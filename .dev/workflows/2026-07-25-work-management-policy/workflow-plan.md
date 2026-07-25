@@ -19,7 +19,7 @@
 - `current_phase`: `remediation-planning`
 - `artifact_root`: `.dev/workflows/2026-07-25-work-management-policy`
 - `created_at`: `2026-07-25T08:02:06+08:00`
-- `updated_at`: `2026-07-25T08:02:06+08:00`
+- `updated_at`: `2026-07-25T08:07:48+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md`
 - `template_version`: `1.2.0`
 
@@ -93,8 +93,8 @@ it does not approve the source-of-truth choices below.
 
 ## Resume Checkpoint
 
-- Last completed action: created the dedicated workflow branch and recorded
-  `ASM-20260725-001` as the baseline assessment.
+- Last completed action: committed the workflow bootstrap and
+  `ASM-20260725-001` baseline as `6e62a4fe71cf4a034584e73865ef412ccd9fe8a3`.
 - Current task: `WMP-002`.
 - Exact next action: receive the owner's decisions for `WMP-DEC-001` through
   `WMP-DEC-004`; do not edit canonical policy before that approval.
@@ -102,8 +102,10 @@ it does not approve the source-of-truth choices below.
   creation; baseline evidence was read from the active governance policies,
   backlog provider direction, and workflow task contract.
 - Git state: branch `codex/2026-07-25-work-management-policy` starts from
-  `main@672344b5d1d3ca8edce77244e29568c53403ccab`.
-- Branch history and checkpoint handoffs: none; bootstrap is not yet committed.
+  `main@672344b5d1d3ca8edce77244e29568c53403ccab` and contains the validated
+  bootstrap commit `6e62a4fe71cf4a034584e73865ef412ccd9fe8a3`.
+- Branch history and checkpoint handoffs: the bootstrap commit is a local
+  checkpoint; it has not been pushed or merged.
 - Blockers or unresolved decisions: all four `WMP-DEC-*` entries above require
   explicit owner approval before remediation.
 
@@ -111,4 +113,4 @@ it does not approve the source-of-truth choices below.
 
 | Segment | Branch | Base | Checkpoint Type | Commit | Remote / Target | Recorded At | Reason | Resume Branch / Action |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| 1 | `codex/2026-07-25-work-management-policy` | `main@672344b5d1d3ca8edce77244e29568c53403ccab` | active bootstrap | none | local | `2026-07-25T08:02:06+08:00` | Establish a decision-ready policy workflow without changing canonical policy. | Obtain `WMP-DEC-001` through `WMP-DEC-004`. |
+| 1 | `codex/2026-07-25-work-management-policy` | `main@672344b5d1d3ca8edce77244e29568c53403ccab` | local bootstrap checkpoint | `6e62a4fe71cf4a034584e73865ef412ccd9fe8a3` | local | `2026-07-25T08:07:48+08:00` | Establish a decision-ready policy workflow without changing canonical policy. | Obtain `WMP-DEC-001` through `WMP-DEC-004`. |
