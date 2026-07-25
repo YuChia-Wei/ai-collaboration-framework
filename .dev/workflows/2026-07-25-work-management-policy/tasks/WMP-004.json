@@ -6,9 +6,9 @@
   "task_id": "WMP-004",
   "workflow_id": "2026-07-25-work-management-policy",
   "owner_skill": "ai-context-governance",
-  "status": "in_progress",
+  "status": "completed",
   "created_at": "2026-07-25T08:02:06+08:00",
-  "updated_at": "2026-07-26T00:55:38+08:00",
+  "updated_at": "2026-07-26T07:39:50+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "finding_ids": [
     "ASM-20260725-001#AIC-001",
@@ -18,7 +18,7 @@
   "scope": {
     "target": "Validation, independent verification, commit evidence, and workflow closure",
     "files": [
-      ".dev/assessments/ASM-20260725-002/**",
+      ".dev/assessments/ASM-20260726-001/**",
       ".dev/workflows/2026-07-25-work-management-policy/**",
       ".dev/workflows/INDEX.MD",
       ".dev/assessments/INDEX.MD"
@@ -46,15 +46,25 @@
       "git diff --check",
       "python .ai/scripts/validate-git-commits.py --range main..HEAD --workflow-id 2026-07-25-work-management-policy"
     ],
-    "last_completed_step": "WMP-003 applied and locally validated the approved policy changes.",
-    "next_action": "Run the configured validation, create an independent verification assessment, reconcile findings, and close the workflow."
+    "last_completed_step": "Finalized ASM-20260726-001, reconciled every baseline finding, completed all configured local validation, and created the local closure checkpoint.",
+    "next_action": "No local workflow action remains; request PR transport separately if desired."
   },
   "results": {
-    "summary": "",
-    "files_changed": [],
-    "tests_run": [],
-    "finding_status": "not-addressed",
-    "residual_risk": "",
+    "summary": "Independent verification confirms ASM-20260725-001#AIC-001 through #AIC-003 are resolved; the workflow is complete locally.",
+    "files_changed": [
+      ".dev/assessments/ASM-20260726-001/assessment.yaml",
+      ".dev/assessments/ASM-20260726-001/report.md",
+      ".dev/assessments/INDEX.MD",
+      ".dev/workflows/2026-07-25-work-management-policy/reports/remediation-report.md"
+    ],
+    "tests_run": [
+      "python .ai/scripts/validate-workflow-artifacts.py",
+      "python .ai/scripts/validate-assessment-artifacts.py",
+      "git diff --check",
+      "python .ai/scripts/validate-git-commits.py --range main..HEAD --workflow-id 2026-07-25-work-management-policy"
+    ],
+    "finding_status": "addressed",
+    "residual_risk": "Hosted GitHub branch-protection and live tracker configuration were intentionally deferred as separately authorized external administration work.",
     "follow_up_needed": false
   }
 }

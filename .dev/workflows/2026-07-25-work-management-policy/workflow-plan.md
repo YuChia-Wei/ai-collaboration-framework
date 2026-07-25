@@ -15,11 +15,11 @@
 - `branch`: `codex/2026-07-25-work-management-policy`
 - `base_branch`: `main`
 - `branch_segment`: `1`
-- `status`: `in_progress`
-- `current_phase`: `verification`
+- `status`: `completed`
+- `current_phase`: `completed`
 - `artifact_root`: `.dev/workflows/2026-07-25-work-management-policy`
 - `created_at`: `2026-07-25T08:02:06+08:00`
-- `updated_at`: `2026-07-26T00:55:38+08:00`
+- `updated_at`: `2026-07-26T07:39:50+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md`
 - `template_version`: `1.2.0`
 
@@ -63,16 +63,16 @@ The owner approved the following source-of-truth and transport decisions on
 
 - Baseline assessment: `.dev/assessments/ASM-20260725-001/assessment.yaml`
 - Remediation report: `.dev/workflows/2026-07-25-work-management-policy/reports/remediation-report.md`
-- Verification assessment: not allocated until policy edits are approved
+- Verification assessment: `.dev/assessments/ASM-20260726-001/assessment.yaml`
 - Tasks: `.dev/workflows/2026-07-25-work-management-policy/tasks/`
 
 ## Finding Triage
 
 | Finding | Severity | Owner | Disposition | Task | Validation |
 | --- | --- | --- | --- | --- | --- |
-| `ASM-20260725-001#AIC-001` | MEDIUM | governance | revise only after `WMP-DEC-001` | `WMP-003` | policy path and semantic review |
-| `ASM-20260725-001#AIC-002` | MEDIUM | governance / owner | select provider and proposal boundary | `WMP-002` | cross-policy consistency |
-| `ASM-20260725-001#AIC-003` | LOW | governance | clarify branch, draft PR, and merge semantics | `WMP-003` | policy wording and reference checks |
+| `ASM-20260725-001#AIC-001` | MEDIUM | governance | resolved | `WMP-003` | `ASM-20260726-001#VFY-001` |
+| `ASM-20260725-001#AIC-002` | MEDIUM | governance / owner | resolved | `WMP-002`, `WMP-003` | `ASM-20260726-001#VFY-002` |
+| `ASM-20260725-001#AIC-003` | LOW | governance | resolved | `WMP-003` | `ASM-20260726-001#VFY-003` |
 
 ## Stages And Checkpoints
 
@@ -89,27 +89,27 @@ The owner approved the following source-of-truth and transport decisions on
 | `WMP-001` | Record the baseline assessment and map current policy boundaries. | `completed` |
 | `WMP-002` | Obtain owner approval for the proposed lifecycle and transport decisions. | `completed` |
 | `WMP-003` | Apply the approved policy and navigation changes. | `completed` |
-| `WMP-004` | Validate, obtain independent verification, commit, and close. | `in_progress` |
+| `WMP-004` | Validate, obtain independent verification, commit, and close. | `completed` |
 
 ## Resume Checkpoint
 
-- Last completed action: applied and locally validated the approved lifecycle,
-  GitHub candidate-provider, and pull-request integration policies.
-- Current task: `WMP-004`.
-- Exact next action: obtain an independent post-remediation assessment,
-  reconcile the baseline findings, validate the full workflow range, and create
-  the final local checkpoint.
-- Validation already completed: repository state was clean before branch
-  creation; baseline evidence was read from the active governance policies,
-  backlog provider direction, and workflow task contract.
+- Last completed action: finalized `ASM-20260726-001`, reconciled every
+  baseline finding, and committed the local closure checkpoint.
+- Current task: none; `WMP-001` through `WMP-004` are completed.
+- Exact next action: no implementation work remains. If external transport is
+  authorized, push the completed branch and open a pull request; do not claim
+  `main` integration before the PR merges.
+- Validation already completed: workflow and assessment artifact validators,
+  JSON parsing, `git diff --check`, and workflow commit-range validation passed;
+  `ASM-20260726-001` independently reconciles each baseline finding.
 - Git state: branch `codex/2026-07-25-work-management-policy` starts from
   `main@672344b5d1d3ca8edce77244e29568c53403ccab` and contains the validated
   bootstrap commit `6e62a4fe71cf4a034584e73865ef412ccd9fe8a3`.
-- Branch history and checkpoint handoffs: the bootstrap and owner-decision
-  checkpoints are local; neither has been pushed or merged.
-- Blockers or unresolved decisions: none. The approved decisions bound the
-  remediation; no external tracker item creation or GitHub transport is
-  authorized by this policy work alone.
+- Branch history and checkpoint handoffs: the bootstrap, owner-decision, and
+  policy-remediation checkpoints are local; none has been pushed or merged.
+- Blockers or unresolved decisions: none for local workflow closure. External
+  tracker creation, GitHub branch-protection configuration, and PR transport
+  remain intentionally unrequested actions.
 
 ## Branch Lifecycle
 
@@ -117,3 +117,4 @@ The owner approved the following source-of-truth and transport decisions on
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | 1 | `codex/2026-07-25-work-management-policy` | `main@672344b5d1d3ca8edce77244e29568c53403ccab` | local bootstrap checkpoint | `6e62a4fe71cf4a034584e73865ef412ccd9fe8a3` | local | `2026-07-25T08:07:48+08:00` | Establish a decision-ready policy workflow without changing canonical policy. | Apply approved lifecycle and PR policy changes. |
 | 1 | `codex/2026-07-25-work-management-policy` | `main@672344b5d1d3ca8edce77244e29568c53403ccab` | local owner-decision checkpoint | `f59288f` | local | `2026-07-26T00:51:56+08:00` | Preserve the owner's four approved lifecycle and transport decisions before policy remediation. | Complete independent verification and close the workflow. |
+| 1 | `codex/2026-07-25-work-management-policy` | `main@672344b5d1d3ca8edce77244e29568c53403ccab` | local policy-remediation checkpoint | `a7e0c543f632e0b00fcffc0f25f87c6756cb9c27` | local | `2026-07-26T00:56:57+08:00` | Apply the owner-approved lifecycle and PR policy changes. | No implementation remains; request PR transport only if desired. |

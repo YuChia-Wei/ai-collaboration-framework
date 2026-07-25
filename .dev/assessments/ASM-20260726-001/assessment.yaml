@@ -1,0 +1,57 @@
+template_metadata:
+  template_id: "assessment-locator"
+  template_version: "1.0.0"
+  template_created_at: "2026-07-13T23:04:10+08:00"
+  template_updated_at: "2026-07-13T23:04:10+08:00"
+
+schema_version: "1.0"
+assessment_id: "ASM-20260726-001"
+commit_search_id: "ASM-20260726-001"
+assessment_type: "ai-context-verification"
+title: "Work Management Lifecycle Policy Verification"
+owner_skill: "ai-context-auditor"
+status: "final"
+report: "report.md"
+artifact_branch: "codex/2026-07-25-work-management-policy"
+base_branch: "main"
+created_at: "2026-07-26T00:58:08+08:00"
+updated_at: "2026-07-26T00:58:08+08:00"
+template_source: ".dev/assessments/templates/assessment-locator-template.yaml"
+template_version: "1.0.0"
+report_template_source: ".ai/assets/skills/ai-context-auditor/templates/ai-context-audit-report-template.md"
+report_template_version: "2.1.0"
+subject_ref:
+  repository: "YuChia-Wei/ai-collaboration-prompts-dotnet-backend"
+  branch: "codex/2026-07-25-work-management-policy"
+  commit: "a7e0c543f632e0b00fcffc0f25f87c6756cb9c27"
+scope:
+  included:
+    - ".dev/assessments/ASM-20260725-001/**"
+    - ".dev/standards/WORKFLOW-GATE-POLICY.md"
+    - ".dev/standards/GIT-COMMIT-POLICY.md"
+    - ".dev/TEAM-GIT-FLOW-RULES.MD"
+    - ".dev/backlog/ROADMAP.md"
+    - ".dev/workflows/2026-07-25-work-management-policy/**"
+    - ".dev/workflows/INDEX.MD"
+    - ".dev/assessments/INDEX.MD"
+  excluded:
+    - "src/**"
+    - "tests/**"
+    - "test/**"
+    - "product implementation trees"
+    - "generated and dependency trees"
+    - "live GitHub Issues, Projects, pull requests, and branch-protection configuration"
+relations:
+  supersedes: []
+  superseded_by: []
+  related_assessments:
+    - "ASM-20260725-001"
+  workflow_refs:
+    - "2026-07-25-work-management-policy"
+  backlog_refs:
+    - "DEVWF-001"
+  adr_refs: []
+resume:
+  last_completed_action: "Independently verified the approved work-management lifecycle policy against ASM-20260725-001."
+  next_action: "ai-context-governance may reconcile this verification and close the owning workflow."
+  blockers: []
