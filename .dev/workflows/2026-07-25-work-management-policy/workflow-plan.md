@@ -19,7 +19,7 @@
 - `current_phase`: `remediation-planning`
 - `artifact_root`: `.dev/workflows/2026-07-25-work-management-policy`
 - `created_at`: `2026-07-25T08:02:06+08:00`
-- `updated_at`: `2026-07-25T08:07:48+08:00`
+- `updated_at`: `2026-07-26T00:51:56+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md`
 - `template_version`: `1.2.0`
 
@@ -49,15 +49,15 @@
 ## Decision Authority
 
 Opening this workflow was authorized by the repository owner on 2026-07-25.
-That authorization permits evidence capture and a decision-ready policy proposal;
-it does not approve the source-of-truth choices below.
+The owner approved the following source-of-truth and transport decisions on
+2026-07-26; they authorize `WMP-003` to make the bounded policy edits.
 
-| Decision | Owner decision required before policy edits | Proposed default |
+| Decision | Owner-approved policy decision | Evidence |
 | --- | --- | --- |
-| `WMP-DEC-001` | When does a workflow begin? | Only when execution is authorized or durable cross-session execution tracking is required; discussion and unapproved planning do not create a workflow locator. |
-| `WMP-DEC-002` | Where do candidate work and unapproved plan details live? | An optional tracker such as GitHub Issues is the preferred durable candidate surface; without a selected provider, discussion remains conversational until the owner approves repository persistence. |
-| `WMP-DEC-003` | What is the repository-only alternative for a plan that must be retained but is not executable? | Decide whether to add a separate proposal artifact class or require an explicitly approved planning branch; do not overload an `in_progress` execution workflow. |
-| `WMP-DEC-004` | What Git transport is required at each lifecycle boundary? | Branches are required for repository workflow or policy edits; a draft PR is optional review transport before an intended merge; `main` changes require the repository merge policy; a push-only checkpoint does not imply completion. |
+| `WMP-DEC-001` | A workflow begins only when execution is authorized or durable cross-session execution tracking is required. Discussion and unapproved planning do not create a workflow locator. | Owner response: `1 同意`. |
+| `WMP-DEC-002` | For this repository, GitHub Issues and GitHub Projects are the candidate-work provider. The framework remains provider-neutral for target repositories. | Owner response: `2 選 GitHub`. |
+| `WMP-DEC-003` | This repository does not add a repository proposal artifact class. A retained but unapproved plan belongs in a GitHub Issue; without an available provider, it remains conversational until the owner explicitly authorizes another persistence route. An execution workflow must not be overloaded for this purpose. | Owner response: `3 同意`. |
+| `WMP-DEC-004` | Repository workflow and policy edits stay branch-first. Draft PRs are optional before review or handoff, but every change entering `main` must use a pull request. Workflow completion and PR integration remain separate facts. | Owner response: `4 要求 PR 合併 main`. |
 
 ## Artifact Contract
 
@@ -87,17 +87,17 @@ it does not approve the source-of-truth choices below.
 | Task | Purpose | Status |
 | --- | --- | --- |
 | `WMP-001` | Record the baseline assessment and map current policy boundaries. | `completed` |
-| `WMP-002` | Obtain owner approval for the proposed lifecycle and transport decisions. | `in_progress` |
-| `WMP-003` | Apply the approved policy and navigation changes. | `pending` |
+| `WMP-002` | Obtain owner approval for the proposed lifecycle and transport decisions. | `completed` |
+| `WMP-003` | Apply the approved policy and navigation changes. | `in_progress` |
 | `WMP-004` | Validate, obtain independent verification, commit, and close. | `pending` |
 
 ## Resume Checkpoint
 
-- Last completed action: committed the workflow bootstrap and
-  `ASM-20260725-001` baseline as `6e62a4fe71cf4a034584e73865ef412ccd9fe8a3`.
-- Current task: `WMP-002`.
-- Exact next action: receive the owner's decisions for `WMP-DEC-001` through
-  `WMP-DEC-004`; do not edit canonical policy before that approval.
+- Last completed action: the owner approved `WMP-DEC-001` through
+  `WMP-DEC-004` on 2026-07-26.
+- Current task: `WMP-003`.
+- Exact next action: apply the approved lifecycle and pull-request policy
+  changes, then validate them before independent verification.
 - Validation already completed: repository state was clean before branch
   creation; baseline evidence was read from the active governance policies,
   backlog provider direction, and workflow task contract.
@@ -106,11 +106,12 @@ it does not approve the source-of-truth choices below.
   bootstrap commit `6e62a4fe71cf4a034584e73865ef412ccd9fe8a3`.
 - Branch history and checkpoint handoffs: the bootstrap commit is a local
   checkpoint; it has not been pushed or merged.
-- Blockers or unresolved decisions: all four `WMP-DEC-*` entries above require
-  explicit owner approval before remediation.
+- Blockers or unresolved decisions: none. The approved decisions bound the
+  remediation; no external tracker item creation or GitHub transport is
+  authorized by this policy work alone.
 
 ## Branch Lifecycle
 
 | Segment | Branch | Base | Checkpoint Type | Commit | Remote / Target | Recorded At | Reason | Resume Branch / Action |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| 1 | `codex/2026-07-25-work-management-policy` | `main@672344b5d1d3ca8edce77244e29568c53403ccab` | local bootstrap checkpoint | `6e62a4fe71cf4a034584e73865ef412ccd9fe8a3` | local | `2026-07-25T08:07:48+08:00` | Establish a decision-ready policy workflow without changing canonical policy. | Obtain `WMP-DEC-001` through `WMP-DEC-004`. |
+| 1 | `codex/2026-07-25-work-management-policy` | `main@672344b5d1d3ca8edce77244e29568c53403ccab` | local bootstrap checkpoint | `6e62a4fe71cf4a034584e73865ef412ccd9fe8a3` | local | `2026-07-25T08:07:48+08:00` | Establish a decision-ready policy workflow without changing canonical policy. | Apply approved lifecycle and PR policy changes. |

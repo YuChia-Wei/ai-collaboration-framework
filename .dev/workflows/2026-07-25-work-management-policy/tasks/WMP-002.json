@@ -6,9 +6,9 @@
   "task_id": "WMP-002",
   "workflow_id": "2026-07-25-work-management-policy",
   "owner_skill": "ai-context-governance",
-  "status": "in_progress",
+  "status": "completed",
   "created_at": "2026-07-25T08:02:06+08:00",
-  "updated_at": "2026-07-25T08:07:48+08:00",
+  "updated_at": "2026-07-26T00:51:56+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "finding_ids": [
     "ASM-20260725-001#AIC-001",
@@ -41,15 +41,17 @@
       "Decision register completeness",
       "No contradiction with optional-provider and workflow lifecycle contracts"
     ],
-    "last_completed_step": "Baseline evidence was committed in local bootstrap checkpoint 6e62a4fe71cf4a034584e73865ef412ccd9fe8a3.",
-    "next_action": "Await owner decisions for WMP-DEC-001 through WMP-DEC-004."
+    "last_completed_step": "The owner approved WMP-DEC-001 through WMP-DEC-004 on 2026-07-26: execution-only workflow activation, GitHub Issues/Projects for this repository, no repository proposal artifact class, and pull-request-only integration to main.",
+    "next_action": "WMP-003 applies the approved bounded policy changes."
   },
   "results": {
-    "summary": "Awaiting owner decisions.",
-    "files_changed": [],
+    "summary": "Owner decisions were recorded in the workflow plan and authorize bounded policy remediation.",
+    "files_changed": [
+      ".dev/workflows/2026-07-25-work-management-policy/workflow-plan.md"
+    ],
     "tests_run": [],
-    "finding_status": "not-addressed",
-    "residual_risk": "Choosing a provider or proposal storage class without owner approval would change the repository's source-of-truth boundary.",
-    "follow_up_needed": true
+    "finding_status": "addressed",
+    "residual_risk": "The approved GitHub selection is repository-specific; portable framework targets must retain provider choice.",
+    "follow_up_needed": false
   }
 }

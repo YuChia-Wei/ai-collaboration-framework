@@ -8,7 +8,7 @@ task-level progress.
 
 | Workflow | Title | Owner | Status | Updated | Entry Point |
 | --- | --- | --- | --- | --- | --- |
-| [`2026-07-25-work-management-policy`](2026-07-25-work-management-policy/workflow.yaml) | Define Work Management Lifecycle And Git Governance Boundaries | `ai-context-governance` | `in_progress` | `2026-07-25T08:07:48+08:00` | [plan](2026-07-25-work-management-policy/workflow-plan.md) |
+| [`2026-07-25-work-management-policy`](2026-07-25-work-management-policy/workflow.yaml) | Define Work Management Lifecycle And Git Governance Boundaries | `ai-context-governance` | `in_progress` | `2026-07-26T00:51:56+08:00` | [plan](2026-07-25-work-management-policy/workflow-plan.md) |
 | [`2026-07-24-v0-6-model-evaluation`](2026-07-24-v0-6-model-evaluation/workflow.yaml) | Run The v0.6.0 Terra Model-In-The-Loop Evaluation | `ai-context-governance` | `completed` | `2026-07-24T12:36:47+08:00` | [plan](2026-07-24-v0-6-model-evaluation/workflow-plan.md) |
 | [`2026-07-24-v0-6-config-skill-transition`](2026-07-24-v0-6-config-skill-transition/workflow.yaml) | Separate Repository Configuration And Prepare Compatible Skill Transitions | `ai-context-governance` | `completed` | `2026-07-24T13:08:39+08:00` | [plan](2026-07-24-v0-6-config-skill-transition/workflow-plan.md) |
 | [`2026-07-24-v0-6-eval-deterministic`](2026-07-24-v0-6-eval-deterministic/workflow.yaml) | Establish The v0.6.0 Deterministic AI Behavior Evaluation Baseline | `ai-context-governance` | `completed` | `2026-07-24T09:56:21+08:00` | [plan](2026-07-24-v0-6-eval-deterministic/workflow-plan.md) |
