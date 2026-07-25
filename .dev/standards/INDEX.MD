@@ -16,7 +16,7 @@ rules.
 | `DEPENDENCY-VERSION-CONSISTENCY-POLICY.md` | Deterministic offline dependency/runtime consistency and online advisory boundary. |
 | `GIT-COMMIT-POLICY.md` / `GIT-COMMIT-POLICY.yaml` | Agent-assisted Git commit contract. |
 | `WORKFLOW-ARTIFACT-POLICY.md` | Shared workflow artifact metadata. |
-| `WORKFLOW-GATE-POLICY.md` | Direct mode versus workflow mode. |
+| `WORKFLOW-GATE-POLICY.md` | Conversation, candidate-work, assessment, and authorized-execution workflow gate. |
 | `WORKFLOW-HANDOFF-POLICY.md` / `WORKFLOW-HANDOFF-POLICY.yaml` | Fail-closed cross-model, runtime, host, machine, and fresh-session receiving checkpoint contract. |
 
 ## Architecture And Implementation

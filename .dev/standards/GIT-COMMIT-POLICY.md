@@ -216,6 +216,7 @@ For commit-policy purposes:
 - create workflow commits only on the dedicated workflow or continuation branch;
 - include checkpoint state in the commit body when the workflow will be handed off or merged before completion;
 - do not treat a commit, push, or merge as evidence that the workflow is complete;
+- use the pull-request-only `main` integration rule owned by `.dev/TEAM-GIT-FLOW-RULES.MD`; a local merge must not bypass it;
 - verify the workflow closing checklist separately from Git transport state.
 
 ## Validation Notes

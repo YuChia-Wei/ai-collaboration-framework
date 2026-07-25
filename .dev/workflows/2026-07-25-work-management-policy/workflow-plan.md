@@ -16,10 +16,10 @@
 - `base_branch`: `main`
 - `branch_segment`: `1`
 - `status`: `in_progress`
-- `current_phase`: `remediation-planning`
+- `current_phase`: `verification`
 - `artifact_root`: `.dev/workflows/2026-07-25-work-management-policy`
 - `created_at`: `2026-07-25T08:02:06+08:00`
-- `updated_at`: `2026-07-26T00:51:56+08:00`
+- `updated_at`: `2026-07-26T00:55:38+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md`
 - `template_version`: `1.2.0`
 
@@ -88,24 +88,25 @@ The owner approved the following source-of-truth and transport decisions on
 | --- | --- | --- |
 | `WMP-001` | Record the baseline assessment and map current policy boundaries. | `completed` |
 | `WMP-002` | Obtain owner approval for the proposed lifecycle and transport decisions. | `completed` |
-| `WMP-003` | Apply the approved policy and navigation changes. | `in_progress` |
-| `WMP-004` | Validate, obtain independent verification, commit, and close. | `pending` |
+| `WMP-003` | Apply the approved policy and navigation changes. | `completed` |
+| `WMP-004` | Validate, obtain independent verification, commit, and close. | `in_progress` |
 
 ## Resume Checkpoint
 
-- Last completed action: the owner approved `WMP-DEC-001` through
-  `WMP-DEC-004` on 2026-07-26.
-- Current task: `WMP-003`.
-- Exact next action: apply the approved lifecycle and pull-request policy
-  changes, then validate them before independent verification.
+- Last completed action: applied and locally validated the approved lifecycle,
+  GitHub candidate-provider, and pull-request integration policies.
+- Current task: `WMP-004`.
+- Exact next action: obtain an independent post-remediation assessment,
+  reconcile the baseline findings, validate the full workflow range, and create
+  the final local checkpoint.
 - Validation already completed: repository state was clean before branch
   creation; baseline evidence was read from the active governance policies,
   backlog provider direction, and workflow task contract.
 - Git state: branch `codex/2026-07-25-work-management-policy` starts from
   `main@672344b5d1d3ca8edce77244e29568c53403ccab` and contains the validated
   bootstrap commit `6e62a4fe71cf4a034584e73865ef412ccd9fe8a3`.
-- Branch history and checkpoint handoffs: the bootstrap commit is a local
-  checkpoint; it has not been pushed or merged.
+- Branch history and checkpoint handoffs: the bootstrap and owner-decision
+  checkpoints are local; neither has been pushed or merged.
 - Blockers or unresolved decisions: none. The approved decisions bound the
   remediation; no external tracker item creation or GitHub transport is
   authorized by this policy work alone.
@@ -115,3 +116,4 @@ The owner approved the following source-of-truth and transport decisions on
 | Segment | Branch | Base | Checkpoint Type | Commit | Remote / Target | Recorded At | Reason | Resume Branch / Action |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | 1 | `codex/2026-07-25-work-management-policy` | `main@672344b5d1d3ca8edce77244e29568c53403ccab` | local bootstrap checkpoint | `6e62a4fe71cf4a034584e73865ef412ccd9fe8a3` | local | `2026-07-25T08:07:48+08:00` | Establish a decision-ready policy workflow without changing canonical policy. | Apply approved lifecycle and PR policy changes. |
+| 1 | `codex/2026-07-25-work-management-policy` | `main@672344b5d1d3ca8edce77244e29568c53403ccab` | local owner-decision checkpoint | `f59288f` | local | `2026-07-26T00:51:56+08:00` | Preserve the owner's four approved lifecycle and transport decisions before policy remediation. | Complete independent verification and close the workflow. |

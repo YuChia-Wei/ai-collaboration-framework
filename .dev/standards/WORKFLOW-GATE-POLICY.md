@@ -6,11 +6,32 @@ This policy defines when an agent should create workflow artifacts proactively i
 
 | Mode | Use |
 | --- | --- |
-| Direct mode | Small, single-pass work that does not need long-lived context. |
+| Direct mode | Conversation, exploration, or small single-pass work that does not need a durable repository execution record. |
 | Assessment mode | Read-only analysis that needs a durable report but does not authorize remediation or execution tracking. |
-| Workflow mode | Multi-stage work that changes source-of-truth, crosses skill boundaries, or needs task status tracking. |
+| Workflow mode | Authorized execution that changes source-of-truth, crosses skill boundaries, or needs durable execution-task tracking. |
 
 Mode is determined by intent, mutation, and execution tracking, not by the number of analysis steps alone. A transient read-only analysis may use multiple passes or sub-agents in direct mode when it does not write a repository report, mutate repository files, or perform remediation. A user request for a "report" means a durable repository artifact only when the user asks to save, persist, land, or otherwise retain it in the repository. Persistence by itself selects assessment mode, not workflow mode.
+
+## Work-Management Lifecycle
+
+Keep work-management state distinct from repository execution state. A planning
+word, a detailed breakdown, or a multi-step conversation does not by itself
+authorize repository work or create a workflow.
+
+| State | Durable home | Repository execution consequence |
+| --- | --- | --- |
+| Conversation and exploration | The conversation only. | No branch, workflow locator, commit, or pull request. |
+| Candidate work and unapproved plan | For this source repository, a GitHub Issue; GitHub Projects provide the priority and status views. | The tracker item is optional evidence, not an execution workflow. No repository branch or pull request is created merely to record it. |
+| Authorized execution | A skill-owned workflow locator and its task artifacts when the workflow gate applies. | Create the dedicated branch before the locator or material repository edits. Link an existing issue only when useful; never fabricate a tracker identifier. |
+| Integrated repository fact | `main`, after the required pull request is merged. | Do not describe branch-only or tracker-only work as integrated repository truth. |
+
+GitHub Issues and Projects are this repository's selected candidate-work
+provider, not a framework-wide requirement for target repositories. The
+framework stays provider-neutral. This repository does not define a separate
+repository proposal artifact class: a retained but unapproved plan belongs in
+a GitHub Issue. If no selected provider is available, retain it in the
+conversation until the owner explicitly authorizes another persistence route;
+do not overload an `in_progress` execution workflow.
 
 For software-development work, activation is intent-based. A high-level request
 that spans planning, requirements, design, implementation, testing, review, or
@@ -21,17 +42,22 @@ not from skill names alone.
 
 ## Must Create a Workflow
 
-Create a durable workflow and its discovery locator when any of these are true:
+Create a durable workflow and its discovery locator only when execution is
+authorized, or the owner requires durable cross-session execution tracking, and
+one or more of these are true:
 
-- the task needs two or more stages;
+- the authorized task needs two or more execution stages;
 - the task needs cross-skill or sub-agent handoff;
 - the task changes canonical source-of-truth rules;
 - the task reorganizes `.ai/`, `.dev/`, `.agents/`, `.claude/`, or wrapper routing;
 - the task affects future agent behavior;
-- the task needs plan, review, or task status artifacts;
+- the task needs execution plan, review, or task status artifacts;
 - the task involves document governance, source-of-truth cleanup, or context boundary changes;
 - the task will likely touch five or more files;
-- the user uses wording such as "workflow", "規劃", "整理", "重構", "標準化", "治理", or "拆分" for repo-wide documentation or context work.
+- the owner explicitly requests a workflow for the authorized execution.
+
+Candidate tracker management, discussion, plan drafting, and task breakdown are
+not workflow triggers unless they also meet the authorization condition above.
 
 ## Direct Mode Is Enough
 
@@ -50,6 +76,10 @@ Transient read-only analysis is also direct mode even when it is multi-stage or 
 - no durable report or workflow artifact is written to the repository;
 - no repository file is mutated;
 - no finding is remediated.
+
+Creating or refining a selected external tracker item does not by itself change
+the repository mode. It must remain within the owner's authorization for that
+provider, and it does not turn an unapproved plan into execution authorization.
 
 ## Assessment Mode
 
@@ -163,4 +193,5 @@ Before sending a final response in workflow mode, the agent must verify all of t
 - when the commit policy requires a commit, the commit has been created before claiming completion;
 - when no commit is created, the final response cites the exact policy exception that applies.
 - the workflow was not marked complete merely because its branch was merged or pushed as a checkpoint;
+- workflow completion and pull-request integration were reported as separate facts; do not claim a `main` change until the pull request required by `.dev/TEAM-GIT-FLOW-RULES.MD` is merged;
 - any requested merge used `--no-ff` unless the user explicitly selected another strategy.
