@@ -1,0 +1,55 @@
+{
+  "template_id": "ai-context-governance-remediation-task",
+  "template_version": "1.0.0",
+  "template_created_at": "2026-07-10T18:22:49+08:00",
+  "template_updated_at": "2026-07-10T18:22:49+08:00",
+  "task_id": "WMP-002",
+  "workflow_id": "2026-07-25-work-management-policy",
+  "owner_skill": "ai-context-governance",
+  "status": "in_progress",
+  "created_at": "2026-07-25T08:02:06+08:00",
+  "updated_at": "2026-07-25T08:02:06+08:00",
+  "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
+  "finding_ids": [
+    "ASM-20260725-001#AIC-001",
+    "ASM-20260725-001#AIC-002",
+    "ASM-20260725-001#AIC-003"
+  ],
+  "scope": {
+    "target": "Owner approval for work-management lifecycle and Git transport semantics",
+    "files": [
+      ".dev/workflows/2026-07-25-work-management-policy/workflow-plan.md"
+    ],
+    "constraints": [
+      "Do not infer source-of-truth decisions from existing paths",
+      "Keep issue linkage optional",
+      "Do not authorize policy edits until decisions are recorded"
+    ],
+    "non_goals": [
+      "Policy edits",
+      "Creating online tracker items",
+      "Implementation work"
+    ]
+  },
+  "execution": {
+    "steps": [
+      "Present WMP-DEC-001 through WMP-DEC-004 to the owner",
+      "Record explicit approvals or alternatives",
+      "Bound WMP-003 to the resulting decisions"
+    ],
+    "validation": [
+      "Decision register completeness",
+      "No contradiction with optional-provider and workflow lifecycle contracts"
+    ],
+    "last_completed_step": "Baseline evidence is available for owner review.",
+    "next_action": "Await owner decisions for WMP-DEC-001 through WMP-DEC-004."
+  },
+  "results": {
+    "summary": "Awaiting owner decisions.",
+    "files_changed": [],
+    "tests_run": [],
+    "finding_status": "not-addressed",
+    "residual_risk": "Choosing a provider or proposal storage class without owner approval would change the repository's source-of-truth boundary.",
+    "follow_up_needed": true
+  }
+}

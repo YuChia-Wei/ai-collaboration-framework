@@ -1,0 +1,65 @@
+{
+  "template_id": "ai-context-governance-remediation-task",
+  "template_version": "1.0.0",
+  "template_created_at": "2026-07-10T18:22:49+08:00",
+  "template_updated_at": "2026-07-10T18:22:49+08:00",
+  "task_id": "WMP-003",
+  "workflow_id": "2026-07-25-work-management-policy",
+  "owner_skill": "ai-context-governance",
+  "status": "pending",
+  "created_at": "2026-07-25T08:02:06+08:00",
+  "updated_at": "2026-07-25T08:02:06+08:00",
+  "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
+  "finding_ids": [
+    "ASM-20260725-001#AIC-001",
+    "ASM-20260725-001#AIC-002",
+    "ASM-20260725-001#AIC-003"
+  ],
+  "scope": {
+    "target": "Approved workflow gate, durable proposal, optional provider, branch, and PR policy changes",
+    "files": [
+      ".dev/standards/WORKFLOW-GATE-POLICY.md",
+      ".dev/standards/WORKFLOW-ARTIFACT-POLICY.md",
+      ".dev/TEAM-GIT-FLOW-RULES.MD",
+      ".dev/standards/GIT-COMMIT-POLICY.md",
+      ".dev/backlog/ROADMAP.md",
+      ".dev/backlog/items/DEVWF-001.yaml",
+      ".dev/INDEX.md",
+      ".dev/guides/**"
+    ],
+    "constraints": [
+      "Edit only files required by approved decisions",
+      "Do not make an external tracker mandatory",
+      "Preserve branch-first protection for active repository workflows",
+      "Do not rewrite historical workflow or assessment records"
+    ],
+    "non_goals": [
+      "External tool installation",
+      "Backlog migration",
+      "Product implementation",
+      "Release changes"
+    ]
+  },
+  "execution": {
+    "steps": [
+      "Apply the owner-approved lifecycle and transport decisions",
+      "Update discovery navigation only where the new rules require it",
+      "Record decision authority and affected contract links"
+    ],
+    "validation": [
+      "Markdown and link checks",
+      "Workflow and policy validators",
+      "git diff --check"
+    ],
+    "last_completed_step": "",
+    "next_action": "Start only after WMP-002 records owner approval."
+  },
+  "results": {
+    "summary": "",
+    "files_changed": [],
+    "tests_run": [],
+    "finding_status": "not-addressed",
+    "residual_risk": "",
+    "follow_up_needed": true
+  }
+}
