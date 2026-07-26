@@ -6,7 +6,7 @@
 - `status`: `active`
 - `current_target`: `unassigned`
 - `created_at`: `2026-07-18T14:19:06+08:00`
-- `updated_at`: `2026-07-24T15:15:15+08:00`
+- `updated_at`: `2026-07-26T00:51:56+08:00`
 - `source_assessment`: `.dev/assessments/ASM-20260717-004/assessment.yaml`
 - `source_plan`: `.dev/backlog/plans/post-v0.4.0-improvement-plan.md`
 - `planning_workflow`: `.dev/workflows/2026-07-18-post-v0-4-roadmap-planning/workflow.yaml`
@@ -20,7 +20,13 @@ Read this file before planning or resuming a post-v0.4.0 release.
 - This roadmap owns release horizons, release-level state, activation gates, and workflow handoffs.
 - Individual backlog items own candidate work and their target/completed/published release metadata.
 - Execution workflows own task progress, validation evidence, commits, and publication checkpoints.
-- Open the planning workflow only when decision rationale or evidence details are needed.
+- This source repository uses GitHub Issues for candidate work and unapproved
+  plans; GitHub Projects provide its priority and status views. The durable
+  repository backlog retains framework and release-governance decisions rather
+  than replacing that day-to-day tracker.
+- Open an execution workflow only after execution is authorized or durable
+  cross-session execution tracking is required. A candidate issue or planning
+  discussion alone is not a workflow trigger.
 
 ## Release Horizons
 

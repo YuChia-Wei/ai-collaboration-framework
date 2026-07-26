@@ -1,0 +1,66 @@
+{
+  "template_id": "ai-context-governance-remediation-task",
+  "template_version": "1.0.0",
+  "template_created_at": "2026-07-10T18:22:49+08:00",
+  "template_updated_at": "2026-07-10T18:22:49+08:00",
+  "task_id": "WMP-001",
+  "workflow_id": "2026-07-25-work-management-policy",
+  "owner_skill": "ai-context-governance",
+  "status": "completed",
+  "created_at": "2026-07-25T08:02:06+08:00",
+  "updated_at": "2026-07-25T08:02:06+08:00",
+  "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
+  "finding_ids": [
+    "ASM-20260725-001#AIC-001",
+    "ASM-20260725-001#AIC-002",
+    "ASM-20260725-001#AIC-003"
+  ],
+  "scope": {
+    "target": "Current work-management, workflow-gate, branch, commit, and optional backlog-provider boundaries",
+    "files": [
+      ".dev/standards/WORKFLOW-GATE-POLICY.md",
+      ".dev/standards/WORKFLOW-ARTIFACT-POLICY.md",
+      ".dev/TEAM-GIT-FLOW-RULES.MD",
+      ".dev/standards/GIT-COMMIT-POLICY.md",
+      ".dev/backlog/ROADMAP.md",
+      ".dev/backlog/items/DEVWF-001.yaml"
+    ],
+    "constraints": [
+      "Read-only baseline evidence",
+      "Do not modify canonical policy before owner decisions",
+      "Do not inspect product source or tests"
+    ],
+    "non_goals": [
+      "Policy remediation",
+      "Tracker installation or migration",
+      "Release work"
+    ]
+  },
+  "execution": {
+    "steps": [
+      "Classify direct, assessment, workflow, branch, and commit rules",
+      "Compare general source-of-truth principles with repository policy",
+      "Record baseline findings with stable IDs"
+    ],
+    "validation": [
+      "Repository-native path and policy review",
+      "Clean pre-branch Git state",
+      "Structured assessment and task artifact validation in WMP-004"
+    ],
+    "last_completed_step": "Recorded ASM-20260725-001 and the initial policy-boundary findings.",
+    "next_action": "WMP-002 obtains owner decisions before canonical policy is edited."
+  },
+  "results": {
+    "summary": "The baseline confirms that transient discussion is already direct mode, while the durable workflow gate lacks a clear candidate and proposal promotion boundary.",
+    "files_changed": [
+      ".dev/assessments/ASM-20260725-001/**",
+      ".dev/workflows/2026-07-25-work-management-policy/**"
+    ],
+    "tests_run": [
+      "Read-only policy and artifact review"
+    ],
+    "finding_status": "deferred",
+    "residual_risk": "No canonical policy has changed; remediation is intentionally deferred until the owner resolves WMP-DEC-001 through WMP-DEC-004.",
+    "follow_up_needed": true
+  }
+}

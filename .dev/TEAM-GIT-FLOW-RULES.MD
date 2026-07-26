@@ -15,7 +15,10 @@ trunk-based development because workflow-mode changes do not occur directly on
 
 `main` is the only long-lived trunk.
 
-All feature, workflow, documentation, and agent work branches start from `main`. Completed workflows merge back to `main`; an explicitly requested earlier merge is a checkpoint and does not close the workflow.
+All feature, workflow, documentation, and agent work branches start from `main`.
+Every change entering `main` must be merged through a pull request; do not
+perform a local direct merge into `main`. An explicitly requested earlier pull
+request merge is a checkpoint and does not close the workflow.
 
 ## Branch Model
 
@@ -53,14 +56,12 @@ Use the agent prefix when an agent performs the work.
 
 3. Make focused commits following `.dev/standards/GIT-COMMIT-POLICY.md`.
 4. Run the narrowest meaningful validation.
-5. Merge back to `main` with no fast-forward:
-
-   ```bash
-   git checkout main
-   git merge --no-ff <branch-name>
-   ```
-
-6. Confirm `main` is clean after merge.
+5. Push the branch and open a pull request to `main` when transport is
+   authorized. A draft pull request is optional before review or handoff.
+6. Merge the approved pull request with a merge commit (`--no-ff` equivalent)
+   after its required validation and review; do not use a local direct merge to
+   enter `main`.
+7. Confirm `main` is clean after the pull-request merge.
 
 ## Workflow Branches
 
@@ -96,12 +97,14 @@ artifacts plus required assessment index updates. If an assessment is produced
 inside an existing authorized workflow, use the workflow branch instead of
 creating a competing assessment branch.
 
-Assessment branches follow the normal `--no-ff` merge rule unless the user
-explicitly selects another strategy.
+Assessment branches follow the normal pull-request and `--no-ff` merge rule
+unless the user explicitly selects another strategy.
 
 ## Merge Rule
 
-Use `--no-ff` for workflow and multi-commit branches so the branch work remains visible as a grouped unit.
+Every change entering `main` requires a pull request. Use a merge commit
+(`--no-ff` or the GitHub pull-request equivalent) for workflow and multi-commit
+branches so the branch work remains visible as a grouped unit.
 
 Fast-forward merge is acceptable only for tiny direct-mode branches when the user or maintainer explicitly chooses it.
 
@@ -112,7 +115,8 @@ When work must move to another machine or session before all workflow tasks are 
 1. Commit a coherent validated checkpoint and keep the workflow `active`.
 2. Prefer pushing the workflow branch when integration into `main` is not required.
 3. For a push-only handoff, fetch the remote branch on the next machine and resume that branch, or create a continuation branch from that remote branch. Do not restart from `main`, because it does not contain the unmerged checkpoint.
-4. If merge is explicitly requested, merge with `--no-ff` and push the requested target.
+4. If merge is explicitly requested, push the branch and merge its pull request
+   with a merge commit; do not bypass the pull-request rule with a local merge.
 5. After a checkpoint merge, start from the updated target branch and create a new continuation branch such as `<prefix>/<workflow-id>-cont-02`; do not continue material work on the target branch.
 6. Record the checkpoint type (`push` or `merge`), commit, remote or target, timestamp, reason, last completed task, and exact resume branch/action in the workflow plan.
 7. Update locator `branch`, `base_branch`, `updated_at`, and branch history only when the active branch segment changes.
