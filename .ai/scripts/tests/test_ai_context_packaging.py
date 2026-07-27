@@ -216,6 +216,84 @@ class DeterministicPackageGwtTests(unittest.TestCase):
         finally:
             fixture.close()
 
+    def test_gwt_0000_given_source_local_policy_and_portable_mapping_when_projected_then_target_gets_only_portable_bytes(self) -> None:
+        fixture = SyntheticPackageRepo()
+        try:
+            source_policy = fixture.root / ".dev/standards/POLICY.md"
+            portable_root = fixture.root / ".ai/assets/shared/governance"
+            source_policy.parent.mkdir(parents=True)
+            portable_root.mkdir(parents=True)
+            source_policy.write_text(
+                "source-only hosted provider and main rule\n", encoding="utf-8"
+            )
+            (portable_root / "POLICY.md").write_text(
+                "provider-neutral workflow truth\n", encoding="utf-8"
+            )
+            manifest_path = portable_root / "manifest.yaml"
+            manifest_path.write_text(
+                yaml.safe_dump(
+                    {
+                        "schema_version": "1.0",
+                        "source_root": ".",
+                        "mappings": [
+                            {
+                                "source": "POLICY.md",
+                                "target": ".dev/standards/POLICY.md",
+                                "component_id": "software-development-core",
+                            }
+                        ],
+                    },
+                    sort_keys=False,
+                ),
+                encoding="utf-8",
+            )
+            profile_path = fixture.root / fixture.profile
+            profile = yaml.safe_load(profile_path.read_text(encoding="utf-8"))
+            profile["entries"].append(
+                {
+                    "id": "portable-policy",
+                    "component_id": "software-development-core",
+                    "source": ".ai/assets/shared/governance/**",
+                    "target": "mapping-declared-by-template-manifest",
+                    "template_manifest": ".ai/assets/shared/governance/manifest.yaml",
+                    "ownership": "framework-managed",
+                    "install_behavior": "managed",
+                }
+            )
+            profile["exclusions"].append(
+                {
+                    "id": "source-policy",
+                    "classification": "source-only",
+                    "patterns": [".dev/standards/POLICY.md"],
+                    "reason": "Source policy must not become target truth.",
+                }
+            )
+            profile_path.write_text(
+                yaml.safe_dump(profile, sort_keys=False), encoding="utf-8"
+            )
+            git(fixture.root, "add", ".")
+            git(fixture.root, "commit", "-qm", "portable policy fixture")
+
+            tree = PACKAGE.git_tree(fixture.root, "HEAD")
+            committed_profile = PACKAGE.load_yaml_blob(
+                fixture.root, tree, fixture.profile
+            )
+            payload = {
+                item.path: item
+                for item in PACKAGE.collect_payload(
+                    fixture.root, tree, committed_profile
+                )
+            }
+
+            projected = payload[".dev/standards/POLICY.md"]
+            self.assertEqual(
+                ".ai/assets/shared/governance/POLICY.md", projected.source_path
+            )
+            self.assertEqual(b"provider-neutral workflow truth\n", projected.content)
+            self.assertNotIn(b"hosted provider", projected.content)
+        finally:
+            fixture.close()
+
     def test_gwt_000a_given_real_component_matrix_when_payload_is_projected_then_both_mandatory_cores_keep_their_capabilities(self) -> None:
         tree = PACKAGE.git_tree(ROOT, "HEAD")
         profile = yaml.safe_load(
