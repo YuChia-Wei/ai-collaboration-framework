@@ -6,9 +6,9 @@
   "task_id": "AEP-004",
   "workflow_id": "2026-07-27-ai-execution-provenance-policy",
   "owner_skill": "ai-context-governance",
-  "status": "in_progress",
+  "status": "completed",
   "created_at": "2026-07-27T08:39:34+08:00",
-  "updated_at": "2026-07-27T10:06:15+08:00",
+  "updated_at": "2026-07-27T10:20:30+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-5.6-sol",
   "reasoning_effort": "medium",
@@ -44,15 +44,28 @@
       "python .ai/scripts/validate-git-commits.py --range main..HEAD --workflow-id 2026-07-27-ai-execution-provenance-policy",
       "git diff --check"
     ],
-    "last_completed_step": "AEP-003 completed provider evidence, runtime guidance, and focused validation.",
-    "next_action": "Commit the remediation baseline, run independent ai-context-auditor verification, and close the workflow."
+    "last_completed_step": "Completed ASM-20260727-001, passed the 44-check critical gate, reconciled the verification, and finalized workflow closure evidence.",
+    "next_action": "Push the completed workflow branch, open a pull request, and merge it to main."
   },
   "results": {
-    "summary": "",
-    "files_changed": [],
-    "tests_run": [],
-    "finding_status": "not-addressed",
-    "residual_risk": "",
-    "follow_up_needed": true
+    "summary": "Independent verification found no active remediation finding; the complete required validation set passed and the workflow is ready for PR integration.",
+    "files_changed": [
+      ".dev/assessments/ASM-20260727-001/assessment.yaml",
+      ".dev/assessments/ASM-20260727-001/report.md",
+      ".dev/workflows/2026-07-27-ai-execution-provenance-policy/reports/remediation-report.md",
+      ".dev/workflows/2026-07-27-ai-execution-provenance-policy/workflow-plan.md",
+      ".dev/workflows/2026-07-27-ai-execution-provenance-policy/workflow.yaml"
+    ],
+    "tests_run": [
+      "python .ai/scripts/validate-assessment-artifacts.py",
+      "python .ai/scripts/validate-workflow-artifacts.py",
+      "python .ai/scripts/validate-workflow-handoff.py --all",
+      "python .ai/scripts/validate-git-commits.py --range main..HEAD --workflow-id 2026-07-27-ai-execution-provenance-policy",
+      "C:\\Program Files\\Git\\bin\\bash.exe ./.ai/scripts/check-all.sh --critical (44 required passed)",
+      "git diff --check"
+    ],
+    "finding_status": "verified",
+    "residual_risk": "Provider-native Claude and Copilot golden commit fixtures remain explicitly blocked; no repository policy or v0.7.0 workstream depends on fabricating them.",
+    "follow_up_needed": false
   }
 }

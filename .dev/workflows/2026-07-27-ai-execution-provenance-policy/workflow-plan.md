@@ -15,11 +15,11 @@
 - `branch`: `codex/2026-07-27-ai-execution-provenance-policy`
 - `base_branch`: `main`
 - `branch_segment`: `1`
-- `status`: `in_progress`
-- `current_phase`: `remediation`
+- `status`: `completed`
+- `current_phase`: `completed`
 - `artifact_root`: `.dev/workflows/2026-07-27-ai-execution-provenance-policy`
 - `created_at`: `2026-07-27T08:39:34+08:00`
-- `updated_at`: `2026-07-27T09:56:54+08:00`
+- `updated_at`: `2026-07-27T10:20:30+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md`
 - `template_version`: `1.2.0`
 - `release_target`: `v0.7.0`
@@ -105,8 +105,7 @@
   referenced during `AEP-001`; no standalone baseline assessment is created by
   the planning-only authorization.
 - Remediation report: `.dev/workflows/2026-07-27-ai-execution-provenance-policy/reports/remediation-report.md`
-- Verification assessment: to be assigned and created by `ai-context-auditor`
-  after remediation.
+- Verification assessment: `.dev/assessments/ASM-20260727-001/assessment.yaml`.
 - Tasks: `.dev/workflows/2026-07-27-ai-execution-provenance-policy/tasks/`
 
 ## Planned Contract Surface
@@ -135,8 +134,8 @@
 | --- | --- | --- |
 | `AEP-001` | Preserve evidence and obtain owner decisions for attribution, unavailable behavior, storage, tools, custom settings, and release assignment. | `completed` |
 | `AEP-002` | Apply the approved policy and provenance contract changes without introducing a duplicate settings authority. | `completed` |
-| `AEP-003` | Add provider fixtures, validator coverage, and runtime-specific guidance. | `in_progress` |
-| `AEP-004` | Validate, obtain independent verification, reconcile results, and close the workflow. | `pending` |
+| `AEP-003` | Add provider fixtures, validator coverage, and runtime-specific guidance. | `completed` |
+| `AEP-004` | Validate, obtain independent verification, reconcile results, and close the workflow. | `completed` |
 
 ## Validation Plan
 
@@ -152,24 +151,20 @@
 
 ## Resume Checkpoint
 
-- Last completed action: recorded owner approval for `AEP-DEC-007` through
-  `AEP-DEC-009`, implemented the repository-created local commit signature,
-  added the prospective two-field task contract, and completed focused tests.
-- Current task: `AEP-003`.
-- Exact next action: capture or classify real Codex, Claude, and Copilot
-  attribution fixtures and document how each client produces or preserves the
-  approved signature without rewriting provider-native commits.
-- Validation already completed: planning evidence was cross-checked against
-  recent session records, current policy text, schema validation behavior, and
-  current provider documentation; workflow artifact validation, four-task JSON
-  parsing, the six backlog release-contract tests, and `git diff --check` pass.
+- Last completed action: independently verified the completed remediation in
+  `ASM-20260727-001`, reconciled the report, and closed all four tasks.
+- Current task: none; the workflow is completed.
+- Exact next action: push the completed branch, open a pull request, and merge
+  it to `main` under the repository Git flow policy.
+- Validation already completed: focused policy, task, handoff, assessment, and
+  commit-range validators passed; the critical gate executed and passed all 44
+  required checks with no failure, warning, or deferral.
 - Git state: branch `codex/2026-07-27-ai-execution-provenance-policy` from
-  `main`; the validated planning checkpoint is local and has not been
-  transported.
+  `main`; closure is local until PR integration completes.
 - Branch history and checkpoint handoffs: none.
-- Blockers or unresolved decisions: no policy-direction decision remains.
-  Claude and Copilot native fixture availability may constrain client-specific
-  enforcement and must be reported rather than fabricated.
+- Blockers or unresolved decisions: none. Claude and Copilot native fixture
+  availability remains deferred evidence and does not block the approved local
+  policy or v0.7.0 workstream.
 
 ## Branch Lifecycle
 
@@ -178,3 +173,4 @@
 | 1 | `codex/2026-07-27-ai-execution-provenance-policy` | `main` | local planning | resolved from branch history | local | `2026-07-27T08:39:34+08:00` | Preserve the owner-requested policy correction plan before remediation. | Resolve `AEP-DEC-001` through `AEP-DEC-006`. |
 | 1 | `codex/2026-07-27-ai-execution-provenance-policy` | `main` | local owner-decision checkpoint | resolved from branch history | local | `2026-07-27T09:24:09+08:00` | Preserve the approved policy boundary and v0.7.0 assignment before canonical remediation. | Inventory task templates and provider fixtures, then execute `AEP-002`. |
 | 1 | `codex/2026-07-27-ai-execution-provenance-policy` | `main` | local policy-remediation checkpoint | resolved from branch history | local | `2026-07-27T09:56:54+08:00` | Apply AEP-DEC-001 through AEP-DEC-009 to local commit and task contracts. | Capture provider fixtures and guidance under `AEP-003`. |
+| 1 | `codex/2026-07-27-ai-execution-provenance-policy` | `main` | local verification checkpoint | `0f8ad08b4709b06f3130f02b51f171555876297d` | local | `2026-07-27T10:20:30+08:00` | Preserve `ASM-20260727-001` before workflow closeout. | Complete AEP-004 closure and integrate through a pull request. |
