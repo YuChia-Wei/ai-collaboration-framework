@@ -2,11 +2,11 @@ schema_version: "1.0"
 backlog_id: "UPG-001"
 title: "Legacy Customized Target Upgrade Intake And Override Preservation"
 category: "ai-context-upgrade"
-status: "open"
+status: "declined"
 priority: "HIGH"
 summary: "Make the manual provenance bootstrap and customization inventory executable for pre-governed targets that need a safe path to a current published release."
 created_at: "2026-07-22T21:53:50+08:00"
-updated_at: "2026-07-22T21:53:50+08:00"
+updated_at: "2026-07-27T21:04:52+08:00"
 release:
   target: "unassigned"
   completed_in: null
@@ -24,10 +24,12 @@ recommended_owner_skill: "ai-context-upgrader"
 handoff_condition: "Use a real legacy customized target as evidence. Keep source-framework planning in this repository and execute the actual upgrade only in the target repository's own governed workflow."
 workflow_refs:
   - ".dev/workflows/2026-07-22-post-v0-5-backlog-intake/workflow.yaml"
+  - ".dev/workflows/2026-07-27-backlog-init-compatibility-intake/workflow.yaml"
 task_refs:
   - ".dev/workflows/2026-07-22-post-v0-5-backlog-intake/tasks/INTAKE-001.json"
-resolution_ref: null
-decision_needed: "Identify a credible WorkService base commit or approve manual baseline reconciliation, then decide each framework-path difference before recording governed provenance."
+  - ".dev/workflows/2026-07-27-backlog-init-compatibility-intake/tasks/INIT-001.json"
+resolution_ref: ".dev/workflows/2026-07-27-backlog-init-compatibility-intake/reports/remediation-report.md"
+decision_needed: "Resolved by owner on 2026-07-27: cancel this item because no credible legacy customized target or feedback capacity is expected to be available."
 acceptance:
   - "The intake starts from a clean committed target and records an explicit rollback commit before any package apply."
   - "The target identifies the closest credible framework base by Git evidence; absent or ambiguous provenance produces an unresolved inventory rather than an automatic classification."
@@ -39,6 +41,8 @@ acceptance:
   - "Provenance updates only after the target's AI-context and repository gates pass, with accepted differences in local_overrides and unresolved decisions retained under reconciliation.unresolved."
   - "The reusable source-side deliverable is a bounded intake packet or guide; WorkService-specific results remain in WorkService."
 inventory_notes:
+  - "Cancelled without claiming acceptance completion; historical assessment and intake evidence remain immutable."
+  - "INIT-001 records the distinct question of safely adopting this framework in repositories that already use AI agents; it does not claim to complete or replace a real legacy upgrade trial."
   - "The v0.5.0 mechanism already protects custom content; this item improves cold-start execution for old or unversioned customized targets rather than inventing a second merge model."
   - "Ordinary target-only artifacts are protected truth but are not local_overrides unless an incoming framework path or contract collides with them."
   - "Directly copying v0.5.0 over a v0.0.1-era target is unsupported and would bypass the provenance and reconciliation gates."

@@ -6,7 +6,7 @@
 - `status`: `active`
 - `current_target`: `v0.7.0`
 - `created_at`: `2026-07-18T14:19:06+08:00`
-- `updated_at`: `2026-07-27T10:20:30+08:00`
+- `updated_at`: `2026-07-27T21:04:52+08:00`
 - `source_assessment`: `.dev/assessments/ASM-20260717-004/assessment.yaml`
 - `source_plan`: `.dev/backlog/plans/post-v0.4.0-improvement-plan.md`
 - `planning_workflow`: `.dev/workflows/2026-07-18-post-v0-4-roadmap-planning/workflow.yaml`
@@ -57,11 +57,17 @@ Read this file before planning or resuming a post-v0.4.0 release.
 | `v0.6.0` | `DIST-001`, `CUST-001`, `DEVWF-002`, `CI-001`, `CI-002`, `CFG-001`, `SKILL-001` | `SIMPL-001`; any legacy identifier retirement remains conditional and cannot be silently included. | `EVAL-001`, v0.5.0 completion, `.dev/ai-context/provenance.yaml`, `.dev/ai-context/customizations.yaml`, and the approved `software-development-orchestrator` plus `ai-context-init` compatibility transitions. |
 | `v0.7.0` | `2026-07-27-ai-execution-provenance-policy#AEP-002`, `#AEP-003`, and `#AEP-004` | A historical archive migration and legacy identifier retirement each require explicit successor work rather than silent inclusion. | Owner-approved `AEP-DEC-001` through `AEP-DEC-006`; real provider fixtures and validated default fallback behavior; existing archive and downstream compatibility evidence for any additional conditional work. |
 
-`DEVWF-001`, `UPG-001`, `STD-001`, and `OBS-001` remain independent unassigned
+`DEVWF-001`, `INIT-001`, `STD-001`, and `OBS-001` remain independent unassigned
 decisions. None is a hidden v0.6.0 blocker. Standards or dev-workflow schema
 changes may receive a dedicated release after deliberation instead of being
 forced into an existing horizon. Actual WorkService upgrade execution belongs
 to its target repository rather than this source roadmap.
+
+`UPG-001` was declined by owner decision on 2026-07-27 because no credible
+legacy customized target or feedback capacity is expected to be available.
+`INIT-001` is a distinct low-priority exploration of collision-safe
+`ai-context-init` adoption for repositories that already use AI agents. It is
+unassigned, independent, and not a v0.7.0 blocker.
 
 ## v0.6.0 Product And Distribution Definition
 
@@ -216,10 +222,13 @@ versions. Current assignments:
   archive migration and legacy identifier retirement remain conditional and
   require separately approved successor work.
 - `unassigned`: `DEVWF-001` owns optional issue/timeline schema deliberation;
-  `UPG-001` owns a reusable legacy-target intake and override-preservation
-  packet; `STD-001` owns standards deliberation and release allocation; and
+  `INIT-001` owns existing-AI-agent initialization compatibility, collision
+  inventory, dry-run, and synthetic fixtures; `STD-001` owns standards
+  deliberation and release allocation; and
   `OBS-001` remains an independent architecture workflow. None is a mandatory
   closeout gate for an assigned release.
+- `declined`: `UPG-001` retains its historical assessment and intake evidence
+  but no longer represents planned execution.
 - Resolved `AIC-007` and `CTX-001` through `CTX-003` were first completed and
   published in `v0.1.0`, verified by Git tag ancestry.
 
@@ -293,7 +302,7 @@ assign it to v0.6.0, v0.7.0, or a dedicated release.
 v0.6.0 is published and the explicitly assigned v0.7.0 provenance-policy
 workstream is completed and independently verified by `ASM-20260727-001`.
 Release planning may use that completed scope while keeping `DEVWF-001`,
-`UPG-001`, `STD-001`, and `OBS-001` independently gated unless an explicit
+`INIT-001`, `STD-001`, and `OBS-001` independently gated unless an explicit
 decision assigns them. Do not silently include a future software-delivery
 orchestrator, historical archive migration, or legacy identifier retirement in
 v0.7.0.
