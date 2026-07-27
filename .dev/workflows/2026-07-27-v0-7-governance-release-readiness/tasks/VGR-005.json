@@ -6,9 +6,9 @@
   "task_id": "VGR-005",
   "workflow_id": "2026-07-27-v0-7-governance-release-readiness",
   "owner_skill": "ai-context-governance",
-  "status": "in_progress",
+  "status": "completed",
   "created_at": "2026-07-27T23:02:00+08:00",
-  "updated_at": "2026-07-27T23:51:54+08:00",
+  "updated_at": "2026-07-27T23:53:54+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-5.6-sol",
   "reasoning_effort": "high",
@@ -22,15 +22,15 @@
   "execution": {
     "steps": ["Run focused validations and the aggregate gate once.", "Request read-only ai-context-auditor verification.", "Reconcile all findings and deferrals.", "Validate commit range, close, push, open ready PR, await checks, and merge."],
     "validation": ["Assessment, workflow, AI-context, structured parsing, diff, commit-range, and required checks."],
-    "last_completed_step": "ASM-20260727-002 found no active governance issue, GOV-002 and PKG-004 were resolved with publication null, focused release suites passed with isolated TEMP, and the single critical aggregate gate passed 44 of 44 required checks.",
-    "next_action": "Commit the verified backlog disposition, validate the complete workflow commit range, and close the workflow for PR integration."
+    "last_completed_step": "The verified backlog disposition was committed and all six workflow commits in main..c20ada8 passed the commit policy after the single critical gate passed 44 of 44 required checks.",
+    "next_action": "Completed; push the closed branch and integrate it through a ready PR as a separate repository fact."
   },
   "results": {
-    "summary": "Independent verification permits backlog resolution; final local gates pass and workflow closure awaits the commit-range checkpoint.",
+    "summary": "Independent verification, backlog reconciliation, focused and aggregate gates, and commit-range validation passed; the workflow is closed for separate PR integration.",
     "files_changed": [".dev/assessments/ASM-20260727-002/**", ".dev/backlog/items/GOV-002.yaml", ".dev/backlog/items/PKG-004.yaml", ".dev/backlog/INDEX.MD", ".dev/backlog/ROADMAP.md", ".dev/workflows/2026-07-27-v0-7-governance-release-readiness/**"],
     "tests_run": ["release-state 23 passed", "release-note renderer 6 passed", "backlog release contract 6 passed", "critical aggregate 44 of 44 required passed; 1 not-applicable commit-range slot; 0 failed/deferred", "workflow, assessment, AI-context, source-governance, JSON/YAML, and diff checks passed"],
-    "finding_status": "resolved-pending-commit-range",
+    "finding_status": "resolved",
     "residual_risk": "GitHub provider adoption and v0.7.0 publication remain intentionally deferred; PR integration remains a separate repository fact.",
-    "follow_up_needed": true
+    "follow_up_needed": false
   }
 }

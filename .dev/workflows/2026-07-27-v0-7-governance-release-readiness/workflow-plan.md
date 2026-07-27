@@ -15,11 +15,11 @@
 - `branch`: `codex/2026-07-27-v0-7-governance-release-readiness`
 - `base_branch`: `main`
 - `branch_segment`: `1`
-- `status`: `in_progress`
-- `current_phase`: `verification`
+- `status`: `completed`
+- `current_phase`: `closed`
 - `artifact_root`: `.dev/workflows/2026-07-27-v0-7-governance-release-readiness`
 - `created_at`: `2026-07-27T23:02:00+08:00`
-- `updated_at`: `2026-07-27T23:51:54+08:00`
+- `updated_at`: `2026-07-27T23:53:54+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md`
 - `template_version`: `1.2.0`
 - `release_target`: `v0.7.0`
@@ -66,9 +66,9 @@
 
 ## Resume Checkpoint
 
-- Last completed action: `ASM-20260727-002` found no active governance issue; `GOV-002` and `PKG-004` are resolved; focused release tests and the single critical aggregate gate pass.
-- Current task: `VGR-005`.
-- Exact next action: commit the verified backlog disposition, validate `main..HEAD`, then close the workflow for PR integration.
+- Last completed action: committed the independently verified backlog disposition and validated all six workflow commits in `main..c20ada8` after the single critical aggregate gate passed.
+- Current task: none; `VGR-001` through `VGR-005` are completed.
+- Exact next action: push the closed workflow branch and integrate it through a ready PR; PR integration remains distinct from workflow completion.
 - Validation already completed: release-state 23/23, release-note renderer 6/6, backlog release 6/6, package matrix 25 passed with 1 environment skip not counted as passed, profile projection 3/3, package apply 23 passed with 1 Windows capability skip not counted as passed, actual clean install and initialized upgrade passed, workflow, assessment, AI-context, source-governance, structured parsing, and diff checks passed; the single critical aggregate gate passed 44/44 required checks with one commit-range slot not applicable because it is executed separately.
 - Git state: branch `codex/2026-07-27-v0-7-governance-release-readiness` from clean `main`.
 - Branch history and checkpoint handoffs: none.
@@ -78,4 +78,4 @@
 
 | Segment | Branch | Base | Checkpoint Type | Commit | Remote / Target | Recorded At | Reason | Resume Branch / Action |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| 1 | `codex/2026-07-27-v0-7-governance-release-readiness` | `main@24d280cd4f60e5d5da46dbb62b5934c0a2718062` | active implementation | pending | local | `2026-07-27T23:02:00+08:00` | Owner authorized full v0.7.0 governance readiness through PR merge. | Continue through verification and closure on this branch. |
+| 1 | `codex/2026-07-27-v0-7-governance-release-readiness` | `main@24d280cd4f60e5d5da46dbb62b5934c0a2718062` | completed implementation | `c20ada8` | local | `2026-07-27T23:53:54+08:00` | Independent verification, backlog resolution, focused gates, one critical gate, and six-commit range validation passed. | Push and integrate through a ready PR without publishing v0.7.0. |
