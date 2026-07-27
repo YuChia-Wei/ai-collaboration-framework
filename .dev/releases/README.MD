@@ -19,4 +19,13 @@ the next release.
 markers and provenance are renderer output and must not be committed to an
 authored notes file.
 
+For v0.7.0 and newer candidates, `release.yaml.planning.backlog_refs` must
+exactly equal the canonical backlog set accepted by that version: every
+resolved backlog item whose `release.completed_in` equals the release version.
+The renderer appends one generated `Included Work` section with each backlog ID
+exactly once while preserving the complete human-authored notes. Missing,
+duplicate, unrelated, unresolved, completion-mismatched, or prematurely
+published backlog references fail candidate validation. Historical release
+records and notes retain their original contract and are not rewritten.
+
 Do not store workflow progress, assessments, or target-repository override details here.

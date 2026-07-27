@@ -73,6 +73,45 @@ class ReleaseNotesRendererTests(unittest.TestCase):
             data, _, _ = RENDERER.validate_release(root, "v0.5.0", COMMIT, "candidate")
             self.assertEqual(["v0.3.0"], data["compatibility"]["automatic_upgrade_sources"])
 
+    def test_gwt_004_given_v070_backlog_refs_when_rendered_then_authored_notes_and_exact_included_work_are_preserved(self) -> None:
+        data = release_record("2.0.0", ["v0.6.0"])
+        data.update({"release_id": "REL-v0.7.0", "version": "v0.7.0"})
+        data["planning"] = {
+            "backlog_refs": [
+                ".dev/backlog/items/GOV-002.yaml",
+                ".dev/backlog/items/GOV-003.yaml",
+                ".dev/backlog/items/PKG-004.yaml",
+            ]
+        }
+        authored = "# Human-authored release notes\n\nKeep this paragraph byte-for-byte."
+        rendered = RENDERER.render_body_text(data, authored, "# Migration", COMMIT)
+        self.assertIn(authored, rendered)
+        included = rendered.split("## Included Work", 1)[1].split(
+            "## Release provenance", 1
+        )[0]
+        for work_id in ("GOV-002", "GOV-003", "PKG-004"):
+            self.assertEqual(1, included.count(f"`{work_id}`"))
+
+    def test_gwt_005_given_v070_missing_or_duplicate_backlog_refs_when_rendered_then_it_fails_closed(self) -> None:
+        data = release_record("2.0.0", ["v0.6.0"])
+        data.update({"release_id": "REL-v0.7.0", "version": "v0.7.0"})
+        data["planning"] = {}
+        with self.assertRaisesRegex(RENDERER.ReleaseNotesError, "non-empty"):
+            RENDERER.render_body_text(data, "# Notes", "# Migration", COMMIT)
+        data["planning"] = {
+            "backlog_refs": [
+                ".dev/backlog/items/GOV-002.yaml",
+                ".dev/backlog/items/GOV-002.yaml",
+            ]
+        }
+        with self.assertRaisesRegex(RENDERER.ReleaseNotesError, "duplicates"):
+            RENDERER.render_body_text(data, "# Notes", "# Migration", COMMIT)
+
+    def test_gwt_006_given_pre_v070_release_when_rendered_then_historical_shape_remains_compatible(self) -> None:
+        data = release_record("1.0.0", ["v0.4.2"])
+        rendered = RENDERER.render_body_text(data, "# Notes", "# Migration", COMMIT)
+        self.assertNotIn("## Included Work", rendered)
+
 
 if __name__ == "__main__":
     unittest.main()

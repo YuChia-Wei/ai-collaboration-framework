@@ -16,10 +16,10 @@
 - `base_branch`: `main`
 - `branch_segment`: `1`
 - `status`: `in_progress`
-- `current_phase`: `audit`
+- `current_phase`: `remediation`
 - `artifact_root`: `.dev/workflows/2026-07-27-v0-7-governance-release-readiness`
 - `created_at`: `2026-07-27T23:02:00+08:00`
-- `updated_at`: `2026-07-27T23:02:00+08:00`
+- `updated_at`: `2026-07-27T23:13:47+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md`
 - `template_version`: `1.2.0`
 - `release_target`: `v0.7.0`
@@ -66,10 +66,10 @@
 
 ## Resume Checkpoint
 
-- Last completed action: synchronized clean `main`, created the dedicated workflow branch, and started two bounded read-only discovery agents.
-- Current task: `VGR-001`.
-- Exact next action: reconcile discovery evidence and implement the backlog/release traceability contract.
-- Validation already completed: confirmed `main` and `origin/main` at `24d280cd4f60e5d5da46dbb62b5934c0a2718062`; codebase knowledge graph available with 10,457 nodes.
+- Last completed action: completed `VGR-001` and `VGR-002`; GOV-003 and the prospective exact-set Included Work contract pass focused tests.
+- Current task: `VGR-003`.
+- Exact next action: project provider-neutral policy files into the downstream payload while retaining source-local GitHub policy only in this repository.
+- Validation already completed: release-state 23/23, release-note renderer 6/6, backlog release 6/6, workflow artifacts, YAML parse, Python compile, and diff checks passed.
 - Git state: branch `codex/2026-07-27-v0-7-governance-release-readiness` from clean `main`.
 - Branch history and checkpoint handoffs: none.
 - Blockers or unresolved decisions: none; GitHub provider adoption is explicitly deferred and non-blocking.
@@ -79,4 +79,3 @@
 | Segment | Branch | Base | Checkpoint Type | Commit | Remote / Target | Recorded At | Reason | Resume Branch / Action |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | 1 | `codex/2026-07-27-v0-7-governance-release-readiness` | `main@24d280cd4f60e5d5da46dbb62b5934c0a2718062` | active implementation | pending | local | `2026-07-27T23:02:00+08:00` | Owner authorized full v0.7.0 governance readiness through PR merge. | Continue through verification and closure on this branch. |
-

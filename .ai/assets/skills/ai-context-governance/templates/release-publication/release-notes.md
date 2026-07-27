@@ -16,6 +16,10 @@
 
 <completed-validation-and-known-limitation-statement>
 
+From v0.7.0 onward, the renderer appends the canonical `Included Work` section
+from `release.yaml.planning.backlog_refs`. Do not duplicate that generated
+section in this authored source.
+
 ## Publication Completion
 
 Complete this section only after publication. Do not add generated automation

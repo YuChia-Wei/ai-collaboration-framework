@@ -89,6 +89,12 @@ A governed release must verify:
 - repository AI-context and workflow validation;
 - required Git commit body and AI co-author trailer policy.
 
+For v0.7.0 and later, candidate validation also derives the canonical included
+work set from resolved backlog items whose `completed_in` equals the candidate
+version. `release.yaml.planning.backlog_refs` must match that set exactly, and
+the rendered release body must contain one generated `Included Work` entry per
+reference. This prospective rule does not alter historical release notes.
+
 Tag creation, remote publication, and target upgrade execution each require explicit authorization appropriate to that action.
 
 For the configured automated publication path, pushing a user-created release tag is the publication authorization. Candidate or pull-request automation may build and retain validation artifacts, but it must not create a GitHub Release or mutate tags.

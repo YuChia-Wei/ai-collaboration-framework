@@ -6,7 +6,7 @@
 - `status`: `active`
 - `current_target`: `v0.7.0`
 - `created_at`: `2026-07-18T14:19:06+08:00`
-- `updated_at`: `2026-07-27T21:39:33+08:00`
+- `updated_at`: `2026-07-27T23:02:00+08:00`
 - `source_assessment`: `.dev/assessments/ASM-20260717-004/assessment.yaml`
 - `source_plan`: `.dev/backlog/plans/post-v0.4.0-improvement-plan.md`
 - `planning_workflow`: `.dev/workflows/2026-07-18-post-v0-4-roadmap-planning/workflow.yaml`
@@ -36,7 +36,7 @@ Read this file before planning or resuming a post-v0.4.0 release.
 | `v0.4.2` | `published` | yes | The immutable package, local release registry, workflow evidence, roadmap state, migration guidance, and authorized public Release body correction are complete. | Completed without moving `v0.4.2` or changing the four published assets. | [`2026-07-20-v0-4-2-release-finalization-hotfix`](../workflows/2026-07-20-v0-4-2-release-finalization-hotfix/workflow.yaml) |
 | `v0.5.0` | `published` | yes | The four-source release, including exact automatic v0.4.2 upgrades, passed independent review, Windows, hosted Ubuntu, and owner-arranged macOS gates. | Completed at immutable tag `v0.5.0`, peeled commit `1477181f0b43fa7ee82fcd482141758ac9e22eb6`, successful hosted publication run `29922585651`, and a stable GitHub Release with four governed assets. | [`2026-07-22-v0-5-0-macos-portability`](../workflows/2026-07-22-v0-5-0-macos-portability/workflow.yaml) |
 | `v0.6.0` | `published` | yes | The componentized downstream product, semantic customization lifecycle, software-development orchestration acceptance, coordinated CI/configuration/skill transitions, Terra evaluation, and measured simplification disposition are complete. | Completed at immutable annotated tag `v0.6.0`, peeled commit `8b98b5f917513f2d143f42a322050a1162bb63f9`, successful hosted publication run `30074558122`, and a stable GitHub Release with four governed assets. | [`2026-07-24-v0-6-0-release-publication`](../workflows/2026-07-24-v0-6-0-release-publication/workflow.yaml) |
-| `v0.7.0` | `planned` | yes | Correct AI commit attribution and task provenance, and classify the owner-selected PR #10 work-management policy contribution before it becomes downstream framework truth. Legacy identifier retirement and historical archive migration remain separately conditional. | The provenance workflow and `ASM-20260727-001` verification are complete. `GOV-002` and `PKG-004` must resolve the portable policy and payload disposition before a v0.7.0 package candidate is built. | [`2026-07-27-ai-execution-provenance-policy`](../workflows/2026-07-27-ai-execution-provenance-policy/workflow.yaml), [`2026-07-27-v0-7-work-management-release-allocation`](../workflows/2026-07-27-v0-7-work-management-release-allocation/workflow.yaml) |
+| `v0.7.0` | `planned` | yes | Publish the completed `GOV-003` provenance contract together with portable work-management and downstream package-safety outcomes. Legacy identifier retirement and historical archive migration remain separately conditional. | `GOV-003` is resolved and awaiting publication. `GOV-002` and `PKG-004` must resolve the portable policy and payload disposition before a v0.7.0 package candidate is built. | [`2026-07-27-v0-7-governance-release-readiness`](../workflows/2026-07-27-v0-7-governance-release-readiness/workflow.yaml) |
 
 ## Release Gate Semantics
 
@@ -55,7 +55,7 @@ Read this file before planning or resuming a post-v0.4.0 release.
 | `v0.4.2` | `R042-001`, `R042-002`, `R042-003`, `R042-004`, `R042-005` | Any selected correction that would add a schema, required validation or CI route, remove a published path, or intentionally change pass/fail semantics must stop and move to an explicit v0.5.0 item. | v0.4.1 publication and registry closeout are complete. |
 | `v0.5.0` | `PKG-003`, `SAG-001`, `ENF-001`, `TOOL-001`, `LANG-001`, `REL-001`, `REL-002`, `HANDOFF-001` | `GOV-001`, `CAP-001`, `VAL-001` | R042-005 is closed; v0.4.2 workflow, independent verification, local release evidence, public Release body, and final version state are reconciled. |
 | `v0.6.0` | `DIST-001`, `CUST-001`, `DEVWF-002`, `CI-001`, `CI-002`, `CFG-001`, `SKILL-001` | `SIMPL-001`; any legacy identifier retirement remains conditional and cannot be silently included. | `EVAL-001`, v0.5.0 completion, `.dev/ai-context/provenance.yaml`, `.dev/ai-context/customizations.yaml`, and the approved `software-development-orchestrator` plus `ai-context-init` compatibility transitions. |
-| `v0.7.0` | `2026-07-27-ai-execution-provenance-policy#AEP-002`, `#AEP-003`, and `#AEP-004`; `GOV-002`; `PKG-004` | A historical archive migration and legacy identifier retirement each require explicit successor work rather than silent inclusion. | Owner-approved `AEP-DEC-001` through `AEP-DEC-006`; real provider fixtures and validated default fallback behavior; `GOV-002` portable-policy disposition and `PKG-004` candidate payload proof before package build or publication. |
+| `v0.7.0` | `GOV-003`, `GOV-002`, `PKG-004` | A historical archive migration and legacy identifier retirement each require explicit successor work rather than silent inclusion. | `GOV-003` records the completed AEP workflow and verification; `GOV-002` portable-policy disposition and `PKG-004` candidate payload proof must complete before package build or publication. |
 
 `DEVWF-001`, `INIT-001`, `STD-001`, and `OBS-001` remain independent unassigned
 decisions. None is a hidden v0.6.0 blocker. Standards or dev-workflow schema
@@ -216,7 +216,7 @@ versions. Current assignments:
   `CFG-001` executes with that taxonomy/configuration workstream; `SIMPL-001`
   owns measured simplification disposition; and `CI-001` plus `CI-002` own the
   complete release-automation migration and lifecycle review.
-- `v0.7.0`: the AI execution provenance policy workflow owns the common
+- `v0.7.0`: `GOV-003` records the completed AI execution provenance policy's common
   runtime-model-reasoning signature, task fields, fallback behavior, provider
   fixtures, validation, and independent verification. `GOV-002` records PR
   #10's work-management policy as a scope candidate, and `PKG-004` blocks
@@ -301,8 +301,8 @@ assign it to v0.6.0, v0.7.0, or a dedicated release.
 
 ## Next Action
 
-v0.6.0 is published and the explicitly assigned v0.7.0 provenance-policy
-workstream is completed and independently verified by `ASM-20260727-001`.
+v0.6.0 is published and `GOV-003` records the completed v0.7.0
+provenance-policy workstream independently verified by `ASM-20260727-001`.
 PR #10 is an owner-selected v0.7.0 scope candidate through `GOV-002`, not an
 actual release-candidate archive, tag, or publication. `GOV-002` and
 `PKG-004` must be resolved before package-candidate creation. Keep

@@ -7,7 +7,7 @@ artifact directories. See [README.MD](README.MD) for ownership and lifecycle.
 
 | Roadmap | Current Target | Status | Next Gate | Updated |
 | --- | --- | --- | --- | --- |
-| [ROADMAP.md](ROADMAP.md) | `v0.7.0` | `active` | The assigned provenance-policy workstream is complete and verified; resolve `GOV-002` plus `PKG-004` before any v0.7.0 package candidate is built. Any additional scope still requires explicit owner assignment. | 2026-07-27 |
+| [ROADMAP.md](ROADMAP.md) | `v0.7.0` | `active` | `GOV-003` records the completed provenance policy; resolve `GOV-002` plus `PKG-004` before any v0.7.0 package candidate is built. Any additional scope still requires explicit owner assignment. | 2026-07-27 |
 
 Source planning records are retained under [`plans/`](plans/); they inform the
 roadmap but do not replace it or a governed assessment.
@@ -28,6 +28,12 @@ roadmap but do not replace it or a governed assessment.
 | Item | Priority | Target Release | Decision | Resolution | Updated |
 | --- | --- | --- | --- | --- | --- |
 | [UPG-001](items/UPG-001.yaml) | HIGH | `unassigned` | Owner cancelled the real legacy-target intake because no target or feedback capacity is expected to be available. | Historical evidence is retained; `INIT-001` tracks a distinct existing-AI-agent initialization question without claiming to complete the legacy upgrade acceptance. | 2026-07-27 |
+
+## Resolved / Awaiting Publication
+
+| Item | Priority | Completed In | Published In | Resolution | Workflow | Updated |
+| --- | --- | --- | --- | --- | --- | --- |
+| [GOV-003](items/GOV-003.yaml) | HIGH | `v0.7.0` | — | The AI execution provenance and attribution policy is complete and independently verified; publication remains a separate future fact. | [`2026-07-27-ai-execution-provenance-policy`](../workflows/2026-07-27-ai-execution-provenance-policy/workflow.yaml) | 2026-07-27 |
 
 ## Resolved
 
