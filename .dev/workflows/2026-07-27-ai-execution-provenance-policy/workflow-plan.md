@@ -16,10 +16,10 @@
 - `base_branch`: `main`
 - `branch_segment`: `1`
 - `status`: `in_progress`
-- `current_phase`: `remediation-planning`
+- `current_phase`: `remediation`
 - `artifact_root`: `.dev/workflows/2026-07-27-ai-execution-provenance-policy`
 - `created_at`: `2026-07-27T08:39:34+08:00`
-- `updated_at`: `2026-07-27T09:24:09+08:00`
+- `updated_at`: `2026-07-27T09:56:54+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md`
 - `template_version`: `1.2.0`
 - `release_target`: `v0.7.0`
@@ -95,6 +95,9 @@
 | `AEP-DEC-004` Tool evidence | Do not add tool availability or tool-use fields in this workflow. | Owner response on 2026-07-27. | `approved` |
 | `AEP-DEC-005` Cross-tool policy file | Do not create a cross-tool custom settings file. | Owner response on 2026-07-27. | `approved` |
 | `AEP-DEC-006` Release assignment | Assign this workflow to v0.7.0. | Owner response on 2026-07-27. | `approved` |
+| `AEP-DEC-007` Task migration | Require the two fields on new tasks; add them to unfinished historical tasks when next updated; do not backfill completed historical tasks. | Owner accepted the recommended boundary on 2026-07-27. | `approved` |
+| `AEP-DEC-008` Sub-agent attribution | Add another co-author only when a sub-agent materially produced committed content, and mark its runtime as `Sub-Agent`; do not credit read-only discovery, review, or advice. | Owner response on 2026-07-27. | `approved` |
+| `AEP-DEC-009` Reasoning labels | Preserve the provider/runtime value without cross-provider replacement or arbitrary normalization. | Owner response on 2026-07-27. | `approved` |
 
 ## Artifact Contract
 
@@ -131,8 +134,8 @@
 | Task | Purpose | Status |
 | --- | --- | --- |
 | `AEP-001` | Preserve evidence and obtain owner decisions for attribution, unavailable behavior, storage, tools, custom settings, and release assignment. | `completed` |
-| `AEP-002` | Apply the approved policy and provenance contract changes without introducing a duplicate settings authority. | `in_progress` |
-| `AEP-003` | Add provider fixtures, validator coverage, and runtime-specific guidance. | `pending` |
+| `AEP-002` | Apply the approved policy and provenance contract changes without introducing a duplicate settings authority. | `completed` |
+| `AEP-003` | Add provider fixtures, validator coverage, and runtime-specific guidance. | `in_progress` |
 | `AEP-004` | Validate, obtain independent verification, reconcile results, and close the workflow. | `pending` |
 
 ## Validation Plan
@@ -149,12 +152,13 @@
 
 ## Resume Checkpoint
 
-- Last completed action: recorded owner approval for `AEP-DEC-001` through
-  `AEP-DEC-006` and assigned the workflow to v0.7.0.
-- Current task: `AEP-002`.
-- Exact next action: inventory the affected task templates and real provider
-  attribution fixtures, then apply the approved common signature and the two
-  task fields without adding direct-mode, tool, or cross-tool configuration.
+- Last completed action: recorded owner approval for `AEP-DEC-007` through
+  `AEP-DEC-009`, implemented the repository-created local commit signature,
+  added the prospective two-field task contract, and completed focused tests.
+- Current task: `AEP-003`.
+- Exact next action: capture or classify real Codex, Claude, and Copilot
+  attribution fixtures and document how each client produces or preserves the
+  approved signature without rewriting provider-native commits.
 - Validation already completed: planning evidence was cross-checked against
   recent session records, current policy text, schema validation behavior, and
   current provider documentation; workflow artifact validation, four-task JSON
@@ -163,9 +167,9 @@
   `main`; the validated planning checkpoint is local and has not been
   transported.
 - Branch history and checkpoint handoffs: none.
-- Blockers or unresolved decisions: no policy-direction decision remains;
-  provider fixture availability may constrain native-client enforcement and
-  must be reported rather than fabricated.
+- Blockers or unresolved decisions: no policy-direction decision remains.
+  Claude and Copilot native fixture availability may constrain client-specific
+  enforcement and must be reported rather than fabricated.
 
 ## Branch Lifecycle
 
@@ -173,3 +177,4 @@
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | 1 | `codex/2026-07-27-ai-execution-provenance-policy` | `main` | local planning | resolved from branch history | local | `2026-07-27T08:39:34+08:00` | Preserve the owner-requested policy correction plan before remediation. | Resolve `AEP-DEC-001` through `AEP-DEC-006`. |
 | 1 | `codex/2026-07-27-ai-execution-provenance-policy` | `main` | local owner-decision checkpoint | resolved from branch history | local | `2026-07-27T09:24:09+08:00` | Preserve the approved policy boundary and v0.7.0 assignment before canonical remediation. | Inventory task templates and provider fixtures, then execute `AEP-002`. |
+| 1 | `codex/2026-07-27-ai-execution-provenance-policy` | `main` | local policy-remediation checkpoint | resolved from branch history | local | `2026-07-27T09:56:54+08:00` | Apply AEP-DEC-001 through AEP-DEC-009 to local commit and task contracts. | Capture provider fixtures and guidance under `AEP-003`. |

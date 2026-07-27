@@ -163,7 +163,7 @@ Add this trailer before any required `Co-Authored-By` trailers:
 
 ```text
 Assessment-Id: ASM-20260713-001
-Co-Authored-By: <AI runtime/model> <noreply@provider-domain>
+Co-Authored-By: <AI runtime> (<model>, <reasoning_effort>) <noreply@provider-domain>
 ```
 
 Downstream workflow, backlog, ADR, remediation, or verification commits may

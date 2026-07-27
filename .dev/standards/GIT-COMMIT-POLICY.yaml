@@ -1,4 +1,4 @@
-schema_version: "1.0"
+schema_version: "1.1"
 allowed_types:
   - docs
   - workflow
@@ -21,5 +21,9 @@ assessment:
   trailer: Assessment-Id
 ai_signature:
   trailer: Co-Authored-By
-  value_pattern: '^.+ <noreply@[^ >]+>$'
+  effective_at: '2026-07-27T09:52:09+08:00'
+  value_pattern: '^(?P<runtime>.+) \((?P<model>[^,()]+), (?P<reasoning_effort>[^()]+)\) <noreply@[^ >]+>$'
+  legacy_value_pattern: '^.+ <noreply@[^ >]+>$'
+  additional_trailer_runtime_suffix: ' Sub-Agent'
+  require_all_trailers_match: true
   final_non_empty_line: true

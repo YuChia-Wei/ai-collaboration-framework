@@ -7,6 +7,7 @@ import argparse
 import re
 import subprocess
 import sys
+from datetime import datetime
 from pathlib import Path
 
 import yaml
@@ -58,6 +59,7 @@ def validate_message(
     policy: dict[str, object],
     errors: list[str],
     workflow_id: str | None = None,
+    committed_at: datetime | None = None,
 ) -> None:
     lines = message.rstrip().splitlines()
     subject = lines[0] if lines else ""
@@ -67,11 +69,37 @@ def validate_message(
     signature = policy["ai_signature"]
     assert isinstance(signature, dict)
     trailer_name = str(signature["trailer"])
-    trailer_pattern = re.compile(str(signature["value_pattern"]))
+    effective_at = datetime.fromisoformat(str(signature["effective_at"]))
+    use_legacy_pattern = committed_at is not None and committed_at < effective_at
+    pattern_key = "legacy_value_pattern" if use_legacy_pattern else "value_pattern"
+    trailer_pattern = re.compile(str(signature[pattern_key]))
     final_line = lines[-1] if lines else ""
     prefix = f"{trailer_name}: "
     if not final_line.startswith(prefix) or not trailer_pattern.fullmatch(final_line[len(prefix):]):
         errors.append(f"{sha}: final non-empty line must be a valid {trailer_name} trailer")
+
+    trailer_values = [
+        line[len(prefix):]
+        for line in lines
+        if line.startswith(prefix)
+    ]
+    trailer_matches: list[re.Match[str] | None] = []
+    for value in trailer_values:
+        match = trailer_pattern.fullmatch(value)
+        trailer_matches.append(match)
+        if not match:
+            errors.append(f"{sha}: invalid {trailer_name} trailer value: {value}")
+
+    if not use_legacy_pattern:
+        subagent_suffix = str(signature["additional_trailer_runtime_suffix"])
+        for index, match in enumerate(trailer_matches):
+            if index == 0 or match is None:
+                continue
+            runtime = match.groupdict().get("runtime", "")
+            if not runtime.endswith(subagent_suffix):
+                errors.append(
+                    f"{sha}: additional {trailer_name} trailer must mark the runtime with{subagent_suffix}"
+                )
 
     assessment = policy["assessment"]
     assert isinstance(assessment, dict)
@@ -114,7 +142,17 @@ def validate_commits(
     errors: list[str] = []
     for sha in shas:
         message = git("show", "-s", "--format=%B", sha, root=root)
-        validate_message(sha, message, policy, errors, workflow_id)
+        committed_at = datetime.fromisoformat(
+            git("show", "-s", "--format=%cI", sha, root=root).strip()
+        )
+        validate_message(
+            sha,
+            message,
+            policy,
+            errors,
+            workflow_id,
+            committed_at=committed_at,
+        )
     return errors
 
 
