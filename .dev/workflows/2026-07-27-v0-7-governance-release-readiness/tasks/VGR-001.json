@@ -1,0 +1,30 @@
+{
+  "template_id": "ai-context-governance-remediation-task",
+  "template_version": "1.1.0",
+  "template_created_at": "2026-07-10T18:22:49+08:00",
+  "template_updated_at": "2026-07-27T09:52:09+08:00",
+  "task_id": "VGR-001",
+  "workflow_id": "2026-07-27-v0-7-governance-release-readiness",
+  "owner_skill": "ai-context-governance",
+  "status": "in_progress",
+  "created_at": "2026-07-27T23:02:00+08:00",
+  "updated_at": "2026-07-27T23:02:00+08:00",
+  "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
+  "model": "gpt-5.6-sol",
+  "reasoning_effort": "high",
+  "finding_ids": ["ASM-20260727-001#VFY-001", "ASM-20260727-001#VFY-002"],
+  "scope": {
+    "target": "Create GOV-003 and bind completed provenance work to the v0.7.0 awaiting-publication set.",
+    "files": [".dev/backlog/**", ".dev/releases/release.yaml", ".dev/workflows/2026-07-27-v0-7-governance-release-readiness/**"],
+    "constraints": ["GOV-003 is resolved with completed_in v0.7.0 and published_in null.", "UPG-001 and INIT-001 remain unchanged."],
+    "non_goals": ["v0.7.0 publication", "GitHub tracker resource creation"]
+  },
+  "execution": {
+    "steps": ["Create the next conflict-free governance backlog ID.", "Link the AEP workflow and verification assessment.", "Add it to the resolved awaiting-publication index and canonical v0.7.0 set."],
+    "validation": ["Parse YAML.", "Run backlog and release-state contract tests."],
+    "last_completed_step": "Workflow bootstrap completed.",
+    "next_action": "Implement GOV-003 and the canonical release backlog set."
+  },
+  "results": {"summary": "", "files_changed": [], "tests_run": [], "finding_status": "not-addressed", "residual_risk": "", "follow_up_needed": true}
+}
+
