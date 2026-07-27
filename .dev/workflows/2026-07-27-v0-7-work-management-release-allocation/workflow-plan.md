@@ -15,11 +15,11 @@
 - `branch`: `codex/2026-07-27-v0-7-work-management-release-allocation`
 - `base_branch`: `main`
 - `branch_segment`: `1`
-- `status`: `in_progress`
-- `current_phase`: `closure`
+- `status`: `completed`
+- `current_phase`: `completed`
 - `artifact_root`: `.dev/workflows/2026-07-27-v0-7-work-management-release-allocation`
 - `created_at`: `2026-07-27T21:39:33+08:00`
-- `updated_at`: `2026-07-27T21:45:08+08:00`
+- `updated_at`: `2026-07-27T21:46:37+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md`
 - `template_version`: `1.2.0`
 - `release_target`: `v0.7.0`
@@ -54,7 +54,7 @@
 | Task | Purpose | Status |
 | --- | --- | --- |
 | `WMR-001` | Create `GOV-002` and preserve the approved v0.7.0 scope-candidate evidence without fabricating a GitHub Issue. | `completed` |
-| `WMR-002` | Verify `PKG-004`, the v0.7.0 release gate, and the allocation artifacts before closure. | `in_progress` |
+| `WMR-002` | Verify `PKG-004`, the v0.7.0 release gate, and the allocation artifacts before closure. | `completed` |
 
 ## Release Handoff
 
@@ -64,10 +64,10 @@
 
 ## Resume Checkpoint
 
-- Last completed action: created and validated `GOV-002`, `PKG-004`, the roadmap gate, and the backlog and workflow indexes.
-- Current task: `WMR-002`.
-- Exact next action: commit the allocation checkpoint, then record commit evidence and close the workflow after a second validation pass.
-- Validation already completed: YAML and JSON parsing; `validate-workflow-artifacts.py`; backlog release, governance workflow, and workflow lifecycle contract tests; `git diff --check`.
+- Last completed action: recorded the allocation report, completed WMR-002, and closed the scope-allocation workflow after the local allocation checkpoint `36adb6c`.
+- Current task: none; WMR-001 and WMR-002 are completed.
+- Exact next action: open a separate authorized workflow for GOV-002 or PKG-004 only when the owner is ready to determine portable policy and package behavior; create GitHub Issues later using the real backlog IDs and tracker numbers.
+- Validation already completed: YAML and JSON parsing; `validate-workflow-artifacts.py`; backlog release, governance workflow, and workflow lifecycle contract tests; `git diff --check`; workflow commit-range validation will cover both allocation commits before PR transport.
 - Git state: branch `codex/2026-07-27-v0-7-work-management-release-allocation` from `main`.
 - Branch history and checkpoint handoffs: none.
 - Blockers or unresolved decisions: the portable implementation and actual GitHub tracker design remain separate future work.
@@ -76,4 +76,4 @@
 
 | Segment | Branch | Base | Checkpoint Type | Commit | Remote / Target | Recorded At | Reason | Resume Branch / Action |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| 1 | `codex/2026-07-27-v0-7-work-management-release-allocation` | `main@1a2b146cf2fe5389c8bd6a809cd8ab18de5973ff` | local bootstrap | pending | local | `2026-07-27T21:39:33+08:00` | Preserve owner-authorized v0.7.0 scope allocation before changing backlog and roadmap truth. | Commit the allocation checkpoint, record the resulting SHA, then close `WMR-002`. |
+| 1 | `codex/2026-07-27-v0-7-work-management-release-allocation` | `main@1a2b146cf2fe5389c8bd6a809cd8ab18de5973ff` | local allocation checkpoint | `36adb6cd5d9986ac106d3d1b449db3828d383be3` | local | `2026-07-27T21:46:37+08:00` | Preserve the owner-authorized GOV-002 and PKG-004 allocation before closure evidence. | Commit the closure report and request PR transport when desired. |

@@ -6,9 +6,9 @@
   "task_id": "WMR-002",
   "workflow_id": "2026-07-27-v0-7-work-management-release-allocation",
   "owner_skill": "ai-context-governance",
-  "status": "in_progress",
+  "status": "completed",
   "created_at": "2026-07-27T21:39:33+08:00",
-  "updated_at": "2026-07-27T21:45:08+08:00",
+  "updated_at": "2026-07-27T21:46:37+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-5.6-sol",
   "reasoning_effort": "high",
@@ -41,14 +41,26 @@
       "Parse changed YAML and JSON artifacts.",
       "Run backlog-release and workflow-artifact validation."
     ],
-    "last_completed_step": "Created PKG-004 and added GOV-002 plus PKG-004 as v0.7.0 release blockers.",
-    "next_action": "Record allocation checkpoint evidence, run final validation, and close the workflow."
+    "last_completed_step": "Recorded the allocation checkpoint, package-safety gate, and future GitHub mapping handoff without creating online resources.",
+    "next_action": "No allocation action remains; GOV-002 and PKG-004 require separate authorized implementation workflows."
   },
   "results": {
-    "summary": "",
-    "files_changed": [],
-    "tests_run": [],
-    "finding_status": "not-addressed",
+    "summary": "PKG-004 now prevents a v0.7.0 package candidate or publication from treating a package glob as approval to export source-repository work-management policy.",
+    "files_changed": [
+      ".dev/backlog/items/PKG-004.yaml",
+      ".dev/backlog/ROADMAP.md",
+      ".dev/backlog/INDEX.MD",
+      ".dev/workflows/2026-07-27-v0-7-work-management-release-allocation/**"
+    ],
+    "tests_run": [
+      "YAML and JSON parse",
+      "python .ai/scripts/validate-workflow-artifacts.py",
+      "python .ai/scripts/tests/test_backlog_release_contract.py",
+      "python .ai/scripts/tests/test_governance_workflow_contract.py",
+      "python .ai/scripts/tests/test_workflow_lifecycle_contract.py",
+      "git diff --check"
+    ],
+    "finding_status": "addressed",
     "residual_risk": "The current package profile can select governance standards before portable classification is complete.",
     "follow_up_needed": true
   }
