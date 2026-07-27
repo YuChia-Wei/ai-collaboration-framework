@@ -14,26 +14,26 @@
 - `owner_skill`: `ai-context-governance`
 - `status`: `draft`
 - `created_at`: `2026-07-27T23:02:00+08:00`
-- `updated_at`: `2026-07-27T23:35:51+08:00`
+- `updated_at`: `2026-07-27T23:51:54+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-remediation-report-template.md`
 - `template_version`: `2.0.0`
 - `baseline_assessments`: `ASM-20260725-001`, `ASM-20260727-001`
-- `verification_assessment`: `ASM-20260727-002` (pending)
+- `verification_assessment`: `ASM-20260727-002` (final)
 
 ## Remediation Summary
 
 - Authorized scope: complete v0.7.0 work-management portability, package safety, and release-note traceability without adopting GitHub Issues/Projects or publishing v0.7.0.
-- Completed scope: GOV-003 backlog identity, prospective exact-set release-note traceability, portable work-management policy projection, and deterministic package/install/upgrade evidence. GOV-002 and PKG-004 remain open until independent verification.
-- Validation summary: focused backlog, release-state, renderer, workflow, AI-context, package, profile projection, package apply, actual clean-install, initialized-upgrade, structured parse, compile, and diff checks pass; two explicit capability/environment skips are not counted as passed.
-- Closure decision: `not-ready`
+- Completed scope: GOV-002, GOV-003, and PKG-004 are resolved for v0.7.0 with publication null; release traceability, portable work-management projection, and deterministic package/install/upgrade evidence are independently verified.
+- Validation summary: focused backlog 6/6, release-state 23/23, renderer 6/6, package 25 passed plus 1 explicit environment skip, profile projection 3/3, package apply 23 passed plus 1 explicit Windows capability skip, actual clean-install and initialized-upgrade, workflow, assessment, AI-context, source-governance, structured parse, compile, and diff checks pass. The single critical aggregate gate passed 44/44 required checks with one not-applicable commit-range slot; neither skip nor not-applicable is counted as passed.
+- Closure decision: `ready-to-close-after-commit-range`
 
 ## Finding Resolution Matrix
 
 | Assessment Finding / Work | Before Severity | Status | Changed Files | Validation | Commit | Residual Risk |
 | --- | --- | --- | --- | --- | --- | --- |
 | `ASM-20260727-001#VFY-001` / `GOV-003` | none / HIGH | `resolved` | backlog, roadmap, release contract | 35 focused tests plus workflow validation | pending | Publication remains intentionally separate. |
-| `ASM-20260725-001#AIC-001..003` / `GOV-002` | HIGH | `addressed-pending-verification` | portable governance assets, distribution profile, package contract test | package/profile and governance validators | `78fbba8` | Provider adoption remains deferred and non-blocking. |
-| `PKG-004` | HIGH | `addressed-pending-verification` | immutable payload/migration manifests and package proof | package 25 passed plus 1 explicit skip; apply 23 passed plus 1 explicit skip; actual clean install and upgrade passed | pending | Formal v0.7.0 publication artifacts remain intentionally absent. |
+| `ASM-20260725-001#AIC-001..003` / `GOV-002` | HIGH | `resolved` | portable governance assets, distribution profile, package contract test | `ASM-20260727-002#VFY-002`; package/profile and governance validators | `78fbba8` | Provider adoption remains deferred and non-blocking. |
+| `PKG-004` | HIGH | `resolved` | immutable payload/migration manifests and package proof | `ASM-20260727-002#VFY-003`; package 25 passed plus 1 explicit skip; apply 23 passed plus 1 explicit skip; actual clean install and upgrade passed | `d3f22b2` | Formal v0.7.0 publication artifacts remain intentionally absent. |
 | release-note canonical backlog set | HIGH | `resolved` | release validator, renderer, templates, tests | exact-set and renderer fixtures | pending | No formal v0.7.0 candidate was created. |
 
 ## Deferred Work
@@ -44,7 +44,7 @@
 
 ## Closure Evidence
 
-- Required validations: focused release/backlog, package, projection, package-apply, workflow, and AI-context validation passed; independent assessment, final structured/diff/range checks, and the single aggregate gate remain pending.
-- Commit status: workflow bootstrap, release traceability, and portable policy stages committed; package evidence checkpoint pending.
+- Required validations: independent assessment, focused release/backlog, package, projection, package-apply, workflow, assessment, AI-context, source-governance, structured/diff checks, and the single critical aggregate gate passed; commit-range validation remains as the final local checkpoint.
+- Commit status: workflow bootstrap `f3e226d`, release traceability `da58ccb`, portable policy `78fbba8`, package evidence `d3f22b2`, and assessment `9f124be` are committed; verified backlog disposition is the next checkpoint.
 - Workflow/task status: active; `VGR-005` in progress.
-- Final next action: obtain independent verification, resolve verified backlog items, run final gates, close, and integrate through a ready PR.
+- Final next action: commit the verified backlog disposition, validate the workflow commit range, close, and integrate through a ready PR. PR integration remains distinct from workflow completion.

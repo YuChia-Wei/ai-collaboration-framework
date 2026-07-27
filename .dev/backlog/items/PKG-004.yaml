@@ -2,14 +2,14 @@ schema_version: "1.0"
 backlog_id: "PKG-004"
 title: "Block Unclassified Work-Management Policy from v0.7.0 Packages"
 category: "release-packaging"
-status: "planned"
+status: "resolved"
 priority: "HIGH"
 summary: "Produce a v0.7.0 package-selection proof that prevents source-repository-only work-management policy and execution history from being shipped as downstream framework truth."
 created_at: "2026-07-27T21:39:33+08:00"
-updated_at: "2026-07-27T21:39:33+08:00"
+updated_at: "2026-07-27T23:44:24+08:00"
 release:
   target: "v0.7.0"
-  completed_in: null
+  completed_in: "v0.7.0"
   published_in: null
   target_scope: "work-management-policy-payload-classification-and-package-safety"
   gate: "release-blocker"
@@ -17,14 +17,19 @@ origin_refs:
   - ".ai/distribution/profiles/dotnet-backend.yaml"
   - ".dev/backlog/items/GOV-002.yaml"
   - ".dev/workflows/2026-07-25-work-management-policy/workflow.yaml"
+  - ".dev/assessments/ASM-20260727-002/assessment.yaml"
+finding_refs:
+  - "ASM-20260727-002#VFY-003"
 recommended_owner_skill: "ai-context-governance"
 handoff_condition: "After GOV-002 supplies the approved policy disposition, execute package planning and clean-install or upgrade validation against the selected v0.7.0 candidate commit. Do not create a tag or hosted release until the payload proof passes."
 workflow_refs:
   - ".dev/workflows/2026-07-27-v0-7-work-management-release-allocation/workflow.yaml"
+  - ".dev/workflows/2026-07-27-v0-7-governance-release-readiness/workflow.yaml"
 task_refs:
   - ".dev/workflows/2026-07-27-v0-7-work-management-release-allocation/tasks/WMR-002.json"
-resolution_ref: null
-decision_needed: "The package implementation must either include only an approved portable form of the work-management contract or explicitly exclude the source-local policy surface. A package glob is not owner approval."
+  - ".dev/workflows/2026-07-27-v0-7-governance-release-readiness/tasks/VGR-004.json"
+resolution_ref: ".dev/workflows/2026-07-27-v0-7-governance-release-readiness/reports/remediation-report.md"
+decision_needed: "Resolved: the deterministic payload includes only the approved portable work-management projection, excludes source history and source-local policy, and passes applicable package, clean-install, and initialized-upgrade evidence."
 acceptance:
   - "A candidate payload manifest and diff identify every PR #10 policy file that would enter the selected package."
   - "Dated workflow, assessment, roadmap, and source-project records remain excluded from downstream payloads."
@@ -35,3 +40,5 @@ inventory_notes:
   - "The default dotnet-backend profile currently includes governance standards but excludes dated execution history."
   - "PR evidence: https://github.com/YuChia-Wei/ai-collaboration-prompts-dotnet-backend/pull/10"
   - "PKG-004 is a release blocker; it records a payload safety obligation, not permission to delete or rewrite historical evidence."
+  - "ASM-20260727-002 independently verified the package-safety evidence at d3f22b267e8ff44ae163a47b3b2482d51250cbcc."
+  - "published_in remains null because v0.7.0 has not been tagged or published."

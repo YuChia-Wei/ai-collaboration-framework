@@ -23,14 +23,14 @@
     "steps": ["Classify each PR #10 policy surface.", "Separate portable contract from source-only GitHub policy.", "Add target customization boundary and defer provider adoption.", "Resolve GOV-002 only after validation."],
     "validation": ["Run policy, package-boundary, workflow, and AI-context validators."],
     "last_completed_step": "Projected provider-neutral policies into the downstream payload, excluded source-local GitHub policy, and recorded portable, source-only, target-customization, and deferred-provider classifications.",
-    "next_action": "Obtain independent verification before resolving GOV-002."
+    "next_action": "Completed; ASM-20260727-002 verified the portable boundary and GOV-002 is resolved."
   },
   "results": {
     "summary": "Downstream targets receive provider-neutral workflow, Git-flow, and commit policy bytes; source-local GitHub policy remains excluded, and provider adoption is deferred without blocking repository workflow truth.",
     "files_changed": [".ai/assets/shared/governance/**", ".ai/distribution/ai-context-package-profile.yaml", ".ai/scripts/tests/test_ai_context_packaging.py", ".dev/workflows/2026-07-27-v0-7-governance-release-readiness/evidence/gov-002-policy-classification.md"],
     "tests_run": ["python .ai/scripts/tests/test_ai_context_packaging.py (25 passed, 1 environment-gated skip not counted as passed)", "python .ai/scripts/tests/test_profile_projection_contract.py (3 passed)", "python .ai/scripts/validate-ai-context.py", "python .ai/scripts/validate-source-governance.py"],
-    "finding_status": "addressed-pending-verification",
+    "finding_status": "resolved",
     "residual_risk": "Actual GitHub Issues/Projects adoption remains an owner-owned deferred concern and is not part of the portable contract.",
-    "follow_up_needed": true
+    "follow_up_needed": false
   }
 }

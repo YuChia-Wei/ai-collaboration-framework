@@ -19,7 +19,7 @@
 - `current_phase`: `verification`
 - `artifact_root`: `.dev/workflows/2026-07-27-v0-7-governance-release-readiness`
 - `created_at`: `2026-07-27T23:02:00+08:00`
-- `updated_at`: `2026-07-27T23:35:51+08:00`
+- `updated_at`: `2026-07-27T23:51:54+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md`
 - `template_version`: `1.2.0`
 - `release_target`: `v0.7.0`
@@ -66,10 +66,10 @@
 
 ## Resume Checkpoint
 
-- Last completed action: completed `VGR-003` and `VGR-004`; portable policy projection, immutable payload manifests, deterministic archives, clean install, and initialized v0.6.0 upgrade evidence pass.
+- Last completed action: `ASM-20260727-002` found no active governance issue; `GOV-002` and `PKG-004` are resolved; focused release tests and the single critical aggregate gate pass.
 - Current task: `VGR-005`.
-- Exact next action: obtain independent `ai-context-auditor` verification before resolving `GOV-002` and `PKG-004`.
-- Validation already completed: release-state 23/23, release-note renderer 6/6, backlog release 6/6, package matrix 25 passed with 1 environment skip not counted as passed, profile projection 3/3, package apply 23 passed with 1 Windows capability skip not counted as passed, actual clean install and initialized upgrade passed, workflow artifacts, YAML parse, Python compile, and diff checks passed.
+- Exact next action: commit the verified backlog disposition, validate `main..HEAD`, then close the workflow for PR integration.
+- Validation already completed: release-state 23/23, release-note renderer 6/6, backlog release 6/6, package matrix 25 passed with 1 environment skip not counted as passed, profile projection 3/3, package apply 23 passed with 1 Windows capability skip not counted as passed, actual clean install and initialized upgrade passed, workflow, assessment, AI-context, source-governance, structured parsing, and diff checks passed; the single critical aggregate gate passed 44/44 required checks with one commit-range slot not applicable because it is executed separately.
 - Git state: branch `codex/2026-07-27-v0-7-governance-release-readiness` from clean `main`.
 - Branch history and checkpoint handoffs: none.
 - Blockers or unresolved decisions: none; GitHub provider adoption is explicitly deferred and non-blocking.
