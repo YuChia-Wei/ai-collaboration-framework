@@ -6,9 +6,9 @@
   "task_id": "AEP-002",
   "workflow_id": "2026-07-27-ai-execution-provenance-policy",
   "owner_skill": "ai-context-governance",
-  "status": "pending",
+  "status": "in_progress",
   "created_at": "2026-07-27T08:39:34+08:00",
-  "updated_at": "2026-07-27T08:39:34+08:00",
+  "updated_at": "2026-07-27T09:24:09+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "finding_ids": [],
   "scope": {
@@ -21,21 +21,23 @@
     ],
     "constraints": [
       "Require recorded AEP owner decisions",
-      "Reuse the existing provenance contract",
-      "Preserve provider-native attribution",
-      "Do not invent unavailable runtime data"
+      "Use the owner-approved common runtime-model-reasoning signature",
+      "Add only model and reasoning_effort to task artifacts",
+      "Use effective defaults when active values are unavailable",
+      "Do not add direct-mode, tool, or cross-tool settings contracts"
     ],
     "non_goals": [
       "Provider account configuration",
       "Historical commit rewriting",
-      "Release assignment without owner approval"
+      "Additional provenance fields beyond model and reasoning_effort"
     ]
   },
   "execution": {
     "steps": [
       "Remove fixed-model attribution examples",
-      "Separate stable Git identity from exact execution provenance",
-      "Extend provenance fields and evidence-source semantics",
+      "Define the common runtime-model-reasoning signature",
+      "Add model and reasoning_effort to applicable task contracts",
+      "Define active-session then effective-default resolution",
       "Update affected templates and navigation"
     ],
     "validation": [
@@ -43,8 +45,8 @@
       "Reference validation",
       "git diff --check"
     ],
-    "last_completed_step": "",
-    "next_action": "Begin only after AEP-001 records owner authorization."
+    "last_completed_step": "Owner authorization was recorded by AEP-001.",
+    "next_action": "Inventory affected task templates and real provider attribution fixtures before editing canonical policy."
   },
   "results": {
     "summary": "",

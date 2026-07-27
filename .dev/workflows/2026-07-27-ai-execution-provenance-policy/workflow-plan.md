@@ -19,10 +19,10 @@
 - `current_phase`: `remediation-planning`
 - `artifact_root`: `.dev/workflows/2026-07-27-ai-execution-provenance-policy`
 - `created_at`: `2026-07-27T08:39:34+08:00`
-- `updated_at`: `2026-07-27T08:39:34+08:00`
+- `updated_at`: `2026-07-27T09:24:09+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md`
 - `template_version`: `1.2.0`
-- `release_target`: `unassigned`
+- `release_target`: `v0.7.0`
 
 ## Objective And Scope
 
@@ -32,24 +32,21 @@
   tells agents to use active runtime identity but provides fixed-model examples,
   validates only generic trailer syntax, and does not connect resolved session
   provenance to commit construction.
-- Authorized planning scope: preserve the diagnosis and define an executable
-  correction plan covering provider-native attribution, stable Git identity,
-  resolved execution provenance, surface and mode, tool evidence, validation,
-  provider fixtures, and independent verification.
-- Current authorization boundary: this turn authorizes workflow and planning
-  artifacts only. It does not authorize canonical policy, template, wrapper, or
-  validator remediation.
-- Exclusions: do not rewrite historical commits; do not claim configured model
-  defaults are runtime evidence; do not invent unavailable model, reasoning, or
-  tool metadata; do not normalize Claude, Copilot, Codex, or other provider
-  attribution without real provider fixtures; do not create a new cross-tool
-  settings file unless an owner-approved enforcement requirement justifies it.
-- Completion criteria: fixed-model examples are removed; provider-native
-  attribution is preserved; Codex fallback attribution uses a stable runtime
-  identity; exact model, reasoning effort, surface, mode, and tool evidence have
-  an explicit source and unavailable behavior; configuration intent is distinct
-  from resolved execution evidence; validators cover the contract; real or
-  explicitly blocked provider fixtures are recorded; an independent
+- Authorized remediation scope: apply the owner-approved common commit
+  signature containing runtime, model, and reasoning effort; add only `model`
+  and `reasoning_effort` to task execution provenance; define default fallback
+  behavior; update validators, templates, provider fixtures, and guidance; and
+  complete independent verification for the v0.7.0 workstream.
+- Exclusions: do not rewrite historical commits; do not add surface, mode,
+  available-tool, or used-tool fields; do not add a direct-mode-specific
+  provenance contract; do not create a cross-tool settings file; do not alter
+  provider account configuration.
+- Completion criteria: fixed-model examples are removed; AI commit signatures
+  consistently use `<runtime> (<model>, <reasoning_effort>)`; runtime values are
+  preferred and missing values use the effective configured or documented
+  client default without blocking the commit; tasks contain only the approved
+  `model` and `reasoning_effort` additions; validators cover the contract; real
+  or explicitly blocked provider fixtures are recorded; an independent
   post-remediation assessment verifies the result.
 
 ## Evidence Snapshot
@@ -63,39 +60,41 @@
 | `.dev/standards/WORKFLOW-HANDOFF-POLICY.md` | Existing `runtime`, `model`, `reasoning_effort`, and `model_source` fields already define a partial provenance contract. | Extend and reuse the existing contract rather than creating a duplicate settings authority. |
 | Provider documentation | Claude Code and Copilot CLI expose native attribution controls; current public Codex documentation exposes model/reasoning configuration but no equivalent documented commit-attribution control. | Keep provider adapters distinct and preserve provider-native behavior when available. |
 
-## Policy Direction
+## Approved Policy Direction
 
-1. Treat `Co-Authored-By` as contributor attribution, not complete execution
-   provenance.
-2. Preserve provider-native attribution. For a local Codex commit without a
-   native trailer, prefer the stable identity
-   `OpenAI Codex <noreply@openai.com>` and store exact execution details outside
-   the identity string.
-3. Record configured intent separately from resolved execution state. A config
-   file, model alias, UI tier, or prior commit is not proof of the active model.
-4. Extend the existing provenance contract with `surface`, `mode`,
-   `tools_available`, `tools_used`, evidence timestamp/reference, and
-   sub-agent provenance when applicable.
-5. Accept exact model and reasoning values only from a declared evidence source
-   such as `runtime-reported` or `provider-reported`. Use `unavailable` without
-   invention when the client cannot expose them.
-6. Keep detailed provenance in workflow/checkpoint evidence. Define a compact
-   direct-mode representation only if commits without workflow artifacts need
-   the same assurance level.
-7. Do not add a repository-wide cross-tool settings file by default. Reconsider
-   one only for an approved model allowlist, minimum reasoning requirement, or
-   mechanically enforced unavailable behavior.
+1. Use one repository commit-signature shape across Codex, Claude, Copilot, and
+   other supported runtimes:
+
+   ```text
+   Co-Authored-By: <runtime> (<model>, <reasoning_effort>) <noreply@provider-domain>
+   ```
+
+   Preserve the provider/runtime name and provider noreply domain while making
+   model and reasoning effort visible in the same parenthesized format.
+2. Resolve signature and task values from the active session when available.
+   When either value is unavailable, fill it from the effective configured
+   default after applying the client's documented precedence; if no explicit
+   configuration exists, use the client's documented built-in default. Missing
+   runtime metadata does not globally block a commit.
+3. Add only `model` and `reasoning_effort` to task artifacts. Do not add source,
+   surface, mode, tool, or evidence-reference fields as part of this workflow.
+4. Do not add direct-mode-specific provenance rules. Direct operations continue
+   to rely on the common commit signature.
+5. Do not add tool inventory or tool-use recording in this workflow.
+6. Do not create a cross-tool custom settings file. Provider-native settings
+   remain the configuration authorities.
+7. Assign the workflow to v0.7.0.
 
 ## Owner Decision Register
 
-| Decision | Recommended default | Why it requires owner confirmation | Status |
+| Decision | Owner-approved decision | Evidence | Status |
 | --- | --- | --- | --- |
-| `AEP-DEC-001` Git identity | Stable runtime identity for Codex; preserve native Claude/Copilot trailers. | This changes the canonical meaning and presentation of AI co-authorship. | `pending` |
-| `AEP-DEC-002` Missing evidence | Record `unavailable`; fail only where a workflow explicitly requires exact provenance. | A global fail-closed rule could block clients that do not expose model or effort. | `pending` |
-| `AEP-DEC-003` Direct-mode storage | Use compact commit trailers only when no workflow/checkpoint artifact exists. | This controls commit verbosity and evidence availability for small changes. | `pending` |
-| `AEP-DEC-004` Tool evidence | Require `tools_used`; keep `tools_available` optional unless needed for a handoff or audit. | Full availability lists are dynamic and may be noisy, while actual use is materially relevant. | `pending` |
-| `AEP-DEC-005` Cross-tool policy file | Do not create one in this workflow unless enforcement requirements are approved. | A second settings authority can drift from provider-native configuration. | `pending` |
-| `AEP-DEC-006` Release assignment | Keep `release_target: unassigned` until the owner explicitly assigns this work to `v0.7.0` or another release. | Workflow authorization does not itself authorize roadmap or release scope. | `pending` |
+| `AEP-DEC-001` Git identity | Include the actual model and reasoning effort in a common Claude/Copilot/Codex-style message signature: `<runtime> (<model>, <reasoning_effort>)`. | Owner response on 2026-07-27. | `approved` |
+| `AEP-DEC-002` Missing evidence | Fill missing model or reasoning values from the applicable default and do not impose a global commit block. | Owner response on 2026-07-27. | `approved` |
+| `AEP-DEC-003` Task storage | Add only `model` and `reasoning_effort` to tasks; rely on the commit signature for direct operations and add no direct-mode-specific contract. | Owner response on 2026-07-27. | `approved` |
+| `AEP-DEC-004` Tool evidence | Do not add tool availability or tool-use fields in this workflow. | Owner response on 2026-07-27. | `approved` |
+| `AEP-DEC-005` Cross-tool policy file | Do not create a cross-tool custom settings file. | Owner response on 2026-07-27. | `approved` |
+| `AEP-DEC-006` Release assignment | Assign this workflow to v0.7.0. | Owner response on 2026-07-27. | `approved` |
 
 ## Artifact Contract
 
@@ -111,13 +110,13 @@
 
 | Surface | Planned treatment |
 | --- | --- |
-| Git commit policy and examples | Remove fixed-model examples; distinguish provider-native attribution, stable runtime identity, and exact provenance. |
-| Commit policy schema and validator | Validate required semantic fields and evidence sources, not only trailer syntax. |
-| Workflow handoff provenance | Extend the existing contract for surface, mode, available/used tools, and sub-agent execution. |
-| Codex CLI and Desktop | Document configuration intent, session overrides, resolved runtime checks, mode, and the absence of a documented native trailer control. |
-| Claude Code and Desktop | Preserve Claude Code attribution; distinguish Claude Desktop chat from the client or MCP tool that actually performs Git operations. |
-| GitHub Copilot | Preserve CLI-native `includeCoAuthoredBy`; keep CLI, IDE, and cloud-agent execution surfaces distinct. |
-| Fixtures | Use real provider outputs where available; mark unavailable fixtures as blocked instead of synthesizing identities. |
+| Git commit policy and examples | Require `<runtime> (<model>, <reasoning_effort>)` and document active-session then default fallback resolution. |
+| Commit policy schema and validator | Validate the common signature shape and required values rather than accepting a generic name. |
+| Workflow tasks | Add only `model` and `reasoning_effort`; do not add surface, mode, tools, or source fields. |
+| Codex CLI and Desktop | Document how active-session values and effective defaults are obtained for the common signature. |
+| Claude Code and Desktop | Verify how native attribution can coexist with or produce the approved common signature before enforcement. |
+| GitHub Copilot | Verify CLI, IDE, and cloud-agent attribution behavior before enforcing the common signature. |
+| Fixtures | Use real provider outputs where available and record unsupported native formatting explicitly. |
 
 ## Stages And Checkpoints
 
@@ -131,8 +130,8 @@
 
 | Task | Purpose | Status |
 | --- | --- | --- |
-| `AEP-001` | Preserve evidence and obtain owner decisions for attribution, unavailable behavior, storage, tools, custom settings, and release assignment. | `in_progress` |
-| `AEP-002` | Apply the approved policy and provenance contract changes without introducing a duplicate settings authority. | `pending` |
+| `AEP-001` | Preserve evidence and obtain owner decisions for attribution, unavailable behavior, storage, tools, custom settings, and release assignment. | `completed` |
+| `AEP-002` | Apply the approved policy and provenance contract changes without introducing a duplicate settings authority. | `in_progress` |
 | `AEP-003` | Add provider fixtures, validator coverage, and runtime-specific guidance. | `pending` |
 | `AEP-004` | Validate, obtain independent verification, reconcile results, and close the workflow. | `pending` |
 
@@ -150,23 +149,27 @@
 
 ## Resume Checkpoint
 
-- Last completed action: created the dedicated branch and durable correction
-  plan without changing canonical policy.
-- Current task: `AEP-001`.
-- Exact next action: obtain owner decisions `AEP-DEC-001` through
-  `AEP-DEC-006`; do not begin `AEP-002` before those decisions are recorded.
+- Last completed action: recorded owner approval for `AEP-DEC-001` through
+  `AEP-DEC-006` and assigned the workflow to v0.7.0.
+- Current task: `AEP-002`.
+- Exact next action: inventory the affected task templates and real provider
+  attribution fixtures, then apply the approved common signature and the two
+  task fields without adding direct-mode, tool, or cross-tool configuration.
 - Validation already completed: planning evidence was cross-checked against
   recent session records, current policy text, schema validation behavior, and
-  current provider documentation. Artifact validation remains to be run after
-  creation.
+  current provider documentation; workflow artifact validation, four-task JSON
+  parsing, the six backlog release-contract tests, and `git diff --check` pass.
 - Git state: branch `codex/2026-07-27-ai-execution-provenance-policy` from
   `main`; the validated planning checkpoint is local and has not been
   transported.
 - Branch history and checkpoint handoffs: none.
-- Blockers or unresolved decisions: `AEP-DEC-001` through `AEP-DEC-006`.
+- Blockers or unresolved decisions: no policy-direction decision remains;
+  provider fixture availability may constrain native-client enforcement and
+  must be reported rather than fabricated.
 
 ## Branch Lifecycle
 
 | Segment | Branch | Base | Checkpoint Type | Commit | Remote / Target | Recorded At | Reason | Resume Branch / Action |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | 1 | `codex/2026-07-27-ai-execution-provenance-policy` | `main` | local planning | resolved from branch history | local | `2026-07-27T08:39:34+08:00` | Preserve the owner-requested policy correction plan before remediation. | Resolve `AEP-DEC-001` through `AEP-DEC-006`. |
+| 1 | `codex/2026-07-27-ai-execution-provenance-policy` | `main` | local owner-decision checkpoint | resolved from branch history | local | `2026-07-27T09:24:09+08:00` | Preserve the approved policy boundary and v0.7.0 assignment before canonical remediation. | Inventory task templates and provider fixtures, then execute `AEP-002`. |

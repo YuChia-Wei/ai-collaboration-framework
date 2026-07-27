@@ -6,9 +6,9 @@
   "task_id": "AEP-001",
   "workflow_id": "2026-07-27-ai-execution-provenance-policy",
   "owner_skill": "ai-context-governance",
-  "status": "in_progress",
+  "status": "completed",
   "created_at": "2026-07-27T08:39:34+08:00",
-  "updated_at": "2026-07-27T08:39:34+08:00",
+  "updated_at": "2026-07-27T09:24:09+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "finding_ids": [],
   "scope": {
@@ -38,15 +38,22 @@
       "JSON parse validation",
       "git diff --check"
     ],
-    "last_completed_step": "Created the decision-ready correction plan and evidence snapshot.",
-    "next_action": "Obtain owner decisions AEP-DEC-001 through AEP-DEC-006 before remediation."
+    "last_completed_step": "Recorded owner approval for AEP-DEC-001 through AEP-DEC-006 and assigned the workflow to v0.7.0.",
+    "next_action": "AEP-002 applies the approved common signature and bounded task provenance contract."
   },
   "results": {
-    "summary": "",
-    "files_changed": [],
-    "tests_run": [],
-    "finding_status": "not-addressed",
-    "residual_risk": "The current fixed GPT-5 example and syntax-only validation remain active until approved remediation is implemented.",
+    "summary": "The owner approved a common runtime-model-reasoning signature, default fallback, two task fields only, no tool tracking, no cross-tool settings file, and v0.7.0 assignment.",
+    "files_changed": [
+      ".dev/workflows/2026-07-27-ai-execution-provenance-policy/**",
+      ".dev/backlog/ROADMAP.md"
+    ],
+    "tests_run": [
+      "python .ai/scripts/validate-workflow-artifacts.py",
+      "JSON parse validation",
+      "git diff --check"
+    ],
+    "finding_status": "addressed",
+    "residual_risk": "Canonical policy and validators still require AEP-002 and AEP-003 remediation.",
     "follow_up_needed": true
   }
 }
