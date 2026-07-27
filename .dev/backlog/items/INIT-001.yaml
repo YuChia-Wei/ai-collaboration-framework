@@ -1,0 +1,44 @@
+schema_version: "1.0"
+backlog_id: "INIT-001"
+title: "Existing AI Agent Repository Compatibility Intake"
+category: "ai-context-initialization"
+status: "open"
+priority: "LOW"
+summary: "Evaluate how ai-context-init can safely adopt this framework in an existing repository that already has AI agent instructions, wrappers, and runtime configuration."
+created_at: "2026-07-27T21:04:52+08:00"
+updated_at: "2026-07-27T21:04:52+08:00"
+release:
+  target: "unassigned"
+  completed_in: null
+  published_in: null
+  target_scope: "existing-ai-agent-context-collision-inventory-and-safe-initialization"
+  gate: "independent"
+origin_refs:
+  - ".ai/assets/skills/ai-context-init/skill.yaml"
+  - ".ai/assets/skills/ai-context-init/references/migration-boundaries.md"
+  - ".ai/assets/skills/ai-context-init/references/output-contract.md"
+  - ".dev/backlog/items/UPG-001.yaml"
+  - ".dev/workflows/2026-07-27-backlog-init-compatibility-intake/workflow.yaml"
+finding_refs: []
+recommended_owner_skill: "ai-context-init"
+handoff_condition: "Activate a dedicated ai-context-init compatibility workflow only after the owner selects the collision taxonomy and dry-run boundary. Synthetic fixtures may establish the contract before a real target becomes available; a real pilot remains later maturity evidence."
+workflow_refs:
+  - ".dev/workflows/2026-07-27-backlog-init-compatibility-intake/workflow.yaml"
+task_refs:
+  - ".dev/workflows/2026-07-27-backlog-init-compatibility-intake/tasks/INIT-001.json"
+resolution_ref: null
+decision_needed: "Define authority, precedence, collision classification, dry-run output, and owner-approval rules for existing AGENTS.md, CLAUDE.md, Copilot instructions, runtime wrappers, hooks, MCP declarations, and other target-owned AI context before implementation."
+acceptance:
+  - "The intake inventories existing AI-agent surfaces before copying, rewriting, or deleting any target context."
+  - "Every collision is classified as preserve, compatible, merge-required, owner-decision, or excluded-sensitive with file-backed evidence."
+  - "Existing target instructions and runtime configuration remain target-owned unless an explicit owner decision authorizes replacement or semantic reconciliation."
+  - "A dry-run reports proposed additions, preserved files, semantic merges, unresolved conflicts, and excluded sensitive paths before any write."
+  - "Unknown framework source evidence permits inventory and an unresolved result but does not create provenance.yaml or customizations.yaml."
+  - "Synthetic fixtures cover at least AGENTS-only, Claude Code, GitHub Copilot, and mixed-provider repositories, including one intentional instruction conflict."
+  - "Fixtures contain no credentials, tokens, personal permissions, machine-local secrets, or copied private session content."
+  - "Deterministic validation proves that target-owned files are byte-preserved until their explicit disposition is authorized."
+  - "A future real-repository pilot records practical feedback and residual gaps but is not required to retain this low-priority candidate or design its initial contract."
+inventory_notes:
+  - "The current ai-context-init contract supports existing repositories and copied-template cleanup, but it does not yet provide a complete collision contract for repositories with pre-existing multi-provider AI context."
+  - "This item is independent of legacy version upgrades and is not a v0.7.0 release blocker."
+  - "Do not reopen UPG-001 merely because a future repository already uses AI agents; use this item unless an actual unversioned framework upgrade is also required."

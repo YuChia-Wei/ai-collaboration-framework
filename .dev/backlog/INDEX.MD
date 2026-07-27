@@ -7,7 +7,7 @@ artifact directories. See [README.MD](README.MD) for ownership and lifecycle.
 
 | Roadmap | Current Target | Status | Next Gate | Updated |
 | --- | --- | --- | --- | --- |
-| [ROADMAP.md](ROADMAP.md) | `unassigned` | `active` | v0.6.0 is published. Owner discussion must select any successor target; v0.7.0 remains conditional and `DEVWF-001`, `UPG-001`, `STD-001`, and `OBS-001` remain independently gated. | 2026-07-24 |
+| [ROADMAP.md](ROADMAP.md) | `v0.7.0` | `active` | The assigned provenance-policy workstream is complete and verified; any additional v0.7.0 scope still requires explicit owner assignment. | 2026-07-27 |
 
 Source planning records are retained under [`plans/`](plans/); they inform the
 roadmap but do not replace it or a governed assessment.
@@ -16,10 +16,16 @@ roadmap but do not replace it or a governed assessment.
 
 | Item | Priority | Target Release | Gate | Summary | Decision / Handoff | Updated |
 | --- | --- | --- | --- | --- | --- | --- |
-| [UPG-001](items/UPG-001.yaml) | HIGH | `unassigned` | independent | Make manual provenance bootstrap and customization inventory executable for pre-governed targets. | Use a real legacy target; preserve target truth through Base/Incoming/Target reconciliation before assigning a release. | 2026-07-22 |
+| [INIT-001](items/INIT-001.yaml) | LOW | `unassigned` | independent | Evaluate safe framework adoption in repositories that already use AI agents. | Define collision inventory, dry-run, authority, and synthetic fixtures before a future real-target pilot. | 2026-07-27 |
 | [DEVWF-001](items/DEVWF-001.yaml) | MEDIUM | `unassigned` | independent | Evaluate optional issue traceability and richer task lifecycle timestamps from WorkService. | Keep the portable core tracker-neutral; decide schema placement and compatibility before implementation. | 2026-07-22 |
 | [STD-001](items/STD-001.yaml) | HIGH | `unassigned` | independent | Run bounded standards discussions across ChatGPT, Fable 5, and repository agents before assigning implementation to a release. | Normalize external feedback through assessments; permit a dedicated standards release after owner review. | 2026-07-20 |
 | [OBS-001](items/OBS-001.yaml) | MEDIUM | `unassigned` | independent | Design the reusable CrossCutting Observability and attribute/AOP boundary. | Open a separate architecture workflow; it is not a hidden release gate. | 2026-07-18 |
+
+## Declined
+
+| Item | Priority | Target Release | Decision | Resolution | Updated |
+| --- | --- | --- | --- | --- | --- |
+| [UPG-001](items/UPG-001.yaml) | HIGH | `unassigned` | Owner cancelled the real legacy-target intake because no target or feedback capacity is expected to be available. | Historical evidence is retained; `INIT-001` tracks a distinct existing-AI-agent initialization question without claiming to complete the legacy upgrade acceptance. | 2026-07-27 |
 
 ## Resolved
 

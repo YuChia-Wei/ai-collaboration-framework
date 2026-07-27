@@ -1,0 +1,76 @@
+{
+  "template_id": "ai-context-governance-remediation-task",
+  "template_version": "1.0.0",
+  "template_created_at": "2026-07-10T18:22:49+08:00",
+  "template_updated_at": "2026-07-10T18:22:49+08:00",
+  "task_id": "INIT-001",
+  "workflow_id": "2026-07-27-backlog-init-compatibility-intake",
+  "owner_skill": "ai-context-governance",
+  "status": "completed",
+  "created_at": "2026-07-27T21:04:52+08:00",
+  "updated_at": "2026-07-27T21:04:52+08:00",
+  "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
+  "model": "gpt-5.6-sol",
+  "reasoning_effort": "medium",
+  "finding_ids": [],
+  "scope": {
+    "target": "Cancel UPG-001 and register low-priority INIT-001 without assigning implementation or release scope",
+    "files": [
+      ".dev/backlog/items/UPG-001.yaml",
+      ".dev/backlog/items/INIT-001.yaml",
+      ".dev/backlog/INDEX.MD",
+      ".dev/backlog/ROADMAP.md",
+      ".dev/workflows/2026-07-27-backlog-init-compatibility-intake/**",
+      ".dev/workflows/INDEX.MD"
+    ],
+    "constraints": [
+      "Do not mark UPG-001 resolved because its acceptance criteria were not completed",
+      "Keep INIT-001 LOW, unassigned, independent, and outside the v0.7.0 gate",
+      "Retain historical assessment and workflow evidence"
+    ],
+    "non_goals": [
+      "Implement ai-context-init collision handling",
+      "Build synthetic fixtures",
+      "Validate a real target repository"
+    ]
+  },
+  "execution": {
+    "steps": [
+      "Set UPG-001 to declined and record the owner cancellation reason",
+      "Create INIT-001 with collision, authority, dry-run, and fixture acceptance boundaries",
+      "Reconcile backlog discovery and roadmap state",
+      "Run structured and repository validation"
+    ],
+    "validation": [
+      "python .ai/scripts/tests/test_backlog_release_contract.py -v",
+      "python .ai/scripts/validate-workflow-artifacts.py",
+      "python .ai/scripts/validate-ai-context.py",
+      "git diff --check"
+    ],
+    "last_completed_step": "Recorded the cancellation and new intake boundary, reconciled discovery surfaces, and completed validation.",
+    "next_action": "Keep INIT-001 unassigned until the owner separately authorizes design or fixture work."
+  },
+  "results": {
+    "summary": "UPG-001 is declined without false completion, and INIT-001 is registered as a distinct low-priority unassigned candidate.",
+    "files_changed": [
+      ".dev/backlog/items/UPG-001.yaml",
+      ".dev/backlog/items/INIT-001.yaml",
+      ".dev/backlog/INDEX.MD",
+      ".dev/backlog/ROADMAP.md",
+      ".dev/workflows/2026-07-27-backlog-init-compatibility-intake/workflow.yaml",
+      ".dev/workflows/2026-07-27-backlog-init-compatibility-intake/workflow-plan.md",
+      ".dev/workflows/2026-07-27-backlog-init-compatibility-intake/reports/remediation-report.md",
+      ".dev/workflows/INDEX.MD"
+    ],
+    "tests_run": [
+      "python .ai/scripts/tests/test_backlog_release_contract.py -v (6 passed)",
+      "python .ai/scripts/validate-workflow-artifacts.py (passed: 44 post-adoption workflows, 64 indexed workflow directories, 36 backlog items)",
+      "python .ai/scripts/validate-ai-context.py (passed)",
+      "Structured YAML and JSON parse (passed)",
+      "git diff --check (passed)"
+    ],
+    "finding_status": "addressed",
+    "residual_risk": "INIT-001 remains a design candidate without synthetic-fixture or real-target validation, as intentionally scoped.",
+    "follow_up_needed": false
+  }
+}
