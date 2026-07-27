@@ -1,0 +1,46 @@
+schema_version: "1.0"
+backlog_id: "GOV-002"
+title: "Release the Work-Management Lifecycle as a v0.7.0 Scope Candidate"
+category: "workflow-governance"
+status: "planned"
+priority: "HIGH"
+summary: "Classify the completed PR #10 work-management lifecycle policy for portable v0.7.0 distribution, preserving source-repository GitHub choices as local policy rather than silently exporting them as target defaults."
+created_at: "2026-07-27T21:39:33+08:00"
+updated_at: "2026-07-27T21:39:33+08:00"
+release:
+  target: "v0.7.0"
+  completed_in: null
+  published_in: null
+  target_scope: "work-management-lifecycle-portability-and-release-candidate-disposition"
+  gate: "release-blocker"
+origin_refs:
+  - ".dev/workflows/2026-07-25-work-management-policy/workflow.yaml"
+  - ".dev/assessments/ASM-20260725-001/assessment.yaml"
+  - ".dev/assessments/ASM-20260726-001/assessment.yaml"
+  - ".dev/standards/WORKFLOW-GATE-POLICY.md"
+finding_refs:
+  - "ASM-20260725-001#AIC-001"
+  - "ASM-20260725-001#AIC-002"
+  - "ASM-20260725-001#AIC-003"
+recommended_owner_skill: "ai-context-governance"
+handoff_condition: "Before a v0.7.0 package candidate is built, create a dedicated implementation workflow that classifies every PR #10 policy surface as portable framework truth, source-only local policy, or an explicit target customization; do not infer portability from its current path."
+workflow_refs:
+  - ".dev/workflows/2026-07-25-work-management-policy/workflow.yaml"
+  - ".dev/workflows/2026-07-27-v0-7-work-management-release-allocation/workflow.yaml"
+task_refs:
+  - ".dev/workflows/2026-07-25-work-management-policy/tasks/WMP-002.json"
+  - ".dev/workflows/2026-07-25-work-management-policy/tasks/WMP-003.json"
+  - ".dev/workflows/2026-07-27-v0-7-work-management-release-allocation/tasks/WMR-001.json"
+resolution_ref: null
+decision_needed: "The owner assigned PR #10 as a v0.7.0 scope candidate on 2026-07-27. The implementation workflow must decide and validate the portable contract; this assignment is not an actual release-candidate package, tag, or publication."
+acceptance:
+  - "Every policy file changed by PR #10 has an explicit v0.7.0 disposition: portable framework contract, source-only exclusion, or target-owned customization boundary."
+  - "GitHub Issues, GitHub Projects, and pull-request-only integration remain source-repository choices unless a portable target contract is explicitly approved."
+  - "The released framework distinguishes conversation, candidate work, authorized execution, and integrated repository facts without requiring one tracker provider."
+  - "The release-facing guidance explains how a target with another tracker or integration policy preserves and reconciles its own rule."
+  - "The selected release payload and migration behavior are validated before GOV-002 is resolved."
+inventory_notes:
+  - "PR #10 merged as commit a01e53c2e5123fa9d973a379f1580d4dd055cb82 and completed the source-repository policy workflow."
+  - "PR evidence: https://github.com/YuChia-Wei/ai-collaboration-prompts-dotnet-backend/pull/10"
+  - "The current distribution profile selects .dev/standards/** and .dev/TEAM-GIT-FLOW-RULES.MD, so source integration alone is not evidence of safe downstream release scope."
+  - "No GitHub Issue or Project is created by this backlog record; a later external tracker mapping must use the real tracker identifier."

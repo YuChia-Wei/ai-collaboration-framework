@@ -8,6 +8,7 @@ task-level progress.
 
 | Workflow | Title | Owner | Status | Updated | Entry Point |
 | --- | --- | --- | --- | --- | --- |
+| [`2026-07-27-v0-7-work-management-release-allocation`](2026-07-27-v0-7-work-management-release-allocation/workflow.yaml) | Allocate Work-Management Policy to v0.7.0 Release Scope | `ai-context-governance` | `in_progress` | `2026-07-27T21:45:08+08:00` | [plan](2026-07-27-v0-7-work-management-release-allocation/workflow-plan.md) |
 | [`2026-07-27-backlog-init-compatibility-intake`](2026-07-27-backlog-init-compatibility-intake/workflow.yaml) | Cancel Legacy Upgrade Intake And Register Existing Agent Init Compatibility | `ai-context-governance` | `completed` | `2026-07-27T21:04:52+08:00` | [plan](2026-07-27-backlog-init-compatibility-intake/workflow-plan.md) |
 | [`2026-07-27-ai-execution-provenance-policy`](2026-07-27-ai-execution-provenance-policy/workflow.yaml) | Correct AI Execution Provenance And Git Attribution Policy | `ai-context-governance` | `completed` | `2026-07-27T10:20:30+08:00` | [plan](2026-07-27-ai-execution-provenance-policy/workflow-plan.md) |
 | [`2026-07-25-work-management-policy`](2026-07-25-work-management-policy/workflow.yaml) | Define Work Management Lifecycle And Git Governance Boundaries | `ai-context-governance` | `completed` | `2026-07-26T07:39:50+08:00` | [plan](2026-07-25-work-management-policy/workflow-plan.md) |
