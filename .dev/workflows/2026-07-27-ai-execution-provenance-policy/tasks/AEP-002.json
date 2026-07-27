@@ -1,0 +1,57 @@
+{
+  "template_id": "ai-context-governance-remediation-task",
+  "template_version": "1.0.0",
+  "template_created_at": "2026-07-10T18:22:49+08:00",
+  "template_updated_at": "2026-07-10T18:22:49+08:00",
+  "task_id": "AEP-002",
+  "workflow_id": "2026-07-27-ai-execution-provenance-policy",
+  "owner_skill": "ai-context-governance",
+  "status": "pending",
+  "created_at": "2026-07-27T08:39:34+08:00",
+  "updated_at": "2026-07-27T08:39:34+08:00",
+  "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
+  "finding_ids": [],
+  "scope": {
+    "target": "Approved attribution and execution-provenance policy contract",
+    "files": [
+      ".dev/standards/GIT-COMMIT-POLICY.md",
+      ".dev/standards/GIT-COMMIT-POLICY.yaml",
+      ".dev/standards/WORKFLOW-HANDOFF-POLICY.md",
+      ".ai/assets/skills/ai-context-governance/templates/workflow-handoff-checkpoint-template.yaml"
+    ],
+    "constraints": [
+      "Require recorded AEP owner decisions",
+      "Reuse the existing provenance contract",
+      "Preserve provider-native attribution",
+      "Do not invent unavailable runtime data"
+    ],
+    "non_goals": [
+      "Provider account configuration",
+      "Historical commit rewriting",
+      "Release assignment without owner approval"
+    ]
+  },
+  "execution": {
+    "steps": [
+      "Remove fixed-model attribution examples",
+      "Separate stable Git identity from exact execution provenance",
+      "Extend provenance fields and evidence-source semantics",
+      "Update affected templates and navigation"
+    ],
+    "validation": [
+      "Policy and template parse checks",
+      "Reference validation",
+      "git diff --check"
+    ],
+    "last_completed_step": "",
+    "next_action": "Begin only after AEP-001 records owner authorization."
+  },
+  "results": {
+    "summary": "",
+    "files_changed": [],
+    "tests_run": [],
+    "finding_status": "not-addressed",
+    "residual_risk": "",
+    "follow_up_needed": true
+  }
+}
