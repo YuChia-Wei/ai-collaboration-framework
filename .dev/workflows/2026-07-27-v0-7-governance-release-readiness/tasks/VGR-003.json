@@ -6,9 +6,9 @@
   "task_id": "VGR-003",
   "workflow_id": "2026-07-27-v0-7-governance-release-readiness",
   "owner_skill": "ai-context-governance",
-  "status": "in_progress",
+  "status": "completed",
   "created_at": "2026-07-27T23:02:00+08:00",
-  "updated_at": "2026-07-27T23:13:47+08:00",
+  "updated_at": "2026-07-27T23:35:51+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-5.6-sol",
   "reasoning_effort": "high",
@@ -22,8 +22,15 @@
   "execution": {
     "steps": ["Classify each PR #10 policy surface.", "Separate portable contract from source-only GitHub policy.", "Add target customization boundary and defer provider adoption.", "Resolve GOV-002 only after validation."],
     "validation": ["Run policy, package-boundary, workflow, and AI-context validators."],
-    "last_completed_step": "Read-only PR #10 and distribution evidence was reconciled into the four required portability classes.",
-    "next_action": "Project provider-neutral policies into the downstream payload and retain source-local GitHub policy only in the source repository."
+    "last_completed_step": "Projected provider-neutral policies into the downstream payload, excluded source-local GitHub policy, and recorded portable, source-only, target-customization, and deferred-provider classifications.",
+    "next_action": "Obtain independent verification before resolving GOV-002."
   },
-  "results": {"summary": "", "files_changed": [], "tests_run": [], "finding_status": "not-addressed", "residual_risk": "", "follow_up_needed": true}
+  "results": {
+    "summary": "Downstream targets receive provider-neutral workflow, Git-flow, and commit policy bytes; source-local GitHub policy remains excluded, and provider adoption is deferred without blocking repository workflow truth.",
+    "files_changed": [".ai/assets/shared/governance/**", ".ai/distribution/ai-context-package-profile.yaml", ".ai/scripts/tests/test_ai_context_packaging.py", ".dev/workflows/2026-07-27-v0-7-governance-release-readiness/evidence/gov-002-policy-classification.md"],
+    "tests_run": ["python .ai/scripts/tests/test_ai_context_packaging.py (25 passed, 1 environment-gated skip not counted as passed)", "python .ai/scripts/tests/test_profile_projection_contract.py (3 passed)", "python .ai/scripts/validate-ai-context.py", "python .ai/scripts/validate-source-governance.py"],
+    "finding_status": "addressed-pending-verification",
+    "residual_risk": "Actual GitHub Issues/Projects adoption remains an owner-owned deferred concern and is not part of the portable contract.",
+    "follow_up_needed": true
+  }
 }

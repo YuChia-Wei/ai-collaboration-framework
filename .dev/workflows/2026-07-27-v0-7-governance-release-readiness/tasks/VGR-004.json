@@ -6,9 +6,9 @@
   "task_id": "VGR-004",
   "workflow_id": "2026-07-27-v0-7-governance-release-readiness",
   "owner_skill": "ai-context-governance",
-  "status": "pending",
+  "status": "completed",
   "created_at": "2026-07-27T23:02:00+08:00",
-  "updated_at": "2026-07-27T23:02:00+08:00",
+  "updated_at": "2026-07-27T23:35:51+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-5.6-sol",
   "reasoning_effort": "high",
@@ -22,9 +22,15 @@
   "execution": {
     "steps": ["Generate payload manifest and diff evidence.", "Run deterministic package validation.", "Run applicable clean-install and upgrade fixtures.", "Record future release-note and migration-guide guidance.", "Resolve PKG-004 after evidence passes."],
     "validation": ["Run package, distribution, clean-install, and upgrade tests."],
-    "last_completed_step": "Not started.",
-    "next_action": "Begin after GOV-002 classification is implemented."
+    "last_completed_step": "Generated and hashed the v0.7.0 payload and v0.6.0-to-v0.7.0 migration manifests, proved source-history and source-local policy exclusions, and passed deterministic package, clean-install, and initialized-upgrade fixtures.",
+    "next_action": "Obtain independent verification before resolving PKG-004."
   },
-  "results": {"summary": "", "files_changed": [], "tests_run": [], "finding_status": "not-addressed", "residual_risk": "", "follow_up_needed": true}
+  "results": {
+    "summary": "The 606-path v0.7.0 payload is deterministic, excludes source workflow/assessment/backlog/roadmap/release history, projects portable policy, and passes clean-install and initialized v0.6.0 upgrade proof.",
+    "files_changed": [".dev/workflows/2026-07-27-v0-7-governance-release-readiness/evidence/pkg-004-payload-and-fixture-proof.md", ".dev/workflows/2026-07-27-v0-7-governance-release-readiness/evidence/v070-payload-files.yaml", ".dev/workflows/2026-07-27-v0-7-governance-release-readiness/evidence/v060-to-v070-migration.yaml"],
+    "tests_run": ["python .ai/scripts/tests/test_ai_context_packaging.py (25 passed, 1 environment-gated skip not counted as passed)", "python .ai/scripts/tests/test_profile_projection_contract.py (3 passed)", "python .ai/scripts/tests/test_ai_context_package_apply.py (23 passed, 1 Windows symlink-capability skip not counted as passed)", "actual empty-target clean install (passed)", "actual initialized v0.6.0-to-v0.7.0 upgrade (passed)"],
+    "finding_status": "addressed-pending-verification",
+    "residual_risk": "Formal v0.7.0 release notes, migration guide, tag, hosted release, and publication remain intentionally future work.",
+    "follow_up_needed": true
+  }
 }
-

@@ -16,10 +16,10 @@
 - `base_branch`: `main`
 - `branch_segment`: `1`
 - `status`: `in_progress`
-- `current_phase`: `remediation`
+- `current_phase`: `verification`
 - `artifact_root`: `.dev/workflows/2026-07-27-v0-7-governance-release-readiness`
 - `created_at`: `2026-07-27T23:02:00+08:00`
-- `updated_at`: `2026-07-27T23:13:47+08:00`
+- `updated_at`: `2026-07-27T23:35:51+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md`
 - `template_version`: `1.2.0`
 - `release_target`: `v0.7.0`
@@ -66,10 +66,10 @@
 
 ## Resume Checkpoint
 
-- Last completed action: completed `VGR-001` and `VGR-002`; GOV-003 and the prospective exact-set Included Work contract pass focused tests.
-- Current task: `VGR-003`.
-- Exact next action: project provider-neutral policy files into the downstream payload while retaining source-local GitHub policy only in this repository.
-- Validation already completed: release-state 23/23, release-note renderer 6/6, backlog release 6/6, workflow artifacts, YAML parse, Python compile, and diff checks passed.
+- Last completed action: completed `VGR-003` and `VGR-004`; portable policy projection, immutable payload manifests, deterministic archives, clean install, and initialized v0.6.0 upgrade evidence pass.
+- Current task: `VGR-005`.
+- Exact next action: obtain independent `ai-context-auditor` verification before resolving `GOV-002` and `PKG-004`.
+- Validation already completed: release-state 23/23, release-note renderer 6/6, backlog release 6/6, package matrix 25 passed with 1 environment skip not counted as passed, profile projection 3/3, package apply 23 passed with 1 Windows capability skip not counted as passed, actual clean install and initialized upgrade passed, workflow artifacts, YAML parse, Python compile, and diff checks passed.
 - Git state: branch `codex/2026-07-27-v0-7-governance-release-readiness` from clean `main`.
 - Branch history and checkpoint handoffs: none.
 - Blockers or unresolved decisions: none; GitHub provider adoption is explicitly deferred and non-blocking.
