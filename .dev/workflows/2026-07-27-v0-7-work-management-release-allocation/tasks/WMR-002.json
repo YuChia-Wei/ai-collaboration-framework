@@ -1,0 +1,67 @@
+{
+  "template_id": "ai-context-governance-remediation-task",
+  "template_version": "1.1.0",
+  "template_created_at": "2026-07-10T18:22:49+08:00",
+  "template_updated_at": "2026-07-27T09:52:09+08:00",
+  "task_id": "WMR-002",
+  "workflow_id": "2026-07-27-v0-7-work-management-release-allocation",
+  "owner_skill": "ai-context-governance",
+  "status": "completed",
+  "created_at": "2026-07-27T21:39:33+08:00",
+  "updated_at": "2026-07-27T21:46:37+08:00",
+  "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
+  "model": "gpt-5.6-sol",
+  "reasoning_effort": "high",
+  "finding_ids": [],
+  "scope": {
+    "target": "v0.7.0 package safety gate for the work-management policy scope candidate.",
+    "files": [
+      ".dev/backlog/items/PKG-004.yaml",
+      ".dev/backlog/ROADMAP.md",
+      ".dev/backlog/INDEX.MD",
+      ".dev/workflows/2026-07-27-v0-7-work-management-release-allocation/**"
+    ],
+    "constraints": [
+      "Make unclassified payload bytes a release blocker.",
+      "Preserve dated execution history and do not delete evidence.",
+      "Do not build, tag, or publish a package in this workflow."
+    ],
+    "non_goals": [
+      "Actual package selection implementation",
+      "GitHub Projects configuration"
+    ]
+  },
+  "execution": {
+    "steps": [
+      "Create PKG-004 with a v0.7.0 release-blocker gate.",
+      "Update the roadmap release horizon and gate table.",
+      "Record the next implementation and release handoff."
+    ],
+    "validation": [
+      "Parse changed YAML and JSON artifacts.",
+      "Run backlog-release and workflow-artifact validation."
+    ],
+    "last_completed_step": "Recorded the allocation checkpoint, package-safety gate, and future GitHub mapping handoff without creating online resources.",
+    "next_action": "No allocation action remains; GOV-002 and PKG-004 require separate authorized implementation workflows."
+  },
+  "results": {
+    "summary": "PKG-004 now prevents a v0.7.0 package candidate or publication from treating a package glob as approval to export source-repository work-management policy.",
+    "files_changed": [
+      ".dev/backlog/items/PKG-004.yaml",
+      ".dev/backlog/ROADMAP.md",
+      ".dev/backlog/INDEX.MD",
+      ".dev/workflows/2026-07-27-v0-7-work-management-release-allocation/**"
+    ],
+    "tests_run": [
+      "YAML and JSON parse",
+      "python .ai/scripts/validate-workflow-artifacts.py",
+      "python .ai/scripts/tests/test_backlog_release_contract.py",
+      "python .ai/scripts/tests/test_governance_workflow_contract.py",
+      "python .ai/scripts/tests/test_workflow_lifecycle_contract.py",
+      "git diff --check"
+    ],
+    "finding_status": "addressed",
+    "residual_risk": "The current package profile can select governance standards before portable classification is complete.",
+    "follow_up_needed": true
+  }
+}
