@@ -12,6 +12,8 @@ recorded_at: null
 created_at: "<ISO-8601-offset-timestamp>"
 updated_at: "<ISO-8601-offset-timestamp>"
 planning:
+  # From v0.7.0 onward this list must exactly equal every resolved backlog item
+  # whose release.completed_in matches this version.
   backlog_refs:
     - ".dev/backlog/items/<BACKLOG-ID>.yaml"
 compatibility:

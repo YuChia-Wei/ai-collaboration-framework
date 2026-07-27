@@ -1,0 +1,36 @@
+{
+  "template_id": "ai-context-governance-remediation-task",
+  "template_version": "1.1.0",
+  "template_created_at": "2026-07-10T18:22:49+08:00",
+  "template_updated_at": "2026-07-27T09:52:09+08:00",
+  "task_id": "VGR-004",
+  "workflow_id": "2026-07-27-v0-7-governance-release-readiness",
+  "owner_skill": "ai-context-governance",
+  "status": "completed",
+  "created_at": "2026-07-27T23:02:00+08:00",
+  "updated_at": "2026-07-27T23:53:54+08:00",
+  "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
+  "model": "gpt-5.6-sol",
+  "reasoning_effort": "high",
+  "finding_ids": [],
+  "scope": {
+    "target": "Produce deterministic v0.7.0 package payload safety proof and resolve PKG-004.",
+    "files": [".ai/distribution/**", ".ai/scripts/**", ".dev/backlog/items/PKG-004.yaml", ".dev/workflows/2026-07-27-v0-7-governance-release-readiness/evidence/**"],
+    "constraints": ["Workflow, assessment, backlog, roadmap, and release history do not enter downstream payload.", "GitHub-specific policy is not a target default.", "Resolve only after applicable clean-install and upgrade fixtures pass."],
+    "non_goals": ["Tagging", "Hosted release creation", "Registry publication"]
+  },
+  "execution": {
+    "steps": ["Generate payload manifest and diff evidence.", "Run deterministic package validation.", "Run applicable clean-install and upgrade fixtures.", "Record future release-note and migration-guide guidance.", "Resolve PKG-004 after evidence passes."],
+    "validation": ["Run package, distribution, clean-install, and upgrade tests."],
+    "last_completed_step": "Generated and hashed the v0.7.0 payload and v0.6.0-to-v0.7.0 migration manifests, proved source-history and source-local policy exclusions, and passed deterministic package, clean-install, and initialized-upgrade fixtures.",
+    "next_action": "Completed; ASM-20260727-002 verified the package evidence and PKG-004 is resolved."
+  },
+  "results": {
+    "summary": "The 606-path v0.7.0 payload is deterministic, excludes source workflow/assessment/backlog/roadmap/release history, projects portable policy, and passes clean-install and initialized v0.6.0 upgrade proof.",
+    "files_changed": [".dev/workflows/2026-07-27-v0-7-governance-release-readiness/evidence/pkg-004-payload-and-fixture-proof.md", ".dev/workflows/2026-07-27-v0-7-governance-release-readiness/evidence/v070-payload-files.yaml", ".dev/workflows/2026-07-27-v0-7-governance-release-readiness/evidence/v060-to-v070-migration.yaml"],
+    "tests_run": ["python .ai/scripts/tests/test_ai_context_packaging.py (25 passed, 1 environment-gated skip not counted as passed)", "python .ai/scripts/tests/test_profile_projection_contract.py (3 passed)", "python .ai/scripts/tests/test_ai_context_package_apply.py (23 passed, 1 Windows symlink-capability skip not counted as passed)", "actual empty-target clean install (passed)", "actual initialized v0.6.0-to-v0.7.0 upgrade (passed)"],
+    "finding_status": "resolved",
+    "residual_risk": "Formal v0.7.0 release notes, migration guide, tag, hosted release, and publication remain intentionally future work.",
+    "follow_up_needed": false
+  }
+}

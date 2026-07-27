@@ -55,6 +55,11 @@ release:
 - `published_in` identifies the first immutable published version containing the
   resolution. It may remain `null` between completion and publication.
 - A resolved item must set `completed_in`.
+- For governed releases from v0.7.0 onward, all resolved items whose
+  `completed_in` equals the version form that version's canonical included-work
+  set. Candidate `release.yaml.planning.backlog_refs` must equal that complete
+  set, with each item listed exactly once. A target assignment without resolved
+  completion is not included work.
 - When `published_in` is set, preserve Git ancestry evidence in the item when
   available.
 - Roadmap-level horizons remain in `ROADMAP.md`; do not create a synthetic

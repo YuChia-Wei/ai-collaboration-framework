@@ -203,6 +203,14 @@ entries:
     target: preserve-relative-path
     ownership: framework-managed
     install_behavior: managed
+  - id: portable-governance-policy-projections
+    component_id: software-development-core
+    source: .ai/assets/shared/governance/**
+    target: mapping-declared-by-template-manifest
+    template_manifest: .ai/assets/shared/governance/portable-policy-manifest.yaml
+    template_source_resolution: manifest-directory-relative
+    ownership: framework-managed
+    install_behavior: managed
   - id: reusable-guides
     component_id: software-development-core
     source: .dev/guides/**
@@ -317,6 +325,13 @@ entries:
     install_behavior: seed
 
 exclusions:
+  - id: source-local-work-management-policy
+    classification: source-only
+    patterns:
+      - .dev/standards/WORKFLOW-GATE-POLICY.md
+      - .dev/standards/GIT-COMMIT-POLICY.md
+      - .dev/TEAM-GIT-FLOW-RULES.MD
+    reason: Source-repository tracker and integration choices are replaced by provider-neutral target projections.
   - id: source-root-truth
     classification: source-only
     patterns:

@@ -1,0 +1,36 @@
+{
+  "template_id": "ai-context-governance-remediation-task",
+  "template_version": "1.1.0",
+  "template_created_at": "2026-07-10T18:22:49+08:00",
+  "template_updated_at": "2026-07-27T09:52:09+08:00",
+  "task_id": "VGR-001",
+  "workflow_id": "2026-07-27-v0-7-governance-release-readiness",
+  "owner_skill": "ai-context-governance",
+  "status": "completed",
+  "created_at": "2026-07-27T23:02:00+08:00",
+  "updated_at": "2026-07-27T23:53:54+08:00",
+  "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
+  "model": "gpt-5.6-sol",
+  "reasoning_effort": "high",
+  "finding_ids": ["ASM-20260727-001#VFY-001", "ASM-20260727-001#VFY-002"],
+  "scope": {
+    "target": "Create GOV-003 and bind completed provenance work to the v0.7.0 awaiting-publication set.",
+    "files": [".dev/backlog/**", ".dev/releases/release.yaml", ".dev/workflows/2026-07-27-v0-7-governance-release-readiness/**"],
+    "constraints": ["GOV-003 is resolved with completed_in v0.7.0 and published_in null.", "UPG-001 and INIT-001 remain unchanged."],
+    "non_goals": ["v0.7.0 publication", "GitHub tracker resource creation"]
+  },
+  "execution": {
+    "steps": ["Create the next conflict-free governance backlog ID.", "Link the AEP workflow and verification assessment.", "Add it to the resolved awaiting-publication index and canonical v0.7.0 set."],
+    "validation": ["Parse YAML.", "Run backlog and release-state contract tests."],
+    "last_completed_step": "Created GOV-003, linked the completed AEP workflow and ASM-20260727-001, and added it to the v0.7.0 awaiting-publication set.",
+    "next_action": "Completed; GOV-003 is in the verified v0.7.0 awaiting-publication set."
+  },
+  "results": {
+    "summary": "GOV-003 is resolved in v0.7.0 with published_in null and supplies the release backlog identity for the completed provenance policy.",
+    "files_changed": [".dev/backlog/items/GOV-003.yaml", ".dev/backlog/INDEX.MD", ".dev/backlog/ROADMAP.md", ".dev/backlog/README.MD"],
+    "tests_run": ["python .ai/scripts/tests/test_backlog_release_contract.py", "python .ai/scripts/validate-workflow-artifacts.py", "YAML parse", "git diff --check"],
+    "finding_status": "addressed",
+    "residual_risk": "v0.7.0 remains unpublished and GOV-002 plus PKG-004 remain open.",
+    "follow_up_needed": false
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "template_id": "ai-context-governance-remediation-task",
+  "template_version": "1.1.0",
+  "template_created_at": "2026-07-10T18:22:49+08:00",
+  "template_updated_at": "2026-07-27T09:52:09+08:00",
+  "task_id": "VGR-002",
+  "workflow_id": "2026-07-27-v0-7-governance-release-readiness",
+  "owner_skill": "ai-context-governance",
+  "status": "completed",
+  "created_at": "2026-07-27T23:02:00+08:00",
+  "updated_at": "2026-07-27T23:53:54+08:00",
+  "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
+  "model": "gpt-5.6-sol",
+  "reasoning_effort": "high",
+  "finding_ids": [],
+  "scope": {
+    "target": "Fail-closed prospective release-note traceability from v0.7.0 onward.",
+    "files": [".dev/releases/**", ".ai/scripts/**"],
+    "constraints": ["Included Work must exactly equal backlog_refs with no duplicates.", "Renderer preserves human-authored content.", "Historical release notes are not rewritten."],
+    "non_goals": ["Creating a formal v0.7.0 candidate", "Publishing a release"]
+  },
+  "execution": {
+    "steps": ["Define canonical release backlog membership.", "Render Included Work without overwriting human content.", "Reject missing, duplicate, wrong-version, unresolved, and completed_in mismatches."],
+    "validation": ["Run positive and negative release-state and renderer tests."],
+    "last_completed_step": "Implemented the v0.7.0 prospective exact-set validator, generated Included Work renderer section, and positive/negative fixtures without changing historical notes.",
+    "next_action": "Completed; the prospective contract is independently verified."
+  },
+  "results": {
+    "summary": "Candidate backlog_refs must exactly equal the canonical completed backlog set, and the renderer preserves authored notes while adding each Included Work ID once from v0.7.0 onward.",
+    "files_changed": [".ai/scripts/validate-ai-context-release-state.py", ".ai/scripts/render-ai-context-release-notes.py", ".ai/scripts/tests/test_ai_context_release_state.py", ".ai/scripts/tests/test_release_notes_renderer.py", ".ai/assets/skills/ai-context-governance/templates/release-publication/**", ".dev/releases/README.MD", ".dev/standards/AI-CONTEXT-VERSION-POLICY.md"],
+    "tests_run": ["python .ai/scripts/tests/test_ai_context_release_state.py (23 passed)", "python .ai/scripts/tests/test_release_notes_renderer.py (6 passed)", "python .ai/scripts/tests/test_backlog_release_contract.py (6 passed)", "python -m py_compile"],
+    "finding_status": "addressed",
+    "residual_risk": "No v0.7.0 candidate exists yet, so the new contract is verified through prospective fixtures rather than a formal release record.",
+    "follow_up_needed": false
+  }
+}

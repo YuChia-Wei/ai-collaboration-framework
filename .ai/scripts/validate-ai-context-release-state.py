@@ -220,6 +220,20 @@ def nested_mapping(value: Any, label: str) -> dict[str, Any]:
     return value
 
 
+def canonical_backlog_refs(root: Path, version: str) -> set[str]:
+    """Return the complete backlog set accepted by one release train."""
+    refs: set[str] = set()
+    items = root / ".dev" / "backlog" / "items"
+    for path in sorted(items.glob("*.yaml")):
+        item = load_mapping(path)
+        release = item.get("release")
+        if not isinstance(release, dict):
+            continue
+        if item.get("status") == "resolved" and release.get("completed_in") == version:
+            refs.add(path.relative_to(root).as_posix())
+    return refs
+
+
 def validate_backlog_refs(root: Path, version: str, data: dict[str, Any]) -> None:
     planning = nested_mapping(data.get("planning"), "planning")
     refs = planning.get("backlog_refs")
@@ -245,6 +259,24 @@ def validate_backlog_refs(root: Path, version: str, data: dict[str, Any]) -> Non
             raise ReleaseStateError(
                 f"{path}: release candidate requires the backlog item to be resolved"
             )
+        if release.get("completed_in") != version:
+            raise ReleaseStateError(
+                f"{path}: backlog completed_in must equal release {version}"
+            )
+        if release.get("published_in") is not None:
+            raise ReleaseStateError(
+                f"{path}: backlog published_in must remain null before publication"
+            )
+
+    canonical = canonical_backlog_refs(root, version)
+    declared = set(refs)
+    if declared != canonical:
+        missing = sorted(canonical - declared)
+        extra = sorted(declared - canonical)
+        raise ReleaseStateError(
+            "planning.backlog_refs must exactly equal the canonical completed backlog "
+            f"set for {version}; missing={missing}, extra={extra}"
+        )
 
 
 def validate_candidate_record(

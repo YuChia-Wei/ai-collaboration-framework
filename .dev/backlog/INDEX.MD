@@ -7,7 +7,7 @@ artifact directories. See [README.MD](README.MD) for ownership and lifecycle.
 
 | Roadmap | Current Target | Status | Next Gate | Updated |
 | --- | --- | --- | --- | --- |
-| [ROADMAP.md](ROADMAP.md) | `v0.7.0` | `active` | The assigned provenance-policy workstream is complete and verified; resolve `GOV-002` plus `PKG-004` before any v0.7.0 package candidate is built. Any additional scope still requires explicit owner assignment. | 2026-07-27 |
+| [ROADMAP.md](ROADMAP.md) | `v0.7.0` | `active` | `GOV-002`, `GOV-003`, and `PKG-004` are resolved and awaiting publication; a separate release workflow must still create and validate any candidate before publication. | 2026-07-27 |
 
 Source planning records are retained under [`plans/`](plans/); they inform the
 roadmap but do not replace it or a governed assessment.
@@ -16,8 +16,6 @@ roadmap but do not replace it or a governed assessment.
 
 | Item | Priority | Target Release | Gate | Summary | Decision / Handoff | Updated |
 | --- | --- | --- | --- | --- | --- | --- |
-| [GOV-002](items/GOV-002.yaml) | HIGH | `v0.7.0` | release-blocker | Classify PR #10's work-management lifecycle policy for portable distribution without exporting source-local GitHub choices as target defaults. | A dedicated implementation workflow must complete the portable/source-only/target-customization disposition before release packaging. | 2026-07-27 |
-| [PKG-004](items/PKG-004.yaml) | HIGH | `v0.7.0` | release-blocker | Prevent unclassified work-management policy from entering the v0.7.0 downstream package payload. | Produce candidate manifest, payload diff, and clean-install or upgrade proof after GOV-002 classification. | 2026-07-27 |
 | [INIT-001](items/INIT-001.yaml) | LOW | `unassigned` | independent | Evaluate safe framework adoption in repositories that already use AI agents. | Define collision inventory, dry-run, authority, and synthetic fixtures before a future real-target pilot. | 2026-07-27 |
 | [DEVWF-001](items/DEVWF-001.yaml) | MEDIUM | `unassigned` | independent | Evaluate optional issue traceability and richer task lifecycle timestamps from WorkService. | Keep the portable core tracker-neutral; decide schema placement and compatibility before implementation. | 2026-07-22 |
 | [STD-001](items/STD-001.yaml) | HIGH | `unassigned` | independent | Run bounded standards discussions across ChatGPT, Fable 5, and repository agents before assigning implementation to a release. | Normalize external feedback through assessments; permit a dedicated standards release after owner review. | 2026-07-20 |
@@ -28,6 +26,14 @@ roadmap but do not replace it or a governed assessment.
 | Item | Priority | Target Release | Decision | Resolution | Updated |
 | --- | --- | --- | --- | --- | --- |
 | [UPG-001](items/UPG-001.yaml) | HIGH | `unassigned` | Owner cancelled the real legacy-target intake because no target or feedback capacity is expected to be available. | Historical evidence is retained; `INIT-001` tracks a distinct existing-AI-agent initialization question without claiming to complete the legacy upgrade acceptance. | 2026-07-27 |
+
+## Resolved / Awaiting Publication
+
+| Item | Priority | Completed In | Published In | Resolution | Workflow | Updated |
+| --- | --- | --- | --- | --- | --- | --- |
+| [GOV-002](items/GOV-002.yaml) | HIGH | `v0.7.0` | — | Provider-neutral lifecycle and repository-truth policy is projected downstream; source-local GitHub policy remains excluded and provider adoption remains deferred. | [`2026-07-27-v0-7-governance-release-readiness`](../workflows/2026-07-27-v0-7-governance-release-readiness/workflow.yaml) | 2026-07-27 |
+| [GOV-003](items/GOV-003.yaml) | HIGH | `v0.7.0` | — | The AI execution provenance and attribution policy is complete and independently verified; publication remains a separate future fact. | [`2026-07-27-ai-execution-provenance-policy`](../workflows/2026-07-27-ai-execution-provenance-policy/workflow.yaml) | 2026-07-27 |
+| [PKG-004](items/PKG-004.yaml) | HIGH | `v0.7.0` | — | Deterministic payload, source-history exclusion, portable-policy mapping, clean-install, and initialized-upgrade evidence pass. | [`2026-07-27-v0-7-governance-release-readiness`](../workflows/2026-07-27-v0-7-governance-release-readiness/workflow.yaml) | 2026-07-27 |
 
 ## Resolved
 

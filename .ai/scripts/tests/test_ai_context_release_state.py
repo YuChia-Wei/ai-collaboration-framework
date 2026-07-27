@@ -111,7 +111,11 @@ def write_fixture(
             {
                 "backlog_id": "REL-001",
                 "status": "resolved",
-                "release": {"target": VERSION},
+                "release": {
+                    "target": VERSION,
+                    "completed_in": VERSION,
+                    "published_in": None,
+                },
             },
             sort_keys=False,
         ),
@@ -485,6 +489,103 @@ class AiContextReleaseStateGwtTests(unittest.TestCase):
                     "candidate",
                     "../v0.6.0",
                 )
+
+    def write_backlog(
+        self,
+        root: Path,
+        backlog_id: str,
+        *,
+        status: str = "resolved",
+        target: str = "v0.7.0",
+        completed_in: str | None = "v0.7.0",
+        published_in: str | None = None,
+    ) -> str:
+        ref = f".dev/backlog/items/{backlog_id}.yaml"
+        path = root / ref
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text(
+            yaml.safe_dump(
+                {
+                    "backlog_id": backlog_id,
+                    "status": status,
+                    "release": {
+                        "target": target,
+                        "completed_in": completed_in,
+                        "published_in": published_in,
+                    },
+                },
+                sort_keys=False,
+            ),
+            encoding="utf-8",
+        )
+        return ref
+
+    def test_gwt_019_given_exact_canonical_backlog_set_when_validated_then_it_passes(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            refs = [
+                self.write_backlog(root, "GOV-002"),
+                self.write_backlog(root, "GOV-003"),
+                self.write_backlog(root, "PKG-004"),
+            ]
+            STATE.validate_backlog_refs(
+                root, "v0.7.0", {"planning": {"backlog_refs": refs}}
+            )
+
+    def test_gwt_020_given_canonical_backlog_item_missing_when_validated_then_it_fails_closed(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            included = self.write_backlog(root, "GOV-002")
+            self.write_backlog(root, "GOV-003")
+            with self.assertRaisesRegex(STATE.ReleaseStateError, "exactly equal"):
+                STATE.validate_backlog_refs(
+                    root,
+                    "v0.7.0",
+                    {"planning": {"backlog_refs": [included]}},
+                )
+
+    def test_gwt_021_given_duplicate_backlog_ref_when_validated_then_it_fails_closed(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            ref = self.write_backlog(root, "GOV-002")
+            with self.assertRaisesRegex(STATE.ReleaseStateError, "duplicates"):
+                STATE.validate_backlog_refs(
+                    root,
+                    "v0.7.0",
+                    {"planning": {"backlog_refs": [ref, ref]}},
+                )
+
+    def test_gwt_022_given_unrelated_or_unresolved_backlog_when_validated_then_it_fails_closed(self):
+        cases = [
+            {"target": "v0.6.0"},
+            {"status": "planned", "completed_in": None},
+        ]
+        for case in cases:
+            with self.subTest(case=case), tempfile.TemporaryDirectory() as temp:
+                root = Path(temp)
+                ref = self.write_backlog(root, "GOV-002", **case)
+                with self.assertRaises(STATE.ReleaseStateError):
+                    STATE.validate_backlog_refs(
+                        root,
+                        "v0.7.0",
+                        {"planning": {"backlog_refs": [ref]}},
+                    )
+
+    def test_gwt_023_given_completion_or_publication_mismatch_when_validated_then_it_fails_closed(self):
+        cases = [
+            {"completed_in": "v0.6.0"},
+            {"published_in": "v0.7.0"},
+        ]
+        for case in cases:
+            with self.subTest(case=case), tempfile.TemporaryDirectory() as temp:
+                root = Path(temp)
+                ref = self.write_backlog(root, "GOV-002", **case)
+                with self.assertRaises(STATE.ReleaseStateError):
+                    STATE.validate_backlog_refs(
+                        root,
+                        "v0.7.0",
+                        {"planning": {"backlog_refs": [ref]}},
+                    )
 
 
 if __name__ == "__main__":

@@ -14,6 +14,7 @@ import yaml
 VERSION_RE = re.compile(r"^v\d+\.\d+\.\d+$")
 SHA_RE = re.compile(r"^[0-9a-f]{40}$")
 ALLOWED_CANDIDATE_STATUSES = {"planned", "validated"}
+BACKLOG_REF_RE = re.compile(r"^\.dev/backlog/items/([A-Z][A-Z0-9-]+)\.yaml$")
 
 
 class ReleaseNotesError(ValueError):
@@ -35,6 +36,39 @@ def normalize_version(value: str) -> str:
     if not VERSION_RE.fullmatch(version):
         raise ReleaseNotesError("version must use stable vMAJOR.MINOR.PATCH form")
     return version
+
+
+def version_tuple(version: str) -> tuple[int, int, int]:
+    normalized = normalize_version(version)
+    return tuple(int(part) for part in normalized.removeprefix("v").split("."))
+
+
+def included_work_ids(data: dict) -> list[str]:
+    """Read the prospective generated Included Work contract."""
+    version = data.get("version")
+    if not isinstance(version, str) or version_tuple(version) < (0, 7, 0):
+        return []
+    planning = data.get("planning")
+    if not isinstance(planning, dict):
+        raise ReleaseNotesError("planning must be a mapping from v0.7.0 onward")
+    refs = planning.get("backlog_refs")
+    if not isinstance(refs, list) or not refs:
+        raise ReleaseNotesError(
+            "planning.backlog_refs must be a non-empty list from v0.7.0 onward"
+        )
+    if len(refs) != len(set(refs)):
+        raise ReleaseNotesError("planning.backlog_refs must not contain duplicates")
+    ids: list[str] = []
+    for index, value in enumerate(refs):
+        match = BACKLOG_REF_RE.fullmatch(value) if isinstance(value, str) else None
+        if match is None:
+            raise ReleaseNotesError(
+                f"planning.backlog_refs[{index}] must be a backlog item path"
+            )
+        ids.append(match.group(1))
+    if len(ids) != len(set(ids)):
+        raise ReleaseNotesError("Included Work IDs must not contain duplicates")
+    return ids
 
 
 def discover_candidate(root: Path) -> str:
@@ -118,6 +152,7 @@ def validate_release(root: Path, version: str, commit: str, mode: str) -> tuple[
         raise ReleaseNotesError(
             "multiple automatic upgrade sources require migration schema 2.0.0"
         )
+    included_work_ids(data)
     artifacts = data.get("artifacts")
     if not isinstance(artifacts, dict):
         raise ReleaseNotesError("artifacts must be a mapping")
@@ -137,12 +172,24 @@ def render_body_text(
     version = data["version"]
     release_id = data["release_id"]
     package_id = f"ai-context-dotnet-backend-{version}"
-    return "\n".join(
-        [
+    body = [
             f"<!-- ai-context-release-automation: {release_id} -->",
             "",
             notes_text,
             "",
+    ]
+    work_ids = included_work_ids(data)
+    if work_ids:
+        body.extend(
+            [
+                "## Included Work",
+                "",
+                *[f"- `{work_id}`" for work_id in work_ids],
+                "",
+            ]
+        )
+    body.extend(
+        [
             "## Release provenance",
             "",
             f"- Release ID: `{release_id}`",
@@ -158,6 +205,7 @@ def render_body_text(
             "",
         ]
     )
+    return "\n".join(body)
 
 
 def render_body(data: dict, notes: Path, migration: Path, commit: str) -> str:
