@@ -85,7 +85,7 @@ Workflow:
 - Stage: <stage-id>
 - Task: <task-id>
 
-Co-Authored-By: <AI runtime/model> <noreply@provider-domain>
+Co-Authored-By: <AI runtime> (<model>, <reasoning_effort>) <noreply@provider-domain>
 ```
 
 Small direct-mode commits may omit the body when the title is sufficient and the user did not ask for detailed traceability.
@@ -123,7 +123,7 @@ Add an `Assessment-Id` trailer before the AI signature trailer:
 
 ```text
 Assessment-Id: ASM-20260713-001
-Co-Authored-By: OpenAI Codex (GPT-5) <noreply@openai.com>
+Co-Authored-By: OpenAI Codex (gpt-5.6-sol, high) <noreply@openai.com>
 ```
 
 Downstream commits may use repeatable `Assessment-Id` trailers without placing
@@ -132,27 +132,33 @@ cherry-picking, or otherwise rewriting a commit.
 
 ## AI Model Signature Trailer
 
-Every commit authored with material AI assistance, including workflow commits
-and AI-created merge commits, must end with a Git `Co-Authored-By` trailer that
-identifies the AI runtime or model:
+Every repository-created local commit authored with material AI assistance,
+including workflow commits and AI-created merge commits, must end with a Git
+`Co-Authored-By` trailer that identifies the AI runtime, model, and reasoning
+effort:
 
 ```text
-Co-Authored-By: <AI runtime/model> <noreply@provider-domain>
+Co-Authored-By: <AI runtime> (<model>, <reasoning_effort>) <noreply@provider-domain>
 ```
 
 Examples:
 
 ```text
-Co-Authored-By: Claude Sonnet 5 <noreply@anthropic.com>
-Co-Authored-By: Claude Opus 4.8 <noreply@anthropic.com>
-Co-Authored-By: OpenAI Codex (GPT-5) <noreply@openai.com>
+Co-Authored-By: Claude Code (claude-sonnet-5, high) <noreply@anthropic.com>
+Co-Authored-By: GitHub Copilot (gpt-5.4, medium) <noreply@github.com>
+Co-Authored-By: OpenAI Codex (gpt-5.6-sol, xhigh) <noreply@openai.com>
 ```
 
 Rules:
 
 - place the trailer after all body sections, separated from the body by one blank line;
-- keep the trailer as the final non-empty line, or use one final trailer per materially contributing AI runtime/model;
-- use the runtime/model identity actually reported by the active environment; when the exact model is unavailable, use the known runtime name without inventing a model version;
+- keep the trailer as the final non-empty line, or use one trailer per materially contributing AI runtime/model;
+- use the active session's model and reasoning effort when available; otherwise resolve each missing value from the effective configured default after applying the client's documented precedence, then from the client's documented built-in default;
+- preserve provider-reported model and reasoning labels as written; do not translate, rank, or replace values such as `xhigh`, `extended`, or `thinking` merely to resemble another provider;
+- when a sub-agent materially produces content included in the commit, add an additional trailer whose runtime label ends in `Sub-Agent`, for example `OpenAI Codex Sub-Agent (gpt-5.6-terra, medium)`; do not add a sub-agent co-author for read-only discovery, review, or advice that did not produce committed content;
+- when multiple materially contributing sub-agents have the same runtime, model, reasoning effort, and address, retain only one identical trailer;
+- task artifacts record the primary executing model and reasoning effort; additional sub-agent contributors are represented by their marked commit trailers;
+- apply the common signature shape to repository-created local commits; preserve provider-native commits without rewriting them, and activate provider-specific generation rules only after real fixtures prove the client can emit or retain the approved shape;
 - do not add an AI trailer to a human-only commit;
 - apply this rule prospectively; do not rewrite existing history solely to add missing trailers.
 

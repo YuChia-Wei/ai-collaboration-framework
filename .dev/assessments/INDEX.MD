@@ -12,6 +12,7 @@ owns its identity, current lifecycle state, subject revision, and relationships.
 
 | Assessment | Title | Type | Owner | Status | Subject Commit | Updated | Report |
 | --- | --- | --- | --- | --- | --- | --- | --- |
+| [`ASM-20260727-001`](ASM-20260727-001/assessment.yaml) | AI Execution Provenance And Attribution Policy Verification | `ai-context-verification` | `ai-context-auditor` | `final` | `fb6d35664b3badb915410baa095a83a152780be2` | `2026-07-27T10:17:47+08:00` | [report](ASM-20260727-001/report.md) |
 | [`ASM-20260726-001`](ASM-20260726-001/assessment.yaml) | Work Management Lifecycle Policy Verification | `ai-context-verification` | `ai-context-auditor` | `final` | `a7e0c543f632e0b00fcffc0f25f87c6756cb9c27` | `2026-07-26T00:58:08+08:00` | [report](ASM-20260726-001/report.md) |
 | [`ASM-20260725-001`](ASM-20260725-001/assessment.yaml) | Work Management And Git Governance Boundary Baseline | `ai-context-audit` | `ai-context-auditor` | `final` | `672344b5d1d3ca8edce77244e29568c53403ccab` | `2026-07-25T08:02:06+08:00` | [report](ASM-20260725-001/report.md) |
 | [`ASM-20260722-006`](ASM-20260722-006/assessment.yaml) | Post-v0.5 Backlog Intake Verification | `ai-context-verification` | `ai-context-auditor` | `final` | `7714721111cb465e08c958629f86e92882c02b59` | `2026-07-22T22:06:03+08:00` | [report](ASM-20260722-006/report.md) |

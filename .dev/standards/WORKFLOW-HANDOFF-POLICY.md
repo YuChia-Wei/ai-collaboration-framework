@@ -121,11 +121,19 @@ as exactly one of:
 - `runtime-reported`;
 - `provider-reported`;
 - `user-declared`;
+- `configured-default`;
+- `provider-default`;
 - `unavailable`.
 
-Preserve user-declared model and reasoning labels verbatim. Never describe a
-user-declared value as runtime-verified. When the source is `unavailable`, do
-not invent a model or reasoning label.
+Resolve missing session metadata in this order: active runtime or provider
+report, effective configured default, then a documented provider default. A
+missing runtime report does not block the workflow when a credible effective
+default can be recorded. Use `unavailable` only when neither an observed value
+nor a documented effective default exists.
+
+Preserve reported, declared, configured, and provider-default model and
+reasoning labels verbatim. Never describe a fallback value as runtime-verified
+or replace one provider's vocabulary with another provider's normalized label.
 
 ## Provider-Compatible Attribution
 

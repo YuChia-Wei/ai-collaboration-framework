@@ -1,0 +1,70 @@
+{
+  "template_id": "ai-context-governance-remediation-task",
+  "template_version": "1.0.0",
+  "template_created_at": "2026-07-10T18:22:49+08:00",
+  "template_updated_at": "2026-07-10T18:22:49+08:00",
+  "task_id": "AEP-003",
+  "workflow_id": "2026-07-27-ai-execution-provenance-policy",
+  "owner_skill": "ai-context-governance",
+  "status": "completed",
+  "created_at": "2026-07-27T08:39:34+08:00",
+  "updated_at": "2026-07-27T10:06:15+08:00",
+  "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
+  "model": "gpt-5.6-sol",
+  "reasoning_effort": "medium",
+  "finding_ids": [],
+  "scope": {
+    "target": "Provider fixtures, validation coverage, and runtime guidance",
+    "files": [
+      ".ai/scripts/validate-git-commits.py",
+      ".ai/scripts/tests/**",
+      ".dev/guides/**"
+    ],
+    "constraints": [
+      "Use real provider evidence",
+      "Keep unavailable fixtures explicitly blocked",
+      "Distinguish CLI, desktop, IDE, and cloud surfaces",
+      "Do not store credentials or sensitive session content"
+    ],
+    "non_goals": [
+      "Installing or configuring provider clients",
+      "Rewriting provider-native commit history to normalize attribution"
+    ]
+  },
+  "execution": {
+    "steps": [
+      "Create or update provider attribution fixtures",
+      "Add semantic provenance validator coverage",
+      "Document runtime-specific configuration and observation procedures",
+      "Verify repository-created local and provider-native cases"
+    ],
+    "validation": [
+      "Focused validator unit tests",
+      "Representative fixture tests",
+      "python .ai/scripts/validate-workflow-artifacts.py",
+      "git diff --check"
+    ],
+    "last_completed_step": "Captured the repository-created Codex fixture, classified unavailable provider-native paths, documented runtime behavior, and validated default-source handoff behavior.",
+    "next_action": "Proceed to AEP-004 independent verification and workflow closeout."
+  },
+  "results": {
+    "summary": "Added a Traditional Chinese runtime guide, official provider evidence, a real repository-created Codex fixture, and configured/provider-default handoff support.",
+    "files_changed": [
+      ".dev/guides/ai-collaboration-guides/AI-EXECUTION-PROVENANCE-AND-ATTRIBUTION-GUIDE.md",
+      ".dev/workflows/2026-07-27-ai-execution-provenance-policy/evidence/provider-attribution-fixtures.md",
+      ".dev/standards/WORKFLOW-HANDOFF-POLICY.md",
+      ".dev/standards/WORKFLOW-HANDOFF-POLICY.yaml",
+      ".ai/scripts/validate-workflow-handoff.py",
+      ".ai/scripts/tests/test_workflow_handoff.py"
+    ],
+    "tests_run": [
+      "python .ai/scripts/tests/test_workflow_handoff.py -v (22 passed)",
+      "python .ai/scripts/tests/test_git_commit_policy.py -v (15 passed)",
+      "python .ai/scripts/tests/test_workflow_lifecycle_contract.py -v (10 passed)",
+      "git diff --check"
+    ],
+    "finding_status": "addressed",
+    "residual_risk": "Claude, Copilot CLI, and Copilot cloud provider-native golden commit fixtures remain blocked until those providers create real commits in this repository.",
+    "follow_up_needed": false
+  }
+}

@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import importlib.util
 import unittest
+from datetime import datetime
 from pathlib import Path
 
 
@@ -61,6 +62,54 @@ class WorkflowLifecycleContractTests(unittest.TestCase):
             [("T1", task("pending"))],
             "legacy/workflow.yaml",
             errors,
+        )
+        self.assertEqual([], errors)
+
+    def test_gwt_007_given_new_task_without_model_when_validated_then_fails(self) -> None:
+        errors: list[str] = []
+        value = {"status": "pending"}
+        observed = datetime.fromisoformat("2026-07-27T10:00:00+08:00")
+        VALIDATOR.validate_task_execution_provenance(
+            value, "task.json", errors, observed, observed
+        )
+        self.assertTrue(any("model must be a non-empty string" in error for error in errors))
+        self.assertTrue(any("reasoning_effort must be a non-empty string" in error for error in errors))
+
+    def test_gwt_008_given_historical_active_task_updated_after_policy_when_missing_provenance_then_fails(self) -> None:
+        errors: list[str] = []
+        VALIDATOR.validate_task_execution_provenance(
+            {"status": "in_progress"},
+            "task.json",
+            errors,
+            datetime.fromisoformat("2026-07-20T10:00:00+08:00"),
+            datetime.fromisoformat("2026-07-27T10:00:00+08:00"),
+        )
+        self.assertTrue(errors)
+
+    def test_gwt_009_given_completed_historical_task_when_updated_after_policy_then_no_backfill_is_required(self) -> None:
+        errors: list[str] = []
+        VALIDATOR.validate_task_execution_provenance(
+            {"status": "completed"},
+            "task.json",
+            errors,
+            datetime.fromisoformat("2026-07-20T10:00:00+08:00"),
+            datetime.fromisoformat("2026-07-27T10:00:00+08:00"),
+        )
+        self.assertEqual([], errors)
+
+    def test_gwt_010_given_provider_original_values_when_validated_then_passes(self) -> None:
+        errors: list[str] = []
+        observed = datetime.fromisoformat("2026-07-27T10:00:00+08:00")
+        VALIDATOR.validate_task_execution_provenance(
+            {
+                "status": "in_progress",
+                "model": "claude-sonnet-5",
+                "reasoning_effort": "extended thinking",
+            },
+            "task.json",
+            errors,
+            observed,
+            observed,
         )
         self.assertEqual([], errors)
 

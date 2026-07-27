@@ -106,6 +106,20 @@ Every durable task must include:
 - `template_source`;
 - `template_version`.
 
+For tasks created on or after `2026-07-27T09:52:09+08:00`, also require:
+
+- `model` for the primary executing AI model;
+- `reasoning_effort` for the primary executor's reasoning setting.
+
+An unfinished task created earlier must add these two fields the next time it
+is materially updated on or after the effective timestamp. Do not backfill a
+completed historical task. Resolve values from the active session when
+available; otherwise use the effective configured default after the client's
+documented precedence, then its documented built-in default. Preserve the
+reported or configured strings without cross-provider normalization. Additional
+sub-agent contributors belong in marked Git trailers under
+`GIT-COMMIT-POLICY.md`, not in extra task fields.
+
 Task IDs are immutable, path-safe, and unique within the workflow. Use `<workflow-id>#<task-id>` for cross-workflow references. A skill may define its own task ID prefix and task body.
 
 Use these shared lifecycle states when they apply:

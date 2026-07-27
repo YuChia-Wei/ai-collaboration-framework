@@ -198,12 +198,9 @@ def validate_provenance(
         non_empty_string(
             effort, "execution_provenance.reasoning_effort", errors
         )
-    if (
-        source in {"runtime-reported", "provider-reported", "user-declared"}
-        and not evidence_ref
-    ):
+    if source != "unavailable" and not evidence_ref:
         errors.append(
-            "execution_provenance.evidence_ref: reported or declared values require evidence"
+            "execution_provenance.evidence_ref: observed, declared, or defaulted values require evidence"
         )
 
 

@@ -7,6 +7,7 @@
 | `AI-CONTEXT-AUDITOR-SKILL-GUIDE.md` | Read-only AI context audit usage. |
 | `AI-CONTEXT-GOVERNANCE-SKILL-GUIDE.md` | AI context remediation and lifecycle usage. |
 | `AI-CONTEXT-UPGRADER-SKILL-GUIDE.md` | Provenance-aware framework upgrade usage. |
+| `AI-EXECUTION-PROVENANCE-AND-ATTRIBUTION-GUIDE.md` | Runtime model, reasoning effort, and Git attribution guidance. |
 | `AI-REFACTORING-SKILL-BOUNDARY-GUIDE.md` | Architect, reviewer, slice, and local-change boundaries. |
 | `AI-REFACTORING-SKILL-CONTRACTS.md` | Minimum input/output and handoff contracts. |
 | `AI-SKILL-GUIDE-STANDARDS.md` | Human-facing skill-guide authoring rules. |

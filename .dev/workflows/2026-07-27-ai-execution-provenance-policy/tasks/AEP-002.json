@@ -1,0 +1,78 @@
+{
+  "template_id": "ai-context-governance-remediation-task",
+  "template_version": "1.0.0",
+  "template_created_at": "2026-07-10T18:22:49+08:00",
+  "template_updated_at": "2026-07-10T18:22:49+08:00",
+  "task_id": "AEP-002",
+  "workflow_id": "2026-07-27-ai-execution-provenance-policy",
+  "owner_skill": "ai-context-governance",
+  "status": "completed",
+  "created_at": "2026-07-27T08:39:34+08:00",
+  "updated_at": "2026-07-27T09:56:54+08:00",
+  "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
+  "model": "gpt-5.6-sol",
+  "reasoning_effort": "medium",
+  "finding_ids": [],
+  "scope": {
+    "target": "Approved attribution and execution-provenance policy contract",
+    "files": [
+      ".dev/standards/GIT-COMMIT-POLICY.md",
+      ".dev/standards/GIT-COMMIT-POLICY.yaml",
+      ".dev/standards/WORKFLOW-HANDOFF-POLICY.md",
+      ".ai/assets/skills/ai-context-governance/templates/workflow-handoff-checkpoint-template.yaml"
+    ],
+    "constraints": [
+      "Require recorded AEP owner decisions",
+      "Use the owner-approved common runtime-model-reasoning signature",
+      "Add only model and reasoning_effort to task artifacts",
+      "Use effective defaults when active values are unavailable",
+      "Do not add direct-mode, tool, or cross-tool settings contracts"
+    ],
+    "non_goals": [
+      "Provider account configuration",
+      "Historical commit rewriting",
+      "Additional provenance fields beyond model and reasoning_effort"
+    ]
+  },
+  "execution": {
+    "steps": [
+      "Remove fixed-model attribution examples",
+      "Define the common runtime-model-reasoning signature",
+      "Add model and reasoning_effort to applicable task contracts",
+      "Define active-session then effective-default resolution",
+      "Update affected templates and navigation"
+    ],
+    "validation": [
+      "Policy and template parse checks",
+      "Reference validation",
+      "git diff --check"
+    ],
+    "last_completed_step": "Implemented the approved local commit signature, prospective task fields, default fallback, sub-agent marking, original-value preservation, and historical migration boundary.",
+    "next_action": "AEP-003 captures provider fixtures and publishes runtime-specific guidance."
+  },
+  "results": {
+    "summary": "Repository-created local commits now require runtime, model, and reasoning effort; new and next-updated unfinished tasks require only model and reasoning_effort, while completed history remains unchanged.",
+    "files_changed": [
+      ".dev/standards/GIT-COMMIT-POLICY.md",
+      ".dev/standards/GIT-COMMIT-POLICY.yaml",
+      ".dev/standards/ASSESSMENT-ARTIFACT-POLICY.md",
+      ".dev/standards/WORKFLOW-ARTIFACT-POLICY.md",
+      ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
+      ".ai/assets/skills/ai-context-governance/templates/release-publication/release-publication-task.json",
+      ".ai/assets/skills/software-development-orchestrator/templates/development-workflow-task-template.json",
+      ".ai/scripts/validate-git-commits.py",
+      ".ai/scripts/validate-workflow-artifacts.py",
+      ".ai/scripts/tests/test_git_commit_policy.py",
+      ".ai/scripts/tests/test_workflow_lifecycle_contract.py"
+    ],
+    "tests_run": [
+      "python .ai/scripts/tests/test_git_commit_policy.py -v (15 passed)",
+      "python .ai/scripts/tests/test_workflow_lifecycle_contract.py -v (10 passed)",
+      "python .ai/scripts/validate-workflow-artifacts.py",
+      "git diff --check"
+    ],
+    "finding_status": "addressed",
+    "residual_risk": "Provider-native client behavior remains fixture-gated under AEP-003.",
+    "follow_up_needed": true
+  }
+}
