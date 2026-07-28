@@ -8,7 +8,7 @@ task-level progress.
 
 | Workflow | Title | Owner | Status | Updated | Entry Point |
 | --- | --- | --- | --- | --- | --- |
-| [`2026-07-28-v0-7-0-release-preparation`](2026-07-28-v0-7-0-release-preparation/workflow.yaml) | Prepare v0.7.0 Candidate Through Pre-Tag | `ai-context-governance` | `in_progress` | `2026-07-28T09:32:32+08:00` | [plan](2026-07-28-v0-7-0-release-preparation/tasks/REL070-001.json) |
+| [`2026-07-28-v0-7-0-release-preparation`](2026-07-28-v0-7-0-release-preparation/workflow.yaml) | Prepare v0.7.0 Candidate Through Pre-Tag | `ai-context-governance` | `in_progress` | `2026-07-28T09:47:00+08:00` | [plan](2026-07-28-v0-7-0-release-preparation/tasks/REL070-001.json) |
 | [`2026-07-27-v0-7-governance-release-readiness`](2026-07-27-v0-7-governance-release-readiness/workflow.yaml) | v0.7.0 Governance And Release Readiness | `ai-context-governance` | `completed` | `2026-07-27T23:53:54+08:00` | [plan](2026-07-27-v0-7-governance-release-readiness/workflow-plan.md) |
 | [`2026-07-27-v0-7-work-management-release-allocation`](2026-07-27-v0-7-work-management-release-allocation/workflow.yaml) | Allocate Work-Management Policy to v0.7.0 Release Scope | `ai-context-governance` | `completed` | `2026-07-27T21:46:37+08:00` | [plan](2026-07-27-v0-7-work-management-release-allocation/workflow-plan.md) |
 | [`2026-07-27-backlog-init-compatibility-intake`](2026-07-27-backlog-init-compatibility-intake/workflow.yaml) | Cancel Legacy Upgrade Intake And Register Existing Agent Init Compatibility | `ai-context-governance` | `completed` | `2026-07-27T21:04:52+08:00` | [plan](2026-07-27-backlog-init-compatibility-intake/workflow-plan.md) |
