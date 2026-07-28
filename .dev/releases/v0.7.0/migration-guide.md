@@ -30,7 +30,11 @@ provenance requires manual reconciliation and is not an automatic upgrade.
 4. Acknowledge every required reconciliation explicitly, then apply from the
    same clean starting commit. Do not enable a provider merely to complete the
    framework upgrade.
-5. Run the installed target AI-context, workflow, package, and applicable
+5. Review `.dev/AI-CONTEXT-APPLY-PENDING.yaml`, then run `ai-context-init` for
+   a clean installation or `ai-context-upgrader` for an existing v0.6.0 target.
+   Finalize provenance only after target validation succeeds; the package apply
+   receipt does not claim that later step.
+6. Run the installed target AI-context, workflow, package, and applicable
    project-owned validation commands. Preserve blocked, skipped, deferred, and
    not-applicable outcomes as distinct from passed checks.
 

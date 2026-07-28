@@ -2,7 +2,7 @@
 
 ## Status
 
-Planned governed candidate. v0.7.0 is not tagged or published.
+Validated governed candidate. v0.7.0 is not tagged or published.
 
 ## Highlights
 
@@ -51,12 +51,17 @@ retained.
 
 ## Release Validation
 
-The included contracts passed their independent readiness assessments before
-candidate authoring. The formal candidate must still pass exact backlog and
-renderer validation, deterministic package and archive parity, clean install,
-exact v0.6.0 initialized upgrade, AI-context and workflow validation, independent
-candidate verification, hosted pull-request checks, merge, and current-main
-pre-tag validation. Only observed outcomes will replace this planned statement.
+The exact backlog and renderer contracts, deterministic package and archive
+parity, clean-install apply, exact initialized v0.6.0 upgrade apply, package
+matrices, and independent candidate verification passed. The package matrix
+recorded 26 passed tests and one environment-gated skip; the apply matrix
+recorded 23 passed tests and one Windows capability skip. Neither skip is
+counted as passed. Both real apply receipts intentionally leave downstream
+provenance finalization to `ai-context-init` or `ai-context-upgrader`; that
+later target-owned step is not counted as a candidate pass.
+
+Hosted pull-request checks, merge, current-main pre-tag validation, tag,
+publication, and terminal registry finalization remain unperformed.
 
 From v0.7.0 onward, the renderer appends the canonical `Included Work` section
 from `release.yaml.planning.backlog_refs`. Do not duplicate that generated
