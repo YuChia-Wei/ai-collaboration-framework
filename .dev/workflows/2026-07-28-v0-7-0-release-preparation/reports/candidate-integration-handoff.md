@@ -69,6 +69,13 @@ longer rebuild a historical release with the current builder. The workflow
 contract tests and full packaging matrix passed after this correction; hosted
 checks must rerun and all pass before merge.
 
+On the next hosted run, package candidate and governance passed. The Ubuntu
+quick gate then identified a separate lifecycle-policy test that classified all
+`gh release` commands as mutation, including read-only `gh release download`.
+The classifier now permits download while still rejecting create, delete,
+delete-asset, edit, and upload. Its lifecycle tests passed 6/6 and the focused
+release-workflow contract passed 3/3 before another hosted rerun.
+
 ## Remaining Authorized Steps
 
 1. Validate the final branch commit range and candidate state.
