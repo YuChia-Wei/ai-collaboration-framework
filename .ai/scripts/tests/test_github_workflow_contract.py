@@ -66,7 +66,8 @@ EXPECTED_ARTIFACT_ACTIONS = {
     ],
 }
 MUTATING_COMMAND = re.compile(
-    r"(?:\bgh\s+release\b|\bgit\s+(?:push|commit)\b|"
+    r"(?:\bgh\s+release\s+(?:create|delete(?:-asset)?|edit|upload)\b|"
+    r"\bgit\s+(?:push|commit)\b|"
     r"\bgit\s+tag\s+(?:--(?:annotate|delete)|-[ad])\b)",
     re.IGNORECASE,
 )
@@ -152,6 +153,20 @@ class GitHubWorkflowContractTests(unittest.TestCase):
                 step["run"] for step in steps(self.workflows[name]) if "run" in step
             )
             self.assertIsNone(MUTATING_COMMAND.search(command_text), name)
+
+    def test_gwt_003a_given_release_commands_when_classified_then_download_is_read_only(self) -> None:
+        self.assertIsNone(
+            MUTATING_COMMAND.search('gh release download "v0.6.0" --pattern "*.zip"')
+        )
+        for command in (
+            "gh release create v0.7.0",
+            "gh release delete v0.7.0",
+            "gh release delete-asset v0.7.0 package.zip",
+            "gh release edit v0.7.0",
+            "gh release upload v0.7.0 package.zip",
+        ):
+            with self.subTest(command=command):
+                self.assertIsNotNone(MUTATING_COMMAND.search(command))
 
     def test_gwt_004_given_artifact_handoff_when_actions_checked_then_node24_versions_are_exact(self) -> None:
         for name, workflow in self.workflows.items():

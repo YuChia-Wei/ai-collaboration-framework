@@ -77,6 +77,7 @@ jobs:
 
       - name: Build deterministic archives from tag
         env:
+          GH_TOKEN: ${{ github.token }}
           MIGRATION_SOURCES: ${{ steps.release.outputs.migration_sources }}
         run: |
           build_args=(
@@ -88,10 +89,13 @@ jobs:
             previous_version="${migration_source#v}"
             previous_output="${RUNNER_TEMP}/previous-package-${previous_version}"
             previous_extract="${RUNNER_TEMP}/previous-extracted-${previous_version}"
-            python .ai/scripts/build-ai-context-package.py \
-              --ref "refs/tags/${migration_source}" \
-              --version "${migration_source}" \
-              --output "${previous_output}"
+            mkdir -p "${previous_output}" "${previous_extract}"
+            gh release download "${migration_source}" \
+              --pattern "ai-context-dotnet-backend-v${previous_version}.zip" \
+              --pattern "ai-context-dotnet-backend-v${previous_version}.zip.sha256" \
+              --dir "${previous_output}"
+            python .ai/scripts/validate-ai-context-package.py \
+              "${previous_output}/ai-context-dotnet-backend-v${previous_version}.zip"
             python -m zipfile -e \
               "${previous_output}/ai-context-dotnet-backend-v${previous_version}.zip" \
               "${previous_extract}"

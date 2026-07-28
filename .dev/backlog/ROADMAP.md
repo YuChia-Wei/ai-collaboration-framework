@@ -36,7 +36,7 @@ Read this file before planning or resuming a post-v0.4.0 release.
 | `v0.4.2` | `published` | yes | The immutable package, local release registry, workflow evidence, roadmap state, migration guidance, and authorized public Release body correction are complete. | Completed without moving `v0.4.2` or changing the four published assets. | [`2026-07-20-v0-4-2-release-finalization-hotfix`](../workflows/2026-07-20-v0-4-2-release-finalization-hotfix/workflow.yaml) |
 | `v0.5.0` | `published` | yes | The four-source release, including exact automatic v0.4.2 upgrades, passed independent review, Windows, hosted Ubuntu, and owner-arranged macOS gates. | Completed at immutable tag `v0.5.0`, peeled commit `1477181f0b43fa7ee82fcd482141758ac9e22eb6`, successful hosted publication run `29922585651`, and a stable GitHub Release with four governed assets. | [`2026-07-22-v0-5-0-macos-portability`](../workflows/2026-07-22-v0-5-0-macos-portability/workflow.yaml) |
 | `v0.6.0` | `published` | yes | The componentized downstream product, semantic customization lifecycle, software-development orchestration acceptance, coordinated CI/configuration/skill transitions, Terra evaluation, and measured simplification disposition are complete. | Completed at immutable annotated tag `v0.6.0`, peeled commit `8b98b5f917513f2d143f42a322050a1162bb63f9`, successful hosted publication run `30074558122`, and a stable GitHub Release with four governed assets. | [`2026-07-24-v0-6-0-release-publication`](../workflows/2026-07-24-v0-6-0-release-publication/workflow.yaml) |
-| `v0.7.0` | `planned` | yes | Publish the completed `GOV-003` provenance contract together with portable work-management and downstream package-safety outcomes. Legacy identifier retirement and historical archive migration remain separately conditional. | `GOV-002`, `GOV-003`, and `PKG-004` are resolved and awaiting publication. A separate release workflow must still create and validate the candidate, release notes, migration guide, tag, and hosted publication. | [`2026-07-27-v0-7-governance-release-readiness`](../workflows/2026-07-27-v0-7-governance-release-readiness/workflow.yaml) |
+| `v0.7.0` | `planned` | yes | Publish the completed provenance, portable work-management, downstream package-safety, and fail-closed release-traceability outcomes. Legacy identifier retirement and historical archive migration remain separately conditional. | `GOV-002`, `GOV-003`, `PKG-004`, and `REL-003` are resolved and awaiting publication. The authorized release workflow is preparing the candidate, release notes, migration guide, validation, PR integration, and current-main pre-tag evidence; tag and hosted publication remain unexecuted. | [`2026-07-28-v0-7-0-release-preparation`](../workflows/2026-07-28-v0-7-0-release-preparation/workflow.yaml) |
 
 ## Release Gate Semantics
 
@@ -55,7 +55,7 @@ Read this file before planning or resuming a post-v0.4.0 release.
 | `v0.4.2` | `R042-001`, `R042-002`, `R042-003`, `R042-004`, `R042-005` | Any selected correction that would add a schema, required validation or CI route, remove a published path, or intentionally change pass/fail semantics must stop and move to an explicit v0.5.0 item. | v0.4.1 publication and registry closeout are complete. |
 | `v0.5.0` | `PKG-003`, `SAG-001`, `ENF-001`, `TOOL-001`, `LANG-001`, `REL-001`, `REL-002`, `HANDOFF-001` | `GOV-001`, `CAP-001`, `VAL-001` | R042-005 is closed; v0.4.2 workflow, independent verification, local release evidence, public Release body, and final version state are reconciled. |
 | `v0.6.0` | `DIST-001`, `CUST-001`, `DEVWF-002`, `CI-001`, `CI-002`, `CFG-001`, `SKILL-001` | `SIMPL-001`; any legacy identifier retirement remains conditional and cannot be silently included. | `EVAL-001`, v0.5.0 completion, `.dev/ai-context/provenance.yaml`, `.dev/ai-context/customizations.yaml`, and the approved `software-development-orchestrator` plus `ai-context-init` compatibility transitions. |
-| `v0.7.0` | `GOV-003`, `GOV-002`, `PKG-004` | A historical archive migration and legacy identifier retirement each require explicit successor work rather than silent inclusion. | All three blockers are resolved and awaiting publication; release-candidate construction and publication remain a separate governed workflow. |
+| `v0.7.0` | `GOV-002`, `GOV-003`, `PKG-004`, `REL-003` | A historical archive migration and legacy identifier retirement each require explicit successor work rather than silent inclusion. | All four blockers are resolved; the governed release workflow is authorized through current-main pre-tag, while tag creation and publication remain separate owner actions. |
 
 `DEVWF-001`, `INIT-001`, `STD-001`, and `OBS-001` remain independent unassigned
 decisions. None is a hidden v0.6.0 blocker. Standards or dev-workflow schema
@@ -218,9 +218,10 @@ versions. Current assignments:
   complete release-automation migration and lifecycle review.
 - `v0.7.0`: `GOV-003` records the completed AI execution provenance policy;
   `GOV-002` records the independently verified portable/source-only/target-
-  customization/deferred-provider disposition; and `PKG-004` records the
-  deterministic payload, clean-install, and initialized-upgrade proof. All
-  three are resolved with publication still pending. Historical archive
+  customization/deferred-provider disposition; `PKG-004` records the
+  deterministic payload, clean-install, and initialized-upgrade proof; and
+  `REL-003` records the fail-closed canonical backlog and Included Work
+  contract. All four are resolved with publication still pending. Historical archive
   migration and legacy identifier retirement remain conditional and require
   separately approved successor work.
 - `unassigned`: `DEVWF-001` owns optional issue/timeline schema deliberation;
@@ -301,11 +302,12 @@ assign it to v0.6.0, v0.7.0, or a dedicated release.
 
 ## Next Action
 
-v0.6.0 is published. `GOV-002`, `GOV-003`, and `PKG-004` are resolved for
-v0.7.0 and remain awaiting publication; `ASM-20260727-002` independently
-verifies portability and package readiness without creating a candidate, tag,
-or hosted release. Start a separate governed release workflow only when the
-owner authorizes v0.7.0 candidate and publication work. Keep `DEVWF-001`,
+v0.6.0 is published. `GOV-002`, `GOV-003`, `PKG-004`, and `REL-003` are
+resolved for v0.7.0 and remain awaiting publication; `ASM-20260727-002`
+independently verifies portability, release traceability, and package readiness.
+The owner authorized `2026-07-28-v0-7-0-release-preparation` to create and
+integrate the formal candidate and stop after current-main pre-tag validation;
+no tag or publication is authorized by that workflow. Keep `DEVWF-001`,
 `INIT-001`, `STD-001`, and `OBS-001` independently gated unless an explicit
 decision assigns them. Do not silently include provider adoption, a future
 software-delivery orchestrator, historical archive migration, or legacy

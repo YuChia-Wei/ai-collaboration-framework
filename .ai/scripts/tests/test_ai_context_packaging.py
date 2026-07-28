@@ -159,6 +159,34 @@ class SyntheticPackageRepo:
     def output(self, name: str) -> Path:
         return Path(self._temporary.name) / name
 
+    def ensure_release(
+        self,
+        version: str,
+        automatic_sources: list[str] | None = None,
+    ) -> None:
+        normalized = PACKAGE.normalize_version(version)
+        sources = automatic_sources or []
+        release_path = self.root / f".dev/releases/v{normalized}/release.yaml"
+        release_path.parent.mkdir(parents=True, exist_ok=True)
+        document = {
+            "version": f"v{normalized}",
+            "compatibility": {
+                "breaking_changes": True,
+                "minimum_source_version": sources[0] if sources else "v0.1.0",
+                "reconciliation_sources": sources,
+                "automatic_upgrade_sources": sources,
+            },
+            "distribution": {
+                "profile_id": "fixture",
+                "package_id": f"fixture-v{normalized}",
+            },
+        }
+        content = yaml.safe_dump(document, sort_keys=False)
+        if not release_path.exists() or release_path.read_text(encoding="utf-8") != content:
+            release_path.write_text(content, encoding="utf-8", newline="\n")
+            git(self.root, "add", "--", release_path.relative_to(self.root).as_posix())
+            git(self.root, "commit", "-qm", f"release v{normalized} fixture")
+
     def build(
         self,
         name: str,
@@ -166,6 +194,12 @@ class SyntheticPackageRepo:
         previous_files: Path | None = None,
         previous_version: str | None = None,
     ) -> dict[str, Path | str]:
+        automatic_sources = (
+            [f"v{PACKAGE.normalize_version(previous_version)}"]
+            if previous_version is not None
+            else []
+        )
+        self.ensure_release(version, automatic_sources)
         return PACKAGE.build_package(
             self.root,
             "HEAD",
@@ -513,6 +547,14 @@ class DeterministicPackageGwtTests(unittest.TestCase):
             self.assertEqual("2.0.0", inventory["schema_version"])
             self.assertEqual("3.0.0", migration["schema_version"])
             self.assertEqual(package["selection"], migration["selection"])
+            self.assertEqual(
+                {
+                    "minimum_governed_source": "v0.1.0",
+                    "breaking_changes": True,
+                    "automatic_upgrade_sources": [],
+                },
+                package["compatibility"],
+            )
             self.assertTrue(
                 all(
                     record["component_id"] == "software-development-core"
@@ -525,6 +567,27 @@ class DeterministicPackageGwtTests(unittest.TestCase):
                     for operation in migration["clean_install"]["operations"]
                 )
             )
+        finally:
+            fixture.close()
+
+    def test_gwt_005b_given_release_and_migration_sources_disagree_when_built_then_it_fails_closed(self) -> None:
+        fixture = SyntheticPackageRepo()
+        try:
+            # Given the governed release advertises an automatic source that the
+            # package build did not receive.
+            fixture.ensure_release("1.0.0", ["v0.9.0"])
+            # When the package is built, then metadata cannot silently claim a
+            # broader upgrade contract than migration.yaml implements.
+            with self.assertRaisesRegex(
+                PACKAGE.PackageError, "do not match package migration sources"
+            ):
+                PACKAGE.build_package(
+                    fixture.root,
+                    "HEAD",
+                    "1.0.0",
+                    fixture.output("mismatched-release"),
+                    fixture.profile,
+                )
         finally:
             fixture.close()
 
@@ -605,7 +668,11 @@ class ReleaseWorkflowContractGwtTests(unittest.TestCase):
         self.assertIn('--output "${RUNNER_TEMP}/release-body.md"', text)
         self.assertIn("${{ runner.temp }}/release-body.md", text)
         self.assertNotIn("--output dist/release-body.md", text)
-        self.assertNotIn("gh release", text)
+        self.assertIn('gh release download "${migration_source}"', text)
+        self.assertIn('ai-context-dotnet-backend-v${previous_version}.zip.sha256', text)
+        self.assertNotIn('--ref "refs/tags/${migration_source}"', text)
+        self.assertNotIn("gh release create", text)
+        self.assertNotIn("gh release upload", text)
         self.assertNotRegex(text, r"(?m)^\s*(?:git\s+(?:tag|push|update-ref)|gh\s+api\s+.*git/refs)\b")
 
     def test_gwt_008_given_publish_workflow_when_inspected_then_only_user_tags_authorize_release_writes(self) -> None:
@@ -623,6 +690,9 @@ class ReleaseWorkflowContractGwtTests(unittest.TestCase):
         self.assertIn('--ref "refs/tags/${GITHUB_REF_NAME}"', text)
         self.assertIn("--migration-source", text)
         self.assertIn("steps.release.outputs.migration_sources", text)
+        self.assertIn('gh release download "${migration_source}"', text)
+        self.assertIn('ai-context-dotnet-backend-v${previous_version}.zip.sha256', text)
+        self.assertNotIn('--ref "refs/tags/${migration_source}"', text)
         self.assertIn("validate-ai-context-release-state.py", text)
         self.assertIn("--phase tag", text)
         self.assertIn("actions/upload-artifact@v7", text)
@@ -722,6 +792,7 @@ class VersionedMigrationPackagingGwtTests(unittest.TestCase):
             (fixture.root / "docs/rule.md").write_text("v100 rule\n", encoding="utf-8", newline="\n")
             git(fixture.root, "add", "docs/rule.md")
             git(fixture.root, "commit", "-qm", "v1.0.0 source")
+            fixture.ensure_release("1.0.0", ["v0.8.0", "v0.9.0"])
 
             # When the builder receives the exact version-and-inventory pairs out of order.
             result = PACKAGE.build_package(
@@ -990,6 +1061,7 @@ class VersionedMigrationPackagingGwtTests(unittest.TestCase):
             temp = Path(temp_value)
             previous_roots: dict[str, Path] = {}
             source_inputs: list[tuple[Path, str]] = []
+            v030_files: Path | None = None
 
             # Given real extracted packages for every supported v0.5.0 source.
             for version in ("0.3.0", "0.4.0", "0.4.1", "0.4.2"):
@@ -998,12 +1070,20 @@ class VersionedMigrationPackagingGwtTests(unittest.TestCase):
                     f"v{version}",
                     version,
                     temp / f"previous-{version}",
+                    previous_files_path=(
+                        v030_files if version in {"0.4.1", "0.4.2"} else None
+                    ),
+                    previous_version_value=(
+                        "0.3.0" if version in {"0.4.1", "0.4.2"} else None
+                    ),
                 )
                 extract = temp / f"previous-{version}-extracted"
                 with zipfile.ZipFile(Path(result["zip"])) as archive:
                     archive.extractall(extract)
                 package_root = extract / f"ai-context-dotnet-backend-v{version}"
                 previous_roots[version] = package_root
+                if version == "0.3.0":
+                    v030_files = package_root / "metadata/files.yaml"
                 source_inputs.append(
                     (package_root / "metadata/files.yaml", version)
                 )
@@ -1165,18 +1245,27 @@ class VersionedMigrationPackagingGwtTests(unittest.TestCase):
             temp = Path(temp_value)
             source_inputs: list[tuple[Path, str]] = []
             previous_roots: dict[str, Path] = {}
+            v030_files: Path | None = None
             for version in ("0.3.0", "0.4.0", "0.4.1", "0.4.2"):
                 result = PACKAGE.build_package(
                     ROOT,
                     f"v{version}",
                     version,
                     temp / f"previous-{version}",
+                    previous_files_path=(
+                        v030_files if version in {"0.4.1", "0.4.2"} else None
+                    ),
+                    previous_version_value=(
+                        "0.3.0" if version in {"0.4.1", "0.4.2"} else None
+                    ),
                 )
                 extract = temp / f"previous-{version}-extracted"
                 with zipfile.ZipFile(Path(result["zip"])) as archive:
                     archive.extractall(extract)
                 package_root = extract / f"ai-context-dotnet-backend-v{version}"
                 previous_roots[version] = package_root
+                if version == "0.3.0":
+                    v030_files = package_root / "metadata/files.yaml"
                 source_inputs.append(
                     (package_root / "metadata/files.yaml", version)
                 )
