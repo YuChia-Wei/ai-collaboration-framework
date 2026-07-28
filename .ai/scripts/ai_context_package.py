@@ -786,6 +786,64 @@ def build_package(
     if not all(isinstance(item, str) and item for item in (profile_id, name_template, source_repository)):
         raise PackageError("profile package identity is incomplete")
     package_id = name_template.format(version=version)
+    source_inputs = migration_source_inputs(
+        previous_files_path,
+        previous_version_value,
+        previous_sources,
+    )
+    release_path = f".dev/releases/v{version}/release.yaml"
+    release = load_yaml_blob(repo, tree, release_path)
+    if release.get("version") != f"v{version}":
+        raise PackageError(f"{release_path}: version must equal v{version}")
+    distribution = release.get("distribution")
+    if not isinstance(distribution, dict):
+        raise PackageError(f"{release_path}: distribution must be a mapping")
+    if distribution.get("profile_id") != profile_id:
+        raise PackageError(
+            f"{release_path}: distribution.profile_id must equal {profile_id}"
+        )
+    if distribution.get("package_id") != package_id:
+        raise PackageError(
+            f"{release_path}: distribution.package_id must equal {package_id}"
+        )
+    compatibility = release.get("compatibility")
+    if not isinstance(compatibility, dict):
+        raise PackageError(f"{release_path}: compatibility must be a mapping")
+    minimum_source = compatibility.get("minimum_source_version")
+    if not isinstance(minimum_source, str):
+        raise PackageError(
+            f"{release_path}: compatibility.minimum_source_version must be a version"
+        )
+    try:
+        minimum_source = f"v{normalize_version(minimum_source)}"
+    except ValueError as exc:
+        raise PackageError(
+            f"{release_path}: compatibility.minimum_source_version is invalid"
+        ) from exc
+    breaking_changes = compatibility.get("breaking_changes")
+    if not isinstance(breaking_changes, bool):
+        raise PackageError(
+            f"{release_path}: compatibility.breaking_changes must be boolean"
+        )
+    automatic_sources = compatibility.get("automatic_upgrade_sources")
+    if not isinstance(automatic_sources, list) or not all(
+        isinstance(item, str) for item in automatic_sources
+    ):
+        raise PackageError(
+            f"{release_path}: compatibility.automatic_upgrade_sources must be a list"
+        )
+    try:
+        automatic_sources = [f"v{normalize_version(item)}" for item in automatic_sources]
+    except ValueError as exc:
+        raise PackageError(
+            f"{release_path}: compatibility.automatic_upgrade_sources is invalid"
+        ) from exc
+    expected_sources = [f"v{source_version}" for source_version, _ in source_inputs]
+    if automatic_sources != expected_sources:
+        raise PackageError(
+            f"{release_path}: automatic upgrade sources {automatic_sources} do not "
+            f"match package migration sources {expected_sources}"
+        )
     payload_files = collect_payload(repo, tree, profile)
     if not payload_files:
         raise PackageError("package payload is empty")
@@ -812,17 +870,13 @@ def build_package(
             "sha256": payload_digest(payload_files),
         },
         "compatibility": {
-            "minimum_governed_source": "v0.1.0",
-            "breaking_changes": True,
+            "minimum_governed_source": minimum_source,
+            "breaking_changes": breaking_changes,
+            "automatic_upgrade_sources": automatic_sources,
         },
     }
     if component_aware:
         package_document["selection"] = selection
-    source_inputs = migration_source_inputs(
-        previous_files_path,
-        previous_version_value,
-        previous_sources,
-    )
     clean_install_operations = []
     for index, item in enumerate(payload_files, 1):
         operation = {
@@ -848,9 +902,6 @@ def build_package(
                 "operations": migration_operations(previous, payload_files),
             }
         )
-    package_document["compatibility"]["automatic_upgrade_sources"] = [
-        f"v{source['version']}" for source in migration_sources
-    ]
     migration_document = {
         "schema_version": "3.0.0" if component_aware else "2.0.0",
         "package_id": package_id,
