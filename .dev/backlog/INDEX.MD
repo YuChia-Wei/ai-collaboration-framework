@@ -7,7 +7,7 @@ artifact directories. See [README.MD](README.MD) for ownership and lifecycle.
 
 | Roadmap | Current Target | Status | Next Gate | Updated |
 | --- | --- | --- | --- | --- |
-| [ROADMAP.md](ROADMAP.md) | `v0.7.0` | `active` | `GOV-002`, `GOV-003`, and `PKG-004` are resolved and awaiting publication; a separate release workflow must still create and validate any candidate before publication. | 2026-07-27 |
+| [ROADMAP.md](ROADMAP.md) | `v0.7.0` | `active` | `GOV-002`, `GOV-003`, `PKG-004`, and `REL-003` are resolved; the authorized release workflow is preparing the formal candidate through current-main pre-tag. | 2026-07-28 |
 
 Source planning records are retained under [`plans/`](plans/); they inform the
 roadmap but do not replace it or a governed assessment.
@@ -34,6 +34,7 @@ roadmap but do not replace it or a governed assessment.
 | [GOV-002](items/GOV-002.yaml) | HIGH | `v0.7.0` | — | Provider-neutral lifecycle and repository-truth policy is projected downstream; source-local GitHub policy remains excluded and provider adoption remains deferred. | [`2026-07-27-v0-7-governance-release-readiness`](../workflows/2026-07-27-v0-7-governance-release-readiness/workflow.yaml) | 2026-07-27 |
 | [GOV-003](items/GOV-003.yaml) | HIGH | `v0.7.0` | — | The AI execution provenance and attribution policy is complete and independently verified; publication remains a separate future fact. | [`2026-07-27-ai-execution-provenance-policy`](../workflows/2026-07-27-ai-execution-provenance-policy/workflow.yaml) | 2026-07-27 |
 | [PKG-004](items/PKG-004.yaml) | HIGH | `v0.7.0` | — | Deterministic payload, source-history exclusion, portable-policy mapping, clean-install, and initialized-upgrade evidence pass. | [`2026-07-27-v0-7-governance-release-readiness`](../workflows/2026-07-27-v0-7-governance-release-readiness/workflow.yaml) | 2026-07-27 |
+| [REL-003](items/REL-003.yaml) | HIGH | `v0.7.0` | — | Prospective candidates fail closed unless backlog refs and generated Included Work match the canonical completed backlog set exactly while authored notes remain intact. | [`2026-07-28-v0-7-0-release-preparation`](../workflows/2026-07-28-v0-7-0-release-preparation/workflow.yaml) | 2026-07-28 |
 
 ## Resolved
 

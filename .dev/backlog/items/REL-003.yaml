@@ -1,0 +1,42 @@
+schema_version: "1.0"
+backlog_id: "REL-003"
+title: "Fail-Closed Canonical Included Work Traceability"
+category: "release-governance"
+status: "resolved"
+priority: "HIGH"
+summary: "Require every v0.7.0-or-later candidate to match its resolved completed backlog set exactly and render each Included Work ID once without overwriting authored release notes."
+created_at: "2026-07-28T08:41:54+08:00"
+updated_at: "2026-07-28T08:41:54+08:00"
+release:
+  target: "v0.7.0"
+  completed_in: "v0.7.0"
+  published_in: null
+  target_scope: "prospective-release-canonical-backlog-and-included-work-traceability"
+  gate: "release-blocker"
+origin_refs:
+  - ".dev/standards/AI-CONTEXT-VERSION-POLICY.md"
+  - ".dev/releases/README.MD"
+  - ".dev/assessments/ASM-20260727-002/assessment.yaml"
+finding_refs:
+  - "ASM-20260727-002#VFY-001"
+recommended_owner_skill: "ai-context-governance"
+handoff_condition: "Include REL-003 exactly once in the governed v0.7.0 candidate and rendered Included Work section; retain authored notes and keep published_in null until immutable publication completes."
+workflow_refs:
+  - ".dev/workflows/2026-07-27-v0-7-governance-release-readiness/workflow.yaml"
+  - ".dev/workflows/2026-07-28-v0-7-0-release-preparation/workflow.yaml"
+task_refs:
+  - ".dev/workflows/2026-07-27-v0-7-governance-release-readiness/tasks/VGR-002.json"
+  - ".dev/workflows/2026-07-28-v0-7-0-release-preparation/tasks/REL070-001.json"
+resolution_ref: ".dev/workflows/2026-07-27-v0-7-governance-release-readiness/reports/remediation-report.md"
+decision_needed: "Resolved: the owner classified the independently verified prospective release-traceability contract as v0.7.0 included work on 2026-07-28. Publication remains a separate future fact."
+acceptance:
+  - "Candidate membership is derived from every resolved backlog item whose release.completed_in equals the candidate version."
+  - "release.yaml.planning.backlog_refs matches the canonical set exactly, with no missing, duplicate, unrelated, unresolved, completion-mismatched, or prematurely published item."
+  - "The renderer preserves all authored release-note content and appends one generated Included Work entry per canonical backlog ID."
+  - "The prospective contract begins with v0.7.0 and does not rewrite historical release notes."
+  - "Positive and negative release-state, backlog, and renderer fixtures pass."
+inventory_notes:
+  - "Implementation commit da58ccbb6a4c5c3c7c3b2c09e0ca0290a5a77f5f introduced the prospective exact-set and renderer contract."
+  - "ASM-20260727-002 independently verified fail-closed canonical membership and authored-content preservation."
+  - "The owner selected REL-003 rather than leaving the material source release-governance contract as workflow-only infrastructure."
+  - "published_in remains null because v0.7.0 has not been tagged or published."
