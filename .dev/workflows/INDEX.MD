@@ -8,7 +8,6 @@ task-level progress.
 
 | Workflow | Title | Owner | Status | Updated | Entry Point |
 | --- | --- | --- | --- | --- | --- |
-| [`2026-07-28-v0-7-0-release-preparation`](2026-07-28-v0-7-0-release-preparation/workflow.yaml) | Prepare v0.7.0 Candidate Through Pre-Tag | `ai-context-governance` | `in_progress` | `2026-07-28T10:14:35+08:00` | [plan](2026-07-28-v0-7-0-release-preparation/tasks/REL070-001.json) |
 | [`2026-07-27-v0-7-governance-release-readiness`](2026-07-27-v0-7-governance-release-readiness/workflow.yaml) | v0.7.0 Governance And Release Readiness | `ai-context-governance` | `completed` | `2026-07-27T23:53:54+08:00` | [plan](2026-07-27-v0-7-governance-release-readiness/workflow-plan.md) |
 | [`2026-07-27-v0-7-work-management-release-allocation`](2026-07-27-v0-7-work-management-release-allocation/workflow.yaml) | Allocate Work-Management Policy to v0.7.0 Release Scope | `ai-context-governance` | `completed` | `2026-07-27T21:46:37+08:00` | [plan](2026-07-27-v0-7-work-management-release-allocation/workflow-plan.md) |
 | [`2026-07-27-backlog-init-compatibility-intake`](2026-07-27-backlog-init-compatibility-intake/workflow.yaml) | Cancel Legacy Upgrade Intake And Register Existing Agent Init Compatibility | `ai-context-governance` | `completed` | `2026-07-27T21:04:52+08:00` | [plan](2026-07-27-backlog-init-compatibility-intake/workflow-plan.md) |
@@ -22,6 +21,7 @@ task-level progress.
 
 | Workflow | Title | Owner | Status | Updated | Entry Point |
 | --- | --- | --- | --- | --- | --- |
+| [`2026-07-28-v0-7-0-release-preparation`](2026-07-28-v0-7-0-release-preparation/workflow.yaml) | Prepare And Finalize v0.7.0 Publication | `ai-context-governance` | `completed` | `2026-07-28T21:31:43+08:00` | [plan](2026-07-28-v0-7-0-release-preparation/tasks/REL070-001.json) |
 | [`2026-07-24-v0-6-0-release-publication`](2026-07-24-v0-6-0-release-publication/workflow.yaml) | Prepare And Publish v0.6.0 | `ai-context-governance` | `completed` | `2026-07-24T15:15:15+08:00` | [plan](2026-07-24-v0-6-0-release-publication/tasks/REL060-001.json) |
 | [`2026-07-24-v0-6-ci-lifecycle`](2026-07-24-v0-6-ci-lifecycle/workflow.yaml) | Complete v0.6.0 GitHub Workflow And Release Lifecycle Contracts | `ai-context-governance` | `completed` | `2026-07-24T13:35:00+08:00` | [plan](2026-07-24-v0-6-ci-lifecycle/workflow-plan.md) |
 | [`2026-07-24-v0-6-context-load-simplification`](2026-07-24-v0-6-context-load-simplification/workflow.yaml) | Measure And Disposition v0.6.0 Active Context Simplification | `ai-context-governance` | `completed` | `2026-07-24T10:50:34+08:00` | [plan](2026-07-24-v0-6-context-load-simplification/workflow-plan.md) |

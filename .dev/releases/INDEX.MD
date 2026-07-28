@@ -13,9 +13,7 @@ Historical `v*` directories below are records, never templates.
 
 ## Candidate Releases
 
-| Release ID | Version | Status | Compatibility | Notes | Migration | Phase Contract |
-| --- | --- | --- | --- | --- | --- | --- |
-| [`REL-v0.7.0`](v0.7.0/release.yaml) | `v0.7.0` | `validated` | non-breaking; exact automatic source v0.6.0 | [notes](v0.7.0/release-notes.md) | [guide](v0.7.0/migration-guide.md) | [checks](v0.7.0/release-phase-checks.yaml) |
+_None._
 
 ## Planned Phase Contracts
 
@@ -27,6 +25,7 @@ _None._
 
 | Release ID | Version | Published commit | Compatibility | Notes | Migration |
 | --- | --- | --- | --- | --- | --- |
+| [`REL-v0.7.0`](v0.7.0/release.yaml) | `v0.7.0` | `49723a943f744820f4bdb2c22de7930693a7106d` | non-breaking; schema 2 package/files; schema 3 migration; exact automatic source v0.6.0 | [notes](v0.7.0/release-notes.md) | [guide](v0.7.0/migration-guide.md) |
 | [`REL-v0.6.0`](v0.6.0/release.yaml) | `v0.6.0` | `8b98b5f917513f2d143f42a322050a1162bb63f9` | schema 2 package/files; schema 3 migration; exact automatic source v0.5.0 | [notes](v0.6.0/release-notes.md) | [guide](v0.6.0/migration-guide.md) |
 | [`REL-v0.5.0`](v0.5.0/release.yaml) | `v0.5.0` | `1477181f0b43fa7ee82fcd482141758ac9e22eb6` | migration schema 2.0; exact automatic sources v0.3.0, v0.4.0, v0.4.1, and v0.4.2 | [notes](v0.5.0/release-notes.md) | [guide](v0.5.0/migration-guide.md) |
 | [`REL-v0.4.2`](v0.4.2/release.yaml) | `v0.4.2` | `f474c3b058cb9f89f93929e0732fc1f276422dd9` | governed package patch; automatic source v0.3.0; v0.4.0 consumers should wait for v0.5.0 | [notes](v0.4.2/release-notes.md) | [guide](v0.4.2/migration-guide.md) |

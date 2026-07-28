@@ -6,11 +6,11 @@ status: "resolved"
 priority: "HIGH"
 summary: "Classify the completed PR #10 work-management lifecycle policy for portable v0.7.0 distribution, preserving source-repository GitHub choices as local policy rather than silently exporting them as target defaults."
 created_at: "2026-07-27T21:39:33+08:00"
-updated_at: "2026-07-27T23:44:24+08:00"
+updated_at: "2026-07-28T21:31:43+08:00"
 release:
   target: "v0.7.0"
   completed_in: "v0.7.0"
-  published_in: null
+  published_in: "v0.7.0"
   target_scope: "work-management-lifecycle-portability-and-release-candidate-disposition"
   gate: "release-blocker"
 origin_refs:
@@ -49,4 +49,4 @@ inventory_notes:
   - "The current distribution profile selects .dev/standards/** and .dev/TEAM-GIT-FLOW-RULES.MD, so source integration alone is not evidence of safe downstream release scope."
   - "No GitHub Issue or Project is created by this backlog record; a later external tracker mapping must use the real tracker identifier."
   - "ASM-20260727-002 independently verified the four-way classification and portable target projection at d3f22b267e8ff44ae163a47b3b2482d51250cbcc."
-  - "published_in remains null because v0.7.0 has not been tagged or published."
+  - "Published in immutable v0.7.0 through successful hosted run 30363397794."

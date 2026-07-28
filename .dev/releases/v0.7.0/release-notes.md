@@ -2,7 +2,7 @@
 
 ## Status
 
-Validated governed candidate. v0.7.0 is not tagged or published.
+Published.
 
 ## Highlights
 
@@ -60,8 +60,9 @@ counted as passed. Both real apply receipts intentionally leave downstream
 provenance finalization to `ai-context-init` or `ai-context-upgrader`; that
 later target-owned step is not counted as a candidate pass.
 
-Hosted pull-request checks, merge, current-main pre-tag validation, tag,
-publication, and terminal registry finalization remain unperformed.
+PR #15 passed the hosted release gates and merged the validated candidate to
+`main`. The owner-created annotated tag, tag-phase gate, hosted publication,
+and exact four-asset Release validation then passed.
 
 From v0.7.0 onward, the renderer appends the canonical `Included Work` section
 from `release.yaml.planning.backlog_refs`. Do not duplicate that generated
@@ -69,5 +70,7 @@ section in this authored source.
 
 ## Publication Completion
 
-Not published. Tag, hosted publication, package assets, run identity, and final
-registry evidence remain absent until separately authorized and observed.
+Published from immutable annotated tag `v0.7.0`, peeled commit
+`49723a943f744820f4bdb2c22de7930693a7106d`, through successful hosted run
+`30363397794`. The stable GitHub Release exposes the governed ZIP, tar.gz, and
+both checksum sidecars.

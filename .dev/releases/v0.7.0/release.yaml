@@ -1,16 +1,16 @@
 schema_version: "1.0"
 release_id: "REL-v0.7.0"
 version: "v0.7.0"
-status: "validated"
+status: "published"
 record_origin: "governed"
 distribution_kind: "governed-package"
 installable: true
-tag: null
-commit: null
-tagged_at: null
-recorded_at: null
+tag: "v0.7.0"
+commit: "49723a943f744820f4bdb2c22de7930693a7106d"
+tagged_at: "2026-07-28T21:25:02+08:00"
+recorded_at: "2026-07-28T21:31:43+08:00"
 created_at: "2026-07-28T08:48:43+08:00"
-updated_at: "2026-07-28T09:32:32+08:00"
+updated_at: "2026-07-28T21:31:43+08:00"
 planning:
   backlog_refs:
     - ".dev/backlog/items/GOV-002.yaml"
@@ -54,7 +54,7 @@ distribution:
     automation: "github-actions"
     creates_or_moves_tag: false
 validation:
-  evidence: "The exact four-item release set, authored notes, and v0.6.0-only compatibility contract passed focused release validation. Candidate package b474730d453c27f2b5338f5bbe0b5efd5e9b0628 binds compatibility to this record, preserves the 606-path payload and exact v0.6.0 migration manifests, passes archive parity, clean-install apply, and initialized v0.6.0-to-v0.7.0 apply with repo-backlog disabled, and is independently verified by ASM-20260728-001. Package tests passed 26 with one environment-gated skip not counted as passed; apply tests passed 23 with one Windows capability skip not counted as passed; projection tests passed 3/3. Downstream provenance finalization, hosted PR checks, merge, current-main pre-tag, tag, and publication remain separate and are not claimed."
+  evidence: "The exact four-item release set, authored notes, and v0.6.0-only compatibility contract passed focused release validation. Candidate package b474730d453c27f2b5338f5bbe0b5efd5e9b0628 binds compatibility to this record, preserves the 606-path payload and exact v0.6.0 migration manifests, passes archive parity, clean-install apply, and initialized v0.6.0-to-v0.7.0 apply with repo-backlog disabled, and is independently verified by ASM-20260728-001. Package tests passed 26 with one environment-gated skip not counted as passed; apply tests passed 23 with one Windows capability skip not counted as passed; projection tests passed 3/3. PR #15 passed its hosted gates and merged to main as 49723a943f744820f4bdb2c22de7930693a7106d. The owner-created immutable annotated tag v0.7.0 triggered successful publication run 30363397794. Tag-phase and hosted publication validation passed, and the stable GitHub Release exposes exactly the governed ZIP, tar.gz, and two checksum sidecars."
   workflow_id: "2026-07-28-v0-7-0-release-preparation"
   related_workflows:
     - "2026-07-25-work-management-policy"
@@ -65,7 +65,7 @@ validation:
     - "ASM-20260727-002"
     - "ASM-20260728-001"
   package_status: "validated"
-  post_merge_status: "pending"
+  post_merge_status: "passed"
   failed_publication_run: null
-  published_run: null
-  public_release_url: null
+  published_run: "30363397794"
+  public_release_url: "https://github.com/YuChia-Wei/ai-collaboration-prompts-dotnet-backend/releases/tag/v0.7.0"
