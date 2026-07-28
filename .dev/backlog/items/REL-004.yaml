@@ -1,0 +1,41 @@
+schema_version: "1.0"
+backlog_id: "REL-004"
+title: "Evaluate Source-Only AI Context Release Closeout"
+category: "release-governance"
+status: "open"
+priority: "MEDIUM"
+summary: "Evaluate a repository-only AI context release closeout capability that shortens post-tag registry finalization while preserving strict separation from the published framework product."
+created_at: "2026-07-28T22:31:00+08:00"
+updated_at: "2026-07-28T22:31:00+08:00"
+release:
+  target: "unassigned"
+  completed_in: null
+  published_in: null
+  target_scope: "source-only-ai-context-release-closeout-and-product-isolation"
+  gate: "independent"
+origin_refs:
+  - ".dev/backlog/plans/rel-004-ai-context-release-closeout-discussion-context.md"
+  - ".dev/operations/runbooks/AI-CONTEXT-RELEASE-PUBLICATION-RUNBOOK.MD"
+  - ".ai/distribution/profiles/dotnet-backend.yaml"
+  - ".dev/workflows/2026-07-28-v0-7-0-release-preparation/reports/finalization-report.md"
+finding_refs: []
+recommended_owner_skill: "ai-context-governance"
+handoff_condition: "Open a dedicated AI-context governance workflow only after the owner approves the source-only placement, package-isolation proof, runtime fallback, failure-containment boundary, and terminal Git behavior. Do not add the skill or change the published payload during backlog intake."
+workflow_refs: []
+task_refs: []
+resolution_ref: null
+decision_needed: "Decide whether to introduce the repo-only ai-context-release-closeout capability, where its canonical and runtime files belong, how packaged ai-context-governance remains independent, which Python or uv fallback is supported, and how temporary-worktree failure containment behaves before and after commit, push, PR, or merge."
+acceptance:
+  - "The final name preserves the ai-context namespace and clearly means post-publication administrative closeout rather than candidate preparation, tag creation, or hosted publication."
+  - "The capability has no runtime dependency on another skill; portable ai-context-governance does not reference, route to, or require the repo-only skill."
+  - "Canonical instructions, runtime wrappers, scripts, tests, registries, and routing are explicitly classified as source-only or otherwise proven absent from every published package component."
+  - "A deterministic package regression fails if any closeout skill path, identifier, or broken reference leaks into the published payload."
+  - "The skill remains a thin low-freedom entry that performs only post-tag verification, registry reconciliation, the declared validation bundle, and the repository Git handoff."
+  - "Python and uv availability is checked before repository writes; when neither sanctioned runtime is available, the operation returns blocked-by-environment without manual mutation or a false completion claim."
+  - "Failure containment keeps the primary worktree unchanged until an isolated temporary worktree produces a validated patch, and shared or published history is never automatically rewritten."
+  - "A forward test measures local closeout effort and confirms that candidate discovery, broad governance re-reading, unrelated remediation, and duplicate validation are not reintroduced."
+inventory_notes:
+  - "The v0.7.0 post-tag closeout was behaviorally simple but took about nineteen minutes end to end because broad governance discovery, Python and encoding retries, manual multi-file reconciliation, repeated validation, and hosted PR waiting were interleaved."
+  - "The current preferred naming candidate is ai-context-release-closeout; ai-context-release-finalize remains understandable but less idiomatic. No identifier is approved by this backlog intake."
+  - "The owner requires this capability to remain specific to this source repository until product isolation and downstream impact are explicitly decided."
+  - "This item does not activate a successor release and is not a hidden blocker for an already published version."
