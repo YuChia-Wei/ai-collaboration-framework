@@ -55,6 +55,20 @@ The final commit range is validated separately. The hosted PR required checks
 must provide a green aggregate result before merge; the failed local aggregate
 is never relabeled as passed.
 
+## Hosted Package Remediation
+
+PR #15 initially passed the hosted Ubuntu quick and read-only governance gates
+but failed the package candidate gate. The new fail-closed compatibility check
+correctly rejected rebuilding historical v0.6.0 without its own v0.5.0
+migration input.
+
+The candidate and publication workflows now obtain each automatic-upgrade
+baseline from the immutable published release ZIP plus adjacent checksum,
+validate that archive, and only then extract `metadata/files.yaml`. They no
+longer rebuild a historical release with the current builder. The workflow
+contract tests and full packaging matrix passed after this correction; hosted
+checks must rerun and all pass before merge.
+
 ## Remaining Authorized Steps
 
 1. Validate the final branch commit range and candidate state.

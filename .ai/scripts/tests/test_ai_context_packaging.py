@@ -668,7 +668,11 @@ class ReleaseWorkflowContractGwtTests(unittest.TestCase):
         self.assertIn('--output "${RUNNER_TEMP}/release-body.md"', text)
         self.assertIn("${{ runner.temp }}/release-body.md", text)
         self.assertNotIn("--output dist/release-body.md", text)
-        self.assertNotIn("gh release", text)
+        self.assertIn('gh release download "${migration_source}"', text)
+        self.assertIn('ai-context-dotnet-backend-v${previous_version}.zip.sha256', text)
+        self.assertNotIn('--ref "refs/tags/${migration_source}"', text)
+        self.assertNotIn("gh release create", text)
+        self.assertNotIn("gh release upload", text)
         self.assertNotRegex(text, r"(?m)^\s*(?:git\s+(?:tag|push|update-ref)|gh\s+api\s+.*git/refs)\b")
 
     def test_gwt_008_given_publish_workflow_when_inspected_then_only_user_tags_authorize_release_writes(self) -> None:
@@ -686,6 +690,9 @@ class ReleaseWorkflowContractGwtTests(unittest.TestCase):
         self.assertIn('--ref "refs/tags/${GITHUB_REF_NAME}"', text)
         self.assertIn("--migration-source", text)
         self.assertIn("steps.release.outputs.migration_sources", text)
+        self.assertIn('gh release download "${migration_source}"', text)
+        self.assertIn('ai-context-dotnet-backend-v${previous_version}.zip.sha256', text)
+        self.assertNotIn('--ref "refs/tags/${migration_source}"', text)
         self.assertIn("validate-ai-context-release-state.py", text)
         self.assertIn("--phase tag", text)
         self.assertIn("actions/upload-artifact@v7", text)
