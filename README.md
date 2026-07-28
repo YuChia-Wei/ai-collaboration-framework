@@ -78,15 +78,267 @@
 | `AGENTS.md` | Codex 與通用 Agent 的 canonical root collaboration guide。 |
 | `CLAUDE.md` | 匯入 `AGENTS.md` 的 Claude Code project-memory 薄入口。 |
 
-## 在其他專案採用
+## 安裝與升級
 
-1. 從已發佈版本取得對應的可攜式 AI context 封包，而非直接複製此來源庫的全部內容。
-2. 依該版本的 release 與 migration guide 安裝或升級。
-3. 在目標專案先使用 `ai-context-init` 盤點真實檔案、設定與既有文件，建立 target-specific truth。
-4. 保留目標專案自己的需求、規格、架構、營運文件與決策；它們不應由此來源庫覆寫。
-5. 依工作類型選擇對應 skill，例如需求、規格、架構、實作、測試設計或 code review。
+請從已發佈版本取得對應的可攜式 AI context 封包，而非直接複製此來源庫。封包是 versioned framework payload，不是整個 repository 的覆蓋式快照。
 
-詳細的遷移與邊界規則，請見 [`migration-boundaries.md`](.ai/assets/skills/ai-context-init/references/migration-boundaries.md)。
+| 目標狀態 | 正確流程 |
+| --- | --- |
+| 第一次在空白或既有專案導入 framework | 依下方「乾淨安裝」用 package planner 套用，再使用 `ai-context-init`。 |
+| 已初始化且有可信的 provenance，並且 release guide 支援該升級路徑 | 依下方「版本升級」先用 package planner，再使用 `ai-context-upgrader`。 |
+| 沒有可信的來源版本、provenance 不完整，或版本跨度不受支援 | 停止自動升級；採人工 baseline reconciliation 或乾淨安裝式導入，不能猜測舊版。 |
+
+### 乾淨安裝
+
+#### 0. 先準備正確的目錄與證據
+
+將下載的 ZIP / tar.gz **解壓縮在目標專案之外**。`PACKAGE_ROOT` 指的是解壓後、包含 `requirements.txt`、`metadata/` 與 `payload/` 的 envelope root，不是 ZIP 檔所在目錄。
+
+```text
+~/gitproj/
+├── ai-context-package-0.7.0/
+│   └── ai-context-dotnet-backend-v0.7.0/  # PACKAGE_ROOT
+└── my-project/                            # TARGET_ROOT
+```
+
+不要將封包直接解壓縮到 `my-project`，也不要手動逐檔複製 `payload/` 內容。這會略過 checksum、套件選擇、reconciliation 與套用收據，並可能把 envelope metadata 誤放進目標專案。
+
+開始前請確認：
+
+1. 目標專案是 Git repository，worktree 乾淨，並已記錄目前 commit，方便回復。
+2. 已下載發布包及相鄰的 `.sha256` sidecar；先比對 archive 的 SHA-256 與 sidecar 中的值。
+3. 可使用 Python 3.11 或更新版本。
+4. 已閱讀目標版本的 `migration-guide.md`。即使是乾淨安裝，也要確認 optional provider 與 profile 的預設選擇。
+
+在 PowerShell 可用下列方式先設定路徑與檢視 checksum（兩個值必須相同）：
+
+```powershell
+$Archive = 'C:\Downloads\ai-context-dotnet-backend-v0.7.0.zip'
+$Checksum = 'C:\Downloads\ai-context-dotnet-backend-v0.7.0.zip.sha256'
+$PackageRoot = 'C:\gitproj\ai-context-package-0.7.0\ai-context-dotnet-backend-v0.7.0'
+$TargetRoot = 'C:\gitproj\my-project'
+
+Get-Content $Checksum
+(Get-FileHash $Archive -Algorithm SHA256).Hash
+```
+
+在 macOS 或 Linux，將上例路徑換成目錄後，可使用 `shasum -a 256 <archive>` 與 sidecar 的第一欄比較。
+
+#### 1. 先執行 dry-run，絕不直接覆蓋
+
+在 `PACKAGE_ROOT` 執行。`--plan-output` 是選用但建議的審查檔，且必須放在 package 與 target 以外的位置。
+
+```powershell
+Set-Location $PackageRoot
+python --version
+python -m pip install -r requirements.txt
+
+python .\payload\.ai\scripts\plan-ai-context-package-apply.py `
+  --package-root . `
+  --target-root $TargetRoot `
+  --plan-output "$env:TEMP\ai-context-v0.7.0-clean-install-plan.yaml"
+```
+
+在 Bash 或 zsh，可使用下列等效命令：
+
+```bash
+PACKAGE_ROOT="$HOME/gitproj/ai-context-package-0.7.0/ai-context-dotnet-backend-v0.7.0"
+TARGET_ROOT="$HOME/gitproj/my-project"
+PLAN_OUTPUT="/tmp/ai-context-v0.7.0-clean-install-plan.yaml"
+
+cd "$PACKAGE_ROOT"
+python3.11 --version
+python3.11 -m pip install -r requirements.txt
+python3.11 payload/.ai/scripts/plan-ai-context-package-apply.py \
+  --package-root . \
+  --target-root "$TARGET_ROOT" \
+  --plan-output "$PLAN_OUTPUT"
+```
+
+預設會選取 `dotnet-backend` profile；`repo-backlog` 是預設停用的 optional provider。只有目標 owner 明確需要它時，才在 **乾淨安裝** 的 dry-run 與 apply 同時加上 `--enable-provider repo-backlog`。不要因為升級遇到問題而臨時啟用它。
+
+仔細審查 plan 中的 selection、`add`、`replace`、`remove`、`rename` 與 `reconcile` 項目。此步驟只產生計畫，不會寫入目標專案。
+
+#### 2. 確認計畫後才套用
+
+只有在 dry-run 已確認、目標 worktree 仍是同一個乾淨起點時，才執行 apply。若 plan 列出多個 reconciliation 項目，重複加入 `--acknowledge`；確認某個 ID 代表略過該項目，**不代表**授權覆寫或刪除 target-owned 檔案。
+
+```powershell
+Set-Location $PackageRoot
+
+python .\payload\.ai\scripts\plan-ai-context-package-apply.py `
+  --package-root . `
+  --target-root $TargetRoot `
+  --apply `
+  --acknowledge 'OP-001' `
+  --acknowledge 'OP-002'
+```
+
+在 Bash 或 zsh：
+
+```bash
+cd "$PACKAGE_ROOT"
+python3.11 payload/.ai/scripts/plan-ai-context-package-apply.py \
+  --package-root . \
+  --target-root "$TARGET_ROOT" \
+  --apply \
+  --acknowledge 'OP-001' \
+  --acknowledge 'OP-002'
+```
+
+將範例中的 `OP-001`、`OP-002` 換成剛才 plan 實際列出的 operation ID；沒有需要 acknowledgement 的項目時，移除這兩行。套用後先閱讀：
+
+```powershell
+Get-Content "$TargetRoot\.dev\AI-CONTEXT-APPLY-PENDING.yaml"
+```
+
+這份 receipt 說明套用的 component、略過的 reconciliation 與來源證據；它尚未完成 target provenance 的最終初始化。
+
+#### 3. 在目標專案使用 `ai-context-init`
+
+接著以 `TARGET_ROOT` 開啟慣用的 AI Agent，讓 Agent 使用已安裝的 `ai-context-init` skill。它應依目標專案的真實檔案、solution、套件、設定與既有文件，整理 target-specific truth；不能把 framework source 的專案資訊當成目標事實，也不能在空專案中捏造產品架構。
+
+第一次可直接使用下列 prompt。先要求唯讀盤點；確認後再讓 Agent 寫入，會比「交給 AI 自行處理」更安全且可審查。
+
+```text
+請在目前的 target repository 完成 AI context 的乾淨安裝初始化。
+
+Package envelope root：<PACKAGE_ROOT>
+Target repository：<TARGET_ROOT>
+Requested release：<VERSION>
+
+第一階段只做唯讀檢查：
+1. 確認 target Git worktree 是否乾淨，並回報目前 commit。
+2. 確認 package root 包含 requirements.txt、metadata/ 與 payload/，並驗證 archive checksum 的證據。
+3. 執行 package planner 的 dry-run；plan output 必須放在 package 與 target 之外。
+4. 回報 component/profile/provider selection、所有 add/replace/remove/rename/reconcile 項目與 operation ID。
+5. 不得直接解壓縮或手動複製 payload 到 target，不得套用變更，不得建立或 finalize provenance。
+
+等待我確認 plan 後再繼續。
+```
+
+確認 plan 後，使用下列 follow-up prompt：
+
+```text
+我已確認套用計畫。只可從相同的乾淨 target commit 套用已審查的 package plan；
+只 acknowledgement 我明確列出的 operation ID，不能把 acknowledgement 當成覆寫或刪除授權。
+
+套用後請閱讀 .dev/AI-CONTEXT-APPLY-PENDING.yaml，接著使用 ai-context-init：
+- 根據 target repository 的檔案、solution、專案、套件、設定與既有文件建立 target-specific truth；
+- 保留 reusable framework rules；
+- 更新必要的 README、AGENTS、架構入口與 project config；
+- 不得在空專案捏造產品、endpoint、資料庫、broker、queue 或部署事實；
+- 只有在 repository、release、tag、full commit、component selection 與 import time 都有可信證據時，
+  才原子建立 .dev/ai-context/provenance.yaml 與 .dev/ai-context/customizations.yaml。
+
+回報已修改檔案、未確認的事實、驗證結果與下一步建議。
+```
+
+在實務上，建議將「framework package 套用」與「target-specific 文件同步」分開提交，讓回復與審查界線清楚。
+
+### 版本升級
+
+`ai-context-upgrader` 不是一鍵覆蓋工具，也不是第一次安裝的入口。它只適用於已初始化的 target，且必須先由新發布包的 planner 進行 version-aware 套用。
+
+開始前必須同時具備：
+
+1. 乾淨 target worktree 與可回復的目前 commit。
+2. 有效的 `.dev/ai-context/provenance.yaml` 與 `.dev/ai-context/customizations.yaml`；legacy `.dev/AI-CONTEXT-SOURCE.yaml` 只能作 read compatibility，不能與新 authority 並存。
+3. 舊版本發布包中對應的 `metadata/files.yaml`，以及新版本的完整發布包與 checksum。
+4. 新版本 migration guide 明確支援的來源版本與升級路徑。
+
+例如，v0.7.0 只直接支援「已發布 v0.6.0 inventory」作為 automatic / reviewed 升級來源；v0.5.0 或更舊的 target 必須先依各自發布版本的 migration guide 走到 v0.6.0。是否已經有 `ai-context-upgrader` skill 不是充分條件。
+
+#### 1. 以新 package 建立升級 dry-run
+
+下例假設 target 已從 v0.6.0 升級到 v0.7.0。從 **新** package root 執行，並傳入完全相符的 **舊** package inventory：
+
+```powershell
+$PackageRoot = 'C:\gitproj\ai-context-package-0.7.0\ai-context-dotnet-backend-v0.7.0'
+$TargetRoot = 'C:\gitproj\my-project'
+$PreviousFiles = 'C:\gitproj\ai-context-package-0.6.0\ai-context-dotnet-backend-v0.6.0\metadata\files.yaml'
+
+Set-Location $PackageRoot
+python -m pip install -r requirements.txt
+
+python .\payload\.ai\scripts\plan-ai-context-package-apply.py `
+  --package-root . `
+  --target-root $TargetRoot `
+  --previous-version 'v0.6.0' `
+  --previous-files $PreviousFiles `
+  --plan-output "$env:TEMP\ai-context-v0.6.0-to-v0.7.0-plan.yaml"
+```
+
+在 Bash 或 zsh：
+
+```bash
+PACKAGE_ROOT="$HOME/gitproj/ai-context-package-0.7.0/ai-context-dotnet-backend-v0.7.0"
+TARGET_ROOT="$HOME/gitproj/my-project"
+PREVIOUS_FILES="$HOME/gitproj/ai-context-package-0.6.0/ai-context-dotnet-backend-v0.6.0/metadata/files.yaml"
+PLAN_OUTPUT="/tmp/ai-context-v0.6.0-to-v0.7.0-plan.yaml"
+
+cd "$PACKAGE_ROOT"
+python3.11 -m pip install -r requirements.txt
+python3.11 payload/.ai/scripts/plan-ai-context-package-apply.py \
+  --package-root . \
+  --target-root "$TARGET_ROOT" \
+  --previous-version 'v0.6.0' \
+  --previous-files "$PREVIOUS_FILES" \
+  --plan-output "$PLAN_OUTPUT"
+```
+
+審查所有 `automatic-candidate`、`reconcile` 與 `exclude` 項目。planner 無法確認的內容必須保留給 owner decision；不要用猜測的版本或任意一份 `files.yaml` 讓流程繼續。
+
+#### 2. 套用 planner 後，再使用 `ai-context-upgrader`
+
+確認計畫後，以相同的 `--previous-version`、`--previous-files` 與已核准的 acknowledgement ID 重新執行帶有 `--apply` 的指令。閱讀 `.dev/AI-CONTEXT-APPLY-PENDING.yaml` 後，在 target repository 執行 `ai-context-upgrader` 的唯讀規劃。
+
+```powershell
+Set-Location $PackageRoot
+
+python .\payload\.ai\scripts\plan-ai-context-package-apply.py `
+  --package-root . `
+  --target-root $TargetRoot `
+  --previous-version 'v0.6.0' `
+  --previous-files $PreviousFiles `
+  --apply `
+  --acknowledge 'OP-001' `
+  --acknowledge 'OP-002'
+```
+
+```bash
+cd "$PACKAGE_ROOT"
+python3.11 payload/.ai/scripts/plan-ai-context-package-apply.py \
+  --package-root . \
+  --target-root "$TARGET_ROOT" \
+  --previous-version 'v0.6.0' \
+  --previous-files "$PREVIOUS_FILES" \
+  --apply \
+  --acknowledge 'OP-001' \
+  --acknowledge 'OP-002'
+```
+
+將範例 operation ID 換成 plan 中已核准的項目；沒有 reconciliation 時移除所有 `--acknowledge` 行。
+
+```text
+請使用 ai-context-upgrader，先以唯讀方式規劃此 target repository 從 <FROM_VERSION>
+升級到 <TO_VERSION>。新 package 已由 package planner 套用，套用收據位於
+.dev/AI-CONTEXT-APPLY-PENDING.yaml。
+
+請先：
+1. 驗證 .dev/ai-context/provenance.yaml、customizations ledger、發布版本、tag、full commit、
+   package metadata 與 migration guide；
+2. 以 base、incoming、target 做三方比較；
+3. 列出 automatic-candidate、reconcile、exclude，以及每項的理由；
+4. 產出依 customization ID 分組的 semantic reconciliation table、validation 與 rollback boundary。
+
+在我明確核准前，不得修改 target 檔案、不得覆寫 target-owned truth，
+也不得 finalize provenance 或 customizations ledger。
+```
+
+只有在 owner 已決定所有 reconciliation、必要驗證已成功，且獨立 post-upgrade audit 沒有阻擋問題後，才授權 Agent 套用接受的變更並原子更新 provenance。若 target 缺少可信 baseline，請要求 Agent 停在 unresolved-provenance inventory，改提出人工 reconciliation 或乾淨安裝式 baseline 計畫；不得強制執行自動升級。
+
+詳細的目標真相邊界，請見 [`migration-boundaries.md`](.ai/assets/skills/ai-context-init/references/migration-boundaries.md)；每個版本的支援來源以其 [release migration guide](.dev/releases/INDEX.MD) 為準。
 
 ## 發佈邊界
 
