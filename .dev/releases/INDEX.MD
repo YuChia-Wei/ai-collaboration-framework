@@ -17,7 +17,9 @@ _None._
 
 ## Planned Phase Contracts
 
-_None._
+| Release ID | Version | Status | Compatibility | Phase Contract |
+| --- | --- | --- | --- | --- |
+| [`REL-v0.7.0`](v0.7.0/release.yaml) | `v0.7.0` | `planned` | backward-compatible; exact automatic source v0.6.0 | [checks](v0.7.0/release-phase-checks.yaml) |
 
 ## Published Releases
 
