@@ -6,10 +6,10 @@
   "task_id": "REL070-001",
   "workflow_id": "2026-07-28-v0-7-0-release-preparation",
   "owner_skill": "ai-context-governance",
-  "title": "Prepare REL-v0.7.0 candidate through current-main pre-tag",
-  "status": "in_progress",
+  "title": "Prepare and finalize REL-v0.7.0 publication",
+  "status": "completed",
   "created_at": "2026-07-28T08:37:29+08:00",
-  "updated_at": "2026-07-28T10:14:35+08:00",
+  "updated_at": "2026-07-28T21:31:43+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/release-publication/release-publication-task.json",
   "model": "gpt-5.6-sol",
   "reasoning_effort": "high",
@@ -17,11 +17,10 @@
     "release_id": "REL-v0.7.0",
     "release_record": ".dev/releases/v0.7.0/release.yaml",
     "authorized_included_work": ["GOV-002", "GOV-003", "PKG-004", "REL-003"],
-    "authorization_source": "Owner decisions recorded in the 2026-07-28 conversation: promote release traceability as REL-003, freeze four-item scope, declare non-breaking exact-v0.6.0 upgrade compatibility, disclose limitations, and proceed through current-main pre-tag.",
+    "authorization_source": "Owner decisions recorded in the 2026-07-28 conversations: promote release traceability as REL-003, freeze four-item scope, declare non-breaking exact-v0.6.0 upgrade compatibility, proceed through current-main pre-tag, create and push the immutable annotated tag, and authorize release closeout after tagging.",
     "out_of_scope": [
-      "creating, moving, deleting, or pushing Git tags",
-      "creating a GitHub Release or publishing package artifacts",
-      "finalizing v0.7.0 as published",
+      "creating, moving, deleting, replacing, or pushing Git tags",
+      "mutating the successfully published GitHub Release or its assets",
       "creating or modifying GitHub Issues or Projects",
       "implementing GitHub provider adoption",
       "historical archive migration, legacy identifier retirement, STD-001, DEVWF-001, INIT-001, or OBS-001"
@@ -33,7 +32,38 @@
     "Build and validate deterministic candidate packages, exact v0.6.0 upgrade, authored release documents, and the candidate lifecycle contract.",
     "Obtain independent ai-context-auditor candidate verification and close the workflow evidence.",
     "Commit, push, open a ready pull request, pass required checks, and merge through the pull-request-only main policy.",
-    "Run the sanctioned current-main pre-tag command and stop before any tag or publication action."
+    "Run the sanctioned current-main pre-tag command and stop before any tag or publication action.",
+    "After the owner-created tag and successful hosted publication, validate immutable tag and publication evidence, reconcile registries, and close the workflow."
   ],
-  "results": null
+  "results": {
+    "summary": "REL-v0.7.0 passed candidate, PR integration, current-main pre-tag, owner-created annotated tag, hosted publication, and registry finalization without moving or recreating the immutable tag.",
+    "files_changed": [
+      ".dev/releases/v0.7.0/release.yaml",
+      ".dev/releases/v0.7.0/release-notes.md",
+      ".dev/releases/INDEX.MD",
+      ".dev/backlog/ROADMAP.md",
+      ".dev/backlog/INDEX.MD",
+      ".dev/backlog/items/GOV-002.yaml",
+      ".dev/backlog/items/GOV-003.yaml",
+      ".dev/backlog/items/PKG-004.yaml",
+      ".dev/backlog/items/REL-003.yaml",
+      ".dev/workflows/2026-07-28-v0-7-0-release-preparation/workflow.yaml",
+      ".dev/workflows/2026-07-28-v0-7-0-release-preparation/tasks/REL070-001.json",
+      ".dev/workflows/2026-07-28-v0-7-0-release-preparation/reports/finalization-report.md",
+      ".dev/workflows/INDEX.MD"
+    ],
+    "tests_run": [
+      "PR #15 hosted release gates passed",
+      "local tag-phase validation passed for annotated tag v0.7.0",
+      "publication run 30363397794 completed successfully",
+      "hosted publication and finalization validation passed with one stable Release and four governed assets",
+      "workflow artifact validation passed for 47 post-adoption workflows and 40 backlog items",
+      "AI context version validation passed for 10 release records",
+      "release-state tests passed 23/23; backlog release tests passed 6/6; release-note renderer tests passed 6/6",
+      "AI context validation passed"
+    ],
+    "finding_status": "verified",
+    "residual_risk": "No successor release is active; DEVWF-001, INIT-001, STD-001, and OBS-001 remain independently gated.",
+    "follow_up_needed": false
+  }
 }

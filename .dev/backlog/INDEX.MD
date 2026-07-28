@@ -7,7 +7,7 @@ artifact directories. See [README.MD](README.MD) for ownership and lifecycle.
 
 | Roadmap | Current Target | Status | Next Gate | Updated |
 | --- | --- | --- | --- | --- |
-| [ROADMAP.md](ROADMAP.md) | `v0.7.0` | `active` | `GOV-002`, `GOV-003`, `PKG-004`, and `REL-003` are resolved; the authorized release workflow is preparing the formal candidate through current-main pre-tag. | 2026-07-28 |
+| [ROADMAP.md](ROADMAP.md) | `unassigned` | `active` | v0.7.0 is published. Owner discussion must select any successor target; `DEVWF-001`, `INIT-001`, `STD-001`, and `OBS-001` remain independently gated. | 2026-07-28 |
 
 Source planning records are retained under [`plans/`](plans/); they inform the
 roadmap but do not replace it or a governed assessment.
@@ -29,17 +29,16 @@ roadmap but do not replace it or a governed assessment.
 
 ## Resolved / Awaiting Publication
 
-| Item | Priority | Completed In | Published In | Resolution | Workflow | Updated |
-| --- | --- | --- | --- | --- | --- | --- |
-| [GOV-002](items/GOV-002.yaml) | HIGH | `v0.7.0` | — | Provider-neutral lifecycle and repository-truth policy is projected downstream; source-local GitHub policy remains excluded and provider adoption remains deferred. | [`2026-07-27-v0-7-governance-release-readiness`](../workflows/2026-07-27-v0-7-governance-release-readiness/workflow.yaml) | 2026-07-27 |
-| [GOV-003](items/GOV-003.yaml) | HIGH | `v0.7.0` | — | The AI execution provenance and attribution policy is complete and independently verified; publication remains a separate future fact. | [`2026-07-27-ai-execution-provenance-policy`](../workflows/2026-07-27-ai-execution-provenance-policy/workflow.yaml) | 2026-07-27 |
-| [PKG-004](items/PKG-004.yaml) | HIGH | `v0.7.0` | — | Deterministic payload, source-history exclusion, portable-policy mapping, clean-install, and initialized-upgrade evidence pass. | [`2026-07-27-v0-7-governance-release-readiness`](../workflows/2026-07-27-v0-7-governance-release-readiness/workflow.yaml) | 2026-07-27 |
-| [REL-003](items/REL-003.yaml) | HIGH | `v0.7.0` | — | Prospective candidates fail closed unless backlog refs and generated Included Work match the canonical completed backlog set exactly while authored notes remain intact. | [`2026-07-28-v0-7-0-release-preparation`](../workflows/2026-07-28-v0-7-0-release-preparation/workflow.yaml) | 2026-07-28 |
+_None._
 
 ## Resolved
 
 | Item | Priority | Completed In | Published In | Resolution | Workflow | Updated |
 | --- | --- | --- | --- | --- | --- | --- |
+| [GOV-002](items/GOV-002.yaml) | HIGH | `v0.7.0` | `v0.7.0` | Provider-neutral lifecycle and repository-truth policy is projected downstream; source-local GitHub policy remains excluded and provider adoption remains deferred. | [`2026-07-27-v0-7-governance-release-readiness`](../workflows/2026-07-27-v0-7-governance-release-readiness/workflow.yaml) | 2026-07-28 |
+| [GOV-003](items/GOV-003.yaml) | HIGH | `v0.7.0` | `v0.7.0` | The AI execution provenance and attribution policy is complete, independently verified, and published. | [`2026-07-27-ai-execution-provenance-policy`](../workflows/2026-07-27-ai-execution-provenance-policy/workflow.yaml) | 2026-07-28 |
+| [PKG-004](items/PKG-004.yaml) | HIGH | `v0.7.0` | `v0.7.0` | Deterministic payload, source-history exclusion, portable-policy mapping, clean-install, and initialized-upgrade evidence pass. | [`2026-07-27-v0-7-governance-release-readiness`](../workflows/2026-07-27-v0-7-governance-release-readiness/workflow.yaml) | 2026-07-28 |
+| [REL-003](items/REL-003.yaml) | HIGH | `v0.7.0` | `v0.7.0` | Candidates fail closed unless backlog refs and generated Included Work match the canonical completed backlog set exactly while authored notes remain intact. | [`2026-07-28-v0-7-0-release-preparation`](../workflows/2026-07-28-v0-7-0-release-preparation/workflow.yaml) | 2026-07-28 |
 | [CI-001](items/CI-001.yaml) | HIGH | `v0.6.0` | `v0.6.0` | Candidate and publication workflows execute native Node.js 24 artifact actions with hosted package and publication evidence. | [`2026-07-24-v0-6-ci-lifecycle`](../workflows/2026-07-24-v0-6-ci-lifecycle/workflow.yaml) | 2026-07-24 |
 | [CI-002](items/CI-002.yaml) | HIGH | `v0.6.0` | `v0.6.0` | The four-workflow responsibility, trigger, concurrency, mutation, and release-phase lifecycle matrix is verified through publication. | [`2026-07-24-v0-6-ci-lifecycle`](../workflows/2026-07-24-v0-6-ci-lifecycle/workflow.yaml) | 2026-07-24 |
 | [EVAL-001](items/EVAL-001.yaml) | HIGH | `v0.6.0` | `v0.6.0` | Deterministic regression and the owner-selected Terra evaluation passed 8/8 critical and 8/8 full outcomes. | [`2026-07-24-v0-6-model-evaluation`](../workflows/2026-07-24-v0-6-model-evaluation/workflow.yaml) | 2026-07-24 |
