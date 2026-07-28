@@ -2,107 +2,102 @@
 
 [繁體中文](README.md)
 
-This file is the English translation of the canonical Traditional Chinese (Taiwan) human-facing repository identity in `README.md`.
+This repository is the source for a portable AI collaboration framework. It brings together software-development practices, reusable Agent context, skills, sub-agent prompts, and collaboration workflows. It currently retains and develops specialized .NET / C# backend capability while separating cross-stack collaboration rules into reusable shared content.
 
-This repository extracts, organizes, and evolves my software development knowledge together with reusable AI Agent context, skills, sub-agent prompts, and collaboration workflows.
+It is not a product application or a sample system for one product. Its purpose is to help teams bring curated and validated AI collaboration capability into new or existing repositories, while letting each target repository establish its own facts from its code, configuration, and documentation.
 
-It is not a product repository. It is a portable AI collaboration framework. When this context is copied into an existing repository or an empty new repository, run `ai-context-init` first as the repo initialization skill so target-repository facts replace template or historical source-project facts.
+> This root README is a human-facing guide to the source repository, not part of a portable release payload. Packages are built from an explicit allowlist that deliberately excludes root README files, so this source-repository introduction is never carried into a target repository.
 
-## Goals
+## What This Repository Is
 
-- Extract software development knowledge, including software engineering, system architecture, software architecture, DDD, Clean Architecture, CQRS, testing strategy, and .NET development experience.
-- Maintain AI Agent context, skills, sub-agent prompts, workflow rules, and validation rules.
-- Separate universal knowledge from tech-stack-specific knowledge.
-- Preserve the current non-universal capability set: .NET, C#, backend Web API, and DDD / CA / CQRS / message-driven backend development.
-- Remove or isolate historical source-project facts, converting them to templates or repo-init inputs when useful.
+| This repository is | This repository is not |
+| --- | --- |
+| A reusable AI collaboration knowledge base and framework source | A complete implementation of one product, microservice, or Web API |
+| A collection of shared software-development practices and specialized .NET backend capability | A mechanism for copying this source repository's requirements, specifications, workflows, or decisions into a target project as facts |
+| A governed source for portable AI context release packages | A raw source snapshot to install into a target repository |
 
-## Context Layers
+## Problems It Helps Solve
 
-### Universal AI Context
+- Give AI Agents consistent collaboration rules, document locations, and validation expectations before work begins.
+- Organize requirements, specifications, architecture, implementation, tests, reviews, and handoffs into routable skills and workflows.
+- Separate knowledge that is reusable across repositories from facts that only a target repository can establish, preventing historical-project context from contaminating a new project.
+- Retain .NET backend implementation, design, and review experience so discussions of DDD, Clean Architecture, CQRS, and message-driven backends start from a consistent baseline.
 
-Universal context should be reusable across languages, frameworks, and product types. Examples:
+## When It Fits
 
-- AI collaboration workflows and workflow gates
-- git commit policy
-- skill routing and sub-agent collaboration rules
-- system and software architecture principles
-- conceptual DDD, Clean Architecture, and CQRS guidance
-- requirement, spec, ADR, review, and validation governance
+This repository is useful for teams and individuals who want a maintainable AI collaboration practice, especially when they:
 
-### Non-Universal AI Context
+- introduce durable AI Agent context into a new or existing repository;
+- provide .NET / C# backend architecture and implementation conventions to multiple Agents;
+- need clear ownership and handoff boundaries for requirements, specifications, implementation, tests, and code review; or
+- want to preserve portable framework rules without overwriting a target repository's business, architecture, or operations facts.
 
-This repository's current non-universal context is `.NET backend`:
+## Quick Navigation
 
-- C# / .NET backend implementation standards
-- Web API / worker / consumer backend project structure
-- WolverineFx, Dapper, EF Core, PostgreSQL, RabbitMQ, and Kafka experience
-- DDD / CA / CQRS implementation planning and code review rules for .NET backend systems
+| Goal | Start here |
+| --- | --- |
+| Understand the source repository's architecture and scope | [`.dev/ARCHITECTURE.md`](.dev/ARCHITECTURE.md) |
+| Find available AI skills | [`.ai/assets/skills/README.MD`](.ai/assets/skills/README.MD) |
+| Read human-facing collaboration guides | [`.dev/guides/ai-collaboration-guides/INDEX.MD`](.dev/guides/ai-collaboration-guides/INDEX.MD) |
+| Help an Agent collaborate correctly in this source repository | [`AGENTS.md`](AGENTS.md) |
+| Obtain or upgrade a portable framework release | [`.dev/releases/INDEX.MD`](.dev/releases/INDEX.MD) |
 
-These assets belong under `.ai/assets/tech-stacks/dotnet-backend/` or must be clearly marked as dotnet-backend-specific.
+## Core Content
+
+### Shared AI Collaboration Content
+
+The shared content is intended for reuse across languages, frameworks, and product types. It covers:
+
+- AI collaboration workflows, workflow gates, and handoff rules.
+- Git commits, validation, requirements, specifications, ADRs, and review practices.
+- Skill routing, sub-agent collaboration, and traceable execution boundaries.
+- System and software architecture, along with conceptual guidance for DDD, Clean Architecture, and CQRS.
+
+### .NET Backend Capability
+
+The retained technology profile focuses on .NET / C# backend work, including:
+
+- Backend project structures for Web APIs, workers, and consumers.
+- Practical DDD, Clean Architecture, CQRS, Hexagonal Architecture, and message-driven backend guidance.
+- Common backend combinations involving WolverineFx, Dapper, EF Core, PostgreSQL, RabbitMQ, and Kafka.
+- Architecture design, implementation-slice, and code-review guidance for .NET backends.
 
 ## Main Directories
 
 | Path | Purpose |
 | --- | --- |
-| `.ai/` | Agent-facing reusable AI context, canonical assets, scripts, and skill specs |
-| `.ai/assets/shared/` | Universal prompt fragments, rules, and reusable materials |
-| `.ai/assets/tech-stacks/dotnet-backend/` | .NET C# backend Web API specific context |
-| `.ai/assets/skills/` | Canonical skill specs and skill registry |
-| `.ai/assets/sub-agent-role-prompts/` | Canonical source for sub-agent role prompts |
-| `.agents/skills/` | Codex/current runtime skill wrappers |
-| `.claude/skills/` | Claude-compatible skill wrappers |
-| `AGENTS.md` | Canonical root collaboration guide for Codex and general agents |
-| `CLAUDE.md` | Thin Claude Code project-memory entry that imports `AGENTS.md` |
-| `.dev/` | Human-facing governance, standards, guides, requirements, specs, and workflow artifacts |
-| `.dev/workflows/` | Cross-skill and sub-agent workflow plans, tasks, and review reports |
+| `.ai/` | Agent-facing reusable AI context, canonical assets, scripts, and skill specs. |
+| `.ai/assets/shared/` | Cross-stack prompt fragments, rules, and reusable materials. |
+| `.ai/assets/tech-stacks/dotnet-backend/` | .NET C# backend Web API-specific context. |
+| `.ai/assets/skills/` | Canonical skill specs and the skill registry. |
+| `.ai/assets/sub-agent-role-prompts/` | Canonical source for sub-agent role prompts. |
+| `.agents/skills/` | Codex and current-runtime skill wrappers. |
+| `.claude/skills/` | Claude-compatible skill wrappers. |
+| `.dev/` | Human-facing standards, guides, requirements, specifications, releases, and workflow records. |
+| `.dev/releases/` | Release identities, compatibility declarations, and migration guidance. |
+| `AGENTS.md` | Canonical root collaboration guide for Codex and general Agents. |
+| `CLAUDE.md` | Thin Claude Code project-memory entry that imports `AGENTS.md`. |
 
-GitHub Copilot repo-level wrappers are not currently provided. Their runtime paths are planned optional integrations, not entries in the current runtime catalog.
+## Adopting It in Another Repository
 
-## Important Skills
+1. Obtain the appropriate portable AI context package from a published release instead of copying this entire source repository.
+2. Install or upgrade it using that version's release and migration guide.
+3. In the target repository, use `ai-context-init` first to inventory real files, configuration, and existing documents, then establish target-specific truth.
+4. Preserve the target repository's own requirements, specifications, architecture, operations documents, and decisions; this source repository must not overwrite them.
+5. Choose the relevant skill for the work at hand, such as requirements, specifications, architecture, implementation, test design, or code review.
 
-- `software-development-orchestrator`
-  - Coordinates the software and product development lifecycle across requirements, specifications, architecture, tests, implementation, review, and compliance; owns development workflow-mode decisions, skill routing, validation checkpoints, and commit checkpoints, but not AI context or repo-initialization workflows.
-- `ai-context-governance`
-  - Governs context boundaries, language policy, skill routing, wrapper sync, AI documentation cleanup, and context moves.
-- `ai-context-auditor`
-  - Performs read-only AI context health and drift audits, excludes product code by default, and compares independent and repository-aware analysis. Results may remain transient in the conversation; create an audit workflow and persist a durable report only when repository storage is required.
-- `ai-context-init`
-  - Performs repo initialization. After this AI context is copied into an existing or empty target repository, use this skill first to inventory the target repo and refresh `AGENTS.md`, `.dev/`, and required `.ai/` entry docs.
-- `ddd-ca-hex-architect`
-  - Designs .NET backend DDD / Clean Architecture / Hexagonal / CQRS architecture.
-- `code-reviewer`
-  - Reviews .NET backend code.
+For detailed migration and boundary rules, see [`migration-boundaries.md`](.ai/assets/skills/ai-context-init/references/migration-boundaries.md).
 
-The canonical skill registry is `.ai/assets/skills/README.MD`.
+## Release Boundary
 
-## Language Policy
+This repository is both the maintenance source and the build source for framework packages, but those scopes intentionally contain different files:
 
-- Agent-facing context should prefer English to reduce token cost and improve cross-agent portability.
-- Human-facing documents should prefer Traditional Chinese for Taiwan usage.
-- Root README files are maintained in both languages:
-  - `README.md`
-  - `README.en.md`
-- See `.dev/standards/AI-CONTEXT-LANGUAGE-POLICY.md` for the full policy.
+- Root README files, source-repository Agent entry files, historical workflows, assessments, release records, and product placeholders are source-only information and are never included in a downstream package.
+- A portable package contains only reusable content named by the distribution profile's allowlist, with explicit exclusions providing a second protection boundary.
+- As a result, editing this README improves the readability of the source repository only. It neither changes a published release nor makes the README eligible for inclusion in future packages.
 
-## Using This Framework in Another Repo
+## Language
 
-When this context is copied into another repository:
-
-1. Copy the needed `.ai/`, `.dev/`, `.agents/`, `.claude/`, and agent entry files.
-2. Run `ai-context-init` immediately.
-3. Rebuild repo-specific truth from the target repo's files, solution, projects, packages, infrastructure config, and existing docs.
-4. Remove or rewrite source-repo-specific requirements, specs, operations docs, workflow artifacts, and ADRs.
-5. Preserve framework-level rules unless the target repo clearly requires a change.
-
-See `.ai/assets/skills/ai-context-init/references/migration-boundaries.md` for the detailed boundary.
-
-## Current Cleanup Direction
-
-Product-specific requirements, specs, operations truth, problem frames, project config, and frontend implementation assets have been removed from active paths or converted into templates.
-
-New content must preserve these boundaries:
-
-- reusable .NET backend context belongs under `.ai/assets/tech-stacks/dotnet-backend/`;
-- target-repository truth is created by `ai-context-init` from target evidence;
-- historical decisions remain only in explicitly labeled workflow or migration artifacts;
-- frontend and other languages remain context-placement exploration, not active profiles.
+- `README.md` is the Traditional Chinese (Taiwan) human-facing guide.
+- `README.en.md` is the corresponding English version.
+- Agent-facing context prefers English; human-facing guides may use Traditional Chinese (Taiwan). See [`.dev/standards/AI-CONTEXT-LANGUAGE-POLICY.md`](.dev/standards/AI-CONTEXT-LANGUAGE-POLICY.md) for the full policy.
