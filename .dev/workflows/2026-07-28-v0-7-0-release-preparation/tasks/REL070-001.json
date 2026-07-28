@@ -1,0 +1,39 @@
+{
+  "template_id": "ai-context-governance-release-publication-task",
+  "template_version": "1.1.0",
+  "template_created_at": "2026-07-24T13:35:00+08:00",
+  "template_updated_at": "2026-07-27T09:52:09+08:00",
+  "task_id": "REL070-001",
+  "workflow_id": "2026-07-28-v0-7-0-release-preparation",
+  "owner_skill": "ai-context-governance",
+  "title": "Prepare REL-v0.7.0 candidate through current-main pre-tag",
+  "status": "in_progress",
+  "created_at": "2026-07-28T08:37:29+08:00",
+  "updated_at": "2026-07-28T08:37:29+08:00",
+  "template_source": ".ai/assets/skills/ai-context-governance/templates/release-publication/release-publication-task.json",
+  "model": "gpt-5.6-sol",
+  "reasoning_effort": "high",
+  "scope": {
+    "release_id": "REL-v0.7.0",
+    "release_record": ".dev/releases/v0.7.0/release.yaml",
+    "authorized_included_work": ["GOV-002", "GOV-003", "PKG-004", "REL-003"],
+    "authorization_source": "Owner decisions recorded in the 2026-07-28 conversation: promote release traceability as REL-003, freeze four-item scope, declare non-breaking exact-v0.6.0 upgrade compatibility, disclose limitations, and proceed through current-main pre-tag.",
+    "out_of_scope": [
+      "creating, moving, deleting, or pushing Git tags",
+      "creating a GitHub Release or publishing package artifacts",
+      "finalizing v0.7.0 as published",
+      "creating or modifying GitHub Issues or Projects",
+      "implementing GitHub provider adoption",
+      "historical archive migration, legacy identifier retirement, STD-001, DEVWF-001, INIT-001, or OBS-001"
+    ]
+  },
+  "steps": [
+    "Register REL-003 and reconcile the exact four-item v0.7.0 backlog set.",
+    "Instantiate all six release-publication templates without copying a previous release instance.",
+    "Build and validate deterministic candidate packages, exact v0.6.0 upgrade, authored release documents, and the candidate lifecycle contract.",
+    "Obtain independent ai-context-auditor candidate verification and close the workflow evidence.",
+    "Commit, push, open a ready pull request, pass required checks, and merge through the pull-request-only main policy.",
+    "Run the sanctioned current-main pre-tag command and stop before any tag or publication action."
+  ],
+  "results": null
+}
