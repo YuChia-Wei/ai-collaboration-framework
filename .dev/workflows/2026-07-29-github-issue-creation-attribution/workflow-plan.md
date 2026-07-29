@@ -5,14 +5,14 @@
 - `workflow_id`: `2026-07-29-github-issue-creation-attribution`
 - `workflow_kind`: `ai-context-maintenance`
 - `owner_skill`: `ai-context-governance`
-- `branch`: `codex/2026-07-29-github-issue-creation-attribution`
+- `branch`: `codex/2026-07-29-github-issue-creation-attribution-continuation`
 - `base_branch`: `main`
-- `branch_segment`: `1`
-- `status`: `in_progress`
-- `current_phase`: `provider-contract-pr-integration`
+- `branch_segment`: `2`
+- `status`: `completed`
+- `current_phase`: `completed`
 - `artifact_root`: `.dev/workflows/2026-07-29-github-issue-creation-attribution`
 - `created_at`: `2026-07-29T22:21:37+08:00`
-- `updated_at`: `2026-07-29T22:30:00+08:00`
+- `updated_at`: `2026-07-29T22:40:09+08:00`
 
 ## Objective And Scope
 
@@ -35,8 +35,8 @@
 | Task | Purpose | Status |
 | --- | --- | --- |
 | `GHATTR-001` | Add and validate the formal Issue creation-attribution contract. | `completed` |
-| `GHATTR-002` | Merge the contract through PR-only `main`. | `in_progress` |
-| `GHATTR-003` | Update four canary Issue bodies and persist read-back evidence. | `pending` |
+| `GHATTR-002` | Merge the contract through PR-only `main`. | `completed` |
+| `GHATTR-003` | Update four canary Issue bodies and persist read-back evidence. | `completed` |
 
 ## Provider Boundary
 
@@ -48,13 +48,14 @@
 
 ## Resume Checkpoint
 
-- Last completed action: received owner approval to replace the visible trailer with a label and hidden detailed marker before push.
-- Current task: `GHATTR-002`.
-- Exact next action: commit, push, open the contract PR, and merge it through PR-only `main`.
-- Blockers: none for the contract; online canary updates wait for the contract PR to merge.
+- Last completed action: updated and exactly read back Issues #21-#24 with the new label and hidden marker while preserving state, close reason, assignees, and original closing comments.
+- Current task: none; `GHATTR-001` through `GHATTR-003` are completed.
+- Exact next action: commit and integrate this continuation receipt through PR-only `main`, then wait for owner approval before creating the remaining 37 Issues or Project.
+- Blockers: none for attribution; the remaining migration is deliberately owner-gated.
 
 ## Branch Lifecycle
 
 | Segment | Branch | Base | Checkpoint Type | Commit | Remote / Target | Recorded At | Reason | Resume Branch / Action |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| 1 | `codex/2026-07-29-github-issue-creation-attribution` | `main@27bc777` | validated implementation | pending | local | `2026-07-29T22:30:00+08:00` | Add the owner-approved label and hidden marker contract before mutating live canaries. | Amend the unpushed checkpoint, push, open PR, and merge. |
+| 1 | `codex/2026-07-29-github-issue-creation-attribution` | `main@27bc777` | checkpoint merge | `2968aad35b611006fcadc222ac4b2d31f499e46f` | PR #25 / `main@e83b759` | `2026-07-29T22:34:49+08:00` | Integrate the provider contract before mutating live canaries. | Resume on a continuation branch from merged main. |
+| 2 | `codex/2026-07-29-github-issue-creation-attribution-continuation` | `main@e83b759` | validated closure checkpoint | pending | local | `2026-07-29T22:40:09+08:00` | Update only the four existing canaries and persist exact evidence. | Commit, push, open the continuation receipt PR, and merge. |

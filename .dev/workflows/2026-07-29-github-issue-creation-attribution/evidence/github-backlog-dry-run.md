@@ -7,8 +7,8 @@ not authorize Stage B.
 
 - Migration: `github-backlog-migration-2026-07`
 - Repository: `YuChia-Wei/ai-collaboration-prompts-dotnet-backend`
-- Canonical revision: `27bc777972506d391a0f0d66d1856570099c57fc`
-- Deterministic generated-at source: `2026-07-29T22:06:45+08:00`
+- Canonical revision: `e83b759c8cf1deeb11af5ae748359f6a4c63b200`
+- Deterministic generated-at source: `2026-07-29T22:34:48+08:00`
 - Total: `41`
 - Desired open / closed: `5 / 36`
 - Story / Enabler: `11 / 30`

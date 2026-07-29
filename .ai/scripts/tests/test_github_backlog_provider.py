@@ -119,13 +119,22 @@ class GitHubBacklogProviderTests(unittest.TestCase):
         for keyword in ("Closes #", "Fixes #", "Resolves #"):
             self.assertNotIn(keyword, template)
 
-    def test_gwt_014_given_stage_a_mapping_then_provider_receipt_is_empty_and_non_authoritative(self) -> None:
+    def test_gwt_014_given_verified_canaries_then_provider_receipt_records_only_the_four_mappings(self) -> None:
         receipt = PROVIDER.load_yaml_mapping(
             REPO_ROOT / ".dev/backlog/provider-mappings/github-issues.yaml"
         )
-        self.assertEqual("stage-a-contract-only", receipt["stage"])
-        self.assertIsNone(receipt["source_revision"])
-        self.assertEqual([], receipt["items"])
+        self.assertEqual("stage-b-in-progress", receipt["stage"])
+        self.assertEqual(
+            "e83b759c8cf1deeb11af5ae748359f6a4c63b200",
+            receipt["source_revision"],
+        )
+        self.assertEqual(
+            {"DEVWF-001", "AIC-007", "R042-005", "UPG-001"},
+            {item["backlog_id"] for item in receipt["items"]},
+        )
+        self.assertTrue(all(item["read_back"]["labels_match"] for item in receipt["items"]))
+        self.assertTrue(all(item["read_back"]["markers_match"] for item in receipt["items"]))
+        self.assertIsNone(receipt["project"]["number"])
 
     def test_gwt_015_given_source_provider_tools_then_distribution_profile_excludes_them(self) -> None:
         profile = PROVIDER.load_yaml_mapping(
