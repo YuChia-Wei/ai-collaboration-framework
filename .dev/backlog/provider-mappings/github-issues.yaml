@@ -1,0 +1,13 @@
+schema_version: "1.0"
+provider: "github"
+repository: "YuChia-Wei/ai-collaboration-prompts-dotnet-backend"
+migration_id: "github-backlog-migration-2026-07"
+stage: "stage-a-contract-only"
+source_revision: null
+generated_at: null
+project:
+  number: null
+  node_id: null
+  url: null
+items: []
+

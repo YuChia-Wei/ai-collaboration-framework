@@ -1,0 +1,63 @@
+{
+  "template_id": "ai-context-governance-remediation-task",
+  "template_version": "1.1.0",
+  "template_created_at": "2026-07-10T18:22:49+08:00",
+  "template_updated_at": "2026-07-27T09:52:09+08:00",
+  "task_id": "GHBP-001",
+  "workflow_id": "2026-07-29-github-backlog-provider-adoption",
+  "owner_skill": "ai-context-governance",
+  "status": "completed",
+  "created_at": "2026-07-29T21:27:05+08:00",
+  "updated_at": "2026-07-29T21:48:26+08:00",
+  "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
+  "model": "gpt-5.6-sol",
+  "reasoning_effort": "high",
+  "finding_ids": [],
+  "scope": {
+    "target": "Source-only GitHub Issues and Projects provider contract for the repository backlog.",
+    "files": [
+      ".dev/backlog/providers/**",
+      ".dev/backlog/provider-mappings/**",
+      ".github/ISSUE_TEMPLATE/**",
+      ".github/PULL_REQUEST_TEMPLATE.md"
+    ],
+    "constraints": [
+      "Preserve portable backlog IDs independently from GitHub issue numbers.",
+      "Keep repository workflow execution independent from tracker availability.",
+      "Do not create or mutate online provider resources in Stage A."
+    ],
+    "non_goals": [
+      "Online GitHub configuration",
+      "Changing the 41 canonical backlog items"
+    ]
+  },
+  "execution": {
+    "steps": [
+      "Define the source-of-truth and Story Pack projection boundary.",
+      "Declare labels, Project fields, views, low-risk automation, classifications, and migration gates.",
+      "Add the Proposal form and durable provider mapping schema."
+    ],
+    "validation": [
+      "Parse YAML and JSON artifacts.",
+      "Validate exact label, field, view, lifecycle, and receipt contracts."
+    ],
+    "last_completed_step": "Defined the source-of-truth, Story Pack projection, Project, Issue, Proposal, label, field, view, automation, lifecycle, and receipt contracts.",
+    "next_action": "Completed; GHBP-002 owns the executable projection."
+  },
+  "results": {
+    "summary": "The source-only GitHub provider contract preserves repository workflow authority and declares all approved collaboration semantics without online mutation.",
+    "files_changed": [
+      ".dev/backlog/providers/**",
+      ".dev/backlog/provider-mappings/**",
+      ".github/ISSUE_TEMPLATE/**",
+      ".github/pull_request_template.md"
+    ],
+    "tests_run": [
+      "YAML and JSON parse",
+      "python .ai/scripts/tests/test_github_backlog_provider.py"
+    ],
+    "finding_status": "addressed",
+    "residual_risk": "Stage B remains unauthorized.",
+    "follow_up_needed": true
+  }
+}

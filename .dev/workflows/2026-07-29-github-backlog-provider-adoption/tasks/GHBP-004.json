@@ -1,0 +1,63 @@
+{
+  "template_id": "ai-context-governance-remediation-task",
+  "template_version": "1.1.0",
+  "template_created_at": "2026-07-10T18:22:49+08:00",
+  "template_updated_at": "2026-07-27T09:52:09+08:00",
+  "task_id": "GHBP-004",
+  "workflow_id": "2026-07-29-github-backlog-provider-adoption",
+  "owner_skill": "ai-context-governance",
+  "status": "in_progress",
+  "created_at": "2026-07-29T21:27:05+08:00",
+  "updated_at": "2026-07-29T21:48:26+08:00",
+  "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
+  "model": "gpt-5.6-sol",
+  "reasoning_effort": "high",
+  "finding_ids": [],
+  "scope": {
+    "target": "Stage A validation, closure, and PR handoff.",
+    "files": [
+      ".dev/workflows/2026-07-29-github-backlog-provider-adoption/**",
+      ".dev/workflows/INDEX.MD"
+    ],
+    "constraints": [
+      "Do not claim online adoption.",
+      "Keep Stage B blocked on merged main plus a fresh owner-approved dry-run.",
+      "Use PR-only main integration."
+    ],
+    "non_goals": [
+      "Merging the PR",
+      "Creating GitHub Issues or Project resources"
+    ]
+  },
+  "execution": {
+    "steps": [
+      "Run focused and aggregate validation.",
+      "Record results and close the local Stage A workflow.",
+      "Commit, push, and open the Stage A PR."
+    ],
+    "validation": [
+      "Run repository workflow and package gates.",
+      "Run commit policy validation for the workflow range."
+    ],
+    "last_completed_step": "Completed the focused and aggregate local validation matrix, including the successful repository-local Temp reruns for Windows fixtures.",
+    "next_action": "Create the implementation checkpoint, finalize closure evidence, push, and open the Stage A PR."
+  },
+  "results": {
+    "summary": "All Stage A implementation and validation work is complete; commit and PR handoff remain.",
+    "files_changed": [],
+    "tests_run": [
+      "python .ai/scripts/validate-workflow-artifacts.py",
+      "python .ai/scripts/validate-ai-context.py",
+      "python .ai/scripts/validate-source-governance.py",
+      "python .ai/scripts/tests/test_governance_workflow_contract.py",
+      "python .ai/scripts/tests/test_workflow_lifecycle_contract.py",
+      "python .ai/scripts/tests/test_profile_projection_contract.py",
+      "python .ai/scripts/tests/test_repository_config_contract.py",
+      "python .ai/scripts/tests/test_github_workflow_contract.py",
+      "git diff --check"
+    ],
+    "finding_status": "addressed",
+    "residual_risk": "No live GitHub read-back exists because Stage A forbids online provider mutation.",
+    "follow_up_needed": true
+  }
+}

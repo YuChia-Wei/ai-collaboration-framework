@@ -1,0 +1,55 @@
+name: "Proposal / 提案"
+description: "Suggest an outcome or improvement. English and Traditional Chinese (Taiwan) responses are both welcome."
+title: "[Proposal] "
+labels:
+  - "kind:proposal"
+body:
+  - type: "markdown"
+    attributes:
+      value: |
+        Thank you for helping improve the AI Collaboration Framework.
+
+        Please describe the desired outcome rather than an implementation task. English or Traditional Chinese (Taiwan) is welcome. Maintainers may ask questions, decline, defer, or promote an accepted proposal into a separate canonical Story or Enabler Issue. Comments do not automatically change repository requirements or authorize implementation.
+  - type: "textarea"
+    id: "problem"
+    attributes:
+      label: "Problem or opportunity / 問題或機會"
+      description: "What is difficult, missing, risky, or worth improving?"
+      placeholder: "Describe the current situation and who is affected."
+    validations:
+      required: true
+  - type: "textarea"
+    id: "outcome"
+    attributes:
+      label: "Desired outcome / 期望成果"
+      description: "What should become possible or measurably better?"
+      placeholder: "Describe the outcome without prescribing detailed workflow tasks."
+    validations:
+      required: true
+  - type: "textarea"
+    id: "context"
+    attributes:
+      label: "Context and examples / 背景與範例"
+      description: "Links, examples, constraints, affected repositories, or related work. Do not include secrets."
+    validations:
+      required: false
+  - type: "dropdown"
+    id: "affected_scope"
+    attributes:
+      label: "Likely scope / 可能範圍"
+      description: "A maintainer will make the final classification."
+      options:
+        - "Not sure / 不確定"
+        - "Portable framework or downstream use / 可攜式框架或下游使用"
+        - "This source repository only / 僅限本 repo"
+        - "Both / 兩者皆有"
+    validations:
+      required: true
+  - type: "checkboxes"
+    id: "conduct"
+    attributes:
+      label: "Submission check / 送出確認"
+      options:
+        - label: "I have not included secrets or private credentials. / 我沒有附上秘密或私人憑證。"
+          required: true
+

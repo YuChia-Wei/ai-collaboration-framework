@@ -5,7 +5,7 @@
 - Key changes (services, projects, endpoints, contracts)
 
 ## Related Issues
-- Closes #
+- Refs #
 
 ## Screenshots / Evidence (optional)
 - e.g., Scalar UI, Kafka/RabbitMQ UI, console output

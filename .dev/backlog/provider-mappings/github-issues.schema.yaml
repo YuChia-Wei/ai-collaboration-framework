@@ -1,0 +1,87 @@
+$schema: "https://json-schema.org/draft/2020-12/schema"
+$id: "https://github.com/YuChia-Wei/ai-collaboration-prompts-dotnet-backend/blob/main/.dev/backlog/provider-mappings/github-issues.schema.yaml"
+title: "GitHub backlog provider mapping receipt"
+type: "object"
+additionalProperties: false
+required:
+  - schema_version
+  - provider
+  - repository
+  - migration_id
+  - stage
+  - source_revision
+  - generated_at
+  - project
+  - items
+properties:
+  schema_version:
+    const: "1.0"
+  provider:
+    const: "github"
+  repository:
+    type: "string"
+    pattern: "^[^/]+/[^/]+$"
+  migration_id:
+    type: "string"
+    minLength: 1
+  stage:
+    enum:
+      - "stage-a-contract-only"
+      - "stage-b-in-progress"
+      - "stage-b-read-back-complete"
+  source_revision:
+    type: ["string", "null"]
+    pattern: "^[0-9a-f]{40}$"
+  generated_at:
+    type: ["string", "null"]
+    format: "date-time"
+  project:
+    type: "object"
+    additionalProperties: false
+    required: ["number", "node_id", "url"]
+    properties:
+      number: {type: ["integer", "null"], minimum: 1}
+      node_id: {type: ["string", "null"]}
+      url: {type: ["string", "null"], format: "uri"}
+  items:
+    type: "array"
+    items:
+      type: "object"
+      additionalProperties: false
+      required:
+        - backlog_id
+        - source_path
+        - source_sha256
+        - issue_number
+        - issue_node_id
+        - issue_url
+        - issue_state
+        - close_reason
+        - project_item_id
+        - created_at
+        - updated_at
+        - read_back
+      properties:
+        backlog_id: {type: "string", pattern: "^[A-Z][A-Z0-9]*-[0-9]{3}$"}
+        source_path: {type: "string"}
+        source_sha256: {type: "string", pattern: "^[0-9a-f]{64}$"}
+        issue_number: {type: "integer", minimum: 1}
+        issue_node_id: {type: "string", minLength: 1}
+        issue_url: {type: "string", format: "uri"}
+        issue_state: {enum: ["open", "closed"]}
+        close_reason: {type: ["string", "null"], enum: ["completed", "not planned", null]}
+        project_item_id: {type: ["string", "null"]}
+        created_at: {type: "string", format: "date-time"}
+        updated_at: {type: "string", format: "date-time"}
+        read_back:
+          type: "object"
+          additionalProperties: false
+          required: ["verified_at", "title_matches", "markers_match", "labels_match", "state_matches"]
+          properties:
+            verified_at: {type: "string", format: "date-time"}
+            title_matches: {type: "boolean"}
+            markers_match: {type: "boolean"}
+            labels_match: {type: "boolean"}
+            state_matches: {type: "boolean"}
+            notes: {type: ["string", "null"]}
+
