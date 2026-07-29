@@ -16,10 +16,10 @@
 - `base_branch`: `main`
 - `branch_segment`: `1`
 - `status`: `in_progress`
-- `current_phase`: `source-remediation-validation`
+- `current_phase`: `source-verification-complete`
 - `artifact_root`: `.dev/workflows/2026-07-29-v0-7-0-public-release-body-correction`
 - `created_at`: `2026-07-29T15:08:23+08:00`
-- `updated_at`: `2026-07-29T15:56:46+08:00`
+- `updated_at`: `2026-07-29T16:06:15+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md`
 - `template_version`: `1.2.0`
 
@@ -96,8 +96,10 @@
   `2026-07-20-v0-4-2-release-finalization-hotfix`.
 - Remediation report:
   `.dev/workflows/2026-07-29-v0-7-0-public-release-body-correction/reports/remediation-report.md`
-- Verification assessment: allocate a new assessment during independent
-  post-remediation verification; do not invent its ID during bootstrap.
+- Verification assessment: ASM-20260729-001 independently confirms the source
+  renderer, validator, and package boundary remediation. It retains the
+  still-stale hosted body as active VFY-004 until the authorized online
+  correction and invariant read-back complete.
 - Tasks:
   `.dev/workflows/2026-07-29-v0-7-0-public-release-body-correction/tasks/`
 
@@ -146,16 +148,14 @@
 
 ## Resume Checkpoint
 
-- Last completed action: Verified the fresh-session checkpoint, froze the live
-  Release, annotated-tag, peeled-commit, and four-asset digest baseline, then
-  implemented and focused-tested the phase-correct source-only renderer and
-  finalization-validator contract. The new hosted finalization check now fails
-  as expected against the still-stale candidate body; no GitHub data changed.
+- Last completed action: Committed the source-only published-phase contract at
+  cbe1553f0fc30a856a35e85ec17ecd8cd91838d2 and independent verification
+  ASM-20260729-001 at 7b782c3. The auditor confirmed source remediation while
+  retaining the public body as an active external correction.
 - Current task: `V070BODY-001`
-- Exact next action: Complete the declared source validation bundle, commit the
-  source correction so the independent verification assessment can pin its
-  subject revision, then create the read-only `ai-context-auditor` verification
-  assessment on this workflow branch.
+- Exact next action: Update and commit governance-owned remediation state, run
+  the exact source commit-range and aggregate gate once, then push and create a
+  ready pull request for source integration.
 - Validation already completed: repository `main` was clean and synchronized at
   `b2f1354f85ba1cee4acb497820d57a0d35547ef8` before branch creation. The first
   real critical gate at bootstrap commit
@@ -166,9 +166,9 @@
   passed 44/44 required critical checks, and the hosted finalization phase
   check passed. The latter reflects the existing validator contract and does
   not resolve the known stale-body semantic finding.
-- Git state: source-only renderer, validator, test, and bounded workflow
-  evidence changes are uncommitted on the dedicated branch; the published tag,
-  Release identity, and assets remain read-only baseline facts.
+- Git state: source contract and independent verification are committed on the
+  dedicated branch. Governance closeout metadata remains to be committed; the
+  published tag, Release identity, and assets remain read-only baseline facts.
 - Branch history and checkpoint handoffs: segment 1 started from synchronized
   `main`; a local fresh-session checkpoint will be recorded before transfer.
 - Blockers or unresolved decisions: none for the bounded body correction. Stop

@@ -8,7 +8,7 @@
   "owner_skill": "ai-context-governance",
   "status": "in_progress",
   "created_at": "2026-07-29T15:08:23+08:00",
-  "updated_at": "2026-07-29T15:56:46+08:00",
+  "updated_at": "2026-07-29T16:06:15+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-5.6-sol",
   "reasoning_effort": "high",
@@ -17,7 +17,11 @@
     "V070-VALIDATOR-PHASE-002",
     "V070-PACKAGE-BOUNDARY-003",
     "V070-RELEASE-ALLOCATION-004",
-    "V070-README-BASELINE-005"
+    "V070-README-BASELINE-005",
+    "ASM-20260729-001#VFY-001",
+    "ASM-20260729-001#VFY-002",
+    "ASM-20260729-001#VFY-003",
+    "ASM-20260729-001#VFY-004"
   ],
   "scope": {
     "target": "Source-repository v0.7.0 public Release body and source-only release rendering/validation contract",
@@ -26,10 +30,13 @@
       ".ai/scripts/validate-ai-context-release-state.py",
       ".ai/scripts/tests/test_ai_context_release_state.py",
       ".ai/scripts/tests/test_release_notes_renderer.py",
+      ".ai/scripts/tests/test_ai_context_packaging.py",
       ".github/workflows/publish-release.yml",
       ".dev/releases/v0.7.0/release-notes.md",
       "README.en.md",
-      ".dev/workflows/2026-07-29-v0-7-0-public-release-body-correction/**"
+      ".dev/assessments/ASM-20260729-001/**",
+      ".dev/workflows/2026-07-29-v0-7-0-public-release-body-correction/**",
+      ".dev/workflows/INDEX.MD"
     ],
     "constraints": [
       "Modify only the public v0.7.0 GitHub Release body after the source contract is integrated.",
@@ -73,11 +80,11 @@
       "one applicable aggregate critical gate for each exact handoff commit",
       "hosted Release read-back plus unchanged tag object, peeled commit, asset names, and asset digests"
     ],
-    "last_completed_step": "Validated the fresh-session handoff, froze the hosted v0.7.0 Release body, Release identity, annotated tag object, peeled commit, and four asset digests, then implemented the source-only published-phase renderer and fail-closed finalization validator. The new hosted finalization validation correctly fails against the stale candidate-only body.",
-    "next_action": "Complete declared source validation, commit the source correction, then create the independent ai-context-auditor verification assessment on this workflow branch."
+    "last_completed_step": "Committed the source-only published-phase contract at cbe1553f0fc30a856a35e85ec17ecd8cd91838d2 and independent auditor verification ASM-20260729-001 at 7b782c3. The auditor confirms source remediation while retaining the public body as an active external correction.",
+    "next_action": "Commit governance-owned remediation state, run the exact source commit-range and aggregate gate once, then push and create a ready pull request for source integration."
   },
   "results": {
-    "summary": "The hosted v0.7.0 baseline is frozen and the source-only phase-correct renderer/validator remediation is implemented and focused-tested; no GitHub Release mutation has occurred.",
+    "summary": "The hosted v0.7.0 baseline is frozen; source-only phase-correct renderer, validator, and payload boundary remediation are independently verified. No GitHub Release mutation has occurred.",
     "files_changed": [
       "README.en.md",
       ".ai/scripts/render-ai-context-release-notes.py",
@@ -85,8 +92,10 @@
       ".ai/scripts/tests/test_release_notes_renderer.py",
       ".ai/scripts/tests/test_ai_context_release_state.py",
       ".ai/scripts/tests/test_ai_context_packaging.py",
+      ".dev/assessments/ASM-20260729-001/**",
       ".dev/workflows/2026-07-29-v0-7-0-public-release-body-correction/evidence/V070BODY-001-hosted-before.json",
-      ".dev/workflows/2026-07-29-v0-7-0-public-release-body-correction/evidence/V070BODY-001-published-validator-negative.json"
+      ".dev/workflows/2026-07-29-v0-7-0-public-release-body-correction/evidence/V070BODY-001-published-validator-negative.json",
+      ".dev/workflows/2026-07-29-v0-7-0-public-release-body-correction/reports/remediation-report.md"
     ],
     "tests_run": [
       "critical gate at bootstrap commit: failed because current-main README bilingual ownership and inline-code parity had drifted; owner authorized the minimal source-only prerequisite repair",
@@ -97,7 +106,8 @@
       "hosted baseline freeze: passed read-only; captured Release identity, annotated tag object, peeled commit, four asset digests, and stale body SHA-256",
       "published renderer and release-state focused suites: passed 8/8 and 24/24 after TEMP/TMP were scoped to workspace .tmp",
       "published finalization validator against live hosted body: expected-fail; it rejected the stale candidate-only body",
-      "source-only package projection and GitHub workflow contract suites: passed"
+      "source-only package projection and GitHub workflow contract suites: passed",
+      "independent ai-context-auditor verification ASM-20260729-001: finalized with VFY-001 through VFY-003 resolved and VFY-004 retained as active external correction"
     ],
     "finding_status": "partially-resolved",
     "residual_risk": "The public v0.7.0 body still contains candidate-only not-published wording until the source correction is integrated, the exact published body is reviewed, and the authorized online correction is completed and verified.",
