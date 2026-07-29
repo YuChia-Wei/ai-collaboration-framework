@@ -1,25 +1,25 @@
 {
   "template_id": "ai-context-governance-remediation-task",
   "template_version": "1.1.0",
-  "task_id": "GHBM-003",
+  "task_id": "GHBM-004",
   "workflow_id": "2026-07-29-github-backlog-migration-stage-b",
   "owner_skill": "ai-context-governance",
-  "status": "completed",
-  "created_at": "2026-07-29T23:04:30+08:00",
+  "status": "in_progress",
+  "created_at": "2026-07-29T23:07:11+08:00",
   "updated_at": "2026-07-29T23:07:11+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-5.6-sol",
   "reasoning_effort": "high",
   "scope": {
-    "target": "Remaining Issue migration batch 2.",
+    "target": "Remaining Issue migration batch 3.",
     "files": [
       ".dev/backlog/provider-mappings/github-issues.yaml",
       ".dev/workflows/2026-07-29-github-backlog-migration-stage-b/**"
     ],
     "constraints": [
-      "Apply only ENF-001 through PKG-001 in the declared batch order.",
+      "Apply only PKG-002 through REL-003 in the declared batch order.",
       "Stop on the first mismatch and retain successful mappings.",
-      "Do not begin batch 3 until all ten read back exactly."
+      "Do not begin batch 4 until all ten read back exactly."
     ]
   },
   "execution": {
@@ -32,21 +32,14 @@
     "validation": [
       "All ten Issue identities, bodies, markers, labels, assignees, states, close reasons, and comments match."
     ],
-    "last_completed_step": "Created and exactly verified ENF-001 through PKG-001 as Issues #37-#46.",
-    "next_action": "Proceed to GHBM-004 batch 3."
+    "last_completed_step": "Batch 2 completed 10/10.",
+    "next_action": "Apply PKG-002 as the first batch 3 item."
   },
   "results": {
-    "summary": "Batch 2 completed 10/10 with two open outcomes and eight completed historical outcomes exactly preserved.",
-    "files_changed": [
-      ".dev/backlog/provider-mappings/github-issues.yaml",
-      ".dev/workflows/2026-07-29-github-backlog-migration-stage-b/evidence/issue-batch-2-readback.json",
-      ".dev/workflows/2026-07-29-github-backlog-migration-stage-b/**"
-    ],
-    "tests_run": [
-      "GitHub Issue exact read-back: 10/10 passed for Issues #37-#46"
-    ],
-    "finding_status": "addressed",
-    "residual_risk": "Batches 3-4 and Project adoption remain pending.",
+    "summary": "In progress.",
+    "tests_run": [],
+    "finding_status": "in_progress",
+    "residual_risk": "Batch 3 has not started.",
     "follow_up_needed": true
   }
 }
