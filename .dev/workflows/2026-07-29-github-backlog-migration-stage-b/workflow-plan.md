@@ -9,10 +9,10 @@
 - `base_branch`: `main`
 - `branch_segment`: `1`
 - `status`: `in_progress`
-- `current_phase`: `issue-batch-4`
+- `current_phase`: `project-creation-and-fields`
 - `artifact_root`: `.dev/workflows/2026-07-29-github-backlog-migration-stage-b`
 - `created_at`: `2026-07-29T22:58:40+08:00`
-- `updated_at`: `2026-07-29T23:09:42+08:00`
+- `updated_at`: `2026-07-29T23:13:11+08:00`
 
 ## Objective And Scope
 
@@ -52,8 +52,8 @@
 | `GHBM-002` | Apply and read back remaining batch 1. | `completed` |
 | `GHBM-003` | Apply and read back remaining batch 2. | `completed` |
 | `GHBM-004` | Apply and read back remaining batch 3. | `completed` |
-| `GHBM-005` | Apply and read back remaining batch 4. | `in_progress` |
-| `GHBM-006` | Verify all 41 mappings, create the Project, fields, and item values. | `pending` |
+| `GHBM-005` | Apply and read back remaining batch 4. | `completed` |
+| `GHBM-006` | Verify all 41 mappings, create the Project, fields, and item values. | `in_progress` |
 | `GHBM-007` | Configure supported views and automation, perform complete provider read-back, and close the workflow. | `pending` |
 
 ## Stop And Recovery Rules
@@ -67,9 +67,9 @@
 
 ## Resume Checkpoint
 
-- Last completed action: created and exactly read back batch 3 as Issues #47-#56; all ten are closed as completed with one immutable historical comment each.
-- Current task: `GHBM-005`.
-- Exact next action: create and read back the final remaining batch, recording each successful provider mapping immediately.
+- Last completed action: created and exactly read back batch 4 as Issues #57-#63, then independently verified all 41 mappings with 5 open, 36 closed, and no unrecorded formal Issue.
+- Current task: `GHBM-006`.
+- Exact next action: create the public Project, approved fields, add all 41 Issues, and set projected values.
 - Blockers: none; Project views and automation remain capability-checked rather than assumed.
 
 ## Branch Lifecycle

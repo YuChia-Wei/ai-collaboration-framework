@@ -8,7 +8,7 @@ task-level progress.
 
 | Workflow | Title | Owner | Status | Updated | Entry Point |
 | --- | --- | --- | --- | --- | --- |
-| [`2026-07-29-github-backlog-migration-stage-b`](2026-07-29-github-backlog-migration-stage-b/workflow.yaml) | Complete GitHub Backlog Migration And Project Adoption | `ai-context-governance` | `in_progress` | `2026-07-29T23:09:42+08:00` | [plan](2026-07-29-github-backlog-migration-stage-b/workflow-plan.md) |
+| [`2026-07-29-github-backlog-migration-stage-b`](2026-07-29-github-backlog-migration-stage-b/workflow.yaml) | Complete GitHub Backlog Migration And Project Adoption | `ai-context-governance` | `in_progress` | `2026-07-29T23:13:11+08:00` | [plan](2026-07-29-github-backlog-migration-stage-b/workflow-plan.md) |
 | [`2026-07-29-github-issue-creation-attribution`](2026-07-29-github-issue-creation-attribution/workflow.yaml) | Add Codex Creation Attribution To Formal GitHub Issues | `ai-context-governance` | `completed` | `2026-07-29T22:40:09+08:00` | [plan](2026-07-29-github-issue-creation-attribution/workflow-plan.md) |
 | [`2026-07-29-github-backlog-provider-adoption`](2026-07-29-github-backlog-provider-adoption/workflow.yaml) | Adopt The Source-Repository GitHub Backlog Provider Contract | `ai-context-governance` | `completed` | `2026-07-29T21:50:30+08:00` | [plan](2026-07-29-github-backlog-provider-adoption/workflow-plan.md) |
 | [`2026-07-29-v0-7-0-public-release-body-correction`](2026-07-29-v0-7-0-public-release-body-correction/workflow.yaml) | Correct v0.7.0 Public Release Body And Published-Phase Truth | `ai-context-governance` | `completed` | `2026-07-29T16:21:30+08:00` | [plan](2026-07-29-v0-7-0-public-release-body-correction/workflow-plan.md) |
