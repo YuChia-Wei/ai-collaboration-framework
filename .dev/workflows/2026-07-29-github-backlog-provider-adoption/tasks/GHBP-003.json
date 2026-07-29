@@ -1,0 +1,59 @@
+{
+  "template_id": "ai-context-governance-remediation-task",
+  "template_version": "1.1.0",
+  "template_created_at": "2026-07-10T18:22:49+08:00",
+  "template_updated_at": "2026-07-27T09:52:09+08:00",
+  "task_id": "GHBP-003",
+  "workflow_id": "2026-07-29-github-backlog-provider-adoption",
+  "owner_skill": "ai-context-governance",
+  "status": "completed",
+  "created_at": "2026-07-29T21:27:05+08:00",
+  "updated_at": "2026-07-29T21:48:26+08:00",
+  "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
+  "model": "gpt-5.6-sol",
+  "reasoning_effort": "high",
+  "finding_ids": [],
+  "scope": {
+    "target": "Complete 41-item migration preview and resumable canary/batch plan.",
+    "files": [
+      ".dev/workflows/2026-07-29-github-backlog-provider-adoption/evidence/**"
+    ],
+    "constraints": [
+      "Exactly 41 formal backlog items; no synthetic roadmap or workflow Issues.",
+      "Ambiguous classification or evidence must block that item rather than invent truth.",
+      "Preview generation must not contact or mutate GitHub."
+    ],
+    "non_goals": [
+      "Owner approval of Stage B",
+      "Issue creation"
+    ]
+  },
+  "execution": {
+    "steps": [
+      "Generate YAML and Markdown previews.",
+      "Verify four canaries and 10+10+10+7 remaining batches.",
+      "Review warnings, evidence classes, and lifecycle actions for all 41 items."
+    ],
+    "validation": [
+      "Assert exact source and preview ID parity.",
+      "Assert deterministic regeneration."
+    ],
+    "last_completed_step": "Generated and reviewed the full YAML and Markdown preview for 41 unique backlog IDs, four canaries, and 10+10+10+7 remaining batches.",
+    "next_action": "Completed; regenerate from fresh main after Stage A merges."
+  },
+  "results": {
+    "summary": "The preview projects 5 open and 36 historical closed Issues, with 11 Stories, 30 Enablers, and no blocked classifications or closure evidence warnings.",
+    "files_changed": [
+      ".dev/workflows/2026-07-29-github-backlog-provider-adoption/evidence/github-backlog-dry-run.yaml",
+      ".dev/workflows/2026-07-29-github-backlog-provider-adoption/evidence/github-backlog-dry-run.md"
+    ],
+    "tests_run": [
+      "dry-run generation",
+      "dry-run --check at main@08b9fd9f75edc373b693f6c38242ba141917f2c2",
+      "exact source/preview/canary/batch ID parity"
+    ],
+    "finding_status": "addressed",
+    "residual_risk": "The preview is not Stage B approval.",
+    "follow_up_needed": true
+  }
+}

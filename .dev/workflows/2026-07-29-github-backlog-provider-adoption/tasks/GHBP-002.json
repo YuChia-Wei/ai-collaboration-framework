@@ -1,0 +1,64 @@
+{
+  "template_id": "ai-context-governance-remediation-task",
+  "template_version": "1.1.0",
+  "template_created_at": "2026-07-10T18:22:49+08:00",
+  "template_updated_at": "2026-07-27T09:52:09+08:00",
+  "task_id": "GHBP-002",
+  "workflow_id": "2026-07-29-github-backlog-provider-adoption",
+  "owner_skill": "ai-context-governance",
+  "status": "completed",
+  "created_at": "2026-07-29T21:27:05+08:00",
+  "updated_at": "2026-07-29T21:48:26+08:00",
+  "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
+  "model": "gpt-5.6-sol",
+  "reasoning_effort": "high",
+  "finding_ids": [],
+  "scope": {
+    "target": "Read-only deterministic GitHub backlog projection adapter.",
+    "files": [
+      ".ai/scripts/github_backlog_provider.py",
+      ".ai/scripts/plan-github-backlog-migration.py",
+      ".ai/scripts/tests/test_github_backlog_provider.py",
+      ".ai/distribution/profiles/dotnet-backend.yaml"
+    ],
+    "constraints": [
+      "The Stage A adapter must expose no online write operation.",
+      "Fail closed on incomplete classification, lifecycle, or mapping contracts.",
+      "Exclude source-provider tooling from downstream packages."
+    ],
+    "non_goals": [
+      "GitHub API mutation",
+      "Azure DevOps implementation"
+    ]
+  },
+  "execution": {
+    "steps": [
+      "Load and validate the 41 canonical backlog items.",
+      "Project deterministic Issue bodies, labels, Project fields, lifecycle actions, and evidence classes.",
+      "Add focused GWT-style contract tests."
+    ],
+    "validation": [
+      "Run the focused provider tests.",
+      "Run package-boundary regression tests."
+    ],
+    "last_completed_step": "Implemented the fail-closed read-only projection, deterministic rendering, source digests, evidence classification, lifecycle actions, and source-only distribution exclusions.",
+    "next_action": "Completed; GHBP-003 owns the full preview."
+  },
+  "results": {
+    "summary": "The Stage A adapter exposes local plan/check outputs only and has no GitHub mutation path.",
+    "files_changed": [
+      ".ai/scripts/github_backlog_provider.py",
+      ".ai/scripts/plan-github-backlog-migration.py",
+      ".ai/scripts/tests/test_github_backlog_provider.py",
+      ".ai/distribution/profiles/dotnet-backend.yaml"
+    ],
+    "tests_run": [
+      "python .ai/scripts/tests/test_github_backlog_provider.py (15 passed)",
+      "python .ai/scripts/tests/test_ai_context_packaging.py (27 passed, 1 skipped)",
+      "python -m py_compile"
+    ],
+    "finding_status": "addressed",
+    "residual_risk": "Online apply and read-back execution remain intentionally deferred to Stage B.",
+    "follow_up_needed": true
+  }
+}

@@ -1,0 +1,273 @@
+schema_version: "1.0"
+provider: "github"
+repository: "YuChia-Wei/ai-collaboration-prompts-dotnet-backend"
+owner: "YuChia-Wei"
+source:
+  backlog_glob: ".dev/backlog/items/*.yaml"
+  roadmap: ".dev/backlog/ROADMAP.md"
+  expected_item_count: 41
+  portable_identity_field: "backlog_id"
+  provider_identity_is_authoritative: false
+project:
+  title: "AI Collaboration Framework — Backlog & Roadmap"
+  description: "Product planning, priorities, owner review, roadmap, and delivery history for the AI Collaboration Framework."
+  visibility: "public"
+  include_all_formal_backlog_items: true
+  use_milestones: false
+issue:
+  title_format: "[{backlog_id}] {title}"
+  canonical_language: "en"
+  comments_languages:
+    - "en"
+    - "zh-TW"
+  historical_items_are_top_level: true
+  infer_sub_issues: false
+  lock_closed_issues: false
+  assignee_default: null
+  pr_reference_keyword: "Refs"
+  forbidden_pr_close_keywords:
+    - "Closes"
+    - "Fixes"
+    - "Resolves"
+  hidden_markers:
+    backlog_id: "canonical-backlog-id"
+    migration_id: "migration-id"
+labels:
+  - name: "kind:story"
+    color: "1D76DB"
+    description: "A user, maintainer, or downstream adopter outcome."
+  - name: "kind:enabler"
+    color: "5319E7"
+    description: "An independently acceptable governance, tooling, quality, or risk capability."
+  - name: "kind:proposal"
+    color: "D4C5F9"
+    description: "Community feedback awaiting maintainer triage."
+  - name: "scope:framework"
+    color: "0E8A16"
+    description: "Affects portable framework or downstream behavior."
+  - name: "scope:source-repo"
+    color: "BFDADC"
+    description: "Affects only this source repository."
+  - name: "scope:mixed"
+    color: "006B75"
+    description: "Affects both source-repository operation and portable outcomes."
+  - name: "migration:historical"
+    color: "C2E0C6"
+    description: "Migrated from the canonical repository backlog."
+  - name: "traceability:needs-review"
+    color: "D93F0B"
+    description: "Provider lifecycle is blocked pending evidence review."
+  - name: "triage:needed"
+    color: "FBCA04"
+    description: "Proposal needs maintainer triage or more information."
+fields:
+  status:
+    name: "Status"
+    options:
+      - "Inbox"
+      - "Planned"
+      - "In progress"
+      - "Verification"
+      - "Done"
+  priority:
+    name: "Priority"
+    required_for_formal_issue: true
+    options:
+      - "P0 Critical"
+      - "P1 High"
+      - "P2 Normal"
+      - "P3 Low"
+  owner_review:
+    name: "Owner review"
+    options:
+      - "Not required"
+      - "Pending"
+      - "Approved"
+      - "Changes requested"
+  target_release:
+    name: "Target release"
+    options:
+      - "Unassigned"
+      - "v0.1.0"
+      - "v0.4.1"
+      - "v0.4.2"
+      - "v0.5.0"
+      - "v0.6.0"
+      - "v0.7.0"
+  published_in:
+    name: "Published in"
+    options:
+      - "Not yet published"
+      - "Not applicable — source repository only"
+      - "v0.1.0"
+      - "v0.4.1"
+      - "v0.4.2"
+      - "v0.5.0"
+      - "v0.6.0"
+      - "v0.7.0"
+views:
+  - name: "Active Backlog"
+    layout: "board"
+    filter: "Status != Done"
+    group_by: "Status"
+    sort:
+      - "Priority ascending"
+  - name: "Roadmap"
+    layout: "table"
+    filter: "Status != Done AND Target release != Unassigned"
+    group_by: "Target release"
+    sort:
+      - "Priority ascending"
+  - name: "Owner Review"
+    layout: "table"
+    filter: "Owner review = Pending OR Owner review = Changes requested"
+    sort:
+      - "Priority ascending"
+      - "Updated descending"
+  - name: "History by Release"
+    layout: "table"
+    filter: "Status = Done"
+    group_by: "Published in"
+    sort:
+      - "Backlog ID ascending"
+automation:
+  allowlist:
+    - trigger: "issue_opened_in_repository"
+      action: "auto_add_to_project_and_initialize_status_inbox"
+    - trigger: "issue_closed"
+      action: "set_status_done"
+  explicitly_disabled:
+    - "pull_request_merged_sets_done"
+    - "pull_request_merge_closes_issue"
+    - "provider_state_authorizes_workflow"
+    - "provider_priority_reverse_writes_backlog"
+proposal_intake:
+  form: ".github/ISSUE_TEMPLATE/proposal.yml"
+  blank_issues_enabled: false
+  initial_project_status: "Inbox"
+  initial_label: "kind:proposal"
+  promotion_creates_new_formal_issue: true
+  promotion_comment: "Promoted to #{formal_issue_number}."
+  accepted_close_reason: "completed"
+  rejected_close_reason: "not planned"
+  duplicate_close_reason: "not planned"
+  ai_may_triage: true
+  ai_may_accept_or_reject: false
+story_pack_adapter:
+  input_identity: "story_id or canonical backlog_id"
+  input_fields:
+    - "kind"
+    - "statement"
+    - "outcome"
+    - "acceptance_criteria"
+    - "boundaries"
+    - "priority"
+    - "lifecycle"
+    - "target_release"
+    - "published_in"
+    - "owner_review"
+    - "related_work"
+    - "evidence_links"
+  output_mapping:
+    identity: "hidden canonical-backlog-id marker and provider receipt"
+    kind: "exactly one kind label and matching statement section"
+    scope: "exactly one scope label"
+    outcome_and_acceptance: "Issue body"
+    priority_and_lifecycle: "Project fields"
+    evidence: "Issue Delivery Evidence section and closing comment"
+    relationships: "Related Work links; never infer sub-issues"
+  reverse_write: "provider identities and read-back only; never rewrite canonical outcome or workflow truth"
+migration:
+  id: "github-backlog-migration-2026-07"
+  stage_a_read_only: true
+  stage_b_requires_merged_main: true
+  stage_b_requires_fresh_owner_approved_dry_run: true
+  expected_item_count: 41
+  canaries:
+    - "DEVWF-001"
+    - "AIC-007"
+    - "R042-005"
+    - "UPG-001"
+  remaining_batch_sizes:
+    - 10
+    - 10
+    - 10
+    - 7
+  stop_current_batch_on:
+    - "provider_identity_mismatch"
+    - "body_or_label_readback_mismatch"
+    - "comment_or_close_mismatch"
+  rollback: "record successful mappings immediately; stop and correct in place; never delete migrated Issues"
+priority_mapping:
+  "HIGH / P0": "P0 Critical"
+  "HIGH": "P1 High"
+  "MEDIUM": "P2 Normal"
+  "LOW": "P3 Low"
+lifecycle_mapping:
+  open:
+    issue_state: "open"
+    close_reason: null
+    status: "Inbox"
+    owner_review: "Pending"
+  planned:
+    issue_state: "open"
+    close_reason: null
+    status: "Planned"
+    owner_review: "Approved"
+  in_progress:
+    issue_state: "open"
+    close_reason: null
+    status: "In progress"
+    owner_review: "Not required"
+  resolved:
+    issue_state: "closed"
+    close_reason: "completed"
+    status: "Done"
+    owner_review: "Not required"
+  declined:
+    issue_state: "closed"
+    close_reason: "not planned"
+    status: "Done"
+    owner_review: "Not required"
+classifications:
+  AIC-007: {kind: "enabler", scope: "framework", rationale: "Executable validation modes are a portable framework quality capability."}
+  CAP-001: {kind: "enabler", scope: "framework", rationale: "The terminology capability decision governs reusable framework context."}
+  CFG-001: {kind: "enabler", scope: "mixed", rationale: "Source configuration separation controls both repository operation and downstream templates."}
+  CI-001: {kind: "enabler", scope: "mixed", rationale: "Source release automation produces and verifies published framework artifacts."}
+  CI-002: {kind: "enabler", scope: "mixed", rationale: "Hosted workflow lifecycle governs source operations and published release outcomes."}
+  CTX-001: {kind: "enabler", scope: "framework", rationale: "The audit establishes quality evidence for the reusable AI context."}
+  CTX-002: {kind: "enabler", scope: "framework", rationale: "Navigation repair changes the reusable AI context catalog."}
+  CTX-003: {kind: "enabler", scope: "framework", rationale: "Truth and contract remediation changes portable AI context behavior."}
+  CUST-001: {kind: "story", scope: "framework", rationale: "Downstream adopters need target-owned customizations preserved across framework lifecycle changes."}
+  DEVWF-001: {kind: "story", scope: "framework", rationale: "Maintainers need optional tracker-neutral traceability without making a tracker mandatory."}
+  DEVWF-002: {kind: "story", scope: "framework", rationale: "Framework users need one governed end-to-end development orchestration contract."}
+  DIST-001: {kind: "enabler", scope: "mixed", rationale: "Source packaging controls and downstream component identity are both affected."}
+  ENF-001: {kind: "enabler", scope: "mixed", rationale: "Source enforcement verifies portable and source-only path disposition."}
+  EVAL-001: {kind: "enabler", scope: "mixed", rationale: "Source evaluation gates provide release evidence for portable framework behavior."}
+  GOV-001: {kind: "enabler", scope: "mixed", rationale: "Source history reconciliation determines the governed portable follow-up set."}
+  GOV-002: {kind: "enabler", scope: "mixed", rationale: "The work-management policy separates source-local provider rules from portable lifecycle semantics."}
+  GOV-003: {kind: "enabler", scope: "mixed", rationale: "Source provenance rules are projected into portable attribution guidance."}
+  HANDOFF-001: {kind: "story", scope: "framework", rationale: "Maintainers need executable state alignment when work crosses models, runtimes, hosts, or sessions."}
+  INIT-001: {kind: "story", scope: "framework", rationale: "Existing AI-agent repositories need safe, collision-aware framework adoption."}
+  LANG-001: {kind: "enabler", scope: "framework", rationale: "Semantic translation parity is a reusable AI context quality gate."}
+  OBS-001: {kind: "story", scope: "framework", rationale: "Downstream .NET teams need a reusable observability and AOP boundary."}
+  PKG-001: {kind: "story", scope: "framework", rationale: "Downstream adopters need deterministic executable version-to-version migration metadata."}
+  PKG-002: {kind: "enabler", scope: "mixed", rationale: "Source-only tests and downstream package gates require an explicit separation."}
+  PKG-003: {kind: "story", scope: "framework", rationale: "Downstream adopters need governed direct upgrades from supported source versions."}
+  PKG-004: {kind: "enabler", scope: "mixed", rationale: "Source packaging must prevent source-local work-management policy from leaking downstream."}
+  R042-001: {kind: "enabler", scope: "framework", rationale: "Runtime wrapper and routing correctness affects distributed adapters."}
+  R042-002: {kind: "enabler", scope: "framework", rationale: "Doctrine and standards corrections affect reusable guidance."}
+  R042-003: {kind: "enabler", scope: "framework", rationale: "Navigation and lifecycle hygiene affects reusable context discovery."}
+  R042-004: {kind: "enabler", scope: "framework", rationale: "Tooling portability affects supported downstream environments."}
+  R042-005: {kind: "enabler", scope: "source-repo", rationale: "The hotfix repairs this repository's post-publication registry and public Release body only."}
+  REL-001: {kind: "enabler", scope: "mixed", rationale: "Source publication mechanics create and finalize portable release artifacts."}
+  REL-002: {kind: "enabler", scope: "mixed", rationale: "Source pre-tag gates protect portable release behavior across hosts."}
+  REL-003: {kind: "enabler", scope: "mixed", rationale: "Source release validation and published Included Work traceability are both affected."}
+  REL-004: {kind: "enabler", scope: "source-repo", rationale: "The proposed closeout capability is explicitly limited to this repository's release finalization."}
+  SAG-001: {kind: "story", scope: "framework", rationale: "Framework users need supported runtime adapters with parity across providers."}
+  SIMPL-001: {kind: "enabler", scope: "framework", rationale: "Measured context simplification changes reusable framework loading behavior."}
+  SKILL-001: {kind: "story", scope: "framework", rationale: "Framework users need stable skill identities and compatible orchestration transitions."}
+  STD-001: {kind: "enabler", scope: "framework", rationale: "Standards deliberation governs future reusable framework rules."}
+  TOOL-001: {kind: "enabler", scope: "mixed", rationale: "Source shell gates verify portable tooling behavior across supported hosts."}
+  UPG-001: {kind: "story", scope: "framework", rationale: "Legacy customized targets would need a governed provenance and override-preserving upgrade path."}
+  VAL-001: {kind: "enabler", scope: "mixed", rationale: "Source validation policy governs confidence in portable dependency and repository contracts."}
