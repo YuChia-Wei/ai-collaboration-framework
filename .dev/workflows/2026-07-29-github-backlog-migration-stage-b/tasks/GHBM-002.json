@@ -1,0 +1,52 @@
+{
+  "template_id": "ai-context-governance-remediation-task",
+  "template_version": "1.1.0",
+  "task_id": "GHBM-002",
+  "workflow_id": "2026-07-29-github-backlog-migration-stage-b",
+  "owner_skill": "ai-context-governance",
+  "status": "completed",
+  "created_at": "2026-07-29T23:00:26+08:00",
+  "updated_at": "2026-07-29T23:04:30+08:00",
+  "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
+  "model": "gpt-5.6-sol",
+  "reasoning_effort": "high",
+  "scope": {
+    "target": "Remaining Issue migration batch 1.",
+    "files": [
+      ".dev/backlog/provider-mappings/github-issues.yaml",
+      ".dev/workflows/2026-07-29-github-backlog-migration-stage-b/**"
+    ],
+    "constraints": [
+      "Apply only CAP-001 through DIST-001 in the declared batch order.",
+      "Stop on the first mismatch and retain successful mappings.",
+      "Do not begin batch 2 until all ten read back exactly."
+    ]
+  },
+  "execution": {
+    "steps": [
+      "Create each Issue from the immutable plan.",
+      "For resolved items, add the historical closing comment and close with completed.",
+      "Read back exact provider state after each Issue.",
+      "Persist each successful mapping immediately."
+    ],
+    "validation": [
+      "All ten Issue identities, bodies, markers, labels, assignees, states, close reasons, and comments match."
+    ],
+    "last_completed_step": "Created and exactly verified CAP-001 through DIST-001 as Issues #27-#36.",
+    "next_action": "Proceed to GHBM-003 batch 2."
+  },
+  "results": {
+    "summary": "Batch 1 completed 10/10 with exact body, marker, label, lifecycle, and closing-comment read-back.",
+    "files_changed": [
+      ".dev/backlog/provider-mappings/github-issues.yaml",
+      ".dev/workflows/2026-07-29-github-backlog-migration-stage-b/evidence/issue-batch-1-readback.json",
+      ".dev/workflows/2026-07-29-github-backlog-migration-stage-b/**"
+    ],
+    "tests_run": [
+      "GitHub Issue exact read-back: 10/10 passed for Issues #27-#36"
+    ],
+    "finding_status": "addressed",
+    "residual_risk": "Batches 2-4 and Project adoption remain pending.",
+    "follow_up_needed": true
+  }
+}

@@ -1,0 +1,19 @@
+schema_version: '1.0'
+captured_at: '2026-07-29T23:21:02+08:00'
+provider: github
+project:
+  number: 3
+  node_id: PVT_kwHOAwvEG84Bez7w
+  url: https://github.com/users/YuChia-Wei/projects/3
+  title: AI Collaboration Framework — Backlog & Roadmap
+  short_description: Product planning, priorities, owner review, roadmap, and delivery history for the AI Collaboration Framework.
+  public: true
+  closed: false
+  imported_item_count: 5
+  provider_native_field_count: 13
+verification:
+  identity_matches: true
+  title_matches: true
+  description_matches: true
+  visibility_matches: true
+  notes: The table template imported the five open Issues. Provider-native fields remain distinct from the five approved workflow-managed fields.

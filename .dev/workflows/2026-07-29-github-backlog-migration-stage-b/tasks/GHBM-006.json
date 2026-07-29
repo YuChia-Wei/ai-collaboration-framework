@@ -1,0 +1,50 @@
+{
+  "template_id": "ai-context-governance-remediation-task",
+  "template_version": "1.1.0",
+  "task_id": "GHBM-006",
+  "workflow_id": "2026-07-29-github-backlog-migration-stage-b",
+  "owner_skill": "ai-context-governance",
+  "status": "completed",
+  "created_at": "2026-07-29T23:13:11+08:00",
+  "updated_at": "2026-07-29T23:30:17+08:00",
+  "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
+  "model": "gpt-5.6-sol",
+  "reasoning_effort": "high",
+  "scope": {
+    "target": "Public GitHub Project, approved fields, 41 Issue items, and projected values.",
+    "files": [
+      ".dev/backlog/provider-mappings/github-issues.yaml",
+      ".dev/workflows/2026-07-29-github-backlog-migration-stage-b/**"
+    ],
+    "constraints": [
+      "Create exactly one public Project with the approved title and description.",
+      "Use only Status, Priority, Owner review, Target release, and Published in as workflow fields.",
+      "Do not let Project values reverse-write or authorize repository workflow state.",
+      "Record Project and item IDs before setting values."
+    ]
+  },
+  "execution": {
+    "steps": [
+      "Create and read back the Project identity and public visibility.",
+      "Create or configure the approved minimal fields.",
+      "Add all 41 Issues and immediately record project item IDs.",
+      "Set and read back every projected field value."
+    ],
+    "validation": [
+      "Project identity, visibility, description, field names/options, item count, Issue URLs, and field values match the provider plan."
+    ],
+    "last_completed_step": "Exactly verified the public Project, five workflow fields, 41 unique item mappings, 205 projected values, and 41 empty assignee sets.",
+    "next_action": "Configure approved views and allowlisted workflows under GHBM-007."
+  },
+  "results": {
+    "summary": "Created public Project 3 with the approved metadata, configured five workflow-managed fields, added all 41 formal Issues, recorded every Project item ID, and exactly verified every projected value.",
+    "tests_run": [
+      "python .tmp/project-github-backlog-fields.py verify-identities: passed (41/41)",
+      "python .tmp/project-github-backlog-fields.py verify-values: passed (205/205; 41/41 empty assignees)",
+      "gh project view/field-list/item-list exact readback: passed"
+    ],
+    "finding_status": "completed",
+    "residual_risk": "Views and automation remain pending under GHBM-007; provider-native fields remain present but are not workflow-managed authority.",
+    "follow_up_needed": false
+  }
+}

@@ -1,0 +1,1163 @@
+{
+  "schema_version": "1.0",
+  "source_revision": "e83b759c8cf1deeb11af5ae748359f6a4c63b200",
+  "verified_at": "2026-07-29T23:46:30+08:00",
+  "counts": {
+    "total": 41,
+    "open": 5,
+    "closed": 36,
+    "formal_inventory": 41
+  },
+  "formal_inventory_matches_receipt": true,
+  "items": [
+    {
+      "backlog_id": "AIC-007",
+      "issue_number": 22,
+      "issue_node_id": "I_kwDOSBe2Hc8AAAABKqI2Zw",
+      "issue_url": "https://github.com/YuChia-Wei/ai-collaboration-prompts-dotnet-backend/issues/22",
+      "state": "CLOSED",
+      "state_reason": "COMPLETED",
+      "labels": [
+        "created-by:codex",
+        "kind:enabler",
+        "migration:historical",
+        "scope:framework"
+      ],
+      "checks": {
+        "title_matches": true,
+        "body_matches": true,
+        "markers_match": true,
+        "labels_match": true,
+        "assignees_empty": true,
+        "state_matches": true,
+        "close_reason_matches": true,
+        "closing_comment_matches": true,
+        "number_matches": true,
+        "node_id_matches": true,
+        "url_matches": true
+      },
+      "verified": true
+    },
+    {
+      "backlog_id": "CAP-001",
+      "issue_number": 27,
+      "issue_node_id": "I_kwDOSBe2Hc8AAAABKql9bw",
+      "issue_url": "https://github.com/YuChia-Wei/ai-collaboration-prompts-dotnet-backend/issues/27",
+      "state": "CLOSED",
+      "state_reason": "COMPLETED",
+      "labels": [
+        "created-by:codex",
+        "kind:enabler",
+        "migration:historical",
+        "scope:framework"
+      ],
+      "checks": {
+        "title_matches": true,
+        "body_matches": true,
+        "markers_match": true,
+        "labels_match": true,
+        "assignees_empty": true,
+        "state_matches": true,
+        "close_reason_matches": true,
+        "closing_comment_matches": true,
+        "number_matches": true,
+        "node_id_matches": true,
+        "url_matches": true
+      },
+      "verified": true
+    },
+    {
+      "backlog_id": "CFG-001",
+      "issue_number": 28,
+      "issue_node_id": "I_kwDOSBe2Hc8AAAABKqmBgg",
+      "issue_url": "https://github.com/YuChia-Wei/ai-collaboration-prompts-dotnet-backend/issues/28",
+      "state": "CLOSED",
+      "state_reason": "COMPLETED",
+      "labels": [
+        "created-by:codex",
+        "kind:enabler",
+        "migration:historical",
+        "scope:mixed"
+      ],
+      "checks": {
+        "title_matches": true,
+        "body_matches": true,
+        "markers_match": true,
+        "labels_match": true,
+        "assignees_empty": true,
+        "state_matches": true,
+        "close_reason_matches": true,
+        "closing_comment_matches": true,
+        "number_matches": true,
+        "node_id_matches": true,
+        "url_matches": true
+      },
+      "verified": true
+    },
+    {
+      "backlog_id": "CI-001",
+      "issue_number": 29,
+      "issue_node_id": "I_kwDOSBe2Hc8AAAABKqmFeA",
+      "issue_url": "https://github.com/YuChia-Wei/ai-collaboration-prompts-dotnet-backend/issues/29",
+      "state": "CLOSED",
+      "state_reason": "COMPLETED",
+      "labels": [
+        "created-by:codex",
+        "kind:enabler",
+        "migration:historical",
+        "scope:mixed"
+      ],
+      "checks": {
+        "title_matches": true,
+        "body_matches": true,
+        "markers_match": true,
+        "labels_match": true,
+        "assignees_empty": true,
+        "state_matches": true,
+        "close_reason_matches": true,
+        "closing_comment_matches": true,
+        "number_matches": true,
+        "node_id_matches": true,
+        "url_matches": true
+      },
+      "verified": true
+    },
+    {
+      "backlog_id": "CI-002",
+      "issue_number": 30,
+      "issue_node_id": "I_kwDOSBe2Hc8AAAABKqmKvA",
+      "issue_url": "https://github.com/YuChia-Wei/ai-collaboration-prompts-dotnet-backend/issues/30",
+      "state": "CLOSED",
+      "state_reason": "COMPLETED",
+      "labels": [
+        "created-by:codex",
+        "kind:enabler",
+        "migration:historical",
+        "scope:mixed"
+      ],
+      "checks": {
+        "title_matches": true,
+        "body_matches": true,
+        "markers_match": true,
+        "labels_match": true,
+        "assignees_empty": true,
+        "state_matches": true,
+        "close_reason_matches": true,
+        "closing_comment_matches": true,
+        "number_matches": true,
+        "node_id_matches": true,
+        "url_matches": true
+      },
+      "verified": true
+    },
+    {
+      "backlog_id": "CTX-001",
+      "issue_number": 31,
+      "issue_node_id": "I_kwDOSBe2Hc8AAAABKqmOqA",
+      "issue_url": "https://github.com/YuChia-Wei/ai-collaboration-prompts-dotnet-backend/issues/31",
+      "state": "CLOSED",
+      "state_reason": "COMPLETED",
+      "labels": [
+        "created-by:codex",
+        "kind:enabler",
+        "migration:historical",
+        "scope:framework"
+      ],
+      "checks": {
+        "title_matches": true,
+        "body_matches": true,
+        "markers_match": true,
+        "labels_match": true,
+        "assignees_empty": true,
+        "state_matches": true,
+        "close_reason_matches": true,
+        "closing_comment_matches": true,
+        "number_matches": true,
+        "node_id_matches": true,
+        "url_matches": true
+      },
+      "verified": true
+    },
+    {
+      "backlog_id": "CTX-002",
+      "issue_number": 32,
+      "issue_node_id": "I_kwDOSBe2Hc8AAAABKqmTbw",
+      "issue_url": "https://github.com/YuChia-Wei/ai-collaboration-prompts-dotnet-backend/issues/32",
+      "state": "CLOSED",
+      "state_reason": "COMPLETED",
+      "labels": [
+        "created-by:codex",
+        "kind:enabler",
+        "migration:historical",
+        "scope:framework"
+      ],
+      "checks": {
+        "title_matches": true,
+        "body_matches": true,
+        "markers_match": true,
+        "labels_match": true,
+        "assignees_empty": true,
+        "state_matches": true,
+        "close_reason_matches": true,
+        "closing_comment_matches": true,
+        "number_matches": true,
+        "node_id_matches": true,
+        "url_matches": true
+      },
+      "verified": true
+    },
+    {
+      "backlog_id": "CTX-003",
+      "issue_number": 33,
+      "issue_node_id": "I_kwDOSBe2Hc8AAAABKqmXPQ",
+      "issue_url": "https://github.com/YuChia-Wei/ai-collaboration-prompts-dotnet-backend/issues/33",
+      "state": "CLOSED",
+      "state_reason": "COMPLETED",
+      "labels": [
+        "created-by:codex",
+        "kind:enabler",
+        "migration:historical",
+        "scope:framework"
+      ],
+      "checks": {
+        "title_matches": true,
+        "body_matches": true,
+        "markers_match": true,
+        "labels_match": true,
+        "assignees_empty": true,
+        "state_matches": true,
+        "close_reason_matches": true,
+        "closing_comment_matches": true,
+        "number_matches": true,
+        "node_id_matches": true,
+        "url_matches": true
+      },
+      "verified": true
+    },
+    {
+      "backlog_id": "CUST-001",
+      "issue_number": 34,
+      "issue_node_id": "I_kwDOSBe2Hc8AAAABKqmbXw",
+      "issue_url": "https://github.com/YuChia-Wei/ai-collaboration-prompts-dotnet-backend/issues/34",
+      "state": "CLOSED",
+      "state_reason": "COMPLETED",
+      "labels": [
+        "created-by:codex",
+        "kind:story",
+        "migration:historical",
+        "scope:framework"
+      ],
+      "checks": {
+        "title_matches": true,
+        "body_matches": true,
+        "markers_match": true,
+        "labels_match": true,
+        "assignees_empty": true,
+        "state_matches": true,
+        "close_reason_matches": true,
+        "closing_comment_matches": true,
+        "number_matches": true,
+        "node_id_matches": true,
+        "url_matches": true
+      },
+      "verified": true
+    },
+    {
+      "backlog_id": "DEVWF-001",
+      "issue_number": 21,
+      "issue_node_id": "I_kwDOSBe2Hc8AAAABKqIoUA",
+      "issue_url": "https://github.com/YuChia-Wei/ai-collaboration-prompts-dotnet-backend/issues/21",
+      "state": "OPEN",
+      "state_reason": "",
+      "labels": [
+        "created-by:codex",
+        "kind:story",
+        "migration:historical",
+        "scope:framework"
+      ],
+      "checks": {
+        "title_matches": true,
+        "body_matches": true,
+        "markers_match": true,
+        "labels_match": true,
+        "assignees_empty": true,
+        "state_matches": true,
+        "close_reason_matches": true,
+        "closing_comment_matches": true,
+        "number_matches": true,
+        "node_id_matches": true,
+        "url_matches": true
+      },
+      "verified": true
+    },
+    {
+      "backlog_id": "DEVWF-002",
+      "issue_number": 35,
+      "issue_node_id": "I_kwDOSBe2Hc8AAAABKqmfvA",
+      "issue_url": "https://github.com/YuChia-Wei/ai-collaboration-prompts-dotnet-backend/issues/35",
+      "state": "CLOSED",
+      "state_reason": "COMPLETED",
+      "labels": [
+        "created-by:codex",
+        "kind:story",
+        "migration:historical",
+        "scope:framework"
+      ],
+      "checks": {
+        "title_matches": true,
+        "body_matches": true,
+        "markers_match": true,
+        "labels_match": true,
+        "assignees_empty": true,
+        "state_matches": true,
+        "close_reason_matches": true,
+        "closing_comment_matches": true,
+        "number_matches": true,
+        "node_id_matches": true,
+        "url_matches": true
+      },
+      "verified": true
+    },
+    {
+      "backlog_id": "DIST-001",
+      "issue_number": 36,
+      "issue_node_id": "I_kwDOSBe2Hc8AAAABKqmkAA",
+      "issue_url": "https://github.com/YuChia-Wei/ai-collaboration-prompts-dotnet-backend/issues/36",
+      "state": "CLOSED",
+      "state_reason": "COMPLETED",
+      "labels": [
+        "created-by:codex",
+        "kind:enabler",
+        "migration:historical",
+        "scope:mixed"
+      ],
+      "checks": {
+        "title_matches": true,
+        "body_matches": true,
+        "markers_match": true,
+        "labels_match": true,
+        "assignees_empty": true,
+        "state_matches": true,
+        "close_reason_matches": true,
+        "closing_comment_matches": true,
+        "number_matches": true,
+        "node_id_matches": true,
+        "url_matches": true
+      },
+      "verified": true
+    },
+    {
+      "backlog_id": "ENF-001",
+      "issue_number": 37,
+      "issue_node_id": "I_kwDOSBe2Hc8AAAABKqnpnw",
+      "issue_url": "https://github.com/YuChia-Wei/ai-collaboration-prompts-dotnet-backend/issues/37",
+      "state": "CLOSED",
+      "state_reason": "COMPLETED",
+      "labels": [
+        "created-by:codex",
+        "kind:enabler",
+        "migration:historical",
+        "scope:mixed"
+      ],
+      "checks": {
+        "title_matches": true,
+        "body_matches": true,
+        "markers_match": true,
+        "labels_match": true,
+        "assignees_empty": true,
+        "state_matches": true,
+        "close_reason_matches": true,
+        "closing_comment_matches": true,
+        "number_matches": true,
+        "node_id_matches": true,
+        "url_matches": true
+      },
+      "verified": true
+    },
+    {
+      "backlog_id": "EVAL-001",
+      "issue_number": 38,
+      "issue_node_id": "I_kwDOSBe2Hc8AAAABKqnuGw",
+      "issue_url": "https://github.com/YuChia-Wei/ai-collaboration-prompts-dotnet-backend/issues/38",
+      "state": "CLOSED",
+      "state_reason": "COMPLETED",
+      "labels": [
+        "created-by:codex",
+        "kind:enabler",
+        "migration:historical",
+        "scope:mixed"
+      ],
+      "checks": {
+        "title_matches": true,
+        "body_matches": true,
+        "markers_match": true,
+        "labels_match": true,
+        "assignees_empty": true,
+        "state_matches": true,
+        "close_reason_matches": true,
+        "closing_comment_matches": true,
+        "number_matches": true,
+        "node_id_matches": true,
+        "url_matches": true
+      },
+      "verified": true
+    },
+    {
+      "backlog_id": "GOV-001",
+      "issue_number": 39,
+      "issue_node_id": "I_kwDOSBe2Hc8AAAABKqnyhA",
+      "issue_url": "https://github.com/YuChia-Wei/ai-collaboration-prompts-dotnet-backend/issues/39",
+      "state": "CLOSED",
+      "state_reason": "COMPLETED",
+      "labels": [
+        "created-by:codex",
+        "kind:enabler",
+        "migration:historical",
+        "scope:mixed"
+      ],
+      "checks": {
+        "title_matches": true,
+        "body_matches": true,
+        "markers_match": true,
+        "labels_match": true,
+        "assignees_empty": true,
+        "state_matches": true,
+        "close_reason_matches": true,
+        "closing_comment_matches": true,
+        "number_matches": true,
+        "node_id_matches": true,
+        "url_matches": true
+      },
+      "verified": true
+    },
+    {
+      "backlog_id": "GOV-002",
+      "issue_number": 40,
+      "issue_node_id": "I_kwDOSBe2Hc8AAAABKqn2gA",
+      "issue_url": "https://github.com/YuChia-Wei/ai-collaboration-prompts-dotnet-backend/issues/40",
+      "state": "CLOSED",
+      "state_reason": "COMPLETED",
+      "labels": [
+        "created-by:codex",
+        "kind:enabler",
+        "migration:historical",
+        "scope:mixed"
+      ],
+      "checks": {
+        "title_matches": true,
+        "body_matches": true,
+        "markers_match": true,
+        "labels_match": true,
+        "assignees_empty": true,
+        "state_matches": true,
+        "close_reason_matches": true,
+        "closing_comment_matches": true,
+        "number_matches": true,
+        "node_id_matches": true,
+        "url_matches": true
+      },
+      "verified": true
+    },
+    {
+      "backlog_id": "GOV-003",
+      "issue_number": 41,
+      "issue_node_id": "I_kwDOSBe2Hc8AAAABKqn6bA",
+      "issue_url": "https://github.com/YuChia-Wei/ai-collaboration-prompts-dotnet-backend/issues/41",
+      "state": "CLOSED",
+      "state_reason": "COMPLETED",
+      "labels": [
+        "created-by:codex",
+        "kind:enabler",
+        "migration:historical",
+        "scope:mixed"
+      ],
+      "checks": {
+        "title_matches": true,
+        "body_matches": true,
+        "markers_match": true,
+        "labels_match": true,
+        "assignees_empty": true,
+        "state_matches": true,
+        "close_reason_matches": true,
+        "closing_comment_matches": true,
+        "number_matches": true,
+        "node_id_matches": true,
+        "url_matches": true
+      },
+      "verified": true
+    },
+    {
+      "backlog_id": "HANDOFF-001",
+      "issue_number": 42,
+      "issue_node_id": "I_kwDOSBe2Hc8AAAABKqn-6g",
+      "issue_url": "https://github.com/YuChia-Wei/ai-collaboration-prompts-dotnet-backend/issues/42",
+      "state": "CLOSED",
+      "state_reason": "COMPLETED",
+      "labels": [
+        "created-by:codex",
+        "kind:story",
+        "migration:historical",
+        "scope:framework"
+      ],
+      "checks": {
+        "title_matches": true,
+        "body_matches": true,
+        "markers_match": true,
+        "labels_match": true,
+        "assignees_empty": true,
+        "state_matches": true,
+        "close_reason_matches": true,
+        "closing_comment_matches": true,
+        "number_matches": true,
+        "node_id_matches": true,
+        "url_matches": true
+      },
+      "verified": true
+    },
+    {
+      "backlog_id": "INIT-001",
+      "issue_number": 43,
+      "issue_node_id": "I_kwDOSBe2Hc8AAAABKqoDVA",
+      "issue_url": "https://github.com/YuChia-Wei/ai-collaboration-prompts-dotnet-backend/issues/43",
+      "state": "OPEN",
+      "state_reason": "",
+      "labels": [
+        "created-by:codex",
+        "kind:story",
+        "migration:historical",
+        "scope:framework"
+      ],
+      "checks": {
+        "title_matches": true,
+        "body_matches": true,
+        "markers_match": true,
+        "labels_match": true,
+        "assignees_empty": true,
+        "state_matches": true,
+        "close_reason_matches": true,
+        "closing_comment_matches": true,
+        "number_matches": true,
+        "node_id_matches": true,
+        "url_matches": true
+      },
+      "verified": true
+    },
+    {
+      "backlog_id": "LANG-001",
+      "issue_number": 44,
+      "issue_node_id": "I_kwDOSBe2Hc8AAAABKqoEuQ",
+      "issue_url": "https://github.com/YuChia-Wei/ai-collaboration-prompts-dotnet-backend/issues/44",
+      "state": "CLOSED",
+      "state_reason": "COMPLETED",
+      "labels": [
+        "created-by:codex",
+        "kind:enabler",
+        "migration:historical",
+        "scope:framework"
+      ],
+      "checks": {
+        "title_matches": true,
+        "body_matches": true,
+        "markers_match": true,
+        "labels_match": true,
+        "assignees_empty": true,
+        "state_matches": true,
+        "close_reason_matches": true,
+        "closing_comment_matches": true,
+        "number_matches": true,
+        "node_id_matches": true,
+        "url_matches": true
+      },
+      "verified": true
+    },
+    {
+      "backlog_id": "OBS-001",
+      "issue_number": 45,
+      "issue_node_id": "I_kwDOSBe2Hc8AAAABKqoIPg",
+      "issue_url": "https://github.com/YuChia-Wei/ai-collaboration-prompts-dotnet-backend/issues/45",
+      "state": "OPEN",
+      "state_reason": "",
+      "labels": [
+        "created-by:codex",
+        "kind:story",
+        "migration:historical",
+        "scope:framework"
+      ],
+      "checks": {
+        "title_matches": true,
+        "body_matches": true,
+        "markers_match": true,
+        "labels_match": true,
+        "assignees_empty": true,
+        "state_matches": true,
+        "close_reason_matches": true,
+        "closing_comment_matches": true,
+        "number_matches": true,
+        "node_id_matches": true,
+        "url_matches": true
+      },
+      "verified": true
+    },
+    {
+      "backlog_id": "PKG-001",
+      "issue_number": 46,
+      "issue_node_id": "I_kwDOSBe2Hc8AAAABKqoJuA",
+      "issue_url": "https://github.com/YuChia-Wei/ai-collaboration-prompts-dotnet-backend/issues/46",
+      "state": "CLOSED",
+      "state_reason": "COMPLETED",
+      "labels": [
+        "created-by:codex",
+        "kind:story",
+        "migration:historical",
+        "scope:framework"
+      ],
+      "checks": {
+        "title_matches": true,
+        "body_matches": true,
+        "markers_match": true,
+        "labels_match": true,
+        "assignees_empty": true,
+        "state_matches": true,
+        "close_reason_matches": true,
+        "closing_comment_matches": true,
+        "number_matches": true,
+        "node_id_matches": true,
+        "url_matches": true
+      },
+      "verified": true
+    },
+    {
+      "backlog_id": "PKG-002",
+      "issue_number": 47,
+      "issue_node_id": "I_kwDOSBe2Hc8AAAABKqo-lA",
+      "issue_url": "https://github.com/YuChia-Wei/ai-collaboration-prompts-dotnet-backend/issues/47",
+      "state": "CLOSED",
+      "state_reason": "COMPLETED",
+      "labels": [
+        "created-by:codex",
+        "kind:enabler",
+        "migration:historical",
+        "scope:mixed"
+      ],
+      "checks": {
+        "title_matches": true,
+        "body_matches": true,
+        "markers_match": true,
+        "labels_match": true,
+        "assignees_empty": true,
+        "state_matches": true,
+        "close_reason_matches": true,
+        "closing_comment_matches": true,
+        "number_matches": true,
+        "node_id_matches": true,
+        "url_matches": true
+      },
+      "verified": true
+    },
+    {
+      "backlog_id": "PKG-003",
+      "issue_number": 48,
+      "issue_node_id": "I_kwDOSBe2Hc8AAAABKqpCsA",
+      "issue_url": "https://github.com/YuChia-Wei/ai-collaboration-prompts-dotnet-backend/issues/48",
+      "state": "CLOSED",
+      "state_reason": "COMPLETED",
+      "labels": [
+        "created-by:codex",
+        "kind:story",
+        "migration:historical",
+        "scope:framework"
+      ],
+      "checks": {
+        "title_matches": true,
+        "body_matches": true,
+        "markers_match": true,
+        "labels_match": true,
+        "assignees_empty": true,
+        "state_matches": true,
+        "close_reason_matches": true,
+        "closing_comment_matches": true,
+        "number_matches": true,
+        "node_id_matches": true,
+        "url_matches": true
+      },
+      "verified": true
+    },
+    {
+      "backlog_id": "PKG-004",
+      "issue_number": 49,
+      "issue_node_id": "I_kwDOSBe2Hc8AAAABKqpHBw",
+      "issue_url": "https://github.com/YuChia-Wei/ai-collaboration-prompts-dotnet-backend/issues/49",
+      "state": "CLOSED",
+      "state_reason": "COMPLETED",
+      "labels": [
+        "created-by:codex",
+        "kind:enabler",
+        "migration:historical",
+        "scope:mixed"
+      ],
+      "checks": {
+        "title_matches": true,
+        "body_matches": true,
+        "markers_match": true,
+        "labels_match": true,
+        "assignees_empty": true,
+        "state_matches": true,
+        "close_reason_matches": true,
+        "closing_comment_matches": true,
+        "number_matches": true,
+        "node_id_matches": true,
+        "url_matches": true
+      },
+      "verified": true
+    },
+    {
+      "backlog_id": "R042-001",
+      "issue_number": 50,
+      "issue_node_id": "I_kwDOSBe2Hc8AAAABKqpKzA",
+      "issue_url": "https://github.com/YuChia-Wei/ai-collaboration-prompts-dotnet-backend/issues/50",
+      "state": "CLOSED",
+      "state_reason": "COMPLETED",
+      "labels": [
+        "created-by:codex",
+        "kind:enabler",
+        "migration:historical",
+        "scope:framework"
+      ],
+      "checks": {
+        "title_matches": true,
+        "body_matches": true,
+        "markers_match": true,
+        "labels_match": true,
+        "assignees_empty": true,
+        "state_matches": true,
+        "close_reason_matches": true,
+        "closing_comment_matches": true,
+        "number_matches": true,
+        "node_id_matches": true,
+        "url_matches": true
+      },
+      "verified": true
+    },
+    {
+      "backlog_id": "R042-002",
+      "issue_number": 51,
+      "issue_node_id": "I_kwDOSBe2Hc8AAAABKqpOtw",
+      "issue_url": "https://github.com/YuChia-Wei/ai-collaboration-prompts-dotnet-backend/issues/51",
+      "state": "CLOSED",
+      "state_reason": "COMPLETED",
+      "labels": [
+        "created-by:codex",
+        "kind:enabler",
+        "migration:historical",
+        "scope:framework"
+      ],
+      "checks": {
+        "title_matches": true,
+        "body_matches": true,
+        "markers_match": true,
+        "labels_match": true,
+        "assignees_empty": true,
+        "state_matches": true,
+        "close_reason_matches": true,
+        "closing_comment_matches": true,
+        "number_matches": true,
+        "node_id_matches": true,
+        "url_matches": true
+      },
+      "verified": true
+    },
+    {
+      "backlog_id": "R042-003",
+      "issue_number": 52,
+      "issue_node_id": "I_kwDOSBe2Hc8AAAABKqpTqA",
+      "issue_url": "https://github.com/YuChia-Wei/ai-collaboration-prompts-dotnet-backend/issues/52",
+      "state": "CLOSED",
+      "state_reason": "COMPLETED",
+      "labels": [
+        "created-by:codex",
+        "kind:enabler",
+        "migration:historical",
+        "scope:framework"
+      ],
+      "checks": {
+        "title_matches": true,
+        "body_matches": true,
+        "markers_match": true,
+        "labels_match": true,
+        "assignees_empty": true,
+        "state_matches": true,
+        "close_reason_matches": true,
+        "closing_comment_matches": true,
+        "number_matches": true,
+        "node_id_matches": true,
+        "url_matches": true
+      },
+      "verified": true
+    },
+    {
+      "backlog_id": "R042-004",
+      "issue_number": 53,
+      "issue_node_id": "I_kwDOSBe2Hc8AAAABKqpXwA",
+      "issue_url": "https://github.com/YuChia-Wei/ai-collaboration-prompts-dotnet-backend/issues/53",
+      "state": "CLOSED",
+      "state_reason": "COMPLETED",
+      "labels": [
+        "created-by:codex",
+        "kind:enabler",
+        "migration:historical",
+        "scope:framework"
+      ],
+      "checks": {
+        "title_matches": true,
+        "body_matches": true,
+        "markers_match": true,
+        "labels_match": true,
+        "assignees_empty": true,
+        "state_matches": true,
+        "close_reason_matches": true,
+        "closing_comment_matches": true,
+        "number_matches": true,
+        "node_id_matches": true,
+        "url_matches": true
+      },
+      "verified": true
+    },
+    {
+      "backlog_id": "R042-005",
+      "issue_number": 23,
+      "issue_node_id": "I_kwDOSBe2Hc8AAAABKqJZrg",
+      "issue_url": "https://github.com/YuChia-Wei/ai-collaboration-prompts-dotnet-backend/issues/23",
+      "state": "CLOSED",
+      "state_reason": "COMPLETED",
+      "labels": [
+        "created-by:codex",
+        "kind:enabler",
+        "migration:historical",
+        "scope:source-repo"
+      ],
+      "checks": {
+        "title_matches": true,
+        "body_matches": true,
+        "markers_match": true,
+        "labels_match": true,
+        "assignees_empty": true,
+        "state_matches": true,
+        "close_reason_matches": true,
+        "closing_comment_matches": true,
+        "number_matches": true,
+        "node_id_matches": true,
+        "url_matches": true
+      },
+      "verified": true
+    },
+    {
+      "backlog_id": "REL-001",
+      "issue_number": 54,
+      "issue_node_id": "I_kwDOSBe2Hc8AAAABKqpbVA",
+      "issue_url": "https://github.com/YuChia-Wei/ai-collaboration-prompts-dotnet-backend/issues/54",
+      "state": "CLOSED",
+      "state_reason": "COMPLETED",
+      "labels": [
+        "created-by:codex",
+        "kind:enabler",
+        "migration:historical",
+        "scope:mixed"
+      ],
+      "checks": {
+        "title_matches": true,
+        "body_matches": true,
+        "markers_match": true,
+        "labels_match": true,
+        "assignees_empty": true,
+        "state_matches": true,
+        "close_reason_matches": true,
+        "closing_comment_matches": true,
+        "number_matches": true,
+        "node_id_matches": true,
+        "url_matches": true
+      },
+      "verified": true
+    },
+    {
+      "backlog_id": "REL-002",
+      "issue_number": 55,
+      "issue_node_id": "I_kwDOSBe2Hc8AAAABKqpfhA",
+      "issue_url": "https://github.com/YuChia-Wei/ai-collaboration-prompts-dotnet-backend/issues/55",
+      "state": "CLOSED",
+      "state_reason": "COMPLETED",
+      "labels": [
+        "created-by:codex",
+        "kind:enabler",
+        "migration:historical",
+        "scope:mixed"
+      ],
+      "checks": {
+        "title_matches": true,
+        "body_matches": true,
+        "markers_match": true,
+        "labels_match": true,
+        "assignees_empty": true,
+        "state_matches": true,
+        "close_reason_matches": true,
+        "closing_comment_matches": true,
+        "number_matches": true,
+        "node_id_matches": true,
+        "url_matches": true
+      },
+      "verified": true
+    },
+    {
+      "backlog_id": "REL-003",
+      "issue_number": 56,
+      "issue_node_id": "I_kwDOSBe2Hc8AAAABKqpkKw",
+      "issue_url": "https://github.com/YuChia-Wei/ai-collaboration-prompts-dotnet-backend/issues/56",
+      "state": "CLOSED",
+      "state_reason": "COMPLETED",
+      "labels": [
+        "created-by:codex",
+        "kind:enabler",
+        "migration:historical",
+        "scope:mixed"
+      ],
+      "checks": {
+        "title_matches": true,
+        "body_matches": true,
+        "markers_match": true,
+        "labels_match": true,
+        "assignees_empty": true,
+        "state_matches": true,
+        "close_reason_matches": true,
+        "closing_comment_matches": true,
+        "number_matches": true,
+        "node_id_matches": true,
+        "url_matches": true
+      },
+      "verified": true
+    },
+    {
+      "backlog_id": "REL-004",
+      "issue_number": 57,
+      "issue_node_id": "I_kwDOSBe2Hc8AAAABKqqZew",
+      "issue_url": "https://github.com/YuChia-Wei/ai-collaboration-prompts-dotnet-backend/issues/57",
+      "state": "OPEN",
+      "state_reason": "",
+      "labels": [
+        "created-by:codex",
+        "kind:enabler",
+        "migration:historical",
+        "scope:source-repo"
+      ],
+      "checks": {
+        "title_matches": true,
+        "body_matches": true,
+        "markers_match": true,
+        "labels_match": true,
+        "assignees_empty": true,
+        "state_matches": true,
+        "close_reason_matches": true,
+        "closing_comment_matches": true,
+        "number_matches": true,
+        "node_id_matches": true,
+        "url_matches": true
+      },
+      "verified": true
+    },
+    {
+      "backlog_id": "SAG-001",
+      "issue_number": 58,
+      "issue_node_id": "I_kwDOSBe2Hc8AAAABKqqa6Q",
+      "issue_url": "https://github.com/YuChia-Wei/ai-collaboration-prompts-dotnet-backend/issues/58",
+      "state": "CLOSED",
+      "state_reason": "COMPLETED",
+      "labels": [
+        "created-by:codex",
+        "kind:story",
+        "migration:historical",
+        "scope:framework"
+      ],
+      "checks": {
+        "title_matches": true,
+        "body_matches": true,
+        "markers_match": true,
+        "labels_match": true,
+        "assignees_empty": true,
+        "state_matches": true,
+        "close_reason_matches": true,
+        "closing_comment_matches": true,
+        "number_matches": true,
+        "node_id_matches": true,
+        "url_matches": true
+      },
+      "verified": true
+    },
+    {
+      "backlog_id": "SIMPL-001",
+      "issue_number": 59,
+      "issue_node_id": "I_kwDOSBe2Hc8AAAABKqqflQ",
+      "issue_url": "https://github.com/YuChia-Wei/ai-collaboration-prompts-dotnet-backend/issues/59",
+      "state": "CLOSED",
+      "state_reason": "COMPLETED",
+      "labels": [
+        "created-by:codex",
+        "kind:enabler",
+        "migration:historical",
+        "scope:framework"
+      ],
+      "checks": {
+        "title_matches": true,
+        "body_matches": true,
+        "markers_match": true,
+        "labels_match": true,
+        "assignees_empty": true,
+        "state_matches": true,
+        "close_reason_matches": true,
+        "closing_comment_matches": true,
+        "number_matches": true,
+        "node_id_matches": true,
+        "url_matches": true
+      },
+      "verified": true
+    },
+    {
+      "backlog_id": "SKILL-001",
+      "issue_number": 60,
+      "issue_node_id": "I_kwDOSBe2Hc8AAAABKqqjWw",
+      "issue_url": "https://github.com/YuChia-Wei/ai-collaboration-prompts-dotnet-backend/issues/60",
+      "state": "CLOSED",
+      "state_reason": "COMPLETED",
+      "labels": [
+        "created-by:codex",
+        "kind:story",
+        "migration:historical",
+        "scope:framework"
+      ],
+      "checks": {
+        "title_matches": true,
+        "body_matches": true,
+        "markers_match": true,
+        "labels_match": true,
+        "assignees_empty": true,
+        "state_matches": true,
+        "close_reason_matches": true,
+        "closing_comment_matches": true,
+        "number_matches": true,
+        "node_id_matches": true,
+        "url_matches": true
+      },
+      "verified": true
+    },
+    {
+      "backlog_id": "STD-001",
+      "issue_number": 61,
+      "issue_node_id": "I_kwDOSBe2Hc8AAAABKqqngA",
+      "issue_url": "https://github.com/YuChia-Wei/ai-collaboration-prompts-dotnet-backend/issues/61",
+      "state": "OPEN",
+      "state_reason": "",
+      "labels": [
+        "created-by:codex",
+        "kind:enabler",
+        "migration:historical",
+        "scope:framework"
+      ],
+      "checks": {
+        "title_matches": true,
+        "body_matches": true,
+        "markers_match": true,
+        "labels_match": true,
+        "assignees_empty": true,
+        "state_matches": true,
+        "close_reason_matches": true,
+        "closing_comment_matches": true,
+        "number_matches": true,
+        "node_id_matches": true,
+        "url_matches": true
+      },
+      "verified": true
+    },
+    {
+      "backlog_id": "TOOL-001",
+      "issue_number": 62,
+      "issue_node_id": "I_kwDOSBe2Hc8AAAABKqqorw",
+      "issue_url": "https://github.com/YuChia-Wei/ai-collaboration-prompts-dotnet-backend/issues/62",
+      "state": "CLOSED",
+      "state_reason": "COMPLETED",
+      "labels": [
+        "created-by:codex",
+        "kind:enabler",
+        "migration:historical",
+        "scope:mixed"
+      ],
+      "checks": {
+        "title_matches": true,
+        "body_matches": true,
+        "markers_match": true,
+        "labels_match": true,
+        "assignees_empty": true,
+        "state_matches": true,
+        "close_reason_matches": true,
+        "closing_comment_matches": true,
+        "number_matches": true,
+        "node_id_matches": true,
+        "url_matches": true
+      },
+      "verified": true
+    },
+    {
+      "backlog_id": "UPG-001",
+      "issue_number": 24,
+      "issue_node_id": "I_kwDOSBe2Hc8AAAABKqJ88w",
+      "issue_url": "https://github.com/YuChia-Wei/ai-collaboration-prompts-dotnet-backend/issues/24",
+      "state": "CLOSED",
+      "state_reason": "NOT_PLANNED",
+      "labels": [
+        "created-by:codex",
+        "kind:story",
+        "migration:historical",
+        "scope:framework"
+      ],
+      "checks": {
+        "title_matches": true,
+        "body_matches": true,
+        "markers_match": true,
+        "labels_match": true,
+        "assignees_empty": true,
+        "state_matches": true,
+        "close_reason_matches": true,
+        "closing_comment_matches": true,
+        "number_matches": true,
+        "node_id_matches": true,
+        "url_matches": true
+      },
+      "verified": true
+    },
+    {
+      "backlog_id": "VAL-001",
+      "issue_number": 63,
+      "issue_node_id": "I_kwDOSBe2Hc8AAAABKqqsTg",
+      "issue_url": "https://github.com/YuChia-Wei/ai-collaboration-prompts-dotnet-backend/issues/63",
+      "state": "CLOSED",
+      "state_reason": "COMPLETED",
+      "labels": [
+        "created-by:codex",
+        "kind:enabler",
+        "migration:historical",
+        "scope:mixed"
+      ],
+      "checks": {
+        "title_matches": true,
+        "body_matches": true,
+        "markers_match": true,
+        "labels_match": true,
+        "assignees_empty": true,
+        "state_matches": true,
+        "close_reason_matches": true,
+        "closing_comment_matches": true,
+        "number_matches": true,
+        "node_id_matches": true,
+        "url_matches": true
+      },
+      "verified": true
+    }
+  ],
+  "all_verified": true
+}

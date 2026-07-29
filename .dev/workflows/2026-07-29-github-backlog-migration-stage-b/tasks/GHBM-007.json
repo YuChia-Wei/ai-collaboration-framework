@@ -1,0 +1,58 @@
+{
+  "template_id": "ai-context-governance-remediation-task",
+  "template_version": "1.1.0",
+  "task_id": "GHBM-007",
+  "workflow_id": "2026-07-29-github-backlog-migration-stage-b",
+  "owner_skill": "ai-context-governance",
+  "status": "completed",
+  "created_at": "2026-07-29T23:30:17+08:00",
+  "updated_at": "2026-07-29T23:44:53+08:00",
+  "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
+  "model": "gpt-5.6-sol",
+  "reasoning_effort": "high",
+  "scope": {
+    "target": "Approved Project views, allowlisted workflows, final provider readback, repository validation, and PR-only closeout.",
+    "files": [
+      ".dev/backlog/provider-mappings/github-issues.yaml",
+      ".dev/workflows/2026-07-29-github-backlog-migration-stage-b/**",
+      ".dev/workflows/INDEX.md"
+    ],
+    "constraints": [
+      "Configure only Active Backlog, Roadmap, Owner Review, and History by Release views.",
+      "Configure only issue-opened auto-add with Status Inbox and issue-closed Status Done outcomes.",
+      "Do not enable PR-merge closure or any provider-to-repository reverse write.",
+      "Record unsupported provider capabilities explicitly and do not invent completion."
+    ]
+  },
+  "execution": {
+    "steps": [
+      "Configure and read back approved Project views.",
+      "Inspect existing workflows and configure only the two allowlisted outcomes.",
+      "Run complete provider and repository validation.",
+      "Close workflow evidence and publish through the PR-only main policy."
+    ],
+    "validation": [
+      "View names/layouts/filters/grouping/sorts and enabled workflow outcomes match the approved provider contract or carry explicit provider-constraint evidence.",
+      "All Issue, Project, receipt, test, workflow, and Git handoff evidence passes without making GitHub a repository workflow dependency."
+    ],
+    "last_completed_step": "Exactly read back four saved views and three enabled provider workflows implementing the two allowlisted outcomes.",
+    "next_action": "Publish the completed workflow through the repository's PR-only main integration policy."
+  },
+  "results": {
+    "summary": "Configured and read back Active Backlog, Roadmap, Owner Review, and History by Release; retained only the auto-add/Inbox and closed/Done automation outcomes; disabled template PR and lifecycle side effects outside the allowlist.",
+    "tests_run": [
+      "GraphQL ProjectV2View readback: four exact names, layouts, filters, groups, and sorts",
+      "Signed-in Project workflow UI readback: three enabled workflows, five-item open auto-add query, Status Inbox initialization, and Status Done closure",
+      "Signed-in Active Backlog readback: four named views, 5 matching open items, and Workflows (3 enabled)",
+      "python .tmp/verify-github-all-issues.py: passed (41/41; open=5; closed=36)",
+      "python .tmp/project-github-backlog-fields.py verify-identities: passed (41/41)",
+      "python .tmp/project-github-backlog-fields.py verify-values: passed (205/205; 41/41 empty assignees)",
+      "python .ai/scripts/tests/test_github_backlog_provider.py: passed (17/17)",
+      "python .ai/scripts/validate-ai-context.py: passed",
+      "git diff --check: passed"
+    ],
+    "finding_status": "completed",
+    "residual_risk": "The built-in auto-add trigger also evaluates updated Issues that newly match is:issue is:open; this is the provider-native implementation of the approved issue-opened outcome. History ordering uses Title ascending because titles begin with the canonical backlog ID and no redundant Backlog ID field was approved.",
+    "follow_up_needed": false
+  }
+}

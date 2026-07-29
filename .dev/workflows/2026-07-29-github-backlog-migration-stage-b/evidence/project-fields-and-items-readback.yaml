@@ -1,0 +1,35 @@
+schema_version: '1.0'
+captured_at: '2026-07-29T23:30:17+08:00'
+provider: github
+project:
+  number: 3
+  node_id: PVT_kwHOAwvEG84Bez7w
+  url: https://github.com/users/YuChia-Wei/projects/3
+  public: true
+  closed: false
+  provider_native_field_count: 17
+  workflow_managed_fields:
+    - Status
+    - Priority
+    - Owner review
+    - Target release
+    - Published in
+verification:
+  receipt_items: 41
+  provider_items: 41
+  non_null_project_item_ids: 41
+  unique_project_item_ids: 41
+  exact_url_and_item_id_matches: 41
+  expected_managed_field_values: 205
+  exact_managed_field_value_matches: 205
+  empty_assignees: 41
+  errors: []
+distributions:
+  status: {Inbox: 5, Done: 36}
+  priority: {P0 Critical: 2, P1 High: 26, P2 Normal: 10, P3 Low: 3}
+  owner_review: {Pending: 5, Not required: 36}
+  target_release: {Unassigned: 6, v0.1.0: 4, v0.4.1: 2, v0.4.2: 5, v0.5.0: 11, v0.6.0: 9, v0.7.0: 4}
+  published_in: {Not yet published: 5, Not applicable — source repository only: 2, v0.1.0: 4, v0.4.1: 2, v0.4.2: 4, v0.5.0: 11, v0.6.0: 9, v0.7.0: 4}
+notes:
+  - Provider-native fields such as Title, Assignees, Labels, Repository, and timestamps remain available but are not workflow-managed source-of-truth fields.
+  - The Project is a visibility and owner-review projection; repository backlog and workflow artifacts remain authoritative.

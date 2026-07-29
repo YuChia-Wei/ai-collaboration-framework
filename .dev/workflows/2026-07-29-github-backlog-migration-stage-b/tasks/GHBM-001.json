@@ -1,0 +1,56 @@
+{
+  "template_id": "ai-context-governance-remediation-task",
+  "template_version": "1.1.0",
+  "task_id": "GHBM-001",
+  "workflow_id": "2026-07-29-github-backlog-migration-stage-b",
+  "owner_skill": "ai-context-governance",
+  "status": "completed",
+  "created_at": "2026-07-29T22:58:40+08:00",
+  "updated_at": "2026-07-29T23:00:26+08:00",
+  "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
+  "model": "gpt-5.6-sol",
+  "reasoning_effort": "high",
+  "scope": {
+    "target": "Stage B provider preflight and duplicate prevention.",
+    "files": [
+      ".dev/workflows/2026-07-29-github-backlog-migration-stage-b/**",
+      ".dev/workflows/INDEX.MD"
+    ],
+    "constraints": [
+      "Use the immutable e83b759 plan.",
+      "Do not create an Issue that already has a provider mapping or hidden-marker match.",
+      "Do not create the Project before all 41 Issues verify."
+    ]
+  },
+  "execution": {
+    "steps": [
+      "Regenerate and hash the immutable plan.",
+      "Inventory all existing formal Issues and Projects.",
+      "Verify canary mapping parity and the exact label contract.",
+      "Record the owner authorization and apply order."
+    ],
+    "validation": [
+      "Plan count and SHA-256 match.",
+      "Exactly four formal Issues exist and match the receipt.",
+      "No GitHub Project exists for the owner."
+    ],
+    "last_completed_step": "Regenerated the immutable plan and completed online inventory.",
+    "next_action": "Proceed to GHBM-002 batch 1."
+  },
+  "results": {
+    "summary": "The immutable plan, four mapped canaries, label contract, duplicate prevention, and absence of a Project were verified.",
+    "files_changed": [
+      ".dev/workflows/2026-07-29-github-backlog-migration-stage-b/**",
+      ".dev/workflows/INDEX.MD"
+    ],
+    "tests_run": [
+      "python .ai/scripts/validate-workflow-artifacts.py",
+      "python .ai/scripts/tests/test_github_backlog_provider.py (17 passed)",
+      "deterministic e83b759 dry-run check (41 items, 0 blocked)",
+      "GitHub Issue and Project inventory read-back"
+    ],
+    "finding_status": "addressed",
+    "residual_risk": "No remaining Issue or Project has been created yet.",
+    "follow_up_needed": true
+  }
+}

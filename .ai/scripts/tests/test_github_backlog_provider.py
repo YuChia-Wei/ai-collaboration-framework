@@ -119,22 +119,26 @@ class GitHubBacklogProviderTests(unittest.TestCase):
         for keyword in ("Closes #", "Fixes #", "Resolves #"):
             self.assertNotIn(keyword, template)
 
-    def test_gwt_014_given_verified_canaries_then_provider_receipt_records_only_the_four_mappings(self) -> None:
+    def test_gwt_014_given_stage_b_receipt_then_every_recorded_mapping_is_verified_and_canonical(self) -> None:
         receipt = PROVIDER.load_yaml_mapping(
             REPO_ROOT / ".dev/backlog/provider-mappings/github-issues.yaml"
         )
-        self.assertEqual("stage-b-in-progress", receipt["stage"])
+        self.assertIn(receipt["stage"], {"stage-b-in-progress", "stage-b-read-back-complete"})
         self.assertEqual(
             "e83b759c8cf1deeb11af5ae748359f6a4c63b200",
             receipt["source_revision"],
         )
-        self.assertEqual(
-            {"DEVWF-001", "AIC-007", "R042-005", "UPG-001"},
-            {item["backlog_id"] for item in receipt["items"]},
+        mapped_ids = [item["backlog_id"] for item in receipt["items"]]
+        self.assertTrue(
+            {"DEVWF-001", "AIC-007", "R042-005", "UPG-001"}.issubset(mapped_ids)
         )
+        self.assertEqual(len(mapped_ids), len(set(mapped_ids)))
+        self.assertTrue(set(mapped_ids).issubset(self.items))
         self.assertTrue(all(item["read_back"]["labels_match"] for item in receipt["items"]))
         self.assertTrue(all(item["read_back"]["markers_match"] for item in receipt["items"]))
-        self.assertIsNone(receipt["project"]["number"])
+        if receipt["stage"] == "stage-b-read-back-complete":
+            self.assertEqual(41, len(mapped_ids))
+            self.assertIsNotNone(receipt["project"]["number"])
 
     def test_gwt_015_given_source_provider_tools_then_distribution_profile_excludes_them(self) -> None:
         profile = PROVIDER.load_yaml_mapping(
