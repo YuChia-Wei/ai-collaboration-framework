@@ -171,6 +171,26 @@ def related_refs(item: dict[str, Any]) -> list[str]:
     return sorted({line for line in value if isinstance(line, str)})
 
 
+def creation_attribution(config: dict[str, Any]) -> str:
+    issue = config.get("issue")
+    if not isinstance(issue, dict):
+        raise ProviderContractError("issue configuration must be a mapping")
+    attribution = issue.get("creation_attribution")
+    if not isinstance(attribution, dict):
+        raise ProviderContractError("issue.creation_attribution must be a mapping")
+    try:
+        return attribution["marker_format"].format(
+            runtime=attribution["runtime"],
+            model=attribution["model"],
+            reasoning_effort=attribution["reasoning_effort"],
+            email=attribution["email"],
+        )
+    except (KeyError, AttributeError, ValueError) as exc:
+        raise ProviderContractError(
+            "issue.creation_attribution must define a valid marker_format, runtime, model, reasoning_effort, and email"
+        ) from exc
+
+
 def validate_config(config: dict[str, Any], backlog_ids: set[str]) -> None:
     errors: list[str] = []
     if config.get("schema_version") != "1.0" or config.get("provider") != "github":
@@ -213,11 +233,43 @@ def validate_config(config: dict[str, Any], backlog_ids: set[str]) -> None:
         "scope:source-repo",
         "scope:mixed",
         "migration:historical",
+        "created-by:codex",
         "traceability:needs-review",
         "triage:needed",
     }
     if label_names != required_labels:
-        errors.append("label declaration differs from the approved nine-label contract")
+        errors.append("label declaration differs from the approved ten-label contract")
+    issue = config.get("issue", {})
+    attribution = issue.get("creation_attribution", {}) if isinstance(issue, dict) else {}
+    if not isinstance(attribution, dict):
+        errors.append("issue.creation_attribution must be a mapping")
+    else:
+        expected_attribution = {
+            "required_for_formal_issue": True,
+            "label": "created-by:codex",
+            "marker_format": "<!-- created-by: {runtime} ({model}, {reasoning_effort}) <{email}> -->",
+            "placement": "hidden marker immediately before canonical identity markers",
+            "runtime": "OpenAI Codex",
+            "model": "gpt-5.6-sol",
+            "reasoning_effort": "high",
+            "email": "noreply@openai.com",
+            "runtime_binding": "active Issue-creation execution",
+            "refresh_policy": "update execution values before a creation batch when runtime provenance changes",
+            "applies_to": ["formal_story", "formal_enabler"],
+            "proposal_policy": "not automatically applied",
+        }
+        if attribution != expected_attribution:
+            errors.append("Issue creation attribution differs from the approved Codex label and marker contract")
+        else:
+            try:
+                rendered_attribution = creation_attribution(config)
+            except ProviderContractError as exc:
+                errors.append(str(exc))
+            else:
+                if rendered_attribution != (
+                    "<!-- created-by: OpenAI Codex (gpt-5.6-sol, high) <noreply@openai.com> -->"
+                ):
+                    errors.append("Issue creation attribution does not render the approved hidden marker")
     automation = config.get("automation", {})
     allowlist = automation.get("allowlist", []) if isinstance(automation, dict) else []
     if allowlist != [
@@ -380,6 +432,8 @@ This Issue is a historical projection of a canonical repository backlog item. Gi
 
 - Canonical source: [`{canonical_path}` at `{revision[:12]}`]({canonical_url})
 
+{creation_attribution(config)}
+
 <!-- canonical-backlog-id: {item['backlog_id']} -->
 <!-- migration-id: {config['migration']['id']} -->
 """
@@ -428,6 +482,7 @@ def project_item(
         f"kind:{classification['kind']}",
         f"scope:{classification['scope']}",
         "migration:historical",
+        config["issue"]["creation_attribution"]["label"],
     ]
     if blocked:
         labels.append("traceability:needs-review")
