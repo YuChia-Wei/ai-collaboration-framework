@@ -12,9 +12,9 @@
 - report_id: remediation-report-2026-07-29-v0-7-0-public-release-body-correction
 - workflow_id: 2026-07-29-v0-7-0-public-release-body-correction
 - owner_skill: ai-context-governance
-- status: draft
+- status: final
 - created_at: 2026-07-29T16:06:15+08:00
-- updated_at: 2026-07-29T16:06:15+08:00
+- updated_at: 2026-07-29T16:21:30+08:00
 - template_source: .ai/assets/skills/ai-context-governance/templates/ai-context-remediation-report-template.md
 - template_version: 2.0.0
 - baseline_assessment: transient V070 finding set captured by the active workflow
@@ -25,20 +25,23 @@
 - Authorized scope: correct only the v0.7.0 public Release body after a
   source-only phase-correct renderer and validator contract is integrated.
 - Completed scope: hosted before-state frozen; published-phase source contract,
-  focused regression tests, and source-only payload proof committed at
-  cbe1553f0fc30a856a35e85ec17ecd8cd91838d2; independent verification committed
-  at 7b782c3.
+  focused regression tests, source-only payload proof, and independent
+  verification completed; source PR #18 passed required checks and merged as
+  b5b1a5223657933b222833f4ccf2f21e77d8c97a. From updated main, the exact
+  published body was rendered and reviewed, then only the hosted Release body
+  was updated.
 - Validation summary: renderer 8/8, release-state 24/24, package projection,
   GitHub workflow contract, workflow artifact, assessment artifact, and
-  AI-context validation pass. The new live hosted finalization validation
-  fails as expected because the external body remains stale.
-- Closure decision: not-ready
+  AI-context validation pass. Post-edit read-back proves the hosted body equals
+  the renderer and Release identity, annotated tag object, peeled commit, and
+  four asset name/digest pairs are unchanged; hosted finalization passes.
+- Closure decision: ready
 
 ## Finding Resolution Matrix
 
 | Assessment Finding | Before Severity | Status | Changed Files | Validation | Commit | Residual Risk |
 | --- | --- | --- | --- | --- | --- | --- |
-| V070-PUBLIC-BODY-001 / ASM-20260729-001#VFY-004 | HIGH | partially-resolved | frozen evidence and source contract | hosted finalization fails closed against stale body | cbe1553, 7b782c3 | public body remains incorrect until authorized body-only edit and read-back |
+| V070-PUBLIC-BODY-001 / ASM-20260729-001#VFY-004 | HIGH | resolved | final rendered body and post-edit evidence | exact body read-back, immutable-fact comparison, hosted finalization pass | b5b1a52 and this closure commit | no remaining public-body mismatch |
 | V070-VALIDATOR-PHASE-002 / ASM-20260729-001#VFY-001, VFY-002 | HIGH | resolved | renderer and release-state validator | 8/8 renderer, 24/24 release-state suites | cbe1553 | finalization cannot accept tagged candidate body or supplied bypass body |
 | V070-PACKAGE-BOUNDARY-003 / ASM-20260729-001#VFY-003 | HIGH | resolved | package-boundary regression test | package projection suite passes | cbe1553 | stop for owner input if later package selection evidence contradicts this result |
 | V070-RELEASE-ALLOCATION-004 | MEDIUM | resolved | none | workflow and task scope retain no allocation | cbe1553 | none |
@@ -52,10 +55,12 @@
   commit, successful run, public URL, required phase sections, and no
   candidate-only publication claims. Finalization derives its body from that
   mode and compares any supplied body against it.
-- Evidence: V070BODY-001-hosted-before.json captures the old body and
+- Evidence: V070BODY-001-hosted-before.json captures the old body,
   V070BODY-001-published-validator-negative.json records the expected live
-  failure.
-- Validation: focused renderer and release-state suites pass.
+  failure, V070BODY-001-final-rendered-body.md records the reviewed body, and
+  V070BODY-001-hosted-after.json records the immutable-fact comparison.
+- Validation: focused renderer and release-state suites pass; post-edit hosted
+  finalization passes.
 - Remaining risk: none in source contract.
 
 ### V070-PACKAGE-BOUNDARY-003
@@ -71,22 +76,24 @@
 - Independent auditor: ASM-20260729-001.
 - Confirmed resolved: source renderer, finalization validator, and package
   boundary findings.
-- Recurring findings: VFY-004 confirms the hosted body remains stale and must
-  stay active until online read-back passes.
+- Recurring findings: none. VFY-004 is resolved by the authorized body-only
+  edit and immediate invariant read-back.
 - New or regressed findings: none.
 
 ## Deferred Work
 
 | Finding | Reason | Owner | Next Action |
 | --- | --- | --- | --- |
-| V070-PUBLIC-BODY-001 | External mutation is deliberately deferred until source integration and exact-body review on updated main. | ai-context-governance | Continue the approved PR, continuation, edit, and invariant read-back sequence. |
-| REL-004 and successor scope | Explicitly outside this self-correction. | owner | Keep unallocated. |
+| REL-004 and successor scope | Explicitly outside this completed self-correction. | owner | Keep unallocated. |
 
 ## Closure Evidence
 
-- Required validations: source validation bundle and independent verification
-  complete; the source integration gate and later online read-back remain.
-- Commit status: source contract cbe1553; verification 7b782c3; workflow remains active.
-- Workflow/task status: V070BODY-001 is in progress.
-- Final next action: validate the source commit range and exact source
-  checkpoint, then push and create the required ready pull request.
+- Required validations: source validation bundle, independent verification,
+  source PR checks, exact published-body review, immediate invariant read-back,
+  and hosted finalization validation are complete.
+- Commit status: source contract cbe1553; verification 7b782c3; source
+  integration b5b1a52; closure evidence awaits this continuation commit.
+- Workflow/task status: V070BODY-001 and the workflow are completed pending
+  closure PR integration.
+- Final next action: push this continuation branch, pass required checks, merge
+  the ready closure PR, and synchronize local main.

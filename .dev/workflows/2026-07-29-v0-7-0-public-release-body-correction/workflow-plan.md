@@ -12,14 +12,14 @@
 - `workflow_id`: `2026-07-29-v0-7-0-public-release-body-correction`
 - `workflow_kind`: `ai-context-maintenance`
 - `owner_skill`: `ai-context-governance`
-- `branch`: `codex/2026-07-29-v0-7-0-public-release-body-correction`
+- `branch`: `codex/2026-07-29-v0-7-0-public-release-body-correction-continuation`
 - `base_branch`: `main`
-- `branch_segment`: `1`
-- `status`: `in_progress`
-- `current_phase`: `source-verification-complete`
+- `branch_segment`: `2`
+- `status`: `completed`
+- `current_phase`: `completed`
 - `artifact_root`: `.dev/workflows/2026-07-29-v0-7-0-public-release-body-correction`
 - `created_at`: `2026-07-29T15:08:23+08:00`
-- `updated_at`: `2026-07-29T16:06:15+08:00`
+- `updated_at`: `2026-07-29T16:21:30+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md`
 - `template_version`: `1.2.0`
 
@@ -148,14 +148,14 @@
 
 ## Resume Checkpoint
 
-- Last completed action: Committed the source-only published-phase contract at
-  cbe1553f0fc30a856a35e85ec17ecd8cd91838d2 and independent verification
-  ASM-20260729-001 at 7b782c3. The auditor confirmed source remediation while
-  retaining the public body as an active external correction.
+- Last completed action: Source PR #18 passed required checks and merged as
+  b5b1a5223657933b222833f4ccf2f21e77d8c97a. From that synchronized main,
+  rendered and word-for-word reviewed the deterministic published body, updated
+  only the hosted v0.7.0 Release body, and completed immediate invariant
+  read-back plus hosted finalization validation.
 - Current task: `V070BODY-001`
-- Exact next action: Update and commit governance-owned remediation state, run
-  the exact source commit-range and aggregate gate once, then push and create a
-  ready pull request for source integration.
+- Exact next action: Integrate this closure record through its required ready
+  pull request and synchronize local `main`.
 - Validation already completed: repository `main` was clean and synchronized at
   `b2f1354f85ba1cee4acb497820d57a0d35547ef8` before branch creation. The first
   real critical gate at bootstrap commit
@@ -166,14 +166,12 @@
   passed 44/44 required critical checks, and the hosted finalization phase
   check passed. The latter reflects the existing validator contract and does
   not resolve the known stale-body semantic finding.
-- Git state: source contract and independent verification are committed on the
-  dedicated branch. Governance closeout metadata remains to be committed; the
-  published tag, Release identity, and assets remain read-only baseline facts.
-- Branch history and checkpoint handoffs: segment 1 started from synchronized
-  `main`; a local fresh-session checkpoint will be recorded before transfer.
-- Blockers or unresolved decisions: none for the bounded body correction. Stop
-  for owner input if package isolation fails or any tag/asset mutation would be
-  required.
+- Git state: source contract is merged to main. This continuation branch holds
+  only closure evidence and metadata; no package, tag, or asset bytes changed.
+- Branch history and checkpoint handoffs: segment 2 started from updated
+  `main@b5b1a5223657933b222833f4ccf2f21e77d8c97a` after source PR #18 merged.
+- Blockers or unresolved decisions: none. The bounded body correction is
+  complete; REL-004 and successor allocation remain outside scope.
 
 ## Branch Lifecycle
 
@@ -181,3 +179,4 @@
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | 1 | `codex/2026-07-29-v0-7-0-public-release-body-correction` | `main@b2f1354f85ba1cee4acb497820d57a0d35547ef8` | started | `b2f1354f85ba1cee4acb497820d57a0d35547ef8` | local | `2026-07-29T15:08:23+08:00` | Prepare an executable fresh-session correction workflow. | Commit and validate the workflow bootstrap, then create the handoff checkpoint. |
 | 1 | `codex/2026-07-29-v0-7-0-public-release-body-correction` | `main@b2f1354f85ba1cee4acb497820d57a0d35547ef8` | validated handoff parent | `96a4968af028ee25da33d70438b6fd6cc2ddf3c3` | local | `2026-07-29T15:36:17+08:00` | Restore the owner-authorized source-only README baseline and prove the normal continuation gate. | Commit the containing checkpoint, validate it against the repository, then transfer to a fresh session. |
+| 2 | `codex/2026-07-29-v0-7-0-public-release-body-correction-continuation` | `main@b5b1a5223657933b222833f4ccf2f21e77d8c97a` | post-source-integration continuation | `b5b1a5223657933b222833f4ccf2f21e77d8c97a` | local | `2026-07-29T16:14:00+08:00` | Render the phase-correct body from updated main, perform the authorized body-only edit, and prove immutable facts unchanged. | Commit closure evidence, pass the exact closure gate, and integrate through a ready PR. |

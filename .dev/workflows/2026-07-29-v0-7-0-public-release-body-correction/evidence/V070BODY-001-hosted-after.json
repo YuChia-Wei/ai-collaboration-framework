@@ -1,0 +1,87 @@
+{
+  "schema_version": "1.0",
+  "evidence_id": "V070BODY-001-hosted-after",
+  "observed_at": "2026-07-29T16:21:30.8722551+08:00",
+  "capture": {
+    "mode": "post-mutation-read-back",
+    "body_only_command": "gh release edit v0.7.0 --repo YuChia-Wei/ai-collaboration-prompts-dotnet-backend --notes-file .tmp/V070BODY-001-final-body.md",
+    "read_back_command": "gh api repos/YuChia-Wei/ai-collaboration-prompts-dotnet-backend/releases/tags/v0.7.0; gh api repos/YuChia-Wei/ai-collaboration-prompts-dotnet-backend/git/ref/tags/v0.7.0; gh api repos/YuChia-Wei/ai-collaboration-prompts-dotnet-backend/git/tags/<tag-object-sha>",
+    "authorized_mutation": "Release body only"
+  },
+  "rendered_body": {
+    "mode": "published",
+    "source_main_merge_commit": "b5b1a5223657933b222833f4ccf2f21e77d8c97a",
+    "release_commit": "49723a943f744820f4bdb2c22de7930693a7106d",
+    "utf8_sha256": "6e2b2eb1c4b6b95a7bd8e7acf678b1d8cbde22d492bbed9a454d56d74ed3c298",
+    "line_count": 154,
+    "review_body_artifact": "V070BODY-001-final-rendered-body.md",
+    "review_artifact_note": "The tracked Markdown preserves every rendered word and order. Its terminal newline is repository-text normalization and was not supplied to GitHub; the UTF-8 SHA-256 above is the exact supplied and read-back body."
+  },
+  "release": {
+    "id": 361106776,
+    "database_id": 361106776,
+    "node_id": "RE_kwDOSBe2Hc4Vhg1Y",
+    "url": "https://github.com/YuChia-Wei/ai-collaboration-prompts-dotnet-backend/releases/tag/v0.7.0",
+    "tag_name": "v0.7.0",
+    "target_commitish": "main",
+    "name": "REL-v0.7.0",
+    "is_draft": false,
+    "is_prerelease": false,
+    "created_at": "2026-07-28T13:25:02Z",
+    "published_at": "2026-07-28T13:26:18Z"
+  },
+  "annotated_tag": {
+    "ref": "refs/tags/v0.7.0",
+    "ref_object_type": "tag",
+    "object_sha": "ac57bc0f400c9e8fafdb553407b65ced5f61ee2c",
+    "peeled_object_type": "commit",
+    "peeled_commit": "49723a943f744820f4bdb2c22de7930693a7106d"
+  },
+  "assets": [
+    {
+      "id": 492748639,
+      "name": "ai-context-dotnet-backend-v0.7.0.tar.gz",
+      "state": "uploaded",
+      "size": 640586,
+      "digest": "sha256:a54cc2649ab9508ec186d87f03fcf7ec83e58e1df65b761c53e6447971243e40"
+    },
+    {
+      "id": 492748640,
+      "name": "ai-context-dotnet-backend-v0.7.0.tar.gz.sha256",
+      "state": "uploaded",
+      "size": 106,
+      "digest": "sha256:7b15dd79b0f1db9789ad1d59b7ed781b8eb1b908e000789a5531972c91566b4f"
+    },
+    {
+      "id": 492748641,
+      "name": "ai-context-dotnet-backend-v0.7.0.zip",
+      "state": "uploaded",
+      "size": 1021279,
+      "digest": "sha256:ce817b6635f515eec9fb824d6fea89a01a6273a4a0401682dd65b38202c5adb6"
+    },
+    {
+      "id": 492748638,
+      "name": "ai-context-dotnet-backend-v0.7.0.zip.sha256",
+      "state": "uploaded",
+      "size": 103,
+      "digest": "sha256:a76292fadfcbbef5a139c198ee8f2de6ba9a9b9413459eb7f8b51b885ce8b12c"
+    }
+  ],
+  "invariant_comparison": {
+    "baseline": "V070BODY-001-hosted-before.json",
+    "hosted_body_matches_exact_renderer": true,
+    "release_identity_unchanged": true,
+    "annotated_tag_ref_unchanged": true,
+    "annotated_tag_object_unchanged": true,
+    "peeled_commit_unchanged": true,
+    "asset_name_digest_set_unchanged": true,
+    "changed_release_fields": [
+      "body"
+    ]
+  },
+  "hosted_phase_validation": {
+    "command": "python .ai/scripts/validate-ai-context-release-state.py --phase finalization --version v0.7.0 --hosted",
+    "outcome": "passed",
+    "message": "AI context release-state validation passed for v0.7.0 finalization phase at 49723a943f744820f4bdb2c22de7930693a7106d."
+  }
+}
