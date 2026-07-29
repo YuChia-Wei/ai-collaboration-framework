@@ -128,7 +128,15 @@ def write_fixture(
     (release / "release-notes.md").write_text(
         authored_notes
         or (
-            "# REL-v0.5.0 - Candidate\n\n"
+            "# REL-v0.5.0 - Published\n\n"
+            "## Status\n\n"
+            "Published.\n\n"
+            "## Release Validation\n\n"
+            "The published release validation passed.\n\n"
+            "## Publication Completion\n\n"
+            "Published from immutable annotated tag `v0.5.0`.\n"
+            if status == "published"
+            else "# REL-v0.5.0 - Candidate\n\n"
             "Supports governed upgrades from v0.3.0, v0.4.0, v0.4.1, and v0.4.2.\n"
         ),
         encoding="utf-8",
@@ -378,7 +386,8 @@ class AiContextReleaseStateGwtTests(unittest.TestCase):
             root = Path(temp)
             write_fixture(root, status="published")
             body = root / "body.md"
-            body.write_text("rendered body\n", encoding="utf-8")
+            expected = STATE.render_published_body(root, VERSION, SHA)
+            body.write_text(expected, encoding="utf-8")
             STATE.validate(
                 root,
                 "finalization",
@@ -387,7 +396,7 @@ class AiContextReleaseStateGwtTests(unittest.TestCase):
                 rendered_body=body,
                 hosted=True,
                 runner=fake_runner(
-                    release=hosted_release(),
+                    release=hosted_release(expected),
                     workflow=hosted_workflow(),
                 ),
             )
@@ -409,6 +418,30 @@ class AiContextReleaseStateGwtTests(unittest.TestCase):
                     hosted=True,
                     runner=fake_runner(
                         release=hosted_release("wrong"),
+                        workflow=hosted_workflow(),
+                    ),
+                )
+
+    def test_gwt_024_given_published_record_with_hosted_candidate_body_when_finalized_then_it_fails_closed(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            write_fixture(root, status="published")
+            stale_candidate_body = (
+                "## Status\n\n"
+                "Validated governed candidate. v0.5.0 is not tagged or published.\n\n"
+                "## Publication Completion\n\n"
+                "Not published.\n"
+            )
+            with self.assertRaisesRegex(STATE.ReleaseStateError, "body differs"):
+                STATE.validate(
+                    root,
+                    "finalization",
+                    VERSION,
+                    repository="owner/repo",
+                    workflow_run_id="42",
+                    hosted=True,
+                    runner=fake_runner(
+                        release=hosted_release(stale_candidate_body),
                         workflow=hosted_workflow(),
                     ),
                 )

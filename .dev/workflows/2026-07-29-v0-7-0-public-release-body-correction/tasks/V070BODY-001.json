@@ -8,7 +8,7 @@
   "owner_skill": "ai-context-governance",
   "status": "in_progress",
   "created_at": "2026-07-29T15:08:23+08:00",
-  "updated_at": "2026-07-29T15:36:17+08:00",
+  "updated_at": "2026-07-29T15:56:46+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-5.6-sol",
   "reasoning_effort": "high",
@@ -73,22 +73,34 @@
       "one applicable aggregate critical gate for each exact handoff commit",
       "hosted Release read-back plus unchanged tag object, peeled commit, asset names, and asset digests"
     ],
-    "last_completed_step": "Committed the source-only README parity repair at 96a4968af028ee25da33d70438b6fd6cc2ddf3c3; critical validation passed 44/44 required checks and the hosted v0.7.0 finalization phase check passed read-only.",
-    "next_action": "In a fresh session, validate the registered checkpoint, then reproduce and freeze the live v0.7.0 Release body, tag, Release identity, asset names, and asset digests without mutation."
+    "last_completed_step": "Validated the fresh-session handoff, froze the hosted v0.7.0 Release body, Release identity, annotated tag object, peeled commit, and four asset digests, then implemented the source-only published-phase renderer and fail-closed finalization validator. The new hosted finalization validation correctly fails against the stale candidate-only body.",
+    "next_action": "Complete declared source validation, commit the source correction, then create the independent ai-context-auditor verification assessment on this workflow branch."
   },
   "results": {
-    "summary": "Workflow bootstrap and authorized source-only README baseline repair are in progress; no GitHub Release mutation has occurred.",
+    "summary": "The hosted v0.7.0 baseline is frozen and the source-only phase-correct renderer/validator remediation is implemented and focused-tested; no GitHub Release mutation has occurred.",
     "files_changed": [
-      "README.en.md"
+      "README.en.md",
+      ".ai/scripts/render-ai-context-release-notes.py",
+      ".ai/scripts/validate-ai-context-release-state.py",
+      ".ai/scripts/tests/test_release_notes_renderer.py",
+      ".ai/scripts/tests/test_ai_context_release_state.py",
+      ".ai/scripts/tests/test_ai_context_packaging.py",
+      ".dev/workflows/2026-07-29-v0-7-0-public-release-body-correction/evidence/V070BODY-001-hosted-before.json",
+      ".dev/workflows/2026-07-29-v0-7-0-public-release-body-correction/evidence/V070BODY-001-published-validator-negative.json"
     ],
     "tests_run": [
       "critical gate at bootstrap commit: failed because current-main README bilingual ownership and inline-code parity had drifted; owner authorized the minimal source-only prerequisite repair",
       "AI context validation and bilingual language policy tests: passed after README repair",
       "critical gate at 96a4968af028ee25da33d70438b6fd6cc2ddf3c3: 44/44 required checks passed, 0 failed, 0 deferred",
-      "hosted v0.7.0 finalization phase check: passed read-only; this does not resolve the known stale-body semantic finding"
+      "hosted v0.7.0 finalization phase check: passed read-only; this does not resolve the known stale-body semantic finding",
+      "fresh-session checkpoint validation: passed with repository verification",
+      "hosted baseline freeze: passed read-only; captured Release identity, annotated tag object, peeled commit, four asset digests, and stale body SHA-256",
+      "published renderer and release-state focused suites: passed 8/8 and 24/24 after TEMP/TMP were scoped to workspace .tmp",
+      "published finalization validator against live hosted body: expected-fail; it rejected the stale candidate-only body",
+      "source-only package projection and GitHub workflow contract suites: passed"
     ],
-    "finding_status": "not-addressed",
-    "residual_risk": "The public v0.7.0 body still contains candidate-only not-published wording until the authorized online correction is completed and verified.",
+    "finding_status": "partially-resolved",
+    "residual_risk": "The public v0.7.0 body still contains candidate-only not-published wording until the source correction is integrated, the exact published body is reviewed, and the authorized online correction is completed and verified.",
     "follow_up_needed": true
   }
 }

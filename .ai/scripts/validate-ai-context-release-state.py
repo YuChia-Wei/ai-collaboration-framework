@@ -524,6 +524,28 @@ def render_governed_body(
         raise ReleaseStateError(f"cannot render governed release body read-only: {exc}") from exc
 
 
+def render_published_body(
+    root: Path,
+    version: str,
+    commit: str,
+) -> str:
+    path = root / RENDERER_PATH
+    spec = importlib.util.spec_from_file_location("release_notes_renderer", path)
+    if spec is None or spec.loader is None:
+        raise ReleaseStateError("cannot load published release-body renderer")
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    try:
+        data, notes, migration = module.validate_release(
+            root, version, commit, "published"
+        )
+        return module.render_body(data, notes, migration, commit)
+    except (OSError, module.ReleaseNotesError) as exc:
+        raise ReleaseStateError(
+            f"cannot render published release body read-only: {exc}"
+        ) from exc
+
+
 def assert_hosted_release(root: Path, repository: str, version: str, commit: str, data: dict, expected_body: str, runner=subprocess.run) -> None:
     release = hosted_release(root, repository, version, runner)
     if release.get("draft") is not False or release.get("prerelease") is not False:
@@ -669,7 +691,20 @@ def validate(
             validate_published_record(version, data, tagged_commit)
         if hosted:
             effective_repository = repository or origin_repository(root, runner)
-            expected_body = rendered_body.read_text(encoding="utf-8") if rendered_body is not None else render_governed_body(root, version, tagged_commit, runner)
+            if phase == "finalization":
+                expected_body = render_published_body(root, version, tagged_commit)
+                if rendered_body is not None:
+                    supplied_body = rendered_body.read_text(encoding="utf-8")
+                    if supplied_body.rstrip("\r\n") != expected_body.rstrip("\r\n"):
+                        raise ReleaseStateError(
+                            "finalization rendered body differs from the published-phase renderer"
+                        )
+            else:
+                expected_body = (
+                    rendered_body.read_text(encoding="utf-8")
+                    if rendered_body is not None
+                    else render_governed_body(root, version, tagged_commit, runner)
+                )
             assert_hosted_release(root, effective_repository, version, tagged_commit, data, expected_body, runner)
             recorded_run = (
                 nested_mapping(data.get("validation"), "validation").get(

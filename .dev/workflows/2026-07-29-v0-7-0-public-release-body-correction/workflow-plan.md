@@ -16,10 +16,10 @@
 - `base_branch`: `main`
 - `branch_segment`: `1`
 - `status`: `in_progress`
-- `current_phase`: `fresh-session-handoff`
+- `current_phase`: `source-remediation-validation`
 - `artifact_root`: `.dev/workflows/2026-07-29-v0-7-0-public-release-body-correction`
 - `created_at`: `2026-07-29T15:08:23+08:00`
-- `updated_at`: `2026-07-29T15:36:17+08:00`
+- `updated_at`: `2026-07-29T15:56:46+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md`
 - `template_version`: `1.2.0`
 
@@ -146,14 +146,16 @@
 
 ## Resume Checkpoint
 
-- Last completed action: Committed the minimal source-only README bilingual
-  repair at `96a4968af028ee25da33d70438b6fd6cc2ddf3c3`, passed all 44
-  required critical checks, and passed the hosted `v0.7.0` finalization phase
-  check without mutating GitHub.
+- Last completed action: Verified the fresh-session checkpoint, froze the live
+  Release, annotated-tag, peeled-commit, and four-asset digest baseline, then
+  implemented and focused-tested the phase-correct source-only renderer and
+  finalization-validator contract. The new hosted finalization check now fails
+  as expected against the still-stale candidate body; no GitHub data changed.
 - Current task: `V070BODY-001`
-- Exact next action: In a fresh session, validate the registered checkpoint,
-  then reproduce and freeze the live `v0.7.0` Release body, tag, Release
-  identity, asset names, and asset digests without mutating GitHub.
+- Exact next action: Complete the declared source validation bundle, commit the
+  source correction so the independent verification assessment can pin its
+  subject revision, then create the read-only `ai-context-auditor` verification
+  assessment on this workflow branch.
 - Validation already completed: repository `main` was clean and synchronized at
   `b2f1354f85ba1cee4acb497820d57a0d35547ef8` before branch creation. The first
   real critical gate at bootstrap commit
@@ -164,8 +166,9 @@
   passed 44/44 required critical checks, and the hosted finalization phase
   check passed. The latter reflects the existing validator contract and does
   not resolve the known stale-body semantic finding.
-- Git state: validated source-only prerequisite commit is clean; the containing
-  handoff checkpoint commit is being prepared on the dedicated branch.
+- Git state: source-only renderer, validator, test, and bounded workflow
+  evidence changes are uncommitted on the dedicated branch; the published tag,
+  Release identity, and assets remain read-only baseline facts.
 - Branch history and checkpoint handoffs: segment 1 started from synchronized
   `main`; a local fresh-session checkpoint will be recorded before transfer.
 - Blockers or unresolved decisions: none for the bounded body correction. Stop
