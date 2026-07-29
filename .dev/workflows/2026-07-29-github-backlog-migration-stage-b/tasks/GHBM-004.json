@@ -4,9 +4,9 @@
   "task_id": "GHBM-004",
   "workflow_id": "2026-07-29-github-backlog-migration-stage-b",
   "owner_skill": "ai-context-governance",
-  "status": "in_progress",
+  "status": "completed",
   "created_at": "2026-07-29T23:07:11+08:00",
-  "updated_at": "2026-07-29T23:07:11+08:00",
+  "updated_at": "2026-07-29T23:09:42+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-5.6-sol",
   "reasoning_effort": "high",
@@ -32,14 +32,21 @@
     "validation": [
       "All ten Issue identities, bodies, markers, labels, assignees, states, close reasons, and comments match."
     ],
-    "last_completed_step": "Batch 2 completed 10/10.",
-    "next_action": "Apply PKG-002 as the first batch 3 item."
+    "last_completed_step": "Created and exactly verified PKG-002 through REL-003 as Issues #47-#56.",
+    "next_action": "Proceed to GHBM-005 batch 4."
   },
   "results": {
-    "summary": "In progress.",
-    "tests_run": [],
-    "finding_status": "in_progress",
-    "residual_risk": "Batch 3 has not started.",
+    "summary": "Batch 3 completed 10/10 with exact body, marker, label, lifecycle, and closing-comment read-back.",
+    "files_changed": [
+      ".dev/backlog/provider-mappings/github-issues.yaml",
+      ".dev/workflows/2026-07-29-github-backlog-migration-stage-b/evidence/issue-batch-3-readback.json",
+      ".dev/workflows/2026-07-29-github-backlog-migration-stage-b/**"
+    ],
+    "tests_run": [
+      "GitHub Issue exact read-back: 10/10 passed for Issues #47-#56"
+    ],
+    "finding_status": "addressed",
+    "residual_risk": "Batch 4 and Project adoption remain pending.",
     "follow_up_needed": true
   }
 }
