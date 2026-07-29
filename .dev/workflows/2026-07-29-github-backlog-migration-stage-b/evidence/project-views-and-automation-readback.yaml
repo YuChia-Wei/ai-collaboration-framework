@@ -1,0 +1,75 @@
+schema_version: '1.0'
+captured_at: '2026-07-29T23:44:53+08:00'
+provider: github
+project_number: 3
+views:
+  - number: 1
+    node_id: PVTV_lAHOAwvEG84Bez7wzgLIX-s
+    name: Active Backlog
+    layout: board
+    filter: '-status:Done'
+    group_by: Status
+    group_axis: columns
+    sort: [Priority ascending]
+    matching_items: 5
+    exact_readback: true
+  - number: 2
+    node_id: PVTV_lAHOAwvEG84Bez7wzgLIY2U
+    name: Roadmap
+    layout: table
+    filter: '-status:Done -target-release:Unassigned'
+    group_by: Target release
+    sort: [Priority ascending]
+    matching_items: 0
+    exact_readback: true
+  - number: 3
+    node_id: PVTV_lAHOAwvEG84Bez7wzgLIY2Y
+    name: Owner Review
+    layout: table
+    filter: 'owner-review:Pending,"Changes requested"'
+    group_by: null
+    sort: [Priority ascending, Updated descending]
+    matching_items: 5
+    exact_readback: true
+  - number: 4
+    node_id: PVTV_lAHOAwvEG84Bez7wzgLIY2c
+    name: History by Release
+    layout: table
+    filter: 'status:Done'
+    group_by: Published in
+    sort: [Title ascending]
+    matching_items: 36
+    exact_readback: true
+    provider_adaptation: Titles begin with '[BACKLOG-ID]', so Title ascending implements Backlog ID ascending without a redundant custom field.
+automation:
+  enabled_provider_workflow_count: 3
+  approved_outcomes:
+    - outcome: issue_opened_in_repository_auto_add_and_initialize_inbox
+      implementation:
+        - name: Auto-add to project
+          state: 'on'
+          repository: YuChia-Wei/ai-collaboration-prompts-dotnet-backend
+          provider_trigger: When the filter matches a new or updated item
+          filter: 'is:issue is:open'
+        - name: Item added to project
+          state: 'on'
+          provider_trigger: When an item is added to the project
+          action: 'Status: Inbox'
+    - outcome: issue_closed_sets_status_done
+      implementation:
+        - name: Item closed
+          state: 'on'
+          provider_trigger: When an item is closed
+          action: 'Status: Done'
+  disabled_workflows:
+    - Auto-add sub-issues to project
+    - Auto-close issue
+    - Pull request linked to issue
+    - Pull request merged
+  count_proof: The three allowlisted implementation workflows were individually read back as on, and the Project showed exactly 3 enabled workflows; therefore all other listed workflows were off.
+boundaries:
+  provider_state_authorizes_repository_workflow: false
+  provider_priority_reverse_writes_backlog: false
+  pull_request_merge_closes_issue: false
+  pull_request_merge_sets_done: false
+errors: []

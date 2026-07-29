@@ -8,11 +8,11 @@
 - `branch`: `codex/2026-07-29-github-backlog-migration-stage-b`
 - `base_branch`: `main`
 - `branch_segment`: `1`
-- `status`: `in_progress`
-- `current_phase`: `views-automation-and-closeout`
+- `status`: `completed`
+- `current_phase`: `completed`
 - `artifact_root`: `.dev/workflows/2026-07-29-github-backlog-migration-stage-b`
 - `created_at`: `2026-07-29T22:58:40+08:00`
-- `updated_at`: `2026-07-29T23:30:17+08:00`
+- `updated_at`: `2026-07-29T23:44:53+08:00`
 
 ## Objective And Scope
 
@@ -54,7 +54,7 @@
 | `GHBM-004` | Apply and read back remaining batch 3. | `completed` |
 | `GHBM-005` | Apply and read back remaining batch 4. | `completed` |
 | `GHBM-006` | Verify all 41 mappings, create the Project, fields, and item values. | `completed` |
-| `GHBM-007` | Configure supported views and automation, perform complete provider read-back, and close the workflow. | `in_progress` |
+| `GHBM-007` | Configure supported views and automation, perform complete provider read-back, and close the workflow. | `completed` |
 
 ## Stop And Recovery Rules
 
@@ -67,13 +67,13 @@
 
 ## Resume Checkpoint
 
-- Last completed action: created public Project 3, recorded all 41 unique item IDs, and exactly read back all 205 managed field values plus empty assignees.
-- Current task: `GHBM-007`.
-- Exact next action: configure the four approved views and two allowlisted workflows through the signed-in Project UI, then perform the final provider read-back.
-- Blockers: none; unsupported view or automation details will be recorded as provider constraints rather than invented state.
+- Last completed action: exactly read back all four saved views and the three enabled provider workflows that implement the two approved automation outcomes.
+- Current task: none; all Stage B tasks are complete.
+- Exact next action: publish this completed branch through PR-only main integration.
+- Blockers: none.
 
 ## Branch Lifecycle
 
 | Segment | Branch | Base | Checkpoint Type | Commit | Remote / Target | Recorded At | Reason | Resume Branch / Action |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| 1 | `codex/2026-07-29-github-backlog-migration-stage-b` | `main@4b4a663` | active Stage B apply | pending | local | `2026-07-29T22:58:40+08:00` | Apply the owner-approved remaining migration with durable batch receipts. | Complete preflight, then apply batches sequentially. |
+| 1 | `codex/2026-07-29-github-backlog-migration-stage-b` | `main@4b4a663` | completed Stage B apply | `e911511` plus final closeout commit | local pending PR | `2026-07-29T23:44:53+08:00` | Apply and exactly read back the owner-approved Issue and Project migration. | Push branch, open PR, pass checks, and integrate through PR-only main. |

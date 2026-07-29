@@ -2,9 +2,9 @@ schema_version: '1.0'
 provider: github
 repository: YuChia-Wei/ai-collaboration-prompts-dotnet-backend
 migration_id: github-backlog-migration-2026-07
-stage: stage-b-in-progress
+stage: stage-b-read-back-complete
 source_revision: e83b759c8cf1deeb11af5ae748359f6a4c63b200
-generated_at: '2026-07-29T23:30:17+08:00'
+generated_at: '2026-07-29T23:44:53+08:00'
 project:
   number: 3
   node_id: PVT_kwHOAwvEG84Bez7w

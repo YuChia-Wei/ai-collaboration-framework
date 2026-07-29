@@ -4,9 +4,9 @@
   "task_id": "GHBM-007",
   "workflow_id": "2026-07-29-github-backlog-migration-stage-b",
   "owner_skill": "ai-context-governance",
-  "status": "in_progress",
+  "status": "completed",
   "created_at": "2026-07-29T23:30:17+08:00",
-  "updated_at": "2026-07-29T23:30:17+08:00",
+  "updated_at": "2026-07-29T23:44:53+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-5.6-sol",
   "reasoning_effort": "high",
@@ -35,14 +35,24 @@
       "View names/layouts/filters/grouping/sorts and enabled workflow outcomes match the approved provider contract or carry explicit provider-constraint evidence.",
       "All Issue, Project, receipt, test, workflow, and Git handoff evidence passes without making GitHub a repository workflow dependency."
     ],
-    "last_completed_step": "GHBM-006 completed with Project and item field readback.",
-    "next_action": "Configure the four approved views through the signed-in Project UI."
+    "last_completed_step": "Exactly read back four saved views and three enabled provider workflows implementing the two allowlisted outcomes.",
+    "next_action": "Publish the completed workflow through the repository's PR-only main integration policy."
   },
   "results": {
-    "summary": "In progress.",
-    "tests_run": [],
-    "finding_status": "in_progress",
-    "residual_risk": "GitHub CLI and GraphQL do not expose Project view configuration; exact support must be checked through the provider UI.",
-    "follow_up_needed": true
+    "summary": "Configured and read back Active Backlog, Roadmap, Owner Review, and History by Release; retained only the auto-add/Inbox and closed/Done automation outcomes; disabled template PR and lifecycle side effects outside the allowlist.",
+    "tests_run": [
+      "GraphQL ProjectV2View readback: four exact names, layouts, filters, groups, and sorts",
+      "Signed-in Project workflow UI readback: three enabled workflows, five-item open auto-add query, Status Inbox initialization, and Status Done closure",
+      "Signed-in Active Backlog readback: four named views, 5 matching open items, and Workflows (3 enabled)",
+      "python .tmp/verify-github-all-issues.py: passed (41/41; open=5; closed=36)",
+      "python .tmp/project-github-backlog-fields.py verify-identities: passed (41/41)",
+      "python .tmp/project-github-backlog-fields.py verify-values: passed (205/205; 41/41 empty assignees)",
+      "python .ai/scripts/tests/test_github_backlog_provider.py: passed (17/17)",
+      "python .ai/scripts/validate-ai-context.py: passed",
+      "git diff --check: passed"
+    ],
+    "finding_status": "completed",
+    "residual_risk": "The built-in auto-add trigger also evaluates updated Issues that newly match is:issue is:open; this is the provider-native implementation of the approved issue-opened outcome. History ordering uses Title ascending because titles begin with the canonical backlog ID and no redundant Backlog ID field was approved.",
+    "follow_up_needed": false
   }
 }
