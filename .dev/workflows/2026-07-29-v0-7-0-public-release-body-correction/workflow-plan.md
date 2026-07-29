@@ -16,10 +16,10 @@
 - `base_branch`: `main`
 - `branch_segment`: `1`
 - `status`: `in_progress`
-- `current_phase`: `baseline-repair`
+- `current_phase`: `fresh-session-handoff`
 - `artifact_root`: `.dev/workflows/2026-07-29-v0-7-0-public-release-body-correction`
 - `created_at`: `2026-07-29T15:08:23+08:00`
-- `updated_at`: `2026-07-29T15:27:57+08:00`
+- `updated_at`: `2026-07-29T15:36:17+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md`
 - `template_version`: `1.2.0`
 
@@ -146,20 +146,26 @@
 
 ## Resume Checkpoint
 
-- Last completed action: The owner authorized a minimal source-only README
-  bilingual parity repair after the bootstrap critical gate exposed drift in
-  the current `main` baseline.
+- Last completed action: Committed the minimal source-only README bilingual
+  repair at `96a4968af028ee25da33d70438b6fd6cc2ddf3c3`, passed all 44
+  required critical checks, and passed the hosted `v0.7.0` finalization phase
+  check without mutating GitHub.
 - Current task: `V070BODY-001`
-- Exact next action: Validate and commit the README prerequisite, rerun the
-  critical gate on that exact commit, then register and validate the
-  fresh-session checkpoint.
+- Exact next action: In a fresh session, validate the registered checkpoint,
+  then reproduce and freeze the live `v0.7.0` Release body, tag, Release
+  identity, asset names, and asset digests without mutating GitHub.
 - Validation already completed: repository `main` was clean and synchronized at
   `b2f1354f85ba1cee4acb497820d57a0d35547ef8` before branch creation. The first
   real critical gate at bootstrap commit
   `2cf094d4c3185b194e257e190d1c48a4ea0e343b` executed 44 required checks and
   failed one current-main README bilingual validation check; blocked/error
-  fixture attempts were not counted as passes.
-- Git state: workflow bootstrap is being prepared on the dedicated branch.
+  fixture attempts were not counted as passes. After the authorized repair,
+  AI-context and language-policy checks passed, the exact validated commit
+  passed 44/44 required critical checks, and the hosted finalization phase
+  check passed. The latter reflects the existing validator contract and does
+  not resolve the known stale-body semantic finding.
+- Git state: validated source-only prerequisite commit is clean; the containing
+  handoff checkpoint commit is being prepared on the dedicated branch.
 - Branch history and checkpoint handoffs: segment 1 started from synchronized
   `main`; a local fresh-session checkpoint will be recorded before transfer.
 - Blockers or unresolved decisions: none for the bounded body correction. Stop
@@ -171,3 +177,4 @@
 | Segment | Branch | Base | Checkpoint Type | Commit | Remote / Target | Recorded At | Reason | Resume Branch / Action |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | 1 | `codex/2026-07-29-v0-7-0-public-release-body-correction` | `main@b2f1354f85ba1cee4acb497820d57a0d35547ef8` | started | `b2f1354f85ba1cee4acb497820d57a0d35547ef8` | local | `2026-07-29T15:08:23+08:00` | Prepare an executable fresh-session correction workflow. | Commit and validate the workflow bootstrap, then create the handoff checkpoint. |
+| 1 | `codex/2026-07-29-v0-7-0-public-release-body-correction` | `main@b2f1354f85ba1cee4acb497820d57a0d35547ef8` | validated handoff parent | `96a4968af028ee25da33d70438b6fd6cc2ddf3c3` | local | `2026-07-29T15:36:17+08:00` | Restore the owner-authorized source-only README baseline and prove the normal continuation gate. | Commit the containing checkpoint, validate it against the repository, then transfer to a fresh session. |

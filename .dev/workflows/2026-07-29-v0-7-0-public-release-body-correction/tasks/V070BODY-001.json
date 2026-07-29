@@ -8,7 +8,7 @@
   "owner_skill": "ai-context-governance",
   "status": "in_progress",
   "created_at": "2026-07-29T15:08:23+08:00",
-  "updated_at": "2026-07-29T15:27:57+08:00",
+  "updated_at": "2026-07-29T15:36:17+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-5.6-sol",
   "reasoning_effort": "high",
@@ -73,8 +73,8 @@
       "one applicable aggregate critical gate for each exact handoff commit",
       "hosted Release read-back plus unchanged tag object, peeled commit, asset names, and asset digests"
     ],
-    "last_completed_step": "Owner authorized the minimal source-only README bilingual parity prerequisite after the first critical gate exposed current-main drift.",
-    "next_action": "Validate and commit the README parity repair, rerun the critical gate on that exact commit, then create the fresh-session handoff checkpoint."
+    "last_completed_step": "Committed the source-only README parity repair at 96a4968af028ee25da33d70438b6fd6cc2ddf3c3; critical validation passed 44/44 required checks and the hosted v0.7.0 finalization phase check passed read-only.",
+    "next_action": "In a fresh session, validate the registered checkpoint, then reproduce and freeze the live v0.7.0 Release body, tag, Release identity, asset names, and asset digests without mutation."
   },
   "results": {
     "summary": "Workflow bootstrap and authorized source-only README baseline repair are in progress; no GitHub Release mutation has occurred.",
@@ -82,7 +82,10 @@
       "README.en.md"
     ],
     "tests_run": [
-      "critical gate at bootstrap commit: failed because current-main README bilingual ownership and inline-code parity had drifted; owner authorized the minimal source-only prerequisite repair"
+      "critical gate at bootstrap commit: failed because current-main README bilingual ownership and inline-code parity had drifted; owner authorized the minimal source-only prerequisite repair",
+      "AI context validation and bilingual language policy tests: passed after README repair",
+      "critical gate at 96a4968af028ee25da33d70438b6fd6cc2ddf3c3: 44/44 required checks passed, 0 failed, 0 deferred",
+      "hosted v0.7.0 finalization phase check: passed read-only; this does not resolve the known stale-body semantic finding"
     ],
     "finding_status": "not-addressed",
     "residual_risk": "The public v0.7.0 body still contains candidate-only not-published wording until the authorized online correction is completed and verified.",

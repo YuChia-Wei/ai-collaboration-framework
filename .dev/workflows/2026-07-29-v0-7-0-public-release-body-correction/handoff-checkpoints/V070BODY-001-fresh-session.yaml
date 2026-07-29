@@ -1,0 +1,103 @@
+schema_version: "1.0"
+checkpoint_id: "2026-07-29-v0-7-0-public-release-body-correction-V070BODY-001-fresh-session"
+created_at: "2026-07-29T15:36:17+08:00"
+repository:
+  root: "."
+  branch: "codex/2026-07-29-v0-7-0-public-release-body-correction"
+  validated_commit: "96a4968af028ee25da33d70438b6fd6cc2ddf3c3"
+  checkpoint_commit_source: "containing-commit"
+  dirty_state: "clean"
+  status_porcelain_sha256: "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+workflow:
+  workflow_id: "2026-07-29-v0-7-0-public-release-body-correction"
+  task_id: "V070BODY-001"
+resume:
+  last_completed_action: "Restored the owner-authorized source-only README bilingual baseline at 96a4968af028ee25da33d70438b6fd6cc2ddf3c3, passed all 44 required critical checks, and passed the required hosted v0.7.0 finalization phase read-only check. No GitHub data was mutated."
+  exact_next_action: "Reproduce and freeze the live v0.7.0 GitHub Release body, tag, Release identity, asset names, and asset digests without mutating GitHub."
+  hidden_context_required: false
+critical_gate:
+  command: '"C:\Program Files\Git\bin\bash.exe" .ai/scripts/check-all.sh --critical'
+  observed_at: "2026-07-29T15:35:18+08:00"
+  exit_code: 0
+  outcome: "passed"
+  output:
+    normalization: "utf8-lf"
+    sha256: "d5d96b57e7e44a3c4a656619bad22c50b0c40d8055ce8913db133eea203c242e"
+    line_count: 937
+    tail:
+      - "Total Checks Run: 44"
+      - "Passed: 44"
+      - "Failed: 0"
+      - "Skipped By Mode: 0"
+      - "Advisory Warnings: 0"
+      - "Deferred: 0"
+      - "Not Applicable: 1"
+      - "Required Selected: 44"
+      - "Required Executed: 44"
+      - "Required Failed: 0"
+      - "Advisory Selected: 0"
+      - "Pass Rate: 100%"
+      - "Completed at 2026-07-29 15:35:18"
+      - "╔════════════════════════════════════════╗"
+      - "║    ✓ All Checks Passed Successfully!   ║"
+      - "╚════════════════════════════════════════╝"
+continuation:
+  allowed: true
+  mode: "normal"
+  reason: "The owner-authorized README prerequisite restored a passing current-main baseline, and the hosted correction remains bounded and executable without hidden session context."
+  repair_task_id: null
+  failure_ids: []
+release_handoff: true
+release_phase_check:
+  version: "v0.7.0"
+  phase: "finalization"
+  command: "python .ai/scripts/validate-ai-context-release-state.py --phase finalization --version v0.7.0 --hosted"
+  observed_at: "2026-07-29T15:35:59+08:00"
+  exit_code: 0
+  outcome: "passed"
+  output:
+    normalization: "utf8-lf"
+    sha256: "50dc88aea2042b447dbed989d532fd63bc033f7634ee0c01d5c9768174ef4fa8"
+    line_count: 1
+    tail:
+      - "AI context release-state validation passed for v0.7.0 finalization phase at 49723a943f744820f4bdb2c22de7930693a7106d."
+execution_provenance:
+  runtime: "OpenAI Codex"
+  model: "gpt-5.6-sol"
+  reasoning_effort: "high"
+  model_source: "runtime-reported"
+  evidence_ref: ".dev/workflows/2026-07-29-v0-7-0-public-release-body-correction/tasks/V070BODY-001.json"
+attribution:
+  preservation_required: true
+  evidence_union_version: "1.0"
+  selected_evidence:
+    kind: "repository-created-local-ai-trailer"
+    commit: "96a4968af028ee25da33d70438b6fd6cc2ddf3c3"
+    author: "YuChia <h42279@gmail.com>"
+    committer: "YuChia <h42279@gmail.com>"
+    signature_status: "unsigned"
+    session_ref: null
+    observed_trailer: "Co-Authored-By: OpenAI Codex (gpt-5.6-sol, high) <noreply@openai.com>"
+    message_sha256: "eccdbaa2dfadaee6d3869f57525d8f83d2ed1f981bb06a03c775db5f1f10a5fb"
+    fixture_ref: "git:96a4968af028ee25da33d70438b6fd6cc2ddf3c3"
+  fixture_status:
+    - path_id: "copilot-cli"
+      status: "blocked"
+      commit: null
+      evidence_ref: ".dev/workflows/2026-07-21-v0-5-0-development/evidence/v050-handoff-attribution-fixtures.md#github-copilot-cli"
+      reason: "No provider-generated Copilot CLI commit fixture is present in this repository."
+    - path_id: "copilot-cloud-agent"
+      status: "blocked"
+      commit: null
+      evidence_ref: ".dev/workflows/2026-07-21-v0-5-0-development/evidence/v050-handoff-attribution-fixtures.md#github-copilot-cloud-agent"
+      reason: "No provider-generated Copilot cloud-agent commit fixture is present in this repository."
+    - path_id: "claude"
+      status: "blocked"
+      commit: null
+      evidence_ref: ".dev/workflows/2026-07-21-v0-5-0-development/evidence/v050-handoff-attribution-fixtures.md#claude"
+      reason: "No stable provider-generated Claude commit attribution fixture is available."
+    - path_id: "codex-local"
+      status: "captured"
+      commit: "96a4968af028ee25da33d70438b6fd6cc2ddf3c3"
+      evidence_ref: "git:96a4968af028ee25da33d70438b6fd6cc2ddf3c3"
+      reason: null
