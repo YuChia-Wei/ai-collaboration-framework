@@ -1,84 +1,264 @@
-schema_version: "1.0"
-provider: "github"
-repository: "YuChia-Wei/ai-collaboration-prompts-dotnet-backend"
-migration_id: "github-backlog-migration-2026-07"
-stage: "stage-b-in-progress"
-source_revision: "e83b759c8cf1deeb11af5ae748359f6a4c63b200"
-generated_at: "2026-07-29T22:40:09+08:00"
+schema_version: '1.0'
+provider: github
+repository: YuChia-Wei/ai-collaboration-prompts-dotnet-backend
+migration_id: github-backlog-migration-2026-07
+stage: stage-b-in-progress
+source_revision: e83b759c8cf1deeb11af5ae748359f6a4c63b200
+generated_at: '2026-07-29T23:04:22+08:00'
 project:
   number: null
   node_id: null
   url: null
 items:
-  - backlog_id: "DEVWF-001"
-    source_path: ".dev/backlog/items/DEVWF-001.yaml"
-    source_sha256: "2bc764b5b593583edaa3c1f50d76fadde4aaa84bccbf03b2496fa765aa11ad77"
-    issue_number: 21
-    issue_node_id: "I_kwDOSBe2Hc8AAAABKqIoUA"
-    issue_url: "https://github.com/YuChia-Wei/ai-collaboration-prompts-dotnet-backend/issues/21"
-    issue_state: "open"
-    close_reason: null
-    project_item_id: null
-    created_at: "2026-07-29T14:13:53Z"
-    updated_at: "2026-07-29T14:38:55Z"
-    read_back:
-      verified_at: "2026-07-29T22:40:09+08:00"
-      title_matches: true
-      markers_match: true
-      labels_match: true
-      state_matches: true
-      notes: "Exact body, empty assignees, open state, and absence of a closing comment were also verified."
-  - backlog_id: "AIC-007"
-    source_path: ".dev/backlog/items/AIC-007.yaml"
-    source_sha256: "50aa35578a551f6fe86890f40984370716f774a8ca6d2b7529e2c2013943b409"
-    issue_number: 22
-    issue_node_id: "I_kwDOSBe2Hc8AAAABKqI2Zw"
-    issue_url: "https://github.com/YuChia-Wei/ai-collaboration-prompts-dotnet-backend/issues/22"
-    issue_state: "closed"
-    close_reason: "completed"
-    project_item_id: null
-    created_at: "2026-07-29T14:14:16Z"
-    updated_at: "2026-07-29T14:39:05Z"
-    read_back:
-      verified_at: "2026-07-29T22:40:09+08:00"
-      title_matches: true
-      markers_match: true
-      labels_match: true
-      state_matches: true
-      notes: "Exact body, empty assignees, completed close reason, and the immutable original closing comment were also verified."
-  - backlog_id: "R042-005"
-    source_path: ".dev/backlog/items/R042-005.yaml"
-    source_sha256: "0145d393b42c30ff247162d00f5c94ab0b98db9ec6c2c79c1485cd57e7ca85c4"
-    issue_number: 23
-    issue_node_id: "I_kwDOSBe2Hc8AAAABKqJZrg"
-    issue_url: "https://github.com/YuChia-Wei/ai-collaboration-prompts-dotnet-backend/issues/23"
-    issue_state: "closed"
-    close_reason: "completed"
-    project_item_id: null
-    created_at: "2026-07-29T14:15:11Z"
-    updated_at: "2026-07-29T14:39:15Z"
-    read_back:
-      verified_at: "2026-07-29T22:40:09+08:00"
-      title_matches: true
-      markers_match: true
-      labels_match: true
-      state_matches: true
-      notes: "Exact body, empty assignees, completed close reason, and the immutable original closing comment were also verified."
-  - backlog_id: "UPG-001"
-    source_path: ".dev/backlog/items/UPG-001.yaml"
-    source_sha256: "7dda7fe378728f83eb521595e1320db1071ef22ea67ad53bd6848608c61d1ee9"
-    issue_number: 24
-    issue_node_id: "I_kwDOSBe2Hc8AAAABKqJ88w"
-    issue_url: "https://github.com/YuChia-Wei/ai-collaboration-prompts-dotnet-backend/issues/24"
-    issue_state: "closed"
-    close_reason: "not planned"
-    project_item_id: null
-    created_at: "2026-07-29T14:16:06Z"
-    updated_at: "2026-07-29T14:39:21Z"
-    read_back:
-      verified_at: "2026-07-29T22:40:09+08:00"
-      title_matches: true
-      markers_match: true
-      labels_match: true
-      state_matches: true
-      notes: "Exact body, empty assignees, not-planned close reason, and the immutable original closing comment were also verified."
+- backlog_id: DEVWF-001
+  source_path: .dev/backlog/items/DEVWF-001.yaml
+  source_sha256: 2bc764b5b593583edaa3c1f50d76fadde4aaa84bccbf03b2496fa765aa11ad77
+  issue_number: 21
+  issue_node_id: I_kwDOSBe2Hc8AAAABKqIoUA
+  issue_url: https://github.com/YuChia-Wei/ai-collaboration-prompts-dotnet-backend/issues/21
+  issue_state: open
+  close_reason: null
+  project_item_id: null
+  created_at: '2026-07-29T14:13:53Z'
+  updated_at: '2026-07-29T14:38:55Z'
+  read_back:
+    verified_at: '2026-07-29T22:40:09+08:00'
+    title_matches: true
+    markers_match: true
+    labels_match: true
+    state_matches: true
+    notes: Exact body, empty assignees, open state, and absence of a closing comment were also verified.
+- backlog_id: AIC-007
+  source_path: .dev/backlog/items/AIC-007.yaml
+  source_sha256: 50aa35578a551f6fe86890f40984370716f774a8ca6d2b7529e2c2013943b409
+  issue_number: 22
+  issue_node_id: I_kwDOSBe2Hc8AAAABKqI2Zw
+  issue_url: https://github.com/YuChia-Wei/ai-collaboration-prompts-dotnet-backend/issues/22
+  issue_state: closed
+  close_reason: completed
+  project_item_id: null
+  created_at: '2026-07-29T14:14:16Z'
+  updated_at: '2026-07-29T14:39:05Z'
+  read_back:
+    verified_at: '2026-07-29T22:40:09+08:00'
+    title_matches: true
+    markers_match: true
+    labels_match: true
+    state_matches: true
+    notes: Exact body, empty assignees, completed close reason, and the immutable original closing comment were also verified.
+- backlog_id: R042-005
+  source_path: .dev/backlog/items/R042-005.yaml
+  source_sha256: 0145d393b42c30ff247162d00f5c94ab0b98db9ec6c2c79c1485cd57e7ca85c4
+  issue_number: 23
+  issue_node_id: I_kwDOSBe2Hc8AAAABKqJZrg
+  issue_url: https://github.com/YuChia-Wei/ai-collaboration-prompts-dotnet-backend/issues/23
+  issue_state: closed
+  close_reason: completed
+  project_item_id: null
+  created_at: '2026-07-29T14:15:11Z'
+  updated_at: '2026-07-29T14:39:15Z'
+  read_back:
+    verified_at: '2026-07-29T22:40:09+08:00'
+    title_matches: true
+    markers_match: true
+    labels_match: true
+    state_matches: true
+    notes: Exact body, empty assignees, completed close reason, and the immutable original closing comment were also verified.
+- backlog_id: UPG-001
+  source_path: .dev/backlog/items/UPG-001.yaml
+  source_sha256: 7dda7fe378728f83eb521595e1320db1071ef22ea67ad53bd6848608c61d1ee9
+  issue_number: 24
+  issue_node_id: I_kwDOSBe2Hc8AAAABKqJ88w
+  issue_url: https://github.com/YuChia-Wei/ai-collaboration-prompts-dotnet-backend/issues/24
+  issue_state: closed
+  close_reason: not planned
+  project_item_id: null
+  created_at: '2026-07-29T14:16:06Z'
+  updated_at: '2026-07-29T14:39:21Z'
+  read_back:
+    verified_at: '2026-07-29T22:40:09+08:00'
+    title_matches: true
+    markers_match: true
+    labels_match: true
+    state_matches: true
+    notes: Exact body, empty assignees, not-planned close reason, and the immutable original closing comment were also verified.
+- backlog_id: CAP-001
+  source_path: .dev/backlog/items/CAP-001.yaml
+  source_sha256: 0f7a4ea4168e464146bfee69965ebc5a14c555e0e0dd4656d5e1aa490cf11604
+  issue_number: 27
+  issue_node_id: I_kwDOSBe2Hc8AAAABKql9bw
+  issue_url: https://github.com/YuChia-Wei/ai-collaboration-prompts-dotnet-backend/issues/27
+  issue_state: closed
+  close_reason: completed
+  project_item_id: null
+  created_at: '2026-07-29T15:03:18Z'
+  updated_at: '2026-07-29T15:03:22Z'
+  read_back:
+    verified_at: '2026-07-29T23:03:22+08:00'
+    title_matches: true
+    markers_match: true
+    labels_match: true
+    state_matches: true
+    notes: Exact body, empty assignees, close reason, and closing-comment history were also verified.
+- backlog_id: CFG-001
+  source_path: .dev/backlog/items/CFG-001.yaml
+  source_sha256: 1059b729acfe211e527544736d21b05ca102eb7ed1c2fd2db610a4383fed47d2
+  issue_number: 28
+  issue_node_id: I_kwDOSBe2Hc8AAAABKqmBgg
+  issue_url: https://github.com/YuChia-Wei/ai-collaboration-prompts-dotnet-backend/issues/28
+  issue_state: closed
+  close_reason: completed
+  project_item_id: null
+  created_at: '2026-07-29T15:03:25Z'
+  updated_at: '2026-07-29T15:03:29Z'
+  read_back:
+    verified_at: '2026-07-29T23:03:28+08:00'
+    title_matches: true
+    markers_match: true
+    labels_match: true
+    state_matches: true
+    notes: Exact body, empty assignees, close reason, and closing-comment history were also verified.
+- backlog_id: CI-001
+  source_path: .dev/backlog/items/CI-001.yaml
+  source_sha256: 460beddacc6318dcad1c9348a4873b53409a7f4db6ec907d1c60d967b13f003e
+  issue_number: 29
+  issue_node_id: I_kwDOSBe2Hc8AAAABKqmFeA
+  issue_url: https://github.com/YuChia-Wei/ai-collaboration-prompts-dotnet-backend/issues/29
+  issue_state: closed
+  close_reason: completed
+  project_item_id: null
+  created_at: '2026-07-29T15:03:31Z'
+  updated_at: '2026-07-29T15:03:36Z'
+  read_back:
+    verified_at: '2026-07-29T23:03:35+08:00'
+    title_matches: true
+    markers_match: true
+    labels_match: true
+    state_matches: true
+    notes: Exact body, empty assignees, close reason, and closing-comment history were also verified.
+- backlog_id: CI-002
+  source_path: .dev/backlog/items/CI-002.yaml
+  source_sha256: fa0eca27329549aedbe215ab65a070765cdc22f302a02277f34e1e41a299e3dd
+  issue_number: 30
+  issue_node_id: I_kwDOSBe2Hc8AAAABKqmKvA
+  issue_url: https://github.com/YuChia-Wei/ai-collaboration-prompts-dotnet-backend/issues/30
+  issue_state: closed
+  close_reason: completed
+  project_item_id: null
+  created_at: '2026-07-29T15:03:39Z'
+  updated_at: '2026-07-29T15:03:43Z'
+  read_back:
+    verified_at: '2026-07-29T23:03:43+08:00'
+    title_matches: true
+    markers_match: true
+    labels_match: true
+    state_matches: true
+    notes: Exact body, empty assignees, close reason, and closing-comment history were also verified.
+- backlog_id: CTX-001
+  source_path: .dev/backlog/items/CTX-001.yaml
+  source_sha256: f761d1760634de5c3439ac8b7adbc81a215f275d0b43d3f9b4fb06e47030030b
+  issue_number: 31
+  issue_node_id: I_kwDOSBe2Hc8AAAABKqmOqA
+  issue_url: https://github.com/YuChia-Wei/ai-collaboration-prompts-dotnet-backend/issues/31
+  issue_state: closed
+  close_reason: completed
+  project_item_id: null
+  created_at: '2026-07-29T15:03:46Z'
+  updated_at: '2026-07-29T15:03:50Z'
+  read_back:
+    verified_at: '2026-07-29T23:03:50+08:00'
+    title_matches: true
+    markers_match: true
+    labels_match: true
+    state_matches: true
+    notes: Exact body, empty assignees, close reason, and closing-comment history were also verified.
+- backlog_id: CTX-002
+  source_path: .dev/backlog/items/CTX-002.yaml
+  source_sha256: 8f6397f385b69bd37f451c2089200e75b6edbc887b1aadcccf33968481eb583b
+  issue_number: 32
+  issue_node_id: I_kwDOSBe2Hc8AAAABKqmTbw
+  issue_url: https://github.com/YuChia-Wei/ai-collaboration-prompts-dotnet-backend/issues/32
+  issue_state: closed
+  close_reason: completed
+  project_item_id: null
+  created_at: '2026-07-29T15:03:53Z'
+  updated_at: '2026-07-29T15:03:57Z'
+  read_back:
+    verified_at: '2026-07-29T23:03:56+08:00'
+    title_matches: true
+    markers_match: true
+    labels_match: true
+    state_matches: true
+    notes: Exact body, empty assignees, close reason, and closing-comment history were also verified.
+- backlog_id: CTX-003
+  source_path: .dev/backlog/items/CTX-003.yaml
+  source_sha256: 2d1bc90941247b5c63a8b8064c4643d455e825bf04c26393a447986550d3ba1e
+  issue_number: 33
+  issue_node_id: I_kwDOSBe2Hc8AAAABKqmXPQ
+  issue_url: https://github.com/YuChia-Wei/ai-collaboration-prompts-dotnet-backend/issues/33
+  issue_state: closed
+  close_reason: completed
+  project_item_id: null
+  created_at: '2026-07-29T15:03:59Z'
+  updated_at: '2026-07-29T15:04:03Z'
+  read_back:
+    verified_at: '2026-07-29T23:04:02+08:00'
+    title_matches: true
+    markers_match: true
+    labels_match: true
+    state_matches: true
+    notes: Exact body, empty assignees, close reason, and closing-comment history were also verified.
+- backlog_id: CUST-001
+  source_path: .dev/backlog/items/CUST-001.yaml
+  source_sha256: ded01dd8abe530ea953a749f1b9685d1355624fc1ca7fda0eb0c9b059d1714f9
+  issue_number: 34
+  issue_node_id: I_kwDOSBe2Hc8AAAABKqmbXw
+  issue_url: https://github.com/YuChia-Wei/ai-collaboration-prompts-dotnet-backend/issues/34
+  issue_state: closed
+  close_reason: completed
+  project_item_id: null
+  created_at: '2026-07-29T15:04:05Z'
+  updated_at: '2026-07-29T15:04:09Z'
+  read_back:
+    verified_at: '2026-07-29T23:04:09+08:00'
+    title_matches: true
+    markers_match: true
+    labels_match: true
+    state_matches: true
+    notes: Exact body, empty assignees, close reason, and closing-comment history were also verified.
+- backlog_id: DEVWF-002
+  source_path: .dev/backlog/items/DEVWF-002.yaml
+  source_sha256: ad6c472d023d69c5e0c9e1b1385bb50c4bb29b2815f728573117077f80370717
+  issue_number: 35
+  issue_node_id: I_kwDOSBe2Hc8AAAABKqmfvA
+  issue_url: https://github.com/YuChia-Wei/ai-collaboration-prompts-dotnet-backend/issues/35
+  issue_state: closed
+  close_reason: completed
+  project_item_id: null
+  created_at: '2026-07-29T15:04:12Z'
+  updated_at: '2026-07-29T15:04:16Z'
+  read_back:
+    verified_at: '2026-07-29T23:04:15+08:00'
+    title_matches: true
+    markers_match: true
+    labels_match: true
+    state_matches: true
+    notes: Exact body, empty assignees, close reason, and closing-comment history were also verified.
+- backlog_id: DIST-001
+  source_path: .dev/backlog/items/DIST-001.yaml
+  source_sha256: 6419fa69f9bfde8ea35db6806e0f2ac8f594ef53ca743dca004298c7ed5a43da
+  issue_number: 36
+  issue_node_id: I_kwDOSBe2Hc8AAAABKqmkAA
+  issue_url: https://github.com/YuChia-Wei/ai-collaboration-prompts-dotnet-backend/issues/36
+  issue_state: closed
+  close_reason: completed
+  project_item_id: null
+  created_at: '2026-07-29T15:04:19Z'
+  updated_at: '2026-07-29T15:04:23Z'
+  read_back:
+    verified_at: '2026-07-29T23:04:22+08:00'
+    title_matches: true
+    markers_match: true
+    labels_match: true
+    state_matches: true
+    notes: Exact body, empty assignees, close reason, and closing-comment history were also verified.

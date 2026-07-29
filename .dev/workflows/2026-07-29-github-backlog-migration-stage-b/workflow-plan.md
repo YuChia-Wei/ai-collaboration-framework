@@ -9,10 +9,10 @@
 - `base_branch`: `main`
 - `branch_segment`: `1`
 - `status`: `in_progress`
-- `current_phase`: `issue-batch-1`
+- `current_phase`: `issue-batch-2`
 - `artifact_root`: `.dev/workflows/2026-07-29-github-backlog-migration-stage-b`
 - `created_at`: `2026-07-29T22:58:40+08:00`
-- `updated_at`: `2026-07-29T23:00:26+08:00`
+- `updated_at`: `2026-07-29T23:04:30+08:00`
 
 ## Objective And Scope
 
@@ -49,8 +49,8 @@
 | Task | Purpose | Status |
 | --- | --- | --- |
 | `GHBM-001` | Verify immutable plan, existing canaries, label contract, and absence of a Project. | `completed` |
-| `GHBM-002` | Apply and read back remaining batch 1. | `in_progress` |
-| `GHBM-003` | Apply and read back remaining batch 2. | `pending` |
+| `GHBM-002` | Apply and read back remaining batch 1. | `completed` |
+| `GHBM-003` | Apply and read back remaining batch 2. | `in_progress` |
 | `GHBM-004` | Apply and read back remaining batch 3. | `pending` |
 | `GHBM-005` | Apply and read back remaining batch 4. | `pending` |
 | `GHBM-006` | Verify all 41 mappings, create the Project, fields, and item values. | `pending` |
@@ -67,9 +67,9 @@
 
 ## Resume Checkpoint
 
-- Last completed action: validated the byte-identical immutable plan, exactly four mapped formal Issues, no duplicates, and no existing Project.
-- Current task: `GHBM-002`.
-- Exact next action: create and read back remaining batch 1, recording each successful provider mapping immediately.
+- Last completed action: created and exactly read back batch 1 as Issues #27-#36; all ten are closed as completed with one immutable historical comment each.
+- Current task: `GHBM-003`.
+- Exact next action: create and read back remaining batch 2, recording each successful provider mapping immediately.
 - Blockers: none; Project views and automation remain capability-checked rather than assumed.
 
 ## Branch Lifecycle
