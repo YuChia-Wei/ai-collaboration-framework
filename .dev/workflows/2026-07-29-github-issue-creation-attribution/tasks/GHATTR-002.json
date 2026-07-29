@@ -1,0 +1,47 @@
+{
+  "template_id": "ai-context-governance-remediation-task",
+  "template_version": "1.1.0",
+  "task_id": "GHATTR-002",
+  "workflow_id": "2026-07-29-github-issue-creation-attribution",
+  "owner_skill": "ai-context-governance",
+  "status": "in_progress",
+  "created_at": "2026-07-29T22:25:13+08:00",
+  "updated_at": "2026-07-29T22:30:00+08:00",
+  "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
+  "model": "gpt-5.6-sol",
+  "reasoning_effort": "high",
+  "scope": {
+    "target": "PR-only integration of the validated provider contract.",
+    "files": [
+      ".dev/backlog/providers/github.yaml",
+      ".ai/scripts/github_backlog_provider.py",
+      ".ai/scripts/tests/test_github_backlog_provider.py",
+      ".dev/workflows/2026-07-29-github-issue-creation-attribution/**",
+      ".dev/workflows/INDEX.MD"
+    ],
+    "constraints": [
+      "Do not mutate live canaries before the PR merges.",
+      "Do not bypass PR-only main integration."
+    ]
+  },
+  "execution": {
+    "steps": [
+      "Create a governed implementation commit.",
+      "Push the dedicated branch and open a ready PR.",
+      "Verify checks and merge through GitHub."
+    ],
+    "validation": [
+      "Validate the commit range against repository commit policy.",
+      "Verify hosted PR checks before merge."
+    ],
+    "last_completed_step": "Validated the owner-approved label and hidden-marker revision before push.",
+    "next_action": "Amend the unpushed checkpoint, then push and open the PR."
+  },
+  "results": {
+    "summary": "In progress.",
+    "tests_run": [],
+    "finding_status": "in_progress",
+    "residual_risk": "Live canary bodies do not yet contain the trailer.",
+    "follow_up_needed": true
+  }
+}

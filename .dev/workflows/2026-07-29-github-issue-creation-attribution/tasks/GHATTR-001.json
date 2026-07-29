@@ -1,0 +1,57 @@
+{
+  "template_id": "ai-context-governance-remediation-task",
+  "template_version": "1.1.0",
+  "task_id": "GHATTR-001",
+  "workflow_id": "2026-07-29-github-issue-creation-attribution",
+  "owner_skill": "ai-context-governance",
+  "status": "completed",
+  "created_at": "2026-07-29T22:21:37+08:00",
+  "updated_at": "2026-07-29T22:30:00+08:00",
+  "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
+  "model": "gpt-5.6-sol",
+  "reasoning_effort": "high",
+  "scope": {
+    "target": "Formal GitHub Issue creation attribution and four existing canary bodies.",
+    "files": [
+      ".dev/backlog/providers/github.yaml",
+      ".ai/scripts/github_backlog_provider.py",
+      ".ai/scripts/tests/test_github_backlog_provider.py",
+      ".dev/workflows/2026-07-29-github-issue-creation-attribution/**",
+      ".dev/workflows/INDEX.MD"
+    ],
+    "constraints": [
+      "Use PR-only main integration before online body updates.",
+      "Do not add attribution to public Proposal intake.",
+      "Do not create the remaining 37 Issues or the Project."
+    ]
+  },
+  "execution": {
+    "steps": [
+      "Add a fail-closed creation-attribution provider contract.",
+      "Render the visible trailer before hidden markers.",
+      "Validate all 41 projections and Proposal exclusion.",
+      "Merge through main, update the four canaries, and read them back."
+    ],
+    "validation": [
+      "Run focused provider tests.",
+      "Run repository workflow and AI-context validators.",
+      "Read back exact Issue bodies after online updates."
+    ],
+    "last_completed_step": "Replaced the pre-push visible trailer design with the owner-approved created-by:codex label and hidden detailed marker.",
+    "next_action": "Commit and integrate the provider contract through PR-only main."
+  },
+  "results": {
+    "summary": "The formal Issue renderer now applies the approved created-by:codex label and hidden execution marker while failing closed on contract drift.",
+    "tests_run": [
+      "python .ai/scripts/tests/test_github_backlog_provider.py (17 passed)",
+      "python .ai/scripts/plan-github-backlog-migration.py --check (41 items, 0 blocked)",
+      "python .ai/scripts/validate-workflow-artifacts.py",
+      "python .ai/scripts/validate-ai-context.py",
+      "python .ai/scripts/tests/test_repository_config_contract.py (13 passed with TEMP/TMP=.tmp)",
+      "git diff --check"
+    ],
+    "finding_status": "addressed",
+    "residual_risk": "Online canaries remain unchanged until the contract PR merges.",
+    "follow_up_needed": true
+  }
+}

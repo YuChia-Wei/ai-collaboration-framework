@@ -144,6 +144,26 @@ class GitHubBacklogProviderTests(unittest.TestCase):
             }.issubset(excluded)
         )
 
+    def test_gwt_016_given_formal_issue_when_rendered_then_codex_label_and_hidden_marker_exist_once(self) -> None:
+        marker = "<!-- created-by: OpenAI Codex (gpt-5.6-sol, high) <noreply@openai.com> -->"
+        for item in self.plan["items"]:
+            body = item["issue"]["body"]
+            self.assertNotIn("## Creation Attribution", body)
+            self.assertEqual(1, body.count(marker))
+            self.assertEqual(1, item["issue"]["labels"].count("created-by:codex"))
+            self.assertLess(body.index(marker), body.index("<!-- canonical-backlog-id:"))
+
+    def test_gwt_017_given_public_proposal_form_then_formal_issue_attribution_is_not_injected(self) -> None:
+        form_text = (REPO_ROOT / ".github/ISSUE_TEMPLATE/proposal.yml").read_text(
+            encoding="utf-8"
+        )
+        self.assertNotIn("created-by:codex", form_text)
+        config = PROVIDER.load_yaml_mapping(CONFIG)
+        self.assertEqual(
+            "not automatically applied",
+            config["issue"]["creation_attribution"]["proposal_policy"],
+        )
+
 
 if __name__ == "__main__":
     unittest.main()
