@@ -232,7 +232,7 @@ def rewrite_zip_member(source: Path, target: Path, suffix: str, replacement: byt
 
 
 class DeterministicPackageGwtTests(unittest.TestCase):
-    def test_gwt_000_given_source_release_renderer_when_payload_is_projected_then_downstream_excludes_it(self) -> None:
+    def test_gwt_000_given_source_release_body_tooling_when_payload_is_projected_then_downstream_excludes_it(self) -> None:
         fixture = SyntheticPackageRepo()
         try:
             tree = PACKAGE.git_tree(fixture.root, "HEAD")
@@ -243,6 +243,15 @@ class DeterministicPackageGwtTests(unittest.TestCase):
             }
             self.assertNotIn(
                 ".ai/scripts/render-ai-context-release-notes.py", targets
+            )
+            self.assertNotIn(
+                ".ai/scripts/validate-ai-context-release-state.py", targets
+            )
+            self.assertFalse(
+                any(path.startswith(".ai/scripts/tests/") for path in targets)
+            )
+            self.assertFalse(
+                any(path.startswith(".dev/workflows/") for path in targets)
             )
             self.assertIn(
                 ".ai/scripts/plan-ai-context-package-apply.py", targets

@@ -1,0 +1,84 @@
+{
+  "schema_version": "1.0",
+  "evidence_id": "V070BODY-001-hosted-before",
+  "observed_at": "2026-07-29T15:46:02.1125603+08:00",
+  "capture": {
+    "mode": "read-only",
+    "command": "gh release view v0.7.0 --repo YuChia-Wei/ai-collaboration-prompts-dotnet-backend --json id,databaseId,url,tagName,targetCommitish,name,isDraft,isImmutable,isPrerelease,createdAt,publishedAt,body,assets; gh api repos/YuChia-Wei/ai-collaboration-prompts-dotnet-backend/git/ref/tags/v0.7.0; gh api repos/YuChia-Wei/ai-collaboration-prompts-dotnet-backend/git/tags/<tag-object-sha>"
+  },
+  "release": {
+    "id": 361106776,
+    "database_id": 361106776,
+    "node_id": "RE_kwDOSBe2Hc4Vhg1Y",
+    "url": "https://github.com/YuChia-Wei/ai-collaboration-prompts-dotnet-backend/releases/tag/v0.7.0",
+    "tag_name": "v0.7.0",
+    "target_commitish": "main",
+    "name": "REL-v0.7.0",
+    "is_draft": false,
+    "is_prerelease": false,
+    "created_at": "2026-07-28T13:25:02Z",
+    "published_at": "2026-07-28T13:26:18Z"
+  },
+  "annotated_tag": {
+    "ref": "refs/tags/v0.7.0",
+    "ref_object_type": "tag",
+    "object_sha": "ac57bc0f400c9e8fafdb553407b65ced5f61ee2c",
+    "tag": "v0.7.0",
+    "tagger": {
+      "name": "YuChia-Wei",
+      "email": "h42279@gmail.com",
+      "date": "2026-07-28T13:25:02Z"
+    },
+    "peeled_object_type": "commit",
+    "peeled_commit": "49723a943f744820f4bdb2c22de7930693a7106d"
+  },
+  "assets": [
+    {
+      "id": 492748639,
+      "name": "ai-context-dotnet-backend-v0.7.0.tar.gz",
+      "state": "uploaded",
+      "size": 640586,
+      "digest": "sha256:a54cc2649ab9508ec186d87f03fcf7ec83e58e1df65b761c53e6447971243e40"
+    },
+    {
+      "id": 492748640,
+      "name": "ai-context-dotnet-backend-v0.7.0.tar.gz.sha256",
+      "state": "uploaded",
+      "size": 106,
+      "digest": "sha256:7b15dd79b0f1db9789ad1d59b7ed781b8eb1b908e000789a5531972c91566b4f"
+    },
+    {
+      "id": 492748641,
+      "name": "ai-context-dotnet-backend-v0.7.0.zip",
+      "state": "uploaded",
+      "size": 1021279,
+      "digest": "sha256:ce817b6635f515eec9fb824d6fea89a01a6273a4a0401682dd65b38202c5adb6"
+    },
+    {
+      "id": 492748638,
+      "name": "ai-context-dotnet-backend-v0.7.0.zip.sha256",
+      "state": "uploaded",
+      "size": 103,
+      "digest": "sha256:a76292fadfcbbef5a139c198ee8f2de6ba9a9b9413459eb7f8b51b885ce8b12c"
+    }
+  ],
+  "body": {
+    "utf8_sha256": "2e121c416198196e6d9006835eed2c7d256668d95194de026e2541557892d649",
+    "line_count": 152,
+    "content": "<!-- ai-context-release-automation: REL-v0.7.0 -->\n\n# REL-v0.7.0 — Portable Work Management, Provenance, And Release Safety\n\n## Status\n\nValidated governed candidate. v0.7.0 is not tagged or published.\n\n## Highlights\n\n- Adds a tracker-neutral work-management lifecycle that keeps conversation,\n  candidate work, authorized execution, workflow completion, PR integration,\n  and integrated facts distinct.\n- Adds portable AI execution provenance and attribution governance without\n  normalizing unavailable provider-native identity.\n- Proves deterministic downstream payload exclusion, clean installation, and\n  exact initialized upgrade from the published v0.6.0 package.\n- Makes candidate backlog membership and generated Included Work fail closed\n  from v0.7.0 onward while preserving human-authored release notes.\n\n## Compatibility\n\nv0.7.0 is a backward-compatible pre-1.0 minor release. The only automatic and\nreviewed reconciliation source is the exact published v0.6.0 package inventory.\nTargets on an older version must first follow each version's published route to\nv0.6.0. Existing target-owned customizations, provider choice, integration\nbranch, review policy, merge policy, and tracker identity remain target-owned.\n\nThe package and files schemas remain at `2.0.0`; the migration schema remains\nat `3.0.0`. Deprecated compatibility aliases and historical evidence paths are\nretained.\n\n## Known Limitations\n\n- The portable execution-provenance contract and deterministic fixtures are\n  verified, but native Claude and GitHub Copilot commit-attribution fixtures\n  remain unavailable. This deferred evidence is not reported as passed.\n- Automatic upgrade is supported only from the exact published v0.6.0\n  inventory. Direct automatic upgrade from v0.5.0 or older is unsupported.\n- Candidate validation must report any environment-gated or platform-capability\n  skip separately. A skip, deferred check, or not-applicable gate is never\n  counted as passed.\n\n## Not Included\n\n- No GitHub Issue, GitHub Project, field, view, automation, mapping, or provider\n  integration is created by this release. Source-local GitHub policy is not a\n  downstream default.\n- Historical archive migration, deprecated identifier retirement, standards\n  simplification, issue/timeline schema deliberation, existing-agent\n  initialization exploration, and observability architecture remain separately\n  gated work.\n\n## Release Validation\n\nThe exact backlog and renderer contracts, deterministic package and archive\nparity, clean-install apply, exact initialized v0.6.0 upgrade apply, package\nmatrices, and independent candidate verification passed. The package matrix\nrecorded 26 passed tests and one environment-gated skip; the apply matrix\nrecorded 23 passed tests and one Windows capability skip. Neither skip is\ncounted as passed. Both real apply receipts intentionally leave downstream\nprovenance finalization to `ai-context-init` or `ai-context-upgrader`; that\nlater target-owned step is not counted as a candidate pass.\n\nHosted pull-request checks, merge, current-main pre-tag validation, tag,\npublication, and terminal registry finalization remain unperformed.\n\nFrom v0.7.0 onward, the renderer appends the canonical `Included Work` section\nfrom `release.yaml.planning.backlog_refs`. Do not duplicate that generated\nsection in this authored source.\n\n## Publication Completion\n\nNot published. Tag, hosted publication, package assets, run identity, and final\nregistry evidence remain absent until separately authorized and observed.\n\n## Included Work\n\n- `GOV-002`\n- `GOV-003`\n- `PKG-004`\n- `REL-003`\n\n## Release provenance\n\n- Release ID: `REL-v0.7.0`\n- Tag: `v0.7.0`\n- Commit: `49723a943f744820f4bdb2c22de7930693a7106d`\n- Distribution profile: `dotnet-backend`\n- Package: `ai-context-dotnet-backend-v0.7.0`\n- Archive integrity: verify each archive against its adjacent `.sha256` asset.\n\n## Migration guide\n\n# Migrate To v0.7.0\n\n## Supported Sources\n\nAutomatic upgrade and reviewed reconciliation support only the exact published\nv0.6.0 package inventory. Use that package's `metadata/files.yaml` with\n`--previous-version v0.6.0`. Targets on v0.5.0 or older must first follow their\npublished migration route to v0.6.0. A target without credible component-aware\nprovenance requires manual reconciliation and is not an automatic upgrade.\n\n## Before You Start\n\n1. Use Python 3.11 or newer and install the exact source dependencies when\n   running source-side validation.\n2. Start from a clean target worktree and record its current commit.\n3. Obtain the exact published v0.6.0 `metadata/files.yaml` and verify the\n   v0.7.0 archive against its adjacent checksum before extraction.\n4. Review target provenance, semantic customizations, provider selection,\n   integration branch, review policy, merge policy, and local changes.\n\n## Migration Steps\n\n1. Extract the v0.7.0 package outside the target repository.\n2. Run `plan-ai-context-package-apply.py` in its default dry-run mode with the\n   extracted package root, target root, exact v0.6.0 files manifest, and\n   `--previous-version v0.6.0`.\n3. Review every operation and reconcile locally changed target-owned or\n   target-template content. The three portable policy targets are managed by\n   framework bytes only when their exact previous-release hashes still match.\n4. Acknowledge every required reconciliation explicitly, then apply from the\n   same clean starting commit. Do not enable a provider merely to complete the\n   framework upgrade.\n5. Review `.dev/AI-CONTEXT-APPLY-PENDING.yaml`, then run `ai-context-init` for\n   a clean installation or `ai-context-upgrader` for an existing v0.6.0 target.\n   Finalize provenance only after target validation succeeds; the package apply\n   receipt does not claim that later step.\n6. Run the installed target AI-context, workflow, package, and applicable\n   project-owned validation commands. Preserve blocked, skipped, deferred, and\n   not-applicable outcomes as distinct from passed checks.\n\n## Clean Installation\n\nFor a clean target, apply the default `dotnet-backend` profile in dry-run mode,\nreview the plan, and then apply from a clean Git worktree. The optional\n`repo-backlog` provider remains disabled unless the target owner separately\nselects it. No GitHub Issue or Project resource is created.\n\n## Scope Boundaries\n\n- Target work-management state remains usable without a tracker, and tracker\n  provider choice remains replaceable and target-owned.\n- Existing target modifications enter reconciliation rather than being\n  silently overwritten.\n- Source workflows, assessments, backlog items, roadmap, release history, and\n  source-local GitHub policy are excluded from the downstream payload.\n- The upgrade does not migrate historical source evidence, retire deprecated\n  identifiers, simplify standards, or adopt GitHub Issues or Projects.\n"
+  },
+  "semantic_mismatch": {
+    "reproduction": "passed",
+    "published_facts": [
+      "Release is non-draft and non-prerelease.",
+      "Release has a published_at timestamp.",
+      "Annotated tag resolves to the governed commit.",
+      "Exactly four uploaded assets have GitHub SHA-256 digests."
+    ],
+    "contradictory_hosted_phrases": [
+      "Validated governed candidate. v0.7.0 is not tagged or published.",
+      "Hosted pull-request checks, merge, current-main pre-tag validation, tag, publication, and terminal registry finalization remain unperformed.",
+      "Not published. Tag, hosted publication, package assets, run identity, and final registry evidence remain absent until separately authorized and observed."
+    ]
+  }
+}

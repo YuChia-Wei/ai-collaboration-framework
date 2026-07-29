@@ -12,6 +12,7 @@ owns its identity, current lifecycle state, subject revision, and relationships.
 
 | Assessment | Title | Type | Owner | Status | Subject Commit | Updated | Report |
 | --- | --- | --- | --- | --- | --- | --- | --- |
+| [`ASM-20260729-001`](ASM-20260729-001/assessment.yaml) | v0.7.0 Public Release Body Source Contract Verification | `ai-context-verification` | `ai-context-auditor` | `final` | `cbe1553f0fc30a856a35e85ec17ecd8cd91838d2` | `2026-07-29T16:03:20+08:00` | [report](ASM-20260729-001/report.md) |
 | [`ASM-20260728-001`](ASM-20260728-001/assessment.yaml) | v0.7.0 Candidate Package And Release Contract Verification | `ai-context-verification` | `ai-context-auditor` | `final` | `b474730d453c27f2b5338f5bbe0b5efd5e9b0628` | `2026-07-28T09:32:32+08:00` | [report](ASM-20260728-001/report.md) |
 | [`ASM-20260727-002`](ASM-20260727-002/assessment.yaml) | v0.7.0 Governance And Package Readiness Verification | `ai-context-verification` | `ai-context-auditor` | `final` | `d3f22b267e8ff44ae163a47b3b2482d51250cbcc` | `2026-07-27T23:42:17+08:00` | [report](ASM-20260727-002/report.md) |
 | [`ASM-20260727-001`](ASM-20260727-001/assessment.yaml) | AI Execution Provenance And Attribution Policy Verification | `ai-context-verification` | `ai-context-auditor` | `final` | `fb6d35664b3badb915410baa095a83a152780be2` | `2026-07-27T10:17:47+08:00` | [report](ASM-20260727-001/report.md) |

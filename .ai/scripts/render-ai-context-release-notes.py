@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Validate a governed release candidate and render its GitHub Release body."""
+"""Validate a governed release phase and render its GitHub Release body."""
 
 from __future__ import annotations
 
@@ -15,6 +15,17 @@ VERSION_RE = re.compile(r"^v\d+\.\d+\.\d+$")
 SHA_RE = re.compile(r"^[0-9a-f]{40}$")
 ALLOWED_CANDIDATE_STATUSES = {"planned", "validated"}
 BACKLOG_REF_RE = re.compile(r"^\.dev/backlog/items/([A-Z][A-Z0-9-]+)\.yaml$")
+PUBLISHED_FORBIDDEN_BODY_RE = re.compile(
+    r"\bnot tagged or published\b|"
+    r"\b(?:tag|publication|finalization).{0,240}\b(?:remain|remains)\s+unperformed\b|"
+    r"^Not published\.",
+    re.IGNORECASE | re.DOTALL | re.MULTILINE,
+)
+PUBLISHED_REQUIRED_BODY_SECTIONS = (
+    "## Status",
+    "## Release Validation",
+    "## Publication Completion",
+)
 
 
 class ReleaseNotesError(ValueError):
@@ -105,6 +116,43 @@ def resolve_artifact(path: Path, release_dir: Path, label: str) -> Path:
     return candidate
 
 
+def assert_published_body_source(
+    data: dict, notes: Path, version: str, commit: str
+) -> None:
+    if data.get("status") != "published":
+        raise ReleaseNotesError("published mode requires release status published")
+    if data.get("tag") != version or data.get("commit") != commit:
+        raise ReleaseNotesError(
+            "published mode requires the immutable annotated tag and peeled commit"
+        )
+    validation = data.get("validation")
+    if not isinstance(validation, dict):
+        raise ReleaseNotesError("published mode requires validation evidence")
+    published_run = validation.get("published_run")
+    if not isinstance(published_run, str) or not published_run.isdigit():
+        raise ReleaseNotesError("published mode requires validation.published_run")
+    public_url = validation.get("public_release_url")
+    if not isinstance(public_url, str) or not public_url.endswith(
+        f"/releases/tag/{version}"
+    ):
+        raise ReleaseNotesError(
+            "published mode requires validation.public_release_url for the tag"
+        )
+    text = notes.read_text(encoding="utf-8").strip()
+    missing = [section for section in PUBLISHED_REQUIRED_BODY_SECTIONS if section not in text]
+    if missing:
+        raise ReleaseNotesError(
+            "published release notes must contain phase-owned sections: "
+            + ", ".join(missing)
+        )
+    if "## Status\n\nPublished." not in text:
+        raise ReleaseNotesError("published release notes must state Published.")
+    if PUBLISHED_FORBIDDEN_BODY_RE.search(text):
+        raise ReleaseNotesError(
+            "published release notes must not retain candidate-only publication claims"
+        )
+
+
 def validate_release(root: Path, version: str, commit: str, mode: str) -> tuple[dict, Path, Path]:
     if not SHA_RE.fullmatch(commit):
         raise ReleaseNotesError("commit must be a full lowercase 40-character Git SHA")
@@ -116,8 +164,16 @@ def validate_release(root: Path, version: str, commit: str, mode: str) -> tuple[
         raise ReleaseNotesError(f"{record_path} identity does not match {expected_id}")
     if data.get("record_origin") != "governed":
         raise ReleaseNotesError("automatic publication accepts governed releases only")
+    if mode not in {"candidate", "publish", "published"}:
+        raise ReleaseNotesError("mode must be candidate, publish, or published")
     status = data.get("status")
-    allowed = {"validated"} if mode == "publish" else ALLOWED_CANDIDATE_STATUSES
+    allowed = (
+        {"validated"}
+        if mode == "publish"
+        else {"published"}
+        if mode == "published"
+        else ALLOWED_CANDIDATE_STATUSES
+    )
     if status not in allowed:
         raise ReleaseNotesError(
             f"release status {status!r} is not allowed in {mode} mode; expected {sorted(allowed)}"
@@ -160,6 +216,8 @@ def validate_release(root: Path, version: str, commit: str, mode: str) -> tuple[
     migration = resolve_artifact(
         artifacts.get("migration_guide"), release_dir, "migration_guide"
     )
+    if mode == "published":
+        assert_published_body_source(data, notes, version, commit)
     return data, notes, migration
 
 
@@ -230,7 +288,9 @@ def main() -> int:
     parser.add_argument("--root", type=Path, default=Path(__file__).resolve().parents[2])
     parser.add_argument("--version")
     parser.add_argument("--commit", required=True)
-    parser.add_argument("--mode", choices=("candidate", "publish"), default="candidate")
+    parser.add_argument(
+        "--mode", choices=("candidate", "publish", "published"), default="candidate"
+    )
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--github-output", type=Path)
     args = parser.parse_args()

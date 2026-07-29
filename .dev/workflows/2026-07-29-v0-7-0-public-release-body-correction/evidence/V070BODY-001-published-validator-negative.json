@@ -1,0 +1,12 @@
+{
+  "schema_version": "1.0",
+  "evidence_id": "V070BODY-001-published-validator-negative",
+  "observed_at": "2026-07-29T15:54:51.3426285+08:00",
+  "command": "python .ai/scripts/validate-ai-context-release-state.py --phase finalization --version v0.7.0 --hosted",
+  "environment": "HTTP_PROXY, HTTPS_PROXY, ALL_PROXY, and NO_PROXY removed for the child process because the configured localhost proxy was unavailable",
+  "exit_code": 1,
+  "outcome": "expected-fail",
+  "rendered_published_body_utf8_sha256": "6e2b2eb1c4b6b95a7bd8e7acf678b1d8cbde22d492bbed9a454d56d74ed3c298",
+  "result": "hosted release body differs from governed rendered body",
+  "conclusion": "The corrected finalization contract detects the frozen candidate-only hosted body and cannot be bypassed by using tagged candidate text."
+}

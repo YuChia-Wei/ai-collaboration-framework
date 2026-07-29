@@ -36,6 +36,16 @@ def release_record(migration_schema: str, sources: list[str]) -> dict:
     }
 
 
+def published_release_record() -> dict:
+    data = release_record("1.0.0", ["v0.3.0"])
+    data.update({"status": "published", "tag": "v0.5.0", "commit": COMMIT})
+    data["validation"] = {
+        "published_run": "42",
+        "public_release_url": "https://github.com/owner/repo/releases/tag/v0.5.0",
+    }
+    return data
+
+
 class ReleaseNotesRendererTests(unittest.TestCase):
     def write_release(self, root: Path, data: dict) -> None:
         release = root / ".dev/releases/v0.5.0"
@@ -111,6 +121,49 @@ class ReleaseNotesRendererTests(unittest.TestCase):
         data = release_record("1.0.0", ["v0.4.2"])
         rendered = RENDERER.render_body_text(data, "# Notes", "# Migration", COMMIT)
         self.assertNotIn("## Included Work", rendered)
+
+    def test_gwt_007_given_published_record_when_rendered_then_phase_truth_is_preserved(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            self.write_release(root, published_release_record())
+            notes_path = root / ".dev/releases/v0.5.0/release-notes.md"
+            notes_path.write_text(
+                "# REL-v0.5.0 - Published\n\n"
+                "## Status\n\n"
+                "Published.\n\n"
+                "## Release Validation\n\n"
+                "The published release validation passed.\n\n"
+                "## Publication Completion\n\n"
+                "Published from immutable annotated tag `v0.5.0`.\n",
+                encoding="utf-8",
+            )
+
+            data, notes, migration = RENDERER.validate_release(
+                root, "v0.5.0", COMMIT, "published"
+            )
+            rendered = RENDERER.render_body(data, notes, migration, COMMIT)
+
+            self.assertIn("## Status\n\nPublished.", rendered)
+            self.assertIn("## Release provenance", rendered)
+
+    def test_gwt_008_given_published_record_with_candidate_claim_when_rendered_then_it_fails_closed(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            self.write_release(root, published_release_record())
+            notes_path = root / ".dev/releases/v0.5.0/release-notes.md"
+            notes_path.write_text(
+                "# REL-v0.5.0 - Published\n\n"
+                "## Status\n\n"
+                "Published.\n\n"
+                "## Release Validation\n\n"
+                "Tag and publication remain unperformed.\n\n"
+                "## Publication Completion\n\n"
+                "Not published.\n",
+                encoding="utf-8",
+            )
+
+            with self.assertRaisesRegex(RENDERER.ReleaseNotesError, "candidate-only"):
+                RENDERER.validate_release(root, "v0.5.0", COMMIT, "published")
 
 
 if __name__ == "__main__":
