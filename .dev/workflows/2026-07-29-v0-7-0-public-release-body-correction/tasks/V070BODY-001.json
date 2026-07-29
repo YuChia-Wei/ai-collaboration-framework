@@ -6,9 +6,9 @@
   "task_id": "V070BODY-001",
   "workflow_id": "2026-07-29-v0-7-0-public-release-body-correction",
   "owner_skill": "ai-context-governance",
-  "status": "in_progress",
+  "status": "completed",
   "created_at": "2026-07-29T15:08:23+08:00",
-  "updated_at": "2026-07-29T16:06:15+08:00",
+  "updated_at": "2026-07-29T16:21:30+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-5.6-sol",
   "reasoning_effort": "high",
@@ -80,11 +80,11 @@
       "one applicable aggregate critical gate for each exact handoff commit",
       "hosted Release read-back plus unchanged tag object, peeled commit, asset names, and asset digests"
     ],
-    "last_completed_step": "Committed the source-only published-phase contract at cbe1553f0fc30a856a35e85ec17ecd8cd91838d2 and independent auditor verification ASM-20260729-001 at 7b782c3. The auditor confirms source remediation while retaining the public body as an active external correction.",
-    "next_action": "Commit governance-owned remediation state, run the exact source commit-range and aggregate gate once, then push and create a ready pull request for source integration."
+    "last_completed_step": "From synchronized main at b5b1a5223657933b222833f4ccf2f21e77d8c97a, rendered and word-for-word reviewed the published body, updated only the hosted v0.7.0 Release body, and completed immediate body, Release identity, tag, peeled-commit, and asset read-back.",
+    "next_action": "Integrate this completed closure record through the required ready pull request, then synchronize local main."
   },
   "results": {
-    "summary": "The hosted v0.7.0 baseline is frozen; source-only phase-correct renderer, validator, and payload boundary remediation are independently verified. No GitHub Release mutation has occurred.",
+    "summary": "The source-only published-phase contract was independently verified and merged. The authorized v0.7.0 GitHub Release body now exactly equals the deterministic published renderer; Release identity, annotated tag object, peeled commit, and all four asset names and digests were immediately read back unchanged.",
     "files_changed": [
       "README.en.md",
       ".ai/scripts/render-ai-context-release-notes.py",
@@ -95,6 +95,8 @@
       ".dev/assessments/ASM-20260729-001/**",
       ".dev/workflows/2026-07-29-v0-7-0-public-release-body-correction/evidence/V070BODY-001-hosted-before.json",
       ".dev/workflows/2026-07-29-v0-7-0-public-release-body-correction/evidence/V070BODY-001-published-validator-negative.json",
+      ".dev/workflows/2026-07-29-v0-7-0-public-release-body-correction/evidence/V070BODY-001-final-rendered-body.md",
+      ".dev/workflows/2026-07-29-v0-7-0-public-release-body-correction/evidence/V070BODY-001-hosted-after.json",
       ".dev/workflows/2026-07-29-v0-7-0-public-release-body-correction/reports/remediation-report.md"
     ],
     "tests_run": [
@@ -107,10 +109,14 @@
       "published renderer and release-state focused suites: passed 8/8 and 24/24 after TEMP/TMP were scoped to workspace .tmp",
       "published finalization validator against live hosted body: expected-fail; it rejected the stale candidate-only body",
       "source-only package projection and GitHub workflow contract suites: passed",
-      "independent ai-context-auditor verification ASM-20260729-001: finalized with VFY-001 through VFY-003 resolved and VFY-004 retained as active external correction"
+      "independent ai-context-auditor verification ASM-20260729-001: finalized with VFY-001 through VFY-003 resolved and VFY-004 retained as active external correction",
+      "source integration PR #18: ready, all required checks passed, and merged as b5b1a5223657933b222833f4ccf2f21e77d8c97a",
+      "published body rendered from updated main: SHA-256 6e2b2eb1c4b6b95a7bd8e7acf678b1d8cbde22d492bbed9a454d56d74ed3c298; word-for-word review completed",
+      "post-edit hosted read-back: body equals renderer; Release identity, annotated tag ref/object, peeled commit, and four asset name/digest pairs unchanged",
+      "post-edit hosted finalization validator: passed"
     ],
-    "finding_status": "partially-resolved",
-    "residual_risk": "The public v0.7.0 body still contains candidate-only not-published wording until the source correction is integrated, the exact published body is reviewed, and the authorized online correction is completed and verified.",
-    "follow_up_needed": true
+    "finding_status": "resolved",
+    "residual_risk": "None within this bounded correction. The broader REL-004 capability and successor allocation remain explicitly out of scope and unallocated.",
+    "follow_up_needed": false
   }
 }
