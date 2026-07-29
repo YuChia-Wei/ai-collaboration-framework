@@ -1,0 +1,55 @@
+{
+  "template_id": "ai-context-governance-remediation-task",
+  "template_version": "1.1.0",
+  "task_id": "GHATTR-003",
+  "workflow_id": "2026-07-29-github-issue-creation-attribution",
+  "owner_skill": "ai-context-governance",
+  "status": "completed",
+  "created_at": "2026-07-29T22:35:21+08:00",
+  "updated_at": "2026-07-29T22:40:09+08:00",
+  "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
+  "model": "gpt-5.6-sol",
+  "reasoning_effort": "high",
+  "scope": {
+    "target": "Label and hidden-marker attribution for existing canary Issues #21-#24.",
+    "files": [
+      ".dev/workflows/2026-07-29-github-issue-creation-attribution/**",
+      ".dev/workflows/INDEX.MD"
+    ],
+    "constraints": [
+      "Use a projection generated from merged main e83b759c8cf1deeb11af5ae748359f6a4c63b200.",
+      "Update and read back only Issues #21-#24.",
+      "Do not create the remaining 37 Issues or the GitHub Project."
+    ]
+  },
+  "execution": {
+    "steps": [
+      "Generate fresh-main Issue bodies.",
+      "Create and read back the created-by:codex label.",
+      "Update each canary body and label without changing title, state, close reason, comments, or assignees.",
+      "Read back exact provider state and persist the receipt."
+    ],
+    "validation": [
+      "Match title, body, hidden markers, labels, assignees, state, close reason, and closing comment for all four canaries.",
+      "Run repository workflow and provider validators before closure."
+    ],
+    "last_completed_step": "Updated and exactly read back all four canary Issues and the created-by:codex label.",
+    "next_action": "Commit and integrate the durable receipt through PR-only main."
+  },
+  "results": {
+    "summary": "All four canaries now have the owner-approved label and hidden execution marker with their original lifecycle and closing history preserved.",
+    "files_changed": [
+      ".dev/backlog/provider-mappings/github-issues.yaml",
+      ".dev/workflows/2026-07-29-github-issue-creation-attribution/evidence/**",
+      ".dev/workflows/2026-07-29-github-issue-creation-attribution/**",
+      ".dev/workflows/INDEX.MD"
+    ],
+    "tests_run": [
+      "Exact GitHub read-back for Issues #21-#24: 4/4 verified",
+      "created-by:codex label name, color, and description read-back: verified"
+    ],
+    "finding_status": "addressed",
+    "residual_risk": "The remaining 37 Issues and Project are intentionally not created.",
+    "follow_up_needed": false
+  }
+}
