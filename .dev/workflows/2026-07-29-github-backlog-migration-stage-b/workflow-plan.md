@@ -9,10 +9,10 @@
 - `base_branch`: `main`
 - `branch_segment`: `1`
 - `status`: `in_progress`
-- `current_phase`: `project-creation-and-fields`
+- `current_phase`: `views-automation-and-closeout`
 - `artifact_root`: `.dev/workflows/2026-07-29-github-backlog-migration-stage-b`
 - `created_at`: `2026-07-29T22:58:40+08:00`
-- `updated_at`: `2026-07-29T23:13:11+08:00`
+- `updated_at`: `2026-07-29T23:30:17+08:00`
 
 ## Objective And Scope
 
@@ -53,8 +53,8 @@
 | `GHBM-003` | Apply and read back remaining batch 2. | `completed` |
 | `GHBM-004` | Apply and read back remaining batch 3. | `completed` |
 | `GHBM-005` | Apply and read back remaining batch 4. | `completed` |
-| `GHBM-006` | Verify all 41 mappings, create the Project, fields, and item values. | `in_progress` |
-| `GHBM-007` | Configure supported views and automation, perform complete provider read-back, and close the workflow. | `pending` |
+| `GHBM-006` | Verify all 41 mappings, create the Project, fields, and item values. | `completed` |
+| `GHBM-007` | Configure supported views and automation, perform complete provider read-back, and close the workflow. | `in_progress` |
 
 ## Stop And Recovery Rules
 
@@ -67,10 +67,10 @@
 
 ## Resume Checkpoint
 
-- Last completed action: created and exactly read back batch 4 as Issues #57-#63, then independently verified all 41 mappings with 5 open, 36 closed, and no unrecorded formal Issue.
-- Current task: `GHBM-006`.
-- Exact next action: create the public Project, approved fields, add all 41 Issues, and set projected values.
-- Blockers: none; Project views and automation remain capability-checked rather than assumed.
+- Last completed action: created public Project 3, recorded all 41 unique item IDs, and exactly read back all 205 managed field values plus empty assignees.
+- Current task: `GHBM-007`.
+- Exact next action: configure the four approved views and two allowlisted workflows through the signed-in Project UI, then perform the final provider read-back.
+- Blockers: none; unsupported view or automation details will be recorded as provider constraints rather than invented state.
 
 ## Branch Lifecycle
 
