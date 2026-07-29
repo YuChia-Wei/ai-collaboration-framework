@@ -16,10 +16,10 @@
 - `base_branch`: `main`
 - `branch_segment`: `1`
 - `status`: `in_progress`
-- `current_phase`: `remediation-planning`
+- `current_phase`: `baseline-repair`
 - `artifact_root`: `.dev/workflows/2026-07-29-v0-7-0-public-release-body-correction`
 - `created_at`: `2026-07-29T15:08:23+08:00`
-- `updated_at`: `2026-07-29T15:08:23+08:00`
+- `updated_at`: `2026-07-29T15:27:57+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md`
 - `template_version`: `1.2.0`
 
@@ -36,7 +36,11 @@
 - Authorization source: The owner authorized this source-repository
   self-correction and asked Codex to correct the online data in the 2026-07-29
   conversation. The authorization is limited to the `v0.7.0` GitHub Release
-  body and the source-only tooling needed to prevent recurrence.
+  body and the source-only tooling needed to prevent recurrence. After the
+  bootstrap critical gate exposed pre-existing current-main README validation
+  drift, the owner separately authorized the minimum bilingual ownership and
+  inline-code parity repair as a prerequisite; this does not allocate release
+  scope or broaden the online-mutation authority.
 - Authorized remediation scope:
   - reproduce and retain bounded evidence of the public-body phase mismatch;
   - define a phase-correct public-body rendering and validation contract;
@@ -105,11 +109,13 @@
 | `V070-VALIDATOR-PHASE-002` | HIGH | `ai-context-governance` | repair now | `V070BODY-001` | positive and negative release-state/renderer tests |
 | `V070-PACKAGE-BOUNDARY-003` | HIGH | `ai-context-governance` | prove source-only; stop on leakage | `V070BODY-001` | payload manifest/diff and package regression |
 | `V070-RELEASE-ALLOCATION-004` | MEDIUM | owner | resolved by owner: no release assignment | `V070BODY-001` | roadmap and backlog remain unassigned/unchanged |
+| `V070-README-BASELINE-005` | HIGH | `ai-context-governance` | repair prerequisite only | `V070BODY-001` | bilingual ownership marker, inline-code parity, AI-context validation |
 
 ## Stages And Checkpoints
 
-1. Bootstrap this workflow and create a fresh-session handoff checkpoint without
-   changing the hosted Release.
+1. Bootstrap this workflow, repair the owner-authorized source-only README
+   validation prerequisite, and create a fresh-session handoff checkpoint
+   without changing the hosted Release.
 2. Reproduce the live mismatch and freeze tag, Release, asset, and body digests.
 3. Implement the smallest phase-correct renderer/validator contract and focused
    regression tests.
@@ -140,13 +146,19 @@
 
 ## Resume Checkpoint
 
-- Last completed action: Created the dedicated workflow branch and durable
-  execution plan for the owner-authorized source-only correction.
+- Last completed action: The owner authorized a minimal source-only README
+  bilingual parity repair after the bootstrap critical gate exposed drift in
+  the current `main` baseline.
 - Current task: `V070BODY-001`
-- Exact next action: Validate the registered fresh-session checkpoint, then
-  reproduce the live `v0.7.0` public-body mismatch without mutating GitHub.
+- Exact next action: Validate and commit the README prerequisite, rerun the
+  critical gate on that exact commit, then register and validate the
+  fresh-session checkpoint.
 - Validation already completed: repository `main` was clean and synchronized at
-  `b2f1354f85ba1cee4acb497820d57a0d35547ef8` before branch creation.
+  `b2f1354f85ba1cee4acb497820d57a0d35547ef8` before branch creation. The first
+  real critical gate at bootstrap commit
+  `2cf094d4c3185b194e257e190d1c48a4ea0e343b` executed 44 required checks and
+  failed one current-main README bilingual validation check; blocked/error
+  fixture attempts were not counted as passes.
 - Git state: workflow bootstrap is being prepared on the dedicated branch.
 - Branch history and checkpoint handoffs: segment 1 started from synchronized
   `main`; a local fresh-session checkpoint will be recorded before transfer.
@@ -159,4 +171,3 @@
 | Segment | Branch | Base | Checkpoint Type | Commit | Remote / Target | Recorded At | Reason | Resume Branch / Action |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | 1 | `codex/2026-07-29-v0-7-0-public-release-body-correction` | `main@b2f1354f85ba1cee4acb497820d57a0d35547ef8` | started | `b2f1354f85ba1cee4acb497820d57a0d35547ef8` | local | `2026-07-29T15:08:23+08:00` | Prepare an executable fresh-session correction workflow. | Commit and validate the workflow bootstrap, then create the handoff checkpoint. |
-

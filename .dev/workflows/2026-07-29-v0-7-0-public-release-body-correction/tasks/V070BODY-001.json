@@ -8,7 +8,7 @@
   "owner_skill": "ai-context-governance",
   "status": "in_progress",
   "created_at": "2026-07-29T15:08:23+08:00",
-  "updated_at": "2026-07-29T15:08:23+08:00",
+  "updated_at": "2026-07-29T15:27:57+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-5.6-sol",
   "reasoning_effort": "high",
@@ -16,7 +16,8 @@
     "V070-PUBLIC-BODY-001",
     "V070-VALIDATOR-PHASE-002",
     "V070-PACKAGE-BOUNDARY-003",
-    "V070-RELEASE-ALLOCATION-004"
+    "V070-RELEASE-ALLOCATION-004",
+    "V070-README-BASELINE-005"
   ],
   "scope": {
     "target": "Source-repository v0.7.0 public Release body and source-only release rendering/validation contract",
@@ -27,6 +28,7 @@
       ".ai/scripts/tests/test_release_notes_renderer.py",
       ".github/workflows/publish-release.yml",
       ".dev/releases/v0.7.0/release-notes.md",
+      "README.en.md",
       ".dev/workflows/2026-07-29-v0-7-0-public-release-body-correction/**"
     ],
     "constraints": [
@@ -35,6 +37,7 @@
       "Do not modify or republish the four v0.7.0 package assets.",
       "Do not create or modify GitHub Issues or Projects.",
       "Do not activate a successor release or make this correction a release gate.",
+      "Limit the authorized README prerequisite to restoring the existing bilingual ownership and inline-code parity contract; do not redesign README content.",
       "Prove the changed tooling is source-only; stop for owner input if it enters the downstream payload.",
       "Use fix-forward behavior after any shared commit or online mutation."
     ],
@@ -70,16 +73,19 @@
       "one applicable aggregate critical gate for each exact handoff commit",
       "hosted Release read-back plus unchanged tag object, peeled commit, asset names, and asset digests"
     ],
-    "last_completed_step": "Created the workflow branch and durable execution scope.",
-    "next_action": "Validate the fresh-session handoff checkpoint, then reproduce the live mismatch read-only."
+    "last_completed_step": "Owner authorized the minimal source-only README bilingual parity prerequisite after the first critical gate exposed current-main drift.",
+    "next_action": "Validate and commit the README parity repair, rerun the critical gate on that exact commit, then create the fresh-session handoff checkpoint."
   },
   "results": {
-    "summary": "Workflow bootstrap in progress; no source remediation or GitHub Release mutation has occurred.",
-    "files_changed": [],
-    "tests_run": [],
+    "summary": "Workflow bootstrap and authorized source-only README baseline repair are in progress; no GitHub Release mutation has occurred.",
+    "files_changed": [
+      "README.en.md"
+    ],
+    "tests_run": [
+      "critical gate at bootstrap commit: failed because current-main README bilingual ownership and inline-code parity had drifted; owner authorized the minimal source-only prerequisite repair"
+    ],
     "finding_status": "not-addressed",
     "residual_risk": "The public v0.7.0 body still contains candidate-only not-published wording until the authorized online correction is completed and verified.",
     "follow_up_needed": true
   }
 }
-
