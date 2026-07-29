@@ -71,3 +71,10 @@ failure was environmental and did not require product changes.
   two complete development rounds or two releases; historical migration does
   not count as a round.
 
+## Local Checkpoint
+
+- Implementation commit: `f6826e34b739d0e0ab6a974bc4eca12cb5666f20`
+- Stage A workflow state: `completed`
+- Online provider state: unchanged
+- Next transport: push the dedicated branch and open a PR; do not merge or begin
+  Stage B without the separately required owner decision.

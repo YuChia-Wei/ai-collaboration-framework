@@ -15,11 +15,11 @@
 - `branch`: `codex/2026-07-29-github-backlog-provider-adoption`
 - `base_branch`: `main`
 - `branch_segment`: `1`
-- `status`: `in_progress`
-- `current_phase`: `closure`
+- `status`: `completed`
+- `current_phase`: `completed`
 - `artifact_root`: `.dev/workflows/2026-07-29-github-backlog-provider-adoption`
 - `created_at`: `2026-07-29T21:27:05+08:00`
-- `updated_at`: `2026-07-29T21:48:26+08:00`
+- `updated_at`: `2026-07-29T21:50:30+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md`
 - `template_version`: `1.2.0`
 
@@ -53,7 +53,7 @@
 | `GHBP-001` | Define source-of-truth boundaries, provider configuration, Proposal intake, and receipt schema. | `completed` |
 | `GHBP-002` | Implement the read-only GitHub backlog projection adapter and focused tests. | `completed` |
 | `GHBP-003` | Generate and review the complete 41-item dry-run and canary/batch plan. | `completed` |
-| `GHBP-004` | Run aggregate validation, close Stage A locally, and prepare PR handoff. | `in_progress` |
+| `GHBP-004` | Run aggregate validation, close Stage A locally, and prepare PR handoff. | `completed` |
 
 ## Provider Boundary
 
@@ -75,16 +75,16 @@
 
 ## Resume Checkpoint
 
-- Last completed action: generated and reviewed the deterministic 41-item preview; all focused, workflow, AI-context, source-governance, repository-config, and package regression gates pass after using repository-local Temp for Windows fixtures.
-- Current task: `GHBP-004`.
-- Exact next action: create the validated implementation checkpoint, finalize workflow closure evidence, push the branch, and open the Stage A PR.
+- Last completed action: committed the validated Stage A implementation checkpoint as `f6826e34b739d0e0ab6a974bc4eca12cb5666f20` and finalized local closure evidence.
+- Current task: none; GHBP-001 through GHBP-004 are completed.
+- Exact next action: push this branch and open the Stage A PR. After PR merge, regenerate from fresh `main` and request explicit owner approval before Stage B.
 - Validation already completed: provider contract 15/15; package regression 27 tests with one expected skip; repository configuration 13/13; workflow and governance suites; dry-run regeneration check; source governance; AI-context aggregate; Python compile; `git diff --check`.
-- Git state: `codex/2026-07-29-github-backlog-provider-adoption` from `main@08b9fd9`.
-- Branch history and checkpoint handoffs: none.
+- Git state: `codex/2026-07-29-github-backlog-provider-adoption` from `main@08b9fd9`, with implementation checkpoint `f6826e34b739d0e0ab6a974bc4eca12cb5666f20`.
+- Branch history and checkpoint handoffs: the implementation checkpoint is local; the closure commit and PR transport follow.
 - Blockers or unresolved decisions: none for Stage A; Stage B remains deliberately blocked on merge, fresh-main dry-run, and explicit owner approval.
 
 ## Branch Lifecycle
 
 | Segment | Branch | Base | Checkpoint Type | Commit | Remote / Target | Recorded At | Reason | Resume Branch / Action |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| 1 | `codex/2026-07-29-github-backlog-provider-adoption` | `main@08b9fd9` | active Stage A | — | local | `2026-07-29T21:27:05+08:00` | Implement the approved repository contract without online provider mutation. | Complete GHBP-001 through GHBP-004, then push and open the Stage A PR. |
+| 1 | `codex/2026-07-29-github-backlog-provider-adoption` | `main@08b9fd9` | local implementation checkpoint | `f6826e34b739d0e0ab6a974bc4eca12cb5666f20` | local | `2026-07-29T21:50:30+08:00` | Preserve the validated provider contract and complete 41-item dry-run before closure. | Commit closure evidence, push, and open the Stage A PR. |

@@ -6,9 +6,9 @@
   "task_id": "GHBP-004",
   "workflow_id": "2026-07-29-github-backlog-provider-adoption",
   "owner_skill": "ai-context-governance",
-  "status": "in_progress",
+  "status": "completed",
   "created_at": "2026-07-29T21:27:05+08:00",
-  "updated_at": "2026-07-29T21:48:26+08:00",
+  "updated_at": "2026-07-29T21:50:30+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-5.6-sol",
   "reasoning_effort": "high",
@@ -39,12 +39,15 @@
       "Run repository workflow and package gates.",
       "Run commit policy validation for the workflow range."
     ],
-    "last_completed_step": "Completed the focused and aggregate local validation matrix, including the successful repository-local Temp reruns for Windows fixtures.",
-    "next_action": "Create the implementation checkpoint, finalize closure evidence, push, and open the Stage A PR."
+    "last_completed_step": "Created validated implementation checkpoint f6826e34b739d0e0ab6a974bc4eca12cb5666f20 and finalized the local Stage A closure record.",
+    "next_action": "Push and open the Stage A PR; Stage B remains separately owner-gated after merge."
   },
   "results": {
-    "summary": "All Stage A implementation and validation work is complete; commit and PR handoff remain.",
-    "files_changed": [],
+    "summary": "Stage A implementation, validation, durable checkpoint, and local closure are complete without online provider mutation.",
+    "files_changed": [
+      ".dev/workflows/2026-07-29-github-backlog-provider-adoption/**",
+      ".dev/workflows/INDEX.MD"
+    ],
     "tests_run": [
       "python .ai/scripts/validate-workflow-artifacts.py",
       "python .ai/scripts/validate-ai-context.py",
@@ -57,7 +60,7 @@
       "git diff --check"
     ],
     "finding_status": "addressed",
-    "residual_risk": "No live GitHub read-back exists because Stage A forbids online provider mutation.",
+    "residual_risk": "No live GitHub read-back exists because Stage A forbids online provider mutation; Stage B requires fresh-main owner approval.",
     "follow_up_needed": true
   }
 }
