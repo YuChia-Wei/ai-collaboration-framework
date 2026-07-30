@@ -95,7 +95,10 @@ class SemanticCustomizationSkillContractTests(unittest.TestCase):
             for group in profile["exclusions"]
             for pattern in group["patterns"]
         }
-        self.assertIn(".ai/scripts/compare-ai-context-versions.py", excluded)
+        self.assertIn(
+            ".ai/assets/skills/ai-context-upgrader/scripts/compare-ai-context-versions.py",
+            excluded,
+        )
         self.assertIn(".ai/scripts/validate-ai-context-versions.py", excluded)
         self.assertNotIn(".ai/scripts/validate-ai-context-target.py", excluded)
         self.assertNotIn(".ai/scripts/ai_context_target_provenance.py", excluded)

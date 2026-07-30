@@ -1,0 +1,38 @@
+schema_version: "1.0"
+backlog_id: "SKILL-002"
+title: "Co-locate Skill-Owned Scripts With Canonical Skills"
+category: "ai-context-governance"
+status: "in_progress"
+priority: "HIGH"
+summary: "Move Python automation and contract tests with one canonical skill owner into that skill's canonical directory while retaining shared tooling and compatibility-safe published routes."
+created_at: "2026-07-30T09:40:38+08:00"
+updated_at: "2026-07-30T09:40:38+08:00"
+release:
+  target: "v0.8.0"
+  completed_in: null
+  published_in: null
+  target_scope: "skill-owned-script-colocation"
+  gate: "release-blocker"
+origin_refs:
+  - ".dev/backlog/ROADMAP.md#release-horizons"
+  - ".dev/workflows/2026-07-30-skill-script-colocation/workflow-plan.md#authorization-and-release-boundary"
+recommended_owner_skill: "ai-context-governance"
+handoff_condition: "Complete the single-owner inventory, compatibility-safe relocation, active-reference synchronization, package projection, and repository validation before resolving the item; publication remains separately authorized."
+workflow_refs:
+  - ".dev/workflows/2026-07-30-skill-script-colocation/workflow.yaml"
+task_refs:
+  - ".dev/workflows/2026-07-30-skill-script-colocation/tasks/SKILL-002-script-colocation.json"
+resolution_ref: null
+decision_needed: "Resolved: the owner approved SKILL-002 implementation as a required v0.8.0 planning item on 2026-07-30 and explicitly withheld release candidate, tag, GitHub Release, and package publication authorization."
+acceptance_criteria:
+  - "One-owner Python implementations and contract tests are colocated under .ai/assets/skills/<skill-id>/scripts/."
+  - "Shared, multi-skill, provider, release, package, workflow, and source-wide tools remain under .ai/scripts/."
+  - "Active references use canonical paths and published compatibility commands remain explicit."
+  - "Distribution component classification, package projection, and supported upgrade behavior remain deterministic."
+  - "Focused tests, AI-context validation, workflow validation, package tests, and the quick gate pass."
+compatibility_boundaries:
+  - "Old packaged software-development-orchestrator Python commands remain thin compatibility entrypoints until a later governed removal has downstream evidence."
+  - "The source-only version comparison helper may move without a downstream compatibility copy, but active source references and exclusions must be updated."
+  - "Published shell compatibility entrypoints are not relocated by this item."
+  - "Historical workflow, assessment, release, and provider receipts retain their original paths and identifiers."
+  - "v0.8.0 planning is active, but no release candidate or publication artifact is authorized by this item."

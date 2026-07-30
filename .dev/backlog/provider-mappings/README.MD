@@ -9,7 +9,11 @@ append each successful Issue creation immediately, including the canonical
 source digest and provider read-back result, so a failed batch can resume
 without creating duplicates.
 
+New post-migration formal Issues use one bounded receipt per live creation.
+[`github-issues-SKILL-002.yaml`](github-issues-SKILL-002.yaml) is the first such
+receipt; it keeps its live-creation idempotency key separate from the historical
+July migration batch.
+
 The hidden `canonical-backlog-id` and `migration-id` markers are the provider
 idempotency keys. Provider numbers, node IDs, URLs, Project item IDs, and repair
 notes belong only here.
-
