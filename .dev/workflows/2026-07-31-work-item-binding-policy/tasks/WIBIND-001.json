@@ -4,9 +4,9 @@
   "task_id": "WIBIND-001",
   "workflow_id": "2026-07-31-work-item-binding-policy",
   "owner_skill": "ai-context-governance",
-  "status": "in_progress",
+  "status": "completed",
   "created_at": "2026-07-31T00:06:18+08:00",
-  "updated_at": "2026-07-31T00:22:24+08:00",
+  "updated_at": "2026-07-31T00:29:59+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-5.6-sol",
   "reasoning_effort": "high",
@@ -58,8 +58,8 @@
       "Run Git diff and commit policy checks.",
       "Verify hosted checks and merged-main content."
     ],
-    "last_completed_step": "Validated the source and downstream selection contracts, including direct execution of all three .NET child tests unavailable to Git Bash.",
-    "next_action": "Commit, push, open the pull request, and verify hosted checks."
+    "last_completed_step": "Merged PR #73 as d4d9220d328068043b990494f9171ea13078b4e7 after all hosted checks passed, then read back source optional/optional selection and unresolved downstream values from main.",
+    "next_action": "Merge the closeout-only pull request; no implementation work remains."
   },
   "results": {
     "summary": "Work-item binding now carries traceability plus explicit authorization evidence, target teams select binding and merge-gate modes independently, and the source repository selects optional/optional.",
@@ -91,10 +91,14 @@
       "dotnet test DotnetBackendAnalyzers.Tests --no-restore: 49 passed",
       "dotnet test DotnetBackendValidation.Tests --no-restore: 2 passed",
       "dotnet test DotnetBackendBuildingBlocks.Tests --no-restore: 5 passed",
-      "git diff --check: passed"
+      "git diff --check: passed",
+      "python .ai/scripts/validate-git-commits.py --range origin/main..HEAD --workflow-id 2026-07-31-work-item-binding-policy: passed for implementation commit",
+      "PR #73 Build and validate candidate: passed",
+      "PR #73 Read-only governance contract: passed",
+      "PR #73 Ubuntu quick gate: passed"
     ],
     "finding_status": "addressed",
-    "residual_risk": "The policy is not integrated into main; hosted checks must confirm the Linux runner has the configured .NET toolchain.",
-    "follow_up_needed": true
+    "residual_risk": "No unresolved risk remains in this workflow scope; separately developed overlapping rules remain owner-managed outside this workflow.",
+    "follow_up_needed": false
   }
 }

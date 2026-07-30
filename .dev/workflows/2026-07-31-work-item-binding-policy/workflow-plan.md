@@ -5,14 +5,14 @@
 - `workflow_id`: `2026-07-31-work-item-binding-policy`
 - `workflow_kind`: `ai-context-maintenance`
 - `owner_skill`: `ai-context-governance`
-- `branch`: `codex/2026-07-31-work-item-binding-policy`
+- `branch`: `codex/2026-07-31-work-item-binding-policy-closeout`
 - `base_branch`: `main`
-- `branch_segment`: `1`
-- `status`: `in_progress`
-- `current_phase`: `remediation`
+- `branch_segment`: `2`
+- `status`: `completed`
+- `current_phase`: `completed`
 - `artifact_root`: `.dev/workflows/2026-07-31-work-item-binding-policy`
 - `created_at`: `2026-07-31T00:06:18+08:00`
-- `updated_at`: `2026-07-31T00:22:24+08:00`
+- `updated_at`: `2026-07-31T00:29:59+08:00`
 
 ## Objective And Scope
 
@@ -34,7 +34,7 @@
 
 | Task | Purpose | Status |
 | --- | --- | --- |
-| `WIBIND-001` | Define, validate, integrate, and read back the work-item binding selection contract. | `in_progress` |
+| `WIBIND-001` | Define, validate, integrate, and read back the work-item binding selection contract. | `completed` |
 
 ## Boundary Decisions
 
@@ -46,15 +46,16 @@
 
 ## Resume Checkpoint
 
-- Last completed action: validated the policy, provider, target template, schema, wrapper registration, workflow, packaging, repository configuration, and .NET child tests.
-- Current task: integrate the validated contract through pull-request-only `main`.
-- Exact next action: commit, push, open the pull request, and verify hosted checks.
-- Validation already completed: focused Python contracts, AI-context and workflow validators, the 45-check quick gate with three Bash-PATH environment failures, and the same three .NET child commands passing directly on Windows.
-- Git state: dedicated branch from `main@618ceb0`.
+- Last completed action: read back merge commit `d4d9220d328068043b990494f9171ea13078b4e7` from `main` after PR #73 and all required hosted checks passed.
+- Current task: completed; this continuation branch records closeout evidence only.
+- Exact next action: merge the closeout-only pull request into `main`.
+- Validation already completed: focused Python contracts, AI-context and workflow validators, direct .NET child tests, commit-range validation, and all three hosted checks for PR #73.
+- Git state: closeout continuation branch from merged `main@d4d9220`.
 - Blockers or unresolved decisions: overlapping work in another session is owner-managed and does not block this branch.
 
 ## Branch Lifecycle
 
 | Segment | Branch | Base | Checkpoint Type | Commit | Remote / Target | Recorded At | Reason | Resume Branch / Action |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| 1 | `codex/2026-07-31-work-item-binding-policy` | `main@618ceb0` | active remediation | pending | local | `2026-07-31T00:06:18+08:00` | Implement the owner-approved provider-neutral binding contract. | Validate, commit, push, open PR, and merge after hosted checks. |
+| 1 | `codex/2026-07-31-work-item-binding-policy` | `main@618ceb0` | integration | `12e513d977cfc4aa095b9038ca2150df65086d7b` | PR #73 / `main@d4d9220` | `2026-07-31T00:28:47+08:00` | Implement and validate the owner-approved provider-neutral binding contract. | Start a continuation branch from merged main and record closeout evidence. |
+| 2 | `codex/2026-07-31-work-item-binding-policy-closeout` | `main@d4d9220` | closeout | pending | closeout PR / `main` | `2026-07-31T00:29:59+08:00` | Persist merge read-back and completed workflow state. | Merge the closeout-only PR; no implementation work remains. |
