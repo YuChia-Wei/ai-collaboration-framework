@@ -86,4 +86,4 @@
 | Segment | Branch | Base | Checkpoint Type | Commit | Remote / Target | Recorded At | Reason | Resume Branch / Action |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | 1 | `codex/2026-07-30-skill-script-colocation` | `main@fc878b934b8ac15fb6be2ae238c790ab9caad3cc` | merge | `359941cd14bd19a63b64df0f696af1dd71256cd1` | PR #66 / `main` | `2026-07-30T11:38:15+08:00` | Integrate the validated `SKILL-002` implementation before closing Issue #65. | Continue closeout from updated `main` on `codex/2026-07-30-skill-script-colocation-cont-02`. |
-| 2 | `codex/2026-07-30-skill-script-colocation-cont-02` | `main@359941cd14bd19a63b64df0f696af1dd71256cd1` | closure | pending | local | `2026-07-30T11:38:15+08:00` | Persist merge and provider read-back after Issue closure. | Push and merge the closeout PR; do not start release work. |
+| 2 | `codex/2026-07-30-skill-script-colocation-cont-02` | `main@359941cd14bd19a63b64df0f696af1dd71256cd1` | closure | `7644609be01d0605860cd85625d88709293c4f48` | local | `2026-07-30T11:38:15+08:00` | Persist merge and provider read-back after Issue closure. | Push and merge the closeout PR; do not start release work. |
