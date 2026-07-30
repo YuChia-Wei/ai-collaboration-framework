@@ -21,8 +21,8 @@ authorize repository work or create a workflow.
 | State | Durable home | Repository execution consequence |
 | --- | --- | --- |
 | Conversation and exploration | The conversation only. | No branch, workflow locator, commit, or pull request. |
-| Candidate work and unapproved plan | For this source repository, a GitHub Issue; GitHub Projects provide the priority and status views. | The tracker item is optional evidence, not an execution workflow. No repository branch or pull request is created merely to record it. |
-| Authorized execution | A skill-owned workflow locator and its task artifacts when the workflow gate applies. | Create the dedicated branch before the locator or material repository edits. Link an existing issue only when useful; never fabricate a tracker identifier. |
+| Candidate work and unapproved plan | For this source repository, a GitHub Issue; GitHub Projects provide the priority and status views. | The tracker item records possible work but does not authorize execution merely by existing or changing provider state. No repository branch or pull request is created merely to record it. |
+| Authorized execution | Explicit owner authorization, optionally bound to an approved work item according to the selected work-item binding mode, plus a skill-owned workflow when the workflow gate applies. | Create the dedicated branch before the locator or material repository edits. Record the work-item binding or the explicit no-binding authorization; never fabricate a tracker identifier. |
 | Integrated repository fact | `main`, after the required pull request is merged. | Do not describe branch-only or tracker-only work as integrated repository truth. |
 
 GitHub Issues and Projects are this repository's selected candidate-work
@@ -32,6 +32,34 @@ repository proposal artifact class: a retained but unapproved plan belongs in
 a GitHub Issue. If no selected provider is available, retain it in the
 conversation until the owner explicitly authorizes another persistence route;
 do not overload an `in_progress` execution workflow.
+
+## Work-Item Binding Contract
+
+A valid work-item binding serves two purposes together:
+
+1. trace the execution and pull request to the approved work outcome; and
+2. preserve evidence that the owner authorized that outcome for execution.
+
+An Issue, Project field, provider event, or provider state never authorizes
+execution by itself. The binding becomes authorization evidence only when the
+owner's explicit approval is recorded in the work item, workflow, pull request,
+or conversation. The workflow remains execution truth and `main` remains
+integrated repository truth.
+
+Targets select a provider-neutral binding mode:
+
+- `required`: an approved work item must be bound before execution;
+- `optional`: a binding is preferred but explicit owner authorization may be
+  recorded without one; or
+- `disabled`: no work-item binding is used and authorization is recorded
+  outside a tracker.
+
+Targets separately select whether pull-request integration enforces the
+binding as `required`, treats it as `optional`, or leaves the merge gate
+`disabled`. This source repository selects `optional` for both work-item
+binding and the merge gate in `.dev/backlog/providers/github.yaml`. A missing
+Issue therefore does not block an owner-approved change here, but the workflow
+or pull request must preserve the explicit authorization source.
 
 For software-development work, activation is intent-based. A high-level request
 that spans planning, requirements, design, implementation, testing, review, or
@@ -79,7 +107,8 @@ Transient read-only analysis is also direct mode even when it is multi-stage or 
 
 Creating or refining a selected external tracker item does not by itself change
 the repository mode. It must remain within the owner's authorization for that
-provider, and it does not turn an unapproved plan into execution authorization.
+provider. Only a binding with explicit owner approval may serve as execution
+authorization evidence; an unapproved plan never does.
 
 ## Assessment Mode
 

@@ -199,6 +199,27 @@ class GitHubBacklogProviderTests(unittest.TestCase):
             proposal_policy["human_submitted"],
         )
 
+    def test_gwt_018_given_source_repository_then_work_item_binding_and_merge_gate_are_optional(self) -> None:
+        config = PROVIDER.load_yaml_mapping(CONFIG)
+
+        self.assertEqual(
+            {
+                "mode": "optional",
+                "purposes": ["traceability", "work-authorization"],
+                "authorization": {
+                    "requires_explicit_owner_approval": True,
+                    "provider_state_alone_authorizes": False,
+                    "missing_binding": "record explicit owner authorization in the workflow or pull request",
+                },
+                "merge_gate": {
+                    "mode": "optional",
+                    "reference_format": "Refs #<issue-number>",
+                    "missing_binding_blocks_merge": False,
+                },
+            },
+            config["work_item_binding"],
+        )
+
 
 if __name__ == "__main__":
     unittest.main()

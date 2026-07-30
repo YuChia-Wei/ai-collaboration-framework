@@ -6,6 +6,7 @@
 
 ## Related Issues
 - Refs #
+- Owner authorization or approved no-Issue exception:
 
 ## Screenshots / Evidence (optional)
 - e.g., Scalar UI, Kafka/RabbitMQ UI, console output
@@ -15,4 +16,3 @@
 - [ ] Tests pass: `dotnet test`
 - [ ] Docs updated (README/AGENTS.md, comments)
 - [ ] No secrets committed; config via env vars
-

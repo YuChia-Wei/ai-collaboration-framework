@@ -65,6 +65,7 @@ authority，不能猜測版本；後續已初始化 repo 的版本升級交給
 reconciliation 輸入，不能與 schema-2 provenance 同時存在。
 
 - canonical shape：`.ai/assets/skills/ai-context-init/templates/project-config.template.yaml`
+- work-item binding selection：`.ai/assets/skills/ai-context-init/templates/work-item-binding.schema.yaml`
 - 先完成 inventory，再填入有檔案證據或使用者確認的欄位。
 - 未知值保持 `null` 或空集合。
 - 空 repo 可不建立 project config，或使用 `generationStatus: not-initialized`。
