@@ -7,7 +7,7 @@ artifact directories. See [README.MD](README.MD) for ownership and lifecycle.
 
 | Roadmap | Current Target | Status | Next Gate | Updated |
 | --- | --- | --- | --- | --- |
-| [ROADMAP.md](ROADMAP.md) | `v0.8.0` | `active` | Merge and read back `SKILL-002` on `main`; do not create a release candidate or publication workflow until the owner separately authorizes release preparation. | 2026-07-30 |
+| [ROADMAP.md](ROADMAP.md) | `v0.8.0` | `active` | `SKILL-002` is merged and complete; await separate owner authorization before creating a release candidate or publication workflow. | 2026-07-30 |
 
 Source planning records are retained under [`plans/`](plans/); they inform the
 roadmap but do not replace it or a governed assessment.
@@ -16,7 +16,6 @@ roadmap but do not replace it or a governed assessment.
 
 | Item | Priority | Target Release | Gate | Summary | Decision / Handoff | Updated |
 | --- | --- | --- | --- | --- | --- | --- |
-| [SKILL-002](items/SKILL-002.yaml) | HIGH | `v0.8.0` | release-blocker | Co-locate Python automation and tests that have one canonical skill owner while retaining shared tooling and compatibility-safe published routes. | Local validation passed; merge the implementation PR into `main` before resolving or closing Issue #65. | 2026-07-30 |
 | [REL-004](items/REL-004.yaml) | MEDIUM | `unassigned` | independent | Evaluate a repo-only AI context release closeout capability that simplifies post-tag registry finalization without leaking into the published framework. | Decide naming, source-only placement, product-isolation proof, zero skill dependencies, runtime fallback, failure containment, and terminal Git behavior before implementation. | 2026-07-28 |
 | [INIT-001](items/INIT-001.yaml) | LOW | `unassigned` | independent | Evaluate safe framework adoption in repositories that already use AI agents. | Define collision inventory, dry-run, authority, and synthetic fixtures before a future real-target pilot. | 2026-07-27 |
 | [DEVWF-001](items/DEVWF-001.yaml) | MEDIUM | `unassigned` | independent | Evaluate optional issue traceability and richer task lifecycle timestamps from WorkService. | Keep the portable core tracker-neutral; decide schema placement and compatibility before implementation. | 2026-07-22 |
@@ -31,7 +30,9 @@ roadmap but do not replace it or a governed assessment.
 
 ## Resolved / Awaiting Publication
 
-_None._
+| Item | Priority | Completed In | Publication Gate | Resolution | Workflow | Updated |
+| --- | --- | --- | --- | --- | --- | --- |
+| [SKILL-002](items/SKILL-002.yaml) | HIGH | `v0.8.0` | Await separately authorized `v0.8.0` publication; `published_in` remains unset. | PR #66 merged the validated canonical-skill colocation into `main`; Issue #65 closed only after merge read-back. | [`2026-07-30-skill-script-colocation`](../workflows/2026-07-30-skill-script-colocation/workflow.yaml) | 2026-07-30 |
 
 ## Resolved
 
