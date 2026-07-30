@@ -1,0 +1,52 @@
+{
+  "template_id": "ai-context-governance-remediation-task",
+  "template_version": "1.1.0",
+  "task_id": "OPUS5-004",
+  "workflow_id": "2026-07-30-opus-5-feedback-intake",
+  "owner_skill": "ai-context-governance",
+  "status": "pending",
+  "created_at": "2026-07-30T22:04:48+08:00",
+  "updated_at": "2026-07-30T22:04:48+08:00",
+  "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
+  "model": "gpt-5.6-sol",
+  "reasoning_effort": "high",
+  "finding_ids": [
+    "ASM-20260730-001#AIC-001",
+    "ASM-20260730-001#AIC-002",
+    "ASM-20260730-001#AIC-003",
+    "ASM-20260730-001#AIC-004",
+    "ASM-20260730-001#AIC-005",
+    "ASM-20260730-001#AIC-006",
+    "ASM-20260730-001#AIC-007",
+    "ASM-20260730-001#AIC-008",
+    "ASM-20260730-001#AIC-009"
+  ],
+  "scope": {
+    "target": "Independently verify finding dispositions and close the governance workflow.",
+    "files": [
+      ".dev/assessments/<verification-id>/**",
+      ".dev/workflows/2026-07-30-opus-5-feedback-intake/**"
+    ],
+    "constraints": ["Do not rewrite the baseline assessment."],
+    "non_goals": ["Implement any Proposal or STD-001 discussion outcome."]
+  },
+  "execution": {
+    "steps": [
+      "Create an independent verification assessment on the active continuation branch.",
+      "Map every baseline finding to an explicit outcome.",
+      "Run final repository and commit-range validation.",
+      "Close the workflow only after provider read-back is retained."
+    ],
+    "validation": ["Assessment, workflow, backlog, provider, Git diff, and commit-range validators."],
+    "last_completed_step": "",
+    "next_action": "Wait for OPUS5-003 completion."
+  },
+  "results": {
+    "summary": "",
+    "files_changed": [],
+    "tests_run": [],
+    "finding_status": "not-addressed",
+    "residual_risk": "",
+    "follow_up_needed": true
+  }
+}

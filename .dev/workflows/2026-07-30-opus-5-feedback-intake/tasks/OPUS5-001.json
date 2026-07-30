@@ -1,0 +1,59 @@
+{
+  "template_id": "ai-context-governance-remediation-task",
+  "template_version": "1.1.0",
+  "task_id": "OPUS5-001",
+  "workflow_id": "2026-07-30-opus-5-feedback-intake",
+  "owner_skill": "ai-context-governance",
+  "status": "completed",
+  "created_at": "2026-07-30T22:04:48+08:00",
+  "updated_at": "2026-07-30T22:10:31+08:00",
+  "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
+  "model": "gpt-5.6-sol",
+  "reasoning_effort": "high",
+  "finding_ids": [],
+  "scope": {
+    "target": "Preserve and normalize two Opus 5 repository reports as ASM-20260730-001.",
+    "files": [
+      ".dev/assessments/ASM-20260730-001/**",
+      ".dev/assessments/INDEX.MD"
+    ],
+    "constraints": [
+      "Preserve exact external bytes under evidence/external/original/opus-5.",
+      "Pin all conclusions to main@98e90bb4649961b1c09105346f7376b197b126a8.",
+      "Keep product source and product tests outside the audit scope."
+    ],
+    "non_goals": [
+      "Implement any external recommendation.",
+      "Treat the external reports as canonical truth or write authorization."
+    ]
+  },
+  "execution": {
+    "steps": [
+      "Verify source hashes and preserve both reports unchanged.",
+      "Run independent and repository-aware passes against the pinned subject.",
+      "Classify every material claim and assign stable finding IDs.",
+      "Index and validate the final assessment."
+    ],
+    "validation": [
+      "Source and preserved SHA-256 values match for both reports.",
+      "validate-assessment-artifacts.py passes."
+    ],
+    "last_completed_step": "Finalized ASM-20260730-001 with nine stable findings and byte-preserved source evidence.",
+    "next_action": "Execute OPUS5-002 from selected findings."
+  },
+  "results": {
+    "summary": "Both external reports were preserved and normalized into a final repo-native assessment without promoting unsupported claims.",
+    "files_changed": [
+      ".dev/assessments/ASM-20260730-001/**",
+      ".dev/assessments/INDEX.MD"
+    ],
+    "tests_run": [
+      "External source/copy SHA-256 parity: 2/2 matched",
+      "python .ai/scripts/validate-assessment-artifacts.py: passed for 24 assessments",
+      "python .ai/scripts/validate-workflow-artifacts.py: passed for 53 post-adoption workflows, 73 indexed workflow directories, and 42 backlog items"
+    ],
+    "finding_status": "addressed",
+    "residual_risk": "Provider and backlog dispositions remain unimplemented until later workflow tasks.",
+    "follow_up_needed": true
+  }
+}

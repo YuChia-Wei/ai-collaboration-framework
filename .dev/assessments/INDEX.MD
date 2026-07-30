@@ -12,6 +12,7 @@ owns its identity, current lifecycle state, subject revision, and relationships.
 
 | Assessment | Title | Type | Owner | Status | Subject Commit | Updated | Report |
 | --- | --- | --- | --- | --- | --- | --- | --- |
+| [`ASM-20260730-001`](ASM-20260730-001/assessment.yaml) | Opus 5 Repository Assessment External Review Intake | `ai-context-audit` | `ai-context-auditor` | `final` | `98e90bb4649961b1c09105346f7376b197b126a8` | `2026-07-30T22:10:31+08:00` | [report](ASM-20260730-001/report.md) |
 | [`ASM-20260729-001`](ASM-20260729-001/assessment.yaml) | v0.7.0 Public Release Body Source Contract Verification | `ai-context-verification` | `ai-context-auditor` | `final` | `cbe1553f0fc30a856a35e85ec17ecd8cd91838d2` | `2026-07-29T16:03:20+08:00` | [report](ASM-20260729-001/report.md) |
 | [`ASM-20260728-001`](ASM-20260728-001/assessment.yaml) | v0.7.0 Candidate Package And Release Contract Verification | `ai-context-verification` | `ai-context-auditor` | `final` | `b474730d453c27f2b5338f5bbe0b5efd5e9b0628` | `2026-07-28T09:32:32+08:00` | [report](ASM-20260728-001/report.md) |
 | [`ASM-20260727-002`](ASM-20260727-002/assessment.yaml) | v0.7.0 Governance And Package Readiness Verification | `ai-context-verification` | `ai-context-auditor` | `final` | `d3f22b267e8ff44ae163a47b3b2482d51250cbcc` | `2026-07-27T23:42:17+08:00` | [report](ASM-20260727-002/report.md) |
@@ -60,6 +61,7 @@ follow repository-owned assessment templates.
 
 | Input | Source | Received | Normalized By | Status |
 | --- | --- | --- | --- | --- |
+| [`opus-5-repository-assessment`](ASM-20260730-001/evidence/external/README.md) | Opus 5 external repository review, two revisions | 2026-07-30 | [`ASM-20260730-001`](ASM-20260730-001/assessment.yaml) | `normalized` |
 | [`workservice-dev-workflow-comparison`](ASM-20260722-005/evidence/workservice/2026-07-22-dev-workflow-skill-comparison.md) | WorkService external comparison | 2026-07-22 | [`ASM-20260722-005`](ASM-20260722-005/assessment.yaml) | `normalized` |
 | [`fable5-v0.5.0-macos`](ASM-20260722-003/evidence/fable5-macos/v050-macos-portability-report.md) | Claude Fable 5 | 2026-07-22 | [`ASM-20260722-003`](ASM-20260722-003/assessment.yaml) | `normalized` |
 | [`fable5-v0.4.2`](ASM-20260720-001/evidence/fable5-v0.4.2/README.md) | Claude Fable 5 | 2026-07-20 | [`ASM-20260720-001`](ASM-20260720-001/assessment.yaml) | `normalized` |
