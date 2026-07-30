@@ -2,11 +2,11 @@ schema_version: "1.0"
 backlog_id: "STD-001"
 title: "Standards Simplification Deliberation And Release Decision"
 category: "standards-governance"
-status: "open"
+status: "planned"
 priority: "HIGH"
 summary: "Run bounded, evidence-backed standards discussions across ChatGPT, Fable 5, and repository agents before deciding whether standards simplification needs a dedicated release."
 created_at: "2026-07-20T23:24:59+08:00"
-updated_at: "2026-07-20T23:24:59+08:00"
+updated_at: "2026-07-30T22:13:09+08:00"
 release:
   target: "unassigned"
   completed_in: null
@@ -16,14 +16,22 @@ release:
 origin_refs:
   - ".dev/assessments/ASM-20260720-001/evidence/fable5-v0.4.2/06-simplification-plan.md"
   - ".dev/backlog/items/SIMPL-001.yaml"
+  - ".dev/assessments/ASM-20260730-001/assessment.yaml"
+finding_refs:
+  - "ASM-20260730-001#AIC-001"
+  - "ASM-20260730-001#AIC-002"
+  - "ASM-20260730-001#AIC-003"
+  - "ASM-20260730-001#AIC-005"
 recommended_owner_skill: "ai-context-governance"
-handoff_condition: "Create a dedicated deliberation workflow when the owner selects the first standards topic. Do not assign a release or edit canonical standards until bounded external discussions have been normalized and reviewed."
+handoff_condition: "Create a dedicated deliberation workflow for the selected rounds below. Do not assign a release, edit canonical standards, or create an implementation successor until the bounded discussions are normalized and the owner approves their doctrine, validator, compatibility, and migration dispositions."
 workflow_refs:
   - ".dev/workflows/2026-07-20-simplification-roadmap-intake/workflow.yaml"
 task_refs:
   - ".dev/workflows/2026-07-20-simplification-roadmap-intake/tasks/SIMPLPLAN-001.json"
 resolution_ref: null
-decision_needed: "After topic-by-topic ChatGPT and optional Fable 5 discussions are normalized, approve the standards boundaries, validator obligations, migration impact, and whether the work receives a dedicated release."
+decision_needed: "Owner planning decision recorded on 2026-07-30: run the three selected bounded rounds and complete their standards-format decisions before OBS-001 publishes a new canonical standard. After the discussions are normalized, approve the standards boundaries, validator obligations, migration impact, and whether implementation receives a dedicated release."
+related_backlog_refs:
+  - "OBS-001"
 acceptance:
   - "Each discussion round uses a versioned packet that pins repository, branch, full commit, topic, included files, exclusions, known invariants, decision questions, and expected feedback."
   - "Discussion packets are bounded by one standards concern or coherent family so ChatGPT or another external model can reason without loading the complete standards corpus."
@@ -42,6 +50,33 @@ discussion_roundtrip:
     - "Claude Fable 5 or another independent AI reviewer"
     - "repository-native agent discussion"
   canonicalization_boundary: "Only selected normalized assessment findings may enter a remediation workflow."
+selected_rounds:
+  - round: 1
+    title: "Workflow Gate Proportionality And Direct-Mode Decision Contract"
+    finding_refs:
+      - "ASM-20260730-001#AIC-001"
+    questions:
+      - "Which risk and mutation signals distinguish direct, assessment, and workflow mode across representative tasks?"
+      - "Which positive and negative examples calibrate mode selection without a file-count threshold?"
+      - "What evidence would justify a later DEVWF successor rather than retaining the current contract?"
+  - round: 2
+    title: "Code Review Progressive Disclosure And Reference Loading"
+    finding_refs:
+      - "ASM-20260730-001#AIC-002"
+    questions:
+      - "Which references are actually loaded for representative transient and durable reviews?"
+      - "Can a smaller entry or file-type routing reduce fixed context while preserving checklist and output equivalence?"
+  - round: 3
+    title: "Governance Terminology Discovery And Definition Placement"
+    finding_refs:
+      - "ASM-20260730-001#AIC-003"
+    questions:
+      - "Which lifecycle and release terms repeatedly cause discovery or interpretation errors?"
+      - "Should definitions live in a glossary, domain-language index, owned standards, or contextual links while retaining CAP-001's no-dedicated-skill decision?"
+sequencing:
+  related_item: "OBS-001"
+  finding_ref: "ASM-20260730-001#AIC-005"
+  rule: "OBS-001 may collect architecture evidence and perform read-only exploration, but canonical standards structure, placement, and publication wait for the applicable STD-001 format decisions unless the owner explicitly grants an exception."
 versioning_posture:
   current: "unassigned"
   earliest_dependency: "Complete or stabilize the v0.5.0 mechanical governance safeguards."
