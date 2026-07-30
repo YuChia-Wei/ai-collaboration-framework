@@ -219,9 +219,24 @@ def validate_config(config: dict[str, Any], backlog_ids: set[str]) -> None:
     migration = config.get("migration", {})
     canaries = migration.get("canaries", []) if isinstance(migration, dict) else []
     batches = migration.get("remaining_batch_sizes", []) if isinstance(migration, dict) else []
-    if len(canaries) != 4 or not set(canaries).issubset(backlog_ids):
+    post_adoption = (
+        migration.get("post_adoption_backlog_ids", [])
+        if isinstance(migration, dict)
+        else []
+    )
+    if (
+        not isinstance(post_adoption, list)
+        or len(post_adoption) != len(set(post_adoption))
+        or not set(post_adoption).issubset(backlog_ids)
+    ):
+        errors.append("migration.post_adoption_backlog_ids must be unique canonical IDs")
+        post_adoption = []
+    migration_ids = backlog_ids - set(post_adoption)
+    if migration.get("expected_item_count") != len(migration_ids):
+        errors.append("migration.expected_item_count must equal the historical migration cohort")
+    if len(canaries) != 4 or not set(canaries).issubset(migration_ids):
         errors.append("migration requires four valid canaries")
-    if batches != [10, 10, 10, 7] or sum(batches) != len(backlog_ids) - len(canaries):
+    if batches != [10, 10, 10, 7] or sum(batches) != len(migration_ids) - len(canaries):
         errors.append("remaining migration batches must be 10+10+10+7")
     labels = config.get("labels", [])
     label_names = {entry.get("name") for entry in labels if isinstance(entry, dict)}
@@ -527,7 +542,13 @@ def build_plan(repo: Path, config_path: Path, revision: str = "HEAD") -> dict[st
         for path, item in entries
     ]
     canaries = config["migration"]["canaries"]
-    remaining = [item["backlog_id"] for item in items if item["backlog_id"] not in canaries]
+    post_adoption = config["migration"].get("post_adoption_backlog_ids", [])
+    remaining = [
+        item["backlog_id"]
+        for item in items
+        if item["backlog_id"] not in canaries
+        and item["backlog_id"] not in post_adoption
+    ]
     sizes = config["migration"]["remaining_batch_sizes"]
     batches: list[list[str]] = []
     cursor = 0
@@ -557,6 +578,7 @@ def build_plan(repo: Path, config_path: Path, revision: str = "HEAD") -> dict[st
         "counts": counts,
         "canaries": canaries,
         "remaining_batches": batches,
+        "post_adoption_items": post_adoption,
         "items": items,
     }
 

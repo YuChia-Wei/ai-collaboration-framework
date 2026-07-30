@@ -388,7 +388,7 @@ exclusions:
       - .codex/config.toml
       - .ai/scripts/ai_context_package.py
       - .ai/scripts/build-ai-context-package.py
-      - .ai/scripts/compare-ai-context-versions.py
+      - .ai/assets/skills/ai-context-upgrader/scripts/compare-ai-context-versions.py
       - .ai/scripts/prepare-ai-context-release.py
       - .ai/scripts/render-ai-context-release-notes.py
       - .ai/scripts/validate-ai-context-package.py

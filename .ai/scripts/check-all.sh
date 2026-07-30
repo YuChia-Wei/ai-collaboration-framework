@@ -375,7 +375,7 @@ run_command_check "python .ai/scripts/tests/test_assessment_artifacts.py -v" \
       "Workflow Artifact Metadata" \
       "required" "true" "true"
 
-run_command_check "python .ai/scripts/tests/test_workflow_implementation_contract.py -v" \
+run_command_check "python .ai/assets/skills/software-development-orchestrator/scripts/tests/test_workflow_implementation_contract.py -v" \
       "Workflow Implementation Contract Fail-Closed Tests" \
       "required" "true" "true"
 
@@ -395,12 +395,16 @@ run_command_check "python .ai/scripts/validate-workflow-handoff.py --all" \
     "Registered Workflow Handoff Checkpoints" \
     "required" "true" "true"
 
-run_command_check "python .ai/scripts/tests/test_software_development_orchestrator_capability_contract.py -v" \
+run_command_check "python .ai/assets/skills/software-development-orchestrator/scripts/tests/test_software_development_orchestrator_capability_contract.py -v" \
     "Development Workflow Capability Contract" \
     "required" "true" "true"
 
-run_command_check "python .ai/scripts/tests/test_software_development_orchestrator_acceptance.py -v" \
+run_command_check "python .ai/assets/skills/software-development-orchestrator/scripts/tests/test_software_development_orchestrator_acceptance.py -v" \
     "Development Workflow Deterministic Acceptance" \
+    "required" "true" "true"
+
+run_command_check "python .ai/scripts/tests/test_skill_script_colocation.py -v" \
+    "Canonical Skill Script Colocation Contract" \
     "required" "true" "true"
 
 run_command_check "python .ai/scripts/tests/test_semantic_customization_lifecycle.py -v" \

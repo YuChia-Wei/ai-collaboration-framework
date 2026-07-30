@@ -5,7 +5,7 @@ owner: "YuChia-Wei"
 source:
   backlog_glob: ".dev/backlog/items/*.yaml"
   roadmap: ".dev/backlog/ROADMAP.md"
-  expected_item_count: 41
+  expected_item_count: 42
   portable_identity_field: "backlog_id"
   provider_identity_is_authoritative: false
 project:
@@ -113,6 +113,7 @@ fields:
       - "v0.5.0"
       - "v0.6.0"
       - "v0.7.0"
+      - "v0.8.0"
   published_in:
     name: "Published in"
     options:
@@ -202,6 +203,8 @@ migration:
   stage_b_requires_merged_main: true
   stage_b_requires_fresh_owner_approved_dry_run: true
   expected_item_count: 41
+  post_adoption_backlog_ids:
+    - "SKILL-002"
   canaries:
     - "DEVWF-001"
     - "AIC-007"
@@ -286,6 +289,7 @@ classifications:
   SAG-001: {kind: "story", scope: "framework", rationale: "Framework users need supported runtime adapters with parity across providers."}
   SIMPL-001: {kind: "enabler", scope: "framework", rationale: "Measured context simplification changes reusable framework loading behavior."}
   SKILL-001: {kind: "story", scope: "framework", rationale: "Framework users need stable skill identities and compatible orchestration transitions."}
+  SKILL-002: {kind: "enabler", scope: "mixed", rationale: "Canonical skill ownership affects portable skill assets while source compatibility entrypoints and package governance remain repository-managed."}
   STD-001: {kind: "enabler", scope: "framework", rationale: "Standards deliberation governs future reusable framework rules."}
   TOOL-001: {kind: "enabler", scope: "mixed", rationale: "Source shell gates verify portable tooling behavior across supported hosts."}
   UPG-001: {kind: "story", scope: "framework", rationale: "Legacy customized targets would need a governed provenance and override-preserving upgrade path."}

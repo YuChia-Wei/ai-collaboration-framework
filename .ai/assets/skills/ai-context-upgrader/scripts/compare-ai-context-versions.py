@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Read-only Git-backed AI context version comparison."""
+"""Read-only Git-backed version comparison for ai-context-upgrader."""
 
 from __future__ import annotations
 

@@ -98,8 +98,8 @@ references:
   - ".ai/assets/skills/software-development-orchestrator/references/acceptance-oracle.md"
   - ".dev/standards/WORKFLOW-HANDOFF-POLICY.md"
 acceptance:
-  validator: ".ai/scripts/validate-software-development-orchestrator-acceptance.py"
-  test: ".ai/scripts/tests/test_software_development_orchestrator_acceptance.py"
+  validator: ".ai/assets/skills/software-development-orchestrator/scripts/validate-software-development-orchestrator-acceptance.py"
+  test: ".ai/assets/skills/software-development-orchestrator/scripts/tests/test_software_development_orchestrator_acceptance.py"
   activation_fixture: ".ai/assets/skills/software-development-orchestrator/fixtures/acceptance/activation-high-level-pending-approval.yaml"
   activation_expected: ".ai/assets/skills/software-development-orchestrator/fixtures/acceptance/activation-high-level-pending-approval.expected.yaml"
   fresh_session_blueprint: ".ai/assets/skills/software-development-orchestrator/fixtures/acceptance/fresh-session-checkpoint-blueprint.yaml"

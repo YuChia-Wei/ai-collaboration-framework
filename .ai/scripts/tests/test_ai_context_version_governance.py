@@ -15,17 +15,19 @@ import yaml
 ROOT = Path(__file__).resolve().parents[3]
 
 
-def load_script(name: str):
-    path = ROOT / ".ai" / "scripts" / name
-    spec = importlib.util.spec_from_file_location(name.replace("-", "_"), path)
+def load_script(relative_path: str):
+    path = ROOT / relative_path
+    spec = importlib.util.spec_from_file_location(path.stem.replace("-", "_"), path)
     module = importlib.util.module_from_spec(spec)
     assert spec and spec.loader
     spec.loader.exec_module(module)
     return module
 
 
-COMPARE = load_script("compare-ai-context-versions.py")
-VALIDATE = load_script("validate-ai-context-versions.py")
+COMPARE = load_script(
+    ".ai/assets/skills/ai-context-upgrader/scripts/compare-ai-context-versions.py"
+)
+VALIDATE = load_script(".ai/scripts/validate-ai-context-versions.py")
 
 
 class AiContextVersionGovernanceGwtTests(unittest.TestCase):

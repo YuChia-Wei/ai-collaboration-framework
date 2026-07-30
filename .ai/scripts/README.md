@@ -2,6 +2,12 @@
 
 This directory contains transitional AI workflow scripts, context governance checks, and local tool orchestration helpers.
 
+Python implementations and contract tests owned by exactly one canonical skill
+belong under `.ai/assets/skills/<skill-id>/scripts/`. This directory retains
+shared, multi-skill, provider, release, package, workflow, and source-wide
+automation plus explicit compatibility entrypoints for already published
+commands.
+
 It is no longer the long-term home for authoritative C# semantic validation. Rules that inspect C# syntax, symbols, type dependencies, attributes, or framework API usage should move to dotnet-native validation mechanisms such as Roslyn analyzers, `.editorconfig`, `dotnet format`, architecture tests, integration tests, or dotnet tools.
 
 ## Source Tooling Prerequisites
@@ -97,7 +103,7 @@ These scripts inspect AI context, markdown, prompt portability, or repository hy
 
 `validate-ai-context.py` checks objective repository facts: active index paths, literal table corruption, declared runtime-root status, canonical/Agents/Claude skill inventory parity, case-safe `AGENTS.md` and thin `CLAUDE.md` root entries, canonical wrapper-metadata target/path integrity, sub-agent dynamic/native dispositions, exact adapter target/path/schema/canonical-link/package-profile parity, policy-scoped agent-facing language, root bilingual entry ownership/link/structural markers, rule ownership registry structure, canonical skill/sub-agent schema compliance, canonical template-family hygiene, and deterministic development capability routing. It scans both tracked and untracked non-ignored files so a new context file cannot bypass the gate before staging, while filtering tracked paths that are deleted in the working tree. Language lint uses exact path-and-line exceptions for deliberate routing triggers; other Han prose and selected non-ASCII punctuation fail with a file and line number. Script source, generated/example/archive/migration material, workflows, product `src`/`test` trees, and human-facing `.dev` documentation are outside that language scan; Markdown documentation under `.ai/scripts` remains in scope. Root bilingual validation checks reciprocal ownership links, headings, links, fences, inline-code identifiers, tables, lists, and ordered backtick table paths. These are structural drift guards, not proof of semantic equivalence; retained semantic review remains required when a bilingual entry changes materially.
 
-`validate-workflow-artifacts.py` validates post-adoption workflow locator/task metadata, complete `.dev/workflows/INDEX.MD` directory coverage, locator-backed title/owner/status/timestamp/entrypoint parity, explicit legacy/no-locator rows, durable `.dev/backlog/items/*.yaml` identity/lifecycle/reference integrity, and fail-closed development implementation contracts for intent, execution mode, overlays, layered sources, subject revision, and acceptance criteria. Locators that opt into `lifecycle_contract: "1.0"` also enforce active-task cardinality, completed-workflow closure, and completed-task result semantics. Historical tasks and locators before their respective contract adoption remain compatible.
+`validate-workflow-artifacts.py` validates post-adoption workflow locator/task metadata, complete `.dev/workflows/INDEX.MD` directory coverage, locator-backed title/owner/status/timestamp/entrypoint parity, explicit legacy/no-locator rows, durable `.dev/backlog/items/*.yaml` identity/lifecycle/reference integrity, and fail-closed development implementation contracts for intent, execution mode, overlays, layered sources, subject revision, and acceptance criteria. Locators that opt into `lifecycle_contract: "1.0"` also enforce active-task cardinality, completed-workflow closure, and completed-task result semantics. Historical tasks and locators before their respective contract adoption remain compatible. The development implementation-contract and orchestrator acceptance tests live with `software-development-orchestrator`; the old `.ai/scripts/tests/` paths are thin compatibility entrypoints only.
 
 `validate-assessment-artifacts.py` validates `.dev/assessments/` locator and
 index coverage, `ASM-YYYYMMDD-NNN` identity, template and report paths, assessed
@@ -116,7 +122,8 @@ shared downstream library.
 semantic identities, safe paths, base and decision evidence, owner
 reconciliation, active-context baseline audit, post-upgrade audit, and
 fail-closed finalization without requiring source release records, Git tags, or
-publication workflows. `compare-ai-context-versions.py`
+publication workflows.
+`.ai/assets/skills/ai-context-upgrader/scripts/compare-ai-context-versions.py`
 is a read-only Git-tree comparison helper; it proposes an automatic candidate
 only when a supplied target file is byte-identical to the recorded base. Target
 truth, deletions, absent evidence, and source history remain reconciliation or
@@ -247,7 +254,9 @@ python .ai/scripts/tests/test_fail_closed_validation.py -v
 python .ai/scripts/tests/test_ai_context_wrapper_metadata.py -v
 python .ai/scripts/tests/test_ai_context_root_entries.py -v
 python .ai/scripts/tests/test_ai_context_language_policy.py -v
-python .ai/scripts/tests/test_workflow_implementation_contract.py -v
+python .ai/assets/skills/software-development-orchestrator/scripts/tests/test_workflow_implementation_contract.py -v
+python .ai/assets/skills/software-development-orchestrator/scripts/tests/test_software_development_orchestrator_capability_contract.py -v
+python .ai/assets/skills/software-development-orchestrator/scripts/tests/test_software_development_orchestrator_acceptance.py -v
 python .ai/scripts/tests/test_workflow_lifecycle_contract.py -v
 python .ai/scripts/tests/test_assessment_artifacts.py -v
 python .ai/scripts/tests/test_git_commit_policy.py -v

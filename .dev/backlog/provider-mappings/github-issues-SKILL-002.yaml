@@ -1,0 +1,30 @@
+schema_version: "1.0"
+provider: "github"
+repository: "YuChia-Wei/ai-collaboration-prompts-dotnet-backend"
+migration_id: "github-live-SKILL-002-2026-07-30"
+stage: "stage-b-read-back-complete"
+source_revision: null
+generated_at: "2026-07-30T11:30:59+08:00"
+project:
+  number: 3
+  node_id: "PVT_kwHOAwvEG84Bez7w"
+  url: "https://github.com/users/YuChia-Wei/projects/3"
+items:
+  - backlog_id: "SKILL-002"
+    source_path: ".dev/backlog/items/SKILL-002.yaml"
+    source_sha256: "53df54a6ba8878f6d2b6ce3b7eb1cbe12c155271e9693c09aad8a4c4108014e4"
+    issue_number: 65
+    issue_node_id: "I_kwDOSBe2Hc8AAAABKu1fbQ"
+    issue_url: "https://github.com/YuChia-Wei/ai-collaboration-prompts-dotnet-backend/issues/65"
+    issue_state: "open"
+    close_reason: null
+    project_item_id: "PVTI_lAHOAwvEG84Bez7wzg0mfsw"
+    created_at: "2026-07-30T01:40:21Z"
+    updated_at: "2026-07-30T03:30:24Z"
+    read_back:
+      verified_at: "2026-07-30T11:30:59+08:00"
+      title_matches: true
+      markers_match: true
+      labels_match: true
+      state_matches: true
+      notes: "Issue #65 is open and is in Project #3 with Status Verification, Priority P1 High, Owner review Not required, Target release v0.8.0, and Published in Not yet published; merge read-back is pending."

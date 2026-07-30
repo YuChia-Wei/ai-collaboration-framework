@@ -8,6 +8,7 @@ task-level progress.
 
 | Workflow | Title | Owner | Status | Updated | Entry Point |
 | --- | --- | --- | --- | --- | --- |
+| [`2026-07-30-skill-script-colocation`](2026-07-30-skill-script-colocation/workflow.yaml) | Co-locate Skill-Owned Scripts With Canonical Skills | `ai-context-governance` | `in_progress` | `2026-07-30T11:30:59+08:00` | [plan](2026-07-30-skill-script-colocation/workflow-plan.md) |
 | [`2026-07-29-github-backlog-migration-stage-b`](2026-07-29-github-backlog-migration-stage-b/workflow.yaml) | Complete GitHub Backlog Migration And Project Adoption | `ai-context-governance` | `completed` | `2026-07-29T23:44:53+08:00` | [plan](2026-07-29-github-backlog-migration-stage-b/workflow-plan.md) |
 | [`2026-07-29-github-issue-creation-attribution`](2026-07-29-github-issue-creation-attribution/workflow.yaml) | Add Codex Creation Attribution To Formal GitHub Issues | `ai-context-governance` | `completed` | `2026-07-29T22:40:09+08:00` | [plan](2026-07-29-github-issue-creation-attribution/workflow-plan.md) |
 | [`2026-07-29-github-backlog-provider-adoption`](2026-07-29-github-backlog-provider-adoption/workflow.yaml) | Adopt The Source-Repository GitHub Backlog Provider Contract | `ai-context-governance` | `completed` | `2026-07-29T21:50:30+08:00` | [plan](2026-07-29-github-backlog-provider-adoption/workflow-plan.md) |

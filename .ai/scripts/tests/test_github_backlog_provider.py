@@ -26,9 +26,9 @@ class GitHubBacklogProviderTests(unittest.TestCase):
         cls.plan = PROVIDER.build_plan(REPO_ROOT, CONFIG, "HEAD")
         cls.items = {item["backlog_id"]: item for item in cls.plan["items"]}
 
-    def test_gwt_001_given_canonical_backlog_when_projected_then_all_41_ids_are_unique(self) -> None:
-        self.assertEqual(41, self.plan["counts"]["total"])
-        self.assertEqual(41, len(self.items))
+    def test_gwt_001_given_canonical_backlog_when_projected_then_all_42_ids_are_unique(self) -> None:
+        self.assertEqual(42, self.plan["counts"]["total"])
+        self.assertEqual(42, len(self.items))
 
     def test_gwt_002_given_stage_a_when_planned_then_no_online_write_is_available(self) -> None:
         self.assertFalse(self.plan["online_writes_performed"])
@@ -80,8 +80,17 @@ class GitHubBacklogProviderTests(unittest.TestCase):
         for batch in self.plan["remaining_batches"]:
             ordered.extend(batch)
         self.assertEqual(41, len(ordered))
-        self.assertEqual(set(self.items), set(ordered))
+        self.assertEqual(set(self.items) - {"SKILL-002"}, set(ordered))
         self.assertEqual([10, 10, 10, 7], [len(batch) for batch in self.plan["remaining_batches"]])
+        self.assertEqual(["SKILL-002"], self.plan["post_adoption_items"])
+
+    def test_gwt_009a_given_post_adoption_item_when_projected_then_it_is_not_rewritten_into_the_completed_migration(self) -> None:
+        item = self.items["SKILL-002"]
+
+        self.assertEqual("enabler", item["classification"]["kind"])
+        self.assertEqual("mixed", item["classification"]["scope"])
+        self.assertEqual("v0.8.0", item["project_fields"]["Target release"])
+        self.assertEqual("Not yet published", item["project_fields"]["Published in"])
 
     def test_gwt_010_given_same_revision_then_yaml_projection_is_deterministic(self) -> None:
         second = PROVIDER.build_plan(REPO_ROOT, CONFIG, self.plan["source_revision"])
