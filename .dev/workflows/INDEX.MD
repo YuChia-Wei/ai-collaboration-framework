@@ -8,6 +8,7 @@ task-level progress.
 
 | Workflow | Title | Owner | Status | Updated | Entry Point |
 | --- | --- | --- | --- | --- | --- |
+| [`2026-07-30-ai-created-proposal-attribution`](2026-07-30-ai-created-proposal-attribution/workflow.yaml) | Extend Codex Creation Attribution To AI-Created Proposals | `ai-context-governance` | `in_progress` | `2026-07-30T23:36:20+08:00` | [plan](2026-07-30-ai-created-proposal-attribution/workflow-plan.md) |
 | [`2026-07-30-skill-script-colocation`](2026-07-30-skill-script-colocation/workflow.yaml) | Co-locate Skill-Owned Scripts With Canonical Skills | `ai-context-governance` | `completed` | `2026-07-30T11:38:15+08:00` | [plan](2026-07-30-skill-script-colocation/workflow-plan.md) |
 | [`2026-07-29-github-backlog-migration-stage-b`](2026-07-29-github-backlog-migration-stage-b/workflow.yaml) | Complete GitHub Backlog Migration And Project Adoption | `ai-context-governance` | `completed` | `2026-07-29T23:44:53+08:00` | [plan](2026-07-29-github-backlog-migration-stage-b/workflow-plan.md) |
 | [`2026-07-29-github-issue-creation-attribution`](2026-07-29-github-issue-creation-attribution/workflow.yaml) | Add Codex Creation Attribution To Formal GitHub Issues | `ai-context-governance` | `completed` | `2026-07-29T22:40:09+08:00` | [plan](2026-07-29-github-issue-creation-attribution/workflow-plan.md) |

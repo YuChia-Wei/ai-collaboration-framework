@@ -175,15 +175,28 @@ class GitHubBacklogProviderTests(unittest.TestCase):
             self.assertEqual(1, item["issue"]["labels"].count("created-by:codex"))
             self.assertLess(body.index(marker), body.index("<!-- canonical-backlog-id:"))
 
-    def test_gwt_017_given_public_proposal_form_then_formal_issue_attribution_is_not_injected(self) -> None:
+    def test_gwt_017_given_proposal_creation_source_then_attribution_is_source_aware(self) -> None:
         form_text = (REPO_ROOT / ".github/ISSUE_TEMPLATE/proposal.yml").read_text(
             encoding="utf-8"
         )
         self.assertNotIn("created-by:codex", form_text)
         config = PROVIDER.load_yaml_mapping(CONFIG)
+        proposal_policy = config["issue"]["creation_attribution"]["proposal_policy"]
         self.assertEqual(
-            "not automatically applied",
-            config["issue"]["creation_attribution"]["proposal_policy"],
+            {
+                "label_required": True,
+                "hidden_marker_required": False,
+                "application": "include the attribution label in the Issue creation request",
+            },
+            proposal_policy["ai_created"],
+        )
+        self.assertEqual(
+            {
+                "label_required": False,
+                "hidden_marker_required": False,
+                "application": "keep the public Proposal form attribution-neutral",
+            },
+            proposal_policy["human_submitted"],
         )
 
 
