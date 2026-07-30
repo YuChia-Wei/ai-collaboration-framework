@@ -16,10 +16,10 @@
 - `base_branch`: `main`
 - `branch_segment`: `1`
 - `status`: `in_progress`
-- `current_phase`: `remediation-planning`
+- `current_phase`: `remediation`
 - `artifact_root`: `.dev/workflows/2026-07-30-opus-5-feedback-intake`
 - `created_at`: `2026-07-30T22:04:48+08:00`
-- `updated_at`: `2026-07-30T22:10:31+08:00`
+- `updated_at`: `2026-07-30T22:18:19+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md`
 - `template_version`: `1.2.0`
 
@@ -91,11 +91,12 @@
 
 ## Resume Checkpoint
 
-- Last completed action: preserved both Opus 5 source files byte-for-byte and
-  finalized the evidence-backed intake assessment at subject `98e90bb`.
-- Current task: `OPUS5-002`.
-- Exact next action: update `STD-001` and `OBS-001` using only selected stable
-  assessment finding references, then generate and inspect a provider dry-run.
+- Last completed action: committed canonical `STD-001` and `OBS-001` planning
+  changes at `9ce991f` and verified their deterministic provider projection.
+- Current task: `OPUS5-003`.
+- Exact next action: validate the workflow commit range, push this branch, and
+  open the first pull request checkpoint; live provider writes remain gated on
+  the pull request merge.
 - Validation already completed:
   - source/copy SHA-256 parity for both external reports;
   - remote refresh and clean `main == origin/main == 98e90bb`;
@@ -103,7 +104,7 @@
   - raw missing-PyYAML failure reproduced with `python -S`;
   - assessment and workflow artifact validators passed.
 - Git state: dedicated workflow branch; assessment and workflow artifacts are
-  uncommitted until their structural validators pass.
+  committed through `9ce991f`; checkpoint evidence remains to be committed.
 - Branch history and checkpoint handoffs: none yet.
 - Blockers or unresolved decisions: live Issue and Project mutation must wait
   for canonical integration; owner acceptance is still required before a
@@ -113,4 +114,4 @@
 
 | Segment | Branch | Base | Checkpoint Type | Commit | Remote / Target | Recorded At | Reason | Resume Branch / Action |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| 1 | `codex/2026-07-30-opus-5-feedback-intake` | `main@98e90bb` | local active work | pending | local | `2026-07-30T22:04:48+08:00` | Normalize external feedback before provider mutation. | Complete `OPUS5-002`, validate, and open the integration checkpoint PR. |
+| 1 | `codex/2026-07-30-opus-5-feedback-intake` | `main@98e90bb` | validated integration checkpoint | `9ce991f` | local | `2026-07-30T22:18:19+08:00` | Canonical feedback normalization is complete; provider mutation must follow merged main. | Commit checkpoint evidence, push, and open the first PR. |
