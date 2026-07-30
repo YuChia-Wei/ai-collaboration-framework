@@ -408,7 +408,7 @@ items:
     notes: Exact body, empty assignees, close reason, and closing-comment history were also verified.
 - backlog_id: OBS-001
   source_path: .dev/backlog/items/OBS-001.yaml
-  source_sha256: 41f404ccbb30e0cc70375d236f5da0597245d9fb678f2e1c3d7f265cee05ebfc
+  source_sha256: 1f16485bdc4866804488a4e7e3bbf7b7cc164ab1de3f8045ab5387d7585d7795
   issue_number: 45
   issue_node_id: I_kwDOSBe2Hc8AAAABKqoIPg
   issue_url: https://github.com/YuChia-Wei/ai-collaboration-prompts-dotnet-backend/issues/45
@@ -416,14 +416,14 @@ items:
   close_reason: null
   project_item_id: PVTI_lAHOAwvEG84Bez7wzg0i26Q
   created_at: '2026-07-29T15:07:00Z'
-  updated_at: '2026-07-29T15:07:00Z'
+  updated_at: '2026-07-30T14:57:32Z'
   read_back:
-    verified_at: '2026-07-29T23:06:59+08:00'
+    verified_at: '2026-07-30T23:01:33+08:00'
     title_matches: true
     markers_match: true
     labels_match: true
     state_matches: true
-    notes: Exact body, empty assignees, close reason, and closing-comment history were also verified.
+    notes: Exact merged-main body, empty assignees, open state, reciprocal STD-001 related work, and Project Inbox/P2/Pending/Unassigned/Not yet published fields were verified.
 - backlog_id: PKG-001
   source_path: .dev/backlog/items/PKG-001.yaml
   source_sha256: dba55415e6f0a7cd3aba2983d6c60e42d4074963cc617f06f227c8aeb0ead2ce
@@ -696,7 +696,7 @@ items:
     notes: Exact body, empty assignees, close reason, and closing-comment history were also verified.
 - backlog_id: STD-001
   source_path: .dev/backlog/items/STD-001.yaml
-  source_sha256: f5610d425b4d670e6a08d695003f1d84b7e947b15423d9f0dd841a133729f995
+  source_sha256: 519e12c5dc945dd58de30b1858088a064edb03d25df4bac5f460c274290110fc
   issue_number: 61
   issue_node_id: I_kwDOSBe2Hc8AAAABKqqngA
   issue_url: https://github.com/YuChia-Wei/ai-collaboration-prompts-dotnet-backend/issues/61
@@ -704,14 +704,14 @@ items:
   close_reason: null
   project_item_id: PVTI_lAHOAwvEG84Bez7wzg0i26c
   created_at: '2026-07-29T15:11:25Z'
-  updated_at: '2026-07-29T15:11:25Z'
+  updated_at: '2026-07-30T14:57:36Z'
   read_back:
-    verified_at: '2026-07-29T23:11:25+08:00'
+    verified_at: '2026-07-30T23:01:33+08:00'
     title_matches: true
     markers_match: true
     labels_match: true
     state_matches: true
-    notes: Exact body, empty assignees, close reason, and closing-comment history were also verified.
+    notes: Exact merged-main body, empty assignees, open state, reciprocal OBS-001 related work, and Project Planned/P1/Approved/Unassigned/Not yet published fields were verified.
 - backlog_id: TOOL-001
   source_path: .dev/backlog/items/TOOL-001.yaml
   source_sha256: 267beabff35e7fc9d0c97a27b46b50bbe629d8223fc6aae988b7c9000b06fc63
