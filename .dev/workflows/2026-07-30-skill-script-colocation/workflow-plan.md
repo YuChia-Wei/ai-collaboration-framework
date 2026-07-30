@@ -15,11 +15,11 @@
 - `branch`: `codex/2026-07-30-skill-script-colocation`
 - `base_branch`: `main`
 - `branch_segment`: `1`
-- `status`: `completed`
-- `current_phase`: `completed`
+- `status`: `in_progress`
+- `current_phase`: `verification`
 - `artifact_root`: `.dev/workflows/2026-07-30-skill-script-colocation`
 - `created_at`: `2026-07-30T09:40:38+08:00`
-- `updated_at`: `2026-07-30T10:25:28+08:00`
+- `updated_at`: `2026-07-30T11:30:59+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md`
 - `template_version`: `1.2.0`
 
@@ -73,13 +73,13 @@
 
 ## Resume Checkpoint
 
-- Last completed action: the complete Windows Git Bash quick gate passed against checkpoint `dc0a0b2d6abcd77a81efd6d5c80cc2ac0b6393f4`, including packaging, version governance, and all three .NET test projects.
+- Last completed action: Issue #65 was reopened and Project #3 was corrected to Verification after confirming the implementation had not yet entered `main`.
 - Current task: `SKILL-002-script-colocation`.
-- Exact next action: retain the completed local branch for owner-selected push or PR handling; do not begin release preparation.
+- Exact next action: push this workflow branch, open a PR to `main`, wait for required checks, and merge with a merge commit before closing Issue #65.
 - Validation already completed: repository and skill inventory; duplicate open-Issue search; branch creation; canonical and compatibility orchestrator tests; AI-context, workflow, shell-asset, source-governance, active-reference, colocation, version-governance, package, package-safe-apply, .NET, and aggregate quick-gate validation.
-- Git state: `codex/2026-07-30-skill-script-colocation` at implementation checkpoint `dc0a0b2d6abcd77a81efd6d5c80cc2ac0b6393f4`, from `main@fc878b934b8ac15fb6be2ae238c790ab9caad3cc`.
-- Branch history and checkpoint handoffs: implementation checkpoint `dc0a0b2d6abcd77a81efd6d5c80cc2ac0b6393f4`; no push or merge requested.
-- Blockers or unresolved decisions: Windows sandbox cannot write Python temporary subdirectories, so temp-dependent tests must run outside the sandbox; release candidate creation and publication remain explicitly outside this workflow.
+- Git state: `codex/2026-07-30-skill-script-colocation` at local closure checkpoint `a3c3620`; `main` does not yet contain the implementation.
+- Branch history and checkpoint handoffs: implementation checkpoint `dc0a0b2d6abcd77a81efd6d5c80cc2ac0b6393f4`; premature local closure checkpoint `a3c3620` is corrected by the active verification state before integration.
+- Blockers or unresolved decisions: integration and merge read-back are pending; Windows sandbox cannot write Python temporary subdirectories, so temp-dependent tests must run outside the sandbox; release candidate creation and publication remain explicitly outside this workflow.
 
 ## Branch Lifecycle
 

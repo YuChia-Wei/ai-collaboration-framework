@@ -6,9 +6,9 @@
   "task_id": "SKILL-002-script-colocation",
   "workflow_id": "2026-07-30-skill-script-colocation",
   "owner_skill": "ai-context-governance",
-  "status": "completed",
+  "status": "in_progress",
   "created_at": "2026-07-30T09:40:38+08:00",
-  "updated_at": "2026-07-30T10:25:28+08:00",
+  "updated_at": "2026-07-30T11:30:59+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-5.6-sol",
   "reasoning_effort": "high",
@@ -53,8 +53,8 @@
       "Git Bash .ai/scripts/check-all.sh --quick",
       "git diff --check"
     ],
-    "last_completed_step": "The complete Windows Git Bash quick gate passed against implementation checkpoint dc0a0b2d6abcd77a81efd6d5c80cc2ac0b6393f4.",
-    "next_action": "Retain SKILL-002 as resolved and awaiting v0.8.0 publication; release work requires separate owner authorization."
+    "last_completed_step": "Issue #65 was reopened and Project #3 was corrected to Verification because main does not yet contain the implementation.",
+    "next_action": "Push the workflow branch, merge its pull request into main, and read back the merge before resolving SKILL-002."
   },
   "results": {
     "summary": "Colocated single-owner upgrader and orchestrator Python assets, preserved thin published compatibility entrypoints, synchronized active routing and package classification, and added a fail-closed ownership contract.",
@@ -74,8 +74,8 @@
       "targeted immutable-HEAD package projection: 3 passed",
       "Windows Git Bash .ai/scripts/check-all.sh --quick: passed"
     ],
-    "finding_status": "resolved",
+    "finding_status": "partially-resolved",
     "residual_risk": "Release candidate creation and publication remain separately authorized and are not part of this task.",
-    "follow_up_needed": false
+    "follow_up_needed": true
   }
 }

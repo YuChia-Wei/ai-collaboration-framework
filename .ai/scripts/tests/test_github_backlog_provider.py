@@ -87,9 +87,8 @@ class GitHubBacklogProviderTests(unittest.TestCase):
     def test_gwt_009a_given_post_adoption_item_when_projected_then_it_is_not_rewritten_into_the_completed_migration(self) -> None:
         item = self.items["SKILL-002"]
 
-        self.assertEqual("closed", item["issue"]["desired_state"])
-        self.assertEqual("completed", item["issue"]["close_reason"])
-        self.assertEqual("Done", item["project_fields"]["Status"])
+        self.assertEqual("enabler", item["classification"]["kind"])
+        self.assertEqual("mixed", item["classification"]["scope"])
         self.assertEqual("v0.8.0", item["project_fields"]["Target release"])
         self.assertEqual("Not yet published", item["project_fields"]["Published in"])
 

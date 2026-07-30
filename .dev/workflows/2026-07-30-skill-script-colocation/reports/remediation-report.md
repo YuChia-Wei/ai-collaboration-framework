@@ -12,9 +12,9 @@
 - `report_id`: `remediation-report-2026-07-30-skill-script-colocation`
 - `workflow_id`: `2026-07-30-skill-script-colocation`
 - `owner_skill`: `ai-context-governance`
-- `status`: `final`
+- `status`: `draft`
 - `created_at`: `2026-07-30T10:25:28+08:00`
-- `updated_at`: `2026-07-30T10:25:28+08:00`
+- `updated_at`: `2026-07-30T11:30:59+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-remediation-report-template.md`
 - `template_version`: `2.0.0`
 - `baseline_assessment`: `not-applicable-owner-authorized-bounded-remediation`
@@ -25,13 +25,13 @@
 - Authorized scope: complete `SKILL-002`, register it as the required `v0.8.0` planning item, and preserve shared automation plus published compatibility routes.
 - Completed scope: moved five single-owner Python implementations or contract tests into their canonical skill directories, retained four thin compatibility entrypoints, synchronized active routing and distribution rules, and added an aggregate colocation regression contract.
 - Validation summary: focused canonical and compatibility tests, active-reference checks, package projection, package safe-apply, version governance, AI-context/workflow/shell/source validators, and the Windows Git Bash quick gate passed.
-- Closure decision: `ready-with-deferrals`
+- Closure decision: `not-ready`
 
 ## Finding Resolution Matrix
 
 | Assessment Finding | Before Severity | Status | Changed Files | Validation | Commit | Residual Risk |
 | --- | --- | --- | --- | --- | --- | --- |
-| `SKILL-002` | HIGH | `resolved` | Canonical upgrader/orchestrator `scripts/`, compatibility entrypoints, active routing, distribution profile, governance and backlog artifacts | Focused tests plus `.ai/scripts/check-all.sh --quick` | `dc0a0b2d6abcd77a81efd6d5c80cc2ac0b6393f4` | `v0.8.0` release preparation and publication remain separately unauthorized. |
+| `SKILL-002` | HIGH | `partially-resolved` | Canonical upgrader/orchestrator `scripts/`, compatibility entrypoints, active routing, distribution profile, governance and backlog artifacts | Focused tests plus `.ai/scripts/check-all.sh --quick`; merge read-back pending | `dc0a0b2d6abcd77a81efd6d5c80cc2ac0b6393f4` | Implementation is not yet integrated into `main`; `v0.8.0` release preparation and publication remain separately unauthorized. |
 
 ## Changes And Evidence
 
@@ -45,7 +45,7 @@
 ## Verification Assessment Reconciliation
 
 - Independent auditor: not required for this bounded owner-requested cleanup.
-- Confirmed resolved: deterministic repository, package, compatibility, and aggregate validation confirms `SKILL-002` acceptance criteria.
+- Confirmed resolved: deterministic repository, package, compatibility, and aggregate validation confirms the local implementation; integration remains pending.
 - Recurring findings: none.
 - New or regressed findings: none after updating the version-governance test loader to the canonical upgrader helper.
 
@@ -59,6 +59,6 @@
 ## Closure Evidence
 
 - Required validations: passed, including the complete Windows Git Bash `.ai/scripts/check-all.sh --quick` gate.
-- Commit status: implementation checkpoint `dc0a0b2d6abcd77a81efd6d5c80cc2ac0b6393f4`; closure metadata commit follows this report.
-- Workflow/task status: completed / completed.
-- Final next action: retain `SKILL-002` as resolved and awaiting `v0.8.0` publication; do not create release artifacts without a new owner authorization.
+- Commit status: validated implementation checkpoint `dc0a0b2d6abcd77a81efd6d5c80cc2ac0b6393f4`; pull-request merge evidence is pending.
+- Workflow/task status: in_progress / in_progress.
+- Final next action: merge the implementation PR into `main`, read back the merge, then resolve `SKILL-002`; do not create release artifacts without a new owner authorization.

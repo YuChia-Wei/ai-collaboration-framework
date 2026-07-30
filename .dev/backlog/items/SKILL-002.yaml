@@ -2,14 +2,14 @@ schema_version: "1.0"
 backlog_id: "SKILL-002"
 title: "Co-locate Skill-Owned Scripts With Canonical Skills"
 category: "ai-context-governance"
-status: "resolved"
+status: "in_progress"
 priority: "HIGH"
 summary: "Move Python automation and contract tests with one canonical skill owner into that skill's canonical directory while retaining shared tooling and compatibility-safe published routes."
 created_at: "2026-07-30T09:40:38+08:00"
-updated_at: "2026-07-30T10:25:28+08:00"
+updated_at: "2026-07-30T11:30:59+08:00"
 release:
   target: "v0.8.0"
-  completed_in: "v0.8.0"
+  completed_in: null
   published_in: null
   target_scope: "skill-owned-script-colocation"
   gate: "release-blocker"
@@ -22,7 +22,7 @@ workflow_refs:
   - ".dev/workflows/2026-07-30-skill-script-colocation/workflow.yaml"
 task_refs:
   - ".dev/workflows/2026-07-30-skill-script-colocation/tasks/SKILL-002-script-colocation.json"
-resolution_ref: ".dev/workflows/2026-07-30-skill-script-colocation/reports/remediation-report.md"
+resolution_ref: null
 decision_needed: "Resolved: the owner approved SKILL-002 implementation as a required v0.8.0 planning item on 2026-07-30 and explicitly withheld release candidate, tag, GitHub Release, and package publication authorization."
 acceptance_criteria:
   - "One-owner Python implementations and contract tests are colocated under .ai/assets/skills/<skill-id>/scripts/."
