@@ -17,8 +17,11 @@ any single workflow. It is not a second workflow engine.
   evidence that may be selected as backlog work.
 - `.dev/workflows/<workflow-id>/` owns execution plans, tasks, evidence, and
   commits after work is scheduled.
-- A workflow must link its source backlog item. The backlog item must link the
-  active or completed workflow and be updated when the handoff state changes.
+- When the selected work-item binding mode requires or uses a backlog item, the
+  workflow must link it and the item must link the active or completed workflow.
+  In this source repository's `optional` mode, execution without an Issue must
+  instead record the owner's explicit authorization in the workflow or pull
+  request.
 
 ## States
 

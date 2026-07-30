@@ -56,6 +56,19 @@ issue:
         label_required: false
         hidden_marker_required: false
         application: "keep the public Proposal form attribution-neutral"
+work_item_binding:
+  mode: "optional"
+  purposes:
+    - "traceability"
+    - "work-authorization"
+  authorization:
+    requires_explicit_owner_approval: true
+    provider_state_alone_authorizes: false
+    missing_binding: "record explicit owner authorization in the workflow or pull request"
+  merge_gate:
+    mode: "optional"
+    reference_format: "Refs #<issue-number>"
+    missing_binding_blocks_merge: false
 labels:
   - name: "kind:story"
     color: "1D76DB"

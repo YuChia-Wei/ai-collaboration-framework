@@ -296,6 +296,24 @@ def validate_config(config: dict[str, Any], backlog_ids: set[str]) -> None:
                     "<!-- created-by: OpenAI Codex (gpt-5.6-sol, high) <noreply@openai.com> -->"
                 ):
                     errors.append("Issue creation attribution does not render the approved hidden marker")
+    expected_binding = {
+        "mode": "optional",
+        "purposes": ["traceability", "work-authorization"],
+        "authorization": {
+            "requires_explicit_owner_approval": True,
+            "provider_state_alone_authorizes": False,
+            "missing_binding": "record explicit owner authorization in the workflow or pull request",
+        },
+        "merge_gate": {
+            "mode": "optional",
+            "reference_format": "Refs #<issue-number>",
+            "missing_binding_blocks_merge": False,
+        },
+    }
+    if config.get("work_item_binding") != expected_binding:
+        errors.append(
+            "work_item_binding differs from the approved optional source-repository contract"
+        )
     automation = config.get("automation", {})
     allowlist = automation.get("allowlist", []) if isinstance(automation, dict) else []
     if allowlist != [

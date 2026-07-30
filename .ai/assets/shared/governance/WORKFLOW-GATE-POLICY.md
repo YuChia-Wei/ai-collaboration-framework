@@ -9,13 +9,38 @@ repository execution without requiring a tracker provider.
 | --- | --- | --- |
 | Conversation or exploration | Conversation participants | No branch, workflow, commit, or integration claim. |
 | Candidate work | The target's selected provider or conversation when none is selected | Records possible work but does not authorize execution. |
-| Authorized execution | Owner authorization plus a skill-owned workflow when the gate applies | Create the dedicated branch before workflow artifacts or material edits. |
+| Authorized execution | Explicit owner authorization, optionally bound to an approved work item under target policy, plus a skill-owned workflow when the gate applies | Create the dedicated branch before workflow artifacts or material edits. |
 | Integrated repository fact | The target repository's configured integration mechanism | Integration and workflow completion are separate facts and must be verified separately. |
 
 A provider is replaceable. Provider identifiers, states, links, and
 availability are optional evidence; they never replace repository workflow
 truth or authorize execution. When no provider is configured, an authorized
 repository workflow remains fully operable.
+
+## Work-Item Binding Selection
+
+A valid work-item binding jointly preserves traceability to the approved work
+outcome and evidence of execution authorization. A provider item or provider
+state alone never authorizes work; the binding is valid only when explicit
+owner approval is recorded.
+
+Each target team selects `workManagement.workItemBinding.mode` in
+`.dev/project-config.yaml`:
+
+- `required`: bind an approved work item before execution;
+- `optional`: prefer a binding, but allow separately recorded explicit owner
+  authorization; or
+- `disabled`: do not use work-item bindings.
+
+The team separately selects `mergeGate` as `required`, `optional`, or
+`disabled`. A required merge gate blocks integration without a valid binding.
+An optional gate may report or request the binding but permits an explicitly
+owner-approved exception. A disabled gate performs no binding check.
+
+These are target-owned decisions. Initialization leaves both selections
+unresolved until the target team decides them, and upgrades preserve or
+reconcile the target's choices rather than copying the source repository's
+provider setting.
 
 ## Workflow Gate
 

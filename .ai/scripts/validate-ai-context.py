@@ -123,6 +123,9 @@ PROJECT_CONFIG_TEMPLATE = Path(
 TECHNOLOGY_SELECTION_SCHEMA = Path(
     ".ai/assets/skills/ai-context-init/templates/technology-selection.schema.yaml"
 )
+WORK_ITEM_BINDING_SCHEMA = Path(
+    ".ai/assets/skills/ai-context-init/templates/work-item-binding.schema.yaml"
+)
 EXAMPLE_EVIDENCE_SCHEMA = Path(".dev/standards/examples/evidence-schema.yaml")
 EXAMPLE_EVIDENCE_MANIFEST = Path(".dev/standards/examples/evidence-manifest.yaml")
 EXAMPLE_PLACEHOLDER_DISPOSITION = Path(
@@ -325,6 +328,70 @@ def validate_technology_selection_contract(
             re.compile(slot_pattern)
         except re.error as exc:
             errors.append(f"{schema_path}: invalid slot_pattern: {exc}")
+
+
+def validate_work_item_binding_contract(
+    errors: list[str],
+    root: Path = ROOT,
+    template_path: Path = PROJECT_CONFIG_TEMPLATE,
+    schema_path: Path = WORK_ITEM_BINDING_SCHEMA,
+) -> None:
+    """Validate the target-owned work-item binding selection contract."""
+    try:
+        template = yaml.safe_load((root / template_path).read_text(encoding="utf-8"))
+        schema = yaml.safe_load((root / schema_path).read_text(encoding="utf-8"))
+    except (OSError, yaml.YAMLError) as exc:
+        errors.append(f"work-item binding contract cannot be loaded: {exc}")
+        return
+
+    if not isinstance(template, dict):
+        errors.append(f"{template_path}: root must be a mapping")
+        return
+    if not isinstance(schema, dict):
+        errors.append(f"{schema_path}: root must be a mapping")
+        return
+
+    work_management = template.get("workManagement")
+    binding = (
+        work_management.get("workItemBinding")
+        if isinstance(work_management, dict)
+        else None
+    )
+    expected_binding = {
+        "mode": None,
+        "purposes": ["traceability", "work-authorization"],
+        "mergeGate": None,
+    }
+    if binding != expected_binding:
+        errors.append(
+            f"{template_path}: workManagement.workItemBinding must preserve the unresolved target-selection shape"
+        )
+
+    expected_fields = {"mode", "purposes", "mergeGate"}
+    required_fields = schema.get("required_fields")
+    if not isinstance(required_fields, list) or set(required_fields) != expected_fields:
+        errors.append(
+            f"{schema_path}: required_fields must equal {sorted(expected_fields)}"
+        )
+
+    fixed_purposes = schema.get("fixed_purposes")
+    if fixed_purposes != ["traceability", "work-authorization"]:
+        errors.append(
+            f"{schema_path}: fixed_purposes must preserve traceability and work-authorization"
+        )
+
+    allowed = {"required", "optional", "disabled"}
+    for key in ("allowed_modes", "allowed_merge_gates"):
+        values = schema.get(key)
+        if not isinstance(values, list) or set(values) != allowed:
+            errors.append(f"{schema_path}: {key} must equal {sorted(allowed)}")
+
+    if schema.get("selection_source") != "explicit-target-decision":
+        errors.append(
+            f"{schema_path}: selection_source must be explicit-target-decision"
+        )
+    if schema.get("template_unresolved_value", "missing") is not None:
+        errors.append(f"{schema_path}: template_unresolved_value must be null")
 
 
 def validate_example_evidence_contract(
@@ -1709,6 +1776,7 @@ def main() -> int:
     validate_exact_case_references(files, errors)
     validate_active_script_references(files, errors)
     validate_technology_selection_contract(errors)
+    validate_work_item_binding_contract(errors)
     validate_example_evidence_contract(errors)
     validate_example_placeholder_disposition(errors)
     validate_source_include_evidence(errors)

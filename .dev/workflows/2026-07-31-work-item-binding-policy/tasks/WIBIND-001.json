@@ -1,0 +1,100 @@
+{
+  "template_id": "ai-context-governance-remediation-task",
+  "template_version": "1.1.0",
+  "task_id": "WIBIND-001",
+  "workflow_id": "2026-07-31-work-item-binding-policy",
+  "owner_skill": "ai-context-governance",
+  "status": "in_progress",
+  "created_at": "2026-07-31T00:06:18+08:00",
+  "updated_at": "2026-07-31T00:22:24+08:00",
+  "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
+  "model": "gpt-5.6-sol",
+  "reasoning_effort": "high",
+  "finding_ids": [],
+  "scope": {
+    "target": "Provider-neutral work-item binding purposes, target selection, source selection, and merge-gate policy.",
+    "files": [
+      ".dev/standards/WORKFLOW-GATE-POLICY.md",
+      ".ai/assets/shared/governance/WORKFLOW-GATE-POLICY.md",
+      ".ai/assets/skills/ai-context-init/templates/project-config.template.yaml",
+      ".ai/assets/skills/ai-context-init/templates/work-item-binding.schema.yaml",
+      ".ai/assets/skills/ai-context-init/references/scan-playbook.md",
+      ".ai/assets/skills/ai-context-init/skill.yaml",
+      ".agents/skills/ai-context-init/SKILL.md",
+      ".claude/skills/ai-context-init/SKILL.md",
+      ".dev/guides/ai-collaboration-guides/AI-CONTEXT-INIT-SKILL-GUIDE.md",
+      ".dev/backlog/providers/github.yaml",
+      ".dev/backlog/README.MD",
+      ".github/pull_request_template.md",
+      ".ai/scripts/validate-ai-context.py",
+      ".ai/scripts/github_backlog_provider.py",
+      ".ai/scripts/tests/test_github_backlog_provider.py",
+      ".ai/scripts/tests/test_work_item_binding_contract.py",
+      ".dev/workflows/2026-07-31-work-item-binding-policy/**",
+      ".dev/workflows/INDEX.MD"
+    ],
+    "constraints": [
+      "Provider state alone must not authorize execution.",
+      "This source repository selects optional binding and optional merge enforcement.",
+      "Downstream templates must not inherit the source repository selection.",
+      "Do not create an Issue for this owner-authorized optional-mode change."
+    ],
+    "non_goals": [
+      "Implementing a hosted branch-protection check.",
+      "Choosing a downstream team's policy.",
+      "Reconciling another session's overlapping development-rule branch."
+    ]
+  },
+  "execution": {
+    "steps": [
+      "Define source and portable work-item binding semantics.",
+      "Add unresolved downstream selection and exact schema.",
+      "Add source optional selection and fail-closed validators.",
+      "Run local and hosted validation, merge, and read back main."
+    ],
+    "validation": [
+      "Run focused work-item binding and GitHub provider tests.",
+      "Run AI-context, workflow, repository-config, and package validation.",
+      "Run Git diff and commit policy checks.",
+      "Verify hosted checks and merged-main content."
+    ],
+    "last_completed_step": "Validated the source and downstream selection contracts, including direct execution of all three .NET child tests unavailable to Git Bash.",
+    "next_action": "Commit, push, open the pull request, and verify hosted checks."
+  },
+  "results": {
+    "summary": "Work-item binding now carries traceability plus explicit authorization evidence, target teams select binding and merge-gate modes independently, and the source repository selects optional/optional.",
+    "files_changed": [
+      ".dev/standards/WORKFLOW-GATE-POLICY.md",
+      ".ai/assets/shared/governance/WORKFLOW-GATE-POLICY.md",
+      ".ai/assets/skills/ai-context-init/**",
+      ".agents/skills/ai-context-init/SKILL.md",
+      ".claude/skills/ai-context-init/SKILL.md",
+      ".dev/backlog/README.MD",
+      ".dev/backlog/providers/github.yaml",
+      ".github/pull_request_template.md",
+      ".ai/scripts/github_backlog_provider.py",
+      ".ai/scripts/validate-ai-context.py",
+      ".ai/scripts/tests/test_github_backlog_provider.py",
+      ".ai/scripts/tests/test_work_item_binding_contract.py",
+      ".dev/guides/ai-collaboration-guides/AI-CONTEXT-INIT-SKILL-GUIDE.md",
+      ".dev/workflows/2026-07-31-work-item-binding-policy/**",
+      ".dev/workflows/INDEX.MD"
+    ],
+    "tests_run": [
+      "python .ai/scripts/tests/test_work_item_binding_contract.py: 4 passed",
+      "python .ai/scripts/tests/test_github_backlog_provider.py: 19 passed",
+      "python .ai/scripts/tests/test_repository_config_contract.py: 13 passed",
+      "python .ai/scripts/validate-ai-context.py: passed",
+      "python .ai/scripts/validate-workflow-artifacts.py: passed",
+      "python .ai/scripts/plan-github-backlog-migration.py --check: 42 items, 0 blocked",
+      "bash .ai/scripts/check-all.sh --quick: 42 passed, 3 failed because Git Bash could not resolve dotnet",
+      "dotnet test DotnetBackendAnalyzers.Tests --no-restore: 49 passed",
+      "dotnet test DotnetBackendValidation.Tests --no-restore: 2 passed",
+      "dotnet test DotnetBackendBuildingBlocks.Tests --no-restore: 5 passed",
+      "git diff --check: passed"
+    ],
+    "finding_status": "addressed",
+    "residual_risk": "The policy is not integrated into main; hosted checks must confirm the Linux runner has the configured .NET toolchain.",
+    "follow_up_needed": true
+  }
+}
