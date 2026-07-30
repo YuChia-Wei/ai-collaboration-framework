@@ -4,9 +4,9 @@
   "task_id": "GHATTR-004",
   "workflow_id": "2026-07-30-ai-created-proposal-attribution",
   "owner_skill": "ai-context-governance",
-  "status": "in_progress",
+  "status": "completed",
   "created_at": "2026-07-30T23:33:42+08:00",
-  "updated_at": "2026-07-30T23:36:20+08:00",
+  "updated_at": "2026-07-30T23:47:53+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-5.6-sol",
   "reasoning_effort": "high",
@@ -43,8 +43,8 @@
       "Run workflow artifact and implementation-contract validators.",
       "Run Git diff checks."
     ],
-    "last_completed_step": "Validated the source-aware Proposal attribution contract and Proposal #69 provider correction.",
-    "next_action": "Commit, push, and open the pull request."
+    "last_completed_step": "Merged PR #71 and read back the approved provider policy from main@da4b73c.",
+    "next_action": "Integrate the closeout receipt through pull-request-only main."
   },
   "results": {
     "summary": "AI-created Proposals now require the Codex label at creation while the human Proposal form remains attribution-neutral.",
@@ -63,10 +63,12 @@
       "python .ai/scripts/tests/test_governance_workflow_contract.py: 7 passed",
       "python .ai/scripts/tests/test_workflow_implementation_contract.py: 7 passed",
       "python .ai/scripts/validate-ai-context.py: passed",
-      "git diff --check: passed"
+      "git diff --check: passed",
+      "PR #71 hosted checks: 3 passed",
+      "main@da4b73c merge parents and Proposal policy read-back: passed"
     ],
     "finding_status": "addressed",
-    "residual_risk": "The durable provider rule is not integrated into main yet.",
-    "follow_up_needed": true
+    "residual_risk": "GitHub cannot infer AI authorship; each AI creation runtime must honor the provider contract.",
+    "follow_up_needed": false
   }
 }

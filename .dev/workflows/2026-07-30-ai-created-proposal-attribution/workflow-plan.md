@@ -5,14 +5,14 @@
 - `workflow_id`: `2026-07-30-ai-created-proposal-attribution`
 - `workflow_kind`: `ai-context-maintenance`
 - `owner_skill`: `ai-context-governance`
-- `branch`: `codex/2026-07-30-ai-created-proposal-attribution`
+- `branch`: `codex/2026-07-30-ai-created-proposal-attribution-closeout`
 - `base_branch`: `main`
-- `branch_segment`: `1`
-- `status`: `in_progress`
-- `current_phase`: `remediation`
+- `branch_segment`: `2`
+- `status`: `completed`
+- `current_phase`: `completed`
 - `artifact_root`: `.dev/workflows/2026-07-30-ai-created-proposal-attribution`
 - `created_at`: `2026-07-30T23:33:42+08:00`
-- `updated_at`: `2026-07-30T23:36:20+08:00`
+- `updated_at`: `2026-07-30T23:47:53+08:00`
 
 ## Objective And Scope
 
@@ -32,7 +32,7 @@
 
 | Task | Purpose | Status |
 | --- | --- | --- |
-| `GHATTR-004` | Define and validate source-aware Proposal creation attribution. | `in_progress` |
+| `GHATTR-004` | Define and validate source-aware Proposal creation attribution. | `completed` |
 
 ## Provider Boundary
 
@@ -44,15 +44,16 @@
 
 ## Resume Checkpoint
 
-- Last completed action: corrected Proposal #69 online and validated the source-aware provider contract.
-- Current task: integrate the validated contract through pull-request-only `main`.
-- Exact next action: commit, push, and open the pull request.
-- Validation already completed: #69 label read-back, 18 focused provider tests, migration dry-run, workflow contracts, AI-context validation, and Git diff checks.
-- Git state: dedicated branch from merged `main@6886c92`.
-- Blockers or unresolved decisions: none.
+- Last completed action: merged PR #71 and read back the source-aware Proposal attribution contract from `main@da4b73c`.
+- Current task: none; `GHATTR-004` is completed.
+- Exact next action: integrate this closeout receipt through pull-request-only `main`.
+- Validation already completed: #69 label read-back, 18 focused provider tests, migration dry-run, workflow contracts, AI-context validation, hosted checks, merge-parent verification, and merged-main policy read-back.
+- Git state: continuation branch from merged `main@da4b73c`.
+- Blockers or unresolved decisions: future Issue-binding policy evaluation is deliberately untracked and outside this workflow.
 
 ## Branch Lifecycle
 
 | Segment | Branch | Base | Checkpoint Type | Commit | Remote / Target | Recorded At | Reason | Resume Branch / Action |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| 1 | `codex/2026-07-30-ai-created-proposal-attribution` | `main@6886c92` | active remediation | pending | local | `2026-07-30T23:33:42+08:00` | Persist the owner-approved attribution rule. | Validate, commit, push, and open a PR. |
+| 1 | `codex/2026-07-30-ai-created-proposal-attribution` | `main@6886c92` | validated implementation merge | `6952e27` | PR #71 / `main@da4b73c` | `2026-07-30T23:46:51+08:00` | Persist and integrate the owner-approved attribution rule. | Resume from merged main on a closeout branch. |
+| 2 | `codex/2026-07-30-ai-created-proposal-attribution-closeout` | `main@da4b73c` | merge read-back closeout | pending | local | `2026-07-30T23:47:53+08:00` | Record PR #71 integration and close the workflow. | Commit, push, and merge the closeout receipt. |
