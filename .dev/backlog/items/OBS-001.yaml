@@ -6,7 +6,7 @@ status: "open"
 priority: "MEDIUM"
 summary: "Design the reusable runtime CrossCutting observability boundary, including attribute/AOP instrumentation, execution-time and detail capture, redaction, async behavior, dependency direction, and target-selected implementation adapters."
 created_at: "2026-07-16T21:33:25+08:00"
-updated_at: "2026-07-18T14:41:03+08:00"
+updated_at: "2026-07-30T22:13:09+08:00"
 release:
   target: "unassigned"
   completed_in: null
@@ -15,13 +15,29 @@ release:
 origin_refs:
   - ".dev/workflows/2026-07-16-v0-4-0-ai-context-remediation/workflow-plan.md#decision-register"
   - ".dev/workflows/2026-07-16-v0-4-0-ai-context-remediation/tasks/ARCH-001.json"
+  - ".dev/assessments/ASM-20260730-001/assessment.yaml"
+finding_refs:
+  - "ASM-20260730-001#AIC-005"
 recommended_owner_skill: "ddd-ca-hex-architect"
-handoff_condition: "Create a dedicated architecture/design workflow after v0.4.0 assessment remediation or when the user explicitly prioritizes Observability. Keep it outside verification of ASM-20260715-002 findings."
+handoff_condition: "Create a dedicated architecture/design workflow when the owner explicitly prioritizes Observability. Architecture evidence collection and read-only exploration may begin independently; canonical standards structure, placement, and publication must wait for the applicable STD-001 format decisions unless the owner explicitly grants an exception. Keep the work outside verification of ASM-20260715-002 findings."
 workflow_refs: []
 task_refs:
   - ".dev/workflows/2026-07-16-v0-4-0-ai-context-remediation/tasks/ARCH-001.json"
 resolution_ref: null
 decision_needed: "Select the reusable boundary and validation contract without selecting a permanent AOP package; preserve target technology selection through observability.runtime."
+related_backlog_refs:
+  - "STD-001"
+sequencing:
+  related_item: "STD-001"
+  finding_ref: "ASM-20260730-001#AIC-005"
+  may_start_before_related_decision:
+    - "architecture evidence collection"
+    - "read-only exploration"
+  waits_for_related_decision:
+    - "canonical standards structure"
+    - "canonical document placement"
+    - "standards publication implementation"
+  owner_exception_required: true
 inventory_notes:
   - "The accepted minimum boundary is that runtime AOP/attribute observability belongs to CrossCutting Infrastructure and Domain must not depend on it."
   - "dotnet-webapi-lab dotnetLab.CrossCutting.Observability is downstream design evidence, not canonical source code for this framework."

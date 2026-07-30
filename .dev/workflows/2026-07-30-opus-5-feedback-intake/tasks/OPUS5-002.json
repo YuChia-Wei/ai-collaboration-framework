@@ -1,0 +1,70 @@
+{
+  "template_id": "ai-context-governance-remediation-task",
+  "template_version": "1.1.0",
+  "task_id": "OPUS5-002",
+  "workflow_id": "2026-07-30-opus-5-feedback-intake",
+  "owner_skill": "ai-context-governance",
+  "status": "completed",
+  "created_at": "2026-07-30T22:04:48+08:00",
+  "updated_at": "2026-07-30T22:18:19+08:00",
+  "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
+  "model": "gpt-5.6-sol",
+  "reasoning_effort": "high",
+  "finding_ids": [
+    "ASM-20260730-001#AIC-001",
+    "ASM-20260730-001#AIC-002",
+    "ASM-20260730-001#AIC-003",
+    "ASM-20260730-001#AIC-005"
+  ],
+  "scope": {
+    "target": "Update STD-001 and OBS-001 with selected discussion scope, sequencing, and stable evidence references.",
+    "files": [
+      ".dev/backlog/items/STD-001.yaml",
+      ".dev/backlog/items/OBS-001.yaml",
+      ".dev/backlog/INDEX.MD",
+      ".dev/backlog/ROADMAP.md"
+    ],
+    "constraints": [
+      "Do not create a sub-issue relationship.",
+      "Do not block read-only OBS-001 exploration.",
+      "Do not implement standards, review, or glossary changes in this workflow."
+    ],
+    "non_goals": [
+      "Create DEVWF-003 before STD-001 deliberation selects implementation.",
+      "Assign a target release."
+    ]
+  },
+  "execution": {
+    "steps": [
+      "Add selected assessment origin and reciprocal related backlog references.",
+      "Record the three bounded STD-001 discussion rounds.",
+      "Record the precise OBS-001 sequencing boundary.",
+      "Generate and inspect the GitHub provider dry-run."
+    ],
+    "validation": [
+      "Parse all changed YAML files.",
+      "Run canonical backlog and provider contract tests.",
+      "Confirm fresh projection for #61/#45 contains the intended related work and fields."
+    ],
+    "last_completed_step": "Committed reciprocal backlog relationships, three STD-001 rounds, precise sequencing, and verified provider projection at 9ce991f.",
+    "next_action": "Hand the merged-main provider synchronization to OPUS5-003."
+  },
+  "results": {
+    "summary": "STD-001 is planned at P1 with three bounded rounds; OBS-001 remains P2 Inbox with reciprocal related work and a non-absolute sequencing boundary.",
+    "files_changed": [
+      ".dev/backlog/items/STD-001.yaml",
+      ".dev/backlog/items/OBS-001.yaml",
+      ".dev/backlog/INDEX.MD",
+      ".dev/backlog/ROADMAP.md",
+      ".dev/workflows/2026-07-30-opus-5-feedback-intake/evidence/provider-projection-preview.md"
+    ],
+    "tests_run": [
+      "python .ai/scripts/validate-workflow-artifacts.py: passed",
+      "python .ai/scripts/tests/test_github_backlog_provider.py: 18/18 passed",
+      "deterministic provider projection at 9ce991f: zero warnings"
+    ],
+    "finding_status": "partially-resolved",
+    "residual_risk": "Canonical changes are branch-only until the first pull request merges; deliberation implementation remains intentionally deferred.",
+    "follow_up_needed": true
+  }
+}

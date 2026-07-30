@@ -1,0 +1,55 @@
+template_metadata:
+  template_id: "assessment-locator"
+  template_version: "1.0.0"
+  template_created_at: "2026-07-13T23:04:10+08:00"
+  template_updated_at: "2026-07-13T23:04:10+08:00"
+
+schema_version: "1.0"
+assessment_id: "ASM-20260730-001"
+commit_search_id: "ASM-20260730-001"
+assessment_type: "ai-context-audit"
+title: "Opus 5 Repository Assessment External Review Intake"
+owner_skill: "ai-context-auditor"
+status: "final"
+report: "report.md"
+artifact_branch: "codex/2026-07-30-opus-5-feedback-intake"
+base_branch: "main"
+created_at: "2026-07-30T22:04:48+08:00"
+updated_at: "2026-07-30T22:10:31+08:00"
+template_source: ".dev/assessments/templates/assessment-locator-template.yaml"
+template_version: "1.0.0"
+report_template_source: ".ai/assets/skills/ai-context-auditor/templates/ai-context-audit-report-template.md"
+report_template_version: "2.1.0"
+subject_ref:
+  repository: "C:/Github/YuChia/ai-collaboration-prompts-dotnet-backend"
+  branch: "main"
+  commit: "98e90bb4649961b1c09105346f7376b197b126a8"
+scope:
+  included:
+    - ".dev/assessments/ASM-20260730-001/evidence/external/original/opus-5/**"
+    - "root collaboration and repository identity entries"
+    - ".ai/** AI context, skill, distribution, and validator surfaces relevant to external claims"
+    - ".dev/** governance, standards, backlog, assessment, workflow, and release evidence relevant to external claims"
+    - ".agents/** and .claude/** runtime wrappers relevant to external claims"
+    - "local Git history and GitHub Issue/Project read-back for PR #66, #61, and #45"
+  excluded:
+    - "src/** and product implementation trees"
+    - "tests/** and test/** product test trees"
+    - "tools/** analyzer implementation review"
+    - "generated and dependency trees"
+    - "remediation implementation"
+    - "GitHub mutation during assessment"
+relations:
+  supersedes: []
+  superseded_by: []
+  related_assessments: []
+  workflow_refs:
+    - "2026-07-30-opus-5-feedback-intake"
+  backlog_refs:
+    - "STD-001"
+    - "OBS-001"
+  adr_refs: []
+resume:
+  last_completed_action: "Finalized the repo-native intake after reproducing and dispositioning nine material Opus 5 claims against main@98e90bb4649961b1c09105346f7376b197b126a8."
+  next_action: "Hand selected findings AIC-001 through AIC-005 to ai-context-governance workflow 2026-07-30-opus-5-feedback-intake."
+  blockers: []

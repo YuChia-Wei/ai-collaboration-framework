@@ -59,11 +59,16 @@ Read this file before planning or resuming a post-v0.4.0 release.
 | `v0.7.0` | `GOV-002`, `GOV-003`, `PKG-004`, `REL-003` | A historical archive migration and legacy identifier retirement each require explicit successor work rather than silent inclusion. | All four blockers are resolved and published at immutable tag `v0.7.0`; no conditional successor work was silently included. |
 | `v0.8.0` | `SKILL-002` (resolved; awaiting publication) | None currently selected. New scope requires an explicit owner roadmap decision rather than silent inclusion. | PR #66 merged at `359941cd14bd19a63b64df0f696af1dd71256cd1`; Issue #65 closed after main read-back. Release preparation remains unauthorized. |
 
-`DEVWF-001`, `INIT-001`, `STD-001`, and `OBS-001` remain independent unassigned
-decisions. None is a hidden v0.6.0 blocker. Standards or dev-workflow schema
-changes may receive a dedicated release after deliberation instead of being
-forced into an existing horizon. Actual WorkService upgrade execution belongs
-to its target repository rather than this source roadmap.
+`DEVWF-001` and `INIT-001` remain independent unassigned decisions. `STD-001`
+is now planned at P1 with three bounded deliberation rounds and is explicitly
+related to `OBS-001`, which remains P2 and unassigned. Neither item is a hidden
+release blocker: `OBS-001` may collect architecture evidence independently,
+while canonical standards structure, placement, and publication wait for the
+applicable `STD-001` decisions unless the owner grants an exception. Standards
+or dev-workflow schema changes may receive a dedicated release after
+deliberation instead of being forced into an existing horizon. Actual
+WorkService upgrade execution belongs to its target repository rather than
+this source roadmap.
 
 `UPG-001` was declined by owner decision on 2026-07-27 because no credible
 legacy customized target or feedback capacity is expected to be available.
@@ -231,10 +236,10 @@ versions. Current assignments:
   merged and complete, awaiting publication; no release candidate or publication is authorized.
 - `unassigned`: `DEVWF-001` owns optional issue/timeline schema deliberation;
   `INIT-001` owns existing-AI-agent initialization compatibility, collision
-  inventory, dry-run, and synthetic fixtures; `STD-001` owns standards
-  deliberation and release allocation; and
-  `OBS-001` remains an independent architecture workflow. None is a mandatory
-  closeout gate for an assigned release.
+  inventory, dry-run, and synthetic fixtures; planned `STD-001` owns three
+  bounded standards deliberation rounds and release allocation; and `OBS-001`
+  remains a related but separately owned architecture workflow. None is a
+  mandatory closeout gate for an assigned release.
 - `declined`: `UPG-001` retains its historical assessment and intake evidence
   but no longer represents planned execution.
 - Resolved `AIC-007` and `CTX-001` through `CTX-003` were first completed and
@@ -300,17 +305,20 @@ restore/lookup behavior, and downstream migration evidence.
 
 Standards simplification is not normal token cleanup. Standards are a core
 software-development capability of this framework, so `STD-001` remains
-unassigned while bounded ChatGPT, Fable 5, and repository-agent discussions are
-normalized and reviewed. Only after the accepted doctrine, validator impact,
-examples, compatibility, and migration boundaries are understood may the owner
-assign it to v0.6.0, v0.7.0, or a dedicated release.
+unassigned for release allocation but is planned at P1 for three bounded rounds:
+workflow-mode proportionality, code-review progressive disclosure, and
+terminology discovery. `OBS-001` may perform read-only architecture exploration
+in parallel, but applicable standards-format decisions precede its canonical
+standards publication unless the owner grants an exception. Only after the
+accepted doctrine, validator impact, examples, compatibility, and migration
+boundaries are understood may the owner assign implementation to an existing
+or dedicated release.
 
 ## Next Action
 
 Retain the completed `SKILL-002` merge, package, compatibility, and provider
 read-back evidence. Do not create a v0.8.0 release candidate, tag, GitHub
 Release, or published package until the owner separately authorizes release
-preparation. Keep
-`DEVWF-001`, `INIT-001`, `STD-001`, `OBS-001`,
-historical archive migration, and legacy identifier retirement independently
-gated unless an explicit decision assigns them.
+preparation. Keep `DEVWF-001`, `INIT-001`, the related but separately owned
+`STD-001` and `OBS-001`, historical archive migration, and legacy identifier
+retirement independently gated unless an explicit decision assigns them.
