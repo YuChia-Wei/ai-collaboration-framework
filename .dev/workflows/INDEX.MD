@@ -8,7 +8,6 @@ task-level progress.
 
 | Workflow | Title | Owner | Status | Updated | Entry Point |
 | --- | --- | --- | --- | --- | --- |
-| [`2026-07-30-opus-5-feedback-intake`](2026-07-30-opus-5-feedback-intake/workflow.yaml) | Normalize Opus 5 Repository Feedback And Plan Selected Follow-Ups | `ai-context-governance` | `in_progress` | `2026-07-30T22:18:19+08:00` | [plan](2026-07-30-opus-5-feedback-intake/workflow-plan.md) |
 | [`2026-07-30-skill-script-colocation`](2026-07-30-skill-script-colocation/workflow.yaml) | Co-locate Skill-Owned Scripts With Canonical Skills | `ai-context-governance` | `completed` | `2026-07-30T11:38:15+08:00` | [plan](2026-07-30-skill-script-colocation/workflow-plan.md) |
 | [`2026-07-29-github-backlog-migration-stage-b`](2026-07-29-github-backlog-migration-stage-b/workflow.yaml) | Complete GitHub Backlog Migration And Project Adoption | `ai-context-governance` | `completed` | `2026-07-29T23:44:53+08:00` | [plan](2026-07-29-github-backlog-migration-stage-b/workflow-plan.md) |
 | [`2026-07-29-github-issue-creation-attribution`](2026-07-29-github-issue-creation-attribution/workflow.yaml) | Add Codex Creation Attribution To Formal GitHub Issues | `ai-context-governance` | `completed` | `2026-07-29T22:40:09+08:00` | [plan](2026-07-29-github-issue-creation-attribution/workflow-plan.md) |
@@ -27,6 +26,7 @@ task-level progress.
 
 | Workflow | Title | Owner | Status | Updated | Entry Point |
 | --- | --- | --- | --- | --- | --- |
+| [`2026-07-30-opus-5-feedback-intake`](2026-07-30-opus-5-feedback-intake/workflow.yaml) | Normalize Opus 5 Repository Feedback And Plan Selected Follow-Ups | `ai-context-governance` | `completed` | `2026-07-30T23:06:17+08:00` | [plan](2026-07-30-opus-5-feedback-intake/workflow-plan.md) |
 | [`2026-07-28-v0-7-0-release-preparation`](2026-07-28-v0-7-0-release-preparation/workflow.yaml) | Prepare And Finalize v0.7.0 Publication | `ai-context-governance` | `completed` | `2026-07-28T21:31:43+08:00` | [plan](2026-07-28-v0-7-0-release-preparation/tasks/REL070-001.json) |
 | [`2026-07-24-v0-6-0-release-publication`](2026-07-24-v0-6-0-release-publication/workflow.yaml) | Prepare And Publish v0.6.0 | `ai-context-governance` | `completed` | `2026-07-24T15:15:15+08:00` | [plan](2026-07-24-v0-6-0-release-publication/tasks/REL060-001.json) |
 | [`2026-07-24-v0-6-ci-lifecycle`](2026-07-24-v0-6-ci-lifecycle/workflow.yaml) | Complete v0.6.0 GitHub Workflow And Release Lifecycle Contracts | `ai-context-governance` | `completed` | `2026-07-24T13:35:00+08:00` | [plan](2026-07-24-v0-6-ci-lifecycle/workflow-plan.md) |

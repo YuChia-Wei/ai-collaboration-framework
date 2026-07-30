@@ -12,6 +12,7 @@ owns its identity, current lifecycle state, subject revision, and relationships.
 
 | Assessment | Title | Type | Owner | Status | Subject Commit | Updated | Report |
 | --- | --- | --- | --- | --- | --- | --- | --- |
+| [`ASM-20260730-002`](ASM-20260730-002/assessment.yaml) | Opus 5 Feedback Intake And Provider Reconciliation Verification | `ai-context-verification` | `ai-context-auditor` | `final` | `cdff0f36e4cb2963231ac004606d340659bf3f0c` | `2026-07-30T23:01:33+08:00` | [report](ASM-20260730-002/report.md) |
 | [`ASM-20260730-001`](ASM-20260730-001/assessment.yaml) | Opus 5 Repository Assessment External Review Intake | `ai-context-audit` | `ai-context-auditor` | `final` | `98e90bb4649961b1c09105346f7376b197b126a8` | `2026-07-30T22:10:31+08:00` | [report](ASM-20260730-001/report.md) |
 | [`ASM-20260729-001`](ASM-20260729-001/assessment.yaml) | v0.7.0 Public Release Body Source Contract Verification | `ai-context-verification` | `ai-context-auditor` | `final` | `cbe1553f0fc30a856a35e85ec17ecd8cd91838d2` | `2026-07-29T16:03:20+08:00` | [report](ASM-20260729-001/report.md) |
 | [`ASM-20260728-001`](ASM-20260728-001/assessment.yaml) | v0.7.0 Candidate Package And Release Contract Verification | `ai-context-verification` | `ai-context-auditor` | `final` | `b474730d453c27f2b5338f5bbe0b5efd5e9b0628` | `2026-07-28T09:32:32+08:00` | [report](ASM-20260728-001/report.md) |

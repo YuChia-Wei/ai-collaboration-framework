@@ -1,0 +1,56 @@
+template_metadata:
+  template_id: "assessment-locator"
+  template_version: "1.0.0"
+  template_created_at: "2026-07-13T23:04:10+08:00"
+  template_updated_at: "2026-07-13T23:04:10+08:00"
+
+schema_version: "1.0"
+assessment_id: "ASM-20260730-002"
+commit_search_id: "ASM-20260730-002"
+assessment_type: "ai-context-verification"
+title: "Opus 5 Feedback Intake And Provider Reconciliation Verification"
+owner_skill: "ai-context-auditor"
+status: "final"
+report: "report.md"
+artifact_branch: "codex/2026-07-30-opus-5-feedback-intake-closeout"
+base_branch: "main"
+created_at: "2026-07-30T23:01:33+08:00"
+updated_at: "2026-07-30T23:01:33+08:00"
+template_source: ".dev/assessments/templates/assessment-locator-template.yaml"
+template_version: "1.0.0"
+report_template_source: ".ai/assets/skills/ai-context-auditor/templates/ai-context-audit-report-template.md"
+report_template_version: "2.1.0"
+subject_ref:
+  repository: "YuChia-Wei/ai-collaboration-prompts-dotnet-backend"
+  branch: "main"
+  commit: "cdff0f36e4cb2963231ac004606d340659bf3f0c"
+scope:
+  included:
+    - ".dev/assessments/ASM-20260730-001/**"
+    - ".dev/backlog/items/STD-001.yaml"
+    - ".dev/backlog/items/OBS-001.yaml"
+    - ".dev/backlog/provider-mappings/github-issues.yaml"
+    - ".dev/workflows/2026-07-30-opus-5-feedback-intake/**"
+    - "GitHub Issues #45, #61, and #69"
+    - "GitHub Project #3 fields for Issues #45, #61, and #69"
+  excluded:
+    - "src/**"
+    - "tests/** and product test implementation"
+    - "product implementation trees"
+    - "generated and dependency trees"
+    - "implementation of any STD-001 discussion outcome or Proposal #69"
+relations:
+  supersedes: []
+  superseded_by: []
+  related_assessments:
+    - "ASM-20260730-001"
+  workflow_refs:
+    - "2026-07-30-opus-5-feedback-intake"
+  backlog_refs:
+    - "STD-001"
+    - "OBS-001"
+  adr_refs: []
+resume:
+  last_completed_action: "Independently verified merged canonical dispositions, exact GitHub Issue projection, Project field reconciliation, and Proposal #69 intake."
+  next_action: "Return verification results to ai-context-governance for workflow reconciliation and closure."
+  blockers: []
