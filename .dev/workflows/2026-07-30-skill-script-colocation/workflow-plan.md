@@ -12,14 +12,14 @@
 - `workflow_id`: `2026-07-30-skill-script-colocation`
 - `workflow_kind`: `ai-context-maintenance`
 - `owner_skill`: `ai-context-governance`
-- `branch`: `codex/2026-07-30-skill-script-colocation`
+- `branch`: `codex/2026-07-30-skill-script-colocation-cont-02`
 - `base_branch`: `main`
-- `branch_segment`: `1`
-- `status`: `in_progress`
-- `current_phase`: `verification`
+- `branch_segment`: `2`
+- `status`: `completed`
+- `current_phase`: `completed`
 - `artifact_root`: `.dev/workflows/2026-07-30-skill-script-colocation`
 - `created_at`: `2026-07-30T09:40:38+08:00`
-- `updated_at`: `2026-07-30T11:30:59+08:00`
+- `updated_at`: `2026-07-30T11:38:15+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md`
 - `template_version`: `1.2.0`
 
@@ -73,16 +73,17 @@
 
 ## Resume Checkpoint
 
-- Last completed action: Issue #65 was reopened and Project #3 was corrected to Verification after confirming the implementation had not yet entered `main`.
+- Last completed action: PR #66 passed all required checks and merged at `359941cd14bd19a63b64df0f696af1dd71256cd1`; remote `main` was read back at the same SHA before Issue #65 was closed as completed and Project #3 moved to Done.
 - Current task: `SKILL-002-script-colocation`.
-- Exact next action: push this workflow branch, open a PR to `main`, wait for required checks, and merge with a merge commit before closing Issue #65.
+- Exact next action: persist this final merge and provider read-back on the continuation branch, then merge its closeout PR into `main`; do not begin release preparation.
 - Validation already completed: repository and skill inventory; duplicate open-Issue search; branch creation; canonical and compatibility orchestrator tests; AI-context, workflow, shell-asset, source-governance, active-reference, colocation, version-governance, package, package-safe-apply, .NET, and aggregate quick-gate validation.
-- Git state: `codex/2026-07-30-skill-script-colocation` at local closure checkpoint `a3c3620`; `main` does not yet contain the implementation.
-- Branch history and checkpoint handoffs: implementation checkpoint `dc0a0b2d6abcd77a81efd6d5c80cc2ac0b6393f4`; premature local closure checkpoint `a3c3620` is corrected by the active verification state before integration.
-- Blockers or unresolved decisions: integration and merge read-back are pending; Windows sandbox cannot write Python temporary subdirectories, so temp-dependent tests must run outside the sandbox; release candidate creation and publication remain explicitly outside this workflow.
+- Git state: continuation branch `codex/2026-07-30-skill-script-colocation-cont-02` from `main@359941cd14bd19a63b64df0f696af1dd71256cd1`.
+- Branch history and checkpoint handoffs: PR #66 merged the validated implementation with merge commit `359941cd14bd19a63b64df0f696af1dd71256cd1`; final provider read-back continues on segment 2.
+- Blockers or unresolved decisions: none for `SKILL-002`; Windows sandbox cannot write Python temporary subdirectories, so temp-dependent tests ran outside the sandbox; release candidate creation and publication remain explicitly outside this workflow.
 
 ## Branch Lifecycle
 
 | Segment | Branch | Base | Checkpoint Type | Commit | Remote / Target | Recorded At | Reason | Resume Branch / Action |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| 1 | `codex/2026-07-30-skill-script-colocation` | `main@fc878b934b8ac15fb6be2ae238c790ab9caad3cc` | implementation | `dc0a0b2d6abcd77a81efd6d5c80cc2ac0b6393f4` | local | `2026-07-30T10:25:28+08:00` | Complete and validate `SKILL-002` without release publication. | Await owner-selected push or PR handling; do not start release work. |
+| 1 | `codex/2026-07-30-skill-script-colocation` | `main@fc878b934b8ac15fb6be2ae238c790ab9caad3cc` | merge | `359941cd14bd19a63b64df0f696af1dd71256cd1` | PR #66 / `main` | `2026-07-30T11:38:15+08:00` | Integrate the validated `SKILL-002` implementation before closing Issue #65. | Continue closeout from updated `main` on `codex/2026-07-30-skill-script-colocation-cont-02`. |
+| 2 | `codex/2026-07-30-skill-script-colocation-cont-02` | `main@359941cd14bd19a63b64df0f696af1dd71256cd1` | closure | `7644609be01d0605860cd85625d88709293c4f48` | local | `2026-07-30T11:38:15+08:00` | Persist merge and provider read-back after Issue closure. | Push and merge the closeout PR; do not start release work. |
