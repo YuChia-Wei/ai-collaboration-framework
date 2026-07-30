@@ -47,7 +47,15 @@ issue:
     applies_to:
       - "formal_story"
       - "formal_enabler"
-    proposal_policy: "not automatically applied"
+    proposal_policy:
+      ai_created:
+        label_required: true
+        hidden_marker_required: false
+        application: "include the attribution label in the Issue creation request"
+      human_submitted:
+        label_required: false
+        hidden_marker_required: false
+        application: "keep the public Proposal form attribution-neutral"
 labels:
   - name: "kind:story"
     color: "1D76DB"

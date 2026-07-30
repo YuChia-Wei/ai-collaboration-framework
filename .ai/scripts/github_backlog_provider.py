@@ -271,7 +271,18 @@ def validate_config(config: dict[str, Any], backlog_ids: set[str]) -> None:
             "runtime_binding": "active Issue-creation execution",
             "refresh_policy": "update execution values before a creation batch when runtime provenance changes",
             "applies_to": ["formal_story", "formal_enabler"],
-            "proposal_policy": "not automatically applied",
+            "proposal_policy": {
+                "ai_created": {
+                    "label_required": True,
+                    "hidden_marker_required": False,
+                    "application": "include the attribution label in the Issue creation request",
+                },
+                "human_submitted": {
+                    "label_required": False,
+                    "hidden_marker_required": False,
+                    "application": "keep the public Proposal form attribution-neutral",
+                },
+            },
         }
         if attribution != expected_attribution:
             errors.append("Issue creation attribution differs from the approved Codex label and marker contract")

@@ -1,0 +1,72 @@
+{
+  "template_id": "ai-context-governance-remediation-task",
+  "template_version": "1.1.0",
+  "task_id": "GHATTR-004",
+  "workflow_id": "2026-07-30-ai-created-proposal-attribution",
+  "owner_skill": "ai-context-governance",
+  "status": "in_progress",
+  "created_at": "2026-07-30T23:33:42+08:00",
+  "updated_at": "2026-07-30T23:36:20+08:00",
+  "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
+  "model": "gpt-5.6-sol",
+  "reasoning_effort": "high",
+  "finding_ids": [],
+  "scope": {
+    "target": "Source-aware Codex attribution for GitHub Proposal creation.",
+    "files": [
+      ".dev/backlog/providers/github.yaml",
+      ".ai/scripts/github_backlog_provider.py",
+      ".ai/scripts/tests/test_github_backlog_provider.py",
+      ".dev/workflows/2026-07-30-ai-created-proposal-attribution/**",
+      ".dev/workflows/INDEX.MD"
+    ],
+    "constraints": [
+      "Do not inject AI attribution into the human Proposal form.",
+      "Do not change Proposal triage or promotion authority.",
+      "Do not extend the detailed hidden marker to Proposals without a separate owner decision."
+    ],
+    "non_goals": [
+      "Implementing Proposal #69.",
+      "Changing STD-001 or OBS-001.",
+      "Reopening DIST-001."
+    ]
+  },
+  "execution": {
+    "steps": [
+      "Record the source-aware Proposal attribution policy.",
+      "Update fail-closed provider validation.",
+      "Verify AI-created and human-submitted Proposal behavior separately.",
+      "Integrate through pull-request-only main."
+    ],
+    "validation": [
+      "Run focused GitHub backlog provider tests.",
+      "Run workflow artifact and implementation-contract validators.",
+      "Run Git diff checks."
+    ],
+    "last_completed_step": "Validated the source-aware Proposal attribution contract and Proposal #69 provider correction.",
+    "next_action": "Commit, push, and open the pull request."
+  },
+  "results": {
+    "summary": "AI-created Proposals now require the Codex label at creation while the human Proposal form remains attribution-neutral.",
+    "files_changed": [
+      ".dev/backlog/providers/github.yaml",
+      ".ai/scripts/github_backlog_provider.py",
+      ".ai/scripts/tests/test_github_backlog_provider.py",
+      ".dev/workflows/2026-07-30-ai-created-proposal-attribution/**",
+      ".dev/workflows/INDEX.MD"
+    ],
+    "tests_run": [
+      "Proposal #69 label read-back: passed",
+      "python .ai/scripts/tests/test_github_backlog_provider.py: 18 passed",
+      "python .ai/scripts/plan-github-backlog-migration.py --check: 42 items, 0 blocked",
+      "python .ai/scripts/validate-workflow-artifacts.py: passed",
+      "python .ai/scripts/tests/test_governance_workflow_contract.py: 7 passed",
+      "python .ai/scripts/tests/test_workflow_implementation_contract.py: 7 passed",
+      "python .ai/scripts/validate-ai-context.py: passed",
+      "git diff --check: passed"
+    ],
+    "finding_status": "addressed",
+    "residual_risk": "The durable provider rule is not integrated into main yet.",
+    "follow_up_needed": true
+  }
+}
