@@ -6,7 +6,7 @@
 - `status`: `active`
 - `current_target`: `v0.8.0`
 - `created_at`: `2026-07-18T14:19:06+08:00`
-- `updated_at`: `2026-07-30T09:40:38+08:00`
+- `updated_at`: `2026-07-30T10:25:28+08:00`
 - `source_assessment`: `.dev/assessments/ASM-20260717-004/assessment.yaml`
 - `source_plan`: `.dev/backlog/plans/post-v0.4.0-improvement-plan.md`
 - `planning_workflow`: `.dev/workflows/2026-07-18-post-v0-4-roadmap-planning/workflow.yaml`
@@ -37,7 +37,7 @@ Read this file before planning or resuming a post-v0.4.0 release.
 | `v0.5.0` | `published` | yes | The four-source release, including exact automatic v0.4.2 upgrades, passed independent review, Windows, hosted Ubuntu, and owner-arranged macOS gates. | Completed at immutable tag `v0.5.0`, peeled commit `1477181f0b43fa7ee82fcd482141758ac9e22eb6`, successful hosted publication run `29922585651`, and a stable GitHub Release with four governed assets. | [`2026-07-22-v0-5-0-macos-portability`](../workflows/2026-07-22-v0-5-0-macos-portability/workflow.yaml) |
 | `v0.6.0` | `published` | yes | The componentized downstream product, semantic customization lifecycle, software-development orchestration acceptance, coordinated CI/configuration/skill transitions, Terra evaluation, and measured simplification disposition are complete. | Completed at immutable annotated tag `v0.6.0`, peeled commit `8b98b5f917513f2d143f42a322050a1162bb63f9`, successful hosted publication run `30074558122`, and a stable GitHub Release with four governed assets. | [`2026-07-24-v0-6-0-release-publication`](../workflows/2026-07-24-v0-6-0-release-publication/workflow.yaml) |
 | `v0.7.0` | `published` | yes | The provenance, portable work-management, downstream package-safety, and fail-closed release-traceability outcomes are published. Legacy identifier retirement and historical archive migration remain separately conditional. | Completed at immutable annotated tag `v0.7.0`, peeled commit `49723a943f744820f4bdb2c22de7930693a7106d`, successful hosted publication run `30363397794`, and a stable GitHub Release with four governed assets. | [`2026-07-28-v0-7-0-release-preparation`](../workflows/2026-07-28-v0-7-0-release-preparation/workflow.yaml) |
-| `v0.8.0` | `planning` | yes | Co-locate skill-owned Python automation with canonical skills while preserving shared tooling and published compatibility routes. | Complete `SKILL-002` with package and repository evidence. Release candidate creation and publication require separate owner authorization. | [`2026-07-30-skill-script-colocation`](../workflows/2026-07-30-skill-script-colocation/workflow.yaml) |
+| `v0.8.0` | `planning` | yes | Co-locate skill-owned Python automation with canonical skills while preserving shared tooling and published compatibility routes. | `SKILL-002` is complete with package and repository evidence. Release candidate creation and publication require separate owner authorization. | [`2026-07-30-skill-script-colocation`](../workflows/2026-07-30-skill-script-colocation/workflow.yaml) |
 
 ## Release Gate Semantics
 
@@ -57,7 +57,7 @@ Read this file before planning or resuming a post-v0.4.0 release.
 | `v0.5.0` | `PKG-003`, `SAG-001`, `ENF-001`, `TOOL-001`, `LANG-001`, `REL-001`, `REL-002`, `HANDOFF-001` | `GOV-001`, `CAP-001`, `VAL-001` | R042-005 is closed; v0.4.2 workflow, independent verification, local release evidence, public Release body, and final version state are reconciled. |
 | `v0.6.0` | `DIST-001`, `CUST-001`, `DEVWF-002`, `CI-001`, `CI-002`, `CFG-001`, `SKILL-001` | `SIMPL-001`; any legacy identifier retirement remains conditional and cannot be silently included. | `EVAL-001`, v0.5.0 completion, `.dev/ai-context/provenance.yaml`, `.dev/ai-context/customizations.yaml`, and the approved `software-development-orchestrator` plus `ai-context-init` compatibility transitions. |
 | `v0.7.0` | `GOV-002`, `GOV-003`, `PKG-004`, `REL-003` | A historical archive migration and legacy identifier retirement each require explicit successor work rather than silent inclusion. | All four blockers are resolved and published at immutable tag `v0.7.0`; no conditional successor work was silently included. |
-| `v0.8.0` | `SKILL-002` | None currently selected. New scope requires an explicit owner roadmap decision rather than silent inclusion. | v0.7.0 is published; Issue #65 and the `SKILL-002` implementation boundary are owner-approved. |
+| `v0.8.0` | `SKILL-002` (resolved; awaiting publication) | None currently selected. New scope requires an explicit owner roadmap decision rather than silent inclusion. | v0.7.0 is published; Issue #65 and `SKILL-002` implementation are complete. Release preparation remains unauthorized. |
 
 `DEVWF-001`, `INIT-001`, `STD-001`, and `OBS-001` remain independent unassigned
 decisions. None is a hidden v0.6.0 blocker. Standards or dev-workflow schema
@@ -228,7 +228,7 @@ versions. Current assignments:
   separately approved successor work.
 - `v0.8.0`: `SKILL-002` owns compatibility-safe colocation of single-owner
   Python automation and contract tests under canonical skill directories. It is
-  the only current blocker; no release candidate or publication is authorized.
+  complete and awaiting publication; no release candidate or publication is authorized.
 - `unassigned`: `DEVWF-001` owns optional issue/timeline schema deliberation;
   `INIT-001` owns existing-AI-agent initialization compatibility, collision
   inventory, dry-run, and synthetic fixtures; `STD-001` owns standards
@@ -307,9 +307,9 @@ assign it to v0.6.0, v0.7.0, or a dedicated release.
 
 ## Next Action
 
-Complete `SKILL-002` on its dedicated workflow branch and retain exact package,
-compatibility, and validation evidence. Do not create a v0.8.0 release candidate,
-tag, GitHub Release, or published package until the owner separately authorizes
-release preparation. Keep `DEVWF-001`, `INIT-001`, `STD-001`, `OBS-001`,
+Retain the completed `SKILL-002` package, compatibility, and validation evidence.
+Do not create a v0.8.0 release candidate, tag, GitHub Release, or published
+package until the owner separately authorizes release preparation. Keep
+`DEVWF-001`, `INIT-001`, `STD-001`, `OBS-001`,
 historical archive migration, and legacy identifier retirement independently
 gated unless an explicit decision assigns them.

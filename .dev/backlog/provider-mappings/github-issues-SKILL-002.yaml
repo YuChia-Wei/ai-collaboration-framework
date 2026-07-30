@@ -3,8 +3,8 @@ provider: "github"
 repository: "YuChia-Wei/ai-collaboration-prompts-dotnet-backend"
 migration_id: "github-live-SKILL-002-2026-07-30"
 stage: "stage-b-read-back-complete"
-source_revision: null
-generated_at: "2026-07-30T09:48:52+08:00"
+source_revision: "dc0a0b2d6abcd77a81efd6d5c80cc2ac0b6393f4"
+generated_at: "2026-07-30T10:34:34+08:00"
 project:
   number: 3
   node_id: "PVT_kwHOAwvEG84Bez7w"
@@ -12,19 +12,19 @@ project:
 items:
   - backlog_id: "SKILL-002"
     source_path: ".dev/backlog/items/SKILL-002.yaml"
-    source_sha256: "47fdc847ae1363bd57cc059402601e7e75f597479ee6f09dfa6e24f649acdb7d"
+    source_sha256: "f6879ee8b116217ec8825e507eba0eb9abe9124c54850ca5f79914de821c1e95"
     issue_number: 65
     issue_node_id: "I_kwDOSBe2Hc8AAAABKu1fbQ"
     issue_url: "https://github.com/YuChia-Wei/ai-collaboration-prompts-dotnet-backend/issues/65"
-    issue_state: "open"
-    close_reason: null
+    issue_state: "closed"
+    close_reason: "completed"
     project_item_id: "PVTI_lAHOAwvEG84Bez7wzg0mfsw"
     created_at: "2026-07-30T01:40:21Z"
-    updated_at: "2026-07-30T01:45:33Z"
+    updated_at: "2026-07-30T02:34:30Z"
     read_back:
-      verified_at: "2026-07-30T09:48:52+08:00"
+      verified_at: "2026-07-30T10:34:34+08:00"
       title_matches: true
       markers_match: true
       labels_match: true
       state_matches: true
-      notes: "Issue #65 is in Project #3 with Status In progress, Priority P1 High, Owner review Approved, Target release v0.8.0, and Published in Not yet published."
+      notes: "Issue #65 is closed as completed and is in Project #3 with Status Done, Priority P1 High, Owner review Not required, Target release v0.8.0, and Published in Not yet published."
