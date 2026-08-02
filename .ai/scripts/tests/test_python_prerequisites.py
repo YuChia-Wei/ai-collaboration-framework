@@ -155,9 +155,17 @@ class PythonPrerequisiteGwtTests(unittest.TestCase):
 
     def test_gwt_008_given_direct_entrypoint_when_current_python_lacks_yaml_then_guard_removes_json_switch_and_exits_once(self) -> None:
         # Given the already-running interpreter is supported but lacks the required dependency.
-        runner = FakeRunner({sys.executable: ("3.13.1", False)})
+        imported: list[str] = []
+
+        def missing_dependency(name: str) -> object:
+            imported.append(name)
+            raise ImportError(name)
+
         blocked = PREREQUISITES.preflight_current(
-            ".ai/scripts/validate-ai-context.py", registry=self.registry, runner=runner
+            ".ai/scripts/validate-ai-context.py",
+            registry=self.registry,
+            importer=missing_dependency,
+            version_info=(3, 13, 1),
         )
         original = PREREQUISITES.preflight_current
         try:
@@ -173,7 +181,7 @@ class PythonPrerequisiteGwtTests(unittest.TestCase):
             self.assertEqual(1, exited.exception.code)
             self.assertEqual("", stderr.getvalue())
             self.assertEqual("missing-dependency", json.loads(stdout.getvalue())["reason_code"])
-            self.assertEqual({sys.executable}, {command[0] for command in runner.commands if command != PREREQUISITES.UV_COMMAND})
+            self.assertEqual(["yaml"], imported)
         finally:
             PREREQUISITES.preflight_current = original
 
@@ -198,15 +206,19 @@ class PythonPrerequisiteGwtTests(unittest.TestCase):
         # When discovery runs, then no parent-process Python command leaks into the supplied environment.
         self.assertEqual([], candidates)
 
-    def test_gwt_011_given_unlaunchable_current_interpreter_when_direct_preflight_runs_then_public_reason_is_no_ready_python(self) -> None:
-        # Given the current process executable cannot be started by its own prerequisite probe.
-        runner = FakeRunner({sys.executable: ("", False)})
+    def test_gwt_011_given_old_current_interpreter_when_direct_preflight_runs_then_it_never_imports_dependencies(self) -> None:
+        # Given the already-running process is below the supported Python floor.
+        imported: list[str] = []
         result = PREREQUISITES.preflight_current(
-            ".ai/scripts/validate-ai-context.py", registry=self.registry, runner=runner
+            ".ai/scripts/validate-ai-context.py",
+            registry=self.registry,
+            importer=lambda name: imported.append(name),
+            version_info=(3, 10, 9),
         )
 
-        # When direct preflight reports the failure, then internal probe vocabulary is never exposed.
-        self.assertEqual("no-ready-python", result.diagnostic["reason_code"])
+        # When direct preflight reports the failure, then no alternate runtime or dependency probe runs.
+        self.assertEqual("unsupported-python", result.diagnostic["reason_code"])
+        self.assertEqual([], imported)
 
     def test_gwt_012_given_active_environment_when_no_explicit_override_then_it_precedes_generic_path(self) -> None:
         # Given an active environment and a separately ready generic Python.

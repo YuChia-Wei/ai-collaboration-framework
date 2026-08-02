@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import argparse
+import importlib
 import json
 import os
 import re
@@ -134,7 +135,14 @@ def _diagnostic(contract: Mapping[str, object], registry: Mapping[str, object], 
     missing = []
     if reason == "missing-dependency":
         missing = [f"{name}=={requirements[name]['version']}" for name in dependencies]  # type: ignore[index]
-    requirements_path = str((ROOT / "requirements.txt").resolve())
+    source_requirements = ROOT / "requirements.txt"
+    envelope_requirements = ROOT.parent / "requirements.txt"
+    governed_requirements = (
+        source_requirements
+        if source_requirements.is_file() or not envelope_requirements.is_file()
+        else envelope_requirements
+    )
+    requirements_path = str(governed_requirements.resolve())
     recovery = None
     if selected and missing:
         recovery = f'"{selected.executable}" -m pip install -r "{requirements_path}"'
@@ -186,17 +194,47 @@ def preflight(entrypoint: str, *, environment: Mapping[str, str] | None = None, 
     return PreflightResult(None, None, diagnostic, int(contract["prerequisite_exit_code"]))
 
 
-def preflight_current(entrypoint: str, *, registry: Mapping[str, object] | None = None, runner: Runner = _run) -> PreflightResult:
+def _probe_current(
+    dependencies: Sequence[str],
+    *,
+    importer: Callable[[str], object] = importlib.import_module,
+    version_info: Sequence[int] | None = None,
+) -> tuple[str | None, str | None]:
+    """Inspect the already-running interpreter without launching an alternate process."""
+    observed_version = sys.version_info[:3] if version_info is None else version_info[:3]
+    parts = tuple(int(item) for item in observed_version)
+    value = ".".join(str(item) for item in parts)
+    if len(parts) < 2 or parts[:2] < (3, 11):
+        return value or None, "unsupported-python"
+    for dependency in dependencies:
+        import_name = "yaml" if dependency == "PyYAML" else dependency
+        try:
+            importer(import_name)
+        except Exception:
+            return value, "missing-dependency"
+    return value, None
+
+
+def preflight_current(
+    entrypoint: str,
+    *,
+    registry: Mapping[str, object] | None = None,
+    importer: Callable[[str], object] = importlib.import_module,
+    version_info: Sequence[int] | None = None,
+) -> PreflightResult:
     """Check only this process's interpreter; direct callers must not switch runtime."""
     registry = load_registry() if registry is None else registry
     contract = entrypoint_contract(entrypoint, registry)
     candidate = Candidate(sys.executable, "current-process")
-    version, reason = _probe(candidate, list(contract["dependency_profile"]), runner)
+    version, reason = _probe_current(
+        list(contract["dependency_profile"]),
+        importer=importer,
+        version_info=version_info,
+    )
     if reason is None:
         return PreflightResult(candidate.executable, version, None, 0)
     observed = [{"executable": candidate.executable, "source": candidate.source, "status": reason, **({"version": version} if version else {})}]
-    public_reason = "no-ready-python" if reason == "unlaunchable" else reason
-    diagnostic = _diagnostic(contract, registry, reason=public_reason, candidates=observed, selected=candidate if version else None, version=version)
+    diagnostic = _diagnostic(contract, registry, reason=reason, candidates=observed, selected=candidate if version else None, version=version)
     return PreflightResult(None, version, diagnostic, int(contract["prerequisite_exit_code"]))
 
 

@@ -55,7 +55,12 @@ class SyntheticPackageRepo:
         (self.root / ".dev/portable.md").write_text(
             "portable project guidance\n", encoding="utf-8", newline="\n"
         )
-        for script in ("ai_context_package_apply.py", "plan-ai-context-package-apply.py"):
+        for script in (
+            "ai_context_package_apply.py",
+            "plan-ai-context-package-apply.py",
+            "python-entrypoints.json",
+            "python_prerequisites.py",
+        ):
             (self.root / ".ai/scripts" / script).write_bytes((SCRIPTS / script).read_bytes())
         (self.root / ".ai/scripts/render-ai-context-release-notes.py").write_text(
             "raise SystemExit('source-only renderer')\n",
@@ -662,7 +667,8 @@ class DeterministicPackageGwtTests(unittest.TestCase):
                 text=True,
             )
             self.assertEqual(2, missing_dependency.returncode)
-            self.assertIn("pip install -r requirements.txt", missing_dependency.stderr)
+            self.assertIn("-m pip install -r", missing_dependency.stderr)
+            self.assertIn(str(package_root / "requirements.txt"), missing_dependency.stderr)
             # When the planner imports its packaged helper before checksum validation.
             completed = subprocess.run(
                 [sys.executable, str(planner), "--package-root", str(package_root), "--target-root", str(target)],
