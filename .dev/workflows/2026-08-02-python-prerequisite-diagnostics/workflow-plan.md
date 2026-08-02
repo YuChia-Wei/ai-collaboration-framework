@@ -19,7 +19,7 @@
 - `current_phase`: `remediation-planning`
 - `artifact_root`: `.dev/workflows/2026-08-02-python-prerequisite-diagnostics`
 - `created_at`: `2026-08-02T10:32:53+08:00`
-- `updated_at`: `2026-08-02T18:50:06+08:00`
+- `updated_at`: `2026-08-02T18:56:49+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md`
 - `template_version`: `1.2.0`
 
@@ -95,7 +95,7 @@
 | `D-002` | Diagnostic fallback and delivery architecture umbrella | decomposed | Evaluate fail-closed behavior, automatic installation, host/versioned/provider-runtime discovery, and OS-native launchers one subdecision at a time. | Prevents unlike trust, mutation, portability, and launcher questions from being collapsed into one approval. |
 | `D-002A` | Default action when no fully ready environment is found | resolved | Perform read-only discovery only; if no fully ready environment exists, do not execute the target CLI, install anything, create an environment, or modify the host/repository. Fail closed with diagnostics and explicit recovery guidance. | Establishes a no-work/no-mutation terminal state while leaving separately invoked, explicitly authorized bootstrap options open for D-004. |
 | `D-002B` | Trusted interpreter discovery sources and order | resolved | Use deterministic read-only discovery in this order: explicit `AI_CONTEXT_PYTHON`; active environment and stable generic PATH commands; versioned PATH commands; one optional installed-uv managed-Python fallback using `uv python find --managed-python --no-python-downloads --offline --no-config --no-project ">=3.11"`; then fail closed. Validate and deduplicate every resolved executable before selection. Do not automatically scan Agent-tool private runtime paths; an owner may still select one explicitly through `AI_CONTEXT_PYTHON`. | Finds uv-managed Python that lacks a PATH shim without making uv or an Agent product a prerequisite, downloading Python, mutating an environment, or depending on provider-private layouts. |
-| `D-002C` | OS-native launcher coverage and delegation boundary | pending |  | Determines Windows/POSIX support and whether native scripts only resolve/diagnose or duplicate Python validator semantics. |
+| `D-002C` | OS-native launcher coverage and delegation boundary | resolved | Provide POSIX-sh and Windows-PowerShell thin launchers as stable compatibility entrypoints. They implement only the approved read-only interpreter/dependency preflight and diagnostics, then delegate validator semantics to the canonical Python implementation; do not create a parallel `check-all.ps1` or duplicate validator behavior. The launchers and their fallback must work without Proposal #76. Treat embedded discovery as a replaceable transitional fallback: a future approved readiness result may be consumed additively, but removing fallback logic or either launcher requires separate evidence, migration, compatibility, and release approval. | Gives Windows and POSIX users a native bootstrap even when no Agent/readiness profile is available, while keeping validation truth in one implementation. Python and required dependencies remain necessary for actual validation; two small adapters and their platform tests become maintained compatibility surfaces. |
 | `D-003` | Diagnostic output and exit contract | pending |  | Defines stable fields, channel, exit status, and compatibility expectations for humans and automation. |
 | `D-004` | Dependency prerequisite inventory and sanctioned recovery/install operation | pending |  | Determines whether only PyYAML or every required runtime dependency is checked, which recovery command is printed, and whether an explicit isolated bootstrap mode is offered. |
 | `D-005` | Pre-mutation guarantee and proof boundary | pending |  | Determines where checks must run and which write-capable paths require negative-path evidence. |
@@ -147,6 +147,14 @@ No automatic Codex, Claude Code, ChatGPT Desktop, or other Agent-product private
 
 Local read-only evidence on 2026-08-02 used uv 0.11.29 with the approved safety flags and resolved its installed managed CPython 3.14.1. The same installation is also exposed as `python3.14` on PATH, and both identities lack PyYAML, proving that interpreter discovery and dependency readiness remain separate. The WinGet uv link required sandbox approval in the current Agent environment, reinforcing that uv must remain a bounded fallback rather than a prerequisite or first candidate.
 
+## D-002C OS-Native Launcher And Transition Boundary
+
+The owner approved a POSIX-sh launcher and a Windows-PowerShell launcher as stable compatibility entrypoints. Each launcher may perform only the read-only prerequisite discovery approved by `D-002A` and `D-002B`, produce the diagnostic contract later resolved by `D-003`, and delegate actual validator semantics to the canonical Python implementation later resolved by `D-009`. They must not duplicate validator rules, become OS-native validator rewrites, or introduce `check-all.ps1` under Issue #69.
+
+The launchers are self-contained bootstrap/fallback paths and cannot require Proposal #76, an Agent runtime, or a pre-existing readiness result. Their embedded discovery is nevertheless a replaceable transitional implementation detail. If Proposal #76 is later approved and implemented, the launchers may first consume a fresh compatible readiness result and retain bounded direct discovery when that result is missing, stale, or unavailable.
+
+Completion of a readiness skill does not itself authorize deleting these entrypoints. Removing duplicated discovery requires evidence that supported local, CI, non-Agent, and downstream package scenarios retain a usable bootstrap plus explicit migration approval. Removing either published launcher is a stronger compatibility change and requires a separate release decision after consumers have migrated; it is not part of the v0.8.0 #69 implementation.
+
 ## General Environment Readiness Follow-Up Boundary
 
 The owner approved separating the generalized environment-readiness capability from Issue #69. `FUP-002` is externally tracked as GitHub Proposal [#76](https://github.com/YuChia-Wei/ai-collaboration-prompts-dotnet-backend/issues/76), `[Proposal] Add Environment Readiness Profiles for Host and Agent Capabilities`, with `scope:mixed`, `kind:proposal`, `triage:needed`, and `created-by:codex` labels. Duplicate searches for environment readiness, local profiles, `apply_patch`, PowerShell file editing, and .NET build/test diagnostics found no open issue owning the same boundary.
@@ -160,7 +168,7 @@ Proposal #76 owns evaluation of:
 - an owner- and policy-approved PowerShell-native text-update fallback with repository containment, expected-content/fingerprint checks, encoding/newline preservation, atomic replacement where practical, and post-write diff verification;
 - the rule that repository policy cannot bypass a higher-priority system, developer, runtime, sandbox, or enterprise requirement to use another edit mechanism.
 
-Issue #69 retains only Python prerequisite discovery, diagnostic, and native bootstrap behavior. Its D-002C launcher decision must work without #76, must not define a general readiness snapshot, and may remain a future consumer of an approved profile through an additive integration. Creating #76 does not accept, promote, schedule, or authorize its implementation.
+Issue #69 retains only Python prerequisite discovery, diagnostic, and native bootstrap behavior. The approved D-002C launchers must work without #76, must not define a general readiness snapshot, and may become future consumers of an approved profile only through additive integration. Creating #76 does not accept, promote, schedule, or authorize its implementation, and completing it would not independently authorize removal of a launcher or fallback.
 
 ## Current Downstream Validation Activation State
 
@@ -383,13 +391,13 @@ Issue #69 is not fully discussed. The current decision ledger has this state:
 
 | State | Decisions | Meaning |
 | --- | --- | --- |
-| Resolved atomic decisions (12) | `D-001`, `D-002A`, `D-002B`, `D-006A`, `D-006B`, `D-TR-001`, `D-010A`, `D-010B1`, `D-010B2`, `D-010C`, `D-010D`, `D-010E` | Production-entrypoint coverage, no-mutation failure, deterministic interpreter trust/discovery, workflow ownership, packaged-but-unselected skill self-tests, future translation routing, routine-switch scope, local and CI policy, compatibility-safe result truth, and bounded Agent attempts are approved. |
-| Decomposed umbrellas (1) | `D-002` | This organizes its runtime subdecisions and does not itself authorize an implementation. `D-010` is fully resolved through its control chain. |
-| Pending atomic decisions (8) | `D-002C`, `D-003`, `D-004`, `D-005`, `D-006`, `D-007`, `D-008`, `D-009` | Launcher boundary, output/exit contract, dependency recovery, pre-mutation proof, remaining script ownership, tests, migration communication, and canonical runtime remain open. |
+| Resolved atomic decisions (13) | `D-001`, `D-002A`, `D-002B`, `D-002C`, `D-006A`, `D-006B`, `D-TR-001`, `D-010A`, `D-010B1`, `D-010B2`, `D-010C`, `D-010D`, `D-010E` | Production-entrypoint coverage, no-mutation failure, deterministic interpreter trust/discovery, stable native launchers with replaceable discovery, workflow ownership, packaged-but-unselected skill self-tests, future translation routing, routine-switch scope, local and CI policy, compatibility-safe result truth, and bounded Agent attempts are approved. |
+| Decomposed umbrellas (1) | `D-002` | This organizes its now-resolved runtime subdecisions and does not itself authorize an implementation. `D-010` is also fully resolved through its control chain. |
+| Pending atomic decisions (7) | `D-003`, `D-004`, `D-005`, `D-006`, `D-007`, `D-008`, `D-009` | Output/exit contract, dependency recovery, pre-mutation proof, remaining script ownership, tests, migration communication, and canonical runtime remain open. |
 
 The remaining questions should be completed in three bounded groups while retaining the one-question-at-a-time owner contract:
 
-1. Runtime discovery and recovery: `D-002C`, `D-004`, and `D-009`; `D-002A` and `D-002B` are resolved.
+1. Runtime discovery and recovery: `D-004` and `D-009`; `D-002A`, `D-002B`, and `D-002C` are resolved.
 2. Observable contract and proof: `D-003`, `D-005`, and `D-007`.
 3. Ownership, package compatibility, and communication: `D-006` and `D-008`.
 
@@ -426,15 +434,15 @@ Discussion may continue in the same Codex task for conversational continuity, bu
 
 ## Resume Checkpoint
 
-- Last completed action: separated generalized environment readiness, target enterprise execution policy, Agent-runtime capability evidence, and policy-governed workspace-edit fallback into externally tracked Proposal #76; D-002C remains pending inside #69.
+- Last completed action: resolved `D-002C` with stable POSIX-sh and Windows-PowerShell compatibility entrypoints, canonical-Python delegation, a self-contained read-only bootstrap, and separately removable transitional discovery logic.
 - Current task: `AIC-004-diagnostic-design`.
-- Exact next action: resume only the owner decision on whether D-002C provides POSIX-sh and Windows-PowerShell thin Python launchers as a self-contained bootstrap/fallback that does not depend on Proposal #76.
+- Exact next action: explain and obtain only the owner decision on `D-004` dependency prerequisite inventory, recovery guidance, and whether an explicit isolated bootstrap operation is offered.
 - Validation already completed: confirmed clean `main@2263744bb2dc876f8077547e961fc68be28b0074` before branching; verified the final baseline assessment; verified the inventory against `git ls-files`, direct file reads, distribution profile, shell registry, active documentation, and existing tests; parsed all then-existing task JSON files; `git diff --check`, `validate-workflow-artifacts.py`, and `validate-ai-context.py` passed.
 - Current discussion-checkpoint validation: Git-history probes established the adoption timeline; the active sub-agent manifest and Codex adapter established the missed low-cost route; local uv 0.11.29 help and an offline/no-download managed-Python lookup were inspected read-only; the changed task JSON parsed with PowerShell; locator/index state was checked directly; and `git diff --check` passed. Full Python-backed repository validators were not rerun because every discovered interpreter lacks PyYAML and D-002A now forbids implicit installation; this checkpoint records that result as `blocked-by-environment`, not passed.
 - Validation environment note: generic `python` and `python3` resolve to unusable Windows aliases. A versioned uv-managed Python 3.14.1 and the Codex bundled Python 3.12.13 can start, but neither currently imports PyYAML. Prior artifact validation used Codex Python with isolated temporary `PyYAML==6.0.3`; no repository dependency files were changed.
-- Git state: active branch `codex/2026-08-02-python-prerequisite-diagnostics`, created from `main@2263744bb2dc876f8077547e961fc68be28b0074`; the latest durable design checkpoint entering this discussion is `8cef8fc`.
-- Branch history and checkpoint handoffs: bootstrap commits `88a01be` and `4e93c0f`; absent-interpreter boundary `cd58c2b`; inventory translation `d27fb8a`; D-001/fallback assessment `d5ae808`; runtime rationale and D-002A `9937fb4`; downstream switch gap `7fa102c`; activation/retry scope `74bb024`; D-010B team scenarios `c2b35ad`; opt-in location and skill-stage map `32ede97`; workflow ownership and self-test terminology `22e6883`; self-test boundary and FUP scope `ac2d9d7`; staged #69/#75 scope boundary `1a66897`; checkpoint split and integrated D-010 framing `8c3fb8d`; manual-default and local-store comparison `4703943`; persistent local opt-in `5c6b9e5`; target CI enforcement `8ba7ed9`; outcome/retry controls `59a8add`; interpreter discovery order `8cef8fc`; no push or merge handoff has occurred.
-- Blockers or unresolved decisions: eight atomic #69 decisions remain unresolved; `D-002A`, `D-002B`, the complete D-010 control chain, and checkpoint/branch separation are resolved. Implementation edits remain paused pending explicit accumulated-design approval. Proposals #75 and #76 are externally tracked but not accepted, promoted, scheduled, or authorized for implementation.
+- Git state: active branch `codex/2026-08-02-python-prerequisite-diagnostics`, created from `main@2263744bb2dc876f8077547e961fc68be28b0074`; the latest durable design checkpoint entering this discussion is `3769584`.
+- Branch history and checkpoint handoffs: bootstrap commits `88a01be` and `4e93c0f`; absent-interpreter boundary `cd58c2b`; inventory translation `d27fb8a`; D-001/fallback assessment `d5ae808`; runtime rationale and D-002A `9937fb4`; downstream switch gap `7fa102c`; activation/retry scope `74bb024`; D-010B team scenarios `c2b35ad`; opt-in location and skill-stage map `32ede97`; workflow ownership and self-test terminology `22e6883`; self-test boundary and FUP scope `ac2d9d7`; staged #69/#75 scope boundary `1a66897`; checkpoint split and integrated D-010 framing `8c3fb8d`; manual-default and local-store comparison `4703943`; persistent local opt-in `5c6b9e5`; target CI enforcement `8ba7ed9`; outcome/retry controls `59a8add`; interpreter discovery order `8cef8fc`; environment-readiness follow-up split `3769584`; no push or merge handoff has occurred.
+- Blockers or unresolved decisions: seven atomic #69 decisions remain unresolved; `D-002A`, `D-002B`, `D-002C`, the complete D-010 control chain, and checkpoint/branch separation are resolved. Implementation edits remain paused pending explicit accumulated-design approval. Proposals #75 and #76 are externally tracked but not accepted, promoted, scheduled, or authorized for implementation.
 
 ## Branch Lifecycle
 
