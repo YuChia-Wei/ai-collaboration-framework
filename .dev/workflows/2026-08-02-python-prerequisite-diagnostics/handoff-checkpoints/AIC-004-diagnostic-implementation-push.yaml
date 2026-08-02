@@ -1,0 +1,85 @@
+schema_version: "1.0"
+checkpoint_id: "2026-08-02-python-prerequisite-diagnostics-AIC-004-diagnostic-implementation-push"
+created_at: "2026-08-02T21:39:50+08:00"
+repository:
+  root: "."
+  branch: "codex/2026-08-02-python-prerequisite-diagnostics"
+  validated_commit: "7ce14a41342afde0aa03935fb163fa83ceed9640"
+  checkpoint_commit_source: "containing-commit"
+  dirty_state: "clean"
+  status_porcelain_sha256: "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+workflow:
+  workflow_id: "2026-08-02-python-prerequisite-diagnostics"
+  task_id: "AIC-004-diagnostic-implementation"
+resume:
+  last_completed_action: "Preserved the approved 22-decision design and CP-1 state through the owner-integrated main fix and local rebase at 7ce14a4, then ran the required critical gate without editing any of the 12 portable entrypoints."
+  exact_next_action: "Push this branch to origin; on the receiving host, verify this checkpoint, repair only AIC-004-HANDOFF-GIT-BASH-DIRNAME-UNRESOLVED and AIC-004-HANDOFF-PYTHON-PREREQUISITE-UNSATISFIED, rerun the recorded critical gate, and replace this checkpoint with a passing normal-continuation checkpoint before editing any of the 12 portable entrypoints."
+  hidden_context_required: false
+critical_gate:
+  command: '"C:\Program Files\Git\bin\bash.exe" .ai/scripts/check-all.sh --critical'
+  observed_at: "2026-08-02T21:38:06+08:00"
+  exit_code: 1
+  outcome: "failed"
+  execution_environment:
+    persistent_host_changes: false
+    child_path_prefixes:
+      - 'C:\Program Files\Git\usr\bin'
+      - 'C:\Program Files\Git\mingw64\bin'
+    note: "The two Git installation paths were prepended only for the final child process because the Codex-inherited PATH omitted Git core utilities; dirname still remained unresolved."
+  output:
+    normalization: "utf8-lf"
+    sha256: "22f4768bbafbcb565daac51361007e7063a85567a1f52e80b8dab30c2f495251"
+    line_count: 2
+    tail:
+      - ".ai/scripts/check-all.sh: line 22: dirname: command not found"
+      - "Python 3.11 or newer is required. Install source dependencies from requirements.txt or set AI_CONTEXT_PYTHON to a usable interpreter."
+continuation:
+  allowed: true
+  mode: "repair-only"
+  reason: "The critical gate is blocked by two named host bootstrap failures. Cross-host transfer is allowed, but implementation remains prohibited until the receiving host repairs those failures and records a passing replacement checkpoint."
+  repair_task_id: "AIC-004-diagnostic-implementation"
+  failure_ids:
+    - "AIC-004-HANDOFF-GIT-BASH-DIRNAME-UNRESOLVED"
+    - "AIC-004-HANDOFF-PYTHON-PREREQUISITE-UNSATISFIED"
+release_handoff: false
+release_phase_check: null
+execution_provenance:
+  runtime: "OpenAI Codex"
+  model: "gpt-5.6-sol"
+  reasoning_effort: "high"
+  model_source: "runtime-reported"
+  evidence_ref: ".dev/workflows/2026-08-02-python-prerequisite-diagnostics/tasks/AIC-004-diagnostic-implementation.json"
+attribution:
+  preservation_required: true
+  evidence_union_version: "1.0"
+  selected_evidence:
+    kind: "repository-created-local-ai-trailer"
+    commit: "7ce14a41342afde0aa03935fb163fa83ceed9640"
+    author: "YuChia <h42279@gmail.com>"
+    committer: "YuChia <h42279@gmail.com>"
+    signature_status: "unsigned"
+    session_ref: null
+    observed_trailer: "Co-Authored-By: OpenAI Codex (gpt-5.6-sol, high) <noreply@openai.com>"
+    message_sha256: "acc07438e18c5df6baa2d4f1e04fb7c96bb06ddc8eb82a81d82588664db31b9a"
+    fixture_ref: "git:7ce14a41342afde0aa03935fb163fa83ceed9640"
+  fixture_status:
+    - path_id: "copilot-cli"
+      status: "blocked"
+      commit: null
+      evidence_ref: ".dev/workflows/2026-07-21-v0-5-0-development/evidence/v050-handoff-attribution-fixtures.md#github-copilot-cli"
+      reason: "No provider-generated Copilot CLI commit fixture is present in this repository."
+    - path_id: "copilot-cloud-agent"
+      status: "blocked"
+      commit: null
+      evidence_ref: ".dev/workflows/2026-07-21-v0-5-0-development/evidence/v050-handoff-attribution-fixtures.md#github-copilot-cloud-agent"
+      reason: "No provider-generated Copilot cloud-agent commit fixture is present in this repository."
+    - path_id: "claude"
+      status: "blocked"
+      commit: null
+      evidence_ref: ".dev/workflows/2026-07-21-v0-5-0-development/evidence/v050-handoff-attribution-fixtures.md#claude"
+      reason: "No stable provider-generated Claude commit attribution fixture is available."
+    - path_id: "codex-local"
+      status: "captured"
+      commit: "7ce14a41342afde0aa03935fb163fa83ceed9640"
+      evidence_ref: "git:7ce14a41342afde0aa03935fb163fa83ceed9640"
+      reason: null
