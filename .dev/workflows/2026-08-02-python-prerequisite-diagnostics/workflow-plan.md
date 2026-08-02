@@ -19,7 +19,7 @@
 - `current_phase`: `remediation-planning`
 - `artifact_root`: `.dev/workflows/2026-08-02-python-prerequisite-diagnostics`
 - `created_at`: `2026-08-02T10:32:53+08:00`
-- `updated_at`: `2026-08-02T12:39:54+08:00`
+- `updated_at`: `2026-08-02T13:05:31+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md`
 - `template_version`: `1.2.0`
 
@@ -71,6 +71,10 @@
 - Git history contains no current comparison-backed ADR that selects Python as the canonical validator runtime. Python entered incrementally, PyYAML spread when nested YAML validation was added, and dependency/bootstrap declarations followed clean-environment failures. Retaining Python is therefore a pending design decision rather than established owner-approved rationale.
 - A historical, now-retired `ADR-052` acknowledged that its Markdown parser required Python but treated that prerequisite as a consequence; it did not compare runtime alternatives. Full OS-native validator rewrites would create multiple platform implementations and YAML parsing gaps, while thin OS-native launchers remain a bounded candidate for discovery and diagnostics.
 - The two existing zh-TW evidence files were produced by the primary `gpt-5.6-sol` agent even though active routing assigns finalized derived translations to the low-cost `context-translator` (`gpt-5.6-terra`, low reasoning). Their parity checks passed, but the cost-routing process was not followed; corrective handling is pending owner direction.
+- The owner accepted the existing translation content without regeneration. Future derived zh-TW work must use the promoted low-cost translator after English finalization, record the resolved model, and stop rather than fall back to the primary agent when that route is unavailable.
+- Current downstream validation has selection modes but no target-owned enablement policy. `--quick`, `--critical`, and `--full` select batches; `check-all.sh` resolves Python before any batch can run, and selected Python checks are generally hard-coded as required. `AI_CONTEXT_PYTHON` selects an interpreter rather than enabling or disabling validation.
+- Context-driven `not applicable` behavior exists for absent source-release/provenance/spec inputs, but it is not an owner or developer toggle. No pre-commit hook automatically invokes the aggregate runner. Source CI runs `--quick`, while the distribution profile packages scripts under mandatory core components without projecting the source `.github/workflows/portable-gates.yml` workflow.
+- A validation activation switch would not remove Python from explicit package apply, initialization, or upgrade lifecycles. Routine local/CI enforcement must be separated from safety-critical lifecycle commands before a switch is designed.
 - Detailed inventory and fallback/ownership evidence are retained in the English evidence files with complete owner-review translations in their `.zh-TW.md` companions.
 
 ## Discussion Contract And Decision Log
@@ -94,7 +98,12 @@
 | `D-007` | Deterministic test matrix | pending |  | Determines interpreter/dependency simulation, platform coverage, and required closeout gates. |
 | `D-008` | Documentation and migration communication | pending |  | Determines whether this is behavior clarification only or a documented command/contract migration. |
 | `D-009` | Canonical validator runtime disposition | pending |  | Determines whether Python remains the canonical implementation under Issue #69, a runtime migration enters this workflow, or runtime replacement becomes a separate governed proposal. This must be resolved before implementation can entrench the current dependency. |
-| `D-TR-001` | Corrective handling for the two primary-agent zh-TW translations | pending |  | Determines whether the low-cost `context-translator` should replace/revalidate both derived files before substantive design discussion continues. |
+| `D-TR-001` | Corrective handling for the two primary-agent zh-TW translations | resolved | Keep the two existing translations; do not regenerate them. Require every later finalized-English-to-zh-TW derivation to use the promoted low-cost `context-translator` route and main-agent parity review. | Avoids unnecessary churn while making the future cost/routing precondition explicit and non-optional. |
+| `D-010` | Downstream validation activation policy umbrella | decomposed | Separate automatic routine execution, local developer policy, CI enforcement, lifecycle safety gates, and result semantics instead of using one ambiguous Boolean. | Allows host-flexible local use without weakening explicit install, upgrade, apply, or selected CI contracts. |
+| `D-010A` | Scope of the downstream activation switch | pending |  | Determines whether the switch controls only automatic routine validation while direct invocations and lifecycle safety commands remain fail-closed. |
+| `D-010B` | Target-owned local default and developer override | pending |  | Determines whether local execution is disabled, manual, recommended, or required by default and where a developer-specific override may live without changing repository truth. |
+| `D-010C` | Target-owned CI enforcement | pending |  | Determines how a target separately declares CI-required validation and prevents a local preference from bypassing hosted gates. |
+| `D-010D` | Disabled, unavailable, and executed result semantics | pending |  | Keeps `not-run-by-policy`, `blocked-by-environment`, `failed`, and `passed` distinct so disabling a check cannot be reported as success. |
 
 ## Translation Routing Deviation
 
@@ -102,7 +111,19 @@
 - The primary agent instead translated `entrypoint-inventory.zh-TW.md` and `runtime-fallback-and-ownership-assessment.zh-TW.md` using `gpt-5.6-sol` with high reasoning.
 - Cause: the primary agent consulted the language/governance policies but failed to discover and apply `.ai/SUB-AGENT-SYSTEM.MD` before translation. No runtime limitation required this bypass.
 - Impact: structural and semantic parity checks passed, so the content is not automatically invalid, but the requested low-cost delegation contract was violated.
-- Correction remains pending `D-TR-001`; no translation is being represented as low-cost-sub-agent output retroactively.
+- `D-TR-001` is resolved without regeneration. No translation is being represented as low-cost-sub-agent output retroactively.
+- For every future derived translation, the main agent must finalize the English source first, delegate exactly one source/output pair to `context-translator`, record the resolved `gpt-5.6-terra` low-reasoning route, review parity, and own the commit. If that route is unavailable, translation pauses instead of falling back to the primary model.
+
+## Current Downstream Validation Activation State
+
+- `check-all.sh` supports `--quick`, `--critical`, and `--full`, but these are batch-selection modes rather than an enable/disable switch.
+- Python 3.11+ discovery runs before check selection. Even a mode intended to omit some checks cannot start without Python under the current implementation.
+- Selected checks use repository-coded enforcement classes (`required` or `advisory`). Downstream configuration cannot currently reclassify them.
+- `AI_CONTEXT_PYTHON` is only an explicit interpreter selector.
+- Applicability detection can report source-only or unconfigured checks as `not applicable`; it does not express owner or developer preference.
+- Installing the package does not install a downstream CI workflow or Git hook. The source repository's `portable-gates.yml` explicitly provisions Python/PyYAML and runs `--quick`; downstream teams must create their own CI integration.
+- The distribution profile does not expose validators as an optional component. `.ai/scripts/**` is projected through mandatory core components, although shipping a script does not itself execute it.
+- Direct Python commands and lifecycle-owned validation references exist in policies and skills. An activation policy must not silently bypass package apply, initialization, upgrade, provenance finalization, or other commands the user explicitly invokes.
 
 ## Stages And Checkpoints
 
@@ -117,15 +138,15 @@
 
 ## Resume Checkpoint
 
-- Last completed action: resolved D-002A as fail-closed/no-work/no-mutation, reconstructed the incremental Python/PyYAML adoption history, assessed OS-native alternatives, and recorded the missed low-cost translation route without retroactively changing provenance.
+- Last completed action: resolved D-TR-001 without regenerating existing translations, established a mandatory low-cost route for future derived translations, and confirmed that current downstream validation has modes and contextual applicability but no target-owned enable/disable policy.
 - Current task: `AIC-004-diagnostic-design`.
-- Exact next action: ask only `D-TR-001` whether the two existing owner-review translations should be replaced/revalidated by the promoted low-cost `context-translator` before returning to runtime-design decisions.
+- Exact next action: ask only `D-010A` whether downstream activation controls automatic routine validation only, leaving direct invocation and explicit lifecycle safety commands fail-closed and outside the switch.
 - Validation already completed: confirmed clean `main@2263744bb2dc876f8077547e961fc68be28b0074` before branching; verified the final baseline assessment; verified the inventory against `git ls-files`, direct file reads, distribution profile, shell registry, active documentation, and existing tests; parsed both task JSON files; `git diff --check`, `validate-workflow-artifacts.py`, and `validate-ai-context.py` passed.
 - Current discussion-checkpoint validation: Git-history probes established the adoption timeline; the active sub-agent manifest and Codex adapter established the missed low-cost route; the changed task JSON parsed with PowerShell; locator/index state was checked directly; and `git diff --check` passed. Full Python-backed repository validators were not rerun because every discovered interpreter lacks PyYAML and D-002A now forbids implicit installation; this checkpoint records that result as `blocked-by-environment`, not passed.
 - Validation environment note: generic `python` and `python3` resolve to unusable Windows aliases. A versioned uv-managed Python 3.14.1 and the Codex bundled Python 3.12.13 can start, but neither currently imports PyYAML. Prior artifact validation used Codex Python with isolated temporary `PyYAML==6.0.3`; no repository dependency files were changed.
 - Git state: active branch `codex/2026-08-02-python-prerequisite-diagnostics`, created from `main@2263744bb2dc876f8077547e961fc68be28b0074`; the latest durable design commit before this discussion is `d5ae808626508cba857ea412ae1d543fa86095e6`.
 - Branch history and checkpoint handoffs: bootstrap commits `88a01bebfe95f696763c1b310c363f354949f205` and `4e93c0f09cae2c50bf6a330de0cca05c8b52fec6`; absent-interpreter boundary commit `cd58c2b0391dccb4a8487f33938b8a3c5d060500`; inventory translation commit `d27fb8adbaf890f9f926c2de6bf66aa6917a83d0`; D-001/fallback assessment commit `d5ae808626508cba857ea412ae1d543fa86095e6`; no push or merge handoff has occurred.
-- Blockers or unresolved decisions: `D-TR-001`, `D-002B` onward, and `D-009` remain unresolved; implementation edits are paused pending explicit accumulated-design approval.
+- Blockers or unresolved decisions: `D-010A` onward, `D-002B` onward, and `D-009` remain unresolved; implementation edits are paused pending explicit accumulated-design approval.
 
 ## Branch Lifecycle
 

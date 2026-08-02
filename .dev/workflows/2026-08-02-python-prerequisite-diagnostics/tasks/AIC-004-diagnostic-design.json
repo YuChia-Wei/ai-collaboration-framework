@@ -8,7 +8,7 @@
   "owner_skill": "ai-context-governance",
   "status": "in_progress",
   "created_at": "2026-08-02T10:32:53+08:00",
-  "updated_at": "2026-08-02T12:39:54+08:00",
+  "updated_at": "2026-08-02T13:05:31+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-5.6-sol",
   "reasoning_effort": "high",
@@ -49,6 +49,7 @@
       "Map import timing, mutation potential, package projection, documentation, and tests.",
       "Assess fail-closed, host/versioned/provider runtime discovery, explicit installation, OS-native launcher, and canonical script ownership alternatives.",
       "Reconstruct the Python/PyYAML selection history and distinguish repository evidence from inferred engineering motivation.",
+      "Inventory current downstream execution modes, applicability behavior, CI wiring, distribution projection, and the absence of a target-owned activation policy.",
       "Present one design decision at a time with impact and alternatives.",
       "Record every owner decision in workflow-plan.md.",
       "Produce an approved implementation boundary and validation matrix."
@@ -58,11 +59,11 @@
       "Valid workflow locator and task artifacts",
       "Explicit owner approval before implementation transition"
     ],
-    "last_completed_step": "Recorded D-002A as fail-closed with no execution, installation, environment creation, or mutation; reconstructed the incremental Python/PyYAML history; assessed OS-native options; and recorded the missed low-cost context-translator route.",
-    "next_action": "Ask only D-TR-001 whether the two existing zh-TW evidence files should be replaced/revalidated by the low-cost context-translator before returning to runtime-design decisions."
+    "last_completed_step": "Resolved D-TR-001 without regeneration, established the required low-cost route for later translations, and confirmed that downstream validation currently has batch modes and contextual applicability but no target-owned activation switch.",
+    "next_action": "Ask only D-010A whether the activation switch controls automatic routine validation only while direct invocation and explicit lifecycle safety commands remain fail-closed."
   },
   "results": {
-    "summary": "D-001 and D-002A are resolved: all 25 production CLIs are in scope in portable-first order, and a missing ready environment terminates without execution or mutation. Python runtime rationale, OS-native alternatives, and the missed low-cost translation route are now evidenced; implementation has not started.",
+    "summary": "D-001, D-002A, and D-TR-001 are resolved. Existing translations remain, future derived translations require the low-cost context-translator, and the current downstream surface is confirmed to lack a target-owned validation activation policy. Implementation has not started.",
     "files_changed": [
       ".dev/workflows/2026-08-02-python-prerequisite-diagnostics/workflow.yaml",
       ".dev/workflows/2026-08-02-python-prerequisite-diagnostics/workflow-plan.md",
@@ -88,10 +89,12 @@
       "context-translator canonical manifest, playbook, active routing table, and Codex adapter verification: completed",
       "Current changed task JSON parsed with PowerShell ConvertFrom-Json: passed",
       "Current git diff --check: passed",
-      "Current Python-backed workflow and AI-context validators: blocked-by-environment because discovered interpreters lack PyYAML; no implicit installation performed under D-002A"
+      "Current Python-backed workflow and AI-context validators: blocked-by-environment because discovered interpreters lack PyYAML; no implicit installation performed under D-002A",
+      "Codebase Memory graph and graph-augmented search for hidden .ai scripts: no indexed results; direct tracked-file fallback used",
+      "check-all.sh modes, interpreter resolution order, enforcement classes, applicability gates, source portable-gates CI, distribution profile, skill/policy direct invocations, and hook inventory: inspected"
     ],
     "finding_status": "not-addressed",
-    "residual_risk": "The default no-work/no-mutation behavior is resolved, but translation-process correction, interpreter trust, launcher coverage, dependency recovery, canonical runtime, output, proof, ownership, projection, testing, and documentation decisions remain unresolved; implementation remains paused.",
+    "residual_risk": "Future translation routing is resolved, but downstream activation scope/defaults/CI semantics, interpreter trust, launcher coverage, dependency recovery, canonical runtime, output, proof, ownership, projection, testing, and documentation decisions remain unresolved; implementation remains paused.",
     "follow_up_needed": true
   }
 }
