@@ -1,0 +1,80 @@
+{
+  "template_id": "ai-context-governance-remediation-task",
+  "template_version": "1.1.0",
+  "template_created_at": "2026-07-10T18:22:49+08:00",
+  "template_updated_at": "2026-07-27T09:52:09+08:00",
+  "task_id": "AIC-004-diagnostic-design",
+  "workflow_id": "2026-08-02-python-prerequisite-diagnostics",
+  "owner_skill": "ai-context-governance",
+  "status": "in_progress",
+  "created_at": "2026-08-02T10:32:53+08:00",
+  "updated_at": "2026-08-02T10:44:09+08:00",
+  "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
+  "model": "gpt-5.6-sol",
+  "reasoning_effort": "high",
+  "finding_ids": [
+    "ASM-20260730-001#AIC-004"
+  ],
+  "scope": {
+    "target": "Repository-backed design for consistent Python prerequisite diagnostics across supported validator and package entrypoints",
+    "files": [
+      ".ai/scripts/**/*.py",
+      ".ai/assets/skills/*/scripts/**/*.py",
+      ".ai/scripts/check-all.sh",
+      "requirements.txt",
+      ".ai/distribution/**",
+      ".dev/guides/**",
+      ".dev/releases/**",
+      ".dev/workflows/2026-08-02-python-prerequisite-diagnostics/**"
+    ],
+    "constraints": [
+      "Ask and resolve exactly one owner-decision question at a time.",
+      "Explain behavior, compatibility, package, documentation, and test impacts before each decision.",
+      "Require Python 3.11 or newer; do not redefine the supported runtime downward.",
+      "Fail before repository mutation or validation success claims.",
+      "Do not weaken existing validation, package, upgrade, or release gates.",
+      "Keep the baseline assessment immutable."
+    ],
+    "non_goals": [
+      "Implement before the accumulated design is explicitly approved.",
+      "Silently install Python or dependencies.",
+      "Refactor unrelated validator behavior.",
+      "Prepare or publish a framework release."
+    ]
+  },
+  "execution": {
+    "steps": [
+      "Inventory all candidate Python entrypoints and classify user-facing support evidence.",
+      "Map import timing, mutation potential, package projection, documentation, and tests.",
+      "Present one design decision at a time with impact and alternatives.",
+      "Record every owner decision in workflow-plan.md.",
+      "Produce an approved implementation boundary and validation matrix."
+    ],
+    "validation": [
+      "Repository-native path and reference evidence for every in-scope entrypoint",
+      "Valid workflow locator and task artifacts",
+      "Explicit owner approval before implementation transition"
+    ],
+    "last_completed_step": "Bound Issue #69 to ASM-20260730-001#AIC-004 and completed the repository-native entrypoint, distribution, prerequisite-import, mutation-risk, documentation, and test inventory.",
+    "next_action": "Ask only D-001 about the supported user-facing entrypoint boundary and record the owner's answer before considering delivery architecture."
+  },
+  "results": {
+    "summary": "Initial impact inventory is complete and design discussion is active; no implementation conclusion has been approved or applied.",
+    "files_changed": [
+      ".dev/workflows/2026-08-02-python-prerequisite-diagnostics/workflow.yaml",
+      ".dev/workflows/2026-08-02-python-prerequisite-diagnostics/workflow-plan.md",
+      ".dev/workflows/2026-08-02-python-prerequisite-diagnostics/tasks/AIC-004-diagnostic-design.json",
+      ".dev/workflows/2026-08-02-python-prerequisite-diagnostics/tasks/AIC-004-diagnostic-implementation.json",
+      ".dev/workflows/2026-08-02-python-prerequisite-diagnostics/evidence/entrypoint-inventory.md"
+    ],
+    "tests_run": [
+      "Both task JSON files parsed with PowerShell ConvertFrom-Json: passed",
+      "git diff --check: passed",
+      "Codex bundled Python 3.12.13 plus isolated PyYAML==6.0.3: python .ai/scripts/validate-workflow-artifacts.py: passed",
+      "Codex bundled Python 3.12.13 plus isolated PyYAML==6.0.3: python .ai/scripts/validate-ai-context.py: passed"
+    ],
+    "finding_status": "not-addressed",
+    "residual_risk": "The supported-entrypoint boundary and diagnostic contract are still unresolved; implementation remains paused.",
+    "follow_up_needed": true
+  }
+}
