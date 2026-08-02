@@ -6,9 +6,9 @@
   "task_id": "AIC-004-source-diagnostic-implementation",
   "workflow_id": "2026-08-02-python-prerequisite-diagnostics",
   "owner_skill": "ai-context-governance",
-  "status": "pending",
+  "status": "in_progress",
   "created_at": "2026-08-02T12:03:33+08:00",
-  "updated_at": "2026-08-02T16:43:00+08:00",
+  "updated_at": "2026-08-03T01:05:00+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-5.6-sol",
   "reasoning_effort": "high",
@@ -40,7 +40,7 @@
     ],
     "non_goals": [
       "Reopen or broaden the completed portable implementation batch without a recorded defect or owner decision.",
-      "Redesign check-all aggregate composition, package disposition, or portable-handoff policy; those concerns are tracked by GitHub Proposal #75. Only the approved prerequisite-diagnostic surface may change under Issue #69.",
+      "Redesign check-all aggregate composition, package disposition, or portable-handoff policy; those concerns are tracked by GitHub Proposal #75. Only the approved prerequisite-diagnostic surface may change under TOOL-002 / GitHub Story #77; Proposal #69 is retained only as the completed discussion origin.",
       "Change supported Python below 3.11.",
       "Publish a release."
     ]
@@ -61,14 +61,16 @@
       "Applicable aggregate repository gate",
       "Independent verification of ASM-20260730-001#AIC-004"
     ],
-    "last_completed_step": "Not started; accumulated design approval and portable implementation checkpoint gates are active.",
-    "next_action": "Remain pending until AIC-004-diagnostic-implementation is completed and its portable/downstream checkpoint is explicitly accepted."
+    "last_completed_step": "CP-2 passed at portable implementation commit 91e636894fcf6c9551a0235b02bd5869807b2b56, and the owner's continuation instruction accepted the checkpoint for automatic source-only continuation.",
+    "next_action": "Apply the shared guarded import contract to the 13 registered source-only production CLIs and add write-boundary regressions."
   },
   "results": {
-    "summary": "The second 13-entry source-only implementation batch is pending design approval and the portable implementation checkpoint.",
+    "summary": "The second 13-entry source-only implementation batch is active after the passing CP-2 portable checkpoint.",
     "files_changed": [],
-    "tests_run": [],
-    "finding_status": "not-addressed",
+    "tests_run": [
+      "portable-compatibility-checkpoint.md: passed and accepted for continuation"
+    ],
+    "finding_status": "partially-addressed",
     "residual_risk": "No source-only remediation exists yet.",
     "follow_up_needed": true
   }
