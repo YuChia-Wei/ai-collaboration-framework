@@ -8,7 +8,7 @@
   "owner_skill": "ai-context-governance",
   "status": "in_progress",
   "created_at": "2026-08-02T10:32:53+08:00",
-  "updated_at": "2026-08-02T20:01:06+08:00",
+  "updated_at": "2026-08-02T20:12:59+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-5.6-sol",
   "reasoning_effort": "high",
@@ -65,11 +65,11 @@
       "Valid workflow locator and task artifacts",
       "Explicit owner approval before implementation transition"
     ],
-    "last_completed_step": "Resolved D-006 by preserving two canonical skill-owned scripts, one thin compatibility path, and 22 repo-common scripts while approving four stable repo-common prerequisite/launcher assets and package parity obligations.",
-    "next_action": "Explain and obtain only the owner decision on D-008 human documentation, command migration, upgrade, troubleshooting, and release communication."
+    "last_completed_step": "Resolved D-008 as a formally documented additive migration with layered Agent, team, script, package, init/upgrade, and later-release communication while preserving existing commands and excluding premature v0.8.0 release artifacts.",
+    "next_action": "Present the complete 22-decision design summary and obtain explicit accumulated-design approval for CP-1; then prepare and validate the requested cross-host push-only handoff without closing this workflow."
   },
   "results": {
-    "summary": "D-006 is resolved without moving existing CLIs: two remain canonical skill-owned, one remains a thin repo compatibility path, and 22 remain repo-common. The shared bootstrap module, 25-entrypoint registry, POSIX launcher, and PowerShell launcher are frozen as repo-common portable assets; direct Python paths remain supported and package/registry parity fails closed. One atomic decision remains, and implementation has not started.",
+    "summary": "All 22 atomic design decisions are resolved. D-008 classifies #69 as a formally documented additive migration with layered Agent, team, script, package, init/upgrade, and later-release communication; existing direct commands remain supported and this workflow does not create v0.8.0 release artifacts. Accumulated-design approval, CP-1, and the requested cross-host handoff remain before implementation.",
     "files_changed": [
       ".dev/workflows/2026-08-02-python-prerequisite-diagnostics/workflow.yaml",
       ".dev/workflows/2026-08-02-python-prerequisite-diagnostics/workflow-plan.md",
@@ -142,10 +142,12 @@
       "Current source CI read-back: portable-gates.yml provisions Python 3.12 and pinned dependencies, then runs an Ubuntu-only quick gate; no native Windows job currently exists",
       "Owner decision: D-007 approved layered shared-state, all-25 registry/smoke, complete write-path no-mutation, focused Windows/Ubuntu, and portable clean-install/upgrade coverage without a check-all --full requirement",
       "Ownership evidence read-back: two canonical skill-owned production scripts, one repo-level thin compatibility path, 22 repo-common production scripts, and the current distribution projection were re-confirmed",
-      "Owner decision: D-006 approved unchanged CLI ownership, repo-common python_prerequisites.py and python-entrypoints.json, generic POSIX and PowerShell launchers, portable projection, retained direct paths, single check-all discovery, and fail-closed parity"
+      "Owner decision: D-006 approved unchanged CLI ownership, repo-common python_prerequisites.py and python-entrypoints.json, generic POSIX and PowerShell launchers, portable projection, retained direct paths, single check-all discovery, and fail-closed parity",
+      "Documentation surface read-back: source script README, portable INSTALL template, root bilingual README commands, human collaboration guide index, init/upgrader/orchestrator guides, project-config template, and v0.7.0 release/migration structure were inspected",
+      "Owner decision: D-008 approved formal additive-migration documentation, layered team/Agent/package guidance, tracked manual and unconfigured defaults, ignored local opt-in preservation, troubleshooting, parity validation, and a remediation-report release handoff without creating v0.8.0 release artifacts"
     ],
     "finding_status": "not-addressed",
-    "residual_risk": "External tracking now exists as Proposals #75 and #76, but neither is accepted or implementation-authorized. Runtime discovery, recovery, disposition, diagnostic/exit projection, pre-mutation proof, script ownership/package compatibility, deterministic testing, and the D-010 control chain are resolved, but one #69 atomic decision remains unresolved: documentation and migration communication; implementation remains paused.",
+    "residual_risk": "No atomic #69 design decision remains unresolved, but accumulated-design approval and CP-1 are still required before implementation. The requested cross-host machine-readable checkpoint and push-only handoff are not yet created or authorized. Proposals #75 and #76 remain external, unaccepted, and implementation-unauthorized.",
     "follow_up_needed": true
   }
 }
