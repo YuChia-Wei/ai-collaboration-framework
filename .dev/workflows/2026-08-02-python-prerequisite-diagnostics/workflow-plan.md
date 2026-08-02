@@ -19,7 +19,7 @@
 - `current_phase`: `remediation-planning`
 - `artifact_root`: `.dev/workflows/2026-08-02-python-prerequisite-diagnostics`
 - `created_at`: `2026-08-02T10:32:53+08:00`
-- `updated_at`: `2026-08-02T13:05:31+08:00`
+- `updated_at`: `2026-08-02T13:14:42+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md`
 - `template_version`: `1.2.0`
 
@@ -75,6 +75,7 @@
 - Current downstream validation has selection modes but no target-owned enablement policy. `--quick`, `--critical`, and `--full` select batches; `check-all.sh` resolves Python before any batch can run, and selected Python checks are generally hard-coded as required. `AI_CONTEXT_PYTHON` selects an interpreter rather than enabling or disabling validation.
 - Context-driven `not applicable` behavior exists for absent source-release/provenance/spec inputs, but it is not an owner or developer toggle. No pre-commit hook automatically invokes the aggregate runner. Source CI runs `--quick`, while the distribution profile packages scripts under mandatory core components without projecting the source `.github/workflows/portable-gates.yml` workflow.
 - A validation activation switch would not remove Python from explicit package apply, initialization, or upgrade lifecycles. Routine local/CI enforcement must be separated from safety-critical lifecycle commands before a switch is designed.
+- The owner confirmed that repeated automatic local-check failures during software-development workflows cause Agent retries and material token waste. Token control is therefore a first-class acceptance concern: policy must be resolved before invocation, and an unchanged prerequisite failure must not trigger identical command retries.
 - Detailed inventory and fallback/ownership evidence are retained in the English evidence files with complete owner-review translations in their `.zh-TW.md` companions.
 
 ## Discussion Contract And Decision Log
@@ -100,10 +101,11 @@
 | `D-009` | Canonical validator runtime disposition | pending |  | Determines whether Python remains the canonical implementation under Issue #69, a runtime migration enters this workflow, or runtime replacement becomes a separate governed proposal. This must be resolved before implementation can entrench the current dependency. |
 | `D-TR-001` | Corrective handling for the two primary-agent zh-TW translations | resolved | Keep the two existing translations; do not regenerate them. Require every later finalized-English-to-zh-TW derivation to use the promoted low-cost `context-translator` route and main-agent parity review. | Avoids unnecessary churn while making the future cost/routing precondition explicit and non-optional. |
 | `D-010` | Downstream validation activation policy umbrella | decomposed | Separate automatic routine execution, local developer policy, CI enforcement, lifecycle safety gates, and result semantics instead of using one ambiguous Boolean. | Allows host-flexible local use without weakening explicit install, upgrade, apply, or selected CI contracts. |
-| `D-010A` | Scope of the downstream activation switch | pending |  | Determines whether the switch controls only automatic routine validation while direct invocations and lifecycle safety commands remain fail-closed. |
+| `D-010A` | Scope of the downstream activation switch | resolved | Control only automatic routine validation in the software-development flow. Do not affect a user's explicit CLI invocation or lifecycle-owned install, apply, init, upgrade, provenance, and release safety commands. | Prevents environment-sensitive routine automation from wasting tokens without turning an opt-out into a bypass for explicitly selected safety operations. |
 | `D-010B` | Target-owned local default and developer override | pending |  | Determines whether local execution is disabled, manual, recommended, or required by default and where a developer-specific override may live without changing repository truth. |
 | `D-010C` | Target-owned CI enforcement | pending |  | Determines how a target separately declares CI-required validation and prevents a local preference from bypassing hosted gates. |
 | `D-010D` | Disabled, unavailable, and executed result semantics | pending |  | Keeps `not-run-by-policy`, `blocked-by-environment`, `failed`, and `passed` distinct so disabling a check cannot be reported as success. |
+| `D-010E` | Agent prerequisite probe and retry budget | pending |  | Determines zero-attempt behavior when local automation is unselected, the maximum bounded preflight/execution attempts when selected, and the material-state-change requirement for any retry. |
 
 ## Translation Routing Deviation
 
@@ -125,6 +127,14 @@
 - The distribution profile does not expose validators as an optional component. `.ai/scripts/**` is projected through mandatory core components, although shipping a script does not itself execute it.
 - Direct Python commands and lifecycle-owned validation references exist in policies and skills. An activation policy must not silently bypass package apply, initialization, upgrade, provenance finalization, or other commands the user explicitly invokes.
 
+## Token-Cost And Retry Finding
+
+- `check-all.sh` contains no validation retry loop. It selects each check and invokes it once.
+- The software-development orchestrator already records exact outcomes such as `blocked-by-environment` and forbids treating blocked as passed, but it defines no attempt budget and no identical-retry prohibition.
+- Root execution guidance says to iterate until completion criteria pass or report blockers. That permits an Agent to report the first stable prerequisite blocker, but does not currently force it to stop before one or more redundant retries.
+- A shell-only switch would be too late if the Agent has already spent tokens discovering and invoking the command. Target-owned activation policy must be read during orchestration, before Python discovery or process launch.
+- The design candidate for `D-010E` is: zero probes and zero executions when local automatic validation is unselected; when selected, one bounded read-only prerequisite preflight and at most one validator execution; retry only after a recorded material state change or explicit owner instruction. This is not yet approved.
+
 ## Stages And Checkpoints
 
 1. Bootstrap the governance workflow and freeze Issue #69 plus `AIC-004` as source evidence.
@@ -138,15 +148,15 @@
 
 ## Resume Checkpoint
 
-- Last completed action: resolved D-TR-001 without regenerating existing translations, established a mandatory low-cost route for future derived translations, and confirmed that current downstream validation has modes and contextual applicability but no target-owned enable/disable policy.
+- Last completed action: resolved D-010A so only automatic routine software-development validation is switchable, traced retry ownership to Agent orchestration rather than `check-all.sh`, and made token-cost/no-identical-retry behavior an explicit pending design concern.
 - Current task: `AIC-004-diagnostic-design`.
-- Exact next action: ask only `D-010A` whether downstream activation controls automatic routine validation only, leaving direct invocation and explicit lifecycle safety commands fail-closed and outside the switch.
+- Exact next action: ask only `D-010B` whether downstream local automatic validation defaults to manual/unselected, with no prerequisite probe or validator execution until a developer or target policy opts in.
 - Validation already completed: confirmed clean `main@2263744bb2dc876f8077547e961fc68be28b0074` before branching; verified the final baseline assessment; verified the inventory against `git ls-files`, direct file reads, distribution profile, shell registry, active documentation, and existing tests; parsed both task JSON files; `git diff --check`, `validate-workflow-artifacts.py`, and `validate-ai-context.py` passed.
 - Current discussion-checkpoint validation: Git-history probes established the adoption timeline; the active sub-agent manifest and Codex adapter established the missed low-cost route; the changed task JSON parsed with PowerShell; locator/index state was checked directly; and `git diff --check` passed. Full Python-backed repository validators were not rerun because every discovered interpreter lacks PyYAML and D-002A now forbids implicit installation; this checkpoint records that result as `blocked-by-environment`, not passed.
 - Validation environment note: generic `python` and `python3` resolve to unusable Windows aliases. A versioned uv-managed Python 3.14.1 and the Codex bundled Python 3.12.13 can start, but neither currently imports PyYAML. Prior artifact validation used Codex Python with isolated temporary `PyYAML==6.0.3`; no repository dependency files were changed.
 - Git state: active branch `codex/2026-08-02-python-prerequisite-diagnostics`, created from `main@2263744bb2dc876f8077547e961fc68be28b0074`; the latest durable design commit before this discussion is `d5ae808626508cba857ea412ae1d543fa86095e6`.
 - Branch history and checkpoint handoffs: bootstrap commits `88a01bebfe95f696763c1b310c363f354949f205` and `4e93c0f09cae2c50bf6a330de0cca05c8b52fec6`; absent-interpreter boundary commit `cd58c2b0391dccb4a8487f33938b8a3c5d060500`; inventory translation commit `d27fb8adbaf890f9f926c2de6bf66aa6917a83d0`; D-001/fallback assessment commit `d5ae808626508cba857ea412ae1d543fa86095e6`; no push or merge handoff has occurred.
-- Blockers or unresolved decisions: `D-010A` onward, `D-002B` onward, and `D-009` remain unresolved; implementation edits are paused pending explicit accumulated-design approval.
+- Blockers or unresolved decisions: `D-010B` onward, `D-002B` onward, and `D-009` remain unresolved; implementation edits are paused pending explicit accumulated-design approval.
 
 ## Branch Lifecycle
 
