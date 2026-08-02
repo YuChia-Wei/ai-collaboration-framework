@@ -8,7 +8,7 @@
   "owner_skill": "ai-context-governance",
   "status": "in_progress",
   "created_at": "2026-08-02T10:32:53+08:00",
-  "updated_at": "2026-08-02T19:21:46+08:00",
+  "updated_at": "2026-08-02T19:26:56+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-5.6-sol",
   "reasoning_effort": "high",
@@ -65,11 +65,11 @@
       "Valid workflow locator and task artifacts",
       "Explicit owner approval before implementation transition"
     ],
-    "last_completed_step": "Resolved D-003A with one compact default human diagnostic on stderr, one explicit schema-versioned JSON projection on stdout, stable prerequisite fields, bounded candidate evidence, unchanged success output, and no expected traceback.",
-    "next_action": "Explain and obtain only the owner decision on D-003B numeric exit-code compatibility across existing entrypoints and the new native launchers."
+    "last_completed_step": "Resolved D-003B with success-only zero, per-entrypoint legacy prerequisite codes, mapped native-launcher behavior, delegated-code propagation, and JSON reason codes as the authoritative detailed semantics.",
+    "next_action": "Explain and obtain only the owner decision on D-005 pre-mutation guarantee and the negative-path evidence required for write-capable entrypoints."
   },
   "results": {
-    "summary": "D-003A is resolved. Known prerequisite failures default to one compact human diagnostic on stderr with no expected traceback; explicit --diagnostic-format=json emits exactly one schema-versioned object on stdout and no duplicate human message. Stable fields include blocked-by-environment, reason, entrypoint, Python floor, bounded/deduplicated candidates, resolved runtime when known, missing governed requirements, mutation_started=false, and documentation-only recovery. Successful output remains unchanged, D-003B still owns numeric exit compatibility, five atomic decisions remain, and implementation has not started.",
+    "summary": "D-003 is fully resolved through D-003A and D-003B. Exit zero remains success-only; existing entrypoints retain current or closest prerequisite-failure codes, native launchers use the target mapping before delegation, and delegated validator codes propagate unchanged. Detailed automation uses the JSON outcome/reason_code instead of inferring meaning from numeric values. No global prerequisite code is introduced in v0.8.0, four atomic decisions remain, and implementation has not started.",
     "files_changed": [
       ".dev/workflows/2026-08-02-python-prerequisite-diagnostics/workflow.yaml",
       ".dev/workflows/2026-08-02-python-prerequisite-diagnostics/workflow-plan.md",
@@ -135,10 +135,11 @@
       "Owner decision: D-004B approved human-facing installation documentation and deterministic recovery guidance without automatic install, environment creation, network access, recovery writes, or executable bootstrap behavior",
       "Owner decision: D-009 retained Python 3.11+ as the #69/v0.8.0 canonical validator runtime, kept native launchers thin, and deferred runtime replacement without creating a follow-up issue",
       "Current diagnostic read-back: check-all missing-Python text uses stderr and exit 1; package planner missing-PyYAML text uses stderr and exit 2; most other PyYAML paths expose raw import failure",
-      "Owner decision: D-003A approved compact human stderr, explicit single-object JSON stdout, stable prerequisite fields, bounded candidate evidence, unchanged success output, and no expected traceback"
+      "Owner decision: D-003A approved compact human stderr, explicit single-object JSON stdout, stable prerequisite fields, bounded candidate evidence, unchanged success output, and no expected traceback",
+      "Owner decision: D-003B approved success-only zero, existing per-entrypoint prerequisite codes, target-mapped native-launcher behavior, delegated-code propagation, and JSON reason codes as authoritative semantics"
     ],
     "finding_status": "not-addressed",
-    "residual_risk": "External tracking now exists as Proposals #75 and #76, but neither is accepted or implementation-authorized. Runtime discovery, recovery, disposition, output projection, and the D-010 control chain are resolved, but five #69 atomic decisions remain unresolved, including numeric exit compatibility, pre-mutation proof, remaining script ownership, testing, and migration documentation; implementation remains paused.",
+    "residual_risk": "External tracking now exists as Proposals #75 and #76, but neither is accepted or implementation-authorized. Runtime discovery, recovery, disposition, diagnostic/exit projection, and the D-010 control chain are resolved, but four #69 atomic decisions remain unresolved: pre-mutation proof, remaining script ownership, testing, and migration documentation; implementation remains paused.",
     "follow_up_needed": true
   }
 }
