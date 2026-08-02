@@ -19,7 +19,7 @@
 - `current_phase`: `remediation-planning`
 - `artifact_root`: `.dev/workflows/2026-08-02-python-prerequisite-diagnostics`
 - `created_at`: `2026-08-02T10:32:53+08:00`
-- `updated_at`: `2026-08-02T16:19:44+08:00`
+- `updated_at`: `2026-08-02T16:32:42+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md`
 - `template_version`: `1.2.0`
 
@@ -30,7 +30,7 @@
 - Authorization source: the repository owner requested on 2026-08-02 that this workflow be opened, that design decisions be discussed one at a time with impact explanations, and that approved design continue into implementation without closing this workflow.
 - Authorized now: workflow bootstrap, repository-backed impact inventory, design discussion, and durable decision recording.
 - Approval gate: implementation edits remain pending until the owner explicitly approves the accumulated design direction.
-- Provider state: Issue #69 remains open with its existing proposal/triage labels; this workflow does not infer authorization from those labels and has not mutated the Issue.
+- Provider state: Issue #69 remains open with its existing proposal/triage labels. On 2026-08-02 the owner reported manually changing its GitHub Project Status to `In progress`; the connected Issue read confirms the Issue remains open but does not expose Project fields. This owner-reported tracker update aligns work visibility with the active design workflow but does not authorize implementation or replace the workflow approval gate.
 
 ## Objective And Scope
 
@@ -97,7 +97,7 @@
 | `D-005` | Pre-mutation guarantee and proof boundary | pending |  | Determines where checks must run and which write-capable paths require negative-path evidence. |
 | `D-006` | Canonical script ownership, shared prerequisite placement, package projection, and compatibility | pending |  | Determines which CLIs remain skill-owned or repo-common, where shared prerequisite code lives, what is portable, and which thin compatibility entrypoints remain. |
 | `D-006A` | Workflow artifact authoring ownership | resolved | Keep only the minimum shared workflow contract at repository level. Each workflow-owning skill owns its domain-specific plan, task, report templates, and workflow semantics; do not introduce a universal workflow-author skill. | Avoids a god skill that must understand every domain template while retaining shared discovery, identity, lifecycle, and minimum task compatibility. Common validators may validate only the shared envelope and must not author domain semantics. |
-| `D-006B` | Framework self-test distribution and activation boundary | pending |  | Separates source-only tests, packaged-but-dormant skill self-tests, portable target-runtime validators, and aggregate gates instead of treating `framework self-test` as a package classification. |
+| `D-006B` | Framework self-test distribution and activation boundary | resolved | Keep skill-owned acceptance validators, fixtures, and contract tests colocated with and packaged inside their owning skill. Treat them as unselected during routine downstream product development; require or explicitly select them only for source framework CI/release, framework-owned path changes, or explicit downstream framework verification/customization. | Preserves portable, auditable skill acceptance evidence without making file presence a Python runtime prerequisite. This decision does not classify `check-all.sh` or narrow target-runtime workflow/handoff validators. |
 | `D-007` | Deterministic test matrix | pending |  | Determines interpreter/dependency simulation, platform coverage, and required closeout gates. |
 | `D-008` | Documentation and migration communication | pending |  | Determines whether this is behavior clarification only or a documented command/contract migration. |
 | `D-009` | Canonical validator runtime disposition | pending |  | Determines whether Python remains the canonical implementation under Issue #69, a runtime migration enters this workflow, or runtime replacement becomes a separate governed proposal. This must be resolved before implementation can entrench the current dependency. |
@@ -235,7 +235,22 @@ Current behavior is not source-only or truly default-off:
 - The portable handoff policy also requires `check-all.sh --critical`, so a downstream product workflow can currently execute those framework tests during handoff even when no framework-owned skill file changed.
 - Merely packaging a dormant test would not require Python at normal skill-runtime activation. The present dependency leak comes from invocation policy and package-install/lifecycle commands, not from file presence alone.
 
-The current recommendation pending `D-006B` is to keep skill-owned acceptance evidence colocated with its skill but never select it during routine downstream product development. Source CI/release and explicit framework-maintenance work may require it. Treat the source aggregate runner separately: `check-all.sh` should remain a source-framework aggregate candidate rather than a portable handoff prerequisite. Narrow validators that inspect actual downstream workflow or handoff artifacts are target-runtime validators, not framework self-tests, and require their own runtime/fallback decision.
+The owner resolved `D-006B`: keep skill-owned acceptance evidence colocated with and packaged inside its skill, but leave it unselected during routine downstream product development. Source framework CI/release and framework-owned path changes may require it; downstream execution requires an explicit framework verification or customization selection. Merely packaging these files does not make Python a normal skill-runtime prerequisite.
+
+### `check-all.sh` Follow-Up Scope
+
+Issue #69 includes `check-all.sh` only as an affected Python entrypoint and diagnostic surface. Standardizing how that entrypoint discovers Python, reports a missing runtime/dependency, and stops before false success remains in #69. The following concerns change aggregate selection and downstream lifecycle architecture rather than prerequisite diagnostics, so they must not be implemented silently under #69:
+
+- whether the aggregate runner belongs only to source framework CI/release;
+- whether it is included in downstream packages;
+- whether portable handoff policy may require it;
+- whether its 30 sequential required checks should be split by changed paths, domain, or execution profile;
+- performance budgets, caching, parallelism, and token-aware observation;
+- replacement of full aggregate reruns with narrow workflow/checkpoint validation plus recorded target-test evidence.
+
+Record these concerns as follow-up candidate `FUP-001`, proposed title `[Proposal] Separate Source Framework Aggregate Gates from Downstream Workflow Validation`, with `scope:mixed`. Its evidence may reference Issue #69, this workflow's D-006B analysis, the distribution profile, `check-all.sh --critical`, and the portable handoff policy. No GitHub Issue has been created without explicit owner authorization. If created as a Proposal, provider policy keeps acceptance/promotion separate from Issue creation.
+
+Narrow validators that inspect actual downstream workflow or handoff artifacts remain target-runtime validators, not framework self-tests, and still require a separate runtime/fallback decision within this workflow where they overlap Python prerequisite behavior.
 
 ## Stages And Checkpoints
 
@@ -250,15 +265,15 @@ The current recommendation pending `D-006B` is to keep skill-owned acceptance ev
 
 ## Resume Checkpoint
 
-- Last completed action: recorded the owner-confirmed workflow authoring boundary under D-006A, distinguished framework self-test ownership/distribution/activation/enforcement axes, and established that the current default package includes both skill self-tests and `check-all.sh` while portable handoff policy can invoke them downstream.
+- Last completed action: resolved D-006B as packaged-but-unselected skill self-tests, recorded the owner-reported GitHub Project transition of #69 to In progress, and separated check-all aggregate composition/performance/handoff coupling into follow-up candidate FUP-001 without creating an external Issue.
 - Current task: `AIC-004-diagnostic-design`.
-- Exact next action: obtain only the D-006B owner decision on whether skill-owned contract tests remain packaged but dormant while `check-all.sh` becomes source-only and narrow target-runtime validators retain a separately governed portable boundary.
+- Exact next action: obtain only the owner decision on whether to create the proposed check-all follow-up Proposal from FUP-001; if not authorized, retain it as a workflow follow-up and return to D-010B.
 - Validation already completed: confirmed clean `main@2263744bb2dc876f8077547e961fc68be28b0074` before branching; verified the final baseline assessment; verified the inventory against `git ls-files`, direct file reads, distribution profile, shell registry, active documentation, and existing tests; parsed both task JSON files; `git diff --check`, `validate-workflow-artifacts.py`, and `validate-ai-context.py` passed.
 - Current discussion-checkpoint validation: Git-history probes established the adoption timeline; the active sub-agent manifest and Codex adapter established the missed low-cost route; the changed task JSON parsed with PowerShell; locator/index state was checked directly; and `git diff --check` passed. Full Python-backed repository validators were not rerun because every discovered interpreter lacks PyYAML and D-002A now forbids implicit installation; this checkpoint records that result as `blocked-by-environment`, not passed.
 - Validation environment note: generic `python` and `python3` resolve to unusable Windows aliases. A versioned uv-managed Python 3.14.1 and the Codex bundled Python 3.12.13 can start, but neither currently imports PyYAML. Prior artifact validation used Codex Python with isolated temporary `PyYAML==6.0.3`; no repository dependency files were changed.
-- Git state: active branch `codex/2026-08-02-python-prerequisite-diagnostics`, created from `main@2263744bb2dc876f8077547e961fc68be28b0074`; the latest durable design checkpoint entering this discussion is `32ede97`.
-- Branch history and checkpoint handoffs: bootstrap commits `88a01be` and `4e93c0f`; absent-interpreter boundary `cd58c2b`; inventory translation `d27fb8a`; D-001/fallback assessment `d5ae808`; runtime rationale and D-002A `9937fb4`; downstream switch gap `7fa102c`; activation/retry scope `74bb024`; D-010B team scenarios `c2b35ad`; opt-in location and skill-stage map `32ede97`; no push or merge handoff has occurred.
-- Blockers or unresolved decisions: `D-006B`, `D-010B` onward, `D-002B` onward, and `D-009` remain unresolved; implementation edits are paused pending explicit accumulated-design approval.
+- Git state: active branch `codex/2026-08-02-python-prerequisite-diagnostics`, created from `main@2263744bb2dc876f8077547e961fc68be28b0074`; the latest durable design checkpoint entering this discussion is `22e6883`.
+- Branch history and checkpoint handoffs: bootstrap commits `88a01be` and `4e93c0f`; absent-interpreter boundary `cd58c2b`; inventory translation `d27fb8a`; D-001/fallback assessment `d5ae808`; runtime rationale and D-002A `9937fb4`; downstream switch gap `7fa102c`; activation/retry scope `74bb024`; D-010B team scenarios `c2b35ad`; opt-in location and skill-stage map `32ede97`; workflow ownership and self-test terminology `22e6883`; no push or merge handoff has occurred.
+- Blockers or unresolved decisions: the FUP-001 Issue-creation decision, `D-010B` onward, `D-002B` onward, and `D-009` remain unresolved; implementation edits are paused pending explicit accumulated-design approval.
 
 ## Branch Lifecycle
 

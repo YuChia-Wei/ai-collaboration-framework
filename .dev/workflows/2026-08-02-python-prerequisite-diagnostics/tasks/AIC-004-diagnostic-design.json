@@ -8,7 +8,7 @@
   "owner_skill": "ai-context-governance",
   "status": "in_progress",
   "created_at": "2026-08-02T10:32:53+08:00",
-  "updated_at": "2026-08-02T16:19:44+08:00",
+  "updated_at": "2026-08-02T16:32:42+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-5.6-sol",
   "reasoning_effort": "high",
@@ -63,11 +63,11 @@
       "Valid workflow locator and task artifacts",
       "Explicit owner approval before implementation transition"
     ],
-    "last_completed_step": "Resolved D-006A against a universal workflow-author skill and separated framework self-test distribution from activation after confirming the current package and handoff behavior.",
-    "next_action": "Obtain only the D-006B owner decision on packaged-but-dormant skill self-tests, a source-only aggregate check-all boundary, and separately portable narrow target-runtime validators."
+    "last_completed_step": "Resolved D-006B as packaged-but-unselected skill self-tests, recorded the owner-reported #69 Project Status transition to In progress, and scoped check-all aggregate architecture as follow-up candidate FUP-001.",
+    "next_action": "Obtain only the owner decision on creating the FUP-001 check-all follow-up Proposal; otherwise retain the follow-up locally and return to D-010B."
   },
   "results": {
-    "summary": "D-006A is resolved: repository workflow governance remains a minimum shared contract and every workflow-owning skill retains its own domain templates and semantics. Framework self-test packaging and activation are now separated under pending D-006B; current packages include the tests and aggregate runner, and downstream handoff can invoke them. Implementation has not started.",
+    "summary": "D-006A and D-006B are resolved: workflow owners retain domain templates, and skill-owned self-tests remain packaged but unselected in routine downstream product development. Check-all aggregate composition, performance, packaging, and portable-handoff coupling are outside #69 diagnostic implementation and are captured as uncreated follow-up candidate FUP-001. Implementation has not started.",
     "files_changed": [
       ".dev/workflows/2026-08-02-python-prerequisite-diagnostics/workflow.yaml",
       ".dev/workflows/2026-08-02-python-prerequisite-diagnostics/workflow-plan.md",
@@ -103,10 +103,12 @@
       "Workflow artifact ownership policy, ai-context-governance playbook, and software-development-orchestrator playbook: confirmed minimum shared contract plus skill-owned domain templates",
       "Distribution profile: confirmed .ai/assets/** and .ai/scripts/** default payload inclusion; current exclusions do not remove orchestrator self-tests or check-all.sh",
       "check-all.sh critical block: confirmed 30 sequential required commands, including 26 literal Python commands, three dotnet tests, and one indirect commit-validation command",
-      "Portable handoff policy: confirmed downstream handoff currently requires check-all.sh --critical"
+      "Portable handoff policy: confirmed downstream handoff currently requires check-all.sh --critical",
+      "Connected GitHub Issue read: #69 remains open with proposal/triage labels; GitHub Project Status is recorded from the owner's manual In progress update because the Issue connector does not expose Project fields",
+      "Issue #69 scope comparison: prerequisite discovery/diagnostics remains in scope; aggregate composition, performance, package disposition, and handoff coupling classified as follow-up candidate FUP-001"
     ],
     "finding_status": "not-addressed",
-    "residual_risk": "Workflow authoring ownership is resolved, but framework self-test distribution, aggregate-runner portability, narrow target-runtime validation, local defaults, CI semantics, result taxonomy, Agent retry budget, interpreter trust, launcher coverage, dependency recovery, canonical runtime, output, proof, remaining script ownership, testing, and documentation decisions remain unresolved; implementation remains paused.",
+    "residual_risk": "Workflow authoring and framework self-test boundaries are resolved, but FUP-001 external tracking, aggregate-runner portability, narrow target-runtime validation, local defaults, CI semantics, result taxonomy, Agent retry budget, interpreter trust, launcher coverage, dependency recovery, canonical runtime, output, proof, remaining script ownership, testing, and documentation decisions remain unresolved; implementation remains paused.",
     "follow_up_needed": true
   }
 }
