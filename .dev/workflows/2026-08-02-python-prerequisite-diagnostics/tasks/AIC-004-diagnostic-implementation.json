@@ -8,7 +8,7 @@
   "owner_skill": "ai-context-governance",
   "status": "pending",
   "created_at": "2026-08-02T10:32:53+08:00",
-  "updated_at": "2026-08-02T10:32:53+08:00",
+  "updated_at": "2026-08-02T12:03:33+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-5.6-sol",
   "reasoning_effort": "high",
@@ -16,27 +16,42 @@
     "ASM-20260730-001#AIC-004"
   ],
   "scope": {
-    "target": "Approved implementation of consistent fail-closed Python prerequisite diagnostics",
-    "files": [],
+    "target": "First approved implementation batch for the 12 portable/downstream production CLI prerequisite diagnostics",
+    "files": [
+      ".ai/assets/skills/software-development-orchestrator/scripts/validate-software-development-orchestrator-acceptance.py",
+      ".ai/scripts/plan-ai-context-package-apply.py",
+      ".ai/scripts/validate-ai-context-target.py",
+      ".ai/scripts/validate-ai-context.py",
+      ".ai/scripts/validate-assessment-artifacts.py",
+      ".ai/scripts/validate-dependency-versions.py",
+      ".ai/scripts/validate-file-disposition-manifest.py",
+      ".ai/scripts/validate-git-commits.py",
+      ".ai/scripts/validate-shell-assets.py",
+      ".ai/scripts/validate-software-development-orchestrator-acceptance.py",
+      ".ai/scripts/validate-workflow-artifacts.py",
+      ".ai/scripts/validate-workflow-handoff.py"
+    ],
     "constraints": [
       "Start only after explicit approval of the accumulated design.",
-      "Use the smallest coherent implementation that covers the approved entrypoint boundary.",
+      "Use the smallest coherent implementation that covers only the first 12-entry portable/downstream batch.",
+      "Reach the approved portable validation checkpoint before the source-only implementation task may start.",
       "Preserve existing validator, package, upgrade, and release gates.",
       "Prove unsupported-version and missing-dependency failures occur before mutation."
     ],
     "non_goals": [
-      "Expand beyond the approved user-facing entrypoints.",
+      "Modify the 13 source-only production CLIs in this task.",
+      "Expand beyond the approved production entrypoints.",
       "Change supported Python below 3.11.",
       "Publish a release."
     ]
   },
   "execution": {
     "steps": [
-      "Apply the approved diagnostic design to the approved entrypoint set.",
+      "Apply the approved diagnostic design to the 12 portable/downstream production CLI surfaces.",
       "Add deterministic unsupported-version and missing-dependency coverage.",
       "Synchronize affected documentation and package projections.",
       "Run focused and aggregate validation.",
-      "Create remediation evidence and request independent post-remediation assessment."
+      "Create the portable-batch checkpoint evidence needed to authorize the source-only batch."
     ],
     "validation": [
       "Approved deterministic prerequisite test matrix",
@@ -46,14 +61,14 @@
       "Independent verification of ASM-20260730-001#AIC-004"
     ],
     "last_completed_step": "Not started; design approval gate is active.",
-    "next_action": "Remain pending until AIC-004-diagnostic-design is completed with explicit owner approval."
+    "next_action": "Remain pending until AIC-004-diagnostic-design completes with explicit accumulated-design approval; then implement and validate only the portable/downstream batch."
   },
   "results": {
-    "summary": "Implementation is pending design approval.",
+    "summary": "The first 12-entry portable/downstream implementation batch is pending accumulated design approval.",
     "files_changed": [],
     "tests_run": [],
     "finding_status": "not-addressed",
-    "residual_risk": "No remediation exists yet.",
+    "residual_risk": "No portable remediation exists yet; the source-only batch is intentionally sequenced behind this task.",
     "follow_up_needed": true
   }
 }

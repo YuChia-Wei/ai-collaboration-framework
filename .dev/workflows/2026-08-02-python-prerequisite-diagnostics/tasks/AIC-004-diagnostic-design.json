@@ -8,7 +8,7 @@
   "owner_skill": "ai-context-governance",
   "status": "in_progress",
   "created_at": "2026-08-02T10:32:53+08:00",
-  "updated_at": "2026-08-02T11:02:27+08:00",
+  "updated_at": "2026-08-02T12:03:33+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-5.6-sol",
   "reasoning_effort": "high",
@@ -31,13 +31,14 @@
       "Ask and resolve exactly one owner-decision question at a time.",
       "Explain behavior, compatibility, package, documentation, and test impacts before each decision.",
       "Require Python 3.11 or newer; do not redefine the supported runtime downward.",
+      "Apply the approved 25-production-CLI boundary in two ordered batches: 12 portable/downstream entrypoints first, then 13 source-only entrypoints.",
       "Fail before repository mutation or validation success claims.",
       "Do not weaken existing validation, package, upgrade, or release gates.",
       "Keep the baseline assessment immutable."
     ],
     "non_goals": [
       "Implement before the accumulated design is explicitly approved.",
-      "Silently install Python or dependencies.",
+      "Silently or implicitly install Python or dependencies; an explicit isolated bootstrap remains an owner decision.",
       "Refactor unrelated validator behavior.",
       "Prepare or publish a framework release."
     ]
@@ -46,6 +47,7 @@
     "steps": [
       "Inventory all candidate Python entrypoints and classify user-facing support evidence.",
       "Map import timing, mutation potential, package projection, documentation, and tests.",
+      "Assess fail-closed, host/versioned/provider runtime discovery, explicit installation, OS-native launcher, and canonical script ownership alternatives.",
       "Present one design decision at a time with impact and alternatives.",
       "Record every owner decision in workflow-plan.md.",
       "Produce an approved implementation boundary and validation matrix."
@@ -55,28 +57,34 @@
       "Valid workflow locator and task artifacts",
       "Explicit owner approval before implementation transition"
     ],
-    "last_completed_step": "Recorded the absent-interpreter boundary and created a complete Traditional Chinese Taiwan translation of the entrypoint inventory for owner review while preserving the English agent-facing source and all commands, paths, identifiers, counts, options, and conclusion boundaries.",
-    "next_action": "Ask only D-001 about the supported user-facing entrypoint boundary and record the owner's answer before considering delivery architecture."
+    "last_completed_step": "Recorded owner approval of D-001 Option A with portable-first sequencing, corrected the host observation after discovering a missed versioned interpreter, and completed repository-backed fallback and per-entrypoint ownership option assessments with owner-review translations.",
+    "next_action": "Ask only D-002A whether the default terminal behavior should perform read-only discovery and then fail closed without silent installation when no fully ready environment is found."
   },
   "results": {
-    "summary": "Initial impact inventory and its complete Traditional Chinese Taiwan owner-review translation are available; design discussion remains active and no implementation conclusion has been approved or applied.",
+    "summary": "D-001 is approved for all 25 production CLIs with a portable-first implementation sequence; fallback, discovery, launcher, installation, diagnostic, and ownership design remains active, and no production implementation has started.",
     "files_changed": [
       ".dev/workflows/2026-08-02-python-prerequisite-diagnostics/workflow.yaml",
       ".dev/workflows/2026-08-02-python-prerequisite-diagnostics/workflow-plan.md",
       ".dev/workflows/2026-08-02-python-prerequisite-diagnostics/tasks/AIC-004-diagnostic-design.json",
       ".dev/workflows/2026-08-02-python-prerequisite-diagnostics/tasks/AIC-004-diagnostic-implementation.json",
+      ".dev/workflows/2026-08-02-python-prerequisite-diagnostics/tasks/AIC-004-source-diagnostic-implementation.json",
       ".dev/workflows/2026-08-02-python-prerequisite-diagnostics/evidence/entrypoint-inventory.md",
-      ".dev/workflows/2026-08-02-python-prerequisite-diagnostics/evidence/entrypoint-inventory.zh-TW.md"
+      ".dev/workflows/2026-08-02-python-prerequisite-diagnostics/evidence/entrypoint-inventory.zh-TW.md",
+      ".dev/workflows/2026-08-02-python-prerequisite-diagnostics/evidence/runtime-fallback-and-ownership-assessment.md",
+      ".dev/workflows/2026-08-02-python-prerequisite-diagnostics/evidence/runtime-fallback-and-ownership-assessment.zh-TW.md",
+      ".dev/workflows/INDEX.MD"
     ],
     "tests_run": [
-      "Both task JSON files parsed with PowerShell ConvertFrom-Json: passed",
+      "All three task JSON files parsed with PowerShell ConvertFrom-Json: passed",
       "git diff --check: passed",
       "Translation parity check for heading topology, all 25 CLI paths, both PowerShell reproduction blocks, and invariant counts/identifiers: passed",
+      "Fallback/ownership translation parity check for heading topology, all 25 ownership rows, official-source URLs, and invariant decision/runtime tokens: passed",
+      "Host probes for generic aliases, uv-managed Python 3.14.1, Codex bundled Python 3.12.13, and PyYAML readiness: completed without repository mutation",
       "Codex bundled Python 3.12.13 plus isolated PyYAML==6.0.3: python .ai/scripts/validate-workflow-artifacts.py: passed",
       "Codex bundled Python 3.12.13 plus isolated PyYAML==6.0.3: python .ai/scripts/validate-ai-context.py: passed"
     ],
     "finding_status": "not-addressed",
-    "residual_risk": "The supported-entrypoint boundary and diagnostic contract are still unresolved; implementation remains paused.",
+    "residual_risk": "The entrypoint boundary is resolved, but fallback trust, environment mutation, launcher coverage, dependency recovery, output, proof, ownership, projection, testing, and documentation decisions remain unresolved; implementation remains paused.",
     "follow_up_needed": true
   }
 }

@@ -4,7 +4,7 @@
 
 - `generated_by`: `OpenAI Codex repository-native inventory`
 - `generated_at`: `2026-08-02T10:39:48+08:00`
-- `updated_at`: `2026-08-02T10:53:29+08:00`
+- `updated_at`: `2026-08-02T12:03:33+08:00`
 - `source_revision`: `2263744bb2dc876f8077547e961fc68be28b0074`
 - `source_branch`: `codex/2026-08-02-python-prerequisite-diagnostics`
 - `issue`: `https://github.com/YuChia-Wei/ai-collaboration-prompts-dotnet-backend/issues/69`
@@ -102,16 +102,16 @@ These are excluded from the downstream payload but are real maintainer or CI ope
 
 ## Current Behavior And Risk
 
-### Interpreter absent on the host
+### Generic interpreter commands unavailable on the host
 
-On the current Windows host, `python` and `python3` resolve to Windows App Execution Alias executables, but no host Python runtime is installed. A direct `python <entrypoint>.py` command therefore fails in the operating-system launcher before the repository can execute a Python bootstrap or print its own message.
+On the current Windows host, `python` and `python3` resolve to unprovisioned Windows App Execution Alias executables. A direct `python <entrypoint>.py` command therefore fails in the operating-system launcher before the repository can execute a Python bootstrap or print its own message. A later targeted probe found a usable `python3.14` command on `PATH`, but the current resolver does not inspect versioned command names and that environment lacks PyYAML.
 
 This creates two distinct diagnostic layers:
 
 1. A non-Python shell or PowerShell launcher can detect that no usable interpreter exists, name the attempted commands, state the Python 3.11+ requirement, and stop before invoking any Python entrypoint.
 2. Once a Python interpreter starts, a shared Python bootstrap can reject an unsupported version or missing dependency before importing PyYAML, `tomllib`, local modules, or write-capable code.
 
-Consequently, standardizing Python preambles alone cannot make a missing-interpreter direct command repository-owned. Full coverage of the observed machine state requires the approved invocation contract to include a non-Python launcher or aggregate runner; raw direct `.py` invocation remains subject to the operating system when no Python executable exists.
+Consequently, standardizing Python preambles alone cannot make an unlaunchable generic command repository-owned. Full coverage of the observed machine state requires the approved invocation contract to include a non-Python launcher or aggregate runner that can discover additional candidates and diagnose why none is ready; raw direct `.py` invocation remains subject to the operating system when its selected Python command cannot start.
 
 ### Aggregate runner
 
@@ -173,6 +173,12 @@ Cover the 12 production entrypoints projected into downstream payloads or retain
 - Benefit: smallest bounded change and strongest focus on downstream first-run experience.
 - Cost: 13 source-only maintainer/CI operations remain inconsistent, including several write-capable commands; this only partially addresses the Issue's `scope:mixed` label and source-runner comparison.
 
+## D-001 Owner Decision
+
+On 2026-08-02, the owner selected Option A: all 25 production CLIs are in scope, while 45 direct test CLIs and four import-only modules remain outside the user-facing prerequisite contract.
+
+Implementation is ordered into two bounded batches. The 12 portable/downstream production CLIs must be designed, implemented, and validated first. The 13 source-only production CLIs are handled only after that batch reaches its approved gate. This sequencing does not approve the fallback architecture, environment mutation, provider-runtime discovery, OS-native launcher, or canonical script ownership.
+
 ## Current Conclusion Boundary
 
-This inventory establishes candidates and impact only. No D-001 option has been selected, no implementation architecture has been approved, and no production file has been modified. The observed host state proves that an absent interpreter cannot be diagnosed by repository Python code; whether a supported non-Python launcher is added remains a D-002 owner decision.
+D-001 and its portable-first sequencing are approved. No implementation architecture has been approved and no production file has been modified. A later host probe found a usable versioned `python3.14` command that the current `python`/`python3` resolver misses, while both that interpreter and the current Codex bundled Python lack PyYAML. Runtime discovery, dependency readiness, agent-tool adapters, OS-native launchers, automatic installation, and script ownership remain separate pending decisions documented in `runtime-fallback-and-ownership-assessment.md`.

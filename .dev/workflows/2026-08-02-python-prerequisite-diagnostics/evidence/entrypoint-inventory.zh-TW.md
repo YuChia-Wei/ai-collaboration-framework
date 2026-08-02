@@ -7,11 +7,12 @@
 - `translation_status`: `complete`
 - `translated_by`: `OpenAI Codex`
 - `translated_at`: `2026-08-02T11:01:14+08:00`
+- `translation_updated_at`: `2026-08-02T12:03:33+08:00`
 - `source_document`: `.dev/workflows/2026-08-02-python-prerequisite-diagnostics/evidence/entrypoint-inventory.md`
-- `source_updated_at`: `2026-08-02T10:53:29+08:00`
+- `source_updated_at`: `2026-08-02T12:03:33+08:00`
 - `generated_by`: `OpenAI Codex repository-native inventory`
 - `generated_at`: `2026-08-02T10:39:48+08:00`
-- `updated_at`: `2026-08-02T10:53:29+08:00`
+- `updated_at`: `2026-08-02T12:03:33+08:00`
 - `source_revision`: `2263744bb2dc876f8077547e961fc68be28b0074`
 - `source_branch`: `codex/2026-08-02-python-prerequisite-diagnostics`
 - `issue`: `https://github.com/YuChia-Wei/ai-collaboration-prompts-dotnet-backend/issues/69`
@@ -109,16 +110,16 @@ Get-Content -Raw .ai/scripts/README.md
 
 ## 目前行為與風險
 
-### 主機沒有 interpreter
+### 主機上的通用 interpreter 指令不可用
 
-在目前的 Windows 主機上，`python` 與 `python3` 會解析至 Windows App Execution Alias 可執行檔，但主機並未安裝 Python runtime。因此，直接執行 `python <entrypoint>.py` 時，會在作業系統 launcher 階段失敗，repository 還來不及執行 Python bootstrap 或印出自己的訊息。
+在目前的 Windows 主機上，`python` 與 `python3` 會解析至尚未配置的 Windows App Execution Alias 可執行檔。因此，直接執行 `python <entrypoint>.py` 時，會在作業系統 launcher 階段失敗，repository 還來不及執行 Python bootstrap 或印出自己的訊息。後續的針對性探測在 PATH 上找到可用的 `python3.14` 指令，但目前 resolver 不會檢查版本化指令名稱，而且該環境缺少 PyYAML。
 
 這形成兩個不同的診斷層次：
 
 1. 非 Python 的 shell 或 PowerShell launcher 可以偵測沒有可用 interpreter 的情況、列出曾嘗試的指令、說明需要 Python 3.11+，並在呼叫任何 Python 進入點前停止。
 2. Python interpreter 一旦啟動，shared Python bootstrap 就可以在 import PyYAML、`tomllib`、本機模組或可寫入程式碼前，拒絕不支援的版本或缺少 dependency 的環境。
 
-因此，僅標準化 Python preamble，無法讓缺少 interpreter 的直接指令改由 repository 提供診斷。若要完整涵蓋這台電腦實際出現的狀態，核准後的呼叫契約必須包含非 Python launcher 或 aggregate runner；當沒有 Python 可執行檔時，直接呼叫 `.py` 的原始方式仍受作業系統行為控制。
+因此，僅標準化 Python preamble，無法讓無法啟動的通用指令改由 repository 提供診斷。若要完整涵蓋這台電腦實際出現的狀態，核准後的呼叫契約必須包含非 Python launcher 或 aggregate runner，以發現其他候選並診斷為何沒有任何候選完全就緒；當選定的 Python 指令無法啟動時，直接呼叫 `.py` 的原始方式仍受作業系統行為控制。
 
 ### Aggregate runner
 
@@ -180,6 +181,12 @@ Get-Content -Raw .ai/scripts/README.md
 - 優點：變更範圍最小，並最集中改善下游使用者的首次執行體驗。
 - 成本：13 個 source-only 維護者／CI 操作仍會維持不一致，其中包含數個可寫入指令；這只能部分處理 Issue 的 `scope:mixed` 標籤與 source runner 比較問題。
 
+## D-001 Owner 決定
+
+Owner 已於 2026-08-02 選擇選項 A：全部 25 個 production CLI 都納入範圍；45 個可直接執行的 test CLI 與 4 個僅供 import 的模組，仍不納入 user-facing 先決條件契約。
+
+實作依序拆成兩個範圍受控的批次。必須先完成 12 個 portable/downstream production CLI 的設計、實作與驗證，達到核准 gate 後，才處理 13 個 source-only production CLI。這項順序並未核准 fallback 架構、環境 mutation、provider runtime discovery、OS-native launcher 或 canonical script ownership。
+
 ## 目前結論邊界
 
-本盤點只建立候選範圍與影響，尚未選定任何 D-001 選項、尚未核准任何實作架構，也沒有修改任何 production 檔案。目前主機狀態證明：repository 的 Python 程式無法診斷 interpreter 完全不存在的情況；是否新增受支援的非 Python launcher，仍屬於 D-002 的 owner decision。
+D-001 與 portable-first 順序已核准。尚未核准任何實作架構，也沒有修改任何 production 檔案。後續本機探測找到一個目前 `python`／`python3` resolver 會漏掉、但可使用的版本化 `python3.14` 指令；該 interpreter 與目前 Codex bundled Python 都缺少 PyYAML。Runtime discovery、dependency readiness、agent tool adapter、OS-native launcher、自動安裝及 script ownership 仍是彼此獨立的 pending decisions，詳細記錄於 `runtime-fallback-and-ownership-assessment.zh-TW.md`。
