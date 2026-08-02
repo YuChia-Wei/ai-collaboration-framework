@@ -8,7 +8,7 @@
   "owner_skill": "ai-context-governance",
   "status": "pending",
   "created_at": "2026-08-02T10:32:53+08:00",
-  "updated_at": "2026-08-02T12:03:33+08:00",
+  "updated_at": "2026-08-02T16:43:00+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-5.6-sol",
   "reasoning_effort": "high",
@@ -41,6 +41,7 @@
     "non_goals": [
       "Modify the 13 source-only production CLIs in this task.",
       "Expand beyond the approved production entrypoints.",
+      "Redesign check-all aggregate composition, package disposition, or portable-handoff policy; those concerns are tracked by GitHub Proposal #75. Only the approved prerequisite-diagnostic surface may change under Issue #69.",
       "Change supported Python below 3.11.",
       "Publish a release."
     ]

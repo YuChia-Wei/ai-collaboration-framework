@@ -8,7 +8,7 @@
   "owner_skill": "ai-context-governance",
   "status": "in_progress",
   "created_at": "2026-08-02T10:32:53+08:00",
-  "updated_at": "2026-08-02T16:32:42+08:00",
+  "updated_at": "2026-08-02T16:43:00+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-5.6-sol",
   "reasoning_effort": "high",
@@ -63,11 +63,11 @@
       "Valid workflow locator and task artifacts",
       "Explicit owner approval before implementation transition"
     ],
-    "last_completed_step": "Resolved D-006B as packaged-but-unselected skill self-tests, recorded the owner-reported #69 Project Status transition to In progress, and scoped check-all aggregate architecture as follow-up candidate FUP-001.",
-    "next_action": "Obtain only the owner decision on creating the FUP-001 check-all follow-up Proposal; otherwise retain the follow-up locally and return to D-010B."
+    "last_completed_step": "Created GitHub Proposal #75 for the check-all aggregate follow-up, audited the #69 decision ledger as six resolved, two decomposed umbrellas, and thirteen pending atomic decisions, and proposed CP-1, CP-2, and CP-75A release-safe checkpoints.",
+    "next_action": "Obtain only the owner decision on the proposed checkpoint and separate-workflow/branch boundary; if approved, record it and return to D-010B."
   },
   "results": {
-    "summary": "D-006A and D-006B are resolved: workflow owners retain domain templates, and skill-owned self-tests remain packaged but unselected in routine downstream product development. Check-all aggregate composition, performance, packaging, and portable-handoff coupling are outside #69 diagnostic implementation and are captured as uncreated follow-up candidate FUP-001. Implementation has not started.",
+    "summary": "D-006A and D-006B remain resolved. Check-all aggregate composition, performance, packaging, and portable-handoff coupling are outside #69 and now tracked by GitHub Proposal #75. The #69 discussion is not complete: six atomic decisions are resolved and thirteen remain pending. Proposed CP-1 design-freeze, CP-2 portable-compatibility, and separate CP-75A architecture/benchmark checkpoints await owner confirmation. Implementation has not started.",
     "files_changed": [
       ".dev/workflows/2026-08-02-python-prerequisite-diagnostics/workflow.yaml",
       ".dev/workflows/2026-08-02-python-prerequisite-diagnostics/workflow-plan.md",
@@ -105,10 +105,14 @@
       "check-all.sh critical block: confirmed 30 sequential required commands, including 26 literal Python commands, three dotnet tests, and one indirect commit-validation command",
       "Portable handoff policy: confirmed downstream handoff currently requires check-all.sh --critical",
       "Connected GitHub Issue read: #69 remains open with proposal/triage labels; GitHub Project Status is recorded from the owner's manual In progress update because the Issue connector does not expose Project fields",
-      "Issue #69 scope comparison: prerequisite discovery/diagnostics remains in scope; aggregate composition, performance, package disposition, and handoff coupling classified as follow-up candidate FUP-001"
+      "Issue #69 scope comparison: prerequisite discovery/diagnostics remains in scope; aggregate composition, performance, package disposition, and handoff coupling classified as follow-up FUP-001",
+      "Connected GitHub duplicate search for check-all, aggregate-gate, and workflow-handoff proposals: no issue owning the same boundary; resolved #22 and #42 retained as related work",
+      "Connected GitHub create/read-back: Proposal #75 created open with kind:proposal, scope:mixed, triage:needed, and created-by:codex labels",
+      "Decision-ledger completeness audit: six resolved atomic decisions, two decomposed umbrellas, and thirteen pending atomic decisions",
+      "v0.8.0 risk review: proposed separate design-freeze, portable-compatibility, and architecture/benchmark checkpoints with no cross-issue default change"
     ],
     "finding_status": "not-addressed",
-    "residual_risk": "Workflow authoring and framework self-test boundaries are resolved, but FUP-001 external tracking, aggregate-runner portability, narrow target-runtime validation, local defaults, CI semantics, result taxonomy, Agent retry budget, interpreter trust, launcher coverage, dependency recovery, canonical runtime, output, proof, remaining script ownership, testing, and documentation decisions remain unresolved; implementation remains paused.",
+    "residual_risk": "External tracking now exists as Proposal #75, but it is not accepted or implementation-authorized. Thirteen #69 atomic decisions remain unresolved, including local and CI semantics, result taxonomy, Agent retry budget, interpreter trust, launcher coverage, dependency recovery, canonical runtime, output, proof, remaining script ownership, testing, and documentation; implementation remains paused.",
     "follow_up_needed": true
   }
 }

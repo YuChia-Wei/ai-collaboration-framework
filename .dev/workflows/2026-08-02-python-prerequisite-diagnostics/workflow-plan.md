@@ -19,7 +19,7 @@
 - `current_phase`: `remediation-planning`
 - `artifact_root`: `.dev/workflows/2026-08-02-python-prerequisite-diagnostics`
 - `created_at`: `2026-08-02T10:32:53+08:00`
-- `updated_at`: `2026-08-02T16:32:42+08:00`
+- `updated_at`: `2026-08-02T16:43:00+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md`
 - `template_version`: `1.2.0`
 
@@ -76,6 +76,8 @@
 - Context-driven `not applicable` behavior exists for absent source-release/provenance/spec inputs, but it is not an owner or developer toggle. No pre-commit hook automatically invokes the aggregate runner. Source CI runs `--quick`, while the distribution profile packages scripts under mandatory core components without projecting the source `.github/workflows/portable-gates.yml` workflow.
 - A validation activation switch would not remove Python from explicit package apply, initialization, or upgrade lifecycles. Routine local/CI enforcement must be separated from safety-critical lifecycle commands before a switch is designed.
 - The owner confirmed that repeated automatic local-check failures during software-development workflows cause Agent retries and material token waste. Token control is therefore a first-class acceptance concern: policy must be resolved before invocation, and an unchanged prerequisite failure must not trigger identical command retries.
+- The owner authorized external tracking for the out-of-scope aggregate-runner concerns. GitHub Proposal [#75](https://github.com/YuChia-Wei/ai-collaboration-prompts-dotnet-backend/issues/75), `[Proposal] Separate check-all Aggregate Gates from Downstream Workflow Validation`, now owns aggregate composition, source-versus-downstream profiles, portable-handoff coupling, performance budgets, compatibility, and release sequencing. Issue #69 retains only `check-all.sh` prerequisite discovery and diagnostic behavior.
+- A discussion-completeness review found six resolved atomic decisions, two decomposed umbrella decisions, and thirteen pending atomic decisions. Issue #69 is therefore not ready for accumulated-design approval or implementation yet.
 - Detailed inventory and fallback/ownership evidence are retained in the English evidence files with complete owner-review translations in their `.zh-TW.md` companions.
 
 ## Discussion Contract And Decision Log
@@ -248,32 +250,69 @@ Issue #69 includes `check-all.sh` only as an affected Python entrypoint and diag
 - performance budgets, caching, parallelism, and token-aware observation;
 - replacement of full aggregate reruns with narrow workflow/checkpoint validation plus recorded target-test evidence.
 
-Record these concerns as follow-up candidate `FUP-001`, proposed title `[Proposal] Separate Source Framework Aggregate Gates from Downstream Workflow Validation`, with `scope:mixed`. Its evidence may reference Issue #69, this workflow's D-006B analysis, the distribution profile, `check-all.sh --critical`, and the portable handoff policy. No GitHub Issue has been created without explicit owner authorization. If created as a Proposal, provider policy keeps acceptance/promotion separate from Issue creation.
+The owner authorized external tracking, and `FUP-001` was created as GitHub Proposal [#75](https://github.com/YuChia-Wei/ai-collaboration-prompts-dotnet-backend/issues/75), `[Proposal] Separate check-all Aggregate Gates from Downstream Workflow Validation`, with `scope:mixed`, `kind:proposal`, `triage:needed`, and `created-by:codex`. Search found related resolved Issues #22 and #42 but no duplicate that owns this source-versus-downstream aggregate boundary. Proposal creation does not accept, promote, schedule, or authorize implementation of #75.
 
 Narrow validators that inspect actual downstream workflow or handoff artifacts remain target-runtime validators, not framework self-tests, and still require a separate runtime/fallback decision within this workflow where they overlap Python prerequisite behavior.
+
+## Discussion Completion Review And Release Boundary
+
+Issue #69 is not fully discussed. The current decision ledger has this state:
+
+| State | Decisions | Meaning |
+| --- | --- | --- |
+| Resolved atomic decisions (6) | `D-001`, `D-002A`, `D-006A`, `D-006B`, `D-TR-001`, `D-010A` | Production-entrypoint coverage, no-mutation failure, workflow ownership, packaged-but-unselected skill self-tests, future translation routing, and routine-switch scope are approved. |
+| Decomposed umbrellas (2) | `D-002`, `D-010` | These organize subdecisions and do not themselves authorize an implementation. |
+| Pending atomic decisions (13) | `D-002B`, `D-002C`, `D-003`, `D-004`, `D-005`, `D-006`, `D-007`, `D-008`, `D-009`, `D-010B`, `D-010C`, `D-010D`, `D-010E` | Interpreter trust, launcher boundary, output/exit contract, dependency recovery, pre-mutation proof, script ownership, tests, migration, canonical runtime, local policy, CI policy, result taxonomy, and retry budgets remain open. |
+
+The remaining questions should be completed in four bounded groups while retaining the one-question-at-a-time owner contract:
+
+1. Downstream activation and cost control: `D-010B` through `D-010E`.
+2. Runtime discovery and recovery: `D-002B`, `D-002C`, `D-004`, and `D-009`.
+3. Observable contract and proof: `D-003`, `D-005`, and `D-007`.
+4. Ownership, package compatibility, and communication: `D-006` and `D-008`.
+
+### Proposed Intermediate Checkpoints
+
+The following sequence is proposed and remains pending owner confirmation:
+
+- `CP-1 — #69 Design Freeze`: resolve every pending #69 decision or explicitly defer it to a named issue; require `D-009` to be resolved rather than deferred; freeze the 12-entry portable contract, compatibility requirements, migration expectations, and deterministic acceptance matrix; obtain explicit accumulated-design approval; then create a durable design-freeze commit before implementation.
+- `CP-2 — #69 Portable Compatibility`: implement only the 12 portable/downstream entrypoints, preserve command paths and approved exit semantics, prove clean-install and supported v0.7.0-to-v0.8.0 upgrade compatibility, and stop for owner review before touching the 13 source-only entrypoints.
+- `CP-75A — #75 Architecture And Benchmark`: after `CP-1`, create a separate #75 workflow and dedicated branch. Inventory and benchmark aggregate paths and approve source/downstream profiles without changing `check-all` defaults, portable handoff behavior, or package disposition.
+
+Discussion may continue in the same Codex task for conversational continuity, but #75 artifacts and commits should not share Issue #69's workflow or branch. This keeps acceptance criteria, rollback, PR review, and release inclusion independently controllable.
+
+### v0.8.0 Compatibility Guardrails
+
+- Issue #69 may add approved diagnostics and bounded discovery but must not redesign aggregate selection, package disposition, or handoff policy owned by #75.
+- Preserve published command paths and thin compatibility entrypoints; removals or default changes require a separate migration and release decision.
+- Do not combine #69 implementation and #75 aggregate behavior changes in one implementation batch or pull request.
+- Keep the existing full source aggregate gate available until any replacement profiles have independent parity and rollback evidence.
+- Require clean-install package projection and supported v0.7.0-to-v0.8.0 upgrade tests before either proposal changes portable behavior.
+- Permit #75 behavior changes to move after v0.8.0 if its approved design cannot stay additive or dual-path; target-version pressure is not authorization for a breaking default change.
 
 ## Stages And Checkpoints
 
 1. Bootstrap the governance workflow and freeze Issue #69 plus `AIC-004` as source evidence.
 2. Inventory supported Python entrypoints, import timing, write potential, package inclusion, documented invocation, and current test coverage.
 3. Resolve the remaining decision log one question at a time and obtain explicit approval for the accumulated design.
-4. Implement and validate the approved 12-entry portable/downstream batch without broad validator redesign.
-5. Begin the 13-entry source-only batch only after the portable batch reaches its approved checkpoint.
-6. Run focused negative-path tests, affected validator/package checks, workflow/AI-context validation, and applicable aggregate gates.
-7. Request an independent `ai-context-auditor` verification assessment and reconcile `AIC-004` in the remediation report.
-8. Verify commits, task state, residual risks, and close the workflow only after implementation and verification complete.
+4. Reach proposed `CP-1 — #69 Design Freeze` after owner confirmation; no implementation starts before that checkpoint is approved and committed.
+5. Implement and validate the approved 12-entry portable/downstream batch without broad validator redesign.
+6. Reach `CP-2 — #69 Portable Compatibility`, then begin the 13-entry source-only batch only after explicit checkpoint acceptance.
+7. Run focused negative-path tests, affected validator/package checks, workflow/AI-context validation, and applicable aggregate gates.
+8. Request an independent `ai-context-auditor` verification assessment and reconcile `AIC-004` in the remediation report.
+9. Verify commits, task state, residual risks, and close the workflow only after implementation and verification complete.
 
 ## Resume Checkpoint
 
-- Last completed action: resolved D-006B as packaged-but-unselected skill self-tests, recorded the owner-reported GitHub Project transition of #69 to In progress, and separated check-all aggregate composition/performance/handoff coupling into follow-up candidate FUP-001 without creating an external Issue.
+- Last completed action: created GitHub Proposal #75 for the `check-all` aggregate follow-up, audited the #69 decision ledger, and proposed design-freeze, portable-compatibility, and separate #75 architecture/benchmark checkpoints with v0.8.0 compatibility guardrails.
 - Current task: `AIC-004-diagnostic-design`.
-- Exact next action: obtain only the owner decision on whether to create the proposed check-all follow-up Proposal from FUP-001; if not authorized, retain it as a workflow follow-up and return to D-010B.
+- Exact next action: obtain only the owner decision on the proposed `CP-1`/`CP-2`/`CP-75A` separation; if approved, record it and return to the next unresolved #69 question, `D-010B`.
 - Validation already completed: confirmed clean `main@2263744bb2dc876f8077547e961fc68be28b0074` before branching; verified the final baseline assessment; verified the inventory against `git ls-files`, direct file reads, distribution profile, shell registry, active documentation, and existing tests; parsed both task JSON files; `git diff --check`, `validate-workflow-artifacts.py`, and `validate-ai-context.py` passed.
 - Current discussion-checkpoint validation: Git-history probes established the adoption timeline; the active sub-agent manifest and Codex adapter established the missed low-cost route; the changed task JSON parsed with PowerShell; locator/index state was checked directly; and `git diff --check` passed. Full Python-backed repository validators were not rerun because every discovered interpreter lacks PyYAML and D-002A now forbids implicit installation; this checkpoint records that result as `blocked-by-environment`, not passed.
 - Validation environment note: generic `python` and `python3` resolve to unusable Windows aliases. A versioned uv-managed Python 3.14.1 and the Codex bundled Python 3.12.13 can start, but neither currently imports PyYAML. Prior artifact validation used Codex Python with isolated temporary `PyYAML==6.0.3`; no repository dependency files were changed.
-- Git state: active branch `codex/2026-08-02-python-prerequisite-diagnostics`, created from `main@2263744bb2dc876f8077547e961fc68be28b0074`; the latest durable design checkpoint entering this discussion is `22e6883`.
-- Branch history and checkpoint handoffs: bootstrap commits `88a01be` and `4e93c0f`; absent-interpreter boundary `cd58c2b`; inventory translation `d27fb8a`; D-001/fallback assessment `d5ae808`; runtime rationale and D-002A `9937fb4`; downstream switch gap `7fa102c`; activation/retry scope `74bb024`; D-010B team scenarios `c2b35ad`; opt-in location and skill-stage map `32ede97`; workflow ownership and self-test terminology `22e6883`; no push or merge handoff has occurred.
-- Blockers or unresolved decisions: the FUP-001 Issue-creation decision, `D-010B` onward, `D-002B` onward, and `D-009` remain unresolved; implementation edits are paused pending explicit accumulated-design approval.
+- Git state: active branch `codex/2026-08-02-python-prerequisite-diagnostics`, created from `main@2263744bb2dc876f8077547e961fc68be28b0074`; the latest durable design checkpoint entering this discussion is `ac2d9d7`.
+- Branch history and checkpoint handoffs: bootstrap commits `88a01be` and `4e93c0f`; absent-interpreter boundary `cd58c2b`; inventory translation `d27fb8a`; D-001/fallback assessment `d5ae808`; runtime rationale and D-002A `9937fb4`; downstream switch gap `7fa102c`; activation/retry scope `74bb024`; D-010B team scenarios `c2b35ad`; opt-in location and skill-stage map `32ede97`; workflow ownership and self-test terminology `22e6883`; self-test boundary and FUP scope `ac2d9d7`; no push or merge handoff has occurred.
+- Blockers or unresolved decisions: thirteen atomic #69 decisions and the proposed checkpoint/branch separation remain unresolved; implementation edits are paused pending explicit accumulated-design approval. Proposal #75 is externally tracked but not accepted, promoted, scheduled, or authorized for implementation.
 
 ## Branch Lifecycle
 
