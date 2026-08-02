@@ -19,7 +19,7 @@
 - `current_phase`: `remediation-planning`
 - `artifact_root`: `.dev/workflows/2026-08-02-python-prerequisite-diagnostics`
 - `created_at`: `2026-08-02T10:32:53+08:00`
-- `updated_at`: `2026-08-02T17:29:39+08:00`
+- `updated_at`: `2026-08-02T18:17:55+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md`
 - `template_version`: `1.2.0`
 
@@ -110,7 +110,7 @@
 | `D-010B` | Target-owned local default and developer override umbrella | resolved | Resolve through `D-010B1` tracked `manual` default and `D-010B2` ignored strict `.dev/validation.local.conf` personal opt-in. | Establishes one cross-Agent local policy with a visible, pre-Python personal strengthening path and no hidden Git-config requirement. |
 | `D-010B1` | Target-owned routine local default | resolved | Use tracked target mode `manual`: routine local validation is applicable but unselected by default; explicit CLI and lifecycle commands remain unaffected. | Heterogeneous developer hosts perform zero automatic prerequisite probes or routine validator executions until target policy or an allowed developer opt-in selects them. |
 | `D-010B2` | Developer-local opt-in storage and transport | resolved | Use ignored `.dev/validation.local.conf` as the only persistent personal opt-in. Require the exact `/.dev/validation.local.conf` ignore rule, a strict one-line `validation.routine.local=<approved-mode>` data parser, monotonic strengthening only, no implicit Agent writes, and no environment-variable override in v0.8.0. | Keeps the preference visible and cross-Agent without reintroducing Python/YAML bootstrap, while adding explicit init, upgrade, ignore, package, native-reader, and negative-path test obligations. |
-| `D-010C` | Target-owned CI enforcement | pending |  | Determines how a target separately declares CI-required validation and prevents a local preference from bypassing hosted gates. |
+| `D-010C` | Target-owned CI enforcement | resolved | Use framework default `unconfigured`; allow a target to explicitly select `advisory` or `required` in tracked `.dev/project-config.yaml#validation.routine.ci.mode`. Treat `required` as valid only with a real tracked CI workflow, exact command/profile, provisioned prerequisites, durable check evidence, and separately verified provider merge-gate settings when merge blocking is claimed. Developer-local settings cannot weaken CI; absent, misconfigured, blocked, or failed required CI is never passed. | Avoids inventing CI for downstream targets while allowing teams to centralize Python/PyYAML provisioning and mandatory validation. Issue #75 retains command/profile selection, so this decision does not prescribe `check-all`. |
 | `D-010D` | Disabled, unavailable, and executed result semantics | pending |  | Keeps `not-run-by-policy`, `blocked-by-environment`, `failed`, and `passed` distinct so disabling a check cannot be reported as success. |
 | `D-010E` | Agent prerequisite probe and retry budget | pending |  | Determines zero-attempt behavior when local automation is unselected, the maximum bounded preflight/execution attempts when selected, and the material-state-change requirement for any retry. |
 
@@ -264,7 +264,7 @@ The owner resolved the tracked target authority and default as future `.dev/proj
 
 ### D-010C — CI Enforcement
 
-The candidate CI modes are `unconfigured`, `advisory`, and `required`. The framework cannot assume that a downstream target has a CI provider, so the recommended framework default is `unconfigured`; a target team that wants the validation standard should record `required` only after a real tracked CI workflow, exact command/profile, provisioned prerequisites, and durable check evidence exist.
+The owner approved CI modes `unconfigured`, `advisory`, and `required`. The framework default is `unconfigured` because a downstream target cannot be assumed to have a CI provider. A target team that wants the validation standard records `required` only after a real tracked CI workflow, exact command/profile, provisioned prerequisites, and durable check evidence exist.
 
 - The proposed authority is `.dev/project-config.yaml#validation.routine.ci.mode` plus the target-owned CI workflow. A configuration value by itself does not create or prove a hosted gate.
 - A required CI path may explicitly provision pinned Python and dependencies as part of the CI environment. That is planned CI provisioning, not implicit self-installation by a validator and does not weaken `D-002A`.
@@ -344,20 +344,20 @@ Issue #69 is not fully discussed. The current decision ledger has this state:
 
 | State | Decisions | Meaning |
 | --- | --- | --- |
-| Resolved atomic decisions (8) | `D-001`, `D-002A`, `D-006A`, `D-006B`, `D-TR-001`, `D-010A`, `D-010B1`, `D-010B2` | Production-entrypoint coverage, no-mutation failure, workflow ownership, packaged-but-unselected skill self-tests, future translation routing, routine-switch scope, tracked `manual` default, and ignored strict personal opt-in are approved. |
+| Resolved atomic decisions (9) | `D-001`, `D-002A`, `D-006A`, `D-006B`, `D-TR-001`, `D-010A`, `D-010B1`, `D-010B2`, `D-010C` | Production-entrypoint coverage, no-mutation failure, workflow ownership, packaged-but-unselected skill self-tests, future translation routing, routine-switch scope, tracked `manual` default, ignored strict personal opt-in, and target-owned CI enforcement are approved. |
 | Decomposed umbrellas (2) | `D-002`, `D-010` | These organize subdecisions and do not themselves authorize an implementation. `D-010B` is fully resolved through its two subdecisions. |
-| Pending atomic decisions (12) | `D-002B`, `D-002C`, `D-003`, `D-004`, `D-005`, `D-006`, `D-007`, `D-008`, `D-009`, `D-010C`, `D-010D`, `D-010E` | Interpreter trust, launcher boundary, output/exit contract, dependency recovery, pre-mutation proof, script ownership, tests, migration, canonical runtime, CI policy, result taxonomy, and retry budgets remain open. |
+| Pending atomic decisions (11) | `D-002B`, `D-002C`, `D-003`, `D-004`, `D-005`, `D-006`, `D-007`, `D-008`, `D-009`, `D-010D`, `D-010E` | Interpreter trust, launcher boundary, output/exit contract, dependency recovery, pre-mutation proof, script ownership, tests, migration, canonical runtime, result taxonomy, and retry budgets remain open. |
 
 The remaining questions should be completed in four bounded groups while retaining the one-question-at-a-time owner contract:
 
-1. Downstream activation and cost control: `D-010C` through `D-010E`; all of D-010B is resolved.
+1. Downstream activation and cost control: `D-010D` and `D-010E`; D-010B and D-010C are resolved.
 2. Runtime discovery and recovery: `D-002B`, `D-002C`, `D-004`, and `D-009`.
 3. Observable contract and proof: `D-003`, `D-005`, and `D-007`.
 4. Ownership, package compatibility, and communication: `D-006` and `D-008`.
 
 ### Approved Intermediate Checkpoints
 
-The owner approved the following sequence on 2026-08-02. Approval establishes workflow and release boundaries only; it does not approve the thirteen pending #69 design decisions or authorize implementation.
+The owner approved the following sequence on 2026-08-02. Approval establishes workflow and release boundaries only; it does not approve remaining #69 design decisions or authorize implementation.
 
 - `CP-1 — #69 Design Freeze`: resolve every pending #69 decision or explicitly defer it to a named issue; require `D-009` to be resolved rather than deferred; freeze the 12-entry portable contract, compatibility requirements, migration expectations, and deterministic acceptance matrix; obtain explicit accumulated-design approval; then create a durable design-freeze commit before implementation.
 - `CP-2 — #69 Portable Compatibility`: implement only the 12 portable/downstream entrypoints, preserve command paths and approved exit semantics, prove clean-install and supported v0.7.0-to-v0.8.0 upgrade compatibility, and stop for owner review before touching the 13 source-only entrypoints.
@@ -388,15 +388,15 @@ Discussion may continue in the same Codex task for conversational continuity, bu
 
 ## Resume Checkpoint
 
-- Last completed action: resolved `D-010B2` as ignored strict `.dev/validation.local.conf`, completed D-010B, and excluded `.git/config` plus environment-variable override from the selected v0.8.0 design.
+- Last completed action: resolved `D-010C` with framework-default `unconfigured` CI, explicit target `advisory`/`required` modes, evidence-backed required enforcement, local non-weakening, and #75-owned command/profile selection.
 - Current task: `AIC-004-diagnostic-design`.
-- Exact next action: obtain only the owner decision on `D-010C` target-owned CI enforcement; D-010D and D-010E remain pending.
+- Exact next action: obtain only the owner decision on `D-010D` compatibility-safe result semantics; D-010E remains pending.
 - Validation already completed: confirmed clean `main@2263744bb2dc876f8077547e961fc68be28b0074` before branching; verified the final baseline assessment; verified the inventory against `git ls-files`, direct file reads, distribution profile, shell registry, active documentation, and existing tests; parsed both task JSON files; `git diff --check`, `validate-workflow-artifacts.py`, and `validate-ai-context.py` passed.
 - Current discussion-checkpoint validation: Git-history probes established the adoption timeline; the active sub-agent manifest and Codex adapter established the missed low-cost route; the changed task JSON parsed with PowerShell; locator/index state was checked directly; and `git diff --check` passed. Full Python-backed repository validators were not rerun because every discovered interpreter lacks PyYAML and D-002A now forbids implicit installation; this checkpoint records that result as `blocked-by-environment`, not passed.
 - Validation environment note: generic `python` and `python3` resolve to unusable Windows aliases. A versioned uv-managed Python 3.14.1 and the Codex bundled Python 3.12.13 can start, but neither currently imports PyYAML. Prior artifact validation used Codex Python with isolated temporary `PyYAML==6.0.3`; no repository dependency files were changed.
-- Git state: active branch `codex/2026-08-02-python-prerequisite-diagnostics`, created from `main@2263744bb2dc876f8077547e961fc68be28b0074`; the latest durable design checkpoint entering this discussion is `4703943`.
-- Branch history and checkpoint handoffs: bootstrap commits `88a01be` and `4e93c0f`; absent-interpreter boundary `cd58c2b`; inventory translation `d27fb8a`; D-001/fallback assessment `d5ae808`; runtime rationale and D-002A `9937fb4`; downstream switch gap `7fa102c`; activation/retry scope `74bb024`; D-010B team scenarios `c2b35ad`; opt-in location and skill-stage map `32ede97`; workflow ownership and self-test terminology `22e6883`; self-test boundary and FUP scope `ac2d9d7`; staged #69/#75 scope boundary `1a66897`; checkpoint split and integrated D-010 framing `8c3fb8d`; manual-default and local-store comparison `4703943`; no push or merge handoff has occurred.
-- Blockers or unresolved decisions: twelve atomic #69 decisions remain unresolved; D-010B and checkpoint/branch separation are resolved. Implementation edits remain paused pending explicit accumulated-design approval. Proposal #75 is externally tracked but not accepted, promoted, scheduled, or authorized for implementation.
+- Git state: active branch `codex/2026-08-02-python-prerequisite-diagnostics`, created from `main@2263744bb2dc876f8077547e961fc68be28b0074`; the latest durable design checkpoint entering this discussion is `5c6b9e5`.
+- Branch history and checkpoint handoffs: bootstrap commits `88a01be` and `4e93c0f`; absent-interpreter boundary `cd58c2b`; inventory translation `d27fb8a`; D-001/fallback assessment `d5ae808`; runtime rationale and D-002A `9937fb4`; downstream switch gap `7fa102c`; activation/retry scope `74bb024`; D-010B team scenarios `c2b35ad`; opt-in location and skill-stage map `32ede97`; workflow ownership and self-test terminology `22e6883`; self-test boundary and FUP scope `ac2d9d7`; staged #69/#75 scope boundary `1a66897`; checkpoint split and integrated D-010 framing `8c3fb8d`; manual-default and local-store comparison `4703943`; persistent local opt-in `5c6b9e5`; no push or merge handoff has occurred.
+- Blockers or unresolved decisions: eleven atomic #69 decisions remain unresolved; D-010B, D-010C, and checkpoint/branch separation are resolved. Implementation edits remain paused pending explicit accumulated-design approval. Proposal #75 is externally tracked but not accepted, promoted, scheduled, or authorized for implementation.
 
 ## Branch Lifecycle
 
