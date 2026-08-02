@@ -110,6 +110,8 @@
 3. 可使用 Python 3.11 或更新版本。
 4. 已閱讀目標版本的 `migration-guide.md`。即使是乾淨安裝，也要確認 optional provider 與 profile 的預設選擇。
 
+可攜式 package CLI 會在執行前驗證 Python 與其受治理的相依套件。被阻擋的 direct command 會在 stderr 輸出一行可採取行動的訊息；POSIX 與 PowerShell launcher 也支援 `--diagnostic-format=json`，以輸出一個 machine-readable stdout object。診斷不會安裝套件或變更 target。請手動依照回報的 recovery command 處理，或使用 `AI_CONTEXT_PYTHON` 選取已準備好的 interpreter。關於 discovery order 與 local routine-validation policy，請見 [Python prerequisite diagnostics guide](.dev/guides/ai-collaboration-guides/PYTHON-PREREQUISITE-DIAGNOSTICS-GUIDE.zh-TW.md)。
+
 在 PowerShell 可用下列方式先設定路徑與檢視 checksum（兩個值必須相同）：
 
 ```powershell

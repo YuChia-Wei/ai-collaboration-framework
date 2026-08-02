@@ -112,6 +112,15 @@ Before starting, confirm that:
 3. Python 3.11 or newer is available.
 4. You have read the selected version's `migration-guide.md`. Even for a clean installation, confirm the default profile and optional-provider choices.
 
+Portable package CLIs validate Python and their governed dependencies before
+running. A blocked direct command prints one actionable stderr line; the POSIX
+and PowerShell launchers also support `--diagnostic-format=json` for one
+machine-readable stdout object. Diagnostics never install packages or mutate
+the target. Follow the reported recovery command manually, or select a ready
+interpreter with `AI_CONTEXT_PYTHON`. See the
+[Python prerequisite diagnostics guide](.dev/guides/ai-collaboration-guides/PYTHON-PREREQUISITE-DIAGNOSTICS-GUIDE.zh-TW.md)
+for discovery order and local routine-validation policy.
+
 In PowerShell, set the paths and inspect the checksum as follows. The two values must match:
 
 ```powershell

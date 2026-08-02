@@ -24,6 +24,7 @@ outputs:
   - "migration-guide checklist for the selected version path"
   - "applied changes only when explicitly authorized"
   - "updated target provenance after successful validation"
+  - "preserved target-owned routine-validation policy with reconciliation evidence"
   - "semantic reconciliation table keyed by customization ID and subject"
 constraints:
   - "Use `ai-context-init` instead when the target has not been initialized"
@@ -33,6 +34,7 @@ constraints:
   - "Treat MCP graphs, IDE indexes, semantic search, and other external tools only as discovery accelerators; verify every decision with Git or repository files"
   - "Remain read-only during discovery and planning; require explicit authorization before applying an upgrade"
   - "Do not update provenance until the selected changes and required validation succeed"
+  - "Preserve validation.routine without weakening target selections; never read, package, or overwrite ignored `.dev/validation.local.conf`."
   - "Use the shared semantic customization lifecycle; never infer semantic equivalence from paths or finalize before owner reconciliation and independent post-upgrade verification."
 workflow:
   - step: 1

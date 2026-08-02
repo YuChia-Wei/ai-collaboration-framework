@@ -12,10 +12,19 @@ import sys
 from pathlib import Path
 from typing import Any
 
+sys.dont_write_bytecode = True
+ROOT = Path(__file__).resolve().parents[5]
+sys.path.insert(0, str(ROOT / ".ai/scripts"))
+
+from python_prerequisites import guard_direct_entrypoint
+
+guard_direct_entrypoint(
+    ".ai/assets/skills/software-development-orchestrator/scripts/validate-software-development-orchestrator-acceptance.py"
+)
+
 import yaml
 
 
-ROOT = Path(__file__).resolve().parents[5]
 PROFILE_PATH = (
     ROOT
     / ".ai/assets/skills/software-development-orchestrator/references/capability-profile.yaml"

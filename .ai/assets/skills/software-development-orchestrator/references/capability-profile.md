@@ -90,9 +90,11 @@ spec-compliance gate itself remains selectable.
 
 ## Profile Update Rules
 
-Schema `1.2` also records deterministic orchestration invariants for
-intent-class activation, approval pauses, selectable compliance, coherent
-commit batches, fresh-session evidence, and separate closeout evidence.
+Schema `1.2` records deterministic orchestration invariants for intent-class
+activation, approval pauses, selectable compliance, coherent commit batches,
+fresh-session evidence, and separate closeout evidence. Schema `1.3` adds the
+repository-owned routine-validation activation policy without changing the
+explicit command and lifecycle-command contracts.
 
 Deterministic activation acceptance starts from the preclassified envelope
 defined in `acceptance-oracle.md`. Natural-language classification remains a
@@ -106,3 +108,19 @@ continuation mapping.
 - Keep `test-execution` optional and unmapped until a dedicated provider has
   been separately evaluated and deliberately adopted.
 - If a downstream skill is renamed, update this profile and run reference searches.
+
+## Routine Validation Activation
+
+Routine automatic validation is target policy, not a Python runtime. The tracked
+default is `validation.routine.local.mode: manual`, which performs zero routine
+probes, executions, and retries. The only persistent opt-in is ignored
+`.dev/validation.local.conf`, exactly one data line
+`validation.routine.local=<approved-mode>`; it may strengthen but never weaken
+the tracked mode. Agents never source or write it, and no environment override
+exists. CI modes are `unconfigured`, `advisory`, and `required`; required needs
+tracked workflow, exact command/profile, provisioned prerequisites, durable
+evidence, and separately verified merge settings when claimed.
+
+An applicable but unselected routine check records `outcome: not-applicable`
+and `selection_reason: not-run-by-policy`; it is not passed. Explicit commands
+and lifecycle gates are outside this switch.

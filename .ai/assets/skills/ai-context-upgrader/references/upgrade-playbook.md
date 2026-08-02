@@ -62,6 +62,14 @@ The plan must state:
 
 ## Application
 
+### Routine Validation Policy
+
+Treat `.dev/project-config.yaml#validation.routine` as target-owned policy. Add
+missing defaults only through reconciliation; do not overwrite local or CI
+selections. Defaults are local `manual` and CI `unconfigured`. Preserve ignored
+`.dev/validation.local.conf` without reading or changing it. Lifecycle
+validation remains unaffected.
+
 Apply only explicitly accepted paths. Never use a bulk copy over the repository root. Re-read a path immediately before writing when it is target-owned or previously classified for reconciliation.
 
 For `moved-to` or `merged-into`, preserve target-local source content until its

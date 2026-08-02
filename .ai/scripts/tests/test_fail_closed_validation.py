@@ -67,6 +67,15 @@ class SyntheticShellAssetRepo:
         self.scripts = self.root / ".ai/scripts"
         self.scripts.mkdir(parents=True)
         shutil.copy2(VALIDATOR_SOURCE, self.scripts / VALIDATOR_SOURCE.name)
+        shutil.copy2(
+            REPO_ROOT / ".ai/scripts/python_prerequisites.py",
+            self.scripts / "python_prerequisites.py",
+        )
+        shutil.copy2(
+            REPO_ROOT / ".ai/scripts/python-entrypoints.json",
+            self.scripts / "python-entrypoints.json",
+        )
+        shutil.copy2(REPO_ROOT / "requirements.txt", self.root / "requirements.txt")
         initialized = run(["git", "init", "--quiet"], self.root)
         if initialized.returncode != 0:
             self.close()
@@ -201,11 +210,13 @@ class SyntheticRunnerRepo:
     def remove_child(self, name: str) -> None:
         (self.scripts / name).unlink()
 
-    def add_python_stub(self, name: str) -> None:
+    def add_python_stub(self, name: str, exit_variable: str = "PYTHON_STUB_EXIT") -> Path:
+        path = self.bin / name
         self._write_stub(
-            self.bin / name,
-            f'printf "{name} %s\\n" "$*" >> .aic-sentinel\nexit "${{PYTHON_STUB_EXIT:-0}}"',
+            path,
+            f'printf "{name} %s\\n" "$*" >> .aic-sentinel\nexit "${{{exit_variable}:-0}}"',
         )
+        return path
 
     def enable_source_release_context(self) -> None:
         (self.root / ".dev/releases").mkdir(parents=True)
@@ -603,6 +614,69 @@ class CheckAllRunnerGwtTests(unittest.TestCase):
             self.assertTrue(
                 any(line.startswith("python ") for line in fixture.sentinel())
             )
+        finally:
+            fixture.close()
+
+    def test_gwt_016_given_active_environment_when_gate_starts_then_it_precedes_path_python(self) -> None:
+        fixture = SyntheticRunnerRepo()
+        try:
+            active = fixture.root / "active"
+            active_python = active / ("Scripts/python.exe" if os.name == "nt" else "bin/python")
+            active_python.parent.mkdir(parents=True)
+            fixture._write_stub(
+                active_python,
+                'printf "active-python %s\\n" "$*" >> .aic-sentinel\nexit 0',
+            )
+            result = fixture.execute(
+                "--critical", environment={"VIRTUAL_ENV": str(active)}
+            )
+            self.assertEqual(0, result.returncode, result.stdout + result.stderr)
+            commands = fixture.sentinel()
+            self.assertTrue(any(line.startswith("active-python ") for line in commands))
+            self.assertFalse(any(line.startswith("python ") for line in commands))
+        finally:
+            fixture.close()
+
+    def test_gwt_017_given_only_versioned_path_python_when_gate_starts_then_it_is_selected(self) -> None:
+        fixture = SyntheticRunnerRepo()
+        try:
+            fixture.add_python_stub("python", "GENERIC_PYTHON_STUB_EXIT")
+            fixture.add_python_stub("python3", "GENERIC_PYTHON_STUB_EXIT")
+            fixture.add_python_stub("python3.13", "VERSIONED_PYTHON_STUB_EXIT")
+            result = fixture.execute(
+                "--critical",
+                environment={"GENERIC_PYTHON_STUB_EXIT": "1"},
+            )
+            self.assertEqual(0, result.returncode, result.stdout + result.stderr)
+            self.assertTrue(
+                any(line.startswith("python3.13 ") for line in fixture.sentinel())
+            )
+        finally:
+            fixture.close()
+
+    def test_gwt_018_given_only_offline_uv_python_when_gate_starts_then_uv_is_queried_once(self) -> None:
+        fixture = SyntheticRunnerRepo()
+        try:
+            fixture.add_python_stub("python", "GENERIC_PYTHON_STUB_EXIT")
+            fixture.add_python_stub("python3", "GENERIC_PYTHON_STUB_EXIT")
+            managed = fixture.add_python_stub("managed-python", "MANAGED_PYTHON_STUB_EXIT")
+            fixture._write_stub(
+                fixture.bin / "uv",
+                f'printf "uv %s\\n" "$*" >> .aic-sentinel\nprintf "%s\\n" "{managed.as_posix()}"',
+            )
+            result = fixture.execute(
+                "--critical",
+                environment={"GENERIC_PYTHON_STUB_EXIT": "1"},
+            )
+            self.assertEqual(0, result.returncode, result.stdout + result.stderr)
+            commands = fixture.sentinel()
+            uv_commands = [line for line in commands if line.startswith("uv ")]
+            self.assertEqual(1, len(uv_commands))
+            self.assertIn(
+                "python find --managed-python --no-python-downloads --offline --no-config --no-project >=3.11",
+                uv_commands[0],
+            )
+            self.assertTrue(any(line.startswith("managed-python ") for line in commands))
         finally:
             fixture.close()
 

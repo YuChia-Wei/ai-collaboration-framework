@@ -234,7 +234,11 @@ class GitHubWorkflowContractTests(unittest.TestCase):
     def test_gwt_005_given_jobs_when_cost_and_responsibility_checked_then_matrix_is_exact(self) -> None:
         expected_jobs = {
             "governance.yml": {"governance": ("15", "ubuntu-latest")},
-            "portable-gates.yml": {"quick": ("30", "ubuntu-latest")},
+            "portable-gates.yml": {
+                "prerequisite-posix": ("15", "ubuntu-latest"),
+                "prerequisite-windows": ("15", "windows-latest"),
+                "quick": ("30", "ubuntu-latest"),
+            },
             "package-candidate.yml": {"package": ("15", "ubuntu-latest")},
             "publish-release.yml": {
                 "build": ("15", "ubuntu-latest"),

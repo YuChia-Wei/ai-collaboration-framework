@@ -349,3 +349,4 @@ healthchecksdb
 !/.codex/agents/**
 /.dotnet_cli_home/
 .dotnet
+/.dev/validation.local.conf

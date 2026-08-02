@@ -1,4 +1,4 @@
-schema_version: "1.2"
+schema_version: "1.3"
 profile_id: "ai-collaboration-prompts-dotnet-backend"
 status: "active"
 allowed_slots: [workflow-orchestration, requirements, specification, problem-framing, architecture, test-design, implementation, local-change, test-execution, review, compliance-validation]
@@ -33,6 +33,20 @@ orchestration_contract:
     default_selected: false
     unselected_outcome: not-applicable
     selected_gate: 100-percent-fail-closed-with-evidence
+  routine_validation:
+    authority: .dev/project-config.yaml#validation.routine
+    local_default: manual
+    local_modes: [manual, auto-if-ready, required]
+    local_opt_in: .dev/validation.local.conf
+    local_opt_in_rule: strict-one-line-validation.routine.local
+    local_opt_in_can_only_strengthen: true
+    environment_override: prohibited
+    implicit_local_write: prohibited
+    ci_default: unconfigured
+    ci_modes: [unconfigured, advisory, required]
+    unselected_projection: { outcome: not-applicable, selection_reason: not-run-by-policy }
+    attempt_budget: { unselected: 0, selected_preflight: 1, initial_execution: 1, retry_after_material_change: 1, ci_observations: 2 }
+    unaffected: [explicit-cli, install, apply, init, upgrade, provenance, governance, release, publication]
   commit:
     checkpoint_unit: validated-durable-stage-or-coherent-bounded-batch
     per_skill_invocation_commits: prohibited

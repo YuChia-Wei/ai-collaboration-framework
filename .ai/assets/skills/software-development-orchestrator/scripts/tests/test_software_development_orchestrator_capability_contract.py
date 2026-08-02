@@ -143,7 +143,7 @@ class DevWorkflowCapabilityContractGwtTests(unittest.TestCase):
         self.profile = yaml.safe_load(PROFILE.read_text(encoding="utf-8"))
 
     def test_gwt_001_given_test_execution_when_profile_loaded_then_it_is_optional_and_unmapped(self) -> None:
-        self.assertEqual("1.2", self.profile["schema_version"])
+        self.assertEqual("1.3", self.profile["schema_version"])
         self.assertIn("test-execution", self.profile["allowed_slots"])
         self.assertNotIn("test-execution", self.profile["required_slots"])
         self.assertNotIn("test-execution", self.profile["mappings"])

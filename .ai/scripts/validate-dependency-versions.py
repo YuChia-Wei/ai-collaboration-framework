@@ -11,10 +11,18 @@ import xml.etree.ElementTree as ET
 from collections import defaultdict
 from pathlib import Path
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+sys.dont_write_bytecode = True
+
+from python_prerequisites import guard_direct_entrypoint
+
+guard_direct_entrypoint(".ai/scripts/validate-dependency-versions.py")
+
 
 DEFAULT_ROOT = Path(__file__).resolve().parents[2]
 SOURCE_PROFILE = Path(".ai/distribution/profiles/dotnet-backend.yaml")
 MINIMUM_PYTHON = (3, 11)
+REGISTRY_PATH = Path(".ai/scripts/python-entrypoints.json")
 REQUIREMENT_PIN = re.compile(
     r"^(?P<name>[A-Za-z0-9][A-Za-z0-9._-]*)=="
     r"(?P<version>[A-Za-z0-9][A-Za-z0-9._+!-]*)$"
@@ -69,11 +77,90 @@ def parse_exact_requirements(path: Path, root: Path, errors: list[str]) -> dict[
     return resolved
 
 
+def validate_python_entrypoint_registry(root: Path, errors: list[str]) -> dict[str, object] | None:
+    path = root / REGISTRY_PATH
+    try:
+        registry = json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, UnicodeDecodeError, json.JSONDecodeError) as exc:
+        errors.append(f"{REGISTRY_PATH.as_posix()}: invalid or unreadable registry: {exc}")
+        return None
+    if not isinstance(registry, dict):
+        errors.append(f"{REGISTRY_PATH.as_posix()}: registry must be an object")
+        return None
+    if registry.get("schema_version") != "1.0":
+        errors.append(f"{REGISTRY_PATH.as_posix()}: schema_version must be '1.0'")
+    if registry.get("python_floor") != "3.11":
+        errors.append(f"{REGISTRY_PATH.as_posix()}: python_floor must be '3.11'")
+    governed = registry.get("governed_requirements")
+    expected_requirement = {
+        "version": "6.0.3",
+        "import_name": "yaml",
+        "requirements_path": "requirements.txt",
+    }
+    if not isinstance(governed, dict) or set(governed) != {"PyYAML"} or governed.get("PyYAML") != expected_requirement:
+        errors.append(
+            f"{REGISTRY_PATH.as_posix()}: PyYAML contract must declare "
+            "version 6.0.3, import_name yaml, and requirements_path requirements.txt"
+        )
+    entrypoints = registry.get("entrypoints")
+    if not isinstance(entrypoints, list) or len(entrypoints) != 25:
+        errors.append(f"{REGISTRY_PATH.as_posix()}: entrypoints must contain exactly 25 records")
+        return registry
+    paths: set[str] = set()
+    portable = pyyaml = stdlib = 0
+    exit_two_paths: set[str] = set()
+    for index, entrypoint in enumerate(entrypoints, start=1):
+        label = f"{REGISTRY_PATH.as_posix()}: entrypoints[{index}]"
+        if not isinstance(entrypoint, dict) or set(entrypoint) != {"path", "portable", "dependency_profile", "prerequisite_exit_code"}:
+            errors.append(f"{label}: must contain exactly path, portable, dependency_profile, and prerequisite_exit_code")
+            continue
+        path_value = entrypoint["path"]
+        profile = entrypoint["dependency_profile"]
+        if not isinstance(path_value, str) or not path_value.endswith(".py") or path_value.startswith("/") or "\\" in path_value:
+            errors.append(f"{label}: path must be a repository-relative .py path")
+        elif path_value in paths:
+            errors.append(f"{label}: duplicate path {path_value}")
+        else:
+            paths.add(path_value)
+            if not (root / path_value).is_file():
+                errors.append(f"{label}: path does not exist in source root: {path_value}")
+        if not isinstance(entrypoint["portable"], bool):
+            errors.append(f"{label}: portable must be boolean")
+        elif entrypoint["portable"]:
+            portable += 1
+        if profile == ["PyYAML"]:
+            pyyaml += 1
+        elif profile == []:
+            stdlib += 1
+        else:
+            errors.append(f"{label}: dependency_profile must be [] or ['PyYAML']")
+        if entrypoint["prerequisite_exit_code"] not in (1, 2):
+            errors.append(f"{label}: prerequisite_exit_code must be 1 or 2")
+        elif entrypoint["prerequisite_exit_code"] == 2 and isinstance(path_value, str):
+            exit_two_paths.add(path_value)
+    if (portable, pyyaml, stdlib) != (12, 23, 2):
+        errors.append(
+            f"{REGISTRY_PATH.as_posix()}: expected 12 portable, 23 PyYAML, and 2 stdlib-only entrypoints; "
+            f"found {portable}, {pyyaml}, {stdlib}"
+        )
+    if exit_two_paths != {".ai/scripts/plan-ai-context-package-apply.py"}:
+        errors.append(
+            f"{REGISTRY_PATH.as_posix()}: only .ai/scripts/plan-ai-context-package-apply.py "
+            f"may use prerequisite_exit_code 2; found {sorted(exit_two_paths)}"
+        )
+    return registry
+
+
 def validate_source_python(root: Path, errors: list[str]) -> int:
     source_requirements = root / "requirements.txt"
     package_requirements = root / ".ai/distribution/templates/requirements.txt"
     source_pins = parse_exact_requirements(source_requirements, root, errors)
     package_pins = parse_exact_requirements(package_requirements, root, errors)
+    registry = validate_python_entrypoint_registry(root, errors)
+    if registry is not None:
+        pyyaml = registry.get("governed_requirements", {}).get("PyYAML", {}) if isinstance(registry.get("governed_requirements"), dict) else {}
+        if isinstance(pyyaml, dict) and pyyaml.get("version") != source_pins.get("pyyaml"):
+            errors.append("python-entrypoints.json PyYAML version must match requirements.txt")
 
     try:
         if source_requirements.read_bytes() != package_requirements.read_bytes():

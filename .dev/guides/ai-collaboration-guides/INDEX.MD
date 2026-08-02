@@ -21,6 +21,7 @@
 | `OPTIONAL-MINIMAL-WORKFLOW-MODE.md` | Minimal workflow mode. |
 | `PROBLEM-FRAME-AUTHORING-GUIDE.md` | Problem-frame drafting usage. |
 | `AI-CONTEXT-INIT-SKILL-GUIDE.md` | Initial target repository synchronization. |
+| `PYTHON-PREREQUISITE-DIAGNOSTICS-GUIDE.zh-TW.md` | Python prerequisite diagnostics and target-local validation selection. |
 | `REQUIREMENT-AND-SPEC-DESIGNER-STRATEGY.md` | Requirement/spec capability strategy. |
 | `REQUIREMENT-DESIGNER-PROMPT-GUIDE.md` | Requirement-authoring invocation examples. |
 | `SKILL-AND-SUB-AGENT-TAXONOMY-GUIDE.md` | Skill and delegated-role taxonomy. |

@@ -52,7 +52,7 @@ fi
 # Resolve the existing Python contract across Windows Git Bash and POSIX hosts.
 # Keep literal `python ...` command declarations below for shell-manifest parity.
 resolve_python() {
-    local candidate
+    local candidate directory possible name old_ifs
     if [ -n "${AI_CONTEXT_PYTHON:-}" ]; then
         if command -v "$AI_CONTEXT_PYTHON" >/dev/null 2>&1 &&
             "$AI_CONTEXT_PYTHON" -c 'import sys; raise SystemExit(0 if sys.version_info >= (3, 11) else 1)' >/dev/null 2>&1; then
@@ -62,6 +62,19 @@ resolve_python() {
         return 1
     fi
 
+    if [ -n "${VIRTUAL_ENV:-}" ]; then
+        if [ -x "$VIRTUAL_ENV/Scripts/python.exe" ]; then
+            candidate=$VIRTUAL_ENV/Scripts/python.exe
+        else
+            candidate=$VIRTUAL_ENV/bin/python
+        fi
+        if [ -x "$candidate" ] &&
+            "$candidate" -c 'import sys; raise SystemExit(0 if sys.version_info >= (3, 11) else 1)' >/dev/null 2>&1; then
+            printf '%s\n' "$candidate"
+            return 0
+        fi
+    fi
+
     for candidate in python python3; do
         if command -v "$candidate" >/dev/null 2>&1 &&
             "$candidate" -c 'import sys; raise SystemExit(0 if sys.version_info >= (3, 11) else 1)' >/dev/null 2>&1; then
@@ -69,6 +82,35 @@ resolve_python() {
             return 0
         fi
     done
+
+    old_ifs=$IFS
+    IFS=:
+    for directory in $PATH; do
+        [ -n "$directory" ] || directory=.
+        for possible in "$directory"/python*; do
+            [ -x "$possible" ] || continue
+            name=${possible##*/}
+            case "$name" in
+                python3.[0-9]*|python3[0-9]*|python[0-9][0-9]*)
+                    if "$possible" -c 'import sys; raise SystemExit(0 if sys.version_info >= (3, 11) else 1)' >/dev/null 2>&1; then
+                        IFS=$old_ifs
+                        printf '%s\n' "$possible"
+                        return 0
+                    fi
+                    ;;
+            esac
+        done
+    done
+    IFS=$old_ifs
+
+    if command -v uv >/dev/null 2>&1; then
+        candidate=$(uv python find --managed-python --no-python-downloads --offline --no-config --no-project ">=3.11" 2>/dev/null || true)
+        if [ -n "$candidate" ] &&
+            "$candidate" -c 'import sys; raise SystemExit(0 if sys.version_info >= (3, 11) else 1)' >/dev/null 2>&1; then
+            printf '%s\n' "$candidate"
+            return 0
+        fi
+    fi
     return 1
 }
 
@@ -76,6 +118,7 @@ if ! PYTHON_EXECUTABLE="$(resolve_python)"; then
     echo "Python 3.11 or newer is required. Install source dependencies from requirements.txt or set AI_CONTEXT_PYTHON to a usable interpreter." >&2
     exit 1
 fi
+export AI_CONTEXT_PYTHON="$PYTHON_EXECUTABLE"
 
 python() {
     "$PYTHON_EXECUTABLE" "$@"

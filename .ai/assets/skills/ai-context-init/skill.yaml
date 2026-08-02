@@ -21,6 +21,7 @@ outputs:
   - "repo init verdict"
   - "repo inventory"
   - "evidence-based `.dev/project-config.yaml` or an explicit not-initialized decision"
+  - "tracked routine-validation defaults: local `manual` and CI `unconfigured`, preserved as target-owned policy"
   - "atomic `.dev/ai-context/provenance.yaml` and `customizations.yaml` initialization when credible source evidence is available, or an unresolved no-write result"
   - "complexity verdict"
   - "safe direct update targets"
@@ -35,6 +36,7 @@ constraints:
   - "Do not guess the copied framework version or commit; create target provenance only from credible release or import evidence."
   - "Never retain dual provenance authorities; follow the shared semantic customization lifecycle and write neither schema-2 authority when source evidence is incomplete."
   - "Finalize target-specific English `AGENTS.md` before delegating `AGENTS.zh-TW.md` to the low-cost context-translator role; do not use a pretranslated root template."
+  - "Generate validation.routine defaults unless target evidence selects stronger policy; never create or write `.dev/validation.local.conf`."
 workflow:
   - step: 1
     description: "Identify target repository mode: empty repo, existing repo, or copied-template repo"

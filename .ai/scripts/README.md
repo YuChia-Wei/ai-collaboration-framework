@@ -50,6 +50,38 @@ The extracted release package has its own checksum-governed envelope
 `requirements.txt`; follow the package `INSTALL.md` rather than using this
 source-repository bootstrap.
 
+## Governed Python Entrypoints
+
+The supported Python-command registry is
+`.ai/scripts/python-entrypoints.json`. Use a registered CLI directly when the
+selected interpreter is already ready, or use a launcher when the invoking
+shell needs deterministic interpreter discovery:
+
+```text
+python .ai/scripts/validate-ai-context.py --help
+sh .ai/scripts/run-python-entrypoint.sh .ai/scripts/validate-ai-context.py --help
+pwsh -File .ai/scripts/run-python-entrypoint.ps1 .ai/scripts/validate-ai-context.py --help
+```
+
+Direct CLIs and both launchers accept `--diagnostic-format=json`; without it,
+blocked prerequisites are emitted as a human-readable stderr diagnostic. A
+blocked diagnostic reports `blocked-by-environment`, the required Python floor,
+the selected candidate when available, missing requirements, and a recovery
+command. The recovery command is advice only: the preflight never installs
+Python, packages, or other dependencies.
+
+`.dev/validation.local.conf` is an ignored target-local selection file, never a
+package member. When a target enables it, it must contain exactly one line,
+`validation.routine.local=<approved-mode>`; it may only strengthen the checked
+in selection and is never an environment-variable override. See the human
+guide at
+`.dev/guides/ai-collaboration-guides/PYTHON-PREREQUISITE-DIAGNOSTICS-GUIDE.zh-TW.md`
+for the approved modes and recovery process.
+
+Source-only registered CLIs remain source-framework tooling. Their presence or
+absence in an extracted target is not a prerequisite failure, and release
+publication is outside this diagnostic contract.
+
 ## Current Boundary
 
 `shell-assets.yaml` is the machine-readable role, lifecycle, distribution, and
