@@ -499,6 +499,10 @@ run_command_check "python .ai/scripts/tests/test_dependency_version_consistency.
     "Dependency And Version Consistency Fail-Closed Tests" \
     "required" "true" "true"
 
+run_command_check "python .ai/scripts/tests/test_python_source_entrypoints.py -v" \
+    "Source-Only Python Entrypoint Prerequisite Contract" \
+    "required" "true" "true"
+
 run_command_check "python .ai/scripts/validate-shell-assets.py" \
     "Shell Asset Classification And Git Modes" \
     "required" "true" "true"

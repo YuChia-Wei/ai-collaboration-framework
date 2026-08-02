@@ -3,10 +3,18 @@
 
 from __future__ import annotations
 
-import subprocess
 import sys
 from pathlib import Path, PurePosixPath
 
+SCRIPT_ROOT = Path(__file__).resolve().parent
+sys.path.insert(0, str(SCRIPT_ROOT))
+sys.dont_write_bytecode = True
+
+from python_prerequisites import guard_direct_entrypoint
+
+guard_direct_entrypoint(".ai/scripts/validate-source-governance.py")
+
+import subprocess
 import yaml
 
 

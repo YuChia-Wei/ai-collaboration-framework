@@ -23,6 +23,7 @@ ROOT = Path(__file__).resolve().parents[2]
 MANIFEST = Path(".ai/scripts/shell-assets.yaml")
 ROLES = {
     "active-orchestrator",
+    "runtime-launcher",
     "context-validator",
     "compatibility-entrypoint",
     "manual-advisory",

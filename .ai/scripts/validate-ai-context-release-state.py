@@ -8,14 +8,23 @@ tags, releases, assets, or workflow runs.
 
 from __future__ import annotations
 
+import sys
+from pathlib import Path
+
+SCRIPT_ROOT = Path(__file__).resolve().parent
+sys.path.insert(0, str(SCRIPT_ROOT))
+sys.dont_write_bytecode = True
+
+from python_prerequisites import guard_direct_entrypoint
+
+guard_direct_entrypoint(".ai/scripts/validate-ai-context-release-state.py")
+
 import argparse
 import importlib.util
 import json
 import re
 import subprocess
-import sys
 from datetime import datetime, timedelta, timezone
-from pathlib import Path
 from typing import Any, Callable
 
 import yaml

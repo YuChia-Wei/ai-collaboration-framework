@@ -10,6 +10,15 @@ import subprocess
 import sys
 from pathlib import Path, PurePosixPath
 
+sys.dont_write_bytecode = True
+ROOT = Path(__file__).resolve().parents[5]
+sys.path.insert(0, str(ROOT / ".ai/scripts"))
+
+from python_prerequisites import guard_direct_entrypoint
+
+guard_direct_entrypoint(
+    ".ai/assets/skills/ai-context-upgrader/scripts/compare-ai-context-versions.py"
+)
 
 EXCLUDED_PREFIXES = (
     ".dev/releases/",
