@@ -8,7 +8,7 @@
   "owner_skill": "ai-context-governance",
   "status": "in_progress",
   "created_at": "2026-08-02T10:32:53+08:00",
-  "updated_at": "2026-08-02T19:48:00+08:00",
+  "updated_at": "2026-08-02T20:01:06+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-5.6-sol",
   "reasoning_effort": "high",
@@ -65,11 +65,11 @@
       "Valid workflow locator and task artifacts",
       "Explicit owner approval before implementation transition"
     ],
-    "last_completed_step": "Resolved D-007 with layered shared-bootstrap state tests, all-25 registry and blocked-smoke coverage, complete write-path no-mutation evidence, focused Windows/Ubuntu contracts, and portable clean-install/upgrade gates.",
-    "next_action": "Explain and obtain only the owner decision on D-006 canonical script ownership, shared prerequisite placement, package projection, and compatibility routes."
+    "last_completed_step": "Resolved D-006 by preserving two canonical skill-owned scripts, one thin compatibility path, and 22 repo-common scripts while approving four stable repo-common prerequisite/launcher assets and package parity obligations.",
+    "next_action": "Explain and obtain only the owner decision on D-008 human documentation, command migration, upgrade, troubleshooting, and release communication."
   },
   "results": {
-    "summary": "D-007 is resolved with a layered, non-Cartesian deterministic matrix. Shared bootstrap states are exhaustive; all 25 CLIs receive registry/profile/mapping and blocked-smoke coverage; write-capable paths receive full no-mutation proof; Windows and Ubuntu focused jobs cover native launchers; and the 12 portable paths receive extracted-package, clean-install, and v0.7-to-v0.8 upgrade gates before CP-2. Two atomic decisions remain, and implementation has not started.",
+    "summary": "D-006 is resolved without moving existing CLIs: two remain canonical skill-owned, one remains a thin repo compatibility path, and 22 remain repo-common. The shared bootstrap module, 25-entrypoint registry, POSIX launcher, and PowerShell launcher are frozen as repo-common portable assets; direct Python paths remain supported and package/registry parity fails closed. One atomic decision remains, and implementation has not started.",
     "files_changed": [
       ".dev/workflows/2026-08-02-python-prerequisite-diagnostics/workflow.yaml",
       ".dev/workflows/2026-08-02-python-prerequisite-diagnostics/workflow-plan.md",
@@ -140,10 +140,12 @@
       "Entrypoint mutation evidence read-back: write-capable package apply, plan/output, build, release, migration, and evaluation paths plus Python bytecode risk were re-confirmed from the retained inventory and focused source evidence",
       "Owner decision: D-005 approved bootstrap-before-domain-import ordering, bytecode suppression, bounded repository-controlled no-mutation guarantees, JSON mutation_started=false, and negative-path evidence across direct Python, POSIX-sh, Windows-PowerShell, and portable-package paths",
       "Current source CI read-back: portable-gates.yml provisions Python 3.12 and pinned dependencies, then runs an Ubuntu-only quick gate; no native Windows job currently exists",
-      "Owner decision: D-007 approved layered shared-state, all-25 registry/smoke, complete write-path no-mutation, focused Windows/Ubuntu, and portable clean-install/upgrade coverage without a check-all --full requirement"
+      "Owner decision: D-007 approved layered shared-state, all-25 registry/smoke, complete write-path no-mutation, focused Windows/Ubuntu, and portable clean-install/upgrade coverage without a check-all --full requirement",
+      "Ownership evidence read-back: two canonical skill-owned production scripts, one repo-level thin compatibility path, 22 repo-common production scripts, and the current distribution projection were re-confirmed",
+      "Owner decision: D-006 approved unchanged CLI ownership, repo-common python_prerequisites.py and python-entrypoints.json, generic POSIX and PowerShell launchers, portable projection, retained direct paths, single check-all discovery, and fail-closed parity"
     ],
     "finding_status": "not-addressed",
-    "residual_risk": "External tracking now exists as Proposals #75 and #76, but neither is accepted or implementation-authorized. Runtime discovery, recovery, disposition, diagnostic/exit projection, pre-mutation proof, deterministic testing, and the D-010 control chain are resolved, but two #69 atomic decisions remain unresolved: remaining script ownership/package compatibility and migration documentation; implementation remains paused.",
+    "residual_risk": "External tracking now exists as Proposals #75 and #76, but neither is accepted or implementation-authorized. Runtime discovery, recovery, disposition, diagnostic/exit projection, pre-mutation proof, script ownership/package compatibility, deterministic testing, and the D-010 control chain are resolved, but one #69 atomic decision remains unresolved: documentation and migration communication; implementation remains paused.",
     "follow_up_needed": true
   }
 }
