@@ -19,7 +19,7 @@
 - `current_phase`: `remediation-planning`
 - `artifact_root`: `.dev/workflows/2026-08-02-python-prerequisite-diagnostics`
 - `created_at`: `2026-08-02T10:32:53+08:00`
-- `updated_at`: `2026-08-02T15:32:22+08:00`
+- `updated_at`: `2026-08-02T16:19:44+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md`
 - `template_version`: `1.2.0`
 
@@ -96,6 +96,8 @@
 | `D-004` | Dependency prerequisite inventory and sanctioned recovery/install operation | pending |  | Determines whether only PyYAML or every required runtime dependency is checked, which recovery command is printed, and whether an explicit isolated bootstrap mode is offered. |
 | `D-005` | Pre-mutation guarantee and proof boundary | pending |  | Determines where checks must run and which write-capable paths require negative-path evidence. |
 | `D-006` | Canonical script ownership, shared prerequisite placement, package projection, and compatibility | pending |  | Determines which CLIs remain skill-owned or repo-common, where shared prerequisite code lives, what is portable, and which thin compatibility entrypoints remain. |
+| `D-006A` | Workflow artifact authoring ownership | resolved | Keep only the minimum shared workflow contract at repository level. Each workflow-owning skill owns its domain-specific plan, task, report templates, and workflow semantics; do not introduce a universal workflow-author skill. | Avoids a god skill that must understand every domain template while retaining shared discovery, identity, lifecycle, and minimum task compatibility. Common validators may validate only the shared envelope and must not author domain semantics. |
+| `D-006B` | Framework self-test distribution and activation boundary | pending |  | Separates source-only tests, packaged-but-dormant skill self-tests, portable target-runtime validators, and aggregate gates instead of treating `framework self-test` as a package classification. |
 | `D-007` | Deterministic test matrix | pending |  | Determines interpreter/dependency simulation, platform coverage, and required closeout gates. |
 | `D-008` | Documentation and migration communication | pending |  | Determines whether this is behavior clarification only or a documented command/contract migration. |
 | `D-009` | Canonical validator runtime disposition | pending |  | Determines whether Python remains the canonical implementation under Issue #69, a runtime migration enters this workflow, or runtime replacement becomes a separate governed proposal. This must be resolved before implementation can entrench the current dependency. |
@@ -212,6 +214,29 @@ The proposed opt-in command is conceptually `git config --local ai-context.valid
 - Preserve thin Codex and Claude wrappers and validate canonical-link parity rather than copying the whole policy into wrappers.
 - Add negative tests proving that `manual/unselected` causes zero interpreter probes, zero validator executions, and zero identical retries; local opt-in cannot weaken tracked target or CI requirements.
 
+## Workflow Ownership And Framework Self-Test Terminology
+
+The owner confirmed the workflow authoring boundary under `D-006A`: the repository owns only the minimum locator, identity, lifecycle, timestamp, relationship, and minimum-task contract. Each workflow-owning skill owns its domain plan, task, report templates, and workflow semantics. A common validator may validate the shared envelope, but no universal workflow-author skill may learn or reproduce every owner's template.
+
+`Framework self-test` is an execution-role classification, not a distribution classification. The design must keep these axes separate:
+
+| Axis | Values requiring an explicit decision |
+| --- | --- |
+| Ownership | skill-owned, repo-common, or source-operation-owned |
+| Distribution | source-only, packaged in a default component, or packaged in an optional development/test component |
+| Activation | source CI/release, framework-path change, explicit downstream invocation, routine product development, or lifecycle handoff |
+| Enforcement/result | required, explicitly selected, unselected, blocked-by-environment, failed, or passed |
+
+Current behavior is not source-only or truly default-off:
+
+- The distribution profile packages `.ai/assets/**`, so the canonical `software-development-orchestrator` validator, fixtures, and contract tests travel in the default `software-development-core` payload.
+- The same profile packages `.ai/scripts/**` except explicit exclusions. The current exclusions do not remove `check-all.sh`, the orchestrator compatibility validator, or its compatibility tests.
+- This source repository proactively executes the orchestrator contract tests from `check-all.sh --critical`.
+- The portable handoff policy also requires `check-all.sh --critical`, so a downstream product workflow can currently execute those framework tests during handoff even when no framework-owned skill file changed.
+- Merely packaging a dormant test would not require Python at normal skill-runtime activation. The present dependency leak comes from invocation policy and package-install/lifecycle commands, not from file presence alone.
+
+The current recommendation pending `D-006B` is to keep skill-owned acceptance evidence colocated with its skill but never select it during routine downstream product development. Source CI/release and explicit framework-maintenance work may require it. Treat the source aggregate runner separately: `check-all.sh` should remain a source-framework aggregate candidate rather than a portable handoff prerequisite. Narrow validators that inspect actual downstream workflow or handoff artifacts are target-runtime validators, not framework self-tests, and require their own runtime/fallback decision.
+
 ## Stages And Checkpoints
 
 1. Bootstrap the governance workflow and freeze Issue #69 plus `AIC-004` as source evidence.
@@ -225,15 +250,15 @@ The proposed opt-in command is conceptually `git config --local ai-context.valid
 
 ## Resume Checkpoint
 
-- Last completed action: identified that no opt-in location exists today, proposed tracked team policy in `.dev/project-config.yaml` plus persistent per-clone opt-in in `.git/config`, and mapped the exact affected and unaffected skill stages without resolving D-010B.
+- Last completed action: recorded the owner-confirmed workflow authoring boundary under D-006A, distinguished framework self-test ownership/distribution/activation/enforcement axes, and established that the current default package includes both skill self-tests and `check-all.sh` while portable handoff policy can invoke them downstream.
 - Current task: `AIC-004-diagnostic-design`.
-- Exact next action: obtain only the D-010B owner decision on the proposed shared/local locations, `manual/unselected` default, and monotonic developer opt-in boundary.
+- Exact next action: obtain only the D-006B owner decision on whether skill-owned contract tests remain packaged but dormant while `check-all.sh` becomes source-only and narrow target-runtime validators retain a separately governed portable boundary.
 - Validation already completed: confirmed clean `main@2263744bb2dc876f8077547e961fc68be28b0074` before branching; verified the final baseline assessment; verified the inventory against `git ls-files`, direct file reads, distribution profile, shell registry, active documentation, and existing tests; parsed both task JSON files; `git diff --check`, `validate-workflow-artifacts.py`, and `validate-ai-context.py` passed.
 - Current discussion-checkpoint validation: Git-history probes established the adoption timeline; the active sub-agent manifest and Codex adapter established the missed low-cost route; the changed task JSON parsed with PowerShell; locator/index state was checked directly; and `git diff --check` passed. Full Python-backed repository validators were not rerun because every discovered interpreter lacks PyYAML and D-002A now forbids implicit installation; this checkpoint records that result as `blocked-by-environment`, not passed.
 - Validation environment note: generic `python` and `python3` resolve to unusable Windows aliases. A versioned uv-managed Python 3.14.1 and the Codex bundled Python 3.12.13 can start, but neither currently imports PyYAML. Prior artifact validation used Codex Python with isolated temporary `PyYAML==6.0.3`; no repository dependency files were changed.
-- Git state: active branch `codex/2026-08-02-python-prerequisite-diagnostics`, created from `main@2263744bb2dc876f8077547e961fc68be28b0074`; the latest durable design commit before this discussion is `d5ae808626508cba857ea412ae1d543fa86095e6`.
-- Branch history and checkpoint handoffs: bootstrap commits `88a01bebfe95f696763c1b310c363f354949f205` and `4e93c0f09cae2c50bf6a330de0cca05c8b52fec6`; absent-interpreter boundary commit `cd58c2b0391dccb4a8487f33938b8a3c5d060500`; inventory translation commit `d27fb8adbaf890f9f926c2de6bf66aa6917a83d0`; D-001/fallback assessment commit `d5ae808626508cba857ea412ae1d543fa86095e6`; no push or merge handoff has occurred.
-- Blockers or unresolved decisions: `D-010B` onward, `D-002B` onward, and `D-009` remain unresolved; implementation edits are paused pending explicit accumulated-design approval.
+- Git state: active branch `codex/2026-08-02-python-prerequisite-diagnostics`, created from `main@2263744bb2dc876f8077547e961fc68be28b0074`; the latest durable design checkpoint entering this discussion is `32ede97`.
+- Branch history and checkpoint handoffs: bootstrap commits `88a01be` and `4e93c0f`; absent-interpreter boundary `cd58c2b`; inventory translation `d27fb8a`; D-001/fallback assessment `d5ae808`; runtime rationale and D-002A `9937fb4`; downstream switch gap `7fa102c`; activation/retry scope `74bb024`; D-010B team scenarios `c2b35ad`; opt-in location and skill-stage map `32ede97`; no push or merge handoff has occurred.
+- Blockers or unresolved decisions: `D-006B`, `D-010B` onward, `D-002B` onward, and `D-009` remain unresolved; implementation edits are paused pending explicit accumulated-design approval.
 
 ## Branch Lifecycle
 

@@ -8,7 +8,7 @@
   "owner_skill": "ai-context-governance",
   "status": "in_progress",
   "created_at": "2026-08-02T10:32:53+08:00",
-  "updated_at": "2026-08-02T15:32:22+08:00",
+  "updated_at": "2026-08-02T16:19:44+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-5.6-sol",
   "reasoning_effort": "high",
@@ -53,6 +53,7 @@
       "Trace retry ownership across the aggregate runner, software-development orchestrator, and root execution guidance; define a token-cost-aware retry decision boundary.",
       "Explain the local activation default through team scenarios, target-owned versus developer-local configuration, precedence, CI dependency, and feedback/token tradeoffs before requesting D-010B approval.",
       "Identify the proposed shared and local setting locations and map exact producer, preserver, consumer, closeout, audit, unaffected-skill, wrapper, contract, and test impacts.",
+      "Separate minimum repository workflow contracts from workflow-owner template semantics, and distinguish framework self-test ownership, package projection, activation, and enforcement.",
       "Present one design decision at a time with impact and alternatives.",
       "Record every owner decision in workflow-plan.md.",
       "Produce an approved implementation boundary and validation matrix."
@@ -62,11 +63,11 @@
       "Valid workflow locator and task artifacts",
       "Explicit owner approval before implementation transition"
     ],
-    "last_completed_step": "Confirmed no opt-in path exists today; proposed tracked team policy in .dev/project-config.yaml and persistent per-clone opt-in in .git/config; mapped exact affected and unaffected skill stages without resolving D-010B.",
-    "next_action": "Obtain only the D-010B owner decision on the proposed shared/local locations, manual/unselected default, and monotonic developer opt-in boundary."
+    "last_completed_step": "Resolved D-006A against a universal workflow-author skill and separated framework self-test distribution from activation after confirming the current package and handoff behavior.",
+    "next_action": "Obtain only the D-006B owner decision on packaged-but-dormant skill self-tests, a source-only aggregate check-all boundary, and separately portable narrow target-runtime validators."
   },
   "results": {
-    "summary": "D-010B is now location- and impact-defined but unresolved: shared policy would be target-owned project configuration, personal opt-in would be repository-local Git configuration, and orchestration would own one policy decision consumed by implementation skills. Implementation has not started.",
+    "summary": "D-006A is resolved: repository workflow governance remains a minimum shared contract and every workflow-owning skill retains its own domain templates and semantics. Framework self-test packaging and activation are now separated under pending D-006B; current packages include the tests and aggregate runner, and downstream handoff can invoke them. Implementation has not started.",
     "files_changed": [
       ".dev/workflows/2026-08-02-python-prerequisite-diagnostics/workflow.yaml",
       ".dev/workflows/2026-08-02-python-prerequisite-diagnostics/workflow-plan.md",
@@ -98,10 +99,14 @@
       "Aggregate runner retry scan: no validation retry loop found; each selected check invokes once",
       "Software-development orchestrator capability, fallback, workflow-gate, and root execution policies: inspected for blocked outcomes and retry-budget behavior",
       "Target project-config template, ai-context-init document targets, technology-selection ownership policy, and portable workflow-gate target settings: inspected for shared-versus-local configuration boundaries",
-      "Canonical skill workflow scan and direct reads for software-development-orchestrator, ai-context-init, ai-context-upgrader, slice-implementer, local-change-implementer, code-reviewer, spec-compliance-validator, and bdd-gwt-test-designer: completed"
+      "Canonical skill workflow scan and direct reads for software-development-orchestrator, ai-context-init, ai-context-upgrader, slice-implementer, local-change-implementer, code-reviewer, spec-compliance-validator, and bdd-gwt-test-designer: completed",
+      "Workflow artifact ownership policy, ai-context-governance playbook, and software-development-orchestrator playbook: confirmed minimum shared contract plus skill-owned domain templates",
+      "Distribution profile: confirmed .ai/assets/** and .ai/scripts/** default payload inclusion; current exclusions do not remove orchestrator self-tests or check-all.sh",
+      "check-all.sh critical block: confirmed 30 sequential required commands, including 26 literal Python commands, three dotnet tests, and one indirect commit-validation command",
+      "Portable handoff policy: confirmed downstream handoff currently requires check-all.sh --critical"
     ],
     "finding_status": "not-addressed",
-    "residual_risk": "Activation scope is resolved, but local defaults, CI semantics, result taxonomy, Agent retry budget, interpreter trust, launcher coverage, dependency recovery, canonical runtime, output, proof, ownership, projection, testing, and documentation decisions remain unresolved; implementation remains paused.",
+    "residual_risk": "Workflow authoring ownership is resolved, but framework self-test distribution, aggregate-runner portability, narrow target-runtime validation, local defaults, CI semantics, result taxonomy, Agent retry budget, interpreter trust, launcher coverage, dependency recovery, canonical runtime, output, proof, remaining script ownership, testing, and documentation decisions remain unresolved; implementation remains paused.",
     "follow_up_needed": true
   }
 }
