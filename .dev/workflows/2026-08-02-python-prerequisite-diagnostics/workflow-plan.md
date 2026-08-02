@@ -19,7 +19,7 @@
 - `current_phase`: `remediation-planning`
 - `artifact_root`: `.dev/workflows/2026-08-02-python-prerequisite-diagnostics`
 - `created_at`: `2026-08-02T10:32:53+08:00`
-- `updated_at`: `2026-08-02T13:14:42+08:00`
+- `updated_at`: `2026-08-02T15:24:05+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md`
 - `template_version`: `1.2.0`
 
@@ -135,6 +135,40 @@
 - A shell-only switch would be too late if the Agent has already spent tokens discovering and invoking the command. Target-owned activation policy must be read during orchestration, before Python discovery or process launch.
 - The design candidate for `D-010E` is: zero probes and zero executions when local automatic validation is unselected; when selected, one bounded read-only prerequisite preflight and at most one validator execution; retry only after a recorded material state change or explicit owner instruction. This is not yet approved.
 
+## D-010B Scenarios And Team Impact
+
+`manual/unselected` describes automatic local orchestration, not removal of the validators. Scripts remain available, a developer may invoke them explicitly, and D-010A keeps explicit lifecycle commands outside this policy.
+
+| Scenario | Agent behavior under the proposed local default | Team consequence |
+| --- | --- | --- |
+| New developer without Python/PyYAML | Read target policy, perform no interpreter probe, run no routine Python validator, and continue without claiming validation passed. | No onboarding block or repeated Agent retry/token cost; feedback must come from later developer opt-in or CI. |
+| Developer with a ready environment but no personal opt-in | Do not auto-run merely because Python happens to be discoverable. | Deterministic behavior across hosts; capable developers do not unexpectedly receive stricter local automation than others. |
+| Developer explicitly opts in | Perform the later-approved bounded preflight and run the selected routine validation once when ready. | Earlier local feedback for developers who accept the environment and execution cost. |
+| Target repository selects local validation as required | The shared target policy overrides the framework default; missing prerequisites become a recorded local blocker. | A team can intentionally require homogeneous local tooling, but individual preferences must not weaken that tracked team rule. |
+| Target CI selects validation as required | Local manual/unselected behavior remains unchanged; CI provisions its governed environment and owns the required result. | Consistent shared enforcement without requiring every workstation to match; CI feedback and branch protection become operational dependencies. |
+| No local opt-in and no CI owner | Record that no automated routine validator owns the gate; never imply standards were checked. | Lowest immediate token/setup cost but highest drift risk; unsuitable for a team claiming mandatory standard enforcement. |
+| Explicit package apply, init, upgrade, provenance, or release command | Ignore the local routine switch and enforce that command's own prerequisites and fail-closed contract. | Routine flexibility cannot bypass lifecycle safety. |
+
+### Configuration And Precedence Candidate
+
+- Store the shared target default as target-owned, versioned repository truth under a future validation-policy section of generated `.dev/project-config.yaml`; do not model it as a Python package or technology selection.
+- Preserve that target decision during `ai-context-upgrader`, consistent with existing project-configuration ownership.
+- Keep a developer-specific opt-in outside tracked target truth. Its exact environment-variable or ignored-local-file transport remains an implementation decision.
+- Resolve precedence from strongest to weakest: explicit lifecycle invocation; target CI policy; tracked target local policy; developer local preference; framework default.
+- Permit a developer preference to strengthen local execution (`manual` to automatic/required) but not weaken a tracked target or CI requirement.
+- Require every Agent runtime to read the same tracked target policy before capability/test selection. A Codex-, Claude-, or Copilot-specific default must not silently diverge.
+
+### Team Tradeoffs
+
+- Benefit: local missing-runtime failures consume zero command attempts and avoid repeated diagnostic reasoning when automatic validation is unselected.
+- Benefit: Python/PyYAML installation and supply-chain policy can be centralized in CI while motivated developers retain earlier feedback.
+- Cost: defects may be discovered later in CI, increasing feedback latency, CI minutes, and pull-request iterations.
+- Cost: without CI enforcement or explicit local execution, the team has availability but no effective standard gate.
+- Governance requirement: an unexecuted local validator must remain visibly unexecuted; it cannot become `passed` merely because CI is expected later.
+- Token requirement: moving enforcement to CI must not replace command retries with unbounded Agent polling of CI status or logs; CI observation also needs a bounded wait/read policy under D-010E.
+
+The current D-010B recommendation is a tracked target default of `manual/unselected`, with developer-local preferences allowed only to opt into stronger local execution. D-010C separately decides whether and how CI becomes required; approval of D-010B alone does not claim that CI is configured.
+
 ## Stages And Checkpoints
 
 1. Bootstrap the governance workflow and freeze Issue #69 plus `AIC-004` as source evidence.
@@ -148,9 +182,9 @@
 
 ## Resume Checkpoint
 
-- Last completed action: resolved D-010A so only automatic routine software-development validation is switchable, traced retry ownership to Agent orchestration rather than `check-all.sh`, and made token-cost/no-identical-retry behavior an explicit pending design concern.
+- Last completed action: explained D-010B through developer, target-policy, CI, no-gate, and lifecycle scenarios; mapped target-owned versus local configuration, precedence, token benefit, and delayed-feedback risk without resolving the decision.
 - Current task: `AIC-004-diagnostic-design`.
-- Exact next action: ask only `D-010B` whether downstream local automatic validation defaults to manual/unselected, with no prerequisite probe or validator execution until a developer or target policy opts in.
+- Exact next action: obtain only the D-010B owner decision on a tracked `manual/unselected` local default with developer preferences allowed to strengthen but not weaken target policy.
 - Validation already completed: confirmed clean `main@2263744bb2dc876f8077547e961fc68be28b0074` before branching; verified the final baseline assessment; verified the inventory against `git ls-files`, direct file reads, distribution profile, shell registry, active documentation, and existing tests; parsed both task JSON files; `git diff --check`, `validate-workflow-artifacts.py`, and `validate-ai-context.py` passed.
 - Current discussion-checkpoint validation: Git-history probes established the adoption timeline; the active sub-agent manifest and Codex adapter established the missed low-cost route; the changed task JSON parsed with PowerShell; locator/index state was checked directly; and `git diff --check` passed. Full Python-backed repository validators were not rerun because every discovered interpreter lacks PyYAML and D-002A now forbids implicit installation; this checkpoint records that result as `blocked-by-environment`, not passed.
 - Validation environment note: generic `python` and `python3` resolve to unusable Windows aliases. A versioned uv-managed Python 3.14.1 and the Codex bundled Python 3.12.13 can start, but neither currently imports PyYAML. Prior artifact validation used Codex Python with isolated temporary `PyYAML==6.0.3`; no repository dependency files were changed.

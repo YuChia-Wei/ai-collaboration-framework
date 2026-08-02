@@ -8,7 +8,7 @@
   "owner_skill": "ai-context-governance",
   "status": "in_progress",
   "created_at": "2026-08-02T10:32:53+08:00",
-  "updated_at": "2026-08-02T13:14:42+08:00",
+  "updated_at": "2026-08-02T15:24:05+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-5.6-sol",
   "reasoning_effort": "high",
@@ -51,6 +51,7 @@
       "Reconstruct the Python/PyYAML selection history and distinguish repository evidence from inferred engineering motivation.",
       "Inventory current downstream execution modes, applicability behavior, CI wiring, distribution projection, and the absence of a target-owned activation policy.",
       "Trace retry ownership across the aggregate runner, software-development orchestrator, and root execution guidance; define a token-cost-aware retry decision boundary.",
+      "Explain the local activation default through team scenarios, target-owned versus developer-local configuration, precedence, CI dependency, and feedback/token tradeoffs before requesting D-010B approval.",
       "Present one design decision at a time with impact and alternatives.",
       "Record every owner decision in workflow-plan.md.",
       "Produce an approved implementation boundary and validation matrix."
@@ -60,11 +61,11 @@
       "Valid workflow locator and task artifacts",
       "Explicit owner approval before implementation transition"
     ],
-    "last_completed_step": "Resolved D-010A so only automatic routine software-development validation is switchable, confirmed that check-all.sh does not retry internally, and identified the missing Agent-side attempt budget and identical-retry prohibition.",
-    "next_action": "Ask only D-010B whether downstream local automatic validation defaults to manual/unselected with no probe or execution until developer or target-policy opt-in."
+    "last_completed_step": "Explained D-010B through new-developer, ready-environment, developer-opt-in, target-required, CI-required, no-gate, and explicit-lifecycle scenarios without resolving the decision.",
+    "next_action": "Obtain only the D-010B owner decision on a tracked manual/unselected local default with developer preferences allowed to strengthen but not weaken target policy."
   },
   "results": {
-    "summary": "D-010A is resolved: only automatic routine software-development validation is switchable; explicit CLI and lifecycle safety commands remain outside the switch. Agent-side retry control is now a required token-cost design concern. Implementation has not started.",
+    "summary": "D-010A remains resolved. D-010B is now scenario-defined: a manual/unselected target default avoids local probes and retries, personal opt-in may strengthen local execution, CI is a separate decision, and no-gate states cannot claim validation. Implementation has not started.",
     "files_changed": [
       ".dev/workflows/2026-08-02-python-prerequisite-diagnostics/workflow.yaml",
       ".dev/workflows/2026-08-02-python-prerequisite-diagnostics/workflow-plan.md",
@@ -94,7 +95,8 @@
       "Codebase Memory graph and graph-augmented search for hidden .ai scripts: no indexed results; direct tracked-file fallback used",
       "check-all.sh modes, interpreter resolution order, enforcement classes, applicability gates, source portable-gates CI, distribution profile, skill/policy direct invocations, and hook inventory: inspected",
       "Aggregate runner retry scan: no validation retry loop found; each selected check invokes once",
-      "Software-development orchestrator capability, fallback, workflow-gate, and root execution policies: inspected for blocked outcomes and retry-budget behavior"
+      "Software-development orchestrator capability, fallback, workflow-gate, and root execution policies: inspected for blocked outcomes and retry-budget behavior",
+      "Target project-config template, ai-context-init document targets, technology-selection ownership policy, and portable workflow-gate target settings: inspected for shared-versus-local configuration boundaries"
     ],
     "finding_status": "not-addressed",
     "residual_risk": "Activation scope is resolved, but local defaults, CI semantics, result taxonomy, Agent retry budget, interpreter trust, launcher coverage, dependency recovery, canonical runtime, output, proof, ownership, projection, testing, and documentation decisions remain unresolved; implementation remains paused.",
