@@ -8,7 +8,7 @@
   "owner_skill": "ai-context-governance",
   "status": "in_progress",
   "created_at": "2026-08-02T10:32:53+08:00",
-  "updated_at": "2026-08-02T19:08:34+08:00",
+  "updated_at": "2026-08-02T19:17:57+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-5.6-sol",
   "reasoning_effort": "high",
@@ -30,7 +30,7 @@
     "constraints": [
       "Ask and resolve exactly one owner-decision question at a time.",
       "Explain behavior, compatibility, package, documentation, and test impacts before each decision.",
-      "Until D-009 is resolved, preserve Python 3.11 or newer on every retained Python path; do not silently entrench or lower the current runtime contract.",
+      "Preserve Python 3.11 or newer as the canonical runtime on every retained #69/v0.8.0 validator path; any later runtime replacement requires a separate governed proposal and explicit owner approval.",
       "Apply the approved 25-production-CLI boundary in two ordered batches: 12 portable/downstream entrypoints first, then 13 source-only entrypoints.",
       "Fail before repository mutation or validation success claims.",
       "Do not weaken existing validation, package, upgrade, or release gates.",
@@ -65,11 +65,11 @@
       "Valid workflow locator and task artifacts",
       "Explicit owner approval before implementation transition"
     ],
-    "last_completed_step": "Resolved D-004B with human-facing installation documentation and exact non-executing recovery guidance, while excluding automatic or separately executable bootstrap behavior from Issue #69.",
-    "next_action": "Explain and obtain only the owner decision on D-009 canonical validator runtime disposition for Issue #69 and v0.8.0."
+    "last_completed_step": "Resolved D-009 by retaining Python 3.11 or newer as the canonical #69/v0.8.0 validator runtime, keeping native launchers thin, and deferring any runtime replacement to a separately approved future proposal without creating one now.",
+    "next_action": "Explain and obtain only the owner decision on D-003A human/machine diagnostic output fields and channel before asking separately about exit-code compatibility."
   },
   "results": {
-    "summary": "D-004 is fully resolved through D-004A and D-004B. The exact per-entrypoint dependency profile remains read-only, and missing prerequisites produce human-facing installation documentation plus deterministic guidance bound to the selected interpreter and governed requirements file. No launcher or validator executes pip/uv, creates an environment, accesses the network, writes recovery state, or retries unchanged failure; enterprise provisioning remains target/team authority. Six atomic decisions remain and implementation has not started.",
+    "summary": "D-009 is resolved. Python 3.11 or newer remains the canonical validator runtime for Issue #69 and v0.8.0; the POSIX-sh and Windows-PowerShell launchers stay thin prerequisite/diagnostic adapters. Runtime replacement is outside this workflow and would require a separately approved future proposal with distribution and compatibility evidence, but no issue is created now. Five atomic decisions remain and implementation has not started.",
     "files_changed": [
       ".dev/workflows/2026-08-02-python-prerequisite-diagnostics/workflow.yaml",
       ".dev/workflows/2026-08-02-python-prerequisite-diagnostics/workflow-plan.md",
@@ -132,10 +132,11 @@
       "Owner decision: D-002C approved stable POSIX-sh and Windows-PowerShell thin launchers, canonical-Python delegation, self-contained fallback behavior, and separately governed removal of transitional discovery",
       "Production-entrypoint import read-back: confirmed 23 direct/indirect PyYAML consumers and identified validate-dependency-versions.py plus compare-ai-context-versions.py as the two standard-library-only CLIs",
       "Owner decision: D-004A approved exact per-entrypoint dependency profiles, Python-floor checks for all 25 CLIs, PyYAML readiness only for its 23 consumers, and governed drift validation",
-      "Owner decision: D-004B approved human-facing installation documentation and deterministic recovery guidance without automatic install, environment creation, network access, recovery writes, or executable bootstrap behavior"
+      "Owner decision: D-004B approved human-facing installation documentation and deterministic recovery guidance without automatic install, environment creation, network access, recovery writes, or executable bootstrap behavior",
+      "Owner decision: D-009 retained Python 3.11+ as the #69/v0.8.0 canonical validator runtime, kept native launchers thin, and deferred runtime replacement without creating a follow-up issue"
     ],
     "finding_status": "not-addressed",
-    "residual_risk": "External tracking now exists as Proposals #75 and #76, but neither is accepted or implementation-authorized. D-002A through D-002C, D-004A through D-004B, and the D-010 control chain are resolved, but six #69 atomic decisions remain unresolved, including canonical runtime, output, proof, remaining script ownership, testing, and migration documentation; implementation remains paused.",
+    "residual_risk": "External tracking now exists as Proposals #75 and #76, but neither is accepted or implementation-authorized. Runtime discovery, recovery, and disposition plus the D-010 control chain are resolved, but five #69 atomic decisions remain unresolved, including output/exit behavior, pre-mutation proof, remaining script ownership, testing, and migration documentation; implementation remains paused.",
     "follow_up_needed": true
   }
 }
