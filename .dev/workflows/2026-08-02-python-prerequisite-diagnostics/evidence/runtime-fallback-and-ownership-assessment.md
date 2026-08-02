@@ -4,7 +4,7 @@
 
 - `generated_by`: `OpenAI Codex repository-native and host-local assessment`
 - `generated_at`: `2026-08-02T12:03:33+08:00`
-- `source_revision`: `d27fb8adbaf890f9f926c2de6bf66aa6917a83d0`
+- `source_revision`: `d411981748933fa64dc5919a0307a4b6b369f35d`
 - `source_branch`: `codex/2026-08-02-python-prerequisite-diagnostics`
 - `issue`: `https://github.com/YuChia-Wei/ai-collaboration-prompts-dotnet-backend/issues/69`
 - `baseline_finding`: `ASM-20260730-001#AIC-004`

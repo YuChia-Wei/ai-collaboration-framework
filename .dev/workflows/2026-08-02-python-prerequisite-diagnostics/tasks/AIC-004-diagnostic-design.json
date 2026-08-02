@@ -8,7 +8,7 @@
   "owner_skill": "ai-context-governance",
   "status": "completed",
   "created_at": "2026-08-02T10:32:53+08:00",
-  "updated_at": "2026-08-02T20:47:32+08:00",
+  "updated_at": "2026-08-02T21:30:37+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-5.6-sol",
   "reasoning_effort": "high",
@@ -65,11 +65,11 @@
       "Valid workflow locator and task artifacts",
       "Explicit owner approval before implementation transition"
     ],
-    "last_completed_step": "The repository owner explicitly approved the complete 22-decision design on 2026-08-02; CP-1 froze the design subject at 1d448d4 and authorized transition to the portable implementation task.",
+    "last_completed_step": "The repository owner explicitly approved the complete 22-decision design on 2026-08-02; after rebasing onto main@48d2871, CP-1 freezes current design subject 8c240ad with state commit c93f699 and authorizes transition to the portable implementation task.",
     "next_action": "Continue through AIC-004-diagnostic-implementation after the cross-host receiving gate is valid; retain the source-only task behind CP-2."
   },
   "results": {
-    "summary": "All 22 atomic design decisions were resolved and explicitly approved by the repository owner. CP-1 froze the portable contract, compatibility requirements, migration communication, and deterministic acceptance matrix through design subject 1d448d4; implementation remains ordered as portable first and source-only after CP-2.",
+    "summary": "All 22 atomic design decisions were resolved and explicitly approved by the repository owner. After rebasing onto main@48d2871, CP-1 preserves the portable contract, compatibility requirements, migration communication, and deterministic acceptance matrix through current design subject 8c240ad and state commit c93f699; implementation remains ordered as portable first and source-only after CP-2.",
     "files_changed": [
       ".dev/workflows/2026-08-02-python-prerequisite-diagnostics/workflow.yaml",
       ".dev/workflows/2026-08-02-python-prerequisite-diagnostics/workflow-plan.md",
@@ -81,6 +81,7 @@
       ".dev/workflows/2026-08-02-python-prerequisite-diagnostics/evidence/runtime-fallback-and-ownership-assessment.md",
       ".dev/workflows/2026-08-02-python-prerequisite-diagnostics/evidence/runtime-fallback-and-ownership-assessment.zh-TW.md",
       ".dev/workflows/2026-08-02-python-prerequisite-diagnostics/evidence/python-runtime-selection-history-and-native-options.md",
+      ".dev/workflows/2026-08-02-python-prerequisite-diagnostics/evidence/local-history-redaction-and-compression-assessment.md",
       ".dev/workflows/INDEX.MD"
     ],
     "tests_run": [
@@ -145,7 +146,9 @@
       "Owner decision: D-006 approved unchanged CLI ownership, repo-common python_prerequisites.py and python-entrypoints.json, generic POSIX and PowerShell launchers, portable projection, retained direct paths, single check-all discovery, and fail-closed parity",
       "Documentation surface read-back: source script README, portable INSTALL template, root bilingual README commands, human collaboration guide index, init/upgrader/orchestrator guides, project-config template, and v0.7.0 release/migration structure were inspected",
       "Owner decision: D-008 approved formal additive-migration documentation, layered team/Agent/package guidance, tracked manual and unconfigured defaults, ignored local opt-in preservation, troubleshooting, parity validation, and a remediation-report release handoff without creating v0.8.0 release artifacts",
-      "Accumulated owner approval: all 22 atomic decisions approved and CP-1 design subject frozen at 1d448d4"
+      "Accumulated owner approval: all 22 atomic decisions approved; after rebasing onto main@48d2871, CP-1 design subject is 8c240ad and state commit is c93f699",
+      "Local-only history redaction: 27 recreated snapshots contain zero host-username occurrences in the #69 workflow scope; author, date, subject, and body parity preserved",
+      "Commit compression assessment: all 31 pre-reconciliation commits retained to preserve approval, evidence, checkpoint, translation-review, and atomic-decision boundaries; reconciliation record added as commit 32"
     ],
     "finding_status": "partially-resolved",
     "residual_risk": "The approved design has not yet been implemented or independently verified. Cross-host checkpoint evidence is pending, and Proposals #75 and #76 remain external, unaccepted, and implementation-unauthorized.",
