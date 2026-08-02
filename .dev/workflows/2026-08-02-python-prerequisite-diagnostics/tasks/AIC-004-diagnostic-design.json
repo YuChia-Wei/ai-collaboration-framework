@@ -8,7 +8,7 @@
   "owner_skill": "ai-context-governance",
   "status": "in_progress",
   "created_at": "2026-08-02T10:32:53+08:00",
-  "updated_at": "2026-08-02T18:25:02+08:00",
+  "updated_at": "2026-08-02T18:33:31+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-5.6-sol",
   "reasoning_effort": "high",
@@ -65,11 +65,11 @@
       "Valid workflow locator and task artifacts",
       "Explicit owner approval before implementation transition"
     ],
-    "last_completed_step": "Resolved D-010D with a v0.8.0-compatible legacy outcome projection and D-010E with bounded prerequisite, execution, retry, and CI-observation attempts; the D-010 control chain is complete.",
-    "next_action": "Explain and obtain only the owner decision on D-002B interpreter trust sources and discovery order."
+    "last_completed_step": "Resolved D-002B with explicit-owner, active/generic PATH, versioned PATH, optional read-only installed-uv, and fail-closed precedence while excluding automatic Agent-product private-runtime discovery.",
+    "next_action": "Explain and obtain only the owner decision on D-002C OS-native launcher coverage and delegation boundary."
   },
   "results": {
-    "summary": "D-010 is fully resolved. D-010D preserves the v0.8.0 top-level outcome enum while recording applicable-but-unselected validation as legacy not-applicable plus optional selection_reason not-run-by-policy and truthful human output; promotion is deferred pending downstream observation. D-010E sets zero attempts when unselected, one preflight and one initial execution when selected, no unchanged-state retry, one retry after a material change, and bounded CI observation. Implementation has not started.",
+    "summary": "D-002B is resolved. Interpreter discovery uses explicit AI_CONTEXT_PYTHON, active/generic PATH, versioned PATH, one optional installed-uv managed-Python probe with offline/no-download/no-config/no-project safety flags, then D-002A fail-closed behavior. Candidates are validated and deduplicated before selection. Agent-product private runtimes are never scanned automatically but remain available through an explicit owner path. Implementation has not started.",
     "files_changed": [
       ".dev/workflows/2026-08-02-python-prerequisite-diagnostics/workflow.yaml",
       ".dev/workflows/2026-08-02-python-prerequisite-diagnostics/workflow-plan.md",
@@ -123,10 +123,12 @@
       "Owner decision: D-010B2 approved .dev/validation.local.conf as the only persistent personal opt-in; .git/config and environment-variable override not selected for v0.8.0",
       "Owner decision: D-010C approved framework-default unconfigured CI plus explicit target advisory/required modes and evidence-backed enforcement",
       "Owner decision: D-010D approved the compatibility-first v0.8.0 projection using legacy outcome not-applicable plus optional selection_reason not-run-by-policy, with downstream observation before any top-level enum promotion",
-      "Owner decision: D-010E approved zero attempts when unselected, one preflight and one initial execution when selected, one retry only after a material state change, and one initial plus one bounded CI observation"
+      "Owner decision: D-010E approved zero attempts when unselected, one preflight and one initial execution when selected, one retry only after a material state change, and one initial plus one bounded CI observation",
+      "Local uv 0.11.29 help and managed-Python discovery: offline, no-download, no-config, no-project probe resolved installed CPython 3.14.1 without repository mutation",
+      "Owner decision: D-002B approved explicit-owner, active/generic PATH, versioned PATH, optional read-only installed-uv, and fail-closed precedence; automatic Agent-product private-runtime scanning excluded"
     ],
     "finding_status": "not-addressed",
-    "residual_risk": "External tracking now exists as Proposal #75, but it is not accepted or implementation-authorized. The D-010 control chain is resolved, but nine #69 atomic decisions remain unresolved, including interpreter trust, launcher coverage, dependency recovery, canonical runtime, output, proof, remaining script ownership, testing, and documentation; implementation remains paused.",
+    "residual_risk": "External tracking now exists as Proposal #75, but it is not accepted or implementation-authorized. D-002B and the D-010 control chain are resolved, but eight #69 atomic decisions remain unresolved, including launcher coverage, dependency recovery, canonical runtime, output, proof, remaining script ownership, testing, and documentation; implementation remains paused.",
     "follow_up_needed": true
   }
 }

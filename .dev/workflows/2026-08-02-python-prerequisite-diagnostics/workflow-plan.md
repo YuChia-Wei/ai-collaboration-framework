@@ -19,7 +19,7 @@
 - `current_phase`: `remediation-planning`
 - `artifact_root`: `.dev/workflows/2026-08-02-python-prerequisite-diagnostics`
 - `created_at`: `2026-08-02T10:32:53+08:00`
-- `updated_at`: `2026-08-02T18:25:02+08:00`
+- `updated_at`: `2026-08-02T18:33:31+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md`
 - `template_version`: `1.2.0`
 
@@ -93,7 +93,7 @@
 | `D-001` | Supported user-facing entrypoint boundary | resolved | Option A: cover all 25 production CLIs, exclude 45 direct test CLIs and four import-only modules; implement and validate the 12 portable/downstream CLIs before the 13 source-only CLIs. | Establishes complete production coverage while creating two ordered, separately reviewable implementation batches. |
 | `D-002` | Diagnostic fallback and delivery architecture umbrella | decomposed | Evaluate fail-closed behavior, automatic installation, host/versioned/provider-runtime discovery, and OS-native launchers one subdecision at a time. | Prevents unlike trust, mutation, portability, and launcher questions from being collapsed into one approval. |
 | `D-002A` | Default action when no fully ready environment is found | resolved | Perform read-only discovery only; if no fully ready environment exists, do not execute the target CLI, install anything, create an environment, or modify the host/repository. Fail closed with diagnostics and explicit recovery guidance. | Establishes a no-work/no-mutation terminal state while leaving separately invoked, explicitly authorized bootstrap options open for D-004. |
-| `D-002B` | Trusted interpreter discovery sources and order | pending |  | Determines precedence for owner overrides, generic/versioned host commands, uv or other managers, and optional agent-tool adapters. |
+| `D-002B` | Trusted interpreter discovery sources and order | resolved | Use deterministic read-only discovery in this order: explicit `AI_CONTEXT_PYTHON`; active environment and stable generic PATH commands; versioned PATH commands; one optional installed-uv managed-Python fallback using `uv python find --managed-python --no-python-downloads --offline --no-config --no-project ">=3.11"`; then fail closed. Validate and deduplicate every resolved executable before selection. Do not automatically scan Agent-tool private runtime paths; an owner may still select one explicitly through `AI_CONTEXT_PYTHON`. | Finds uv-managed Python that lacks a PATH shim without making uv or an Agent product a prerequisite, downloading Python, mutating an environment, or depending on provider-private layouts. |
 | `D-002C` | OS-native launcher coverage and delegation boundary | pending |  | Determines Windows/POSIX support and whether native scripts only resolve/diagnose or duplicate Python validator semantics. |
 | `D-003` | Diagnostic output and exit contract | pending |  | Defines stable fields, channel, exit status, and compatibility expectations for humans and automation. |
 | `D-004` | Dependency prerequisite inventory and sanctioned recovery/install operation | pending |  | Determines whether only PyYAML or every required runtime dependency is checked, which recovery command is printed, and whether an explicit isolated bootstrap mode is offered. |
@@ -122,6 +122,29 @@
 - Impact: structural and semantic parity checks passed, so the content is not automatically invalid, but the requested low-cost delegation contract was violated.
 - `D-TR-001` is resolved without regeneration. No translation is being represented as low-cost-sub-agent output retroactively.
 - For every future derived translation, the main agent must finalize the English source first, delegate exactly one source/output pair to `context-translator`, record the resolved `gpt-5.6-terra` low-reasoning route, review parity, and own the commit. If that route is unavailable, translation pauses instead of falling back to the primary model.
+
+## D-002B Trusted Interpreter Discovery
+
+The owner approved this deterministic candidate order:
+
+1. An explicit owner-provided `AI_CONTEXT_PYTHON` executable.
+2. The active environment and stable generic Python commands already exposed through `PATH`.
+3. Versioned Python commands exposed through `PATH`; exact Windows and POSIX command names remain owned by `D-002C`.
+4. One optional installed-uv probe for an already installed managed Python:
+
+   ```text
+   uv python find --managed-python --no-python-downloads --offline --no-config --no-project ">=3.11"
+   ```
+
+5. The fail-closed diagnostic approved by `D-002A` when no fully ready candidate remains.
+
+Every returned executable must start, satisfy the retained Python 3.11-or-newer constraint unless `D-009` changes it, and pass the required-import probe before selection. Resolve and deduplicate physical executable identities so a PATH shim and uv-managed installation do not trigger duplicate prerequisite work.
+
+The uv probe is optional, read-only, and non-fatal as an individual source. If uv is missing, blocked, or returns no installed candidate, record that source once and continue without retry under `D-010E`. The adapter must not invoke `uv run`, `uvx`, `uv sync`, `uv python install`, or any download/install behavior. Official uv documentation confirms that Python download is otherwise automatic in some discovery flows, which is why `--no-python-downloads` and `--offline` are mandatory here: [Python versions](https://docs.astral.sh/uv/concepts/python-versions/) and [CLI reference](https://docs.astral.sh/uv/reference/cli/).
+
+No automatic Codex, Claude Code, ChatGPT Desktop, or other Agent-product private-runtime scan is approved for v0.8.0. An owner may still point `AI_CONTEXT_PYTHON` at such an executable explicitly; that preserves owner trust without making provider-private paths part of the portable repository contract.
+
+Local read-only evidence on 2026-08-02 used uv 0.11.29 with the approved safety flags and resolved its installed managed CPython 3.14.1. The same installation is also exposed as `python3.14` on PATH, and both identities lack PyYAML, proving that interpreter discovery and dependency readiness remain separate. The WinGet uv link required sandbox approval in the current Agent environment, reinforcing that uv must remain a bounded fallback rather than a prerequisite or first candidate.
 
 ## Current Downstream Validation Activation State
 
@@ -344,13 +367,13 @@ Issue #69 is not fully discussed. The current decision ledger has this state:
 
 | State | Decisions | Meaning |
 | --- | --- | --- |
-| Resolved atomic decisions (11) | `D-001`, `D-002A`, `D-006A`, `D-006B`, `D-TR-001`, `D-010A`, `D-010B1`, `D-010B2`, `D-010C`, `D-010D`, `D-010E` | Production-entrypoint coverage, no-mutation failure, workflow ownership, packaged-but-unselected skill self-tests, future translation routing, routine-switch scope, local and CI policy, compatibility-safe result truth, and bounded Agent attempts are approved. |
+| Resolved atomic decisions (12) | `D-001`, `D-002A`, `D-002B`, `D-006A`, `D-006B`, `D-TR-001`, `D-010A`, `D-010B1`, `D-010B2`, `D-010C`, `D-010D`, `D-010E` | Production-entrypoint coverage, no-mutation failure, deterministic interpreter trust/discovery, workflow ownership, packaged-but-unselected skill self-tests, future translation routing, routine-switch scope, local and CI policy, compatibility-safe result truth, and bounded Agent attempts are approved. |
 | Decomposed umbrellas (1) | `D-002` | This organizes its runtime subdecisions and does not itself authorize an implementation. `D-010` is fully resolved through its control chain. |
-| Pending atomic decisions (9) | `D-002B`, `D-002C`, `D-003`, `D-004`, `D-005`, `D-006`, `D-007`, `D-008`, `D-009` | Interpreter trust, launcher boundary, output/exit contract, dependency recovery, pre-mutation proof, remaining script ownership, tests, migration communication, and canonical runtime remain open. |
+| Pending atomic decisions (8) | `D-002C`, `D-003`, `D-004`, `D-005`, `D-006`, `D-007`, `D-008`, `D-009` | Launcher boundary, output/exit contract, dependency recovery, pre-mutation proof, remaining script ownership, tests, migration communication, and canonical runtime remain open. |
 
 The remaining questions should be completed in three bounded groups while retaining the one-question-at-a-time owner contract:
 
-1. Runtime discovery and recovery: `D-002B`, `D-002C`, `D-004`, and `D-009`.
+1. Runtime discovery and recovery: `D-002C`, `D-004`, and `D-009`; `D-002A` and `D-002B` are resolved.
 2. Observable contract and proof: `D-003`, `D-005`, and `D-007`.
 3. Ownership, package compatibility, and communication: `D-006` and `D-008`.
 
@@ -387,15 +410,15 @@ Discussion may continue in the same Codex task for conversational continuity, bu
 
 ## Resume Checkpoint
 
-- Last completed action: resolved `D-010D` with the compatibility-first legacy outcome projection and later-observation boundary, resolved `D-010E` with the zero/one bounded attempt and CI-observation budget, and thereby completed the `D-010` control chain.
+- Last completed action: resolved `D-002B` with explicit-owner, active/generic PATH, versioned PATH, optional read-only installed-uv, and fail-closed precedence; automatic Agent-product private-runtime discovery remains excluded.
 - Current task: `AIC-004-diagnostic-design`.
-- Exact next action: explain and obtain only the owner decision on `D-002B` interpreter trust sources and discovery order.
+- Exact next action: explain and obtain only the owner decision on `D-002C` OS-native launcher coverage and delegation boundary.
 - Validation already completed: confirmed clean `main@2263744bb2dc876f8077547e961fc68be28b0074` before branching; verified the final baseline assessment; verified the inventory against `git ls-files`, direct file reads, distribution profile, shell registry, active documentation, and existing tests; parsed both task JSON files; `git diff --check`, `validate-workflow-artifacts.py`, and `validate-ai-context.py` passed.
-- Current discussion-checkpoint validation: Git-history probes established the adoption timeline; the active sub-agent manifest and Codex adapter established the missed low-cost route; the changed task JSON parsed with PowerShell; locator/index state was checked directly; and `git diff --check` passed. Full Python-backed repository validators were not rerun because every discovered interpreter lacks PyYAML and D-002A now forbids implicit installation; this checkpoint records that result as `blocked-by-environment`, not passed.
+- Current discussion-checkpoint validation: Git-history probes established the adoption timeline; the active sub-agent manifest and Codex adapter established the missed low-cost route; local uv 0.11.29 help and an offline/no-download managed-Python lookup were inspected read-only; the changed task JSON parsed with PowerShell; locator/index state was checked directly; and `git diff --check` passed. Full Python-backed repository validators were not rerun because every discovered interpreter lacks PyYAML and D-002A now forbids implicit installation; this checkpoint records that result as `blocked-by-environment`, not passed.
 - Validation environment note: generic `python` and `python3` resolve to unusable Windows aliases. A versioned uv-managed Python 3.14.1 and the Codex bundled Python 3.12.13 can start, but neither currently imports PyYAML. Prior artifact validation used Codex Python with isolated temporary `PyYAML==6.0.3`; no repository dependency files were changed.
-- Git state: active branch `codex/2026-08-02-python-prerequisite-diagnostics`, created from `main@2263744bb2dc876f8077547e961fc68be28b0074`; the latest durable design checkpoint entering this discussion is `8ba7ed9`.
-- Branch history and checkpoint handoffs: bootstrap commits `88a01be` and `4e93c0f`; absent-interpreter boundary `cd58c2b`; inventory translation `d27fb8a`; D-001/fallback assessment `d5ae808`; runtime rationale and D-002A `9937fb4`; downstream switch gap `7fa102c`; activation/retry scope `74bb024`; D-010B team scenarios `c2b35ad`; opt-in location and skill-stage map `32ede97`; workflow ownership and self-test terminology `22e6883`; self-test boundary and FUP scope `ac2d9d7`; staged #69/#75 scope boundary `1a66897`; checkpoint split and integrated D-010 framing `8c3fb8d`; manual-default and local-store comparison `4703943`; persistent local opt-in `5c6b9e5`; target CI enforcement `8ba7ed9`; no push or merge handoff has occurred.
-- Blockers or unresolved decisions: nine atomic #69 decisions remain unresolved; the complete D-010 control chain and checkpoint/branch separation are resolved. Implementation edits remain paused pending explicit accumulated-design approval. Proposal #75 is externally tracked but not accepted, promoted, scheduled, or authorized for implementation.
+- Git state: active branch `codex/2026-08-02-python-prerequisite-diagnostics`, created from `main@2263744bb2dc876f8077547e961fc68be28b0074`; the latest durable design checkpoint entering this discussion is `59a8add`.
+- Branch history and checkpoint handoffs: bootstrap commits `88a01be` and `4e93c0f`; absent-interpreter boundary `cd58c2b`; inventory translation `d27fb8a`; D-001/fallback assessment `d5ae808`; runtime rationale and D-002A `9937fb4`; downstream switch gap `7fa102c`; activation/retry scope `74bb024`; D-010B team scenarios `c2b35ad`; opt-in location and skill-stage map `32ede97`; workflow ownership and self-test terminology `22e6883`; self-test boundary and FUP scope `ac2d9d7`; staged #69/#75 scope boundary `1a66897`; checkpoint split and integrated D-010 framing `8c3fb8d`; manual-default and local-store comparison `4703943`; persistent local opt-in `5c6b9e5`; target CI enforcement `8ba7ed9`; outcome/retry controls `59a8add`; no push or merge handoff has occurred.
+- Blockers or unresolved decisions: eight atomic #69 decisions remain unresolved; `D-002A`, `D-002B`, the complete D-010 control chain, and checkpoint/branch separation are resolved. Implementation edits remain paused pending explicit accumulated-design approval. Proposal #75 is externally tracked but not accepted, promoted, scheduled, or authorized for implementation.
 
 ## Branch Lifecycle
 
