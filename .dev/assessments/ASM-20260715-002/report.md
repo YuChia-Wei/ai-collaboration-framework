@@ -15,13 +15,20 @@
 - `status`: `final`
 - `audit_date`: `2026-07-15`
 - `created_at`: `2026-07-15T23:43:06+08:00`
-- `updated_at`: `2026-07-15T23:43:06+08:00`
+- `updated_at`: `2026-08-02T21:20:17+08:00`
 - `repository`: `C:/Github/YuChia/ai-collaboration-prompts-dotnet-backend`
 - `subject_branch`: `main`
 - `subject_commit`: `82b88b7287deb7a64e0311fde6b1b53ea0d194b1`
 - `artifact_branch`: `codex/assessment/asm-20260715-002`
 - `previous_assessment`: `ASM-20260715-001` (superseded)
 - `workflow_refs`: none; this is a standalone durable assessment
+
+## Privacy Corrigendum (2026-08-02)
+
+Two host-local absolute checkout paths were replaced with the portable
+`<local-source-checkout>` placeholder to avoid retaining a workstation username.
+The pinned evidence revision, score, decision, finding IDs, relationships, and
+assessment conclusions are unchanged.
 
 ## 1. Executive Summary
 
@@ -44,7 +51,7 @@ The reassessment confirms nine prior findings, narrows two, splits one concern i
 - [`.dev/standards/**`](../../standards/README.md), [`.dev/guides/**`](../../guides/README.MD), [`.ai/scripts/**`](../../../.ai/scripts/README.md);
 - [canonical skills](../../../.ai/assets/skills/README.MD), [`.agents` wrappers](../../../.agents/skills/README.md), and [`.claude` wrappers](../../../.claude/skills/README.md);
 - [`AGENTS.md`](../../../AGENTS.md), [`CLAUDE.md`](../../../CLAUDE.md), validators, indexes, workflow artifacts, and Git history;
-- immutable Git-tree evidence from `C:/Users/h4227/source/GitHub/YuChia/ai-coding-exercise` at `f7ed0b9`;
+- immutable Git-tree evidence from `<local-source-checkout>/ai-coding-exercise` at `f7ed0b9`;
 - target-owned manifests, architecture documents, workflow records, validators, indexes, and Git history from [`dotnet-mq-arch-lab`](../../../../dotnet-mq-arch-lab/AGENTS.md) at `0f71e5c`.
 
 ### Excluded
@@ -443,7 +450,7 @@ Use stable references `ASM-20260715-002#AIC-001` through `ASM-20260715-002#AIC-0
 
 ```text
 framework: C:/Github/YuChia/ai-collaboration-prompts-dotnet-backend@82b88b7287deb7a64e0311fde6b1b53ea0d194b1
-origin: C:/Users/h4227/source/GitHub/YuChia/ai-coding-exercise@f7ed0b9b5b23822ec012c375261df44f6f03a97f
+origin: <local-source-checkout>/ai-coding-exercise@f7ed0b9b5b23822ec012c375261df44f6f03a97f
 downstream: C:/Github/YuChia/dotnet-mq-arch-lab@0f71e5ca694ceadacf7616a72805a14b2eef2309
 
 git ls-tree -r --name-only <pinned-commit>

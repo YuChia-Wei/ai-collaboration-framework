@@ -15,7 +15,7 @@ report: "report.md"
 artifact_branch: "codex/assessment/asm-20260715-002"
 base_branch: "codex/assessment/asm-20260715-001"
 created_at: "2026-07-15T23:43:06+08:00"
-updated_at: "2026-07-15T23:43:06+08:00"
+updated_at: "2026-08-02T21:20:17+08:00"
 template_source: ".dev/assessments/templates/assessment-locator-template.yaml"
 template_version: "1.0.0"
 report_template_source: ".ai/assets/skills/ai-context-auditor/templates/ai-context-audit-report-template.md"
@@ -54,6 +54,6 @@ relations:
   backlog_refs: []
   adr_refs: []
 resume:
-  last_completed_action: "Finalized the v0.4.0 reassessment with original Java lineage and downstream adoption evidence."
+  last_completed_action: "Finalized the v0.4.0 reassessment with original Java lineage and downstream adoption evidence; on 2026-08-02, applied an owner-authorized privacy corrigendum that replaced two host-local display paths without changing the assessment conclusions."
   next_action: "Await user review and selected finding IDs before ai-context-governance creates a remediation workflow."
   blockers: []
