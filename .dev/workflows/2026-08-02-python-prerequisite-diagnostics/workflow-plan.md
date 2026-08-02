@@ -19,7 +19,7 @@
 - `current_phase`: `completed`
 - `artifact_root`: `.dev/workflows/2026-08-02-python-prerequisite-diagnostics`
 - `created_at`: `2026-08-02T10:32:53+08:00`
-- `updated_at`: `2026-08-03T07:28:29+08:00`
+- `updated_at`: `2026-08-03T07:33:13+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md`
 - `template_version`: `1.2.0`
 
@@ -591,4 +591,4 @@ Discussion may continue in the same Codex task for conversational continuity, bu
 | 1 | `codex/2026-08-02-python-prerequisite-diagnostics` | `main@48d2871ec7e1592bcaa0c0b1fa72b6dd1b280231` | push-only repair checkpoint | `7ce14a41342afde0aa03935fb163fa83ceed9640` | `origin` / pending owner push | `2026-08-02T21:39:50+08:00` | Transfer the active workflow without misreporting the failed host gate as passed; pin the clean validated parent and bound continuation to two named environment repairs. | Push this branch; on the receiving host verify the checkpoint, repair only the named failures, and replace it with a passing normal checkpoint before implementation. |
 | 1 | `codex/2026-08-02-python-prerequisite-diagnostics` | `main@2263744bb2dc876f8077547e961fc68be28b0074` | receiving-host normal-continuation checkpoint | validated parent `5381b97270726a89b266f7bbab953e744cc08736` | local / containing commit pending | `2026-08-02T23:50:46+08:00` | Record that both named host failures and the Python-exposed assessment index drift are repaired and the full critical gate passes. | Create and bind `TOOL-002`, then implement only the 12 portable entrypoints and stop at `CP-2`. |
 | 1 | `codex/2026-08-02-python-prerequisite-diagnostics` | `main@2263744bb2dc876f8077547e961fc68be28b0074` | integration | `2070e44cff17bf3baad52f014ec360a449e3bd36` | PR #78 / `main` | `2026-08-03T07:24:11+08:00` | Integrate the validated TOOL-002 implementation and owner-approved GWT-018 fixture correction with a merge commit. | Continue closeout from updated main after merged-tree read-back. |
-| 2 | `codex/2026-08-02-python-prerequisite-diagnostics-closeout` | `main@2070e44cff17bf3baad52f014ec360a449e3bd36` | closeout | pending | closeout PR / `main` | `2026-08-03T07:28:29+08:00` | Persist merged-main, Issue #77, Project #3, backlog, and workflow completion evidence without release mutation. | Merge the closeout-only PR; no TOOL-002 implementation or release work remains. |
+| 2 | `codex/2026-08-02-python-prerequisite-diagnostics-closeout` | `main@2070e44cff17bf3baad52f014ec360a449e3bd36` | closeout | `5ec8f6210463df9be707304d632aca44014586d9` | local / closeout PR pending | `2026-08-03T07:33:01+08:00` | Persist merged-main, Issue #77, Project #3, backlog, and workflow completion evidence without release mutation. | Merge the closeout-only PR; no TOOL-002 implementation or release work remains. |
