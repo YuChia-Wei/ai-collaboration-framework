@@ -8,7 +8,7 @@
   "owner_skill": "ai-context-governance",
   "status": "in_progress",
   "created_at": "2026-08-02T12:03:33+08:00",
-  "updated_at": "2026-08-03T02:05:46+08:00",
+  "updated_at": "2026-08-03T02:11:40+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-5.6-sol",
   "reasoning_effort": "high",
@@ -61,8 +61,8 @@
       "Applicable aggregate repository gate",
       "Independent verification of ASM-20260730-001#AIC-004"
     ],
-    "last_completed_step": "All 13 source-only CLIs are guarded at 21e4001, the current-process/package gate defects are corrected at cc08a36, and the complete source-wide critical gate passed with exit 0 in 459.5 seconds.",
-    "next_action": "Obtain independent ai-context-auditor read-back of the committed source-wide checkpoint, then prepare PR integration."
+    "last_completed_step": "ASM-20260803-001 independently verified the committed implementation and source-wide gate with no remaining critical, must-fix, or should-fix finding and recommends AIC-004 resolved.",
+    "next_action": "Push the branch, create a ready PR, pass hosted checks, merge, and complete merged-main read-back."
   },
   "results": {
     "summary": "All 13 source-only production CLIs now use the shared guarded-import contract before domain imports or writes. Source regressions, package projection, current-process dependency behavior, and the complete critical gate pass; independent verification and PR integration remain.",
@@ -97,10 +97,11 @@
       "focused packaging regressions 006 and 014: 2 passed",
       "affected source release, provider, evaluation, repository-config, skill-transition, version, and governance suites: 127 passed before the final aggregate gate",
       "check-all.sh --critical from cc08a36: passed, exit 0, elapsed 459.5 seconds",
-      "validate-ai-context.py, validate-shell-assets.py, and git diff --check: passed"
+      "validate-ai-context.py, validate-shell-assets.py, and git diff --check: passed",
+      "ASM-20260803-001: final independent verification; no critical, must-fix, or should-fix finding; AIC-004 resolved"
     ],
-    "finding_status": "partially-resolved",
-    "residual_risk": "Independent post-remediation assessment and PR/merged-main read-back remain. The retained downstream integration case requires an explicitly supplied external repository and was skipped, not passed.",
+    "finding_status": "resolved",
+    "residual_risk": "PR/hosted-CI and merged-main read-back remain workflow integration gates. The retained downstream integration case requires an explicitly supplied external repository and was skipped, not passed.",
     "follow_up_needed": true
   }
 }
