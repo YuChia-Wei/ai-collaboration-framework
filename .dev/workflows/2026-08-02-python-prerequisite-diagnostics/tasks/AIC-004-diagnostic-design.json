@@ -8,7 +8,7 @@
   "owner_skill": "ai-context-governance",
   "status": "in_progress",
   "created_at": "2026-08-02T10:32:53+08:00",
-  "updated_at": "2026-08-02T19:01:30+08:00",
+  "updated_at": "2026-08-02T19:08:34+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-5.6-sol",
   "reasoning_effort": "high",
@@ -65,11 +65,11 @@
       "Valid workflow locator and task artifacts",
       "Explicit owner approval before implementation transition"
     ],
-    "last_completed_step": "Resolved D-004A with Python-floor checks for all 25 production CLIs, exact PyYAML readiness for the 23 dependent CLIs, no false PyYAML gate on the two standard-library-only CLIs, and a governed dependency-profile drift check.",
-    "next_action": "Explain and obtain only the owner decision on D-004B recovery guidance and whether a separately invoked isolated dependency bootstrap operation is offered."
+    "last_completed_step": "Resolved D-004B with human-facing installation documentation and exact non-executing recovery guidance, while excluding automatic or separately executable bootstrap behavior from Issue #69.",
+    "next_action": "Explain and obtain only the owner decision on D-009 canonical validator runtime disposition for Issue #69 and v0.8.0."
   },
   "results": {
-    "summary": "D-004A is resolved. Every production CLI checks the Python 3.11+ floor; only the 23 direct/indirect YAML consumers check governed PyYAML==6.0.3 readiness. The two standard-library-only CLIs remain runnable without PyYAML, tomllib is covered by the version floor, and a machine-readable dependency profile must be checked against imports, requirements, package projection, and compatibility paths. D-004B still owns recovery/install behavior, seven atomic decisions remain, and implementation has not started.",
+    "summary": "D-004 is fully resolved through D-004A and D-004B. The exact per-entrypoint dependency profile remains read-only, and missing prerequisites produce human-facing installation documentation plus deterministic guidance bound to the selected interpreter and governed requirements file. No launcher or validator executes pip/uv, creates an environment, accesses the network, writes recovery state, or retries unchanged failure; enterprise provisioning remains target/team authority. Six atomic decisions remain and implementation has not started.",
     "files_changed": [
       ".dev/workflows/2026-08-02-python-prerequisite-diagnostics/workflow.yaml",
       ".dev/workflows/2026-08-02-python-prerequisite-diagnostics/workflow-plan.md",
@@ -131,10 +131,11 @@
       "Owner scope decision: generalized readiness skill, local result, enterprise execution policy, and workspace-edit fallback separated from #69 into Proposal #76",
       "Owner decision: D-002C approved stable POSIX-sh and Windows-PowerShell thin launchers, canonical-Python delegation, self-contained fallback behavior, and separately governed removal of transitional discovery",
       "Production-entrypoint import read-back: confirmed 23 direct/indirect PyYAML consumers and identified validate-dependency-versions.py plus compare-ai-context-versions.py as the two standard-library-only CLIs",
-      "Owner decision: D-004A approved exact per-entrypoint dependency profiles, Python-floor checks for all 25 CLIs, PyYAML readiness only for its 23 consumers, and governed drift validation"
+      "Owner decision: D-004A approved exact per-entrypoint dependency profiles, Python-floor checks for all 25 CLIs, PyYAML readiness only for its 23 consumers, and governed drift validation",
+      "Owner decision: D-004B approved human-facing installation documentation and deterministic recovery guidance without automatic install, environment creation, network access, recovery writes, or executable bootstrap behavior"
     ],
     "finding_status": "not-addressed",
-    "residual_risk": "External tracking now exists as Proposals #75 and #76, but neither is accepted or implementation-authorized. D-002A through D-002C, D-004A, and the D-010 control chain are resolved, but seven #69 atomic decisions remain unresolved, including recovery/install behavior, canonical runtime, output, proof, remaining script ownership, testing, and documentation; implementation remains paused.",
+    "residual_risk": "External tracking now exists as Proposals #75 and #76, but neither is accepted or implementation-authorized. D-002A through D-002C, D-004A through D-004B, and the D-010 control chain are resolved, but six #69 atomic decisions remain unresolved, including canonical runtime, output, proof, remaining script ownership, testing, and migration documentation; implementation remains paused.",
     "follow_up_needed": true
   }
 }
