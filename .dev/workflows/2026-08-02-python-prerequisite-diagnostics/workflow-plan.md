@@ -16,10 +16,10 @@
 - `base_branch`: `main`
 - `branch_segment`: `1`
 - `status`: `in_progress`
-- `current_phase`: `remediation-planning`
+- `current_phase`: `remediation`
 - `artifact_root`: `.dev/workflows/2026-08-02-python-prerequisite-diagnostics`
 - `created_at`: `2026-08-02T10:32:53+08:00`
-- `updated_at`: `2026-08-02T20:12:59+08:00`
+- `updated_at`: `2026-08-02T20:47:32+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md`
 - `template_version`: `1.2.0`
 
@@ -28,8 +28,8 @@
 - Work-item binding: GitHub Issue [#69](https://github.com/YuChia-Wei/ai-collaboration-prompts-dotnet-backend/issues/69).
 - Baseline evidence: `.dev/assessments/ASM-20260730-001/assessment.yaml` and `ASM-20260730-001#AIC-004`.
 - Authorization source: the repository owner requested on 2026-08-02 that this workflow be opened, that design decisions be discussed one at a time with impact explanations, and that approved design continue into implementation without closing this workflow.
-- Authorized now: workflow bootstrap, repository-backed impact inventory, design discussion, and durable decision recording.
-- Approval gate: implementation edits remain pending until the owner explicitly approves the accumulated design direction.
+- Authorized now: the complete 22-decision design was explicitly approved by the repository owner on 2026-08-02; `CP-1 — #69 Design Freeze` is satisfied against design subject `1d448d4`, and the 12-entry portable implementation task may proceed after the cross-host receiving gate is valid.
+- Approval gate: accumulated-design approval is satisfied. The 13-entry source-only batch remains gated by `CP-2`, and no implementation may begin on a receiving host until the machine-readable handoff and its permitted critical-gate state are verified.
 - Provider state: Issue #69 remains open with its existing proposal/triage labels. On 2026-08-02 the owner reported manually changing its GitHub Project Status to `In progress`; the connected Issue read confirms the Issue remains open but does not expose Project fields. This owner-reported tracker update aligns work visibility with the active design workflow but does not authorize implementation or replace the workflow approval gate.
 
 ## Objective And Scope
@@ -516,21 +516,21 @@ Narrow validators that inspect actual downstream workflow or handoff artifacts r
 
 ## Discussion Completion Review And Release Boundary
 
-Issue #69's atomic design discussion is complete. The accumulated design still requires explicit owner approval before CP-1 or implementation. The current decision ledger has this state:
+Issue #69's atomic design discussion is complete. On 2026-08-02 the repository owner explicitly approved the complete 22-decision design summarized below. `CP-1 — #69 Design Freeze` is therefore satisfied against design subject `1d448d4`; implementation remains bounded to the ordered tasks and checkpoint gates.
 
 | State | Decisions | Meaning |
 | --- | --- | --- |
 | Resolved atomic decisions (22) | `D-001`, `D-002A`, `D-002B`, `D-002C`, `D-003A`, `D-003B`, `D-004A`, `D-004B`, `D-005`, `D-006`, `D-006A`, `D-006B`, `D-007`, `D-008`, `D-009`, `D-TR-001`, `D-010A`, `D-010B1`, `D-010B2`, `D-010C`, `D-010D`, `D-010E` | Production-entrypoint coverage, no-mutation failure, deterministic interpreter trust/discovery, stable native launchers with replaceable discovery, human/JSON diagnostic projections, compatibility-first exit codes, exact per-entrypoint dependency profiles, documentation-only recovery, a verifiable pre-mutation boundary, unchanged CLI ownership plus a repo-common prerequisite component, workflow ownership, packaged-but-unselected skill self-tests, a layered Windows/Ubuntu/portable test matrix, formal additive-migration communication without premature release artifacts, retained v0.8.0 Python runtime, future translation routing, routine-switch scope, local and CI policy, compatibility-safe result truth, and bounded Agent attempts are approved. |
 | Decomposed umbrella (1) | `D-002` | This organizes its now-resolved runtime subdecisions and does not independently authorize implementation. `D-003`, `D-004`, and `D-010` are fully resolved through their control chains. |
-| Pending atomic decisions (0) | none | No atomic #69 design question remains; accumulated-design approval and CP-1 are still required before implementation. |
+| Pending atomic decisions (0) | none | No atomic #69 design question remains; accumulated-design approval was granted and CP-1 is satisfied. |
 
-The requested final-three preview was provided before resolving `D-007`, and all three decisions are now resolved. The next owner gate is a consolidated approval of the complete design, not another atomic design question.
+The requested final-three preview was provided before resolving `D-007`, and all three decisions are now resolved. The next implementation boundary is the cross-host receiving gate for the portable batch, not another design decision.
 
 ### Approved Intermediate Checkpoints
 
-The owner approved the following sequence on 2026-08-02. Approval establishes workflow and release boundaries only; it does not approve remaining #69 design decisions or authorize implementation.
+The owner approved the checkpoint sequence earlier on 2026-08-02, then explicitly approved the complete 22-decision design after the atomic discussion closed. CP-1 now authorizes only the ordered portable implementation task; CP-2 and CP-75A retain their separate gates.
 
-- `CP-1 — #69 Design Freeze`: resolve every pending #69 decision or explicitly defer it to a named issue; require `D-009` to be resolved rather than deferred; freeze the 12-entry portable contract, compatibility requirements, migration expectations, and deterministic acceptance matrix; obtain explicit accumulated-design approval; then create a durable design-freeze commit before implementation.
+- `CP-1 — #69 Design Freeze` — achieved on 2026-08-02: all 22 atomic decisions are resolved, `D-009` is retained, the 12-entry portable contract and deterministic acceptance matrix are frozen through `1d448d4`, and the owner explicitly approved the accumulated design. The durable CP-1 state transition completes `AIC-004-diagnostic-design` and activates only the portable implementation task.
 - `CP-2 — #69 Portable Compatibility`: implement only the 12 portable/downstream entrypoints, preserve command paths and approved exit semantics, prove clean-install and supported v0.7.0-to-v0.8.0 upgrade compatibility, and stop for owner review before touching the 13 source-only entrypoints.
 - `CP-75A — #75 Architecture And Benchmark`: after `CP-1`, create a separate #75 workflow and dedicated branch. Inventory and benchmark aggregate paths and approve source/downstream profiles without changing `check-all` defaults, portable handoff behavior, or package disposition.
 
@@ -559,15 +559,15 @@ Discussion may continue in the same Codex task for conversational continuity, bu
 
 ## Resume Checkpoint
 
-- Last completed action: resolved `D-008` as a formally documented additive migration with layered Agent, team, script, package, init/upgrade, and later-release communication while preserving existing commands and excluding premature v0.8.0 release artifacts.
-- Current task: `AIC-004-diagnostic-design`.
-- Exact next action: present the complete 22-decision design summary and obtain explicit accumulated-design approval for CP-1; before the requested cross-host continuation, create and validate a machine-readable handoff checkpoint and use a push-only handoff so the same workflow and branch remain active.
+- Last completed action: obtained explicit owner approval for the complete 22-decision design and satisfied `CP-1 — #69 Design Freeze` against design subject `1d448d4`.
+- Current task: `AIC-004-diagnostic-implementation`.
+- Exact next action: settle the separately evaluated Git history privacy strategy before any transport, then create and validate a machine-readable push-only handoff checkpoint. On the receiving development host, restore the approved Python/PyYAML readiness and pass the permitted receiving gate before making portable implementation edits.
 - Validation already completed: confirmed clean `main@2263744bb2dc876f8077547e961fc68be28b0074` before branching; verified the final baseline assessment; verified the inventory against `git ls-files`, direct file reads, distribution profile, shell registry, active documentation, and existing tests; parsed all then-existing task JSON files; `git diff --check`, `validate-workflow-artifacts.py`, and `validate-ai-context.py` passed.
 - Current discussion-checkpoint validation: Git-history probes established the adoption timeline; the active sub-agent manifest and Codex adapter established the missed low-cost route; local uv 0.11.29 help and an offline/no-download managed-Python lookup were inspected read-only; the changed task JSON parsed with PowerShell; locator/index state was checked directly; and `git diff --check` passed. Full Python-backed repository validators were not rerun because every discovered interpreter lacks PyYAML and D-002A now forbids implicit installation; this checkpoint records that result as `blocked-by-environment`, not passed.
 - Validation environment note: generic `python` and `python3` resolve to unusable Windows aliases. A versioned uv-managed Python 3.14.1 and the Codex bundled Python 3.12.13 can start, but neither currently imports PyYAML. Prior artifact validation used Codex Python with isolated temporary `PyYAML==6.0.3`; no repository dependency files were changed.
-- Git state: active branch `codex/2026-08-02-python-prerequisite-diagnostics`, created from `main@2263744bb2dc876f8077547e961fc68be28b0074`; the latest durable design checkpoint entering this discussion is `5b1b579`.
-- Branch history and checkpoint handoffs: bootstrap commits `88a01be` and `4e93c0f`; absent-interpreter boundary `cd58c2b`; inventory translation `d27fb8a`; D-001/fallback assessment `d5ae808`; runtime rationale and D-002A `9937fb4`; downstream switch gap `7fa102c`; activation/retry scope `74bb024`; D-010B team scenarios `c2b35ad`; opt-in location and skill-stage map `32ede97`; workflow ownership and self-test terminology `22e6883`; self-test boundary and FUP scope `ac2d9d7`; staged #69/#75 scope boundary `1a66897`; checkpoint split and integrated D-010 framing `8c3fb8d`; manual-default and local-store comparison `4703943`; persistent local opt-in `5c6b9e5`; target CI enforcement `8ba7ed9`; outcome/retry controls `59a8add`; interpreter discovery order `8cef8fc`; environment-readiness follow-up split `3769584`; native-launcher boundary `779df84`; dependency-profile boundary `3f4d75d`; recovery-guidance boundary `52593be`; canonical-runtime boundary `170d7c8`; diagnostic-output projection `8d00140`; exit-code compatibility `51d274e`; pre-mutation guarantee `44e28fd`; deterministic test matrix `e2b46db`; prerequisite ownership `5b1b579`; no push or merge handoff has occurred.
-- Blockers or unresolved decisions: no atomic #69 decision remains unresolved. Implementation edits remain paused until explicit accumulated-design approval completes CP-1. A cross-host checkpoint and push-only handoff have not yet been created or authorized. Proposals #75 and #76 are externally tracked but not accepted, promoted, scheduled, or authorized for implementation.
+- Git state: active branch `codex/2026-08-02-python-prerequisite-diagnostics`, created from `main@2263744bb2dc876f8077547e961fc68be28b0074`; the frozen design subject is `1d448d4` and the branch remains local-only.
+- Branch history and checkpoint handoffs: bootstrap commits `88a01be` and `4e93c0f`; absent-interpreter boundary `cd58c2b`; inventory translation `d27fb8a`; D-001/fallback assessment `d5ae808`; runtime rationale and D-002A `9937fb4`; downstream switch gap `7fa102c`; activation/retry scope `74bb024`; D-010B team scenarios `c2b35ad`; opt-in location and skill-stage map `32ede97`; workflow ownership and self-test terminology `22e6883`; self-test boundary and FUP scope `ac2d9d7`; staged #69/#75 scope boundary `1a66897`; checkpoint split and integrated D-010 framing `8c3fb8d`; manual-default and local-store comparison `4703943`; persistent local opt-in `5c6b9e5`; target CI enforcement `8ba7ed9`; outcome/retry controls `59a8add`; interpreter discovery order `8cef8fc`; environment-readiness follow-up split `3769584`; native-launcher boundary `779df84`; dependency-profile boundary `3f4d75d`; recovery-guidance boundary `52593be`; canonical-runtime boundary `170d7c8`; diagnostic-output projection `8d00140`; exit-code compatibility `51d274e`; pre-mutation guarantee `44e28fd`; deterministic test matrix `e2b46db`; prerequisite ownership `5b1b579`; migration communication `1d448d4`; no push or merge handoff has occurred.
+- Blockers or unresolved decisions: no #69 design decision remains unresolved. Portable implementation is authorized but has not started; the cross-host checkpoint must wait until the separately scoped Git history privacy strategy is chosen because a history rewrite would invalidate commit pins. The receiving host must satisfy the handoff gate before implementation. Proposals #75 and #76 remain external, unaccepted, and implementation-unauthorized.
 
 ## Branch Lifecycle
 
@@ -576,3 +576,4 @@ Discussion may continue in the same Codex task for conversational continuity, bu
 | 1 | `codex/2026-08-02-python-prerequisite-diagnostics` | `main@2263744bb2dc876f8077547e961fc68be28b0074` | bootstrap | `88a01bebfe95f696763c1b310c363f354949f205` | local | `2026-08-02T10:45:48+08:00` | Preserve the authorized workflow and initial impact inventory before owner decisions. | Ask `D-001`; keep implementation pending until the accumulated design is explicitly approved. |
 | 1 | `codex/2026-08-02-python-prerequisite-diagnostics` | `main@2263744bb2dc876f8077547e961fc68be28b0074` | design evidence | `cd58c2b0391dccb4a8487f33938b8a3c5d060500` | local | `2026-08-02T10:57:23+08:00` | Preserve the observed absent-interpreter boundary without resolving D-001 or D-002. | Provide the requested complete zh-TW inventory, then ask only `D-001`. |
 | 1 | `codex/2026-08-02-python-prerequisite-diagnostics` | `main@2263744bb2dc876f8077547e961fc68be28b0074` | owner-review translation | `d27fb8adbaf890f9f926c2de6bf66aa6917a83d0` | local | `2026-08-02T11:05:29+08:00` | Preserve the complete Traditional Chinese Taiwan inventory used for the D-001 owner decision. | Record D-001 and evaluate fallback/ownership before asking D-002A. |
+| 1 | `codex/2026-08-02-python-prerequisite-diagnostics` | `main@2263744bb2dc876f8077547e961fc68be28b0074` | `CP-1` design freeze | `1d448d4a9855871d0526e394b682a2472a1019e3` | local | `2026-08-02T20:47:32+08:00` | Freeze the complete 22-decision design after explicit accumulated owner approval. | Settle the history privacy strategy, then prepare a push-only cross-host handoff for the portable task. |
