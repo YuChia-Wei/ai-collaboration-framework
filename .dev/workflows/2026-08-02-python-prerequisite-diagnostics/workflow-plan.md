@@ -19,7 +19,7 @@
 - `current_phase`: `remediation-planning`
 - `artifact_root`: `.dev/workflows/2026-08-02-python-prerequisite-diagnostics`
 - `created_at`: `2026-08-02T10:32:53+08:00`
-- `updated_at`: `2026-08-02T16:43:00+08:00`
+- `updated_at`: `2026-08-02T16:53:39+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md`
 - `template_version`: `1.2.0`
 
@@ -78,6 +78,7 @@
 - The owner confirmed that repeated automatic local-check failures during software-development workflows cause Agent retries and material token waste. Token control is therefore a first-class acceptance concern: policy must be resolved before invocation, and an unchanged prerequisite failure must not trigger identical command retries.
 - The owner authorized external tracking for the out-of-scope aggregate-runner concerns. GitHub Proposal [#75](https://github.com/YuChia-Wei/ai-collaboration-prompts-dotnet-backend/issues/75), `[Proposal] Separate check-all Aggregate Gates from Downstream Workflow Validation`, now owns aggregate composition, source-versus-downstream profiles, portable-handoff coupling, performance budgets, compatibility, and release sequencing. Issue #69 retains only `check-all.sh` prerequisite discovery and diagnostic behavior.
 - A discussion-completeness review found six resolved atomic decisions, two decomposed umbrella decisions, and thirteen pending atomic decisions. Issue #69 is therefore not ready for accumulated-design approval or implementation yet.
+- The owner approved the `CP-1`/`CP-2`/`CP-75A` split on 2026-08-02. Issue #69 remains on the current workflow and branch through design freeze and its two implementation batches; Issue #75 will receive a separate workflow and branch after `CP-1`, beginning with architecture and benchmark evidence rather than a v0.8.0 behavior change.
 - Detailed inventory and fallback/ownership evidence are retained in the English evidence files with complete owner-review translations in their `.zh-TW.md` companions.
 
 ## Discussion Contract And Decision Log
@@ -216,6 +217,58 @@ The proposed opt-in command is conceptually `git config --local ai-context.valid
 - Preserve thin Codex and Claude wrappers and validate canonical-link parity rather than copying the whole policy into wrappers.
 - Add negative tests proving that `manual/unselected` causes zero interpreter probes, zero validator executions, and zero identical retries; local opt-in cannot weaken tracked target or CI requirements.
 
+## D-010B Through D-010E Integrated Decision View
+
+These four decisions form one control chain but remain separately approved: `D-010B` selects routine local behavior, `D-010C` assigns hosted enforcement, `D-010D` records what actually happened, and `D-010E` bounds Agent attempts and observation cost. None of them disables an explicit CLI invocation or lifecycle-owned install, apply, init, upgrade, provenance, release, or publication gate under resolved `D-010A`.
+
+### D-010B — Local Selection And Developer Override
+
+| Candidate local mode | Automatic Agent behavior | Team impact |
+| --- | --- | --- |
+| `manual/unselected` (recommended framework default) | Read policy before tool discovery; perform zero routine interpreter probes and zero routine validator executions. | Avoids onboarding and token-cost failures on heterogeneous hosts, but requires developer opt-in or CI for actual enforcement. |
+| `auto-if-ready` | Run one bounded prerequisite preflight and execute once only when ready. | Gives earlier feedback on prepared hosts without requiring every developer to install Python; unavailable checks remain visible and are not passed. |
+| `required` | Select the check and block the local checkpoint when it cannot run or fails. | Suitable only when the team intentionally standardizes local tooling; a personal preference cannot weaken it. |
+
+The tracked target authority remains the future `.dev/project-config.yaml#validation.routine.local.mode`. The per-clone `.git/config` key `ai-context.validation.local` may only strengthen the target decision, such as `manual` to `auto-if-ready`; an Agent may read but never write it implicitly. This decision is requested first.
+
+### D-010C — CI Enforcement
+
+The candidate CI modes are `unconfigured`, `advisory`, and `required`. The framework cannot assume that a downstream target has a CI provider, so the recommended framework default is `unconfigured`; a target team that wants the validation standard should record `required` only after a real tracked CI workflow, exact command/profile, provisioned prerequisites, and durable check evidence exist.
+
+- The proposed authority is `.dev/project-config.yaml#validation.routine.ci.mode` plus the target-owned CI workflow. A configuration value by itself does not create or prove a hosted gate.
+- A required CI path may explicitly provision pinned Python and dependencies as part of the CI environment. That is planned CI provisioning, not implicit self-installation by a validator and does not weaken `D-002A`.
+- Local `.git/config` cannot weaken CI. Required CI that is absent, misconfigured, blocked, or failed cannot be reported as passed or allow a required closeout.
+- Issue #75 decides whether the eventual CI command is `check-all`, a source profile, or a narrow downstream profile. `D-010C` can define enforcement semantics without pre-approving that command choice.
+- If branch protection or an equivalent provider merge gate is expected, it must be configured and verified separately; repository policy alone cannot enforce the remote provider setting.
+
+### D-010D — Truthful Result Semantics
+
+The semantic model must distinguish these states:
+
+| State | Meaning | May count as passed? |
+| --- | --- | --- |
+| `not-applicable` | The target has no applicable validation surface. | No; it is an applicability result. |
+| `not-run-by-policy` | The check applies but routine policy left it unselected; no prerequisite probe or execution occurred. | No. |
+| `blocked-by-environment` | The check was selected but could not run because a required runtime, dependency, service, or host capability was unavailable. | No. |
+| `failed` | The validator executed and reported a failing result. | No. |
+| `passed` | The selected validator actually executed and produced the required success evidence. | Yes. |
+| `deferred-with-owner` | A named owner explicitly accepted later handling with a follow-up. | No; it is an authorized deferral, not success. |
+
+The current orchestrator contract already accepts `passed`, `failed`, `blocked-by-environment`, `not-applicable`, and `deferred-with-owner`, and currently uses `not-applicable` for some unselected capabilities. Adding `not-run-by-policy` directly to the required outcome enum could break strict v0.8.0 consumers. The compatibility-first candidate is to preserve the current outcome enum and add an optional machine-readable selection reason, so an unselected routine check projects as legacy `outcome: not-applicable` plus `selection_reason: not-run-by-policy`, while human output always says it was not run. Promotion to a new required top-level outcome would require separate compatibility evidence.
+
+### D-010E — Agent Attempt, Retry, And CI-Observation Budget
+
+The recommended budget is scoped per selected validation command, task/checkpoint, and stable material state:
+
+- `manual/unselected`: zero interpreter probes, zero validator executions, and zero retries.
+- Selected local validation: one read-only prerequisite preflight and at most one initial validator execution.
+- Automatic retry: zero while executable, dependency state, policy, relevant inputs, and repository state are unchanged. After a recorded material change, permit at most one automatic retry in the same checkpoint; further attempts require explicit owner instruction.
+- Material change includes an owner-installed runtime/dependency, an approved configuration change, relevant source/test correction, changed lock or package input, or a new CI run/commit. Re-reading the same error, changing only wording, or waiting without a state transition is not a material change.
+- CI observation: one initial status/log read and one bounded follow-up observation. If state remains pending or unchanged, report it and stop; do not poll or re-download identical logs indefinitely.
+- Record policy source, command fingerprint, prerequisite result, execution outcome, attempt count, and retry justification in the workflow/task evidence so another Agent does not repeat the same attempt after handoff.
+
+This budget reduces repeated token and elapsed-time cost but may delay recovery from a genuinely transient failure. Explicit owner instruction remains the escape hatch; silent automatic installation remains prohibited.
+
 ## Workflow Ownership And Framework Self-Test Terminology
 
 The owner confirmed the workflow authoring boundary under `D-006A`: the repository owns only the minimum locator, identity, lifecycle, timestamp, relationship, and minimum-task contract. Each workflow-owning skill owns its domain plan, task, report templates, and workflow semantics. A common validator may validate the shared envelope, but no universal workflow-author skill may learn or reproduce every owner's template.
@@ -271,9 +324,9 @@ The remaining questions should be completed in four bounded groups while retaini
 3. Observable contract and proof: `D-003`, `D-005`, and `D-007`.
 4. Ownership, package compatibility, and communication: `D-006` and `D-008`.
 
-### Proposed Intermediate Checkpoints
+### Approved Intermediate Checkpoints
 
-The following sequence is proposed and remains pending owner confirmation:
+The owner approved the following sequence on 2026-08-02. Approval establishes workflow and release boundaries only; it does not approve the thirteen pending #69 design decisions or authorize implementation.
 
 - `CP-1 — #69 Design Freeze`: resolve every pending #69 decision or explicitly defer it to a named issue; require `D-009` to be resolved rather than deferred; freeze the 12-entry portable contract, compatibility requirements, migration expectations, and deterministic acceptance matrix; obtain explicit accumulated-design approval; then create a durable design-freeze commit before implementation.
 - `CP-2 — #69 Portable Compatibility`: implement only the 12 portable/downstream entrypoints, preserve command paths and approved exit semantics, prove clean-install and supported v0.7.0-to-v0.8.0 upgrade compatibility, and stop for owner review before touching the 13 source-only entrypoints.
@@ -295,7 +348,7 @@ Discussion may continue in the same Codex task for conversational continuity, bu
 1. Bootstrap the governance workflow and freeze Issue #69 plus `AIC-004` as source evidence.
 2. Inventory supported Python entrypoints, import timing, write potential, package inclusion, documented invocation, and current test coverage.
 3. Resolve the remaining decision log one question at a time and obtain explicit approval for the accumulated design.
-4. Reach proposed `CP-1 — #69 Design Freeze` after owner confirmation; no implementation starts before that checkpoint is approved and committed.
+4. Reach `CP-1 — #69 Design Freeze`; no implementation starts before that checkpoint is completed and committed.
 5. Implement and validate the approved 12-entry portable/downstream batch without broad validator redesign.
 6. Reach `CP-2 — #69 Portable Compatibility`, then begin the 13-entry source-only batch only after explicit checkpoint acceptance.
 7. Run focused negative-path tests, affected validator/package checks, workflow/AI-context validation, and applicable aggregate gates.
@@ -304,15 +357,15 @@ Discussion may continue in the same Codex task for conversational continuity, bu
 
 ## Resume Checkpoint
 
-- Last completed action: created GitHub Proposal #75 for the `check-all` aggregate follow-up, audited the #69 decision ledger, and proposed design-freeze, portable-compatibility, and separate #75 architecture/benchmark checkpoints with v0.8.0 compatibility guardrails.
+- Last completed action: recorded owner approval of the `CP-1`/`CP-2`/`CP-75A` split, re-confirmed the exact 25-CLI D-001 boundary, and consolidated the pending D-010B through D-010E candidates and impacts for owner review.
 - Current task: `AIC-004-diagnostic-design`.
-- Exact next action: obtain only the owner decision on the proposed `CP-1`/`CP-2`/`CP-75A` separation; if approved, record it and return to the next unresolved #69 question, `D-010B`.
+- Exact next action: obtain only the owner decision on `D-010B`; D-010C through D-010E remain pending even though their interactions and recommendations have been presented together.
 - Validation already completed: confirmed clean `main@2263744bb2dc876f8077547e961fc68be28b0074` before branching; verified the final baseline assessment; verified the inventory against `git ls-files`, direct file reads, distribution profile, shell registry, active documentation, and existing tests; parsed both task JSON files; `git diff --check`, `validate-workflow-artifacts.py`, and `validate-ai-context.py` passed.
 - Current discussion-checkpoint validation: Git-history probes established the adoption timeline; the active sub-agent manifest and Codex adapter established the missed low-cost route; the changed task JSON parsed with PowerShell; locator/index state was checked directly; and `git diff --check` passed. Full Python-backed repository validators were not rerun because every discovered interpreter lacks PyYAML and D-002A now forbids implicit installation; this checkpoint records that result as `blocked-by-environment`, not passed.
 - Validation environment note: generic `python` and `python3` resolve to unusable Windows aliases. A versioned uv-managed Python 3.14.1 and the Codex bundled Python 3.12.13 can start, but neither currently imports PyYAML. Prior artifact validation used Codex Python with isolated temporary `PyYAML==6.0.3`; no repository dependency files were changed.
-- Git state: active branch `codex/2026-08-02-python-prerequisite-diagnostics`, created from `main@2263744bb2dc876f8077547e961fc68be28b0074`; the latest durable design checkpoint entering this discussion is `ac2d9d7`.
-- Branch history and checkpoint handoffs: bootstrap commits `88a01be` and `4e93c0f`; absent-interpreter boundary `cd58c2b`; inventory translation `d27fb8a`; D-001/fallback assessment `d5ae808`; runtime rationale and D-002A `9937fb4`; downstream switch gap `7fa102c`; activation/retry scope `74bb024`; D-010B team scenarios `c2b35ad`; opt-in location and skill-stage map `32ede97`; workflow ownership and self-test terminology `22e6883`; self-test boundary and FUP scope `ac2d9d7`; no push or merge handoff has occurred.
-- Blockers or unresolved decisions: thirteen atomic #69 decisions and the proposed checkpoint/branch separation remain unresolved; implementation edits are paused pending explicit accumulated-design approval. Proposal #75 is externally tracked but not accepted, promoted, scheduled, or authorized for implementation.
+- Git state: active branch `codex/2026-08-02-python-prerequisite-diagnostics`, created from `main@2263744bb2dc876f8077547e961fc68be28b0074`; the latest durable design checkpoint entering this discussion is `1a66897`.
+- Branch history and checkpoint handoffs: bootstrap commits `88a01be` and `4e93c0f`; absent-interpreter boundary `cd58c2b`; inventory translation `d27fb8a`; D-001/fallback assessment `d5ae808`; runtime rationale and D-002A `9937fb4`; downstream switch gap `7fa102c`; activation/retry scope `74bb024`; D-010B team scenarios `c2b35ad`; opt-in location and skill-stage map `32ede97`; workflow ownership and self-test terminology `22e6883`; self-test boundary and FUP scope `ac2d9d7`; staged #69/#75 scope boundary `1a66897`; no push or merge handoff has occurred.
+- Blockers or unresolved decisions: thirteen atomic #69 decisions remain unresolved; the checkpoint/branch separation is approved. Implementation edits are paused pending explicit accumulated-design approval. Proposal #75 is externally tracked but not accepted, promoted, scheduled, or authorized for implementation.
 
 ## Branch Lifecycle
 

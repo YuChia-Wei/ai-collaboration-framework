@@ -8,7 +8,7 @@
   "owner_skill": "ai-context-governance",
   "status": "in_progress",
   "created_at": "2026-08-02T10:32:53+08:00",
-  "updated_at": "2026-08-02T16:43:00+08:00",
+  "updated_at": "2026-08-02T16:53:39+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-5.6-sol",
   "reasoning_effort": "high",
@@ -52,6 +52,7 @@
       "Inventory current downstream execution modes, applicability behavior, CI wiring, distribution projection, and the absence of a target-owned activation policy.",
       "Trace retry ownership across the aggregate runner, software-development orchestrator, and root execution guidance; define a token-cost-aware retry decision boundary.",
       "Explain the local activation default through team scenarios, target-owned versus developer-local configuration, precedence, CI dependency, and feedback/token tradeoffs before requesting D-010B approval.",
+      "Present the complete D-010B through D-010E control chain together, including local selection, CI enforcement, compatibility-safe result semantics, and bounded Agent/CI observation cost, while requesting only one owner decision at a time.",
       "Identify the proposed shared and local setting locations and map exact producer, preserver, consumer, closeout, audit, unaffected-skill, wrapper, contract, and test impacts.",
       "Separate minimum repository workflow contracts from workflow-owner template semantics, and distinguish framework self-test ownership, package projection, activation, and enforcement.",
       "Present one design decision at a time with impact and alternatives.",
@@ -63,11 +64,11 @@
       "Valid workflow locator and task artifacts",
       "Explicit owner approval before implementation transition"
     ],
-    "last_completed_step": "Created GitHub Proposal #75 for the check-all aggregate follow-up, audited the #69 decision ledger as six resolved, two decomposed umbrellas, and thirteen pending atomic decisions, and proposed CP-1, CP-2, and CP-75A release-safe checkpoints.",
-    "next_action": "Obtain only the owner decision on the proposed checkpoint and separate-workflow/branch boundary; if approved, record it and return to D-010B."
+    "last_completed_step": "Recorded owner approval of the CP-1/CP-2/CP-75A split, re-confirmed the exact 12-portable plus 13-source-only D-001 CLI boundary, and consolidated D-010B through D-010E recommendations and impacts.",
+    "next_action": "Obtain only the owner decision on D-010B; retain D-010C through D-010E as pending despite presenting their integrated context."
   },
   "results": {
-    "summary": "D-006A and D-006B remain resolved. Check-all aggregate composition, performance, packaging, and portable-handoff coupling are outside #69 and now tracked by GitHub Proposal #75. The #69 discussion is not complete: six atomic decisions are resolved and thirteen remain pending. Proposed CP-1 design-freeze, CP-2 portable-compatibility, and separate CP-75A architecture/benchmark checkpoints await owner confirmation. Implementation has not started.",
+    "summary": "The CP-1 design-freeze, CP-2 portable-compatibility, and separate CP-75A architecture/benchmark split is owner-approved. The D-001 boundary remains 25 production Python CLIs in an ordered 12-portable then 13-source-only rollout. D-010B through D-010E have been presented as one control chain, but all four decisions remain pending and only D-010B is requested next. Implementation has not started.",
     "files_changed": [
       ".dev/workflows/2026-08-02-python-prerequisite-diagnostics/workflow.yaml",
       ".dev/workflows/2026-08-02-python-prerequisite-diagnostics/workflow-plan.md",
@@ -109,7 +110,12 @@
       "Connected GitHub duplicate search for check-all, aggregate-gate, and workflow-handoff proposals: no issue owning the same boundary; resolved #22 and #42 retained as related work",
       "Connected GitHub create/read-back: Proposal #75 created open with kind:proposal, scope:mixed, triage:needed, and created-by:codex labels",
       "Decision-ledger completeness audit: six resolved atomic decisions, two decomposed umbrellas, and thirteen pending atomic decisions",
-      "v0.8.0 risk review: proposed separate design-freeze, portable-compatibility, and architecture/benchmark checkpoints with no cross-issue default change"
+      "v0.8.0 risk review: proposed separate design-freeze, portable-compatibility, and architecture/benchmark checkpoints with no cross-issue default change",
+      "Owner decision: CP-1, CP-2, and separate CP-75A workflow/branch split approved",
+      "Entrypoint inventory read-back: exact 12 portable and 13 source-only production Python CLI paths re-confirmed; 45 direct test CLIs, four import-only modules, and check-all.sh remain outside the 25 count",
+      "Current source CI workflow read-back: Python 3.12 and pinned dependencies are explicitly provisioned before the source quick gate",
+      "Current orchestrator outcome contract read-back: passed, failed, blocked-by-environment, not-applicable, and deferred-with-owner are the existing values; not-run-by-policy requires compatibility treatment",
+      "D-010B through D-010E integrated design review: local modes, CI authority, result truth, and bounded attempt/observation recommendations recorded"
     ],
     "finding_status": "not-addressed",
     "residual_risk": "External tracking now exists as Proposal #75, but it is not accepted or implementation-authorized. Thirteen #69 atomic decisions remain unresolved, including local and CI semantics, result taxonomy, Agent retry budget, interpreter trust, launcher coverage, dependency recovery, canonical runtime, output, proof, remaining script ownership, testing, and documentation; implementation remains paused.",
