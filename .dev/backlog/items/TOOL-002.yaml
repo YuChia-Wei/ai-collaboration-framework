@@ -2,14 +2,14 @@ schema_version: "1.0"
 backlog_id: "TOOL-002"
 title: "Standardize Python Prerequisite Diagnostics Across Validator Entrypoints"
 category: "tooling-validation"
-status: "in_progress"
+status: "resolved"
 priority: "MEDIUM"
 summary: "Provide consistent, fail-closed Python runtime and dependency prerequisite diagnostics across the approved validator and package entrypoints before imports, mutation, or success claims."
 created_at: "2026-08-02T23:52:27+08:00"
-updated_at: "2026-08-02T23:52:27+08:00"
+updated_at: "2026-08-03T07:28:29+08:00"
 release:
   target: "v0.8.0"
-  completed_in: null
+  completed_in: "v0.8.0"
   published_in: null
   target_scope: "python-prerequisite-diagnostics"
   gate: "release-blocker"
@@ -25,12 +25,13 @@ task_refs:
   - ".dev/workflows/2026-08-02-python-prerequisite-diagnostics/tasks/AIC-004-diagnostic-design.json"
   - ".dev/workflows/2026-08-02-python-prerequisite-diagnostics/tasks/AIC-004-diagnostic-implementation.json"
   - ".dev/workflows/2026-08-02-python-prerequisite-diagnostics/tasks/AIC-004-source-diagnostic-implementation.json"
-resolution_ref: null
-decision_needed: "Resolved: on 2026-08-02 the repository owner approved the complete 22-decision design and then requested formal Story creation, direct implementation, and merge. TOOL-002 is required v0.8.0 scope; the 12 portable/downstream entrypoints are authorized now, the 13 source-only entrypoints require CP-2 acceptance, and release preparation or publication remains separately unauthorized."
+resolution_ref: ".dev/workflows/2026-08-02-python-prerequisite-diagnostics/remediation-report.md"
+decision_needed: "Resolved: the complete owner-approved design was implemented across all 25 production CLIs; CP-2, independent verification, hosted PR #78, merge commit 2070e44, merged-main read-back, Issue #77 completion, and Project #3 Done read-back are complete. v0.8.0 publication remains separately unauthorized."
 related_backlog_refs:
   - "TOOL-001"
 inventory_notes:
-  - "GitHub Proposal #69 records the discussion origin; the formal TOOL-002 provider Story is created only after this canonical item is committed and its source revision is known."
+  - "GitHub Proposal #69 records the discussion origin; formal Story #77 was created only after the canonical TOOL-002 item was committed and its source revision was known."
+  - "PR #78 merged as 2070e44 after all three hosted workflows passed; Issue #77 closed only after merged-main read-back, and Project #3 then showed Done under Not yet published."
 acceptance:
   - "All 25 approved production Python CLIs use the approved prerequisite architecture, delivered in the required portable-first then source-only sequence."
   - "Each affected entrypoint reports the selected executable and detected version, the Python 3.11-or-newer requirement, the exact required dependency when applicable, a sanctioned recovery command, and the pre-mutation stop state."

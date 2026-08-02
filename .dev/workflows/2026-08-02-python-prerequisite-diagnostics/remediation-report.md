@@ -12,9 +12,9 @@
 - `report_id`: `remediation-report-2026-08-02-python-prerequisite-diagnostics`
 - `workflow_id`: `2026-08-02-python-prerequisite-diagnostics`
 - `owner_skill`: `ai-context-governance`
-- `status`: `draft`
+- `status`: `final`
 - `created_at`: `2026-08-03T02:11:40+08:00`
-- `updated_at`: `2026-08-03T07:17:19+08:00`
+- `updated_at`: `2026-08-03T07:28:29+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-remediation-report-template.md`
 - `template_version`: `2.0.0`
 - `baseline_assessment`: `ASM-20260730-001`
@@ -32,15 +32,16 @@
 - Validation summary: focused shared/source/package tests and the committed
   source-wide critical gate pass; `ASM-20260803-001` independently finds no
   critical, must-fix, or should-fix issue and marks AIC-004 resolved.
-- Closure decision: `ready-with-deferrals`; ready for PR integration, while the
-  conditional retained-downstream test, Proposals #75/#76, and any v0.8.0
-  release work remain outside this completion claim.
+- Closure decision: `completed-with-explicit-deferrals`; PR #78, merged-main
+  read-back, Issue #77, and Project #3 closeout are complete. The conditional
+  retained-downstream test, Proposals #75/#76, and any v0.8.0 release work
+  remain outside this completion claim.
 
 ## Finding Resolution Matrix
 
 | Assessment Finding | Before Severity | Status | Changed Files | Validation | Commit | Residual Risk |
 | --- | --- | --- | --- | --- | --- | --- |
-| `ASM-20260730-001#AIC-004` | MEDIUM | `resolved` | registry, core, launchers, 25 CLIs, package/policy/docs/tests | focused tests, critical gate, `ASM-20260803-001` | `3f863be`, `6b8cd56`, `cbf36e0` | hosted PR/CI and merged-main read-back remain integration gates |
+| `ASM-20260730-001#AIC-004` | MEDIUM | `resolved` | registry, core, launchers, 25 CLIs, package/policy/docs/tests | focused tests, critical gate, `ASM-20260803-001`, hosted PR #78, merged-main read-back | `2070e44` merge | conditional external downstream test and separately scoped Proposals #75/#76 remain |
 
 ## Changes And Evidence
 
@@ -56,11 +57,9 @@
 - Validation: shared prerequisite 14/14, source-only 3/3, packaging 28 passed
   plus one explicit conditional skip, complete critical gate exit 0 in 459.5
   seconds, workflow/assessment/AI-context validators passed.
-- Remaining risk: PR #78's first Ubuntu quick gate found a test-fixture PATH
-  isolation regression. The owner-approved test-only correction passes its
-  focused and full local suites; a fresh hosted run, merge, and merged-main
-  closeout remain pending. The external downstream integration was skipped and
-  is not counted as passed.
+- Remaining risk: the external downstream integration was skipped and is not
+  counted as passed. Proposals #75/#76 and v0.8.0 release preparation remain
+  outside this workflow.
 
 ## Verification Assessment Reconciliation
 
@@ -83,16 +82,11 @@
 
 - Required pre-PR validations: focused tests, package compatibility, complete
   critical gate, structural validators, and independent assessment are passed.
-- Commit status: implementation and verification are pushed through PR #78 at
-  `93806ad0b56d23d235a94bc47c9c915a2d4a8330`; its owner-approved test-only
-  GWT-018 fixture correction is locally validated and pending commit and push.
-- Workflow/task status: workflow and the single integration-owning task remain
-  `in_progress` until hosted checks, merge, and main read-back complete.
-- Current integration validation: PR #78 Governance and Package runs passed;
-  Portable Gates failed only in Ubuntu GWT-018. The corrected focused case and
-  complete fail-closed suite pass. Local `check-all.sh --quick` is
+- Commit status: PR #78 merged as `2070e44cff17bf3baad52f014ec360a449e3bd36`; `origin/main` read-back confirms the validated feature head as its second parent and an identical tree.
+- Hosted integration: AI Context Governance `30772063194`, Package AI Context Candidate `30772063213`, and Portable AI Context Gates `30772063228` passed.
+- Provider closeout: Issue #77 is closed as completed after comment `5160851683`; Project #3 shows Status `Done` under `Not yet published`.
+- Workflow/task status: completed / completed.
+- Local environment note: `check-all.sh --quick` remains
   `blocked-by-environment`, not passed, because Git Bash cannot resolve
   `dotnet`; direct PowerShell .NET suites pass 49/49, 2/2, and 5/5.
-- Final next action: commit and push the fixture correction, require fresh PR
-  #78 hosted checks, merge with repository policy, and finalize from merged
-  `main`.
+- Final next action: merge the closeout-only pull request. Do not create v0.8.0 release artifacts without separate owner authorization.

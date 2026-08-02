@@ -3,8 +3,8 @@ provider: "github"
 repository: "YuChia-Wei/ai-collaboration-prompts-dotnet-backend"
 migration_id: "github-live-TOOL-002-2026-08-02"
 stage: "stage-b-read-back-complete"
-source_revision: "6b55ddbe808bc0f72e02936256865aeebc4e9b35"
-generated_at: "2026-08-03T00:07:15+08:00"
+source_revision: "5ec8f6210463df9be707304d632aca44014586d9"
+generated_at: "2026-08-03T07:33:01+08:00"
 project:
   number: 3
   node_id: "PVT_kwHOAwvEG84Bez7w"
@@ -12,19 +12,19 @@ project:
 items:
   - backlog_id: "TOOL-002"
     source_path: ".dev/backlog/items/TOOL-002.yaml"
-    source_sha256: "01d4ae3e361b7a43377dfee2228350362a76e2855661dae9e7a89b83b0b77c87"
+    source_sha256: "d31dd6a2d23b7ed847d4f767dff9550624fe34e454b030cc0d25d9086313d940"
     issue_number: 77
     issue_node_id: "I_kwDOSBe2Hc8AAAABLJqJfw"
     issue_url: "https://github.com/YuChia-Wei/ai-collaboration-prompts-dotnet-backend/issues/77"
-    issue_state: "open"
-    close_reason: null
+    issue_state: "closed"
+    close_reason: "completed"
     project_item_id: "222222572"
     created_at: "2026-08-02T16:00:26Z"
-    updated_at: "2026-08-02T16:00:26Z"
+    updated_at: "2026-08-02T23:26:08Z"
     read_back:
-      verified_at: "2026-08-03T00:07:15+08:00"
+      verified_at: "2026-08-03T07:33:13+08:00"
       title_matches: true
       markers_match: true
       labels_match: true
       state_matches: true
-      notes: "GitHub Issue read-back confirms the live TOOL-002 title, open state, kind:story, scope:mixed, created-by:codex, and all three hidden markers. Project #3 browser read-back confirms Status In progress, Priority P2 Normal, Owner review Not required, Target release v0.8.0, and Published in Not yet published; the visible project card identity is 222222572. Proposal #69 was commented with the promotion receipt and then closed as completed."
+      notes: "PR #78 merged as 2070e44cff17bf3baad52f014ec360a449e3bd36 after all three hosted workflows passed, and remote main read-back confirmed the validated feature head and identical tree before Issue #77 closed as completed. Connector read-back confirms the closed state, reason completed, exact title, labels, and completion comment. Project #3 History by Release read-back confirms Status Done under Not yet published; prior read-back retains Priority P2 Normal, Owner review Not required, and Target release v0.8.0. No v0.8.0 release or publication field was created."

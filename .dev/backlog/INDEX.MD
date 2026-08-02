@@ -7,16 +7,14 @@ artifact directories. See [README.MD](README.MD) for ownership and lifecycle.
 
 | Roadmap | Current Target | Status | Next Gate | Updated |
 | --- | --- | --- | --- | --- |
-| [ROADMAP.md](ROADMAP.md) | `v0.8.0` | `active` | Complete `TOOL-002` prerequisite diagnostics and independent verification; release preparation and publication remain separately unauthorized. | 2026-08-02 |
+| [ROADMAP.md](ROADMAP.md) | `v0.8.0` | `active` | `SKILL-002` and `TOOL-002` are resolved and awaiting publication; any further scope or release preparation requires separate owner authorization. | 2026-08-03 |
 
 Source planning records are retained under [`plans/`](plans/); they inform the
 roadmap but do not replace it or a governed assessment.
 
 ## In Progress
 
-| Item | Priority | Target Release | Gate | Summary | Decision / Handoff | Updated |
-| --- | --- | --- | --- | --- | --- | --- |
-| [TOOL-002](items/TOOL-002.yaml) | MEDIUM | `v0.8.0` | release-blocker; portable `CP-2` before source-only batch | Standardize fail-closed Python runtime and dependency diagnostics across 25 approved production CLIs. | Implement the 12 portable/downstream entrypoints first, prove clean-install and v0.7.0-to-v0.8.0 compatibility, stop at `CP-2`, then continue the 13 source-only entrypoints. | 2026-08-02 |
+No canonical backlog item is currently in progress.
 
 ## Planned / Open
 
@@ -38,6 +36,7 @@ roadmap but do not replace it or a governed assessment.
 
 | Item | Priority | Completed In | Publication Gate | Resolution | Workflow | Updated |
 | --- | --- | --- | --- | --- | --- | --- |
+| [TOOL-002](items/TOOL-002.yaml) | MEDIUM | `v0.8.0` | Await separately authorized `v0.8.0` publication; `published_in` remains unset. | PR #78 merged the validated prerequisite contract as `2070e44`; Issue #77 and Project #3 closed only after merged-main read-back. | [`2026-08-02-python-prerequisite-diagnostics`](../workflows/2026-08-02-python-prerequisite-diagnostics/workflow.yaml) | 2026-08-03 |
 | [SKILL-002](items/SKILL-002.yaml) | HIGH | `v0.8.0` | Await separately authorized `v0.8.0` publication; `published_in` remains unset. | PR #66 merged the validated canonical-skill colocation into `main`; Issue #65 closed only after merge read-back. | [`2026-07-30-skill-script-colocation`](../workflows/2026-07-30-skill-script-colocation/workflow.yaml) | 2026-07-30 |
 
 ## Resolved
