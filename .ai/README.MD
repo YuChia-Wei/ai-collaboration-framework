@@ -23,4 +23,8 @@ Start with `.ai/INDEX.MD` when you need a file or directory catalog. Use this RE
   `.ai/evaluation/`; they are source governance evidence, not downstream
   product payload.
 
+Python CLI prerequisite behavior is agent-facing contract material under
+`.ai/scripts/`; the human recovery and target-local selection guide is
+`.dev/guides/ai-collaboration-guides/PYTHON-PREREQUISITE-DIAGNOSTICS-GUIDE.zh-TW.md`.
+
 Detailed file and directory descriptions belong in `.ai/INDEX.MD`.

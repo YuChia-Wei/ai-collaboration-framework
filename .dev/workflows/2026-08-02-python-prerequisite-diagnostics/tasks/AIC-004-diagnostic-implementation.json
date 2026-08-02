@@ -1,0 +1,102 @@
+{
+  "template_id": "ai-context-governance-remediation-task",
+  "template_version": "1.1.0",
+  "template_created_at": "2026-07-10T18:22:49+08:00",
+  "template_updated_at": "2026-07-27T09:52:09+08:00",
+  "task_id": "AIC-004-diagnostic-implementation",
+  "workflow_id": "2026-08-02-python-prerequisite-diagnostics",
+  "owner_skill": "ai-context-governance",
+  "status": "completed",
+  "created_at": "2026-08-02T10:32:53+08:00",
+  "updated_at": "2026-08-03T02:21:24+08:00",
+  "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
+  "model": "gpt-5.6-sol",
+  "reasoning_effort": "high",
+  "finding_ids": [
+    "ASM-20260730-001#AIC-004"
+  ],
+  "scope": {
+    "target": "First approved implementation batch for the 12 portable/downstream production CLI prerequisite diagnostics",
+    "files": [
+      ".ai/assets/skills/software-development-orchestrator/scripts/validate-software-development-orchestrator-acceptance.py",
+      ".ai/scripts/plan-ai-context-package-apply.py",
+      ".ai/scripts/validate-ai-context-target.py",
+      ".ai/scripts/validate-ai-context.py",
+      ".ai/scripts/validate-assessment-artifacts.py",
+      ".ai/scripts/validate-dependency-versions.py",
+      ".ai/scripts/validate-file-disposition-manifest.py",
+      ".ai/scripts/validate-git-commits.py",
+      ".ai/scripts/validate-shell-assets.py",
+      ".ai/scripts/validate-software-development-orchestrator-acceptance.py",
+      ".ai/scripts/validate-workflow-artifacts.py",
+      ".ai/scripts/validate-workflow-handoff.py"
+    ],
+    "constraints": [
+      "Start only after explicit approval of the accumulated design.",
+      "Use the smallest coherent implementation that covers only the first 12-entry portable/downstream batch.",
+      "Reach the approved portable validation checkpoint before the source-only implementation task may start.",
+      "Preserve existing validator, package, upgrade, and release gates.",
+      "Prove unsupported-version and missing-dependency failures occur before mutation."
+    ],
+    "non_goals": [
+      "Modify the 13 source-only production CLIs in this task.",
+      "Expand beyond the approved production entrypoints.",
+      "Redesign check-all aggregate composition, package disposition, or portable-handoff policy; those concerns are tracked by GitHub Proposal #75. Only the approved prerequisite-diagnostic surface may change under TOOL-002 / GitHub Story #77; Proposal #69 is retained only as the completed discussion origin.",
+      "Change supported Python below 3.11.",
+      "Publish a release."
+    ]
+  },
+  "execution": {
+    "steps": [
+      "Apply the approved diagnostic design to the 12 portable/downstream production CLI surfaces.",
+      "Add deterministic unsupported-version and missing-dependency coverage.",
+      "Synchronize affected documentation and package projections.",
+      "Run focused and aggregate validation.",
+      "Create the portable-batch checkpoint evidence needed to authorize the source-only batch."
+    ],
+    "validation": [
+      "Approved deterministic prerequisite test matrix",
+      "Affected validator and package tests",
+      "AI-context and workflow artifact validators",
+      "Applicable aggregate repository gate",
+      "Independent verification of ASM-20260730-001#AIC-004"
+    ],
+    "last_completed_step": "Implemented the 12 portable/downstream entrypoints and committed the passing CP-2 implementation batch at 3f863be4a57e64ac068983081854648277719b81.",
+    "next_action": "Continue with AIC-004-source-diagnostic-implementation under the owner's accepted CP-2 continuation instruction."
+  },
+  "results": {
+    "summary": "The first 12-entry portable/downstream implementation batch is complete at 3f863be. Shared fail-closed diagnostics, both launchers, direct guards, package projection, target-owned routine-validation policy, documentation, focused CI, clean-install proof, and v0.7.0 upgrade proof pass CP-2.",
+    "files_changed": [
+      ".ai/scripts/python-entrypoints.json",
+      ".ai/scripts/python_prerequisites.py",
+      ".ai/scripts/run-python-entrypoint.sh",
+      ".ai/scripts/run-python-entrypoint.ps1",
+      ".ai/scripts/check-all.sh",
+      ".ai/distribution/profiles/dotnet-backend.yaml",
+      ".ai/assets/skills/software-development-orchestrator/references/validation-activation-policy.md",
+      ".github/workflows/portable-gates.yml",
+      ".dev/guides/ai-collaboration-guides/PYTHON-PREREQUISITE-DIAGNOSTICS-GUIDE.zh-TW.md",
+      ".dev/workflows/2026-08-02-python-prerequisite-diagnostics/evidence/portable-compatibility-checkpoint.md"
+    ],
+    "tests_run": [
+      "test_python_prerequisites.py: 14 passed",
+      "test_run_python_entrypoint_ps1.py: 4 passed",
+      "test_run_python_entrypoint_sh.py under Git Bash: 5 passed",
+      "test_python_entrypoints_contract.py: 4 passed",
+      "test_dependency_version_consistency.py: 15 passed",
+      "test_fail_closed_validation.py: 30 passed",
+      "test_validation_activation_policy.py: 3 passed",
+      "test_software_development_orchestrator_capability_contract.py: 13 passed",
+      "test_ai_context_technology_selection.py: 3 passed",
+      "test_github_workflow_contract.py: 6 passed",
+      "test_ai_context_package_apply.py: 25 passed, 1 Windows symlink-privilege skip",
+      "focused tracked-local-opt-in negative package proof: passed",
+      "focused clean-install and v0.7.0-to-candidate upgrade proof: passed",
+      "validate-ai-context.py and root bilingual structural parity: passed",
+      "git diff --check: passed"
+    ],
+    "finding_status": "partially-addressed",
+    "residual_risk": "The 13 source-only production CLIs still need the same direct guard and write-boundary regression coverage. The first full packaging invocation timed out after 304 seconds and is not passed; it remains required in the final source-wide gate.",
+    "follow_up_needed": true
+  }
+}

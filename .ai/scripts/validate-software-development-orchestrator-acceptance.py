@@ -4,8 +4,15 @@
 from __future__ import annotations
 
 import importlib.util
+import sys
 from pathlib import Path
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+sys.dont_write_bytecode = True
+
+from python_prerequisites import guard_direct_entrypoint
+
+guard_direct_entrypoint(".ai/scripts/validate-software-development-orchestrator-acceptance.py")
 
 TARGET = (
     Path(__file__).resolve().parents[1]

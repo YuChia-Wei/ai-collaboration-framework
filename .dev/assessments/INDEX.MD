@@ -12,8 +12,9 @@ owns its identity, current lifecycle state, subject revision, and relationships.
 
 | Assessment | Title | Type | Owner | Status | Subject Commit | Updated | Report |
 | --- | --- | --- | --- | --- | --- | --- | --- |
+| [`ASM-20260803-001`](ASM-20260803-001/assessment.yaml) | Python Prerequisite Diagnostics Remediation Verification | `ai-context-verification` | `ai-context-auditor` | `final` | `bd63d3c3b6998484304edb982c464199980dce7e` | `2026-08-03T02:21:24+08:00` | [report](ASM-20260803-001/report.md) |
 | [`ASM-20260730-002`](ASM-20260730-002/assessment.yaml) | Opus 5 Feedback Intake And Provider Reconciliation Verification | `ai-context-verification` | `ai-context-auditor` | `final` | `cdff0f36e4cb2963231ac004606d340659bf3f0c` | `2026-07-30T23:01:33+08:00` | [report](ASM-20260730-002/report.md) |
-| [`ASM-20260730-001`](ASM-20260730-001/assessment.yaml) | Opus 5 Repository Assessment External Review Intake | `ai-context-audit` | `ai-context-auditor` | `final` | `98e90bb4649961b1c09105346f7376b197b126a8` | `2026-07-30T22:10:31+08:00` | [report](ASM-20260730-001/report.md) |
+| [`ASM-20260730-001`](ASM-20260730-001/assessment.yaml) | Opus 5 Repository Assessment External Review Intake | `ai-context-audit` | `ai-context-auditor` | `final` | `98e90bb4649961b1c09105346f7376b197b126a8` | `2026-08-02T21:20:17+08:00` | [report](ASM-20260730-001/report.md) |
 | [`ASM-20260729-001`](ASM-20260729-001/assessment.yaml) | v0.7.0 Public Release Body Source Contract Verification | `ai-context-verification` | `ai-context-auditor` | `final` | `cbe1553f0fc30a856a35e85ec17ecd8cd91838d2` | `2026-07-29T16:03:20+08:00` | [report](ASM-20260729-001/report.md) |
 | [`ASM-20260728-001`](ASM-20260728-001/assessment.yaml) | v0.7.0 Candidate Package And Release Contract Verification | `ai-context-verification` | `ai-context-auditor` | `final` | `b474730d453c27f2b5338f5bbe0b5efd5e9b0628` | `2026-07-28T09:32:32+08:00` | [report](ASM-20260728-001/report.md) |
 | [`ASM-20260727-002`](ASM-20260727-002/assessment.yaml) | v0.7.0 Governance And Package Readiness Verification | `ai-context-verification` | `ai-context-auditor` | `final` | `d3f22b267e8ff44ae163a47b3b2482d51250cbcc` | `2026-07-27T23:42:17+08:00` | [report](ASM-20260727-002/report.md) |
@@ -35,7 +36,7 @@ owns its identity, current lifecycle state, subject revision, and relationships.
 | [`ASM-20260717-002`](ASM-20260717-002/assessment.yaml) | v0.4.0 AI Context Final Verification | `ai-context-verification` | `ai-context-auditor` | `final` | `36c0add48129eff6bfa503b2244a45c4a802b5c5` | `2026-07-17T07:28:50+08:00` | [report](ASM-20260717-002/report.md) |
 | [`ASM-20260717-001`](ASM-20260717-001/assessment.yaml) | v0.4.0 AI Context Successor Verification | `ai-context-verification` | `ai-context-auditor` | `final` | `26c958069510f56818752368bec4bd7ad83e5038` | `2026-07-17T07:16:38+08:00` | [report](ASM-20260717-001/report.md) |
 | [`ASM-20260716-001`](ASM-20260716-001/assessment.yaml) | v0.4.0 AI Context Remediation Verification | `ai-context-verification` | `ai-context-auditor` | `final` | `e7ca51a7f03c114d5ce5826a15eeb15338efea76` | `2026-07-16T23:10:20+08:00` | [report](ASM-20260716-001/report.md) |
-| [`ASM-20260715-002`](ASM-20260715-002/assessment.yaml) | v0.4.0 Standards Lineage And Downstream Adoption Reassessment | `ai-context-audit` | `ai-context-auditor` | `final` | `82b88b7287deb7a64e0311fde6b1b53ea0d194b1` | `2026-07-15T23:43:06+08:00` | [report](ASM-20260715-002/report.md) |
+| [`ASM-20260715-002`](ASM-20260715-002/assessment.yaml) | v0.4.0 Standards Lineage And Downstream Adoption Reassessment | `ai-context-audit` | `ai-context-auditor` | `final` | `82b88b7287deb7a64e0311fde6b1b53ea0d194b1` | `2026-08-02T21:20:17+08:00` | [report](ASM-20260715-002/report.md) |
 
 ## Superseded Or Withdrawn Assessments
 

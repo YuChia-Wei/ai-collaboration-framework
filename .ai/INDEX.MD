@@ -35,6 +35,9 @@ This index owns the file and directory catalog for `.ai/`. The `.ai/README.MD` f
 | `scripts/` | Transitional local workflow scripts and orchestration helpers. |
 | `scripts/README.md` | Script transition policy and inventory. |
 | `scripts/validate-ai-context.py` | Active index, runtime-root, table-integrity, and skill-wrapper parity validation. |
+| `scripts/python-entrypoints.json` | Registry for supported Python CLI prerequisite contracts. |
+| `scripts/run-python-entrypoint.sh` | POSIX interpreter-discovery launcher for registered Python CLIs. |
+| `scripts/run-python-entrypoint.ps1` | PowerShell interpreter-discovery launcher for registered Python CLIs. |
 
 ## Related Human-Facing Docs
 
@@ -44,5 +47,6 @@ This index owns the file and directory catalog for `.ai/`. The `.ai/README.MD` f
 | `../.dev/guides/ai-collaboration-guides/INDEX.MD` | AI collaboration guide index. |
 | `../.dev/guides/ai-collaboration-guides/AI-ASSET-LOCATION-STRATEGY.md` | Human-facing strategy for AI asset placement. |
 | `../.dev/guides/ai-collaboration-guides/AI-CONTEXT-INIT-SKILL-GUIDE.md` | Repo initialization and context sync guide. |
+| `../.dev/guides/ai-collaboration-guides/PYTHON-PREREQUISITE-DIAGNOSTICS-GUIDE.zh-TW.md` | Human recovery and target-local validation-selection guide. |
 | `../.dev/standards/AI-CONTEXT-BOUNDARY.md` | Canonical context boundary policy. |
 | `../.dev/standards/AI-CONTEXT-LANGUAGE-POLICY.md` | Canonical language policy. |

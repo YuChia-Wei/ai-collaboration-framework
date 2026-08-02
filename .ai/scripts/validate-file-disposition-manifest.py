@@ -9,6 +9,13 @@ import subprocess
 import sys
 from pathlib import Path, PurePosixPath
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+sys.dont_write_bytecode = True
+
+from python_prerequisites import guard_direct_entrypoint
+
+guard_direct_entrypoint(".ai/scripts/validate-file-disposition-manifest.py")
+
 import yaml
 
 

@@ -7,10 +7,16 @@ artifact directories. See [README.MD](README.MD) for ownership and lifecycle.
 
 | Roadmap | Current Target | Status | Next Gate | Updated |
 | --- | --- | --- | --- | --- |
-| [ROADMAP.md](ROADMAP.md) | `v0.8.0` | `active` | `SKILL-002` is merged and complete; await separate owner authorization before creating a release candidate or publication workflow. | 2026-07-30 |
+| [ROADMAP.md](ROADMAP.md) | `v0.8.0` | `active` | Complete `TOOL-002` prerequisite diagnostics and independent verification; release preparation and publication remain separately unauthorized. | 2026-08-02 |
 
 Source planning records are retained under [`plans/`](plans/); they inform the
 roadmap but do not replace it or a governed assessment.
+
+## In Progress
+
+| Item | Priority | Target Release | Gate | Summary | Decision / Handoff | Updated |
+| --- | --- | --- | --- | --- | --- | --- |
+| [TOOL-002](items/TOOL-002.yaml) | MEDIUM | `v0.8.0` | release-blocker; portable `CP-2` before source-only batch | Standardize fail-closed Python runtime and dependency diagnostics across 25 approved production CLIs. | Implement the 12 portable/downstream entrypoints first, prove clean-install and v0.7.0-to-v0.8.0 compatibility, stop at `CP-2`, then continue the 13 source-only entrypoints. | 2026-08-02 |
 
 ## Planned / Open
 

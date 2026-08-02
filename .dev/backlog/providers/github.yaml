@@ -5,7 +5,7 @@ owner: "YuChia-Wei"
 source:
   backlog_glob: ".dev/backlog/items/*.yaml"
   roadmap: ".dev/backlog/ROADMAP.md"
-  expected_item_count: 42
+  expected_item_count: 43
   portable_identity_field: "backlog_id"
   provider_identity_is_authoritative: false
 project:
@@ -226,6 +226,7 @@ migration:
   expected_item_count: 41
   post_adoption_backlog_ids:
     - "SKILL-002"
+    - "TOOL-002"
   canaries:
     - "DEVWF-001"
     - "AIC-007"
@@ -313,5 +314,6 @@ classifications:
   SKILL-002: {kind: "enabler", scope: "mixed", rationale: "Canonical skill ownership affects portable skill assets while source compatibility entrypoints and package governance remain repository-managed."}
   STD-001: {kind: "enabler", scope: "framework", rationale: "Standards deliberation governs future reusable framework rules."}
   TOOL-001: {kind: "enabler", scope: "mixed", rationale: "Source shell gates verify portable tooling behavior across supported hosts."}
+  TOOL-002: {kind: "story", scope: "mixed", rationale: "Framework maintainers and downstream adopters need actionable prerequisite diagnostics across source and portable Python entrypoints before mutation."}
   UPG-001: {kind: "story", scope: "framework", rationale: "Legacy customized targets would need a governed provenance and override-preserving upgrade path."}
   VAL-001: {kind: "enabler", scope: "mixed", rationale: "Source validation policy governs confidence in portable dependency and repository contracts."}

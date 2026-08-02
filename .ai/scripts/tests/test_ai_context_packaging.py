@@ -38,6 +38,7 @@ class SyntheticPackageRepo:
         (self.root / ".ai/distribution/templates").mkdir(parents=True)
         (self.root / ".ai/distribution/profiles").mkdir(parents=True)
         (self.root / ".ai/scripts").mkdir(parents=True)
+        (self.root / ".dev").mkdir()
         (self.root / "docs").mkdir()
         (self.root / ".ai/distribution/templates/INSTALL.md").write_text(
             "# Install fixture\n", encoding="utf-8", newline="\n"
@@ -48,7 +49,18 @@ class SyntheticPackageRepo:
         (self.root / "docs/rule.md").write_text("committed rule\n", encoding="utf-8", newline="\n")
         (self.root / "docs/remove.md").write_text("remove me\n", encoding="utf-8", newline="\n")
         (self.root / "docs/old-name.md").write_text("renamed bytes\n", encoding="utf-8", newline="\n")
-        for script in ("ai_context_package_apply.py", "plan-ai-context-package-apply.py"):
+        (self.root / ".dev/validation.local.conf").write_text(
+            "validation.routine.local=required\n", encoding="utf-8", newline="\n"
+        )
+        (self.root / ".dev/portable.md").write_text(
+            "portable project guidance\n", encoding="utf-8", newline="\n"
+        )
+        for script in (
+            "ai_context_package_apply.py",
+            "plan-ai-context-package-apply.py",
+            "python-entrypoints.json",
+            "python_prerequisites.py",
+        ):
             (self.root / ".ai/scripts" / script).write_bytes((SCRIPTS / script).read_bytes())
         (self.root / ".ai/scripts/render-ai-context-release-notes.py").write_text(
             "raise SystemExit('source-only renderer')\n",
@@ -133,9 +145,23 @@ class SyntheticPackageRepo:
                     "target": "preserve-relative-path",
                     "ownership": "framework-managed",
                     "install_behavior": "managed",
+                },
+                {
+                    "id": "fixture-local-policy",
+                    "component_id": "software-development-core",
+                    "source": ".dev/**",
+                    "target": "preserve-relative-path",
+                    "ownership": "framework-managed",
+                    "install_behavior": "managed",
                 }
             ],
             "exclusions": [
+                {
+                    "id": "local-validation-opt-in",
+                    "classification": "source-only",
+                    "patterns": [".dev/validation.local.conf"],
+                    "reason": "Machine-local validation selection is never portable framework truth.",
+                },
                 {
                     "id": "source-release-renderer",
                     "classification": "source-only",
@@ -232,6 +258,20 @@ def rewrite_zip_member(source: Path, target: Path, suffix: str, replacement: byt
 
 
 class DeterministicPackageGwtTests(unittest.TestCase):
+    def test_gwt_000a_given_tracked_local_validation_opt_in_when_payload_is_projected_then_it_is_excluded(self) -> None:
+        fixture = SyntheticPackageRepo()
+        try:
+            tree = PACKAGE.git_tree(fixture.root, "HEAD")
+            profile = PACKAGE.load_yaml_blob(fixture.root, tree, fixture.profile)
+            targets = {
+                item.path
+                for item in PACKAGE.collect_payload(fixture.root, tree, profile)
+            }
+            self.assertIn(".dev/portable.md", targets)
+            self.assertNotIn(".dev/validation.local.conf", targets)
+        finally:
+            fixture.close()
+
     def test_gwt_000_given_source_release_body_tooling_when_payload_is_projected_then_downstream_excludes_it(self) -> None:
         fixture = SyntheticPackageRepo()
         try:
@@ -627,7 +667,8 @@ class DeterministicPackageGwtTests(unittest.TestCase):
                 text=True,
             )
             self.assertEqual(2, missing_dependency.returncode)
-            self.assertIn("pip install -r requirements.txt", missing_dependency.stderr)
+            self.assertIn("-m pip install -r", missing_dependency.stderr)
+            self.assertIn(str(package_root / "requirements.txt"), missing_dependency.stderr)
             # When the planner imports its packaged helper before checksum validation.
             completed = subprocess.run(
                 [sys.executable, str(planner), "--package-root", str(package_root), "--target-root", str(target)],
@@ -1406,6 +1447,105 @@ class VersionedMigrationPackagingGwtTests(unittest.TestCase):
             }
             <= targets
         )
+
+    def test_gwt_020_given_v070_payload_when_candidate_projects_shared_prerequisites_then_clean_install_and_upgrade_keep_portable_commands(self) -> None:
+        """CP-2 synthetic proof; it creates no source-repository release artifact."""
+        try:
+            fixture = SyntheticPackageRepo()
+        except PermissionError as error:
+            self.skipTest(f"temporary synthetic package fixture is blocked by Windows ACL: {error}")
+        shared_assets = (
+            ".ai/scripts/python_prerequisites.py",
+            ".ai/scripts/python-entrypoints.json",
+            ".ai/scripts/run-python-entrypoint.sh",
+            ".ai/scripts/run-python-entrypoint.ps1",
+        )
+        portable_paths = (
+            ".ai/assets/skills/software-development-orchestrator/scripts/validate-software-development-orchestrator-acceptance.py",
+            ".ai/scripts/plan-ai-context-package-apply.py", ".ai/scripts/validate-ai-context-target.py",
+            ".ai/scripts/validate-ai-context.py", ".ai/scripts/validate-assessment-artifacts.py",
+            ".ai/scripts/validate-dependency-versions.py", ".ai/scripts/validate-file-disposition-manifest.py",
+            ".ai/scripts/validate-git-commits.py", ".ai/scripts/validate-shell-assets.py",
+            ".ai/scripts/validate-software-development-orchestrator-acceptance.py",
+            ".ai/scripts/validate-workflow-artifacts.py", ".ai/scripts/validate-workflow-handoff.py",
+        )
+        try:
+            # Given v0.7.0 already carries every direct portable command path.
+            for path in portable_paths:
+                target = fixture.root / path
+                target.parent.mkdir(parents=True, exist_ok=True)
+                target.write_bytes((ROOT / path).read_bytes())
+            profile_path = fixture.root / fixture.profile
+            profile = yaml.safe_load(profile_path.read_text(encoding="utf-8"))
+            profile["entries"].append({"id": "portable-skill-cli", "component_id": "software-development-core", "source": ".ai/assets/skills/**", "target": "preserve-relative-path", "ownership": "framework-managed", "install_behavior": "managed"})
+            profile_path.write_text(yaml.safe_dump(profile, sort_keys=False), encoding="utf-8", newline="\n")
+            git(fixture.root, "add", ".")
+            git(fixture.root, "commit", "-qm", "v070 portable command fixture")
+            previous = fixture.build("v070", version="0.7.0")
+            previous_root = fixture.extract(previous, "v070-extract")
+            previous_files = previous_root / "metadata/files.yaml"
+            previous_payload = previous_root / "payload"
+            direct_bytes = {path: (previous_payload / path).read_bytes() for path in portable_paths}
+
+            # When the candidate adds the shared runtime bytes without renaming direct commands.
+            for path in shared_assets:
+                target = fixture.root / path
+                target.parent.mkdir(parents=True, exist_ok=True)
+                target.write_bytes((ROOT / path).read_bytes())
+            git(fixture.root, "add", ".")
+            git(fixture.root, "commit", "-qm", "candidate shared prerequisite fixture")
+            candidate = fixture.build("candidate", version="0.8.0", previous_files=previous_files, previous_version="0.7.0")
+            candidate_root = fixture.extract(candidate, "candidate-extract")
+            candidate_payload = candidate_root / "payload"
+
+            # Then clean install projects the four shared assets and every portable CLI unchanged.
+            self.assertFalse((ROOT / ".dev/releases/v0.8.0").exists())
+            self.assertTrue(all((candidate_payload / path).is_file() for path in shared_assets))
+            self.assertTrue(all((candidate_payload / path).is_file() for path in portable_paths))
+            self.assertEqual({path: (candidate_payload / path).read_bytes() for path in portable_paths}, direct_bytes)
+            self.assertFalse((candidate_payload / ".dev/validation.local.conf").exists())
+
+            # And the candidate planner upgrades a v0.7 payload while retaining those same paths.
+            target = fixture.output("v070-target")
+            shutil.copytree(previous_payload, target)
+            provenance = target / ".dev/ai-context/provenance.yaml"
+            provenance.parent.mkdir(parents=True, exist_ok=True)
+            provenance.write_text(
+                yaml.safe_dump(
+                    {
+                        "selection": {
+                            "release_model": "single-versioned-componentized-release",
+                            "mandatory_components": [
+                                "software-development-core",
+                                "ai-context-lifecycle-core",
+                            ],
+                            "profiles": ["dotnet-backend"],
+                            "providers": {
+                                "repo-backlog": {
+                                    "enabled": False,
+                                    "preservation": "preserve-existing-if-recorded",
+                                }
+                            },
+                        }
+                    },
+                    sort_keys=False,
+                ),
+                encoding="utf-8",
+                newline="\n",
+            )
+            git(target, "init", "-q")
+            git(target, "config", "user.name", "Fixture")
+            git(target, "config", "user.email", "fixture@example.invalid")
+            git(target, "add", ".")
+            git(target, "commit", "-qm", "v070 payload")
+            planner = candidate_payload / ".ai/scripts/plan-ai-context-package-apply.py"
+            applied = subprocess.run([sys.executable, str(planner), "--package-root", str(candidate_root), "--target-root", str(target), "--previous-files", str(previous_files), "--previous-version", "0.7.0", "--apply"], capture_output=True, text=True, check=False)
+            self.assertEqual(0, applied.returncode, applied.stdout + applied.stderr)
+            self.assertTrue(all((target / path).is_file() for path in shared_assets + portable_paths))
+            self.assertEqual(direct_bytes, {path: (target / path).read_bytes() for path in portable_paths})
+            self.assertFalse((target / ".dev/validation.local.conf").exists())
+        finally:
+            fixture.close()
 
 
 if __name__ == "__main__":

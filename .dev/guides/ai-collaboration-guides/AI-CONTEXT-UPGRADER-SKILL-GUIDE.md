@@ -35,6 +35,15 @@
 - `.git/`、工具 cache、暫存報告與環境檔案
 - 產品 `src/` 與 `tests/`
 
+## Python 與本機 validation 邊界
+
+升級時保留 target 的 Python 前置條件恢復決定；diagnostic 僅提出建議命令，
+不會安裝依賴。本機 `.dev/validation.local.conf` 是 ignored、unpackaged 的
+單行選擇檔，僅能強化 checked-in `validation.routine.local` policy，不能由
+環境變數覆寫。source-only CLI 與 framework release publication 不屬於
+downstream prerequisite contract。細節見
+`PYTHON-PREREQUISITE-DIAGNOSTICS-GUIDE.zh-TW.md`。
+
 codebase-memory-mcp、Code Graph、IDE index 等工具只能加速探索；最後的版本、檔案與內容判斷仍以 Git 和 repo 檔案為準。
 
 ## Prompt 範本

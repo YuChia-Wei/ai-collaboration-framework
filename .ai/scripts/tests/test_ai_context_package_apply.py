@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import importlib.util
+import json
 import os
 import subprocess
 import sys
@@ -280,6 +281,30 @@ def operation(
 
 
 class AiContextPackageApplyGwtTests(unittest.TestCase):
+    def test_gwt_000_given_portable_prerequisite_runtime_when_clean_installed_then_all_shared_and_registered_assets_are_selected(self) -> None:
+        fixture = PackageApplyFixture()
+        try:
+            registry = json.loads((ROOT / ".ai/scripts/python-entrypoints.json").read_text(encoding="utf-8"))
+            paths = {
+                ".ai/scripts/python-entrypoints.json",
+                ".ai/scripts/python_prerequisites.py",
+                ".ai/scripts/run-python-entrypoint.sh",
+                ".ai/scripts/run-python-entrypoint.ps1",
+                *(item["path"] for item in registry["entrypoints"] if item["portable"]),
+            }
+            incoming = {
+                path: (path.encode("utf-8"), "framework-managed", "0644", "software-development-core")
+                for path in paths
+            }
+            fixture.make_component_package(
+                incoming,
+                [operation(f"{index:03d}-add", "add", path, component_id="software-development-core") for index, path in enumerate(sorted(paths), 1)],
+            )
+            plan = fixture.plan()
+            self.assertEqual(sorted(paths), [item["path"] for item in plan["operations"]])
+            self.assertEqual({"software-development-core": 16}, plan["component_operation_counts"]["would_apply"])
+        finally:
+            fixture.close()
     def test_gwt_000a_given_component_archive_when_clean_installed_then_default_skips_backlog_and_cli_can_enable_it(self) -> None:
         fixture = PackageApplyFixture()
         try:

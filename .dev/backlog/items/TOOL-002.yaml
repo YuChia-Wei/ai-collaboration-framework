@@ -1,0 +1,47 @@
+schema_version: "1.0"
+backlog_id: "TOOL-002"
+title: "Standardize Python Prerequisite Diagnostics Across Validator Entrypoints"
+category: "tooling-validation"
+status: "in_progress"
+priority: "MEDIUM"
+summary: "Provide consistent, fail-closed Python runtime and dependency prerequisite diagnostics across the approved validator and package entrypoints before imports, mutation, or success claims."
+created_at: "2026-08-02T23:52:27+08:00"
+updated_at: "2026-08-02T23:52:27+08:00"
+release:
+  target: "v0.8.0"
+  completed_in: null
+  published_in: null
+  target_scope: "python-prerequisite-diagnostics"
+  gate: "release-blocker"
+origin_refs:
+  - ".dev/assessments/ASM-20260730-001/assessment.yaml"
+finding_refs:
+  - "ASM-20260730-001#AIC-004"
+recommended_owner_skill: "ai-context-governance"
+handoff_condition: "Implement only the approved 12 portable/downstream Python CLI batch first; prove deterministic unsupported-version and missing-dependency failures before mutation; reach CP-2 before beginning the 13 source-only CLI batch. Do not weaken existing gates or prepare or publish a release."
+workflow_refs:
+  - ".dev/workflows/2026-08-02-python-prerequisite-diagnostics/workflow.yaml"
+task_refs:
+  - ".dev/workflows/2026-08-02-python-prerequisite-diagnostics/tasks/AIC-004-diagnostic-design.json"
+  - ".dev/workflows/2026-08-02-python-prerequisite-diagnostics/tasks/AIC-004-diagnostic-implementation.json"
+  - ".dev/workflows/2026-08-02-python-prerequisite-diagnostics/tasks/AIC-004-source-diagnostic-implementation.json"
+resolution_ref: null
+decision_needed: "Resolved: on 2026-08-02 the repository owner approved the complete 22-decision design and then requested formal Story creation, direct implementation, and merge. TOOL-002 is required v0.8.0 scope; the 12 portable/downstream entrypoints are authorized now, the 13 source-only entrypoints require CP-2 acceptance, and release preparation or publication remains separately unauthorized."
+related_backlog_refs:
+  - "TOOL-001"
+inventory_notes:
+  - "GitHub Proposal #69 records the discussion origin; the formal TOOL-002 provider Story is created only after this canonical item is committed and its source revision is known."
+acceptance:
+  - "All 25 approved production Python CLIs use the approved prerequisite architecture, delivered in the required portable-first then source-only sequence."
+  - "Each affected entrypoint reports the selected executable and detected version, the Python 3.11-or-newer requirement, the exact required dependency when applicable, a sanctioned recovery command, and the pre-mutation stop state."
+  - "Unsupported Python and missing required dependencies fail deterministically before domain imports, repository mutation, or validation success claims."
+  - "The 12 portable/downstream CLIs retain direct-command, clean-install, and supported v0.7.0-to-v0.8.0 upgrade compatibility before CP-2."
+  - "The 13 source-only CLIs are not modified until CP-2 is reached and accepted."
+  - "No automatic installation, environment creation, network access, credential discovery, runtime replacement, aggregate-gate redesign, or release publication is introduced."
+  - "Focused prerequisite, package, compatibility, Windows-PowerShell, and Ubuntu-POSIX validation plus independent AIC-004 verification are recorded with fail-closed outcomes."
+compatibility_boundaries:
+  - "Python 3.11 or newer remains the canonical validator runtime for TOOL-002 and v0.8.0."
+  - "POSIX-sh and Windows-PowerShell launchers remain thin prerequisite and diagnostic adapters that delegate validator semantics to Python."
+  - "Issue #75 owns aggregate composition, performance, package disposition, and portable-handoff policy."
+  - "Issue #76 owns generalized environment-readiness profiles and policy-aware host or runtime capabilities."
+  - "Existing direct Python command paths and per-entrypoint prerequisite exit-code compatibility remain supported."

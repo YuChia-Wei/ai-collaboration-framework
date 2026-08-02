@@ -386,6 +386,7 @@ exclusions:
       - .git/**
       - .gitignore
       - .codex/config.toml
+      - .dev/validation.local.conf
       - .ai/scripts/ai_context_package.py
       - .ai/scripts/build-ai-context-package.py
       - .ai/assets/skills/ai-context-upgrader/scripts/compare-ai-context-versions.py

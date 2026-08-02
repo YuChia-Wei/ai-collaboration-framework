@@ -9,6 +9,19 @@ This package is a versioned framework payload, not a whole-repository overwrite.
    python -m pip install -r requirements.txt
    ```
 
+   The portable direct CLIs support `--diagnostic-format=json`; otherwise a
+   blocked preflight is human-readable. Use the POSIX or PowerShell launcher
+   when interpreter discovery is needed:
+
+   ```text
+   sh payload/.ai/scripts/run-python-entrypoint.sh .ai/scripts/plan-ai-context-package-apply.py --diagnostic-format=json
+   pwsh -File payload/.ai/scripts/run-python-entrypoint.ps1 .ai/scripts/plan-ai-context-package-apply.py --diagnostic-format=json
+   ```
+
+   A blocked diagnostic suggests, but never executes, a recovery command. Do
+   not treat a source-only CLI or release publication operation as part of the
+   extracted target prerequisite contract.
+
 3. Validate the archive and its external `.sha256` sidecar.
 4. From the extracted envelope root, run a dry-run against the target and review every add, replace, remove, rename, and reconcile result:
 
@@ -49,5 +62,10 @@ This package is a versioned framework payload, not a whole-repository overwrite.
    `.dev/ai-context/provenance.yaml` provenance. Legacy
    `.dev/AI-CONTEXT-SOURCE.yaml` remains read-compatible only.
 7. Commit target-specific synchronization separately from the framework application when practical.
+
+Target-local validation selection, when a target policy enables it, uses the
+ignored and unpackaged `.dev/validation.local.conf`. It must contain exactly
+one `validation.routine.local=<approved-mode>` line, can only strengthen the
+checked-in policy, and cannot be supplied through an environment variable.
 
 Framework-managed content may be replaced or removed only when its current hash matches the previous released hash. Target templates and target-owned truth are never silently overwritten or deleted.

@@ -3,17 +3,23 @@
 
 from __future__ import annotations
 
-import argparse
-import re
-import subprocess
 import sys
-from datetime import datetime
 from pathlib import Path
-
-import yaml
 
 SCRIPT_ROOT = Path(__file__).resolve().parent
 sys.path.insert(0, str(SCRIPT_ROOT))
+sys.dont_write_bytecode = True
+
+from python_prerequisites import guard_direct_entrypoint
+
+guard_direct_entrypoint(".ai/scripts/validate-ai-context-versions.py")
+
+import argparse
+import re
+import subprocess
+from datetime import datetime
+
+import yaml
 
 import ai_context_target_provenance as target_provenance
 

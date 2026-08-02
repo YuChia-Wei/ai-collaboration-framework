@@ -7,10 +7,17 @@ import posixpath
 import re
 import subprocess
 import sys
-import tomllib
 from collections import Counter
 from pathlib import Path, PurePosixPath
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+sys.dont_write_bytecode = True
+
+from python_prerequisites import guard_direct_entrypoint
+
+guard_direct_entrypoint(".ai/scripts/validate-ai-context.py")
+
+import tomllib
 import yaml
 
 
@@ -1616,8 +1623,8 @@ def validate_capability_profile(skill_assets: dict[str, dict], errors: list[str]
     if profile is None:
         return 0
     schema_version = profile.get("schema_version")
-    if schema_version not in {"1.0", "1.1", "1.2"}:
-        errors.append(f"{CAPABILITY_PROFILE}: schema_version must be 1.0, 1.1, or 1.2")
+    if schema_version not in {"1.0", "1.1", "1.2", "1.3"}:
+        errors.append(f"{CAPABILITY_PROFILE}: schema_version must be 1.0, 1.1, 1.2, or 1.3")
     if not isinstance(profile.get("profile_id"), str) or not profile.get("profile_id"):
         errors.append(f"{CAPABILITY_PROFILE}: profile_id must be a non-empty string")
     if profile.get("status") != "active":
@@ -1643,7 +1650,7 @@ def validate_capability_profile(skill_assets: dict[str, dict], errors: list[str]
     if missing:
         errors.append(f"{CAPABILITY_PROFILE}: missing required mappings {missing}")
     contracts = profile.get("capability_contracts", {})
-    if schema_version in {"1.1", "1.2"}:
+    if schema_version in {"1.1", "1.2", "1.3"}:
         if not isinstance(contracts, dict):
             errors.append(f"{CAPABILITY_PROFILE}: capability_contracts must be a mapping")
         else:
@@ -1683,7 +1690,7 @@ def validate_capability_profile(skill_assets: dict[str, dict], errors: list[str]
                 errors.append(f"{CAPABILITY_PROFILE}: test-execution must remain optional")
             if "test-execution" in mappings:
                 errors.append(f"{CAPABILITY_PROFILE}: test-execution must not map to an unevaluated skill")
-    if schema_version == "1.2":
+    if schema_version in {"1.2", "1.3"}:
         expected_orchestration = {
             "activation": {
                 "intent_class": "high-level-multi-stage-software-development",
@@ -1733,10 +1740,45 @@ def validate_capability_profile(skill_assets: dict[str, dict], errors: list[str]
                 "branch-and-handoff",
             ],
         }
+        if schema_version == "1.3":
+            expected_orchestration["routine_validation"] = {
+                "authority": ".dev/project-config.yaml#validation.routine",
+                "local_default": "manual",
+                "local_modes": ["manual", "auto-if-ready", "required"],
+                "local_opt_in": ".dev/validation.local.conf",
+                "local_opt_in_rule": "strict-one-line-validation.routine.local",
+                "local_opt_in_can_only_strengthen": True,
+                "environment_override": "prohibited",
+                "implicit_local_write": "prohibited",
+                "ci_default": "unconfigured",
+                "ci_modes": ["unconfigured", "advisory", "required"],
+                "unselected_projection": {
+                    "outcome": "not-applicable",
+                    "selection_reason": "not-run-by-policy",
+                },
+                "attempt_budget": {
+                    "unselected": 0,
+                    "selected_preflight": 1,
+                    "initial_execution": 1,
+                    "retry_after_material_change": 1,
+                    "ci_observations": 2,
+                },
+                "unaffected": [
+                    "explicit-cli",
+                    "install",
+                    "apply",
+                    "init",
+                    "upgrade",
+                    "provenance",
+                    "governance",
+                    "release",
+                    "publication",
+                ],
+            }
         if profile.get("orchestration_contract") != expected_orchestration:
             errors.append(
                 f"{CAPABILITY_PROFILE}: orchestration_contract must match the "
-                "v1.2 deterministic acceptance contract"
+                f"v{schema_version} deterministic acceptance contract"
             )
     for slot, skill_id in mappings.items():
         if not isinstance(skill_id, str) or skill_id not in skill_assets:

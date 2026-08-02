@@ -52,6 +52,11 @@ Expected Output:
 Validation:
 - <checks required before return>
 
+Routine Validation Policy:
+- Source / resolved mode: <tracked policy and permitted local strengthening>
+- Selection / outcome / selection reason: <including not-run-by-policy>
+- Command fingerprint / prerequisite result / attempts / retry justification: <evidence>
+
 Test Execution:
 - Level: <unit | integration | e2e | browser | playwright | environment-dependent>
 - Provider: <target-profile-commands | evaluated-external-skill | fallback-contract>

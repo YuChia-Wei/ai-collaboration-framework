@@ -3,11 +3,19 @@
 
 from __future__ import annotations
 
-import argparse
-import hashlib
 import sys
 from pathlib import Path
 
+SCRIPT_ROOT = Path(__file__).resolve().parent
+sys.path.insert(0, str(SCRIPT_ROOT))
+sys.dont_write_bytecode = True
+
+from python_prerequisites import guard_direct_entrypoint
+
+guard_direct_entrypoint(".ai/scripts/validate-repository-config-contract.py")
+
+import argparse
+import hashlib
 import yaml
 
 
