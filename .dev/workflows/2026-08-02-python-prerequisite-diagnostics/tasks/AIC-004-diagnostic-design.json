@@ -8,7 +8,7 @@
   "owner_skill": "ai-context-governance",
   "status": "in_progress",
   "created_at": "2026-08-02T10:32:53+08:00",
-  "updated_at": "2026-08-02T15:24:05+08:00",
+  "updated_at": "2026-08-02T15:32:22+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-5.6-sol",
   "reasoning_effort": "high",
@@ -52,6 +52,7 @@
       "Inventory current downstream execution modes, applicability behavior, CI wiring, distribution projection, and the absence of a target-owned activation policy.",
       "Trace retry ownership across the aggregate runner, software-development orchestrator, and root execution guidance; define a token-cost-aware retry decision boundary.",
       "Explain the local activation default through team scenarios, target-owned versus developer-local configuration, precedence, CI dependency, and feedback/token tradeoffs before requesting D-010B approval.",
+      "Identify the proposed shared and local setting locations and map exact producer, preserver, consumer, closeout, audit, unaffected-skill, wrapper, contract, and test impacts.",
       "Present one design decision at a time with impact and alternatives.",
       "Record every owner decision in workflow-plan.md.",
       "Produce an approved implementation boundary and validation matrix."
@@ -61,11 +62,11 @@
       "Valid workflow locator and task artifacts",
       "Explicit owner approval before implementation transition"
     ],
-    "last_completed_step": "Explained D-010B through new-developer, ready-environment, developer-opt-in, target-required, CI-required, no-gate, and explicit-lifecycle scenarios without resolving the decision.",
-    "next_action": "Obtain only the D-010B owner decision on a tracked manual/unselected local default with developer preferences allowed to strengthen but not weaken target policy."
+    "last_completed_step": "Confirmed no opt-in path exists today; proposed tracked team policy in .dev/project-config.yaml and persistent per-clone opt-in in .git/config; mapped exact affected and unaffected skill stages without resolving D-010B.",
+    "next_action": "Obtain only the D-010B owner decision on the proposed shared/local locations, manual/unselected default, and monotonic developer opt-in boundary."
   },
   "results": {
-    "summary": "D-010A remains resolved. D-010B is now scenario-defined: a manual/unselected target default avoids local probes and retries, personal opt-in may strengthen local execution, CI is a separate decision, and no-gate states cannot claim validation. Implementation has not started.",
+    "summary": "D-010B is now location- and impact-defined but unresolved: shared policy would be target-owned project configuration, personal opt-in would be repository-local Git configuration, and orchestration would own one policy decision consumed by implementation skills. Implementation has not started.",
     "files_changed": [
       ".dev/workflows/2026-08-02-python-prerequisite-diagnostics/workflow.yaml",
       ".dev/workflows/2026-08-02-python-prerequisite-diagnostics/workflow-plan.md",
@@ -96,7 +97,8 @@
       "check-all.sh modes, interpreter resolution order, enforcement classes, applicability gates, source portable-gates CI, distribution profile, skill/policy direct invocations, and hook inventory: inspected",
       "Aggregate runner retry scan: no validation retry loop found; each selected check invokes once",
       "Software-development orchestrator capability, fallback, workflow-gate, and root execution policies: inspected for blocked outcomes and retry-budget behavior",
-      "Target project-config template, ai-context-init document targets, technology-selection ownership policy, and portable workflow-gate target settings: inspected for shared-versus-local configuration boundaries"
+      "Target project-config template, ai-context-init document targets, technology-selection ownership policy, and portable workflow-gate target settings: inspected for shared-versus-local configuration boundaries",
+      "Canonical skill workflow scan and direct reads for software-development-orchestrator, ai-context-init, ai-context-upgrader, slice-implementer, local-change-implementer, code-reviewer, spec-compliance-validator, and bdd-gwt-test-designer: completed"
     ],
     "finding_status": "not-addressed",
     "residual_risk": "Activation scope is resolved, but local defaults, CI semantics, result taxonomy, Agent retry budget, interpreter trust, launcher coverage, dependency recovery, canonical runtime, output, proof, ownership, projection, testing, and documentation decisions remain unresolved; implementation remains paused.",

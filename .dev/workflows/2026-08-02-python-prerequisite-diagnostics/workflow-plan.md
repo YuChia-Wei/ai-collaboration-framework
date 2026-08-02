@@ -19,7 +19,7 @@
 - `current_phase`: `remediation-planning`
 - `artifact_root`: `.dev/workflows/2026-08-02-python-prerequisite-diagnostics`
 - `created_at`: `2026-08-02T10:32:53+08:00`
-- `updated_at`: `2026-08-02T15:24:05+08:00`
+- `updated_at`: `2026-08-02T15:32:22+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md`
 - `template_version`: `1.2.0`
 
@@ -169,6 +169,49 @@
 
 The current D-010B recommendation is a tracked target default of `manual/unselected`, with developer-local preferences allowed only to opt into stronger local execution. D-010C separately decides whether and how CI becomes required; approval of D-010B alone does not claim that CI is configured.
 
+## D-010B Configuration Location And Skill-Stage Impact
+
+No opt-in path or reader is implemented today. The paths and keys below are design candidates pending D-010B approval.
+
+### Proposed Configuration Locations
+
+| Scope | Proposed authority and location | Reason |
+| --- | --- | --- |
+| Shared team default | Generated, tracked target truth at `.dev/project-config.yaml#validation.routine.local.mode` | All Agent runtimes and humans see the same default; `ai-context-init` creates it and `ai-context-upgrader` preserves it. |
+| Persistent developer opt-in | Repository-local Git configuration in `.git/config`, read as `ai-context.validation.local` | Per clone, untracked, not packaged, not committed accidentally, and readable through Git before Python discovery. |
+| CI enforcement | Tracked target CI policy and workflow, governed separately by D-010C | A developer-local Git setting must never weaken hosted enforcement. |
+
+The proposed opt-in command is conceptually `git config --local ai-context.validation.local auto-if-ready`. No Agent may write that preference implicitly. A one-shot environment override is not yet proposed because another precedence source would increase ambiguity and validation cost.
+
+### Skill And Stage Impact
+
+| Skill or surface | Affected stage | Required behavior change |
+| --- | --- | --- |
+| `ai-context-governance` | This source remediation's design, implementation coordination, wrapper/policy sync, and post-remediation verification | Own the portable policy/schema changes and prove that runtime adapters do not diverge. Its own required governance validation remains outside the downstream routine switch. |
+| `ai-context-init` | Step 4, generation/update of `.dev/project-config.yaml` | Materialize the shared target selection or unresolved/default state from explicit owner evidence. It does not create a personal `.git/config` opt-in. |
+| `ai-context-upgrader` | Steps 3-5, comparison/reconciliation/application of target configuration | Preserve the target-owned validation policy and reconcile incoming schema additions without overwriting the target decision. Its step-5/6 required upgrade validation remains lifecycle-owned and unswitchable. |
+| `software-development-orchestrator` | Step 1 intake | Read tracked target policy and the allowed local opt-in before planning validation; do not probe Python first. |
+| `software-development-orchestrator` | Step 5 capability/test/validation coordination | Select or omit automatic routine validation once, enforce the D-010E attempt budget, and pass the resolved policy to implementation work. |
+| `software-development-orchestrator` | Step 6 closeout and handoff | Record whether validation passed, failed, was blocked, or was unselected/deferred; never collapse an unexecuted check into success. |
+| `slice-implementer` | Step 4 validation/handoff | When orchestrated, consume the resolved decision rather than independently discovering or retrying validators. In direct use, read the same target/local policy before routine automatic validation. |
+| `local-change-implementer` | Step 3 narrow validation | Apply the same rule for a direct local change; a “narrowest meaningful validation” instruction cannot override an unselected routine policy or create repeated prerequisite attempts. |
+| `ai-context-auditor` | Independent post-remediation assessment only | Verify routing/configuration drift and negative paths; it is not the runtime policy selector. |
+
+### Skills Not Controlled By This Switch
+
+- `spec-compliance-validator` remains unselected by default and fail-closed once explicitly selected by a problem-frame workflow, requirement, target policy, or owner decision.
+- `code-reviewer` remains read-only and does not become a routine validator runner.
+- `requirement-author`, `spec-author`, `problem-frame-author`, `bdd-gwt-test-designer`, and `ddd-ca-hex-architect` do not gain Python prerequisite execution from this policy.
+- Explicit `ai-context-init`, `ai-context-upgrader`, package apply, provenance finalization, governance, release, and publication validation remains governed by each lifecycle contract, not D-010B.
+
+### Contract And Test Radius
+
+- Extend the target project-config template and repository configuration contract for the shared validation-policy shape.
+- Update orchestrator capability, workflow-artifact, output, acceptance fixture, and deterministic test contracts.
+- Update slice/local implementer validation language only enough to consume the resolved policy; do not duplicate policy parsing in every skill.
+- Preserve thin Codex and Claude wrappers and validate canonical-link parity rather than copying the whole policy into wrappers.
+- Add negative tests proving that `manual/unselected` causes zero interpreter probes, zero validator executions, and zero identical retries; local opt-in cannot weaken tracked target or CI requirements.
+
 ## Stages And Checkpoints
 
 1. Bootstrap the governance workflow and freeze Issue #69 plus `AIC-004` as source evidence.
@@ -182,9 +225,9 @@ The current D-010B recommendation is a tracked target default of `manual/unselec
 
 ## Resume Checkpoint
 
-- Last completed action: explained D-010B through developer, target-policy, CI, no-gate, and lifecycle scenarios; mapped target-owned versus local configuration, precedence, token benefit, and delayed-feedback risk without resolving the decision.
+- Last completed action: identified that no opt-in location exists today, proposed tracked team policy in `.dev/project-config.yaml` plus persistent per-clone opt-in in `.git/config`, and mapped the exact affected and unaffected skill stages without resolving D-010B.
 - Current task: `AIC-004-diagnostic-design`.
-- Exact next action: obtain only the D-010B owner decision on a tracked `manual/unselected` local default with developer preferences allowed to strengthen but not weaken target policy.
+- Exact next action: obtain only the D-010B owner decision on the proposed shared/local locations, `manual/unselected` default, and monotonic developer opt-in boundary.
 - Validation already completed: confirmed clean `main@2263744bb2dc876f8077547e961fc68be28b0074` before branching; verified the final baseline assessment; verified the inventory against `git ls-files`, direct file reads, distribution profile, shell registry, active documentation, and existing tests; parsed both task JSON files; `git diff --check`, `validate-workflow-artifacts.py`, and `validate-ai-context.py` passed.
 - Current discussion-checkpoint validation: Git-history probes established the adoption timeline; the active sub-agent manifest and Codex adapter established the missed low-cost route; the changed task JSON parsed with PowerShell; locator/index state was checked directly; and `git diff --check` passed. Full Python-backed repository validators were not rerun because every discovered interpreter lacks PyYAML and D-002A now forbids implicit installation; this checkpoint records that result as `blocked-by-environment`, not passed.
 - Validation environment note: generic `python` and `python3` resolve to unusable Windows aliases. A versioned uv-managed Python 3.14.1 and the Codex bundled Python 3.12.13 can start, but neither currently imports PyYAML. Prior artifact validation used Codex Python with isolated temporary `PyYAML==6.0.3`; no repository dependency files were changed.
