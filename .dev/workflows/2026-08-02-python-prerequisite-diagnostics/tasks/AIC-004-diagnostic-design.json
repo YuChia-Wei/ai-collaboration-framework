@@ -8,7 +8,7 @@
   "owner_skill": "ai-context-governance",
   "status": "in_progress",
   "created_at": "2026-08-02T10:32:53+08:00",
-  "updated_at": "2026-08-02T19:26:56+08:00",
+  "updated_at": "2026-08-02T19:36:32+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-5.6-sol",
   "reasoning_effort": "high",
@@ -65,11 +65,11 @@
       "Valid workflow locator and task artifacts",
       "Explicit owner approval before implementation transition"
     ],
-    "last_completed_step": "Resolved D-003B with success-only zero, per-entrypoint legacy prerequisite codes, mapped native-launcher behavior, delegated-code propagation, and JSON reason codes as the authoritative detailed semantics.",
-    "next_action": "Explain and obtain only the owner decision on D-005 pre-mutation guarantee and the negative-path evidence required for write-capable entrypoints."
+    "last_completed_step": "Resolved D-005 with prerequisite bootstrap before domain/local/PyYAML imports, bytecode suppression before local imports, bounded repository-controlled no-mutation surfaces, and required negative-path evidence.",
+    "next_action": "Preview D-007, D-006, and D-008 together as the final three topics, then explain and obtain only the owner decision on the D-007 layered deterministic test matrix."
   },
   "results": {
-    "summary": "D-003 is fully resolved through D-003A and D-003B. Exit zero remains success-only; existing entrypoints retain current or closest prerequisite-failure codes, native launchers use the target mapping before delegation, and delegated validator codes propagate unchanged. Detailed automation uses the JSON outcome/reason_code instead of inferring meaning from numeric values. No global prerequisite code is introduced in v0.8.0, four atomic decisions remain, and implementation has not started.",
+    "summary": "D-005 is resolved. All 25 production CLIs must preflight before domain/local/PyYAML imports, suppress bytecode before local imports, and prove no repository-controlled target/output mutation or write-capable domain subprocess on prerequisite failure. Negative-path evidence covers write-capable and read-only CLIs across direct Python, native launchers, and portable packages. Three atomic decisions remain, and implementation has not started.",
     "files_changed": [
       ".dev/workflows/2026-08-02-python-prerequisite-diagnostics/workflow.yaml",
       ".dev/workflows/2026-08-02-python-prerequisite-diagnostics/workflow-plan.md",
@@ -136,10 +136,12 @@
       "Owner decision: D-009 retained Python 3.11+ as the #69/v0.8.0 canonical validator runtime, kept native launchers thin, and deferred runtime replacement without creating a follow-up issue",
       "Current diagnostic read-back: check-all missing-Python text uses stderr and exit 1; package planner missing-PyYAML text uses stderr and exit 2; most other PyYAML paths expose raw import failure",
       "Owner decision: D-003A approved compact human stderr, explicit single-object JSON stdout, stable prerequisite fields, bounded candidate evidence, unchanged success output, and no expected traceback",
-      "Owner decision: D-003B approved success-only zero, existing per-entrypoint prerequisite codes, target-mapped native-launcher behavior, delegated-code propagation, and JSON reason codes as authoritative semantics"
+      "Owner decision: D-003B approved success-only zero, existing per-entrypoint prerequisite codes, target-mapped native-launcher behavior, delegated-code propagation, and JSON reason codes as authoritative semantics",
+      "Entrypoint mutation evidence read-back: write-capable package apply, plan/output, build, release, migration, and evaluation paths plus Python bytecode risk were re-confirmed from the retained inventory and focused source evidence",
+      "Owner decision: D-005 approved bootstrap-before-domain-import ordering, bytecode suppression, bounded repository-controlled no-mutation guarantees, JSON mutation_started=false, and negative-path evidence across direct Python, POSIX-sh, Windows-PowerShell, and portable-package paths"
     ],
     "finding_status": "not-addressed",
-    "residual_risk": "External tracking now exists as Proposals #75 and #76, but neither is accepted or implementation-authorized. Runtime discovery, recovery, disposition, diagnostic/exit projection, and the D-010 control chain are resolved, but four #69 atomic decisions remain unresolved: pre-mutation proof, remaining script ownership, testing, and migration documentation; implementation remains paused.",
+    "residual_risk": "External tracking now exists as Proposals #75 and #76, but neither is accepted or implementation-authorized. Runtime discovery, recovery, disposition, diagnostic/exit projection, pre-mutation proof, and the D-010 control chain are resolved, but three #69 atomic decisions remain unresolved: deterministic testing, remaining script ownership/package compatibility, and migration documentation; implementation remains paused.",
     "follow_up_needed": true
   }
 }
