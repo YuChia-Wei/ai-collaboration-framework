@@ -8,7 +8,7 @@
   "owner_skill": "ai-context-governance",
   "status": "in_progress",
   "created_at": "2026-08-02T10:32:53+08:00",
-  "updated_at": "2026-08-02T16:53:39+08:00",
+  "updated_at": "2026-08-02T17:17:41+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-5.6-sol",
   "reasoning_effort": "high",
@@ -53,6 +53,7 @@
       "Trace retry ownership across the aggregate runner, software-development orchestrator, and root execution guidance; define a token-cost-aware retry decision boundary.",
       "Explain the local activation default through team scenarios, target-owned versus developer-local configuration, precedence, CI dependency, and feedback/token tradeoffs before requesting D-010B approval.",
       "Present the complete D-010B through D-010E control chain together, including local selection, CI enforcement, compatibility-safe result semantics, and bounded Agent/CI observation cost, while requesting only one owner decision at a time.",
+      "Separate the approved manual target default from developer-local storage, and compare Git config, ignored strict file, environment, OS-user, and runtime-specific transports against pre-Python, packaging, and cross-Agent constraints.",
       "Identify the proposed shared and local setting locations and map exact producer, preserver, consumer, closeout, audit, unaffected-skill, wrapper, contract, and test impacts.",
       "Separate minimum repository workflow contracts from workflow-owner template semantics, and distinguish framework self-test ownership, package projection, activation, and enforcement.",
       "Present one design decision at a time with impact and alternatives.",
@@ -64,11 +65,11 @@
       "Valid workflow locator and task artifacts",
       "Explicit owner approval before implementation transition"
     ],
-    "last_completed_step": "Recorded owner approval of the CP-1/CP-2/CP-75A split, re-confirmed the exact 12-portable plus 13-source-only D-001 CLI boundary, and consolidated D-010B through D-010E recommendations and impacts.",
-    "next_action": "Obtain only the owner decision on D-010B; retain D-010C through D-010E as pending despite presenting their integrated context."
+    "last_completed_step": "Resolved D-010B1 as tracked target default manual, left D-010B2 developer-local storage pending, and compared Git config, ignored strict file, environment, OS-user, and runtime-specific alternatives.",
+    "next_action": "Obtain only the owner decision on D-010B2; recommend ignored strict file .dev/validation.local.conf when .git/config is not acceptable."
   },
   "results": {
-    "summary": "The CP-1 design-freeze, CP-2 portable-compatibility, and separate CP-75A architecture/benchmark split is owner-approved. The D-001 boundary remains 25 production Python CLIs in an ordered 12-portable then 13-source-only rollout. D-010B through D-010E have been presented as one control chain, but all four decisions remain pending and only D-010B is requested next. Implementation has not started.",
+    "summary": "D-010B is decomposed: D-010B1 is owner-approved as tracked target default manual, while D-010B2 remains pending for developer-local storage. .git/config was only an economy candidate; an ignored strict .dev/validation.local.conf file is the recommended non-Git alternative after reviewing parser, ignore, package, init/upgrade, and cross-Agent impacts. Implementation has not started.",
     "files_changed": [
       ".dev/workflows/2026-08-02-python-prerequisite-diagnostics/workflow.yaml",
       ".dev/workflows/2026-08-02-python-prerequisite-diagnostics/workflow-plan.md",
@@ -115,10 +116,13 @@
       "Entrypoint inventory read-back: exact 12 portable and 13 source-only production Python CLI paths re-confirmed; 45 direct test CLIs, four import-only modules, and check-all.sh remain outside the 25 count",
       "Current source CI workflow read-back: Python 3.12 and pinned dependencies are explicitly provisioned before the source quick gate",
       "Current orchestrator outcome contract read-back: passed, failed, blocked-by-environment, not-applicable, and deferred-with-owner are the existing values; not-run-by-policy requires compatibility treatment",
-      "D-010B through D-010E integrated design review: local modes, CI authority, result truth, and bounded attempt/observation recommendations recorded"
+      "D-010B through D-010E integrated design review: local modes, CI authority, result truth, and bounded attempt/observation recommendations recorded",
+      "Owner decision: D-010B1 tracked target routine local default manual approved; developer-local transport explicitly not implied",
+      "Local transport evidence: current .gitignore, distribution profile, public initialization seed, project-config template, directory boundaries, and existing runtime-local conventions inspected",
+      "D-010B2 alternatives: .git/config, ignored strict local file, one-shot environment, OS-user config, and runtime-specific settings compared"
     ],
     "finding_status": "not-addressed",
-    "residual_risk": "External tracking now exists as Proposal #75, but it is not accepted or implementation-authorized. Thirteen #69 atomic decisions remain unresolved, including local and CI semantics, result taxonomy, Agent retry budget, interpreter trust, launcher coverage, dependency recovery, canonical runtime, output, proof, remaining script ownership, testing, and documentation; implementation remains paused.",
+    "residual_risk": "External tracking now exists as Proposal #75, but it is not accepted or implementation-authorized. The manual target default is resolved, but thirteen #69 atomic decisions remain unresolved, including developer-local transport, CI semantics, result taxonomy, Agent retry budget, interpreter trust, launcher coverage, dependency recovery, canonical runtime, output, proof, remaining script ownership, testing, and documentation; implementation remains paused.",
     "follow_up_needed": true
   }
 }
