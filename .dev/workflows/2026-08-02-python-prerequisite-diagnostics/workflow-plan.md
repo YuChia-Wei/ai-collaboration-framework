@@ -12,14 +12,14 @@
 - `workflow_id`: `2026-08-02-python-prerequisite-diagnostics`
 - `workflow_kind`: `ai-context-maintenance`
 - `owner_skill`: `ai-context-governance`
-- `branch`: `codex/2026-08-02-python-prerequisite-diagnostics`
+- `branch`: `codex/2026-08-02-python-prerequisite-diagnostics-closeout`
 - `base_branch`: `main`
-- `branch_segment`: `1`
-- `status`: `in_progress`
-- `current_phase`: `integration`
+- `branch_segment`: `2`
+- `status`: `completed`
+- `current_phase`: `completed`
 - `artifact_root`: `.dev/workflows/2026-08-02-python-prerequisite-diagnostics`
 - `created_at`: `2026-08-02T10:32:53+08:00`
-- `updated_at`: `2026-08-03T07:17:19+08:00`
+- `updated_at`: `2026-08-03T07:28:29+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md`
 - `template_version`: `1.2.0`
 
@@ -29,8 +29,8 @@
 - Baseline evidence: `.dev/assessments/ASM-20260730-001/assessment.yaml` and `ASM-20260730-001#AIC-004`.
 - Authorization source: the repository owner requested on 2026-08-02 that this workflow be opened, that design decisions be discussed one at a time with impact explanations, and that approved design continue into implementation without closing this workflow.
 - Authorized now: the complete 22-decision design was explicitly approved by the repository owner on 2026-08-02; `CP-1 — #69 Design Freeze` and `CP-2 — #69 Portable Compatibility` are satisfied. Portable implementation commit `3f863be` preserves direct paths and exit mappings and passes the bounded compatibility evidence in `evidence/portable-compatibility-checkpoint.md`.
-- Approval gate: accumulated-design approval, the receiving-host gate, CP-2, the complete source-wide critical gate, and independent verification `ASM-20260803-001` are satisfied. PR #78 is open. Its first hosted run exposed an Ubuntu-only GWT-018 fixture-isolation regression; the owner approved the test-only correction on 2026-08-03. A fresh hosted run and merged-main read-back remain before final closure.
-- Provider state: live Story #77 was created from canonical `TOOL-002` at equivalent active-history source revision `6b55ddb`, read back with the exact title, open state, required live markers, and `kind:story`, `scope:mixed`, and `created-by:codex` labels. Project #3 read-back confirms `In progress`, `P2 Normal`, `Not required`, `v0.8.0`, and `Not yet published`. Proposal #69 received a promotion comment and was closed as completed. Provider state remains visibility and evidence; owner authorization and this workflow remain authoritative.
+- Approval gate: all design, receiving-host, CP-2, implementation, source-wide validation, independent verification, hosted-CI, merge, merged-main read-back, and provider closeout gates are satisfied. PR #78 merged as `2070e44`; the validated feature tree was read back unchanged from `main`.
+- Provider state: Story #77 has a completion receipt and is closed with reason `completed`. Project #3 reads Status `Done` under `Not yet published`; its prior `P2 Normal`, `Not required`, and `v0.8.0` field read-back remains applicable. Proposal #69 remains the completed discussion origin. Provider state is retained as visibility and evidence, not as workflow authority.
 
 ## Objective And Scope
 
@@ -53,12 +53,13 @@
 - Local-only history redaction, recovery mapping, and commit-compression assessment: `.dev/workflows/2026-08-02-python-prerequisite-diagnostics/evidence/local-history-redaction-and-compression-assessment.md`
 - Push-only cross-host handoff checkpoint: `.dev/workflows/2026-08-02-python-prerequisite-diagnostics/handoff-checkpoints/AIC-004-diagnostic-implementation-push.yaml`
 - PR #78 hosted-CI diagnosis and remediation evidence: `.dev/workflows/2026-08-02-python-prerequisite-diagnostics/evidence/pr-78-ci-remediation.md`
+- Merged-main and provider closeout evidence: `.dev/workflows/2026-08-02-python-prerequisite-diagnostics/evidence/merged-main-and-provider-closeout.md`
 
 ## Finding Triage
 
 | Finding | Severity | Owner | Disposition | Task | Validation |
 | --- | --- | --- | --- | --- | --- |
-| `ASM-20260730-001#AIC-004` | MEDIUM | `ai-context-governance` | D-001 approved; remaining design in progress; implementation authorized only after explicit accumulated-design approval | `AIC-004-diagnostic-design`, then portable `AIC-004-diagnostic-implementation`, then `AIC-004-source-diagnostic-implementation` | entrypoint inventory, fallback/ownership assessment, deterministic prerequisite tests, affected validators/package tests, aggregate gates, independent verification assessment |
+| `ASM-20260730-001#AIC-004` | MEDIUM | `ai-context-governance` | resolved and independently verified | `AIC-004-diagnostic-design`, portable `AIC-004-diagnostic-implementation`, and `AIC-004-source-diagnostic-implementation` completed | deterministic prerequisite tests, affected validators/package tests, source-wide and hosted gates, `ASM-20260803-001`, merged-main read-back |
 
 ## Initial Impact Assessment
 
@@ -562,9 +563,9 @@ Discussion may continue in the same Codex task for conversational continuity, bu
 
 ## Resume Checkpoint
 
-- Last completed action: diagnosed PR #78 Portable AI Context Gates run `30761100100`, job `91531622398`, and locally validated the owner-approved test-only GWT-018 fixture isolation correction; production resolver behavior remains unchanged.
-- Current task: `AIC-004-source-diagnostic-implementation`.
-- Exact next action: commit and push the approved fixture correction, require the new PR #78 hosted checks to pass, merge, and complete merged-`main` closeout.
+- Last completed action: read back merge commit `2070e44cff17bf3baad52f014ec360a449e3bd36` from `origin/main`, closed Issue #77 as completed, and confirmed Project #3 Status `Done` under `Not yet published`.
+- Current task: completed; this continuation branch persists canonical and provider closeout evidence only.
+- Exact next action: commit, push, and merge the closeout-only pull request; do not begin v0.8.0 release preparation.
 - Validation already completed: confirmed clean `main@2263744bb2dc876f8077547e961fc68be28b0074` before branching; verified the final baseline assessment; verified the inventory against `git ls-files`, direct file reads, distribution profile, shell registry, active documentation, and existing tests; parsed all then-existing task JSON files; `git diff --check`, `validate-workflow-artifacts.py`, and `validate-ai-context.py` passed.
 - Receiving-host validation: the existing Python 3.13.14 interpreter imports governed PyYAML 6.0.3; child-only Git installation PATH prefixes restore `dirname`; `validate-assessment-artifacts.py` passes for 25 assessments after the index synchronization; and `check-all.sh --critical` passes 45/45 required checks with zero failures and zero deferred outcomes. No interpreter, dependency, environment, or persistent host setting was installed or changed.
 - Handoff-checkpoint validation: the refreshed checkpoint pins clean validated parent `5381b97`, the 950-line normalized critical-gate digest `98b988090c33a58cc11be58be7c23e79860ead126a1f2bbad6ea869613d865e5`, and normal continuation. Repository verification is the next check after committing the checkpoint as its containing commit.
@@ -572,10 +573,10 @@ Discussion may continue in the same Codex task for conversational continuity, bu
 - Direct forward-fix validation: commit `48d2871` changes only four existing assessment files, leaves both retained external evidence SHA-256 digests unchanged, and reduces the exact host-local home-path count to zero in the corrected branch's current tracked tree. Published Git history remains unchanged by owner decision.
 - Post-main rebase validation: `main@48d2871` is the current branch merge base; the pre-rebase and current ranges each contain 32 linear commits; all 32 ordered pairs preserve commit subject, author, author email, and author date; the first 31 current commits have stable pins, while this reconciliation record is resolved as its containing commit after amend.
 - Validation environment note: the policy-sanctioned replacement critical gate ran from `2026-08-02T23:43:09+08:00` through `2026-08-02T23:50:41+08:00` and passed with exit `0`; its normalized digest and bounded tail are pinned in the checkpoint. The earlier two named host failures are resolved.
-- PR #78 validation: AI Context Governance run `30761100104` and Package AI Context Candidate run `30761100110` passed. Portable AI Context Gates run `30761100100` failed only in Ubuntu quick-gate job `91531622398`; both prerequisite-contract jobs passed. The corrected focused case passes 1/1 and the complete fail-closed suite passes 30/30 outside the sandbox. Local `check-all.sh --quick` is `blocked-by-environment`, not passed, because Git Bash could not resolve `dotnet`; direct PowerShell .NET suites pass 49/49, 2/2, and 5/5. Details are retained in `evidence/pr-78-ci-remediation.md`.
-- Git state: active branch `codex/2026-08-02-python-prerequisite-diagnostics`, currently based on `main@2263744bb2dc876f8077547e961fc68be28b0074`; PR #78 was opened from pushed head `93806ad`; the branch tracks `origin/codex/2026-08-02-python-prerequisite-diagnostics`. An offline recovery bundle captures the pre-redaction head and must remain unpublished.
-- Branch history and checkpoint handoffs: bootstrap commits `af4043d` and `e0a00e8`; absent-interpreter boundary `260d052`; inventory translation `d411981`; D-001/fallback assessment `f81547e`; runtime rationale and D-002A `3291d81`; downstream switch gap `afc0245`; activation/retry scope `c6501ec`; D-010B team scenarios `187cb69`; opt-in location and skill-stage map `182a7d8`; workflow ownership and self-test terminology `f1dc0b9`; self-test boundary and FUP scope `0d99b9f`; staged #69/#75 scope boundary `6d9b968`; checkpoint split and integrated D-010 framing `fbc4505`; manual-default and local-store comparison `0795798`; persistent local opt-in `3974074`; target CI enforcement `1720551`; outcome/retry controls `cdfb1c4`; interpreter discovery order `d0fe4ae`; environment-readiness follow-up split `303c66b`; native-launcher boundary `f2a92cc`; dependency-profile boundary `3a3dddd`; recovery-guidance boundary `537beb9`; canonical-runtime boundary `579a9b6`; diagnostic-output projection `940bb41`; exit-code compatibility `6805787`; pre-mutation guarantee `75afd2a`; deterministic test matrix `e09ab0a`; prerequisite ownership `40570ac`; migration communication `8c240ad`; CP-1 state `c93f699`; PR integration head `93806ad`; the owner-approved GWT-018 fixture correction is the current uncommitted checkpoint.
-- Blockers or unresolved decisions: no TOOL-002 design, Story-binding, provider, receiving-host, CP-2, source implementation, complete-gate, or independent-verification decision remains unresolved. The earlier full packaging invocation timed out and remains explicitly not passed; the later committed replacement gate passed and is recorded separately. The current local quick aggregate is `blocked-by-environment`, not passed, while the direct .NET suites pass. A fresh PR #78 hosted run, merge, and merged-main integration remain. Proposals #75 and #76 remain external, unaccepted, and implementation-unauthorized.
+- PR #78 validation: AI Context Governance run `30772063194`, Package AI Context Candidate run `30772063213`, and Portable AI Context Gates run `30772063228` all passed. The corrected focused case passes 1/1 and the complete fail-closed suite passes 30/30 outside the sandbox. The local `check-all.sh --quick` attempt remains `blocked-by-environment`, not passed, because Git Bash could not resolve `dotnet`; direct PowerShell .NET suites pass 49/49, 2/2, and 5/5. Details are retained in `evidence/pr-78-ci-remediation.md`.
+- Git state: closeout continuation branch `codex/2026-08-02-python-prerequisite-diagnostics-closeout` from merged `main@2070e44cff17bf3baad52f014ec360a449e3bd36`. An offline recovery bundle captures pre-redaction local history and remains unpublished.
+- Branch history and checkpoint handoffs: PR #78 merged validated head `d1872ca` as merge commit `2070e44`; segment 2 began from that merged `main` and records Issue #77 plus Project #3 closeout. Historical checkpoints remain pinned in this plan and their evidence files.
+- Blockers or unresolved decisions: none for TOOL-002. The retained downstream integration remains an explicit conditional skip and Proposals #75/#76 remain separate, unaccepted scopes. v0.8.0 release preparation and publication remain separately unauthorized.
 
 ## Branch Lifecycle
 
@@ -589,3 +590,5 @@ Discussion may continue in the same Codex task for conversational continuity, bu
 | 1 | `codex/2026-08-02-python-prerequisite-diagnostics` | `main@48d2871ec7e1592bcaa0c0b1fa72b6dd1b280231` | post-direct-fix rebase | `c93f699062283b4c10ae89e1774a53bdf890a700` | local | `2026-08-02T21:30:37+08:00` | Record that the direct assessment fix is integrated and all 32 local commits were rebased with subject and author/date parity. | Amend the reconciliation containing commit, then create and validate the push-only cross-host checkpoint. |
 | 1 | `codex/2026-08-02-python-prerequisite-diagnostics` | `main@48d2871ec7e1592bcaa0c0b1fa72b6dd1b280231` | push-only repair checkpoint | `7ce14a41342afde0aa03935fb163fa83ceed9640` | `origin` / pending owner push | `2026-08-02T21:39:50+08:00` | Transfer the active workflow without misreporting the failed host gate as passed; pin the clean validated parent and bound continuation to two named environment repairs. | Push this branch; on the receiving host verify the checkpoint, repair only the named failures, and replace it with a passing normal checkpoint before implementation. |
 | 1 | `codex/2026-08-02-python-prerequisite-diagnostics` | `main@2263744bb2dc876f8077547e961fc68be28b0074` | receiving-host normal-continuation checkpoint | validated parent `5381b97270726a89b266f7bbab953e744cc08736` | local / containing commit pending | `2026-08-02T23:50:46+08:00` | Record that both named host failures and the Python-exposed assessment index drift are repaired and the full critical gate passes. | Create and bind `TOOL-002`, then implement only the 12 portable entrypoints and stop at `CP-2`. |
+| 1 | `codex/2026-08-02-python-prerequisite-diagnostics` | `main@2263744bb2dc876f8077547e961fc68be28b0074` | integration | `2070e44cff17bf3baad52f014ec360a449e3bd36` | PR #78 / `main` | `2026-08-03T07:24:11+08:00` | Integrate the validated TOOL-002 implementation and owner-approved GWT-018 fixture correction with a merge commit. | Continue closeout from updated main after merged-tree read-back. |
+| 2 | `codex/2026-08-02-python-prerequisite-diagnostics-closeout` | `main@2070e44cff17bf3baad52f014ec360a449e3bd36` | closeout | pending | closeout PR / `main` | `2026-08-03T07:28:29+08:00` | Persist merged-main, Issue #77, Project #3, backlog, and workflow completion evidence without release mutation. | Merge the closeout-only PR; no TOOL-002 implementation or release work remains. |
