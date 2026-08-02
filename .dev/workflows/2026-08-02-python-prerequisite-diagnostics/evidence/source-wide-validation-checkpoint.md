@@ -6,7 +6,7 @@
 - `backlog_id`: `TOOL-002`
 - `github_issue`: `#77`
 - `baseline_finding`: `ASM-20260730-001#AIC-004`
-- `subject_commit`: `cc08a36ca50cd284f3163747aa335bd6c934212f`
+- `subject_commit`: `cbf36e085d40fba41c5be31eb73977f7870f8c1a`
 - `validated_at`: `2026-08-03T02:03:07+08:00`
 - `environment`: Windows, Python `3.13.14`, PyYAML `6.0.3`, Git Bash
 
@@ -58,7 +58,7 @@ failure:
    current process, and its package recovery command pointed at
    `payload/requirements.txt` rather than the envelope's governed file.
 
-Commit `cc08a36ca50cd284f3163747aa335bd6c934212f` corrects those defects. The
+Commit `cbf36e085d40fba41c5be31eb73977f7870f8c1a` corrects those defects. The
 focused regressions and complete package suite passed before the aggregate gate
 was rerun from that commit.
 

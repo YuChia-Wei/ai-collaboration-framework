@@ -3,7 +3,7 @@ provider: "github"
 repository: "YuChia-Wei/ai-collaboration-prompts-dotnet-backend"
 migration_id: "github-live-TOOL-002-2026-08-02"
 stage: "stage-b-read-back-complete"
-source_revision: "f65b0dc261ca187fc7ff5c5e918f6e37e8961756"
+source_revision: "6b55ddbe808bc0f72e02936256865aeebc4e9b35"
 generated_at: "2026-08-03T00:07:15+08:00"
 project:
   number: 3

@@ -14,7 +14,7 @@
 - `owner_skill`: `ai-context-governance`
 - `status`: `draft`
 - `created_at`: `2026-08-03T02:11:40+08:00`
-- `updated_at`: `2026-08-03T02:11:40+08:00`
+- `updated_at`: `2026-08-03T02:21:24+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-remediation-report-template.md`
 - `template_version`: `2.0.0`
 - `baseline_assessment`: `ASM-20260730-001`
@@ -40,7 +40,7 @@
 
 | Assessment Finding | Before Severity | Status | Changed Files | Validation | Commit | Residual Risk |
 | --- | --- | --- | --- | --- | --- | --- |
-| `ASM-20260730-001#AIC-004` | MEDIUM | `resolved` | registry, core, launchers, 25 CLIs, package/policy/docs/tests | focused tests, critical gate, `ASM-20260803-001` | `91e6368`, `21e4001`, `cc08a36` | hosted PR/CI and merged-main read-back remain integration gates |
+| `ASM-20260730-001#AIC-004` | MEDIUM | `resolved` | registry, core, launchers, 25 CLIs, package/policy/docs/tests | focused tests, critical gate, `ASM-20260803-001` | `3f863be`, `6b8cd56`, `cbf36e0` | hosted PR/CI and merged-main read-back remain integration gates |
 
 ## Changes And Evidence
 
@@ -79,8 +79,8 @@
 
 - Required validations: focused tests, package compatibility, complete critical
   gate, structural validators, and independent assessment are passed.
-- Commit status: implementation and verification are committed locally through
-  `722cdf37c4c0b897da283a2fe8134f95560b3ea9`; branch push and PR pending.
+- Commit status: implementation, verification, and reconciliation are committed
+  locally through `7909b445b07d6d3280afa748306eb556dcc771f4`; branch push and PR pending.
 - Workflow/task status: workflow and the single integration-owning task remain
   `in_progress` until hosted checks, merge, and main read-back complete.
 - Final next action: push the branch, create a ready PR, require hosted checks,

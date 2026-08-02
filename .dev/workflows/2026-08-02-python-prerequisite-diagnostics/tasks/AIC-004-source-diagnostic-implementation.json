@@ -8,7 +8,7 @@
   "owner_skill": "ai-context-governance",
   "status": "in_progress",
   "created_at": "2026-08-02T12:03:33+08:00",
-  "updated_at": "2026-08-03T02:11:40+08:00",
+  "updated_at": "2026-08-03T02:21:24+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-5.6-sol",
   "reasoning_effort": "high",
@@ -96,7 +96,7 @@
       "test_ai_context_packaging.py: 28 passed; 1 conditional retained-downstream integration skipped and not counted as passed",
       "focused packaging regressions 006 and 014: 2 passed",
       "affected source release, provider, evaluation, repository-config, skill-transition, version, and governance suites: 127 passed before the final aggregate gate",
-      "check-all.sh --critical from cc08a36: passed, exit 0, elapsed 459.5 seconds",
+      "check-all.sh --critical from cbf36e0: passed, exit 0, elapsed 459.5 seconds",
       "validate-ai-context.py, validate-shell-assets.py, and git diff --check: passed",
       "ASM-20260803-001: final independent verification; no critical, must-fix, or should-fix finding; AIC-004 resolved"
     ],

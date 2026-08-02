@@ -4,7 +4,7 @@
 - Task: `AIC-004-diagnostic-implementation`
 - Canonical work item: `TOOL-002`
 - Provider Story: GitHub Issue `#77`
-- Implementation commit: `91e636894fcf6c9551a0235b02bd5869807b2b56`
+- Implementation commit: `3f863be4a57e64ac068983081854648277719b81`
 - Recorded at: `2026-08-03T01:05:00+08:00`
 - Outcome: `passed`
 
@@ -19,7 +19,7 @@ tagging, publication, or work owned by Proposals #75 or #76.
 
 ## Implemented Boundary
 
-Commit `91e6368` adds the governed 25-entry registry, a no-write Python
+Commit `3f863be` adds the governed 25-entry registry, a no-write Python
 prerequisite core, POSIX and PowerShell discovery launchers, and direct guards
 for exactly the 12 portable production CLIs. It also adds target-owned routine
 validation selection, source-only exclusion for `.dev/validation.local.conf`,
@@ -73,7 +73,7 @@ canonical language boundary.
 
 ## CP-2 Decision
 
-CP-2 is satisfied. The portable task is complete at commit `91e6368`; the
+CP-2 is satisfied. The portable task is complete at commit `3f863be`; the
 owner's continuation instruction accepts this passing checkpoint and activates
 `AIC-004-source-diagnostic-implementation`. The 13-entry source-only batch must
 reuse the same registry/core contract, remain outside portable package

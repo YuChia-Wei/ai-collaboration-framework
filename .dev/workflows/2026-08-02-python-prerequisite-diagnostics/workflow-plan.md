@@ -19,7 +19,7 @@
 - `current_phase`: `integration`
 - `artifact_root`: `.dev/workflows/2026-08-02-python-prerequisite-diagnostics`
 - `created_at`: `2026-08-02T10:32:53+08:00`
-- `updated_at`: `2026-08-03T02:11:40+08:00`
+- `updated_at`: `2026-08-03T02:21:24+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md`
 - `template_version`: `1.2.0`
 
@@ -28,9 +28,9 @@
 - Work-item binding: canonical Story `TOOL-002`, GitHub Issue [#77](https://github.com/YuChia-Wei/ai-collaboration-prompts-dotnet-backend/issues/77). Proposal [#69](https://github.com/YuChia-Wei/ai-collaboration-prompts-dotnet-backend/issues/69) is the completed discussion origin, not the active execution authority.
 - Baseline evidence: `.dev/assessments/ASM-20260730-001/assessment.yaml` and `ASM-20260730-001#AIC-004`.
 - Authorization source: the repository owner requested on 2026-08-02 that this workflow be opened, that design decisions be discussed one at a time with impact explanations, and that approved design continue into implementation without closing this workflow.
-- Authorized now: the complete 22-decision design was explicitly approved by the repository owner on 2026-08-02; `CP-1 — #69 Design Freeze` and `CP-2 — #69 Portable Compatibility` are satisfied. Portable implementation commit `91e6368` preserves direct paths and exit mappings and passes the bounded compatibility evidence in `evidence/portable-compatibility-checkpoint.md`.
+- Authorized now: the complete 22-decision design was explicitly approved by the repository owner on 2026-08-02; `CP-1 — #69 Design Freeze` and `CP-2 — #69 Portable Compatibility` are satisfied. Portable implementation commit `3f863be` preserves direct paths and exit mappings and passes the bounded compatibility evidence in `evidence/portable-compatibility-checkpoint.md`.
 - Approval gate: accumulated-design approval, the receiving-host gate, CP-2, the complete source-wide critical gate, and independent verification `ASM-20260803-001` are satisfied. The owner's continuation request authorized the completed 13-entry source-only batch; PR/hosted-CI and merged-main read-back remain before final closure.
-- Provider state: live Story #77 was created from canonical `TOOL-002` at source revision `f65b0dc`, read back with the exact title, open state, required live markers, and `kind:story`, `scope:mixed`, and `created-by:codex` labels. Project #3 read-back confirms `In progress`, `P2 Normal`, `Not required`, `v0.8.0`, and `Not yet published`. Proposal #69 received a promotion comment and was closed as completed. Provider state remains visibility and evidence; owner authorization and this workflow remain authoritative.
+- Provider state: live Story #77 was created from canonical `TOOL-002` at equivalent active-history source revision `6b55ddb`, read back with the exact title, open state, required live markers, and `kind:story`, `scope:mixed`, and `created-by:codex` labels. Project #3 read-back confirms `In progress`, `P2 Normal`, `Not required`, `v0.8.0`, and `Not yet published`. Proposal #69 received a promotion comment and was closed as completed. Provider state remains visibility and evidence; owner authorization and this workflow remain authoritative.
 
 ## Objective And Scope
 
@@ -561,7 +561,7 @@ Discussion may continue in the same Codex task for conversational continuity, bu
 
 ## Resume Checkpoint
 
-- Last completed action: finalized independent verification `ASM-20260803-001` at `722cdf3`; it found no critical, must-fix, or should-fix issue and recommends `ASM-20260730-001#AIC-004` resolved.
+- Last completed action: repaired the unpushed AI-assisted signature trailers without changing the preserved human commit `49aa57b`, any checkpoint boundary, or the final tree; repinned independent verification `ASM-20260803-001` to `d02674f`.
 - Current task: `AIC-004-source-diagnostic-implementation`.
 - Exact next action: push the branch, create a ready PR, pass hosted checks, merge, and complete merged-`main` closeout.
 - Validation already completed: confirmed clean `main@2263744bb2dc876f8077547e961fc68be28b0074` before branching; verified the final baseline assessment; verified the inventory against `git ls-files`, direct file reads, distribution profile, shell registry, active documentation, and existing tests; parsed all then-existing task JSON files; `git diff --check`, `validate-workflow-artifacts.py`, and `validate-ai-context.py` passed.

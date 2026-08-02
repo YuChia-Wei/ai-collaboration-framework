@@ -15,7 +15,7 @@ report: "report.md"
 artifact_branch: "codex/2026-08-02-python-prerequisite-diagnostics"
 base_branch: "main"
 created_at: "2026-08-03T02:09:22+08:00"
-updated_at: "2026-08-03T02:09:22+08:00"
+updated_at: "2026-08-03T02:21:24+08:00"
 template_source: ".dev/assessments/templates/assessment-locator-template.yaml"
 template_version: "1.0.0"
 report_template_source: ".ai/assets/skills/ai-context-auditor/templates/ai-context-audit-report-template.md"
@@ -23,7 +23,7 @@ report_template_version: "2.1.0"
 subject_ref:
   repository: "YuChia-Wei/ai-collaboration-prompts-dotnet-backend"
   branch: "codex/2026-08-02-python-prerequisite-diagnostics"
-  commit: "e11750a188cbf298b87bfb8e0b097fecd387e2ff"
+  commit: "bd63d3c3b6998484304edb982c464199980dce7e"
 scope:
   included:
     - ".ai/scripts/python-entrypoints.json"

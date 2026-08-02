@@ -8,7 +8,7 @@
   "owner_skill": "ai-context-governance",
   "status": "completed",
   "created_at": "2026-08-02T10:32:53+08:00",
-  "updated_at": "2026-08-03T01:05:00+08:00",
+  "updated_at": "2026-08-03T02:21:24+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-5.6-sol",
   "reasoning_effort": "high",
@@ -61,11 +61,11 @@
       "Applicable aggregate repository gate",
       "Independent verification of ASM-20260730-001#AIC-004"
     ],
-    "last_completed_step": "Implemented the 12 portable/downstream entrypoints and committed the passing CP-2 implementation batch at 91e636894fcf6c9551a0235b02bd5869807b2b56.",
+    "last_completed_step": "Implemented the 12 portable/downstream entrypoints and committed the passing CP-2 implementation batch at 3f863be4a57e64ac068983081854648277719b81.",
     "next_action": "Continue with AIC-004-source-diagnostic-implementation under the owner's accepted CP-2 continuation instruction."
   },
   "results": {
-    "summary": "The first 12-entry portable/downstream implementation batch is complete at 91e6368. Shared fail-closed diagnostics, both launchers, direct guards, package projection, target-owned routine-validation policy, documentation, focused CI, clean-install proof, and v0.7.0 upgrade proof pass CP-2.",
+    "summary": "The first 12-entry portable/downstream implementation batch is complete at 3f863be. Shared fail-closed diagnostics, both launchers, direct guards, package projection, target-owned routine-validation policy, documentation, focused CI, clean-install proof, and v0.7.0 upgrade proof pass CP-2.",
     "files_changed": [
       ".ai/scripts/python-entrypoints.json",
       ".ai/scripts/python_prerequisites.py",

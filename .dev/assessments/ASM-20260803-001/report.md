@@ -15,12 +15,12 @@
 - `status`: `final`
 - `audit_date`: `2026-08-03`
 - `created_at`: `2026-08-03T02:09:22+08:00`
-- `updated_at`: `2026-08-03T02:09:22+08:00`
+- `updated_at`: `2026-08-03T02:21:24+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-auditor/templates/ai-context-audit-report-template.md`
 - `template_version`: `2.1.0`
 - `repository`: `YuChia-Wei/ai-collaboration-prompts-dotnet-backend`
 - `subject_branch`: `codex/2026-08-02-python-prerequisite-diagnostics`
-- `subject_commit`: `e11750a188cbf298b87bfb8e0b097fecd387e2ff`
+- `subject_commit`: `bd63d3c3b6998484304edb982c464199980dce7e`
 - `previous_assessment`: `ASM-20260730-001`
 - `workflow_refs`: `.dev/workflows/2026-08-02-python-prerequisite-diagnostics/workflow.yaml`
 
@@ -75,7 +75,7 @@
 
 - Evidence used: baseline report, tracked registry and entrypoints, launchers,
   distribution profile, D-010 policy, committed CP-2 and source-wide checkpoint
-  evidence, and Git state at `e11750a`.
+  evidence, and Git state at `bd63d3c`.
 - Checks performed: counted registry boundaries, inspected guard/import ordering,
   checked deterministic discovery and recovery paths, verified package/source
   classification, and checked the absence of v0.8.0 release artifacts.
@@ -88,7 +88,7 @@
   workflow lifecycle validation.
 - Checks performed: independently rejected closure while the workflow still
   carried only the earlier timeout, then read back committed replacement
-  evidence at `e11750a` and confirmed that timeout, skip, integration, and
+  evidence at `bd63d3c` and confirmed that timeout, skip, integration, and
   finding dispositions remain fail-closed and distinct.
 - Result: `ASM-20260730-001#AIC-004` is resolved; PR and merged-main work remains
   a workflow closure boundary rather than a technical remediation gap.
@@ -166,12 +166,12 @@ bounded post-remediation verification.
 
 | Check | Result | Evidence / Notes |
 | --- | --- | --- |
-| Git state and subject | passed | `HEAD=e11750a`; implementation correction subject `cc08a36` exists |
+| Git state and subject | passed | `HEAD=bd63d3c`; implementation correction subject `cbf36e0` exists |
 | Registry contract | passed | 25 = 12 portable + 13 source-only; 23 PyYAML + 2 stdlib |
 | Shared prerequisite GWT | passed | 14/14 outside sandbox, including real shadow-module smoke |
 | Source-only entrypoint GWT | passed | 3/3; 13 help paths and 12 PyYAML negative paths |
 | Packaging GWT | passed with conditional exclusion | 28 passed; 1 retained downstream integration skipped and not counted as passed |
-| Complete critical gate | passed | exit `0`, elapsed `459.5s`, committed checkpoint at `e11750a` |
+| Complete critical gate | passed | exit `0`, elapsed `459.5s`, committed checkpoint at `bd63d3c` |
 | AI context and workflow artifacts | passed | navigation/wrapper parity and workflow metadata validators passed |
 | Release boundary | passed | `.dev/releases/v0.8.0/**` absent; no release mutation performed |
 | Independent finding read-back | passed | no critical, must-fix, or should-fix findings; AIC-004 disposition `resolved` |
@@ -203,11 +203,11 @@ bounded post-remediation verification.
 
 ```text
 git rev-parse HEAD
-git show --no-patch cc08a36ca50cd284f3163747aa335bd6c934212f
+git show --no-patch cbf36e085d40fba41c5be31eb73977f7870f8c1a
 python .ai/scripts/validate-ai-context.py
 python .ai/scripts/tests/test_python_entrypoints_contract.py -v
 direct registry, guard, launcher, policy, workflow, and release-boundary reads
-read-back of source-wide-validation-checkpoint.md at e11750a
+read-back of source-wide-validation-checkpoint.md at bd63d3c
 ```
 
 ### Notes
