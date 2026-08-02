@@ -19,7 +19,7 @@
 - `current_phase`: `remediation-planning`
 - `artifact_root`: `.dev/workflows/2026-08-02-python-prerequisite-diagnostics`
 - `created_at`: `2026-08-02T10:32:53+08:00`
-- `updated_at`: `2026-08-02T18:33:31+08:00`
+- `updated_at`: `2026-08-02T18:50:06+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md`
 - `template_version`: `1.2.0`
 
@@ -77,6 +77,7 @@
 - A validation activation switch would not remove Python from explicit package apply, initialization, or upgrade lifecycles. Routine local/CI enforcement must be separated from safety-critical lifecycle commands before a switch is designed.
 - The owner confirmed that repeated automatic local-check failures during software-development workflows cause Agent retries and material token waste. Token control is therefore a first-class acceptance concern: policy must be resolved before invocation, and an unchanged prerequisite failure must not trigger identical command retries.
 - The owner authorized external tracking for the out-of-scope aggregate-runner concerns. GitHub Proposal [#75](https://github.com/YuChia-Wei/ai-collaboration-prompts-dotnet-backend/issues/75), `[Proposal] Separate check-all Aggregate Gates from Downstream Workflow Validation`, now owns aggregate composition, source-versus-downstream profiles, portable-handoff coupling, performance budgets, compatibility, and release sequencing. Issue #69 retains only `check-all.sh` prerequisite discovery and diagnostic behavior.
+- The owner also authorized external tracking for the generalized host/Agent capability idea. GitHub Proposal [#76](https://github.com/YuChia-Wei/ai-collaboration-prompts-dotnet-backend/issues/76), `[Proposal] Add Environment Readiness Profiles for Host and Agent Capabilities`, now owns the proposed readiness skill, ignored local result, target execution/permission policy, consuming-skill prerequisite declarations, and policy-governed workspace-edit fallback. Issue #69 does not add a general readiness profile or make it a Python prerequisite.
 - A discussion-completeness review found six resolved atomic decisions, two decomposed umbrella decisions, and thirteen pending atomic decisions. Issue #69 is therefore not ready for accumulated-design approval or implementation yet.
 - The owner approved the `CP-1`/`CP-2`/`CP-75A` split on 2026-08-02. Issue #69 remains on the current workflow and branch through design freeze and its two implementation batches; Issue #75 will receive a separate workflow and branch after `CP-1`, beginning with architecture and benchmark evidence rather than a v0.8.0 behavior change.
 - Detailed inventory and fallback/ownership evidence are retained in the English evidence files with complete owner-review translations in their `.zh-TW.md` companions.
@@ -145,6 +146,21 @@ The uv probe is optional, read-only, and non-fatal as an individual source. If u
 No automatic Codex, Claude Code, ChatGPT Desktop, or other Agent-product private-runtime scan is approved for v0.8.0. An owner may still point `AI_CONTEXT_PYTHON` at such an executable explicitly; that preserves owner trust without making provider-private paths part of the portable repository contract.
 
 Local read-only evidence on 2026-08-02 used uv 0.11.29 with the approved safety flags and resolved its installed managed CPython 3.14.1. The same installation is also exposed as `python3.14` on PATH, and both identities lack PyYAML, proving that interpreter discovery and dependency readiness remain separate. The WinGet uv link required sandbox approval in the current Agent environment, reinforcing that uv must remain a bounded fallback rather than a prerequisite or first candidate.
+
+## General Environment Readiness Follow-Up Boundary
+
+The owner approved separating the generalized environment-readiness capability from Issue #69. `FUP-002` is externally tracked as GitHub Proposal [#76](https://github.com/YuChia-Wei/ai-collaboration-prompts-dotnet-backend/issues/76), `[Proposal] Add Environment Readiness Profiles for Host and Agent Capabilities`, with `scope:mixed`, `kind:proposal`, `triage:needed`, and `created-by:codex` labels. Duplicate searches for environment readiness, local profiles, `apply_patch`, PowerShell file editing, and .NET build/test diagnostics found no open issue owning the same boundary.
+
+Proposal #76 owns evaluation of:
+
+- a possible `assess-environment-readiness` skill and ignored machine-local readiness result;
+- separate `available`, `allowed`, and `verified` evidence for host tools, Agent-runtime tools, target policy, and actual executions;
+- target-owned `.NET` build/test commands, network and permission restrictions, and explicit refresh/configuration assistance;
+- a provider-neutral `workspace-text-edit` capability that can record an advertised but unusable `apply_patch` provider;
+- an owner- and policy-approved PowerShell-native text-update fallback with repository containment, expected-content/fingerprint checks, encoding/newline preservation, atomic replacement where practical, and post-write diff verification;
+- the rule that repository policy cannot bypass a higher-priority system, developer, runtime, sandbox, or enterprise requirement to use another edit mechanism.
+
+Issue #69 retains only Python prerequisite discovery, diagnostic, and native bootstrap behavior. Its D-002C launcher decision must work without #76, must not define a general readiness snapshot, and may remain a future consumer of an approved profile through an additive integration. Creating #76 does not accept, promote, schedule, or authorize its implementation.
 
 ## Current Downstream Validation Activation State
 
@@ -410,15 +426,15 @@ Discussion may continue in the same Codex task for conversational continuity, bu
 
 ## Resume Checkpoint
 
-- Last completed action: resolved `D-002B` with explicit-owner, active/generic PATH, versioned PATH, optional read-only installed-uv, and fail-closed precedence; automatic Agent-product private-runtime discovery remains excluded.
+- Last completed action: separated generalized environment readiness, target enterprise execution policy, Agent-runtime capability evidence, and policy-governed workspace-edit fallback into externally tracked Proposal #76; D-002C remains pending inside #69.
 - Current task: `AIC-004-diagnostic-design`.
-- Exact next action: explain and obtain only the owner decision on `D-002C` OS-native launcher coverage and delegation boundary.
-- Validation already completed: confirmed clean `main@2263744bb2dc876f8077547e961fc68be28b0074` before branching; verified the final baseline assessment; verified the inventory against `git ls-files`, direct file reads, distribution profile, shell registry, active documentation, and existing tests; parsed both task JSON files; `git diff --check`, `validate-workflow-artifacts.py`, and `validate-ai-context.py` passed.
+- Exact next action: resume only the owner decision on whether D-002C provides POSIX-sh and Windows-PowerShell thin Python launchers as a self-contained bootstrap/fallback that does not depend on Proposal #76.
+- Validation already completed: confirmed clean `main@2263744bb2dc876f8077547e961fc68be28b0074` before branching; verified the final baseline assessment; verified the inventory against `git ls-files`, direct file reads, distribution profile, shell registry, active documentation, and existing tests; parsed all then-existing task JSON files; `git diff --check`, `validate-workflow-artifacts.py`, and `validate-ai-context.py` passed.
 - Current discussion-checkpoint validation: Git-history probes established the adoption timeline; the active sub-agent manifest and Codex adapter established the missed low-cost route; local uv 0.11.29 help and an offline/no-download managed-Python lookup were inspected read-only; the changed task JSON parsed with PowerShell; locator/index state was checked directly; and `git diff --check` passed. Full Python-backed repository validators were not rerun because every discovered interpreter lacks PyYAML and D-002A now forbids implicit installation; this checkpoint records that result as `blocked-by-environment`, not passed.
 - Validation environment note: generic `python` and `python3` resolve to unusable Windows aliases. A versioned uv-managed Python 3.14.1 and the Codex bundled Python 3.12.13 can start, but neither currently imports PyYAML. Prior artifact validation used Codex Python with isolated temporary `PyYAML==6.0.3`; no repository dependency files were changed.
-- Git state: active branch `codex/2026-08-02-python-prerequisite-diagnostics`, created from `main@2263744bb2dc876f8077547e961fc68be28b0074`; the latest durable design checkpoint entering this discussion is `59a8add`.
-- Branch history and checkpoint handoffs: bootstrap commits `88a01be` and `4e93c0f`; absent-interpreter boundary `cd58c2b`; inventory translation `d27fb8a`; D-001/fallback assessment `d5ae808`; runtime rationale and D-002A `9937fb4`; downstream switch gap `7fa102c`; activation/retry scope `74bb024`; D-010B team scenarios `c2b35ad`; opt-in location and skill-stage map `32ede97`; workflow ownership and self-test terminology `22e6883`; self-test boundary and FUP scope `ac2d9d7`; staged #69/#75 scope boundary `1a66897`; checkpoint split and integrated D-010 framing `8c3fb8d`; manual-default and local-store comparison `4703943`; persistent local opt-in `5c6b9e5`; target CI enforcement `8ba7ed9`; outcome/retry controls `59a8add`; no push or merge handoff has occurred.
-- Blockers or unresolved decisions: eight atomic #69 decisions remain unresolved; `D-002A`, `D-002B`, the complete D-010 control chain, and checkpoint/branch separation are resolved. Implementation edits remain paused pending explicit accumulated-design approval. Proposal #75 is externally tracked but not accepted, promoted, scheduled, or authorized for implementation.
+- Git state: active branch `codex/2026-08-02-python-prerequisite-diagnostics`, created from `main@2263744bb2dc876f8077547e961fc68be28b0074`; the latest durable design checkpoint entering this discussion is `8cef8fc`.
+- Branch history and checkpoint handoffs: bootstrap commits `88a01be` and `4e93c0f`; absent-interpreter boundary `cd58c2b`; inventory translation `d27fb8a`; D-001/fallback assessment `d5ae808`; runtime rationale and D-002A `9937fb4`; downstream switch gap `7fa102c`; activation/retry scope `74bb024`; D-010B team scenarios `c2b35ad`; opt-in location and skill-stage map `32ede97`; workflow ownership and self-test terminology `22e6883`; self-test boundary and FUP scope `ac2d9d7`; staged #69/#75 scope boundary `1a66897`; checkpoint split and integrated D-010 framing `8c3fb8d`; manual-default and local-store comparison `4703943`; persistent local opt-in `5c6b9e5`; target CI enforcement `8ba7ed9`; outcome/retry controls `59a8add`; interpreter discovery order `8cef8fc`; no push or merge handoff has occurred.
+- Blockers or unresolved decisions: eight atomic #69 decisions remain unresolved; `D-002A`, `D-002B`, the complete D-010 control chain, and checkpoint/branch separation are resolved. Implementation edits remain paused pending explicit accumulated-design approval. Proposals #75 and #76 are externally tracked but not accepted, promoted, scheduled, or authorized for implementation.
 
 ## Branch Lifecycle
 
