@@ -8,7 +8,7 @@
   "owner_skill": "ai-context-governance",
   "status": "in_progress",
   "created_at": "2026-08-02T12:03:33+08:00",
-  "updated_at": "2026-08-03T01:05:00+08:00",
+  "updated_at": "2026-08-03T02:05:46+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-5.6-sol",
   "reasoning_effort": "high",
@@ -61,17 +61,46 @@
       "Applicable aggregate repository gate",
       "Independent verification of ASM-20260730-001#AIC-004"
     ],
-    "last_completed_step": "CP-2 passed at portable implementation commit 91e636894fcf6c9551a0235b02bd5869807b2b56, and the owner's continuation instruction accepted the checkpoint for automatic source-only continuation.",
-    "next_action": "Apply the shared guarded import contract to the 13 registered source-only production CLIs and add write-boundary regressions."
+    "last_completed_step": "All 13 source-only CLIs are guarded at 21e4001, the current-process/package gate defects are corrected at cc08a36, and the complete source-wide critical gate passed with exit 0 in 459.5 seconds.",
+    "next_action": "Obtain independent ai-context-auditor read-back of the committed source-wide checkpoint, then prepare PR integration."
   },
   "results": {
-    "summary": "The second 13-entry source-only implementation batch is active after the passing CP-2 portable checkpoint.",
-    "files_changed": [],
-    "tests_run": [
-      "portable-compatibility-checkpoint.md: passed and accepted for continuation"
+    "summary": "All 13 source-only production CLIs now use the shared guarded-import contract before domain imports or writes. Source regressions, package projection, current-process dependency behavior, and the complete critical gate pass; independent verification and PR integration remain.",
+    "files_changed": [
+      ".ai/assets/skills/ai-context-upgrader/scripts/compare-ai-context-versions.py",
+      ".ai/scripts/build-ai-context-package.py",
+      ".ai/scripts/measure-ai-context-load.py",
+      ".ai/scripts/plan-github-backlog-migration.py",
+      ".ai/scripts/prepare-ai-context-release.py",
+      ".ai/scripts/render-ai-context-release-notes.py",
+      ".ai/scripts/validate-ai-behavior-evaluation.py",
+      ".ai/scripts/validate-ai-context-package.py",
+      ".ai/scripts/validate-ai-context-release-state.py",
+      ".ai/scripts/validate-ai-context-versions.py",
+      ".ai/scripts/validate-repository-config-contract.py",
+      ".ai/scripts/validate-skill-transition.py",
+      ".ai/scripts/validate-source-governance.py",
+      ".ai/scripts/python_prerequisites.py",
+      ".ai/scripts/tests/test_python_source_entrypoints.py",
+      ".ai/scripts/tests/test_python_prerequisites.py",
+      ".ai/scripts/tests/test_ai_context_packaging.py",
+      ".ai/scripts/check-all.sh",
+      ".ai/scripts/shell-assets.yaml",
+      ".ai/scripts/validate-shell-assets.py",
+      ".dev/workflows/2026-08-02-python-prerequisite-diagnostics/evidence/source-wide-validation-checkpoint.md"
     ],
-    "finding_status": "partially-addressed",
-    "residual_risk": "No source-only remediation exists yet.",
+    "tests_run": [
+      "portable-compatibility-checkpoint.md: passed and accepted for continuation",
+      "test_python_prerequisites.py: 14 passed outside the sandbox with no ACL skip",
+      "test_python_source_entrypoints.py: 3 passed",
+      "test_ai_context_packaging.py: 28 passed; 1 conditional retained-downstream integration skipped and not counted as passed",
+      "focused packaging regressions 006 and 014: 2 passed",
+      "affected source release, provider, evaluation, repository-config, skill-transition, version, and governance suites: 127 passed before the final aggregate gate",
+      "check-all.sh --critical from cc08a36: passed, exit 0, elapsed 459.5 seconds",
+      "validate-ai-context.py, validate-shell-assets.py, and git diff --check: passed"
+    ],
+    "finding_status": "partially-resolved",
+    "residual_risk": "Independent post-remediation assessment and PR/merged-main read-back remain. The retained downstream integration case requires an explicitly supplied external repository and was skipped, not passed.",
     "follow_up_needed": true
   }
 }
