@@ -19,7 +19,7 @@
 - `current_phase`: `remediation-planning`
 - `artifact_root`: `.dev/workflows/2026-08-02-python-prerequisite-diagnostics`
 - `created_at`: `2026-08-02T10:32:53+08:00`
-- `updated_at`: `2026-08-02T17:17:41+08:00`
+- `updated_at`: `2026-08-02T17:29:39+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md`
 - `template_version`: `1.2.0`
 
@@ -107,9 +107,9 @@
 | `D-TR-001` | Corrective handling for the two primary-agent zh-TW translations | resolved | Keep the two existing translations; do not regenerate them. Require every later finalized-English-to-zh-TW derivation to use the promoted low-cost `context-translator` route and main-agent parity review. | Avoids unnecessary churn while making the future cost/routing precondition explicit and non-optional. |
 | `D-010` | Downstream validation activation policy umbrella | decomposed | Separate automatic routine execution, local developer policy, CI enforcement, lifecycle safety gates, and result semantics instead of using one ambiguous Boolean. | Allows host-flexible local use without weakening explicit install, upgrade, apply, or selected CI contracts. |
 | `D-010A` | Scope of the downstream activation switch | resolved | Control only automatic routine validation in the software-development flow. Do not affect a user's explicit CLI invocation or lifecycle-owned install, apply, init, upgrade, provenance, and release safety commands. | Prevents environment-sensitive routine automation from wasting tokens without turning an opt-out into a bypass for explicitly selected safety operations. |
-| `D-010B` | Target-owned local default and developer override umbrella | decomposed | Separate the target default from the developer-local storage/transport so accepting `manual` does not implicitly approve `.git/config`. | Prevents one local-policy decision from hiding a distinct repository-boundary and bootstrap choice. |
+| `D-010B` | Target-owned local default and developer override umbrella | resolved | Resolve through `D-010B1` tracked `manual` default and `D-010B2` ignored strict `.dev/validation.local.conf` personal opt-in. | Establishes one cross-Agent local policy with a visible, pre-Python personal strengthening path and no hidden Git-config requirement. |
 | `D-010B1` | Target-owned routine local default | resolved | Use tracked target mode `manual`: routine local validation is applicable but unselected by default; explicit CLI and lifecycle commands remain unaffected. | Heterogeneous developer hosts perform zero automatic prerequisite probes or routine validator executions until target policy or an allowed developer opt-in selects them. |
-| `D-010B2` | Developer-local opt-in storage and transport | pending |  | Determines where an untracked, per-developer strengthening preference lives, how it is read before Python discovery, and how accidental commit, package leakage, runtime divergence, and parser bootstrap are prevented. |
+| `D-010B2` | Developer-local opt-in storage and transport | resolved | Use ignored `.dev/validation.local.conf` as the only persistent personal opt-in. Require the exact `/.dev/validation.local.conf` ignore rule, a strict one-line `validation.routine.local=<approved-mode>` data parser, monotonic strengthening only, no implicit Agent writes, and no environment-variable override in v0.8.0. | Keeps the preference visible and cross-Agent without reintroducing Python/YAML bootstrap, while adding explicit init, upgrade, ignore, package, native-reader, and negative-path test obligations. |
 | `D-010C` | Target-owned CI enforcement | pending |  | Determines how a target separately declares CI-required validation and prevents a local preference from bypassing hosted gates. |
 | `D-010D` | Disabled, unavailable, and executed result semantics | pending |  | Keeps `not-run-by-policy`, `blocked-by-environment`, `failed`, and `passed` distinct so disabling a check cannot be reported as success. |
 | `D-010E` | Agent prerequisite probe and retry budget | pending |  | Determines zero-attempt behavior when local automation is unselected, the maximum bounded preflight/execution attempts when selected, and the material-state-change requirement for any retry. |
@@ -174,18 +174,18 @@
 - Governance requirement: an unexecuted local validator must remain visibly unexecuted; it cannot become `passed` merely because CI is expected later.
 - Token requirement: moving enforcement to CI must not replace command retries with unbounded Agent polling of CI status or logs; CI observation also needs a bounded wait/read policy under D-010E.
 
-The owner resolved `D-010B1`: tracked target routine local validation defaults to `manual/unselected`. `D-010B2` remains pending because the owner does not want `.git/config` to become an implicit consequence of accepting that default. D-010C separately decides whether and how CI becomes required; approval of D-010B1 alone does not claim that CI is configured.
+The owner resolved both D-010B subdecisions. `D-010B1` sets tracked target routine local validation to `manual/unselected`; `D-010B2` uses ignored `.dev/validation.local.conf` as the only persistent personal strengthening path and excludes an environment-variable override from v0.8.0. D-010C separately decides whether and how CI becomes required; resolving D-010B does not claim that CI is configured.
 
 ## D-010B Configuration Location And Skill-Stage Impact
 
-No opt-in path or reader is implemented today. The target default is resolved, but the developer-local transport remains a `D-010B2` design choice.
+No opt-in path or reader is implemented today. The target default and developer-local transport are now resolved design inputs; implementation remains behind the accumulated-design approval gate.
 
 ### Proposed Configuration Locations
 
 | Scope | Proposed authority and location | Reason |
 | --- | --- | --- |
 | Shared team default | Generated, tracked target truth at `.dev/project-config.yaml#validation.routine.local.mode` | All Agent runtimes and humans see the same default; `ai-context-init` creates it and `ai-context-upgrader` preserves it. |
-| Persistent developer opt-in | Pending `D-010B2`; `.git/config` is only one candidate and is not approved. | The selected transport must remain local, readable before Python discovery, cross-runtime, monotonic, and outside package/repository truth. |
+| Persistent developer opt-in | Ignored `.dev/validation.local.conf`, parsed as one strict key/value data line. | Remains per clone, visible, readable before Python discovery, cross-runtime, monotonic, and outside tracked/package truth. |
 | CI enforcement | Tracked target CI policy and workflow, governed separately by D-010C | A developer-local Git setting must never weaken hosted enforcement. |
 
 ### Why `.git/config` Was Initially Recommended
@@ -203,9 +203,9 @@ Its drawbacks are material: it is hidden from normal worktree browsing, depends 
 
 | Candidate | Strengths | Costs and risks | Current disposition |
 | --- | --- | --- | --- |
-| Repository-local `.git/config` key `ai-context.validation.local` | No new file schema or parser; per clone; automatically untracked and un-packaged. | Hidden Git metadata; Git-only; less visible; linked-worktree behavior needs tests. | Available but not preferred by the owner. |
-| Ignored strict file `.dev/validation.local.conf` | Visible beside project governance; per clone; cross-Agent; can be read without Python when limited to one strict key/value line. | Requires the exact `/.dev/validation.local.conf` ignore rule, safe native readers, init/upgrade/docs/tests, and a documented exception to `.dev`'s durable-truth boundary. | Recommended non-`.git/config` candidate. |
-| One-shot environment variable `AI_CONTEXT_VALIDATION_LOCAL` | No repository or Git metadata write; easy for temporary invocation. | Process/shell scoped, easy to leak across repositories, inconsistent across Agent processes, and poor for durable handoff. | Suitable only as an optional one-shot override, not the persistent authority. |
+| Repository-local `.git/config` key `ai-context.validation.local` | No new file schema or parser; per clone; automatically untracked and un-packaged. | Hidden Git metadata; Git-only; less visible; linked-worktree behavior needs tests. | Not selected. |
+| Ignored strict file `.dev/validation.local.conf` | Visible beside project governance; per clone; cross-Agent; can be read without Python when limited to one strict key/value line. | Requires the exact `/.dev/validation.local.conf` ignore rule, safe native readers, init/upgrade/docs/tests, and a documented exception to `.dev`'s durable-truth boundary. | Approved by the owner. |
+| One-shot environment variable `AI_CONTEXT_VALIDATION_LOCAL` | No repository or Git metadata write; easy for temporary invocation. | Process/shell scoped, easy to leak across repositories, inconsistent across Agent processes, and poor for durable handoff. | Excluded from v0.8.0 to keep one local precedence path. |
 | User-level OS config under XDG/AppData | Outside the repository and reusable across clones. | Cross-OS path logic, repository identity matching, permissions, relocation, and hidden global scope create substantially more implementation and support cost. | Not recommended for v0.8.0. |
 | Runtime-specific local files such as Claude or Codex settings | Uses each tool's native convention. | Codex, Claude, ChatGPT Desktop, and other Agents can disagree; violates the single target-policy resolution rule. | Rejected as the shared framework mechanism. |
 
@@ -217,7 +217,7 @@ validation.routine.local=auto-if-ready
 
 Readers must parse this as data, accept exactly one known key and approved enum, and never `source` or execute the file. A `.dev/project-config.local.yaml` overlay looks more symmetrical but would require a YAML implementation before Python/PyYAML readiness is known; JSON similarly lacks one OS-native parser across Windows and POSIX. Both would recreate the bootstrap problem or multiply launcher code.
 
-The current source `.gitignore` does not cover any proposed validation-local file, and the public initialization seed does not install a `.gitignore`. Selecting `.dev/validation.local.conf` therefore requires the explicit `/.dev/validation.local.conf` target ignore contract and tests proving the file remains untracked, is never packaged, and is preserved by init/upgrade. The current distribution builds from tracked Git blobs and excludes `.git/**`, so an ignored untracked file cannot enter a release package accidentally once that contract exists.
+The current source `.gitignore` does not cover the approved validation-local file, and the public initialization seed does not install a `.gitignore`. Implementing `.dev/validation.local.conf` therefore requires the explicit `/.dev/validation.local.conf` target ignore contract and tests proving the file remains untracked, is never packaged, and is preserved by init/upgrade. The current distribution builds from tracked Git blobs and excludes `.git/**`, so an ignored untracked file cannot enter a release package accidentally once that contract exists.
 
 ### Skill And Stage Impact
 
@@ -260,7 +260,7 @@ These four decisions form one control chain but remain separately approved: `D-0
 | `auto-if-ready` | Run one bounded prerequisite preflight and execute once only when ready. | Gives earlier feedback on prepared hosts without requiring every developer to install Python; unavailable checks remain visible and are not passed. |
 | `required` | Select the check and block the local checkpoint when it cannot run or fails. | Suitable only when the team intentionally standardizes local tooling; a personal preference cannot weaken it. |
 
-The owner resolved the tracked target authority and default as future `.dev/project-config.yaml#validation.routine.local.mode: manual`. Any developer-local transport may only strengthen that decision, such as `manual` to `auto-if-ready`; an Agent may read but never write it implicitly. The remaining question is only `D-010B2`, the storage/transport.
+The owner resolved the tracked target authority and default as future `.dev/project-config.yaml#validation.routine.local.mode: manual`, and the personal transport as ignored `.dev/validation.local.conf`. It may only strengthen the target decision to an approved mode such as `auto-if-ready` or `required`; an Agent may read but never write it implicitly. D-010B is complete.
 
 ### D-010C — CI Enforcement
 
@@ -344,13 +344,13 @@ Issue #69 is not fully discussed. The current decision ledger has this state:
 
 | State | Decisions | Meaning |
 | --- | --- | --- |
-| Resolved atomic decisions (7) | `D-001`, `D-002A`, `D-006A`, `D-006B`, `D-TR-001`, `D-010A`, `D-010B1` | Production-entrypoint coverage, no-mutation failure, workflow ownership, packaged-but-unselected skill self-tests, future translation routing, routine-switch scope, and the tracked `manual` local default are approved. |
-| Decomposed umbrellas (3) | `D-002`, `D-010`, `D-010B` | These organize subdecisions and do not themselves authorize an implementation. |
-| Pending atomic decisions (13) | `D-002B`, `D-002C`, `D-003`, `D-004`, `D-005`, `D-006`, `D-007`, `D-008`, `D-009`, `D-010B2`, `D-010C`, `D-010D`, `D-010E` | Interpreter trust, launcher boundary, output/exit contract, dependency recovery, pre-mutation proof, script ownership, tests, migration, canonical runtime, developer-local transport, CI policy, result taxonomy, and retry budgets remain open. |
+| Resolved atomic decisions (8) | `D-001`, `D-002A`, `D-006A`, `D-006B`, `D-TR-001`, `D-010A`, `D-010B1`, `D-010B2` | Production-entrypoint coverage, no-mutation failure, workflow ownership, packaged-but-unselected skill self-tests, future translation routing, routine-switch scope, tracked `manual` default, and ignored strict personal opt-in are approved. |
+| Decomposed umbrellas (2) | `D-002`, `D-010` | These organize subdecisions and do not themselves authorize an implementation. `D-010B` is fully resolved through its two subdecisions. |
+| Pending atomic decisions (12) | `D-002B`, `D-002C`, `D-003`, `D-004`, `D-005`, `D-006`, `D-007`, `D-008`, `D-009`, `D-010C`, `D-010D`, `D-010E` | Interpreter trust, launcher boundary, output/exit contract, dependency recovery, pre-mutation proof, script ownership, tests, migration, canonical runtime, CI policy, result taxonomy, and retry budgets remain open. |
 
 The remaining questions should be completed in four bounded groups while retaining the one-question-at-a-time owner contract:
 
-1. Downstream activation and cost control: `D-010B2` through `D-010E`; `D-010B1` is resolved as `manual`.
+1. Downstream activation and cost control: `D-010C` through `D-010E`; all of D-010B is resolved.
 2. Runtime discovery and recovery: `D-002B`, `D-002C`, `D-004`, and `D-009`.
 3. Observable contract and proof: `D-003`, `D-005`, and `D-007`.
 4. Ownership, package compatibility, and communication: `D-006` and `D-008`.
@@ -388,15 +388,15 @@ Discussion may continue in the same Codex task for conversational continuity, bu
 
 ## Resume Checkpoint
 
-- Last completed action: resolved `D-010B1` as tracked target default `manual`, decomposed developer-local storage into pending `D-010B2`, and compared `.git/config`, ignored-file, environment, OS-user, and runtime-specific alternatives against bootstrap and distribution constraints.
+- Last completed action: resolved `D-010B2` as ignored strict `.dev/validation.local.conf`, completed D-010B, and excluded `.git/config` plus environment-variable override from the selected v0.8.0 design.
 - Current task: `AIC-004-diagnostic-design`.
-- Exact next action: obtain only the owner decision on `D-010B2`, with ignored strict file `.dev/validation.local.conf` as the recommended non-`.git/config` candidate; D-010C through D-010E remain pending.
+- Exact next action: obtain only the owner decision on `D-010C` target-owned CI enforcement; D-010D and D-010E remain pending.
 - Validation already completed: confirmed clean `main@2263744bb2dc876f8077547e961fc68be28b0074` before branching; verified the final baseline assessment; verified the inventory against `git ls-files`, direct file reads, distribution profile, shell registry, active documentation, and existing tests; parsed both task JSON files; `git diff --check`, `validate-workflow-artifacts.py`, and `validate-ai-context.py` passed.
 - Current discussion-checkpoint validation: Git-history probes established the adoption timeline; the active sub-agent manifest and Codex adapter established the missed low-cost route; the changed task JSON parsed with PowerShell; locator/index state was checked directly; and `git diff --check` passed. Full Python-backed repository validators were not rerun because every discovered interpreter lacks PyYAML and D-002A now forbids implicit installation; this checkpoint records that result as `blocked-by-environment`, not passed.
 - Validation environment note: generic `python` and `python3` resolve to unusable Windows aliases. A versioned uv-managed Python 3.14.1 and the Codex bundled Python 3.12.13 can start, but neither currently imports PyYAML. Prior artifact validation used Codex Python with isolated temporary `PyYAML==6.0.3`; no repository dependency files were changed.
-- Git state: active branch `codex/2026-08-02-python-prerequisite-diagnostics`, created from `main@2263744bb2dc876f8077547e961fc68be28b0074`; the latest durable design checkpoint entering this discussion is `8c3fb8d`.
-- Branch history and checkpoint handoffs: bootstrap commits `88a01be` and `4e93c0f`; absent-interpreter boundary `cd58c2b`; inventory translation `d27fb8a`; D-001/fallback assessment `d5ae808`; runtime rationale and D-002A `9937fb4`; downstream switch gap `7fa102c`; activation/retry scope `74bb024`; D-010B team scenarios `c2b35ad`; opt-in location and skill-stage map `32ede97`; workflow ownership and self-test terminology `22e6883`; self-test boundary and FUP scope `ac2d9d7`; staged #69/#75 scope boundary `1a66897`; checkpoint split and integrated D-010 framing `8c3fb8d`; no push or merge handoff has occurred.
-- Blockers or unresolved decisions: thirteen atomic #69 decisions remain unresolved, including `D-010B2`; the tracked local default and checkpoint/branch separation are resolved. Implementation edits remain paused pending explicit accumulated-design approval. Proposal #75 is externally tracked but not accepted, promoted, scheduled, or authorized for implementation.
+- Git state: active branch `codex/2026-08-02-python-prerequisite-diagnostics`, created from `main@2263744bb2dc876f8077547e961fc68be28b0074`; the latest durable design checkpoint entering this discussion is `4703943`.
+- Branch history and checkpoint handoffs: bootstrap commits `88a01be` and `4e93c0f`; absent-interpreter boundary `cd58c2b`; inventory translation `d27fb8a`; D-001/fallback assessment `d5ae808`; runtime rationale and D-002A `9937fb4`; downstream switch gap `7fa102c`; activation/retry scope `74bb024`; D-010B team scenarios `c2b35ad`; opt-in location and skill-stage map `32ede97`; workflow ownership and self-test terminology `22e6883`; self-test boundary and FUP scope `ac2d9d7`; staged #69/#75 scope boundary `1a66897`; checkpoint split and integrated D-010 framing `8c3fb8d`; manual-default and local-store comparison `4703943`; no push or merge handoff has occurred.
+- Blockers or unresolved decisions: twelve atomic #69 decisions remain unresolved; D-010B and checkpoint/branch separation are resolved. Implementation edits remain paused pending explicit accumulated-design approval. Proposal #75 is externally tracked but not accepted, promoted, scheduled, or authorized for implementation.
 
 ## Branch Lifecycle
 

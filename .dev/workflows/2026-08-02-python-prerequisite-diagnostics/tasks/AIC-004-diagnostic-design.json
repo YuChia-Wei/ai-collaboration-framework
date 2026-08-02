@@ -8,7 +8,7 @@
   "owner_skill": "ai-context-governance",
   "status": "in_progress",
   "created_at": "2026-08-02T10:32:53+08:00",
-  "updated_at": "2026-08-02T17:17:41+08:00",
+  "updated_at": "2026-08-02T17:29:39+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-5.6-sol",
   "reasoning_effort": "high",
@@ -65,11 +65,11 @@
       "Valid workflow locator and task artifacts",
       "Explicit owner approval before implementation transition"
     ],
-    "last_completed_step": "Resolved D-010B1 as tracked target default manual, left D-010B2 developer-local storage pending, and compared Git config, ignored strict file, environment, OS-user, and runtime-specific alternatives.",
-    "next_action": "Obtain only the owner decision on D-010B2; recommend ignored strict file .dev/validation.local.conf when .git/config is not acceptable."
+    "last_completed_step": "Resolved D-010B2 as ignored strict .dev/validation.local.conf, completed D-010B, and excluded .git/config plus environment-variable override from the selected v0.8.0 design.",
+    "next_action": "Obtain only the owner decision on D-010C target-owned CI enforcement; retain D-010D and D-010E as pending."
   },
   "results": {
-    "summary": "D-010B is decomposed: D-010B1 is owner-approved as tracked target default manual, while D-010B2 remains pending for developer-local storage. .git/config was only an economy candidate; an ignored strict .dev/validation.local.conf file is the recommended non-Git alternative after reviewing parser, ignore, package, init/upgrade, and cross-Agent impacts. Implementation has not started.",
+    "summary": "D-010B is complete: tracked target routine local validation defaults to manual, and ignored strict .dev/validation.local.conf is the only persistent personal strengthening path. The selected v0.8.0 design excludes .git/config and environment-variable overrides, forbids implicit Agent writes, and requires explicit ignore, native-reader, init/upgrade preservation, package-exclusion, and negative-path tests. Implementation has not started.",
     "files_changed": [
       ".dev/workflows/2026-08-02-python-prerequisite-diagnostics/workflow.yaml",
       ".dev/workflows/2026-08-02-python-prerequisite-diagnostics/workflow-plan.md",
@@ -119,10 +119,11 @@
       "D-010B through D-010E integrated design review: local modes, CI authority, result truth, and bounded attempt/observation recommendations recorded",
       "Owner decision: D-010B1 tracked target routine local default manual approved; developer-local transport explicitly not implied",
       "Local transport evidence: current .gitignore, distribution profile, public initialization seed, project-config template, directory boundaries, and existing runtime-local conventions inspected",
-      "D-010B2 alternatives: .git/config, ignored strict local file, one-shot environment, OS-user config, and runtime-specific settings compared"
+      "D-010B2 alternatives: .git/config, ignored strict local file, one-shot environment, OS-user config, and runtime-specific settings compared",
+      "Owner decision: D-010B2 approved .dev/validation.local.conf as the only persistent personal opt-in; .git/config and environment-variable override not selected for v0.8.0"
     ],
     "finding_status": "not-addressed",
-    "residual_risk": "External tracking now exists as Proposal #75, but it is not accepted or implementation-authorized. The manual target default is resolved, but thirteen #69 atomic decisions remain unresolved, including developer-local transport, CI semantics, result taxonomy, Agent retry budget, interpreter trust, launcher coverage, dependency recovery, canonical runtime, output, proof, remaining script ownership, testing, and documentation; implementation remains paused.",
+    "residual_risk": "External tracking now exists as Proposal #75, but it is not accepted or implementation-authorized. D-010B is resolved, but twelve #69 atomic decisions remain unresolved, including CI semantics, result taxonomy, Agent retry budget, interpreter trust, launcher coverage, dependency recovery, canonical runtime, output, proof, remaining script ownership, testing, and documentation; implementation remains paused.",
     "follow_up_needed": true
   }
 }
