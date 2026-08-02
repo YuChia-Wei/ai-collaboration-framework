@@ -19,7 +19,7 @@
 - `current_phase`: `remediation-planning`
 - `artifact_root`: `.dev/workflows/2026-08-02-python-prerequisite-diagnostics`
 - `created_at`: `2026-08-02T10:32:53+08:00`
-- `updated_at`: `2026-08-02T10:53:29+08:00`
+- `updated_at`: `2026-08-02T11:02:27+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md`
 - `template_version`: `1.2.0`
 
@@ -45,7 +45,8 @@
 - Remediation report: `.dev/workflows/2026-08-02-python-prerequisite-diagnostics/reports/remediation-report.md` (created during remediation evidence consolidation)
 - Verification assessment: `.dev/assessments/<verification-assessment-id>/assessment.yaml` (created after implementation and validation)
 - Tasks: `.dev/workflows/2026-08-02-python-prerequisite-diagnostics/tasks/`
-- Entrypoint inventory: `.dev/workflows/2026-08-02-python-prerequisite-diagnostics/evidence/entrypoint-inventory.md`
+- Entrypoint inventory (English agent-facing source): `.dev/workflows/2026-08-02-python-prerequisite-diagnostics/evidence/entrypoint-inventory.md`
+- Entrypoint inventory (complete Traditional Chinese Taiwan owner-review translation): `.dev/workflows/2026-08-02-python-prerequisite-diagnostics/evidence/entrypoint-inventory.zh-TW.md`
 
 ## Finding Triage
 
@@ -62,7 +63,7 @@
 - The current Windows host exposed a separate bootstrap boundary: `python` and `python3` resolve only to unprovisioned Windows App Execution Aliases, so a direct `python <script>.py` invocation fails before repository Python code can run. A Python bootstrap can standardize an unsupported-version or missing-dependency diagnostic after an interpreter starts, but an absent interpreter requires a non-Python launcher or aggregate runner to own the diagnostic.
 - Write-capable risk is concentrated in package apply and several source-only build/render/evaluation tools. Read-only validators still need the version gate so they cannot report success under an unsupported interpreter.
 - The main design cost is not only a helper module: the approved boundary will affect entrypoint registration, import order, bytecode/no-write behavior, package projection, direct-command documentation, deterministic subprocess fixtures, and aggregate validation.
-- Detailed evidence, category lists, and reproduction commands are retained in `evidence/entrypoint-inventory.md`.
+- Detailed evidence, category lists, and reproduction commands are retained in `evidence/entrypoint-inventory.md`; a complete owner-review translation is retained in `evidence/entrypoint-inventory.zh-TW.md` without changing the English source-of-truth boundary.
 
 ## Discussion Contract And Decision Log
 
@@ -94,13 +95,13 @@
 
 ## Resume Checkpoint
 
-- Last completed action: created the workflow, completed the repository-native entrypoint inventory, and recorded the observed host-without-Python boundary that separates launcher diagnostics from Python-level version/dependency diagnostics.
+- Last completed action: completed the repository-native entrypoint inventory, recorded the observed host-without-Python boundary, and added a complete Traditional Chinese Taiwan owner-review translation with unchanged commands, paths, identifiers, counts, options, and conclusion boundaries.
 - Current task: `AIC-004-diagnostic-design`.
 - Exact next action: ask only `D-001` and record the owner's selected supported-entrypoint boundary before evaluating diagnostic architecture.
 - Validation already completed: confirmed clean `main@2263744bb2dc876f8077547e961fc68be28b0074` before branching; verified the final baseline assessment; verified the inventory against `git ls-files`, direct file reads, distribution profile, shell registry, active documentation, and existing tests; parsed both task JSON files; `git diff --check`, `validate-workflow-artifacts.py`, and `validate-ai-context.py` passed.
 - Validation environment note: the host `python` and `python3` commands resolve only to Windows App Execution Aliases with no installed interpreter, so direct Python invocation fails before repository code starts. Validation used the Codex bundled Python 3.12.13 with `PyYAML==6.0.3` installed into an isolated temporary directory; no repository dependency files were changed.
-- Git state: active branch `codex/2026-08-02-python-prerequisite-diagnostics`, created from `main@2263744bb2dc876f8077547e961fc68be28b0074`; durable workflow bootstrap commit `88a01bebfe95f696763c1b310c363f354949f205` exists locally.
-- Branch history and checkpoint handoffs: bootstrap commit `88a01bebfe95f696763c1b310c363f354949f205`; no push or merge handoff has occurred.
+- Git state: active branch `codex/2026-08-02-python-prerequisite-diagnostics`, created from `main@2263744bb2dc876f8077547e961fc68be28b0074`; the latest durable design-evidence commit is `cd58c2b0391dccb4a8487f33938b8a3c5d060500`.
+- Branch history and checkpoint handoffs: bootstrap commits `88a01bebfe95f696763c1b310c363f354949f205` and `4e93c0f09cae2c50bf6a330de0cca05c8b52fec6`; absent-interpreter boundary commit `cd58c2b0391dccb4a8487f33938b8a3c5d060500`; no push or merge handoff has occurred.
 - Blockers or unresolved decisions: `D-001` through `D-008` remain unresolved; implementation edits are paused pending explicit design approval.
 
 ## Branch Lifecycle
@@ -108,3 +109,4 @@
 | Segment | Branch | Base | Checkpoint Type | Commit | Remote / Target | Recorded At | Reason | Resume Branch / Action |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | 1 | `codex/2026-08-02-python-prerequisite-diagnostics` | `main@2263744bb2dc876f8077547e961fc68be28b0074` | bootstrap | `88a01bebfe95f696763c1b310c363f354949f205` | local | `2026-08-02T10:45:48+08:00` | Preserve the authorized workflow and initial impact inventory before owner decisions. | Ask `D-001`; keep implementation pending until the accumulated design is explicitly approved. |
+| 1 | `codex/2026-08-02-python-prerequisite-diagnostics` | `main@2263744bb2dc876f8077547e961fc68be28b0074` | design evidence | `cd58c2b0391dccb4a8487f33938b8a3c5d060500` | local | `2026-08-02T10:57:23+08:00` | Preserve the observed absent-interpreter boundary without resolving D-001 or D-002. | Provide the requested complete zh-TW inventory, then ask only `D-001`. |
