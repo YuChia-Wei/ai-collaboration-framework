@@ -8,7 +8,7 @@
   "owner_skill": "ai-context-governance",
   "status": "in_progress",
   "created_at": "2026-08-02T12:03:33+08:00",
-  "updated_at": "2026-08-03T02:21:24+08:00",
+  "updated_at": "2026-08-03T07:17:19+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-5.6-sol",
   "reasoning_effort": "high",
@@ -61,11 +61,11 @@
       "Applicable aggregate repository gate",
       "Independent verification of ASM-20260730-001#AIC-004"
     ],
-    "last_completed_step": "ASM-20260803-001 independently verified the committed implementation and source-wide gate with no remaining critical, must-fix, or should-fix finding and recommends AIC-004 resolved.",
-    "next_action": "Push the branch, create a ready PR, pass hosted checks, merge, and complete merged-main read-back."
+    "last_completed_step": "PR #78's Ubuntu quick-gate failure was diagnosed as inherited host PATH leaking into GWT-018; the owner-approved test-only hermetic fixture correction passed the focused and complete fail-closed suites locally without changing production resolver behavior.",
+    "next_action": "Commit and push the fixture correction, require the fresh PR #78 hosted checks to pass, merge, and complete merged-main read-back."
   },
   "results": {
-    "summary": "All 13 source-only production CLIs now use the shared guarded-import contract before domain imports or writes. Source regressions, package projection, current-process dependency behavior, and the complete critical gate pass; independent verification and PR integration remain.",
+    "summary": "All 13 source-only production CLIs now use the shared guarded-import contract before domain imports or writes. Source regressions, package projection, current-process dependency behavior, the complete critical gate, and independent verification pass; the owner-approved PR #78 test-fixture correction and hosted integration remain in progress.",
     "files_changed": [
       ".ai/assets/skills/ai-context-upgrader/scripts/compare-ai-context-versions.py",
       ".ai/scripts/build-ai-context-package.py",
@@ -84,10 +84,12 @@
       ".ai/scripts/tests/test_python_source_entrypoints.py",
       ".ai/scripts/tests/test_python_prerequisites.py",
       ".ai/scripts/tests/test_ai_context_packaging.py",
+      ".ai/scripts/tests/test_fail_closed_validation.py",
       ".ai/scripts/check-all.sh",
       ".ai/scripts/shell-assets.yaml",
       ".ai/scripts/validate-shell-assets.py",
-      ".dev/workflows/2026-08-02-python-prerequisite-diagnostics/evidence/source-wide-validation-checkpoint.md"
+      ".dev/workflows/2026-08-02-python-prerequisite-diagnostics/evidence/source-wide-validation-checkpoint.md",
+      ".dev/workflows/2026-08-02-python-prerequisite-diagnostics/evidence/pr-78-ci-remediation.md"
     ],
     "tests_run": [
       "portable-compatibility-checkpoint.md: passed and accepted for continuation",
@@ -98,10 +100,14 @@
       "affected source release, provider, evaluation, repository-config, skill-transition, version, and governance suites: 127 passed before the final aggregate gate",
       "check-all.sh --critical from cbf36e0: passed, exit 0, elapsed 459.5 seconds",
       "validate-ai-context.py, validate-shell-assets.py, and git diff --check: passed",
-      "ASM-20260803-001: final independent verification; no critical, must-fix, or should-fix finding; AIC-004 resolved"
+      "ASM-20260803-001: final independent verification; no critical, must-fix, or should-fix finding; AIC-004 resolved",
+      "PR #78 initial hosted checks: AI Context Governance and Package AI Context Candidate passed; Portable AI Context Gates failed only in Ubuntu GWT-018 while both prerequisite-contract jobs passed",
+      "owner-approved GWT-018 test-only fixture isolation: focused case 1 passed and complete fail-closed suite 30 passed outside the sandbox",
+      "local check-all.sh --quick: blocked-by-environment and not passed because Git Bash could not resolve dotnet after all preceding checks passed",
+      "direct PowerShell .NET validation: analyzer 49/49, validation 2/2, and building-block 5/5 passed"
     ],
     "finding_status": "resolved",
-    "residual_risk": "PR/hosted-CI and merged-main read-back remain workflow integration gates. The retained downstream integration case requires an explicitly supplied external repository and was skipped, not passed.",
+    "residual_risk": "The fresh PR #78 hosted rerun, merge, and merged-main read-back remain workflow integration gates. The local quick aggregate is blocked-by-environment because Git Bash cannot resolve dotnet; the corresponding direct PowerShell suites pass. The retained downstream integration case requires an explicitly supplied external repository and was skipped, not passed.",
     "follow_up_needed": true
   }
 }

@@ -657,6 +657,14 @@ class CheckAllRunnerGwtTests(unittest.TestCase):
     def test_gwt_018_given_only_offline_uv_python_when_gate_starts_then_uv_is_queried_once(self) -> None:
         fixture = SyntheticRunnerRepo()
         try:
+            fixture._write_stub(
+                fixture.bin / "dirname",
+                'value=${1%/}\ncase "$value" in */*) printf "%s\\n" "${value%/*}" ;; *) printf ".\\n" ;; esac',
+            )
+            fixture._write_stub(
+                fixture.bin / "date",
+                'printf "2026-01-01 00:00:00\\n"',
+            )
             fixture.add_python_stub("python", "GENERIC_PYTHON_STUB_EXIT")
             fixture.add_python_stub("python3", "GENERIC_PYTHON_STUB_EXIT")
             managed = fixture.add_python_stub("managed-python", "MANAGED_PYTHON_STUB_EXIT")
@@ -666,7 +674,10 @@ class CheckAllRunnerGwtTests(unittest.TestCase):
             )
             result = fixture.execute(
                 "--critical",
-                environment={"GENERIC_PYTHON_STUB_EXIT": "1"},
+                environment={
+                    "GENERIC_PYTHON_STUB_EXIT": "1",
+                    "PATH": str(fixture.bin),
+                },
             )
             self.assertEqual(0, result.returncode, result.stdout + result.stderr)
             commands = fixture.sentinel()

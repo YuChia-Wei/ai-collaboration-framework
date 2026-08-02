@@ -14,7 +14,7 @@
 - `owner_skill`: `ai-context-governance`
 - `status`: `draft`
 - `created_at`: `2026-08-03T02:11:40+08:00`
-- `updated_at`: `2026-08-03T02:21:24+08:00`
+- `updated_at`: `2026-08-03T07:17:19+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-remediation-report-template.md`
 - `template_version`: `2.0.0`
 - `baseline_assessment`: `ASM-20260730-001`
@@ -50,13 +50,17 @@
   domain imports or write-capable behavior; launchers share deterministic
   discovery; package and target policy surfaces preserve the approved contract.
 - Evidence: `evidence/portable-compatibility-checkpoint.md`,
-  `evidence/source-wide-validation-checkpoint.md`, and
+  `evidence/source-wide-validation-checkpoint.md`,
+  `evidence/pr-78-ci-remediation.md`, and
   `.dev/assessments/ASM-20260803-001/report.md`.
 - Validation: shared prerequisite 14/14, source-only 3/3, packaging 28 passed
   plus one explicit conditional skip, complete critical gate exit 0 in 459.5
   seconds, workflow/assessment/AI-context validators passed.
-- Remaining risk: hosted CI, PR merge, and merged-main closeout are pending; the
-  external downstream integration was skipped and is not counted as passed.
+- Remaining risk: PR #78's first Ubuntu quick gate found a test-fixture PATH
+  isolation regression. The owner-approved test-only correction passes its
+  focused and full local suites; a fresh hosted run, merge, and merged-main
+  closeout remain pending. The external downstream integration was skipped and
+  is not counted as passed.
 
 ## Verification Assessment Reconciliation
 
@@ -77,11 +81,18 @@
 
 ## Closure Evidence
 
-- Required validations: focused tests, package compatibility, complete critical
-  gate, structural validators, and independent assessment are passed.
-- Commit status: implementation, verification, and reconciliation are committed
-  locally through `7909b445b07d6d3280afa748306eb556dcc771f4`; branch push and PR pending.
+- Required pre-PR validations: focused tests, package compatibility, complete
+  critical gate, structural validators, and independent assessment are passed.
+- Commit status: implementation and verification are pushed through PR #78 at
+  `93806ad0b56d23d235a94bc47c9c915a2d4a8330`; its owner-approved test-only
+  GWT-018 fixture correction is locally validated and pending commit and push.
 - Workflow/task status: workflow and the single integration-owning task remain
   `in_progress` until hosted checks, merge, and main read-back complete.
-- Final next action: push the branch, create a ready PR, require hosted checks,
-  merge with repository policy, and finalize from merged `main`.
+- Current integration validation: PR #78 Governance and Package runs passed;
+  Portable Gates failed only in Ubuntu GWT-018. The corrected focused case and
+  complete fail-closed suite pass. Local `check-all.sh --quick` is
+  `blocked-by-environment`, not passed, because Git Bash cannot resolve
+  `dotnet`; direct PowerShell .NET suites pass 49/49, 2/2, and 5/5.
+- Final next action: commit and push the fixture correction, require fresh PR
+  #78 hosted checks, merge with repository policy, and finalize from merged
+  `main`.
