@@ -1,10 +1,10 @@
 schema_version: "1.0"
 checkpoint_id: "2026-08-02-python-prerequisite-diagnostics-AIC-004-diagnostic-implementation-push"
-created_at: "2026-08-02T21:39:50+08:00"
+created_at: "2026-08-02T23:50:46+08:00"
 repository:
   root: "."
   branch: "codex/2026-08-02-python-prerequisite-diagnostics"
-  validated_commit: "7ce14a41342afde0aa03935fb163fa83ceed9640"
+  validated_commit: "5381b97270726a89b266f7bbab953e744cc08736"
   checkpoint_commit_source: "containing-commit"
   dirty_state: "clean"
   status_porcelain_sha256: "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
@@ -12,35 +12,44 @@ workflow:
   workflow_id: "2026-08-02-python-prerequisite-diagnostics"
   task_id: "AIC-004-diagnostic-implementation"
 resume:
-  last_completed_action: "Preserved the approved 22-decision design and CP-1 state through the owner-integrated main fix and local rebase at 7ce14a4, then ran the required critical gate without editing any of the 12 portable entrypoints."
-  exact_next_action: "Push this branch to origin; on the receiving host, verify this checkpoint, repair only AIC-004-HANDOFF-GIT-BASH-DIRNAME-UNRESOLVED and AIC-004-HANDOFF-PYTHON-PREREQUISITE-UNSATISFIED, rerun the recorded critical gate, and replace this checkpoint with a passing normal-continuation checkpoint before editing any of the 12 portable entrypoints."
+  last_completed_action: "Verified Python 3.13.14 and governed PyYAML 6.0.3, restored Git Bash dirname discovery without persistent host mutation, synchronized two stale assessment index timestamps exposed by the first Python-backed run, and passed the complete critical gate at validated parent 5381b97 without editing any of the 12 portable entrypoints."
+  exact_next_action: "Create and bind the accepted TOOL-002 Story to this workflow, then implement only the 12-entry portable/downstream batch and stop at CP-2 before editing the 13 source-only entrypoints."
   hidden_context_required: false
 critical_gate:
   command: '"C:\Program Files\Git\bin\bash.exe" .ai/scripts/check-all.sh --critical'
-  observed_at: "2026-08-02T21:38:06+08:00"
-  exit_code: 1
-  outcome: "failed"
+  observed_at: "2026-08-02T23:50:41+08:00"
+  exit_code: 0
+  outcome: "passed"
   execution_environment:
     persistent_host_changes: false
     child_path_prefixes:
       - 'C:\Program Files\Git\usr\bin'
       - 'C:\Program Files\Git\mingw64\bin'
-    note: "The two Git installation paths were prepended only for the final child process because the Codex-inherited PATH omitted Git core utilities; dirname still remained unresolved."
+    note: "The two Git installation paths were prepended only for the child process, and AI_CONTEXT_PYTHON selected the existing Python returned by Get-Command python. No interpreter, dependency, environment, or persistent host setting was installed or changed."
   output:
     normalization: "utf8-lf"
-    sha256: "22f4768bbafbcb565daac51361007e7063a85567a1f52e80b8dab30c2f495251"
-    line_count: 2
+    sha256: "98b988090c33a58cc11be58be7c23e79860ead126a1f2bbad6ea869613d865e5"
+    line_count: 950
     tail:
-      - ".ai/scripts/check-all.sh: line 22: dirname: command not found"
-      - "Python 3.11 or newer is required. Install source dependencies from requirements.txt or set AI_CONTEXT_PYTHON to a usable interpreter."
+      - "Total Checks Run: \u001b[0;36m45\u001b[0m"
+      - "Passed: \u001b[0;32m45\u001b[0m"
+      - "Failed: \u001b[0;31m0\u001b[0m"
+      - "Skipped By Mode: \u001b[1;33m0\u001b[0m"
+      - "Advisory Warnings: \u001b[1;33m0\u001b[0m"
+      - "Deferred: \u001b[1;33m0\u001b[0m"
+      - "Not Applicable: \u001b[0;36m1\u001b[0m"
+      - "Required Selected: \u001b[0;36m45\u001b[0m"
+      - "Required Executed: \u001b[0;36m45\u001b[0m"
+      - "Required Failed: \u001b[0;31m0\u001b[0m"
+      - "Advisory Selected: \u001b[0;36m0\u001b[0m"
+      - "Pass Rate: \u001b[0;36m100%\u001b[0m"
+      - "\u001b[0;34mCompleted at 2026-08-02 23:50:41\u001b[0m"
 continuation:
   allowed: true
-  mode: "repair-only"
-  reason: "The critical gate is blocked by two named host bootstrap failures. Cross-host transfer is allowed, but implementation remains prohibited until the receiving host repairs those failures and records a passing replacement checkpoint."
-  repair_task_id: "AIC-004-diagnostic-implementation"
-  failure_ids:
-    - "AIC-004-HANDOFF-GIT-BASH-DIRNAME-UNRESOLVED"
-    - "AIC-004-HANDOFF-PYTHON-PREREQUISITE-UNSATISFIED"
+  mode: "normal"
+  reason: "The receiving host resolved the two named bootstrap failures, repaired the assessment-index drift exposed by Python-backed validation, and passed the complete critical gate. The approved 12-entry portable implementation may proceed."
+  repair_task_id: null
+  failure_ids: []
 release_handoff: false
 release_phase_check: null
 execution_provenance:
@@ -54,14 +63,14 @@ attribution:
   evidence_union_version: "1.0"
   selected_evidence:
     kind: "repository-created-local-ai-trailer"
-    commit: "7ce14a41342afde0aa03935fb163fa83ceed9640"
+    commit: "5381b97270726a89b266f7bbab953e744cc08736"
     author: "YuChia <h42279@gmail.com>"
     committer: "YuChia <h42279@gmail.com>"
     signature_status: "unsigned"
     session_ref: null
     observed_trailer: "Co-Authored-By: OpenAI Codex (gpt-5.6-sol, high) <noreply@openai.com>"
-    message_sha256: "acc07438e18c5df6baa2d4f1e04fb7c96bb06ddc8eb82a81d82588664db31b9a"
-    fixture_ref: "git:7ce14a41342afde0aa03935fb163fa83ceed9640"
+    message_sha256: "44ed7c724a3948145a183feff0817c8e985a4170bb3fee98411f04f3bb8af3fa"
+    fixture_ref: "git:5381b97270726a89b266f7bbab953e744cc08736"
   fixture_status:
     - path_id: "copilot-cli"
       status: "blocked"
@@ -80,6 +89,6 @@ attribution:
       reason: "No stable provider-generated Claude commit attribution fixture is available."
     - path_id: "codex-local"
       status: "captured"
-      commit: "7ce14a41342afde0aa03935fb163fa83ceed9640"
-      evidence_ref: "git:7ce14a41342afde0aa03935fb163fa83ceed9640"
+      commit: "5381b97270726a89b266f7bbab953e744cc08736"
+      evidence_ref: "git:5381b97270726a89b266f7bbab953e744cc08736"
       reason: null
