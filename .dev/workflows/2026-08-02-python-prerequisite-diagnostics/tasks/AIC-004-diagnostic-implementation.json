@@ -8,7 +8,7 @@
   "owner_skill": "ai-context-governance",
   "status": "in_progress",
   "created_at": "2026-08-02T10:32:53+08:00",
-  "updated_at": "2026-08-02T23:50:46+08:00",
+  "updated_at": "2026-08-03T00:07:15+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-5.6-sol",
   "reasoning_effort": "high",
@@ -41,7 +41,7 @@
     "non_goals": [
       "Modify the 13 source-only production CLIs in this task.",
       "Expand beyond the approved production entrypoints.",
-      "Redesign check-all aggregate composition, package disposition, or portable-handoff policy; those concerns are tracked by GitHub Proposal #75. Only the approved prerequisite-diagnostic surface may change under Issue #69.",
+      "Redesign check-all aggregate composition, package disposition, or portable-handoff policy; those concerns are tracked by GitHub Proposal #75. Only the approved prerequisite-diagnostic surface may change under TOOL-002 / GitHub Story #77; Proposal #69 is retained only as the completed discussion origin.",
       "Change supported Python below 3.11.",
       "Publish a release."
     ]
@@ -61,11 +61,11 @@
       "Applicable aggregate repository gate",
       "Independent verification of ASM-20260730-001#AIC-004"
     ],
-    "last_completed_step": "The receiving host verified Python 3.13.14, governed PyYAML 6.0.3, and Git Bash dirname discovery; synchronized two stale assessment index timestamps exposed by the first Python-backed run; and passed all 45 required critical checks at validated parent 5381b97 without editing a portable entrypoint.",
-    "next_action": "Create and bind the accepted TOOL-002 Story, then implement and validate only the 12 portable/downstream entrypoints before stopping at CP-2."
+    "last_completed_step": "Created canonical TOOL-002 at f65b0dc, created and read back live GitHub Story #77 and its Project #3 fields, recorded the provider receipt, and closed Proposal #69 after the promotion comment without editing a portable entrypoint.",
+    "next_action": "Implement and validate only the 12 portable/downstream entrypoints bound to TOOL-002 / #77 before stopping at CP-2."
   },
   "results": {
-    "summary": "The first 12-entry portable/downstream implementation batch is authorized and active after CP-1. Receiving-host repair is complete, the full critical gate passes, and the refreshed checkpoint permits normal continuation; no portable implementation edit has started yet.",
+    "summary": "The first 12-entry portable/downstream implementation batch is authorized and active after CP-1. Receiving-host repair and the full critical gate pass; canonical TOOL-002, live Story #77, Project #3 fields, and the provider receipt are fully bound; no portable implementation edit has started yet.",
     "files_changed": [
       ".dev/workflows/2026-08-02-python-prerequisite-diagnostics/handoff-checkpoints/AIC-004-diagnostic-implementation-push.yaml",
       ".dev/workflows/2026-08-02-python-prerequisite-diagnostics/tasks/AIC-004-diagnostic-implementation.json",
@@ -73,7 +73,13 @@
       ".dev/workflows/2026-08-02-python-prerequisite-diagnostics/workflow.yaml",
       ".dev/workflows/INDEX.MD",
       ".dev/workflows/handoff-checkpoints.yaml",
-      ".dev/assessments/INDEX.MD"
+      ".dev/assessments/INDEX.MD",
+      ".dev/backlog/items/TOOL-002.yaml",
+      ".dev/backlog/provider-mappings/github-issues-TOOL-002.yaml",
+      ".dev/backlog/providers/github.yaml",
+      ".dev/backlog/INDEX.MD",
+      ".dev/backlog/ROADMAP.md",
+      ".ai/scripts/tests/test_github_backlog_provider.py"
     ],
     "tests_run": [
       "validate-workflow-handoff.py --checkpoint .../AIC-004-diagnostic-implementation-push.yaml: passed",
@@ -83,7 +89,11 @@
       "git diff --check: passed",
       "Python 3.13.14 and PyYAML 6.0.3 prerequisite probes: passed",
       "validate-assessment-artifacts.py after assessment index synchronization: passed for 25 assessments",
-      "check-all.sh --critical on the receiving host: passed 45/45 required checks, zero failures, zero deferred, one not-applicable"
+      "check-all.sh --critical on the receiving host: passed 45/45 required checks, zero failures, zero deferred, one not-applicable",
+      "test_github_backlog_provider.py: passed 19 tests with 43 canonical backlog items and two post-adoption items",
+      "GitHub Issue #77 connected read-back: title, open state, labels, and hidden markers match",
+      "GitHub Project #3 browser read-back: In progress / P2 Normal / Not required / v0.8.0 / Not yet published",
+      "GitHub Proposal #69 read-back: closed as completed after promotion comment"
     ],
     "finding_status": "not-addressed",
     "residual_risk": "No portable remediation exists yet. The host prerequisite blockers are resolved, but the 12-entry batch still needs implementation and CP-2 validation; the source-only batch remains intentionally sequenced behind CP-2.",

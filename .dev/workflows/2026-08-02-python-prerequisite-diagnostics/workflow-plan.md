@@ -19,18 +19,18 @@
 - `current_phase`: `remediation`
 - `artifact_root`: `.dev/workflows/2026-08-02-python-prerequisite-diagnostics`
 - `created_at`: `2026-08-02T10:32:53+08:00`
-- `updated_at`: `2026-08-02T23:50:46+08:00`
+- `updated_at`: `2026-08-03T00:07:15+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md`
 - `template_version`: `1.2.0`
 
 ## Authorization And Decision Boundary
 
-- Work-item binding: GitHub Issue [#69](https://github.com/YuChia-Wei/ai-collaboration-prompts-dotnet-backend/issues/69).
+- Work-item binding: canonical Story `TOOL-002`, GitHub Issue [#77](https://github.com/YuChia-Wei/ai-collaboration-prompts-dotnet-backend/issues/77). Proposal [#69](https://github.com/YuChia-Wei/ai-collaboration-prompts-dotnet-backend/issues/69) is the completed discussion origin, not the active execution authority.
 - Baseline evidence: `.dev/assessments/ASM-20260730-001/assessment.yaml` and `ASM-20260730-001#AIC-004`.
 - Authorization source: the repository owner requested on 2026-08-02 that this workflow be opened, that design decisions be discussed one at a time with impact explanations, and that approved design continue into implementation without closing this workflow.
 - Authorized now: the complete 22-decision design was explicitly approved by the repository owner on 2026-08-02; `CP-1 — #69 Design Freeze` is satisfied against current design subject `8c240ad`, and the receiving host passed the required 45-check critical gate at validated parent `5381b97`, so the 12-entry portable implementation task may proceed.
 - Approval gate: accumulated-design approval and the receiving-host gate are satisfied. The 13-entry source-only batch remains gated by `CP-2`.
-- Provider state: Issue #69 remains open with its existing proposal/triage labels. On 2026-08-02 the owner reported manually changing its GitHub Project Status to `In progress`; the connected Issue read confirms the Issue remains open but does not expose Project fields. This owner-reported tracker update aligns work visibility with the active design workflow but does not authorize implementation or replace the workflow approval gate.
+- Provider state: live Story #77 was created from canonical `TOOL-002` at source revision `f65b0dc`, read back with the exact title, open state, required live markers, and `kind:story`, `scope:mixed`, and `created-by:codex` labels. Project #3 read-back confirms `In progress`, `P2 Normal`, `Not required`, `v0.8.0`, and `Not yet published`. Proposal #69 received a promotion comment and was closed as completed. Provider state remains visibility and evidence; owner authorization and this workflow remain authoritative.
 
 ## Objective And Scope
 
@@ -561,9 +561,9 @@ Discussion may continue in the same Codex task for conversational continuity, bu
 
 ## Resume Checkpoint
 
-- Last completed action: repaired the receiving host's Git Bash and Python prerequisite failures without persistent host mutation, synchronized two assessment index timestamps exposed by the first Python-backed run, passed all 45 required critical checks at validated parent `5381b97`, and refreshed the machine-readable checkpoint for normal continuation. The approved design, current `CP-1` state, and all 12 portable entrypoints remain unchanged.
+- Last completed action: created canonical `TOOL-002`, committed it at `f65b0dc`, created and fully read back live Story #77 plus its Project #3 fields, and closed discussion-origin Proposal #69 after recording the promotion. The approved design, current `CP-1` state, and all 12 portable entrypoints remain unchanged.
 - Current task: `AIC-004-diagnostic-implementation`.
-- Exact next action: create and bind the accepted `TOOL-002` Story, then implement only the 12-entry portable/downstream batch and stop at `CP-2` before editing the 13 source-only entrypoints.
+- Exact next action: implement only the 12-entry portable/downstream batch bound to `TOOL-002` / #77, run its focused and package compatibility gates, and stop at `CP-2` before editing the 13 source-only entrypoints.
 - Validation already completed: confirmed clean `main@2263744bb2dc876f8077547e961fc68be28b0074` before branching; verified the final baseline assessment; verified the inventory against `git ls-files`, direct file reads, distribution profile, shell registry, active documentation, and existing tests; parsed all then-existing task JSON files; `git diff --check`, `validate-workflow-artifacts.py`, and `validate-ai-context.py` passed.
 - Receiving-host validation: the existing Python 3.13.14 interpreter imports governed PyYAML 6.0.3; child-only Git installation PATH prefixes restore `dirname`; `validate-assessment-artifacts.py` passes for 25 assessments after the index synchronization; and `check-all.sh --critical` passes 45/45 required checks with zero failures and zero deferred outcomes. No interpreter, dependency, environment, or persistent host setting was installed or changed.
 - Handoff-checkpoint validation: the refreshed checkpoint pins clean validated parent `5381b97`, the 950-line normalized critical-gate digest `98b988090c33a58cc11be58be7c23e79860ead126a1f2bbad6ea869613d865e5`, and normal continuation. Repository verification is the next check after committing the checkpoint as its containing commit.
@@ -573,7 +573,7 @@ Discussion may continue in the same Codex task for conversational continuity, bu
 - Validation environment note: the policy-sanctioned replacement critical gate ran from `2026-08-02T23:43:09+08:00` through `2026-08-02T23:50:41+08:00` and passed with exit `0`; its normalized digest and bounded tail are pinned in the checkpoint. The earlier two named host failures are resolved.
 - Git state: active branch `codex/2026-08-02-python-prerequisite-diagnostics`, currently based on `main@2263744bb2dc876f8077547e961fc68be28b0074`; current design subject is `8c240ad`, current CP-1 state is `c93f699`, and the branch tracks `origin/codex/2026-08-02-python-prerequisite-diagnostics`. An offline recovery bundle captures the pre-redaction head and must remain unpublished.
 - Branch history and checkpoint handoffs: bootstrap commits `af4043d` and `e0a00e8`; absent-interpreter boundary `260d052`; inventory translation `d411981`; D-001/fallback assessment `f81547e`; runtime rationale and D-002A `3291d81`; downstream switch gap `afc0245`; activation/retry scope `c6501ec`; D-010B team scenarios `187cb69`; opt-in location and skill-stage map `182a7d8`; workflow ownership and self-test terminology `f1dc0b9`; self-test boundary and FUP scope `0d99b9f`; staged #69/#75 scope boundary `6d9b968`; checkpoint split and integrated D-010 framing `fbc4505`; manual-default and local-store comparison `0795798`; persistent local opt-in `3974074`; target CI enforcement `1720551`; outcome/retry controls `cdfb1c4`; interpreter discovery order `d0fe4ae`; environment-readiness follow-up split `303c66b`; native-launcher boundary `f2a92cc`; dependency-profile boundary `3a3dddd`; recovery-guidance boundary `537beb9`; canonical-runtime boundary `579a9b6`; diagnostic-output projection `940bb41`; exit-code compatibility `6805787`; pre-mutation guarantee `75afd2a`; deterministic test matrix `e09ab0a`; prerequisite ownership `40570ac`; migration communication `8c240ad`; CP-1 state `c93f699`; this reconciliation record is the containing commit resolved from `HEAD`; no push or merge handoff has occurred.
-- Blockers or unresolved decisions: no #69 design or receiving-host decision remains unresolved. Portable implementation is authorized but has not started; continuation is normal and remains bounded to the 12-entry batch until `CP-2`. Proposals #75 and #76 remain external, unaccepted, and implementation-unauthorized.
+- Blockers or unresolved decisions: no TOOL-002 design, Story-binding, provider, or receiving-host decision remains unresolved. Portable implementation is authorized but has not started; continuation is normal and remains bounded to the 12-entry batch until `CP-2`. Proposals #75 and #76 remain external, unaccepted, and implementation-unauthorized.
 
 ## Branch Lifecycle
 
