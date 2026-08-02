@@ -4,6 +4,7 @@
 
 - `generated_by`: `OpenAI Codex repository-native inventory`
 - `generated_at`: `2026-08-02T10:39:48+08:00`
+- `updated_at`: `2026-08-02T10:53:29+08:00`
 - `source_revision`: `2263744bb2dc876f8077547e961fc68be28b0074`
 - `source_branch`: `codex/2026-08-02-python-prerequisite-diagnostics`
 - `issue`: `https://github.com/YuChia-Wei/ai-collaboration-prompts-dotnet-backend/issues/69`
@@ -101,6 +102,17 @@ These are excluded from the downstream payload but are real maintainer or CI ope
 
 ## Current Behavior And Risk
 
+### Interpreter absent on the host
+
+On the current Windows host, `python` and `python3` resolve to Windows App Execution Alias executables, but no host Python runtime is installed. A direct `python <entrypoint>.py` command therefore fails in the operating-system launcher before the repository can execute a Python bootstrap or print its own message.
+
+This creates two distinct diagnostic layers:
+
+1. A non-Python shell or PowerShell launcher can detect that no usable interpreter exists, name the attempted commands, state the Python 3.11+ requirement, and stop before invoking any Python entrypoint.
+2. Once a Python interpreter starts, a shared Python bootstrap can reject an unsupported version or missing dependency before importing PyYAML, `tomllib`, local modules, or write-capable code.
+
+Consequently, standardizing Python preambles alone cannot make a missing-interpreter direct command repository-owned. Full coverage of the observed machine state requires the approved invocation contract to include a non-Python launcher or aggregate runner; raw direct `.py` invocation remains subject to the operating system when no Python executable exists.
+
 ### Aggregate runner
 
 `.ai/scripts/check-all.sh` resolves `AI_CONTEXT_PYTHON`, then `python`, then `python3`, and accepts only Python 3.11 or newer. Its failure message states the version floor and points to `requirements.txt`, but it does not currently report the selected executable, detected unsupported version, missing dependency identity, or a structured pre-mutation result.
@@ -129,7 +141,7 @@ This is the strongest existing direct diagnostic, but it remains a one-off contr
 
 1. Define and register the supported Python entrypoint boundary.
 2. Define a standard diagnostic schema: executable, detected version, required floor, dependency/import package, sanctioned recovery command, exit status, and pre-mutation state.
-3. Choose a delivery architecture that works for root shared scripts, skill-owned scripts, compatibility entrypoints, extracted packages, and installed targets.
+3. Choose a delivery architecture that separates non-Python absent-interpreter detection from Python-level version/dependency checks and works for root shared scripts, skill-owned scripts, compatibility entrypoints, extracted packages, and installed targets.
 4. Reorder imports and bytecode behavior so the diagnostic executes before `tomllib`, PyYAML, local dependency modules, or target writes.
 5. Preserve package projection and checksum behavior for the extracted envelope.
 6. Add deterministic unsupported-version and missing-dependency tests, plus no-write assertions for write-capable paths.
@@ -163,4 +175,4 @@ Cover the 12 production entrypoints projected into downstream payloads or retain
 
 ## Current Conclusion Boundary
 
-This inventory establishes candidates and impact only. No D-001 option has been selected, no implementation architecture has been approved, and no production file has been modified.
+This inventory establishes candidates and impact only. No D-001 option has been selected, no implementation architecture has been approved, and no production file has been modified. The observed host state proves that an absent interpreter cannot be diagnosed by repository Python code; whether a supported non-Python launcher is added remains a D-002 owner decision.

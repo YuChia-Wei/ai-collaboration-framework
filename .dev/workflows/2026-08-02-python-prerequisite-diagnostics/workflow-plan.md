@@ -19,7 +19,7 @@
 - `current_phase`: `remediation-planning`
 - `artifact_root`: `.dev/workflows/2026-08-02-python-prerequisite-diagnostics`
 - `created_at`: `2026-08-02T10:32:53+08:00`
-- `updated_at`: `2026-08-02T10:47:18+08:00`
+- `updated_at`: `2026-08-02T10:53:29+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md`
 - `template_version`: `1.2.0`
 
@@ -59,6 +59,7 @@
 - The 25 production CLIs split into 12 portable payload entrypoints and 13 source-only maintainer/CI entrypoints under the current distribution profile.
 - Twenty-three of the 25 production CLIs require PyYAML directly or through a local module. Two are standard-library-only. `validate-ai-context.py` additionally imports Python 3.11's `tomllib` before `main`.
 - The package planner already has a one-off PyYAML diagnostic and a bytecode-suppression guard. Other dependency-bearing direct entrypoints generally import before a repository-owned diagnostic, so the current contract is inconsistent rather than wholly absent.
+- The current Windows host exposed a separate bootstrap boundary: `python` and `python3` resolve only to unprovisioned Windows App Execution Aliases, so a direct `python <script>.py` invocation fails before repository Python code can run. A Python bootstrap can standardize an unsupported-version or missing-dependency diagnostic after an interpreter starts, but an absent interpreter requires a non-Python launcher or aggregate runner to own the diagnostic.
 - Write-capable risk is concentrated in package apply and several source-only build/render/evaluation tools. Read-only validators still need the version gate so they cannot report success under an unsupported interpreter.
 - The main design cost is not only a helper module: the approved boundary will affect entrypoint registration, import order, bytecode/no-write behavior, package projection, direct-command documentation, deterministic subprocess fixtures, and aggregate validation.
 - Detailed evidence, category lists, and reproduction commands are retained in `evidence/entrypoint-inventory.md`.
@@ -73,7 +74,7 @@
 | Decision | Topic | Status | Owner Decision | Impact Summary |
 | --- | --- | --- | --- | --- |
 | `D-001` | Supported user-facing entrypoint boundary | pending |  | Determines which direct validators, skill-owned scripts, package tools, and compatibility paths must share the prerequisite contract. |
-| `D-002` | Diagnostic delivery architecture | pending |  | Chooses shared bootstrap, wrapper routing, or bounded per-entrypoint handling and therefore affects coupling and package portability. |
+| `D-002` | Diagnostic delivery architecture and absent-interpreter launcher boundary | pending |  | Chooses shared Python bootstrap, non-Python launcher/wrapper routing, or bounded per-entrypoint handling and therefore determines whether a missing interpreter receives a repository-owned diagnostic as well as affecting coupling and package portability. |
 | `D-003` | Diagnostic output and exit contract | pending |  | Defines stable fields, channel, exit status, and compatibility expectations for humans and automation. |
 | `D-004` | Dependency prerequisite inventory and sanctioned install command | pending |  | Determines whether only PyYAML or every required runtime dependency is checked and how downstream users recover. |
 | `D-005` | Pre-mutation guarantee and proof boundary | pending |  | Determines where checks must run and which write-capable paths require negative-path evidence. |
@@ -93,11 +94,11 @@
 
 ## Resume Checkpoint
 
-- Last completed action: created the workflow and completed a repository-native inventory of tracked Python entrypoints, distribution classification, prerequisite imports, direct documentation/runtime references, and current negative-path coverage.
+- Last completed action: created the workflow, completed the repository-native entrypoint inventory, and recorded the observed host-without-Python boundary that separates launcher diagnostics from Python-level version/dependency diagnostics.
 - Current task: `AIC-004-diagnostic-design`.
 - Exact next action: ask only `D-001` and record the owner's selected supported-entrypoint boundary before evaluating diagnostic architecture.
 - Validation already completed: confirmed clean `main@2263744bb2dc876f8077547e961fc68be28b0074` before branching; verified the final baseline assessment; verified the inventory against `git ls-files`, direct file reads, distribution profile, shell registry, active documentation, and existing tests; parsed both task JSON files; `git diff --check`, `validate-workflow-artifacts.py`, and `validate-ai-context.py` passed.
-- Validation environment note: the host `python` App Execution Alias has no installed interpreter. Validation used the Codex bundled Python 3.12.13 with `PyYAML==6.0.3` installed into an isolated temporary directory; no repository dependency files were changed.
+- Validation environment note: the host `python` and `python3` commands resolve only to Windows App Execution Aliases with no installed interpreter, so direct Python invocation fails before repository code starts. Validation used the Codex bundled Python 3.12.13 with `PyYAML==6.0.3` installed into an isolated temporary directory; no repository dependency files were changed.
 - Git state: active branch `codex/2026-08-02-python-prerequisite-diagnostics`, created from `main@2263744bb2dc876f8077547e961fc68be28b0074`; durable workflow bootstrap commit `88a01bebfe95f696763c1b310c363f354949f205` exists locally.
 - Branch history and checkpoint handoffs: bootstrap commit `88a01bebfe95f696763c1b310c363f354949f205`; no push or merge handoff has occurred.
 - Blockers or unresolved decisions: `D-001` through `D-008` remain unresolved; implementation edits are paused pending explicit design approval.
