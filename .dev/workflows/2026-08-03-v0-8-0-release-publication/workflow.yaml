@@ -12,7 +12,7 @@ base_branch: "main"
 artifact_root: ".dev/workflows/2026-08-03-v0-8-0-release-publication"
 entrypoint: "tasks/REL080-001.json"
 created_at: "2026-08-03T08:33:26+08:00"
-updated_at: "2026-08-03T10:05:26+08:00"
+updated_at: "2026-08-03T10:13:26+08:00"
 template_source: ".ai/assets/skills/ai-context-governance/templates/release-publication/release-workflow-locator.yaml"
 template_version: "1.0.0"
 release:

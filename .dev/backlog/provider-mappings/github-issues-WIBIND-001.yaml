@@ -1,0 +1,30 @@
+schema_version: "1.0"
+provider: "github"
+repository: "YuChia-Wei/ai-collaboration-prompts-dotnet-backend"
+migration_id: "github-live-WIBIND-001-2026-08-03"
+stage: "stage-b-in-progress"
+source_revision: "b1ffd9ea4d44308f0da0bca6c50445f47bb8eacd"
+generated_at: "2026-08-03T10:13:26+08:00"
+project:
+  number: 3
+  node_id: "PVT_kwHOAwvEG84Bez7w"
+  url: "https://github.com/users/YuChia-Wei/projects/3"
+items:
+  - backlog_id: "WIBIND-001"
+    source_path: ".dev/backlog/items/WIBIND-001.yaml"
+    source_sha256: "9b64010617988eedd3f50241b34373850568b1369c239940ba7274c6c2e38863"
+    issue_number: 80
+    issue_node_id: "I_kwDOSBe2Hc8AAAABLL6WgA"
+    issue_url: "https://github.com/YuChia-Wei/ai-collaboration-prompts-dotnet-backend/issues/80"
+    issue_state: "open"
+    close_reason: null
+    project_item_id: "PVTI_lAHOAwvEG84Bez7wzg1BB94"
+    created_at: "2026-08-03T02:11:33Z"
+    updated_at: "2026-08-03T02:11:33Z"
+    read_back:
+      verified_at: "2026-08-03T10:13:26+08:00"
+      title_matches: true
+      markers_match: true
+      labels_match: true
+      state_matches: false
+      notes: "Issue #80 is intentionally open until the v0.8.0 release-allocation pull request merges and main is read back. Project #3 reads Status Verification, Priority P2 Normal, Owner review Not required, Target release v0.8.0, and Published in Not yet published. Canonical resolved state and desired completed close reason remain deferred to merged-main provider closeout; provider state alone does not authorize work."
