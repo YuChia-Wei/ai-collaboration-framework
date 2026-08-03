@@ -92,13 +92,15 @@ class GitHubBacklogProviderTests(unittest.TestCase):
     def test_gwt_009a_given_post_adoption_items_when_projected_then_they_are_not_rewritten_into_the_completed_migration(self) -> None:
         skill_item = self.items["SKILL-002"]
         tool_item = self.items["TOOL-002"]
+        binding_item = self.items["WIBIND-001"]
 
         self.assertEqual("enabler", skill_item["classification"]["kind"])
         self.assertEqual("story", tool_item["classification"]["kind"])
-        for item in (skill_item, tool_item):
+        self.assertEqual("enabler", binding_item["classification"]["kind"])
+        for item in (skill_item, tool_item, binding_item):
             self.assertEqual("mixed", item["classification"]["scope"])
             self.assertEqual("v0.8.0", item["project_fields"]["Target release"])
-            self.assertEqual("Not yet published", item["project_fields"]["Published in"])
+            self.assertEqual("v0.8.0", item["project_fields"]["Published in"])
 
     def test_gwt_010_given_same_revision_then_yaml_projection_is_deterministic(self) -> None:
         second = PROVIDER.build_plan(REPO_ROOT, CONFIG, self.plan["source_revision"])

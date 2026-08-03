@@ -1,16 +1,16 @@
 schema_version: "1.0"
 release_id: "REL-v0.8.0"
 version: "v0.8.0"
-status: "validated"
+status: "published"
 record_origin: "governed"
 distribution_kind: "governed-package"
 installable: true
-tag: null
-commit: null
-tagged_at: null
-recorded_at: null
+tag: "v0.8.0"
+commit: "97ccc9e9f218ec681bb726d2e1b4edbb3e14fb25"
+tagged_at: "2026-08-03T13:12:55+08:00"
+recorded_at: "2026-08-03T13:38:00+08:00"
 created_at: "2026-08-03T08:33:26+08:00"
-updated_at: "2026-08-03T10:05:26+08:00"
+updated_at: "2026-08-03T13:38:00+08:00"
 planning:
   backlog_refs:
     - ".dev/backlog/items/SKILL-002.yaml"
@@ -52,7 +52,7 @@ distribution:
     automation: "github-actions"
     creates_or_moves_tag: false
 validation:
-  evidence: "The exact SKILL-002, TOOL-002, and WIBIND-001 release set, authored notes, and non-breaking v0.7.0-only compatibility contract passed focused release validation. Immutable candidate ec50df072ec59f7e59322345f005450c48be28d7 contains 625 payload paths; ZIP 1e2b2356ae2ebd0fe6938261b1e054e7d467f92829bdcde6946ca245e9028775 and tar.gz a4b23ada7365b53592a2ae0edc92c68da53b07a1b6187e0a8d3f07e09143a7f0 passed archive validation. Clean install applied 623 paths with two optional provider skips; the exact provenance-driven v0.7.0 upgrade applied 64 operations with one optional provider skip and two reviewed reconciliations, with zero missing applied paths or applied SHA mismatches. ASM-20260803-002 independently verified hashes, receipts, skip truth, and projection stability with no critical, must-fix, or should-fix finding. Packaging tests passed 28 with one external-repository skip not counted as passed; apply tests passed 25 with one Windows capability skip not counted as passed. The authoritative Git Bash critical gate passed with exit 0 in 438.6 seconds; an earlier WSL attempt that could not execute dotnet remains recorded as blocked-by-environment rather than passed. Hosted PR checks, merge, current-main pre-tag, tag, and publication remain separate and are not claimed."
+  evidence: "The exact SKILL-002, TOOL-002, and WIBIND-001 release set, authored notes, and non-breaking v0.7.0-only compatibility contract passed focused release validation. Immutable candidate ec50df072ec59f7e59322345f005450c48be28d7 contains 625 payload paths; ZIP 1e2b2356ae2ebd0fe6938261b1e054e7d467f92829bdcde6946ca245e9028775 and tar.gz a4b23ada7365b53592a2ae0edc92c68da53b07a1b6187e0a8d3f07e09143a7f0 passed archive validation. Clean install applied 623 paths with two optional provider skips; the exact provenance-driven v0.7.0 upgrade applied 64 operations with one optional provider skip and two reviewed reconciliations, with zero missing applied paths or applied SHA mismatches. ASM-20260803-002 independently verified hashes, receipts, skip truth, and projection stability with no critical, must-fix, or should-fix finding. Packaging tests passed 28 with one external-repository skip not counted as passed; apply tests passed 25 with one Windows capability skip not counted as passed. The authoritative Git Bash critical gate passed with exit 0 in 438.6 seconds; an earlier WSL attempt that could not execute dotnet remains recorded as blocked-by-environment rather than passed. PR #81 passed all five hosted jobs and merged to main as 97ccc9e9f218ec681bb726d2e1b4edbb3e14fb25; merged-main provider read-back and the current-main pre-tag command then passed. The owner-created annotated tag object 14a763876130cb8adcf876339c573ce0dbb9f330 peels to that exact commit and triggered successful publication run 30786537723. The stable GitHub Release exposes exactly the governed ZIP, tar.gz, and adjacent checksum sidecars. Downloaded ZIP 94fe4ff17222423f2fa521343e02b8a7e4709c566ea22e264f5b1b1ac3a4701c and tar.gz e47374ab997209b0860ce082ed6e645e3789350926863a6ef488bcb07c8cb515 matched their sidecars and passed archive parity validation. Published-body reconciliation and provider read-back remain the active terminal closeout stage and are not claimed here."
   workflow_id: "2026-08-03-v0-8-0-release-publication"
   related_workflows:
     - "2026-07-30-skill-script-colocation"
@@ -62,7 +62,7 @@ validation:
     - "ASM-20260803-001"
     - "ASM-20260803-002"
   package_status: "validated"
-  post_merge_status: "pending"
+  post_merge_status: "passed"
   failed_publication_run: null
-  published_run: null
-  public_release_url: null
+  published_run: "30786537723"
+  public_release_url: "https://github.com/YuChia-Wei/ai-collaboration-prompts-dotnet-backend/releases/tag/v0.8.0"

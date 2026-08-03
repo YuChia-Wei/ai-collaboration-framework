@@ -9,7 +9,7 @@
   "title": "Prepare and publish REL-v0.8.0",
   "status": "in_progress",
   "created_at": "2026-08-03T08:33:26+08:00",
-  "updated_at": "2026-08-03T10:13:26+08:00",
+  "updated_at": "2026-08-03T13:38:00+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/release-publication/release-publication-task.json",
   "model": "gpt-5.6-sol",
   "reasoning_effort": "max",
@@ -21,10 +21,10 @@
       "TOOL-002",
       "WIBIND-001"
     ],
-    "authorization_source": "Owner decision in the 2026-08-03 conversation: formally register the already integrated work-item binding policy in v0.8.0 and begin the governed publication workflow.",
+    "authorization_source": "Owner decisions in the 2026-08-03 conversation: formally register the already integrated work-item binding policy in v0.8.0, begin the governed publication workflow, complete the owner-controlled tag handoff, and after hosted publication authorize changing only the v0.8.0 GitHub Release body while preserving tag, Release identity, and all four assets.",
     "out_of_scope": [
       "creating, moving, deleting, replacing, or pushing Git tags",
-      "mutating an already published GitHub Release or its assets",
+      "mutating the v0.8.0 Release identity, tag association, name, draft or prerelease state, or assets; only the explicitly authorized body-only correction is permitted after source finalization",
       "Proposal #75 aggregate/downstream selection architecture",
       "Proposal #76 generalized environment-readiness profiles",
       "DEVWF-001, INIT-001, STD-001, OBS-001, historical archive migration, or legacy identifier retirement",
@@ -38,7 +38,7 @@
     "Obtain independent read-only candidate verification and reconcile any finding before integration.",
     "Commit, push, open a ready pull request, pass required checks, and merge through the pull-request-only main policy.",
     "Run the sanctioned current-main pre-tag command and stop before any tag or publication action.",
-    "After the owner-created tag and successful hosted publication, validate immutable evidence, reconcile registries, and close the workflow."
+    "After the owner-created tag and successful hosted publication, validate immutable evidence, reconcile registries, render the published body from integrated source, perform the authorized body-only correction, and close the workflow."
   ],
   "results": null
 }
