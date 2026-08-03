@@ -7,7 +7,7 @@ artifact directories. See [README.MD](README.MD) for ownership and lifecycle.
 
 | Roadmap | Current Target | Status | Next Gate | Updated |
 | --- | --- | --- | --- | --- |
-| [ROADMAP.md](ROADMAP.md) | `v0.8.0` | `published / closeout active` | Reconcile the published-mode public body and Project #3 `Published in` field, then run terminal validation and close the workflow. | 2026-08-03 |
+| [ROADMAP.md](ROADMAP.md) | `unassigned` | `published / closed` | Obtain an explicit owner decision before assigning the next release target. | 2026-08-03 |
 
 Source planning records are retained under [`plans/`](plans/); they inform the
 roadmap but do not replace it or a governed assessment.

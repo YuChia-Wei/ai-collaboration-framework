@@ -3,8 +3,8 @@ provider: "github"
 repository: "YuChia-Wei/ai-collaboration-prompts-dotnet-backend"
 migration_id: "github-live-WIBIND-001-2026-08-03"
 stage: "stage-b-read-back-complete"
-source_revision: "97ccc9e9f218ec681bb726d2e1b4edbb3e14fb25"
-generated_at: "2026-08-03T10:29:08+08:00"
+source_revision: "5ad3f60ea08b8f1416b2d478ae1642a30bf11801"
+generated_at: "2026-08-03T19:04:13+08:00"
 project:
   number: 3
   node_id: "PVT_kwHOAwvEG84Bez7w"
@@ -12,7 +12,7 @@ project:
 items:
   - backlog_id: "WIBIND-001"
     source_path: ".dev/backlog/items/WIBIND-001.yaml"
-    source_sha256: "9b64010617988eedd3f50241b34373850568b1369c239940ba7274c6c2e38863"
+    source_sha256: "142dcc8eeb718fbbccb164e7456b2eb86b674a31efb6b5c75ed3c876d32fbaac"
     issue_number: 80
     issue_node_id: "I_kwDOSBe2Hc8AAAABLL6WgA"
     issue_url: "https://github.com/YuChia-Wei/ai-collaboration-prompts-dotnet-backend/issues/80"
@@ -22,9 +22,9 @@ items:
     created_at: "2026-08-03T02:11:33Z"
     updated_at: "2026-08-03T02:20:04Z"
     read_back:
-      verified_at: "2026-08-03T10:29:08+08:00"
+      verified_at: "2026-08-03T19:04:13+08:00"
       title_matches: true
       markers_match: true
       labels_match: true
       state_matches: true
-      notes: "PR #81 passed all five hosted jobs and merged as 97ccc9e9f218ec681bb726d2e1b4edbb3e14fb25. Remote main read-back confirmed feature head 2f0c263786f6b51957c9dfcb739f01f4b458a39f as the second parent with an identical tree before Issue #80 closed as completed. The closeout comment preserves PR #73, #74, and #81 evidence. Project #3 reads Status Done, Priority P2 Normal, Owner review Not required, Target release v0.8.0, and Published in Not yet published. No v0.8.0 tag or Release exists, and provider state alone does not authorize work."
+      notes: "PR #81 passed all five hosted jobs and merged as the immutable release commit 97ccc9e9f218ec681bb726d2e1b4edbb3e14fb25 before Issue #80 closed as completed. After hosted v0.8.0 publication and source finalization through PR #82, Project #3 read-back confirms item PVTI_lAHOAwvEG84Bez7wzg1BB94 at Status Done, Target release v0.8.0, and Published in v0.8.0. Provider state remains a non-authoritative projection and did not authorize the work or release."

@@ -1,0 +1,141 @@
+{
+  "schema_version": "1.0",
+  "evidence_id": "REL080-001-hosted-after",
+  "observed_at": "2026-08-03T19:04:13+08:00",
+  "capture": {
+    "mode": "post-mutation-terminal-read-back",
+    "body_only_command": "gh release edit v0.8.0 --repo YuChia-Wei/ai-collaboration-prompts-dotnet-backend --notes-file .tmp/v080-final-published-body.md",
+    "release_read_back": "GitHub REST Release, annotated-tag ref, and annotated-tag object APIs",
+    "project_read_back": "GitHub Projects v2 field and item APIs",
+    "authorized_release_mutation": "Release body only",
+    "provider_reconciliation": "Add the source-declared v0.8.0 Published in option and select it for the exact three included items"
+  },
+  "rendered_body": {
+    "mode": "published",
+    "source_main_merge_commit": "5ad3f60ea08b8f1416b2d478ae1642a30bf11801",
+    "release_commit": "97ccc9e9f218ec681bb726d2e1b4edbb3e14fb25",
+    "pre_mutation_utf8_sha256": "4a4062dfeaff19ffae1406cc4a835f2c35380ea4fce5f213c876346e2ab48fde",
+    "rendered_utf8_sha256": "05520da4dda5ddc1d98ca55741b07f10a2a4edb5ec8d36bfe785eae00e31fd86",
+    "hosted_utf8_sha256": "05520da4dda5ddc1d98ca55741b07f10a2a4edb5ec8d36bfe785eae00e31fd86",
+    "exact_text_equal": true,
+    "line_count": 150,
+    "review_body_artifact": "REL080-001-final-rendered-body.md"
+  },
+  "release": {
+    "id": 363998750,
+    "database_id": 363998750,
+    "node_id": "RE_kwDOSBe2Hc4Vsi4e",
+    "url": "https://github.com/YuChia-Wei/ai-collaboration-prompts-dotnet-backend/releases/tag/v0.8.0",
+    "tag_name": "v0.8.0",
+    "target_commitish": "main",
+    "name": "REL-v0.8.0",
+    "is_draft": false,
+    "is_prerelease": false,
+    "created_at": "2026-08-03T05:12:55Z",
+    "published_at": "2026-08-03T05:13:55Z"
+  },
+  "annotated_tag": {
+    "ref": "refs/tags/v0.8.0",
+    "ref_object_type": "tag",
+    "object_sha": "14a763876130cb8adcf876339c573ce0dbb9f330",
+    "peeled_object_type": "commit",
+    "peeled_commit": "97ccc9e9f218ec681bb726d2e1b4edbb3e14fb25",
+    "tagger_timestamp": "2026-08-03T13:12:55+08:00"
+  },
+  "publication_run": {
+    "database_id": 30786537723,
+    "workflow_name": "Publish AI Context Release",
+    "event": "push",
+    "head_sha": "97ccc9e9f218ec681bb726d2e1b4edbb3e14fb25",
+    "status": "completed",
+    "conclusion": "success",
+    "created_at": "2026-08-03T05:13:15Z",
+    "updated_at": "2026-08-03T05:13:58Z",
+    "url": "https://github.com/YuChia-Wei/ai-collaboration-prompts-dotnet-backend/actions/runs/30786537723"
+  },
+  "assets": [
+    {
+      "id": 499651307,
+      "node_id": "RA_kwDOSBe2Hc4dyBLr",
+      "name": "ai-context-dotnet-backend-v0.8.0.tar.gz",
+      "size": 671844,
+      "digest": "sha256:e47374ab997209b0860ce082ed6e645e3789350926863a6ef488bcb07c8cb515"
+    },
+    {
+      "id": 499651309,
+      "node_id": "RA_kwDOSBe2Hc4dyBLt",
+      "name": "ai-context-dotnet-backend-v0.8.0.tar.gz.sha256",
+      "size": 106,
+      "digest": "sha256:92da471d6dc1f496d1dd25f5ecc36302444d07a92f8175afd77cbe75687f0849"
+    },
+    {
+      "id": 499651308,
+      "node_id": "RA_kwDOSBe2Hc4dyBLs",
+      "name": "ai-context-dotnet-backend-v0.8.0.zip",
+      "size": 1065353,
+      "digest": "sha256:94fe4ff17222423f2fa521343e02b8a7e4709c566ea22e264f5b1b1ac3a4701c"
+    },
+    {
+      "id": 499651310,
+      "node_id": "RA_kwDOSBe2Hc4dyBLu",
+      "name": "ai-context-dotnet-backend-v0.8.0.zip.sha256",
+      "size": 103,
+      "digest": "sha256:04b720f0c190760dc9c3eef76922b71db3f79aa9965c1d8928aaaf8c4083bde4"
+    }
+  ],
+  "release_invariant_comparison": {
+    "baseline": "tag-and-publication-validation.md",
+    "hosted_body_matches_exact_renderer": true,
+    "release_identity_unchanged": true,
+    "release_timestamps_unchanged": true,
+    "annotated_tag_ref_unchanged": true,
+    "annotated_tag_object_unchanged": true,
+    "peeled_commit_unchanged": true,
+    "publication_run_unchanged": true,
+    "asset_id_name_size_digest_set_unchanged": true,
+    "changed_release_fields": [
+      "body"
+    ]
+  },
+  "project": {
+    "number": 3,
+    "node_id": "PVT_kwHOAwvEG84Bez7w",
+    "published_in_field_id": "PVTSSF_lAHOAwvEG84Bez7wzhZLZ_w",
+    "v0_8_0_option_id": "12007885",
+    "pre_mutation_option_count": 8,
+    "post_mutation_option_count": 9,
+    "all_preexisting_options_preserved": true,
+    "provider_state_alone_authorizes_execution": false,
+    "items": [
+      {
+        "backlog_id": "SKILL-002",
+        "issue_number": 65,
+        "project_item_id": "PVTI_lAHOAwvEG84Bez7wzg0mfsw",
+        "status": "Done",
+        "target_release": "v0.8.0",
+        "published_in": "v0.8.0"
+      },
+      {
+        "backlog_id": "TOOL-002",
+        "issue_number": 77,
+        "project_item_id": "PVTI_lAHOAwvEG84Bez7wzg0-2Ow",
+        "status": "Done",
+        "target_release": "v0.8.0",
+        "published_in": "v0.8.0"
+      },
+      {
+        "backlog_id": "WIBIND-001",
+        "issue_number": 80,
+        "project_item_id": "PVTI_lAHOAwvEG84Bez7wzg1BB94",
+        "status": "Done",
+        "target_release": "v0.8.0",
+        "published_in": "v0.8.0"
+      }
+    ]
+  },
+  "hosted_phase_validation": {
+    "command": "python .ai/scripts/validate-ai-context-release-state.py --phase finalization --version v0.8.0 --hosted",
+    "outcome": "passed",
+    "message": "AI context release-state validation passed for v0.8.0 finalization phase at 97ccc9e9f218ec681bb726d2e1b4edbb3e14fb25."
+  }
+}
