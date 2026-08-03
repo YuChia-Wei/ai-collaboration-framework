@@ -1449,7 +1449,13 @@ class VersionedMigrationPackagingGwtTests(unittest.TestCase):
         )
 
     def test_gwt_020_given_v070_payload_when_candidate_projects_shared_prerequisites_then_clean_install_and_upgrade_keep_portable_commands(self) -> None:
-        """CP-2 synthetic proof; it creates no source-repository release artifact."""
+        """CP-2 synthetic proof; it does not mutate source release artifacts."""
+        release_root = ROOT / ".dev/releases"
+        release_artifacts_before = {
+            path.relative_to(ROOT).as_posix(): path.read_bytes()
+            for path in release_root.rglob("*")
+            if path.is_file()
+        }
         try:
             fixture = SyntheticPackageRepo()
         except PermissionError as error:
@@ -1499,7 +1505,6 @@ class VersionedMigrationPackagingGwtTests(unittest.TestCase):
             candidate_payload = candidate_root / "payload"
 
             # Then clean install projects the four shared assets and every portable CLI unchanged.
-            self.assertFalse((ROOT / ".dev/releases/v0.8.0").exists())
             self.assertTrue(all((candidate_payload / path).is_file() for path in shared_assets))
             self.assertTrue(all((candidate_payload / path).is_file() for path in portable_paths))
             self.assertEqual({path: (candidate_payload / path).read_bytes() for path in portable_paths}, direct_bytes)
@@ -1544,6 +1549,12 @@ class VersionedMigrationPackagingGwtTests(unittest.TestCase):
             self.assertTrue(all((target / path).is_file() for path in shared_assets + portable_paths))
             self.assertEqual(direct_bytes, {path: (target / path).read_bytes() for path in portable_paths})
             self.assertFalse((target / ".dev/validation.local.conf").exists())
+            release_artifacts_after = {
+                path.relative_to(ROOT).as_posix(): path.read_bytes()
+                for path in release_root.rglob("*")
+                if path.is_file()
+            }
+            self.assertEqual(release_artifacts_before, release_artifacts_after)
         finally:
             fixture.close()
 
