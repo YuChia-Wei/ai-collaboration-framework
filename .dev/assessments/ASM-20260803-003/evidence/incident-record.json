@@ -1,0 +1,281 @@
+{
+  "schema_version": "1.0",
+  "evidence_id": "ASM-20260803-003-incident-record",
+  "assessment_id": "ASM-20260803-003",
+  "captured_at": "2026-08-03T19:46:19+08:00",
+  "subject": {
+    "repository": "YuChia-Wei/ai-collaboration-prompts-dotnet-backend",
+    "branch": "main",
+    "commit": "2d7917c43452668bb129ae14392781c13c9040fd",
+    "release": "v0.8.0",
+    "workflow_id": "2026-08-03-v0-8-0-release-publication"
+  },
+  "evidence_classes": [
+    {
+      "id": "repository-record",
+      "definition": "Timestamp or result persisted in the assessed repository revision."
+    },
+    {
+      "id": "git-fact",
+      "definition": "Commit identity and timestamp read from the local synchronized Git object database."
+    },
+    {
+      "id": "github-readback",
+      "definition": "Current read-only GitHub connector result captured during the assessment."
+    },
+    {
+      "id": "conversation-observation",
+      "definition": "Timing observed in this Codex task but not independently recoverable from the assessed repository."
+    },
+    {
+      "id": "derived",
+      "definition": "Arithmetic interval between recorded milestones; it does not establish active execution time."
+    }
+  ],
+  "milestones": [
+    {
+      "id": "workflow-created",
+      "timestamp": "2026-08-03T08:33:26+08:00",
+      "evidence_class": "repository-record",
+      "source": ".dev/workflows/2026-08-03-v0-8-0-release-publication/workflow.yaml"
+    },
+    {
+      "id": "pr-81-created",
+      "timestamp": "2026-08-03T10:16:16+08:00",
+      "evidence_class": "github-readback",
+      "source": "https://github.com/YuChia-Wei/ai-collaboration-prompts-dotnet-backend/pull/81"
+    },
+    {
+      "id": "pr-81-merged",
+      "timestamp": "2026-08-03T10:18:39+08:00",
+      "evidence_class": "git-fact",
+      "commit": "97ccc9e9f218ec681bb726d2e1b4edbb3e14fb25",
+      "source": "PR #81 merge commit"
+    },
+    {
+      "id": "tag-created",
+      "timestamp": "2026-08-03T13:12:55+08:00",
+      "evidence_class": "repository-record",
+      "tag_object": "14a763876130cb8adcf876339c573ce0dbb9f330",
+      "peeled_commit": "97ccc9e9f218ec681bb726d2e1b4edbb3e14fb25",
+      "source": ".dev/workflows/2026-08-03-v0-8-0-release-publication/evidence/REL080-001-hosted-after.json"
+    },
+    {
+      "id": "release-published",
+      "timestamp": "2026-08-03T13:13:55+08:00",
+      "evidence_class": "repository-record",
+      "release_database_id": 363998750,
+      "source": ".dev/workflows/2026-08-03-v0-8-0-release-publication/evidence/REL080-001-hosted-after.json"
+    },
+    {
+      "id": "publication-run-completed",
+      "timestamp": "2026-08-03T13:13:58+08:00",
+      "evidence_class": "repository-record",
+      "run_id": 30786537723,
+      "conclusion": "success",
+      "source": ".dev/workflows/2026-08-03-v0-8-0-release-publication/evidence/REL080-001-hosted-after.json"
+    },
+    {
+      "id": "tag-publication-evidence-observed",
+      "timestamp": "2026-08-03T13:38:00+08:00",
+      "evidence_class": "repository-record",
+      "source": ".dev/workflows/2026-08-03-v0-8-0-release-publication/evidence/tag-and-publication-validation.md"
+    },
+    {
+      "id": "pr-82-created",
+      "timestamp": "2026-08-03T18:54:02+08:00",
+      "evidence_class": "github-readback",
+      "source": "https://github.com/YuChia-Wei/ai-collaboration-prompts-dotnet-backend/pull/82"
+    },
+    {
+      "id": "pr-82-merged",
+      "timestamp": "2026-08-03T18:56:24+08:00",
+      "evidence_class": "git-fact",
+      "commit": "5ad3f60ea08b8f1416b2d478ae1642a30bf11801",
+      "source": "PR #82 merge commit"
+    },
+    {
+      "id": "release-body-and-provider-readback",
+      "timestamp": "2026-08-03T19:04:13+08:00",
+      "evidence_class": "repository-record",
+      "rendered_and_hosted_body_sha256": "05520da4dda5ddc1d98ca55741b07f10a2a4edb5ec8d36bfe785eae00e31fd86",
+      "changed_release_fields": [
+        "body"
+      ],
+      "source": ".dev/workflows/2026-08-03-v0-8-0-release-publication/evidence/REL080-001-hosted-after.json"
+    },
+    {
+      "id": "closure-commit",
+      "timestamp": "2026-08-03T19:17:49+08:00",
+      "evidence_class": "git-fact",
+      "commit": "7916fa7765bad32a3d871e753faf122d3c5e51ab",
+      "source": "local Git commit"
+    },
+    {
+      "id": "pr-83-created",
+      "timestamp": "2026-08-03T19:18:33+08:00",
+      "evidence_class": "github-readback",
+      "source": "https://github.com/YuChia-Wei/ai-collaboration-prompts-dotnet-backend/pull/83"
+    },
+    {
+      "id": "pr-83-merged",
+      "timestamp": "2026-08-03T19:21:12+08:00",
+      "evidence_class": "git-fact",
+      "commit": "2d7917c43452668bb129ae14392781c13c9040fd",
+      "source": "PR #83 merge commit"
+    }
+  ],
+  "derived_intervals": [
+    {
+      "from": "workflow-created",
+      "to": "pr-81-merged",
+      "seconds": 6313,
+      "display": "1:45:13",
+      "attribution": "mixed and unobserved"
+    },
+    {
+      "from": "pr-81-merged",
+      "to": "tag-created",
+      "seconds": 10456,
+      "display": "2:54:16",
+      "attribution": "owner-controlled handoff interval; active versus waiting time is not recorded"
+    },
+    {
+      "from": "tag-created",
+      "to": "release-published",
+      "seconds": 60,
+      "display": "0:01:00",
+      "attribution": "hosted publication"
+    },
+    {
+      "from": "release-published",
+      "to": "pr-82-merged",
+      "seconds": 20549,
+      "display": "5:42:29",
+      "attribution": "mixed and unobserved; must not be represented as continuous active execution"
+    },
+    {
+      "from": "pr-82-merged",
+      "to": "release-body-and-provider-readback",
+      "seconds": 469,
+      "display": "0:07:49",
+      "attribution": "render, approval-scoped body mutation, exact read-back, and provider projection"
+    },
+    {
+      "from": "release-body-and-provider-readback",
+      "to": "closure-commit",
+      "seconds": 816,
+      "display": "0:13:36",
+      "attribution": "terminal artifact update and validation; detailed active versus wait split is not recorded"
+    },
+    {
+      "from": "closure-commit",
+      "to": "pr-83-merged",
+      "seconds": 203,
+      "display": "0:03:23",
+      "attribution": "push, pull request creation, hosted checks, and merge"
+    },
+    {
+      "from": "workflow-created",
+      "to": "pr-83-merged",
+      "seconds": 38866,
+      "display": "10:47:46",
+      "attribution": "end-to-end wall clock only"
+    }
+  ],
+  "recorded_execution_costs": [
+    {
+      "operation": "initial aggregate critical gate through WSL launcher",
+      "seconds": 573.5,
+      "outcome": "blocked-by-environment",
+      "evidence_class": "repository-record",
+      "source": ".dev/workflows/2026-08-03-v0-8-0-release-publication/evidence/candidate-critical-gate.md"
+    },
+    {
+      "operation": "authoritative candidate critical gate through Git for Windows Bash",
+      "seconds": 438.6,
+      "outcome": "passed",
+      "evidence_class": "repository-record",
+      "source": ".dev/workflows/2026-08-03-v0-8-0-release-publication/evidence/candidate-critical-gate.md"
+    },
+    {
+      "operation": "source-checkpoint quick gate through Git for Windows Bash",
+      "seconds": 483.4,
+      "outcome": "passed",
+      "evidence_class": "repository-record",
+      "source": ".dev/workflows/2026-08-03-v0-8-0-release-publication/evidence/tag-and-publication-validation.md"
+    },
+    {
+      "operation": "hosted publication workflow run",
+      "seconds": 43,
+      "outcome": "passed",
+      "evidence_class": "repository-record",
+      "source": ".dev/workflows/2026-08-03-v0-8-0-release-publication/evidence/REL080-001-hosted-after.json"
+    },
+    {
+      "operation": "GitHub Release body edit command",
+      "seconds": 1.8,
+      "outcome": "passed",
+      "evidence_class": "conversation-observation",
+      "source": "current Codex task tool timing; future hook capture required"
+    },
+    {
+      "operation": "pre-edit and post-edit Release read-backs",
+      "seconds": [
+        2.6,
+        2.4
+      ],
+      "outcome": "passed",
+      "evidence_class": "conversation-observation",
+      "source": "current Codex task tool timing; future hook capture required"
+    },
+    {
+      "operation": "hosted finalization validation",
+      "seconds": 2.4,
+      "outcome": "passed",
+      "evidence_class": "conversation-observation",
+      "source": "current Codex task tool timing; future hook capture required"
+    }
+  ],
+  "context_route_corpus": {
+    "measurement": "potential closeout route corpus, not actual model input tokens",
+    "file_count": 14,
+    "line_count": 1763,
+    "utf8_bytes": 89633,
+    "whitespace_delimited_chunks": 11558,
+    "included_categories": [
+      "root agent guide",
+      "workflow gate and artifact policy",
+      "Git flow and commit policy",
+      "ai-context-governance wrapper, canonical specification, and four references",
+      "release publication runbook",
+      "REL-004 item and discussion plan"
+    ],
+    "limitation": "The client did not export per-file context inclusion or tokenizer counts, so these values describe a plausible route surface rather than consumed context."
+  },
+  "rel004_readback": {
+    "canonical_status": "open",
+    "canonical_target": "unassigned",
+    "github_issue": 57,
+    "github_state": "open",
+    "github_comments_before_assessment_link": 0,
+    "url": "https://github.com/YuChia-Wei/ai-collaboration-prompts-dotnet-backend/issues/57",
+    "decision": "Reference this assessment from REL-004; do not reopen, duplicate, retarget, or treat the assessment as implementation authorization."
+  },
+  "unmeasured_fields": [
+    "per-turn input, cached-input, reasoning, and output tokens",
+    "per-context-file inclusion and token contribution",
+    "tool queue time versus process execution time",
+    "sub-agent prompt, token, wall-clock, and duplicate-work cost",
+    "approval wait versus active reasoning",
+    "machine sleep and resume timestamps",
+    "no-output intervals and stalled-process classification",
+    "validation fingerprint and whether an identical result was reusable"
+  ],
+  "integrity_notes": [
+    "The workflow updated_at value 2026-08-03T19:05:12+08:00 predates final integration at 19:21:12 and therefore is not used as the terminal completion timestamp.",
+    "Wall-clock gaps are not represented as continuous model or tool execution.",
+    "Token waste cannot be quantified from the current evidence and no token total is inferred.",
+    "The body-only API mutation was seconds-scale; the incident concerns orchestration, validation, context, waiting, and resume behavior around it."
+  ]
+}
