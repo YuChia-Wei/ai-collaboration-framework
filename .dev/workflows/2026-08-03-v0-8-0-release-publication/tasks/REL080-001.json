@@ -7,9 +7,9 @@
   "workflow_id": "2026-08-03-v0-8-0-release-publication",
   "owner_skill": "ai-context-governance",
   "title": "Prepare and publish REL-v0.8.0",
-  "status": "in_progress",
+  "status": "completed",
   "created_at": "2026-08-03T08:33:26+08:00",
-  "updated_at": "2026-08-03T13:38:00+08:00",
+  "updated_at": "2026-08-03T19:05:12+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/release-publication/release-publication-task.json",
   "model": "gpt-5.6-sol",
   "reasoning_effort": "max",
@@ -40,5 +40,35 @@
     "Run the sanctioned current-main pre-tag command and stop before any tag or publication action.",
     "After the owner-created tag and successful hosted publication, validate immutable evidence, reconcile registries, render the published body from integrated source, perform the authorized body-only correction, and close the workflow."
   ],
-  "results": null
+  "results": {
+    "summary": "REL-v0.8.0 passed candidate validation, PR integration, the owner-created immutable annotated tag, hosted publication, merged-source published-body reconciliation, exact body-only read-back, Project publication-field reconciliation, and terminal finalization without changing the Release identity, tag, or assets.",
+    "files_changed": [
+      ".dev/releases/v0.8.0/release.yaml",
+      ".dev/backlog/ROADMAP.md",
+      ".dev/backlog/INDEX.MD",
+      ".dev/backlog/provider-mappings/github-issues-SKILL-002.yaml",
+      ".dev/backlog/provider-mappings/github-issues-TOOL-002.yaml",
+      ".dev/backlog/provider-mappings/github-issues-WIBIND-001.yaml",
+      ".dev/workflows/2026-08-03-v0-8-0-release-publication/workflow.yaml",
+      ".dev/workflows/2026-08-03-v0-8-0-release-publication/tasks/REL080-001.json",
+      ".dev/workflows/2026-08-03-v0-8-0-release-publication/evidence/REL080-001-final-rendered-body.md",
+      ".dev/workflows/2026-08-03-v0-8-0-release-publication/evidence/REL080-001-hosted-after.json",
+      ".dev/workflows/2026-08-03-v0-8-0-release-publication/reports/finalization-report.md",
+      ".dev/workflows/INDEX.MD"
+    ],
+    "tests_run": [
+      "candidate package, clean-install, exact-v0.7.0 upgrade, focused release suites, and independent assessment ASM-20260803-002 passed",
+      "PR #81 passed all five hosted jobs and merged the immutable release commit; current-main pre-tag validation passed",
+      "annotated tag v0.8.0 tag phase and publication run 30786537723 passed; downloaded ZIP/tar checksums and payload parity passed",
+      "PR #82 passed all five hosted jobs and merged the published source registry as 5ad3f60ea08b8f1416b2d478ae1642a30bf11801",
+      "pre-edit hosted finalization was the expected negative body-mismatch gate and was not counted as passed",
+      "post-edit body read-back exactly matched SHA-256 05520da4dda5ddc1d98ca55741b07f10a2a4edb5ec8d36bfe785eae00e31fd86; Release, annotated tag, peeled commit, and four assets were unchanged",
+      "Project #3 read-back passed for SKILL-002, TOOL-002, and WIBIND-001 at Status Done, Target release v0.8.0, and Published in v0.8.0",
+      "hosted v0.8.0 finalization validation passed",
+      "terminal version, workflow-artifact, AI-context, release-state, renderer, backlog-release, and GitHub-provider validations passed"
+    ],
+    "finding_status": "verified",
+    "residual_risk": "No successor release is active. DEVWF-001, INIT-001, REL-004, STD-001, and OBS-001 remain independently gated until an explicit owner allocation.",
+    "follow_up_needed": false
+  }
 }

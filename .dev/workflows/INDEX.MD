@@ -8,7 +8,6 @@ task-level progress.
 
 | Workflow | Title | Owner | Status | Updated | Entry Point |
 | --- | --- | --- | --- | --- | --- |
-| [`2026-08-03-v0-8-0-release-publication`](2026-08-03-v0-8-0-release-publication/workflow.yaml) | Prepare And Publish v0.8.0 | `ai-context-governance` | `in_progress` | `2026-08-03T18:52:26+08:00` | [plan](2026-08-03-v0-8-0-release-publication/tasks/REL080-001.json) |
 | [`2026-08-02-python-prerequisite-diagnostics`](2026-08-02-python-prerequisite-diagnostics/workflow.yaml) | Standardize Python Prerequisite Diagnostics Across Validator Entrypoints | `ai-context-governance` | `completed` | `2026-08-03T07:33:13+08:00` | [plan](2026-08-02-python-prerequisite-diagnostics/workflow-plan.md) |
 | [`2026-07-31-work-item-binding-policy`](2026-07-31-work-item-binding-policy/workflow.yaml) | Define Provider-Neutral Work-Item Binding And Merge-Gate Selection | `ai-context-governance` | `completed` | `2026-07-31T00:29:59+08:00` | [plan](2026-07-31-work-item-binding-policy/workflow-plan.md) |
 | [`2026-07-30-skill-script-colocation`](2026-07-30-skill-script-colocation/workflow.yaml) | Co-locate Skill-Owned Scripts With Canonical Skills | `ai-context-governance` | `completed` | `2026-07-30T11:38:15+08:00` | [plan](2026-07-30-skill-script-colocation/workflow-plan.md) |
@@ -29,6 +28,7 @@ task-level progress.
 
 | Workflow | Title | Owner | Status | Updated | Entry Point |
 | --- | --- | --- | --- | --- | --- |
+| [`2026-08-03-v0-8-0-release-publication`](2026-08-03-v0-8-0-release-publication/workflow.yaml) | Prepare And Publish v0.8.0 | `ai-context-governance` | `completed` | `2026-08-03T19:05:12+08:00` | [plan](2026-08-03-v0-8-0-release-publication/tasks/REL080-001.json) |
 | [`2026-07-30-ai-created-proposal-attribution`](2026-07-30-ai-created-proposal-attribution/workflow.yaml) | Extend Codex Creation Attribution To AI-Created Proposals | `ai-context-governance` | `completed` | `2026-07-30T23:47:53+08:00` | [plan](2026-07-30-ai-created-proposal-attribution/workflow-plan.md) |
 | [`2026-07-30-opus-5-feedback-intake`](2026-07-30-opus-5-feedback-intake/workflow.yaml) | Normalize Opus 5 Repository Feedback And Plan Selected Follow-Ups | `ai-context-governance` | `completed` | `2026-07-30T23:06:17+08:00` | [plan](2026-07-30-opus-5-feedback-intake/workflow-plan.md) |
 | [`2026-07-28-v0-7-0-release-preparation`](2026-07-28-v0-7-0-release-preparation/workflow.yaml) | Prepare And Finalize v0.7.0 Publication | `ai-context-governance` | `completed` | `2026-07-28T21:31:43+08:00` | [plan](2026-07-28-v0-7-0-release-preparation/tasks/REL070-001.json) |

@@ -3,8 +3,8 @@ provider: "github"
 repository: "YuChia-Wei/ai-collaboration-prompts-dotnet-backend"
 migration_id: "github-live-TOOL-002-2026-08-02"
 stage: "stage-b-read-back-complete"
-source_revision: "5ec8f6210463df9be707304d632aca44014586d9"
-generated_at: "2026-08-03T07:33:01+08:00"
+source_revision: "5ad3f60ea08b8f1416b2d478ae1642a30bf11801"
+generated_at: "2026-08-03T19:04:13+08:00"
 project:
   number: 3
   node_id: "PVT_kwHOAwvEG84Bez7w"
@@ -12,19 +12,19 @@ project:
 items:
   - backlog_id: "TOOL-002"
     source_path: ".dev/backlog/items/TOOL-002.yaml"
-    source_sha256: "d31dd6a2d23b7ed847d4f767dff9550624fe34e454b030cc0d25d9086313d940"
+    source_sha256: "5f8634cf507a96ae50d73f738a631a7751ea4ee2fd61cac9b4bca1ce3cfbcccd"
     issue_number: 77
     issue_node_id: "I_kwDOSBe2Hc8AAAABLJqJfw"
     issue_url: "https://github.com/YuChia-Wei/ai-collaboration-prompts-dotnet-backend/issues/77"
     issue_state: "closed"
     close_reason: "completed"
-    project_item_id: "222222572"
+    project_item_id: "PVTI_lAHOAwvEG84Bez7wzg0-2Ow"
     created_at: "2026-08-02T16:00:26Z"
     updated_at: "2026-08-02T23:26:08Z"
     read_back:
-      verified_at: "2026-08-03T07:33:13+08:00"
+      verified_at: "2026-08-03T19:04:13+08:00"
       title_matches: true
       markers_match: true
       labels_match: true
       state_matches: true
-      notes: "PR #78 merged as 2070e44cff17bf3baad52f014ec360a449e3bd36 after all three hosted workflows passed, and remote main read-back confirmed the validated feature head and identical tree before Issue #77 closed as completed. Connector read-back confirms the closed state, reason completed, exact title, labels, and completion comment. Project #3 History by Release read-back confirms Status Done under Not yet published; prior read-back retains Priority P2 Normal, Owner review Not required, and Target release v0.8.0. No v0.8.0 release or publication field was created."
+      notes: "PR #78 merged as 2070e44cff17bf3baad52f014ec360a449e3bd36 before Issue #77 closed as completed. After immutable v0.8.0 publication and source finalization through PR #82, live node read-back corrects the earlier numeric receipt to item PVTI_lAHOAwvEG84Bez7wzg0-2Ow and confirms Status Done, Target release v0.8.0, and Published in v0.8.0. Provider state remains a non-authoritative projection."
