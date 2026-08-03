@@ -114,6 +114,7 @@ candidate evidence rather than package-projected content. The disposition is
 CRITICAL 0, MUST FIX 0, SHOULD FIX 0, so source-local lifecycle advancement
 from `planned` to `validated` is permitted.
 
-The aggregate repository critical gate, hosted pull-request checks, merge,
-current-main pre-tag validation, owner-created tag, publication, and terminal
-registry finalization remain unperformed.
+The candidate lifecycle and aggregate repository critical gates subsequently
+passed as recorded in `candidate-critical-gate.md`. Hosted pull-request checks,
+merge, current-main pre-tag validation, owner-created tag, publication, and
+terminal registry finalization remain unperformed.

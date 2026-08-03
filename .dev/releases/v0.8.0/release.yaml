@@ -10,7 +10,7 @@ commit: null
 tagged_at: null
 recorded_at: null
 created_at: "2026-08-03T08:33:26+08:00"
-updated_at: "2026-08-03T09:39:41+08:00"
+updated_at: "2026-08-03T10:05:26+08:00"
 planning:
   backlog_refs:
     - ".dev/backlog/items/SKILL-002.yaml"
@@ -52,7 +52,7 @@ distribution:
     automation: "github-actions"
     creates_or_moves_tag: false
 validation:
-  evidence: "The exact SKILL-002, TOOL-002, and WIBIND-001 release set, authored notes, and non-breaking v0.7.0-only compatibility contract passed focused release validation. Immutable candidate ec50df072ec59f7e59322345f005450c48be28d7 contains 625 payload paths; ZIP 1e2b2356ae2ebd0fe6938261b1e054e7d467f92829bdcde6946ca245e9028775 and tar.gz a4b23ada7365b53592a2ae0edc92c68da53b07a1b6187e0a8d3f07e09143a7f0 passed archive validation. Clean install applied 623 paths with two optional provider skips; the exact provenance-driven v0.7.0 upgrade applied 64 operations with one optional provider skip and two reviewed reconciliations, with zero missing applied paths or applied SHA mismatches. ASM-20260803-002 independently verified hashes, receipts, skip truth, and projection stability with no critical, must-fix, or should-fix finding. Packaging tests passed 28 with one external-repository skip not counted as passed; apply tests passed 25 with one Windows capability skip not counted as passed. Aggregate repository validation, hosted PR checks, merge, current-main pre-tag, tag, and publication remain separate and are not claimed."
+  evidence: "The exact SKILL-002, TOOL-002, and WIBIND-001 release set, authored notes, and non-breaking v0.7.0-only compatibility contract passed focused release validation. Immutable candidate ec50df072ec59f7e59322345f005450c48be28d7 contains 625 payload paths; ZIP 1e2b2356ae2ebd0fe6938261b1e054e7d467f92829bdcde6946ca245e9028775 and tar.gz a4b23ada7365b53592a2ae0edc92c68da53b07a1b6187e0a8d3f07e09143a7f0 passed archive validation. Clean install applied 623 paths with two optional provider skips; the exact provenance-driven v0.7.0 upgrade applied 64 operations with one optional provider skip and two reviewed reconciliations, with zero missing applied paths or applied SHA mismatches. ASM-20260803-002 independently verified hashes, receipts, skip truth, and projection stability with no critical, must-fix, or should-fix finding. Packaging tests passed 28 with one external-repository skip not counted as passed; apply tests passed 25 with one Windows capability skip not counted as passed. The authoritative Git Bash critical gate passed with exit 0 in 438.6 seconds; an earlier WSL attempt that could not execute dotnet remains recorded as blocked-by-environment rather than passed. Hosted PR checks, merge, current-main pre-tag, tag, and publication remain separate and are not claimed."
   workflow_id: "2026-08-03-v0-8-0-release-publication"
   related_workflows:
     - "2026-07-30-skill-script-colocation"

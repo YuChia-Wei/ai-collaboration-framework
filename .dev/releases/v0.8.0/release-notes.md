@@ -54,8 +54,9 @@ Both real apply receipts intentionally leave downstream provenance finalization
 to `ai-context-init` or `ai-context-upgrader`; that target-owned step is not
 counted as a candidate pass.
 
-The aggregate repository critical gate, hosted pull-request checks, merge, and
-current-main pre-tag validation remain pending in the owning workflow.
+The complete repository critical gate also passed. Hosted pull-request checks,
+merge, and current-main pre-tag validation remain pending in the owning
+workflow.
 
 From v0.7.0 onward, the renderer appends the canonical `Included Work` section
 from `release.yaml.planning.backlog_refs`. Do not duplicate that generated
