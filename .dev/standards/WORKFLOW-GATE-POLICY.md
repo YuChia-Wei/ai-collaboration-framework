@@ -12,6 +12,21 @@ This policy defines when an agent should create workflow artifacts proactively i
 
 Mode is determined by intent, mutation, and execution tracking, not by the number of analysis steps alone. A transient read-only analysis may use multiple passes or sub-agents in direct mode when it does not write a repository report, mutate repository files, or perform remediation. A user request for a "report" means a durable repository artifact only when the user asks to save, persist, land, or otherwise retain it in the repository. Persistence by itself selects assessment mode, not workflow mode.
 
+## Independent Delivery Decisions
+
+Do not collapse these decisions into one another:
+
+| Decision | Question | Typical values |
+| --- | --- | --- |
+| Execution record | What durable repository execution state is needed? | `direct`, `assessment`, `workflow` |
+| Delivery grouping | Which approved outcomes must move, validate, review, and roll back together? | one outcome per delivery, or several work items in one cohesive delivery |
+| Integration gate | What review or automation must pass before the target branch changes? | direct push where target policy permits, or pull request |
+| Git topology | Does a grouped branch boundary carry information that must remain visible? | linear integration or merge commit |
+
+Workflow mode does not imply one workflow per Issue, a pull request does not
+imply a merge commit, and a single commit does not imply low risk. Decide each
+axis from its own evidence and target policy.
+
 ## Work-Management Lifecycle
 
 Keep work-management state distinct from repository execution state. A planning
@@ -68,35 +83,90 @@ user naming `software-development-orchestrator` or any downstream skill. Determi
 requested outcome, current artifacts, repository policy, and approval state,
 not from skill names alone.
 
+## Delivery Cohesion For Multiple Work Items
+
+Before creating workflow artifacts for multiple approved Issues or other work
+items, decide the delivery unit. Group the items into one workflow, branch,
+validation path, and pull request when they share all material delivery
+boundaries:
+
+- one coherent user or maintainer outcome;
+- the same base and work branch;
+- substantially the same required validation and environment;
+- the same reviewer, approval, security, and ownership boundary;
+- the same release gate or deployment horizon; and
+- atomic integration and rollback are acceptable.
+
+Split the delivery when an item can and should be reviewed, released, reverted,
+or resumed independently; when approval, security, ownership, environment, or
+release boundaries differ; or when the owner explicitly selects independent
+delivery. Ask the owner only when these boundaries are materially ambiguous.
+
+A workflow and pull request may bind multiple approved work-item identifiers.
+Record all applicable identifiers in workflow and commit metadata, but do not
+create one workflow, task, branch, or pull request merely because there is more
+than one Issue. Issue count is traceability input, not delivery cardinality.
+
 ## Must Create a Workflow
 
 Create a durable workflow and its discovery locator only when execution is
-authorized, or the owner requires durable cross-session execution tracking, and
-one or more of these are true:
+authorized, or the owner requires durable cross-session execution tracking,
+**and both of these tests pass**:
 
-- the authorized task needs two or more execution stages;
-- the task needs cross-skill or sub-agent handoff;
-- the task changes canonical source-of-truth rules;
-- the task reorganizes `.ai/`, `.dev/`, `.agents/`, `.claude/`, or wrapper routing;
-- the task affects future agent behavior;
-- the task needs execution plan, review, or task status artifacts;
-- the task involves document governance, source-of-truth cleanup, or context boundary changes;
-- the task will likely touch five or more files;
-- the owner explicitly requests a workflow for the authorized execution.
+1. The workflow will preserve unique approval, coordination, execution,
+   handoff, external-lifecycle, or recovery state that is not adequately owned
+   by an Issue, ADR, assessment, commit, pull request, release record, or the
+   conversation.
+2. At least one material execution condition applies:
+   - independently meaningful stages need status or approval checkpoints;
+   - cross-skill, cross-owner, sub-agent, host, runtime, or session handoff is
+     required;
+   - canonical rules or future agent behavior need staged remediation plus
+     independent verification;
+   - `.ai/`, `.dev/`, `.agents/`, `.claude/`, or wrapper routing crosses
+     ownership or compatibility boundaries;
+   - release, publication, migration, deployment, or another external
+     lifecycle must be resumed or reconciled safely;
+   - failure, rollback, or partial completion requires durable task state; or
+   - the owner explicitly requests workflow tracking for the authorized work.
 
 Candidate tracker management, discussion, plan drafting, and task breakdown are
 not workflow triggers unless they also meet the authorization condition above.
+
+File count, commit count, Issue count, skill-invocation count, and the number of
+analysis steps are signals only. They must not independently select workflow
+mode.
+
+### Low-Task Proportionality Review
+
+One task, or fewer than three substantive tasks, is a review signal rather than
+a prohibition. Before retaining such a workflow, record which unique state from
+the first test above justifies it. Release publication, an external-host
+checkpoint, an approval boundary, or an independently resumable migration can
+justify a one-task workflow.
+
+Do not invent tasks to satisfy a count. Generic validation, evidence formatting,
+provider read-back, commit creation, pull-request creation, and workflow
+closeout are lifecycle steps unless they produce independently owned outcomes.
+If the only proposed task is the change itself and no unique workflow state can
+be named, return to direct mode.
 
 ## Direct Mode Is Enough
 
 Direct mode is acceptable when all of these are true:
 
-- the change is small and local;
+- the change is one coherent, bounded execution unit;
 - only one skill is needed;
-- no durable decision trail is required;
-- no canonical rule or source-of-truth boundary changes;
-- no task status needs to be preserved;
+- an Issue, ADR, assessment, commit, pull request, release record, or the
+  conversation adequately owns any required decision trail;
+- no independently resumable task state, approval transition, or external
+  lifecycle must be preserved;
 - validation can be completed in the same turn.
+
+Direct mode may touch several files when the change is mechanical and remains
+within one ownership and validation boundary. Conversely, a one-file change may
+need workflow mode when it carries an external lifecycle or durable approval
+checkpoint.
 
 Transient read-only analysis is also direct mode even when it is multi-stage or uses sub-agents, provided that all of these are true:
 
@@ -137,7 +207,9 @@ When workflow mode is used:
 2. Create or switch to a dedicated workflow branch before creating workflow artifacts or making material task changes.
 3. Then create the workflow locator and skill-owned artifacts.
 
-Branch naming, checkpoint merge, continuation branch, push, and `--no-ff` details are defined by `.dev/TEAM-GIT-FLOW-RULES.MD`.
+Branch naming, checkpoint integration, continuation branch, push, and positive
+linear-versus-merge-commit selection are defined by
+`.dev/TEAM-GIT-FLOW-RULES.MD`.
 
 ```text
 .dev/workflows/<workflow-id>/
@@ -223,4 +295,17 @@ Before sending a final response in workflow mode, the agent must verify all of t
 - when no commit is created, the final response cites the exact policy exception that applies.
 - the workflow was not marked complete merely because its branch was merged or pushed as a checkpoint;
 - workflow completion and pull-request integration were reported as separate facts; do not claim a `main` change until the pull request required by `.dev/TEAM-GIT-FLOW-RULES.MD` is merged;
-- any requested merge used `--no-ff` unless the user explicitly selected another strategy.
+- delivery grouping was evaluated before separate workflows were created for multiple work items;
+- a workflow with fewer than three substantive tasks records the unique state that justified workflow mode without padding the task list;
+- integration gate and Git topology were selected independently under `.dev/TEAM-GIT-FLOW-RULES.MD`.
+
+## Representative Decisions
+
+| Scenario | Execution record | Delivery grouping | Integration gate | Topology |
+| --- | --- | --- | --- | --- |
+| Correct historical README wording with no normative, generated, release, security, or migration truth change | direct | one bounded change | pull request in this source repository | linear |
+| Remove one stale index entry and validate it in the same turn | direct | one bounded change | pull request in this source repository | linear |
+| Retain a read-only repository audit without remediation | assessment | one assessment | pull request in this source repository | normally linear |
+| Implement several Issues on one branch with shared validation, reviewers, release gate, and rollback | direct or one workflow according to unique execution state | one cohesive multi-Issue delivery | one pull request | select from boundary value, not Issue count |
+| Publish or reconcile a release across hosted and local state | workflow | one release lifecycle | pull request plus owner-controlled publication gates | merge commit when the grouped lifecycle boundary must remain visible |
+| Change canonical behavior across portable policy, routing, validators, and independent verification | workflow | one policy outcome | pull request | linear or merge commit according to whether the branch boundary adds durable information |

@@ -67,7 +67,7 @@ Baseline assessment 不得被修正報告或 verification assessment 覆寫或�
 - `created_at`、`updated_at` 使用帶明確 offset 的 ISO 8601。
 - 所有 generated artifacts 記錄 `template_source` 與 `template_version`。
 - 暫停前更新 locator、plan 與 active task 的 checkpoint，包含最後完成動作、下一步、validation 與 Git state。
-- 未完成時若使用者要求 merge/push，視為 checkpoint handoff：維持 active/pending 並記錄 checkpoint evidence；merge 預設 `--no-ff`。Push-only 從已推送 branch 接續，checkpoint merge 後才建立新的 continuation branch。
+- 未完成時若使用者要求 integration/push，視為 checkpoint handoff：維持 active/pending 並記錄 checkpoint evidence；依 `.dev/TEAM-GIT-FLOW-RULES.MD` 選擇線性或 merge-commit topology，handoff boundary 有獨立保存價值時通常保留 merge commit。Push-only 從已推送 branch 接續，checkpoint integration 後才建立新的 continuation branch。
 
 本 skill 的 templates 位於 `.ai/assets/skills/ai-context-governance/templates/`。
 

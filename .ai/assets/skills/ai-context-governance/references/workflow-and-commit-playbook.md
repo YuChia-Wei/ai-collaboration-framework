@@ -36,7 +36,9 @@ When the user requests merge or push before the AI-context workflow is complete:
 
 - follow `.dev/standards/WORKFLOW-HANDOFF-POLICY.md`;
 - commit a coherent validated checkpoint;
-- use `git merge --no-ff` when merge is requested;
+- select linear or merge-commit topology under `.dev/TEAM-GIT-FLOW-RULES.MD`;
+- normally retain a merge commit when a checkpoint branch boundary carries
+  durable resume or handoff evidence;
 - keep the workflow and unfinished remediation tasks active;
 - record the checkpoint type, commit, remote/target, last completed work, and exact next action;
 - resume a push-only handoff from the pushed branch;

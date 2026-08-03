@@ -89,7 +89,7 @@ Use $software-development-orchestrator as the orchestration policy for this repo
 Inputs:
 - Objective: <software or product development objective>
 - Existing artifacts: <requirements/specs/workflow/task paths, if any>
-- Constraints: <branch, commit, validation, issue number, model/sub-agent constraints>
+- Constraints: <branch, commit, validation, zero/one/multiple approved work-item identifiers, model/sub-agent constraints>
 
 Execution:
 - Detect the entry point.

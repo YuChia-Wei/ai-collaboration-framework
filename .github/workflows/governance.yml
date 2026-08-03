@@ -90,6 +90,7 @@ jobs:
         run: |
           python .ai/scripts/validate-source-governance.py
           python .ai/scripts/tests/test_file_disposition_manifest.py -v
+          python .ai/scripts/tests/test_workflow_delivery_policy.py -v
 
       - name: Validate this read-only workflow contract
         run: python .ai/scripts/tests/test_governance_workflow_contract.py -v

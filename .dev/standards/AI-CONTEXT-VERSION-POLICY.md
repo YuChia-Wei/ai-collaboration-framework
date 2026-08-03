@@ -28,7 +28,10 @@ Version impact is determined by the highest-impact included change. Repository h
 
 1. **Planned**: create or update a version candidate record and migration material on a dedicated workflow branch. The candidate has no tag or published commit.
 2. **Validated**: all required repository gates pass and release notes describe compatibility, migrations, and known limitations.
-3. **Merged**: merge the workflow with `--no-ff` into `main`. Re-run release validation against the merge commit.
+3. **Integrated**: integrate through the required pull request using the
+   topology selected by `.dev/TEAM-GIT-FLOW-RULES.MD`. Release and publication
+   workflows normally retain a merge commit because the lifecycle boundary is
+   durable evidence. Re-run release validation against the integrated commit.
 4. **Published**: the user creates an annotated immutable tag on the validated `main` commit. The tag-triggered publication automation validates that tag, builds the package from it, and publishes the release artifacts and notes.
 
 The merge commit should use `release` scope and mention the candidate version. The annotated tag message must include the release identifier, compatibility summary, and `AI-Model` line when AI assisted the release preparation.

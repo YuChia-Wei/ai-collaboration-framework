@@ -215,7 +215,9 @@ the existing evidence trail.
 
 ## Workflow Branch And Merge Rule
 
-Branch naming, branch-first creation, push, checkpoint merge, continuation, and default `--no-ff` behavior are owned by `.dev/TEAM-GIT-FLOW-RULES.MD`.
+Branch naming, branch-first creation, push, checkpoint merge, continuation, and
+positive linear-versus-merge-commit topology selection are owned by
+`.dev/TEAM-GIT-FLOW-RULES.MD`.
 
 For commit-policy purposes:
 

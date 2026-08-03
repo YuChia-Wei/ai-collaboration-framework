@@ -4,9 +4,9 @@
   "task_id": "GOV004-001",
   "workflow_id": "2026-08-03-workflow-delivery-cohesion",
   "owner_skill": "ai-context-governance",
-  "status": "in_progress",
+  "status": "completed",
   "created_at": "2026-08-03T23:47:10+08:00",
-  "updated_at": "2026-08-03T23:47:10+08:00",
+  "updated_at": "2026-08-03T23:59:37+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-5.6-sol",
   "reasoning_effort": "max",
@@ -46,15 +46,29 @@
       "Run workflow and AI-context validators.",
       "Request independent post-remediation verification."
     ],
-    "last_completed_step": "Baseline evidence frozen in ASM-20260803-004.",
-    "next_action": "Implement the workflow-value and delivery-cohesion contract."
+    "last_completed_step": "Implemented canonical and portable workflow-value, low-task proportionality, and delivery-cohesion rules with deterministic coverage.",
+    "next_action": "Independent verification checks WFG-001 and WFG-002."
   },
   "results": {
-    "summary": "",
-    "files_changed": [],
-    "tests_run": [],
-    "finding_status": "not-addressed",
-    "residual_risk": "Current broad triggers may still create low-value workflows or split cohesive multi-Issue delivery.",
-    "follow_up_needed": true
+    "summary": "Workflow mode now requires unique durable state plus a material execution condition; low-task workflows require proportionality review without task padding; multiple approved work items are grouped by delivery cohesion rather than Issue count.",
+    "files_changed": [
+      ".dev/standards/WORKFLOW-GATE-POLICY.md",
+      ".ai/assets/shared/governance/WORKFLOW-GATE-POLICY.md",
+      ".ai/assets/skills/software-development-orchestrator/skill.yaml",
+      ".ai/assets/skills/software-development-orchestrator/references/runtime-coordination.md",
+      ".dev/guides/ai-collaboration-guides/**",
+      "AGENTS.md",
+      "AGENTS.zh-TW.md",
+      ".ai/scripts/tests/test_workflow_delivery_policy.py"
+    ],
+    "tests_run": [
+      "python .ai/scripts/tests/test_workflow_delivery_policy.py -v: 6 passed",
+      "python .ai/assets/skills/software-development-orchestrator/scripts/tests/test_software_development_orchestrator_acceptance.py -v: 3 passed outside sandbox",
+      "python .ai/scripts/validate-ai-context.py: passed",
+      "python .ai/scripts/validate-workflow-artifacts.py: passed"
+    ],
+    "finding_status": "addressed",
+    "residual_risk": "Natural-language grouping remains model-in-loop; deterministic policy fixtures verify the required decision boundaries but cannot prove every future classification.",
+    "follow_up_needed": false
   }
 }

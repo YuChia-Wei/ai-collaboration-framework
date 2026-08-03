@@ -66,6 +66,7 @@ REQUIRED_COMMANDS = {
     "python .ai/scripts/tests/test_release_notes_renderer.py -v",
     SOURCE_GOVERNANCE_COMMAND,
     "python .ai/scripts/tests/test_file_disposition_manifest.py -v",
+    "python .ai/scripts/tests/test_workflow_delivery_policy.py -v",
     "python .ai/scripts/tests/test_governance_workflow_contract.py -v",
 }
 MUTATING_COMMAND = re.compile(

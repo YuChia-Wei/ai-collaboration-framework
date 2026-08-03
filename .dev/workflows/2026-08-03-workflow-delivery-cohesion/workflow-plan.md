@@ -16,10 +16,10 @@
 - `base_branch`: `main`
 - `branch_segment`: `1`
 - `status`: `in_progress`
-- `current_phase`: `remediation-planning`
+- `current_phase`: `post-audit`
 - `artifact_root`: `.dev/workflows/2026-08-03-workflow-delivery-cohesion`
 - `created_at`: `2026-08-03T23:47:10+08:00`
-- `updated_at`: `2026-08-03T23:47:10+08:00`
+- `updated_at`: `2026-08-03T23:59:37+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md`
 - `template_version`: `1.2.0`
 
@@ -34,6 +34,7 @@
 
 - The owner explicitly authorized persistence, a new Issue, related documentation corrections, and inclusion in the next release gate on 2026-08-03.
 - The owner selected linear integration for this delivery. This is a positive topology selection, not an exception request.
+- The baseline, remediation, and verification commits are self-describing and share one outcome, reviewer boundary, validation path, and rollback posture. No checkpoint, handoff, release, or external-host boundary gives an extra merge node independent value, so the selected linear topology remains coherent despite multiple stage commits.
 - Issue #86 records the approved outcome. GitHub provider state remains a projection and did not authorize execution.
 
 ## Artifact Contract
@@ -61,8 +62,8 @@
 
 | Task | Purpose | Status |
 | --- | --- | --- |
-| `GOV004-001` | Define workflow value, low-task review signals, and many-Issue-to-one-delivery cohesion. | `in_progress` |
-| `GOV004-002` | Define normal linear and merge-commit topology rules and register the next-release gate. | `pending` |
+| `GOV004-001` | Define workflow value, low-task review signals, and many-Issue-to-one-delivery cohesion. | `completed` |
+| `GOV004-002` | Define normal linear and merge-commit topology rules and register the next-release gate. | `in_progress` (policy complete; verification and linear integration pending) |
 
 ## Stages And Checkpoints
 
@@ -74,10 +75,10 @@
 
 ## Resume Checkpoint
 
-- Last completed action: created GitHub Issue #86, created the dedicated workflow branch, and froze the baseline evidence at `main@80b013803ee29ca2f4dd458a393eb1da451212e1`.
-- Current task: `GOV004-001`.
-- Exact next action: update canonical, portable, skill, and human guidance with workflow-value and delivery-cohesion rules.
-- Validation already completed: live GitHub PR inventory, workflow artifact inventory, and CTX-002 historical commit inspection.
+- Last completed action: implemented both normative tasks and passed focused policy, governance-workflow, AI-context, workflow, language, wrapper, backlog, and orchestrator acceptance validation.
+- Current task: independent `ai-context-auditor` verification.
+- Exact next action: create `ASM-20260803-005`, reconcile the remediation report, and prepare linear integration.
+- Validation already completed: live GitHub PR inventory; workflow artifact inventory; CTX-002 historical commit inspection; six workflow-delivery policy cases; seven governance-workflow cases; three orchestrator acceptance cases; ten language/parity cases; sixteen wrapper cases; AI-context, workflow, backlog, and diff checks.
 - Git state: workflow branch created from clean `main@80b013803ee29ca2f4dd458a393eb1da451212e1`.
 - Branch history and checkpoint handoffs: none.
 - Blockers or unresolved decisions: successor release identity remains intentionally unassigned; this does not block defining its activation gate.
@@ -86,4 +87,4 @@
 
 | Segment | Branch | Base | Checkpoint Type | Commit | Remote / Target | Recorded At | Reason | Resume Branch / Action |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| 1 | `codex/2026-08-03-workflow-delivery-cohesion` | `main@80b013803ee29ca2f4dd458a393eb1da451212e1` | active | pending | Issue #86 / future PR to `main` | `2026-08-03T23:47:10+08:00` | Implement one cohesive governance delivery. | Continue `GOV004-001` on this branch. |
+| 1 | `codex/2026-08-03-workflow-delivery-cohesion` | `main@80b013803ee29ca2f4dd458a393eb1da451212e1` | active | pending | Issue #86 / future PR to `main` | `2026-08-03T23:59:37+08:00` | Implement one cohesive governance delivery with owner-selected linear topology. | Run independent verification, then open one PR. |

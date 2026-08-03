@@ -67,15 +67,17 @@ release set, and authorizes release preparation. It does not delegate creation,
 movement, deletion, replacement, or push of the immutable release tag.
 
 `DEVWF-001` and `INIT-001` remain independent unassigned decisions. `STD-001`
-is now planned at P1 with three bounded deliberation rounds and is explicitly
-related to `OBS-001`, which remains P2 and unassigned. Neither item is a hidden
-release blocker: `OBS-001` may collect architecture evidence independently,
-while canonical standards structure, placement, and publication wait for the
-applicable `STD-001` decisions unless the owner grants an exception. Standards
-or dev-workflow schema changes may receive a dedicated release after
-deliberation instead of being forced into an existing horizon. Actual
-WorkService upgrade execution belongs to its target repository rather than
-this source roadmap.
+is planned at P1 and explicitly related to `OBS-001`, which remains P2 and
+unassigned. The owner selected round one for implementation through `GOV-004`;
+rounds two and three remain deliberation-only. `STD-001`, `DEVWF-001`, and
+`OBS-001` are not hidden release blockers. `GOV-004` is the separately named
+blocker for the next allocated successor release. `OBS-001` may collect
+architecture evidence independently, while canonical standards structure,
+placement, and publication wait for the remaining applicable `STD-001`
+decisions unless the owner grants an exception. Standards or dev-workflow
+schema changes may receive a dedicated release after deliberation instead of
+being forced into an existing horizon. Actual WorkService upgrade execution
+belongs to its target repository rather than this source roadmap.
 
 `UPG-001` was declined by owner decision on 2026-07-27 because no credible
 legacy customized target or feedback capacity is expected to be available.
@@ -317,15 +319,15 @@ manifest/digests, stable summaries and redirects, reference validation,
 restore/lookup behavior, and downstream migration evidence.
 
 Standards simplification is not normal token cleanup. Standards are a core
-software-development capability of this framework, so `STD-001` remains
-unassigned for release allocation but is planned at P1 for three bounded rounds:
-workflow-mode proportionality, code-review progressive disclosure, and
-terminology discovery. `OBS-001` may perform read-only architecture exploration
-in parallel, but applicable standards-format decisions precede its canonical
-standards publication unless the owner grants an exception. Only after the
-accepted doctrine, validator impact, examples, compatibility, and migration
-boundaries are understood may the owner assign implementation to an existing
-or dedicated release.
+software-development capability of this framework. `STD-001` remains
+unassigned for release allocation; workflow proportionality is now implemented
+through `GOV-004`, while code-review progressive disclosure and terminology
+discovery remain bounded rounds. `OBS-001` may perform read-only architecture
+exploration in parallel, but applicable remaining standards-format decisions
+precede its canonical standards publication unless the owner grants an
+exception. Only after each round's accepted doctrine, validator impact,
+examples, compatibility, and migration boundaries are understood may the owner
+assign that round's implementation to an existing or dedicated release.
 
 ## Next Action
 

@@ -16,6 +16,27 @@ protection rules, and permissions.
 - After integration, verify the target branch separately and do not claim
   publication or release completion from integration alone.
 
+## Integration Gate And Topology
+
+The target selects its review or integration gate independently from Git
+topology. A workflow does not inherently require a merge commit, and a linear
+history does not inherently permit direct push.
+
+Choose linear integration when commits and the provider review record carry all
+needed evidence and the branch has no durable checkpoint, approval, handoff,
+external-lifecycle, or grouped rollback meaning. Direct-mode fixes, standalone
+assessments, and non-normative documentation changes are common candidates.
+
+Choose a merge commit when the branch is itself a meaningful review or rollback
+unit, carries checkpoint or handoff state, reconciles release, publication,
+migration, deployment, security, or another external lifecycle, or target
+policy requires a merge node.
+
+Issue count, task count, commit count, file count, and workflow mode are signals
+only. The target records its positive topology choice and uses a provider-native
+rebase, fast-forward, or merge-commit mechanism that does not bypass required
+review, checks, permissions, or branch protection.
+
 ## Handoff And Customization
 
 A push-only handoff resumes from the pushed workflow branch. A workflow that is

@@ -46,6 +46,8 @@ Do not treat historical sample backend information as current product truth unle
 1. Read `.dev/standards/WORKFLOW-GATE-POLICY.md` when work may affect source-of-truth, AI context, skill routing, wrapper sync, or more than one stage.
 2. Create workflow artifacts proactively when the gate requires workflow mode.
 3. Keep small, local, single-pass changes in direct mode.
+4. Before creating separate workflows for multiple approved work items, evaluate delivery cohesion; shared outcome, branch, validation, reviewers, release gate, and rollback normally use one delivery.
+5. Treat fewer than three substantive tasks as a proportionality review signal. Do not invent validation or closeout tasks to justify workflow mode.
 
 Workflow artifact rules:
 
@@ -61,7 +63,7 @@ Workflow artifact rules:
 - Do not store runtime workflow records under canonical skill or runtime wrapper directories.
 - Treat an explicitly requested merge/push before completion as a checkpoint handoff and keep the workflow active. Resume a push-only handoff from the pushed branch; after a checkpoint merge, start a new dedicated continuation branch from the updated target.
 - Follow `.dev/standards/WORKFLOW-HANDOFF-POLICY.md` before transferring an active workflow across a model, runtime, host, machine, or fresh session; the receiving checkpoint must remain executable without hidden session context.
-- Merge workflow branches with `--no-ff` by default unless the user explicitly requests another strategy.
+- Select linear or merge-commit integration positively under `.dev/TEAM-GIT-FLOW-RULES.MD`; workflow mode alone does not select topology.
 
 ### Assessment Gate
 

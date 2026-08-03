@@ -6,7 +6,7 @@ status: "planned"
 priority: "HIGH"
 summary: "Run bounded, evidence-backed standards discussions across ChatGPT, Fable 5, and repository agents before deciding whether standards simplification needs a dedicated release."
 created_at: "2026-07-20T23:24:59+08:00"
-updated_at: "2026-07-30T22:13:09+08:00"
+updated_at: "2026-08-03T23:47:10+08:00"
 release:
   target: "unassigned"
   completed_in: null
@@ -32,6 +32,7 @@ resolution_ref: null
 decision_needed: "Owner planning decision recorded on 2026-07-30: run the three selected bounded rounds and complete their standards-format decisions before OBS-001 publishes a new canonical standard. After the discussions are normalized, approve the standards boundaries, validator obligations, migration impact, and whether implementation receives a dedicated release."
 related_backlog_refs:
   - "OBS-001"
+  - "GOV-004"
 acceptance:
   - "Each discussion round uses a versioned packet that pins repository, branch, full commit, topic, included files, exclusions, known invariants, decision questions, and expected feedback."
   - "Discussion packets are bounded by one standards concern or coherent family so ChatGPT or another external model can reason without loading the complete standards corpus."
@@ -53,6 +54,8 @@ discussion_roundtrip:
 selected_rounds:
   - round: 1
     title: "Workflow Gate Proportionality And Direct-Mode Decision Contract"
+    implementation_ref: "GOV-004"
+    owner_disposition: "Selected on 2026-08-03 for implementation and next-successor release gating without naming that release."
     finding_refs:
       - "ASM-20260730-001#AIC-001"
     questions:
@@ -85,3 +88,4 @@ versioning_posture:
 inventory_notes:
   - "Standards are a core product surface of this AI context framework, not incidental token cleanup."
   - "Discussion depth and correctness take precedence over fitting the work into a preselected release."
+  - "GOV-004 implements the owner-selected round-one workflow proportionality, delivery-cohesion, and linear-topology outcome; rounds two and three remain planned and independent."

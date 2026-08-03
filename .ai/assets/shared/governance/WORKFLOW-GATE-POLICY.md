@@ -44,11 +44,37 @@ provider setting.
 
 ## Workflow Gate
 
-Use workflow mode when authorized execution changes source-of-truth, affects
-future agent behavior, crosses stages or skills, needs durable task state, or
-is explicitly required by the owner. Keep transient analysis, exploration,
-and small single-pass work in direct mode. Persist a read-only assessment
-without remediation as assessment mode.
+Decide execution record, delivery grouping, integration gate, and Git topology
+independently. Workflow mode does not imply one workflow per work item, and a
+pull request does not imply a merge commit.
+
+Use workflow mode only when authorized execution needs unique approval,
+coordination, handoff, external-lifecycle, recovery, or independently resumable
+task state that an Issue, ADR, assessment, commit, pull request, release record,
+or conversation does not already own. A material stage, ownership boundary,
+cross-runtime handoff, canonical behavior change with independent verification,
+release lifecycle, rollback boundary, or explicit owner request must also
+apply. Keep transient analysis, exploration, and coherent single-pass work in
+direct mode. Persist a read-only assessment without remediation as assessment
+mode.
+
+One task or fewer than three substantive tasks requires a proportionality
+review, not automatic rejection. Record the unique state that justifies the
+workflow. Do not invent tasks: generic validation, evidence formatting,
+provider read-back, commits, pull-request operations, and closeout are lifecycle
+steps unless they produce independently owned outcomes. File, commit, Issue,
+skill-invocation, and analysis-step counts are signals only.
+
+## Delivery Cohesion
+
+When several approved work items share one outcome, branch, validation path,
+review and approval boundary, release horizon, and atomic rollback posture,
+group them into one workflow or direct delivery and one integration path. A
+workflow may bind multiple work-item identifiers. Split only when an item must
+be reviewed, released, reverted, secured, owned, or resumed independently, or
+when the owner explicitly selects independent delivery. Ask only when those
+boundaries are materially ambiguous. Work-item count never determines workflow,
+task, branch, or pull-request count.
 
 Workflow mode requires a dedicated branch, a locator, skill-owned tasks, exact
 validation outcomes, and a closeout that checks workflow completion separately

@@ -4,9 +4,9 @@
   "task_id": "GOV004-002",
   "workflow_id": "2026-08-03-workflow-delivery-cohesion",
   "owner_skill": "ai-context-governance",
-  "status": "pending",
+  "status": "in_progress",
   "created_at": "2026-08-03T23:47:10+08:00",
-  "updated_at": "2026-08-03T23:47:10+08:00",
+  "updated_at": "2026-08-03T23:59:37+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-5.6-sol",
   "reasoning_effort": "max",
@@ -47,15 +47,29 @@
       "Run backlog, provider, workflow, and commit validators.",
       "Verify hosted checks and linear main ancestry."
     ],
-    "last_completed_step": "Issue #86 records the owner-selected outcome and linear integration choice.",
-    "next_action": "Begin after GOV004-001 policy changes are coherent."
+    "last_completed_step": "Implemented positive linear and merge-commit rules, README classification, PR template evidence, and unassigned successor-release gating.",
+    "next_action": "Independent verification checks WFG-003, then the PR uses the selected linear topology."
   },
   "results": {
-    "summary": "",
-    "files_changed": [],
-    "tests_run": [],
-    "finding_status": "not-addressed",
-    "residual_risk": "Current policy still frames fast-forward as a tiny direct-mode exception.",
+    "summary": "Linear and merge-commit integration are now positive normal choices independent of execution mode and PR gating; historical README-only updates default to direct mode, PR review, and linear topology; GOV-004 is gated into the next owner-allocated successor release without inventing its version.",
+    "files_changed": [
+      ".dev/TEAM-GIT-FLOW-RULES.MD",
+      ".ai/assets/shared/governance/TEAM-GIT-FLOW-RULES.MD",
+      ".dev/standards/GIT-COMMIT-POLICY.md",
+      ".dev/standards/AI-CONTEXT-VERSION-POLICY.md",
+      ".github/pull_request_template.md",
+      ".dev/backlog/ROADMAP.md",
+      ".dev/backlog/items/STD-001.yaml",
+      ".dev/backlog/INDEX.MD"
+    ],
+    "tests_run": [
+      "python .ai/scripts/tests/test_workflow_delivery_policy.py -v: 6 passed",
+      "python .ai/scripts/tests/test_governance_workflow_contract.py -v: 7 passed",
+      "python .ai/scripts/plan-github-backlog-migration.py --check: 45 items, 0 blocked",
+      "git diff --check: passed"
+    ],
+    "finding_status": "addressed",
+    "residual_risk": "Provider branch-protection configuration may limit available topology mechanisms; target policy remains authoritative.",
     "follow_up_needed": true
   }
 }

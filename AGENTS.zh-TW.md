@@ -46,6 +46,8 @@
 1. 當工作可能影響 source-of-truth、AI context、skill routing、wrapper sync，或跨越多個階段時，閱讀 `.dev/standards/WORKFLOW-GATE-POLICY.md`。
 2. 當 gate 要求 workflow mode 時，主動建立 workflow artifacts。
 3. 小型、局部、單次可完成的變更可維持 direct mode。
+4. 為多個已核准 work items 建立不同 workflows 前，先評估 delivery cohesion；outcome、branch、validation、reviewers、release gate 與 rollback 相同時，通常使用同一個 delivery。
+5. 少於三個實質 tasks 是 proportionality review signal；不要為了合理化 workflow mode 而捏造 validation 或 closeout tasks。
 
 Workflow artifact 規則：
 
@@ -61,7 +63,7 @@ Workflow artifact 規則：
 - 不要把 runtime workflow 紀錄放進 canonical skill 或 runtime wrapper 目錄。
 - Workflow 尚未完成時若使用者要求 merge/push，視為 checkpoint handoff 並維持 workflow active。只有 push 時從已推送的 branch 接續；checkpoint merge 後則從更新後的 target 建立新的獨立 continuation branch。
 - 在跨 model、runtime、host、machine 或 fresh session 轉交 active workflow 前，遵循 `.dev/standards/WORKFLOW-HANDOFF-POLICY.md`；receiving checkpoint 必須能在不依賴 hidden session context 的情況下執行。
-- Workflow branch 預設使用 `--no-ff` 合併，除非使用者明確指定其他策略。
+- 依 `.dev/TEAM-GIT-FLOW-RULES.MD` 明確選擇線性或 merge-commit 整合；workflow mode 本身不決定 topology。
 
 ### Assessment Gate
 

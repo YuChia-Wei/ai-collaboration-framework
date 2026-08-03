@@ -33,11 +33,12 @@ inputs:
   - "current workflow artifacts, if any"
   - "canonical skill registry and relevant skill specs"
   - "available downstream skill metadata or runtime wrapper descriptions"
-  - "issue number, required branch policy, validation expectations, and handoff requirements"
+  - "zero, one, or multiple approved work-item identifiers; required branch policy; validation expectations; and handoff requirements"
   - "target-owned test commands, working directory, prerequisites, credential requirements or environment boundaries, and test policy when test execution is selected; never secret values"
   - "approval state for requirements, design, specification, implementation, specialized tests, and compliance gates"
 outputs:
   - "direct-mode or workflow-mode decision"
+  - "delivery-cohesion decision that groups or splits multiple approved work items independently from execution mode"
   - "capability-slot routing plan"
   - "local skill routing plan when a capability profile exists"
   - "skill discovery result with confidence when routing is inferred"
@@ -62,7 +63,9 @@ constraints:
   - "Do not store runtime workflow artifacts under .ai/assets/skills, .agents/skills, .claude/skills, generated folders, or temporary locations."
   - "Preserve user decisions, explicit constraints, branch rules, commit policy, and validation expectations."
   - "Create or switch to a dedicated workflow branch before creating development workflow artifacts or making material workflow edits; never use main as the active workflow branch."
-  - "Treat a requested pre-completion push or merge as a checkpoint and keep pending workflow state active; use --no-ff for merges unless the user explicitly selects another strategy."
+  - "Treat a requested pre-completion push or integration as a checkpoint and keep pending workflow state active; select linear or merge-commit topology under the target branch policy instead of deriving it from workflow mode."
+  - "Before creating separate workflows for multiple approved work items, evaluate delivery cohesion across outcome, branch, validation, reviewer and approval boundary, release horizon, and atomic rollback; one cohesive delivery may bind multiple work-item identifiers."
+  - "Treat one task or fewer than three substantive tasks as a workflow-value review signal, never as a reason to invent validation or closeout tasks."
   - "Activate from high-level software-development intent; do not require the user to name this skill or downstream skills, and do not derive lifecycle stages from skill names alone."
   - "When a requirement, design, or specification discussion awaits approval, pause before creating or executing implementation work; record the pending decision and resume only after explicit authorization."
   - "Treat test-execution as an optional, unmapped capability contract. Resolve target-profile commands first, then a separately evaluated external skill, then the fallback contract; do not create or assume a dedicated test skill."
@@ -79,9 +82,9 @@ constraints:
   - "Ask the user only for direction decisions that cannot be safely inferred from repository evidence or existing policies."
 workflow:
   - step: 1
-    description: "Activate from the high-level software or product development goal without requiring skill names; intake current repo state, active branch, explicit constraints, approval state, and any issue number or commit expectations."
+    description: "Activate from the high-level software or product development goal without requiring skill names; intake current repo state, active branch, explicit constraints, approval state, any approved work-item identifiers, and commit expectations."
   - step: 2
-    description: "Apply the workflow gate to choose direct mode or workflow mode."
+    description: "Apply the workflow-value gate and delivery-cohesion check to choose direct or workflow mode and group multiple approved work items into the smallest coherent delivery."
   - step: 3
     description: "If workflow mode applies, create or switch to the dedicated workflow branch first, then create or update development workflow artifacts from this skill's templates under the repository-approved artifact root."
   - step: 4
