@@ -19,7 +19,7 @@ _None._
 
 | Release ID | Version | Status | Compatibility | Phase Contract |
 | --- | --- | --- | --- | --- |
-_None._
+| [`REL-v0.8.0`](v0.8.0/release.yaml) | `v0.8.0` | `planned` | planned non-breaking exact automatic source v0.7.0 | [checks](v0.8.0/release-phase-checks.yaml) |
 
 ## Published Releases
 

@@ -1,0 +1,67 @@
+schema_version: "1.0"
+release_id: "REL-v0.8.0"
+version: "v0.8.0"
+status: "planned"
+record_origin: "governed"
+distribution_kind: "governed-package"
+installable: true
+tag: null
+commit: null
+tagged_at: null
+recorded_at: null
+created_at: "2026-08-03T08:33:26+08:00"
+updated_at: "2026-08-03T08:33:26+08:00"
+planning:
+  backlog_refs:
+    - ".dev/backlog/items/SKILL-002.yaml"
+    - ".dev/backlog/items/TOOL-002.yaml"
+    - ".dev/backlog/items/WIBIND-001.yaml"
+compatibility:
+  breaking_changes: false
+  minimum_source_version: "v0.7.0"
+  reconciliation_sources:
+    - "v0.7.0"
+  automatic_upgrade_sources:
+    - "v0.7.0"
+  affected_contracts:
+    - "canonical skill-owned Python script placement and compatibility entrypoints"
+    - "Python 3.11+ runtime and dependency prerequisite diagnostics for governed production CLIs"
+    - "target-owned provider-neutral work-item binding and pull-request merge-gate selection"
+artifacts:
+  release_notes: "release-notes.md"
+  migration_guide: "migration-guide.md"
+distribution:
+  profile_id: "dotnet-backend"
+  package_id: "ai-context-dotnet-backend-v0.8.0"
+  schema_versions:
+    package: "2.0.0"
+    files: "2.0.0"
+    migration: "3.0.0"
+  artifacts:
+    zip: "ai-context-dotnet-backend-v0.8.0.zip"
+    zip_checksum: "ai-context-dotnet-backend-v0.8.0.zip.sha256"
+    tar_gz: "ai-context-dotnet-backend-v0.8.0.tar.gz"
+    tar_gz_checksum: "ai-context-dotnet-backend-v0.8.0.tar.gz.sha256"
+  migration:
+    default_mode: "dry-run"
+    apply_requires_clean_worktree: true
+    apply_requires_acknowledged_reconciliation: true
+  publication:
+    tag_owner: "user"
+    trigger: "user-created-tag"
+    automation: "github-actions"
+    creates_or_moves_tag: false
+validation:
+  evidence: "Candidate package, exact v0.7.0 upgrade, independent verification, and repository critical-gate evidence are pending execution in workflow 2026-08-03-v0-8-0-release-publication."
+  workflow_id: "2026-08-03-v0-8-0-release-publication"
+  related_workflows:
+    - "2026-07-30-skill-script-colocation"
+    - "2026-07-31-work-item-binding-policy"
+    - "2026-08-02-python-prerequisite-diagnostics"
+  related_assessments:
+    - "ASM-20260803-001"
+  package_status: "planned"
+  post_merge_status: "pending"
+  failed_publication_run: null
+  published_run: null
+  public_release_url: null

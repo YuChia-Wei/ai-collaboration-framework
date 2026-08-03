@@ -5,7 +5,7 @@ owner: "YuChia-Wei"
 source:
   backlog_glob: ".dev/backlog/items/*.yaml"
   roadmap: ".dev/backlog/ROADMAP.md"
-  expected_item_count: 43
+  expected_item_count: 44
   portable_identity_field: "backlog_id"
   provider_identity_is_authoritative: false
 project:
@@ -40,7 +40,7 @@ issue:
     placement: "hidden marker immediately before canonical identity markers"
     runtime: "OpenAI Codex"
     model: "gpt-5.6-sol"
-    reasoning_effort: "high"
+    reasoning_effort: "max"
     email: "noreply@openai.com"
     runtime_binding: "active Issue-creation execution"
     refresh_policy: "update execution values before a creation batch when runtime provenance changes"
@@ -227,6 +227,7 @@ migration:
   post_adoption_backlog_ids:
     - "SKILL-002"
     - "TOOL-002"
+    - "WIBIND-001"
   canaries:
     - "DEVWF-001"
     - "AIC-007"
@@ -317,3 +318,4 @@ classifications:
   TOOL-002: {kind: "story", scope: "mixed", rationale: "Framework maintainers and downstream adopters need actionable prerequisite diagnostics across source and portable Python entrypoints before mutation."}
   UPG-001: {kind: "story", scope: "framework", rationale: "Legacy customized targets would need a governed provenance and override-preserving upgrade path."}
   VAL-001: {kind: "enabler", scope: "mixed", rationale: "Source validation policy governs confidence in portable dependency and repository contracts."}
+  WIBIND-001: {kind: "enabler", scope: "mixed", rationale: "Provider-neutral binding and merge-gate semantics affect portable target policy while the source repository retains its own optional selection."}
