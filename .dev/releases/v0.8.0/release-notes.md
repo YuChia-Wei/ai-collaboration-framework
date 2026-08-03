@@ -2,7 +2,8 @@
 
 ## Status
 
-Planned governed candidate. No tag, published package, or GitHub Release exists.
+Planned governed candidate with local package validation complete. No tag,
+published package, or GitHub Release exists.
 
 ## Highlights
 
@@ -36,6 +37,8 @@ selection unresolved until the target team explicitly chooses `required`,
 
 - The retained external downstream integration requires an explicitly supplied
   repository; its prior conditional skip is not counted as passed.
+- This Windows host cannot create the package-apply symlink fixture without an
+  unavailable capability; that conditional skip is not counted as passed.
 - Proposal #75 aggregate/downstream selection architecture and Proposal #76
   generalized environment readiness are not part of this release.
 - Published shell compatibility-entrypoint relocation remains deferred pending
@@ -43,9 +46,18 @@ selection unresolved until the target team explicitly chooses `required`,
 
 ## Release Validation
 
-Candidate package, archive parity, clean installation, exact v0.7.0 upgrade,
-independent verification, repository critical gates, pull-request integration,
-and current-main pre-tag validation remain pending in the owning workflow.
+The candidate archives, clean installation, exact initialized v0.7.0 upgrade,
+release contracts, and package matrices passed locally. The packaging matrix
+recorded 28 passed tests and one retained-downstream conditional skip; the
+package-apply matrix recorded 25 passed tests and one Windows symlink-capability
+skip. Neither skip is counted as passed. Both real apply receipts intentionally
+leave downstream provenance finalization to `ai-context-init` or
+`ai-context-upgrader`; that target-owned step is not counted as a candidate
+pass.
+
+Independent candidate verification, the aggregate repository critical gate,
+hosted pull-request checks, merge, and current-main pre-tag validation remain
+pending in the owning workflow.
 
 From v0.7.0 onward, the renderer appends the canonical `Included Work` section
 from `release.yaml.planning.backlog_refs`. Do not duplicate that generated
