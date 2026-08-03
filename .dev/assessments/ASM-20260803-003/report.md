@@ -15,7 +15,7 @@
 - `status`: `final`
 - `audit_date`: `2026-08-03`
 - `created_at`: `2026-08-03T19:46:19+08:00`
-- `updated_at`: `2026-08-03T23:07:07+08:00`
+- `updated_at`: `2026-08-04T01:09:50+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-auditor/templates/ai-context-audit-report-template.md`
 - `template_version`: `2.1.0`
 - `repository`: `C:/Github/YuChia/ai-collaboration-prompts-dotnet-backend`
@@ -24,7 +24,7 @@
 - `previous_assessment`: [`ASM-20260803-002`](../ASM-20260803-002/report.md)
 - `workflow_refs`: [`2026-08-03-v0-8-0-release-publication`](../../workflows/2026-08-03-v0-8-0-release-publication/workflow.yaml), [`2026-07-29-v0-7-0-public-release-body-correction`](../../workflows/2026-07-29-v0-7-0-public-release-body-correction/workflow.yaml)
 - `backlog_ref`: [`REL-004`](../../backlog/items/REL-004.yaml)
-- `machine_readable_evidence`: [`incident-record.json`](evidence/incident-record.json)
+- `machine_readable_evidence`: [`incident-record.json`](evidence/incident-record.json), [`session-019fc7dc-observation.json`](evidence/session-019fc7dc-observation.json)
 
 ## Executive Summary
 
@@ -451,7 +451,10 @@ Evidence in this addendum is classified as current-machine or current-task
 observation unless a repository or hosted source is named. Raw conversation
 content, secrets, credentials, private host identifiers, and complete host logs
 are not committed. The original `incident-record.json` remains the immutable
-machine-readable snapshot for the initial cutoff.
+machine-readable snapshot for the initial cutoff. The bounded
+`session-019fc7dc-observation.json` file separately records derived metrics and
+correction events from a later Codex Desktop thread summary without preserving
+the raw conversation.
 
 ### Sleep And Resume Reconstruction
 
@@ -483,8 +486,13 @@ the assessment decision.
 
 ### Approval Policy, Auto-Review, And Execpolicy Rules
 
-Follow-up inspection found no current file-backed evidence that this repository
-overrides the executor to `approval_policy = "never"`:
+The owner reports that this repository did contain an
+`approval_policy = "never"` override during the incident period and that the
+override was later removed manually. This is owner-supplied historical evidence;
+the removed file was not available at follow-up, so its exact path, lifetime,
+and effective actor coverage cannot be independently reconstructed.
+
+Follow-up inspection found no *current* file-backed override:
 
 - the user config records `approval_policy = "on-request"` and
   `sandbox_mode = "workspace-write"`;
@@ -495,9 +503,11 @@ overrides the executor to `approval_policy = "never"`:
 
 Some release-rollout records belong to the separate `codex-auto-review`
 reviewer and carry their own `never` plus `read-only` context. Those child
-reviewer records do not prove that repository config overrode the parent
-executor. Future telemetry must record effective policy together with the
-actor role so parent execution is not confused with an approval-review turn.
+reviewer records do not prove which historical repository override applied to
+the parent executor. The earlier absence-of-current-file observation must not
+be used to contradict the owner's report about removed historical config.
+Future telemetry must record the effective policy source and actor role at turn
+start so parent execution is not confused with an approval-review turn.
 
 If an actual executor uses `approval_policy = "never"`, it suppresses approval
 prompts; it does not bypass the filesystem, network, service, or sandbox
@@ -568,6 +578,60 @@ Future hooks should record parent task ID, cell ID, start/end, wait reason,
 process ID, retry predecessor, and disposal state, and should cap simultaneous
 or retained cells per stage.
 
+### Comparative Session Observation — Workflow Policy Development
+
+Codex Desktop thread `019fc7dc-a64a-7491-8357-0fa60a763cb0` provides a later
+comparison case for the newly adopted workflow and linear-integration rules.
+The thread is not part of the v0.8.0 release incident and its policy work was
+materially broader than a Release-body correction, so its durations must not be
+used as a like-for-like benchmark. It is useful because the thread summary
+exposes turn durations, item types, connector timings, context compactions, and
+explicit self-corrections.
+
+| Turn | Purpose | Turn duration | Observable structure |
+| --- | --- | ---: | --- |
+| `019fc7de-92b5-7331-9d5d-bfdccf6dac81` | Initial single-commit/PR assessment | `0:08:27.672` | `72` items; `51` connector calls; `302.723 s` of recorded connector duration; two failed lookups used the wrong repository owner before correction. |
+| `019fc7f3-dee2-7622-b70c-9c42dc319468` | Refine linear integration and small-workflow criteria | `0:06:29.737` | `10` items; no separately timed connector call in the summary. |
+| `019fc83e-0c43-7340-8a9f-a90bc9a41945` | Add issue-control-system considerations | `0:02:02.542` | `6` items; discussion-only refinement. |
+| `019fc846-1987-76d0-9564-50d8b243a55a` | Implement governance workflow and integrate PR #88 | `0:55:41.310` | `73` items; `21` file-change events; `2` context compactions; `10` connector calls totaling `13.557 s`; local aggregate validation timed out and was decomposed into focused plus hosted gates. |
+| `019fc87d-58b8-7ca0-8b09-ea88aa68bb8d` | Direct-mode v0.9.0 allocation and PR #89 closeout | `0:17:19.416` | `38` items; `5` file-change events; `5` connector calls totaling `9.628 s`; three explicit correction loops. |
+
+The five completed-turn durations sum to **`1:30:00.677`**. The first turn
+started at `2026-08-03 21:44:40+08:00` and the last completed at
+`2026-08-04 00:55:25+08:00`, a wall span of **`3:10:45`**. The difference is
+primarily between completed turns while awaiting additional user messages; it
+must not be reported as Agent execution or idle processing. Conversely, the
+small recorded connector totals inside the two implementation turns do not
+explain the turn durations: file editing, shell commands, reasoning, queues,
+validation waits, and possible no-output intervals have no complete duration
+breakdown in the thread summary.
+
+Explicitly observable rework was:
+
+1. The initial assessment issued two failed connector queries against
+   `YuChia/ai-collaboration-prompts-dotnet-backend` before using the correct
+   repository identity.
+2. At the start of the implementation turn, the Agent corrected an earlier
+   sandbox-internal `gh` authentication diagnosis after the owner clarified that
+   `gh` was authenticated outside the sandbox and the GitHub connector was
+   available.
+3. The 55-minute workflow turn required two context compactions, multiple
+   cross-surface edit passes, an aggregate-gate timeout, focused fallback tests,
+   and hosted-check waiting. These are real costs, but the summary cannot
+   allocate their individual durations.
+4. In the direct-mode turn, provider test failures were first classified as an
+   unrelated baseline drift, then correctly reclassified as required #86
+   fixture synchronization after acceptance-criteria review.
+5. The first fixture edit left a second `44` assertion unchanged, requiring a
+   second edit; the commit validator later required a metadata-only amend for
+   issue/scope syntax and the AI attribution trailer.
+
+This comparison strengthens the case for hooks that record every command and
+file-edit duration, wait reason, context-compaction boundary, correction
+predecessor, validation fingerprint, and user-wait interval. It also shows why
+direct mode reduces workflow artifacts but does not by itself eliminate
+misclassification, incomplete edits, validation waits, or commit-policy rework.
+
 ### Product-Source Boundary Follow-Up
 
 The broader request for a canonical distributable-product source directory is
@@ -587,15 +651,25 @@ surface is the canonical editable product source, a generated staging tree, or
 a manifest-only projection; implementation or file movement remains
 unauthorized.
 
-The external `mattpocock/skills` repository is useful as comparison evidence,
-not as a layout to copy. It separates promoted and non-promoted skills by
-bucket and lets a Claude plugin enumerate promoted paths. Its own ADR records
-that Codex's single recursive skill path would also include deprecated,
-in-progress, personal, and miscellaneous buckets, so a native Codex plugin was
-deferred rather than publish an ambiguous set. That failure mode supports a
-single unambiguous promoted-product root or deterministic generated projection
-with negative package tests. It does not by itself decide this repository's
-universal, .NET-profile, provider, target-template, or source-only boundaries.
+The external `mattpocock/skills` repository is a positive reference for
+separating development organization, promoted product content, and delivery
+projections. It keeps development-facing material and non-promoted buckets
+alongside centralized skill sources, while its plugin manifest explicitly
+selects what is promoted and its README exposes more than one delivery mode.
+Its Codex single-path limitation is a delivery-channel constraint documented by
+the project, not a counterexample to the development/product model. The lesson
+for this repository is to keep one authoritative product source and make each
+plugin, copied installation, archive, or future CLI an explicit validated
+projection, without copying the exact external folder topology.
+
+GitHub Proposal
+[#87](https://github.com/YuChia-Wei/ai-collaboration-prompts-dotnet-backend/issues/87)
+now owns the installable-CLI design that consumes the future product-source
+contract. Proposal
+[#90](https://github.com/YuChia-Wei/ai-collaboration-prompts-dotnet-backend/issues/90)
+separately owns the first-class Copilot surface/support matrix and
+provider-native projection decisions. Neither proposal authorizes file movement,
+implementation, publication, or release allocation.
 
 This corroborates `AIC-007` and creates a separate proposal intake; it does not
 expand `REL-004` or change any release assignment.
@@ -604,13 +678,13 @@ expand `REL-004` or change any release assignment.
 
 | Existing finding | Addendum effect |
 | --- | --- |
-| `AIC-001` | Strengthened and narrowed: about 4:42:46 of the large wall gap is now attributable to host sleep; parent/child lifecycle and active/wait/token attribution still require instrumentation. |
+| `AIC-001` | Strengthened and narrowed: about 4:42:46 of the release gap is attributable to host sleep; the later session also proves that completed-turn time, inter-turn user wait, and recorded connector time must be separated. |
 | `AIC-002` | Unchanged: Python selection, command permission, environment readiness, and package-source decisions must stay in separate progressive-disclosure layers. |
 | `AIC-003` | Unchanged: preflight and fingerprint reuse remain required. |
-| `AIC-004` | Strengthened: background-cell counts show fragmentation, but no per-agent/cell cost budget exists. |
+| `AIC-004` | Strengthened: background-cell counts plus two context compactions and repeated correction loops show fragmentation, but no per-agent/cell/edit/rework cost budget exists. |
 | `AIC-005` | Strengthened: WSL exists and runs outside the sandbox, while sandbox service access fails closed. |
 | `AIC-006` | Unchanged. |
-| `AIC-007` | Corroborated by Proposal #85; the general product-source boundary is separate from the REL-004 source-only skill question. |
+| `AIC-007` | Corroborated by Proposals #85, #87, and #90; product source, installer CLI, Copilot projection, and REL-004 source-only behavior remain separate ownership boundaries. |
 
 The recommended action order is refined as follows:
 
@@ -623,7 +697,8 @@ The recommended action order is refined as follows:
 3. Preflight the selected shell/runtime in its actual security boundary. Do not
    infer WSL or GitHub availability from host installation alone.
 4. Triage Proposal #85 independently and decide canonical-source versus
-   generated-projection semantics before moving distributable files.
+   generated-projection semantics before moving distributable files; coordinate
+   #87 and #90 as consumers without collapsing their CLI and Copilot decisions.
 5. Continue `REL-004` only through its existing owner-decision boundary.
 
 No original finding is closed, renumbered, or reduced in severity by this
@@ -640,6 +715,7 @@ wsl.exe -l -v
 wsl.exe -d Ubuntu-24.04 -- bash -lc <read-only probe>
 Read current Codex config, project trust entry, user rules, and task turn context
 Read Issue #69/TOOL-002 implementation decisions and launchers
-GitHub read-back for Issues #36, #75, #76, and created Proposal #85
+GitHub read-back for Issues #36, #42, #43, #58, #75-#77 and Proposals #85, #87, #90
 Inspect mattpocock/skills README, package metadata, skill tree, plugin manifest, and plugin-layout ADR
+Read Codex Desktop thread 019fc7dc-a64a-7491-8357-0fa60a763cb0 summary and derive bounded per-turn metrics
 ```

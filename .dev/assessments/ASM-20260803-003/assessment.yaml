@@ -15,7 +15,7 @@ report: "report.md"
 artifact_branch: "codex/assessment/asm-20260803-003"
 base_branch: "main"
 created_at: "2026-08-03T19:46:19+08:00"
-updated_at: "2026-08-03T23:07:07+08:00"
+updated_at: "2026-08-04T01:09:50+08:00"
 template_source: ".dev/assessments/templates/assessment-locator-template.yaml"
 template_version: "1.0.0"
 report_template_source: ".ai/assets/skills/ai-context-auditor/templates/ai-context-audit-report-template.md"
@@ -34,6 +34,7 @@ scope:
     - "AI-context routing, workflow, Git, assessment, and release-governance context loaded or potentially routed during closeout"
     - "Git and GitHub read-back for PRs #81-#83 and Issue #57"
     - "Current-conversation tool timing observations, explicitly separated from durable repository evidence"
+    - "Bounded Codex Desktop thread-summary metrics for session 019fc7dc-a64a-7491-8357-0fa60a763cb0, without raw conversation persistence"
   excluded:
     - "src/** and product implementation trees"
     - "tests/** outside AI-context validation evidence already recorded by the release workflow"
@@ -53,6 +54,6 @@ relations:
     - "REL-004"
   adr_refs: []
 resume:
-  last_completed_action: "Added the dated 2026-08-03 follow-up addendum covering sleep/resume, effective approval and rules boundaries, WSL sandbox diagnostics, Python routing, background-process records, and GitHub Proposal #85."
-  next_action: "Owner decides whether to authorize a dedicated ai-context-governance remediation workflow for selected findings under REL-004 and separately triages GitHub Proposal #85; this addendum authorizes neither implementation."
+  last_completed_action: "Extended the dated follow-up addendum with the owner's historical approval-policy correction, positive product-source reference framing, Proposals #87 and #90, and bounded session 019fc7dc timing/rework evidence."
+  next_action: "Owner decides whether to authorize selected REL-004 remediation and separately triages Proposals #85, #87, and #90; this addendum authorizes no implementation."
   blockers: []

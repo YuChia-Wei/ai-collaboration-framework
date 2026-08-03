@@ -1,0 +1,131 @@
+{
+  "schema_version": "1.0",
+  "evidence_id": "ASM-20260803-003-session-019fc7dc-observation",
+  "assessment_id": "ASM-20260803-003",
+  "captured_at": "2026-08-04T01:09:50+08:00",
+  "evidence_class": "current-task-thread-summary-observation",
+  "thread": {
+    "id": "019fc7dc-a64a-7491-8357-0fa60a763cb0",
+    "title": "評估單一 commit PR 例外",
+    "status_at_capture": "idle",
+    "first_turn_started_at": "2026-08-03T21:44:40+08:00",
+    "last_turn_completed_at": "2026-08-04T00:55:25+08:00",
+    "wall_span_seconds": 11445,
+    "completed_turn_duration_seconds": 5400.677,
+    "completed_turn_duration_display": "1:30:00.677",
+    "inter_turn_difference_seconds_approximate": 6044.323,
+    "inter_turn_interpretation": "Primarily time between completed turns while awaiting later user messages; second-resolution turn timestamps make the derived difference approximate."
+  },
+  "turns": [
+    {
+      "turn_id": "019fc7de-92b5-7331-9d5d-bfdccf6dac81",
+      "purpose": "Initial single-commit and pull-request policy assessment",
+      "duration_ms": 507672,
+      "item_count": 72,
+      "item_counts": {
+        "user_message": 1,
+        "reasoning": 12,
+        "agent_message": 7,
+        "mcp_tool_call": 51,
+        "web_search": 1
+      },
+      "recorded_mcp_duration_ms": 302723,
+      "failed_mcp_calls": 2,
+      "failure_summary": "Two initial GitHub lookups used repository owner YuChia instead of YuChia-Wei before correction."
+    },
+    {
+      "turn_id": "019fc7f3-dee2-7622-b70c-9c42dc319468",
+      "purpose": "Refine linear integration and small-workflow criteria",
+      "duration_ms": 389737,
+      "item_count": 10,
+      "item_counts": {
+        "user_message": 1,
+        "reasoning": 4,
+        "agent_message": 5
+      },
+      "recorded_mcp_duration_ms": 0
+    },
+    {
+      "turn_id": "019fc83e-0c43-7340-8a9f-a90bc9a41945",
+      "purpose": "Add issue-control-system considerations",
+      "duration_ms": 122542,
+      "item_count": 6,
+      "item_counts": {
+        "user_message": 1,
+        "reasoning": 2,
+        "agent_message": 3
+      },
+      "recorded_mcp_duration_ms": 0
+    },
+    {
+      "turn_id": "019fc846-1987-76d0-9564-50d8b243a55a",
+      "purpose": "Implement governance workflow and integrate pull request 88",
+      "duration_ms": 3341310,
+      "item_count": 73,
+      "item_counts": {
+        "user_message": 1,
+        "reasoning": 16,
+        "agent_message": 23,
+        "mcp_tool_call": 10,
+        "context_compaction": 2,
+        "file_change": 21
+      },
+      "recorded_mcp_duration_ms": 13557,
+      "failed_mcp_calls": 0,
+      "observations": [
+        "Corrected an earlier sandbox-internal GitHub CLI authentication diagnosis after owner clarification.",
+        "Created one workflow plus baseline and verification assessments for a broad normative policy change.",
+        "Aggregate local validation timed out and was decomposed into focused tests plus hosted gates.",
+        "The thread summary does not provide complete durations for shell commands, file edits, reasoning, queues, or validation waits."
+      ]
+    },
+    {
+      "turn_id": "019fc87d-58b8-7ca0-8b09-ea88aa68bb8d",
+      "purpose": "Direct-mode v0.9.0 allocation and pull request 89 closeout",
+      "duration_ms": 1039416,
+      "item_count": 38,
+      "item_counts": {
+        "user_message": 1,
+        "reasoning": 9,
+        "agent_message": 18,
+        "mcp_tool_call": 5,
+        "file_change": 5
+      },
+      "recorded_mcp_duration_ms": 9628,
+      "failed_mcp_calls": 0,
+      "correction_loops": [
+        "Provider fixture failures were first classified as unrelated baseline drift, then reclassified as in-scope after acceptance-criteria review.",
+        "The first fixture edit missed a second stale assertion and required a second edit.",
+        "The commit validator required a metadata-only amend for issue/scope syntax and the AI attribution trailer."
+      ]
+    }
+  ],
+  "interpretation_limits": [
+    "Turn duration is not equivalent to active model computation.",
+    "Recorded MCP duration excludes shell commands, file changes, reasoning, queueing, hosted waits, and uninstrumented no-output intervals.",
+    "Inter-turn time after a completed response is not Agent execution and must not be counted as idle processing.",
+    "The broad governance workflow is not a like-for-like benchmark for the narrow v0.8.0 Release-body correction.",
+    "No token counts were available, so token waste is not quantified."
+  ],
+  "recommended_hook_fields": [
+    "thread_id",
+    "turn_id",
+    "parent_task_id",
+    "actor_role",
+    "effective_approval_policy_and_source",
+    "sandbox_and_network_boundary",
+    "item_type",
+    "command_or_edit_id",
+    "started_at",
+    "completed_at",
+    "queue_duration",
+    "execution_duration",
+    "wait_reason",
+    "context_compaction_predecessor",
+    "correction_predecessor",
+    "validation_fingerprint",
+    "retry_predecessor",
+    "terminal_disposition",
+    "input_cached_reasoning_output_tokens_when_available"
+  ]
+}
