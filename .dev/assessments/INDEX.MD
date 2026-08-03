@@ -12,6 +12,7 @@ owns its identity, current lifecycle state, subject revision, and relationships.
 
 | Assessment | Title | Type | Owner | Status | Subject Commit | Updated | Report |
 | --- | --- | --- | --- | --- | --- | --- | --- |
+| [`ASM-20260803-002`](ASM-20260803-002/assessment.yaml) | v0.8.0 Candidate Package And Release Contract Verification | `ai-context-verification` | `ai-context-auditor` | `final` | `ec50df072ec59f7e59322345f005450c48be28d7` | `2026-08-03T09:39:41+08:00` | [report](ASM-20260803-002/report.md) |
 | [`ASM-20260803-001`](ASM-20260803-001/assessment.yaml) | Python Prerequisite Diagnostics Remediation Verification | `ai-context-verification` | `ai-context-auditor` | `final` | `bd63d3c3b6998484304edb982c464199980dce7e` | `2026-08-03T02:21:24+08:00` | [report](ASM-20260803-001/report.md) |
 | [`ASM-20260730-002`](ASM-20260730-002/assessment.yaml) | Opus 5 Feedback Intake And Provider Reconciliation Verification | `ai-context-verification` | `ai-context-auditor` | `final` | `cdff0f36e4cb2963231ac004606d340659bf3f0c` | `2026-07-30T23:01:33+08:00` | [report](ASM-20260730-002/report.md) |
 | [`ASM-20260730-001`](ASM-20260730-001/assessment.yaml) | Opus 5 Repository Assessment External Review Intake | `ai-context-audit` | `ai-context-auditor` | `final` | `98e90bb4649961b1c09105346f7376b197b126a8` | `2026-08-02T21:20:17+08:00` | [report](ASM-20260730-001/report.md) |

@@ -13,13 +13,15 @@ Historical `v*` directories below are records, never templates.
 
 ## Candidate Releases
 
-_None._
+| Release ID | Version | Status | Compatibility | Notes | Migration | Phase Contract |
+| --- | --- | --- | --- | --- | --- | --- |
+| [`REL-v0.8.0`](v0.8.0/release.yaml) | `v0.8.0` | `validated` | non-breaking; exact automatic source v0.7.0 | [notes](v0.8.0/release-notes.md) | [guide](v0.8.0/migration-guide.md) | [checks](v0.8.0/release-phase-checks.yaml) |
 
 ## Planned Phase Contracts
 
 | Release ID | Version | Status | Compatibility | Phase Contract |
 | --- | --- | --- | --- | --- |
-| [`REL-v0.8.0`](v0.8.0/release.yaml) | `v0.8.0` | `planned` | planned non-breaking exact automatic source v0.7.0 | [checks](v0.8.0/release-phase-checks.yaml) |
+_None._
 
 ## Published Releases
 

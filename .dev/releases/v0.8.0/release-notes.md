@@ -2,8 +2,7 @@
 
 ## Status
 
-Planned governed candidate with local package validation complete. No tag,
-published package, or GitHub Release exists.
+Validated governed candidate. v0.8.0 is not tagged or published.
 
 ## Highlights
 
@@ -47,17 +46,16 @@ selection unresolved until the target team explicitly chooses `required`,
 ## Release Validation
 
 The candidate archives, clean installation, exact initialized v0.7.0 upgrade,
-release contracts, and package matrices passed locally. The packaging matrix
-recorded 28 passed tests and one retained-downstream conditional skip; the
-package-apply matrix recorded 25 passed tests and one Windows symlink-capability
-skip. Neither skip is counted as passed. Both real apply receipts intentionally
-leave downstream provenance finalization to `ai-context-init` or
-`ai-context-upgrader`; that target-owned step is not counted as a candidate
-pass.
+release contracts, package matrices, and independent candidate verification
+passed. The packaging matrix recorded 28 passed tests and one retained-
+downstream conditional skip; the package-apply matrix recorded 25 passed tests
+and one Windows symlink-capability skip. Neither skip is counted as passed.
+Both real apply receipts intentionally leave downstream provenance finalization
+to `ai-context-init` or `ai-context-upgrader`; that target-owned step is not
+counted as a candidate pass.
 
-Independent candidate verification, the aggregate repository critical gate,
-hosted pull-request checks, merge, and current-main pre-tag validation remain
-pending in the owning workflow.
+The aggregate repository critical gate, hosted pull-request checks, merge, and
+current-main pre-tag validation remain pending in the owning workflow.
 
 From v0.7.0 onward, the renderer appends the canonical `Included Work` section
 from `release.yaml.planning.backlog_refs`. Do not duplicate that generated
@@ -65,5 +63,5 @@ section in this authored source.
 
 ## Publication Completion
 
-Pending. The repository owner creates the immutable annotated tag only after
-the merged current-main pre-tag gate passes.
+Not published. The repository owner creates the immutable annotated tag only
+after the merged current-main pre-tag gate passes.

@@ -106,6 +106,14 @@ None of these attempts is represented as a passed gate.
 
 ## Independent Verification
 
-Independent read-only candidate verification is pending. Hosted pull-request
-checks, merge, current-main pre-tag validation, owner-created tag, publication,
-and terminal registry finalization also remain unperformed.
+`ASM-20260803-002` records the final independent read-only audit. It recomputed
+the archive and metadata hashes, verified package identity and receipts, read
+back the exact provenance-driven v0.7.0 upgrade and both preserved
+reconciliations, and confirmed that `ec50df0..20f4a2c` changes only this
+candidate evidence rather than package-projected content. The disposition is
+CRITICAL 0, MUST FIX 0, SHOULD FIX 0, so source-local lifecycle advancement
+from `planned` to `validated` is permitted.
+
+The aggregate repository critical gate, hosted pull-request checks, merge,
+current-main pre-tag validation, owner-created tag, publication, and terminal
+registry finalization remain unperformed.
