@@ -1,0 +1,58 @@
+template_metadata:
+  template_id: "assessment-locator"
+  template_version: "1.0.0"
+  template_created_at: "2026-07-13T23:04:10+08:00"
+  template_updated_at: "2026-07-13T23:04:10+08:00"
+
+schema_version: "1.0"
+assessment_id: "ASM-20260803-003"
+commit_search_id: "ASM-20260803-003"
+assessment_type: "ai-context-audit"
+title: "v0.8.0 Release Workflow Time And Context-Cost Incident Assessment"
+owner_skill: "ai-context-auditor"
+status: "final"
+report: "report.md"
+artifact_branch: "codex/assessment/asm-20260803-003"
+base_branch: "main"
+created_at: "2026-08-03T19:46:19+08:00"
+updated_at: "2026-08-03T19:46:19+08:00"
+template_source: ".dev/assessments/templates/assessment-locator-template.yaml"
+template_version: "1.0.0"
+report_template_source: ".ai/assets/skills/ai-context-auditor/templates/ai-context-audit-report-template.md"
+report_template_version: "2.1.0"
+subject_ref:
+  repository: "C:/Github/YuChia/ai-collaboration-prompts-dotnet-backend"
+  branch: "main"
+  commit: "2d7917c43452668bb129ae14392781c13c9040fd"
+scope:
+  included:
+    - ".dev/workflows/2026-08-03-v0-8-0-release-publication/**"
+    - ".dev/releases/v0.8.0/**"
+    - ".dev/backlog/items/REL-004.yaml"
+    - ".dev/backlog/plans/rel-004-ai-context-release-closeout-discussion-context.md"
+    - ".dev/operations/runbooks/AI-CONTEXT-RELEASE-PUBLICATION-RUNBOOK.MD"
+    - "AI-context routing, workflow, Git, assessment, and release-governance context loaded or potentially routed during closeout"
+    - "Git and GitHub read-back for PRs #81-#83 and Issue #57"
+    - "Current-conversation tool timing observations, explicitly separated from durable repository evidence"
+  excluded:
+    - "src/** and product implementation trees"
+    - "tests/** outside AI-context validation evidence already recorded by the release workflow"
+    - "raw conversation content, secrets, credentials, and private host telemetry"
+    - "remediation changes to audited context, release automation, hooks, or skills"
+    - "REL-004 lifecycle, target-release, priority, or authorization changes"
+relations:
+  supersedes: []
+  superseded_by: []
+  related_assessments:
+    - "ASM-20260803-002"
+    - "ASM-20260729-001"
+  workflow_refs:
+    - "2026-08-03-v0-8-0-release-publication"
+    - "2026-07-29-v0-7-0-public-release-body-correction"
+  backlog_refs:
+    - "REL-004"
+  adr_refs: []
+resume:
+  last_completed_action: "Finalized the evidence-backed release workflow efficiency and context-cost incident assessment against main@2d7917c43452668bb129ae14392781c13c9040fd."
+  next_action: "Owner decides whether to authorize a dedicated ai-context-governance remediation workflow for selected ASM-20260803-003 findings under open backlog item REL-004."
+  blockers: []
