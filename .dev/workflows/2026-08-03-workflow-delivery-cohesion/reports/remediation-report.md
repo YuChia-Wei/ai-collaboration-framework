@@ -12,28 +12,28 @@
 - `report_id`: `remediation-report-2026-08-03-workflow-delivery-cohesion`
 - `workflow_id`: `2026-08-03-workflow-delivery-cohesion`
 - `owner_skill`: `ai-context-governance`
-- `status`: `draft`
+- `status`: `final`
 - `created_at`: `2026-08-03T23:59:37+08:00`
-- `updated_at`: `2026-08-03T23:59:37+08:00`
+- `updated_at`: `2026-08-04T00:23:48+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-remediation-report-template.md`
 - `template_version`: `2.0.0`
 - `baseline_assessment`: `ASM-20260803-004`
-- `verification_assessment`: `ASM-20260803-005` (pending)
+- `verification_assessment`: `ASM-20260803-005`
 
 ## Remediation Summary
 
 - Authorized scope: implement Issue #86 / `GOV-004` across workflow selection, multi-Issue grouping, merge topology, validation, and next-successor release gating.
 - Completed scope: both substantive tasks are implemented and locally validated.
-- Validation summary: focused policy and hosted-workflow contract tests pass; sandbox-blocked temporary-repository suites pass outside the sandbox; aggregate verification remains pending.
-- Closure decision: `not-ready` until independent verification and integration read-back.
+- Validation summary: focused policy and hosted-workflow contract tests pass; sandbox-blocked temporary-repository suites pass outside the sandbox; direct required checks and independent verification pass. Aggregate/package timeouts remain explicit non-pass outcomes for hosted PR checks.
+- Closure decision: `ready`; workflow completion is separate from pending PR integration.
 
 ## Finding Resolution Matrix
 
 | Assessment Finding | Before Severity | Status | Changed Files | Validation | Commit | Residual Risk |
 | --- | --- | --- | --- | --- | --- | --- |
-| `ASM-20260803-004#WFG-001` | HIGH | `resolved` pending verification | workflow policies, guides, skill specs, tests | six focused cases plus context/workflow gates | pending | model-in-loop proportionality classification |
-| `ASM-20260803-004#WFG-002` | HIGH | `resolved` pending verification | workflow policies, orchestrator routing, guides, tests | multi-Issue cohesion case plus orchestrator acceptance | pending | ambiguous real-world delivery boundaries still require owner input |
-| `ASM-20260803-004#WFG-003` | MEDIUM | `resolved` pending verification | source/portable Git policy, commit/version policy, PR template, tests | linear/merge and README cases plus governance workflow contract | pending | target provider settings may constrain mechanism |
+| `ASM-20260803-004#WFG-001` | HIGH | `resolved` | workflow policies, guides, skill specs, tests | six focused cases plus context/workflow gates; ASM-20260803-005 | `3f8caf0` | model-in-loop proportionality classification |
+| `ASM-20260803-004#WFG-002` | HIGH | `resolved` | workflow policies, orchestrator routing, guides, tests | multi-Issue cohesion case plus orchestrator acceptance; ASM-20260803-005 | `3f8caf0` | ambiguous real-world delivery boundaries still require owner input |
+| `ASM-20260803-004#WFG-003` | MEDIUM | `resolved` | source/portable Git policy, commit/version policy, PR template, tests | linear/merge and README cases plus governance workflow contract; ASM-20260803-005 | `3f8caf0` | target provider settings may constrain mechanism |
 
 ## Changes And Evidence
 
@@ -60,10 +60,10 @@
 
 ## Verification Assessment Reconciliation
 
-- Independent auditor: `ai-context-auditor` (pending `ASM-20260803-005`)
-- Confirmed resolved: pending
-- Recurring findings: pending
-- New or regressed findings: pending
+- Independent auditor: `ai-context-auditor` through `ASM-20260803-005`
+- Confirmed resolved: `WFG-001`, `WFG-002`, `WFG-003`
+- Recurring findings: none
+- New or regressed findings: none
 
 ## Deferred Work
 
@@ -74,7 +74,7 @@
 
 ## Closure Evidence
 
-- Required validations: focused suites pass; aggregate quick/critical and independent audit pending.
-- Commit status: baseline committed; implementation commit pending.
-- Workflow/task status: two tasks completed; workflow remains `in_progress` at `post-audit`.
-- Final next action: create `ASM-20260803-005`, reconcile this report, push one branch, open one PR, and integrate linearly after hosted checks.
+- Required validations: focused and direct required suites pass; independent audit passes; aggregate/package timeouts remain non-pass and move to hosted checks.
+- Commit status: baseline `c9c6f0d` and implementation `3f8caf0` committed; verification/closure commit pending.
+- Workflow/task status: two tasks and workflow completed independently from integration.
+- Final next action: push one branch, open one ready PR, pass hosted checks, and integrate linearly before main read-back.

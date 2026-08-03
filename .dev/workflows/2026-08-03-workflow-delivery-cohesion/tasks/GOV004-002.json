@@ -4,9 +4,9 @@
   "task_id": "GOV004-002",
   "workflow_id": "2026-08-03-workflow-delivery-cohesion",
   "owner_skill": "ai-context-governance",
-  "status": "in_progress",
+  "status": "completed",
   "created_at": "2026-08-03T23:47:10+08:00",
-  "updated_at": "2026-08-03T23:59:37+08:00",
+  "updated_at": "2026-08-04T00:23:48+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-5.6-sol",
   "reasoning_effort": "max",
@@ -40,15 +40,15 @@
       "Define positive selection rules for linear and merge-commit integration.",
       "Classify historical README-only updates as PR-reviewed linear candidates by default.",
       "Register GOV-004 and its next-successor-release activation gate.",
-      "Validate and integrate this branch using the selected linear topology."
+      "Validate this branch and record the selected linear topology for the separate integration step."
     ],
     "validation": [
       "Run merge-policy consistency tests.",
       "Run backlog, provider, workflow, and commit validators.",
       "Verify hosted checks and linear main ancestry."
     ],
-    "last_completed_step": "Implemented positive linear and merge-commit rules, README classification, PR template evidence, and unassigned successor-release gating.",
-    "next_action": "Independent verification checks WFG-003, then the PR uses the selected linear topology."
+    "last_completed_step": "ASM-20260803-005 independently verified WFG-003 as resolved; the selected linear topology is recorded for subsequent PR integration.",
+    "next_action": "No task execution remains; PR integration and main read-back are separate facts."
   },
   "results": {
     "summary": "Linear and merge-commit integration are now positive normal choices independent of execution mode and PR gating; historical README-only updates default to direct mode, PR review, and linear topology; GOV-004 is gated into the next owner-allocated successor release without inventing its version.",
@@ -70,6 +70,6 @@
     ],
     "finding_status": "addressed",
     "residual_risk": "Provider branch-protection configuration may limit available topology mechanisms; target policy remains authoritative.",
-    "follow_up_needed": true
+    "follow_up_needed": false
   }
 }

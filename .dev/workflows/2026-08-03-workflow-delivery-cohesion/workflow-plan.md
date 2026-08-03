@@ -15,11 +15,11 @@
 - `branch`: `codex/2026-08-03-workflow-delivery-cohesion`
 - `base_branch`: `main`
 - `branch_segment`: `1`
-- `status`: `in_progress`
-- `current_phase`: `post-audit`
+- `status`: `completed`
+- `current_phase`: `completed`
 - `artifact_root`: `.dev/workflows/2026-08-03-workflow-delivery-cohesion`
 - `created_at`: `2026-08-03T23:47:10+08:00`
-- `updated_at`: `2026-08-03T23:59:37+08:00`
+- `updated_at`: `2026-08-04T00:23:48+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md`
 - `template_version`: `1.2.0`
 
@@ -63,7 +63,7 @@
 | Task | Purpose | Status |
 | --- | --- | --- |
 | `GOV004-001` | Define workflow value, low-task review signals, and many-Issue-to-one-delivery cohesion. | `completed` |
-| `GOV004-002` | Define normal linear and merge-commit topology rules and register the next-release gate. | `in_progress` (policy complete; verification and linear integration pending) |
+| `GOV004-002` | Define normal linear and merge-commit topology rules and register the next-release gate. | `completed` |
 
 ## Stages And Checkpoints
 
@@ -71,13 +71,13 @@
 2. Workflow-value and delivery-cohesion policy remediation.
 3. Linear integration and successor-release gate remediation.
 4. Deterministic validation and independent post-remediation audit.
-5. Linear pull-request integration and provider/main read-back.
+5. Finding reconciliation and workflow closure; pull-request integration and main read-back remain separate subsequent facts.
 
 ## Resume Checkpoint
 
-- Last completed action: implemented both normative tasks and passed focused policy, governance-workflow, AI-context, workflow, language, wrapper, backlog, and orchestrator acceptance validation.
-- Current task: independent `ai-context-auditor` verification.
-- Exact next action: create `ASM-20260803-005`, reconcile the remediation report, and prepare linear integration.
+- Last completed action: `ASM-20260803-005` independently verified all three baseline findings as resolved and governance reconciled the lifecycle.
+- Current task: completed; no repository execution task remains.
+- Exact next action: push this completed workflow branch, open one ready PR, require hosted checks, and integrate linearly as a separate fact.
 - Validation already completed: live GitHub PR inventory; workflow artifact inventory; CTX-002 historical commit inspection; six workflow-delivery policy cases; seven governance-workflow cases; three orchestrator acceptance cases; ten language/parity cases; sixteen wrapper cases; AI-context, workflow, backlog, and diff checks.
 - Git state: workflow branch created from clean `main@80b013803ee29ca2f4dd458a393eb1da451212e1`.
 - Branch history and checkpoint handoffs: none.
@@ -87,4 +87,4 @@
 
 | Segment | Branch | Base | Checkpoint Type | Commit | Remote / Target | Recorded At | Reason | Resume Branch / Action |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| 1 | `codex/2026-08-03-workflow-delivery-cohesion` | `main@80b013803ee29ca2f4dd458a393eb1da451212e1` | active | pending | Issue #86 / future PR to `main` | `2026-08-03T23:59:37+08:00` | Implement one cohesive governance delivery with owner-selected linear topology. | Run independent verification, then open one PR. |
+| 1 | `codex/2026-08-03-workflow-delivery-cohesion` | `main@80b013803ee29ca2f4dd458a393eb1da451212e1` | workflow-complete / integration-pending | pending | Issue #86 / future PR to `main` | `2026-08-04T00:23:48+08:00` | Preserve workflow completion separately from the owner-selected linear integration fact. | Push, open one PR, pass hosted checks, and fast-forward `main`. |

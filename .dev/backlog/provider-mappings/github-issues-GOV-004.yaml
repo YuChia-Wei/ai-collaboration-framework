@@ -1,0 +1,30 @@
+schema_version: "1.0"
+provider: "github"
+repository: "YuChia-Wei/ai-collaboration-prompts-dotnet-backend"
+migration_id: "github-live-GOV-004-2026-08-03"
+stage: "stage-b-read-back-complete"
+source_revision: "3f8caf08cee86c58df487f81f7ec692ccbe4012b"
+generated_at: "2026-08-04T00:22:45+08:00"
+project:
+  number: 3
+  node_id: "PVT_kwHOAwvEG84Bez7w"
+  url: "https://github.com/users/YuChia-Wei/projects/3"
+items:
+  - backlog_id: "GOV-004"
+    source_path: ".dev/backlog/items/GOV-004.yaml"
+    source_sha256: "f59319460a68d063ad1438ed72723a68f9da994eb1b584b6598d9e174dd13d16"
+    issue_number: 86
+    issue_node_id: "I_kwDOSBe2Hc8AAAABLRlaWg"
+    issue_url: "https://github.com/YuChia-Wei/ai-collaboration-prompts-dotnet-backend/issues/86"
+    issue_state: "open"
+    close_reason: null
+    project_item_id: "PVTI_lAHOAwvEG84Bez7wzg1G3MQ"
+    created_at: "2026-08-03T15:43:25Z"
+    updated_at: "2026-08-03T15:43:25Z"
+    read_back:
+      verified_at: "2026-08-04T00:22:45+08:00"
+      title_matches: true
+      markers_match: true
+      labels_match: true
+      state_matches: true
+      notes: "Issue #86 is open with exact GOV-004 title, markers, and labels. Project #3 item PVTI_lAHOAwvEG84Bez7wzg1G3MQ reads back Status In progress, Priority P1 High, Owner review Not required, Target release Unassigned, and Published in Not yet published. Provider state remains a non-authoritative projection of the owner-approved repository work."

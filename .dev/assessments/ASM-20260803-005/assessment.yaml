@@ -1,0 +1,61 @@
+template_metadata:
+  template_id: "assessment-locator"
+  template_version: "1.0.0"
+  template_created_at: "2026-07-13T23:04:10+08:00"
+  template_updated_at: "2026-07-13T23:04:10+08:00"
+
+schema_version: "1.0"
+assessment_id: "ASM-20260803-005"
+commit_search_id: "ASM-20260803-005"
+assessment_type: "ai-context-verification"
+title: "Workflow Delivery Cohesion And Linear Merge Remediation Verification"
+owner_skill: "ai-context-auditor"
+status: "final"
+report: "report.md"
+artifact_branch: "codex/2026-08-03-workflow-delivery-cohesion"
+base_branch: "main"
+created_at: "2026-08-03T23:59:37+08:00"
+updated_at: "2026-08-04T00:23:48+08:00"
+template_source: ".dev/assessments/templates/assessment-locator-template.yaml"
+template_version: "1.0.0"
+report_template_source: ".ai/assets/skills/ai-context-auditor/templates/ai-context-audit-report-template.md"
+report_template_version: "2.1.0"
+subject_ref:
+  repository: "C:/Github/YuChia/ai-collaboration-prompts-dotnet-backend"
+  branch: "codex/2026-08-03-workflow-delivery-cohesion"
+  commit: "3f8caf08cee86c58df487f81f7ec692ccbe4012b"
+scope:
+  included:
+    - "ASM-20260803-004 findings WFG-001 through WFG-003"
+    - ".dev/standards/WORKFLOW-GATE-POLICY.md"
+    - ".dev/TEAM-GIT-FLOW-RULES.MD"
+    - ".dev/standards/GIT-COMMIT-POLICY.md"
+    - ".ai/assets/shared/governance/**"
+    - ".ai/assets/skills/ai-context-auditor/skill.yaml"
+    - ".ai/assets/skills/ai-context-governance/**"
+    - ".ai/assets/skills/software-development-orchestrator/**"
+    - ".dev/guides/** workflow and merge guidance"
+    - ".ai/scripts/tests/test_workflow_delivery_policy.py"
+    - "GOV-004 backlog, roadmap, Issue #86, and Project #3 projection"
+  excluded:
+    - "src/** and product implementation trees"
+    - "tests/** and test/** product tests"
+    - "historical workflow rewrites"
+    - "successor release identity or publication"
+    - "provider branch-protection enforcement"
+relations:
+  supersedes: []
+  superseded_by: []
+  related_assessments:
+    - "ASM-20260803-004"
+    - "ASM-20260803-003"
+  workflow_refs:
+    - "2026-08-03-workflow-delivery-cohesion"
+  backlog_refs:
+    - "GOV-004"
+    - "STD-001"
+  adr_refs: []
+resume:
+  last_completed_action: "Verified WFG-001 through WFG-003 as resolved at implementation commit 3f8caf08cee86c58df487f81f7ec692ccbe4012b."
+  next_action: "ai-context-governance reconciles the final report, then integration remains a separate pull-request and main-read-back fact."
+  blockers: []
