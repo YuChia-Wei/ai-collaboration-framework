@@ -27,9 +27,9 @@ class GitHubBacklogProviderTests(unittest.TestCase):
         cls.plan = PROVIDER.build_plan(REPO_ROOT, CONFIG, "HEAD")
         cls.items = {item["backlog_id"]: item for item in cls.plan["items"]}
 
-    def test_gwt_001_given_canonical_backlog_when_projected_then_all_44_ids_are_unique(self) -> None:
-        self.assertEqual(44, self.plan["counts"]["total"])
-        self.assertEqual(44, len(self.items))
+    def test_gwt_001_given_canonical_backlog_when_projected_then_all_45_ids_are_unique(self) -> None:
+        self.assertEqual(45, self.plan["counts"]["total"])
+        self.assertEqual(45, len(self.items))
 
     def test_gwt_002_given_stage_a_when_planned_then_no_online_write_is_available(self) -> None:
         self.assertFalse(self.plan["online_writes_performed"])
@@ -85,7 +85,7 @@ class GitHubBacklogProviderTests(unittest.TestCase):
         self.assertEqual(set(self.items) - post_adoption, set(ordered))
         self.assertEqual([10, 10, 10, 7], [len(batch) for batch in self.plan["remaining_batches"]])
         self.assertEqual(
-            ["SKILL-002", "TOOL-002", "WIBIND-001"],
+            ["SKILL-002", "TOOL-002", "WIBIND-001", "GOV-004"],
             self.plan["post_adoption_items"],
         )
 

@@ -7,16 +7,14 @@ artifact directories. See [README.MD](README.MD) for ownership and lifecycle.
 
 | Roadmap | Current Target | Status | Next Gate | Updated |
 | --- | --- | --- | --- | --- |
-| [ROADMAP.md](ROADMAP.md) | `unassigned` | `published / closed` | Obtain an explicit owner decision before assigning the next release target. | 2026-08-03 |
+| [ROADMAP.md](ROADMAP.md) | `v0.9.0` | `planned` | Obtain explicit authorization before release preparation; include `GOV-004` exactly once. | 2026-08-04 |
 
 Source planning records are retained under [`plans/`](plans/); they inform the
 roadmap but do not replace it or a governed assessment.
 
 ## In Progress
 
-| Item | Priority | Target Release | Gate | Summary | Decision / Handoff | Updated |
-| --- | --- | --- | --- | --- | --- | --- |
-| [GOV-004](items/GOV-004.yaml) | HIGH | `unassigned` | release blocker for next allocated successor | Separate workflow value, delivery grouping, PR gating, and Git topology so cohesive multi-Issue work does not create one workflow per Issue. | Implement and verify now; include exactly once when the owner allocates the next successor release identity. | 2026-08-03 |
+_None._
 
 ## Planned / Open
 
@@ -36,7 +34,9 @@ roadmap but do not replace it or a governed assessment.
 
 ## Resolved / Awaiting Publication
 
-_None._
+| Item | Priority | Completed In | Published In | Resolution | Workflow | Updated |
+| --- | --- | --- | --- | --- | --- | --- |
+| [GOV-004](items/GOV-004.yaml) | HIGH | `v0.9.0` | — | Workflow-value, multi-Issue delivery-cohesion, and positive linear-topology rules passed independent verification and were integrated linearly through PR #88. | [`2026-08-03-workflow-delivery-cohesion`](../workflows/2026-08-03-workflow-delivery-cohesion/workflow.yaml) | 2026-08-04 |
 
 ## Resolved
 

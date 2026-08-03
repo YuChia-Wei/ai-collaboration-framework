@@ -2,14 +2,14 @@ schema_version: "1.0"
 backlog_id: "GOV-004"
 title: "Adopt Workflow Delivery Cohesion And Linear Merge Rules"
 category: "workflow-governance"
-status: "in_progress"
+status: "resolved"
 priority: "HIGH"
 summary: "Reduce low-value workflow and merge ceremony by separating execution mode, delivery grouping, pull-request gating, and Git topology while preserving authorization and review evidence."
 created_at: "2026-08-03T23:43:25+08:00"
-updated_at: "2026-08-03T23:47:10+08:00"
+updated_at: "2026-08-04T00:41:10+08:00"
 release:
-  target: "unassigned"
-  completed_in: null
+  target: "v0.9.0"
+  completed_in: "v0.9.0"
   published_in: null
   target_scope: "workflow-delivery-cohesion-and-linear-merge-selection"
   gate: "release-blocker"
@@ -21,14 +21,14 @@ finding_refs:
   - "ASM-20260803-004#WFG-002"
   - "ASM-20260803-004#WFG-003"
 recommended_owner_skill: "ai-context-governance"
-handoff_condition: "Complete and independently verify the workflow-value, delivery-cohesion, and linear-topology contract. When the owner allocates the next successor release identity, GOV-004 must be included as a release blocker without retroactively inventing a version now."
+handoff_condition: "Include GOV-004 exactly once in the future v0.9.0 candidate and keep published_in null until immutable publication succeeds. Release preparation, tag creation, and publication still require their own authorization and evidence."
 workflow_refs:
   - ".dev/workflows/2026-08-03-workflow-delivery-cohesion/workflow.yaml"
 task_refs:
   - ".dev/workflows/2026-08-03-workflow-delivery-cohesion/tasks/GOV004-001.json"
   - ".dev/workflows/2026-08-03-workflow-delivery-cohesion/tasks/GOV004-002.json"
-resolution_ref: null
-decision_needed: "Owner decision recorded on 2026-08-03: implement the selected workflow-proportionality and linear-merge contract now, integrate this delivery linearly, and make the completed outcome a blocker for the next successor release once that release receives an explicit identity."
+resolution_ref: ".dev/assessments/ASM-20260803-005/report.md"
+decision_needed: "Resolved: PR #88 passed all five hosted checks and was integrated linearly to main at 820546ed38a7b084782d07613dbf25c5fbf6fbb5; on 2026-08-04 the owner allocated the completed outcome to v0.9.0 without authorizing release preparation or publication."
 related_backlog_refs:
   - "STD-001"
   - "DEVWF-001"
@@ -44,8 +44,9 @@ acceptance:
   - "Linear and merge-commit integration are normal positive topology choices independent of pull-request requirements."
   - "Historical README-only updates default to direct mode, pull-request review, and linear integration unless they alter normative, generated, release, security, or migration truth."
   - "An independent verification assessment finds no unresolved GOV-004 remediation finding."
-  - "The next owner-allocated successor release cannot publish without including GOV-004 exactly once."
+  - "v0.9.0 cannot publish without including GOV-004 exactly once."
 inventory_notes:
   - "Issue #86 is the source repository work-management projection; provider state did not authorize execution."
   - "The baseline found 28 of 57 formal workflows with fewer than three tasks and 23 with one task."
   - "No token-cost claim is made because historical token telemetry is unavailable."
+  - "PR #88 passed five hosted checks and GitHub read-back confirmed a linear merge with branch head and merge_commit_sha both 820546ed38a7b084782d07613dbf25c5fbf6fbb5."
