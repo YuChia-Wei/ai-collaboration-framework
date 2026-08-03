@@ -15,7 +15,7 @@
 - `status`: `final`
 - `audit_date`: `2026-08-03`
 - `created_at`: `2026-08-03T19:46:19+08:00`
-- `updated_at`: `2026-08-03T19:46:19+08:00`
+- `updated_at`: `2026-08-03T23:07:07+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-auditor/templates/ai-context-audit-report-template.md`
 - `template_version`: `2.1.0`
 - `repository`: `C:/Github/YuChia/ai-collaboration-prompts-dotnet-backend`
@@ -434,3 +434,212 @@ git diff --check
 - Related remediation workflow: not created; requires explicit owner authorization under open `REL-004`
 - Verification assessment: pending any future remediation
 - Remediation intentionally not performed by this skill: `yes`
+
+## Addendum — 2026-08-03 Runtime, Sleep, And Distribution Follow-Up
+
+### Addendum Status And Evidence Boundary
+
+This dated addendum records follow-up evidence obtained after the original
+assessment cutoff. It does not rewrite the original timeline, overall score,
+decision, finding IDs, or subject revision. The original statement that
+sleep/resume and the active/wait split were unavailable was accurate at that
+cutoff; the sleep interval is now partly attributable from host and task logs,
+while active execution, power-request ownership, and complete token attribution
+remain unavailable.
+
+Evidence in this addendum is classified as current-machine or current-task
+observation unless a repository or hosted source is named. Raw conversation
+content, secrets, credentials, private host identifiers, and complete host logs
+are not committed. The original `incident-record.json` remains the immutable
+machine-readable snapshot for the initial cutoff.
+
+### Sleep And Resume Reconstruction
+
+| Event | Timestamp (+08:00) | Evidence class | Interpretation |
+| --- | --- | --- | --- |
+| Last recorded pre-sleep command activity | `2026-08-03 14:07:13.335` | current-task log observation | A command completing shortly before sleep disproves a claim that no Agent work occurred for the entire configured idle interval. |
+| Child turn ended with `model_needs_follow_up=false` | `14:07:36.227` | current-task log observation | The child turn was locally complete, but the parent task still owed lifecycle reconciliation and user-facing completion. |
+| Kernel-Power session transition, event `566` | `14:07:40.254` | Windows System event log | The host entered the low-power transition about four seconds after the child-turn boundary. |
+| Kernel-Power sleep, event `42` | `14:07:44.030` | Windows System event log | Windows explicitly recorded `Sleep Reason: System Idle`; sleep-to-wake was about `4:42:45.765`. |
+| Power-Troubleshooter wake | `18:50:29.795` | Windows System event log | The earlier event `566` low-power transition-to-wake span was about `4:42:49.541`. |
+| Next recorded task command | `18:50:46.621` | current-task log observation | The app resumed and reconciled the still-active parent task instead of starting a new release operation from zero. |
+
+Windows idle time is driven primarily by user-input idleness; Agent subprocess
+activity does not necessarily reset that timer. Therefore a two-hour configured
+idle timeout does not prove that the Agent was inactive for two hours before
+sleep. The confirmed conclusion is that sleep was not effectively prevented at
+the decisive parent/child lifecycle boundary even though the owner had enabled
+**Keep this computer awake**. The evidence does not identify whether an app
+power request was absent, released, ignored, or scoped differently.
+
+The evidence is consistent with a keep-awake lifetime that ended when the child
+turn reported local completion while the parent task still required follow-up.
+It is not proof of that exact implementation defect because no contemporaneous
+`powercfg /requests` snapshot or app-owned power-request event was captured.
+Classify it as a high-priority lifecycle-defect candidate, not as a proven
+Release-body or repository-script defect. This strengthens `AIC-001` and
+narrows the previously unattributed post-publication gap; it does not change
+the assessment decision.
+
+### Approval Policy, Auto-Review, And Execpolicy Rules
+
+Follow-up inspection found no current file-backed evidence that this repository
+overrides the executor to `approval_policy = "never"`:
+
+- the user config records `approval_policy = "on-request"` and
+  `sandbox_mode = "workspace-write"`;
+- the project entry for this repository records only `trust_level = "trusted"`;
+- no repository-local `.codex/config.toml` exists at the follow-up revision,
+  and that local path is intentionally ignored;
+- the current task context records `on-request` with automatic approval review.
+
+Some release-rollout records belong to the separate `codex-auto-review`
+reviewer and carry their own `never` plus `read-only` context. Those child
+reviewer records do not prove that repository config overrode the parent
+executor. Future telemetry must record effective policy together with the
+actor role so parent execution is not confused with an approval-review turn.
+
+If an actual executor uses `approval_policy = "never"`, it suppresses approval
+prompts; it does not bypass the filesystem, network, service, or sandbox
+boundary. An operation that needs escalation can therefore fail closed instead
+of being offered to the user or auto-reviewer. That can add retry and rerouting
+cost, but it does not explain the confirmed sleep interval.
+
+`.codex/rules` has a separate role: an execpolicy prefix rule controls whether
+a matching command may run outside the sandbox with `allow`, `prompt`, or
+`forbidden`. It does not install tools, select a Python interpreter, populate
+environment variables, make WSL services visible, or replace a readiness
+profile. The inspected user rules contain no `gh`, Python, or WSL route. Any
+future exception should use the narrowest safe executable/subcommand prefix,
+remain machine- or source-repository-specific, and never be exported as a
+portable downstream requirement without a separate product decision.
+
+### Python And WSL Routing Clarification
+
+Issue #69 / `TOOL-002` introduced two controls that must not be conflated:
+
+1. `AI_CONTEXT_PYTHON` selects an owner-prepared Python executable. The
+   launchers then consider an active environment, generic and versioned PATH
+   commands, and an installed offline `uv` managed-Python result before failing
+   closed.
+2. ignored `.dev/validation.local.conf` selects the local routine-validation
+   mode through one strict data line. It does not store a Python path.
+
+The interpreter selector is intentionally provider-neutral and can name an
+absolute executable. Moving it into `.codex/rules` would make a portable runtime
+contract Codex-specific and would still not solve version or dependency
+readiness. A rule is relevant only when a known-safe Python command must be
+permitted outside the Codex sandbox; the resolver and prerequisite diagnostic
+remain authoritative. General reusable host/runtime readiness belongs to open
+Proposal #76.
+
+The current host also disproves a machine-wide WSL absence:
+
+- inside the Windows sandbox, `wsl.exe` was discoverable at
+  `C:\WINDOWS\system32\wsl.exe`, but status, distribution enumeration, and a
+  simple distro launch failed with `Wsl/Service/E_ACCESSDENIED`;
+- outside the sandbox, WSL reported default distro `Ubuntu-24.04`, version 2;
+- `wsl.exe -d Ubuntu-24.04 -- bash -lc <read-only-probe>` succeeded;
+- `-d Ubuntu` failed separately with `WSL_E_DISTRO_NOT_FOUND` because that is
+  not the installed distro name.
+
+Therefore the observed current-machine failure is sandbox/service access plus
+one possible distro-name mismatch, not an uninstalled WSL platform. Historical
+release records are insufficient to assign their WSL failure to only one of
+those causes. For a Linux-native toolchain, prefer running the Agent itself in
+WSL2 and restarting the app; for this repository's Windows/.NET gates, use the
+declared Windows or Git Bash route unless a WSL environment has independently
+proven the required SDK, line-ending, filesystem, and credential readiness.
+This strengthens `AIC-005` without changing its severity.
+
+### Background Process Records
+
+The inspected task history contained `81` unique background cell identifiers
+and `376` background output/wait records. A contemporaneous OS process check
+found no remaining Git, GitHub CLI, Python, Bash, or .NET workload attributable
+to the release. The stopped rows shown by the desktop interface are therefore
+best classified as retained terminal/task records, not proof that all those
+commands are still consuming CPU.
+
+The volume is nevertheless actionable evidence of orchestration fragmentation:
+the UI retains many stopped units, while the durable release evidence does not
+map them to one parent stage, retry lineage, or terminal completion decision.
+Future hooks should record parent task ID, cell ID, start/end, wait reason,
+process ID, retry predecessor, and disposal state, and should cap simultaneous
+or retained cells per stage.
+
+### Product-Source Boundary Follow-Up
+
+The broader request for a canonical distributable-product source directory is
+not already owned by #75, #76, or `REL-004`:
+
+- #75 owns aggregate-gate composition and its packaging disposition;
+- #76 owns environment-readiness profiles and local snapshots;
+- `REL-004` discusses a dedicated source-only root only for one possible
+  repository-specific release-closeout capability;
+- completed `DIST-001` defines component and source-only classification, but
+  does not establish a canonical product-source tree.
+
+GitHub Proposal
+[#85](https://github.com/YuChia-Wei/ai-collaboration-prompts-dotnet-backend/issues/85)
+now records the separate design problem. It leaves unresolved whether the new
+surface is the canonical editable product source, a generated staging tree, or
+a manifest-only projection; implementation or file movement remains
+unauthorized.
+
+The external `mattpocock/skills` repository is useful as comparison evidence,
+not as a layout to copy. It separates promoted and non-promoted skills by
+bucket and lets a Claude plugin enumerate promoted paths. Its own ADR records
+that Codex's single recursive skill path would also include deprecated,
+in-progress, personal, and miscellaneous buckets, so a native Codex plugin was
+deferred rather than publish an ambiguous set. That failure mode supports a
+single unambiguous promoted-product root or deterministic generated projection
+with negative package tests. It does not by itself decide this repository's
+universal, .NET-profile, provider, target-template, or source-only boundaries.
+
+This corroborates `AIC-007` and creates a separate proposal intake; it does not
+expand `REL-004` or change any release assignment.
+
+### Addendum Effect On Findings And Actions
+
+| Existing finding | Addendum effect |
+| --- | --- |
+| `AIC-001` | Strengthened and narrowed: about 4:42:46 of the large wall gap is now attributable to host sleep; parent/child lifecycle and active/wait/token attribution still require instrumentation. |
+| `AIC-002` | Unchanged: Python selection, command permission, environment readiness, and package-source decisions must stay in separate progressive-disclosure layers. |
+| `AIC-003` | Unchanged: preflight and fingerprint reuse remain required. |
+| `AIC-004` | Strengthened: background-cell counts show fragmentation, but no per-agent/cell cost budget exists. |
+| `AIC-005` | Strengthened: WSL exists and runs outside the sandbox, while sandbox service access fails closed. |
+| `AIC-006` | Unchanged. |
+| `AIC-007` | Corroborated by Proposal #85; the general product-source boundary is separate from the REL-004 source-only skill question. |
+
+The recommended action order is refined as follows:
+
+1. Instrument parent/child turn lifecycle, effective keep-awake ownership,
+   effective approval policy plus actor role, sleep/resume, and background-cell
+   disposal before another release benchmark.
+2. Keep Python selection in `AI_CONTEXT_PYTHON` and prerequisite launchers;
+   use `.codex/rules` only for narrow Codex command exceptions, and use #76 for
+   portable readiness design.
+3. Preflight the selected shell/runtime in its actual security boundary. Do not
+   infer WSL or GitHub availability from host installation alone.
+4. Triage Proposal #85 independently and decide canonical-source versus
+   generated-projection semantics before moving distributable files.
+5. Continue `REL-004` only through its existing owner-decision boundary.
+
+No original finding is closed, renumbered, or reduced in severity by this
+addendum. Overall score `5.5/10` and decision `remediation-recommended` remain
+unchanged.
+
+### Addendum Commands And Read-Backs
+
+```text
+Get-WinEvent -FilterHashtable <bounded 2026-08-03 System events 1,42,107,566>
+Get-Command wsl.exe
+wsl.exe --status
+wsl.exe -l -v
+wsl.exe -d Ubuntu-24.04 -- bash -lc <read-only probe>
+Read current Codex config, project trust entry, user rules, and task turn context
+Read Issue #69/TOOL-002 implementation decisions and launchers
+GitHub read-back for Issues #36, #75, #76, and created Proposal #85
+Inspect mattpocock/skills README, package metadata, skill tree, plugin manifest, and plugin-layout ADR
+```

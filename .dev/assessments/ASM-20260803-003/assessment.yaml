@@ -15,7 +15,7 @@ report: "report.md"
 artifact_branch: "codex/assessment/asm-20260803-003"
 base_branch: "main"
 created_at: "2026-08-03T19:46:19+08:00"
-updated_at: "2026-08-03T19:46:19+08:00"
+updated_at: "2026-08-03T23:07:07+08:00"
 template_source: ".dev/assessments/templates/assessment-locator-template.yaml"
 template_version: "1.0.0"
 report_template_source: ".ai/assets/skills/ai-context-auditor/templates/ai-context-audit-report-template.md"
@@ -53,6 +53,6 @@ relations:
     - "REL-004"
   adr_refs: []
 resume:
-  last_completed_action: "Finalized the evidence-backed release workflow efficiency and context-cost incident assessment against main@2d7917c43452668bb129ae14392781c13c9040fd."
-  next_action: "Owner decides whether to authorize a dedicated ai-context-governance remediation workflow for selected ASM-20260803-003 findings under open backlog item REL-004."
+  last_completed_action: "Added the dated 2026-08-03 follow-up addendum covering sleep/resume, effective approval and rules boundaries, WSL sandbox diagnostics, Python routing, background-process records, and GitHub Proposal #85."
+  next_action: "Owner decides whether to authorize a dedicated ai-context-governance remediation workflow for selected findings under REL-004 and separately triages GitHub Proposal #85; this addendum authorizes neither implementation."
   blockers: []
