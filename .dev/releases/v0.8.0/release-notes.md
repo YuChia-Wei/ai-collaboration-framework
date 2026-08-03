@@ -2,7 +2,7 @@
 
 ## Status
 
-Validated governed candidate. v0.8.0 is not tagged or published.
+Published.
 
 ## Highlights
 
@@ -17,7 +17,7 @@ Validated governed candidate. v0.8.0 is not tagged or published.
 
 ## Compatibility
 
-v0.8.0 is planned as a backward-compatible pre-1.0 minor release with exact
+v0.8.0 is a backward-compatible pre-1.0 minor release with exact
 automatic upgrade support from the published v0.7.0 package. Existing Python
 command paths and thin compatibility entrypoints remain supported, and the
 current payload comparison removes no published path.
@@ -54,9 +54,11 @@ Both real apply receipts intentionally leave downstream provenance finalization
 to `ai-context-init` or `ai-context-upgrader`; that target-owned step is not
 counted as a candidate pass.
 
-The complete repository critical gate also passed. Hosted pull-request checks,
-merge, and current-main pre-tag validation remain pending in the owning
-workflow.
+The complete repository critical gate also passed. PR #81 passed all five
+hosted jobs and merged the validated candidate to `main`. Merged-main provider
+read-back and the current-main pre-tag gate then passed. The owner-created
+annotated tag, tag-phase gate, hosted publication, downloaded checksum
+sidecars, and exact ZIP/tar payload-parity validation also passed.
 
 From v0.7.0 onward, the renderer appends the canonical `Included Work` section
 from `release.yaml.planning.backlog_refs`. Do not duplicate that generated
@@ -64,5 +66,7 @@ section in this authored source.
 
 ## Publication Completion
 
-Not published. The repository owner creates the immutable annotated tag only
-after the merged current-main pre-tag gate passes.
+Published from immutable annotated tag `v0.8.0`, peeled commit
+`97ccc9e9f218ec681bb726d2e1b4edbb3e14fb25`, through successful hosted run
+`30786537723`. The stable GitHub Release exposes the governed ZIP, tar.gz, and
+both checksum sidecars.

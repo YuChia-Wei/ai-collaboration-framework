@@ -7,7 +7,7 @@ artifact directories. See [README.MD](README.MD) for ownership and lifecycle.
 
 | Roadmap | Current Target | Status | Next Gate | Updated |
 | --- | --- | --- | --- | --- |
-| [ROADMAP.md](ROADMAP.md) | `v0.8.0` | `release preparation` | `SKILL-002`, `TOOL-002`, and `WIBIND-001` are the owner-approved exact release set; execute the candidate workflow and stop at the immutable-tag owner gate. | 2026-08-03 |
+| [ROADMAP.md](ROADMAP.md) | `v0.8.0` | `published / closeout active` | Reconcile the published-mode public body and Project #3 `Published in` field, then run terminal validation and close the workflow. | 2026-08-03 |
 
 Source planning records are retained under [`plans/`](plans/); they inform the
 roadmap but do not replace it or a governed assessment.
@@ -34,16 +34,15 @@ No canonical backlog item is currently in progress.
 
 ## Resolved / Awaiting Publication
 
-| Item | Priority | Completed In | Publication Gate | Resolution | Workflow | Updated |
-| --- | --- | --- | --- | --- | --- | --- |
-| [WIBIND-001](items/WIBIND-001.yaml) | MEDIUM | `v0.8.0` | Included by the 2026-08-03 owner decision; `published_in` remains unset until immutable publication. | PR #73 merged the provider-neutral policy as `d4d9220`; PR #74 retained workflow closeout evidence as `2263744`. | [`2026-07-31-work-item-binding-policy`](../workflows/2026-07-31-work-item-binding-policy/workflow.yaml), [`2026-08-03-v0-8-0-release-publication`](../workflows/2026-08-03-v0-8-0-release-publication/workflow.yaml) | 2026-08-03 |
-| [TOOL-002](items/TOOL-002.yaml) | MEDIUM | `v0.8.0` | Await separately authorized `v0.8.0` publication; `published_in` remains unset. | PR #78 merged the validated prerequisite contract as `2070e44`; Issue #77 and Project #3 closed only after merged-main read-back. | [`2026-08-02-python-prerequisite-diagnostics`](../workflows/2026-08-02-python-prerequisite-diagnostics/workflow.yaml) | 2026-08-03 |
-| [SKILL-002](items/SKILL-002.yaml) | HIGH | `v0.8.0` | Await separately authorized `v0.8.0` publication; `published_in` remains unset. | PR #66 merged the validated canonical-skill colocation into `main`; Issue #65 closed only after merge read-back. | [`2026-07-30-skill-script-colocation`](../workflows/2026-07-30-skill-script-colocation/workflow.yaml) | 2026-07-30 |
+_None._
 
 ## Resolved
 
 | Item | Priority | Completed In | Published In | Resolution | Workflow | Updated |
 | --- | --- | --- | --- | --- | --- | --- |
+| [SKILL-002](items/SKILL-002.yaml) | HIGH | `v0.8.0` | `v0.8.0` | Canonical skill-owned implementations and compatibility-safe entrypoints are published through immutable run `30786537723`. | [`2026-07-30-skill-script-colocation`](../workflows/2026-07-30-skill-script-colocation/workflow.yaml) | 2026-08-03 |
+| [TOOL-002](items/TOOL-002.yaml) | MEDIUM | `v0.8.0` | `v0.8.0` | Fail-closed Python prerequisite diagnostics across all 25 governed production CLIs are published. | [`2026-08-02-python-prerequisite-diagnostics`](../workflows/2026-08-02-python-prerequisite-diagnostics/workflow.yaml) | 2026-08-03 |
+| [WIBIND-001](items/WIBIND-001.yaml) | MEDIUM | `v0.8.0` | `v0.8.0` | Provider-neutral work-item binding and independently selected merge-gate policy are published while provider state remains non-authoritative. | [`2026-07-31-work-item-binding-policy`](../workflows/2026-07-31-work-item-binding-policy/workflow.yaml), [`2026-08-03-v0-8-0-release-publication`](../workflows/2026-08-03-v0-8-0-release-publication/workflow.yaml) | 2026-08-03 |
 | [GOV-002](items/GOV-002.yaml) | HIGH | `v0.7.0` | `v0.7.0` | Provider-neutral lifecycle and repository-truth policy is projected downstream; source-local GitHub policy remains excluded and provider adoption remains deferred. | [`2026-07-27-v0-7-governance-release-readiness`](../workflows/2026-07-27-v0-7-governance-release-readiness/workflow.yaml) | 2026-07-28 |
 | [GOV-003](items/GOV-003.yaml) | HIGH | `v0.7.0` | `v0.7.0` | The AI execution provenance and attribution policy is complete, independently verified, and published. | [`2026-07-27-ai-execution-provenance-policy`](../workflows/2026-07-27-ai-execution-provenance-policy/workflow.yaml) | 2026-07-28 |
 | [PKG-004](items/PKG-004.yaml) | HIGH | `v0.7.0` | `v0.7.0` | Deterministic payload, source-history exclusion, portable-policy mapping, clean-install, and initialized-upgrade evidence pass. | [`2026-07-27-v0-7-governance-release-readiness`](../workflows/2026-07-27-v0-7-governance-release-readiness/workflow.yaml) | 2026-07-28 |

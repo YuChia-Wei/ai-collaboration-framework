@@ -2,9 +2,9 @@ schema_version: "1.0"
 provider: "github"
 repository: "YuChia-Wei/ai-collaboration-prompts-dotnet-backend"
 migration_id: "github-live-WIBIND-001-2026-08-03"
-stage: "stage-b-in-progress"
-source_revision: "b1ffd9ea4d44308f0da0bca6c50445f47bb8eacd"
-generated_at: "2026-08-03T10:13:26+08:00"
+stage: "stage-b-read-back-complete"
+source_revision: "97ccc9e9f218ec681bb726d2e1b4edbb3e14fb25"
+generated_at: "2026-08-03T10:29:08+08:00"
 project:
   number: 3
   node_id: "PVT_kwHOAwvEG84Bez7w"
@@ -16,15 +16,15 @@ items:
     issue_number: 80
     issue_node_id: "I_kwDOSBe2Hc8AAAABLL6WgA"
     issue_url: "https://github.com/YuChia-Wei/ai-collaboration-prompts-dotnet-backend/issues/80"
-    issue_state: "open"
-    close_reason: null
+    issue_state: "closed"
+    close_reason: "completed"
     project_item_id: "PVTI_lAHOAwvEG84Bez7wzg1BB94"
     created_at: "2026-08-03T02:11:33Z"
-    updated_at: "2026-08-03T02:11:33Z"
+    updated_at: "2026-08-03T02:20:04Z"
     read_back:
-      verified_at: "2026-08-03T10:13:26+08:00"
+      verified_at: "2026-08-03T10:29:08+08:00"
       title_matches: true
       markers_match: true
       labels_match: true
-      state_matches: false
-      notes: "Issue #80 is intentionally open until the v0.8.0 release-allocation pull request merges and main is read back. Project #3 reads Status Verification, Priority P2 Normal, Owner review Not required, Target release v0.8.0, and Published in Not yet published. Canonical resolved state and desired completed close reason remain deferred to merged-main provider closeout; provider state alone does not authorize work."
+      state_matches: true
+      notes: "PR #81 passed all five hosted jobs and merged as 97ccc9e9f218ec681bb726d2e1b4edbb3e14fb25. Remote main read-back confirmed feature head 2f0c263786f6b51957c9dfcb739f01f4b458a39f as the second parent with an identical tree before Issue #80 closed as completed. The closeout comment preserves PR #73, #74, and #81 evidence. Project #3 reads Status Done, Priority P2 Normal, Owner review Not required, Target release v0.8.0, and Published in Not yet published. No v0.8.0 tag or Release exists, and provider state alone does not authorize work."

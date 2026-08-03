@@ -6,11 +6,11 @@ status: "resolved"
 priority: "MEDIUM"
 summary: "Record the completed provider-neutral work-item binding and independently selectable merge-gate policy as canonical v0.8.0 included work."
 created_at: "2026-08-03T08:33:26+08:00"
-updated_at: "2026-08-03T08:33:26+08:00"
+updated_at: "2026-08-03T13:38:00+08:00"
 release:
   target: "v0.8.0"
   completed_in: "v0.8.0"
-  published_in: null
+  published_in: "v0.8.0"
   target_scope: "provider-neutral-work-item-binding-and-merge-gate-selection"
   gate: "release-blocker"
 origin_refs:
@@ -27,7 +27,7 @@ task_refs:
   - ".dev/workflows/2026-07-31-work-item-binding-policy/tasks/WIBIND-001.json"
   - ".dev/workflows/2026-08-03-v0-8-0-release-publication/tasks/REL080-001.json"
 resolution_ref: ".dev/workflows/2026-07-31-work-item-binding-policy/reports/remediation-report.md"
-decision_needed: "Resolved: on 2026-08-03 the owner explicitly approved formal v0.8.0 allocation for the already merged policy and authorized release preparation; tag creation remains a later owner action."
+decision_needed: "Resolved: on 2026-08-03 the owner explicitly approved formal v0.8.0 allocation, completed the owner-controlled immutable tag handoff, and authorized the body-only terminal closeout after successful hosted publication."
 acceptance:
   - "A valid binding preserves both traceability and explicit owner authorization evidence; provider state alone never authorizes execution."
   - "Targets independently select work-item binding and pull-request merge-gate modes as required, optional, or disabled."
@@ -38,3 +38,4 @@ inventory_notes:
   - "PR #73 merged the implementation as d4d9220d328068043b990494f9171ea13078b4e7; PR #74 retained workflow closeout evidence as 2263744bb2dc876f8077547e961fc68be28b0074."
   - "The implementation originally excluded release allocation, so this item records the later explicit owner decision instead of retroactively treating the earlier workflow as publication authorization."
   - "Hosted enforcement automation and branch-protection integration remain target-specific future decisions."
+  - "Published in immutable v0.8.0 through successful hosted run 30786537723."
