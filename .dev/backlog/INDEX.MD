@@ -7,7 +7,7 @@ artifact directories. See [README.MD](README.MD) for ownership and lifecycle.
 
 | Roadmap | Current Target | Status | Next Gate | Updated |
 | --- | --- | --- | --- | --- |
-| [ROADMAP.md](ROADMAP.md) | `v0.8.0` | `active` | `SKILL-002` and `TOOL-002` are resolved and awaiting publication; any further scope or release preparation requires separate owner authorization. | 2026-08-03 |
+| [ROADMAP.md](ROADMAP.md) | `v0.8.0` | `release preparation` | `SKILL-002`, `TOOL-002`, and `WIBIND-001` are the owner-approved exact release set; execute the candidate workflow and stop at the immutable-tag owner gate. | 2026-08-03 |
 
 Source planning records are retained under [`plans/`](plans/); they inform the
 roadmap but do not replace it or a governed assessment.
@@ -36,6 +36,7 @@ No canonical backlog item is currently in progress.
 
 | Item | Priority | Completed In | Publication Gate | Resolution | Workflow | Updated |
 | --- | --- | --- | --- | --- | --- | --- |
+| [WIBIND-001](items/WIBIND-001.yaml) | MEDIUM | `v0.8.0` | Included by the 2026-08-03 owner decision; `published_in` remains unset until immutable publication. | PR #73 merged the provider-neutral policy as `d4d9220`; PR #74 retained workflow closeout evidence as `2263744`. | [`2026-07-31-work-item-binding-policy`](../workflows/2026-07-31-work-item-binding-policy/workflow.yaml), [`2026-08-03-v0-8-0-release-publication`](../workflows/2026-08-03-v0-8-0-release-publication/workflow.yaml) | 2026-08-03 |
 | [TOOL-002](items/TOOL-002.yaml) | MEDIUM | `v0.8.0` | Await separately authorized `v0.8.0` publication; `published_in` remains unset. | PR #78 merged the validated prerequisite contract as `2070e44`; Issue #77 and Project #3 closed only after merged-main read-back. | [`2026-08-02-python-prerequisite-diagnostics`](../workflows/2026-08-02-python-prerequisite-diagnostics/workflow.yaml) | 2026-08-03 |
 | [SKILL-002](items/SKILL-002.yaml) | HIGH | `v0.8.0` | Await separately authorized `v0.8.0` publication; `published_in` remains unset. | PR #66 merged the validated canonical-skill colocation into `main`; Issue #65 closed only after merge read-back. | [`2026-07-30-skill-script-colocation`](../workflows/2026-07-30-skill-script-colocation/workflow.yaml) | 2026-07-30 |
 

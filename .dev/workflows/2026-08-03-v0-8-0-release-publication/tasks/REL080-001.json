@@ -1,0 +1,44 @@
+{
+  "template_id": "ai-context-governance-release-publication-task",
+  "template_version": "1.1.0",
+  "template_created_at": "2026-07-24T13:35:00+08:00",
+  "template_updated_at": "2026-07-27T09:52:09+08:00",
+  "task_id": "REL080-001",
+  "workflow_id": "2026-08-03-v0-8-0-release-publication",
+  "owner_skill": "ai-context-governance",
+  "title": "Prepare and publish REL-v0.8.0",
+  "status": "in_progress",
+  "created_at": "2026-08-03T08:33:26+08:00",
+  "updated_at": "2026-08-03T10:13:26+08:00",
+  "template_source": ".ai/assets/skills/ai-context-governance/templates/release-publication/release-publication-task.json",
+  "model": "gpt-5.6-sol",
+  "reasoning_effort": "max",
+  "scope": {
+    "release_id": "REL-v0.8.0",
+    "release_record": ".dev/releases/v0.8.0/release.yaml",
+    "authorized_included_work": [
+      "SKILL-002",
+      "TOOL-002",
+      "WIBIND-001"
+    ],
+    "authorization_source": "Owner decision in the 2026-08-03 conversation: formally register the already integrated work-item binding policy in v0.8.0 and begin the governed publication workflow.",
+    "out_of_scope": [
+      "creating, moving, deleting, replacing, or pushing Git tags",
+      "mutating an already published GitHub Release or its assets",
+      "Proposal #75 aggregate/downstream selection architecture",
+      "Proposal #76 generalized environment-readiness profiles",
+      "DEVWF-001, INIT-001, STD-001, OBS-001, historical archive migration, or legacy identifier retirement",
+      "published shell compatibility-entrypoint relocation"
+    ]
+  },
+  "steps": [
+    "Register WIBIND-001 and reconcile the exact three-item v0.8.0 backlog set.",
+    "Instantiate all six release-publication templates without copying a previous release instance.",
+    "Build and validate deterministic candidate packages, exact v0.7.0 upgrade, authored release documents, and the candidate lifecycle contract.",
+    "Obtain independent read-only candidate verification and reconcile any finding before integration.",
+    "Commit, push, open a ready pull request, pass required checks, and merge through the pull-request-only main policy.",
+    "Run the sanctioned current-main pre-tag command and stop before any tag or publication action.",
+    "After the owner-created tag and successful hosted publication, validate immutable evidence, reconcile registries, and close the workflow."
+  ],
+  "results": null
+}

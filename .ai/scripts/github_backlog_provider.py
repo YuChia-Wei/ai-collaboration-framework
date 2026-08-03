@@ -266,7 +266,7 @@ def validate_config(config: dict[str, Any], backlog_ids: set[str]) -> None:
             "placement": "hidden marker immediately before canonical identity markers",
             "runtime": "OpenAI Codex",
             "model": "gpt-5.6-sol",
-            "reasoning_effort": "high",
+            "reasoning_effort": "max",
             "email": "noreply@openai.com",
             "runtime_binding": "active Issue-creation execution",
             "refresh_policy": "update execution values before a creation batch when runtime provenance changes",
@@ -293,7 +293,7 @@ def validate_config(config: dict[str, Any], backlog_ids: set[str]) -> None:
                 errors.append(str(exc))
             else:
                 if rendered_attribution != (
-                    "<!-- created-by: OpenAI Codex (gpt-5.6-sol, high) <noreply@openai.com> -->"
+                    "<!-- created-by: OpenAI Codex (gpt-5.6-sol, max) <noreply@openai.com> -->"
                 ):
                     errors.append("Issue creation attribution does not render the approved hidden marker")
     expected_binding = {
