@@ -6,7 +6,7 @@
 - `status`: `active`
 - `current_target`: `unassigned`
 - `created_at`: `2026-07-18T14:19:06+08:00`
-- `updated_at`: `2026-08-03T19:05:12+08:00`
+- `updated_at`: `2026-08-03T23:47:10+08:00`
 - `source_assessment`: `.dev/assessments/ASM-20260717-004/assessment.yaml`
 - `source_plan`: `.dev/backlog/plans/post-v0.4.0-improvement-plan.md`
 - `planning_workflow`: `.dev/workflows/2026-07-18-post-v0-4-roadmap-planning/workflow.yaml`
@@ -334,3 +334,9 @@ assigning the next release target. Keep `REL-004`, `DEVWF-001`, `INIT-001`, the
 related but separately owned `STD-001` and `OBS-001`, historical archive
 migration, and legacy identifier retirement independently gated unless an
 explicit decision assigns them.
+
+The owner selected `GOV-004` on 2026-08-03 as a mandatory blocker for the next
+successor release once that release identity is allocated. This decision does
+not name or activate a version. The successor release activation workflow must
+include `GOV-004` exactly once and must not enter publication until its
+implementation and independent verification are complete.

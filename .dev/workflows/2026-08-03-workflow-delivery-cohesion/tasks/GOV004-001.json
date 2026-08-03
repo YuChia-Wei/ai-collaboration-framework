@@ -1,0 +1,60 @@
+{
+  "template_id": "ai-context-governance-remediation-task",
+  "template_version": "1.1.0",
+  "task_id": "GOV004-001",
+  "workflow_id": "2026-08-03-workflow-delivery-cohesion",
+  "owner_skill": "ai-context-governance",
+  "status": "in_progress",
+  "created_at": "2026-08-03T23:47:10+08:00",
+  "updated_at": "2026-08-03T23:47:10+08:00",
+  "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
+  "model": "gpt-5.6-sol",
+  "reasoning_effort": "max",
+  "finding_ids": [
+    "ASM-20260803-004#WFG-001",
+    "ASM-20260803-004#WFG-002"
+  ],
+  "scope": {
+    "target": "Workflow proportionality, task-value, and multi-Issue delivery-cohesion policy.",
+    "files": [
+      ".dev/standards/WORKFLOW-GATE-POLICY.md",
+      ".ai/assets/shared/governance/WORKFLOW-GATE-POLICY.md",
+      ".ai/assets/skills/software-development-orchestrator/**",
+      ".ai/assets/skills/ai-context-governance/references/workflow-and-commit-playbook.md",
+      ".dev/guides/ai-collaboration-guides/**"
+    ],
+    "constraints": [
+      "Task, Issue, commit, and file counts are signals rather than sole decision rules.",
+      "Provider state alone never authorizes work.",
+      "One cohesive delivery may bind multiple approved Issues without creating one workflow per Issue."
+    ],
+    "non_goals": [
+      "Rewriting historical workflow artifacts.",
+      "Introducing a provider-specific portable dependency.",
+      "Counting validation and closeout as artificial delivery tasks."
+    ]
+  },
+  "execution": {
+    "steps": [
+      "Define the workflow-value test before workflow creation.",
+      "Define low-task review signals without numeric prohibition.",
+      "Define delivery cohesion and many-Issue-to-one-workflow binding.",
+      "Add representative deterministic cases and synchronize guidance."
+    ],
+    "validation": [
+      "Run focused workflow-gate tests.",
+      "Run workflow and AI-context validators.",
+      "Request independent post-remediation verification."
+    ],
+    "last_completed_step": "Baseline evidence frozen in ASM-20260803-004.",
+    "next_action": "Implement the workflow-value and delivery-cohesion contract."
+  },
+  "results": {
+    "summary": "",
+    "files_changed": [],
+    "tests_run": [],
+    "finding_status": "not-addressed",
+    "residual_risk": "Current broad triggers may still create low-value workflows or split cohesive multi-Issue delivery.",
+    "follow_up_needed": true
+  }
+}

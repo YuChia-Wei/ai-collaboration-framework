@@ -1,0 +1,61 @@
+{
+  "template_id": "ai-context-governance-remediation-task",
+  "template_version": "1.1.0",
+  "task_id": "GOV004-002",
+  "workflow_id": "2026-08-03-workflow-delivery-cohesion",
+  "owner_skill": "ai-context-governance",
+  "status": "pending",
+  "created_at": "2026-08-03T23:47:10+08:00",
+  "updated_at": "2026-08-03T23:47:10+08:00",
+  "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
+  "model": "gpt-5.6-sol",
+  "reasoning_effort": "max",
+  "finding_ids": [
+    "ASM-20260803-004#WFG-003"
+  ],
+  "scope": {
+    "target": "Normal linear and merge-commit topology selection plus successor-release gating.",
+    "files": [
+      ".dev/TEAM-GIT-FLOW-RULES.MD",
+      ".dev/standards/GIT-COMMIT-POLICY.md",
+      "AGENTS.md",
+      ".ai/assets/skills/ai-context-governance/references/workflow-and-commit-playbook.md",
+      ".dev/backlog/**",
+      ".github/pull_request_template.md"
+    ],
+    "constraints": [
+      "Linear merge is a normal positive rule, not an exception.",
+      "Pull-request need and Git topology are independent decisions.",
+      "Do not invent the next release version.",
+      "This delivery must integrate linearly."
+    ],
+    "non_goals": [
+      "Making direct push the default.",
+      "Rewriting existing merge commits.",
+      "Allocating a successor version without a separate owner decision."
+    ]
+  },
+  "execution": {
+    "steps": [
+      "Define positive selection rules for linear and merge-commit integration.",
+      "Classify historical README-only updates as PR-reviewed linear candidates by default.",
+      "Register GOV-004 and its next-successor-release activation gate.",
+      "Validate and integrate this branch using the selected linear topology."
+    ],
+    "validation": [
+      "Run merge-policy consistency tests.",
+      "Run backlog, provider, workflow, and commit validators.",
+      "Verify hosted checks and linear main ancestry."
+    ],
+    "last_completed_step": "Issue #86 records the owner-selected outcome and linear integration choice.",
+    "next_action": "Begin after GOV004-001 policy changes are coherent."
+  },
+  "results": {
+    "summary": "",
+    "files_changed": [],
+    "tests_run": [],
+    "finding_status": "not-addressed",
+    "residual_risk": "Current policy still frames fast-forward as a tiny direct-mode exception.",
+    "follow_up_needed": true
+  }
+}

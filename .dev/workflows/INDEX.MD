@@ -8,6 +8,7 @@ task-level progress.
 
 | Workflow | Title | Owner | Status | Updated | Entry Point |
 | --- | --- | --- | --- | --- | --- |
+| [`2026-08-03-workflow-delivery-cohesion`](2026-08-03-workflow-delivery-cohesion/workflow.yaml) | Adopt Workflow Delivery Cohesion And Linear Merge Rules | `ai-context-governance` | `in_progress` | `2026-08-03T23:47:10+08:00` | [plan](2026-08-03-workflow-delivery-cohesion/workflow-plan.md) |
 | [`2026-08-02-python-prerequisite-diagnostics`](2026-08-02-python-prerequisite-diagnostics/workflow.yaml) | Standardize Python Prerequisite Diagnostics Across Validator Entrypoints | `ai-context-governance` | `completed` | `2026-08-03T07:33:13+08:00` | [plan](2026-08-02-python-prerequisite-diagnostics/workflow-plan.md) |
 | [`2026-07-31-work-item-binding-policy`](2026-07-31-work-item-binding-policy/workflow.yaml) | Define Provider-Neutral Work-Item Binding And Merge-Gate Selection | `ai-context-governance` | `completed` | `2026-07-31T00:29:59+08:00` | [plan](2026-07-31-work-item-binding-policy/workflow-plan.md) |
 | [`2026-07-30-skill-script-colocation`](2026-07-30-skill-script-colocation/workflow.yaml) | Co-locate Skill-Owned Scripts With Canonical Skills | `ai-context-governance` | `completed` | `2026-07-30T11:38:15+08:00` | [plan](2026-07-30-skill-script-colocation/workflow-plan.md) |

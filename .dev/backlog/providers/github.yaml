@@ -5,7 +5,7 @@ owner: "YuChia-Wei"
 source:
   backlog_glob: ".dev/backlog/items/*.yaml"
   roadmap: ".dev/backlog/ROADMAP.md"
-  expected_item_count: 44
+  expected_item_count: 45
   portable_identity_field: "backlog_id"
   provider_identity_is_authoritative: false
 project:
@@ -229,6 +229,7 @@ migration:
     - "SKILL-002"
     - "TOOL-002"
     - "WIBIND-001"
+    - "GOV-004"
   canaries:
     - "DEVWF-001"
     - "AIC-007"
@@ -293,6 +294,7 @@ classifications:
   GOV-001: {kind: "enabler", scope: "mixed", rationale: "Source history reconciliation determines the governed portable follow-up set."}
   GOV-002: {kind: "enabler", scope: "mixed", rationale: "The work-management policy separates source-local provider rules from portable lifecycle semantics."}
   GOV-003: {kind: "enabler", scope: "mixed", rationale: "Source provenance rules are projected into portable attribution guidance."}
+  GOV-004: {kind: "enabler", scope: "mixed", rationale: "Source workflow and Git integration rules are projected into portable delivery-cohesion and topology guidance."}
   HANDOFF-001: {kind: "story", scope: "framework", rationale: "Maintainers need executable state alignment when work crosses models, runtimes, hosts, or sessions."}
   INIT-001: {kind: "story", scope: "framework", rationale: "Existing AI-agent repositories need safe, collision-aware framework adoption."}
   LANG-001: {kind: "enabler", scope: "framework", rationale: "Semantic translation parity is a reusable AI context quality gate."}
