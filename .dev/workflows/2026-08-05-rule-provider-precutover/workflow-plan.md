@@ -12,7 +12,7 @@
 - `current_phase`: `remediation`
 - `artifact_root`: `.dev/workflows/2026-08-05-rule-provider-precutover`
 - `created_at`: `2026-08-05T01:29:39+08:00`
-- `updated_at`: `2026-08-05T01:29:39+08:00`
+- `updated_at`: `2026-08-05T01:51:16+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md`
 - `template_version`: `1.2.0`
 
@@ -81,7 +81,7 @@ Only one task is marked `in_progress` in durable workflow state. The orchestrato
 
 1. Baseline evidence and owner decisions — completed from `ASM-20260804-002`, #92 discussion, and live Issue read-back at `main@d8580df4516155ff7b1a139d9a064a8b0d4b2019`.
 2. Workflow and bounded work-item binding — completed by creating #109 through #117 and formal sub-issue relationships under #104 through #107.
-3. Dependency-ordered remediation — in progress.
+3. Dependency-ordered remediation — in progress; `RPB-001` completed and `RPB-002` started.
 4. Independent post-remediation audit — pending.
 5. PR review, merge-commit integration, merged-main read-back, and closure — pending; release packaging remains excluded.
 
@@ -95,10 +95,10 @@ Only one task is marked `in_progress` in durable workflow state. The orchestrato
 
 ## Resume Checkpoint
 
-- Last completed action: Created and bound bounded GitHub Issues #109 through #117 beneath umbrellas #104 through #107; recorded cross-workflow ownership with the independent #94 task.
-- Current task: `RPB-001` is in progress.
-- Exact next action: Delegate `RPB-001` to a Terra xhigh worker with exclusive ownership of the identity/ownership contract and no edits to #94-owned sections.
-- Validation already completed: live Issue #92 and #104 through #107 read-back; duplicate search before child creation; latest `origin/main` and clean branch read-back. No repository validation script has run.
+- Last completed action: Completed `RPB-001/#109` after orchestrator correction of the initial blanket `.dev/standards/**` ownership interpretation; shared and profile baselines now have explicit canonical ownership while legacy registry paths remain transitional.
+- Current task: `RPB-002` is in progress.
+- Exact next action: Delegate the exhaustive file-by-file migration matrix to a Terra high worker without moving canonical source.
+- Validation already completed: live Issue read-back, duplicate search, latest-main/branch read-back, scoped identity-contract review, task JSON parsing, and `git diff --check`. No repository validation script has run.
 - Git state: branch `codex/2026-08-05-rule-provider-precutover` starts from `origin/main@d8580df4516155ff7b1a139d9a064a8b0d4b2019`.
 - Branch history and checkpoint handoffs: segment 1 only; no handoff or merge yet.
 - Blockers or unresolved decisions: none. Shared-file sequencing with #94 is a coordination constraint, not an owner-decision blocker.

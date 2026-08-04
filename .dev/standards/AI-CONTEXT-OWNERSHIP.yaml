@@ -1,5 +1,75 @@
 schema_version: "1.0"
-updated_at: "2026-07-16T22:19:34+08:00"
+updated_at: "2026-08-05T01:41:10+08:00"
+identity_model:
+  version: "1.0"
+  registry_owner: .dev/standards/AI-CONTEXT-OWNERSHIP.yaml
+  portable_baseline_roots:
+    universal: .ai/assets/shared/
+    profile: .ai/assets/tech-stacks/<profile>/
+  source_governance_root: .dev/standards/
+  target_effective_root: .dev/ai-context/
+  ownership_resolution:
+    canonical_semantic_owner: exactly-one-classified-baseline-record
+    source_governance_and_registry: .dev/standards/
+    target_effective_owner: .dev/ai-context/
+    legacy_canonical_path:
+      classification: transitional-unmigrated
+      applies_to: rules[].canonical_path under .dev/standards/
+      exit_condition: migration matrix assigns one classified portable baseline path
+    ambiguity: fail-closed
+  contracts:
+    - contract_id: ENG-IDENTITY-001
+      kind: portable-universal-baseline
+      canonical_path: .ai/assets/shared/governance/ENGINEERING-IDENTITY-CONTRACT.md
+      canonical_anchor: "# Engineering Identity Contract"
+      registry_governance_path: .dev/standards/AI-CONTEXT-OWNERSHIP.md
+      profile_binding_contract: .ai/assets/tech-stacks/dotnet-backend/references/ENGINEERING-IDENTITY-BINDINGS.MD
+  kinds:
+    engineering-concept:
+      id_field: concept_id
+      id_pattern: "^CONCEPT-[A-Z0-9]+(?:-[A-Z0-9]+)*$"
+      semantic_subject: true
+      canonical_owner: cross-technology baseline record under .ai/assets/shared/
+    normative-rule:
+      id_field: rule_id
+      id_pattern: "^[A-Z][A-Z0-9]*(?:-[A-Z0-9]+)+$"
+      legacy_ids: retained
+      semantic_subject: true
+      canonical_owner: classified baseline record under shared or profile root
+    observable-constraint:
+      id_field: constraint_id
+      id_pattern: "^CONSTRAINT-[A-Z0-9]+(?:-[A-Z0-9]+)*$"
+      semantic_subject: true
+      canonical_owner: classified baseline record under shared or profile root
+    abstract-enforcement-capability:
+      id_field: capability_id
+      id_pattern: "^CAPABILITY-[A-Z0-9]+(?:-[A-Z0-9]+)*$"
+      semantic_subject: false
+      canonical_owner: cross-technology capability record under .ai/assets/shared/
+    technology-binding:
+      id_field: binding_id
+      id_pattern: "^BINDING-[A-Z0-9]+(?:-[A-Z0-9]+)*$"
+      semantic_subject: false
+      canonical_owner: selected profile record under .ai/assets/tech-stacks/<profile>/
+  relationships:
+    - concept-supports-rule
+    - rule-yields-constraint
+    - constraint-enforced-by-capability
+    - binding-realizes-constraint-through-capability
+  referential_integrity:
+    reference_shape: kind-and-id
+    resolution: exactly-one-record-of-declared-kind
+    unresolved: fail-closed
+    disallowed_identity_substitutes:
+      - path
+      - diagnostic-id
+      - package-name
+      - command-name
+      - provider-name
+  compatibility:
+    identity_stability: retain-id-when-semantic-meaning-is-unchanged
+    semantic_change: explicit-owner-approved-supersedes-relationship
+    alternate_temporary_ids: forbidden
 rules:
   - rule_id: ASSESSMENT-ARTIFACT-001
     domain: durable-assessment

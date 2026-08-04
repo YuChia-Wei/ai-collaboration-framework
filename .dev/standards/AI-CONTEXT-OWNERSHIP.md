@@ -1,14 +1,81 @@
 # AI Context Rule Ownership
 
-This standard assigns one normative owner to reusable AI-context rules and defines how secondary agent-loading surfaces consume them.
+Related portable baseline contract: `ENG-IDENTITY-001`.
+
+This source-governance standard assigns canonical ownership classifications to
+reusable AI-context engineering identities and defines how consumers resolve
+them without creating a second semantic owner.
 
 ## Ownership Model
 
-- `.dev/standards/` owns normative rule semantics, rule strength, applicability, and approved override slots.
-- `.ai/assets/shared/` and `.ai/assets/tech-stacks/` are agent-loading projections. They may summarize a rule for execution, but must cite its rule ID and canonical standard.
-- Skills own workflow behavior and output contracts, not the domain rules they consume.
-- Runtime wrappers, checklists, examples, and workflow records are derived consumers and never become normative through repetition.
-- `.dev/standards/AI-CONTEXT-OWNERSHIP.yaml` is the machine-readable registry. Add conflicted or cross-cutting rule families incrementally instead of attempting an unreviewed bulk migration.
+- `.ai/assets/shared/` owns portable cross-technology framework baseline
+  concepts, rules, constraints, and abstract enforcement capabilities.
+- `.ai/assets/tech-stacks/<profile>/` owns portable profile-specific defaults,
+  rules, constraints, technology bindings, and bundled tooling. The canonical
+  .NET binding contract is
+  `.ai/assets/tech-stacks/dotnet-backend/references/ENGINEERING-IDENTITY-BINDINGS.MD`.
+- `.dev/standards/` owns source governance, rule strength and applicability
+  policy, ownership classification, and the identity registry. A current
+  registry record with a legacy `canonical_path` under `.dev/standards/` is
+  `transitional-unmigrated` until the migration matrix reclassifies it; this
+  does not make `.dev/standards/` the blanket future owner for framework
+  semantics.
+- `.dev/ai-context/` is target-owned effective state shared by humans and
+  agents. It records adopted state, semantic deltas, target selections, tuning,
+  waivers, provenance, and reconciliation evidence; it may select or change a
+  declared decision slot but cannot silently remove an invariant.
+- Skills own workflow behavior and output contracts, not the engineering
+  semantics they consume.
+- Runtime wrappers, checklists, examples, workflow records, analyzers,
+  validators, providers, Diagnostics, commands, and target configuration are
+  derived consumers or enforcement mechanisms. They never become normative
+  semantic owners through repetition or activation.
+- `.dev/standards/AI-CONTEXT-OWNERSHIP.yaml` is the machine-readable registry.
+  It resolves each record to exactly one canonical owner. Add conflicted or
+  cross-cutting identity families incrementally instead of attempting an
+  unreviewed bulk migration.
+
+## Identity Model
+
+The registry distinguishes these kinds. Existing `rule_id` values remain
+stable; the model does not require a bulk renaming migration.
+
+| Kind | Field and stable form | Canonical owner | Required relationships |
+| --- | --- | --- | --- |
+| Engineering concept | `concept_id`: `CONCEPT-...` | cross-technology baseline record under `.ai/assets/shared/` | may support one or more rules |
+| Normative rule | `rule_id`: existing registered format or new `RULE-...` | classified baseline record under `.ai/assets/shared/` or `.ai/assets/tech-stacks/<profile>/` | references one or more concepts; may yield constraints |
+| Observable constraint | `constraint_id`: `CONSTRAINT-...` | classified baseline record under `.ai/assets/shared/` or `.ai/assets/tech-stacks/<profile>/` | references a rule; may be enforced by capabilities and bindings |
+| Abstract enforcement capability | `capability_id`: `CAPABILITY-...` | cross-technology baseline capability record under `.ai/assets/shared/` | may enforce one or more constraints |
+| Technology binding | `binding_id`: `BINDING-...` | selected profile record under `.ai/assets/tech-stacks/<profile>/` | references exactly one constraint and capability; may name provider or Diagnostic details |
+
+Concepts, rules, and constraints are semantic subjects. Abstract capabilities
+and technology bindings are enforcement records: they can be changed for a
+selected profile without being treated as a semantic customization when the
+engineering meaning is unchanged. A target's semantic customization therefore
+names a concept, rule, or constraint; enforcement tuning or a tooling waiver
+names the affected constraint plus its capability/binding evidence.
+
+## Referential Integrity
+
+- A reference has an explicit `kind` and `id`; a bare path, Diagnostic ID,
+  package name, command, or provider name is never a semantic reference.
+- A referenced ID must resolve to exactly one registered record of the declared
+  kind. Duplicate IDs across kinds, missing records, type-invalid edges,
+  self-references, and path-derived identities are unresolved.
+- A consumer that receives an unresolved identity, missing target-effective
+  state, stale digest, or incompatible profile must fail closed and report the
+  reason. It must not select a similarly named default or silently use the
+  framework baseline.
+- An identity remains stable across relocations, projection rewrites,
+  provider swaps, Diagnostic changes, and package upgrades. A semantic change
+  requires an explicit owner-approved `supersedes` relationship; compatibility
+  and migration records reference the existing identity rather than creating a
+  temporary alternate ID.
+- The registry resolves the canonical baseline path and anchor for each record.
+  A current record with a legacy `.dev/standards/` `canonical_path` is
+  `transitional-unmigrated` until the migration matrix relocates it. Portable
+  consumers and target-effective packets cite the same ID; no alternate
+  normative statement is implied.
 
 ## Rule Strength
 
@@ -29,7 +96,7 @@ Do not use an unqualified `mandatory` or `default` when the applicable strength 
 3. Framework `invariant` rules. Target conflicts are reported; they are not silent overrides.
 4. Adopted `profile-default` rules.
 5. Applicable `conditional` rules.
-6. Derived `.ai` projections, runtime wrappers, and checklists.
+6. Derived projections of a canonical baseline, runtime wrappers, and checklists.
 7. Examples.
 8. Historical records.
 
@@ -45,7 +112,7 @@ mechanism for each package family.
 Every registered derived consumer must:
 
 - identify the canonical rule with `Rule IDs:` or an equivalent explicit source declaration;
-- link to the canonical standard instead of independently redefining ownership;
+- link to the registry-resolved canonical owner instead of independently redefining ownership;
 - preserve the registered strength and applicability when it summarizes the rule;
 - keep examples clearly illustrative.
 

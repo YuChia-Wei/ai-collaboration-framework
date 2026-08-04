@@ -7,9 +7,9 @@
   "workflow_id": "2026-08-05-rule-provider-precutover",
   "owner_skill": "ai-context-governance",
   "title": "Publish the exhaustive file-by-file migration matrix",
-  "status": "pending",
+  "status": "in_progress",
   "created_at": "2026-08-05T01:29:39+08:00",
-  "updated_at": "2026-08-05T01:29:39+08:00",
+  "updated_at": "2026-08-05T01:51:16+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-5.6-terra",
   "reasoning_effort": "high",
@@ -23,8 +23,8 @@
   "execution": {
     "steps": ["Inventory tracked files", "Classify every file against RPB-001 identities", "Record action, destination, owner, component, compatibility, rationale, and implementing task", "Fail closed on unresolved rows"],
     "validation": ["Compare matrix rows to the tracked-file inventory", "Manual uniqueness and destination review", "No repository validation scripts"],
-    "last_completed_step": "Task bounded and awaiting RPB-001.",
-    "next_action": "After RPB-001 completes, create the complete migration matrix without moving source files."
+    "last_completed_step": "RPB-001 established the identity and ownership classification contract.",
+    "next_action": "Create the complete migration matrix without moving source files."
   },
   "results": {
     "summary": "",
