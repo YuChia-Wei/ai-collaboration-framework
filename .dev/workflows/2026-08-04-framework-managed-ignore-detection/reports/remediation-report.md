@@ -14,7 +14,7 @@
 - `owner_skill`: `ai-context-governance`
 - `status`: `draft`
 - `created_at`: `2026-08-04T23:44:48+08:00`
-- `updated_at`: `2026-08-04T23:56:09+08:00`
+- `updated_at`: `2026-08-05T00:03:55+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-remediation-report-template.md`
 - `template_version`: `2.0.0`
 - `baseline_assessment`: `ASM-20260804-003`
@@ -25,7 +25,7 @@
 - Authorized scope: Story #99, promoted from source Proposal #93, owns selected framework-managed paths hidden by target Git ignore or exclude rules.
 - Completed scope: shared exact-path ignore observation; fail-closed package plan and apply; required-path receipt binding; target validation, initialization, provenance finalization, critical-gate routing; synthetic Windows/POSIX and exact-case coverage; package fixture helper preservation.
 - Validation summary: focused suites passed before the current checkpoint. The one owner-authorized sandbox-external critical gate completed at `2026-08-04T23:43:00+08:00` with 46 of 47 checks passed. Its only failure was `Workflow Artifact Metadata`, which exposed a stale workflow-index timestamp and missing `PKG-005.resolution_ref`; the focused workflow-artifact rerun passes after those corrections and after replacing external URL origin references with local evidence paths. The owner did not authorize another aggregate rerun.
-- Closure decision: `not-ready`; owner authorization permits a Draft PR only.
+- Closure decision: `not-ready`; PR #103 is integrated as an owner-authorized merge checkpoint, while independent verification and a passing local aggregate gate remain outstanding.
 
 ## Finding Resolution Matrix
 
@@ -57,7 +57,7 @@
 
 ## Closure Evidence
 
-- Required validations: independent verification and a passing current aggregate gate remain outstanding; the focused workflow-artifact rerun passes. The owner authorized the no-rebase `--no-ff` integration checkpoint.
-- Commit status: implementation `803cd09`, Story binding `5204512`, and failed-gate waiver checkpoint `e5d134c` are pushed. Draft PR #103 is open but GitHub currently reports it `DIRTY` because main advanced three commits after the branch base.
+- Required validations: independent verification and a passing current aggregate gate remain outstanding; the focused workflow-artifact rerun and all five hosted PR checks pass. The owner authorized the no-rebase `--no-ff` integration checkpoint.
+- Commit status: implementation `803cd09`, Story binding `5204512`, current-main union `1189063`, and GitHub merge commit `276c213` are durable. PR #103 is merged to main through the owner-selected merge-commit path.
 - Workflow/task status: workflow and `IGN93-003` remain `in_progress`.
-- Final next action: merge current main into the PR branch without rebase, resolve the conflict, and perform the owner-authorized `--no-ff` PR integration. Independent verification and an aggregate passing gate remain recorded follow-up work rather than release authorization.
+- Final next action: on the continuation branch, allocate a fresh all-ref verification assessment, reconcile the baseline finding, and run the deferred local aggregate gate before workflow closure. Release preparation and publication remain unauthorized.
