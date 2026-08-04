@@ -1,0 +1,36 @@
+{
+  "template_id": "ai-context-governance-remediation-task",
+  "template_version": "1.1.0",
+  "template_created_at": "2026-07-10T18:22:49+08:00",
+  "template_updated_at": "2026-07-27T09:52:09+08:00",
+  "task_id": "OPUS0804-002",
+  "workflow_id": "2026-08-04-opus-5-periodic-review-intake",
+  "owner_skill": "ai-context-governance",
+  "status": "completed",
+  "created_at": "2026-08-04T20:43:23+08:00",
+  "updated_at": "2026-08-04T20:43:23+08:00",
+  "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
+  "model": "gpt-5.6-sol",
+  "reasoning_effort": "max",
+  "finding_ids": ["ASM-20260804-001#AIC-005", "ASM-20260804-001#AIC-006", "ASM-20260804-001#AIC-008", "ASM-20260804-001#AIC-010"],
+  "scope": {
+    "target": "Create bounded unassigned backlog items from selected findings.",
+    "files": [".dev/backlog/items/EVAL-002.yaml", ".dev/backlog/items/VAL-002.yaml", ".dev/backlog/items/GOV-005.yaml", ".dev/backlog/items/CTX-004.yaml"],
+    "constraints": ["Do not assign work to v0.9.0.", "Do not treat issue state as execution authorization."],
+    "non_goals": ["Implement any selected item.", "Accept unrelated proposals."]
+  },
+  "execution": {
+    "steps": ["Define one outcome per item.", "Link stable finding IDs.", "Update indexes and provider classification."],
+    "validation": ["backlog schema", "provider dry-run", "roadmap boundary read-back"],
+    "last_completed_step": "Created and indexed four unassigned formal backlog items.",
+    "next_action": "Project the items through OPUS0804-003."
+  },
+  "results": {
+    "summary": "Selected four non-duplicative follow-ups while retaining archive migration and release allocation as separate owner decisions.",
+    "files_changed": [".dev/backlog/items/EVAL-002.yaml", ".dev/backlog/items/VAL-002.yaml", ".dev/backlog/items/GOV-005.yaml", ".dev/backlog/items/CTX-004.yaml", ".dev/backlog/INDEX.MD", ".dev/backlog/ROADMAP.md", ".dev/backlog/providers/github.yaml"],
+    "tests_run": ["pending final repository validators"],
+    "finding_status": "selected-for-backlog",
+    "residual_risk": "Release targets and execution authorization remain unassigned.",
+    "follow_up_needed": false
+  }
+}

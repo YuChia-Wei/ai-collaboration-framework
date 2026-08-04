@@ -1,0 +1,43 @@
+schema_version: "1.0"
+backlog_id: "GOV-005"
+title: "Converge The Interlocked Proposal Queue"
+category: "work-management-governance"
+status: "open"
+priority: "HIGH"
+summary: "Make one owner-reviewed dependency and disposition decision across the current interlocked Proposal queue so candidate work stops accumulating without an explicit next state."
+created_at: "2026-08-04T20:43:23+08:00"
+updated_at: "2026-08-04T20:51:23+08:00"
+release:
+  target: "unassigned"
+  completed_in: null
+  published_in: null
+  target_scope: "proposal-queue-convergence"
+origin_refs:
+  - ".dev/assessments/ASM-20260804-001/assessment.yaml"
+finding_refs:
+  - "ASM-20260804-001#AIC-008"
+recommended_owner_skill: "ai-context-governance"
+handoff_condition: "Run one owner review over the complete current Proposal set. AI may prepare dependencies and alternatives but may not accept, reject, allocate, or close a Proposal without the owner's recorded disposition."
+workflow_refs: []
+task_refs: []
+resolution_ref: null
+decision_needed: "For each current Proposal, record selected-for-design, waits-for a named Issue, deferred with a trigger, rejected, duplicate, or superseded; separately decide priority and release allocation only where intended."
+related_backlog_refs:
+  - "STD-001"
+  - "DEVWF-001"
+  - "INIT-001"
+provider_refs:
+  - "github-issue:#97"
+acceptance:
+  - "The review covers Proposals #75, #76, #85, #87, #90, #92, #93, and #94 or records why a later-created Proposal is outside the frozen review set."
+  - "Every reviewed Proposal has exactly one owner-approved disposition and a concise decision rationale."
+  - "Dependencies distinguish hard waits-for, informative related-work, shared decision axes, and independent execution."
+  - "The packaging/projection axis and validation/environment axis are considered together without assuming the external review's proposed roots are owner-approved."
+  - "Accepted work is promoted through a new formal backlog item and Issue; rejected, duplicate, or superseded Proposals use the provider's documented close reason."
+  - "No Project field, label, Issue state, or AI recommendation is treated as execution authorization."
+  - "The resulting queue has no zero-comment and zero-disposition Proposal from the frozen set."
+inventory_notes:
+  - "The external snapshot contained five zero-comment Proposals; current read-back contains eight after #92-#94 were added."
+  - "This is source-repository work-management governance and does not change the provider-neutral downstream framework contract."
+  - "Creation of this item does not pre-approve #85 or #75 as dependency roots."
+  - "GitHub Issue #97 is the source-repository queue-convergence projection; only a later recorded owner review may disposition the frozen Proposals."
