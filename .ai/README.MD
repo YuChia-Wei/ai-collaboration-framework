@@ -15,6 +15,10 @@ Start with `.ai/INDEX.MD` when you need a file or directory catalog. Use this RE
 - Canonical reusable AI assets belong under `.ai/assets/`.
 - Universal shared context belongs under `.ai/assets/shared/`.
 - Tech-stack-specific context belongs under `.ai/assets/tech-stacks/<profile>/`.
+- Registered universal engineering rules resolve through the shared catalog;
+  registered profile rules resolve through their profile catalog to the recorded
+  Markdown owner. Routine consumers use a task-scoped effective packet rather
+  than scanning all baseline documents.
 - Canonical skill specs belong under `.ai/assets/skills/`.
 - Canonical sub-agent role prompts belong under `.ai/assets/sub-agent-role-prompts/`.
 - Runtime wrappers belong under `.agents/skills/` and `.claude/skills/`.

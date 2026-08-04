@@ -155,4 +155,4 @@ TODO: replace `.ai/scripts/check-data-class-annotations.sh` with a Roslyn analyz
 ## Related Documents
 - `FRAMEWORK-API-INTEGRATION-GUIDE.md`
 - `.ai/assets/tech-stacks/dotnet-backend/shared/dto-conventions.md`
-- `.dev/standards/examples/dto/README.md`
+- `.ai/assets/tech-stacks/dotnet-backend/examples/dto/README.md`

@@ -178,4 +178,4 @@ Do not infer Query Repository semantics from filenames or grep results.
 
 - [Repository Standards](repository-standards.md)
 - [Use Case Standards](usecase-standards.md)
-- [Query-side Layering Rationale](../rationale/query-side-layering-rationale.MD)
+- [Query-side Layering Rationale](../../references/rationale/query-side-layering-rationale.MD)

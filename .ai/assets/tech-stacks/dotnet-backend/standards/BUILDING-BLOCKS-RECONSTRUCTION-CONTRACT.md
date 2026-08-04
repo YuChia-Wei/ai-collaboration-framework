@@ -104,9 +104,9 @@ public sealed class Order : EsAggregateRoot<OrderId>
 ```
 
 The repository-owned source include is under
-[`source-includes/domain/`](../../.ai/assets/tech-stacks/dotnet-backend/source-includes/domain/). Its behavior is compiled
+[`source-includes/domain/`](../source-includes/domain/). Its behavior is compiled
 and tested by
-[`tools/DotnetBackendBuildingBlocks.Tests`](../../tools/DotnetBackendBuildingBlocks.Tests/).
+[`tools/DotnetBackendBuildingBlocks.Tests`](../../../../../tools/DotnetBackendBuildingBlocks.Tests/).
 It is not a published package or complete reference product.
 
 ## Source-Include Ownership And Upgrade Rule

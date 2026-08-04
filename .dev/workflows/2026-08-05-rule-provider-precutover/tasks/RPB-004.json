@@ -9,7 +9,7 @@
   "title": "Apply portable .NET asset migration rows",
   "status": "in_progress",
   "created_at": "2026-08-05T01:29:39+08:00",
-  "updated_at": "2026-08-05T02:07:14+08:00",
+  "updated_at": "2026-08-05T02:53:00+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-5.6-terra",
   "reasoning_effort": "high",
@@ -23,15 +23,15 @@
   "execution": {
     "steps": ["Apply resolved rule, example, reference, and template move rows in non-overlapping batches", "Derive machine-readable shared/profile catalogs with full normative statements and selector metadata", "Update indexes and references", "Add bounded compatibility entrypoints", "Reconcile distribution navigation and fixture expectations"],
     "validation": ["Row-by-row source/destination read-back", "Manual broken-reference review", "git diff --check if useful; no repository validation scripts"],
-    "last_completed_step": "RPB-002 resolved all 232 tracked rows and made the RPB-003 resolver dependent on RPB-004 machine-readable catalogs.",
-    "next_action": "Apply the resolved non-provider rows in non-overlapping migration batches, then derive catalogs and reconcile navigation."
+    "last_completed_step": "Applied all 148 RPB-004 move rows, retained 10 bounded compatibility entrypoints, derived the shared and dotnet-backend rule catalogs, and reconciled active non-shared references and navigation.",
+    "next_action": "Checkpoint the coherent migration batch, then read back the #94 single-writer validator path commit and complete the remaining serialized consumer references through RPB-006."
   },
   "results": {
-    "summary": "",
-    "files_changed": [],
+    "summary": "Portable .NET rules, examples, references, rationale, and templates now live under the dotnet-backend profile. Shared and profile rule catalogs preserve 13 existing stable IDs with complete normative statements; 12 documents without approved IDs are explicit unpacketized-fail-closed records.",
+    "files_changed": ["148 matrix-selected source-to-profile moves", "10 thin .dev/standards compatibility entrypoints", "shared and dotnet-backend engineering-rule-catalog.yaml", "ownership registry, indexes, and active non-shared path consumers"],
     "tests_run": [],
-    "finding_status": "not-addressed",
-    "residual_risk": "",
+    "finding_status": "partially-addressed",
+    "residual_risk": "The #94 single-writer validator path commit is not yet present on this branch, and action-skill consumer metadata intentionally waits for RPB-003/RPB-006.",
     "follow_up_needed": true
   }
 }

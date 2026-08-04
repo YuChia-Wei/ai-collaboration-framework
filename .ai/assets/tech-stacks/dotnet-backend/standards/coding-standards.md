@@ -161,8 +161,8 @@ Full rules:
 
 - [Repository Standards](./coding-standards/repository-standards.md)
 - [Projection Standards](./coding-standards/projection-standards.md)
-- [Aggregate Repository Rationale](./rationale/generic-repository-only-rationale.MD)
-- [Query-side Layering Rationale](./rationale/query-side-layering-rationale.MD)
+- [Aggregate Repository Rationale](../references/rationale/generic-repository-only-rationale.MD)
+- [Query-side Layering Rationale](../references/rationale/query-side-layering-rationale.MD)
 
 ### ⚠ Profile-Based Testing
 - **Do not use BaseTestClass or BaseUseCaseTest as test base classes**

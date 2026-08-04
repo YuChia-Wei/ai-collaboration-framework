@@ -309,5 +309,5 @@ The target repository enables analyzer/architecture-test rules for target-specif
 - [Aggregate Standards](aggregate-standards.md)
 - [Projection Standards](projection-standards.md)
 - [Use Case Standards](usecase-standards.md)
-- [Generic Repository Rationale](../rationale/generic-repository-only-rationale.MD)
-- [Query-side Layering Rationale](../rationale/query-side-layering-rationale.MD)
+- [Generic Repository Rationale](../../references/rationale/generic-repository-only-rationale.MD)
+- [Query-side Layering Rationale](../../references/rationale/query-side-layering-rationale.MD)

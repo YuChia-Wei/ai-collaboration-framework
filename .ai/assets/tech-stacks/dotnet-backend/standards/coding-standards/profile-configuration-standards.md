@@ -157,6 +157,6 @@ Select the profile at the test host, fixture, or execution-command layer. Do not
 
 ## Related Documents
 
-- [../../guides/implementation-guides/PROFILE-CONFIGURATION-COMPLEXITY-SOLUTION.md](../../guides/implementation-guides/PROFILE-CONFIGURATION-COMPLEXITY-SOLUTION.md)
-- [../../guides/implementation-guides/DOTNET-DI-TEST-GUIDE.md](../../guides/implementation-guides/DOTNET-DI-TEST-GUIDE.md)
+- [../../../../../../.dev/guides/implementation-guides/PROFILE-CONFIGURATION-COMPLEXITY-SOLUTION.md](../../../../../../.dev/guides/implementation-guides/PROFILE-CONFIGURATION-COMPLEXITY-SOLUTION.md)
+- [../../../../../../.dev/guides/implementation-guides/DOTNET-DI-TEST-GUIDE.md](../../../../../../.dev/guides/implementation-guides/DOTNET-DI-TEST-GUIDE.md)
 - [../ASPNET-CORE-CONFIGURATION-CHECKLIST.md](../ASPNET-CORE-CONFIGURATION-CHECKLIST.md)

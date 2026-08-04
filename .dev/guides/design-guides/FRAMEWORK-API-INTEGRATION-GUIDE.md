@@ -270,10 +270,10 @@ Fix: ensure outbox registrations only in outbox environments
 | Configuration | Environment | `Outbox` / `TestOutbox` only
 
 ## Related Resources
-- `.dev/standards/coding-standards.md`
-- `.dev/standards/coding-standards/mapper-standards.md`
+- `.ai/assets/tech-stacks/dotnet-backend/standards/coding-standards.md`
+- `.ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/mapper-standards.md`
 - Outbox Sub-agent Canonical Asset (.ai/assets/sub-agent-role-prompts/outbox-sub-agent/sub-agent.yaml)
-- Wolverine outbox examples (`.dev/standards/examples/outbox/README.md`, `.dev/standards/examples/aspnet-core/Program.cs`)
+- Wolverine outbox examples (`.ai/assets/tech-stacks/dotnet-backend/examples/outbox/README.md`, `.ai/assets/tech-stacks/dotnet-backend/examples/aspnet-core/Program.cs`)
 
 ## Quick Checklist
 
@@ -290,5 +290,4 @@ rg "DomainEventDatas" src/ | rg -v "NotMapped" && echo "Missing NotMapped"
 # 4. Ensure outbox config only in outbox environments
 rg "UseDurableOutbox" src/ | rg -v "outbox" && echo "Check environment gating"
 ```
-
 

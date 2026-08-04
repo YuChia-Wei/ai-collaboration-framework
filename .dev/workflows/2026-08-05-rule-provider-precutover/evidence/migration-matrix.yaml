@@ -4,6 +4,7 @@ workflow_id: "2026-08-05-rule-provider-precutover"
 work_item: "GitHub Issue #110"
 status: "approved-for-implementation"
 generated_at: "2026-08-05T02:07:14+08:00"
+updated_at: "2026-08-05T02:53:00+08:00"
 source_revision: "69603f10445552239fa7e632014e980c6650204c"
 generator: "RPB-002 direct Git tracked-path inventory"
 inventory_command: "git ls-files -- .dev/standards .ai/assets/shared .ai/assets/tech-stacks/dotnet-backend tools/DotnetBackendAnalyzers tools/DotnetBackendAnalyzers.Tests tools/DotnetBackendValidation tools/DotnetBackendValidation.Tests tools/DotnetBackendBuildingBlocks.Tests .ai/INDEX.MD .ai/README.MD .dev/standards/INDEX.MD .ai/distribution/profiles/dotnet-backend.yaml"
@@ -91,11 +92,11 @@ row_templates:
   shared_manifest: &shared_manifest
     artifact_class: shared-baseline-manifest
     current_owner_location_state: "canonical portable projection manifest under .ai/assets/shared"
-    action: derive
+    action: retain
     canonical_owner: ".ai/assets/shared/"
     distribution_component: software-development-core
-    compatibility_treatment: "refresh only its canonical projection and catalog references"
-    implementing_task: RPB-004
+    compatibility_treatment: "retain the distribution mapping unchanged; canonical-ai-assets already carries the separately owned shared catalog"
+    implementing_task: none
     resolution_status: resolved
   profile_asset: &profile_asset
     artifact_class: profile-baseline
@@ -166,6 +167,15 @@ inventory_counts:
     ".ai/INDEX.MD": 1
     ".ai/README.MD": 1
     ".ai/distribution/profiles/dotnet-backend.yaml": 1
+derived_artifacts:
+  - path: ".ai/assets/shared/governance/engineering-rule-catalog.yaml"
+    implementing_task: RPB-004
+    ownership_role: canonical-portable-baseline
+    contents: "Three existing active universal rule IDs with complete anchored normative statements and deterministic digest inputs."
+  - path: ".ai/assets/tech-stacks/dotnet-backend/engineering-rule-catalog.yaml"
+    implementing_task: RPB-004
+    ownership_role: resolver-ready-exact-projection
+    contents: "Ten existing active .NET rule IDs projected from their canonical profile documents; twelve moved profile rule documents remain explicitly unpacketized-fail-closed pending owner-approved stable identity allocation."
 entries:
   - <<: *ai_entry
     current_path: ".ai/INDEX.MD"
@@ -202,7 +212,7 @@ entries:
   - <<: *shared_manifest
     current_path: ".ai/assets/shared/governance/portable-policy-manifest.yaml"
     exact_destinations: [".ai/assets/shared/governance/portable-policy-manifest.yaml"]
-    rationale: "The shared projection manifest remains the portable owner and is refreshed to reference the shared rule catalog."
+    rationale: "This distribution mapping is retained unchanged and is not a semantic owner; canonical-ai-assets already distributes the independently owned shared catalog."
   - <<: *profile_navigation
     current_path: ".ai/assets/tech-stacks/dotnet-backend/README.MD"
     exact_destinations: [".ai/assets/tech-stacks/dotnet-backend/README.MD"]
@@ -298,11 +308,17 @@ entries:
   - <<: *source_governance
     current_path: ".dev/standards/AI-CONTEXT-OWNERSHIP.md"
     exact_destinations: [".dev/standards/AI-CONTEXT-OWNERSHIP.md"]
-    rationale: "Source-governance policy remains under .dev/standards; any portable projection is derived and does not become a second owner."
+    action: derive
+    implementing_task: RPB-004
+    compatibility_treatment: "retain source-governance ownership while reconciling the derived catalog contract and selectors"
+    rationale: "Source-governance policy remains under .dev/standards and is reconciled to identify the separately owned shared catalog and exact profile projection without becoming a second semantic owner."
   - <<: *source_governance
     current_path: ".dev/standards/AI-CONTEXT-OWNERSHIP.yaml"
     exact_destinations: [".dev/standards/AI-CONTEXT-OWNERSHIP.yaml"]
-    rationale: "Source-governance policy remains under .dev/standards; any portable projection is derived and does not become a second owner."
+    action: derive
+    implementing_task: RPB-004
+    compatibility_treatment: "retain the source registry path while reconciling canonical catalog paths, selectors, and moved profile provenance"
+    rationale: "The source registry remains under .dev/standards and is reconciled to the derived catalog locations and moved profile documents without becoming the runtime resolver input."
   - <<: *source_governance
     current_path: ".dev/standards/AI-CONTEXT-VERSION-POLICY.md"
     exact_destinations: [".dev/standards/AI-CONTEXT-VERSION-POLICY.md"]

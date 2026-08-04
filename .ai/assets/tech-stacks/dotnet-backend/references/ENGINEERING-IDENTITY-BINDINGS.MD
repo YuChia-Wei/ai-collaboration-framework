@@ -30,3 +30,9 @@ binding details only for implementation, validation, upgrade, or diagnostic
 handling that requires them. Missing, stale, ambiguous, or type-invalid
 identity/binding resolution fails closed; it does not silently select a
 framework default or activate a delivered provider.
+
+The profile `engineering-rule-catalog.yaml` is a resolver-ready exact
+projection of the Markdown rule owners. A binding or provider consumes its
+selected stable ID and must not turn the catalog, a Diagnostic, or a provider
+location into a second semantic owner. Profile-baseline documents without an
+allocated stable rule ID are explicitly unpacketized.

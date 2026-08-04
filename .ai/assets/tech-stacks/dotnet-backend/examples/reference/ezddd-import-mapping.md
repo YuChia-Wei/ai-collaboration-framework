@@ -20,7 +20,7 @@ the linked canonical standards.
 
 This file is historical provenance, not an active .NET import plan. Current
 BuildingBlocks truth is the
-[BuildingBlocks Reconstruction Contract](../../BUILDING-BLOCKS-RECONSTRUCTION-CONTRACT.md).
+[BuildingBlocks Reconstruction Contract](../../standards/BUILDING-BLOCKS-RECONSTRUCTION-CONTRACT.md).
 
 ## CQRS Concepts
 
@@ -74,6 +74,6 @@ public sealed record PlanCreated(/* ... */) : IDomainEvent
 ## Contract Utilities
 
 Design by Contract semantics are defined by
-[Design By Contract Semantics](../../DESIGN-BY-CONTRACT.md). Helper names and
+[Design By Contract Semantics](../../standards/DESIGN-BY-CONTRACT.md). Helper names and
 package selection remain target-owned; this historical mapping does not require
 `uContract`.

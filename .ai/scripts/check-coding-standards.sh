@@ -20,9 +20,9 @@ NC='\033[0m' # No Color
 # Base directories - use relative path or detect from script location
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 BASE_DIR="$(cd "$SCRIPT_DIR/../.." && pwd)"
-STANDARDS_DIR="$BASE_DIR/.dev/standards/coding-standards"
-MAIN_FILE="$BASE_DIR/.dev/standards/coding-standards.md"
-INDEX_FILE="$STANDARDS_DIR/INDEX.MD"
+STANDARDS_DIR="$BASE_DIR/.ai/assets/tech-stacks/dotnet-backend/standards/coding-standards"
+MAIN_FILE="$BASE_DIR/.ai/assets/tech-stacks/dotnet-backend/standards/coding-standards.md"
+INDEX_FILE="$BASE_DIR/.dev/standards/coding-standards/INDEX.MD"
 SHARED_CONTEXT_DIR="$BASE_DIR/.ai/assets/shared"
 
 echo -e "${BLUE}========================================${NC}"

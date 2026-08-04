@@ -35,6 +35,23 @@ them without creating a second semantic owner.
   cross-cutting identity families incrementally instead of attempting an
   unreviewed bulk migration.
 
+## Rule Catalogs
+
+- `.ai/assets/shared/governance/engineering-rule-catalog.yaml` is the canonical
+  portable baseline for the registered universal rules. Its complete normative
+  text is an LF-normalized anchored extraction, while the source-governance
+  section remains provenance and governance evidence.
+- `.ai/assets/tech-stacks/<profile>/engineering-rule-catalog.yaml` is a
+  resolver-ready exact projection. For profile rules, the moved profile Markdown
+  path and anchor remain the single semantic owner; the catalog is not a second
+  owner and retains the exact source section, hashes, and stable selector.
+- Catalogs preserve existing identities. They do not allocate a path-derived
+  rule or constraint ID. A migrated profile-baseline document without a stable
+  ID is explicitly `identity-allocation-required` and must remain unpacketized.
+- A routine resolver selects records by stable ID from the catalog and the
+  freshness-validated effective state. It does not scan a directory of Markdown
+  files to reconstruct semantics.
+
 ## Identity Model
 
 The registry distinguishes these kinds. Existing `rule_id` values remain
@@ -71,11 +88,11 @@ names the affected constraint plus its capability/binding evidence.
   requires an explicit owner-approved `supersedes` relationship; compatibility
   and migration records reference the existing identity rather than creating a
   temporary alternate ID.
-- The registry resolves the canonical baseline path and anchor for each record.
-  A current record with a legacy `.dev/standards/` `canonical_path` is
-  `transitional-unmigrated` until the migration matrix relocates it. Portable
-  consumers and target-effective packets cite the same ID; no alternate
-  normative statement is implied.
+- The registry resolves the canonical baseline path, anchor, and catalog
+  selector for each record. A current record with a legacy
+  `.dev/standards/` `canonical_path` is `transitional-unmigrated` until the
+  migration matrix relocates it. Portable consumers and target-effective
+  packets cite the same ID; no alternate normative statement is implied.
 
 ## Rule Strength
 
@@ -115,5 +132,9 @@ Every registered derived consumer must:
 - link to the registry-resolved canonical owner instead of independently redefining ownership;
 - preserve the registered strength and applicability when it summarizes the rule;
 - keep examples clearly illustrative.
+
+An effective-rule packet consumer uses the catalog record selected by the
+resolver; it does not treat a derived consumer, copied summary, or a directory
+scan as a competing normative source.
 
 The validator checks registry structure, paths, anchors, strength/override compatibility, and declared consumer references. Semantic parity remains a review responsibility.

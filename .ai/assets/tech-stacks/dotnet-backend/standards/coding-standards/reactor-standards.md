@@ -139,5 +139,5 @@ If a Reactor updates a read model, calls an external system, or sends a notifica
 
 - [usecase-standards.md](usecase-standards.md)
 - [archive-standards.md](archive-standards.md)
-- [../../operations/runbooks/README.MD](../../operations/runbooks/README.MD)
-- [../../ARCHITECTURE.md](../../ARCHITECTURE.md)
+- [../../../../../../.dev/operations/runbooks/README.MD](../../../../../../.dev/operations/runbooks/README.MD)
+- [../../../../../../.dev/ARCHITECTURE.md](../../../../../../.dev/ARCHITECTURE.md)

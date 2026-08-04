@@ -526,9 +526,9 @@ For more complete examples, see:
 
 | Example | Path |
 |------|------|
-| Aggregate examples | [../examples/aggregate/](../examples/aggregate/) |
-| Domain Events | [../examples/aggregate/PlanEvents.cs](../examples/aggregate/PlanEvents.cs) |
-| Value Objects | [../examples/aggregate/PlanId.cs](../examples/aggregate/PlanId.cs) |
+| Aggregate examples | [../../examples/aggregate/](../../examples/aggregate/) |
+| Domain Events | [../../examples/aggregate/PlanEvents.cs](../../examples/aggregate/PlanEvents.cs) |
+| Value Objects | [../../examples/aggregate/PlanId.cs](../../examples/aggregate/PlanId.cs) |
 
 ---
 

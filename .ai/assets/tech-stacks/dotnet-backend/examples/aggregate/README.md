@@ -172,7 +172,7 @@ public override void EnsureInvariant()
 - Avoid overgrown aggregates; split when necessary.
 - Treat this folder as illustrative. The executable-tested mechanical
   `EsAggregateRoot<TId>` source and behavior contract are linked from
-  [the BuildingBlocks reconstruction contract](../../BUILDING-BLOCKS-RECONSTRUCTION-CONTRACT.md).
+  [the BuildingBlocks reconstruction contract](../../standards/BUILDING-BLOCKS-RECONSTRUCTION-CONTRACT.md).
 
 ## Related Examples
 - `../usecase/` - Use case patterns

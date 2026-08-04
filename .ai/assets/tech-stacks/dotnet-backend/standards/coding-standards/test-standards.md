@@ -11,7 +11,7 @@ This document defines coding standards for Domain, Use Case, Handler adapter, Co
 
 Rule IDs: `TEST-GWT-001`, `TEST-BDDFY-001`, `TEST-MOCK-001`.
 
-All tests must express intent in Given-When-Then (GWT) style; Arrange-Act-Assert (3A) is not an acceptable substitute. xUnit + BDDfy is the default combination, with NSubstitute as the default mocking selection. A target team may explicitly opt out of BDDfy, but its C# tests must retain recognizable Given / When / Then structure and naming. A target may replace NSubstitute through the generic `testing.mocking` selection defined by [Target Technology Selection Policy](../TECHNOLOGY-SELECTION-POLICY.md).
+All tests must express intent in Given-When-Then (GWT) style; Arrange-Act-Assert (3A) is not an acceptable substitute. xUnit + BDDfy is the default combination, with NSubstitute as the default mocking selection. A target team may explicitly opt out of BDDfy, but its C# tests must retain recognizable Given / When / Then structure and naming. A target may replace NSubstitute through the generic `testing.mocking` selection defined by [Target Technology Selection Policy](../../../../../../.dev/standards/TECHNOLOGY-SELECTION-POLICY.md).
 
 - **xUnit**: Primary test framework
 - **BDDfy**: Default GWT orchestration tool; a target team may explicitly opt out of the package but not the GWT rule
@@ -89,7 +89,7 @@ public class CreateProductUseCaseTests
 
 **Mandatory**: All tests must use Given-When-Then semantics and recognizable step names. Arrange-Act-Assert (3A) must not replace GWT. Use Case and integration tests default to BDDfy; plain xUnit may implement the same GWT structure only when the target team explicitly opts out of that package.
 
-`.feature` files and runners are not minimum dependencies. When requirements directly provide a `.feature` file, its design or production is explicitly requested, or the target profile has adopted a runner, create or maintain it according to the [Gherkin Feature Storage Guide](../../specs/tests/GHERKIN-FEATURE-STORAGE-GUIDE.MD). Otherwise, express the scenario directly as a GWT-style C# test.
+`.feature` files and runners are not minimum dependencies. When requirements directly provide a `.feature` file, its design or production is explicitly requested, or the target profile has adopted a runner, create or maintain it according to the [Gherkin Feature Storage Guide](../../../../../../.dev/specs/tests/GHERKIN-FEATURE-STORAGE-GUIDE.MD). Otherwise, express the scenario directly as a GWT-style C# test.
 
 ```csharp
 // ✅ Correct: BDDfy + Gherkin style
@@ -251,7 +251,7 @@ public void Rename_Throws_WhenNameIsNull()
 NSubstitute is the `TEST-MOCK-001` profile default. Before generating or
 reviewing mocks, resolve `testing.mocking` through
 `.dev/project-config.yaml#technologySelections` and
-[Target Technology Selection Policy](../TECHNOLOGY-SELECTION-POLICY.md).
+[Target Technology Selection Policy](../../../../../../.dev/standards/TECHNOLOGY-SELECTION-POLICY.md).
 
 - When no target selection exists, use NSubstitute.
 - When an evidenced target selection exists, use that library consistently.
@@ -482,8 +482,8 @@ For more complete examples, see:
 
 | Example | Path |
 |------|------|
-| Reqnroll/Gherkin reference | [../examples/bdd-gherkin-example/](../examples/bdd-gherkin-example/) |
-| BDD Given-When-Then | [../examples/bdd-given-when-then-example/](../examples/bdd-given-when-then-example/) |
+| Reqnroll/Gherkin reference | [../../examples/bdd-gherkin-example/](../../examples/bdd-gherkin-example/) |
+| BDD Given-When-Then | [../../examples/bdd-given-when-then-example/](../../examples/bdd-given-when-then-example/) |
 
 ---
 
@@ -494,4 +494,4 @@ For more complete examples, see:
 - [usecase-standards.md](usecase-standards.md)
 - [controller-standards.md](controller-standards.md)
 - [profile-configuration-standards.md](profile-configuration-standards.md)
-- [../../guides/design-guides/FRAMEWORK-API-INTEGRATION-GUIDE.md](../../guides/design-guides/FRAMEWORK-API-INTEGRATION-GUIDE.md)
+- [../../../../../../.dev/guides/design-guides/FRAMEWORK-API-INTEGRATION-GUIDE.md](../../../../../../.dev/guides/design-guides/FRAMEWORK-API-INTEGRATION-GUIDE.md)

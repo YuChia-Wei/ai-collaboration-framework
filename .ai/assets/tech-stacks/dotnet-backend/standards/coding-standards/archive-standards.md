@@ -281,8 +281,8 @@ For more complete examples, see:
 
 | Example | Path |
 |------|------|
-| Inquiry + Archive examples | [../examples/inquiry-archive/](../examples/inquiry-archive/) |
-| Usage guide | [../examples/inquiry-archive/USAGE-GUIDE.md](../examples/inquiry-archive/USAGE-GUIDE.md) |
+| Inquiry + Archive examples | [../../examples/inquiry-archive/](../../examples/inquiry-archive/) |
+| Usage guide | [../../examples/inquiry-archive/USAGE-GUIDE.md](../../examples/inquiry-archive/USAGE-GUIDE.md) |
 
 ---
 

@@ -428,8 +428,8 @@ For more complete examples, see:
 
 | Example | Path |
 |------|------|
-| Mapper example | [../examples/mapper/](../examples/mapper/) |
-| DTO example | [../examples/dto/](../examples/dto/) |
+| Mapper example | [../../examples/mapper/](../../examples/mapper/) |
+| DTO example | [../../examples/dto/](../../examples/dto/) |
 
 ---
 
@@ -438,4 +438,4 @@ For more complete examples, see:
 - [aggregate-standards.md](aggregate-standards.md)
 - [repository-standards.md](repository-standards.md)
 - [projection-standards.md](projection-standards.md)
-- [../../guides/design-guides/FRAMEWORK-API-INTEGRATION-GUIDE.md](../../guides/design-guides/FRAMEWORK-API-INTEGRATION-GUIDE.md)
+- [../../../../../../.dev/guides/design-guides/FRAMEWORK-API-INTEGRATION-GUIDE.md](../../../../../../.dev/guides/design-guides/FRAMEWORK-API-INTEGRATION-GUIDE.md)

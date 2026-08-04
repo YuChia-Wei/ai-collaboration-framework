@@ -12,7 +12,7 @@
 - `current_phase`: `remediation`
 - `artifact_root`: `.dev/workflows/2026-08-05-rule-provider-precutover`
 - `created_at`: `2026-08-05T01:29:39+08:00`
-- `updated_at`: `2026-08-05T02:07:14+08:00`
+- `updated_at`: `2026-08-05T02:53:00+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md`
 - `template_version`: `1.2.0`
 
@@ -81,7 +81,7 @@ Only one task is marked `in_progress` in durable workflow state. The orchestrato
 
 1. Baseline evidence and owner decisions — completed from `ASM-20260804-002`, #92 discussion, and live Issue read-back at `main@d8580df4516155ff7b1a139d9a064a8b0d4b2019`.
 2. Workflow and bounded work-item binding — completed by creating #109 through #117 and formal sub-issue relationships under #104 through #107.
-3. Dependency-ordered remediation — in progress; `RPB-001` and `RPB-002` completed and `RPB-004` started.
+3. Dependency-ordered remediation — in progress; `RPB-001` and `RPB-002` completed, and the coherent `RPB-004` migration/catalog batch is ready for checkpoint.
 4. Independent post-remediation audit — pending.
 5. PR review, merge-commit integration, merged-main read-back, and closure — pending; release packaging remains excluded.
 
@@ -95,10 +95,10 @@ Only one task is marked `in_progress` in durable workflow state. The orchestrato
 
 ## Resume Checkpoint
 
-- Last completed action: Completed `RPB-002/#110` after root corrected invalid YAML chunk markers, the provider path, and the #94-owned universal rationale classification; the final matrix has 232 explicit resolved rows with exact tracked-file parity.
+- Last completed action: Applied all 148 `RPB-004` move rows, retained 10 bounded compatibility entrypoints, derived the shared/profile catalogs for all 13 existing stable IDs, and marked 12 not-yet-identified profile documents unpacketized/fail-closed.
 - Current task: `RPB-004` is in progress.
-- Exact next action: Delegate non-overlapping rule/example migration batches to Terra high workers, then derive the machine-readable catalogs and reconcile navigation before RPB-003 resolver work.
-- Validation already completed: live Issue read-back, duplicate search, latest-main/branch read-back, scoped identity-contract review, task JSON parsing, matrix YAML parse, 232-row parity/uniqueness/required-field/provider-root review, and `git diff --check`. No repository validation script has run.
+- Exact next action: Commit the coherent migration/catalog checkpoint, begin `RPB-003` from those catalogs, and later read back the #94 single-writer validator path change before RPB-004 closure.
+- Validation already completed: 148-row source/destination parity, 10 compatibility-entrypoint existence, 13-ID registry/catalog/source-anchor/hash parity, deterministic catalog-digest recomputation, explicit 12-document unpacketized set review, changed-Markdown relative-link review, active-reference review, and `git diff --check`. No repository validation script has run.
 - Git state: branch `codex/2026-08-05-rule-provider-precutover` starts from `origin/main@d8580df4516155ff7b1a139d9a064a8b0d4b2019`.
 - Branch history and checkpoint handoffs: segment 1 only; no handoff or merge yet.
 - Blockers or unresolved decisions: none. Shared-file sequencing with #94 is a coordination constraint, not an owner-decision blocker.

@@ -211,5 +211,5 @@ public Product(ProductId id, string name)
 ## 🔗 Related Resources
 - `coding-standards.md`
 - `USECASE-COMMAND-HANDLER-RELATIONSHIP.MD`
-- `../guides/implementation-guides/COMMON-MISTAKES-GUIDE.md`
-- `../guides/implementation-guides/TEMPLATE-USAGE-GUIDE.md`
+- `../../../../../.dev/guides/implementation-guides/COMMON-MISTAKES-GUIDE.md`
+- `../../../../../.dev/guides/implementation-guides/TEMPLATE-USAGE-GUIDE.md`

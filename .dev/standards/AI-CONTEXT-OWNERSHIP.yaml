@@ -1,11 +1,21 @@
 schema_version: "1.0"
-updated_at: "2026-08-05T01:41:10+08:00"
+updated_at: "2026-08-05T02:51:38+08:00"
 identity_model:
   version: "1.0"
   registry_owner: .dev/standards/AI-CONTEXT-OWNERSHIP.yaml
   portable_baseline_roots:
     universal: .ai/assets/shared/
     profile: .ai/assets/tech-stacks/<profile>/
+  rule_catalogs:
+    shared:
+      role: canonical-portable-baseline
+      path: .ai/assets/shared/governance/engineering-rule-catalog.yaml
+      selection: "rules[rule_id=<existing-active-universal-rule-id>]"
+    profile:
+      role: resolver-ready-exact-projection
+      path: .ai/assets/tech-stacks/<profile>/engineering-rule-catalog.yaml
+      selection: "rules[rule_id=<existing-active-profile-rule-id>]"
+      semantic_owner: the profile Markdown path and anchor recorded by each rule
   source_governance_root: .dev/standards/
   target_effective_root: .dev/ai-context/
   ownership_resolution:
@@ -74,8 +84,13 @@ rules:
   - rule_id: ASSESSMENT-ARTIFACT-001
     domain: durable-assessment
     strength: invariant
-    canonical_path: .dev/standards/ASSESSMENT-ARTIFACT-POLICY.md
-    canonical_anchor: "## Assessment Versus Workflow"
+    canonical_path: .ai/assets/shared/governance/engineering-rule-catalog.yaml
+    canonical_anchor: "rules[rule_id=ASSESSMENT-ARTIFACT-001]"
+    catalog_selector:
+      rule_id: ASSESSMENT-ARTIFACT-001
+    source_governance_provenance:
+      path: .dev/standards/ASSESSMENT-ARTIFACT-POLICY.md
+      anchor: "## Assessment Versus Workflow"
     scope: universal
     applicability: an audit, large code review, architecture assessment, or technical-debt inventory is persisted
     override_policy: forbidden
@@ -88,8 +103,13 @@ rules:
   - rule_id: AICTX-EVIDENCE-001
     domain: ai-context-evidence
     strength: invariant
-    canonical_path: .dev/standards/AI-CONTEXT-BOUNDARY.md
-    canonical_anchor: "## Tool-Neutral Evidence Boundary"
+    canonical_path: .ai/assets/shared/governance/engineering-rule-catalog.yaml
+    canonical_anchor: "rules[rule_id=AICTX-EVIDENCE-001]"
+    catalog_selector:
+      rule_id: AICTX-EVIDENCE-001
+    source_governance_provenance:
+      path: .dev/standards/AI-CONTEXT-BOUNDARY.md
+      anchor: "## Tool-Neutral Evidence Boundary"
     scope: universal
     applicability: AI context or repository facts are discovered with optional external tooling
     override_policy: forbidden
@@ -102,8 +122,14 @@ rules:
   - rule_id: TEST-GWT-001
     domain: testing
     strength: invariant
-    canonical_path: .dev/standards/coding-standards/test-standards.md
+    canonical_path: .ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/test-standards.md
     canonical_anchor: "### 3. Use GWT; Default to BDDfy"
+    catalog_selector:
+      rule_id: TEST-GWT-001
+    catalog_projection:
+      path: .ai/assets/tech-stacks/dotnet-backend/engineering-rule-catalog.yaml
+      selector:
+        rule_id: TEST-GWT-001
     scope: dotnet-backend
     applicability: always
     override_policy: forbidden
@@ -115,8 +141,14 @@ rules:
   - rule_id: TEST-BDDFY-001
     domain: testing
     strength: profile-default
-    canonical_path: .dev/standards/coding-standards/test-standards.md
+    canonical_path: .ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/test-standards.md
     canonical_anchor: "### 3. Use GWT; Default to BDDfy"
+    catalog_selector:
+      rule_id: TEST-BDDFY-001
+    catalog_projection:
+      path: .ai/assets/tech-stacks/dotnet-backend/engineering-rule-catalog.yaml
+      selector:
+        rule_id: TEST-BDDFY-001
     scope: dotnet-backend
     applicability: dotnet-backend profile is adopted
     override_policy: explicit-target-decision
@@ -130,8 +162,13 @@ rules:
   - rule_id: TECH-SELECT-001
     domain: technology-selection
     strength: invariant
-    canonical_path: .dev/standards/TECHNOLOGY-SELECTION-POLICY.md
-    canonical_anchor: "## Selection Record"
+    canonical_path: .ai/assets/shared/governance/engineering-rule-catalog.yaml
+    canonical_anchor: "rules[rule_id=TECH-SELECT-001]"
+    catalog_selector:
+      rule_id: TECH-SELECT-001
+    source_governance_provenance:
+      path: .dev/standards/TECHNOLOGY-SELECTION-POLICY.md
+      anchor: "## Selection Record"
     scope: universal
     applicability: a target records or overrides a framework technology choice
     override_policy: forbidden
@@ -143,8 +180,14 @@ rules:
   - rule_id: TEST-MOCK-001
     domain: testing
     strength: profile-default
-    canonical_path: .dev/standards/coding-standards/test-standards.md
+    canonical_path: .ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/test-standards.md
     canonical_anchor: "### 6. Mocking Library Selection"
+    catalog_selector:
+      rule_id: TEST-MOCK-001
+    catalog_projection:
+      path: .ai/assets/tech-stacks/dotnet-backend/engineering-rule-catalog.yaml
+      selector:
+        rule_id: TEST-MOCK-001
     scope: dotnet-backend
     applicability: dotnet-backend profile is adopted and tests require a mocking library
     override_policy: explicit-target-decision
@@ -159,8 +202,14 @@ rules:
   - rule_id: ARCH-UOW-001
     domain: aggregate-transaction-boundary
     strength: profile-default
-    canonical_path: .dev/standards/coding-standards/usecase-standards.md
+    canonical_path: .ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/usecase-standards.md
     canonical_anchor: "### 7. Strong Consistency MUST Be Explicit"
+    catalog_selector:
+      rule_id: ARCH-UOW-001
+    catalog_projection:
+      path: .ai/assets/tech-stacks/dotnet-backend/engineering-rule-catalog.yaml
+      selector:
+        rule_id: ARCH-UOW-001
     scope: dotnet-backend
     applicability: command use case coordinates aggregate persistence
     override_policy: explicit-target-decision
@@ -173,8 +222,14 @@ rules:
   - rule_id: MAP-EVENTS-001
     domain: mapper-event-lifecycle
     strength: invariant
-    canonical_path: .dev/standards/coding-standards/mapper-standards.md
+    canonical_path: .ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/mapper-standards.md
     canonical_anchor: "### Pending Domain Events After Reconstruction"
+    catalog_selector:
+      rule_id: MAP-EVENTS-001
+    catalog_projection:
+      path: .ai/assets/tech-stacks/dotnet-backend/engineering-rule-catalog.yaml
+      selector:
+        rule_id: MAP-EVENTS-001
     scope: dotnet-backend
     applicability: a mapper reconstructs an aggregate from persisted state
     override_policy: forbidden
@@ -185,36 +240,54 @@ rules:
   - rule_id: AGGREGATE-ES-001
     domain: event-sourced-aggregate
     strength: conditional
-    canonical_path: .dev/standards/BUILDING-BLOCKS-RECONSTRUCTION-CONTRACT.md
+    canonical_path: .ai/assets/tech-stacks/dotnet-backend/standards/BUILDING-BLOCKS-RECONSTRUCTION-CONTRACT.md
     canonical_anchor: "## Optional `EsAggregateRoot<TId>` Behavior Contract"
+    catalog_selector:
+      rule_id: AGGREGATE-ES-001
+    catalog_projection:
+      path: .ai/assets/tech-stacks/dotnet-backend/engineering-rule-catalog.yaml
+      selector:
+        rule_id: AGGREGATE-ES-001
     scope: dotnet-backend
     applicability: target Aggregate selects Event Sourcing
     override_policy: not-applicable
     decision_evidence:
       - target Aggregate architecture or persistence profile
     derived_consumers:
-      - .dev/standards/coding-standards/aggregate-standards.md
+      - .ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/aggregate-standards.md
       - .ai/assets/tech-stacks/dotnet-backend/references/BUILDING-BLOCKS-CLASS-INDEX.MD
       - .ai/assets/tech-stacks/dotnet-backend/references/CODE-REVIEW-INDEX.MD
     status: active
   - rule_id: CONTRACT-SEMANTICS-001
     domain: design-by-contract
     strength: invariant
-    canonical_path: .dev/standards/DESIGN-BY-CONTRACT.md
+    canonical_path: .ai/assets/tech-stacks/dotnet-backend/standards/DESIGN-BY-CONTRACT.md
     canonical_anchor: "## Contract Categories"
+    catalog_selector:
+      rule_id: CONTRACT-SEMANTICS-001
+    catalog_projection:
+      path: .ai/assets/tech-stacks/dotnet-backend/engineering-rule-catalog.yaml
+      selector:
+        rule_id: CONTRACT-SEMANTICS-001
     scope: dotnet-backend
     applicability: Domain or Application behavior declares preconditions, postconditions, or invariants
     override_policy: forbidden
     decision_evidence: null
     derived_consumers:
-      - .dev/standards/coding-standards/aggregate-standards.md
-      - .dev/standards/coding-standards/test-standards.md
+      - .ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/aggregate-standards.md
+      - .ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/test-standards.md
     status: active
   - rule_id: PROJECT-GRAMMAR-001
     domain: solution-navigation
     strength: profile-default
-    canonical_path: .dev/standards/project-structure.md
+    canonical_path: .ai/assets/tech-stacks/dotnet-backend/standards/project-structure.md
     canonical_anchor: "### Workload Mapping"
+    catalog_selector:
+      rule_id: PROJECT-GRAMMAR-001
+    catalog_projection:
+      path: .ai/assets/tech-stacks/dotnet-backend/engineering-rule-catalog.yaml
+      selector:
+        rule_id: PROJECT-GRAMMAR-001
     scope: dotnet-backend
     applicability: target adopts the conditional .slnx project-structure profile
     override_policy: explicit-target-decision
@@ -227,8 +300,14 @@ rules:
   - rule_id: DELETE-SOFT-001
     domain: deletion
     strength: profile-default
-    canonical_path: .dev/standards/coding-standards/aggregate-standards.md
+    canonical_path: .ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/aggregate-standards.md
     canonical_anchor: "### 0. Soft-Delete Default Profile"
+    catalog_selector:
+      rule_id: DELETE-SOFT-001
+    catalog_projection:
+      path: .ai/assets/tech-stacks/dotnet-backend/engineering-rule-catalog.yaml
+      selector:
+        rule_id: DELETE-SOFT-001
     scope: dotnet-backend
     applicability: dotnet-backend Aggregate Repository profile is adopted unless the target explicitly opts out
     override_policy: explicit-target-decision
@@ -241,8 +320,14 @@ rules:
   - rule_id: DELETE-PURGE-001
     domain: deletion
     strength: conditional
-    canonical_path: .dev/standards/coding-standards/archive-standards.md
+    canonical_path: .ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/archive-standards.md
     canonical_anchor: "## 📌 Core Concept"
+    catalog_selector:
+      rule_id: DELETE-PURGE-001
+    catalog_projection:
+      path: .ai/assets/tech-stacks/dotnet-backend/engineering-rule-catalog.yaml
+      selector:
+        rule_id: DELETE-PURGE-001
     scope: dotnet-backend
     applicability: target repository adopts archive or physical-purge capability
     override_policy: not-applicable

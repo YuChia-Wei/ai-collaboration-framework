@@ -21,6 +21,13 @@ baseline version and target-state digest. Load abstract enforcement capability
 or technology-binding details only when implementation, validation, upgrade,
 or diagnostic handling needs them.
 
+For registered universal rules, the portable baseline is
+`engineering-rule-catalog.yaml` in this directory. It preserves the full
+anchored source statement and source-governance provenance. For profile rules,
+the resolver uses the profile catalog as an exact projection of the profile
+Markdown owner. Neither catalog allocates a missing path-derived identity;
+unregistered documents remain unpacketized and fail closed.
+
 ## Identity Boundary
 
 - Concepts, rules, and constraints express engineering meaning.

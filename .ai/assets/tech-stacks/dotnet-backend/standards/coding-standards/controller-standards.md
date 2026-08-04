@@ -296,9 +296,9 @@ For more complete examples, see:
 
 | Example | Path |
 |------|------|
-| Controller examples | [../examples/controller/](../examples/controller/) |
-| ASP.NET Core examples | [../examples/aspnet-core/](../examples/aspnet-core/) |
-| DTO examples | [../examples/dto/](../examples/dto/) |
+| Controller examples | [../../examples/controller/](../../examples/controller/) |
+| ASP.NET Core examples | [../../examples/aspnet-core/](../../examples/aspnet-core/) |
+| DTO examples | [../../examples/dto/](../../examples/dto/) |
 
 ---
 
@@ -306,4 +306,4 @@ For more complete examples, see:
 
 - [usecase-standards.md](usecase-standards.md)
 - [test-standards.md](test-standards.md)
-- [REST API resource path rationale](../rationale/rest-api-resource-path-rationale.MD)
+- [REST API resource path rationale](../../references/rationale/rest-api-resource-path-rationale.MD)
