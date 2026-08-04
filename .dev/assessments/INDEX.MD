@@ -12,6 +12,7 @@ owns its identity, current lifecycle state, subject revision, and relationships.
 
 | Assessment | Title | Type | Owner | Status | Subject Commit | Updated | Report |
 | --- | --- | --- | --- | --- | --- | --- | --- |
+| [`ASM-20260804-003`](ASM-20260804-003/assessment.yaml) | Framework-Managed Target Ignore Detection Baseline | `ai-context-audit` | `ai-context-auditor` | `final` | `4e7b5e0d59be831453b5c34f5f1eb3a1daae1245` | `2026-08-04T21:49:30+08:00` | [report](ASM-20260804-003/report.md) |
 | [`ASM-20260803-005`](ASM-20260803-005/assessment.yaml) | Workflow Delivery Cohesion And Linear Merge Remediation Verification | `ai-context-verification` | `ai-context-auditor` | `final` | `3f8caf08cee86c58df487f81f7ec692ccbe4012b` | `2026-08-04T00:23:48+08:00` | [report](ASM-20260803-005/report.md) |
 | [`ASM-20260803-004`](ASM-20260803-004/assessment.yaml) | Workflow Proportionality, Delivery Cohesion, And Merge Topology Baseline | `ai-context-audit` | `ai-context-auditor` | `final` | `80b013803ee29ca2f4dd458a393eb1da451212e1` | `2026-08-03T23:47:10+08:00` | [report](ASM-20260803-004/report.md) |
 | [`ASM-20260803-003`](ASM-20260803-003/assessment.yaml) | v0.8.0 Release Workflow Time And Context-Cost Incident Assessment | `ai-context-audit` | `ai-context-auditor` | `final` | `2d7917c43452668bb129ae14392781c13c9040fd` | `2026-08-04T01:09:50+08:00` | [report](ASM-20260803-003/report.md) |

@@ -57,6 +57,7 @@ class SyntheticPackageRepo:
         )
         for script in (
             "ai_context_package_apply.py",
+            "ai_context_target_provenance.py",
             "plan-ai-context-package-apply.py",
             "python-entrypoints.json",
             "python_prerequisites.py",
@@ -1468,7 +1469,8 @@ class VersionedMigrationPackagingGwtTests(unittest.TestCase):
         )
         portable_paths = (
             ".ai/assets/skills/software-development-orchestrator/scripts/validate-software-development-orchestrator-acceptance.py",
-            ".ai/scripts/plan-ai-context-package-apply.py", ".ai/scripts/validate-ai-context-target.py",
+            ".ai/scripts/ai_context_target_provenance.py", ".ai/scripts/plan-ai-context-package-apply.py",
+            ".ai/scripts/validate-ai-context-target.py",
             ".ai/scripts/validate-ai-context.py", ".ai/scripts/validate-assessment-artifacts.py",
             ".ai/scripts/validate-dependency-versions.py", ".ai/scripts/validate-file-disposition-manifest.py",
             ".ai/scripts/validate-git-commits.py", ".ai/scripts/validate-shell-assets.py",

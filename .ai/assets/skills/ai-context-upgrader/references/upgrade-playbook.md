@@ -59,6 +59,11 @@ The plan must state:
 - a semantic reconciliation table keyed by customization ID, with subject,
   relationship, incoming equivalence, proposed disposition, owner decision,
   validation, and unresolved reason.
+- every selected framework-managed package path that target Git ignore or
+  exclude rules suppress, including the exact path, component, ownership, and
+  matched rule. Keep it unresolved until the owner chooses to preserve the
+  rule, add a narrow exception, disable the component, or retain a pending
+  decision; never modify target-owned ignore configuration automatically.
 
 ## Application
 
@@ -71,6 +76,14 @@ selections. Defaults are local `manual` and CI `unconfigured`. Preserve ignored
 validation remains unaffected.
 
 Apply only explicitly accepted paths. Never use a bulk copy over the repository root. Re-read a path immediately before writing when it is target-owned or previously classified for reconciliation.
+
+When package preflight reports an ignored selected framework-managed path, do
+not acknowledge it as an ordinary reconciliation item or write any package
+bytes. Resolve the target-owned rule only through the owner's recorded
+disposition, then create a new plan. The pending apply receipt carries the
+required framework path/component/ownership/byte identity so the target
+validator, critical gate, and provenance finalization reject the same missing,
+changed, or still-ignored payload.
 
 For `moved-to` or `merged-into`, preserve target-local source content until its
 destination has been reconciled. For `retired`, remove automatically only when
@@ -90,5 +103,7 @@ Finalize `.dev/ai-context/customizations.yaml` and
 post-upgrade verification, and target validation succeed. Keep legacy path
 overrides and collisions in `reconciliation.unresolved`. Report the exact
 resulting version and commit, validation evidence, remaining customizations,
-and deferred migration. Do not retain the legacy manifest as a second
-authority after a successful schema-2 migration.
+and deferred migration. Required framework-managed package paths must have
+landed with their expected bytes and remain visible to target Git before
+finalization; otherwise preserve prior provenance bytes. Do not retain the
+legacy manifest as a second authority after a successful schema-2 migration.
