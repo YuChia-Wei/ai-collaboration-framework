@@ -1,0 +1,78 @@
+schema_version: "1.0"
+assessment_id: "ASM-20260804-002"
+recorded_at: "2026-08-04T23:11:05+08:00"
+authority:
+  assessment: "evidence and normalized findings only"
+  proposals: "design intake only"
+  implementation: "requires later owner decisions and separately authorized work items"
+proposals:
+  - issue: 92
+    title: "[Proposal] Define Layered Engineering Rule Ownership, Target Policy, and .NET Analyzer Bindings"
+    url: "https://github.com/YuChia-Wei/ai-collaboration-prompts-dotnet-backend/issues/92"
+    role: "normalized design proposal"
+    canonical_backlog_context:
+      - "STD-001"
+    finding_refs:
+      - "ASM-20260804-002#AIC-001"
+      - "ASM-20260804-002#AIC-002"
+      - "ASM-20260804-002#AIC-004"
+    mappings:
+      - proposal_surface: "problem statement and three-layer ownership model"
+        downstream_evidence:
+          - "discussion-record.md DEC-001, DEC-006, DEC-008, DEC-022 through DEC-028"
+      - proposal_surface: "target rule profile, semantic customization, and diagnostic override lifecycle"
+        downstream_evidence:
+          - "discussion-record.md DEC-002, DEC-009, DEC-010, DEC-014, DEC-017 through DEC-021"
+      - proposal_surface: "Architecture Kit adoption and provider transition"
+        downstream_evidence:
+          - "discussion-record.md DEC-012, DEC-013, DEC-015, DEC-016, DEC-029, and DEC-030"
+      - proposal_surface: "technology references, action skills, and external skill boundaries"
+        downstream_evidence:
+          - "discussion-record.md DEC-031 through DEC-033"
+      - proposal_surface: "scope split, related-work ownership, and transport provenance"
+        downstream_evidence:
+          - "discussion-record.md DEC-034, DEC-036, and DEC-037"
+      - proposal_surface: "interim bundled-provider placement, activation contract, and directory migration matrix"
+        repository_native_basis:
+          - "ASM-20260804-002#AIC-001"
+          - "ASM-20260804-002#AIC-002"
+        note: "Added by the receiving repository review; the downstream draft did not fully define this transition."
+  - issue: 94
+    title: "[Proposal] Make Canonical Sub-Agent Reachability Explicit in Owning Skills"
+    url: "https://github.com/YuChia-Wei/ai-collaboration-prompts-dotnet-backend/issues/94"
+    role: "normalized post-contract follow-up proposal"
+    canonical_backlog_context:
+      - "SAG-001"
+    finding_refs:
+      - "ASM-20260804-002#AIC-003"
+      - "ASM-20260804-002#AIC-004"
+    question_mappings:
+      - question: 1
+        downstream_evidence:
+          - "sub-agent-follow-up-notes.md Possible Problems 1 and Future Decision Question 3"
+      - question: 2
+        downstream_evidence:
+          - "sub-agent-follow-up-notes.md Possible Problems 1 and 4; Future Decision Questions 3 and 6"
+      - question: 3
+        downstream_evidence:
+          - "sub-agent-follow-up-notes.md Future Decision Questions 1 and 2"
+      - question: 4
+        downstream_evidence:
+          - "sub-agent-follow-up-notes.md Possible Problems 2 and 3"
+      - question: 5
+        downstream_evidence:
+          - "sub-agent-follow-up-notes.md Possible Problem 5 and Future Decision Question 4"
+      - question: 6
+        downstream_evidence:
+          - "sub-agent-follow-up-notes.md Possible Problem 6 and Future Decision Questions 1 and 6"
+      - question: 7
+        downstream_evidence:
+          - "discussion-record.md Candidate Adoption Boundary and sub-agent-follow-up-notes.md Future Decision Questions 1, 2, and 6"
+separate_issue_boundary:
+  issue: 93
+  url: "https://github.com/YuChia-Wei/ai-collaboration-prompts-dotnet-backend/issues/93"
+  source_items:
+    - "sub-agent-follow-up-notes.md Possible Problems 7 and 8"
+    - "sub-agent-follow-up-notes.md Future Decision Question 5"
+    - "discussion-record.md AICDISC-ADAPTER-001"
+  disposition: "installation and upgrade drift only; excluded from Issue #94 reachability decisions and handled by a separate Codex task"
