@@ -14,7 +14,7 @@
 - `owner_skill`: `ai-context-governance`
 - `status`: `draft`
 - `created_at`: `2026-08-05T01:34:40+08:00`
-- `updated_at`: `2026-08-05T02:20:00+08:00`
+- `updated_at`: `2026-08-05T02:26:00+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-remediation-report-template.md`
 - `template_version`: `2.0.0`
 - `baseline_assessment`: `ASM-20260804-002`
@@ -31,7 +31,7 @@
 
 | Assessment Finding | Before Severity | Status | Changed Files | Validation | Commit | Residual Risk |
 | --- | --- | --- | --- | --- | --- | --- |
-| `ASM-20260804-002#AIC-003` | MEDIUM | `implemented-awaiting-separate-validation-review` | canonical role binding and execution contracts, owning skills, derived projection, orchestrator, validator, and fixtures | manual/static review only; repository validators and fixture tests deferred | #118 `a80d6a6`; #119 pending checkpoint | implementation is present; scripted evidence, pull-request integration, and merged-main read-back remain pending |
+| `ASM-20260804-002#AIC-003` | MEDIUM | `implemented-awaiting-separate-validation-review` | canonical role binding and execution contracts, owning skills, derived projection, orchestrator, validator, and fixtures | manual/static review only; repository validators and fixture tests deferred | #118 `a80d6a6`; #119 `f9f6a04` | implementation is present; scripted evidence, pull-request integration, and merged-main read-back remain pending |
 | `ASM-20260804-002#AIC-004` | HIGH | `preserved-as-evidence` | workflow traceability only | assessment and Issue links read back | pending | implementation must not disturb retained evidence or import downstream workflow identity |
 
 ## Changes And Evidence
@@ -54,7 +54,7 @@
 ### Cross-Workflow Integration Boundary
 
 - #92 commit `69603f1` changes different sections of `.dev/standards/AI-CONTEXT-BOUNDARY.md`. #94 owns only the existing sub-agent classification and placement wording. The final integrating branch must read back both sets after merge/rebase rather than treating an automatic textual merge as semantic proof.
-- Applicable action-skill YAML files are sequential shared surfaces: #94's role sections stabilize first; #92 may then add #114 packet-consumer sibling sections without modifying `role_bindings` or `role_execution` semantics.
+- Applicable action-skill YAML files are sequential shared surfaces. #92 acknowledged `a80d6a6` and `f9f6a04`; after RPB-003 it may write only root-level sibling `effective_rule_consumption` data in `ddd-ca-hex-architect`, `local-change-implementer`, `slice-implementer`, `code-reviewer`, and `spec-compliance-validator` skill manifests, plus the matrix-approved `code-reviewer` checklist reference correction. It must not modify `role_bindings` or `role_execution` semantics.
 
 ## Verification Assessment Reconciliation
 
@@ -72,6 +72,6 @@
 ## Closure Evidence
 
 - Required validations: root implementation review is complete; repository validators, fixture tests, and independent validation remain explicitly outside this workflow checkpoint.
-- Commit status: workflow bootstrap `9880255` and #118 implementation `a80d6a6` are committed; the #119 implementation checkpoint is pending.
+- Commit status: workflow bootstrap `9880255`, #118 implementation `a80d6a6`, and #119 implementation `f9f6a04` are committed; `f9f6a04` is pushed on `origin/codex/2026-08-05-sub-agent-reachability`.
 - Workflow/task status: workflow `in_progress`; `SAR94-001` completed; `SAR94-002` implemented but remains in progress for separate validation and integration reconciliation.
-- Final next action: commit the #119 checkpoint, notify #92 that shared skill role sections are stable, then hand off to separate validation before pull-request/no-ff integration and merged-main read-back.
+- Final next action: run and reconcile the separately arranged validation review from the pushed branch, then open the required pull request for explicit no-ff integration and merged-main read-back. No packaging or publication is included.

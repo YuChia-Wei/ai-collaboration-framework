@@ -13,7 +13,7 @@
 - `current_phase`: `validation-handoff`
 - `artifact_root`: `.dev/workflows/2026-08-05-sub-agent-reachability`
 - `created_at`: `2026-08-05T01:34:40+08:00`
-- `updated_at`: `2026-08-05T02:20:00+08:00`
+- `updated_at`: `2026-08-05T02:26:00+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md`
 - `template_version`: `1.2.0`
 
@@ -77,6 +77,7 @@
 - Concurrent #92 task `019fcd65-1745-78f3-8879-b5dc45ec4b30` owns rule/provider/effective-state sections and `loaded_rule_ids` resolver evidence.
 - This workflow owns `.ai/SUB-AGENT-SYSTEM.MD`, all `role_bindings` and `role_execution` sections, direct/delegated/unavailable/not-applicable semantics, test-design-to-slice-implementation mapping, no-delegation parity, and their fixtures.
 - #92 confirmed that it will not edit `.ai/assets/CANONICAL-SCHEMA.MD`, `.ai/SUB-AGENT-SYSTEM.MD`, the reachability validator/fixtures, or the #94-owned role sections. Applicable action-skill `skill.yaml` files remain sequential: #94 commits its role sections first, then #92 may add #114 sibling packet-consumer sections as the single writer.
+- #92 acknowledged #94 commits `a80d6a6` and `f9f6a04`. Its future RPB-006 single-writer subset is exactly `ddd-ca-hex-architect/skill.yaml`, `local-change-implementer/skill.yaml`, `slice-implementer/skill.yaml`, `code-reviewer/skill.yaml`, and `spec-compliance-validator/skill.yaml`; it may add only root-level sibling `effective_rule_consumption` data and the matrix-approved code-review checklist reference correction after RPB-003 completes.
 - #94 is the single writer for the universal role-taxonomy wording in `.dev/standards/rationale/skill-sub-agent-boundary-rationale.MD`, `.dev/standards/AI-CONTEXT-BOUNDARY.md`, and the three named human guides. #92 commit `69603f1` changes different `AI-CONTEXT-BOUNDARY.md` sections; final integration must read back both semantic sets after the branches meet.
 - This workflow will not edit #92-owned rule/provider/effective-state sections, target provider configuration, or `loaded_rule_ids` semantics.
 
@@ -84,14 +85,14 @@
 
 - Last completed action: Integrated #119's shared provider-neutral execution contract, canonical taxonomy parity, owning-skill production, orchestrator aggregation, BDD-to-test implementation boundary, no-delegation parity, and bounded acceptance fixtures after root review corrected final-attempt provenance and fallback behavior.
 - Current task: `SAR94-002` remains `in_progress` for the explicit validation/integration handoff; implementation changes are ready for a durable checkpoint. `SAR94-001` is completed awaiting the same separately arranged validation review.
-- Exact next action: Commit the #119 implementation checkpoint, notify #92 that the action-skill role sections are stable for sequential #114 sibling edits, then hand the branch to the separately arranged validation review before creating or merging the required pull request.
+- Exact next action: Run the separately arranged validation review against remote branch `origin/codex/2026-08-05-sub-agent-reachability` at or after `f9f6a04`, reconcile its results into this task, then create the required pull request. Do not merge until hosted/review gates permit the explicit `--no-ff` integration.
 - Validation already completed: Git branch/base checks; GitHub duplicate search and issue/comment read-back; worker PyYAML/JSON syntax parsing and reference read-back; worker Python AST syntax parsing; root manual contract, role-owner/path, disposition, fallback, and fixture-oracle review; root/worker `git diff --check`. No repository validation script, fixture test, or test suite has been run.
-- Git state: branch `codex/2026-08-05-sub-agent-reachability`, based on `origin/main@d8580df4516155ff7b1a139d9a064a8b0d4b2019`; workflow bootstrap `9880255` and #118 implementation `a80d6a6` are committed locally; #119 implementation is ready for its bounded commit.
-- Branch history and checkpoint handoffs: segment 1 began from updated `origin/main`; no push or merge checkpoint yet.
+- Git state: branch `codex/2026-08-05-sub-agent-reachability`, based on unchanged `origin/main@d8580df4516155ff7b1a139d9a064a8b0d4b2019`; workflow bootstrap `9880255`, #118 implementation `a80d6a6`, and #119 implementation `f9f6a04` are committed. The remote branch contains the implementation checkpoint.
+- Branch history and checkpoint handoffs: segment 1 began from updated `origin/main`; push-only checkpoint `f9f6a04` was published to `origin/codex/2026-08-05-sub-agent-reachability` at `2026-08-05T02:25:33+08:00`. Resume from that branch for validation; no merge checkpoint or pull request exists.
 - Blockers or unresolved decisions: no owner decision is pending. Repository validation and mainline integration remain deliberately unfinished; final shared-file read-back must include #92 commit `69603f1` or its integrated successor.
 
 ## Branch Lifecycle
 
 | Segment | Branch | Base | Checkpoint Type | Commit | Remote / Target | Recorded At | Reason | Resume Branch / Action |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| 1 | `codex/2026-08-05-sub-agent-reachability` | `main@d8580df4516155ff7b1a139d9a064a8b0d4b2019` | active | pending | local | `2026-08-05T01:34:40+08:00` | owner-authorized #94 implementation | continue `SAR94-001` after workflow bootstrap |
+| 1 | `codex/2026-08-05-sub-agent-reachability` | `main@d8580df4516155ff7b1a139d9a064a8b0d4b2019` | push-only implementation checkpoint | `f9f6a04` | `origin/codex/2026-08-05-sub-agent-reachability` | `2026-08-05T02:25:33+08:00` | #118/#119 implementation is reviewable while validation remains separately deferred | resume the same branch for validation reconciliation; then open the required PR without release packaging |
