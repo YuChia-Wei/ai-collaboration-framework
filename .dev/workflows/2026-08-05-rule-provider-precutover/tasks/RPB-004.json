@@ -7,9 +7,9 @@
   "workflow_id": "2026-08-05-rule-provider-precutover",
   "owner_skill": "ai-context-governance",
   "title": "Apply portable .NET asset migration rows",
-  "status": "pending",
+  "status": "in_progress",
   "created_at": "2026-08-05T01:29:39+08:00",
-  "updated_at": "2026-08-05T01:29:39+08:00",
+  "updated_at": "2026-08-05T02:07:14+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-5.6-terra",
   "reasoning_effort": "high",
@@ -21,10 +21,10 @@
     "non_goals": ["Provider source relocation", "Target-effective runtime", "Target-owned configuration", "Release packaging"]
   },
   "execution": {
-    "steps": ["Apply resolved move/split/derive rows", "Update indexes and references", "Add bounded compatibility entrypoints", "Reconcile distribution navigation and fixture expectations"],
+    "steps": ["Apply resolved rule, example, reference, and template move rows in non-overlapping batches", "Derive machine-readable shared/profile catalogs with full normative statements and selector metadata", "Update indexes and references", "Add bounded compatibility entrypoints", "Reconcile distribution navigation and fixture expectations"],
     "validation": ["Row-by-row source/destination read-back", "Manual broken-reference review", "git diff --check if useful; no repository validation scripts"],
-    "last_completed_step": "Task bounded and awaiting RPB-002.",
-    "next_action": "Apply only the non-provider migration rows after the matrix is complete."
+    "last_completed_step": "RPB-002 resolved all 232 tracked rows and made the RPB-003 resolver dependent on RPB-004 machine-readable catalogs.",
+    "next_action": "Apply the resolved non-provider rows in non-overlapping migration batches, then derive catalogs and reconcile navigation."
   },
   "results": {
     "summary": "",

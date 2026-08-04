@@ -1,0 +1,1131 @@
+schema_version: "1.0"
+matrix_id: "RPB-002-MIGRATION-MATRIX"
+workflow_id: "2026-08-05-rule-provider-precutover"
+work_item: "GitHub Issue #110"
+status: "approved-for-implementation"
+generated_at: "2026-08-05T02:07:14+08:00"
+source_revision: "69603f10445552239fa7e632014e980c6650204c"
+generator: "RPB-002 direct Git tracked-path inventory"
+inventory_command: "git ls-files -- .dev/standards .ai/assets/shared .ai/assets/tech-stacks/dotnet-backend tools/DotnetBackendAnalyzers tools/DotnetBackendAnalyzers.Tests tools/DotnetBackendValidation tools/DotnetBackendValidation.Tests tools/DotnetBackendBuildingBlocks.Tests .ai/INDEX.MD .ai/README.MD .dev/standards/INDEX.MD .ai/distribution/profiles/dotnet-backend.yaml"
+scope_exclusions:
+  - "Historical workflow, assessment, and backlog records are outside this inventory and remain unchanged."
+  - "#94-owned role-binding, role-execution, and reachability semantics are excluded."
+  - "No target-effective rule packet, loaded_rule_ids, validation, packaging, publication, build, test, or format work is authorized by this matrix."
+stable_identity_policy:
+  preserve_existing_ids: true
+  path_derived_transitional_ids: forbidden
+  legacy_standard_rule_paths: transitional-unmigrated-until-row-implementation
+unresolved_policy: "fail-closed"
+permitted_actions: [retain, move, split, derive, compatibility-entrypoint]
+classification_legend:
+  source-governance: "Source framework governance, ownership policy, and human-facing guidance that remains under .dev."
+  shared-baseline: "Cross-technology portable baseline owned under .ai/assets/shared."
+  profile-baseline: ".NET backend-only rules, constraints, examples, bindings, references, or source includes owned under the dotnet-backend profile."
+  provider-production: "Bundled .NET mechanical provider production source; relocation is uniquely RPB-005."
+  source-verification: "Root tools test source retained source-only and excluded from downstream payload."
+  distribution-control: "Source distribution manifest; it is not a downstream payload artifact."
+row_templates:
+  source_governance: &source_governance
+    artifact_class: source-governance
+    current_owner_location_state: "source governance in .dev/standards"
+    action: retain
+    canonical_owner: ".dev/standards/"
+    distribution_component: source-only
+    compatibility_treatment: "not applicable"
+    implementing_task: none
+    resolution_status: resolved
+  external_workflow_retained: &external_workflow_retained
+    artifact_class: cross-workflow-universal-sub-agent-rationale
+    current_owner_location_state: "current source-governance location retained pending independently authorized #94 placement"
+    action: retain
+    canonical_owner: ".dev/standards/"
+    distribution_component: source-only
+    compatibility_treatment: "no #92 mutation; future universal shared placement is exclusively #94-owned"
+    implementing_task: external-#94
+    resolution_status: resolved
+  dotnet_rule: &dotnet_rule
+    artifact_class: profile-baseline-rule
+    current_owner_location_state: "legacy .dev/standards semantic path; transitional-unmigrated"
+    action: move
+    canonical_owner: ".ai/assets/tech-stacks/dotnet-backend/"
+    distribution_component: dotnet-backend
+    compatibility_treatment: "legacy path is replaced by profile navigation compatibility entry"
+    implementing_task: RPB-004
+    resolution_status: resolved
+  dotnet_example: &dotnet_example
+    artifact_class: profile-baseline-example
+    current_owner_location_state: "legacy .dev/standards example path; transitional-unmigrated"
+    action: move
+    canonical_owner: ".ai/assets/tech-stacks/dotnet-backend/"
+    distribution_component: dotnet-backend
+    compatibility_treatment: "legacy path is replaced by profile example index compatibility entry"
+    implementing_task: RPB-004
+    resolution_status: resolved
+  dotnet_reference: &dotnet_reference
+    artifact_class: profile-baseline-reference
+    current_owner_location_state: "legacy .dev/standards reference path; transitional-unmigrated"
+    action: move
+    canonical_owner: ".ai/assets/tech-stacks/dotnet-backend/"
+    distribution_component: dotnet-backend
+    compatibility_treatment: "legacy path is replaced by profile navigation compatibility entry"
+    implementing_task: RPB-004
+    resolution_status: resolved
+  legacy_index: &legacy_index
+    artifact_class: legacy-standards-navigation
+    current_owner_location_state: "legacy standards navigation with mixed governance and profile links"
+    action: compatibility-entrypoint
+    canonical_owner: ".dev/standards/"
+    distribution_component: source-only
+    compatibility_treatment: "retain a thin source-governance entry that links the classified profile canonical locations"
+    implementing_task: RPB-004
+    resolution_status: resolved
+  shared_baseline: &shared_baseline
+    artifact_class: shared-baseline
+    current_owner_location_state: "canonical portable baseline under .ai/assets/shared"
+    action: retain
+    canonical_owner: ".ai/assets/shared/"
+    distribution_component: software-development-core
+    compatibility_treatment: "canonical location remains stable; catalogs cite it by stable identity"
+    implementing_task: RPB-004
+    resolution_status: resolved
+  shared_manifest: &shared_manifest
+    artifact_class: shared-baseline-manifest
+    current_owner_location_state: "canonical portable projection manifest under .ai/assets/shared"
+    action: derive
+    canonical_owner: ".ai/assets/shared/"
+    distribution_component: software-development-core
+    compatibility_treatment: "refresh only its canonical projection and catalog references"
+    implementing_task: RPB-004
+    resolution_status: resolved
+  profile_asset: &profile_asset
+    artifact_class: profile-baseline
+    current_owner_location_state: "canonical dotnet-backend profile asset"
+    action: retain
+    canonical_owner: ".ai/assets/tech-stacks/dotnet-backend/"
+    distribution_component: dotnet-backend
+    compatibility_treatment: "canonical location remains stable; profile catalog cites it by stable identity"
+    implementing_task: RPB-004
+    resolution_status: resolved
+  profile_navigation: &profile_navigation
+    artifact_class: profile-navigation-or-reference
+    current_owner_location_state: "canonical dotnet-backend profile navigation or derived reference"
+    action: derive
+    canonical_owner: ".ai/assets/tech-stacks/dotnet-backend/"
+    distribution_component: dotnet-backend
+    compatibility_treatment: "refresh navigation and source references after canonical profile migration"
+    implementing_task: RPB-004
+    resolution_status: resolved
+  provider_production: &provider_production
+    artifact_class: provider-production
+    current_owner_location_state: "bundled provider production source under root tools"
+    action: move
+    canonical_owner: ".ai/assets/tech-stacks/dotnet-backend/tooling/bundled-mechanical-validation/"
+    distribution_component: dotnet-backend
+    provider_id: ai-context-dotnet-bundled-mechanical-validation
+    compatibility_treatment: "no root-tools compatibility payload; activation remains reference-in-place and inactive by default"
+    implementing_task: RPB-005
+    resolution_status: resolved
+  source_verification: &source_verification
+    artifact_class: source-verification
+    current_owner_location_state: "root tools test source"
+    action: retain
+    canonical_owner: "source repository verification"
+    distribution_component: source-only
+    compatibility_treatment: "excluded from downstream payload; ProjectReference updates are RPB-005 implementation work"
+    implementing_task: RPB-005
+    resolution_status: resolved
+  distribution_control: &distribution_control
+    artifact_class: distribution-control
+    current_owner_location_state: "source distribution manifest"
+    action: split
+    canonical_owner: ".ai/distribution/"
+    distribution_component: source-only
+    compatibility_treatment: "source-only manifest remains; its dotnet provider mapping is updated without becoming a payload artifact"
+    implementing_task: RPB-005
+    resolution_status: resolved
+  ai_entry: &ai_entry
+    artifact_class: ai-entry-navigation
+    current_owner_location_state: "framework-managed AI entry document"
+    action: derive
+    canonical_owner: ".ai/"
+    distribution_component: ai-context-lifecycle-core
+    compatibility_treatment: "update navigation to classified shared and profile catalog locations"
+    implementing_task: RPB-004
+    resolution_status: resolved
+inventory_counts:
+  tracked_rows: 232
+  by_surface:
+    ".dev/standards/**": 173
+    ".ai/assets/shared/**": 7
+    ".ai/assets/tech-stacks/dotnet-backend/**": 20
+    "tools/DotnetBackendAnalyzers/**": 13
+    "tools/DotnetBackendAnalyzers.Tests/**": 9
+    "tools/DotnetBackendValidation/**": 3
+    "tools/DotnetBackendValidation.Tests/**": 2
+    "tools/DotnetBackendBuildingBlocks.Tests/**": 2
+    ".ai/INDEX.MD": 1
+    ".ai/README.MD": 1
+    ".ai/distribution/profiles/dotnet-backend.yaml": 1
+entries:
+  - <<: *ai_entry
+    current_path: ".ai/INDEX.MD"
+    exact_destinations: [".ai/INDEX.MD"]
+    rationale: "Entry navigation is regenerated to name the shared and dotnet-backend canonical catalogs."
+  - <<: *ai_entry
+    current_path: ".ai/README.MD"
+    exact_destinations: [".ai/README.MD"]
+    rationale: "Entry navigation is regenerated to name the shared and dotnet-backend canonical catalogs."
+  - <<: *shared_baseline
+    current_path: ".ai/assets/shared/PROMPT-PORTABILITY-RULES.md"
+    exact_destinations: [".ai/assets/shared/PROMPT-PORTABILITY-RULES.md"]
+    rationale: "Already classified as a cross-technology portable baseline; retain its canonical location and stable identities."
+  - <<: *shared_baseline
+    current_path: ".ai/assets/shared/README.MD"
+    exact_destinations: [".ai/assets/shared/README.MD"]
+    rationale: "Already classified as a cross-technology portable baseline; retain its canonical location and stable identities."
+  - <<: *shared_baseline
+    current_path: ".ai/assets/shared/governance/ENGINEERING-IDENTITY-CONTRACT.md"
+    exact_destinations: [".ai/assets/shared/governance/ENGINEERING-IDENTITY-CONTRACT.md"]
+    rationale: "Already classified as a cross-technology portable baseline; retain its canonical location and stable identities."
+  - <<: *shared_baseline
+    current_path: ".ai/assets/shared/governance/GIT-COMMIT-POLICY.md"
+    exact_destinations: [".ai/assets/shared/governance/GIT-COMMIT-POLICY.md"]
+    rationale: "Already classified as a cross-technology portable baseline; retain its canonical location and stable identities."
+  - <<: *shared_baseline
+    current_path: ".ai/assets/shared/governance/TEAM-GIT-FLOW-RULES.MD"
+    exact_destinations: [".ai/assets/shared/governance/TEAM-GIT-FLOW-RULES.MD"]
+    rationale: "Already classified as a cross-technology portable baseline; retain its canonical location and stable identities."
+  - <<: *shared_baseline
+    current_path: ".ai/assets/shared/governance/WORKFLOW-GATE-POLICY.md"
+    exact_destinations: [".ai/assets/shared/governance/WORKFLOW-GATE-POLICY.md"]
+    rationale: "Already classified as a cross-technology portable baseline; retain its canonical location and stable identities."
+  - <<: *shared_manifest
+    current_path: ".ai/assets/shared/governance/portable-policy-manifest.yaml"
+    exact_destinations: [".ai/assets/shared/governance/portable-policy-manifest.yaml"]
+    rationale: "The shared projection manifest remains the portable owner and is refreshed to reference the shared rule catalog."
+  - <<: *profile_navigation
+    current_path: ".ai/assets/tech-stacks/dotnet-backend/README.MD"
+    exact_destinations: [".ai/assets/tech-stacks/dotnet-backend/README.MD"]
+    rationale: "Profile navigation or derived reference is refreshed after canonical rules and examples are classified under the profile."
+  - <<: *profile_navigation
+    current_path: ".ai/assets/tech-stacks/dotnet-backend/references/BUILDING-BLOCKS-CLASS-INDEX.MD"
+    exact_destinations: [".ai/assets/tech-stacks/dotnet-backend/references/BUILDING-BLOCKS-CLASS-INDEX.MD"]
+    rationale: "Profile navigation or derived reference is refreshed after canonical rules and examples are classified under the profile."
+  - <<: *profile_navigation
+    current_path: ".ai/assets/tech-stacks/dotnet-backend/references/CODE-REVIEW-INDEX.MD"
+    exact_destinations: [".ai/assets/tech-stacks/dotnet-backend/references/CODE-REVIEW-INDEX.MD"]
+    rationale: "Profile navigation or derived reference is refreshed after canonical rules and examples are classified under the profile."
+  - <<: *profile_navigation
+    current_path: ".ai/assets/tech-stacks/dotnet-backend/references/CODE-TEMPLATES.MD"
+    exact_destinations: [".ai/assets/tech-stacks/dotnet-backend/references/CODE-TEMPLATES.MD"]
+    rationale: "Profile navigation or derived reference is refreshed after canonical rules and examples are classified under the profile."
+  - <<: *profile_navigation
+    current_path: ".ai/assets/tech-stacks/dotnet-backend/references/COMMON-PITFALLS.MD"
+    exact_destinations: [".ai/assets/tech-stacks/dotnet-backend/references/COMMON-PITFALLS.MD"]
+    rationale: "Profile navigation or derived reference is refreshed after canonical rules and examples are classified under the profile."
+  - <<: *profile_navigation
+    current_path: ".ai/assets/tech-stacks/dotnet-backend/references/ENGINEERING-IDENTITY-BINDINGS.MD"
+    exact_destinations: [".ai/assets/tech-stacks/dotnet-backend/references/ENGINEERING-IDENTITY-BINDINGS.MD"]
+    rationale: "Profile navigation or derived reference is refreshed after canonical rules and examples are classified under the profile."
+  - <<: *profile_navigation
+    current_path: ".ai/assets/tech-stacks/dotnet-backend/references/FAILURE-CASES.MD"
+    exact_destinations: [".ai/assets/tech-stacks/dotnet-backend/references/FAILURE-CASES.MD"]
+    rationale: "Profile navigation or derived reference is refreshed after canonical rules and examples are classified under the profile."
+  - <<: *profile_asset
+    current_path: ".ai/assets/tech-stacks/dotnet-backend/shared/architecture-config.md"
+    exact_destinations: [".ai/assets/tech-stacks/dotnet-backend/shared/architecture-config.md"]
+    rationale: "Already classified as a .NET backend profile asset; retain its canonical location and stable identity references."
+  - <<: *profile_asset
+    current_path: ".ai/assets/tech-stacks/dotnet-backend/shared/code-review-checklist.md"
+    exact_destinations: [".ai/assets/tech-stacks/dotnet-backend/shared/code-review-checklist.md"]
+    rationale: "Already classified as a .NET backend profile asset; retain its canonical location and stable identity references."
+  - <<: *profile_asset
+    current_path: ".ai/assets/tech-stacks/dotnet-backend/shared/common-rules.md"
+    exact_destinations: [".ai/assets/tech-stacks/dotnet-backend/shared/common-rules.md"]
+    rationale: "Already classified as a .NET backend profile asset; retain its canonical location and stable identity references."
+  - <<: *profile_asset
+    current_path: ".ai/assets/tech-stacks/dotnet-backend/shared/domain-rules.md"
+    exact_destinations: [".ai/assets/tech-stacks/dotnet-backend/shared/domain-rules.md"]
+    rationale: "Already classified as a .NET backend profile asset; retain its canonical location and stable identity references."
+  - <<: *profile_asset
+    current_path: ".ai/assets/tech-stacks/dotnet-backend/shared/dto-conventions.md"
+    exact_destinations: [".ai/assets/tech-stacks/dotnet-backend/shared/dto-conventions.md"]
+    rationale: "Already classified as a .NET backend profile asset; retain its canonical location and stable identity references."
+  - <<: *profile_asset
+    current_path: ".ai/assets/tech-stacks/dotnet-backend/shared/testing-standards.md"
+    exact_destinations: [".ai/assets/tech-stacks/dotnet-backend/shared/testing-standards.md"]
+    rationale: "Already classified as a .NET backend profile asset; retain its canonical location and stable identity references."
+  - <<: *profile_asset
+    current_path: ".ai/assets/tech-stacks/dotnet-backend/shared/testing-strategy.md"
+    exact_destinations: [".ai/assets/tech-stacks/dotnet-backend/shared/testing-strategy.md"]
+    rationale: "Already classified as a .NET backend profile asset; retain its canonical location and stable identity references."
+  - <<: *profile_asset
+    current_path: ".ai/assets/tech-stacks/dotnet-backend/source-includes/domain/EsAggregateRoot.cs"
+    exact_destinations: [".ai/assets/tech-stacks/dotnet-backend/source-includes/domain/EsAggregateRoot.cs"]
+    rationale: "Already classified as a .NET backend profile asset; retain its canonical location and stable identity references."
+  - <<: *profile_asset
+    current_path: ".ai/assets/tech-stacks/dotnet-backend/source-includes/domain/IAggregateRoot.cs"
+    exact_destinations: [".ai/assets/tech-stacks/dotnet-backend/source-includes/domain/IAggregateRoot.cs"]
+    rationale: "Already classified as a .NET backend profile asset; retain its canonical location and stable identity references."
+  - <<: *profile_asset
+    current_path: ".ai/assets/tech-stacks/dotnet-backend/source-includes/domain/IDomainEntity.cs"
+    exact_destinations: [".ai/assets/tech-stacks/dotnet-backend/source-includes/domain/IDomainEntity.cs"]
+    rationale: "Already classified as a .NET backend profile asset; retain its canonical location and stable identity references."
+  - <<: *profile_asset
+    current_path: ".ai/assets/tech-stacks/dotnet-backend/source-includes/domain/IDomainEvent.cs"
+    exact_destinations: [".ai/assets/tech-stacks/dotnet-backend/source-includes/domain/IDomainEvent.cs"]
+    rationale: "Already classified as a .NET backend profile asset; retain its canonical location and stable identity references."
+  - <<: *profile_asset
+    current_path: ".ai/assets/tech-stacks/dotnet-backend/source-includes/domain/README.md"
+    exact_destinations: [".ai/assets/tech-stacks/dotnet-backend/source-includes/domain/README.md"]
+    rationale: "Already classified as a .NET backend profile asset; retain its canonical location and stable identity references."
+  - <<: *profile_asset
+    current_path: ".ai/assets/tech-stacks/dotnet-backend/source-includes/evidence-manifest.yaml"
+    exact_destinations: [".ai/assets/tech-stacks/dotnet-backend/source-includes/evidence-manifest.yaml"]
+    rationale: "Already classified as a .NET backend profile asset; retain its canonical location and stable identity references."
+  - <<: *distribution_control
+    current_path: ".ai/distribution/profiles/dotnet-backend.yaml"
+    exact_destinations: [".ai/distribution/profiles/dotnet-backend.yaml"]
+    rationale: "The source manifest records relocated provider production and source-only root tests; RPB-005 owns provider relocation."
+  - <<: *source_governance
+    current_path: ".dev/standards/AI-CONTEXT-BOUNDARY.md"
+    exact_destinations: [".dev/standards/AI-CONTEXT-BOUNDARY.md"]
+    rationale: "Source-governance policy remains under .dev/standards; any portable projection is derived and does not become a second owner."
+  - <<: *source_governance
+    current_path: ".dev/standards/AI-CONTEXT-LANGUAGE-POLICY.md"
+    exact_destinations: [".dev/standards/AI-CONTEXT-LANGUAGE-POLICY.md"]
+    rationale: "Source-governance policy remains under .dev/standards; any portable projection is derived and does not become a second owner."
+  - <<: *source_governance
+    current_path: ".dev/standards/AI-CONTEXT-OWNERSHIP.md"
+    exact_destinations: [".dev/standards/AI-CONTEXT-OWNERSHIP.md"]
+    rationale: "Source-governance policy remains under .dev/standards; any portable projection is derived and does not become a second owner."
+  - <<: *source_governance
+    current_path: ".dev/standards/AI-CONTEXT-OWNERSHIP.yaml"
+    exact_destinations: [".dev/standards/AI-CONTEXT-OWNERSHIP.yaml"]
+    rationale: "Source-governance policy remains under .dev/standards; any portable projection is derived and does not become a second owner."
+  - <<: *source_governance
+    current_path: ".dev/standards/AI-CONTEXT-VERSION-POLICY.md"
+    exact_destinations: [".dev/standards/AI-CONTEXT-VERSION-POLICY.md"]
+    rationale: "Source-governance policy remains under .dev/standards; any portable projection is derived and does not become a second owner."
+  - <<: *dotnet_rule
+    current_path: ".dev/standards/ASPNET-CORE-CONFIGURATION-CHECKLIST.md"
+    exact_destinations: [".ai/assets/tech-stacks/dotnet-backend/standards/ASPNET-CORE-CONFIGURATION-CHECKLIST.md"]
+    rationale: ".NET backend-only standard is transitional-unmigrated in .dev/standards and moves to the dotnet-backend profile without path-derived IDs."
+  - <<: *source_governance
+    current_path: ".dev/standards/ASSESSMENT-ARTIFACT-POLICY.md"
+    exact_destinations: [".dev/standards/ASSESSMENT-ARTIFACT-POLICY.md"]
+    rationale: "Source-governance policy remains under .dev/standards; any portable projection is derived and does not become a second owner."
+  - <<: *dotnet_rule
+    current_path: ".dev/standards/BUILDING-BLOCKS-RECONSTRUCTION-CONTRACT.md"
+    exact_destinations: [".ai/assets/tech-stacks/dotnet-backend/standards/BUILDING-BLOCKS-RECONSTRUCTION-CONTRACT.md"]
+    rationale: ".NET backend-only standard is transitional-unmigrated in .dev/standards and moves to the dotnet-backend profile without path-derived IDs."
+  - <<: *dotnet_rule
+    current_path: ".dev/standards/CODE-REVIEW-CHECKLIST.md"
+    exact_destinations: [".ai/assets/tech-stacks/dotnet-backend/standards/CODE-REVIEW-CHECKLIST.md"]
+    rationale: ".NET backend-only standard is transitional-unmigrated in .dev/standards and moves to the dotnet-backend profile without path-derived IDs."
+  - <<: *source_governance
+    current_path: ".dev/standards/DEPENDENCY-VERSION-CONSISTENCY-POLICY.md"
+    exact_destinations: [".dev/standards/DEPENDENCY-VERSION-CONSISTENCY-POLICY.md"]
+    rationale: "Source-governance policy remains under .dev/standards; any portable projection is derived and does not become a second owner."
+  - <<: *dotnet_rule
+    current_path: ".dev/standards/DESIGN-BY-CONTRACT.md"
+    exact_destinations: [".ai/assets/tech-stacks/dotnet-backend/standards/DESIGN-BY-CONTRACT.md"]
+    rationale: ".NET backend-only standard is transitional-unmigrated in .dev/standards and moves to the dotnet-backend profile without path-derived IDs."
+  - <<: *source_governance
+    current_path: ".dev/standards/GIT-COMMIT-POLICY.md"
+    exact_destinations: [".dev/standards/GIT-COMMIT-POLICY.md"]
+    rationale: "Source-governance policy remains under .dev/standards; any portable projection is derived and does not become a second owner."
+  - <<: *source_governance
+    current_path: ".dev/standards/GIT-COMMIT-POLICY.yaml"
+    exact_destinations: [".dev/standards/GIT-COMMIT-POLICY.yaml"]
+    rationale: "Source-governance policy remains under .dev/standards; any portable projection is derived and does not become a second owner."
+  - <<: *legacy_index
+    current_path: ".dev/standards/INDEX.MD"
+    exact_destinations: [".dev/standards/INDEX.MD"]
+    rationale: "Thin compatibility navigation preserves source-governance discovery while pointing to classified profile canonical locations."
+  - <<: *legacy_index
+    current_path: ".dev/standards/README.md"
+    exact_destinations: [".dev/standards/README.md"]
+    rationale: "Thin compatibility navigation preserves source-governance discovery while pointing to classified profile canonical locations."
+  - <<: *source_governance
+    current_path: ".dev/standards/TECHNOLOGY-SELECTION-POLICY.md"
+    exact_destinations: [".dev/standards/TECHNOLOGY-SELECTION-POLICY.md"]
+    rationale: "Source-governance policy remains under .dev/standards; any portable projection is derived and does not become a second owner."
+  - <<: *dotnet_rule
+    current_path: ".dev/standards/USECASE-COMMAND-HANDLER-RELATIONSHIP.MD"
+    exact_destinations: [".ai/assets/tech-stacks/dotnet-backend/standards/USECASE-COMMAND-HANDLER-RELATIONSHIP.MD"]
+    rationale: ".NET backend-only standard is transitional-unmigrated in .dev/standards and moves to the dotnet-backend profile without path-derived IDs."
+  - <<: *source_governance
+    current_path: ".dev/standards/WORKFLOW-ARTIFACT-POLICY.md"
+    exact_destinations: [".dev/standards/WORKFLOW-ARTIFACT-POLICY.md"]
+    rationale: "Source-governance policy remains under .dev/standards; any portable projection is derived and does not become a second owner."
+  - <<: *source_governance
+    current_path: ".dev/standards/WORKFLOW-GATE-POLICY.md"
+    exact_destinations: [".dev/standards/WORKFLOW-GATE-POLICY.md"]
+    rationale: "Source-governance policy remains under .dev/standards; any portable projection is derived and does not become a second owner."
+  - <<: *source_governance
+    current_path: ".dev/standards/WORKFLOW-HANDOFF-POLICY.md"
+    exact_destinations: [".dev/standards/WORKFLOW-HANDOFF-POLICY.md"]
+    rationale: "Source-governance policy remains under .dev/standards; any portable projection is derived and does not become a second owner."
+  - <<: *source_governance
+    current_path: ".dev/standards/WORKFLOW-HANDOFF-POLICY.yaml"
+    exact_destinations: [".dev/standards/WORKFLOW-HANDOFF-POLICY.yaml"]
+    rationale: "Source-governance policy remains under .dev/standards; any portable projection is derived and does not become a second owner."
+  - <<: *dotnet_rule
+    current_path: ".dev/standards/anti-patterns.md"
+    exact_destinations: [".ai/assets/tech-stacks/dotnet-backend/standards/anti-patterns.md"]
+    rationale: ".NET backend-only standard is transitional-unmigrated in .dev/standards and moves to the dotnet-backend profile without path-derived IDs."
+  - <<: *dotnet_rule
+    current_path: ".dev/standards/best-practices.md"
+    exact_destinations: [".ai/assets/tech-stacks/dotnet-backend/standards/best-practices.md"]
+    rationale: ".NET backend-only standard is transitional-unmigrated in .dev/standards and moves to the dotnet-backend profile without path-derived IDs."
+  - <<: *dotnet_rule
+    current_path: ".dev/standards/coding-guide.md"
+    exact_destinations: [".ai/assets/tech-stacks/dotnet-backend/standards/coding-guide.md"]
+    rationale: ".NET backend-only standard is transitional-unmigrated in .dev/standards and moves to the dotnet-backend profile without path-derived IDs."
+  - <<: *dotnet_rule
+    current_path: ".dev/standards/coding-standards.md"
+    exact_destinations: [".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards.md"]
+    rationale: ".NET backend-only standard is transitional-unmigrated in .dev/standards and moves to the dotnet-backend profile without path-derived IDs."
+  - <<: *legacy_index
+    current_path: ".dev/standards/coding-standards/INDEX.MD"
+    exact_destinations: [".dev/standards/coding-standards/INDEX.MD"]
+    rationale: "Thin compatibility navigation preserves source-governance discovery while pointing to classified profile canonical locations."
+  - <<: *legacy_index
+    current_path: ".dev/standards/coding-standards/README.md"
+    exact_destinations: [".dev/standards/coding-standards/README.md"]
+    rationale: "Thin compatibility navigation preserves source-governance discovery while pointing to classified profile canonical locations."
+  - <<: *dotnet_rule
+    current_path: ".dev/standards/coding-standards/aggregate-standards.md"
+    exact_destinations: [".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/aggregate-standards.md"]
+    rationale: ".NET backend standards are transitional legacy semantics and move to the profile; existing stable IDs remain unchanged."
+  - <<: *dotnet_rule
+    current_path: ".dev/standards/coding-standards/archive-standards.md"
+    exact_destinations: [".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/archive-standards.md"]
+    rationale: ".NET backend standards are transitional legacy semantics and move to the profile; existing stable IDs remain unchanged."
+  - <<: *dotnet_rule
+    current_path: ".dev/standards/coding-standards/controller-standards.md"
+    exact_destinations: [".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/controller-standards.md"]
+    rationale: ".NET backend standards are transitional legacy semantics and move to the profile; existing stable IDs remain unchanged."
+  - <<: *dotnet_rule
+    current_path: ".dev/standards/coding-standards/mapper-standards.md"
+    exact_destinations: [".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/mapper-standards.md"]
+    rationale: ".NET backend standards are transitional legacy semantics and move to the profile; existing stable IDs remain unchanged."
+  - <<: *dotnet_rule
+    current_path: ".dev/standards/coding-standards/profile-configuration-standards.md"
+    exact_destinations: [".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/profile-configuration-standards.md"]
+    rationale: ".NET backend standards are transitional legacy semantics and move to the profile; existing stable IDs remain unchanged."
+  - <<: *dotnet_rule
+    current_path: ".dev/standards/coding-standards/projection-standards.md"
+    exact_destinations: [".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/projection-standards.md"]
+    rationale: ".NET backend standards are transitional legacy semantics and move to the profile; existing stable IDs remain unchanged."
+  - <<: *dotnet_rule
+    current_path: ".dev/standards/coding-standards/reactor-standards.md"
+    exact_destinations: [".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/reactor-standards.md"]
+    rationale: ".NET backend standards are transitional legacy semantics and move to the profile; existing stable IDs remain unchanged."
+  - <<: *dotnet_rule
+    current_path: ".dev/standards/coding-standards/repository-standards.md"
+    exact_destinations: [".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/repository-standards.md"]
+    rationale: ".NET backend standards are transitional legacy semantics and move to the profile; existing stable IDs remain unchanged."
+  - <<: *dotnet_rule
+    current_path: ".dev/standards/coding-standards/test-standards.md"
+    exact_destinations: [".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/test-standards.md"]
+    rationale: ".NET backend standards are transitional legacy semantics and move to the profile; existing stable IDs remain unchanged."
+  - <<: *dotnet_rule
+    current_path: ".dev/standards/coding-standards/usecase-standards.md"
+    exact_destinations: [".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/usecase-standards.md"]
+    rationale: ".NET backend standards are transitional legacy semantics and move to the profile; existing stable IDs remain unchanged."
+  - <<: *legacy_index
+    current_path: ".dev/standards/examples/INDEX.md"
+    exact_destinations: [".dev/standards/examples/INDEX.md"]
+    rationale: "Thin compatibility navigation preserves source-governance discovery while pointing to classified profile canonical locations."
+  - <<: *legacy_index
+    current_path: ".dev/standards/examples/README.md"
+    exact_destinations: [".dev/standards/examples/README.md"]
+    rationale: "Thin compatibility navigation preserves source-governance discovery while pointing to classified profile canonical locations."
+  - <<: *dotnet_example
+    current_path: ".dev/standards/examples/aggregate/Plan.cs"
+    exact_destinations: [".ai/assets/tech-stacks/dotnet-backend/examples/aggregate/Plan.cs"]
+    rationale: ".NET backend illustrative example moves with its profile context and remains non-normative unless a stable catalog record says otherwise."
+  - <<: *dotnet_example
+    current_path: ".dev/standards/examples/aggregate/PlanEvents.cs"
+    exact_destinations: [".ai/assets/tech-stacks/dotnet-backend/examples/aggregate/PlanEvents.cs"]
+    rationale: ".NET backend illustrative example moves with its profile context and remains non-normative unless a stable catalog record says otherwise."
+  - <<: *dotnet_example
+    current_path: ".dev/standards/examples/aggregate/PlanId.cs"
+    exact_destinations: [".ai/assets/tech-stacks/dotnet-backend/examples/aggregate/PlanId.cs"]
+    rationale: ".NET backend illustrative example moves with its profile context and remains non-normative unless a stable catalog record says otherwise."
+  - <<: *dotnet_example
+    current_path: ".dev/standards/examples/aggregate/Project.cs"
+    exact_destinations: [".ai/assets/tech-stacks/dotnet-backend/examples/aggregate/Project.cs"]
+    rationale: ".NET backend illustrative example moves with its profile context and remains non-normative unless a stable catalog record says otherwise."
+  - <<: *dotnet_example
+    current_path: ".dev/standards/examples/aggregate/ProjectId.cs"
+    exact_destinations: [".ai/assets/tech-stacks/dotnet-backend/examples/aggregate/ProjectId.cs"]
+    rationale: ".NET backend illustrative example moves with its profile context and remains non-normative unless a stable catalog record says otherwise."
+  - <<: *dotnet_example
+    current_path: ".dev/standards/examples/aggregate/ProjectName.cs"
+    exact_destinations: [".ai/assets/tech-stacks/dotnet-backend/examples/aggregate/ProjectName.cs"]
+    rationale: ".NET backend illustrative example moves with its profile context and remains non-normative unless a stable catalog record says otherwise."
+  - <<: *dotnet_example
+    current_path: ".dev/standards/examples/aggregate/README.md"
+    exact_destinations: [".ai/assets/tech-stacks/dotnet-backend/examples/aggregate/README.md"]
+    rationale: ".NET backend illustrative example moves with its profile context and remains non-normative unless a stable catalog record says otherwise."
+  - <<: *dotnet_example
+    current_path: ".dev/standards/examples/aggregate/TagEvents.cs"
+    exact_destinations: [".ai/assets/tech-stacks/dotnet-backend/examples/aggregate/TagEvents.cs"]
+    rationale: ".NET backend illustrative example moves with its profile context and remains non-normative unless a stable catalog record says otherwise."
+  - <<: *dotnet_example
+    current_path: ".dev/standards/examples/aggregate/TagId.cs"
+    exact_destinations: [".ai/assets/tech-stacks/dotnet-backend/examples/aggregate/TagId.cs"]
+    rationale: ".NET backend illustrative example moves with its profile context and remains non-normative unless a stable catalog record says otherwise."
+  - <<: *dotnet_example
+    current_path: ".dev/standards/examples/aggregate/TaskId.cs"
+    exact_destinations: [".ai/assets/tech-stacks/dotnet-backend/examples/aggregate/TaskId.cs"]
+    rationale: ".NET backend illustrative example moves with its profile context and remains non-normative unless a stable catalog record says otherwise."
+  - <<: *dotnet_example
+    current_path: ".dev/standards/examples/aspnet-core/InMemoryRepositoryConfig.cs"
+    exact_destinations: [".ai/assets/tech-stacks/dotnet-backend/examples/aspnet-core/InMemoryRepositoryConfig.cs"]
+    rationale: ".NET backend illustrative example moves with its profile context and remains non-normative unless a stable catalog record says otherwise."
+  - <<: *dotnet_example
+    current_path: ".dev/standards/examples/aspnet-core/OutboxRepositoryConfig.cs"
+    exact_destinations: [".ai/assets/tech-stacks/dotnet-backend/examples/aspnet-core/OutboxRepositoryConfig.cs"]
+    rationale: ".NET backend illustrative example moves with its profile context and remains non-normative unless a stable catalog record says otherwise."
+  - <<: *dotnet_example
+    current_path: ".dev/standards/examples/aspnet-core/Program.cs"
+    exact_destinations: [".ai/assets/tech-stacks/dotnet-backend/examples/aspnet-core/Program.cs"]
+    rationale: ".NET backend illustrative example moves with its profile context and remains non-normative unless a stable catalog record says otherwise."
+  - <<: *dotnet_example
+    current_path: ".dev/standards/examples/aspnet-core/README.md"
+    exact_destinations: [".ai/assets/tech-stacks/dotnet-backend/examples/aspnet-core/README.md"]
+    rationale: ".NET backend illustrative example moves with its profile context and remains non-normative unless a stable catalog record says otherwise."
+  - <<: *dotnet_example
+    current_path: ".dev/standards/examples/aspnet-core/UseCaseConfiguration.cs"
+    exact_destinations: [".ai/assets/tech-stacks/dotnet-backend/examples/aspnet-core/UseCaseConfiguration.cs"]
+    rationale: ".NET backend illustrative example moves with its profile context and remains non-normative unless a stable catalog record says otherwise."
+  - <<: *dotnet_example
+    current_path: ".dev/standards/examples/aspnet-core/appsettings.InMemory.json"
+    exact_destinations: [".ai/assets/tech-stacks/dotnet-backend/examples/aspnet-core/appsettings.InMemory.json"]
+    rationale: ".NET backend illustrative example moves with its profile context and remains non-normative unless a stable catalog record says otherwise."
+  - <<: *dotnet_example
+    current_path: ".dev/standards/examples/aspnet-core/appsettings.Outbox.json"
+    exact_destinations: [".ai/assets/tech-stacks/dotnet-backend/examples/aspnet-core/appsettings.Outbox.json"]
+    rationale: ".NET backend illustrative example moves with its profile context and remains non-normative unless a stable catalog record says otherwise."
+  - <<: *dotnet_example
+    current_path: ".dev/standards/examples/aspnet-core/appsettings.TestInMemory.json"
+    exact_destinations: [".ai/assets/tech-stacks/dotnet-backend/examples/aspnet-core/appsettings.TestInMemory.json"]
+    rationale: ".NET backend illustrative example moves with its profile context and remains non-normative unless a stable catalog record says otherwise."
+  - <<: *dotnet_example
+    current_path: ".dev/standards/examples/aspnet-core/appsettings.TestOutbox.json"
+    exact_destinations: [".ai/assets/tech-stacks/dotnet-backend/examples/aspnet-core/appsettings.TestOutbox.json"]
+    rationale: ".NET backend illustrative example moves with its profile context and remains non-normative unless a stable catalog record says otherwise."
+  - <<: *dotnet_example
+    current_path: ".dev/standards/examples/aspnet-core/appsettings.json"
+    exact_destinations: [".ai/assets/tech-stacks/dotnet-backend/examples/aspnet-core/appsettings.json"]
+    rationale: ".NET backend illustrative example moves with its profile context and remains non-normative unless a stable catalog record says otherwise."
+  - <<: *dotnet_example
+    current_path: ".dev/standards/examples/bdd-gherkin-example/README.md"
+    exact_destinations: [".ai/assets/tech-stacks/dotnet-backend/examples/bdd-gherkin-example/README.md"]
+    rationale: ".NET backend illustrative example moves with its profile context and remains non-normative unless a stable catalog record says otherwise."
+  - <<: *dotnet_example
+    current_path: ".dev/standards/examples/bdd-gherkin-example/aggregate-outbox-repository.feature"
+    exact_destinations: [".ai/assets/tech-stacks/dotnet-backend/examples/bdd-gherkin-example/aggregate-outbox-repository.feature"]
+    rationale: ".NET backend illustrative example moves with its profile context and remains non-normative unless a stable catalog record says otherwise."
+  - <<: *dotnet_example
+    current_path: ".dev/standards/examples/bdd-gherkin-example/complete-usecase-with-rules.feature"
+    exact_destinations: [".ai/assets/tech-stacks/dotnet-backend/examples/bdd-gherkin-example/complete-usecase-with-rules.feature"]
+    rationale: ".NET backend illustrative example moves with its profile context and remains non-normative unless a stable catalog record says otherwise."
+  - <<: *dotnet_example
+    current_path: ".dev/standards/examples/bdd-gherkin-example/create-task-usecase.feature"
+    exact_destinations: [".ai/assets/tech-stacks/dotnet-backend/examples/bdd-gherkin-example/create-task-usecase.feature"]
+    rationale: ".NET backend illustrative example moves with its profile context and remains non-normative unless a stable catalog record says otherwise."
+  - <<: *dotnet_example
+    current_path: ".dev/standards/examples/bdd-gherkin-example/rule-design-before-after.md"
+    exact_destinations: [".ai/assets/tech-stacks/dotnet-backend/examples/bdd-gherkin-example/rule-design-before-after.md"]
+    rationale: ".NET backend illustrative example moves with its profile context and remains non-normative unless a stable catalog record says otherwise."
+  - <<: *dotnet_example
+    current_path: ".dev/standards/examples/bdd-gherkin-example/rule-migration-guide.md"
+    exact_destinations: [".ai/assets/tech-stacks/dotnet-backend/examples/bdd-gherkin-example/rule-migration-guide.md"]
+    rationale: ".NET backend illustrative example moves with its profile context and remains non-normative unless a stable catalog record says otherwise."
+  - <<: *dotnet_example
+    current_path: ".dev/standards/examples/bdd-given-when-then-example/AggregateOutboxRepositoryTests.cs"
+    exact_destinations: [".ai/assets/tech-stacks/dotnet-backend/examples/bdd-given-when-then-example/AggregateOutboxRepositoryTests.cs"]
+    rationale: ".NET backend illustrative example moves with its profile context and remains non-normative unless a stable catalog record says otherwise."
+  - <<: *dotnet_example
+    current_path: ".dev/standards/examples/bdd-given-when-then-example/CompleteUseCaseRuleTests.cs"
+    exact_destinations: [".ai/assets/tech-stacks/dotnet-backend/examples/bdd-given-when-then-example/CompleteUseCaseRuleTests.cs"]
+    rationale: ".NET backend illustrative example moves with its profile context and remains non-normative unless a stable catalog record says otherwise."
+  - <<: *dotnet_example
+    current_path: ".dev/standards/examples/bdd-given-when-then-example/README.md"
+    exact_destinations: [".ai/assets/tech-stacks/dotnet-backend/examples/bdd-given-when-then-example/README.md"]
+    rationale: ".NET backend illustrative example moves with its profile context and remains non-normative unless a stable catalog record says otherwise."
+  - <<: *dotnet_example
+    current_path: ".dev/standards/examples/bdd-given-when-then-example/rule-design-before-after.md"
+    exact_destinations: [".ai/assets/tech-stacks/dotnet-backend/examples/bdd-given-when-then-example/rule-design-before-after.md"]
+    rationale: ".NET backend illustrative example moves with its profile context and remains non-normative unless a stable catalog record says otherwise."
+  - <<: *dotnet_example
+    current_path: ".dev/standards/examples/bdd-given-when-then-example/rule-migration-guide.md"
+    exact_destinations: [".ai/assets/tech-stacks/dotnet-backend/examples/bdd-given-when-then-example/rule-migration-guide.md"]
+    rationale: ".NET backend illustrative example moves with its profile context and remains non-normative unless a stable catalog record says otherwise."
+  - <<: *dotnet_example
+    current_path: ".dev/standards/examples/contract/CONTRACT-GUIDE.md"
+    exact_destinations: [".ai/assets/tech-stacks/dotnet-backend/examples/contract/CONTRACT-GUIDE.md"]
+    rationale: ".NET backend illustrative example moves with its profile context and remains non-normative unless a stable catalog record says otherwise."
+  - <<: *dotnet_example
+    current_path: ".dev/standards/examples/contract/README.md"
+    exact_destinations: [".ai/assets/tech-stacks/dotnet-backend/examples/contract/README.md"]
+    rationale: ".NET backend illustrative example moves with its profile context and remains non-normative unless a stable catalog record says otherwise."
+  - <<: *dotnet_example
+    current_path: ".dev/standards/examples/contract/UCONTRACT-GUIDE.md"
+    exact_destinations: [".ai/assets/tech-stacks/dotnet-backend/examples/contract/UCONTRACT-GUIDE.md"]
+    rationale: ".NET backend illustrative example moves with its profile context and remains non-normative unless a stable catalog record says otherwise."
+  - <<: *dotnet_example
+    current_path: ".dev/standards/examples/contract/aggregate-contract-example.md"
+    exact_destinations: [".ai/assets/tech-stacks/dotnet-backend/examples/contract/aggregate-contract-example.md"]
+    rationale: ".NET backend illustrative example moves with its profile context and remains non-normative unless a stable catalog record says otherwise."
+  - <<: *dotnet_example
+    current_path: ".dev/standards/examples/contract/ucontract-detailed-examples.md"
+    exact_destinations: [".ai/assets/tech-stacks/dotnet-backend/examples/contract/ucontract-detailed-examples.md"]
+    rationale: ".NET backend illustrative example moves with its profile context and remains non-normative unless a stable catalog record says otherwise."
+  - <<: *dotnet_example
+    current_path: ".dev/standards/examples/contract/usecase-contract-example.md"
+    exact_destinations: [".ai/assets/tech-stacks/dotnet-backend/examples/contract/usecase-contract-example.md"]
+    rationale: ".NET backend illustrative example moves with its profile context and remains non-normative unless a stable catalog record says otherwise."
+  - <<: *dotnet_example
+    current_path: ".dev/standards/examples/contract/value-object-contract-example.md"
+    exact_destinations: [".ai/assets/tech-stacks/dotnet-backend/examples/contract/value-object-contract-example.md"]
+    rationale: ".NET backend illustrative example moves with its profile context and remains non-normative unless a stable catalog record says otherwise."
+  - <<: *dotnet_example
+    current_path: ".dev/standards/examples/controller/CreateTaskController.cs"
+    exact_destinations: [".ai/assets/tech-stacks/dotnet-backend/examples/controller/CreateTaskController.cs"]
+    rationale: ".NET backend illustrative example moves with its profile context and remains non-normative unless a stable catalog record says otherwise."
+  - <<: *dotnet_example
+    current_path: ".dev/standards/examples/controller/CreateTaskRequest.cs"
+    exact_destinations: [".ai/assets/tech-stacks/dotnet-backend/examples/controller/CreateTaskRequest.cs"]
+    rationale: ".NET backend illustrative example moves with its profile context and remains non-normative unless a stable catalog record says otherwise."
+  - <<: *dotnet_example
+    current_path: ".dev/standards/examples/controller/CreateTaskResponse.cs"
+    exact_destinations: [".ai/assets/tech-stacks/dotnet-backend/examples/controller/CreateTaskResponse.cs"]
+    rationale: ".NET backend illustrative example moves with its profile context and remains non-normative unless a stable catalog record says otherwise."
+  - <<: *dotnet_example
+    current_path: ".dev/standards/examples/controller/README.md"
+    exact_destinations: [".ai/assets/tech-stacks/dotnet-backend/examples/controller/README.md"]
+    rationale: ".NET backend illustrative example moves with its profile context and remains non-normative unless a stable catalog record says otherwise."
+  - <<: *dotnet_example
+    current_path: ".dev/standards/examples/dto/PlanDto.cs"
+    exact_destinations: [".ai/assets/tech-stacks/dotnet-backend/examples/dto/PlanDto.cs"]
+    rationale: ".NET backend illustrative example moves with its profile context and remains non-normative unless a stable catalog record says otherwise."
+  - <<: *dotnet_example
+    current_path: ".dev/standards/examples/dto/ProjectDto.cs"
+    exact_destinations: [".ai/assets/tech-stacks/dotnet-backend/examples/dto/ProjectDto.cs"]
+    rationale: ".NET backend illustrative example moves with its profile context and remains non-normative unless a stable catalog record says otherwise."
+  - <<: *dotnet_example
+    current_path: ".dev/standards/examples/dto/README.md"
+    exact_destinations: [".ai/assets/tech-stacks/dotnet-backend/examples/dto/README.md"]
+    rationale: ".NET backend illustrative example moves with its profile context and remains non-normative unless a stable catalog record says otherwise."
+  - <<: *dotnet_example
+    current_path: ".dev/standards/examples/dto/TaskDto.cs"
+    exact_destinations: [".ai/assets/tech-stacks/dotnet-backend/examples/dto/TaskDto.cs"]
+    rationale: ".NET backend illustrative example moves with its profile context and remains non-normative unless a stable catalog record says otherwise."
+  - <<: *dotnet_example
+    current_path: ".dev/standards/examples/evidence-manifest.yaml"
+    exact_destinations: [".ai/assets/tech-stacks/dotnet-backend/examples/evidence-manifest.yaml"]
+    rationale: ".NET backend illustrative example moves with its profile context and remains non-normative unless a stable catalog record says otherwise."
+  - <<: *dotnet_example
+    current_path: ".dev/standards/examples/evidence-schema.yaml"
+    exact_destinations: [".ai/assets/tech-stacks/dotnet-backend/examples/evidence-schema.yaml"]
+    rationale: ".NET backend illustrative example moves with its profile context and remains non-normative unless a stable catalog record says otherwise."
+  - <<: *dotnet_example
+    current_path: ".dev/standards/examples/generation-templates/README.md"
+    exact_destinations: [".ai/assets/tech-stacks/dotnet-backend/examples/generation-templates/README.md"]
+    rationale: ".NET backend illustrative example moves with its profile context and remains non-normative unless a stable catalog record says otherwise."
+  - <<: *dotnet_example
+    current_path: ".dev/standards/examples/generation-templates/base-test-classes.md"
+    exact_destinations: [".ai/assets/tech-stacks/dotnet-backend/examples/generation-templates/base-test-classes.md"]
+    rationale: ".NET backend illustrative example moves with its profile context and remains non-normative unless a stable catalog record says otherwise."
+  - <<: *dotnet_example
+    current_path: ".dev/standards/examples/generation-templates/complex-aggregate-spec.md"
+    exact_destinations: [".ai/assets/tech-stacks/dotnet-backend/examples/generation-templates/complex-aggregate-spec.md"]
+    rationale: ".NET backend illustrative example moves with its profile context and remains non-normative unless a stable catalog record says otherwise."
+  - <<: *dotnet_example
+    current_path: ".dev/standards/examples/generation-templates/local-utils.md"
+    exact_destinations: [".ai/assets/tech-stacks/dotnet-backend/examples/generation-templates/local-utils.md"]
+    rationale: ".NET backend illustrative example moves with its profile context and remains non-normative unless a stable catalog record says otherwise."
+  - <<: *dotnet_example
+    current_path: ".dev/standards/examples/generation-templates/reactor-full.md"
+    exact_destinations: [".ai/assets/tech-stacks/dotnet-backend/examples/generation-templates/reactor-full.md"]
+    rationale: ".NET backend illustrative example moves with its profile context and remains non-normative unless a stable catalog record says otherwise."
+  - <<: *dotnet_example
+    current_path: ".dev/standards/examples/generation-templates/test-case-full.md"
+    exact_destinations: [".ai/assets/tech-stacks/dotnet-backend/examples/generation-templates/test-case-full.md"]
+    rationale: ".NET backend illustrative example moves with its profile context and remains non-normative unless a stable catalog record says otherwise."
+  - <<: *dotnet_example
+    current_path: ".dev/standards/examples/generation-templates/test-suites.md"
+    exact_destinations: [".ai/assets/tech-stacks/dotnet-backend/examples/generation-templates/test-suites.md"]
+    rationale: ".NET backend illustrative example moves with its profile context and remains non-normative unless a stable catalog record says otherwise."
+  - <<: *dotnet_example
+    current_path: ".dev/standards/examples/inquiry-archive/EfFindCardsByTagIdInquiry.cs"
+    exact_destinations: [".ai/assets/tech-stacks/dotnet-backend/examples/inquiry-archive/EfFindCardsByTagIdInquiry.cs"]
+    rationale: ".NET backend illustrative example moves with its profile context and remains non-normative unless a stable catalog record says otherwise."
+  - <<: *dotnet_example
+    current_path: ".dev/standards/examples/inquiry-archive/EfUserArchive.cs"
+    exact_destinations: [".ai/assets/tech-stacks/dotnet-backend/examples/inquiry-archive/EfUserArchive.cs"]
+    rationale: ".NET backend illustrative example moves with its profile context and remains non-normative unless a stable catalog record says otherwise."
+  - <<: *dotnet_example
+    current_path: ".dev/standards/examples/inquiry-archive/EsFindCardsByTagIdInquiry.cs"
+    exact_destinations: [".ai/assets/tech-stacks/dotnet-backend/examples/inquiry-archive/EsFindCardsByTagIdInquiry.cs"]
+    rationale: ".NET backend illustrative example moves with its profile context and remains non-normative unless a stable catalog record says otherwise."
+  - <<: *dotnet_example
+    current_path: ".dev/standards/examples/inquiry-archive/FindCardsByTagIdInquiry.cs"
+    exact_destinations: [".ai/assets/tech-stacks/dotnet-backend/examples/inquiry-archive/FindCardsByTagIdInquiry.cs"]
+    rationale: ".NET backend illustrative example moves with its profile context and remains non-normative unless a stable catalog record says otherwise."
+  - <<: *dotnet_example
+    current_path: ".dev/standards/examples/inquiry-archive/InquiryContracts.cs"
+    exact_destinations: [".ai/assets/tech-stacks/dotnet-backend/examples/inquiry-archive/InquiryContracts.cs"]
+    rationale: ".NET backend illustrative example moves with its profile context and remains non-normative unless a stable catalog record says otherwise."
+  - <<: *dotnet_example
+    current_path: ".dev/standards/examples/inquiry-archive/README.md"
+    exact_destinations: [".ai/assets/tech-stacks/dotnet-backend/examples/inquiry-archive/README.md"]
+    rationale: ".NET backend illustrative example moves with its profile context and remains non-normative unless a stable catalog record says otherwise."
+  - <<: *dotnet_example
+    current_path: ".dev/standards/examples/inquiry-archive/USAGE-GUIDE.md"
+    exact_destinations: [".ai/assets/tech-stacks/dotnet-backend/examples/inquiry-archive/USAGE-GUIDE.md"]
+    rationale: ".NET backend illustrative example moves with its profile context and remains non-normative unless a stable catalog record says otherwise."
+  - <<: *dotnet_example
+    current_path: ".dev/standards/examples/inquiry-archive/UserArchive.cs"
+    exact_destinations: [".ai/assets/tech-stacks/dotnet-backend/examples/inquiry-archive/UserArchive.cs"]
+    rationale: ".NET backend illustrative example moves with its profile context and remains non-normative unless a stable catalog record says otherwise."
+  - <<: *dotnet_example
+    current_path: ".dev/standards/examples/inquiry-archive/UserDbContext.cs"
+    exact_destinations: [".ai/assets/tech-stacks/dotnet-backend/examples/inquiry-archive/UserDbContext.cs"]
+    rationale: ".NET backend illustrative example moves with its profile context and remains non-normative unless a stable catalog record says otherwise."
+  - <<: *dotnet_example
+    current_path: ".dev/standards/examples/mapper/PlanMapper.cs"
+    exact_destinations: [".ai/assets/tech-stacks/dotnet-backend/examples/mapper/PlanMapper.cs"]
+    rationale: ".NET backend illustrative example moves with its profile context and remains non-normative unless a stable catalog record says otherwise."
+  - <<: *dotnet_example
+    current_path: ".dev/standards/examples/mapper/README.md"
+    exact_destinations: [".ai/assets/tech-stacks/dotnet-backend/examples/mapper/README.md"]
+    rationale: ".NET backend illustrative example moves with its profile context and remains non-normative unless a stable catalog record says otherwise."
+  - <<: *dotnet_example
+    current_path: ".dev/standards/examples/mapper/TaskMapper.cs"
+    exact_destinations: [".ai/assets/tech-stacks/dotnet-backend/examples/mapper/TaskMapper.cs"]
+    rationale: ".NET backend illustrative example moves with its profile context and remains non-normative unless a stable catalog record says otherwise."
+  - <<: *dotnet_example
+    current_path: ".dev/standards/examples/nuget/Directory.Packages.props"
+    exact_destinations: [".ai/assets/tech-stacks/dotnet-backend/examples/nuget/Directory.Packages.props"]
+    rationale: ".NET backend illustrative example moves with its profile context and remains non-normative unless a stable catalog record says otherwise."
+  - <<: *dotnet_example
+    current_path: ".dev/standards/examples/outbox/BootstrapConfig.cs"
+    exact_destinations: [".ai/assets/tech-stacks/dotnet-backend/examples/outbox/BootstrapConfig.cs"]
+    rationale: ".NET backend illustrative example moves with its profile context and remains non-normative unless a stable catalog record says otherwise."
+  - <<: *dotnet_example
+    current_path: ".dev/standards/examples/outbox/DataSourceConfig.cs"
+    exact_destinations: [".ai/assets/tech-stacks/dotnet-backend/examples/outbox/DataSourceConfig.cs"]
+    rationale: ".NET backend illustrative example moves with its profile context and remains non-normative unless a stable catalog record says otherwise."
+  - <<: *dotnet_example
+    current_path: ".dev/standards/examples/outbox/OUTBOX-TEST-CONFIGURATION.md"
+    exact_destinations: [".ai/assets/tech-stacks/dotnet-backend/examples/outbox/OUTBOX-TEST-CONFIGURATION.md"]
+    rationale: ".NET backend illustrative example moves with its profile context and remains non-normative unless a stable catalog record says otherwise."
+  - <<: *dotnet_example
+    current_path: ".dev/standards/examples/outbox/OutboxContracts.cs"
+    exact_destinations: [".ai/assets/tech-stacks/dotnet-backend/examples/outbox/OutboxContracts.cs"]
+    rationale: ".NET backend illustrative example moves with its profile context and remains non-normative unless a stable catalog record says otherwise."
+  - <<: *dotnet_example
+    current_path: ".dev/standards/examples/outbox/PlanData.cs"
+    exact_destinations: [".ai/assets/tech-stacks/dotnet-backend/examples/outbox/PlanData.cs"]
+    rationale: ".NET backend illustrative example moves with its profile context and remains non-normative unless a stable catalog record says otherwise."
+  - <<: *dotnet_example
+    current_path: ".dev/standards/examples/outbox/PlanDbContext.cs"
+    exact_destinations: [".ai/assets/tech-stacks/dotnet-backend/examples/outbox/PlanDbContext.cs"]
+    rationale: ".NET backend illustrative example moves with its profile context and remains non-normative unless a stable catalog record says otherwise."
+  - <<: *dotnet_example
+    current_path: ".dev/standards/examples/outbox/PlanOutboxMapper.cs"
+    exact_destinations: [".ai/assets/tech-stacks/dotnet-backend/examples/outbox/PlanOutboxMapper.cs"]
+    rationale: ".NET backend illustrative example moves with its profile context and remains non-normative unless a stable catalog record says otherwise."
+  - <<: *dotnet_example
+    current_path: ".dev/standards/examples/outbox/ProjectData.cs"
+    exact_destinations: [".ai/assets/tech-stacks/dotnet-backend/examples/outbox/ProjectData.cs"]
+    rationale: ".NET backend illustrative example moves with its profile context and remains non-normative unless a stable catalog record says otherwise."
+  - <<: *dotnet_example
+    current_path: ".dev/standards/examples/outbox/ProjectOutboxMapper.cs"
+    exact_destinations: [".ai/assets/tech-stacks/dotnet-backend/examples/outbox/ProjectOutboxMapper.cs"]
+    rationale: ".NET backend illustrative example moves with its profile context and remains non-normative unless a stable catalog record says otherwise."
+  - <<: *dotnet_example
+    current_path: ".dev/standards/examples/outbox/README.md"
+    exact_destinations: [".ai/assets/tech-stacks/dotnet-backend/examples/outbox/README.md"]
+    rationale: ".NET backend illustrative example moves with its profile context and remains non-normative unless a stable catalog record says otherwise."
+  - <<: *dotnet_example
+    current_path: ".dev/standards/examples/outbox/RepositoryConfig.cs"
+    exact_destinations: [".ai/assets/tech-stacks/dotnet-backend/examples/outbox/RepositoryConfig.cs"]
+    rationale: ".NET backend illustrative example moves with its profile context and remains non-normative unless a stable catalog record says otherwise."
+  - <<: *dotnet_example
+    current_path: ".dev/standards/examples/outbox/TaskData.cs"
+    exact_destinations: [".ai/assets/tech-stacks/dotnet-backend/examples/outbox/TaskData.cs"]
+    rationale: ".NET backend illustrative example moves with its profile context and remains non-normative unless a stable catalog record says otherwise."
+  - <<: *dotnet_example
+    current_path: ".dev/standards/examples/outbox/TaskOutboxMapper.cs"
+    exact_destinations: [".ai/assets/tech-stacks/dotnet-backend/examples/outbox/TaskOutboxMapper.cs"]
+    rationale: ".NET backend illustrative example moves with its profile context and remains non-normative unless a stable catalog record says otherwise."
+  - <<: *dotnet_example
+    current_path: ".dev/standards/examples/placeholder-disposition.yaml"
+    exact_destinations: [".ai/assets/tech-stacks/dotnet-backend/examples/placeholder-disposition.yaml"]
+    rationale: ".NET backend illustrative example moves with its profile context and remains non-normative unless a stable catalog record says otherwise."
+  - <<: *dotnet_example
+    current_path: ".dev/standards/examples/profile-configs/event-architecture-reference.md"
+    exact_destinations: [".ai/assets/tech-stacks/dotnet-backend/examples/profile-configs/event-architecture-reference.md"]
+    rationale: ".NET backend illustrative example moves with its profile context and remains non-normative unless a stable catalog record says otherwise."
+  - <<: *dotnet_example
+    current_path: ".dev/standards/examples/profile-configs/inmemory-profile-config.md"
+    exact_destinations: [".ai/assets/tech-stacks/dotnet-backend/examples/profile-configs/inmemory-profile-config.md"]
+    rationale: ".NET backend illustrative example moves with its profile context and remains non-normative unless a stable catalog record says otherwise."
+  - <<: *dotnet_example
+    current_path: ".dev/standards/examples/profile-configs/outbox-profile-config.md"
+    exact_destinations: [".ai/assets/tech-stacks/dotnet-backend/examples/profile-configs/outbox-profile-config.md"]
+    rationale: ".NET backend illustrative example moves with its profile context and remains non-normative unless a stable catalog record says otherwise."
+  - <<: *dotnet_example
+    current_path: ".dev/standards/examples/projection/AllTagsProjection.cs"
+    exact_destinations: [".ai/assets/tech-stacks/dotnet-backend/examples/projection/AllTagsProjection.cs"]
+    rationale: ".NET backend illustrative example moves with its profile context and remains non-normative unless a stable catalog record says otherwise."
+  - <<: *dotnet_example
+    current_path: ".dev/standards/examples/projection/EfAllTagsProjection.cs"
+    exact_destinations: [".ai/assets/tech-stacks/dotnet-backend/examples/projection/EfAllTagsProjection.cs"]
+    rationale: ".NET backend illustrative example moves with its profile context and remains non-normative unless a stable catalog record says otherwise."
+  - <<: *dotnet_example
+    current_path: ".dev/standards/examples/projection/EfPlanDtosProjection.cs"
+    exact_destinations: [".ai/assets/tech-stacks/dotnet-backend/examples/projection/EfPlanDtosProjection.cs"]
+    rationale: ".NET backend illustrative example moves with its profile context and remains non-normative unless a stable catalog record says otherwise."
+  - <<: *dotnet_example
+    current_path: ".dev/standards/examples/projection/EfTasksByDateProjection.cs"
+    exact_destinations: [".ai/assets/tech-stacks/dotnet-backend/examples/projection/EfTasksByDateProjection.cs"]
+    rationale: ".NET backend illustrative example moves with its profile context and remains non-normative unless a stable catalog record says otherwise."
+  - <<: *dotnet_example
+    current_path: ".dev/standards/examples/projection/EfTasksDueTodayProjection.cs"
+    exact_destinations: [".ai/assets/tech-stacks/dotnet-backend/examples/projection/EfTasksDueTodayProjection.cs"]
+    rationale: ".NET backend illustrative example moves with its profile context and remains non-normative unless a stable catalog record says otherwise."
+  - <<: *dotnet_example
+    current_path: ".dev/standards/examples/projection/PlanDtosProjection.cs"
+    exact_destinations: [".ai/assets/tech-stacks/dotnet-backend/examples/projection/PlanDtosProjection.cs"]
+    rationale: ".NET backend illustrative example moves with its profile context and remains non-normative unless a stable catalog record says otherwise."
+  - <<: *dotnet_example
+    current_path: ".dev/standards/examples/projection/ProjectionDtos.cs"
+    exact_destinations: [".ai/assets/tech-stacks/dotnet-backend/examples/projection/ProjectionDtos.cs"]
+    rationale: ".NET backend illustrative example moves with its profile context and remains non-normative unless a stable catalog record says otherwise."
+  - <<: *dotnet_example
+    current_path: ".dev/standards/examples/projection/ProjectionModels.cs"
+    exact_destinations: [".ai/assets/tech-stacks/dotnet-backend/examples/projection/ProjectionModels.cs"]
+    rationale: ".NET backend illustrative example moves with its profile context and remains non-normative unless a stable catalog record says otherwise."
+  - <<: *dotnet_example
+    current_path: ".dev/standards/examples/projection/README.md"
+    exact_destinations: [".ai/assets/tech-stacks/dotnet-backend/examples/projection/README.md"]
+    rationale: ".NET backend illustrative example moves with its profile context and remains non-normative unless a stable catalog record says otherwise."
+  - <<: *dotnet_example
+    current_path: ".dev/standards/examples/projection/ReadModelDbContext.cs"
+    exact_destinations: [".ai/assets/tech-stacks/dotnet-backend/examples/projection/ReadModelDbContext.cs"]
+    rationale: ".NET backend illustrative example moves with its profile context and remains non-normative unless a stable catalog record says otherwise."
+  - <<: *dotnet_example
+    current_path: ".dev/standards/examples/projection/TasksByDateProjection.cs"
+    exact_destinations: [".ai/assets/tech-stacks/dotnet-backend/examples/projection/TasksByDateProjection.cs"]
+    rationale: ".NET backend illustrative example moves with its profile context and remains non-normative unless a stable catalog record says otherwise."
+  - <<: *dotnet_example
+    current_path: ".dev/standards/examples/projection/TasksDueTodayProjection.cs"
+    exact_destinations: [".ai/assets/tech-stacks/dotnet-backend/examples/projection/TasksDueTodayProjection.cs"]
+    rationale: ".NET backend illustrative example moves with its profile context and remains non-normative unless a stable catalog record says otherwise."
+  - <<: *dotnet_example
+    current_path: ".dev/standards/examples/projection/TasksSortedByDeadlineProjection.cs"
+    exact_destinations: [".ai/assets/tech-stacks/dotnet-backend/examples/projection/TasksSortedByDeadlineProjection.cs"]
+    rationale: ".NET backend illustrative example moves with its profile context and remains non-normative unless a stable catalog record says otherwise."
+  - <<: *dotnet_example
+    current_path: ".dev/standards/examples/reference/README.md"
+    exact_destinations: [".ai/assets/tech-stacks/dotnet-backend/examples/reference/README.md"]
+    rationale: ".NET backend illustrative example moves with its profile context and remains non-normative unless a stable catalog record says otherwise."
+  - <<: *dotnet_example
+    current_path: ".dev/standards/examples/reference/ezddd-import-mapping.md"
+    exact_destinations: [".ai/assets/tech-stacks/dotnet-backend/examples/reference/ezddd-import-mapping.md"]
+    rationale: ".NET backend illustrative example moves with its profile context and remains non-normative unless a stable catalog record says otherwise."
+  - <<: *dotnet_example
+    current_path: ".dev/standards/examples/reference/ezspec-test-template.md"
+    exact_destinations: [".ai/assets/tech-stacks/dotnet-backend/examples/reference/ezspec-test-template.md"]
+    rationale: ".NET backend illustrative example moves with its profile context and remains non-normative unless a stable catalog record says otherwise."
+  - <<: *dotnet_example
+    current_path: ".dev/standards/examples/reference/nuget-dependencies.md"
+    exact_destinations: [".ai/assets/tech-stacks/dotnet-backend/examples/reference/nuget-dependencies.md"]
+    rationale: ".NET backend illustrative example moves with its profile context and remains non-normative unless a stable catalog record says otherwise."
+  - <<: *dotnet_example
+    current_path: ".dev/standards/examples/reference/reactor-pattern-guide.md"
+    exact_destinations: [".ai/assets/tech-stacks/dotnet-backend/examples/reference/reactor-pattern-guide.md"]
+    rationale: ".NET backend illustrative example moves with its profile context and remains non-normative unless a stable catalog record says otherwise."
+  - <<: *dotnet_example
+    current_path: ".dev/standards/examples/use-case-injection/README.md"
+    exact_destinations: [".ai/assets/tech-stacks/dotnet-backend/examples/use-case-injection/README.md"]
+    rationale: ".NET backend illustrative example moves with its profile context and remains non-normative unless a stable catalog record says otherwise."
+  - <<: *dotnet_example
+    current_path: ".dev/standards/examples/usecase/AssignTagUseCase.cs"
+    exact_destinations: [".ai/assets/tech-stacks/dotnet-backend/examples/usecase/AssignTagUseCase.cs"]
+    rationale: ".NET backend illustrative example moves with its profile context and remains non-normative unless a stable catalog record says otherwise."
+  - <<: *dotnet_example
+    current_path: ".dev/standards/examples/usecase/AssignTagUseCaseContract.cs"
+    exact_destinations: [".ai/assets/tech-stacks/dotnet-backend/examples/usecase/AssignTagUseCaseContract.cs"]
+    rationale: ".NET backend illustrative example moves with its profile context and remains non-normative unless a stable catalog record says otherwise."
+  - <<: *dotnet_example
+    current_path: ".dev/standards/examples/usecase/CreatePlanUseCase.cs"
+    exact_destinations: [".ai/assets/tech-stacks/dotnet-backend/examples/usecase/CreatePlanUseCase.cs"]
+    rationale: ".NET backend illustrative example moves with its profile context and remains non-normative unless a stable catalog record says otherwise."
+  - <<: *dotnet_example
+    current_path: ".dev/standards/examples/usecase/CreatePlanUseCaseContract.cs"
+    exact_destinations: [".ai/assets/tech-stacks/dotnet-backend/examples/usecase/CreatePlanUseCaseContract.cs"]
+    rationale: ".NET backend illustrative example moves with its profile context and remains non-normative unless a stable catalog record says otherwise."
+  - <<: *dotnet_example
+    current_path: ".dev/standards/examples/usecase/CreateTaskUseCase.cs"
+    exact_destinations: [".ai/assets/tech-stacks/dotnet-backend/examples/usecase/CreateTaskUseCase.cs"]
+    rationale: ".NET backend illustrative example moves with its profile context and remains non-normative unless a stable catalog record says otherwise."
+  - <<: *dotnet_example
+    current_path: ".dev/standards/examples/usecase/CreateTaskUseCaseContract.cs"
+    exact_destinations: [".ai/assets/tech-stacks/dotnet-backend/examples/usecase/CreateTaskUseCaseContract.cs"]
+    rationale: ".NET backend illustrative example moves with its profile context and remains non-normative unless a stable catalog record says otherwise."
+  - <<: *dotnet_example
+    current_path: ".dev/standards/examples/usecase/DeleteTaskUseCase.cs"
+    exact_destinations: [".ai/assets/tech-stacks/dotnet-backend/examples/usecase/DeleteTaskUseCase.cs"]
+    rationale: ".NET backend illustrative example moves with its profile context and remains non-normative unless a stable catalog record says otherwise."
+  - <<: *dotnet_example
+    current_path: ".dev/standards/examples/usecase/DeleteTaskUseCaseContract.cs"
+    exact_destinations: [".ai/assets/tech-stacks/dotnet-backend/examples/usecase/DeleteTaskUseCaseContract.cs"]
+    rationale: ".NET backend illustrative example moves with its profile context and remains non-normative unless a stable catalog record says otherwise."
+  - <<: *dotnet_example
+    current_path: ".dev/standards/examples/usecase/GetPlanUseCase.cs"
+    exact_destinations: [".ai/assets/tech-stacks/dotnet-backend/examples/usecase/GetPlanUseCase.cs"]
+    rationale: ".NET backend illustrative example moves with its profile context and remains non-normative unless a stable catalog record says otherwise."
+  - <<: *dotnet_example
+    current_path: ".dev/standards/examples/usecase/GetPlanUseCaseContract.cs"
+    exact_destinations: [".ai/assets/tech-stacks/dotnet-backend/examples/usecase/GetPlanUseCaseContract.cs"]
+    rationale: ".NET backend illustrative example moves with its profile context and remains non-normative unless a stable catalog record says otherwise."
+  - <<: *dotnet_example
+    current_path: ".dev/standards/examples/usecase/GetPlansUseCase.cs"
+    exact_destinations: [".ai/assets/tech-stacks/dotnet-backend/examples/usecase/GetPlansUseCase.cs"]
+    rationale: ".NET backend illustrative example moves with its profile context and remains non-normative unless a stable catalog record says otherwise."
+  - <<: *dotnet_example
+    current_path: ".dev/standards/examples/usecase/GetPlansUseCaseContract.cs"
+    exact_destinations: [".ai/assets/tech-stacks/dotnet-backend/examples/usecase/GetPlansUseCaseContract.cs"]
+    rationale: ".NET backend illustrative example moves with its profile context and remains non-normative unless a stable catalog record says otherwise."
+  - <<: *dotnet_example
+    current_path: ".dev/standards/examples/usecase/GetTasksByDateUseCase.cs"
+    exact_destinations: [".ai/assets/tech-stacks/dotnet-backend/examples/usecase/GetTasksByDateUseCase.cs"]
+    rationale: ".NET backend illustrative example moves with its profile context and remains non-normative unless a stable catalog record says otherwise."
+  - <<: *dotnet_example
+    current_path: ".dev/standards/examples/usecase/GetTasksByDateUseCaseContract.cs"
+    exact_destinations: [".ai/assets/tech-stacks/dotnet-backend/examples/usecase/GetTasksByDateUseCaseContract.cs"]
+    rationale: ".NET backend illustrative example moves with its profile context and remains non-normative unless a stable catalog record says otherwise."
+  - <<: *dotnet_example
+    current_path: ".dev/standards/examples/usecase/README.md"
+    exact_destinations: [".ai/assets/tech-stacks/dotnet-backend/examples/usecase/README.md"]
+    rationale: ".NET backend illustrative example moves with its profile context and remains non-normative unless a stable catalog record says otherwise."
+  - <<: *dotnet_example
+    current_path: ".dev/standards/examples/usecase/RenameTaskUseCase.cs"
+    exact_destinations: [".ai/assets/tech-stacks/dotnet-backend/examples/usecase/RenameTaskUseCase.cs"]
+    rationale: ".NET backend illustrative example moves with its profile context and remains non-normative unless a stable catalog record says otherwise."
+  - <<: *dotnet_example
+    current_path: ".dev/standards/examples/usecase/RenameTaskUseCaseContract.cs"
+    exact_destinations: [".ai/assets/tech-stacks/dotnet-backend/examples/usecase/RenameTaskUseCaseContract.cs"]
+    rationale: ".NET backend illustrative example moves with its profile context and remains non-normative unless a stable catalog record says otherwise."
+  - <<: *dotnet_example
+    current_path: ".dev/standards/examples/usecase/UseCaseContracts.cs"
+    exact_destinations: [".ai/assets/tech-stacks/dotnet-backend/examples/usecase/UseCaseContracts.cs"]
+    rationale: ".NET backend illustrative example moves with its profile context and remains non-normative unless a stable catalog record says otherwise."
+  - <<: *dotnet_rule
+    current_path: ".dev/standards/project-structure.md"
+    exact_destinations: [".ai/assets/tech-stacks/dotnet-backend/standards/project-structure.md"]
+    rationale: ".NET backend-only standard is transitional-unmigrated in .dev/standards and moves to the dotnet-backend profile without path-derived IDs."
+  - <<: *legacy_index
+    current_path: ".dev/standards/rationale/INDEX.MD"
+    exact_destinations: [".dev/standards/rationale/INDEX.MD"]
+    rationale: "Thin compatibility navigation preserves source-governance discovery while pointing to classified profile canonical locations."
+  - <<: *legacy_index
+    current_path: ".dev/standards/rationale/README.MD"
+    exact_destinations: [".dev/standards/rationale/README.MD"]
+    rationale: "Thin compatibility navigation preserves source-governance discovery while pointing to classified profile canonical locations."
+  - <<: *dotnet_reference
+    current_path: ".dev/standards/rationale/generic-repository-only-rationale.MD"
+    exact_destinations: [".ai/assets/tech-stacks/dotnet-backend/references/rationale/generic-repository-only-rationale.MD"]
+    rationale: ".NET backend rationale moves beside the profile semantics it explains; it is a derived human reference, not a second owner."
+  - <<: *dotnet_reference
+    current_path: ".dev/standards/rationale/profile-based-testing-rationale.MD"
+    exact_destinations: [".ai/assets/tech-stacks/dotnet-backend/references/rationale/profile-based-testing-rationale.MD"]
+    rationale: ".NET backend rationale moves beside the profile semantics it explains; it is a derived human reference, not a second owner."
+  - <<: *dotnet_reference
+    current_path: ".dev/standards/rationale/query-side-layering-rationale.MD"
+    exact_destinations: [".ai/assets/tech-stacks/dotnet-backend/references/rationale/query-side-layering-rationale.MD"]
+    rationale: ".NET backend rationale moves beside the profile semantics it explains; it is a derived human reference, not a second owner."
+  - <<: *dotnet_reference
+    current_path: ".dev/standards/rationale/rest-api-resource-path-rationale.MD"
+    exact_destinations: [".ai/assets/tech-stacks/dotnet-backend/references/rationale/rest-api-resource-path-rationale.MD"]
+    rationale: ".NET backend rationale moves beside the profile semantics it explains; it is a derived human reference, not a second owner."
+  - <<: *external_workflow_retained
+    current_path: ".dev/standards/rationale/skill-sub-agent-boundary-rationale.MD"
+    exact_destinations: [".dev/standards/rationale/skill-sub-agent-boundary-rationale.MD"]
+    rationale: "Universal sub-agent and skill-boundary semantics are outside #92; retain the current path and hand any future canonical shared placement to independently authorized #94."
+  - <<: *legacy_index
+    current_path: ".dev/standards/templates/INDEX.MD"
+    exact_destinations: [".dev/standards/templates/INDEX.MD"]
+    rationale: "Thin compatibility navigation preserves source-governance discovery while pointing to classified profile canonical locations."
+  - <<: *legacy_index
+    current_path: ".dev/standards/templates/README.md"
+    exact_destinations: [".dev/standards/templates/README.md"]
+    rationale: "Thin compatibility navigation preserves source-governance discovery while pointing to classified profile canonical locations."
+  - <<: *dotnet_reference
+    current_path: ".dev/standards/templates/application-properties-templates.md"
+    exact_destinations: [".ai/assets/tech-stacks/dotnet-backend/templates/application-properties-templates.md"]
+    rationale: ".NET backend template moves into the profile because its guidance is profile-specific and not source-governance truth."
+  - <<: *dotnet_reference
+    current_path: ".dev/standards/templates/profile-isolated-configurations.md"
+    exact_destinations: [".ai/assets/tech-stacks/dotnet-backend/templates/profile-isolated-configurations.md"]
+    rationale: ".NET backend template moves into the profile because its guidance is profile-specific and not source-governance truth."
+  - <<: *source_verification
+    current_path: "tools/DotnetBackendAnalyzers.Tests/AggregateInfrastructureDependencyAnalyzerTests.cs"
+    exact_destinations: ["tools/DotnetBackendAnalyzers.Tests/AggregateInfrastructureDependencyAnalyzerTests.cs"]
+    rationale: "Root test project remains source-only verification and outside downstream payload; any relocated-provider ProjectReference is RPB-005."
+  - <<: *source_verification
+    current_path: "tools/DotnetBackendAnalyzers.Tests/AnalyzerTestHelper.cs"
+    exact_destinations: ["tools/DotnetBackendAnalyzers.Tests/AnalyzerTestHelper.cs"]
+    rationale: "Root test project remains source-only verification and outside downstream payload; any relocated-provider ProjectReference is RPB-005."
+  - <<: *source_verification
+    current_path: "tools/DotnetBackendAnalyzers.Tests/ControllerComplianceAnalyzerTests.cs"
+    exact_destinations: ["tools/DotnetBackendAnalyzers.Tests/ControllerComplianceAnalyzerTests.cs"]
+    rationale: "Root test project remains source-only verification and outside downstream payload; any relocated-provider ProjectReference is RPB-005."
+  - <<: *source_verification
+    current_path: "tools/DotnetBackendAnalyzers.Tests/DotnetBackendAnalyzers.Tests.csproj"
+    exact_destinations: ["tools/DotnetBackendAnalyzers.Tests/DotnetBackendAnalyzers.Tests.csproj"]
+    rationale: "Root test project remains source-only verification and outside downstream payload; any relocated-provider ProjectReference is RPB-005."
+  - <<: *source_verification
+    current_path: "tools/DotnetBackendAnalyzers.Tests/EventSourcedAggregateMutationAnalyzerTests.cs"
+    exact_destinations: ["tools/DotnetBackendAnalyzers.Tests/EventSourcedAggregateMutationAnalyzerTests.cs"]
+    rationale: "Root test project remains source-only verification and outside downstream payload; any relocated-provider ProjectReference is RPB-005."
+  - <<: *source_verification
+    current_path: "tools/DotnetBackendAnalyzers.Tests/MapperComplianceAnalyzerTests.cs"
+    exact_destinations: ["tools/DotnetBackendAnalyzers.Tests/MapperComplianceAnalyzerTests.cs"]
+    rationale: "Root test project remains source-only verification and outside downstream payload; any relocated-provider ProjectReference is RPB-005."
+  - <<: *source_verification
+    current_path: "tools/DotnetBackendAnalyzers.Tests/ProjectionReadOnlyAnalyzerTests.cs"
+    exact_destinations: ["tools/DotnetBackendAnalyzers.Tests/ProjectionReadOnlyAnalyzerTests.cs"]
+    rationale: "Root test project remains source-only verification and outside downstream payload; any relocated-provider ProjectReference is RPB-005."
+  - <<: *source_verification
+    current_path: "tools/DotnetBackendAnalyzers.Tests/RepositoryQueryMethodAnalyzerTests.cs"
+    exact_destinations: ["tools/DotnetBackendAnalyzers.Tests/RepositoryQueryMethodAnalyzerTests.cs"]
+    rationale: "Root test project remains source-only verification and outside downstream payload; any relocated-provider ProjectReference is RPB-005."
+  - <<: *source_verification
+    current_path: "tools/DotnetBackendAnalyzers.Tests/UseCaseServiceProviderInjectionAnalyzerTests.cs"
+    exact_destinations: ["tools/DotnetBackendAnalyzers.Tests/UseCaseServiceProviderInjectionAnalyzerTests.cs"]
+    rationale: "Root test project remains source-only verification and outside downstream payload; any relocated-provider ProjectReference is RPB-005."
+  - <<: *provider_production
+    current_path: "tools/DotnetBackendAnalyzers/AggregateInfrastructureDependencyAnalyzer.cs"
+    exact_destinations: [".ai/assets/tech-stacks/dotnet-backend/tooling/bundled-mechanical-validation/analyzers/AggregateInfrastructureDependencyAnalyzer.cs"]
+    rationale: "Bundled analyzer production moves into the dotnet-backend provider location; no semantic ownership moves to the provider."
+  - <<: *provider_production
+    current_path: "tools/DotnetBackendAnalyzers/ControllerComplianceAnalyzer.cs"
+    exact_destinations: [".ai/assets/tech-stacks/dotnet-backend/tooling/bundled-mechanical-validation/analyzers/ControllerComplianceAnalyzer.cs"]
+    rationale: "Bundled analyzer production moves into the dotnet-backend provider location; no semantic ownership moves to the provider."
+  - <<: *provider_production
+    current_path: "tools/DotnetBackendAnalyzers/DiagnosticCategories.cs"
+    exact_destinations: [".ai/assets/tech-stacks/dotnet-backend/tooling/bundled-mechanical-validation/analyzers/DiagnosticCategories.cs"]
+    rationale: "Bundled analyzer production moves into the dotnet-backend provider location; no semantic ownership moves to the provider."
+  - <<: *provider_production
+    current_path: "tools/DotnetBackendAnalyzers/DotnetBackendAnalyzers.csproj"
+    exact_destinations: [".ai/assets/tech-stacks/dotnet-backend/tooling/bundled-mechanical-validation/analyzers/DotnetBackendAnalyzers.csproj"]
+    rationale: "Bundled analyzer production moves into the dotnet-backend provider location; no semantic ownership moves to the provider."
+  - <<: *provider_production
+    current_path: "tools/DotnetBackendAnalyzers/EventSourcedAggregateMutationAnalyzer.cs"
+    exact_destinations: [".ai/assets/tech-stacks/dotnet-backend/tooling/bundled-mechanical-validation/analyzers/EventSourcedAggregateMutationAnalyzer.cs"]
+    rationale: "Bundled analyzer production moves into the dotnet-backend provider location; no semantic ownership moves to the provider."
+  - <<: *provider_production
+    current_path: "tools/DotnetBackendAnalyzers/MapperComplianceAnalyzer.cs"
+    exact_destinations: [".ai/assets/tech-stacks/dotnet-backend/tooling/bundled-mechanical-validation/analyzers/MapperComplianceAnalyzer.cs"]
+    rationale: "Bundled analyzer production moves into the dotnet-backend provider location; no semantic ownership moves to the provider."
+  - <<: *provider_production
+    current_path: "tools/DotnetBackendAnalyzers/ProjectionReadOnlyAnalyzer.cs"
+    exact_destinations: [".ai/assets/tech-stacks/dotnet-backend/tooling/bundled-mechanical-validation/analyzers/ProjectionReadOnlyAnalyzer.cs"]
+    rationale: "Bundled analyzer production moves into the dotnet-backend provider location; no semantic ownership moves to the provider."
+  - <<: *provider_production
+    current_path: "tools/DotnetBackendAnalyzers/README.md"
+    exact_destinations: [".ai/assets/tech-stacks/dotnet-backend/tooling/bundled-mechanical-validation/analyzers/README.md"]
+    rationale: "Bundled analyzer production moves into the dotnet-backend provider location; no semantic ownership moves to the provider."
+  - <<: *provider_production
+    current_path: "tools/DotnetBackendAnalyzers/RepositoryQueryMethodAnalyzer.cs"
+    exact_destinations: [".ai/assets/tech-stacks/dotnet-backend/tooling/bundled-mechanical-validation/analyzers/RepositoryQueryMethodAnalyzer.cs"]
+    rationale: "Bundled analyzer production moves into the dotnet-backend provider location; no semantic ownership moves to the provider."
+  - <<: *provider_production
+    current_path: "tools/DotnetBackendAnalyzers/RuleDescriptors.cs"
+    exact_destinations: [".ai/assets/tech-stacks/dotnet-backend/tooling/bundled-mechanical-validation/analyzers/RuleDescriptors.cs"]
+    rationale: "Bundled analyzer production moves into the dotnet-backend provider location; no semantic ownership moves to the provider."
+  - <<: *provider_production
+    current_path: "tools/DotnetBackendAnalyzers/UseCaseServiceProviderInjectionAnalyzer.cs"
+    exact_destinations: [".ai/assets/tech-stacks/dotnet-backend/tooling/bundled-mechanical-validation/analyzers/UseCaseServiceProviderInjectionAnalyzer.cs"]
+    rationale: "Bundled analyzer production moves into the dotnet-backend provider location; no semantic ownership moves to the provider."
+  - <<: *provider_production
+    current_path: "tools/DotnetBackendAnalyzers/templates/Directory.Build.props.snippet"
+    exact_destinations: [".ai/assets/tech-stacks/dotnet-backend/tooling/bundled-mechanical-validation/analyzers/templates/Directory.Build.props.snippet"]
+    rationale: "Bundled analyzer production moves into the dotnet-backend provider location; no semantic ownership moves to the provider."
+  - <<: *provider_production
+    current_path: "tools/DotnetBackendAnalyzers/templates/analyzer-severity.editorconfig"
+    exact_destinations: [".ai/assets/tech-stacks/dotnet-backend/tooling/bundled-mechanical-validation/analyzers/templates/analyzer-severity.editorconfig"]
+    rationale: "Bundled analyzer production moves into the dotnet-backend provider location; no semantic ownership moves to the provider."
+  - <<: *source_verification
+    current_path: "tools/DotnetBackendBuildingBlocks.Tests/DotnetBackendBuildingBlocks.Tests.csproj"
+    exact_destinations: ["tools/DotnetBackendBuildingBlocks.Tests/DotnetBackendBuildingBlocks.Tests.csproj"]
+    rationale: "Root test project remains source-only verification and outside downstream payload; any relocated-provider ProjectReference is RPB-005."
+  - <<: *source_verification
+    current_path: "tools/DotnetBackendBuildingBlocks.Tests/EsAggregateRootTests.cs"
+    exact_destinations: ["tools/DotnetBackendBuildingBlocks.Tests/EsAggregateRootTests.cs"]
+    rationale: "Root test project remains source-only verification and outside downstream payload; any relocated-provider ProjectReference is RPB-005."
+  - <<: *source_verification
+    current_path: "tools/DotnetBackendValidation.Tests/DotnetBackendValidation.Tests.csproj"
+    exact_destinations: ["tools/DotnetBackendValidation.Tests/DotnetBackendValidation.Tests.csproj"]
+    rationale: "Root test project remains source-only verification and outside downstream payload; any relocated-provider ProjectReference is RPB-005."
+  - <<: *source_verification
+    current_path: "tools/DotnetBackendValidation.Tests/ProjectionModelRegistrationValidatorTests.cs"
+    exact_destinations: ["tools/DotnetBackendValidation.Tests/ProjectionModelRegistrationValidatorTests.cs"]
+    rationale: "Root test project remains source-only verification and outside downstream payload; any relocated-provider ProjectReference is RPB-005."
+  - <<: *provider_production
+    current_path: "tools/DotnetBackendValidation/DotnetBackendValidation.csproj"
+    exact_destinations: [".ai/assets/tech-stacks/dotnet-backend/tooling/bundled-mechanical-validation/runtime-validation/DotnetBackendValidation.csproj"]
+    rationale: "Bundled validator production moves into the dotnet-backend provider location; no semantic ownership moves to the provider."
+  - <<: *provider_production
+    current_path: "tools/DotnetBackendValidation/ProjectionModelRegistrationValidator.cs"
+    exact_destinations: [".ai/assets/tech-stacks/dotnet-backend/tooling/bundled-mechanical-validation/runtime-validation/ProjectionModelRegistrationValidator.cs"]
+    rationale: "Bundled validator production moves into the dotnet-backend provider location; no semantic ownership moves to the provider."
+  - <<: *provider_production
+    current_path: "tools/DotnetBackendValidation/README.md"
+    exact_destinations: [".ai/assets/tech-stacks/dotnet-backend/tooling/bundled-mechanical-validation/runtime-validation/README.md"]
+    rationale: "Bundled validator production moves into the dotnet-backend provider location; no semantic ownership moves to the provider."
+migration_batches:
+  - batch_id: RPB-004-shared-and-profile-catalogs
+    implementing_task: RPB-004
+    scope: "Retain shared baselines, move classified .NET rules/examples/references into the profile, refresh navigation, and derive machine-readable shared/profile rule catalogs."
+    catalog_contract: "Catalogs contain stable rule and constraint IDs, complete baseline normative statements, selector/applicability metadata, canonical source references, and catalog digest inputs."
+    dependencies: ["RPB-001 identity contract", "this matrix"]
+  - batch_id: RPB-003-effective-schema
+    implementing_task: RPB-003
+    scope: "May prepare the #112 target-effective schema and index before catalog completion."
+    dependencies: ["RPB-001 identity contract"]
+  - batch_id: RPB-003-resolver-and-packets
+    implementing_task: RPB-003
+    scope: "Resolver and task-scoped packet generation consume the RPB-004 machine-readable catalogs; they must not parse Markdown or the flat registry at runtime."
+    dependencies: ["RPB-004 shared/profile rule catalogs", "RPB-003 target-effective schema"]
+  - batch_id: RPB-005-provider-relocation
+    implementing_task: RPB-005
+    provider_id: ai-context-dotnet-bundled-mechanical-validation
+    scope: "Relocate only bundled provider production, update source distribution control, preserve reference-in-place inactive-by-default activation, and update root test ProjectReferences."
+    dependencies: ["this matrix"]
+  - batch_id: RPB-006-packet-consumers
+    implementing_task: RPB-006
+    scope: "Add effective-rule packet consumption only after RPB-003; serialize shared action-skill YAML sections with #94."
+    dependencies: ["RPB-003 resolver and packets", "#94 shared-file coordination"]
+  - batch_id: RPB-007-readiness
+    implementing_task: RPB-007
+    scope: "Record Architecture Kit readiness and the current unsupported/unavailable gate."
+    dependencies: ["RPB-003 target-effective state", "RPB-005 provider relocation"]
+unresolved_rows: []
+manual_checks:
+  - "Compare the 232 explicit entries with the git ls-files inventory command recorded above."
+  - "Confirm every legacy .dev/standards semantic row is transitional-unmigrated and not silently retained as a portable semantic owner."
+  - "Confirm RPB-005 is the only provider-production relocation owner and root tools test rows remain source-only."
+  - "Confirm RPB-003 runtime inputs are the RPB-004 catalogs, not Markdown or the flat ownership registry."
+  - "Read back this YAML and run git diff --check only; repository validation scripts, builds, tests, and formatters are owner-prohibited."
