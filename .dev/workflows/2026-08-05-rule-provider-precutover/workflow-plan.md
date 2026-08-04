@@ -12,7 +12,7 @@
 - `current_phase`: `verification`
 - `artifact_root`: `.dev/workflows/2026-08-05-rule-provider-precutover`
 - `created_at`: `2026-08-05T01:29:39+08:00`
-- `updated_at`: `2026-08-05T07:38:38+08:00`
+- `updated_at`: `2026-08-05T07:46:05+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md`
 - `template_version`: `1.2.0`
 
@@ -40,6 +40,7 @@
 | #105 | #112 target-effective state; #113 resolver/packets; #114 action-skill consumption | `RPB-003`, `RPB-006` |
 | #106 | #115 provider relocation/manifest; #116 reference-in-place activation | `RPB-005` |
 | #107 | #117 readiness record and unavailable gate | `RPB-007` |
+| workflow closeout | no implementation Issue; verification and integration evidence only | `RPB-008` |
 
 The four parents remain umbrella Enablers. The nine children record deliverable and rollback boundaries. They do not create nine workflows or nine releases.
 
@@ -60,6 +61,7 @@ The four parents remain umbrella Enablers. The nine children record deliverable 
 5. `RPB-005` / #115 and #116 — relocate the bundled provider and implement reference-in-place activation; starts after `RPB-002` and uses the exact canonical root recorded by the matrix.
 6. `RPB-006` / #114 — migrate action skills to effective-rule consumption; starts after `RPB-003` and must coordinate shared-file ownership with the independent #94 workflow.
 7. `RPB-007` / #117 — implement the Architecture Kit readiness record and current unavailable gate; starts after `RPB-003` and `RPB-005`.
+8. `RPB-008` — create the independent verification assessment and own PR, hosted-check, merge-commit, merged-main, Issue-closeout, and #94 handoff evidence. It starts only after all remediation tasks complete and creates no implementation Issue.
 
 Only one task is marked `in_progress` in durable workflow state. The orchestrator may delegate non-overlapping bounded file ownership in parallel after its dependencies are complete.
 
@@ -82,7 +84,7 @@ Only one task is marked `in_progress` in durable workflow state. The orchestrato
 1. Baseline evidence and owner decisions — completed from `ASM-20260804-002`, #92 discussion, and live Issue read-back at `main@d8580df4516155ff7b1a139d9a064a8b0d4b2019`.
 2. Workflow and bounded work-item binding — completed by creating #109 through #117 and formal sub-issue relationships under #104 through #107.
 3. Dependency-ordered remediation — completed; `RPB-001` through `RPB-007` completed.
-4. Independent post-remediation audit — in progress; #94 reserved `ASM-20260805-001`, so #92 will allocate the next unused sequence after all-ref confirmation.
+4. Independent post-remediation audit — in progress under `RPB-008`; #94 reserved `ASM-20260805-001`, and all-ref confirmation allocated `ASM-20260805-002` to #92.
 5. PR review, merge-commit integration, merged-main read-back, and closure — pending; release packaging remains excluded.
 
 ## Delivery And Merge Decisions
@@ -96,15 +98,15 @@ Only one task is marked `in_progress` in durable workflow state. The orchestrato
 ## Resume Checkpoint
 
 - Last completed action: Completed `RPB-007` with a closed Architecture Kit readiness schema, deterministic fail-closed evaluator, current unsupported/unavailable fixture, criterion-specific future evidence contract, and three-round independent source review with all blockers corrected.
-- Current task: independent post-remediation AI-context verification is in progress.
-- Exact next action: Commit the RPB-007 checkpoint, allocate `ASM-20260805-002` after local/remote duplicate checks, and audit the full #92 remediation against `ASM-20260804-002#AIC-001` and `AIC-002` without running repository validators.
+- Current task: `RPB-008` independent verification and integration closeout is in progress.
+- Exact next action: Commit the lifecycle-correct closeout task and complete `ASM-20260805-002` against that subject commit without running repository validators.
 - Validation already completed: prior migration/catalog, resolver, provider, action-skill, and readiness-gate source read-back; production blob parity; relocation/distribution scans; typed evidence and digest inspection; independent review rounds; #94 overlap and transport-order coordination; and `git diff --check`. No tests, builds, check-all, or repository validation scripts have run.
 - Git state: branch `codex/2026-08-05-rule-provider-precutover` starts from `origin/main@d8580df4516155ff7b1a139d9a064a8b0d4b2019`.
-- Branch history and checkpoint handoffs: segment 1 only; local durable checkpoints through `08f24eb`, with the RPB-007 checkpoint pending this commit; no push or merge handoff yet.
+- Branch history and checkpoint handoffs: segment 1 only; local durable checkpoints through `06372a0`; the RPB-008 lifecycle checkpoint is pending this commit; no push or merge handoff yet.
 - Blockers or unresolved decisions: none. Shared-file sequencing with #94 is a coordination constraint, not an owner-decision blocker.
 
 ## Branch Lifecycle
 
 | Segment | Branch | Base | Checkpoint Type | Commit | Remote / Target | Recorded At | Reason | Resume Branch / Action |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| 1 | `codex/2026-08-05-rule-provider-precutover` | `main@d8580df4516155ff7b1a139d9a064a8b0d4b2019` | active verification | pending | `origin/main` | `2026-08-05T01:29:39+08:00` | owner-authorized grouped pre-cutover remediation | create the post-remediation verification assessment |
+| 1 | `codex/2026-08-05-rule-provider-precutover` | `main@d8580df4516155ff7b1a139d9a064a8b0d4b2019` | active verification | pending | `origin/main` | `2026-08-05T01:29:39+08:00` | owner-authorized grouped pre-cutover remediation | execute `RPB-008` verification and integration closeout |

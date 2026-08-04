@@ -14,7 +14,7 @@
 - `owner_skill`: `ai-context-governance`
 - `status`: `draft`
 - `created_at`: `2026-08-05T01:29:39+08:00`
-- `updated_at`: `2026-08-05T07:38:38+08:00`
+- `updated_at`: `2026-08-05T07:46:05+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-remediation-report-template.md`
 - `template_version`: `2.0.0`
 - `baseline_assessment`: `ASM-20260804-002`
@@ -70,5 +70,5 @@
 
 - Required validations: pending; no repository validation scripts may be run under current owner direction.
 - Commit status: durable checkpoints through `08f24eb`; branch not pushed or merged; the RPB-007 checkpoint is pending this commit.
-- Workflow/task status: `RPB-001` through `RPB-007` completed; independent verification is in progress.
+- Workflow/task status: `RPB-001` through `RPB-007` completed; `RPB-008` owns independent verification and integration closeout and is in progress.
 - Final next action: complete the independent verification assessment, then PR, merge-commit integration, and merged-main read-back without release packaging.
