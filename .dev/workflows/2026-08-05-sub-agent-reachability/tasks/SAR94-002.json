@@ -1,0 +1,79 @@
+{
+  "template_id": "ai-context-governance-remediation-task",
+  "template_version": "1.1.0",
+  "template_created_at": "2026-07-10T18:22:49+08:00",
+  "template_updated_at": "2026-07-27T09:52:09+08:00",
+  "task_id": "SAR94-002",
+  "workflow_id": "2026-08-05-sub-agent-reachability",
+  "owner_skill": "ai-context-governance",
+  "title": "Record role execution and no-delegation inline parity",
+  "status": "pending",
+  "created_at": "2026-08-05T01:34:40+08:00",
+  "updated_at": "2026-08-05T01:34:40+08:00",
+  "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
+  "model": "gpt-5.6-terra",
+  "reasoning_effort": "xhigh",
+  "work_item": "#119",
+  "depends_on": [
+    "SAR94-001"
+  ],
+  "finding_ids": [
+    "ASM-20260804-002#AIC-003",
+    "ASM-20260804-002#AIC-004"
+  ],
+  "scope": {
+    "target": "Provider-neutral direct/delegated selection, role_execution evidence, retry/fallback, orchestrator aggregation, test ownership handoff, and no-delegation inline parity.",
+    "files": [
+      ".ai/assets/CANONICAL-SCHEMA.MD role_execution sections only",
+      ".ai/SUB-AGENT-SYSTEM.MD",
+      ".ai/assets/skills/software-development-orchestrator/**",
+      ".ai/assets/skills/slice-implementer/**",
+      ".ai/assets/skills/bdd-gwt-test-designer/**",
+      "applicable owning-skill execution contracts and bounded fixtures"
+    ],
+    "constraints": [
+      "Implement D94-Q3, D94-Q6, and D94-Q7 exactly",
+      "Owning skills produce role_execution and the orchestrator only aggregates it",
+      "Compose with #114 loaded_rule_ids without redefining #92 resolver semantics",
+      "Use direct inline parity rather than synthetic child evidence on no-delegation runtimes",
+      "Limit retries to the owner-approved attempt policy",
+      "Do not run check-all or repository validation scripts"
+    ],
+    "non_goals": [
+      "Owning-skill static mapping already delivered by SAR94-001",
+      "External orchestration package adoption",
+      "Provider-specific adapter generation or settings",
+      "#92 rule/provider/effective-state sections",
+      "#93 target ignore/install/upgrade drift",
+      "Release packaging or publication"
+    ]
+  },
+  "execution": {
+    "steps": [
+      "Define the provider-neutral role_execution contract and dispositions",
+      "Encode direct-by-default delegation safety gates and value triggers",
+      "Define genuine invocation evidence, one bounded retry, fallback, and final integration ownership",
+      "Apply no-delegation inline parity and test-design-to-implementation handoff",
+      "Update owning-skill production and orchestrator aggregation contracts",
+      "Add bounded examples/fixtures without executing repository validation scripts",
+      "Perform root-orchestrator manual integration review"
+    ],
+    "validation": [
+      "Manual disposition and retry/fallback scenario matrix",
+      "Manual direct/delegated provenance distinction review",
+      "JSON/YAML syntax parsing where applicable",
+      "Repository validation scripts deferred by explicit owner direction"
+    ],
+    "last_completed_step": "Issue #119 was created and read back with dependency on #118.",
+    "next_action": "Wait for SAR94-001 canonical bindings, then implement and integrate the runtime execution contract."
+  },
+  "results": {
+    "summary": "",
+    "files_changed": [],
+    "tests_run": [],
+    "finding_status": "not-addressed",
+    "residual_risk": "Until this task is implemented, runtime evidence cannot consistently distinguish inline application, genuine delegation, unavailable requirements, and non-applicability.",
+    "follow_up_needed": true
+  }
+}
+
