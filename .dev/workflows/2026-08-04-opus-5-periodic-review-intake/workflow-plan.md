@@ -16,10 +16,10 @@
 - `base_branch`: `main`
 - `branch_segment`: `1`
 - `status`: `in_progress`
-- `current_phase`: `closure`
+- `current_phase`: `integration`
 - `artifact_root`: `.dev/workflows/2026-08-04-opus-5-periodic-review-intake`
 - `created_at`: `2026-08-04T20:43:23+08:00`
-- `updated_at`: `2026-08-04T20:51:23+08:00`
+- `updated_at`: `2026-08-04T23:29:53+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md`
 - `template_version`: `1.2.0`
 
@@ -37,21 +37,23 @@
   - preserve the supplied English report byte-for-byte;
   - normalize every material claim in `ASM-20260804-001`;
   - create four unassigned formal backlog items for selected findings;
-  - create the corresponding GitHub Issues and retain exact provider receipts.
+  - create the corresponding GitHub Issues and retain exact provider receipts;
+  - integrate this intake through a pull request after hosted CI passes.
 - Exclusions:
   - no implementation of validation profiles, telemetry, queue triage, README
     navigation, or historical archive migration;
   - no acceptance or rejection of Proposals #75, #76, #85, #87, #90, #92,
     #93, or #94 except the separately selected promotion path for #75;
   - no assignment of additional work to v0.9.0;
-  - no release preparation, tag, publication, merge, or package mutation;
+  - no release preparation, tag, publication, or package mutation;
   - no product source or test code review.
 - Completion criteria:
   - assessment source bytes and SHA-256 are verified;
   - all F-01 through F-10 claims have repository-native dispositions;
   - selected backlog items reference stable assessment finding IDs;
   - four online Issues have required labels, attribution, and canonical IDs;
-  - repository assessment, workflow, backlog, and AI-context validators pass;
+  - required hosted CI checks pass; no new local validation is run for the
+    integration delta under the owner's 2026-08-04 direction;
   - provider receipts are recorded without describing branch-only files as
     integrated `main` truth.
 
@@ -78,25 +80,27 @@
 1. Preserve the external source and finalize the repository-native assessment.
 2. Register `EVAL-002`, `VAL-002`, `GOV-005`, and `CTX-004` as unassigned work.
 3. Create four formal GitHub Issues with required attribution and labels.
-4. Record provider receipts and run deterministic validation.
-5. Keep the workflow active until the canonical branch is integrated and
+4. Record provider receipts and prepare pull-request delivery without running
+   new local validators.
+5. Use required hosted CI as the integration evidence and keep the workflow
+   active until the canonical branch is integrated and
    provider read-back can be reconciled from merged `main`.
 
 ## Resume Checkpoint
 
-- Last completed action: created GitHub Issues #95 through #98 with the required
-  canonical IDs, attribution markers, and kind/scope labels, then recorded the
-  provider receipts in the canonical backlog items.
-- Current task: repository validation and handoff preparation.
-- Exact next action: run final validators, record exact outcomes, and retain the
-  active workflow until its canonical batch is integrated through a pull request.
+- Last completed action: reclassified `CTX-004` as a Story and read back all
+  required Project fields for Issues #95 through #98 from an authenticated `gh`
+  session outside the sandbox.
+- Current task: `OPUS0804-004` pull-request integration using hosted CI evidence.
+- Exact next action: commit and push the branch, open the pull request, and wait
+  for required hosted checks without running new local validators.
 - Validation already completed: subject SHA and branch equality; raw source
   SHA-256; line-count reproduction; Python prerequisite exit-code reproduction;
   current GitHub open-Issue and zero-comment Proposal read-back.
 - Git state: dedicated workflow branch from clean `main@4e7b5e0`.
 - Branch history and checkpoint handoffs: segment 1 only; no push or merge.
-- Blockers or unresolved decisions: no release allocation is authorized; live
-  Project field reconciliation may require the provider automation or `gh`.
+- Blockers or unresolved decisions: no release allocation or follow-up Issue
+  execution is authorized; hosted CI and merged-main reconciliation are pending.
 
 ## Branch Lifecycle
 

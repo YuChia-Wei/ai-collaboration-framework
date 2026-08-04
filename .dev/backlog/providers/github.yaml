@@ -290,7 +290,7 @@ classifications:
   CTX-001: {kind: "enabler", scope: "framework", rationale: "The audit establishes quality evidence for the reusable AI context."}
   CTX-002: {kind: "enabler", scope: "framework", rationale: "Navigation repair changes the reusable AI context catalog."}
   CTX-003: {kind: "enabler", scope: "framework", rationale: "Truth and contract remediation changes portable AI context behavior."}
-  CTX-004: {kind: "enabler", scope: "source-repo", rationale: "The bilingual root navigation correction affects this source repository entry layer without changing analyzer or portable framework behavior."}
+  CTX-004: {kind: "story", scope: "source-repo", rationale: "Repository users and downstream evaluators need the bilingual root navigation to expose the executable analyzer entry point."}
   CUST-001: {kind: "story", scope: "framework", rationale: "Downstream adopters need target-owned customizations preserved across framework lifecycle changes."}
   DEVWF-001: {kind: "story", scope: "framework", rationale: "Maintainers need optional tracker-neutral traceability without making a tracker mandatory."}
   DEVWF-002: {kind: "story", scope: "framework", rationale: "Framework users need one governed end-to-end development orchestration contract."}
