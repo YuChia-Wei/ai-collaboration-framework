@@ -6,9 +6,9 @@
   "task_id": "OPUS0804-004",
   "workflow_id": "2026-08-04-opus-5-periodic-review-intake",
   "owner_skill": "ai-context-governance",
-  "status": "in_progress",
+  "status": "completed",
   "created_at": "2026-08-04T23:29:53+08:00",
-  "updated_at": "2026-08-04T23:29:53+08:00",
+  "updated_at": "2026-08-04T23:40:59+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-5.6-sol",
   "reasoning_effort": "max",
@@ -22,15 +22,15 @@
   "execution": {
     "steps": ["Commit and push the intake delta.", "Open a pull request and wait for required hosted checks.", "Merge only after hosted CI passes, then read back main and provider state."],
     "validation": ["GitHub pull-request check read-back", "merged-main commit and repository state read-back", "GitHub Issue and Project read-back"],
-    "last_completed_step": "Completed provider field initialization and CTX-004 Story correction with online read-back.",
-    "next_action": "Commit and push the branch, open the pull request, and wait for hosted CI without running local validators."
+    "last_completed_step": "Merged PR #101 by rebase after all five hosted checks passed, then read back origin/main at 126996892a8ee5a83d1942e3f793cfb25976809a.",
+    "next_action": "None for this intake; wait for separate owner direction before scheduling any follow-up Issue."
   },
   "results": {
-    "summary": "Integration pending.",
-    "files_changed": [],
-    "tests_run": [],
-    "finding_status": "pending-integration",
-    "residual_risk": "Hosted CI and merged-main read-back are pending.",
-    "follow_up_needed": true
+    "summary": "Integrated the normalized intake through PR #101 using hosted CI evidence and reconciled merged main plus provider state.",
+    "files_changed": [".dev/assessments/ASM-20260804-001/", ".dev/backlog/", ".dev/workflows/2026-08-04-opus-5-periodic-review-intake/"],
+    "tests_run": ["GitHub Actions: Read-only governance contract", "GitHub Actions: Build and validate candidate", "GitHub Actions: Ubuntu prerequisite contract", "GitHub Actions: Windows prerequisite contract", "GitHub Actions: Ubuntu quick gate"],
+    "finding_status": "integrated",
+    "residual_risk": "Issues #95 through #98 remain unscheduled and may conflict with later owner-selected work; no execution authorization is inferred.",
+    "follow_up_needed": false
   }
 }
