@@ -12,7 +12,7 @@ project:
 items:
   - backlog_id: "PKG-005"
     source_path: ".dev/backlog/items/PKG-005.yaml"
-    source_sha256: "d80f8e33ee2ae58528af8930ac9d29e7079cc9efeedda39c69faa880ba96f15a"
+    source_sha256: "633c6b779aef61a76b7ed2fd8dd74d05f2f185465824d64d8484a45a607a1864"
     issue_number: 99
     issue_node_id: "I_kwDOSBe2Hc8AAAABLbdlgw"
     issue_url: "https://github.com/YuChia-Wei/ai-collaboration-prompts-dotnet-backend/issues/99"
