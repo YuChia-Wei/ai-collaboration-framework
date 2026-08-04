@@ -6,7 +6,7 @@ status: "resolved"
 priority: "HIGH"
 summary: "Prevent a selected framework-managed AI Context path from being hidden by target Git ignore or exclude rules while package apply, provenance finalization, or adapter-parity validation treats the path as complete."
 created_at: "2026-08-04T23:04:58+08:00"
-updated_at: "2026-08-05T00:26:12+08:00"
+updated_at: "2026-08-05T00:33:25+08:00"
 release:
   target: "v0.9.0"
   completed_in: "v0.9.0"
@@ -41,5 +41,5 @@ acceptance:
   - "Windows, POSIX, and exact-case fixtures show equivalent path semantics, and package fixtures retain every portable planner helper."
 inventory_notes:
   - "Proposal #93 is retained as the closed source proposal; Story #99 is the only execution work item for this delivery."
-  - "Project #3 read-back on 2026-08-05 recorded Story #99 as Done with completed close reason, P1 High, Owner review Approved, and Target release v0.9.0. Its Published in field was unset; no Project field mutation is included in this workflow closure."
+  - "Project #3 read-back on 2026-08-05 recorded Story #99 as Done with completed close reason, P1 High, Owner review Approved, Target release v0.9.0, and Published in Not yet published. This Project projection makes the Story visible in the 待發布 view; it does not authorize release preparation or publication."
   - "The release-blocker designation records the explicit v0.9.0 allocation; it does not authorize release preparation or publication."
