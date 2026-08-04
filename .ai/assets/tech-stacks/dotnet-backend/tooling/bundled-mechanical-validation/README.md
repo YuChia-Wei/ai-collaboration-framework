@@ -77,6 +77,41 @@ Architecture Kit is `unavailable` and `pre-cutover`; it is not selectable from
 this provider. Its implementation, publication, proof, and cutover need a
 separate authorized readiness workflow.
 
+## Architecture Kit Readiness Gate
+
+[`schemas/architecture-kit-readiness-record.schema.yaml`](schemas/architecture-kit-readiness-record.schema.yaml)
+defines the closed readiness record and the eight independent criteria. The
+current [`unavailable fixture`](fixtures/architecture-kit-unavailable/readiness-record.yaml)
+is bound to this provider ID, its exact framework version and commit, and the
+raw manifest SHA-256. That SHA is the bundled provider version binding: this
+provider has no invented independent semantic version. Architecture Kit's
+package ID and version remain `unavailable`, not invented.
+
+[`scripts/evaluate-architecture-kit-readiness.py`](scripts/evaluate-architecture-kit-readiness.py)
+is deterministic and read-only. It reads only the record, canonical provider
+manifest, and explicitly declared digest-bound evidence files. It rejects
+unknown fields, duplicate criteria or evidence IDs, unsafe paths, and every
+non-`verified` criterion. Source presence, a planned package, a repository
+project, and preview or dual-run activity never make the future provider
+available or prove cutover.
+
+Every `verified` criterion must name all of its evidence IDs. Each evidence
+file has a closed metadata header bound to the record's provider ID, framework
+version and commit, raw manifest SHA, and criterion; it also has the
+criterion-specific closed payload in the readiness schema. Generic
+`status: verified` headers are insufficient. The registry cannot contain an
+unknown, duplicate, reused, or unreferenced entry. The evaluator parses the
+physical canonical manifest again and rejects a supplied mapping that differs
+from its raw bytes.
+
+The current record returns `unsupported` / `unavailable` / `selectable: false`.
+Even a future record with all evidence verified can return only
+`evidence-complete` / `not-selected`: the evaluator cannot execute, select, or
+authorize cutover and never changes a target. A future cutover remains a
+separately authorized breaking change with no preview or dual run, bundled
+source removal, and no legacy provider. Deferred targets must retain a visible
+gap and required action; there is no fallback.
+
 This provider never mutates a target `.slnx`, `Directory.Build.props`,
 `.editorconfig`, project/package references, analyzer severity, or
 warnings-as-errors policy. Those files remain target-owned, separately
@@ -102,3 +137,7 @@ decisions.
   context, plan-only rejection, digest/reference/kind mismatch, unsafe paths,
   materialization rejection, and the unresolved fixture. Root `tools/*Tests`
   projects remain source-only framework tests.
+- `tests/test_architecture_kit_readiness_evaluator.py` is source-only coverage
+  for mixed verified evidence, typed payloads, path/digest/metadata rejection,
+  split-brain manifest rejection, exit-code behavior, exact output binding, and
+  the evidence-complete-but-not-selected boundary.

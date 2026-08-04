@@ -56,3 +56,41 @@ precutover_availability:
     lifecycle: "pre-cutover"
     selectable: false
     reason: "Architecture Kit provider implementation, publication, proof, and cutover are outside this provider contract."
+architecture_kit_readiness_contract:
+  record_schema: "schemas/architecture-kit-readiness-record.schema.yaml"
+  record_template: "templates/architecture-kit-readiness-record.yaml"
+  current_fixture: "fixtures/architecture-kit-unavailable/readiness-record.yaml"
+  evaluator: "scripts/evaluate-architecture-kit-readiness.py"
+  required_criteria:
+    - "immutable_package_identity"
+    - "diagnostic_constraint_crosswalk"
+    - "behavior_parity"
+    - "consumer_guidance"
+    - "compatible_profile_range"
+    - "real_target_proof"
+    - "migration_rollback_proof"
+    - "owner_cutover_approval"
+  criterion_states:
+    - "verified"
+    - "unavailable"
+    - "stale"
+    - "incompatible"
+    - "unresolved"
+    - "source-only"
+  current_package_version_status: "unavailable"
+  source_presence_is_provider_availability: false
+  planned_package_is_provider_availability: false
+  repository_project_is_provider_availability: false
+  preview_or_dual_run_is_cutover_proof: false
+  evaluation:
+    any_non_verified_criterion: "unsupported"
+    all_verified_criteria: "evidence-complete"
+    all_verified_selection: "not-selected"
+    grants_cutover_authorization: false
+    evaluator_side_effects: "none"
+  future_cutover:
+    breaking: true
+    preview_or_dual_run: false
+    remove_bundled_source: true
+    legacy_provider: false
+    requires_explicit_owner_authorization: true

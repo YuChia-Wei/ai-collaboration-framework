@@ -9,10 +9,10 @@
 - `base_branch`: `main`
 - `branch_segment`: `1`
 - `status`: `in_progress`
-- `current_phase`: `remediation`
+- `current_phase`: `verification`
 - `artifact_root`: `.dev/workflows/2026-08-05-rule-provider-precutover`
 - `created_at`: `2026-08-05T01:29:39+08:00`
-- `updated_at`: `2026-08-05T07:10:40+08:00`
+- `updated_at`: `2026-08-05T07:38:38+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md`
 - `template_version`: `1.2.0`
 
@@ -81,8 +81,8 @@ Only one task is marked `in_progress` in durable workflow state. The orchestrato
 
 1. Baseline evidence and owner decisions — completed from `ASM-20260804-002`, #92 discussion, and live Issue read-back at `main@d8580df4516155ff7b1a139d9a064a8b0d4b2019`.
 2. Workflow and bounded work-item binding — completed by creating #109 through #117 and formal sub-issue relationships under #104 through #107.
-3. Dependency-ordered remediation — in progress; `RPB-001` through `RPB-006` completed. `RPB-007` is active.
-4. Independent post-remediation audit — pending.
+3. Dependency-ordered remediation — completed; `RPB-001` through `RPB-007` completed.
+4. Independent post-remediation audit — in progress; #94 reserved `ASM-20260805-001`, so #92 will allocate the next unused sequence after all-ref confirmation.
 5. PR review, merge-commit integration, merged-main read-back, and closure — pending; release packaging remains excluded.
 
 ## Delivery And Merge Decisions
@@ -95,16 +95,16 @@ Only one task is marked `in_progress` in durable workflow state. The orchestrato
 
 ## Resume Checkpoint
 
-- Last completed action: Completed `RPB-006` by adding the coordinated `effective_rule_consumption` sibling contracts, canonical-schema documentation, comparable execution evidence, and source-only metadata/two-route semantic-parity checks across the exact ten action skills without changing #94-owned semantics.
-- Current task: `RPB-007` is in progress.
-- Exact next action: Implement the provider-root-only Architecture Kit readiness schema, template, current unavailable fixture, deterministic evaluator, source-only evaluator test, and manifest/README pointers.
-- Validation already completed: prior migration/catalog, resolver, provider, and action-skill source read-back; production blob parity; relocation/distribution scans; typed evidence and digest inspection; independent review rounds; #94 overlap comparison; and `git diff --check`. No tests, builds, check-all, or repository validation scripts have run.
+- Last completed action: Completed `RPB-007` with a closed Architecture Kit readiness schema, deterministic fail-closed evaluator, current unsupported/unavailable fixture, criterion-specific future evidence contract, and three-round independent source review with all blockers corrected.
+- Current task: independent post-remediation AI-context verification is in progress.
+- Exact next action: Commit the RPB-007 checkpoint, allocate `ASM-20260805-002` after local/remote duplicate checks, and audit the full #92 remediation against `ASM-20260804-002#AIC-001` and `AIC-002` without running repository validators.
+- Validation already completed: prior migration/catalog, resolver, provider, action-skill, and readiness-gate source read-back; production blob parity; relocation/distribution scans; typed evidence and digest inspection; independent review rounds; #94 overlap and transport-order coordination; and `git diff --check`. No tests, builds, check-all, or repository validation scripts have run.
 - Git state: branch `codex/2026-08-05-rule-provider-precutover` starts from `origin/main@d8580df4516155ff7b1a139d9a064a8b0d4b2019`.
-- Branch history and checkpoint handoffs: segment 1 only; local durable checkpoints through `f167672`, with the RPB-006 checkpoint pending this commit; no push or merge handoff yet.
+- Branch history and checkpoint handoffs: segment 1 only; local durable checkpoints through `08f24eb`, with the RPB-007 checkpoint pending this commit; no push or merge handoff yet.
 - Blockers or unresolved decisions: none. Shared-file sequencing with #94 is a coordination constraint, not an owner-decision blocker.
 
 ## Branch Lifecycle
 
 | Segment | Branch | Base | Checkpoint Type | Commit | Remote / Target | Recorded At | Reason | Resume Branch / Action |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| 1 | `codex/2026-08-05-rule-provider-precutover` | `main@d8580df4516155ff7b1a139d9a064a8b0d4b2019` | active remediation | pending | `origin/main` | `2026-08-05T01:29:39+08:00` | owner-authorized grouped pre-cutover remediation | execute `RPB-007` |
+| 1 | `codex/2026-08-05-rule-provider-precutover` | `main@d8580df4516155ff7b1a139d9a064a8b0d4b2019` | active verification | pending | `origin/main` | `2026-08-05T01:29:39+08:00` | owner-authorized grouped pre-cutover remediation | create the post-remediation verification assessment |

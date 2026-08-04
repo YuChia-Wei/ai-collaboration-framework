@@ -1,0 +1,67 @@
+# This record only proves readiness evidence. It never selects, executes, or
+# authorizes a cutover. Replace unresolved placeholders only in a separately
+# authorized future readiness workflow.
+schema_version: "1.0"
+record_type: "architecture-kit-readiness-record"
+record_id: "<readiness-record-id>"
+provider_binding:
+  provider_id: "ai-context-dotnet-bundled-mechanical-validation"
+  canonical_root: ".ai/assets/tech-stacks/dotnet-backend/tooling/bundled-mechanical-validation/"
+  framework_version: "<exact-framework-version>"
+  framework_commit: "<40-character-lowercase-framework-commit>"
+  provider_manifest_sha256: "<sha256-of-raw-provider-manifest.yaml-bytes>"
+architecture_kit:
+  package_id: "<unresolved-architecture-kit-package-id>"
+  package_version: "<unresolved-architecture-kit-package-version>"
+  package_version_status: "unresolved"
+current_state:
+  availability: "unavailable"
+  lifecycle: "pre-cutover"
+  selectable: false
+  source_presence_is_availability: false
+  planned_package_is_availability: false
+  repo_project_is_availability: false
+  preview_or_dual_run_is_cutover_proof: false
+deferred_targets:
+  - target: "<deferred-target-identity>"
+    gap: "<visible-unmet-readiness-gap>"
+    required_action: "<separately-authorized-action-without-fallback>"
+evidence:
+  # Each future verified criterion must reference every declared evidence ID.
+  # Evidence files have the closed header and criterion-specific payload defined
+  # by the readiness schema; no generic status-only proof is accepted.
+  root: ".dev/ai-context/provider-evidence/architecture-kit"
+  records: []
+criteria:
+  - id: "immutable_package_identity"
+    state: "unresolved"
+    evidence_ids: []
+  - id: "diagnostic_constraint_crosswalk"
+    state: "unresolved"
+    evidence_ids: []
+  - id: "behavior_parity"
+    state: "unresolved"
+    evidence_ids: []
+  - id: "consumer_guidance"
+    state: "unresolved"
+    evidence_ids: []
+  - id: "compatible_profile_range"
+    state: "unresolved"
+    evidence_ids: []
+  - id: "real_target_proof"
+    state: "unresolved"
+    evidence_ids: []
+  - id: "migration_rollback_proof"
+    state: "unresolved"
+    evidence_ids: []
+  - id: "owner_cutover_approval"
+    state: "unresolved"
+    evidence_ids: []
+future_cutover:
+  breaking: true
+  preview_or_dual_run: false
+  remove_bundled_source: true
+  legacy_provider: false
+  requires_explicit_owner_authorization: true
+  evaluator_may_execute: false
+  evaluator_may_authorize: false
