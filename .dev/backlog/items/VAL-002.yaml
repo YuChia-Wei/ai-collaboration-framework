@@ -1,0 +1,46 @@
+schema_version: "1.0"
+backlog_id: "VAL-002"
+title: "Separate Source Aggregate And Downstream Workflow Validation Profiles"
+category: "tooling-validation"
+status: "open"
+priority: "HIGH"
+summary: "Separate the source repository's full aggregate gate from downstream workflow validation, add changed-path and time-budget behavior, and preserve fail-closed correctness without forcing unrelated framework checks on every target change."
+created_at: "2026-08-04T20:43:23+08:00"
+updated_at: "2026-08-04T20:51:23+08:00"
+release:
+  target: "unassigned"
+  completed_in: null
+  published_in: null
+  target_scope: "source-and-downstream-validation-profiles"
+origin_refs:
+  - ".dev/assessments/ASM-20260804-001/assessment.yaml"
+finding_refs:
+  - "ASM-20260804-001#AIC-006"
+  - "ASM-20260803-003#AIC-003"
+recommended_owner_skill: "ai-context-governance"
+handoff_condition: "Design profiles and changed-path semantics before editing check-all; retain the complete source critical gate and prove downstream package behavior with clean-install and upgrade fixtures."
+workflow_refs: []
+task_refs: []
+resolution_ref: null
+decision_needed: "Approve the profile ownership, changed-path dependency graph, time-budget semantics, cache or fingerprint boundary, and release/downstream validation matrix."
+related_backlog_refs:
+  - "EVAL-002"
+  - "TOOL-002"
+  - "CI-002"
+provider_refs:
+  - "github-issue:#75"
+  - "github-issue:#96"
+acceptance:
+  - "Source CI/release, downstream workflow, and framework self-test responsibilities are explicit and independently invocable."
+  - "The source critical gate remains complete and fail-closed for release and source-governance changes."
+  - "A downstream workflow runs target-owned tests plus only the framework validators required by its selected capabilities and current transition."
+  - "Changed-path selection is dependency-aware, deterministic, and covered by positive and negative fixtures; unknown impact fails closed or escalates to the full applicable profile."
+  - "Each selected check has a declared time budget and reports timeout, failed, blocked-by-environment, skipped-by-proven-input, or passed without conflation."
+  - "Validation reuse requires an input fingerprint and never reuses evidence after relevant bytes, configuration, runtime, or policy change."
+  - "Windows, hosted Ubuntu, clean-install, and supported-upgrade evidence prove equivalent pass/fail semantics."
+  - "The change does not add token telemetry, weaken prerequisites, or assign itself to a release."
+inventory_notes:
+  - "This formal item promotes the validated direction from Proposal #75; #75 remains a provider intake source until promotion reconciliation is completed."
+  - "A raw validator-to-content line ratio is not an acceptance metric because its denominator omits many validated surfaces."
+  - "TOOL-002 owns prerequisite diagnostics; this item owns aggregate composition and execution selection."
+  - "GitHub Issue #96 is the formal work-management projection; Proposal #75 remains the intake origin until owner-approved promotion closeout."

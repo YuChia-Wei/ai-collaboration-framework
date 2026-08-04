@@ -1,0 +1,46 @@
+schema_version: "1.0"
+backlog_id: "EVAL-002"
+title: "Establish Comparable Workflow Execution And Cost Evidence"
+category: "execution-observability"
+status: "open"
+priority: "HIGH"
+summary: "Record privacy-preserving, comparable workflow execution evidence so maintainers can distinguish necessary rigor, environment retries, waits, repeated validation, and delivery boundaries before optimizing cost."
+created_at: "2026-08-04T20:43:23+08:00"
+updated_at: "2026-08-04T20:51:23+08:00"
+release:
+  target: "unassigned"
+  completed_in: null
+  published_in: null
+  target_scope: "workflow-execution-and-cost-evidence"
+origin_refs:
+  - ".dev/assessments/ASM-20260804-001/assessment.yaml"
+  - ".dev/assessments/ASM-20260803-003/assessment.yaml"
+finding_refs:
+  - "ASM-20260804-001#AIC-005"
+  - "ASM-20260804-001#AIC-006"
+  - "ASM-20260803-003#AIC-001"
+recommended_owner_skill: "ai-context-governance"
+handoff_condition: "Open a design workflow only after the owner selects the minimum privacy boundary, event source, schema placement, and decision questions. Do not infer token use or require provider-private telemetry."
+workflow_refs: []
+task_refs: []
+resolution_ref: null
+decision_needed: "Choose the smallest provider-neutral evidence contract that supports workflow comparison without recording prompts, private host activity, or invented token costs."
+related_backlog_refs:
+  - "DEVWF-001"
+  - "VAL-002"
+  - "REL-004"
+provider_refs:
+  - "github-issue:#95"
+acceptance:
+  - "The contract distinguishes wall span, active execution, external wait, approval wait, environment retry, and unknown time instead of treating all elapsed time as agent work."
+  - "Validator invocations record stable validator identity, input or revision fingerprint when available, outcome, duration, and whether unchanged evidence was reused."
+  - "Delivery evidence records workflow start/end, task count, pull-request boundaries, checkpoint/resume events, and environment-related retries without inferring causality from Git timestamps alone."
+  - "No raw prompt, conversation body, secret, credential, private machine activity, or provider-private token trace is stored."
+  - "Unavailable token or model telemetry remains unknown and cannot be estimated from repository line counts."
+  - "At least one completed release workflow and one non-release workflow produce comparable records before budgets or optimization gates are proposed."
+  - "The schema has an explicit version, ownership, optionality, and downstream/source-only disposition."
+inventory_notes:
+  - "ASM-20260803-003 could reconstruct a 10:47:46 wall span but could not classify active, wait, retry, or token cost; that inability is the primary origin."
+  - "The external review proposed a minimal structure-only record; this item retains that low-cost direction while requiring explicit evidence semantics."
+  - "This item does not authorize an archive threshold or release allocation."
+  - "GitHub Issue #95 is the source repository work-management projection; provider state does not authorize execution."

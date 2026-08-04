@@ -1,0 +1,36 @@
+{
+  "template_id": "ai-context-governance-remediation-task",
+  "template_version": "1.1.0",
+  "template_created_at": "2026-07-10T18:22:49+08:00",
+  "template_updated_at": "2026-07-27T09:52:09+08:00",
+  "task_id": "OPUS0804-003",
+  "workflow_id": "2026-08-04-opus-5-periodic-review-intake",
+  "owner_skill": "ai-context-governance",
+  "status": "completed",
+  "created_at": "2026-08-04T20:43:23+08:00",
+  "updated_at": "2026-08-04T23:29:53+08:00",
+  "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
+  "model": "gpt-5.6-sol",
+  "reasoning_effort": "max",
+  "finding_ids": ["ASM-20260804-001#AIC-005", "ASM-20260804-001#AIC-006", "ASM-20260804-001#AIC-008", "ASM-20260804-001#AIC-010"],
+  "scope": {
+    "target": "Create and verify formal GitHub Issue projections.",
+    "files": [".dev/backlog/items/EVAL-002.yaml", ".dev/backlog/items/VAL-002.yaml", ".dev/backlog/items/GOV-005.yaml", ".dev/backlog/items/CTX-004.yaml"],
+    "constraints": ["Use required attribution and canonical identity markers.", "Do not infer release allocation or execution authority."],
+    "non_goals": ["Start implementation workflows.", "Allocate follow-up work to a release."]
+  },
+  "execution": {
+    "steps": ["Create four Issues.", "Initialize provider fields when available.", "Record exact receipts and validate."],
+    "validation": ["Issue title/body/label read-back", "Project field read-back when available", "repository validators"],
+    "last_completed_step": "Created and read back Issues #95 through #98, reclassified CTX-004 as a Story, and initialized every documented Project field from an authenticated gh session outside the sandbox.",
+    "next_action": "Hand off repository integration to OPUS0804-004; do not start any follow-up Issue."
+  },
+  "results": {
+    "summary": "Created and read back four formal GitHub Issues with canonical IDs, required attribution, kind/scope labels, and complete Project intake fields; CTX-004 is a Story and the other three are Enablers.",
+    "files_changed": [".dev/backlog/items/EVAL-002.yaml", ".dev/backlog/items/VAL-002.yaml", ".dev/backlog/items/GOV-005.yaml", ".dev/backlog/items/CTX-004.yaml"],
+    "tests_run": ["GitHub Issue title/body/label read-back", "GitHub Project Status/Priority/Owner review/Target release/Published in read-back via gh outside the sandbox"],
+    "finding_status": "projected-to-provider",
+    "residual_risk": "Provider state must be reconciled after canonical integration; no Issue is authorized for execution.",
+    "follow_up_needed": false
+  }
+}

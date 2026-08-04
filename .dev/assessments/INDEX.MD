@@ -13,6 +13,8 @@ owns its identity, current lifecycle state, subject revision, and relationships.
 | Assessment | Title | Type | Owner | Status | Subject Commit | Updated | Report |
 | --- | --- | --- | --- | --- | --- | --- | --- |
 | [`ASM-20260804-003`](ASM-20260804-003/assessment.yaml) | Framework-Managed Target Ignore Detection Baseline | `ai-context-audit` | `ai-context-auditor` | `final` | `4e7b5e0d59be831453b5c34f5f1eb3a1daae1245` | `2026-08-04T21:49:30+08:00` | [report](ASM-20260804-003/report.md) |
+| [`ASM-20260804-002`](ASM-20260804-002/assessment.yaml) | Downstream Architecture Kit And Sub-Agent Proposal Evidence Intake | `ai-context-audit` | `ai-context-auditor` | `final` | `4e7b5e0d59be831453b5c34f5f1eb3a1daae1245` | `2026-08-04T23:11:05+08:00` | [report](ASM-20260804-002/report.md) |
+| [`ASM-20260804-001`](ASM-20260804-001/assessment.yaml) | 2026-08-04 Opus 5 Periodic Repository Review Intake | `ai-context-audit` | `ai-context-auditor` | `final` | `4e7b5e0d59be831453b5c34f5f1eb3a1daae1245` | `2026-08-04T20:51:23+08:00` | [report](ASM-20260804-001/report.md) |
 | [`ASM-20260803-005`](ASM-20260803-005/assessment.yaml) | Workflow Delivery Cohesion And Linear Merge Remediation Verification | `ai-context-verification` | `ai-context-auditor` | `final` | `3f8caf08cee86c58df487f81f7ec692ccbe4012b` | `2026-08-04T00:23:48+08:00` | [report](ASM-20260803-005/report.md) |
 | [`ASM-20260803-004`](ASM-20260803-004/assessment.yaml) | Workflow Proportionality, Delivery Cohesion, And Merge Topology Baseline | `ai-context-audit` | `ai-context-auditor` | `final` | `80b013803ee29ca2f4dd458a393eb1da451212e1` | `2026-08-03T23:47:10+08:00` | [report](ASM-20260803-004/report.md) |
 | [`ASM-20260803-003`](ASM-20260803-003/assessment.yaml) | v0.8.0 Release Workflow Time And Context-Cost Incident Assessment | `ai-context-audit` | `ai-context-auditor` | `final` | `2d7917c43452668bb129ae14392781c13c9040fd` | `2026-08-04T01:09:50+08:00` | [report](ASM-20260803-003/report.md) |
@@ -68,6 +70,8 @@ follow repository-owned assessment templates.
 
 | Input | Source | Received | Normalized By | Status |
 | --- | --- | --- | --- | --- |
+| [`dotnet-architecture-discussion`](ASM-20260804-002/evidence/evidence-catalog.yaml) | dotnet-distributed-architecture-lab owner-led discussion at `b29ef35` | 2026-08-04 | [`ASM-20260804-002`](ASM-20260804-002/assessment.yaml) | `normalized` |
+| [`opus-5-periodic-review-2026-08-04`](ASM-20260804-001/evidence/external/README.md) | Claude Opus 5 periodic repository review, English source | 2026-08-04 | [`ASM-20260804-001`](ASM-20260804-001/assessment.yaml) | `normalized` |
 | [`opus-5-repository-assessment`](ASM-20260730-001/evidence/external/README.md) | Opus 5 external repository review, two revisions | 2026-07-30 | [`ASM-20260730-001`](ASM-20260730-001/assessment.yaml) | `normalized` |
 | [`workservice-dev-workflow-comparison`](ASM-20260722-005/evidence/workservice/2026-07-22-dev-workflow-skill-comparison.md) | WorkService external comparison | 2026-07-22 | [`ASM-20260722-005`](ASM-20260722-005/assessment.yaml) | `normalized` |
 | [`fable5-v0.5.0-macos`](ASM-20260722-003/evidence/fable5-macos/v050-macos-portability-report.md) | Claude Fable 5 | 2026-07-22 | [`ASM-20260722-003`](ASM-20260722-003/assessment.yaml) | `normalized` |

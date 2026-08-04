@@ -1,0 +1,61 @@
+template_metadata:
+  template_id: "assessment-locator"
+  template_version: "1.0.0"
+  template_created_at: "2026-07-13T23:04:10+08:00"
+  template_updated_at: "2026-07-13T23:04:10+08:00"
+
+schema_version: "1.0"
+assessment_id: "ASM-20260804-001"
+commit_search_id: "ASM-20260804-001"
+assessment_type: "ai-context-audit"
+title: "2026-08-04 Opus 5 Periodic Repository Review Intake"
+owner_skill: "ai-context-auditor"
+status: "final"
+report: "report.md"
+artifact_branch: "codex/2026-08-04-opus-5-periodic-review-intake"
+base_branch: "main"
+created_at: "2026-08-04T20:43:23+08:00"
+updated_at: "2026-08-04T20:51:23+08:00"
+template_source: ".dev/assessments/templates/assessment-locator-template.yaml"
+template_version: "1.0.0"
+report_template_source: ".ai/assets/skills/ai-context-auditor/templates/ai-context-audit-report-template.md"
+report_template_version: "2.1.0"
+subject_ref:
+  repository: "C:/Github/YuChia/ai-collaboration-prompts-dotnet-backend"
+  branch: "main"
+  commit: "4e7b5e0d59be831453b5c34f5f1eb3a1daae1245"
+scope:
+  included:
+    - ".dev/assessments/ASM-20260804-001/evidence/external/original/opus-5/**"
+    - "root collaboration, identity, and bilingual README entries"
+    - ".ai/** context, distribution, skill, and validator surfaces relevant to the external claims"
+    - ".dev/** governance, backlog, assessment, workflow, simplification, and release evidence relevant to the external claims"
+    - ".agents/** and .claude/** wrapper counts and routing evidence"
+    - "tools/DotnetBackendAnalyzers/** inventory only"
+    - "local Git history and current GitHub Issue read-back"
+  excluded:
+    - "src/** and product implementation trees"
+    - "tests/** and test/** product test trees"
+    - "semantic review of analyzer and analyzer-test implementation"
+    - "generated and dependency trees"
+    - "remediation implementation"
+relations:
+  supersedes: []
+  superseded_by: []
+  related_assessments:
+    - "ASM-20260730-001"
+    - "ASM-20260803-003"
+    - "ASM-20260803-004"
+    - "ASM-20260803-005"
+  workflow_refs:
+    - "2026-08-04-opus-5-periodic-review-intake"
+  backlog_refs:
+    - "EVAL-002"
+    - "VAL-002"
+    - "GOV-005"
+    - "CTX-004"
+  adr_refs: []
+resume:
+  last_completed_action: "Finalized repository-native dispositions for F-01 through F-10 against main@4e7b5e0 and handed the four selected follow-ups to GitHub Issues #95 through #98."
+  next_action: "ai-context-governance validates and integrates the canonical assessment/backlog batch before merged-main provider reconciliation."
+  blockers: []

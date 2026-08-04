@@ -68,7 +68,9 @@ integrated work-item binding policy as `WIBIND-001`, freezes the exact three-ite
 release set, and authorizes release preparation. It does not delegate creation,
 movement, deletion, replacement, or push of the immutable release tag.
 
-`DEVWF-001` and `INIT-001` remain independent unassigned decisions. `STD-001`
+`DEVWF-001`, `INIT-001`, `EVAL-002`, `VAL-002`, `GOV-005`, and `CTX-004`
+remain independent unassigned decisions. The four 2026-08-04 intake items are
+candidate work only and do not expand v0.9.0 or authorize implementation. `STD-001`
 is planned at P1 and explicitly related to `OBS-001`, which remains P2 and
 unassigned. The owner selected round one for implementation through `GOV-004`;
 rounds two and three remain deliberation-only. `STD-001`, `DEVWF-001`, and
@@ -253,7 +255,10 @@ versions. Current assignments:
   terminal finalization are complete.
 - `unassigned`: `DEVWF-001` owns optional issue/timeline schema deliberation;
   `INIT-001` owns existing-AI-agent initialization compatibility, collision
-  inventory, dry-run, and synthetic fixtures; planned `STD-001` owns three
+  inventory, dry-run, and synthetic fixtures; `EVAL-002` owns comparable
+  execution evidence; `VAL-002` owns validation profile separation;
+  `GOV-005` owns one Proposal-queue convergence decision; `CTX-004` owns the
+  bilingual .NET analyzer navigation correction; planned `STD-001` owns three
   bounded standards deliberation rounds and release allocation; and `OBS-001`
   remains a related but separately owned architecture workflow. None is a
   mandatory closeout gate for an assigned release.

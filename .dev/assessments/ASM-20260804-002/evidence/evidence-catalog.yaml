@@ -1,0 +1,30 @@
+schema_version: "1.0"
+assessment_id: "ASM-20260804-002"
+captured_at: "2026-08-04T23:11:05+08:00"
+preservation_contract: "exact-source-bytes"
+source:
+  source_id: "dotnet-distributed-architecture-lab"
+  repository_url: "https://github.com/YuChia-Wei/dotnet-distributed-architecture-lab"
+  local_repository_alias: "C:/Github/YuChia/dotnet-mq-arch-lab"
+  branch: "codex/2026-07-30-ai-context-architecture-kit-standards-discussion"
+  commit: "b29ef357d7c6c7cb202d11896466a039e1e17483"
+  remote_branch_commit: "b29ef357d7c6c7cb202d11896466a039e1e17483"
+  worktree_state: "clean"
+  originating_workflow_id: "2026-07-30-ai-context-architecture-kit-standards-discussion"
+  intake_boundary: "external evidence only; not an upstream workflow, normative source, or execution authorization"
+files:
+  - retained_path: "external/original/dotnet-distributed-architecture-lab/discussion-record.md"
+    source_path: ".dev/workflows/2026-07-30-ai-context-architecture-kit-standards-discussion/discussion-record.md"
+    role: "owner-led decision and reasoning record"
+    bytes: 72753
+    sha256: "469b4334d5d78110229d01037d97c2c0ddea4fea9df7fb9391452b109ad0d260"
+  - retained_path: "external/original/dotnet-distributed-architecture-lab/ai-context-rule-architecture-issue-draft.md"
+    source_path: ".dev/workflows/2026-07-30-ai-context-architecture-kit-standards-discussion/ai-context-rule-architecture-issue-draft.md"
+    role: "issue-ready source draft normalized into GitHub Issue #92"
+    bytes: 19425
+    sha256: "67dd80719998e8840a4916233076e1fae425e377afdc2f2ecec86c35821c00a9"
+  - retained_path: "external/original/dotnet-distributed-architecture-lab/sub-agent-follow-up-notes.md"
+    source_path: ".dev/workflows/2026-07-30-ai-context-architecture-kit-standards-discussion/sub-agent-follow-up-notes.md"
+    role: "deferred post-SAG-001 reachability evidence normalized into GitHub Issue #94, with installation drift split to Issue #93"
+    bytes: 3849
+    sha256: "197b7302c2c20484265a6dd439fe4fa5d9d6d45fcfa0e7020edc217270d09950"
