@@ -133,10 +133,14 @@ TECHNOLOGY_SELECTION_SCHEMA = Path(
 WORK_ITEM_BINDING_SCHEMA = Path(
     ".ai/assets/skills/ai-context-init/templates/work-item-binding.schema.yaml"
 )
-EXAMPLE_EVIDENCE_SCHEMA = Path(".dev/standards/examples/evidence-schema.yaml")
-EXAMPLE_EVIDENCE_MANIFEST = Path(".dev/standards/examples/evidence-manifest.yaml")
+EXAMPLE_EVIDENCE_SCHEMA = Path(
+    ".ai/assets/tech-stacks/dotnet-backend/examples/evidence-schema.yaml"
+)
+EXAMPLE_EVIDENCE_MANIFEST = Path(
+    ".ai/assets/tech-stacks/dotnet-backend/examples/evidence-manifest.yaml"
+)
 EXAMPLE_PLACEHOLDER_DISPOSITION = Path(
-    ".dev/standards/examples/placeholder-disposition.yaml"
+    ".ai/assets/tech-stacks/dotnet-backend/examples/placeholder-disposition.yaml"
 )
 SOURCE_INCLUDE_EVIDENCE_MANIFEST = Path(
     ".ai/assets/tech-stacks/dotnet-backend/source-includes/evidence-manifest.yaml"
