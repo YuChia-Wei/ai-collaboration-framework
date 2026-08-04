@@ -5,14 +5,14 @@
 - `workflow_id`: `2026-08-04-framework-managed-ignore-detection`
 - `workflow_kind`: `ai-context-maintenance`
 - `owner_skill`: `ai-context-governance`
-- `branch`: `codex/2026-08-04-framework-managed-ignore-detection`
+- `branch`: `codex/2026-08-04-framework-managed-ignore-detection-cont-02`
 - `base_branch`: `main`
-- `branch_segment`: `1`
+- `branch_segment`: `2`
 - `status`: `in_progress`
-- `current_phase`: `post-audit`
+- `current_phase`: `post-integration-verification`
 - `artifact_root`: `.dev/workflows/2026-08-04-framework-managed-ignore-detection`
 - `created_at`: `2026-08-04T21:49:30+08:00`
-- `updated_at`: `2026-08-04T23:56:09+08:00`
+- `updated_at`: `2026-08-05T00:03:55+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md`
 - `template_version`: `1.2.0`
 
@@ -42,22 +42,22 @@
 1. Baseline audit and evidence freeze — completed at `main@4e7b5e0d59be831453b5c34f5f1eb3a1daae1245`.
 2. Finding triage and remediation authorization — completed from the delegated owner authorization, Proposal #93 source acceptance, and formal Story #99 acceptance criteria.
 3. Bounded remediation and focused validation — completed.
-4. Independent post-remediation audit — in progress.
-5. Finding reconciliation, commit verification, and closure — pending.
+4. Independent post-remediation audit — pending owner-authorized validation resumption.
+5. Finding reconciliation, aggregate verification, and closure — pending.
 
 ## Workflow Proportionality And Delivery Decisions
 
 - This one-issue workflow is retained because it preserves an explicit owner authorization, a durable cross-surface safety contract, a baseline-to-verification assessment lifecycle, and a receiving checkpoint. These states are not adequately owned by Story #99, a commit, or a pull request alone.
 - Delivery grouping: Story #99 only; Proposal #93 is its closed source record. It has independent scope, validation, review, rollback, and release boundaries from REL-004, #92, and #94.
 - Integration gate: pull request to `main` under `.dev/TEAM-GIT-FLOW-RULES.MD`.
-- Proposed topology: linear integration, unless a later checkpoint/handoff makes the branch boundary durable integration evidence.
+- Selected topology: merge-commit integration. The owner selected no-rebase `--no-ff` integration; PR #103 merged through GitHub merge commit `276c2132b5521acea414281bf06e6d70078f9f4f` after its hosted checks passed.
 
 ## Resume Checkpoint
 
-- Last completed action: Implemented shared exact-path Git-ignore evidence, receipt identity binding, apply rejection, target validation/finalization/init fail-closed checks, and critical-gate routing.
+- Last completed action: Merged PR #103 by the owner-selected GitHub merge-commit path at `276c2132b5521acea414281bf06e6d70078f9f4f`; all five hosted checks passed.
 - Current task: `IGN93-003`.
-- Exact next action: Merge current `main` into this Draft branch without rebase, resolve the PR conflict, then merge PR #103 with `--no-ff`; independent verification and release work remain outside this owner-authorized integration checkpoint.
-- Validation already completed: Refreshed `origin/main`; checked all local and remote refs for `ASM-20260804-*`; indexed the repository; read Proposal #93 and formal Story #99; reproduced the current behavior; then passed package/apply GWT (29, one Windows symlink privilege skip), critical-gate routing GWT (31), semantic lifecycle GWT (7), full package compatibility GWT (29, one external-downstream skip), and `git diff --check`. The owner separately authorized one sandbox-external current critical gate after formal Story #99 binding. It completed at `2026-08-04T23:43:00+08:00` with 46 of 47 required checks passed; `Workflow Artifact Metadata` failed only because this workflow index had not yet synchronized its timestamp and `PKG-005` lacked a required `resolution_ref` key. The focused `python .ai/scripts/validate-workflow-artifacts.py` rerun passed at `2026-08-04T23:56:09+08:00` after synchronizing the index, adding `resolution_ref`, and replacing external URLs in `origin_refs` with local evidence paths. No aggregate rerun was performed.
-- Git state: implementation `803cd09`, Story binding `5204512`, and waiver checkpoint `e5d134c` are pushed. Draft PR #103 is open against `main` with `Refs #99`; GitHub read-back reports `DIRTY` because `main` advanced three commits after the branch base.
-- Branch history and checkpoint handoffs: segment 1 began from `origin/main@4e7b5e0d59be831453b5c34f5f1eb3a1daae1245`; it was push-checkpointed through `e5d134c` on 2026-08-04. The current Draft PR is not merge-ready and no local rebase or merge has been attempted.
-- Blockers or unresolved decisions: no owner design decision is pending. The owner authorized no-rebase merge-commit integration after the focused workflow-artifact validator passed. Independent verification, a passing aggregate current gate, and release work remain deferred from this integration checkpoint.
+- Exact next action: When validation resumption is authorized, allocate a fresh all-ref assessment ID, independently audit the remediated surface, reconcile `ASM-20260804-003#AIC-001`, and run a passing current aggregate gate before workflow closure or any release work.
+- Validation already completed: Refreshed `origin/main`; checked all local and remote refs for `ASM-20260804-*`; indexed the repository; read Proposal #93 and formal Story #99; reproduced the current behavior; then passed package/apply GWT (29, one Windows symlink privilege skip), critical-gate routing GWT (31), semantic lifecycle GWT (7), full package compatibility GWT (29, one external-downstream skip), and `git diff --check`. The owner separately authorized one sandbox-external current critical gate after formal Story #99 binding. It completed at `2026-08-04T23:43:00+08:00` with 46 of 47 required checks passed; `Workflow Artifact Metadata` initially failed only because this workflow index had not yet synchronized its timestamp and `PKG-005` lacked a required `resolution_ref` key. The focused `python .ai/scripts/validate-workflow-artifacts.py` rerun passed at `2026-08-04T23:56:09+08:00` after synchronizing the index, adding `resolution_ref`, and replacing external URLs in `origin_refs` with local evidence paths. PR #103 then passed Read-only governance contract, Build and validate candidate, Ubuntu prerequisite contract, Windows prerequisite contract, and Ubuntu quick gate. No second local aggregate rerun was performed.
+- Git state: PR #103 is merged to `origin/main` at `276c2132b5521acea414281bf06e6d70078f9f4f`; the original branch is retained as integration history. This continuation starts clean from merged `origin/main`.
+- Branch history and checkpoint handoffs: segment 1 began from `origin/main@4e7b5e0d59be831453b5c34f5f1eb3a1daae1245`, merged current main by `1189063`, and integrated as PR #103 at `276c213`. Segment 2 begins at that merged-main commit on `codex/2026-08-04-framework-managed-ignore-detection-cont-02`.
+- Blockers or unresolved decisions: no owner design decision is pending. Independent verification and a passing local aggregate current gate remain deferred until validation resumption; release preparation and publication remain excluded.
