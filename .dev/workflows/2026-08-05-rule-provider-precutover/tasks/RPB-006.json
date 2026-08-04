@@ -7,9 +7,9 @@
   "workflow_id": "2026-08-05-rule-provider-precutover",
   "owner_skill": "ai-context-governance",
   "title": "Route action skills through effective-rule packets",
-  "status": "in_progress",
+  "status": "completed",
   "created_at": "2026-08-05T01:29:39+08:00",
-  "updated_at": "2026-08-05T06:46:31+08:00",
+  "updated_at": "2026-08-05T07:10:40+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-5.6-terra",
   "reasoning_effort": "xhigh",
@@ -23,15 +23,15 @@
   "execution": {
     "steps": ["Inventory applicable action skills", "Coordinate one-writer ownership for shared skill files", "Add effective-rule consumer declarations and evidence", "Prove same-rule semantic consistency across consumers"],
     "validation": ["Cross-skill rule-resolution read-back", "Manual shared-section conflict review", "No check-all or repository validators"],
-    "last_completed_step": "RPB-003 completed the resolver/packet contract; the exact ten action skills were inventoried; #94 confirmed its writers are complete and granted sequential single-writer access to only the announced sibling sections and #92 consumer tests.",
-    "next_action": "Add the top-level effective_rule_consumption contract to the ten action skills, document it in the canonical schema, and add bounded same-rule consumer consistency test source without changing #94-owned semantics."
+    "last_completed_step": "Added one canonical effective_rule_consumption sibling contract to each of the exact ten action skills, documented the separate schema section, added metadata and two-route byte-parity test source, registered both source-only checks, and completed independent source read-back against the stable #94 role sections without changing their semantics.",
+    "next_action": "Task complete; retain the final post-#94 integration read-back and independent AI-context audit as workflow-level closeout gates."
   },
   "results": {
-    "summary": "",
-    "files_changed": [],
-    "tests_run": [],
-    "finding_status": "not-addressed",
-    "residual_risk": "",
+    "summary": "All applicable action skills now consume freshness-verified task-scoped effective-rule packets through one deterministic resolver, emit comparable resolution evidence, fail closed instead of scanning or falling back to defaults, and preserve exact same-rule normative bytes across consumer routes.",
+    "files_changed": [".ai/assets/CANONICAL-SCHEMA.MD", ".ai/assets/skills/{software-development-orchestrator,requirement-author,spec-author,problem-frame-author,ddd-ca-hex-architect,bdd-gwt-test-designer,slice-implementer,local-change-implementer,code-reviewer,spec-compliance-validator}/skill.yaml", ".ai/scripts/tests/test_ai_context_effective_rules.py", ".ai/scripts/tests/test_effective_rule_action_skill_contract.py", ".ai/scripts/check-all.sh", ".ai/scripts/shell-assets.yaml"],
+    "tests_run": ["not-run-owner-directed: repository tests, check-all, validators, builds, and formatters"],
+    "finding_status": "addressed-pending-independent-verification",
+    "residual_risk": "The executable checks were source-inspected but intentionally not run; after #94 integration, the five overlapping skill specs and canonical schema still require a final combined read-back.",
     "follow_up_needed": true
   }
 }

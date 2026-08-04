@@ -39,6 +39,17 @@ REQUEST = {
     "technology_profile": "dotnet-backend",
     "file_type": "csharp-test",
 }
+REVIEW_REQUEST = {
+    "capability": "review",
+    "execution_mode": "consumer-route-b",
+    "technology_profile": "dotnet-backend",
+    "file_type": "csharp-review",
+}
+CONSUMER_ROUTES = (
+    (REQUEST, ["AICTX-EVIDENCE-001", "TEST-GWT-001"]),
+    (REVIEW_REQUEST, ["AICTX-EVIDENCE-001"]),
+)
+DEFAULT_CONSUMER_ROUTES = (CONSUMER_ROUTES[0],)
 EVIDENCE = ".dev/decisions/effective-rules.md"
 
 
@@ -92,9 +103,24 @@ class EffectiveRuleFixture:
             for catalog_id in ("selected-profile", "shared")
         ]
 
-    def write_ready_state(self) -> dict:
-        selector = dict(REQUEST)
-        route_id = RULES.route_id_for_selector(selector)
+    def write_ready_state(self, consumer_routes=DEFAULT_CONSUMER_ROUTES) -> dict:
+        routing = []
+        for selector, required_rule_ids in consumer_routes:
+            resolved_selector = dict(selector)
+            route_id = RULES.route_id_for_selector(resolved_selector)
+            routing.append(
+                {
+                    "route_id": route_id,
+                    "selector": resolved_selector,
+                    "required_rule_ids": list(required_rule_ids),
+                    "reported_not_applicable_rule_ids": [],
+                    "packet": {
+                        "path": f"{RULES.PACKET_DIRECTORY}/{route_id}.yaml",
+                        "digest": "0" * 64,
+                    },
+                }
+            )
+        routing.sort(key=lambda route: route["route_id"])
         state = {
             "schema_version": "1.0",
             "framework": {
@@ -135,18 +161,7 @@ class EffectiveRuleFixture:
                     },
                 },
             ],
-            "routing": [
-                {
-                    "route_id": route_id,
-                    "selector": selector,
-                    "required_rule_ids": ["AICTX-EVIDENCE-001", "TEST-GWT-001"],
-                    "reported_not_applicable_rule_ids": [],
-                    "packet": {
-                        "path": f"{RULES.PACKET_DIRECTORY}/{route_id}.yaml",
-                        "digest": "0" * 64,
-                    },
-                }
-            ],
+            "routing": routing,
         }
         state["target_state_digest"] = RULES.target_state_digest(state)
         state_path = self.root / RULES.EFFECTIVE_STATE_PATH
@@ -155,23 +170,31 @@ class EffectiveRuleFixture:
             encoding="utf-8",
             newline="\n",
         )
-        packet = RULES.build_packet_candidate(
-            self.root, **REQUEST, resolver_evidence=[EVIDENCE]
-        )
-        state["routing"][0]["packet"]["digest"] = packet["packet_digest"]
+        packets_by_route_id = {
+            RULES.route_id_for_selector(dict(selector)): RULES.build_packet_candidate(
+                self.root, **selector, resolver_evidence=[EVIDENCE]
+            )
+            for selector, _ in consumer_routes
+        }
+        for route in state["routing"]:
+            route["packet"]["digest"] = packets_by_route_id[route["route_id"]][
+                "packet_digest"
+            ]
         self.assert_stable_state_digest(state)
         state_path.write_text(
             yaml.safe_dump(state, sort_keys=False, allow_unicode=True),
             encoding="utf-8",
             newline="\n",
         )
-        packet_path = self.root / state["routing"][0]["packet"]["path"]
-        packet_path.parent.mkdir(parents=True, exist_ok=True)
-        packet_path.write_text(
-            yaml.safe_dump(packet, sort_keys=False, allow_unicode=True),
-            encoding="utf-8",
-            newline="\n",
-        )
+        for route in state["routing"]:
+            packet = packets_by_route_id[route["route_id"]]
+            packet_path = self.root / route["packet"]["path"]
+            packet_path.parent.mkdir(parents=True, exist_ok=True)
+            packet_path.write_text(
+                yaml.safe_dump(packet, sort_keys=False, allow_unicode=True),
+                encoding="utf-8",
+                newline="\n",
+            )
         return state
 
     @staticmethod
@@ -207,6 +230,49 @@ class EffectiveRuleResolverTests(unittest.TestCase):
                 packet_rules["AICTX-EVIDENCE-001"]["disposition_record"],
             )
             self.assertEqual([], RULES.validate_effective_rule_state(fixture.root))
+        finally:
+            fixture.close()
+
+    def test_gwt_001a_given_two_permitted_consumer_routes_for_the_same_rule_when_resolved_then_statement_bytes_and_digest_are_identical(self) -> None:
+        fixture = EffectiveRuleFixture()
+        try:
+            state = fixture.write_ready_state(CONSUMER_ROUTES)
+            self.assertEqual(2, len(state["routing"]))
+            self.assertEqual(
+                2,
+                len({route["route_id"] for route in state["routing"]}),
+            )
+            self.assertEqual(
+                sorted(route["route_id"] for route in state["routing"]),
+                [route["route_id"] for route in state["routing"]],
+            )
+
+            shared_rules = []
+            for selector, _ in CONSUMER_ROUTES:
+                packet = RULES.resolve_effective_rule_packet(fixture.root, **selector)
+                shared_rules.append(
+                    next(
+                        rule
+                        for rule in packet["rules"]
+                        if rule["rule_id"] == "AICTX-EVIDENCE-001"
+                    )
+                )
+
+            expected_statement_bytes = shared_rules[0]["normative_statement"].encode(
+                "utf-8"
+            )
+            expected_digest = shared_rules[0]["normative_statement_digest"]
+            self.assertEqual(
+                RULES._sha256_bytes(expected_statement_bytes),
+                expected_digest,
+            )
+            for rule in shared_rules:
+                self.assertEqual("AICTX-EVIDENCE-001", rule["rule_id"])
+                self.assertEqual(
+                    expected_statement_bytes,
+                    rule["normative_statement"].encode("utf-8"),
+                )
+                self.assertEqual(expected_digest, rule["normative_statement_digest"])
         finally:
             fixture.close()
 
