@@ -1,0 +1,36 @@
+{
+  "template_id": "ai-context-governance-remediation-task",
+  "template_version": "1.1.0",
+  "template_created_at": "2026-07-10T18:22:49+08:00",
+  "template_updated_at": "2026-07-27T09:52:09+08:00",
+  "task_id": "OPUS0804-001",
+  "workflow_id": "2026-08-04-opus-5-periodic-review-intake",
+  "owner_skill": "ai-context-auditor",
+  "status": "completed",
+  "created_at": "2026-08-04T20:43:23+08:00",
+  "updated_at": "2026-08-04T20:43:23+08:00",
+  "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
+  "model": "gpt-5.6-sol",
+  "reasoning_effort": "max",
+  "finding_ids": ["ASM-20260804-001#AIC-001", "ASM-20260804-001#AIC-002", "ASM-20260804-001#AIC-003", "ASM-20260804-001#AIC-004", "ASM-20260804-001#AIC-005", "ASM-20260804-001#AIC-006", "ASM-20260804-001#AIC-007", "ASM-20260804-001#AIC-008", "ASM-20260804-001#AIC-009", "ASM-20260804-001#AIC-010"],
+  "scope": {
+    "target": "Preserve and normalize the 2026-08-04 Opus 5 review.",
+    "files": [".dev/assessments/ASM-20260804-001/**"],
+    "constraints": ["Keep audited context read-only.", "Preserve the external source byte-for-byte."],
+    "non_goals": ["Implement remediation.", "Review product source or tests."]
+  },
+  "execution": {
+    "steps": ["Freeze the external source.", "Reproduce quantitative and behavioral claims.", "Assign stable repository finding IDs."],
+    "validation": ["SHA-256 parity", "repository-native measurements", "provider read-back"],
+    "last_completed_step": "Finalized all ten external claim dispositions.",
+    "next_action": "Hand selected findings to OPUS0804-002."
+  },
+  "results": {
+    "summary": "External review normalized as ASM-20260804-001 with four strengths confirmed, four bounded follow-ups selected, one recommendation deferred, and one claimed defect overturned.",
+    "files_changed": [".dev/assessments/ASM-20260804-001/assessment.yaml", ".dev/assessments/ASM-20260804-001/report.md", ".dev/assessments/ASM-20260804-001/evidence/external/README.md", ".dev/assessments/ASM-20260804-001/evidence/external/original/opus-5/EXTERNAL-REVIEW-2026-08-04-opus-5.en.md"],
+    "tests_run": ["source/copy SHA-256 parity", "Python prerequisite exit-code reproduction", "repository line-count reproduction"],
+    "finding_status": "triaged",
+    "residual_risk": "External scores remain attributed opinion and current GitHub state is later than the subject commit.",
+    "follow_up_needed": false
+  }
+}
