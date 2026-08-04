@@ -14,25 +14,25 @@
 - `owner_skill`: `ai-context-governance`
 - `status`: `draft`
 - `created_at`: `2026-08-05T01:29:39+08:00`
-- `updated_at`: `2026-08-05T07:46:05+08:00`
+- `updated_at`: `2026-08-05T07:51:44+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-remediation-report-template.md`
 - `template_version`: `2.0.0`
 - `baseline_assessment`: `ASM-20260804-002`
-- `verification_assessment`: `pending allocation after all-ref duplicate check`
+- `verification_assessment`: `ASM-20260805-002`
 
 ## Remediation Summary
 
 - Authorized scope: bounded GitHub Issues #109 through #117 under #104 through #107.
 - Completed scope: workflow/work-item topology, stable engineering identity/ownership, the exhaustive migration matrix, `RPB-004` physical migration/catalog/reference reconciliation, `RPB-003` target-effective state plus deterministic packet resolution, `RPB-005` stable bundled-provider relocation plus fail-closed reference-in-place activation, `RPB-006` serialized action-skill packet consumption, and `RPB-007` Architecture Kit unavailable readiness gate.
 - Validation summary: no repository validation script has run, by explicit owner direction.
-- Closure decision: `not-ready`
+- Closure decision: `ready-for-pr-integration`
 
 ## Finding Resolution Matrix
 
 | Assessment Finding | Before Severity | Status | Changed Files | Validation | Commit | Residual Risk |
 | --- | --- | --- | --- | --- | --- | --- |
-| `ASM-20260804-002#AIC-001` | HIGH | `resolved-pending-verification` | identity/ownership policies, registry, 232-row matrix, migrated assets, shared/profile catalogs, target-effective schemas, deterministic resolver, stable bundled provider, and ten serialized action-skill consumers | scoped row/link/identity/hash/digest/blob/distribution/consumer read-back, independent reviews, #94 overlap comparison, and diff check | `20edeff`, `98484bd`, `ec55b91`, `f167672`, `08f24eb` | executable checks intentionally not run; independent audit and final combined #94 read-back remain |
-| `ASM-20260804-002#AIC-002` | HIGH | `resolved-pending-verification` | target-effective authority/packet lifecycle, freshness gates, stable inactive provider, physical canonical-root binding, fail-closed activation evidence, action-skill packet consumption, and Architecture Kit unavailable readiness gate | schema/runtime/fixture/digest/path/capability/consumer/readiness source parity and independent reviews | `ec55b91`, `f167672`, `08f24eb`, RPB-007 checkpoint pending | executable checks intentionally not run; actual Architecture Kit package/proofs/cutover remain future work |
+| `ASM-20260804-002#AIC-001` | HIGH | `resolved` | identity/ownership policies, registry, 232-row matrix, migrated assets, shared/profile catalogs, target-effective schemas, deterministic resolver, stable bundled provider, and ten serialized action-skill consumers | scoped row/link/identity/hash/digest/blob/distribution/consumer read-back, independent reviews, #94 overlap comparison, diff check, and `ASM-20260805-002` | `20edeff`, `98484bd`, `ec55b91`, `f167672`, `08f24eb`, `62c582e` | executable checks intentionally not run; final combined #94 read-back remains its post-#92 integration gate |
+| `ASM-20260804-002#AIC-002` | HIGH | `resolved` | target-effective authority/packet lifecycle, freshness gates, stable inactive provider, physical canonical-root binding, fail-closed activation evidence, action-skill packet consumption, and Architecture Kit unavailable readiness gate | schema/runtime/fixture/digest/path/capability/consumer/readiness source parity, independent reviews, and `ASM-20260805-002` | `ec55b91`, `f167672`, `08f24eb`, `06372a0`, `62c582e` | executable checks intentionally not run; actual Architecture Kit package/proofs/cutover remain future work |
 | `ASM-20260804-002#AIC-004` | HIGH | `resolved in baseline intake` | retained assessment evidence | traceability read-back pending | `206c3ae` baseline | downstream branch may be removed; retained bytes remain canonical evidence |
 
 ## Changes And Evidence
@@ -53,10 +53,11 @@
 
 ## Verification Assessment Reconciliation
 
-- Independent auditor: pending.
-- Confirmed resolved: none yet.
-- Recurring findings: pending.
-- New or regressed findings: pending.
+- Independent auditor: `ASM-20260805-002` at subject `09b280f522ad4249c69a19fdc4d9707a5e30e073`.
+- Confirmed resolved: `ASM-20260804-002#AIC-001` and `ASM-20260804-002#AIC-002` within the authorized static pre-cutover scope; `AIC-004` evidence and traceability remain retained.
+- Recurring findings: none.
+- New or regressed findings: none active. A lifecycle-contract candidate was corrected before the final assessed subject by adding `RPB-008` as the sole active task.
+- Skipped evidence: all repository validators, `check-all`, tests, builds, formatters, and dependency restores remain `not-run-owner-directed`; hosted checks and merged-main read-back remain pending integration.
 
 ## Deferred Work
 
@@ -69,6 +70,6 @@
 ## Closure Evidence
 
 - Required validations: pending; no repository validation scripts may be run under current owner direction.
-- Commit status: durable checkpoints through `08f24eb`; branch not pushed or merged; the RPB-007 checkpoint is pending this commit.
-- Workflow/task status: `RPB-001` through `RPB-007` completed; `RPB-008` owns independent verification and integration closeout and is in progress.
-- Final next action: complete the independent verification assessment, then PR, merge-commit integration, and merged-main read-back without release packaging.
+- Commit status: durable checkpoints through `62c582e`; branch not pushed or merged.
+- Workflow/task status: `RPB-001` through `RPB-007` completed; `RPB-008` verification is complete and integration closeout is in progress.
+- Final next action: push, ready PR, hosted checks, merge-commit integration, merged-main read-back, Issue closure, and #94 handoff without release packaging.

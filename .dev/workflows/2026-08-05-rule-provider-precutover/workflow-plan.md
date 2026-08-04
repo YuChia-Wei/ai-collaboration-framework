@@ -9,10 +9,10 @@
 - `base_branch`: `main`
 - `branch_segment`: `1`
 - `status`: `in_progress`
-- `current_phase`: `verification`
+- `current_phase`: `integration`
 - `artifact_root`: `.dev/workflows/2026-08-05-rule-provider-precutover`
 - `created_at`: `2026-08-05T01:29:39+08:00`
-- `updated_at`: `2026-08-05T07:46:05+08:00`
+- `updated_at`: `2026-08-05T07:51:44+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md`
 - `template_version`: `1.2.0`
 
@@ -28,7 +28,7 @@
 
 - Baseline assessment: `.dev/assessments/ASM-20260804-002/assessment.yaml`
 - Remediation report: `.dev/workflows/2026-08-05-rule-provider-precutover/reports/remediation-report.md`
-- Verification assessment: allocate only after checking all local and remote refs for the next unused assessment ID.
+- Verification assessment: `.dev/assessments/ASM-20260805-002/assessment.yaml` at subject `09b280f522ad4249c69a19fdc4d9707a5e30e073`.
 - Tasks: `.dev/workflows/2026-08-05-rule-provider-precutover/tasks/`
 - Migration matrix: `.dev/workflows/2026-08-05-rule-provider-precutover/evidence/migration-matrix.yaml`
 
@@ -84,8 +84,8 @@ Only one task is marked `in_progress` in durable workflow state. The orchestrato
 1. Baseline evidence and owner decisions — completed from `ASM-20260804-002`, #92 discussion, and live Issue read-back at `main@d8580df4516155ff7b1a139d9a064a8b0d4b2019`.
 2. Workflow and bounded work-item binding — completed by creating #109 through #117 and formal sub-issue relationships under #104 through #107.
 3. Dependency-ordered remediation — completed; `RPB-001` through `RPB-007` completed.
-4. Independent post-remediation audit — in progress under `RPB-008`; #94 reserved `ASM-20260805-001`, and all-ref confirmation allocated `ASM-20260805-002` to #92.
-5. PR review, merge-commit integration, merged-main read-back, and closure — pending; release packaging remains excluded.
+4. Independent post-remediation audit — completed as final `ASM-20260805-002`; AIC-001/AIC-002 are resolved in the authorized static pre-cutover scope, AIC-004 evidence remains retained, and no new active finding remains.
+5. PR review, merge-commit integration, merged-main read-back, and closure — in progress under `RPB-008`; release packaging remains excluded.
 
 ## Delivery And Merge Decisions
 
@@ -97,16 +97,16 @@ Only one task is marked `in_progress` in durable workflow state. The orchestrato
 
 ## Resume Checkpoint
 
-- Last completed action: Completed `RPB-007` with a closed Architecture Kit readiness schema, deterministic fail-closed evaluator, current unsupported/unavailable fixture, criterion-specific future evidence contract, and three-round independent source review with all blockers corrected.
-- Current task: `RPB-008` independent verification and integration closeout is in progress.
-- Exact next action: Commit the lifecycle-correct closeout task and complete `ASM-20260805-002` against that subject commit without running repository validators.
-- Validation already completed: prior migration/catalog, resolver, provider, action-skill, and readiness-gate source read-back; production blob parity; relocation/distribution scans; typed evidence and digest inspection; independent review rounds; #94 overlap and transport-order coordination; and `git diff --check`. No tests, builds, check-all, or repository validation scripts have run.
+- Last completed action: Committed final independent verification `ASM-20260805-002` at `62c582e`, with no active HIGH/MEDIUM finding and an explicit owner-directed executable-validation residual.
+- Current task: `RPB-008` integration closeout is in progress.
+- Exact next action: Refresh `origin/main`, push the branch, open one ready PR, wait for hosted checks, and integrate by merge commit only after the provider gate passes.
+- Validation already completed: prior migration/catalog, resolver, provider, action-skill, and readiness-gate source read-back; production blob parity; relocation/distribution scans; typed evidence and digest inspection; independent review rounds; #94 overlap/transport coordination; two-pass verification; assessment-fidelity review; and `git diff --check`. No tests, builds, check-all, or repository validation scripts have run.
 - Git state: branch `codex/2026-08-05-rule-provider-precutover` starts from `origin/main@d8580df4516155ff7b1a139d9a064a8b0d4b2019`.
-- Branch history and checkpoint handoffs: segment 1 only; local durable checkpoints through `06372a0`; the RPB-008 lifecycle checkpoint is pending this commit; no push or merge handoff yet.
+- Branch history and checkpoint handoffs: segment 1 only; local durable checkpoints through `62c582e`; no push or merge handoff yet.
 - Blockers or unresolved decisions: none. Shared-file sequencing with #94 is a coordination constraint, not an owner-decision blocker.
 
 ## Branch Lifecycle
 
 | Segment | Branch | Base | Checkpoint Type | Commit | Remote / Target | Recorded At | Reason | Resume Branch / Action |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| 1 | `codex/2026-08-05-rule-provider-precutover` | `main@d8580df4516155ff7b1a139d9a064a8b0d4b2019` | active verification | pending | `origin/main` | `2026-08-05T01:29:39+08:00` | owner-authorized grouped pre-cutover remediation | execute `RPB-008` verification and integration closeout |
+| 1 | `codex/2026-08-05-rule-provider-precutover` | `main@d8580df4516155ff7b1a139d9a064a8b0d4b2019` | active integration | pending | `origin/main` | `2026-08-05T01:29:39+08:00` | owner-authorized grouped pre-cutover remediation | push, PR, hosted checks, merge commit, and merged-main read-back under `RPB-008` |
