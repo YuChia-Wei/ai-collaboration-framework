@@ -16,7 +16,7 @@
 - `base_branch`: `main`
 - `branch_segment`: `2`
 - `status`: `completed`
-- `current_phase`: `closure`
+- `current_phase`: `completed`
 - `artifact_root`: `.dev/workflows/2026-08-04-opus-5-periodic-review-intake`
 - `created_at`: `2026-08-04T20:43:23+08:00`
 - `updated_at`: `2026-08-04T23:40:59+08:00`
