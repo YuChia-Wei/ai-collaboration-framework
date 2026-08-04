@@ -12,14 +12,14 @@
 - `workflow_id`: `2026-08-04-opus-5-periodic-review-intake`
 - `workflow_kind`: `ai-context-maintenance`
 - `owner_skill`: `ai-context-governance`
-- `branch`: `codex/2026-08-04-opus-5-periodic-review-intake`
+- `branch`: `codex/2026-08-04-opus-5-periodic-review-intake-cont-02`
 - `base_branch`: `main`
-- `branch_segment`: `1`
-- `status`: `in_progress`
-- `current_phase`: `integration`
+- `branch_segment`: `2`
+- `status`: `completed`
+- `current_phase`: `closure`
 - `artifact_root`: `.dev/workflows/2026-08-04-opus-5-periodic-review-intake`
 - `created_at`: `2026-08-04T20:43:23+08:00`
-- `updated_at`: `2026-08-04T23:29:53+08:00`
+- `updated_at`: `2026-08-04T23:40:59+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md`
 - `template_version`: `1.2.0`
 
@@ -88,22 +88,24 @@
 
 ## Resume Checkpoint
 
-- Last completed action: reclassified `CTX-004` as a Story and read back all
-  required Project fields for Issues #95 through #98 from an authenticated `gh`
-  session outside the sandbox.
-- Current task: `OPUS0804-004` pull-request integration using hosted CI evidence.
-- Exact next action: commit and push the branch, open the pull request, and wait
-  for required hosted checks without running new local validators.
+- Last completed action: merged PR #101 by rebase after all five hosted checks
+  passed, then read back `origin/main` at
+  `126996892a8ee5a83d1942e3f793cfb25976809a` and confirmed the provider fields.
+- Current task: none; `OPUS0804-004` is complete.
+- Exact next action: wait for separate owner direction before scheduling or
+  executing Issues #95 through #98.
 - Validation already completed: subject SHA and branch equality; raw source
   SHA-256; line-count reproduction; Python prerequisite exit-code reproduction;
   current GitHub open-Issue and zero-comment Proposal read-back.
-- Git state: dedicated workflow branch from clean `main@4e7b5e0`.
-- Branch history and checkpoint handoffs: segment 1 only; no push or merge.
+- Git state: closeout continuation branch from merged `main@1269968`.
+- Branch history and checkpoint handoffs: segment 1 merged through PR #101;
+  segment 2 records closeout only.
 - Blockers or unresolved decisions: no release allocation or follow-up Issue
-  execution is authorized; hosted CI and merged-main reconciliation are pending.
+  execution is authorized; later work selection remains owner-controlled.
 
 ## Branch Lifecycle
 
 | Segment | Branch | Base | Checkpoint Type | Commit | Remote / Target | Recorded At | Reason | Resume Branch / Action |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| 1 | `codex/2026-08-04-opus-5-periodic-review-intake` | `main@4e7b5e0` | validated provider projection | pending | Issues #95-#98 | `2026-08-04T20:51:23+08:00` | Preserve canonical/provider separation while satisfying the requested online tracking outcome. | Complete validation and prepare the repository handoff. |
+| 1 | `codex/2026-08-04-opus-5-periodic-review-intake` | `main@4e7b5e0` | merge | `126996892a8ee5a83d1942e3f793cfb25976809a` | PR #101 / `main` | `2026-08-04T23:40:12+08:00` | Integrate the normalized intake after five hosted checks passed. | Start segment 2 from merged `main` and record closeout only. |
+| 2 | `codex/2026-08-04-opus-5-periodic-review-intake-cont-02` | `main@1269968` | closeout | pending | `main` / Issues #95-#98 | `2026-08-04T23:40:59+08:00` | Record merged-main and provider read-back without scheduling follow-up work. | Close the workflow and wait for owner direction. |

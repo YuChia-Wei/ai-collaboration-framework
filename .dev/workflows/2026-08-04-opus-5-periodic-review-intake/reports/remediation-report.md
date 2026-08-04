@@ -46,5 +46,7 @@ intake metadata only and do not schedule or authorize work.
 
 GitHub Issues are candidate-work projections. Their existence, labels, Project
 fields, or later state transitions do not authorize implementation. Repository
-`main` remains integrated truth; this workflow stays active until its canonical
-changes and provider receipts are reconciled after integration.
+`main` remains integrated truth. PR #101 was rebased into `main` at
+`126996892a8ee5a83d1942e3f793cfb25976809a` after all five hosted checks passed.
+The merged-main and provider receipts are reconciled; Issues #95 through #98
+remain unscheduled and require separate owner direction before execution.
