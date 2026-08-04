@@ -130,13 +130,16 @@ entries:
         patterns:
           - .ai/scripts/README.md
           - .ai/scripts/ai_context_package_apply.py
+          - .ai/scripts/ai_context_effective_rules.py
           - .ai/scripts/ai_context_target_provenance.py
           - .ai/scripts/plan-ai-context-package-apply.py
+          - .ai/scripts/resolve-effective-rule-packet.py
           - .ai/scripts/validate-ai-context.py
           - .ai/scripts/validate-ai-context-target.py
           - .ai/scripts/tests/test_ai_context_package_apply.py
           - .ai/scripts/tests/test_ai_context_root_entries.py
           - .ai/scripts/tests/test_ai_context_wrapper_metadata.py
+          - .ai/scripts/tests/test_ai_context_effective_rules.py
           - .ai/scripts/tests/test_semantic_customization_lifecycle.py
           - .ai/scripts/tests/test_semantic_customization_skill_contract.py
     target: .ai/scripts/

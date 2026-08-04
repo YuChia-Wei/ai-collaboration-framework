@@ -1153,6 +1153,8 @@ class AiContextPackageApplyGwtTests(unittest.TestCase):
         for path in (
             ".dev/ai-context/provenance.yaml",
             ".dev/ai-context/customizations.yaml",
+            ".dev/ai-context/effective-rules.yaml",
+            ".dev/ai-context/effective-rule-packets/ROUTE-EXAMPLE.yaml",
         ):
             with self.subTest(path=path):
                 fixture = PackageApplyFixture()

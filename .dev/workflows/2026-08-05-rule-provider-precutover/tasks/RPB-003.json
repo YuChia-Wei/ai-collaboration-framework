@@ -7,9 +7,9 @@
   "workflow_id": "2026-08-05-rule-provider-precutover",
   "owner_skill": "ai-context-governance",
   "title": "Implement target-effective state and deterministic rule packets",
-  "status": "in_progress",
+  "status": "completed",
   "created_at": "2026-08-05T01:29:39+08:00",
-  "updated_at": "2026-08-05T02:58:13+08:00",
+  "updated_at": "2026-08-05T03:54:04+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-5.6-terra",
   "reasoning_effort": "xhigh",
@@ -23,15 +23,15 @@
   "execution": {
     "steps": ["Define target-effective schemas and lifecycle", "Implement deterministic index and packet generation", "Implement common resolver and fail-closed freshness states", "Record consumer and execution-evidence contract"],
     "validation": ["Deterministic fixture read-back", "Manual stale, conflict, missing, and digest-mismatch scenario review", "No check-all or repository validators"],
-    "last_completed_step": "RPB-001 established stable identities and RPB-004 supplied the canonical shared catalog plus exact dotnet-backend projection consumed by this resolver.",
-    "next_action": "Implement the target-effective schemas and lifecycle first, then build deterministic index and task-scoped packet generation over the catalogs without Markdown scanning or default fallback."
+    "last_completed_step": "Defined target-owned effective-state and packet contracts, implemented deterministic packet build/resolve and staged publication, integrated lifecycle hooks and package reservations, and closed independent semantic/runtime review blockers through root read-back.",
+    "next_action": "Commit the RPB-003 checkpoint, then begin RPB-005 provider relocation and reference-in-place activation without changing target-owned configuration."
   },
   "results": {
-    "summary": "",
-    "files_changed": [],
+    "summary": "Target repositories now have a template-only, target-owned effective-rule state, complete self-contained task packets, deterministic exact routing, authority/catalog/state/packet freshness binding, and a shared read-only resolver that fails closed without scanning Markdown or using framework defaults.",
+    "files_changed": ["effective-rule state/packet schemas and lifecycle references", "shared resolver, candidate builder, staged writer, and target validation integration", "initialization/upgrader provenance and customization templates", "package preservation, distribution, entrypoint, and representative GWT test source"],
     "tests_run": [],
-    "finding_status": "not-addressed",
-    "residual_risk": "",
-    "follow_up_needed": true
+    "finding_status": "addressed-for-task-scope",
+    "residual_risk": "No local tests or repository validation scripts ran by owner direction. Twelve profile documents remain explicitly unpacketized until stable identities are allocated; constraint tuning/waiver resolution remains fail-closed until stable constraint records exist. Multi-file publication is packets-first/state-last with in-process rollback, not cross-file crash atomicity; crash-mixed state cannot pass freshness checks.",
+    "follow_up_needed": false
   }
 }

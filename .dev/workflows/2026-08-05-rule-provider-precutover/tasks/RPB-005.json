@@ -7,9 +7,9 @@
   "workflow_id": "2026-08-05-rule-provider-precutover",
   "owner_skill": "ai-context-governance",
   "title": "Relocate and activate the bundled validation provider",
-  "status": "pending",
+  "status": "in_progress",
   "created_at": "2026-08-05T01:29:39+08:00",
-  "updated_at": "2026-08-05T01:29:39+08:00",
+  "updated_at": "2026-08-05T03:54:04+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-5.6-terra",
   "reasoning_effort": "xhigh",
@@ -23,8 +23,8 @@
   "execution": {
     "steps": ["Relocate bundled source to the profile-owned canonical path", "Publish provider/capability manifest", "Update distribution and source references", "Implement fail-closed activation state and reference-in-place evidence", "Reject unsupported materialization"],
     "validation": ["Manifest/source/distribution read-back", "Controlled reference-in-place fixture review", "Manual analyzer/runtime separation review", "No repository validation scripts"],
-    "last_completed_step": "Task bounded and awaiting RPB-002.",
-    "next_action": "After the matrix, implement #115 before the #116 activation state."
+    "last_completed_step": "RPB-002 fixed the provider destination and RPB-003 completed the target-effective resolver contract; the provider source and distribution surfaces are ready for a single-writer relocation.",
+    "next_action": "Relocate analyzer and runtime-validation source under the stable profile-owned provider root, then add the inactive-by-default manifest and reference-in-place activation contract."
   },
   "results": {
     "summary": "",
