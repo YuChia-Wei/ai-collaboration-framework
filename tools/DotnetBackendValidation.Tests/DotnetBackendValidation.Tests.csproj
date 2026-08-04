@@ -8,7 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\DotnetBackendValidation\DotnetBackendValidation.csproj" />
+    <ProjectReference Include="..\..\.ai\assets\tech-stacks\dotnet-backend\tooling\bundled-mechanical-validation\runtime-validation\DotnetBackendValidation.csproj" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="10.0.3" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="10.0.0" />
     <PackageReference Include="xunit" Version="2.9.3" />

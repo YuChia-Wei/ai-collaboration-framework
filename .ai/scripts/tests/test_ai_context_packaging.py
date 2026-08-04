@@ -425,7 +425,25 @@ class DeterministicPackageGwtTests(unittest.TestCase):
         )
         self.assertEqual(
             "dotnet-backend",
-            payload["tools/DotnetBackendAnalyzers/DotnetBackendAnalyzers.csproj"],
+            payload[
+                ".ai/assets/tech-stacks/dotnet-backend/tooling/"
+                "bundled-mechanical-validation/analyzers/DotnetBackendAnalyzers.csproj"
+            ],
+        )
+        self.assertFalse(
+            any(
+                path.startswith("tools/DotnetBackendAnalyzers/")
+                or path.startswith("tools/DotnetBackendValidation/")
+                for path in payload
+            ),
+            "relocated production provider paths must not remain in the payload",
+        )
+        self.assertFalse(
+            any(
+                path.startswith("tools/") and path.split("/", 2)[1].endswith(".Tests")
+                for path in payload
+            ),
+            "root tools/*Tests projects are source-only framework verification",
         )
 
     def test_gwt_000aa_given_repository_configuration_when_payload_is_projected_then_dedicated_target_seeds_replace_source_truth(self) -> None:

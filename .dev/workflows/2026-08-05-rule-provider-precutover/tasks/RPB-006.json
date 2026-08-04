@@ -7,9 +7,9 @@
   "workflow_id": "2026-08-05-rule-provider-precutover",
   "owner_skill": "ai-context-governance",
   "title": "Route action skills through effective-rule packets",
-  "status": "pending",
+  "status": "in_progress",
   "created_at": "2026-08-05T01:29:39+08:00",
-  "updated_at": "2026-08-05T01:29:39+08:00",
+  "updated_at": "2026-08-05T06:46:31+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-5.6-terra",
   "reasoning_effort": "xhigh",
@@ -23,8 +23,8 @@
   "execution": {
     "steps": ["Inventory applicable action skills", "Coordinate one-writer ownership for shared skill files", "Add effective-rule consumer declarations and evidence", "Prove same-rule semantic consistency across consumers"],
     "validation": ["Cross-skill rule-resolution read-back", "Manual shared-section conflict review", "No check-all or repository validators"],
-    "last_completed_step": "Exclusive #92/#94 boundaries were exchanged between tasks.",
-    "next_action": "After RPB-003 and shared-file coordination, migrate only #92-owned effective-rule sections."
+    "last_completed_step": "RPB-003 completed the resolver/packet contract; the exact ten action skills were inventoried; #94 confirmed its writers are complete and granted sequential single-writer access to only the announced sibling sections and #92 consumer tests.",
+    "next_action": "Add the top-level effective_rule_consumption contract to the ten action skills, document it in the canonical schema, and add bounded same-rule consumer consistency test source without changing #94-owned semantics."
   },
   "results": {
     "summary": "",

@@ -7,9 +7,9 @@
   "workflow_id": "2026-08-05-rule-provider-precutover",
   "owner_skill": "ai-context-governance",
   "title": "Relocate and activate the bundled validation provider",
-  "status": "in_progress",
+  "status": "completed",
   "created_at": "2026-08-05T01:29:39+08:00",
-  "updated_at": "2026-08-05T03:54:04+08:00",
+  "updated_at": "2026-08-05T06:46:31+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-5.6-terra",
   "reasoning_effort": "xhigh",
@@ -23,15 +23,15 @@
   "execution": {
     "steps": ["Relocate bundled source to the profile-owned canonical path", "Publish provider/capability manifest", "Update distribution and source references", "Implement fail-closed activation state and reference-in-place evidence", "Reject unsupported materialization"],
     "validation": ["Manifest/source/distribution read-back", "Controlled reference-in-place fixture review", "Manual analyzer/runtime separation review", "No repository validation scripts"],
-    "last_completed_step": "RPB-002 fixed the provider destination and RPB-003 completed the target-effective resolver contract; the provider source and distribution surfaces are ready for a single-writer relocation.",
-    "next_action": "Relocate analyzer and runtime-validation source under the stable profile-owned provider root, then add the inactive-by-default manifest and reference-in-place activation contract."
+    "last_completed_step": "Relocated both production capabilities under the stable profile-owned root, added the inactive-by-default manifest and fail-closed reference-in-place contract, bound active proof to the physical canonical location plus typed file evidence, and closed two independent review rounds.",
+    "next_action": "Commit the RPB-005 checkpoint, then begin RPB-006 effective-rule consumer declarations on the exact shared-file sections coordinated with #94."
   },
   "results": {
-    "summary": "",
-    "files_changed": [],
+    "summary": "The pre-cutover bundled provider now has one stable identity and physical profile-owned root, separate analyzer/runtime-validation capabilities, source-only distribution, inactive-by-default reference-in-place activation, and fail-closed evidence and materialization semantics without target configuration mutation.",
+    "files_changed": ["13 analyzer and 3 runtime-validation production entries relocated under the canonical bundled provider root", "provider manifest, activation schema/template/evaluator, controlled unresolved fixture, and typed evidence source", "dotnet-backend distribution ownership, dependency scan roots, source-only check-all registration, source test references, and navigation documentation"],
     "tests_run": [],
-    "finding_status": "not-addressed",
-    "residual_risk": "",
-    "follow_up_needed": true
+    "finding_status": "addressed-for-task-scope",
+    "residual_risk": "No local tests, builds, check-all, or repository validation scripts ran by owner direction. Active proof intentionally trusts target-owned, digest-bound evidence metadata instead of parsing or mutating target projects or executing target commands. Exotic non-JSON YAML values can fail with an unstructured evaluator error, but cannot certify activation.",
+    "follow_up_needed": false
   }
 }

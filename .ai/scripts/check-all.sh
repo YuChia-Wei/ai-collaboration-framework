@@ -284,6 +284,33 @@ source_release_context_available() {
         [ -f "$PROJECT_ROOT/.ai/scripts/ai_context_package.py" ]
 }
 
+run_source_repository_dotnet_framework_tests() {
+    if ! source_release_context_available; then
+        echo -e "${CYAN}ℹ${NC} NOT APPLICABLE: Dotnet Backend Analyzer Template Tests (source framework tests not packaged)"
+        echo -e "${CYAN}ℹ${NC} NOT APPLICABLE: Dotnet Backend Configuration Validation Tests (source framework tests not packaged)"
+        echo -e "${CYAN}ℹ${NC} NOT APPLICABLE: Dotnet Backend BuildingBlocks Behavior Tests (source framework tests not packaged)"
+        echo -e "${CYAN}ℹ${NC} NOT APPLICABLE: Bundled Mechanical Validation Provider Activation Tests (source framework tests not packaged)"
+        NOT_APPLICABLE=$((NOT_APPLICABLE + 4))
+        return
+    fi
+
+    run_command_check "dotnet test tools/DotnetBackendAnalyzers.Tests/DotnetBackendAnalyzers.Tests.csproj" \
+        "Dotnet Backend Analyzer Template Tests" \
+        "required" "true" "true"
+
+    run_command_check "dotnet test tools/DotnetBackendValidation.Tests/DotnetBackendValidation.Tests.csproj" \
+        "Dotnet Backend Configuration Validation Tests" \
+        "required" "true" "true"
+
+    run_command_check "dotnet test tools/DotnetBackendBuildingBlocks.Tests/DotnetBackendBuildingBlocks.Tests.csproj" \
+        "Dotnet Backend BuildingBlocks Behavior Tests" \
+        "required" "true" "true"
+
+    run_command_check "python .ai/assets/tech-stacks/dotnet-backend/tooling/bundled-mechanical-validation/tests/test_provider_activation_evaluator.py -v" \
+        "Bundled Mechanical Validation Provider Activation Tests" \
+        "required" "true" "true"
+}
+
 run_source_repository_release_checks() {
     if ! source_release_context_available; then
         echo -e "${CYAN}ℹ${NC} NOT APPLICABLE: AI Context Version Governance Fail-Closed Tests (source release context not packaged)"
@@ -539,17 +566,7 @@ run_check "check-coding-standards.sh" \
     "Coding Standards Structural Integrity" \
     "required" "true" "true"
 
-run_command_check "dotnet test tools/DotnetBackendAnalyzers.Tests/DotnetBackendAnalyzers.Tests.csproj" \
-    "Dotnet Backend Analyzer Template Tests" \
-    "required" "true" "true"
-
-run_command_check "dotnet test tools/DotnetBackendValidation.Tests/DotnetBackendValidation.Tests.csproj" \
-    "Dotnet Backend Configuration Validation Tests" \
-    "required" "true" "true"
-
-run_command_check "dotnet test tools/DotnetBackendBuildingBlocks.Tests/DotnetBackendBuildingBlocks.Tests.csproj" \
-    "Dotnet Backend BuildingBlocks Behavior Tests" \
-    "required" "true" "true"
+run_source_repository_dotnet_framework_tests
 
 # Repository source validation is covered by DBA1001 in analyzer tests.
 # Mapper source validation is covered by DBA1007-DBA1008 in analyzer tests.

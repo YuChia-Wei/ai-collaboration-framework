@@ -12,7 +12,7 @@
 - `current_phase`: `remediation`
 - `artifact_root`: `.dev/workflows/2026-08-05-rule-provider-precutover`
 - `created_at`: `2026-08-05T01:29:39+08:00`
-- `updated_at`: `2026-08-05T03:54:04+08:00`
+- `updated_at`: `2026-08-05T06:46:31+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md`
 - `template_version`: `1.2.0`
 
@@ -81,7 +81,7 @@ Only one task is marked `in_progress` in durable workflow state. The orchestrato
 
 1. Baseline evidence and owner decisions — completed from `ASM-20260804-002`, #92 discussion, and live Issue read-back at `main@d8580df4516155ff7b1a139d9a064a8b0d4b2019`.
 2. Workflow and bounded work-item binding — completed by creating #109 through #117 and formal sub-issue relationships under #104 through #107.
-3. Dependency-ordered remediation — in progress; `RPB-001`, `RPB-002`, `RPB-003`, and `RPB-004` completed. `RPB-005` is active.
+3. Dependency-ordered remediation — in progress; `RPB-001` through `RPB-005` completed. `RPB-006` is active.
 4. Independent post-remediation audit — pending.
 5. PR review, merge-commit integration, merged-main read-back, and closure — pending; release packaging remains excluded.
 
@@ -95,16 +95,16 @@ Only one task is marked `in_progress` in durable workflow state. The orchestrato
 
 ## Resume Checkpoint
 
-- Last completed action: Completed `RPB-003` target-effective schemas, deterministic routing/packet generation, authority and digest freshness gates, safe staged publication, and the read-only resolver for #112/#113.
-- Current task: `RPB-005` is in progress.
-- Exact next action: Relocate the bundled provider under its stable profile-owned identity and implement inactive-by-default reference-in-place activation without target configuration mutation.
-- Validation already completed: prior migration/catalog read-back plus manual schema/runtime/fixture parity review, two independent read-only reviews and post-fix blocker confirmation, path/symlink and authority-contract source inspection, and `git diff --check`. No tests or repository validation scripts have run.
+- Last completed action: Completed `RPB-005` provider relocation, stable manifest/capability identity, source-only distribution, physical canonical-root binding, and inactive-by-default reference-in-place evidence contract for #115/#116.
+- Current task: `RPB-006` is in progress.
+- Exact next action: Add only the coordinated `effective_rule_consumption` sibling sections, canonical-schema documentation, and #92 resolver-consumer tests across the exact ten action skills.
+- Validation already completed: prior migration/catalog and resolver read-back plus production blob parity, relocation/distribution scans, typed evidence and digest read-back, two independent provider review rounds with post-fix blocker confirmation, path/symlink/canonical-root source inspection, and `git diff --check`. No tests, builds, check-all, or repository validation scripts have run.
 - Git state: branch `codex/2026-08-05-rule-provider-precutover` starts from `origin/main@d8580df4516155ff7b1a139d9a064a8b0d4b2019`.
-- Branch history and checkpoint handoffs: segment 1 only; local durable checkpoints through `98484bd`, with the RPB-003 checkpoint pending this commit; no push or merge handoff yet.
+- Branch history and checkpoint handoffs: segment 1 only; local durable checkpoints through `ec55b91`, with the RPB-005 checkpoint pending this commit; no push or merge handoff yet.
 - Blockers or unresolved decisions: none. Shared-file sequencing with #94 is a coordination constraint, not an owner-decision blocker.
 
 ## Branch Lifecycle
 
 | Segment | Branch | Base | Checkpoint Type | Commit | Remote / Target | Recorded At | Reason | Resume Branch / Action |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| 1 | `codex/2026-08-05-rule-provider-precutover` | `main@d8580df4516155ff7b1a139d9a064a8b0d4b2019` | active remediation | pending | `origin/main` | `2026-08-05T01:29:39+08:00` | owner-authorized grouped pre-cutover remediation | execute `RPB-005` |
+| 1 | `codex/2026-08-05-rule-provider-precutover` | `main@d8580df4516155ff7b1a139d9a064a8b0d4b2019` | active remediation | pending | `origin/main` | `2026-08-05T01:29:39+08:00` | owner-authorized grouped pre-cutover remediation | execute `RPB-006` |

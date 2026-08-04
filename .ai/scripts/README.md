@@ -200,12 +200,16 @@ discarding every older printed command.
 `validate-dependency-versions.py` is a deterministic offline gate. In the source
 framework repository it enforces byte-identical pinned Python requirement
 mirrors, requirements-file use and one Python version across GitHub workflows,
-exact and consistent direct package versions in framework-managed
-`tools/**/*.csproj`, and an exact `global.json` SDK new enough for those tools.
-In initialized targets, source-only workflow and distribution checks become not
-applicable while managed-tool checks remain active. It does not query package
-registries or advisory databases and therefore makes no package-currency or
-vulnerability claim. The normative boundary is
+exact and consistent direct package versions in the explicit scan roots
+`tools/` and
+`.ai/assets/tech-stacks/dotnet-backend/tooling/bundled-mechanical-validation/`.
+The provider root includes its production projects at every level, while its
+`fixtures/` and `tests/` subtrees are excluded. It does not scan unrelated
+`.ai/` assets. It also enforces an exact `global.json` SDK new enough for the
+managed projects. In initialized targets, source-only workflow and distribution
+checks become not applicable while managed-tool checks remain active. It does not
+query package registries or advisory databases and therefore makes no package-currency
+or vulnerability claim. The normative boundary is
 `.dev/standards/DEPENDENCY-VERSION-CONSISTENCY-POLICY.md`.
 
 `validate-file-disposition-manifest.py` validates a supplied remediation
@@ -418,9 +422,9 @@ dotnet format --verify-no-changes
 dotnet tool run repo-context-lint
 ```
 
-Current behavior:
+Current source-framework behavior:
 
-- runs `dotnet test tools/DotnetBackendAnalyzers.Tests/DotnetBackendAnalyzers.Tests.csproj`;
+- runs source-only `dotnet test tools/DotnetBackendAnalyzers.Tests/DotnetBackendAnalyzers.Tests.csproj`;
 - does not invoke the retired repository grep checks.
 
 ### Compatibility And Manual Entry Points
@@ -466,10 +470,10 @@ Completed replacement:
 - use case rules: `DBA1002` and `DBA1010` through `DBA1012`; the use case grep scripts have been removed while transaction and error-handling design remain AI review work.
 - projection rules: `DBA1013` covers EF write operations and `DotnetBackendValidation` verifies marker-based EF model registration; the projection grep/config scripts have been removed.
 
-Analyzer source template:
+Analyzer production source is provider-owned and source-available by default:
 
-- `tools/DotnetBackendAnalyzers/`
-- `tools/DotnetBackendAnalyzers.Tests/`
+- `.ai/assets/tech-stacks/dotnet-backend/tooling/bundled-mechanical-validation/analyzers/`
+- `tools/DotnetBackendAnalyzers.Tests/` remains source-only framework verification.
 
 ### Retired Generated Regex Checks
 

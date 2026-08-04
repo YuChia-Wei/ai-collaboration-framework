@@ -149,3 +149,4 @@ check_all_required_commands:
   - dotnet test tools/DotnetBackendAnalyzers.Tests/DotnetBackendAnalyzers.Tests.csproj
   - dotnet test tools/DotnetBackendValidation.Tests/DotnetBackendValidation.Tests.csproj
   - dotnet test tools/DotnetBackendBuildingBlocks.Tests/DotnetBackendBuildingBlocks.Tests.csproj
+  - python .ai/assets/tech-stacks/dotnet-backend/tooling/bundled-mechanical-validation/tests/test_provider_activation_evaluator.py -v

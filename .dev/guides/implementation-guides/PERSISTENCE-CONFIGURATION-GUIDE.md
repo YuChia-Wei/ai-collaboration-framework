@@ -77,9 +77,15 @@ database.
 
 ## Validation
 
+For source-framework contributor verification only:
+
 ```bash
 dotnet test tools/DotnetBackendValidation.Tests/DotnetBackendValidation.Tests.csproj
 ```
+
+For a target that has separately selected and activated the provider in place,
+record and run its own target-owned runtime-validation test command. The root
+test project is not delivered to targets.
 
 When the target uses the supplied validation pattern, it provides an
 `IProjectionReadModel` marker and uses

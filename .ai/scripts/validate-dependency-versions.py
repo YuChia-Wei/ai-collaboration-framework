@@ -21,6 +21,13 @@ guard_direct_entrypoint(".ai/scripts/validate-dependency-versions.py")
 
 DEFAULT_ROOT = Path(__file__).resolve().parents[2]
 SOURCE_PROFILE = Path(".ai/distribution/profiles/dotnet-backend.yaml")
+PROVIDER_PRODUCTION_ROOT = Path(
+    ".ai/assets/tech-stacks/dotnet-backend/tooling/bundled-mechanical-validation"
+)
+MANAGED_PROJECT_ROOTS = (
+    Path("tools"),
+    PROVIDER_PRODUCTION_ROOT,
+)
 MINIMUM_PYTHON = (3, 11)
 REGISTRY_PATH = Path(".ai/scripts/python-entrypoints.json")
 REQUIREMENT_PIN = re.compile(
@@ -256,17 +263,21 @@ def is_exact_package_version(version: str) -> bool:
 
 
 def managed_projects(root: Path) -> list[Path]:
-    tools = root / "tools"
-    if not tools.is_dir():
-        return []
-    return sorted(
-        (
+    projects: set[Path] = set()
+    for project_root in MANAGED_PROJECT_ROOTS:
+        absolute_root = root / project_root
+        if not absolute_root.is_dir():
+            continue
+        projects.update(
             path
-            for path in tools.rglob("*.csproj")
+            for path in absolute_root.rglob("*.csproj")
             if not {"bin", "obj"}.intersection(path.relative_to(root).parts)
-        ),
-        key=lambda path: relative(path, root).encode("utf-8"),
-    )
+            and not (
+                project_root == PROVIDER_PRODUCTION_ROOT
+                and {"fixtures", "tests"}.intersection(path.relative_to(absolute_root).parts)
+            )
+        )
+    return sorted(projects, key=lambda path: relative(path, root).encode("utf-8"))
 
 
 def validate_dotnet(root: Path, errors: list[str]) -> tuple[int, int]:

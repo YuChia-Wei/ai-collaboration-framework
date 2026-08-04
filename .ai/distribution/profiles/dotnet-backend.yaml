@@ -109,6 +109,9 @@ entries:
           - .ai/assets/skills/repo-structure-sync/**
           - .ai/assets/skills/transitions/**
           - .ai/assets/sub-agent-role-prompts/context-translator/**
+      - component_id: dotnet-backend
+        patterns:
+          - .ai/assets/tech-stacks/dotnet-backend/**
     target: .ai/assets/
     ownership: framework-managed
     install_behavior: managed
@@ -300,12 +303,6 @@ entries:
     component_id: software-development-core
     source: .dev/workflows/README.MD
     target: .dev/workflows/README.MD
-    ownership: framework-managed
-    install_behavior: managed
-  - id: dotnet-validation-tools
-    component_id: dotnet-backend
-    source: tools/**
-    target: tools/
     ownership: framework-managed
     install_behavior: managed
   - id: public-root-and-catalog-seeds

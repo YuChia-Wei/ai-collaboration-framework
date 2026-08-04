@@ -31,6 +31,8 @@ Excluded:
   shared/
   standards/
   templates/
+  tooling/
+    bundled-mechanical-validation/
 ```
 
 ## References
@@ -44,6 +46,8 @@ Excluded:
 - `references/CODE-TEMPLATES.MD`
 - `references/COMMON-PITFALLS.MD`
 - `references/FAILURE-CASES.MD`
+- `tooling/bundled-mechanical-validation/` - source-available, inactive-by-default
+  provider for separately selected Roslyn analyzer and runtime-validation capabilities
 
 ## Current Shared Materials
 

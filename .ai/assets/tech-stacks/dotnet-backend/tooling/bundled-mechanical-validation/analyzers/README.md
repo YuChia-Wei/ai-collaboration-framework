@@ -1,6 +1,12 @@
 # Dotnet Backend Analyzers
 
-Source-included Roslyn analyzer template for this AI context framework's .NET backend profile.
+This is the Roslyn-analyzer capability of the profile-owned bundled mechanical
+validation provider. It is delivered as source only and remains inactive until
+a target records an explicit `reference-in-place` activation. It is not a NuGet
+package and this pre-cutover provider does not copy it into a target repository.
+
+See the provider [activation contract](../README.md#activation-contract) before
+planning target wiring.
 
 Current diagnostics:
 
@@ -44,33 +50,48 @@ orchestration quality.
 
 Analyzers do not replace AI software engineering reasoning context used by review and architecture skills.
 
-## Run Tests
+## Source Repository Verification
 
 ```bash
 dotnet test tools/DotnetBackendAnalyzers.Tests/DotnetBackendAnalyzers.Tests.csproj
 ```
 
-## Source-Included Usage Direction
+The root test project is source-repository verification only. It references
+this canonical provider source in place and is not part of target delivery.
 
-For now this project is intended to travel with the AI context framework as source. Do not package it as NuGet until the rules and AI skill integration stabilize.
+## Activation Direction
 
-## Wire Into A Target Repo
+Use the provider's activation-record template to record a target-owned plan
+before selecting this capability. The only implemented mode is
+`reference-in-place`; a record must pin the framework version and commit, this
+canonical path, the target plan, wiring, invocation, configuration ownership,
+evidence, outcome, and freshness.
 
-After copying this analyzer source into a target repo, wire it into target projects through `Directory.Build.props`.
+## Planned Target Wiring
+
+An explicit target-owned plan may use the following source templates to describe
+its wiring. This provider does not write a target `.slnx`, `Directory.Build.props`,
+`.editorconfig`, project/package references, severity, or warnings-as-errors.
 
 Use:
 
 - `templates/Directory.Build.props.snippet`
 - `templates/analyzer-severity.editorconfig`
 
-The snippet adds the analyzer project as a `ProjectReference` with:
+The snippet describes an analyzer `ProjectReference` with:
 
 - `OutputItemType="Analyzer"`
 - `ReferenceOutputAssembly="false"`
 - `PrivateAssets="all"`
 
-This lets target projects receive analyzer diagnostics during `dotnet build` without referencing the analyzer as a runtime assembly.
+When a target implements its separately authorized plan, that wiring lets its
+projects receive analyzer diagnostics during `dotnet build` without referencing
+the analyzer as a runtime assembly.
 
 The severity template keeps each architecture diagnostic independently configurable. Target repositories may use `none`, `suggestion`, `warning`, or `error` according to their architecture profile and team agreement.
 
-Custom DBA diagnostics run during build after the analyzer project is wired in. Standard IDE coding-style preferences may additionally require `EnforceCodeStyleInBuild`, `dotnet format --verify-no-changes`, or an equivalent CI command. A warning blocks the build only when warnings are treated as errors.
+Custom DBA diagnostics run during build only after the target has implemented
+and evidenced its recorded plan. Standard IDE coding-style preferences may
+additionally require `EnforceCodeStyleInBuild`, `dotnet format --verify-no-changes`,
+or an equivalent CI command. A warning blocks the build only when warnings are
+treated as errors.

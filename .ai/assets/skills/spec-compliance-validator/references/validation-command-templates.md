@@ -33,10 +33,13 @@ Target repository route:
 dotnet build <solution-or-project>
 ```
 
-Wire the source-included `DotnetBackendAnalyzers` project into the target build as
-described in `tools/DotnetBackendAnalyzers/README.md`. Repository contract
-compliance is enforced by `DBA1001` during `dotnet build`; the former grep-based
-repository script has been removed.
+First record an authorized target-owned reference-in-place plan. The target
+owner then applies analyzer wiring as described in
+`.ai/assets/tech-stacks/dotnet-backend/tooling/bundled-mechanical-validation/analyzers/README.md`.
+Only a subsequent target invocation with file-backed evidence can support a
+fresh active record. The provider does not change target configuration or copy
+production source. Repository contract compliance is enforced by `DBA1001`
+during `dotnet build`; the former grep-based repository script has been removed.
 
 Framework contributor verification:
 
@@ -44,8 +47,9 @@ Framework contributor verification:
 dotnet test tools/DotnetBackendAnalyzers.Tests/DotnetBackendAnalyzers.Tests.csproj --filter FullyQualifiedName~RepositoryQueryMethodAnalyzerTests
 ```
 
-The focused test command verifies the analyzer implementation in this framework.
-It does not replace running `dotnet build` in the target repository with the
+The focused test command is source-only framework contributor verification. It
+does not establish target activation or replace running `dotnet build` in the
+target repository with the
 analyzer wired into the relevant projects.
 
 ### 3) Targeted Test Runs (xUnit)
