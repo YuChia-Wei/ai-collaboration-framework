@@ -16,6 +16,12 @@ from typing import Iterable
 
 import yaml
 
+from ai_context_target_provenance import (
+    TargetValidationError,
+    framework_managed_ignore_message,
+    git_ignore_rule,
+)
+
 
 VERSION_RE = re.compile(r"^v?(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)$")
 
@@ -600,6 +606,56 @@ def observation(paths: Iterable[str], target: Path) -> dict[str, dict]:
     return result
 
 
+def required_framework_paths(incoming: dict[str, dict]) -> list[dict]:
+    """Bind selected framework-managed package bytes to the pending receipt."""
+    required: list[dict] = []
+    for path in sorted(incoming, key=lambda item: item.encode("utf-8")):
+        record = incoming[path]
+        if record.get("ownership") != "framework-managed":
+            continue
+        component_id = record.get("component_id")
+        if not isinstance(component_id, str) or not component_id:
+            continue
+        required.append(
+            {
+                "path": path,
+                "component_id": component_id,
+                "ownership": "framework-managed",
+                "sha256": record["sha256"],
+            }
+        )
+    return required
+
+
+def ignored_framework_paths(target: Path, required: list[dict]) -> list[dict]:
+    """Expose target-owned Git ignores without choosing an owner disposition."""
+    unresolved: list[dict] = []
+    for item in required:
+        path = item["path"]
+        component_id = item["component_id"]
+        try:
+            rule = git_ignore_rule(target, path)
+        except TargetValidationError as exc:
+            raise ApplyError(str(exc)) from exc
+        if rule is None:
+            continue
+        unresolved.append(
+            {
+                "path": path,
+                "component_id": component_id,
+                "ownership": "framework-managed",
+                "ignore_rule": rule,
+                "owner_dispositions": [
+                    "preserve-target-rule",
+                    "add-narrow-exception",
+                    "disable-component",
+                    "pending-owner-decision",
+                ],
+            }
+        )
+    return unresolved
+
+
 def build_plan(
     package_root: Path,
     target_root: Path,
@@ -629,6 +685,9 @@ def build_plan(
     selected_components = enabled_components(resolved_selection)
     incoming = filter_component_records(incoming, selected_components)
     previous = filter_component_records(previous, selected_components)
+    required_paths = required_framework_paths(incoming)
+    ignored_paths = ignored_framework_paths(target, required_paths)
+    ignored_by_path = {item["path"]: item for item in ignored_paths}
     skipped_by_selection = [
         raw
         for raw in operations
@@ -771,6 +830,12 @@ def build_plan(
                 action, reason = "reconcile", "rename destination already exists"
         else:
             action, reason = "reconcile", "migration explicitly requires reconciliation"
+        ignored = ignored_by_path.get(path)
+        if ignored is not None:
+            action = "unresolved"
+            reason = framework_managed_ignore_message(
+                path, ignored["component_id"], ignored["ignore_rule"]
+            )
         planned.append({**item, "action": action, "reason": reason})
     would_apply = [
         item
@@ -778,10 +843,12 @@ def build_plan(
         if item["action"] in {"add", "replace", "remove", "rename"}
     ]
     would_skip = [
-        item for item in planned if item["action"] in {"noop", "reconcile"}
+        item
+        for item in planned
+        if item["action"] in {"noop", "reconcile", "unresolved"}
     ]
     return {
-        "schema_version": "1.0.0",
+        "schema_version": "1.1.0",
         "package_id": package["package_id"],
         "package_version": package.get("version"),
         "package_manifest_sha256": manifest_sha,
@@ -805,6 +872,8 @@ def build_plan(
                 [*would_skip, *skipped_by_selection]
             ),
         },
+        "required_framework_paths": required_paths,
+        "ignored_framework_paths": ignored_paths,
         "observed": observed,
         "operations": planned,
     }
@@ -852,6 +921,18 @@ def apply_plan(plan: dict, acknowledgements: set[str] | None = None) -> dict:
     incoming = filter_component_records(
         incoming, enabled_components(resolved_selection)
     )
+    required_paths = required_framework_paths(incoming)
+    if required_paths != plan.get("required_framework_paths"):
+        raise ApplyError("required framework-managed path identity changed after planning")
+    current_ignored = ignored_framework_paths(target, required_paths)
+    if current_ignored != plan.get("ignored_framework_paths"):
+        raise ApplyError("target Git ignore rules changed after planning")
+    if current_ignored:
+        paths = [item["path"] for item in current_ignored]
+        raise ApplyError(
+            "unresolved target Git ignore rules for selected framework-managed paths: "
+            f"{paths}; owner must choose a recorded disposition before apply"
+        )
     current_observed = observation(plan.get("observed", {}).keys(), target)
     if current_observed != plan.get("observed"):
         raise ApplyError("target file state changed after planning")
@@ -893,7 +974,7 @@ def apply_plan(plan: dict, acknowledgements: set[str] | None = None) -> dict:
                 write_payload(package_root, target, path, incoming[path])
         receipt_path.parent.mkdir(parents=True, exist_ok=True)
         receipt = {
-            "schema_version": "1.0.0",
+            "schema_version": "1.1.0",
             "status": "pending-validation",
             "package_id": package["package_id"],
             "package_version": package.get("version"),
@@ -908,6 +989,7 @@ def apply_plan(plan: dict, acknowledgements: set[str] | None = None) -> dict:
                 "applied": count_components(active),
                 "skipped": plan["component_operation_counts"]["would_skip"],
             },
+            "required_framework_paths": required_paths,
             "provenance_updated": False,
         }
         receipt_path.write_text(yaml.safe_dump(receipt, sort_keys=False), encoding="utf-8", newline="\n")

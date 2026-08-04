@@ -351,9 +351,10 @@ run_ai_context_version_check() {
         run_command_check "python .ai/scripts/validate-ai-context-versions.py" \
             "AI Context Release And Version Contracts" \
             "required" "true" "true"
-    elif [ -f "$PROJECT_ROOT/.dev/ai-context/provenance.yaml" ]; then
+    elif [ -f "$PROJECT_ROOT/.dev/ai-context/provenance.yaml" ] || \
+         [ -f "$PROJECT_ROOT/.dev/AI-CONTEXT-APPLY-PENDING.yaml" ]; then
         run_command_check "python .ai/scripts/validate-ai-context-target.py" \
-            "AI Context Target Provenance And Customization Contracts" \
+            "AI Context Target Apply, Provenance And Customization Contracts" \
             "required" "true" "true"
     else
         echo -e "${CYAN}ℹ${NC} NOT APPLICABLE: AI Context Target Provenance And Customization Contracts (target provenance not initialized)"

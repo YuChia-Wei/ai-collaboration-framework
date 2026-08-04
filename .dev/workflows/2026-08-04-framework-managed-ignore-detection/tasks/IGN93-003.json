@@ -1,0 +1,45 @@
+{
+  "template_id": "ai-context-governance-remediation-task",
+  "template_version": "1.1.0",
+  "template_created_at": "2026-07-10T18:22:49+08:00",
+  "template_updated_at": "2026-07-27T09:52:09+08:00",
+  "task_id": "IGN93-003",
+  "workflow_id": "2026-08-04-framework-managed-ignore-detection",
+  "owner_skill": "ai-context-governance",
+  "title": "Verify and close the ignored managed-path remediation",
+  "status": "in_progress",
+  "created_at": "2026-08-04T21:49:30+08:00",
+  "updated_at": "2026-08-04T23:56:09+08:00",
+  "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
+  "model": "gpt-5.6-sol",
+  "reasoning_effort": "medium",
+  "finding_ids": ["ASM-20260804-003#AIC-001"],
+  "scope": {
+    "target": "Independent verification assessment, remediation report, workflow closure, commit range, and receiving checkpoint.",
+    "files": [".dev/assessments/**", ".dev/workflows/2026-08-04-framework-managed-ignore-detection/**"],
+    "constraints": ["Recheck assessment ID across all refs before allocation", "Treat closed Proposal #93 as source evidence only", "Keep REL-004, #92, and #94 separate"],
+    "non_goals": ["Merge or publication without approval"]
+  },
+  "execution": {
+    "steps": ["Run independent verification", "Reconcile finding", "Create receiving checkpoint", "Commit and open PR"],
+    "validation": ["Assessment, workflow, commit, and critical validation"],
+    "last_completed_step": "The focused workflow-artifact validator passed after correcting the index, PKG-005 resolution_ref, and PKG-005 local origin evidence references.",
+    "next_action": "Merge current main into this Draft branch without rebase, resolve the PR conflict, and complete the owner-authorized --no-ff integration; retain independent verification and release work as separate follow-up gates."
+  },
+  "results": {
+    "summary": "Focused remediation is implemented. The single current critical gate completed with 46 of 47 required checks passed and exposed two tracking omissions; the owner instructed that the corrected checkpoint proceed to a Draft PR without a second gate run.",
+    "files_changed": [
+      ".dev/workflows/INDEX.MD",
+      ".dev/backlog/items/PKG-005.yaml",
+      ".dev/workflows/2026-08-04-framework-managed-ignore-detection/workflow.yaml",
+      ".dev/workflows/2026-08-04-framework-managed-ignore-detection/workflow-plan.md"
+    ],
+    "tests_run": [
+      "COMMIT_RANGE=origin/main..HEAD WORKFLOW_ID=2026-08-04-framework-managed-ignore-detection C:\\Program Files\\Git\\bin\\bash.exe .ai/scripts/check-all.sh --critical (46 passed, 1 failed: Workflow Artifact Metadata; owner directed no rerun after correcting the two metadata omissions)"
+      ,"python .ai/scripts/validate-workflow-artifacts.py (passed: 59 post-adoption workflows, 79 indexed workflow directories, 46 backlog items)"
+    ],
+    "finding_status": "partially-resolved",
+    "residual_risk": "The focused workflow-artifact validator passes, but the aggregate current gate remains 46/47 before the tracking correction and independent verification remains outstanding. The owner authorized no-rebase --no-ff integration only; release preparation and publication remain excluded.",
+    "follow_up_needed": true
+  }
+}

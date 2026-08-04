@@ -1,0 +1,30 @@
+schema_version: "1.0"
+provider: "github"
+repository: "YuChia-Wei/ai-collaboration-prompts-dotnet-backend"
+migration_id: "github-live-PKG-005-2026-08-04"
+stage: "stage-b-read-back-complete"
+source_revision: "803cd098c092e34c8939145c4ac9f57f73ad818c"
+generated_at: "2026-08-04T23:15:14+08:00"
+project:
+  number: 3
+  node_id: "PVT_kwHOAwvEG84Bez7w"
+  url: "https://github.com/users/YuChia-Wei/projects/3"
+items:
+  - backlog_id: "PKG-005"
+    source_path: ".dev/backlog/items/PKG-005.yaml"
+    source_sha256: "633c6b779aef61a76b7ed2fd8dd74d05f2f185465824d64d8484a45a607a1864"
+    issue_number: 99
+    issue_node_id: "I_kwDOSBe2Hc8AAAABLbdlgw"
+    issue_url: "https://github.com/YuChia-Wei/ai-collaboration-prompts-dotnet-backend/issues/99"
+    issue_state: "open"
+    close_reason: null
+    project_item_id: "PVTI_lAHOAwvEG84Bez7wzg1P_Ug"
+    created_at: "2026-08-04T15:04:58Z"
+    updated_at: "2026-08-04T15:04:58Z"
+    read_back:
+      verified_at: "2026-08-04T23:15:14+08:00"
+      title_matches: true
+      markers_match: true
+      labels_match: true
+      state_matches: true
+      notes: "Story #99 is open with exact PKG-005 title, canonical marker, and kind:story, scope:framework, created-by:codex labels. Project #3 item PVTI_lAHOAwvEG84Bez7wzg1P_Ug reads back Status In progress, Priority P1 High, Owner review Approved, and Target release v0.9.0. Proposal #93 is closed as the promoted source record. Provider state remains a non-authoritative projection of the owner-approved workflow."

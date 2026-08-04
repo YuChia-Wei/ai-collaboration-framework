@@ -259,6 +259,19 @@ evidence, and applied/skipped counts by component. Apply revalidates that
 authority before mutation. `ai-context-init` or `ai-context-upgrader` owns
 validation and provenance finalization.
 
+For every selected framework-managed path, dry run also records an exact target
+Git ignore match (`source`, line, and pattern). An ignored path is an explicit
+unresolved item with its path, component, ownership, and the only permitted
+owner dispositions: preserve the target rule, add a narrow exception, disable
+the component, or keep a pending owner decision. The planner never rewrites
+target-owned ignore configuration and apply refuses unresolved ignored paths
+before any target byte or pending receipt is written. A successful receipt
+binds every selected framework-managed path to its component, ownership, and
+expected bytes; target validation and provenance finalization reject the same
+missing, changed, or ignored path. This keeps plan preflight, post-install
+validation, and the target critical gate on one identity without treating a
+skipped path as a pass.
+
 `render-ai-context-release-notes.py` validates a governed release candidate and
 renders the GitHub Release body from its canonical release notes, migration
 guide, tag, and exact commit. Candidate mode can discover exactly one active

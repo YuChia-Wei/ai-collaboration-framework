@@ -424,6 +424,32 @@ class CheckAllRunnerGwtTests(unittest.TestCase):
         finally:
             fixture.close()
 
+    def test_gwt_007b_given_pending_target_apply_receipt_without_provenance_when_critical_runs_then_target_validation_is_required(self) -> None:
+        fixture = SyntheticRunnerRepo()
+        try:
+            # Given a downstream pending receipt but no finalized target provenance.
+            receipt = fixture.root / ".dev/AI-CONTEXT-APPLY-PENDING.yaml"
+            receipt.parent.mkdir(parents=True)
+            receipt.write_text("schema_version: '1.1.0'\n", encoding="utf-8")
+
+            # When the critical gate is selected.
+            result = fixture.execute("--critical")
+
+            # Then the target validator is selected as a required check, not N/A.
+            self.assertEqual(0, result.returncode, result.stdout + result.stderr)
+            self.assertIn(
+                "AI Context Target Apply, Provenance And Customization Contracts",
+                result.stdout,
+            )
+            self.assertTrue(
+                any(
+                    "validate-ai-context-target.py" in line
+                    for line in fixture.sentinel()
+                )
+            )
+        finally:
+            fixture.close()
+
     def test_gwt_008_given_complete_spec_inputs_when_quick_runs_then_child_result_is_required(self) -> None:
         fixture = SyntheticRunnerRepo()
         try:

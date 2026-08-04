@@ -3,9 +3,11 @@
 
 from __future__ import annotations
 
+import hashlib
 import os
 import re
 import shutil
+import subprocess
 import tempfile
 from datetime import datetime
 from pathlib import Path, PurePosixPath
@@ -22,6 +24,7 @@ SUBJECT_KINDS = {"capability", "rule", "contract"}
 RELATIONSHIPS = {"extends", "replaces", "deviates", "target-only"}
 EQUIVALENCE = {"absent", "partial", "equivalent-candidate", "conflicting"}
 DISPOSITIONS = {"retain", "merge", "supersede", "retire", "unresolved"}
+PENDING_APPLY_RECEIPT = ".dev/AI-CONTEXT-APPLY-PENDING.yaml"
 
 
 class TargetValidationError(ValueError):
@@ -63,6 +66,139 @@ def safe_repo_reference(value: object) -> bool:
         and not path.is_absolute()
         and all(part not in {"", ".", ".."} for part in path.parts)
     )
+
+
+def safe_target_path(value: object) -> bool:
+    if not isinstance(value, str) or not value or "\\" in value:
+        return False
+    path = PurePosixPath(value)
+    return not path.is_absolute() and all(
+        part not in {"", ".", ".."} for part in path.parts
+    )
+
+
+def git_ignore_rule(root: Path, path: str) -> dict[str, object] | None:
+    """Return the exact target Git ignore rule for one untracked path."""
+    if not safe_target_path(path):
+        raise TargetValidationError(f"unsafe target path for Git ignore check: {path!r}")
+    try:
+        result = subprocess.run(
+            ["git", "check-ignore", "-z", "-v", "--stdin"],
+            cwd=root,
+            check=False,
+            capture_output=True,
+            input=f"{path}\0".encode("utf-8"),
+        )
+    except OSError as exc:
+        raise TargetValidationError(f"cannot inspect target Git ignore rules: {exc}") from exc
+    if result.returncode == 1:
+        return None
+    if result.returncode != 0:
+        detail = result.stderr.decode("utf-8", errors="replace").strip()
+        raise TargetValidationError(
+            f"cannot inspect target Git ignore rules for {path}: {detail or result.returncode}"
+        )
+    values = result.stdout.split(b"\0")
+    if values and values[-1] == b"":
+        values.pop()
+    if len(values) != 4:
+        raise TargetValidationError(
+            f"cannot parse target Git ignore rule for {path}"
+        )
+    source, line, pattern, matched_path = (
+        value.decode("utf-8", errors="surrogateescape") for value in values
+    )
+    if matched_path != path or not line.isdecimal() or not source or not pattern:
+        raise TargetValidationError(
+            f"cannot parse target Git ignore rule for {path}"
+        )
+    return {"source": source, "line": int(line), "pattern": pattern}
+
+
+def framework_managed_ignore_message(
+    path: str, component_id: str, rule: dict[str, object]
+) -> str:
+    return (
+        f"target Git ignore rule excludes framework-managed path {path} "
+        f"(component {component_id}; ownership framework-managed): "
+        f"{rule['source']}:{rule['line']}:{rule['pattern']}"
+    )
+
+
+def validate_pending_apply_receipt(root: Path, errors: list[str]) -> None:
+    """Validate selected managed bytes and ignore state carried by a new receipt."""
+    receipt_path = root / PENDING_APPLY_RECEIPT
+    if receipt_path.is_symlink():
+        errors.append(f"{receipt_path}: pending apply receipt must not be a symlink")
+        return
+    if not receipt_path.is_file():
+        return
+    receipt = load_mapping(receipt_path, errors)
+    if receipt is None:
+        return
+    if receipt.get("schema_version") not in {"1.0.0", "1.1.0"}:
+        errors.append(f"{receipt_path}: unsupported pending apply receipt schema")
+        return
+    required = receipt.get("required_framework_paths")
+    if required is None:
+        if receipt.get("schema_version") == "1.1.0":
+            errors.append(
+                f"{receipt_path}: schema 1.1.0 requires required_framework_paths"
+            )
+        return
+    if not isinstance(required, list):
+        errors.append(f"{receipt_path}: required_framework_paths must be a list")
+        return
+    seen: set[str] = set()
+    ordered: list[str] = []
+    for index, item in enumerate(required):
+        label = f"{receipt_path}: required_framework_paths[{index}]"
+        if not isinstance(item, dict):
+            errors.append(f"{label} must be a mapping")
+            continue
+        path = item.get("path")
+        component_id = item.get("component_id")
+        expected_sha = item.get("sha256")
+        if not safe_target_path(path):
+            errors.append(f"{label}.path must be a safe POSIX target path")
+            continue
+        if path in seen:
+            errors.append(f"{receipt_path}: required framework paths must be unique")
+            continue
+        seen.add(path)
+        ordered.append(path)
+        if not isinstance(component_id, str) or not component_id:
+            errors.append(f"{label}.component_id must be non-empty")
+        if item.get("ownership") != "framework-managed":
+            errors.append(f"{label}.ownership must be framework-managed")
+        if not isinstance(expected_sha, str) or not re.fullmatch(
+            r"[0-9a-f]{64}", expected_sha
+        ):
+            errors.append(f"{label}.sha256 must be a lowercase SHA-256")
+        candidate = root / Path(*PurePosixPath(path).parts)
+        if candidate.is_symlink() or not candidate.is_file():
+            errors.append(f"required framework-managed path is absent: {path}")
+            continue
+        if isinstance(expected_sha, str) and re.fullmatch(r"[0-9a-f]{64}", expected_sha):
+            actual_sha = hashlib.sha256(candidate.read_bytes()).hexdigest()
+            if actual_sha != expected_sha:
+                errors.append(
+                    f"required framework-managed path bytes differ: {path}"
+                )
+        if isinstance(component_id, str) and component_id:
+            try:
+                rule = git_ignore_rule(root, path)
+            except TargetValidationError as exc:
+                errors.append(str(exc))
+            else:
+                if rule is not None:
+                    errors.append(
+                        framework_managed_ignore_message(path, component_id, rule)
+                    )
+    if ordered != sorted(ordered, key=lambda value: value.encode("utf-8")):
+        errors.append(
+            f"{receipt_path}: required framework paths must use UTF-8 bytewise order"
+        )
 
 
 def validate_string_references(
@@ -448,6 +584,7 @@ def validate_target(
 ) -> list[str]:
     root = root.resolve()
     errors: list[str] = []
+    validate_pending_apply_receipt(root, errors)
     provenance = root / ".dev/ai-context/provenance.yaml"
     legacy = root / ".dev/AI-CONTEXT-SOURCE.yaml"
     if provenance.is_file() and legacy.is_file():
@@ -527,6 +664,10 @@ def finalize_context(
         raise TargetValidationError("legacy provenance must be reconciled before finalization")
     if provenance_path.exists() and not allow_existing:
         raise TargetValidationError("component-aware provenance already exists")
+    pending_errors: list[str] = []
+    validate_pending_apply_receipt(root, pending_errors)
+    if pending_errors:
+        raise TargetValidationError("; ".join(pending_errors))
     context.mkdir(parents=True, exist_ok=True)
     temporary_paths: list[Path] = []
     try:
@@ -582,10 +723,18 @@ def initialize_context(
             "reason": "credible-source-evidence-required",
             "written": [],
         }
+    root = root.resolve()
+    pending_errors: list[str] = []
+    validate_pending_apply_receipt(root, pending_errors)
+    if pending_errors:
+        return {
+            "status": "unresolved",
+            "reason": "required-framework-managed-path-validation-failed",
+            "written": [],
+        }
     provenance, ledger = build_initialization_documents(
         dict(source), selection, imported_at
     )
-    root = root.resolve()
     dev_root = root / ".dev"
     context = dev_root / "ai-context"
     legacy = dev_root / "AI-CONTEXT-SOURCE.yaml"

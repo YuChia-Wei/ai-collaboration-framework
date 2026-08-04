@@ -1,0 +1,52 @@
+{
+  "template_id": "ai-context-governance-remediation-task",
+  "template_version": "1.1.0",
+  "template_created_at": "2026-07-10T18:22:49+08:00",
+  "template_updated_at": "2026-07-27T09:52:09+08:00",
+  "task_id": "IGN93-002",
+  "workflow_id": "2026-08-04-framework-managed-ignore-detection",
+  "owner_skill": "ai-context-governance",
+  "title": "Fail closed on target ignore exclusions for selected managed paths",
+  "status": "completed",
+  "created_at": "2026-08-04T21:49:30+08:00",
+  "updated_at": "2026-08-04T22:41:37+08:00",
+  "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
+  "model": "gpt-5.6-sol",
+  "reasoning_effort": "medium",
+  "finding_ids": ["ASM-20260804-003#AIC-001"],
+  "scope": {
+    "target": "Portable package planner, package apply receipt, target validation, provenance finalization, focused tests, and guidance.",
+    "files": [".ai/scripts/**", ".ai/assets/skills/ai-context-upgrader/references/upgrade-playbook.md"],
+    "constraints": ["Do not rewrite target-owned .gitignore", "Preserve provenance bytes on failure", "Use exact package path/component/ownership identity"],
+    "non_goals": ["REL-004", "#92", "#94", "Repository-wide terminology rename"]
+  },
+  "execution": {
+    "steps": ["Add shared Git ignore observation", "Expose unresolved evidence in dry run", "Reject apply before mutations", "Validate pending receipt before target validation/finalization", "Add portable exact-case fixtures"],
+    "validation": ["Focused GWT suites", "Package validation", "Critical gate"],
+    "last_completed_step": "Implemented and focused-validated the shared ignored-path contract.",
+    "next_action": "IGN93-003 independently audits and closes the remediation."
+  },
+  "results": {
+    "summary": "The package plan now records exact ignored selected framework-managed path, component, ownership, Git rule, and owner dispositions; apply fails before any target write. The pending receipt binds required managed bytes, and target validation, finalization, initialization, and the critical gate reject the same ignored identity without changing target-owned ignore rules. Package fixtures carry the target-provenance helper required by the portable planner.",
+    "files_changed": [
+      ".ai/scripts/ai_context_package_apply.py",
+      ".ai/scripts/ai_context_target_provenance.py",
+      ".ai/scripts/check-all.sh",
+      ".ai/scripts/README.md",
+      ".ai/scripts/tests/test_ai_context_package_apply.py",
+      ".ai/scripts/tests/test_ai_context_packaging.py",
+      ".ai/scripts/tests/test_fail_closed_validation.py",
+      ".ai/assets/skills/ai-context-upgrader/references/upgrade-playbook.md"
+    ],
+    "tests_run": [
+      "python .ai/scripts/tests/test_ai_context_package_apply.py -v (29 passed; 1 Windows symlink privilege skip)",
+      "python .ai/scripts/tests/test_fail_closed_validation.py -v (31 passed)",
+      "python .ai/scripts/tests/test_semantic_customization_lifecycle.py -v (7 passed)",
+      "python .ai/scripts/tests/test_ai_context_packaging.py -v (29 passed; 1 external-downstream skip)",
+      "git diff --check"
+    ],
+    "finding_status": "resolved-awaiting-independent-verification",
+    "residual_risk": "A target owner must explicitly choose any ignore-rule repair or component-selection disposition; the framework does not modify target-owned Git configuration.",
+    "follow_up_needed": false
+  }
+}
