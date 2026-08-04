@@ -21,6 +21,7 @@ outputs:
   - "authoring extraction sheet"
   - "validator-ready problem-frame draft"
   - "open questions and inferred items"
+  - "one provider-neutral role_execution record for the considered problem-frame role binding, handed to the orchestrator without transferring framing ownership"
 constraints:
   - "Prefer CBF for the first draft unless SWF is clearly a better fit"
   - "Mark inferred items explicitly when the source documents do not state them"
@@ -34,15 +35,16 @@ role_bindings:
     load_obligation: "mandatory-when-applicable"
 workflow:
   - step: 1
-    description: "Identify the highest-priority source of truth and the target use case"
+    description: "Identify the highest-priority source of truth and target use case, then evaluate the problem-frame role binding"
   - step: 2
-    description: "Extract inputs, preconditions, outcomes, external constraints, and scenarios"
+    description: "Load the matching role manifest and all mandatory references, then extract inputs, preconditions, outcomes, external constraints, and scenarios"
   - step: 3
     description: "Draft frame.yaml, machine/machine.yaml, machine/use-case.yaml, aggregate.yaml, and acceptance.yaml"
   - step: 4
-    description: "List open questions, inferred items, and next skill handoff"
+    description: "List open questions, inferred items, next skill handoff, and the skill-owned role_execution record for orchestrator aggregation"
 references:
   - ".ai/assets/skills/problem-frame-author/references/authoring-playbook.md"
+  - ".ai/assets/skills/problem-frame-author/references/role-execution.md"
   - ".ai/assets/skills/problem-frame-author/references/source-mapping.md"
   - ".ai/assets/skills/problem-frame-author/references/output-contract.md"
 examples:

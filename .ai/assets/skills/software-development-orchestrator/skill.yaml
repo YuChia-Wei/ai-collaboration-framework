@@ -33,6 +33,7 @@ inputs:
   - "current workflow artifacts, if any"
   - "canonical skill registry and relevant skill specs"
   - "available downstream skill metadata or runtime wrapper descriptions"
+  - "owner-produced role_execution records when an applicable canonical role supports a development stage"
   - "zero, one, or multiple approved work-item identifiers; required branch policy; validation expectations; and handoff requirements"
   - "target-owned test commands, working directory, prerequisites, credential requirements or environment boundaries, and test policy when test execution is selected; never secret values"
   - "approval state for requirements, design, specification, implementation, specialized tests, and compliance gates"
@@ -52,9 +53,14 @@ outputs:
   - "selectable spec-compliance result: not-applicable when unselected or a 100% fail-closed gate when selected"
   - "final execution summary with separate requirement/spec approval, implementation, test, compliance, review, validation, task, commit, and handoff evidence"
   - "deterministic acceptance evidence from a preclassified input envelope and a repository-verified fresh-session checkpoint"
+  - "provider-neutral aggregation of owning-skill role_execution records with direct/delegated evidence, attempts, fallback, and final integration decisions"
 constraints:
   - "Do not claim standalone fallback output has the same quality as a matching downstream specialist skill or project-specific standard."
   - "Do not replace downstream development skills; delegate requirement, specification, problem framing, architecture, test design, implementation, review, and compliance work to the matching local skill when the profile provides one."
+  - "For an applicable canonical sub-agent role, require the owning skill to produce the shared role_execution record; aggregate it by stage without taking domain ownership or inventing child invocation evidence."
+  - "Default to direct inline role execution. Select delegated only when every shared safety gate passes, at least one material-value trigger exists, cost/failure/retry risk supports delegation, and genuine invocation evidence is available."
+  - "If delegation is unsupported or fails, select direct when the shared inline-parity contract can be satisfied; otherwise record unavailable. Preserve attempt continuity and require new owner or workflow authorization for attempt three or later."
+  - "Compose a role_execution input envelope with an existing loaded_rule_ids packet only by reference; do not redefine its resolver, provider, effective-state, or rule semantics."
   - "When no matching downstream skill exists, use fallback playbooks only to create a minimum viable checklist, handoff prompt, or quality gate."
   - "When downstream skill mapping is inferred, report confidence and evidence before relying on the route."
   - "Do not make a runtime goal or runtime workflow the source of truth for repository process rules; use runtime features to carry software-development-orchestrator execution."
@@ -90,7 +96,7 @@ workflow:
   - step: 4
     description: "Map each stage to a generic capability slot, then use the active capability profile or skill discovery playbook to route to a local skill or use a fallback playbook."
   - step: 5
-    description: "Coordinate approval pauses, stage execution, target-aware test execution, selectable spec compliance, status updates, validation checkpoints, and one commit per validated durable stage or coherent bounded batch."
+    description: "Coordinate approval pauses, owner-produced role_execution records and stage aggregation, target-aware test execution, selectable spec compliance, status updates, validation checkpoints, and one commit per validated durable stage or coherent bounded batch."
   - step: 6
     description: "Before the final response, verify branch and checkpoint state plus the workflow closing checklist, including whether the commit policy requires a commit; then close with separate evidence for approved requirements/specs, implementation, required tests, selected compliance, review, validation, task state, commits, merge/checkpoint state, open decisions, and recommended next action."
 references:
@@ -100,10 +106,12 @@ references:
   - ".ai/assets/skills/software-development-orchestrator/references/capability-profile.yaml"
   - ".ai/assets/skills/software-development-orchestrator/references/fallback-playbooks.md"
   - ".ai/assets/skills/software-development-orchestrator/references/runtime-coordination.md"
+  - ".ai/assets/skills/software-development-orchestrator/references/role-execution-playbook.md"
   - ".ai/assets/skills/software-development-orchestrator/references/workflow-artifact-playbook.md"
   - ".ai/assets/skills/software-development-orchestrator/references/output-contract.md"
   - ".ai/assets/skills/software-development-orchestrator/references/validation-activation-policy.md"
   - ".ai/assets/skills/software-development-orchestrator/references/acceptance-oracle.md"
+  - ".ai/assets/shared/ROLE-EXECUTION-CONTRACT.md"
   - ".dev/standards/WORKFLOW-HANDOFF-POLICY.md"
 acceptance:
   validator: ".ai/assets/skills/software-development-orchestrator/scripts/validate-software-development-orchestrator-acceptance.py"

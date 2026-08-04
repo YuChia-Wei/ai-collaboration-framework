@@ -10,10 +10,10 @@
 - `base_branch`: `main`
 - `branch_segment`: `1`
 - `status`: `in_progress`
-- `current_phase`: `remediation`
+- `current_phase`: `validation-handoff`
 - `artifact_root`: `.dev/workflows/2026-08-05-sub-agent-reachability`
 - `created_at`: `2026-08-05T01:34:40+08:00`
-- `updated_at`: `2026-08-05T01:52:18+08:00`
+- `updated_at`: `2026-08-05T02:20:00+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md`
 - `template_version`: `1.2.0`
 
@@ -60,8 +60,8 @@
 2. Bounded issue decomposition and duplicate search — completed; #118 and #119 are the smallest coherent slices and #119 depends on #118.
 3. Workflow bootstrap — completed on the dedicated branch from `origin/main@d8580df4516155ff7b1a139d9a064a8b0d4b2019` in commit `9880255`.
 4. Static owning-skill reachability remediation — `SAR94-001` / #118 completed with repository validation scripts deferred by explicit owner direction.
-5. Runtime selection, execution evidence, and inline parity remediation — `SAR94-002` / #119 in progress.
-6. Orchestrator integration review and durable handoff — pending; repository validation scripts are intentionally outside this workflow.
+5. Runtime selection, execution evidence, and inline parity remediation — implementation and root integration review completed; `SAR94-002` remains in progress only for the separately arranged validation and integration handoff.
+6. Orchestrator durable handoff — in progress; repository validation scripts are intentionally outside this workflow, and the workflow remains open until their result and mainline integration are reconciled.
 
 ## Proportionality And Delivery Decisions
 
@@ -76,18 +76,19 @@
 
 - Concurrent #92 task `019fcd65-1745-78f3-8879-b5dc45ec4b30` owns rule/provider/effective-state sections and `loaded_rule_ids` resolver evidence.
 - This workflow owns `.ai/SUB-AGENT-SYSTEM.MD`, all `role_bindings` and `role_execution` sections, direct/delegated/unavailable/not-applicable semantics, test-design-to-slice-implementation mapping, no-delegation parity, and their fixtures.
-- Potential shared surfaces are `.ai/assets/CANONICAL-SCHEMA.MD` and applicable action-skill `skill.yaml` files. If #92 needs an essential edit there, both workflows will name the exact section and use one sequential writer.
+- #92 confirmed that it will not edit `.ai/assets/CANONICAL-SCHEMA.MD`, `.ai/SUB-AGENT-SYSTEM.MD`, the reachability validator/fixtures, or the #94-owned role sections. Applicable action-skill `skill.yaml` files remain sequential: #94 commits its role sections first, then #92 may add #114 sibling packet-consumer sections as the single writer.
+- #94 is the single writer for the universal role-taxonomy wording in `.dev/standards/rationale/skill-sub-agent-boundary-rationale.MD`, `.dev/standards/AI-CONTEXT-BOUNDARY.md`, and the three named human guides. #92 commit `69603f1` changes different `AI-CONTEXT-BOUNDARY.md` sections; final integration must read back both semantic sets after the branches meet.
 - This workflow will not edit #92-owned rule/provider/effective-state sections, target provider configuration, or `loaded_rule_ids` semantics.
 
 ## Resume Checkpoint
 
-- Last completed action: Integrated #118 canonical bindings, the 18-row derived projection, fail-closed static-reachability validation, and GWT fixtures after root review corrected multi-owner and projection-parity behavior.
-- Current task: `SAR94-002` is `in_progress`; `SAR94-001` is completed awaiting the separately arranged validation-script review.
-- Exact next action: Commit the #118 task boundary, then delegate disjoint #119 runtime-contract, owning-skill handoff, and acceptance-fixture units to `gpt-5.6-terra` sub-agents under root integration ownership.
-- Validation already completed: Git branch/base checks; GitHub duplicate search and issue/comment read-back; worker PyYAML parse and exact 18-role path/asset/status matrix; worker Python AST syntax parse of the validator and test file; root/worker `git diff --check`. No repository validation script or test suite has been run.
-- Git state: branch `codex/2026-08-05-sub-agent-reachability`, based on `origin/main@d8580df4516155ff7b1a139d9a064a8b0d4b2019`; workflow bootstrap commit `9880255` is local and the #118 task changes are ready for their bounded commit.
+- Last completed action: Integrated #119's shared provider-neutral execution contract, canonical taxonomy parity, owning-skill production, orchestrator aggregation, BDD-to-test implementation boundary, no-delegation parity, and bounded acceptance fixtures after root review corrected final-attempt provenance and fallback behavior.
+- Current task: `SAR94-002` remains `in_progress` for the explicit validation/integration handoff; implementation changes are ready for a durable checkpoint. `SAR94-001` is completed awaiting the same separately arranged validation review.
+- Exact next action: Commit the #119 implementation checkpoint, notify #92 that the action-skill role sections are stable for sequential #114 sibling edits, then hand the branch to the separately arranged validation review before creating or merging the required pull request.
+- Validation already completed: Git branch/base checks; GitHub duplicate search and issue/comment read-back; worker PyYAML/JSON syntax parsing and reference read-back; worker Python AST syntax parsing; root manual contract, role-owner/path, disposition, fallback, and fixture-oracle review; root/worker `git diff --check`. No repository validation script, fixture test, or test suite has been run.
+- Git state: branch `codex/2026-08-05-sub-agent-reachability`, based on `origin/main@d8580df4516155ff7b1a139d9a064a8b0d4b2019`; workflow bootstrap `9880255` and #118 implementation `a80d6a6` are committed locally; #119 implementation is ready for its bounded commit.
 - Branch history and checkpoint handoffs: segment 1 began from updated `origin/main`; no push or merge checkpoint yet.
-- Blockers or unresolved decisions: none. Shared-file coordination with #92 is established and will fail closed to sequential integration if an overlap materializes.
+- Blockers or unresolved decisions: no owner decision is pending. Repository validation and mainline integration remain deliberately unfinished; final shared-file read-back must include #92 commit `69603f1` or its integrated successor.
 
 ## Branch Lifecycle
 

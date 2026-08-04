@@ -20,6 +20,7 @@ outputs:
   - "architecture-level findings"
   - "code-level findings"
   - "review scores"
+  - "one provider-neutral role_execution record for every considered review-role binding, handed to the orchestrator without transferring review ownership"
 constraints:
   - "Do not define target architecture"
   - "Do not output a staged refactoring plan"
@@ -54,16 +55,17 @@ role_bindings:
     load_obligation: "mandatory-when-applicable"
 workflow:
   - step: 1
-    description: "Read the review index and checklist"
+    description: "Read the review index and checklist, then evaluate each review-role binding's applicability"
   - step: 2
-    description: "Classify the reviewed scope and build a checklist comparison"
+    description: "Classify the reviewed scope, load every matching role manifest and mandatory reference, and build a checklist comparison"
   - step: 3
-    description: "Separate architecture-level and code-level findings"
+    description: "Execute review directly by default or make an eligible bounded delegation, then separate architecture-level and code-level findings"
   - step: 4
-    description: "Return transient findings in conversation or persist an explicitly requested large review as a standalone assessment"
+    description: "Return transient findings or persist an explicitly requested assessment, and hand the skill-owned role_execution records to the orchestrator for aggregation"
 references:
   - ".ai/assets/tech-stacks/dotnet-backend/references/CODE-REVIEW-INDEX.MD"
   - ".ai/assets/skills/code-reviewer/references/checklist-reference.md"
+  - ".ai/assets/skills/code-reviewer/references/role-execution.md"
   - ".ai/assets/skills/code-reviewer/references/output-contract.md"
   - ".ai/assets/tech-stacks/dotnet-backend/standards/CODE-REVIEW-CHECKLIST.md"
   - ".dev/standards/ASSESSMENT-ARTIFACT-POLICY.md"

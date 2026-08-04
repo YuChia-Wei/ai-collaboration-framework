@@ -65,3 +65,11 @@ orchestration_contract:
     - task-state
     - commits
     - branch-and-handoff
+  role_execution:
+    contract: .ai/assets/shared/ROLE-EXECUTION-CONTRACT.md
+    producer: owning-skill
+    aggregator: software-development-orchestrator
+    direct_default: true
+    dispositions: [direct, delegated, unavailable, not-applicable]
+    delegated_requires: [all-safety-gates, material-value-trigger, supports-delegation-risk-result, genuine-invocation-evidence]
+    no_delegation_runtime: direct-when-inline-parity-satisfiable

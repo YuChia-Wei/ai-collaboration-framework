@@ -8,7 +8,7 @@ This standard defines where AI collaboration context belongs and how to separate
 | --- | --- | --- |
 | Universal AI context | Canonical portable baseline concepts, rules, constraints, and abstract enforcement capabilities reusable across repositories and technology stacks. | `.ai/assets/shared/` |
 | Skill context | Canonical top-level skill specs and skill references. | `.ai/assets/skills/` |
-| Sub-agent context | Delegated worker role prompts and references. | `.ai/assets/sub-agent-role-prompts/` |
+| Sub-agent context | Owning-skill bounded worker role prompts and references; they may execute direct inline or through genuine delegation. This category does not prove an invocation. | `.ai/assets/sub-agent-role-prompts/` |
 | Tech-stack context | Canonical portable profile defaults, rules, constraints, bindings, bundled tooling, and execution context tied to a specific stack profile. | `.ai/assets/tech-stacks/<profile>/` |
 | Runtime wrapper context | Thin runtime entries for a specific agent tool. | `.agents/skills/`, `.claude/skills/` |
 | Source governance and ownership registry | Framework governance, ownership classification, and the registry that identifies each artifact's canonical owner. A current registry record whose legacy `canonical_path` is here is transitional-unmigrated until reclassified. | `.dev/standards/` |
@@ -35,7 +35,7 @@ It explicitly excludes Razor, Blazor, MAUI, ASP.NET MVC view rendering, and othe
 - Put source governance and the ownership registry in `.dev/standards/`. A current registry record with a legacy `canonical_path` under `.dev/standards/` is resolved as `transitional-unmigrated` until the migration matrix reclassifies it; `.dev/standards/` is not the blanket future owner for framework semantics.
 - Put a downstream target's effective semantic state, deltas, tuning, waivers, provenance, and reconciliation evidence in `.dev/ai-context/`. `.dev/` is shared execution truth, not a human-only tree.
 - Put canonical skill specs in `.ai/assets/skills/<skill-id>/`.
-- Put delegated worker role definitions in `.ai/assets/sub-agent-role-prompts/<role-id>/`.
+- Put owning-skill bounded worker role definitions in `.ai/assets/sub-agent-role-prompts/<role-id>/`; they may execute direct inline or through genuine delegation, and placement alone does not prove an invocation.
 - Put Codex runtime wrappers in `.agents/skills/<skill-id>/`.
 - Put Claude-compatible wrappers in `.claude/skills/<skill-id>/`.
 - Put project requirements, domain language, specs, operations truth, workflow artifacts, and architecture facts under `.dev/`.

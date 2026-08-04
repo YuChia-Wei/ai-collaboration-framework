@@ -2,13 +2,16 @@
 
 This file is a derived, agent-facing discovery and parity view of active
 sub-agent role bindings in the current .NET backend context framework. It
-does not define routing authority or runtime execution.
+does not define role applicability, routing authority, or the provider-neutral
+runtime execution contract.
 
 ## Canonical Sources
 
 - Owning skill mapping and applicability: each owning
   `.ai/assets/skills/<skill-id>/skill.yaml` `role_bindings` entry
 - Delegated sub-agent role contract: `.ai/assets/sub-agent-role-prompts/<role-id>/sub-agent.yaml`
+- Provider-neutral execution record and evidence rules:
+  `.ai/assets/shared/ROLE-EXECUTION-CONTRACT.md`
 - Human-facing taxonomy guide: `.dev/guides/ai-collaboration-guides/SKILL-AND-SUB-AGENT-TAXONOMY-GUIDE.md`
 - Workflow discovery: `.dev/workflows/<workflow-id>/workflow.yaml`
 - Workflow artifact contract: `.dev/standards/WORKFLOW-ARTIFACT-POLICY.md`
@@ -44,7 +47,8 @@ For a task, first evaluate the canonical binding's applicability:
 
 These are selection and evidence terms, not extra canonical binding fields.
 Runtime invocation, retries, fallbacks, and execution evidence remain outside
-this static projection and are handled by the role-execution work.
+this static projection and are handled only by
+`ROLE-EXECUTION-CONTRACT.md`.
 
 Every projected binding below has `expected_role_status: "active"` and
 `load_obligation: "mandatory-when-applicable"`. On a matching applicability,
@@ -70,7 +74,35 @@ This selective adapter policy does not promote or add adapters for any other
 role. Adapter presence proves a validated project configuration file, not that
 every host or tool surface can invoke that named adapter in the current
 session. Callers must confirm runtime availability and resolved model before
-delegating.
+delegating. They must not add adapters, packages, or promoted roles merely to
+make delegation appear available.
+
+## Runtime Execution
+
+For each applicable binding, the owning skill produces the provider-neutral
+`role_execution` record defined in
+`.ai/assets/shared/ROLE-EXECUTION-CONTRACT.md`. It identifies the loaded
+canonical role path, stage, bounded envelope, permissions, executor,
+invocation evidence, output, attempts, fallback, and final integration owner.
+
+`direct` is the default. It applies the same canonical role contract and
+mandatory references inline, records `parent-inline`, and never invents a
+child invocation. `delegated` is permitted only after all contract safety
+gates, a material-value trigger, and cost/failure/retry-risk assessment support
+it; it requires genuine invocation evidence. Lack of delegation support routes
+to `direct` whenever inline parity is satisfiable, not automatically to
+`unavailable`.
+
+The orchestrator may aggregate the owner-produced records by stage and verify
+their execution evidence, but it does not take domain ownership or replace the
+role's output. It retains or surfaces a final integration decision and may make
+that decision only when explicitly named as its owner. A conversation-only direct execution follows the same semantics
+without forcing a repository artifact; workflow mode embeds or references the
+complete records in its owning task.
+
+`loaded_rule_ids` packets may be referenced through the execution record's
+existing input sources. Their resolver, provider, and effective-state semantics
+remain outside this derived projection and this execution contract.
 
 ## SAG-001 Derived Role-Binding Projection
 
