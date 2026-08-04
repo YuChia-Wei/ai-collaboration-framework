@@ -14,11 +14,11 @@
 - `owner_skill`: `ai-context-governance`
 - `status`: `draft`
 - `created_at`: `2026-08-05T01:34:40+08:00`
-- `updated_at`: `2026-08-05T07:32:09+08:00`
+- `updated_at`: `2026-08-05T07:36:38+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-remediation-report-template.md`
 - `template_version`: `2.0.0`
 - `baseline_assessment`: `ASM-20260804-002`
-- `verification_assessment`: `ASM-20260805-001 reserved; draft source-only verification pending final #92-integrated read-back`
+- `verification_assessment`: `ASM-20260805-001 draft at subject commit 5dc854749f39397058d95bace415cccab8c6300e; final #92-integrated read-back pending`
 
 ## Remediation Summary
 

@@ -7,6 +7,7 @@ owns its identity, current lifecycle state, subject revision, and relationships.
 
 | Assessment | Title | Type | Owner | Status | Subject Commit | Updated | Report |
 | --- | --- | --- | --- | --- | --- | --- | --- |
+| [`ASM-20260805-001`](ASM-20260805-001/assessment.yaml) | Owning-Skill Reachability And Role Execution Remediation Verification | `ai-context-verification` | `ai-context-auditor` | `draft` | `5dc854749f39397058d95bace415cccab8c6300e` | `2026-08-05T07:34:57+08:00` | [report](ASM-20260805-001/report.md) |
 
 ## Final Assessments
 

@@ -13,7 +13,7 @@
 - `current_phase`: `sequential-integration-wait`
 - `artifact_root`: `.dev/workflows/2026-08-05-sub-agent-reachability`
 - `created_at`: `2026-08-05T01:34:40+08:00`
-- `updated_at`: `2026-08-05T07:32:09+08:00`
+- `updated_at`: `2026-08-05T07:36:38+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md`
 - `template_version`: `1.2.0`
 
@@ -32,7 +32,7 @@
 - Owner decision ledger: `https://github.com/YuChia-Wei/ai-collaboration-prompts-dotnet-backend/issues/94#issuecomment-5182504544`
 - Implementation issues: `#118`, `#119`
 - Remediation report: `.dev/workflows/2026-08-05-sub-agent-reachability/reports/remediation-report.md`
-- Verification assessment: `ASM-20260805-001` reserved for a source-only draft; it remains non-final until #92-first integration and combined-main read-back are assessed. Validation-script execution remains separately owner-arranged.
+- Verification assessment: [`ASM-20260805-001`](../../assessments/ASM-20260805-001/assessment.yaml) is a source-only draft at subject commit `5dc854749f39397058d95bace415cccab8c6300e`; it remains non-final until #92-first integration and combined-state read-back are assessed. Validation-script execution remains separately owner-arranged.
 - Tasks: `.dev/workflows/2026-08-05-sub-agent-reachability/tasks/`
 
 ## Owner Decision Baseline
