@@ -20,17 +20,15 @@ not remediation implementation. The baseline assessment remains owned by
 | `EVAL-002` | [#95](https://github.com/YuChia-Wei/ai-collaboration-prompts-dotnet-backend/issues/95) | `kind:enabler`, `scope:mixed`, `created-by:codex` | open; unassigned; no execution authorization |
 | `VAL-002` | [#96](https://github.com/YuChia-Wei/ai-collaboration-prompts-dotnet-backend/issues/96) | `kind:enabler`, `scope:mixed`, `created-by:codex` | open; formal promotion target for Proposal #75 |
 | `GOV-005` | [#97](https://github.com/YuChia-Wei/ai-collaboration-prompts-dotnet-backend/issues/97) | `kind:enabler`, `scope:source-repo`, `created-by:codex` | open; owner dispositions remain pending |
-| `CTX-004` | [#98](https://github.com/YuChia-Wei/ai-collaboration-prompts-dotnet-backend/issues/98) | `kind:enabler`, `scope:source-repo`, `created-by:codex` | open; README change not started |
+| `CTX-004` | [#98](https://github.com/YuChia-Wei/ai-collaboration-prompts-dotnet-backend/issues/98) | `kind:story`, `scope:source-repo`, `created-by:codex` | open; README change not started |
 
-Project custom fields could not be initialized in this run. The configured
-`gh` credential was invalid, and the authenticated browser surface was denied
-by browser security policy. The intended field values remain the repository
-provider defaults: `Status = Inbox`, `Owner review = Pending`, `Target release
-= Unassigned`; priorities are `P1 High` for `EVAL-002`, `VAL-002`, and
-`GOV-005`, and `P3 Low` for `CTX-004`. `Published in` is `Not yet published`
-for the mixed items and `Not applicable - source repository only` for the two
-source-repository items. These values are pending provider read-back and must
-not be reported as applied.
+An authenticated `gh` session outside the sandbox initialized and read back all
+documented Project fields. Every item remains `Status = Inbox`, `Owner review = Pending`,
+and `Target release = Unassigned`. Priorities are `P1 High` for `EVAL-002`,
+`VAL-002`, and `GOV-005`, and `P3 Low` for `CTX-004`. `Published in` is
+`Not yet published` for the mixed items and `Not applicable - source repository only`
+for the two source-repository items. These fields provide
+intake metadata only and do not schedule or authorize work.
 
 ## Not Selected
 
