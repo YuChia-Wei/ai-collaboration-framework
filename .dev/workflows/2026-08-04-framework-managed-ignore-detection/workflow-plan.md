@@ -12,7 +12,7 @@
 - `current_phase`: `post-audit`
 - `artifact_root`: `.dev/workflows/2026-08-04-framework-managed-ignore-detection`
 - `created_at`: `2026-08-04T21:49:30+08:00`
-- `updated_at`: `2026-08-04T23:15:14+08:00`
+- `updated_at`: `2026-08-04T23:44:48+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md`
 - `template_version`: `1.2.0`
 
@@ -56,8 +56,8 @@
 
 - Last completed action: Implemented shared exact-path Git-ignore evidence, receipt identity binding, apply rejection, target validation/finalization/init fail-closed checks, and critical-gate routing.
 - Current task: `IGN93-003`.
-- Exact next action: Independently audit the bounded remediation under `ai-context-auditor`, reconcile `ASM-20260804-003#AIC-001`, then complete final workflow validation and review the #99 pull request.
-- Validation already completed: Refreshed `origin/main`; checked all local and remote refs for `ASM-20260804-*`; indexed the repository; read Proposal #93 and formal Story #99; reproduced the current behavior; then passed package/apply GWT (29, one Windows symlink privilege skip), critical-gate routing GWT (31), semantic lifecycle GWT (7), full package compatibility GWT (29, one external-downstream skip), and `git diff --check`. The owner separately authorized one current critical gate before this Draft PR checkpoint.
-- Git state: remediation and workflow artifacts are ready for a first durable stage commit.
+- Exact next action: Push this branch and open a Draft PR for Story #99 under the owner's explicit current-critical-gate rerun waiver; before review or merge, allocate a fresh verification assessment, reconcile `ASM-20260804-003#AIC-001`, and obtain a passing current gate.
+- Validation already completed: Refreshed `origin/main`; checked all local and remote refs for `ASM-20260804-*`; indexed the repository; read Proposal #93 and formal Story #99; reproduced the current behavior; then passed package/apply GWT (29, one Windows symlink privilege skip), critical-gate routing GWT (31), semantic lifecycle GWT (7), full package compatibility GWT (29, one external-downstream skip), and `git diff --check`. The owner separately authorized one sandbox-external current critical gate after formal Story #99 binding. It completed at `2026-08-04T23:43:00+08:00` with 46 of 47 required checks passed; `Workflow Artifact Metadata` failed only because this workflow index had not yet synchronized its timestamp and `PKG-005` lacked a required `resolution_ref` key. Those two metadata omissions are corrected in the next checkpoint commit. The owner then instructed that no second rerun occur and that Draft PR preparation proceed.
+- Git state: implementation `803cd09` and Story binding `5204512` are local and unpushed; the next checkpoint commit records the failed-gate evidence and correction without claiming a passing rerun.
 - Branch history and checkpoint handoffs: segment 1 began from `origin/main@4e7b5e0d59be831453b5c34f5f1eb3a1daae1245`; no push or merge checkpoint.
-- Blockers or unresolved decisions: no owner design decision is pending. Story #99 acceptance authorizes fail-closed behavior and explicit owner dispositions; independent verification and final workflow closure remain required technical gates.
+- Blockers or unresolved decisions: no owner design decision is pending. The owner explicitly waived a second current-gate rerun for Draft PR preparation only; independent verification, a passing current gate, PR review, and merged-main read-back remain required before workflow closure or merge.

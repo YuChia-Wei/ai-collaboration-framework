@@ -9,7 +9,7 @@
   "title": "Verify and close the ignored managed-path remediation",
   "status": "in_progress",
   "created_at": "2026-08-04T21:49:30+08:00",
-  "updated_at": "2026-08-04T23:15:14+08:00",
+  "updated_at": "2026-08-04T23:44:48+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-5.6-sol",
   "reasoning_effort": "medium",
@@ -23,15 +23,22 @@
   "execution": {
     "steps": ["Run independent verification", "Reconcile finding", "Create receiving checkpoint", "Commit and open PR"],
     "validation": ["Assessment, workflow, commit, and critical validation"],
-    "last_completed_step": "IGN93-002 completed focused remediation and tests.",
-    "next_action": "Allocate a fresh verification assessment ID, audit the remediation, complete final validation, and review the #99 pull request."
+    "last_completed_step": "The one owner-authorized sandbox-external critical gate completed with 46 of 47 required checks passed; the only failure exposed missing workflow-index synchronization and a missing PKG-005 resolution_ref key.",
+    "next_action": "Commit the two metadata corrections, push the branch, and open a Draft PR for #99 under the owner-approved no-rerun waiver; do not merge before independent verification and a passing current gate."
   },
   "results": {
-    "summary": "",
-    "files_changed": [],
-    "tests_run": [],
-    "finding_status": "not-addressed",
-    "residual_risk": "",
+    "summary": "Focused remediation is implemented. The single current critical gate completed with 46 of 47 required checks passed and exposed two tracking omissions; the owner instructed that the corrected checkpoint proceed to a Draft PR without a second gate run.",
+    "files_changed": [
+      ".dev/workflows/INDEX.MD",
+      ".dev/backlog/items/PKG-005.yaml",
+      ".dev/workflows/2026-08-04-framework-managed-ignore-detection/workflow.yaml",
+      ".dev/workflows/2026-08-04-framework-managed-ignore-detection/workflow-plan.md"
+    ],
+    "tests_run": [
+      "COMMIT_RANGE=origin/main..HEAD WORKFLOW_ID=2026-08-04-framework-managed-ignore-detection C:\\Program Files\\Git\\bin\\bash.exe .ai/scripts/check-all.sh --critical (46 passed, 1 failed: Workflow Artifact Metadata; owner directed no rerun after correcting the two metadata omissions)"
+    ],
+    "finding_status": "partially-resolved",
+    "residual_risk": "The independent verification assessment and a passing current critical gate remain outstanding. The owner waiver allows a Draft PR only and does not authorize merge, workflow closure, release preparation, or publication.",
     "follow_up_needed": true
   }
 }
