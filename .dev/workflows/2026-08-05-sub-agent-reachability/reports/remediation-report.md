@@ -14,7 +14,7 @@
 - `owner_skill`: `ai-context-governance`
 - `status`: `draft`
 - `created_at`: `2026-08-05T01:34:40+08:00`
-- `updated_at`: `2026-08-05T01:34:40+08:00`
+- `updated_at`: `2026-08-05T01:52:18+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-remediation-report-template.md`
 - `template_version`: `2.0.0`
 - `baseline_assessment`: `ASM-20260804-002`
@@ -23,25 +23,25 @@
 ## Remediation Summary
 
 - Authorized scope: #118 and #119 under the completed Issue #94 owner decision ledger.
-- Completed scope: workflow bootstrap and durable decision/issue traceability only.
-- Validation summary: Git/GitHub state and relationship read-back only; no repository validation script has been run.
+- Completed scope: workflow bootstrap, durable decision/issue traceability, and #118 owning-skill static reachability. #119 runtime execution evidence remains in progress.
+- Validation summary: Git/GitHub state and relationship read-back; PyYAML manifest parse and exact 18-role matrix; Python AST syntax parse for changed validator/test files; `git diff --check`. No repository validation script or test suite has been run.
 - Closure decision: `not-ready`
 
 ## Finding Resolution Matrix
 
 | Assessment Finding | Before Severity | Status | Changed Files | Validation | Commit | Residual Risk |
 | --- | --- | --- | --- | --- | --- | --- |
-| `ASM-20260804-002#AIC-003` | MEDIUM | `not-addressed` | workflow artifacts only | implementation not yet reviewed | pending | owning-skill reachability and runtime evidence remain incomplete |
+| `ASM-20260804-002#AIC-003` | MEDIUM | `partially-resolved` | canonical schema, four owning skill manifests, derived routing projection, validator and fixtures | manual/static review only; repository validators deferred | pending | static reachability is implemented; runtime role execution remains in SAR94-002 and scripted evidence remains separately deferred |
 | `ASM-20260804-002#AIC-004` | HIGH | `preserved-as-evidence` | workflow traceability only | assessment and Issue links read back | pending | implementation must not disturb retained evidence or import downstream workflow identity |
 
 ## Changes And Evidence
 
 ### `ASM-20260804-002#AIC-003`
 
-- Changes: none yet beyond authorized workflow and task decomposition.
-- Evidence: Issue #94 decision-ledger comment; Issues #118 and #119.
-- Validation: GitHub issue/comment read-back.
-- Remaining risk: canonical bindings, validator fixtures, runtime selection, and execution evidence are not yet implemented.
+- Changes: added the canonical role-binding contract; bound all 18 active roles across `slice-implementer`, `code-reviewer`, `problem-frame-author`, and `ai-context-init`; converted the central routing table to a parity-checked derived view; moved concrete test-role ownership to `slice-implementer`; added fail-closed validation and GWT fixtures including multi-owner projection parity.
+- Evidence: Issue #94 decision-ledger comment; Issues #118 and #119; `SAR94-001` results.
+- Validation: GitHub issue/comment read-back, syntax-aware manifest/Python parsing, exact 18-role matrix, root diff review, and `git diff --check`; no repository validator or test suite executed.
+- Remaining risk: SAR94-002 runtime selection/evidence is not yet implemented, and the separate owner-arranged validation review has not executed the new validator or fixtures.
 
 ### `ASM-20260804-002#AIC-004`
 
@@ -66,7 +66,6 @@
 ## Closure Evidence
 
 - Required validations: implementation review and task reconciliation remain pending; repository validation scripts are explicitly outside this workflow.
-- Commit status: workflow bootstrap pending commit.
-- Workflow/task status: workflow `in_progress`; `SAR94-001` in progress; `SAR94-002` pending.
-- Final next action: implement #118, then #119, under root-orchestrator integration ownership.
-
+- Commit status: workflow bootstrap is committed as `9880255`; the bounded #118 task commit is pending.
+- Workflow/task status: workflow `in_progress`; `SAR94-001` completed; `SAR94-002` in progress.
+- Final next action: implement and integrate #119 under root-orchestrator ownership, then reconcile the workflow while preserving the separate validation review.

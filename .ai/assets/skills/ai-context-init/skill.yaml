@@ -37,6 +37,13 @@ constraints:
   - "Never retain dual provenance authorities; follow the shared semantic customization lifecycle and write neither schema-2 authority when source evidence is incomplete."
   - "Finalize target-specific English `AGENTS.md` before delegating `AGENTS.zh-TW.md` to the low-cost context-translator role; do not use a pretranslated root template."
   - "Generate validation.routine defaults unless target evidence selects stronger policy; never create or write `.dev/validation.local.conf`."
+role_bindings:
+  - role_path: ".ai/assets/sub-agent-role-prompts/context-translator/sub-agent.yaml"
+    role_asset_id: "context-translator"
+    expected_role_status: "active"
+    binding_kind: "conditional"
+    applicability: "A derived Traditional Chinese translation is requested after its English source is final and a caller-verified runtime can honor the role's low-cost model precondition."
+    load_obligation: "mandatory-when-applicable"
 workflow:
   - step: 1
     description: "Identify target repository mode: empty repo, existing repo, or copied-template repo"

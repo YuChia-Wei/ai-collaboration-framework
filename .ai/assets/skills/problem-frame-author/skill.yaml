@@ -25,6 +25,13 @@ constraints:
   - "Prefer CBF for the first draft unless SWF is clearly a better fit"
   - "Mark inferred items explicitly when the source documents do not state them"
   - "Do not claim 100% validator compliance from drafting alone"
+role_bindings:
+  - role_path: ".ai/assets/sub-agent-role-prompts/problem-frame-sub-agent/sub-agent.yaml"
+    role_asset_id: "problem-frame-sub-agent"
+    expected_role_status: "active"
+    binding_kind: "primary"
+    applicability: "Problem-frame authoring is selected for one bounded use case or workpiece."
+    load_obligation: "mandatory-when-applicable"
 workflow:
   - step: 1
     description: "Identify the highest-priority source of truth and the target use case"

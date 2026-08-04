@@ -1,9 +1,9 @@
 # Canonical Asset Schema
 
-This document defines canonical asset metadata schema version `1.0` and the
-`sub-agent-role-prompt` version `1.1` extension. Canonical manifests use
-`asset_id` as their identifier field; the legacy `id` field is not part of this
-schema.
+This document defines canonical asset metadata schema version `1.0`, its
+owning-skill role-binding contract, and the `sub-agent-role-prompt` version
+`1.1` extension. Canonical manifests use `asset_id` as their identifier field;
+the legacy `id` field is not part of this schema.
 
 The active manifest families are currently `skill-spec` (`skill.yaml`) and
 `sub-agent-role-prompt` (`sub-agent.yaml`). `command-spec` and `prompt-package`
@@ -60,7 +60,7 @@ A `skill-spec` requires all common fields plus:
 | `triggers` | `string[]` | At least one user intent or trigger phrase |
 | `workflow` | `workflow-step[]` | Ordered execution contract |
 Optional skill fields include `handoff_rules`, `runtime_notes`,
-`capability_slots`, `human_guide`, `workflow_artifacts`,
+`capability_slots`, `role_bindings`, `human_guide`, `workflow_artifacts`,
 `workflow_templates`, and `report_template`. When present, `handoff_rules` and
 `runtime_notes` are `string[]`. Paths and wrapper metadata must not make a
 wrapper the canonical owner of the skill.
@@ -77,6 +77,41 @@ object with a required `wrapper_path` string. A wrapper path must:
 `runtime_wrapper_path` is a legacy, invalid key. Runtime-specific details may
 be added beside `wrapper_path`, but they do not replace it or weaken target
 parity.
+
+### Owning-skill role bindings
+
+`role_bindings` is the canonical mapping and applicability authority from an
+owning `skill-spec` to active delegated role prompts. An active skill that owns
+one or more active roles must declare them here. Every active
+`sub-agent-role-prompt` must be covered by at least one binding in an active
+owning skill. A role manifest owns its delegated-role contract only; it does
+not reverse-declare, select, or otherwise become the authority for its owning
+skill.
+
+Each `role_bindings` entry is an object with these required fields:
+
+| Field | Type | Rule |
+| --- | --- | --- |
+| `role_path` | `string` | Exact repository-relative path to the role's `sub-agent.yaml`, using `/` separators with no placeholder, glob, or repository escape syntax |
+| `role_asset_id` | `string` | Exactly matches the target role manifest's `asset_id` |
+| `expected_role_status` | `enum` | `active`; the target role manifest must currently have `status: active` |
+| `binding_kind` | `enum` | `primary` or `conditional` |
+| `applicability` | `string` | A non-empty declarative condition that states when the binding applies; it is not a runtime disposition and is not claimed to be fully machine-evaluable |
+| `load_obligation` | `enum` | `mandatory-when-applicable` |
+
+When a binding's applicability matches, the owning skill must read the exact
+role manifest and its mandatory references before using that role, then record
+the applicable runtime outcome as `direct`, `delegated`, or `unavailable` in
+the separately owned execution record. A nonmatching applicability condition
+is recorded only at runtime as `not-applicable`; it must not be encoded as a
+binding kind, status expectation, or load obligation.
+
+`primary` identifies a role that is the selected primary behavior for the
+owning skill's declared mode or capability. `conditional` identifies an
+available role whose declared condition can supplement that primary behavior
+without replacing it. A binding never creates an implicit runtime-native
+adapter, and no adapter is required merely because a role is statically
+reachable.
 
 ## `sub-agent-role-prompt`
 

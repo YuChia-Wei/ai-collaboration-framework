@@ -13,7 +13,7 @@
 - `current_phase`: `remediation`
 - `artifact_root`: `.dev/workflows/2026-08-05-sub-agent-reachability`
 - `created_at`: `2026-08-05T01:34:40+08:00`
-- `updated_at`: `2026-08-05T01:34:40+08:00`
+- `updated_at`: `2026-08-05T01:52:18+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md`
 - `template_version`: `1.2.0`
 
@@ -58,9 +58,9 @@
 
 1. Evidence freeze and owner discussion — completed; all seven decisions and the implementation authority are preserved on Issue #94.
 2. Bounded issue decomposition and duplicate search — completed; #118 and #119 are the smallest coherent slices and #119 depends on #118.
-3. Workflow bootstrap — in progress on the dedicated branch from `origin/main@d8580df4516155ff7b1a139d9a064a8b0d4b2019`.
-4. Static owning-skill reachability remediation — `SAR94-001` / #118.
-5. Runtime selection, execution evidence, and inline parity remediation — `SAR94-002` / #119.
+3. Workflow bootstrap — completed on the dedicated branch from `origin/main@d8580df4516155ff7b1a139d9a064a8b0d4b2019` in commit `9880255`.
+4. Static owning-skill reachability remediation — `SAR94-001` / #118 completed with repository validation scripts deferred by explicit owner direction.
+5. Runtime selection, execution evidence, and inline parity remediation — `SAR94-002` / #119 in progress.
 6. Orchestrator integration review and durable handoff — pending; repository validation scripts are intentionally outside this workflow.
 
 ## Proportionality And Delivery Decisions
@@ -81,11 +81,11 @@
 
 ## Resume Checkpoint
 
-- Last completed action: Created and read back Issues #118 and #119, then preserved D94-Q1 through D94-Q7 in the Issue #94 decision-ledger comment.
-- Current task: `SAR94-001` is `in_progress`.
-- Exact next action: Commit the workflow bootstrap, then delegate bounded #118 implementation units to `gpt-5.6-terra` sub-agents under disjoint file ownership while the root orchestrator retains shared-file integration.
-- Validation already completed: Git branch/base and clean-tree checks; GitHub duplicate search and issue/comment read-back. No repository validation script has been run.
-- Git state: branch `codex/2026-08-05-sub-agent-reachability`, based on `origin/main@d8580df4516155ff7b1a139d9a064a8b0d4b2019`.
+- Last completed action: Integrated #118 canonical bindings, the 18-row derived projection, fail-closed static-reachability validation, and GWT fixtures after root review corrected multi-owner and projection-parity behavior.
+- Current task: `SAR94-002` is `in_progress`; `SAR94-001` is completed awaiting the separately arranged validation-script review.
+- Exact next action: Commit the #118 task boundary, then delegate disjoint #119 runtime-contract, owning-skill handoff, and acceptance-fixture units to `gpt-5.6-terra` sub-agents under root integration ownership.
+- Validation already completed: Git branch/base checks; GitHub duplicate search and issue/comment read-back; worker PyYAML parse and exact 18-role path/asset/status matrix; worker Python AST syntax parse of the validator and test file; root/worker `git diff --check`. No repository validation script or test suite has been run.
+- Git state: branch `codex/2026-08-05-sub-agent-reachability`, based on `origin/main@d8580df4516155ff7b1a139d9a064a8b0d4b2019`; workflow bootstrap commit `9880255` is local and the #118 task changes are ready for their bounded commit.
 - Branch history and checkpoint handoffs: segment 1 began from updated `origin/main`; no push or merge checkpoint yet.
 - Blockers or unresolved decisions: none. Shared-file coordination with #92 is established and will fail closed to sequential integration if an overlap materializes.
 
@@ -94,4 +94,3 @@
 | Segment | Branch | Base | Checkpoint Type | Commit | Remote / Target | Recorded At | Reason | Resume Branch / Action |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | 1 | `codex/2026-08-05-sub-agent-reachability` | `main@d8580df4516155ff7b1a139d9a064a8b0d4b2019` | active | pending | local | `2026-08-05T01:34:40+08:00` | owner-authorized #94 implementation | continue `SAR94-001` after workflow bootstrap |
-
