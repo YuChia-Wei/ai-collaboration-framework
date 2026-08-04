@@ -14,7 +14,7 @@
 - `owner_skill`: `ai-context-governance`
 - `status`: `draft`
 - `created_at`: `2026-08-04T23:44:48+08:00`
-- `updated_at`: `2026-08-04T23:44:48+08:00`
+- `updated_at`: `2026-08-04T23:48:42+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-remediation-report-template.md`
 - `template_version`: `2.0.0`
 - `baseline_assessment`: `ASM-20260804-003`
@@ -57,7 +57,7 @@
 
 ## Closure Evidence
 
-- Required validations: independent verification, a passing current critical gate, PR review, and merged-main read-back remain outstanding.
-- Commit status: implementation `803cd09` and Story binding `5204512` are local; this checkpoint records the failed-gate evidence and corrections.
+- Required validations: independent verification, a passing current critical gate, reconciliation with advanced `main`, PR review, and merged-main read-back remain outstanding.
+- Commit status: implementation `803cd09`, Story binding `5204512`, and failed-gate waiver checkpoint `e5d134c` are pushed. Draft PR #103 is open but GitHub currently reports it `DIRTY` because main advanced three commits after the branch base.
 - Workflow/task status: workflow and `IGN93-003` remain `in_progress`.
-- Final next action: push and open the owner-approved Draft PR for #99; do not merge, close the Story, finalize the workflow, prepare a release, or publish.
+- Final next action: preserve Draft PR #103 as the review artifact; when validation resumption is authorized, reconcile with current main on a continuation branch, complete independent verification and a passing current gate, then seek review before any merge.
