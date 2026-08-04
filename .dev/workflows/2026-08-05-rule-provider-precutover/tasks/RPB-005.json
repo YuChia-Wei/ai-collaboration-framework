@@ -1,0 +1,37 @@
+{
+  "template_id": "ai-context-governance-remediation-task",
+  "template_version": "1.1.0",
+  "template_created_at": "2026-07-10T18:22:49+08:00",
+  "template_updated_at": "2026-07-27T09:52:09+08:00",
+  "task_id": "RPB-005",
+  "workflow_id": "2026-08-05-rule-provider-precutover",
+  "owner_skill": "ai-context-governance",
+  "title": "Relocate and activate the bundled validation provider",
+  "status": "pending",
+  "created_at": "2026-08-05T01:29:39+08:00",
+  "updated_at": "2026-08-05T01:29:39+08:00",
+  "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
+  "model": "gpt-5.6-terra",
+  "reasoning_effort": "xhigh",
+  "finding_ids": ["ASM-20260804-002#AIC-001", "ASM-20260804-002#AIC-002"],
+  "scope": {
+    "target": "GitHub Issues #115 and #116; stable provider manifest/location, physical relocation, capability separation, and reference-in-place activation.",
+    "files": ["tools/DotnetBackendAnalyzers/**", "tools/DotnetBackendValidation/**", ".ai/assets/tech-stacks/dotnet-backend/tooling/bundled-mechanical-validation/**", ".ai/distribution/**", ".ai/scripts/**"],
+    "constraints": ["Depends on RPB-002", "Analyzer and runtime validation stay separate capabilities", "Source delivery is inactive", "No target-owned configuration mutation", "No materialization implementation without evidence/authorization"],
+    "non_goals": ["Architecture Kit cutover", "Package publication", "Real-target configuration changes", "Provider test injection into target solutions"]
+  },
+  "execution": {
+    "steps": ["Relocate bundled source to the profile-owned canonical path", "Publish provider/capability manifest", "Update distribution and source references", "Implement fail-closed activation state and reference-in-place evidence", "Reject unsupported materialization"],
+    "validation": ["Manifest/source/distribution read-back", "Controlled reference-in-place fixture review", "Manual analyzer/runtime separation review", "No repository validation scripts"],
+    "last_completed_step": "Task bounded and awaiting RPB-002.",
+    "next_action": "After the matrix, implement #115 before the #116 activation state."
+  },
+  "results": {
+    "summary": "",
+    "files_changed": [],
+    "tests_run": [],
+    "finding_status": "not-addressed",
+    "residual_risk": "",
+    "follow_up_needed": true
+  }
+}
