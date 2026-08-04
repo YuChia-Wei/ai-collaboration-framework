@@ -354,6 +354,29 @@ scenarios:
       fallback: *no_fallback
       final_integration_owner: *owner
 
+  - scenario_id: "attempt-three-reuses-prior-authorization"
+    expected_valid: false
+    expected_error: "attempt 3 authorization must include a reference not used by an earlier attempt"
+    role_execution:
+      role_execution_id: "SAR94-002-INVALID-THIRD-ATTEMPT-002"
+      role_asset_id: "command-sub-agent"
+      role_path: ".ai/assets/sub-agent-role-prompts/command-sub-agent/sub-agent.yaml"
+      owning_skill: "slice-implementer"
+      stage_id: "invalid-reused-third-attempt-authorization"
+      applicability: { result: "applies", reason: "The selected command primary mode applies." }
+      selection: *direct_selection
+      input_envelope: *command_input_envelope
+      permissions: *permissions
+      executor: *parent_executor
+      invocation_evidence: null
+      output: { expected: ["slice"], returned: [], evidence_refs: ["fixture:reused-third-attempt-authorization"], bounded: true }
+      attempts:
+        - { number: 1, disposition: "direct", executor: *parent_executor, invocation_evidence: null, outcome: "failed", correctable_failure: true, material_state_change: "first correction", authorization_source: ["workflow:retry-authorization-001"], evidence_refs: ["fixture:first"] }
+        - { number: 2, disposition: "direct", executor: *parent_executor, invocation_evidence: null, outcome: "failed", correctable_failure: true, material_state_change: "second correction", authorization_source: [], evidence_refs: ["fixture:second"] }
+        - { number: 3, disposition: "direct", executor: *parent_executor, invocation_evidence: null, outcome: "completed", correctable_failure: false, material_state_change: "", authorization_source: ["workflow:retry-authorization-001"], evidence_refs: ["fixture:third"] }
+      fallback: *no_fallback
+      final_integration_owner: *owner
+
   - scenario_id: "direct-mode-with-fake-child-invocation"
     expected_valid: false
     expected_error: "direct selection must not carry invocation_evidence"

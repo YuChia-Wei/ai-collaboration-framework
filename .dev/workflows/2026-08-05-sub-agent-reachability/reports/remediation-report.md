@@ -14,24 +14,24 @@
 - `owner_skill`: `ai-context-governance`
 - `status`: `draft`
 - `created_at`: `2026-08-05T01:34:40+08:00`
-- `updated_at`: `2026-08-05T02:26:00+08:00`
+- `updated_at`: `2026-08-05T07:32:09+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-remediation-report-template.md`
 - `template_version`: `2.0.0`
 - `baseline_assessment`: `ASM-20260804-002`
-- `verification_assessment`: `not allocated; validation-script review is separately owner-arranged`
+- `verification_assessment`: `ASM-20260805-001 reserved; draft source-only verification pending final #92-integrated read-back`
 
 ## Remediation Summary
 
 - Authorized scope: #118 and #119 under the completed Issue #94 owner decision ledger.
-- Completed scope: workflow bootstrap, durable decision/issue traceability, #118 owning-skill static reachability, and the #119 implementation/root-review checkpoint for provider-neutral execution evidence and inline parity.
-- Validation summary: Git/GitHub state and relationship read-back; PyYAML/JSON/AST syntax parsing; exact 18-role matrix; root manual contract, provenance, fallback, ownership, and boundary review; `git diff --check`. No repository validation script, fixture test, or test suite has been run.
+- Completed scope: workflow bootstrap, durable decision/issue traceability, #118 owning-skill static reachability, #119 provider-neutral execution evidence and inline parity, and correction of both MEDIUM findings from independent execution review.
+- Validation summary: Git/GitHub state and relationship read-back; earlier PyYAML/JSON/AST syntax parsing; exact 18-role matrix; root manual review; `git diff --check`; and three independent source-only audits plus one follow-up review. No repository validation script, fixture test, test suite, or `check-all` has been run.
 - Closure decision: `not-ready`
 
 ## Finding Resolution Matrix
 
 | Assessment Finding | Before Severity | Status | Changed Files | Validation | Commit | Residual Risk |
 | --- | --- | --- | --- | --- | --- | --- |
-| `ASM-20260804-002#AIC-003` | MEDIUM | `implemented-awaiting-separate-validation-review` | canonical role binding and execution contracts, owning skills, derived projection, orchestrator, validator, and fixtures | manual/static review only; repository validators and fixture tests deferred | #118 `a80d6a6`; #119 `f9f6a04` | implementation is present; scripted evidence, pull-request integration, and merged-main read-back remain pending |
+| `ASM-20260804-002#AIC-003` | MEDIUM | `source-reviewed-awaiting-integration` | canonical role binding and execution contracts, owning skills, derived projection, orchestrator, validator, and fixtures | independent source-only review; repository validators and fixture tests deferred | #118 `a80d6a6`; #119 `f9f6a04`; review correction pending checkpoint | implementation is source-reviewed; #92-first integration, hosted checks, and merged-main read-back remain pending |
 | `ASM-20260804-002#AIC-004` | HIGH | `preserved-as-evidence` | workflow traceability only | assessment and Issue links read back | pending | implementation must not disturb retained evidence or import downstream workflow identity |
 
 ## Changes And Evidence
@@ -42,7 +42,8 @@
 - Runtime changes: added the canonical provider-neutral `role_execution` contract; separated final/current disposition from per-attempt provenance; required genuine child evidence, bounded retry/fallback, inline parity, and named final integration ownership; updated owning skills and orchestrator aggregation; retained BDD as design-only and test execution as separate; aligned universal role taxonomy without generating adapters.
 - Evidence: Issue #94 decision-ledger comment; Issues #118 and #119; `SAR94-001` results.
 - Validation: GitHub issue/comment read-back, syntax-aware manifest/JSON/Python parsing, exact 18-role matrix, root semantic/diff review, and `git diff --check`; no repository validator, fixture test, or test suite executed.
-- Remaining risk: the separate owner-arranged validation review has not executed the new validators or fixtures; pull-request integration and merged-main read-back remain pending.
+- Independent review: static reachability passed without findings; cross-workflow comparison passed for sequential integration; execution review found two MEDIUM gaps. The gaps were corrected by making inline application the dynamic-role default and by enforcing a new authorization reference for attempt 3+, including a repeated-old-authorization negative fixture. Follow-up review passed with no new finding.
+- Remaining risk: repository validators and fixtures have not been executed; #92-first integration, pull-request hosted checks, and merged-main read-back remain pending.
 
 ### `ASM-20260804-002#AIC-004`
 
@@ -53,25 +54,27 @@
 
 ### Cross-Workflow Integration Boundary
 
-- #92 commit `69603f1` changes different sections of `.dev/standards/AI-CONTEXT-BOUNDARY.md`. #94 owns only the existing sub-agent classification and placement wording. The final integrating branch must read back both sets after merge/rebase rather than treating an automatic textual merge as semantic proof.
-- Applicable action-skill YAML files are sequential shared surfaces. #92 acknowledged `a80d6a6` and `f9f6a04`; after RPB-003 it may write only root-level sibling `effective_rule_consumption` data in `ddd-ca-hex-architect`, `local-change-implementer`, `slice-implementer`, `code-reviewer`, and `spec-compliance-validator` skill manifests, plus the matrix-approved `code-reviewer` checklist reference correction. It must not modify `role_bindings` or `role_execution` semantics.
+- #92 commit `69603f1` changes different sections of `.dev/standards/AI-CONTEXT-BOUNDARY.md`. #94 owns only the existing sub-agent classification and placement wording. The final continuation branch must read back both sets rather than treating an automatic textual merge as semantic proof.
+- #92 RPB-006 commit `08f24eb` adds only top-level sibling `effective_rule_consumption` sections and independent schema/test coverage. Independent source comparison found no collision with #94 `role_bindings`, `role_execution`, BDD/test ownership, or execution-disposition semantics.
+- #92 commit `98484bd` and local #94 patch `9240f3d` share patch ID `ac99550ac151a4ab4fe92ced69f8c4c15d7a8a56`. #92 will integrate first with the moved destination files; #94 will then continue from updated `main` and skip the duplicate local patch.
 
 ## Verification Assessment Reconciliation
 
-- Independent auditor: not allocated in this workflow.
-- Confirmed resolved: none.
-- Recurring findings: not assessed.
-- New or regressed findings: not assessed.
+- Independent auditors: three bounded source-only Terra-xhigh reviews covered static reachability, provider-neutral execution, and #92 compatibility; the execution reviewer also performed the correction follow-up.
+- Confirmed resolved: static owning-skill reachability and selective-adapter preservation; direct/delegated/unavailable/not-applicable evidence semantics; BDD-design-to-concrete-test ownership; no-delegation inline parity; #92 sibling-section compatibility; dynamic-role direct-default wording; and attempt-3+ authorization freshness.
+- Recurring findings: none identified in the reviewed source.
+- New or regressed findings: two MEDIUM findings were identified and corrected before checkpoint; follow-up review identified no new defect.
 
 ## Deferred Work
 
 | Finding | Reason | Owner | Next Action |
 | --- | --- | --- | --- |
-| Repository validation scripts and independent verification | the owner will arrange a separate review and explicitly requested that this workflow not run `check-all` or repository validation scripts | future owner-arranged review | review or run the implemented fixtures and reconcile this report without treating the current deferral as passed evidence |
+| Repository validation scripts | the owner explicitly requested that this workflow not run `check-all` or repository validation scripts and will arrange their review separately | future owner-arranged review | run or review the implemented fixtures separately and reconcile the exact outcome without treating the current deferral as passed evidence |
+| Final combined verification | #92 must integrate first so the final subject includes rule-packet siblings, moved evidence examples, and #94 role semantics together | `ai-context-auditor` | finalize `ASM-20260805-001` only after continuation from updated `main` and combined source read-back |
 
 ## Closure Evidence
 
-- Required validations: root implementation review is complete; repository validators, fixture tests, and independent validation remain explicitly outside this workflow checkpoint.
-- Commit status: workflow bootstrap `9880255`, #118 implementation `a80d6a6`, and #119 implementation `f9f6a04` are committed; `f9f6a04` is pushed on `origin/codex/2026-08-05-sub-agent-reachability`.
+- Required validations: root implementation review and independent source-only verification are complete for the pre-integration state; repository validators and fixture tests remain explicitly outside this workflow checkpoint, and combined post-#92 read-back is pending.
+- Commit status: workflow bootstrap `9880255`, #118 implementation `a80d6a6`, #119 implementation `f9f6a04`, and validation handoff `99a9de2` are committed and pushed. Local duplicate patch `9240f3d` will not be published; the source-review correction is prepared for a local checkpoint.
 - Workflow/task status: workflow `in_progress`; `SAR94-001` completed; `SAR94-002` implemented but remains in progress for separate validation and integration reconciliation.
-- Final next action: run and reconcile the separately arranged validation review from the pushed branch, then open the required pull request for explicit no-ff integration and merged-main read-back. No packaging or publication is included.
+- Final next action: let #92 integrate first, continue #94 from updated `main` without duplicate patch `9240f3d`, finalize combined source verification, then open the required pull request for explicit no-ff integration and merged-main read-back. No packaging or publication is included.

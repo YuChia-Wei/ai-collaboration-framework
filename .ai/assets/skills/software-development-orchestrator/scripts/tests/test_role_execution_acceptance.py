@@ -338,8 +338,24 @@ def validate_role_execution(
             prior = attempts[0] if isinstance(attempts[0], dict) else {}
             if prior.get("correctable_failure") is not True or not is_non_empty_string(prior.get("material_state_change")):
                 errors.append("attempt 2 requires attempt 1 correctable_failure and material_state_change")
-        if index >= 3 and not is_string_list(attempt_map.get("authorization_source")):
-            errors.append(f"attempt {index} requires fresh authorization")
+        if index >= 3:
+            current_authorization = attempt_map.get("authorization_source")
+            if not is_string_list(current_authorization):
+                errors.append(f"attempt {index} requires fresh authorization")
+            else:
+                prior_authorization = set()
+                for prior_attempt in attempts[: index - 1]:
+                    if not isinstance(prior_attempt, dict):
+                        continue
+                    prior_sources = prior_attempt.get("authorization_source")
+                    if isinstance(prior_sources, list):
+                        prior_authorization.update(
+                            reference for reference in prior_sources if is_non_empty_string(reference)
+                        )
+                if not any(reference not in prior_authorization for reference in current_authorization):
+                    errors.append(
+                        f"attempt {index} authorization must include a reference not used by an earlier attempt"
+                    )
 
     if attempts:
         last_attempt = attempts[-1] if isinstance(attempts[-1], dict) else {}

@@ -191,13 +191,16 @@ contains `number`, `disposition`, `executor`, `invocation_evidence`, `outcome`,
 `correctable_failure`, `material_state_change`, `authorization_source`, and
 `evidence_refs`. A direct attempt has `parent-inline` executor and null
 invocation evidence; a delegated attempt has `runtime-worker` executor and
-genuine structured invocation evidence.
+genuine structured invocation evidence. Each `authorization_source` item is a
+stable reference to owner or workflow authorization evidence.
 
 - Attempt `2` is allowed only when the preceding attempt recorded both a
   correctable failure and a material state change.
 - Attempt `3` or later remains in the same record and requires a non-empty
-  new owner or workflow authorization in `authorization_source`; it must not
-  erase earlier attempt evidence.
+  new owner or workflow authorization in `authorization_source`. At least one
+  authorization reference must not appear in any earlier attempt in the same
+  record; repeating only earlier references is not new authorization. The
+  attempt must not erase earlier attempt evidence.
 - A failed delegation may fall back to `direct` only when
   `fallback.inline_contract_evidence` proves inline parity with every required
   boolean true: `same_role_path_and_mandatory_references`,

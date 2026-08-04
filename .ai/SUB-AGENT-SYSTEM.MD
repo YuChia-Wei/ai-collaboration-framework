@@ -59,9 +59,11 @@ recording `direct`, `delegated`, or `unavailable`.
 
 Dynamic loading is the default. A canonical role with empty `wrapper_targets`
 and empty `adapter_metadata` is read by the owning skill or main agent and
-delegated through a generic worker. Runtime-native promotion is an
-evidence-backed exception for a concrete model, tool, permission, or invocation
-need; symmetry alone is not a promotion reason.
+applied inline by default. Delegation through a generic worker is permitted
+only after the shared execution gates pass and genuine invocation evidence can
+be recorded. Runtime-native promotion is an evidence-backed exception for a
+concrete model, tool, permission, or invocation need; symmetry alone is not a
+promotion reason.
 
 Only `context-translator` is currently promoted. Its role contract maps
 exactly one thin adapter for each supported target:
