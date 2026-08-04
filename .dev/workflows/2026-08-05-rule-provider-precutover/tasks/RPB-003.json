@@ -7,9 +7,9 @@
   "workflow_id": "2026-08-05-rule-provider-precutover",
   "owner_skill": "ai-context-governance",
   "title": "Implement target-effective state and deterministic rule packets",
-  "status": "pending",
+  "status": "in_progress",
   "created_at": "2026-08-05T01:29:39+08:00",
-  "updated_at": "2026-08-05T01:29:39+08:00",
+  "updated_at": "2026-08-05T02:58:13+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-5.6-terra",
   "reasoning_effort": "xhigh",
@@ -23,8 +23,8 @@
   "execution": {
     "steps": ["Define target-effective schemas and lifecycle", "Implement deterministic index and packet generation", "Implement common resolver and fail-closed freshness states", "Record consumer and execution-evidence contract"],
     "validation": ["Deterministic fixture read-back", "Manual stale, conflict, missing, and digest-mismatch scenario review", "No check-all or repository validators"],
-    "last_completed_step": "Task bounded and awaiting RPB-001.",
-    "next_action": "After RPB-001, implement #112 before resolver/packet behavior for #113."
+    "last_completed_step": "RPB-001 established stable identities and RPB-004 supplied the canonical shared catalog plus exact dotnet-backend projection consumed by this resolver.",
+    "next_action": "Implement the target-effective schemas and lifecycle first, then build deterministic index and task-scoped packet generation over the catalogs without Markdown scanning or default fallback."
   },
   "results": {
     "summary": "",

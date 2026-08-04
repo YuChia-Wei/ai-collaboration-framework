@@ -12,7 +12,7 @@
 - `current_phase`: `remediation`
 - `artifact_root`: `.dev/workflows/2026-08-05-rule-provider-precutover`
 - `created_at`: `2026-08-05T01:29:39+08:00`
-- `updated_at`: `2026-08-05T02:53:00+08:00`
+- `updated_at`: `2026-08-05T02:58:13+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md`
 - `template_version`: `1.2.0`
 
@@ -81,7 +81,7 @@ Only one task is marked `in_progress` in durable workflow state. The orchestrato
 
 1. Baseline evidence and owner decisions — completed from `ASM-20260804-002`, #92 discussion, and live Issue read-back at `main@d8580df4516155ff7b1a139d9a064a8b0d4b2019`.
 2. Workflow and bounded work-item binding — completed by creating #109 through #117 and formal sub-issue relationships under #104 through #107.
-3. Dependency-ordered remediation — in progress; `RPB-001` and `RPB-002` completed, and the coherent `RPB-004` migration/catalog batch is ready for checkpoint.
+3. Dependency-ordered remediation — in progress; `RPB-001`, `RPB-002`, and `RPB-004` completed, and `RPB-003` has started from the canonical catalogs.
 4. Independent post-remediation audit — pending.
 5. PR review, merge-commit integration, merged-main read-back, and closure — pending; release packaging remains excluded.
 
@@ -95,12 +95,12 @@ Only one task is marked `in_progress` in durable workflow state. The orchestrato
 
 ## Resume Checkpoint
 
-- Last completed action: Applied all 148 `RPB-004` move rows, retained 10 bounded compatibility entrypoints, derived the shared/profile catalogs for all 13 existing stable IDs, and marked 12 not-yet-identified profile documents unpacketized/fail-closed.
-- Current task: `RPB-004` is in progress.
-- Exact next action: Commit the coherent migration/catalog checkpoint, begin `RPB-003` from those catalogs, and later read back the #94 single-writer validator path change before RPB-004 closure.
+- Last completed action: Committed the 148-row migration/catalog batch as `20edeff` and integrated the #94 single-writer evidence-example path change as `98484bd`; `RPB-004` is complete.
+- Current task: `RPB-003` is in progress.
+- Exact next action: Implement target-effective schemas, deterministic index/packet generation, freshness and digest gates, and fail-closed resolution for #112/#113.
 - Validation already completed: 148-row source/destination parity, 10 compatibility-entrypoint existence, 13-ID registry/catalog/source-anchor/hash parity, deterministic catalog-digest recomputation, explicit 12-document unpacketized set review, changed-Markdown relative-link review, active-reference review, and `git diff --check`. No repository validation script has run.
 - Git state: branch `codex/2026-08-05-rule-provider-precutover` starts from `origin/main@d8580df4516155ff7b1a139d9a064a8b0d4b2019`.
-- Branch history and checkpoint handoffs: segment 1 only; no handoff or merge yet.
+- Branch history and checkpoint handoffs: segment 1 only; local durable checkpoints through `98484bd`, no push or merge handoff yet.
 - Blockers or unresolved decisions: none. Shared-file sequencing with #94 is a coordination constraint, not an owner-decision blocker.
 
 ## Branch Lifecycle

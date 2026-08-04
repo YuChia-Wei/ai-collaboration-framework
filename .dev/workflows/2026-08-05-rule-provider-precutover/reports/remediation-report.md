@@ -14,7 +14,7 @@
 - `owner_skill`: `ai-context-governance`
 - `status`: `draft`
 - `created_at`: `2026-08-05T01:29:39+08:00`
-- `updated_at`: `2026-08-05T02:53:00+08:00`
+- `updated_at`: `2026-08-05T02:58:13+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-remediation-report-template.md`
 - `template_version`: `2.0.0`
 - `baseline_assessment`: `ASM-20260804-002`
@@ -23,7 +23,7 @@
 ## Remediation Summary
 
 - Authorized scope: bounded GitHub Issues #109 through #117 under #104 through #107.
-- Completed scope: workflow/work-item topology, stable engineering identity/ownership, the exhaustive migration matrix, and the coherent `RPB-004` physical migration/catalog batch; serialized shared-file follow-up and later remediation remain in progress.
+- Completed scope: workflow/work-item topology, stable engineering identity/ownership, the exhaustive migration matrix, and `RPB-004` physical migration/catalog/reference reconciliation; later remediation remains in progress.
 - Validation summary: no repository validation script has run, by explicit owner direction.
 - Closure decision: `not-ready`
 
@@ -31,7 +31,7 @@
 
 | Assessment Finding | Before Severity | Status | Changed Files | Validation | Commit | Residual Risk |
 | --- | --- | --- | --- | --- | --- | --- |
-| `ASM-20260804-002#AIC-001` | HIGH | `partially-resolved` | identity/ownership policies, registry, 232-row matrix, 148 migrated assets, 10 compatibility entries, shared/profile catalogs and active references | scoped row/link/identity/hash/digest read-back and diff check | pending | target-effective resolver, serialized consumers, and provider work remain |
+| `ASM-20260804-002#AIC-001` | HIGH | `partially-resolved` | identity/ownership policies, registry, 232-row matrix, 148 migrated assets, 10 compatibility entries, shared/profile catalogs and active references | scoped row/link/identity/hash/digest read-back and diff check | `20edeff`, `98484bd` | target-effective resolver, serialized consumers, and provider work remain |
 | `ASM-20260804-002#AIC-002` | HIGH | `not-addressed` | pending | pending | pending | provider activation and cutover readiness remain undefined in canonical source |
 | `ASM-20260804-002#AIC-004` | HIGH | `resolved in baseline intake` | retained assessment evidence | traceability read-back pending | `206c3ae` baseline | downstream branch may be removed; retained bytes remain canonical evidence |
 
@@ -69,6 +69,6 @@
 ## Closure Evidence
 
 - Required validations: pending; no repository validation scripts may be run under current owner direction.
-- Commit status: pending.
-- Workflow/task status: `RPB-001` and `RPB-002` completed; `RPB-004` in progress; remaining tasks pending.
+- Commit status: durable checkpoints through `98484bd`; branch not pushed or merged.
+- Workflow/task status: `RPB-001`, `RPB-002`, and `RPB-004` completed; `RPB-003` in progress; remaining tasks pending.
 - Final next action: complete dependency-ordered remediation, independent audit, PR, merge-commit integration, and merged-main read-back without release packaging.
