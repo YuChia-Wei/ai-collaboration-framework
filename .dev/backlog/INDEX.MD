@@ -7,14 +7,16 @@ artifact directories. See [README.MD](README.MD) for ownership and lifecycle.
 
 | Roadmap | Current Target | Status | Next Gate | Updated |
 | --- | --- | --- | --- | --- |
-| [ROADMAP.md](ROADMAP.md) | `v0.9.0` | `planned` | Obtain explicit authorization before release preparation; include `GOV-004` exactly once. | 2026-08-04 |
+| [ROADMAP.md](ROADMAP.md) | `v0.9.0` | `planned` | Obtain explicit authorization before release preparation; include `GOV-004` and `PKG-005` exactly once. | 2026-08-04 |
 
 Source planning records are retained under [`plans/`](plans/); they inform the
 roadmap but do not replace it or a governed assessment.
 
 ## In Progress
 
-_None._
+| Item | Priority | Target Release | Gate | Summary | Next Gate | Updated |
+| --- | --- | --- | --- | --- | --- | --- |
+| [PKG-005](items/PKG-005.yaml) | HIGH | `v0.9.0` | release-blocker | Selected framework-managed paths fail closed when target Git ignore or exclude rules hide them. | Independent verification, final workflow evidence, PR review, and merged-main read-back. | 2026-08-04 |
 
 ## Planned / Open
 

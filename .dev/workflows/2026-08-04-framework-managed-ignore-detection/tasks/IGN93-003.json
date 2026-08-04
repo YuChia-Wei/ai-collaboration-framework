@@ -9,7 +9,7 @@
   "title": "Verify and close the ignored managed-path remediation",
   "status": "in_progress",
   "created_at": "2026-08-04T21:49:30+08:00",
-  "updated_at": "2026-08-04T22:11:00+08:00",
+  "updated_at": "2026-08-04T23:15:14+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-5.6-sol",
   "reasoning_effort": "medium",
@@ -17,14 +17,14 @@
   "scope": {
     "target": "Independent verification assessment, remediation report, workflow closure, commit range, and receiving checkpoint.",
     "files": [".dev/assessments/**", ".dev/workflows/2026-08-04-framework-managed-ignore-detection/**"],
-    "constraints": ["Recheck assessment ID across all refs before allocation", "Keep #93 separate"],
+    "constraints": ["Recheck assessment ID across all refs before allocation", "Treat closed Proposal #93 as source evidence only", "Keep REL-004, #92, and #94 separate"],
     "non_goals": ["Merge or publication without approval"]
   },
   "execution": {
     "steps": ["Run independent verification", "Reconcile finding", "Create receiving checkpoint", "Commit and open PR"],
     "validation": ["Assessment, workflow, commit, and critical validation"],
     "last_completed_step": "IGN93-002 completed focused remediation and tests.",
-    "next_action": "Allocate a fresh verification assessment ID, audit the remediation, run final validation, and prepare the #93 pull request."
+    "next_action": "Allocate a fresh verification assessment ID, audit the remediation, complete final validation, and review the #99 pull request."
   },
   "results": {
     "summary": "",

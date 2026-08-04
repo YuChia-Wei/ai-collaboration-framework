@@ -5,7 +5,7 @@ owner: "YuChia-Wei"
 source:
   backlog_glob: ".dev/backlog/items/*.yaml"
   roadmap: ".dev/backlog/ROADMAP.md"
-  expected_item_count: 45
+  expected_item_count: 46
   portable_identity_field: "backlog_id"
   provider_identity_is_authoritative: false
 project:
@@ -231,6 +231,7 @@ migration:
     - "TOOL-002"
     - "WIBIND-001"
     - "GOV-004"
+    - "PKG-005"
   canaries:
     - "DEVWF-001"
     - "AIC-007"
@@ -304,6 +305,7 @@ classifications:
   PKG-002: {kind: "enabler", scope: "mixed", rationale: "Source-only tests and downstream package gates require an explicit separation."}
   PKG-003: {kind: "story", scope: "framework", rationale: "Downstream adopters need governed direct upgrades from supported source versions."}
   PKG-004: {kind: "enabler", scope: "mixed", rationale: "Source packaging must prevent source-local work-management policy from leaking downstream."}
+  PKG-005: {kind: "story", scope: "framework", rationale: "Framework maintainers and downstream adopters need selected framework-managed paths to fail closed when target Git ignore rules hide them."}
   R042-001: {kind: "enabler", scope: "framework", rationale: "Runtime wrapper and routing correctness affects distributed adapters."}
   R042-002: {kind: "enabler", scope: "framework", rationale: "Doctrine and standards corrections affect reusable guidance."}
   R042-003: {kind: "enabler", scope: "framework", rationale: "Navigation and lifecycle hygiene affects reusable context discovery."}
