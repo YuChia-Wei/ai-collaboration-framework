@@ -12,12 +12,6 @@ artifact directories. See [README.MD](README.MD) for ownership and lifecycle.
 Source planning records are retained under [`plans/`](plans/); they inform the
 roadmap but do not replace it or a governed assessment.
 
-## In Progress
-
-| Item | Priority | Target Release | Gate | Summary | Next Gate | Updated |
-| --- | --- | --- | --- | --- | --- | --- |
-| [PKG-005](items/PKG-005.yaml) | HIGH | `v0.9.0` | release-blocker | Selected framework-managed paths fail closed when target Git ignore or exclude rules hide them. | Independent verification, final workflow evidence, PR review, and merged-main read-back. | 2026-08-04 |
-
 ## Planned / Open
 
 | Item | Priority | Target Release | Gate | Summary | Decision / Handoff | Updated |
@@ -42,6 +36,7 @@ roadmap but do not replace it or a governed assessment.
 
 | Item | Priority | Completed In | Published In | Resolution | Workflow | Updated |
 | --- | --- | --- | --- | --- | --- | --- |
+| [PKG-005](items/PKG-005.yaml) | HIGH | `v0.9.0` | — | Fail-closed ignored framework-managed-path detection is merged through PR #103; the owner closed the workflow with independent audit and aggregate-rerun debt deferred to separately arranged future work. | [`2026-08-04-framework-managed-ignore-detection`](../workflows/2026-08-04-framework-managed-ignore-detection/workflow.yaml) | 2026-08-05 |
 | [GOV-004](items/GOV-004.yaml) | HIGH | `v0.9.0` | — | Workflow-value, multi-Issue delivery-cohesion, and positive linear-topology rules passed independent verification and were integrated linearly through PR #88. | [`2026-08-03-workflow-delivery-cohesion`](../workflows/2026-08-03-workflow-delivery-cohesion/workflow.yaml) | 2026-08-04 |
 
 ## Resolved

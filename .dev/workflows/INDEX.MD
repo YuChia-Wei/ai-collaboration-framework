@@ -8,7 +8,6 @@ task-level progress.
 
 | Workflow | Title | Owner | Status | Updated | Entry Point |
 | --- | --- | --- | --- | --- | --- |
-| [`2026-08-04-framework-managed-ignore-detection`](2026-08-04-framework-managed-ignore-detection/workflow.yaml) | Detect Framework-Managed Paths Excluded By Target Ignore Rules | `ai-context-governance` | `in_progress` | `2026-08-05T00:03:55+08:00` | [plan](2026-08-04-framework-managed-ignore-detection/workflow-plan.md) |
 | [`2026-08-04-opus-5-periodic-review-intake`](2026-08-04-opus-5-periodic-review-intake/workflow.yaml) | Normalize The 2026-08-04 Opus 5 Periodic Review And Register Follow-Ups | `ai-context-governance` | `completed` | `2026-08-04T23:40:59+08:00` | [plan](2026-08-04-opus-5-periodic-review-intake/workflow-plan.md) |
 | [`2026-08-02-python-prerequisite-diagnostics`](2026-08-02-python-prerequisite-diagnostics/workflow.yaml) | Standardize Python Prerequisite Diagnostics Across Validator Entrypoints | `ai-context-governance` | `completed` | `2026-08-03T07:33:13+08:00` | [plan](2026-08-02-python-prerequisite-diagnostics/workflow-plan.md) |
 | [`2026-07-31-work-item-binding-policy`](2026-07-31-work-item-binding-policy/workflow.yaml) | Define Provider-Neutral Work-Item Binding And Merge-Gate Selection | `ai-context-governance` | `completed` | `2026-07-31T00:29:59+08:00` | [plan](2026-07-31-work-item-binding-policy/workflow-plan.md) |
@@ -30,6 +29,7 @@ task-level progress.
 
 | Workflow | Title | Owner | Status | Updated | Entry Point |
 | --- | --- | --- | --- | --- | --- |
+| [`2026-08-04-framework-managed-ignore-detection`](2026-08-04-framework-managed-ignore-detection/workflow.yaml) | Detect Framework-Managed Paths Excluded By Target Ignore Rules | `ai-context-governance` | `completed` | `2026-08-05T00:26:12+08:00` | [plan](2026-08-04-framework-managed-ignore-detection/workflow-plan.md) |
 | [`2026-08-03-workflow-delivery-cohesion`](2026-08-03-workflow-delivery-cohesion/workflow.yaml) | Adopt Workflow Delivery Cohesion And Linear Merge Rules | `ai-context-governance` | `completed` | `2026-08-04T00:23:48+08:00` | [plan](2026-08-03-workflow-delivery-cohesion/workflow-plan.md) |
 | [`2026-08-03-v0-8-0-release-publication`](2026-08-03-v0-8-0-release-publication/workflow.yaml) | Prepare And Publish v0.8.0 | `ai-context-governance` | `completed` | `2026-08-03T19:05:12+08:00` | [plan](2026-08-03-v0-8-0-release-publication/tasks/REL080-001.json) |
 | [`2026-07-30-ai-created-proposal-attribution`](2026-07-30-ai-created-proposal-attribution/workflow.yaml) | Extend Codex Creation Attribution To AI-Created Proposals | `ai-context-governance` | `completed` | `2026-07-30T23:47:53+08:00` | [plan](2026-07-30-ai-created-proposal-attribution/workflow-plan.md) |
