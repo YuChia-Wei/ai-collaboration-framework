@@ -5,7 +5,7 @@ owner: "YuChia-Wei"
 source:
   backlog_glob: ".dev/backlog/items/*.yaml"
   roadmap: ".dev/backlog/ROADMAP.md"
-  expected_item_count: 54
+  expected_item_count: 55
   portable_identity_field: "backlog_id"
   provider_identity_is_authoritative: false
 project:
@@ -240,6 +240,7 @@ migration:
     - "CTX-005"
     - "PKG-006"
     - "VAL-003"
+    - "SAG-002"
   canaries:
     - "DEVWF-001"
     - "AIC-007"
@@ -330,6 +331,7 @@ classifications:
   REL-003: {kind: "enabler", scope: "mixed", rationale: "Source release validation and published Included Work traceability are both affected."}
   REL-004: {kind: "enabler", scope: "source-repo", rationale: "The proposed closeout capability is explicitly limited to this repository's release finalization."}
   SAG-001: {kind: "story", scope: "framework", rationale: "Framework users need supported runtime adapters with parity across providers."}
+  SAG-002: {kind: "enabler", scope: "framework", rationale: "Framework maintainers and downstream users need every canonical role to be reachable from its owning skill with comparable provider-neutral direct, delegated, unavailable, and inline execution evidence."}
   SIMPL-001: {kind: "enabler", scope: "framework", rationale: "Measured context simplification changes reusable framework loading behavior."}
   SKILL-001: {kind: "story", scope: "framework", rationale: "Framework users need stable skill identities and compatible orchestration transitions."}
   SKILL-002: {kind: "enabler", scope: "mixed", rationale: "Canonical skill ownership affects portable skill assets while source compatibility entrypoints and package governance remain repository-managed."}

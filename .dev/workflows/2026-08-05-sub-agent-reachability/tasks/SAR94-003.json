@@ -1,0 +1,84 @@
+{
+  "template_id": "ai-context-governance-remediation-task",
+  "template_version": "1.1.0",
+  "template_created_at": "2026-07-10T18:22:49+08:00",
+  "template_updated_at": "2026-07-27T09:52:09+08:00",
+  "task_id": "SAR94-003",
+  "workflow_id": "2026-08-05-sub-agent-reachability",
+  "owner_skill": "ai-context-governance",
+  "title": "Allocate the completed reachability delivery to v0.9.0",
+  "status": "in_progress",
+  "created_at": "2026-08-05T10:00:52+08:00",
+  "updated_at": "2026-08-05T10:00:52+08:00",
+  "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
+  "model": "gpt-5.6-sol",
+  "reasoning_effort": "xhigh",
+  "work_item": "#118",
+  "depends_on": [
+    "SAR94-001",
+    "SAR94-002"
+  ],
+  "finding_ids": [
+    "ASM-20260804-002#AIC-003",
+    "ASM-20260804-002#AIC-004"
+  ],
+  "scope": {
+    "target": "One canonical SAG-002 v0.9.0 allocation for the completed #118/#119 delivery, plus exact repository and GitHub Project reconciliation without publication.",
+    "files": [
+      ".dev/backlog/items/SAG-002.yaml",
+      ".dev/backlog/ROADMAP.md",
+      ".dev/backlog/INDEX.MD",
+      ".dev/backlog/providers/github.yaml",
+      ".dev/backlog/provider-mappings/github-issues-SAG-002.yaml",
+      ".ai/scripts/tests/test_github_backlog_provider.py provider-contract expectation only",
+      ".dev/workflows/2026-08-05-sub-agent-reachability/** release-allocation addendum only",
+      "GitHub Proposal #94, Issues #118/#119, Project #3, and merged PR #122 provider records"
+    ],
+    "constraints": [
+      "Count SAG-002 exactly once in v0.9.0 Included Work",
+      "Use Issue #118 as the representative canonical provider item; retain #119 as the dependent implementation slice and #94 as proposal provenance",
+      "Preserve #92 and #93 owned source, workflow, and semantic content",
+      "Run every gh CLI command outside the sandbox",
+      "Do not run local validation scripts, tests, builds, formatters, check-all, aggregate gates, or other verification programs",
+      "Rely on hosted CI and hosted Issue/Project/PR read-back",
+      "Use merge-commit topology and do not publish v0.9.0"
+    ],
+    "non_goals": [
+      "v0.9.0 package generation or release configuration",
+      "Tag creation or movement",
+      "GitHub Release creation, asset upload, or publication",
+      "Any #92 rule/provider/effective-state change",
+      "Any #93 ignore/install/upgrade implementation change",
+      "Bulk runtime-native role adapter generation"
+    ]
+  },
+  "execution": {
+    "steps": [
+      "Create the SAG-002 canonical backlog item and reconcile ROADMAP, backlog index, provider classification, and workflow addendum",
+      "Commit the canonical allocation checkpoint before external provider mutation",
+      "Repair PR #122 reference keywords and bind representative Issue #118 to SAG-002 without changing #94/#119 canonical counting",
+      "Set only representative #118 to the approved v0.9.0 pending-publication Project fields",
+      "Record the exact provider receipt and hosted read-back",
+      "Open the required pull request, rely on hosted CI, integrate by merge commit, and read back merged main and Project state"
+    ],
+    "validation": [
+      "Manual canonical-file and diff inspection",
+      "Hosted Issue, PR, Project field, close-reason, and view-filter read-back",
+      "Hosted pull-request CI only",
+      "Merge-commit ancestry and merged-main file read-back",
+      "Local validators and all executable local gates prohibited by owner direction"
+    ],
+    "last_completed_step": "Confirmed the owner follow-up authorization, refreshed main@2aa61dd, selected one SAG-002 aggregate represented by #118, and verified that #94/#118/#119 are closed completed while all release-projection fields are unset.",
+    "next_action": "Finish and commit the canonical allocation checkpoint before changing GitHub Issue or Project provider state."
+  },
+  "results": {
+    "summary": "In progress: canonical allocation is being established before provider projection.",
+    "files_changed": [],
+    "tests_run": [
+      "No local validation script, test, build, formatter, check-all, aggregate gate, or other verification program run by explicit owner direction."
+    ],
+    "finding_status": "in_progress",
+    "residual_risk": "GitHub Project fields, provider receipt, hosted CI, merge integration, and merged-main read-back remain pending.",
+    "follow_up_needed": true
+  }
+}

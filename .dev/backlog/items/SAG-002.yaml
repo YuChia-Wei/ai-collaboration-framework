@@ -1,0 +1,56 @@
+schema_version: "1.0"
+backlog_id: "SAG-002"
+title: "Canonical Owning-Skill Reachability And Role Execution"
+category: "ai-context-governance"
+status: "resolved"
+priority: "HIGH"
+summary: "Make every active canonical sub-agent role reachable from an owning skill, distinguish static mapping from direct inline application and genuine delegated invocation, and retain provider-neutral execution evidence with no-delegation parity."
+created_at: "2026-08-05T01:30:38+08:00"
+updated_at: "2026-08-05T10:00:52+08:00"
+release:
+  target: "v0.9.0"
+  completed_in: "v0.9.0"
+  published_in: null
+  target_scope: "owning-skill-reachability-and-provider-neutral-role-execution"
+  gate: "release-blocker"
+origin_refs:
+  - ".dev/assessments/ASM-20260804-002/assessment.yaml"
+  - ".dev/assessments/ASM-20260804-002/evidence/proposal-traceability.yaml"
+  - ".dev/assessments/ASM-20260805-001/assessment.yaml"
+  - ".dev/backlog/provider-mappings/github-issues-SAG-002.yaml"
+  - ".dev/workflows/2026-08-05-sub-agent-reachability/reports/release-allocation-addendum.md"
+  - ".dev/workflows/2026-08-05-sub-agent-reachability/workflow.yaml"
+finding_refs:
+  - "ASM-20260804-002#AIC-003"
+  - "ASM-20260804-002#AIC-004"
+recommended_owner_skill: "ai-context-governance"
+handoff_condition: "Include SAG-002 exactly once in any future v0.9.0 candidate. The canonical release item aggregates the owner-approved #118 static-reachability slice and dependent #119 runtime-execution slice; Proposal #94 remains intake and decision provenance only. Release preparation, tag creation, GitHub Release creation, and publication remain separately unauthorized."
+workflow_refs:
+  - ".dev/workflows/2026-08-05-sub-agent-reachability/workflow.yaml"
+task_refs:
+  - ".dev/workflows/2026-08-05-sub-agent-reachability/tasks/SAR94-001.json"
+  - ".dev/workflows/2026-08-05-sub-agent-reachability/tasks/SAR94-002.json"
+  - ".dev/workflows/2026-08-05-sub-agent-reachability/tasks/SAR94-003.json"
+resolution_ref: ".dev/workflows/2026-08-05-sub-agent-reachability/reports/remediation-report.md"
+decision_needed: "Resolved: the owner completed all seven Issue #94 decisions, authorized #118 and #119, and on 2026-08-05 explicitly confirmed that their merged PR #122 delivery belongs in v0.9.0. This allocation changes release planning and provider projection only; it does not authorize packaging or publication."
+related_backlog_refs:
+  - "SAG-001"
+provider_refs:
+  - "github-issue:#118"
+  - "github-issue:#119"
+  - "github-proposal:#94"
+acceptance:
+  - "Each active canonical role has an owning-skill binding, explicit applicability, exact active asset identity, and mandatory load obligation."
+  - "Validator-backed projection proves only statically-reachable and fails closed for ownerless, central-only, malformed, duplicate, stale, or conflicting bindings."
+  - "Slice modes remain command, query, reactor, or generic; aggregate, controller, outbox, profile-config, and concrete-test roles are conditional bindings rather than new modes."
+  - "Concrete test implementation belongs to slice-implementer after separate authorization; BDD design and test execution remain distinct responsibilities."
+  - "Owning skills produce provider-neutral role_execution evidence that distinguishes direct, delegated, unavailable, and not-applicable outcomes with bounded inputs, permissions, outputs, attempts, fallback, and final integration ownership."
+  - "No-delegation runtimes apply the same canonical stage contract inline without inventing child invocation evidence."
+  - "SAG-001 selective adapter policy remains intact; runtime-native adapters are not bulk-generated for reachability."
+  - "PR #122 passes the required hosted gates, merges with the owner-selected merge-commit topology, and is read back from merged main before release allocation becomes canonical."
+  - "A future v0.9.0 candidate includes SAG-002 exactly once and does not count Proposal #94 or supporting slice #119 as additional canonical Included Work."
+inventory_notes:
+  - "Proposal #94 preserves the seven-question intake and owner decision ledger. Issue #118 is the representative provider projection for SAG-002; Issue #119 remains the dependent runtime-evidence slice."
+  - "PR #122 merged as 0a9089f7d463f343dabc3da71a2ab5b20287f6cd after all five required hosted checks passed; the records-only PR #123 merged as 2aa61dd7a33916782170b8e3cc6de2e098c555d8."
+  - "Local repository validators, fixture tests, test suites, builds, formatters, check-all, and aggregate gates were not run by explicit owner direction and are not claimed as passed."
+  - "The release-blocker designation records allocation only. published_in remains null until a separately authorized immutable publication succeeds."

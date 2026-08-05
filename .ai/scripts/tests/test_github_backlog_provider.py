@@ -99,6 +99,7 @@ class GitHubBacklogProviderTests(unittest.TestCase):
                 "CTX-005",
                 "PKG-006",
                 "VAL-003",
+                "SAG-002",
             ],
             self.plan["post_adoption_items"],
         )
