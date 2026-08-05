@@ -7,7 +7,7 @@ artifact directories. See [README.MD](README.MD) for ownership and lifecycle.
 
 | Roadmap | Current Target | Status | Next Gate | Updated |
 | --- | --- | --- | --- | --- |
-| [ROADMAP.md](ROADMAP.md) | `v0.9.0` | `planned` | Obtain explicit authorization before release preparation; include `GOV-004`, `PKG-005`, `GOV-006`, `CTX-005`, `PKG-006`, `VAL-003`, and `SAG-002` exactly once. | 2026-08-05 |
+| [ROADMAP.md](ROADMAP.md) | `v0.9.0` | `planned` | Prepare and validate the exact eight-item candidate; immutable tag creation remains owner-controlled. | 2026-08-05 |
 
 Source planning records are retained under [`plans/`](plans/); they inform the
 roadmap but do not replace it or a governed assessment.
@@ -19,7 +19,6 @@ roadmap but do not replace it or a governed assessment.
 | [EVAL-002](items/EVAL-002.yaml) | HIGH | `unassigned` | owner design decision | Establish comparable, privacy-preserving workflow execution and cost evidence before optimization or archive claims. | Select the minimum evidence schema and privacy boundary; do not infer token cost or assign a release. | 2026-08-04 |
 | [VAL-002](items/VAL-002.yaml) | HIGH | `unassigned` | promotes Proposal #75 | Separate source aggregate, downstream workflow, and framework-self-test profiles with changed-path, time-budget, and fingerprint behavior. | Approve profile ownership and dependency semantics without weakening source fail-closed gates. | 2026-08-04 |
 | [GOV-005](items/GOV-005.yaml) | HIGH | `unassigned` | owner queue disposition | Converge eight interlocked, zero-comment Proposals through one owner-reviewed dependency and disposition decision. | AI prepares the decision surface; only the owner accepts, rejects, defers, or sequences each Proposal. | 2026-08-04 |
-| [CTX-004](items/CTX-004.yaml) | LOW | `unassigned` | independent direct-mode candidate | Surface executable .NET analyzer capabilities in bilingual root navigation. | Keep the correction README-only and use the verified seven-analyzer/two-support-file inventory. | 2026-08-04 |
 | [REL-004](items/REL-004.yaml) | MEDIUM | `unassigned` | independent | Evaluate a repo-only AI context release closeout capability that simplifies post-tag registry finalization without leaking into the published framework. | Decide naming, source-only placement, product-isolation proof, zero skill dependencies, runtime fallback, failure containment, and terminal Git behavior before implementation. | 2026-07-28 |
 | [INIT-001](items/INIT-001.yaml) | LOW | `unassigned` | independent | Evaluate safe framework adoption in repositories that already use AI agents. | Define collision inventory, dry-run, authority, and synthetic fixtures before a future real-target pilot. | 2026-07-27 |
 | [DEVWF-001](items/DEVWF-001.yaml) | MEDIUM | `unassigned` | independent | Evaluate optional issue traceability and richer task lifecycle timestamps from WorkService. | Keep the portable core tracker-neutral; decide schema placement and compatibility before implementation. | 2026-07-22 |
@@ -36,6 +35,7 @@ roadmap but do not replace it or a governed assessment.
 
 | Item | Priority | Completed In | Published In | Resolution | Workflow | Updated |
 | --- | --- | --- | --- | --- | --- | --- |
+| [CTX-004](items/CTX-004.yaml) | LOW | `v0.9.0` | — | Bilingual root navigation now links the stable bundled mechanical-validation provider and distinguishes portable production assets from source-only tests retained under `tools/`. | [`2026-08-05-v0-9-0-release-publication`](../workflows/2026-08-05-v0-9-0-release-publication/workflow.yaml) | 2026-08-05 |
 | [SAG-002](items/SAG-002.yaml) | HIGH | `v0.9.0` | — | All 18 active roles have owning-skill reachability and provider-neutral execution evidence with direct-by-default delegation, inline parity, bounded retry/fallback, and unchanged selective-adapter policy; #118 represents the single canonical item and #119 remains its dependent slice. | [`2026-08-05-sub-agent-reachability`](../workflows/2026-08-05-sub-agent-reachability/workflow.yaml) | 2026-08-05 |
 | [VAL-003](items/VAL-003.yaml) | HIGH | `v0.9.0` | — | Architecture Kit remains unsupported, unavailable, and non-selectable behind an evidence-complete fail-closed readiness gate; actual cutover remains future work. | [`2026-08-05-rule-provider-precutover`](../workflows/2026-08-05-rule-provider-precutover/workflow.yaml) | 2026-08-05 |
 | [PKG-006](items/PKG-006.yaml) | HIGH | `v0.9.0` | — | The bundled .NET validation provider has stable identity/location, separate analyzer/runtime capabilities, inactive source delivery, and fail-closed reference-in-place activation. | [`2026-08-05-rule-provider-precutover`](../workflows/2026-08-05-rule-provider-precutover/workflow.yaml) | 2026-08-05 |

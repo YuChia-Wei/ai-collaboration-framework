@@ -603,8 +603,19 @@ def migration_selection(
     raise ApplyError(f"unsupported migration schema version: {schema_version!r}")
 
 
-def state_matches(state: FileState, record: dict) -> bool:
-    return state.exists and state.sha256 == record.get("sha256") and state.mode == record.get("mode")
+def state_matches(root: Path, state: FileState, record: dict) -> bool:
+    if not state.exists or state.sha256 != record.get("sha256"):
+        return False
+    if state.mode == record.get("mode"):
+        return True
+    filemode = run_git(root, "config", "--bool", "core.filemode")
+    if filemode.returncode != 0 or filemode.stdout.strip() not in {"true", "false"}:
+        raise ApplyError("cannot determine target Git core.filemode")
+    return (
+        filemode.stdout.strip() == "false"
+        and state.mode == "0644"
+        and record.get("mode") == "0755"
+    )
 
 
 def observation(paths: Iterable[str], target: Path) -> dict[str, dict]:
@@ -819,7 +830,7 @@ def build_plan(
                 raise ApplyError(f"replace requires managed incoming and previous records: {path}")
             if incoming[path].get("ownership") != "framework-managed" or previous[path].get("ownership") != "framework-managed":
                 raise ApplyError(f"replace inventory ownership must be framework-managed: {path}")
-            if not state_matches(current, previous[path]):
+            if not state_matches(target, current, previous[path]):
                 action, reason = "reconcile", "current hash or mode differs from previous release"
         elif kind == "remove":
             if item["ownership"] != "framework-managed" or path not in previous:
@@ -828,7 +839,7 @@ def build_plan(
                 raise ApplyError(f"remove previous ownership must be framework-managed: {path}")
             if not current.exists:
                 action, reason = "noop", "path is already absent"
-            elif not state_matches(current, previous[path]):
+            elif not state_matches(target, current, previous[path]):
                 action, reason = "reconcile", "current hash or mode differs from previous release"
         elif kind == "rename":
             if item["ownership"] != "framework-managed" or source not in previous or path not in incoming:
@@ -836,7 +847,7 @@ def build_plan(
             if previous[source].get("ownership") != "framework-managed" or incoming[path].get("ownership") != "framework-managed":
                 raise ApplyError(f"rename inventory ownership must be framework-managed: {operation_id}")
             source_state = FileState(**observed[source])
-            if not state_matches(source_state, previous[source]):
+            if not state_matches(target, source_state, previous[source]):
                 action, reason = "reconcile", "rename source hash or mode differs from previous release"
             elif current.exists:
                 action, reason = "reconcile", "rename destination already exists"

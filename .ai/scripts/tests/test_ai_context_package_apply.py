@@ -1186,6 +1186,35 @@ class AiContextPackageApplyGwtTests(unittest.TestCase):
         finally:
             fixture.close()
 
+    def test_gwt_012a_given_filemode_disabled_target_with_unrepresentable_executable_bit_when_planned_then_safe_replace_applies(self) -> None:
+        fixture = PackageApplyFixture()
+        try:
+            # Given target bytes match the executable base, but Git explicitly cannot
+            # represent the executable bit on this worktree.
+            git(fixture.target, "config", "core.filemode", "false")
+            fixture.add_target(".ai/tool.sh", b"same bytes\n")
+            fixture.commit_target()
+            fixture.make_package(
+                {".ai/tool.sh": (b"incoming\n", "framework-managed", "0755")},
+                [operation("001-replace", "replace", ".ai/tool.sh")],
+                {".ai/tool.sh": (b"same bytes\n", "framework-managed", "0755")},
+            )
+
+            # When planning and applying the governed replacement.
+            plan = fixture.plan()
+            receipt = APPLY.apply_plan(plan)
+
+            # Then platform-only mode loss does not masquerade as target-owned
+            # content drift, and the receipt binds the incoming bytes.
+            self.assertEqual("replace", plan["operations"][0]["action"])
+            self.assertEqual([], receipt["skipped_reconciliation_ids"])
+            self.assertEqual(b"incoming\n", (fixture.target / ".ai/tool.sh").read_bytes())
+            errors: list[str] = []
+            TARGET.validate_pending_apply_receipt(fixture.target, errors)
+            self.assertEqual([], errors)
+        finally:
+            fixture.close()
+
     def test_gwt_013_given_cli_without_apply_when_executed_then_it_remains_dry_run(self) -> None:
         fixture = PackageApplyFixture()
         try:

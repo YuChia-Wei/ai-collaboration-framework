@@ -12,6 +12,7 @@ owns its identity, current lifecycle state, subject revision, and relationships.
 
 | Assessment | Title | Type | Owner | Status | Subject Commit | Updated | Report |
 | --- | --- | --- | --- | --- | --- | --- | --- |
+| [`ASM-20260805-004`](ASM-20260805-004/assessment.yaml) | v0.9.0 Candidate Package And Release Contract Verification | `ai-context-verification` | `ai-context-auditor` | `final` | `773b96cb742f09fd2744ae63b85d982ee3d61822` | `2026-08-06T00:16:57+08:00` | [report](ASM-20260805-004/report.md) |
 | [`ASM-20260805-003`](ASM-20260805-003/assessment.yaml) | Validation Cost External Review Intake And Decision Record | `ai-context-audit` | `ai-context-governance` | `final` | `7f6746b34759c1633b7083175381e76a222bb142` | `2026-08-05T21:21:52+08:00` | [report](ASM-20260805-003/report.md) |
 | [`ASM-20260805-001`](ASM-20260805-001/assessment.yaml) | Owning-Skill Reachability And Role Execution Remediation Verification | `ai-context-verification` | `ai-context-auditor` | `final` | `4fd7ed991729836801e960c557fb019a25930146` | `2026-08-05T09:00:09+08:00` | [report](ASM-20260805-001/report.md) |
 | [`ASM-20260805-002`](ASM-20260805-002/assessment.yaml) | Layered Engineering Rules And Pre-Cutover Provider Remediation Verification | `ai-context-verification` | `ai-context-auditor` | `final` | `09b280f522ad4249c69a19fdc4d9707a5e30e073` | `2026-08-05T07:48:01+08:00` | [report](ASM-20260805-002/report.md) |

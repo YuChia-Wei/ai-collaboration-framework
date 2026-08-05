@@ -2,11 +2,13 @@
 
 [English](README.en.md)
 
+本檔案是 `README.md` 所代表的來源庫人類導覽身分之繁體中文（台灣）canonical 版本；README.en.md 是對應的英文翻譯。
+
 本專案是一個可攜式的 AI 協作框架來源庫，將軟體開發實務、可重用的 Agent context、skills、sub-agent prompts 與協作流程集中管理。它目前保留並發展 .NET / C# 後端的專門能力，同時把可跨技術棧使用的協作規則抽離為通用內容。
 
 這不是特定產品的應用程式或範例系統。它的目的，是讓團隊能把經過整理與驗證的 AI 協作能力帶入新舊專案，並由目標專案本身的程式碼、設定與文件建立該專案的真實脈絡。
 
-> `README.md` 是此來源庫的人類導覽文件，不是可攜式發佈封包的一部分。封包由明確 allowlist 建立，並刻意排除根目錄 README，避免來源庫介紹被帶入目標專案。
+> 根目錄 README 是此來源庫的人類導覽文件，不是可攜式發佈封包的一部分。封包由明確 allowlist 建立，並刻意排除根目錄 README，因此此來源庫介紹不會被帶入目標專案。
 
 ## 專案定位
 
@@ -40,6 +42,7 @@
 | 尋找可用的 AI skills | [`.ai/assets/skills/README.MD`](.ai/assets/skills/README.MD) |
 | 了解人類可閱讀的協作指南 | [`.dev/guides/ai-collaboration-guides/INDEX.MD`](.dev/guides/ai-collaboration-guides/INDEX.MD) |
 | 讓 Agent 在此來源庫中正確協作 | [`AGENTS.md`](AGENTS.md) |
+| 探索內建的可執行 .NET 驗證 provider | [`.ai/assets/tech-stacks/dotnet-backend/tooling/bundled-mechanical-validation/`](.ai/assets/tech-stacks/dotnet-backend/tooling/bundled-mechanical-validation/) |
 | 取得或升級可攜式框架版本 | [`.dev/releases/INDEX.MD`](.dev/releases/INDEX.MD) |
 
 ## 核心內容
@@ -61,6 +64,10 @@
 - DDD、Clean Architecture、CQRS、Hexagonal Architecture 與 message-driven backend 的實務。
 - WolverineFx、Dapper、EF Core、PostgreSQL、RabbitMQ 與 Kafka 等常見後端組合。
 - .NET 後端的架構設計、實作切片與 code review 指引。
+
+內建的 mechanical-validation provider 提供原始碼，預設不啟用。其穩定 landing page 將兩項可個別選取的能力分開：用於機械式架構規則的 Roslyn analyzers，以及用於檢查 target-owned registration 的 runtime/configuration validation。人類與 Agent 的指引仍位於 .NET standards 與 technology-stack context 中；這些文件不會取代可執行的驗證。
+
+此 provider 的 production 專案是位於 `.ai/assets/tech-stacks/dotnet-backend/tooling/bundled-mechanical-validation/` 下的可攜式資產。其 `tools/DotnetBackendAnalyzers.Tests/` 與 `tools/DotnetBackendValidation.Tests/` 專案仍屬於來源庫驗證，並刻意排除在下游封包之外。`tools/DotnetBackendBuildingBlocks.Tests/` 同樣驗證另行保留的 source-includes，而不屬於 mechanical-validation provider。
 
 ## 主要目錄
 
@@ -163,7 +170,7 @@ python3.11 payload/.ai/scripts/plan-ai-context-package-apply.py \
 
 #### 2. 確認計畫後才套用
 
-只有在 dry-run 已確認、目標 worktree 仍是同一個乾淨起點時，才執行 apply。若 plan 列出多個 reconciliation 項目，重複加入 `--acknowledge`；確認某個 ID 代表略過該項目，**不代表**授權覆寫或刪除 target-owned 檔案。
+只有在 dry-run 已確認、目標 worktree 仍是同一個乾淨起點時，才執行 apply。對每個 reconciliation 項目加入 `--acknowledge`；確認某個 ID 只會略過該項目，**不代表**授權覆寫或刪除 target-owned 檔案。
 
 ```powershell
 Set-Location $PackageRoot
@@ -214,7 +221,7 @@ Requested release：<VERSION>
 2. 確認 package root 包含 requirements.txt、metadata/ 與 payload/，並驗證 archive checksum 的證據。
 3. 執行 package planner 的 dry-run；plan output 必須放在 package 與 target 之外。
 4. 回報 component/profile/provider selection、所有 add/replace/remove/rename/reconcile 項目與 operation ID。
-5. 不得直接解壓縮或手動複製 payload 到 target，不得套用變更，不得建立或 finalize provenance。
+5. 不得直接解壓縮或複製 payload 到 target，不得套用變更，不得建立或 finalize provenance。
 
 等待我確認 plan 後再繼續。
 ```
@@ -230,7 +237,7 @@ Requested release：<VERSION>
 - 保留 reusable framework rules；
 - 更新必要的 README、AGENTS、架構入口與 project config；
 - 不得在空專案捏造產品、endpoint、資料庫、broker、queue 或部署事實；
-- 只有在 repository、release、tag、full commit、component selection 與 import time 都有可信證據時，
+- 只有在 repository、release、tag、full commit、component selection 與 import-time 都有可信證據時，
   才原子建立 .dev/ai-context/provenance.yaml 與 .dev/ai-context/customizations.yaml。
 
 回報已修改檔案、未確認的事實、驗證結果與下一步建議。
@@ -332,13 +339,13 @@ python3.11 payload/.ai/scripts/plan-ai-context-package-apply.py \
    package metadata 與 migration guide；
 2. 以 base、incoming、target 做三方比較；
 3. 列出 automatic-candidate、reconcile、exclude，以及每項的理由；
-4. 產出依 customization ID 分組的 semantic reconciliation table、validation 與 rollback boundary。
+4. 產出依 customization ID 分組的 semantic reconciliation table、validation 與 rollback boundaries。
 
 在我明確核准前，不得修改 target 檔案、不得覆寫 target-owned truth，
 也不得 finalize provenance 或 customizations ledger。
 ```
 
-只有在 owner 已決定所有 reconciliation、必要驗證已成功，且獨立 post-upgrade audit 沒有阻擋問題後，才授權 Agent 套用接受的變更並原子更新 provenance。若 target 缺少可信 baseline，請要求 Agent 停在 unresolved-provenance inventory，改提出人工 reconciliation 或乾淨安裝式 baseline 計畫；不得強制執行自動升級。
+只有在 owner 已決定所有 reconciliation、必要驗證已成功，且獨立 post-upgrade audit 沒有阻擋問題後，才授權 Agent 套用接受的變更。若 target 缺少可信 baseline，請要求 Agent 停在 unresolved-provenance inventory，改提出人工 reconciliation 或乾淨安裝式 baseline 計畫；不得強制執行自動升級。
 
 詳細的目標真相邊界，請見 [`migration-boundaries.md`](.ai/assets/skills/ai-context-init/references/migration-boundaries.md)；每個版本的支援來源以其 [release migration guide](.dev/releases/INDEX.MD) 為準。
 
