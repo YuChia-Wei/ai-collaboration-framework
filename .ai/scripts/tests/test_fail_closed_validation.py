@@ -200,7 +200,11 @@ class SyntheticRunnerRepo:
         self.bin.mkdir()
         shutil.copy2(RUNNER_SOURCE, self.scripts / RUNNER_SOURCE.name)
         self.add_python_stub("python")
-        self._write_stub(self.bin / "dotnet", 'printf "dotnet %s\\n" "$*" >> .aic-sentinel\nexit "${DOTNET_STUB_EXIT:-0}"')
+        self._write_stub(
+            self.bin / "dotnet",
+            'if [ -n "${DOTNET_STUB_OUTPUT:-}" ]; then printf "%s\\n" "$DOTNET_STUB_OUTPUT"; fi\n'
+            'printf "dotnet %s\\n" "$*" >> .aic-sentinel\nexit "${DOTNET_STUB_EXIT:-0}"',
+        )
         self._write_child("check-coding-standards.sh", "CODING_STUB_EXIT")
         self._write_child("check-spec-compliance.sh", "SPEC_STUB_EXIT")
 
@@ -272,6 +276,7 @@ class SyntheticRunnerRepo:
     def _write_child(self, name: str, exit_variable: str) -> None:
         self._write_stub(
             self.scripts / name,
+            f'if [ -n "${{{exit_variable}_OUTPUT:-}}" ]; then printf "%s\\n" "${{{exit_variable}_OUTPUT}}"; fi\n'
             f'printf "{name} %s\\n" "$*" >> .aic-sentinel\nexit "${{{exit_variable}:-0}}"',
         )
 
@@ -340,6 +345,73 @@ class CheckAllRunnerGwtTests(unittest.TestCase):
         finally:
             fixture.close()
 
+    def test_gwt_004a_given_dotnet_is_missing_when_critical_runs_then_gate_is_blocked(self) -> None:
+        fixture = SyntheticRunnerRepo()
+        try:
+            # Given source-only dotnet checks emit an unambiguous missing-command error.
+            fixture.enable_source_release_context()
+
+            # When critical mode runs against that host state.
+            result = fixture.execute(
+                "--critical",
+                environment={
+                    "DOTNET_STUB_EXIT": "127",
+                    "DOTNET_STUB_OUTPUT": "bash: dotnet: command not found",
+                },
+            )
+
+            # Then it remains non-passing but identifies the host prerequisite.
+            self.assertEqual(3, result.returncode, result.stdout + result.stderr)
+            self.assertIn("BLOCKED-BY-ENVIRONMENT", result.stdout)
+            self.assertIn("missing-dotnet-sdk", result.stdout)
+            self.assertRegex(result.stdout, r"Required Failed: .*0")
+            self.assertRegex(result.stdout, r"Required Blocked: .*3")
+        finally:
+            fixture.close()
+
+    def test_gwt_004b_given_msb1003_when_critical_runs_then_gate_fails(self) -> None:
+        fixture = SyntheticRunnerRepo()
+        try:
+            # Given source-only dotnet checks fail with a command/configuration error.
+            fixture.enable_source_release_context()
+
+            # When critical mode runs.
+            result = fixture.execute(
+                "--critical",
+                environment={
+                    "DOTNET_STUB_EXIT": "1",
+                    "DOTNET_STUB_OUTPUT": "MSB1003: Specify a project or solution file.",
+                },
+            )
+
+            # Then the possible repository defect remains a genuine failure.
+            self.assertEqual(1, result.returncode, result.stdout + result.stderr)
+            self.assertNotIn("BLOCKED-BY-ENVIRONMENT", result.stdout)
+            self.assertRegex(result.stdout, r"Required Failed: .*3")
+        finally:
+            fixture.close()
+
+    def test_gwt_004c_given_read_only_child_when_critical_runs_then_gate_is_blocked(self) -> None:
+        fixture = SyntheticRunnerRepo()
+        try:
+            # Given a required child reports a read-only filesystem.
+            # When critical mode runs.
+            result = fixture.execute(
+                "--critical",
+                environment={
+                    "CODING_STUB_EXIT": "1",
+                    "CODING_STUB_EXIT_OUTPUT": "Read-only file system",
+                },
+            )
+
+            # Then it remains non-passing and reports an environment block.
+            self.assertEqual(3, result.returncode, result.stdout + result.stderr)
+            self.assertIn("read-only-filesystem", result.stdout)
+            self.assertRegex(result.stdout, r"Required Failed: .*0")
+            self.assertRegex(result.stdout, r"Required Blocked: .*1")
+        finally:
+            fixture.close()
+
     def test_gwt_005_given_retirement_candidate_when_modes_run_then_it_is_never_selected(self) -> None:
         fixture = SyntheticRunnerRepo()
         try:
@@ -356,6 +428,11 @@ class CheckAllRunnerGwtTests(unittest.TestCase):
                 self.assertEqual(0, result.returncode, result.stdout + result.stderr)
                 self.assertNotIn("Test Standards Compliance", result.stdout)
                 self.assertRegex(result.stdout, r"Advisory Warnings: .*0")
+                self.assertIn("Elapsed By Check (slowest first)", result.stdout)
+                self.assertRegex(
+                    result.stdout,
+                    r"AI_CONTEXT_CHECK_TIMING total_seconds=\d+ checks=\d+ failed=0 blocked=0",
+                )
         finally:
             fixture.close()
 
@@ -609,7 +686,7 @@ class CheckAllRunnerGwtTests(unittest.TestCase):
         finally:
             fixture.close()
 
-    def test_gwt_014_given_explicit_python_missing_when_gate_starts_then_it_fails_closed(self) -> None:
+    def test_gwt_014_given_explicit_python_missing_when_gate_starts_then_it_is_blocked(self) -> None:
         fixture = SyntheticRunnerRepo()
         try:
             # Given an explicit interpreter selection cannot be resolved.
@@ -619,8 +696,9 @@ class CheckAllRunnerGwtTests(unittest.TestCase):
                 environment={"AI_CONTEXT_PYTHON": "missing-aic-python"},
             )
 
-            # Then the runner fails before launching any required check.
-            self.assertEqual(1, result.returncode)
+            # Then the runner remains non-passing before launching any required check.
+            self.assertEqual(3, result.returncode)
+            self.assertIn("BLOCKED-BY-ENVIRONMENT", result.stderr)
             self.assertIn("Python 3.11 or newer is required", result.stderr)
             self.assertEqual([], fixture.sentinel())
         finally:
