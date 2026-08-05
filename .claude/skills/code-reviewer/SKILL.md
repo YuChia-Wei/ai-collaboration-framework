@@ -22,7 +22,7 @@ This is a thin Claude-compatible wrapper.
   - `.ai/assets/tech-stacks/dotnet-backend/references/CODE-REVIEW-INDEX.MD`
   - `.ai/assets/skills/code-reviewer/references/checklist-reference.md`
   - `.ai/assets/skills/code-reviewer/references/output-contract.md`
-  - `.dev/standards/CODE-REVIEW-CHECKLIST.md`
+  - `.ai/assets/tech-stacks/dotnet-backend/standards/CODE-REVIEW-CHECKLIST.md`
   - `.dev/standards/ASSESSMENT-ARTIFACT-POLICY.md`
 - Report Template: `.ai/assets/skills/code-reviewer/templates/code-review-assessment-report-template.md`
 

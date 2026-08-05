@@ -872,6 +872,100 @@ def validate_rule_ownership(errors: list[str]) -> int:
         errors.append(f"{OWNERSHIP_REGISTRY}: rules must be a list")
         return 0
 
+    identity_model = data.get("identity_model")
+    declared_canonical_roots: list[Path] = []
+
+    def add_declared_canonical_root(value: object, label: str) -> None:
+        if not isinstance(value, str) or not value:
+            errors.append(f"{label} must be a non-empty string")
+            return
+        pure_root = PurePosixPath(value)
+        if (
+            Path(value).is_absolute()
+            or pure_root.is_absolute()
+            or "\\" in value
+            or any(part in {".", ".."} for part in pure_root.parts)
+        ):
+            errors.append(f"{label} must be a safe repository-relative root")
+            return
+        root_parts = pure_root.parts
+        if "<profile>" in root_parts:
+            if root_parts.count("<profile>") != 1 or root_parts[-1] != "<profile>":
+                errors.append(f"{label} has an invalid <profile> placeholder")
+                return
+            root_parts = root_parts[: root_parts.index("<profile>")]
+        if not root_parts:
+            errors.append(f"{label} must resolve to a non-empty root")
+            return
+        declared_canonical_roots.append(Path(*root_parts))
+
+    def validate_catalog_selector(
+        catalog_file: Path,
+        catalog_selector: object,
+        expected_rule_id: str,
+        label: str,
+        *,
+        projected_record: bool = False,
+    ) -> None:
+        if catalog_selector != {"rule_id": expected_rule_id}:
+            errors.append(
+                f"{label}: catalog_selector must be exactly rule_id {expected_rule_id}"
+            )
+        if catalog_file.suffix not in {".yaml", ".yml"}:
+            errors.append(f"{label}: catalog selector requires a YAML catalog")
+            return
+        try:
+            catalog_data = yaml.safe_load(catalog_file.read_text(encoding="utf-8"))
+        except yaml.YAMLError as exc:
+            errors.append(f"{label}: invalid canonical catalog YAML: {exc}")
+            return
+        catalog_rules = (
+            catalog_data.get("rules", []) if isinstance(catalog_data, dict) else []
+        )
+        matches = [
+            item
+            for item in catalog_rules
+            if isinstance(item, dict) and item.get("rule_id") == expected_rule_id
+        ]
+        if len(matches) != 1:
+            errors.append(
+                f"{label}: catalog selector must resolve exactly one rule_id in {catalog_file.relative_to(ROOT)}"
+            )
+        elif projected_record:
+            record_projection = matches[0].get("catalog_projection")
+            expected_projection = {
+                "path": catalog_file.relative_to(ROOT).as_posix(),
+                "selector": {"rule_id": expected_rule_id},
+            }
+            if record_projection != expected_projection:
+                errors.append(
+                    f"{label}: projected catalog record must bind the same path and rule_id"
+                )
+        elif matches[0].get("catalog_selector") != {"rule_id": expected_rule_id}:
+            errors.append(
+                f"{label}: catalog record selector must be exactly rule_id {expected_rule_id}"
+            )
+
+    if not isinstance(identity_model, dict):
+        errors.append(f"{OWNERSHIP_REGISTRY}: identity_model must be a mapping")
+    else:
+        source_governance_root = identity_model.get("source_governance_root")
+        portable_baseline_roots = identity_model.get("portable_baseline_roots")
+        add_declared_canonical_root(
+            source_governance_root,
+            f"{OWNERSHIP_REGISTRY}: identity_model.source_governance_root",
+        )
+        if not isinstance(portable_baseline_roots, dict):
+            errors.append(
+                f"{OWNERSHIP_REGISTRY}: identity_model.portable_baseline_roots must be a mapping"
+            )
+        else:
+            for root_name, root_value in portable_baseline_roots.items():
+                add_declared_canonical_root(
+                    root_value,
+                    f"{OWNERSHIP_REGISTRY}: portable baseline root {root_name!r}",
+                )
+
     seen: set[str] = set()
     for index, rule in enumerate(rules, 1):
         label = f"{OWNERSHIP_REGISTRY}:rules[{index}]"
@@ -908,17 +1002,82 @@ def validate_rule_ownership(errors: list[str]) -> int:
         if not isinstance(canonical_value, str):
             errors.append(f"{label}: missing canonical_path")
             continue
-        canonical = Path(canonical_value)
-        if Path(".dev/standards") not in canonical.parents:
-            errors.append(f"{label}: canonical_path must be under .dev/standards")
+        canonical_pure = PurePosixPath(canonical_value)
+        if (
+            not canonical_value
+            or Path(canonical_value).is_absolute()
+            or canonical_pure.is_absolute()
+            or "\\" in canonical_value
+            or any(part in {".", ".."} for part in canonical_pure.parts)
+        ):
+            errors.append(f"{label}: canonical_path must be repository-relative and safe")
+            continue
+        canonical = Path(*canonical_pure.parts)
+        if not any(
+            canonical_root == canonical or canonical_root in canonical.parents
+            for canonical_root in declared_canonical_roots
+        ):
+            errors.append(
+                f"{label}: canonical_path must be under a declared source-governance or portable baseline root"
+            )
+            continue
         canonical_file = ROOT / canonical
         if not canonical_file.is_file():
             errors.append(f"{label}: missing canonical_path {canonical}")
             continue
         anchor = rule.get("canonical_anchor")
         canonical_text = canonical_file.read_text(encoding="utf-8")
-        if not isinstance(anchor, str) or anchor not in canonical_text:
+        selector = (
+            re.fullmatch(r"rules\[rule_id=([^\]]+)\]", anchor)
+            if isinstance(anchor, str)
+            else None
+        )
+        if selector is not None:
+            if selector.group(1) != rule_id:
+                errors.append(
+                    f"{label}: canonical_anchor selector must match rule_id {rule_id}"
+                )
+            else:
+                validate_catalog_selector(
+                    canonical_file, rule.get("catalog_selector"), rule_id, label
+                )
+        elif not isinstance(anchor, str) or anchor not in canonical_text:
             errors.append(f"{label}: canonical_anchor not found in {canonical}")
+
+        if "catalog_projection" in rule:
+            projection = rule.get("catalog_projection")
+            projection_label = f"{label}: catalog_projection"
+            if not isinstance(projection, dict):
+                errors.append(f"{projection_label} must be a mapping")
+            else:
+                projection_path_value = projection.get("path")
+                if (
+                    not isinstance(projection_path_value, str)
+                    or not projection_path_value
+                    or Path(projection_path_value).is_absolute()
+                    or "\\" in projection_path_value
+                    or any(
+                        part in {".", ".."}
+                        for part in PurePosixPath(projection_path_value).parts
+                    )
+                ):
+                    errors.append(
+                        f"{projection_label}.path must be a safe repository-relative path"
+                    )
+                else:
+                    projection_file = ROOT / projection_path_value
+                    if not projection_file.is_file():
+                        errors.append(
+                            f"{projection_label}.path does not exist: {projection_path_value}"
+                        )
+                    else:
+                        validate_catalog_selector(
+                            projection_file,
+                            projection.get("selector"),
+                            rule_id,
+                            projection_label,
+                            projected_record=True,
+                        )
 
         consumers = rule.get("derived_consumers", [])
         if not isinstance(consumers, list):

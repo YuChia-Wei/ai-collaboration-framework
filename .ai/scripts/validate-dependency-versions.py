@@ -110,8 +110,8 @@ def validate_python_entrypoint_registry(root: Path, errors: list[str]) -> dict[s
             "version 6.0.3, import_name yaml, and requirements_path requirements.txt"
         )
     entrypoints = registry.get("entrypoints")
-    if not isinstance(entrypoints, list) or len(entrypoints) != 25:
-        errors.append(f"{REGISTRY_PATH.as_posix()}: entrypoints must contain exactly 25 records")
+    if not isinstance(entrypoints, list) or len(entrypoints) != 26:
+        errors.append(f"{REGISTRY_PATH.as_posix()}: entrypoints must contain exactly 26 records")
         return registry
     paths: set[str] = set()
     portable = pyyaml = stdlib = 0
@@ -145,9 +145,9 @@ def validate_python_entrypoint_registry(root: Path, errors: list[str]) -> dict[s
             errors.append(f"{label}: prerequisite_exit_code must be 1 or 2")
         elif entrypoint["prerequisite_exit_code"] == 2 and isinstance(path_value, str):
             exit_two_paths.add(path_value)
-    if (portable, pyyaml, stdlib) != (12, 23, 2):
+    if (portable, pyyaml, stdlib) != (13, 24, 2):
         errors.append(
-            f"{REGISTRY_PATH.as_posix()}: expected 12 portable, 23 PyYAML, and 2 stdlib-only entrypoints; "
+            f"{REGISTRY_PATH.as_posix()}: expected 13 portable, 24 PyYAML, and 2 stdlib-only entrypoints; "
             f"found {portable}, {pyyaml}, {stdlib}"
         )
     if exit_two_paths != {".ai/scripts/plan-ai-context-package-apply.py"}:
