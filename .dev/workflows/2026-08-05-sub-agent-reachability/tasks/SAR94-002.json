@@ -9,7 +9,7 @@
   "title": "Record role execution and no-delegation inline parity",
   "status": "in_progress",
   "created_at": "2026-08-05T01:34:40+08:00",
-  "updated_at": "2026-08-05T08:37:17+08:00",
+  "updated_at": "2026-08-05T08:53:20+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-5.6-terra",
   "reasoning_effort": "xhigh",
@@ -69,8 +69,8 @@
       "JSON/YAML syntax parsing where applicable",
       "Repository validation scripts deferred by explicit owner direction"
     ],
-    "last_completed_step": "Replayed #94 from final #92 closeout main while omitting duplicate patch 9240f3d; three final source-only audits passed, one LOW preflight-ordering ambiguity was clarified, its follow-up passed, and ASM-20260805-001 was finalized with no active finding.",
-    "next_action": "Push the continuation branch, open the bounded ready pull request, process hosted checks, integrate with merge-commit topology, and read back merged main."
+    "last_completed_step": "Diagnosed PR #122's first hosted run: three failed checks shared one deterministic set of missing thin-wrapper references and an incomplete strict v1.3 role_execution expectation. After explicit owner approval, commit a1741fb corrected only those projections without changing role semantics.",
+    "next_action": "Push a1741fb and the records checkpoint to PR #122, require a fresh hosted result, then integrate with merge-commit topology and read back merged main only after required checks pass."
   },
   "results": {
     "summary": "Implemented one canonical provider-neutral role_execution contract with final/current disposition, exact role/owner/stage identity, bounded input/output/permissions/stops, genuine per-attempt provenance, deterministic direct-by-default delegation gates, bounded retry and fallback, and named final integration ownership. Owning skills produce records; software-development-orchestrator only aggregates them. BDD remains design-only, slice-implementer owns separately authorized concrete tests, and no-delegation runtimes use the same contract inline without fake child evidence.",
@@ -123,10 +123,12 @@
       "Independent final combined-source reachability, execution, and #92 compatibility audits (passed; no active finding)",
       "Independent LOW code-review preflight-ordering clarification follow-up (passed)",
       "Incremental origin/main@3e200fd ancestry and #121 records-only delta read-back (passed)",
+      "PR #122 first hosted run: Build and validate candidate plus Windows prerequisite passed; Ubuntu prerequisite, read-only governance, and Ubuntu quick gate failed from the same wrapper/validator synchronization drift",
+      "Manual exact comparison of the ten wrapper-reference additions and the v1.3 role_execution expectation in a1741fb (passed; hosted rerun pending)",
       "Repository validators, fixture tests, test suites, and check-all not run by explicit owner direction"
     ],
-    "finding_status": "verified-source-awaiting-hosted-integration",
-    "residual_risk": "The fixture-local oracle and repository validators have not been executed. Hosted checks, merge-commit integration, and merged-main read-back remain pending lifecycle facts.",
+    "finding_status": "hosted-fix-prepared-awaiting-rerun",
+    "residual_risk": "The fixture-local oracle and repository validators have not been executed locally. The first hosted run is failed/corrected evidence; a fresh hosted result, merge-commit integration, and merged-main read-back remain pending lifecycle facts.",
     "follow_up_needed": true
   }
 }

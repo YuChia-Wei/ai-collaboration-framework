@@ -15,7 +15,7 @@ report: "report.md"
 artifact_branch: "codex/2026-08-05-sub-agent-reachability-continuation"
 base_branch: "main"
 created_at: "2026-08-05T07:34:57+08:00"
-updated_at: "2026-08-05T08:37:17+08:00"
+updated_at: "2026-08-05T08:53:20+08:00"
 template_source: ".dev/assessments/templates/assessment-locator-template.yaml"
 template_version: "1.0.0"
 report_template_source: ".ai/assets/skills/ai-context-auditor/templates/ai-context-audit-report-template.md"
@@ -23,7 +23,7 @@ report_template_version: "2.1.0"
 subject_ref:
   repository: "C:/Users/h4227/.codex/worktrees/b3b5/ai-collaboration-prompts-dotnet-backend"
   branch: "codex/2026-08-05-sub-agent-reachability-continuation"
-  commit: "57369e1f3a9ad2ac80bfc841f74e06677832bfe7"
+  commit: "a1741fbecc2e1c1e81379b94d4bb85389e681107"
 scope:
   included:
     - "ASM-20260804-002#AIC-003 and ASM-20260804-002#AIC-004 traceability"
@@ -54,6 +54,6 @@ relations:
   backlog_refs: []
   adr_refs: []
 resume:
-  last_completed_action: "Verified the #92-integrated and #94-replayed combined source at 57369e1f3a9ad2ac80bfc841f74e06677832bfe7 with three independent source-only passes, one ordering-clarity follow-up, and a records-only #121 delta read-back; no active finding remains."
-  next_action: "ai-context-governance reconciles this final assessment into the workflow, then hosted checks, merge-commit integration, and merged-main read-back remain separate lifecycle facts."
+  last_completed_action: "Reconciled PR #122's first hosted run: ten thin-wrapper references and the validator's v1.3 exact role_execution expectation were corrected in a1741fbecc2e1c1e81379b94d4bb85389e681107 without changing the independently reviewed execution semantics."
+  next_action: "Push the bounded hosted-gate fix, require a fresh hosted result, then keep merge-commit integration and merged-main read-back as separate lifecycle facts."
   blockers: []

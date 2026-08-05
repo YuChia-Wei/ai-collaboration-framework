@@ -15,22 +15,22 @@
 - `status`: `final`
 - `audit_date`: `2026-08-05`
 - `created_at`: `2026-08-05T07:34:57+08:00`
-- `updated_at`: `2026-08-05T08:37:17+08:00`
+- `updated_at`: `2026-08-05T08:53:20+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-auditor/templates/ai-context-audit-report-template.md`
 - `template_version`: `2.1.0`
 - `repository`: `C:/Users/h4227/.codex/worktrees/b3b5/ai-collaboration-prompts-dotnet-backend`
 - `subject_branch`: `codex/2026-08-05-sub-agent-reachability-continuation`
-- `subject_commit`: `57369e1f3a9ad2ac80bfc841f74e06677832bfe7`
+- `subject_commit`: `a1741fbecc2e1c1e81379b94d4bb85389e681107`
 - `previous_assessment`: [`ASM-20260804-002`](../ASM-20260804-002/report.md)
 - `workflow_refs`: [`2026-08-05-sub-agent-reachability`](../../workflows/2026-08-05-sub-agent-reachability/workflow.yaml)
 
 ## Executive Summary
 
-- Overall assessment: The #92-integrated and #94-replayed source expresses complete static owning-skill reachability, direct-by-default role execution, evidence-bound delegation, explicit unavailable/not-applicable semantics, BDD-to-concrete-test ownership, no-delegation inline parity, and non-overlapping effective-rule packet consumption. Three independent final passes found no active correctness or compatibility defect.
+- Overall assessment: The #92-integrated and #94-replayed source expresses complete static owning-skill reachability, direct-by-default role execution, evidence-bound delegation, explicit unavailable/not-applicable semantics, BDD-to-concrete-test ownership, no-delegation inline parity, and non-overlapping effective-rule packet consumption. Three independent source passes found the semantics sound; PR #122's first hosted run then exposed bounded wrapper-reference and validator-expectation synchronization gaps, both corrected in the updated subject.
 - Overall score: `9/10`
 - Decision: `healthy-with-followups`
 - Primary strengths: exact 18-role owner mapping, preserved SAG-001 selective-adapter policy, provider-neutral final-attempt provenance, explicit retry authorization freshness, and source-reviewed coexistence with #92 engineering identity, target-effective packets, moved examples, and CI synchronization.
-- Primary risks: no #94 repository validator or fixture test has been executed locally; the role-execution oracle remains fixture-local, while hosted checks, merge-commit integration, and merged-main read-back are later lifecycle facts.
+- Primary risks: no #94 repository validator or fixture test has been executed locally; the role-execution oracle remains fixture-local, while the hosted rerun, merge-commit integration, and merged-main read-back are later lifecycle facts.
 
 `ASM-20260804-002` is evidence for the original gap and traceability only. The Issue #94 owner decision ledger supplies design adoption and implementation authorization; this assessment supplies neither.
 
@@ -80,6 +80,8 @@
 - The compatibility pass identified one LOW ordering ambiguity in `code-reviewer`; commit `afdfcbd` made the applicable effective-rule preflight explicit before profile references, and the same reviewer confirmed the ambiguity removed without redefining #92 semantics.
 - The unpushed continuation was then rebased onto final #92 closeout main `3e200fd`. The #121 delta changes only five #92 workflow/index records; canonical AI context, standards, and guides remain tree-equivalent to the independently reviewed source.
 - A final incremental independent read-back at subject `57369e1` confirmed its ancestry from `origin/main@3e200fd`, an empty #121 delta across `.ai/**`, `.dev/standards/**`, and `.dev/guides/**`, and continued coexistence of role bindings/execution, effective-rule consumption, BDD/test ownership, and moved-example paths.
+- PR #122's first hosted run produced three failed checks from one deterministic drift set: five `.agents`/`.claude` wrapper pairs lacked newly canonical role-execution references, and the validator's strict v1.3 orchestration expectation had not yet included the already-adopted `role_execution` block. Package candidate and Windows prerequisite checks passed; Ubuntu quick gate passed its other 48 selected checks.
+- Owner-authorized commit `a1741fb` added only the missing wrapper references and the exact YAML-equivalent validator expectation. It did not generate role adapters, alter #92 effective-rule semantics, or change role-execution behavior.
 
 ### Delegation
 
@@ -90,7 +92,7 @@
 
 | Tool / generated view | Source revision or input digest | Freshness / dirty state | Scope and exclusions | Unsupported relationships | File-backed fallback |
 | --- | --- | --- | --- | --- | --- |
-| Git diff, ancestry, patch ID, and merged-source read-back | #94 subject `57369e1`; #92 implementation merge `3bb0399`, closeout merge `3e200fd`, and head `317c541` | clean rebased continuation subject; current refs at finalization | overlap, duplicate-patch, boundary, schema, skill, validator source, and records-only closeout analysis | cannot prove runtime execution or future hosted #94 results | direct canonical file and workflow evidence read-back |
+| Git diff, ancestry, patch ID, merged-source read-back, and PR #122 Actions logs | #94 subject `a1741fb`; #92 implementation merge `3bb0399`, closeout merge `3e200fd`, and head `317c541` | clean rebased continuation plus bounded hosted-gate correction | overlap, duplicate-patch, boundary, schema, skill, wrappers, validator source, records-only closeout, and hosted failure analysis | cannot prove the pending hosted rerun or future runtime invocation | direct canonical file, wrapper, validator, and workflow evidence read-back |
 
 ## Repository Context Inventory
 
@@ -112,7 +114,7 @@
 
 ## Findings
 
-No unresolved, recurring, or regressed finding remains at the final source-only checkpoint. Two MEDIUM pre-integration observations and one LOW combined-state clarity observation were corrected before the final subject commit and independently re-reviewed as resolved.
+No unresolved, recurring, or regressed finding remains in the updated subject. Two MEDIUM pre-integration observations, one LOW combined-state clarity observation, and the two bounded hosted synchronization gaps were corrected before this assessment revision. A fresh hosted run remains required before integration.
 
 ## Baseline And Skill Comparison
 
@@ -149,19 +151,20 @@ No unresolved, recurring, or regressed finding remains at the final source-only 
 | #92 compatibility | passed-combined-source-review | no semantic overwrite after PR #120; all ten sibling consumers, moved paths, and role semantics coexist |
 | Diff whitespace | passed | `git diff --check` and staged equivalent produced no output |
 | Repository validators / fixtures / tests | deferred-with-owner | explicitly not run; no passing execution claim |
-| Combined post-#92 state | passed-source-review | subject `57369e1` is based on final closeout merge `3e200fd`; duplicate `9240f3d` omitted while its #92 path fix and destination files remain |
+| Combined post-#92 state | passed-source-review | subject `a1741fb` is based on final closeout merge `3e200fd`; duplicate `9240f3d` omitted while its #92 path fix and destination files remain |
+| PR #122 first hosted run | corrected-awaiting-rerun | package candidate and Windows prerequisite passed; Ubuntu prerequisite, read-only governance, and quick gate exposed the same wrapper/validator synchronization drift, corrected in `a1741fb` |
 
 ### Skipped Validation
 
 - `check-all`, repository validation scripts, fixture tests, and test suites were not run by explicit owner direction.
-- #94 hosted GitHub checks and merged-main read-back are not available before the pull request and integration stages.
+- The initial PR #122 hosted results are recorded as failed/corrected, never passed; a fresh hosted rerun and merged-main read-back remain unavailable.
 
 ## Recommended Action Order
 
-1. Reconcile this final assessment into the active governance workflow while keeping `SAR94-002` active for integration.
-2. Push the continuation branch and open the bounded #94/#118/#119 pull request without release packaging.
-3. Process hosted checks without rerunning the owner-deferred local scripts.
-4. Integrate using the owner-selected merge-commit / `--no-ff` topology, then read back merged `main` and Issue state.
+1. Reconcile this assessment revision into the active governance workflow while keeping `SAR94-002` active for integration.
+2. Push `a1741fb` and this records checkpoint to PR #122 without release packaging.
+3. Require fresh hosted results without rerunning the owner-deferred local scripts; if Ubuntu quick gate alone fails without the deterministic drift, retry once before expanding scope.
+4. Integrate only after required checks pass, using the owner-selected merge-commit / `--no-ff` topology, then read back merged `main` and Issue state.
 
 ## Deferred Items
 
@@ -178,6 +181,8 @@ git patch-id --stable comparison for #92 98484bd and #94 9240f3d
 git merge-tree read-only overlap comparison
 git ancestry and destination-file read-back after #92 PR #120 and records-only PR #121
 git rebase of the unpushed continuation onto final origin/main with duplicate 9240f3d omitted
+gh pr checks and GitHub Actions job-log read-back for PR #122 runs 30964149472 and 30964149533
+manual exact wrapper-reference and v1.3 contract-value comparison for commit a1741fb
 git diff --check
 gh auth status outside the sandbox
 ```
@@ -188,6 +193,7 @@ No repository validation script, fixture test, test suite, or `check-all` comman
 
 - GitHub CLI authentication is valid when checked outside the sandbox; an earlier sandboxed result was discarded as environment-invalid evidence.
 - Duplicate patch commit `9240f3d` is not an ancestor of the final subject. Its three path changes and destination files are present through #92 commit `98484bd`, implementation merge `3bb0399`, and final closeout main `3e200fd`.
+- The first PR #122 failures were deterministic source synchronization evidence, not an Ubuntu-only flake. All three failing checks reported the same wrapper-reference and exact-contract errors; no hosted rerun result is claimed yet.
 
 ## Lifecycle Handoff
 

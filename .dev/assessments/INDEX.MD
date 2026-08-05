@@ -12,7 +12,7 @@ owns its identity, current lifecycle state, subject revision, and relationships.
 
 | Assessment | Title | Type | Owner | Status | Subject Commit | Updated | Report |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| [`ASM-20260805-001`](ASM-20260805-001/assessment.yaml) | Owning-Skill Reachability And Role Execution Remediation Verification | `ai-context-verification` | `ai-context-auditor` | `final` | `57369e1f3a9ad2ac80bfc841f74e06677832bfe7` | `2026-08-05T08:37:17+08:00` | [report](ASM-20260805-001/report.md) |
+| [`ASM-20260805-001`](ASM-20260805-001/assessment.yaml) | Owning-Skill Reachability And Role Execution Remediation Verification | `ai-context-verification` | `ai-context-auditor` | `final` | `a1741fbecc2e1c1e81379b94d4bb85389e681107` | `2026-08-05T08:53:20+08:00` | [report](ASM-20260805-001/report.md) |
 | [`ASM-20260805-002`](ASM-20260805-002/assessment.yaml) | Layered Engineering Rules And Pre-Cutover Provider Remediation Verification | `ai-context-verification` | `ai-context-auditor` | `final` | `09b280f522ad4249c69a19fdc4d9707a5e30e073` | `2026-08-05T07:48:01+08:00` | [report](ASM-20260805-002/report.md) |
 | [`ASM-20260804-003`](ASM-20260804-003/assessment.yaml) | Framework-Managed Target Ignore Detection Baseline | `ai-context-audit` | `ai-context-auditor` | `final` | `4e7b5e0d59be831453b5c34f5f1eb3a1daae1245` | `2026-08-04T21:49:30+08:00` | [report](ASM-20260804-003/report.md) |
 | [`ASM-20260804-002`](ASM-20260804-002/assessment.yaml) | Downstream Architecture Kit And Sub-Agent Proposal Evidence Intake | `ai-context-audit` | `ai-context-auditor` | `final` | `4e7b5e0d59be831453b5c34f5f1eb3a1daae1245` | `2026-08-04T23:11:05+08:00` | [report](ASM-20260804-002/report.md) |

@@ -13,7 +13,7 @@
 - `current_phase`: `integration`
 - `artifact_root`: `.dev/workflows/2026-08-05-sub-agent-reachability`
 - `created_at`: `2026-08-05T01:34:40+08:00`
-- `updated_at`: `2026-08-05T08:37:17+08:00`
+- `updated_at`: `2026-08-05T08:53:20+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md`
 - `template_version`: `1.2.0`
 
@@ -32,7 +32,7 @@
 - Owner decision ledger: `https://github.com/YuChia-Wei/ai-collaboration-prompts-dotnet-backend/issues/94#issuecomment-5182504544`
 - Implementation issues: `#118`, `#119`
 - Remediation report: `.dev/workflows/2026-08-05-sub-agent-reachability/reports/remediation-report.md`
-- Verification assessment: [`ASM-20260805-001`](../../assessments/ASM-20260805-001/assessment.yaml) is final at subject commit `57369e1f3a9ad2ac80bfc841f74e06677832bfe7`; it records the #92-integrated combined-source read-back. Validation-script execution remains separately owner-arranged.
+- Verification assessment: [`ASM-20260805-001`](../../assessments/ASM-20260805-001/assessment.yaml) is final at updated subject commit `a1741fbecc2e1c1e81379b94d4bb85389e681107`; it records the #92-integrated combined-source read-back and the bounded PR #122 hosted synchronization correction. Validation-script execution remains separately owner-arranged.
 - Tasks: `.dev/workflows/2026-08-05-sub-agent-reachability/tasks/`
 
 ## Owner Decision Baseline
@@ -62,7 +62,7 @@
 4. Static owning-skill reachability remediation — `SAR94-001` / #118 completed with repository validation scripts deferred by explicit owner direction.
 5. Runtime selection, execution evidence, and inline parity remediation — completed; three independent source-only reviews found the static reachability and #92 compatibility surfaces sound, then identified two MEDIUM execution-contract gaps which were corrected and independently re-reviewed as resolved.
 6. #92-first sequential transport and combined verification — completed; #92 implementation PR #120 and records-only closeout PR #121 reached `main`, #94 was replayed from `main@3e200fd5e164ba363c3cde0c50219e18f0ca14de`, and duplicate patch `9240f3d` was omitted. Three final source-only passes and an ordering-clarity follow-up found no active defect.
-7. Pull request, hosted evidence, merge-commit integration, and merged-main read-back — in progress; local repository validators, fixture tests, test suites, and `check-all` remain deferred by owner direction.
+7. Pull request, hosted evidence, merge-commit integration, and merged-main read-back — in progress. PR #122's first run produced three failures from the same missing wrapper references and strict v1.3 validator expectation; package candidate and Windows prerequisite passed, Ubuntu quick gate passed its other 48 checks, and owner-authorized correction `a1741fb` is prepared for a fresh hosted run. Local repository validators, fixture tests, test suites, and `check-all` remain deferred by owner direction.
 
 ## Proportionality And Delivery Decisions
 
@@ -85,12 +85,12 @@
 
 ## Resume Checkpoint
 
-- Last completed action: Replayed #94 from final #92 closeout `main`, omitted duplicate `9240f3d`, completed three independent combined-source passes, corrected one LOW code-review preflight-ordering ambiguity in `57369e1`, and finalized `ASM-20260805-001` with no active finding.
+- Last completed action: Diagnosed PR #122's three hosted failures as one deterministic projection/validator synchronization gap, obtained explicit owner approval, and committed the bounded fix in `a1741fb`: ten thin wrappers now cite the canonical role-execution references and the existing v1.3 validator expectation matches the adopted `role_execution` block.
 - Current task: `SAR94-002` remains `in_progress` solely for pull-request, hosted-check, merge-commit, and merged-main lifecycle evidence. `SAR94-001` is completed with final combined-source reachability review.
-- Exact next action: Commit the reconciled assessment/workflow checkpoint, push `codex/2026-08-05-sub-agent-reachability-continuation`, open the bounded ready pull request, process hosted checks, integrate with merge-commit topology, and read back merged `main`.
-- Validation already completed: Git branch/base and GitHub issue/comment read-back; earlier syntax parsing; root manual reviews; `git diff --check`; three independent final source-only reachability, execution, and cross-workflow compatibility reviews; the LOW ordering-clarity follow-up; and confirmation that #121 is records-only outside #94 canonical surfaces. No repository validation script, fixture test, test suite, or `check-all` run has been performed.
-- Git state: branch `codex/2026-08-05-sub-agent-reachability-continuation` is based on `origin/main@3e200fd5e164ba363c3cde0c50219e18f0ca14de` and is seven commits ahead before this reconciliation checkpoint. Duplicate patch `9240f3d` is not an ancestor; its path fix and destinations are present via #92 commit `98484bd`.
-- Branch history and checkpoint handoffs: segment 1 published the pre-integration implementation checkpoint. Segment 2 is an unpushed continuation from final #92 closeout `main`, with rebased #94 implementation and review commits through `57369e1`; no #94 pull request or merge exists yet.
+- Exact next action: Commit this assessment/workflow reconciliation, push both new commits to ready PR #122, require fresh hosted results, then integrate with merge-commit topology and read back merged `main` only after required checks pass.
+- Validation already completed: Git branch/base and GitHub issue/comment read-back; earlier syntax parsing; root manual reviews; `git diff --check`; three independent final source-only reachability, execution, and cross-workflow compatibility reviews; the LOW ordering-clarity follow-up; confirmation that #121 is records-only outside #94 canonical surfaces; PR #122 check/log inspection; and manual exact wrapper-reference/v1.3 contract-value comparison for `a1741fb`. The initial hosted run passed package candidate and Windows prerequisite, while three checks failed from the same corrected drift. No local repository validation script, fixture test, test suite, or `check-all` run has been performed.
+- Git state: branch `codex/2026-08-05-sub-agent-reachability-continuation` is based on `origin/main@3e200fd5e164ba363c3cde0c50219e18f0ca14de`; PR #122 currently points to `1b05192`, and local fix `a1741fb` plus this records checkpoint await push. Duplicate patch `9240f3d` is not an ancestor; its path fix and destinations are present via #92 commit `98484bd`.
+- Branch history and checkpoint handoffs: segment 1 published the pre-integration implementation checkpoint. Segment 2 opened ready PR #122 from final #92 closeout `main`, then retained the same branch for the owner-authorized hosted-gate correction; no merge exists yet.
 - Blockers or unresolved decisions: none. Repository validation scripts remain separately owner-arranged and are not treated as passed; hosted checks and merged-main evidence remain pending lifecycle facts.
 
 ## Branch Lifecycle
@@ -98,4 +98,4 @@
 | Segment | Branch | Base | Checkpoint Type | Commit | Remote / Target | Recorded At | Reason | Resume Branch / Action |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | 1 | `codex/2026-08-05-sub-agent-reachability` | `main@d8580df4516155ff7b1a139d9a064a8b0d4b2019` | push-only implementation checkpoint | `f9f6a04` | `origin/codex/2026-08-05-sub-agent-reachability` | `2026-08-05T02:25:33+08:00` | #118/#119 implementation is reviewable while validation remains separately deferred | resume the same branch for validation reconciliation; then open the required PR without release packaging |
-| 2 | `codex/2026-08-05-sub-agent-reachability-continuation` | `main@3e200fd5e164ba363c3cde0c50219e18f0ca14de` | local replay and combined-verification checkpoint | `57369e1` | local continuation | `2026-08-05T08:37:17+08:00` | #92-first transport completed; retain rebased role commits and omit duplicate `9240f3d` | finalize workflow evidence, then push and open the ready merge-commit PR |
+| 2 | `codex/2026-08-05-sub-agent-reachability-continuation` | `main@3e200fd5e164ba363c3cde0c50219e18f0ca14de` | ready PR plus hosted-fix checkpoint | `a1741fb` | PR #122 / local fix pending push | `2026-08-05T08:53:20+08:00` | #92-first transport and combined verification completed; first hosted run exposed one bounded sync gap now corrected | push the fix and records checkpoint, require fresh hosted evidence, then merge-commit only after required checks pass |
