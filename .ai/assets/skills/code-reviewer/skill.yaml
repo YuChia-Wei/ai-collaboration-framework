@@ -55,7 +55,7 @@ role_bindings:
     load_obligation: "mandatory-when-applicable"
 workflow:
   - step: 1
-    description: "Read the review index and checklist, then evaluate each review-role binding's applicability"
+    description: "Complete any applicable effective-rule preflight, then read the review index and checklist and evaluate each review-role binding's applicability"
   - step: 2
     description: "Classify the reviewed scope, load every matching role manifest and mandatory reference, and build a checklist comparison"
   - step: 3
