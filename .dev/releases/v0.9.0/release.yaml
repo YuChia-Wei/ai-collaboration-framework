@@ -1,7 +1,7 @@
 schema_version: "1.0"
 release_id: "REL-v0.9.0"
 version: "v0.9.0"
-status: "planned"
+status: "validated"
 record_origin: "governed"
 distribution_kind: "governed-package"
 installable: true
@@ -10,7 +10,7 @@ commit: null
 tagged_at: null
 recorded_at: null
 created_at: "2026-08-05T22:42:53+08:00"
-updated_at: "2026-08-05T22:42:53+08:00"
+updated_at: "2026-08-06T00:20:55+08:00"
 planning:
   backlog_refs:
     - ".dev/backlog/items/GOV-004.yaml"
@@ -59,7 +59,7 @@ distribution:
     automation: "github-actions"
     creates_or_moves_tag: false
 validation:
-  evidence: "Planned candidate record instantiated from the canonical release-publication templates. The exact eight-item v0.9.0 backlog set and v0.8.0 compatibility source are observed from repository records. Candidate-specific package archives, clean-install and upgrade receipts, independent candidate verification, and the candidate critical gate are not yet recorded and are not claimed as passed."
+  evidence: "Validated candidate with the exact eight-item v0.9.0 backlog set and v0.8.0 as the sole compatibility source. Deterministic rewritten ZIP and tar archives passed package validation; the post-filemode critical gate passed 49/49 checks. Fresh clean-install and exact-v0.8.0 upgrade fixtures passed against the byte-identical package tree before the commit-message-only rewrite, and the owner explicitly waived duplicate fixture execution after independently verified tree, payload, inventory, migration, archive, sidecar, and checksum equivalence. ASM-20260805-004 reports healthy-with-followups with no active finding and permits candidate advancement. Hosted integration, merged-main pre-tag validation, owner-created tag, publication, and provider read-back remain pending."
   workflow_id: "2026-08-05-v0-9-0-release-publication"
   related_workflows:
     - "2026-08-03-workflow-delivery-cohesion"
@@ -75,7 +75,8 @@ validation:
     - "ASM-20260805-001"
     - "ASM-20260805-002"
     - "ASM-20260805-003"
-  package_status: "planned"
+    - "ASM-20260805-004"
+  package_status: "validated"
   post_merge_status: "pending"
   failed_publication_run: null
   published_run: null

@@ -16,10 +16,10 @@
 - `base_branch`: `main`
 - `branch_segment`: `1`
 - `status`: `in_progress`
-- `current_phase`: `candidate-preparation`
+- `current_phase`: `candidate-validated`
 - `artifact_root`: `.dev/workflows/2026-08-05-v0-9-0-release-publication`
 - `created_at`: `2026-08-05T22:26:56+08:00`
-- `updated_at`: `2026-08-05T22:26:56+08:00`
+- `updated_at`: `2026-08-06T00:20:55+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md`
 - `template_version`: `1.2.0`
 
@@ -36,7 +36,7 @@
 
 - Baseline assessments: `.dev/assessments/ASM-20260804-001/assessment.yaml`, `.dev/assessments/ASM-20260805-003/assessment.yaml`
 - Remediation report: `.dev/workflows/2026-08-05-v0-9-0-release-publication/reports/remediation-report.md`
-- Verification assessment: pending allocation by `ai-context-auditor`
+- Verification assessment: `.dev/assessments/ASM-20260805-004/assessment.yaml` (`healthy-with-followups`; no active finding)
 - Tasks: `.dev/workflows/2026-08-05-v0-9-0-release-publication/tasks/`
 
 ## Finding Triage
@@ -66,10 +66,10 @@
 
 ## Resume Checkpoint
 
-- Last completed action: owner authorized the bounded release workflow; `main@5d9af93` passed 49/49 critical checks with zero failures and zero environment blocks.
+- Last completed action: independent assessment `ASM-20260805-004` verified the deterministic candidate, bounded commit-message rewrite equivalence, exact eight-item scope, and owner waiver with no active finding; the source-local candidate advanced to `validated`.
 - Current task: `REL090-001`
-- Exact next action: complete the bilingual CTX-004 change, record the online #95/#128 relationship, and instantiate the release candidate contract.
-- Validation already completed: current-main critical gate passed before preparation; the final-code critical gate passed 49/49 in 951 seconds; attachment parity was confirmed against `ASM-20260804-001`; deterministic packages, clean install, and exact v0.8.0 upgrade passed. The seven pre-existing Project items read back Done/v0.9.0/Not yet published; CTX-004/#98 remains pending provider sync until merged-main read-back.
+- Exact next action: run the candidate phase validator, commit the validated transition, then push and open the ready candidate pull request for hosted checks and merge-commit integration.
+- Validation already completed: current-main critical gate passed before preparation; the final-code critical gate passed 49/49 in 951 seconds; attachment parity was confirmed against `ASM-20260804-001`; deterministic packages, clean install, and exact v0.8.0 upgrade passed. A duplicate post-rewrite fixture run was explicitly waived and replaced by independently verified tree, inventory, migration, archive, sidecar, and checksum equivalence. `ASM-20260805-004` concluded `healthy-with-followups` with no active finding. The seven pre-existing Project items read back Done/v0.9.0/Not yet published; CTX-004/#98 remains pending provider sync until merged-main read-back.
 - Git state: dedicated workflow branch created from clean `main@5d9af93`.
 - Branch history and checkpoint handoffs: none.
 - Blockers or unresolved decisions: publication tag remains user-owned.

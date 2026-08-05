@@ -2,8 +2,8 @@
 
 ## Status
 
-Planned governed candidate. No tag, published package, or GitHub Release
-exists.
+Validated governed candidate. No tag, published package, or GitHub Release
+exists; hosted integration and the merged-main pre-tag gate remain pending.
 
 ## Highlights
 
@@ -43,9 +43,11 @@ authorized future provider package, proof production, or cutover.
 
 ## Known Limitations
 
-- Candidate-specific package builds, clean-install and v0.8.0 upgrade receipts,
-  independent candidate verification, and the candidate critical gate are not
-  yet recorded as passed.
+- The owner waived duplicate clean-install and v0.8.0 upgrade fixture execution
+  after a commit-message-only rewrite. Independent verification established an
+  identical Git tree, payload inventory, migration contract, archive contents,
+  and checksums; the original fresh fixture passes are therefore retained as
+  bounded equivalence evidence rather than represented as a second execution.
 - The online-only timing/block validation correction in Issue #128 is already
   integrated into the source train. It has no local backlog item, is not a
   ninth canonical Included Work entry, and does not complete EVAL-002 or Issue
@@ -57,11 +59,13 @@ authorized future provider package, proof production, or cutover.
 ## Release Validation
 
 The release record uses the canonical v0.9.0 phase contract and the exact
-resolved eight-item backlog set. Candidate validation, the repository critical
-gate, hosted pull-request checks, merge, current-main pre-tag validation,
-owner-created annotated tag, and hosted publication remain separate pending
-stages. A blocked, skipped, deferred, or not-applicable check will be recorded
-separately from a passed check.
+resolved eight-item backlog set. Deterministic candidate packages, the fresh
+clean-install and exact-v0.8.0 upgrade fixtures, the 49/49 repository critical
+gate, and independent assessment `ASM-20260805-004` support the validated
+candidate state. Hosted pull-request checks, merge, current-main pre-tag
+validation, owner-created annotated tag, and hosted publication remain
+separate pending stages. A blocked, skipped, deferred, or not-applicable check
+is recorded separately from a passed check.
 
 From v0.7.0 onward, the renderer appends the canonical `Included Work` section
 from `release.yaml.planning.backlog_refs`. Do not duplicate that generated
