@@ -6,14 +6,14 @@
 - `workflow_kind`: `ai-context-maintenance`
 - `owner_skill`: `ai-context-governance`
 - `orchestrating_skill`: `software-development-orchestrator`
-- `branch`: `codex/2026-08-05-sub-agent-reachability-cont-03`
+- `branch`: `codex/2026-08-05-sub-agent-reachability-cont-04`
 - `base_branch`: `main`
-- `branch_segment`: `4`
-- `status`: `in_progress`
-- `current_phase`: `release-allocation-reconciliation`
+- `branch_segment`: `5`
+- `status`: `completed`
+- `current_phase`: `completed`
 - `artifact_root`: `.dev/workflows/2026-08-05-sub-agent-reachability`
 - `created_at`: `2026-08-05T01:34:40+08:00`
-- `updated_at`: `2026-08-05T10:19:47+08:00`
+- `updated_at`: `2026-08-05T10:31:24+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md`
 - `template_version`: `1.2.0`
 
@@ -64,7 +64,7 @@
 5. Runtime selection, execution evidence, and inline parity remediation — completed; three independent source-only reviews found the static reachability and #92 compatibility surfaces sound, then identified two MEDIUM execution-contract gaps which were corrected and independently re-reviewed as resolved.
 6. #92-first sequential transport and combined verification — completed; #92 implementation PR #120 and records-only closeout PR #121 reached `main`, #94 was replayed from `main@3e200fd5e164ba363c3cde0c50219e18f0ca14de`, and duplicate patch `9240f3d` was omitted. Three final source-only passes and an ordering-clarity follow-up found no active defect.
 7. Pull request, hosted evidence, merge-commit integration, and merged-main read-back — completed. PR #122's final head `e2757e2c2a382192866d1a52bfa8c74f6ce762a0` passed all five required checks, then merged to `main@0a9089f7d463f343dabc3da71a2ab5b20287f6cd` with parents `3e200fd...` and `e2757e2...`. Issues #94, #118, and #119 closed completed. Local repository validators, fixture tests, test suites, and `check-all` remain deferred by owner direction.
-8. Owner-authorized v0.9.0 release-allocation addendum — in progress under `SAR94-003`. Canonical `SAG-002`, ROADMAP, provider configuration, representative Issue #118, PR #122 reference keywords, Project fields, live `待發布` filter, and the provider receipt are reconciled. Pull-request hosted CI, merge-commit integration, and final merged-main/Project read-back remain. Packaging, tag, GitHub Release, and publication remain excluded.
+8. Owner-authorized v0.9.0 release-allocation addendum — completed under `SAR94-003`. Canonical `SAG-002`, ROADMAP, provider configuration, representative Issue #118, PR #122 reference keywords, Project fields, live `待發布` filter, provider receipt, hosted CI, PR #125 merge-commit integration, and final merged-main/Project read-back are reconciled. Packaging, tag, GitHub Release, and publication remain excluded.
 
 ## Proportionality And Delivery Decisions
 
@@ -103,9 +103,10 @@
 - Canonical aggregation: create one `SAG-002` release blocker represented by #118 and supported by dependent #119. Proposal #94 remains intake and owner-decision provenance and is not a second Included Work entry.
 - Project projection: keep #94 and #119 as non-canonical provenance/supporting cards without release allocation fields; set representative #118 to Done / P1 High / Owner review Approved / v0.9.0 / Not yet published so it is eligible for `待發布` exactly once.
 - Provider reconciliation: replace merged PR #122 closing keywords with `Refs`, preserve the already verified completed Issue state, and add exact canonical markers/read-back evidence to representative #118 without creating formal sub-issue relationships that the provider policy forbids inferring.
-- Current task: `SAR94-003` is in progress on `codex/2026-08-05-sub-agent-reachability-cont-03` from #92-integrated `main@f4018e6bac7ce7df7367359278eeb07e204974a3`. Canonical checkpoint `b9a6f0c` preserves all six existing v0.9.0 items and adds only `SAG-002` as the seventh before the completed external provider mutation.
+- Current task: `SAR94-003` is completed on records-only continuation `codex/2026-08-05-sub-agent-reachability-cont-04` from merged allocation `main@6eeed2b90054451d962a842decaefdee7fa96693`. Canonical checkpoint `b9a6f0c` preserves all six existing v0.9.0 items and adds only `SAG-002` as the seventh.
 - Provider read-back: PR #122 now uses `Refs #94`, `Refs #118`, and `Refs #119`; Issue #118 carries the exact `SAG-002` markers, remains closed completed, and is the only card with P1 High / Approved / v0.9.0 / Not yet published. The live `待發布` filter is `status:Done reason:completed -target-release:Unassigned published-in:"Not yet published"`; #94 and #119 retain unset release fields.
-- Exact next action: commit the provider receipt, refresh latest `main`, open the required pull request, rely only on hosted CI, and integrate with the already selected merge-commit topology after all applicable gates pass. Final task completion belongs to a records-only continuation from merged `main`.
+- Hosted integration: PR #125 corrected one deterministic workflow-index timestamp mismatch in `de16ca4`, then all five hosted gates passed. It merged as `6eeed2b90054451d962a842decaefdee7fa96693` with parents `f4018e6` and `de16ca4`.
+- Exact next action: integrate this records-only closeout by merge commit after hosted CI. No implementation, release preparation, tag, GitHub Release, or publication action remains authorized.
 - Validation boundary: do not run local validation scripts, tests, builds, formatters, `check-all`, aggregate gates, or other validation programs. Manual file inspection and hosted Issue/Project/PR read-back are allowed; hosted CI is the only executable gate.
 - Publication boundary: no package build, release configuration, tag, GitHub Release, asset upload, or publication is authorized.
 
@@ -116,4 +117,5 @@
 | 1 | `codex/2026-08-05-sub-agent-reachability` | `main@d8580df4516155ff7b1a139d9a064a8b0d4b2019` | push-only implementation checkpoint | `f9f6a04` | `origin/codex/2026-08-05-sub-agent-reachability` | `2026-08-05T02:25:33+08:00` | #118/#119 implementation is reviewable while validation remains separately deferred | resume the same branch for validation reconciliation; then open the required PR without release packaging |
 | 2 | `codex/2026-08-05-sub-agent-reachability-continuation` | `main@3e200fd5e164ba363c3cde0c50219e18f0ca14de` | merge-commit integration | `e2757e2c2a382192866d1a52bfa8c74f6ce762a0` | `main@0a9089f7d463f343dabc3da71a2ab5b20287f6cd` via PR #122 | `2026-08-05T09:08:50+08:00` | final hosted run passed all five required checks after two bounded deterministic corrections | merged-main ancestry/read-back passed; create records-only closeout continuation from merged main |
 | 3 | `codex/2026-08-05-sub-agent-reachability-cont-02` | `main@0a9089f7d463f343dabc3da71a2ab5b20287f6cd` | closeout records | `9af809b30e2a783187d06e80041095677a3083f8` | `main@2aa61dd7a33916782170b8e3cc6de2e098c555d8` via PR #123 | `2026-08-05T09:21:14+08:00` | preserve the completed implementation segment while recording final workflow evidence | records-only merge topology and completed task read-back passed; await separately authorized follow-up |
-| 4 | `codex/2026-08-05-sub-agent-reachability-cont-03` | `main@f4018e6bac7ce7df7367359278eeb07e204974a3` | active release-allocation addendum | `b9a6f0c76b8f45f5acd25f9592dfafc253f0404b` canonical-before-provider checkpoint | local branch | `2026-08-05T10:19:47+08:00` | replay preserved the complete #92 six-item allocation and added only `SAG-002` as the seventh; repository truth precedes the completed external Project reconciliation | amend the provider receipt commit, then open the required merge-commit PR without publication work |
+| 4 | `codex/2026-08-05-sub-agent-reachability-cont-03` | `main@f4018e6bac7ce7df7367359278eeb07e204974a3` | merge-commit release allocation | `de16ca4854d28d58a536e28f4b41c7a3fef36cc5` | `main@6eeed2b90054451d962a842decaefdee7fa96693` via PR #125 | `2026-08-05T10:27:39+08:00` | replay preserved the complete #92 six-item allocation, added only `SAG-002` as the seventh, and corrected one hosted workflow-index timestamp mismatch | merged-main and hosted Project read-back passed; create records-only closeout continuation |
+| 5 | `codex/2026-08-05-sub-agent-reachability-cont-04` | `main@6eeed2b90054451d962a842decaefdee7fa96693` | active records-only closeout | pending | local branch | `2026-08-05T10:31:24+08:00` | record final PR #125, hosted CI, merged-main, Project, and residual provider-title evidence without reopening implementation | commit and integrate the records-only closeout by merge commit; publication remains separately unauthorized |

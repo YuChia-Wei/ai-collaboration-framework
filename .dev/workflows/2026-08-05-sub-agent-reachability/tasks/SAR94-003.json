@@ -7,9 +7,9 @@
   "workflow_id": "2026-08-05-sub-agent-reachability",
   "owner_skill": "ai-context-governance",
   "title": "Allocate the completed reachability delivery to v0.9.0",
-  "status": "in_progress",
+  "status": "completed",
   "created_at": "2026-08-05T10:00:52+08:00",
-  "updated_at": "2026-08-05T10:19:47+08:00",
+  "updated_at": "2026-08-05T10:31:24+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-5.6-sol",
   "reasoning_effort": "xhigh",
@@ -68,11 +68,11 @@
       "Merge-commit ancestry and merged-main file read-back",
       "Local validators and all executable local gates prohibited by owner direction"
     ],
-    "last_completed_step": "Replayed the canonical checkpoint as b9a6f0c from #92-integrated main@f4018e6, preserving the six existing v0.9.0 items and adding only SAG-002 as the seventh. Repaired PR #122 to Refs-only traceability, marked Issue #118 as the sole SAG-002 provider projection, and read back #118 as closed completed with P1 High, Owner review Approved, Target release v0.9.0, Published in Not yet published, and exact eligibility for the live 待發布 filter. Proposal #94 and dependent #119 retain unset release fields.",
-    "next_action": "Commit the provider receipt, refresh from latest main, open the merge-commit pull request, rely only on hosted CI, and complete merged-main plus Project read-back on a records-only continuation."
+    "last_completed_step": "PR #125 passed all five hosted gates and merged as 6eeed2b with parents f4018e6 and de16ca4. Merged main retains all six #92/#93/GOV v0.9.0 items and adds only SAG-002 as the seventh. Final hosted read-back confirms #118 is closed completed and is the only #94-chain card with P1 High, Approved, v0.9.0, and Not yet published; #94/#119 fields remain unset and PR #122 remains Refs-only.",
+    "next_action": "None within the release-allocation scope. Package generation, release configuration, tag creation, GitHub Release creation, asset upload, and publication require separate authorization."
   },
   "results": {
-    "summary": "In progress: canonical SAG-002 allocation and the external Issue/Project projection are reconciled; pull-request integration and final merged-main closeout remain.",
+    "summary": "Completed: SAG-002 is canonical v0.9.0 work exactly once, represented only by #118 in the pending-publication Project projection, integrated after #92 by merge-commit PR #125, and read back from merged main and hosted provider state.",
     "files_changed": [
       ".dev/backlog/items/SAG-002.yaml",
       ".dev/backlog/ROADMAP.md",
@@ -87,10 +87,13 @@
       ".dev/workflows/INDEX.MD"
     ],
     "tests_run": [
+      "Hosted AI Context Governance read-only contract passed on corrected PR #125 head de16ca4 in run 30969276832.",
+      "Hosted Package AI Context Candidate build and validate candidate passed on corrected PR #125 head de16ca4 in run 30969276921.",
+      "Hosted Portable AI Context Gates Ubuntu prerequisite, Windows prerequisite, and Ubuntu quick gate passed on corrected PR #125 head de16ca4 in run 30969276827.",
       "No local validation script, test, build, formatter, check-all, aggregate gate, or other verification program run by explicit owner direction."
     ],
-    "finding_status": "in_progress",
-    "residual_risk": "Hosted pull-request CI, merge-commit integration, records-only closeout, and final merged-main/Project read-back remain pending. Publication remains separately unauthorized.",
-    "follow_up_needed": true
+    "finding_status": "completed",
+    "residual_risk": "GitHub's Project Title text value still displays the former #118 title even though linked Issue content and canonical markers are exact; the API permits Title writes only for DraftIssues, so no destructive item replacement was attempted. This does not affect release fields or 待發布 eligibility. Publication remains separately unauthorized.",
+    "follow_up_needed": false
   }
 }
