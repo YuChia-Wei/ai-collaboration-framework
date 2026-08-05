@@ -12,6 +12,7 @@ owns its identity, current lifecycle state, subject revision, and relationships.
 
 | Assessment | Title | Type | Owner | Status | Subject Commit | Updated | Report |
 | --- | --- | --- | --- | --- | --- | --- | --- |
+| [`ASM-20260805-003`](ASM-20260805-003/assessment.yaml) | Validation Cost External Review Intake And Decision Record | `ai-context-audit` | `ai-context-governance` | `final` | `7f6746b34759c1633b7083175381e76a222bb142` | `2026-08-05T21:21:52+08:00` | [report](ASM-20260805-003/report.md) |
 | [`ASM-20260805-001`](ASM-20260805-001/assessment.yaml) | Owning-Skill Reachability And Role Execution Remediation Verification | `ai-context-verification` | `ai-context-auditor` | `final` | `4fd7ed991729836801e960c557fb019a25930146` | `2026-08-05T09:00:09+08:00` | [report](ASM-20260805-001/report.md) |
 | [`ASM-20260805-002`](ASM-20260805-002/assessment.yaml) | Layered Engineering Rules And Pre-Cutover Provider Remediation Verification | `ai-context-verification` | `ai-context-auditor` | `final` | `09b280f522ad4249c69a19fdc4d9707a5e30e073` | `2026-08-05T07:48:01+08:00` | [report](ASM-20260805-002/report.md) |
 | [`ASM-20260804-003`](ASM-20260804-003/assessment.yaml) | Framework-Managed Target Ignore Detection Baseline | `ai-context-audit` | `ai-context-auditor` | `final` | `4e7b5e0d59be831453b5c34f5f1eb3a1daae1245` | `2026-08-04T21:49:30+08:00` | [report](ASM-20260804-003/report.md) |
@@ -72,6 +73,7 @@ follow repository-owned assessment templates.
 
 | Input | Source | Received | Normalized By | Status |
 | --- | --- | --- | --- | --- |
+| [`validation-cost-remediation-en-2026-08-05`](ASM-20260805-003/evidence/evidence-catalog.yaml) | Owner-supplied Opus 5 validation-cost review, English source | 2026-08-05 | [`ASM-20260805-003`](ASM-20260805-003/assessment.yaml) | `normalized` |
 | [`dotnet-architecture-discussion`](ASM-20260804-002/evidence/evidence-catalog.yaml) | dotnet-distributed-architecture-lab owner-led discussion at `b29ef35` | 2026-08-04 | [`ASM-20260804-002`](ASM-20260804-002/assessment.yaml) | `normalized` |
 | [`opus-5-periodic-review-2026-08-04`](ASM-20260804-001/evidence/external/README.md) | Claude Opus 5 periodic repository review, English source | 2026-08-04 | [`ASM-20260804-001`](ASM-20260804-001/assessment.yaml) | `normalized` |
 | [`opus-5-repository-assessment`](ASM-20260730-001/evidence/external/README.md) | Opus 5 external repository review, two revisions | 2026-07-30 | [`ASM-20260730-001`](ASM-20260730-001/assessment.yaml) | `normalized` |

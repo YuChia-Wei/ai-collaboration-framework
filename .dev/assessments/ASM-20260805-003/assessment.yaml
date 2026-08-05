@@ -1,0 +1,55 @@
+template_metadata:
+  template_id: "assessment-locator"
+  template_version: "1.0.0"
+  template_created_at: "2026-07-13T23:04:10+08:00"
+  template_updated_at: "2026-07-13T23:04:10+08:00"
+
+schema_version: "1.0"
+assessment_id: "ASM-20260805-003"
+commit_search_id: "ASM-20260805-003"
+assessment_type: "ai-context-audit"
+title: "Validation Cost External Review Intake And Decision Record"
+owner_skill: "ai-context-governance"
+status: "final"
+report: "report.md"
+artifact_branch: "codex/2026-08-05-validation-cost-remediation"
+base_branch: "main"
+created_at: "2026-08-05T21:21:52+08:00"
+updated_at: "2026-08-05T21:21:52+08:00"
+template_source: ".dev/assessments/templates/assessment-locator-template.yaml"
+template_version: "1.0.0"
+report_template_source: ".ai/assets/skills/ai-context-auditor/templates/ai-context-audit-report-template.md"
+report_template_version: "2.1.0"
+subject_ref:
+  repository: "C:/Github/YuChia/ai-collaboration-prompts-dotnet-backend"
+  branch: "codex/2026-08-05-validation-cost-remediation"
+  commit: "7f6746b34759c1633b7083175381e76a222bb142"
+scope:
+  included:
+    - "Owner-supplied external validation-cost review and its exact original bytes"
+    - ".ai/scripts/check-all.sh and .ai/scripts/tests/test_fail_closed_validation.py at 7f6746b"
+    - "Prior portable-Python compatibility decisions e76d89ca, da70bb5, and 3f863be"
+    - "GitHub Issue #128 and related canonical backlog items EVAL-002, VAL-002, and TOOL-002"
+    - "Bounded WSL sandbox-versus-host execution probes and validation-duration records from this delivery"
+  excluded:
+    - "Mode-tier reclassification and changed-path selection implementation"
+    - "New runtime readiness policy, CI configuration changes, release allocation, publication, or main integration"
+    - "Raw conversation content, credentials, secrets, and unbounded host telemetry"
+relations:
+  supersedes: []
+  superseded_by: []
+  related_assessments:
+    - "ASM-20260722-003"
+    - "ASM-20260803-001"
+    - "ASM-20260803-003"
+  workflow_refs:
+    - "2026-08-02-python-prerequisite-diagnostics"
+  backlog_refs:
+    - "EVAL-002"
+    - "VAL-002"
+    - "TOOL-002"
+  adr_refs: []
+resume:
+  last_completed_action: "Preserved the external review bytes, reconciled every proposed patch against commit 7f6746b, recorded prior compatibility decisions, and confirmed WSL executes outside the sandbox."
+  next_action: "External reviewers may use report.md, evidence/evidence-catalog.yaml, evidence/execution-record.json, and the immutable original to reassess the accepted and deferred decisions; no further implementation is authorized by this assessment."
+  blockers: []

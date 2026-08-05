@@ -1,0 +1,67 @@
+{
+  "schema_version": "1.0",
+  "assessment_id": "ASM-20260805-003",
+  "recorded_at": "2026-08-05T21:21:52+08:00",
+  "subject_commit": "7f6746b34759c1633b7083175381e76a222bb142",
+  "records": [
+    {
+      "id": "ER-001",
+      "command": "wsl.exe --status",
+      "execution_boundary": "outside-sandbox",
+      "outcome": "passed",
+      "exit_code": 0,
+      "duration_ms": 46,
+      "observation": "WSL status succeeded; the default distribution reported Ubuntu-24.04 on WSL version 2."
+    },
+    {
+      "id": "ER-002",
+      "command": "wsl.exe -e sh -lc 'printf \\\"WSL_EXEC_OK\\\\n\\\"; uname -sr'",
+      "execution_boundary": "outside-sandbox",
+      "outcome": "passed",
+      "exit_code": 0,
+      "duration_ms": 4941,
+      "observation": "Printed WSL_EXEC_OK and Linux 6.18.33.2-microsoft-standard-WSL2."
+    },
+    {
+      "id": "ER-003",
+      "command": "python .ai/scripts/tests/test_fail_closed_validation.py -v CheckAllRunnerGwtTests",
+      "execution_boundary": "outside-sandbox temporary-fixtures",
+      "outcome": "passed",
+      "exit_code": 0,
+      "duration_ms": 68483,
+      "observation": "23 CheckAllRunnerGwtTests passed."
+    },
+    {
+      "id": "ER-004",
+      "command": "python .ai/scripts/tests/test_fail_closed_validation.py -v [six focused CheckAllRunnerGwtTests]",
+      "execution_boundary": "outside-sandbox temporary-fixtures",
+      "outcome": "passed",
+      "exit_code": 0,
+      "duration_ms": 19551,
+      "observation": "Covered missing dotnet, MSB1003, read-only filesystem, timing output, and missing explicit Python."
+    },
+    {
+      "id": "ER-005",
+      "command": "python .ai/scripts/validate-shell-assets.py; python .ai/scripts/validate-ai-context.py",
+      "execution_boundary": "sandbox",
+      "outcome": "passed",
+      "exit_code": 0,
+      "duration_ms": 4300,
+      "observation": "Combined parallel validation wall time; do not interpret this as an individual validator duration."
+    }
+  ],
+  "non_results": [
+    {
+      "id": "NR-001",
+      "command": "bash -n .ai/scripts/check-all.sh via sandbox default bash",
+      "outcome": "blocked-by-environment",
+      "observation": "WSL CreateInstance E_ACCESSDENIED occurred inside the sandbox; ER-001 and ER-002 confirm that WSL itself was available outside it."
+    },
+    {
+      "id": "NR-002",
+      "command": "bash .ai/scripts/check-all.sh --full against the real source repository",
+      "outcome": "not-run",
+      "observation": "The full source aggregate was intentionally not represented by fixture timings. Per-check timing is now emitted by check-all.sh for a future real run."
+    }
+  ]
+}
