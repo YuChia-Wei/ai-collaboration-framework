@@ -2304,6 +2304,25 @@ def validate_capability_profile(skill_assets: dict[str, dict], errors: list[str]
                     "publication",
                 ],
             }
+            expected_orchestration["role_execution"] = {
+                "contract": ".ai/assets/shared/ROLE-EXECUTION-CONTRACT.md",
+                "producer": "owning-skill",
+                "aggregator": "software-development-orchestrator",
+                "direct_default": True,
+                "dispositions": [
+                    "direct",
+                    "delegated",
+                    "unavailable",
+                    "not-applicable",
+                ],
+                "delegated_requires": [
+                    "all-safety-gates",
+                    "material-value-trigger",
+                    "supports-delegation-risk-result",
+                    "genuine-invocation-evidence",
+                ],
+                "no_delegation_runtime": "direct-when-inline-parity-satisfiable",
+            }
         if profile.get("orchestration_contract") != expected_orchestration:
             errors.append(
                 f"{CAPABILITY_PROFILE}: orchestration_contract must match the "

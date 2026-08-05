@@ -20,10 +20,12 @@ This is a thin Claude-compatible wrapper.
   - `.ai/assets/skills/software-development-orchestrator/references/capability-profile.yaml`
   - `.ai/assets/skills/software-development-orchestrator/references/fallback-playbooks.md`
   - `.ai/assets/skills/software-development-orchestrator/references/runtime-coordination.md`
+  - `.ai/assets/skills/software-development-orchestrator/references/role-execution-playbook.md`
   - `.ai/assets/skills/software-development-orchestrator/references/workflow-artifact-playbook.md`
   - `.ai/assets/skills/software-development-orchestrator/references/output-contract.md`
   - `.ai/assets/skills/software-development-orchestrator/references/validation-activation-policy.md`
   - `.ai/assets/skills/software-development-orchestrator/references/acceptance-oracle.md`
+  - `.ai/assets/shared/ROLE-EXECUTION-CONTRACT.md`
 - Templates:
   - `.ai/assets/skills/software-development-orchestrator/templates/workflow-locator-template.yaml`
   - `.ai/assets/skills/software-development-orchestrator/templates/development-workflow-plan-template.md`

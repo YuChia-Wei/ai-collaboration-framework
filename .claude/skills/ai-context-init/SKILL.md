@@ -17,6 +17,7 @@ This is a thin Claude-compatible wrapper.
   - `.ai/assets/skills/ai-context-init/references/migration-boundaries.md`
   - `.ai/assets/skills/ai-context-init/references/escalation-checklist.md`
   - `.ai/assets/skills/ai-context-init/references/delegation-rules.md`
+  - `.ai/assets/skills/ai-context-init/references/role-execution.md`
   - `.ai/assets/skills/ai-context-init/references/document-targets.md`
   - `.ai/assets/skills/ai-context-init/references/output-contract.md`
   - `.ai/assets/skills/ai-context-governance/references/semantic-customization-lifecycle.md`
