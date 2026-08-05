@@ -9,7 +9,7 @@
   "title": "Allocate the completed reachability delivery to v0.9.0",
   "status": "in_progress",
   "created_at": "2026-08-05T10:00:52+08:00",
-  "updated_at": "2026-08-05T10:00:52+08:00",
+  "updated_at": "2026-08-05T10:19:47+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-5.6-sol",
   "reasoning_effort": "xhigh",
@@ -68,17 +68,29 @@
       "Merge-commit ancestry and merged-main file read-back",
       "Local validators and all executable local gates prohibited by owner direction"
     ],
-    "last_completed_step": "Confirmed the owner follow-up authorization, refreshed main@2aa61dd, selected one SAG-002 aggregate represented by #118, and verified that #94/#118/#119 are closed completed while all release-projection fields are unset.",
-    "next_action": "Finish and commit the canonical allocation checkpoint before changing GitHub Issue or Project provider state."
+    "last_completed_step": "Replayed the canonical checkpoint as b9a6f0c from #92-integrated main@f4018e6, preserving the six existing v0.9.0 items and adding only SAG-002 as the seventh. Repaired PR #122 to Refs-only traceability, marked Issue #118 as the sole SAG-002 provider projection, and read back #118 as closed completed with P1 High, Owner review Approved, Target release v0.9.0, Published in Not yet published, and exact eligibility for the live 待發布 filter. Proposal #94 and dependent #119 retain unset release fields.",
+    "next_action": "Commit the provider receipt, refresh from latest main, open the merge-commit pull request, rely only on hosted CI, and complete merged-main plus Project read-back on a records-only continuation."
   },
   "results": {
-    "summary": "In progress: canonical allocation is being established before provider projection.",
-    "files_changed": [],
+    "summary": "In progress: canonical SAG-002 allocation and the external Issue/Project projection are reconciled; pull-request integration and final merged-main closeout remain.",
+    "files_changed": [
+      ".dev/backlog/items/SAG-002.yaml",
+      ".dev/backlog/ROADMAP.md",
+      ".dev/backlog/INDEX.MD",
+      ".dev/backlog/providers/github.yaml",
+      ".dev/backlog/provider-mappings/github-issues-SAG-002.yaml",
+      ".ai/scripts/tests/test_github_backlog_provider.py",
+      ".dev/workflows/2026-08-05-sub-agent-reachability/workflow.yaml",
+      ".dev/workflows/2026-08-05-sub-agent-reachability/workflow-plan.md",
+      ".dev/workflows/2026-08-05-sub-agent-reachability/tasks/SAR94-003.json",
+      ".dev/workflows/2026-08-05-sub-agent-reachability/reports/release-allocation-addendum.md",
+      ".dev/workflows/INDEX.MD"
+    ],
     "tests_run": [
       "No local validation script, test, build, formatter, check-all, aggregate gate, or other verification program run by explicit owner direction."
     ],
     "finding_status": "in_progress",
-    "residual_risk": "GitHub Project fields, provider receipt, hosted CI, merge integration, and merged-main read-back remain pending.",
+    "residual_risk": "Hosted pull-request CI, merge-commit integration, records-only closeout, and final merged-main/Project read-back remain pending. Publication remains separately unauthorized.",
     "follow_up_needed": true
   }
 }

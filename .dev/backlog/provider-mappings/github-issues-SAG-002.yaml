@@ -1,0 +1,30 @@
+schema_version: "1.0"
+provider: "github"
+repository: "YuChia-Wei/ai-collaboration-prompts-dotnet-backend"
+migration_id: "github-live-SAG-002-2026-08-05"
+stage: "stage-b-read-back-complete"
+source_revision: "b9a6f0c76b8f45f5acd25f9592dfafc253f0404b"
+generated_at: "2026-08-05T10:13:16+08:00"
+project:
+  number: 3
+  node_id: "PVT_kwHOAwvEG84Bez7w"
+  url: "https://github.com/users/YuChia-Wei/projects/3"
+items:
+  - backlog_id: "SAG-002"
+    source_path: ".dev/backlog/items/SAG-002.yaml"
+    source_sha256: "a7d7b0acd83dd27a1eb1ad6e0b2c12654eaf7f45c08a56114fbb6d5eba698d79"
+    issue_number: 118
+    issue_node_id: "I_kwDOSBe2Hc8AAAABLcp6TA"
+    issue_url: "https://github.com/YuChia-Wei/ai-collaboration-prompts-dotnet-backend/issues/118"
+    issue_state: "closed"
+    close_reason: "completed"
+    project_item_id: "PVTI_lAHOAwvEG84Bez7wzg1RH2w"
+    created_at: "2026-08-04T17:30:38Z"
+    updated_at: "2026-08-05T02:11:40Z"
+    read_back:
+      verified_at: "2026-08-05T10:13:16+08:00"
+      title_matches: true
+      markers_match: true
+      labels_match: true
+      state_matches: true
+      notes: "Issue #118 is the sole canonical provider projection for SAG-002 and reads back closed as completed with the exact canonical title and markers plus scope:framework, kind:enabler, and created-by:codex labels. Project #3 item PVTI_lAHOAwvEG84Bez7wzg1RH2w reads back Status Done, Priority P1 High, Owner review Approved, Target release v0.9.0, and Published in Not yet published. The live 待發布 view filter is status:Done reason:completed -target-release:Unassigned published-in:\"Not yet published\", so SAG-002 is eligible exactly once. Proposal #94 and dependent slice #119 intentionally retain unset release fields. Merged PR #122 now uses Refs #94, Refs #118, and Refs #119 rather than closing keywords. This projection does not authorize package generation, tagging, GitHub Release creation, or publication."
