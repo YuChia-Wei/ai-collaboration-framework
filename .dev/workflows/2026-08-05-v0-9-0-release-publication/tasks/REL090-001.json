@@ -1,0 +1,36 @@
+{
+  "template_id": "ai-context-governance-remediation-task",
+  "template_version": "1.1.0",
+  "template_created_at": "2026-07-10T18:22:49+08:00",
+  "template_updated_at": "2026-07-27T09:52:09+08:00",
+  "task_id": "REL090-001",
+  "workflow_id": "2026-08-05-v0-9-0-release-publication",
+  "owner_skill": "ai-context-governance",
+  "status": "in_progress",
+  "created_at": "2026-08-05T22:26:56+08:00",
+  "updated_at": "2026-08-05T22:26:56+08:00",
+  "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
+  "model": "gpt-5.6-sol",
+  "reasoning_effort": "xhigh",
+  "finding_ids": ["ASM-20260804-001#AIC-010", "provider-test-location-coherence"],
+  "scope": {
+    "target": "Bundled provider test placement, CTX-004 bilingual root navigation, and #95/#128 online traceability",
+    "files": ["tools/**", ".ai/assets/tech-stacks/dotnet-backend/tooling/bundled-mechanical-validation/**", "README.md", "README.en.md", ".dev/backlog/items/CTX-004.yaml"],
+    "constraints": ["English README is canonical authoring source for the translation role", "Issue #128 receives no local backlog item", "Do not broaden into VAL-002 or Architecture Kit cutover"],
+    "non_goals": ["Analyzer behavior redesign", "Validation profile redesign", "New provider implementation", "Release tag mutation"]
+  },
+  "execution": {
+    "steps": ["Audit provider test ownership and references", "Apply the smallest coherent move and reference update", "Update CTX-004 scope and English README", "Invoke context-translator for zh-TW parity", "Record #95/#128 online relation", "Run focused and context validation"],
+    "validation": ["provider and package path parity", "dotnet test for moved projects", "bilingual root-entry validation", "workflow artifact validation"],
+    "last_completed_step": "Created the authorized workflow branch and durable execution plan.",
+    "next_action": "Reconcile the two read-only sub-agent audits and implement evidence-backed provider/test placement."
+  },
+  "results": {
+    "summary": "",
+    "files_changed": [],
+    "tests_run": [],
+    "finding_status": "not-addressed",
+    "residual_risk": "Provider test ownership and all path consumers are still under audit.",
+    "follow_up_needed": true
+  }
+}
