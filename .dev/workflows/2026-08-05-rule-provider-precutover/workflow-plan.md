@@ -5,14 +5,14 @@
 - `workflow_id`: `2026-08-05-rule-provider-precutover`
 - `workflow_kind`: `ai-context-maintenance`
 - `owner_skill`: `ai-context-governance`
-- `branch`: `codex/2026-08-05-rule-provider-precutover`
+- `branch`: `codex/2026-08-05-rule-provider-precutover-cont-02`
 - `base_branch`: `main`
-- `branch_segment`: `1`
-- `status`: `in_progress`
-- `current_phase`: `integration`
+- `branch_segment`: `2`
+- `status`: `completed`
+- `current_phase`: `closed`
 - `artifact_root`: `.dev/workflows/2026-08-05-rule-provider-precutover`
 - `created_at`: `2026-08-05T01:29:39+08:00`
-- `updated_at`: `2026-08-05T07:51:44+08:00`
+- `updated_at`: `2026-08-05T08:23:52+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md`
 - `template_version`: `1.2.0`
 
@@ -85,7 +85,7 @@ Only one task is marked `in_progress` in durable workflow state. The orchestrato
 2. Workflow and bounded work-item binding — completed by creating #109 through #117 and formal sub-issue relationships under #104 through #107.
 3. Dependency-ordered remediation — completed; `RPB-001` through `RPB-007` completed.
 4. Independent post-remediation audit — completed as final `ASM-20260805-002`; AIC-001/AIC-002 are resolved in the authorized static pre-cutover scope, AIC-004 evidence remains retained, and no new active finding remains.
-5. PR review, merge-commit integration, merged-main read-back, and closure — in progress under `RPB-008`; release packaging remains excluded.
+5. PR review, merge-commit integration, merged-main read-back, Issue closeout, and #94 handoff — completed under `RPB-008`. Release packaging remains excluded.
 
 ## Delivery And Merge Decisions
 
@@ -95,18 +95,19 @@ Only one task is marked `in_progress` in durable workflow state. The orchestrato
 - Selected topology: merge-commit integration. The owner explicitly selected no-rebase `--no-ff` integration.
 - Release boundary: completing this workflow does not package or publish v0.9.0. Completed work may be allocated to a later release workflow under the repository's release policy.
 
-## Resume Checkpoint
+## Closeout Record
 
-- Last completed action: Committed final independent verification `ASM-20260805-002` at `62c582e`, with no active HIGH/MEDIUM finding and an explicit owner-directed executable-validation residual.
-- Current task: `RPB-008` integration closeout is in progress.
-- Exact next action: Refresh `origin/main`, push the branch, open one ready PR, wait for hosted checks, and integrate by merge commit only after the provider gate passes.
-- Validation already completed: prior migration/catalog, resolver, provider, action-skill, and readiness-gate source read-back; production blob parity; relocation/distribution scans; typed evidence and digest inspection; independent review rounds; #94 overlap/transport coordination; two-pass verification; assessment-fidelity review; and `git diff --check`. No tests, builds, check-all, or repository validation scripts have run.
-- Git state: branch `codex/2026-08-05-rule-provider-precutover` starts from `origin/main@d8580df4516155ff7b1a139d9a064a8b0d4b2019`.
-- Branch history and checkpoint handoffs: segment 1 only; local durable checkpoints through `62c582e`; no push or merge handoff yet.
-- Blockers or unresolved decisions: none. Shared-file sequencing with #94 is a coordination constraint, not an owner-decision blocker.
+- Final completed action: PR [#120](https://github.com/YuChia-Wei/ai-collaboration-prompts-dotnet-backend/pull/120) merged at `2026-08-05T08:17:07+08:00` by the owner-selected merge-commit topology. Its head was `317c5415de5a2d4011a2975dc4aca095fee39999`; merged `main` is `3bb03993675bb404dc467b8da6ad702c01919705`, with parents `d8580df...` (base) and `317c541...` (head).
+- Task result: `RPB-008` is completed. Merged-main ancestry and artifact read-back passed. Issue #92, umbrellas #104 through #107, and bounded Issues #109 through #117 are closed as completed.
+- Hosted validation: all required hosted runs were green: AI Context Governance `30962608253`; Package AI Context Candidate `30962608189`; and Portable AI Context Gates `30962608192` (Ubuntu prerequisite, Windows prerequisite, Ubuntu quick gate).
+- Local validation boundary: no local repository validator, `check-all`, test, build, formatter, or dependency restore ran, per owner direction. The green hosted gates are separate evidence and do not reclassify local commands as run.
+- Cross-workflow handoff: after merge, the #94 integration handoff was sent. #94 will replay from new `main` and omit duplicate local patch `9240f3d` because #92 commit `98484bd` is already integrated.
+- Exclusions retained: v0.9.0 packaging, release, publication, tag, and ROADMAP allocation remain explicitly excluded and unauthorized. Architecture Kit remains unavailable/non-selectable; no cutover occurred.
+- Exact next action: none for this completed workflow. Any release allocation, publication, Architecture Kit implementation, proof production, or cutover requires separately recorded owner authorization.
 
 ## Branch Lifecycle
 
 | Segment | Branch | Base | Checkpoint Type | Commit | Remote / Target | Recorded At | Reason | Resume Branch / Action |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| 1 | `codex/2026-08-05-rule-provider-precutover` | `main@d8580df4516155ff7b1a139d9a064a8b0d4b2019` | active integration | pending | `origin/main` | `2026-08-05T01:29:39+08:00` | owner-authorized grouped pre-cutover remediation | push, PR, hosted checks, merge commit, and merged-main read-back under `RPB-008` |
+| 1 | `codex/2026-08-05-rule-provider-precutover` | `main@d8580df4516155ff7b1a139d9a064a8b0d4b2019` | merge-commit integration | `317c5415de5a2d4011a2975dc4aca095fee39999` | `main@3bb03993675bb404dc467b8da6ad702c01919705` via PR #120 | `2026-08-05T08:17:07+08:00` | owner-authorized grouped pre-cutover remediation integrated after all hosted gates were green | merged-main ancestry/read-back passed; send #94 handoff and create closeout-record continuation from merged main |
+| 2 | `codex/2026-08-05-rule-provider-precutover-cont-02` | `main@3bb03993675bb404dc467b8da6ad702c01919705` | closeout records | containing closeout commit | local pending closeout PR integration | `2026-08-05T08:23:52+08:00` | preserve the completed implementation segment while recording final workflow evidence | integrate this records-only checkpoint; no implementation replay or release work authorized |
