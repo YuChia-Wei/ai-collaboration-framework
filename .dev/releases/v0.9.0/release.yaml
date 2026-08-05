@@ -10,7 +10,7 @@ commit: null
 tagged_at: null
 recorded_at: null
 created_at: "2026-08-05T22:42:53+08:00"
-updated_at: "2026-08-06T00:20:55+08:00"
+updated_at: "2026-08-06T00:44:03+08:00"
 planning:
   backlog_refs:
     - ".dev/backlog/items/GOV-004.yaml"
@@ -59,7 +59,7 @@ distribution:
     automation: "github-actions"
     creates_or_moves_tag: false
 validation:
-  evidence: "Validated candidate with the exact eight-item v0.9.0 backlog set and v0.8.0 as the sole compatibility source. Deterministic rewritten ZIP and tar archives passed package validation; the post-filemode critical gate passed 49/49 checks. Fresh clean-install and exact-v0.8.0 upgrade fixtures passed against the byte-identical package tree before the commit-message-only rewrite, and the owner explicitly waived duplicate fixture execution after independently verified tree, payload, inventory, migration, archive, sidecar, and checksum equivalence. ASM-20260805-004 reports healthy-with-followups with no active finding and permits candidate advancement. Hosted integration, merged-main pre-tag validation, owner-created tag, publication, and provider read-back remain pending."
+  evidence: "Validated candidate with the exact eight-item v0.9.0 backlog set and v0.8.0 as the sole compatibility source. Deterministic rewritten ZIP and tar archives passed package validation; the post-filemode critical gate passed 49/49 checks. Fresh clean-install and exact-v0.8.0 upgrade fixtures passed against the byte-identical package tree before the commit-message-only rewrite, and the owner explicitly waived duplicate fixture execution after independently verified tree, payload, inventory, migration, archive, sidecar, and checksum equivalence. ASM-20260805-004 reports healthy-with-followups with no active finding. PR #130 passed all five hosted checks and merged through merge commit c14a3260cba7d0a9e2b67b73df9e221280d2d2ef. The sanctioned merged-main pre-tag gate passed in 910.2 seconds. Owner-created tag, publication, and final provider read-back remain pending."
   workflow_id: "2026-08-05-v0-9-0-release-publication"
   related_workflows:
     - "2026-08-03-workflow-delivery-cohesion"
@@ -77,7 +77,7 @@ validation:
     - "ASM-20260805-003"
     - "ASM-20260805-004"
   package_status: "validated"
-  post_merge_status: "pending"
+  post_merge_status: "validated"
   failed_publication_run: null
   published_run: null
   public_release_url: null

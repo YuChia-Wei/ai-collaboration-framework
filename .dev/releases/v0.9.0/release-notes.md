@@ -2,8 +2,9 @@
 
 ## Status
 
-Validated governed candidate. No tag, published package, or GitHub Release
-exists; hosted integration and the merged-main pre-tag gate remain pending.
+Validated governed candidate integrated by PR #130. All hosted checks and the
+merged-main pre-tag gate passed. No tag, published package, or GitHub Release
+exists; immutable tag creation remains owner-controlled.
 
 ## Highlights
 
@@ -62,10 +63,11 @@ The release record uses the canonical v0.9.0 phase contract and the exact
 resolved eight-item backlog set. Deterministic candidate packages, the fresh
 clean-install and exact-v0.8.0 upgrade fixtures, the 49/49 repository critical
 gate, and independent assessment `ASM-20260805-004` support the validated
-candidate state. Hosted pull-request checks, merge, current-main pre-tag
-validation, owner-created annotated tag, and hosted publication remain
-separate pending stages. A blocked, skipped, deferred, or not-applicable check
-is recorded separately from a passed check.
+candidate state. PR #130 passed all five hosted checks and merged through merge
+commit `c14a3260cba7d0a9e2b67b73df9e221280d2d2ef`; the sanctioned current-main
+pre-tag critical gate then passed in 910.2 seconds. Owner-created annotated tag
+and hosted publication remain separate pending stages. A blocked, skipped,
+deferred, or not-applicable check is recorded separately from a passed check.
 
 From v0.7.0 onward, the renderer appends the canonical `Included Work` section
 from `release.yaml.planning.backlog_refs`. Do not duplicate that generated
