@@ -70,3 +70,12 @@ not copied as bundled-provider production projects.
   or change the separately owned EVAL-002 / Issue #95 evaluation scope.
 - Architecture Kit cutover, `materialize-to-tools`, historical archive
   migration, and legacy identifier retirement are not included.
+
+## Published Package Identity
+
+The governed package is published at the stable
+[v0.9.0 GitHub Release](https://github.com/YuChia-Wei/ai-collaboration-prompts-dotnet-backend/releases/tag/v0.9.0)
+from immutable annotated tag `v0.9.0`, peeled commit
+`c14a3260cba7d0a9e2b67b73df9e221280d2d2ef`. Verify the selected ZIP or tar.gz
+against its adjacent checksum sidecar before planning installation or the
+supported v0.8.0 upgrade.

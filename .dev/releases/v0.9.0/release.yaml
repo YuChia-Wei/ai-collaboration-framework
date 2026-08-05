@@ -1,16 +1,16 @@
 schema_version: "1.0"
 release_id: "REL-v0.9.0"
 version: "v0.9.0"
-status: "validated"
+status: "published"
 record_origin: "governed"
 distribution_kind: "governed-package"
 installable: true
-tag: null
-commit: null
-tagged_at: null
-recorded_at: null
+tag: "v0.9.0"
+commit: "c14a3260cba7d0a9e2b67b73df9e221280d2d2ef"
+tagged_at: "2026-08-06T00:51:57+08:00"
+recorded_at: "2026-08-06T07:05:42+08:00"
 created_at: "2026-08-05T22:42:53+08:00"
-updated_at: "2026-08-06T00:44:03+08:00"
+updated_at: "2026-08-06T07:05:42+08:00"
 planning:
   backlog_refs:
     - ".dev/backlog/items/GOV-004.yaml"
@@ -59,7 +59,7 @@ distribution:
     automation: "github-actions"
     creates_or_moves_tag: false
 validation:
-  evidence: "Validated candidate with the exact eight-item v0.9.0 backlog set and v0.8.0 as the sole compatibility source. Deterministic rewritten ZIP and tar archives passed package validation; the post-filemode critical gate passed 49/49 checks. Fresh clean-install and exact-v0.8.0 upgrade fixtures passed against the byte-identical package tree before the commit-message-only rewrite, and the owner explicitly waived duplicate fixture execution after independently verified tree, payload, inventory, migration, archive, sidecar, and checksum equivalence. ASM-20260805-004 reports healthy-with-followups with no active finding. PR #130 passed all five hosted checks and merged through merge commit c14a3260cba7d0a9e2b67b73df9e221280d2d2ef. The sanctioned merged-main pre-tag gate passed in 910.2 seconds. Owner-created tag, publication, and final provider read-back remain pending."
+  evidence: "Published from the exact eight-item v0.9.0 backlog set with v0.8.0 as the sole compatibility source. Deterministic candidate archives, fresh clean install, exact-v0.8.0 upgrade, the 49/49 post-filemode critical gate, and independent assessment ASM-20260805-004 passed; the owner-waived duplicate post-rewrite fixtures remain bounded by independently verified identical-tree and archive equivalence and are not represented as rerun. PR #130 passed five hosted checks and merged the immutable release payload as c14a3260cba7d0a9e2b67b73df9e221280d2d2ef. Annotated tag object 0c90a4a3c8e7769b4e46db63f80fb43c5e863289 peels to that commit and triggered successful publication run 31027306074. The stable GitHub Release is non-draft, non-prerelease, and exposes exactly the governed ZIP, tar.gz, and checksum sidecars. Downloaded ZIP 2c98ac02eabd24ca881798caf83657adc2062ababe42fdb09fe26ce499cc98f2 and tar.gz d2a7c546fa32f27e180883d07e27b3aa560745bdea33e98604abb50dde974634 matched their sidecars and passed package parity validation. Tag and publication phase validators passed, and Project #3 read back all eight included items as Done, target v0.9.0, and published in v0.9.0. The official published renderer was synchronized body-only to the stable Release; exact rendered/live SHA-256 eaaa2eb3a1aac38adf719888bee1c7818497e1cb63926f7f3de55f46c1c30f47 matched while tag, timestamps, and all four asset tuples remained unchanged, and the hosted finalization phase passed. A HIGH procedural sequence deviation is permanently recorded: PR #131 merged documentation-only handoff commit e4965cb232323affe3339747b0405b79b868cf75 after the c14a326 pre-tag gate but 37 seconds before tag creation, so the printed command was stale under the runbook even though no payload path changed. On 2026-08-06 the owner directed completion with this disposition; the immutable tag was preserved and must not be moved or recreated."
   workflow_id: "2026-08-05-v0-9-0-release-publication"
   related_workflows:
     - "2026-08-03-workflow-delivery-cohesion"
@@ -77,7 +77,7 @@ validation:
     - "ASM-20260805-003"
     - "ASM-20260805-004"
   package_status: "validated"
-  post_merge_status: "validated"
+  post_merge_status: "passed"
   failed_publication_run: null
-  published_run: null
-  public_release_url: null
+  published_run: "31027306074"
+  public_release_url: "https://github.com/YuChia-Wei/ai-collaboration-prompts-dotnet-backend/releases/tag/v0.9.0"

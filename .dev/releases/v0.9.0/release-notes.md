@@ -2,9 +2,10 @@
 
 ## Status
 
-Validated governed candidate integrated by PR #130. All hosted checks and the
-merged-main pre-tag gate passed. No tag, published package, or GitHub Release
-exists; immutable tag creation remains owner-controlled.
+Published.
+
+The immutable annotated tag `v0.9.0` peels to
+`c14a3260cba7d0a9e2b67b73df9e221280d2d2ef`.
 
 ## Highlights
 
@@ -65,9 +66,18 @@ clean-install and exact-v0.8.0 upgrade fixtures, the 49/49 repository critical
 gate, and independent assessment `ASM-20260805-004` support the validated
 candidate state. PR #130 passed all five hosted checks and merged through merge
 commit `c14a3260cba7d0a9e2b67b73df9e221280d2d2ef`; the sanctioned current-main
-pre-tag critical gate then passed in 910.2 seconds. Owner-created annotated tag
-and hosted publication remain separate pending stages. A blocked, skipped,
-deferred, or not-applicable check is recorded separately from a passed check.
+pre-tag critical gate then passed in 910.2 seconds. The owner-created annotated
+tag, tag and publication phase gates, successful hosted publication run
+`31027306074`, downloaded checksums, and ZIP/tar payload parity passed. A
+blocked, skipped, deferred, or not-applicable check is recorded separately
+from a passed check.
+
+The release permanently records one accepted HIGH procedural deviation. PR
+#131 merged documentation-only handoff commit `e4965cb` after the pre-tag gate
+but 37 seconds before tag creation, so the earlier command was stale under the
+current-main invalidation rule. No package payload path changed, all immutable
+tag/publication/package checks passed, and the owner directed completion on
+2026-08-06. The tag was preserved without movement or recreation.
 
 From v0.7.0 onward, the renderer appends the canonical `Included Work` section
 from `release.yaml.planning.backlog_refs`. Do not duplicate that generated
@@ -75,5 +85,7 @@ section in this authored source.
 
 ## Publication Completion
 
-Pending. The repository owner creates the immutable annotated tag only after
-the merged current-main pre-tag gate passes.
+Published by successful hosted run `31027306074` from annotated tag object
+`0c90a4a3c8e7769b4e46db63f80fb43c5e863289`, peeled commit
+`c14a3260cba7d0a9e2b67b73df9e221280d2d2ef`. The stable GitHub Release exposes
+the governed ZIP, tar.gz, and both adjacent checksum sidecars.
