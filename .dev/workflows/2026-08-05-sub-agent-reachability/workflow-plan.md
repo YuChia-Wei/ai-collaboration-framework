@@ -6,14 +6,14 @@
 - `workflow_kind`: `ai-context-maintenance`
 - `owner_skill`: `ai-context-governance`
 - `orchestrating_skill`: `software-development-orchestrator`
-- `branch`: `codex/2026-08-05-sub-agent-reachability-continuation`
+- `branch`: `codex/2026-08-05-sub-agent-reachability-cont-02`
 - `base_branch`: `main`
-- `branch_segment`: `2`
-- `status`: `in_progress`
-- `current_phase`: `integration`
+- `branch_segment`: `3`
+- `status`: `completed`
+- `current_phase`: `closed`
 - `artifact_root`: `.dev/workflows/2026-08-05-sub-agent-reachability`
 - `created_at`: `2026-08-05T01:34:40+08:00`
-- `updated_at`: `2026-08-05T09:00:09+08:00`
+- `updated_at`: `2026-08-05T09:11:11+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md`
 - `template_version`: `1.2.0`
 
@@ -62,7 +62,7 @@
 4. Static owning-skill reachability remediation — `SAR94-001` / #118 completed with repository validation scripts deferred by explicit owner direction.
 5. Runtime selection, execution evidence, and inline parity remediation — completed; three independent source-only reviews found the static reachability and #92 compatibility surfaces sound, then identified two MEDIUM execution-contract gaps which were corrected and independently re-reviewed as resolved.
 6. #92-first sequential transport and combined verification — completed; #92 implementation PR #120 and records-only closeout PR #121 reached `main`, #94 was replayed from `main@3e200fd5e164ba363c3cde0c50219e18f0ca14de`, and duplicate patch `9240f3d` was omitted. Three final source-only passes and an ordering-clarity follow-up found no active defect.
-7. Pull request, hosted evidence, merge-commit integration, and merged-main read-back — in progress. PR #122's first run produced three failures from one wrapper/validator sync gap, corrected in `a1741fb`. The second run passed package candidate, both prerequisite contracts, and Ubuntu quick gate; read-only governance alone exposed GWT-025 crediting the first of duplicate bindings, corrected fail-closed in `4fd7ed9`. A fresh all-green run is required. Local repository validators, fixture tests, test suites, and `check-all` remain deferred by owner direction.
+7. Pull request, hosted evidence, merge-commit integration, and merged-main read-back — completed. PR #122's final head `e2757e2c2a382192866d1a52bfa8c74f6ce762a0` passed all five required checks, then merged to `main@0a9089f7d463f343dabc3da71a2ab5b20287f6cd` with parents `3e200fd...` and `e2757e2...`. Issues #94, #118, and #119 closed completed. Local repository validators, fixture tests, test suites, and `check-all` remain deferred by owner direction.
 
 ## Proportionality And Delivery Decisions
 
@@ -83,19 +83,21 @@
 - #92 implementation PR #120 merged at `3bb03993675bb404dc467b8da6ad702c01919705`; records-only PR #121 merged at `3e200fd5e164ba363c3cde0c50219e18f0ca14de`. The #121 delta changes only five #92 workflow/index records and no canonical `.ai`, `.dev/standards`, or `.dev/guides` surface.
 - This workflow will not edit #92-owned rule/provider/effective-state sections, target provider configuration, or `loaded_rule_ids` semantics.
 
-## Resume Checkpoint
+## Closeout Record
 
-- Last completed action: Diagnosed the second PR #122 hosted run: four checks passed, and read-only governance alone exposed that duplicate role bindings still credited the first declaration as valid reachability. Commit `4fd7ed9` now removes only duplicated role IDs from the valid-owner result while retaining independent valid bindings.
-- Current task: `SAR94-002` remains `in_progress` solely for pull-request, hosted-check, merge-commit, and merged-main lifecycle evidence. `SAR94-001` is completed with final combined-source reachability review.
-- Exact next action: Commit this assessment/workflow reconciliation, push `4fd7ed9` and the records checkpoint to ready PR #122, require fresh all-green hosted results, then integrate with merge-commit topology and read back merged `main`.
-- Validation already completed: Git branch/base and GitHub issue/comment read-back; earlier syntax parsing; root manual reviews; `git diff --check`; three independent final source-only reachability, execution, and cross-workflow compatibility reviews; the LOW ordering-clarity follow-up; confirmation that #121 is records-only outside #94 canonical surfaces; two rounds of PR #122 check/log inspection; manual exact wrapper-reference/v1.3 contract comparison for `a1741fb`; and duplicate-binding return-path review for `4fd7ed9`. The second hosted run passed four checks including Ubuntu quick gate; only read-only GWT-025 failed and is corrected. No local repository validation script, fixture test, test suite, or `check-all` run has been performed.
-- Git state: branch `codex/2026-08-05-sub-agent-reachability-continuation` is based on `origin/main@3e200fd5e164ba363c3cde0c50219e18f0ca14de`; PR #122 currently points to `a6249e0`, and local fix `4fd7ed9` plus this records checkpoint await push. Duplicate patch `9240f3d` is not an ancestor; its path fix and destinations are present via #92 commit `98484bd`.
-- Branch history and checkpoint handoffs: segment 1 published the pre-integration implementation checkpoint. Segment 2 opened ready PR #122 from final #92 closeout `main`, then retained the same branch for the owner-authorized hosted-gate correction; no merge exists yet.
-- Blockers or unresolved decisions: none. Repository validation scripts remain separately owner-arranged and are not treated as passed; hosted checks and merged-main evidence remain pending lifecycle facts.
+- Final completed action: PR [#122](https://github.com/YuChia-Wei/ai-collaboration-prompts-dotnet-backend/pull/122) merged at `2026-08-05T01:08:50Z` by the owner-selected merge-commit topology. Its head was `e2757e2c2a382192866d1a52bfa8c74f6ce762a0`; merged `main` is `0a9089f7d463f343dabc3da71a2ab5b20287f6cd`, with parents `3e200fd...` (base) and `e2757e2...` (head).
+- Task result: `SAR94-001` and `SAR94-002` are completed. Merged-main ancestry and the full #92/#94 combined artifact read-back passed. Issues #94, #118, and #119 are closed completed.
+- Hosted validation: all five required checks were green on final head `e2757e2`: AI Context Governance `30965252258`; Package AI Context Candidate `30965252246`; and Portable AI Context Gates `30965252383` (Ubuntu prerequisite, Windows prerequisite, Ubuntu quick gate). The final Ubuntu quick gate passed on its first attempt; no transient rerun was needed.
+- Failure diagnosis retained: earlier PR runs exposed deterministic wrapper/validator synchronization and duplicate-binding fail-closed defects, corrected in `a1741fb` and `4fd7ed9`. They were not classified as an Ubuntu quick-gate flake.
+- Local validation boundary: no local repository validator, fixture test, test suite, or `check-all` ran, per owner direction. Green hosted gates are separate evidence and do not reclassify local commands as run.
+- Cross-workflow boundary: #92 remains fully closed. Merged `main` retains both #92 effective-rule/provider semantics and #94 role reachability/execution semantics; duplicate patch `9240f3d` remains omitted while #92 path fix `98484bd` is integrated.
+- Exclusions retained: v0.9.0 packaging, tagging, release configuration, and publication remain outside this workflow.
+- Exact next action: none for this completed workflow. Any local validation-script review or v0.9.0 release activity remains a separately owner-arranged task.
 
 ## Branch Lifecycle
 
 | Segment | Branch | Base | Checkpoint Type | Commit | Remote / Target | Recorded At | Reason | Resume Branch / Action |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | 1 | `codex/2026-08-05-sub-agent-reachability` | `main@d8580df4516155ff7b1a139d9a064a8b0d4b2019` | push-only implementation checkpoint | `f9f6a04` | `origin/codex/2026-08-05-sub-agent-reachability` | `2026-08-05T02:25:33+08:00` | #118/#119 implementation is reviewable while validation remains separately deferred | resume the same branch for validation reconciliation; then open the required PR without release packaging |
-| 2 | `codex/2026-08-05-sub-agent-reachability-continuation` | `main@3e200fd5e164ba363c3cde0c50219e18f0ca14de` | ready PR plus hosted-fix checkpoint | `4fd7ed9` | PR #122 / local fix pending push | `2026-08-05T09:00:09+08:00` | #92-first transport and combined verification completed; two hosted runs exposed bounded deterministic gaps now corrected | push the fix and records checkpoint, require fresh all-green hosted evidence, then merge-commit only after required checks pass |
+| 2 | `codex/2026-08-05-sub-agent-reachability-continuation` | `main@3e200fd5e164ba363c3cde0c50219e18f0ca14de` | merge-commit integration | `e2757e2c2a382192866d1a52bfa8c74f6ce762a0` | `main@0a9089f7d463f343dabc3da71a2ab5b20287f6cd` via PR #122 | `2026-08-05T09:08:50+08:00` | final hosted run passed all five required checks after two bounded deterministic corrections | merged-main ancestry/read-back passed; create records-only closeout continuation from merged main |
+| 3 | `codex/2026-08-05-sub-agent-reachability-cont-02` | `main@0a9089f7d463f343dabc3da71a2ab5b20287f6cd` | closeout records | containing closeout commit | local pending closeout PR integration | `2026-08-05T09:11:11+08:00` | preserve the completed implementation segment while recording final workflow evidence | integrate this records-only checkpoint; no implementation replay or release work authorized |
