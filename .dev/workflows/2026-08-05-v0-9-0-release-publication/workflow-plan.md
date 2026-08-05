@@ -25,7 +25,7 @@
 
 ## Objective And Scope
 
-- Problem statement: v0.9.0 has seven completed canonical outcomes and a green current-main critical gate, but it lacks the governed candidate, stable root navigation for the bundled provider, candidate package and migration evidence, and publication lifecycle records. The packaged Issue #128 correction also needs explicit release-note visibility without a local backlog backfill.
+- Problem statement: v0.9.0 has eight completed canonical outcomes, stable bilingual bundled-provider navigation, deterministic candidate packages, clean-install and exact-v0.8.0 upgrade evidence, and a green final-code critical gate. Independent candidate verification, integration, the owner-controlled tag, hosted publication, and terminal reconciliation remain separate lifecycle stages. The packaged Issue #128 correction is disclosed without a local backlog backfill.
 - Authorized release scope: retain the provider test projects under `tools/` as source-only verification; implement CTX-004/#98 against the stable provider landing page with English-first authoring and Luna-max Traditional Chinese translation; record the online #95/#128 relationship; create and validate the v0.9.0 governed candidate; obtain independent verification; integrate through a pull request; prepare the owner-owned tag command; then validate hosted publication and finalize the registry.
 - Authorization source: owner approval in the active Codex task on 2026-08-05, including explicit CTX-004 allocation, bilingual README implementation, sub-agent use, and v0.9.0 publication after prerequisites complete.
 - Work-item bindings: GitHub Issue #98 for CTX-004; Issue #128 remains online-only and must not receive a local backlog item; Issues #86, #99, #104-#107, and #118 remain the pre-existing canonical release set.
@@ -44,7 +44,7 @@
 | Finding | Severity | Owner | Disposition | Task | Validation |
 | --- | --- | --- | --- | --- | --- |
 | `ASM-20260804-001#AIC-010` | LOW | `ai-context-governance` | resolve in v0.9.0 through stable provider navigation | `REL090-001` | bilingual structure, link, provider, and context validation |
-| `ASM-20260805-003#VCR-001` | evidence | `ai-context-governance` | disclose merged packaged timing behavior without duplicating EVAL-002 | `REL090-002` | release notes, package parity, current critical gate |
+| `ASM-20260805-003#VCR-001` | evidence | `ai-context-governance` | disclose merged packaged timing behavior without duplicating EVAL-002 | `REL090-001` | release notes, package parity, current critical gate |
 | Bundled provider test-location coherence | owner-raised | `ai-context-governance` | decide from provider/package/project evidence and move only if ownership is coherent | `REL090-001` | project-reference, dependency, package, and .NET test gates |
 
 ## Stages And Checkpoints
@@ -69,7 +69,7 @@
 - Last completed action: owner authorized the bounded release workflow; `main@5d9af93` passed 49/49 critical checks with zero failures and zero environment blocks.
 - Current task: `REL090-001`
 - Exact next action: complete the bilingual CTX-004 change, record the online #95/#128 relationship, and instantiate the release candidate contract.
-- Validation already completed: current-main critical gate passed in 950 seconds; attachment parity confirmed against `ASM-20260804-001`; all seven prior Project items read back Done/v0.9.0/Not yet published.
+- Validation already completed: current-main critical gate passed before preparation; the final-code critical gate passed 49/49 in 951 seconds; attachment parity was confirmed against `ASM-20260804-001`; deterministic packages, clean install, and exact v0.8.0 upgrade passed. The seven pre-existing Project items read back Done/v0.9.0/Not yet published; CTX-004/#98 remains pending provider sync until merged-main read-back.
 - Git state: dedicated workflow branch created from clean `main@5d9af93`.
 - Branch history and checkpoint handoffs: none.
 - Blockers or unresolved decisions: publication tag remains user-owned.
