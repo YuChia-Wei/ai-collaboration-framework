@@ -12,14 +12,14 @@
 - `workflow_id`: `2026-08-05-v0-9-0-release-publication`
 - `workflow_kind`: `ai-context-maintenance`
 - `owner_skill`: `ai-context-governance`
-- `branch`: `codex/2026-08-05-v0-9-0-release-publication`
+- `branch`: `codex/2026-08-05-v0-9-0-release-publication-cont-02`
 - `base_branch`: `main`
-- `branch_segment`: `1`
+- `branch_segment`: `2`
 - `status`: `in_progress`
-- `current_phase`: `candidate-validated`
+- `current_phase`: `pre-tag-ready`
 - `artifact_root`: `.dev/workflows/2026-08-05-v0-9-0-release-publication`
 - `created_at`: `2026-08-05T22:26:56+08:00`
-- `updated_at`: `2026-08-06T00:20:55+08:00`
+- `updated_at`: `2026-08-06T00:44:03+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md`
 - `template_version`: `1.2.0`
 
@@ -66,18 +66,18 @@
 
 ## Resume Checkpoint
 
-- Last completed action: independent assessment `ASM-20260805-004` verified the deterministic candidate, bounded commit-message rewrite equivalence, exact eight-item scope, and owner waiver with no active finding; the source-local candidate advanced to `validated`.
+- Last completed action: PR #130 passed five hosted checks and merged through `c14a326`; the sanctioned read-only merged-main pre-tag gate passed in 910.2 seconds and printed the owner-only annotated-tag command without executing it.
 - Current task: `REL090-001`
-- Exact next action: run the candidate phase validator, commit the validated transition, then push and open the ready candidate pull request for hosted checks and merge-commit integration.
+- Exact next action: commit and integrate the second-segment pre-tag handoff, then ask the owner to create and push the exact annotated v0.9.0 tag.
 - Validation already completed: current-main critical gate passed before preparation; the final-code critical gate passed 49/49 in 951 seconds; attachment parity was confirmed against `ASM-20260804-001`; deterministic packages, clean install, and exact v0.8.0 upgrade passed. A duplicate post-rewrite fixture run was explicitly waived and replaced by independently verified tree, inventory, migration, archive, sidecar, and checksum equivalence. `ASM-20260805-004` concluded `healthy-with-followups` with no active finding. The seven pre-existing Project items read back Done/v0.9.0/Not yet published; CTX-004/#98 remains pending provider sync until merged-main read-back.
-- Git state: dedicated workflow branch created from clean `main@5d9af93`.
-- Branch history and checkpoint handoffs: none.
+- Git state: continuation branch created from clean merged `main@c14a326`.
+- Branch history and checkpoint handoffs: segment 1 merged by PR #130 through merge commit `c14a326`; segment 2 is active on `codex/2026-08-05-v0-9-0-release-publication-cont-02`.
 - Blockers or unresolved decisions: publication tag remains user-owned.
 
 ## Branch Lifecycle
 
 | Segment | Branch | Base | Checkpoint Type | Commit | Remote / Target | Recorded At | Reason | Resume Branch / Action |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| 1 | `codex/2026-08-05-v0-9-0-release-publication` | `main@5d9af93` | active | — | local | `2026-08-05T22:26:56+08:00` | Cohesive CTX-004, provider-placement, candidate, and publication lifecycle | Continue `REL090-001` on this branch. |
-| 2 | pending continuation branch | updated `main` after candidate PR | planned checkpoint continuation | — | pull-request merged main | — | Merged candidate is a checkpoint, not workflow completion | Create `codex/2026-08-05-v0-9-0-release-publication-cont-02` from updated `main`; run pre-tag gates and prepare the owner handoff. |
+| 1 | `codex/2026-08-05-v0-9-0-release-publication` | `main@5d9af93` | merged checkpoint | `c14a3260cba7d0a9e2b67b73df9e221280d2d2ef` | PR #130 / `main` | `2026-08-06T00:27:06+08:00` | Cohesive CTX-004, provider-placement, candidate, and publication lifecycle | Completed; do not reuse the merged branch. |
+| 2 | `codex/2026-08-05-v0-9-0-release-publication-cont-02` | `main@c14a326` | active checkpoint continuation | — | local | `2026-08-06T00:27:30+08:00` | Merged candidate is a checkpoint, not workflow completion | Persist the passed pre-tag gate and owner tag handoff, then integrate through a continuation PR. |
 | 3 | pending hosted-closeout continuation branch | updated `main` after owner tag/publication | planned post-publication continuation | — | hosted release and main | — | Publication evidence and registries must be reconciled without reusing a merged segment | Create a fresh continuation branch from updated `main`; validate hosted artifacts, reconcile publication fields, and finalize through a pull request. |
