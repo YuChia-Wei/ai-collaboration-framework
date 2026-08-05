@@ -1,36 +1,50 @@
 {
-  "template_id": "ai-context-governance-remediation-task",
+  "template_id": "ai-context-governance-release-publication-task",
   "template_version": "1.1.0",
-  "template_created_at": "2026-07-10T18:22:49+08:00",
+  "template_created_at": "2026-07-24T13:35:00+08:00",
   "template_updated_at": "2026-07-27T09:52:09+08:00",
   "task_id": "REL090-001",
   "workflow_id": "2026-08-05-v0-9-0-release-publication",
   "owner_skill": "ai-context-governance",
+  "title": "Prepare and publish REL-v0.9.0",
   "status": "in_progress",
   "created_at": "2026-08-05T22:26:56+08:00",
-  "updated_at": "2026-08-05T22:26:56+08:00",
-  "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
+  "updated_at": "2026-08-05T22:34:56+08:00",
+  "template_source": ".ai/assets/skills/ai-context-governance/templates/release-publication/release-publication-task.json",
   "model": "gpt-5.6-sol",
   "reasoning_effort": "xhigh",
-  "finding_ids": ["ASM-20260804-001#AIC-010", "provider-test-location-coherence"],
   "scope": {
-    "target": "Bundled provider test placement, CTX-004 bilingual root navigation, and #95/#128 online traceability",
-    "files": ["tools/**", ".ai/assets/tech-stacks/dotnet-backend/tooling/bundled-mechanical-validation/**", "README.md", "README.en.md", ".dev/backlog/items/CTX-004.yaml"],
-    "constraints": ["English README is canonical authoring source for the translation role", "Issue #128 receives no local backlog item", "Do not broaden into VAL-002 or Architecture Kit cutover"],
-    "non_goals": ["Analyzer behavior redesign", "Validation profile redesign", "New provider implementation", "Release tag mutation"]
+    "release_id": "REL-v0.9.0",
+    "release_record": ".dev/releases/v0.9.0/release.yaml",
+    "authorized_included_work": [
+      "GOV-004",
+      "PKG-005",
+      "GOV-006",
+      "CTX-004",
+      "CTX-005",
+      "PKG-006",
+      "VAL-003",
+      "SAG-002"
+    ],
+    "authorization_source": "Owner decisions in the active 2026-08-05 Codex task: allocate CTX-004 to v0.9.0, repair bilingual root navigation through the dedicated translation role, preserve source-only provider tests under tools, record the online Issue #95/#128 relationship without a local #128 backlog item, and proceed through governed v0.9.0 publication after validation.",
+    "out_of_scope": [
+      "creating, moving, deleting, replacing, or pushing Git tags",
+      "creating a local backlog item or provider mapping for Issue #128",
+      "Architecture Kit cutover or materialize-to-tools mode",
+      "VAL-002 profile or changed-path redesign",
+      "moving source-only test projects into the downstream package payload",
+      "installing or using WSL Python or dotnet"
+    ]
   },
-  "execution": {
-    "steps": ["Audit provider test ownership and references", "Apply the smallest coherent move and reference update", "Update CTX-004 scope and English README", "Invoke context-translator for zh-TW parity", "Record #95/#128 online relation", "Run focused and context validation"],
-    "validation": ["provider and package path parity", "dotnet test for moved projects", "bilingual root-entry validation", "workflow artifact validation"],
-    "last_completed_step": "Created the authorized workflow branch and durable execution plan.",
-    "next_action": "Reconcile the two read-only sub-agent audits and implement evidence-backed provider/test placement."
-  },
-  "results": {
-    "summary": "",
-    "files_changed": [],
-    "tests_run": [],
-    "finding_status": "not-addressed",
-    "residual_risk": "Provider test ownership and all path consumers are still under audit.",
-    "follow_up_needed": true
-  }
+  "steps": [
+    "Resolve CTX-004 with stable bilingual provider navigation, retain source-only provider tests under tools, and record the online Issue #95/#128 relationship.",
+    "Reconcile the exact eight-item v0.9.0 backlog and Project allocation without creating local #128 records.",
+    "Instantiate all six release-publication templates without copying a previous release instance.",
+    "Build and validate deterministic candidate packages, exact v0.8.0 upgrade, authored release documents, and the candidate lifecycle contract.",
+    "Obtain independent read-only candidate verification and reconcile any finding before integration.",
+    "Commit, push, open a ready pull request, pass required checks, and merge through the pull-request-only main policy.",
+    "Start a continuation branch from updated main, run the sanctioned current-main pre-tag command, and stop before any tag or publication action.",
+    "After the owner-created tag and successful hosted publication, validate immutable evidence, reconcile registries and Project publication fields, and close the workflow from a post-publication continuation branch."
+  ],
+  "results": null
 }

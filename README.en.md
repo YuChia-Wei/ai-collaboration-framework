@@ -42,6 +42,7 @@ This repository is useful for teams and individuals who want a maintainable AI c
 | Find available AI skills | [`.ai/assets/skills/README.MD`](.ai/assets/skills/README.MD) |
 | Read human-facing collaboration guides | [`.dev/guides/ai-collaboration-guides/INDEX.MD`](.dev/guides/ai-collaboration-guides/INDEX.MD) |
 | Help an Agent collaborate correctly in this source repository | [`AGENTS.md`](AGENTS.md) |
+| Discover the bundled executable .NET validation provider | [`.ai/assets/tech-stacks/dotnet-backend/tooling/bundled-mechanical-validation/`](.ai/assets/tech-stacks/dotnet-backend/tooling/bundled-mechanical-validation/) |
 | Obtain or upgrade a portable framework release | [`.dev/releases/INDEX.MD`](.dev/releases/INDEX.MD) |
 
 ## Core Content
@@ -63,6 +64,10 @@ The retained technology profile focuses on .NET / C# backend work, including:
 - Practical DDD, Clean Architecture, CQRS, Hexagonal Architecture, and message-driven backend guidance.
 - Common backend combinations involving WolverineFx, Dapper, EF Core, PostgreSQL, RabbitMQ, and Kafka.
 - Architecture design, implementation-slice, and code-review guidance for .NET backends.
+
+The bundled mechanical-validation provider is source-available and inactive by default. Its stable landing page separates two independently selected capabilities: Roslyn analyzers for mechanical architecture rules and runtime/configuration validation for target-owned registration checks. Human and Agent guidance remains in the .NET standards and technology-stack context; those documents do not replace executable validation.
+
+The provider's production projects are portable assets under `.ai/assets/tech-stacks/dotnet-backend/tooling/bundled-mechanical-validation/`. Their `tools/DotnetBackendAnalyzers.Tests/` and `tools/DotnetBackendValidation.Tests/` projects remain source-repository verification and are intentionally excluded from the downstream package. `tools/DotnetBackendBuildingBlocks.Tests/` likewise verifies separately retained source-includes rather than belonging to the mechanical-validation provider.
 
 ## Main Directories
 

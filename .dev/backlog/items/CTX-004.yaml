@@ -2,37 +2,41 @@ schema_version: "1.0"
 backlog_id: "CTX-004"
 title: "Surface Executable Dotnet Analyzer Capabilities In Root Navigation"
 category: "ai-context-navigation"
-status: "open"
+status: "resolved"
 priority: "LOW"
-summary: "Correct bilingual root navigation so repository-name-driven users can find the executable .NET analyzer capability and understand its relationship to standards and portable technology-stack context."
+summary: "Correct bilingual root navigation so repository-name-driven users can find the stable bundled .NET mechanical-validation provider and understand its analyzer, runtime-validation, standards, portable-context, and source-only test boundaries."
 created_at: "2026-08-04T20:43:23+08:00"
-updated_at: "2026-08-04T20:51:23+08:00"
+updated_at: "2026-08-05T22:34:56+08:00"
 release:
-  target: "unassigned"
-  completed_in: null
+  target: "v0.9.0"
+  completed_in: "v0.9.0"
   published_in: null
   target_scope: "dotnet-analyzer-root-navigation"
+  gate: "release-blocker"
 origin_refs:
   - ".dev/assessments/ASM-20260804-001/assessment.yaml"
 finding_refs:
   - "ASM-20260804-001#AIC-010"
 recommended_owner_skill: "ai-context-governance"
-handoff_condition: "Use direct mode for a bilingual README-only correction unless the final scope changes normative, package, generated, or product truth. Do not review or change analyzer implementation under this item."
-workflow_refs: []
-task_refs: []
-resolution_ref: null
-decision_needed: "No architecture decision is expected; verify wording and bilingual semantic parity before integration."
+handoff_condition: "Implement the owner-authorized bilingual README-only correction through workflow 2026-08-05-v0-9-0-release-publication. Link the stable bundled provider landing page, retain source-only test projects under tools, and do not review or change analyzer behavior."
+workflow_refs:
+  - ".dev/workflows/2026-08-05-v0-9-0-release-publication/workflow.yaml"
+task_refs:
+  - ".dev/workflows/2026-08-05-v0-9-0-release-publication/tasks/REL090-001.json"
+resolution_ref: "README.en.md"
+decision_needed: "Resolved by owner direction on 2026-08-05: include CTX-004 in v0.9.0, use the stable bundled-provider landing page established by PKG-006, retain source-only provider tests under tools, and produce Traditional Chinese parity through the dedicated context-translator role."
 related_backlog_refs:
   - "OBS-001"
 provider_refs:
   - "github-issue:#98"
 acceptance:
-  - "Quick Navigation in README.md and README.en.md links to tools/DotnetBackendAnalyzers/."
-  - "Both READMEs distinguish executable Roslyn analyzer enforcement, human/agent standards, and portable .NET technology-stack context."
-  - "The wording states the verified inventory accurately: seven analyzer classes plus RuleDescriptors and DiagnosticCategories support files, with tests counted separately."
+  - "Quick Navigation in README.md and README.en.md links to the stable .ai/assets/tech-stacks/dotnet-backend/tooling/bundled-mechanical-validation/ landing page."
+  - "Both READMEs distinguish executable Roslyn analyzers, runtime/configuration validation, human/agent standards, and portable .NET technology-stack context."
+  - "Both READMEs state that provider production projects are portable while tools/DotnetBackendAnalyzers.Tests and tools/DotnetBackendValidation.Tests remain source-only verification outside the downstream package; the separate BuildingBlocks tests are not misclassified as provider tests."
   - "Traditional Chinese and English statements have semantic parity and valid repository-relative links."
-  - "No analyzer, test, package, release, or roadmap implementation is changed."
+  - "No analyzer, test, or package implementation is changed; the release records only the navigation outcome."
 inventory_notes:
   - "At subject commit 4e7b5e0 neither bilingual Quick Navigation table links the analyzer directory."
   - "The external report combined 1,483 source lines and 1,404 test lines as 2,887 lines and called all nine source files analyzers; this item uses the corrected inventory."
+  - "PKG-006 later stabilized the canonical provider root under .ai/assets/tech-stacks/dotnet-backend/tooling/bundled-mechanical-validation/ and the RPB migration matrix explicitly retained root test projects as source-only verification outside the downstream payload."
   - "GitHub Issue #98 is the source-repository navigation projection; provider state does not authorize the README edit."

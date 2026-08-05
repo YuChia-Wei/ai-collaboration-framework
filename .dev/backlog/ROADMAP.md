@@ -38,7 +38,7 @@ Read this file before planning or resuming a post-v0.4.0 release.
 | `v0.6.0` | `published` | yes | The componentized downstream product, semantic customization lifecycle, software-development orchestration acceptance, coordinated CI/configuration/skill transitions, Terra evaluation, and measured simplification disposition are complete. | Completed at immutable annotated tag `v0.6.0`, peeled commit `8b98b5f917513f2d143f42a322050a1162bb63f9`, successful hosted publication run `30074558122`, and a stable GitHub Release with four governed assets. | [`2026-07-24-v0-6-0-release-publication`](../workflows/2026-07-24-v0-6-0-release-publication/workflow.yaml) |
 | `v0.7.0` | `published` | yes | The provenance, portable work-management, downstream package-safety, and fail-closed release-traceability outcomes are published. Legacy identifier retirement and historical archive migration remain separately conditional. | Completed at immutable annotated tag `v0.7.0`, peeled commit `49723a943f744820f4bdb2c22de7930693a7106d`, successful hosted publication run `30363397794`, and a stable GitHub Release with four governed assets. | [`2026-07-28-v0-7-0-release-preparation`](../workflows/2026-07-28-v0-7-0-release-preparation/workflow.yaml) |
 | `v0.8.0` | `published` | yes | Canonical skill-owned Python automation, fail-closed prerequisite diagnostics, and provider-neutral target-selected work-item binding and merge-gate policy are published. | Completed at immutable annotated tag `v0.8.0`, peeled commit `97ccc9e9f218ec681bb726d2e1b4edbb3e14fb25`, successful hosted run `30786537723`, exact governed public body, four unchanged assets, and Project #3 publication-field read-back. | [`2026-07-30-skill-script-colocation`](../workflows/2026-07-30-skill-script-colocation/workflow.yaml), [`2026-07-31-work-item-binding-policy`](../workflows/2026-07-31-work-item-binding-policy/workflow.yaml), [`2026-08-02-python-prerequisite-diagnostics`](../workflows/2026-08-02-python-prerequisite-diagnostics/workflow.yaml), [`2026-08-03-v0-8-0-release-publication`](../workflows/2026-08-03-v0-8-0-release-publication/workflow.yaml) |
-| `v0.9.0` | `planned` | yes | Publish the seven completed outcomes owned by `GOV-004`, `PKG-005`, `GOV-006`, `CTX-005`, `PKG-006`, `VAL-003`, and `SAG-002`: proportional delivery governance, ignored-path package safety, layered engineering-rule ownership, target-effective rule packets, the bundled .NET validation provider contract, the unavailable Architecture Kit cutover gate, and canonical owning-skill reachability plus provider-neutral role execution. | `GOV-004` and `PKG-005` retain their recorded completion boundaries. The four #92 umbrella outcomes are independently verified through `ASM-20260805-002`, integrated through PR #120, and allocated exactly once at umbrella granularity. `SAG-002` aggregates #118 and dependent #119 exactly once after PR #122 and records PR #123 reached merged `main`; Proposals #92/#94 and supporting leaf Issues remain traceability rather than Included Work. Release preparation, immutable tag creation, GitHub Release creation, and publication remain separately unauthorized. | — |
+| `v0.9.0` | `planned` | yes | Publish the eight completed outcomes owned by `GOV-004`, `PKG-005`, `GOV-006`, `CTX-004`, `CTX-005`, `PKG-006`, `VAL-003`, and `SAG-002`: proportional delivery governance, ignored-path package safety, layered engineering-rule ownership, bilingual bundled-provider navigation, target-effective rule packets, the bundled .NET validation provider contract, the unavailable Architecture Kit cutover gate, and canonical owning-skill reachability plus provider-neutral role execution. | `GOV-004` and `PKG-005` retain their recorded completion boundaries. The four #92 umbrella outcomes are independently verified through `ASM-20260805-002`, integrated through PR #120, and allocated exactly once at umbrella granularity. `CTX-004` resolves the low-cost root-navigation finding without moving source-only tests into the package. `SAG-002` aggregates #118 and dependent #119 exactly once after PR #122 and records PR #123 reached merged `main`; Proposals #92/#94 and supporting leaf Issues remain traceability rather than Included Work. The release workflow is authorized; immutable tag creation remains owner-controlled. | [`2026-08-05-v0-9-0-release-publication`](../workflows/2026-08-05-v0-9-0-release-publication/workflow.yaml) |
 
 ## Release Gate Semantics
 
@@ -59,7 +59,7 @@ Read this file before planning or resuming a post-v0.4.0 release.
 | `v0.6.0` | `DIST-001`, `CUST-001`, `DEVWF-002`, `CI-001`, `CI-002`, `CFG-001`, `SKILL-001` | `SIMPL-001`; any legacy identifier retirement remains conditional and cannot be silently included. | `EVAL-001`, v0.5.0 completion, `.dev/ai-context/provenance.yaml`, `.dev/ai-context/customizations.yaml`, and the approved `software-development-orchestrator` plus `ai-context-init` compatibility transitions. |
 | `v0.7.0` | `GOV-002`, `GOV-003`, `PKG-004`, `REL-003` | A historical archive migration and legacy identifier retirement each require explicit successor work rather than silent inclusion. | All four blockers are resolved and published at immutable tag `v0.7.0`; no conditional successor work was silently included. |
 | `v0.8.0` | `SKILL-002`, `TOOL-002`, `WIBIND-001` (all resolved and published) | No additional scope was selected. Any fourth item still requires an explicit owner roadmap decision rather than silent inclusion. | The exact three-item set is terminally complete at immutable tag `v0.8.0`; the governed hosted body and Project #3 `Published in` read-back pass. |
-| `v0.9.0` | `GOV-004`, `PKG-005`, `GOV-006`, `CTX-005`, `PKG-006`, `VAL-003`, `SAG-002` (all resolved; awaiting publication) | Proposal #93 remains provenance for `PKG-005`; Proposal #92 is represented by four umbrella-level canonical items; Proposal #94 remains provenance for the single aggregated `SAG-002` item represented by #118 with dependent slice #119. Proposal, umbrella, and leaf Issues must not be counted together. Any eighth item requires another owner decision. | v0.8.0 is published; PR #88 and PR #103 retain their recorded evidence. PR #120 passed its required hosted checks and merged the four #92 umbrella outcomes as `3bb0399`; `ASM-20260805-002` found no active HIGH/MEDIUM finding in the authorized static pre-cutover scope. PR #122 passed five hosted checks and merge-commit read-back at `0a9089f`, with records closeout at `2aa61dd`. Architecture Kit remains unavailable/non-selectable and actual cutover is not part of this release. |
+| `v0.9.0` | `GOV-004`, `PKG-005`, `GOV-006`, `CTX-004`, `CTX-005`, `PKG-006`, `VAL-003`, `SAG-002` (all resolved; awaiting publication) | Proposal #93 remains provenance for `PKG-005`; Proposal #92 is represented by four umbrella-level canonical items; Proposal #94 remains provenance for the single aggregated `SAG-002` item represented by #118 with dependent slice #119. Proposal, umbrella, and leaf Issues must not be counted together. Issue #128 is an online-only packaged correction disclosed in release notes, not a ninth canonical item. | v0.8.0 is published; PR #88 and PR #103 retain their recorded evidence. PR #120 passed its required hosted checks and merged the four #92 umbrella outcomes as `3bb0399`; `ASM-20260805-002` found no active HIGH/MEDIUM finding in the authorized static pre-cutover scope. PR #122 passed five hosted checks and merge-commit read-back at `0a9089f`, with records closeout at `2aa61dd`. CTX-004 supplies stable bilingual provider navigation while source-only tests remain outside the payload. Architecture Kit remains unavailable/non-selectable and actual cutover is not part of this release. |
 
 The 2026-08-02 owner decision promotes Proposal #69 into required v0.8.0
 scope as `TOOL-002`. That decision authorizes the bounded Story delivery and
@@ -68,17 +68,17 @@ integrated work-item binding policy as `WIBIND-001`, freezes the exact three-ite
 release set, and authorizes release preparation. It does not delegate creation,
 movement, deletion, replacement, or push of the immutable release tag.
 
-`DEVWF-001`, `INIT-001`, `EVAL-002`, `VAL-002`, `GOV-005`, and `CTX-004`
+`DEVWF-001`, `INIT-001`, `EVAL-002`, `VAL-002`, and `GOV-005`
 remain independent unassigned decisions. Proposal #92 is now represented in
 v0.9.0 only by `GOV-006`, `CTX-005`, `PKG-006`, and `VAL-003`; its nine leaf
 implementation Issues are not additional release items. Proposal #93 remains
 represented only by `PKG-005`. Proposal #94 is represented only by `SAG-002`,
 with #118 as its representative provider projection and #119 as its dependent
 slice; neither provider record is an additional Included Work item. #98/`CTX-004`
-remain independent. `STD-001` is planned at P1 and explicitly related to `OBS-001`,
+is the eighth resolved v0.9.0 outcome. `STD-001` is planned at P1 and explicitly related to `OBS-001`,
 which remains P2 and unassigned. The owner selected round one for implementation
 through `GOV-004`; rounds two and three remain deliberation-only. `STD-001`,
-`DEVWF-001`, and `OBS-001` are not hidden release blockers. The seven items in the
+`DEVWF-001`, and `OBS-001` are not hidden release blockers. The eight items in the
 v0.9.0 release-gate row are the exact currently selected blockers. `OBS-001` may collect
 architecture evidence independently, while canonical standards structure,
 placement, and publication wait for the remaining applicable `STD-001`
@@ -262,17 +262,18 @@ versions. Current assignments:
   normalized engineering-rule identity, ownership, and file-level migration;
   `CTX-005` owns target-effective rule state, deterministic packets, and shared
   action-skill consumption; `PKG-006` owns the stable bundled .NET validation
-  provider and reference-in-place activation contract; and `VAL-003` owns the
-  unavailable-by-default Architecture Kit readiness gate. These six resolved
-  items form the exact current Included Work set. Proposal #92, umbrellas'
+  provider and reference-in-place activation contract; `CTX-004` owns stable
+  bilingual root navigation to that provider; and `VAL-003` owns the
+  unavailable-by-default Architecture Kit readiness gate. Together with
+  `GOV-004`, `PKG-005`, and `SAG-002`, these form the exact eight-item Included
+  Work set. Proposal #92, umbrellas'
   child Issues #109–#117, and actual Architecture Kit cutover are not additional
   Included Work.
 - `unassigned`: `DEVWF-001` owns optional issue/timeline schema deliberation;
   `INIT-001` owns existing-AI-agent initialization compatibility, collision
   inventory, dry-run, and synthetic fixtures; `EVAL-002` owns comparable
   execution evidence; `VAL-002` owns validation profile separation;
-  `GOV-005` owns one Proposal-queue convergence decision; `CTX-004` owns the
-  bilingual .NET analyzer navigation correction; planned `STD-001` owns three
+  `GOV-005` owns one Proposal-queue convergence decision; planned `STD-001` owns three
   bounded standards deliberation rounds and release allocation; and `OBS-001`
   remains a related but separately owned architecture workflow. None is a
   mandatory closeout gate for an assigned release.
@@ -354,16 +355,17 @@ assign that round's implementation to an existing or dedicated release.
 
 The owner allocated `v0.9.0` on 2026-08-04 with `GOV-004` and `PKG-005`, then
 on 2026-08-05 added the completed #92 umbrella outcomes as `GOV-006`, `CTX-005`,
-`PKG-006`, and `VAL-003`, then confirmed the completed Issue #94 delivery as
-`SAG-002`. The future release candidate must include `GOV-004`, `PKG-005`,
-`GOV-006`, `CTX-005`, `PKG-006`, `VAL-003`, and `SAG-002` exactly once each.
+`PKG-006`, and `VAL-003`, confirmed the completed Issue #94 delivery as
+`SAG-002`, and then added the completed bilingual provider navigation as
+`CTX-004`. The release candidate must include `GOV-004`, `PKG-005`, `GOV-006`,
+`CTX-004`, `CTX-005`, `PKG-006`, `VAL-003`, and `SAG-002` exactly once each.
 Proposal #92 and #109–#117 implementation slices must not be counted as
 additional Included Work; #104–#107 are the one-to-one provider projections
 of the four #92 canonical items. Proposal #94 and dependent #119 are not
 additional Included Work; #118 is the sole provider projection for `SAG-002`.
-This allocation does not authorize release preparation, tag creation, GitHub
-Release creation, publication, actual Architecture Kit cutover, or additional
-scope.
+The owner authorized release preparation and publication workflow execution.
+Tag creation remains owner-controlled; actual Architecture Kit cutover and
+additional scope remain unauthorized.
 
 Keep `REL-004`, `DEVWF-001`, `INIT-001`, the related but separately owned
 `STD-001` and `OBS-001`, historical archive migration, and legacy identifier
