@@ -2,7 +2,7 @@
 
 ## Subject
 
-- Candidate source commit: `25ae56647a93668c800409f4306a9485b78cce3c`
+- Candidate source commit: `d3236e6dfe54c56a5b9d040e95071569ccc493a3`
 - Previous immutable source: published `v0.8.0` package
 - Package identity: `ai-context-dotnet-backend-v0.9.0`
 - Environment: Windows host Python `3.13.14` and PowerShell; WSL was not used
@@ -32,8 +32,8 @@ as the sole v0.9.0 migration source.
 | Optional `repo-backlog` paths | 2 |
 | `files.yaml` SHA-256 | `c293247612eb2f01ef42e4d7c55be4ff36201cdf034157c518de871ec2acb5c7` |
 | `migration.yaml` SHA-256 | `ca0ec6f7d8694549a3cf6cfa6ef22bcfe7da88f7d7900b2c24e9f58c8f00d27a` |
-| ZIP SHA-256 | `937ecec624577b2bc7c47ffe29b4c7ad91d17f27a86fdb9b9cf8c236fe3a7d44` |
-| tar.gz SHA-256 | `cd233ab3272ccf25c9d26c34a1c0a1594d4b1ad9a0ff2236f95e29384d639c80` |
+| ZIP SHA-256 | `db314ef5f1f0428f6e0907a7877c0050575c9f58f2f3a54528528ff6f0d4195f` |
+| tar.gz SHA-256 | `d1c7e2dd1349fa8c62573ef62da01c1a196a2d2dbf8c34c1e8cfc6a779db3208` |
 | Two-build determinism | ZIP, tar.gz, and both sidecar file digests matched |
 | ZIP/tar package validation | passed for both archives |
 
@@ -55,6 +55,27 @@ Both target validators reported the absent target-effective rule state as
 installation and required-path integrity passed independently of later
 target-owned effective-rule adoption.
 
+## Message-Rewrite Equivalence And Owner Waiver
+
+The unpushed branch history was rewritten only to repair commit subjects and
+AI trailers. The original package subject `25ae56647a93668c800409f4306a9485b78cce3c`
+and rewritten subject `d3236e6dfe54c56a5b9d040e95071569ccc493a3`
+have the identical Git tree
+`863f50ae4679b3d908299435168d118414284262`. Because the package envelope
+records the source commit, the rewritten candidate was still built twice from
+`d3236e6`; its new archives and sidecars were deterministic and ZIP/tar parity
+validation passed. The payload inventory and migration contract remained
+byte-identical at the `files.yaml` and `migration.yaml` hashes recorded above.
+
+On 2026-08-06 the owner explicitly waived a second clean-install and exact
+v0.8.0-upgrade fixture run after this message-only rewrite because the payload
+tree, inventory, and migration bytes were identical. The fixture results in
+this report were executed against the equal-tree `25ae566` package and are
+inherited by equivalence; they were not rerun against the rewritten envelope.
+The new archive construction, checksums, determinism, and archive validator
+were rerun and are the current candidate evidence. No stale pre-rewrite
+archive digest is treated as current.
+
 ## Corrected Attempts Not Counted As Passes
 
 - A first metadata lookup omitted the package envelope directory and stopped
@@ -71,6 +92,9 @@ target-owned effective-rule adoption.
   29 passed cases with one Windows symlink-privilege skip.
 - Several sub-agent calls reached their per-call wait limit. Live processes
   were read back and allowed to finish; no apply was rerun over partial state.
+- A redundant post-rewrite fixture rerun was started, then stopped on explicit
+  owner direction before its partial results were used. The equivalence and
+  waiver above define the accepted scope instead.
 
 ## Focused Validation
 
