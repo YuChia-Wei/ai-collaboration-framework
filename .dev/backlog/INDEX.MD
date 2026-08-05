@@ -7,7 +7,7 @@ artifact directories. See [README.MD](README.MD) for ownership and lifecycle.
 
 | Roadmap | Current Target | Status | Next Gate | Updated |
 | --- | --- | --- | --- | --- |
-| [ROADMAP.md](ROADMAP.md) | `v0.9.0` | `planned` | Obtain explicit authorization before release preparation; include `GOV-004`, `PKG-005`, `GOV-006`, `CTX-005`, `PKG-006`, and `VAL-003` exactly once. | 2026-08-05 |
+| [ROADMAP.md](ROADMAP.md) | `v0.9.0` | `planned` | Obtain explicit authorization before release preparation; include `GOV-004`, `PKG-005`, `GOV-006`, `CTX-005`, `PKG-006`, `VAL-003`, and `SAG-002` exactly once. | 2026-08-05 |
 
 Source planning records are retained under [`plans/`](plans/); they inform the
 roadmap but do not replace it or a governed assessment.
@@ -36,6 +36,7 @@ roadmap but do not replace it or a governed assessment.
 
 | Item | Priority | Completed In | Published In | Resolution | Workflow | Updated |
 | --- | --- | --- | --- | --- | --- | --- |
+| [SAG-002](items/SAG-002.yaml) | HIGH | `v0.9.0` | — | All 18 active roles have owning-skill reachability and provider-neutral execution evidence with direct-by-default delegation, inline parity, bounded retry/fallback, and unchanged selective-adapter policy; #118 represents the single canonical item and #119 remains its dependent slice. | [`2026-08-05-sub-agent-reachability`](../workflows/2026-08-05-sub-agent-reachability/workflow.yaml) | 2026-08-05 |
 | [VAL-003](items/VAL-003.yaml) | HIGH | `v0.9.0` | — | Architecture Kit remains unsupported, unavailable, and non-selectable behind an evidence-complete fail-closed readiness gate; actual cutover remains future work. | [`2026-08-05-rule-provider-precutover`](../workflows/2026-08-05-rule-provider-precutover/workflow.yaml) | 2026-08-05 |
 | [PKG-006](items/PKG-006.yaml) | HIGH | `v0.9.0` | — | The bundled .NET validation provider has stable identity/location, separate analyzer/runtime capabilities, inactive source delivery, and fail-closed reference-in-place activation. | [`2026-08-05-rule-provider-precutover`](../workflows/2026-08-05-rule-provider-precutover/workflow.yaml) | 2026-08-05 |
 | [CTX-005](items/CTX-005.yaml) | HIGH | `v0.9.0` | — | Target-effective state, deterministic task packets, and shared action-skill consumption fail closed without freshness-verified semantics. | [`2026-08-05-rule-provider-precutover`](../workflows/2026-08-05-rule-provider-precutover/workflow.yaml) | 2026-08-05 |

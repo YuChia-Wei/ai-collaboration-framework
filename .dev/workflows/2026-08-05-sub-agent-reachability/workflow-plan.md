@@ -6,14 +6,14 @@
 - `workflow_kind`: `ai-context-maintenance`
 - `owner_skill`: `ai-context-governance`
 - `orchestrating_skill`: `software-development-orchestrator`
-- `branch`: `codex/2026-08-05-sub-agent-reachability-cont-02`
+- `branch`: `codex/2026-08-05-sub-agent-reachability-cont-03`
 - `base_branch`: `main`
-- `branch_segment`: `3`
-- `status`: `completed`
-- `current_phase`: `closed`
+- `branch_segment`: `4`
+- `status`: `in_progress`
+- `current_phase`: `release-allocation-reconciliation`
 - `artifact_root`: `.dev/workflows/2026-08-05-sub-agent-reachability`
 - `created_at`: `2026-08-05T01:34:40+08:00`
-- `updated_at`: `2026-08-05T09:11:11+08:00`
+- `updated_at`: `2026-08-05T10:19:47+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md`
 - `template_version`: `1.2.0`
 
@@ -21,7 +21,7 @@
 
 - Problem statement: The canonical active-role map and dynamic-loading policy do not prove that owning skills can reach their roles, do not distinguish inline application from genuine delegated invocation, and leave concrete test implementation ownership and no-delegation parity underspecified.
 - Authorized remediation scope: Implement the seven owner decisions recorded on Issue #94 through the two smallest coherent slices: #118 for owning-skill bindings and validator-backed static reachability, then #119 for provider-neutral runtime execution evidence and inline fallback parity.
-- Authorization: The owner completed decisions D94-Q1 through D94-Q7 and explicitly authorized workflow creation and implementation on 2026-08-05. The Issue #94 decision-ledger comment, not the assessment, Issue state, or v0.9.0 allocation alone, is the implementation authority.
+- Authorization: The owner completed decisions D94-Q1 through D94-Q7 and explicitly authorized workflow creation and implementation on 2026-08-05. The Issue #94 decision-ledger comment, not the assessment or provider state, is the implementation authority. After PR #122 and records PR #123 reached merged `main`, the owner separately authorized canonical v0.9.0 allocation and Project reconciliation on 2026-08-05; this follow-up does not authorize packaging or publication.
 - Exclusions: Issue #92 rule/provider/effective-state ownership; Issue #93 target ignore/install/upgrade drift and `AICDISC-ADAPTER-001`; Copilot-specific projection work; external orchestration packages; product source/tests; provider configuration; bulk runtime-native adapter generation; v0.9.0 packaging, tagging, publication, and release configuration.
 - Completion criteria: Every active canonical role has a valid owning-skill binding and explicit applicability/load obligation; the derived routing view and deterministic validator enforce static reachability without claiming execution; slice mode/test ownership matches D94-Q4/Q5; provider-neutral `role_execution` evidence covers direct, delegated, unavailable, not-applicable, retry, fallback, no-delegation parity, and final integration ownership; #92-owned sections remain untouched; tasks and remediation evidence are reconciled for review.
 
@@ -32,6 +32,7 @@
 - Owner decision ledger: `https://github.com/YuChia-Wei/ai-collaboration-prompts-dotnet-backend/issues/94#issuecomment-5182504544`
 - Implementation issues: `#118`, `#119`
 - Remediation report: `.dev/workflows/2026-08-05-sub-agent-reachability/reports/remediation-report.md`
+- Release-allocation addendum: `.dev/workflows/2026-08-05-sub-agent-reachability/reports/release-allocation-addendum.md`
 - Verification assessment: [`ASM-20260805-001`](../../assessments/ASM-20260805-001/assessment.yaml) is final at updated subject commit `4fd7ed991729836801e960c557fb019a25930146`; it records the #92-integrated combined-source read-back, bounded PR #122 hosted synchronization correction, and duplicate-binding fail-closed correction. Validation-script execution remains separately owner-arranged.
 - Tasks: `.dev/workflows/2026-08-05-sub-agent-reachability/tasks/`
 
@@ -63,6 +64,7 @@
 5. Runtime selection, execution evidence, and inline parity remediation — completed; three independent source-only reviews found the static reachability and #92 compatibility surfaces sound, then identified two MEDIUM execution-contract gaps which were corrected and independently re-reviewed as resolved.
 6. #92-first sequential transport and combined verification — completed; #92 implementation PR #120 and records-only closeout PR #121 reached `main`, #94 was replayed from `main@3e200fd5e164ba363c3cde0c50219e18f0ca14de`, and duplicate patch `9240f3d` was omitted. Three final source-only passes and an ordering-clarity follow-up found no active defect.
 7. Pull request, hosted evidence, merge-commit integration, and merged-main read-back — completed. PR #122's final head `e2757e2c2a382192866d1a52bfa8c74f6ce762a0` passed all five required checks, then merged to `main@0a9089f7d463f343dabc3da71a2ab5b20287f6cd` with parents `3e200fd...` and `e2757e2...`. Issues #94, #118, and #119 closed completed. Local repository validators, fixture tests, test suites, and `check-all` remain deferred by owner direction.
+8. Owner-authorized v0.9.0 release-allocation addendum — in progress under `SAR94-003`. Canonical `SAG-002`, ROADMAP, provider configuration, representative Issue #118, PR #122 reference keywords, Project fields, live `待發布` filter, and the provider receipt are reconciled. Pull-request hosted CI, merge-commit integration, and final merged-main/Project read-back remain. Packaging, tag, GitHub Release, and publication remain excluded.
 
 ## Proportionality And Delivery Decisions
 
@@ -72,6 +74,7 @@
 - Integration gate: pull request to `main` under `.dev/TEAM-GIT-FLOW-RULES.MD`.
 - Selected topology: merge-commit integration (`--no-ff`) because the owner explicitly requires the workflow boundary to remain visible.
 - Validation boundary: do not run `check-all` or repository validation scripts. Implement fixtures and record manual/static review evidence; a separate owner-arranged task will review or run validation scripts.
+- Follow-up proportionality: one addendum task is justified because repository canonical release truth and the external GitHub Project lifecycle must be ordered, synchronized, and resumed safely. No validation-only or closeout-only padding task is created.
 
 ## Parallel Work Coordination
 
@@ -83,7 +86,7 @@
 - #92 implementation PR #120 merged at `3bb03993675bb404dc467b8da6ad702c01919705`; records-only PR #121 merged at `3e200fd5e164ba363c3cde0c50219e18f0ca14de`. The #121 delta changes only five #92 workflow/index records and no canonical `.ai`, `.dev/standards`, or `.dev/guides` surface.
 - This workflow will not edit #92-owned rule/provider/effective-state sections, target provider configuration, or `loaded_rule_ids` semantics.
 
-## Closeout Record
+## Implementation Closeout Record
 
 - Final completed action: PR [#122](https://github.com/YuChia-Wei/ai-collaboration-prompts-dotnet-backend/pull/122) merged at `2026-08-05T01:08:50Z` by the owner-selected merge-commit topology. Its head was `e2757e2c2a382192866d1a52bfa8c74f6ce762a0`; merged `main` is `0a9089f7d463f343dabc3da71a2ab5b20287f6cd`, with parents `3e200fd...` (base) and `e2757e2...` (head).
 - Task result: `SAR94-001` and `SAR94-002` are completed. Merged-main ancestry and the full #92/#94 combined artifact read-back passed. Issues #94, #118, and #119 are closed completed.
@@ -92,7 +95,19 @@
 - Local validation boundary: no local repository validator, fixture test, test suite, or `check-all` ran, per owner direction. Green hosted gates are separate evidence and do not reclassify local commands as run.
 - Cross-workflow boundary: #92 remains fully closed. Merged `main` retains both #92 effective-rule/provider semantics and #94 role reachability/execution semantics; duplicate patch `9240f3d` remains omitted while #92 path fix `98484bd` is integrated.
 - Exclusions retained: v0.9.0 packaging, tagging, release configuration, and publication remain outside this workflow.
-- Exact next action: none for this completed workflow. Any local validation-script review or v0.9.0 release activity remains a separately owner-arranged task.
+- Implementation-closeout next action at that checkpoint: none for the completed implementation scope. The later owner-authorized allocation decision is governed by the explicit addendum below; local validation-script review remains separately owner-arranged.
+
+## Release Allocation Addendum
+
+- Authorization: on 2026-08-05, after merged-main read-back, the owner explicitly confirmed that the seven-decision #94 delivery is intended for v0.9.0 and authorized canonical backlog, ROADMAP, provider-mapping, and Project reconciliation.
+- Canonical aggregation: create one `SAG-002` release blocker represented by #118 and supported by dependent #119. Proposal #94 remains intake and owner-decision provenance and is not a second Included Work entry.
+- Project projection: keep #94 and #119 as non-canonical provenance/supporting cards without release allocation fields; set representative #118 to Done / P1 High / Owner review Approved / v0.9.0 / Not yet published so it is eligible for `待發布` exactly once.
+- Provider reconciliation: replace merged PR #122 closing keywords with `Refs`, preserve the already verified completed Issue state, and add exact canonical markers/read-back evidence to representative #118 without creating formal sub-issue relationships that the provider policy forbids inferring.
+- Current task: `SAR94-003` is in progress on `codex/2026-08-05-sub-agent-reachability-cont-03` from #92-integrated `main@f4018e6bac7ce7df7367359278eeb07e204974a3`. Canonical checkpoint `b9a6f0c` preserves all six existing v0.9.0 items and adds only `SAG-002` as the seventh before the completed external provider mutation.
+- Provider read-back: PR #122 now uses `Refs #94`, `Refs #118`, and `Refs #119`; Issue #118 carries the exact `SAG-002` markers, remains closed completed, and is the only card with P1 High / Approved / v0.9.0 / Not yet published. The live `待發布` filter is `status:Done reason:completed -target-release:Unassigned published-in:"Not yet published"`; #94 and #119 retain unset release fields.
+- Exact next action: commit the provider receipt, refresh latest `main`, open the required pull request, rely only on hosted CI, and integrate with the already selected merge-commit topology after all applicable gates pass. Final task completion belongs to a records-only continuation from merged `main`.
+- Validation boundary: do not run local validation scripts, tests, builds, formatters, `check-all`, aggregate gates, or other validation programs. Manual file inspection and hosted Issue/Project/PR read-back are allowed; hosted CI is the only executable gate.
+- Publication boundary: no package build, release configuration, tag, GitHub Release, asset upload, or publication is authorized.
 
 ## Branch Lifecycle
 
@@ -100,4 +115,5 @@
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | 1 | `codex/2026-08-05-sub-agent-reachability` | `main@d8580df4516155ff7b1a139d9a064a8b0d4b2019` | push-only implementation checkpoint | `f9f6a04` | `origin/codex/2026-08-05-sub-agent-reachability` | `2026-08-05T02:25:33+08:00` | #118/#119 implementation is reviewable while validation remains separately deferred | resume the same branch for validation reconciliation; then open the required PR without release packaging |
 | 2 | `codex/2026-08-05-sub-agent-reachability-continuation` | `main@3e200fd5e164ba363c3cde0c50219e18f0ca14de` | merge-commit integration | `e2757e2c2a382192866d1a52bfa8c74f6ce762a0` | `main@0a9089f7d463f343dabc3da71a2ab5b20287f6cd` via PR #122 | `2026-08-05T09:08:50+08:00` | final hosted run passed all five required checks after two bounded deterministic corrections | merged-main ancestry/read-back passed; create records-only closeout continuation from merged main |
-| 3 | `codex/2026-08-05-sub-agent-reachability-cont-02` | `main@0a9089f7d463f343dabc3da71a2ab5b20287f6cd` | closeout records | containing closeout commit | local pending closeout PR integration | `2026-08-05T09:11:11+08:00` | preserve the completed implementation segment while recording final workflow evidence | integrate this records-only checkpoint; no implementation replay or release work authorized |
+| 3 | `codex/2026-08-05-sub-agent-reachability-cont-02` | `main@0a9089f7d463f343dabc3da71a2ab5b20287f6cd` | closeout records | `9af809b30e2a783187d06e80041095677a3083f8` | `main@2aa61dd7a33916782170b8e3cc6de2e098c555d8` via PR #123 | `2026-08-05T09:21:14+08:00` | preserve the completed implementation segment while recording final workflow evidence | records-only merge topology and completed task read-back passed; await separately authorized follow-up |
+| 4 | `codex/2026-08-05-sub-agent-reachability-cont-03` | `main@f4018e6bac7ce7df7367359278eeb07e204974a3` | active release-allocation addendum | `b9a6f0c76b8f45f5acd25f9592dfafc253f0404b` canonical-before-provider checkpoint | local branch | `2026-08-05T10:19:47+08:00` | replay preserved the complete #92 six-item allocation and added only `SAG-002` as the seventh; repository truth precedes the completed external Project reconciliation | amend the provider receipt commit, then open the required merge-commit PR without publication work |
