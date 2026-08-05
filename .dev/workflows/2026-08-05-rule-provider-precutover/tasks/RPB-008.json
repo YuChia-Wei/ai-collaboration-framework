@@ -7,9 +7,9 @@
   "workflow_id": "2026-08-05-rule-provider-precutover",
   "owner_skill": "ai-context-governance",
   "title": "Verify and integrate the completed pre-cutover remediation",
-  "status": "in_progress",
+  "status": "completed",
   "created_at": "2026-08-05T07:46:05+08:00",
-  "updated_at": "2026-08-05T07:51:44+08:00",
+  "updated_at": "2026-08-05T08:23:52+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-5.6-sol",
   "reasoning_effort": "max",
@@ -23,15 +23,21 @@
   "execution": {
     "steps": ["Create the independent post-remediation verification assessment", "Reconcile the final remediation report and workflow evidence", "Refresh main and open one workflow PR", "Require hosted checks and review", "Integrate by merge commit and read back merged main", "Close only the completed #92 implementation topology and notify #94"],
     "validation": ["Two-pass independent AI-context source audit", "Scoped Git/read-back evidence", "Hosted PR checks without local reproduction", "Merge-commit ancestry and merged-main artifact read-back", "No check-all or repository validators"],
-    "last_completed_step": "Committed final verification ASM-20260805-002 at 62c582e after independent Pass A, repository-aware Pass B, corrected-subject lifecycle read-back, and artifact-fidelity review; no active HIGH or MEDIUM finding remains.",
-    "next_action": "Refresh main, push the workflow branch, open one ready PR, and require hosted checks before merge-commit integration."
+    "last_completed_step": "PR #120 merged by merge commit at 2026-08-05T00:17:07Z after all hosted checks were green; merged-main ancestry and workflow artifact read-back passed at main@3bb03993675bb404dc467b8da6ad702c01919705.",
+    "next_action": "None. The completed workflow retains explicit exclusions for release work and Architecture Kit cutover."
   },
   "results": {
-    "summary": "",
-    "files_changed": [],
-    "tests_run": [],
-    "finding_status": "not-addressed",
-    "residual_risk": "",
-    "follow_up_needed": true
+    "summary": "Completed independent verification, PR #120 hosted-check review, merge-commit integration, merged-main read-back, #92 implementation-topology closure, and post-merge #94 handoff. PR head 317c5415de5a2d4011a2975dc4aca095fee39999 merged to main as 3bb03993675bb404dc467b8da6ad702c01919705.",
+    "files_changed": [
+      ".dev/workflows/2026-08-05-rule-provider-precutover/workflow.yaml",
+      ".dev/workflows/2026-08-05-rule-provider-precutover/workflow-plan.md",
+      ".dev/workflows/2026-08-05-rule-provider-precutover/tasks/RPB-008.json",
+      ".dev/workflows/2026-08-05-rule-provider-precutover/reports/remediation-report.md",
+      ".dev/workflows/INDEX.MD"
+    ],
+    "tests_run": ["Hosted: AI Context Governance run 30962608253 — passed.", "Hosted: Package AI Context Candidate run 30962608189 — passed.", "Hosted: Portable AI Context Gates run 30962608192 — passed (Ubuntu prerequisite, Windows prerequisite, Ubuntu quick gate).", "Local repository validators, check-all, tests, builds, formatters, and restores — not-run-owner-directed."],
+    "finding_status": "addressed",
+    "residual_risk": "Executable local validation remains intentionally not run by owner direction. v0.9.0 packaging/release/publication/tag/ROADMAP allocation and Architecture Kit implementation, proof production, and cutover remain excluded and unauthorized.",
+    "follow_up_needed": false
   }
 }
