@@ -12,14 +12,14 @@
 - `workflow_id`: `2026-08-05-v0-9-0-release-publication`
 - `workflow_kind`: `ai-context-maintenance`
 - `owner_skill`: `ai-context-governance`
-- `branch`: `codex/2026-08-05-v0-9-0-release-publication-cont-02`
+- `branch`: `codex/2026-08-05-v0-9-0-release-publication-cont-03`
 - `base_branch`: `main`
-- `branch_segment`: `2`
-- `status`: `in_progress`
-- `current_phase`: `pre-tag-ready`
+- `branch_segment`: `3`
+- `status`: `completed`
+- `current_phase`: `closed`
 - `artifact_root`: `.dev/workflows/2026-08-05-v0-9-0-release-publication`
 - `created_at`: `2026-08-05T22:26:56+08:00`
-- `updated_at`: `2026-08-06T00:44:03+08:00`
+- `updated_at`: `2026-08-06T07:05:42+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md`
 - `template_version`: `1.2.0`
 
@@ -66,18 +66,18 @@
 
 ## Resume Checkpoint
 
-- Last completed action: PR #130 passed five hosted checks and merged through `c14a326`; the sanctioned read-only merged-main pre-tag gate passed in 910.2 seconds and printed the owner-only annotated-tag command without executing it.
-- Current task: `REL090-001`
-- Exact next action: commit and integrate the second-segment pre-tag handoff, then ask the owner to create and push the exact annotated v0.9.0 tag.
-- Validation already completed: current-main critical gate passed before preparation; the final-code critical gate passed 49/49 in 951 seconds; attachment parity was confirmed against `ASM-20260804-001`; deterministic packages, clean install, and exact v0.8.0 upgrade passed. A duplicate post-rewrite fixture run was explicitly waived and replaced by independently verified tree, inventory, migration, archive, sidecar, and checksum equivalence. `ASM-20260805-004` concluded `healthy-with-followups` with no active finding. The seven pre-existing Project items read back Done/v0.9.0/Not yet published; CTX-004/#98 remains pending provider sync until merged-main read-back.
-- Git state: continuation branch created from clean merged `main@c14a326`.
-- Branch history and checkpoint handoffs: segment 1 merged by PR #130 through merge commit `c14a326`; segment 2 is active on `codex/2026-08-05-v0-9-0-release-publication-cont-02`.
-- Blockers or unresolved decisions: publication tag remains user-owned.
+- Last completed action: immutable tag `v0.9.0`, successful hosted publication run `31027306074`, four public assets, checksums, archive parity, published registry, and eight-item Project publication fields were read back and reconciled. The owner accepted the documented HIGH pre-tag ordering deviation and directed completion without tag mutation.
+- Current task: `REL090-001` completed.
+- Exact next action: none for v0.9.0; merge the terminal closeout PR and preserve the immutable tag and Release.
+- Validation already completed: current-main critical gate passed before preparation; final-code critical passed 49/49; deterministic packages, fresh clean install, and exact v0.8.0 upgrade passed; `ASM-20260805-004` had no active candidate finding; PR #130 and PR #131 each passed five hosted checks; the merged-main pre-tag gate passed; tag and publication phases passed; public ZIP/tar matched sidecars and passed parity; all eight Project items read published in v0.9.0. The owner-waived duplicate post-rewrite fixture run remains explicitly not executed.
+- Git state: terminal closeout branch created from clean `main@e4965cb`.
+- Branch history and checkpoint handoffs: segments 1 and 2 merged through PR #130 and PR #131; segment 3 owns terminal registry and workflow closeout.
+- Blockers or unresolved decisions: none. The accepted procedural deviation remains durable evidence, not a passing check.
 
 ## Branch Lifecycle
 
 | Segment | Branch | Base | Checkpoint Type | Commit | Remote / Target | Recorded At | Reason | Resume Branch / Action |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | 1 | `codex/2026-08-05-v0-9-0-release-publication` | `main@5d9af93` | merged checkpoint | `c14a3260cba7d0a9e2b67b73df9e221280d2d2ef` | PR #130 / `main` | `2026-08-06T00:27:06+08:00` | Cohesive CTX-004, provider-placement, candidate, and publication lifecycle | Completed; do not reuse the merged branch. |
-| 2 | `codex/2026-08-05-v0-9-0-release-publication-cont-02` | `main@c14a326` | active checkpoint continuation | — | local | `2026-08-06T00:27:30+08:00` | Merged candidate is a checkpoint, not workflow completion | Persist the passed pre-tag gate and owner tag handoff, then integrate through a continuation PR. |
-| 3 | pending hosted-closeout continuation branch | updated `main` after owner tag/publication | planned post-publication continuation | — | hosted release and main | — | Publication evidence and registries must be reconciled without reusing a merged segment | Create a fresh continuation branch from updated `main`; validate hosted artifacts, reconcile publication fields, and finalize through a pull request. |
+| 2 | `codex/2026-08-05-v0-9-0-release-publication-cont-02` | `main@c14a326` | merged checkpoint | `e4965cb232323affe3339747b0405b79b868cf75` | PR #131 / `main` | `2026-08-06T00:51:20+08:00` | Persist merged-main pre-tag evidence and owner handoff | Completed; its post-gate merge is retained as the accepted sequence deviation. |
+| 3 | `codex/2026-08-05-v0-9-0-release-publication-cont-03` | `main@e4965cb` | terminal closeout | pending closeout PR | hosted release and `main` | `2026-08-06T07:05:42+08:00` | Reconcile immutable publication, registry, Project fields, and workflow closure | Merge the terminal closeout PR; no further v0.9.0 action remains. |

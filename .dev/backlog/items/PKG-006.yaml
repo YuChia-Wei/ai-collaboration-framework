@@ -6,11 +6,11 @@ status: "resolved"
 priority: "HIGH"
 summary: "Give the pre-cutover bundled provider a stable profile-owned identity and location, separate analyzer/runtime capabilities, inactive-by-default delivery, and fail-closed reference-in-place activation evidence."
 created_at: "2026-08-05T09:58:52+08:00"
-updated_at: "2026-08-05T09:58:52+08:00"
+updated_at: "2026-08-06T07:05:42+08:00"
 release:
   target: "v0.9.0"
   completed_in: "v0.9.0"
-  published_in: null
+  published_in: "v0.9.0"
   target_scope: "bundled-dotnet-mechanical-validation-provider-relocation-and-activation"
   gate: "release-blocker"
 origin_refs:
@@ -49,4 +49,3 @@ inventory_notes:
   - "Issue #106 is the sole formal provider projection for PKG-006."
   - "Issues #115 and #116 are bounded implementation slices under #106 and are not separate v0.9.0 Included Work."
   - "PR #120 integrated this outcome by merge commit 3bb03993675bb404dc467b8da6ad702c01919705; source availability remains distinct from target activation."
-
