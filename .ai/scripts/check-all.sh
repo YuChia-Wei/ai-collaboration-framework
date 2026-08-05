@@ -115,8 +115,8 @@ resolve_python() {
 }
 
 if ! PYTHON_EXECUTABLE="$(resolve_python)"; then
-    echo "Python 3.11 or newer is required. Install source dependencies from requirements.txt or set AI_CONTEXT_PYTHON to a usable interpreter." >&2
-    exit 1
+    echo -e "${YELLOW}⊘ BLOCKED-BY-ENVIRONMENT${NC}: Python 3.11 or newer is required. Install source dependencies from requirements.txt or set AI_CONTEXT_PYTHON to a usable interpreter." >&2
+    exit 3
 fi
 export AI_CONTEXT_PYTHON="$PYTHON_EXECUTABLE"
 
@@ -136,6 +136,11 @@ REQUIRED_FAILED=0
 ADVISORY_SELECTED=0
 DEFERRED_CHECKS=0
 NOT_APPLICABLE=0
+BLOCKED_CHECKS=0
+REQUIRED_BLOCKED=0
+CHECK_TIMINGS=()
+BLOCKED_LIST=()
+TOTAL_ELAPSED_START=$SECONDS
 
 select_check() {
     local description=$1
@@ -181,6 +186,54 @@ record_unavailable_or_failed() {
     fi
 }
 
+record_timing() {
+    local elapsed=$1
+    local description=$2
+    local outcome=$3
+    CHECK_TIMINGS+=("${elapsed}|${outcome}|${description}")
+}
+
+# Return a reason only for unambiguous host/runtime failures. Keep this list
+# deliberately narrow: repository defects must continue to fail normally.
+classify_environment_block() {
+    local output=$1
+    case "$output" in
+        *'"outcome":"blocked-by-environment"'*|*"Python prerequisite blocked"*)
+            printf '%s\n' "python-prerequisite"
+            return 0
+            ;;
+        *"python: command not found"*|*"python3: command not found"*)
+            printf '%s\n' "missing-python"
+            return 0
+            ;;
+        *"dotnet: command not found"*|*"No .NET SDKs were found"*)
+            printf '%s\n' "missing-dotnet-sdk"
+            return 0
+            ;;
+        *"Could not resolve host"*|*"Name or service not known"*|*"Network is unreachable"*|*"No connection could be made"*)
+            printf '%s\n' "network-unavailable"
+            return 0
+            ;;
+        *"Read-only file system"*)
+            printf '%s\n' "read-only-filesystem"
+            return 0
+            ;;
+    esac
+    return 1
+}
+
+record_environment_block() {
+    local enforcement=$1
+    local description=$2
+    local reason=$3
+    echo -e "${YELLOW}⊘ BLOCKED-BY-ENVIRONMENT${NC}: $description ($reason)"
+    BLOCKED_CHECKS=$((BLOCKED_CHECKS + 1))
+    BLOCKED_LIST+=("${reason}|${description}")
+    if [ "$enforcement" == "required" ]; then
+        REQUIRED_BLOCKED=$((REQUIRED_BLOCKED + 1))
+    fi
+}
+
 # Function to run a check script
 run_check() {
     local script_name=$1
@@ -190,6 +243,8 @@ run_check() {
     local is_quick=$5
     shift 5
     local args=("$@")
+    local elapsed_start=$SECONDS
+    local output rc reason outcome
     select_check "$description" "$is_critical" "$is_quick" || return
     record_selected "$enforcement"
     
@@ -201,18 +256,33 @@ run_check() {
     if [ -f "$SCRIPT_DIR/$script_name" ]; then
         if [ -x "$SCRIPT_DIR/$script_name" ]; then
             [ "$enforcement" == "required" ] && REQUIRED_RUN=$((REQUIRED_RUN + 1))
-            if "$SCRIPT_DIR/$script_name" "${args[@]}" 2>&1; then
+            if output=$("$SCRIPT_DIR/$script_name" "${args[@]}" 2>&1); then
+                rc=0
+            else
+                rc=$?
+            fi
+            printf '%s\n' "$output"
+            if [ "$rc" -eq 0 ]; then
                 echo -e "${GREEN}✓ PASSED${NC}: $description"
                 PASSED_CHECKS=$((PASSED_CHECKS + 1))
+                outcome="passed"
+            elif reason=$(classify_environment_block "$output"); then
+                record_environment_block "$enforcement" "$description" "$reason"
+                outcome="blocked"
             else
                 record_unavailable_or_failed "$enforcement" "$description returned non-zero"
+                outcome="failed"
             fi
         else
             record_unavailable_or_failed "$enforcement" "$script_name is not executable"
+            outcome="unavailable"
         fi
     else
         record_unavailable_or_failed "$enforcement" "$script_name not found"
+        outcome="unavailable"
     fi
+
+    record_timing "$((SECONDS - elapsed_start))" "$description" "$outcome"
     
     echo -e "${BLUE}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
 }
@@ -223,6 +293,8 @@ run_command_check() {
     local enforcement=$3
     local is_critical=$4
     local is_quick=$5
+    local elapsed_start=$SECONDS
+    local output rc reason outcome
     select_check "$description" "$is_critical" "$is_quick" || return
     record_selected "$enforcement"
     [ "$enforcement" == "required" ] && REQUIRED_RUN=$((REQUIRED_RUN + 1))
@@ -232,12 +304,25 @@ run_command_check() {
     echo "  Command: $command_text"
     echo -e "${BLUE}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
 
-    if (cd "$PROJECT_ROOT" && eval "$command_text"); then
+    if output=$( (cd "$PROJECT_ROOT" && eval "$command_text") 2>&1); then
+        rc=0
+    else
+        rc=$?
+    fi
+    printf '%s\n' "$output"
+    if [ "$rc" -eq 0 ]; then
         echo -e "${GREEN}✓ PASSED${NC}: $description"
         PASSED_CHECKS=$((PASSED_CHECKS + 1))
+        outcome="passed"
+    elif reason=$(classify_environment_block "$output"); then
+        record_environment_block "$enforcement" "$description" "$reason"
+        outcome="blocked"
     else
         record_unavailable_or_failed "$enforcement" "$description returned non-zero"
+        outcome="failed"
     fi
+
+    record_timing "$((SECONDS - elapsed_start))" "$description" "$outcome"
 
     echo -e "${BLUE}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
 }
@@ -650,6 +735,7 @@ fi
 echo -e "Total Checks Run: ${CYAN}$TOTAL_CHECKS${NC}"
 echo -e "Passed: ${GREEN}$PASSED_CHECKS${NC}"
 echo -e "Failed: ${RED}$FAILED_CHECKS${NC}"
+echo -e "Blocked By Environment: ${YELLOW}$BLOCKED_CHECKS${NC}"
 echo -e "Skipped By Mode: ${YELLOW}$SKIPPED_CHECKS${NC}"
 echo -e "Advisory Warnings: ${YELLOW}$WARNINGS${NC}"
 echo -e "Deferred: ${YELLOW}$DEFERRED_CHECKS${NC}"
@@ -657,24 +743,58 @@ echo -e "Not Applicable: ${CYAN}$NOT_APPLICABLE${NC}"
 echo -e "Required Selected: ${CYAN}$REQUIRED_SELECTED${NC}"
 echo -e "Required Executed: ${CYAN}$REQUIRED_RUN${NC}"
 echo -e "Required Failed: ${RED}$REQUIRED_FAILED${NC}"
+echo -e "Required Blocked: ${YELLOW}$REQUIRED_BLOCKED${NC}"
 echo -e "Advisory Selected: ${CYAN}$ADVISORY_SELECTED${NC}"
 echo -e "Pass Rate: ${CYAN}${PASS_RATE}%${NC}"
+
+TOTAL_ELAPSED=$((SECONDS - TOTAL_ELAPSED_START))
+echo ""
+echo -e "${MAGENTA}──── Elapsed By Check (slowest first) ────${NC}"
+if [ ${#CHECK_TIMINGS[@]} -gt 0 ]; then
+    printf '%s\n' "${CHECK_TIMINGS[@]}" \
+        | sort -t'|' -k1,1nr \
+        | head -15 \
+        | while IFS='|' read -r seconds outcome description; do
+            printf "  %5ss  %-10s %s\n" "$seconds" "$outcome" "$description"
+        done
+fi
+echo -e "  ${CYAN}Total wall time: ${TOTAL_ELAPSED}s across $TOTAL_CHECKS selected checks${NC}"
+echo "AI_CONTEXT_CHECK_TIMING total_seconds=${TOTAL_ELAPSED} checks=${TOTAL_CHECKS} failed=${FAILED_CHECKS} blocked=${BLOCKED_CHECKS}"
+
+if [ ${#BLOCKED_LIST[@]} -gt 0 ]; then
+    echo ""
+    echo -e "${YELLOW}──── Blocked By Environment (do NOT remediate code) ────${NC}"
+    printf '%s\n' "${BLOCKED_LIST[@]}" | while IFS='|' read -r reason description; do
+        printf "  %-24s %s\n" "$reason" "$description"
+    done
+    echo -e "  ${CYAN}These are host/runtime conditions. Prepare the environment, then re-run.${NC}"
+fi
 
 echo ""
 echo -e "${BLUE}Completed at $(date '+%Y-%m-%d %H:%M:%S')${NC}"
 echo ""
 
 # Overall status
-if [ $FAILED_CHECKS -eq 0 ] && [ $WARNINGS -eq 0 ]; then
+if [ $FAILED_CHECKS -eq 0 ] && [ $BLOCKED_CHECKS -eq 0 ] && [ $WARNINGS -eq 0 ]; then
     echo -e "${GREEN}╔════════════════════════════════════════╗${NC}"
     echo -e "${GREEN}║    ✓ All Checks Passed Successfully!   ║${NC}"
     echo -e "${GREEN}╚════════════════════════════════════════╝${NC}"
     exit 0
-elif [ $FAILED_CHECKS -eq 0 ]; then
+elif [ $FAILED_CHECKS -eq 0 ] && [ $BLOCKED_CHECKS -eq 0 ]; then
     echo -e "${YELLOW}╔════════════════════════════════════════╗${NC}"
     echo -e "${YELLOW}║  ⚠ Passed with $WARNINGS Advisory Warning(s) ║${NC}"
     echo -e "${YELLOW}╚════════════════════════════════════════╝${NC}"
     exit 0
+elif [ $FAILED_CHECKS -eq 0 ]; then
+    echo -e "${YELLOW}╔════════════════════════════════════════╗${NC}"
+    echo -e "${YELLOW}║  ⊘ $BLOCKED_CHECKS check(s) blocked by environment  ║${NC}"
+    echo -e "${YELLOW}╚════════════════════════════════════════╝${NC}"
+    echo ""
+    echo -e "${YELLOW}Next Steps:${NC}"
+    echo "1. Do NOT modify repository code for these."
+    echo "2. Prepare the host prerequisite listed above."
+    echo "3. Re-run. Exit code 3 means unverified, never passed."
+    exit 3
 else
     echo -e "${RED}╔════════════════════════════════════════╗${NC}"
     echo -e "${RED}║    ✗ $FAILED_CHECKS Check(s) Failed!              ║${NC}"
