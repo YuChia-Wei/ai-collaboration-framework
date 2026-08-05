@@ -4,7 +4,7 @@ repository: "YuChia-Wei/ai-collaboration-prompts-dotnet-backend"
 migration_id: "github-live-SAG-002-2026-08-05"
 stage: "stage-b-read-back-complete"
 source_revision: "b9a6f0c76b8f45f5acd25f9592dfafc253f0404b"
-generated_at: "2026-08-05T10:31:24+08:00"
+generated_at: "2026-08-05T20:56:32+08:00"
 project:
   number: 3
   node_id: "PVT_kwHOAwvEG84Bez7w"
@@ -20,11 +20,11 @@ items:
     close_reason: "completed"
     project_item_id: "PVTI_lAHOAwvEG84Bez7wzg1RH2w"
     created_at: "2026-08-04T17:30:38Z"
-    updated_at: "2026-08-05T02:11:40Z"
+    updated_at: "2026-08-05T12:56:27Z"
     read_back:
-      verified_at: "2026-08-05T10:31:24+08:00"
+      verified_at: "2026-08-05T20:56:32+08:00"
       title_matches: true
       markers_match: true
       labels_match: true
       state_matches: true
-      notes: "Issue #118 is the sole canonical provider projection for SAG-002 and reads back closed as completed with the exact canonical title and markers plus scope:framework, kind:enabler, and created-by:codex labels. Project #3 item PVTI_lAHOAwvEG84Bez7wzg1RH2w reads back Status Done, Priority P1 High, Owner review Approved, Target release v0.9.0, and Published in Not yet published. The live 待發布 view filter is status:Done reason:completed -target-release:Unassigned published-in:\"Not yet published\", so SAG-002 is eligible exactly once. Proposal #94 and dependent slice #119 intentionally retain unset release fields. Merged PR #122 now uses Refs #94, Refs #118, and Refs #119 rather than closing keywords. Allocation PR #125 passed all five hosted gates and merged by merge commit 6eeed2b90054451d962a842decaefdee7fa96693 with parents f4018e6 and de16ca4. The linked Issue content title is canonical, while the Project Title text value still shows the former title; GitHub rejected direct synchronization because Title can be updated only for DraftIssues. The release and view fields are exact, and no destructive remove/re-add was attempted. This projection does not authorize package generation, tagging, GitHub Release creation, or publication."
+      notes: "Issue #118 is the sole canonical provider projection for SAG-002 and reads back closed as completed with the exact canonical title and markers plus scope:framework, kind:enabler, and created-by:codex labels. Project #3 item PVTI_lAHOAwvEG84Bez7wzg1RH2w reads back Status Done, Priority P1 High, Owner review Approved, Target release v0.9.0, and Published in Not yet published. The live 待發布 view filter is status:Done reason:completed -target-release:Unassigned published-in:\"Not yet published\", so SAG-002 is eligible exactly once. Proposal #94 and dependent slice #119 intentionally retain unset release fields. Merged PR #122 now uses Refs #94, Refs #118, and Refs #119 rather than closing keywords. Allocation PR #125 passed all five hosted gates and merged by merge commit 6eeed2b90054451d962a842decaefdee7fa96693 with parents f4018e6 and de16ca4. The linked Issue content title is canonical, while the Project Title text value still shows the former title; GitHub rejected direct synchronization because Title can be updated only for DraftIssues. The release and view fields are exact, and no destructive remove/re-add was attempted. On 2026-08-05, after explicit owner authorization, GitHub formally bound dependent Issue #119 as the sole sub-issue of canonical Issue #118. Read-back confirms #118 has subIssues totalCount 1 containing closed completed #119, #119 parent is #118, and Proposal #94 remains without a formal parent or sub-issues. This corrects Project relationship-derived progress without changing allocation, state, or publication. The earlier infer_sub_issues: false policy prohibited automatic inference; it did not prohibit this explicit owner-approved relation. This projection does not authorize package generation, tagging, GitHub Release creation, or publication."
