@@ -9,7 +9,7 @@
   "title": "Declare owning-skill bindings and static reachability",
   "status": "completed",
   "created_at": "2026-08-05T01:34:40+08:00",
-  "updated_at": "2026-08-05T08:37:17+08:00",
+  "updated_at": "2026-08-05T09:11:11+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-5.6-terra",
   "reasoning_effort": "xhigh",
@@ -58,7 +58,7 @@
       "Repository validation scripts deferred by explicit owner direction"
     ],
     "last_completed_step": "Final combined-source review on the continuation branch confirmed all 18 active roles retain exact owning-skill bindings, projection parity, fail-closed validator source, and SAG-001 selective-adapter policy after #92 integration.",
-    "next_action": "Preserve the verified reachability contract through hosted pull-request checks, merge-commit integration, and merged-main read-back. Repository validation scripts remain a separate owner-arranged review."
+    "next_action": "None. Repository validation scripts remain a separate owner-arranged review, and v0.9.0 release work remains outside this workflow."
   },
   "results": {
     "summary": "All 18 active SAG-001 role contracts now have canonical owning-skill role_bindings with explicit applicability, kind, active-status expectation, and mandatory load obligation. The central table is a parity-checked derived projection, concrete test implementation binds to slice-implementer, and deterministic validation rejects ownerless, dangling, duplicate, malformed, stale, missing, or conflicting declarations while permitting valid multi-owner bindings.",
@@ -78,10 +78,11 @@
       "git diff --check (passed; root and delegated workers)",
       "Independent source-only owning-skill reachability audit (pass-for-manual-review; no findings)",
       "Final combined-source reachability audit after #92 closeout main (passed; exact 18 roles and selective adapters preserved)",
+      "PR #122 final hosted run passed all five required checks; merge-commit ancestry and merged-main artifact read-back at 0a9089f passed",
       "Repository validation scripts and test suites not run by explicit owner direction"
     ],
-    "finding_status": "verified-source-awaiting-hosted-integration",
-    "residual_risk": "The contract and fixtures have not been executed through repository validators or test suites in this workflow; that evidence remains pending in the separately arranged validation review. Hosted checks and merged-main read-back remain pending lifecycle facts.",
-    "follow_up_needed": true
+    "finding_status": "addressed",
+    "residual_risk": "The contract and fixtures have not been executed through local repository validators or test suites by explicit owner direction. v0.9.0 packaging, tagging, release configuration, and publication remain separately governed.",
+    "follow_up_needed": false
   }
 }

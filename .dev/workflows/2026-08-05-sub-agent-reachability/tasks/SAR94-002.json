@@ -7,9 +7,9 @@
   "workflow_id": "2026-08-05-sub-agent-reachability",
   "owner_skill": "ai-context-governance",
   "title": "Record role execution and no-delegation inline parity",
-  "status": "in_progress",
+  "status": "completed",
   "created_at": "2026-08-05T01:34:40+08:00",
-  "updated_at": "2026-08-05T09:00:09+08:00",
+  "updated_at": "2026-08-05T09:11:11+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-5.6-terra",
   "reasoning_effort": "xhigh",
@@ -69,8 +69,8 @@
       "JSON/YAML syntax parsing where applicable",
       "Repository validation scripts deferred by explicit owner direction"
     ],
-    "last_completed_step": "Diagnosed PR #122's second hosted run: package candidate, both prerequisite contracts, and Ubuntu quick gate passed; read-only GWT-025 alone showed that a duplicate binding still credited its first declaration. Commit 4fd7ed9 now excludes only duplicated role IDs from valid ownership.",
-    "next_action": "Push 4fd7ed9 and the records checkpoint to PR #122, require a fresh all-green hosted result, then integrate with merge-commit topology and read back merged main."
+    "last_completed_step": "PR #122 final head e2757e2 passed all five required hosted checks, merged by merge commit to main@0a9089f, and passed merged-main ancestry, combined artifact, and Issue-closeout read-back.",
+    "next_action": "None. Local validation-script review and v0.9.0 release work remain separately owner-arranged."
   },
   "results": {
     "summary": "Implemented one canonical provider-neutral role_execution contract with final/current disposition, exact role/owner/stage identity, bounded input/output/permissions/stops, genuine per-attempt provenance, deterministic direct-by-default delegation gates, bounded retry and fallback, and named final integration ownership. Owning skills produce records; software-development-orchestrator only aggregates them. BDD remains design-only, slice-implementer owns separately authorized concrete tests, and no-delegation runtimes use the same contract inline without fake child evidence.",
@@ -124,13 +124,15 @@
       "Independent LOW code-review preflight-ordering clarification follow-up (passed)",
       "Incremental origin/main@3e200fd ancestry and #121 records-only delta read-back (passed)",
       "PR #122 first hosted run: Build and validate candidate plus Windows prerequisite passed; Ubuntu prerequisite, read-only governance, and Ubuntu quick gate failed from the same wrapper/validator synchronization drift",
-      "Manual exact comparison of the ten wrapper-reference additions and the v1.3 role_execution expectation in a1741fb (passed; hosted rerun pending)",
+      "Manual exact comparison of the ten wrapper-reference additions and the v1.3 role_execution expectation in a1741fb (passed; later confirmed by the final all-green hosted run)",
       "PR #122 second hosted run: Build and validate candidate, Ubuntu prerequisite, Windows prerequisite, and Ubuntu quick gate passed; read-only governance GWT-025 failed",
-      "Manual duplicate-binding fail-closed return-path review for 4fd7ed9 (passed; fresh all-green hosted rerun pending)",
+      "Manual duplicate-binding fail-closed return-path review for 4fd7ed9 (passed)",
+      "PR #122 final hosted run: AI Context Governance 30965252258, Package AI Context Candidate 30965252246, and Portable AI Context Gates 30965252383 all passed; Ubuntu quick gate passed on its first final-head attempt",
+      "PR #122 merge-commit ancestry and merged-main combined-artifact read-back at 0a9089f passed; Issues #94, #118, and #119 closed completed",
       "Repository validators, fixture tests, test suites, and check-all not run by explicit owner direction"
     ],
-    "finding_status": "hosted-fixes-prepared-awaiting-all-green-rerun",
-    "residual_risk": "The fixture-local oracle and repository validators have not been executed locally. Two hosted runs are retained as failed/corrected evidence; a fresh all-green result, merge-commit integration, and merged-main read-back remain pending lifecycle facts.",
-    "follow_up_needed": true
+    "finding_status": "addressed",
+    "residual_risk": "The fixture-local oracle and repository validators have not been executed locally by explicit owner direction. v0.9.0 packaging, tagging, release configuration, and publication remain excluded and separately governed.",
+    "follow_up_needed": false
   }
 }
