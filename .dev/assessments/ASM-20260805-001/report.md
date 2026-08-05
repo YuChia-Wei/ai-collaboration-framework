@@ -12,25 +12,25 @@
 - `assessment_id`: `ASM-20260805-001`
 - `assessment_type`: `ai-context-verification`
 - `owner_skill`: `ai-context-auditor`
-- `status`: `draft`
+- `status`: `final`
 - `audit_date`: `2026-08-05`
 - `created_at`: `2026-08-05T07:34:57+08:00`
-- `updated_at`: `2026-08-05T07:34:57+08:00`
+- `updated_at`: `2026-08-05T08:37:17+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-auditor/templates/ai-context-audit-report-template.md`
 - `template_version`: `2.1.0`
 - `repository`: `C:/Users/h4227/.codex/worktrees/b3b5/ai-collaboration-prompts-dotnet-backend`
-- `subject_branch`: `codex/2026-08-05-sub-agent-reachability`
-- `subject_commit`: `5dc854749f39397058d95bace415cccab8c6300e`
+- `subject_branch`: `codex/2026-08-05-sub-agent-reachability-continuation`
+- `subject_commit`: `57369e1f3a9ad2ac80bfc841f74e06677832bfe7`
 - `previous_assessment`: [`ASM-20260804-002`](../ASM-20260804-002/report.md)
 - `workflow_refs`: [`2026-08-05-sub-agent-reachability`](../../workflows/2026-08-05-sub-agent-reachability/workflow.yaml)
 
 ## Executive Summary
 
-- Overall assessment: The pre-integration #94 source now expresses complete static owning-skill reachability, direct-by-default role execution, evidence-bound delegation, explicit unavailable/not-applicable semantics, BDD-to-concrete-test ownership, and no-delegation inline parity. Independent review found two MEDIUM execution gaps; both were corrected and the follow-up review found no new defect.
-- Overall score: `N/A` while draft
-- Decision: preliminary `healthy-with-followups`; final decision is deferred until #92 is integrated first and the combined continuation commit is read back.
-- Primary strengths: exact 18-role owner mapping, preserved SAG-001 selective-adapter policy, provider-neutral final-attempt provenance, explicit retry authorization freshness, and independently reviewed #92 sibling-section compatibility.
-- Primary risks: this draft has no executed repository validator or fixture-test evidence; its subject still contains the duplicate moved-example path patch that must be omitted when #94 continues from #92-integrated `main`.
+- Overall assessment: The #92-integrated and #94-replayed source expresses complete static owning-skill reachability, direct-by-default role execution, evidence-bound delegation, explicit unavailable/not-applicable semantics, BDD-to-concrete-test ownership, no-delegation inline parity, and non-overlapping effective-rule packet consumption. Three independent final passes found no active correctness or compatibility defect.
+- Overall score: `9/10`
+- Decision: `healthy-with-followups`
+- Primary strengths: exact 18-role owner mapping, preserved SAG-001 selective-adapter policy, provider-neutral final-attempt provenance, explicit retry authorization freshness, and source-reviewed coexistence with #92 engineering identity, target-effective packets, moved examples, and CI synchronization.
+- Primary risks: no #94 repository validator or fixture test has been executed locally; the role-execution oracle remains fixture-local, while hosted checks, merge-commit integration, and merged-main read-back are later lifecycle facts.
 
 `ASM-20260804-002` is evidence for the original gap and traceability only. The Issue #94 owner decision ledger supplies design adoption and implementation authorization; this assessment supplies neither.
 
@@ -41,7 +41,7 @@
 - Baseline findings `ASM-20260804-002#AIC-003` and `ASM-20260804-002#AIC-004` traceability.
 - Issue #94 decisions D94-Q1 through D94-Q7 and bounded Issues #118/#119.
 - Canonical role bindings, derived routing projection, provider-neutral role execution contract, owning-skill production, orchestrator aggregation, BDD/test ownership, no-delegation behavior, and acceptance fixture/oracle source.
-- Read-only compatibility comparison against #92 commits through RPB-006 `08f24eb`.
+- Combined-state compatibility after #92 implementation PR #120 merge `3bb03993675bb404dc467b8da6ad702c01919705` and records-only closeout PR #121 merge `3e200fd5e164ba363c3cde0c50219e18f0ca14de`.
 
 ### Default Exclusions
 
@@ -76,6 +76,10 @@
 - The execution review identified two MEDIUM issues: dynamic-loading prose contradicted direct-by-default execution, and attempt-3+ authorization freshness was not distinguishable from reused authorization.
 - The workflow corrected the canonical prose and contract, implemented the freshness comparison in the fixture-local oracle, and added a negative reused-authorization scenario.
 - The same execution reviewer re-read the four-file correction and returned `pass-for-manual-review`, confirming both findings resolved and no new correctness defect.
+- After #92 merged first, three independent final passes reviewed static reachability, provider-neutral execution, and the combined shared surfaces at continuation commit `7154b67`.
+- The compatibility pass identified one LOW ordering ambiguity in `code-reviewer`; commit `afdfcbd` made the applicable effective-rule preflight explicit before profile references, and the same reviewer confirmed the ambiguity removed without redefining #92 semantics.
+- The unpushed continuation was then rebased onto final #92 closeout main `3e200fd`. The #121 delta changes only five #92 workflow/index records; canonical AI context, standards, and guides remain tree-equivalent to the independently reviewed source.
+- A final incremental independent read-back at subject `57369e1` confirmed its ancestry from `origin/main@3e200fd`, an empty #121 delta across `.ai/**`, `.dev/standards/**`, and `.dev/guides/**`, and continued coexistence of role bindings/execution, effective-rule consumption, BDD/test ownership, and moved-example paths.
 
 ### Delegation
 
@@ -86,17 +90,17 @@
 
 | Tool / generated view | Source revision or input digest | Freshness / dirty state | Scope and exclusions | Unsupported relationships | File-backed fallback |
 | --- | --- | --- | --- | --- | --- |
-| Git diff, patch ID, and merge-tree | #94 through `5dc8547`; #92 through `08f24eb` | current local/remote refs at draft creation | overlap and duplicate-patch analysis only | cannot prove future integrated-main behavior or runtime execution | direct canonical file and workflow evidence read-back |
+| Git diff, ancestry, patch ID, and merged-source read-back | #94 subject `57369e1`; #92 implementation merge `3bb0399`, closeout merge `3e200fd`, and head `317c541` | clean rebased continuation subject; current refs at finalization | overlap, duplicate-patch, boundary, schema, skill, validator source, and records-only closeout analysis | cannot prove runtime execution or future hosted #94 results | direct canonical file and workflow evidence read-back |
 
 ## Repository Context Inventory
 
 | Surface | Files / Size | Audience | Scope | State | Notes |
 | --- | ---: | --- | --- | --- | --- |
-| Active role inventory | 18 manifests | agents | canonical roles | source-reviewed | 12 slice, 4 review, 1 problem-frame, 1 init |
-| Owning skills | 4 `role_bindings` owners | agents | canonical routing | source-reviewed | exact path, ID, applicability, and mandatory load |
-| Runtime execution | shared contract plus owning-skill references | agents | canonical execution | source-reviewed after correction | direct default; genuine delegated evidence only |
+| Active role inventory | 18 manifests | agents | canonical roles | final source-reviewed | 12 slice, 4 review, 1 problem-frame, 1 init |
+| Owning skills | 4 `role_bindings` owners | agents | canonical routing | final source-reviewed | exact path, ID, applicability, and mandatory load |
+| Runtime execution | shared contract plus owning-skill references | agents | canonical execution | final source-reviewed | direct default; genuine delegated evidence only |
 | Acceptance source | validator/oracle and bounded fixtures | maintainers / CI | source governance | not executed | negative reused-authorization case added |
-| #92 shared surfaces | schema and applicable skill YAML siblings | agents | sequential integration | compatible before integration | final combined read-back pending |
+| #92 shared surfaces | identity/effective-state schema, ten skill siblings, moved examples, CI synchronization | agents / maintainers | integrated baseline | compatible in combined subject | no semantic overwrite found |
 
 ## Strengths
 
@@ -108,13 +112,13 @@
 
 ## Findings
 
-No unresolved, recurring, or regressed finding is allocated at this draft checkpoint. Two MEDIUM review observations were corrected before the subject commit and independently re-reviewed as resolved. Final combined-state verification remains pending and may still produce findings.
+No unresolved, recurring, or regressed finding remains at the final source-only checkpoint. Two MEDIUM pre-integration observations and one LOW combined-state clarity observation were corrected before the final subject commit and independently re-reviewed as resolved.
 
 ## Baseline And Skill Comparison
 
 ### Confirmed
 
-- `ASM-20260804-002#AIC-003` is source-level resolved for the #94-owned pre-integration surfaces.
+- `ASM-20260804-002#AIC-003` is source-level resolved in the #92-integrated combined state.
 - `ASM-20260804-002#AIC-004` evidence and workflow traceability remain preserved without adopting the assessment as design or authorization.
 - D94-Q1 through D94-Q7 are represented without merging, deleting, or silently changing the seven owner decisions.
 
@@ -122,13 +126,14 @@ No unresolved, recurring, or regressed finding is allocated at this draft checkp
 
 - Authorization freshness now has a stable, testable identity across attempts.
 - Generic-worker delegation is explicitly gated rather than implied by dynamic loading.
-- #92's effective-rule-consumption siblings are source-compatible with #94 role sections before sequential integration.
+- #92's effective-rule-consumption siblings, moved examples, identity/effective-state contracts, and CI synchronization are source-compatible with #94 role sections after sequential integration.
+- Code-review preflight ordering is explicit without transferring resolver or role ownership.
 
 ### Downgraded Or Deferred
 
 - Validator and fixture execution evidence is deferred by explicit owner direction and is not counted as passed.
 - Hosted checks, `--no-ff` integration, and merged-main read-back are later lifecycle facts.
-- Final status is deferred until #92 reaches `main` and #94 is replayed without duplicate patch `9240f3d`.
+- Hosted #94 checks, PR merge, and merged-main read-back remain integration evidence rather than assessment findings.
 
 ### Overturned
 
@@ -141,23 +146,22 @@ No unresolved, recurring, or regressed finding is allocated at this draft checkp
 | --- | --- | --- |
 | Static owning-skill reachability | passed-source-review | all 18 active roles, exact canonical owners, projection parity, selective adapters |
 | Provider-neutral execution semantics | passed-source-review-after-fix | two MEDIUM findings corrected; follow-up found no new defect |
-| #92 compatibility | passed-for-sequential-integration | no semantic overlap through RPB-006; duplicate path patch identified |
+| #92 compatibility | passed-combined-source-review | no semantic overwrite after PR #120; all ten sibling consumers, moved paths, and role semantics coexist |
 | Diff whitespace | passed | `git diff --check` and staged equivalent produced no output |
 | Repository validators / fixtures / tests | deferred-with-owner | explicitly not run; no passing execution claim |
-| Combined post-#92 state | pending | requires #92-first `main` integration and #94 continuation read-back |
+| Combined post-#92 state | passed-source-review | subject `57369e1` is based on final closeout merge `3e200fd`; duplicate `9240f3d` omitted while its #92 path fix and destination files remain |
 
 ### Skipped Validation
 
 - `check-all`, repository validation scripts, fixture tests, and test suites were not run by explicit owner direction.
-- Hosted GitHub checks and merged-main read-back are not available before the pull request and integration stages.
+- #94 hosted GitHub checks and merged-main read-back are not available before the pull request and integration stages.
 
 ## Recommended Action Order
 
-1. Keep this assessment draft and the current correction commit local while #92 finishes RPB-007, independent audit, and `main` integration.
-2. Create a #94 continuation branch from updated `main`; replay `9880255`, `a80d6a6`, `f9f6a04`, `99a9de2`, and `5dc8547`, while omitting duplicate `9240f3d`.
-3. Read back #92 boundary, effective-rule-consumption, moved-example, and governance provenance changes together with all #94 role semantics.
-4. Update this assessment's subject commit and finalize it only if the combined state has no unresolved finding.
-5. Push and open the bounded PR, process hosted evidence, integrate using the owner-selected `--no-ff` topology, then read back merged `main`.
+1. Reconcile this final assessment into the active governance workflow while keeping `SAR94-002` active for integration.
+2. Push the continuation branch and open the bounded #94/#118/#119 pull request without release packaging.
+3. Process hosted checks without rerunning the owner-deferred local scripts.
+4. Integrate using the owner-selected merge-commit / `--no-ff` topology, then read back merged `main` and Issue state.
 
 ## Deferred Items
 
@@ -172,6 +176,8 @@ No unresolved, recurring, or regressed finding is allocated at this draft checkp
 git diff / git show / git status / git log source read-back
 git patch-id --stable comparison for #92 98484bd and #94 9240f3d
 git merge-tree read-only overlap comparison
+git ancestry and destination-file read-back after #92 PR #120 and records-only PR #121
+git rebase of the unpushed continuation onto final origin/main with duplicate 9240f3d omitted
 git diff --check
 gh auth status outside the sandbox
 ```
@@ -181,12 +187,12 @@ No repository validation script, fixture test, test suite, or `check-all` comman
 ### Notes
 
 - GitHub CLI authentication is valid when checked outside the sandbox; an earlier sandboxed result was discarded as environment-invalid evidence.
-- The current draft subject includes local duplicate patch `9240f3d`. It must not be published; the final subject will be the post-#92 continuation commit without that patch.
+- Duplicate patch commit `9240f3d` is not an ancestor of the final subject. Its three path changes and destination files are present through #92 commit `98484bd`, implementation merge `3bb0399`, and final closeout main `3e200fd`.
 
 ## Lifecycle Handoff
 
 - Assessment path: `.dev/assessments/ASM-20260805-001/report.md`
-- Stable finding references: none at draft checkpoint
+- Stable finding references: none; no active finding remains
 - Remediation owner: `ai-context-governance`
 - Related remediation workflow: `2026-08-05-sub-agent-reachability`
 - Verification assessment: `ASM-20260805-001`

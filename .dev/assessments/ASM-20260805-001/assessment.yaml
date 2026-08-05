@@ -10,20 +10,20 @@ commit_search_id: "ASM-20260805-001"
 assessment_type: "ai-context-verification"
 title: "Owning-Skill Reachability And Role Execution Remediation Verification"
 owner_skill: "ai-context-auditor"
-status: "draft"
+status: "final"
 report: "report.md"
-artifact_branch: "codex/2026-08-05-sub-agent-reachability"
+artifact_branch: "codex/2026-08-05-sub-agent-reachability-continuation"
 base_branch: "main"
 created_at: "2026-08-05T07:34:57+08:00"
-updated_at: "2026-08-05T07:34:57+08:00"
+updated_at: "2026-08-05T08:37:17+08:00"
 template_source: ".dev/assessments/templates/assessment-locator-template.yaml"
 template_version: "1.0.0"
 report_template_source: ".ai/assets/skills/ai-context-auditor/templates/ai-context-audit-report-template.md"
 report_template_version: "2.1.0"
 subject_ref:
   repository: "C:/Users/h4227/.codex/worktrees/b3b5/ai-collaboration-prompts-dotnet-backend"
-  branch: "codex/2026-08-05-sub-agent-reachability"
-  commit: "5dc854749f39397058d95bace415cccab8c6300e"
+  branch: "codex/2026-08-05-sub-agent-reachability-continuation"
+  commit: "57369e1f3a9ad2ac80bfc841f74e06677832bfe7"
 scope:
   included:
     - "ASM-20260804-002#AIC-003 and ASM-20260804-002#AIC-004 traceability"
@@ -36,7 +36,7 @@ scope:
     - ".ai/assets/skills/** role_bindings, role_execution, BDD/test ownership, and acceptance fixtures"
     - ".ai/scripts/validate-ai-context.py and bounded role-reachability test source"
     - ".dev/standards and .dev/guides sub-agent taxonomy wording changed by the workflow"
-    - "Read-only compatibility comparison with #92 through RPB-006 commit 08f24eb"
+    - "Combined-state compatibility after #92 implementation PR #120 merge 3bb03993675bb404dc467b8da6ad702c01919705 and records-only closeout PR #121 merge 3e200fd5e164ba363c3cde0c50219e18f0ca14de"
   excluded:
     - "Issue #92 rule/provider/effective-state implementation and provider-root work"
     - "Issue #93 target ignore/install/upgrade drift and AICDISC-ADAPTER-001"
@@ -54,7 +54,6 @@ relations:
   backlog_refs: []
   adr_refs: []
 resume:
-  last_completed_action: "Recorded three independent source-only reviews and a follow-up review that confirmed both execution findings resolved at commit 5dc854749f39397058d95bace415cccab8c6300e."
-  next_action: "After #92 integrates into main, update the subject to the #94 continuation commit, verify the combined shared surfaces, and finalize only if no recurring or regressed finding remains."
-  blockers:
-    - "The agreed #92-first integration has not yet reached main, so combined-state verification is not available."
+  last_completed_action: "Verified the #92-integrated and #94-replayed combined source at 57369e1f3a9ad2ac80bfc841f74e06677832bfe7 with three independent source-only passes, one ordering-clarity follow-up, and a records-only #121 delta read-back; no active finding remains."
+  next_action: "ai-context-governance reconciles this final assessment into the workflow, then hosted checks, merge-commit integration, and merged-main read-back remain separate lifecycle facts."
+  blockers: []

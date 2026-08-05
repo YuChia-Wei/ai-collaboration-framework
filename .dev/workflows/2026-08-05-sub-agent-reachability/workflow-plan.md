@@ -6,14 +6,14 @@
 - `workflow_kind`: `ai-context-maintenance`
 - `owner_skill`: `ai-context-governance`
 - `orchestrating_skill`: `software-development-orchestrator`
-- `branch`: `codex/2026-08-05-sub-agent-reachability`
+- `branch`: `codex/2026-08-05-sub-agent-reachability-continuation`
 - `base_branch`: `main`
-- `branch_segment`: `1`
+- `branch_segment`: `2`
 - `status`: `in_progress`
-- `current_phase`: `sequential-integration-wait`
+- `current_phase`: `integration`
 - `artifact_root`: `.dev/workflows/2026-08-05-sub-agent-reachability`
 - `created_at`: `2026-08-05T01:34:40+08:00`
-- `updated_at`: `2026-08-05T07:36:38+08:00`
+- `updated_at`: `2026-08-05T08:37:17+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md`
 - `template_version`: `1.2.0`
 
@@ -32,7 +32,7 @@
 - Owner decision ledger: `https://github.com/YuChia-Wei/ai-collaboration-prompts-dotnet-backend/issues/94#issuecomment-5182504544`
 - Implementation issues: `#118`, `#119`
 - Remediation report: `.dev/workflows/2026-08-05-sub-agent-reachability/reports/remediation-report.md`
-- Verification assessment: [`ASM-20260805-001`](../../assessments/ASM-20260805-001/assessment.yaml) is a source-only draft at subject commit `5dc854749f39397058d95bace415cccab8c6300e`; it remains non-final until #92-first integration and combined-state read-back are assessed. Validation-script execution remains separately owner-arranged.
+- Verification assessment: [`ASM-20260805-001`](../../assessments/ASM-20260805-001/assessment.yaml) is final at subject commit `57369e1f3a9ad2ac80bfc841f74e06677832bfe7`; it records the #92-integrated combined-source read-back. Validation-script execution remains separately owner-arranged.
 - Tasks: `.dev/workflows/2026-08-05-sub-agent-reachability/tasks/`
 
 ## Owner Decision Baseline
@@ -60,8 +60,9 @@
 2. Bounded issue decomposition and duplicate search — completed; #118 and #119 are the smallest coherent slices and #119 depends on #118.
 3. Workflow bootstrap — completed on the dedicated branch from `origin/main@d8580df4516155ff7b1a139d9a064a8b0d4b2019` in commit `9880255`.
 4. Static owning-skill reachability remediation — `SAR94-001` / #118 completed with repository validation scripts deferred by explicit owner direction.
-5. Runtime selection, execution evidence, and inline parity remediation — implementation completed; three independent source-only reviews found the static reachability and #92 compatibility surfaces sound, then identified two MEDIUM execution-contract gaps which were corrected and independently re-reviewed as resolved.
-6. Sequential integration handoff — in progress; #92 must integrate its complete workflow first. This workflow will then continue from updated `main`, retain the #94 role commits and review corrections, and omit the duplicate moved-example path patch already carried by #92.
+5. Runtime selection, execution evidence, and inline parity remediation — completed; three independent source-only reviews found the static reachability and #92 compatibility surfaces sound, then identified two MEDIUM execution-contract gaps which were corrected and independently re-reviewed as resolved.
+6. #92-first sequential transport and combined verification — completed; #92 implementation PR #120 and records-only closeout PR #121 reached `main`, #94 was replayed from `main@3e200fd5e164ba363c3cde0c50219e18f0ca14de`, and duplicate patch `9240f3d` was omitted. Three final source-only passes and an ordering-clarity follow-up found no active defect.
+7. Pull request, hosted evidence, merge-commit integration, and merged-main read-back — in progress; local repository validators, fixture tests, test suites, and `check-all` remain deferred by owner direction.
 
 ## Proportionality And Delivery Decisions
 
@@ -74,25 +75,27 @@
 
 ## Parallel Work Coordination
 
-- Concurrent #92 task `019fcd65-1745-78f3-8879-b5dc45ec4b30` owns rule/provider/effective-state sections and `loaded_rule_ids` resolver evidence.
+- Concurrent #92 task `019fcd65-1745-78f3-8879-b5dc45ec4b30` owned rule/provider/effective-state sections and `loaded_rule_ids` resolver evidence; it is fully closed with no further source writes pending.
 - This workflow owns `.ai/SUB-AGENT-SYSTEM.MD`, all `role_bindings` and `role_execution` sections, direct/delegated/unavailable/not-applicable semantics, test-design-to-slice-implementation mapping, no-delegation parity, and their fixtures.
-- #92 kept `.ai/SUB-AGENT-SYSTEM.MD`, the reachability validator/fixtures, and all #94-owned role sections untouched. Its RPB-006 commit `08f24eb` added only sibling `effective_rule_consumption` sections and independent schema/test coverage; an independent three-way source review found no textual or semantic conflict with #94 commits `a80d6a6` and `f9f6a04`.
-- #92 commit `98484bd` and local #94 commit `9240f3d` have the same stable patch ID `ac99550ac151a4ab4fe92ced69f8c4c15d7a8a56` for the moved-example validator paths. Because the destination files arrive through #92, the owner workflows selected #92-first transport: do not publish the duplicate #94 patch, then omit it when replaying #94 from updated `main`.
-- #94 is the single writer for the universal role-taxonomy wording in `.dev/standards/rationale/skill-sub-agent-boundary-rationale.MD`, `.dev/standards/AI-CONTEXT-BOUNDARY.md`, and the three named human guides. #92 commit `69603f1` changes different `AI-CONTEXT-BOUNDARY.md` sections; final integration must read back both semantic sets after the branches meet.
+- #92 kept `.ai/SUB-AGENT-SYSTEM.MD`, the reachability validator/fixtures, and all #94-owned role sections untouched. Its integrated RPB-006 changes add only sibling `effective_rule_consumption` sections and independent schema/test coverage; combined-state source review found no textual or semantic conflict with rebased #94 commits `46e7bd4` and `14a256e`.
+- #92 commit `98484bd` and discarded local #94 commit `9240f3d` have the same stable patch ID `ac99550ac151a4ab4fe92ced69f8c4c15d7a8a56` for the moved-example validator paths. The continuation is based on #92 closeout `main@3e200fd5e164ba363c3cde0c50219e18f0ca14de`; `9240f3d` is not an ancestor, while the three destination files and path fix remain through #92.
+- #94 remained the single writer for the universal role-taxonomy wording in `.dev/standards/rationale/skill-sub-agent-boundary-rationale.MD`, `.dev/standards/AI-CONTEXT-BOUNDARY.md`, and the three named human guides. Combined read-back retained both #92 engineering-identity/target-effective semantics and #94 sub-agent classification/placement semantics.
+- #92 implementation PR #120 merged at `3bb03993675bb404dc467b8da6ad702c01919705`; records-only PR #121 merged at `3e200fd5e164ba363c3cde0c50219e18f0ca14de`. The #121 delta changes only five #92 workflow/index records and no canonical `.ai`, `.dev/standards`, or `.dev/guides` surface.
 - This workflow will not edit #92-owned rule/provider/effective-state sections, target provider configuration, or `loaded_rule_ids` semantics.
 
 ## Resume Checkpoint
 
-- Last completed action: Corrected both MEDIUM source-review findings: dynamic roles now apply inline by default unless delegation gates and evidence pass, and attempt 3+ authorization freshness is defined, enforced, and covered by a reused-authorization negative fixture. The same independent reviewer then returned `pass-for-manual-review` with no new finding.
-- Current task: `SAR94-002` remains `in_progress` for sequential integration and final verification. `SAR94-001` is completed and its independent source-only reachability audit returned `pass-for-manual-review` with no finding.
-- Exact next action: Wait for #92 to complete RPB-007, its independent assessment, and `main` integration. Then create a continuation branch from updated `main`, replay #94 commits and this review correction while skipping duplicate patch `9240f3d`, and perform the final combined read-back before opening the required PR.
-- Validation already completed: Git branch/base and GitHub issue/comment read-back; earlier syntax parsing; root manual reviews; `git diff --check`; independent source-only reachability, execution, and cross-workflow compatibility reviews; and a source-only follow-up that resolved both execution findings. No repository validation script, fixture test, test suite, or `check-all` run has been performed.
-- Git state: branch `codex/2026-08-05-sub-agent-reachability`; remote checkpoint through `99a9de2`; local duplicate patch `9240f3d` must not be published and will be omitted after #92 reaches `main`. The current source-review correction is prepared for a local durable checkpoint.
-- Branch history and checkpoint handoffs: segment 1 began from updated `origin/main`; push-only checkpoint `f9f6a04` was published to `origin/codex/2026-08-05-sub-agent-reachability` at `2026-08-05T02:25:33+08:00`. Resume from that branch for validation; no merge checkpoint or pull request exists.
-- Blockers or unresolved decisions: no owner decision is pending. Sequential transport waits only for #92 to reach `main`; repository validation scripts remain separately owner-arranged. Final shared-file read-back must include #92 commit `69603f1`, RPB-006 `08f24eb`, the moved-example destination files, and their integrated successors.
+- Last completed action: Replayed #94 from final #92 closeout `main`, omitted duplicate `9240f3d`, completed three independent combined-source passes, corrected one LOW code-review preflight-ordering ambiguity in `57369e1`, and finalized `ASM-20260805-001` with no active finding.
+- Current task: `SAR94-002` remains `in_progress` solely for pull-request, hosted-check, merge-commit, and merged-main lifecycle evidence. `SAR94-001` is completed with final combined-source reachability review.
+- Exact next action: Commit the reconciled assessment/workflow checkpoint, push `codex/2026-08-05-sub-agent-reachability-continuation`, open the bounded ready pull request, process hosted checks, integrate with merge-commit topology, and read back merged `main`.
+- Validation already completed: Git branch/base and GitHub issue/comment read-back; earlier syntax parsing; root manual reviews; `git diff --check`; three independent final source-only reachability, execution, and cross-workflow compatibility reviews; the LOW ordering-clarity follow-up; and confirmation that #121 is records-only outside #94 canonical surfaces. No repository validation script, fixture test, test suite, or `check-all` run has been performed.
+- Git state: branch `codex/2026-08-05-sub-agent-reachability-continuation` is based on `origin/main@3e200fd5e164ba363c3cde0c50219e18f0ca14de` and is seven commits ahead before this reconciliation checkpoint. Duplicate patch `9240f3d` is not an ancestor; its path fix and destinations are present via #92 commit `98484bd`.
+- Branch history and checkpoint handoffs: segment 1 published the pre-integration implementation checkpoint. Segment 2 is an unpushed continuation from final #92 closeout `main`, with rebased #94 implementation and review commits through `57369e1`; no #94 pull request or merge exists yet.
+- Blockers or unresolved decisions: none. Repository validation scripts remain separately owner-arranged and are not treated as passed; hosted checks and merged-main evidence remain pending lifecycle facts.
 
 ## Branch Lifecycle
 
 | Segment | Branch | Base | Checkpoint Type | Commit | Remote / Target | Recorded At | Reason | Resume Branch / Action |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | 1 | `codex/2026-08-05-sub-agent-reachability` | `main@d8580df4516155ff7b1a139d9a064a8b0d4b2019` | push-only implementation checkpoint | `f9f6a04` | `origin/codex/2026-08-05-sub-agent-reachability` | `2026-08-05T02:25:33+08:00` | #118/#119 implementation is reviewable while validation remains separately deferred | resume the same branch for validation reconciliation; then open the required PR without release packaging |
+| 2 | `codex/2026-08-05-sub-agent-reachability-continuation` | `main@3e200fd5e164ba363c3cde0c50219e18f0ca14de` | local replay and combined-verification checkpoint | `57369e1` | local continuation | `2026-08-05T08:37:17+08:00` | #92-first transport completed; retain rebased role commits and omit duplicate `9240f3d` | finalize workflow evidence, then push and open the ready merge-commit PR |
