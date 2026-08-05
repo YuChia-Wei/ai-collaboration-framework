@@ -1711,6 +1711,7 @@ def validate_skill_role_bindings(
 
     valid_role_ids: list[str] = []
     declared_role_ids: set[str] = set()
+    duplicate_role_ids: set[str] = set()
     declared_role_paths: set[str] = set()
     for index, binding in enumerate(bindings):
         label = f"{path}: role_bindings[{index}]"
@@ -1794,6 +1795,7 @@ def validate_skill_role_bindings(
                     f"{label}: duplicate role binding for {role_asset_id} "
                     f"in owning skill {data.get('asset_id')!r}"
                 )
+                duplicate_role_ids.add(role_asset_id)
                 valid = False
             declared_role_ids.add(role_asset_id)
         if isinstance(role_path, str) and role_path:
@@ -1827,7 +1829,11 @@ def validate_skill_role_bindings(
         if valid and isinstance(role_asset_id, str):
             valid_role_ids.append(role_asset_id)
 
-    return valid_role_ids
+    return [
+        role_asset_id
+        for role_asset_id in valid_role_ids
+        if role_asset_id not in duplicate_role_ids
+    ]
 
 
 def validate_active_role_binding_coverage(
