@@ -1,0 +1,82 @@
+schema_version: "1.0"
+release_id: "REL-v0.9.0"
+version: "v0.9.0"
+status: "planned"
+record_origin: "governed"
+distribution_kind: "governed-package"
+installable: true
+tag: null
+commit: null
+tagged_at: null
+recorded_at: null
+created_at: "2026-08-05T22:42:53+08:00"
+updated_at: "2026-08-05T22:42:53+08:00"
+planning:
+  backlog_refs:
+    - ".dev/backlog/items/GOV-004.yaml"
+    - ".dev/backlog/items/PKG-005.yaml"
+    - ".dev/backlog/items/GOV-006.yaml"
+    - ".dev/backlog/items/CTX-004.yaml"
+    - ".dev/backlog/items/CTX-005.yaml"
+    - ".dev/backlog/items/PKG-006.yaml"
+    - ".dev/backlog/items/VAL-003.yaml"
+    - ".dev/backlog/items/SAG-002.yaml"
+compatibility:
+  breaking_changes: true
+  minimum_source_version: "v0.8.0"
+  reconciliation_sources:
+    - "v0.8.0"
+  automatic_upgrade_sources:
+    - "v0.8.0"
+  affected_contracts:
+    - "canonical engineering-rule ownership and profile-owned path migration"
+    - "target-effective rule state, freshness-checked packet resolution, and action-skill consumption"
+    - "bundled .NET mechanical-validation provider identity, canonical root, and reference-in-place activation"
+    - "framework-managed path Git-ignore detection during package planning, apply, and provenance finalization"
+    - "canonical owning-skill reachability and provider-neutral role-execution evidence"
+artifacts:
+  release_notes: "release-notes.md"
+  migration_guide: "migration-guide.md"
+distribution:
+  profile_id: "dotnet-backend"
+  package_id: "ai-context-dotnet-backend-v0.9.0"
+  schema_versions:
+    package: "2.0.0"
+    files: "2.0.0"
+    migration: "3.0.0"
+  artifacts:
+    zip: "ai-context-dotnet-backend-v0.9.0.zip"
+    zip_checksum: "ai-context-dotnet-backend-v0.9.0.zip.sha256"
+    tar_gz: "ai-context-dotnet-backend-v0.9.0.tar.gz"
+    tar_gz_checksum: "ai-context-dotnet-backend-v0.9.0.tar.gz.sha256"
+  migration:
+    default_mode: "dry-run"
+    apply_requires_clean_worktree: true
+    apply_requires_acknowledged_reconciliation: true
+  publication:
+    tag_owner: "user"
+    trigger: "user-created-tag"
+    automation: "github-actions"
+    creates_or_moves_tag: false
+validation:
+  evidence: "Planned candidate record instantiated from the canonical release-publication templates. The exact eight-item v0.9.0 backlog set and v0.8.0 compatibility source are observed from repository records. Candidate-specific package archives, clean-install and upgrade receipts, independent candidate verification, and the candidate critical gate are not yet recorded and are not claimed as passed."
+  workflow_id: "2026-08-05-v0-9-0-release-publication"
+  related_workflows:
+    - "2026-08-03-workflow-delivery-cohesion"
+    - "2026-08-04-framework-managed-ignore-detection"
+    - "2026-08-05-rule-provider-precutover"
+    - "2026-08-05-sub-agent-reachability"
+  related_assessments:
+    - "ASM-20260803-004"
+    - "ASM-20260803-005"
+    - "ASM-20260804-001"
+    - "ASM-20260804-002"
+    - "ASM-20260804-003"
+    - "ASM-20260805-001"
+    - "ASM-20260805-002"
+    - "ASM-20260805-003"
+  package_status: "planned"
+  post_merge_status: "pending"
+  failed_publication_run: null
+  published_run: null
+  public_release_url: null

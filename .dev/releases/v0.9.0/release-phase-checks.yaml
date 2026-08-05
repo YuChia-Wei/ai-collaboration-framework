@@ -1,0 +1,15 @@
+schema_version: "1.0"
+release: "v0.9.0"
+phases:
+  candidate:
+    command: "python .ai/scripts/validate-ai-context-release-state.py --phase candidate --version v0.9.0"
+    description: "Validate the local governed candidate before merge or tag preparation."
+  tag:
+    command: "python .ai/scripts/validate-ai-context-release-state.py --phase tag --version v0.9.0"
+    description: "Validate an existing user-owned annotated tag and its exact governed commit peel."
+  publication:
+    command: "python .ai/scripts/validate-ai-context-release-state.py --phase publication --version v0.9.0 --hosted"
+    description: "Validate the hosted release and successful tag-triggered workflow while the tagged record remains validated."
+  finalization:
+    command: "python .ai/scripts/validate-ai-context-release-state.py --phase finalization --version v0.9.0 --hosted"
+    description: "Validate terminal local registry, authored-source, and publication-state evidence."
