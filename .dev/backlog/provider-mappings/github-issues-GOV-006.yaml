@@ -1,0 +1,31 @@
+schema_version: "1.0"
+provider: "github"
+repository: "YuChia-Wei/ai-collaboration-prompts-dotnet-backend"
+migration_id: "github-live-GOV-006-2026-08-05"
+stage: "stage-b-in-progress"
+source_revision: null
+generated_at: "2026-08-05T10:03:35+08:00"
+project:
+  number: 3
+  node_id: "PVT_kwHOAwvEG84Bez7w"
+  url: "https://github.com/users/YuChia-Wei/projects/3"
+items:
+  - backlog_id: "GOV-006"
+    source_path: ".dev/backlog/items/GOV-006.yaml"
+    source_sha256: "47131d461ee32f4846c714c30e89c1cf4bf3cdd31e10632424ec7401952fed0b"
+    issue_number: 104
+    issue_node_id: "I_kwDOSBe2Hc8AAAABLcMcCg"
+    issue_url: "https://github.com/YuChia-Wei/ai-collaboration-prompts-dotnet-backend/issues/104"
+    issue_state: "closed"
+    close_reason: "completed"
+    project_item_id: "PVTI_lAHOAwvEG84Bez7wzg1QsoY"
+    created_at: "2026-08-04T16:31:02Z"
+    updated_at: "2026-08-05T00:17:08Z"
+    read_back:
+      verified_at: "2026-08-05T10:03:35+08:00"
+      title_matches: false
+      markers_match: false
+      labels_match: true
+      state_matches: true
+      notes: "Canonical GOV-006 source is prepared before provider mutation. Issue #104 is closed completed with the intended enabler/framework/created-by labels, but its title and canonical markers still require promotion; Project Priority, Owner review, Target release, and Published in are unset."
+

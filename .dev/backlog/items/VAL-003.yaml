@@ -1,0 +1,49 @@
+schema_version: "1.0"
+backlog_id: "VAL-003"
+title: "Guard Future Architecture Kit Provider Cutover"
+category: "provider-cutover-readiness"
+status: "resolved"
+priority: "HIGH"
+summary: "Keep Architecture Kit unavailable and non-selectable behind an evidence-complete, fail-closed readiness record until a separately authorized breaking release performs the actual provider cutover."
+created_at: "2026-08-05T09:58:52+08:00"
+updated_at: "2026-08-05T09:58:52+08:00"
+release:
+  target: "v0.9.0"
+  completed_in: "v0.9.0"
+  published_in: null
+  target_scope: "architecture-kit-unavailable-readiness-and-cutover-gate"
+  gate: "release-blocker"
+origin_refs:
+  - ".dev/assessments/ASM-20260804-002/report.md"
+  - ".dev/assessments/ASM-20260804-002/evidence/proposal-traceability.yaml"
+  - ".dev/workflows/2026-08-05-rule-provider-precutover/workflow.yaml"
+finding_refs:
+  - "ASM-20260804-002#AIC-002"
+recommended_owner_skill: "ai-context-governance"
+handoff_condition: "Include VAL-003 exactly once in the future v0.9.0 candidate and keep published_in null until immutable publication succeeds. Issue #117 is its implementation slice; actual Architecture Kit proof production, packaging, and cutover remain separately authorized future work."
+workflow_refs:
+  - ".dev/workflows/2026-08-05-rule-provider-precutover/workflow.yaml"
+task_refs:
+  - ".dev/workflows/2026-08-05-rule-provider-precutover/tasks/RPB-007.json"
+  - ".dev/workflows/2026-08-05-rule-provider-precutover/tasks/RPB-008.json"
+resolution_ref: ".dev/assessments/ASM-20260805-002/report.md"
+decision_needed: "Resolved for the unavailable pre-cutover gate only: the owner allocated the completed #107 umbrella outcome to v0.9.0 on 2026-08-05. Architecture Kit remains unsupported, unavailable, and non-selectable; package publication, proof production, and breaking cutover require future explicit authorization."
+related_backlog_refs:
+  - "GOV-006"
+  - "CTX-005"
+  - "PKG-006"
+provider_refs:
+  - "github-issue:#107"
+  - "github-proposal:#92"
+acceptance:
+  - "Current Architecture Kit planning state deterministically resolves to unsupported and unavailable."
+  - "Source code, a planned package name, or incomplete evidence cannot satisfy immutable package availability."
+  - "Package identity, diagnostic crosswalk, behavior parity, consumer guidance, compatible range, target proof, rollback proof, and owner approval are independent required criteria."
+  - "Missing, stale, incompatible, unresolved, or source-only evidence fails closed."
+  - "A deferred target reports a visible mechanical-validation gap and continuation action rather than active validation."
+  - "Gate success cannot publish, install, remove bundled source, mutate target configuration, or authorize cutover."
+inventory_notes:
+  - "Issue #107 is the sole formal provider projection for VAL-003."
+  - "Issue #117 is the bounded implementation slice under #107 and is not separate v0.9.0 Included Work."
+  - "PR #120 implemented only the readiness record and unavailable gate; actual Architecture Kit cutover is not part of v0.9.0 allocation."
+

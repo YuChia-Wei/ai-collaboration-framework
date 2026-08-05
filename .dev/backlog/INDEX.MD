@@ -7,7 +7,7 @@ artifact directories. See [README.MD](README.MD) for ownership and lifecycle.
 
 | Roadmap | Current Target | Status | Next Gate | Updated |
 | --- | --- | --- | --- | --- |
-| [ROADMAP.md](ROADMAP.md) | `v0.9.0` | `planned` | Obtain explicit authorization before release preparation; include `GOV-004` and `PKG-005` exactly once. | 2026-08-04 |
+| [ROADMAP.md](ROADMAP.md) | `v0.9.0` | `planned` | Obtain explicit authorization before release preparation; include `GOV-004`, `PKG-005`, `GOV-006`, `CTX-005`, `PKG-006`, and `VAL-003` exactly once. | 2026-08-05 |
 
 Source planning records are retained under [`plans/`](plans/); they inform the
 roadmap but do not replace it or a governed assessment.
@@ -36,6 +36,10 @@ roadmap but do not replace it or a governed assessment.
 
 | Item | Priority | Completed In | Published In | Resolution | Workflow | Updated |
 | --- | --- | --- | --- | --- | --- | --- |
+| [VAL-003](items/VAL-003.yaml) | HIGH | `v0.9.0` | — | Architecture Kit remains unsupported, unavailable, and non-selectable behind an evidence-complete fail-closed readiness gate; actual cutover remains future work. | [`2026-08-05-rule-provider-precutover`](../workflows/2026-08-05-rule-provider-precutover/workflow.yaml) | 2026-08-05 |
+| [PKG-006](items/PKG-006.yaml) | HIGH | `v0.9.0` | — | The bundled .NET validation provider has stable identity/location, separate analyzer/runtime capabilities, inactive source delivery, and fail-closed reference-in-place activation. | [`2026-08-05-rule-provider-precutover`](../workflows/2026-08-05-rule-provider-precutover/workflow.yaml) | 2026-08-05 |
+| [CTX-005](items/CTX-005.yaml) | HIGH | `v0.9.0` | — | Target-effective state, deterministic task packets, and shared action-skill consumption fail closed without freshness-verified semantics. | [`2026-08-05-rule-provider-precutover`](../workflows/2026-08-05-rule-provider-precutover/workflow.yaml) | 2026-08-05 |
+| [GOV-006](items/GOV-006.yaml) | HIGH | `v0.9.0` | — | Stable engineering-rule ownership and the exhaustive migration matrix place each shared, profile, source, and target surface under one explicit authority. | [`2026-08-05-rule-provider-precutover`](../workflows/2026-08-05-rule-provider-precutover/workflow.yaml) | 2026-08-05 |
 | [PKG-005](items/PKG-005.yaml) | HIGH | `v0.9.0` | — | Fail-closed ignored framework-managed-path detection is merged through PR #103; the owner closed the workflow with independent audit and aggregate-rerun debt deferred to separately arranged future work. | [`2026-08-04-framework-managed-ignore-detection`](../workflows/2026-08-04-framework-managed-ignore-detection/workflow.yaml) | 2026-08-05 |
 | [GOV-004](items/GOV-004.yaml) | HIGH | `v0.9.0` | — | Workflow-value, multi-Issue delivery-cohesion, and positive linear-topology rules passed independent verification and were integrated linearly through PR #88. | [`2026-08-03-workflow-delivery-cohesion`](../workflows/2026-08-03-workflow-delivery-cohesion/workflow.yaml) | 2026-08-04 |
 

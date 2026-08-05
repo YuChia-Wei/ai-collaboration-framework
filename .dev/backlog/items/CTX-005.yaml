@@ -1,0 +1,52 @@
+schema_version: "1.0"
+backlog_id: "CTX-005"
+title: "Resolve Target-Effective Rules Through Task-Scoped Packets"
+category: "target-effective-ai-context"
+status: "resolved"
+priority: "HIGH"
+summary: "Resolve freshness-checked target-effective rule semantics through one deterministic index, packet, and action-skill consumption contract without silently falling back to framework defaults."
+created_at: "2026-08-05T09:58:52+08:00"
+updated_at: "2026-08-05T09:58:52+08:00"
+release:
+  target: "v0.9.0"
+  completed_in: "v0.9.0"
+  published_in: null
+  target_scope: "target-effective-rule-state-deterministic-packets-and-skill-consumption"
+  gate: "release-blocker"
+origin_refs:
+  - ".dev/assessments/ASM-20260804-002/report.md"
+  - ".dev/assessments/ASM-20260804-002/evidence/proposal-traceability.yaml"
+  - ".dev/workflows/2026-08-05-rule-provider-precutover/workflow.yaml"
+finding_refs:
+  - "ASM-20260804-002#AIC-001"
+  - "ASM-20260804-002#AIC-002"
+recommended_owner_skill: "ai-context-governance"
+handoff_condition: "Include CTX-005 exactly once in the future v0.9.0 candidate and keep published_in null until immutable publication succeeds. Proposal #92 and implementation Issues #112 through #114 remain traceability surfaces, not additional Included Work."
+workflow_refs:
+  - ".dev/workflows/2026-08-05-rule-provider-precutover/workflow.yaml"
+task_refs:
+  - ".dev/workflows/2026-08-05-rule-provider-precutover/tasks/RPB-003.json"
+  - ".dev/workflows/2026-08-05-rule-provider-precutover/tasks/RPB-006.json"
+  - ".dev/workflows/2026-08-05-rule-provider-precutover/tasks/RPB-008.json"
+resolution_ref: ".dev/assessments/ASM-20260805-002/report.md"
+decision_needed: "Resolved: the owner allocated the completed #105 umbrella outcome to v0.9.0 on 2026-08-05 after PR #120 and its records-only closeout were integrated. This allocation does not authorize release preparation, tagging, publication, or provider cutover."
+related_backlog_refs:
+  - "GOV-006"
+  - "INIT-001"
+  - "PKG-006"
+  - "VAL-003"
+provider_refs:
+  - "github-issue:#105"
+  - "github-proposal:#92"
+acceptance:
+  - "Target-effective state distinguishes baseline acceptance, semantic deviation, enforcement tuning, tooling waiver, evidence, and provenance."
+  - "One deterministic resolver selects ordered rule identities from declared capability, execution mode, technology profile, file type, and freshness-verified target state."
+  - "Task-scoped packets retain complete selected normative statements rather than transient model summaries."
+  - "Missing, stale, unresolved, conflicting, or digest-mismatched state fails closed without framework-default fallback."
+  - "All in-scope action skills consume the same resolver contract and emit comparable loaded-rule and target-state evidence."
+  - "Native analyzer severity and target warnings-as-errors remain separate from the warning-by-default semantic consistency check."
+inventory_notes:
+  - "Issue #105 is the sole formal provider projection for CTX-005."
+  - "Issues #112, #113, and #114 are bounded implementation slices under #105 and are not separate v0.9.0 Included Work."
+  - "PR #120 integrated this outcome by merge commit 3bb03993675bb404dc467b8da6ad702c01919705; ASM-20260805-002 independently verified the authorized static pre-cutover scope."
+

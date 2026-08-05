@@ -1,0 +1,31 @@
+schema_version: "1.0"
+provider: "github"
+repository: "YuChia-Wei/ai-collaboration-prompts-dotnet-backend"
+migration_id: "github-live-CTX-005-2026-08-05"
+stage: "stage-b-in-progress"
+source_revision: null
+generated_at: "2026-08-05T10:03:35+08:00"
+project:
+  number: 3
+  node_id: "PVT_kwHOAwvEG84Bez7w"
+  url: "https://github.com/users/YuChia-Wei/projects/3"
+items:
+  - backlog_id: "CTX-005"
+    source_path: ".dev/backlog/items/CTX-005.yaml"
+    source_sha256: "fe4c6cf2080947f602d140bc788a12fffb4367ea058fe8d8e01d3d1b1805ec45"
+    issue_number: 105
+    issue_node_id: "I_kwDOSBe2Hc8AAAABLcMwEg"
+    issue_url: "https://github.com/YuChia-Wei/ai-collaboration-prompts-dotnet-backend/issues/105"
+    issue_state: "closed"
+    close_reason: "completed"
+    project_item_id: "PVTI_lAHOAwvEG84Bez7wzg1Qs3o"
+    created_at: "2026-08-04T16:31:40Z"
+    updated_at: "2026-08-05T00:17:09Z"
+    read_back:
+      verified_at: "2026-08-05T10:03:35+08:00"
+      title_matches: false
+      markers_match: false
+      labels_match: true
+      state_matches: true
+      notes: "Canonical CTX-005 source is prepared before provider mutation. Issue #105 is closed completed with the intended enabler/framework/created-by labels, but its title and canonical markers still require promotion; Project Priority, Owner review, Target release, and Published in are unset."
+

@@ -1,0 +1,31 @@
+schema_version: "1.0"
+provider: "github"
+repository: "YuChia-Wei/ai-collaboration-prompts-dotnet-backend"
+migration_id: "github-live-VAL-003-2026-08-05"
+stage: "stage-b-in-progress"
+source_revision: null
+generated_at: "2026-08-05T10:03:35+08:00"
+project:
+  number: 3
+  node_id: "PVT_kwHOAwvEG84Bez7w"
+  url: "https://github.com/users/YuChia-Wei/projects/3"
+items:
+  - backlog_id: "VAL-003"
+    source_path: ".dev/backlog/items/VAL-003.yaml"
+    source_sha256: "5ef02bdc8bf366cd990b11b952b364da04f74268942551aa6ef9e06c70fdea77"
+    issue_number: 107
+    issue_node_id: "I_kwDOSBe2Hc8AAAABLcNSaw"
+    issue_url: "https://github.com/YuChia-Wei/ai-collaboration-prompts-dotnet-backend/issues/107"
+    issue_state: "closed"
+    close_reason: "completed"
+    project_item_id: "PVTI_lAHOAwvEG84Bez7wzg1QtdE"
+    created_at: "2026-08-04T16:32:47Z"
+    updated_at: "2026-08-05T00:17:10Z"
+    read_back:
+      verified_at: "2026-08-05T10:03:35+08:00"
+      title_matches: false
+      markers_match: false
+      labels_match: true
+      state_matches: true
+      notes: "Canonical VAL-003 source is prepared before provider mutation. Issue #107 is closed completed with the intended enabler/framework/created-by labels, but its title and canonical markers still require promotion; Project Priority, Owner review, Target release, and Published in are unset. Architecture Kit remains unavailable and non-selectable."
+
