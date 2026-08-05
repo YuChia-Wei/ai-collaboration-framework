@@ -8,7 +8,7 @@
 
 1. **Read this file** - You are reading it now ✓
 2. **Identify the file type** - Find the matching section in the table below.
-3. **Read the matching section** - Read the full content in the .NET `.dev/standards/CODE-REVIEW-CHECKLIST.md`.
+3. **Read the matching section** - Read the full content in the .NET `.ai/assets/tech-stacks/dotnet-backend/standards/CODE-REVIEW-CHECKLIST.md`.
 4. **Perform the review** - Check every item and create a results table.
 5. **Assign issue severity** - CRITICAL / MUST FIX / SHOULD FIX.
 
@@ -25,13 +25,13 @@
 
 | File Pattern | Checklist Location | Review Focus | Priority |
 |---------|------------|---------|--------|
-| `src/Domain/**/Aggregates/*.cs` | [CODE-REVIEW-CHECKLIST.md](../../../../../.dev/standards/CODE-REVIEW-CHECKLIST.md)<br>→ **Aggregate (type-first detection)** | 1. Detect `EsAggregateRoot<TId>` or `IAggregateRoot<TId>` first.<br>2. Check Apply/When only for ES.<br>3. Check invariants and state transitions for non-ES. | **CRITICAL** |
-| `src/Application/**/UseCases/**/*.cs` | [CODE-REVIEW-CHECKLIST.md](../../../../../.dev/standards/CODE-REVIEW-CHECKLIST.md)<br>→ **Use Case / Handler** | 1. Explicit `I*UseCase` inbound port.<br>2. `ExecuteAsync` and transport-neutral contract.<br>3. Handler does not own orchestration. | HIGH |
-| `src/**/Repositories/*.cs` | [CODE-REVIEW-CHECKLIST.md](../../../../../.dev/standards/CODE-REVIEW-CHECKLIST.md)<br>→ **Repository** | 1. Write side conforms to `IAggregateRepository<TAggregate, TId>`.<br>2. Generic type is an Aggregate Root.<br>3. Query and write capabilities are separated. | HIGH |
-| `src/Api/Controllers/*.cs` | [CODE-REVIEW-CHECKLIST.md](../../../../../.dev/standards/CODE-REVIEW-CHECKLIST.md)<br>→ **Controller** | 1. Controller is sufficiently thin.<br>2. DTO is in a separate file.<br>3. HTTP status is correct. | MEDIUM |
-| `src/Application/**/Ports/**/*Mapper.cs`<br>`src/Infrastructure/**/Mappers/*.cs` | [CODE-REVIEW-CHECKLIST.md](../../../../../.dev/standards/CODE-REVIEW-CHECKLIST.md)<br>→ **Mapper** | 1. Mapper is static/sealed.<br>2. One Mapper per DTO.<br>3. Outbox ToDomain handles both with-events and without-events cases. | **HIGH** |
-| `src/Infrastructure/**/Outbox/*Data.cs` | [Repository Standards](../../../../../.dev/standards/coding-standards/repository-standards.md)<br>+ [Mapper Standards](../../../../../.dev/standards/coding-standards/mapper-standards.md) | 1. Preserve Aggregate + Outbox atomicity.<br>2. Keep serialized data separate from Domain types.<br>3. Apply target-selected EF/SQL mapping rules. | MEDIUM |
-| `src/tests/**/*.cs` | [CODE-REVIEW-CHECKLIST.md](../../../../../.dev/standards/CODE-REVIEW-CHECKLIST.md)<br>→ **BDD Rules / UseCase Tests** | 1. xUnit GWT structure and naming (BDDfy is the default profile and may be explicitly disabled by the team).<br>2. Do not use 3A or BaseTestClass.<br>3. Use the target `testing.mocking` selection; default to NSubstitute. | HIGH |
+| `src/Domain/**/Aggregates/*.cs` | [CODE-REVIEW-CHECKLIST.md](../standards/CODE-REVIEW-CHECKLIST.md)<br>→ **Aggregate (type-first detection)** | 1. Detect `EsAggregateRoot<TId>` or `IAggregateRoot<TId>` first.<br>2. Check Apply/When only for ES.<br>3. Check invariants and state transitions for non-ES. | **CRITICAL** |
+| `src/Application/**/UseCases/**/*.cs` | [CODE-REVIEW-CHECKLIST.md](../standards/CODE-REVIEW-CHECKLIST.md)<br>→ **Use Case / Handler** | 1. Explicit `I*UseCase` inbound port.<br>2. `ExecuteAsync` and transport-neutral contract.<br>3. Handler does not own orchestration. | HIGH |
+| `src/**/Repositories/*.cs` | [CODE-REVIEW-CHECKLIST.md](../standards/CODE-REVIEW-CHECKLIST.md)<br>→ **Repository** | 1. Write side conforms to `IAggregateRepository<TAggregate, TId>`.<br>2. Generic type is an Aggregate Root.<br>3. Query and write capabilities are separated. | HIGH |
+| `src/Api/Controllers/*.cs` | [CODE-REVIEW-CHECKLIST.md](../standards/CODE-REVIEW-CHECKLIST.md)<br>→ **Controller** | 1. Controller is sufficiently thin.<br>2. DTO is in a separate file.<br>3. HTTP status is correct. | MEDIUM |
+| `src/Application/**/Ports/**/*Mapper.cs`<br>`src/Infrastructure/**/Mappers/*.cs` | [CODE-REVIEW-CHECKLIST.md](../standards/CODE-REVIEW-CHECKLIST.md)<br>→ **Mapper** | 1. Mapper is static/sealed.<br>2. One Mapper per DTO.<br>3. Outbox ToDomain handles both with-events and without-events cases. | **HIGH** |
+| `src/Infrastructure/**/Outbox/*Data.cs` | [Repository Standards](../standards/coding-standards/repository-standards.md)<br>+ [Mapper Standards](../standards/coding-standards/mapper-standards.md) | 1. Preserve Aggregate + Outbox atomicity.<br>2. Keep serialized data separate from Domain types.<br>3. Apply target-selected EF/SQL mapping rules. | MEDIUM |
+| `src/tests/**/*.cs` | [CODE-REVIEW-CHECKLIST.md](../standards/CODE-REVIEW-CHECKLIST.md)<br>→ **BDD Rules / UseCase Tests** | 1. xUnit GWT structure and naming (BDDfy is the default profile and may be explicitly disabled by the team).<br>2. Do not use 3A or BaseTestClass.<br>3. Use the target `testing.mocking` selection; default to NSubstitute. | HIGH |
 
 ---
 
@@ -103,10 +103,10 @@ public static Plan ToDomain(PlanData data)
 
 ### 📚 Related Documents
 
-- **Complete checklist**: [CODE-REVIEW-CHECKLIST.md](../../../../../.dev/standards/CODE-REVIEW-CHECKLIST.md)
-- **Aggregate rules**: [aggregate-standards.md](../../../../../.dev/standards/coding-standards/aggregate-standards.md)
-- **Mapper rules**: [mapper-standards.md](../../../../../.dev/standards/coding-standards/mapper-standards.md)
-- **Outbox lifecycle**: [repository-standards.md](../../../../../.dev/standards/coding-standards/repository-standards.md)
+- **Complete checklist**: [CODE-REVIEW-CHECKLIST.md](../standards/CODE-REVIEW-CHECKLIST.md)
+- **Aggregate rules**: [aggregate-standards.md](../standards/coding-standards/aggregate-standards.md)
+- **Mapper rules**: [mapper-standards.md](../standards/coding-standards/mapper-standards.md)
+- **Outbox lifecycle**: [repository-standards.md](../standards/coding-standards/repository-standards.md)
 
 ---
 

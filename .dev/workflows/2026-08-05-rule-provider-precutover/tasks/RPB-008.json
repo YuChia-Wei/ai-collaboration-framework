@@ -1,0 +1,37 @@
+{
+  "template_id": "ai-context-governance-remediation-task",
+  "template_version": "1.1.0",
+  "template_created_at": "2026-07-10T18:22:49+08:00",
+  "template_updated_at": "2026-07-27T09:52:09+08:00",
+  "task_id": "RPB-008",
+  "workflow_id": "2026-08-05-rule-provider-precutover",
+  "owner_skill": "ai-context-governance",
+  "title": "Verify and integrate the completed pre-cutover remediation",
+  "status": "in_progress",
+  "created_at": "2026-08-05T07:46:05+08:00",
+  "updated_at": "2026-08-05T07:51:44+08:00",
+  "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
+  "model": "gpt-5.6-sol",
+  "reasoning_effort": "max",
+  "finding_ids": ["ASM-20260804-002#AIC-001", "ASM-20260804-002#AIC-002", "ASM-20260804-002#AIC-004"],
+  "scope": {
+    "target": "Workflow-level independent verification, pull-request integration, merged-main read-back, and Issue #92 implementation closeout after RPB-001 through RPB-007.",
+    "files": [".dev/assessments/ASM-20260805-002/**", ".dev/assessments/INDEX.MD", ".dev/workflows/2026-08-05-rule-provider-precutover/**", "GitHub PR and Issue traceability"],
+    "constraints": ["No remediation source change from the ai-context-auditor pass", "No check-all or repository validation scripts", "Use merge-commit / --no-ff integration", "Integrate #92 before #94 and hand off exact PR/main evidence", "Do not treat hosted checks, PR state, or Issue state as authorization"],
+    "non_goals": ["v0.9.0 packaging or publication", "Architecture Kit implementation, proof production, or cutover", "Issue #93/#99 implementation", "Issue #94 implementation", "Issue #98 implementation", "Product source or test review"]
+  },
+  "execution": {
+    "steps": ["Create the independent post-remediation verification assessment", "Reconcile the final remediation report and workflow evidence", "Refresh main and open one workflow PR", "Require hosted checks and review", "Integrate by merge commit and read back merged main", "Close only the completed #92 implementation topology and notify #94"],
+    "validation": ["Two-pass independent AI-context source audit", "Scoped Git/read-back evidence", "Hosted PR checks without local reproduction", "Merge-commit ancestry and merged-main artifact read-back", "No check-all or repository validators"],
+    "last_completed_step": "Committed final verification ASM-20260805-002 at 62c582e after independent Pass A, repository-aware Pass B, corrected-subject lifecycle read-back, and artifact-fidelity review; no active HIGH or MEDIUM finding remains.",
+    "next_action": "Refresh main, push the workflow branch, open one ready PR, and require hosted checks before merge-commit integration."
+  },
+  "results": {
+    "summary": "",
+    "files_changed": [],
+    "tests_run": [],
+    "finding_status": "not-addressed",
+    "residual_risk": "",
+    "follow_up_needed": true
+  }
+}

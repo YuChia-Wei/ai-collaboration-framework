@@ -1,0 +1,37 @@
+{
+  "template_id": "ai-context-governance-remediation-task",
+  "template_version": "1.1.0",
+  "template_created_at": "2026-07-10T18:22:49+08:00",
+  "template_updated_at": "2026-07-27T09:52:09+08:00",
+  "task_id": "RPB-007",
+  "workflow_id": "2026-08-05-rule-provider-precutover",
+  "owner_skill": "ai-context-governance",
+  "title": "Add the Architecture Kit unavailable readiness gate",
+  "status": "completed",
+  "created_at": "2026-08-05T01:29:39+08:00",
+  "updated_at": "2026-08-05T07:38:38+08:00",
+  "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
+  "model": "gpt-5.6-terra",
+  "reasoning_effort": "high",
+  "finding_ids": ["ASM-20260804-002#AIC-002"],
+  "scope": {
+    "target": "GitHub Issue #117; future-provider readiness record and current unsupported/unavailable gate.",
+    "files": [".ai/assets/tech-stacks/dotnet-backend/**", ".ai/distribution/**", ".ai/scripts/**", ".dev/guides/**"],
+    "constraints": ["Depends on RPB-003 and RPB-005", "Current state must be unsupported/unavailable", "Source presence cannot satisfy publication", "Gate success cannot authorize cutover", "No repository validation scripts"],
+    "non_goals": ["Architecture Kit implementation or publication", "Diagnostic crosswalk proof production", "Real-target proof production", "Cutover", "Release packaging"]
+  },
+  "execution": {
+    "steps": ["Define readiness record and criterion evidence", "Implement deterministic fail-closed evaluation", "Encode current unavailable state and deferred-target gap", "Document future breaking-cutover gate without executing it"],
+    "validation": ["Criterion-by-criterion fail-closed fixture review", "Current-state read-back", "No check-all or repository validators"],
+    "last_completed_step": "Implemented and independently source-reviewed the closed provider-root readiness schema, template, current unavailable fixture, deterministic evaluator, typed criterion evidence contracts, source-only negative fixtures, exact output binding, and manifest/README navigation. Three initial blockers and one follow-up evidence-registry blocker were corrected; final review found no remaining blocker.",
+    "next_action": "Task complete; proceed to the workflow-owned independent post-remediation AI-context verification assessment."
+  },
+  "results": {
+    "summary": "The current Architecture Kit state is deterministically structurally valid but gate-blocked as unsupported/unavailable/non-selectable. Every future criterion is independently file-backed and fail closed, exact framework/provider bindings are reported, and even complete evidence remains non-selecting, non-authorizing, and side-effect free.",
+    "files_changed": [".ai/assets/tech-stacks/dotnet-backend/tooling/bundled-mechanical-validation/{provider-manifest.yaml,README.md}", ".ai/assets/tech-stacks/dotnet-backend/tooling/bundled-mechanical-validation/schemas/architecture-kit-readiness-record.schema.yaml", ".ai/assets/tech-stacks/dotnet-backend/tooling/bundled-mechanical-validation/templates/architecture-kit-readiness-record.yaml", ".ai/assets/tech-stacks/dotnet-backend/tooling/bundled-mechanical-validation/fixtures/architecture-kit-unavailable/readiness-record.yaml", ".ai/assets/tech-stacks/dotnet-backend/tooling/bundled-mechanical-validation/scripts/evaluate-architecture-kit-readiness.py", ".ai/assets/tech-stacks/dotnet-backend/tooling/bundled-mechanical-validation/tests/test_architecture_kit_readiness_evaluator.py"],
+    "tests_run": ["not-run-owner-directed: evaluator, source-only tests, repository validators, check-all, builds, and formatters"],
+    "finding_status": "addressed-pending-independent-verification",
+    "residual_risk": "The evaluator and source-only tests were inspected but intentionally not executed; no real Architecture Kit package, crosswalk/parity, target, migration/rollback, or owner cutover proof exists, and a future breaking cutover still requires separate explicit authorization.",
+    "follow_up_needed": true
+  }
+}

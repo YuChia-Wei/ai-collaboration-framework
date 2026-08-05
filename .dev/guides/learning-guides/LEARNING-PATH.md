@@ -65,10 +65,10 @@
 5. `.ai/assets/skills/spec-compliance-validator/references/spec-compliance-rules.md` - spec compliance rules
 
 ### Phase 2: Learn by examples
-1. `.dev/standards/examples/outbox/README.md` - outbox flow
-2. `.dev/standards/examples/reference/ezspec-test-template.md` - BDD test style
-3. `.dev/standards/coding-standards/test-standards.md` - mocking pattern
-4. `.dev/standards/examples/dto/README.md` - DTO layout
+1. `.ai/assets/tech-stacks/dotnet-backend/examples/outbox/README.md` - outbox flow
+2. `.ai/assets/tech-stacks/dotnet-backend/examples/reference/ezspec-test-template.md` - BDD test style
+3. `.ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/test-standards.md` - mocking pattern
+4. `.ai/assets/tech-stacks/dotnet-backend/examples/dto/README.md` - DTO layout
 
 ### Phase 3: Avoid common mistakes
 1. `.ai/assets/tech-stacks/dotnet-backend/references/COMMON-PITFALLS.MD` - cross-cutting pitfalls
@@ -118,7 +118,7 @@ public readonly record struct ProductId(string Value);
 ### Use Case and Optional Dispatch Handler
 
 Read
-[`USECASE-COMMAND-HANDLER-RELATIONSHIP.MD`](../../standards/USECASE-COMMAND-HANDLER-RELATIONSHIP.MD)
+[`USECASE-COMMAND-HANDLER-RELATIONSHIP.MD`](../../../.ai/assets/tech-stacks/dotnet-backend/standards/USECASE-COMMAND-HANDLER-RELATIONSHIP.MD)
 before applying a runtime-specific Handler convention. The Use Case owns
 application orchestration; a Handler exists only for a real dispatch/message
 entry and maps one delivery input to one Use Case invocation.
@@ -174,7 +174,7 @@ public sealed class CreateProductUseCaseTests
 ## Quick Start Template for LLM Tasks
 
 When you need to implement a new feature:
-1. Find the closest example in `.dev/standards/examples/`
+1. Find the closest example in `.ai/assets/tech-stacks/dotnet-backend/examples/`
 2. Follow naming rules:
    - Use case: `<Operation><Aggregate>UseCase`
    - Use Case: `I<Operation><Aggregate>UseCase` and

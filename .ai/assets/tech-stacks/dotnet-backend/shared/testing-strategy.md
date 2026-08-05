@@ -1,6 +1,6 @@
 # Testing Strategy (Dotnet)
 
-Agent-loading projection of the canonical [Test Coding Standards](../../../../../.dev/standards/coding-standards/test-standards.md).
+Agent-loading projection of the canonical [Test Coding Standards](../standards/coding-standards/test-standards.md).
 
 Rule IDs: `TEST-GWT-001`, `TEST-BDDFY-001`, `TEST-MOCK-001`, `TECH-SELECT-001`.
 

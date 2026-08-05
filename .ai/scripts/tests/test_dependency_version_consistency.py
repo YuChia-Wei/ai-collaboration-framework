@@ -13,6 +13,18 @@ from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parents[3]
 VALIDATOR_PATH = REPO_ROOT / ".ai/scripts/validate-dependency-versions.py"
+PROVIDER_ROOT_PROJECT = (
+    ".ai/assets/tech-stacks/dotnet-backend/tooling/"
+    "bundled-mechanical-validation/ProviderRoot.csproj"
+)
+PROVIDER_FIXTURE_PROJECT = (
+    ".ai/assets/tech-stacks/dotnet-backend/tooling/"
+    "bundled-mechanical-validation/fixtures/controlled/Fixture.csproj"
+)
+PROVIDER_TEST_PROJECT = (
+    ".ai/assets/tech-stacks/dotnet-backend/tooling/"
+    "bundled-mechanical-validation/tests/ProviderTests.csproj"
+)
 
 
 class DependencyVersionConsistencyTests(unittest.TestCase):
@@ -282,6 +294,65 @@ class DependencyVersionConsistencyTests(unittest.TestCase):
             result = self.run_validator(root)
             self.assert_validation_failure(result, "only .ai/scripts/plan-ai-context-package-apply.py")
             self.assertIn("path does not exist in source root", result.stdout + result.stderr)
+
+    def test_gwt_016_given_root_level_provider_project_version_drift_when_validated_then_it_fails_closed(self) -> None:
+        # Given the provider production root itself and tools root disagree on one package version.
+        references_v1 = '  <ItemGroup><PackageReference Include="MediatR" Version="12.2.0" /></ItemGroup>\n'
+        references_v2 = '  <ItemGroup><PackageReference Include="MediatR" Version="12.3.0" /></ItemGroup>\n'
+        result = self.validate_fixture(
+            projects={
+                "tools/App/App.csproj": self.csproj(references=references_v1),
+                PROVIDER_ROOT_PROJECT: self.csproj(references=references_v2),
+            }
+        )
+
+        # When dependency scanning runs, then root-level provider production is included.
+        self.assert_validation_failure(
+            result,
+            "PackageReference mediatr resolves to conflicting versions",
+        )
+
+    def test_gwt_017_given_provider_fixture_project_when_validated_then_it_is_not_scanned(self) -> None:
+        # Given a fixture under the canonical provider root declares an invalid PackageReference.
+        result = self.validate_fixture(
+            projects={
+                "tools/App/App.csproj": self.csproj(),
+                PROVIDER_FIXTURE_PROJECT: self.csproj(
+                    references='  <ItemGroup><PackageReference Include="MediatR" /></ItemGroup>\n'
+                ),
+            }
+        )
+
+        # When dependency scanning runs, then fixture-only projects are excluded.
+        self.assertEqual(0, result.returncode, result.stdout + result.stderr)
+
+    def test_gwt_018_given_provider_test_project_when_validated_then_it_is_not_scanned(self) -> None:
+        # Given a provider-owned test project declares an invalid PackageReference.
+        result = self.validate_fixture(
+            projects={
+                "tools/App/App.csproj": self.csproj(),
+                PROVIDER_TEST_PROJECT: self.csproj(
+                    references='  <ItemGroup><PackageReference Include="MediatR" /></ItemGroup>\n'
+                ),
+            }
+        )
+
+        # When dependency scanning runs, then test-only projects are excluded.
+        self.assertEqual(0, result.returncode, result.stdout + result.stderr)
+
+    def test_gwt_019_given_unrelated_ai_project_when_validated_then_it_is_not_scanned(self) -> None:
+        # Given an unrelated .ai asset declares an invalid PackageReference outside both scan roots.
+        result = self.validate_fixture(
+            projects={
+                "tools/App/App.csproj": self.csproj(),
+                ".ai/assets/unrelated/Ignore.csproj": self.csproj(
+                    references='  <ItemGroup><PackageReference Include="MediatR" /></ItemGroup>\n'
+                ),
+            }
+        )
+
+        # When dependency scanning runs, then it does not broaden into all .ai assets.
+        self.assertEqual(0, result.returncode, result.stdout + result.stderr)
 
 
 if __name__ == "__main__":

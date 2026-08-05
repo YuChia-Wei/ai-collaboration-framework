@@ -21,6 +21,13 @@ guard_direct_entrypoint(".ai/scripts/validate-dependency-versions.py")
 
 DEFAULT_ROOT = Path(__file__).resolve().parents[2]
 SOURCE_PROFILE = Path(".ai/distribution/profiles/dotnet-backend.yaml")
+PROVIDER_PRODUCTION_ROOT = Path(
+    ".ai/assets/tech-stacks/dotnet-backend/tooling/bundled-mechanical-validation"
+)
+MANAGED_PROJECT_ROOTS = (
+    Path("tools"),
+    PROVIDER_PRODUCTION_ROOT,
+)
 MINIMUM_PYTHON = (3, 11)
 REGISTRY_PATH = Path(".ai/scripts/python-entrypoints.json")
 REQUIREMENT_PIN = re.compile(
@@ -103,8 +110,8 @@ def validate_python_entrypoint_registry(root: Path, errors: list[str]) -> dict[s
             "version 6.0.3, import_name yaml, and requirements_path requirements.txt"
         )
     entrypoints = registry.get("entrypoints")
-    if not isinstance(entrypoints, list) or len(entrypoints) != 25:
-        errors.append(f"{REGISTRY_PATH.as_posix()}: entrypoints must contain exactly 25 records")
+    if not isinstance(entrypoints, list) or len(entrypoints) != 26:
+        errors.append(f"{REGISTRY_PATH.as_posix()}: entrypoints must contain exactly 26 records")
         return registry
     paths: set[str] = set()
     portable = pyyaml = stdlib = 0
@@ -138,9 +145,9 @@ def validate_python_entrypoint_registry(root: Path, errors: list[str]) -> dict[s
             errors.append(f"{label}: prerequisite_exit_code must be 1 or 2")
         elif entrypoint["prerequisite_exit_code"] == 2 and isinstance(path_value, str):
             exit_two_paths.add(path_value)
-    if (portable, pyyaml, stdlib) != (12, 23, 2):
+    if (portable, pyyaml, stdlib) != (13, 24, 2):
         errors.append(
-            f"{REGISTRY_PATH.as_posix()}: expected 12 portable, 23 PyYAML, and 2 stdlib-only entrypoints; "
+            f"{REGISTRY_PATH.as_posix()}: expected 13 portable, 24 PyYAML, and 2 stdlib-only entrypoints; "
             f"found {portable}, {pyyaml}, {stdlib}"
         )
     if exit_two_paths != {".ai/scripts/plan-ai-context-package-apply.py"}:
@@ -256,17 +263,21 @@ def is_exact_package_version(version: str) -> bool:
 
 
 def managed_projects(root: Path) -> list[Path]:
-    tools = root / "tools"
-    if not tools.is_dir():
-        return []
-    return sorted(
-        (
+    projects: set[Path] = set()
+    for project_root in MANAGED_PROJECT_ROOTS:
+        absolute_root = root / project_root
+        if not absolute_root.is_dir():
+            continue
+        projects.update(
             path
-            for path in tools.rglob("*.csproj")
+            for path in absolute_root.rglob("*.csproj")
             if not {"bin", "obj"}.intersection(path.relative_to(root).parts)
-        ),
-        key=lambda path: relative(path, root).encode("utf-8"),
-    )
+            and not (
+                project_root == PROVIDER_PRODUCTION_ROOT
+                and {"fixtures", "tests"}.intersection(path.relative_to(absolute_root).parts)
+            )
+        )
+    return sorted(projects, key=lambda path: relative(path, root).encode("utf-8"))
 
 
 def validate_dotnet(root: Path, errors: list[str]) -> tuple[int, int]:

@@ -46,6 +46,8 @@ DEFAULT_COMPONENT_SELECTION = {
 }
 LEGACY_COMPONENT_SELECTION = deepcopy(DEFAULT_COMPONENT_SELECTION)
 LEGACY_COMPONENT_SELECTION["providers"]["repo-backlog"]["enabled"] = True
+TARGET_EFFECTIVE_STATE_PATH = ".dev/ai-context/effective-rules.yaml"
+TARGET_EFFECTIVE_PACKET_DIRECTORY = ".dev/ai-context/effective-rule-packets"
 
 
 @dataclass(frozen=True)
@@ -75,6 +77,14 @@ def safe_path(value: object, label: str) -> str:
     if path.is_absolute() or any(part in {"", ".", ".."} for part in path.parts):
         raise ApplyError(f"unsafe {label}: {value!r}")
     return path.as_posix()
+
+
+def is_target_effective_rule_path(path: str) -> bool:
+    """Keep target-effective state and packets outside framework package control."""
+    return (
+        path in {TARGET_EFFECTIVE_STATE_PATH, TARGET_EFFECTIVE_PACKET_DIRECTORY}
+        or path.startswith(f"{TARGET_EFFECTIVE_PACKET_DIRECTORY}/")
+    )
 
 
 def load_yaml(path: Path, label: str) -> dict:
@@ -739,8 +749,10 @@ def build_plan(
                 ".dev/AI-CONTEXT-APPLY-PENDING.yaml",
                 ".dev/ai-context/provenance.yaml",
                 ".dev/ai-context/customizations.yaml",
-            }:
-                raise ApplyError(f"migration cannot manage provenance or pending receipt: {candidate}")
+            } or (candidate is not None and is_target_effective_rule_path(candidate)):
+                raise ApplyError(
+                    f"migration cannot manage provenance, pending receipt, or target effective state: {candidate}"
+                )
             if candidate is not None:
                 owner = touched_paths.get(candidate)
                 if owner is not None:

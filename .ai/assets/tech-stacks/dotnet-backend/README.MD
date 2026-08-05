@@ -25,20 +25,29 @@ Excluded:
 
 ```text
 .ai/assets/tech-stacks/dotnet-backend/
+  engineering-rule-catalog.yaml
+  examples/
   references/
   shared/
+  standards/
+  templates/
+  tooling/
+    bundled-mechanical-validation/
 ```
 
 ## References
 
 - `references/BUILDING-BLOCKS-CLASS-INDEX.MD`
-- [BuildingBlocks reconstruction contract](../../../../.dev/standards/BUILDING-BLOCKS-RECONSTRUCTION-CONTRACT.md)
+- [BuildingBlocks reconstruction contract](standards/BUILDING-BLOCKS-RECONSTRUCTION-CONTRACT.md)
 - `references/CODE-REVIEW-INDEX.MD`
+- `examples/` - canonical .NET backend profile example landing path
 - `source-includes/domain/` - optional interface-first Domain contracts and the
   executable-tested `EsAggregateRoot<TId>` source include
 - `references/CODE-TEMPLATES.MD`
 - `references/COMMON-PITFALLS.MD`
 - `references/FAILURE-CASES.MD`
+- `tooling/bundled-mechanical-validation/` - source-available, inactive-by-default
+  provider for separately selected Roslyn analyzer and runtime-validation capabilities
 
 ## Current Shared Materials
 
@@ -49,6 +58,16 @@ Excluded:
 - `shared/dto-conventions.md`
 - `shared/testing-strategy.md` (active projection; `shared/testing-standards.md` is a compatibility entry)
 - `shared/testing-strategy.md`
+
+## Rule Resolution
+
+`engineering-rule-catalog.yaml` is a resolver-ready exact projection of the
+registered profile rule sections. The Markdown file and anchor recorded by a
+catalog record remain the semantic owner. The catalog retains stable IDs,
+selectors, full normative text, and hashes so task-scoped packet generation
+does not scan this profile tree. Migrated profile-baseline documents without a
+stable registered rule ID remain `identity-allocation-required` and are not
+packet candidates.
 
 ## Boundary Rule
 

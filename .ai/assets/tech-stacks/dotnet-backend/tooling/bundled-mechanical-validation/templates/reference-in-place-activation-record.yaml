@@ -1,0 +1,83 @@
+# Replace every placeholder with concrete target-owned data before evaluation.
+# The evaluator rejects an active record that still contains a placeholder. For
+# active evaluation, pass repository_root and the physical canonical provider
+# root; an alternate or symlinked --provider-root cannot certify this record.
+schema_version: "1.0"
+record_id: "<target-record-id>"
+provider:
+  id: "ai-context-dotnet-bundled-mechanical-validation"
+framework:
+  version: "<framework-version>"
+  commit: "<40-character-lowercase-framework-commit>"
+canonical_root: ".ai/assets/tech-stacks/dotnet-backend/tooling/bundled-mechanical-validation/"
+provider_manifest_sha256: "<sha256-of-raw-provider-manifest.yaml-bytes>"
+outcome: "active-reference-in-place"
+freshness: "fresh"
+selected_capabilities:
+  - "analyzers"
+  - "runtime-validation"
+target_plan:
+  plan_id: "<authorized-target-owned-plan-id>"
+  activation_mode: "reference-in-place"
+  target_repository: "<target-repository-identity>"
+  provider_evaluator_automation_mutation: "not-performed"
+  source_copy: false
+target_plan_sha256: "<sha256-of-deterministic-canonical-json-target-plan>"
+evidence:
+  root: ".dev/ai-context/provider-evidence/ai-context-dotnet-bundled-mechanical-validation"
+  records:
+    - id: "analyzers-wiring"
+      path: "analyzers-wiring.yaml"
+      sha256: "<raw-file-sha256>"
+    - id: "analyzers-configuration"
+      path: "analyzers-configuration.yaml"
+      sha256: "<raw-file-sha256>"
+    - id: "analyzers-invocation"
+      path: "analyzers-invocation.yaml"
+      sha256: "<raw-file-sha256>"
+    - id: "runtime-validation-wiring"
+      path: "runtime-validation-wiring.yaml"
+      sha256: "<raw-file-sha256>"
+    - id: "runtime-validation-configuration"
+      path: "runtime-validation-configuration.yaml"
+      sha256: "<raw-file-sha256>"
+    - id: "runtime-validation-invocation"
+      path: "runtime-validation-invocation.yaml"
+      sha256: "<raw-file-sha256>"
+capabilities:
+  analyzers:
+    state: "active-reference-in-place"
+    selection:
+      source: "<explicit-target-selection>"
+    wiring:
+      strategy: "<target-owned-analyzer-ProjectReference-plan>"
+      source_path: ".ai/assets/tech-stacks/dotnet-backend/tooling/bundled-mechanical-validation/analyzers/DotnetBackendAnalyzers.csproj"
+      target_reference: "<target-project-or-Directory.Build.props-location>"
+    configuration:
+      ownership: "target-owned"
+      target_reference: "<target-owned-analyzer-configuration-location>"
+    invocation:
+      command: "<target-build-command>"
+      evidence_scope: "<recorded-build-evidence-scope>"
+    evidence_ids:
+      wiring: "analyzers-wiring"
+      configuration: "analyzers-configuration"
+      invocation: "analyzers-invocation"
+  runtime-validation:
+    state: "active-reference-in-place"
+    selection:
+      source: "<explicit-target-selection>"
+    wiring:
+      strategy: "<target-owned-test-ProjectReference-or-source-reference-plan>"
+      source_path: ".ai/assets/tech-stacks/dotnet-backend/tooling/bundled-mechanical-validation/runtime-validation/DotnetBackendValidation.csproj"
+      target_reference: "<target-test-project-or-source-reference-location>"
+    configuration:
+      ownership: "target-owned"
+      target_reference: "<target-owned-runtime-configuration-location>"
+    invocation:
+      command: "<target-runtime-validation-test-command>"
+      evidence_scope: "<recorded-test-evidence-scope>"
+    evidence_ids:
+      wiring: "runtime-validation-wiring"
+      configuration: "runtime-validation-configuration"
+      invocation: "runtime-validation-invocation"

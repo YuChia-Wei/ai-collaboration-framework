@@ -109,6 +109,9 @@ entries:
           - .ai/assets/skills/repo-structure-sync/**
           - .ai/assets/skills/transitions/**
           - .ai/assets/sub-agent-role-prompts/context-translator/**
+      - component_id: dotnet-backend
+        patterns:
+          - .ai/assets/tech-stacks/dotnet-backend/**
     target: .ai/assets/
     ownership: framework-managed
     install_behavior: managed
@@ -130,13 +133,16 @@ entries:
         patterns:
           - .ai/scripts/README.md
           - .ai/scripts/ai_context_package_apply.py
+          - .ai/scripts/ai_context_effective_rules.py
           - .ai/scripts/ai_context_target_provenance.py
           - .ai/scripts/plan-ai-context-package-apply.py
+          - .ai/scripts/resolve-effective-rule-packet.py
           - .ai/scripts/validate-ai-context.py
           - .ai/scripts/validate-ai-context-target.py
           - .ai/scripts/tests/test_ai_context_package_apply.py
           - .ai/scripts/tests/test_ai_context_root_entries.py
           - .ai/scripts/tests/test_ai_context_wrapper_metadata.py
+          - .ai/scripts/tests/test_ai_context_effective_rules.py
           - .ai/scripts/tests/test_semantic_customization_lifecycle.py
           - .ai/scripts/tests/test_semantic_customization_skill_contract.py
     target: .ai/scripts/
@@ -297,12 +303,6 @@ entries:
     component_id: software-development-core
     source: .dev/workflows/README.MD
     target: .dev/workflows/README.MD
-    ownership: framework-managed
-    install_behavior: managed
-  - id: dotnet-validation-tools
-    component_id: dotnet-backend
-    source: tools/**
-    target: tools/
     ownership: framework-managed
     install_behavior: managed
   - id: public-root-and-catalog-seeds

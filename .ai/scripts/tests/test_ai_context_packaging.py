@@ -57,8 +57,10 @@ class SyntheticPackageRepo:
         )
         for script in (
             "ai_context_package_apply.py",
+            "ai_context_effective_rules.py",
             "ai_context_target_provenance.py",
             "plan-ai-context-package-apply.py",
+            "resolve-effective-rule-packet.py",
             "python-entrypoints.json",
             "python_prerequisites.py",
         ):
@@ -399,6 +401,8 @@ class DeterministicPackageGwtTests(unittest.TestCase):
             ".agents/skills/ai-context-upgrader/SKILL.md",
             ".agents/skills/ai-context-init/SKILL.md",
             ".ai/scripts/ai_context_target_provenance.py",
+            ".ai/scripts/ai_context_effective_rules.py",
+            ".ai/scripts/resolve-effective-rule-packet.py",
             ".ai/scripts/validate-ai-context-target.py",
         ]
         self.assertTrue(
@@ -421,7 +425,25 @@ class DeterministicPackageGwtTests(unittest.TestCase):
         )
         self.assertEqual(
             "dotnet-backend",
-            payload["tools/DotnetBackendAnalyzers/DotnetBackendAnalyzers.csproj"],
+            payload[
+                ".ai/assets/tech-stacks/dotnet-backend/tooling/"
+                "bundled-mechanical-validation/analyzers/DotnetBackendAnalyzers.csproj"
+            ],
+        )
+        self.assertFalse(
+            any(
+                path.startswith("tools/DotnetBackendAnalyzers/")
+                or path.startswith("tools/DotnetBackendValidation/")
+                for path in payload
+            ),
+            "relocated production provider paths must not remain in the payload",
+        )
+        self.assertFalse(
+            any(
+                path.startswith("tools/") and path.split("/", 2)[1].endswith(".Tests")
+                for path in payload
+            ),
+            "root tools/*Tests projects are source-only framework verification",
         )
 
     def test_gwt_000aa_given_repository_configuration_when_payload_is_projected_then_dedicated_target_seeds_replace_source_truth(self) -> None:
@@ -1469,7 +1491,8 @@ class VersionedMigrationPackagingGwtTests(unittest.TestCase):
         )
         portable_paths = (
             ".ai/assets/skills/software-development-orchestrator/scripts/validate-software-development-orchestrator-acceptance.py",
-            ".ai/scripts/ai_context_target_provenance.py", ".ai/scripts/plan-ai-context-package-apply.py",
+            ".ai/scripts/ai_context_effective_rules.py", ".ai/scripts/ai_context_target_provenance.py",
+            ".ai/scripts/plan-ai-context-package-apply.py", ".ai/scripts/resolve-effective-rule-packet.py",
             ".ai/scripts/validate-ai-context-target.py",
             ".ai/scripts/validate-ai-context.py", ".ai/scripts/validate-assessment-artifacts.py",
             ".ai/scripts/validate-dependency-versions.py", ".ai/scripts/validate-file-disposition-manifest.py",

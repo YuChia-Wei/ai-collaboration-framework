@@ -284,6 +284,33 @@ source_release_context_available() {
         [ -f "$PROJECT_ROOT/.ai/scripts/ai_context_package.py" ]
 }
 
+run_source_repository_dotnet_framework_tests() {
+    if ! source_release_context_available; then
+        echo -e "${CYAN}ℹ${NC} NOT APPLICABLE: Dotnet Backend Analyzer Template Tests (source framework tests not packaged)"
+        echo -e "${CYAN}ℹ${NC} NOT APPLICABLE: Dotnet Backend Configuration Validation Tests (source framework tests not packaged)"
+        echo -e "${CYAN}ℹ${NC} NOT APPLICABLE: Dotnet Backend BuildingBlocks Behavior Tests (source framework tests not packaged)"
+        echo -e "${CYAN}ℹ${NC} NOT APPLICABLE: Bundled Mechanical Validation Provider Activation Tests (source framework tests not packaged)"
+        NOT_APPLICABLE=$((NOT_APPLICABLE + 4))
+        return
+    fi
+
+    run_command_check "dotnet test tools/DotnetBackendAnalyzers.Tests/DotnetBackendAnalyzers.Tests.csproj" \
+        "Dotnet Backend Analyzer Template Tests" \
+        "required" "true" "true"
+
+    run_command_check "dotnet test tools/DotnetBackendValidation.Tests/DotnetBackendValidation.Tests.csproj" \
+        "Dotnet Backend Configuration Validation Tests" \
+        "required" "true" "true"
+
+    run_command_check "dotnet test tools/DotnetBackendBuildingBlocks.Tests/DotnetBackendBuildingBlocks.Tests.csproj" \
+        "Dotnet Backend BuildingBlocks Behavior Tests" \
+        "required" "true" "true"
+
+    run_command_check "python .ai/assets/tech-stacks/dotnet-backend/tooling/bundled-mechanical-validation/tests/test_provider_activation_evaluator.py -v" \
+        "Bundled Mechanical Validation Provider Activation Tests" \
+        "required" "true" "true"
+}
+
 run_source_repository_release_checks() {
     if ! source_release_context_available; then
         echo -e "${CYAN}ℹ${NC} NOT APPLICABLE: AI Context Version Governance Fail-Closed Tests (source release context not packaged)"
@@ -297,7 +324,9 @@ run_source_repository_release_checks() {
         echo -e "${CYAN}ℹ${NC} NOT APPLICABLE: Repository Configuration Ownership Fail-Closed Tests (source release context not packaged)"
         echo -e "${CYAN}ℹ${NC} NOT APPLICABLE: Skill Transition Compatibility Contract (source release context not packaged)"
         echo -e "${CYAN}ℹ${NC} NOT APPLICABLE: Skill Transition Compatibility Fail-Closed Tests (source release context not packaged)"
-        NOT_APPLICABLE=$((NOT_APPLICABLE + 11))
+        echo -e "${CYAN}ℹ${NC} NOT APPLICABLE: Effective Rule Packet Resolution and Consumer Parity Tests (source release context not packaged)"
+        echo -e "${CYAN}ℹ${NC} NOT APPLICABLE: Effective Rule Action Skill Consumption Contract (source release context not packaged)"
+        NOT_APPLICABLE=$((NOT_APPLICABLE + 13))
         return
     fi
 
@@ -343,6 +372,14 @@ run_source_repository_release_checks() {
 
     run_command_check "python .ai/scripts/tests/test_skill_transition_contract.py -v" \
         "Skill Transition Compatibility Fail-Closed Tests" \
+        "required" "true" "true"
+
+    run_command_check "python .ai/scripts/tests/test_ai_context_effective_rules.py -v" \
+        "Effective Rule Packet Resolution and Consumer Parity Tests" \
+        "required" "true" "true"
+
+    run_command_check "python .ai/scripts/tests/test_effective_rule_action_skill_contract.py -v" \
+        "Effective Rule Action Skill Consumption Contract" \
         "required" "true" "true"
 }
 
@@ -539,17 +576,7 @@ run_check "check-coding-standards.sh" \
     "Coding Standards Structural Integrity" \
     "required" "true" "true"
 
-run_command_check "dotnet test tools/DotnetBackendAnalyzers.Tests/DotnetBackendAnalyzers.Tests.csproj" \
-    "Dotnet Backend Analyzer Template Tests" \
-    "required" "true" "true"
-
-run_command_check "dotnet test tools/DotnetBackendValidation.Tests/DotnetBackendValidation.Tests.csproj" \
-    "Dotnet Backend Configuration Validation Tests" \
-    "required" "true" "true"
-
-run_command_check "dotnet test tools/DotnetBackendBuildingBlocks.Tests/DotnetBackendBuildingBlocks.Tests.csproj" \
-    "Dotnet Backend BuildingBlocks Behavior Tests" \
-    "required" "true" "true"
+run_source_repository_dotnet_framework_tests
 
 # Repository source validation is covered by DBA1001 in analyzer tests.
 # Mapper source validation is covered by DBA1007-DBA1008 in analyzer tests.

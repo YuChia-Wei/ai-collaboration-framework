@@ -1,0 +1,37 @@
+{
+  "template_id": "ai-context-governance-remediation-task",
+  "template_version": "1.1.0",
+  "template_created_at": "2026-07-10T18:22:49+08:00",
+  "template_updated_at": "2026-07-27T09:52:09+08:00",
+  "task_id": "RPB-001",
+  "workflow_id": "2026-08-05-rule-provider-precutover",
+  "owner_skill": "ai-context-governance",
+  "title": "Define stable engineering identities and ownership",
+  "status": "completed",
+  "created_at": "2026-08-05T01:29:39+08:00",
+  "updated_at": "2026-08-05T01:51:16+08:00",
+  "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
+  "model": "gpt-5.6-terra",
+  "reasoning_effort": "xhigh",
+  "finding_ids": ["ASM-20260804-002#AIC-001", "ASM-20260804-002#AIC-004"],
+  "scope": {
+    "target": "GitHub Issue #109; stable concept, rule, constraint, capability, and technology-binding identity plus semantic ownership.",
+    "files": [".dev/standards/AI-CONTEXT-BOUNDARY.md", ".dev/standards/AI-CONTEXT-OWNERSHIP.md", ".dev/standards/AI-CONTEXT-OWNERSHIP.yaml", ".ai/assets/shared/**", ".ai/assets/tech-stacks/dotnet-backend/**"],
+    "constraints": ["Do not make providers or target configuration semantic owners", "Do not edit #94-owned role or reachability sections", "Coordinate before any essential CANONICAL-SCHEMA.MD edit"],
+    "non_goals": ["File migration", "Target-effective resolver", "Provider relocation", "Release packaging"]
+  },
+  "execution": {
+    "steps": ["Read owner decisions and retained evidence", "Define stable identity/reference contract", "Update the owned boundary and ownership records", "Provide a precise handoff to RPB-002 and RPB-003"],
+    "validation": ["Scoped read-back of every changed identity and reference", "Manual ambiguity and duplicate-owner review", "git diff --check only if useful; no repository validation scripts"],
+    "last_completed_step": "Defined and manually reviewed the stable identity, ownership, and fail-closed reference contract.",
+    "next_action": "RPB-002 classifies every legacy surface against this contract."
+  },
+  "results": {
+    "summary": "Established canonical concept, rule, constraint, capability, and binding identities; assigned shared/profile/source-governance/target-effective ownership classes; and made provider/configuration details non-semantic owners.",
+    "files_changed": [".dev/standards/AI-CONTEXT-BOUNDARY.md", ".dev/standards/AI-CONTEXT-OWNERSHIP.md", ".dev/standards/AI-CONTEXT-OWNERSHIP.yaml", ".ai/assets/shared/governance/ENGINEERING-IDENTITY-CONTRACT.md", ".ai/assets/tech-stacks/dotnet-backend/references/ENGINEERING-IDENTITY-BINDINGS.MD"],
+    "tests_run": ["Scoped read-back and git diff --check; repository validation scripts not run by owner direction"],
+    "finding_status": "partially-resolved",
+    "residual_risk": "Existing registry paths remain transitional-unmigrated until the exhaustive matrix and migration tasks complete.",
+    "follow_up_needed": true
+  }
+}

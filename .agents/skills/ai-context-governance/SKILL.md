@@ -22,6 +22,9 @@ This is a thin current-runtime wrapper.
   - `.ai/assets/skills/ai-context-governance/references/audit-remediation-lifecycle.md`
   - `.ai/assets/skills/ai-context-governance/references/semantic-customization-lifecycle.md`
   - `.ai/assets/skills/ai-context-governance/templates/customizations.schema.yaml`
+  - `.ai/assets/skills/ai-context-governance/templates/effective-rule-state.schema.yaml`
+  - `.ai/assets/skills/ai-context-governance/templates/effective-rule-state.template.yaml`
+  - `.ai/assets/skills/ai-context-governance/templates/effective-rule-packet.schema.yaml`
 - Templates:
   - `.ai/assets/skills/ai-context-governance/templates/workflow-locator-template.yaml`
   - `.ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md`

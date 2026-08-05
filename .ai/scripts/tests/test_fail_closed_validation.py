@@ -327,7 +327,9 @@ class CheckAllRunnerGwtTests(unittest.TestCase):
     def test_gwt_004_given_required_command_unavailable_when_selected_then_gate_fails(self) -> None:
         fixture = SyntheticRunnerRepo()
         try:
-            # Given deterministic dotnet command stubs return command-not-found semantics.
+            # Given source-only required dotnet command checks are selected and
+            # deterministic stubs return command-not-found semantics.
+            fixture.enable_source_release_context()
             # When critical mode executes all required dotnet checks.
             result = fixture.execute("--critical", environment={"DOTNET_STUB_EXIT": "127"})
 

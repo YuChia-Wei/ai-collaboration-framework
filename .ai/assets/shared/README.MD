@@ -11,9 +11,13 @@ Reusable, technology-specific agent-facing context belongs under `.ai/assets/tec
 - prompt packages
 - reusable templates
 - examples
+- `governance/engineering-rule-catalog.yaml` for the canonical portable
+  baseline records of registered universal engineering rules
 
 ## Purpose
 
 - Reduce duplication between skill specs and canonical sub-agent assets.
 - Allow wrappers and human-facing guides to reference the same canonical source.
 - Keep .NET backend-only rules out of universal shared context.
+- Treat the shared rule catalog as the owner only for its registered universal
+  records; profile catalogs remain exact projections of profile Markdown owners.

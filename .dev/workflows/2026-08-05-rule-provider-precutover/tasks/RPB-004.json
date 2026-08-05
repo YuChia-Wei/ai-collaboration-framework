@@ -1,0 +1,37 @@
+{
+  "template_id": "ai-context-governance-remediation-task",
+  "template_version": "1.1.0",
+  "template_created_at": "2026-07-10T18:22:49+08:00",
+  "template_updated_at": "2026-07-27T09:52:09+08:00",
+  "task_id": "RPB-004",
+  "workflow_id": "2026-08-05-rule-provider-precutover",
+  "owner_skill": "ai-context-governance",
+  "title": "Apply portable .NET asset migration rows",
+  "status": "completed",
+  "created_at": "2026-08-05T01:29:39+08:00",
+  "updated_at": "2026-08-05T02:58:13+08:00",
+  "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
+  "model": "gpt-5.6-terra",
+  "reasoning_effort": "high",
+  "finding_ids": ["ASM-20260804-002#AIC-001"],
+  "scope": {
+    "target": "GitHub Issue #111; non-provider portable .NET migration rows, indexes, references, distribution metadata, and compatibility entrypoints.",
+    "files": ["Matrix-selected .dev/standards/**", ".ai/assets/shared/**", ".ai/assets/tech-stacks/dotnet-backend/**", ".ai/INDEX.MD", ".ai/README.MD", ".dev/standards/INDEX.MD", ".dev/guides/**", ".ai/distribution/**"],
+    "constraints": ["Depends on RPB-002", "Implement only resolved RPB-004 rows", "Do not move provider source", "Preserve one canonical semantic owner"],
+    "non_goals": ["Provider source relocation", "Target-effective runtime", "Target-owned configuration", "Release packaging"]
+  },
+  "execution": {
+    "steps": ["Apply resolved rule, example, reference, and template move rows in non-overlapping batches", "Derive machine-readable shared/profile catalogs with full normative statements and selector metadata", "Update indexes and references", "Add bounded compatibility entrypoints", "Reconcile distribution navigation and fixture expectations"],
+    "validation": ["Row-by-row source/destination read-back", "Manual broken-reference review", "git diff --check if useful; no repository validation scripts"],
+    "last_completed_step": "Applied all 148 RPB-004 move rows, retained 10 bounded compatibility entrypoints, derived the shared and dotnet-backend rule catalogs, and reconciled active non-shared references and navigation.",
+    "next_action": "RPB-003 consumes the completed catalogs; action-skill consumer declarations remain intentionally owned by RPB-006."
+  },
+  "results": {
+    "summary": "Portable .NET rules, examples, references, rationale, and templates now live under the dotnet-backend profile. Shared and profile rule catalogs preserve 13 existing stable IDs with complete normative statements; 12 documents without approved IDs are explicit unpacketized-fail-closed records.",
+    "files_changed": ["148 matrix-selected source-to-profile moves", "10 thin .dev/standards compatibility entrypoints", "shared and dotnet-backend engineering-rule-catalog.yaml", "ownership registry, indexes, and active non-shared path consumers"],
+    "tests_run": [],
+    "finding_status": "addressed-for-task-scope",
+    "residual_risk": "Twelve migrated profile documents remain unpacketized until a future owner decision allocates stable identities; the resolver must fail closed for them.",
+    "follow_up_needed": false
+  }
+}

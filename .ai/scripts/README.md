@@ -119,6 +119,7 @@ Shell or PowerShell scripts should be retired or replaced when they:
 - `validate-assessment-artifacts.py`
 - `validate-ai-context-versions.py`
 - `validate-ai-context-target.py`
+- `resolve-effective-rule-packet.py`
 - `validate-ai-context-release-state.py`
 - `prepare-ai-context-release.py`
 - `validate-file-disposition-manifest.py`
@@ -132,6 +133,20 @@ Shell or PowerShell scripts should be retired or replaced when they:
 - `measure-ai-context-load.py`
 
 These scripts inspect AI context, markdown, prompt portability, or repository hygiene. They are not substitutes for dotnet C# validation.
+
+`resolve-effective-rule-packet.py` is the shared, read-only action-time resolver for one exact
+`capability` / `execution_mode` / `technology_profile` / `file_type` tuple. It consumes only the
+two engineering-rule catalogs, the pinned `.dev/ai-context/provenance.yaml` and
+`customizations.yaml` authorities for complete contract and freshness checks, and the target's
+freshness-validated `.dev/ai-context/effective-rules.yaml` plus selected packet. It never scans
+target Markdown, ADRs, or directories for nearby semantics and never silently falls back to
+framework defaults. A missing, malformed, stale, ambiguous, or digest-mismatched authority,
+catalog, state, route, or packet is unresolved and stops the action. `--emit-candidate` is an
+explicit reconciliation aid only: it prints a packet candidate with complete effective normative
+statements but neither writes nor activates it. Reconciliation publication stages all packets
+first and the state index last, with rollback for in-process exceptions. It does not claim
+cross-file crash atomicity; a crash-mixed candidate remains unusable because freshness and digest
+validation fails closed.
 
 `validate-ai-context.py` checks objective repository facts: active index paths, literal table corruption, declared runtime-root status, canonical/Agents/Claude skill inventory parity, case-safe `AGENTS.md` and thin `CLAUDE.md` root entries, canonical wrapper-metadata target/path integrity, sub-agent dynamic/native dispositions, exact adapter target/path/schema/canonical-link/package-profile parity, policy-scoped agent-facing language, root bilingual entry ownership/link/structural markers, rule ownership registry structure, canonical skill/sub-agent schema compliance, canonical template-family hygiene, and deterministic development capability routing. It scans both tracked and untracked non-ignored files so a new context file cannot bypass the gate before staging, while filtering tracked paths that are deleted in the working tree. Language lint uses exact path-and-line exceptions for deliberate routing triggers; other Han prose and selected non-ASCII punctuation fail with a file and line number. Script source, generated/example/archive/migration material, workflows, product `src`/`test` trees, and human-facing `.dev` documentation are outside that language scan; Markdown documentation under `.ai/scripts` remains in scope. Root bilingual validation checks reciprocal ownership links, headings, links, fences, inline-code identifiers, tables, lists, and ordered backtick table paths. These are structural drift guards, not proof of semantic equivalence; retained semantic review remains required when a bilingual entry changes materially.
 
@@ -185,12 +200,16 @@ discarding every older printed command.
 `validate-dependency-versions.py` is a deterministic offline gate. In the source
 framework repository it enforces byte-identical pinned Python requirement
 mirrors, requirements-file use and one Python version across GitHub workflows,
-exact and consistent direct package versions in framework-managed
-`tools/**/*.csproj`, and an exact `global.json` SDK new enough for those tools.
-In initialized targets, source-only workflow and distribution checks become not
-applicable while managed-tool checks remain active. It does not query package
-registries or advisory databases and therefore makes no package-currency or
-vulnerability claim. The normative boundary is
+exact and consistent direct package versions in the explicit scan roots
+`tools/` and
+`.ai/assets/tech-stacks/dotnet-backend/tooling/bundled-mechanical-validation/`.
+The provider root includes its production projects at every level, while its
+`fixtures/` and `tests/` subtrees are excluded. It does not scan unrelated
+`.ai/` assets. It also enforces an exact `global.json` SDK new enough for the
+managed projects. In initialized targets, source-only workflow and distribution
+checks become not applicable while managed-tool checks remain active. It does not
+query package registries or advisory databases and therefore makes no package-currency
+or vulnerability claim. The normative boundary is
 `.dev/standards/DEPENDENCY-VERSION-CONSISTENCY-POLICY.md`.
 
 `validate-file-disposition-manifest.py` validates a supplied remediation
@@ -403,9 +422,9 @@ dotnet format --verify-no-changes
 dotnet tool run repo-context-lint
 ```
 
-Current behavior:
+Current source-framework behavior:
 
-- runs `dotnet test tools/DotnetBackendAnalyzers.Tests/DotnetBackendAnalyzers.Tests.csproj`;
+- runs source-only `dotnet test tools/DotnetBackendAnalyzers.Tests/DotnetBackendAnalyzers.Tests.csproj`;
 - does not invoke the retired repository grep checks.
 
 ### Compatibility And Manual Entry Points
@@ -451,10 +470,10 @@ Completed replacement:
 - use case rules: `DBA1002` and `DBA1010` through `DBA1012`; the use case grep scripts have been removed while transaction and error-handling design remain AI review work.
 - projection rules: `DBA1013` covers EF write operations and `DotnetBackendValidation` verifies marker-based EF model registration; the projection grep/config scripts have been removed.
 
-Analyzer source template:
+Analyzer production source is provider-owned and source-available by default:
 
-- `tools/DotnetBackendAnalyzers/`
-- `tools/DotnetBackendAnalyzers.Tests/`
+- `.ai/assets/tech-stacks/dotnet-backend/tooling/bundled-mechanical-validation/analyzers/`
+- `tools/DotnetBackendAnalyzers.Tests/` remains source-only framework verification.
 
 ### Retired Generated Regex Checks
 

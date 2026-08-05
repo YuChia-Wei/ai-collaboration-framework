@@ -155,3 +155,28 @@ claim conformance to `1.0`.
 exact target-to-path contract. A version `1.0` sub-agent manifest must be
 migrated by recording empty adapter metadata for dynamic loading or exact
 metadata for every promoted runtime target.
+
+## Effective Rule Consumption
+
+`effective_rule_consumption` is a top-level sibling section for canonical
+action-skill specifications. It records how a routine action consumes the
+target-effective rule packet without becoming a second rule owner or defining
+the task-selected `execution_mode` vocabulary.
+
+Each section requires this shape:
+
+| Field | Type | Rule |
+| --- | --- | --- |
+| `applies_when` | `string[]` | Describes the skill-owned action that needs an effective rule packet. |
+| `excludes` | `string[]` | Describes adjacent work outside that action. |
+| `resolver` | `string` | Exactly `.ai/scripts/resolve-effective-rule-packet.py`. |
+| `selectors` | `string[]` | Exactly `capability`, `execution_mode`, `technology_profile`, and `file_type`, treated as opaque task-selected inputs. |
+| `unresolved_outcome` | `string` | Exactly `stop-applicable-action`. |
+| `consumption_order` | `string` | Requires a freshness-verified task-scoped packet before profile references needed for the action. |
+| `evidence.required` | `string[]` | Includes `resolver_outcome`, `loaded_rule_ids`, `baseline.framework_version`, `target_state.digest`, and the four request paths `request.capability`, `request.execution_mode`, `request.technology_profile`, and `request.file_type`. |
+| `semantic_consistency` | `object` | Uses `rule_id`, exact UTF-8 `rules[].normative_statement` bytes, and `rules[].normative_statement_digest`; the default mismatch outcome is a warning and any stricter outcome is target-owned. |
+| `prohibitions` | `string[]` | Prohibits broad target or framework document scans, framework-default fallback, alternate-route selection, and analyzer-output comparison as rule semantics; analyzer severity and warnings-as-errors remain separate target-owned policy. |
+
+The same `rule_id` must resolve to byte-equivalent effective semantics across
+consumers. Consumers record resolver and packet evidence; they do not compare
+analyzer output or derive rule semantics from a broad document scan.

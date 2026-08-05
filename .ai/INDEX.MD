@@ -19,9 +19,13 @@ This index owns the file and directory catalog for `.ai/`. The `.ai/README.MD` f
 | --- | --- |
 | `assets/` | Canonical source root for reusable AI assets. |
 | `assets/README.MD` | Purpose and boundary of `.ai/assets/`. |
-| `assets/shared/` | Universal shared prompt fragments, rules, and supporting materials. |
+| `assets/shared/` | Universal shared prompt fragments, rules, and supporting materials, including the canonical universal engineering-rule catalog. |
 | `assets/tech-stacks/` | Tech-stack-specific reusable AI context. |
-| `assets/tech-stacks/dotnet-backend/` | .NET backend-only agent context. |
+| `assets/tech-stacks/dotnet-backend/` | .NET backend-only agent context, including the resolver-ready profile rule catalog and its Markdown owners. |
+| `assets/tech-stacks/dotnet-backend/engineering-rule-catalog.yaml` | Resolver-ready exact projection for registered .NET backend rules. |
+| `assets/tech-stacks/dotnet-backend/standards/` | Canonical Markdown owners for migrated .NET backend profile rules. |
+| `assets/tech-stacks/dotnet-backend/examples/` | Canonical landing path for migrated .NET backend profile examples. |
+| `assets/tech-stacks/dotnet-backend/templates/` | Canonical landing path for migrated .NET backend profile templates. |
 | `assets/tech-stacks/dotnet-backend/references/` | .NET backend reference indexes, pitfalls, failure cases, and templates. |
 | `assets/skills/` | Canonical top-level skill specs. |
 | `assets/skills/README.MD` | Canonical skill registry entry. |
