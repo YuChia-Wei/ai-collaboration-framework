@@ -1,0 +1,87 @@
+{
+  "template_id": "ai-context-governance-remediation-task",
+  "template_version": "1.1.0",
+  "template_created_at": "2026-07-10T18:22:49+08:00",
+  "template_updated_at": "2026-07-27T09:52:09+08:00",
+  "task_id": "SAR94-001",
+  "workflow_id": "2026-08-05-sub-agent-reachability",
+  "owner_skill": "ai-context-governance",
+  "title": "Declare owning-skill bindings and static reachability",
+  "status": "completed",
+  "created_at": "2026-08-05T01:34:40+08:00",
+  "updated_at": "2026-08-05T08:37:17+08:00",
+  "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
+  "model": "gpt-5.6-terra",
+  "reasoning_effort": "xhigh",
+  "work_item": "#118",
+  "finding_ids": [
+    "ASM-20260804-002#AIC-003",
+    "ASM-20260804-002#AIC-004"
+  ],
+  "scope": {
+    "target": "Canonical role-binding schema, all active owning-skill bindings, the derived routing view, deterministic static-reachability validation, and bounded fixtures.",
+    "files": [
+      ".ai/assets/CANONICAL-SCHEMA.MD role-binding sections only",
+      ".ai/SUB-AGENT-SYSTEM.MD",
+      ".ai/assets/skills/*/skill.yaml role_bindings sections only",
+      ".ai/scripts/validate-ai-context.py",
+      ".ai/scripts/tests/test_ai_context_sub_agent_adapters.py"
+    ],
+    "constraints": [
+      "Implement D94-Q1, D94-Q2, D94-Q4, and D94-Q5 exactly",
+      "Preserve SAG-001/#58 selective adapter dispositions for all 18 active roles",
+      "Use statically-reachable only for static proof",
+      "Coordinate shared CANONICAL-SCHEMA.MD and skill.yaml sections with #92 through a single sequential writer",
+      "Do not run check-all or repository validation scripts"
+    ],
+    "non_goals": [
+      "Runtime role_execution selection and evidence",
+      "Bulk runtime-native adapter generation",
+      "#92 rule/provider/effective-state sections",
+      "#93 target ignore/install/upgrade drift",
+      "Release packaging or publication"
+    ]
+  },
+  "execution": {
+    "steps": [
+      "Inventory the 18 active role manifests and current routing map",
+      "Define canonical owning-skill role_bindings and applicability/load obligations",
+      "Bind primary slice modes, conditional implementation roles, and concrete test-implementation roles",
+      "Refresh the central routing view as a derived projection",
+      "Extend deterministic validation and negative fixtures without executing repository validation scripts",
+      "Perform root-orchestrator manual integration review"
+    ],
+    "validation": [
+      "Manual 18-role binding matrix and exact-path review",
+      "Manual schema/projection parity review",
+      "JSON/YAML syntax parsing where applicable",
+      "Repository validation scripts deferred by explicit owner direction"
+    ],
+    "last_completed_step": "Final combined-source review on the continuation branch confirmed all 18 active roles retain exact owning-skill bindings, projection parity, fail-closed validator source, and SAG-001 selective-adapter policy after #92 integration.",
+    "next_action": "Preserve the verified reachability contract through hosted pull-request checks, merge-commit integration, and merged-main read-back. Repository validation scripts remain a separate owner-arranged review."
+  },
+  "results": {
+    "summary": "All 18 active SAG-001 role contracts now have canonical owning-skill role_bindings with explicit applicability, kind, active-status expectation, and mandatory load obligation. The central table is a parity-checked derived projection, concrete test implementation binds to slice-implementer, and deterministic validation rejects ownerless, dangling, duplicate, malformed, stale, missing, or conflicting declarations while permitting valid multi-owner bindings.",
+    "files_changed": [
+      ".ai/SUB-AGENT-SYSTEM.MD",
+      ".ai/assets/CANONICAL-SCHEMA.MD",
+      ".ai/assets/skills/ai-context-init/skill.yaml",
+      ".ai/assets/skills/code-reviewer/skill.yaml",
+      ".ai/assets/skills/problem-frame-author/skill.yaml",
+      ".ai/assets/skills/slice-implementer/skill.yaml",
+      ".ai/scripts/validate-ai-context.py",
+      ".ai/scripts/tests/test_ai_context_sub_agent_adapters.py"
+    ],
+    "tests_run": [
+      "PyYAML syntax parse and exact 18-role path/asset/status matrix (passed; delegated worker)",
+      "Python AST syntax parse of validator and test file (passed; delegated worker)",
+      "git diff --check (passed; root and delegated workers)",
+      "Independent source-only owning-skill reachability audit (pass-for-manual-review; no findings)",
+      "Final combined-source reachability audit after #92 closeout main (passed; exact 18 roles and selective adapters preserved)",
+      "Repository validation scripts and test suites not run by explicit owner direction"
+    ],
+    "finding_status": "verified-source-awaiting-hosted-integration",
+    "residual_risk": "The contract and fixtures have not been executed through repository validators or test suites in this workflow; that evidence remains pending in the separately arranged validation review. Hosted checks and merged-main read-back remain pending lifecycle facts.",
+    "follow_up_needed": true
+  }
+}

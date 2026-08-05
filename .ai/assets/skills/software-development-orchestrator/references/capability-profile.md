@@ -124,3 +124,19 @@ evidence, and separately verified merge settings when claimed.
 An applicable but unselected routine check records `outcome: not-applicable`
 and `selection_reason: not-run-by-policy`; it is not passed. Explicit commands
 and lifecycle gates are outside this switch.
+
+## Role Execution Coordination
+
+The capability profile maps stages to owning skills; it does not grant a
+runtime child invocation. When an owning skill selects an applicable canonical
+role, that skill produces a provider-neutral `role_execution` record according
+to `../../../shared/ROLE-EXECUTION-CONTRACT.md`. The orchestrator aggregates
+those records by stage without claiming the downstream domain result.
+
+`direct` is the default, including a no-child runtime when inline parity is
+available. `delegated` requires all shared safety gates, at least one material
+value trigger, a `supports-delegation` cost/failure/retry-risk result, and
+genuine child evidence. Records retain bounded envelope and permission data
+without secrets, attempts and fallback, and a final integration decision.
+`loaded_rule_ids` can be an opaque source reference only; its existing owner
+retains resolver and effective-state semantics.

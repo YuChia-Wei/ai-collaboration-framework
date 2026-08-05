@@ -121,6 +121,26 @@ SUB_AGENT_ADAPTER_CONTRACTS = {
         "suffixes": (".md", ".agent.md"),
     },
 }
+ROLE_BINDING_ROOT = PurePosixPath(".ai/assets/sub-agent-role-prompts")
+ROLE_BINDING_REQUIRED_FIELDS = {
+    "role_path",
+    "role_asset_id",
+    "expected_role_status",
+    "binding_kind",
+    "applicability",
+    "load_obligation",
+}
+ROLE_BINDING_KINDS = {"primary", "conditional"}
+ROLE_BINDING_EXPECTED_STATUS = "active"
+ROLE_BINDING_LOAD_OBLIGATION = "mandatory-when-applicable"
+SUB_AGENT_SYSTEM = Path(".ai/SUB-AGENT-SYSTEM.MD")
+ROLE_BINDING_PROJECTION_HEADING = "## SAG-001 Derived Role-Binding Projection"
+ROLE_BINDING_PROJECTION_HEADERS = (
+    "Role Asset ID",
+    "Derived Owning Skill",
+    "Binding Kind",
+    "Canonical Applicability (Projection)",
+)
 CAPABILITY_PROFILE = Path(
     ".ai/assets/skills/software-development-orchestrator/references/capability-profile.yaml"
 )
@@ -1662,6 +1682,319 @@ def validate_sub_agent_adapter_metadata(
         errors.append(f"{path}: adapter paths must be unique across runtime targets")
 
 
+def expected_role_binding_path(role_asset_id: str) -> str:
+    """Return the one canonical role-manifest path for a role asset ID."""
+    return (ROLE_BINDING_ROOT / role_asset_id / "sub-agent.yaml").as_posix()
+
+
+def validate_skill_role_bindings(
+    path: Path,
+    data: dict,
+    role_assets_by_path: dict[str, dict],
+    errors: list[str],
+) -> list[str]:
+    """Validate static role reachability declared by one owning skill only.
+
+    A valid result proves that the canonical role is statically reachable from
+    the owning skill. It intentionally does not claim that a runtime read,
+    application, delegation, or invocation occurred.
+    """
+    bindings = data.get("role_bindings")
+    if bindings is None:
+        return []
+    if not isinstance(bindings, list):
+        errors.append(f"{path}: role_bindings must be a list")
+        return []
+    if not bindings:
+        errors.append(f"{path}: role_bindings must be non-empty when declared")
+        return []
+
+    valid_role_ids: list[str] = []
+    declared_role_ids: set[str] = set()
+    duplicate_role_ids: set[str] = set()
+    declared_role_paths: set[str] = set()
+    for index, binding in enumerate(bindings):
+        label = f"{path}: role_bindings[{index}]"
+        if not isinstance(binding, dict):
+            errors.append(f"{label} must be a mapping")
+            continue
+
+        missing = sorted(ROLE_BINDING_REQUIRED_FIELDS - binding.keys())
+        if missing:
+            errors.append(f"{label}: missing required fields {missing}")
+        extra = sorted(
+            repr(key) for key in binding if key not in ROLE_BINDING_REQUIRED_FIELDS
+        )
+        if extra:
+            errors.append(f"{label}: unsupported keys {extra}")
+
+        role_path = binding.get("role_path")
+        role_asset_id = binding.get("role_asset_id")
+        expected_status = binding.get("expected_role_status")
+        binding_kind = binding.get("binding_kind")
+        applicability = binding.get("applicability")
+        load_obligation = binding.get("load_obligation")
+        valid = not missing and not extra
+
+        if not isinstance(role_asset_id, str) or not role_asset_id:
+            errors.append(f"{label}.role_asset_id must be a non-empty string")
+            valid = False
+        if not isinstance(role_path, str) or not role_path:
+            errors.append(f"{label}.role_path must be a non-empty string")
+            valid = False
+        elif isinstance(role_asset_id, str) and role_asset_id:
+            expected_path = expected_role_binding_path(role_asset_id)
+            if role_path != expected_path:
+                errors.append(
+                    f"{label}.role_path must be the exact canonical role path "
+                    f"{expected_path}"
+                )
+                valid = False
+            if (
+                Path(role_path).is_absolute()
+                or "\\" in role_path
+                or ".." in PurePosixPath(role_path).parts
+                or any(character in role_path for character in "<>*?[]{}")
+            ):
+                errors.append(
+                    f"{label}.role_path must be repository-relative without "
+                    "placeholders, globs, or escapes"
+                )
+                valid = False
+
+        if expected_status != ROLE_BINDING_EXPECTED_STATUS:
+            errors.append(
+                f"{label}.expected_role_status must be "
+                f"{ROLE_BINDING_EXPECTED_STATUS!r}"
+            )
+            valid = False
+        if (
+            not isinstance(binding_kind, str)
+            or binding_kind not in ROLE_BINDING_KINDS
+        ):
+            errors.append(
+                f"{label}.binding_kind must be one of "
+                f"{sorted(ROLE_BINDING_KINDS)}"
+            )
+            valid = False
+        if not isinstance(applicability, str) or not applicability.strip():
+            errors.append(
+                f"{label}.applicability must be a non-empty declarative string"
+            )
+            valid = False
+        if load_obligation != ROLE_BINDING_LOAD_OBLIGATION:
+            errors.append(
+                f"{label}.load_obligation must be "
+                f"{ROLE_BINDING_LOAD_OBLIGATION!r}"
+            )
+            valid = False
+
+        if isinstance(role_asset_id, str) and role_asset_id:
+            if role_asset_id in declared_role_ids:
+                errors.append(
+                    f"{label}: duplicate role binding for {role_asset_id} "
+                    f"in owning skill {data.get('asset_id')!r}"
+                )
+                duplicate_role_ids.add(role_asset_id)
+                valid = False
+            declared_role_ids.add(role_asset_id)
+        if isinstance(role_path, str) and role_path:
+            if role_path in declared_role_paths:
+                errors.append(f"{label}: duplicate role_path {role_path}")
+                valid = False
+            declared_role_paths.add(role_path)
+
+        role_data = (
+            role_assets_by_path.get(role_path)
+            if isinstance(role_path, str)
+            else None
+        )
+        if role_data is None:
+            errors.append(f"{label}.role_path is dangling: {role_path!r}")
+            valid = False
+        else:
+            if role_data.get("asset_id") != role_asset_id:
+                errors.append(
+                    f"{label}.role_asset_id must exactly match target role asset_id "
+                    f"{role_data.get('asset_id')!r}"
+                )
+                valid = False
+            if role_data.get("status") != ROLE_BINDING_EXPECTED_STATUS:
+                errors.append(
+                    f"{label}: target role status must be "
+                    f"{ROLE_BINDING_EXPECTED_STATUS!r}"
+                )
+                valid = False
+
+        if valid and isinstance(role_asset_id, str):
+            valid_role_ids.append(role_asset_id)
+
+    return [
+        role_asset_id
+        for role_asset_id in valid_role_ids
+        if role_asset_id not in duplicate_role_ids
+    ]
+
+
+def validate_active_role_binding_coverage(
+    role_assets_by_path: dict[str, dict],
+    active_owners_by_role: dict[str, list[Path]],
+    errors: list[str],
+) -> None:
+    """Require at least one active owning skill for every active role."""
+    active_roles = sorted(
+        (
+            (role_data.get("asset_id"), role_path)
+            for role_path, role_data in role_assets_by_path.items()
+            if role_data.get("status") == ROLE_BINDING_EXPECTED_STATUS
+            and isinstance(role_data.get("asset_id"), str)
+        ),
+        key=lambda item: item[0],
+    )
+    for role_asset_id, role_path in active_roles:
+        owners = active_owners_by_role.get(role_asset_id, [])
+        if not owners:
+            errors.append(
+                f"{role_path}: active role is central-only and ownerless; "
+                "declare at least one active owning skill role binding"
+            )
+
+
+def projection_cell_value(value: str) -> str | None:
+    """Parse one exact inline-code cell from the derived binding table."""
+    match = re.fullmatch(r"`([^`]+)`", value.strip())
+    return match.group(1) if match else None
+
+
+def parse_role_binding_projection(
+    projection_path: Path, errors: list[str]
+) -> set[tuple[str, str, str, str]] | None:
+    """Parse the narrow, derived SAG-001 table without granting it authority."""
+    try:
+        lines = projection_path.read_text(encoding="utf-8").splitlines()
+    except OSError as exc:
+        errors.append(f"{projection_path}: cannot read SAG-001 projection: {exc}")
+        return None
+
+    headings = [
+        index
+        for index, line in enumerate(lines)
+        if line == ROLE_BINDING_PROJECTION_HEADING
+    ]
+    if len(headings) != 1:
+        errors.append(
+            f"{projection_path}: must contain exactly one "
+            f"{ROLE_BINDING_PROJECTION_HEADING!r} heading"
+        )
+        return None
+    index = headings[0] + 1
+    while index < len(lines) and not lines[index].strip():
+        index += 1
+    if index + 1 >= len(lines):
+        errors.append(f"{projection_path}: SAG-001 projection table is incomplete")
+        return None
+
+    def table_cells(line: str) -> list[str] | None:
+        stripped = line.strip()
+        if not stripped.startswith("|") or not stripped.endswith("|"):
+            return None
+        return [cell.strip() for cell in stripped[1:-1].split("|")]
+
+    headers = table_cells(lines[index])
+    separator = table_cells(lines[index + 1])
+    if headers != list(ROLE_BINDING_PROJECTION_HEADERS):
+        errors.append(
+            f"{projection_path}: SAG-001 projection headers must be "
+            f"{list(ROLE_BINDING_PROJECTION_HEADERS)}"
+        )
+        return None
+    if (
+        separator is None
+        or len(separator) != len(ROLE_BINDING_PROJECTION_HEADERS)
+        or any(not re.fullmatch(r":?-{3,}:?", cell) for cell in separator)
+    ):
+        errors.append(f"{projection_path}: SAG-001 projection separator is invalid")
+        return None
+
+    rows: set[tuple[str, str, str, str]] = set()
+    index += 2
+    row_index = 0
+    while index < len(lines):
+        cells = table_cells(lines[index])
+        if cells is None:
+            break
+        label = f"{projection_path}: SAG-001 projection row {row_index + 1}"
+        if len(cells) != len(ROLE_BINDING_PROJECTION_HEADERS):
+            errors.append(f"{label} must contain four cells")
+            index += 1
+            row_index += 1
+            continue
+        role_asset_id = projection_cell_value(cells[0])
+        owning_skill = projection_cell_value(cells[1])
+        binding_kind = projection_cell_value(cells[2])
+        applicability = cells[3]
+        if not role_asset_id or not owning_skill or not binding_kind or not applicability:
+            errors.append(
+                f"{label} must use non-empty inline-code role, owner, and kind cells "
+                "plus a non-empty applicability cell"
+            )
+            index += 1
+            row_index += 1
+            continue
+        row = (role_asset_id, owning_skill, binding_kind, applicability)
+        if row in rows:
+            errors.append(f"{label} duplicates a derived role-binding row")
+        rows.add(row)
+        index += 1
+        row_index += 1
+
+    if not rows:
+        errors.append(f"{projection_path}: SAG-001 projection must contain rows")
+    return rows
+
+
+def validate_derived_role_binding_projection(
+    projection_path: Path,
+    canonical_rows: set[tuple[str, str, str, str]],
+    errors: list[str],
+) -> None:
+    """Require the central SAG-001 table to be a projection of canonical bindings."""
+    derived_rows = parse_role_binding_projection(projection_path, errors)
+    if derived_rows is None:
+        return
+
+    canonical_by_role: dict[str, set[tuple[str, str, str]]] = {}
+    for role_asset_id, owning_skill, binding_kind, applicability in canonical_rows:
+        canonical_by_role.setdefault(role_asset_id, set()).add(
+            (owning_skill, binding_kind, applicability)
+        )
+    derived_by_role: dict[str, set[tuple[str, str, str]]] = {}
+    for role_asset_id, owning_skill, binding_kind, applicability in derived_rows:
+        derived_by_role.setdefault(role_asset_id, set()).add(
+            (owning_skill, binding_kind, applicability)
+        )
+
+    for role_asset_id in sorted(set(canonical_by_role) | set(derived_by_role)):
+        canonical = canonical_by_role.get(role_asset_id, set())
+        derived = derived_by_role.get(role_asset_id, set())
+        if not canonical:
+            errors.append(
+                f"{projection_path}: SAG-001 projection has stale or central-only "
+                f"role row {role_asset_id!r}"
+            )
+        elif not derived:
+            errors.append(
+                f"{projection_path}: SAG-001 projection is missing canonical "
+                f"role row {role_asset_id!r}"
+            )
+        elif canonical != derived:
+            errors.append(
+                f"{projection_path}: SAG-001 projection has ambiguous or "
+                f"conflicting row(s) for {role_asset_id!r}; canonical={sorted(canonical)!r}, "
+                f"derived={sorted(derived)!r}"
+            )
+
+
 def validate_canonical_assets(errors: list[str]) -> tuple[int, dict[str, dict]]:
     """Validate versioned skill and sub-agent manifests against the canonical contract."""
     manifests = sorted(Path(".ai/assets/skills").glob("*/skill.yaml")) + sorted(
@@ -1678,6 +2011,8 @@ def validate_canonical_assets(errors: list[str]) -> tuple[int, dict[str, dict]]:
     }
     seen: set[str] = set()
     skill_assets: dict[str, dict] = {}
+    skill_manifests: list[tuple[Path, dict]] = []
+    role_assets_by_path: dict[str, dict] = {}
     for path in manifests:
         data = load_yaml_mapping(path, errors)
         if data is None:
@@ -1731,9 +2066,11 @@ def validate_canonical_assets(errors: list[str]) -> tuple[int, dict[str, dict]]:
                         errors.append(f"{path}: missing {key} path {value}")
         if path.name == "skill.yaml":
             skill_assets[asset_id] = data
+            skill_manifests.append((path, data))
             validate_wrapper_metadata(path, data, errors)
             validate_skill_wrapper_semantics(path, data, errors)
         else:
+            role_assets_by_path[path.as_posix()] = data
             validate_sub_agent_adapter_metadata(path, data, errors)
         for key in ("triggers", "workflow"):
             if key not in data:
@@ -1766,6 +2103,41 @@ def validate_canonical_assets(errors: list[str]) -> tuple[int, dict[str, dict]]:
                     errors.append(f"{path}: workflow step description must be non-empty")
             if step_ids != list(range(1, len(step_ids) + 1)):
                 errors.append(f"{path}: workflow steps must be unique and sequential from 1")
+
+    active_owners_by_role: dict[str, list[Path]] = {}
+    canonical_projection_rows: set[tuple[str, str, str, str]] = set()
+    for path, data in skill_manifests:
+        role_ids = validate_skill_role_bindings(
+            path, data, role_assets_by_path, errors
+        )
+        if data.get("status") != ROLE_BINDING_EXPECTED_STATUS:
+            continue
+        for role_asset_id in role_ids:
+            active_owners_by_role.setdefault(role_asset_id, []).append(path)
+        unprojected_role_ids = set(role_ids)
+        bindings = data.get("role_bindings")
+        if isinstance(bindings, list):
+            for binding in bindings:
+                if not isinstance(binding, dict):
+                    continue
+                role_asset_id = binding.get("role_asset_id")
+                if role_asset_id not in unprojected_role_ids:
+                    continue
+                canonical_projection_rows.add(
+                    (
+                        role_asset_id,
+                        data["asset_id"],
+                        binding["binding_kind"],
+                        binding["applicability"],
+                    )
+                )
+                unprojected_role_ids.remove(role_asset_id)
+    validate_active_role_binding_coverage(
+        role_assets_by_path, active_owners_by_role, errors
+    )
+    validate_derived_role_binding_projection(
+        ROOT / SUB_AGENT_SYSTEM, canonical_projection_rows, errors
+    )
 
     templates = ROOT / ".ai/assets/templates"
     legacy = sorted(path.name for path in templates.glob("*.template.yaml"))
@@ -1937,6 +2309,25 @@ def validate_capability_profile(skill_assets: dict[str, dict], errors: list[str]
                     "release",
                     "publication",
                 ],
+            }
+            expected_orchestration["role_execution"] = {
+                "contract": ".ai/assets/shared/ROLE-EXECUTION-CONTRACT.md",
+                "producer": "owning-skill",
+                "aggregator": "software-development-orchestrator",
+                "direct_default": True,
+                "dispositions": [
+                    "direct",
+                    "delegated",
+                    "unavailable",
+                    "not-applicable",
+                ],
+                "delegated_requires": [
+                    "all-safety-gates",
+                    "material-value-trigger",
+                    "supports-delegation-risk-result",
+                    "genuine-invocation-evidence",
+                ],
+                "no_delegation_runtime": "direct-when-inline-parity-satisfiable",
             }
         if profile.get("orchestration_contract") != expected_orchestration:
             errors.append(

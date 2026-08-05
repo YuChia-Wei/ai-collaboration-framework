@@ -8,6 +8,7 @@ Reusable, technology-specific agent-facing context belongs under `.ai/assets/tec
 
 - rules
 - contracts
+- [Provider-Neutral Role Execution Contract](ROLE-EXECUTION-CONTRACT.md)
 - prompt packages
 - reusable templates
 - examples

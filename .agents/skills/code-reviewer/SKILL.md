@@ -21,6 +21,7 @@ This is a thin current-runtime wrapper.
 - References:
   - `.ai/assets/tech-stacks/dotnet-backend/references/CODE-REVIEW-INDEX.MD`
   - `.ai/assets/skills/code-reviewer/references/checklist-reference.md`
+  - `.ai/assets/skills/code-reviewer/references/role-execution.md`
   - `.ai/assets/skills/code-reviewer/references/output-contract.md`
   - `.ai/assets/tech-stacks/dotnet-backend/standards/CODE-REVIEW-CHECKLIST.md`
   - `.dev/standards/ASSESSMENT-ARTIFACT-POLICY.md`

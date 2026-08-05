@@ -1,0 +1,59 @@
+template_metadata:
+  template_id: "assessment-locator"
+  template_version: "1.0.0"
+  template_created_at: "2026-07-13T23:04:10+08:00"
+  template_updated_at: "2026-07-13T23:04:10+08:00"
+
+schema_version: "1.0"
+assessment_id: "ASM-20260805-001"
+commit_search_id: "ASM-20260805-001"
+assessment_type: "ai-context-verification"
+title: "Owning-Skill Reachability And Role Execution Remediation Verification"
+owner_skill: "ai-context-auditor"
+status: "final"
+report: "report.md"
+artifact_branch: "codex/2026-08-05-sub-agent-reachability-continuation"
+base_branch: "main"
+created_at: "2026-08-05T07:34:57+08:00"
+updated_at: "2026-08-05T09:00:09+08:00"
+template_source: ".dev/assessments/templates/assessment-locator-template.yaml"
+template_version: "1.0.0"
+report_template_source: ".ai/assets/skills/ai-context-auditor/templates/ai-context-audit-report-template.md"
+report_template_version: "2.1.0"
+subject_ref:
+  repository: "C:/Users/h4227/.codex/worktrees/b3b5/ai-collaboration-prompts-dotnet-backend"
+  branch: "codex/2026-08-05-sub-agent-reachability-continuation"
+  commit: "4fd7ed991729836801e960c557fb019a25930146"
+scope:
+  included:
+    - "ASM-20260804-002#AIC-003 and ASM-20260804-002#AIC-004 traceability"
+    - "Issue #94 decisions D94-Q1 through D94-Q7"
+    - "Issue #118 owning-skill role bindings and static reachability"
+    - "Issue #119 provider-neutral role execution and no-delegation parity"
+    - ".ai/SUB-AGENT-SYSTEM.MD"
+    - ".ai/assets/CANONICAL-SCHEMA.MD"
+    - ".ai/assets/shared/ROLE-EXECUTION-CONTRACT.md"
+    - ".ai/assets/skills/** role_bindings, role_execution, BDD/test ownership, and acceptance fixtures"
+    - ".ai/scripts/validate-ai-context.py and bounded role-reachability test source"
+    - ".dev/standards and .dev/guides sub-agent taxonomy wording changed by the workflow"
+    - "Combined-state compatibility after #92 implementation PR #120 merge 3bb03993675bb404dc467b8da6ad702c01919705 and records-only closeout PR #121 merge 3e200fd5e164ba363c3cde0c50219e18f0ca14de"
+  excluded:
+    - "Issue #92 rule/provider/effective-state implementation and provider-root work"
+    - "Issue #93 target ignore/install/upgrade drift and AICDISC-ADAPTER-001"
+    - "src/** and product implementation trees"
+    - "tests/** and test/** product tests"
+    - "repository validation script, fixture-test, test-suite, and check-all execution"
+    - "v0.9.0 packaging, tagging, publication, and release configuration"
+relations:
+  supersedes: []
+  superseded_by: []
+  related_assessments:
+    - "ASM-20260804-002"
+  workflow_refs:
+    - "2026-08-05-sub-agent-reachability"
+  backlog_refs: []
+  adr_refs: []
+resume:
+  last_completed_action: "Reconciled PR #122's second hosted run: four checks passed, while the read-only role-binding GWT-025 exposed duplicate-owner credit that was corrected fail-closed in 4fd7ed991729836801e960c557fb019a25930146."
+  next_action: "Push the bounded duplicate-binding correction and this records checkpoint, require a fresh all-green hosted result, then keep merge-commit integration and merged-main read-back as separate lifecycle facts."
+  blockers: []

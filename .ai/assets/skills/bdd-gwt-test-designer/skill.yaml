@@ -22,6 +22,7 @@ outputs:
   - "assertion points and setup notes"
   - "recommended test spec storage path under .dev/specs/tests/"
   - "a .feature artifact design when the user provides or explicitly requests one, or when the target profile selects a feature runner"
+  - "an explicit test-implementation handoff that preserves the separate authorization and test-execution boundary"
 constraints:
   - "Do not implement final test code unless explicitly requested"
   - "Do not change production code"
@@ -29,6 +30,7 @@ constraints:
   - "Treat BDDfy as the default profile, while preserving mandatory GWT structure when a target team explicitly opts out"
   - "Never replace GWT with Arrange-Act-Assert (3A)"
   - "Do not choose a feature runner or package without an explicit target decision"
+  - "Do not create role_execution, authorize concrete test implementation, or report test execution"
 workflow:
   - step: 1
     description: "Identify the highest-priority source of truth"
@@ -37,7 +39,7 @@ workflow:
   - step: 3
     description: "Draft Given-When-Then scenarios and map them to test intent"
   - step: 4
-    description: "Recommend the correct test spec category and output path"
+    description: "Recommend the correct test spec category and output path, then hand implementation to slice-implementer only when separately authorized"
 references:
   - ".ai/assets/skills/bdd-gwt-test-designer/references/scope-rules.md"
   - ".ai/assets/skills/bdd-gwt-test-designer/references/scenario-design-playbook.md"

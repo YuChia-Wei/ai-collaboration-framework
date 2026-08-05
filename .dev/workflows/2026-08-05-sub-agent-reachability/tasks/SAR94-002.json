@@ -1,0 +1,136 @@
+{
+  "template_id": "ai-context-governance-remediation-task",
+  "template_version": "1.1.0",
+  "template_created_at": "2026-07-10T18:22:49+08:00",
+  "template_updated_at": "2026-07-27T09:52:09+08:00",
+  "task_id": "SAR94-002",
+  "workflow_id": "2026-08-05-sub-agent-reachability",
+  "owner_skill": "ai-context-governance",
+  "title": "Record role execution and no-delegation inline parity",
+  "status": "in_progress",
+  "created_at": "2026-08-05T01:34:40+08:00",
+  "updated_at": "2026-08-05T09:00:09+08:00",
+  "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
+  "model": "gpt-5.6-terra",
+  "reasoning_effort": "xhigh",
+  "work_item": "#119",
+  "depends_on": [
+    "SAR94-001"
+  ],
+  "finding_ids": [
+    "ASM-20260804-002#AIC-003",
+    "ASM-20260804-002#AIC-004"
+  ],
+  "scope": {
+    "target": "Provider-neutral direct/delegated selection, role_execution evidence, retry/fallback, orchestrator aggregation, test ownership handoff, and no-delegation inline parity.",
+    "files": [
+      ".ai/assets/CANONICAL-SCHEMA.MD role execution and bounded-role wording only",
+      ".ai/assets/shared/ROLE-EXECUTION-CONTRACT.md",
+      ".ai/SUB-AGENT-SYSTEM.MD",
+      ".ai/assets/sub-agent-role-prompts/README.MD",
+      ".ai/assets/skills/software-development-orchestrator/**",
+      ".ai/assets/skills/slice-implementer/**",
+      ".ai/assets/skills/bdd-gwt-test-designer/**",
+      "applicable owning-skill execution contracts and bounded fixtures",
+      ".dev/standards/AI-CONTEXT-BOUNDARY.md sub-agent classification only",
+      ".dev/standards/rationale/skill-sub-agent-boundary-rationale.MD",
+      ".dev/guides/ai-collaboration-guides role-taxonomy wording only"
+    ],
+    "constraints": [
+      "Implement D94-Q3, D94-Q6, and D94-Q7 exactly",
+      "Owning skills produce role_execution and the orchestrator only aggregates it",
+      "Compose with #114 loaded_rule_ids without redefining #92 resolver semantics",
+      "Use direct inline parity rather than synthetic child evidence on no-delegation runtimes",
+      "Limit retries to the owner-approved attempt policy",
+      "Do not run check-all or repository validation scripts"
+    ],
+    "non_goals": [
+      "Owning-skill static mapping already delivered by SAR94-001",
+      "External orchestration package adoption",
+      "Provider-specific adapter generation or settings",
+      "#92 rule/provider/effective-state sections",
+      "#93 target ignore/install/upgrade drift",
+      "Release packaging or publication"
+    ]
+  },
+  "execution": {
+    "steps": [
+      "Define the provider-neutral role_execution contract and dispositions",
+      "Encode direct-by-default delegation safety gates and value triggers",
+      "Define genuine invocation evidence, one bounded retry, fallback, and final integration ownership",
+      "Apply no-delegation inline parity and test-design-to-implementation handoff",
+      "Update owning-skill production and orchestrator aggregation contracts",
+      "Add bounded examples/fixtures without executing repository validation scripts",
+      "Perform root-orchestrator manual integration review"
+    ],
+    "validation": [
+      "Manual disposition and retry/fallback scenario matrix",
+      "Manual direct/delegated provenance distinction review",
+      "JSON/YAML syntax parsing where applicable",
+      "Repository validation scripts deferred by explicit owner direction"
+    ],
+    "last_completed_step": "Diagnosed PR #122's second hosted run: package candidate, both prerequisite contracts, and Ubuntu quick gate passed; read-only GWT-025 alone showed that a duplicate binding still credited its first declaration. Commit 4fd7ed9 now excludes only duplicated role IDs from valid ownership.",
+    "next_action": "Push 4fd7ed9 and the records checkpoint to PR #122, require a fresh all-green hosted result, then integrate with merge-commit topology and read back merged main."
+  },
+  "results": {
+    "summary": "Implemented one canonical provider-neutral role_execution contract with final/current disposition, exact role/owner/stage identity, bounded input/output/permissions/stops, genuine per-attempt provenance, deterministic direct-by-default delegation gates, bounded retry and fallback, and named final integration ownership. Owning skills produce records; software-development-orchestrator only aggregates them. BDD remains design-only, slice-implementer owns separately authorized concrete tests, and no-delegation runtimes use the same contract inline without fake child evidence.",
+    "files_changed": [
+      ".ai/SUB-AGENT-SYSTEM.MD",
+      ".ai/assets/CANONICAL-SCHEMA.MD",
+      ".ai/assets/shared/README.MD",
+      ".ai/assets/shared/ROLE-EXECUTION-CONTRACT.md",
+      ".ai/assets/sub-agent-role-prompts/README.MD",
+      ".ai/assets/skills/ai-context-init/skill.yaml",
+      ".ai/assets/skills/ai-context-init/references/delegation-rules.md",
+      ".ai/assets/skills/ai-context-init/references/role-execution.md",
+      ".ai/assets/skills/bdd-gwt-test-designer/skill.yaml",
+      ".ai/assets/skills/bdd-gwt-test-designer/references/output-contract.md",
+      ".ai/assets/skills/bdd-gwt-test-designer/references/scope-rules.md",
+      ".ai/assets/skills/code-reviewer/skill.yaml",
+      ".ai/assets/skills/code-reviewer/references/role-execution.md",
+      ".ai/assets/skills/problem-frame-author/skill.yaml",
+      ".ai/assets/skills/problem-frame-author/references/role-execution.md",
+      ".ai/assets/skills/slice-implementer/skill.yaml",
+      ".ai/assets/skills/slice-implementer/references/execution-playbook.md",
+      ".ai/assets/skills/slice-implementer/references/handoff-rules.md",
+      ".ai/assets/skills/slice-implementer/references/modes/generic-slice.md",
+      ".ai/assets/skills/slice-implementer/references/role-execution.md",
+      ".ai/assets/skills/software-development-orchestrator/skill.yaml",
+      ".ai/assets/skills/software-development-orchestrator/references/capability-profile.md",
+      ".ai/assets/skills/software-development-orchestrator/references/capability-profile.yaml",
+      ".ai/assets/skills/software-development-orchestrator/references/output-contract.md",
+      ".ai/assets/skills/software-development-orchestrator/references/role-execution-playbook.md",
+      ".ai/assets/skills/software-development-orchestrator/references/routing-playbook.md",
+      ".ai/assets/skills/software-development-orchestrator/references/runtime-coordination.md",
+      ".ai/assets/skills/software-development-orchestrator/references/workflow-artifact-playbook.md",
+      ".ai/assets/skills/software-development-orchestrator/templates/development-review-report-template.md",
+      ".ai/assets/skills/software-development-orchestrator/templates/development-workflow-plan-template.md",
+      ".ai/assets/skills/software-development-orchestrator/templates/development-workflow-task-template.json",
+      ".ai/assets/skills/software-development-orchestrator/fixtures/acceptance/role-execution-provider-neutral.yaml",
+      ".ai/assets/skills/software-development-orchestrator/scripts/tests/test_role_execution_acceptance.py",
+      ".dev/guides/ai-collaboration-guides/AI-ASSET-LOCATION-STRATEGY.md",
+      ".dev/guides/ai-collaboration-guides/LOCAL-RUNTIME-WRAPPER-GUIDE.md",
+      ".dev/guides/ai-collaboration-guides/SKILL-AND-SUB-AGENT-TAXONOMY-GUIDE.md",
+      ".dev/standards/AI-CONTEXT-BOUNDARY.md",
+      ".dev/standards/rationale/skill-sub-agent-boundary-rationale.MD"
+    ],
+    "tests_run": [
+      "PyYAML/JSON syntax parsing and canonical reference-path read-back (passed; delegated workers)",
+      "Python AST syntax parse of the fixture-local acceptance oracle (passed; delegated worker)",
+      "Root manual role/owner/path, final-attempt provenance, disposition, retry/fallback, final-owner, BDD handoff, no-delegation, and #92 boundary review",
+      "git diff --check (passed; root and delegated workers)",
+      "Independent source-only execution audit (two MEDIUM findings corrected; follow-up pass-for-manual-review with no new finding)",
+      "Independent final combined-source reachability, execution, and #92 compatibility audits (passed; no active finding)",
+      "Independent LOW code-review preflight-ordering clarification follow-up (passed)",
+      "Incremental origin/main@3e200fd ancestry and #121 records-only delta read-back (passed)",
+      "PR #122 first hosted run: Build and validate candidate plus Windows prerequisite passed; Ubuntu prerequisite, read-only governance, and Ubuntu quick gate failed from the same wrapper/validator synchronization drift",
+      "Manual exact comparison of the ten wrapper-reference additions and the v1.3 role_execution expectation in a1741fb (passed; hosted rerun pending)",
+      "PR #122 second hosted run: Build and validate candidate, Ubuntu prerequisite, Windows prerequisite, and Ubuntu quick gate passed; read-only governance GWT-025 failed",
+      "Manual duplicate-binding fail-closed return-path review for 4fd7ed9 (passed; fresh all-green hosted rerun pending)",
+      "Repository validators, fixture tests, test suites, and check-all not run by explicit owner direction"
+    ],
+    "finding_status": "hosted-fixes-prepared-awaiting-all-green-rerun",
+    "residual_risk": "The fixture-local oracle and repository validators have not been executed locally. Two hosted runs are retained as failed/corrected evidence; a fresh all-green result, merge-commit integration, and merged-main read-back remain pending lifecycle facts.",
+    "follow_up_needed": true
+  }
+}

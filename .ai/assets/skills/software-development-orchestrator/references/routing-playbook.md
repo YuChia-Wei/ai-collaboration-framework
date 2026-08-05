@@ -109,3 +109,23 @@ When handing a stage to another skill or sub-agent, include:
    test execution is selected;
 7. validation expected before returning;
 8. approval state and the decision that would pause or resume execution.
+
+## Role Execution Handoff and Aggregation
+
+When a selected stage has an applicable canonical sub-agent role, the owning
+skill—not this orchestrator—loads the role manifest and mandatory references,
+then produces the complete provider-neutral `role_execution` record defined in
+`../../../shared/ROLE-EXECUTION-CONTRACT.md`.
+
+Include the role record or its durable task reference in the handoff. The
+orchestrator aggregates records by `stage_id`, checks disposition, genuine
+delegation evidence, attempts, fallback, and final integration decision, then
+keeps the owning skill's domain output intact. It must not infer a role result
+from routing metadata or a runtime adapter.
+
+Use `direct` by default. Delegation requires every shared safety gate, one or
+more material-value triggers, a `supports-delegation` risk result, and a real
+child invocation. If that route is unavailable but the parent can apply the
+same role contract inline, select `direct`; otherwise select `unavailable`.
+The existing `loaded_rule_ids` packet may be cited as an input source, without
+changing its semantics.

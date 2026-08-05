@@ -140,3 +140,31 @@ When writing prompts for any runtime, include:
 9. when to ask the user for a direction decision.
 
 Do not make runtime workflows the source of truth for repository process rules. Runtime workflows should invoke `software-development-orchestrator`; `software-development-orchestrator` should point to repository policies and downstream skills.
+
+## Role Execution at Runtime
+
+Runtime child-agent features are optional execution mechanisms, not proof that
+a canonical role was delegated. For every applicable role, the owning skill
+produces the provider-neutral `role_execution` record from
+`../../../shared/ROLE-EXECUTION-CONTRACT.md`; the orchestrator aggregates it
+by stage and remains the integration coordinator only.
+
+Default to `direct`: the parent reads the same role manifest and mandatory
+references, applies the same bounded input/output/permission/stop contract
+inline, records `parent-inline`, and leaves direct invocation evidence null.
+This is also the correct result when the runtime cannot launch a child but
+inline parity is available.
+
+Select `delegated` only after the shared all-gates plus material-value test and
+a `supports-delegation` cost/failure/retry-risk result. The delegated attempt
+must retain genuine invocation evidence. A delegated failure may become direct
+only with recorded inline-parity evidence; otherwise it is unavailable. The
+first execution attempt is `1`; attempt `2` follows correctable failure and
+material state change; attempt `3` or later requires new owner/workflow
+authorization.
+
+Conversation-only direct use reports this same record inline without a
+repository artifact. Workflow mode stores a complete record in the owning task
+or references it from that task. Neither mode requires a new adapter or
+package. An existing `loaded_rule_ids` packet remains an input source reference
+whose resolver and effective-state semantics are unchanged.
