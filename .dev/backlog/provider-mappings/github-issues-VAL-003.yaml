@@ -1,0 +1,30 @@
+schema_version: "1.0"
+provider: "github"
+repository: "YuChia-Wei/ai-collaboration-prompts-dotnet-backend"
+migration_id: "github-live-VAL-003-2026-08-05"
+stage: "stage-b-read-back-complete"
+source_revision: "3f4979ed74cb04409be2aa8702b539f9d4fda159"
+generated_at: "2026-08-05T10:10:25+08:00"
+project:
+  number: 3
+  node_id: "PVT_kwHOAwvEG84Bez7w"
+  url: "https://github.com/users/YuChia-Wei/projects/3"
+items:
+  - backlog_id: "VAL-003"
+    source_path: ".dev/backlog/items/VAL-003.yaml"
+    source_sha256: "5ef02bdc8bf366cd990b11b952b364da04f74268942551aa6ef9e06c70fdea77"
+    issue_number: 107
+    issue_node_id: "I_kwDOSBe2Hc8AAAABLcNSaw"
+    issue_url: "https://github.com/YuChia-Wei/ai-collaboration-prompts-dotnet-backend/issues/107"
+    issue_state: "closed"
+    close_reason: "completed"
+    project_item_id: "PVTI_lAHOAwvEG84Bez7wzg1QtdE"
+    created_at: "2026-08-04T16:32:47Z"
+    updated_at: "2026-08-05T02:07:00Z"
+    read_back:
+      verified_at: "2026-08-05T10:10:25+08:00"
+      title_matches: true
+      markers_match: true
+      labels_match: true
+      state_matches: true
+      notes: "Issue #107 is closed completed with the canonical title, idempotency markers, and enabler/framework/created-by labels. Project read-back is Done, P1 High, Approved, v0.9.0, and Not yet published; Proposal #92 and leaf #117 remain non-release traceability. Architecture Kit remains unavailable and non-selectable."

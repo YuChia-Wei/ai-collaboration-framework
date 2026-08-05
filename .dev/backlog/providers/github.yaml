@@ -5,7 +5,7 @@ owner: "YuChia-Wei"
 source:
   backlog_glob: ".dev/backlog/items/*.yaml"
   roadmap: ".dev/backlog/ROADMAP.md"
-  expected_item_count: 50
+  expected_item_count: 54
   portable_identity_field: "backlog_id"
   provider_identity_is_authoritative: false
 project:
@@ -236,6 +236,10 @@ migration:
     - "VAL-002"
     - "GOV-005"
     - "CTX-004"
+    - "GOV-006"
+    - "CTX-005"
+    - "PKG-006"
+    - "VAL-003"
   canaries:
     - "DEVWF-001"
     - "AIC-007"
@@ -292,6 +296,7 @@ classifications:
   CTX-002: {kind: "enabler", scope: "framework", rationale: "Navigation repair changes the reusable AI context catalog."}
   CTX-003: {kind: "enabler", scope: "framework", rationale: "Truth and contract remediation changes portable AI context behavior."}
   CTX-004: {kind: "story", scope: "source-repo", rationale: "Repository users and downstream evaluators need the bilingual root navigation to expose the executable analyzer entry point."}
+  CTX-005: {kind: "enabler", scope: "framework", rationale: "Downstream targets and action skills need one freshness-verified effective-rule semantics contract."}
   CUST-001: {kind: "story", scope: "framework", rationale: "Downstream adopters need target-owned customizations preserved across framework lifecycle changes."}
   DEVWF-001: {kind: "story", scope: "framework", rationale: "Maintainers need optional tracker-neutral traceability without making a tracker mandatory."}
   DEVWF-002: {kind: "story", scope: "framework", rationale: "Framework users need one governed end-to-end development orchestration contract."}
@@ -304,6 +309,7 @@ classifications:
   GOV-003: {kind: "enabler", scope: "mixed", rationale: "Source provenance rules are projected into portable attribution guidance."}
   GOV-004: {kind: "enabler", scope: "mixed", rationale: "Source workflow and Git integration rules are projected into portable delivery-cohesion and topology guidance."}
   GOV-005: {kind: "enabler", scope: "source-repo", rationale: "Proposal dependency triage governs this source repository's selected GitHub work-management provider."}
+  GOV-006: {kind: "enabler", scope: "framework", rationale: "Stable rule ownership and profile migration determine reusable framework semantics and distribution boundaries."}
   HANDOFF-001: {kind: "story", scope: "framework", rationale: "Maintainers need executable state alignment when work crosses models, runtimes, hosts, or sessions."}
   INIT-001: {kind: "story", scope: "framework", rationale: "Existing AI-agent repositories need safe, collision-aware framework adoption."}
   LANG-001: {kind: "enabler", scope: "framework", rationale: "Semantic translation parity is a reusable AI context quality gate."}
@@ -313,6 +319,7 @@ classifications:
   PKG-003: {kind: "story", scope: "framework", rationale: "Downstream adopters need governed direct upgrades from supported source versions."}
   PKG-004: {kind: "enabler", scope: "mixed", rationale: "Source packaging must prevent source-local work-management policy from leaking downstream."}
   PKG-005: {kind: "story", scope: "framework", rationale: "Framework maintainers and downstream adopters need selected framework-managed paths to fail closed when target Git ignore rules hide them."}
+  PKG-006: {kind: "enabler", scope: "framework", rationale: "Downstream .NET targets need stable bundled-provider identity and explicit capability activation without confusing source delivery with active validation."}
   R042-001: {kind: "enabler", scope: "framework", rationale: "Runtime wrapper and routing correctness affects distributed adapters."}
   R042-002: {kind: "enabler", scope: "framework", rationale: "Doctrine and standards corrections affect reusable guidance."}
   R042-003: {kind: "enabler", scope: "framework", rationale: "Navigation and lifecycle hygiene affects reusable context discovery."}
@@ -332,4 +339,5 @@ classifications:
   UPG-001: {kind: "story", scope: "framework", rationale: "Legacy customized targets would need a governed provenance and override-preserving upgrade path."}
   VAL-001: {kind: "enabler", scope: "mixed", rationale: "Source validation policy governs confidence in portable dependency and repository contracts."}
   VAL-002: {kind: "enabler", scope: "mixed", rationale: "Source aggregate composition and downstream validation profiles affect both repository operation and portable workflow cost."}
+  VAL-003: {kind: "enabler", scope: "framework", rationale: "A fail-closed readiness gate prevents an unavailable Architecture Kit package from becoming a selectable framework provider."}
   WIBIND-001: {kind: "enabler", scope: "mixed", rationale: "Provider-neutral binding and merge-gate semantics affect portable target policy while the source repository retains its own optional selection."}

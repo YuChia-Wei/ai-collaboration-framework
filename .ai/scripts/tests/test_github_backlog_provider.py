@@ -27,9 +27,9 @@ class GitHubBacklogProviderTests(unittest.TestCase):
         cls.plan = PROVIDER.build_plan(REPO_ROOT, CONFIG, "HEAD")
         cls.items = {item["backlog_id"]: item for item in cls.plan["items"]}
 
-    def test_gwt_001_given_canonical_backlog_when_projected_then_all_49_ids_are_unique(self) -> None:
-        self.assertEqual(49, self.plan["counts"]["total"])
-        self.assertEqual(49, len(self.items))
+    def test_gwt_001_given_canonical_backlog_when_projected_then_all_54_ids_are_unique(self) -> None:
+        self.assertEqual(54, self.plan["counts"]["total"])
+        self.assertEqual(54, len(self.items))
 
     def test_gwt_002_given_stage_a_when_planned_then_no_online_write_is_available(self) -> None:
         self.assertFalse(self.plan["online_writes_performed"])
@@ -85,7 +85,21 @@ class GitHubBacklogProviderTests(unittest.TestCase):
         self.assertEqual(set(self.items) - post_adoption, set(ordered))
         self.assertEqual([10, 10, 10, 7], [len(batch) for batch in self.plan["remaining_batches"]])
         self.assertEqual(
-            ["SKILL-002", "TOOL-002", "WIBIND-001", "GOV-004", "EVAL-002", "VAL-002", "GOV-005", "CTX-004"],
+            [
+                "SKILL-002",
+                "TOOL-002",
+                "WIBIND-001",
+                "GOV-004",
+                "PKG-005",
+                "EVAL-002",
+                "VAL-002",
+                "GOV-005",
+                "CTX-004",
+                "GOV-006",
+                "CTX-005",
+                "PKG-006",
+                "VAL-003",
+            ],
             self.plan["post_adoption_items"],
         )
 
@@ -101,6 +115,24 @@ class GitHubBacklogProviderTests(unittest.TestCase):
             self.assertEqual("mixed", item["classification"]["scope"])
             self.assertEqual("v0.8.0", item["project_fields"]["Target release"])
             self.assertEqual("v0.8.0", item["project_fields"]["Published in"])
+
+    def test_gwt_009b_given_v090_items_when_projected_then_each_appears_once_as_awaiting_publication(self) -> None:
+        expected = {
+            "GOV-004",
+            "PKG-005",
+            "GOV-006",
+            "CTX-005",
+            "PKG-006",
+            "VAL-003",
+        }
+        projected = {
+            backlog_id
+            for backlog_id, item in self.items.items()
+            if item["project_fields"]["Target release"] == "v0.9.0"
+        }
+        self.assertEqual(expected, projected)
+        for backlog_id in expected:
+            self.assertEqual("Not yet published", self.items[backlog_id]["project_fields"]["Published in"])
 
     def test_gwt_010_given_same_revision_then_yaml_projection_is_deterministic(self) -> None:
         second = PROVIDER.build_plan(REPO_ROOT, CONFIG, self.plan["source_revision"])

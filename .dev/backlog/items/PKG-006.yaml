@@ -1,0 +1,52 @@
+schema_version: "1.0"
+backlog_id: "PKG-006"
+title: "Relocate And Activate The Bundled .NET Validation Provider"
+category: "mechanical-validation-provider"
+status: "resolved"
+priority: "HIGH"
+summary: "Give the pre-cutover bundled provider a stable profile-owned identity and location, separate analyzer/runtime capabilities, inactive-by-default delivery, and fail-closed reference-in-place activation evidence."
+created_at: "2026-08-05T09:58:52+08:00"
+updated_at: "2026-08-05T09:58:52+08:00"
+release:
+  target: "v0.9.0"
+  completed_in: "v0.9.0"
+  published_in: null
+  target_scope: "bundled-dotnet-mechanical-validation-provider-relocation-and-activation"
+  gate: "release-blocker"
+origin_refs:
+  - ".dev/assessments/ASM-20260804-002/report.md"
+  - ".dev/assessments/ASM-20260804-002/evidence/proposal-traceability.yaml"
+  - ".dev/workflows/2026-08-05-rule-provider-precutover/workflow.yaml"
+finding_refs:
+  - "ASM-20260804-002#AIC-001"
+  - "ASM-20260804-002#AIC-002"
+recommended_owner_skill: "ai-context-governance"
+handoff_condition: "Include PKG-006 exactly once in the future v0.9.0 candidate and keep published_in null until immutable publication succeeds. Proposal #92 and implementation Issues #115 and #116 remain traceability surfaces, not additional Included Work."
+workflow_refs:
+  - ".dev/workflows/2026-08-05-rule-provider-precutover/workflow.yaml"
+task_refs:
+  - ".dev/workflows/2026-08-05-rule-provider-precutover/tasks/RPB-005.json"
+  - ".dev/workflows/2026-08-05-rule-provider-precutover/tasks/RPB-008.json"
+resolution_ref: ".dev/assessments/ASM-20260805-002/report.md"
+decision_needed: "Resolved: the owner allocated the completed #106 umbrella outcome to v0.9.0 on 2026-08-05 after PR #120 and its records-only closeout were integrated. This allocation does not authorize release preparation, tagging, publication, materialize-to-tools implementation, or Architecture Kit cutover."
+related_backlog_refs:
+  - "GOV-006"
+  - "CTX-005"
+  - "PKG-005"
+  - "CTX-004"
+  - "VAL-003"
+provider_refs:
+  - "github-issue:#106"
+  - "github-proposal:#92"
+acceptance:
+  - "The pre-cutover provider retains stable identity ai-context-dotnet-bundled-mechanical-validation at one canonical dotnet-backend profile location."
+  - "Roslyn analyzer and DotnetBackendValidation remain separately selectable, wired, invoked, configured, and evidenced capabilities."
+  - "Receiving provider source reports source-available and never implies active validation."
+  - "Reference-in-place is the only implemented activation mode and requires explicit target-owned wiring plus invocation evidence."
+  - "Materialize-to-tools remains unsupported and fails closed without a recorded target limitation and separate authorization."
+  - "No activation path silently edits target-owned solution, build, editor, package, severity, or warnings-as-errors configuration."
+inventory_notes:
+  - "Issue #106 is the sole formal provider projection for PKG-006."
+  - "Issues #115 and #116 are bounded implementation slices under #106 and are not separate v0.9.0 Included Work."
+  - "PR #120 integrated this outcome by merge commit 3bb03993675bb404dc467b8da6ad702c01919705; source availability remains distinct from target activation."
+

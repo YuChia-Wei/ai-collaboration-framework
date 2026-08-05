@@ -1,0 +1,52 @@
+schema_version: "1.0"
+backlog_id: "GOV-006"
+title: "Normalize Engineering Rule Ownership And Directory Migration"
+category: "engineering-rule-governance"
+status: "resolved"
+priority: "HIGH"
+summary: "Give concepts, rules, constraints, enforcement capabilities, and technology bindings stable ownership while migrating each affected surface to one explicit canonical location."
+created_at: "2026-08-05T09:58:52+08:00"
+updated_at: "2026-08-05T09:58:52+08:00"
+release:
+  target: "v0.9.0"
+  completed_in: "v0.9.0"
+  published_in: null
+  target_scope: "engineering-rule-identity-ownership-and-directory-migration"
+  gate: "release-blocker"
+origin_refs:
+  - ".dev/assessments/ASM-20260804-002/report.md"
+  - ".dev/assessments/ASM-20260804-002/evidence/proposal-traceability.yaml"
+  - ".dev/workflows/2026-08-05-rule-provider-precutover/workflow.yaml"
+finding_refs:
+  - "ASM-20260804-002#AIC-001"
+recommended_owner_skill: "ai-context-governance"
+handoff_condition: "Include GOV-006 exactly once in the future v0.9.0 candidate and keep published_in null until immutable publication succeeds. Proposal #92 and implementation Issues #109 through #111 remain traceability surfaces, not additional Included Work."
+workflow_refs:
+  - ".dev/workflows/2026-08-05-rule-provider-precutover/workflow.yaml"
+task_refs:
+  - ".dev/workflows/2026-08-05-rule-provider-precutover/tasks/RPB-001.json"
+  - ".dev/workflows/2026-08-05-rule-provider-precutover/tasks/RPB-002.json"
+  - ".dev/workflows/2026-08-05-rule-provider-precutover/tasks/RPB-004.json"
+  - ".dev/workflows/2026-08-05-rule-provider-precutover/tasks/RPB-008.json"
+resolution_ref: ".dev/assessments/ASM-20260805-002/report.md"
+decision_needed: "Resolved: the owner allocated the completed #104 umbrella outcome to v0.9.0 on 2026-08-05 after PR #120 and its records-only closeout were integrated. This allocation does not authorize release preparation, tagging, publication, or provider cutover."
+related_backlog_refs:
+  - "STD-001"
+  - "CTX-005"
+  - "PKG-006"
+  - "VAL-003"
+provider_refs:
+  - "github-issue:#104"
+  - "github-proposal:#92"
+acceptance:
+  - "Concepts, rules, constraints, enforcement capabilities, and technology bindings retain distinct stable identities and resolve to one canonical semantic owner."
+  - "Every #92 migration surface has an explicit file-level disposition, destination, ownership class, distribution component, and compatibility treatment."
+  - "Portable cross-technology semantics remain shared while .NET-native semantics resolve through the dotnet-backend profile."
+  - "Source governance and downstream target-effective truth remain under .dev with their distinct roles documented."
+  - "Provider, analyzer, validator, and target configuration surfaces cannot become the normative semantic owner."
+  - "Distribution and navigation references follow the migrated canonical paths without claiming delivered tooling is active."
+inventory_notes:
+  - "Issue #104 is the sole formal provider projection for GOV-006."
+  - "Issues #109, #110, and #111 are bounded implementation slices under #104 and are not separate v0.9.0 Included Work."
+  - "ASM-20260804-002#AIC-004 remains retained evidence provenance and is not represented as GOV-006 remediation."
+  - "PR #120 integrated this outcome by merge commit 3bb03993675bb404dc467b8da6ad702c01919705; ASM-20260805-002 independently verified the authorized static pre-cutover scope."
