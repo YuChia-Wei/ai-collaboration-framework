@@ -7,9 +7,9 @@
   "task_id": "V010-VAL",
   "owner_skill": "ai-context-governance",
   "related_plan_id": "development-plan-2026-08-07-v0-10-validation-cost-and-release-flow",
-  "status": "in_progress",
+  "status": "completed",
   "created_at": "2026-08-07T22:12:41+08:00",
-  "updated_at": "2026-08-07T22:27:02+08:00",
+  "updated_at": "2026-08-07T23:21:27+08:00",
   "template_source": ".ai/assets/skills/software-development-orchestrator/templates/development-workflow-task-template.json",
   "model": "gpt-5.6-terra",
   "reasoning_effort": "not-runtime-reported",
@@ -61,5 +61,22 @@
     "commit_checkpoint": "Validated implementation stage commit.",
     "deferred_items": []
   },
-  "results": {"summary": "", "files_changed": [], "approval_evidence": [], "test_execution": [], "role_execution_aggregation": [], "spec_compliance": {"outcome": "not-applicable", "coverage_percent": null, "evidence": []}, "validation_evidence": [], "commits": [], "follow_up_needed": false}
+  "results": {
+    "summary": "#96 now has one canonical profile registry, compact retained diagnostics, smoke/full packaging separation, batched Git object reads, and CI consumers that call the registry rather than copied command lists.",
+    "files_changed": [".ai/scripts/check-all.sh", ".ai/scripts/validation-profile-registry.sh", ".ai/scripts/ai_context_package.py", ".github/workflows/governance.yml", ".github/workflows/portable-gates.yml", ".ai/scripts/tests/"],
+    "approval_evidence": ["Owner v0.10.0 work package", "GitHub Issue #96 owner-decision comment"],
+    "test_execution": [],
+    "role_execution_aggregation": [],
+    "spec_compliance": {"outcome": "not-applicable", "coverage_percent": null, "evidence": []},
+    "validation_evidence": [
+      "Windows Git Bash: check-all.sh --profile fast passed in 24 seconds (27 selected; no full package matrix).",
+      "Windows Git Bash: check-all.sh --profile pr passed in 49 seconds (36 selected; package smoke included; no full package matrix).",
+      "python .ai/scripts/tests/test_fail_closed_validation.py -v: 35 tests passed.",
+      "Focused GitObjectReader GWT tests: 2 passed; package smoke: 1 passed; profile registry: 4 passed.",
+      "python .ai/scripts/validate-workflow-artifacts.py --workflow-id 2026-08-07-v0-10-validation-cost-and-release-flow and validate-shell-assets.py passed; git diff --check passed."
+    ],
+    "commits": ["5a24d04025c529690e24fa3251113beecf7e40d4"],
+    "finding_status": "addressed",
+    "follow_up_needed": false
+  }
 }
