@@ -1,0 +1,139 @@
+{
+  "template_id": "software-development-orchestrator/development-workflow-task",
+  "template_version": "1.5.0",
+  "template_created_at": "2026-07-10T18:25:11+08:00",
+  "template_updated_at": "2026-08-05T02:12:00+08:00",
+  "workflow_id": "2026-08-07-v0-10-validation-cost-and-release-flow",
+  "task_id": "V010-ISSUES",
+  "owner_skill": "ai-context-governance",
+  "related_plan_id": "development-plan-2026-08-07-v0-10-validation-cost-and-release-flow",
+  "status": "completed",
+  "created_at": "2026-08-07T22:12:41+08:00",
+  "updated_at": "2026-08-07T22:24:03+08:00",
+  "template_source": ".ai/assets/skills/software-development-orchestrator/templates/development-workflow-task-template.json",
+  "model": "gpt-5.6-terra",
+  "reasoning_effort": "not-runtime-reported",
+  "workflow_locator": ".dev/workflows/2026-08-07-v0-10-validation-cost-and-release-flow/workflow.yaml",
+  "scope": {
+    "goal": "Normalize online GitHub Issue authority and v0.10.0 release scope, then repair its exact workflow-validator enforcement path.",
+    "target": "GitHub Issues #75, #95, #96, #57, #97, #133, #134, #135, #136, and #137; Project #3; .ai/scripts/validate-workflow-artifacts.py and its focused tests.",
+    "files": [
+      ".ai/scripts/validate-workflow-artifacts.py",
+      ".ai/scripts/tests/ relevant workflow-artifact validator tests",
+      ".dev/workflows/INDEX.MD"
+    ],
+    "constraints": [
+      "Online GitHub Issues are the sole work-management authority.",
+      "No material repository implementation precedes an Issue with owner authorization.",
+      "Keep GitHub-provider authority source-repository-only and fail closed for new unissued material work.",
+      "Do not treat a provider field as implementation authorization without the owner work package."
+    ],
+    "non_goals": [
+      "Validation profiles, package identity, execution evidence, closeout capability, or release tag/publishing implementation.",
+      "Release tag or publication mutation."
+    ]
+  },
+  "inputs": {
+    "requirements": [
+      "AI-框架改善分析-v0.10.0-Terra完整實作工作包.md",
+      "GitHub live Issue and Project state"
+    ],
+    "specifications": [],
+    "architecture_decisions": [
+      "#75 is superseded by #96.",
+      "#134 is a bounded child of #95.",
+      "#137 reconciles the tag-authority policy conflict."
+    ],
+    "user_constraints": [
+      "Use gh only outside the sandbox.",
+      "Keep #85 and the native-language discussion scope excluded."
+    ]
+  },
+  "execution": {
+    "capability_slot": "implementation",
+    "approval_contract": {
+      "status": "approved",
+      "required_before": "Source-governance validator repair",
+      "authorization_source": [
+        "Owner v0.10.0 work package dated 2026-08-07"
+      ],
+      "pending_decision": ""
+    },
+    "implementation_contract": {
+      "intent": "bug-fix",
+      "execution_mode": "generic",
+      "overlays": [],
+      "authorization_source": [
+        "Owner v0.10.0 work package dated 2026-08-07",
+        "GitHub Issue #133"
+      ],
+      "normative_truth": [
+        "Work package Section 2.1",
+        ".dev/standards/WORKFLOW-GATE-POLICY.md",
+        ".dev/standards/WORKFLOW-ARTIFACT-POLICY.md",
+        "GitHub Issue #133 acceptance criteria"
+      ],
+      "finding_evidence": [
+        "validate-workflow-artifacts.py reports a missing continuation mapping for a valid nested locator because main() uses parse_flat_yaml."
+      ],
+      "subject_revision": "481c84c32405f849b0adc15f20f78ad00b38af9b",
+      "acceptance_criteria": [
+        "Nested development locator continuation mappings are parsed and validated rather than flattened.",
+        "New workflow artifacts with an online-Issue binding validate fail closed.",
+        "Historical locator validation remains compatible."
+      ]
+    },
+    "test_execution_contract": null,
+    "role_execution_records": [],
+    "spec_compliance": {
+      "selected": false,
+      "activation_source": [],
+      "expected_outcome": "not-applicable"
+    },
+    "steps": [
+      "Read current GitHub Issue/PR baseline.",
+      "Create #133, #134, #135, #136, and #137 with owner authorization.",
+      "Comment and close #75 as superseded by #96; link #134 to #95.",
+      "Create v0.10.0 Project options and project all scoped issues.",
+      "Repair the current workflow validator so it parses nested development locators before enforcing their continuation contract."
+    ],
+    "validation": [
+      "Direct provider read-back after each irreversible issue and Project mutation.",
+      "Focused workflow-validator tests and repository workflow-artifact validation."
+    ],
+    "commit_checkpoint": "Workflow bootstrap commit after artifact validation.",
+    "deferred_items": []
+  },
+  "results": {
+    "summary": "Online authority and release scope are normalized. The workflow validator now preserves nested locator mappings before enforcing the development continuation contract, so current workflow artifacts validate fail closed without rejecting valid structure.",
+    "files_changed": [
+      ".ai/scripts/validate-workflow-artifacts.py",
+      ".ai/scripts/tests/test_workflow_lifecycle_contract.py",
+      ".dev/workflows/INDEX.MD",
+      ".dev/workflows/2026-08-07-v0-10-validation-cost-and-release-flow/"
+    ],
+    "approval_evidence": [
+      "Owner v0.10.0 work package",
+      "GitHub Issue comments and Issue bodies",
+      "Project #3 field read-back"
+    ],
+    "test_execution": [],
+    "role_execution_aggregation": [],
+    "spec_compliance": {
+      "outcome": "not-applicable",
+      "coverage_percent": null,
+      "evidence": []
+    },
+    "validation_evidence": [
+      "Issue #75 CLOSED / NOT_PLANNED with supersession comment and Status Done",
+      "Issue #136 open release coordination read-back",
+      "Project field options and item updates returned by GitHub GraphQL",
+      "python .ai/scripts/tests/test_workflow_lifecycle_contract.py (11 tests passed)",
+      "python .ai/scripts/validate-workflow-artifacts.py --workflow-id 2026-08-07-v0-10-validation-cost-and-release-flow (passed)",
+      "git diff --check (passed)"
+    ],
+    "commits": ["containing-commit"],
+    "finding_status": "addressed",
+    "follow_up_needed": false
+  }
+}

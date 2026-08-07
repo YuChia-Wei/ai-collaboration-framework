@@ -987,7 +987,13 @@ def main() -> int:
         if not locator_path.is_file():
             errors.append(f"{directory.relative_to(repo)}: missing workflow.yaml")
             continue
-        locator = parse_flat_yaml(locator_path)
+        locator = parse_yaml_mapping(
+            locator_path,
+            str(locator_path.relative_to(repo)),
+            errors,
+        )
+        if locator is None:
+            continue
         missing = sorted(REQUIRED_LOCATOR - locator.keys())
         if missing:
             errors.append(f"{locator_path.relative_to(repo)}: missing fields {', '.join(missing)}")
