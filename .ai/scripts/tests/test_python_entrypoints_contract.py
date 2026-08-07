@@ -54,12 +54,12 @@ class PythonEntrypointContractTests(unittest.TestCase):
     def test_gwt_001_given_governed_registry_when_counted_then_portable_dependency_contract_is_complete(self) -> None:
         self.assertEqual("1.0", self.registry["schema_version"])
         self.assertEqual("3.11", self.registry["python_floor"])
-        self.assertEqual(26, len(self.entrypoints))
+        self.assertEqual(27, len(self.entrypoints))
         portable = [item for item in self.entrypoints if item["portable"]]
         pyyaml = [item for item in self.entrypoints if item["dependency_profile"] == ["PyYAML"]]
         stdlib = [item for item in self.entrypoints if not item["dependency_profile"]]
         self.assertEqual(13, len(portable))
-        self.assertEqual(24, len(pyyaml))
+        self.assertEqual(25, len(pyyaml))
         self.assertEqual(2, len(stdlib))
         self.assertEqual("6.0.3", self.registry["governed_requirements"]["PyYAML"]["version"])
         self.assertEqual("requirements.txt", self.registry["governed_requirements"]["PyYAML"]["requirements_path"])
@@ -73,16 +73,24 @@ class PythonEntrypointContractTests(unittest.TestCase):
             {".ai/scripts/plan-ai-context-package-apply.py"},
             {item["path"] for item in self.entrypoints if item["prerequisite_exit_code"] == 2},
         )
+        self.assertEqual(
+            {".ai/scripts/ai_context_release_closeout.py"},
+            {item["path"] for item in self.entrypoints if item["prerequisite_exit_code"] == 3},
+        )
         self.assertTrue(
             all(
                 item["prerequisite_exit_code"] == 1
                 for item in self.entrypoints
-                if item["path"] != ".ai/scripts/plan-ai-context-package-apply.py"
+                if item["path"]
+                not in {
+                    ".ai/scripts/plan-ai-context-package-apply.py",
+                    ".ai/scripts/ai_context_release_closeout.py",
+                }
             )
         )
         for item in self.entrypoints:
             self.assertTrue((ROOT / item["path"]).is_file(), item["path"])
-            self.assertIn(item["prerequisite_exit_code"], (1, 2), item["path"])
+            self.assertIn(item["prerequisite_exit_code"], (1, 2, 3), item["path"])
 
     def test_gwt_002_given_dotnet_profile_when_resolved_then_shared_runtime_and_portable_cli_assets_are_projected(self) -> None:
         profile = yaml.safe_load(PROFILE_PATH.read_text(encoding="utf-8"))
