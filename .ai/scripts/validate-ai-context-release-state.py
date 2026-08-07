@@ -32,6 +32,7 @@ import yaml
 
 VERSION_RE = re.compile(r"^v(?:0|[1-9]\d*)\.(?:0|[1-9]\d*)\.(?:0|[1-9]\d*)$")
 SHA_RE = re.compile(r"^[0-9a-f]{40}$")
+ONLINE_ISSUE_REF_RE = re.compile(r"^#([1-9]\d*)$")
 PHASES = ("candidate", "tag", "publication", "finalization")
 V010_AGENT_PUBLICATION_AUTHORITY = {
     "tag_owner": "owner-authorized-terra-agent",
@@ -104,7 +105,7 @@ def read_only_command_allowed(args: list[str]) -> bool:
         return bool(
             re.fullmatch(
                 r"repos/[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+/"
-                r"(?:releases/tags/v\d+\.\d+\.\d+|actions/runs/\d+|"
+                r"(?:issues/[1-9]\d*|releases/tags/v\d+\.\d+\.\d+|actions/runs/\d+|"
                 r"actions/workflows/publish-release\.yml/runs\?"
                 r"event=push&head_sha=[0-9a-f]{40})",
                 args[4],
@@ -298,6 +299,59 @@ def validate_backlog_refs(root: Path, version: str, data: dict[str, Any]) -> Non
         )
 
 
+def validate_online_issue_refs(
+    root: Path,
+    version: str,
+    data: dict[str, Any],
+    runner=subprocess.run,
+) -> None:
+    """Read the authoritative source-repository release scope from GitHub."""
+    planning = nested_mapping(data.get("planning"), "planning")
+    if "backlog_refs" in planning:
+        raise ReleaseStateError(
+            "v0.10.0 source-repository releases must not use planning.backlog_refs"
+        )
+    refs = planning.get("github_issue_refs")
+    if not isinstance(refs, list) or not refs:
+        raise ReleaseStateError(
+            "planning.github_issue_refs must be a non-empty online Issue list"
+        )
+    if len(refs) != len(set(refs)):
+        raise ReleaseStateError("planning.github_issue_refs must not contain duplicates")
+    numbers: list[str] = []
+    for index, value in enumerate(refs):
+        match = ONLINE_ISSUE_REF_RE.fullmatch(value) if isinstance(value, str) else None
+        if match is None:
+            raise ReleaseStateError(
+                f"planning.github_issue_refs[{index}] must use #<issue-number>"
+            )
+        numbers.append(match.group(1))
+
+    repository = origin_repository(root, runner)
+    target_pattern = re.compile(
+        rf"^## Target Release\s*$\s*^{re.escape(version)}\s*$", re.MULTILINE
+    )
+    for number in numbers:
+        raw = run_read_only(
+            root,
+            ["gh", "api", "--method", "GET", f"repos/{repository}/issues/{number}"],
+            runner,
+        )
+        try:
+            issue = json.loads(raw)
+        except json.JSONDecodeError as exc:
+            raise ReleaseStateError(f"#{number}: GitHub Issue read-back is not JSON") from exc
+        if not isinstance(issue, dict) or issue.get("number") != int(number):
+            raise ReleaseStateError(f"#{number}: GitHub Issue read-back has a mismatched number")
+        if issue.get("state") != "open":
+            raise ReleaseStateError(f"#{number}: candidate Issue must remain open")
+        body = issue.get("body")
+        if not isinstance(body, str) or target_pattern.search(body) is None:
+            raise ReleaseStateError(
+                f"#{number}: online Issue must declare Target Release {version}"
+            )
+
+
 def validate_publication_authority(version: str, distribution: dict[str, Any]) -> None:
     """Keep the owner-approved v0.10.0 tag exception exact and non-transferable."""
     if version != "v0.10.0":
@@ -315,6 +369,7 @@ def validate_candidate_record(
     root: Path,
     version: str,
     data: dict[str, Any],
+    runner=subprocess.run,
 ) -> None:
     expected_package = f"ai-context-dotnet-backend-{version}"
     required_identity = {
@@ -394,11 +449,14 @@ def validate_candidate_record(
             raise ReleaseStateError(
                 f"validation.{stale_field} must be null or absent before publication"
             )
-    validate_backlog_refs(root, version, data)
+    if version == "v0.10.0":
+        validate_online_issue_refs(root, version, data, runner)
+    else:
+        validate_backlog_refs(root, version, data)
 
 
 def assert_candidate(root: Path, version: str, data: dict, commit: str, branch: str, runner=subprocess.run) -> None:
-    validate_candidate_record(root, version, data)
+    validate_candidate_record(root, version, data, runner)
     # The candidate commit cannot be stored in the record that it contains:
     # that would create a self-referential Git object.  It is observed from the
     # repository at gate time and must be pinned by the receiving checkpoint.

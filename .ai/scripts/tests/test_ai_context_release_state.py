@@ -639,6 +639,56 @@ class AiContextReleaseStateGwtTests(unittest.TestCase):
         with self.assertRaisesRegex(STATE.ReleaseStateError, "bounded owner-authorized Terra"):
             STATE.validate_publication_authority("v0.10.0", data["distribution"])
 
+    def test_gwt_026_given_v010_online_issue_scope_when_candidate_checked_then_live_open_targeted_issues_are_required(self):
+        data = release_data()
+        data["version"] = "v0.10.0"
+        data["release_id"] = "REL-v0.10.0"
+        data["distribution"]["package_id"] = "ai-context-dotnet-backend-v0.10.0"
+        data["distribution"]["artifacts"] = {
+            "zip": "ai-context-dotnet-backend-v0.10.0.zip",
+            "zip_checksum": "ai-context-dotnet-backend-v0.10.0.zip.sha256",
+            "tar_gz": "ai-context-dotnet-backend-v0.10.0.tar.gz",
+            "tar_gz_checksum": "ai-context-dotnet-backend-v0.10.0.tar.gz.sha256",
+        }
+        data["distribution"]["publication"] = dict(
+            STATE.V010_AGENT_PUBLICATION_AUTHORITY
+        )
+        data["planning"] = {"github_issue_refs": ["#96", "#135"]}
+        baseline = fake_runner()
+
+        def online_runner(args, cwd, capture_output, text, check):
+            if args[:4] == ["gh", "api", "--method", "GET"] and "/issues/" in args[-1]:
+                number = int(args[-1].rsplit("/", 1)[1])
+                return subprocess.CompletedProcess(
+                    args,
+                    0,
+                    json.dumps(
+                        {
+                            "number": number,
+                            "state": "open",
+                            "body": "## Target Release\n\nv0.10.0\n",
+                        }
+                    )
+                    + "\n",
+                    "",
+                )
+            return baseline(args, cwd, capture_output, text, check)
+
+        with tempfile.TemporaryDirectory() as temp:
+            STATE.validate_candidate_record(Path(temp), "v0.10.0", data, online_runner)
+
+        def closed_runner(args, cwd, capture_output, text, check):
+            result = online_runner(args, cwd, capture_output, text, check)
+            if args[:4] == ["gh", "api", "--method", "GET"] and "/issues/" in args[-1]:
+                payload = json.loads(result.stdout)
+                payload["state"] = "closed"
+                return subprocess.CompletedProcess(args, 0, json.dumps(payload) + "\n", "")
+            return result
+
+        with tempfile.TemporaryDirectory() as temp:
+            with self.assertRaisesRegex(STATE.ReleaseStateError, "must remain open"):
+                STATE.validate_candidate_record(Path(temp), "v0.10.0", data, closed_runner)
+
 
 if __name__ == "__main__":
     unittest.main()

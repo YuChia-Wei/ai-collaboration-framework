@@ -12,10 +12,10 @@ recorded_at: null
 created_at: "<ISO-8601-offset-timestamp>"
 updated_at: "<ISO-8601-offset-timestamp>"
 planning:
-  # From v0.7.0 onward this list must exactly equal every resolved backlog item
-  # whose release.completed_in matches this version.
-  backlog_refs:
-    - ".dev/backlog/items/<BACKLOG-ID>.yaml"
+  # Source-repository releases from v0.10.0 onward bind release scope to live
+  # GitHub Issues. Historical releases retain their existing backlog_refs.
+  github_issue_refs:
+    - "#<online-github-issue-number>"
 compatibility:
   breaking_changes: <true-or-false>
   minimum_source_version: "<vMAJOR.MINOR.PATCH-or-null>"

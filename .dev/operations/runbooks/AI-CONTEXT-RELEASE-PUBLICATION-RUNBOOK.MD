@@ -9,7 +9,7 @@
 ## Scope And Source Of Truth
 
 - 新版本一律從 [canonical release-publication templates](../../../.ai/assets/skills/ai-context-governance/templates/release-publication/) instantiate；不得複製 `.dev/releases/v*` instance。
-- `release.yaml`、`release-notes.md`、`migration-guide.md` 是 candidate 的 source of truth。`release-notes.md` 不得包含 renderer 的 automation marker 或 provenance block。
+- `release.yaml`、`release-notes.md`、`migration-guide.md` 是 candidate 的 source of truth。從 v0.10.0 起，source-repository candidate 的 Included Work 以 `planning.github_issue_refs` 的 GitHub read-back 為權威；既有已發布 release 的 `backlog_refs` 保持歷史相容。`release-notes.md` 不得包含 renderer 的 automation marker 或 provenance block。
 - 每個 `.dev/releases/<version>/release-phase-checks.yaml` 的 command 是 handoff 可比對的 sanctioned command；不可包進 shell substitution 或任意 command。
 - 每個版本必須從 canonical template 建立自己的 phase contract。不可修改或重用另一版已記錄的 command；下方 `<version>` 必須先展開成同一個 stable `vMAJOR.MINOR.PATCH` literal，checkpoint 內也必須保存展開後的完整 command。
 

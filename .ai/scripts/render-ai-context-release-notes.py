@@ -22,6 +22,7 @@ VERSION_RE = re.compile(r"^v\d+\.\d+\.\d+$")
 SHA_RE = re.compile(r"^[0-9a-f]{40}$")
 ALLOWED_CANDIDATE_STATUSES = {"planned", "validated"}
 BACKLOG_REF_RE = re.compile(r"^\.dev/backlog/items/([A-Z][A-Z0-9-]+)\.yaml$")
+ONLINE_ISSUE_REF_RE = re.compile(r"^#([1-9]\d*)$")
 PUBLISHED_FORBIDDEN_BODY_RE = re.compile(
     r"\bnot tagged or published\b|"
     r"\b(?:tag|publication|finalization).{0,240}\b(?:remain|remains)\s+unperformed\b|"
@@ -69,6 +70,28 @@ def included_work_ids(data: dict) -> list[str]:
     planning = data.get("planning")
     if not isinstance(planning, dict):
         raise ReleaseNotesError("planning must be a mapping from v0.7.0 onward")
+    online_refs = planning.get("github_issue_refs")
+    if online_refs is not None:
+        if "backlog_refs" in planning:
+            raise ReleaseNotesError(
+                "planning must not mix github_issue_refs and backlog_refs"
+            )
+        if not isinstance(online_refs, list) or not online_refs:
+            raise ReleaseNotesError(
+                "planning.github_issue_refs must be a non-empty list"
+            )
+        if len(online_refs) != len(set(online_refs)):
+            raise ReleaseNotesError("planning.github_issue_refs must not contain duplicates")
+        ids: list[str] = []
+        for index, value in enumerate(online_refs):
+            match = ONLINE_ISSUE_REF_RE.fullmatch(value) if isinstance(value, str) else None
+            if match is None:
+                raise ReleaseNotesError(
+                    f"planning.github_issue_refs[{index}] must use #<issue-number>"
+                )
+            ids.append(value)
+        return ids
+
     refs = planning.get("backlog_refs")
     if not isinstance(refs, list) or not refs:
         raise ReleaseNotesError(

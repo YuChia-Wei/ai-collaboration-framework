@@ -16,9 +16,10 @@
 
 <completed-validation-and-known-limitation-statement>
 
-From v0.7.0 onward, the renderer appends the canonical `Included Work` section
-from `release.yaml.planning.backlog_refs`. Do not duplicate that generated
-section in this authored source.
+For source-repository releases from v0.10.0 onward, the renderer appends the
+canonical `Included Work` section from `release.yaml.planning.github_issue_refs`.
+Historical release instances retain their existing `backlog_refs` contract. Do
+not duplicate the generated section in this authored source.
 
 ## Publication Completion
 
