@@ -12,12 +12,12 @@
 - `workflow_id`: `2026-08-07-v0-10-validation-cost-and-release-flow`
 - `plan_id`: `development-plan-2026-08-07-v0-10-validation-cost-and-release-flow`
 - `owner_skill`: `software-development-orchestrator`
-- `branch`: `codex/2026-08-08-v0-10-core-repair`
+- `branch`: `codex/2026-08-08-v0-10-closeout`
 - `base_branch`: `main`
-- `branch_segment`: `2`
+- `branch_segment`: `3`
 - `status`: `active`
 - `created_at`: `2026-08-07T22:12:41+08:00`
-- `updated_at`: `2026-08-08T00:28:00+08:00`
+- `updated_at`: `2026-08-08T01:15:00+08:00`
 - `template_source`: `.ai/assets/skills/software-development-orchestrator/templates/development-workflow-plan-template.md`
 - `template_version`: `1.4.0`
 - `workflow_locator`: `.dev/workflows/2026-08-07-v0-10-validation-cost-and-release-flow/workflow.yaml`
@@ -26,7 +26,7 @@
 ## Development Objective
 
 - Product or software outcome: Deliver, publish, and close `v0.10.0 — Validation Cost And Release Flow` with distinct validation profiles, deterministic execution evidence, package content identity, and source-only closeout.
-- Current lifecycle entry point: Online work normalization and the #133 nested-locator parser repair are complete; the #96 profile implementation slice is active.
+- Current lifecycle entry point: Core stages are merged on `main`; the validated #57/#133/#137 source-only closeout stage is ready for its continuation pull request.
 - User constraints: Online GitHub Issues are the sole work-management authority; do not implement the native-language discussion package, a real downstream upgrader pilot, product-source-tree migration, #87, #90, or a handoff semantic change. Run WSL and `gh` only outside the sandbox.
 - Non-goals: Go/Rust/.NET AOT selection or prototype, native toolchain/binary, real downstream upgrade, product-source migration, Distribution CLI, Copilot projection, and existing immutable tag mutation.
 
@@ -99,14 +99,15 @@ The selected integration topology is a merge commit: candidate preparation, immu
 ### Stage 5 — Source-only closeout capability and release-governance reconciliation
 
 - `stage_id`: `V010-CLOSEOUT`
-- Goal: Implement #57 and #137 with package-isolation, post-tag-only boundaries, and the owner-authorized v0.10.0 tag/publication policy reconciliation.
+- Goal: Implement #57, #133, and #137 with package-isolation, online-Issue binding, post-tag-only boundaries, and the owner-authorized v0.10.0 tag/publication policy reconciliation.
 - Capability slot: `implementation`
 - Owner skill: `ai-context-governance`
-- Scope: Source-only closeout assets, release runbook/policy adjustment, package negative tests, isolated-worktree behavior, and provider read-back.
+- Scope: Source-only closeout assets, source-repository online-Issue policy, release runbook/policy adjustment, package negative tests, isolated-worktree behavior, and provider read-back.
 - Non-goals: Candidate preparation by the closeout capability, tag mutation of existing releases, full matrix/.NET reruns during closeout, or a permanent unbounded tag-ownership change.
-- Dependencies: #57, #137, and the current release runbook.
+- Dependencies: #57, #133, #137, and the current release runbook.
 - Validation: Source-only leakage tests, closeout profile contract, release-state validation, and separate policy/reference checks.
 - Commit checkpoint: Validated source-only capability and release-governance pull request.
+- Current result: The source-only capability, package exclusions, required closeout profile, online-Issue binding policy, and v0.10.0-only new-tag exception are implemented and validated on this branch. The WSL closeout profile selected and executed its required contract. The WSL aggregate-runner fixture remains a pre-existing test-environment exception (clock stub / intentionally stripped PATH); it is not a selected closeout profile gate.
 
 ### Stage 6 — Candidate, publication, and records-only closeout
 
@@ -171,7 +172,7 @@ No task selects a canonical sub-agent role yet. The source-framework validation 
 - Completed stages: `V010-ISSUES`, `V010-VAL`, `V010-PKG`, and `V010-EVAL`.
 - Deferred stages and reasons: None.
 - Open decisions: WSL .NET 10.0.302 is not currently available; no environment installation or global modification is authorized implicitly. It remains a release evidence risk while Windows/hosted alternatives are evaluated.
-- Continuation instructions: Push the validated core implementation as an incomplete-workflow checkpoint, obtain and merge its hosted pull-request checks, then create the policy/source-only continuation branch for #57, #133, and #137. Before any fresh-session, host, model, runtime, push, merge, candidate, tag, publication, or finalization continuation, create and verify a registered handoff checkpoint.
+- Continuation instructions: Push and merge the validated source-only closeout pull request. Then start a fresh candidate continuation from updated `main`, create the v0.10.0 records, run the immutable candidate gates, create only the authorized new tag, publish, and reconcile GitHub Issues/Project records. Before any fresh-session, host, model, runtime, push, merge, candidate, tag, publication, or finalization continuation, create and verify a registered handoff checkpoint.
 - Target policy references: `AGENTS.md`, current workflow/commit/handoff policies, release runbook, and #137.
 - Registered handoff checkpoint: None; no handoff has occurred.
 - Branch history and checkpoint handoffs: No branch checkpoint yet.
@@ -182,18 +183,19 @@ No task selects a canonical sub-agent role yet. The source-framework validation 
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | 1 | `codex/2026-08-07-v0-10-validation-cost-and-release-flow` | `main` | pushed format-invalid checkpoint | `0c4d21c` | `origin/codex/2026-08-07-v0-10-validation-cost-and-release-flow` | `2026-08-08T00:29:00+08:00` | Preserve pushed evidence without rewriting it. | Rebuild the same stages on segment 2. |
 | 2 | `codex/2026-08-08-v0-10-core-repair` | `main` | active repair continuation | `a7fba5c` | local | `2026-08-08T00:30:00+08:00` | Current validator requires structured bodies that the pushed checkpoint lacks. | Validate and push this branch for the core PR. |
+| 3 | `codex/2026-08-08-v0-10-closeout` | `main` at `aeaa9c1` | active source-only closeout continuation | pending validated checkpoint | local | `2026-08-08T01:15:00+08:00` | Core PR #138 is merged; #57/#133/#137 remain to integrate. | Validate, push, and merge the source-only closeout PR. |
 
 ## Completion Summary
 
 - Outcome: In progress.
 - Changed artifacts: Workflow bootstrap only; the user-supplied work package remains untracked and unmodified.
 - Approved requirement/specification evidence: Owner work package and online Issue/Project read-back.
-- Implementation completion evidence: #96/#135/#134 local stages are committed; source-only closeout and release stages remain pending.
+- Implementation completion evidence: #96/#135/#134 core stages are merged in PR #138; #57/#133/#137 source-only closeout is validated and pending its dedicated PR merge; release records/publication remain pending.
 - Required test outcomes: Pending.
 - Selected compliance evidence: `not-applicable`.
 - Review disposition: Pending.
 - Validation evidence: Online Issue/Project normalization read-back; preflight recorded.
-- Workflow task state: V010-ISSUES, V010-VAL, V010-PKG, and V010-EVAL completed; V010-CLOSEOUT is in progress under `ai-context-governance`; V010-RELEASE remains pending.
-- Commits: `0d40533`, `703cead`, `3e11779`, `e78a66c`, `f28f3fb`, `17a4f66`, and `a7fba5c` reconstruct the validated checkpoints with current commit-policy bodies.
+- Workflow task state: V010-ISSUES, V010-VAL, V010-PKG, and V010-EVAL completed; V010-CLOSEOUT is validated and awaits its durable commit checkpoint; V010-RELEASE remains pending.
+- Commits: `0d40533`, `703cead`, `3e11779`, `e78a66c`, `f28f3fb`, `17a4f66`, `a7fba5c`, and the pending source-only closeout checkpoint reconstruct the validated workflow stages with current commit-policy bodies.
 - Branch / checkpoint / handoff evidence: Dedicated branch exists; no checkpoint.
-- Residual risks: WSL .NET unavailable; #137 must be implemented before any agent-created tag.
+- Residual risks: WSL .NET remains unavailable; actual candidate/tag/publication must not begin until the source-only PR is merged. The WSL aggregate-runner fixture has its independent clock/PATH test limitations, while the selected WSL closeout profile passes.

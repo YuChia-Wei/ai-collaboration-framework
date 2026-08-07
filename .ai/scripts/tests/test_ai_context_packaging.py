@@ -328,6 +328,9 @@ class DeterministicPackageGwtTests(unittest.TestCase):
                 ".ai/scripts/validate-ai-context-release-state.py", targets
             )
             self.assertFalse(
+                any("ai-context-release-closeout" in path for path in targets)
+            )
+            self.assertFalse(
                 any(path.startswith(".ai/scripts/tests/") for path in targets)
             )
             self.assertFalse(

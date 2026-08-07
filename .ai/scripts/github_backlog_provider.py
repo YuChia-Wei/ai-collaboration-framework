@@ -297,22 +297,22 @@ def validate_config(config: dict[str, Any], backlog_ids: set[str]) -> None:
                 ):
                     errors.append("Issue creation attribution does not render the approved hidden marker")
     expected_binding = {
-        "mode": "optional",
+        "mode": "required",
         "purposes": ["traceability", "work-authorization"],
         "authorization": {
             "requires_explicit_owner_approval": True,
             "provider_state_alone_authorizes": False,
-            "missing_binding": "record explicit owner authorization in the workflow or pull request",
+            "missing_binding": "block material execution until an online GitHub Issue records the scope and explicit owner authorization",
         },
         "merge_gate": {
-            "mode": "optional",
+            "mode": "required",
             "reference_format": "Refs #<issue-number>",
-            "missing_binding_blocks_merge": False,
+            "missing_binding_blocks_merge": True,
         },
     }
     if config.get("work_item_binding") != expected_binding:
         errors.append(
-            "work_item_binding differs from the approved optional source-repository contract"
+            "work_item_binding differs from the approved required source-repository contract"
         )
     automation = config.get("automation", {})
     allowlist = automation.get("allowlist", []) if isinstance(automation, dict) else []

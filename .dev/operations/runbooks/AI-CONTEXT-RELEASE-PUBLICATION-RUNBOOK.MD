@@ -2,9 +2,9 @@
 
 ## Trigger
 
-當已核准的 governed framework release 已完成實作，需要從冷啟動環境建立候選、合併、由 owner 建立 immutable annotated tag、GitHub Actions 發布，並完成本機 registry 收尾時使用本文件。
+當已核准的 governed framework release 已完成實作，需要從冷啟動環境建立候選、合併、建立 immutable annotated tag、GitHub Actions 發布，並完成本機 registry 收尾時使用本文件。除明列且已核對的 release-specific exception 外，tag 仍由 owner 建立。
 
-不要用於補改既有 published tag、搬移 tag 或複製舊 release 目錄。任何 tag 的建立、移動、重建與刪除都不屬於 automation 或 agent 的權限。
+不要用於補改既有 published tag、搬移 tag 或複製舊 release 目錄。任何既有 tag 的移動、重建與刪除都不屬於 automation 或 agent 的權限。
 
 ## Scope And Source Of Truth
 
@@ -88,13 +88,31 @@ closeout 文件的 merge commit）都會使先前印出的 tag command 過期。
 前必須在當前 clean `main` 重新執行同一條 pre-tag command，並且只使用該次
 新印出的完整 command；不得重用指向舊 SHA 的輸出。
 
-## Owner-Created Annotated Tag
+## Tag Authority
 
 The repository owner—not an agent, script, or GitHub workflow—creates and pushes
-the annotated `<version>` tag only after the pre-tag preparation command passes.
-Use the complete command printed by `prepare-ai-context-release.py`; it pins the
-validated commit, summarizes compatibility, and takes the `AI-Model` value from
-the latest registered handoff checkpoint.
+the annotated `<version>` tag only after the pre-tag preparation command passes,
+except for the single `v0.10.0` authorization below. Use the complete command
+printed by `prepare-ai-context-release.py`; it pins the validated commit,
+summarizes compatibility, and takes the `AI-Model` value from the latest
+registered handoff checkpoint.
+
+### v0.10.0 Owner-Authorized Agent Exception
+
+The owner-approved **AI Collaboration Framework v0.10.0 Terra implementation
+work package** and online Issue #137 authorize the named Terra agent to create
+and push only one **new annotated** `v0.10.0` tag, and only after the current
+merged `main` pre-tag command has passed. This narrow exception does not
+transfer ownership of any other tag and never allows moving, recreating,
+deleting, or force-pushing an existing tag.
+
+Before tag mutation, record the exact validated candidate SHA, the active
+executing identity, the complete generated tag command, and the pre-tag gate
+read-back in the release workflow. Immediately after the push, read back the
+annotated tag object and peeled SHA. After hosted publication, retain the
+workflow run URL, GitHub Release identity, and four governed asset tuples in
+the records-only finalization evidence. Any mismatch stops the lifecycle; read
+back provider state before deciding whether a new repair branch is needed.
 
 After the owner has created and pushed the tag, first run:
 

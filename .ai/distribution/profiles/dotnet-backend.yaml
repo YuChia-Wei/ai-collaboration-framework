@@ -394,6 +394,7 @@ exclusions:
       - .ai/scripts/render-ai-context-release-notes.py
       - .ai/scripts/validate-ai-context-package.py
       - .ai/scripts/validate-ai-context-release-state.py
+      - .ai/scripts/ai_context_release_closeout.py
       - .ai/scripts/validate-ai-context-versions.py
       - .ai/scripts/validate-source-governance.py
       - .ai/scripts/validate-ai-behavior-evaluation.py
@@ -405,6 +406,7 @@ exclusions:
       - .ai/scripts/tests/test_backlog_release_contract.py
       - .ai/scripts/tests/test_ai_context_packaging.py
       - .ai/scripts/tests/test_ai_context_release_state.py
+      - .ai/scripts/tests/test_ai_context_release_closeout.py
       - .ai/scripts/tests/test_ai_context_version_governance.py
       - .ai/scripts/tests/test_governance_workflow_contract.py
       - .ai/scripts/tests/test_github_workflow_contract.py
@@ -422,6 +424,14 @@ exclusions:
       - '**/__pycache__/**'
       - '**/.pytest_cache/**'
     reason: Git state, source release/build tests, local runtime policy, and caches are never portable framework truth.
+  - id: source-release-closeout-capability
+    classification: source-only
+    patterns:
+      - .ai/assets/skills/ai-context-release-closeout/**
+      - .agents/skills/ai-context-release-closeout/**
+      - .claude/skills/ai-context-release-closeout/**
+      - .dev/guides/ai-collaboration-guides/AI-CONTEXT-RELEASE-CLOSEOUT-SKILL-GUIDE.md
+    reason: Post-tag source-repository release closeout is not a downstream framework capability.
   - id: source-distribution-control
     classification: source-only
     patterns:

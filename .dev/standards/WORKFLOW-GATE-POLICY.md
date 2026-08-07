@@ -37,16 +37,17 @@ authorize repository work or create a workflow.
 | --- | --- | --- |
 | Conversation and exploration | The conversation only. | No branch, workflow locator, commit, or pull request. |
 | Candidate work and unapproved plan | For this source repository, a GitHub Issue; GitHub Projects provide the priority and status views. | The tracker item records possible work but does not authorize execution merely by existing or changing provider state. No repository branch or pull request is created merely to record it. |
-| Authorized execution | Explicit owner authorization, optionally bound to an approved work item according to the selected work-item binding mode, plus a skill-owned workflow when the workflow gate applies. | Create the dedicated branch before the locator or material repository edits. Record the work-item binding or the explicit no-binding authorization; never fabricate a tracker identifier. |
+| Authorized execution | An online GitHub Issue that records the material scope plus explicit owner authorization, and a skill-owned workflow when the workflow gate applies. | Create the dedicated branch before the locator or material repository edits. Bind the workflow and pull request to the Issue; never fabricate a tracker identifier or infer authorization from provider state. |
 | Integrated repository fact | `main`, after the required pull request is merged. | Do not describe branch-only or tracker-only work as integrated repository truth. |
 
-GitHub Issues and Projects are this repository's selected candidate-work
-provider, not a framework-wide requirement for target repositories. The
+GitHub Issues and Projects are this repository's selected work-management
+authority, not a framework-wide requirement for target repositories. The
 framework stays provider-neutral. This repository does not define a separate
 repository proposal artifact class: a retained but unapproved plan belongs in
-a GitHub Issue. If no selected provider is available, retain it in the
-conversation until the owner explicitly authorizes another persistence route;
-do not overload an `in_progress` execution workflow.
+a GitHub Issue. Every new material implementation or release scope needs its
+online Issue before execution; if the provider is unavailable, stop before
+material work rather than inventing a repository-local substitute or
+overloading an `in_progress` workflow.
 
 ## Work-Item Binding Contract
 
@@ -71,10 +72,10 @@ Targets select a provider-neutral binding mode:
 
 Targets separately select whether pull-request integration enforces the
 binding as `required`, treats it as `optional`, or leaves the merge gate
-`disabled`. This source repository selects `optional` for both work-item
-binding and the merge gate in `.dev/backlog/providers/github.yaml`. A missing
-Issue therefore does not block an owner-approved change here, but the workflow
-or pull request must preserve the explicit authorization source.
+`disabled`. This source repository selects `required` for both material
+work-item binding and the merge gate in `.dev/backlog/providers/github.yaml`.
+An owner authorization remains necessary, but it never removes the requirement
+to create and bind an online Issue before material work begins.
 
 For software-development work, activation is intent-based. A high-level request
 that spans planning, requirements, design, implementation, testing, review, or

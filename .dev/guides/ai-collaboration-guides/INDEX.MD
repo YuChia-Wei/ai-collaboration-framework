@@ -6,6 +6,7 @@
 | `AI-COLLABORATION-WORKFLOW-GUIDE.md` | End-to-end collaboration and routing overview. |
 | `AI-CONTEXT-AUDITOR-SKILL-GUIDE.md` | Read-only AI context audit usage. |
 | `AI-CONTEXT-GOVERNANCE-SKILL-GUIDE.md` | AI context remediation and lifecycle usage. |
+| `AI-CONTEXT-RELEASE-CLOSEOUT-SKILL-GUIDE.md` | Source-only post-tag release closeout usage. |
 | `AI-CONTEXT-UPGRADER-SKILL-GUIDE.md` | Provenance-aware framework upgrade usage. |
 | `AI-EXECUTION-PROVENANCE-AND-ATTRIBUTION-GUIDE.md` | Runtime model, reasoning effort, and Git attribution guidance. |
 | `AI-REFACTORING-SKILL-BOUNDARY-GUIDE.md` | Architect, reviewer, slice, and local-change boundaries. |
