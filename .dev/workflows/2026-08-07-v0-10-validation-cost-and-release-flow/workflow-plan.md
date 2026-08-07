@@ -12,9 +12,9 @@
 - `workflow_id`: `2026-08-07-v0-10-validation-cost-and-release-flow`
 - `plan_id`: `development-plan-2026-08-07-v0-10-validation-cost-and-release-flow`
 - `owner_skill`: `software-development-orchestrator`
-- `branch`: `codex/2026-08-07-v0-10-validation-cost-and-release-flow`
+- `branch`: `codex/2026-08-08-v0-10-core-repair`
 - `base_branch`: `main`
-- `branch_segment`: `1`
+- `branch_segment`: `2`
 - `status`: `active`
 - `created_at`: `2026-08-07T22:12:41+08:00`
 - `updated_at`: `2026-08-08T00:28:00+08:00`
@@ -68,7 +68,7 @@ The selected integration topology is a merge commit: candidate preparation, immu
 - Dependencies: #96 authorization and source inspection.
 - Validation: Focused profile/runner/packaging tests, Windows and WSL evidence where applicable, and hosted PR checks after review.
 - Commit checkpoint: Validated core implementation pull request.
-- Current result: `5a24d04` completed the local stage. Windows Git Bash `fast` passed in 24 seconds (27 selected) and `pr` passed in 49 seconds (36 selected); both omit the full package matrix.
+- Current result: `703cead` completed the repaired local stage. Windows Git Bash `fast` passed in 24 seconds (27 selected) and `pr` passed in 49 seconds (36 selected); both omit the full package matrix.
 
 ### Stage 3 — Package content identity
 
@@ -81,7 +81,7 @@ The selected integration topology is a merge commit: candidate preparation, immu
 - Dependencies: #135 authorization and Stage 2 interfaces. This source-framework task has no downstream target-effective packet.
 - Validation: Legacy metadata, reuse/invalidation, message-only, documentation-only, environment-class, and archive-digest tests.
 - Commit checkpoint: Validated identity implementation pull request.
-- Current result: `c06de8a` records tree and fingerprint identity while preserving legacy reader compatibility; message-only and unselected-documentation fixtures remain eligible, while payload and profile configuration changes invalidate identity.
+- Current result: `e78a66c` records tree and fingerprint identity while preserving legacy reader compatibility; message-only and unselected-documentation fixtures remain eligible, while payload and profile configuration changes invalidate identity.
 
 ### Stage 4 — Deterministic execution evidence
 
@@ -94,7 +94,7 @@ The selected integration topology is a merge commit: candidate preparation, immu
 - Dependencies: #134 parent relation, Stage 2 runner interfaces, and #135 identity fields. This source-framework task has no downstream target-effective packet.
 - Validation: Executed/reused/not-selected/timed-out/cancelled semantics and PR/release evidence comparability.
 - Commit checkpoint: Validated evidence implementation pull request.
-- Current result: `af7344f` records privacy-preserving per-validator evidence, cache eligibility, retained-output metadata, and distinct timeout/reuse dispositions. Windows `fast` passed 27/27 in 24 seconds, an unchanged run reused 27/27 in 3 seconds, the synthetic runner suite passed 35/35, and WSL `fast` passed 27/27 in 192 seconds with one budget advisory.
+- Current result: `17a4f66` records privacy-preserving per-validator evidence, cache eligibility, retained-output metadata, and distinct timeout/reuse dispositions. Windows `fast` passed 27/27 in 24 seconds, an unchanged run reused 27/27 in 3 seconds, the synthetic runner suite passed 35/35, and WSL `fast` passed 27/27 in 192 seconds with one budget advisory.
 
 ### Stage 5 — Source-only closeout capability and release-governance reconciliation
 
@@ -127,8 +127,8 @@ No task selects a canonical sub-agent role yet. The source-framework validation 
 | Stage | Role / Canonical Path | Owning Skill | Final/Current Disposition | Attempt Summary | Final Integration Owner / Decision | Record or Task Reference |
 | --- | --- | --- | --- | --- | --- | --- |
 | V010-VAL | no canonical implementation role selected | ai-context-governance | `not-applicable` | no implementation attempt yet | workflow parent / pending | `tasks/V010-VAL.json` |
-| V010-PKG | no canonical implementation role selected | ai-context-governance | `not-applicable` | identity stage completed in `c06de8a` | workflow parent / accepted | `tasks/V010-PKG.json` |
-| V010-EVAL | no canonical implementation role selected | ai-context-governance | `not-applicable` | evidence stage completed in `af7344f` | workflow parent / accepted | `tasks/V010-EVAL.json` |
+| V010-PKG | no canonical implementation role selected | ai-context-governance | `not-applicable` | identity stage completed in `e78a66c` | workflow parent / accepted | `tasks/V010-PKG.json` |
+| V010-EVAL | no canonical implementation role selected | ai-context-governance | `not-applicable` | evidence stage completed in `17a4f66` | workflow parent / accepted | `tasks/V010-EVAL.json` |
 
 ## Approval Gates
 
@@ -180,7 +180,8 @@ No task selects a canonical sub-agent role yet. The source-framework validation 
 
 | Segment | Branch | Base | Checkpoint Type | Commit | Remote / Target | Recorded At | Reason | Resume Branch / Action |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| 1 | `codex/2026-08-07-v0-10-validation-cost-and-release-flow` | `main` | none |  |  | `2026-08-07T22:12:41+08:00` | Initial authorized workflow branch | Continue V010-VAL on this branch. |
+| 1 | `codex/2026-08-07-v0-10-validation-cost-and-release-flow` | `main` | pushed format-invalid checkpoint | `0c4d21c` | `origin/codex/2026-08-07-v0-10-validation-cost-and-release-flow` | `2026-08-08T00:29:00+08:00` | Preserve pushed evidence without rewriting it. | Rebuild the same stages on segment 2. |
+| 2 | `codex/2026-08-08-v0-10-core-repair` | `main` | active repair continuation | `a7fba5c` | local | `2026-08-08T00:30:00+08:00` | Current validator requires structured bodies that the pushed checkpoint lacks. | Validate and push this branch for the core PR. |
 
 ## Completion Summary
 
@@ -193,6 +194,6 @@ No task selects a canonical sub-agent role yet. The source-framework validation 
 - Review disposition: Pending.
 - Validation evidence: Online Issue/Project normalization read-back; preflight recorded.
 - Workflow task state: V010-ISSUES, V010-VAL, V010-PKG, and V010-EVAL completed; V010-CLOSEOUT is in progress under `ai-context-governance`; V010-RELEASE remains pending.
-- Commits: `2c57ac9`, `5a24d04`, `1bcf717`, `c06de8a`, and `af7344f` are validated local checkpoints.
+- Commits: `0d40533`, `703cead`, `3e11779`, `e78a66c`, `f28f3fb`, `17a4f66`, and `a7fba5c` reconstruct the validated checkpoints with current commit-policy bodies.
 - Branch / checkpoint / handoff evidence: Dedicated branch exists; no checkpoint.
 - Residual risks: WSL .NET unavailable; #137 must be implemented before any agent-created tag.
