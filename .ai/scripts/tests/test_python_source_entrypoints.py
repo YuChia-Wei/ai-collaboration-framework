@@ -17,6 +17,10 @@ ROOT = Path(__file__).resolve().parents[3]
 REGISTRY_PATH = ROOT / ".ai/scripts/python-entrypoints.json"
 STDLIB_COMPARE = ".ai/assets/skills/ai-context-upgrader/scripts/compare-ai-context-versions.py"
 MARKER = ROOT / ".ai/scripts/tests/.python-source-entrypoints-marker"
+RUNNER_LOG_DIRECTORY = os.environ.get("AI_CONTEXT_VALIDATION_RUN_LOG_DIR")
+ACTIVE_RUNNER_LOG_DIRECTORY = (
+    Path(RUNNER_LOG_DIRECTORY).resolve() if RUNNER_LOG_DIRECTORY else None
+)
 PROTECTED_ROOTS = (
     ROOT / ".dev/releases/v0.8.0",
     ROOT / "dist",
@@ -29,6 +33,17 @@ def digest(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
+def is_active_runner_diagnostic(path: Path) -> bool:
+    """Exclude only the aggregate runner's own retained diagnostic files."""
+    if ACTIVE_RUNNER_LOG_DIRECTORY is None:
+        return False
+    try:
+        path.resolve().relative_to(ACTIVE_RUNNER_LOG_DIRECTORY)
+    except ValueError:
+        return False
+    return True
+
+
 def protected_snapshot() -> dict[str, str]:
     """Capture artifacts a blocked preflight must never create or change."""
     snapshot: dict[str, str] = {}
@@ -37,6 +52,8 @@ def protected_snapshot() -> dict[str, str]:
             snapshot[root.relative_to(ROOT).as_posix()] = digest(root)
         elif root.is_dir():
             for path in sorted(item for item in root.rglob("*") if item.is_file()):
+                if is_active_runner_diagnostic(path):
+                    continue
                 snapshot[path.relative_to(ROOT).as_posix()] = digest(path)
     for directory, directories, files in os.walk(ROOT):
         directories[:] = [name for name in directories if name != ".git"]

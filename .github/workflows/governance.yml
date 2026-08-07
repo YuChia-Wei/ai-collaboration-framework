@@ -65,32 +65,6 @@ jobs:
       - name: Install pinned Python dependencies
         run: python -m pip install --disable-pip-version-check -r requirements.txt
 
-      - name: Validate AI context and runtime projections
-        run: |
-          python .ai/scripts/validate-ai-context.py
-          python .ai/scripts/tests/test_ai_context_wrapper_metadata.py -v
-          python .ai/scripts/tests/test_ai_context_language_policy.py -v
-          python .ai/scripts/tests/test_ai_context_sub_agent_adapters.py -v
-
-      - name: Validate dependency and shell governance
-        run: |
-          python .ai/scripts/validate-dependency-versions.py
-          python .ai/scripts/tests/test_dependency_version_consistency.py -v
-          python .ai/scripts/validate-shell-assets.py
-          python .ai/scripts/tests/test_workflow_handoff.py -v
-          python .ai/scripts/validate-workflow-handoff.py --all
-
-      - name: Validate release governance tooling
-        run: |
-          python .ai/scripts/tests/test_ai_context_release_state.py -v
-          python .ai/scripts/tests/test_prepare_ai_context_release.py -v
-          python .ai/scripts/tests/test_release_notes_renderer.py -v
-
-      - name: Validate registered source governance manifests
-        run: |
-          python .ai/scripts/validate-source-governance.py
-          python .ai/scripts/tests/test_file_disposition_manifest.py -v
-          python .ai/scripts/tests/test_workflow_delivery_policy.py -v
-
-      - name: Validate this read-only workflow contract
-        run: python .ai/scripts/tests/test_governance_workflow_contract.py -v
+      - name: Run the canonical fast governance profile
+        shell: bash
+        run: bash .ai/scripts/check-all.sh --profile fast

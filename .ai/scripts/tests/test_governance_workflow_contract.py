@@ -50,25 +50,7 @@ GOVERNED_PR_PATHS = {
     ".github/workflows/governance.yml",
     *ROOT_ENTRIES,
 }
-SOURCE_GOVERNANCE_COMMAND = "python .ai/scripts/validate-source-governance.py"
-REQUIRED_COMMANDS = {
-    "python .ai/scripts/validate-ai-context.py",
-    "python .ai/scripts/tests/test_ai_context_wrapper_metadata.py -v",
-    "python .ai/scripts/tests/test_ai_context_language_policy.py -v",
-    "python .ai/scripts/tests/test_ai_context_sub_agent_adapters.py -v",
-    "python .ai/scripts/validate-dependency-versions.py",
-    "python .ai/scripts/tests/test_dependency_version_consistency.py -v",
-    "python .ai/scripts/validate-shell-assets.py",
-    "python .ai/scripts/tests/test_workflow_handoff.py -v",
-    "python .ai/scripts/validate-workflow-handoff.py --all",
-    "python .ai/scripts/tests/test_ai_context_release_state.py -v",
-    "python .ai/scripts/tests/test_prepare_ai_context_release.py -v",
-    "python .ai/scripts/tests/test_release_notes_renderer.py -v",
-    SOURCE_GOVERNANCE_COMMAND,
-    "python .ai/scripts/tests/test_file_disposition_manifest.py -v",
-    "python .ai/scripts/tests/test_workflow_delivery_policy.py -v",
-    "python .ai/scripts/tests/test_governance_workflow_contract.py -v",
-}
+CANONICAL_FAST_PROFILE = "bash .ai/scripts/check-all.sh --profile fast"
 MUTATING_COMMAND = re.compile(
     r"(?:\bgh\s+release\b|\bgit\s+(?:push|commit)\b|"
     r"\bgit\s+tag\s+(?:--(?:annotate|delete)|-[ad])\b|"
@@ -122,17 +104,16 @@ class GovernanceWorkflowContractTests(unittest.TestCase):
         self.assertEqual({"python-version": "3.12"}, setup_python.get("with"))
         self.assertIn("python -m pip install --disable-pip-version-check -r requirements.txt", self.commands)
 
-    def test_gwt_004_given_governance_workflow_when_checked_then_all_required_gates_run(self) -> None:
+    def test_gwt_004_given_governance_workflow_when_checked_then_membership_comes_from_the_canonical_profile(self) -> None:
         command_text = "\n".join(self.commands)
-        for command in REQUIRED_COMMANDS:
-            with self.subTest(command=command):
-                self.assertIn(command, command_text)
+        self.assertIn(CANONICAL_FAST_PROFILE, command_text)
+        self.assertNotIn("python .ai/scripts/validate-ai-context.py", command_text)
         step_names = {
             step.get("name")
             for job in self.workflow["jobs"].values()
             for step in job["steps"]
         }
-        self.assertIn("Validate registered source governance manifests", step_names)
+        self.assertIn("Run the canonical fast governance profile", step_names)
         self.assertNotIn("Validate v0.5.0 path disposition", step_names)
 
     def test_gwt_005_given_governance_workflow_when_checked_then_release_mutation_is_absent(self) -> None:

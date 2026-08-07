@@ -441,6 +441,7 @@ def validate_package_root(package_root: Path) -> tuple[dict, dict[str, dict], di
             raise ApplyError(f"missing extracted package metadata: {path.name}")
     package = load_yaml(package_path, "package.yaml")
     files_bytes = files_path.read_bytes()
+    migration_bytes = migration_path.read_bytes()
     inventory = load_yaml(files_path, "files.yaml")
     migration = load_yaml(migration_path, "migration.yaml")
     package_id = package.get("package_id")
@@ -449,9 +450,9 @@ def validate_package_root(package_root: Path) -> tuple[dict, dict[str, dict], di
     if inventory.get("package_id") != package_id or migration.get("package_id") != package_id:
         raise ApplyError("package identity mismatch")
     package_schema = package.get("schema_version")
-    if package_schema not in {"1.0.0", "2.0.0"}:
+    if package_schema not in {"1.0.0", "1.1.0", "2.0.0", "2.1.0"}:
         raise ApplyError(f"unsupported package schema version: {package_schema!r}")
-    if package_schema == "2.0.0":
+    if package_schema in {"2.0.0", "2.1.0"}:
         selection = package.get("selection")
         if not isinstance(selection, dict):
             raise ApplyError("package selection must be a mapping")
@@ -472,6 +473,39 @@ def validate_package_root(package_root: Path) -> tuple[dict, dict[str, dict], di
     to_data = migration.get("to")
     if not isinstance(to_data, dict) or to_data.get("manifest_sha256") != manifest_sha:
         raise ApplyError("migration target manifest SHA does not match files.yaml")
+    if package_schema in {"1.1.0", "2.1.0"}:
+        source = package.get("source")
+        identity = package.get("identity")
+        if not isinstance(source, dict) or not all(
+            isinstance(source.get(key), str)
+            and len(source[key]) == 40
+            and all(char in "0123456789abcdef" for char in source[key])
+            for key in ("commit", "tree")
+        ):
+            raise ApplyError("package source identity requires commit and tree SHA")
+        if not isinstance(identity, dict) or identity.get("schema_version") != "1.0.0":
+            raise ApplyError("package identity schema is missing or unsupported")
+        payload_fingerprint = sha256_bytes(
+            "".join(
+                f"{record['sha256']}  {relative}\n"
+                for relative, record in sorted(
+                    records.items(), key=lambda item: item[0].encode("utf-8")
+                )
+            ).encode("utf-8")
+        )
+        expected_identity = {
+            "payload_fingerprint": payload_fingerprint,
+            "files_manifest_digest": manifest_sha,
+            "migration_digest": sha256_bytes(migration_bytes),
+        }
+        for key, value in expected_identity.items():
+            if identity.get(key) != value:
+                raise ApplyError(f"package identity {key} does not match package bytes")
+        selected = identity.get("selected_input_fingerprint")
+        if not isinstance(selected, str) or len(selected) != 64 or any(
+            char not in "0123456789abcdef" for char in selected
+        ):
+            raise ApplyError("package identity selected_input_fingerprint is invalid")
     return package, records, migration, manifest_sha
 
 

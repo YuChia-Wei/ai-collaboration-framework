@@ -188,6 +188,7 @@ class SyntheticPackageRepo:
     def output(self, name: str) -> Path:
         return Path(self._temporary.name) / name
 
+
     def ensure_release(
         self,
         version: str,
@@ -244,6 +245,42 @@ class SyntheticPackageRepo:
         with zipfile.ZipFile(Path(result["zip"])) as archive:
             archive.extractall(destination)
         return destination / str(result["package_id"])
+
+
+class GitObjectReaderGwtTests(unittest.TestCase):
+    def test_gwt_000_given_shared_snapshot_when_multiple_payload_blobs_are_read_then_one_batch_process_is_reused(self) -> None:
+        fixture = SyntheticPackageRepo()
+        try:
+            large_content = ("large package fixture\n" * 32768).encode("utf-8")
+            large_path = fixture.root / "docs/large.md"
+            large_path.write_bytes(large_content)
+            git(fixture.root, "add", "docs/large.md")
+            git(fixture.root, "commit", "-qm", "large batch fixture")
+
+            # Given one immutable snapshot, when two blobs are retrieved,
+            # then they share the one preloaded Git batch reader.
+            snapshot = PACKAGE.PackageRepositorySnapshot.from_ref(fixture.root, "HEAD")
+            rule = snapshot.tree["docs/rule.md"]
+            large = snapshot.tree["docs/large.md"]
+            self.assertEqual(b"committed rule\n", snapshot.blob_reader.read_blob(rule))
+            self.assertEqual(large_content, snapshot.blob_reader.read_blob(large))
+            self.assertEqual(1, snapshot.blob_reader.batch_process_count)
+        finally:
+            fixture.close()
+
+    def test_gwt_001_given_missing_object_when_batch_read_then_the_error_is_fail_closed(self) -> None:
+        fixture = SyntheticPackageRepo()
+        try:
+            reader = PACKAGE.GitObjectReader(fixture.root)
+            missing = PACKAGE.GitEntry("missing.md", "100644", "blob", "0" * 40)
+
+            with self.assertRaises(PACKAGE.PackageError) as raised:
+                reader.read_blobs_batch((missing,))
+
+            self.assertIn("Git batch response", str(raised.exception))
+            self.assertEqual(1, reader.batch_process_count)
+        finally:
+            fixture.close()
 
 
 def rewrite_zip_member(source: Path, target: Path, suffix: str, replacement: bytes) -> None:
@@ -544,6 +581,106 @@ class DeterministicPackageGwtTests(unittest.TestCase):
         finally:
             fixture.close()
 
+    def test_gwt_001a_given_message_only_rewrite_when_built_then_tree_identity_and_eligible_inputs_match(self) -> None:
+        fixture = SyntheticPackageRepo()
+        try:
+            fixture.ensure_release("1.0.0")
+            first_commit = git(fixture.root, "rev-parse", "HEAD").stdout.strip()
+            git(fixture.root, "commit", "--allow-empty", "-qm", "message-only rewrite")
+            second_commit = git(fixture.root, "rev-parse", "HEAD").stdout.strip()
+
+            first = PACKAGE.build_package(
+                fixture.root, first_commit, "1.0.0", fixture.output("message-first"), fixture.profile
+            )
+            second = PACKAGE.build_package(
+                fixture.root, second_commit, "1.0.0", fixture.output("message-second"), fixture.profile
+            )
+
+            self.assertNotEqual(first["commit"], second["commit"])
+            self.assertEqual(first["tree"], second["tree"])
+            for key in (
+                "selected_input_fingerprint",
+                "payload_fingerprint",
+                "files_manifest_digest",
+                "migration_digest",
+            ):
+                self.assertEqual(first[key], second[key])
+        finally:
+            fixture.close()
+
+    def test_gwt_001b_given_unselected_documentation_change_when_built_then_selected_input_identity_is_reused(self) -> None:
+        fixture = SyntheticPackageRepo()
+        try:
+            fixture.ensure_release("1.0.0")
+            first = PACKAGE.build_package(
+                fixture.root, "HEAD", "1.0.0", fixture.output("docs-first"), fixture.profile
+            )
+            (fixture.root / "README.md").write_text(
+                "unselected documentation\n", encoding="utf-8", newline="\n"
+            )
+            git(fixture.root, "add", "README.md")
+            git(fixture.root, "commit", "-qm", "documentation outside package inputs")
+            second = PACKAGE.build_package(
+                fixture.root, "HEAD", "1.0.0", fixture.output("docs-second"), fixture.profile
+            )
+
+            self.assertNotEqual(first["tree"], second["tree"])
+            self.assertEqual(
+                first["selected_input_fingerprint"], second["selected_input_fingerprint"]
+            )
+            self.assertEqual(first["payload_fingerprint"], second["payload_fingerprint"])
+        finally:
+            fixture.close()
+
+    def test_gwt_001c_given_relevant_payload_change_when_built_then_content_identity_is_invalidated(self) -> None:
+        fixture = SyntheticPackageRepo()
+        try:
+            fixture.ensure_release("1.0.0")
+            first = PACKAGE.build_package(
+                fixture.root, "HEAD", "1.0.0", fixture.output("payload-first"), fixture.profile
+            )
+            (fixture.root / "docs/rule.md").write_text(
+                "changed package rule\n", encoding="utf-8", newline="\n"
+            )
+            git(fixture.root, "add", "docs/rule.md")
+            git(fixture.root, "commit", "-qm", "relevant package input")
+            second = PACKAGE.build_package(
+                fixture.root, "HEAD", "1.0.0", fixture.output("payload-second"), fixture.profile
+            )
+
+            self.assertNotEqual(
+                first["selected_input_fingerprint"], second["selected_input_fingerprint"]
+            )
+            self.assertNotEqual(first["payload_fingerprint"], second["payload_fingerprint"])
+        finally:
+            fixture.close()
+
+    def test_gwt_001d_given_profile_configuration_change_when_built_then_selected_input_identity_is_invalidated(self) -> None:
+        fixture = SyntheticPackageRepo()
+        try:
+            fixture.ensure_release("1.0.0")
+            first = PACKAGE.build_package(
+                fixture.root, "HEAD", "1.0.0", fixture.output("profile-first"), fixture.profile
+            )
+            profile_path = fixture.root / fixture.profile
+            profile = yaml.safe_load(profile_path.read_text(encoding="utf-8"))
+            profile["package"]["source_repository"] = "fixture/repository-v2"
+            profile_path.write_text(
+                yaml.safe_dump(profile, sort_keys=False), encoding="utf-8", newline="\n"
+            )
+            git(fixture.root, "add", fixture.profile)
+            git(fixture.root, "commit", "-qm", "relevant profile configuration")
+            second = PACKAGE.build_package(
+                fixture.root, "HEAD", "1.0.0", fixture.output("profile-second"), fixture.profile
+            )
+
+            self.assertNotEqual(
+                first["selected_input_fingerprint"], second["selected_input_fingerprint"]
+            )
+            self.assertEqual(first["payload_fingerprint"], second["payload_fingerprint"])
+        finally:
+            fixture.close()
+
     def test_gwt_002_given_dirty_checkout_bytes_when_head_is_built_then_git_blob_truth_wins(self) -> None:
         fixture = SyntheticPackageRepo()
         try:
@@ -615,10 +752,28 @@ class DeterministicPackageGwtTests(unittest.TestCase):
                 (root / "metadata/migration.yaml").read_text(encoding="utf-8")
             )
 
-            self.assertEqual("2.0.0", package["schema_version"])
+            self.assertEqual("2.1.0", package["schema_version"])
             self.assertEqual("2.0.0", inventory["schema_version"])
             self.assertEqual("3.0.0", migration["schema_version"])
             self.assertEqual(package["selection"], migration["selection"])
+            self.assertEqual(result["tree"], package["source"]["tree"])
+            self.assertEqual(result["commit"], package["source"]["commit"])
+            self.assertEqual(
+                result["selected_input_fingerprint"],
+                package["identity"]["selected_input_fingerprint"],
+            )
+            self.assertEqual(
+                result["payload_fingerprint"],
+                package["identity"]["payload_fingerprint"],
+            )
+            self.assertEqual(
+                result["files_manifest_digest"],
+                package["identity"]["files_manifest_digest"],
+            )
+            self.assertEqual(
+                result["migration_digest"],
+                package["identity"]["migration_digest"],
+            )
             self.assertEqual(
                 {
                     "minimum_governed_source": "v0.1.0",
@@ -639,6 +794,21 @@ class DeterministicPackageGwtTests(unittest.TestCase):
                     for operation in migration["clean_install"]["operations"]
                 )
             )
+        finally:
+            fixture.close()
+
+    def test_gwt_005aa_given_archive_sidecar_digest_drift_when_validated_then_it_fails_closed(self) -> None:
+        fixture = SyntheticPackageRepo()
+        try:
+            result = fixture.build("sidecar-drift")
+            sidecar = Path(f"{result['zip']}.sha256")
+            sidecar.write_text(
+                f"{'0' * 64}  {Path(result['zip']).name}\n",
+                encoding="utf-8",
+                newline="\n",
+            )
+            with self.assertRaisesRegex(PACKAGE.PackageError, "sidecar mismatch"):
+                PACKAGE.validate_sidecar(Path(result["zip"]))
         finally:
             fixture.close()
 

@@ -113,6 +113,18 @@ class WorkflowLifecycleContractTests(unittest.TestCase):
         )
         self.assertEqual([], errors)
 
+    def test_gwt_011_given_nested_development_locator_when_parsed_then_continuation_is_a_mapping(self) -> None:
+        path = (
+            REPO_ROOT
+            / ".ai/assets/skills/software-development-orchestrator/templates/workflow-locator-template.yaml"
+        )
+        errors: list[str] = []
+        locator = VALIDATOR.parse_yaml_mapping(path, "workflow-locator-template.yaml", errors)
+
+        self.assertEqual([], errors)
+        self.assertIsInstance(locator, dict)
+        self.assertEqual("<current-task-id>", locator["continuation"]["current_task_id"])
+
 
 if __name__ == "__main__":
     unittest.main()

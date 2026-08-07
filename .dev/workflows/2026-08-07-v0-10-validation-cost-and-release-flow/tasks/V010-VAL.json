@@ -1,0 +1,82 @@
+{
+  "template_id": "software-development-orchestrator/development-workflow-task",
+  "template_version": "1.5.0",
+  "template_created_at": "2026-07-10T18:25:11+08:00",
+  "template_updated_at": "2026-08-05T02:12:00+08:00",
+  "workflow_id": "2026-08-07-v0-10-validation-cost-and-release-flow",
+  "task_id": "V010-VAL",
+  "owner_skill": "ai-context-governance",
+  "related_plan_id": "development-plan-2026-08-07-v0-10-validation-cost-and-release-flow",
+  "status": "completed",
+  "created_at": "2026-08-07T22:12:41+08:00",
+  "updated_at": "2026-08-07T23:21:27+08:00",
+  "template_source": ".ai/assets/skills/software-development-orchestrator/templates/development-workflow-task-template.json",
+  "model": "gpt-5.6-terra",
+  "reasoning_effort": "not-runtime-reported",
+  "workflow_locator": ".dev/workflows/2026-08-07-v0-10-validation-cost-and-release-flow/workflow.yaml",
+  "scope": {
+    "goal": "Deliver #96 profile-driven validation, quiet retained diagnostics, dependency-aware selection, fingerprint reuse, and Packaging GWT cost remediation.",
+    "target": "Aggregate validation runner, profile registry, CI consumers, packaging test layers, and direct validator compatibility entrypoints.",
+    "files": [],
+    "constraints": [
+      "This is source-framework governance tooling, not a downstream target action; no target-effective packet exists in this source repository.",
+      "Preserve full fail-closed release semantics and direct entrypoints.",
+      "Keep runner work as #96 implementation slices, not a second release item."
+    ],
+    "non_goals": [
+      "Native-language rewrite or toolchain.",
+      "Release tag/publication.",
+      "Handoff semantic changes."
+    ]
+  },
+  "inputs": {
+    "requirements": ["GitHub Issue #96", "Work package Sections 8, 12, and 13"],
+    "specifications": [],
+    "architecture_decisions": ["#75 is superseded by #96"],
+    "user_constraints": ["No excluded native-language work", "WSL only outside sandbox"]
+  },
+  "execution": {
+    "capability_slot": "implementation",
+    "approval_contract": {
+      "status": "approved",
+      "required_before": "Implementation",
+      "authorization_source": ["Owner work package", "Issue #96 owner-decision comment"],
+      "pending_decision": ""
+    },
+    "implementation_contract": {
+      "intent": "feature",
+      "execution_mode": "generic",
+      "overlays": [],
+      "authorization_source": ["Owner work package", "GitHub Issue #96"],
+      "normative_truth": ["Work package Sections 8, 12, and 13", "AGENTS.md", "current validation and release policies"],
+      "finding_evidence": ["Work package Section 4.2 performance baseline"],
+      "subject_revision": "481c84c32405f849b0adc15f20f78ad00b38af9b",
+      "acceptance_criteria": ["Fast and PR profiles are materially smaller than the old full gate", "Release remains fail-closed", "Packaging hot path uses batched Git reads and reuse"]
+    },
+    "test_execution_contract": null,
+    "role_execution_records": [],
+    "spec_compliance": {"selected": false, "activation_source": [], "expected_outcome": "not-applicable"},
+    "steps": ["Inspect current runner and packaging implementation", "Confirm source-framework governance ownership", "Implement and validate bounded changes", "Record performance and compatibility evidence"],
+    "validation": ["Focused runner/profile/package tests", "git diff --check", "selected Windows/WSL evidence"],
+    "commit_checkpoint": "Validated implementation stage commit.",
+    "deferred_items": []
+  },
+  "results": {
+    "summary": "#96 now has one canonical profile registry, compact retained diagnostics, smoke/full packaging separation, batched Git object reads, and CI consumers that call the registry rather than copied command lists.",
+    "files_changed": [".ai/scripts/check-all.sh", ".ai/scripts/validation-profile-registry.sh", ".ai/scripts/ai_context_package.py", ".github/workflows/governance.yml", ".github/workflows/portable-gates.yml", ".ai/scripts/tests/"],
+    "approval_evidence": ["Owner v0.10.0 work package", "GitHub Issue #96 owner-decision comment"],
+    "test_execution": [],
+    "role_execution_aggregation": [],
+    "spec_compliance": {"outcome": "not-applicable", "coverage_percent": null, "evidence": []},
+    "validation_evidence": [
+      "Windows Git Bash: check-all.sh --profile fast passed in 24 seconds (27 selected; no full package matrix).",
+      "Windows Git Bash: check-all.sh --profile pr passed in 49 seconds (36 selected; package smoke included; no full package matrix).",
+      "python .ai/scripts/tests/test_fail_closed_validation.py -v: 35 tests passed.",
+      "Focused GitObjectReader GWT tests: 2 passed; package smoke: 1 passed; profile registry: 4 passed.",
+      "python .ai/scripts/validate-workflow-artifacts.py --workflow-id 2026-08-07-v0-10-validation-cost-and-release-flow and validate-shell-assets.py passed; git diff --check passed."
+    ],
+    "commits": ["5a24d04025c529690e24fa3251113beecf7e40d4"],
+    "finding_status": "addressed",
+    "follow_up_needed": false
+  }
+}
