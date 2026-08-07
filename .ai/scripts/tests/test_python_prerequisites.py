@@ -134,11 +134,19 @@ class PythonPrerequisiteGwtTests(unittest.TestCase):
         # Given the canonical entrypoint registry.
         entries = self.registry["entrypoints"]
 
-        # When its approved boundary is counted, then it retains 26 entries, 13 portable entries and two no-PyYAML profiles.
-        self.assertEqual(26, len(entries))
+        # When its approved boundary is counted, then it retains 27 entries, 13 portable entries and two no-PyYAML profiles.
+        self.assertEqual(27, len(entries))
         self.assertEqual(13, sum(entry["portable"] for entry in entries))
         self.assertEqual(2, sum(not entry["dependency_profile"] for entry in entries))
-        self.assertEqual({1, 2}, {entry["prerequisite_exit_code"] for entry in entries})
+        self.assertEqual({1, 2, 3}, {entry["prerequisite_exit_code"] for entry in entries})
+        self.assertEqual(
+            {".ai/scripts/ai_context_release_closeout.py"},
+            {
+                entry["path"]
+                for entry in entries
+                if entry["prerequisite_exit_code"] == 3
+            },
+        )
 
     def test_gwt_007_given_invalid_explicit_override_when_a_path_candidate_is_ready_then_discovery_falls_through_once(self) -> None:
         # Given the owner override cannot launch but a lower-priority candidate is ready.

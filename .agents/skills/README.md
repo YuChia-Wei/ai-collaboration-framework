@@ -20,6 +20,7 @@ This directory contains the current repo-local skill wrappers for Codex and comp
 ## Available Wrappers
 
 - `ai-context-governance`
+- `ai-context-release-closeout` (source-repository-only)
 - `ai-context-auditor`
 - `ai-context-init`
 - `ai-context-upgrader`

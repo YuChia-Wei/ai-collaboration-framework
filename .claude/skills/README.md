@@ -20,6 +20,7 @@ This directory contains Claude-compatible skill wrappers.
 ## Available Wrappers
 
 - `ai-context-governance`
+- `ai-context-release-closeout` (source-repository-only)
 - `ai-context-auditor`
 - `ai-context-init`
 - `ai-context-upgrader`
@@ -44,4 +45,3 @@ historical identifiers.
 - Add or update the canonical spec before adding or updating a wrapper.
 - If the canonical spec and wrapper conflict, follow `.ai/assets/skills/`.
 - Each wrapper `SKILL.md` should only keep canonical spec links, human guide links, reference links, and runtime-specific metadata.
-

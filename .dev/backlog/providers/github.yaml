@@ -57,18 +57,18 @@ issue:
         hidden_marker_required: false
         application: "keep the public Proposal form attribution-neutral"
 work_item_binding:
-  mode: "optional"
+  mode: "required"
   purposes:
     - "traceability"
     - "work-authorization"
   authorization:
     requires_explicit_owner_approval: true
     provider_state_alone_authorizes: false
-    missing_binding: "record explicit owner authorization in the workflow or pull request"
+    missing_binding: "block material execution until an online GitHub Issue records the scope and explicit owner authorization"
   merge_gate:
-    mode: "optional"
+    mode: "required"
     reference_format: "Refs #<issue-number>"
-    missing_binding_blocks_merge: false
+    missing_binding_blocks_merge: true
 labels:
   - name: "kind:story"
     color: "1D76DB"
@@ -136,6 +136,7 @@ fields:
       - "v0.7.0"
       - "v0.8.0"
       - "v0.9.0"
+      - "v0.10.0"
   published_in:
     name: "Published in"
     options:
@@ -148,6 +149,8 @@ fields:
       - "v0.6.0"
       - "v0.7.0"
       - "v0.8.0"
+      - "v0.9.0"
+      - "v0.10.0"
 views:
   - name: "Active Backlog"
     layout: "board"

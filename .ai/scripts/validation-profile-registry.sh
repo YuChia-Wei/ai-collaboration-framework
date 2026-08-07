@@ -299,6 +299,11 @@ register_check github-workflow-contract \
     "governance,source" "pr release nightly-full" \
     ".github/workflows .ai/scripts/tests/test_github_workflow_contract.py" source-governance-manifest "python>=3.11" 60 cpu reuse-by-input source \
     "python .ai/scripts/tests/test_github_workflow_contract.py -v" source-governance
+register_check source-release-closeout-contract \
+    "Source-Only Release Closeout Contract" required \
+    "release,closeout" "closeout" \
+    ".ai/assets/skills/ai-context-release-closeout .agents/skills/ai-context-release-closeout .claude/skills/ai-context-release-closeout .ai/scripts/ai_context_release_closeout.py .ai/scripts/tests/test_ai_context_release_closeout.py" '' "python>=3.11 git" 120 io no-reuse source \
+    "python .ai/scripts/tests/test_ai_context_release_closeout.py -v" always
 register_check test-di-compliance \
     "Test DI Compliance" advisory \
     "deferred,nightly" "nightly-full" \

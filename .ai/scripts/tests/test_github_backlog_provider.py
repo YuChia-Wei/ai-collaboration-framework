@@ -27,9 +27,9 @@ class GitHubBacklogProviderTests(unittest.TestCase):
         cls.plan = PROVIDER.build_plan(REPO_ROOT, CONFIG, "HEAD")
         cls.items = {item["backlog_id"]: item for item in cls.plan["items"]}
 
-    def test_gwt_001_given_canonical_backlog_when_projected_then_all_54_ids_are_unique(self) -> None:
-        self.assertEqual(54, self.plan["counts"]["total"])
-        self.assertEqual(54, len(self.items))
+    def test_gwt_001_given_canonical_backlog_when_projected_then_all_55_ids_are_unique(self) -> None:
+        self.assertEqual(55, self.plan["counts"]["total"])
+        self.assertEqual(55, len(self.items))
 
     def test_gwt_002_given_stage_a_when_planned_then_no_online_write_is_available(self) -> None:
         self.assertFalse(self.plan["online_writes_performed"])
@@ -117,13 +117,15 @@ class GitHubBacklogProviderTests(unittest.TestCase):
             self.assertEqual("v0.8.0", item["project_fields"]["Target release"])
             self.assertEqual("v0.8.0", item["project_fields"]["Published in"])
 
-    def test_gwt_009b_given_v090_items_when_projected_then_each_appears_once_as_awaiting_publication(self) -> None:
+    def test_gwt_009b_given_v090_items_when_projected_then_each_appears_once_as_published(self) -> None:
         expected = {
+            "CTX-004",
             "GOV-004",
             "PKG-005",
             "GOV-006",
             "CTX-005",
             "PKG-006",
+            "SAG-002",
             "VAL-003",
         }
         projected = {
@@ -133,7 +135,7 @@ class GitHubBacklogProviderTests(unittest.TestCase):
         }
         self.assertEqual(expected, projected)
         for backlog_id in expected:
-            self.assertEqual("Not yet published", self.items[backlog_id]["project_fields"]["Published in"])
+            self.assertEqual("v0.9.0", self.items[backlog_id]["project_fields"]["Published in"])
 
     def test_gwt_010_given_same_revision_then_yaml_projection_is_deterministic(self) -> None:
         second = PROVIDER.build_plan(REPO_ROOT, CONFIG, self.plan["source_revision"])
@@ -242,22 +244,22 @@ class GitHubBacklogProviderTests(unittest.TestCase):
             proposal_policy["human_submitted"],
         )
 
-    def test_gwt_018_given_source_repository_then_work_item_binding_and_merge_gate_are_optional(self) -> None:
+    def test_gwt_018_given_source_repository_then_material_work_item_binding_and_merge_gate_are_required(self) -> None:
         config = PROVIDER.load_yaml_mapping(CONFIG)
 
         self.assertEqual(
             {
-                "mode": "optional",
+                "mode": "required",
                 "purposes": ["traceability", "work-authorization"],
                 "authorization": {
                     "requires_explicit_owner_approval": True,
                     "provider_state_alone_authorizes": False,
-                    "missing_binding": "record explicit owner authorization in the workflow or pull request",
+                    "missing_binding": "block material execution until an online GitHub Issue records the scope and explicit owner authorization",
                 },
                 "merge_gate": {
-                    "mode": "optional",
+                    "mode": "required",
                     "reference_format": "Refs #<issue-number>",
-                    "missing_binding_blocks_merge": False,
+                    "missing_binding_blocks_merge": True,
                 },
             },
             config["work_item_binding"],

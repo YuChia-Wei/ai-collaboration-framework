@@ -33,6 +33,16 @@ import yaml
 VERSION_RE = re.compile(r"^v(?:0|[1-9]\d*)\.(?:0|[1-9]\d*)\.(?:0|[1-9]\d*)$")
 SHA_RE = re.compile(r"^[0-9a-f]{40}$")
 PHASES = ("candidate", "tag", "publication", "finalization")
+V010_AGENT_PUBLICATION_AUTHORITY = {
+    "tag_owner": "owner-authorized-terra-agent",
+    "trigger": "owner-approved-v0.10.0-agent-tag",
+    "automation": "github-actions",
+    "creates_or_moves_tag": False,
+    "authorization_source": "AI Collaboration Framework v0.10.0 Terra implementation work package",
+    "authorized_issue": "#137",
+    "authorized_actor": "OpenAI Codex Terra",
+    "existing_tag_mutation": "forbidden",
+}
 PLACEHOLDER_RE = re.compile(r"\{\{.+?\}\}|<[^\n>]+>|\b(?:TODO|TBD|PLACEHOLDER)\b", re.I)
 FORBIDDEN_AUTHORED_RE = re.compile(
     r"ai-context-release-automation:|^## Release provenance\s*$", re.I | re.M
@@ -288,6 +298,19 @@ def validate_backlog_refs(root: Path, version: str, data: dict[str, Any]) -> Non
         )
 
 
+def validate_publication_authority(version: str, distribution: dict[str, Any]) -> None:
+    """Keep the owner-approved v0.10.0 tag exception exact and non-transferable."""
+    if version != "v0.10.0":
+        return
+    publication = nested_mapping(
+        distribution.get("publication"), "distribution.publication"
+    )
+    if publication != V010_AGENT_PUBLICATION_AUTHORITY:
+        raise ReleaseStateError(
+            "v0.10.0 distribution.publication must equal the bounded owner-authorized Terra tag policy"
+        )
+
+
 def validate_candidate_record(
     root: Path,
     version: str,
@@ -339,6 +362,7 @@ def validate_candidate_record(
         raise ReleaseStateError(
             f"distribution.package_id must be {expected_package}"
         )
+    validate_publication_authority(version, distribution)
     schema_versions = nested_mapping(
         distribution.get("schema_versions"), "distribution.schema_versions"
     )

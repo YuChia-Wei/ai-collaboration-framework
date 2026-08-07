@@ -1,8 +1,98 @@
 {
-  "template_id": "software-development-orchestrator/development-workflow-task", "template_version": "1.5.0", "template_created_at": "2026-07-10T18:25:11+08:00", "template_updated_at": "2026-08-05T02:12:00+08:00",
-  "workflow_id": "2026-08-07-v0-10-validation-cost-and-release-flow", "task_id": "V010-CLOSEOUT", "owner_skill": "ai-context-governance", "related_plan_id": "development-plan-2026-08-07-v0-10-validation-cost-and-release-flow", "status": "in_progress", "created_at": "2026-08-07T22:12:41+08:00", "updated_at": "2026-08-08T00:28:00+08:00", "template_source": ".ai/assets/skills/software-development-orchestrator/templates/development-workflow-task-template.json", "model": "gpt-5.6-terra", "reasoning_effort": "not-runtime-reported", "workflow_locator": ".dev/workflows/2026-08-07-v0-10-validation-cost-and-release-flow/workflow.yaml",
-  "scope": {"goal": "Deliver #57 source-only closeout capability and #137 v0.10.0 tag/publication policy reconciliation.", "target": "Source-only closeout skill/scripts/tests and release runbook policy.", "files": [], "constraints": ["Prove package isolation.", "Do not create candidate or rerun package/.NET matrices during closeout.", "Authorize only a new v0.10.0 tag after gates; existing immutable tags stay untouched."], "non_goals": ["Product package inclusion", "global tag-owner transfer", "handoff semantic change"]},
-  "inputs": {"requirements": ["GitHub Issues #57 and #137", "Work package Sections 11 and 14"], "specifications": [], "architecture_decisions": ["Current release runbook conflict must be resolved through #137"], "user_constraints": []},
-  "execution": {"capability_slot": "implementation", "approval_contract": {"status": "approved", "required_before": "Implementation", "authorization_source": ["Owner work package", "GitHub Issues #57 and #137"], "pending_decision": ""}, "implementation_contract": {"intent": "feature", "execution_mode": "generic", "overlays": [], "authorization_source": ["Owner work package", "GitHub Issues #57 and #137"], "normative_truth": ["Work package Section 11", "Work package Section 14", ".dev/operations/runbooks/AI-CONTEXT-RELEASE-PUBLICATION-RUNBOOK.MD"], "finding_evidence": ["Current tag-authority policy conflict recorded in #137"], "subject_revision": "af7344fa48995fef9450f8f95bd79f7bddee6cea", "acceptance_criteria": ["Source-only package isolation", "records-only closeout", "v0.10.0-only tag authority reconciliation"]}, "test_execution_contract": null, "role_execution_records": [], "spec_compliance": {"selected": false, "activation_source": [], "expected_outcome": "not-applicable"}, "steps": ["Implement the #133 online-Issue authority policy change without making provider state itself authorizing.", "Implement source-only closeout command, release read-back, isolated-worktree patch generation, and package negative proof.", "Reconcile #137 to permit only the explicitly owner-authorized new v0.10.0 tag after final gates."], "validation": ["Source-only leakage and closeout profile tests", "release-state and policy checks", "provider read-back after publication"], "commit_checkpoint": "Validated source-only and governance stage commit.", "deferred_items": []},
-  "results": {"summary": "", "files_changed": [], "approval_evidence": [], "test_execution": [], "role_execution_aggregation": [], "spec_compliance": {"outcome": "not-applicable", "coverage_percent": null, "evidence": []}, "validation_evidence": [], "commits": [], "follow_up_needed": false}
+  "template_id": "software-development-orchestrator/development-workflow-task",
+  "template_version": "1.5.0",
+  "template_created_at": "2026-07-10T18:25:11+08:00",
+  "template_updated_at": "2026-08-05T02:12:00+08:00",
+  "workflow_id": "2026-08-07-v0-10-validation-cost-and-release-flow",
+  "task_id": "V010-CLOSEOUT",
+  "owner_skill": "ai-context-governance",
+  "related_plan_id": "development-plan-2026-08-07-v0-10-validation-cost-and-release-flow",
+  "status": "completed",
+  "created_at": "2026-08-07T22:12:41+08:00",
+  "updated_at": "2026-08-08T01:25:00+08:00",
+  "template_source": ".ai/assets/skills/software-development-orchestrator/templates/development-workflow-task-template.json",
+  "model": "gpt-5.6-terra",
+  "reasoning_effort": "not-runtime-reported",
+  "workflow_locator": ".dev/workflows/2026-08-07-v0-10-validation-cost-and-release-flow/workflow.yaml",
+  "scope": {
+    "goal": "Deliver #57 source-only closeout capability, #133 online-Issue authority policy, and #137 v0.10.0 tag/publication policy reconciliation.",
+    "target": "Source-only closeout skill/scripts/tests, source-repository Issue-binding policy, and release runbook policy.",
+    "files": [],
+    "constraints": [
+      "Prove package isolation.",
+      "Do not create candidate or rerun package/.NET matrices during closeout.",
+      "Authorize only a new v0.10.0 tag after gates; existing immutable tags stay untouched."
+    ],
+    "non_goals": ["Product package inclusion", "global tag-owner transfer", "handoff semantic change"]
+  },
+  "inputs": {
+    "requirements": ["GitHub Issues #57, #133, and #137", "Work package Sections 11 and 14"],
+    "specifications": [],
+    "architecture_decisions": ["Current release runbook conflict must be resolved through #137"],
+    "user_constraints": []
+  },
+  "execution": {
+    "capability_slot": "implementation",
+    "approval_contract": {
+      "status": "approved",
+      "required_before": "Implementation",
+      "authorization_source": ["Owner work package", "GitHub Issues #57, #133, and #137"],
+      "pending_decision": ""
+    },
+    "implementation_contract": {
+      "intent": "feature",
+      "execution_mode": "generic",
+      "overlays": [],
+      "authorization_source": ["Owner work package", "GitHub Issues #57, #133, and #137"],
+      "normative_truth": [
+        "Work package Section 11",
+        "Work package Section 14",
+        ".dev/operations/runbooks/AI-CONTEXT-RELEASE-PUBLICATION-RUNBOOK.MD"
+      ],
+      "finding_evidence": ["Current tag-authority policy conflict recorded in #137"],
+      "subject_revision": "aeaa9c185dcb9da8c27d9f34186f7398142513f0",
+      "acceptance_criteria": [
+        "Source-only package isolation",
+        "records-only closeout",
+        "required online Issue binding for material source execution",
+        "v0.10.0-only tag authority reconciliation"
+      ]
+    },
+    "test_execution_contract": null,
+    "role_execution_records": [],
+    "spec_compliance": {"selected": false, "activation_source": [], "expected_outcome": "not-applicable"},
+    "steps": [
+      "Implement the #133 online-Issue authority policy change without making provider state itself authorizing.",
+      "Implement source-only closeout command, release read-back, isolated-worktree patch generation, and package negative proof.",
+      "Reconcile #137 to permit only the explicitly owner-authorized new v0.10.0 tag after final gates."
+    ],
+    "validation": ["Source-only leakage and closeout profile tests", "release-state and policy checks", "provider read-back after publication"],
+    "commit_checkpoint": "Validated source-only and governance stage commit.",
+    "deferred_items": []
+  },
+  "results": {
+    "summary": "Implemented the #57 source-only closeout capability, #133 required GitHub-Issue binding policy, and #137 bounded v0.10.0 new-tag authority exception without touching a downstream payload or existing tag.",
+    "files_changed": [
+      "source-only closeout canonical skill and thin wrappers",
+      "closeout CLI and its tests",
+      "package profile exclusions and negative proof",
+      "GitHub provider / workflow-gate Issue-binding policy",
+      "release state validator and publication runbook",
+      "validation-profile and shell-command parity contracts"
+    ],
+    "approval_evidence": ["Owner work package", "GitHub Issues #57, #133, and #137"],
+    "test_execution": [
+      {"command": "bash .ai/scripts/check-all.sh --profile closeout", "outcome": "passed", "evidence": "Windows Git Bash and WSL each selected=1, executed=1, failed=0, blocked=0"},
+      {"command": "python .ai/scripts/tests/test_github_backlog_provider.py -v", "outcome": "passed", "evidence": "20 tests"},
+      {"command": "python .ai/scripts/tests/test_ai_context_release_state.py -v", "outcome": "passed", "evidence": "25 tests"},
+      {"command": "python .ai/scripts/tests/test_ai_context_packaging.py DeterministicPackageGwtTests.test_gwt_000_given_source_release_body_tooling_when_payload_is_projected_then_downstream_excludes_it -v", "outcome": "passed", "evidence": "package leakage negative proof"},
+      {"command": "python .ai/scripts/tests/test_fail_closed_validation.py -v", "outcome": "blocked-by-environment", "evidence": "WSL fixture clock/PATH baselines are outside the selected closeout profile; Windows fixture exceeded local process timeout"}
+    ],
+    "role_execution_aggregation": [],
+    "spec_compliance": {"outcome": "not-applicable", "coverage_percent": null, "evidence": []},
+    "validation_evidence": ["validate-ai-context", "validate-source-governance", "validate-shell-assets", "validate-workflow-artifacts", "git diff --check"],
+    "commits": ["f7904bf732c523305f1600a6068e34da216da816", "f76ae17b8df7e51314e4f248daf0948c2fe29129"],
+    "finding_status": "addressed",
+    "follow_up_needed": false
+  }
 }

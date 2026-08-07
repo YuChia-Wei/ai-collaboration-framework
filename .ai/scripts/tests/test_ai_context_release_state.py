@@ -620,6 +620,25 @@ class AiContextReleaseStateGwtTests(unittest.TestCase):
                         {"planning": {"backlog_refs": [ref]}},
                     )
 
+    def test_gwt_025_given_v010_candidate_when_tag_policy_is_checked_then_only_the_bounded_agent_exception_passes(self):
+        data = release_data()
+        data["version"] = "v0.10.0"
+        data["release_id"] = "REL-v0.10.0"
+        data["distribution"]["package_id"] = "ai-context-dotnet-backend-v0.10.0"
+        data["distribution"]["artifacts"] = {
+            "zip": "ai-context-dotnet-backend-v0.10.0.zip",
+            "zip_checksum": "ai-context-dotnet-backend-v0.10.0.zip.sha256",
+            "tar_gz": "ai-context-dotnet-backend-v0.10.0.tar.gz",
+            "tar_gz_checksum": "ai-context-dotnet-backend-v0.10.0.tar.gz.sha256",
+        }
+        data["distribution"]["publication"] = dict(
+            STATE.V010_AGENT_PUBLICATION_AUTHORITY
+        )
+        STATE.validate_publication_authority("v0.10.0", data["distribution"])
+        data["distribution"]["publication"]["tag_owner"] = "user"
+        with self.assertRaisesRegex(STATE.ReleaseStateError, "bounded owner-authorized Terra"):
+            STATE.validate_publication_authority("v0.10.0", data["distribution"])
+
 
 if __name__ == "__main__":
     unittest.main()

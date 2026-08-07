@@ -1063,6 +1063,10 @@ run_command_check "python .ai/scripts/tests/test_file_disposition_manifest.py -v
 
 run_source_repository_governance_checks
 
+run_command_check "python .ai/scripts/tests/test_ai_context_release_closeout.py -v" \
+    "Source-Only Release Closeout Contract" \
+    "required" "true" "true"
+
 run_command_check "python .ai/scripts/tests/test_fail_closed_validation.py -v" \
     "Aggregate Runner And Shell Registry Fail-Closed Tests" \
     "required" "true" "true"

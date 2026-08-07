@@ -110,12 +110,13 @@ def validate_python_entrypoint_registry(root: Path, errors: list[str]) -> dict[s
             "version 6.0.3, import_name yaml, and requirements_path requirements.txt"
         )
     entrypoints = registry.get("entrypoints")
-    if not isinstance(entrypoints, list) or len(entrypoints) != 26:
-        errors.append(f"{REGISTRY_PATH.as_posix()}: entrypoints must contain exactly 26 records")
+    if not isinstance(entrypoints, list) or len(entrypoints) != 27:
+        errors.append(f"{REGISTRY_PATH.as_posix()}: entrypoints must contain exactly 27 records")
         return registry
     paths: set[str] = set()
     portable = pyyaml = stdlib = 0
     exit_two_paths: set[str] = set()
+    exit_three_paths: set[str] = set()
     for index, entrypoint in enumerate(entrypoints, start=1):
         label = f"{REGISTRY_PATH.as_posix()}: entrypoints[{index}]"
         if not isinstance(entrypoint, dict) or set(entrypoint) != {"path", "portable", "dependency_profile", "prerequisite_exit_code"}:
@@ -141,19 +142,26 @@ def validate_python_entrypoint_registry(root: Path, errors: list[str]) -> dict[s
             stdlib += 1
         else:
             errors.append(f"{label}: dependency_profile must be [] or ['PyYAML']")
-        if entrypoint["prerequisite_exit_code"] not in (1, 2):
-            errors.append(f"{label}: prerequisite_exit_code must be 1 or 2")
+        if entrypoint["prerequisite_exit_code"] not in (1, 2, 3):
+            errors.append(f"{label}: prerequisite_exit_code must be 1, 2, or 3")
         elif entrypoint["prerequisite_exit_code"] == 2 and isinstance(path_value, str):
             exit_two_paths.add(path_value)
-    if (portable, pyyaml, stdlib) != (13, 24, 2):
+        elif entrypoint["prerequisite_exit_code"] == 3 and isinstance(path_value, str):
+            exit_three_paths.add(path_value)
+    if (portable, pyyaml, stdlib) != (13, 25, 2):
         errors.append(
-            f"{REGISTRY_PATH.as_posix()}: expected 13 portable, 24 PyYAML, and 2 stdlib-only entrypoints; "
+            f"{REGISTRY_PATH.as_posix()}: expected 13 portable, 25 PyYAML, and 2 stdlib-only entrypoints; "
             f"found {portable}, {pyyaml}, {stdlib}"
         )
     if exit_two_paths != {".ai/scripts/plan-ai-context-package-apply.py"}:
         errors.append(
             f"{REGISTRY_PATH.as_posix()}: only .ai/scripts/plan-ai-context-package-apply.py "
             f"may use prerequisite_exit_code 2; found {sorted(exit_two_paths)}"
+        )
+    if exit_three_paths != {".ai/scripts/ai_context_release_closeout.py"}:
+        errors.append(
+            f"{REGISTRY_PATH.as_posix()}: only .ai/scripts/ai_context_release_closeout.py "
+            f"may use prerequisite_exit_code 3; found {sorted(exit_three_paths)}"
         )
     return registry
 

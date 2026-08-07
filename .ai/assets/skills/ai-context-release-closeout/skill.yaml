@@ -1,0 +1,54 @@
+asset_id: "ai-context-release-closeout"
+schema_version: "1.0"
+asset_type: "skill-spec"
+title: "AI Context Release Closeout"
+purpose: "Plan and verify source-repository-only post-tag release closeout records without changing a release tag or portable downstream framework contract."
+portability: "repo-portable"
+audience: "agent-facing"
+source_of_truth: "canonical"
+status: "active"
+triggers:
+  - "post-tag release closeout"
+  - "release registry reconciliation"
+  - "records-only release handoff"
+inputs:
+  - "published immutable release tag"
+  - "GitHub repository identity and successful publication workflow run ID"
+  - "rendered release body when finalization requires body parity"
+outputs:
+  - "hosted finalization read-back"
+  - "records-only patch generated in an isolated temporary worktree"
+constraints:
+  - "Do not prepare a release candidate or choose, create, move, recreate, or delete a tag."
+  - "Do not execute package migrations or .NET product tests."
+  - "Use only post-tag hosted read-back and records-only source changes."
+  - "Check sanctioned Python and offline uv discovery before a repository write."
+  - "Keep the primary worktree unchanged until the isolated patch validates."
+  - "Never rewrite shared or published history."
+workflow:
+  - step: 1
+    description: "Read back the immutable tag, hosted release, publication run, and local runtime readiness without writing the primary worktree."
+  - step: 2
+    description: "Create a temporary detached worktree, build only the records-only registry patch, and validate finalization there."
+  - step: 3
+    description: "Hand the validated patch to a dedicated records-only branch and pull request; read back provider state before any retry."
+commands:
+  verify: "python .ai/scripts/ai_context_release_closeout.py verify --version <vX.Y.Z> --repository <owner/repo> --workflow-run-id <id>"
+  plan_patch: "python .ai/scripts/ai_context_release_closeout.py plan-patch --version <vX.Y.Z> --repository <owner/repo> --workflow-run-id <id> --output <path-outside-primary-worktree>"
+wrapper_targets:
+  - "codex"
+  - "claude"
+wrapper_metadata:
+  codex:
+    wrapper_path: ".agents/skills/ai-context-release-closeout/"
+  claude:
+    wrapper_path: ".claude/skills/ai-context-release-closeout/"
+human_guide: ".dev/guides/ai-collaboration-guides/AI-CONTEXT-RELEASE-CLOSEOUT-SKILL-GUIDE.md"
+references:
+  - ".dev/standards/WORKFLOW-HANDOFF-POLICY.md"
+  - ".dev/standards/GIT-COMMIT-POLICY.md"
+examples:
+  - ".dev/guides/ai-collaboration-guides/AI-CONTEXT-RELEASE-CLOSEOUT-SKILL-GUIDE.md"
+distribution:
+  classification: "source-only"
+  proof: ".ai/distribution/profiles/dotnet-backend.yaml#source-release-closeout-capability"
