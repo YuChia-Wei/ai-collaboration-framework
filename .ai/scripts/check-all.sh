@@ -3,8 +3,8 @@
 # ====================================================================
 # Comprehensive Project Check Script (.NET)
 # 
-# Purpose: 執行所有專案檢查腳本，提供完整的專案健康報告
-# Usage: ./check-all.sh [--quick | --full | --critical]
+# Purpose: Execute one declared validation profile and retain complete logs.
+# Usage: ./check-all.sh [--profile <name> | --quick | --full | --critical] [--verbose]
 # ====================================================================
 
 set -e
@@ -22,31 +22,214 @@ NC='\033[0m' # No Color
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
 
-# Parse arguments strictly so a typo cannot silently select the full gate.
-MODE="full"
-if [ "$#" -gt 1 ]; then
-    echo "Usage: $0 [--quick | --full | --critical]" >&2
+# The registry is intentionally shell-native: the runner must remain usable in
+# a minimal downstream Git Bash environment before Python prerequisites can be
+# established.  It owns membership; this runner only owns execution.
+declare -ag PROFILE_IDS=()
+declare -A PROFILE_PURPOSE=()
+declare -A PROFILE_BUDGET=()
+declare -A PROFILE_ENFORCEMENT=()
+declare -ag CHECK_IDS=()
+declare -A CHECK_ID_BY_DESCRIPTION=()
+declare -A CHECK_DESCRIPTION=()
+declare -A CHECK_OWNER=()
+declare -A CHECK_ENFORCEMENT=()
+declare -A CHECK_TAGS=()
+declare -A CHECK_PROFILES=()
+declare -A CHECK_INPUT_PATHS=()
+declare -A CHECK_DEPENDS=()
+declare -A CHECK_ENVIRONMENT=()
+declare -A CHECK_TIMEOUT=()
+declare -A CHECK_RESOURCE_CLASS=()
+declare -A CHECK_CACHE_POLICY=()
+declare -A CHECK_DISPOSITION=()
+declare -A CHECK_COMMAND=()
+declare -A CHECK_APPLICABILITY=()
+declare -A SELECTED_CHECK_IDS=()
+
+register_profile() {
+    local id=$1 purpose=$2 budget=$3 enforcement=$4
+    PROFILE_IDS+=("$id")
+    PROFILE_PURPOSE["$id"]=$purpose
+    PROFILE_BUDGET["$id"]=$budget
+    PROFILE_ENFORCEMENT["$id"]=$enforcement
+}
+
+register_check() {
+    local id=$1 description=$2 enforcement=$3 tags=$4 profiles=$5 input_paths=$6
+    local depends_on=$7 environment_capabilities=$8 timeout_seconds=$9
+    local resource_class=${10} cache_policy=${11} disposition=${12}
+    local command_or_callable=${13} applicability=${14}
+    CHECK_IDS+=("$id")
+    CHECK_ID_BY_DESCRIPTION["$description"]=$id
+    CHECK_DESCRIPTION["$id"]=$description
+    CHECK_OWNER["$id"]=ai-context-governance
+    CHECK_ENFORCEMENT["$id"]=$enforcement
+    CHECK_TAGS["$id"]=$tags
+    CHECK_PROFILES["$id"]=$profiles
+    CHECK_INPUT_PATHS["$id"]=$input_paths
+    CHECK_DEPENDS["$id"]=$depends_on
+    CHECK_ENVIRONMENT["$id"]=$environment_capabilities
+    CHECK_TIMEOUT["$id"]=$timeout_seconds
+    CHECK_RESOURCE_CLASS["$id"]=$resource_class
+    CHECK_CACHE_POLICY["$id"]=$cache_policy
+    CHECK_DISPOSITION["$id"]=$disposition
+    CHECK_COMMAND["$id"]=$command_or_callable
+    CHECK_APPLICABILITY["$id"]=$applicability
+}
+
+REGISTRY_PATH="$SCRIPT_DIR/validation-profile-registry.sh"
+if [ ! -r "$REGISTRY_PATH" ]; then
+    echo "Validation profile registry is missing: $REGISTRY_PATH" >&2
     exit 2
-elif [ "$#" -eq 1 ] && { [ "$1" == "--help" ] || [ "$1" == "-h" ]; }; then
-    echo "Usage: $0 [--quick | --full | --critical]"
-    echo ""
-    echo "Modes:"
-    echo "  --quick    : Only run fast, critical checks"
-    echo "  --critical : Only run the most important checks"
-    echo "  --full     : Run all available checks (default)"
-    echo ""
-    exit 0
-elif [ "$#" -eq 1 ]; then
+fi
+# shellcheck source=validation-profile-registry.sh
+source "$REGISTRY_PATH"
+
+registry_has_profile() {
+    local expected=$1 profile
+    for profile in "${PROFILE_IDS[@]}"; do
+        [ "$profile" = "$expected" ] && return 0
+    done
+    return 1
+}
+
+profiles_include() {
+    local profiles=$1 expected=$2 profile
+    for profile in $profiles; do
+        [ "$profile" = "$expected" ] && return 0
+    done
+    return 1
+}
+
+validate_profile_registry() {
+    local profile id dependency
+    for profile in fast pr release closeout nightly-full; do
+        if ! registry_has_profile "$profile" || [ -z "${PROFILE_PURPOSE[$profile]:-}" ] ||
+            { [ "${PROFILE_ENFORCEMENT[$profile]:-}" != report-and-warn ] &&
+              [ "${PROFILE_ENFORCEMENT[$profile]:-}" != measure-first ]; }; then
+            echo "Invalid validation profile registry entry: $profile" >&2
+            return 1
+        fi
+    done
+    for id in "${CHECK_IDS[@]}"; do
+        if [ -z "$id" ] || [ -z "${CHECK_DESCRIPTION[$id]:-}" ] ||
+            [ -z "${CHECK_OWNER[$id]:-}" ] || [ -z "${CHECK_PROFILES[$id]:-}" ] ||
+            [ -z "${CHECK_INPUT_PATHS[$id]:-}" ] || [ -z "${CHECK_ENVIRONMENT[$id]:-}" ] ||
+            [ -z "${CHECK_RESOURCE_CLASS[$id]:-}" ] || [ -z "${CHECK_CACHE_POLICY[$id]:-}" ] ||
+            [ -z "${CHECK_DISPOSITION[$id]:-}" ] || [ -z "${CHECK_COMMAND[$id]:-}" ] ||
+            [ -z "${CHECK_APPLICABILITY[$id]:-}" ]; then
+            echo "Incomplete validation check registry entry: $id" >&2
+            return 1
+        fi
+        for profile in ${CHECK_PROFILES[$id]}; do
+            registry_has_profile "$profile" || {
+                echo "Unknown profile '$profile' in validation check '$id'" >&2
+                return 1
+            }
+        done
+        for dependency in ${CHECK_DEPENDS[$id]}; do
+            [ -n "${CHECK_DESCRIPTION[$dependency]:-}" ] || {
+                echo "Unknown dependency '$dependency' in validation check '$id'" >&2
+                return 1
+            }
+        done
+    done
+}
+
+select_with_dependencies() {
+    local id=$1 dependency
+    [ -n "${CHECK_DESCRIPTION[$id]:-}" ] || return 1
+    [ -n "${SELECTED_CHECK_IDS[$id]:-}" ] && return 0
+    SELECTED_CHECK_IDS["$id"]=selected
+    for dependency in ${CHECK_DEPENDS[$id]}; do
+        select_with_dependencies "$dependency" || return 1
+    done
+}
+
+prepare_profile_selection() {
+    local id
+    for id in "${CHECK_IDS[@]}"; do
+        if profiles_include "${CHECK_PROFILES[$id]}" "$PROFILE"; then
+            select_with_dependencies "$id" || return 1
+        fi
+    done
+}
+
+check_is_selected() {
+    local description=$1
+    local id=${CHECK_ID_BY_DESCRIPTION[$description]:-}
+    [ -n "$id" ] && [ -n "${SELECTED_CHECK_IDS[$id]:-}" ]
+}
+
+show_usage() {
+    cat <<'EOF'
+Usage: ./check-all.sh [--profile <fast|pr|release|closeout|nightly-full>] [--verbose]
+
+Profiles:
+  fast          Local development feedback (30 seconds, report-and-warn)
+  pr            Pull-request integration (90 seconds, report-and-warn)
+  release       Immutable candidate validation (measure-first)
+  closeout      Post-publication administrative verification (120 seconds)
+  nightly-full  Full history and compatibility regression (measure-first)
+
+Compatibility aliases (deprecated):
+  --quick       --profile pr
+  --critical    --profile release
+  --full        --profile nightly-full (the default)
+EOF
+}
+
+# Parse arguments strictly so an unknown flag cannot silently select a gate.
+PROFILE=nightly-full
+VERBOSE=false
+PROFILE_EXPLICIT=false
+while [ "$#" -gt 0 ]; do
     case "$1" in
-        --quick) MODE="quick" ;;
-        --critical) MODE="critical" ;;
-        --full) MODE="full" ;;
+        --profile)
+            [ "$#" -ge 2 ] && [ "$PROFILE_EXPLICIT" = false ] || { show_usage >&2; exit 2; }
+            PROFILE=$2
+            PROFILE_EXPLICIT=true
+            shift 2
+            ;;
+        --quick)
+            [ "$PROFILE_EXPLICIT" = false ] || { show_usage >&2; exit 2; }
+            PROFILE=pr
+            PROFILE_EXPLICIT=true
+            shift
+            ;;
+        --critical)
+            [ "$PROFILE_EXPLICIT" = false ] || { show_usage >&2; exit 2; }
+            PROFILE=release
+            PROFILE_EXPLICIT=true
+            shift
+            ;;
+        --full)
+            [ "$PROFILE_EXPLICIT" = false ] || { show_usage >&2; exit 2; }
+            PROFILE=nightly-full
+            PROFILE_EXPLICIT=true
+            shift
+            ;;
+        --verbose)
+            [ "$VERBOSE" = false ] || { show_usage >&2; exit 2; }
+            VERBOSE=true
+            shift
+            ;;
+        --help|-h)
+            [ "$#" -eq 1 ] || { show_usage >&2; exit 2; }
+            show_usage
+            exit 0
+            ;;
         *)
             echo "Unknown argument: $1" >&2
-            echo "Usage: $0 [--quick | --full | --critical]" >&2
+            show_usage >&2
             exit 2
             ;;
     esac
+done
+
+if ! registry_has_profile "$PROFILE" || ! validate_profile_registry || ! prepare_profile_selection; then
+    exit 2
 fi
 
 # Resolve the existing Python contract across Windows Git Bash and POSIX hosts.
@@ -141,18 +324,49 @@ REQUIRED_BLOCKED=0
 CHECK_TIMINGS=()
 BLOCKED_LIST=()
 TOTAL_ELAPSED_START=$SECONDS
+LOG_BASE="${AI_CONTEXT_VALIDATION_LOG_DIR:-$PROJECT_ROOT/artifacts/validation}"
+INVOCATION_ID="$(date -u +%Y%m%dT%H%M%SZ)-$$"
+LOG_DIR="$LOG_BASE/$INVOCATION_ID"
+mkdir -p "$LOG_DIR"
+# Child contract tests must distinguish the aggregate runner's retained
+# diagnostics from mutations made by the entrypoint being tested.
+export AI_CONTEXT_VALIDATION_RUN_LOG_DIR="$LOG_DIR"
+# Child contract tests must distinguish the aggregate runner's retained
+# diagnostics from mutations made by the entrypoint being tested.
+export AI_CONTEXT_VALIDATION_RUN_LOG_DIR="$LOG_DIR"
+
+now_millis() {
+    local value seconds fraction
+    if [ -n "${EPOCHREALTIME:-}" ]; then
+        seconds=${EPOCHREALTIME%.*}
+        fraction=${EPOCHREALTIME#*.}
+        printf '%s%03d\n' "$seconds" "$((10#${fraction:0:3}))"
+        return 0
+    fi
+    value=$(date +%s%3N 2>/dev/null || true)
+    case "$value" in
+        ''|*[!0-9]*) printf '%s\n' "$((SECONDS * 1000))" ;;
+        *) printf '%s\n' "$value" ;;
+    esac
+}
+
+emit_retained_output() {
+    local log_path=$1 outcome=$2
+    if [ "$VERBOSE" = true ]; then
+        cat "$log_path"
+    elif [ "$outcome" != passed ]; then
+        sed -n '1,20p' "$log_path"
+    fi
+}
 
 select_check() {
     local description=$1
-    local is_critical=$2
-    local is_quick=$3
-    if [ "$MODE" == "critical" ] && [ "$is_critical" != "true" ]; then
-        echo -e "${YELLOW}⊖${NC} Skipping by mode: $description (non-critical)"
-        SKIPPED_CHECKS=$((SKIPPED_CHECKS + 1))
-        return 1
+    local id=${CHECK_ID_BY_DESCRIPTION[$description]:-}
+    if [ -z "$id" ]; then
+        echo "Validation check is missing from the profile registry: $description" >&2
+        exit 2
     fi
-    if [ "$MODE" == "quick" ] && [ "$is_quick" != "true" ]; then
-        echo -e "${YELLOW}⊖${NC} Skipping by mode: $description (not quick)"
+    if [ -z "${SELECTED_CHECK_IDS[$id]:-}" ]; then
         SKIPPED_CHECKS=$((SKIPPED_CHECKS + 1))
         return 1
     fi
@@ -187,10 +401,8 @@ record_unavailable_or_failed() {
 }
 
 record_timing() {
-    local elapsed=$1
-    local description=$2
-    local outcome=$3
-    CHECK_TIMINGS+=("${elapsed}|${outcome}|${description}")
+    local id=$1 elapsed=$2 description=$3 outcome=$4 disposition=$5 log_ref=$6
+    CHECK_TIMINGS+=("${elapsed}|${outcome}|${disposition}|${id}|${description}|${log_ref}")
 }
 
 # Return a reason only for unambiguous host/runtime failures. Keep this list
@@ -243,48 +455,46 @@ run_check() {
     local is_quick=$5
     shift 5
     local args=("$@")
-    local elapsed_start=$SECONDS
-    local output rc reason outcome
-    select_check "$description" "$is_critical" "$is_quick" || return
+    local id=${CHECK_ID_BY_DESCRIPTION[$description]:-}
+    local started_ms completed_ms duration_ms output rc reason outcome log_path
+    select_check "$description" "$is_critical" "$is_quick" || return 0
     record_selected "$enforcement"
-    
-    echo ""
-    echo -e "${CYAN}▶ Running:${NC} $description"
-    echo "  Script: $script_name"
-    echo -e "${BLUE}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
-    
+    log_path="$LOG_DIR/$id.log"
+    started_ms=$(now_millis)
+
     if [ -f "$SCRIPT_DIR/$script_name" ]; then
         if [ -x "$SCRIPT_DIR/$script_name" ]; then
             [ "$enforcement" == "required" ] && REQUIRED_RUN=$((REQUIRED_RUN + 1))
-            if output=$("$SCRIPT_DIR/$script_name" "${args[@]}" 2>&1); then
-                rc=0
-            else
-                rc=$?
-            fi
-            printf '%s\n' "$output"
+            set +e
+            "$SCRIPT_DIR/$script_name" "${args[@]}" >"$log_path" 2>&1
+            rc=$?
+            set -e
+            output=$(<"$log_path")
             if [ "$rc" -eq 0 ]; then
-                echo -e "${GREEN}✓ PASSED${NC}: $description"
                 PASSED_CHECKS=$((PASSED_CHECKS + 1))
                 outcome="passed"
             elif reason=$(classify_environment_block "$output"); then
                 record_environment_block "$enforcement" "$description" "$reason"
-                outcome="blocked"
+                outcome="blocked-by-environment"
             else
                 record_unavailable_or_failed "$enforcement" "$description returned non-zero"
                 outcome="failed"
             fi
         else
+            printf '%s\n' "$script_name is not executable" >"$log_path"
             record_unavailable_or_failed "$enforcement" "$script_name is not executable"
-            outcome="unavailable"
+            outcome="failed"
         fi
     else
+        printf '%s\n' "$script_name not found" >"$log_path"
         record_unavailable_or_failed "$enforcement" "$script_name not found"
-        outcome="unavailable"
+        outcome="failed"
     fi
-
-    record_timing "$((SECONDS - elapsed_start))" "$description" "$outcome"
-    
-    echo -e "${BLUE}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
+    completed_ms=$(now_millis)
+    duration_ms=$((completed_ms - started_ms))
+    record_timing "$id" "$duration_ms" "$description" "$outcome" executed "$log_path"
+    printf '%-36s %-24s %6sms %s\n' "$id" "$outcome" "$duration_ms" executed
+    emit_retained_output "$log_path" "$outcome"
 }
 
 run_command_check() {
@@ -293,38 +503,34 @@ run_command_check() {
     local enforcement=$3
     local is_critical=$4
     local is_quick=$5
-    local elapsed_start=$SECONDS
-    local output rc reason outcome
-    select_check "$description" "$is_critical" "$is_quick" || return
+    local id=${CHECK_ID_BY_DESCRIPTION[$description]:-}
+    local started_ms completed_ms duration_ms output rc reason outcome log_path
+    select_check "$description" "$is_critical" "$is_quick" || return 0
     record_selected "$enforcement"
     [ "$enforcement" == "required" ] && REQUIRED_RUN=$((REQUIRED_RUN + 1))
+    log_path="$LOG_DIR/$id.log"
+    started_ms=$(now_millis)
 
-    echo ""
-    echo -e "${CYAN}▶ Running:${NC} $description"
-    echo "  Command: $command_text"
-    echo -e "${BLUE}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
-
-    if output=$( (cd "$PROJECT_ROOT" && eval "$command_text") 2>&1); then
-        rc=0
-    else
-        rc=$?
-    fi
-    printf '%s\n' "$output"
+    set +e
+    (cd "$PROJECT_ROOT" && eval "$command_text") >"$log_path" 2>&1
+    rc=$?
+    set -e
+    output=$(<"$log_path")
     if [ "$rc" -eq 0 ]; then
-        echo -e "${GREEN}✓ PASSED${NC}: $description"
         PASSED_CHECKS=$((PASSED_CHECKS + 1))
         outcome="passed"
     elif reason=$(classify_environment_block "$output"); then
         record_environment_block "$enforcement" "$description" "$reason"
-        outcome="blocked"
+        outcome="blocked-by-environment"
     else
         record_unavailable_or_failed "$enforcement" "$description returned non-zero"
         outcome="failed"
     fi
-
-    record_timing "$((SECONDS - elapsed_start))" "$description" "$outcome"
-
-    echo -e "${BLUE}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
+    completed_ms=$(now_millis)
+    duration_ms=$((completed_ms - started_ms))
+    record_timing "$id" "$duration_ms" "$description" "$outcome" executed "$log_path"
+    printf '%-36s %-24s %6sms %s\n' "$id" "$outcome" "$duration_ms" executed
+    emit_retained_output "$log_path" "$outcome"
 }
 
 # Function to mark a check as pending dotnet-native replacement
@@ -335,7 +541,7 @@ run_deferred_check() {
     local is_quick=$4
     local reason=${5:-"dotnet-native replacement pending"}
 
-    select_check "$description" "$is_critical" "$is_quick" || return
+    select_check "$description" "$is_critical" "$is_quick" || return 0
     echo -e "${YELLOW}⊖${NC} DEFERRED: $description ($reason)"
     DEFERRED_CHECKS=$((DEFERRED_CHECKS + 1))
 }
@@ -370,6 +576,9 @@ source_release_context_available() {
 }
 
 run_source_repository_dotnet_framework_tests() {
+    if ! check_is_selected "Dotnet Backend Analyzer Template Tests"; then
+        return
+    fi
     if ! source_release_context_available; then
         echo -e "${CYAN}ℹ${NC} NOT APPLICABLE: Dotnet Backend Analyzer Template Tests (source framework tests not packaged)"
         echo -e "${CYAN}ℹ${NC} NOT APPLICABLE: Dotnet Backend Configuration Validation Tests (source framework tests not packaged)"
@@ -397,6 +606,9 @@ run_source_repository_dotnet_framework_tests() {
 }
 
 run_source_repository_release_checks() {
+    if ! check_is_selected "AI Context Version Governance Fail-Closed Tests"; then
+        return
+    fi
     if ! source_release_context_available; then
         echo -e "${CYAN}ℹ${NC} NOT APPLICABLE: AI Context Version Governance Fail-Closed Tests (source release context not packaged)"
         echo -e "${CYAN}ℹ${NC} NOT APPLICABLE: AI Context Packaging GWT Tests (source package builder not packaged)"
@@ -492,6 +704,9 @@ source_governance_context_available() {
 }
 
 run_source_repository_governance_checks() {
+    if ! check_is_selected "Source Governance Manifest Registry"; then
+        return
+    fi
     if ! source_governance_context_available; then
         echo -e "${CYAN}ℹ${NC} NOT APPLICABLE: Source Governance Manifest Registry (source governance registry not packaged)"
         echo -e "${CYAN}ℹ${NC} NOT APPLICABLE: Governance Pull-Request Workflow Contract (source CI workflow not packaged)"
@@ -513,11 +728,25 @@ run_source_repository_governance_checks() {
         "required" "true" "true"
 }
 
+run_source_package_smoke() {
+    if ! check_is_selected "AI Context Package Smoke Tests"; then
+        return
+    fi
+    if ! source_release_context_available; then
+        echo -e "${CYAN}ℹ${NC} NOT APPLICABLE: AI Context Package Smoke Tests (source package builder not packaged)"
+        NOT_APPLICABLE=$((NOT_APPLICABLE + 1))
+        return
+    fi
+    run_command_check "python .ai/scripts/tests/test_ai_context_package_smoke.py -v" \
+        "AI Context Package Smoke Tests" \
+        "required" "true" "true"
+}
+
 # Header
 echo ""
 echo -e "${MAGENTA}╔════════════════════════════════════════╗${NC}"
-echo -e "${MAGENTA}║    Comprehensive Project Check         ║${NC}"
-echo -e "${MAGENTA}║    Mode: ${YELLOW}$MODE${MAGENTA}                          ║${NC}"
+echo -e "${MAGENTA}║    Profile-driven Project Check        ║${NC}"
+echo -e "${MAGENTA}║    Profile: ${YELLOW}$PROFILE${MAGENTA}                     ║${NC}"
 echo -e "${MAGENTA}╚════════════════════════════════════════╝${NC}"
 echo ""
 echo -e "${BLUE}Starting checks at $(date '+%Y-%m-%d %H:%M:%S')${NC}"
@@ -614,6 +843,8 @@ run_command_check "python .ai/scripts/tests/test_ai_context_package_apply.py -v"
     "AI Context Safe Apply GWT Tests" \
     "required" "true" "true"
 
+run_source_package_smoke
+
 run_command_check "python .ai/scripts/validate-dependency-versions.py" \
     "Offline Dependency And Version Consistency" \
     "required" "true" "true"
@@ -638,6 +869,10 @@ run_source_repository_governance_checks
 
 run_command_check "python .ai/scripts/tests/test_fail_closed_validation.py -v" \
     "Aggregate Runner And Shell Registry Fail-Closed Tests" \
+    "required" "true" "true"
+
+run_command_check "python .ai/scripts/tests/test_validation_profile_registry.py -v" \
+    "Validation Profile Registry Contract" \
     "required" "true" "true"
 
 run_command_check "python .ai/scripts/tests/test_coding_standards_integrity_contract.py -v" \
@@ -670,7 +905,7 @@ run_source_repository_dotnet_framework_tests
 # Important Checks (run in full and quick modes)
 # ====================================================================
 
-if [ "$MODE" != "critical" ]; then
+if check_is_selected "Spec Implementation Compliance (.NET)"; then
     echo ""
     echo -e "${MAGENTA}════ Important Checks ════${NC}"
     
@@ -689,7 +924,7 @@ fi
 # Additional Checks (only in full mode)
 # ====================================================================
 
-if [ "$MODE" == "full" ]; then
+if [ "$PROFILE" == "nightly-full" ]; then
     echo ""
     echo -e "${MAGENTA}════ Additional Checks ════${NC}"
 
@@ -731,35 +966,27 @@ else
     PASS_RATE=0
 fi
 
-# Display results with colors
-echo -e "Total Checks Run: ${CYAN}$TOTAL_CHECKS${NC}"
-echo -e "Passed: ${GREEN}$PASSED_CHECKS${NC}"
-echo -e "Failed: ${RED}$FAILED_CHECKS${NC}"
-echo -e "Blocked By Environment: ${YELLOW}$BLOCKED_CHECKS${NC}"
-echo -e "Skipped By Mode: ${YELLOW}$SKIPPED_CHECKS${NC}"
-echo -e "Advisory Warnings: ${YELLOW}$WARNINGS${NC}"
-echo -e "Deferred: ${YELLOW}$DEFERRED_CHECKS${NC}"
-echo -e "Not Applicable: ${CYAN}$NOT_APPLICABLE${NC}"
+# The concise summary deliberately separates outcome from execution disposition.
+echo "summary: profile=$PROFILE selected=$TOTAL_CHECKS executed=$TOTAL_CHECKS reused=0 failed=$FAILED_CHECKS blocked=$BLOCKED_CHECKS warnings=$WARNINGS deferred=$DEFERRED_CHECKS not-applicable=$NOT_APPLICABLE"
+echo "full-log: $LOG_DIR"
 echo -e "Required Selected: ${CYAN}$REQUIRED_SELECTED${NC}"
 echo -e "Required Executed: ${CYAN}$REQUIRED_RUN${NC}"
 echo -e "Required Failed: ${RED}$REQUIRED_FAILED${NC}"
 echo -e "Required Blocked: ${YELLOW}$REQUIRED_BLOCKED${NC}"
-echo -e "Advisory Selected: ${CYAN}$ADVISORY_SELECTED${NC}"
-echo -e "Pass Rate: ${CYAN}${PASS_RATE}%${NC}"
 
 TOTAL_ELAPSED=$((SECONDS - TOTAL_ELAPSED_START))
 echo ""
-echo -e "${MAGENTA}──── Elapsed By Check (slowest first) ────${NC}"
-if [ ${#CHECK_TIMINGS[@]} -gt 0 ]; then
+if [ "$VERBOSE" = true ] && [ ${#CHECK_TIMINGS[@]} -gt 0 ]; then
+    echo -e "${MAGENTA}──── Elapsed By Check (slowest first) ────${NC}"
     printf '%s\n' "${CHECK_TIMINGS[@]}" \
         | sort -t'|' -k1,1nr \
         | head -15 \
-        | while IFS='|' read -r seconds outcome description; do
-            printf "  %5ss  %-10s %s\n" "$seconds" "$outcome" "$description"
+        | while IFS='|' read -r millis outcome disposition id description log_ref; do
+            printf "  %6sms  %-24s %-10s %s\n" "$millis" "$id" "$outcome" "$log_ref"
         done
 fi
 echo -e "  ${CYAN}Total wall time: ${TOTAL_ELAPSED}s across $TOTAL_CHECKS selected checks${NC}"
-echo "AI_CONTEXT_CHECK_TIMING total_seconds=${TOTAL_ELAPSED} checks=${TOTAL_CHECKS} failed=${FAILED_CHECKS} blocked=${BLOCKED_CHECKS}"
+echo "AI_CONTEXT_CHECK_TIMING total_seconds=${TOTAL_ELAPSED} profile=${PROFILE} checks=${TOTAL_CHECKS} executed=${TOTAL_CHECKS} reused=0 failed=${FAILED_CHECKS} blocked=${BLOCKED_CHECKS}"
 
 if [ ${#BLOCKED_LIST[@]} -gt 0 ]; then
     echo ""

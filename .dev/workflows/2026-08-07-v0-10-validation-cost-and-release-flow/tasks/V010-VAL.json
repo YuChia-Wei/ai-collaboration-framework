@@ -5,11 +5,11 @@
   "template_updated_at": "2026-08-05T02:12:00+08:00",
   "workflow_id": "2026-08-07-v0-10-validation-cost-and-release-flow",
   "task_id": "V010-VAL",
-  "owner_skill": "slice-implementer",
+  "owner_skill": "ai-context-governance",
   "related_plan_id": "development-plan-2026-08-07-v0-10-validation-cost-and-release-flow",
   "status": "in_progress",
   "created_at": "2026-08-07T22:12:41+08:00",
-  "updated_at": "2026-08-07T22:24:03+08:00",
+  "updated_at": "2026-08-07T22:27:02+08:00",
   "template_source": ".ai/assets/skills/software-development-orchestrator/templates/development-workflow-task-template.json",
   "model": "gpt-5.6-terra",
   "reasoning_effort": "not-runtime-reported",
@@ -19,7 +19,7 @@
     "target": "Aggregate validation runner, profile registry, CI consumers, packaging test layers, and direct validator compatibility entrypoints.",
     "files": [],
     "constraints": [
-      "Use exactly one bounded generic execution mode after the exact current implementation contract is discovered.",
+      "This is source-framework governance tooling, not a downstream target action; no target-effective packet exists in this source repository.",
       "Preserve full fail-closed release semantics and direct entrypoints.",
       "Keep runner work as #96 implementation slices, not a second release item."
     ],
@@ -56,7 +56,7 @@
     "test_execution_contract": null,
     "role_execution_records": [],
     "spec_compliance": {"selected": false, "activation_source": [], "expected_outcome": "not-applicable"},
-    "steps": ["Inspect current runner and packaging implementation", "Resolve exact generic slice contract", "Implement and validate bounded changes", "Record performance and compatibility evidence"],
+    "steps": ["Inspect current runner and packaging implementation", "Confirm source-framework governance ownership", "Implement and validate bounded changes", "Record performance and compatibility evidence"],
     "validation": ["Focused runner/profile/package tests", "git diff --check", "selected Windows/WSL evidence"],
     "commit_checkpoint": "Validated implementation stage commit.",
     "deferred_items": []

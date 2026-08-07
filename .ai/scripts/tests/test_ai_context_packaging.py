@@ -188,6 +188,7 @@ class SyntheticPackageRepo:
     def output(self, name: str) -> Path:
         return Path(self._temporary.name) / name
 
+
     def ensure_release(
         self,
         version: str,
@@ -244,6 +245,42 @@ class SyntheticPackageRepo:
         with zipfile.ZipFile(Path(result["zip"])) as archive:
             archive.extractall(destination)
         return destination / str(result["package_id"])
+
+
+class GitObjectReaderGwtTests(unittest.TestCase):
+    def test_gwt_000_given_shared_snapshot_when_multiple_payload_blobs_are_read_then_one_batch_process_is_reused(self) -> None:
+        fixture = SyntheticPackageRepo()
+        try:
+            large_content = ("large package fixture\n" * 32768).encode("utf-8")
+            large_path = fixture.root / "docs/large.md"
+            large_path.write_bytes(large_content)
+            git(fixture.root, "add", "docs/large.md")
+            git(fixture.root, "commit", "-qm", "large batch fixture")
+
+            # Given one immutable snapshot, when two blobs are retrieved,
+            # then they share the one preloaded Git batch reader.
+            snapshot = PACKAGE.PackageRepositorySnapshot.from_ref(fixture.root, "HEAD")
+            rule = snapshot.tree["docs/rule.md"]
+            large = snapshot.tree["docs/large.md"]
+            self.assertEqual(b"committed rule\n", snapshot.blob_reader.read_blob(rule))
+            self.assertEqual(large_content, snapshot.blob_reader.read_blob(large))
+            self.assertEqual(1, snapshot.blob_reader.batch_process_count)
+        finally:
+            fixture.close()
+
+    def test_gwt_001_given_missing_object_when_batch_read_then_the_error_is_fail_closed(self) -> None:
+        fixture = SyntheticPackageRepo()
+        try:
+            reader = PACKAGE.GitObjectReader(fixture.root)
+            missing = PACKAGE.GitEntry("missing.md", "100644", "blob", "0" * 40)
+
+            with self.assertRaises(PACKAGE.PackageError) as raised:
+                reader.read_blobs_batch((missing,))
+
+            self.assertIn("Git batch response", str(raised.exception))
+            self.assertEqual(1, reader.batch_process_count)
+        finally:
+            fixture.close()
 
 
 def rewrite_zip_member(source: Path, target: Path, suffix: str, replacement: bytes) -> None:

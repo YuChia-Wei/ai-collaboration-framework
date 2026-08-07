@@ -80,7 +80,7 @@ jobs:
           python .ai/scripts/tests/test_run_python_entrypoint_ps1.py -v
 
   quick:
-    name: Ubuntu quick gate
+    name: Ubuntu PR profile gate
     runs-on: ubuntu-latest
     timeout-minutes: 30
     permissions:
@@ -105,6 +105,6 @@ jobs:
         with:
           global-json-file: global.json
 
-      - name: Run the governed quick gate
+      - name: Run the canonical PR profile
         shell: bash
-        run: bash .ai/scripts/check-all.sh --quick
+        run: bash .ai/scripts/check-all.sh --profile pr

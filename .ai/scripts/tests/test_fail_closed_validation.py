@@ -22,6 +22,7 @@ import yaml
 REPO_ROOT = Path(__file__).resolve().parents[3]
 VALIDATOR_SOURCE = REPO_ROOT / ".ai/scripts/validate-shell-assets.py"
 RUNNER_SOURCE = REPO_ROOT / ".ai/scripts/check-all.sh"
+PROFILE_REGISTRY_SOURCE = REPO_ROOT / ".ai/scripts/validation-profile-registry.sh"
 TEST_COMPLIANCE_SOURCE = REPO_ROOT / ".ai/scripts/check-test-compliance.sh"
 
 
@@ -199,6 +200,7 @@ class SyntheticRunnerRepo:
         self.scripts.mkdir(parents=True)
         self.bin.mkdir()
         shutil.copy2(RUNNER_SOURCE, self.scripts / RUNNER_SOURCE.name)
+        shutil.copy2(PROFILE_REGISTRY_SOURCE, self.scripts / PROFILE_REGISTRY_SOURCE.name)
         self.add_python_stub("python")
         self._write_stub(
             self.bin / "dotnet",
@@ -427,11 +429,12 @@ class CheckAllRunnerGwtTests(unittest.TestCase):
             for result in results:
                 self.assertEqual(0, result.returncode, result.stdout + result.stderr)
                 self.assertNotIn("Test Standards Compliance", result.stdout)
-                self.assertRegex(result.stdout, r"Advisory Warnings: .*0")
-                self.assertIn("Elapsed By Check (slowest first)", result.stdout)
+                self.assertIn("reused=0", result.stdout)
+                self.assertIn("full-log:", result.stdout)
+                self.assertNotIn("Elapsed By Check (slowest first)", result.stdout)
                 self.assertRegex(
                     result.stdout,
-                    r"AI_CONTEXT_CHECK_TIMING total_seconds=\d+ checks=\d+ failed=0 blocked=0",
+                    r"AI_CONTEXT_CHECK_TIMING total_seconds=\d+ profile=\S+ checks=\d+ executed=\d+ reused=0 failed=0 blocked=0",
                 )
         finally:
             fixture.close()
@@ -445,11 +448,10 @@ class CheckAllRunnerGwtTests(unittest.TestCase):
 
             # Then target-inapplicable checks and optional inputs record N/A without failing.
             self.assertEqual(0, result.returncode, result.stdout + result.stderr)
-            self.assertIn("source release context not packaged", result.stdout)
-            self.assertIn("source package builder not packaged", result.stdout)
             self.assertIn("source governance registry not packaged", result.stdout)
             self.assertIn("source CI workflow not packaged", result.stdout)
-            self.assertRegex(result.stdout, r"Not Applicable: .*6")
+            self.assertIn("Spec Implementation Compliance", result.stdout)
+            self.assertRegex(result.stdout, r"not-applicable=\d+")
             self.assertRegex(result.stdout, r"Required Failed: .*0")
             self.assertFalse(
                 any(
@@ -516,10 +518,7 @@ class CheckAllRunnerGwtTests(unittest.TestCase):
 
             # Then the target validator is selected as a required check, not N/A.
             self.assertEqual(0, result.returncode, result.stdout + result.stderr)
-            self.assertIn(
-                "AI Context Target Apply, Provenance And Customization Contracts",
-                result.stdout,
-            )
+            self.assertIn("target-ai-context-version", result.stdout)
             self.assertTrue(
                 any(
                     "validate-ai-context-target.py" in line
@@ -554,15 +553,15 @@ class CheckAllRunnerGwtTests(unittest.TestCase):
             # Then both commands execute and no dependency deferral remains.
             self.assertEqual(0, result.returncode, result.stdout + result.stderr)
             self.assertNotIn("DEFERRED: Dependencies and Versions", result.stdout)
-            self.assertIn("Offline Dependency And Version Consistency", result.stdout)
-            self.assertIn("Dependency And Version Consistency Fail-Closed Tests", result.stdout)
+            self.assertIn("dependency-versions", result.stdout)
+            self.assertIn("dependency-versions-tests", result.stdout)
             self.assertTrue(
                 any("validate-dependency-versions.py" in line for line in fixture.sentinel())
             )
             self.assertTrue(
                 any("test_dependency_version_consistency.py" in line for line in fixture.sentinel())
             )
-            self.assertRegex(result.stdout, r"Deferred: .*0")
+            self.assertIn("deferred=0", result.stdout)
             self.assertRegex(result.stdout, r"Required Failed: .*0")
         finally:
             fixture.close()
@@ -576,10 +575,7 @@ class CheckAllRunnerGwtTests(unittest.TestCase):
 
             # Then the language suite executes and remains fail closed.
             self.assertEqual(0, result.returncode, result.stdout + result.stderr)
-            self.assertIn(
-                "AI Context Language And Bilingual Parity Fail-Closed Tests",
-                result.stdout,
-            )
+            self.assertIn("ai-context-language-policy", result.stdout)
             self.assertTrue(
                 any(
                     "test_ai_context_language_policy.py -v" in line
@@ -602,13 +598,13 @@ class CheckAllRunnerGwtTests(unittest.TestCase):
             # Then all pass, mode labels are truthful, and default selects full behavior.
             for result in (critical, quick, full, default):
                 self.assertEqual(0, result.returncode, result.stdout + result.stderr)
-            self.assertIn("Mode: ", critical.stdout)
-            self.assertIn("critical", critical.stdout)
-            self.assertIn("quick", quick.stdout)
-            self.assertIn("full", full.stdout)
+            self.assertIn("Profile: ", critical.stdout)
+            self.assertIn("release", critical.stdout)
+            self.assertIn("pr", quick.stdout)
+            self.assertIn("nightly-full", full.stdout)
             self.assertEqual(
-                [line for line in full.stdout.splitlines() if "Running:" in line],
-                [line for line in default.stdout.splitlines() if "Running:" in line],
+                [line.split()[0] for line in full.stdout.splitlines() if line.rstrip().endswith("executed")],
+                [line.split()[0] for line in default.stdout.splitlines() if line.rstrip().endswith("executed")],
             )
             self.assertNotIn("Test Standards Compliance", critical.stdout)
             self.assertNotIn("Test Standards Compliance", quick.stdout)
@@ -631,7 +627,33 @@ class CheckAllRunnerGwtTests(unittest.TestCase):
             self.assertIn("Usage:", unknown.stderr)
             self.assertIn("Usage:", extra.stderr)
             self.assertIn("Usage:", help_result.stdout)
+            self.assertIn("--quick       --profile pr", help_result.stdout)
+            self.assertIn("--critical    --profile release", help_result.stdout)
             self.assertEqual([], fixture.sentinel())
+        finally:
+            fixture.close()
+
+    def test_gwt_011a_given_profile_selection_when_runner_starts_then_membership_is_registry_driven(self) -> None:
+        fixture = SyntheticRunnerRepo()
+        try:
+            # Given the canonical registry supplies five named profiles.
+            fast = fixture.execute("--profile", "fast")
+            pr = fixture.execute("--profile", "pr")
+            release = fixture.execute("--profile", "release")
+
+            # When each profile is selected directly, then its declared
+            # membership is visible and progressively stronger without the
+            # legacy aliases hiding the selected profile.
+            for result, profile in ((fast, "fast"), (pr, "pr"), (release, "release")):
+                self.assertEqual(0, result.returncode, result.stdout + result.stderr)
+                self.assertIn(f"profile={profile}", result.stdout)
+                self.assertIn("full-log:", result.stdout)
+            self.assertNotIn("AI Context Packaging GWT Tests", fast.stdout)
+            self.assertNotIn("AI Context Packaging GWT Tests", pr.stdout)
+            self.assertIn("AI Context Packaging GWT Tests", release.stdout)
+            self.assertTrue(
+                any("test_ai_context_package_apply.py -v" in line for line in fixture.sentinel())
+            )
         finally:
             fixture.close()
 

@@ -17,7 +17,7 @@
 - `branch_segment`: `1`
 - `status`: `active`
 - `created_at`: `2026-08-07T22:12:41+08:00`
-- `updated_at`: `2026-08-07T22:24:03+08:00`
+- `updated_at`: `2026-08-07T22:27:02+08:00`
 - `template_source`: `.ai/assets/skills/software-development-orchestrator/templates/development-workflow-plan-template.md`
 - `template_version`: `1.4.0`
 - `workflow_locator`: `.dev/workflows/2026-08-07-v0-10-validation-cost-and-release-flow/workflow.yaml`
@@ -62,7 +62,7 @@ The selected integration topology is a merge commit: candidate preparation, immu
 - `stage_id`: `V010-VAL`
 - Goal: Implement #96 profile registry, runner selection/output, packaging smoke/full separation, and hot-path remediation.
 - Capability slot: `implementation`
-- Owner skill: `slice-implementer`
+- Owner skill: `ai-context-governance`
 - Scope: Existing aggregate validation runner, profiles, CI consumers, packaging tests, and direct-entrypoint compatibility.
 - Non-goals: Native-language implementation, relaxed release semantics, duplicated release item for the runner, or handoff semantic change.
 - Dependencies: #96 authorization and source inspection.
@@ -119,11 +119,11 @@ The selected integration topology is a merge commit: candidate preparation, immu
 
 ## Role Execution Coordination
 
-No task selects a canonical sub-agent role yet. The implementation tasks use direct inline ownership; their role applicability and evidence will be updated before the matching technical slice starts. No delegated work is inferred from planning metadata.
+No task selects a canonical sub-agent role yet. The source-framework validation task is governed directly by `ai-context-governance`, because this repository has no target-effective rule packet and #96 explicitly assigns the work to that owner skill. No delegated work is inferred from planning metadata.
 
 | Stage | Role / Canonical Path | Owning Skill | Final/Current Disposition | Attempt Summary | Final Integration Owner / Decision | Record or Task Reference |
 | --- | --- | --- | --- | --- | --- | --- |
-| V010-VAL | pending exact slice mode | slice-implementer | `not-applicable` | no implementation attempt yet | workflow parent / pending | `tasks/V010-VAL.json` |
+| V010-VAL | no canonical implementation role selected | ai-context-governance | `not-applicable` | no implementation attempt yet | workflow parent / pending | `tasks/V010-VAL.json` |
 | V010-PKG | pending exact slice mode | slice-implementer | `not-applicable` | no implementation attempt yet | workflow parent / pending | `tasks/V010-PKG.json` |
 | V010-EVAL | pending exact slice mode | slice-implementer | `not-applicable` | no implementation attempt yet | workflow parent / pending | `tasks/V010-EVAL.json` |
 
@@ -189,7 +189,7 @@ No task selects a canonical sub-agent role yet. The implementation tasks use dir
 - Selected compliance evidence: `not-applicable`.
 - Review disposition: Pending.
 - Validation evidence: Online Issue/Project normalization read-back; preflight recorded.
-- Workflow task state: V010-ISSUES completed; V010-VAL in progress; remaining tasks pending.
+- Workflow task state: V010-ISSUES completed; V010-VAL is in progress under the #96-recommended `ai-context-governance` owner; remaining tasks are pending.
 - Commits: Pending workflow-bootstrap validation.
 - Branch / checkpoint / handoff evidence: Dedicated branch exists; no checkpoint.
 - Residual risks: WSL .NET unavailable; #137 must be implemented before any agent-created tag.

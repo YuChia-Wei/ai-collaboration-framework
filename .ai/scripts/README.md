@@ -387,14 +387,27 @@ validator and its negative parity fixture in the same change.
 ### Active Orchestration And Context Validation
 
 - `check-all.sh`
+- `validation-profile-registry.sh`
 - `check-coding-standards.sh`
 - `check-prompt-portability.sh`
 
-`check-all.sh` orchestrates repository gates. The two context validators inspect
-repository structure or prompt portability; neither claims C# semantic
-compliance. `check-coding-standards.sh` checks required files, headings, catalog
-routes, executable modes, and shell syntax, and explicitly excludes architecture
-completeness, example correctness, and target technology adoption.
+`check-all.sh` executes the canonical profile membership declared in
+`validation-profile-registry.sh`; CI never maintains a second copied check
+list. The registry declares each stable check ID, owner, tags, profile
+membership, input paths, dependencies, environment capability, timeout,
+resource class, cache policy, source/downstream disposition, and callable. The
+two context validators inspect repository structure or prompt portability;
+neither claims C# semantic compliance. `check-coding-standards.sh` checks
+required files, headings, catalog routes, executable modes, and shell syntax,
+and explicitly excludes architecture completeness, example correctness, and
+target technology adoption.
+
+Use `--profile fast`, `pr`, `release`, `closeout`, or `nightly-full`. The
+legacy `--quick`, `--critical`, and `--full` flags remain explicit compatibility
+aliases for `pr`, `release`, and `nightly-full`. Successful runs print one line
+per selected check plus a concise summary; full stdout/stderr is retained under
+the ignored `artifacts/validation/` path. `--verbose` additionally prints the
+retained child output and slowest-check list.
 
 `check-all.sh` uses four enforcement classes:
 
@@ -407,8 +420,8 @@ completeness, example correctness, and target technology adoption.
 - `deferred`: known future work is counted separately and is never described as
   a selected required check.
 
-Mode-based omission is distinct from a selected required check being skipped.
-Invalid modes or extra arguments return exit code `2`. A successful aggregate
+Profile non-selection is distinct from a selected required check being skipped.
+Invalid profiles or extra arguments return exit code `2`. A successful aggregate
 result may contain explicit advisory warnings, deferred work, or not-applicable
 conditional checks, but it cannot contain an unexecuted selected required check.
 

@@ -118,11 +118,115 @@ def git_tree(repo: Path, commit: str) -> dict[str, GitEntry]:
     return entries
 
 
-def git_blob(repo: Path, entry: GitEntry) -> bytes:
+class GitObjectReader:
+    """Read immutable Git blobs once through a single batch process."""
+
+    def __init__(self, repo: Path) -> None:
+        self.repo = repo
+        self._blob_cache: dict[str, bytes] = {}
+        self.batch_process_count = 0
+
+    @staticmethod
+    def _validate_entry(entry: GitEntry) -> None:
+        if entry.object_type != "blob" or entry.mode not in REGULAR_MODES:
+            raise PackageError(
+                f"unsupported Git entry {entry.path}: mode={entry.mode} type={entry.object_type}"
+            )
+
+    def read_blobs_batch(self, entries: Iterable[GitEntry]) -> dict[str, bytes]:
+        ordered_ids: list[str] = []
+        for entry in entries:
+            self._validate_entry(entry)
+            if entry.object_id not in self._blob_cache and entry.object_id not in ordered_ids:
+                ordered_ids.append(entry.object_id)
+        if not ordered_ids:
+            return self._blob_cache
+
+        process = subprocess.Popen(
+            ["git", "cat-file", "--batch-command", "--buffer"],
+            cwd=self.repo,
+            stdin=subprocess.PIPE,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+        )
+        self.batch_process_count += 1
+        assert process.stdin is not None and process.stdout is not None and process.stderr is not None
+        try:
+            for object_id in ordered_ids:
+                process.stdin.write(f"contents {object_id}\n".encode("ascii"))
+            process.stdin.write(b"flush\n")
+            process.stdin.flush()
+
+            for expected_id in ordered_ids:
+                header = process.stdout.readline()
+                try:
+                    object_id, object_type, size_text = header.decode("ascii").strip().split(" ")
+                    size = int(size_text)
+                except (UnicodeDecodeError, ValueError) as exc:
+                    raise PackageError(
+                        f"invalid Git batch response while reading {expected_id}: {header!r}"
+                    ) from exc
+                if object_id != expected_id or object_type != "blob" or size < 0:
+                    raise PackageError(
+                        f"unexpected Git batch response for {expected_id}: {header!r}"
+                    )
+                content = process.stdout.read(size)
+                separator = process.stdout.read(1)
+                if len(content) != size or separator != b"\n":
+                    raise PackageError(f"truncated Git batch payload for {expected_id}")
+                self._blob_cache[expected_id] = content
+        finally:
+            process.stdin.close()
+            returncode = process.wait()
+            stderr = process.stderr.read().decode("utf-8", errors="replace").strip()
+            process.stdout.close()
+            process.stderr.close()
+        if returncode != 0:
+            raise PackageError(stderr or "git cat-file batch reader failed")
+        return self._blob_cache
+
+    def read_blob(self, entry: GitEntry) -> bytes:
+        self._validate_entry(entry)
+        self.read_blobs_batch((entry,))
+        return self._blob_cache[entry.object_id]
+
+
+@dataclass
+class PackageRepositorySnapshot:
+    """One immutable source snapshot shared by package construction and tests."""
+
+    repo: Path
+    commit: str
+    epoch: int
+    tree: dict[str, GitEntry]
+    blob_reader: GitObjectReader
+
+    @classmethod
+    def from_ref(cls, repo: Path, ref: str) -> "PackageRepositorySnapshot":
+        resolved_repo = repo.resolve()
+        commit = resolve_commit(resolved_repo, ref)
+        snapshot = cls(
+            repo=resolved_repo,
+            commit=commit,
+            epoch=commit_epoch(resolved_repo, commit),
+            tree=git_tree(resolved_repo, commit),
+            blob_reader=GitObjectReader(resolved_repo),
+        )
+        snapshot.blob_reader.read_blobs_batch(
+            entry
+            for entry in snapshot.tree.values()
+            if entry.object_type == "blob" and entry.mode in REGULAR_MODES
+        )
+        return snapshot
+
+
+def git_blob(repo: Path, entry: GitEntry, reader: GitObjectReader | None = None) -> bytes:
     if entry.object_type != "blob" or entry.mode not in REGULAR_MODES:
         raise PackageError(
             f"unsupported Git entry {entry.path}: mode={entry.mode} type={entry.object_type}"
         )
+    if reader is not None:
+        return reader.read_blob(entry)
     result = run_git(repo, "cat-file", "blob", entry.object_id, text=False)
     if result.returncode != 0:
         raise PackageError(f"cannot read Git blob {entry.object_id} for {entry.path}")
@@ -191,12 +295,17 @@ def static_prefix(pattern: str) -> str:
     return pattern[: slash + 1] if slash >= 0 else ""
 
 
-def load_yaml_blob(repo: Path, tree: dict[str, GitEntry], path: str) -> dict:
+def load_yaml_blob(
+    repo: Path,
+    tree: dict[str, GitEntry],
+    path: str,
+    reader: GitObjectReader | None = None,
+) -> dict:
     entry = tree.get(path)
     if entry is None:
         raise PackageError(f"missing required Git-tree file: {path}")
     try:
-        value = yaml.safe_load(git_blob(repo, entry).decode("utf-8"))
+        value = yaml.safe_load(git_blob(repo, entry, reader).decode("utf-8"))
     except (UnicodeDecodeError, yaml.YAMLError) as exc:
         raise PackageError(f"cannot parse {path}: {exc}") from exc
     if not isinstance(value, dict):
@@ -265,6 +374,7 @@ def collect_payload(
     repo: Path,
     tree: dict[str, GitEntry],
     profile: dict,
+    reader: GitObjectReader | None = None,
 ) -> list[PayloadFile]:
     exclusions = profile.get("exclusions")
     entries = profile.get("entries")
@@ -304,7 +414,7 @@ def collect_payload(
             manifest_path = entry.get("template_manifest")
             if not isinstance(manifest_path, str):
                 raise PackageError(f"{entry_id}: template_manifest is required")
-            manifest = load_yaml_blob(repo, tree, manifest_path)
+            manifest = load_yaml_blob(repo, tree, manifest_path, reader)
             source_root = manifest.get("source_root", ".")
             if source_root != ".":
                 raise PackageError(f"{manifest_path}: only manifest-relative source_root '.' is supported")
@@ -334,7 +444,7 @@ def collect_payload(
                     PayloadFile(
                         target_path,
                         source_path,
-                        git_blob(repo, source_entry),
+                        git_blob(repo, source_entry, reader),
                         REGULAR_MODES[source_entry.mode],
                         ownership,
                         behavior,
@@ -351,7 +461,7 @@ def collect_payload(
                 if not matches(source_path, source_pattern) or is_excluded(source_path, exclusions):
                     continue
                 source_entry = tree[source_path]
-                content = git_blob(repo, source_entry)
+                content = git_blob(repo, source_entry, reader)
                 if target_rule == "preserve-relative-path":
                     target_path = source_path
                 elif isinstance(target_rule, str) and target_rule.endswith("/"):
@@ -774,11 +884,12 @@ def build_package(
     previous_version_value: str | None = None,
     previous_sources: Iterable[tuple[Path, str]] | None = None,
 ) -> dict[str, Path | str]:
-    repo = repo.resolve()
-    commit = resolve_commit(repo, ref)
-    epoch = commit_epoch(repo, commit)
-    tree = git_tree(repo, commit)
-    profile = load_yaml_blob(repo, tree, profile_path)
+    snapshot = PackageRepositorySnapshot.from_ref(repo, ref)
+    repo = snapshot.repo
+    commit = snapshot.commit
+    epoch = snapshot.epoch
+    tree = snapshot.tree
+    profile = load_yaml_blob(repo, tree, profile_path, snapshot.blob_reader)
     version = normalize_version(version_value)
     profile_id = profile.get("profile", {}).get("id")
     name_template = profile.get("package", {}).get("name_template")
@@ -792,7 +903,7 @@ def build_package(
         previous_sources,
     )
     release_path = f".dev/releases/v{version}/release.yaml"
-    release = load_yaml_blob(repo, tree, release_path)
+    release = load_yaml_blob(repo, tree, release_path, snapshot.blob_reader)
     if release.get("version") != f"v{version}":
         raise PackageError(f"{release_path}: version must equal v{version}")
     distribution = release.get("distribution")
@@ -844,7 +955,7 @@ def build_package(
             f"{release_path}: automatic upgrade sources {automatic_sources} do not "
             f"match package migration sources {expected_sources}"
         )
-    payload_files = collect_payload(repo, tree, profile)
+    payload_files = collect_payload(repo, tree, profile, snapshot.blob_reader)
     if not payload_files:
         raise PackageError("package payload is empty")
     validate_payload_reference_integrity(payload_files, profile)
@@ -925,8 +1036,8 @@ def build_package(
         raise PackageError("missing package requirements.txt template")
 
     relative_members: dict[str, tuple[bytes, int]] = {
-        "INSTALL.md": (git_blob(repo, install_entry), 0o644),
-        "requirements.txt": (git_blob(repo, requirements_entry), 0o644),
+        "INSTALL.md": (git_blob(repo, install_entry, snapshot.blob_reader), 0o644),
+        "requirements.txt": (git_blob(repo, requirements_entry, snapshot.blob_reader), 0o644),
         "metadata/package.yaml": (yaml_bytes(package_document), 0o644),
         "metadata/files.yaml": (files_content, 0o644),
         "metadata/migration.yaml": (yaml_bytes(migration_document), 0o644),
