@@ -302,6 +302,7 @@ if ! PYTHON_EXECUTABLE="$(resolve_python)"; then
     exit 3
 fi
 export AI_CONTEXT_PYTHON="$PYTHON_EXECUTABLE"
+export PYTHON_EXECUTABLE
 
 python() {
     "$PYTHON_EXECUTABLE" "$@"
@@ -310,6 +311,8 @@ python() {
 # Track results
 TOTAL_CHECKS=0
 PASSED_CHECKS=0
+EXECUTED_CHECKS=0
+REUSED_CHECKS=0
 FAILED_CHECKS=0
 SKIPPED_CHECKS=0
 WARNINGS=0
@@ -349,6 +352,98 @@ now_millis() {
         *) printf '%s\n' "$value" ;;
     esac
 }
+
+EVIDENCE_HELPER="$SCRIPT_DIR/validation-evidence.py"
+EVIDENCE_PATH="$LOG_DIR/evidence.jsonl"
+EVIDENCE_SUMMARY="$LOG_DIR/evidence-summary.json"
+EVIDENCE_CACHE="$LOG_BASE/evidence-cache.json"
+EVIDENCE_SELECTION="$LOG_DIR/evidence-selection.tsv"
+EVIDENCE_EVENTS="$LOG_DIR/evidence-events.tsv"
+declare -A EVIDENCE_FINGERPRINT_BY_ID=()
+declare -A EVIDENCE_CACHE_HIT_BY_ID=()
+declare -A EVIDENCE_PRIOR_LOG_BY_ID=()
+declare -A VALIDATOR_VERSION_BY_ID=()
+EVIDENCE_ENVIRONMENT_CLASS=linux-local
+if [ "${GITHUB_ACTIONS:-}" = true ]; then
+    EVIDENCE_ENVIRONMENT_CLASS=ubuntu-hosted
+elif [ -n "${MSYSTEM:-}" ]; then
+    EVIDENCE_ENVIRONMENT_CLASS=windows-native
+elif [ -r /proc/version ] && grep -qi microsoft /proc/version 2>/dev/null; then
+    EVIDENCE_ENVIRONMENT_CLASS=wsl-linux
+fi
+EVIDENCE_POLICY_FINGERPRINT=$(sha256sum "$REGISTRY_PATH" "$SCRIPT_DIR/check-all.sh" "$EVIDENCE_HELPER" 2>/dev/null | sha256sum 2>/dev/null | awk '{print $1}')
+EVIDENCE_POLICY_FINGERPRINT=${EVIDENCE_POLICY_FINGERPRINT:-unavailable}
+EVIDENCE_INPUT_FINGERPRINT=
+EVIDENCE_CACHE_HIT=false
+EVIDENCE_PRIOR_LOG=
+
+validator_version() {
+    local id=$1
+    printf '%s:%s\n' "$EVIDENCE_POLICY_FINGERPRINT" "$id"
+}
+
+prepare_validation_evidence() {
+    local id=$1
+    EVIDENCE_INPUT_FINGERPRINT=${EVIDENCE_FINGERPRINT_BY_ID[$id]:-}
+    EVIDENCE_CACHE_HIT=${EVIDENCE_CACHE_HIT_BY_ID[$id]:-false}
+    EVIDENCE_PRIOR_LOG=${EVIDENCE_PRIOR_LOG_BY_ID[$id]:-}
+    [ -n "$EVIDENCE_INPUT_FINGERPRINT" ] || return 1
+    return 0
+}
+
+prepare_all_validation_evidence() {
+    local id version prepared record fingerprint cache_hit prior_log
+    [ -f "$EVIDENCE_HELPER" ] || {
+        echo "Validation evidence helper is missing: $EVIDENCE_HELPER" >&2
+        return 1
+    }
+    : > "$EVIDENCE_SELECTION"
+    for id in "${CHECK_IDS[@]}"; do
+        [ -n "${SELECTED_CHECK_IDS[$id]:-}" ] || continue
+        version=$(validator_version "$id")
+        VALIDATOR_VERSION_BY_ID["$id"]=$version
+        printf '%s\t%s\t%s\t%s\n' \
+            "$id" "$version" "${CHECK_INPUT_PATHS[$id]}" "${CHECK_CACHE_POLICY[$id]}" \
+            >> "$EVIDENCE_SELECTION"
+    done
+    prepared=$(python .ai/scripts/validation-evidence.py prepare \
+        --repo "$PROJECT_ROOT" \
+        --cache "$EVIDENCE_CACHE" \
+        --profile "$PROFILE" \
+        --environment-class "$EVIDENCE_ENVIRONMENT_CLASS" \
+        --selection "$EVIDENCE_SELECTION") || return 1
+    while IFS=$'\t' read -r record fingerprint cache_hit prior_log; do
+        [ -n "$record" ] || continue
+        EVIDENCE_FINGERPRINT_BY_ID["$record"]=$fingerprint
+        EVIDENCE_CACHE_HIT_BY_ID["$record"]=$cache_hit
+        EVIDENCE_PRIOR_LOG_BY_ID["$record"]=$prior_log
+    done <<< "$prepared"
+    for id in "${CHECK_IDS[@]}"; do
+        [ -n "${SELECTED_CHECK_IDS[$id]:-}" ] || continue
+        [ -n "${EVIDENCE_FINGERPRINT_BY_ID[$id]:-}" ] || {
+            echo "Validation evidence preparation omitted selected check: $id" >&2
+            return 1
+        }
+    done
+}
+
+record_validation_evidence() {
+    local id=$1 outcome=$2 disposition=$3 started_ms=$4 completed_ms=$5 log_path=$6
+    local suppressed_bytes=0 version
+    [ "$VERBOSE" = true ] || suppressed_bytes=-1
+    version=${VALIDATOR_VERSION_BY_ID[$id]:-}
+    [ -n "$version" ] || return 1
+    printf '%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n' \
+        "$id" "$version" "$EVIDENCE_INPUT_FINGERPRINT" "$outcome" "$disposition" \
+        "$started_ms" "$completed_ms" "$EVIDENCE_CACHE_HIT" "$(basename "$log_path")" "$suppressed_bytes" \
+        >> "$EVIDENCE_EVENTS"
+}
+
+if ! prepare_all_validation_evidence; then
+    echo "Validation evidence preparation failed; no checks were launched." >&2
+    exit 2
+fi
+: > "$EVIDENCE_EVENTS"
 
 emit_retained_output() {
     local log_path=$1 outcome=$2
@@ -446,6 +541,47 @@ record_environment_block() {
     fi
 }
 
+wait_for_check_with_timeout() {
+    local child_pid=$1 timeout_seconds=$2 started_seconds=$SECONDS
+    local child_rc
+    while kill -0 "$child_pid" 2>/dev/null; do
+        if [ $((SECONDS - started_seconds)) -ge "$timeout_seconds" ]; then
+            kill -TERM "$child_pid" 2>/dev/null || true
+            sleep 0.1
+            kill -KILL "$child_pid" 2>/dev/null || true
+            wait "$child_pid" 2>/dev/null || true
+            return 124
+        fi
+        sleep 0.1
+    done
+    wait "$child_pid"
+    child_rc=$?
+    return "$child_rc"
+}
+
+run_script_with_timeout() {
+    local timeout_seconds=$1 log_path=$2
+    shift 2
+    if command -v timeout >/dev/null 2>&1; then
+        timeout --foreground "${timeout_seconds}s" "$@" >"$log_path" 2>&1
+        return $?
+    fi
+    "$@" >"$log_path" 2>&1 &
+    wait_for_check_with_timeout "$!" "$timeout_seconds"
+}
+
+run_text_command_with_timeout() {
+    local timeout_seconds=$1 log_path=$2 command_text=$3
+    if command -v timeout >/dev/null 2>&1; then
+        export -f python
+        timeout --foreground "${timeout_seconds}s" bash -c \
+            'cd "$1" && eval "$2"' bash "$PROJECT_ROOT" "$command_text" >"$log_path" 2>&1
+        return $?
+    fi
+    (cd "$PROJECT_ROOT" && eval "$command_text") >"$log_path" 2>&1 &
+    wait_for_check_with_timeout "$!" "$timeout_seconds"
+}
+
 # Function to run a check script
 run_check() {
     local script_name=$1
@@ -456,21 +592,39 @@ run_check() {
     shift 5
     local args=("$@")
     local id=${CHECK_ID_BY_DESCRIPTION[$description]:-}
-    local started_ms completed_ms duration_ms output rc reason outcome log_path
+    local started_ms completed_ms duration_ms output rc reason outcome log_path disposition timeout_seconds
     select_check "$description" "$is_critical" "$is_quick" || return 0
     record_selected "$enforcement"
     log_path="$LOG_DIR/$id.log"
     started_ms=$(now_millis)
+    timeout_seconds=${CHECK_TIMEOUT[$id]:-}
 
-    if [ -f "$SCRIPT_DIR/$script_name" ]; then
+    if ! prepare_validation_evidence "$id"; then
+        printf '%s\n' "validation evidence lookup failed for $id" >"$log_path"
+        record_unavailable_or_failed "$enforcement" "validation evidence lookup for $description"
+        outcome="failed"
+        disposition="executed"
+    elif [ "$EVIDENCE_CACHE_HIT" = true ]; then
+        printf 'Reused eligible validation evidence; prior_log=%s\n' "$EVIDENCE_PRIOR_LOG" >"$log_path"
+        PASSED_CHECKS=$((PASSED_CHECKS + 1))
+        REUSED_CHECKS=$((REUSED_CHECKS + 1))
+        outcome="passed"
+        disposition="reused"
+    elif [ -f "$SCRIPT_DIR/$script_name" ]; then
         if [ -x "$SCRIPT_DIR/$script_name" ]; then
             [ "$enforcement" == "required" ] && REQUIRED_RUN=$((REQUIRED_RUN + 1))
+            EXECUTED_CHECKS=$((EXECUTED_CHECKS + 1))
             set +e
-            "$SCRIPT_DIR/$script_name" "${args[@]}" >"$log_path" 2>&1
+            run_script_with_timeout "$timeout_seconds" "$log_path" "$SCRIPT_DIR/$script_name" "${args[@]}"
             rc=$?
             set -e
             output=$(<"$log_path")
-            if [ "$rc" -eq 0 ]; then
+            if [ "$rc" -eq 124 ]; then
+                printf 'Validation timed out after %ss.\n' "$timeout_seconds" >>"$log_path"
+                record_unavailable_or_failed "$enforcement" "$description timed out after ${timeout_seconds}s"
+                outcome="failed"
+                disposition="timed-out"
+            elif [ "$rc" -eq 0 ]; then
                 PASSED_CHECKS=$((PASSED_CHECKS + 1))
                 outcome="passed"
             elif reason=$(classify_environment_block "$output"); then
@@ -480,20 +634,32 @@ run_check() {
                 record_unavailable_or_failed "$enforcement" "$description returned non-zero"
                 outcome="failed"
             fi
+            disposition=${disposition:-executed}
         else
             printf '%s\n' "$script_name is not executable" >"$log_path"
             record_unavailable_or_failed "$enforcement" "$script_name is not executable"
             outcome="failed"
+            disposition="executed"
         fi
     else
         printf '%s\n' "$script_name not found" >"$log_path"
         record_unavailable_or_failed "$enforcement" "$script_name not found"
         outcome="failed"
+        disposition="executed"
     fi
     completed_ms=$(now_millis)
     duration_ms=$((completed_ms - started_ms))
-    record_timing "$id" "$duration_ms" "$description" "$outcome" executed "$log_path"
-    printf '%-36s %-24s %6sms %s\n' "$id" "$outcome" "$duration_ms" executed
+    if ! record_validation_evidence "$id" "$outcome" "$disposition" "$started_ms" "$completed_ms" "$log_path"; then
+        printf '%s\n' "validation evidence record failed" >>"$log_path"
+        if [ "$outcome" = passed ]; then
+            PASSED_CHECKS=$((PASSED_CHECKS - 1))
+            [ "$disposition" = reused ] && REUSED_CHECKS=$((REUSED_CHECKS - 1))
+            record_unavailable_or_failed "$enforcement" "validation evidence record for $description"
+            outcome="failed"
+        fi
+    fi
+    record_timing "$id" "$duration_ms" "$description" "$outcome" "$disposition" "$log_path"
+    printf '%-36s %-24s %6sms %s\n' "$id" "$outcome" "$duration_ms" "$disposition"
     emit_retained_output "$log_path" "$outcome"
 }
 
@@ -504,32 +670,62 @@ run_command_check() {
     local is_critical=$4
     local is_quick=$5
     local id=${CHECK_ID_BY_DESCRIPTION[$description]:-}
-    local started_ms completed_ms duration_ms output rc reason outcome log_path
+    local started_ms completed_ms duration_ms output rc reason outcome log_path disposition timeout_seconds
     select_check "$description" "$is_critical" "$is_quick" || return 0
     record_selected "$enforcement"
-    [ "$enforcement" == "required" ] && REQUIRED_RUN=$((REQUIRED_RUN + 1))
     log_path="$LOG_DIR/$id.log"
     started_ms=$(now_millis)
+    timeout_seconds=${CHECK_TIMEOUT[$id]:-}
 
-    set +e
-    (cd "$PROJECT_ROOT" && eval "$command_text") >"$log_path" 2>&1
-    rc=$?
-    set -e
-    output=$(<"$log_path")
-    if [ "$rc" -eq 0 ]; then
+    if ! prepare_validation_evidence "$id"; then
+        printf '%s\n' "validation evidence lookup failed for $id" >"$log_path"
+        record_unavailable_or_failed "$enforcement" "validation evidence lookup for $description"
+        outcome="failed"
+        disposition="executed"
+    elif [ "$EVIDENCE_CACHE_HIT" = true ]; then
+        printf 'Reused eligible validation evidence; prior_log=%s\n' "$EVIDENCE_PRIOR_LOG" >"$log_path"
         PASSED_CHECKS=$((PASSED_CHECKS + 1))
         outcome="passed"
-    elif reason=$(classify_environment_block "$output"); then
-        record_environment_block "$enforcement" "$description" "$reason"
-        outcome="blocked-by-environment"
+        REUSED_CHECKS=$((REUSED_CHECKS + 1))
+        disposition="reused"
     else
-        record_unavailable_or_failed "$enforcement" "$description returned non-zero"
-        outcome="failed"
+        [ "$enforcement" == "required" ] && REQUIRED_RUN=$((REQUIRED_RUN + 1))
+        EXECUTED_CHECKS=$((EXECUTED_CHECKS + 1))
+        set +e
+        run_text_command_with_timeout "$timeout_seconds" "$log_path" "$command_text"
+        rc=$?
+        set -e
+        output=$(<"$log_path")
+        if [ "$rc" -eq 124 ]; then
+            printf 'Validation timed out after %ss.\n' "$timeout_seconds" >>"$log_path"
+            record_unavailable_or_failed "$enforcement" "$description timed out after ${timeout_seconds}s"
+            outcome="failed"
+            disposition="timed-out"
+        elif [ "$rc" -eq 0 ]; then
+            PASSED_CHECKS=$((PASSED_CHECKS + 1))
+            outcome="passed"
+        elif reason=$(classify_environment_block "$output"); then
+            record_environment_block "$enforcement" "$description" "$reason"
+            outcome="blocked-by-environment"
+        else
+            record_unavailable_or_failed "$enforcement" "$description returned non-zero"
+            outcome="failed"
+        fi
+        disposition=${disposition:-executed}
     fi
     completed_ms=$(now_millis)
     duration_ms=$((completed_ms - started_ms))
-    record_timing "$id" "$duration_ms" "$description" "$outcome" executed "$log_path"
-    printf '%-36s %-24s %6sms %s\n' "$id" "$outcome" "$duration_ms" executed
+    if ! record_validation_evidence "$id" "$outcome" "$disposition" "$started_ms" "$completed_ms" "$log_path"; then
+        printf '%s\n' "validation evidence record failed" >>"$log_path"
+        if [ "$outcome" = passed ]; then
+            PASSED_CHECKS=$((PASSED_CHECKS - 1))
+            [ "$disposition" = reused ] && REUSED_CHECKS=$((REUSED_CHECKS - 1))
+            record_unavailable_or_failed "$enforcement" "validation evidence record for $description"
+            outcome="failed"
+        fi
+    fi
+    record_timing "$id" "$duration_ms" "$description" "$outcome" "$disposition" "$log_path"
+    printf '%-36s %-24s %6sms %s\n' "$id" "$outcome" "$duration_ms" "$disposition"
     emit_retained_output "$log_path" "$outcome"
 }
 
@@ -875,6 +1071,10 @@ run_command_check "python .ai/scripts/tests/test_validation_profile_registry.py 
     "Validation Profile Registry Contract" \
     "required" "true" "true"
 
+run_command_check "python .ai/scripts/tests/test_validation_evidence.py -v" \
+    "Validation Execution Evidence Contract" \
+    "required" "true" "true"
+
 run_command_check "python .ai/scripts/tests/test_coding_standards_integrity_contract.py -v" \
     "Coding Standards Integrity Claim Contract" \
     "required" "true" "true"
@@ -966,15 +1166,49 @@ else
     PASS_RATE=0
 fi
 
+if ! python .ai/scripts/validation-evidence.py finalize \
+    --repo "$PROJECT_ROOT" \
+    --cache "$EVIDENCE_CACHE" \
+    --evidence "$EVIDENCE_PATH" \
+    --events "$EVIDENCE_EVENTS" \
+    --invocation-id "$INVOCATION_ID" \
+    --profile "$PROFILE" \
+    --environment-class "$EVIDENCE_ENVIRONMENT_CLASS"; then
+    echo -e "${RED}✗ FAILED${NC}: validation evidence records could not be finalized"
+    FAILED_CHECKS=$((FAILED_CHECKS + 1))
+    REQUIRED_FAILED=$((REQUIRED_FAILED + 1))
+fi
+
+if ! python .ai/scripts/validation-evidence.py summarize \
+    --evidence "$EVIDENCE_PATH" \
+    --output "$EVIDENCE_SUMMARY" \
+    --invocation-id "$INVOCATION_ID" \
+    --profile "$PROFILE"; then
+    echo -e "${RED}✗ FAILED${NC}: validation evidence summary could not be written"
+    FAILED_CHECKS=$((FAILED_CHECKS + 1))
+    REQUIRED_FAILED=$((REQUIRED_FAILED + 1))
+fi
+
+TOTAL_ELAPSED=$((SECONDS - TOTAL_ELAPSED_START))
+PROFILE_BUDGET_SECONDS=${PROFILE_BUDGET[$PROFILE]:-}
+if [ -n "$PROFILE_BUDGET_SECONDS" ] && [ "$TOTAL_ELAPSED" -gt "$PROFILE_BUDGET_SECONDS" ]; then
+    if [ "${PROFILE_ENFORCEMENT[$PROFILE]}" = report-and-warn ]; then
+        WARNINGS=$((WARNINGS + 1))
+        echo -e "${YELLOW}⚠ ADVISORY${NC}: profile=$PROFILE exceeded its ${PROFILE_BUDGET_SECONDS}s budget (${TOTAL_ELAPSED}s measured)"
+    else
+        echo -e "${CYAN}ℹ${NC} MEASURED: profile=$PROFILE exceeded its ${PROFILE_BUDGET_SECONDS}s budget (${TOTAL_ELAPSED}s measured)"
+    fi
+fi
+
 # The concise summary deliberately separates outcome from execution disposition.
-echo "summary: profile=$PROFILE selected=$TOTAL_CHECKS executed=$TOTAL_CHECKS reused=0 failed=$FAILED_CHECKS blocked=$BLOCKED_CHECKS warnings=$WARNINGS deferred=$DEFERRED_CHECKS not-applicable=$NOT_APPLICABLE"
+echo "summary: profile=$PROFILE selected=$TOTAL_CHECKS executed=$EXECUTED_CHECKS reused=$REUSED_CHECKS failed=$FAILED_CHECKS blocked=$BLOCKED_CHECKS warnings=$WARNINGS deferred=$DEFERRED_CHECKS not-applicable=$NOT_APPLICABLE"
 echo "full-log: $LOG_DIR"
+echo "evidence: $EVIDENCE_PATH"
 echo -e "Required Selected: ${CYAN}$REQUIRED_SELECTED${NC}"
 echo -e "Required Executed: ${CYAN}$REQUIRED_RUN${NC}"
 echo -e "Required Failed: ${RED}$REQUIRED_FAILED${NC}"
 echo -e "Required Blocked: ${YELLOW}$REQUIRED_BLOCKED${NC}"
 
-TOTAL_ELAPSED=$((SECONDS - TOTAL_ELAPSED_START))
 echo ""
 if [ "$VERBOSE" = true ] && [ ${#CHECK_TIMINGS[@]} -gt 0 ]; then
     echo -e "${MAGENTA}──── Elapsed By Check (slowest first) ────${NC}"
@@ -986,7 +1220,7 @@ if [ "$VERBOSE" = true ] && [ ${#CHECK_TIMINGS[@]} -gt 0 ]; then
         done
 fi
 echo -e "  ${CYAN}Total wall time: ${TOTAL_ELAPSED}s across $TOTAL_CHECKS selected checks${NC}"
-echo "AI_CONTEXT_CHECK_TIMING total_seconds=${TOTAL_ELAPSED} profile=${PROFILE} checks=${TOTAL_CHECKS} executed=${TOTAL_CHECKS} reused=0 failed=${FAILED_CHECKS} blocked=${BLOCKED_CHECKS}"
+echo "AI_CONTEXT_CHECK_TIMING total_seconds=${TOTAL_ELAPSED} profile=${PROFILE} checks=${TOTAL_CHECKS} executed=${EXECUTED_CHECKS} reused=${REUSED_CHECKS} failed=${FAILED_CHECKS} blocked=${BLOCKED_CHECKS}"
 
 if [ ${#BLOCKED_LIST[@]} -gt 0 ]; then
     echo ""

@@ -23,6 +23,7 @@ REPO_ROOT = Path(__file__).resolve().parents[3]
 VALIDATOR_SOURCE = REPO_ROOT / ".ai/scripts/validate-shell-assets.py"
 RUNNER_SOURCE = REPO_ROOT / ".ai/scripts/check-all.sh"
 PROFILE_REGISTRY_SOURCE = REPO_ROOT / ".ai/scripts/validation-profile-registry.sh"
+EVIDENCE_SOURCE = REPO_ROOT / ".ai/scripts/validation-evidence.py"
 TEST_COMPLIANCE_SOURCE = REPO_ROOT / ".ai/scripts/check-test-compliance.sh"
 
 
@@ -201,6 +202,7 @@ class SyntheticRunnerRepo:
         self.bin.mkdir()
         shutil.copy2(RUNNER_SOURCE, self.scripts / RUNNER_SOURCE.name)
         shutil.copy2(PROFILE_REGISTRY_SOURCE, self.scripts / PROFILE_REGISTRY_SOURCE.name)
+        shutil.copy2(EVIDENCE_SOURCE, self.scripts / EVIDENCE_SOURCE.name)
         self.add_python_stub("python")
         self._write_stub(
             self.bin / "dotnet",
@@ -220,6 +222,16 @@ class SyntheticRunnerRepo:
         path = self.bin / name
         self._write_stub(
             path,
+            'if [ "$1" = ".ai/scripts/validation-evidence.py" ] && [ "$2" = "prepare" ]; then\n'
+            '  while [ "$#" -gt 0 ]; do\n'
+            '    if [ "$1" = "--selection" ]; then selection=$2; break; fi\n'
+            '    shift\n'
+            '  done\n'
+            '  while IFS="$(printf \'\\t\')" read -r validator_id _; do\n'
+            '    [ -n "$validator_id" ] && printf "%s\\tfixture-%s\\tfalse\\t\\n" "$validator_id" "$validator_id"\n'
+            '  done < "$selection"\n'
+            '  exit 0\n'
+            'fi\n'
             f'printf "{name} %s\\n" "$*" >> .aic-sentinel\nexit "${{{exit_variable}:-0}}"',
         )
         return path
@@ -753,7 +765,15 @@ class CheckAllRunnerGwtTests(unittest.TestCase):
             active_python.parent.mkdir(parents=True)
             fixture._write_stub(
                 active_python,
-                'printf "active-python %s\\n" "$*" >> .aic-sentinel\nexit 0',
+                'printf "active-python %s\\n" "$*" >> .aic-sentinel\n'
+                'if [ "$1" = ".ai/scripts/validation-evidence.py" ] && [ "$2" = "prepare" ]; then\n'
+                '  while [ "$1" != "--selection" ] && [ "$#" -gt 0 ]; do shift; done\n'
+                '  shift\n'
+                "  while IFS=$'\\t' read -r validator_id _; do\n"
+                '    [ -n "$validator_id" ] && printf "%s\\tfixture-%s\\tfalse\\t\\n" "$validator_id" "$validator_id"\n'
+                '  done < "$1"\n'
+                'fi\n'
+                'exit 0',
             )
             result = fixture.execute(
                 "--critical", environment={"VIRTUAL_ENV": str(active)}

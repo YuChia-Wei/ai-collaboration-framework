@@ -115,6 +115,9 @@ class ValidationProfileRegistryGwtTests(unittest.TestCase):
         self.assertNotIn("pr", memberships["aggregate-runner-contract"])
         self.assertIn("fast", memberships["ai-context-navigation"])
         self.assertIn("pr", memberships["package-apply"])
+        self.assertNotIn("fast", memberships["python-source-entrypoints"])
+        self.assertIn("pr", memberships["python-source-entrypoints"])
+        self.assertIn("fast", memberships["validation-evidence-contract"])
 
     def test_gwt_004_given_legacy_flags_when_help_is_requested_then_aliases_are_declared(self) -> None:
         bash = bash_executable()

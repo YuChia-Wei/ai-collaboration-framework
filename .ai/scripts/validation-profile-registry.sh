@@ -97,7 +97,7 @@ register_check selected-git-commits \
 register_check ai-context-navigation \
     "AI Context Navigation and Runtime Contracts" required \
     "context,navigation" "fast pr release nightly-full" \
-    ".ai AGENTS.md CLAUDE.md" '' "python>=3.11" 30 cpu reuse-by-input portable \
+    ".ai AGENTS.md CLAUDE.md" '' "python>=3.11" 600 cpu reuse-by-input portable \
     "python .ai/scripts/validate-ai-context.py" always
 register_check ai-context-wrapper-metadata \
     "AI Context Wrapper Semantic Contract Fail-Closed Tests" required \
@@ -146,7 +146,7 @@ register_check dependency-versions-tests \
     "python .ai/scripts/tests/test_dependency_version_consistency.py -v" always
 register_check python-source-entrypoints \
     "Source-Only Python Entrypoint Prerequisite Contract" required \
-    "runtime,tests" "fast pr release nightly-full" \
+    "runtime,tests" "pr release nightly-full" \
     ".ai/scripts requirements.txt" '' "python>=3.11" 30 cpu reuse-by-input source \
     "python .ai/scripts/tests/test_python_source_entrypoints.py -v" always
 register_check shell-assets \
@@ -169,6 +169,11 @@ register_check profile-registry-contract \
     "runner,registry,tests" "fast pr release nightly-full" \
     ".ai/scripts/validation-profile-registry.sh .ai/scripts/check-all.sh .ai/scripts/tests/test_validation_profile_registry.py" '' "python>=3.11 bash" 30 cpu reuse-by-input portable \
     "python .ai/scripts/tests/test_validation_profile_registry.py -v" always
+register_check validation-evidence-contract \
+    "Validation Execution Evidence Contract" required \
+    "runner,evidence,tests" "fast pr release nightly-full" \
+    ".ai/scripts/validation-evidence.py .ai/scripts/tests/test_validation_evidence.py .ai/scripts/check-all.sh" profile-registry-contract "python>=3.11" 30 cpu reuse-by-input source \
+    "python .ai/scripts/tests/test_validation_evidence.py -v" always
 register_check coding-standards-integrity \
     "Coding Standards Integrity Claim Contract" required \
     "standards,tests" "fast pr release nightly-full" \

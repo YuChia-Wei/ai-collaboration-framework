@@ -409,6 +409,15 @@ per selected check plus a concise summary; full stdout/stderr is retained under
 the ignored `artifacts/validation/` path. `--verbose` additionally prints the
 retained child output and slowest-check list.
 
+Each selected check also receives a retained `evidence.jsonl` record with its
+stable validator ID/version, profile, selected-input fingerprint, environment
+class, timing, output counts, log reference, outcome, and execution
+disposition. The record stores hashes and counts rather than output content,
+prompts, host identity, or provider token data. A prior eligible `executed`
+pass with the same validator/profile/input/environment identity may be reported
+as `reused`; that remains distinct from a new execution in both the compact
+summary and evidence record.
+
 `check-all.sh` uses four enforcement classes:
 
 - `required`: when selected by the active mode, the check must execute; missing,
