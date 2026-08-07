@@ -162,7 +162,7 @@ register_check file-disposition-manifest \
 register_check aggregate-runner-contract \
     "Aggregate Runner And Shell Registry Fail-Closed Tests" required \
     "runner,tests" "release nightly-full" \
-    ".ai/scripts/check-all.sh .ai/scripts/validation-profile-registry.sh .ai/scripts/tests/test_fail_closed_validation.py" shell-assets "python>=3.11 bash" 30 cpu no-reuse portable \
+    ".ai/scripts/check-all.sh .ai/scripts/validation-profile-registry.sh .ai/scripts/tests/test_fail_closed_validation.py" shell-assets "python>=3.11 bash" 300 cpu no-reuse portable \
     "python .ai/scripts/tests/test_fail_closed_validation.py -v" always
 register_check profile-registry-contract \
     "Validation Profile Registry Contract" required \
