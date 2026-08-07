@@ -17,7 +17,7 @@
 - `branch_segment`: `3`
 - `status`: `active`
 - `created_at`: `2026-08-07T22:12:41+08:00`
-- `updated_at`: `2026-08-08T01:18:00+08:00`
+- `updated_at`: `2026-08-08T01:25:00+08:00`
 - `template_source`: `.ai/assets/skills/software-development-orchestrator/templates/development-workflow-plan-template.md`
 - `template_version`: `1.4.0`
 - `workflow_locator`: `.dev/workflows/2026-08-07-v0-10-validation-cost-and-release-flow/workflow.yaml`
@@ -107,7 +107,7 @@ The selected integration topology is a merge commit: candidate preparation, immu
 - Dependencies: #57, #133, #137, and the current release runbook.
 - Validation: Source-only leakage tests, closeout profile contract, release-state validation, and separate policy/reference checks.
 - Commit checkpoint: Validated source-only capability and release-governance pull request.
-- Current result: `f7904bf` implements the source-only capability, package exclusions, required closeout profile, online-Issue binding policy, and v0.10.0-only new-tag exception. The WSL closeout profile selected and executed its required contract. The WSL aggregate-runner fixture remains a pre-existing test-environment exception (clock stub / intentionally stripped PATH); it is not a selected closeout profile gate.
+- Current result: `f7904bf` implements the source-only capability, package exclusions, required closeout profile, online-Issue binding policy, and v0.10.0-only new-tag exception; `f76ae17` reconciles the governed direct-entrypoint count and reserves its blocked-by-environment exit code. The WSL closeout profile selected and executed its required contract. The WSL aggregate-runner fixture remains a pre-existing test-environment exception (clock stub / intentionally stripped PATH); it is not a selected closeout profile gate.
 
 ### Stage 6 — Candidate, publication, and records-only closeout
 
@@ -183,19 +183,19 @@ No task selects a canonical sub-agent role yet. The source-framework validation 
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | 1 | `codex/2026-08-07-v0-10-validation-cost-and-release-flow` | `main` | pushed format-invalid checkpoint | `0c4d21c` | `origin/codex/2026-08-07-v0-10-validation-cost-and-release-flow` | `2026-08-08T00:29:00+08:00` | Preserve pushed evidence without rewriting it. | Rebuild the same stages on segment 2. |
 | 2 | `codex/2026-08-08-v0-10-core-repair` | `main` | active repair continuation | `a7fba5c` | local | `2026-08-08T00:30:00+08:00` | Current validator requires structured bodies that the pushed checkpoint lacks. | Validate and push this branch for the core PR. |
-| 3 | `codex/2026-08-08-v0-10-closeout` | `main` at `aeaa9c1` | source-only closeout checkpoint | `f7904bf` | local | `2026-08-08T01:18:00+08:00` | Core PR #138 is merged; #57/#133/#137 are implemented and await hosted integration. | Push, merge, then start the release-candidate continuation from updated main. |
+| 3 | `codex/2026-08-08-v0-10-closeout` | `main` at `aeaa9c1` | source-only closeout checkpoint plus hosted-CI repair | `f7904bf`, `f76ae17` | local | `2026-08-08T01:25:00+08:00` | Core PR #138 is merged; #57/#133/#137 are implemented and their direct-entrypoint contract is repaired for hosted integration. | Push, merge, then start the release-candidate continuation from updated main. |
 
 ## Completion Summary
 
 - Outcome: In progress.
 - Changed artifacts: Workflow bootstrap only; the user-supplied work package remains untracked and unmodified.
 - Approved requirement/specification evidence: Owner work package and online Issue/Project read-back.
-- Implementation completion evidence: #96/#135/#134 core stages are merged in PR #138; #57/#133/#137 source-only closeout is committed in `f7904bf` and pending its dedicated PR merge; release records/publication remain pending.
+- Implementation completion evidence: #96/#135/#134 core stages are merged in PR #138; #57/#133/#137 source-only closeout is committed in `f7904bf` plus the hosted-CI contract repair `f76ae17`, and is pending its dedicated PR merge; release records/publication remain pending.
 - Required test outcomes: Pending.
 - Selected compliance evidence: `not-applicable`.
 - Review disposition: Pending.
 - Validation evidence: Online Issue/Project normalization read-back; preflight recorded.
 - Workflow task state: V010-ISSUES, V010-VAL, V010-PKG, V010-EVAL, and V010-CLOSEOUT completed; V010-RELEASE is in progress under `software-development-orchestrator`.
-- Commits: `0d40533`, `703cead`, `3e11779`, `e78a66c`, `f28f3fb`, `17a4f66`, `a7fba5c`, and `f7904bf` reconstruct the validated workflow stages with current commit-policy bodies.
+- Commits: `0d40533`, `703cead`, `3e11779`, `e78a66c`, `f28f3fb`, `17a4f66`, `a7fba5c`, `f7904bf`, and `f76ae17` reconstruct the validated workflow stages with current commit-policy bodies.
 - Branch / checkpoint / handoff evidence: Dedicated branch exists; no checkpoint.
 - Residual risks: WSL .NET remains unavailable; actual candidate/tag/publication must not begin until the source-only PR is merged. The WSL aggregate-runner fixture has its independent clock/PATH test limitations, while the selected WSL closeout profile passes.
