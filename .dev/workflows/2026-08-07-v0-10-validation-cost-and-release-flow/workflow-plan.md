@@ -17,7 +17,7 @@
 - `branch_segment`: `1`
 - `status`: `active`
 - `created_at`: `2026-08-07T22:12:41+08:00`
-- `updated_at`: `2026-08-07T23:21:27+08:00`
+- `updated_at`: `2026-08-07T23:32:51+08:00`
 - `template_source`: `.ai/assets/skills/software-development-orchestrator/templates/development-workflow-plan-template.md`
 - `template_version`: `1.4.0`
 - `workflow_locator`: `.dev/workflows/2026-08-07-v0-10-validation-cost-and-release-flow/workflow.yaml`
@@ -81,16 +81,17 @@ The selected integration topology is a merge commit: candidate preparation, immu
 - Dependencies: #135 authorization and Stage 2 interfaces. This source-framework task has no downstream target-effective packet.
 - Validation: Legacy metadata, reuse/invalidation, message-only, documentation-only, environment-class, and archive-digest tests.
 - Commit checkpoint: Validated identity implementation pull request.
+- Current result: `c06de8a` records tree and fingerprint identity while preserving legacy reader compatibility; message-only and unselected-documentation fixtures remain eligible, while payload and profile configuration changes invalidate identity.
 
 ### Stage 4 — Deterministic execution evidence
 
 - `stage_id`: `V010-EVAL`
 - Goal: Implement #134 without claiming the unimplemented remainder of parent #95.
 - Capability slot: `implementation`
-- Owner skill: `slice-implementer`
+- Owner skill: `ai-context-governance`
 - Scope: Validator event schema, retained-output metadata, execution dispositions, and privacy-preserving evidence output.
 - Non-goals: Provider-private token data, raw conversation data, or #95 full lifecycle completion.
-- Dependencies: #134 parent relation and Stage 2 runner interfaces.
+- Dependencies: #134 parent relation, Stage 2 runner interfaces, and #135 identity fields. This source-framework task has no downstream target-effective packet.
 - Validation: Executed/reused/not-selected/timed-out/cancelled semantics and PR/release evidence comparability.
 - Commit checkpoint: Validated evidence implementation pull request.
 
@@ -125,8 +126,8 @@ No task selects a canonical sub-agent role yet. The source-framework validation 
 | Stage | Role / Canonical Path | Owning Skill | Final/Current Disposition | Attempt Summary | Final Integration Owner / Decision | Record or Task Reference |
 | --- | --- | --- | --- | --- | --- | --- |
 | V010-VAL | no canonical implementation role selected | ai-context-governance | `not-applicable` | no implementation attempt yet | workflow parent / pending | `tasks/V010-VAL.json` |
-| V010-PKG | pending exact slice mode | slice-implementer | `not-applicable` | no implementation attempt yet | workflow parent / pending | `tasks/V010-PKG.json` |
-| V010-EVAL | pending exact slice mode | slice-implementer | `not-applicable` | no implementation attempt yet | workflow parent / pending | `tasks/V010-EVAL.json` |
+| V010-PKG | no canonical implementation role selected | ai-context-governance | `not-applicable` | identity stage completed in `c06de8a` | workflow parent / accepted | `tasks/V010-PKG.json` |
+| V010-EVAL | no canonical implementation role selected | ai-context-governance | `not-applicable` | source-framework evidence stage in progress | workflow parent / active | `tasks/V010-EVAL.json` |
 
 ## Approval Gates
 
@@ -190,7 +191,7 @@ No task selects a canonical sub-agent role yet. The source-framework validation 
 - Selected compliance evidence: `not-applicable`.
 - Review disposition: Pending.
 - Validation evidence: Online Issue/Project normalization read-back; preflight recorded.
-- Workflow task state: V010-ISSUES completed; V010-VAL is in progress under the #96-recommended `ai-context-governance` owner; remaining tasks are pending.
-- Commits: Pending workflow-bootstrap validation.
+- Workflow task state: V010-ISSUES, V010-VAL, and V010-PKG completed; V010-EVAL is in progress under `ai-context-governance`; remaining tasks are pending.
+- Commits: `2c57ac9`, `5a24d04`, `1bcf717`, and `c06de8a` are validated local checkpoints.
 - Branch / checkpoint / handoff evidence: Dedicated branch exists; no checkpoint.
 - Residual risks: WSL .NET unavailable; #137 must be implemented before any agent-created tag.
