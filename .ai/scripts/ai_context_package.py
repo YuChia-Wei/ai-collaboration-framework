@@ -6,6 +6,7 @@ from __future__ import annotations
 import gzip
 import hashlib
 import io
+import json
 import os
 import re
 import subprocess
@@ -103,6 +104,14 @@ def commit_epoch(repo: Path, commit: str) -> int:
     return int(value)
 
 
+def commit_tree_sha(repo: Path, commit: str) -> str:
+    result = run_git(repo, "rev-parse", "--verify", f"{commit}^{{tree}}")
+    tree_sha = result.stdout.strip() if result.returncode == 0 else ""
+    if not re.fullmatch(r"[0-9a-f]{40}", tree_sha):
+        raise PackageError(f"cannot read tree identity for {commit}")
+    return tree_sha
+
+
 def git_tree(repo: Path, commit: str) -> dict[str, GitEntry]:
     result = run_git(repo, "ls-tree", "-r", "-z", "--full-tree", commit, text=False)
     if result.returncode != 0:
@@ -190,6 +199,18 @@ class GitObjectReader:
         self.read_blobs_batch((entry,))
         return self._blob_cache[entry.object_id]
 
+    def list_tree(self, commit: str) -> dict[str, GitEntry]:
+        """Read one commit tree through the same repository boundary."""
+        return git_tree(self.repo, commit)
+
+    def read_commit_metadata(self, commit: str) -> dict[str, int | str]:
+        """Return immutable commit facts used by package identity."""
+        return {
+            "commit_sha": commit,
+            "tree_sha": commit_tree_sha(self.repo, commit),
+            "source_date_epoch": commit_epoch(self.repo, commit),
+        }
+
 
 @dataclass
 class PackageRepositorySnapshot:
@@ -197,6 +218,7 @@ class PackageRepositorySnapshot:
 
     repo: Path
     commit: str
+    tree_sha: str
     epoch: int
     tree: dict[str, GitEntry]
     blob_reader: GitObjectReader
@@ -205,12 +227,15 @@ class PackageRepositorySnapshot:
     def from_ref(cls, repo: Path, ref: str) -> "PackageRepositorySnapshot":
         resolved_repo = repo.resolve()
         commit = resolve_commit(resolved_repo, ref)
+        reader = GitObjectReader(resolved_repo)
+        metadata = reader.read_commit_metadata(commit)
         snapshot = cls(
             repo=resolved_repo,
             commit=commit,
-            epoch=commit_epoch(resolved_repo, commit),
-            tree=git_tree(resolved_repo, commit),
-            blob_reader=GitObjectReader(resolved_repo),
+            tree_sha=str(metadata["tree_sha"]),
+            epoch=int(metadata["source_date_epoch"]),
+            tree=reader.list_tree(commit),
+            blob_reader=reader,
         )
         snapshot.blob_reader.read_blobs_batch(
             entry
@@ -542,6 +567,58 @@ def yaml_bytes(value: dict) -> bytes:
 def payload_digest(files: Iterable[PayloadFile]) -> str:
     content = "".join(f"{item.sha256}  {item.path}\n" for item in files).encode("utf-8")
     return sha256_bytes(content)
+
+
+def identity_fingerprint(document: dict) -> str:
+    """Hash canonical, typed identity inputs without serializing YAML formatting."""
+    return sha256_bytes(
+        json.dumps(
+            document,
+            ensure_ascii=False,
+            separators=(",", ":"),
+            sort_keys=True,
+        ).encode("utf-8")
+    )
+
+
+def selected_input_fingerprint(
+    source_inputs: dict[str, bytes],
+    payload_files: Iterable[PayloadFile],
+    migration_sources: Iterable[dict],
+) -> str:
+    """Fingerprint only bytes/configuration that can affect package output."""
+    return identity_fingerprint(
+        {
+            "schema_version": "package-selected-input/v1",
+            "source_inputs": [
+                {"path": path, "sha256": sha256_bytes(content)}
+                for path, content in sorted(
+                    source_inputs.items(), key=lambda item: item[0].encode("utf-8")
+                )
+            ],
+            "payload": [
+                {
+                    "path": item.path,
+                    "sha256": item.sha256,
+                    "mode": f"{item.mode:04o}",
+                    "ownership": item.ownership,
+                    "install_behavior": item.install_behavior,
+                    "component_id": item.component_id,
+                }
+                for item in sorted(payload_files, key=lambda item: item.path.encode("utf-8"))
+            ],
+            "migration_sources": [
+                {
+                    "version": item["version"],
+                    "manifest_sha256": item["manifest_sha256"],
+                }
+                for item in sorted(
+                    migration_sources,
+                    key=lambda item: str(item["version"]),
+                )
+            ],
+        }
+    )
 
 
 def directory_members(paths: Iterable[str]) -> list[str]:
@@ -966,28 +1043,6 @@ def build_package(
     files_content = yaml_bytes(file_document)
     files_sha = sha256_bytes(files_content)
     created_at = datetime.fromtimestamp(epoch, timezone.utc).isoformat().replace("+00:00", "Z")
-    package_document = {
-        "schema_version": "2.0.0" if component_aware else "1.0.0",
-        "package_id": package_id,
-        "profile_id": profile_id,
-        "version": version,
-        "release_id": f"REL-v{version}",
-        "source": {"repository": source_repository, "ref": commit, "commit": commit},
-        "created_at": created_at,
-        "source_date_epoch": epoch,
-        "payload": {
-            "root": "payload",
-            "file_count": len(payload_files),
-            "sha256": payload_digest(payload_files),
-        },
-        "compatibility": {
-            "minimum_governed_source": minimum_source,
-            "breaking_changes": breaking_changes,
-            "automatic_upgrade_sources": automatic_sources,
-        },
-    }
-    if component_aware:
-        package_document["selection"] = selection
     clean_install_operations = []
     for index, item in enumerate(payload_files, 1):
         operation = {
@@ -1028,19 +1083,74 @@ def build_package(
     }
     if component_aware:
         migration_document["selection"] = selection
+    migration_content = yaml_bytes(migration_document)
     install_entry = tree.get(".ai/distribution/templates/INSTALL.md")
     if install_entry is None:
         raise PackageError("missing package INSTALL.md template")
     requirements_entry = tree.get(".ai/distribution/templates/requirements.txt")
     if requirements_entry is None:
         raise PackageError("missing package requirements.txt template")
+    profile_entry = tree.get(profile_path)
+    release_entry = tree.get(release_path)
+    if profile_entry is None or release_entry is None:
+        raise PackageError("package identity inputs are missing from the source tree")
+    source_input_bytes = {
+        profile_path: git_blob(repo, profile_entry, snapshot.blob_reader),
+        release_path: git_blob(repo, release_entry, snapshot.blob_reader),
+        ".ai/distribution/templates/INSTALL.md": git_blob(
+            repo, install_entry, snapshot.blob_reader
+        ),
+        ".ai/distribution/templates/requirements.txt": git_blob(
+            repo, requirements_entry, snapshot.blob_reader
+        ),
+    }
+    payload_sha = payload_digest(payload_files)
+    selected_inputs_sha = selected_input_fingerprint(
+        source_input_bytes,
+        payload_files,
+        migration_sources,
+    )
+    package_document = {
+        "schema_version": "2.1.0" if component_aware else "1.1.0",
+        "package_id": package_id,
+        "profile_id": profile_id,
+        "version": version,
+        "release_id": f"REL-v{version}",
+        "source": {
+            "repository": source_repository,
+            "ref": commit,
+            "commit": commit,
+            "tree": snapshot.tree_sha,
+        },
+        "created_at": created_at,
+        "source_date_epoch": epoch,
+        "identity": {
+            "schema_version": "1.0.0",
+            "selected_input_fingerprint": selected_inputs_sha,
+            "payload_fingerprint": payload_sha,
+            "files_manifest_digest": files_sha,
+            "migration_digest": sha256_bytes(migration_content),
+        },
+        "payload": {
+            "root": "payload",
+            "file_count": len(payload_files),
+            "sha256": payload_sha,
+        },
+        "compatibility": {
+            "minimum_governed_source": minimum_source,
+            "breaking_changes": breaking_changes,
+            "automatic_upgrade_sources": automatic_sources,
+        },
+    }
+    if component_aware:
+        package_document["selection"] = selection
 
     relative_members: dict[str, tuple[bytes, int]] = {
-        "INSTALL.md": (git_blob(repo, install_entry, snapshot.blob_reader), 0o644),
-        "requirements.txt": (git_blob(repo, requirements_entry, snapshot.blob_reader), 0o644),
+        "INSTALL.md": (source_input_bytes[".ai/distribution/templates/INSTALL.md"], 0o644),
+        "requirements.txt": (source_input_bytes[".ai/distribution/templates/requirements.txt"], 0o644),
         "metadata/package.yaml": (yaml_bytes(package_document), 0o644),
         "metadata/files.yaml": (files_content, 0o644),
-        "metadata/migration.yaml": (yaml_bytes(migration_document), 0o644),
+        "metadata/migration.yaml": (migration_content, 0o644),
     }
     for item in payload_files:
         relative_members[f"payload/{item.path}"] = (item.content, item.mode)
@@ -1059,16 +1169,25 @@ def build_package(
             raise PackageError(f"refusing to overwrite existing output: {candidate}")
     write_zip(zip_path, members, epoch)
     write_tar_gz(tar_path, members, epoch)
+    archive_digests: dict[str, str] = {}
     for archive_path in (zip_path, tar_path):
         digest = sha256_bytes(archive_path.read_bytes())
+        archive_digests[archive_path.name] = digest
         Path(f"{archive_path}.sha256").write_text(
             f"{digest}  {archive_path.name}\n", encoding="utf-8", newline="\n"
         )
     return {
         "package_id": package_id,
         "commit": commit,
+        "tree": snapshot.tree_sha,
+        "selected_input_fingerprint": selected_inputs_sha,
+        "payload_fingerprint": payload_sha,
+        "files_manifest_digest": files_sha,
+        "migration_digest": sha256_bytes(migration_content),
         "zip": zip_path,
         "tar_gz": tar_path,
+        "zip_digest": archive_digests[zip_path.name],
+        "tar_digest": archive_digests[tar_path.name],
     }
 
 
@@ -1204,10 +1323,28 @@ def validate_archive(path: Path) -> dict[str, tuple[bytes, int]]:
     if package.get("package_id") != root or inventory.get("package_id") != root or migration.get("package_id") != root:
         raise PackageError("package identity mismatch")
     package_schema = package.get("schema_version")
-    if package_schema not in {"1.0.0", "2.0.0"}:
+    if package_schema not in {"1.0.0", "1.1.0", "2.0.0", "2.1.0"}:
         raise PackageError(f"unsupported package schema version: {package_schema!r}")
-    if package_schema == "2.0.0":
+    if package_schema in {"2.0.0", "2.1.0"}:
         validate_component_selection(package.get("selection"), "package selection")
+    identity = package.get("identity")
+    if package_schema in {"1.1.0", "2.1.0"}:
+        source = package.get("source")
+        if not isinstance(source, dict) or not all(
+            isinstance(source.get(key), str) and re.fullmatch(r"[0-9a-f]{40}", source[key])
+            for key in ("commit", "tree")
+        ):
+            raise PackageError("package source identity requires commit and tree SHA")
+        if not isinstance(identity, dict) or identity.get("schema_version") != "1.0.0":
+            raise PackageError("package identity schema is missing or unsupported")
+        for key in (
+            "selected_input_fingerprint",
+            "payload_fingerprint",
+            "files_manifest_digest",
+            "migration_digest",
+        ):
+            if not isinstance(identity.get(key), str) or not SHA256_RE.fullmatch(identity[key]):
+                raise PackageError(f"package identity has invalid {key}")
     inventory_schema = inventory.get("schema_version")
     if inventory_schema not in {"1.0.0", "2.0.0"}:
         raise PackageError(f"unsupported files schema version: {inventory_schema!r}")
@@ -1263,6 +1400,19 @@ def validate_archive(path: Path) -> dict[str, tuple[bytes, int]]:
     payload_meta = package.get("payload", {})
     if payload_meta.get("file_count") != len(records) or payload_meta.get("sha256") != payload_digest(payload_items):
         raise PackageError("package payload count or digest mismatch")
+    if package_schema in {"1.1.0", "2.1.0"} and identity is not None:
+        expected_identity = {
+            "payload_fingerprint": payload_digest(payload_items),
+            "files_manifest_digest": sha256_bytes(
+                members[f"{prefix}metadata/files.yaml"][0]
+            ),
+            "migration_digest": sha256_bytes(
+                members[f"{prefix}metadata/migration.yaml"][0]
+            ),
+        }
+        for key, value in expected_identity.items():
+            if identity.get(key) != value:
+                raise PackageError(f"package identity {key} does not match archive bytes")
     return members
 
 
