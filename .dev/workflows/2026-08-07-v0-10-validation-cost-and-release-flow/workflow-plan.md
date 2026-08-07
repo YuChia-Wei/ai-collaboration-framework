@@ -17,7 +17,7 @@
 - `branch_segment`: `1`
 - `status`: `active`
 - `created_at`: `2026-08-07T22:12:41+08:00`
-- `updated_at`: `2026-08-07T23:32:51+08:00`
+- `updated_at`: `2026-08-08T00:28:00+08:00`
 - `template_source`: `.ai/assets/skills/software-development-orchestrator/templates/development-workflow-plan-template.md`
 - `template_version`: `1.4.0`
 - `workflow_locator`: `.dev/workflows/2026-08-07-v0-10-validation-cost-and-release-flow/workflow.yaml`
@@ -94,6 +94,7 @@ The selected integration topology is a merge commit: candidate preparation, immu
 - Dependencies: #134 parent relation, Stage 2 runner interfaces, and #135 identity fields. This source-framework task has no downstream target-effective packet.
 - Validation: Executed/reused/not-selected/timed-out/cancelled semantics and PR/release evidence comparability.
 - Commit checkpoint: Validated evidence implementation pull request.
+- Current result: `af7344f` records privacy-preserving per-validator evidence, cache eligibility, retained-output metadata, and distinct timeout/reuse dispositions. Windows `fast` passed 27/27 in 24 seconds, an unchanged run reused 27/27 in 3 seconds, the synthetic runner suite passed 35/35, and WSL `fast` passed 27/27 in 192 seconds with one budget advisory.
 
 ### Stage 5 — Source-only closeout capability and release-governance reconciliation
 
@@ -127,7 +128,7 @@ No task selects a canonical sub-agent role yet. The source-framework validation 
 | --- | --- | --- | --- | --- | --- | --- |
 | V010-VAL | no canonical implementation role selected | ai-context-governance | `not-applicable` | no implementation attempt yet | workflow parent / pending | `tasks/V010-VAL.json` |
 | V010-PKG | no canonical implementation role selected | ai-context-governance | `not-applicable` | identity stage completed in `c06de8a` | workflow parent / accepted | `tasks/V010-PKG.json` |
-| V010-EVAL | no canonical implementation role selected | ai-context-governance | `not-applicable` | source-framework evidence stage in progress | workflow parent / active | `tasks/V010-EVAL.json` |
+| V010-EVAL | no canonical implementation role selected | ai-context-governance | `not-applicable` | evidence stage completed in `af7344f` | workflow parent / accepted | `tasks/V010-EVAL.json` |
 
 ## Approval Gates
 
@@ -166,11 +167,11 @@ No task selects a canonical sub-agent role yet. The source-framework validation 
 
 ## Progress And Handoff
 
-- Current stage: `V010-VAL`.
-- Completed stages: `V010-ISSUES`.
+- Current stage: `V010-CLOSEOUT`.
+- Completed stages: `V010-ISSUES`, `V010-VAL`, `V010-PKG`, and `V010-EVAL`.
 - Deferred stages and reasons: None.
 - Open decisions: WSL .NET 10.0.302 is not currently available; no environment installation or global modification is authorized implicitly. It remains a release evidence risk while Windows/hosted alternatives are evaluated.
-- Continuation instructions: Complete the exact source inventory and direct runner contract before starting the first implementation patch. Before any fresh-session, host, model, runtime, push, merge, candidate, tag, publication, or finalization continuation, create and verify a registered handoff checkpoint.
+- Continuation instructions: Push the validated core implementation as an incomplete-workflow checkpoint, obtain and merge its hosted pull-request checks, then create the policy/source-only continuation branch for #57, #133, and #137. Before any fresh-session, host, model, runtime, push, merge, candidate, tag, publication, or finalization continuation, create and verify a registered handoff checkpoint.
 - Target policy references: `AGENTS.md`, current workflow/commit/handoff policies, release runbook, and #137.
 - Registered handoff checkpoint: None; no handoff has occurred.
 - Branch history and checkpoint handoffs: No branch checkpoint yet.
@@ -186,12 +187,12 @@ No task selects a canonical sub-agent role yet. The source-framework validation 
 - Outcome: In progress.
 - Changed artifacts: Workflow bootstrap only; the user-supplied work package remains untracked and unmodified.
 - Approved requirement/specification evidence: Owner work package and online Issue/Project read-back.
-- Implementation completion evidence: Pending.
+- Implementation completion evidence: #96/#135/#134 local stages are committed; source-only closeout and release stages remain pending.
 - Required test outcomes: Pending.
 - Selected compliance evidence: `not-applicable`.
 - Review disposition: Pending.
 - Validation evidence: Online Issue/Project normalization read-back; preflight recorded.
-- Workflow task state: V010-ISSUES, V010-VAL, and V010-PKG completed; V010-EVAL is in progress under `ai-context-governance`; remaining tasks are pending.
-- Commits: `2c57ac9`, `5a24d04`, `1bcf717`, and `c06de8a` are validated local checkpoints.
+- Workflow task state: V010-ISSUES, V010-VAL, V010-PKG, and V010-EVAL completed; V010-CLOSEOUT is in progress under `ai-context-governance`; V010-RELEASE remains pending.
+- Commits: `2c57ac9`, `5a24d04`, `1bcf717`, `c06de8a`, and `af7344f` are validated local checkpoints.
 - Branch / checkpoint / handoff evidence: Dedicated branch exists; no checkpoint.
 - Residual risks: WSL .NET unavailable; #137 must be implemented before any agent-created tag.
