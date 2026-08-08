@@ -325,6 +325,17 @@ entries:
     install_behavior: seed
 
 exclusions:
+  - id: source-codex-runtime-worker-profiles
+    classification: source-only
+    patterns:
+      - .codex/agents/bounded-general-worker.toml
+      - .codex/agents/bounded-routine-worker.toml
+    reason: >-
+      Source-repository Codex execution profiles select a runtime/model tier but
+      do not own canonical skill or sub-agent-role semantics. Downstream
+      promotion is deferred to the canonical product-source and CLI contract
+      decisions; context-translator remains the only promoted canonical
+      runtime-native role adapter.
   - id: source-local-work-management-policy
     classification: source-only
     patterns:

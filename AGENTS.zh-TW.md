@@ -124,6 +124,26 @@ environment-dependent tests 是 conditional。Outcome 只能記錄為 `passed`�
 
 一般 AI context audit、文件治理或 repository initialization 不交給 `software-development-orchestrator`；改由對應 owner skill 與其自有 workflow template 處理。
 
+### Codex Runtime Worker Profiles
+
+此 source repository 定義兩種 project-scoped Codex execution profile：
+
+| Profile | Model | Default use |
+| --- | --- | --- |
+| `bounded-general-worker` | `gpt-5.6-terra` / `xhigh` | 需要判斷與 tool use 的一個獨立且有意義的 bounded unit；若要 mutation，必須有明確 write scope。 |
+| `bounded-routine-worker` | `gpt-5.6-luna` / `high` | 清楚、可重複、read-heavy 或 mechanical 的工作，例如 inventory、extraction、classification、exact comparison 與 log summarization。 |
+
+這些檔案是 **runtime execution profiles**，不是 canonical skills 或 canonical sub-agent roles。
+
+- 它們不會在 `.ai/assets/sub-agent-role-prompts/**` 下新增項目。
+- 它們不擁有 skill-to-role applicability，且不會出現在 SAG canonical role inventory 中。
+- 當 delegated work 對應既有 canonical role 時，parent 必須提供確切的 owning skill 與 `.ai/assets/sub-agent-role-prompts/<role-id>/sub-agent.yaml` 路徑。選定的 worker 執行該 contract，但不取代它。
+- Direct execution 仍是預設。僅當 `.ai/assets/shared/ROLE-EXECUTION-CONTRACT.md` 的 safety gates 與 material-value triggers 支持 delegation 時，才可 delegate。
+- Parent 負責 authorization、routing、concurrent-write isolation、Issue/workflow/release state、integration 與 final acceptance。
+- 不得只為了避免載入或遵循適用的 skill-owned role，就使用 generic worker。
+- 不得從任一 generic worker 再 spawn nested workers。
+- 除非 canonical product-source decision 日後明確提升它們，這兩個 profile 都僅限 source-repository，且不得 distributed downstream。
+
 ### Repo Init / Template Adaptation
 
 當這套 framework 被複製到既有或全新目標 repository 後，第一個 skill 應使用 `ai-context-init`。

@@ -129,6 +129,26 @@ Record exact outcomes as `passed`, `failed`, `blocked-by-environment`,
 
 Do not route general AI-context audit, documentation governance, or repository initialization through `software-development-orchestrator`; use their owning skills and skill-specific workflow templates.
 
+### Codex Runtime Worker Profiles
+
+This source repository defines two project-scoped Codex execution profiles:
+
+| Profile | Model | Default use |
+| --- | --- | --- |
+| `bounded-general-worker` | `gpt-5.6-terra` / `xhigh` | One independently meaningful, bounded unit that needs judgment and tool use; explicit write scope is required for mutation. |
+| `bounded-routine-worker` | `gpt-5.6-luna` / `high` | Clear, repeatable, read-heavy or mechanical work such as inventory, extraction, classification, exact comparison, and log summarization. |
+
+These files are **runtime execution profiles**, not canonical skills or canonical sub-agent roles.
+
+- They do not add entries under `.ai/assets/sub-agent-role-prompts/**`.
+- They do not own skill-to-role applicability and do not appear in the SAG canonical role inventory.
+- When delegated work maps to an existing canonical role, the parent must supply the exact owning skill and `.ai/assets/sub-agent-role-prompts/<role-id>/sub-agent.yaml` path. The selected worker executes that contract but does not replace it.
+- Direct execution remains the default. Delegate only when the safety gates and material-value triggers in `.ai/assets/shared/ROLE-EXECUTION-CONTRACT.md` support delegation.
+- The parent owns authorization, routing, concurrent-write isolation, Issue/workflow/release state, integration, and final acceptance.
+- Do not use a generic worker merely to avoid loading or following an applicable skill-owned role.
+- Do not spawn nested workers from either generic worker.
+- Unless the canonical product-source decision explicitly promotes them later, these two profiles are source-repository-only and must not be distributed downstream.
+
 ### Repo Init / Template Adaptation
 
 Use `ai-context-init` as the first skill after this framework is copied into an existing or empty target repository.
