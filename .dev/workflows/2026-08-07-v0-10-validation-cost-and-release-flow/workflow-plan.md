@@ -174,8 +174,8 @@ No task selects a canonical sub-agent role yet. The source-framework validation 
 - Open decisions: WSL .NET 10.0.302 is not currently available; no environment installation or global modification is authorized implicitly. It remains a release evidence risk while Windows/hosted alternatives are evaluated.
 - Continuation instructions: Instantiate and validate the v0.10.0 candidate records on this branch, create and verify the candidate handoff checkpoint, push and merge the candidate PR, then run the current-main pre-tag command. Create only the authorized new tag, publish, and reconcile GitHub Issues/Project records. Before any fresh-session, host, model, runtime, push, merge, candidate, tag, publication, or finalization continuation, create and verify a registered handoff checkpoint.
 - Target policy references: `AGENTS.md`, current workflow/commit/handoff policies, release runbook, and #137.
-- Registered handoff checkpoint: Pending candidate validation on segment 4.
-- Branch history and checkpoint handoffs: Segment 3 merged as PR #139; segment 4 must create a release-candidate handoff checkpoint before push.
+- Registered handoff checkpoint: `.dev/workflows/2026-08-07-v0-10-validation-cost-and-release-flow/handoff-checkpoints/V010-RELEASE-candidate.yaml` pins candidate `ac731d60ecc5191105b07d4d6b6932c7bf44976a` after live Issue scope reconciliation, Windows `release`/`fast`/`pr`, WSL `closeout`, and a fresh critical gate.
+- Branch history and checkpoint handoffs: Segment 3 merged as PR #139; segment 4 has a release-candidate checkpoint and may be pushed for candidate PR review.
 
 ## Branch Lifecycle
 
@@ -184,7 +184,7 @@ No task selects a canonical sub-agent role yet. The source-framework validation 
 | 1 | `codex/2026-08-07-v0-10-validation-cost-and-release-flow` | `main` | pushed format-invalid checkpoint | `0c4d21c` | `origin/codex/2026-08-07-v0-10-validation-cost-and-release-flow` | `2026-08-08T00:29:00+08:00` | Preserve pushed evidence without rewriting it. | Rebuild the same stages on segment 2. |
 | 2 | `codex/2026-08-08-v0-10-core-repair` | `main` | active repair continuation | `a7fba5c` | local | `2026-08-08T00:30:00+08:00` | Current validator requires structured bodies that the pushed checkpoint lacks. | Validate and push this branch for the core PR. |
 | 3 | `codex/2026-08-08-v0-10-closeout` | `main` at `aeaa9c1` | source-only closeout checkpoint plus hosted-CI repair | `f7904bf`, `f76ae17` | local | `2026-08-08T01:25:00+08:00` | Core PR #138 is merged; #57/#133/#137 are implemented and their direct-entrypoint contract is repaired for hosted integration. | Push, merge, then start the release-candidate continuation from updated main. |
-| 4 | `codex/2026-08-08-v0-10-release-candidate` | `main` at `697061d` | active post-merge candidate continuation | `697061d51f4e4c3308e36902095c64b78200daf0` | local | `2026-08-08T01:43:37+08:00` | PR #139 merged with all five hosted checks green. | Instantiate v0.10.0 candidate records and create the candidate handoff checkpoint. |
+| 4 | `codex/2026-08-08-v0-10-release-candidate` | `main` at `697061d` | release-candidate handoff | `ac731d60ecc5191105b07d4d6b6932c7bf44976a` | local | `2026-08-08T13:08:30+08:00` | Candidate and release profiles passed after reconciling the owner-authorized online Issue target records. | Commit and push the checkpoint, then open the candidate PR. |
 
 ## Completion Summary
 
@@ -192,11 +192,11 @@ No task selects a canonical sub-agent role yet. The source-framework validation 
 - Changed artifacts: Workflow bootstrap only; the user-supplied work package remains untracked and unmodified.
 - Approved requirement/specification evidence: Owner work package and online Issue/Project read-back.
 - Implementation completion evidence: #96/#135/#134 core stages are merged in PR #138; #57/#133/#137 source-only closeout and its hosted-CI contract repair are merged in PR #139 as `697061d51f4e4c3308e36902095c64b78200daf0`; release records/publication remain pending.
-- Required test outcomes: Pending.
+- Required test outcomes: Windows `release` 52/52, `fast` 27/27, and `pr` 37/37 passed; WSL `closeout` 1/1 passed. WSL `.NET` remains blocked-by-environment and was not selected by the WSL closeout profile.
 - Selected compliance evidence: `not-applicable`.
 - Review disposition: Pending.
-- Validation evidence: Online Issue/Project normalization read-back; preflight recorded.
+- Validation evidence: Candidate phase passed with live online Issue read-back at `ac731d60ecc5191105b07d4d6b6932c7bf44976a`; a fresh critical gate passed with 52 selected checks and 0 failures/blocks.
 - Workflow task state: V010-ISSUES, V010-VAL, V010-PKG, V010-EVAL, and V010-CLOSEOUT completed; V010-RELEASE is in progress under `software-development-orchestrator`.
 - Commits: `0d40533`, `703cead`, `3e11779`, `e78a66c`, `f28f3fb`, `17a4f66`, `a7fba5c`, `f7904bf`, and `f76ae17` reconstruct the validated workflow stages with current commit-policy bodies.
-- Branch / checkpoint / handoff evidence: Dedicated branch exists; no checkpoint.
+- Branch / checkpoint / handoff evidence: Registered candidate handoff checkpoint exists and pins the exact validated parent candidate commit; its containing commit must be created next.
 - Residual risks: WSL .NET remains unavailable; actual candidate/tag/publication must not begin until the source-only PR is merged. The WSL aggregate-runner fixture has its independent clock/PATH test limitations, while the selected WSL closeout profile passes.

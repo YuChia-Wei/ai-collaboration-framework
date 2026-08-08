@@ -5,3 +5,4 @@ checkpoints:
   - ".dev/workflows/2026-07-24-v0-6-ci-lifecycle/handoff-checkpoints/CIENG-001-push.yaml"
   - ".dev/workflows/2026-07-29-v0-7-0-public-release-body-correction/handoff-checkpoints/V070BODY-001-fresh-session.yaml"
   - ".dev/workflows/2026-08-02-python-prerequisite-diagnostics/handoff-checkpoints/AIC-004-diagnostic-implementation-push.yaml"
+  - ".dev/workflows/2026-08-07-v0-10-validation-cost-and-release-flow/handoff-checkpoints/V010-RELEASE-candidate.yaml"

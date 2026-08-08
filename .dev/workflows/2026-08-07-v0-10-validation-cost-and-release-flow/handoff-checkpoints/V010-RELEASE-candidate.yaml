@@ -1,0 +1,98 @@
+schema_version: "1.0"
+checkpoint_id: "2026-08-07-v0-10-validation-cost-and-release-flow-V010-RELEASE-candidate"
+created_at: "2026-08-08T13:08:30+08:00"
+repository:
+  root: "."
+  branch: "codex/2026-08-08-v0-10-release-candidate"
+  validated_commit: "ac731d60ecc5191105b07d4d6b6932c7bf44976a"
+  checkpoint_commit_source: "containing-commit"
+  dirty_state: "clean"
+  status_porcelain_sha256: "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+workflow:
+  workflow_id: "2026-08-07-v0-10-validation-cost-and-release-flow"
+  task_id: "V010-RELEASE"
+resume:
+  last_completed_action: "Validated the exact v0.10.0 candidate at ac731d60ecc5191105b07d4d6b6932c7bf44976a with reconciled live Issue scope, Windows release/fast/PR profiles, WSL closeout, and a fresh critical gate."
+  exact_next_action: "Commit and push this candidate handoff checkpoint, then open the candidate pull request against main using the recorded merge-commit topology."
+  hidden_context_required: false
+critical_gate:
+  command: "bash .ai/scripts/check-all.sh --critical"
+  observed_at: "2026-08-08T13:06:46+08:00"
+  exit_code: 0
+  outcome: "passed"
+  output:
+    normalization: "utf8-lf"
+    sha256: "e2fb2b6465a6f494404391738c1b577a888f77cb74806599ffcce5002561eb78"
+    line_count: 86
+    tail:
+      - "summary: profile=release selected=52 executed=1 reused=51 failed=0 blocked=0 warnings=0 deferred=0 not-applicable=2"
+      - "full-log: /c/Github/YuChia/ai-collaboration-prompts-dotnet-backend-v0-10-release-candidate/artifacts/validation/20260808T050329Z-868"
+      - "evidence: /c/Github/YuChia/ai-collaboration-prompts-dotnet-backend-v0-10-release-candidate/artifacts/validation/20260808T050329Z-868/evidence.jsonl"
+      - "Required Selected: 52"
+      - "Required Executed: 1"
+      - "Required Failed: 0"
+      - "Required Blocked: 0"
+      - "  Total wall time: 197s across 52 selected checks"
+      - "AI_CONTEXT_CHECK_TIMING total_seconds=197 profile=release checks=52 executed=1 reused=51 failed=0 blocked=0"
+      - "Completed at 2026-08-08 13:06:46"
+      - "║    ✓ All Checks Passed Successfully!   ║"
+release_handoff: true
+release_phase_check:
+  version: "v0.10.0"
+  phase: "candidate"
+  command: "python .ai/scripts/validate-ai-context-release-state.py --phase candidate --version v0.10.0"
+  observed_at: "2026-08-08T13:07:17.8134051+08:00"
+  exit_code: 0
+  outcome: "passed"
+  output:
+    normalization: "utf8-lf"
+    sha256: "eeccadddb246e2b96573e1be7e28e29d83b0b60dc8617694c816a6d8a6a34c9b"
+    line_count: 1
+    tail:
+      - "AI context release-state validation passed for v0.10.0 candidate phase at ac731d60ecc5191105b07d4d6b6932c7bf44976a on codex/2026-08-08-v0-10-release-candidate."
+continuation:
+  allowed: true
+  mode: "normal"
+  reason: "The candidate phase and fresh critical gate passed; the next operation is the authorized transport boundary to candidate PR review."
+  repair_task_id: null
+  failure_ids: []
+execution_provenance:
+  runtime: "OpenAI Codex"
+  model: "gpt-5.6-terra"
+  reasoning_effort: "not-runtime-reported"
+  model_source: "user-declared"
+  evidence_ref: ".dev/workflows/2026-08-07-v0-10-validation-cost-and-release-flow/tasks/V010-RELEASE.json"
+attribution:
+  preservation_required: true
+  evidence_union_version: "1.0"
+  selected_evidence:
+    kind: "repository-created-local-ai-trailer"
+    commit: "ac731d60ecc5191105b07d4d6b6932c7bf44976a"
+    author: "YuChia <h42279@gmail.com>"
+    committer: "YuChia <h42279@gmail.com>"
+    signature_status: "unsigned"
+    session_ref: null
+    observed_trailer: "Co-Authored-By: OpenAI Codex (gpt-5.6-terra, not-runtime-reported) <noreply@openai.com>"
+    message_sha256: "0e374c0a28b425f0a1095cbb602cd04094c67a8c73ee3af0ca1b6b5533666a7d"
+    fixture_ref: "git:ac731d60ecc5191105b07d4d6b6932c7bf44976a"
+  fixture_status:
+    - path_id: "copilot-cli"
+      status: "blocked"
+      commit: null
+      evidence_ref: ".dev/standards/WORKFLOW-HANDOFF-POLICY.md#provider-compatible-attribution"
+      reason: "No provider-generated Copilot CLI commit fixture is present in this repository."
+    - path_id: "copilot-cloud-agent"
+      status: "blocked"
+      commit: null
+      evidence_ref: ".dev/standards/WORKFLOW-HANDOFF-POLICY.md#provider-compatible-attribution"
+      reason: "No provider-generated Copilot cloud-agent commit fixture is present in this repository."
+    - path_id: "claude"
+      status: "blocked"
+      commit: null
+      evidence_ref: ".dev/standards/WORKFLOW-HANDOFF-POLICY.md#provider-compatible-attribution"
+      reason: "No provider-generated Claude commit attribution fixture is available."
+    - path_id: "codex-local"
+      status: "captured"
+      commit: "ac731d60ecc5191105b07d4d6b6932c7bf44976a"
+      evidence_ref: "git:ac731d60ecc5191105b07d4d6b6932c7bf44976a"
+      reason: null
