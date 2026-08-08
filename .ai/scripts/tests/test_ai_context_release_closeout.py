@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import importlib.util
+import tempfile
 import unittest
 from pathlib import Path
 
@@ -56,6 +57,34 @@ class ReleaseCloseoutGwtTests(unittest.TestCase):
         )()
         with self.assertRaisesRegex(ValueError, "outside the primary worktree"):
             MODULE.plan_patch(arguments)
+
+    def test_gwt_005_given_validated_candidate_notes_when_closeout_is_planned_then_only_status_becomes_published(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            worktree = Path(temporary)
+            notes = worktree / ".dev/releases/v0.10.0/release-notes.md"
+            notes.parent.mkdir(parents=True)
+            notes.write_text(
+                "# REL-v0.10.0\n\n## Status\n\n"
+                "Validated candidate; publication remains pending the immutable tag and hosted release workflow.\n\n"
+                "## Publication Completion\n\nComplete this section after publication.\n",
+                encoding="utf-8",
+            )
+
+            MODULE.update_release_notes(worktree, "v0.10.0")
+
+            rendered = notes.read_text(encoding="utf-8")
+            self.assertIn("## Status\n\nPublished.", rendered)
+            self.assertIn("## Publication Completion", rendered)
+
+    def test_gwt_006_given_unrecognized_notes_status_when_closeout_is_planned_then_it_fails_closed(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            worktree = Path(temporary)
+            notes = worktree / ".dev/releases/v0.10.0/release-notes.md"
+            notes.parent.mkdir(parents=True)
+            notes.write_text("# REL-v0.10.0\n\n## Status\n\nUnexpected.\n", encoding="utf-8")
+
+            with self.assertRaisesRegex(RuntimeError, "exact validated candidate"):
+                MODULE.update_release_notes(worktree, "v0.10.0")
 
 
 if __name__ == "__main__":
