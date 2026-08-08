@@ -1,14 +1,17 @@
 schema_version: '1.0'
 release_id: REL-v0.11.0
 version: v0.11.0
-status: candidate
+status: published
 record_origin: governed
 distribution_kind: governed-package
 installable: true
 tag: v0.11.0
-commit: pending-exact-candidate
+commit: 05199ed0a9ed509ef1696df014fce244f8e7cffa
+tag_object: b8d766125714cd79006c1c43abd372bb51a59d3a
+tagged_at: '2026-08-09T00:54:18+08:00'
+recorded_at: '2026-08-09T00:59:43+08:00'
 created_at: '2026-08-09T00:44:44+08:00'
-updated_at: '2026-08-09T00:44:44+08:00'
+updated_at: '2026-08-09T00:59:43+08:00'
 planning:
   github_issue_refs:
   - '#96'
@@ -77,9 +80,34 @@ validation:
   - 2026-08-07-v0-10-validation-cost-and-release-flow
   related_assessments: []
   package_status: deferred-with-owner
-  post_merge_status: pending
-  published_run: null
-  public_release_url: null
+  post_merge_status: deferred-with-owner
+  published_run: not-selected-owner-fast-path
+  public_release_url: https://github.com/YuChia-Wei/ai-collaboration-prompts-dotnet-backend/releases/tag/v0.11.0
+  release_body_digest: c37f23c7361155a2e496dbc46d662e7383cac1f648ea3c7d723b2cc776d448b9
+release_provider_receipt:
+  release_id: RE_kwDOSBe2Hc4V49W9
+  published_at: '2026-08-08T16:54:24Z'
+  draft: false
+  prerelease: false
+  tag_object: b8d766125714cd79006c1c43abd372bb51a59d3a
+  peeled_commit: 05199ed0a9ed509ef1696df014fce244f8e7cffa
+  assets:
+  - id: RA_kwDOSBe2Hc4eMaiJ
+    name: ai-context-dotnet-backend-v0.11.0.zip
+    size: 1255029
+    digest: sha256:cd7010f65941cccfa2151ded2e0d7b3ef27f7a9d0bb3c5772a5b5c9855a0a10c
+  - id: RA_kwDOSBe2Hc4eMaiI
+    name: ai-context-dotnet-backend-v0.11.0.zip.sha256
+    size: 104
+    digest: sha256:a74ae497c14c6c9241c8414c0907701d4bdd624147cb1fc5f02c7d8c923447b4
+  - id: RA_kwDOSBe2Hc4eMaiL
+    name: ai-context-dotnet-backend-v0.11.0.tar.gz
+    size: 814603
+    digest: sha256:087810cd444d5c3aff9311079a0051020e0d03784803ebcc677e906bd4602404
+  - id: RA_kwDOSBe2Hc4eMaiK
+    name: ai-context-dotnet-backend-v0.11.0.tar.gz.sha256
+    size: 107
+    digest: sha256:6fb23dfe7032d7062879c80823c3e9acee36b0ac18a5543bdf3d2960a3b3700c
 deferred_issues:
 - '#149'
 - '#150'
