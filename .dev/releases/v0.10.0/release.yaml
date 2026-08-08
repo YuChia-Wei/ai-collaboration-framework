@@ -1,70 +1,74 @@
-schema_version: "1.0"
-release_id: "REL-v0.10.0"
-version: "v0.10.0"
-status: "validated"
-record_origin: "governed"
-distribution_kind: "governed-package"
+schema_version: '1.0'
+release_id: REL-v0.10.0
+version: v0.10.0
+status: published
+record_origin: governed
+distribution_kind: governed-package
 installable: true
-tag: null
-commit: null
-tagged_at: null
-recorded_at: null
-created_at: "2026-08-08T01:43:37+08:00"
-updated_at: "2026-08-08T01:43:37+08:00"
+tag: v0.10.0
+commit: 5878f213b50bdbb4b3123a60525cdc206fd5be04
+tagged_at: '2026-08-08T13:36:05+08:00'
+recorded_at: '2026-08-08T05:46:01Z'
+created_at: '2026-08-08T01:43:37+08:00'
+updated_at: '2026-08-08T05:46:01Z'
 planning:
   github_issue_refs:
-    - "#96"
-    - "#135"
-    - "#57"
-    - "#134"
-    - "#133"
+  - '#96'
+  - '#135'
+  - '#57'
+  - '#134'
+  - '#133'
 compatibility:
   breaking_changes: true
-  minimum_source_version: "v0.9.0"
+  minimum_source_version: v0.9.0
   reconciliation_sources:
-    - "v0.9.0"
+  - v0.9.0
   automatic_upgrade_sources:
-    - "v0.9.0"
+  - v0.9.0
   affected_contracts:
-    - "profile-driven validation selection and deterministic execution evidence"
-    - "package tree, selected-input, payload, and archive content identity"
-    - "source-only release closeout and online-Issue release-scope authority"
+  - profile-driven validation selection and deterministic execution evidence
+  - package tree, selected-input, payload, and archive content identity
+  - source-only release closeout and online-Issue release-scope authority
 artifacts:
-  release_notes: "release-notes.md"
-  migration_guide: "migration-guide.md"
+  release_notes: release-notes.md
+  migration_guide: migration-guide.md
 distribution:
-  profile_id: "dotnet-backend"
-  package_id: "ai-context-dotnet-backend-v0.10.0"
+  profile_id: dotnet-backend
+  package_id: ai-context-dotnet-backend-v0.10.0
   schema_versions:
-    package: "2.0.0"
-    files: "2.0.0"
-    migration: "3.0.0"
+    package: 2.0.0
+    files: 2.0.0
+    migration: 3.0.0
   artifacts:
-    zip: "ai-context-dotnet-backend-v0.10.0.zip"
-    zip_checksum: "ai-context-dotnet-backend-v0.10.0.zip.sha256"
-    tar_gz: "ai-context-dotnet-backend-v0.10.0.tar.gz"
-    tar_gz_checksum: "ai-context-dotnet-backend-v0.10.0.tar.gz.sha256"
+    zip: ai-context-dotnet-backend-v0.10.0.zip
+    zip_checksum: ai-context-dotnet-backend-v0.10.0.zip.sha256
+    tar_gz: ai-context-dotnet-backend-v0.10.0.tar.gz
+    tar_gz_checksum: ai-context-dotnet-backend-v0.10.0.tar.gz.sha256
   migration:
-    default_mode: "dry-run"
+    default_mode: dry-run
     apply_requires_clean_worktree: true
     apply_requires_acknowledged_reconciliation: true
   publication:
-    tag_owner: "owner-authorized-terra-agent"
-    trigger: "owner-approved-v0.10.0-agent-tag"
-    automation: "github-actions"
+    tag_owner: owner-authorized-terra-agent
+    trigger: owner-approved-v0.10.0-agent-tag
+    automation: github-actions
     creates_or_moves_tag: false
-    authorization_source: "AI Collaboration Framework v0.10.0 Terra implementation work package"
-    authorized_issue: "#137"
-    authorized_actor: "OpenAI Codex Terra"
-    existing_tag_mutation: "forbidden"
+    authorization_source: AI Collaboration Framework v0.10.0 Terra implementation
+      work package
+    authorized_issue: '#137'
+    authorized_actor: OpenAI Codex Terra
+    existing_tag_mutation: forbidden
 validation:
-  evidence: "Candidate record binds only the five online canonical work items from Issue #136. Candidate, release-profile, Windows, WSL, synthetic clean-install, v0.9.0 upgrade, hosted PR, and post-tag records-only evidence are recorded by their governed stages; no provider-private token data is retained."
-  workflow_id: "2026-08-08-v0-10-release-publication"
+  evidence: 'Candidate record binds only the five online canonical work items from
+    Issue #136. Candidate, release-profile, Windows, WSL, synthetic clean-install,
+    v0.9.0 upgrade, hosted PR, and post-tag records-only evidence are recorded by
+    their governed stages; no provider-private token data is retained.'
+  workflow_id: 2026-08-08-v0-10-release-publication
   related_workflows:
-    - "2026-08-07-v0-10-validation-cost-and-release-flow"
+  - 2026-08-07-v0-10-validation-cost-and-release-flow
   related_assessments: []
-  package_status: "validated"
-  post_merge_status: "pending"
+  package_status: validated
+  post_merge_status: pending
   failed_publication_run: null
-  published_run: null
-  public_release_url: null
+  published_run: '31242089985'
+  public_release_url: https://github.com/YuChia-Wei/ai-collaboration-prompts-dotnet-backend/releases/tag/v0.10.0
