@@ -168,11 +168,11 @@ No task selects a canonical sub-agent role yet. The source-framework validation 
 
 ## Progress And Handoff
 
-- Current stage: `V010-RELEASE`.
+- Current stage: `completed`.
 - Completed stages: `V010-ISSUES`, `V010-VAL`, `V010-PKG`, `V010-EVAL`, and `V010-CLOSEOUT`.
 - Deferred stages and reasons: None.
 - Open decisions: WSL .NET 10.0.302 is not currently available; no environment installation or global modification is authorized implicitly. It remains a release evidence risk while Windows/hosted alternatives are evaluated.
-- Continuation instructions: The candidate PR #140 is merged as `5878f213b50bdbb4b3123a60525cdc206fd5be04`; the owner-authorized annotated `v0.10.0` tag and GitHub Release are published. Push and merge the records-only closeout PR, then reconcile canonical GitHub Issues and Project #3. Before any fresh-session, host, model, runtime, push, merge, candidate, tag, publication, or finalization continuation, create and verify a registered handoff checkpoint.
+- Continuation instructions: None for v0.10.0. Preserve the immutable `v0.10.0` tag and public Release; #95 and #97 remain open by the bounded owner direction.
 - Target policy references: `AGENTS.md`, current workflow/commit/handoff policies, release runbook, and #137.
 - Registered handoff checkpoint: `.dev/workflows/2026-08-07-v0-10-validation-cost-and-release-flow/handoff-checkpoints/V010-RELEASE-finalization.yaml` pins published-records commit `3815a93f07634872e646f6f7817b8b7280826b1b` after hosted finalization and records-only closeout validation. The prior candidate checkpoints remain registered historical evidence.
 - Branch history and checkpoint handoffs: Segment 3 merged as PR #139; segment 4 has a refreshed release-candidate checkpoint and may push PR #140's focused CI repair for hosted revalidation.
@@ -185,19 +185,20 @@ No task selects a canonical sub-agent role yet. The source-framework validation 
 | 2 | `codex/2026-08-08-v0-10-core-repair` | `main` | active repair continuation | `a7fba5c` | local | `2026-08-08T00:30:00+08:00` | Current validator requires structured bodies that the pushed checkpoint lacks. | Validate and push this branch for the core PR. |
 | 3 | `codex/2026-08-08-v0-10-closeout` | `main` at `aeaa9c1` | source-only closeout checkpoint plus hosted-CI repair | `f7904bf`, `f76ae17` | local | `2026-08-08T01:25:00+08:00` | Core PR #138 is merged; #57/#133/#137 are implemented and their direct-entrypoint contract is repaired for hosted integration. | Push, merge, then start the release-candidate continuation from updated main. |
 | 4 | `codex/2026-08-08-v0-10-release-candidate` | `main` at `697061d` | repaired release-candidate handoff | `6f8072e874a73ae696228d2acf9d6aaa16e3c974` | local | `2026-08-08T13:25:00+08:00` | PR #140 exposed missing Actions token wiring for live Issue read-back; focused repair and final candidate gates passed. | Commit and push refreshed checkpoint, then wait for PR #140 hosted checks. |
-| 5 | `codex/2026-08-08-v0-10-closeout-records` | `main` at `5878f213` | post-tag records-only finalization | `3815a93f07634872e646f6f7817b8b7280826b1b` | local | `2026-08-08T14:03:56+08:00` | v0.10.0 is tagged and published; governed registry and Release body now agree. | Commit/push the finalization checkpoint, then merge the records-only closeout PR. |
+| 5 | `codex/2026-08-08-v0-10-closeout-records` | `main` at `5878f213` | post-tag records-only finalization | `ec990ca821273a4028fae49a967689c43f654da4` | `main` | `2026-08-08T14:11:15+08:00` | v0.10.0 registry, Release body, and source closeout records were merged through PR #141. | Reconcile Project and Issues, then record terminal workflow completion. |
+| 6 | `codex/2026-08-08-v0-10-final-closeout` | `main` at `ec990ca` | terminal workflow records | pending | local | `2026-08-08T14:16:51+08:00` | Provider read-back is complete: canonical items are Done/published and governed source records passed finalization. | Merge this records-only completion PR. |
 
 ## Completion Summary
 
-- Outcome: In progress.
+- Outcome: Completed pending merge of this terminal records-only workflow record.
 - Changed artifacts: Workflow bootstrap only; the user-supplied work package remains untracked and unmodified.
 - Approved requirement/specification evidence: Owner work package and online Issue/Project read-back.
-- Implementation completion evidence: #96/#135/#134 core stages are merged in PR #138; #57/#133/#137 source-only closeout and its hosted-CI contract repair are merged in PR #139 as `697061d51f4e4c3308e36902095c64b78200daf0`; release records/publication remain pending.
+- Implementation completion evidence: #96/#135/#134 core stages are merged in PR #138; #57/#133/#137 source-only closeout and its hosted-CI contract repair are merged in PR #139 as `697061d51f4e4c3308e36902095c64b78200daf0`; candidate PR #140 merged as `5878f213b50bdbb4b3123a60525cdc206fd5be04`; tag, GitHub Release, and records-only PR #141 are published and merged.
 - Required test outcomes: Windows `release` 52/52 and `pr` 37/37 passed on repaired candidate `6f8072e`; targeted GitHub workflow contract tests 7/7 and WSL `closeout` 1/1 passed. Earlier fast 27/27 evidence remains valid; WSL `.NET` remains blocked-by-environment and was not selected by the WSL closeout profile.
 - Selected compliance evidence: `not-applicable`.
-- Review disposition: Pending.
-- Validation evidence: Candidate phase passed with live online Issue read-back at `6f8072e874a73ae696228d2acf9d6aaa16e3c974`; a fresh critical gate passed with 52 selected checks and 0 failures/blocks.
-- Workflow task state: V010-ISSUES, V010-VAL, V010-PKG, V010-EVAL, and V010-CLOSEOUT completed; V010-RELEASE is in progress under `software-development-orchestrator`.
+- Review disposition: PR #140 and PR #141 required hosted checks passed and were merge-commit integrated; this terminal records-only PR remains the final workflow state write.
+- Validation evidence: Candidate phase passed with live online Issue read-back at `6f8072e874a73ae696228d2acf9d6aaa16e3c974`; hosted finalization and source-only closeout verification passed on main; Project #3 and Issue read-back passed.
+- Workflow task state: V010-ISSUES, V010-VAL, V010-PKG, V010-EVAL, V010-CLOSEOUT, and V010-RELEASE are completed.
 - Commits: `0d40533`, `703cead`, `3e11779`, `e78a66c`, `f28f3fb`, `17a4f66`, `a7fba5c`, `f7904bf`, and `f76ae17` reconstruct the validated workflow stages with current commit-policy bodies.
 - Branch / checkpoint / handoff evidence: The refreshed candidate handoff checkpoint pins the exact repaired candidate commit; its containing commit must be created next.
 - Residual risks: WSL .NET remains unavailable; actual candidate/tag/publication must not begin until the source-only PR is merged. The WSL aggregate-runner fixture has its independent clock/PATH test limitations, while the selected WSL closeout profile passes.
