@@ -27,6 +27,16 @@ import ai_context_target_provenance as target_provenance
 VERSION_RE = re.compile(r"^v(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)$")
 SEMVER_RE = re.compile(r"^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)$")
 SHA_RE = re.compile(r"^[0-9a-f]{40}$")
+V010_AGENT_PUBLICATION_AUTHORITY = {
+    "tag_owner": "owner-authorized-terra-agent",
+    "trigger": "owner-approved-v0.10.0-agent-tag",
+    "automation": "github-actions",
+    "creates_or_moves_tag": False,
+    "authorization_source": "AI Collaboration Framework v0.10.0 Terra implementation work package",
+    "authorized_issue": "#137",
+    "authorized_actor": "OpenAI Codex Terra",
+    "existing_tag_mutation": "forbidden",
+}
 
 
 def load_mapping(path: Path, errors: list[str]) -> dict | None:
@@ -39,6 +49,18 @@ def load_mapping(path: Path, errors: list[str]) -> dict | None:
         errors.append(f"{path}: root must be a mapping")
         return None
     return value
+
+
+def expected_publication(version: str) -> dict:
+    """Return the only allowed tag authority for one release version."""
+    if version == "v0.10.0":
+        return V010_AGENT_PUBLICATION_AUTHORITY
+    return {
+        "tag_owner": "user",
+        "trigger": "user-created-tag",
+        "automation": "github-actions",
+        "creates_or_moves_tag": False,
+    }
 
 
 def iso_with_offset(value: object) -> bool:
@@ -126,16 +148,15 @@ def validate_distribution(
     if not isinstance(publication, dict):
         errors.append(f"{path}: distribution.publication must be a mapping")
     else:
-        expected_publication = {
-            "tag_owner": "user",
-            "trigger": "user-created-tag",
-            "automation": "github-actions",
-            "creates_or_moves_tag": False,
-        }
-        for field, expected in expected_publication.items():
-            if publication.get(field) != expected:
+        expected = expected_publication(version)
+        if version == "v0.10.0" and publication != expected:
+            errors.append(
+                f"{path}: distribution.publication must equal the bounded v0.10.0 owner-authorized Terra policy"
+            )
+        for field, value in expected.items():
+            if publication.get(field) != value:
                 errors.append(
-                    f"{path}: distribution.publication.{field} must be {expected!r}"
+                    f"{path}: distribution.publication.{field} must be {value!r}"
                 )
 
     reconciliation_sources = compatibility.get("reconciliation_sources")

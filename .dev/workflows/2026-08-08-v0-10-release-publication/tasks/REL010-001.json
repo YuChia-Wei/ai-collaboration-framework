@@ -1,0 +1,37 @@
+{
+  "template_id": "ai-context-governance-release-publication-task",
+  "template_version": "1.1.0",
+  "template_created_at": "2026-07-24T13:35:00+08:00",
+  "template_updated_at": "2026-07-27T09:52:09+08:00",
+  "task_id": "REL010-001",
+  "workflow_id": "2026-08-08-v0-10-release-publication",
+  "owner_skill": "ai-context-governance",
+  "title": "Prepare and publish REL-v0.10.0",
+  "status": "in_progress",
+  "created_at": "2026-08-08T01:43:37+08:00",
+  "updated_at": "2026-08-08T01:43:37+08:00",
+  "template_source": ".ai/assets/skills/ai-context-governance/templates/release-publication/release-publication-task.json",
+  "model": "gpt-5.6-terra",
+  "reasoning_effort": "not-runtime-reported",
+  "scope": {
+    "release_id": "REL-v0.10.0",
+    "release_record": ".dev/releases/v0.10.0/release.yaml",
+    "authorized_included_work": ["#96", "#135", "#57", "#134", "#133"],
+    "authorization_source": "Owner v0.10.0 Terra work package; online release coordination Issue #136; bounded tag authority Issue #137.",
+    "out_of_scope": [
+      "moving, recreating, deleting, replacing, or force-pushing any existing tag",
+      "native language selection or implementation",
+      "real downstream upgrader pilot",
+      "product source tree migration",
+      "merge-to-continuation handoff semantic change"
+    ]
+  },
+  "steps": [
+    "Instantiate and validate the six governed release artifacts with live GitHub Issue scope read-back.",
+    "Run release-profile package, synthetic clean-install, v0.9.0 upgrade, candidate, critical, Windows, WSL, and hosted PR gates.",
+    "Merge the candidate PR using the recorded merge-commit topology and run the current-main pre-tag command.",
+    "Create only the owner-authorized new annotated v0.10.0 tag, verify hosted publication, and complete records-only source closeout.",
+    "Reconcile canonical online Issues and Project #3 only after publication read-back succeeds."
+  ],
+  "results": null
+}

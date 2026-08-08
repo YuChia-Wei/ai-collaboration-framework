@@ -12,12 +12,12 @@
 - `workflow_id`: `2026-08-07-v0-10-validation-cost-and-release-flow`
 - `plan_id`: `development-plan-2026-08-07-v0-10-validation-cost-and-release-flow`
 - `owner_skill`: `software-development-orchestrator`
-- `branch`: `codex/2026-08-08-v0-10-closeout`
+- `branch`: `codex/2026-08-08-v0-10-release-candidate`
 - `base_branch`: `main`
-- `branch_segment`: `3`
+- `branch_segment`: `4`
 - `status`: `active`
 - `created_at`: `2026-08-07T22:12:41+08:00`
-- `updated_at`: `2026-08-08T01:25:00+08:00`
+- `updated_at`: `2026-08-08T01:43:37+08:00`
 - `template_source`: `.ai/assets/skills/software-development-orchestrator/templates/development-workflow-plan-template.md`
 - `template_version`: `1.4.0`
 - `workflow_locator`: `.dev/workflows/2026-08-07-v0-10-validation-cost-and-release-flow/workflow.yaml`
@@ -26,7 +26,7 @@
 ## Development Objective
 
 - Product or software outcome: Deliver, publish, and close `v0.10.0 — Validation Cost And Release Flow` with distinct validation profiles, deterministic execution evidence, package content identity, and source-only closeout.
-- Current lifecycle entry point: Core stages are merged on `main`; source-only closeout is committed and awaits its dedicated pull-request integration before v0.10.0 candidate work begins.
+- Current lifecycle entry point: PR #138 and PR #139 are merged on `main` at `697061d51f4e4c3308e36902095c64b78200daf0`; this fresh continuation branch owns the candidate, publication, and records-only closeout stages.
 - User constraints: Online GitHub Issues are the sole work-management authority; do not implement the native-language discussion package, a real downstream upgrader pilot, product-source-tree migration, #87, #90, or a handoff semantic change. Run WSL and `gh` only outside the sandbox.
 - Non-goals: Go/Rust/.NET AOT selection or prototype, native toolchain/binary, real downstream upgrade, product-source migration, Distribution CLI, Copilot projection, and existing immutable tag mutation.
 
@@ -172,10 +172,10 @@ No task selects a canonical sub-agent role yet. The source-framework validation 
 - Completed stages: `V010-ISSUES`, `V010-VAL`, `V010-PKG`, `V010-EVAL`, and `V010-CLOSEOUT`.
 - Deferred stages and reasons: None.
 - Open decisions: WSL .NET 10.0.302 is not currently available; no environment installation or global modification is authorized implicitly. It remains a release evidence risk while Windows/hosted alternatives are evaluated.
-- Continuation instructions: Push and merge the validated source-only closeout pull request. Then start a fresh candidate continuation from updated `main`, create the v0.10.0 records, run the immutable candidate gates, create only the authorized new tag, publish, and reconcile GitHub Issues/Project records. Before any fresh-session, host, model, runtime, push, merge, candidate, tag, publication, or finalization continuation, create and verify a registered handoff checkpoint.
+- Continuation instructions: Instantiate and validate the v0.10.0 candidate records on this branch, create and verify the candidate handoff checkpoint, push and merge the candidate PR, then run the current-main pre-tag command. Create only the authorized new tag, publish, and reconcile GitHub Issues/Project records. Before any fresh-session, host, model, runtime, push, merge, candidate, tag, publication, or finalization continuation, create and verify a registered handoff checkpoint.
 - Target policy references: `AGENTS.md`, current workflow/commit/handoff policies, release runbook, and #137.
-- Registered handoff checkpoint: None; no handoff has occurred.
-- Branch history and checkpoint handoffs: No branch checkpoint yet.
+- Registered handoff checkpoint: `.dev/workflows/2026-08-07-v0-10-validation-cost-and-release-flow/handoff-checkpoints/V010-RELEASE-candidate-ci-repair.yaml` pins repaired candidate `6f8072e874a73ae696228d2acf9d6aaa16e3c974` after the focused GitHub Actions token fix, final Windows `release`/`pr`, WSL `closeout`, live candidate Issue read-back, and a fresh critical gate. The earlier `V010-RELEASE-candidate.yaml` remains registered historical evidence.
+- Branch history and checkpoint handoffs: Segment 3 merged as PR #139; segment 4 has a refreshed release-candidate checkpoint and may push PR #140's focused CI repair for hosted revalidation.
 
 ## Branch Lifecycle
 
@@ -184,18 +184,19 @@ No task selects a canonical sub-agent role yet. The source-framework validation 
 | 1 | `codex/2026-08-07-v0-10-validation-cost-and-release-flow` | `main` | pushed format-invalid checkpoint | `0c4d21c` | `origin/codex/2026-08-07-v0-10-validation-cost-and-release-flow` | `2026-08-08T00:29:00+08:00` | Preserve pushed evidence without rewriting it. | Rebuild the same stages on segment 2. |
 | 2 | `codex/2026-08-08-v0-10-core-repair` | `main` | active repair continuation | `a7fba5c` | local | `2026-08-08T00:30:00+08:00` | Current validator requires structured bodies that the pushed checkpoint lacks. | Validate and push this branch for the core PR. |
 | 3 | `codex/2026-08-08-v0-10-closeout` | `main` at `aeaa9c1` | source-only closeout checkpoint plus hosted-CI repair | `f7904bf`, `f76ae17` | local | `2026-08-08T01:25:00+08:00` | Core PR #138 is merged; #57/#133/#137 are implemented and their direct-entrypoint contract is repaired for hosted integration. | Push, merge, then start the release-candidate continuation from updated main. |
+| 4 | `codex/2026-08-08-v0-10-release-candidate` | `main` at `697061d` | repaired release-candidate handoff | `6f8072e874a73ae696228d2acf9d6aaa16e3c974` | local | `2026-08-08T13:25:00+08:00` | PR #140 exposed missing Actions token wiring for live Issue read-back; focused repair and final candidate gates passed. | Commit and push refreshed checkpoint, then wait for PR #140 hosted checks. |
 
 ## Completion Summary
 
 - Outcome: In progress.
 - Changed artifacts: Workflow bootstrap only; the user-supplied work package remains untracked and unmodified.
 - Approved requirement/specification evidence: Owner work package and online Issue/Project read-back.
-- Implementation completion evidence: #96/#135/#134 core stages are merged in PR #138; #57/#133/#137 source-only closeout is committed in `f7904bf` plus the hosted-CI contract repair `f76ae17`, and is pending its dedicated PR merge; release records/publication remain pending.
-- Required test outcomes: Pending.
+- Implementation completion evidence: #96/#135/#134 core stages are merged in PR #138; #57/#133/#137 source-only closeout and its hosted-CI contract repair are merged in PR #139 as `697061d51f4e4c3308e36902095c64b78200daf0`; release records/publication remain pending.
+- Required test outcomes: Windows `release` 52/52 and `pr` 37/37 passed on repaired candidate `6f8072e`; targeted GitHub workflow contract tests 7/7 and WSL `closeout` 1/1 passed. Earlier fast 27/27 evidence remains valid; WSL `.NET` remains blocked-by-environment and was not selected by the WSL closeout profile.
 - Selected compliance evidence: `not-applicable`.
 - Review disposition: Pending.
-- Validation evidence: Online Issue/Project normalization read-back; preflight recorded.
+- Validation evidence: Candidate phase passed with live online Issue read-back at `6f8072e874a73ae696228d2acf9d6aaa16e3c974`; a fresh critical gate passed with 52 selected checks and 0 failures/blocks.
 - Workflow task state: V010-ISSUES, V010-VAL, V010-PKG, V010-EVAL, and V010-CLOSEOUT completed; V010-RELEASE is in progress under `software-development-orchestrator`.
 - Commits: `0d40533`, `703cead`, `3e11779`, `e78a66c`, `f28f3fb`, `17a4f66`, `a7fba5c`, `f7904bf`, and `f76ae17` reconstruct the validated workflow stages with current commit-policy bodies.
-- Branch / checkpoint / handoff evidence: Dedicated branch exists; no checkpoint.
+- Branch / checkpoint / handoff evidence: The refreshed candidate handoff checkpoint pins the exact repaired candidate commit; its containing commit must be created next.
 - Residual risks: WSL .NET remains unavailable; actual candidate/tag/publication must not begin until the source-only PR is merged. The WSL aggregate-runner fixture has its independent clock/PATH test limitations, while the selected WSL closeout profile passes.

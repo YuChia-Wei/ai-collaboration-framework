@@ -280,6 +280,21 @@ class AiContextVersionGovernanceGwtTests(unittest.TestCase):
             # Then its package, upgrade, and manual-tag identities are coherent
             self.assertEqual([], errors)
 
+    def test_gwt_011a_given_v010_owner_authorization_when_publication_policy_is_resolved_then_only_the_bounded_exception_is_allowed(self):
+        self.assertEqual(
+            VALIDATE.V010_AGENT_PUBLICATION_AUTHORITY,
+            VALIDATE.expected_publication("v0.10.0"),
+        )
+        self.assertEqual(
+            {
+                "tag_owner": "user",
+                "trigger": "user-created-tag",
+                "automation": "github-actions",
+                "creates_or_moves_tag": False,
+            },
+            VALIDATE.expected_publication("v0.9.0"),
+        )
+
     def test_gwt_012_given_governed_candidate_with_drift_when_validated_then_it_fails_closed(
         self,
     ):

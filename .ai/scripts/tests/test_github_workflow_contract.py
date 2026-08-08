@@ -256,6 +256,14 @@ class GitHubWorkflowContractTests(unittest.TestCase):
             self.workflows["publish-release.yml"]["jobs"]["publish"]["environment"],
         )
 
+    def test_gwt_006_given_candidate_state_requires_online_issue_readback_when_run_then_token_is_available(self) -> None:
+        candidate_step = next(
+            step
+            for step in steps(self.workflows["package-candidate.yml"])
+            if step.get("name") == "Validate exact candidate state"
+        )
+        self.assertEqual({"GH_TOKEN": "${{ github.token }}"}, candidate_step.get("env"))
+
 
 if __name__ == "__main__":
     unittest.main()

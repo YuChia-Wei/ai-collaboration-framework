@@ -117,6 +117,17 @@ class ReleaseNotesRendererTests(unittest.TestCase):
         with self.assertRaisesRegex(RENDERER.ReleaseNotesError, "duplicates"):
             RENDERER.render_body_text(data, "# Notes", "# Migration", COMMIT)
 
+    def test_gwt_005a_given_v010_online_issue_refs_when_rendered_then_they_are_the_exact_included_work(self) -> None:
+        data = release_record("3.0.0", ["v0.9.0"])
+        data.update({"release_id": "REL-v0.10.0", "version": "v0.10.0"})
+        data["planning"] = {"github_issue_refs": ["#96", "#135", "#57"]}
+        rendered = RENDERER.render_body_text(data, "# Notes", "# Migration", COMMIT)
+        included = rendered.split("## Included Work", 1)[1].split(
+            "## Release provenance", 1
+        )[0]
+        for issue_ref in ("#96", "#135", "#57"):
+            self.assertEqual(1, included.count(f"`{issue_ref}`"))
+
     def test_gwt_006_given_pre_v070_release_when_rendered_then_historical_shape_remains_compatible(self) -> None:
         data = release_record("1.0.0", ["v0.4.2"])
         rendered = RENDERER.render_body_text(data, "# Notes", "# Migration", COMMIT)
