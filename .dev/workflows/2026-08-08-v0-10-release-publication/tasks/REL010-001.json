@@ -7,9 +7,9 @@
   "workflow_id": "2026-08-08-v0-10-release-publication",
   "owner_skill": "ai-context-governance",
   "title": "Prepare and publish REL-v0.10.0",
-  "status": "in_progress",
+  "status": "completed",
   "created_at": "2026-08-08T01:43:37+08:00",
-  "updated_at": "2026-08-08T01:43:37+08:00",
+  "updated_at": "2026-08-08T14:16:51+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/release-publication/release-publication-task.json",
   "model": "gpt-5.6-terra",
   "reasoning_effort": "not-runtime-reported",
@@ -33,5 +33,26 @@
     "Create only the owner-authorized new annotated v0.10.0 tag, verify hosted publication, and complete records-only source closeout.",
     "Reconcile canonical online Issues and Project #3 only after publication read-back succeeds."
   ],
-  "results": null
+  "results": {
+    "summary": "Published REL-v0.10.0 from the validated candidate, reconciled the published registry and live Release body, and completed Project and Issue closeout without mutating the immutable tag or release assets.",
+    "finding_status": "addressed",
+    "candidate_pull_request": "https://github.com/YuChia-Wei/ai-collaboration-prompts-dotnet-backend/pull/140",
+    "merged_commit": "5878f213b50bdbb4b3123a60525cdc206fd5be04",
+    "tag_object": "6d5c7ed6e903f89b6a5b69bb3b69b419033680ed",
+    "tag_commit": "5878f213b50bdbb4b3123a60525cdc206fd5be04",
+    "publication_run": "31242089985",
+    "public_release_url": "https://github.com/YuChia-Wei/ai-collaboration-prompts-dotnet-backend/releases/tag/v0.10.0",
+    "source_closeout_pull_request": "https://github.com/YuChia-Wei/ai-collaboration-prompts-dotnet-backend/pull/141",
+    "source_closeout_merge": "ec990ca821273a4028fae49a967689c43f654da4",
+    "project_readback": "#57, #96, #133, #134, and #135 read Done / v0.10.0; #136 and #137 read Done / Not applicable source governance; #95 and #97 remain open by owner direction.",
+    "tests_run": [
+      "repaired candidate release profile: 52 selected, 0 failed, 0 blocked",
+      "PR #140 hosted checks: 5/5 passed",
+      "tag and GitHub publication workflow run 31242089985 passed",
+      "hosted finalization and source-only closeout verification passed from main",
+      "terminal closeout profile: 1 selected, 1 executed, 0 failed, 0 blocked"
+    ],
+    "follow_up_needed": false,
+    "next_action": "None for v0.10.0; preserve the immutable tag and public Release."
+  }
 }
