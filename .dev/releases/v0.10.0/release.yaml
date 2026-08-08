@@ -36,7 +36,7 @@ distribution:
   profile_id: dotnet-backend
   package_id: ai-context-dotnet-backend-v0.10.0
   schema_versions:
-    package: 2.0.0
+    package: 2.1.0
     files: 2.0.0
     migration: 3.0.0
   artifacts:
@@ -68,7 +68,7 @@ validation:
   - 2026-08-07-v0-10-validation-cost-and-release-flow
   related_assessments: []
   package_status: validated
-  post_merge_status: pending
+  post_merge_status: passed
   failed_publication_run: null
   published_run: '31242089985'
   public_release_url: https://github.com/YuChia-Wei/ai-collaboration-prompts-dotnet-backend/releases/tag/v0.10.0

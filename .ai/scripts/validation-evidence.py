@@ -14,7 +14,12 @@ from pathlib import Path
 from typing import Iterable
 
 
-SCHEMA_VERSION = "1.0.0"
+SCHEMA_VERSION = "2.0.0"
+# Reuse eligibility is intentionally independent from the emitted evidence
+# schema.  Existing successful evidence remains safe to reuse when the input
+# and validator fingerprints still match; a presentation-schema increment must
+# not turn an otherwise valid run into a cache-read failure.
+CACHE_SCHEMA_VERSION = "1.0.0"
 OUTCOMES = {"passed", "failed", "blocked-by-environment", "not-applicable", "deferred-with-owner"}
 DISPOSITIONS = {"executed", "reused", "not-selected", "timed-out", "cancelled"}
 
@@ -192,12 +197,12 @@ def cache_key(
 
 def load_cache(path: Path) -> dict[str, object]:
     if not path.exists():
-        return {"schema_version": SCHEMA_VERSION, "entries": {}}
+        return {"schema_version": CACHE_SCHEMA_VERSION, "entries": {}}
     try:
         value = json.loads(path.read_text(encoding="utf-8"))
     except (OSError, json.JSONDecodeError) as exc:
         raise EvidenceError(f"cannot read validation evidence cache: {path}") from exc
-    if value.get("schema_version") != SCHEMA_VERSION or not isinstance(value.get("entries"), dict):
+    if value.get("schema_version") != CACHE_SCHEMA_VERSION or not isinstance(value.get("entries"), dict):
         raise EvidenceError("validation evidence cache schema is invalid")
     return value
 
@@ -287,6 +292,10 @@ def record(arguments: argparse.Namespace) -> None:
         raise EvidenceError("validation duration does not match timestamps")
     if arguments.suppressed_output_bytes < -1:
         raise EvidenceError("invalid suppressed output byte count")
+    if not arguments.selection_reason or "\t" in arguments.selection_reason or "\n" in arguments.selection_reason:
+        raise EvidenceError("invalid selection reason")
+    if not arguments.changed_paths_digest:
+        raise EvidenceError("missing changed paths digest")
     repo = Path(arguments.repo).resolve()
     log_path = Path(arguments.log_path)
     if not log_path.is_absolute():
@@ -313,12 +322,45 @@ def record(arguments: argparse.Namespace) -> None:
             if arguments.suppressed_output_bytes == -1
             else arguments.suppressed_output_bytes
         ),
-        "subprocess_count": arguments.subprocess_count,
+        # The aggregate runner can observe only the top-level process it starts.
+        # Child scripts are not yet instrumented, so claiming a numeric nested
+        # process total would be a proxy metric rather than execution evidence.
+        "subprocess_count": None,
         "temp_repository_count": None,
         "retry_count": 0,
         "cache_hit": arguments.cache_hit,
         "log_ref": log_ref,
         "selection_reason": arguments.selection_reason,
+        "selection": {
+            "changed_paths_digest": arguments.changed_paths_digest,
+            "reason": arguments.selection_reason,
+        },
+        "metrics": {
+            "output_bytes": {"availability": "observed", "value": len(content)},
+            "output_lines": {"availability": "observed", "value": count_lines(content)},
+            "suppressed_output_bytes": {
+                "availability": "observed",
+                "value": len(content)
+                if arguments.suppressed_output_bytes == -1
+                else arguments.suppressed_output_bytes,
+            },
+            "child_process_count": {
+                "availability": "unavailable",
+                "reason": "child-script-not-instrumented",
+                "value": None,
+            },
+            "git_invocation_count": {
+                "availability": "unavailable",
+                "reason": "child-script-not-instrumented",
+                "value": None,
+            },
+            "temp_repository_count": {
+                "availability": "unavailable",
+                "reason": "child-script-not-instrumented",
+                "value": None,
+            },
+            "retry_count": {"availability": "observed", "value": 0},
+        },
     }
     evidence = Path(arguments.evidence)
     evidence.parent.mkdir(parents=True, exist_ok=True)
@@ -345,7 +387,7 @@ def record(arguments: argparse.Namespace) -> None:
 def finalize(arguments: argparse.Namespace) -> None:
     for line in Path(arguments.events).read_text(encoding="utf-8").splitlines():
         fields = line.split("\t")
-        if len(fields) != 10:
+        if len(fields) != 12:
             raise EvidenceError("validation evidence event is malformed")
         (
             validator_id,
@@ -358,6 +400,8 @@ def finalize(arguments: argparse.Namespace) -> None:
             cache_hit,
             log_path,
             suppressed_bytes,
+            selection_reason,
+            changed_paths_digest,
         ) = fields
         started = int(started_ms)
         completed = int(completed_ms)
@@ -378,10 +422,11 @@ def finalize(arguments: argparse.Namespace) -> None:
                 completed_ms=completed,
                 duration_ms=completed - started,
                 suppressed_output_bytes=int(suppressed_bytes),
-                subprocess_count=1 if disposition == "executed" else 0,
+                subprocess_count=None,
                 cache_hit=cache_hit == "true",
                 log_path=log_path,
-                selection_reason="profile=" + arguments.profile + ";registry-membership-or-dependency",
+                selection_reason=selection_reason,
+                changed_paths_digest=changed_paths_digest,
             )
         )
 
@@ -400,6 +445,9 @@ def summarize(arguments: argparse.Namespace) -> None:
         "records": len(records),
         "executed": sum(record["execution_disposition"] == "executed" for record in records),
         "reused": sum(record["execution_disposition"] == "reused" for record in records),
+        "not_selected": sum(
+            record["execution_disposition"] == "not-selected" for record in records
+        ),
         "dispositions": {
             disposition: sum(
                 record["execution_disposition"] == disposition for record in records
@@ -418,6 +466,52 @@ def summarize(arguments: argparse.Namespace) -> None:
     )
 
 
+def workflow_summary(arguments: argparse.Namespace) -> None:
+    evidence = Path(arguments.evidence)
+    records = [
+        json.loads(line)
+        for line in evidence.read_text(encoding="utf-8").splitlines()
+        if line.strip()
+    ] if evidence.exists() else []
+    active_execution_ms = sum(
+        int(record["duration_ms"])
+        for record in records
+        if record["execution_disposition"] == "executed"
+    )
+    unknown_ms = max(0, arguments.wall_span_ms - active_execution_ms)
+    payload = {
+        "schema_version": "1.0.0",
+        "workflow_id": arguments.workflow_id or None,
+        "profile": arguments.profile,
+        "wall_span_ms": arguments.wall_span_ms,
+        "segments": {
+            "active_execution_ms": active_execution_ms,
+            "external_wait_ms": None,
+            "approval_wait_ms": None,
+            "environment_retry_ms": None,
+            "unknown_ms": unknown_ms,
+        },
+        "validator_invocations": len(records),
+        "executed_results": sum(
+            record["execution_disposition"] == "executed" for record in records
+        ),
+        "reused_results": sum(
+            record["execution_disposition"] == "reused" for record in records
+        ),
+        "not_selected_results": sum(
+            record["execution_disposition"] == "not-selected" for record in records
+        ),
+        "retry_count": 0,
+        "sub_agents": {"availability": "unavailable", "value": None},
+        "observability": {"export_status": "unavailable", "trace_id": None},
+    }
+    Path(arguments.output).write_text(
+        json.dumps(payload, ensure_ascii=False, sort_keys=True, indent=2) + "\n",
+        encoding="utf-8",
+        newline="\n",
+    )
+
+
 def parser() -> argparse.ArgumentParser:
     result = argparse.ArgumentParser(description=__doc__)
     commands = result.add_subparsers(dest="command", required=True)
@@ -426,6 +520,7 @@ def parser() -> argparse.ArgumentParser:
     record_parser = commands.add_parser("record")
     finalize_parser = commands.add_parser("finalize")
     summary_parser = commands.add_parser("summarize")
+    workflow_summary_parser = commands.add_parser("workflow-summary")
     for command in (lookup_parser, record_parser):
         command.add_argument("--repo", required=True)
         command.add_argument("--cache", required=True)
@@ -460,10 +555,16 @@ def parser() -> argparse.ArgumentParser:
     record_parser.add_argument("--cache-hit", action="store_true")
     record_parser.add_argument("--log-path", required=True)
     record_parser.add_argument("--selection-reason", required=True)
+    record_parser.add_argument("--changed-paths-digest", default="unavailable")
     summary_parser.add_argument("--evidence", required=True)
     summary_parser.add_argument("--output", required=True)
     summary_parser.add_argument("--invocation-id", required=True)
     summary_parser.add_argument("--profile", required=True)
+    workflow_summary_parser.add_argument("--evidence", required=True)
+    workflow_summary_parser.add_argument("--output", required=True)
+    workflow_summary_parser.add_argument("--profile", required=True)
+    workflow_summary_parser.add_argument("--wall-span-ms", type=int, required=True)
+    workflow_summary_parser.add_argument("--workflow-id", default="")
     return result
 
 
@@ -478,6 +579,8 @@ def main() -> int:
             finalize(arguments)
         elif arguments.command == "record":
             record(arguments)
+        elif arguments.command == "workflow-summary":
+            workflow_summary(arguments)
         else:
             summarize(arguments)
     except EvidenceError as exc:

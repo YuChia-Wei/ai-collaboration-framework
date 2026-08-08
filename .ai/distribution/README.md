@@ -5,6 +5,8 @@ This directory owns source-side, machine-readable contracts for building portabl
 ## Entry Points
 
 - `profiles/dotnet-backend.yaml` defines the initial complete distribution profile, source allowlist, ownership classes, and exclusions.
+- `../assets/shared/PRODUCT-SOURCE-PROJECTION-CONTRACT.md` defines the single canonical product-source and derived-projection boundary.
+- `CLI-TOOLING-CONTRACT.md` defines the contract-only Distribution CLI, Portable Validator Engine, and source-only Source Maintainer CLI boundaries.
 - `schemas/package.schema.yaml` defines package-envelope metadata.
 - `schemas/files.schema.yaml` defines the generated per-file inventory.
 - `schemas/migration.schema.yaml` defines version-to-version migration operations.

@@ -1,0 +1,86 @@
+schema_version: '1.0'
+release_id: REL-v0.11.0
+version: v0.11.0
+status: candidate
+record_origin: governed
+distribution_kind: governed-package
+installable: true
+tag: v0.11.0
+commit: pending-exact-candidate
+created_at: '2026-08-09T00:44:44+08:00'
+updated_at: '2026-08-09T00:44:44+08:00'
+planning:
+  github_issue_refs:
+  - '#96'
+  - '#95'
+  - '#145'
+  - '#146'
+  - '#147'
+  - '#148'
+  coordination_issue: '#151'
+  publication_authority_issue: '#152'
+compatibility:
+  breaking_changes: true
+  minimum_source_version: v0.10.0
+  reconciliation_sources:
+  - v0.10.0
+  automatic_upgrade_sources:
+  - v0.10.0
+  affected_contracts:
+  - canonical product source and deterministic projection boundary
+  - changed-path validation selection and truthful execution evidence
+  - portable environment readiness
+  - Distribution CLI, Validator Engine, and Source Maintainer CLI contracts
+  - terminal release, workflow, and Issue lifecycle convergence
+artifacts:
+  release_notes: release-notes.md
+  migration_guide: migration-guide.md
+distribution:
+  profile_id: dotnet-backend
+  package_id: ai-context-dotnet-backend-v0.11.0
+  schema_versions:
+    package: 2.1.0
+    files: 2.0.0
+    migration: 3.0.0
+    product_source: 1.0.0
+    evidence: 2.0.0
+    readiness: 1.0.0
+    cli_contract: 1.0.0
+  product_source:
+    authority: current-canonical-assets
+    projection: distribution-profile
+    source_only_runtime_profiles:
+    - .codex/agents/bounded-general-worker.toml
+    - .codex/agents/bounded-routine-worker.toml
+  artifacts:
+    zip: ai-context-dotnet-backend-v0.11.0.zip
+    zip_checksum: ai-context-dotnet-backend-v0.11.0.zip.sha256
+    tar_gz: ai-context-dotnet-backend-v0.11.0.tar.gz
+    tar_gz_checksum: ai-context-dotnet-backend-v0.11.0.tar.gz.sha256
+  migration:
+    default_mode: dry-run
+    apply_requires_clean_worktree: true
+    apply_requires_acknowledged_reconciliation: true
+  publication:
+    tag_owner: owner-authorized-sol-agent
+    trigger: owner-approved-v0.11.0-agent-tag
+    automation: manual-fast-path
+    creates_or_moves_tag: false
+    authorization_source: AI framework v0.11.0 Sol MAX work package and online Issue #152
+    authorized_issue: '#152'
+    authorized_actor: OpenAI Codex Sol
+    existing_tag_mutation: forbidden
+validation:
+  evidence: 'Execution was explicitly deferred by the owner for this fast-path delivery; no unexecuted validator is represented as passed. Exact Git and GitHub provider read-back remains required for publication identity.'
+  workflow_id: 2026-08-09-v0-11-product-boundary-delivery-evidence
+  related_workflows:
+  - 2026-08-07-v0-10-validation-cost-and-release-flow
+  related_assessments: []
+  package_status: deferred-with-owner
+  post_merge_status: pending
+  published_run: null
+  public_release_url: null
+deferred_issues:
+- '#149'
+- '#150'
+- '#153'

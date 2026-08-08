@@ -1,0 +1,88 @@
+schema_version: "1.0"
+policy_id: "environment-readiness"
+status: "active-portable-vocabulary"
+purpose: >-
+  Define portable readiness states and safe preflight behavior without treating
+  local machine observations, prerequisites, or execution evidence as the same authority.
+
+authority_model:
+  tracked_policy: ".dev/ai-context/environment-policy.yaml"
+  local_readiness_snapshot:
+    path: ".dev/ai-context/local/environment-readiness.json"
+    status: "prohibited-until-a-tracked-ignore-rule-exists"
+    requirements:
+      - "data-only JSON"
+      - "contains no secret values"
+      - "is ignored before it is created"
+      - "is never an execution-pass receipt"
+  prerequisite_declarations:
+    allowed_owners:
+      - "validator registry"
+      - "skill contract"
+      - "profile or component manifest"
+      - "target-owned command contract"
+  execution_evidence:
+    rule: "A workflow, validator, or command receipt records actual execution separately from readiness."
+
+capability_states:
+  availability:
+    allowed_values: ["available", "unavailable", "unknown"]
+    meaning: "Whether the capability can be discovered in the observed environment."
+  authorization:
+    allowed_values: ["allowed", "disallowed", "unknown"]
+    meaning: "Whether the current policy and runtime boundary permit use of the capability."
+  verification:
+    allowed_values: ["verified", "unverified", "stale", "blocked"]
+    meaning: "Whether bounded read-only evidence currently supports the declared readiness assertion."
+
+read_only_preflight:
+  permitted:
+    - "executable lookup"
+    - "version read"
+    - "dotnet --info"
+    - "python3 --version"
+    - "import-only PyYAML check"
+    - "git --version"
+    - "filesystem read/write policy inspection"
+    - "runtime capability metadata read-back"
+    - "sandbox capability read-back"
+  prohibited_by_default:
+    - "dotnet restore, build, or test"
+    - "package installation"
+    - "network download"
+    - "privilege elevation"
+    - "credential access"
+    - "production file mutation"
+
+freshness:
+  required_fields:
+    - "observed_at"
+    - "ttl"
+    - "environment_policy_digest"
+    - "repository_config_digest"
+    - "runtime_identity"
+    - "invalidated_by"
+  invalidated_by:
+    - "PATH change"
+    - "runtime update"
+    - "sandbox change"
+    - "target policy change"
+    - "working directory change"
+    - "version requirement change"
+    - "file permission change"
+    - "explicit refresh"
+
+consumer_behavior:
+  required_sequence:
+    - "read readiness"
+    - "validate freshness"
+    - "compare declared prerequisite"
+    - "perform bounded live preflight"
+    - "execute the separately authorized operation"
+    - "write separate execution evidence"
+  prohibited_inferences:
+    - "A ready or verified snapshot does not prove a later command, build, test, package, or release passed."
+    - "A source-host fixture is not a portable default."
+    - "Unknown, unavailable, disallowed, stale, or blocked readiness must not be silently upgraded to success."
+  secret_handling: "Readiness records and evidence must not contain secret values."
+

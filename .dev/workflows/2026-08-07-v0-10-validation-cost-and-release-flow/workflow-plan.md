@@ -15,7 +15,7 @@
 - `branch`: `codex/2026-08-08-v0-10-release-candidate`
 - `base_branch`: `main`
 - `branch_segment`: `4`
-- `status`: `active`
+- `status`: `completed`
 - `created_at`: `2026-08-07T22:12:41+08:00`
 - `updated_at`: `2026-08-08T01:43:37+08:00`
 - `template_source`: `.ai/assets/skills/software-development-orchestrator/templates/development-workflow-plan-template.md`
@@ -127,7 +127,7 @@ No task selects a canonical sub-agent role yet. The source-framework validation 
 
 | Stage | Role / Canonical Path | Owning Skill | Final/Current Disposition | Attempt Summary | Final Integration Owner / Decision | Record or Task Reference |
 | --- | --- | --- | --- | --- | --- | --- |
-| V010-VAL | no canonical implementation role selected | ai-context-governance | `not-applicable` | no implementation attempt yet | workflow parent / pending | `tasks/V010-VAL.json` |
+| V010-VAL | no canonical implementation role selected | ai-context-governance | `not-applicable` | validation-profile stage completed in PR #138 | workflow parent / accepted | `tasks/V010-VAL.json` |
 | V010-PKG | no canonical implementation role selected | ai-context-governance | `not-applicable` | identity stage completed in `e78a66c` | workflow parent / accepted | `tasks/V010-PKG.json` |
 | V010-EVAL | no canonical implementation role selected | ai-context-governance | `not-applicable` | evidence stage completed in `17a4f66` | workflow parent / accepted | `tasks/V010-EVAL.json` |
 
@@ -156,8 +156,8 @@ No task selects a canonical sub-agent role yet. The source-framework validation 
 
 | Level | Outcome | Evidence | Deferral Owner / Follow-up |
 | --- | --- | --- | --- |
-| unit | `pending` | To be recorded per selected profile. |  |
-| integration | `pending` | To be recorded per selected profile. |  |
+| unit | `passed` | Recorded by the completed selected-profile evidence in the task records. |  |
+| integration | `passed` | Recorded by the completed Windows, WSL, and hosted evidence in the task records. |  |
 
 ## Spec Compliance Selection
 
@@ -186,11 +186,11 @@ No task selects a canonical sub-agent role yet. The source-framework validation 
 | 3 | `codex/2026-08-08-v0-10-closeout` | `main` at `aeaa9c1` | source-only closeout checkpoint plus hosted-CI repair | `f7904bf`, `f76ae17` | local | `2026-08-08T01:25:00+08:00` | Core PR #138 is merged; #57/#133/#137 are implemented and their direct-entrypoint contract is repaired for hosted integration. | Push, merge, then start the release-candidate continuation from updated main. |
 | 4 | `codex/2026-08-08-v0-10-release-candidate` | `main` at `697061d` | repaired release-candidate handoff | `6f8072e874a73ae696228d2acf9d6aaa16e3c974` | local | `2026-08-08T13:25:00+08:00` | PR #140 exposed missing Actions token wiring for live Issue read-back; focused repair and final candidate gates passed. | Commit and push refreshed checkpoint, then wait for PR #140 hosted checks. |
 | 5 | `codex/2026-08-08-v0-10-closeout-records` | `main` at `5878f213` | post-tag records-only finalization | `ec990ca821273a4028fae49a967689c43f654da4` | `main` | `2026-08-08T14:11:15+08:00` | v0.10.0 registry, Release body, and source closeout records were merged through PR #141. | Reconcile Project and Issues, then record terminal workflow completion. |
-| 6 | `codex/2026-08-08-v0-10-final-closeout` | `main` at `ec990ca` | terminal workflow records | pending | local | `2026-08-08T14:16:51+08:00` | Provider read-back is complete: canonical items are Done/published and governed source records passed finalization. | Merge this records-only completion PR. |
+| 6 | `codex/2026-08-08-v0-10-final-closeout` | `main` at `ec990ca` | terminal workflow records | `6a78c95f5e8af28a46f40df8c9d52807615f9ae4` | `main` | `2026-08-08T14:16:51+08:00` | Provider read-back is complete: canonical items are Done/published and governed source records passed finalization. | Completed. |
 
 ## Completion Summary
 
-- Outcome: Completed pending merge of this terminal records-only workflow record.
+- Outcome: Completed and merged; the terminal records-only workflow record is authoritative.
 - Changed artifacts: Workflow bootstrap only; the user-supplied work package remains untracked and unmodified.
 - Approved requirement/specification evidence: Owner work package and online Issue/Project read-back.
 - Implementation completion evidence: #96/#135/#134 core stages are merged in PR #138; #57/#133/#137 source-only closeout and its hosted-CI contract repair are merged in PR #139 as `697061d51f4e4c3308e36902095c64b78200daf0`; candidate PR #140 merged as `5878f213b50bdbb4b3123a60525cdc206fd5be04`; tag, GitHub Release, and records-only PR #141 are published and merged.
