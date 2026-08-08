@@ -1,0 +1,15 @@
+schema_version: "1.0"
+release: "v0.11.0"
+checks:
+  candidate:
+    command: "python .ai/scripts/validate-ai-context-release-state.py --phase candidate --version v0.11.0"
+    owner_disposition: "deferred-with-owner"
+  tag:
+    command: "python .ai/scripts/validate-ai-context-release-state.py --phase tag --version v0.11.0"
+    owner_disposition: "deferred-with-owner"
+  publication:
+    command: "python .ai/scripts/validate-ai-context-release-state.py --phase publication --version v0.11.0 --hosted"
+    owner_disposition: "deferred-with-owner"
+  finalization:
+    command: "python .ai/scripts/validate-ai-context-release-state.py --phase finalization --version v0.11.0 --hosted"
+    owner_disposition: "deferred-with-owner"

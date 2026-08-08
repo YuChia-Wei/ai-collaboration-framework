@@ -20,4 +20,4 @@ The candidate requires release-profile package, clean-install, v0.9.0 upgrade, W
 
 ## Publication Completion
 
-Complete this section only after the new annotated v0.10.0 tag and GitHub Release are read back successfully.
+The annotated `v0.10.0` tag, GitHub Release, governed ZIP and tar archives, and adjacent checksum sidecars were published and read back successfully. The immutable release points to `5878f213b50bdbb4b3123a60525cdc206fd5be04`; later source-only closeout records do not alter those bytes.

@@ -46,6 +46,11 @@ declare -A CHECK_DISPOSITION=()
 declare -A CHECK_COMMAND=()
 declare -A CHECK_APPLICABILITY=()
 declare -A SELECTED_CHECK_IDS=()
+declare -A SELECTION_REASON_BY_ID=()
+declare -A CHANGED_PATHS=()
+CHANGED_PATHS_DIGEST=unavailable
+SELECTION_MODE=profile-full
+SELECTION_ESCALATION_REASON=
 
 register_profile() {
     local id=$1 purpose=$2 budget=$3 enforcement=$4
@@ -147,12 +152,146 @@ select_with_dependencies() {
     done
 }
 
-prepare_profile_selection() {
-    local id
+prepare_full_profile_selection() {
+    local reason=$1 id
+    SELECTED_CHECK_IDS=()
     for id in "${CHECK_IDS[@]}"; do
         if profiles_include "${CHECK_PROFILES[$id]}" "$PROFILE"; then
             select_with_dependencies "$id" || return 1
         fi
+    done
+    for id in "${!SELECTED_CHECK_IDS[@]}"; do
+        SELECTION_REASON_BY_ID["$id"]="full-profile-escalation:$reason"
+    done
+}
+
+path_is_safe() {
+    local path=$1 segment old_ifs
+    case "$path" in
+        ''|/*|*\\*|*'//'*) return 1 ;;
+    esac
+    [[ "$path" =~ ^[A-Za-z]: ]] && return 1
+    old_ifs=$IFS
+    IFS=/
+    for segment in $path; do
+        [ -n "$segment" ] && [ "$segment" != . ] && [ "$segment" != .. ] || { IFS=$old_ifs; return 1; }
+    done
+    IFS=$old_ifs
+    return 0
+}
+
+add_changed_path() {
+    local path=$1
+    path_is_safe "$path" || return 1
+    CHANGED_PATHS["$path"]=changed
+}
+
+input_owns_path() {
+    local path=$1 token
+    for token in $2; do
+        case "$token" in
+            *'**'|*'?'|*'['*) [[ "$path" == $token ]] && return 0 ;;
+            *) [[ "$path" == "$token" || "$path" == "$token/"* ]] && return 0 ;;
+        esac
+    done
+    return 1
+}
+
+is_global_invalidator() {
+    case "$1" in
+        .ai/scripts/validation-profile-registry.sh|.ai/scripts/check-all.sh|.ai/scripts/validation-evidence.py|.github/workflows/*)
+            return 0 ;;
+    esac
+    return 1
+}
+
+collect_changed_paths() {
+    local base=$1 head=$2 temporary status first second
+    temporary=$(mktemp) || return 1
+    if ! git diff --name-status --find-renames --find-copies -z "$base" "$head" > "$temporary"; then
+        rm -f "$temporary"
+        return 1
+    fi
+    while IFS= read -r -d '' status; do
+        case "$status" in
+            R*|C*)
+                IFS= read -r -d '' first && IFS= read -r -d '' second || { rm -f "$temporary"; return 1; }
+                add_changed_path "$first" && add_changed_path "$second" || { rm -f "$temporary"; return 1; }
+                ;;
+            *)
+                IFS= read -r -d '' first || { rm -f "$temporary"; return 1; }
+                add_changed_path "$first" || { rm -f "$temporary"; return 1; }
+                ;;
+        esac
+    done < "$temporary"
+    rm -f "$temporary"
+    CHANGED_PATHS_DIGEST=$(printf '%s\n' "${!CHANGED_PATHS[@]}" | LC_ALL=C sort | sha256sum | awk '{print $1}')
+    CHANGED_PATHS_DIGEST=${CHANGED_PATHS_DIGEST:-unavailable}
+}
+
+prepare_changed_path_selection() {
+    local base=$1 head=$2 path id owned active_owned
+    if ! collect_changed_paths "$base" "$head"; then
+        SELECTION_ESCALATION_REASON=changed-path-diff-unavailable
+        prepare_full_profile_selection "$SELECTION_ESCALATION_REASON"
+        return
+    fi
+    for path in "${!CHANGED_PATHS[@]}"; do
+        if is_global_invalidator "$path"; then
+            SELECTION_ESCALATION_REASON=global-invalidator
+            prepare_full_profile_selection "$SELECTION_ESCALATION_REASON"
+            return
+        fi
+        owned=false
+        active_owned=false
+        for id in "${CHECK_IDS[@]}"; do
+            if input_owns_path "$path" "${CHECK_INPUT_PATHS[$id]}"; then
+                owned=true
+                if profiles_include "${CHECK_PROFILES[$id]}" "$PROFILE"; then
+                    active_owned=true
+                    SELECTED_CHECK_IDS["$id"]=selected
+                    SELECTION_REASON_BY_ID["$id"]=changed-path-match
+                fi
+            fi
+        done
+        if [ "$owned" = false ]; then
+            SELECTION_ESCALATION_REASON=unknown-impact-path
+            prepare_full_profile_selection "$SELECTION_ESCALATION_REASON"
+            return
+        fi
+    done
+    for id in "${!SELECTED_CHECK_IDS[@]}"; do
+        select_with_dependencies "$id" || {
+            SELECTION_ESCALATION_REASON=dependency-resolution-failed
+            prepare_full_profile_selection "$SELECTION_ESCALATION_REASON"
+            return
+        }
+    done
+    for id in "${!SELECTED_CHECK_IDS[@]}"; do
+        [ -n "${SELECTION_REASON_BY_ID[$id]:-}" ] || SELECTION_REASON_BY_ID["$id"]=dependency-expansion
+    done
+    SELECTION_MODE=changed-path
+}
+
+prepare_profile_selection() {
+    local implicit_base
+    if [ -n "$BASE_SHA" ] || [ -n "$HEAD_SHA" ]; then
+        if [ -z "$BASE_SHA" ] || [ -z "$HEAD_SHA" ] ||
+            ! git rev-parse --verify "${BASE_SHA}^{commit}" >/dev/null 2>&1 ||
+            ! git rev-parse --verify "${HEAD_SHA}^{commit}" >/dev/null 2>&1; then
+            SELECTION_ESCALATION_REASON=comparison-base-unavailable
+            prepare_full_profile_selection "$SELECTION_ESCALATION_REASON"
+        else
+            prepare_changed_path_selection "$BASE_SHA" "$HEAD_SHA"
+        fi
+    elif implicit_base=$(git merge-base HEAD '@{upstream}' 2>/dev/null); then
+        prepare_changed_path_selection "$implicit_base" HEAD
+    else
+        SELECTION_ESCALATION_REASON=comparison-base-unavailable
+        prepare_full_profile_selection "$SELECTION_ESCALATION_REASON"
+    fi
+    for id in "${CHECK_IDS[@]}"; do
+        [ -n "${SELECTION_REASON_BY_ID[$id]:-}" ] || SELECTION_REASON_BY_ID["$id"]=not-selected-unmatched-input-contract
     done
 }
 
@@ -164,7 +303,7 @@ check_is_selected() {
 
 show_usage() {
     cat <<'EOF'
-Usage: ./check-all.sh [--profile <fast|pr|release|closeout|nightly-full>] [--verbose]
+Usage: ./check-all.sh [--profile <fast|pr|release|closeout|nightly-full>] [--base <sha> --head <sha>] [--verbose]
 
 Profiles:
   fast          Local development feedback (30 seconds, report-and-warn)
@@ -184,6 +323,8 @@ EOF
 PROFILE=nightly-full
 VERBOSE=false
 PROFILE_EXPLICIT=false
+BASE_SHA=
+HEAD_SHA=
 while [ "$#" -gt 0 ]; do
     case "$1" in
         --profile)
@@ -214,6 +355,16 @@ while [ "$#" -gt 0 ]; do
             [ "$VERBOSE" = false ] || { show_usage >&2; exit 2; }
             VERBOSE=true
             shift
+            ;;
+        --base)
+            [ "$#" -ge 2 ] && [ -z "$BASE_SHA" ] || { show_usage >&2; exit 2; }
+            BASE_SHA=$2
+            shift 2
+            ;;
+        --head)
+            [ "$#" -ge 2 ] && [ -z "$HEAD_SHA" ] || { show_usage >&2; exit 2; }
+            HEAD_SHA=$2
+            shift 2
             ;;
         --help|-h)
             [ "$#" -eq 1 ] || { show_usage >&2; exit 2; }
@@ -359,6 +510,7 @@ EVIDENCE_SUMMARY="$LOG_DIR/evidence-summary.json"
 EVIDENCE_CACHE="$LOG_BASE/evidence-cache.json"
 EVIDENCE_SELECTION="$LOG_DIR/evidence-selection.tsv"
 EVIDENCE_EVENTS="$LOG_DIR/evidence-events.tsv"
+EVIDENCE_CHANGED_PATHS="$LOG_DIR/changed-paths.txt"
 declare -A EVIDENCE_FINGERPRINT_BY_ID=()
 declare -A EVIDENCE_CACHE_HIT_BY_ID=()
 declare -A EVIDENCE_PRIOR_LOG_BY_ID=()
@@ -399,7 +551,6 @@ prepare_all_validation_evidence() {
     }
     : > "$EVIDENCE_SELECTION"
     for id in "${CHECK_IDS[@]}"; do
-        [ -n "${SELECTED_CHECK_IDS[$id]:-}" ] || continue
         version=$(validator_version "$id")
         VALIDATOR_VERSION_BY_ID["$id"]=$version
         printf '%s\t%s\t%s\t%s\n' \
@@ -419,7 +570,6 @@ prepare_all_validation_evidence() {
         EVIDENCE_PRIOR_LOG_BY_ID["$record"]=$prior_log
     done <<< "$prepared"
     for id in "${CHECK_IDS[@]}"; do
-        [ -n "${SELECTED_CHECK_IDS[$id]:-}" ] || continue
         [ -n "${EVIDENCE_FINGERPRINT_BY_ID[$id]:-}" ] || {
             echo "Validation evidence preparation omitted selected check: $id" >&2
             return 1
@@ -429,13 +579,15 @@ prepare_all_validation_evidence() {
 
 record_validation_evidence() {
     local id=$1 outcome=$2 disposition=$3 started_ms=$4 completed_ms=$5 log_path=$6
-    local suppressed_bytes=0 version
+    local suppressed_bytes=0 version selection_reason
     [ "$VERBOSE" = true ] || suppressed_bytes=-1
     version=${VALIDATOR_VERSION_BY_ID[$id]:-}
     [ -n "$version" ] || return 1
-    printf '%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n' \
+    selection_reason=${SELECTION_REASON_BY_ID[$id]:-selection-reason-unavailable}
+    printf '%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n' \
         "$id" "$version" "$EVIDENCE_INPUT_FINGERPRINT" "$outcome" "$disposition" \
         "$started_ms" "$completed_ms" "$EVIDENCE_CACHE_HIT" "$(basename "$log_path")" "$suppressed_bytes" \
+        "$selection_reason" "$CHANGED_PATHS_DIGEST" \
         >> "$EVIDENCE_EVENTS"
 }
 
@@ -444,6 +596,26 @@ if ! prepare_all_validation_evidence; then
     exit 2
 fi
 : > "$EVIDENCE_EVENTS"
+printf '%s\n' "${!CHANGED_PATHS[@]}" | LC_ALL=C sort > "$EVIDENCE_CHANGED_PATHS"
+
+record_not_selected_evidence() {
+    local id log_path started_ms completed_ms
+    for id in "${CHECK_IDS[@]}"; do
+        [ -n "${SELECTED_CHECK_IDS[$id]:-}" ] && continue
+        log_path="$LOG_DIR/$id.not-selected.log"
+        printf 'NOT-SELECTED: %s\n' "${SELECTION_REASON_BY_ID[$id]}" > "$log_path"
+        EVIDENCE_INPUT_FINGERPRINT=${EVIDENCE_FINGERPRINT_BY_ID[$id]:-}
+        EVIDENCE_CACHE_HIT=false
+        started_ms=$(now_millis)
+        completed_ms=$started_ms
+        record_validation_evidence "$id" "not-applicable" "not-selected" "$started_ms" "$completed_ms" "$log_path" || return 1
+    done
+}
+
+if ! record_not_selected_evidence; then
+    echo "Validation not-selected evidence could not be recorded." >&2
+    exit 2
+fi
 
 emit_retained_output() {
     local log_path=$1 outcome=$2
@@ -1194,6 +1366,16 @@ if ! python .ai/scripts/validation-evidence.py summarize \
 fi
 
 TOTAL_ELAPSED=$((SECONDS - TOTAL_ELAPSED_START))
+if ! python .ai/scripts/validation-evidence.py workflow-summary \
+    --evidence "$EVIDENCE_PATH" \
+    --output "$LOG_DIR/workflow-summary.json" \
+    --profile "$PROFILE" \
+    --wall-span-ms "$((TOTAL_ELAPSED * 1000))" \
+    --workflow-id "${WORKFLOW_ID:-}"; then
+    echo -e "${RED}✗ FAILED${NC}: workflow evidence summary could not be written"
+    FAILED_CHECKS=$((FAILED_CHECKS + 1))
+    REQUIRED_FAILED=$((REQUIRED_FAILED + 1))
+fi
 PROFILE_BUDGET_SECONDS=${PROFILE_BUDGET[$PROFILE]:-}
 if [ -n "$PROFILE_BUDGET_SECONDS" ] && [ "$TOTAL_ELAPSED" -gt "$PROFILE_BUDGET_SECONDS" ]; then
     if [ "${PROFILE_ENFORCEMENT[$PROFILE]}" = report-and-warn ]; then
