@@ -5,11 +5,11 @@
 - `workflow_id`: `2026-08-09-v0-11-product-boundary-delivery-evidence`
 - `plan_id`: `development-plan-2026-08-09-v0-11-product-boundary-delivery-evidence`
 - `owner_skill`: `software-development-orchestrator`
-- `branch`: `codex/2026-08-09-v0-11-product-boundary-delivery-evidence`
+- `branch`: `codex/2026-08-09-v0-11-terminal-closeout`
 - `base_branch`: `main`
-- `status`: `active`
+- `status`: `completed`
 - `created_at`: `2026-08-09T00:44:44+08:00`
-- `updated_at`: `2026-08-09T00:44:44+08:00`
+- `updated_at`: `2026-08-09T00:59:43+08:00`
 - `template_source`: `.ai/assets/skills/software-development-orchestrator/templates/development-workflow-plan-template.md`
 - `template_version`: `1.4.0`
 - `workflow_locator`: `.dev/workflows/2026-08-09-v0-11-product-boundary-delivery-evidence/workflow.yaml`
@@ -53,3 +53,7 @@ Spec compliance is not selected. All test and validator execution is `deferred-w
 ## Publication And Closeout
 
 Candidate source must be merged to current `main`; the new annotated `v0.11.0` tag may be created only if absent and targeted at that exact main. Publish governed ZIP, tar.gz, checksum sidecars, and release notes; then persist one records-only terminal update without rebuilding package bytes. Deferred Issues #149, #150, and #153 remain open.
+
+## Terminal Result
+
+PR #154 merged the candidate at `05199ed0a9ed509ef1696df014fce244f8e7cffa`. Annotated tag object `b8d766125714cd79006c1c43abd372bb51a59d3a` peels to that commit. GitHub Release `RE_kwDOSBe2Hc4V49W9` is public with four governed assets. Issues #95, #96, #143-#148, #151, and #152 are closed with managed lifecycle blocks; Project #3 reads `Done`, target `v0.11.0`, and the appropriate publication state. Issues #149, #150, and #153 remain open. Validation execution remained owner-deferred and was never represented as passed.

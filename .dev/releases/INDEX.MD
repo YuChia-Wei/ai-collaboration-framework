@@ -15,7 +15,7 @@ Historical `v*` directories below are records, never templates.
 
 | Release ID | Version | Status | Compatibility | Notes | Migration | Phase Contract |
 | --- | --- | --- | --- | --- | --- | --- |
-| [`REL-v0.11.0`](v0.11.0/release.yaml) | `v0.11.0` | candidate | breaking; automatic source v0.10.0 | [notes](v0.11.0/release-notes.md) | [guide](v0.11.0/migration-guide.md) | [checks](v0.11.0/release-phase-checks.yaml) |
+_None._
 
 ## Planned Phase Contracts
 
@@ -27,6 +27,7 @@ _None._
 
 | Release ID | Version | Published commit | Compatibility | Notes | Migration |
 | --- | --- | --- | --- | --- | --- |
+| [`REL-v0.11.0`](v0.11.0/release.yaml) | `v0.11.0` | `05199ed0a9ed509ef1696df014fce244f8e7cffa` | breaking; schema 2.1 package; automatic source v0.10.0 | [notes](v0.11.0/release-notes.md) | [guide](v0.11.0/migration-guide.md) |
 | [`REL-v0.9.0`](v0.9.0/release.yaml) | `v0.9.0` | `c14a3260cba7d0a9e2b67b73df9e221280d2d2ef` | breaking; schema 2 package/files; schema 3 migration; exact automatic source v0.8.0 | [notes](v0.9.0/release-notes.md) | [guide](v0.9.0/migration-guide.md) |
 | [`REL-v0.8.0`](v0.8.0/release.yaml) | `v0.8.0` | `97ccc9e9f218ec681bb726d2e1b4edbb3e14fb25` | non-breaking; schema 2 package/files; schema 3 migration; exact automatic source v0.7.0 | [notes](v0.8.0/release-notes.md) | [guide](v0.8.0/migration-guide.md) |
 | [`REL-v0.7.0`](v0.7.0/release.yaml) | `v0.7.0` | `49723a943f744820f4bdb2c22de7930693a7106d` | non-breaking; schema 2 package/files; schema 3 migration; exact automatic source v0.6.0 | [notes](v0.7.0/release-notes.md) | [guide](v0.7.0/migration-guide.md) |

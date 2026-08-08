@@ -2,7 +2,7 @@
 
 ## Status
 
-Candidate release authorized by Issues #151 and #152.
+Published on the immutable annotated `v0.11.0` tag under Issues #151 and #152.
 
 ## Highlights
 
