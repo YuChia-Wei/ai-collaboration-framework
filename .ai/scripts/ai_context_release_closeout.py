@@ -107,6 +107,20 @@ def update_release_record(
     return path
 
 
+def update_release_notes(worktree: Path, version: str) -> Path:
+    """Replace only the validated candidate status with the published status."""
+    path = worktree / ".dev" / "releases" / version / "release-notes.md"
+    try:
+        text = path.read_text(encoding="utf-8")
+    except (OSError, UnicodeDecodeError) as exc:
+        raise RuntimeError(f"cannot load release notes from isolated worktree: {exc}") from exc
+    expected = "## Status\n\nValidated candidate; publication remains pending the immutable tag and hosted release workflow."
+    if expected not in text:
+        raise RuntimeError("isolated closeout patch requires the exact validated candidate release-note status")
+    path.write_text(text.replace(expected, "## Status\n\nPublished.", 1), encoding="utf-8", newline="\n")
+    return path
+
+
 def plan_patch(arguments: argparse.Namespace) -> None:
     """Generate a records-only patch in an isolated worktree after hosted read-back."""
     if (ROOT / arguments.output).resolve().is_relative_to(ROOT):
@@ -127,6 +141,7 @@ def plan_patch(arguments: argparse.Namespace) -> None:
             subprocess.run(["git", "worktree", "add", "--detach", str(worktree), "HEAD"], cwd=ROOT, check=True)
             added = True
             update_release_record(worktree, arguments, read_tagged_at(arguments.version))
+            update_release_notes(worktree, arguments.version)
             command = [sys.executable, str(STATE_VALIDATOR), "--root", str(worktree), "--phase", "finalization", "--version", arguments.version, "--hosted", "--repository", arguments.repository, "--workflow-run-id", arguments.workflow_run_id]
             if arguments.rendered_body:
                 command.extend(["--rendered-body", arguments.rendered_body])

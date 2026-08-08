@@ -2,7 +2,7 @@
 
 ## Status
 
-Validated candidate; publication remains pending the immutable tag and hosted release workflow.
+Published.
 
 ## Highlights
 
