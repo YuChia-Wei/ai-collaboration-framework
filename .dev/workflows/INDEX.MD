@@ -8,6 +8,7 @@ task-level progress.
 
 | Workflow | Title | Owner | Status | Updated | Entry Point |
 | --- | --- | --- | --- | --- | --- |
+| [`2026-08-09-v0-11-product-boundary-delivery-evidence`](2026-08-09-v0-11-product-boundary-delivery-evidence/workflow.yaml) | v0.11.0 Product Boundary, Delivery Contract, And Evidence Completion | `software-development-orchestrator` | `blocked` | `2026-08-09T01:05:11+08:00` | [plan](2026-08-09-v0-11-product-boundary-delivery-evidence/workflow-plan.md) |
 | [`2026-08-05-v0-9-0-release-publication`](2026-08-05-v0-9-0-release-publication/workflow.yaml) | Prepare And Publish v0.9.0 | `ai-context-governance` | `completed` | `2026-08-06T07:05:42+08:00` | [plan](2026-08-05-v0-9-0-release-publication/tasks/REL090-001.json) |
 | [`2026-08-05-rule-provider-precutover`](2026-08-05-rule-provider-precutover/workflow.yaml) | Normalize Engineering Rules And Establish The Pre-Cutover Validation Provider | `ai-context-governance` | `completed` | `2026-08-05T08:23:52+08:00` | [plan](2026-08-05-rule-provider-precutover/workflow-plan.md) |
 | [`2026-08-05-sub-agent-reachability`](2026-08-05-sub-agent-reachability/workflow.yaml) | Make Owning-Skill Reachability And Role Execution Explicit | `ai-context-governance` | `completed` | `2026-08-05T10:31:24+08:00` | [plan](2026-08-05-sub-agent-reachability/workflow-plan.md) |
@@ -32,7 +33,6 @@ task-level progress.
 
 | Workflow | Title | Owner | Status | Updated | Entry Point |
 | --- | --- | --- | --- | --- | --- |
-| [`2026-08-09-v0-11-product-boundary-delivery-evidence`](2026-08-09-v0-11-product-boundary-delivery-evidence/workflow.yaml) | v0.11.0 Product Boundary, Delivery Contract, And Evidence Completion | `software-development-orchestrator` | `completed` | `2026-08-09T00:59:43+08:00` | [plan](2026-08-09-v0-11-product-boundary-delivery-evidence/workflow-plan.md) |
 | [`2026-08-08-v0-10-release-publication`](2026-08-08-v0-10-release-publication/workflow.yaml) | Prepare And Publish v0.10.0 | `ai-context-governance` | `completed` | `2026-08-08T14:16:51+08:00` | [plan](2026-08-08-v0-10-release-publication/tasks/REL010-001.json) |
 | [`2026-08-07-v0-10-validation-cost-and-release-flow`](2026-08-07-v0-10-validation-cost-and-release-flow/workflow.yaml) | v0.10.0 Validation Cost And Release Flow | `software-development-orchestrator` | `completed` | `2026-08-08T14:16:51+08:00` | [plan](2026-08-07-v0-10-validation-cost-and-release-flow/workflow-plan.md) |
 | [`2026-08-04-framework-managed-ignore-detection`](2026-08-04-framework-managed-ignore-detection/workflow.yaml) | Detect Framework-Managed Paths Excluded By Target Ignore Rules | `ai-context-governance` | `completed` | `2026-08-05T00:26:12+08:00` | [plan](2026-08-04-framework-managed-ignore-detection/workflow-plan.md) |

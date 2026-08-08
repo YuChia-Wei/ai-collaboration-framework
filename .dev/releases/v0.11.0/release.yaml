@@ -81,7 +81,10 @@ validation:
   related_assessments: []
   package_status: deferred-with-owner
   post_merge_status: deferred-with-owner
-  published_run: not-selected-owner-fast-path
+  published_run: '31268095541'
+  published_run_url: https://github.com/YuChia-Wei/ai-collaboration-prompts-dotnet-backend/actions/runs/31268095541
+  published_run_outcome: failed
+  published_run_failure: tagged-tree release registry used unsupported candidate status and noncanonical publication ownership values
   public_release_url: https://github.com/YuChia-Wei/ai-collaboration-prompts-dotnet-backend/releases/tag/v0.11.0
   release_body_digest: c37f23c7361155a2e496dbc46d662e7383cac1f648ea3c7d723b2cc776d448b9
 release_provider_receipt:

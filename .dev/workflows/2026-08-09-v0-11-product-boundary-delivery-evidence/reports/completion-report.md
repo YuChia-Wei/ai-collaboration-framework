@@ -1,5 +1,7 @@
 # v0.11.0 Completion Report
 
+> Status correction: this workflow is blocked and this document is retained as a partial delivery report, not a terminal completion claim. Hosted publication run `31268095541` failed against the immutable tagged tree.
+
 ## Release Identity
 
 - Candidate and peeled tag commit: `05199ed0a9ed509ef1696df014fce244f8e7cffa`
@@ -118,7 +120,7 @@ The public non-draft, non-prerelease Release contains the governed ZIP, tar.gz, 
 
 ## Closeout
 
-Issues #95, #96, #143-#148, #151, and #152 are closed. Project #3 terminal fields were read back. This records-only PR does not rebuild or mutate package bytes.
+Canonical implementation work and the public Release exist, but terminal closeout is blocked. Issues #148 and #151 must remain open/Verification until the owner decides how to disposition the immutable v0.11.0 publication failure. This records-only correction does not rebuild or mutate package bytes.
 
 ## Deviations
 
@@ -126,7 +128,7 @@ The owner required a five-minute minimal-change fast path and explicitly prohibi
 
 ## Remaining Risks
 
-The new implementation was not executed by validators or tests in this delivery. Runtime correctness therefore relies on the conservative change design and future execution evidence.
+The new implementation was not executed by validators or tests in this delivery. The automatically triggered hosted publication run failed because the tagged `release.yaml` used unsupported `candidate`, `owner-authorized-sol-agent`, `owner-approved-v0.11.0-agent-tag`, and `manual-fast-path` values. Since `v0.11.0` is immutable, the tagged-tree defect cannot be corrected without a new owner-authorized release disposition.
 
 ## Deferred Issues
 
@@ -140,4 +142,4 @@ Begin #150 only from this terminal source/provider state. Evaluate #149 only aga
 
 ## Exact Next Action
 
-Merge the records-only closeout PR to `main`; do not move or recreate `v0.11.0`.
+Owner decision required: retain v0.11.0 as a published release with an accepted hosted-run deviation, authorize a new patch release from corrected source, or authorize another explicit non-mutating disposition. Do not move, delete, or recreate `v0.11.0`.
