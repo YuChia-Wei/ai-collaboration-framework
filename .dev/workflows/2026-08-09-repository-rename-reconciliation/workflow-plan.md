@@ -5,14 +5,14 @@
 - `workflow_id`: `2026-08-09-repository-rename-reconciliation`
 - `workflow_kind`: `ai-context-maintenance`
 - `owner_skill`: `ai-context-governance`
-- `branch`: `codex/2026-08-09-repository-rename-reconciliation`
+- `branch`: `codex/2026-08-09-repository-rename-reconciliation-closeout`
 - `base_branch`: `main`
-- `branch_segment`: `1`
-- `status`: `in_progress`
-- `current_phase`: `verification`
+- `branch_segment`: `2`
+- `status`: `completed`
+- `current_phase`: `completed`
 - `artifact_root`: `.dev/workflows/2026-08-09-repository-rename-reconciliation`
 - `created_at`: `2026-08-09T19:49:54+08:00`
-- `updated_at`: `2026-08-09T21:31:32+08:00`
+- `updated_at`: `2026-08-09T21:39:20+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md`
 - `template_version`: `1.2.0`
 
@@ -87,16 +87,17 @@
 
 ## Resume Checkpoint
 
-- Last completed action: opened PR #173, advanced Project Status to `Verification`, retained failed hosted run `31315015812`, and passed the owner-approved prerequisite contract correction locally (14/14, 4/4, and 5/5).
-- Current task: `GOV007-004` provider after-state, independent verification, pull request, integration, and terminal reconciliation.
-- Exact next action: commit and push the focused prerequisite-contract correction, then require fresh hosted checks for the corrected PR head.
-- Validation already completed: clean baseline and `main == origin/main`; Issue and related Issue read-back; workflow and assessment artifact validation; YAML parsing; inventory count reconciliation; provider-before and pre-PR provider-after repository/Project/PR/Actions/Release/redirect/clone read-back; AI-context, source-governance, dependency, shell-asset, workflow, and GitHub workflow validators; identity tests 7/7; aggregate fail-closed tests 35/35; dependency tests 19/19; source entrypoint tests 3/3; focused packaging exclusion 1/1; hosted-equivalent fast profile 29 selected / 0 failed / 0 blocked; `git diff --check`.
-- Git state: `codex/2026-08-09-repository-rename-reconciliation` from `main@e1dedd688707d84f5e7a26c7c7532f74a9860a94`.
-- Branch history and checkpoint handoffs: segment 1 is local and unpushed; no checkpoint has occurred.
-- Blockers or unresolved decisions: no owner decision blocks the correction or PR. Signed-in security-report form usability is `owner-readback-required`, and credentialed SSH clone is `blocked-by-environment`; neither is reported as passed. The owner has resolved integration topology as merge commit / no-ff. Product/package/archive/profile/CLI identity remains outside this workflow.
+- Last completed action: merged PR #173 through verified two-parent commit `18aeaef2732ecdd4db84fceae8ef9fd0eb9e7005`, closed Issue #150 as completed, and read Project Status `Done` while retaining `Not yet published`.
+- Current task: none; `GOV007-004` is completed.
+- Exact next action: integrate this records-only closeout through a merge commit; no workflow execution remains.
+- Validation already completed: all local gates listed above; owner-approved prerequisite correction 14/14, 4/4, and 5/5; fresh runs `31316137412`, `31316137415`, and `31316137431` passed at head `a6e01dea27f53fdfe3659e119ceb25fe952af25e`; merge commit has exactly two parents; Issue #150 and Project #3 terminal fields were read back.
+- Git state: `codex/2026-08-09-repository-rename-reconciliation-closeout` from integrated `main@18aeaef2732ecdd4db84fceae8ef9fd0eb9e7005`.
+- Branch history and checkpoint handoffs: segment 1 integrated through PR #173; segment 2 is the records-only terminal continuation from the updated target.
+- Blockers or unresolved decisions: none. Signed-in security-report form usability remains `owner-readback-required`, and credentialed SSH clone remains `blocked-by-environment`; neither is reported as passed. Product/package/archive/profile/CLI identity remains outside this workflow.
 
 ## Branch Lifecycle
 
 | Segment | Branch | Base | Checkpoint Type | Commit | Remote / Target | Recorded At | Reason | Resume Branch / Action |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| 1 | `codex/2026-08-09-repository-rename-reconciliation` | `main@e1dedd688707d84f5e7a26c7c7532f74a9860a94` | active | `f7669641fe27545075f143b90e500a7b1ace57e5` | [PR #173](https://github.com/YuChia-Wei/ai-collaboration-framework/pull/173) / Verification | `2026-08-09T19:49:54+08:00` | Execute the authorized #150 reconciliation as one review and rollback unit. | Push the focused CI correction and require fresh hosted checks. |
+| 1 | `codex/2026-08-09-repository-rename-reconciliation` | `main@e1dedd688707d84f5e7a26c7c7532f74a9860a94` | merge-commit integration | `18aeaef2732ecdd4db84fceae8ef9fd0eb9e7005` | [PR #173](https://github.com/YuChia-Wei/ai-collaboration-framework/pull/173) / `main` | `2026-08-09T21:36:23+08:00` | Integrate the authorized reconciliation after fresh hosted checks. | Continue records-only closeout from updated `main`. |
+| 2 | `codex/2026-08-09-repository-rename-reconciliation-closeout` | `main@18aeaef2732ecdd4db84fceae8ef9fd0eb9e7005` | terminal records | `18aeaef2732ecdd4db84fceae8ef9fd0eb9e7005` | local / closeout PR pending | `2026-08-09T21:39:20+08:00` | Retain final GitHub, Issue, Project, and merge-topology read-back without changing implementation. | Integrate the records-only closeout through a merge commit. |

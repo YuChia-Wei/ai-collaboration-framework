@@ -6,9 +6,9 @@
   "task_id": "GOV007-004",
   "workflow_id": "2026-08-09-repository-rename-reconciliation",
   "owner_skill": "ai-context-governance",
-  "status": "in_progress",
+  "status": "completed",
   "created_at": "2026-08-09T19:49:54+08:00",
-  "updated_at": "2026-08-09T21:31:32+08:00",
+  "updated_at": "2026-08-09T21:39:20+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-5.6-sol",
   "reasoning_effort": "max",
@@ -53,11 +53,11 @@
       "gh provider and Project read-back outside the sandbox",
       "HTTPS, SSH endpoint, redirect, security-route, and release-download probes outside the sandbox"
     ],
-    "last_completed_step": "Opened PR #173, advanced Project Status to Verification, diagnosed hosted run 31315015812, and locally passed the owner-approved prerequisite count correction across 14/14, 4/4, and 5/5 cases.",
-    "next_action": "Commit and push the focused CI correction, then require fresh hosted checks for the corrected PR head."
+    "last_completed_step": "Read back fresh hosted success, merged PR #173 with GitHub's merge method, verified the two-parent commit, closed Issue #150 as completed, and read Project Status Done with publication unchanged.",
+    "next_action": "Integrate the records-only closeout branch through a merge commit; no workflow task remains."
   },
   "results": {
-    "summary": "Baseline findings are independently verified, PR #173 is in Verification, and the first hosted failure has an owner-approved local correction; fresh hosted, merge-commit, and terminal work-item evidence remain pending.",
+    "summary": "All baseline findings are independently verified and addressed; PR #173 passed fresh hosted checks, merged through a verified two-parent commit, and Issue #150 plus Project #3 reached their terminal states.",
     "files_changed": [
       ".dev/assessments/ASM-20260809-002/assessment.yaml",
       ".dev/assessments/ASM-20260809-002/report.md",
@@ -79,10 +79,13 @@
       "BLOCKED-BY-ENVIRONMENT: credentialed SSH clone; official and live host fingerprints match, but this host has no GitHub private key",
       "OWNER-READBACK-REQUIRED: signed-in security advisory form",
       "FAILED/ADDRESSED LOCALLY: hosted run 31315015812 Ubuntu prerequisite contract found two stale 27-entry assertions after the registry grew to 28",
-      "PASSED: corrected prerequisite contract suites 14/14, 4/4, and 5/5 outside sandbox"
+      "PASSED: corrected prerequisite contract suites 14/14, 4/4, and 5/5 outside sandbox",
+      "PASSED: fresh runs 31316137412, 31316137415, and 31316137431 at head a6e01dea27f53fdfe3659e119ceb25fe952af25e",
+      "PASSED: merge commit 18aeaef2732ecdd4db84fceae8ef9fd0eb9e7005 has exactly two parents",
+      "PASSED: Issue #150 CLOSED / COMPLETED and Project Done / P1 High / v0.12.0 / Not required / Not yet published"
     ],
     "finding_status": "addressed",
-    "residual_risk": "Fresh corrected-head hosted checks, two-parent merge-commit verification, terminal Issue/Project read-back, signed-in security form, and credentialed SSH clone remain outstanding or explicitly owner/environment-bound.",
-    "follow_up_needed": true
+    "residual_risk": "Credentialed SSH clone remains blocked-by-environment and the signed-in security form remains owner-readback-required; both are explicitly accepted classifications rather than passed checks.",
+    "follow_up_needed": false
   }
 }

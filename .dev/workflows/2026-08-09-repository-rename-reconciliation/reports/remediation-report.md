@@ -5,14 +5,14 @@
 - `workflow_id`: `2026-08-09-repository-rename-reconciliation`
 - `issue`: `#150`
 - `owner_skill`: `ai-context-governance`
-- `status`: `pr-verification-in-progress`
+- `status`: `completed`
 - `subject_branch`: `codex/2026-08-09-repository-rename-reconciliation`
-- `subject_commit`: `f7669641fe27545075f143b90e500a7b1ace57e5`
-- `updated_at`: `2026-08-09T21:31:32+08:00`
+- `subject_commit`: `18aeaef2732ecdd4db84fceae8ef9fd0eb9e7005`
+- `updated_at`: `2026-08-09T21:39:20+08:00`
 
 ## Outcome
 
-The rename reconciliation is implemented and independently verified for the selected repository and provider surfaces. PR #173 is open, and Project #3 reflects the owner-selected P1/v0.12.0 lifecycle in `Verification`. The first hosted run exposed two stale registry-count assertions; the owner approved the focused correction and all three exact prerequisite contract suites now pass locally. A fresh hosted run, integration, and terminal work-item evidence remain pending.
+The rename reconciliation is implemented, independently verified, integrated, and terminally reconciled. Fresh checks passed for PR head `a6e01dea27f53fdfe3659e119ceb25fe952af25e`; GitHub merged PR #173 through the required two-parent merge commit `18aeaef2732ecdd4db84fceae8ef9fd0eb9e7005`. Issue #150 is `CLOSED / COMPLETED`, and Project #3 is `Done / P1 High / v0.12.0 / Not required / Not yet published`.
 
 ## Baseline Finding Reconciliation
 
@@ -21,7 +21,7 @@ The rename reconciliation is implemented and independently verified for the sele
 | `ASM-20260809-001#AIC-001` | addressed | Current operational repository coordinates and the security link use the current repository. |
 | `ASM-20260809-001#AIC-002` | addressed | The identity validator classifies every retained occurrence exactly once and rejects unclassified, overlapping, stale, or operational exemptions. |
 | `ASM-20260809-001#AIC-003` | addressed | The source closeout fixture uses the current coordinate; compatibility behavior has its own notice and tests. |
-| `ASM-20260809-001#AIC-004` | addressed | Project read-back is `P1 High`, `Verification`, `v0.12.0`, `Not required`, and `Not yet published`. |
+| `ASM-20260809-001#AIC-004` | addressed | Terminal Project read-back is `P1 High`, `Done`, `v0.12.0`, `Not required`, and `Not yet published`; Issue #150 is closed as completed. |
 
 Independent verification is retained in `ASM-20260809-002` with the decision `healthy-with-followups`.
 
@@ -38,15 +38,16 @@ Independent verification is retained in `ASM-20260809-002` with the decision `he
 | Assessment and AI-context artifacts | passed | 39 assessments; AI-context validation passed. |
 | Initial hosted PR checks | failed / addressed locally | Run `31315015812`: four jobs passed; Ubuntu prerequisite contract found stale 27-entry assertions after the registry grew to 28. |
 | Focused CI correction | passed locally | Exact hosted job suites passed 14/14, 4/4, and 5/5 outside the sandbox. |
-| Fresh corrected-head checks | pending | Requires the correction commit and push. |
+| Fresh corrected-head checks | passed | Runs `31316137412`, `31316137415`, and `31316137431` all succeeded at `a6e01dea27f53fdfe3659e119ceb25fe952af25e`; PR profile selected/executed 38 with 0 failed and 0 blocked. |
+| Merge topology | passed | Merge commit `18aeaef2732ecdd4db84fceae8ef9fd0eb9e7005` has two parents: base `e1dedd688707d84f5e7a26c7c7532f74a9860a94` and PR head `a6e01dea27f53fdfe3659e119ceb25fe952af25e`. |
 
 ## Provider Reconciliation
 
 - Repository ID `1209513501` and node `R_kgDOSBe2HQ` resolve at the current coordinate; `main` remains the default branch and merge commits are allowed.
 - HTTPS clone and the old-to-current redirect passed.
 - The live SSH host fingerprint matches GitHub's official metadata, but credentialed clone is `blocked-by-environment` because this host has no GitHub private key.
-- Issue #150 is open at the current coordinate.
-- Project #3 fields are reconciled and Status is `Verification`. The owner set Priority to `P1 High`; automation preserved that decision and read it back.
+- Issue #150 is closed as completed at the current coordinate with closeout comment `5231804695`.
+- Project #3 fields are terminally reconciled and Status is `Done`. The owner set Priority to `P1 High`; automation preserved that decision and read it back.
 - The Project item's top-level title projection differs from the linked Issue title, but both use the current repository identity. No destructive remove-and-readd was justified.
 - Latest pre-delivery PR, Actions, v0.11.0 Release, four assets, and a release-download probe resolve at the current coordinate.
 - The security advisory route redirects to the current path and then to the expected login return target. Signed-in form usability remains `owner-readback-required`.
@@ -54,11 +55,11 @@ Independent verification is retained in `ASM-20260809-002` with the decision `he
 
 The detailed provider receipt is `evidence/provider-after.yaml`.
 
-## Delivery And Integration Contract
+## Delivery And Integration Result
 
-- The PR will reference Issue #150 without an auto-close keyword; Issue closure is a separate terminal provider mutation.
-- The owner selected a true GitHub merge commit. Fast-forward, rebase-and-merge, and squash merge are prohibited.
-- Integration is accepted only after the merge commit is read back with two parents.
+- PR #173 referenced Issue #150 without an auto-close keyword; Issue closure remained a separate terminal provider mutation.
+- GitHub's `merge` method produced commit `18aeaef2732ecdd4db84fceae8ef9fd0eb9e7005` with two parents. Fast-forward, rebase-and-merge, and squash were not used.
+- Integration and terminal Issue/Project states were read back separately before this records-only closeout.
 - `Published in` remains `Not yet published`; this workflow does not publish v0.12.0.
 
 ## Residuals And Deferred Scope
@@ -68,9 +69,11 @@ The detailed provider receipt is `evidence/provider-after.yaml`.
 - Product/package/archive/profile/namespace/CLI identity remains owned by #166.
 - Broader `.ai`, `.dev`, and distribution inventories remain owned by #170, #171, and #172 and are not bundled into this delivery.
 
-## Pending Terminal Steps
+## Terminal Closeout
 
-1. Commit and push the focused prerequisite-contract correction and updated evidence.
-2. Require fresh hosted checks for the corrected PR head.
-3. Merge through GitHub's merge-commit method and verify a two-parent commit.
-4. Reconcile integrated `main`, workflow records, Issue state, and Project state without changing publication state.
+- Implementation PR #173: merged.
+- Fresh hosted checks: passed.
+- Required two-parent merge commit: verified.
+- Issue #150: closed as completed.
+- Project #3: `Done`; publication remains `Not yet published`.
+- This records-only continuation changes no implementation, package, Release, tag, or asset. Its only remaining delivery action is integration through a merge commit.
