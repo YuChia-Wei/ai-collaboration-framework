@@ -60,6 +60,17 @@ def section_positions(message: str, required: list[str]) -> dict[str, int]:
     return positions
 
 
+def subject_pattern_for_commit(
+    policy: dict[str, object],
+    committed_at: datetime | None,
+) -> str:
+    """Select the prospective grammar or the explicit historical boundary."""
+    effective_at = datetime.fromisoformat(str(policy["subject_pattern_effective_at"]))
+    if committed_at is not None and committed_at < effective_at:
+        return str(policy["legacy_subject_pattern"])
+    return str(policy["subject_pattern"])
+
+
 def validate_message(
     sha: str,
     message: str,
@@ -70,7 +81,7 @@ def validate_message(
 ) -> None:
     lines = message.rstrip().splitlines()
     subject = lines[0] if lines else ""
-    if not re.fullmatch(str(policy["subject_pattern"]), subject):
+    if not re.fullmatch(subject_pattern_for_commit(policy, committed_at), subject):
         errors.append(f"{sha}: subject does not match policy: {subject}")
 
     signature = policy["ai_signature"]

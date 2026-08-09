@@ -1,6 +1,6 @@
-# Rule Migration Guide (ezSpec -> Gherkin)
+# Rule-to-Scenario Mapping Guide (Gherkin)
 
-This guide migrates ezSpec Rule usage into Gherkin `Rule:` blocks.
+This guide maps business rules to Gherkin `Rule:` blocks.
 
 ## Migration Steps
 

@@ -6,9 +6,9 @@
   "task_id": "CTX007-001",
   "workflow_id": "2026-08-10-current-context-remediation",
   "owner_skill": "ai-context-governance",
-  "status": "in_progress",
+  "status": "completed",
   "created_at": "2026-08-10T00:33:41+08:00",
-  "updated_at": "2026-08-10T00:33:41+08:00",
+  "updated_at": "2026-08-10T01:10:00+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-5.6-sol",
   "reasoning_effort": "high",
@@ -20,9 +20,18 @@
     "target": "Active and distribution-selected ez-series/uContract guidance",
     "files": [
       ".ai/assets/tech-stacks/dotnet-backend/**",
+      ".ai/distribution/profiles/dotnet-backend.yaml",
+      ".ai/scripts/check-domain-events-compliance.sh",
       ".ai/scripts/check-mutation-coverage.sh",
+      ".ai/scripts/tests/test_brand_neutral_distribution.py",
+      ".ai/scripts/validate-file-disposition-manifest.py",
+      ".ai/scripts/validate-source-governance.py",
+      ".ai/scripts/tests/test_file_disposition_manifest.py",
+      ".ai/scripts/tests/test_governance_workflow_contract.py",
+      ".ai/distribution/governance-checks.yaml",
       ".ai/assets/sub-agent-role-prompts/**",
-      ".dev/guides/**"
+      ".dev/guides/**",
+      ".dev/workflows/2026-08-10-current-context-remediation/evidence/v050-current-byte-authorization.yaml"
     ],
     "constraints": [
       "Preserve neutral engineering concepts and conditional .NET provider choices",
@@ -50,15 +59,38 @@
       "package/profile projection tests and validators",
       "git diff --check"
     ],
-    "last_completed_step": "Owner authorization and provider-boundary decision recorded",
-    "next_action": "Execute the active/distributed branded-file disposition"
+    "last_completed_step": "Removed or neutralized active/distributed branded guidance, repaired references, and installed an exact owner-authorized byte exception without rewriting the immutable v0.5.0 manifest",
+    "next_action": "VERIFY-001 must run the committed package scan and independent audit"
   },
   "results": {
-    "summary": "",
-    "files_changed": [],
-    "tests_run": [],
-    "finding_status": "not-addressed",
-    "residual_risk": "",
+    "summary": "Deleted branded-only Java/API mappings, retained neutral DDD/SbE/BDD/DbC/CQRS/Event-Sourcing/outbox/MQ/DI guidance, kept .NET providers conditional, and made retained branded provenance source-only and machine-verifiable.",
+    "files_changed": [
+      ".ai/assets/tech-stacks/dotnet-backend/**",
+      ".ai/assets/sub-agent-role-prompts/**",
+      ".ai/distribution/governance-checks.yaml",
+      ".ai/distribution/profiles/dotnet-backend.yaml",
+      ".ai/scripts/check-domain-events-compliance.sh",
+      ".ai/scripts/check-mutation-coverage.sh",
+      ".ai/scripts/tests/test_brand_neutral_distribution.py",
+      ".ai/scripts/tests/test_file_disposition_manifest.py",
+      ".ai/scripts/tests/test_governance_workflow_contract.py",
+      ".ai/scripts/validate-file-disposition-manifest.py",
+      ".ai/scripts/validate-source-governance.py",
+      ".dev/guides/**",
+      ".dev/workflows/2026-08-10-current-context-remediation/evidence/v050-current-byte-authorization.yaml"
+    ],
+    "tests_run": [
+      "validate-ai-context.py: passed",
+      "test_profile_projection_contract.py: 3/3 passed",
+      "test_document_projection_contract.py: 2/2 passed",
+      "test_ai_context_example_evidence.py: 4/4 passed",
+      "test_ai_context_example_placeholder_disposition.py: 3/3 passed",
+      "test_file_disposition_manifest.py: 31/31 passed",
+      "test_governance_workflow_contract.py: 7/7 passed",
+      "validate-source-governance.py: passed with two exact current-byte authorizations"
+    ],
+    "finding_status": "addressed",
+    "residual_risk": "EngineeringGuardrails contract-package adoption remains gated by #179; package-level brand absence and independent verification run only after the remediation tree is committed.",
     "follow_up_needed": true
   }
 }

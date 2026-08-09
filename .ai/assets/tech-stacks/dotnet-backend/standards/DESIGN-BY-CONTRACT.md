@@ -2,8 +2,8 @@
 
 Rule ID: `CONTRACT-SEMANTICS-001`.
 
-This standard preserves Design by Contract semantics without requiring the
-unavailable historical uContract API or a shared base class.
+This standard preserves Design by Contract semantics without requiring a
+particular API, package, or shared base class.
 
 ## Contract Categories
 
@@ -54,5 +54,4 @@ public void Rename(ProductName newName)
 ```
 
 Targets that do not perform runtime postcondition checks must prove the same
-promise with focused Domain tests. Historical uContract examples remain
-provenance only.
+promise with focused Domain tests.

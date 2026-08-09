@@ -4,30 +4,31 @@ This policy defines commit title format, commit body structure, and commit timin
 
 ## Title Format
 
-When an issue number exists:
+Use exactly one of these title forms:
 
 ```text
-<type>(#<issue-number>|<scope>): <summary>
-```
-
-When there is no issue number:
-
-```text
+<type>(#<issue-number>): <summary>
 <type>(<scope>): <summary>
 ```
 
 For multiple issue numbers:
 
 ```text
-<type>(#<issue-number>,#<issue-number>|<scope>): <summary>
+<type>(#<issue-number>,#<issue-number>): <summary>
 ```
+
+The issue-number and scope forms are alternatives. The `|` character in
+historical examples was meta-notation for “or”; it is not a literal title
+character. New commits on or after `2026-08-10T00:40:00+08:00` must use the
+canonical form above. The executable policy retains an explicit deprecated
+compatibility pattern for earlier shared history; do not rewrite those commits.
 
 Examples:
 
 ```text
-docs(#123|ai-context): define language policy
-workflow(#124|governance): add workflow gate
-refactor(#125,#128|dotnet-backend): split backend-specific prompt rules
+docs(#123): define language policy
+workflow(#124): add workflow gate
+refactor(#125,#128): split backend-specific prompt rules
 docs(ai-context): inventory context boundaries
 ```
 
@@ -50,6 +51,8 @@ The executable subset of this policy is declared in
 `GIT-COMMIT-POLICY.yaml` and enforced by
 `.ai/scripts/validate-git-commits.py`. The Markdown document remains the
 human-facing source for intent and exceptions; keep both files synchronized.
+The validator selects the canonical pattern prospectively and the named legacy
+pattern only for commits before the recorded cutover.
 
 ## Scope
 

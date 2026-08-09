@@ -1,7 +1,7 @@
 # BDD Test Template (BDDfy + xUnit)
 
-This template replaces ezSpec usage with BDDfy and xUnit.
-It preserves Rule-based grouping and Given/When/Then semantics via naming and fluent steps.
+This template uses BDDfy and xUnit while preserving Rule-based grouping and
+Given/When/Then semantics through naming and fluent steps.
 
 ## Core Rules
 
@@ -55,22 +55,20 @@ public sealed class CreatePlanTests : IClassFixture<TestHostFixture>
 }
 ```
 
-## Rule Mapping (ezSpec -> BDDfy)
+## Rule Mapping
 
-- `feature.NewRule("...")` -> `Rule_...` prefix in test method names
-- `@EzScenario` -> `[Fact]` test method
-- `Given/When/Then` -> BDDfy steps (`Given/When/Then` fluent chain)
+- A business rule maps to a `Rule_...` prefix in test method names.
+- A scenario maps to a `[Fact]` test method.
+- Given/When/Then maps to BDDfy fluent steps.
 
 ## Deprecated Patterns (Do NOT Use)
 
 - TestContext singletons
-- BlockingMessageBus
-- GenericInMemoryRepository
+- Blocking message buses
+- Generic in-memory repositories
 - Base test classes
-
-TODO: Legacy names from the source stack are kept for context only; do not reintroduce them.
 
 ## Event Capture
 
-Use a collector service (composition) to validate domain events.
-TODO: Implement a `DomainEventCollector` integrated with Wolverine.
+Use a collector service assembled through the target composition root to validate domain events.
+TODO: Implement a `DomainEventCollector` integrated with Wolverine when the target selects that adapter.

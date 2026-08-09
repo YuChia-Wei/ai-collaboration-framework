@@ -5,15 +5,11 @@ Use them as lookup material while migrating or generating code.
 
 ## Contents
 
-### ezddd-import-mapping.md
-Historical source terminology mapped to current repository contracts.
-Do not copy its placeholder namespaces into target code.
-
 ### reactor-pattern-guide.md
-Reactor/handler patterns for Wolverine + ezDDD, including naming, structure,
-and testing guidance.
+Reactor/handler patterns for Wolverine, including naming, structure, and
+testing guidance.
 
-### ezspec-test-template.md
+### bdd-gwt-test-template.md
 BDD testing template using BDDfy + xUnit (Gherkin-style naming), including
 Rule grouping and fixture-based DI.
 

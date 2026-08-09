@@ -13,19 +13,16 @@ state consistent.
 ## Core Concepts
 
 ### Preconditions
-- Validate input parameters
-- Validate current state
-- Use `Require` and `RequireNotNull`
+- Validate input parameters and current state before mutation.
+- Use standard guard clauses or a target-selected helper.
 
 ### Postconditions
-- Validate expected state changes
-- Validate emitted events
-- Use `Ensure`
+- Validate expected state changes and emitted events.
+- Use an explicit check or focused Domain test when runtime validation is not selected.
 
 ### Invariants
-- Validate long-lived rules
-- Use `Invariant` and `InvariantNotNull`
-- Run after public operations
+- Validate long-lived rules after public operations.
+- Keep invariant checks free of Infrastructure I/O.
 
 ## Principles
 
@@ -39,55 +36,60 @@ state consistent.
 ### Redundant Checks
 ```csharp
 // Wrong: getter == field is meaningless
-Contract.Ensure(Color == _color, "Color unchanged");
+if (Color != _color) throw new InvalidOperationException("Color changed unexpectedly.");
 ```
 
 ### Duplicate State Checks
 ```csharp
 public void Rename(string newName)
 {
-    Contract.Require(!IsDeleted, "Not deleted");
+    if (IsDeleted) throw new InvalidOperationException("The entity is deleted.");
     // ...
-    Contract.Ensure(!IsDeleted, "Still not deleted"); // redundant
+    if (IsDeleted) throw new InvalidOperationException("The entity is deleted."); // redundant
 }
 ```
 
 ### Checking Immutable Data
 ```csharp
 // Wrong: ID never changes, no need to check
-Contract.Ensure(Id == id, "ID unchanged");
+if (Id != id) throw new InvalidOperationException("ID changed unexpectedly.");
 ```
 
-## Advanced Features (uContract)
+## Advanced Contract Techniques
 
 ### Old State
 ```csharp
-var oldVersion = Contract.Old(() => Version);
+var versionBefore = Version;
 ```
 
-### EnsureAssignable
+### Compare Allowed State Changes
 ```csharp
-var oldUser = Contract.Old(() => this.Clone());
+var userBefore = this.Clone();
 Email = newEmail;
-Contract.EnsureAssignable(this, oldUser, "Email", "LastModified");
+EnsureOnlyExpectedMembersChanged(this, userBefore, "Email", "LastModified");
 ```
 
-### EnsureResult
+`EnsureOnlyExpectedMembersChanged` is illustrative only; a target may use a
+local helper, another guard mechanism, or focused tests to verify the same
+promise.
+
+### Validate A Result
 ```csharp
-return Contract.EnsureResult(user, u => u != null && u.IsActive);
+if (user is null || !user.IsActive) throw new InvalidOperationException("Active user is required.");
+return user;
 ```
 
-### Reject
+### Reject An Invalid Or No-Op Transition
 ```csharp
-if (Contract.Reject("Name unchanged", () => Name == newName))
+if (Name == newName)
 {
-    return;
+    throw new InvalidOperationException("Name is unchanged.");
 }
 ```
 
-### Check
+### Check An Explicit State
 ```csharp
-Contract.Check("Payment validated", () => validated);
+if (!validated) throw new InvalidOperationException("Payment must be validated.");
 ```
 
 ## Checklist

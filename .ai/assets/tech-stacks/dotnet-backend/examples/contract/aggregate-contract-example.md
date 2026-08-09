@@ -1,81 +1,92 @@
 # Aggregate Contract Example (.NET)
 
+This example uses standard .NET exceptions so the contract semantics remain
+usable without selecting a helper package. A target may replace the guards with
+an explicitly selected equivalent while preserving the same behavior.
+
 ## Constructor Contract
 ```csharp
 public Tag(TagId tagId, PlanId planId, string name, string color)
 {
-    Contract.RequireNotNull("tagId", tagId);
-    Contract.RequireNotNull("planId", planId);
-    Contract.RequireNotNull("name", name);
-    Contract.RequireNotNull("color", color);
-    Contract.Require(!string.IsNullOrWhiteSpace(name), "Name required");
-    Contract.Require(IsValidHexColor(color), "Color must be HEX");
+    ArgumentNullException.ThrowIfNull(tagId);
+    ArgumentNullException.ThrowIfNull(planId);
+    ArgumentException.ThrowIfNullOrWhiteSpace(name);
+    ArgumentException.ThrowIfNullOrWhiteSpace(color);
+    if (!IsValidHexColor(color))
+    {
+        throw new ArgumentException("Color must be HEX.", nameof(color));
+    }
 
     Apply(new TagEvents.TagCreated(
         tagId, planId, name.Trim(), color.ToUpperInvariant(),
         Guid.NewGuid(), DateProvider.Now()));
 
-    Contract.Ensure(Id == tagId, "Tag id set");
-    Contract.Ensure(PlanId == planId, "Plan id set");
-    Contract.Ensure(Name == name.Trim(), "Name set");
-    Contract.Ensure(Color == color.ToUpperInvariant(), "Color set");
-    Contract.Ensure(!IsDeleted, "Not deleted");
-    Contract.Ensure(DomainEvents.Count == 1, "One event emitted");
+    EnsureInvariant();
 }
 ```
+
+Focused Domain tests should prove that construction sets the supplied identity,
+normalizes name and color, leaves the Aggregate active, and emits one creation
+event.
 
 ## Rename Command
 ```csharp
 public void Rename(string newName)
 {
-    Contract.RequireNotNull("newName", newName);
-    Contract.Require(!string.IsNullOrWhiteSpace(newName), "Name required");
-    Contract.Require(!IsDeleted, "Not deleted");
+    ArgumentException.ThrowIfNullOrWhiteSpace(newName);
+    if (IsDeleted)
+    {
+        throw new InvalidOperationException("A deleted tag cannot be renamed.");
+    }
 
-    var oldName = Name;
-    var oldVersion = Version;
-    var oldCount = DomainEvents.Count;
+    var normalizedName = newName.Trim();
 
-    if (Contract.Reject("Name unchanged", () => Name == newName.Trim()))
+    if (Name == normalizedName)
     {
         return;
     }
 
     Apply(new TagEvents.TagRenamed(
-        Id, newName.Trim(), Guid.NewGuid(), DateProvider.Now()));
+        Id, normalizedName, Guid.NewGuid(), DateProvider.Now()));
 
-    Contract.Ensure(Name != oldName, "Name changed");
-    Contract.Ensure(DomainEvents.Count == oldCount + 1, "Event emitted");
-    Contract.Ensure(Version == oldVersion + 1, "Version incremented");
+    EnsureInvariant();
 }
 ```
+
+Focused Domain tests should prove that a real rename changes the name, appends
+one event, and increments the Aggregate version, while an identical normalized
+name is a no-op.
 
 ## Delete Command
 ```csharp
 public void Delete()
 {
-    Contract.Require(!IsDeleted, "Not already deleted");
-
-    var oldVersion = Version;
-    var oldCount = DomainEvents.Count;
+    if (IsDeleted)
+    {
+        throw new InvalidOperationException("The tag is already deleted.");
+    }
 
     Apply(new TagEvents.TagDeleted(Id, Guid.NewGuid(), DateProvider.Now()));
 
-    Contract.Ensure(IsDeleted, "Marked deleted");
-    Contract.Ensure(DomainEvents.Count == oldCount + 1, "Event emitted");
-    Contract.Ensure(Version == oldVersion + 1, "Version incremented");
+    EnsureInvariant();
 }
 ```
 
+Focused Domain tests should prove the deleted state, emitted event, and version
+increment.
+
 ## Invariants
 ```csharp
-protected override void EnsureInvariant()
+private void EnsureInvariant()
 {
-    Contract.InvariantNotNull("tagId", Id);
-    Contract.InvariantNotNull("planId", PlanId);
-    Contract.InvariantNotNull("name", Name);
-    Contract.InvariantNotNull("color", Color);
-    Contract.Invariant(!string.IsNullOrWhiteSpace(Name), "Name required");
-    Contract.Invariant(IsValidHexColor(Color), "Valid color");
+    if (Id is null || PlanId is null)
+    {
+        throw new InvalidOperationException("Tag identity is incomplete.");
+    }
+
+    if (string.IsNullOrWhiteSpace(Name) || !IsValidHexColor(Color))
+    {
+        throw new InvalidOperationException("Tag state violates its invariant.");
+    }
 }
 ```

@@ -1,11 +1,11 @@
-# Gherkin Rule Examples (ezSpec -> .NET)
+# Gherkin Rule Examples (.NET)
 
-This folder translates ezSpec Rule concepts into Gherkin `Rule:` blocks using Reqnroll.
+This folder shows how to express business rules as Gherkin `Rule:` blocks using Reqnroll when the target selects that optional runner mode.
 
 Key mapping:
-- ezSpec `Rule` -> Gherkin `Rule:` section
-- ezSpec `Scenario` -> Gherkin `Scenario`
-- ezSpec `Given/When/Then` -> Gherkin steps
+- Business rule -> Gherkin `Rule:` section
+- Scenario -> Gherkin `Scenario`
+- Given/When/Then -> Gherkin steps
 
 Use these examples to keep BDD tests readable and reusable in .NET.
 
@@ -18,7 +18,7 @@ Use these examples to keep BDD tests readable and reusable in .NET.
 - `rule-design-before-after.md`
   - Rule granularity guidance and examples.
 - `rule-migration-guide.md`
-  - Step-by-step migration guide from ezSpec to Gherkin Rule blocks.
+  - Rule-to-scenario mapping guidance for Gherkin Rule blocks.
 - `../outbox/OUTBOX-TEST-CONFIGURATION.md`
   - Shared Outbox test configuration for both BDD modes.
 - `aggregate-outbox-repository.feature`

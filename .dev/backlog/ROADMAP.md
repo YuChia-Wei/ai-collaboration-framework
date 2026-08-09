@@ -4,9 +4,9 @@
 
 - `roadmap_id`: `post-v0.4.0`
 - `status`: `active`
-- `current_target`: `v0.9.0`
+- `current_target`: `v0.12.0`
 - `created_at`: `2026-07-18T14:19:06+08:00`
-- `updated_at`: `2026-08-05T10:00:52+08:00`
+- `updated_at`: `2026-08-10T00:41:55+08:00`
 - `source_assessment`: `.dev/assessments/ASM-20260717-004/assessment.yaml`
 - `source_plan`: `.dev/backlog/plans/post-v0.4.0-improvement-plan.md`
 - `planning_workflow`: `.dev/workflows/2026-07-18-post-v0-4-roadmap-planning/workflow.yaml`
@@ -24,6 +24,11 @@ Read this file before planning or resuming a post-v0.4.0 release.
   plans; GitHub Projects provide its priority and status views. The durable
   repository backlog retains framework and release-governance decisions rather
   than replacing that day-to-day tracker.
+- This roadmap is a local release-governance view, not a complete online Issue
+  queue or Project #3 export. The current online provider snapshot is
+  [`github-project-current.yaml`](provider-mappings/github-project-current.yaml);
+  do not infer current Project scope from local backlog-item count or from a
+  Project card alone.
 - Open an execution workflow only after execution is authorized or durable
   cross-session execution tracking is required. A candidate issue or planning
   discussion alone is not a workflow trigger.
@@ -39,6 +44,9 @@ Read this file before planning or resuming a post-v0.4.0 release.
 | `v0.7.0` | `published` | yes | The provenance, portable work-management, downstream package-safety, and fail-closed release-traceability outcomes are published. Legacy identifier retirement and historical archive migration remain separately conditional. | Completed at immutable annotated tag `v0.7.0`, peeled commit `49723a943f744820f4bdb2c22de7930693a7106d`, successful hosted publication run `30363397794`, and a stable GitHub Release with four governed assets. | [`2026-07-28-v0-7-0-release-preparation`](../workflows/2026-07-28-v0-7-0-release-preparation/workflow.yaml) |
 | `v0.8.0` | `published` | yes | Canonical skill-owned Python automation, fail-closed prerequisite diagnostics, and provider-neutral target-selected work-item binding and merge-gate policy are published. | Completed at immutable annotated tag `v0.8.0`, peeled commit `97ccc9e9f218ec681bb726d2e1b4edbb3e14fb25`, successful hosted run `30786537723`, exact governed public body, four unchanged assets, and Project #3 publication-field read-back. | [`2026-07-30-skill-script-colocation`](../workflows/2026-07-30-skill-script-colocation/workflow.yaml), [`2026-07-31-work-item-binding-policy`](../workflows/2026-07-31-work-item-binding-policy/workflow.yaml), [`2026-08-02-python-prerequisite-diagnostics`](../workflows/2026-08-02-python-prerequisite-diagnostics/workflow.yaml), [`2026-08-03-v0-8-0-release-publication`](../workflows/2026-08-03-v0-8-0-release-publication/workflow.yaml) |
 | `v0.9.0` | `published` | yes | Published the eight completed outcomes owned by `GOV-004`, `PKG-005`, `GOV-006`, `CTX-004`, `CTX-005`, `PKG-006`, `VAL-003`, and `SAG-002`: proportional delivery governance, ignored-path package safety, layered engineering-rule ownership, bilingual bundled-provider navigation, target-effective rule packets, the bundled .NET validation provider contract, the unavailable Architecture Kit cutover gate, and canonical owning-skill reachability plus provider-neutral role execution. | Published from immutable annotated tag `v0.9.0` at `c14a326` through successful run `31027306074`. All eight canonical items read back `Done`, target `v0.9.0`, and published in `v0.9.0`. Proposals, umbrellas, leaves, #119, and online-only #128 remain traceability rather than additional Included Work. The accepted pre-tag sequence deviation is preserved in the release workflow without moving the tag. | [`2026-08-05-v0-9-0-release-publication`](../workflows/2026-08-05-v0-9-0-release-publication/workflow.yaml) |
+| `v0.10.0` | `published` | yes | Published profile-driven validation selection, package content identity, and source-only release closeout contracts. | Immutable tag `v0.10.0` at `5878f213b50bdbb4b3123a60525cdc206fd5be04`, successful hosted run `31242089985`, and governed Release `REL-v0.10.0`. Its included online work is release/workflow evidence, not a retroactively inferred local backlog-item set. | [`2026-08-08-v0-10-release-publication`](../workflows/2026-08-08-v0-10-release-publication/workflow.yaml) |
+| `v0.11.0` | `published` | yes | Published the product-boundary, delivery-contract, environment-readiness, and source-only closeout outcomes. | Immutable tag `v0.11.0` at `05199ed0a9ed509ef1696df014fce244f8e7cffa` and stable Release `REL-v0.11.0`; the original tagged-tree publication run remains recorded as failed, while later source-only closeout validation passed without moving the tag or assets. | [`2026-08-09-v0-11-product-boundary-delivery-evidence`](../workflows/2026-08-09-v0-11-product-boundary-delivery-evidence/workflow.yaml) |
+| `v0.12.0` | `planned` | no | The current Project read-back records #150, #170, and #171 as Done/P1/target `v0.12.0`, each `Not yet published`. | A release candidate requires the owner to select an exact included-work set and authorize a release workflow. The authorized #175/#178 Phase A and #176 delivery work remain separately unallocated until that decision. | — |
 
 ## Release Gate Semantics
 
@@ -60,6 +68,9 @@ Read this file before planning or resuming a post-v0.4.0 release.
 | `v0.7.0` | `GOV-002`, `GOV-003`, `PKG-004`, `REL-003` | A historical archive migration and legacy identifier retirement each require explicit successor work rather than silent inclusion. | All four blockers are resolved and published at immutable tag `v0.7.0`; no conditional successor work was silently included. |
 | `v0.8.0` | `SKILL-002`, `TOOL-002`, `WIBIND-001` (all resolved and published) | No additional scope was selected. Any fourth item still requires an explicit owner roadmap decision rather than silent inclusion. | The exact three-item set is terminally complete at immutable tag `v0.8.0`; the governed hosted body and Project #3 `Published in` read-back pass. |
 | `v0.9.0` | `GOV-004`, `PKG-005`, `GOV-006`, `CTX-004`, `CTX-005`, `PKG-006`, `VAL-003`, `SAG-002` (all resolved and published in v0.9.0) | Proposal #93 remains provenance for `PKG-005`; Proposal #92 is represented by four umbrella-level canonical items; Proposal #94 remains provenance for the single aggregated `SAG-002` item represented by #118 with dependent slice #119. Proposal, umbrella, and leaf Issues must not be counted together. Issue #128 is an online-only packaged correction disclosed in release notes, not a ninth canonical item. | Immutable tag `v0.9.0` peels to `c14a326`; hosted run `31027306074`, the public Release, all four assets, adjacent checksums, and package parity passed. Project #3 records all eight items as published in v0.9.0. CTX-004 keeps source-only tests outside the payload, and Architecture Kit remains unavailable/non-selectable. |
+| `v0.10.0` | Selected and published through its governed release workflow; its exact online Issue scope is owned by `REL-v0.10.0` and the linked workflow. | Do not infer missing local backlog item YAML from the published Release. | Immutable tag, hosted publication run, and Release evidence are recorded in `.dev/releases/v0.10.0/`. |
+| `v0.11.0` | Selected and published through its governed release workflow; its exact online Issue scope is owned by `REL-v0.11.0` and the linked workflow. | The failed tagged-tree publication run remains immutable evidence; it was not relabeled as passed by later closeout. | Immutable tag and assets are preserved; source-only closeout evidence is recorded in `.dev/releases/v0.11.0/`. |
+| `v0.12.0` | No canonical local included-work set is selected. Current Project planning records #150, #170, and #171 as Done/P1/target `v0.12.0`, all `Not yet published`. | #175, #176, and #178 are authorized delivery work but have no selected Project target-release value; do not add them to a v0.12.0 candidate without an owner decision. | A release workflow, candidate record, and publication authority remain required before any release claim. |
 
 The 2026-08-02 owner decision promotes Proposal #69 into required v0.8.0
 scope as `TOOL-002`. That decision authorizes the bounded Story delivery and

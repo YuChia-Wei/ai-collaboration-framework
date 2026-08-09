@@ -27,7 +27,7 @@
 
 ### 3. Key Principles
 - ✅ DO: Follow existing patterns, use explicit loading, write tests first
-- ❌ DON'T: Generate ezDDD/ezSpec classes, skip validation, bypass UseCase layers
+- ❌ DON'T: Generate historical framework-specific classes, skip validation, bypass UseCase layers
 
 ## Architecture Layers (Clean Architecture)
 

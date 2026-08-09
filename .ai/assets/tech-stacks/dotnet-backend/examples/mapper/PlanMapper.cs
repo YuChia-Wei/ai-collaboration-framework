@@ -228,7 +228,7 @@ public static class PlanMapper
     }
 }
 
-// TODO: Replace placeholders below with EzDdd/Wolverine EF Core equivalents.
+// TODO: Replace placeholders below with target-selected mapping, persistence, and messaging adapters.
 public interface IOutboxMapper<TAggregate, TData>
 {
     TAggregate ToDomain(TData data);

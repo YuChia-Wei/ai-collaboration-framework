@@ -45,7 +45,7 @@ public static class TagEvents
         DateTimeOffset OccurredOn
     ) : TagEvent(TagId, Metadata, Id, OccurredOn), IConstructionEvent
     {
-        // TODO: add guard clauses or Contract checks in your EzDdd port.
+        // TODO: add guard clauses or target-selected contract checks.
     }
 
     public sealed record TagRenamed(
@@ -56,7 +56,7 @@ public static class TagEvents
         DateTimeOffset OccurredOn
     ) : TagEvent(TagId, Metadata, Id, OccurredOn)
     {
-        // TODO: add guard clauses or Contract checks in your EzDdd port.
+        // TODO: add guard clauses or target-selected contract checks.
     }
 
     public sealed record TagColorChanged(
@@ -67,7 +67,7 @@ public static class TagEvents
         DateTimeOffset OccurredOn
     ) : TagEvent(TagId, Metadata, Id, OccurredOn)
     {
-        // TODO: add guard clauses or Contract checks in your EzDdd port.
+        // TODO: add guard clauses or target-selected contract checks.
     }
 
     public sealed record TagDeleted(
@@ -77,7 +77,7 @@ public static class TagEvents
         DateTimeOffset OccurredOn
     ) : TagEvent(TagId, Metadata, Id, OccurredOn), IDestructionEvent
     {
-        // TODO: add guard clauses or Contract checks in your EzDdd port.
+        // TODO: add guard clauses or target-selected contract checks.
     }
 
     public static class TypeMapper

@@ -1,7 +1,9 @@
-schema_version: "1.1"
+schema_version: "1.2"
 manifests:
   - id: "v050-published-path-disposition"
     path: ".dev/workflows/2026-07-21-v0-5-0-development/evidence/v050-published-path-disposition.yaml"
+    current_byte_authorizations:
+      - ".dev/workflows/2026-08-10-current-context-remediation/evidence/v050-current-byte-authorization.yaml"
 repository_identity_policies:
   - id: "repository-rename-retired-identity"
     path: ".ai/distribution/repository-identity-policy.yaml"

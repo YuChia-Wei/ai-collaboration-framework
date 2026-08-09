@@ -6,34 +6,43 @@
   "task_id": "GOV009-001",
   "workflow_id": "2026-08-10-current-context-remediation",
   "owner_skill": "ai-context-governance",
-  "status": "pending",
+  "status": "completed",
   "created_at": "2026-08-10T00:33:41+08:00",
-  "updated_at": "2026-08-10T00:33:41+08:00",
+  "updated_at": "2026-08-10T01:10:00+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-5.6-sol",
   "reasoning_effort": "high",
   "finding_ids": [
     "ASM-20260809-004#DEV-001",
     "ASM-20260809-004#DEV-002",
-    "#175"
+    "#175",
+    "#176-commit-title-clarification"
   ],
   "scope": {
     "target": "Current roadmap, backlog/provider projections, and active .dev links",
     "files": [
       ".dev/backlog/**",
       ".dev/requirement/REQUIREMENT-GUIDE.MD",
-      ".dev/guides/**"
+      ".dev/guides/**",
+      ".dev/standards/GIT-COMMIT-POLICY.md",
+      ".dev/standards/GIT-COMMIT-POLICY.yaml",
+      ".ai/scripts/validate-git-commits.py",
+      ".ai/scripts/tests/test_git_commit_policy.py",
+      ".ai/assets/skills/ai-context-governance/references/workflow-and-commit-playbook.md",
+      "AGENTS.md",
+      "AGENTS.zh-TW.md"
     ],
     "constraints": [
       "Use online GitHub Issues and Project as work-management authority",
       "Preserve item, workflow, assessment, release, and provider-receipt history",
       "Do not treat local backlog files as the complete online queue",
-      "Coordinate shared guide edits with CTX007-001"
+      "Coordinate shared guide edits with CTX007-001",
+      "Treat the historical pipe character as meta-notation without rewriting shared commits"
     ],
     "non_goals": [
       "Package publication",
       "Historical cosmetic link rewrites",
-      "Immutable-history validator changes owned by #176"
+      "Layered immutable-history receipt and validation design owned by #176"
     ]
   },
   "execution": {
@@ -42,24 +51,46 @@
       "Resolve the current role of the GitHub provider config",
       "Align ROADMAP and backlog index with published and planned state",
       "Repair active canonical-standard and requirement-example links",
+      "Clarify the two literal commit-title alternatives and preserve pre-cutover compatibility",
       "Run provider, source-governance, and active-link validation"
     ],
     "validation": [
       "live provider read-back",
       "python .ai/scripts/validate-ai-context.py",
       "python .ai/scripts/validate-source-governance.py",
+      "python .ai/scripts/tests/test_git_commit_policy.py -v",
       "active Markdown link checks",
       "git diff --check"
     ],
-    "last_completed_step": "",
-    "next_action": "Begin after CTX007-001 establishes final shared-guide paths"
+    "last_completed_step": "Aligned current provider/roadmap truth, repaired active links, and replaced the ambiguous commit-title meta-notation with prospective literal alternatives",
+    "next_action": "VERIFY-001 must confirm the committed result and reconcile the baseline assessment"
   },
   "results": {
-    "summary": "",
-    "files_changed": [],
-    "tests_run": [],
-    "finding_status": "not-addressed",
-    "residual_risk": "",
+    "summary": "Separated the 55-record local backlog from the 104-item live Project, updated the local roadmap through v0.12 planning without allocating unselected Issues, repaired active links, and clarified that commit titles use either issue numbers or a scope without a literal pipe.",
+    "files_changed": [
+      ".dev/backlog/**",
+      ".dev/ARCHITECTURE.md",
+      ".dev/requirement/REQUIREMENT-GUIDE.MD",
+      ".dev/guides/**",
+      ".dev/standards/GIT-COMMIT-POLICY.md",
+      ".dev/standards/GIT-COMMIT-POLICY.yaml",
+      ".ai/scripts/validate-git-commits.py",
+      ".ai/scripts/tests/test_git_commit_policy.py",
+      ".ai/assets/skills/ai-context-governance/references/workflow-and-commit-playbook.md",
+      "AGENTS.md",
+      "AGENTS.zh-TW.md"
+    ],
+    "tests_run": [
+      "read-only GitHub Project, Issue, and Release read-back outside sandbox: passed",
+      "test_github_backlog_provider.py: 20/20 passed",
+      "test_backlog_release_contract.py: 6/6 passed",
+      "test_workflow_backlog_provider.py: 6/6 passed",
+      "test_git_commit_policy.py: 19/19 passed",
+      "validate-workflow-artifacts.py: passed",
+      "validate-source-governance.py: passed"
+    ],
+    "finding_status": "addressed",
+    "residual_risk": "The provider receipt is point-in-time and must be refreshed before future current-state claims. The broader #176 layered-history contract still requires owner decisions 1-4.",
     "follow_up_needed": true
   }
 }

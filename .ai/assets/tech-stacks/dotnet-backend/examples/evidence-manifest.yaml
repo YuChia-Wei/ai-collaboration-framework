@@ -1,7 +1,7 @@
 schema_version: "1.0"
 manifest_id: "DOTNET-EXAMPLES-EVIDENCE-001"
 schema: ".ai/assets/tech-stacks/dotnet-backend/examples/evidence-schema.yaml"
-updated_at: "2026-07-16T21:33:25+08:00"
+updated_at: "2026-08-10T00:43:11+08:00"
 default_tier: "historical"
 default_claim: "Unclassified legacy provenance; not active or copy-ready guidance."
 default_reason: "Legacy material defaults downward until explicit evidence supports promotion."
@@ -10,7 +10,7 @@ entries:
   - path: "aggregate/"
     tier: "illustrative"
     claim: "Illustrates Aggregate and Event Sourcing concepts; not a compiled template."
-    reason: "Contains converted and placeholder BuildingBlocks/EzDDD shapes without an independent build route."
+    reason: "Contains converted and placeholder BuildingBlocks shapes without an independent build route."
     validators: []
     build_commands: []
     test_commands: []
@@ -36,9 +36,9 @@ entries:
     build_commands: []
     test_commands: []
   - path: "contract/"
-    tier: "historical"
-    claim: "Historical uContract and Design-by-Contract source lineage."
-    reason: "The API has no approved .NET realization; current standards own invariant and validation semantics."
+    tier: "reference-only"
+    claim: "Design-by-Contract semantics and illustrative implementation shapes."
+    reason: "Current standards own invariant and validation semantics; package and helper selection remain target-owned."
     validators: []
     build_commands: []
     test_commands: []
@@ -106,9 +106,9 @@ entries:
     build_commands: []
     test_commands: []
   - path: "reference/"
-    tier: "historical"
-    claim: "Historical Java/EzDDD import and migration provenance."
-    reason: "Retained for concept extraction and lineage; not active implementation guidance."
+    tier: "reference-only"
+    claim: "On-demand .NET architecture, testing, and dependency references."
+    reason: "The references preserve neutral concepts; target package selection remains evidence-driven."
     validators: []
     build_commands: []
     test_commands: []

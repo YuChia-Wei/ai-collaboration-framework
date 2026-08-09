@@ -64,9 +64,9 @@ Kafka, RabbitMQ, or an observability library must come from target evidence.
 ## Historical Names
 
 Names such as `Input`, `ExitCode`, `CqrsOutput`, `MessageProducer`,
-`OutboxRepositoryPeer`, `InMemoryOrmDb`, `MessageDbClient`, BDDfy, and uContract
-originated in Java/EzDDD or lab-specific designs. They may still be useful
-concepts, but they are not active canonical type requirements.
+`OutboxRepositoryPeer`, `InMemoryOrmDb`, and `MessageDbClient` originated in
+historical or lab-specific designs. They may still be useful concepts, but they
+are not active canonical type requirements.
 
 Use the provenance matrix in the
 [reconstruction contract](../standards/BUILDING-BLOCKS-RECONSTRUCTION-CONTRACT.md#provenance-and-concept-disposition)

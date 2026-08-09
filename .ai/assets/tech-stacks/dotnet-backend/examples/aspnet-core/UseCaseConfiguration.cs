@@ -8,7 +8,7 @@ public static class UseCaseConfiguration
 {
     public static IServiceCollection AddUseCases(this IServiceCollection services)
     {
-        // Message bus / producer wiring (ezapp 2.0.0 equivalent)
+        // Message bus / producer wiring belongs in the composition root.
         // TODO: configure Wolverine message bus + producers.
 
         // Use case services

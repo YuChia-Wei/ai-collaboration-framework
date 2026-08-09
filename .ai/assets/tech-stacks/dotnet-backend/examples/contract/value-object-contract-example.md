@@ -10,10 +10,17 @@ public sealed record ProjectName
 
     public ProjectName(string value)
     {
-        Contract.RequireNotNull("value", value);
-        Contract.Require(!string.IsNullOrWhiteSpace(value), "Name required");
-        Contract.Require(value.Length <= 100, "Name too long");
-        Value = value.Trim();
+        ArgumentException.ThrowIfNullOrWhiteSpace(value);
+
+        var normalized = value.Trim();
+        if (normalized.Length > 100)
+        {
+            throw new ArgumentOutOfRangeException(
+                nameof(value),
+                "Name must not exceed 100 characters.");
+        }
+
+        Value = normalized;
     }
 }
 ```

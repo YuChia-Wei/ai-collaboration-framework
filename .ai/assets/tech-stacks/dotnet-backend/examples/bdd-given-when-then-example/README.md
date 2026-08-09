@@ -1,11 +1,11 @@
-# BDDfy Rule Examples (ezSpec -> .NET)
+# BDDfy Rule Examples (.NET)
 
-This folder translates ezSpec Rule concepts into BDDfy tests with Gherkin-style naming.
+This folder shows how to express business rules as BDDfy tests with Gherkin-style naming.
 
 Key mapping:
-- ezSpec `Rule` -> Rule prefix in test method names or grouped test classes
-- ezSpec `Scenario` -> Test method
-- ezSpec `Given/When/Then` -> BDDfy step methods or fluent chain
+- Business rule -> Rule prefix in test method names or grouped test classes
+- Scenario -> Test method
+- Given/When/Then -> BDDfy step methods or fluent chain
 
 Use these examples to keep BDD tests readable and reusable in .NET.
 
@@ -16,7 +16,7 @@ Use these examples to keep BDD tests readable and reusable in .NET.
 - `rule-design-before-after.md`
   - Rule granularity guidance and examples.
 - `rule-migration-guide.md`
-  - Step-by-step migration guide from ezSpec to BDDfy Rule-style grouping.
+  - Rule-style grouping guidance for BDDfy tests.
 - `../outbox/OUTBOX-TEST-CONFIGURATION.md`
   - Outbox test configuration for .NET.
 - `AggregateOutboxRepositoryTests.cs`

@@ -16,10 +16,10 @@
 - `base_branch`: `main`
 - `branch_segment`: `1`
 - `status`: `in_progress`
-- `current_phase`: `remediation`
+- `current_phase`: `verification`
 - `artifact_root`: `.dev/workflows/2026-08-10-current-context-remediation`
 - `created_at`: `2026-08-10T00:33:41+08:00`
-- `updated_at`: `2026-08-10T00:33:41+08:00`
+- `updated_at`: `2026-08-10T01:10:00+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md`
 - `template_version`: `1.2.0`
 
@@ -32,9 +32,10 @@
 
 ## Authorization And Delivery
 
-- Work items: `#175`, `#178`
+- Work items: `#175`, `#178`; bounded addendum: the commit-title alternative clarification requested under `#176`.
 - Authorization: Owner message on 2026-08-10: `開始 #175＋#178 Phase A，並行處理 #176`.
 - Delivery cohesion: #175 and #178 share active guide files, governance ownership, package projection checks, review, and rollback, so they use one workflow and pull request.
+- #176 boundary: This workflow includes only the independently authorized commit-title grammar clarification. The layered immutable-history receipt/profile design remains in its separate workflow and requires owner decisions 1–4.
 - Planned topology: merge commit, because multiple meaningful remediation and independent-verification stages form one review and rollback boundary. Integration remains owner-controlled.
 
 ## Artifact Contract
@@ -54,25 +55,25 @@
 
 ## Stages And Checkpoints
 
-1. Freeze the #170/#171 assessment baseline and owner decisions.
-2. Neutralize active/distributed ez-series and uContract guidance without removing .NET capability contracts.
-3. Align current roadmap/backlog/provider truth and repair active links.
-4. Run native, package, reference, and provider validation.
+1. Freeze the #170/#171 assessment baseline and owner decisions. `completed`
+2. Neutralize active/distributed ez-series and uContract guidance without removing .NET capability contracts. `completed`
+3. Align current roadmap/backlog/provider truth and repair active links. `completed`
+4. Run native, package, reference, and provider validation. `in progress`; worktree gates passed and committed-tree package proof is next.
 5. Obtain an independent post-remediation audit and reconcile findings.
 6. Commit verified closure evidence; push, pull request, and merge require their own authorization/state read-back.
 
 ## Resume Checkpoint
 
-- Last completed action: Created the dedicated branch and workflow bootstrap after explicit owner authorization.
-- Current task: `CTX007-001`
-- Exact next action: Inventory the exact active/distributed branded files and execute the approved delete/neutralize/rename batch.
-- Validation already completed: Baseline assessment and live Issues #175/#178 read back.
-- Git state: Branch created from `main` at `a2f6fe53f2f50d436e6be7e27eb4d7de1bc4c828`; workflow bootstrap uncommitted.
-- Branch history and checkpoint handoffs: None.
-- Blockers or unresolved decisions: None for Phase A. `LightBDD` remains an owner-named candidate, not a selected provider. Course acknowledgement is owner-only and excluded.
+- Last completed action: Completed the #175/#178 worktree remediation, source-governance successor authorization, and focused validation.
+- Current task: `VERIFY-001`
+- Exact next action: Commit the remediation checkpoint, run HEAD package proof, and obtain an independent ai-context-auditor assessment.
+- Validation already completed: AI-context, workflow, assessment, version, source-governance, provider, commit-policy, projection, example-manifest, language, wrapper, and adapter checks passed.
+- Git state: Branch is based on `main` at `a2f6fe53f2f50d436e6be7e27eb4d7de1bc4c828`; bootstrap commit is `e6979439e68d3aa0731541f36bd555b5f45b9bda`; remediation checkpoint is pending.
+- Branch history and checkpoint handoffs: Bootstrap committed locally; nothing pushed and no pull request or merge exists.
+- Blockers or unresolved decisions: None for #175/#178 Phase A. `LightBDD` remains an owner-named candidate, not a selected provider. Course acknowledgement is owner-only and excluded. The separate #176 layered-validation workflow awaits owner decisions 1–4.
 
 ## Branch Lifecycle
 
 | Segment | Branch | Base | Checkpoint Type | Commit | Remote / Target | Recorded At | Reason | Resume Branch / Action |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| 1 | `codex/2026-08-10-current-context-remediation` | `main` | active | pending | local | `2026-08-10T00:33:41+08:00` | Authorized cohesive #175/#178 delivery | Continue `CTX007-001` |
+| 1 | `codex/2026-08-10-current-context-remediation` | `main` | active | `e6979439e68d3aa0731541f36bd555b5f45b9bda` | local | `2026-08-10T01:10:00+08:00` | Authorized cohesive #175/#178 delivery plus bounded #176 title clarification | Commit remediation checkpoint and continue `VERIFY-001` |

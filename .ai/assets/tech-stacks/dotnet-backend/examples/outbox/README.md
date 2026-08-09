@@ -1,8 +1,8 @@
 # Outbox Repository Pattern Implementation Guide (.NET)
 
 ## Overview
-This guide explains how to implement the Outbox Repository pattern for ezDDD-style aggregates
-using EF Core and Wolverine.
+This guide explains how to implement the Outbox Repository pattern for DDD
+aggregates using EF Core and Wolverine when those adapters are selected.
 
 ## Contents
 1. Outbox pattern overview
@@ -48,10 +48,12 @@ Repository.save() -> PostgreSQL (domain + outbox)
 
 ## Integration Notes (Wolverine + EF Core)
 
-- Use EF Core as the ORM.
-- Use Wolverine for outbox durability, messaging, and CQRS handlers.
-- Keep ezDDD concepts (domain events, aggregate versioning, invariants).
-- TODO: map ezddd-gateway behavior to Wolverine outbox pipelines.
+- EF Core is a supported ORM adapter; Dapper or direct SQL may be selected for
+  read paths or other target-defined persistence work.
+- Wolverine/WolverineFx is a supported adapter for durable outbox, messaging,
+  and CQRS handlers when the target selects it.
+- Preserve Domain Events, aggregate versioning, invariants, atomic persistence,
+  idempotency, and retry semantics independently of the selected provider.
 
 ## Implementation Steps
 

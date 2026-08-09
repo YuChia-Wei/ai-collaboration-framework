@@ -1,0 +1,22 @@
+schema_version: "1.0"
+authorization_id: "v050-current-byte-authorization-issue-178"
+base_manifest:
+  id: "v050-published-path-disposition"
+  path: ".dev/workflows/2026-07-21-v0-5-0-development/evidence/v050-published-path-disposition.yaml"
+  blob: "3b7f4fadaa95904dac5f519acefd0a346a87d482"
+  subject_commit: "d5d74eae4717fc0a5cb9a008667094dbfefe9f35"
+authority: "repository-owner"
+issue: 178
+authorized_at: "2026-08-09T16:37:38Z"
+authorization_ref: "https://github.com/YuChia-Wei/ai-collaboration-framework/issues/178#issuecomment-5232583247"
+workflow_ref: ".dev/workflows/2026-08-10-current-context-remediation/workflow.yaml"
+task_ref: ".dev/workflows/2026-08-10-current-context-remediation/tasks/CTX007-001.json"
+entries:
+  - path: ".ai/scripts/check-mutation-coverage.sh"
+    subject_blob: "cc74d5c217986fc8fdd30b37b33df76723ab4a19"
+    authorized_blob: "d298ddfd57ca0dbf9526c2c2edc20eee420573c6"
+    reason: "Issue #178 authorizes the current .NET-specific mutation guidance while preserving the v0.5.0 disposition manifest as immutable evidence."
+  - path: ".ai/scripts/check-domain-events-compliance.sh"
+    subject_blob: "5affcca2598e5f245910906a7f47c28fe089b783"
+    authorized_blob: "238e01b9af88cb5d5fd5fc61feb684406e80c791"
+    reason: "Issue #178 authorizes the current .NET-specific domain-event guidance while preserving the v0.5.0 disposition manifest as immutable evidence."

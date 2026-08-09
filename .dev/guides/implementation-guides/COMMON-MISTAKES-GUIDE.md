@@ -13,12 +13,12 @@
 ## 🔴 編譯錯誤
 
 ### 1. Cannot resolve symbol: DomainEvent
-**原因**：缺少 ezDDD 概念對應的 .NET 基底類別/套件。
+**原因**：專案尚未定義或引用 target-selected 的 Domain Event contract。
 
 **解決方案**：
 - 確認自定義的 DomainEvent 介面或基底類別已建立
 - 確認專案參考與命名空間正確
-- TODO: 補齊 .NET 版 ezddd 套件
+- 若採用共用 Contracts 套件，確認該套件已由 target owner 選定且版本可用；否則維持 project-owned contract
 
 ### 2. Missing package reference
 **解決方案**：
