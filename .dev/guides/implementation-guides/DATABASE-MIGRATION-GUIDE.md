@@ -116,5 +116,5 @@ public sealed class MigrationHealthCheck : IHealthCheck
 ## Related
 
 - [Persistence configuration](PERSISTENCE-CONFIGURATION-GUIDE.md)
-- [Technology selection policy](../../../.ai/assets/tech-stacks/dotnet-backend/standards/TECHNOLOGY-SELECTION-POLICY.md)
+- [Technology selection policy](../../standards/TECHNOLOGY-SELECTION-POLICY.md)
 - [Project structure](../../../.ai/assets/tech-stacks/dotnet-backend/standards/project-structure.md)

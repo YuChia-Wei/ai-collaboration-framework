@@ -8,7 +8,7 @@
   "owner_skill": "ai-context-governance",
   "status": "completed",
   "created_at": "2026-08-10T00:33:41+08:00",
-  "updated_at": "2026-08-10T01:10:00+08:00",
+  "updated_at": "2026-08-10T01:32:45+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-5.6-sol",
   "reasoning_effort": "high",
@@ -62,7 +62,7 @@
       "active Markdown link checks",
       "git diff --check"
     ],
-    "last_completed_step": "Aligned current provider/roadmap truth, repaired active links, and replaced the ambiguous commit-title meta-notation with prospective literal alternatives",
+    "last_completed_step": "Aligned current provider/roadmap truth, repaired active links including the independently caught migration-guide regression, and replaced the ambiguous commit-title meta-notation with prospective literal alternatives",
     "next_action": "VERIFY-001 must confirm the committed result and reconcile the baseline assessment"
   },
   "results": {
@@ -86,6 +86,7 @@
       "test_backlog_release_contract.py: 6/6 passed",
       "test_workflow_backlog_provider.py: 6/6 passed",
       "test_git_commit_policy.py: 19/19 passed",
+      "changed active Markdown link resolution: 45 files checked; all local targets exist",
       "validate-workflow-artifacts.py: passed",
       "validate-source-governance.py: passed"
     ],
