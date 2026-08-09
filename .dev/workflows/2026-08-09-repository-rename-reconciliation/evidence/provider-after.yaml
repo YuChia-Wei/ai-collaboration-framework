@@ -3,16 +3,17 @@ receipt_id: "GOV007-PROVIDER-AFTER"
 receipt_type: "repository-rename-provider-after"
 workflow_id: "2026-08-09-repository-rename-reconciliation"
 issue: 150
-status: "pre-pr-verified"
+status: "pr-verification-in-progress"
 observed_at: "2026-08-09T21:04:07+08:00"
+updated_at: "2026-08-09T21:31:32+08:00"
 mutation_performed: true
 subject_ref:
   branch: "codex/2026-08-09-repository-rename-reconciliation"
-  commit: "ee05a0d385d7c5739554f81e8a3767e31e5b7793"
+  commit: "f7669641fe27545075f143b90e500a7b1ace57e5"
   base_branch: "main"
   base_commit: "e1dedd688707d84f5e7a26c7c7532f74a9860a94"
 local_git:
-  head: "ee05a0d385d7c5739554f81e8a3767e31e5b7793"
+  head: "f7669641fe27545075f143b90e500a7b1ace57e5"
   origin_main: "e1dedd688707d84f5e7a26c7c7532f74a9860a94"
   fetch_url: "https://github.com/YuChia-Wei/ai-collaboration-framework.git"
   push_url: "https://github.com/YuChia-Wei/ai-collaboration-framework.git"
@@ -68,7 +69,7 @@ project_reconciliation:
   project_item_title: "[GOV] Rename The Repository To ai-collaboration-framework After v0.11.0"
   fields:
     priority: "P1 High"
-    status: "In progress"
+    status: "Verification"
     target_release: "v0.12.0"
     owner_review: "Not required"
     published_in: "Not yet published"
@@ -79,6 +80,7 @@ project_reconciliation:
     - "Set Owner review to Not required with option ID a25d4725."
     - "Set Published in to Not yet published with option ID a5bd83e1."
     - "The repository owner set Priority to P1 High online; automation only read it back."
+    - "Advanced Status to Verification with option ID 73b96eaf after PR #173 opened."
   result: "passed"
   note: "The Project item's top-level title projection differs from the linked Issue content title. Both use the current repository identity, so no destructive remove-and-readd was performed."
 continuity_readbacks:
@@ -95,6 +97,38 @@ continuity_readbacks:
     status: "completed"
     conclusion: "success"
     url: "https://github.com/YuChia-Wei/ai-collaboration-framework/actions/runs/31298334256"
+delivery_pull_request:
+  number: 173
+  state: "OPEN"
+  draft: true
+  base: "main"
+  base_sha: "e1dedd688707d84f5e7a26c7c7532f74a9860a94"
+  head: "codex/2026-08-09-repository-rename-reconciliation"
+  head_sha: "f7669641fe27545075f143b90e500a7b1ace57e5"
+  url: "https://github.com/YuChia-Wei/ai-collaboration-framework/pull/173"
+  merge_contract: "GitHub merge commit required; fast-forward, rebase, and squash prohibited"
+hosted_verification:
+  initial_run:
+    database_id: 31315015812
+    workflow: "Portable AI Context Gates"
+    head: "f7669641fe27545075f143b90e500a7b1ace57e5"
+    url: "https://github.com/YuChia-Wei/ai-collaboration-framework/actions/runs/31315015812"
+    conclusion: "failure"
+    passed_jobs:
+      - "Ubuntu PR profile gate: 38 selected / 0 failed / 0 blocked"
+      - "Windows prerequisite contract"
+    failed_job:
+      name: "Ubuntu prerequisite contract"
+      job_id: 93248752104
+      result: "failed"
+      failure: "test_python_prerequisites.py expected 27 registered entrypoints but the governed registry contains 28"
+    diagnosis: "The repository identity validator was registered as the 28th Python entrypoint, but two direct prerequisite contract count assertions still used the previous 27-entry boundary."
+  local_fix_validation:
+    python_prerequisites: "passed: 14/14 outside sandbox"
+    python_entrypoints_contract: "passed: 4/4 outside sandbox"
+    posix_python_entrypoint_launcher: "passed: 5/5 outside sandbox"
+    git_diff_check: "passed"
+  fresh_run: "pending-after-push"
 release_continuity:
   tag: "v0.11.0"
   url: "https://github.com/YuChia-Wei/ai-collaboration-framework/releases/tag/v0.11.0"
@@ -139,6 +173,7 @@ validation_summary:
   aggregate_fail_closed: "passed: 35/35 outside sandbox"
   dependency_contracts: "passed: validator plus 19/19 GWT cases"
   source_python_entrypoints: "passed: 3/3 outside sandbox"
+  prerequisite_contract_fix: "passed: 14/14 prerequisites, 4/4 entrypoint contracts, and 5/5 POSIX launcher cases outside sandbox"
   focused_source_only_packaging: "passed: 1/1"
   hosted_equivalent_fast_profile: "passed: 29 selected / 0 failed / 0 blocked"
   assessment_artifacts: "passed: 39 assessments"
@@ -154,8 +189,7 @@ mutation_boundary:
     - "Existing tag, Release, or asset mutation"
     - "Product, package, archive, profile, namespace, or CLI identity change"
 pending_terminal_evidence:
-  - "Issue #150 delivery pull request URL and head SHA"
-  - "Fresh hosted checks for the delivery pull request"
+  - "Fresh hosted checks for the corrected delivery pull request head"
   - "GitHub merge-method read-back and two-parent merge commit"
   - "Integrated main, terminal Issue state, and terminal Project state"
   - "Signed-in security-report form owner read-back"
