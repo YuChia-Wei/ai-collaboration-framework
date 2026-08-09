@@ -263,7 +263,9 @@ class SyntheticRunnerRepo:
         bash = bash_executable()
         if not bash:
             raise unittest.SkipTest("Bash is required for check-all.sh fixture tests")
-        merged_environment = dict(os.environ)
+        merged_environment = {
+            key: value for key, value in os.environ.items() if not key.startswith("BASH_FUNC_")
+        }
         merged_environment["PATH"] = str(self.bin) + os.pathsep + merged_environment["PATH"]
         merged_environment.pop("SPEC_FILE", None)
         merged_environment.pop("TASK_NAME", None)
