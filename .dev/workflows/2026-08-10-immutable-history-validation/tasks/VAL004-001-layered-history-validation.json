@@ -1,0 +1,60 @@
+{
+  "template_id": "ai-context-governance-remediation-task",
+  "template_version": "1.1.0",
+  "template_created_at": "2026-07-10T18:22:49+08:00",
+  "template_updated_at": "2026-07-27T09:52:09+08:00",
+  "task_id": "VAL004-001-layered-history-validation",
+  "workflow_id": "2026-08-10-immutable-history-validation",
+  "owner_skill": "ai-context-governance",
+  "status": "pending",
+  "created_at": "2026-08-10T00:38:23+08:00",
+  "updated_at": "2026-08-10T00:38:23+08:00",
+  "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
+  "model": "gpt-5.6-terra",
+  "reasoning_effort": "xhigh",
+  "finding_ids": [
+    "ASM-20260809-004#DEV-003"
+  ],
+  "scope": {
+    "target": "Layered routine/full validation of immutable source-repository history.",
+    "files": [
+      ".ai/scripts/",
+      ".ai/tests/",
+      ".dev/standards/",
+      ".dev/operations/"
+    ],
+    "constraints": [
+      "Preserve immutable workflow, assessment, and release evidence bytes.",
+      "Fail closed on missing, stale, mismatched, incomplete, or ambiguous evidence.",
+      "Retain existing full validators as authority until parity and cutover evidence pass.",
+      "Require an owner decision for the four Issue #176 decision points before implementation."
+    ],
+    "non_goals": [
+      "Hosted-workflow modification.",
+      "Release, tag, publication, or package mutation.",
+      "Downstream profile implementation beyond its source-repository boundary contract."
+    ]
+  },
+  "execution": {
+    "steps": [
+      "Record the owner's selection for routine proof, full gates, receipt reuse, and source/downstream profile boundary.",
+      "Implement the selected contract with deterministic fixtures.",
+      "Run full-profile parity and request independent audit verification."
+    ],
+    "validation": [
+      "Focused deterministic validation fixtures.",
+      "Existing full validators and check-all profile parity.",
+      "Independent ai-context-auditor verification assessment."
+    ],
+    "last_completed_step": "Task created and explicitly decision-gated.",
+    "next_action": "Await the owner's explicit selection of the four #176 decisions."
+  },
+  "results": {
+    "summary": "Pending owner decision; no immutable history or validation policy has been modified.",
+    "files_changed": [],
+    "tests_run": [],
+    "finding_status": "not-addressed",
+    "residual_risk": "Routine/full contract cannot be selected safely without the required owner decisions.",
+    "follow_up_needed": true
+  }
+}
