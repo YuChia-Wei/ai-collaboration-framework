@@ -12,28 +12,28 @@
 - `report_id`: `remediation-report-2026-08-10-current-context-remediation`
 - `workflow_id`: `2026-08-10-current-context-remediation`
 - `owner_skill`: `ai-context-governance`
-- `status`: `draft`
+- `status`: `final`
 - `created_at`: `2026-08-10T00:55:38+08:00`
-- `updated_at`: `2026-08-10T01:10:00+08:00`
+- `updated_at`: `2026-08-10T01:43:36+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-remediation-report-template.md`
 - `template_version`: `2.0.0`
 - `baseline_assessment`: `ASM-20260809-004`
-- `verification_assessment`: `pending`
+- `verification_assessment`: `ASM-20260810-001`
 
 ## Remediation Summary
 
 - Authorized scope: Deliver #175 and #178 Phase A in one governance workflow; include the owner-requested commit-title alternative clarification while #176's layered-history design remains independently decision-gated.
-- Completed scope: Active guide, example, script, index, roadmap, backlog/provider, requirement-reference, commit-policy, and exact current-byte authorization edits are implemented and pass worktree validation. Final package evidence and independent verification remain pending.
-- Validation summary: AI-context, workflow, assessment, version, source-governance, commit-policy, projection, provider, language, wrapper/adapter, and example-manifest checks pass. The immutable v0.5.0 manifest remains unchanged; source governance validates the two exact owner-authorized current blobs before forwarding their paths. Package validation must run against the committed tree.
-- Closure decision: `not-ready`
+- Completed scope: Active guide, example, script, index, roadmap, backlog/provider, requirement-reference, commit-policy, and exact current-byte authorization edits are implemented, committed, and independently verified. The owner-only course acknowledgement was not authored or changed.
+- Validation summary: AI-context, workflow, assessment, version, source-governance, commit-policy, projection, provider, language, wrapper/adapter, example-manifest, changed-link, direct Git-tree package, reference-integrity, and retained-provenance checks pass. The final Phase A payload has 655 files, zero branded hits, and digest `d709cb19aaff891578a56e728b648aba17dd9d243145b7857e16b02a39e5d384`. The immutable v0.5.0 manifest remains unchanged; source governance validates the two exact owner-authorized current blobs before forwarding their paths.
+- Closure decision: `completed-local`
 
 ## Finding Resolution Matrix
 
 | Assessment Finding | Before Severity | Status | Changed Files | Validation | Commit | Residual Risk |
 | --- | --- | --- | --- | --- | --- | --- |
-| `ASM-20260809-004#DEV-001` | medium | `resolved` pending independent confirmation | `.dev/backlog/**`, `.dev/requirement/REQUIREMENT-GUIDE.MD` | Live GitHub read-back; provider tests; link checks | pending | Provider receipt is a point-in-time snapshot and must be refreshed before later current-state claims. |
-| `ASM-20260809-004#DEV-002` | low | `resolved` pending independent confirmation | `.dev/ARCHITECTURE.md`, `.dev/guides/**`, deleted stale reference | AI-context validation; active-link checks | pending | Immutable historical links remain unchanged by design. |
-| `#178 Phase A` | owner-selected P1 | `resolved` pending package and independent confirmation | `.ai/assets/**`, selected `.ai/scripts/**`, `.dev/guides/**`, distribution test/profile | deterministic source/package brand scan; package inventory; projection validation | pending | Future EngineeringGuardrails package adoption remains #179 and is not claimed ready. |
+| `ASM-20260809-004#DEV-001` | medium | `verified resolved` | `.dev/backlog/**`, `.dev/requirement/REQUIREMENT-GUIDE.MD` | Live GitHub read-back; provider tests; link checks; `ASM-20260810-001` | `c240b87` | Provider receipt is a point-in-time snapshot and must be refreshed before later current-state claims. |
+| `ASM-20260809-004#DEV-002` | low | `verified resolved` | `.dev/ARCHITECTURE.md`, `.dev/guides/**`, deleted stale reference | AI-context validation; 45 changed Markdown files / 144 local links / 0 broken; `ASM-20260810-001` | `c240b87`, `725162b` | Immutable historical links remain unchanged by design. |
+| `#178 Phase A` | owner-selected P1 | `verified resolved` | `.ai/assets/**`, selected `.ai/scripts/**`, `.dev/guides/**`, distribution test/profile | 655 payload files; zero brand hits; reference integrity; retained-provenance classification; `ASM-20260810-001` | `c240b87` | Future EngineeringGuardrails package adoption remains #179 and is not claimed ready. |
 
 ## Changes And Evidence
 
@@ -67,10 +67,10 @@
 
 ## Verification Assessment Reconciliation
 
-- Independent auditor: pending
-- Confirmed resolved: pending
-- Recurring findings: pending
-- New or regressed findings: pending
+- Independent auditor: `ai-context-auditor`, recorded in `ASM-20260810-001` at commit `47158b89f7aad33c7c1844ceed2eebb487c0084e`.
+- Confirmed resolved: `ASM-20260809-004#DEV-001`, `ASM-20260809-004#DEV-002`, and Issue #178 Phase A.
+- Recurring findings: none.
+- New or regressed findings: none. A Technology Selection link regression introduced in the remediation checkpoint was found before finalization, corrected in `725162b679a9aea85e50417ee4b35c9a95cdae7c`, and included in the final zero-broken-link proof.
 
 ## Deferred Work
 
@@ -81,7 +81,7 @@
 
 ## Closure Evidence
 
-- Required validations: Package inventory and brand scan against committed HEAD, independent assessment, final workflow validation, and commit-range validation remain before closure. Source-governance successor authorization and worktree validation passed.
-- Commit status: Workflow bootstrap committed; remediation changes are uncommitted.
-- Workflow/task status: `CTX007-001` and `GOV009-001` are completed; `VERIFY-001` is in progress.
-- Final next action: Create the remediation checkpoint commit, run package proof, and request independent audit.
+- Required validations: All Phase A gates passed, including direct committed-tree payload resolution, reference integrity, zero branded payload hits, retained-provenance classification, active-link validation, source governance, and independent assessment. The complete 37-case packaging regression suite timed out and is not claimed passed; it remains a future release-candidate gate rather than evidence used for this Phase A closure.
+- Commit status: Local commits record workflow bootstrap, remediation, link correction, and independent verification. This report and terminal workflow metadata form the local closure checkpoint.
+- Workflow/task status: `CTX007-001`, `GOV009-001`, and `VERIFY-001` are completed; the workflow is `completed` locally.
+- Final next action: Await owner authorization for push and pull-request creation. No remote branch, pull request, or merge has been created; eventual integration remains a separately authorized merge-commit action.

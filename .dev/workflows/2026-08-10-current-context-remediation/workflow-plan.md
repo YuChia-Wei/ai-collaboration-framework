@@ -15,11 +15,11 @@
 - `branch`: `codex/2026-08-10-current-context-remediation`
 - `base_branch`: `main`
 - `branch_segment`: `1`
-- `status`: `in_progress`
-- `current_phase`: `verification`
+- `status`: `completed`
+- `current_phase`: `completed`
 - `artifact_root`: `.dev/workflows/2026-08-10-current-context-remediation`
 - `created_at`: `2026-08-10T00:33:41+08:00`
-- `updated_at`: `2026-08-10T01:10:00+08:00`
+- `updated_at`: `2026-08-10T01:42:02+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md`
 - `template_version`: `1.2.0`
 
@@ -42,7 +42,7 @@
 
 - Baseline assessment: `.dev/assessments/ASM-20260809-004/assessment.yaml`
 - Remediation report: `.dev/workflows/2026-08-10-current-context-remediation/reports/remediation-report.md`
-- Verification assessment: `TBD by independent ai-context-auditor`
+- Verification assessment: `.dev/assessments/ASM-20260810-001/assessment.yaml`
 - Tasks: `.dev/workflows/2026-08-10-current-context-remediation/tasks/`
 
 ## Finding Triage
@@ -58,22 +58,22 @@
 1. Freeze the #170/#171 assessment baseline and owner decisions. `completed`
 2. Neutralize active/distributed ez-series and uContract guidance without removing .NET capability contracts. `completed`
 3. Align current roadmap/backlog/provider truth and repair active links. `completed`
-4. Run native, package, reference, and provider validation. `in progress`; worktree gates passed and committed-tree package proof is next.
-5. Obtain an independent post-remediation audit and reconcile findings.
-6. Commit verified closure evidence; push, pull request, and merge require their own authorization/state read-back.
+4. Run native, package, reference, and provider validation. `completed`; the final Git-tree payload has 655 files, zero branded hits, and digest `d709cb19aaff891578a56e728b648aba17dd9d243145b7857e16b02a39e5d384`.
+5. Obtain an independent post-remediation audit and reconcile findings. `completed` by `ASM-20260810-001` with no active finding.
+6. Commit verified closure evidence. `completed` by this local closure checkpoint; push, pull request, and merge require their own authorization/state read-back.
 
 ## Resume Checkpoint
 
-- Last completed action: Completed the #175/#178 worktree remediation, source-governance successor authorization, and focused validation.
-- Current task: `VERIFY-001`
-- Exact next action: Commit the remediation checkpoint, run HEAD package proof, and obtain an independent ai-context-auditor assessment.
-- Validation already completed: AI-context, workflow, assessment, version, source-governance, provider, commit-policy, projection, example-manifest, language, wrapper, and adapter checks passed.
-- Git state: Branch is based on `main` at `a2f6fe53f2f50d436e6be7e27eb4d7de1bc4c828`; bootstrap commit is `e6979439e68d3aa0731541f36bd555b5f45b9bda`; remediation checkpoint is pending.
-- Branch history and checkpoint handoffs: Bootstrap committed locally; nothing pushed and no pull request or merge exists.
-- Blockers or unresolved decisions: None for #175/#178 Phase A. `LightBDD` remains an owner-named candidate, not a selected provider. Course acknowledgement is owner-only and excluded. The separate #176 layered-validation workflow awaits owner decisions 1–4.
+- Last completed action: Finalized `ASM-20260810-001`, reconciled its no-active-finding result, and prepared this local closure checkpoint.
+- Current task: none; `CTX007-001`, `GOV009-001`, and `VERIFY-001` are completed.
+- Exact next action: Await owner authorization for push and pull-request creation. Merge remains a later, separately authorized merge-commit action.
+- Validation already completed: AI-context, workflow, assessment, version, source-governance, provider, commit-policy, projection, example-manifest, language, wrapper, adapter, fail-closed, direct package, brand/provenance, and active-link checks passed. The full 37-case packaging suite timed out and is not claimed passed or required as this Phase A gate.
+- Git state: Branch is based on `main` at `a2f6fe53f2f50d436e6be7e27eb4d7de1bc4c828`; local history includes bootstrap `e6979439e68d3aa0731541f36bd555b5f45b9bda`, remediation `c240b87b14b7583a10979ea4fb1b731d5703a148`, link correction `725162b679a9aea85e50417ee4b35c9a95cdae7c`, and verification assessment `47158b89f7aad33c7c1844ceed2eebb487c0084e` plus this closure commit.
+- Branch history and checkpoint handoffs: All work is local; nothing pushed and no pull request or merge exists.
+- Blockers or unresolved decisions: None for #175/#178 Phase A. The separate #176 layered-validation workflow awaits owner decisions 1–4; #179 package adoption remains separately gated.
 
 ## Branch Lifecycle
 
 | Segment | Branch | Base | Checkpoint Type | Commit | Remote / Target | Recorded At | Reason | Resume Branch / Action |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| 1 | `codex/2026-08-10-current-context-remediation` | `main` | active | `e6979439e68d3aa0731541f36bd555b5f45b9bda` | local | `2026-08-10T01:10:00+08:00` | Authorized cohesive #175/#178 delivery plus bounded #176 title clarification | Commit remediation checkpoint and continue `VERIFY-001` |
+| 1 | `codex/2026-08-10-current-context-remediation` | `main` | completed-local | `e6979439`, `c240b87`, `725162b`, `47158b8`, and this closure commit | local | `2026-08-10T01:42:02+08:00` | Authorized cohesive #175/#178 delivery plus bounded #176 title clarification | Await owner-authorized push and pull request |
