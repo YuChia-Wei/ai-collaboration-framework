@@ -9,10 +9,10 @@
 - `base_branch`: `main`
 - `branch_segment`: `1`
 - `status`: `in_progress`
-- `current_phase`: `audit`
+- `current_phase`: `remediation`
 - `artifact_root`: `.dev/workflows/2026-08-09-repository-rename-reconciliation`
 - `created_at`: `2026-08-09T19:49:54+08:00`
-- `updated_at`: `2026-08-09T19:49:54+08:00`
+- `updated_at`: `2026-08-09T20:00:43+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md`
 - `template_version`: `1.2.0`
 
@@ -36,7 +36,7 @@
 - Four substantive tasks share one repository-rename outcome, branch, reviewer, v0.12.0 release gate, validation boundary, and rollback unit, so they remain one workflow and pull request.
 - Issues #170, #171, #172, and #166 remain independent deliveries because they have broader inventory or owner-decision boundaries and are not v0.12.0 blockers by default.
 - Workflow mode preserves cross-surface classification, remediation, independent verification, external provider reconciliation, and failure-recovery state that an Issue or commit alone cannot carry.
-- Merge-commit integration is selected provisionally because the repository rename and provider/security reconciliation form an external lifecycle boundary whose grouped evidence should remain visible. The pull-request gate and repository settings remain authoritative.
+- The owner explicitly selected merge-commit integration on 2026-08-09. The PR must use a true no-fast-forward merge commit; fast-forward, rebase-and-merge, and squash merge are prohibited for this delivery. The repository rename and provider/security reconciliation form the external lifecycle boundary retained by that merge node.
 
 ## Artifact Contract
 
@@ -52,10 +52,10 @@
 
 | Finding | Severity | Owner | Disposition | Task | Validation |
 | --- | --- | --- | --- | --- | --- |
-| Repository old-name occurrence set is unclassified | HIGH | `ai-context-governance` | inventory and classify | `GOV007-001` | inventory reproduction and baseline assessment |
-| Current operational identity and compatibility surfaces drift | HIGH | `ai-context-governance` | remediate within #150 boundaries | `GOV007-002` | targeted references and repository gates |
-| No fail-closed retired-name drift gate | HIGH | `ai-context-governance` | implement validator and fixtures | `GOV007-003` | positive and negative validator tests |
-| Provider and external surfaces lack consolidated after-receipt | MEDIUM | `ai-context-governance` | verify, reconcile, and retain receipt | `GOV007-004` | provider read-back and verification assessment |
+| `ASM-20260809-001#AIC-001` | HIGH | `ai-context-governance` | remediate within #150 boundaries | `GOV007-002` | targeted references and repository gates |
+| `ASM-20260809-001#AIC-002` | HIGH | `ai-context-governance` | implement classification policy and validator | `GOV007-003` | positive, negative, stale-rule, and overlap tests |
+| `ASM-20260809-001#AIC-003` | MEDIUM | `ai-context-governance` | update current fixture and isolate real redirect compatibility | `GOV007-002`, `GOV007-003` | fixture intent and validator tests |
+| `ASM-20260809-001#AIC-004` | MEDIUM | `ai-context-governance` | reconcile provider fields and retain before/after receipts | `GOV007-004` | Project and Issue read-back |
 
 ## Stages And Checkpoints
 
@@ -73,6 +73,7 @@
 - #170, #171, and #172 may consume this workflow's inventory evidence, but this delivery does not claim their broader inventories complete.
 - Any occurrence whose disposition would change product/package bytes or semantic identity is paused for owner decision or deferred with an explicit owner and next action.
 - Any provider surface that cannot be verified safely through read-only automation is recorded as `owner-readback-required`; this label is not treated as a pass.
+- PR integration topology is an owner decision: use a merge commit and read back the resulting two-parent commit before claiming integration.
 
 ## Validation Selection
 
@@ -86,13 +87,13 @@
 
 ## Resume Checkpoint
 
-- Last completed action: fetched and pinned `origin/main`, read back Issue #150 and related Issues #166/#170/#171/#172, selected a separate-delivery boundary, created the dedicated workflow branch, and instantiated the workflow contract.
-- Current task: `GOV007-001` baseline provider receipt, occurrence inventory, and durable assessment.
-- Exact next action: capture provider-before evidence and generate the tracked old-name occurrence set from `e1dedd688707d84f5e7a26c7c7532f74a9860a94`, then classify material current and compatibility candidates against direct file evidence.
-- Validation already completed: clean worktree and `main == origin/main`; Issue #150 and related Issue bodies read back; workflow and assessment policies loaded.
+- Last completed action: finalized `ASM-20260809-001`, the 1,010-line / 170-file occurrence inventory, and the provider-before receipt; structural assessment and workflow validation passed.
+- Current task: `GOV007-002` current operational identity, fixture, and compatibility remediation.
+- Exact next action: update the eleven classified current-operational lines and one current fixture, then add the source-only compatibility notice without changing historical/generated evidence or #166-owned identities.
+- Validation already completed: clean baseline and `main == origin/main`; Issue and related Issue read-back; workflow artifact validation; assessment artifact validation; YAML parsing; inventory count reconciliation; provider repository/Project/PR/Actions/Release/redirect read-back.
 - Git state: `codex/2026-08-09-repository-rename-reconciliation` from `main@e1dedd688707d84f5e7a26c7c7532f74a9860a94`.
 - Branch history and checkpoint handoffs: segment 1 is local and unpushed; no checkpoint has occurred.
-- Blockers or unresolved decisions: none at bootstrap. Product/package/archive/profile/CLI identity remains intentionally outside this workflow; any newly discovered semantic identity choice must pause for owner direction.
+- Blockers or unresolved decisions: Project Priority awaits owner selection with `P1 High` recommended; signed-in security-report form is `owner-readback-required`. The owner has resolved integration topology as merge commit / no-ff. Product/package/archive/profile/CLI identity remains outside this workflow.
 
 ## Branch Lifecycle
 

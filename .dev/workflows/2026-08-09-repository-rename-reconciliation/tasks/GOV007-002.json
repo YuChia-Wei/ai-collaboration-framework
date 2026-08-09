@@ -6,13 +6,16 @@
   "task_id": "GOV007-002",
   "workflow_id": "2026-08-09-repository-rename-reconciliation",
   "owner_skill": "ai-context-governance",
-  "status": "pending",
+  "status": "in_progress",
   "created_at": "2026-08-09T19:49:54+08:00",
-  "updated_at": "2026-08-09T19:49:54+08:00",
+  "updated_at": "2026-08-09T20:00:43+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-5.6-sol",
   "reasoning_effort": "max",
-  "finding_ids": [],
+  "finding_ids": [
+    "ASM-20260809-001#AIC-001",
+    "ASM-20260809-001#AIC-003"
+  ],
   "scope": {
     "target": "Issue #150 current operational identity, fixture disposition, and compatibility remediation",
     "files": [],
@@ -37,15 +40,15 @@
       "Run targeted structure and reference validation."
     ],
     "validation": [],
-    "last_completed_step": "",
-    "next_action": "Wait for GOV007-001 baseline findings and owner-decision screening."
+    "last_completed_step": "Consumed the finalized AIC-001 and AIC-003 boundaries from ASM-20260809-001.",
+    "next_action": "Update the exact current-operational and current-fixture occurrences, then add the source-only compatibility notice."
   },
   "results": {
     "summary": "",
     "files_changed": [],
     "tests_run": [],
     "finding_status": "not-addressed",
-    "residual_risk": "Pending baseline classification.",
+    "residual_risk": "Operational files and current fixture still contain the retired coordinate.",
     "follow_up_needed": true
   }
 }

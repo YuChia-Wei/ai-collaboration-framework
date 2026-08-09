@@ -1,0 +1,47 @@
+schema_version: "1.0"
+assessment_id: "ASM-20260809-001"
+commit_search_id: "ASM-20260809-001"
+assessment_type: "ai-context-audit"
+title: "Repository Rename Identity And Link Baseline"
+owner_skill: "ai-context-auditor"
+status: "final"
+report: "report.md"
+artifact_branch: "codex/2026-08-09-repository-rename-reconciliation"
+base_branch: "main"
+created_at: "2026-08-09T19:57:58+08:00"
+updated_at: "2026-08-09T19:57:58+08:00"
+template_source: ".dev/assessments/templates/assessment-locator-template.yaml"
+template_version: "1.0.0"
+report_template_source: ".ai/assets/skills/ai-context-auditor/templates/ai-context-audit-report-template.md"
+report_template_version: "2.1.0"
+subject_ref:
+  repository: "YuChia-Wei/ai-collaboration-framework"
+  branch: "main"
+  commit: "e1dedd688707d84f5e7a26c7c7532f74a9860a94"
+scope:
+  included:
+    - "Git-tracked retired repository-name occurrences"
+    - ".ai/** repository identity, source distribution metadata, capability profile, and source validation fixtures"
+    - ".dev/** current provider policy, generated receipts, active navigation, and immutable evidence classification"
+    - ".github/ISSUE_TEMPLATE/config.yml"
+    - "GitHub repository, Issue #150, Project #3, PR, Actions, Release, redirect, and security-link provider surfaces"
+  excluded:
+    - "src/**"
+    - "tests/** and product implementation test trees"
+    - "product, package, archive, technology-profile, namespace, and CLI identity decisions owned by Issue #166"
+    - "broad .ai, .dev, and distribution inventories owned by Issues #170, #171, and #172"
+    - "existing tag, Release, asset, and Git history mutation"
+relations:
+  supersedes: []
+  superseded_by: []
+  related_assessments: []
+  workflow_refs:
+    - "2026-08-09-repository-rename-reconciliation"
+  backlog_refs: []
+  adr_refs: []
+resume:
+  last_completed_action: "Finalized the pinned old-name inventory, direct-file dispositions, and provider-before receipt."
+  next_action: "Remediate ASM-20260809-001#AIC-001 through #AIC-004 under workflow task GOV007-002 and GOV007-003."
+  blockers:
+    - "Project Priority for Issue #150 requires owner selection; P1 High is recommended."
+    - "Signed-in security-report form remains owner-readback-required."
