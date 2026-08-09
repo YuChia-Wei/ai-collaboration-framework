@@ -1,0 +1,64 @@
+{
+  "template_id": "ai-context-governance-remediation-task",
+  "template_version": "1.1.0",
+  "template_created_at": "2026-07-10T18:22:49+08:00",
+  "template_updated_at": "2026-07-27T09:52:09+08:00",
+  "task_id": "CTX007-001",
+  "workflow_id": "2026-08-10-current-context-remediation",
+  "owner_skill": "ai-context-governance",
+  "status": "in_progress",
+  "created_at": "2026-08-10T00:33:41+08:00",
+  "updated_at": "2026-08-10T00:33:41+08:00",
+  "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
+  "model": "gpt-5.6-sol",
+  "reasoning_effort": "high",
+  "finding_ids": [
+    "ASM-20260809-004#DEV-002",
+    "#178"
+  ],
+  "scope": {
+    "target": "Active and distribution-selected ez-series/uContract guidance",
+    "files": [
+      ".ai/assets/tech-stacks/dotnet-backend/**",
+      ".ai/scripts/check-mutation-coverage.sh",
+      ".ai/assets/sub-agent-role-prompts/**",
+      ".dev/guides/**"
+    ],
+    "constraints": [
+      "Preserve neutral engineering concepts and conditional .NET provider choices",
+      "Keep immutable assessment, workflow, release, and migration evidence byte-stable",
+      "Do not introduce unavailable EngineeringGuardrails packages",
+      "Do not create or edit course acknowledgement text"
+    ],
+    "non_goals": [
+      "EngineeringGuardrails prerelease adoption",
+      "Final selection between BDDfy and LightBDD",
+      "Historical evidence rewriting"
+    ]
+  },
+  "execution": {
+    "steps": [
+      "Confirm the tracked active/distributed branded inventory against the baseline",
+      "Delete files whose only purpose is historical Java/uContract API mapping",
+      "Extract and retain neutral BDD, DbC, profile, persistence, messaging, outbox, and DI guidance",
+      "Repair indexes, manifests, scripts, and links affected by deletes or renames",
+      "Run deterministic branded-reference and package projection validation"
+    ],
+    "validation": [
+      "git grep over distribution-selected paths",
+      "python .ai/scripts/validate-ai-context.py",
+      "package/profile projection tests and validators",
+      "git diff --check"
+    ],
+    "last_completed_step": "Owner authorization and provider-boundary decision recorded",
+    "next_action": "Execute the active/distributed branded-file disposition"
+  },
+  "results": {
+    "summary": "",
+    "files_changed": [],
+    "tests_run": [],
+    "finding_status": "not-addressed",
+    "residual_risk": "",
+    "follow_up_needed": true
+  }
+}

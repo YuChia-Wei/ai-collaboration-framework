@@ -1,0 +1,65 @@
+{
+  "template_id": "ai-context-governance-remediation-task",
+  "template_version": "1.1.0",
+  "template_created_at": "2026-07-10T18:22:49+08:00",
+  "template_updated_at": "2026-07-27T09:52:09+08:00",
+  "task_id": "GOV009-001",
+  "workflow_id": "2026-08-10-current-context-remediation",
+  "owner_skill": "ai-context-governance",
+  "status": "pending",
+  "created_at": "2026-08-10T00:33:41+08:00",
+  "updated_at": "2026-08-10T00:33:41+08:00",
+  "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
+  "model": "gpt-5.6-sol",
+  "reasoning_effort": "high",
+  "finding_ids": [
+    "ASM-20260809-004#DEV-001",
+    "ASM-20260809-004#DEV-002",
+    "#175"
+  ],
+  "scope": {
+    "target": "Current roadmap, backlog/provider projections, and active .dev links",
+    "files": [
+      ".dev/backlog/**",
+      ".dev/requirement/REQUIREMENT-GUIDE.MD",
+      ".dev/guides/**"
+    ],
+    "constraints": [
+      "Use online GitHub Issues and Project as work-management authority",
+      "Preserve item, workflow, assessment, release, and provider-receipt history",
+      "Do not treat local backlog files as the complete online queue",
+      "Coordinate shared guide edits with CTX007-001"
+    ],
+    "non_goals": [
+      "Package publication",
+      "Historical cosmetic link rewrites",
+      "Immutable-history validator changes owned by #176"
+    ]
+  },
+  "execution": {
+    "steps": [
+      "Read back live Project and Issue state plus local release/backlog authorities",
+      "Resolve the current role of the GitHub provider config",
+      "Align ROADMAP and backlog index with published and planned state",
+      "Repair active canonical-standard and requirement-example links",
+      "Run provider, source-governance, and active-link validation"
+    ],
+    "validation": [
+      "live provider read-back",
+      "python .ai/scripts/validate-ai-context.py",
+      "python .ai/scripts/validate-source-governance.py",
+      "active Markdown link checks",
+      "git diff --check"
+    ],
+    "last_completed_step": "",
+    "next_action": "Begin after CTX007-001 establishes final shared-guide paths"
+  },
+  "results": {
+    "summary": "",
+    "files_changed": [],
+    "tests_run": [],
+    "finding_status": "not-addressed",
+    "residual_risk": "",
+    "follow_up_needed": true
+  }
+}
