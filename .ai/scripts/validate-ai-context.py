@@ -165,6 +165,41 @@ EXAMPLE_PLACEHOLDER_DISPOSITION = Path(
 SOURCE_INCLUDE_EVIDENCE_MANIFEST = Path(
     ".ai/assets/tech-stacks/dotnet-backend/source-includes/evidence-manifest.yaml"
 )
+SOURCE_GOVERNANCE_REGISTRY = Path(".ai/distribution/governance-checks.yaml")
+LESSON_ROOT = Path(".dev/lessons")
+LESSON_INDEX = LESSON_ROOT / "INDEX.MD"
+LESSON_REQUIRED_PATHS = (
+    LESSON_ROOT / "README.MD",
+    LESSON_INDEX,
+    LESSON_ROOT / "templates/lesson-template.md",
+    LESSON_ROOT / "environment/INDEX.MD",
+)
+LESSON_README_HEADINGS = (
+    "## Responsibility",
+    "## Boundary",
+    "## Identity And Lifecycle",
+    "## Required Lesson Packet",
+    "## Promotion And Supersession",
+    "## Distribution Boundary",
+)
+LESSON_REQUIRED_SECTIONS = (
+    "## Origin Evidence",
+    "## Context And Symptom",
+    "## Confirmed Conditions And Root Cause",
+    "## Reusable Conclusion",
+    "## Non-Applicable Cases",
+    "## Remediation Example",
+    "## Verification",
+    "## Promotion And Supersession",
+    "## Security And Portability Boundary",
+)
+LESSON_CATALOG_ROW = re.compile(
+    r"^\|\s*`(?P<path>[^`]+)`\s*\|\s*"
+    r"`(?P<lesson_id>LESSON-[A-Z0-9]+-\d{3})`\s*\|\s*"
+    r"\[[^\]]+\]\((?P<link_path>[^)]+)\)\s*\|\s*"
+    r"`(?P<category>[a-z0-9]+(?:-[a-z0-9]+)*)`\s*\|\s*"
+    r"`(?P<lifecycle>active|promoted|superseded)`\s*\|"
+)
 CLAUDE_ENTRY_TEMPLATE = """# Claude Code Project Instructions
 
 @AGENTS.md
@@ -222,6 +257,179 @@ def validate_index(index: Path, errors: list[str]) -> None:
             continue
         if not target.exists():
             errors.append(f"{index}:{line_number}: missing catalog path: {match.group(1)}")
+
+
+def lesson_table_field(text: str, label: str) -> str | None:
+    match = re.search(
+        rf"^\|\s*{re.escape(label)}\s*\|\s*(.*?)\s*\|\s*$",
+        text,
+        flags=re.MULTILINE,
+    )
+    return match.group(1).strip() if match else None
+
+
+def validate_lesson_contract(
+    files: list[Path], errors: list[str], root: Path = ROOT
+) -> int:
+    """Validate the source repository's non-normative lesson catalog."""
+    file_set = set(files)
+    for required in LESSON_REQUIRED_PATHS:
+        if required not in file_set or not (root / required).is_file():
+            errors.append(f"{required}: missing required lesson contract path")
+
+    required_entry_paths = (
+        LESSON_ROOT / "README.MD",
+        LESSON_INDEX,
+        LESSON_ROOT / "templates/lesson-template.md",
+    )
+    if any(not (root / path).is_file() for path in required_entry_paths):
+        return 0
+
+    readme_text = (root / LESSON_ROOT / "README.MD").read_text(encoding="utf-8")
+    readme_headings = {line.strip() for line in readme_text.splitlines()}
+    for heading in LESSON_README_HEADINGS:
+        if heading not in readme_headings:
+            errors.append(f"{LESSON_ROOT / 'README.MD'}: missing heading {heading}")
+
+    template_path = LESSON_ROOT / "templates/lesson-template.md"
+    template_text = (root / template_path).read_text(encoding="utf-8")
+    template_lines = {line.strip() for line in template_text.splitlines()}
+    for heading in LESSON_REQUIRED_SECTIONS:
+        if heading not in template_lines:
+            errors.append(f"{template_path}: missing lesson section {heading}")
+    for field in (
+        "Lesson ID",
+        "Category",
+        "Lifecycle",
+        "Normative Authority",
+        "Origin Evidence",
+        "Promotion Target",
+        "Supersedes",
+        "Superseded By",
+    ):
+        if f"| {field} |" not in template_text:
+            errors.append(f"{template_path}: missing lesson field {field}")
+
+    dev_index_path = Path(".dev/INDEX.md")
+    if not (root / dev_index_path).is_file():
+        errors.append(f"{dev_index_path}: missing .dev lesson navigation owner")
+    else:
+        dev_index_text = (root / dev_index_path).read_text(encoding="utf-8")
+        for reference in (
+            "lessons/README.MD",
+            "lessons/INDEX.MD",
+            "lessons/environment/",
+        ):
+            if f"`{reference}`" not in dev_index_text:
+                errors.append(f"{dev_index_path}: missing lesson navigation {reference}")
+
+    index_text = (root / LESSON_INDEX).read_text(encoding="utf-8")
+    catalog: dict[str, tuple[Path, str, str]] = {}
+    indexed_paths: set[Path] = set()
+    for line_number, line in enumerate(index_text.splitlines(), 1):
+        if re.match(r"^\|\s*`[^`]+`\s*\|\s*`LESSON-", line) is None:
+            continue
+        match = LESSON_CATALOG_ROW.match(line)
+        if match is None:
+            errors.append(f"{LESSON_INDEX}:{line_number}: invalid lesson catalog row")
+            continue
+
+        lesson_id = match.group("lesson_id")
+        category = match.group("category")
+        lifecycle = match.group("lifecycle")
+        path_text = match.group("path")
+        link_path_text = match.group("link_path")
+        posix_path = PurePosixPath(path_text)
+        if (
+            posix_path.is_absolute()
+            or "\\" in path_text
+            or ".." in posix_path.parts
+            or len(posix_path.parts) != 2
+            or posix_path.parts[0] != category
+            or link_path_text != path_text
+            or not posix_path.name.startswith(f"{lesson_id}-")
+            or posix_path.suffix != ".md"
+        ):
+            errors.append(
+                f"{LESSON_INDEX}:{line_number}: lesson path must be "
+                f"<category>/{lesson_id}-<slug>.md and match category {category}"
+            )
+            continue
+
+        lesson_path = LESSON_ROOT.joinpath(*posix_path.parts)
+        if lesson_id in catalog:
+            errors.append(f"{LESSON_INDEX}:{line_number}: duplicate lesson ID {lesson_id}")
+            continue
+        if lesson_path in indexed_paths:
+            errors.append(f"{LESSON_INDEX}:{line_number}: duplicate lesson path {lesson_path}")
+            continue
+        catalog[lesson_id] = (lesson_path, category, lifecycle)
+        indexed_paths.add(lesson_path)
+
+        if lesson_path not in file_set or not (root / lesson_path).is_file():
+            errors.append(f"{LESSON_INDEX}:{line_number}: missing lesson path {lesson_path}")
+            continue
+
+        lesson_text = (root / lesson_path).read_text(encoding="utf-8")
+        lesson_lines = {item.strip() for item in lesson_text.splitlines()}
+        if not lesson_text.startswith(f"# {lesson_id}: "):
+            errors.append(f"{lesson_path}: H1 must begin with '# {lesson_id}: '")
+        expected_fields = {
+            "Lesson ID": f"`{lesson_id}`",
+            "Category": f"`{category}`",
+            "Lifecycle": f"`{lifecycle}`",
+            "Normative Authority": "`none`",
+        }
+        for field, expected in expected_fields.items():
+            actual = lesson_table_field(lesson_text, field)
+            if actual != expected:
+                errors.append(
+                    f"{lesson_path}: {field} must be {expected}; actual={actual!r}"
+                )
+        for field in ("Origin Evidence", "Promotion Target", "Supersedes", "Superseded By"):
+            if lesson_table_field(lesson_text, field) is None:
+                errors.append(f"{lesson_path}: missing lesson field {field}")
+        for heading in LESSON_REQUIRED_SECTIONS:
+            if heading not in lesson_lines:
+                errors.append(f"{lesson_path}: missing lesson section {heading}")
+
+        none_values = {"none", "`none`"}
+        promotion_target = lesson_table_field(lesson_text, "Promotion Target")
+        superseded_by = lesson_table_field(lesson_text, "Superseded By")
+        if lifecycle == "promoted" and promotion_target in none_values:
+            errors.append(f"{lesson_path}: promoted lesson requires Promotion Target")
+        if lifecycle == "superseded" and superseded_by in none_values:
+            errors.append(f"{lesson_path}: superseded lesson requires Superseded By")
+
+        category_index = LESSON_ROOT / category / "INDEX.MD"
+        if category_index not in file_set or not (root / category_index).is_file():
+            errors.append(f"{lesson_path}: missing category index {category_index}")
+            continue
+        category_text = (root / category_index).read_text(encoding="utf-8")
+        category_row = re.compile(
+            rf"^\|\s*`{re.escape(posix_path.name)}`\s*\|\s*"
+            rf"`{re.escape(lesson_id)}`\s*\|\s*"
+            rf"\[[^\]]+\]\({re.escape(posix_path.name)}\)\s*\|\s*"
+            rf"`{re.escape(lifecycle)}`\s*\|",
+            flags=re.MULTILINE,
+        )
+        if category_row.search(category_text) is None:
+            errors.append(
+                f"{category_index}: missing {lesson_id} with lifecycle {lifecycle} "
+                f"and path {posix_path.name}"
+            )
+
+    discovered_lessons = {
+        path
+        for path in files
+        if len(path.parts) == 4
+        and path.parts[0:2] == (".dev", "lessons")
+        and re.fullmatch(r"LESSON-[A-Z0-9]+-\d{3}-.+\.md", path.name)
+    }
+    for path in sorted(discovered_lessons - indexed_paths):
+        errors.append(f"{path}: lesson document is missing from {LESSON_INDEX}")
+
+    return len(catalog)
 
 
 def validate_exact_case_references(
@@ -2376,6 +2584,9 @@ def main() -> int:
     validate_example_evidence_contract(errors)
     validate_example_placeholder_disposition(errors)
     validate_source_include_evidence(errors)
+    lesson_count = 0
+    if (ROOT / SOURCE_GOVERNANCE_REGISTRY).is_file():
+        lesson_count = validate_lesson_contract(files, errors)
 
     for index in indexes:
         validate_index(index, errors)
@@ -2421,7 +2632,8 @@ def main() -> int:
         f"AI context validation passed: {len(indexes)} active indexes, "
         f"{len(canonical)} canonical skills, {len(ACTIVE_RUNTIME_ROOTS)} current runtime roots, "
         f"{len(language_files)} language-policy files, {ownership_rules} owned rules, "
-        f"{canonical_assets} canonical manifests, and {capability_mappings} capability mappings."
+        f"{canonical_assets} canonical manifests, {capability_mappings} capability mappings, "
+        f"and {lesson_count} governed lessons."
     )
     print(
         "Root bilingual entry ownership, links, and structural parity passed "

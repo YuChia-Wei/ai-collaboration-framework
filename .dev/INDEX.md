@@ -42,6 +42,15 @@ This index owns the file and directory catalog for `.dev/`. The `.dev/README.MD`
 | `guides/implementation-guides/` | .NET backend implementation and setup guides. |
 | `guides/learning-guides/` | Learning path and new-project guidance. |
 
+## Lessons
+
+| Path | Description |
+| --- | --- |
+| `lessons/` | Evidence-backed, reusable, non-normative lessons derived from durable repository sources. |
+| `lessons/README.MD` | Lesson responsibility, boundary, identity, lifecycle, promotion, and supersession contract. |
+| `lessons/INDEX.MD` | Lesson category and lifecycle discovery catalog. |
+| `lessons/environment/` | Host, shell, process-environment, and runtime-availability lessons. |
+
 ## Requirements And Specs
 
 | Path | Description |

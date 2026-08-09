@@ -9,10 +9,10 @@
 - `base_branch`: `main`
 - `branch_segment`: `1`
 - `status`: `in_progress`
-- `current_phase`: `remediation-planning`
+- `current_phase`: `post-audit`
 - `artifact_root`: `.dev/workflows/2026-08-09-governed-lessons-lifecycle`
 - `created_at`: `2026-08-09T13:40:15+08:00`
-- `updated_at`: `2026-08-09T13:40:15+08:00`
+- `updated_at`: `2026-08-09T13:55:47+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md`
 - `template_version`: `1.2.0`
 
@@ -51,15 +51,32 @@
 4. Push the branch, open the #163 pull request, and read back checks, review, and integration state.
 5. Reconcile workflow and Issue state only after accepted integration; an open branch or pull request is not terminal completion.
 
+## Boundary Decisions
+
+- `.dev/lessons/` is a source-repository knowledge class. The current distribution profile does not select it, and #163 makes no package-profile change.
+- Lesson records are evidence-backed and reusable but have `Normative Authority: none`; they cannot override standards, policy, guides, runbooks, assessments, workflows, release evidence, or machine-local state.
+- `environment` is the first category because the incident concerns shell startup, process environment, and host/runtime availability rather than .NET architecture.
+- The observed `~/.bash_profile` is retained only as a sanitized remediation example. No personal profile bytes or current machine-readiness state are repository truth.
+- `missing-dotnet-sdk`, environment-readiness policy/schema, runner behavior, release profiles, package bytes, tags, Releases, allocation, and v0.11 evidence remain unchanged.
+- Future guide, runbook, policy, or validator promotion remains separately authorized work; no such follow-up is implied by this delivery.
+
+## Validation Selection
+
+- Lesson contract tests: selected; six pass/fail lifecycle and structure cases.
+- AI-context, source-governance, workflow-artifact, and Git-diff validation: selected.
+- Spec compliance: `not-applicable`; no problem frame, requirement, or owner decision selected it.
+- Unit/integration product tests: `not-applicable`; this delivery changes documentation and a source-governance validator, not product code.
+- WSL/.NET environment execution: `not-applicable`; #163 consumes pinned v0.11 evidence and does not authorize runtime installation or new release-profile execution.
+
 ## Resume Checkpoint
 
-- Last completed action: read back Issue #163, refresh `origin/main`, verify a clean matching base, create the dedicated branch, and bootstrap this workflow.
+- Last completed action: implemented the lesson contract, environment exemplar, navigation, and source-only validator; focused and repository validators passed.
 - Current task: `AICG-163-001`
-- Exact next action: verify repository-native historical and v0.11 evidence, then implement the lesson-owned contract and first lesson.
-- Validation already completed: Issue read-back, base SHA equality, clean worktree, workflow ID and branch collision checks.
-- Git state: dedicated branch from `29134dcc5eb18945ca901be5a049b36956197142`; workflow bootstrap changes are uncommitted.
+- Exact next action: review the complete diff, create the implementation commit, then push and open the #163 pull request.
+- Validation already completed: lesson tests 6/6 outside the Codex temp-directory sandbox boundary; AI-context validation with one governed lesson; source-governance validation; workflow-artifact validation; `git diff --check`.
+- Git state: bootstrap commit `26ed9c1abddf734002e9082db6e72b5f2695c517`; implementation changes are uncommitted on the dedicated branch.
 - Branch history and checkpoint handoffs: segment 1 started from `main`; no handoff checkpoint.
-- Blockers or unresolved decisions: none.
+- Blockers or unresolved decisions: hosted pull-request checks and integration state have not yet been observed.
 
 ## Branch Lifecycle
 
