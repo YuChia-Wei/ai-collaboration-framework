@@ -6,9 +6,9 @@
   "task_id": "AICG-163-001",
   "workflow_id": "2026-08-09-governed-lessons-lifecycle",
   "owner_skill": "ai-context-governance",
-  "status": "in_progress",
+  "status": "completed",
   "created_at": "2026-08-09T13:40:15+08:00",
-  "updated_at": "2026-08-09T14:03:21+08:00",
+  "updated_at": "2026-08-09T14:08:52+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-5.6-sol",
   "reasoning_effort": "high",
@@ -53,8 +53,8 @@
       "python .ai/scripts/validate-git-commits.py --range main..HEAD --workflow-id 2026-08-09-governed-lessons-lifecycle",
       "git diff --check"
     ],
-    "last_completed_step": "Committed and pushed the validated implementation, then opened and read back draft PR #164 at head 63fcca72a9df39baf97cf44f0630f7053cfaf500 as open and mergeable.",
-    "next_action": "Push this integration checkpoint, make PR #164 ready with Refs #163, wait for final-head hosted checks, and integrate only after the gate accepts it."
+    "last_completed_step": "PR #164 passed all three hosted workflows, merged by rebase as main@1ec704d556023d0f78e37573fa434274833f4ebb, and the merged lesson plus provider state were read back; Issue #163 was reopened after an early provider auto-close.",
+    "next_action": "Merge the records-only closeout PR, then read back main, the PR, and Issue #163 as closed completed; no implementation work remains."
   },
   "results": {
     "summary": "Defined the previously missing non-normative lesson contract, added LESSON-ENV-001 with complete WSL evidence boundaries, updated owned navigation, and added source-only fail-closed lesson structure and lifecycle validation.",
@@ -77,10 +77,16 @@
       "python .ai/scripts/validate-source-governance.py -> passed",
       "python .ai/scripts/validate-workflow-artifacts.py -> passed",
       "python .ai/scripts/validate-git-commits.py --range main..HEAD --workflow-id 2026-08-09-governed-lessons-lifecycle -> passed 2/2 commits before PR creation",
+      "PR #164 Package AI Context Candidate run 31298116116 -> passed",
+      "PR #164 AI Context Governance run 31298116121 -> passed",
+      "PR #164 Portable AI Context Gates run 31298116112 -> passed (Ubuntu prerequisite, Windows prerequisite, and Ubuntu PR profile jobs)",
+      "PR #164 final head fe0e81bb3e1efdd4c8786eda2e840a3a827a46be -> 3/3 commit validation passed before integration",
+      "PR #164 -> rebase merged and origin/main read back at 1ec704d556023d0f78e37573fa434274833f4ebb with LESSON-ENV-001 present",
+      "Issue #163 -> provider auto-close after PR #164 was detected and reversed; issue read back open for terminal closeout",
       "git diff --check -> passed"
     ],
     "finding_status": "addressed",
-    "residual_risk": "Hosted pull-request checks, review state, accepted integration, terminal source/provider reconciliation, and Issue #163 closure remain pending; no future promotion work is authorized.",
-    "follow_up_needed": true
+    "residual_risk": "No unresolved implementation risk remains in workflow scope. The records-only PR merge and final Issue/main read-back remain delivery actions; no future promotion work is authorized.",
+    "follow_up_needed": false
   }
 }

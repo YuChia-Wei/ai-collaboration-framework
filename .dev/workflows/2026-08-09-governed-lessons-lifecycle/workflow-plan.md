@@ -5,14 +5,14 @@
 - `workflow_id`: `2026-08-09-governed-lessons-lifecycle`
 - `workflow_kind`: `ai-context-maintenance`
 - `owner_skill`: `ai-context-governance`
-- `branch`: `codex/2026-08-09-governed-lessons-lifecycle`
+- `branch`: `codex/2026-08-09-governed-lessons-lifecycle-closeout`
 - `base_branch`: `main`
-- `branch_segment`: `1`
-- `status`: `in_progress`
-- `current_phase`: `integration`
+- `branch_segment`: `2`
+- `status`: `completed`
+- `current_phase`: `closed`
 - `artifact_root`: `.dev/workflows/2026-08-09-governed-lessons-lifecycle`
 - `created_at`: `2026-08-09T13:40:15+08:00`
-- `updated_at`: `2026-08-09T14:03:21+08:00`
+- `updated_at`: `2026-08-09T14:08:52+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md`
 - `template_version`: `1.2.0`
 
@@ -70,16 +70,26 @@
 
 ## Resume Checkpoint
 
-- Last completed action: committed and pushed the validated implementation, then opened and read back draft PR [#164](https://github.com/YuChia-Wei/ai-collaboration-prompts-dotnet-backend/pull/164) at head `63fcca72a9df39baf97cf44f0630f7053cfaf500`; GitHub reported it open and mergeable.
-- Current task: `AICG-163-001`
-- Exact next action: push this integration checkpoint, replace PR #164's premature closing keyword with `Refs #163`, mark it ready, wait for the final-head hosted checks, and integrate only if the gate accepts it.
-- Validation already completed: lesson tests 6/6 outside the Codex temp-directory sandbox boundary; AI-context validation with one governed lesson; source-governance validation; workflow-artifact validation; Git commit validation for both existing commits; `git diff --check`.
-- Git state: bootstrap commit `26ed9c1abddf734002e9082db6e72b5f2695c517` and implementation commit `63fcca72a9df39baf97cf44f0630f7053cfaf500` are pushed on the dedicated branch.
-- Branch history and checkpoint handoffs: segment 1 started from `main@29134dcc5eb18945ca901be5a049b36956197142`; PR #164 is the implementation integration gate. A records-only continuation from accepted `main` will own terminal workflow and Issue reconciliation.
-- Blockers or unresolved decisions: hosted pull-request checks, review state, accepted integration, terminal workflow records, and Issue #163 closure remain pending.
+- Last completed action: PR [#164](https://github.com/YuChia-Wei/ai-collaboration-prompts-dotnet-backend/pull/164) passed all three hosted workflows and merged by rebase as `main@1ec704d556023d0f78e37573fa434274833f4ebb`; merged-main lesson content and Issue #163 provider state were read back.
+- Current task: completed; this continuation branch records closeout evidence only.
+- Exact next action: integrate this records-only closeout through its required ready PR, then read back `main`, the closeout PR, and Issue #163 as closed completed.
+- Validation already completed: lesson tests 6/6 outside the Codex temp-directory sandbox boundary; AI-context, source-governance, workflow-artifact, three-commit policy, and diff validation; PR #164 hosted Package, Governance, and Portable workflows all passed.
+- Git state: closeout continuation branch from accepted `main@1ec704d556023d0f78e37573fa434274833f4ebb`.
+- Branch history and checkpoint handoffs: segment 1 integrated the validated implementation through PR #164; segment 2 contains only terminal workflow records.
+- Blockers or unresolved decisions: no implementation blocker remains. The records-only PR merge and final provider read-back are the remaining delivery actions, not authorization for new lesson, policy, validator, or runtime work.
 
 ## Branch Lifecycle
 
 | Segment | Branch | Base | Checkpoint Type | Commit | Remote / Target | Recorded At | Reason | Resume Branch / Action |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| 1 | `codex/2026-08-09-governed-lessons-lifecycle` | `main@29134dcc5eb18945ca901be5a049b36956197142` | implementation candidate | `63fcca72a9df39baf97cf44f0630f7053cfaf500` | draft PR #164 | `2026-08-09T14:03:21+08:00` | The bounded lesson lifecycle and first exemplar are locally validated and submitted to the required PR gate. | Push this checkpoint, make PR #164 ready, wait for hosted checks, then integrate or repair without closing #163 early. |
+| 1 | `codex/2026-08-09-governed-lessons-lifecycle` | `main@29134dcc5eb18945ca901be5a049b36956197142` | rebase integration | `fe0e81bb3e1efdd4c8786eda2e840a3a827a46be` | PR #164 / `main@1ec704d556023d0f78e37573fa434274833f4ebb` | `2026-08-09T14:06:52+08:00` | All three hosted workflows passed on the final head; no reviews or unresolved threads blocked integration. | Continue from accepted `main` on the records-only closeout branch. |
+| 2 | `codex/2026-08-09-governed-lessons-lifecycle-closeout` | `main@1ec704d556023d0f78e37573fa434274833f4ebb` | terminal records | `pending` | closeout PR / `main` | `2026-08-09T14:08:52+08:00` | Preserve exact integration and provider evidence without reopening implementation. | Merge the records-only PR, then read back terminal source and Issue state. |
+
+## Integration And Provider Receipt
+
+- PR #164 final head `fe0e81bb3e1efdd4c8786eda2e840a3a827a46be` passed Package AI Context Candidate run `31298116116`, AI Context Governance run `31298116121`, and Portable AI Context Gates run `31298116112`. The Portable run's Ubuntu prerequisite, Windows prerequisite, and Ubuntu PR profile jobs all passed.
+- PR #164 had no submitted reviews or unresolved review threads and merged by rebase at `2026-08-09T06:06:52Z`; GitHub returned and `origin/main` confirmed `1ec704d556023d0f78e37573fa434274833f4ebb`.
+- The merged `main` tree was read back and contains `.dev/lessons/environment/LESSON-ENV-001-wsl-non-interactive-dotnet-path.md` with `Lifecycle: active` and `Normative Authority: none`.
+- Provider deviation: PR #164 originally contained `Closes #163` while draft. Although it was changed to `Refs #163` before ready review and merge, GitHub still auto-closed Issue #163 at `2026-08-09T06:06:53Z`. The Issue was read back and reopened at `2026-08-09T06:07:42Z` so an implementation merge would not masquerade as terminal reconciliation.
+- This records-only continuation is the terminal source receipt. Its PR may close #163 only after its own hosted gate accepts the record; final reporting requires a read-back of merged `main`, the closeout PR, and Issue #163 as `closed` / `completed`.
+- No implementation-guide, runbook, policy, classifier, environment-readiness, runtime/profile, release, package, or validator promotion is authorized by this closeout.
