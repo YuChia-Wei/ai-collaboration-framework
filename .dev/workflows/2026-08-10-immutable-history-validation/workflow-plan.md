@@ -19,7 +19,7 @@
 - `current_phase`: `remediation-planning`
 - `artifact_root`: `.dev/workflows/2026-08-10-immutable-history-validation`
 - `created_at`: `2026-08-10T00:38:23+08:00`
-- `updated_at`: `2026-08-10T00:38:23+08:00`
+- `updated_at`: `2026-08-10T00:42:19+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md`
 - `template_version`: `1.2.0`
 
@@ -77,11 +77,11 @@ The Issue records four decisions as required. The following recommended packet w
 
 ## Resume Checkpoint
 
-- Last completed action: Workflow bootstrap prepared on the dedicated branch.
-- Current task: `GIT-001-commit-grammar`.
-- Exact next action: Inventory the current commit validator, policy YAML, tests, and active references before implementing the prospective issue-or-scope grammar.
-- Validation already completed: none.
-- Git state: uncommitted workflow bootstrap artifacts.
+- Last completed action: Completed the prospective commit-title grammar correction with explicit pre-cutover compatibility and deterministic fixture coverage.
+- Current task: `VAL004-001-layered-history-validation` (pending owner decision).
+- Exact next action: Record the owner's explicit selection of routine proof, full gates, receipt reuse, and source/downstream profile boundary before changing layered validation behavior.
+- Validation already completed: commit policy GWT tests passed; root bilingual structural-parity tests passed outside the sandbox after the sandbox blocked temporary-fixture creation; AI context navigation validation passed.
+- Git state: uncommitted commit-grammar remediation and task-state update.
 - Branch history and checkpoint handoffs: no push or merge checkpoint.
 - Blockers or unresolved decisions: `VAL004-001-layered-history-validation` awaits the four owner decisions above. The commit grammar task is independent and may proceed.
 

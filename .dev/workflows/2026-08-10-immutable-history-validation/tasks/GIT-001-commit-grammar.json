@@ -6,9 +6,9 @@
   "task_id": "GIT-001-commit-grammar",
   "workflow_id": "2026-08-10-immutable-history-validation",
   "owner_skill": "ai-context-governance",
-  "status": "in_progress",
+  "status": "completed",
   "created_at": "2026-08-10T00:38:23+08:00",
-  "updated_at": "2026-08-10T00:38:23+08:00",
+  "updated_at": "2026-08-10T00:42:19+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-5.6-terra",
   "reasoning_effort": "xhigh",
@@ -45,15 +45,29 @@
       "Direct policy and example consistency search.",
       "git diff --check."
     ],
-    "last_completed_step": "Task created.",
-    "next_action": "Inventory active grammar validator and fixtures."
+    "last_completed_step": "Implemented and validated the prospective issue-or-scope grammar with explicit legacy compatibility.",
+    "next_action": "No further action for this task."
   },
   "results": {
-    "summary": "In progress.",
-    "files_changed": [],
-    "tests_run": [],
-    "finding_status": "not-addressed",
-    "residual_risk": "Existing history must continue validating during the prospective grammar correction.",
-    "follow_up_needed": true
+    "summary": "The canonical grammar now accepts either issue references or a scope and rejects a literal pipe after the cutover; commits before the cutover retain an explicit deprecated compatibility pattern.",
+    "files_changed": [
+      ".dev/standards/GIT-COMMIT-POLICY.md",
+      ".dev/standards/GIT-COMMIT-POLICY.yaml",
+      ".ai/scripts/validate-git-commits.py",
+      ".ai/scripts/tests/test_git_commit_policy.py",
+      "AGENTS.md",
+      "AGENTS.zh-TW.md",
+      ".ai/assets/skills/ai-context-governance/references/workflow-and-commit-playbook.md"
+    ],
+    "tests_run": [
+      "python .ai/scripts/tests/test_git_commit_policy.py -v: passed (19 tests)",
+      "python .ai/scripts/validate-git-commits.py --commit 5258e7c: passed",
+      "python .ai/scripts/validate-ai-context.py: passed",
+      "python .ai/scripts/tests/test_ai_context_language_policy.py -v: passed outside sandbox after sandbox temporary-fixture permission block",
+      "git diff --check: passed"
+    ],
+    "finding_status": "addressed",
+    "residual_risk": "Historical literal-pipe titles remain accepted only by the date-bounded deprecated compatibility pattern; do not rewrite shared history.",
+    "follow_up_needed": false
   }
 }

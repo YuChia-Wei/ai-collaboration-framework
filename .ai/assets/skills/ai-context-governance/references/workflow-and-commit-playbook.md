@@ -53,17 +53,21 @@ When the user requests merge or push before the AI-context workflow is complete:
 
 Check `.dev/standards/GIT-COMMIT-POLICY.md`.
 
-For workflow-stage commits, use:
+For workflow-stage commits, use exactly one of these alternatives:
 
 ```text
 <type>(<scope>): <summary>
 ```
 
-or with issue number:
+or:
 
 ```text
-<type>(#<issue-number>|<scope>): <summary>
+<type>(#<issue-number>): <summary>
 ```
+
+The `|` character in historical examples was meta-notation for “or”, not a
+literal part of a commit title. Follow the prospective and legacy-compatibility
+boundary in `.dev/standards/GIT-COMMIT-POLICY.md`.
 
 Include body sections:
 

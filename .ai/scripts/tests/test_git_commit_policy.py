@@ -49,6 +49,23 @@ class GitCommitPolicyTests(unittest.TestCase):
         VALIDATOR.validate_message("abc123", message, POLICY, errors, workflow_id)
         return errors
 
+    def validate_at(
+        self,
+        message: str,
+        committed_at: str,
+        workflow_id: str | None = WORKFLOW_ID,
+    ) -> list[str]:
+        errors: list[str] = []
+        VALIDATOR.validate_message(
+            "abc123",
+            message,
+            POLICY,
+            errors,
+            workflow_id,
+            committed_at=datetime.fromisoformat(committed_at),
+        )
+        return errors
+
     def test_gwt_001_given_valid_workflow_commit_when_validated_then_passes(self) -> None:
         self.assertEqual([], self.validate(workflow_message()))
 
@@ -159,6 +176,40 @@ Co-Authored-By: OpenAI Codex (gpt-5.6-sol, high) <noreply@openai.com>
             committed_at=datetime.fromisoformat("2026-07-27T09:00:00+08:00"),
         )
         self.assertEqual([], errors)
+
+    def test_gwt_016_given_current_issue_form_when_validated_then_passes(self) -> None:
+        self.assertEqual(
+            [],
+            self.validate_at(
+                workflow_message("docs(#176): clarify validation contract"),
+                "2026-08-10T00:40:00+08:00",
+            ),
+        )
+
+    def test_gwt_017_given_current_multiple_issue_form_when_validated_then_passes(self) -> None:
+        self.assertEqual(
+            [],
+            self.validate_at(
+                workflow_message("docs(#175,#176): reconcile validation boundaries"),
+                "2026-08-10T00:40:00+08:00",
+            ),
+        )
+
+    def test_gwt_018_given_literal_pipe_after_cutover_when_validated_then_fails(self) -> None:
+        errors = self.validate_at(
+            workflow_message("docs(#176|validation): reject literal pipe"),
+            "2026-08-10T00:40:00+08:00",
+        )
+        self.assertTrue(any("subject does not match" in error for error in errors))
+
+    def test_gwt_019_given_literal_pipe_before_cutover_when_validated_then_passes(self) -> None:
+        self.assertEqual(
+            [],
+            self.validate_at(
+                workflow_message("docs(#176|validation): retain historical title"),
+                "2026-08-10T00:39:59+08:00",
+            ),
+        )
 
 
 if __name__ == "__main__":

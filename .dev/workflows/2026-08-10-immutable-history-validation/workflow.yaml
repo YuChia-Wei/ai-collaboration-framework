@@ -17,7 +17,7 @@ base_branch: "main"
 artifact_root: ".dev/workflows/2026-08-10-immutable-history-validation"
 entrypoint: "workflow-plan.md"
 continuation:
-  current_task_id: "GIT-001-commit-grammar"
+  current_task_id: "VAL004-001-layered-history-validation"
   baseline_assessment: "ASM-20260809-004#DEV-003"
   work_item_refs:
     - "https://github.com/YuChia-Wei/ai-collaboration-framework/issues/176"
@@ -29,6 +29,6 @@ continuation:
     owner_skill: "ai-context-auditor"
     status: "planned"
 created_at: "2026-08-10T00:38:23+08:00"
-updated_at: "2026-08-10T00:38:23+08:00"
+updated_at: "2026-08-10T00:42:19+08:00"
 template_source: ".ai/assets/skills/ai-context-governance/templates/workflow-locator-template.yaml"
 template_version: "1.2.0"

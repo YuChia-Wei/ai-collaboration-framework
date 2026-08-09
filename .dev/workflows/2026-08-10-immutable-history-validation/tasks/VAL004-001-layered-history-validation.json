@@ -6,7 +6,7 @@
   "task_id": "VAL004-001-layered-history-validation",
   "workflow_id": "2026-08-10-immutable-history-validation",
   "owner_skill": "ai-context-governance",
-  "status": "pending",
+  "status": "in_progress",
   "created_at": "2026-08-10T00:38:23+08:00",
   "updated_at": "2026-08-10T00:38:23+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",

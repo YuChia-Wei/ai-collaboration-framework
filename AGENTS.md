@@ -79,8 +79,8 @@ Workflow artifact rules:
 ### Git Commit Policy
 
 1. Follow `.dev/standards/GIT-COMMIT-POLICY.md`.
-2. Use `<type>(#<issue-number>|<scope>): <summary>` when an issue number exists.
-3. Use `<type>(<scope>): <summary>` when no issue number exists.
+2. Use exactly one of `<type>(#<issue-number>): <summary>` or `<type>(<scope>): <summary>`; they are alternatives.
+3. Treat `|` in historical examples as meta-notation for “or”, never as a literal character in a new commit title.
 4. For workflow-stage commits, include `Why`, `What`, `Validation`, and `Workflow` body sections.
 5. Commit one validated durable stage or coherent bounded batch, not each skill
    invocation. Rewrite only unshared, unpushed history, and preserve approval,
