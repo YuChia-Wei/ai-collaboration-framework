@@ -5,9 +5,9 @@
   "task_id": "V011-CLOSEOUT",
   "owner_skill": "ai-context-release-closeout",
   "related_plan_id": "development-plan-2026-08-09-v0-11-product-boundary-delivery-evidence",
-  "status": "in_progress",
+  "status": "completed",
   "created_at": "2026-08-09T00:44:44+08:00",
-  "updated_at": "2026-08-09T10:10:45+08:00",
+  "updated_at": "2026-08-09T12:50:50+08:00",
   "workflow_locator": ".dev/workflows/2026-08-09-v0-11-product-boundary-delivery-evidence/workflow.yaml",
   "template_source": ".ai/assets/skills/software-development-orchestrator/templates/development-workflow-task-template.json",
   "model": "gpt-5.6-sol",
@@ -62,7 +62,7 @@
     ]
   },
   "results": {
-    "summary": "Local source-only closeout validation passed under the exact v0.11.0 exception. Terminal Issue/workflow convergence remains active because #148 and #151 are open and this continuation is not authorized to mutate online Issues, open a PR, or push.",
+    "summary": "Terminal source-only closeout passed under the exact non-transferable v0.11.0 exception. Hosted fix PRs #158 through #161 passed, remote main is pinned at 29a36934f172fa61bd3a2abf1d9d96dad2479f40, and independent Windows/WSL release profiles, published-asset upgrade, and ten-case changed-path evidence are complete. The immutable tag, Release assets, and failed publication run remain unchanged; #148 then #151 are the authorized post-merge provider receipt.",
     "files_changed": [
       ".dev/releases/v0.11.0/release.yaml",
       ".dev/workflows/2026-08-09-v0-11-product-boundary-delivery-evidence/"
@@ -88,9 +88,24 @@
         "evidence": "50 focused tests"
       },
       {
-        "command": "WSL focused Python entrypoint contract",
-        "outcome": "blocked-by-environment",
-        "evidence": "local WSL over NTFS exceeded 184-second process timeout; broader WSL closeout profile passed"
+        "command": "bash .ai/scripts/check-all.sh --profile release --base 5878f213b50bdbb4b3123a60525cdc206fd5be04 --head 64c2ce3549fc22155f8695f370ac9f3a80fdf187 --verbose",
+        "outcome": "passed",
+        "evidence": "Windows Git Bash selected=52, executed=52, reused=0, passed=52, failed=0, blocked=0"
+      },
+      {
+        "command": "bash .ai/scripts/check-all.sh --profile release --base 5878f213b50bdbb4b3123a60525cdc206fd5be04 --head 29a36934f172fa61bd3a2abf1d9d96dad2479f40 --verbose",
+        "outcome": "passed",
+        "evidence": "Fresh-login WSL with .NET SDK 10.0.302 selected=52, executed=52, reused=0, passed=52, failed=0, blocked=0"
+      },
+      {
+        "command": "published v0.10.0-to-v0.11.0 package upgrade fixture",
+        "outcome": "passed",
+        "evidence": "Clean 657-file seed, customization-preserving upgrade/finalize, and injected rollback all passed against the exact published archive digests"
+      },
+      {
+        "command": "changed-path fixture matrix section 8.8",
+        "outcome": "passed",
+        "evidence": "All ten temporary-history cases produced the expected narrow selection, dependency closure, no-change result, or fail-closed escalation"
       }
     ],
     "role_execution_aggregation": [],
@@ -102,13 +117,21 @@
     "validation_evidence": [
       "Workflow artifact and release registry validators passed.",
       "Hosted finalization and official source-only closeout verification passed.",
-      "PR #154 hosted failures map to metadata and workflow-contract drift now passing locally, but no new hosted run was created.",
-      "Issues #148 and #151 remain open by the current explicit online-mutation boundary."
+      "Hosted fix PRs #158 through #161 each passed all five required GitHub checks.",
+      "The full Windows release profile passed 52/52 with the correctly peeled v0.10.0 base 5878f213b50bdbb4b3123a60525cdc206fd5be04.",
+      "The final fresh-login WSL release profile passed 52/52 at main 29a36934f172fa61bd3a2abf1d9d96dad2479f40 with .NET SDK 10.0.302.",
+      "Exact published-asset upgrade and all ten changed-path fixture cases passed; earlier failed or blocked WSL attempts remain superseded historical evidence.",
+      "Issues #148 and #151 are reconciled only after the terminal records commit merges."
     ],
     "commits": [
-      "05199ed0a9ed509ef1696df014fce244f8e7cffa"
+      "05199ed0a9ed509ef1696df014fce244f8e7cffa",
+      "64c2ce3549fc22155f8695f370ac9f3a80fdf187",
+      "d092eb27cc90c1f1cfac2a0c89ae6d4980aacaa6",
+      "e65acaadfd85df0161c0a66e2871aea58876d260",
+      "32abeaf85bfc0fe7eed4f595f250095ae7659bb1",
+      "29a36934f172fa61bd3a2abf1d9d96dad2479f40"
     ],
-    "finding_status": "open",
-    "follow_up_needed": true
+    "finding_status": "addressed",
+    "follow_up_needed": false
   }
 }

@@ -11,7 +11,7 @@ tag_object: b8d766125714cd79006c1c43abd372bb51a59d3a
 tagged_at: '2026-08-09T00:54:18+08:00'
 recorded_at: '2026-08-09T00:59:43+08:00'
 created_at: '2026-08-09T00:44:44+08:00'
-updated_at: '2026-08-09T10:10:45+08:00'
+updated_at: '2026-08-09T12:50:50+08:00'
 planning:
   github_issue_refs:
   - '#96'
@@ -74,13 +74,13 @@ distribution:
     authorized_actor: OpenAI Codex Sol
     existing_tag_mutation: forbidden
 validation:
-  evidence: 'The original fast-path publication deferred validation. The later source-only closeout rerun passed focused tests, registry/workflow validators, Windows and WSL closeout profiles, the Windows PR profile, hosted finalization read-back, and the official closeout verifier. No new hosted PR run or full release-profile fixture matrix is represented as passed.'
+  evidence: 'The original fast-path publication deferred validation. Source-only closeout preserved the immutable tag and assets, retained failed publication run 31268095541 truthfully, and passed focused tests, registry/workflow validators, hosted finalization read-back, the official closeout verifier, hosted fix PRs #158 through #161, full Windows and fresh-login WSL release profiles, the exact published-asset v0.10.0-to-v0.11.0 upgrade fixture, and all ten changed-path matrix cases. Remote main is confirmed at 29a36934f172fa61bd3a2abf1d9d96dad2479f40.'
   workflow_id: 2026-08-09-v0-11-product-boundary-delivery-evidence
   related_workflows:
   - 2026-08-07-v0-10-validation-cost-and-release-flow
   related_assessments: []
-  package_status: deferred-with-owner
-  post_merge_status: local-fast-forward-pending
+  package_status: validated
+  post_merge_status: passed
   published_run: '31268095541'
   published_run_url: https://github.com/YuChia-Wei/ai-collaboration-prompts-dotnet-backend/actions/runs/31268095541
   published_run_outcome: failed
@@ -89,13 +89,17 @@ validation:
   release_body_digest: c37f23c7361155a2e496dbc46d662e7383cac1f648ea3c7d723b2cc776d448b9
   closeout_validation:
     status: passed
-    verified_at: '2026-08-09T10:10:45+08:00'
+    verified_at: '2026-08-09T12:50:50+08:00'
     windows_pr_profile: passed-37-of-37
     windows_closeout_profile: passed-1-of-1
     wsl_closeout_profile: passed-1-of-1
+    windows_release_profile: passed-52-of-52
+    wsl_release_profile: passed-52-of-52
+    published_upgrade_fixture: passed
+    changed_path_fixture_matrix: passed-10-of-10
     hosted_finalization: passed-read-only
     official_source_closeout: passed
-    hosted_pr_rerun: not-executed-owner-boundary
+    hosted_pr_rerun: passed-prs-158-through-161
 release_provider_receipt:
   release_id: RE_kwDOSBe2Hc4V49W9
   published_at: '2026-08-08T16:54:24Z'

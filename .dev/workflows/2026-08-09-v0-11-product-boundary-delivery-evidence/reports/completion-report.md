@@ -1,6 +1,6 @@
 # v0.11.0 Completion Report
 
-> Current status: local source-only closeout is validated, but this remains a partial delivery report rather than a terminal completion claim. Hosted publication run `31268095541` remains failed, no fresh hosted run was created, and online Issues #148 and #151 remain open.
+> Current status: terminal source-only closeout evidence is complete. Hosted publication run `31268095541` remains truthfully failed, while the immutable tag and public Release remain accepted only under the owner's non-transferable v0.11.0 exception. Hosted fix PRs #158 through #161 passed, `main` is `29a36934f172fa61bd3a2abf1d9d96dad2479f40`, and all required independent mechanical validation passed. Online Issues #148 and #151 are the authorized post-merge provider receipt for this final records-only commit.
 
 ## Release Identity
 
@@ -11,7 +11,7 @@
 
 ## Delivered Canonical Work
 
-#96, #95, #145, #146, and #147 were implemented and published in v0.11.0. The #148 source records are present, but its required terminal online convergence is not complete.
+#96, #95, #145, #146, and #147 were implemented and published in v0.11.0. #148's terminal source evidence is complete; its Issue and Project reconciliation occurs after this records-only commit merges, followed by #151.
 
 ## Implementation Slices
 
@@ -74,15 +74,19 @@ The existing validation JSONL/summary boundary is used. Backend/export status is
 | closeout profile | WSL | 1 | 1 | 0 | 0 | 0 | 0 | 29s | selected=1, failed=0 |
 | focused entrypoint case | WSL over NTFS | 1 | 0 | 0 | 0 | 1 | 0 | 184s | process timeout; not passed |
 | hosted finalization + official closeout | Git/GitHub read-only | 2 | 2 | 0 | 0 | 0 | 0 | < 6s | exact tag/Release/assets/deviation read-back |
-| new hosted PR run | GitHub Actions | 0 | 0 | 0 | 1 | 0 | 0 | unavailable | not executed by owner boundary |
+| hosted fix PRs #158-#161 | GitHub Actions | 20 | 20 | 0 | 0 | 0 | 0 | provider-recorded | each PR passed 5/5 required checks |
+| release profile | Windows Git Bash | 52 | 52 | 0 | 4 | 0 | 0 | 897s | `validation-v011-release-correct-20260809/20260809T034026Z-1788/evidence-summary.json` |
+| release profile | fresh-login WSL | 52 | 52 | 0 | 4 | 0 | 0 | 199s | `validation-v011-release-wsl-29a369-20260809/20260809T044038Z-288/evidence-summary.json`; .NET SDK 10.0.302 |
+| exact published-asset upgrade | independent Luna/high task | 1 | 1 | 0 | 0 | 0 | 0 | provider-recorded | clean 657-file seed, customization-preserving finalize, and injected rollback passed |
+| changed-path fixture matrix | independent Luna/high task | 10 | 10 | 0 | 0 | 0 | 0 | provider-recorded | all ten section 8.8 selection/escalation cases matched the expected outcome |
 
 ## Before / After
 
 | Metric | v0.10 Baseline | v0.11 Result | Evidence Quality |
 |---|---:|---:|---|
 | package schema | 2.1.0 actual | 2.1.0 | source/provider receipt |
-| terminal projection | stale fields | locally reconciled; online Issues still open | exact source/provider read-back |
-| changed-path/evidence contracts | partial/proxy | implemented | PR profile passed; required fixture matrix not fully evidenced |
+| terminal projection | stale fields | source evidence complete at main `29a36934`; Issue/provider receipt follows records merge | exact source/provider read-back |
+| changed-path/evidence contracts | partial/proxy | implemented and exercised | 10/10 fixture cases plus Windows and WSL full release profiles passed |
 
 ## Workflow Cost
 
@@ -119,7 +123,7 @@ Unclassified time remains unknown.
 
 ## Package And Upgrade
 
-Four immutable assets exist from the candidate tree. ZIP digest is `cd7010f65941cccfa2151ded2e0d7b3ef27f7a9d0bb3c5772a5b5c9855a0a10c`; tar digest is `087810cd444d5c3aff9311079a0051020e0d03784803ebcc677e906bd4602404`. This continuation did not rebuild them and did not execute the full release-profile clean-install, deterministic-parity, or v0.10→v0.11 upgrade fixture matrix.
+Four immutable assets exist from the candidate tree. ZIP digest is `cd7010f65941cccfa2151ded2e0d7b3ef27f7a9d0bb3c5772a5b5c9855a0a10c`; tar digest is `087810cd444d5c3aff9311079a0051020e0d03784803ebcc677e906bd4602404`. The exact published v0.10.0 inputs used ZIP digest `e45f88917d6a8d0db798600db414436634ba140a89590acd70a1f26bd5c1e489` and tar digest `8e11748ccd2cb8d490dcbcf0590230f07c952ad5ba409c17dbe643d03bbdd3f9`. Clean seed, upgrade, finalize, customization preservation, and injected rollback all passed. This records-only continuation did not rebuild or mutate any asset.
 
 ## Release Publication
 
@@ -127,15 +131,15 @@ The public non-draft, non-prerelease Release contains the governed ZIP, tar.gz, 
 
 ## Closeout
 
-Canonical implementation work and the public Release exist, and local source-only closeout validation now passes. Terminal closeout remains in progress because Issues #148 and #151 are open and this continuation explicitly performs no online Issue mutation, PR creation, push, or fresh hosted run. This records-only correction does not rebuild or mutate package bytes.
+Canonical implementation work and the public Release exist; source-only closeout, hosted fix checks, both full release environments, exact published-asset upgrade, and changed-path matrix all pass. The final records-only commit is integrated with `--ff-only`; #148 is then reconciled and closed before #151, and their online lifecycle/Project state is retained as the provider receipt. No package bytes, tag, or Release asset are rebuilt or mutated.
 
 ## Deviations
 
-The original fast path deferred validation and produced an immutable tagged registry that did not match the then-current validator. The later owner instruction accepts only that exact v0.11.0 Sol tag/publication history and authorizes local validation plus fast-forward integration, while still forbidding online Issue mutation, PR creation, and push in this continuation.
+The original fast path deferred validation and produced an immutable tagged registry that did not match the then-current validator. The later owner instruction accepts only that exact v0.11.0 Sol tag/publication history, confirms the administrator-reset and pushed main state, and authorizes the records-only correction and online closeout. Earlier WSL runs with missing SDK, fixture portability, or aggregate-runner failures remain historical failed/blocked evidence; the final fresh-login WSL run at `29a36934` supersedes them with 52/52 and zero blocked checks. This exception does not transfer to future tag creation.
 
 ## Remaining Risks
 
-The local PR and closeout surfaces now pass, but r2's full completion definition is not yet proven: no fresh hosted Ubuntu run exists; the full release profile, v0.10→v0.11 upgrade fixture, changed-path fixture matrix, and new durable hosted CI evidence were not executed here; and #148/#151 are not terminal. The WSL focused entrypoint case also timed out locally even though the WSL closeout profile passed.
+No validation blocker remains for the v0.11.0 closeout. Residual scope is intentionally limited to deferred Issues #149, #150, and #153 and to the future owner discussion of general tag authority; neither changes this release. The failed publication run and superseded WSL attempts remain visible as historical evidence.
 
 ## Deferred Issues
 
@@ -149,4 +153,4 @@ Do not begin #150 until #148/#151 reach a terminal source/provider state. Evalua
 
 ## Exact Next Action
 
-After this local fast-forward, decide the future tag-authority rule, then separately authorize a pushed branch/hosted rerun and online #148/#151 closeout if full r2 terminal completion is still required. Do not move, delete, or recreate `v0.11.0`.
+Merge this records-only terminal commit only after its hosted checks pass, using `--ff-only`. Then reconcile and close #148 followed by #151, read back their lifecycle and Project fields, and leave #149, #150, and #153 open. Do not move, delete, recreate, or otherwise mutate `v0.11.0`.
