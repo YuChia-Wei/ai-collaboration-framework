@@ -1,0 +1,55 @@
+{
+  "template_id": "ai-context-governance-remediation-task",
+  "template_version": "1.1.0",
+  "template_created_at": "2026-07-10T18:22:49+08:00",
+  "template_updated_at": "2026-07-27T09:52:09+08:00",
+  "task_id": "GOV007-004",
+  "workflow_id": "2026-08-09-repository-rename-reconciliation",
+  "owner_skill": "ai-context-governance",
+  "status": "pending",
+  "created_at": "2026-08-09T19:49:54+08:00",
+  "updated_at": "2026-08-09T19:49:54+08:00",
+  "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
+  "model": "gpt-5.6-sol",
+  "reasoning_effort": "max",
+  "finding_ids": [],
+  "scope": {
+    "target": "Issue #150 independent verification, provider reconciliation, pull request, and terminal evidence",
+    "files": [
+      ".dev/assessments/ASM-20260809-002/**",
+      ".dev/assessments/INDEX.MD",
+      ".dev/workflows/2026-08-09-repository-rename-reconciliation/**"
+    ],
+    "constraints": [
+      "Keep post-remediation audit independent and read-only with respect to remediated surfaces.",
+      "Record exact outcomes separately for local validation, hosted checks, provider state, and owner read-back.",
+      "Do not close Issue #150 or mark workflow complete before accepted integration and final read-back.",
+      "Do not mutate existing tags, Releases, or assets."
+    ],
+    "non_goals": [
+      "Publish v0.12.0 or perform release closeout.",
+      "Close related Issues #166, #170, #171, or #172.",
+      "Treat blocked or owner-readback-required checks as passing."
+    ]
+  },
+  "execution": {
+    "steps": [
+      "Capture provider-after and repository validation receipts.",
+      "Create and validate verification assessment ASM-20260809-002.",
+      "Reconcile baseline findings in the remediation report.",
+      "Create compliant commits, push, and open the Issue #150 pull request.",
+      "Read back hosted checks, PR state, main integration, Issue state, Project state, and terminal provider surfaces."
+    ],
+    "validation": [],
+    "last_completed_step": "",
+    "next_action": "Wait for GOV007-002 and GOV007-003 completion."
+  },
+  "results": {
+    "summary": "",
+    "files_changed": [],
+    "tests_run": [],
+    "finding_status": "not-addressed",
+    "residual_risk": "Provider after-state and independent verification are pending.",
+    "follow_up_needed": true
+  }
+}
