@@ -6,9 +6,9 @@
   "task_id": "GOV007-004",
   "workflow_id": "2026-08-09-repository-rename-reconciliation",
   "owner_skill": "ai-context-governance",
-  "status": "pending",
+  "status": "in_progress",
   "created_at": "2026-08-09T19:49:54+08:00",
-  "updated_at": "2026-08-09T19:49:54+08:00",
+  "updated_at": "2026-08-09T20:51:37+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-5.6-sol",
   "reasoning_effort": "max",
@@ -43,8 +43,8 @@
       "Read back hosted checks, PR state, main integration, Issue state, Project state, and terminal provider surfaces."
     ],
     "validation": [],
-    "last_completed_step": "",
-    "next_action": "Wait for GOV007-002 and GOV007-003 completion."
+    "last_completed_step": "Received completed operational remediation and fail-closed validator evidence from GOV007-002 and GOV007-003; owner set the online Project Priority to P1 High.",
+    "next_action": "Read back Priority and all selected provider surfaces, then create provider-after evidence and ASM-20260809-002."
   },
   "results": {
     "summary": "",

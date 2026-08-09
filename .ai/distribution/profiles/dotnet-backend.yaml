@@ -412,6 +412,7 @@ exclusions:
       - .ai/scripts/validate-ai-behavior-evaluation.py
       - .ai/scripts/measure-ai-context-load.py
       - .ai/scripts/validate-repository-config-contract.py
+      - .ai/scripts/validate-repository-identity.py
       - .ai/scripts/validate-skill-transition.py
       - .ai/scripts/github_backlog_provider.py
       - .ai/scripts/plan-github-backlog-migration.py
@@ -427,6 +428,7 @@ exclusions:
       - .ai/scripts/tests/test_ai_behavior_evaluation.py
       - .ai/scripts/tests/test_ai_context_load_measurement.py
       - .ai/scripts/tests/test_repository_config_contract.py
+      - .ai/scripts/tests/test_repository_identity.py
       - .ai/scripts/tests/test_skill_transition_contract.py
       - .ai/scripts/tests/test_github_backlog_provider.py
       - .ai/evaluation/**

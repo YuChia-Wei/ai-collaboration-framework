@@ -73,8 +73,8 @@ class PythonSourceEntrypointTests(unittest.TestCase):
         cls.pyyaml_source_only = [item for item in cls.source_only if item["dependency_profile"] == ["PyYAML"]]
         cls.stdlib_source_only = [item for item in cls.source_only if not item["dependency_profile"]]
 
-    def test_gwt_001_given_source_only_registry_when_help_is_requested_then_all_fourteen_direct_clis_remain_callable(self) -> None:
-        self.assertEqual(14, len(self.source_only))
+    def test_gwt_001_given_source_only_registry_when_help_is_requested_then_all_fifteen_direct_clis_remain_callable(self) -> None:
+        self.assertEqual(15, len(self.source_only))
         for item in self.source_only:
             with self.subTest(entrypoint=item["path"]):
                 result = subprocess.run(
@@ -87,7 +87,7 @@ class PythonSourceEntrypointTests(unittest.TestCase):
                 self.assertEqual(0, result.returncode, result.stdout + result.stderr)
 
     def test_gwt_002_given_shadowed_yaml_when_source_only_pyyaml_clis_run_then_each_blocks_before_target_body_or_writes(self) -> None:
-        self.assertEqual(13, len(self.pyyaml_source_only))
+        self.assertEqual(14, len(self.pyyaml_source_only))
         before = protected_snapshot()
         with tempfile.TemporaryDirectory(prefix="python-source-entrypoints-") as temporary:
             shadow = Path(temporary) / "yaml.py"

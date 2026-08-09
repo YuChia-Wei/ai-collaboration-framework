@@ -9,10 +9,10 @@
 - `base_branch`: `main`
 - `branch_segment`: `1`
 - `status`: `in_progress`
-- `current_phase`: `remediation`
+- `current_phase`: `verification`
 - `artifact_root`: `.dev/workflows/2026-08-09-repository-rename-reconciliation`
 - `created_at`: `2026-08-09T19:49:54+08:00`
-- `updated_at`: `2026-08-09T20:07:42+08:00`
+- `updated_at`: `2026-08-09T20:51:37+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md`
 - `template_version`: `1.2.0`
 
@@ -87,16 +87,16 @@
 
 ## Resume Checkpoint
 
-- Last completed action: corrected all eleven classified current-operational lines and the one current fixture, added the indexed rename compatibility notice, and completed targeted validation for `GOV007-002`.
-- Current task: `GOV007-003` fail-closed retired repository identity validator and deterministic fixture suite.
-- Exact next action: add the source-only identity policy, validator, fail-closed tests, source-governance registration, and package exclusion, then run targeted and aggregate validation.
-- Validation already completed: clean baseline and `main == origin/main`; Issue and related Issue read-back; workflow and assessment artifact validation; YAML parsing; inventory count reconciliation; provider repository/Project/PR/Actions/Release/redirect read-back; AI-context and source-governance validators; `git diff --check`; release-closeout fixture 6/6 outside the sandbox after the sandbox run recorded two `WinError 5` environment blocks.
+- Last completed action: implemented and registered the source-only retired repository identity policy, validator, deterministic tests, all-PR hosted trigger, and package exclusions; completed `GOV007-003` with the local hosted-equivalent fast profile passing.
+- Current task: `GOV007-004` provider after-state, independent verification, pull request, integration, and terminal reconciliation.
+- Exact next action: read back the owner-selected Project Priority and every Issue #150 provider surface, create provider-after evidence plus `ASM-20260809-002`, then prepare the remediation report and PR checkpoint.
+- Validation already completed: clean baseline and `main == origin/main`; Issue and related Issue read-back; workflow and assessment artifact validation; YAML parsing; inventory count reconciliation; provider-before repository/Project/PR/Actions/Release/redirect read-back; AI-context, source-governance, dependency, shell-asset, workflow, and GitHub workflow validators; identity tests 7/7; aggregate fail-closed tests 35/35; dependency tests 19/19; source entrypoint tests 3/3; focused packaging exclusion 1/1; hosted-equivalent fast profile 29 selected / 0 failed / 0 blocked; `git diff --check`.
 - Git state: `codex/2026-08-09-repository-rename-reconciliation` from `main@e1dedd688707d84f5e7a26c7c7532f74a9860a94`.
 - Branch history and checkpoint handoffs: segment 1 is local and unpushed; no checkpoint has occurred.
-- Blockers or unresolved decisions: Project Priority awaits owner selection with `P1 High` recommended; signed-in security-report form is `owner-readback-required`. The owner has resolved integration topology as merge commit / no-ff. Product/package/archive/profile/CLI identity remains outside this workflow.
+- Blockers or unresolved decisions: the owner set Project Priority to `P1 High` online and provider read-back is pending; signed-in security-report form is `owner-readback-required`. The owner has resolved integration topology as merge commit / no-ff. Product/package/archive/profile/CLI identity remains outside this workflow.
 
 ## Branch Lifecycle
 
 | Segment | Branch | Base | Checkpoint Type | Commit | Remote / Target | Recorded At | Reason | Resume Branch / Action |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| 1 | `codex/2026-08-09-repository-rename-reconciliation` | `main@e1dedd688707d84f5e7a26c7c7532f74a9860a94` | active | `pending` | local / PR pending | `2026-08-09T19:49:54+08:00` | Execute the authorized #150 reconciliation as one review and rollback unit. | Continue `GOV007-003` on this branch. |
+| 1 | `codex/2026-08-09-repository-rename-reconciliation` | `main@e1dedd688707d84f5e7a26c7c7532f74a9860a94` | active | `pending` | local / PR pending | `2026-08-09T19:49:54+08:00` | Execute the authorized #150 reconciliation as one review and rollback unit. | Continue `GOV007-004` on this branch. |

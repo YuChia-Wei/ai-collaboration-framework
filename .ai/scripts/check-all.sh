@@ -1078,14 +1078,19 @@ run_source_repository_governance_checks() {
     fi
     if ! source_governance_context_available; then
         echo -e "${CYAN}ℹ${NC} NOT APPLICABLE: Source Governance Manifest Registry (source governance registry not packaged)"
+        echo -e "${CYAN}ℹ${NC} NOT APPLICABLE: Repository Identity Drift Fail-Closed Tests (source governance registry not packaged)"
         echo -e "${CYAN}ℹ${NC} NOT APPLICABLE: Governance Pull-Request Workflow Contract (source CI workflow not packaged)"
         echo -e "${CYAN}ℹ${NC} NOT APPLICABLE: GitHub Workflow Lifecycle Contract (source CI workflows not packaged)"
-        NOT_APPLICABLE=$((NOT_APPLICABLE + 3))
+        NOT_APPLICABLE=$((NOT_APPLICABLE + 4))
         return
     fi
 
     run_command_check "python .ai/scripts/validate-source-governance.py" \
         "Source Governance Manifest Registry" \
+        "required" "true" "true"
+
+    run_command_check "python .ai/scripts/tests/test_repository_identity.py -v" \
+        "Repository Identity Drift Fail-Closed Tests" \
         "required" "true" "true"
 
     run_command_check "python .ai/scripts/tests/test_governance_workflow_contract.py -v" \

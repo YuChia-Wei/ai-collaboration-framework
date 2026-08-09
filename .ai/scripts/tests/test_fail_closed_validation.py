@@ -473,6 +473,7 @@ class CheckAllRunnerGwtTests(unittest.TestCase):
                     "test_ai_context_version_governance.py" in line
                     or "test_ai_context_packaging.py" in line
                     or "validate-source-governance.py" in line
+                    or "test_repository_identity.py" in line
                     or "test_governance_workflow_contract.py" in line
                     for line in fixture.sentinel()
                 )
@@ -513,6 +514,7 @@ class CheckAllRunnerGwtTests(unittest.TestCase):
             self.assertFalse(
                 any(
                     "validate-source-governance.py" in line
+                    or "test_repository_identity.py" in line
                     or "test_governance_workflow_contract.py" in line
                     for line in fixture.sentinel()
                 )
@@ -691,6 +693,9 @@ class CheckAllRunnerGwtTests(unittest.TestCase):
             self.assertTrue(any("test_ai_context_packaging.py -v" in line for line in commands))
             self.assertTrue(
                 any("validate-source-governance.py" in line for line in commands)
+            )
+            self.assertTrue(
+                any("test_repository_identity.py -v" in line for line in commands)
             )
             self.assertTrue(
                 any("test_governance_workflow_contract.py -v" in line for line in commands)
