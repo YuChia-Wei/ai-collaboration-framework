@@ -10,7 +10,7 @@ The core `software-development-orchestrator` skill should stay publishable. Repo
 
 ## Profile Identity
 
-- Profile name: `ai-collaboration-prompts-dotnet-backend`
+- Profile name: `ai-collaboration-framework`
 - Repository role: AI collaboration knowledge base and .NET backend context framework
 - Workflow artifact root: `.dev/workflows/<workflow-id>/`
 - Commit policy: `.dev/standards/GIT-COMMIT-POLICY.md`

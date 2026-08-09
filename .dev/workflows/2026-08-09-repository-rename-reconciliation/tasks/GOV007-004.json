@@ -1,0 +1,88 @@
+{
+  "template_id": "ai-context-governance-remediation-task",
+  "template_version": "1.1.0",
+  "template_created_at": "2026-07-10T18:22:49+08:00",
+  "template_updated_at": "2026-07-27T09:52:09+08:00",
+  "task_id": "GOV007-004",
+  "workflow_id": "2026-08-09-repository-rename-reconciliation",
+  "owner_skill": "ai-context-governance",
+  "status": "in_progress",
+  "created_at": "2026-08-09T19:49:54+08:00",
+  "updated_at": "2026-08-09T21:31:32+08:00",
+  "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
+  "model": "gpt-5.6-sol",
+  "reasoning_effort": "max",
+  "finding_ids": [
+    "ASM-20260809-001#AIC-004"
+  ],
+  "scope": {
+    "target": "Issue #150 independent verification, provider reconciliation, pull request, and terminal evidence",
+    "files": [
+      ".dev/assessments/ASM-20260809-002/**",
+      ".dev/assessments/INDEX.MD",
+      ".dev/workflows/2026-08-09-repository-rename-reconciliation/**"
+    ],
+    "constraints": [
+      "Keep post-remediation audit independent and read-only with respect to remediated surfaces.",
+      "Record exact outcomes separately for local validation, hosted checks, provider state, and owner read-back.",
+      "Do not close Issue #150 or mark workflow complete before accepted integration and final read-back.",
+      "Do not mutate existing tags, Releases, or assets."
+    ],
+    "non_goals": [
+      "Publish v0.12.0 or perform release closeout.",
+      "Close related Issues #166, #170, #171, or #172.",
+      "Treat blocked or owner-readback-required checks as passing."
+    ]
+  },
+  "execution": {
+    "steps": [
+      "Capture provider-after and repository validation receipts.",
+      "Create and validate verification assessment ASM-20260809-002.",
+      "Reconcile baseline findings in the remediation report.",
+      "Create compliant commits, push, and open the Issue #150 pull request.",
+      "Read back hosted checks, PR state, main integration, Issue state, Project state, and terminal provider surfaces."
+    ],
+    "validation": [
+      "python .ai/scripts/validate-assessment-artifacts.py",
+      "python .ai/scripts/validate-repository-identity.py",
+      "python .ai/scripts/validate-ai-context.py",
+      "python .ai/scripts/tests/test_python_prerequisites.py -v",
+      "python .ai/scripts/tests/test_python_entrypoints_contract.py -v",
+      "python .ai/scripts/tests/test_run_python_entrypoint_sh.py -v",
+      "git diff --check",
+      "gh provider and Project read-back outside the sandbox",
+      "HTTPS, SSH endpoint, redirect, security-route, and release-download probes outside the sandbox"
+    ],
+    "last_completed_step": "Opened PR #173, advanced Project Status to Verification, diagnosed hosted run 31315015812, and locally passed the owner-approved prerequisite count correction across 14/14, 4/4, and 5/5 cases.",
+    "next_action": "Commit and push the focused CI correction, then require fresh hosted checks for the corrected PR head."
+  },
+  "results": {
+    "summary": "Baseline findings are independently verified, PR #173 is in Verification, and the first hosted failure has an owner-approved local correction; fresh hosted, merge-commit, and terminal work-item evidence remain pending.",
+    "files_changed": [
+      ".dev/assessments/ASM-20260809-002/assessment.yaml",
+      ".dev/assessments/ASM-20260809-002/report.md",
+      ".dev/assessments/INDEX.MD",
+      ".dev/workflows/2026-08-09-repository-rename-reconciliation/evidence/provider-after.yaml",
+      ".dev/workflows/2026-08-09-repository-rename-reconciliation/reports/remediation-report.md",
+      ".dev/workflows/2026-08-09-repository-rename-reconciliation/workflow.yaml",
+      ".dev/workflows/2026-08-09-repository-rename-reconciliation/workflow-plan.md",
+      ".dev/workflows/2026-08-09-repository-rename-reconciliation/tasks/GOV007-004.json",
+      ".ai/scripts/tests/test_python_prerequisites.py",
+      ".ai/scripts/tests/test_python_entrypoints_contract.py"
+    ],
+    "tests_run": [
+      "PASSED: assessment artifact validation for 39 assessments",
+      "PASSED: repository identity policy at verified subject commit",
+      "PASSED: AI-context validation and git diff check",
+      "PASSED: Project read-back P1 High / Verification / v0.12.0 / Not required / Not yet published",
+      "PASSED: HTTPS clone, repository redirect, security route, Release/assets, and release-download continuity",
+      "BLOCKED-BY-ENVIRONMENT: credentialed SSH clone; official and live host fingerprints match, but this host has no GitHub private key",
+      "OWNER-READBACK-REQUIRED: signed-in security advisory form",
+      "FAILED/ADDRESSED LOCALLY: hosted run 31315015812 Ubuntu prerequisite contract found two stale 27-entry assertions after the registry grew to 28",
+      "PASSED: corrected prerequisite contract suites 14/14, 4/4, and 5/5 outside sandbox"
+    ],
+    "finding_status": "addressed",
+    "residual_risk": "Fresh corrected-head hosted checks, two-parent merge-commit verification, terminal Issue/Project read-back, signed-in security form, and credentialed SSH clone remain outstanding or explicitly owner/environment-bound.",
+    "follow_up_needed": true
+  }
+}

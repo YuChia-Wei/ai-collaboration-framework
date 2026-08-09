@@ -342,6 +342,29 @@ class DeterministicPackageGwtTests(unittest.TestCase):
         finally:
             fixture.close()
 
+    def test_gwt_000c_given_repository_identity_gate_when_profile_is_read_then_all_control_files_are_source_only(self) -> None:
+        profile = yaml.safe_load(
+            (ROOT / ".ai/distribution/profiles/dotnet-backend.yaml").read_text(
+                encoding="utf-8"
+            )
+        )
+        exclusions = {item["id"]: item for item in profile["exclusions"]}
+        runtime_patterns = set(
+            exclusions["repository-and-local-runtime-state"]["patterns"]
+        )
+
+        self.assertTrue(
+            {
+                ".ai/scripts/validate-repository-identity.py",
+                ".ai/scripts/tests/test_repository_identity.py",
+            }
+            <= runtime_patterns
+        )
+        self.assertIn(
+            ".ai/distribution/**",
+            exclusions["source-distribution-control"]["patterns"],
+        )
+
     def test_gwt_0000_given_source_local_policy_and_portable_mapping_when_projected_then_target_gets_only_portable_bytes(self) -> None:
         fixture = SyntheticPackageRepo()
         try:

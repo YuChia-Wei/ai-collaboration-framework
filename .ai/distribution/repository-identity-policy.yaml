@@ -1,0 +1,115 @@
+schema_version: "1.0"
+policy_id: "repository-rename-retired-identity"
+issue: 150
+status: "active"
+
+current_identity:
+  repository_slug: "ai-collaboration-framework"
+  repository: "YuChia-Wei/ai-collaboration-framework"
+
+retired_identities:
+  - id: "pre-v0.12-repository-slug"
+    literal: "ai-collaboration-prompts-dotnet-backend"
+
+scan:
+  source: "git-index-and-untracked-nonignored"
+  case_sensitive: true
+  match_unit: "line"
+
+allowed_classifications:
+  - "public-compatibility"
+  - "historical-immutable-evidence"
+  - "generated-projection"
+  - "product-or-package-identity"
+  - "fixture"
+  - "unrelated-text"
+
+forbidden_classifications:
+  - "current-operational"
+
+rules:
+  - id: "GOV007-ALLOW-001"
+    classification: "generated-projection"
+    disposition: "retain-as-time-pinned-provider-receipt"
+    path_globs:
+      - ".dev/backlog/provider-mappings/github-issues*.yaml"
+    excluded_patterns:
+      - ".dev/backlog/provider-mappings/github-issues.schema.yaml"
+    minimum_occurrence_lines: 1
+    minimum_files: 1
+    rationale: "Generated provider receipts preserve the repository coordinate observed when each receipt was produced."
+
+  - id: "GOV007-ALLOW-002"
+    classification: "historical-immutable-evidence"
+    disposition: "retain"
+    path_globs:
+      - ".dev/assessments/ASM-*/**"
+    minimum_occurrence_lines: 1
+    minimum_files: 1
+    rationale: "Final and superseded assessments retain subject-revision evidence."
+
+  - id: "GOV007-ALLOW-003"
+    classification: "generated-projection"
+    disposition: "retain-as-current-rename-workflow-evidence"
+    path_globs:
+      - ".dev/workflows/2026-08-09-repository-rename-reconciliation/**"
+    minimum_occurrence_lines: 1
+    minimum_files: 1
+    rationale: "The owning workflow records the retired identity as classified input and provider evidence."
+
+  - id: "GOV007-ALLOW-004"
+    classification: "historical-immutable-evidence"
+    disposition: "retain"
+    path_globs:
+      - ".dev/workflows/20*/**"
+    excluded_patterns:
+      - ".dev/workflows/2026-08-09-repository-rename-reconciliation/**"
+    minimum_occurrence_lines: 1
+    minimum_files: 1
+    rationale: "Completed workflow records are dated execution evidence and are not rewritten after a provider rename."
+
+  - id: "GOV007-ALLOW-005"
+    classification: "historical-immutable-evidence"
+    disposition: "retain"
+    path_globs:
+      - ".dev/releases/v*/**"
+    minimum_occurrence_lines: 1
+    minimum_files: 1
+    rationale: "Published release records retain their observed coordinates and immutable artifact evidence."
+
+  - id: "GOV007-ALLOW-006"
+    classification: "historical-immutable-evidence"
+    disposition: "retain"
+    paths:
+      - ".dev/backlog/items/GOV-002.yaml"
+      - ".dev/backlog/items/PKG-004.yaml"
+    minimum_occurrence_lines: 2
+    minimum_files: 2
+    rationale: "These two records cite the historical pull request that supplied their evidence."
+
+  - id: "GOV007-ALLOW-007"
+    classification: "public-compatibility"
+    disposition: "retain-with-migration-guidance"
+    paths:
+      - ".dev/REPOSITORY-RENAME-COMPATIBILITY.md"
+    minimum_occurrence_lines: 1
+    minimum_files: 1
+    rationale: "The public source notice must name both coordinates to explain migration and redirect risk."
+
+  - id: "GOV007-ALLOW-008"
+    classification: "public-compatibility"
+    disposition: "retain-as-validator-input"
+    paths:
+      - ".ai/distribution/repository-identity-policy.yaml"
+    minimum_occurrence_lines: 1
+    minimum_files: 1
+    rationale: "The source-only policy must declare the literal that it rejects outside classified paths."
+
+  - id: "GOV007-ALLOW-009"
+    classification: "fixture"
+    disposition: "retain-as-negative-and-classification-test-input"
+    paths:
+      - ".ai/scripts/tests/test_repository_identity.py"
+    minimum_occurrence_lines: 1
+    minimum_files: 1
+    rationale: "The fail-closed suite needs the retired literal to construct deterministic positive and negative fixtures."

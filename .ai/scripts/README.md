@@ -334,6 +334,7 @@ python .ai/scripts/tests/test_ai_behavior_evaluation.py -v
 python .ai/scripts/tests/test_ai_context_load_measurement.py -v
 python .ai/scripts/tests/test_dependency_version_consistency.py -v
 python .ai/scripts/tests/test_file_disposition_manifest.py -v
+python .ai/scripts/tests/test_repository_identity.py -v
 python .ai/scripts/tests/test_governance_workflow_contract.py -v
 ```
 
@@ -345,18 +346,22 @@ calls, and compares exact normalized output with the checked-in baseline.
 `test_ai_context_load_measurement.py` proves the source-only context-load
 measurement contract in disposable synthetic Git repositories; it creates no
 official trace or release evidence.
-`test_governance_workflow_contract.py` and the concrete v0.5.0 disposition
-manifest validation are source-repository governance checks.
-`validate-source-governance.py` discovers those manifests through the stable
-source-only `.ai/distribution/governance-checks.yaml` registry so portable
-scripts do not depend on dated workflow history. They remain required when
+`test_governance_workflow_contract.py`, the concrete v0.5.0 disposition
+manifest validation, and the repository identity drift gate are
+source-repository governance checks. `validate-source-governance.py` discovers
+the manifest and `.ai/distribution/repository-identity-policy.yaml` through the
+stable source-only `.ai/distribution/governance-checks.yaml` registry so
+portable scripts do not depend on dated workflow history. The identity
+validator scans Git-tracked plus untracked non-ignored files and fails on
+unclassified retired names, overlapping rules, stale rules, or any attempted
+`current-operational` exception. These checks remain required when
 `check-all.sh` detects their exact source context, but the source-only
-validators, test, registry, and workflow evidence are intentionally excluded
+validators, tests, registry, and workflow evidence are intentionally excluded
 from public target packages. `test_ai_context_package_apply.py` and the
 synthetic file-disposition fixture suite are downstream-supported and remain
-packaged and required. A packaged `check-all.sh` reports the four source-only
-checks as not applicable instead of requiring unavailable release history, Git
-tags, builder modules, workflow evidence, or source CI configuration.
+packaged and required. A packaged `check-all.sh` reports source-only checks as
+not applicable instead of requiring unavailable release history, Git tags,
+builder modules, workflow evidence, or source CI configuration.
 
 The shell fixture suite snapshots the real checkout before and after execution.
 The wrapper-metadata fixture invokes only the bounded validator function against

@@ -13,43 +13,7 @@ import yaml
 REPO_ROOT = Path(__file__).resolve().parents[3]
 WORKFLOW_PATH = REPO_ROOT / ".github/workflows/governance.yml"
 REGISTRY_PATH = REPO_ROOT / ".ai/distribution/governance-checks.yaml"
-ROOT_ENTRIES = {
-    "README.md",
-    "README.en.md",
-    "AGENTS.md",
-    "AGENTS.zh-TW.md",
-    "CLAUDE.md",
-}
-GOVERNED_PR_PATHS = {
-    ".ai/**",
-    ".agents/**",
-    ".claude/**",
-    ".codex/**",
-    ".dev/TEAM-GIT-FLOW-RULES.MD",
-    ".dev/adr/ADR-TEMPLATE.md",
-    ".dev/adr/README.md",
-    ".dev/adr/WHEN-TO-CREATE-ADR.MD",
-    ".dev/assessments/README.MD",
-    ".dev/assessments/templates/**",
-    ".dev/backlog/**",
-    ".dev/domain-language/README.MD",
-    ".dev/domain-language/templates/**",
-    ".dev/guides/**",
-    ".dev/operations/**",
-    ".dev/problem-frames/README.MD",
-    ".dev/problem-frames/SEMANTICS.md",
-    ".dev/problem-frames/templates/**",
-    ".dev/requirement/REQUIREMENT-GUIDE.MD",
-    ".dev/releases/**",
-    ".dev/specs/**",
-    ".dev/standards/**",
-    ".dev/workflows/README.MD",
-    ".dev/workflows/handoff-checkpoints.yaml",
-    ".dev/workflows/**/handoff-checkpoints/**",
-    ".github/agents/**",
-    ".github/workflows/governance.yml",
-    *ROOT_ENTRIES,
-}
+GOVERNED_PR_PATHS = {"**"}
 CANONICAL_FAST_PROFILE = "args=(--profile fast)"
 CANONICAL_PROFILE_RUNNER = 'bash .ai/scripts/check-all.sh "${args[@]}"'
 MUTATING_COMMAND = re.compile(
@@ -86,7 +50,7 @@ class GovernanceWorkflowContractTests(unittest.TestCase):
             GOVERNED_PR_PATHS,
             set(self.workflow["on"]["pull_request"]["paths"]),
         )
-        self.assertIn(".dev/releases/**", self.workflow["on"]["pull_request"]["paths"])
+        self.assertEqual(["**"], self.workflow["on"]["pull_request"]["paths"])
 
     def test_gwt_002_given_governance_workflow_when_checked_then_permissions_are_read_only(self) -> None:
         self.assertEqual({}, self.workflow.get("permissions"))
@@ -134,9 +98,9 @@ class GovernanceWorkflowContractTests(unittest.TestCase):
         self.assertNotIn("--phase candidate", command_text)
         self.assertNotIn("--phase finalization", command_text)
 
-    def test_gwt_007_given_source_registry_when_loaded_then_v050_manifest_is_exact(self) -> None:
+    def test_gwt_007_given_source_registry_when_loaded_then_governance_inputs_are_exact(self) -> None:
         registry = yaml.safe_load(REGISTRY_PATH.read_text(encoding="utf-8"))
-        self.assertEqual("1.0", registry["schema_version"])
+        self.assertEqual("1.1", registry["schema_version"])
         self.assertEqual(
             [
                 {
@@ -148,6 +112,15 @@ class GovernanceWorkflowContractTests(unittest.TestCase):
                 }
             ],
             registry["manifests"],
+        )
+        self.assertEqual(
+            [
+                {
+                    "id": "repository-rename-retired-identity",
+                    "path": ".ai/distribution/repository-identity-policy.yaml",
+                }
+            ],
+            registry["repository_identity_policies"],
         )
 
 

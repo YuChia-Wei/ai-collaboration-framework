@@ -1,0 +1,48 @@
+schema_version: "1.0"
+assessment_id: "ASM-20260809-002"
+commit_search_id: "ASM-20260809-002"
+assessment_type: "ai-context-verification"
+title: "Repository Rename Reconciliation Verification"
+owner_skill: "ai-context-auditor"
+status: "final"
+report: "report.md"
+artifact_branch: "codex/2026-08-09-repository-rename-reconciliation"
+base_branch: "main"
+created_at: "2026-08-09T21:00:08+08:00"
+updated_at: "2026-08-09T21:00:08+08:00"
+template_source: ".dev/assessments/templates/assessment-locator-template.yaml"
+template_version: "1.0.0"
+report_template_source: ".ai/assets/skills/ai-context-auditor/templates/ai-context-audit-report-template.md"
+report_template_version: "2.1.0"
+subject_ref:
+  repository: "YuChia-Wei/ai-collaboration-framework"
+  branch: "codex/2026-08-09-repository-rename-reconciliation"
+  commit: "ee05a0d385d7c5739554f81e8a3767e31e5b7793"
+scope:
+  included:
+    - "ASM-20260809-001 findings AIC-001 through AIC-004"
+    - ".ai/** repository identity policy, validator, source-governance integration, tests, and distribution exclusions"
+    - ".dev/** current repository coordinates, compatibility notice, workflow evidence, and assessment artifacts"
+    - ".github/ISSUE_TEMPLATE/config.yml and .github/workflows/governance.yml"
+    - "GitHub repository, Issue #150, Project #3, PR, Actions, Release, redirect, clone, security-link, and release-download surfaces"
+  excluded:
+    - "src/**"
+    - "tests/** and product implementation test trees"
+    - "product, package, archive, technology-profile, namespace, and CLI identity decisions owned by Issue #166"
+    - "broad .ai, .dev, and distribution inventories owned by Issues #170, #171, and #172"
+    - "existing tag, Release, asset, and Git history mutation"
+relations:
+  supersedes: []
+  superseded_by: []
+  related_assessments:
+    - "ASM-20260809-001"
+  workflow_refs:
+    - "2026-08-09-repository-rename-reconciliation"
+  backlog_refs: []
+  adr_refs: []
+resume:
+  last_completed_action: "Verified all four baseline findings against clean commit ee05a0d and read back the reconciled Project fields plus provider endpoints."
+  next_action: "Create the Issue #150 pull request, execute fresh hosted checks, and retain final integration/provider receipts."
+  blockers:
+    - "SSH clone remains blocked-by-environment because this host has no GitHub private key; endpoint and official host fingerprint were verified."
+    - "The authenticated security-advisory form remains owner-readback-required; unauthenticated routing reaches the expected GitHub login return path."

@@ -1,0 +1,124 @@
+schema_version: "1.0"
+inventory_id: "GOV007-OLD-NAME-BASELINE"
+workflow_id: "2026-08-09-repository-rename-reconciliation"
+issue: 150
+status: "baseline-final"
+generated_at: "2026-08-09T19:57:58+08:00"
+generator:
+  name: "git-grep-retired-repository-name-inventory"
+  command: "git grep -n -I -F 'ai-collaboration-prompts-dotnet-backend' e1dedd688707d84f5e7a26c7c7532f74a9860a94 --"
+  source_revision: "e1dedd688707d84f5e7a26c7c7532f74a9860a94"
+  scope: "all Git-tracked non-binary files in the pinned commit"
+  exclusions:
+    - "binary files omitted by git grep -I"
+  case_sensitive: true
+retired_identity:
+  repository_slug: "ai-collaboration-prompts-dotnet-backend"
+  repository: "YuChia-Wei/ai-collaboration-prompts-dotnet-backend"
+current_identity:
+  repository_slug: "ai-collaboration-framework"
+  repository: "YuChia-Wei/ai-collaboration-framework"
+totals:
+  occurrence_lines: 1010
+  files: 170
+classification_contract:
+  algorithm: "Assign every matching line by its tracked path to exactly one non-overlapping rule below. Counts must sum to the inventory totals."
+  categories:
+    - "current-operational"
+    - "public-compatibility"
+    - "historical-immutable-evidence"
+    - "generated-projection"
+    - "product-or-package-identity"
+    - "fixture"
+    - "unrelated-text"
+classifications:
+  - rule_id: "GOV007-CLASS-001"
+    classification: "current-operational"
+    disposition: "remediate-to-current-coordinate"
+    occurrence_lines: 11
+    files: 9
+    paths:
+      - ".ai/assets/skills/software-development-orchestrator/references/capability-profile.md"
+      - ".ai/assets/skills/software-development-orchestrator/references/capability-profile.yaml"
+      - ".ai/distribution/profiles/dotnet-backend.yaml"
+      - ".dev/backlog/provider-mappings/github-issues.schema.yaml"
+      - ".dev/backlog/providers/github.yaml"
+      - ".dev/lessons/INDEX.MD"
+      - ".dev/lessons/environment/INDEX.MD"
+      - ".dev/lessons/environment/LESSON-ENV-001-wsl-non-interactive-dotnet-path.md"
+      - ".github/ISSUE_TEMPLATE/config.yml"
+    rationale: "These files drive current source-repository behavior, navigation, security reporting, package source metadata, schema identity, or repository-specific capability selection."
+  - rule_id: "GOV007-CLASS-002"
+    classification: "fixture"
+    disposition: "replace-with-current-coordinate"
+    occurrence_lines: 1
+    files: 1
+    paths:
+      - ".ai/scripts/tests/test_ai_context_release_closeout.py"
+    rationale: "The repository argument is unrelated to the asserted primary-worktree output guard, so the fixture is current rather than a redirect-compatibility case."
+  - rule_id: "GOV007-CLASS-003"
+    classification: "generated-projection"
+    disposition: "retain-as-time-pinned-provider-receipts"
+    occurrence_lines: 62
+    files: 11
+    path_glob: ".dev/backlog/provider-mappings/github-issues*.yaml"
+    excluded_paths:
+      - ".dev/backlog/provider-mappings/github-issues.schema.yaml"
+    rationale: "The generated mapping receipts pin provider URLs, node IDs, source revisions, generation times, and read-back state observed before the rename. Rewriting them would falsify their receipt boundary."
+  - rule_id: "GOV007-CLASS-004"
+    classification: "historical-immutable-evidence"
+    disposition: "retain"
+    occurrence_lines: 102
+    files: 78
+    path_glob: ".dev/assessments/**"
+    rationale: "Final and superseded assessments pin the repository identity and URLs observed at their subject revisions."
+  - rule_id: "GOV007-CLASS-005"
+    classification: "historical-immutable-evidence"
+    disposition: "retain"
+    occurrence_lines: 821
+    files: 59
+    path_glob: ".dev/workflows/**"
+    excluded_paths:
+      - ".dev/workflows/2026-08-09-repository-rename-reconciliation/**"
+    rationale: "Completed workflow plans, tasks, reports, and provider receipts are dated execution evidence and must not be rewritten after the provider rename."
+  - rule_id: "GOV007-CLASS-006"
+    classification: "historical-immutable-evidence"
+    disposition: "retain"
+    occurrence_lines: 11
+    files: 10
+    path_glob: ".dev/releases/**"
+    rationale: "Release records and notes describe immutable published tags, release coordinates, and evidence as observed at publication time."
+  - rule_id: "GOV007-CLASS-007"
+    classification: "historical-immutable-evidence"
+    disposition: "retain"
+    occurrence_lines: 2
+    files: 2
+    paths:
+      - ".dev/backlog/items/GOV-002.yaml"
+      - ".dev/backlog/items/PKG-004.yaml"
+    rationale: "The two URLs are explicit PR #10 historical evidence, not current default repository coordinates."
+zero_count_categories:
+  public-compatibility:
+    occurrence_lines: 0
+    note: "The baseline has no purpose-built compatibility notice. The remediation will add one and classify it explicitly."
+  product-or-package-identity:
+    occurrence_lines: 0
+    note: "The package source_repository occurrence identifies the GitHub source coordinate, not the archive or product name. Product and package naming remains owned by Issue #166."
+  unrelated-text:
+    occurrence_lines: 0
+verification:
+  occurrence_line_sum: 1010
+  file_sum: 170
+  complete: true
+  direct_file_checks:
+    - ".github/ISSUE_TEMPLATE/config.yml"
+    - ".ai/distribution/profiles/dotnet-backend.yaml"
+    - ".ai/assets/skills/software-development-orchestrator/references/capability-profile.md"
+    - ".ai/assets/skills/software-development-orchestrator/references/capability-profile.yaml"
+    - ".ai/scripts/tests/test_ai_context_release_closeout.py"
+    - ".dev/backlog/providers/github.yaml"
+    - ".dev/backlog/provider-mappings/README.MD"
+    - ".dev/backlog/provider-mappings/github-issues.schema.yaml"
+    - ".dev/lessons/INDEX.MD"
+    - ".dev/lessons/environment/INDEX.MD"
+    - ".dev/lessons/environment/LESSON-ENV-001-wsl-non-interactive-dotnet-path.md"

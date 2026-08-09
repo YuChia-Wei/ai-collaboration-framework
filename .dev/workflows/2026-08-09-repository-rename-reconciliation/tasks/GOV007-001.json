@@ -1,0 +1,81 @@
+{
+  "template_id": "ai-context-governance-remediation-task",
+  "template_version": "1.1.0",
+  "template_created_at": "2026-07-10T18:22:49+08:00",
+  "template_updated_at": "2026-07-27T09:52:09+08:00",
+  "task_id": "GOV007-001",
+  "workflow_id": "2026-08-09-repository-rename-reconciliation",
+  "owner_skill": "ai-context-governance",
+  "status": "completed",
+  "created_at": "2026-08-09T19:49:54+08:00",
+  "updated_at": "2026-08-09T20:00:43+08:00",
+  "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
+  "model": "gpt-5.6-sol",
+  "reasoning_effort": "max",
+  "finding_ids": [
+    "ASM-20260809-001#AIC-001",
+    "ASM-20260809-001#AIC-002",
+    "ASM-20260809-001#AIC-003",
+    "ASM-20260809-001#AIC-004"
+  ],
+  "scope": {
+    "target": "Issue #150 repository rename baseline inventory and evidence freeze",
+    "files": [
+      ".dev/assessments/ASM-20260809-001/**",
+      ".dev/assessments/INDEX.MD",
+      ".dev/workflows/2026-08-09-repository-rename-reconciliation/evidence/**",
+      ".dev/workflows/2026-08-09-repository-rename-reconciliation/**"
+    ],
+    "constraints": [
+      "Enumerate tracked current repository content with a reproducible command and pinned Git revision.",
+      "Classify every retired-name occurrence using the Issue #150 taxonomy.",
+      "Verify material findings against direct repository files and provider read-back.",
+      "Keep audited context read-only until the baseline assessment is finalized."
+    ],
+    "non_goals": [
+      "Apply remediation before the inventory and finding boundaries are frozen.",
+      "Treat every historical old-name occurrence as a defect.",
+      "Complete the broader inventories in Issues #170, #171, or #172.",
+      "Decide product/package/archive/profile/CLI identity from Issue #166."
+    ]
+  },
+  "execution": {
+    "steps": [
+      "Capture provider-before and Git baseline receipts.",
+      "Generate the complete tracked old-name occurrence inventory.",
+      "Classify occurrences and verify operational candidates against direct source files.",
+      "Create and validate baseline assessment ASM-20260809-001.",
+      "Update workflow triage and hand off selected findings to GOV007-002 and GOV007-003."
+    ],
+    "validation": [
+      "python .ai/scripts/validate-assessment-artifacts.py",
+      "python .ai/scripts/validate-workflow-artifacts.py",
+      "structured YAML and JSON parsing",
+      "git diff --check"
+    ],
+    "last_completed_step": "Finalized and validated ASM-20260809-001, old-name-inventory.yaml, and provider-before.yaml.",
+    "next_action": "Remediate AIC-001 and AIC-003 in GOV007-002; implement the AIC-002 gate in GOV007-003; reconcile AIC-004 in GOV007-004."
+  },
+  "results": {
+    "summary": "Pinned all 1,010 exact retired-name occurrence lines across 170 files, classified them without overlap, finalized a four-finding baseline assessment, and retained provider-before state.",
+    "files_changed": [
+      ".dev/assessments/ASM-20260809-001/assessment.yaml",
+      ".dev/assessments/ASM-20260809-001/report.md",
+      ".dev/assessments/INDEX.MD",
+      ".dev/workflows/2026-08-09-repository-rename-reconciliation/evidence/old-name-inventory.yaml",
+      ".dev/workflows/2026-08-09-repository-rename-reconciliation/evidence/provider-before.yaml",
+      ".dev/workflows/2026-08-09-repository-rename-reconciliation/"
+    ],
+    "tests_run": [
+      "python .ai/scripts/validate-assessment-artifacts.py -> passed for 38 assessments",
+      "python .ai/scripts/validate-workflow-artifacts.py -> passed for 68 post-adoption workflows",
+      "YAML parse for inventory, provider receipt, and assessment locator -> passed",
+      "inventory occurrence-line sum -> 1,010 / 1,010",
+      "inventory file sum -> 170 / 170",
+      "git diff --check -> passed"
+    ],
+    "finding_status": "addressed",
+    "residual_risk": "The four frozen findings remain open for downstream remediation and verification tasks; signed-in security form and Project Priority are not yet resolved.",
+    "follow_up_needed": true
+  }
+}

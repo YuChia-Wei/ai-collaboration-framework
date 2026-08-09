@@ -48,7 +48,7 @@ class ReleaseCloseoutGwtTests(unittest.TestCase):
             (),
             {
                 "version": "v0.10.0",
-                "repository": "YuChia-Wei/ai-collaboration-prompts-dotnet-backend",
+                "repository": "YuChia-Wei/ai-collaboration-framework",
                 "workflow_run_id": "123",
                 "rendered_body": None,
                 "recorded_at": None,

@@ -10,4 +10,4 @@ is its environment projection.
 
 | Path | Lesson ID | Lesson | Lifecycle | Origin Evidence |
 | --- | --- | --- | --- | --- |
-| `LESSON-ENV-001-wsl-non-interactive-dotnet-path.md` | `LESSON-ENV-001` | [WSL Non-Interactive .NET CLI PATH Availability](LESSON-ENV-001-wsl-non-interactive-dotnet-path.md) | `active` | [Issue #163](https://github.com/YuChia-Wei/ai-collaboration-prompts-dotnet-backend/issues/163) |
+| `LESSON-ENV-001-wsl-non-interactive-dotnet-path.md` | `LESSON-ENV-001` | [WSL Non-Interactive .NET CLI PATH Availability](LESSON-ENV-001-wsl-non-interactive-dotnet-path.md) | `active` | [Issue #163](https://github.com/YuChia-Wei/ai-collaboration-framework/issues/163) |

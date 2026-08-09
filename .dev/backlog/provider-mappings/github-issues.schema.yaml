@@ -1,5 +1,5 @@
 $schema: "https://json-schema.org/draft/2020-12/schema"
-$id: "https://github.com/YuChia-Wei/ai-collaboration-prompts-dotnet-backend/blob/main/.dev/backlog/provider-mappings/github-issues.schema.yaml"
+$id: "https://github.com/YuChia-Wei/ai-collaboration-framework/blob/main/.dev/backlog/provider-mappings/github-issues.schema.yaml"
 title: "GitHub backlog provider mapping receipt"
 type: "object"
 additionalProperties: false
@@ -84,4 +84,3 @@ properties:
             labels_match: {type: "boolean"}
             state_matches: {type: "boolean"}
             notes: {type: ["string", "null"]}
-

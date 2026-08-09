@@ -286,13 +286,18 @@ register_check effective-rule-action-skill \
     "python .ai/scripts/tests/test_effective_rule_action_skill_contract.py -v" source-release
 register_check source-governance-manifest \
     "Source Governance Manifest Registry" required \
-    "governance,source" "pr release nightly-full" \
-    ".ai/distribution/governance-checks.yaml .ai/scripts/validate-source-governance.py" '' "python>=3.11" 30 cpu reuse-by-input source \
+    "governance,source" "fast pr release nightly-full" \
+    ".ai/distribution/governance-checks.yaml .ai/distribution/repository-identity-policy.yaml .ai/scripts/validate-source-governance.py .ai/scripts/validate-repository-identity.py" '' "python>=3.11 git" 30 cpu reuse-by-input source \
     "python .ai/scripts/validate-source-governance.py" source-governance
+register_check repository-identity-tests \
+    "Repository Identity Drift Fail-Closed Tests" required \
+    "governance,source,tests" "fast pr release nightly-full" \
+    ".ai/distribution/repository-identity-policy.yaml .ai/scripts/validate-repository-identity.py .ai/scripts/tests/test_repository_identity.py" source-governance-manifest "python>=3.11 git" 60 cpu reuse-by-input source \
+    "python .ai/scripts/tests/test_repository_identity.py -v" source-governance
 register_check governance-workflow-contract \
     "Governance Pull-Request Workflow Contract" required \
     "governance,source" "pr release nightly-full" \
-    ".github/workflows/governance.yml .ai/scripts/tests/test_governance_workflow_contract.py" source-governance-manifest "python>=3.11" 60 cpu reuse-by-input source \
+    ".github/workflows/governance.yml .ai/scripts/tests/test_governance_workflow_contract.py" repository-identity-tests "python>=3.11" 60 cpu reuse-by-input source \
     "python .ai/scripts/tests/test_governance_workflow_contract.py -v" source-governance
 register_check github-workflow-contract \
     "GitHub Workflow Lifecycle Contract" required \

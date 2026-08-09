@@ -1,0 +1,115 @@
+{
+  "template_id": "ai-context-governance-remediation-task",
+  "template_version": "1.1.0",
+  "template_created_at": "2026-07-10T18:22:49+08:00",
+  "template_updated_at": "2026-07-27T09:52:09+08:00",
+  "task_id": "GOV007-003",
+  "workflow_id": "2026-08-09-repository-rename-reconciliation",
+  "owner_skill": "ai-context-governance",
+  "status": "completed",
+  "created_at": "2026-08-09T19:49:54+08:00",
+  "updated_at": "2026-08-09T20:51:37+08:00",
+  "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
+  "model": "gpt-5.6-sol",
+  "reasoning_effort": "max",
+  "finding_ids": [
+    "ASM-20260809-001#AIC-002",
+    "ASM-20260809-001#AIC-003"
+  ],
+  "scope": {
+    "target": "Issue #150 fail-closed retired repository identity validator",
+    "files": [
+      ".ai/distribution/governance-checks.yaml",
+      ".ai/distribution/profiles/dotnet-backend.yaml",
+      ".ai/distribution/repository-identity-policy.yaml",
+      ".ai/scripts/README.md",
+      ".ai/scripts/check-all.sh",
+      ".ai/scripts/python-entrypoints.json",
+      ".ai/scripts/shell-assets.yaml",
+      ".ai/scripts/tests/test_ai_context_packaging.py",
+      ".ai/scripts/tests/test_fail_closed_validation.py",
+      ".ai/scripts/tests/test_governance_workflow_contract.py",
+      ".ai/scripts/tests/test_python_source_entrypoints.py",
+      ".ai/scripts/tests/test_repository_identity.py",
+      ".ai/scripts/validate-dependency-versions.py",
+      ".ai/scripts/validate-repository-identity.py",
+      ".ai/scripts/validate-source-governance.py",
+      ".ai/scripts/validation-profile-registry.sh",
+      ".github/workflows/governance.yml"
+    ],
+    "constraints": [
+      "Fail when a new unclassified current operational surface introduces the retired repository name.",
+      "Allow only explicit classified historical, compatibility, generated, product/package, fixture, or unrelated occurrences.",
+      "Keep the validator source-repository-owned and deterministic.",
+      "Test positive, negative, stale classification, and path-scope cases."
+    ],
+    "non_goals": [
+      "Make optional code graphs or network access validation prerequisites.",
+      "Validate product/package naming decisions owned by Issue #166.",
+      "Mutate repository or provider state during validation."
+    ]
+  },
+  "execution": {
+    "steps": [
+      "Define the tracked classification/exemption contract from GOV007-001.",
+      "Implement the fail-closed validator and integrate it with the narrowest owned validation surface.",
+      "Add deterministic tests for accepted and rejected occurrence classes.",
+      "Run targeted and repository-level validation."
+    ],
+    "validation": [
+      "python .ai/scripts/validate-repository-identity.py",
+      "python .ai/scripts/tests/test_repository_identity.py -v",
+      "python .ai/scripts/validate-source-governance.py",
+      "python .ai/scripts/tests/test_governance_workflow_contract.py -v",
+      "python .ai/scripts/tests/test_github_workflow_contract.py -v",
+      "python .ai/scripts/tests/test_validation_profile_registry.py -v",
+      "python .ai/scripts/tests/test_fail_closed_validation.py -v",
+      "python .ai/scripts/validate-dependency-versions.py",
+      "python .ai/scripts/tests/test_dependency_version_consistency.py -v",
+      "python .ai/scripts/tests/test_python_source_entrypoints.py -v",
+      "python .ai/scripts/validate-shell-assets.py",
+      "python .ai/scripts/tests/test_ai_context_packaging.py DeterministicPackageGwtTests.test_gwt_000c_given_repository_identity_gate_when_profile_is_read_then_all_control_files_are_source_only -v",
+      "bash .ai/scripts/check-all.sh --profile fast",
+      "git diff --check"
+    ],
+    "last_completed_step": "Implemented and registered the fail-closed identity policy, source-only validator and tests, dependency/profile contracts, all-PR hosted trigger, and package exclusions; all selected gates passed.",
+    "next_action": "Hand off provider and independent verification to GOV007-004."
+  },
+  "results": {
+    "summary": "Every retired repository-name line is now assigned to exactly one active classification rule, and any unclassified, overlapping, stale, or current-operational exception fails the source and hosted governance gates.",
+    "files_changed": [
+      ".ai/distribution/governance-checks.yaml",
+      ".ai/distribution/profiles/dotnet-backend.yaml",
+      ".ai/distribution/repository-identity-policy.yaml",
+      ".ai/scripts/README.md",
+      ".ai/scripts/check-all.sh",
+      ".ai/scripts/python-entrypoints.json",
+      ".ai/scripts/shell-assets.yaml",
+      ".ai/scripts/tests/test_ai_context_packaging.py",
+      ".ai/scripts/tests/test_fail_closed_validation.py",
+      ".ai/scripts/tests/test_governance_workflow_contract.py",
+      ".ai/scripts/tests/test_python_source_entrypoints.py",
+      ".ai/scripts/tests/test_repository_identity.py",
+      ".ai/scripts/validate-dependency-versions.py",
+      ".ai/scripts/validate-repository-identity.py",
+      ".ai/scripts/validate-source-governance.py",
+      ".ai/scripts/validation-profile-registry.sh",
+      ".github/workflows/governance.yml"
+    ],
+    "tests_run": [
+      "PASSED: repository identity scan classified 1,016 retired-name lines through 9 active rules with no unclassified or overlapping paths",
+      "PASSED: repository identity GWT suite 7/7 outside the sandbox; the sandbox attempt was blocked by WinError 5 while creating temporary Git repositories",
+      "PASSED: source-governance, governance-workflow 7/7, and GitHub-workflow 7/7 contracts",
+      "PASSED: validation-profile 4/4 outside the sandbox; the sandbox attempt was blocked by Git Bash signal-pipe Win32 error 5",
+      "PASSED: aggregate fail-closed suite 35/35 outside the sandbox in 269 seconds; an earlier 184-second invocation timed out without a verdict and was superseded by this complete rerun",
+      "PASSED: dependency consistency validator and tests 19/19 after synchronizing the registry contract to 28 entrypoints",
+      "PASSED: source Python entrypoint tests 3/3 and shell-asset validation",
+      "PASSED: focused source-only packaging exclusion contract 1/1; the voluntarily attempted full packaging matrix was interrupted before a verdict and is not acceptance evidence",
+      "PASSED: hosted-equivalent fast profile selected 29 required checks with 0 failed and 0 blocked",
+      "PASSED: git diff --check"
+    ],
+    "finding_status": "addressed",
+    "residual_risk": "Hosted CI must execute from a fresh checkout after push; provider after-state and the signed-in security form remain in GOV007-004.",
+    "follow_up_needed": true
+  }
+}

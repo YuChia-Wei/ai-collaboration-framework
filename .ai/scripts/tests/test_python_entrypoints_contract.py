@@ -54,12 +54,12 @@ class PythonEntrypointContractTests(unittest.TestCase):
     def test_gwt_001_given_governed_registry_when_counted_then_portable_dependency_contract_is_complete(self) -> None:
         self.assertEqual("1.0", self.registry["schema_version"])
         self.assertEqual("3.11", self.registry["python_floor"])
-        self.assertEqual(27, len(self.entrypoints))
+        self.assertEqual(28, len(self.entrypoints))
         portable = [item for item in self.entrypoints if item["portable"]]
         pyyaml = [item for item in self.entrypoints if item["dependency_profile"] == ["PyYAML"]]
         stdlib = [item for item in self.entrypoints if not item["dependency_profile"]]
         self.assertEqual(13, len(portable))
-        self.assertEqual(25, len(pyyaml))
+        self.assertEqual(26, len(pyyaml))
         self.assertEqual(2, len(stdlib))
         self.assertEqual("6.0.3", self.registry["governed_requirements"]["PyYAML"]["version"])
         self.assertEqual("requirements.txt", self.registry["governed_requirements"]["PyYAML"]["requirements_path"])

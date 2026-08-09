@@ -1,0 +1,108 @@
+schema_version: "1.0"
+receipt_id: "GOV007-PROVIDER-BEFORE"
+receipt_type: "repository-rename-provider-before"
+workflow_id: "2026-08-09-repository-rename-reconciliation"
+issue: 150
+observed_at: "2026-08-09T19:57:58+08:00"
+mutation_performed: false
+subject_ref:
+  branch: "main"
+  commit: "e1dedd688707d84f5e7a26c7c7532f74a9860a94"
+local_git:
+  head: "e1dedd688707d84f5e7a26c7c7532f74a9860a94"
+  origin_main: "e1dedd688707d84f5e7a26c7c7532f74a9860a94"
+  fetch_url: "https://github.com/YuChia-Wei/ai-collaboration-framework.git"
+  push_url: "https://github.com/YuChia-Wei/ai-collaboration-framework.git"
+provider_repository:
+  id: 1209513501
+  node_id: "R_kgDOSBe2HQ"
+  full_name: "YuChia-Wei/ai-collaboration-framework"
+  html_url: "https://github.com/YuChia-Wei/ai-collaboration-framework"
+  clone_url: "https://github.com/YuChia-Wei/ai-collaboration-framework.git"
+  ssh_url: "git@github.com:YuChia-Wei/ai-collaboration-framework.git"
+  default_branch: "main"
+  archived: false
+  disabled: false
+redirect_probe:
+  retired_url: "https://github.com/YuChia-Wei/ai-collaboration-prompts-dotnet-backend"
+  status: 301
+  location: "https://github.com/YuChia-Wei/ai-collaboration-framework"
+  result: "passed"
+issue_readback:
+  number: 150
+  state: "OPEN"
+  title: "[GOV-007] 完成 Repository Rename 後的識別與連結收尾"
+  url: "https://github.com/YuChia-Wei/ai-collaboration-framework/issues/150"
+  comments: 0
+  labels:
+    - "kind:enabler"
+    - "scope:source-repo"
+    - "created-by:codex"
+project_readback:
+  project_number: 3
+  project_id: "PVT_kwHOAwvEG84Bez7w"
+  project_url: "https://github.com/users/YuChia-Wei/projects/3"
+  item_id: "PVTI_lAHOAwvEG84Bez7wzg1x2hY"
+  issue_content_title: "[GOV-007] 完成 Repository Rename 後的識別與連結收尾"
+  project_item_title: "[GOV] Rename The Repository To ai-collaboration-framework After v0.11.0"
+  status: "Inbox"
+  priority: null
+  owner_review: null
+  target_release: null
+  published_in: null
+  target_release_v0_12_option_present: false
+  result: "reconciliation-required"
+latest_surface_readbacks:
+  pull_request:
+    number: 165
+    state: "MERGED"
+    url: "https://github.com/YuChia-Wei/ai-collaboration-framework/pull/165"
+    merged_at: "2026-08-09T06:12:55Z"
+  action_run:
+    database_id: 31298334256
+    workflow: "Portable AI Context Gates"
+    status: "completed"
+    conclusion: "success"
+    url: "https://github.com/YuChia-Wei/ai-collaboration-framework/actions/runs/31298334256"
+  release:
+    tag: "v0.11.0"
+    url: "https://github.com/YuChia-Wei/ai-collaboration-framework/releases/tag/v0.11.0"
+    published_at: "2026-08-08T16:54:24Z"
+    draft: false
+    prerelease: false
+    asset_count: 4
+    asset_coordinates_use_current_repository: true
+security_report_probe:
+  configured_before: "https://github.com/YuChia-Wei/ai-collaboration-prompts-dotnet-backend/security/advisories/new"
+  retired_url_status: 301
+  retired_url_location: "https://github.com/YuChia-Wei/ai-collaboration-framework/security/advisories/new"
+  current_url_unauthenticated_status: 302
+  current_url_unauthenticated_location: "GitHub login with return_to current security advisory URL"
+  signed_in_page_result: "owner-readback-required"
+  note: "The unauthenticated probe verifies routing but cannot prove the signed-in private-report form is usable."
+retired_name_inventory:
+  occurrence_lines: 1010
+  files: 170
+  evidence: "old-name-inventory.yaml"
+commands:
+  - "git remote -v"
+  - "git rev-parse HEAD"
+  - "git rev-parse origin/main"
+  - "gh api repos/YuChia-Wei/ai-collaboration-framework"
+  - "gh issue view 150 --repo YuChia-Wei/ai-collaboration-framework"
+  - "gh project list --owner YuChia-Wei"
+  - "gh project field-list 3 --owner YuChia-Wei"
+  - "gh project item-list 3 --owner YuChia-Wei"
+  - "gh pr list --repo YuChia-Wei/ai-collaboration-framework --state all --limit 1"
+  - "gh run list --repo YuChia-Wei/ai-collaboration-framework --limit 1"
+  - "gh release view v0.11.0 --repo YuChia-Wei/ai-collaboration-framework"
+  - "curl.exe --head --max-redirs 0 <retired-and-current-urls>"
+skipped_or_pending:
+  - surface: "HTTPS clone"
+    outcome: "pending-after-remediation"
+  - surface: "SSH clone"
+    outcome: "pending-after-remediation"
+  - surface: "signed-in security-report form"
+    outcome: "owner-readback-required"
+  - surface: "v0.11.0 release-download HEAD probe"
+    outcome: "pending-after-remediation"
