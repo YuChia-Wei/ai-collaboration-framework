@@ -1,10 +1,10 @@
 # Project Knowledge And Governance
 
-This directory contains the repository's human-facing governance, standards, guides, requirements, specs, operations guidance, durable releases, assessments, backlog, and workflow records.
+This directory contains the repository's human-facing governance, standards, guides, evidence-backed lessons, requirements, specs, operations guidance, durable releases, assessments, backlog, and workflow records.
 
 ## Purpose
 
-Use `.dev/` for durable project knowledge and governance that humans and agents can share during collaboration. This includes source-of-truth standards, workflow records, authoring guides, requirements, specs, domain language templates, and operations guidance.
+Use `.dev/` for durable project knowledge and governance that humans and agents can share during collaboration. This includes source-of-truth standards, non-normative lessons, workflow records, authoring guides, requirements, specs, domain language templates, and operations guidance.
 
 ## Usage
 
@@ -15,6 +15,7 @@ When this framework is copied into a target repository, run `ai-context-init` be
 ## Boundary
 
 - Keep human-facing guides and project governance under `.dev/`.
+- Keep evidence-backed reusable learnings under `.dev/lessons/`; lessons are non-normative and retain links to their durable origin evidence.
 - Keep reusable agent-facing canonical assets under `.ai/`.
 - Keep runtime-specific skill wrappers under `.agents/skills/` and `.claude/skills/`.
 - Keep durable release identity under `.dev/releases/`, observations under `.dev/assessments/`, cross-workflow work items under `.dev/backlog/`, and execution artifacts under `.dev/workflows/`.

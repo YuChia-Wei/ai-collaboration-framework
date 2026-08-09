@@ -8,7 +8,7 @@
   "owner_skill": "ai-context-governance",
   "status": "in_progress",
   "created_at": "2026-08-09T13:40:15+08:00",
-  "updated_at": "2026-08-09T13:40:15+08:00",
+  "updated_at": "2026-08-09T13:55:47+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-5.6-sol",
   "reasoning_effort": "high",
@@ -53,15 +53,33 @@
       "python .ai/scripts/validate-git-commits.py --range main..HEAD --workflow-id 2026-08-09-governed-lessons-lifecycle",
       "git diff --check"
     ],
-    "last_completed_step": "Created the dedicated branch and workflow artifacts after live Issue and base-state read-back.",
-    "next_action": "Verify source evidence and implement the lesson contract."
+    "last_completed_step": "Implemented the lesson lifecycle, first environment lesson, owned navigation, and source-only lesson validation; focused and repository validators passed.",
+    "next_action": "Review and commit the implementation, then push and create the Issue #163 pull request."
   },
   "results": {
-    "summary": "",
-    "files_changed": [],
-    "tests_run": [],
-    "finding_status": "not-addressed",
-    "residual_risk": "Validation and pull-request gate are pending.",
+    "summary": "Defined the previously missing non-normative lesson contract, added LESSON-ENV-001 with complete WSL evidence boundaries, updated owned navigation, and added source-only fail-closed lesson structure and lifecycle validation.",
+    "files_changed": [
+      ".dev/lessons/README.MD",
+      ".dev/lessons/INDEX.MD",
+      ".dev/lessons/templates/lesson-template.md",
+      ".dev/lessons/environment/INDEX.MD",
+      ".dev/lessons/environment/LESSON-ENV-001-wsl-non-interactive-dotnet-path.md",
+      ".dev/README.MD",
+      ".dev/INDEX.md",
+      ".ai/scripts/validate-ai-context.py",
+      ".ai/scripts/tests/test_ai_context_lessons.py",
+      ".dev/workflows/2026-08-09-governed-lessons-lifecycle/"
+    ],
+    "tests_run": [
+      "python .ai/scripts/tests/test_ai_context_lessons.py -v -> blocked-by-environment inside Codex sandbox because Python tempfile could not write to system TEMP",
+      "python .ai/scripts/tests/test_ai_context_lessons.py -v -> passed 6/6 outside the Codex temp-directory sandbox boundary",
+      "python .ai/scripts/validate-ai-context.py -> passed with 26 active indexes and 1 governed lesson",
+      "python .ai/scripts/validate-source-governance.py -> passed",
+      "python .ai/scripts/validate-workflow-artifacts.py -> passed",
+      "git diff --check -> passed"
+    ],
+    "finding_status": "addressed",
+    "residual_risk": "Hosted pull-request checks, review state, and accepted integration remain pending; no future promotion work is authorized.",
     "follow_up_needed": true
   }
 }
