@@ -10,7 +10,7 @@
 | Category | `environment` |
 | Lifecycle | `active` |
 | Normative Authority | `none` |
-| Origin Evidence | [Issue #163](https://github.com/YuChia-Wei/ai-collaboration-prompts-dotnet-backend/issues/163), [v0.11 completion report](../../workflows/2026-08-09-v0-11-product-boundary-delivery-evidence/reports/completion-report.md), and [V011-CLOSEOUT task](../../workflows/2026-08-09-v0-11-product-boundary-delivery-evidence/tasks/V011-CLOSEOUT.json) |
+| Origin Evidence | [Issue #163](https://github.com/YuChia-Wei/ai-collaboration-framework/issues/163), [v0.11 completion report](../../workflows/2026-08-09-v0-11-product-boundary-delivery-evidence/reports/completion-report.md), and [V011-CLOSEOUT task](../../workflows/2026-08-09-v0-11-product-boundary-delivery-evidence/tasks/V011-CLOSEOUT.json) |
 | Evidence Subject | `main@29a36934f172fa61bd3a2abf1d9d96dad2479f40`; `Ubuntu-24.04`; evidence summary `validation-v011-release-wsl-29a369-20260809/20260809T044038Z-288/evidence-summary.json` |
 | Promotion Target | `none` |
 | Supersedes | `none` |
@@ -18,7 +18,7 @@
 
 ## Origin Evidence
 
-- [Issue #163](https://github.com/YuChia-Wei/ai-collaboration-prompts-dotnet-backend/issues/163)
+- [Issue #163](https://github.com/YuChia-Wei/ai-collaboration-framework/issues/163)
   preserves the owner-confirmed host, shell comparison, repair, and scope
   boundary for this lesson.
 - The [v0.11 completion report](../../workflows/2026-08-09-v0-11-product-boundary-delivery-evidence/reports/completion-report.md)
@@ -28,7 +28,7 @@
   records the three checks as direct `dotnet test` commands. [The aggregate
   runner](../../../.ai/scripts/check-all.sh) records child-shell execution and
   environment-block classification semantics.
-- [PR #158](https://github.com/YuChia-Wei/ai-collaboration-prompts-dotnet-backend/pull/158)
+- [PR #158](https://github.com/YuChia-Wei/ai-collaboration-framework/pull/158)
   separately repaired offline-uv fixture portability. Its defect and outcome
   are not evidence of the shell/PATH cause described here.
 

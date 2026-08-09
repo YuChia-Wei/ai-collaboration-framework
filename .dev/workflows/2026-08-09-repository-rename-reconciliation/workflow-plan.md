@@ -12,7 +12,7 @@
 - `current_phase`: `remediation`
 - `artifact_root`: `.dev/workflows/2026-08-09-repository-rename-reconciliation`
 - `created_at`: `2026-08-09T19:49:54+08:00`
-- `updated_at`: `2026-08-09T20:00:43+08:00`
+- `updated_at`: `2026-08-09T20:07:42+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md`
 - `template_version`: `1.2.0`
 
@@ -87,10 +87,10 @@
 
 ## Resume Checkpoint
 
-- Last completed action: finalized `ASM-20260809-001`, the 1,010-line / 170-file occurrence inventory, and the provider-before receipt; structural assessment and workflow validation passed.
-- Current task: `GOV007-002` current operational identity, fixture, and compatibility remediation.
-- Exact next action: update the eleven classified current-operational lines and one current fixture, then add the source-only compatibility notice without changing historical/generated evidence or #166-owned identities.
-- Validation already completed: clean baseline and `main == origin/main`; Issue and related Issue read-back; workflow artifact validation; assessment artifact validation; YAML parsing; inventory count reconciliation; provider repository/Project/PR/Actions/Release/redirect read-back.
+- Last completed action: corrected all eleven classified current-operational lines and the one current fixture, added the indexed rename compatibility notice, and completed targeted validation for `GOV007-002`.
+- Current task: `GOV007-003` fail-closed retired repository identity validator and deterministic fixture suite.
+- Exact next action: add the source-only identity policy, validator, fail-closed tests, source-governance registration, and package exclusion, then run targeted and aggregate validation.
+- Validation already completed: clean baseline and `main == origin/main`; Issue and related Issue read-back; workflow and assessment artifact validation; YAML parsing; inventory count reconciliation; provider repository/Project/PR/Actions/Release/redirect read-back; AI-context and source-governance validators; `git diff --check`; release-closeout fixture 6/6 outside the sandbox after the sandbox run recorded two `WinError 5` environment blocks.
 - Git state: `codex/2026-08-09-repository-rename-reconciliation` from `main@e1dedd688707d84f5e7a26c7c7532f74a9860a94`.
 - Branch history and checkpoint handoffs: segment 1 is local and unpushed; no checkpoint has occurred.
 - Blockers or unresolved decisions: Project Priority awaits owner selection with `P1 High` recommended; signed-in security-report form is `owner-readback-required`. The owner has resolved integration topology as merge commit / no-ff. Product/package/archive/profile/CLI identity remains outside this workflow.
@@ -99,4 +99,4 @@
 
 | Segment | Branch | Base | Checkpoint Type | Commit | Remote / Target | Recorded At | Reason | Resume Branch / Action |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| 1 | `codex/2026-08-09-repository-rename-reconciliation` | `main@e1dedd688707d84f5e7a26c7c7532f74a9860a94` | active | `pending` | local / PR pending | `2026-08-09T19:49:54+08:00` | Execute the authorized #150 reconciliation as one review and rollback unit. | Continue `GOV007-001` on this branch. |
+| 1 | `codex/2026-08-09-repository-rename-reconciliation` | `main@e1dedd688707d84f5e7a26c7c7532f74a9860a94` | active | `pending` | local / PR pending | `2026-08-09T19:49:54+08:00` | Execute the authorized #150 reconciliation as one review and rollback unit. | Continue `GOV007-003` on this branch. |

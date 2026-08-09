@@ -9,6 +9,7 @@ This index owns the file and directory catalog for `.dev/`. The `.dev/README.MD`
 | `README.MD` | Purpose, scope, and usage of `.dev/`. |
 | `INDEX.md` | File and directory catalog for `.dev/`. |
 | `ARCHITECTURE.md` | Framework repository architecture and context model. |
+| `REPOSITORY-RENAME-COMPATIBILITY.md` | Source-repository rename migration risks, compatibility limits, and operational read-back guidance. |
 | `TEAM-GIT-FLOW-RULES.MD` | Canonical single-trunk branch and merge policy: pull-request-only `main` integration, workflow-mode branches, checkpoint continuation, and default merge commits. |
 
 ## Standards

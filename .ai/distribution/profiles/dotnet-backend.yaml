@@ -54,7 +54,7 @@ component_identity:
   ownership: exactly-one-component-per-distributed-path
 
 package:
-  source_repository: https://github.com/YuChia-Wei/ai-collaboration-prompts-dotnet-backend
+  source_repository: https://github.com/YuChia-Wei/ai-collaboration-framework
   name_template: ai-context-dotnet-backend-v{version}
   formats:
     - zip

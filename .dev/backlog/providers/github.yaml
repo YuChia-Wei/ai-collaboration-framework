@@ -1,6 +1,6 @@
 schema_version: "1.0"
 provider: "github"
-repository: "YuChia-Wei/ai-collaboration-prompts-dotnet-backend"
+repository: "YuChia-Wei/ai-collaboration-framework"
 owner: "YuChia-Wei"
 source:
   backlog_glob: ".dev/backlog/items/*.yaml"

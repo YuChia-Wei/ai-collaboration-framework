@@ -6,9 +6,9 @@
   "task_id": "GOV007-003",
   "workflow_id": "2026-08-09-repository-rename-reconciliation",
   "owner_skill": "ai-context-governance",
-  "status": "pending",
+  "status": "in_progress",
   "created_at": "2026-08-09T19:49:54+08:00",
-  "updated_at": "2026-08-09T19:49:54+08:00",
+  "updated_at": "2026-08-09T20:07:42+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-5.6-sol",
   "reasoning_effort": "max",
@@ -39,8 +39,8 @@
       "Run targeted and repository-level validation."
     ],
     "validation": [],
-    "last_completed_step": "",
-    "next_action": "Wait for the complete occurrence taxonomy and remediation paths from GOV007-001."
+    "last_completed_step": "Received the complete baseline taxonomy from GOV007-001 and the corrected operational/fixture disposition from GOV007-002.",
+    "next_action": "Implement and register the source-only policy, validator, deterministic tests, and package exclusion."
   },
   "results": {
     "summary": "",

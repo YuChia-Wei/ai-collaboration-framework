@@ -6,9 +6,9 @@
   "task_id": "GOV007-002",
   "workflow_id": "2026-08-09-repository-rename-reconciliation",
   "owner_skill": "ai-context-governance",
-  "status": "in_progress",
+  "status": "completed",
   "created_at": "2026-08-09T19:49:54+08:00",
-  "updated_at": "2026-08-09T20:00:43+08:00",
+  "updated_at": "2026-08-09T20:07:42+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-5.6-sol",
   "reasoning_effort": "max",
@@ -18,7 +18,20 @@
   ],
   "scope": {
     "target": "Issue #150 current operational identity, fixture disposition, and compatibility remediation",
-    "files": [],
+    "files": [
+      ".ai/assets/skills/software-development-orchestrator/references/capability-profile.md",
+      ".ai/assets/skills/software-development-orchestrator/references/capability-profile.yaml",
+      ".ai/distribution/profiles/dotnet-backend.yaml",
+      ".ai/scripts/tests/test_ai_context_release_closeout.py",
+      ".dev/INDEX.md",
+      ".dev/REPOSITORY-RENAME-COMPATIBILITY.md",
+      ".dev/backlog/provider-mappings/github-issues.schema.yaml",
+      ".dev/backlog/providers/github.yaml",
+      ".dev/lessons/INDEX.MD",
+      ".dev/lessons/environment/INDEX.MD",
+      ".dev/lessons/environment/LESSON-ENV-001-wsl-non-interactive-dotnet-path.md",
+      ".github/ISSUE_TEMPLATE/config.yml"
+    ],
     "constraints": [
       "Change only occurrences classified as current-operational or explicitly documented public-compatibility/fixture surfaces.",
       "Keep portable capability naming provider-neutral.",
@@ -39,16 +52,40 @@
       "Add the compatibility notice and synchronize owned indexes or projections.",
       "Run targeted structure and reference validation."
     ],
-    "validation": [],
-    "last_completed_step": "Consumed the finalized AIC-001 and AIC-003 boundaries from ASM-20260809-001.",
-    "next_action": "Update the exact current-operational and current-fixture occurrences, then add the source-only compatibility notice."
+    "validation": [
+      "python .ai/scripts/validate-ai-context.py",
+      "python .ai/scripts/validate-source-governance.py",
+      "python .ai/scripts/tests/test_ai_context_release_closeout.py -v",
+      "git diff --check"
+    ],
+    "last_completed_step": "Corrected the eleven current-operational lines and one current fixture, indexed the compatibility notice, and completed targeted validation.",
+    "next_action": "Hand off the complete occurrence taxonomy and retained compatibility boundaries to GOV007-003."
   },
   "results": {
-    "summary": "",
-    "files_changed": [],
-    "tests_run": [],
-    "finding_status": "not-addressed",
-    "residual_risk": "Operational files and current fixture still contain the retired coordinate.",
+    "summary": "All baseline current-operational repository coordinates now use YuChia-Wei/ai-collaboration-framework, the accidental release-closeout fixture was corrected, and the source-only compatibility boundary is indexed.",
+    "files_changed": [
+      ".ai/assets/skills/software-development-orchestrator/references/capability-profile.md",
+      ".ai/assets/skills/software-development-orchestrator/references/capability-profile.yaml",
+      ".ai/distribution/profiles/dotnet-backend.yaml",
+      ".ai/scripts/tests/test_ai_context_release_closeout.py",
+      ".dev/INDEX.md",
+      ".dev/REPOSITORY-RENAME-COMPATIBILITY.md",
+      ".dev/backlog/provider-mappings/github-issues.schema.yaml",
+      ".dev/backlog/providers/github.yaml",
+      ".dev/lessons/INDEX.MD",
+      ".dev/lessons/environment/INDEX.MD",
+      ".dev/lessons/environment/LESSON-ENV-001-wsl-non-interactive-dotnet-path.md",
+      ".github/ISSUE_TEMPLATE/config.yml"
+    ],
+    "tests_run": [
+      "PASSED: python .ai/scripts/validate-ai-context.py",
+      "PASSED: python .ai/scripts/validate-source-governance.py",
+      "BLOCKED-BY-ENVIRONMENT: sandbox execution of python .ai/scripts/tests/test_ai_context_release_closeout.py -v completed 4/6 and hit WinError 5 for two temporary-directory tests",
+      "PASSED: the exact release-closeout command rerun outside the sandbox completed 6/6",
+      "PASSED: git diff --check"
+    ],
+    "finding_status": "addressed",
+    "residual_risk": "The drift validator is owned by GOV007-003; signed-in security-report submission remains owner-readback-required in GOV007-004.",
     "follow_up_needed": true
   }
 }

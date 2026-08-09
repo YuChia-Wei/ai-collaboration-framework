@@ -1,5 +1,5 @@
 schema_version: "1.3"
-profile_id: "ai-collaboration-prompts-dotnet-backend"
+profile_id: "ai-collaboration-framework"
 status: "active"
 allowed_slots: [workflow-orchestration, requirements, specification, problem-framing, architecture, test-design, implementation, local-change, test-execution, review, compliance-validation]
 required_slots: [workflow-orchestration, requirements, specification, problem-framing, architecture, test-design, implementation, local-change, review, compliance-validation]
