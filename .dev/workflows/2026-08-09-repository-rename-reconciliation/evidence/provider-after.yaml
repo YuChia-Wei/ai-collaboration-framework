@@ -3,18 +3,19 @@ receipt_id: "GOV007-PROVIDER-AFTER"
 receipt_type: "repository-rename-provider-after"
 workflow_id: "2026-08-09-repository-rename-reconciliation"
 issue: 150
-status: "pr-verification-in-progress"
+status: "terminal-verified"
 observed_at: "2026-08-09T21:04:07+08:00"
-updated_at: "2026-08-09T21:31:32+08:00"
+updated_at: "2026-08-09T21:39:20+08:00"
 mutation_performed: true
 subject_ref:
-  branch: "codex/2026-08-09-repository-rename-reconciliation"
-  commit: "f7669641fe27545075f143b90e500a7b1ace57e5"
+  branch: "main"
+  commit: "18aeaef2732ecdd4db84fceae8ef9fd0eb9e7005"
   base_branch: "main"
   base_commit: "e1dedd688707d84f5e7a26c7c7532f74a9860a94"
 local_git:
-  head: "f7669641fe27545075f143b90e500a7b1ace57e5"
-  origin_main: "e1dedd688707d84f5e7a26c7c7532f74a9860a94"
+  record_branch: "codex/2026-08-09-repository-rename-reconciliation-closeout"
+  head: "18aeaef2732ecdd4db84fceae8ef9fd0eb9e7005"
+  origin_main: "18aeaef2732ecdd4db84fceae8ef9fd0eb9e7005"
   fetch_url: "https://github.com/YuChia-Wei/ai-collaboration-framework.git"
   push_url: "https://github.com/YuChia-Wei/ai-collaboration-framework.git"
 provider_repository:
@@ -39,7 +40,7 @@ clone_probes:
   https:
     coordinate: "https://github.com/YuChia-Wei/ai-collaboration-framework.git"
     operation: "git ls-remote <coordinate> HEAD"
-    head: "e1dedd688707d84f5e7a26c7c7532f74a9860a94"
+    head: "18aeaef2732ecdd4db84fceae8ef9fd0eb9e7005"
     result: "passed"
   ssh:
     coordinate: "git@github.com:YuChia-Wei/ai-collaboration-framework.git"
@@ -53,9 +54,13 @@ clone_probes:
     note: "This host has no GitHub private key; endpoint identity is verified but credentialed SSH clone usability is not asserted."
 issue_readback:
   number: 150
-  state: "OPEN"
+  state: "CLOSED"
+  state_reason: "COMPLETED"
+  closed_at: "2026-08-09T13:38:08Z"
   title: "[GOV-007] 完成 Repository Rename 後的識別與連結收尾"
   url: "https://github.com/YuChia-Wei/ai-collaboration-framework/issues/150"
+  comments: 1
+  closeout_comment: "https://github.com/YuChia-Wei/ai-collaboration-framework/issues/150#issuecomment-5231804695"
   labels:
     - "kind:enabler"
     - "scope:source-repo"
@@ -69,7 +74,7 @@ project_reconciliation:
   project_item_title: "[GOV] Rename The Repository To ai-collaboration-framework After v0.11.0"
   fields:
     priority: "P1 High"
-    status: "Verification"
+    status: "Done"
     target_release: "v0.12.0"
     owner_review: "Not required"
     published_in: "Not yet published"
@@ -81,6 +86,7 @@ project_reconciliation:
     - "Set Published in to Not yet published with option ID a5bd83e1."
     - "The repository owner set Priority to P1 High online; automation only read it back."
     - "Advanced Status to Verification with option ID 73b96eaf after PR #173 opened."
+    - "Advanced Status to Done with option ID 98236657 after accepted integration."
   result: "passed"
   note: "The Project item's top-level title projection differs from the linked Issue content title. Both use the current repository identity, so no destructive remove-and-readd was performed."
 continuity_readbacks:
@@ -99,14 +105,21 @@ continuity_readbacks:
     url: "https://github.com/YuChia-Wei/ai-collaboration-framework/actions/runs/31298334256"
 delivery_pull_request:
   number: 173
-  state: "OPEN"
-  draft: true
+  state: "MERGED"
+  draft: false
   base: "main"
   base_sha: "e1dedd688707d84f5e7a26c7c7532f74a9860a94"
   head: "codex/2026-08-09-repository-rename-reconciliation"
-  head_sha: "f7669641fe27545075f143b90e500a7b1ace57e5"
+  head_sha: "a6e01dea27f53fdfe3659e119ceb25fe952af25e"
   url: "https://github.com/YuChia-Wei/ai-collaboration-framework/pull/173"
   merge_contract: "GitHub merge commit required; fast-forward, rebase, and squash prohibited"
+  merged_at: "2026-08-09T13:36:23Z"
+  merge_commit: "18aeaef2732ecdd4db84fceae8ef9fd0eb9e7005"
+  merge_commit_parent_count: 2
+  merge_commit_parents:
+    - "e1dedd688707d84f5e7a26c7c7532f74a9860a94"
+    - "a6e01dea27f53fdfe3659e119ceb25fe952af25e"
+  merge_method_result: "passed"
 hosted_verification:
   initial_run:
     database_id: 31315015812
@@ -128,7 +141,27 @@ hosted_verification:
     python_entrypoints_contract: "passed: 4/4 outside sandbox"
     posix_python_entrypoint_launcher: "passed: 5/5 outside sandbox"
     git_diff_check: "passed"
-  fresh_run: "pending-after-push"
+  fresh_runs:
+    portable_ai_context_gates:
+      database_id: 31316137412
+      head: "a6e01dea27f53fdfe3659e119ceb25fe952af25e"
+      conclusion: "success"
+      url: "https://github.com/YuChia-Wei/ai-collaboration-framework/actions/runs/31316137412"
+      jobs:
+        - "Ubuntu prerequisite contract: success"
+        - "Windows prerequisite contract: success"
+        - "Ubuntu PR profile gate: 38 selected / 38 executed / 0 failed / 0 blocked"
+    package_ai_context_candidate:
+      database_id: 31316137415
+      head: "a6e01dea27f53fdfe3659e119ceb25fe952af25e"
+      conclusion: "success"
+      url: "https://github.com/YuChia-Wei/ai-collaboration-framework/actions/runs/31316137415"
+    ai_context_governance:
+      database_id: 31316137431
+      head: "a6e01dea27f53fdfe3659e119ceb25fe952af25e"
+      conclusion: "success"
+      url: "https://github.com/YuChia-Wei/ai-collaboration-framework/actions/runs/31316137431"
+  post_merge_main_runs: "none-triggered"
 release_continuity:
   tag: "v0.11.0"
   url: "https://github.com/YuChia-Wei/ai-collaboration-framework/releases/tag/v0.11.0"
@@ -168,7 +201,7 @@ security_report_probe:
   signed_in_page_result: "owner-readback-required"
   note: "Unauthenticated routing cannot prove that the signed-in private-report form is usable."
 validation_summary:
-  repository_identity: "passed: 1,016 retired-name lines / 171 classified file assignments / 9 active rules at subject commit"
+  repository_identity: "passed: 1,017 retired-name lines / 172 classified file assignments / 9 active rules at integrated subject"
   identity_gwt: "passed: 7/7 outside sandbox"
   aggregate_fail_closed: "passed: 35/35 outside sandbox"
   dependency_contracts: "passed: validator plus 19/19 GWT cases"
@@ -188,8 +221,15 @@ mutation_boundary:
     - "Git history rewrite"
     - "Existing tag, Release, or asset mutation"
     - "Product, package, archive, profile, namespace, or CLI identity change"
-pending_terminal_evidence:
-  - "Fresh hosted checks for the corrected delivery pull request head"
-  - "GitHub merge-method read-back and two-parent merge commit"
-  - "Integrated main, terminal Issue state, and terminal Project state"
-  - "Signed-in security-report form owner read-back"
+  terminal_provider_mutations:
+    - "Added Issue #150 closeout comment 5231804695 after accepted integration."
+    - "Set Project Status to Done while preserving Published in as Not yet published."
+    - "Closed Issue #150 as completed after accepted integration."
+terminal_result: "passed-with-classified-residuals"
+accepted_residuals:
+  - surface: "credentialed SSH clone"
+    outcome: "blocked-by-environment"
+    note: "Endpoint and official host fingerprint match; this host has no GitHub private key."
+  - surface: "signed-in security-report form"
+    outcome: "owner-readback-required"
+    note: "Unauthenticated redirect and login return path passed; no test advisory was submitted."
