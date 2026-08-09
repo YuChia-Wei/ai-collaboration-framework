@@ -9,10 +9,10 @@
 - `base_branch`: `main`
 - `branch_segment`: `1`
 - `status`: `in_progress`
-- `current_phase`: `post-audit`
+- `current_phase`: `integration`
 - `artifact_root`: `.dev/workflows/2026-08-09-governed-lessons-lifecycle`
 - `created_at`: `2026-08-09T13:40:15+08:00`
-- `updated_at`: `2026-08-09T13:55:47+08:00`
+- `updated_at`: `2026-08-09T14:03:21+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md`
 - `template_version`: `1.2.0`
 
@@ -70,16 +70,16 @@
 
 ## Resume Checkpoint
 
-- Last completed action: implemented the lesson contract, environment exemplar, navigation, and source-only validator; focused and repository validators passed.
+- Last completed action: committed and pushed the validated implementation, then opened and read back draft PR [#164](https://github.com/YuChia-Wei/ai-collaboration-prompts-dotnet-backend/pull/164) at head `63fcca72a9df39baf97cf44f0630f7053cfaf500`; GitHub reported it open and mergeable.
 - Current task: `AICG-163-001`
-- Exact next action: review the complete diff, create the implementation commit, then push and open the #163 pull request.
-- Validation already completed: lesson tests 6/6 outside the Codex temp-directory sandbox boundary; AI-context validation with one governed lesson; source-governance validation; workflow-artifact validation; `git diff --check`.
-- Git state: bootstrap commit `26ed9c1abddf734002e9082db6e72b5f2695c517`; implementation changes are uncommitted on the dedicated branch.
-- Branch history and checkpoint handoffs: segment 1 started from `main`; no handoff checkpoint.
-- Blockers or unresolved decisions: hosted pull-request checks and integration state have not yet been observed.
+- Exact next action: push this integration checkpoint, replace PR #164's premature closing keyword with `Refs #163`, mark it ready, wait for the final-head hosted checks, and integrate only if the gate accepts it.
+- Validation already completed: lesson tests 6/6 outside the Codex temp-directory sandbox boundary; AI-context validation with one governed lesson; source-governance validation; workflow-artifact validation; Git commit validation for both existing commits; `git diff --check`.
+- Git state: bootstrap commit `26ed9c1abddf734002e9082db6e72b5f2695c517` and implementation commit `63fcca72a9df39baf97cf44f0630f7053cfaf500` are pushed on the dedicated branch.
+- Branch history and checkpoint handoffs: segment 1 started from `main@29134dcc5eb18945ca901be5a049b36956197142`; PR #164 is the implementation integration gate. A records-only continuation from accepted `main` will own terminal workflow and Issue reconciliation.
+- Blockers or unresolved decisions: hosted pull-request checks, review state, accepted integration, terminal workflow records, and Issue #163 closure remain pending.
 
 ## Branch Lifecycle
 
 | Segment | Branch | Base | Checkpoint Type | Commit | Remote / Target | Recorded At | Reason | Resume Branch / Action |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| 1 | `codex/2026-08-09-governed-lessons-lifecycle` | `main@29134dcc5eb18945ca901be5a049b36956197142` | `none` | `pending` | `local` | `2026-08-09T13:40:15+08:00` | Initial authorized delivery segment. | Continue `AICG-163-001` on this branch. |
+| 1 | `codex/2026-08-09-governed-lessons-lifecycle` | `main@29134dcc5eb18945ca901be5a049b36956197142` | implementation candidate | `63fcca72a9df39baf97cf44f0630f7053cfaf500` | draft PR #164 | `2026-08-09T14:03:21+08:00` | The bounded lesson lifecycle and first exemplar are locally validated and submitted to the required PR gate. | Push this checkpoint, make PR #164 ready, wait for hosted checks, then integrate or repair without closing #163 early. |
