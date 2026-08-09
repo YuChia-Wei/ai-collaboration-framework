@@ -270,6 +270,7 @@ class SyntheticRunnerRepo:
         merged_environment.pop("COMMIT_RANGE", None)
         merged_environment.pop("WORKFLOW_ID", None)
         merged_environment.pop("AI_CONTEXT_PYTHON", None)
+        merged_environment.pop("VIRTUAL_ENV", None)
         if environment:
             merged_environment.update(environment)
         return subprocess.run(
