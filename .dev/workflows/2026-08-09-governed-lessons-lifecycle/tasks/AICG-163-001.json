@@ -1,0 +1,67 @@
+{
+  "template_id": "ai-context-governance-remediation-task",
+  "template_version": "1.1.0",
+  "template_created_at": "2026-07-10T18:22:49+08:00",
+  "template_updated_at": "2026-07-27T09:52:09+08:00",
+  "task_id": "AICG-163-001",
+  "workflow_id": "2026-08-09-governed-lessons-lifecycle",
+  "owner_skill": "ai-context-governance",
+  "status": "in_progress",
+  "created_at": "2026-08-09T13:40:15+08:00",
+  "updated_at": "2026-08-09T13:40:15+08:00",
+  "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
+  "model": "gpt-5.6-sol",
+  "reasoning_effort": "high",
+  "finding_ids": [],
+  "scope": {
+    "target": "GitHub Issue #163 governed lesson knowledge lifecycle",
+    "files": [
+      ".dev/lessons/**",
+      ".dev/INDEX.md",
+      ".ai/scripts/validate-ai-context.py",
+      ".ai/scripts/tests/**lesson**",
+      ".dev/workflows/2026-08-09-governed-lessons-lifecycle/**"
+    ],
+    "constraints": [
+      "Keep lessons evidence-backed, reusable, and non-normative.",
+      "Preserve all historical failed and blocked evidence as truthful.",
+      "Use the environment category for the WSL incident.",
+      "Add only narrow lesson-specific structure and reference validation.",
+      "Integrate only through the pull-request gate bound to Issue #163."
+    ],
+    "non_goals": [
+      "Change missing-dotnet-sdk classification or runner semantics.",
+      "Change environment-readiness policy or schema.",
+      "Add release-runbook requirements or alter release artifacts and history.",
+      "Install or upgrade WSL, .NET, or another runtime.",
+      "Implement Issues #149, #150, or #153."
+    ]
+  },
+  "execution": {
+    "steps": [
+      "Verify Issue, Git, historical, archival, runner, and terminal v0.11 evidence.",
+      "Define the lesson class, boundaries, identity, lifecycle, promotion, and supersession contract.",
+      "Add the environment category and first WSL non-interactive .NET PATH lesson.",
+      "Update lesson-owned and .dev navigation.",
+      "Add and test the narrowest deterministic lesson structure/reference validation.",
+      "Validate, commit, push, create the #163 pull request, and read back gate state."
+    ],
+    "validation": [
+      "python .ai/scripts/tests/test_ai_context_lessons.py -v",
+      "python .ai/scripts/validate-ai-context.py",
+      "python .ai/scripts/validate-workflow-artifacts.py",
+      "python .ai/scripts/validate-git-commits.py --range main..HEAD --workflow-id 2026-08-09-governed-lessons-lifecycle",
+      "git diff --check"
+    ],
+    "last_completed_step": "Created the dedicated branch and workflow artifacts after live Issue and base-state read-back.",
+    "next_action": "Verify source evidence and implement the lesson contract."
+  },
+  "results": {
+    "summary": "",
+    "files_changed": [],
+    "tests_run": [],
+    "finding_status": "not-addressed",
+    "residual_risk": "Validation and pull-request gate are pending.",
+    "follow_up_needed": true
+  }
+}
