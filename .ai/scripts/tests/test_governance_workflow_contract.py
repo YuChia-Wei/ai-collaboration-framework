@@ -50,7 +50,8 @@ GOVERNED_PR_PATHS = {
     ".github/workflows/governance.yml",
     *ROOT_ENTRIES,
 }
-CANONICAL_FAST_PROFILE = "bash .ai/scripts/check-all.sh --profile fast"
+CANONICAL_FAST_PROFILE = "args=(--profile fast)"
+CANONICAL_PROFILE_RUNNER = 'bash .ai/scripts/check-all.sh "${args[@]}"'
 MUTATING_COMMAND = re.compile(
     r"(?:\bgh\s+release\b|\bgit\s+(?:push|commit)\b|"
     r"\bgit\s+tag\s+(?:--(?:annotate|delete)|-[ad])\b|"
@@ -107,6 +108,9 @@ class GovernanceWorkflowContractTests(unittest.TestCase):
     def test_gwt_004_given_governance_workflow_when_checked_then_membership_comes_from_the_canonical_profile(self) -> None:
         command_text = "\n".join(self.commands)
         self.assertIn(CANONICAL_FAST_PROFILE, command_text)
+        self.assertIn(CANONICAL_PROFILE_RUNNER, command_text)
+        self.assertIn("github.event.pull_request.base.sha", command_text)
+        self.assertIn("github.event.pull_request.head.sha", command_text)
         self.assertNotIn("python .ai/scripts/validate-ai-context.py", command_text)
         step_names = {
             step.get("name")

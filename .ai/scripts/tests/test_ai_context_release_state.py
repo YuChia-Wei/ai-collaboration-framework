@@ -164,6 +164,7 @@ def fake_runner(
     tag: bool = True,
     release: dict | None = None,
     workflow: dict | None = None,
+    tagged_data: dict | None = None,
 ):
     def execute(args, cwd, capture_output, text, check):
         if args == ["git", "status", "--porcelain=v1", "--untracked-files=all"]:
@@ -178,7 +179,7 @@ def fake_runner(
             output = BRANCH + "\n"
         elif args[:2] == ["git", "show"]:
             if args[-1].endswith("/release.yaml"):
-                tagged = release_data("validated")
+                tagged = tagged_data or release_data("validated")
                 output = yaml.safe_dump(tagged, sort_keys=False)
             elif args[-1].endswith("/release-notes.md"):
                 output = "# REL-v0.5.0 - Candidate\n\nGoverned notes.\n"
@@ -638,6 +639,77 @@ class AiContextReleaseStateGwtTests(unittest.TestCase):
         data["distribution"]["publication"]["tag_owner"] = "user"
         with self.assertRaisesRegex(STATE.ReleaseStateError, "bounded owner-authorized Terra"):
             STATE.validate_publication_authority("v0.10.0", data["distribution"])
+
+    def test_gwt_025a_given_v011_tag_when_checked_then_only_the_exact_sol_exception_passes(self):
+        data = release_data()
+        data["distribution"]["publication"] = dict(
+            STATE.V011_AGENT_PUBLICATION_AUTHORITY
+        )
+        STATE.validate_publication_authority("v0.11.0", data["distribution"])
+        data["distribution"]["publication"]["automation"] = "github-actions"
+        with self.assertRaisesRegex(STATE.ReleaseStateError, "bounded owner-authorized Sol"):
+            STATE.validate_publication_authority("v0.11.0", data["distribution"])
+
+    def test_gwt_025b_given_immutable_v011_tagged_candidate_when_read_then_only_the_exact_historical_skeleton_passes(self):
+        tagged = release_data()
+        tagged.update(
+            {
+                "release_id": "REL-v0.11.0",
+                "version": "v0.11.0",
+                "status": "candidate",
+                "tag": "v0.11.0",
+                "commit": "pending-exact-candidate",
+            }
+        )
+        tagged["distribution"]["publication"] = dict(
+            STATE.V011_TAGGED_PUBLICATION_AUTHORITY
+        )
+        tagged["validation"]["package_status"] = "deferred-with-owner"
+        self.assertEqual(
+            tagged,
+            STATE.tagged_release_record(
+                Path("."), "v0.11.0", fake_runner(tagged_data=tagged)
+            ),
+        )
+        tagged["commit"] = "different"
+        with self.assertRaisesRegex(STATE.ReleaseStateError, "validated registry skeleton"):
+            STATE.tagged_release_record(
+                Path("."), "v0.11.0", fake_runner(tagged_data=tagged)
+            )
+
+    def test_gwt_025c_given_exact_failed_v011_publication_run_when_checked_then_the_bounded_deviation_passes(self):
+        failed = {
+            "conclusion": "failure",
+            "head_sha": STATE.V011_TAGGED_COMMIT,
+            "event": "push",
+            "path": STATE.PUBLISH_WORKFLOW_PATH,
+        }
+        STATE.assert_hosted_workflow(
+            Path("."),
+            "owner/repo",
+            "v0.11.0",
+            STATE.V011_FAILED_PUBLICATION_RUN,
+            STATE.V011_TAGGED_COMMIT,
+            fake_runner(workflow=failed),
+        )
+        with self.assertRaisesRegex(STATE.ReleaseStateError, "must have succeeded"):
+            STATE.assert_hosted_workflow(
+                Path("."),
+                "owner/repo",
+                "v0.11.0",
+                "1",
+                STATE.V011_TAGGED_COMMIT,
+                fake_runner(workflow=failed),
+            )
+        with self.assertRaisesRegex(STATE.ReleaseStateError, "must have succeeded"):
+            STATE.assert_hosted_workflow(
+                Path("."),
+                "owner/repo",
+                "v0.12.0",
+                STATE.V011_FAILED_PUBLICATION_RUN,
+                STATE.V011_TAGGED_COMMIT,
+                fake_runner(workflow=failed),
+            )
 
     def test_gwt_026_given_v010_online_issue_scope_when_candidate_checked_then_live_open_targeted_issues_are_required(self):
         data = release_data()

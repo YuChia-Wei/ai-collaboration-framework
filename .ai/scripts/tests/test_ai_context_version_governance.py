@@ -295,6 +295,12 @@ class AiContextVersionGovernanceGwtTests(unittest.TestCase):
             VALIDATE.expected_publication("v0.9.0"),
         )
 
+    def test_gwt_011b_given_v011_owner_authorization_when_publication_policy_is_resolved_then_only_the_bounded_sol_exception_is_allowed(self):
+        self.assertEqual(
+            VALIDATE.V011_AGENT_PUBLICATION_AUTHORITY,
+            VALIDATE.expected_publication("v0.11.0"),
+        )
+
     def test_gwt_012_given_governed_candidate_with_drift_when_validated_then_it_fails_closed(
         self,
     ):

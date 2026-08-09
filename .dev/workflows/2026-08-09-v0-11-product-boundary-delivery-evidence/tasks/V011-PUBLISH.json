@@ -1,1 +1,97 @@
-{"template_id":"software-development-orchestrator/development-workflow-task","template_version":"1.5.0","workflow_id":"2026-08-09-v0-11-product-boundary-delivery-evidence","task_id":"V011-PUBLISH","owner_skill":"ai-context-release-closeout","related_plan_id":"development-plan-2026-08-09-v0-11-product-boundary-delivery-evidence","status":"pending","created_at":"2026-08-09T00:44:44+08:00","updated_at":"2026-08-09T00:44:44+08:00","workflow_locator":".dev/workflows/2026-08-09-v0-11-product-boundary-delivery-evidence/workflow.yaml","scope":{"goal":"Create immutable annotated v0.11.0 tag and GitHub Release/assets.","target":"Issues #151 and #152","files":[".dev/releases/v0.11.0/**"],"constraints":["new exact tag only"],"non_goals":["existing tag mutation"]},"execution":{"capability_slot":"workflow-orchestration","approval_contract":{"status":"approved","required_before":"publication","authorization_source":["Owner work package","GitHub Issues #151 and #152"],"pending_decision":""},"implementation_contract":null,"test_execution_contract":null,"role_execution_records":[],"spec_compliance":{"selected":false,"activation_source":[],"expected_outcome":"not-applicable"},"steps":["publish and read back"],"validation":[],"commit_checkpoint":"immutable publication","deferred_items":[]},"results":null}
+{
+  "template_id": "software-development-orchestrator/development-workflow-task",
+  "template_version": "1.5.0",
+  "workflow_id": "2026-08-09-v0-11-product-boundary-delivery-evidence",
+  "task_id": "V011-PUBLISH",
+  "owner_skill": "ai-context-release-closeout",
+  "related_plan_id": "development-plan-2026-08-09-v0-11-product-boundary-delivery-evidence",
+  "status": "completed",
+  "created_at": "2026-08-09T00:44:44+08:00",
+  "updated_at": "2026-08-09T10:10:45+08:00",
+  "workflow_locator": ".dev/workflows/2026-08-09-v0-11-product-boundary-delivery-evidence/workflow.yaml",
+  "template_source": ".ai/assets/skills/software-development-orchestrator/templates/development-workflow-task-template.json",
+  "model": "gpt-5.6-sol",
+  "reasoning_effort": "max",
+  "scope": {
+    "goal": "Create immutable annotated v0.11.0 tag and GitHub Release/assets.",
+    "target": "Issues #151 and #152",
+    "files": [
+      ".dev/releases/v0.11.0/**"
+    ],
+    "constraints": [
+      "new exact tag only"
+    ],
+    "non_goals": [
+      "existing tag mutation"
+    ]
+  },
+  "execution": {
+    "capability_slot": "workflow-orchestration",
+    "approval_contract": {
+      "status": "approved",
+      "required_before": "publication",
+      "authorization_source": [
+        "Owner work package",
+        "GitHub Issues #151 and #152"
+      ],
+      "pending_decision": ""
+    },
+    "implementation_contract": null,
+    "test_execution_contract": null,
+    "role_execution_records": [],
+    "spec_compliance": {
+      "selected": false,
+      "activation_source": [],
+      "expected_outcome": "not-applicable"
+    },
+    "steps": [
+      "publish and read back"
+    ],
+    "validation": [
+      "hosted finalization read-back",
+      "official source-only closeout verify"
+    ],
+    "commit_checkpoint": "immutable publication",
+    "deferred_items": []
+  },
+  "results": {
+    "summary": "The public Release and four assets were accepted under an exact, non-transferable v0.11.0 Sol tag/publication exception. Failed run 31268095541 remains truthfully recorded and no tag or asset was changed.",
+    "files_changed": [
+      ".dev/releases/v0.11.0/release.yaml",
+      ".dev/workflows/2026-08-09-v0-11-product-boundary-delivery-evidence/"
+    ],
+    "approval_evidence": [
+      "Owner v0.11.0 R2 work package",
+      "GitHub Issues #151 and #152"
+    ],
+    "test_execution": [
+      {
+        "command": "python .ai/scripts/validate-ai-context-release-state.py --phase finalization --version v0.11.0 --hosted",
+        "outcome": "passed",
+        "evidence": "exact tag, Release body, assets, and bounded failed-run identity read back"
+      },
+      {
+        "command": "python .ai/scripts/ai_context_release_closeout.py verify --version v0.11.0 --repository YuChia-Wei/ai-collaboration-prompts-dotnet-backend --workflow-run-id 31268095541",
+        "outcome": "passed",
+        "evidence": "source-only closeout verifier"
+      }
+    ],
+    "role_execution_aggregation": [],
+    "spec_compliance": {
+      "outcome": "not-applicable",
+      "coverage_percent": null,
+      "evidence": []
+    },
+    "validation_evidence": [
+      "GitHub Actions run 31268095541 remains failed and is not represented as successful.",
+      "The v0.11.0-only validator exception pins the original tag commit, failed run, Sol authority, parsed tagged YAML, and direct authored Release body.",
+      "Annotated tag b8d766125714cd79006c1c43abd372bb51a59d3a peels to immutable candidate 05199ed0a9ed509ef1696df014fce244f8e7cffa.",
+      "Hosted finalization and official source-only closeout verification passed without online mutation."
+    ],
+    "commits": [
+      "05199ed0a9ed509ef1696df014fce244f8e7cffa"
+    ],
+    "finding_status": "addressed",
+    "follow_up_needed": false
+  }
+}

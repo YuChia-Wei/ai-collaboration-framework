@@ -1,6 +1,6 @@
 schema_version: "1.0"
 release: "v0.11.0"
-checks:
+phases:
   candidate:
     command: "python .ai/scripts/validate-ai-context-release-state.py --phase candidate --version v0.11.0"
     owner_disposition: "deferred-with-owner"

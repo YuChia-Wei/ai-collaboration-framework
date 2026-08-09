@@ -44,6 +44,27 @@ V010_AGENT_PUBLICATION_AUTHORITY = {
     "authorized_actor": "OpenAI Codex Terra",
     "existing_tag_mutation": "forbidden",
 }
+V011_AGENT_PUBLICATION_AUTHORITY = {
+    "tag_owner": "owner-authorized-sol-agent",
+    "trigger": "owner-approved-v0.11.0-agent-tag",
+    "automation": "manual-fast-path",
+    "creates_or_moves_tag": False,
+    "authorization_source": "AI framework v0.11.0 Sol MAX work package and online Issue #152",
+    "authorized_issue": "#152",
+    "authorized_actor": "OpenAI Codex Sol",
+    "existing_tag_mutation": "forbidden",
+}
+V011_TAGGED_PUBLICATION_AUTHORITY = {
+    **V011_AGENT_PUBLICATION_AUTHORITY,
+    # The immutable tagged YAML left #152 unquoted, so YAML parsed it as a comment.
+    "authorization_source": "AI framework v0.11.0 Sol MAX work package and online Issue",
+}
+V011_TAGGED_COMMIT = "05199ed0a9ed509ef1696df014fce244f8e7cffa"
+V011_FAILED_PUBLICATION_RUN = "31268095541"
+V011_PUBLICATION_FAILURE = (
+    "tagged-tree release registry used unsupported candidate status and "
+    "noncanonical publication ownership values"
+)
 PLACEHOLDER_RE = re.compile(r"\{\{.+?\}\}|<[^\n>]+>|\b(?:TODO|TBD|PLACEHOLDER)\b", re.I)
 FORBIDDEN_AUTHORED_RE = re.compile(
     r"ai-context-release-automation:|^## Release provenance\s*$", re.I | re.M
@@ -353,15 +374,21 @@ def validate_online_issue_refs(
 
 
 def validate_publication_authority(version: str, distribution: dict[str, Any]) -> None:
-    """Keep the owner-approved v0.10.0 tag exception exact and non-transferable."""
-    if version != "v0.10.0":
+    """Keep owner-approved tag exceptions exact and non-transferable."""
+    expected = {
+        "v0.10.0": V010_AGENT_PUBLICATION_AUTHORITY,
+        "v0.11.0": V011_AGENT_PUBLICATION_AUTHORITY,
+    }.get(version)
+    if expected is None:
         return
     publication = nested_mapping(
         distribution.get("publication"), "distribution.publication"
     )
-    if publication != V010_AGENT_PUBLICATION_AUTHORITY:
+    if publication != expected:
+        actor = "Terra" if version == "v0.10.0" else "Sol"
         raise ReleaseStateError(
-            "v0.10.0 distribution.publication must equal the bounded owner-authorized Terra tag policy"
+            f"{version} distribution.publication must equal the bounded "
+            f"owner-authorized {actor} tag policy"
         )
 
 
@@ -497,13 +524,30 @@ def tagged_release_record(
         ) from exc
     if not isinstance(data, dict):
         raise ReleaseStateError(f"{version}: tagged release record must be a mapping")
-    if (
+    validated_skeleton = (
         data.get("release_id") != f"REL-{version}"
         or data.get("version") != version
         or data.get("status") != "validated"
         or data.get("tag") is not None
         or data.get("commit") is not None
-    ):
+    )
+    v011_immutable_exception = (
+        version == "v0.11.0"
+        and data.get("release_id") == "REL-v0.11.0"
+        and data.get("version") == "v0.11.0"
+        and data.get("status") == "candidate"
+        and data.get("tag") == "v0.11.0"
+        and data.get("commit") == "pending-exact-candidate"
+        and nested_mapping(data.get("distribution"), "distribution").get(
+            "publication"
+        )
+        == V011_TAGGED_PUBLICATION_AUTHORITY
+        and nested_mapping(data.get("validation"), "validation").get(
+            "package_status"
+        )
+        == "deferred-with-owner"
+    )
+    if validated_skeleton and not v011_immutable_exception:
         raise ReleaseStateError(
             f"{version}: tagged tree must contain the validated registry skeleton"
         )
@@ -517,6 +561,10 @@ def assert_tag(
     runner=subprocess.run,
 ) -> str:
     commit = peel_annotated_tag(root, version, runner)
+    if version == "v0.11.0" and commit != V011_TAGGED_COMMIT:
+        raise ReleaseStateError(
+            "v0.11.0 bounded tag exception is pinned to its original immutable commit"
+        )
     tagged_release_record(root, version, runner)
     if data.get("status") not in {"validated", "published"}:
         raise ReleaseStateError("tag phase requires validated or published release status")
@@ -654,7 +702,7 @@ def assert_hosted_release(root: Path, repository: str, version: str, commit: str
         raise ReleaseStateError("hosted release asset set differs from governed package assets")
 
 
-def assert_hosted_workflow(root: Path, repository: str, run_id: str, commit: str, runner=subprocess.run) -> None:
+def assert_hosted_workflow(root: Path, repository: str, version: str, run_id: str, commit: str, runner=subprocess.run) -> None:
     if not run_id.isdigit():
         raise ReleaseStateError("workflow run ID must be decimal digits")
     raw = run_read_only(root, ["gh", "api", "--method", "GET", f"repos/{repository}/actions/runs/{run_id}"], runner)
@@ -662,13 +710,21 @@ def assert_hosted_workflow(root: Path, repository: str, run_id: str, commit: str
         run = json.loads(raw)
     except json.JSONDecodeError as exc:
         raise ReleaseStateError("hosted workflow API did not return JSON") from exc
-    if (
-        not isinstance(run, dict)
-        or run.get("conclusion") != "success"
-        or run.get("head_sha") != commit
-        or run.get("event") != "push"
-        or run.get("path") != PUBLISH_WORKFLOW_PATH
-    ):
+    exact_identity = (
+        isinstance(run, dict)
+        and run.get("head_sha") == commit
+        and run.get("event") == "push"
+        and run.get("path") == PUBLISH_WORKFLOW_PATH
+    )
+    succeeded = exact_identity and run.get("conclusion") == "success"
+    v011_immutable_exception = (
+        exact_identity
+        and version == "v0.11.0"
+        and commit == V011_TAGGED_COMMIT
+        and run_id == V011_FAILED_PUBLICATION_RUN
+        and run.get("conclusion") == "failure"
+    )
+    if not succeeded and not v011_immutable_exception:
         raise ReleaseStateError("hosted workflow must have succeeded for the annotated tag commit")
 
 
@@ -722,6 +778,14 @@ def validate_published_record(
     if not isinstance(published_run, str) or not published_run.isdigit():
         raise ReleaseStateError(
             "validation.published_run must record the successful workflow run"
+        )
+    if version == "v0.11.0" and (
+        published_run != V011_FAILED_PUBLICATION_RUN
+        or validation.get("published_run_outcome") != "failed"
+        or validation.get("published_run_failure") != V011_PUBLICATION_FAILURE
+    ):
+        raise ReleaseStateError(
+            "v0.11.0 must truthfully record its bounded failed publication run"
         )
     expected_url_suffix = f"/releases/tag/{version}"
     public_url = validation.get("public_release_url")
@@ -783,7 +847,13 @@ def validate(
         if hosted:
             effective_repository = repository or origin_repository(root, runner)
             if phase == "finalization":
-                expected_body = render_published_body(root, version, tagged_commit)
+                expected_body = (
+                    # The bounded manual v0.11.0 fast path published the immutable
+                    # authored notes directly, before renderer provenance was added.
+                    tagged_text(root, version, "release-notes.md", runner).strip()
+                    if version == "v0.11.0" and tagged_commit == V011_TAGGED_COMMIT
+                    else render_published_body(root, version, tagged_commit)
+                )
                 if rendered_body is not None:
                     supplied_body = rendered_body.read_text(encoding="utf-8")
                     if supplied_body.rstrip("\r\n") != expected_body.rstrip("\r\n"):
@@ -818,7 +888,7 @@ def validate(
                     runner,
                 )
             )
-            assert_hosted_workflow(root, effective_repository, effective_run, tagged_commit, runner)
+            assert_hosted_workflow(root, effective_repository, version, effective_run, tagged_commit, runner)
         elif repository or rendered_body or workflow_run_id:
             raise ReleaseStateError("--repository, --rendered-body, and --workflow-run-id require --hosted")
     return {"commit": tagged_commit}

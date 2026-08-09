@@ -57,8 +57,8 @@ EXPECTED_PR_PATHS = {
     },
 }
 EXPECTED_ARTIFACT_ACTIONS = {
-    "governance.yml": [],
-    "portable-gates.yml": [],
+    "governance.yml": ["actions/upload-artifact@v7"],
+    "portable-gates.yml": ["actions/upload-artifact@v7"],
     "package-candidate.yml": ["actions/upload-artifact@v7"],
     "publish-release.yml": [
         "actions/upload-artifact@v7",

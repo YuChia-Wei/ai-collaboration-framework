@@ -2,7 +2,7 @@
 
 ## Status
 
-Candidate release authorized by Issues #151 and #152.
+Published on the immutable annotated `v0.11.0` tag under Issues #151 and #152.
 
 ## Highlights
 
@@ -19,7 +19,7 @@ This is a breaking pre-1.0 framework release. Automated governed upgrade is supp
 
 ## Validation Disclosure
 
-The owner explicitly directed this delivery not to execute validation procedures. No unexecuted check is reported as passed; publication identity is established by exact Git and GitHub provider read-back.
+The original fast-path publication deferred validation. A later source-only closeout rerun passed focused release tests, registry and workflow validators, Windows and WSL closeout profiles, the Windows PR profile, hosted finalization read-back, and the official closeout verifier. The original publication run remains truthfully recorded as failed, and no new hosted PR run or full release-profile fixture matrix is claimed.
 
 ## Included Work
 

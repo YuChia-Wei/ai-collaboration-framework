@@ -37,6 +37,16 @@ V010_AGENT_PUBLICATION_AUTHORITY = {
     "authorized_actor": "OpenAI Codex Terra",
     "existing_tag_mutation": "forbidden",
 }
+V011_AGENT_PUBLICATION_AUTHORITY = {
+    "tag_owner": "owner-authorized-sol-agent",
+    "trigger": "owner-approved-v0.11.0-agent-tag",
+    "automation": "manual-fast-path",
+    "creates_or_moves_tag": False,
+    "authorization_source": "AI framework v0.11.0 Sol MAX work package and online Issue #152",
+    "authorized_issue": "#152",
+    "authorized_actor": "OpenAI Codex Sol",
+    "existing_tag_mutation": "forbidden",
+}
 
 
 def load_mapping(path: Path, errors: list[str]) -> dict | None:
@@ -55,6 +65,8 @@ def expected_publication(version: str) -> dict:
     """Return the only allowed tag authority for one release version."""
     if version == "v0.10.0":
         return V010_AGENT_PUBLICATION_AUTHORITY
+    if version == "v0.11.0":
+        return V011_AGENT_PUBLICATION_AUTHORITY
     return {
         "tag_owner": "user",
         "trigger": "user-created-tag",
@@ -149,9 +161,10 @@ def validate_distribution(
         errors.append(f"{path}: distribution.publication must be a mapping")
     else:
         expected = expected_publication(version)
-        if version == "v0.10.0" and publication != expected:
+        if version in {"v0.10.0", "v0.11.0"} and publication != expected:
+            actor = "Terra" if version == "v0.10.0" else "Sol"
             errors.append(
-                f"{path}: distribution.publication must equal the bounded v0.10.0 owner-authorized Terra policy"
+                f"{path}: distribution.publication must equal the bounded {version} owner-authorized {actor} policy"
             )
         for field, value in expected.items():
             if publication.get(field) != value:

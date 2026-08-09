@@ -1,1 +1,114 @@
-{"template_id":"software-development-orchestrator/development-workflow-task","template_version":"1.5.0","workflow_id":"2026-08-09-v0-11-product-boundary-delivery-evidence","task_id":"V011-CLOSEOUT","owner_skill":"ai-context-release-closeout","related_plan_id":"development-plan-2026-08-09-v0-11-product-boundary-delivery-evidence","status":"pending","created_at":"2026-08-09T00:44:44+08:00","updated_at":"2026-08-09T00:44:44+08:00","workflow_locator":".dev/workflows/2026-08-09-v0-11-product-boundary-delivery-evidence/workflow.yaml","scope":{"goal":"Converge terminal source/provider/Issue/workflow state without rebuilding package bytes.","target":"Issues #148 and #151","files":[".dev/releases/v0.11.0/**",".dev/workflows/2026-08-09-v0-11-product-boundary-delivery-evidence/**"],"constraints":["records only"],"non_goals":["package rebuild"]},"execution":{"capability_slot":"workflow-orchestration","approval_contract":{"status":"approved","required_before":"closeout","authorization_source":["Owner work package","GitHub Issues #148 and #151"],"pending_decision":""},"implementation_contract":null,"test_execution_contract":null,"role_execution_records":[],"spec_compliance":{"selected":false,"activation_source":[],"expected_outcome":"not-applicable"},"steps":["read back and close"],"validation":[],"commit_checkpoint":"terminal records commit","deferred_items":["#149","#150","#153"]},"results":null}
+{
+  "template_id": "software-development-orchestrator/development-workflow-task",
+  "template_version": "1.5.0",
+  "workflow_id": "2026-08-09-v0-11-product-boundary-delivery-evidence",
+  "task_id": "V011-CLOSEOUT",
+  "owner_skill": "ai-context-release-closeout",
+  "related_plan_id": "development-plan-2026-08-09-v0-11-product-boundary-delivery-evidence",
+  "status": "in_progress",
+  "created_at": "2026-08-09T00:44:44+08:00",
+  "updated_at": "2026-08-09T10:10:45+08:00",
+  "workflow_locator": ".dev/workflows/2026-08-09-v0-11-product-boundary-delivery-evidence/workflow.yaml",
+  "template_source": ".ai/assets/skills/software-development-orchestrator/templates/development-workflow-task-template.json",
+  "model": "gpt-5.6-sol",
+  "reasoning_effort": "max",
+  "scope": {
+    "goal": "Converge terminal source/provider/Issue/workflow state without rebuilding package bytes.",
+    "target": "Issues #148 and #151",
+    "files": [
+      ".dev/releases/v0.11.0/**",
+      ".dev/workflows/2026-08-09-v0-11-product-boundary-delivery-evidence/**"
+    ],
+    "constraints": [
+      "records only"
+    ],
+    "non_goals": [
+      "package rebuild"
+    ]
+  },
+  "execution": {
+    "capability_slot": "workflow-orchestration",
+    "approval_contract": {
+      "status": "approved",
+      "required_before": "closeout",
+      "authorization_source": [
+        "Owner work package",
+        "GitHub Issues #148 and #151"
+      ],
+      "pending_decision": ""
+    },
+    "implementation_contract": null,
+    "test_execution_contract": null,
+    "role_execution_records": [],
+    "spec_compliance": {
+      "selected": false,
+      "activation_source": [],
+      "expected_outcome": "not-applicable"
+    },
+    "steps": [
+      "read back and close"
+    ],
+    "validation": [
+      "focused release and workflow tests",
+      "Windows PR and closeout profiles",
+      "WSL closeout profile",
+      "hosted finalization and official source-only closeout verify"
+    ],
+    "commit_checkpoint": "terminal records commit",
+    "deferred_items": [
+      "#149",
+      "#150",
+      "#153"
+    ]
+  },
+  "results": {
+    "summary": "Local source-only closeout validation passed under the exact v0.11.0 exception. Terminal Issue/workflow convergence remains active because #148 and #151 are open and this continuation is not authorized to mutate online Issues, open a PR, or push.",
+    "files_changed": [
+      ".dev/releases/v0.11.0/release.yaml",
+      ".dev/workflows/2026-08-09-v0-11-product-boundary-delivery-evidence/"
+    ],
+    "approval_evidence": [
+      "Owner v0.11.0 R2 work package",
+      "GitHub Issues #151 and #152"
+    ],
+    "test_execution": [
+      {
+        "command": "bash .ai/scripts/check-all.sh --profile closeout",
+        "outcome": "passed",
+        "evidence": "Windows Git Bash and WSL each selected=1, executed=1, failed=0, blocked=0"
+      },
+      {
+        "command": "bash .ai/scripts/check-all.sh --profile pr",
+        "outcome": "passed",
+        "evidence": "Windows Git Bash selected=37, executed=37, failed=0, blocked=0"
+      },
+      {
+        "command": "python .ai/scripts/tests/test_ai_context_release_state.py and test_ai_context_version_governance.py",
+        "outcome": "passed",
+        "evidence": "50 focused tests"
+      },
+      {
+        "command": "WSL focused Python entrypoint contract",
+        "outcome": "blocked-by-environment",
+        "evidence": "local WSL over NTFS exceeded 184-second process timeout; broader WSL closeout profile passed"
+      }
+    ],
+    "role_execution_aggregation": [],
+    "spec_compliance": {
+      "outcome": "not-applicable",
+      "coverage_percent": null,
+      "evidence": []
+    },
+    "validation_evidence": [
+      "Workflow artifact and release registry validators passed.",
+      "Hosted finalization and official source-only closeout verification passed.",
+      "PR #154 hosted failures map to metadata and workflow-contract drift now passing locally, but no new hosted run was created.",
+      "Issues #148 and #151 remain open by the current explicit online-mutation boundary."
+    ],
+    "commits": [
+      "05199ed0a9ed509ef1696df014fce244f8e7cffa"
+    ],
+    "finding_status": "open",
+    "follow_up_needed": true
+  }
+}
