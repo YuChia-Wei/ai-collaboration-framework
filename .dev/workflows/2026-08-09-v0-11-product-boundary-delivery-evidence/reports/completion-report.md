@@ -1,6 +1,6 @@
 # v0.11.0 Completion Report
 
-> Current status: local source-only closeout is validated, but this remains a partial delivery report rather than a terminal completion claim. Hosted publication run `31268095541` remains failed, no fresh hosted run was created, and online Issues #148 and #151 remain open.
+> Current status: local source-only closeout is validated, but this remains a partial delivery report rather than a terminal completion claim. Hosted publication run `31268095541` remains truthfully failed. The owner-pushed `main` is `64c2ce3549fc22155f8695f370ac9f3a80fdf187`; a continuation PR is obtaining fresh hosted evidence, the remaining mechanical validation runs in an independent Luna/high task, and online Issues #148 and #151 remain open pending those results.
 
 ## Release Identity
 
@@ -74,14 +74,15 @@ The existing validation JSONL/summary boundary is used. Backend/export status is
 | closeout profile | WSL | 1 | 1 | 0 | 0 | 0 | 0 | 29s | selected=1, failed=0 |
 | focused entrypoint case | WSL over NTFS | 1 | 0 | 0 | 0 | 1 | 0 | 184s | process timeout; not passed |
 | hosted finalization + official closeout | Git/GitHub read-only | 2 | 2 | 0 | 0 | 0 | 0 | < 6s | exact tag/Release/assets/deviation read-back |
-| new hosted PR run | GitHub Actions | 0 | 0 | 0 | 1 | 0 | 0 | unavailable | not executed by owner boundary |
+| new hosted PR run | GitHub Actions | 0 | 0 | 0 | 1 | 0 | 0 | pending | continuation PR pending provider result |
+| full release, v0.10.0 upgrade, changed-path matrix | independent Luna/high task | 0 | 0 | 0 | 0 | 0 | 0 | pending | independent task reports only failure, completion, or must-know state |
 
 ## Before / After
 
 | Metric | v0.10 Baseline | v0.11 Result | Evidence Quality |
 |---|---:|---:|---|
 | package schema | 2.1.0 actual | 2.1.0 | source/provider receipt |
-| terminal projection | stale fields | locally reconciled; online Issues still open | exact source/provider read-back |
+| terminal projection | stale fields | owner-pushed main confirmed; hosted/mechanical/Issue closeout pending | exact source/provider read-back |
 | changed-path/evidence contracts | partial/proxy | implemented | PR profile passed; required fixture matrix not fully evidenced |
 
 ## Workflow Cost
@@ -119,7 +120,7 @@ Unclassified time remains unknown.
 
 ## Package And Upgrade
 
-Four immutable assets exist from the candidate tree. ZIP digest is `cd7010f65941cccfa2151ded2e0d7b3ef27f7a9d0bb3c5772a5b5c9855a0a10c`; tar digest is `087810cd444d5c3aff9311079a0051020e0d03784803ebcc677e906bd4602404`. This continuation did not rebuild them and did not execute the full release-profile clean-install, deterministic-parity, or v0.10→v0.11 upgrade fixture matrix.
+Four immutable assets exist from the candidate tree. ZIP digest is `cd7010f65941cccfa2151ded2e0d7b3ef27f7a9d0bb3c5772a5b5c9855a0a10c`; tar digest is `087810cd444d5c3aff9311079a0051020e0d03784803ebcc677e906bd4602404`. This records-only continuation does not rebuild them. The full release-profile, v0.10.0-to-v0.11.0 upgrade, and changed-path fixture matrix are executing independently and are not yet claimed as passed.
 
 ## Release Publication
 
@@ -127,15 +128,15 @@ The public non-draft, non-prerelease Release contains the governed ZIP, tar.gz, 
 
 ## Closeout
 
-Canonical implementation work and the public Release exist, and local source-only closeout validation now passes. Terminal closeout remains in progress because Issues #148 and #151 are open and this continuation explicitly performs no online Issue mutation, PR creation, push, or fresh hosted run. This records-only correction does not rebuild or mutate package bytes.
+Canonical implementation work and the public Release exist, local source-only closeout validation passes, and the owner-pushed main state is confirmed. Terminal closeout remains in progress until the continuation PR supplies fresh hosted evidence, the independent mechanical result is accepted, and Issues #148/#151 are reconciled. This records-only correction does not rebuild or mutate package bytes.
 
 ## Deviations
 
-The original fast path deferred validation and produced an immutable tagged registry that did not match the then-current validator. The later owner instruction accepts only that exact v0.11.0 Sol tag/publication history and authorizes local validation plus fast-forward integration, while still forbidding online Issue mutation, PR creation, and push in this continuation.
+The original fast path deferred validation and produced an immutable tagged registry that did not match the then-current validator. The later owner instruction accepts only that exact v0.11.0 Sol tag/publication history, confirms the administrator-reset and pushed main state, and authorizes the remaining records-only PR, hosted validation, and online closeout. This exception does not transfer to future tag creation.
 
 ## Remaining Risks
 
-The local PR and closeout surfaces now pass, but r2's full completion definition is not yet proven: no fresh hosted Ubuntu run exists; the full release profile, v0.10→v0.11 upgrade fixture, changed-path fixture matrix, and new durable hosted CI evidence were not executed here; and #148/#151 are not terminal. The WSL focused entrypoint case also timed out locally even though the WSL closeout profile passed.
+The local PR and closeout surfaces pass, but r2's full completion definition is not yet proven: the fresh hosted Ubuntu result and independent full release, v0.10.0-to-v0.11.0 upgrade, and changed-path fixture evidence are pending; #148/#151 are not terminal. The earlier WSL focused entrypoint case timed out locally even though the broader WSL closeout profile passed.
 
 ## Deferred Issues
 
@@ -149,4 +150,4 @@ Do not begin #150 until #148/#151 reach a terminal source/provider state. Evalua
 
 ## Exact Next Action
 
-After this local fast-forward, decide the future tag-authority rule, then separately authorize a pushed branch/hosted rerun and online #148/#151 closeout if full r2 terminal completion is still required. Do not move, delete, or recreate `v0.11.0`.
+Open the records-only continuation PR and read back its hosted checks. After the independent Luna/high task reports, record the exact mechanical outcomes, merge the same PR only when all required evidence is acceptable, then reconcile and close #148/#151 and the workflow. Do not move, delete, or recreate `v0.11.0`.

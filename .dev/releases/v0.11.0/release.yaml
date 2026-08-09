@@ -11,7 +11,7 @@ tag_object: b8d766125714cd79006c1c43abd372bb51a59d3a
 tagged_at: '2026-08-09T00:54:18+08:00'
 recorded_at: '2026-08-09T00:59:43+08:00'
 created_at: '2026-08-09T00:44:44+08:00'
-updated_at: '2026-08-09T10:10:45+08:00'
+updated_at: '2026-08-09T11:06:58+08:00'
 planning:
   github_issue_refs:
   - '#96'
@@ -74,13 +74,13 @@ distribution:
     authorized_actor: OpenAI Codex Sol
     existing_tag_mutation: forbidden
 validation:
-  evidence: 'The original fast-path publication deferred validation. The later source-only closeout rerun passed focused tests, registry/workflow validators, Windows and WSL closeout profiles, the Windows PR profile, hosted finalization read-back, and the official closeout verifier. No new hosted PR run or full release-profile fixture matrix is represented as passed.'
+  evidence: 'The original fast-path publication deferred validation. The later source-only closeout rerun passed focused tests, registry/workflow validators, Windows and WSL closeout profiles, the Windows PR profile, hosted finalization read-back, and the official closeout verifier. The owner-pushed main is confirmed at 64c2ce3549fc22155f8695f370ac9f3a80fdf187. A continuation PR and independent full mechanical validation are in progress; neither is represented as passed before provider read-back.'
   workflow_id: 2026-08-09-v0-11-product-boundary-delivery-evidence
   related_workflows:
   - 2026-08-07-v0-10-validation-cost-and-release-flow
   related_assessments: []
   package_status: deferred-with-owner
-  post_merge_status: local-fast-forward-pending
+  post_merge_status: remote-main-confirmed
   published_run: '31268095541'
   published_run_url: https://github.com/YuChia-Wei/ai-collaboration-prompts-dotnet-backend/actions/runs/31268095541
   published_run_outcome: failed
@@ -95,7 +95,7 @@ validation:
     wsl_closeout_profile: passed-1-of-1
     hosted_finalization: passed-read-only
     official_source_closeout: passed
-    hosted_pr_rerun: not-executed-owner-boundary
+    hosted_pr_rerun: pending-continuation-pr
 release_provider_receipt:
   release_id: RE_kwDOSBe2Hc4V49W9
   published_at: '2026-08-08T16:54:24Z'
