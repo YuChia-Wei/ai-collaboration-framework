@@ -974,7 +974,8 @@ run_source_repository_dotnet_framework_tests() {
 }
 
 run_source_repository_release_checks() {
-    if ! check_is_selected "AI Context Version Governance Fail-Closed Tests"; then
+    if ! check_is_selected "AI Context Version Governance Fail-Closed Tests" &&
+        ! check_is_selected "AI Context Packaging GWT Tests"; then
         return
     fi
     if ! source_release_context_available; then
