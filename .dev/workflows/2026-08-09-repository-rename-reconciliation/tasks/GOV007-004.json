@@ -8,7 +8,7 @@
   "owner_skill": "ai-context-governance",
   "status": "in_progress",
   "created_at": "2026-08-09T19:49:54+08:00",
-  "updated_at": "2026-08-09T20:51:37+08:00",
+  "updated_at": "2026-08-09T21:04:07+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-5.6-sol",
   "reasoning_effort": "max",
@@ -42,16 +42,40 @@
       "Create compliant commits, push, and open the Issue #150 pull request.",
       "Read back hosted checks, PR state, main integration, Issue state, Project state, and terminal provider surfaces."
     ],
-    "validation": [],
-    "last_completed_step": "Received completed operational remediation and fail-closed validator evidence from GOV007-002 and GOV007-003; owner set the online Project Priority to P1 High.",
-    "next_action": "Read back Priority and all selected provider surfaces, then create provider-after evidence and ASM-20260809-002."
+    "validation": [
+      "python .ai/scripts/validate-assessment-artifacts.py",
+      "python .ai/scripts/validate-repository-identity.py",
+      "python .ai/scripts/validate-ai-context.py",
+      "git diff --check",
+      "gh provider and Project read-back outside the sandbox",
+      "HTTPS, SSH endpoint, redirect, security-route, and release-download probes outside the sandbox"
+    ],
+    "last_completed_step": "Created and validated ASM-20260809-002, reconciled Project fields including owner-selected P1 High, and captured the pre-PR provider-after receipt and remediation report.",
+    "next_action": "Commit and push the verified pre-PR evidence, open the Issue #150 pull request, and execute fresh hosted checks."
   },
   "results": {
-    "summary": "",
-    "files_changed": [],
-    "tests_run": [],
-    "finding_status": "not-addressed",
-    "residual_risk": "Provider after-state and independent verification are pending.",
+    "summary": "Baseline findings are independently verified and pre-PR provider state is reconciled; fresh hosted, merge-commit, and terminal work-item evidence remain pending.",
+    "files_changed": [
+      ".dev/assessments/ASM-20260809-002/assessment.yaml",
+      ".dev/assessments/ASM-20260809-002/report.md",
+      ".dev/assessments/INDEX.MD",
+      ".dev/workflows/2026-08-09-repository-rename-reconciliation/evidence/provider-after.yaml",
+      ".dev/workflows/2026-08-09-repository-rename-reconciliation/reports/remediation-report.md",
+      ".dev/workflows/2026-08-09-repository-rename-reconciliation/workflow.yaml",
+      ".dev/workflows/2026-08-09-repository-rename-reconciliation/workflow-plan.md",
+      ".dev/workflows/2026-08-09-repository-rename-reconciliation/tasks/GOV007-004.json"
+    ],
+    "tests_run": [
+      "PASSED: assessment artifact validation for 39 assessments",
+      "PASSED: repository identity policy at verified subject commit",
+      "PASSED: AI-context validation and git diff check",
+      "PASSED: Project read-back P1 High / In progress / v0.12.0 / Not required / Not yet published",
+      "PASSED: HTTPS clone, repository redirect, security route, Release/assets, and release-download continuity",
+      "BLOCKED-BY-ENVIRONMENT: credentialed SSH clone; official and live host fingerprints match, but this host has no GitHub private key",
+      "OWNER-READBACK-REQUIRED: signed-in security advisory form"
+    ],
+    "finding_status": "addressed",
+    "residual_risk": "Fresh hosted checks, two-parent merge-commit verification, terminal Issue/Project read-back, signed-in security form, and credentialed SSH clone remain outstanding or explicitly owner/environment-bound.",
     "follow_up_needed": true
   }
 }

@@ -1,0 +1,161 @@
+schema_version: "1.0"
+receipt_id: "GOV007-PROVIDER-AFTER"
+receipt_type: "repository-rename-provider-after"
+workflow_id: "2026-08-09-repository-rename-reconciliation"
+issue: 150
+status: "pre-pr-verified"
+observed_at: "2026-08-09T21:04:07+08:00"
+mutation_performed: true
+subject_ref:
+  branch: "codex/2026-08-09-repository-rename-reconciliation"
+  commit: "ee05a0d385d7c5739554f81e8a3767e31e5b7793"
+  base_branch: "main"
+  base_commit: "e1dedd688707d84f5e7a26c7c7532f74a9860a94"
+local_git:
+  head: "ee05a0d385d7c5739554f81e8a3767e31e5b7793"
+  origin_main: "e1dedd688707d84f5e7a26c7c7532f74a9860a94"
+  fetch_url: "https://github.com/YuChia-Wei/ai-collaboration-framework.git"
+  push_url: "https://github.com/YuChia-Wei/ai-collaboration-framework.git"
+provider_repository:
+  id: 1209513501
+  node_id: "R_kgDOSBe2HQ"
+  full_name: "YuChia-Wei/ai-collaboration-framework"
+  html_url: "https://github.com/YuChia-Wei/ai-collaboration-framework"
+  clone_url: "https://github.com/YuChia-Wei/ai-collaboration-framework.git"
+  ssh_url: "git@github.com:YuChia-Wei/ai-collaboration-framework.git"
+  default_branch: "main"
+  archived: false
+  disabled: false
+  merge_commit_allowed: true
+  repository_mutation_performed: false
+redirect_probe:
+  retired_url: "https://github.com/YuChia-Wei/ai-collaboration-prompts-dotnet-backend"
+  retired_url_status: 301
+  retired_url_location: "https://github.com/YuChia-Wei/ai-collaboration-framework"
+  current_url_status: 200
+  result: "passed"
+clone_probes:
+  https:
+    coordinate: "https://github.com/YuChia-Wei/ai-collaboration-framework.git"
+    operation: "git ls-remote <coordinate> HEAD"
+    head: "e1dedd688707d84f5e7a26c7c7532f74a9860a94"
+    result: "passed"
+  ssh:
+    coordinate: "git@github.com:YuChia-Wei/ai-collaboration-framework.git"
+    official_host_key_source: "https://api.github.com/meta"
+    official_fingerprint: "SHA256:+DiY3wvvV6TuJJhbpZisF/zLDA0zPMSvHdkr4UvCOqU"
+    live_fingerprint: "SHA256:+DiY3wvvV6TuJJhbpZisF/zLDA0zPMSvHdkr4UvCOqU"
+    endpoint_identity_result: "passed"
+    authentication_result: "blocked-by-environment"
+    error: "Permission denied (publickey)"
+    persistent_host_or_credential_mutation: false
+    note: "This host has no GitHub private key; endpoint identity is verified but credentialed SSH clone usability is not asserted."
+issue_readback:
+  number: 150
+  state: "OPEN"
+  title: "[GOV-007] 完成 Repository Rename 後的識別與連結收尾"
+  url: "https://github.com/YuChia-Wei/ai-collaboration-framework/issues/150"
+  labels:
+    - "kind:enabler"
+    - "scope:source-repo"
+    - "created-by:codex"
+project_reconciliation:
+  project_number: 3
+  project_id: "PVT_kwHOAwvEG84Bez7w"
+  project_url: "https://github.com/users/YuChia-Wei/projects/3"
+  item_id: "PVTI_lAHOAwvEG84Bez7wzg1x2hY"
+  issue_content_title: "[GOV-007] 完成 Repository Rename 後的識別與連結收尾"
+  project_item_title: "[GOV] Rename The Repository To ai-collaboration-framework After v0.11.0"
+  fields:
+    priority: "P1 High"
+    status: "In progress"
+    target_release: "v0.12.0"
+    owner_review: "Not required"
+    published_in: "Not yet published"
+  mutations:
+    - "Preserved the existing Target release options and added v0.12.0 with option ID 5e9c094d."
+    - "Set Status to In progress with option ID 47fc9ee4."
+    - "Set Target release to v0.12.0 with option ID 5e9c094d."
+    - "Set Owner review to Not required with option ID a25d4725."
+    - "Set Published in to Not yet published with option ID a5bd83e1."
+    - "The repository owner set Priority to P1 High online; automation only read it back."
+  result: "passed"
+  note: "The Project item's top-level title projection differs from the linked Issue content title. Both use the current repository identity, so no destructive remove-and-readd was performed."
+continuity_readbacks:
+  latest_pre_delivery_pull_request:
+    number: 165
+    state: "MERGED"
+    head: "236ef4b50c6eaab828146f4d8829ae9a66f167b3"
+    url: "https://github.com/YuChia-Wei/ai-collaboration-framework/pull/165"
+    merged_at: "2026-08-09T06:12:55Z"
+  latest_pre_delivery_action_run:
+    database_id: 31298334256
+    workflow: "Portable AI Context Gates"
+    head: "236ef4b50c6eaab828146f4d8829ae9a66f167b3"
+    status: "completed"
+    conclusion: "success"
+    url: "https://github.com/YuChia-Wei/ai-collaboration-framework/actions/runs/31298334256"
+release_continuity:
+  tag: "v0.11.0"
+  url: "https://github.com/YuChia-Wei/ai-collaboration-framework/releases/tag/v0.11.0"
+  published_at: "2026-08-08T16:54:24Z"
+  draft: false
+  prerelease: false
+  mutation_performed: false
+  assets:
+    - name: "ai-context-dotnet-backend-v0.11.0.tar.gz"
+      size: 814603
+      digest: "sha256:087810cd444d5c3aff9311079a0051020e0d03784803ebcc677e906bd4602404"
+      url: "https://github.com/YuChia-Wei/ai-collaboration-framework/releases/download/v0.11.0/ai-context-dotnet-backend-v0.11.0.tar.gz"
+    - name: "ai-context-dotnet-backend-v0.11.0.tar.gz.sha256"
+      size: 107
+      digest: "sha256:6fb23dfe7032d7062879c80823c3e9acee36b0ac18a5543bdf3d2960a3b3700c"
+      url: "https://github.com/YuChia-Wei/ai-collaboration-framework/releases/download/v0.11.0/ai-context-dotnet-backend-v0.11.0.tar.gz.sha256"
+    - name: "ai-context-dotnet-backend-v0.11.0.zip"
+      size: 1255029
+      digest: "sha256:cd7010f65941cccfa2151ded2e0d7b3ef27f7a9d0bb3c5772a5b5c9855a0a10c"
+      url: "https://github.com/YuChia-Wei/ai-collaboration-framework/releases/download/v0.11.0/ai-context-dotnet-backend-v0.11.0.zip"
+    - name: "ai-context-dotnet-backend-v0.11.0.zip.sha256"
+      size: 104
+      digest: "sha256:a74ae497c14c6c9241c8414c0907701d4bdd624147cb1fc5f02c7d8c923447b4"
+      url: "https://github.com/YuChia-Wei/ai-collaboration-framework/releases/download/v0.11.0/ai-context-dotnet-backend-v0.11.0.zip.sha256"
+  release_download_probe:
+    asset: "ai-context-dotnet-backend-v0.11.0.zip.sha256"
+    status: 200
+    bytes: 104
+    result: "passed"
+security_report_probe:
+  current_url: "https://github.com/YuChia-Wei/ai-collaboration-framework/security/advisories/new"
+  retired_url_status: 301
+  retired_url_location: "https://github.com/YuChia-Wei/ai-collaboration-framework/security/advisories/new"
+  current_url_unauthenticated_status: 302
+  current_url_unauthenticated_location: "GitHub login with return_to current security advisory URL"
+  routing_result: "passed"
+  signed_in_page_result: "owner-readback-required"
+  note: "Unauthenticated routing cannot prove that the signed-in private-report form is usable."
+validation_summary:
+  repository_identity: "passed: 1,016 retired-name lines / 171 classified file assignments / 9 active rules at subject commit"
+  identity_gwt: "passed: 7/7 outside sandbox"
+  aggregate_fail_closed: "passed: 35/35 outside sandbox"
+  dependency_contracts: "passed: validator plus 19/19 GWT cases"
+  source_python_entrypoints: "passed: 3/3 outside sandbox"
+  focused_source_only_packaging: "passed: 1/1"
+  hosted_equivalent_fast_profile: "passed: 29 selected / 0 failed / 0 blocked"
+  assessment_artifacts: "passed: 39 assessments"
+  ai_context: "passed"
+  git_diff_check: "passed"
+mutation_boundary:
+  performed:
+    - "Added the v0.12.0 Project option while preserving all existing options."
+    - "Reconciled Issue #150 Project fields, except Priority, which the owner set online."
+  prohibited_and_not_performed:
+    - "Repository rename repetition"
+    - "Git history rewrite"
+    - "Existing tag, Release, or asset mutation"
+    - "Product, package, archive, profile, namespace, or CLI identity change"
+pending_terminal_evidence:
+  - "Issue #150 delivery pull request URL and head SHA"
+  - "Fresh hosted checks for the delivery pull request"
+  - "GitHub merge-method read-back and two-parent merge commit"
+  - "Integrated main, terminal Issue state, and terminal Project state"
+  - "Signed-in security-report form owner read-back"
