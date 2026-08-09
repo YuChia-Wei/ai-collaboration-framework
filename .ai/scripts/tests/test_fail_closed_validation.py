@@ -813,6 +813,20 @@ class CheckAllRunnerGwtTests(unittest.TestCase):
                 fixture.bin / "date",
                 'printf "2026-01-01 00:00:00\\n"',
             )
+            for command in (
+                "awk",
+                "cat",
+                "grep",
+                "head",
+                "mkdir",
+                "sed",
+                "sha256sum",
+                "sort",
+            ):
+                fixture._write_stub(
+                    fixture.bin / command,
+                    f'PATH=/usr/bin:/bin exec {command} "$@"',
+                )
             fixture.add_python_stub("python", "GENERIC_PYTHON_STUB_EXIT")
             fixture.add_python_stub("python3", "GENERIC_PYTHON_STUB_EXIT")
             managed = fixture.add_python_stub("managed-python", "MANAGED_PYTHON_STUB_EXIT")
