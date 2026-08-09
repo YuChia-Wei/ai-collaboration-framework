@@ -53,6 +53,16 @@ owns its identity, current lifecycle state, subject revision, and relationships.
 | [`ASM-20260716-001`](ASM-20260716-001/assessment.yaml) | v0.4.0 AI Context Remediation Verification | `ai-context-verification` | `ai-context-auditor` | `final` | `e7ca51a7f03c114d5ce5826a15eeb15338efea76` | `2026-07-16T23:10:20+08:00` | [report](ASM-20260716-001/report.md) |
 | [`ASM-20260715-002`](ASM-20260715-002/assessment.yaml) | v0.4.0 Standards Lineage And Downstream Adoption Reassessment | `ai-context-audit` | `ai-context-auditor` | `final` | `82b88b7287deb7a64e0311fde6b1b53ea0d194b1` | `2026-08-02T21:20:17+08:00` | [report](ASM-20260715-002/report.md) |
 
+## Derived Human-Review Translations
+
+These translations are reading aids. The English final report remains the
+canonical assessment source.
+
+| Assessment | Language | Derived Report |
+| --- | --- | --- |
+| `ASM-20260809-004` | `zh-TW` | [report.zh-TW](ASM-20260809-004/report.zh-TW.md) |
+| `ASM-20260809-003` | `zh-TW` | [report.zh-TW](ASM-20260809-003/report.zh-TW.md) |
+
 ## Superseded Or Withdrawn Assessments
 
 | Assessment | Title | Type | Owner | Status | Subject Commit | Updated | Report |
