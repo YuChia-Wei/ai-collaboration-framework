@@ -1,0 +1,264 @@
+schema_version: "1.0"
+inventory_id: "GOV008-DEV-CONTENT-LIFECYCLE"
+assessment_id: "ASM-20260809-004"
+issue: 171
+status: "final"
+generated_at: "2026-08-09T22:17:10+08:00"
+generator:
+  name: "git-tree-and-distribution-profile-inventory"
+  source_revision: "3a60570d0e290f337f2a212d092c6797670528b4"
+  commands:
+    - "git ls-tree -r -l 3a60570d0e290f337f2a212d092c6797670528b4 -- .dev"
+    - "load .ai/distribution/profiles/dotnet-backend.yaml from the same Git tree and resolve allowlist, exclusions, component overrides, and template mappings with .ai/scripts/ai_context_package.py"
+  byte_basis: "Git blob bytes from git ls-tree; checkout CRLF bytes are not used"
+  scope: "all Git-tracked .dev regular blobs at the pinned source revision"
+  exclusions:
+    - "untracked and ignored local state"
+    - "product source and product test trees outside .dev"
+totals:
+  tracked_files: 1011
+  tracked_bytes: 5810865
+package_projection:
+  profile: ".ai/distribution/profiles/dotnet-backend.yaml"
+  effective_source_files: 118
+  effective_source_bytes: 400870
+  tracked_not_packaged_files: 893
+  tracked_not_packaged_bytes: 5409995
+  explicitly_excluded_files: 864
+  omitted_without_exclusion_files: 29
+  derived_target_files_under_dev: 129
+  note: "The 11 additional .dev target files are mapped portable-governance or public-catalog projections whose canonical sources are under .ai; they are not second .dev source authorities."
+coverage_contract:
+  algorithm: "Assign every tracked .dev blob to exactly one non-overlapping top-level entry below; package counts within each entry are effective source paths after exclusions."
+  complete: true
+  overlap_count: 0
+  tracked_file_sum: 1011
+  tracked_byte_sum: 5810865
+  package_source_file_sum: 118
+  package_source_byte_sum: 400870
+entries:
+  - id: "DEV-INV-001"
+    path: ".dev/adr/**"
+    tracked: { files: 5, bytes: 8527 }
+    packaged_source: { files: 3, bytes: 3144 }
+    owner: "source architecture governance"
+    authority: "README/template/creation guidance are reusable; ADR-001 and INDEX are source decision/history"
+    classifications: ["portable", "source-only", "historical"]
+    retention: "retain all source records"
+    disposition: "package the three authoring assets; keep ADR-001 and INDEX source-only"
+  - id: "DEV-INV-002"
+    path: ".dev/ai-context/**"
+    tracked: { files: 1, bytes: 3101 }
+    packaged_source: { files: 0, bytes: 0 }
+    owner: "current repository effective-state governance"
+    authority: "target-owned effective-state class, represented here by source repository environment policy"
+    classifications: ["target-owned", "source-only"]
+    retention: "retain as current source evidence"
+    disposition: "never copy as downstream truth; require target evidence"
+  - id: "DEV-INV-003"
+    path: ".dev/ARCHITECTURE.md"
+    tracked: { files: 1, bytes: 3542 }
+    packaged_source: { files: 0, bytes: 0 }
+    owner: "source repository architecture entry"
+    authority: "current source navigation, not a downstream target architecture"
+    classifications: ["source-only", "target-template-candidate"]
+    retention: "retain"
+    disposition: "repair active links; target initialization must rebuild architecture truth"
+  - id: "DEV-INV-004"
+    path: ".dev/assessments/**"
+    tracked: { files: 107, bytes: 965141 }
+    packaged_source: { files: 2, bytes: 1780 }
+    owner: "assessment artifact policy and each assessment locator"
+    authority: "39 locator/report evidence sets; 38 final and 1 superseded"
+    classifications: ["portable-governance", "generated-index", "historical-immutable-evidence"]
+    retention: "retain instances byte-stably"
+    disposition: "package README/template only; exclude index and all instances"
+  - id: "DEV-INV-005"
+    path: ".dev/backlog/**"
+    tracked: { files: 76, bytes: 328333 }
+    packaged_source: { files: 1, bytes: 3179 }
+    owner: "source work-management governance; online GitHub Issues are current operational authority"
+    authority: "item YAML retains historical decisions; indexes/roadmap/provider mappings are projections"
+    classifications: ["portable-optional-provider-guidance", "source-only", "generated-projection", "historical"]
+    retention: "retain item and provider evidence; current projections may be regenerated or reconciled"
+    disposition: "package README only; reconcile stale current projections without rewriting evidence"
+  - id: "DEV-INV-006"
+    path: ".dev/domain-language/**"
+    tracked: { files: 4, bytes: 5392 }
+    packaged_source: { files: 4, bytes: 5392 }
+    owner: "portable authoring guidance"
+    authority: "taxonomy and templates; no current target domain facts"
+    classifications: ["portable", "target-template"]
+    retention: "retain"
+    disposition: "package as reusable guidance/templates"
+  - id: "DEV-INV-007"
+    path: ".dev/guides/**"
+    tracked: { files: 63, bytes: 251984 }
+    packaged_source: { files: 62, bytes: 250079 }
+    owner: "human-facing reusable guidance"
+    authority: "guides derive from canonical assets and governance; they do not become semantic owners"
+    classifications: ["portable", "source-only"]
+    retention: "retain"
+    disposition: "package reusable guides; exclude the source-only release-closeout guide"
+  - id: "DEV-INV-008"
+    path: ".dev/INDEX.md"
+    tracked: { files: 1, bytes: 7230 }
+    packaged_source: { files: 0, bytes: 0 }
+    owner: "source repository navigation"
+    authority: "current source catalog"
+    classifications: ["source-only", "generated-projection-candidate"]
+    retention: "retain and keep current"
+    disposition: "exclude from package; target gets target-owned catalog seeds"
+  - id: "DEV-INV-009"
+    path: ".dev/lessons/**"
+    tracked: { files: 5, bytes: 19914 }
+    packaged_source: { files: 0, bytes: 0 }
+    owner: "source lessons lifecycle"
+    authority: "repository-specific operational learning"
+    classifications: ["source-only", "historical"]
+    retention: "retain under governed lesson lifecycle"
+    disposition: "exclude from package unless a future portable lesson contract is approved"
+  - id: "DEV-INV-010"
+    path: ".dev/operations/**"
+    tracked: { files: 7, bytes: 16169 }
+    packaged_source: { files: 6, bytes: 6709 }
+    owner: "operations authoring guidance and source release operation"
+    authority: "document-type guides are reusable; publication runbook is source operation"
+    classifications: ["portable", "source-only"]
+    retention: "retain"
+    disposition: "package guides and runbook README; exclude source publication runbook"
+  - id: "DEV-INV-011"
+    path: ".dev/problem-frames/**"
+    tracked: { files: 8, bytes: 10401 }
+    packaged_source: { files: 7, bytes: 9257 }
+    owner: "portable problem-frame authoring contract"
+    authority: "README/semantics/templates are reusable; INDEX is source catalog"
+    classifications: ["portable", "source-only-projection"]
+    retention: "retain"
+    disposition: "package reusable assets; exclude source INDEX"
+  - id: "DEV-INV-012"
+    path: ".dev/README.MD"
+    tracked: { files: 1, bytes: 1549 }
+    packaged_source: { files: 0, bytes: 0 }
+    owner: "source repository navigation"
+    authority: "current source boundary summary"
+    classifications: ["source-only", "target-template-candidate"]
+    retention: "retain"
+    disposition: "exclude; target receives rewritten seed"
+  - id: "DEV-INV-013"
+    path: ".dev/releases/**"
+    tracked: { files: 51, bytes: 138621 }
+    packaged_source: { files: 0, bytes: 0 }
+    owner: "each version release.yaml and immutable release record"
+    authority: "14 published release records plus discovery guidance"
+    classifications: ["source-only", "historical-immutable-evidence"]
+    retention: "retain published records and evidence byte-stably"
+    disposition: "exclude all release instances and catalogs from target payload"
+  - id: "DEV-INV-014"
+    path: ".dev/REPOSITORY-RENAME-COMPATIBILITY.md"
+    tracked: { files: 1, bytes: 3307 }
+    packaged_source: { files: 0, bytes: 0 }
+    owner: "source repository identity governance"
+    authority: "current operational compatibility notice"
+    classifications: ["source-only", "compatibility"]
+    retention: "retain while redirect compatibility remains relevant"
+    disposition: "exclude from product; classify explicitly in package inventory"
+  - id: "DEV-INV-015"
+    path: ".dev/requirement/**"
+    tracked: { files: 7, bytes: 50065 }
+    packaged_source: { files: 1, bytes: 1796 }
+    owner: "requirement authoring guidance and source requirement history"
+    authority: "REQUIREMENT-GUIDE is reusable; remaining files are source project decisions/history"
+    classifications: ["portable", "source-only", "historical"]
+    retention: "retain"
+    disposition: "package authoring guide only; repair its stale example references"
+  - id: "DEV-INV-016"
+    path: ".dev/specs/**"
+    tracked: { files: 9, bytes: 25233 }
+    packaged_source: { files: 8, bytes: 24282 }
+    owner: "portable specification authoring guidance"
+    authority: "guides/templates are reusable; INDEX is source catalog"
+    classifications: ["portable", "source-only-projection"]
+    retention: "retain"
+    disposition: "package reusable authoring assets; exclude source INDEX"
+  - id: "DEV-INV-017"
+    path: ".dev/standards/**"
+    tracked: { files: 25, bytes: 119365 }
+    packaged_source: { files: 23, bytes: 90841 }
+    owner: "source governance and registered portable policy"
+    authority: "source governance owns classification; portable semantics resolve to .ai shared/profile owners"
+    classifications: ["portable", "source-governance", "transitional-unmigrated"]
+    retention: "retain"
+    disposition: "package 23 selected policies; replace two source-local policies downstream with .ai portable projections"
+  - id: "DEV-INV-018"
+    path: ".dev/TEAM-GIT-FLOW-RULES.MD"
+    tracked: { files: 1, bytes: 8657 }
+    packaged_source: { files: 0, bytes: 0 }
+    owner: "source Git integration governance"
+    authority: "source-local topology and lifecycle policy"
+    classifications: ["source-only", "portable-projection-target"]
+    retention: "retain"
+    disposition: "exclude source bytes; target receives .ai portable policy mapping"
+  - id: "DEV-INV-019"
+    path: ".dev/workflows/**"
+    tracked: { files: 638, bytes: 3844334 }
+    packaged_source: { files: 1, bytes: 4411 }
+    owner: "each workflow locator and owning skill"
+    authority: "68 post-adoption workflows are completed; instances are execution evidence"
+    classifications: ["portable-governance", "generated-index", "historical-immutable-evidence"]
+    retention: "retain completed instances byte-stably"
+    disposition: "package README only; exclude index, handoff checkpoint, and all instances"
+implicit_allowlist_omissions:
+  count: 29
+  risk: "Safe from current package inclusion, but the reason and ownership class are not machine-readable in the distribution profile."
+  groups:
+    - { path: ".dev/REPOSITORY-RENAME-COMPATIBILITY.md", count: 1 }
+    - { path: ".dev/adr/ADR-001-separate-source-config-from-downstream-templates.md", count: 1 }
+    - { path: ".dev/ai-context/environment-policy.yaml", count: 1 }
+    - { path: ".dev/backlog/ROADMAP.md", count: 1 }
+    - { path: ".dev/backlog/plans/**", count: 3 }
+    - { path: ".dev/backlog/provider-mappings/**", count: 13 }
+    - { path: ".dev/backlog/providers/**", count: 2 }
+    - { path: ".dev/lessons/**", count: 5 }
+    - { path: ".dev/operations/runbooks/AI-CONTEXT-RELEASE-PUBLICATION-RUNBOOK.MD", count: 1 }
+    - { path: ".dev/workflows/handoff-checkpoints.yaml", count: 1 }
+candidate_problems:
+  - finding_id: "DEV-001"
+    severity: "HIGH"
+    impact: "Current roadmap, backlog index, and source provider contract disagree with item, release, and live Project state."
+    owner: "ai-context-governance"
+    retention: "Preserve item YAML, provider receipts, workflow evidence, and release records."
+    disposition: "Reconcile current projections and provider state in Issue #175; do not rewrite history."
+  - finding_id: "DEV-002"
+    severity: "MEDIUM"
+    impact: "Active source documents contain seven broken references to four moved canonical standards, and the requirement guide names four absent examples."
+    owner: "ai-context-governance"
+    retention: "Preserve broken links inside immutable assessment/workflow/release evidence."
+    disposition: "Repair active documents only in Issue #175 with DEV-001."
+  - finding_id: "DEV-003"
+    severity: "MEDIUM"
+    impact: "The critical validation profile scans every completed workflow on every run; cost grows with immutable history."
+    owner: "ai-context-governance with software-development-orchestrator validation ownership"
+    retention: "Do not delete, rewrite, or weaken validation of immutable history."
+    disposition: "Use Issue #176 for changed-path routine validation plus scheduled/release full verification; owner decision precedes implementation."
+  - finding_id: "DEV-004"
+    severity: "MEDIUM"
+    impact: "Twenty-nine .dev paths are safely omitted but lack an explicit machine-readable exclusion/disposition."
+    owner: "Issue #172 package inventory, coordinated with ai-context-governance"
+    retention: "Retain source-only and target-owned records."
+    disposition: "Reconcile in #172 before deciding whether a new disposition-schema Issue is required."
+identity_handoff_to_166:
+  current:
+    repository: "YuChia-Wei/ai-collaboration-framework"
+    technology_profile: "dotnet-backend"
+    package_template: "ai-context-dotnet-backend-v{version}"
+    published_package_example: "ai-context-dotnet-backend-v0.11.0"
+  compatibility:
+    - "Retired repository coordinates in immutable history and generated provider receipts"
+  rule: "Repository, product, package/archive, technology profile, namespace, and CLI identities remain separate decisions."
+handoff_to_172:
+  effective_dev_sources: 118
+  derived_dev_targets: 129
+  explicit_exclusions: 864
+  implicit_omissions_requiring_classification: 29
+  immutable_rule: "Do not change existing v0.11.0 archive bytes, names, checksums, or historical release records."

@@ -1,0 +1,47 @@
+schema_version: "1.0"
+assessment_id: "ASM-20260809-004"
+commit_search_id: "ASM-20260809-004"
+assessment_type: "ai-context-audit"
+title: ".dev Governance Content And Lifecycle Inventory"
+owner_skill: "ai-context-auditor"
+status: "final"
+report: "report.md"
+artifact_branch: "codex/assessment/asm-20260809-003"
+base_branch: "main"
+created_at: "2026-08-09T22:06:38+08:00"
+updated_at: "2026-08-09T22:17:10+08:00"
+template_source: ".dev/assessments/templates/assessment-locator-template.yaml"
+template_version: "1.0.0"
+report_template_source: ".ai/assets/skills/ai-context-auditor/templates/ai-context-audit-report-template.md"
+report_template_version: "2.1.0"
+subject_ref:
+  repository: "YuChia-Wei/ai-collaboration-framework"
+  branch: "main"
+  commit: "3a60570d0e290f337f2a212d092c6797670528b4"
+scope:
+  included:
+    - ".dev/** governance, reusable guidance, target seeds, source truth, projections, and immutable history"
+    - "Git-tracked path and Git-blob-size coverage"
+    - "Current distribution-profile disposition for every .dev path"
+    - "GitHub Issue #171 and Project #3 current lifecycle fields"
+    - "Identity and package handoff inputs for Issues #166 and #172"
+  excluded:
+    - "src/** and product implementation trees"
+    - "product tests and test implementation review"
+    - "bulk cleanup, history rewriting, lifecycle-policy changes, and package-byte changes"
+    - "full archive and published-asset read-back owned by Issue #172"
+relations:
+  supersedes: []
+  superseded_by: []
+  related_assessments:
+    - "ASM-20260809-001"
+    - "ASM-20260809-002"
+  workflow_refs: []
+  backlog_refs: []
+  adr_refs: []
+resume:
+  last_completed_action: "Inventoried all 1,011 tracked .dev blobs, classified package disposition, and recorded lifecycle and projection findings."
+  next_action: "Route current projection/reference repair through Issue #175, immutable-history validation policy through Issue #176, and package-disposition gaps through Issue #172."
+  blockers:
+    - "Issue #171 Project Priority remains owner-unselected; P1 High is recommended."
+    - "Routine versus full immutable-history validation cadence requires a future owner decision before implementation."

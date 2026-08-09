@@ -1,0 +1,47 @@
+schema_version: "1.0"
+assessment_id: "ASM-20260809-003"
+commit_search_id: "ASM-20260809-003"
+assessment_type: "ai-context-audit"
+title: ".ai Product Source, Ownership, And Portability Inventory"
+owner_skill: "ai-context-auditor"
+status: "final"
+report: "report.md"
+artifact_branch: "codex/assessment/asm-20260809-003"
+base_branch: "main"
+created_at: "2026-08-09T22:06:38+08:00"
+updated_at: "2026-08-09T22:06:38+08:00"
+template_source: ".dev/assessments/templates/assessment-locator-template.yaml"
+template_version: "1.0.0"
+report_template_source: ".ai/assets/skills/ai-context-auditor/templates/ai-context-audit-report-template.md"
+report_template_version: "2.1.0"
+subject_ref:
+  repository: "YuChia-Wei/ai-collaboration-framework"
+  branch: "main"
+  commit: "3a60570d0e290f337f2a212d092c6797670528b4"
+scope:
+  included:
+    - ".ai/** canonical assets, entry documents, distribution controls, evaluation evidence, and scripts"
+    - ".agents/**, .claude/**, and .codex/** projection and adapter relationships"
+    - "Git-tracked path and Git-blob-size coverage"
+    - "Current distribution-profile disposition and target projection"
+    - "Identity and package handoff inputs for Issues #166 and #172"
+  excluded:
+    - "src/** and product implementation trees"
+    - "product tests outside .ai/scripts/tests/**"
+    - "material moves, deletions, semantic changes, and package-byte changes"
+    - "full archive and published-asset read-back owned by Issue #172"
+relations:
+  supersedes: []
+  superseded_by: []
+  related_assessments:
+    - "ASM-20260809-001"
+    - "ASM-20260809-002"
+  workflow_refs: []
+  backlog_refs: []
+  adr_refs: []
+resume:
+  last_completed_action: "Inventoried all 595 scoped Git blobs, verified explicit distribution disposition, and recorded identity and package handoffs."
+  next_action: "Feed product and compatibility identities to Issue #166 and exact source dispositions plus validation limitations to Issue #172."
+  blockers:
+    - "Issue #170 Project Priority remains owner-unselected; P1 High is recommended."
+    - "Archive-level current package verification remains owned by Issue #172."

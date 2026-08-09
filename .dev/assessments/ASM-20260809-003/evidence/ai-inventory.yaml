@@ -1,0 +1,271 @@
+schema_version: "1.0"
+inventory_id: "CTX006-AI-PRODUCT-BOUNDARY"
+assessment_id: "ASM-20260809-003"
+issue: 170
+status: "final"
+generated_at: "2026-08-09T22:06:38+08:00"
+generator:
+  name: "git-tree-and-distribution-profile-inventory"
+  source_revision: "3a60570d0e290f337f2a212d092c6797670528b4"
+  commands:
+    - "git ls-tree -r -l 3a60570d0e290f337f2a212d092c6797670528b4 -- .ai .agents .claude .codex"
+    - "load .ai/distribution/profiles/dotnet-backend.yaml from the same Git tree and resolve allowlist, exclusions, component overrides, and template mappings with .ai/scripts/ai_context_package.py"
+  byte_basis: "Git blob bytes from git ls-tree; checkout CRLF bytes are not used"
+  scope: "all Git-tracked regular blobs under .ai, .agents, .claude, and .codex"
+  exclusions:
+    - "untracked and ignored local runtime state"
+    - "Copilot adapter parity beyond the requested .ai/.agents/.claude/.codex coverage; it was cross-checked separately"
+totals:
+  scoped_files: 595
+  scoped_bytes: 3026669
+  effective_package_source_files: 522
+  effective_package_source_bytes: 2457698
+  excluded_source_files: 73
+  excluded_source_bytes: 568971
+package_projection:
+  profile: ".ai/distribution/profiles/dotnet-backend.yaml"
+  whole_repository_unique_sources: 643
+  whole_repository_target_paths: 659
+  whole_repository_target_bytes: 2889104
+  whole_repository_payload_digest: "9d559dec5d36975305e53bb7ee71403a1e711f76e59a8bf1c63352f86edfd6c1"
+  scoped_unique_sources: 522
+  scoped_target_paths: 538
+  scoped_duplicate_projections: 16
+  duplicate_projection_types:
+    - { count: 3, kind: "portable-governance", target_root: ".dev" }
+    - { count: 13, kind: "target-template-seed", target_root: "root-and-.dev-catalogs" }
+  target_collisions: 0
+  exclusion_overlaps: 0
+coverage_contract:
+  algorithm: "Assign every scoped Git blob to exactly one non-overlapping path entry below, then reconcile included and excluded counts against the profile."
+  complete: true
+  overlap_count: 0
+  scoped_file_sum: 595
+  scoped_byte_sum: 3026669
+  package_source_file_sum: 522
+  package_source_byte_sum: 2457698
+entries:
+  - id: "AIA-INV-001"
+    path: ".ai/{README.MD,INDEX.MD,DIRECTORY-RULES.MD,SUB-AGENT-SYSTEM.MD}"
+    tracked: { files: 4, bytes: 20320 }
+    packaged_source: { files: 4, bytes: 20320 }
+    owner: "canonical AI context navigation"
+    authority: "agent-facing product entry documents"
+    classification: "portable"
+    package_disposition: "framework-managed / preserve-relative"
+    primary_references: ["root AGENTS.md", ".ai assets and scripts"]
+    drift_or_coupling: "none found"
+    recommended_disposition: "retain"
+  - id: "AIA-INV-002"
+    path: ".ai/assets/{README.MD,CANONICAL-SCHEMA.MD}"
+    tracked: { files: 2, bytes: 12986 }
+    packaged_source: { files: 2, bytes: 12986 }
+    owner: "canonical asset schema"
+    authority: "asset taxonomy and metadata vocabulary"
+    classification: "portable"
+    package_disposition: "framework-managed"
+    primary_references: ["validate-ai-context.py", "asset templates and manifests"]
+    drift_or_coupling: "portability vocabulary is not the same as distribution disposition"
+    recommended_disposition: "retain; read with the distribution profile"
+  - id: "AIA-INV-003"
+    path: ".ai/assets/shared/**"
+    tracked: { files: 10, bytes: 46340 }
+    packaged_source: { files: 10, bytes: 46340 }
+    owner: "portable cross-technology framework baseline"
+    authority: "PRODUCT-SOURCE-001, role execution, portability, and universal governance semantics"
+    classification: "portable"
+    package_disposition: "framework-managed; three governance documents also map to .dev target policies"
+    primary_references: ["distribution profile", "AI-CONTEXT-OWNERSHIP registry", "skills"]
+    drift_or_coupling: "three intentional multi-target projections; no duplicate semantic authority"
+    recommended_disposition: "retain"
+  - id: "AIA-INV-004"
+    path: ".ai/assets/skills/**"
+    tracked: { files: 140, bytes: 501990 }
+    packaged_source: { files: 132, bytes: 487095 }
+    excluded: { files: 8, bytes: 14895 }
+    owner: "each canonical skill; registry owned by .ai/assets/skills/README.MD"
+    authority: "16 packaged skill identities, including two deprecated aliases; one active source-only closeout skill"
+    classification: "portable-mixed-with-source-only-and-compatibility"
+    package_disposition: "framework-managed except eight explicit source-only paths"
+    primary_references: [".agents/skills/**", ".claude/skills/**", "human guides", "owning-role mappings"]
+    drift_or_coupling: "transition manifest mixes portable alias state with source-only activation/evaluation evidence"
+    recommended_disposition: "retain; hand alias identity to #166 and transition evidence boundary to governance"
+  - id: "AIA-INV-005"
+    path: ".ai/assets/sub-agent-role-prompts/**"
+    tracked: { files: 45, bytes: 62883 }
+    packaged_source: { files: 45, bytes: 62883 }
+    owner: "18 canonical role manifests"
+    authority: "provider-neutral delegated role contracts"
+    classification: "portable"
+    package_disposition: "framework-managed"
+    primary_references: ["owning skills", "context-translator runtime adapters"]
+    drift_or_coupling: "no adapter or role identity drift found"
+    recommended_disposition: "retain"
+  - id: "AIA-INV-006"
+    path: ".ai/assets/tech-stacks/**"
+    tracked: { files: 206, bytes: 701019 }
+    packaged_source: { files: 206, bytes: 701019 }
+    owner: "dotnet-backend technology profile"
+    authority: "portable .NET-specific rules, bindings, references, and bundled validation guidance"
+    classification: "portable-technology-profile"
+    package_disposition: "framework-managed / dotnet-backend component"
+    primary_references: ["profile-aware skills", "human guides", "rule ownership registry"]
+    drift_or_coupling: "technology profile name remains distinct from repository/product/package identity"
+    recommended_disposition: "retain; hand identity to #166"
+  - id: "AIA-INV-007"
+    path: ".ai/assets/templates/**"
+    tracked: { files: 5, bytes: 3492 }
+    packaged_source: { files: 5, bytes: 3492 }
+    owner: "canonical asset templates"
+    authority: "skill, role, command, and prompt-package authoring shapes"
+    classification: "portable"
+    package_disposition: "framework-managed"
+    primary_references: [".ai/INDEX.MD", "validate-ai-context.py"]
+    drift_or_coupling: "none found"
+    recommended_disposition: "retain"
+  - id: "AIA-INV-008"
+    path: ".ai/distribution/**"
+    tracked: { files: 11, bytes: 45137 }
+    packaged_source: { files: 0, bytes: 0 }
+    excluded: { files: 11, bytes: 45137, rule: "source-distribution-control" }
+    owner: "source package-build governance"
+    authority: "profile, package schemas, identity policy, templates, and source-side CLI contract"
+    classification: "source-only"
+    package_disposition: "excluded; produces envelope metadata but is not target truth"
+    primary_references: ["package builder", "release validators", "#172"]
+    drift_or_coupling: "central package identity is consumed by source release machinery"
+    recommended_disposition: "retain; #166 decides identity and #172 verifies artifacts"
+  - id: "AIA-INV-009"
+    path: ".ai/evaluation/**"
+    tracked: { files: 19, bytes: 14708 }
+    packaged_source: { files: 0, bytes: 0 }
+    excluded: { files: 19, bytes: 14708, rule: "repository-and-local-runtime-state" }
+    owner: "source evaluation governance"
+    authority: "fixtures, baselines, expected results, and context-load evidence"
+    classification: "source-only"
+    package_disposition: "excluded"
+    primary_references: ["source evaluation validators", "skill transition activation evidence"]
+    drift_or_coupling: "packaged transition manifest contains concrete references to these excluded paths"
+    recommended_disposition: "retain source-only; clarify/split portable alias evidence through follow-up governance"
+  - id: "AIA-INV-010"
+    path: ".ai/scripts/* (excluding tests/**)"
+    tracked: { files: 54, bytes: 924028 }
+    packaged_source: { files: 38, bytes: 664554 }
+    excluded: { files: 16, bytes: 259474, rule: "repository-and-local-runtime-state" }
+    owner: "portable runtime tooling and source repository automation"
+    authority: "each entrypoint/module plus governed entrypoint registry"
+    classification: "portable-mixed-with-source-only"
+    package_disposition: "38 framework-managed; 16 explicit source-only exclusions"
+    primary_references: ["check-all.sh", "skills", "package/release/provider workflows"]
+    drift_or_coupling: "mixed root depends on exact exclusion maintenance; current coverage is complete"
+    recommended_disposition: "retain and fail closed on disposition drift"
+  - id: "AIA-INV-011"
+    path: ".ai/scripts/tests/**"
+    tracked: { files: 56, bytes: 628033 }
+    packaged_source: { files: 41, bytes: 403775 }
+    excluded: { files: 15, bytes: 224258, rule: "repository-and-local-runtime-state" }
+    owner: "portable contract tests and source-only release/provider tests"
+    authority: "executable behavior evidence, never semantic ownership"
+    classification: "portable-mixed-with-source-only"
+    package_disposition: "41 framework-managed; 15 explicit source-only exclusions"
+    primary_references: ["validators and hosted profiles"]
+    drift_or_coupling: "archive-level suite not completed in this audit; current static/profile contracts passed"
+    recommended_disposition: "retain; #172 runs archive-level evidence"
+  - id: "AIA-INV-012"
+    path: ".agents/skills/**"
+    tracked: { files: 20, bytes: 27870 }
+    packaged_source: { files: 19, bytes: 26947 }
+    excluded: { files: 1, bytes: 923, rule: "source-release-closeout-capability" }
+    owner: "Codex-compatible runtime wrapper projection"
+    authority: "thin projection only; canonical skills remain under .ai"
+    classification: "generated-runtime-projection"
+    package_disposition: "19 framework-managed; source-only closeout wrapper excluded"
+    primary_references: ["17 canonical skill specs"]
+    drift_or_coupling: "zero wrapper-name/path drift"
+    recommended_disposition: "retain"
+  - id: "AIA-INV-013"
+    path: ".claude/**"
+    tracked: { files: 20, bytes: 28438 }
+    packaged_source: { files: 19, bytes: 27517 }
+    excluded: { files: 1, bytes: 921, rule: "source-release-closeout-capability" }
+    owner: "Claude-compatible skill and role adapter projection"
+    authority: "thin projection only"
+    classification: "generated-runtime-projection"
+    package_disposition: "19 framework-managed; source-only closeout wrapper excluded"
+    primary_references: ["canonical skills", "context-translator canonical role"]
+    drift_or_coupling: "zero wrapper/adapter drift"
+    recommended_disposition: "retain"
+  - id: "AIA-INV-014"
+    path: ".codex/agents/**"
+    tracked: { files: 3, bytes: 9425 }
+    packaged_source: { files: 1, bytes: 770 }
+    excluded: { files: 2, bytes: 8655, rule: "source-codex-runtime-worker-profiles" }
+    owner: "Codex runtime adapters and source execution profiles"
+    authority: "context-translator adapts one canonical role; bounded workers select source runtime/model tiers only"
+    classification: "portable-adapter-mixed-with-source-only-local-runtime"
+    package_disposition: "context-translator included; bounded workers explicitly excluded"
+    primary_references: ["context-translator canonical role", "root AGENTS.md"]
+    drift_or_coupling: "bounded workers are not canonical roles and must not enter role inventory"
+    recommended_disposition: "retain current boundary"
+explicit_exclusions:
+  - id: "repository-and-local-runtime-state"
+    scoped_files: 57
+    scoped_bytes: 510647
+    paths:
+      - ".ai/evaluation/**"
+      - ".ai/assets/skills/ai-context-governance/templates/release-publication/**"
+      - ".ai/assets/skills/ai-context-upgrader/scripts/compare-ai-context-versions.py"
+      - "16 named non-test .ai/scripts source package/release/provider paths"
+      - "15 named .ai/scripts/tests source release/provider tests"
+  - id: "source-distribution-control"
+    scoped_files: 11
+    scoped_bytes: 45137
+    paths: [".ai/distribution/**"]
+  - id: "source-release-closeout-capability"
+    scoped_files: 3
+    scoped_bytes: 4532
+    paths:
+      - ".ai/assets/skills/ai-context-release-closeout/skill.yaml"
+      - ".agents/skills/ai-context-release-closeout/SKILL.md"
+      - ".claude/skills/ai-context-release-closeout/SKILL.md"
+  - id: "source-codex-runtime-worker-profiles"
+    scoped_files: 2
+    scoped_bytes: 8655
+    paths:
+      - ".codex/agents/bounded-general-worker.toml"
+      - ".codex/agents/bounded-routine-worker.toml"
+candidate_problems:
+  - finding_id: "AIA-001"
+    severity: "MEDIUM"
+    impact: "A packaged compatibility transition manifest combines current alias taxonomy with source-only activation/evaluation evidence and excluded paths."
+    owner: "ai-context-governance; identity decision consumed by #166"
+    disposition: "Keep the historical manifest; let #166 select the portable alias registry, then open a bounded split/projection Issue only if required."
+  - finding_id: "AIA-002"
+    severity: "LOW"
+    impact: "The canonical portability enum does not encode distribution inclusion; one repo-portable skill and its wrappers are intentionally source-only."
+    owner: "#172 package inventory with ai-context-governance"
+    disposition: "Treat the profile as current authority; let #172 decide whether an explicit disposition field/schema is needed."
+identity_handoff_to_166:
+  repository: "YuChia-Wei/ai-collaboration-framework"
+  product_description: "portable AI collaboration context framework with retained .NET backend capability"
+  release_model: "single-versioned-componentized-release"
+  distribution_profile: "dotnet-backend"
+  package_name_template: "ai-context-dotnet-backend-v{version}"
+  components:
+    mandatory: ["software-development-core", "ai-context-lifecycle-core"]
+    optional: ["dotnet-backend", "repo-backlog"]
+  active_packaged_skills: 14
+  deprecated_packaged_aliases:
+    dev-workflow: "software-development-orchestrator"
+    repo-structure-sync: "ai-context-init"
+  source_only_active_skill: "ai-context-release-closeout"
+  canonical_roles: 18
+  technology_profile: "dotnet-backend"
+  rule: "Repository, product, package/archive, technology profile, namespace, and CLI identities remain separate decisions."
+handoff_to_172:
+  scoped_effective_sources: 522
+  scoped_explicit_exclusions: 73
+  all_scoped_paths_classified: true
+  current_contract_target_paths: 659
+  current_contract_payload_digest: "9d559dec5d36975305e53bb7ee71403a1e711f76e59a8bf1c63352f86edfd6c1"
+  archive_readback: "not performed; #172 owns published archive/files/checksum comparison"
