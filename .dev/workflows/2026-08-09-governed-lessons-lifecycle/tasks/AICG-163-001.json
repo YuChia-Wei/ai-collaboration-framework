@@ -8,7 +8,7 @@
   "owner_skill": "ai-context-governance",
   "status": "in_progress",
   "created_at": "2026-08-09T13:40:15+08:00",
-  "updated_at": "2026-08-09T13:55:47+08:00",
+  "updated_at": "2026-08-09T14:03:21+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-5.6-sol",
   "reasoning_effort": "high",
@@ -53,8 +53,8 @@
       "python .ai/scripts/validate-git-commits.py --range main..HEAD --workflow-id 2026-08-09-governed-lessons-lifecycle",
       "git diff --check"
     ],
-    "last_completed_step": "Implemented the lesson lifecycle, first environment lesson, owned navigation, and source-only lesson validation; focused and repository validators passed.",
-    "next_action": "Review and commit the implementation, then push and create the Issue #163 pull request."
+    "last_completed_step": "Committed and pushed the validated implementation, then opened and read back draft PR #164 at head 63fcca72a9df39baf97cf44f0630f7053cfaf500 as open and mergeable.",
+    "next_action": "Push this integration checkpoint, make PR #164 ready with Refs #163, wait for final-head hosted checks, and integrate only after the gate accepts it."
   },
   "results": {
     "summary": "Defined the previously missing non-normative lesson contract, added LESSON-ENV-001 with complete WSL evidence boundaries, updated owned navigation, and added source-only fail-closed lesson structure and lifecycle validation.",
@@ -76,10 +76,11 @@
       "python .ai/scripts/validate-ai-context.py -> passed with 26 active indexes and 1 governed lesson",
       "python .ai/scripts/validate-source-governance.py -> passed",
       "python .ai/scripts/validate-workflow-artifacts.py -> passed",
+      "python .ai/scripts/validate-git-commits.py --range main..HEAD --workflow-id 2026-08-09-governed-lessons-lifecycle -> passed 2/2 commits before PR creation",
       "git diff --check -> passed"
     ],
     "finding_status": "addressed",
-    "residual_risk": "Hosted pull-request checks, review state, and accepted integration remain pending; no future promotion work is authorized.",
+    "residual_risk": "Hosted pull-request checks, review state, accepted integration, terminal source/provider reconciliation, and Issue #163 closure remain pending; no future promotion work is authorized.",
     "follow_up_needed": true
   }
 }
