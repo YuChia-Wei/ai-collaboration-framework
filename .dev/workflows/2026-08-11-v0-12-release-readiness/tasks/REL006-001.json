@@ -1,0 +1,36 @@
+{
+  "template_id": "ai-context-governance-remediation-task",
+  "template_version": "1.1.0",
+  "template_created_at": "2026-07-10T18:22:49+08:00",
+  "template_updated_at": "2026-07-27T09:52:09+08:00",
+  "task_id": "REL006-001-terminal-tag-publication-flow",
+  "workflow_id": "2026-08-11-v0-12-release-readiness",
+  "owner_skill": "ai-context-governance",
+  "status": "completed",
+  "created_at": "2026-08-11T00:43:10+08:00",
+  "updated_at": "2026-08-11T01:27:57+08:00",
+  "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
+  "model": "gpt-5.6-sol",
+  "reasoning_effort": "high",
+  "finding_ids": ["#167"],
+  "scope": {
+    "target": "A tag-triggered release that requires no post-tag source commit and completes provider reconciliation automatically.",
+    "files": [".ai/scripts/*release*", ".ai/assets/skills/ai-context-governance/templates/release-publication/**", ".github/workflows/*release*", ".dev/standards/AI-CONTEXT-VERSION-POLICY.md", ".dev/operations/runbooks/AI-CONTEXT-RELEASE-PUBLICATION-RUNBOOK.MD"],
+    "constraints": ["The user owns tag creation and timing.", "Never mutate an existing tag.", "Provider reconciliation must be idempotent and source-read-only."],
+    "non_goals": ["Publish on every main merge.", "Store credentials in source.", "Alter v0.11 publication artifacts."]
+  },
+  "execution": {
+    "steps": ["Normalize v0.10+ online Issue reference validation.", "Make the tagged pre-publication record terminal for source.", "Add provider preflight and idempotent reconciliation.", "Rewrite policy/runbook/templates and add failure fixtures."],
+    "validation": ["release-state tests", "provider-reconciliation tests", "GitHub workflow contract tests", "candidate and tag-path dry runs"],
+    "last_completed_step": "Implemented terminal validated source state, v0.10+ online Issue routing, protected tag-only provider preflight, idempotent post-publication reconciliation, and historical-only closeout guidance.",
+    "next_action": "Integrate the validated implementation through the owning pull request."
+  },
+  "results": {
+    "summary": "Changed the normal v0.12+ release lifecycle so validated source is terminal: the owner tag triggers archive publication, hosted verification, Published-in updates, and #169 closure with no post-tag source commit.",
+    "files_changed": [".ai/scripts/validate-ai-context-release-state.py", ".ai/scripts/reconcile-ai-context-release-provider.py", ".github/workflows/publish-release.yml", ".ai/assets/skills/ai-context-governance/templates/release-publication/**", ".dev/standards/AI-CONTEXT-VERSION-POLICY.md", ".dev/operations/runbooks/AI-CONTEXT-RELEASE-PUBLICATION-RUNBOOK.MD", ".ai/assets/skills/ai-context-release-closeout/**", ".agents/skills/ai-context-release-closeout/**", ".claude/skills/ai-context-release-closeout/**"],
+    "tests_run": ["test_ai_context_release_state.py: 33 passed", "test_release_provider_reconciliation.py: 7 passed", "test_github_workflow_contract.py: 8 passed", "test_dependency_version_consistency.py: 19 passed", "test_run_python_entrypoint_ps1.py: 4 passed", "test_python_entrypoints_contract.py: 4 passed", "validate-dependency-versions.py: passed", "validate-ai-context.py: passed", "git diff --check: passed"],
+    "finding_status": "addressed",
+    "residual_risk": "Tag automation requires the separately managed RELEASE_PROVIDER_TOKEN. It is withheld from pull-request workflows and injected only into exact privileged tag steps; a missing or unusable token fails before Release mutation.",
+    "follow_up_needed": false
+  }
+}

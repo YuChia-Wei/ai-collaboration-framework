@@ -1,6 +1,6 @@
 ---
 name: ai-context-release-closeout
-description: Plan and verify source-only, post-tag AI context release closeout without altering a release tag or downstream package.
+description: Verify historical post-tag records or explicitly authorized exception recovery without altering a release tag or making source closeout a normal release step.
 ---
 
 # AI Context Release Closeout
@@ -19,4 +19,4 @@ This is a thin current-runtime wrapper.
 ## Wrapper Rules
 
 Use this wrapper only as the current runtime entry.
-Run it only after a tag and hosted publication exist. Do not create, move, or recreate a tag; do not prepare a candidate or rerun package migrations or .NET tests. If wrapper text and canonical spec differ, follow `.ai/assets/skills/ai-context-release-closeout/skill.yaml`.
+Run it only after a tag and hosted publication exist and normal automation cannot represent a historical or explicitly authorized exception. It is not a normal `v0.12.0`-or-later stage. Do not create, move, or recreate a tag; do not prepare a candidate or rerun package migrations or .NET tests. If wrapper text and canonical spec differ, follow `.ai/assets/skills/ai-context-release-closeout/skill.yaml`.

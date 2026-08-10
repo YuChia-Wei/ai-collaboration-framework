@@ -18,7 +18,7 @@ duplicating them.
 | --- | --- | --- |
 | Distribution CLI | Controls inspection, planning, and explicitly authorized target lifecycle operations for an immutable framework payload. | Yes, when separately implemented and packaged. |
 | Portable Validator Engine | Runs selected portable validation through a versioned external-process protocol and returns bounded evidence. | Yes, as a component of a future distribution capability. |
-| Source Maintainer CLI | Handles release preparation, candidate verification, tag/release read-back, source closeout, and source tracker reconciliation. | Never. |
+| Source Maintainer CLI | Handles release preparation, candidate verification, tag/release read-back, automated source-tracker reconciliation, and exceptional historical closeout verification. | Never. |
 
 The source maintainer surface is source-only even when it shares a command name
 or implementation library with another tool. It must not enter a payload,
@@ -111,4 +111,3 @@ fetched payload transport, independent toolchain repository, CLI/product
 version coupling, self-update, licensing/SBOM, notarization, and Windows code
 signing remain owner decisions. This contract does not select or implement any
 of them.
-

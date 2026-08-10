@@ -32,7 +32,7 @@ Version impact is determined by the highest-impact included change. Repository h
    topology selected by `.dev/TEAM-GIT-FLOW-RULES.MD`. Release and publication
    workflows normally retain a merge commit because the lifecycle boundary is
    durable evidence. Re-run release validation against the integrated commit.
-4. **Published**: the user creates an annotated immutable tag on the validated `main` commit. The tag-triggered publication automation validates that tag, builds the package from it, and publishes the release artifacts and notes.
+4. **Published (provider state)**: the user creates an annotated immutable tag on the validated `main` commit. The tag-triggered publication automation validates that tag, builds the package, publishes the release artifacts and notes, verifies hosted state, and reconciles the governed Issue/Project fields. From `v0.12.0` onward the tagged source record remains terminal at `status: validated`; publication does not require a later source commit or records-only pull request.
 
 The merge commit should use `release` scope and mention the candidate version. The annotated tag message must include the release identifier, compatibility summary, and `AI-Model` line when AI assisted the release preparation.
 
@@ -48,7 +48,7 @@ Each governed version uses `.dev/releases/<version>/`:
 
 `.dev/releases/INDEX.MD` is the release catalog. `release.yaml` is the lifecycle source of truth for one version. Historical records created after the tag must declare `record_origin: retrospective` and must not imply that their metadata existed at publication time.
 
-The annotated tag object and its resolved commit are the publication identity. A retrospective record is read from the current trusted framework release registry and is supplemental governance evidence; it is not required to exist inside the older tagged tree. For a governed release, the tagged tree contains the validated candidate notes and migrations, while the trusted registry may finalize the published commit afterward without moving the tag.
+The annotated tag object and its resolved commit are the publication identity. A retrospective record is read from the current trusted framework release registry and is supplemental governance evidence; it is not required to exist inside the older tagged tree. Historical governed releases may retain post-tag `published` registry records. From `v0.12.0` onward the immutable tagged tree's validated record is the terminal source record; hosted workflow and provider receipts are runtime evidence and must not force a source rewrite.
 
 ## Target Provenance
 
@@ -91,6 +91,8 @@ A governed release must verify:
 - compatibility declarations for breaking changes;
 - repository AI-context and workflow validation;
 - required Git commit body and AI co-author trailer policy.
+- exact prepublication Issue/Project state for included work and release coordination;
+- stable hosted publication before automatic `Published in` and coordination-state reconciliation.
 
 For v0.7.0 and later, candidate validation also derives the canonical included
 work set from resolved backlog items whose `completed_in` equals the candidate
@@ -100,4 +102,4 @@ reference. This prospective rule does not alter historical release notes.
 
 Tag creation, remote publication, and target upgrade execution each require explicit authorization appropriate to that action.
 
-For the configured automated publication path, pushing a user-created release tag is the publication authorization. Candidate or pull-request automation may build and retain validation artifacts, but it must not create a GitHub Release or mutate tags.
+For the configured automated publication path, pushing a user-created release tag is the publication authorization. Candidate or pull-request automation may build and retain validation artifacts, but it must not receive the Project write credential, create a GitHub Release, or mutate tags. The Project credential is restricted to the tag-triggered release environment: it performs a read-only preflight before Release mutation, then an idempotent post-publication reconciliation. Normal completion after `v0.12.0` produces no source closeout commit.

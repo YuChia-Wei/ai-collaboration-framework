@@ -2,36 +2,38 @@ asset_id: "ai-context-release-closeout"
 schema_version: "1.0"
 asset_type: "skill-spec"
 title: "AI Context Release Closeout"
-purpose: "Plan and verify source-repository-only post-tag release closeout records without changing a release tag or portable downstream framework contract."
+purpose: "Verify historical post-tag records and plan explicitly authorized exception recovery without changing a release tag or treating source closeout as a normal release step."
 portability: "repo-portable"
 audience: "agent-facing"
 source_of_truth: "canonical"
 status: "active"
 triggers:
-  - "post-tag release closeout"
-  - "release registry reconciliation"
-  - "records-only release handoff"
+  - "historical post-tag release verification"
+  - "failed automated release reconciliation recovery"
+  - "explicitly authorized records-only exception"
 inputs:
   - "published immutable release tag"
   - "GitHub repository identity and successful publication workflow run ID"
   - "rendered release body when finalization requires body parity"
+  - "documented reason normal tag automation cannot complete the historical or exceptional case"
 outputs:
   - "hosted finalization read-back"
-  - "records-only patch generated in an isolated temporary worktree"
+  - "optional records-only exception patch generated outside the primary worktree"
 constraints:
   - "Do not prepare a release candidate or choose, create, move, recreate, or delete a tag."
+  - "Do not use this skill as a normal v0.12.0-or-later release stage; validated source is terminal and provider reconciliation is automated."
   - "Do not execute package migrations or .NET product tests."
-  - "Use only post-tag hosted read-back and records-only source changes."
+  - "Default to post-tag hosted read-back; source changes require an explicit historical or exception-recovery justification."
   - "Check sanctioned Python and offline uv discovery before a repository write."
-  - "Keep the primary worktree unchanged until the isolated patch validates."
+  - "Keep the primary worktree unchanged until an authorized exception patch validates; on Windows use a verified short temporary root to avoid long-path failure."
   - "Never rewrite shared or published history."
 workflow:
   - step: 1
-    description: "Read back the immutable tag, hosted release, publication run, and local runtime readiness without writing the primary worktree."
+    description: "Read back the immutable tag, hosted release, publication run, provider reconciliation, and local runtime readiness without writing the primary worktree."
   - step: 2
-    description: "Create a temporary detached worktree, build only the records-only registry patch, and validate finalization there."
+    description: "Classify the case as historical compatibility, retryable hosted automation, or an explicitly authorized source exception; retryable hosted automation must not create a patch."
   - step: 3
-    description: "Hand the validated patch to a dedicated records-only branch and pull request; read back provider state before any retry."
+    description: "Only for an authorized source exception, use a short isolated path, build the smallest records-only patch, validate it, and hand it to a dedicated pull request."
 commands:
   verify: "python .ai/scripts/ai_context_release_closeout.py verify --version <vX.Y.Z> --repository <owner/repo> --workflow-run-id <id>"
   plan_patch: "python .ai/scripts/ai_context_release_closeout.py plan-patch --version <vX.Y.Z> --repository <owner/repo> --workflow-run-id <id> --output <path-outside-primary-worktree>"

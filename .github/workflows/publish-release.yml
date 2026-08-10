@@ -18,6 +18,7 @@ jobs:
     timeout-minutes: 15
     permissions:
       contents: read
+      issues: read
     outputs:
       commit: ${{ steps.tag.outputs.commit }}
       package_id: ${{ steps.release.outputs.package_id }}
@@ -60,6 +61,8 @@ jobs:
         run: python .ai/scripts/validate-ai-context-versions.py
 
       - name: Validate tagged release state
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
           python .ai/scripts/validate-ai-context-release-state.py \
             --phase tag \
@@ -156,6 +159,14 @@ jobs:
 
       - name: Install packaging dependency
         run: python -m pip install --disable-pip-version-check -r requirements.txt
+
+      - name: Validate provider prepublication state
+        env:
+          GH_TOKEN: ${{ secrets.RELEASE_PROVIDER_TOKEN }}
+        run: |
+          python .ai/scripts/reconcile-ai-context-release-provider.py \
+            --phase preflight \
+            --version "${TAG}"
 
       - name: Download validated release artifact
         uses: actions/download-artifact@v8
@@ -261,3 +272,60 @@ jobs:
       - name: Publish verified draft
         if: steps.draft.outputs.published == 'false'
         run: gh release edit "${TAG}" --verify-tag --draft=false --latest
+
+  reconcile-provider:
+    name: Reconcile release tracking
+    needs:
+      - build
+      - publish
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    environment: ai-context-release
+    permissions:
+      contents: read
+    env:
+      VERSION: ${{ needs.build.outputs.version }}
+    steps:
+      - name: Check out immutable tagged tree for reconciliation
+        uses: actions/checkout@v6
+        with:
+          ref: ${{ needs.build.outputs.version }}
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+
+      - name: Install provider reconciliation dependency
+        run: python -m pip install --disable-pip-version-check -r requirements.txt
+
+      - name: Verify hosted publication without source closeout
+        env:
+          GH_TOKEN: ${{ secrets.RELEASE_PROVIDER_TOKEN }}
+        run: |
+          python .ai/scripts/validate-ai-context-release-state.py \
+            --phase finalization \
+            --version "${VERSION}" \
+            --hosted \
+            --workflow-run-id "${GITHUB_RUN_ID}" \
+            --allow-current-workflow-run
+
+      - name: Reconcile and read back Issues and Project
+        env:
+          GH_TOKEN: ${{ secrets.RELEASE_PROVIDER_TOKEN }}
+        run: |
+          python .ai/scripts/reconcile-ai-context-release-provider.py \
+            --phase apply \
+            --version "${VERSION}" \
+            --output "${RUNNER_TEMP}/provider-reconciliation.json"
+
+      - name: Retain provider reconciliation receipt
+        uses: actions/upload-artifact@v7
+        with:
+          name: provider-reconciliation-${{ needs.build.outputs.version }}-${{ needs.build.outputs.commit }}
+          retention-days: 30
+          compression-level: 0
+          if-no-files-found: error
+          path: ${{ runner.temp }}/provider-reconciliation.json

@@ -4,7 +4,7 @@ This directory stores durable release identities, compatibility declarations, an
 
 Start with [INDEX.MD](INDEX.MD). Follow [AI-CONTEXT-VERSION-POLICY.md](../standards/AI-CONTEXT-VERSION-POLICY.md) for version selection, tag immutability, release lifecycle, target provenance, and publication gates.
 
-Each version directory owns one `release.yaml`, `release-notes.md`, and `migration-guide.md`. Published records are immutable except for clearly identified factual corrections; candidate records remain editable until publication.
+Each version directory owns one `release.yaml`, `release-notes.md`, and `migration-guide.md`. Historical published records are immutable except for clearly identified factual corrections; candidate records remain editable until integration. From v0.12.0 onward, the integrated and tagged `status: validated` record is terminal source truth and is not rewritten after hosted publication.
 
 For a new governed release, instantiate the placeholder-only files in
 [`release-publication`](../../.ai/assets/skills/ai-context-governance/templates/release-publication/).
@@ -19,13 +19,15 @@ the next release.
 markers and provenance are renderer output and must not be committed to an
 authored notes file.
 
-For v0.7.0 and newer candidates, `release.yaml.planning.backlog_refs` must
-exactly equal the canonical backlog set accepted by that version: every
-resolved backlog item whose `release.completed_in` equals the release version.
-The renderer appends one generated `Included Work` section with each backlog ID
-exactly once while preserving the complete human-authored notes. Missing,
-duplicate, unrelated, unresolved, completion-mismatched, or prematurely
-published backlog references fail candidate validation. Historical release
-records and notes retain their original contract and are not rewritten.
+For v0.7.0 through v0.9.0 candidates, `release.yaml.planning.backlog_refs`
+matches the accepted canonical backlog set. From v0.10.0 onward,
+`planning.github_issue_refs` binds Included Work to online Issues; v0.11.0 and
+later require those implementation Issues to be closed as completed before the
+candidate is valid. From v0.12.0 onward, `provider_reconciliation` also binds
+the exact prepublication and postpublication Issue/Project fields. The renderer
+appends one generated `Included Work` section per reference while preserving
+human-authored notes. Missing, duplicate, unrelated, incomplete, or
+provider-mismatched references fail closed. Historical release records and
+notes retain their original contract and are not rewritten.
 
 Do not store workflow progress, assessments, or target-repository override details here.

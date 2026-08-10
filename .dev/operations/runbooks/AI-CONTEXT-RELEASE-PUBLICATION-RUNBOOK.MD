@@ -2,7 +2,7 @@
 
 ## Trigger
 
-當已核准的 governed framework release 已完成實作，需要從冷啟動環境建立候選、合併、建立 immutable annotated tag、GitHub Actions 發布，並完成本機 registry 收尾時使用本文件。除明列且已核對的 release-specific exception 外，tag 仍由 owner 建立。
+當已核准的 governed framework release 已完成實作，需要從冷啟動環境建立候選、合併、建立 immutable annotated tag，並由 GitHub Actions 完成發布與 provider tracking 對帳時使用本文件。除明列且已核對的 release-specific exception 外，tag 仍由 owner 建立。從 `v0.12.0` 起，正常流程不再包含 post-tag source registry 收尾。
 
 不要用於補改既有 published tag、搬移 tag 或複製舊 release 目錄。任何既有 tag 的移動、重建與刪除都不屬於 automation 或 agent 的權限。
 
@@ -10,6 +10,7 @@
 
 - 新版本一律從 [canonical release-publication templates](../../../.ai/assets/skills/ai-context-governance/templates/release-publication/) instantiate；不得複製 `.dev/releases/v*` instance。
 - `release.yaml`、`release-notes.md`、`migration-guide.md` 是 candidate 的 source of truth。從 v0.10.0 起，source-repository candidate 的 Included Work 以 `planning.github_issue_refs` 的 GitHub read-back 為權威；既有已發布 release 的 `backlog_refs` 保持歷史相容。`release-notes.md` 不得包含 renderer 的 automation marker 或 provenance block。
+- 從 `v0.12.0` 起，`release.yaml.provider_reconciliation` 以 machine-readable 方式宣告 included work 與 coordination Issues 在發布前後的 Issue／Project 狀態。tagged source 維持 `status: validated`；`Published in` 與 coordination close 是 hosted provider state，不回寫 source record。
 - 每個 `.dev/releases/<version>/release-phase-checks.yaml` 的 command 是 handoff 可比對的 sanctioned command；不可包進 shell substitution 或任意 command。
 - 每個版本必須從 canonical template 建立自己的 phase contract。不可修改或重用另一版已記錄的 command；下方 `<version>` 必須先展開成同一個 stable `vMAJOR.MINOR.PATCH` literal，checkpoint 內也必須保存展開後的完整 command。
 
@@ -38,10 +39,12 @@ duplicate hosted-run cost without merging gates that have different trigger
 paths or responsibilities.
 
 Tag publication is deliberately different: it uses an immutable tag-scoped
-concurrency group with cancellation disabled. A later dispatch or retry must
-not cancel a release that may already be staging or publishing assets. General
-governance remains read-only, package candidate remains read-only, and only the
-environment-protected publication job receives `contents: write`.
+concurrency group with cancellation disabled. A later retry must not cancel a
+release that may already be staging or publishing assets. General governance
+and package candidate remain read-only and never receive the Project write
+credential. Only the environment-protected tag jobs receive release or Project
+mutation authority; provider preflight runs before Release mutation and
+post-publication reconciliation is idempotent.
 
 ## Cold-Start Candidate
 
@@ -114,19 +117,23 @@ workflow run URL, GitHub Release identity, and four governed asset tuples in
 the records-only finalization evidence. Any mismatch stops the lifecycle; read
 back provider state before deciding whether a new repair branch is needed.
 
-After the owner has created and pushed the tag, first run:
+After the owner has created and pushed the tag, no agent-operated closeout
+command is part of the normal lifecycle. The tag workflow automatically runs
+the equivalent tag, publication, hosted-finalization, and provider read-back
+gates. The following commands remain read-only diagnostics for a failed run:
 
 ```powershell
 python .ai/scripts/validate-ai-context-release-state.py --phase tag --version <version>
 ```
 
-Expected result: exit `0`; the tag is annotated, peels to the current validated
-commit, and the tagged tree contains the `validated` registry skeleton.
+Expected result for the first diagnostic: exit `0`; the tag is annotated,
+peels to the current validated commit, and the tagged tree contains the
+terminal `validated` registry record.
 
 Fail action: do not move, recreate, delete, or replace the tag. Preserve
 evidence and escalate the mismatch to the owner.
 
-Then run:
+The hosted diagnostic is:
 
 ```powershell
 python .ai/scripts/validate-ai-context-release-state.py --phase publication --version <version> --hosted
@@ -135,40 +142,49 @@ python .ai/scripts/validate-ai-context-release-state.py --phase publication --ve
 Expected result: exit `0`; the public release, exact rendered body, four governed
 assets, and successful tag-triggered workflow match the immutable tag.
 
-Fail action: do not move, recreate, delete, or replace the tag. Preserve evidence and escalate the mismatch to the owner.
+Fail action: do not move, recreate, delete, or replace the tag. Preserve the
+failed workflow evidence and correct only the retryable workflow, credential,
+or provider-state condition. A retry must not create a source closeout commit.
 
-## Hosted Publication
+## Hosted Publication And Provider Reconciliation
 
-The tag push triggers `.github/workflows/publish-release.yml`. That workflow validates the tag, renders the public body, builds deterministic archives, and creates or resumes only its owned draft release. It never creates, selects, or moves a tag.
+The tag push triggers `.github/workflows/publish-release.yml`. The workflow:
 
-Expected result: the hosted workflow completes successfully; the GitHub Release is stable/non-draft with exactly the ZIP, tar.gz, and adjacent checksum assets produced from the tagged tree.
+1. validates the immutable tag and builds deterministic archives;
+2. performs provider preflight with `RELEASE_PROVIDER_TOKEN` before Release mutation;
+3. creates or resumes only its owned draft and publishes the four governed assets;
+4. verifies the stable hosted Release against the terminal `validated` source record;
+5. changes included items from `Not yet published` to the release version, closes the release-coordination Issue as completed, moves its Project Status to `Done`, and reads every value back;
+6. retains a provider reconciliation receipt as a workflow artifact.
 
-Fail action: retain the GitHub Actions run URL and logs, then repair the source workflow on a new branch. Do not mutate an unowned draft or a published release merely to hide a failure.
+It never creates, selects, or moves a tag, and it never commits a post-tag source
+record. Expected result is one successful tag workflow, a stable/non-draft
+GitHub Release with exactly the governed assets, and converged provider state.
 
-## Local Registry Finalization
+Fail action: retain the GitHub Actions run URL and logs. Correct the bounded
+credential or provider-state condition and rerun the failed job when safe. If
+source code truly requires repair, use a new reviewed branch for a future retry;
+never move the existing tag or rewrite source merely to claim closeout.
 
-After hosted publication evidence is available, record only observed tag, commit, timestamp, run, asset, and release URL facts in the governed release record. Keep generated marker/provenance material out of authored notes.
+`ai-context-release-closeout` is retained only for historical records and
+exception recovery. It is not a required normal step for `v0.12.0` or later.
 
-Run:
+## Pre-Tag Terminal Checks
+
+Before handing tag creation to the owner, run these read-only checks from the
+clean, integrated `main` tree:
 
 ```powershell
-python .ai/scripts/validate-ai-context-release-state.py --phase finalization --version <version> --hosted
-```
-
-Expected result: exit `0`; the published registry record equals the immutable tag peel, authored notes remain renderer-free, and required terminal evidence is present.
-
-Fail action: do not alter the tag. Correct a factual registry omission through the governed finalization workflow, retain the publication evidence, and rerun the command.
-
-## Terminal Checks
-
-Run these read-only checks before declaring the release closed:
-
-```powershell
-python .ai/scripts/validate-ai-context-release-state.py --phase finalization --version <version> --hosted
+python .ai/scripts/reconcile-ai-context-release-provider.py --phase preflight --version <version>
+python .ai/scripts/prepare-ai-context-release.py --version <version>
 python .ai/scripts/validate-ai-context-versions.py
 git status --short
 ```
 
-Expected result: both Python commands exit `0`; `git status --short` is empty after the finalization checkpoint is committed.
+Expected result: all Python commands exit `0`, `git status --short` is empty,
+and the preparation command prints the one annotated-tag command pinned to the
+current `main` SHA. At that point the only owner action is to create and push
+that tag; all later normal lifecycle work is hosted automation.
 
-Fail action: the release is not closed. Record the failed command and output in the workflow, then resume only the task that owns the failed condition.
+Fail action: do not request or create the tag. Repair the exact candidate,
+provider preflight, or current-main gate condition and repeat these checks.

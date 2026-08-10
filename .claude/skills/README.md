@@ -20,7 +20,7 @@ This directory contains Claude-compatible skill wrappers.
 ## Available Wrappers
 
 - `ai-context-governance`
-- `ai-context-release-closeout` (source-repository-only)
+- `ai-context-release-closeout` (source-repository-only historical/exception recovery)
 - `ai-context-auditor`
 - `ai-context-init`
 - `ai-context-upgrader`

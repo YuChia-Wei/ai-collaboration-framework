@@ -1,0 +1,36 @@
+{
+  "template_id": "ai-context-governance-remediation-task",
+  "template_version": "1.1.0",
+  "template_created_at": "2026-07-10T18:22:49+08:00",
+  "template_updated_at": "2026-07-27T09:52:09+08:00",
+  "task_id": "PKG010-001-source-disposition-contract",
+  "workflow_id": "2026-08-11-v0-12-release-readiness",
+  "owner_skill": "ai-context-governance",
+  "status": "completed",
+  "created_at": "2026-08-11T00:43:10+08:00",
+  "updated_at": "2026-08-11T01:19:03+08:00",
+  "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
+  "model": "gpt-5.6-sol",
+  "reasoning_effort": "high",
+  "finding_ids": ["ASM-20260810-003#PKG-001", "#184"],
+  "scope": {
+    "target": "Exhaustive machine-readable disposition for tracked source files omitted from the dotnet-backend distribution profile.",
+    "files": [".ai/distribution/**", ".ai/scripts/**", ".dev/assessments/ASM-20260810-003/**"],
+    "constraints": ["Fail closed on implicit omission, overlap, contradiction, or stale pattern.", "Preserve current package payload bytes unless explicitly recorded."],
+    "non_goals": ["Delete source evidence.", "Rewrite v0.11 assets or metadata.", "Re-decide public identity."]
+  },
+  "execution": {
+    "steps": ["Define schema and disposition records.", "Implement validator and reviewer read-back.", "Register the gate and add deterministic fixtures.", "Run focused and aggregate validation."],
+    "validation": ["source-disposition unit tests", "source-governance validator", "package inventory parity", "critical gate"],
+    "last_completed_step": "Implemented and validated the exhaustive source-disposition contract; the current tree has 32 governed dispositions because two lesson files were added after the 30-path assessment baseline.",
+    "next_action": "Integrate the validated implementation through the owning pull request."
+  },
+  "results": {
+    "summary": "Added a versioned source-disposition schema, active contract, deterministic Git-tree validator, source-governance registration, and candidate JSON/Markdown reviewer read-back with zero implicit omissions.",
+    "files_changed": [".ai/distribution/source-dispositions.yaml", ".ai/distribution/schemas/source-dispositions.schema.yaml", ".ai/scripts/validate-source-dispositions.py", ".ai/scripts/validate-source-governance.py", ".github/workflows/package-candidate.yml"],
+    "tests_run": ["test_source_dispositions.py: 8 passed", "test_file_disposition_manifest.py: 31 passed", "test_governance_workflow_contract.py: 7 passed", "validate-source-governance.py: passed", "validate-ai-context.py: passed", "git diff --check: passed"],
+    "finding_status": "addressed",
+    "residual_risk": "The assessment counted 30 omissions; two subsequently added governed lesson files make the implementation-time count 32. The validator derives the set from each immutable Git tree, so later additions fail closed rather than relying on a fixed count.",
+    "follow_up_needed": false
+  }
+}

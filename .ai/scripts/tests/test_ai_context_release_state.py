@@ -10,6 +10,7 @@ import tempfile
 import unittest
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
+from unittest.mock import patch
 
 import yaml
 
@@ -760,6 +761,124 @@ class AiContextReleaseStateGwtTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as temp:
             with self.assertRaisesRegex(STATE.ReleaseStateError, "must remain open"):
                 STATE.validate_candidate_record(Path(temp), "v0.10.0", data, closed_runner)
+
+    def test_gwt_027_given_v012_online_issue_scope_when_candidate_checked_then_closed_completed_issues_are_required(self):
+        version = "v0.12.0"
+        package_id = f"ai-context-dotnet-backend-{version}"
+        data = release_data()
+        data["version"] = version
+        data["release_id"] = f"REL-{version}"
+        data["planning"] = {"github_issue_refs": ["#167", "#184"]}
+        data["distribution"]["package_id"] = package_id
+        data["distribution"]["artifacts"] = {
+            "zip": f"{package_id}.zip",
+            "zip_checksum": f"{package_id}.zip.sha256",
+            "tar_gz": f"{package_id}.tar.gz",
+            "tar_gz_checksum": f"{package_id}.tar.gz.sha256",
+        }
+        baseline = fake_runner()
+
+        def completed_runner(args, cwd, capture_output, text, check):
+            if args[:4] == ["gh", "api", "--method", "GET"] and "/issues/" in args[-1]:
+                number = int(args[-1].rsplit("/", 1)[1])
+                return subprocess.CompletedProcess(
+                    args,
+                    0,
+                    json.dumps(
+                        {
+                            "number": number,
+                            "state": "closed",
+                            "state_reason": "completed",
+                            "body": f"Target release: {version}",
+                        }
+                    )
+                    + "\n",
+                    "",
+                )
+            return baseline(args, cwd, capture_output, text, check)
+
+        with tempfile.TemporaryDirectory() as temp:
+            STATE.validate_candidate_record(Path(temp), version, data, completed_runner)
+
+        def open_runner(args, cwd, capture_output, text, check):
+            result = completed_runner(args, cwd, capture_output, text, check)
+            if args[:4] == ["gh", "api", "--method", "GET"] and "/issues/" in args[-1]:
+                payload = json.loads(result.stdout)
+                payload["state"] = "open"
+                payload["state_reason"] = None
+                return subprocess.CompletedProcess(args, 0, json.dumps(payload) + "\n", "")
+            return result
+
+        with tempfile.TemporaryDirectory() as temp:
+            with self.assertRaisesRegex(STATE.ReleaseStateError, "closed with completed"):
+                STATE.validate_candidate_record(Path(temp), version, data, open_runner)
+
+    def test_gwt_028_given_terminal_validated_source_when_hosted_finalization_runs_then_no_published_source_rewrite_is_required(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            write_fixture(root, status="validated")
+            runner = fake_runner()
+            expected = STATE.render_governed_body(root, VERSION, SHA, runner)
+            body = root / "body.md"
+            body.write_text(expected, encoding="utf-8")
+            STATE.validate(
+                root,
+                "finalization",
+                VERSION,
+                repository="owner/repo",
+                rendered_body=body,
+                workflow_run_id="42",
+                hosted=True,
+                runner=fake_runner(
+                    release=hosted_release(expected),
+                    workflow=hosted_workflow(),
+                ),
+            )
+
+    def test_gwt_029_given_the_executing_actions_run_when_finalization_runs_then_in_progress_is_accepted_only_explicitly(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            write_fixture(root, status="validated")
+            runner = fake_runner()
+            expected = STATE.render_governed_body(root, VERSION, SHA, runner)
+            body = root / "body.md"
+            body.write_text(expected, encoding="utf-8")
+            workflow = hosted_workflow()
+            workflow["status"] = "in_progress"
+            workflow["conclusion"] = None
+            with patch.dict(
+                STATE.os.environ,
+                {"GITHUB_ACTIONS": "true", "GITHUB_RUN_ID": "42"},
+                clear=False,
+            ):
+                STATE.validate(
+                    root,
+                    "finalization",
+                    VERSION,
+                    repository="owner/repo",
+                    rendered_body=body,
+                    workflow_run_id="42",
+                    hosted=True,
+                    allow_current_workflow_run=True,
+                    runner=fake_runner(
+                        release=hosted_release(expected),
+                        workflow=workflow,
+                    ),
+                )
+
+    def test_gwt_030_given_a_nonexecuting_run_when_current_run_override_is_requested_then_it_fails_closed(self):
+        with patch.dict(
+            STATE.os.environ,
+            {"GITHUB_ACTIONS": "true", "GITHUB_RUN_ID": "99"},
+            clear=False,
+        ):
+            with self.assertRaisesRegex(STATE.ReleaseStateError, "executing GITHUB_RUN_ID"):
+                STATE.require_current_workflow_context(
+                    "finalization",
+                    True,
+                    "42",
+                    True,
+                )
 
 
 if __name__ == "__main__":

@@ -1,0 +1,36 @@
+{
+  "template_id": "ai-context-governance-remediation-task",
+  "template_version": "1.1.0",
+  "template_created_at": "2026-07-10T18:22:49+08:00",
+  "template_updated_at": "2026-07-27T09:52:09+08:00",
+  "task_id": "REL012-001-exact-candidate-and-pretag-handoff",
+  "workflow_id": "2026-08-11-v0-12-release-readiness",
+  "owner_skill": "ai-context-governance",
+  "status": "in_progress",
+  "created_at": "2026-08-11T00:43:10+08:00",
+  "updated_at": "2026-08-11T01:19:03+08:00",
+  "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
+  "model": "gpt-5.6-sol",
+  "reasoning_effort": "high",
+  "finding_ids": ["#169"],
+  "scope": {
+    "target": "Exact v0.12.0 candidate integrated to main with only user-owned annotated tag creation and push remaining.",
+    "files": [".dev/releases/v0.12.0/**", ".dev/releases/INDEX.MD", ".dev/workflows/2026-08-11-v0-12-release-readiness/**"],
+    "constraints": ["All included Issues are completed before candidate acceptance.", "No source mutation occurs after the final frozen validation.", "Issue #169 remains open until hosted provider reconciliation."],
+    "non_goals": ["Create or push v0.12.0 tag.", "Publish the Release in this workflow branch."]
+  },
+  "execution": {
+    "steps": ["Freeze exact included Issue set.", "Author notes, migration, release record, and phase checks.", "Pass local and hosted candidate gates.", "Freeze and run final external Luna audit.", "Integrate and pass merged-main pre-tag gate."],
+    "validation": ["candidate state", "deterministic package/archive parity", "hosted PR checks", "external Luna read-only audit", "merged-main pre-tag preparation"],
+    "last_completed_step": "#184 and #167 implementations passed focused validation and are ready for hosted pull-request integration.",
+    "next_action": "After the implementation PR merges and Issues #184/#167 close as completed, create the exact v0.12.0 candidate from updated main."
+  },
+  "results": {
+    "summary": "",
+    "files_changed": [],
+    "tests_run": [],
+    "finding_status": "not-addressed",
+    "residual_risk": "",
+    "follow_up_needed": true
+  }
+}

@@ -121,8 +121,10 @@ Shell or PowerShell scripts should be retired or replaced when they:
 - `validate-ai-context-target.py`
 - `resolve-effective-rule-packet.py`
 - `validate-ai-context-release-state.py`
+- `reconcile-ai-context-release-provider.py`
 - `validate-immutable-history.py`
 - `prepare-ai-context-release.py`
+- `validate-source-dispositions.py`
 - `validate-file-disposition-manifest.py`
 - `validate-git-commits.py`
 - `validate-workflow-handoff.py`
@@ -194,13 +196,24 @@ exclusion items.
 `.dev/releases/<version>/release-phase-checks.yaml` contract to one governed
 release. The requested stable version selects the contract and each sanctioned
 command embeds that same literal version. Candidate validation rejects unresolved
-placeholders, copied lifecycle fields, impossible timestamps, unrelated or open
-backlog references, dirty worktrees, package identity drift, and generated
-provenance in authored notes while allowing prior versions in compatibility and
-migration guidance. Tag validation requires an existing annotated tag and a
-validated registry skeleton in the tagged tree. Hosted publication and
-finalization use GET-only GitHub API calls to verify the successful
-tag-triggered workflow, stable Release body, title, tag, and exact asset names.
+placeholders, copied lifecycle fields, impossible timestamps, unrelated or
+incomplete online Issue references, dirty worktrees, package identity drift,
+and generated provenance in authored notes while allowing prior versions in
+compatibility and migration guidance. Tag validation requires an existing
+annotated tag and a validated registry record in the tagged tree. Hosted
+publication and finalization use GET-only GitHub API calls to verify the
+successful tag-triggered workflow, stable Release body, title, tag, and exact
+asset names. From v0.12 onward finalization accepts that terminal validated
+source record and does not require a post-tag published-record rewrite.
+
+`reconcile-ai-context-release-provider.py` validates the release-owned GitHub
+Issue and Project contract. `preflight` is read-only and requires every included
+Issue to be closed/completed with exact Done/P1/Approved/Target/Not-yet fields,
+while the coordination Issue remains planned and non-release. After the stable
+Release exists, `apply` idempotently sets included `Published in`, closes the
+coordination Issue, sets its Project status to Done, and reads the exact state
+back. The Project credential is available only inside the tag-triggered release
+environment; pull-request workflows never receive it.
 
 `prepare-ai-context-release.py` is the pre-tag interface. It requires the merged
 `main` candidate, reruns the candidate and critical gates, verifies the
@@ -208,8 +221,9 @@ worktree remains clean, reads exact AI provenance from the latest registered
 handoff checkpoint, and prints a complete annotated-tag command for the
 repository owner. It never executes the printed command or pushes a ref. The
 printed command is valid only for the current `main` HEAD; any later merge to
-`main`, including lifecycle-only closeout, requires rerunning preparation and
-discarding every older printed command.
+`main` requires rerunning preparation and discarding every older printed
+command. Normal v0.12-or-later publication creates no lifecycle-only source
+closeout merge after the tag.
 
 `validate-dependency-versions.py` is a deterministic offline gate. In the source
 framework repository it enforces byte-identical pinned Python requirement
@@ -350,6 +364,7 @@ python .ai/scripts/tests/test_ai_context_load_measurement.py -v
 python .ai/scripts/tests/test_dependency_version_consistency.py -v
 python .ai/scripts/tests/test_file_disposition_manifest.py -v
 python .ai/scripts/tests/test_repository_identity.py -v
+python .ai/scripts/tests/test_source_dispositions.py -v
 python .ai/scripts/tests/test_governance_workflow_contract.py -v
 ```
 
@@ -362,9 +377,10 @@ calls, and compares exact normalized output with the checked-in baseline.
 measurement contract in disposable synthetic Git repositories; it creates no
 official trace or release evidence.
 `test_governance_workflow_contract.py`, the concrete v0.5.0 disposition
-manifest validation, and the repository identity drift gate are
+manifest validation, the exhaustive source-disposition coverage gate, and the repository identity drift gate are
 source-repository governance checks. `validate-source-governance.py` discovers
-the manifest and `.ai/distribution/repository-identity-policy.yaml` through the
+the manifest, `.ai/distribution/repository-identity-policy.yaml`, and
+`.ai/distribution/source-dispositions.yaml` through the
 stable source-only `.ai/distribution/governance-checks.yaml` registry so
 portable scripts do not depend on dated workflow history. The identity
 validator scans Git-tracked plus untracked non-ignored files and fails on
