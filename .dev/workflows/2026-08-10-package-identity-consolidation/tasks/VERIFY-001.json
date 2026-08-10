@@ -6,9 +6,9 @@
   "task_id": "VERIFY-001",
   "workflow_id": "2026-08-10-package-identity-consolidation",
   "owner_skill": "ai-context-auditor",
-  "status": "in_progress",
+  "status": "completed",
   "created_at": "2026-08-10T22:21:28+08:00",
-  "updated_at": "2026-08-10T22:54:57+08:00",
+  "updated_at": "2026-08-10T23:04:31+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-5.6-sol",
   "reasoning_effort": "high",
@@ -41,11 +41,11 @@
       "exact pre/post package profile and 655-file payload comparison",
       "committed-range git diff --check"
     ],
-    "last_completed_step": "Finalized ASM-20260810-004 with PKG-002 addressed, no new findings, and exact package projection invariance.",
-    "next_action": "Push the branch, open the cohesive PR, run hosted checks, and finalize integration evidence."
+    "last_completed_step": "Read back five successful hosted checks, merged PR #185 through a verified two-parent commit, and confirmed Issue #166 closed as completed with Project Status Done.",
+    "next_action": "Integrate the records-only closeout branch through a merge commit; no workflow task remains."
   },
   "results": {
-    "summary": "Independent verification passed for the #166 committed subject; PKG-002 is addressed and PKG-001 remains correctly routed to #184.",
+    "summary": "Independent verification and hosted integration passed for #166 and #172; PKG-002 is addressed, PR #185 is merged, and PKG-001 remains correctly routed to #184.",
     "files_changed": [
       ".dev/assessments/ASM-20260810-004/assessment.yaml",
       ".dev/assessments/ASM-20260810-004/report.md",
@@ -58,10 +58,13 @@
       "python .ai/scripts/validate-source-governance.py (passed)",
       "python .ai/scripts/validate-ai-context.py (passed)",
       "pre/post package projection comparison (passed: identical 655 files)",
-      "python .ai/scripts/validate-assessment-artifacts.py (passed: 45 assessments)"
+      "python .ai/scripts/validate-assessment-artifacts.py (passed: 45 assessments)",
+      "hosted runs 31400920340, 31400920061, and 31400921081 (passed: five checks at 87aa4e4b280ce5889aa28d1798f79c4628828bed)",
+      "merge commit 15b3e52bbb899afeff47844f99ebae351f6c2b44 (passed: parents 8a59080ad80c424e82099bdda7ac6bc6f951db9e and 87aa4e4b280ce5889aa28d1798f79c4628828bed)",
+      "Issue #166 CLOSED / COMPLETED and Project Done; Issue #172 remained CLOSED / COMPLETED and Project Done"
     ],
     "finding_status": "addressed",
-    "residual_risk": "Hosted PR checks and merge read-back remain before workflow closure.",
-    "follow_up_needed": true
+    "residual_risk": "The separate #184 source-disposition contract and v0.12.0 publication remain owner-scheduled future work; neither is incomplete #166/#172 scope.",
+    "follow_up_needed": false
   }
 }

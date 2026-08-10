@@ -12,14 +12,14 @@
 - `workflow_id`: `2026-08-10-package-identity-consolidation`
 - `workflow_kind`: `ai-context-maintenance`
 - `owner_skill`: `ai-context-governance`
-- `branch`: `codex/2026-08-10-package-identity-consolidation`
+- `branch`: `codex/2026-08-10-package-identity-closeout`
 - `base_branch`: `main`
-- `branch_segment`: `1`
-- `status`: `in_progress`
-- `current_phase`: `integration`
+- `branch_segment`: `2`
+- `status`: `completed`
+- `current_phase`: `completed`
 - `artifact_root`: `.dev/workflows/2026-08-10-package-identity-consolidation`
 - `created_at`: `2026-08-10T22:21:28+08:00`
-- `updated_at`: `2026-08-10T22:54:57+08:00`
+- `updated_at`: `2026-08-10T23:04:31+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md`
 - `template_version`: `1.2.0`
 
@@ -58,20 +58,21 @@
 2. Classify differences and finalize `ASM-20260810-003`. `completed`
 3. Implement the #166 registry and bounded current-document consumption. `completed`
 4. Run focused validation and independent post-remediation audit. `completed`
-5. Reconcile findings, commit closure, push, PR, hosted validation, and merge. `in_progress`
+5. Reconcile findings, commit closure, push, PR, hosted validation, and merge. `completed`
 
 ## Resume Checkpoint
 
-- Last completed action: Finalized `ASM-20260810-004` at `da06351bc685d4921f9e4ce6111251e83b4a1ea2`; PKG-002 is addressed with no new finding.
-- Current task: `VERIFY-001`.
-- Exact next action: Commit the integration checkpoint, push the branch, open the PR, and require hosted validation before final workflow closure.
-- Validation already completed: Baseline and independent verification are final; seven identities, ten aliases, three bindings, two reserved namespaces, eight consumers, 11/11 GWT tests, source governance, AI context, and exact 655-file payload invariance passed.
-- Git state: `codex/2026-08-10-package-identity-consolidation` is based on `main` at `8a59080ad80c424e82099bdda7ac6bc6f951db9e`.
-- Branch history and checkpoint handoffs: none.
-- Blockers or unresolved decisions: Archive rename is not presumed. Any byte/schema/archive-name/migration behavior change discovered by #172 remains a separate Issue unless the existing #166 identity-only contract can record the current compatible name without altering artifacts.
+- Last completed action: PR #185 passed all five hosted checks and merged through two-parent commit `15b3e52bbb899afeff47844f99ebae351f6c2b44`; Issue #166 closed as completed and Project Status moved to `Done`, while #172 remained completed and `Done`.
+- Current task: none; `VERIFY-001` is completed.
+- Exact next action: Integrate this records-only closeout through a merge commit; no workflow execution remains.
+- Validation already completed: Baseline and independent verification are final; seven identities, ten aliases, three bindings, two reserved namespaces, eight consumers, 11/11 GWT tests, source governance, AI context, exact 655-file payload invariance, and hosted runs `31400920340`, `31400920061`, and `31400921081` passed at head `87aa4e4b280ce5889aa28d1798f79c4628828bed`.
+- Git state: `codex/2026-08-10-package-identity-closeout` starts from integrated `main@15b3e52bbb899afeff47844f99ebae351f6c2b44`.
+- Branch history and checkpoint handoffs: segment 1 integrated through PR #185; segment 2 is the records-only terminal continuation from the updated target.
+- Blockers or unresolved decisions: none within this workflow. #184 remains Planned / Unassigned, and v0.12.0 publication remains a distinct future lifecycle action.
 
 ## Branch Lifecycle
 
 | Segment | Branch | Base | Checkpoint Type | Commit | Remote / Target | Recorded At | Reason | Resume Branch / Action |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| 1 | `codex/2026-08-10-package-identity-consolidation` | `main@8a59080ad80c424e82099bdda7ac6bc6f951db9e` | local-active | `da06351bc685d4921f9e4ce6111251e83b4a1ea2` | local | `2026-08-10T22:54:57+08:00` | Local verification passed; hosted integration is pending | Push, PR, hosted checks, then close `VERIFY-001` |
+| 1 | `codex/2026-08-10-package-identity-consolidation` | `main@8a59080ad80c424e82099bdda7ac6bc6f951db9e` | merge-commit integration | `15b3e52bbb899afeff47844f99ebae351f6c2b44` | [PR #185](https://github.com/YuChia-Wei/ai-collaboration-framework/pull/185) / `main` | `2026-08-10T23:03:29+08:00` | Integrate the verified inventory and identity contract after five hosted checks passed. | Continue records-only closeout from updated `main`. |
+| 2 | `codex/2026-08-10-package-identity-closeout` | `main@15b3e52bbb899afeff47844f99ebae351f6c2b44` | terminal records | `15b3e52bbb899afeff47844f99ebae351f6c2b44` | local / closeout PR pending | `2026-08-10T23:04:31+08:00` | Retain final PR, merge-topology, Issue, Project, and publication-state read-back without changing implementation. | Integrate the records-only closeout through a merge commit. |
