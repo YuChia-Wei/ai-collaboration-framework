@@ -32,6 +32,7 @@
     {"path": ".ai/scripts/validate-ai-context-package.py", "portable": false, "dependency_profile": ["PyYAML"], "prerequisite_exit_code": 1},
     {"path": ".ai/scripts/ai_context_release_closeout.py", "portable": false, "dependency_profile": ["PyYAML"], "prerequisite_exit_code": 3},
     {"path": ".ai/scripts/validate-ai-context-release-state.py", "portable": false, "dependency_profile": ["PyYAML"], "prerequisite_exit_code": 1},
+    {"path": ".ai/scripts/validate-immutable-history.py", "portable": false, "dependency_profile": ["PyYAML"], "prerequisite_exit_code": 2},
     {"path": ".ai/scripts/validate-ai-context-versions.py", "portable": false, "dependency_profile": ["PyYAML"], "prerequisite_exit_code": 1},
     {"path": ".ai/scripts/validate-repository-config-contract.py", "portable": false, "dependency_profile": ["PyYAML"], "prerequisite_exit_code": 1},
     {"path": ".ai/scripts/validate-skill-transition.py", "portable": false, "dependency_profile": ["PyYAML"], "prerequisite_exit_code": 1},

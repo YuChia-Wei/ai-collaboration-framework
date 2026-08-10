@@ -121,6 +121,7 @@ Shell or PowerShell scripts should be retired or replaced when they:
 - `validate-ai-context-target.py`
 - `resolve-effective-rule-packet.py`
 - `validate-ai-context-release-state.py`
+- `validate-immutable-history.py`
 - `prepare-ai-context-release.py`
 - `validate-file-disposition-manifest.py`
 - `validate-git-commits.py`
@@ -163,6 +164,19 @@ it validates governed release identity, SemVer, immutable published
 tag-to-commit mappings, and compatibility declarations. It delegates
 component-aware target provenance and semantic customization checks to the
 shared downstream library.
+
+`validate-immutable-history.py` is the source-only routine/full validation
+layer for `.dev/workflows`, `.dev/assessments`, and `.dev/releases`. A full
+refresh executes the three native validators and records a content-addressed
+receipt that binds the exact source commit and tree, historical content,
+indexes, and validator/schema inputs. Routine verification accepts reuse only
+on the receipt commit's first-parent continuation and only when a closed Git
+diff proves those protected surfaces unchanged. Missing, stale, malformed, or
+mismatched evidence never becomes a pass: routine profiles execute the native
+full validators instead, while `release` and `nightly-full` always execute
+them. The receipt has no time-based TTL. This helper, its receipt, and its
+fixtures are source-only; downstream packages continue to validate target-local
+AI context without source history.
 
 `validate-ai-context-target.py` validates only downstream
 `.dev/ai-context/provenance.yaml` and `customizations.yaml`. It requires stable
@@ -315,6 +329,7 @@ naming and comments and run entirely in disposable Git repositories:
 
 ```powershell
 python .ai/scripts/tests/test_fail_closed_validation.py -v
+python .ai/scripts/tests/test_immutable_history_validation.py -v
 python .ai/scripts/tests/test_ai_context_wrapper_metadata.py -v
 python .ai/scripts/tests/test_ai_context_root_entries.py -v
 python .ai/scripts/tests/test_ai_context_language_policy.py -v
@@ -422,6 +437,13 @@ prompts, host identity, or provider token data. A prior eligible `executed`
 pass with the same validator/profile/input/environment identity may be reported
 as `reused`; that remains distinct from a new execution in both the compact
 summary and evidence record.
+
+For the source-only immutable-history checks, `fast` and `pr` may also report
+`reused` from the tracked full-validation receipt. This path does not consume a
+host-local cache and does not rescan unchanged historical blobs. A release,
+scheduled full run, protected-path change, validator/schema change, unknown
+diff path, or invalid receipt forces fresh native execution. Downstream runs do
+not load this source receipt.
 
 `check-all.sh` uses four enforcement classes:
 

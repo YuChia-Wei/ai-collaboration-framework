@@ -12,14 +12,14 @@
 - `workflow_id`: `2026-08-10-immutable-history-validation`
 - `workflow_kind`: `ai-context-maintenance`
 - `owner_skill`: `ai-context-governance`
-- `branch`: `codex/2026-08-10-immutable-history-validation`
+- `branch`: `codex/2026-08-10-immutable-history-validation-cont-02`
 - `base_branch`: `main`
-- `branch_segment`: `1`
+- `branch_segment`: `2`
 - `status`: `in_progress`
-- `current_phase`: `remediation-planning`
+- `current_phase`: `verification`
 - `artifact_root`: `.dev/workflows/2026-08-10-immutable-history-validation`
 - `created_at`: `2026-08-10T00:38:23+08:00`
-- `updated_at`: `2026-08-10T00:42:19+08:00`
+- `updated_at`: `2026-08-10T08:21:13+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md`
 - `template_version`: `1.2.0`
 
@@ -40,7 +40,7 @@ Issue #176 changes source-of-truth validation behavior across policy, executable
 
 - Baseline assessment: `.dev/assessments/ASM-20260809-004/assessment.yaml`
 - Remediation report: `.dev/workflows/2026-08-10-immutable-history-validation/reports/remediation-report.md`
-- Verification assessment: planned independent `ai-context-auditor` assessment; identifier not allocated yet.
+- Verification assessment: reserved independent `ai-context-auditor` assessment `ASM-20260810-002`; creation waits for the committed implementation and receipt subject.
 - Tasks: `.dev/workflows/2026-08-10-immutable-history-validation/tasks/`
 
 ## Finding Triage
@@ -52,7 +52,7 @@ Issue #176 changes source-of-truth validation behavior across policy, executable
 
 ## Owner Decision Gate For `VAL004-001`
 
-The Issue records four decisions as required. The following recommended packet was sent to the owner on `2026-08-10`; implementation of this task remains pending until an explicit owner selection is recorded.
+The Issue records four decisions as required. The owner explicitly adopted the following packet on `2026-08-10` with: `同意，我會觀察之後的狀況再來看有沒有需要調整`. These decisions authorize implementation while preserving later evidence-based adjustment.
 
 1. Routine proof: an already-verified baseline receipt binding content/tree digest and validator/schema fingerprint, plus `git diff --name-status <receipt-source>..HEAD` constrained by a closed allowlist. Any immutable-history path, validator, schema, or index change invalidates the receipt and fails closed.
 2. Required full gates: release candidate, scheduled governance run, validator/schema change, and immutable-history path change.
@@ -64,8 +64,8 @@ The Issue records four decisions as required. The following recommended packet w
 1. Bootstrap workflow and freeze baseline references.
 2. Inventory current validators, profiles, schemas, and tests.
 3. Complete the independent commit-title grammar correction with legacy compatibility fixtures.
-4. Await and record owner decision for layered validation; implement only the selected contract.
-5. Run full-profile parity, request independent post-remediation audit, reconcile evidence, and close or defer explicitly.
+4. Record the adopted layered-validation decision packet and implement it without broadening the hosted-workflow scope. `completed`
+5. Run full-profile parity, establish the receipt commit, request independent post-remediation audit, reconcile evidence, and close or defer explicitly. `in progress`
 
 ## Validation Strategy
 
@@ -77,16 +77,17 @@ The Issue records four decisions as required. The following recommended packet w
 
 ## Resume Checkpoint
 
-- Last completed action: Completed the prospective commit-title grammar correction with explicit pre-cutover compatibility and deterministic fixture coverage.
-- Current task: `VAL004-001-layered-history-validation` (pending owner decision).
-- Exact next action: Record the owner's explicit selection of routine proof, full gates, receipt reuse, and source/downstream profile boundary before changing layered validation behavior.
-- Validation already completed: commit policy GWT tests passed; root bilingual structural-parity tests passed outside the sandbox after the sandbox blocked temporary-fixture creation; AI context navigation validation passed.
-- Git state: uncommitted commit-grammar remediation and task-state update.
-- Branch history and checkpoint handoffs: no push or merge checkpoint.
-- Blockers or unresolved decisions: `VAL004-001-layered-history-validation` awaits the four owner decisions above. The commit grammar task is independent and may proceed.
+- Last completed action: Completed independent semantic review and the delegated long mechanical validation matrix with no open finding or subject drift.
+- Current task: `VAL004-001-layered-history-validation` (verification in progress).
+- Exact next action: Commit the reviewed implementation, run a clean full receipt refresh at that commit, and commit only the generated receipt as its immediate child.
+- Validation already completed: immutable-history fixtures passed 19/19 with one Windows privilege skip limited to the executable symlink fixture; fail-closed aggregate-runner fixtures passed 40/40; profile registry passed 5/5; the selected governance/integration contract suites passed 40 tests; commit policy passed 19/19; AI-context, source-governance, workflow, assessment, version, shell-asset, dependency/version, profile-projection, source-include, and diff validators passed. The independent semantic review has no open correctness, security, fail-open, or contract-test finding. Windows temporary-directory restrictions required fixture suites to run outside the sandbox where noted.
+- Git state: Bootstrap `5258e7c08e97ec4354898a0d798210af95a855ad` and grammar correction `7daeebf` are committed; decision-record and implementation changes are uncommitted.
+- Branch history and checkpoint handoffs: No push or merge checkpoint. Segment 2 starts locally from `7daeebf` because segment 1 remains checked out in its isolated worktree.
+- Blockers or unresolved decisions: None for the selected #176 implementation contract. The symlink execution fixture was skipped because Windows denied symlink creation (`WinError 1314`); the same ordering rule passed static semantic review. Receipt provenance and the independent post-commit `ai-context-auditor` assessment remain required. Hosted-workflow mutation, transport, pull request, and merge remain outside this execution slice.
 
 ## Branch Lifecycle
 
 | Segment | Branch | Base | Checkpoint Type | Commit | Remote / Target | Recorded At | Reason | Resume Branch / Action |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | 1 | `codex/2026-08-10-immutable-history-validation` | `main` at `a2f6fe53f2f50d436e6be7e27eb4d7de1bc4c828` | local bootstrap | pending | local | `2026-08-10T00:38:23+08:00` | Establish decision-gated validation remediation and independent grammar correction. | Commit bootstrap, then inventory validators. |
+| 2 | `codex/2026-08-10-immutable-history-validation-cont-02` | segment 1 at `7daeebf` | local continuation | `7daeebf` | local | `2026-08-10T07:13:15+08:00` | Continue the owner-approved implementation without mutating or removing the isolated segment-1 worktree. | Implement `VAL004-001-layered-history-validation`; no transport authorized. |

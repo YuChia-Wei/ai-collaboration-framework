@@ -406,6 +406,7 @@ exclusions:
       - .ai/scripts/render-ai-context-release-notes.py
       - .ai/scripts/validate-ai-context-package.py
       - .ai/scripts/validate-ai-context-release-state.py
+      - .ai/scripts/validate-immutable-history.py
       - .ai/scripts/ai_context_release_closeout.py
       - .ai/scripts/validate-ai-context-versions.py
       - .ai/scripts/validate-source-governance.py
@@ -419,6 +420,7 @@ exclusions:
       - .ai/scripts/tests/test_backlog_release_contract.py
       - .ai/scripts/tests/test_ai_context_packaging.py
       - .ai/scripts/tests/test_ai_context_release_state.py
+      - .ai/scripts/tests/test_immutable_history_validation.py
       - .ai/scripts/tests/test_ai_context_release_closeout.py
       - .ai/scripts/tests/test_ai_context_version_governance.py
       - .ai/scripts/tests/test_governance_workflow_contract.py

@@ -1,0 +1,87 @@
+schema_version: "1.0"
+contract_id: "immutable-history-validation"
+
+# This source-repository profile is deliberately not a downstream validation
+# contract.  It protects retained source execution evidence without making a
+# target repository carry this source repository's history or receipt.
+source:
+  history_roots:
+    - ".dev/workflows"
+    - ".dev/assessments"
+    - ".dev/releases"
+  history_indexes:
+    - ".dev/workflows/INDEX.MD"
+    - ".dev/assessments/INDEX.MD"
+    - ".dev/releases/INDEX.MD"
+  protected_paths:
+    - ".dev/backlog/**"
+    - ".dev/ai-context/**"
+    - ".dev/AI-CONTEXT-SOURCE.yaml"
+  fingerprint_paths:
+    validators:
+      - ".ai/scripts/validate-immutable-history.py"
+      - ".ai/scripts/validate-workflow-artifacts.py"
+      - ".ai/scripts/validate-assessment-artifacts.py"
+      - ".ai/scripts/validate-ai-context-versions.py"
+      - ".ai/scripts/python_prerequisites.py"
+      - ".ai/scripts/ai_context_target_provenance.py"
+      - ".ai/scripts/ai_context_effective_rules.py"
+      - ".ai/scripts/python-entrypoints.json"
+      - "requirements.txt"
+    schema:
+      - ".ai/distribution/validation/immutable-history-validation.yaml"
+      - ".ai/distribution/IMMUTABLE-HISTORY-VALIDATION-CONTRACT.md"
+  receipt:
+    # `refresh` writes this file only after the native full validators succeed.
+    # It is intentionally outside .dev immutable-history roots. The first
+    # containing commit changes only this receipt; later routine continuation
+    # changes must remain within the closed, deny-first allowlist below.
+    path: ".ai/distribution/validation/immutable-history-receipt.yaml"
+    schema_version: "1.0"
+    allowed_diff_paths:
+      - ".ai/distribution/validation/immutable-history-receipt.yaml"
+      - ".ai/assets/**"
+      - ".ai/scripts/README.md"
+      - ".ai/scripts/tests/**"
+      - ".dev/guides/**"
+      - "docs/**"
+      - "src/**"
+      - "tests/**"
+      - "tools/**"
+      - "README.md"
+      - "README.en.md"
+      - "AGENTS.md"
+      - "AGENTS.zh-TW.md"
+      - "CLAUDE.md"
+  profiles:
+    routine:
+      - "fast"
+      - "pr"
+    full:
+      - "release"
+      - "nightly-full"
+    full_gates:
+      - "release-candidate"
+      - "scheduled-governance"
+      - "validator-schema-change"
+      - "immutable-history-change"
+  native_full_validators:
+    - check_id: "workflow-artifacts"
+      command:
+        - "python"
+        - ".ai/scripts/validate-workflow-artifacts.py"
+    - check_id: "assessment-artifacts"
+      command:
+        - "python"
+        - ".ai/scripts/validate-assessment-artifacts.py"
+    - check_id: "source-ai-context-version"
+      command:
+        - "python"
+        - ".ai/scripts/validate-ai-context-versions.py"
+
+downstream:
+  mode: "target-local-ai-context-only"
+  source_history_receipt: "forbidden"
+  target_local_validation:
+    - "python"
+    - ".ai/scripts/validate-ai-context-target.py"

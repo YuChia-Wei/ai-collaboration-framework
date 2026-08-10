@@ -228,9 +228,17 @@ class SyntheticRunnerRepo:
             '    shift\n'
             '  done\n'
             '  while IFS="$(printf \'\\t\')" read -r validator_id _; do\n'
-            '    [ -n "$validator_id" ] && printf "%s\\tfixture-%s\\tfalse\\t\\n" "$validator_id" "$validator_id"\n'
+            '    [ -n "$validator_id" ] && printf "%s\\tfixture-%s\\t%s\\t\\n" "$validator_id" "$validator_id" "${EVIDENCE_STUB_REUSE:-false}"\n'
             '  done < "$selection"\n'
             '  exit 0\n'
+            'fi\n'
+            'if [ "$1" = ".ai/scripts/validate-immutable-history.py" ] && [ "$2" = "verify" ]; then\n'
+            f'  printf "{name} %s\\n" "$*" >> .aic-sentinel\n'
+            '  case "${IMMUTABLE_HISTORY_STUB_MODE:-error}" in\n'
+            '    reusable) printf "routine-reusable\\treceipt-verified\\t1111111111111111111111111111111111111111\\t2222222222222222222222222222222222222222\\t3333333333333333333333333333333333333333\\tworkflow-artifacts,assessment-artifacts,source-ai-context-version\\n"; exit 0 ;;\n'
+            '    full) printf "full-required\\timmutable-history-change\\t1111111111111111111111111111111111111111\\t2222222222222222222222222222222222222222\\t3333333333333333333333333333333333333333\\tworkflow-artifacts,assessment-artifacts,source-ai-context-version\\n"; exit 10 ;;\n'
+            '    *) printf "configuration-error\\tfixture-error\\t\\t\\t\\t\\n"; exit 2 ;;\n'
+            '  esac\n'
             'fi\n'
             f'printf "{name} %s\\n" "$*" >> .aic-sentinel\nexit "${{{exit_variable}:-0}}"',
         )
@@ -244,6 +252,21 @@ class SyntheticRunnerRepo:
             encoding="utf-8",
             newline="\n",
         )
+
+    def enable_immutable_history_context(self) -> None:
+        for path in (
+            self.root / ".dev/workflows",
+            self.root / ".dev/assessments",
+            self.root / ".dev/releases",
+            self.root / ".ai/distribution/validation",
+        ):
+            path.mkdir(parents=True, exist_ok=True)
+        for path in (
+            self.scripts / "validate-immutable-history.py",
+            self.root / ".ai/distribution/validation/immutable-history-validation.yaml",
+            self.root / ".ai/distribution/validation/immutable-history-receipt.yaml",
+        ):
+            path.write_text("# immutable history fixture marker\n", encoding="utf-8")
 
     def enable_source_governance_context(self) -> None:
         workflow = self.root / ".github/workflows/governance.yml"
@@ -705,6 +728,142 @@ class CheckAllRunnerGwtTests(unittest.TestCase):
             )
             self.assertNotIn("source release context not packaged", result.stdout)
             self.assertNotIn("source governance registry not packaged", result.stdout)
+        finally:
+            fixture.close()
+
+    def test_gwt_012a_given_valid_history_receipt_when_fast_runs_then_native_history_validators_are_reused(self) -> None:
+        fixture = SyntheticRunnerRepo()
+        try:
+            fixture.enable_source_release_context()
+            fixture.enable_immutable_history_context()
+
+            result = fixture.execute(
+                "--profile",
+                "fast",
+                environment={"IMMUTABLE_HISTORY_STUB_MODE": "reusable"},
+            )
+
+            self.assertEqual(0, result.returncode, result.stdout + result.stderr)
+            lines = {line.split()[0]: line for line in result.stdout.splitlines() if line.split()}
+            self.assertTrue(lines["workflow-artifacts"].rstrip().endswith("reused"))
+            self.assertTrue(lines["assessment-artifacts"].rstrip().endswith("reused"))
+            self.assertTrue(lines["source-ai-context-version"].rstrip().endswith("reused"))
+            commands = fixture.sentinel()
+            self.assertTrue(
+                any("validate-immutable-history.py verify" in line for line in commands)
+            )
+            self.assertFalse(
+                any("validate-workflow-artifacts.py" in line for line in commands)
+            )
+            self.assertFalse(
+                any("validate-assessment-artifacts.py" in line for line in commands)
+            )
+            self.assertFalse(
+                any("validate-ai-context-versions.py" in line for line in commands)
+            )
+        finally:
+            fixture.close()
+
+    def test_gwt_012b_given_history_change_when_fast_runs_then_all_native_history_validators_execute(self) -> None:
+        fixture = SyntheticRunnerRepo()
+        try:
+            fixture.enable_source_release_context()
+            fixture.enable_immutable_history_context()
+
+            result = fixture.execute(
+                "--profile",
+                "fast",
+                environment={"IMMUTABLE_HISTORY_STUB_MODE": "full"},
+            )
+
+            self.assertEqual(0, result.returncode, result.stdout + result.stderr)
+            commands = fixture.sentinel()
+            self.assertTrue(any("validate-workflow-artifacts.py" in line for line in commands))
+            self.assertTrue(any("validate-assessment-artifacts.py" in line for line in commands))
+            self.assertTrue(any("validate-ai-context-versions.py" in line for line in commands))
+            self.assertIn("reused=0", result.stdout)
+        finally:
+            fixture.close()
+
+    def test_gwt_012c_given_release_gate_when_local_cache_is_eligible_then_history_validators_still_execute(self) -> None:
+        fixture = SyntheticRunnerRepo()
+        try:
+            fixture.enable_source_release_context()
+            fixture.enable_immutable_history_context()
+
+            result = fixture.execute(
+                "--profile",
+                "release",
+                environment={
+                    "IMMUTABLE_HISTORY_STUB_MODE": "reusable",
+                    "EVIDENCE_STUB_REUSE": "true",
+                },
+            )
+
+            self.assertEqual(0, result.returncode, result.stdout + result.stderr)
+            commands = fixture.sentinel()
+            self.assertFalse(
+                any("validate-immutable-history.py verify" in line for line in commands)
+            )
+            self.assertTrue(any("validate-workflow-artifacts.py" in line for line in commands))
+            self.assertTrue(any("validate-assessment-artifacts.py" in line for line in commands))
+            self.assertTrue(any("validate-ai-context-versions.py" in line for line in commands))
+        finally:
+            fixture.close()
+
+    def test_gwt_012d_given_history_receipt_is_missing_when_fast_runs_then_native_history_validators_execute(self) -> None:
+        fixture = SyntheticRunnerRepo()
+        try:
+            fixture.enable_source_release_context()
+            fixture.enable_immutable_history_context()
+            (
+                fixture.root
+                / ".ai/distribution/validation/immutable-history-receipt.yaml"
+            ).unlink()
+
+            result = fixture.execute("--profile", "fast")
+
+            self.assertEqual(0, result.returncode, result.stdout + result.stderr)
+            commands = fixture.sentinel()
+            self.assertFalse(
+                any("validate-immutable-history.py verify" in line for line in commands)
+            )
+            self.assertTrue(any("validate-workflow-artifacts.py" in line for line in commands))
+            self.assertTrue(any("validate-assessment-artifacts.py" in line for line in commands))
+            self.assertTrue(any("validate-ai-context-versions.py" in line for line in commands))
+        finally:
+            fixture.close()
+
+    def test_gwt_012e_given_history_verifier_has_configuration_error_when_fast_runs_then_runner_stops_before_checks(self) -> None:
+        fixture = SyntheticRunnerRepo()
+        try:
+            fixture.enable_source_release_context()
+            fixture.enable_immutable_history_context()
+
+            result = fixture.execute(
+                "--profile",
+                "fast",
+                environment={"IMMUTABLE_HISTORY_STUB_MODE": "error"},
+            )
+
+            self.assertEqual(2, result.returncode, result.stdout + result.stderr)
+            self.assertIn(
+                "Immutable history validation preparation failed",
+                result.stderr,
+            )
+            commands = fixture.sentinel()
+            self.assertTrue(
+                any("validate-immutable-history.py verify" in line for line in commands)
+            )
+            self.assertFalse(
+                any("validate-workflow-artifacts.py" in line for line in commands)
+            )
+            self.assertFalse(
+                any("validate-assessment-artifacts.py" in line for line in commands)
+            )
+            self.assertFalse(
+                any("validate-ai-context-versions.py" in line for line in commands)
+            )
         finally:
             fixture.close()
 

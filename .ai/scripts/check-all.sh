@@ -48,9 +48,16 @@ declare -A CHECK_APPLICABILITY=()
 declare -A SELECTED_CHECK_IDS=()
 declare -A SELECTION_REASON_BY_ID=()
 declare -A CHANGED_PATHS=()
+declare -A IMMUTABLE_HISTORY_RECEIPT_REUSE_BY_ID=()
 CHANGED_PATHS_DIGEST=unavailable
 SELECTION_MODE=profile-full
 SELECTION_ESCALATION_REASON=
+IMMUTABLE_HISTORY_SOURCE_CONTEXT=false
+IMMUTABLE_HISTORY_FORCE_FULL=false
+IMMUTABLE_HISTORY_MODE=downstream-target-local
+IMMUTABLE_HISTORY_REASON=not-source-repository
+IMMUTABLE_HISTORY_FINGERPRINT=
+IMMUTABLE_HISTORY_RECEIPT_SOURCE=
 
 register_profile() {
     local id=$1 purpose=$2 budget=$3 enforcement=$4
@@ -199,7 +206,12 @@ input_owns_path() {
 
 is_global_invalidator() {
     case "$1" in
-        .ai/scripts/validation-profile-registry.sh|.ai/scripts/check-all.sh|.ai/scripts/validation-evidence.py|.github/workflows/*)
+        .ai/scripts/validation-profile-registry.sh|.ai/scripts/check-all.sh|.ai/scripts/validation-evidence.py|\
+        .ai/scripts/validate-immutable-history.py|.ai/distribution/validation/immutable-history-validation.yaml|\
+        .ai/scripts/validate-workflow-artifacts.py|.ai/scripts/validate-assessment-artifacts.py|\
+        .ai/scripts/validate-ai-context-versions.py|.dev/standards/WORKFLOW-ARTIFACT-POLICY.md|\
+        .dev/standards/ASSESSMENT-ARTIFACT-POLICY.md|.dev/standards/AI-CONTEXT-VERSION-POLICY.md|\
+        .github/workflows/*)
             return 0 ;;
     esac
     return 1
@@ -459,6 +471,121 @@ python() {
     "$PYTHON_EXECUTABLE" "$@"
 }
 
+IMMUTABLE_HISTORY_HELPER="$SCRIPT_DIR/validate-immutable-history.py"
+IMMUTABLE_HISTORY_CONTRACT="$PROJECT_ROOT/.ai/distribution/validation/immutable-history-validation.yaml"
+IMMUTABLE_HISTORY_RECEIPT="$PROJECT_ROOT/.ai/distribution/validation/immutable-history-receipt.yaml"
+
+immutable_history_source_context_available() {
+    [ -d "$PROJECT_ROOT/.dev/workflows" ] &&
+        [ -d "$PROJECT_ROOT/.dev/assessments" ] &&
+        [ -d "$PROJECT_ROOT/.dev/releases" ] &&
+        [ -d "$PROJECT_ROOT/.ai/distribution" ]
+}
+
+immutable_history_check_is_protected() {
+    case "$1" in
+        workflow-artifacts|assessment-artifacts|source-ai-context-version) return 0 ;;
+    esac
+    return 1
+}
+
+select_immutable_history_check() {
+    local id=$1 reason=$2
+    select_with_dependencies "$id" || return 1
+    SELECTION_REASON_BY_ID["$id"]=$reason
+}
+
+select_immutable_history_full_checks() {
+    local reason="immutable-history-full-required:$1" id
+    IMMUTABLE_HISTORY_FORCE_FULL=true
+    IMMUTABLE_HISTORY_MODE=full-required
+    IMMUTABLE_HISTORY_REASON=$1
+    for id in workflow-artifacts assessment-artifacts source-ai-context-version; do
+        select_immutable_history_check "$id" "$reason" || return 1
+    done
+}
+
+prepare_immutable_history_layer() {
+    local output rc outcome reason source_revision source_tree receipt_commit reusable_ids id
+    if ! immutable_history_source_context_available; then
+        return 0
+    fi
+    IMMUTABLE_HISTORY_SOURCE_CONTEXT=true
+
+    case "$PROFILE" in
+        release)
+            select_immutable_history_full_checks release-candidate
+            return
+            ;;
+        nightly-full)
+            select_immutable_history_full_checks scheduled-governance
+            return
+            ;;
+        fast|pr)
+            select_immutable_history_check workflow-artifacts immutable-history-routine-proof || return 1
+            select_immutable_history_check assessment-artifacts immutable-history-routine-proof || return 1
+            select_immutable_history_check source-ai-context-version immutable-history-routine-proof || return 1
+            ;;
+        *)
+            return 0
+            ;;
+    esac
+
+    if [ ! -f "$IMMUTABLE_HISTORY_HELPER" ] ||
+        [ ! -f "$IMMUTABLE_HISTORY_CONTRACT" ] ||
+        [ ! -f "$IMMUTABLE_HISTORY_RECEIPT" ]; then
+        select_immutable_history_full_checks missing-receipt-contract
+        return
+    fi
+
+    set +e
+    output=$(python .ai/scripts/validate-immutable-history.py verify \
+        --repo "$PROJECT_ROOT" \
+        --contract "$IMMUTABLE_HISTORY_CONTRACT" \
+        --receipt "$IMMUTABLE_HISTORY_RECEIPT" \
+        --head HEAD \
+        --profile "$PROFILE" \
+        --output-format tsv)
+    rc=$?
+    set -e
+    IFS=$'\t' read -r outcome reason source_revision source_tree receipt_commit reusable_ids <<< "$output"
+
+    if [ "$rc" -eq 10 ] && [ "$outcome" = full-required ] && [ -n "$reason" ]; then
+        select_immutable_history_full_checks "$reason"
+        return
+    fi
+    if [ "$rc" -ne 0 ] || [ "$outcome" != routine-reusable ] ||
+        [ -z "$source_revision" ] || [ -z "$source_tree" ] || [ -z "$receipt_commit" ]; then
+        echo "Immutable history receipt verification failed closed: ${output:-no-output}" >&2
+        return 1
+    fi
+
+    IMMUTABLE_HISTORY_MODE=routine-reusable
+    IMMUTABLE_HISTORY_REASON=${reason:-receipt-verified}
+    IMMUTABLE_HISTORY_RECEIPT_SOURCE=$source_revision
+    IMMUTABLE_HISTORY_FINGERPRINT=$(printf '%s\n' "$source_revision" "$source_tree" "$receipt_commit" | sha256sum | awk '{print $1}')
+    reusable_ids=${reusable_ids//,/ }
+    for id in $reusable_ids; do
+        immutable_history_check_is_protected "$id" || {
+            echo "Immutable history receipt returned an unsupported check id: $id" >&2
+            return 1
+        }
+        IMMUTABLE_HISTORY_RECEIPT_REUSE_BY_ID["$id"]=true
+    done
+    for id in workflow-artifacts assessment-artifacts source-ai-context-version; do
+        [ -n "${IMMUTABLE_HISTORY_RECEIPT_REUSE_BY_ID[$id]:-}" ] || {
+            echo "Immutable history receipt omitted required reusable check id: $id" >&2
+            return 1
+        }
+        SELECTION_REASON_BY_ID["$id"]="immutable-history-receipt:$source_revision"
+    done
+}
+
+if ! prepare_immutable_history_layer; then
+    echo "Immutable history validation preparation failed; no checks were launched." >&2
+    exit 2
+fi
+
 # Track results
 TOTAL_CHECKS=0
 PASSED_CHECKS=0
@@ -513,6 +640,7 @@ EVIDENCE_EVENTS="$LOG_DIR/evidence-events.tsv"
 EVIDENCE_CHANGED_PATHS="$LOG_DIR/changed-paths.txt"
 declare -A EVIDENCE_FINGERPRINT_BY_ID=()
 declare -A EVIDENCE_CACHE_HIT_BY_ID=()
+declare -A EVIDENCE_RECEIPT_HIT_BY_ID=()
 declare -A EVIDENCE_PRIOR_LOG_BY_ID=()
 declare -A VALIDATOR_VERSION_BY_ID=()
 EVIDENCE_ENVIRONMENT_CLASS=linux-local
@@ -527,6 +655,7 @@ EVIDENCE_POLICY_FINGERPRINT=$(sha256sum "$REGISTRY_PATH" "$SCRIPT_DIR/check-all.
 EVIDENCE_POLICY_FINGERPRINT=${EVIDENCE_POLICY_FINGERPRINT:-unavailable}
 EVIDENCE_INPUT_FINGERPRINT=
 EVIDENCE_CACHE_HIT=false
+EVIDENCE_RECEIPT_HIT=false
 EVIDENCE_PRIOR_LOG=
 
 validator_version() {
@@ -538,6 +667,7 @@ prepare_validation_evidence() {
     local id=$1
     EVIDENCE_INPUT_FINGERPRINT=${EVIDENCE_FINGERPRINT_BY_ID[$id]:-}
     EVIDENCE_CACHE_HIT=${EVIDENCE_CACHE_HIT_BY_ID[$id]:-false}
+    EVIDENCE_RECEIPT_HIT=${EVIDENCE_RECEIPT_HIT_BY_ID[$id]:-false}
     EVIDENCE_PRIOR_LOG=${EVIDENCE_PRIOR_LOG_BY_ID[$id]:-}
     [ -n "$EVIDENCE_INPUT_FINGERPRINT" ] || return 1
     return 0
@@ -553,6 +683,13 @@ prepare_all_validation_evidence() {
     for id in "${CHECK_IDS[@]}"; do
         version=$(validator_version "$id")
         VALIDATOR_VERSION_BY_ID["$id"]=$version
+        if [ -n "${IMMUTABLE_HISTORY_RECEIPT_REUSE_BY_ID[$id]:-}" ]; then
+            EVIDENCE_FINGERPRINT_BY_ID["$id"]=$IMMUTABLE_HISTORY_FINGERPRINT
+            EVIDENCE_CACHE_HIT_BY_ID["$id"]=false
+            EVIDENCE_RECEIPT_HIT_BY_ID["$id"]=true
+            EVIDENCE_PRIOR_LOG_BY_ID["$id"]=$IMMUTABLE_HISTORY_RECEIPT
+            continue
+        fi
         printf '%s\t%s\t%s\t%s\n' \
             "$id" "$version" "${CHECK_INPUT_PATHS[$id]}" "${CHECK_CACHE_POLICY[$id]}" \
             >> "$EVIDENCE_SELECTION"
@@ -567,8 +704,16 @@ prepare_all_validation_evidence() {
         [ -n "$record" ] || continue
         EVIDENCE_FINGERPRINT_BY_ID["$record"]=$fingerprint
         EVIDENCE_CACHE_HIT_BY_ID["$record"]=$cache_hit
+        EVIDENCE_RECEIPT_HIT_BY_ID["$record"]=false
         EVIDENCE_PRIOR_LOG_BY_ID["$record"]=$prior_log
     done <<< "$prepared"
+    if [ "$IMMUTABLE_HISTORY_SOURCE_CONTEXT" = true ] && [ "$IMMUTABLE_HISTORY_FORCE_FULL" = true ]; then
+        for id in workflow-artifacts assessment-artifacts source-ai-context-version; do
+            EVIDENCE_CACHE_HIT_BY_ID["$id"]=false
+            EVIDENCE_RECEIPT_HIT_BY_ID["$id"]=false
+            EVIDENCE_PRIOR_LOG_BY_ID["$id"]=
+        done
+    fi
     for id in "${CHECK_IDS[@]}"; do
         [ -n "${EVIDENCE_FINGERPRINT_BY_ID[$id]:-}" ] || {
             echo "Validation evidence preparation omitted selected check: $id" >&2
@@ -606,6 +751,7 @@ record_not_selected_evidence() {
         printf 'NOT-SELECTED: %s\n' "${SELECTION_REASON_BY_ID[$id]}" > "$log_path"
         EVIDENCE_INPUT_FINGERPRINT=${EVIDENCE_FINGERPRINT_BY_ID[$id]:-}
         EVIDENCE_CACHE_HIT=false
+        EVIDENCE_RECEIPT_HIT=false
         started_ms=$(now_millis)
         completed_ms=$started_ms
         record_validation_evidence "$id" "not-applicable" "not-selected" "$started_ms" "$completed_ms" "$log_path" || return 1
@@ -776,8 +922,10 @@ run_check() {
         record_unavailable_or_failed "$enforcement" "validation evidence lookup for $description"
         outcome="failed"
         disposition="executed"
-    elif [ "$EVIDENCE_CACHE_HIT" = true ]; then
-        printf 'Reused eligible validation evidence; prior_log=%s\n' "$EVIDENCE_PRIOR_LOG" >"$log_path"
+    elif [ "$EVIDENCE_CACHE_HIT" = true ] || [ "$EVIDENCE_RECEIPT_HIT" = true ]; then
+        printf 'Reused eligible validation evidence; source=%s; prior_log=%s\n' \
+            "$([ "$EVIDENCE_RECEIPT_HIT" = true ] && printf receipt || printf cache)" \
+            "$EVIDENCE_PRIOR_LOG" >"$log_path"
         PASSED_CHECKS=$((PASSED_CHECKS + 1))
         REUSED_CHECKS=$((REUSED_CHECKS + 1))
         outcome="passed"
@@ -854,8 +1002,10 @@ run_command_check() {
         record_unavailable_or_failed "$enforcement" "validation evidence lookup for $description"
         outcome="failed"
         disposition="executed"
-    elif [ "$EVIDENCE_CACHE_HIT" = true ]; then
-        printf 'Reused eligible validation evidence; prior_log=%s\n' "$EVIDENCE_PRIOR_LOG" >"$log_path"
+    elif [ "$EVIDENCE_CACHE_HIT" = true ] || [ "$EVIDENCE_RECEIPT_HIT" = true ]; then
+        printf 'Reused eligible validation evidence; source=%s; prior_log=%s\n' \
+            "$([ "$EVIDENCE_RECEIPT_HIT" = true ] && printf receipt || printf cache)" \
+            "$EVIDENCE_PRIOR_LOG" >"$log_path"
         PASSED_CHECKS=$((PASSED_CHECKS + 1))
         outcome="passed"
         REUSED_CHECKS=$((REUSED_CHECKS + 1))
@@ -1256,6 +1406,15 @@ run_command_check "python .ai/scripts/tests/test_validation_profile_registry.py 
 run_command_check "python .ai/scripts/tests/test_validation_evidence.py -v" \
     "Validation Execution Evidence Contract" \
     "required" "true" "true"
+
+if immutable_history_source_context_available; then
+    run_command_check "python .ai/scripts/tests/test_immutable_history_validation.py -v" \
+        "Immutable History Validation Contract" \
+        "required" "true" "true"
+elif check_is_selected "Immutable History Validation Contract"; then
+    echo -e "${CYAN}ℹ${NC} NOT APPLICABLE: Immutable History Validation Contract (source history not packaged)"
+    NOT_APPLICABLE=$((NOT_APPLICABLE + 1))
+fi
 
 run_command_check "python .ai/scripts/tests/test_coding_standards_integrity_contract.py -v" \
     "Coding Standards Integrity Claim Contract" \
