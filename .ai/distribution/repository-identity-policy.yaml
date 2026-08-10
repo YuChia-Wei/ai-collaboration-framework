@@ -3,13 +3,12 @@ policy_id: "repository-rename-retired-identity"
 issue: 150
 status: "active"
 
-current_identity:
-  repository_slug: "ai-collaboration-framework"
-  repository: "YuChia-Wei/ai-collaboration-framework"
-
-retired_identities:
-  - id: "pre-v0.12-repository-slug"
-    literal: "ai-collaboration-prompts-dotnet-backend"
+identity_registry:
+  path: ".ai/distribution/identity-registry.yaml"
+  current_repository_id: "repository.framework-source"
+  retired_alias_refs:
+    - identity_id: "repository.framework-source"
+      alias_id: "pre-v0.12-repository-slug"
 
 scan:
   source: "git-index-and-untracked-nonignored"
@@ -100,10 +99,10 @@ rules:
     classification: "public-compatibility"
     disposition: "retain-as-validator-input"
     paths:
-      - ".ai/distribution/repository-identity-policy.yaml"
+      - ".ai/distribution/identity-registry.yaml"
     minimum_occurrence_lines: 1
     minimum_files: 1
-    rationale: "The source-only policy must declare the literal that it rejects outside classified paths."
+    rationale: "The source-only product identity registry owns the retired alias literals that this policy classifies."
 
   - id: "GOV007-ALLOW-009"
     classification: "fixture"

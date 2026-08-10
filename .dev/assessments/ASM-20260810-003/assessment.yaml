@@ -1,0 +1,46 @@
+schema_version: "1.0"
+assessment_id: "ASM-20260810-003"
+commit_search_id: "ASM-20260810-003"
+assessment_type: "ai-context-audit"
+title: "Distribution Source, Projection, And Published Artifact Inventory"
+owner_skill: "ai-context-auditor"
+status: "final"
+report: "report.md"
+artifact_branch: "codex/2026-08-10-package-identity-consolidation"
+base_branch: "main"
+created_at: "2026-08-10T22:29:58+08:00"
+updated_at: "2026-08-10T22:29:58+08:00"
+template_source: ".dev/assessments/templates/assessment-locator-template.yaml"
+template_version: "1.0.0"
+report_template_source: ".ai/assets/skills/ai-context-auditor/templates/ai-context-audit-report-template.md"
+report_template_version: "2.1.0"
+subject_ref:
+  repository: "YuChia-Wei/ai-collaboration-framework"
+  branch: "codex/2026-08-10-package-identity-consolidation"
+  commit: "343089ea2a05a10ee203fa5cbbc7a542db9b346f"
+scope:
+  included:
+    - ".ai/distribution/** profile, component, mapping, exclusion, and metadata contracts"
+    - "Current source-to-product projection resolved from the pinned Git tree"
+    - "GitHub Release v0.11.0 ZIP, tar.gz, checksum sidecars, and online asset metadata"
+    - "Reconciliation with ASM-20260809-003 and ASM-20260809-004"
+    - "Identity and compatibility handoff to Issues #166 and #184"
+  excluded:
+    - "src/** and product implementation trees"
+    - "product tests and target-repository mutation"
+    - "package byte, schema, archive name, migration behavior, tag, Release, or asset mutation"
+    - "CLI command, binary, installer, and registry-package identity decisions"
+relations:
+  supersedes: []
+  superseded_by: []
+  related_assessments:
+    - "ASM-20260809-003"
+    - "ASM-20260809-004"
+  workflow_refs:
+    - "2026-08-10-package-identity-consolidation"
+  backlog_refs: []
+  adr_refs: []
+resume:
+  last_completed_action: "Verified the published v0.11.0 archives and classified the current source-to-product projection."
+  next_action: "Use PKG-002 as the baseline for the #166 identity registry; route PKG-001 to Issue #184."
+  blockers: []

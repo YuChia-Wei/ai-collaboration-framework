@@ -1,0 +1,71 @@
+{
+  "template_id": "ai-context-governance-remediation-task",
+  "template_version": "1.1.0",
+  "template_created_at": "2026-07-10T18:22:49+08:00",
+  "template_updated_at": "2026-07-27T09:52:09+08:00",
+  "task_id": "PKG009-001",
+  "workflow_id": "2026-08-10-package-identity-consolidation",
+  "owner_skill": "ai-context-auditor",
+  "status": "completed",
+  "created_at": "2026-08-10T22:21:28+08:00",
+  "updated_at": "2026-08-10T22:35:48+08:00",
+  "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
+  "model": "gpt-5.6-sol",
+  "reasoning_effort": "high",
+  "finding_ids": [
+    "ASM-20260810-003#PKG-001",
+    "ASM-20260810-003#PKG-002"
+  ],
+  "scope": {
+    "target": "Issue #172 package source, projection, archive, and published-asset inventory",
+    "files": [
+      ".ai/distribution/**",
+      ".dev/assessments/ASM-20260809-003/**",
+      ".dev/assessments/ASM-20260809-004/**",
+      ".dev/releases/**",
+      ".dev/assessments/ASM-20260810-003/**"
+    ],
+    "constraints": [
+      "Audit package and governance surfaces only; exclude product source and tests.",
+      "Treat GitHub Release v0.11.0 assets and tag bytes as immutable read-only evidence.",
+      "Do not alter package bytes, schemas, archive names, migration behavior, or downstream targets during #172."
+    ],
+    "non_goals": [
+      "Implement #166 before the #172 baseline is final.",
+      "Publish or replace any release asset."
+    ]
+  },
+  "execution": {
+    "steps": [
+      "Reconcile #170/#171 classifications with the current distribution contract.",
+      "Read back v0.11.0 published archives, paths, modes, checksums, fingerprints, and metadata.",
+      "Create and validate ASM-20260810-003 with a machine-readable inventory and difference classification."
+    ],
+    "validation": [
+      "python .ai/scripts/validate-assessment-artifacts.py",
+      "focused distribution resolver and reference-integrity checks",
+      "GitHub Release asset and checksum read-back"
+    ],
+    "last_completed_step": "Finalized ASM-20260810-003 after exact v0.11.0 archive read-back and current-contract reconciliation.",
+    "next_action": "Implement the #166 identity registry from PKG-002; retain PKG-001 under Issue #184."
+  },
+  "results": {
+    "summary": "Verified both published v0.11.0 archives, proved exact source replay, reconciled the current 655-file projection, and routed two stable findings.",
+    "files_changed": [
+      ".dev/assessments/ASM-20260810-003/assessment.yaml",
+      ".dev/assessments/ASM-20260810-003/report.md",
+      ".dev/assessments/ASM-20260810-003/evidence/source-to-product-artifact-inventory.yaml",
+      ".dev/assessments/ASM-20260810-003/evidence/v0.11.0-published-archive-readback.yaml",
+      ".dev/assessments/INDEX.MD"
+    ],
+    "tests_run": [
+      "python .ai/scripts/validate-assessment-artifacts.py (passed: 44 assessments)",
+      "validate_sidecar and validate_archive for v0.11.0 ZIP and tar.gz (passed)",
+      "recorded-source payload replay and cross-format path/content/mode comparison (passed)",
+      "current distribution resolution and v0.11.0 difference classification (passed)"
+    ],
+    "finding_status": "addressed",
+    "residual_risk": "PKG-001 remains planned under #184; PKG-002 is the authorized #166 implementation input.",
+    "follow_up_needed": true
+  }
+}

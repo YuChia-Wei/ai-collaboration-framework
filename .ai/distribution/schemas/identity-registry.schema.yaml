@@ -1,0 +1,72 @@
+schema_version: "1.0"
+document: identity-registry.yaml
+required:
+  - schema_version
+  - schema
+  - registry_id
+  - issue
+  - status
+  - owner_skill
+  - identity_records
+  - bindings
+  - future_namespaces
+  - consumer_contracts
+properties:
+  schema_version:
+    const: "1.0"
+  schema:
+    const: ".ai/distribution/schemas/identity-registry.schema.yaml"
+  registry_id: stable-lowercase-namespaced-id
+  issue: positive-integer
+  status:
+    enum: [active]
+  owner_skill:
+    const: ai-context-governance
+  identity_records:
+    type: unique-non-empty-list
+    record_required:
+      - id
+      - kind
+      - canonical_value
+      - display_name
+      - owner
+      - scope
+      - version_authority
+      - status
+      - forms
+      - aliases
+      - deprecation_policy
+    invariants:
+      - stable-id-is-globally-unique
+      - canonical-value-is-globally-unique
+      - forms-and-alias-values-do-not-overlap-another-record
+      - alias-id-and-value-are-globally-unique
+      - every-alias-has-an-explicit-deprecation-policy
+      - repository-and-public-product-remain-distinct-records
+  bindings:
+    type: unique-non-empty-list
+    record_required: [id, source, target, relationship, rationale]
+    relationships:
+      - must-remain-distinct
+      - derives-name-from
+      - shares-version-with
+  future_namespaces:
+    type: unique-non-empty-list
+    record_required:
+      - id
+      - scope
+      - status
+      - naming_rule
+      - authority
+      - prohibited_assumptions
+    status:
+      const: reserved-rule-only
+    semantics: "A naming rule is not authorization to create a repository, command, binary, installer, or registry package identity."
+  consumer_contracts:
+    type: unique-non-empty-list
+    supported_kinds:
+      - yaml-value
+      - text-contains
+      - release-family
+      - skill-transition
+additional_properties: false

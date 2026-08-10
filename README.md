@@ -1,10 +1,14 @@
-# AI 協作知識庫與 .NET Backend Context Framework
+# AI Collaboration Framework
+
+AI 協作知識庫與 .NET Backend Context Framework
 
 [English](README.en.md)
 
 本檔案是 `README.md` 所代表的來源庫人類導覽身分之繁體中文（台灣）canonical 版本；README.en.md 是對應的英文翻譯。
 
 本專案是一個可攜式的 AI 協作框架來源庫，將軟體開發實務、可重用的 Agent context、skills、sub-agent prompts 與協作流程集中管理。它目前保留並發展 .NET / C# 後端的專門能力，同時把可跨技術棧使用的協作規則抽離為通用內容。
+
+來源庫、公開產品、framework release、technology profile 與 archive/package 是不同識別類別；目前的 machine-readable 權威與相容 alias 定義在 [identity registry](.ai/distribution/identity-registry.yaml)。這份 registry 不決定 CLI command、binary、installer 或外部 toolchain repository 名稱。
 
 這不是特定產品的應用程式或範例系統。它的目的，是讓團隊能把經過整理與驗證的 AI 協作能力帶入新舊專案，並由目標專案本身的程式碼、設定與文件建立該專案的真實脈絡。
 
