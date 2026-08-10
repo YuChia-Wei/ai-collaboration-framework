@@ -7,7 +7,7 @@
 - `owner_skill`: `ai-context-governance`
 - `status`: `implementation-validation`
 - `created_at`: `2026-08-11T00:43:10+08:00`
-- `updated_at`: `2026-08-11T01:19:03+08:00`
+- `updated_at`: `2026-08-11T01:27:57+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-remediation-report-template.md`
 - `template_version`: `2.0.0`
 - `baseline_assessment`: `ASM-20260810-003`
@@ -17,7 +17,7 @@
 
 - Authorized scope: GitHub Issues #184 and #167 plus v0.12 release coordination in #169.
 - Completed scope: #184 source dispositions and #167 terminal tag publication/provider reconciliation implementation.
-- Validation summary: 94 focused tests plus source governance, AI context, and diff validation passed; hosted review and final frozen validation remain.
+- Validation summary: 94 focused tests plus source governance, AI context, and diff validation passed. PR #188 first hosted run found one stale dependency-validator cardinality; the bounded correction passes 19 dependency tests, four Windows launcher tests, four entrypoint tests, and direct dependency validation. Superseding hosted review and final frozen validation remain.
 - Closure decision: `not-ready`
 
 ## Finding Resolution Matrix

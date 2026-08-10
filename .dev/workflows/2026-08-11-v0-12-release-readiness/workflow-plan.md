@@ -12,7 +12,7 @@
 - `current_phase`: `validation`
 - `artifact_root`: `.dev/workflows/2026-08-11-v0-12-release-readiness`
 - `created_at`: `2026-08-11T00:43:10+08:00`
-- `updated_at`: `2026-08-11T01:19:03+08:00`
+- `updated_at`: `2026-08-11T01:27:57+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md`
 - `template_version`: `1.2.0`
 
@@ -51,9 +51,9 @@
 
 ## Resume Checkpoint
 
-- Last completed action: #184 and #167 implementation passed 94 focused tests plus source-governance and AI-context validators; the aggregate critical command produced no failure output but exceeded the two-minute local command limit and is deferred to hosted/frozen validation.
+- Last completed action: PR #188 candidate and Ubuntu prerequisite checks passed on `abeef30`; three checks exposed one shared stale 29-entry dependency-validator count. The validator now expects 31 total / 29 PyYAML entries, and its 19 tests, the four Windows launcher tests, four entrypoint-contract tests, and direct validation pass locally.
 - Current task: integrate `PKG010-001` and `REL006-001` through a reviewed implementation pull request.
-- Exact next action: commit and push the implementation, open the pull request, and wait for hosted checks before Issue closeout or release-candidate authoring.
+- Exact next action: commit and push the focused CI correction, then wait for the superseding PR #188 checks before Issue closeout or release-candidate authoring.
 - Validation already completed: source disposition derives `1052 = 117 packaged + 903 explicit exclusions + 32 dispositions` with zero implicit omissions; release-state 33/33, provider 7/7, workflow 8/8, governance-workflow 7/7, and file-disposition 31/31 tests passed; source governance, AI context, and `git diff --check` passed.
 - Git state: branch `codex/2026-08-11-v0-12-release-readiness` from the exact baseline.
 - Branch history and checkpoint handoffs: none.

@@ -8,7 +8,7 @@
   "owner_skill": "ai-context-governance",
   "status": "completed",
   "created_at": "2026-08-11T00:43:10+08:00",
-  "updated_at": "2026-08-11T01:19:03+08:00",
+  "updated_at": "2026-08-11T01:27:57+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-5.6-sol",
   "reasoning_effort": "high",
@@ -28,7 +28,7 @@
   "results": {
     "summary": "Changed the normal v0.12+ release lifecycle so validated source is terminal: the owner tag triggers archive publication, hosted verification, Published-in updates, and #169 closure with no post-tag source commit.",
     "files_changed": [".ai/scripts/validate-ai-context-release-state.py", ".ai/scripts/reconcile-ai-context-release-provider.py", ".github/workflows/publish-release.yml", ".ai/assets/skills/ai-context-governance/templates/release-publication/**", ".dev/standards/AI-CONTEXT-VERSION-POLICY.md", ".dev/operations/runbooks/AI-CONTEXT-RELEASE-PUBLICATION-RUNBOOK.MD", ".ai/assets/skills/ai-context-release-closeout/**", ".agents/skills/ai-context-release-closeout/**", ".claude/skills/ai-context-release-closeout/**"],
-    "tests_run": ["test_ai_context_release_state.py: 33 passed", "test_release_provider_reconciliation.py: 7 passed", "test_github_workflow_contract.py: 8 passed", "validate-ai-context.py: passed", "git diff --check: passed"],
+    "tests_run": ["test_ai_context_release_state.py: 33 passed", "test_release_provider_reconciliation.py: 7 passed", "test_github_workflow_contract.py: 8 passed", "test_dependency_version_consistency.py: 19 passed", "test_run_python_entrypoint_ps1.py: 4 passed", "test_python_entrypoints_contract.py: 4 passed", "validate-dependency-versions.py: passed", "validate-ai-context.py: passed", "git diff --check: passed"],
     "finding_status": "addressed",
     "residual_risk": "Tag automation requires the separately managed RELEASE_PROVIDER_TOKEN. It is withheld from pull-request workflows and injected only into exact privileged tag steps; a missing or unusable token fails before Release mutation.",
     "follow_up_needed": false
