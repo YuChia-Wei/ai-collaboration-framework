@@ -134,8 +134,8 @@ class PythonPrerequisiteGwtTests(unittest.TestCase):
         # Given the canonical entrypoint registry.
         entries = self.registry["entrypoints"]
 
-        # When its approved boundary is counted, then it retains 28 entries, 13 portable entries and two no-PyYAML profiles.
-        self.assertEqual(28, len(entries))
+        # When its approved boundary is counted, then it retains 29 entries, 13 portable entries and two no-PyYAML profiles.
+        self.assertEqual(29, len(entries))
         self.assertEqual(13, sum(entry["portable"] for entry in entries))
         self.assertEqual(2, sum(not entry["dependency_profile"] for entry in entries))
         self.assertEqual({1, 2, 3}, {entry["prerequisite_exit_code"] for entry in entries})

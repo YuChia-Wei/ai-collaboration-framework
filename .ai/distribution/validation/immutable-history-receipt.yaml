@@ -1,0 +1,67 @@
+schema_version: '1.0'
+contract_id: immutable-history-validation
+source:
+  revision: 8fb17e13ce1e320e103026cff1ecbd3eb4f210b5
+  tree: 16c1e390dde731a321b9320503a48c19bc69ff3e
+  history_digest: b9ffa466288821237eba8e6cdd9ba1e039ef592c29bbb07ed58e20e127ae1a52
+  validator_digest: c2ad7594a58243c9fb08a8a46e45beba526327038f6bbf11f9e387991a27481b
+  schema_digest: 2516e117f7dea008ac8412de91bd176947b5883038a7857ef903273eab02ae50
+  index_digest: 13d5331e937def464ec619e966c62c29ac101d3e1ecf78e946232133139437b6
+  release_ref_digest: 629e253abdc4d389c556feffa948f41c4ef864e81c9dce3c86e866b7558f35d3
+  release_refs:
+  - path: .dev/releases/v0.0.1/release.yaml
+    tag: v0.0.1
+    declared_commit: ac2e2937b5209ece93e104c4a389a15e164c0d1b
+    resolved_commit: ac2e2937b5209ece93e104c4a389a15e164c0d1b
+  - path: .dev/releases/v0.1.0/release.yaml
+    tag: v0.1.0
+    declared_commit: 69c285077708dfb96ee49bb39258aec83eb7f1a9
+    resolved_commit: 69c285077708dfb96ee49bb39258aec83eb7f1a9
+  - path: .dev/releases/v0.10.0/release.yaml
+    tag: v0.10.0
+    declared_commit: 5878f213b50bdbb4b3123a60525cdc206fd5be04
+    resolved_commit: 5878f213b50bdbb4b3123a60525cdc206fd5be04
+  - path: .dev/releases/v0.11.0/release.yaml
+    tag: v0.11.0
+    declared_commit: 05199ed0a9ed509ef1696df014fce244f8e7cffa
+    resolved_commit: 05199ed0a9ed509ef1696df014fce244f8e7cffa
+  - path: .dev/releases/v0.2.0/release.yaml
+    tag: v0.2.0
+    declared_commit: 9abc75b543ae201865c1e119d29fac2bcd2f4542
+    resolved_commit: 9abc75b543ae201865c1e119d29fac2bcd2f4542
+  - path: .dev/releases/v0.3.0/release.yaml
+    tag: v0.3.0
+    declared_commit: 1e782909b7753b2889014516595d72f703a260f3
+    resolved_commit: 1e782909b7753b2889014516595d72f703a260f3
+  - path: .dev/releases/v0.4.0/release.yaml
+    tag: v0.4.0
+    declared_commit: 5af1db672928f9d51f55fee04183ad27b79fb9f8
+    resolved_commit: 5af1db672928f9d51f55fee04183ad27b79fb9f8
+  - path: .dev/releases/v0.4.1/release.yaml
+    tag: v0.4.1
+    declared_commit: 3daefcef1318c12d03c189f232993ccbe04665f2
+    resolved_commit: 3daefcef1318c12d03c189f232993ccbe04665f2
+  - path: .dev/releases/v0.4.2/release.yaml
+    tag: v0.4.2
+    declared_commit: f474c3b058cb9f89f93929e0732fc1f276422dd9
+    resolved_commit: f474c3b058cb9f89f93929e0732fc1f276422dd9
+  - path: .dev/releases/v0.5.0/release.yaml
+    tag: v0.5.0
+    declared_commit: 1477181f0b43fa7ee82fcd482141758ac9e22eb6
+    resolved_commit: 1477181f0b43fa7ee82fcd482141758ac9e22eb6
+  - path: .dev/releases/v0.6.0/release.yaml
+    tag: v0.6.0
+    declared_commit: 8b98b5f917513f2d143f42a322050a1162bb63f9
+    resolved_commit: 8b98b5f917513f2d143f42a322050a1162bb63f9
+  - path: .dev/releases/v0.7.0/release.yaml
+    tag: v0.7.0
+    declared_commit: 49723a943f744820f4bdb2c22de7930693a7106d
+    resolved_commit: 49723a943f744820f4bdb2c22de7930693a7106d
+  - path: .dev/releases/v0.8.0/release.yaml
+    tag: v0.8.0
+    declared_commit: 97ccc9e9f218ec681bb726d2e1b4edbb3e14fb25
+    resolved_commit: 97ccc9e9f218ec681bb726d2e1b4edbb3e14fb25
+  - path: .dev/releases/v0.9.0/release.yaml
+    tag: v0.9.0
+    declared_commit: c14a3260cba7d0a9e2b67b73df9e221280d2d2ef
+    resolved_commit: c14a3260cba7d0a9e2b67b73df9e221280d2d2ef

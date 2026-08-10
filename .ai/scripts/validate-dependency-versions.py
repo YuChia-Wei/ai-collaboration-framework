@@ -110,8 +110,8 @@ def validate_python_entrypoint_registry(root: Path, errors: list[str]) -> dict[s
             "version 6.0.3, import_name yaml, and requirements_path requirements.txt"
         )
     entrypoints = registry.get("entrypoints")
-    if not isinstance(entrypoints, list) or len(entrypoints) != 28:
-        errors.append(f"{REGISTRY_PATH.as_posix()}: entrypoints must contain exactly 28 records")
+    if not isinstance(entrypoints, list) or len(entrypoints) != 29:
+        errors.append(f"{REGISTRY_PATH.as_posix()}: entrypoints must contain exactly 29 records")
         return registry
     paths: set[str] = set()
     portable = pyyaml = stdlib = 0
@@ -148,15 +148,19 @@ def validate_python_entrypoint_registry(root: Path, errors: list[str]) -> dict[s
             exit_two_paths.add(path_value)
         elif entrypoint["prerequisite_exit_code"] == 3 and isinstance(path_value, str):
             exit_three_paths.add(path_value)
-    if (portable, pyyaml, stdlib) != (13, 26, 2):
+    if (portable, pyyaml, stdlib) != (13, 27, 2):
         errors.append(
-            f"{REGISTRY_PATH.as_posix()}: expected 13 portable, 26 PyYAML, and 2 stdlib-only entrypoints; "
+            f"{REGISTRY_PATH.as_posix()}: expected 13 portable, 27 PyYAML, and 2 stdlib-only entrypoints; "
             f"found {portable}, {pyyaml}, {stdlib}"
         )
-    if exit_two_paths != {".ai/scripts/plan-ai-context-package-apply.py"}:
+    expected_exit_two = {
+        ".ai/scripts/plan-ai-context-package-apply.py",
+        ".ai/scripts/validate-immutable-history.py",
+    }
+    if exit_two_paths != expected_exit_two:
         errors.append(
-            f"{REGISTRY_PATH.as_posix()}: only .ai/scripts/plan-ai-context-package-apply.py "
-            f"may use prerequisite_exit_code 2; found {sorted(exit_two_paths)}"
+            f"{REGISTRY_PATH.as_posix()}: prerequisite_exit_code 2 is reserved for "
+            f"{sorted(expected_exit_two)}; found {sorted(exit_two_paths)}"
         )
     if exit_three_paths != {".ai/scripts/ai_context_release_closeout.py"}:
         errors.append(

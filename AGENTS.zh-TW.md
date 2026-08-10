@@ -75,8 +75,8 @@ Workflow artifact 規則：
 ### Git Commit Policy
 
 1. 遵循 `.dev/standards/GIT-COMMIT-POLICY.md`。
-2. 有 issue number 時使用 `<type>(#<issue-number>|<scope>): <summary>`。
-3. 沒有 issue number 時使用 `<type>(<scope>): <summary>`。
+2. 僅能使用 `<type>(#<issue-number>): <summary>` 或 `<type>(<scope>): <summary>` 其中一種；兩者為替代格式。
+3. 舊範例中的 `|` 是表達「或」的中介標記，新的 commit title 不得將其當成字面字元使用。
 4. workflow-stage commits 需包含 `Why`、`What`、`Validation` 與 `Workflow` body sections。
 5. 每個 validated durable stage 或 coherent bounded batch 建立一個 commit，
    而不是每次 skill invocation 都 commit。只能改寫尚未 shared、尚未 pushed

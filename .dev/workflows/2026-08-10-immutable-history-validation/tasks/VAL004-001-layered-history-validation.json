@@ -1,0 +1,104 @@
+{
+  "template_id": "ai-context-governance-remediation-task",
+  "template_version": "1.1.0",
+  "template_created_at": "2026-07-10T18:22:49+08:00",
+  "template_updated_at": "2026-07-27T09:52:09+08:00",
+  "task_id": "VAL004-001-layered-history-validation",
+  "workflow_id": "2026-08-10-immutable-history-validation",
+  "owner_skill": "ai-context-governance",
+  "status": "completed",
+  "created_at": "2026-08-10T00:38:23+08:00",
+  "updated_at": "2026-08-10T08:31:18+08:00",
+  "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
+  "model": "gpt-5.6-terra",
+  "reasoning_effort": "xhigh",
+  "finding_ids": [
+    "ASM-20260809-004#DEV-003"
+  ],
+  "scope": {
+    "target": "Layered routine/full validation of immutable source-repository history.",
+    "files": [
+      ".ai/scripts/",
+      ".ai/tests/",
+      ".dev/standards/",
+      ".dev/operations/"
+    ],
+    "constraints": [
+      "Preserve immutable workflow, assessment, and release evidence bytes.",
+      "Fail closed on missing, stale, mismatched, incomplete, or ambiguous evidence.",
+      "Retain existing full validators as authority until parity and cutover evidence pass.",
+      "Require an owner decision for the four Issue #176 decision points before implementation."
+    ],
+    "non_goals": [
+      "Hosted-workflow modification.",
+      "Release, tag, publication, or package mutation.",
+      "Downstream profile implementation beyond its source-repository boundary contract."
+    ]
+  },
+  "execution": {
+    "steps": [
+      "Record the owner's selection for routine proof, full gates, receipt reuse, and source/downstream profile boundary.",
+      "Implement the selected contract with deterministic fixtures.",
+      "Run full-profile parity and request independent audit verification."
+    ],
+    "validation": [
+      "Focused deterministic validation fixtures.",
+      "Existing full validators and check-all profile parity.",
+      "Independent ai-context-auditor verification assessment."
+    ],
+    "last_completed_step": "Independent assessment ASM-20260810-002 verified DEV-003 addressed at the committed receipt subject with no active finding; governance reconciliation is complete.",
+    "next_action": "No implementation task remains. Generate the final receipt from the containing closure commit, commit only that receipt as its immediate child, and verify routine reuse."
+  },
+  "results": {
+    "summary": "The adopted layered validation contract, deterministic receipt provenance, long mechanical validation, and independent verification are complete on continuation branch segment 2.",
+    "files_changed": [
+      ".ai/distribution/IMMUTABLE-HISTORY-VALIDATION-CONTRACT.md",
+      ".ai/distribution/validation/immutable-history-validation.yaml",
+      ".ai/scripts/validate-immutable-history.py",
+      ".ai/scripts/tests/test_immutable_history_validation.py",
+      ".ai/scripts/check-all.sh",
+      ".ai/scripts/validation-profile-registry.sh",
+      ".ai/scripts/tests/test_fail_closed_validation.py",
+      ".ai/scripts/tests/test_validation_profile_registry.py",
+      ".ai/distribution/profiles/dotnet-backend.yaml",
+      ".ai/scripts/python-entrypoints.json",
+      ".ai/scripts/shell-assets.yaml",
+      ".ai/scripts/README.md",
+      ".ai/scripts/validate-dependency-versions.py",
+      ".ai/scripts/tests/test_dependency_version_consistency.py",
+      ".ai/scripts/tests/test_python_entrypoints_contract.py",
+      ".ai/scripts/tests/test_python_source_entrypoints.py",
+      ".dev/workflows/2026-08-10-immutable-history-validation/workflow.yaml",
+      ".dev/workflows/2026-08-10-immutable-history-validation/workflow-plan.md",
+      ".dev/workflows/2026-08-10-immutable-history-validation/tasks/VAL004-001-layered-history-validation.json",
+      ".dev/workflows/2026-08-10-immutable-history-validation/reports/remediation-report.md",
+      ".dev/workflows/INDEX.MD",
+      ".dev/assessments/ASM-20260810-002/assessment.yaml",
+      ".dev/assessments/ASM-20260810-002/report.md",
+      ".dev/assessments/INDEX.MD"
+    ],
+    "tests_run": [
+      "python .ai/scripts/tests/test_immutable_history_validation.py -v (19/19 passed; one executable symlink fixture skipped for WinError 1314)",
+      "python .ai/scripts/tests/test_fail_closed_validation.py -v (40/40 passed)",
+      "python .ai/scripts/tests/test_validation_profile_registry.py -v (5/5 passed)",
+      "python .ai/scripts/tests/test_python_entrypoints_contract.py -v (4/4 passed)",
+      "python .ai/scripts/tests/test_python_source_entrypoints.py -v (3/3 passed outside sandbox)",
+      "python .ai/scripts/tests/test_dependency_version_consistency.py -v (19/19 passed outside sandbox)",
+      "python .ai/scripts/tests/test_profile_projection_contract.py -v (3/3 passed)",
+      "python .ai/scripts/tests/test_ai_context_source_include_evidence.py -v (4/4 passed)",
+      "python .ai/scripts/tests/test_governance_workflow_contract.py -v (7/7 passed)",
+      "python .ai/scripts/validate-ai-context.py (passed)",
+      "python .ai/scripts/validate-source-governance.py (passed)",
+      "python .ai/scripts/validate-assessment-artifacts.py (passed)",
+      "python .ai/scripts/validate-ai-context-versions.py (passed)",
+      "python .ai/scripts/validate-shell-assets.py (passed)",
+      "python .ai/scripts/validate-dependency-versions.py (passed)",
+      "python .ai/scripts/validate-workflow-artifacts.py (passed)",
+      "Git Bash syntax validation for check-all.sh and validation-profile-registry.sh (passed)",
+      "git diff --check (passed)"
+    ],
+    "finding_status": "addressed",
+    "residual_risk": "The executable symlink fixture could not run on this Windows host because of WinError 1314; the ordering rule passed static semantic review. Release and scheduled-governance profiles remain mandatory full gates by design.",
+    "follow_up_needed": false
+  }
+}
