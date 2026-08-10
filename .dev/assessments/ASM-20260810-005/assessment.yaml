@@ -1,0 +1,50 @@
+schema_version: "1.0"
+assessment_id: "ASM-20260810-005"
+commit_search_id: "ASM-20260810-005"
+assessment_type: "ai-context-audit"
+title: "Terminal Validation Snapshot And Timeout Orchestration Incident"
+owner_skill: "ai-context-auditor"
+status: "final"
+report: "report.md"
+artifact_branch: "codex/assessment/asm-20260810-005"
+base_branch: "main"
+created_at: "2026-08-10T23:17:18+08:00"
+updated_at: "2026-08-10T23:17:18+08:00"
+template_source: ".dev/assessments/templates/assessment-locator-template.yaml"
+template_version: "1.0.0"
+report_template_source: ".ai/assets/skills/ai-context-auditor/templates/ai-context-audit-report-template.md"
+report_template_version: "2.1.0"
+subject_ref:
+  repository: "YuChia-Wei/ai-collaboration-framework"
+  branch: "main"
+  commit: "d39712b3acb2d886dc5541ecc9c93a101f412b60"
+scope:
+  included:
+    - "2026-08-10 delegated #175/#178 terminal-validation incident evidence"
+    - ".ai/scripts/check-all.sh timeout and evidence orchestration"
+    - ".ai/scripts/validation-profile-registry.sh timeout budgets and package command ownership"
+    - ".ai/scripts/tests/test_fail_closed_validation.py fixture and subprocess structure"
+    - ".ai/scripts/tests/test_immutable_history_validation.py fixture and subprocess structure"
+    - ".ai/scripts/validate-immutable-history.py native-validator subprocess execution"
+    - ".dev/standards/WORKFLOW-HANDOFF-POLICY.md validation pinning contract"
+  excluded:
+    - "product source and product tests"
+    - "remediation or timeout-value changes"
+    - "online Issue, Project, pull-request, merge, release, or publication mutation"
+    - "new long-running validation execution"
+relations:
+  supersedes: []
+  superseded_by: []
+  related_assessments:
+    - "ASM-20260810-001"
+    - "ASM-20260810-002"
+    - "ASM-20260809-004"
+    - "ASM-20260805-003"
+  workflow_refs:
+    - "2026-08-10-immutable-history-validation"
+  backlog_refs: []
+  adr_refs: []
+resume:
+  last_completed_action: "Finalized the incident findings and a staged remediation plan without changing audited validation surfaces."
+  next_action: "If the owner authorizes remediation, create and read back an online Issue, then start one ai-context-governance workflow from current main."
+  blockers: []
