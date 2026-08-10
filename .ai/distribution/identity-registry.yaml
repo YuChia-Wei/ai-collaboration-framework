@@ -1,0 +1,324 @@
+schema_version: "1.0"
+schema: ".ai/distribution/schemas/identity-registry.schema.yaml"
+registry_id: "ai-collaboration-framework-product-identities"
+issue: 166
+status: "active"
+owner_skill: "ai-context-governance"
+
+identity_records:
+  - id: "repository.framework-source"
+    kind: "repository"
+    canonical_value: "YuChia-Wei/ai-collaboration-framework"
+    display_name: "ai-collaboration-framework source repository"
+    owner: "repository-owner"
+    scope: "Current GitHub source repository coordinates and operational URLs."
+    version_authority: "GitHub repository settings and Issue #150."
+    status: "active"
+    forms:
+      slug: "ai-collaboration-framework"
+      coordinate: "YuChia-Wei/ai-collaboration-framework"
+      url: "https://github.com/YuChia-Wei/ai-collaboration-framework"
+    aliases:
+      - id: "pre-v0.12-repository-slug"
+        value: "ai-collaboration-prompts-dotnet-backend"
+        status: "redirect-compatible"
+        scope: "Historical source repository slug."
+        deprecation_policy:
+          mode: "compatibility"
+          replacement: "repository.framework-source"
+          removal_target: null
+          historical_rewrite: false
+          notes: "Retain only in classified compatibility or immutable evidence; never restore it as current operational truth."
+      - id: "pre-v0.12-repository-coordinate"
+        value: "YuChia-Wei/ai-collaboration-prompts-dotnet-backend"
+        status: "redirect-compatible"
+        scope: "Historical GitHub owner/repository coordinate."
+        deprecation_policy:
+          mode: "compatibility"
+          replacement: "repository.framework-source"
+          removal_target: null
+          historical_rewrite: false
+          notes: "GitHub redirect compatibility does not make this the current repository identity."
+      - id: "pre-v0.12-repository-url"
+        value: "https://github.com/YuChia-Wei/ai-collaboration-prompts-dotnet-backend"
+        status: "redirect-compatible"
+        scope: "Historical GitHub repository URL."
+        deprecation_policy:
+          mode: "compatibility"
+          replacement: "repository.framework-source"
+          removal_target: null
+          historical_rewrite: false
+          notes: "Preserve inside published metadata and immutable evidence; current operational consumers use the canonical URL."
+    deprecation_policy:
+      mode: "none"
+      replacement: null
+      removal_target: null
+      historical_rewrite: false
+      notes: "The current repository identity changes only through a separately authorized repository operation."
+
+  - id: "product.ai-collaboration-framework"
+    kind: "public-product"
+    canonical_value: "AI Collaboration Framework"
+    display_name: "AI Collaboration Framework"
+    owner: "repository-owner"
+    scope: "Public framework product and human-facing display identity."
+    version_authority: "This registry plus owner-approved product positioning."
+    status: "active"
+    forms:
+      display_name: "AI Collaboration Framework"
+    aliases: []
+    deprecation_policy:
+      mode: "none"
+      replacement: null
+      removal_target: null
+      historical_rewrite: false
+      notes: "Product identity is not inferred from repository, package, technology profile, namespace, or CLI naming."
+
+  - id: "release.framework"
+    kind: "framework-release"
+    canonical_value: "REL-v{version}"
+    display_name: "AI Collaboration Framework release"
+    owner: "release-owner"
+    scope: "Versioned framework release identity and immutable release history."
+    version_authority: ".dev/releases/v{version}/release.yaml"
+    status: "active"
+    forms:
+      release_id_template: "REL-v{version}"
+      release_tag_template: "v{version}"
+      release_model: "single-versioned-componentized-release"
+    aliases: []
+    deprecation_policy:
+      mode: "none"
+      replacement: null
+      removal_target: null
+      historical_rewrite: false
+      notes: "Published release records and tags are immutable version instances."
+
+  - id: "technology-profile.dotnet-backend"
+    kind: "technology-profile"
+    canonical_value: "dotnet-backend"
+    display_name: ".NET backend technology profile"
+    owner: "ai-context-governance"
+    scope: "Optional .NET/C# backend capability selection and its same-identity component binding."
+    version_authority: ".ai/distribution/profiles/dotnet-backend.yaml"
+    status: "active"
+    forms:
+      profile_id: "dotnet-backend"
+      component_id: "dotnet-backend"
+    aliases: []
+    deprecation_policy:
+      mode: "none"
+      replacement: null
+      removal_target: null
+      historical_rewrite: false
+      notes: "Retain because this value describes technology capability, not the repository name."
+
+  - id: "package.dotnet-backend-context"
+    kind: "archive-package"
+    canonical_value: "ai-context-dotnet-backend-v{version}"
+    display_name: ".NET backend AI context package"
+    owner: "release-owner"
+    scope: "Package ID, envelope root, and public archive base name for the dotnet-backend profile."
+    version_authority: ".ai/distribution/profiles/dotnet-backend.yaml#package.name_template"
+    status: "active"
+    forms:
+      package_id_template: "ai-context-dotnet-backend-v{version}"
+      zip_template: "ai-context-dotnet-backend-v{version}.zip"
+      zip_checksum_template: "ai-context-dotnet-backend-v{version}.zip.sha256"
+      tar_gz_template: "ai-context-dotnet-backend-v{version}.tar.gz"
+      tar_gz_checksum_template: "ai-context-dotnet-backend-v{version}.tar.gz.sha256"
+    aliases:
+      - id: "v0.11.0-package-id"
+        value: "ai-context-dotnet-backend-v0.11.0"
+        status: "immutable-published-instance"
+        scope: "Exact v0.11.0 package ID and envelope root."
+        deprecation_policy:
+          mode: "immutable"
+          replacement: null
+          removal_target: null
+          historical_rewrite: false
+          notes: "Preserve exact published identity; it is a version instance, not a repository alias."
+      - id: "v0.11.0-zip"
+        value: "ai-context-dotnet-backend-v0.11.0.zip"
+        status: "immutable-published-instance"
+        scope: "Exact v0.11.0 ZIP asset name."
+        deprecation_policy:
+          mode: "immutable"
+          replacement: null
+          removal_target: null
+          historical_rewrite: false
+          notes: "Preserve exact published asset name and checksum."
+      - id: "v0.11.0-zip-checksum"
+        value: "ai-context-dotnet-backend-v0.11.0.zip.sha256"
+        status: "immutable-published-instance"
+        scope: "Exact v0.11.0 ZIP sidecar name."
+        deprecation_policy:
+          mode: "immutable"
+          replacement: null
+          removal_target: null
+          historical_rewrite: false
+          notes: "Preserve exact published checksum sidecar identity."
+      - id: "v0.11.0-tar-gz"
+        value: "ai-context-dotnet-backend-v0.11.0.tar.gz"
+        status: "immutable-published-instance"
+        scope: "Exact v0.11.0 tar.gz asset name."
+        deprecation_policy:
+          mode: "immutable"
+          replacement: null
+          removal_target: null
+          historical_rewrite: false
+          notes: "Preserve exact published asset name and checksum."
+      - id: "v0.11.0-tar-gz-checksum"
+        value: "ai-context-dotnet-backend-v0.11.0.tar.gz.sha256"
+        status: "immutable-published-instance"
+        scope: "Exact v0.11.0 tar.gz sidecar name."
+        deprecation_policy:
+          mode: "immutable"
+          replacement: null
+          removal_target: null
+          historical_rewrite: false
+          notes: "Preserve exact published checksum sidecar identity."
+    deprecation_policy:
+      mode: "none"
+      replacement: null
+      removal_target: null
+      historical_rewrite: false
+      notes: "No renamed archive alias currently exists. A future rename requires a separate compatibility migration and cannot rewrite published instances."
+
+  - id: "skill.software-development-orchestrator"
+    kind: "canonical-skill"
+    canonical_value: "software-development-orchestrator"
+    display_name: "Software Development Orchestrator"
+    owner: "software-development-orchestrator"
+    scope: "Canonical multi-stage software-development orchestration skill identity."
+    version_authority: ".ai/assets/skills/transitions/v0.6.0.yaml"
+    status: "active"
+    forms:
+      skill_id: "software-development-orchestrator"
+    aliases:
+      - id: "dev-workflow"
+        value: "dev-workflow"
+        status: "deprecated-compatible"
+        scope: "Thin compatibility skill alias."
+        deprecation_policy:
+          mode: "compatibility"
+          replacement: "skill.software-development-orchestrator"
+          removal_target: null
+          historical_rewrite: false
+          notes: "Retain for existing callers and historical ownership; route new work to the canonical skill."
+    deprecation_policy:
+      mode: "none"
+      replacement: null
+      removal_target: null
+      historical_rewrite: false
+      notes: "Canonical skill identity activated in v0.6.0."
+
+  - id: "skill.ai-context-init"
+    kind: "canonical-skill"
+    canonical_value: "ai-context-init"
+    display_name: "AI Context Init"
+    owner: "ai-context-governance"
+    scope: "Canonical target-repository AI context initialization skill identity."
+    version_authority: ".ai/assets/skills/transitions/v0.6.0.yaml"
+    status: "active"
+    forms:
+      skill_id: "ai-context-init"
+    aliases:
+      - id: "repo-structure-sync"
+        value: "repo-structure-sync"
+        status: "deprecated-compatible"
+        scope: "Thin compatibility skill alias."
+        deprecation_policy:
+          mode: "compatibility"
+          replacement: "skill.ai-context-init"
+          removal_target: null
+          historical_rewrite: false
+          notes: "Retain for existing callers and historical ownership; route new initialization to the canonical skill."
+    deprecation_policy:
+      mode: "none"
+      replacement: null
+      removal_target: null
+      historical_rewrite: false
+      notes: "Canonical skill identity activated in v0.6.0."
+
+bindings:
+  - id: "repository-product-separation"
+    source: "repository.framework-source"
+    target: "product.ai-collaboration-framework"
+    relationship: "must-remain-distinct"
+    rationale: "Repository rename does not authorize or imply a product rename, and product identity does not define Git coordinates."
+  - id: "profile-qualified-package"
+    source: "technology-profile.dotnet-backend"
+    target: "package.dotnet-backend-context"
+    relationship: "derives-name-from"
+    rationale: "The archive remains technology-profile-qualified even though the repository has a broader product name."
+  - id: "release-package-version"
+    source: "release.framework"
+    target: "package.dotnet-backend-context"
+    relationship: "shares-version-with"
+    rationale: "Release and package instances share a version without sharing one semantic identity."
+
+future_namespaces:
+  - id: "toolchain-repository"
+    scope: "Potential external toolchain repository."
+    status: "reserved-rule-only"
+    naming_rule: "Select an owner-approved repository name that is distinct from source repository, product, profile, and archive identities."
+    authority: "A future explicit repository-creation Issue."
+    prohibited_assumptions:
+      - "This registry does not authorize repository creation."
+      - "The source repository slug is not a default toolchain repository name."
+  - id: "cli-distribution"
+    scope: "Potential CLI command, binary, installer, and registry package identities."
+    status: "reserved-rule-only"
+    naming_rule: "Define command, binary, installer, and registry package identities independently under feature:cli."
+    authority: "Issues #149/#168 or a later owner-approved feature:cli Issue."
+    prohibited_assumptions:
+      - "No CLI command or binary identity is selected here."
+      - "Package/archive identity is not a default CLI identity."
+
+consumer_contracts:
+  - id: "distribution-profile-repository"
+    kind: "yaml-value"
+    path: ".ai/distribution/profiles/dotnet-backend.yaml"
+    selector: "package.source_repository"
+    identity_id: "repository.framework-source"
+    identity_field: "forms.url"
+  - id: "distribution-profile-id"
+    kind: "yaml-value"
+    path: ".ai/distribution/profiles/dotnet-backend.yaml"
+    selector: "profile.id"
+    identity_id: "technology-profile.dotnet-backend"
+    identity_field: "forms.profile_id"
+  - id: "distribution-package-template"
+    kind: "yaml-value"
+    path: ".ai/distribution/profiles/dotnet-backend.yaml"
+    selector: "package.name_template"
+    identity_id: "package.dotnet-backend-context"
+    identity_field: "canonical_value"
+  - id: "distribution-release-model"
+    kind: "yaml-value"
+    path: ".ai/distribution/profiles/dotnet-backend.yaml"
+    selector: "release_model"
+    identity_id: "release.framework"
+    identity_field: "forms.release_model"
+  - id: "traditional-chinese-product-entry"
+    kind: "text-contains"
+    path: "README.md"
+    identity_id: "product.ai-collaboration-framework"
+    identity_field: "canonical_value"
+  - id: "english-product-entry"
+    kind: "text-contains"
+    path: "README.en.md"
+    identity_id: "product.ai-collaboration-framework"
+    identity_field: "canonical_value"
+  - id: "published-release-family"
+    kind: "release-family"
+    path_glob: ".dev/releases/v*/release.yaml"
+    release_identity_id: "release.framework"
+    package_identity_id: "package.dotnet-backend-context"
+  - id: "v0.6.0-skill-transition"
+    kind: "skill-transition"
+    path: ".ai/assets/skills/transitions/v0.6.0.yaml"
+    canonical_skill_ids:
+      - "skill.software-development-orchestrator"
+      - "skill.ai-context-init"

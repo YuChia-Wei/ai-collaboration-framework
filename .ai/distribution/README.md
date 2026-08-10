@@ -5,6 +5,8 @@ This directory owns source-side, machine-readable contracts for building portabl
 ## Entry Points
 
 - `profiles/dotnet-backend.yaml` defines the initial complete distribution profile, source allowlist, ownership classes, and exclusions.
+- `identity-registry.yaml` defines repository, public product, framework release, technology profile, package/archive, and governed legacy alias identities without selecting a CLI identity.
+- `schemas/identity-registry.schema.yaml` defines the source-only identity registry contract; `validate-repository-identity.py` validates its uniqueness, separation, aliases, and declared consumers.
 - `../assets/shared/PRODUCT-SOURCE-PROJECTION-CONTRACT.md` defines the single canonical product-source and derived-projection boundary.
 - `CLI-TOOLING-CONTRACT.md` defines the contract-only Distribution CLI, Portable Validator Engine, and source-only Source Maintainer CLI boundaries.
 - `schemas/package.schema.yaml` defines package-envelope metadata.
@@ -21,6 +23,8 @@ This directory owns source-side, machine-readable contracts for building portabl
 - `requirements.txt` is checksum-governed envelope metadata for the packaged target-side tooling. Install it with Python 3.11 or newer before invoking the planner.
 - Root entries and empty target catalogs come from public templates owned by `ai-context-init`; active source-repository root documents and catalogs are not templates.
 - External indexes or knowledge graphs may accelerate discovery but cannot prove package completeness.
+- Repository, public product, release, technology profile, archive/package, skill alias, and future CLI/toolchain namespaces are separate identity classes. The registry may bind relationships between them, but a repository rename never authorizes another identity change.
+- Distribution profile and release records remain stable compiled consumers. The source validator cross-checks their literals against the registry so #166 adds no package payload, archive-name, schema, or migration behavior change.
 - A profile entry marked `allow_empty_until` is a workflow bootstrap exception. A release candidate validator must reject every remaining empty entry.
 - Template-manifest `source` paths are resolved relative to the manifest directory. Targets are repository-relative payload paths; reject absolute paths, `..`, backslashes, duplicates, and collisions. A template may exist once at its canonical managed path and once at its mapped target seed path.
 - `metadata/SHA256SUMS.txt` covers every other envelope member and excludes itself. Archive digests are external `.sha256` sidecars because an archive cannot contain its own final digest.

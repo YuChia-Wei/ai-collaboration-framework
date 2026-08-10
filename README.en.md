@@ -1,10 +1,14 @@
-# AI Collaboration Knowledge Base and .NET Backend Context Framework
+# AI Collaboration Framework
+
+AI Collaboration Knowledge Base and .NET Backend Context Framework
 
 [繁體中文](README.md)
 
 This file is the English translation of the canonical Traditional Chinese (Taiwan) human-facing repository identity in `README.md`.
 
 This repository is the source for a portable AI collaboration framework. It brings together software-development practices, reusable Agent context, skills, sub-agent prompts, and collaboration workflows. It currently retains and develops specialized .NET / C# backend capability while separating cross-stack collaboration rules into reusable shared content.
+
+Repository, public product, framework release, technology profile, and archive/package are separate identity classes. Their current machine-readable authority and compatibility aliases are defined by the [identity registry](.ai/distribution/identity-registry.yaml). That registry does not select a CLI command, binary, installer, or external toolchain repository name.
 
 It is not a product application or a sample system for one product. Its purpose is to help teams bring curated and validated AI collaboration capability into new or existing repositories, while letting each target repository establish its own facts from its code, configuration, and documentation.
 

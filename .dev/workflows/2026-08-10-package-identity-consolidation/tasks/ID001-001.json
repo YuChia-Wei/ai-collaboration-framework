@@ -6,9 +6,9 @@
   "task_id": "ID001-001",
   "workflow_id": "2026-08-10-package-identity-consolidation",
   "owner_skill": "ai-context-governance",
-  "status": "in_progress",
+  "status": "completed",
   "created_at": "2026-08-10T22:21:28+08:00",
-  "updated_at": "2026-08-10T22:35:48+08:00",
+  "updated_at": "2026-08-10T22:50:31+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-5.6-sol",
   "reasoning_effort": "high",
@@ -17,7 +17,17 @@
   ],
   "scope": {
     "target": "Issue #166 versioned product/package/archive/profile identity registry",
-    "files": [],
+    "files": [
+      ".ai/distribution/identity-registry.yaml",
+      ".ai/distribution/schemas/identity-registry.schema.yaml",
+      ".ai/distribution/validators/product_identity_registry.py",
+      ".ai/distribution/repository-identity-policy.yaml",
+      ".ai/scripts/validate-repository-identity.py",
+      ".ai/scripts/tests/test_repository_identity.py",
+      ".ai/distribution/README.md",
+      "README.md",
+      "README.en.md"
+    ],
     "constraints": [
       "Consume final ASM-20260810-003 evidence before selecting registry records.",
       "Separate repository, public product, framework release, technology profile, archive/package, legacy alias, and future toolchain identities.",
@@ -34,16 +44,40 @@
       "Implement identity and alias records plus ambiguity validation.",
       "Update bounded current operational documents to consume or reference the registry."
     ],
-    "validation": [],
-    "last_completed_step": "Consumed final ASM-20260810-003 identity and compatibility handoff.",
-    "next_action": "Select the registry placement and schema, then implement exact identity and alias checks."
+    "validation": [
+      "python .ai/scripts/validate-repository-identity.py",
+      "python .ai/scripts/tests/test_repository_identity.py -v",
+      "python .ai/scripts/validate-source-governance.py",
+      "python .ai/scripts/validate-ai-context.py",
+      "working-tree package source overlap and payload fingerprint check",
+      "git diff --check"
+    ],
+    "last_completed_step": "Implemented and validated the versioned identity registry, consumer checks, compatibility aliases, and repository/product separation.",
+    "next_action": "Run independent post-remediation verification in ASM-20260810-004."
   },
   "results": {
-    "summary": "",
-    "files_changed": [],
-    "tests_run": [],
-    "finding_status": "not-addressed",
-    "residual_risk": "Registry placement, consumer boundaries, and ambiguity validation remain to be implemented.",
+    "summary": "Defined seven canonical identities, ten governed aliases, three explicit bindings, two reserved naming namespaces, and eight consumer contracts without changing package payload inputs.",
+    "files_changed": [
+      ".ai/distribution/identity-registry.yaml",
+      ".ai/distribution/schemas/identity-registry.schema.yaml",
+      ".ai/distribution/validators/product_identity_registry.py",
+      ".ai/distribution/repository-identity-policy.yaml",
+      ".ai/scripts/validate-repository-identity.py",
+      ".ai/scripts/tests/test_repository_identity.py",
+      ".ai/distribution/README.md",
+      "README.md",
+      "README.en.md"
+    ],
+    "tests_run": [
+      "product and repository identity validation (passed: 7 identities, 10 aliases, 8 consumers)",
+      "repository identity GWT suite (passed: 11/11)",
+      "source governance validation (passed)",
+      "AI context validation (passed)",
+      "working-tree package source overlap (passed: 0 changed payload sources; profile unchanged)",
+      "AST syntax parse and git diff --check (passed)"
+    ],
+    "finding_status": "addressed",
+    "residual_risk": "Independent ASM-20260810-004 verification and hosted PR checks remain.",
     "follow_up_needed": true
   }
 }

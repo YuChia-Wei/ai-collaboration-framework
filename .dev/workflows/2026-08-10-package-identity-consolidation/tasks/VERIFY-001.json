@@ -6,13 +6,15 @@
   "task_id": "VERIFY-001",
   "workflow_id": "2026-08-10-package-identity-consolidation",
   "owner_skill": "ai-context-auditor",
-  "status": "pending",
+  "status": "in_progress",
   "created_at": "2026-08-10T22:21:28+08:00",
-  "updated_at": "2026-08-10T22:21:28+08:00",
+  "updated_at": "2026-08-10T22:50:31+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-5.6-sol",
   "reasoning_effort": "high",
-  "finding_ids": [],
+  "finding_ids": [
+    "ASM-20260810-003#PKG-002"
+  ],
   "scope": {
     "target": "Independent #172/#166 post-remediation verification",
     "files": [
@@ -33,8 +35,8 @@
       "Finalize ASM-20260810-004 and hand closure back to governance."
     ],
     "validation": [],
-    "last_completed_step": "",
-    "next_action": "Wait for ID001-001 remediation completion."
+    "last_completed_step": "ID001-001 implementation and focused validation completed.",
+    "next_action": "Audit the committed #166 implementation and finalize ASM-20260810-004."
   },
   "results": {
     "summary": "",

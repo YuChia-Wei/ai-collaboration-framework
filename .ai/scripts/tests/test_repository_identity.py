@@ -7,6 +7,7 @@ import subprocess
 import sys
 import tempfile
 import unittest
+from collections.abc import Callable
 from pathlib import Path
 
 import yaml
@@ -15,6 +16,8 @@ import yaml
 REPO_ROOT = Path(__file__).resolve().parents[3]
 VALIDATOR = REPO_ROOT / ".ai/scripts/validate-repository-identity.py"
 POLICY_PATH = ".ai/distribution/repository-identity-policy.yaml"
+REGISTRY_PATH = ".ai/distribution/identity-registry.yaml"
+REGISTRY_SCHEMA_PATH = ".ai/distribution/schemas/identity-registry.schema.yaml"
 RETIRED = "ai-collaboration-prompts-dotnet-backend"
 
 
@@ -41,19 +44,87 @@ class SyntheticIdentityRepository:
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_text(content, encoding="utf-8", newline="\n")
 
-    def write_policy(self, rules: list[dict[str, object]]) -> None:
+    def write_registry(
+        self,
+        mutate: Callable[[dict[str, object]], None] | None = None,
+    ) -> None:
+        registry = yaml.safe_load(
+            (REPO_ROOT / REGISTRY_PATH).read_text(encoding="utf-8")
+        )
+        if mutate is not None:
+            mutate(registry)
+        self.write(REGISTRY_SCHEMA_PATH, 'schema_version: "1.0"\n')
+        self.write(
+            ".ai/distribution/profiles/dotnet-backend.yaml",
+            yaml.safe_dump(
+                {
+                    "profile": {"id": "dotnet-backend"},
+                    "release_model": "single-versioned-componentized-release",
+                    "package": {
+                        "source_repository": "https://github.com/YuChia-Wei/ai-collaboration-framework",
+                        "name_template": "ai-context-dotnet-backend-v{version}",
+                    },
+                },
+                sort_keys=False,
+            ),
+        )
+        self.write("README.md", "# AI Collaboration Framework\n")
+        self.write("README.en.md", "# AI Collaboration Framework\n")
+        self.write(
+            ".dev/releases/v0.3.0/release.yaml",
+            yaml.safe_dump(
+                {
+                    "version": "v0.3.0",
+                    "release_id": "REL-v0.3.0",
+                    "distribution": {
+                        "package_id": "ai-context-dotnet-backend-v0.3.0"
+                    },
+                },
+                sort_keys=False,
+            ),
+        )
+        self.write(
+            ".ai/assets/skills/transitions/v0.6.0.yaml",
+            yaml.safe_dump(
+                {
+                    "transitions": [
+                        {
+                            "current_identifier": "repo-structure-sync",
+                            "candidate_identifier": "ai-context-init",
+                        },
+                        {
+                            "current_identifier": "dev-workflow",
+                            "candidate_identifier": "software-development-orchestrator",
+                        },
+                    ]
+                },
+                sort_keys=False,
+            ),
+        )
+        self.write(REGISTRY_PATH, yaml.safe_dump(registry, sort_keys=False))
+
+    def write_policy(
+        self,
+        rules: list[dict[str, object]],
+        *,
+        registry_mutator: Callable[[dict[str, object]], None] | None = None,
+    ) -> None:
+        self.write_registry(registry_mutator)
         policy = {
             "schema_version": "1.0",
             "policy_id": "fixture-retired-identity",
             "issue": 150,
             "status": "active",
-            "current_identity": {
-                "repository_slug": "ai-collaboration-framework",
-                "repository": "YuChia-Wei/ai-collaboration-framework",
+            "identity_registry": {
+                "path": REGISTRY_PATH,
+                "current_repository_id": "repository.framework-source",
+                "retired_alias_refs": [
+                    {
+                        "identity_id": "repository.framework-source",
+                        "alias_id": "pre-v0.12-repository-slug",
+                    }
+                ],
             },
-            "retired_identities": [
-                {"id": "retired-repository", "literal": RETIRED},
-            ],
             "scan": {
                 "source": "git-index-and-untracked-nonignored",
                 "case_sensitive": True,
@@ -73,10 +144,10 @@ class SyntheticIdentityRepository:
                     "id": "SELF",
                     "classification": "public-compatibility",
                     "disposition": "validator-input",
-                    "paths": [POLICY_PATH],
+                    "paths": [REGISTRY_PATH],
                     "minimum_occurrence_lines": 1,
                     "minimum_files": 1,
-                    "rationale": "The policy declares its rejected literal.",
+                    "rationale": "The registry declares its retired aliases.",
                 },
                 *rules,
             ],
@@ -144,7 +215,7 @@ class RepositoryIdentityGwtTests(unittest.TestCase):
             result = fixture.validate()
 
             self.assertEqual(0, result.returncode, result.stdout + result.stderr)
-            self.assertIn("2 retired-name line(s)", result.stdout)
+            self.assertIn("4 retired-name line(s)", result.stdout)
             self.assertIn("HISTORY: 1 line(s), 1 file(s)", result.stdout)
         finally:
             fixture.close()
@@ -152,13 +223,16 @@ class RepositoryIdentityGwtTests(unittest.TestCase):
     def test_gwt_003_given_unclassified_current_path_when_validated_then_it_fails(self) -> None:
         fixture = SyntheticIdentityRepository()
         try:
-            fixture.write("README.md", f"Clone {RETIRED}.\n")
             fixture.write_policy([])
+            fixture.write(
+                "README.md",
+                f"# AI Collaboration Framework\nClone {RETIRED}.\n",
+            )
 
             result = fixture.validate()
 
             self.assertEqual(1, result.returncode)
-            self.assertIn("unclassified retired identity at README.md:1", result.stderr)
+            self.assertIn("unclassified retired identity at README.md:2", result.stderr)
         finally:
             fixture.close()
 
@@ -232,6 +306,80 @@ class RepositoryIdentityGwtTests(unittest.TestCase):
 
             self.assertEqual(1, result.returncode)
             self.assertIn("uses forbidden classification: current-operational", result.stderr)
+        finally:
+            fixture.close()
+
+    def test_gwt_008_given_duplicate_canonical_id_when_registry_is_loaded_then_it_fails(self) -> None:
+        fixture = SyntheticIdentityRepository()
+        try:
+            def duplicate_id(registry: dict[str, object]) -> None:
+                records = registry["identity_records"]
+                records[1]["id"] = records[0]["id"]
+
+            fixture.write_policy([], registry_mutator=duplicate_id)
+
+            result = fixture.validate()
+
+            self.assertEqual(1, result.returncode)
+            self.assertIn("duplicate canonical identity id", result.stderr)
+        finally:
+            fixture.close()
+
+    def test_gwt_009_given_ambiguous_alias_value_when_registry_is_loaded_then_it_fails(self) -> None:
+        fixture = SyntheticIdentityRepository()
+        try:
+            def duplicate_alias(registry: dict[str, object]) -> None:
+                aliases = registry["identity_records"][0]["aliases"]
+                aliases[1]["value"] = aliases[0]["value"]
+
+            fixture.write_policy([], registry_mutator=duplicate_alias)
+
+            result = fixture.validate()
+
+            self.assertEqual(1, result.returncode)
+            self.assertIn("ambiguous alias value", result.stderr)
+        finally:
+            fixture.close()
+
+    def test_gwt_010_given_repository_product_value_coupling_when_loaded_then_it_fails(self) -> None:
+        fixture = SyntheticIdentityRepository()
+        try:
+            def couple_product(registry: dict[str, object]) -> None:
+                records = registry["identity_records"]
+                records[1]["canonical_value"] = records[0]["canonical_value"]
+
+            fixture.write_policy([], registry_mutator=couple_product)
+
+            result = fixture.validate()
+
+            self.assertEqual(1, result.returncode)
+            self.assertIn("duplicate canonical identity value", result.stderr)
+        finally:
+            fixture.close()
+
+    def test_gwt_011_given_declared_consumer_drift_when_validated_then_it_fails(self) -> None:
+        fixture = SyntheticIdentityRepository()
+        try:
+            fixture.write_policy([])
+            fixture.write(
+                ".ai/distribution/profiles/dotnet-backend.yaml",
+                yaml.safe_dump(
+                    {
+                        "profile": {"id": "dotnet-backend"},
+                        "release_model": "single-versioned-componentized-release",
+                        "package": {
+                            "source_repository": "https://example.invalid/wrong",
+                            "name_template": "ai-context-dotnet-backend-v{version}",
+                        },
+                    },
+                    sort_keys=False,
+                ),
+            )
+
+            result = fixture.validate()
+
+            self.assertEqual(1, result.returncode)
+            self.assertIn("distribution-profile-repository consumer drift", result.stderr)
         finally:
             fixture.close()
 

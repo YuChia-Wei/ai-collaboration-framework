@@ -19,6 +19,16 @@ guard_direct_entrypoint(".ai/scripts/validate-repository-identity.py")
 
 import yaml
 
+IDENTITY_VALIDATOR_ROOT = SCRIPT_ROOT.parent / "distribution" / "validators"
+sys.path.insert(0, str(IDENTITY_VALIDATOR_ROOT))
+
+from product_identity_registry import (
+    IdentityRegistryError,
+    alias_by_id,
+    load_identity_registry,
+    records_by_id,
+)
+
 
 ROOT = Path(__file__).resolve().parents[2]
 DEFAULT_POLICY = ".ai/distribution/repository-identity-policy.yaml"
@@ -27,13 +37,18 @@ EXPECTED_TOP_LEVEL_KEYS = {
     "policy_id",
     "issue",
     "status",
-    "current_identity",
-    "retired_identities",
+    "identity_registry",
     "scan",
     "allowed_classifications",
     "forbidden_classifications",
     "rules",
 }
+IDENTITY_REGISTRY_REF_KEYS = {
+    "path",
+    "current_repository_id",
+    "retired_alias_refs",
+}
+RETIRED_ALIAS_REF_KEYS = {"identity_id", "alias_id"}
 RULE_KEYS = {
     "id",
     "classification",
@@ -115,41 +130,81 @@ def load_policy(root: Path, relative_policy: str) -> tuple[dict[str, object], li
     if policy["status"] != "active":
         raise PolicyError("policy.status must be active")
 
-    current = require_exact_keys(
-        policy["current_identity"],
-        {"repository_slug", "repository"},
+    registry_ref = require_exact_keys(
+        policy["identity_registry"],
+        IDENTITY_REGISTRY_REF_KEYS,
         set(),
-        "policy.current_identity",
+        "policy.identity_registry",
     )
-    if any(not isinstance(current[key], str) or not current[key] for key in current):
-        raise PolicyError("policy.current_identity values must be non-empty strings")
+    registry_path = registry_ref["path"]
+    if not isinstance(registry_path, str):
+        raise PolicyError("policy.identity_registry.path must be a string")
+    try:
+        registry = load_identity_registry(root, registry_path)
+    except IdentityRegistryError as exc:
+        raise PolicyError(f"product identity registry is invalid: {exc}") from exc
+    identities = records_by_id(registry)
+    current_id = registry_ref["current_repository_id"]
+    current_record = identities.get(current_id)
+    if (
+        current_record is None
+        or current_record.get("kind") != "repository"
+        or current_record.get("status") != "active"
+    ):
+        raise PolicyError(
+            "policy.identity_registry.current_repository_id must reference "
+            "an active repository identity"
+        )
+    current_forms = current_record.get("forms")
+    if not isinstance(current_forms, dict) or not all(
+        isinstance(current_forms.get(key), str) and current_forms[key]
+        for key in ("slug", "coordinate", "url")
+    ):
+        raise PolicyError(
+            "the current repository identity must define slug, coordinate, and url forms"
+        )
+    current_values = {
+        current_record["canonical_value"],
+        *current_forms.values(),
+    }
 
-    retired_records = policy["retired_identities"]
+    retired_records = registry_ref["retired_alias_refs"]
     if not isinstance(retired_records, list) or not retired_records:
-        raise PolicyError("policy.retired_identities must be a non-empty list")
+        raise PolicyError(
+            "policy.identity_registry.retired_alias_refs must be a non-empty list"
+        )
     retired_ids: set[str] = set()
     retired_literals: set[str] = set()
     normalized_retired: list[dict[str, str]] = []
     for index, record in enumerate(retired_records):
         item = require_exact_keys(
             record,
-            {"id", "literal"},
+            RETIRED_ALIAS_REF_KEYS,
             set(),
-            f"policy.retired_identities[{index}]",
+            f"policy.identity_registry.retired_alias_refs[{index}]",
         )
-        identity_id = item["id"]
-        literal = item["literal"]
-        if not isinstance(identity_id, str) or not identity_id:
-            raise PolicyError(f"policy.retired_identities[{index}].id must be non-empty")
-        if not isinstance(literal, str) or not literal:
-            raise PolicyError(f"policy.retired_identities[{index}].literal must be non-empty")
-        if identity_id in retired_ids or literal in retired_literals:
+        identity_id = item["identity_id"]
+        alias_id = item["alias_id"]
+        identity = identities.get(identity_id)
+        if identity is None or identity.get("kind") != "repository":
+            raise PolicyError(
+                "policy.identity_registry.retired_alias_refs "
+                f"references unknown repository identity: {identity_id}"
+            )
+        alias = alias_by_id(identity, alias_id) if isinstance(alias_id, str) else None
+        if alias is None:
+            raise PolicyError(
+                "policy.identity_registry.retired_alias_refs "
+                f"references unknown alias: {alias_id}"
+            )
+        literal = alias["value"]
+        if alias_id in retired_ids or literal in retired_literals:
             raise PolicyError("retired identity ids and literals must be unique")
-        if literal == current["repository_slug"] or literal == current["repository"]:
+        if literal in current_values:
             raise PolicyError("a retired identity cannot equal the current identity")
-        retired_ids.add(identity_id)
+        retired_ids.add(alias_id)
         retired_literals.add(literal)
-        normalized_retired.append({"id": identity_id, "literal": literal})
+        normalized_retired.append({"id": alias_id, "literal": literal})
 
     scan = require_exact_keys(
         policy["scan"],
@@ -238,7 +293,21 @@ def load_policy(root: Path, relative_policy: str) -> tuple[dict[str, object], li
             }
         )
 
+    policy["current_identity"] = {
+        "repository_slug": current_forms["slug"],
+        "repository": current_forms["coordinate"],
+        "url": current_forms["url"],
+    }
     policy["retired_identities"] = normalized_retired
+    policy["_identity_registry_summary"] = {
+        "records": len(registry["identity_records"]),
+        "aliases": sum(
+            len(record["aliases"]) for record in registry["identity_records"]
+        ),
+        "bindings": len(registry["bindings"]),
+        "future_namespaces": len(registry["future_namespaces"]),
+        "consumers": len(registry["consumer_contracts"]),
+    }
     return policy, rules
 
 
@@ -307,7 +376,10 @@ def find_retired_lines(
     return matches
 
 
-def validate(root: Path, policy_path: str) -> tuple[list[str], dict[str, tuple[int, int]]]:
+def validate(
+    root: Path,
+    policy_path: str,
+) -> tuple[list[str], dict[str, tuple[int, int]], dict[str, int]]:
     policy, rules = load_policy(root, policy_path)
     matches = find_retired_lines(root, git_candidate_paths(root), policy["retired_identities"])
     errors: list[str] = []
@@ -346,7 +418,7 @@ def validate(root: Path, policy_path: str) -> tuple[list[str], dict[str, tuple[i
         str(rule["id"]): (rule_lines[str(rule["id"])], len(rule_files[str(rule["id"])]))
         for rule in rules
     }
-    return errors, counts
+    return errors, counts, policy["_identity_registry_summary"]
 
 
 def parse_args() -> argparse.Namespace:
@@ -363,7 +435,7 @@ def parse_args() -> argparse.Namespace:
 def main() -> int:
     args = parse_args()
     try:
-        errors, counts = validate(args.root, args.policy)
+        errors, counts, identity_summary = validate(args.root, args.policy)
     except PolicyError as exc:
         print(f"Repository identity validation failed: {exc}", file=sys.stderr)
         return 1
@@ -375,6 +447,14 @@ def main() -> int:
 
     total_lines = sum(lines for lines, _ in counts.values())
     total_files = sum(files for _, files in counts.values())
+    print(
+        "Product identity registry validation passed: "
+        f"{identity_summary['records']} canonical identity record(s), "
+        f"{identity_summary['aliases']} alias record(s), "
+        f"{identity_summary['bindings']} binding(s), "
+        f"{identity_summary['future_namespaces']} reserved namespace rule(s), "
+        f"{identity_summary['consumers']} consumer contract(s)."
+    )
     print(
         "Repository identity validation passed: "
         f"{total_lines} retired-name line(s), {total_files} classified file assignment(s), "
