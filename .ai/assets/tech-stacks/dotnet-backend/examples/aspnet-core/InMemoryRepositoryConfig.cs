@@ -10,8 +10,8 @@ public static class InMemoryRepositoryConfig
 {
     public static IServiceCollection AddInMemoryRepositories(this IServiceCollection services)
     {
-        // ezapp 2.x pattern (preferred):
-        // TODO: replace with InMemory ORM + InMemory message db implementations.
+        // In-memory profile pattern:
+        // TODO: replace with target-selected in-memory persistence and event transport adapters.
 
         // Placeholder repository registration.
         services.AddSingleton<IAggregateRepository<Plan, PlanId>, InMemoryPlanRepository>();

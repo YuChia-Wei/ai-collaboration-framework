@@ -1,7 +1,7 @@
 # ASP.NET Core Configuration Examples
 
 This directory contains ASP.NET Core templates for new projects using
-Wolverine + EF Core + ezDDD-style patterns.
+Wolverine + EF Core + DDD/CQRS patterns.
 
 ## Files Overview
 
@@ -44,4 +44,4 @@ Wolverine + EF Core + ezDDD-style patterns.
 
 - Keep EF Core registration **only** in Outbox profile.
 - Do not use source-stack framework concepts in .NET templates.
-- Keep ezDDD/ezSpec intent intact.
+- Preserve DDD, CQRS, DbC, and GWT semantics without copying historical product APIs.

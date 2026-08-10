@@ -5,20 +5,21 @@ Pick exact package names and versions based on your project needs.
 
 ## Core Architecture
 
-- Wolverine (CQRS, messaging, outbox)
-- EF Core (ORM)
-- Npgsql EF Core provider (PostgreSQL)
+- Wolverine/WolverineFx (CQRS, messaging, outbox) when selected
+- EF Core (ORM) or Dapper (read-side/data-access adapter) when selected
+- Npgsql EF Core provider (PostgreSQL) when EF Core and PostgreSQL are selected
 
 ## Contract / DDD Utilities
 
-- uContract (TODO: .NET port)
-- ezDDD .NET packages (TODO: finalize names)
+- Use a target-selected guard/contract mechanism or focused Domain tests to
+  implement DbC semantics; this framework selects no contract package.
 
 ## Testing
 
 - xUnit (`xunit`, `xunit.runner.visualstudio`, `Microsoft.NET.Test.Sdk`)
 - BDDfy (`TestStack.BDDfy`) for BDD (Gherkin-style naming)
 - Gherkin runner (Reqnroll) is optional and used only for reference examples
+- LightBDD is an owner-named evaluation candidate, not a selected profile dependency
 - NSubstitute (mocking)
 
 ## Optional (Common)

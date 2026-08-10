@@ -1,6 +1,6 @@
 # Inquiry and Archive Patterns (.NET)
 
-In addition to Repository and Projection, the ezDDD CQRS architecture uses:
+In addition to Repository and Projection, a CQRS architecture may use:
 - **Inquiry**: targeted, read-only queries for complex conditions
 - **Archive**: soft-delete and historical retention patterns
 

@@ -35,7 +35,7 @@ How to define test groupings using xUnit traits and filters.
 ### local-utils.md
 Shared utilities required in new projects:
 - DateProvider (time control)
-- InMemory infrastructure expectations (ezDDD .NET)
+- In-memory infrastructure expectations for a target-selected .NET profile
 
 ## Usage Tips
 

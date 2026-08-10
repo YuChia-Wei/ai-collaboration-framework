@@ -1,6 +1,6 @@
-# Rule Migration Guide (ezSpec -> BDDfy)
+# Rule-to-Scenario Mapping Guide (BDDfy)
 
-This guide migrates ezSpec Rule usage into BDDfy tests with Gherkin-style naming.
+This guide maps business rules to BDDfy tests with Gherkin-style naming.
 
 ## Migration Steps
 

@@ -1,6 +1,6 @@
 # Architecture
 
-This document provides the entry point for reusable .NET backend architecture context. See [TECH-STACK-REQUIREMENTS.MD](./requirement/TECH-STACK-REQUIREMENTS.MD) for detailed technology choices and the conditional [project-structure profile](./standards/project-structure.md) for one target layout that must be confirmed by repository evidence or explicit adoption.
+This document provides the entry point for reusable .NET backend architecture context. See [TECH-STACK-REQUIREMENTS.MD](./requirement/TECH-STACK-REQUIREMENTS.MD) for detailed technology choices and the conditional [project-structure profile](../.ai/assets/tech-stacks/dotnet-backend/standards/project-structure.md) for one target layout that must be confirmed by repository evidence or explicit adoption.
 
 ## Architecture Overview
 
@@ -15,7 +15,7 @@ This document provides the entry point for reusable .NET backend architecture co
 - **Infrastructure**: Persistence adapters / ORM or direct SQL / Messaging / Integration
 - **Adapter**: REST API Controllers, DTOs
 
-For a conditional physical layout and naming example, see [project-structure.md](./standards/project-structure.md). Do not infer that profile as this framework repository's current structure or as a universal target requirement.
+For a conditional physical layout and naming example, see [project-structure.md](../.ai/assets/tech-stacks/dotnet-backend/standards/project-structure.md). Do not infer that profile as this framework repository's current structure or as a universal target requirement.
 
 ### Persistence Port Model
 
@@ -29,7 +29,7 @@ For a conditional physical layout and naming example, see [project-structure.md]
 
 Terminology and responsibility boundaries:
 
-- See [USECASE-COMMAND-HANDLER-RELATIONSHIP.MD](./standards/USECASE-COMMAND-HANDLER-RELATIONSHIP.MD) for the relationships among `Use Case`, `Command`, `Query`, and `Handler`.
+- See [USECASE-COMMAND-HANDLER-RELATIONSHIP.MD](../.ai/assets/tech-stacks/dotnet-backend/standards/USECASE-COMMAND-HANDLER-RELATIONSHIP.MD) for the relationships among `Use Case`, `Command`, `Query`, and `Handler`.
 
 ### Application Inbound Port Model
 

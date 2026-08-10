@@ -44,7 +44,7 @@ public static class PlanEvents
         DateTimeOffset OccurredOn
     ) : PlanEvent(PlanId, Metadata, Id, OccurredOn), IConstructionEvent
     {
-        // TODO: add guard clauses or Contract checks in your EzDdd port.
+        // TODO: add guard clauses or target-selected contract checks.
     }
 
     public sealed record PlanRenamed(
@@ -55,7 +55,7 @@ public static class PlanEvents
         DateTimeOffset OccurredOn
     ) : PlanEvent(PlanId, Metadata, Id, OccurredOn)
     {
-        // TODO: add guard clauses or Contract checks in your EzDdd port.
+        // TODO: add guard clauses or target-selected contract checks.
     }
 
     public sealed record PlanDeleted(
@@ -65,7 +65,7 @@ public static class PlanEvents
         DateTimeOffset OccurredOn
     ) : PlanEvent(PlanId, Metadata, Id, OccurredOn), IDestructionEvent
     {
-        // TODO: add guard clauses or Contract checks in your EzDdd port.
+        // TODO: add guard clauses or target-selected contract checks.
     }
 
     public sealed record ProjectCreated(
@@ -77,7 +77,7 @@ public static class PlanEvents
         DateTimeOffset OccurredOn
     ) : PlanEvent(PlanId, Metadata, Id, OccurredOn)
     {
-        // TODO: add guard clauses or Contract checks in your EzDdd port.
+        // TODO: add guard clauses or target-selected contract checks.
     }
 
     public sealed record ProjectDeleted(
@@ -88,7 +88,7 @@ public static class PlanEvents
         DateTimeOffset OccurredOn
     ) : PlanEvent(PlanId, Metadata, Id, OccurredOn)
     {
-        // TODO: add guard clauses or Contract checks in your EzDdd port.
+        // TODO: add guard clauses or target-selected contract checks.
     }
 
     public sealed record TaskCreated(
@@ -102,7 +102,7 @@ public static class PlanEvents
         DateTimeOffset OccurredOn
     ) : PlanEvent(PlanId, Metadata, Id, OccurredOn)
     {
-        // TODO: add guard clauses or Contract checks in your EzDdd port.
+        // TODO: add guard clauses or target-selected contract checks.
     }
 
     public sealed record TaskChecked(
@@ -114,7 +114,7 @@ public static class PlanEvents
         DateTimeOffset OccurredOn
     ) : PlanEvent(PlanId, Metadata, Id, OccurredOn)
     {
-        // TODO: add guard clauses or Contract checks in your EzDdd port.
+        // TODO: add guard clauses or target-selected contract checks.
     }
 
     public sealed record TaskUnchecked(
@@ -126,7 +126,7 @@ public static class PlanEvents
         DateTimeOffset OccurredOn
     ) : PlanEvent(PlanId, Metadata, Id, OccurredOn)
     {
-        // TODO: add guard clauses or Contract checks in your EzDdd port.
+        // TODO: add guard clauses or target-selected contract checks.
     }
 
     public sealed record TaskDeleted(
@@ -138,7 +138,7 @@ public static class PlanEvents
         DateTimeOffset OccurredOn
     ) : PlanEvent(PlanId, Metadata, Id, OccurredOn)
     {
-        // TODO: add guard clauses or Contract checks in your EzDdd port.
+        // TODO: add guard clauses or target-selected contract checks.
     }
 
     public sealed record TaskDeadlineSet(
@@ -151,7 +151,7 @@ public static class PlanEvents
         DateTimeOffset OccurredOn
     ) : PlanEvent(PlanId, Metadata, Id, OccurredOn)
     {
-        // TODO: add guard clauses or Contract checks in your EzDdd port.
+        // TODO: add guard clauses or target-selected contract checks.
     }
 
     public sealed record TaskRenamed(
@@ -164,7 +164,7 @@ public static class PlanEvents
         DateTimeOffset OccurredOn
     ) : PlanEvent(PlanId, Metadata, Id, OccurredOn)
     {
-        // TODO: add guard clauses or Contract checks in your EzDdd port.
+        // TODO: add guard clauses or target-selected contract checks.
     }
 
     public sealed record TagAssigned(
@@ -177,7 +177,7 @@ public static class PlanEvents
         DateTimeOffset OccurredOn
     ) : PlanEvent(PlanId, Metadata, Id, OccurredOn)
     {
-        // TODO: add guard clauses or Contract checks in your EzDdd port.
+        // TODO: add guard clauses or target-selected contract checks.
     }
 
     public sealed record TagUnassigned(
@@ -190,7 +190,7 @@ public static class PlanEvents
         DateTimeOffset OccurredOn
     ) : PlanEvent(PlanId, Metadata, Id, OccurredOn)
     {
-        // TODO: add guard clauses or Contract checks in your EzDdd port.
+        // TODO: add guard clauses or target-selected contract checks.
     }
 
     public static class TypeMapper

@@ -1,0 +1,103 @@
+schema_version: "1.0"
+record_type: "provider-current-state-read-back"
+provider: "github"
+repository: "YuChia-Wei/ai-collaboration-framework"
+read_back_at: "2026-08-10T00:41:55+08:00"
+evidence:
+  execution_boundary: "Read-only gh commands ran outside the sandbox; no Issue, Project, Release, tag, asset, or provider mutation was invoked."
+  queries:
+    - command: "gh project list --owner YuChia-Wei --format json"
+      scope: "All Projects owned by YuChia-Wei"
+      key_result: "Project #3 is public, has 17 fields, and contains 104 items."
+    - command: "gh project field-list 3 --owner YuChia-Wei --format json --limit 100"
+      scope: "Project #3 field names and single-select options"
+      key_result: "Status, Target release, Owner review, Priority, and Published in options recorded below matched the live response."
+    - command: "gh project item-list 3 --owner YuChia-Wei --format json --limit 200"
+      scope: "All 104 Project #3 items; v0.12.0 selection filtered from that response"
+      key_result: "#150, #170, and #171 were Done/P1/target v0.12.0/Not yet published; #175, #176, and #178 were Inbox with no selected target release."
+    - command: "gh release list --repo YuChia-Wei/ai-collaboration-framework --limit 30"
+      scope: "Published Releases in the current repository"
+      key_result: "REL-v0.11.0 was latest, followed by REL-v0.10.0 and REL-v0.9.0."
+    - query: "GitHub connector github_fetch_issue for YuChia-Wei/ai-collaboration-framework issues #150, #170, #171, #175, #176, #178, and #179"
+      scope: "Current Issue lifecycle and explicit body-level scope"
+      key_result: "Issue state and stated authorization boundaries were reconciled without changing any Issue."
+authority_boundary:
+  online_work_management: "GitHub Issues and Project #3 own the current online queue, card priority, and Project status."
+  local_durable_backlog: ".dev/backlog/items/*.yaml owns only the 55-record local canonical subset and its release metadata."
+  source_release_evidence: ".dev/releases/<version>/release.yaml owns local published-release identity and evidence."
+  workflow_execution: ".dev/workflows/ owns authorized execution plans, task state, validation evidence, and checkpoints."
+  provider_state_alone_authorizes: false
+project:
+  number: 3
+  node_id: "PVT_kwHOAwvEG84Bez7w"
+  title: "AI Collaboration Framework — Backlog & Roadmap"
+  url: "https://github.com/users/YuChia-Wei/projects/3"
+  visibility: "public"
+  item_count: 104
+  field_count: 17
+  fields:
+    status:
+      options: ["Inbox", "Planned", "In progress", "Verification", "Done"]
+    target_release:
+      options: ["Unassigned", "v0.1.0", "v0.4.1", "v0.4.2", "v0.5.0", "v0.6.0", "v0.7.0", "v0.8.0", "v0.9.0", "v0.10.0", "v0.1.3", "v0.2.0", "v0.11.0", "v0.1.4", "v0.1.5", "v0.12.0"]
+    owner_review:
+      options: ["Not required", "Pending", "Approved", "Changes requested"]
+    priority:
+      options: ["P0 Critical", "P1 High", "P2 Normal", "P3 Low"]
+    published_in:
+      options: ["Not yet published", "Not applicable — source repository only", "v0.1.0", "v0.4.1", "v0.4.2", "v0.5.0", "v0.7.0", "v0.8.0", "v0.9.0", "v0.10.0", "v0.11.0", "v0.1.3", "v0.1.4", "v0.1.5"]
+local_backlog_projection:
+  item_count: 55
+  online_queue_coverage: "partial"
+  explanation: "Current online Issues that do not have a local backlog item remain online work-management records; they are not silently created as local YAML items by this receipt."
+current_release_read_back:
+  latest_published:
+    - release_id: "REL-v0.11.0"
+      version: "v0.11.0"
+      published_at: "2026-08-08T16:54:24Z"
+    - release_id: "REL-v0.10.0"
+      version: "v0.10.0"
+      published_at: "2026-08-08T05:37:48Z"
+    - release_id: "REL-v0.9.0"
+      version: "v0.9.0"
+      published_at: "2026-08-05T16:52:44Z"
+v0_12_planning_read_back:
+  selected_project_items:
+    - issue: 150
+      title: "[GOV-007] 完成 Repository Rename 後的識別與連結收尾"
+      status: "Done"
+      priority: "P1 High"
+      target_release: "v0.12.0"
+      published_in: "Not yet published"
+    - issue: 170
+      title: "[CTX-006] 重新盤點 .ai 內容、權責與可攜式邊界"
+      status: "Done"
+      priority: "P1 High"
+      target_release: "v0.12.0"
+      published_in: "Not yet published"
+    - issue: 171
+      title: "[GOV-008] 重新盤點 .dev 治理內容、歷史與生命週期"
+      status: "Done"
+      priority: "P1 High"
+      target_release: "v0.12.0"
+      published_in: "Not yet published"
+  current_remediation_boundary:
+    - issue: 175
+      status: "Inbox"
+      target_release: null
+      note: "Suggested v0.12.0 scope in the Issue body is not a selected Project field value."
+    - issue: 176
+      status: "Inbox"
+      target_release: null
+      note: "Independently authorized validation work; release allocation remains owner-decided."
+    - issue: 178
+      status: "Inbox"
+      priority: "P1 High"
+      target_release: null
+      note: "Phase A execution authorization does not select a release allocation."
+disposition:
+  status: "current-read-back"
+  refresh_trigger: "Refresh before any claim about current Project field options, online item count, selected release scope, or Issue/Project status."
+  non_goals:
+    - "Does not replace historical provider mapping receipts."
+    - "Does not create or mutate Issues, Project cards, Releases, tags, assets, or local backlog items."

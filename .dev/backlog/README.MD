@@ -19,9 +19,17 @@ any single workflow. It is not a second workflow engine.
   commits after work is scheduled.
 - When the selected work-item binding mode requires or uses a backlog item, the
   workflow must link it and the item must link the active or completed workflow.
-  In this source repository's `optional` mode, execution without an Issue must
-  instead record the owner's explicit authorization in the workflow or pull
-  request.
+  The selected provider contract owns that mode and merge-reference rule. This
+  source repository records `required` in its source-only provider
+  configuration; downstream targets must select their own binding mode rather
+  than inheriting it from this portable guide. Provider state alone never
+  authorizes work.
+
+This directory catalogues the local durable backlog, not the complete online
+GitHub Issue queue or Project #3. Current provider counts, field options, and
+bounded read-back evidence belong in `providers/github.yaml` and
+`provider-mappings/`; do not infer online completeness from the number of local
+item YAML files.
 
 ## States
 

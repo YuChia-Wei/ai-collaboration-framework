@@ -11,7 +11,7 @@ ordering:
   array_contents: "retain declared source order"
 catalog_digest:
   algorithm: "sha256"
-  value: "a578fb19b95a9b4eab4d010bdf8e0af42798ec7e8d4290c070cff56928bcdef5"
+  value: "8f42b3c6764bf5c3b86973bacd9ca58aa8deb2b1c9b8d51917a2d9ec04bbc309"
   canonicalization: "UTF-8 encoding of compact JSON with Unicode preserved, object keys sorted by Unicode code point, array order preserved, and exactly one terminal LF; the complete catalog_digest field is excluded from the input."
 selector_contract:
   capability_execution_mode_file_type: "unconstrained-by-source with an empty values list means no narrower source-backed predicate is declared; a resolver must not invent one or use it as a default fallback."
@@ -52,7 +52,7 @@ rules:
     decision_evidence: ["target Aggregate architecture or persistence profile"]
     derived_consumers: [".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/aggregate-standards.md", ".ai/assets/tech-stacks/dotnet-backend/references/BUILDING-BLOCKS-CLASS-INDEX.MD", ".ai/assets/tech-stacks/dotnet-backend/references/CODE-REVIEW-INDEX.MD"]
     status: "active"
-    source_file_sha256: "85753a1d7e18b6ebf0f2fd743053ce65fe5381c6c0019a987a588f6baa370b5b"
+    source_file_sha256: "645254b41b160563bcfa9af2d4049dc4d1eb5183108961babbeda78357343128"
     normative_text_sha256: "f509cf33e25f9d70f237dceb3d2a8b4f75bf86369a26695332ee3d2d3be13242"
     normative_text: |
       ## Optional `EsAggregateRoot<TId>` Behavior Contract
@@ -222,7 +222,7 @@ rules:
     decision_evidence: null
     derived_consumers: [".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/aggregate-standards.md", ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/test-standards.md"]
     status: "active"
-    source_file_sha256: "05f476b5eb98c1adec9af209ece968ecac06f2b893409f01d13b1cdf5c106763"
+    source_file_sha256: "3ab132dc92cf0120a488358f23abdbb90731a98556e71cff34a85cae4425eabc"
     normative_text_sha256: "45292a7bbc1fc9e6d4e845aa660681efda68e0e2394cecf1c6c2c76ebf3814f7"
     normative_text: |
       ## Contract Categories
@@ -795,7 +795,7 @@ unpacketized_documents:
       path: ".ai/assets/tech-stacks/dotnet-backend/standards/coding-guide.md"
     migration_provenance:
       legacy_path: ".dev/standards/coding-guide.md"
-    source_file_sha256: "76e50cf540ebc0ff48e0945cce9ea381ea1a9da7270b8a200765b489b1192b8e"
+    source_file_sha256: "7413fa8ca91f3c016470d5c7524d7f993e91a99ad476f31de15d27da5158801f"
     packet_state: "identity-allocation-required"
     resolver_disposition: "unpacketized-fail-closed"
     reason: "The migration matrix classifies this as profile-baseline-rule, but no registered stable rule_id exists. Do not derive a path-based ID or packet it."

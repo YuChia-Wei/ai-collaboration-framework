@@ -7,7 +7,8 @@ Reactors are event handlers in the Use Case layer for:
 - Event transformation (internal -> external)
 - Integration side effects
 
-Use Wolverine for message handling and ezDDD concepts for events.
+Use Wolverine for message handling when selected, while preserving neutral
+Domain Event and Aggregate semantics.
 
 ## Key Rules
 
@@ -39,8 +40,8 @@ public sealed class [Reaction]When[Event]Service : When[Event][Reaction]Reactor
         IFind[Entity]By[Criteria]Inquiry inquiry,
         IAggregateRepository<[Aggregate], [Aggregate]Id> repository)
     {
-        Contract.RequireNotNull(nameof(inquiry), inquiry);
-        Contract.RequireNotNull(nameof(repository), repository);
+        ArgumentNullException.ThrowIfNull(inquiry);
+        ArgumentNullException.ThrowIfNull(repository);
         _inquiry = inquiry;
         _repository = repository;
     }
@@ -75,8 +76,8 @@ public sealed class [Reaction]When[Event]Service : When[Event][Reaction]Reactor
 }
 ```
 
-TODO: Replace `DomainEventMapper`, `IReactor`, and repository interfaces
-with actual ezDDD .NET implementations once available.
+TODO: Replace placeholder `DomainEventMapper`, `IReactor`, and repository
+interfaces with target-owned contracts and selected adapters.
 
 ## Testing Strategy (BDDfy + xUnit)
 

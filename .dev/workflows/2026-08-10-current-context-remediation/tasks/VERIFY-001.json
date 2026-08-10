@@ -1,0 +1,69 @@
+{
+  "template_id": "ai-context-governance-remediation-task",
+  "template_version": "1.1.0",
+  "template_created_at": "2026-07-10T18:22:49+08:00",
+  "template_updated_at": "2026-07-27T09:52:09+08:00",
+  "task_id": "VERIFY-001",
+  "workflow_id": "2026-08-10-current-context-remediation",
+  "owner_skill": "ai-context-governance",
+  "status": "completed",
+  "created_at": "2026-08-10T00:33:41+08:00",
+  "updated_at": "2026-08-10T01:42:02+08:00",
+  "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
+  "model": "gpt-5.6-sol",
+  "reasoning_effort": "high",
+  "finding_ids": [
+    "ASM-20260809-004#DEV-001",
+    "ASM-20260809-004#DEV-002",
+    "#178"
+  ],
+  "scope": {
+    "target": "Independent post-remediation verification and finding reconciliation",
+    "files": [
+      ".dev/assessments/<verification-id>/**",
+      ".dev/workflows/2026-08-10-current-context-remediation/reports/remediation-report.md"
+    ],
+    "constraints": [
+      "The independent auditor remains read-only over remediated surfaces",
+      "The governance executor must not author verification conclusions",
+      "Every baseline finding receives an explicit final disposition"
+    ],
+    "non_goals": [
+      "Additional remediation before independent findings are returned"
+    ]
+  },
+  "execution": {
+    "steps": [
+      "Request a separate ai-context-auditor verification assessment",
+      "Reconcile verification evidence with baseline findings",
+      "Finalize remediation report, task state, and workflow closure evidence"
+    ],
+    "validation": [
+      "python .ai/scripts/validate-assessment-artifacts.py",
+      "python .ai/scripts/validate-workflow-artifacts.py",
+      "python .ai/scripts/validate-git-commits.py --range main..HEAD --workflow-id 2026-08-10-current-context-remediation"
+    ],
+    "last_completed_step": "Finalized ASM-20260810-001 and reconciled its no-active-finding result with the remediation report",
+    "next_action": "None in this workflow; await owner-authorized Git transport and review lifecycle"
+  },
+  "results": {
+    "summary": "Independent verification confirmed ASM-20260809-004#DEV-001, #DEV-002, and Issue #178 Phase A resolved at 725162b679a9aea85e50417ee4b35c9a95cdae7c with no active finding.",
+    "files_changed": [
+      ".dev/assessments/ASM-20260810-001/assessment.yaml",
+      ".dev/assessments/ASM-20260810-001/report.md",
+      ".dev/assessments/INDEX.MD",
+      ".dev/workflows/2026-08-10-current-context-remediation/reports/remediation-report.md"
+    ],
+    "tests_run": [
+      "changed active Markdown links: 45 files / 144 local links / 0 broken",
+      "direct final-HEAD payload resolver and reference integrity: 655 files / 0 brand hits / digest d709cb19aaff891578a56e728b648aba17dd9d243145b7857e16b02a39e5d384",
+      "retained provenance: 22 matches / 0 unclassified or payload candidates",
+      "validate-assessment-artifacts.py: 42 assessments passed",
+      "validate-source-governance.py: passed with immutable manifest and 2 exact authorizations",
+      "validate-git-commits.py workflow range: passed for 3 pre-closure commits"
+    ],
+    "finding_status": "addressed",
+    "residual_risk": "The dated provider receipt must be refreshed for later current-state claims. The complete 37-case packaging suite timed out and is not a passing release gate; #176 and #179 remain separate work.",
+    "follow_up_needed": false
+  }
+}

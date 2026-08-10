@@ -1,7 +1,8 @@
 # Use Case Contract Example (.NET)
 
 ## Overview
-Use case contracts validate input and ensure expected outcomes.
+Use case contracts validate input and define expected outcomes. This example
+uses standard .NET guards and leaves helper-package selection to the target.
 
 ## Example: Create Task Use Case
 ```csharp
@@ -11,28 +12,28 @@ public sealed class CreateTaskService : ICreateTaskUseCase
 
     public CreateTaskService(IAggregateRepository<Plan, PlanId> repository)
     {
-        Contract.RequireNotNull(nameof(repository), repository);
-        _repository = repository;
+        _repository = repository ?? throw new ArgumentNullException(nameof(repository));
     }
 
-    public async Task<CqrsOutput> ExecuteAsync(CreateTaskInput input, CancellationToken ct)
+    public async Task<CreateTaskOutput> ExecuteAsync(
+        CreateTaskInput input,
+        CancellationToken ct)
     {
-        Contract.RequireNotNull("input", input);
-        Contract.RequireNotNull("planId", input.PlanId);
-        Contract.RequireNotNull("projectName", input.ProjectName);
-        Contract.Require(!string.IsNullOrWhiteSpace(input.TaskName), "Task name required");
+        ArgumentNullException.ThrowIfNull(input);
+        ArgumentNullException.ThrowIfNull(input.PlanId);
+        ArgumentException.ThrowIfNullOrWhiteSpace(input.ProjectName);
+        ArgumentException.ThrowIfNullOrWhiteSpace(input.TaskName);
 
         var plan = await _repository.FindByIdAsync(input.PlanId, ct);
-        Contract.Require(plan != null, "Plan must exist");
+        if (plan is null)
+        {
+            throw new InvalidOperationException("Plan must exist.");
+        }
 
-        var oldVersion = Contract.Old(() => plan!.Version);
-
-        plan!.CreateTask(input.ProjectName, input.TaskName);
+        plan.CreateTask(input.ProjectName, input.TaskName);
         await _repository.SaveAsync(plan, ct);
 
-        Contract.Ensure(plan.Version == oldVersion + 1, "Version incremented");
-
-        return CqrsOutput.Success(plan.Id.Value);
+        return new CreateTaskOutput(plan.Id.Value, plan.Version);
     }
 }
 ```
@@ -41,4 +42,6 @@ public sealed class CreateTaskService : ICreateTaskUseCase
 
 - Validate input DTOs at the boundary.
 - Ensure repository results are not null.
-- Verify expected domain events or output values.
+- Return operation-specific output rather than a framework placeholder.
+- Use focused tests to verify the version change, expected Domain Event, output,
+  and persisted Aggregate.

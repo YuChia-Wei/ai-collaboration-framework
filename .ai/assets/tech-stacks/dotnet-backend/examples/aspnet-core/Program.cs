@@ -27,7 +27,7 @@ builder.Services.AddUseCases();
 
 var app = builder.Build();
 
-// Initialize domain event type mapper registry (ezDDD port)
+// Initialize the target-owned domain event type mapper registry.
 BootstrapConfig.Initialize();
 
 app.MapGet("/", () => "ExampleAppApp (.NET) is running.");

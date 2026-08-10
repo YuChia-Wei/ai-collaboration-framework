@@ -1,0 +1,96 @@
+{
+  "template_id": "ai-context-governance-remediation-task",
+  "template_version": "1.1.0",
+  "template_created_at": "2026-07-10T18:22:49+08:00",
+  "template_updated_at": "2026-07-27T09:52:09+08:00",
+  "task_id": "CTX007-001",
+  "workflow_id": "2026-08-10-current-context-remediation",
+  "owner_skill": "ai-context-governance",
+  "status": "completed",
+  "created_at": "2026-08-10T00:33:41+08:00",
+  "updated_at": "2026-08-10T01:42:02+08:00",
+  "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
+  "model": "gpt-5.6-sol",
+  "reasoning_effort": "high",
+  "finding_ids": [
+    "ASM-20260809-004#DEV-002",
+    "#178"
+  ],
+  "scope": {
+    "target": "Active and distribution-selected ez-series/uContract guidance",
+    "files": [
+      ".ai/assets/tech-stacks/dotnet-backend/**",
+      ".ai/distribution/profiles/dotnet-backend.yaml",
+      ".ai/scripts/check-domain-events-compliance.sh",
+      ".ai/scripts/check-mutation-coverage.sh",
+      ".ai/scripts/tests/test_brand_neutral_distribution.py",
+      ".ai/scripts/validate-file-disposition-manifest.py",
+      ".ai/scripts/validate-source-governance.py",
+      ".ai/scripts/tests/test_file_disposition_manifest.py",
+      ".ai/scripts/tests/test_governance_workflow_contract.py",
+      ".ai/distribution/governance-checks.yaml",
+      ".ai/assets/sub-agent-role-prompts/**",
+      ".dev/guides/**",
+      ".dev/workflows/2026-08-10-current-context-remediation/evidence/v050-current-byte-authorization.yaml"
+    ],
+    "constraints": [
+      "Preserve neutral engineering concepts and conditional .NET provider choices",
+      "Keep immutable assessment, workflow, release, and migration evidence byte-stable",
+      "Do not introduce unavailable EngineeringGuardrails packages",
+      "Do not create or edit course acknowledgement text"
+    ],
+    "non_goals": [
+      "EngineeringGuardrails prerelease adoption",
+      "Final selection between BDDfy and LightBDD",
+      "Historical evidence rewriting"
+    ]
+  },
+  "execution": {
+    "steps": [
+      "Confirm the tracked active/distributed branded inventory against the baseline",
+      "Delete files whose only purpose is historical Java/uContract API mapping",
+      "Extract and retain neutral BDD, DbC, profile, persistence, messaging, outbox, and DI guidance",
+      "Repair indexes, manifests, scripts, and links affected by deletes or renames",
+      "Run deterministic branded-reference and package projection validation"
+    ],
+    "validation": [
+      "git grep over distribution-selected paths",
+      "python .ai/scripts/validate-ai-context.py",
+      "package/profile projection tests and validators",
+      "git diff --check"
+    ],
+    "last_completed_step": "Removed or neutralized active/distributed branded guidance, repaired references, and installed an exact owner-authorized byte exception without rewriting the immutable v0.5.0 manifest",
+    "next_action": "VERIFY-001 must run the committed package scan and independent audit"
+  },
+  "results": {
+    "summary": "Deleted branded-only Java/API mappings, retained neutral DDD/SbE/BDD/DbC/CQRS/Event-Sourcing/outbox/MQ/DI guidance, kept .NET providers conditional, and made retained branded provenance source-only and machine-verifiable.",
+    "files_changed": [
+      ".ai/assets/tech-stacks/dotnet-backend/**",
+      ".ai/assets/sub-agent-role-prompts/**",
+      ".ai/distribution/governance-checks.yaml",
+      ".ai/distribution/profiles/dotnet-backend.yaml",
+      ".ai/scripts/check-domain-events-compliance.sh",
+      ".ai/scripts/check-mutation-coverage.sh",
+      ".ai/scripts/tests/test_brand_neutral_distribution.py",
+      ".ai/scripts/tests/test_file_disposition_manifest.py",
+      ".ai/scripts/tests/test_governance_workflow_contract.py",
+      ".ai/scripts/validate-file-disposition-manifest.py",
+      ".ai/scripts/validate-source-governance.py",
+      ".dev/guides/**",
+      ".dev/workflows/2026-08-10-current-context-remediation/evidence/v050-current-byte-authorization.yaml"
+    ],
+    "tests_run": [
+      "validate-ai-context.py: passed",
+      "test_profile_projection_contract.py: 3/3 passed",
+      "test_document_projection_contract.py: 2/2 passed",
+      "test_ai_context_example_evidence.py: 4/4 passed",
+      "test_ai_context_example_placeholder_disposition.py: 3/3 passed",
+      "test_file_disposition_manifest.py: 31/31 passed",
+      "test_governance_workflow_contract.py: 7/7 passed",
+      "validate-source-governance.py: passed with two exact current-byte authorizations"
+    ],
+    "finding_status": "addressed",
+    "residual_risk": "EngineeringGuardrails contract-package adoption remains gated by #179. The full packaging regression suite timed out and remains a future release-candidate gate; direct Phase A payload, reference-integrity, brand, and provenance checks passed.",
+    "follow_up_needed": false
+  }
+}

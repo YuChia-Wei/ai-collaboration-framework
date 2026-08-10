@@ -36,9 +36,24 @@ Pack authority.
 
 ## GitHub Stage Boundary
 
-[`github.yaml`](github.yaml) is the approved Stage A declaration. The Stage A
-adapter is deliberately read-only: it renders and validates a migration plan
-but exposes no provider mutation operation. Online Stage B work requires:
+[`github.yaml`](github.yaml) is the selected source-repository GitHub provider
+policy. It owns the required work-item binding and merge-reference contract,
+and retains the historical Stage A/B migration adapter metadata needed to
+reproduce the 2026-07 migration plan. Its `source.expected_item_count` is the
+55-record local durable-backlog subset; it is not an online queue count or a
+claim that local item YAML files enumerate all current GitHub Issues or Project
+#3 cards.
+
+[`provider-mappings/github-project-current.yaml`](../provider-mappings/github-project-current.yaml)
+is the current provider read-back receipt. It records the live Project schema,
+item count, release visibility, and the bounded v0.12.0 planning evidence used
+by the local roadmap. Refresh that receipt from GitHub before making a current
+provider-state claim; do not mutate historical Stage B receipts to make them
+look current.
+
+The retained Stage A adapter is deliberately read-only: it renders and validates
+a historical migration plan but exposes no provider mutation operation. Online
+Stage B work requires:
 
 1. the Stage A pull request merged to `main`;
 2. a fresh dry-run from that immutable `main` revision; and

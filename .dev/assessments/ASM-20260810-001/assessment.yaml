@@ -1,0 +1,53 @@
+template_metadata:
+  template_id: "assessment-locator"
+  template_version: "1.0.0"
+  template_created_at: "2026-07-13T23:04:10+08:00"
+  template_updated_at: "2026-07-13T23:04:10+08:00"
+
+schema_version: "1.0"
+assessment_id: "ASM-20260810-001"
+commit_search_id: "ASM-20260810-001"
+assessment_type: "ai-context-verification"
+title: "Current Governance And Brand Boundary Remediation Verification"
+owner_skill: "ai-context-auditor"
+status: "final"
+report: "report.md"
+artifact_branch: "codex/2026-08-10-current-context-remediation"
+base_branch: "main"
+created_at: "2026-08-10T01:38:00+08:00"
+updated_at: "2026-08-10T01:38:00+08:00"
+template_source: ".dev/assessments/templates/assessment-locator-template.yaml"
+template_version: "1.0.0"
+report_template_source: ".ai/assets/skills/ai-context-auditor/templates/ai-context-audit-report-template.md"
+report_template_version: "2.1.0"
+subject_ref:
+  repository: "YuChia-Wei/ai-collaboration-framework"
+  branch: "codex/2026-08-10-current-context-remediation"
+  commit: "725162b679a9aea85e50417ee4b35c9a95cdae7c"
+scope:
+  included:
+    - "ASM-20260809-003 and ASM-20260809-004 conclusions relevant to the authorized remediation"
+    - "Current roadmap, local backlog/provider projection, and active Markdown links for ASM-20260809-004#DEV-001 and #DEV-002"
+    - "#178 Phase A active and distributed dotnet-backend guidance, package profile, and direct package payload evidence"
+    - "Commit-title policy and validator, the immutable v0.5.0 disposition manifest, and its exact current-byte authorization"
+    - "The governance workflow locator, tasks, remediation report, and deterministic AI-context governance validators"
+  excluded:
+    - "src/** and product implementation trees"
+    - "tests/** and test/** product tests; only .ai/scripts/tests/** governance tooling was inspected"
+    - "GitHub Issue, Project, Release, package registry, tag, branch, commit, pull-request, and provider mutation"
+    - "#176 layered immutable-history validation design and #179 EngineeringGuardrails package adoption"
+    - "course acknowledgement prose, which remains owner-authored"
+relations:
+  supersedes: []
+  superseded_by: []
+  related_assessments:
+    - "ASM-20260809-003"
+    - "ASM-20260809-004"
+  workflow_refs:
+    - "2026-08-10-current-context-remediation"
+  backlog_refs: []
+  adr_refs: []
+resume:
+  last_completed_action: "Independently verified the final remediation subject, including the pre-finalization active-link correction, and finalized this read-only verification assessment."
+  next_action: "The governance workflow owner may reconcile this assessment with VERIFY-001 and decide the remaining Git lifecycle actions."
+  blockers: []

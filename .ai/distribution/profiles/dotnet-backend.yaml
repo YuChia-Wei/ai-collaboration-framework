@@ -418,6 +418,7 @@ exclusions:
       - .ai/scripts/github_backlog_provider.py
       - .ai/scripts/plan-github-backlog-migration.py
       - .ai/scripts/tests/test_backlog_release_contract.py
+      - .ai/scripts/tests/test_brand_neutral_distribution.py
       - .ai/scripts/tests/test_ai_context_packaging.py
       - .ai/scripts/tests/test_ai_context_release_state.py
       - .ai/scripts/tests/test_immutable_history_validation.py

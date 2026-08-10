@@ -1,6 +1,6 @@
 schema_version: "1.0"
 manifest_id: "DOTNET-EXAMPLE-PLACEHOLDER-DISPOSITION-001"
-updated_at: "2026-07-16T22:19:34+08:00"
+updated_at: "2026-08-10T00:43:11+08:00"
 entries:
   - path: "aggregate/"
     disposition: "bounded-rewrite"
@@ -8,20 +8,20 @@ entries:
     canonical_replacements:
       - ".ai/assets/tech-stacks/dotnet-backend/standards/BUILDING-BLOCKS-RECONSTRUCTION-CONTRACT.md"
       - ".ai/assets/tech-stacks/dotnet-backend/standards/DESIGN-BY-CONTRACT.md"
-    release_rule: "Keep only scenario-teaching material; EzDDD API names are non-canonical."
+    release_rule: "Keep only scenario-teaching material; historical product API names are non-canonical."
   - path: "contract/"
-    disposition: "historical"
-    evidence_tier: "historical"
+    disposition: "reference-only"
+    evidence_tier: "reference-only"
     canonical_replacements:
       - ".ai/assets/tech-stacks/dotnet-backend/standards/DESIGN-BY-CONTRACT.md"
-    release_rule: "Do not generate or preserve the historical uContract API shape."
+    release_rule: "Keep DbC semantics while selecting guard clauses, helpers, packages, or focused tests from target evidence."
   - path: "usecase/"
     disposition: "reference-only"
     evidence_tier: "reference-only"
     canonical_replacements:
       - ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/usecase-standards.md"
       - ".ai/assets/tech-stacks/dotnet-backend/references/CODE-TEMPLATES.MD"
-    release_rule: "Operation-specific current standards override CqrsOutput and EzDDD placeholder types."
+    release_rule: "Operation-specific current standards override CqrsOutput and other historical placeholder types."
   - path: "mapper/"
     disposition: "reference-only"
     evidence_tier: "reference-only"

@@ -2,12 +2,15 @@
 
 This index catalogs durable work that must remain visible outside workflow
 artifact directories. See [README.MD](README.MD) for ownership and lifecycle.
+It lists the local canonical backlog subset, not the complete GitHub Issue
+queue or Project #3. The current online provider-state receipt is
+[`provider-mappings/github-project-current.yaml`](provider-mappings/github-project-current.yaml).
 
 ## Active Release Roadmap
 
 | Roadmap | Current Target | Status | Next Gate | Updated |
 | --- | --- | --- | --- | --- |
-| [ROADMAP.md](ROADMAP.md) | `v0.9.0` | `planned` | Prepare and validate the exact eight-item candidate; immutable tag creation remains owner-controlled. | 2026-08-05 |
+| [ROADMAP.md](ROADMAP.md) | `v0.12.0` | `planned` | Owner must select the exact included-work set and a release workflow; Project card status or priority does not create release scope. | 2026-08-10 |
 
 Source planning records are retained under [`plans/`](plans/); they inform the
 roadmap but do not replace it or a governed assessment.
@@ -31,18 +34,18 @@ roadmap but do not replace it or a governed assessment.
 | --- | --- | --- | --- | --- | --- |
 | [UPG-001](items/UPG-001.yaml) | HIGH | `unassigned` | Owner cancelled the real legacy-target intake because no target or feedback capacity is expected to be available. | Historical evidence is retained; `INIT-001` tracks a distinct existing-AI-agent initialization question without claiming to complete the legacy upgrade acceptance. | 2026-07-27 |
 
-## Resolved / Awaiting Publication
+## Recently Published
 
 | Item | Priority | Completed In | Published In | Resolution | Workflow | Updated |
 | --- | --- | --- | --- | --- | --- | --- |
-| [CTX-004](items/CTX-004.yaml) | LOW | `v0.9.0` | — | Bilingual root navigation now links the stable bundled mechanical-validation provider and distinguishes portable production assets from source-only tests retained under `tools/`. | [`2026-08-05-v0-9-0-release-publication`](../workflows/2026-08-05-v0-9-0-release-publication/workflow.yaml) | 2026-08-06 |
-| [SAG-002](items/SAG-002.yaml) | HIGH | `v0.9.0` | — | All 18 active roles have owning-skill reachability and provider-neutral execution evidence with direct-by-default delegation, inline parity, bounded retry/fallback, and unchanged selective-adapter policy; #118 represents the single canonical item and #119 remains its dependent slice. | [`2026-08-05-sub-agent-reachability`](../workflows/2026-08-05-sub-agent-reachability/workflow.yaml) | 2026-08-06 |
-| [VAL-003](items/VAL-003.yaml) | HIGH | `v0.9.0` | — | Architecture Kit remains unsupported, unavailable, and non-selectable behind an evidence-complete fail-closed readiness gate; actual cutover remains future work. | [`2026-08-05-rule-provider-precutover`](../workflows/2026-08-05-rule-provider-precutover/workflow.yaml) | 2026-08-06 |
-| [PKG-006](items/PKG-006.yaml) | HIGH | `v0.9.0` | — | The bundled .NET validation provider has stable identity/location, separate analyzer/runtime capabilities, inactive source delivery, and fail-closed reference-in-place activation. | [`2026-08-05-rule-provider-precutover`](../workflows/2026-08-05-rule-provider-precutover/workflow.yaml) | 2026-08-06 |
-| [CTX-005](items/CTX-005.yaml) | HIGH | `v0.9.0` | — | Target-effective state, deterministic task packets, and shared action-skill consumption fail closed without freshness-verified semantics. | [`2026-08-05-rule-provider-precutover`](../workflows/2026-08-05-rule-provider-precutover/workflow.yaml) | 2026-08-06 |
-| [GOV-006](items/GOV-006.yaml) | HIGH | `v0.9.0` | — | Stable engineering-rule ownership and the exhaustive migration matrix place each shared, profile, source, and target surface under one explicit authority. | [`2026-08-05-rule-provider-precutover`](../workflows/2026-08-05-rule-provider-precutover/workflow.yaml) | 2026-08-06 |
-| [PKG-005](items/PKG-005.yaml) | HIGH | `v0.9.0` | — | Fail-closed ignored framework-managed-path detection is merged through PR #103; the owner closed the workflow with independent audit and aggregate-rerun debt deferred to separately arranged future work. | [`2026-08-04-framework-managed-ignore-detection`](../workflows/2026-08-04-framework-managed-ignore-detection/workflow.yaml) | 2026-08-06 |
-| [GOV-004](items/GOV-004.yaml) | HIGH | `v0.9.0` | — | Workflow-value, multi-Issue delivery-cohesion, and positive linear-topology rules passed independent verification and were integrated linearly through PR #88. | [`2026-08-03-workflow-delivery-cohesion`](../workflows/2026-08-03-workflow-delivery-cohesion/workflow.yaml) | 2026-08-06 |
+| [CTX-004](items/CTX-004.yaml) | LOW | `v0.9.0` | `v0.9.0` | Bilingual root navigation now links the stable bundled mechanical-validation provider and distinguishes portable production assets from source-only tests retained under `tools/`. | [`2026-08-05-v0-9-0-release-publication`](../workflows/2026-08-05-v0-9-0-release-publication/workflow.yaml) | 2026-08-10 |
+| [SAG-002](items/SAG-002.yaml) | HIGH | `v0.9.0` | `v0.9.0` | All 18 active roles have owning-skill reachability and provider-neutral execution evidence with direct-by-default delegation, inline parity, bounded retry/fallback, and unchanged selective-adapter policy; #118 represents the single canonical item and #119 remains its dependent slice. | [`2026-08-05-sub-agent-reachability`](../workflows/2026-08-05-sub-agent-reachability/workflow.yaml) | 2026-08-10 |
+| [VAL-003](items/VAL-003.yaml) | HIGH | `v0.9.0` | `v0.9.0` | Architecture Kit remains unsupported, unavailable, and non-selectable behind an evidence-complete fail-closed readiness gate; actual cutover remains future work. | [`2026-08-05-rule-provider-precutover`](../workflows/2026-08-05-rule-provider-precutover/workflow.yaml) | 2026-08-10 |
+| [PKG-006](items/PKG-006.yaml) | HIGH | `v0.9.0` | `v0.9.0` | The bundled .NET validation provider has stable identity/location, separate analyzer/runtime capabilities, inactive source delivery, and fail-closed reference-in-place activation. | [`2026-08-05-rule-provider-precutover`](../workflows/2026-08-05-rule-provider-precutover/workflow.yaml) | 2026-08-10 |
+| [CTX-005](items/CTX-005.yaml) | HIGH | `v0.9.0` | `v0.9.0` | Target-effective state, deterministic task packets, and shared action-skill consumption fail closed without freshness-verified semantics. | [`2026-08-05-rule-provider-precutover`](../workflows/2026-08-05-rule-provider-precutover/workflow.yaml) | 2026-08-10 |
+| [GOV-006](items/GOV-006.yaml) | HIGH | `v0.9.0` | `v0.9.0` | Stable engineering-rule ownership and the exhaustive migration matrix place each shared, profile, source, and target surface under one explicit authority. | [`2026-08-05-rule-provider-precutover`](../workflows/2026-08-05-rule-provider-precutover/workflow.yaml) | 2026-08-10 |
+| [PKG-005](items/PKG-005.yaml) | HIGH | `v0.9.0` | `v0.9.0` | Fail-closed ignored framework-managed-path detection is merged through PR #103; the owner closed the workflow with independent audit and aggregate-rerun debt deferred to separately arranged future work. | [`2026-08-04-framework-managed-ignore-detection`](../workflows/2026-08-04-framework-managed-ignore-detection/workflow.yaml) | 2026-08-10 |
+| [GOV-004](items/GOV-004.yaml) | HIGH | `v0.9.0` | `v0.9.0` | Workflow-value, multi-Issue delivery-cohesion, and positive linear-topology rules passed independent verification and were integrated linearly through PR #88. | [`2026-08-03-workflow-delivery-cohesion`](../workflows/2026-08-03-workflow-delivery-cohesion/workflow.yaml) | 2026-08-10 |
 
 ## Resolved
 

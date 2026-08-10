@@ -125,7 +125,7 @@ Until a package distribution decision exists:
 
 | Source evidence | Historical shape | Current disposition | Reason |
 | --- | --- | --- | --- |
-| `ai-coding-exercise` at `f7ed0b9b5b23822ec012c375261df44f6f03a97f` | Java EzDDD `EsAggregateRoot<TId,TEvent>`, `apply/when`, replay constructor | Preserve event-transition and replay concepts; retire Java generic/API shape from active .NET truth | Framework-specific Java types are provenance, not portable .NET contracts |
+| `ai-coding-exercise` at `f7ed0b9b5b23822ec012c375261df44f6f03a97f` | Java event-sourced aggregate base with `apply/when` and replay constructor | Preserve event-transition and replay concepts; retire Java generic/API shape from active .NET truth | Framework-specific Java types are provenance, not portable .NET contracts |
 | `dotnet-mq-arch-lab` | `EsAggregateRoot<TId>` plus `DomainEntity` and `AggregateRoot` bases; explicit commit lifecycle | Preserve single-generic ES shape and commit lifecycle; do not require the other bases | The ES mechanics have executable downstream evidence; the inheritance chain is not required |
 | `dotnet-webapi-lab` | State-based Aggregates implement `IAggregateRoot<Guid>` directly | Preserve as evidence for interface-first normal Aggregates | Confirms that useful Aggregate models do not require a common base class |
 | Pre-v0.4.0 framework example | Converted `EsAggregateRoot<TId,TEvent>` placeholder embedded in `Plan.cs` | Rewrite to the canonical single-generic contract and keep the portfolio illustrative | Embedded placeholder contradicted `DBA1009` guidance and had no independent test route |

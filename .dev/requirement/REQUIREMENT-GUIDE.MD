@@ -75,8 +75,10 @@ flowchart LR
 ## References
 ```
 
-## 5) Existing References
-可參考下列文件整理需求內容：
-- `requirement.md`（需求範例）
-- `README-UML.md`（UML/圖表說明）
-- `scrum-domain-model.md` / `scrum-context-map.puml` 等領域模型文件
+## 5) Existing Examples
+
+上方的「Copy & Fill」區塊是本目錄目前維護的唯一通用需求範本。下列文件是實際需求紀錄，可作為結構與內容密度的參考；它們不是可直接複製的通用範本：
+
+- [HISTORICAL-CONTEXT-NORMALIZATION-REQUIREMENTS.MD](HISTORICAL-CONTEXT-NORMALIZATION-REQUIREMENTS.MD)
+- [DOTNET-VALIDATOR-PHASE-3-REQUIREMENTS.MD](DOTNET-VALIDATOR-PHASE-3-REQUIREMENTS.MD)
+- [TECH-STACK-REQUIREMENTS.MD](TECH-STACK-REQUIREMENTS.MD)

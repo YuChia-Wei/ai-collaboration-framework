@@ -100,7 +100,7 @@ class GovernanceWorkflowContractTests(unittest.TestCase):
 
     def test_gwt_007_given_source_registry_when_loaded_then_governance_inputs_are_exact(self) -> None:
         registry = yaml.safe_load(REGISTRY_PATH.read_text(encoding="utf-8"))
-        self.assertEqual("1.1", registry["schema_version"])
+        self.assertEqual("1.2", registry["schema_version"])
         self.assertEqual(
             [
                 {
@@ -109,6 +109,10 @@ class GovernanceWorkflowContractTests(unittest.TestCase):
                         ".dev/workflows/2026-07-21-v0-5-0-development/"
                         "evidence/v050-published-path-disposition.yaml"
                     ),
+                    "current_byte_authorizations": [
+                        ".dev/workflows/2026-08-10-current-context-remediation/"
+                        "evidence/v050-current-byte-authorization.yaml"
+                    ],
                 }
             ],
             registry["manifests"],
