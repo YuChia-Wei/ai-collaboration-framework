@@ -6,9 +6,9 @@
   "task_id": "REL012-001-exact-candidate-and-pretag-handoff",
   "workflow_id": "2026-08-11-v0-12-release-readiness",
   "owner_skill": "ai-context-governance",
-  "status": "in_progress",
+  "status": "completed",
   "created_at": "2026-08-11T00:43:10+08:00",
-  "updated_at": "2026-08-11T01:19:03+08:00",
+  "updated_at": "2026-08-11T01:48:35+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-5.6-sol",
   "reasoning_effort": "high",
@@ -20,17 +20,17 @@
     "non_goals": ["Create or push v0.12.0 tag.", "Publish the Release in this workflow branch."]
   },
   "execution": {
-    "steps": ["Freeze exact included Issue set.", "Author notes, migration, release record, and phase checks.", "Pass local and hosted candidate gates.", "Freeze and run final external Luna audit.", "Integrate and pass merged-main pre-tag gate."],
+    "steps": ["Freeze exact included Issue set.", "Author notes, migration, release record, and phase checks.", "Pass local and hosted candidate gates.", "Integrate and pass the merged-main pre-tag gates.", "Freeze source/provider state and run the final external Luna audit without concurrent mutation."],
     "validation": ["candidate state", "deterministic package/archive parity", "hosted PR checks", "external Luna read-only audit", "merged-main pre-tag preparation"],
-    "last_completed_step": "#184 and #167 implementations passed focused validation and are ready for hosted pull-request integration.",
-    "next_action": "After the implementation PR merges and Issues #184/#167 close as completed, create the exact v0.12.0 candidate from updated main."
+    "last_completed_step": "PR #189 candidate cef52c2aac01213c2eda7f1881cfaad9784413f5 passed all five hosted checks after all exact local candidate and archive gates passed.",
+    "next_action": "Merge the terminal candidate after its superseding checks pass, then run read-only merged-main and frozen external handoff gates without source mutation."
   },
   "results": {
-    "summary": "",
-    "files_changed": [],
-    "tests_run": [],
-    "finding_status": "not-addressed",
-    "residual_risk": "",
-    "follow_up_needed": true
+    "summary": "Authored the terminal v0.12.0 release candidate with ten included Issues, #169 provider transitions, breaking v0.11.0 migration guidance, and exact phase contracts; local candidate and package gates pass.",
+    "files_changed": [".dev/releases/v0.12.0/**", ".dev/releases/INDEX.MD", ".dev/workflows/2026-08-11-v0-12-release-readiness/**", ".dev/workflows/INDEX.MD"],
+    "tests_run": ["validate-ai-context-versions.py: 15 release records passed", "validate-workflow-artifacts.py: 72 post-adoption workflows passed", "test_ai_context_release_state.py: 33 passed", "test_ai_context_version_governance.py: 21 passed", "test_release_provider_reconciliation.py: 7 passed", "test_release_notes_renderer.py: 9 passed", "candidate state: passed", "provider preflight: passed", "source dispositions: 1062 = 117 + 913 + 32, zero implicit omissions", "v0.11.0 source archive validation: passed", "v0.12.0 ZIP/TAR build and parity: passed"],
+    "finding_status": "addressed",
+    "residual_risk": "RELEASE_PROVIDER_TOKEN remains unprovisioned; the tag workflow will fail before Release mutation until the owner supplies a project-capable credential.",
+    "follow_up_needed": false
   }
 }

@@ -1,0 +1,127 @@
+schema_version: "1.0"
+release_id: "REL-v0.12.0"
+version: "v0.12.0"
+status: "validated"
+record_origin: "governed"
+distribution_kind: "governed-package"
+installable: true
+tag: null
+commit: null
+tagged_at: null
+recorded_at: null
+created_at: "2026-08-11T01:38:38+08:00"
+updated_at: "2026-08-11T01:38:38+08:00"
+planning:
+  github_issue_refs:
+    - "#150"
+    - "#166"
+    - "#167"
+    - "#170"
+    - "#171"
+    - "#172"
+    - "#175"
+    - "#176"
+    - "#178"
+    - "#184"
+provider_reconciliation:
+  schema_version: "1.0"
+  provider: "github"
+  repository: "YuChia-Wei/ai-collaboration-framework"
+  project_owner: "YuChia-Wei"
+  project_number: 3
+  included_issue_refs_source: "planning.github_issue_refs"
+  included_work:
+    prepublication:
+      issue_state: "closed"
+      state_reason: "completed"
+      project:
+        Status: "Done"
+        Priority: "P1 High"
+        Owner review: "Approved"
+        Target release: "v0.12.0"
+        Published in: "Not yet published"
+    postpublication:
+      issue_state: "closed"
+      state_reason: "completed"
+      project:
+        Status: "Done"
+        Priority: "P1 High"
+        Owner review: "Approved"
+        Target release: "v0.12.0"
+        Published in: "v0.12.0"
+  coordination:
+    issue_refs:
+      - "#169"
+    prepublication:
+      issue_state: "open"
+      state_reason: null
+      project:
+        Status: "Planned"
+        Priority: "P1 High"
+        Owner review: "Approved"
+        Target release: "v0.12.0"
+        Published in: "Not applicable — not a release item"
+    postpublication:
+      issue_state: "closed"
+      state_reason: "completed"
+      project:
+        Status: "Done"
+        Priority: "P1 High"
+        Owner review: "Approved"
+        Target release: "v0.12.0"
+        Published in: "Not applicable — not a release item"
+compatibility:
+  breaking_changes: true
+  minimum_source_version: "v0.11.0"
+  reconciliation_sources:
+    - "v0.11.0"
+  automatic_upgrade_sources:
+    - "v0.11.0"
+  affected_contracts:
+    - "brand-neutral dotnet-backend example names and reference paths"
+    - "product, package, archive, profile, repository, and compatibility identities"
+    - "source-disposition and immutable-history validation boundaries"
+    - "terminal tag publication and GitHub provider reconciliation"
+artifacts:
+  release_notes: "release-notes.md"
+  migration_guide: "migration-guide.md"
+distribution:
+  profile_id: "dotnet-backend"
+  package_id: "ai-context-dotnet-backend-v0.12.0"
+  schema_versions:
+    package: "2.1.0"
+    files: "2.0.0"
+    migration: "3.0.0"
+  artifacts:
+    zip: "ai-context-dotnet-backend-v0.12.0.zip"
+    zip_checksum: "ai-context-dotnet-backend-v0.12.0.zip.sha256"
+    tar_gz: "ai-context-dotnet-backend-v0.12.0.tar.gz"
+    tar_gz_checksum: "ai-context-dotnet-backend-v0.12.0.tar.gz.sha256"
+  migration:
+    default_mode: "dry-run"
+    apply_requires_clean_worktree: true
+    apply_requires_acknowledged_reconciliation: true
+  publication:
+    tag_owner: "user"
+    trigger: "user-created-tag"
+    automation: "github-actions"
+    creates_or_moves_tag: false
+validation:
+  evidence: "PR #188 integrated the terminal release flow and source-disposition contract after all five hosted checks passed. Exact v0.12.0 candidate package, provider preflight, frozen independent validation, and merged-main pre-tag evidence are recorded by workflow 2026-08-11-v0-12-release-readiness."
+  workflow_id: "2026-08-11-v0-12-release-readiness"
+  related_workflows:
+    - "2026-08-09-repository-rename-reconciliation"
+    - "2026-08-10-current-context-remediation"
+    - "2026-08-10-immutable-history-validation"
+    - "2026-08-10-package-identity-consolidation"
+  related_assessments:
+    - "ASM-20260809-003"
+    - "ASM-20260809-004"
+    - "ASM-20260810-003"
+    - "ASM-20260810-004"
+    - "ASM-20260810-005"
+  package_status: "validated"
+  post_merge_status: "pending"
+  failed_publication_run: null
+  published_run: null
+  public_release_url: null
