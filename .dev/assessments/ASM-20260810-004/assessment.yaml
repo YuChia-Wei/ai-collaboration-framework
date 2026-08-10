@@ -1,0 +1,46 @@
+schema_version: "1.0"
+assessment_id: "ASM-20260810-004"
+commit_search_id: "ASM-20260810-004"
+assessment_type: "ai-context-verification"
+title: "Product Identity Registry And Package Boundary Verification"
+owner_skill: "ai-context-auditor"
+status: "final"
+report: "report.md"
+artifact_branch: "codex/2026-08-10-package-identity-consolidation"
+base_branch: "main"
+created_at: "2026-08-10T22:53:36+08:00"
+updated_at: "2026-08-10T22:53:36+08:00"
+template_source: ".dev/assessments/templates/assessment-locator-template.yaml"
+template_version: "1.0.0"
+report_template_source: ".ai/assets/skills/ai-context-auditor/templates/ai-context-audit-report-template.md"
+report_template_version: "2.1.0"
+subject_ref:
+  repository: "YuChia-Wei/ai-collaboration-framework"
+  branch: "codex/2026-08-10-package-identity-consolidation"
+  commit: "572cb76350d87e77ef91235dc12fd731547595f5"
+scope:
+  included:
+    - "Issue #166 identity registry, schema, validator, policy consumer, tests, and current entry documents"
+    - "ASM-20260810-003 PKG-002 acceptance reconciliation"
+    - "Committed pre/post implementation package projection comparison"
+    - "Source governance and AI context integration checks"
+  excluded:
+    - "Issue #184 source-disposition implementation"
+    - "CLI command, binary, installer, registry-package, or external toolchain identity selection"
+    - "v0.12.0 candidate, tag, Release, or publication"
+    - "v0.11.0 tag, Release, asset, metadata, or historical-record mutation"
+relations:
+  supersedes: []
+  superseded_by: []
+  related_assessments:
+    - "ASM-20260810-003"
+    - "ASM-20260809-003"
+    - "ASM-20260809-004"
+  workflow_refs:
+    - "2026-08-10-package-identity-consolidation"
+  backlog_refs: []
+  adr_refs: []
+resume:
+  last_completed_action: "Verified the committed #166 identity registry and proved zero package projection drift."
+  next_action: "Close the owning workflow and Issue #166 after repository and hosted checks remain green."
+  blockers: []

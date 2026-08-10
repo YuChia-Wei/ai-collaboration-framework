@@ -1,0 +1,81 @@
+schema_version: "1.0"
+evidence_id: "ID001-POST-REMEDIATION"
+assessment_id: "ASM-20260810-004"
+issue: 166
+status: "final"
+verified_at: "2026-08-10T22:53:36+08:00"
+subject:
+  repository: "YuChia-Wei/ai-collaboration-framework"
+  commit: "572cb76350d87e77ef91235dc12fd731547595f5"
+  parent_inventory_commit: "1999432a9f2b088a65cf6fc76d21599630707d1b"
+identity_registry:
+  path: ".ai/distribution/identity-registry.yaml"
+  schema: ".ai/distribution/schemas/identity-registry.schema.yaml"
+  canonical_records: 7
+  alias_records: 10
+  explicit_bindings: 3
+  reserved_namespace_rules: 2
+  consumer_contracts: 8
+  required_identity_kinds:
+    repository: passed
+    public_product: passed
+    framework_release: passed
+    technology_profile: passed
+    archive_package: passed
+  repository_product_separation: passed
+  cli_identity_selected: false
+  external_toolchain_repository_selected: false
+consumer_readback:
+  distribution_profile_repository: passed
+  distribution_profile_id: passed
+  distribution_package_template: passed
+  distribution_release_model: passed
+  traditional_chinese_product_entry: passed
+  english_product_entry: passed
+  published_release_family: passed
+  v0_6_skill_transition: passed
+negative_cases:
+  total: 10
+  passed: 10
+  cases:
+    - "unclassified retired operational identity"
+    - "stale classification rule"
+    - "overlapping classification rules"
+    - "excluded path remains unclassified"
+    - "forbidden current-operational exception"
+    - "duplicate canonical identity id"
+    - "ambiguous alias value"
+    - "repository/product canonical value coupling"
+    - "declared consumer drift"
+    - "real source scan and compatibility classification"
+package_projection_invariance:
+  before_commit: "1999432a9f2b088a65cf6fc76d21599630707d1b"
+  subject_commit: "572cb76350d87e77ef91235dc12fd731547595f5"
+  before_files: 655
+  subject_files: 655
+  before_fingerprint: "ecd20b708c18ea902113d8d93caf68eb9dbcaa09d1db55acd1614d0d20c6e154"
+  subject_fingerprint: "ecd20b708c18ea902113d8d93caf68eb9dbcaa09d1db55acd1614d0d20c6e154"
+  profile_bytes_equal: true
+  path_sets_equal: true
+  content_mismatches: []
+  mode_mismatches: []
+  component_mismatches: []
+  ownership_mismatches: []
+  install_behavior_mismatches: []
+validation:
+  identity_registry_and_retired_scan: passed
+  repository_identity_gwt: "passed 11/11"
+  source_governance: passed
+  ai_context: passed
+  committed_range_diff_check: passed
+finding_reconciliation:
+  - finding_id: "ASM-20260810-003#PKG-001"
+    status: "deferred-with-owner"
+    issue: 184
+    note: "Separate source-disposition contract; no package integrity regression."
+  - finding_id: "ASM-20260810-003#PKG-002"
+    status: "addressed"
+    issue: 166
+    note: "Registry, aliases, bindings, consumers, and fail-closed validation verified."
+new_findings: []
+decision: "verified-ready-for-closeout"

@@ -12,6 +12,7 @@ owns its identity, current lifecycle state, subject revision, and relationships.
 
 | Assessment | Title | Type | Owner | Status | Subject Commit | Updated | Report |
 | --- | --- | --- | --- | --- | --- | --- | --- |
+| [`ASM-20260810-004`](ASM-20260810-004/assessment.yaml) | Product Identity Registry And Package Boundary Verification | `ai-context-verification` | `ai-context-auditor` | `final` | `572cb76350d87e77ef91235dc12fd731547595f5` | `2026-08-10T22:53:36+08:00` | [report](ASM-20260810-004/report.md) |
 | [`ASM-20260810-003`](ASM-20260810-003/assessment.yaml) | Distribution Source, Projection, And Published Artifact Inventory | `ai-context-audit` | `ai-context-auditor` | `final` | `343089ea2a05a10ee203fa5cbbc7a542db9b346f` | `2026-08-10T22:29:58+08:00` | [report](ASM-20260810-003/report.md) |
 | [`ASM-20260810-002`](ASM-20260810-002/assessment.yaml) | Immutable History Validation Post-Remediation Verification | `ai-context-verification` | `ai-context-auditor` | `final` | `99df2e0b1716b8f6b3def5a464b9f92c6802d823` | `2026-08-10T08:26:38+08:00` | [report](ASM-20260810-002/report.md) |
 | [`ASM-20260810-001`](ASM-20260810-001/assessment.yaml) | Current Governance And Brand Boundary Remediation Verification | `ai-context-verification` | `ai-context-auditor` | `final` | `725162b679a9aea85e50417ee4b35c9a95cdae7c` | `2026-08-10T01:38:00+08:00` | [report](ASM-20260810-001/report.md) |
