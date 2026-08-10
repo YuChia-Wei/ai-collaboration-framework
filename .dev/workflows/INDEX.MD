@@ -8,6 +8,7 @@ task-level progress.
 
 | Workflow | Title | Owner | Status | Updated | Entry Point |
 | --- | --- | --- | --- | --- | --- |
+| [`2026-08-10-package-identity-consolidation`](2026-08-10-package-identity-consolidation/workflow.yaml) | Inventory Distribution Artifacts And Consolidate Product Identities | `ai-context-governance` | `in_progress` | `2026-08-10T22:21:28+08:00` | [plan](2026-08-10-package-identity-consolidation/workflow-plan.md) |
 | [`2026-08-10-immutable-history-validation`](2026-08-10-immutable-history-validation/workflow.yaml) | Layer Immutable .dev History Validation Without Weakening Evidence Integrity | `ai-context-governance` | `completed` | `2026-08-10T08:31:18+08:00` | [plan](2026-08-10-immutable-history-validation/workflow-plan.md) |
 | [`2026-08-10-current-context-remediation`](2026-08-10-current-context-remediation/workflow.yaml) | Align Current Governance State And Retire Active ez-Series Branding | `ai-context-governance` | `completed` | `2026-08-10T01:42:02+08:00` | [plan](2026-08-10-current-context-remediation/workflow-plan.md) |
 | [`2026-08-09-v0-11-product-boundary-delivery-evidence`](2026-08-09-v0-11-product-boundary-delivery-evidence/workflow.yaml) | v0.11.0 Product Boundary, Delivery Contract, And Evidence Completion | `software-development-orchestrator` | `completed` | `2026-08-09T12:50:50+08:00` | [plan](2026-08-09-v0-11-product-boundary-delivery-evidence/workflow-plan.md) |

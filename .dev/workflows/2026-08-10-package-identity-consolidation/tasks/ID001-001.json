@@ -1,0 +1,47 @@
+{
+  "template_id": "ai-context-governance-remediation-task",
+  "template_version": "1.1.0",
+  "template_created_at": "2026-07-10T18:22:49+08:00",
+  "template_updated_at": "2026-07-27T09:52:09+08:00",
+  "task_id": "ID001-001",
+  "workflow_id": "2026-08-10-package-identity-consolidation",
+  "owner_skill": "ai-context-governance",
+  "status": "pending",
+  "created_at": "2026-08-10T22:21:28+08:00",
+  "updated_at": "2026-08-10T22:21:28+08:00",
+  "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
+  "model": "gpt-5.6-sol",
+  "reasoning_effort": "high",
+  "finding_ids": [],
+  "scope": {
+    "target": "Issue #166 versioned product/package/archive/profile identity registry",
+    "files": [],
+    "constraints": [
+      "Consume final ASM-20260810-003 evidence before selecting registry records.",
+      "Separate repository, public product, framework release, technology profile, archive/package, legacy alias, and future toolchain identities.",
+      "Preserve exact v0.11.0 archive compatibility and do not decide CLI identity."
+    ],
+    "non_goals": [
+      "Rename published archives or mutate v0.11.0.",
+      "Create an external toolchain repository or CLI package identity."
+    ]
+  },
+  "execution": {
+    "steps": [
+      "Select registry placement and schema from existing ownership evidence.",
+      "Implement identity and alias records plus ambiguity validation.",
+      "Update bounded current operational documents to consume or reference the registry."
+    ],
+    "validation": [],
+    "last_completed_step": "",
+    "next_action": "Wait for ASM-20260810-003 to become final."
+  },
+  "results": {
+    "summary": "",
+    "files_changed": [],
+    "tests_run": [],
+    "finding_status": "not-addressed",
+    "residual_risk": "Identity decisions remain evidence-gated by #172.",
+    "follow_up_needed": true
+  }
+}

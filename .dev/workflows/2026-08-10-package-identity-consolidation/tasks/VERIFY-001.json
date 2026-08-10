@@ -1,0 +1,47 @@
+{
+  "template_id": "ai-context-governance-remediation-task",
+  "template_version": "1.1.0",
+  "template_created_at": "2026-07-10T18:22:49+08:00",
+  "template_updated_at": "2026-07-27T09:52:09+08:00",
+  "task_id": "VERIFY-001",
+  "workflow_id": "2026-08-10-package-identity-consolidation",
+  "owner_skill": "ai-context-auditor",
+  "status": "pending",
+  "created_at": "2026-08-10T22:21:28+08:00",
+  "updated_at": "2026-08-10T22:21:28+08:00",
+  "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
+  "model": "gpt-5.6-sol",
+  "reasoning_effort": "high",
+  "finding_ids": [],
+  "scope": {
+    "target": "Independent #172/#166 post-remediation verification",
+    "files": [
+      ".dev/assessments/ASM-20260810-004/**"
+    ],
+    "constraints": [
+      "Keep audited package and identity surfaces read-only during verification.",
+      "Do not substitute hosted CI or prior baseline claims for direct evidence."
+    ],
+    "non_goals": [
+      "Remediate findings while acting as auditor."
+    ]
+  },
+  "execution": {
+    "steps": [
+      "Audit the completed #172/#166 subject independently.",
+      "Reconcile baseline findings and record residual/manual decisions.",
+      "Finalize ASM-20260810-004 and hand closure back to governance."
+    ],
+    "validation": [],
+    "last_completed_step": "",
+    "next_action": "Wait for ID001-001 remediation completion."
+  },
+  "results": {
+    "summary": "",
+    "files_changed": [],
+    "tests_run": [],
+    "finding_status": "not-addressed",
+    "residual_risk": "Verification has not started.",
+    "follow_up_needed": true
+  }
+}

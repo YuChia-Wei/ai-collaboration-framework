@@ -1,0 +1,57 @@
+{
+  "template_id": "ai-context-governance-remediation-task",
+  "template_version": "1.1.0",
+  "template_created_at": "2026-07-10T18:22:49+08:00",
+  "template_updated_at": "2026-07-27T09:52:09+08:00",
+  "task_id": "PKG009-001",
+  "workflow_id": "2026-08-10-package-identity-consolidation",
+  "owner_skill": "ai-context-auditor",
+  "status": "in_progress",
+  "created_at": "2026-08-10T22:21:28+08:00",
+  "updated_at": "2026-08-10T22:21:28+08:00",
+  "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
+  "model": "gpt-5.6-sol",
+  "reasoning_effort": "high",
+  "finding_ids": [],
+  "scope": {
+    "target": "Issue #172 package source, projection, archive, and published-asset inventory",
+    "files": [
+      ".ai/distribution/**",
+      ".dev/assessments/ASM-20260809-003/**",
+      ".dev/assessments/ASM-20260809-004/**",
+      ".dev/releases/**",
+      ".dev/assessments/ASM-20260810-003/**"
+    ],
+    "constraints": [
+      "Audit package and governance surfaces only; exclude product source and tests.",
+      "Treat GitHub Release v0.11.0 assets and tag bytes as immutable read-only evidence.",
+      "Do not alter package bytes, schemas, archive names, migration behavior, or downstream targets during #172."
+    ],
+    "non_goals": [
+      "Implement #166 before the #172 baseline is final.",
+      "Publish or replace any release asset."
+    ]
+  },
+  "execution": {
+    "steps": [
+      "Reconcile #170/#171 classifications with the current distribution contract.",
+      "Read back v0.11.0 published archives, paths, modes, checksums, fingerprints, and metadata.",
+      "Create and validate ASM-20260810-003 with a machine-readable inventory and difference classification."
+    ],
+    "validation": [
+      "python .ai/scripts/validate-assessment-artifacts.py",
+      "focused distribution resolver and reference-integrity checks",
+      "GitHub Release asset and checksum read-back"
+    ],
+    "last_completed_step": "Workflow branch and task contract created.",
+    "next_action": "Inspect the current distribution contracts and #170/#171 assessment evidence."
+  },
+  "results": {
+    "summary": "",
+    "files_changed": [],
+    "tests_run": [],
+    "finding_status": "not-addressed",
+    "residual_risk": "Published archive read-back and current-contract comparison are pending.",
+    "follow_up_needed": true
+  }
+}
