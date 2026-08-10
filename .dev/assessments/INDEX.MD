@@ -12,6 +12,7 @@ owns its identity, current lifecycle state, subject revision, and relationships.
 
 | Assessment | Title | Type | Owner | Status | Subject Commit | Updated | Report |
 | --- | --- | --- | --- | --- | --- | --- | --- |
+| [`ASM-20260810-002`](ASM-20260810-002/assessment.yaml) | Immutable History Validation Post-Remediation Verification | `ai-context-verification` | `ai-context-auditor` | `final` | `99df2e0b1716b8f6b3def5a464b9f92c6802d823` | `2026-08-10T08:26:38+08:00` | [report](ASM-20260810-002/report.md) |
 | [`ASM-20260809-004`](ASM-20260809-004/assessment.yaml) | .dev Governance Content And Lifecycle Inventory | `ai-context-audit` | `ai-context-auditor` | `final` | `3a60570d0e290f337f2a212d092c6797670528b4` | `2026-08-09T22:17:10+08:00` | [report](ASM-20260809-004/report.md) |
 | [`ASM-20260809-003`](ASM-20260809-003/assessment.yaml) | .ai Product Source, Ownership, And Portability Inventory | `ai-context-audit` | `ai-context-auditor` | `final` | `3a60570d0e290f337f2a212d092c6797670528b4` | `2026-08-09T22:06:38+08:00` | [report](ASM-20260809-003/report.md) |
 | [`ASM-20260809-002`](ASM-20260809-002/assessment.yaml) | Repository Rename Reconciliation Verification | `ai-context-verification` | `ai-context-auditor` | `final` | `ee05a0d385d7c5739554f81e8a3767e31e5b7793` | `2026-08-09T21:00:08+08:00` | [report](ASM-20260809-002/report.md) |
