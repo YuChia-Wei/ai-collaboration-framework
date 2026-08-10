@@ -1,12 +1,12 @@
 schema_version: '1.0'
 contract_id: immutable-history-validation
 source:
-  revision: 6da4d4a41058f6a2ce9436a4f65b205d5a2121d4
-  tree: a23b32e27a6cd630b22f53c039a6ccd6223ebb0c
-  history_digest: 70b467d0a4d174a0298314dcc2da19c66c6eab33117bf39bb9a4966a7965c89f
+  revision: 8fb17e13ce1e320e103026cff1ecbd3eb4f210b5
+  tree: 16c1e390dde731a321b9320503a48c19bc69ff3e
+  history_digest: b9ffa466288821237eba8e6cdd9ba1e039ef592c29bbb07ed58e20e127ae1a52
   validator_digest: c2ad7594a58243c9fb08a8a46e45beba526327038f6bbf11f9e387991a27481b
   schema_digest: 2516e117f7dea008ac8412de91bd176947b5883038a7857ef903273eab02ae50
-  index_digest: 12267481f87b90b71390a6ccc3d0d28b9d590c96dd72741dd3c880315e2eea99
+  index_digest: 13d5331e937def464ec619e966c62c29ac101d3e1ecf78e946232133139437b6
   release_ref_digest: 629e253abdc4d389c556feffa948f41c4ef864e81c9dce3c86e866b7558f35d3
   release_refs:
   - path: .dev/releases/v0.0.1/release.yaml
