@@ -8,7 +8,7 @@
   "owner_skill": "ai-context-auditor",
   "status": "in_progress",
   "created_at": "2026-08-10T22:21:28+08:00",
-  "updated_at": "2026-08-10T22:50:31+08:00",
+  "updated_at": "2026-08-10T22:54:57+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-5.6-sol",
   "reasoning_effort": "high",
@@ -34,16 +34,34 @@
       "Reconcile baseline findings and record residual/manual decisions.",
       "Finalize ASM-20260810-004 and hand closure back to governance."
     ],
-    "validation": [],
-    "last_completed_step": "ID001-001 implementation and focused validation completed.",
-    "next_action": "Audit the committed #166 implementation and finalize ASM-20260810-004."
+    "validation": [
+      "ASM-20260810-004 against 572cb76350d87e77ef91235dc12fd731547595f5",
+      "identity GWT suite 11/11",
+      "source governance and AI context validators",
+      "exact pre/post package profile and 655-file payload comparison",
+      "committed-range git diff --check"
+    ],
+    "last_completed_step": "Finalized ASM-20260810-004 with PKG-002 addressed, no new findings, and exact package projection invariance.",
+    "next_action": "Push the branch, open the cohesive PR, run hosted checks, and finalize integration evidence."
   },
   "results": {
-    "summary": "",
-    "files_changed": [],
-    "tests_run": [],
-    "finding_status": "not-addressed",
-    "residual_risk": "Verification has not started.",
+    "summary": "Independent verification passed for the #166 committed subject; PKG-002 is addressed and PKG-001 remains correctly routed to #184.",
+    "files_changed": [
+      ".dev/assessments/ASM-20260810-004/assessment.yaml",
+      ".dev/assessments/ASM-20260810-004/report.md",
+      ".dev/assessments/ASM-20260810-004/evidence/identity-verification.yaml",
+      ".dev/assessments/INDEX.MD"
+    ],
+    "tests_run": [
+      "python .ai/scripts/validate-repository-identity.py (passed)",
+      "python .ai/scripts/tests/test_repository_identity.py -v (11/11 passed)",
+      "python .ai/scripts/validate-source-governance.py (passed)",
+      "python .ai/scripts/validate-ai-context.py (passed)",
+      "pre/post package projection comparison (passed: identical 655 files)",
+      "python .ai/scripts/validate-assessment-artifacts.py (passed: 45 assessments)"
+    ],
+    "finding_status": "addressed",
+    "residual_risk": "Hosted PR checks and merge read-back remain before workflow closure.",
     "follow_up_needed": true
   }
 }
