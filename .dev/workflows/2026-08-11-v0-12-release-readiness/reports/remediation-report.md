@@ -7,7 +7,7 @@
 - `owner_skill`: `ai-context-governance`
 - `status`: `candidate-validation`
 - `created_at`: `2026-08-11T00:43:10+08:00`
-- `updated_at`: `2026-08-11T01:38:38+08:00`
+- `updated_at`: `2026-08-11T01:44:36+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-remediation-report-template.md`
 - `template_version`: `2.0.0`
 - `baseline_assessment`: `ASM-20260810-003`
@@ -17,7 +17,7 @@
 
 - Authorized scope: GitHub Issues #184 and #167 plus v0.12 release coordination in #169.
 - Completed scope: #184 source dispositions and #167 terminal tag publication/provider reconciliation implementation.
-- Validation summary: 94 focused tests plus source governance, AI context, and diff validation passed. PR #188's first run found one stale dependency-validator cardinality; the bounded correction then passed all five superseding hosted checks and merged to `main@d1823a0c0cbf75ea13a33820443f5416c1dee86e`. Exact candidate and final frozen validation remain.
+- Validation summary: implementation validation and all five PR #188 hosted checks passed. Candidate `e4d8bfa81bcdef265663ffcbc28de1120016a3df` then passed exact candidate-state, live provider preflight, source-disposition, release-rendering, published-v0.11 input validation, and deterministic v0.12 ZIP/TAR parity. Hosted candidate and final frozen validation remain.
 - Closure decision: `not-ready`
 
 ## Finding Resolution Matrix
@@ -30,7 +30,7 @@
 
 ## Changes And Evidence
 
-- Current source partition: 1052 `.dev/**` paths = 117 packaged + 903 explicit exclusions + 32 governed dispositions; implicit omissions = 0.
+- Current candidate source partition: 1062 `.dev/**` paths = 117 packaged + 913 explicit exclusions + 32 governed dispositions; implicit omissions = 0.
 - Pull-request code never receives `RELEASE_PROVIDER_TOKEN`; only exact tag-environment steps receive it.
 - The tag workflow performs preflight before Release mutation, accepts only its exact in-progress run during internal hosted finalization, applies idempotent provider changes, and retains a read-back receipt.
 - Normal v0.12+ source remains `status: validated`; closeout tooling is historical/exception recovery only.
@@ -50,7 +50,7 @@
 
 ## Closure Evidence
 
-- Required validations: focused/local structural validation and hosted implementation PR passed; exact candidate and frozen independent validation pending.
-- Commit status: implementation merged at `d1823a0c0cbf75ea13a33820443f5416c1dee86e`; candidate commit pending.
+- Required validations: focused/local structural validation, hosted implementation PR, exact candidate-state, provider preflight, and archive parity passed; hosted candidate and frozen independent validation pending.
+- Commit status: implementation merged at `d1823a0c0cbf75ea13a33820443f5416c1dee86e`; initial candidate checkpoint is `e4d8bfa81bcdef265663ffcbc28de1120016a3df`.
 - Workflow/task status: in progress.
 - Final next action: validate and integrate the exact v0.12 candidate, freeze merged-main source/provider state, then run the final Luna audit before tag handoff.

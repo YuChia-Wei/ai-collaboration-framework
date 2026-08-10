@@ -12,7 +12,7 @@
 - `current_phase`: `validation`
 - `artifact_root`: `.dev/workflows/2026-08-11-v0-12-release-readiness`
 - `created_at`: `2026-08-11T00:43:10+08:00`
-- `updated_at`: `2026-08-11T01:38:38+08:00`
+- `updated_at`: `2026-08-11T01:44:36+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md`
 - `template_version`: `1.2.0`
 
@@ -51,10 +51,10 @@
 
 ## Resume Checkpoint
 
-- Last completed action: PR #188 passed all five hosted checks and merged as `main@d1823a0c0cbf75ea13a33820443f5416c1dee86e`; #167/#184 closed as completed. PR wording had accidentally added #169 as a closing reference, so the wording was corrected, #169 was reopened, and its exact Planned provider state was read back. #150 owner review and #175/#176 priority gaps were also corrected.
-- Current task: author and validate the exact `v0.12.0` terminal release candidate on continuation segment 2.
-- Exact next action: run local release registry, candidate-state, provider-preflight, source-disposition, deterministic package, and critical gates; then commit and push the candidate for hosted review.
-- Validation already completed: source disposition at the implementation checkpoint derived `1052 = 117 packaged + 903 explicit exclusions + 32 dispositions` with zero implicit omissions; PR #188 superseding run passed candidate build, governance, Windows prerequisite, Ubuntu prerequisite, and Ubuntu PR profile checks.
+- Last completed action: candidate checkpoint `e4d8bfa81bcdef265663ffcbc28de1120016a3df` passed exact candidate-state and live provider preflight, rendered the v0.12 release body, derived `1062 = 117 packaged + 913 explicit exclusions + 32 dispositions` with zero implicit omissions, and built/validated deterministic ZIP/TAR parity from the published v0.11.0 inventory using a short Windows temp root.
+- Current task: deliver the locally validated `v0.12.0` terminal release candidate through hosted review on continuation segment 2.
+- Exact next action: commit this local validation checkpoint, push the candidate branch, open the candidate PR, and wait for all superseding hosted checks before any further source mutation.
+- Validation already completed: release registry 15/15, workflow registry 72/72, release-state 33/33, version-governance 21/21, provider 7/7, release-notes 9/9, AI-context structural validation, exact candidate state, live provider preflight, source dispositions, prior-asset verification, deterministic archive build/parity, and `git diff --check` passed.
 - Git state: branch `codex/2026-08-11-v0-12-release-candidate` from exact `origin/main@d1823a0c0cbf75ea13a33820443f5416c1dee86e`.
 - Branch history and checkpoint handoffs: implementation segment merged through PR #188; candidate continuation resumed from the fetched merge commit.
 - Blockers or unresolved decisions: repository Actions secret `RELEASE_PROVIDER_TOKEN` must exist before the tag can publish; pull-request workflows intentionally never receive it. Exact live Project preflight will run before tag handoff and again inside the protected tag publication job.
@@ -64,4 +64,4 @@
 | Segment | Branch | Base | Checkpoint Type | Commit | Remote / Target | Recorded At | Reason | Resume Branch / Action |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | 1 | `codex/2026-08-11-v0-12-release-readiness` | `main@bd1bd2530bfe76b56bd38023c4e3f9c167291120` | merge-commit integration | `cead16fd415bde663233f899ba0c16b28e2d270c` | PR #188 → `main@d1823a0c0cbf75ea13a33820443f5416c1dee86e` | `2026-08-11T01:38:38+08:00` | #184 and #167 implementation passed all hosted checks and closed as completed | resume the same delivery on a new branch from updated main |
-| 2 | `codex/2026-08-11-v0-12-release-candidate` | `main@d1823a0c0cbf75ea13a33820443f5416c1dee86e` | candidate authoring | pending | pending | `2026-08-11T01:38:38+08:00` | create the exact terminal v0.12.0 candidate after implementation Issue closeout and provider repair | validate, commit, push, and open candidate PR |
+| 2 | `codex/2026-08-11-v0-12-release-candidate` | `main@d1823a0c0cbf75ea13a33820443f5416c1dee86e` | local candidate validation | `e4d8bfa81bcdef265663ffcbc28de1120016a3df` | pending hosted candidate PR | `2026-08-11T01:44:36+08:00` | exact candidate state, provider preflight, source classification, and deterministic archives passed locally | commit validation evidence, push, and open candidate PR |
