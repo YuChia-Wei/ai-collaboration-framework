@@ -100,7 +100,7 @@ class GovernanceWorkflowContractTests(unittest.TestCase):
 
     def test_gwt_007_given_source_registry_when_loaded_then_governance_inputs_are_exact(self) -> None:
         registry = yaml.safe_load(REGISTRY_PATH.read_text(encoding="utf-8"))
-        self.assertEqual("1.2", registry["schema_version"])
+        self.assertEqual("1.3", registry["schema_version"])
         self.assertEqual(
             [
                 {
@@ -125,6 +125,15 @@ class GovernanceWorkflowContractTests(unittest.TestCase):
                 }
             ],
             registry["repository_identity_policies"],
+        )
+        self.assertEqual(
+            [
+                {
+                    "id": "dotnet-backend-source-dispositions",
+                    "path": ".ai/distribution/source-dispositions.yaml",
+                }
+            ],
+            registry["source_disposition_contracts"],
         )
 
 

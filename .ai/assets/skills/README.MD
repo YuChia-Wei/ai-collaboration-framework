@@ -18,7 +18,7 @@ legacy command paths only as explicit thin compatibility entrypoints.
 The canonical skill registry currently includes:
 
 - `ai-context-governance`
-- `ai-context-release-closeout` (source-repository-only; never packaged)
+- `ai-context-release-closeout` (source-repository-only historical/exception recovery; never packaged)
 - `ai-context-auditor`
 - `ai-context-init`
 - `ai-context-upgrader`

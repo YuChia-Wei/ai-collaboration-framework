@@ -22,6 +22,7 @@ guard_direct_entrypoint(".ai/scripts/validate-ai-context-release-state.py")
 import argparse
 import importlib.util
 import json
+import os
 import re
 import subprocess
 from datetime import datetime, timedelta, timezone
@@ -75,6 +76,18 @@ PUBLISH_WORKFLOW_PATH = ".github/workflows/publish-release.yml"
 
 class ReleaseStateError(ValueError):
     """Raised for invalid release-state inputs."""
+
+
+def version_key(version: str) -> tuple[int, int, int]:
+    if not VERSION_RE.fullmatch(version):
+        raise ReleaseStateError("version must use stable vMAJOR.MINOR.PATCH form")
+    return tuple(int(part) for part in version[1:].split("."))
+
+
+def uses_online_issue_refs(version: str) -> bool:
+    """Source releases from v0.10.0 onward use live GitHub Issue authority."""
+
+    return version_key(version) >= (0, 10, 0)
 
 
 def sanctioned_commands(version: str) -> dict[str, str]:
@@ -330,7 +343,8 @@ def validate_online_issue_refs(
     planning = nested_mapping(data.get("planning"), "planning")
     if "backlog_refs" in planning:
         raise ReleaseStateError(
-            "v0.10.0 source-repository releases must not use planning.backlog_refs"
+            "source-repository releases from v0.10.0 onward must not use "
+            "planning.backlog_refs"
         )
     refs = planning.get("github_issue_refs")
     if not isinstance(refs, list) or not refs:
@@ -349,6 +363,7 @@ def validate_online_issue_refs(
         numbers.append(match.group(1))
 
     repository = origin_repository(root, runner)
+    legacy_open_candidate = version == "v0.10.0"
     target_pattern = re.compile(
         rf"^## Target Release\s*$\s*^{re.escape(version)}\s*$", re.MULTILINE
     )
@@ -364,12 +379,17 @@ def validate_online_issue_refs(
             raise ReleaseStateError(f"#{number}: GitHub Issue read-back is not JSON") from exc
         if not isinstance(issue, dict) or issue.get("number") != int(number):
             raise ReleaseStateError(f"#{number}: GitHub Issue read-back has a mismatched number")
-        if issue.get("state") != "open":
-            raise ReleaseStateError(f"#{number}: candidate Issue must remain open")
-        body = issue.get("body")
-        if not isinstance(body, str) or target_pattern.search(body) is None:
+        if legacy_open_candidate:
+            if issue.get("state") != "open":
+                raise ReleaseStateError(f"#{number}: v0.10.0 candidate Issue must remain open")
+            body = issue.get("body")
+            if not isinstance(body, str) or target_pattern.search(body) is None:
+                raise ReleaseStateError(
+                    f"#{number}: online Issue must declare Target Release {version}"
+                )
+        elif issue.get("state") != "closed" or issue.get("state_reason") != "completed":
             raise ReleaseStateError(
-                f"#{number}: online Issue must declare Target Release {version}"
+                f"#{number}: release-ready Issue must be closed with completed reason"
             )
 
 
@@ -476,7 +496,7 @@ def validate_candidate_record(
             raise ReleaseStateError(
                 f"validation.{stale_field} must be null or absent before publication"
             )
-    if version == "v0.10.0":
+    if uses_online_issue_refs(version):
         validate_online_issue_refs(root, version, data, runner)
     else:
         validate_backlog_refs(root, version, data)
@@ -702,7 +722,16 @@ def assert_hosted_release(root: Path, repository: str, version: str, commit: str
         raise ReleaseStateError("hosted release asset set differs from governed package assets")
 
 
-def assert_hosted_workflow(root: Path, repository: str, version: str, run_id: str, commit: str, runner=subprocess.run) -> None:
+def assert_hosted_workflow(
+    root: Path,
+    repository: str,
+    version: str,
+    run_id: str,
+    commit: str,
+    runner=subprocess.run,
+    *,
+    allow_in_progress: bool = False,
+) -> None:
     if not run_id.isdigit():
         raise ReleaseStateError("workflow run ID must be decimal digits")
     raw = run_read_only(root, ["gh", "api", "--method", "GET", f"repos/{repository}/actions/runs/{run_id}"], runner)
@@ -717,6 +746,12 @@ def assert_hosted_workflow(root: Path, repository: str, version: str, run_id: st
         and run.get("path") == PUBLISH_WORKFLOW_PATH
     )
     succeeded = exact_identity and run.get("conclusion") == "success"
+    current_run = (
+        exact_identity
+        and allow_in_progress
+        and run.get("status") == "in_progress"
+        and run.get("conclusion") is None
+    )
     v011_immutable_exception = (
         exact_identity
         and version == "v0.11.0"
@@ -724,8 +759,28 @@ def assert_hosted_workflow(root: Path, repository: str, version: str, run_id: st
         and run_id == V011_FAILED_PUBLICATION_RUN
         and run.get("conclusion") == "failure"
     )
-    if not succeeded and not v011_immutable_exception:
+    if not succeeded and not current_run and not v011_immutable_exception:
         raise ReleaseStateError("hosted workflow must have succeeded for the annotated tag commit")
+
+
+def require_current_workflow_context(
+    phase: str,
+    hosted: bool,
+    workflow_run_id: str | None,
+    allow_current_workflow_run: bool,
+) -> None:
+    if not allow_current_workflow_run:
+        return
+    if phase != "finalization" or not hosted or workflow_run_id is None:
+        raise ReleaseStateError(
+            "--allow-current-workflow-run requires hosted finalization and --workflow-run-id"
+        )
+    if os.environ.get("GITHUB_ACTIONS") != "true":
+        raise ReleaseStateError("--allow-current-workflow-run is restricted to GitHub Actions")
+    if os.environ.get("GITHUB_RUN_ID") != workflow_run_id:
+        raise ReleaseStateError(
+            "--allow-current-workflow-run must identify the executing GITHUB_RUN_ID"
+        )
 
 
 def discover_workflow_run(root: Path, repository: str, commit: str, runner=subprocess.run) -> str:
@@ -805,10 +860,17 @@ def validate(
     rendered_body: Path | None = None,
     workflow_run_id: str | None = None,
     hosted: bool = False,
+    allow_current_workflow_run: bool = False,
     runner: Callable = subprocess.run,
 ) -> dict[str, str]:
     if phase not in PHASES:
         raise ReleaseStateError(f"phase must be one of: {', '.join(PHASES)}")
+    require_current_workflow_context(
+        phase,
+        hosted,
+        workflow_run_id,
+        allow_current_workflow_run,
+    )
     require_phase_contract(root, phase, version)
     _, data, notes, migration = release_record(root, version)
     assert_authored_sources(version, notes, migration)
@@ -836,17 +898,20 @@ def validate(
         return {"commit": exact_commit, "branch": exact_branch}
     tagged_commit = assert_tag(root, version, data, runner)
     if phase in {"publication", "finalization"}:
-        if phase == "publication":
-            if data.get("status") != "validated":
-                raise ReleaseStateError(
-                    "publication phase requires the tagged validated registry "
-                    "skeleton before local finalization"
-                )
-        else:
+        source_is_terminal_candidate = data.get("status") == "validated"
+        if source_is_terminal_candidate:
+            validate_candidate_record(root, version, data, runner)
+        elif phase == "finalization":
+            # Historical published source records remain readable. New releases
+            # keep their source record terminal at the validated pre-tag state.
             validate_published_record(version, data, tagged_commit)
+        else:
+            raise ReleaseStateError(
+                "publication phase requires the tagged validated registry skeleton"
+            )
         if hosted:
             effective_repository = repository or origin_repository(root, runner)
-            if phase == "finalization":
+            if phase == "finalization" and not source_is_terminal_candidate:
                 expected_body = (
                     # The bounded manual v0.11.0 fast path published the immutable
                     # authored notes directly, before renderer provenance was added.
@@ -871,7 +936,7 @@ def validate(
                 nested_mapping(data.get("validation"), "validation").get(
                     "published_run"
                 )
-                if phase == "finalization"
+                if phase == "finalization" and not source_is_terminal_candidate
                 else None
             )
             if workflow_run_id is not None and recorded_run is not None and workflow_run_id != recorded_run:
@@ -888,7 +953,15 @@ def validate(
                     runner,
                 )
             )
-            assert_hosted_workflow(root, effective_repository, version, effective_run, tagged_commit, runner)
+            assert_hosted_workflow(
+                root,
+                effective_repository,
+                version,
+                effective_run,
+                tagged_commit,
+                runner,
+                allow_in_progress=allow_current_workflow_run,
+            )
         elif repository or rendered_body or workflow_run_id:
             raise ReleaseStateError("--repository, --rendered-body, and --workflow-run-id require --hosted")
     return {"commit": tagged_commit}
@@ -905,9 +978,25 @@ def main() -> int:
     parser.add_argument("--rendered-body", type=Path)
     parser.add_argument("--workflow-run-id")
     parser.add_argument("--hosted", action="store_true", help="perform explicit read-only GitHub API checks")
+    parser.add_argument(
+        "--allow-current-workflow-run",
+        action="store_true",
+        help="accept only this executing GitHub Actions run as in-progress during hosted finalization",
+    )
     args = parser.parse_args()
     try:
-        result = validate(args.root.resolve(), args.phase, args.version, args.commit, args.branch, args.repository, args.rendered_body, args.workflow_run_id, args.hosted)
+        result = validate(
+            args.root.resolve(),
+            args.phase,
+            args.version,
+            args.commit,
+            args.branch,
+            args.repository,
+            args.rendered_body,
+            args.workflow_run_id,
+            args.hosted,
+            args.allow_current_workflow_run,
+        )
     except (OSError, ReleaseStateError) as exc:
         print(f"AI context release-state validation failed: {exc}", file=sys.stderr)
         return 1

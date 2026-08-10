@@ -403,6 +403,7 @@ exclusions:
       - .ai/scripts/build-ai-context-package.py
       - .ai/assets/skills/ai-context-upgrader/scripts/compare-ai-context-versions.py
       - .ai/scripts/prepare-ai-context-release.py
+      - .ai/scripts/reconcile-ai-context-release-provider.py
       - .ai/scripts/render-ai-context-release-notes.py
       - .ai/scripts/validate-ai-context-package.py
       - .ai/scripts/validate-ai-context-release-state.py
@@ -410,6 +411,7 @@ exclusions:
       - .ai/scripts/ai_context_release_closeout.py
       - .ai/scripts/validate-ai-context-versions.py
       - .ai/scripts/validate-source-governance.py
+      - .ai/scripts/validate-source-dispositions.py
       - .ai/scripts/validate-ai-behavior-evaluation.py
       - .ai/scripts/measure-ai-context-load.py
       - .ai/scripts/validate-repository-config-contract.py
@@ -427,11 +429,13 @@ exclusions:
       - .ai/scripts/tests/test_governance_workflow_contract.py
       - .ai/scripts/tests/test_github_workflow_contract.py
       - .ai/scripts/tests/test_prepare_ai_context_release.py
+      - .ai/scripts/tests/test_release_provider_reconciliation.py
       - .ai/scripts/tests/test_release_notes_renderer.py
       - .ai/scripts/tests/test_ai_behavior_evaluation.py
       - .ai/scripts/tests/test_ai_context_load_measurement.py
       - .ai/scripts/tests/test_repository_config_contract.py
       - .ai/scripts/tests/test_repository_identity.py
+      - .ai/scripts/tests/test_source_dispositions.py
       - .ai/scripts/tests/test_skill_transition_contract.py
       - .ai/scripts/tests/test_github_backlog_provider.py
       - .ai/evaluation/**

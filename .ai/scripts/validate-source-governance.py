@@ -23,7 +23,8 @@ ROOT = Path(__file__).resolve().parents[2]
 REGISTRY = ROOT / ".ai/distribution/governance-checks.yaml"
 DISPOSITION_VALIDATOR = ROOT / ".ai/scripts/validate-file-disposition-manifest.py"
 IDENTITY_VALIDATOR = ROOT / ".ai/scripts/validate-repository-identity.py"
-REGISTRY_SCHEMA_VERSION = "1.2"
+SOURCE_DISPOSITION_VALIDATOR = ROOT / ".ai/scripts/validate-source-dispositions.py"
+REGISTRY_SCHEMA_VERSION = "1.3"
 CURRENT_BYTE_AUTHORIZATION_SCHEMA_VERSION = "1.0"
 SHA1 = re.compile(r"^[0-9a-f]{40}$")
 ISSUE_178_AUTHORIZED_AT = "2026-08-09T16:37:38Z"
@@ -35,10 +36,12 @@ REGISTRY_KEYS = {
     "schema_version",
     "manifests",
     "repository_identity_policies",
+    "source_disposition_contracts",
 }
 MANIFEST_RECORD_KEYS = {"id", "path", "current_byte_authorizations"}
 MANIFEST_RECORD_REQUIRED_KEYS = {"id", "path"}
 IDENTITY_POLICY_RECORD_KEYS = {"id", "path"}
+SOURCE_DISPOSITION_RECORD_KEYS = {"id", "path"}
 AUTHORIZATION_KEYS = {
     "schema_version",
     "authorization_id",
@@ -83,7 +86,11 @@ def sha1(value: object) -> bool:
     return isinstance(value, str) and bool(SHA1.fullmatch(value))
 
 
-def load_registry_paths() -> tuple[list[tuple[str, str, list[str]]], list[str]]:
+def load_registry_paths() -> tuple[
+    list[tuple[str, str, list[str]]],
+    list[str],
+    list[str],
+]:
     try:
         data = yaml.safe_load(REGISTRY.read_text(encoding="utf-8"))
     except (OSError, UnicodeDecodeError, yaml.YAMLError) as exc:
@@ -184,6 +191,12 @@ def load_registry_paths() -> tuple[list[tuple[str, str, list[str]]], list[str]]:
         allowed_record_keys=IDENTITY_POLICY_RECORD_KEYS,
         required_record_keys=IDENTITY_POLICY_RECORD_KEYS,
     )
+    source_disposition_contracts = load_group(
+        "source_disposition_contracts",
+        "source disposition contract",
+        allowed_record_keys=SOURCE_DISPOSITION_RECORD_KEYS,
+        required_record_keys=SOURCE_DISPOSITION_RECORD_KEYS,
+    )
     return (
         [
             (
@@ -194,6 +207,7 @@ def load_registry_paths() -> tuple[list[tuple[str, str, list[str]]], list[str]]:
             for record in manifests
         ],
         [record["path"] for record in identity_policies],
+        [record["path"] for record in source_disposition_contracts],
     )
 
 
@@ -406,7 +420,11 @@ def current_byte_authorization_paths(
 
 def main() -> int:
     try:
-        manifest_records, identity_policy_paths = load_registry_paths()
+        (
+            manifest_records,
+            identity_policy_paths,
+            source_disposition_paths,
+        ) = load_registry_paths()
     except RuntimeError as exc:
         print(f"Source governance validation failed: {exc}", file=sys.stderr)
         return 1
@@ -456,10 +474,24 @@ def main() -> int:
         )
         if result.returncode != 0:
             return result.returncode
+    for path in source_disposition_paths:
+        result = subprocess.run(
+            [
+                sys.executable,
+                str(SOURCE_DISPOSITION_VALIDATOR),
+                "--contract",
+                path,
+            ],
+            cwd=ROOT,
+            check=False,
+        )
+        if result.returncode != 0:
+            return result.returncode
     print(
         "Source governance validation passed for "
         f"{len(manifest_records)} manifest(s) and "
-        f"{len(identity_policy_paths)} repository identity policy record(s)."
+        f"{len(identity_policy_paths)} repository identity policy record(s) and "
+        f"{len(source_disposition_paths)} source disposition contract(s)."
     )
     return 0
 

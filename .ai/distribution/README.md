@@ -7,6 +7,7 @@ This directory owns source-side, machine-readable contracts for building portabl
 - `profiles/dotnet-backend.yaml` defines the initial complete distribution profile, source allowlist, ownership classes, and exclusions.
 - `identity-registry.yaml` defines repository, public product, framework release, technology profile, package/archive, and governed legacy alias identities without selecting a CLI identity.
 - `schemas/identity-registry.schema.yaml` defines the source-only identity registry contract; `validate-repository-identity.py` validates its uniqueness, separation, aliases, and declared consumers.
+- `source-dispositions.yaml` explains every tracked `.dev/**` source path that is neither selected by the `dotnet-backend` payload nor covered by a profile exclusion. `schemas/source-dispositions.schema.yaml` defines its taxonomy; `validate-source-dispositions.py` recomputes the Git-tree partition and fails on implicit omissions, stale or overlapping patterns, and payload/exclusion conflicts.
 - `../assets/shared/PRODUCT-SOURCE-PROJECTION-CONTRACT.md` defines the single canonical product-source and derived-projection boundary.
 - `CLI-TOOLING-CONTRACT.md` defines the contract-only Distribution CLI, Portable Validator Engine, and source-only Source Maintainer CLI boundaries.
 - `schemas/package.schema.yaml` defines package-envelope metadata.
@@ -16,6 +17,7 @@ This directory owns source-side, machine-readable contracts for building portabl
 ## Boundary
 
 - A builder must start from the profile allowlist. It must not archive the repository and then rely on exclusions for safety.
+- For the governed `.dev/**` coverage, every tracked source path must resolve to exactly one of three states: packaged source, explicit profile exclusion, or one active source-disposition record. Candidate review emits JSON and Markdown read-back without adding the source-only contract to package bytes.
 - Exclusions are a deny boundary over the allowlist. An `except` entry restores only the named reusable path and must also be covered by an allowlist entry.
 - Source paths are resolved from a clean Git tree at the requested immutable commit or tag.
 - Builders read Git blob bytes and Git tree modes, not checkout bytes; this prevents `autocrlf` or local mode settings from changing package output. Symlinks, submodules, and non-regular Git entries are rejected.

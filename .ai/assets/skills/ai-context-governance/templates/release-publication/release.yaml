@@ -16,6 +16,53 @@ planning:
   # GitHub Issues. Historical releases retain their existing backlog_refs.
   github_issue_refs:
     - "#<online-github-issue-number>"
+provider_reconciliation:
+  schema_version: "1.0"
+  provider: "github"
+  repository: "YuChia-Wei/ai-collaboration-framework"
+  project_owner: "YuChia-Wei"
+  project_number: 3
+  included_issue_refs_source: "planning.github_issue_refs"
+  included_work:
+    prepublication:
+      issue_state: "closed"
+      state_reason: "completed"
+      project:
+        Status: "Done"
+        Priority: "P1 High"
+        Owner review: "Approved"
+        Target release: "<vMAJOR.MINOR.PATCH>"
+        Published in: "Not yet published"
+    postpublication:
+      issue_state: "closed"
+      state_reason: "completed"
+      project:
+        Status: "Done"
+        Priority: "P1 High"
+        Owner review: "Approved"
+        Target release: "<vMAJOR.MINOR.PATCH>"
+        Published in: "<vMAJOR.MINOR.PATCH>"
+  coordination:
+    issue_refs:
+      - "#<release-coordination-issue-number>"
+    prepublication:
+      issue_state: "open"
+      state_reason: null
+      project:
+        Status: "Planned"
+        Priority: "P1 High"
+        Owner review: "Approved"
+        Target release: "<vMAJOR.MINOR.PATCH>"
+        Published in: "Not applicable — not a release item"
+    postpublication:
+      issue_state: "closed"
+      state_reason: "completed"
+      project:
+        Status: "Done"
+        Priority: "P1 High"
+        Owner review: "Approved"
+        Target release: "<vMAJOR.MINOR.PATCH>"
+        Published in: "Not applicable — not a release item"
 compatibility:
   breaking_changes: <true-or-false>
   minimum_source_version: "<vMAJOR.MINOR.PATCH-or-null>"

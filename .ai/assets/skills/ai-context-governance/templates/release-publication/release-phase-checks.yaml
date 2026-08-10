@@ -12,4 +12,4 @@ phases:
     description: "Validate the hosted release and successful tag-triggered workflow while the tagged record remains validated."
   finalization:
     command: "python .ai/scripts/validate-ai-context-release-state.py --phase finalization --version <vMAJOR.MINOR.PATCH> --hosted"
-    description: "Validate terminal local registry, authored-source, and publication-state evidence."
+    description: "Validate hosted publication against the terminal validated source record without requiring a post-tag source rewrite."

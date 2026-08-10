@@ -28,6 +28,7 @@ jobs:
     timeout-minutes: 15
     permissions:
       contents: read
+      issues: read
     steps:
       - name: Check out candidate commit
         uses: actions/checkout@v6
@@ -90,6 +91,13 @@ jobs:
             --commit "${GITHUB_SHA}" \
             --branch "${GITHUB_HEAD_REF:-${GITHUB_REF_NAME}}"
 
+      - name: Validate provider reconciliation contract
+        if: steps.release.outputs.available == 'true'
+        run: |
+          python .ai/scripts/reconcile-ai-context-release-provider.py \
+            --phase contract \
+            --version "${{ steps.release.outputs.version }}"
+
       - name: Build deterministic archives
         if: steps.release.outputs.available == 'true'
         env:
@@ -129,6 +137,18 @@ jobs:
             "dist/${{ steps.release.outputs.package_id }}.zip" \
             "dist/${{ steps.release.outputs.package_id }}.tar.gz"
 
+      - name: Render source disposition read-back
+        if: steps.release.outputs.available == 'true'
+        run: |
+          python .ai/scripts/validate-source-dispositions.py \
+            --ref "${GITHUB_SHA}" \
+            --format json \
+            --output "${RUNNER_TEMP}/source-dispositions.json"
+          python .ai/scripts/validate-source-dispositions.py \
+            --ref "${GITHUB_SHA}" \
+            --format markdown \
+            --output "${RUNNER_TEMP}/source-dispositions.md"
+
       - name: Upload candidate artifact
         if: steps.release.outputs.available == 'true'
         uses: actions/upload-artifact@v7
@@ -143,3 +163,5 @@ jobs:
             dist/${{ steps.release.outputs.package_id }}.tar.gz
             dist/${{ steps.release.outputs.package_id }}.tar.gz.sha256
             ${{ runner.temp }}/release-body.md
+            ${{ runner.temp }}/source-dispositions.json
+            ${{ runner.temp }}/source-dispositions.md

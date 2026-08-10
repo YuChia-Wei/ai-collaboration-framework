@@ -63,10 +63,13 @@ EXPECTED_ARTIFACT_ACTIONS = {
     "publish-release.yml": [
         "actions/upload-artifact@v7",
         "actions/download-artifact@v8",
+        "actions/upload-artifact@v7",
     ],
 }
 MUTATING_COMMAND = re.compile(
     r"(?:\bgh\s+release\s+(?:create|delete(?:-asset)?|edit|upload)\b|"
+    r"\bgh\s+issue\s+close\b|"
+    r"\bgh\s+project\s+item-edit\b|"
     r"\bgit\s+(?:push|commit)\b|"
     r"\bgit\s+tag\s+(?:--(?:annotate|delete)|-[ad])\b)",
     re.IGNORECASE,
@@ -141,11 +144,16 @@ class GitHubWorkflowContractTests(unittest.TestCase):
             self.assertEqual({}, workflow.get("permissions"), name)
             for job_name, job in workflow["jobs"].items():
                 with self.subTest(workflow=name, job=job_name):
-                    expected = (
-                        {"contents": "write"}
-                        if name == "publish-release.yml" and job_name == "publish"
-                        else {"contents": "read"}
-                    )
+                    if name == "publish-release.yml" and job_name == "publish":
+                        expected = {"contents": "write"}
+                    elif (
+                        name == "package-candidate.yml" and job_name == "package"
+                    ) or (
+                        name == "publish-release.yml" and job_name == "build"
+                    ):
+                        expected = {"contents": "read", "issues": "read"}
+                    else:
+                        expected = {"contents": "read"}
                     self.assertEqual(expected, job.get("permissions"))
 
         for name in WORKFLOW_NAMES - {"publish-release.yml"}:
@@ -197,6 +205,8 @@ class GitHubWorkflowContractTests(unittest.TestCase):
                     "dist/${{ steps.release.outputs.package_id }}.tar.gz\n"
                     "dist/${{ steps.release.outputs.package_id }}.tar.gz.sha256\n"
                     "${{ runner.temp }}/release-body.md\n"
+                    "${{ runner.temp }}/source-dispositions.json\n"
+                    "${{ runner.temp }}/source-dispositions.md\n"
                 ),
             },
             candidate_upload["with"],
@@ -230,6 +240,24 @@ class GitHubWorkflowContractTests(unittest.TestCase):
             },
             publish_download["with"],
         )
+        reconciliation_upload = [
+            step
+            for step in publish_steps
+            if step.get("uses") == "actions/upload-artifact@v7"
+        ][1]
+        self.assertEqual(
+            {
+                "name": (
+                    "provider-reconciliation-${{ needs.build.outputs.version }}-"
+                    "${{ needs.build.outputs.commit }}"
+                ),
+                "retention-days": "30",
+                "compression-level": "0",
+                "if-no-files-found": "error",
+                "path": "${{ runner.temp }}/provider-reconciliation.json",
+            },
+            reconciliation_upload["with"],
+        )
 
     def test_gwt_005_given_jobs_when_cost_and_responsibility_checked_then_matrix_is_exact(self) -> None:
         expected_jobs = {
@@ -243,6 +271,7 @@ class GitHubWorkflowContractTests(unittest.TestCase):
             "publish-release.yml": {
                 "build": ("15", "ubuntu-latest"),
                 "publish": ("15", "ubuntu-latest"),
+                "reconcile-provider": ("15", "ubuntu-latest"),
             },
         }
         for name, jobs in expected_jobs.items():
@@ -255,6 +284,10 @@ class GitHubWorkflowContractTests(unittest.TestCase):
             "ai-context-release",
             self.workflows["publish-release.yml"]["jobs"]["publish"]["environment"],
         )
+        self.assertEqual(
+            "ai-context-release",
+            self.workflows["publish-release.yml"]["jobs"]["reconcile-provider"]["environment"],
+        )
 
     def test_gwt_006_given_candidate_state_requires_online_issue_readback_when_run_then_token_is_available(self) -> None:
         candidate_step = next(
@@ -263,6 +296,52 @@ class GitHubWorkflowContractTests(unittest.TestCase):
             if step.get("name") == "Validate exact candidate state"
         )
         self.assertEqual({"GH_TOKEN": "${{ github.token }}"}, candidate_step.get("env"))
+
+    def test_gwt_007_given_project_write_token_when_workflows_checked_then_only_tag_jobs_receive_it(self) -> None:
+        for name in WORKFLOW_NAMES - {"publish-release.yml"}:
+            workflow_text = (WORKFLOW_DIR / name).read_text(encoding="utf-8")
+            self.assertNotIn("RELEASE_PROVIDER_TOKEN", workflow_text, name)
+
+        publish = self.workflows["publish-release.yml"]
+        preflight_step = next(
+            step
+            for step in publish["jobs"]["publish"]["steps"]
+            if step.get("name") == "Validate provider prepublication state"
+        )
+        self.assertEqual(
+            {"GH_TOKEN": "${{ secrets.RELEASE_PROVIDER_TOKEN }}"},
+            preflight_step.get("env"),
+        )
+        reconcile = publish["jobs"]["reconcile-provider"]
+        self.assertNotIn("GH_TOKEN", reconcile["env"])
+        privileged_steps = [
+            step
+            for step in reconcile["steps"]
+            if step.get("env", {}).get("GH_TOKEN")
+            == "${{ secrets.RELEASE_PROVIDER_TOKEN }}"
+        ]
+        self.assertEqual(
+            [
+                "Verify hosted publication without source closeout",
+                "Reconcile and read back Issues and Project",
+            ],
+            [step["name"] for step in privileged_steps],
+        )
+        command_text = "\n".join(
+            step["run"] for step in reconcile["steps"] if "run" in step
+        )
+        self.assertIn("--phase finalization", command_text)
+        self.assertIn("--allow-current-workflow-run", command_text)
+        self.assertIn("--phase apply", command_text)
+        self.assertNotIn("git commit", command_text)
+
+        candidate_contract = next(
+            step
+            for step in self.workflows["package-candidate.yml"]["jobs"]["package"]["steps"]
+            if step.get("name") == "Validate provider reconciliation contract"
+        )
+        self.assertNotIn("env", candidate_contract)
+        self.assertIn("--phase contract", candidate_contract["run"])
 
 
 if __name__ == "__main__":

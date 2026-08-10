@@ -1,0 +1,70 @@
+schema_version: "1.0"
+document: source-dispositions.yaml
+required:
+  - schema_version
+  - schema
+  - contract_id
+  - issue
+  - status
+  - owner_skill
+  - profile
+  - coverage
+  - dispositions
+properties:
+  schema_version:
+    const: "1.0"
+  schema:
+    const: ".ai/distribution/schemas/source-dispositions.schema.yaml"
+  contract_id: stable-lowercase-namespaced-id
+  issue:
+    const: 184
+  status:
+    enum: [active]
+  owner_skill:
+    const: ai-context-governance
+  profile:
+    required: [id, path]
+    id:
+      const: dotnet-backend
+    path:
+      const: .ai/distribution/profiles/dotnet-backend.yaml
+  coverage:
+    required: [source_patterns, baseline_assessment, derivation]
+    source_patterns:
+      const: [.dev/**]
+    baseline_assessment:
+      const: ASM-20260810-003#PKG-001
+    derivation:
+      const: tracked-minus-packaged-minus-explicit-exclusion
+  dispositions:
+    type: unique-non-empty-list
+    record_required:
+      - id
+      - patterns
+      - classification
+      - owner
+      - reason
+      - retention
+      - package_behavior
+    classification:
+      enum:
+        - source-only
+        - target-owned
+        - historical-evidence
+        - generated-projection
+        - not-product-input
+    retention:
+      enum:
+        - retain-active
+        - retain-until-superseded
+        - retain-immutable
+        - retain-current-projection
+        - target-owner-decides
+    package_behavior:
+      const: exclude
+    invariants:
+      - every-pattern-matches-at-least-one-current-tracked-path
+      - every-implicit-omission-matches-exactly-one-disposition
+      - no-disposition-overlaps-payload-or-explicit-exclusion
+      - no-path-matches-more-than-one-pattern-or-record
+additional_properties: false
