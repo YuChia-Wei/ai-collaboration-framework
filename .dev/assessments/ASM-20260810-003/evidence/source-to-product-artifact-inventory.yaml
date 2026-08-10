@@ -1,0 +1,179 @@
+schema_version: "1.0"
+inventory_id: "PKG009-SOURCE-PRODUCT-ARTIFACT"
+assessment_id: "ASM-20260810-003"
+issue: 172
+status: "final"
+generated_at: "2026-08-10T22:29:58+08:00"
+generator:
+  name: "git-tree-distribution-and-published-archive-reconciliation"
+  source_revision: "343089ea2a05a10ee203fa5cbbc7a542db9b346f"
+  source_tree: "cd01fed1d1c0f7213c3abe66d3b206d8757f0e0f"
+  byte_basis: "Git blobs for source projection; downloaded immutable release bytes for published artifacts"
+  coverage: "Aggregate source classes plus cryptographically exact per-file manifests from the distribution resolver and v0.11.0 metadata/files.yaml"
+authorities:
+  canonical_ai_content: ".ai/assets/**"
+  package_projection: ".ai/distribution/profiles/dotnet-backend.yaml"
+  package_builder: ".ai/scripts/ai_context_package.py"
+  release_history: ".dev/releases/v0.11.0/release.yaml"
+  published_artifact: "GitHub Release v0.11.0"
+  current_work_management: "GitHub Issues and Project #3"
+  upstream_ai_inventory: "ASM-20260809-003"
+  upstream_dev_inventory: "ASM-20260809-004"
+current_product_projection:
+  profile_id: "dotnet-backend"
+  release_model: "single-versioned-componentized-release"
+  source_repository: "https://github.com/YuChia-Wei/ai-collaboration-framework"
+  package_name_template: "ai-context-dotnet-backend-v{version}"
+  target_files: 655
+  unique_source_files: 639
+  payload_bytes: 2915814
+  payload_fingerprint: "ecd20b708c18ea902113d8d93caf68eb9dbcaa09d1db55acd1614d0d20c6e154"
+  source_reference_counts:
+    .ai: 496
+    .dev: 117
+    .agents: 19
+    .claude: 19
+    .codex: 1
+    .github: 2
+    global.json: 1
+  target_top_level_counts:
+    .ai: 480
+    .dev: 128
+    .agents: 19
+    .claude: 19
+    .codex: 1
+    .github: 2
+    .editorconfig: 1
+    .gitattributes: 1
+    AGENTS.md: 1
+    CLAUDE.md: 1
+    README.md: 1
+    global.json: 1
+  component_counts:
+    software-development-core: 341
+    ai-context-lifecycle-core: 110
+    dotnet-backend: 202
+    repo-backlog: 2
+  ownership_counts:
+    framework-managed: 640
+    target-template: 15
+  install_behavior_counts:
+    managed: 640
+    seed: 15
+source_to_product_classes:
+  - id: "canonical-ai-assets"
+    canonical_source: ".ai/assets/**"
+    projection_owner: ".ai/distribution/profiles/dotnet-backend.yaml"
+    product_disposition: "selected portable framework and dotnet-backend content"
+    artifact_evidence: "metadata/files.yaml records source_path, target path, component, ownership, behavior, mode, size, and SHA-256"
+  - id: "source-governance-and-guides"
+    canonical_source: ".dev/**"
+    projection_owner: "profile allowlist plus portable-governance template mappings"
+    product_disposition: "117 current source references produce 128 target files; source history and current operational state remain excluded"
+    artifact_evidence: "ASM-20260809-004 and current resolver output"
+  - id: "runtime-adapters"
+    canonical_source: ".agents/**, .claude/**, .codex/**, and .github/**"
+    projection_owner: "profile entries and adapter projection validators"
+    product_disposition: "runtime wrappers and integration seeds"
+    artifact_evidence: "61 current target paths across these four roots"
+  - id: "target-seeds"
+    canonical_source: ".ai/distribution/templates/**"
+    projection_owner: ".ai/distribution/templates/target-files.yaml"
+    product_disposition: "target-template seed files at root and selected .dev paths"
+    artifact_evidence: "15 target-template / seed records in files.yaml"
+current_dev_disposition:
+  tracked_files: 1041
+  tracked_bytes: 6023164
+  packaged_source_files: 117
+  packaged_source_bytes: 399525
+  explicitly_excluded_files: 894
+  omitted_without_exclusion_files: 30
+  derived_target_files_under_dev: 128
+  implicit_omissions:
+    - ".dev/REPOSITORY-RENAME-COMPATIBILITY.md"
+    - ".dev/adr/ADR-001-separate-source-config-from-downstream-templates.md"
+    - ".dev/ai-context/environment-policy.yaml"
+    - ".dev/backlog/ROADMAP.md"
+    - ".dev/backlog/plans/README.md"
+    - ".dev/backlog/plans/post-v0.4.0-improvement-plan.md"
+    - ".dev/backlog/plans/rel-004-ai-context-release-closeout-discussion-context.md"
+    - ".dev/backlog/provider-mappings/README.MD"
+    - ".dev/backlog/provider-mappings/github-issues-CTX-005.yaml"
+    - ".dev/backlog/provider-mappings/github-issues-GOV-004.yaml"
+    - ".dev/backlog/provider-mappings/github-issues-GOV-006.yaml"
+    - ".dev/backlog/provider-mappings/github-issues-PKG-005.yaml"
+    - ".dev/backlog/provider-mappings/github-issues-PKG-006.yaml"
+    - ".dev/backlog/provider-mappings/github-issues-SAG-002.yaml"
+    - ".dev/backlog/provider-mappings/github-issues-SKILL-002.yaml"
+    - ".dev/backlog/provider-mappings/github-issues-TOOL-002.yaml"
+    - ".dev/backlog/provider-mappings/github-issues-VAL-003.yaml"
+    - ".dev/backlog/provider-mappings/github-issues-WIBIND-001.yaml"
+    - ".dev/backlog/provider-mappings/github-issues.schema.yaml"
+    - ".dev/backlog/provider-mappings/github-issues.yaml"
+    - ".dev/backlog/provider-mappings/github-project-current.yaml"
+    - ".dev/backlog/providers/README.MD"
+    - ".dev/backlog/providers/github.yaml"
+    - ".dev/lessons/INDEX.MD"
+    - ".dev/lessons/README.MD"
+    - ".dev/lessons/environment/INDEX.MD"
+    - ".dev/lessons/environment/LESSON-ENV-001-wsl-non-interactive-dotnet-path.md"
+    - ".dev/lessons/templates/lesson-template.md"
+    - ".dev/operations/runbooks/AI-CONTEXT-RELEASE-PUBLICATION-RUNBOOK.MD"
+    - ".dev/workflows/handoff-checkpoints.yaml"
+published_to_current_comparison:
+  published_version: "v0.11.0"
+  published_payload_files: 658
+  current_projection_files: 655
+  added_paths:
+    - ".ai/assets/tech-stacks/dotnet-backend/examples/reference/bdd-gwt-test-template.md"
+    - ".ai/scripts/tests/test_ai_context_lessons.py"
+  removed_paths:
+    - ".ai/assets/tech-stacks/dotnet-backend/examples/contract/UCONTRACT-GUIDE.md"
+    - ".ai/assets/tech-stacks/dotnet-backend/examples/contract/ucontract-detailed-examples.md"
+    - ".ai/assets/tech-stacks/dotnet-backend/examples/reference/ezddd-import-mapping.md"
+    - ".ai/assets/tech-stacks/dotnet-backend/examples/reference/ezspec-test-template.md"
+    - ".dev/guides/design-guides/EZDDD-FRAMEWORK-REFERENCE.md"
+  content_changed_paths: 68
+  mode_changed_paths: 0
+  component_changed_paths: 0
+  ownership_changed_paths: 0
+  install_behavior_changed_paths: 0
+  source_path_changed_paths: 0
+difference_classification:
+  correct:
+    - "Published ZIP and tar.gz are internally valid, reproducible from their recorded source commit, and cross-format equivalent."
+    - "Component, ownership, install behavior, and target path are explicit per file."
+    - "Current profile keeps dotnet-backend as a technology profile and package semantic, not as the repository identity."
+  historical_compatibility:
+    - "v0.11.0 metadata records the pre-rename repository URL; immutable bytes remain valid and the old URL redirects."
+    - "The v0.11.0 archive base name remains an exact legacy identity."
+  document_drift: []
+  mapping_problem: []
+  product_boundary_problem:
+    - "Thirty current .dev omissions are behaviorally safe but lack a machine-readable disposition reason."
+  identity_problem:
+    - "Repository, public product, framework release, technology profile, archive/package, and legacy alias identities are still distributed across separate files without one registry."
+  follow_up_issues:
+    - issue: 166
+      purpose: "versioned identity registry and ambiguity validation"
+    - issue: 184
+      purpose: "machine-readable source disposition contract and implicit-omission validator"
+identity_handoff:
+  repository:
+    current: "YuChia-Wei/ai-collaboration-framework"
+    legacy_alias: "YuChia-Wei/ai-collaboration-prompts-dotnet-backend"
+  public_product:
+    display_name: "AI Collaboration Framework"
+  framework_release:
+    pattern: "REL-v{version}"
+    authority: ".dev/releases/v{version}/release.yaml"
+  technology_profile:
+    current_id: "dotnet-backend"
+    decision: "retain; its semantics describe the selected technology profile"
+  package_archive:
+    current_template: "ai-context-dotnet-backend-v{version}"
+    v0_11_exact_name: "ai-context-dotnet-backend-v0.11.0"
+    decision: "retain for v0.12.0 unless a separately authorized compatibility migration changes it"
+  cli:
+    status: "out-of-scope"
+    authority: "Issues #149/#168 or a later feature:cli Issue"

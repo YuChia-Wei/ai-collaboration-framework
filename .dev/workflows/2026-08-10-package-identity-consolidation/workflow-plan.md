@@ -16,10 +16,10 @@
 - `base_branch`: `main`
 - `branch_segment`: `1`
 - `status`: `in_progress`
-- `current_phase`: `audit`
+- `current_phase`: `implementation`
 - `artifact_root`: `.dev/workflows/2026-08-10-package-identity-consolidation`
 - `created_at`: `2026-08-10T22:21:28+08:00`
-- `updated_at`: `2026-08-10T22:21:28+08:00`
+- `updated_at`: `2026-08-10T22:35:48+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md`
 - `template_version`: `1.2.0`
 
@@ -54,18 +54,18 @@
 
 ## Stages And Checkpoints
 
-1. Freeze merged-main state and create the #172 package/archive baseline. `in_progress`
-2. Classify differences and finalize `ASM-20260810-003`. `pending`
-3. Implement the #166 registry and bounded current-document consumption. `pending`
+1. Freeze merged-main state and create the #172 package/archive baseline. `completed`
+2. Classify differences and finalize `ASM-20260810-003`. `completed`
+3. Implement the #166 registry and bounded current-document consumption. `in_progress`
 4. Run focused validation and independent post-remediation audit. `pending`
 5. Reconcile findings, commit closure, push, PR, hosted validation, and merge. `pending`
 
 ## Resume Checkpoint
 
-- Last completed action: Created the dedicated workflow branch from merged `main` at `8a59080ad80c424e82099bdda7ac6bc6f951db9e`.
-- Current task: `PKG009-001`.
-- Exact next action: Read #170/#171 assessments and current distribution contracts, then independently read back the v0.11.0 published archives.
-- Validation already completed: Branch base and clean state were read back; no #172/#166 repository mutation has occurred.
+- Last completed action: Finalized `ASM-20260810-003`; v0.11.0 ZIP/TAR and source replay passed, and #184 now owns the 30 implicit omissions.
+- Current task: `ID001-001`.
+- Exact next action: Implement the #166 versioned identity registry and ambiguity validator from finding `PKG-002`.
+- Validation already completed: Assessment artifact validation passed for 44 assessments; published asset hashes, sidecars, archive internals, source replay, and cross-format equivalence passed.
 - Git state: `codex/2026-08-10-package-identity-consolidation` is based on `main` at `8a59080ad80c424e82099bdda7ac6bc6f951db9e`.
 - Branch history and checkpoint handoffs: none.
 - Blockers or unresolved decisions: Archive rename is not presumed. Any byte/schema/archive-name/migration behavior change discovered by #172 remains a separate Issue unless the existing #166 identity-only contract can record the current compatible name without altering artifacts.
@@ -74,4 +74,4 @@
 
 | Segment | Branch | Base | Checkpoint Type | Commit | Remote / Target | Recorded At | Reason | Resume Branch / Action |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| 1 | `codex/2026-08-10-package-identity-consolidation` | `main@8a59080ad80c424e82099bdda7ac6bc6f951db9e` | local-active | pending | local | `2026-08-10T22:21:28+08:00` | Authorized cohesive #172 then #166 delivery | Complete `PKG009-001` |
+| 1 | `codex/2026-08-10-package-identity-consolidation` | `main@8a59080ad80c424e82099bdda7ac6bc6f951db9e` | local-active | `343089ea2a05a10ee203fa5cbbc7a542db9b346f` | local | `2026-08-10T22:35:48+08:00` | #172 baseline finalized; #166 implementation is active | Complete `ID001-001` |

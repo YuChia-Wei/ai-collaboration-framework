@@ -1,0 +1,104 @@
+schema_version: "1.0"
+evidence_id: "PKG009-V011-PUBLISHED-READBACK"
+assessment_id: "ASM-20260810-003"
+issue: 172
+status: "final"
+observed_at: "2026-08-10T22:29:58+08:00"
+release:
+  repository: "YuChia-Wei/ai-collaboration-framework"
+  tag: "v0.11.0"
+  name: "REL-v0.11.0"
+  url: "https://github.com/YuChia-Wei/ai-collaboration-framework/releases/tag/v0.11.0"
+  published_at: "2026-08-08T16:54:24Z"
+  draft: false
+  prerelease: false
+  recorded_commit: "05199ed0a9ed509ef1696df014fce244f8e7cffa"
+  recorded_tree: "dc91c8073c4c07ba3579a6fb37ea644365d2eda9"
+assets:
+  - name: "ai-context-dotnet-backend-v0.11.0.zip"
+    asset_id: 506570889
+    size: 1255029
+    sha256: "cd7010f65941cccfa2151ded2e0d7b3ef27f7a9d0bb3c5772a5b5c9855a0a10c"
+    sidecar_asset_id: 506570888
+    sidecar_size: 104
+    sidecar_sha256: "a74ae497c14c6c9241c8414c0907701d4bdd624147cb1fc5f02c7d8c923447b4"
+    sidecar_target_match: true
+  - name: "ai-context-dotnet-backend-v0.11.0.tar.gz"
+    asset_id: 506570891
+    size: 814603
+    sha256: "087810cd444d5c3aff9311079a0051020e0d03784803ebcc677e906bd4602404"
+    sidecar_asset_id: 506570890
+    sidecar_size: 107
+    sidecar_sha256: "6fb23dfe7032d7062879c80823c3e9acee36b0ac18a5543bdf3d2960a3b3700c"
+    sidecar_target_match: true
+archive_validation:
+  envelope_root: "ai-context-dotnet-backend-v0.11.0"
+  total_members_per_archive: 664
+  payload_members: 658
+  required_metadata_members: 6
+  zip_internal_validation: passed
+  tar_gz_internal_validation: passed
+  relative_member_sets_equal: true
+  content_equal: true
+  mode_equal: true
+  content_mismatches: []
+  mode_mismatches: []
+source_replay:
+  commit: "05199ed0a9ed509ef1696df014fce244f8e7cffa"
+  tree: "dc91c8073c4c07ba3579a6fb37ea644365d2eda9"
+  projected_files: 658
+  archived_files: 658
+  path_sets_equal: true
+  content_mismatches: []
+  mode_mismatches: []
+  payload_fingerprint: "a2cf804c04e21dd414a47ceff565b8ac086d36e5519b2294ef4b151385eca715"
+  reference_integrity: passed
+package_metadata:
+  schema_version: "2.1.0"
+  package_id: "ai-context-dotnet-backend-v0.11.0"
+  profile_id: "dotnet-backend"
+  version: "0.11.0"
+  release_id: "REL-v0.11.0"
+  source_repository: "https://github.com/YuChia-Wei/ai-collaboration-prompts-dotnet-backend"
+  source_repository_classification: "immutable legacy repository alias after rename"
+  selected_input_fingerprint: "c84e768a810d60f1b352190fc8626c99483db42b9375cf330207fa84b1ddc2fb"
+  payload_fingerprint: "a2cf804c04e21dd414a47ceff565b8ac086d36e5519b2294ef4b151385eca715"
+  files_manifest_digest: "92cc501ac728d110f120aeb085e43b398dd2fd6c2627412b03c29c93655ddfac"
+  migration_digest: "d70f91ed63948450255107490798287788f595dfe7e3cb937f4b4647b33a080e"
+files_metadata:
+  schema_version: "2.0.0"
+  component_counts:
+    software-development-core: 341
+    ai-context-lifecycle-core: 110
+    dotnet-backend: 205
+    repo-backlog: 2
+  ownership_counts:
+    framework-managed: 643
+    target-template: 15
+  install_behavior_counts:
+    managed: 643
+    seed: 15
+migration_metadata:
+  schema_version: "3.0.0"
+  clean_install_operations: 658
+  source_versions:
+    - "0.10.0"
+  safety:
+    dry_run_default: true
+    clean_worktree_required: true
+    starting_commit_required: true
+    abort_on_unacknowledged_reconciliation: true
+source_only_leakage:
+  transition_sources: []
+  release_closeout_sources: []
+  forbidden_lifecycle_reference_validation: passed
+  forbidden_patterns:
+    - ".dev/workflows/20*/**"
+    - ".dev/assessments/ASM-*/**"
+    - ".dev/releases/v*/**"
+    - ".dev/backlog/items/**"
+conclusion:
+  artifact_integrity: passed
+  publication_record_match: passed
+  reproducibility: passed
+  compatibility_disposition: "preserve exact v0.11.0 names, bytes, checksums, metadata, and legacy repository reference"

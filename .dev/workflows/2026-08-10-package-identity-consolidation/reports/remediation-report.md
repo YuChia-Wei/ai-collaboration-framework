@@ -14,7 +14,7 @@
 - `owner_skill`: `ai-context-governance`
 - `status`: `draft`
 - `created_at`: `2026-08-10T22:21:28+08:00`
-- `updated_at`: `2026-08-10T22:21:28+08:00`
+- `updated_at`: `2026-08-10T22:35:48+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-remediation-report-template.md`
 - `template_version`: `2.0.0`
 - `baseline_assessment`: `ASM-20260810-003`
@@ -23,19 +23,20 @@
 ## Remediation Summary
 
 - Authorized scope: Complete #172 inventory, then #166 identity consolidation in one governed delivery.
-- Completed scope: Workflow bootstrap only.
-- Validation summary: Pending.
+- Completed scope: #172 published-asset and current-projection baseline in `ASM-20260810-003`.
+- Validation summary: v0.11.0 asset metadata, checksums, archive internals, cross-format equivalence, source replay, and assessment structure passed.
 - Closure decision: `not-ready`
 
 ## Finding Resolution Matrix
 
 | Assessment Finding | Before Severity | Status | Changed Files | Validation | Commit | Residual Risk |
 | --- | --- | --- | --- | --- | --- | --- |
-| Pending `ASM-20260810-003` findings | pending | `not-addressed` |  |  |  | Baseline not finalized. |
+| `ASM-20260810-003#PKG-001` | MEDIUM | `deferred-with-owner` | assessment evidence only | exact current omission inventory | pending | #184 is Planned / Unassigned and requires owner scheduling. |
+| `ASM-20260810-003#PKG-002` | MEDIUM | `in-progress` | assessment evidence only | archive identity read-back | pending | #166 registry implementation and verification remain. |
 
 ## Changes And Evidence
 
-Pending baseline assessment.
+`ASM-20260810-003` proves that v0.11.0 published bytes are valid and that current package classification is materially effective. It records 30 implicit `.dev` omissions under #184 and supplies the exact repository/product/release/profile/archive/alias handoff to #166.
 
 ## Verification Assessment Reconciliation
 
@@ -48,11 +49,12 @@ Pending baseline assessment.
 
 | Finding | Reason | Owner | Next Action |
 | --- | --- | --- | --- |
+| `PKG-001` source disposition | Separate contract and validator scope discovered by #172. | Issue #184 / owner | Select a target release; currently Planned / Unassigned. |
 | CLI identity | Explicitly outside #166. | `feature:cli` owner | Retain under #149/#168 or a later CLI Issue. |
 
 ## Closure Evidence
 
-- Required validations: pending.
-- Commit status: workflow bootstrap pending commit.
-- Workflow/task status: `PKG009-001` in progress; later tasks pending.
-- Final next action: Complete the #172 durable baseline.
+- Required validations: #172 focused validations passed; #166 and final workflow validations pending.
+- Commit status: workflow bootstrap committed at `343089ea2a05a10ee203fa5cbbc7a542db9b346f`; baseline commit pending.
+- Workflow/task status: `PKG009-001` completed; `ID001-001` in progress.
+- Final next action: Implement #166 from `ASM-20260810-003#PKG-002`.

@@ -6,13 +6,15 @@
   "task_id": "ID001-001",
   "workflow_id": "2026-08-10-package-identity-consolidation",
   "owner_skill": "ai-context-governance",
-  "status": "pending",
+  "status": "in_progress",
   "created_at": "2026-08-10T22:21:28+08:00",
-  "updated_at": "2026-08-10T22:21:28+08:00",
+  "updated_at": "2026-08-10T22:35:48+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-5.6-sol",
   "reasoning_effort": "high",
-  "finding_ids": [],
+  "finding_ids": [
+    "ASM-20260810-003#PKG-002"
+  ],
   "scope": {
     "target": "Issue #166 versioned product/package/archive/profile identity registry",
     "files": [],
@@ -33,15 +35,15 @@
       "Update bounded current operational documents to consume or reference the registry."
     ],
     "validation": [],
-    "last_completed_step": "",
-    "next_action": "Wait for ASM-20260810-003 to become final."
+    "last_completed_step": "Consumed final ASM-20260810-003 identity and compatibility handoff.",
+    "next_action": "Select the registry placement and schema, then implement exact identity and alias checks."
   },
   "results": {
     "summary": "",
     "files_changed": [],
     "tests_run": [],
     "finding_status": "not-addressed",
-    "residual_risk": "Identity decisions remain evidence-gated by #172.",
+    "residual_risk": "Registry placement, consumer boundaries, and ambiguity validation remain to be implemented.",
     "follow_up_needed": true
   }
 }
