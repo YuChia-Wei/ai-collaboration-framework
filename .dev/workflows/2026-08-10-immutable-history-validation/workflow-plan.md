@@ -15,11 +15,11 @@
 - `branch`: `codex/2026-08-10-immutable-history-validation-cont-02`
 - `base_branch`: `main`
 - `branch_segment`: `2`
-- `status`: `in_progress`
-- `current_phase`: `verification`
+- `status`: `completed`
+- `current_phase`: `closed`
 - `artifact_root`: `.dev/workflows/2026-08-10-immutable-history-validation`
 - `created_at`: `2026-08-10T00:38:23+08:00`
-- `updated_at`: `2026-08-10T08:21:13+08:00`
+- `updated_at`: `2026-08-10T08:31:18+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md`
 - `template_version`: `1.2.0`
 
@@ -40,7 +40,7 @@ Issue #176 changes source-of-truth validation behavior across policy, executable
 
 - Baseline assessment: `.dev/assessments/ASM-20260809-004/assessment.yaml`
 - Remediation report: `.dev/workflows/2026-08-10-immutable-history-validation/reports/remediation-report.md`
-- Verification assessment: reserved independent `ai-context-auditor` assessment `ASM-20260810-002`; creation waits for the committed implementation and receipt subject.
+- Verification assessment: `.dev/assessments/ASM-20260810-002/assessment.yaml`; the independent auditor verified receipt subject `99df2e0b1716b8f6b3def5a464b9f92c6802d823` with no active finding.
 - Tasks: `.dev/workflows/2026-08-10-immutable-history-validation/tasks/`
 
 ## Finding Triage
@@ -65,7 +65,7 @@ The Issue records four decisions as required. The owner explicitly adopted the f
 2. Inventory current validators, profiles, schemas, and tests.
 3. Complete the independent commit-title grammar correction with legacy compatibility fixtures.
 4. Record the adopted layered-validation decision packet and implement it without broadening the hosted-workflow scope. `completed`
-5. Run full-profile parity, establish the receipt commit, request independent post-remediation audit, reconcile evidence, and close or defer explicitly. `in progress`
+5. Run full-profile parity, establish the receipt commit, request independent post-remediation audit, reconcile evidence, and close or defer explicitly. `completed`
 
 ## Validation Strategy
 
@@ -77,17 +77,17 @@ The Issue records four decisions as required. The owner explicitly adopted the f
 
 ## Resume Checkpoint
 
-- Last completed action: Completed independent semantic review and the delegated long mechanical validation matrix with no open finding or subject drift.
-- Current task: `VAL004-001-layered-history-validation` (verification in progress).
-- Exact next action: Commit the reviewed implementation, run a clean full receipt refresh at that commit, and commit only the generated receipt as its immediate child.
+- Last completed action: Reconciled final independent assessment `ASM-20260810-002`, which verified `ASM-20260809-004#DEV-003` addressed at receipt subject `99df2e0b1716b8f6b3def5a464b9f92c6802d823` with no active finding.
+- Current task: `VAL004-001-layered-history-validation` (`completed`).
+- Exact next action: The containing closure commit must be followed immediately by a generated receipt-only commit; verify `routine-reusable`, then perform no further workflow mutation in this execution slice.
 - Validation already completed: immutable-history fixtures passed 19/19 with one Windows privilege skip limited to the executable symlink fixture; fail-closed aggregate-runner fixtures passed 40/40; profile registry passed 5/5; the selected governance/integration contract suites passed 40 tests; commit policy passed 19/19; AI-context, source-governance, workflow, assessment, version, shell-asset, dependency/version, profile-projection, source-include, and diff validators passed. The independent semantic review has no open correctness, security, fail-open, or contract-test finding. Windows temporary-directory restrictions required fixture suites to run outside the sandbox where noted.
-- Git state: Bootstrap `5258e7c08e97ec4354898a0d798210af95a855ad` and grammar correction `7daeebf` are committed; decision-record and implementation changes are uncommitted.
+- Git state: Bootstrap `5258e7c08e97ec4354898a0d798210af95a855ad`, grammar correction `7daeebfeb2b1b8a74ed25db35a991ef8edb1bb89`, implementation `6da4d4a41058f6a2ce9436a4f65b205d5a2121d4`, receipt baseline `99df2e0b1716b8f6b3def5a464b9f92c6802d823`, and independent assessment `cacdc5e` are committed locally.
 - Branch history and checkpoint handoffs: No push or merge checkpoint. Segment 2 starts locally from `7daeebf` because segment 1 remains checked out in its isolated worktree.
-- Blockers or unresolved decisions: None for the selected #176 implementation contract. The symlink execution fixture was skipped because Windows denied symlink creation (`WinError 1314`); the same ordering rule passed static semantic review. Receipt provenance and the independent post-commit `ai-context-auditor` assessment remain required. Hosted-workflow mutation, transport, pull request, and merge remain outside this execution slice.
+- Blockers or unresolved decisions: None for the selected #176 implementation contract. The symlink execution fixture was skipped because Windows denied symlink creation (`WinError 1314`); the same ordering rule passed static semantic review and remains a truthful environment limitation. Hosted-workflow mutation, transport, pull request, merge, release, and publication remain outside this execution slice.
 
 ## Branch Lifecycle
 
 | Segment | Branch | Base | Checkpoint Type | Commit | Remote / Target | Recorded At | Reason | Resume Branch / Action |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | 1 | `codex/2026-08-10-immutable-history-validation` | `main` at `a2f6fe53f2f50d436e6be7e27eb4d7de1bc4c828` | local bootstrap | pending | local | `2026-08-10T00:38:23+08:00` | Establish decision-gated validation remediation and independent grammar correction. | Commit bootstrap, then inventory validators. |
-| 2 | `codex/2026-08-10-immutable-history-validation-cont-02` | segment 1 at `7daeebf` | local continuation | `7daeebf` | local | `2026-08-10T07:13:15+08:00` | Continue the owner-approved implementation without mutating or removing the isolated segment-1 worktree. | Implement `VAL004-001-layered-history-validation`; no transport authorized. |
+| 2 | `codex/2026-08-10-immutable-history-validation-cont-02` | segment 1 at `7daeebf` | local implementation, receipt, and verification checkpoints | `cacdc5e` | local | `2026-08-10T08:31:18+08:00` | Complete the owner-approved implementation and independent verification without mutating or removing the isolated segment-1 worktree. | Commit terminal reconciliation, generate its immediate receipt-only child, and stop without transport. |

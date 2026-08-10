@@ -6,9 +6,9 @@
   "task_id": "VAL004-001-layered-history-validation",
   "workflow_id": "2026-08-10-immutable-history-validation",
   "owner_skill": "ai-context-governance",
-  "status": "in_progress",
+  "status": "completed",
   "created_at": "2026-08-10T00:38:23+08:00",
-  "updated_at": "2026-08-10T08:21:13+08:00",
+  "updated_at": "2026-08-10T08:31:18+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-5.6-terra",
   "reasoning_effort": "xhigh",
@@ -46,11 +46,11 @@
       "Existing full validators and check-all profile parity.",
       "Independent ai-context-auditor verification assessment."
     ],
-    "last_completed_step": "Independent semantic review and the delegated long mechanical validation matrix completed with no open finding or subject drift.",
-    "next_action": "Commit the reviewed implementation, refresh the receipt from that clean commit, and commit only the generated receipt."
+    "last_completed_step": "Independent assessment ASM-20260810-002 verified DEV-003 addressed at the committed receipt subject with no active finding; governance reconciliation is complete.",
+    "next_action": "No implementation task remains. Generate the final receipt from the containing closure commit, commit only that receipt as its immediate child, and verify routine reuse."
   },
   "results": {
-    "summary": "The adopted layered validation contract is implemented and has entered verification on continuation branch segment 2.",
+    "summary": "The adopted layered validation contract, deterministic receipt provenance, long mechanical validation, and independent verification are complete on continuation branch segment 2.",
     "files_changed": [
       ".ai/distribution/IMMUTABLE-HISTORY-VALIDATION-CONTRACT.md",
       ".ai/distribution/validation/immutable-history-validation.yaml",
@@ -71,7 +71,11 @@
       ".dev/workflows/2026-08-10-immutable-history-validation/workflow.yaml",
       ".dev/workflows/2026-08-10-immutable-history-validation/workflow-plan.md",
       ".dev/workflows/2026-08-10-immutable-history-validation/tasks/VAL004-001-layered-history-validation.json",
-      ".dev/workflows/INDEX.MD"
+      ".dev/workflows/2026-08-10-immutable-history-validation/reports/remediation-report.md",
+      ".dev/workflows/INDEX.MD",
+      ".dev/assessments/ASM-20260810-002/assessment.yaml",
+      ".dev/assessments/ASM-20260810-002/report.md",
+      ".dev/assessments/INDEX.MD"
     ],
     "tests_run": [
       "python .ai/scripts/tests/test_immutable_history_validation.py -v (19/19 passed; one executable symlink fixture skipped for WinError 1314)",
@@ -93,8 +97,8 @@
       "Git Bash syntax validation for check-all.sh and validation-profile-registry.sh (passed)",
       "git diff --check (passed)"
     ],
-    "finding_status": "implemented-pending-independent-verification",
-    "residual_risk": "Receipt provenance and the independent post-remediation assessment remain required before cutover can close; the executable symlink fixture could not run on this Windows host, while the ordering rule passed static semantic review.",
-    "follow_up_needed": true
+    "finding_status": "addressed",
+    "residual_risk": "The executable symlink fixture could not run on this Windows host because of WinError 1314; the ordering rule passed static semantic review. Release and scheduled-governance profiles remain mandatory full gates by design.",
+    "follow_up_needed": false
   }
 }
