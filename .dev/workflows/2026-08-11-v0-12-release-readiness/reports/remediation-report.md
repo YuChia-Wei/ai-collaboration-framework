@@ -5,20 +5,20 @@
 - `report_id`: `remediation-report-2026-08-11-v0-12-release-readiness`
 - `workflow_id`: `2026-08-11-v0-12-release-readiness`
 - `owner_skill`: `ai-context-governance`
-- `status`: `candidate-validation`
+- `status`: `completed`
 - `created_at`: `2026-08-11T00:43:10+08:00`
-- `updated_at`: `2026-08-11T01:44:36+08:00`
+- `updated_at`: `2026-08-11T01:48:35+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-remediation-report-template.md`
 - `template_version`: `2.0.0`
 - `baseline_assessment`: `ASM-20260810-003`
-- `verification_assessment`: `pending frozen external Luna audit`
+- `verification_assessment`: `external frozen Luna handoff gate; intentionally not persisted after snapshot freeze`
 
 ## Remediation Summary
 
 - Authorized scope: GitHub Issues #184 and #167 plus v0.12 release coordination in #169.
 - Completed scope: #184 source dispositions and #167 terminal tag publication/provider reconciliation implementation.
-- Validation summary: implementation validation and all five PR #188 hosted checks passed. Candidate `e4d8bfa81bcdef265663ffcbc28de1120016a3df` then passed exact candidate-state, live provider preflight, source-disposition, release-rendering, published-v0.11 input validation, and deterministic v0.12 ZIP/TAR parity. Hosted candidate and final frozen validation remain.
-- Closure decision: `not-ready`
+- Validation summary: implementation validation and all five PR #188 hosted checks passed. The exact candidate passed local candidate-state, live provider preflight, source-disposition, release-rendering, published-v0.11 input validation, deterministic v0.12 ZIP/TAR parity, and all five PR #189 hosted checks at `cef52c2aac01213c2eda7f1881cfaad9784413f5`.
+- Closure decision: `source-complete`; final merge, merged-main pre-tag, credential, and frozen Luna checks remain external handoff gates.
 
 ## Finding Resolution Matrix
 
@@ -26,7 +26,7 @@
 | --- | --- | --- | --- | --- | --- | --- |
 | `ASM-20260810-003#PKG-001` | HIGH | `addressed` | source-disposition schema, contract, validator, registry, docs, and candidate receipt | 8 + 31 + 7 focused tests; source governance and hosted gates passed | `abeef30ffb0072e19470ce4dbc583040c7022b1b`, merged by PR #188 | assessment baseline 30 became 32 after two later lesson files; derived coverage remains exhaustive |
 | GitHub Issue #167 | HIGH | `addressed` | release-state/provider scripts, tag workflow, templates, policy, runbook, exceptional closeout guidance | 33 + 7 + 8 focused tests; AI context and hosted gates passed | `abeef30ffb0072e19470ce4dbc583040c7022b1b`, merged by PR #188 | repository secret must be provisioned before tag publication |
-| GitHub Issue #169 | HIGH | `in-progress` | terminal v0.12 candidate authored; provider state repaired after an accidental PR closing keyword | implementation prerequisites and live pre-candidate read-back passed | candidate segment pending | #169 is open/Planned and must remain so until hosted reconciliation |
+| GitHub Issue #169 | HIGH | `addressed` | terminal v0.12 candidate authored; provider state repaired after an accidental PR closing keyword | local/provider/hosted candidate gates passed | PR #189 candidate | #169 is open/Planned and remains provider-owned until tag automation completes it |
 
 ## Changes And Evidence
 
@@ -37,7 +37,7 @@
 
 ## Verification Assessment Reconciliation
 
-- Independent auditor: pending `gpt-5.6-luna` / `high` frozen read-only task.
+- Independent auditor: pending `gpt-5.6-luna` / `high` frozen read-only handoff task; its result must not create a new source snapshot.
 - Confirmed resolved: pending.
 - Recurring findings: pending.
 - New or regressed findings: pending.
@@ -50,7 +50,7 @@
 
 ## Closure Evidence
 
-- Required validations: focused/local structural validation, hosted implementation PR, exact candidate-state, provider preflight, and archive parity passed; hosted candidate and frozen independent validation pending.
+- Required source validations: focused/local structural validation, hosted implementation PR, exact candidate-state, provider preflight, archive parity, and hosted candidate PR passed.
 - Commit status: implementation merged at `d1823a0c0cbf75ea13a33820443f5416c1dee86e`; initial candidate checkpoint is `e4d8bfa81bcdef265663ffcbc28de1120016a3df`.
-- Workflow/task status: in progress.
-- Final next action: validate and integrate the exact v0.12 candidate, freeze merged-main source/provider state, then run the final Luna audit before tag handoff.
+- Workflow/task status: completed for source-owned work.
+- Final external handoff: merge the exact accepted candidate tree, pass merged-main pre-tag read-back, provision the release credential, and run the frozen Luna audit. Do not write those read-only results back into source.
