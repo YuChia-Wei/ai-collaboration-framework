@@ -5,9 +5,9 @@
 - `report_id`: `remediation-report-2026-08-11-v0-12-release-readiness`
 - `workflow_id`: `2026-08-11-v0-12-release-readiness`
 - `owner_skill`: `ai-context-governance`
-- `status`: `implementation-validation`
+- `status`: `candidate-validation`
 - `created_at`: `2026-08-11T00:43:10+08:00`
-- `updated_at`: `2026-08-11T01:27:57+08:00`
+- `updated_at`: `2026-08-11T01:38:38+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-remediation-report-template.md`
 - `template_version`: `2.0.0`
 - `baseline_assessment`: `ASM-20260810-003`
@@ -17,16 +17,16 @@
 
 - Authorized scope: GitHub Issues #184 and #167 plus v0.12 release coordination in #169.
 - Completed scope: #184 source dispositions and #167 terminal tag publication/provider reconciliation implementation.
-- Validation summary: 94 focused tests plus source governance, AI context, and diff validation passed. PR #188 first hosted run found one stale dependency-validator cardinality; the bounded correction passes 19 dependency tests, four Windows launcher tests, four entrypoint tests, and direct dependency validation. Superseding hosted review and final frozen validation remain.
+- Validation summary: 94 focused tests plus source governance, AI context, and diff validation passed. PR #188's first run found one stale dependency-validator cardinality; the bounded correction then passed all five superseding hosted checks and merged to `main@d1823a0c0cbf75ea13a33820443f5416c1dee86e`. Exact candidate and final frozen validation remain.
 - Closure decision: `not-ready`
 
 ## Finding Resolution Matrix
 
 | Assessment Finding | Before Severity | Status | Changed Files | Validation | Commit | Residual Risk |
 | --- | --- | --- | --- | --- | --- | --- |
-| `ASM-20260810-003#PKG-001` | HIGH | `addressed` | source-disposition schema, contract, validator, registry, docs, and candidate receipt | 8 + 31 + 7 focused tests; source governance passed | pending implementation commit | assessment baseline 30 became 32 after two later lesson files; derived coverage remains exhaustive |
-| GitHub Issue #167 | HIGH | `addressed` | release-state/provider scripts, tag workflow, templates, policy, runbook, exceptional closeout guidance | 33 + 7 + 8 focused tests; AI context passed | pending implementation commit | repository secret must be provisioned before tag publication |
-| GitHub Issue #169 | HIGH | `in-progress` | exact v0.12 candidate not yet authored | implementation prerequisites passed | pending candidate segment | #169 intentionally remains open until hosted reconciliation |
+| `ASM-20260810-003#PKG-001` | HIGH | `addressed` | source-disposition schema, contract, validator, registry, docs, and candidate receipt | 8 + 31 + 7 focused tests; source governance and hosted gates passed | `abeef30ffb0072e19470ce4dbc583040c7022b1b`, merged by PR #188 | assessment baseline 30 became 32 after two later lesson files; derived coverage remains exhaustive |
+| GitHub Issue #167 | HIGH | `addressed` | release-state/provider scripts, tag workflow, templates, policy, runbook, exceptional closeout guidance | 33 + 7 + 8 focused tests; AI context and hosted gates passed | `abeef30ffb0072e19470ce4dbc583040c7022b1b`, merged by PR #188 | repository secret must be provisioned before tag publication |
+| GitHub Issue #169 | HIGH | `in-progress` | terminal v0.12 candidate authored; provider state repaired after an accidental PR closing keyword | implementation prerequisites and live pre-candidate read-back passed | candidate segment pending | #169 is open/Planned and must remain so until hosted reconciliation |
 
 ## Changes And Evidence
 
@@ -50,7 +50,7 @@
 
 ## Closure Evidence
 
-- Required validations: focused/local structural validation passed; hosted implementation PR and frozen candidate validation pending.
-- Commit status: pending.
+- Required validations: focused/local structural validation and hosted implementation PR passed; exact candidate and frozen independent validation pending.
+- Commit status: implementation merged at `d1823a0c0cbf75ea13a33820443f5416c1dee86e`; candidate commit pending.
 - Workflow/task status: in progress.
-- Final next action: commit and integrate the #184/#167 implementation, then create the exact v0.12 candidate from updated main.
+- Final next action: validate and integrate the exact v0.12 candidate, freeze merged-main source/provider state, then run the final Luna audit before tag handoff.

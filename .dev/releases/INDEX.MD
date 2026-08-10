@@ -15,7 +15,7 @@ Historical `v*` directories below are records, never templates.
 
 | Release ID | Version | Status | Compatibility | Notes | Migration | Phase Contract |
 | --- | --- | --- | --- | --- | --- | --- |
-_None._
+| [`REL-v0.12.0`](v0.12.0/release.yaml) | `v0.12.0` | `validated` | breaking; schema 2.1 package; automatic source v0.11.0 | [notes](v0.12.0/release-notes.md) | [guide](v0.12.0/migration-guide.md) | [checks](v0.12.0/release-phase-checks.yaml) |
 
 ## Planned Phase Contracts
 

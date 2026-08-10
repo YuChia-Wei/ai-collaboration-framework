@@ -5,14 +5,14 @@
 - `workflow_id`: `2026-08-11-v0-12-release-readiness`
 - `workflow_kind`: `ai-context-maintenance`
 - `owner_skill`: `ai-context-governance`
-- `branch`: `codex/2026-08-11-v0-12-release-readiness`
+- `branch`: `codex/2026-08-11-v0-12-release-candidate`
 - `base_branch`: `main`
-- `branch_segment`: `1`
+- `branch_segment`: `2`
 - `status`: `in_progress`
 - `current_phase`: `validation`
 - `artifact_root`: `.dev/workflows/2026-08-11-v0-12-release-readiness`
 - `created_at`: `2026-08-11T00:43:10+08:00`
-- `updated_at`: `2026-08-11T01:27:57+08:00`
+- `updated_at`: `2026-08-11T01:38:38+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md`
 - `template_version`: `1.2.0`
 
@@ -45,22 +45,23 @@
 2. Implement and validate #184 source-disposition coverage.
 3. Implement and validate #167 terminal pre-tag and provider-only post-tag automation.
 4. Close integrated implementation Issues and create the exact v0.12 candidate artifacts.
-5. Run hosted candidate gates and freeze all source/provider state.
-6. Start the final external Luna validation only after freeze; do not mutate concurrently.
-7. Integrate to `main`, rerun the exact pre-tag gate, and hand the user only the annotated-tag creation/push action.
+5. Run hosted candidate gates, integrate the accepted candidate to `main`, and complete online pre-tag reconciliation.
+6. Run the exact merged-main pre-tag gates, then freeze all source and provider state.
+7. Start the final external Luna validation only after that freeze, perform no concurrent mutation, and hand the user only the annotated-tag creation/push action after its read-back passes.
 
 ## Resume Checkpoint
 
-- Last completed action: PR #188 candidate and Ubuntu prerequisite checks passed on `abeef30`; three checks exposed one shared stale 29-entry dependency-validator count. The validator now expects 31 total / 29 PyYAML entries, and its 19 tests, the four Windows launcher tests, four entrypoint-contract tests, and direct validation pass locally.
-- Current task: integrate `PKG010-001` and `REL006-001` through a reviewed implementation pull request.
-- Exact next action: commit and push the focused CI correction, then wait for the superseding PR #188 checks before Issue closeout or release-candidate authoring.
-- Validation already completed: source disposition derives `1052 = 117 packaged + 903 explicit exclusions + 32 dispositions` with zero implicit omissions; release-state 33/33, provider 7/7, workflow 8/8, governance-workflow 7/7, and file-disposition 31/31 tests passed; source governance, AI context, and `git diff --check` passed.
-- Git state: branch `codex/2026-08-11-v0-12-release-readiness` from the exact baseline.
-- Branch history and checkpoint handoffs: none.
+- Last completed action: PR #188 passed all five hosted checks and merged as `main@d1823a0c0cbf75ea13a33820443f5416c1dee86e`; #167/#184 closed as completed. PR wording had accidentally added #169 as a closing reference, so the wording was corrected, #169 was reopened, and its exact Planned provider state was read back. #150 owner review and #175/#176 priority gaps were also corrected.
+- Current task: author and validate the exact `v0.12.0` terminal release candidate on continuation segment 2.
+- Exact next action: run local release registry, candidate-state, provider-preflight, source-disposition, deterministic package, and critical gates; then commit and push the candidate for hosted review.
+- Validation already completed: source disposition at the implementation checkpoint derived `1052 = 117 packaged + 903 explicit exclusions + 32 dispositions` with zero implicit omissions; PR #188 superseding run passed candidate build, governance, Windows prerequisite, Ubuntu prerequisite, and Ubuntu PR profile checks.
+- Git state: branch `codex/2026-08-11-v0-12-release-candidate` from exact `origin/main@d1823a0c0cbf75ea13a33820443f5416c1dee86e`.
+- Branch history and checkpoint handoffs: implementation segment merged through PR #188; candidate continuation resumed from the fetched merge commit.
 - Blockers or unresolved decisions: repository Actions secret `RELEASE_PROVIDER_TOKEN` must exist before the tag can publish; pull-request workflows intentionally never receive it. Exact live Project preflight will run before tag handoff and again inside the protected tag publication job.
 
 ## Branch Lifecycle
 
 | Segment | Branch | Base | Checkpoint Type | Commit | Remote / Target | Recorded At | Reason | Resume Branch / Action |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| 1 | `codex/2026-08-11-v0-12-release-readiness` | `main@bd1bd2530bfe76b56bd38023c4e3f9c167291120` | implementation validation | pending | pending | `2026-08-11T01:19:03+08:00` | #184 and #167 implementation is locally focused-green; hosted review remains | commit, push, and open implementation PR |
+| 1 | `codex/2026-08-11-v0-12-release-readiness` | `main@bd1bd2530bfe76b56bd38023c4e3f9c167291120` | merge-commit integration | `cead16fd415bde663233f899ba0c16b28e2d270c` | PR #188 → `main@d1823a0c0cbf75ea13a33820443f5416c1dee86e` | `2026-08-11T01:38:38+08:00` | #184 and #167 implementation passed all hosted checks and closed as completed | resume the same delivery on a new branch from updated main |
+| 2 | `codex/2026-08-11-v0-12-release-candidate` | `main@d1823a0c0cbf75ea13a33820443f5416c1dee86e` | candidate authoring | pending | pending | `2026-08-11T01:38:38+08:00` | create the exact terminal v0.12.0 candidate after implementation Issue closeout and provider repair | validate, commit, push, and open candidate PR |
