@@ -174,6 +174,11 @@ register_check validation-evidence-contract \
     "runner,evidence,tests" "fast pr release nightly-full" \
     ".ai/scripts/validation-evidence.py .ai/scripts/tests/test_validation_evidence.py .ai/scripts/check-all.sh" profile-registry-contract "python>=3.11" 30 cpu reuse-by-input source \
     "python .ai/scripts/tests/test_validation_evidence.py -v" always
+register_check immutable-history-validation-contract \
+    "Immutable History Validation Contract" required \
+    "governance,history,tests" "pr release nightly-full" \
+    ".ai/scripts/validate-immutable-history.py .ai/scripts/tests/test_immutable_history_validation.py .ai/distribution/validation/immutable-history-validation.yaml .ai/distribution/IMMUTABLE-HISTORY-VALIDATION-CONTRACT.md" validation-evidence-contract "python>=3.11 git" 60 cpu reuse-by-input source \
+    "python .ai/scripts/tests/test_immutable_history_validation.py -v" source-release
 register_check coding-standards-integrity \
     "Coding Standards Integrity Claim Contract" required \
     "standards,tests" "fast pr release nightly-full" \

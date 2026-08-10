@@ -54,12 +54,12 @@ class PythonEntrypointContractTests(unittest.TestCase):
     def test_gwt_001_given_governed_registry_when_counted_then_portable_dependency_contract_is_complete(self) -> None:
         self.assertEqual("1.0", self.registry["schema_version"])
         self.assertEqual("3.11", self.registry["python_floor"])
-        self.assertEqual(28, len(self.entrypoints))
+        self.assertEqual(29, len(self.entrypoints))
         portable = [item for item in self.entrypoints if item["portable"]]
         pyyaml = [item for item in self.entrypoints if item["dependency_profile"] == ["PyYAML"]]
         stdlib = [item for item in self.entrypoints if not item["dependency_profile"]]
         self.assertEqual(13, len(portable))
-        self.assertEqual(26, len(pyyaml))
+        self.assertEqual(27, len(pyyaml))
         self.assertEqual(2, len(stdlib))
         self.assertEqual("6.0.3", self.registry["governed_requirements"]["PyYAML"]["version"])
         self.assertEqual("requirements.txt", self.registry["governed_requirements"]["PyYAML"]["requirements_path"])
@@ -70,7 +70,10 @@ class PythonEntrypointContractTests(unittest.TestCase):
             {item["path"] for item in self.entrypoints if not item["dependency_profile"]},
         )
         self.assertEqual(
-            {".ai/scripts/plan-ai-context-package-apply.py"},
+            {
+                ".ai/scripts/plan-ai-context-package-apply.py",
+                ".ai/scripts/validate-immutable-history.py",
+            },
             {item["path"] for item in self.entrypoints if item["prerequisite_exit_code"] == 2},
         )
         self.assertEqual(
@@ -84,6 +87,7 @@ class PythonEntrypointContractTests(unittest.TestCase):
                 if item["path"]
                 not in {
                     ".ai/scripts/plan-ai-context-package-apply.py",
+                    ".ai/scripts/validate-immutable-history.py",
                     ".ai/scripts/ai_context_release_closeout.py",
                 }
             )

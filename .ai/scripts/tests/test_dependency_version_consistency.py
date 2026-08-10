@@ -292,7 +292,7 @@ class DependencyVersionConsistencyTests(unittest.TestCase):
             missing_path.unlink()
             registry_path.write_text(json.dumps(registry), encoding="utf-8")
             result = self.run_validator(root)
-            self.assert_validation_failure(result, "only .ai/scripts/plan-ai-context-package-apply.py")
+            self.assert_validation_failure(result, "prerequisite_exit_code 2 is reserved for")
             self.assertIn("path does not exist in source root", result.stdout + result.stderr)
 
     def test_gwt_016_given_root_level_provider_project_version_drift_when_validated_then_it_fails_closed(self) -> None:

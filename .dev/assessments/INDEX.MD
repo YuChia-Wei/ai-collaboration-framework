@@ -12,6 +12,7 @@ owns its identity, current lifecycle state, subject revision, and relationships.
 
 | Assessment | Title | Type | Owner | Status | Subject Commit | Updated | Report |
 | --- | --- | --- | --- | --- | --- | --- | --- |
+| [`ASM-20260810-002`](ASM-20260810-002/assessment.yaml) | Immutable History Validation Post-Remediation Verification | `ai-context-verification` | `ai-context-auditor` | `final` | `99df2e0b1716b8f6b3def5a464b9f92c6802d823` | `2026-08-10T08:26:38+08:00` | [report](ASM-20260810-002/report.md) |
 | [`ASM-20260810-001`](ASM-20260810-001/assessment.yaml) | Current Governance And Brand Boundary Remediation Verification | `ai-context-verification` | `ai-context-auditor` | `final` | `725162b679a9aea85e50417ee4b35c9a95cdae7c` | `2026-08-10T01:38:00+08:00` | [report](ASM-20260810-001/report.md) |
 | [`ASM-20260809-004`](ASM-20260809-004/assessment.yaml) | .dev Governance Content And Lifecycle Inventory | `ai-context-audit` | `ai-context-auditor` | `final` | `3a60570d0e290f337f2a212d092c6797670528b4` | `2026-08-09T22:17:10+08:00` | [report](ASM-20260809-004/report.md) |
 | [`ASM-20260809-003`](ASM-20260809-003/assessment.yaml) | .ai Product Source, Ownership, And Portability Inventory | `ai-context-audit` | `ai-context-auditor` | `final` | `3a60570d0e290f337f2a212d092c6797670528b4` | `2026-08-09T22:06:38+08:00` | [report](ASM-20260809-003/report.md) |
@@ -53,6 +54,16 @@ owns its identity, current lifecycle state, subject revision, and relationships.
 | [`ASM-20260717-001`](ASM-20260717-001/assessment.yaml) | v0.4.0 AI Context Successor Verification | `ai-context-verification` | `ai-context-auditor` | `final` | `26c958069510f56818752368bec4bd7ad83e5038` | `2026-07-17T07:16:38+08:00` | [report](ASM-20260717-001/report.md) |
 | [`ASM-20260716-001`](ASM-20260716-001/assessment.yaml) | v0.4.0 AI Context Remediation Verification | `ai-context-verification` | `ai-context-auditor` | `final` | `e7ca51a7f03c114d5ce5826a15eeb15338efea76` | `2026-07-16T23:10:20+08:00` | [report](ASM-20260716-001/report.md) |
 | [`ASM-20260715-002`](ASM-20260715-002/assessment.yaml) | v0.4.0 Standards Lineage And Downstream Adoption Reassessment | `ai-context-audit` | `ai-context-auditor` | `final` | `82b88b7287deb7a64e0311fde6b1b53ea0d194b1` | `2026-08-02T21:20:17+08:00` | [report](ASM-20260715-002/report.md) |
+
+## Derived Human-Review Translations
+
+These translations are reading aids. The English final report remains the
+canonical assessment source.
+
+| Assessment | Language | Derived Report |
+| --- | --- | --- |
+| `ASM-20260809-004` | `zh-TW` | [report.zh-TW](ASM-20260809-004/report.zh-TW.md) |
+| `ASM-20260809-003` | `zh-TW` | [report.zh-TW](ASM-20260809-003/report.zh-TW.md) |
 
 ## Superseded Or Withdrawn Assessments
 

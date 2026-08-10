@@ -130,6 +130,31 @@ class ValidationProfileRegistryGwtTests(unittest.TestCase):
         self.assertIn("--critical    --profile release", result.stdout)
         self.assertIn("--full        --profile nightly-full", result.stdout)
 
+    def test_gwt_005_given_source_history_contract_when_profiles_are_read_then_routine_and_full_boundaries_are_explicit(self) -> None:
+        _, checks = registry_snapshot()
+        contract = checks["immutable-history-validation-contract"]
+        runner = RUNNER.read_text(encoding="utf-8")
+        distribution = (
+            ROOT / ".ai/distribution/profiles/dotnet-backend.yaml"
+        ).read_text(encoding="utf-8")
+
+        self.assertEqual(
+            {"pr", "release", "nightly-full"},
+            set(contract[4].split()),
+        )
+        self.assertEqual("source", contract[11])
+        self.assertEqual(
+            "python .ai/scripts/tests/test_immutable_history_validation.py -v",
+            contract[12],
+        )
+        self.assertIn("release-candidate", runner)
+        self.assertIn("scheduled-governance", runner)
+        self.assertIn("IMMUTABLE_HISTORY_RECEIPT_REUSE_BY_ID", runner)
+        self.assertIn(".ai/scripts/validate-immutable-history.py", distribution)
+        self.assertIn(
+            ".ai/scripts/tests/test_immutable_history_validation.py", distribution
+        )
+
 
 if __name__ == "__main__":
     unittest.main()

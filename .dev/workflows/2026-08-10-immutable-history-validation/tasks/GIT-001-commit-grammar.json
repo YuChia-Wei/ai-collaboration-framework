@@ -1,0 +1,73 @@
+{
+  "template_id": "ai-context-governance-remediation-task",
+  "template_version": "1.1.0",
+  "template_created_at": "2026-07-10T18:22:49+08:00",
+  "template_updated_at": "2026-07-27T09:52:09+08:00",
+  "task_id": "GIT-001-commit-grammar",
+  "workflow_id": "2026-08-10-immutable-history-validation",
+  "owner_skill": "ai-context-governance",
+  "status": "completed",
+  "created_at": "2026-08-10T00:38:23+08:00",
+  "updated_at": "2026-08-10T00:42:19+08:00",
+  "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
+  "model": "gpt-5.6-terra",
+  "reasoning_effort": "xhigh",
+  "finding_ids": [],
+  "scope": {
+    "target": "Prospective commit-title grammar and its executable validator/test/reference surfaces.",
+    "files": [
+      ".dev/standards/GIT-COMMIT-POLICY.md",
+      ".dev/standards/GIT-COMMIT-POLICY.yaml",
+      ".ai/scripts/validate-git-commits.py",
+      "tests/",
+      ".ai/assets/",
+      ".agents/",
+      ".claude/"
+    ],
+    "constraints": [
+      "Interpret issue-number and scope title forms as alternatives prospectively.",
+      "Keep a named deprecated compatibility acceptance path for existing commits with a literal pipe.",
+      "Do not rewrite existing commits."
+    ],
+    "non_goals": [
+      "Changing historical commits.",
+      "Relaxing title validation without an explicit canonical grammar and compatibility boundary."
+    ]
+  },
+  "execution": {
+    "steps": [
+      "Inventory the policy, executable grammar, fixtures, and active references.",
+      "Implement the smallest prospective grammar correction and compatibility path.",
+      "Run focused validator tests and reference checks."
+    ],
+    "validation": [
+      "Focused commit-policy validator test command discovered from the repository.",
+      "Direct policy and example consistency search.",
+      "git diff --check."
+    ],
+    "last_completed_step": "Implemented and validated the prospective issue-or-scope grammar with explicit legacy compatibility.",
+    "next_action": "No further action for this task."
+  },
+  "results": {
+    "summary": "The canonical grammar now accepts either issue references or a scope and rejects a literal pipe after the cutover; commits before the cutover retain an explicit deprecated compatibility pattern.",
+    "files_changed": [
+      ".dev/standards/GIT-COMMIT-POLICY.md",
+      ".dev/standards/GIT-COMMIT-POLICY.yaml",
+      ".ai/scripts/validate-git-commits.py",
+      ".ai/scripts/tests/test_git_commit_policy.py",
+      "AGENTS.md",
+      "AGENTS.zh-TW.md",
+      ".ai/assets/skills/ai-context-governance/references/workflow-and-commit-playbook.md"
+    ],
+    "tests_run": [
+      "python .ai/scripts/tests/test_git_commit_policy.py -v: passed (19 tests)",
+      "python .ai/scripts/validate-git-commits.py --commit 5258e7c: passed",
+      "python .ai/scripts/validate-ai-context.py: passed",
+      "python .ai/scripts/tests/test_ai_context_language_policy.py -v: passed outside sandbox after sandbox temporary-fixture permission block",
+      "git diff --check: passed"
+    ],
+    "finding_status": "addressed",
+    "residual_risk": "Historical literal-pipe titles remain accepted only by the date-bounded deprecated compatibility pattern; do not rewrite shared history.",
+    "follow_up_needed": false
+  }
+}
