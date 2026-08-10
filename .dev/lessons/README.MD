@@ -104,9 +104,12 @@ blocked evidence as successful.
 ## Categories
 
 Categories describe the reusable learning boundary, not an architecture or
-technology-profile authority. The initial category is
-[environment](environment/INDEX.MD) for host, shell, process-environment, and
-runtime-availability lessons.
+technology-profile authority.
+
+- [environment](environment/INDEX.MD) covers host, shell, process-environment,
+  and runtime-availability lessons.
+- [validation](validation/INDEX.MD) covers validation scheduling, immutable
+  snapshots, timeout orchestration, and evidence integrity.
 
 ## Distribution Boundary
 

@@ -9,6 +9,7 @@ This index owns lesson discovery and current lifecycle state. Read
 | Path | Code | Scope | Index |
 | --- | --- | --- | --- |
 | `environment/` | `ENV` | Host, shell, process-environment, and runtime-availability knowledge. | [environment index](environment/INDEX.MD) |
+| `validation/` | `VAL` | Validation scheduling, immutable snapshots, timeout orchestration, and evidence integrity. | [validation index](validation/INDEX.MD) |
 | `templates/` | n/a | Reusable lesson authoring template. | [lesson template](templates/lesson-template.md) |
 
 ## Lesson Catalog
@@ -16,6 +17,7 @@ This index owns lesson discovery and current lifecycle state. Read
 | Path | Lesson ID | Lesson | Category | Lifecycle | Origin Evidence | Promotion / Supersession |
 | --- | --- | --- | --- | --- | --- | --- |
 | `environment/LESSON-ENV-001-wsl-non-interactive-dotnet-path.md` | `LESSON-ENV-001` | [WSL Non-Interactive .NET CLI PATH Availability](environment/LESSON-ENV-001-wsl-non-interactive-dotnet-path.md) | `environment` | `active` | [Issue #163](https://github.com/YuChia-Wei/ai-collaboration-framework/issues/163) and [v0.11 completion report](../workflows/2026-08-09-v0-11-product-boundary-delivery-evidence/reports/completion-report.md) | `none` |
+| `validation/LESSON-VAL-001-terminal-validation-immutable-snapshot.md` | `LESSON-VAL-001` | [Terminal Validation Must Use an Immutable Snapshot](validation/LESSON-VAL-001-terminal-validation-immutable-snapshot.md) | `validation` | `active` | [ASM-20260810-005](../assessments/ASM-20260810-005/report.md) | `none` |
 
 Lifecycle changes update this row, the category projection, and the lesson
 packet together. Promoted and superseded lessons remain indexed as provenance.

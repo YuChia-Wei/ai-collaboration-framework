@@ -51,6 +51,7 @@ This index owns the file and directory catalog for `.dev/`. The `.dev/README.MD`
 | `lessons/README.MD` | Lesson responsibility, boundary, identity, lifecycle, promotion, and supersession contract. |
 | `lessons/INDEX.MD` | Lesson category and lifecycle discovery catalog. |
 | `lessons/environment/` | Host, shell, process-environment, and runtime-availability lessons. |
+| `lessons/validation/` | Validation scheduling, immutable-snapshot, timeout-orchestration, and evidence-integrity lessons. |
 
 ## Requirements And Specs
 
