@@ -1,0 +1,60 @@
+{
+  "template_id": "ai-context-governance-remediation-task",
+  "template_version": "1.1.0",
+  "template_created_at": "2026-07-10T18:22:49+08:00",
+  "template_updated_at": "2026-07-27T09:52:09+08:00",
+  "task_id": "STD001-003",
+  "workflow_id": "2026-08-11-std-001-standards-simplification",
+  "owner_skill": "ai-context-governance",
+  "status": "pending",
+  "created_at": "2026-08-11T13:31:10+08:00",
+  "updated_at": "2026-08-11T13:31:10+08:00",
+  "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
+  "model": "gpt-5.6-sol",
+  "reasoning_effort": "high",
+  "finding_ids": [],
+  "scope": {
+    "target": "Actual package-candidate user-view review and finding-bound delivery decision ledger",
+    "files": [
+      ".ai/distribution/**",
+      ".ai/scripts/ai_context_package.py",
+      ".dev/workflows/2026-08-11-std-001-standards-simplification/reports/decision-ledger.md"
+    ],
+    "constraints": [
+      "Review generated payload navigation and comprehension, not only source presence",
+      "Give every proposed move or deletion an owner, replacement, compatibility, migration, and equivalence disposition",
+      "Split findings that change different authorities, validators, or compatibility contracts into successor delivery scopes",
+      "Do not treat a candidate build as release publication evidence"
+    ],
+    "non_goals": [
+      "Tag or GitHub Release creation",
+      "Issue closure before owner review",
+      "Unbounded remediation",
+      "OBS-001 architecture implementation"
+    ]
+  },
+  "execution": {
+    "steps": [
+      "Build the exact package candidate from the fixed subject commit",
+      "Review payload entrypoints and selected standards from a downstream user perspective",
+      "Compare source, routing, and package evidence",
+      "Publish a decision ledger with bounded delivery and successor-Issue recommendations"
+    ],
+    "validation": [
+      "package candidate build and manifest read-back",
+      "package payload reference checks",
+      "python .ai/scripts/validate-workflow-artifacts.py",
+      "git diff --check"
+    ],
+    "last_completed_step": "",
+    "next_action": "Wait for STD001-001 and STD001-002 findings"
+  },
+  "results": {
+    "summary": "",
+    "files_changed": [],
+    "tests_run": [],
+    "finding_status": "not-addressed",
+    "residual_risk": "No actual package-candidate user-view review or decision partition exists yet.",
+    "follow_up_needed": true
+  }
+}

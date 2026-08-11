@@ -1,0 +1,63 @@
+{
+  "template_id": "ai-context-governance-remediation-task",
+  "template_version": "1.1.0",
+  "template_created_at": "2026-07-10T18:22:49+08:00",
+  "template_updated_at": "2026-07-27T09:52:09+08:00",
+  "task_id": "STD001-002",
+  "workflow_id": "2026-08-11-std-001-standards-simplification",
+  "owner_skill": "ai-context-governance",
+  "status": "pending",
+  "created_at": "2026-08-11T13:31:10+08:00",
+  "updated_at": "2026-08-11T13:31:10+08:00",
+  "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
+  "model": "gpt-5.6-sol",
+  "reasoning_effort": "high",
+  "finding_ids": [],
+  "scope": {
+    "target": "Round 3 governance terminology discovery and canonical definition placement",
+    "files": [
+      "AGENTS.md",
+      ".dev/standards/**",
+      ".dev/guides/**",
+      ".ai/assets/skills/**",
+      ".ai/distribution/**",
+      ".dev/operations/**"
+    ],
+    "constraints": [
+      "Inventory lifecycle, candidate, integration, publication, closeout, and related terms with exact consumers",
+      "Distinguish normative definitions from contextual explanation and historical evidence",
+      "Preserve CAP-001's decision not to create a terminology-specific skill",
+      "Record validator, migration, and compatibility impacts before proposing movement"
+    ],
+    "non_goals": [
+      "Reopening #167 implementation",
+      "Editing immutable history",
+      "Broad terminology replacement without owner and consumer evidence",
+      "Release publication"
+    ]
+  },
+  "execution": {
+    "steps": [
+      "Build a term, definition, owner, consumer, and conflict matrix",
+      "Classify duplicate text as canonical, contextual, compatibility, or historical",
+      "Identify validator and migration dependencies",
+      "Record stable R3 findings in ASM-20260811-003"
+    ],
+    "validation": [
+      "direct tracked-file reference checks",
+      "structured manifest parsing",
+      "python .ai/scripts/validate-ai-context.py",
+      "git diff --check"
+    ],
+    "last_completed_step": "",
+    "next_action": "Wait for STD001-001 baseline completion"
+  },
+  "results": {
+    "summary": "",
+    "files_changed": [],
+    "tests_run": [],
+    "finding_status": "not-addressed",
+    "residual_risk": "Terminology ownership and duplication remain unmeasured.",
+    "follow_up_needed": true
+  }
+}
