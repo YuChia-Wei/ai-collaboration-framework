@@ -297,9 +297,21 @@ execution profile that can faithfully execute and report the bounded command.
 Its scope is read-only except for ignored validation logs or artifacts. It must
 not repair, commit, push, mutate Issues or Projects, or broaden the command.
 
-The owning conversation may read back dispatch once, then must yield. It must
-not issue repeated waits, status probes, or progress narration. The external
-task returns one completion report containing:
+The external-task prompt must contain exactly one marked dispatch envelope
+conforming to
+`.ai/assets/skills/software-development-orchestrator/templates/external-task-delegation.schema.yaml`.
+The envelope binds the source-task identity, final integration owner, immutable
+subject, exact argument vector, permission boundary, stop conditions, and one
+completion-delivery route. The source identity may be explicit or supplied by
+the runtime's delegation wrapper; do not assume a separate task's final output
+is automatically routed to its source.
+
+Select either a source-task callback or one parent event wait as the primary
+completion path. The callback must target the source task. The event wait
+subscribes once to the delegated task and wakes on terminal or attention state;
+it is not repeated polling. Progress callbacks, repeated waits, status probes,
+and progress narration remain prohibited. The external task returns exactly one
+completion report conforming to the same schema and containing:
 
 - immutable commit SHA and clean-state preflight;
 - exact command and working directory;
@@ -309,12 +321,16 @@ task returns one completion report containing:
 - exit code plus log, evidence, or bounded output references; and
 - final tracked worktree state.
 
-Timeout, interruption, missing completion evidence, and blocked execution are
-non-passing. The owning workflow remains open until it receives and accepts an
-allowed final outcome. When the runtime cannot provide an independent task that
-reports completion without polling, record `blocked-by-environment` or create a
-fresh-session handoff; never substitute synchronous polling in the owning
-conversation.
+Execution timeout, interruption, missing terminal evidence, subject drift, and
+blocked execution are non-passing. The owning workflow remains open until it
+receives and accepts an allowed final outcome. A parent event-wait timeout is a
+pending transport state, not a validation result. If callback delivery fails
+after the delegated task has reached a terminal state, the owner may perform
+one terminal read-back and accept only a matching schema-valid completion
+report. This bounded recovery is not permission to poll. When the runtime has
+neither callback, event wait, nor terminal read-back support, record
+`blocked-by-environment` or create a fresh-session handoff rather than running a
+primary-conversation polling loop.
 
 Keep canonical aggregate runners because they own profile selection,
 dependency ordering, unified evidence, and fail-closed classification. A future

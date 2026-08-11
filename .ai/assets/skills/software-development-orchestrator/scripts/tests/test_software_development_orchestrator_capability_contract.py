@@ -23,6 +23,10 @@ ROOT_GUIDE = ROOT / "AGENTS.md"
 ROOT_GUIDE_ZH_TW = ROOT / "AGENTS.zh-TW.md"
 WORKFLOW_GATE_POLICY = ROOT / ".dev/standards/WORKFLOW-GATE-POLICY.md"
 RUNTIME_COORDINATION = ROOT / ".ai/assets/skills/software-development-orchestrator/references/runtime-coordination.md"
+DELEGATION_SCHEMA = ROOT / ".ai/assets/skills/software-development-orchestrator/templates/external-task-delegation.schema.yaml"
+DELEGATION_DISPATCH_TEMPLATE = ROOT / ".ai/assets/skills/software-development-orchestrator/templates/external-task-dispatch.template.yaml"
+DELEGATION_COMPLETION_TEMPLATE = ROOT / ".ai/assets/skills/software-development-orchestrator/templates/external-task-completion.template.yaml"
+DELEGATION_VALIDATOR = ROOT / ".ai/assets/skills/software-development-orchestrator/scripts/validate-external-task-delegation.py"
 VALIDATOR_PATH = ROOT / ".ai/scripts/validate-workflow-artifacts.py"
 SPEC = importlib.util.spec_from_file_location("validate_workflow_artifacts", VALIDATOR_PATH)
 if SPEC is None or SPEC.loader is None:
@@ -205,6 +209,40 @@ class DevWorkflowCapabilityContractGwtTests(unittest.TestCase):
             contract["non_passing"],
         )
         self.assertEqual(
+            {
+                "schema": DELEGATION_SCHEMA.relative_to(ROOT).as_posix(),
+                "dispatch_template": DELEGATION_DISPATCH_TEMPLATE.relative_to(ROOT).as_posix(),
+                "completion_template": DELEGATION_COMPLETION_TEMPLATE.relative_to(ROOT).as_posix(),
+                "validator": DELEGATION_VALIDATOR.relative_to(ROOT).as_posix(),
+                "prompt_envelope": [
+                    "BEGIN_EXTERNAL_TASK_DELEGATION",
+                    "END_EXTERNAL_TASK_DELEGATION",
+                ],
+                "completion_envelope": [
+                    "BEGIN_EXTERNAL_TASK_COMPLETION",
+                    "END_EXTERNAL_TASK_COMPLETION",
+                ],
+                "source_task_identity": "explicit-or-runtime-injected",
+                "primary_delivery_modes": [
+                    "source-task-callback",
+                    "parent-event-wait",
+                ],
+                "fallback_delivery_modes": [
+                    "parent-event-wait",
+                    "single-terminal-readback",
+                ],
+                "parent_wait_timeout_state": "pending-awaiting-completion",
+            },
+            contract["delegation_contract"],
+        )
+        for path in (
+            DELEGATION_SCHEMA,
+            DELEGATION_DISPATCH_TEMPLATE,
+            DELEGATION_COMPLETION_TEMPLATE,
+            DELEGATION_VALIDATOR,
+        ):
+            self.assertTrue(path.is_file(), path.relative_to(ROOT).as_posix())
+        self.assertEqual(
             [
                 "dependency-dag",
                 "artifact-isolation",
@@ -216,10 +254,10 @@ class DevWorkflowCapabilityContractGwtTests(unittest.TestCase):
         )
 
         required_phrases = {
-            ROOT_GUIDE: ("Long-Running Validation Gate", "must not execute a repeated polling loop"),
-            ROOT_GUIDE_ZH_TW: ("長時間驗證 Gate", "不得執行重複 polling loop"),
-            WORKFLOW_GATE_POLICY: ("Long-Running Validation Delegation Gate", "least expensive"),
-            RUNTIME_COORDINATION: ("Long-Running Validation Runtime Pattern", "without repeated waits"),
+            ROOT_GUIDE: ("Long-Running Validation Gate", "one parent event wait"),
+            ROOT_GUIDE_ZH_TW: ("長時間驗證 Gate", "一次 event wait"),
+            WORKFLOW_GATE_POLICY: ("Long-Running Validation Delegation Gate", "one terminal read-back"),
+            RUNTIME_COORDINATION: ("Long-Running Validation Runtime Pattern", "source-task-callback"),
         }
         for path, phrases in required_phrases.items():
             text = " ".join(path.read_text(encoding="utf-8").split())

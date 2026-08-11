@@ -91,10 +91,14 @@ Minimum contract:
   mutations and focused checks are complete and a clean immutable commit pins
   the exact command.
 - Use the least expensive capable external runtime task, allow writes only to
-  ignored validation artifacts, and require one final report. The primary
-  conversation reads back dispatch once and does not poll or narrate progress.
+  ignored validation artifacts, and require one final report under the
+  canonical external-task delegation schema. Select a source-task callback or
+  one parent event wait; the primary conversation does not poll or narrate
+  progress.
 - A timeout, interruption, missing completion report, or blocked task is
-  non-passing. Do not repair inside the validation task.
+  non-passing. A parent wait timeout remains pending, and a failed callback may
+  use one schema-valid terminal read-back after terminal state. Do not repair
+  inside the validation task.
 
 ### `refactoring`
 

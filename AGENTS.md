@@ -76,14 +76,18 @@ Workflow artifact rules:
 - Run long-running validation in a separate external runtime task using the
   least expensive capable execution profile. Keep it read-only except for
   ignored validation artifacts, and do not let it repair failures.
-- The primary implementation conversation must not execute a repeated polling
-  loop. After one dispatch read-back it yields; the external task reports one
-  final result with commit, command, duration, outcome counts, and evidence
-  references.
-- Timeout, interruption, missing completion evidence, and blocked execution are
-  never passed. If the runtime cannot provide a separate completion-reporting
-  task, record the validation as blocked or hand it off; do not fall back to
-  synchronous polling in the primary conversation.
+- Put exactly one marked dispatch envelope from
+  `.ai/assets/skills/software-development-orchestrator/templates/external-task-delegation.schema.yaml`
+  in the external-task prompt. Bind the source-task identity, immutable commit,
+  exact argument vector, permissions, stop conditions, and completion route.
+- Use either a callback to the source task or one parent event wait. Do not
+  execute repeated waits, status probes, or progress narration. Require exactly
+  one schema-valid terminal report with source/delegated task IDs, commit,
+  command, duration, outcome counts when available, and evidence.
+- Execution timeout, interruption, subject drift, missing terminal evidence,
+  and blocked execution are never passed. A parent wait timeout remains
+  pending. If callback delivery fails after terminal state, one terminal
+  read-back is allowed; it is not permission to poll.
 - Do not parallelize an aggregate runner until dependency ordering, isolated
   artifacts, bounded concurrency, deterministic evidence, and fail-closed
   cancellation have independent contract coverage.

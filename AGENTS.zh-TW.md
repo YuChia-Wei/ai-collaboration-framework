@@ -74,13 +74,18 @@ Workflow artifact 規則：
 - 長時間驗證必須交給獨立 external runtime task，並使用足以完成工作的最低
   成本 execution profile。除了 ignored validation artifacts 外維持唯讀，且
   不得由該 task 修復失敗。
-- 主要 implementation conversation 不得執行重複 polling loop。完成一次
-  dispatch read-back 後就應 yield；external task 完成時只回報一次 final
-  result，包含 commit、command、duration、outcome counts 與 evidence
-  references。
-- Timeout、中止、缺少 completion evidence 或 blocked execution 絕不等於
-  passed。若 runtime 無法提供可回報完成狀態的獨立 task，將 validation 記為
-  blocked 或 handoff；不得退回主要對話同步輪詢。
+- External-task prompt 必須放入一份符合
+  `.ai/assets/skills/software-development-orchestrator/templates/external-task-delegation.schema.yaml`
+  的 marked dispatch envelope，並綁定 source task identity、immutable commit、
+  exact argument vector、permissions、stop conditions 與 completion route。
+- Completion route 使用 callback 回來源 task，或由 parent 進行一次 event wait；
+  不得重複 waits、status probes 或 progress narration。External task 必須只送出
+  一份 schema-valid terminal report，包含 source/delegated task IDs、commit、
+  command、duration、可取得的 outcome counts 與 evidence。
+- Execution timeout、中止、subject drift、缺少 terminal evidence 或 blocked
+  execution 絕不等於 passed。Parent wait timeout 只維持 pending；若 callback
+  delivery 在 task terminal 後失敗，可做一次 terminal read-back，但不得藉此
+  進入 polling loop。
 - Aggregate runner 在 dependency ordering、artifact isolation、bounded
   concurrency、deterministic evidence 與 fail-closed cancellation 都有獨立
   contract coverage 前，不得平行化。

@@ -6,9 +6,9 @@
   "task_id": "STD001-003",
   "workflow_id": "2026-08-11-std-001-standards-simplification",
   "owner_skill": "ai-context-governance",
-  "status": "in_progress",
+  "status": "deferred",
   "created_at": "2026-08-11T13:31:10+08:00",
-  "updated_at": "2026-08-12T00:22:08+08:00",
+  "updated_at": "2026-08-12T01:03:48+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-5.6-sol",
   "reasoning_effort": "high",
@@ -51,7 +51,7 @@
       "git diff --check"
     ],
     "last_completed_step": "Completed #191/#192/#193 local delivery, #194 no-polling governance, focused validation, and an owner-approved composite integration gate without falsifying the timed-out aggregate receipt",
-    "next_action": "Commit the composite transport record, push and open the PR, then let an external task gate merge, eligible Issue closure, and branch cleanup on hosted checks; keep the real governed v0.13 candidate deferred"
+    "next_action": "Resume only after the owner authorizes a real governed v0.13 candidate; PR #195 integration remains owned by VAL005-001 and does not satisfy this candidate-review condition"
   },
   "results": {
     "summary": "The controlled baseline exposed downstream navigation and component closure failures; #191, #192, and #193 are now locally implemented and independently verified, while the real governed v0.13 candidate and downstream acceptance remain deferred.",
@@ -82,8 +82,8 @@
       "Issue #194 focused orchestrator capability contract: passed 14/14",
       "Issue #194 deterministic orchestrator acceptance: passed 3/3"
     ],
-    "finding_status": "issues-191-192-193-local-complete-pending-owner-review-and-integration",
-    "residual_risk": "The controlled projection is not a real v0.13 candidate. Repository integration is authorized but still awaits handoff and hosted PR gates; #193/#61 closeout, final candidate validation, downstream acceptance, Project state, tag, Release, and publication remain separate.",
+    "finding_status": "deferred-with-owner-real-v0.13-candidate-not-authorized",
+    "residual_risk": "The controlled projection is not a real v0.13 candidate. PR #195 integration may proceed after its own hosted gates, but #193/#61 final candidate review, downstream acceptance, Project state, tag, Release, and publication remain separately deferred.",
     "follow_up_needed": true
   }
 }

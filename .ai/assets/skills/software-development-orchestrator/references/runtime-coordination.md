@@ -60,12 +60,34 @@ first completes tracked mutations and focused checks, pins a clean immutable
 commit, and bounds the exact command and working directory.
 
 Create a separate external runtime task with the least expensive capable
-execution profile. It may write only ignored validation artifacts and must not
-repair or broaden scope. Read back successful dispatch once, then yield the
-owning conversation without repeated waits or progress messages. The task
-reports one final outcome with commit, command, duration, counts, evidence, and
-final tracked state. Runtime interruption, timeout, blocked execution, or a
-missing completion report is non-passing.
+execution profile. Its prompt contains exactly one
+  `BEGIN_EXTERNAL_TASK_DELEGATION` / `END_EXTERNAL_TASK_DELEGATION` YAML envelope
+that conforms to `../templates/external-task-delegation.schema.yaml`. Start from
+the dispatch template, bind either an explicit or runtime-injected source-task
+identity, and name the source task as final integration owner.
+
+Select one completion path before dispatch:
+
+- `source-task-callback`: the delegated task sends its single schema-valid
+  terminal report to the source task;
+- `parent-event-wait`: the source task subscribes once to a completion event for
+  the delegated task and does not issue repeated status probes.
+
+The terminal message contains exactly one
+`BEGIN_EXTERNAL_TASK_COMPLETION` / `END_EXTERNAL_TASK_COMPLETION` envelope.
+
+Use an event wait as the normal callback fallback. A wait transport timeout
+leaves validation pending; it is not an execution failure. If callback delivery
+fails after a terminal task state is independently visible, one terminal
+read-back is allowed. The read-back is acceptable only when it contains the
+matching schema-valid completion report; it must not become a polling loop.
+
+The delegated task may write only ignored validation artifacts and must not
+repair or broaden scope. It reports exactly one terminal outcome with source
+and delegated task identities, commit, exact argument vector, duration, counts
+when available, evidence, and final tracked state. Runtime interruption,
+execution timeout, blocked execution, subject drift, or a terminal task without
+a valid completion report is non-passing.
 
 This runtime task is an execution surface, not proof of a canonical role or
 external skill. Keep role applicability, provider selection, and workflow

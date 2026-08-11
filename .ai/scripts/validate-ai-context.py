@@ -2582,8 +2582,10 @@ def validate_capability_profile(skill_assets: dict[str, dict], errors: list[str]
     if profile is None:
         return 0
     schema_version = profile.get("schema_version")
-    if schema_version not in {"1.0", "1.1", "1.2", "1.3"}:
-        errors.append(f"{CAPABILITY_PROFILE}: schema_version must be 1.0, 1.1, 1.2, or 1.3")
+    if schema_version not in {"1.0", "1.1", "1.2", "1.3", "1.4"}:
+        errors.append(
+            f"{CAPABILITY_PROFILE}: schema_version must be 1.0, 1.1, 1.2, 1.3, or 1.4"
+        )
     if not isinstance(profile.get("profile_id"), str) or not profile.get("profile_id"):
         errors.append(f"{CAPABILITY_PROFILE}: profile_id must be a non-empty string")
     if profile.get("status") != "active":
@@ -2609,7 +2611,7 @@ def validate_capability_profile(skill_assets: dict[str, dict], errors: list[str]
     if missing:
         errors.append(f"{CAPABILITY_PROFILE}: missing required mappings {missing}")
     contracts = profile.get("capability_contracts", {})
-    if schema_version in {"1.1", "1.2", "1.3"}:
+    if schema_version in {"1.1", "1.2", "1.3", "1.4"}:
         if not isinstance(contracts, dict):
             errors.append(f"{CAPABILITY_PROFILE}: capability_contracts must be a mapping")
         else:
@@ -2649,7 +2651,66 @@ def validate_capability_profile(skill_assets: dict[str, dict], errors: list[str]
                 errors.append(f"{CAPABILITY_PROFILE}: test-execution must remain optional")
             if "test-execution" in mappings:
                 errors.append(f"{CAPABILITY_PROFILE}: test-execution must not map to an unevaluated skill")
-    if schema_version in {"1.2", "1.3"}:
+            if schema_version == "1.4":
+                expected_long_running = {
+                    "threshold_seconds": 120,
+                    "always_external_profiles": ["release", "nightly-full"],
+                    "always_external_scopes": ["full-matrix"],
+                    "dispatch_preconditions": [
+                        "tracked-mutations-complete",
+                        "focused-validation-complete",
+                        "clean-immutable-commit",
+                        "exact-command-bounded",
+                    ],
+                    "execution_surface": "separate-external-runtime-task",
+                    "executor_cost_policy": "least-expensive-capable",
+                    "primary_conversation_wait_policy": "no-repeated-polling",
+                    "completion_signal": "one-final-report",
+                    "allowed_write_scope": ["ignored-validation-artifacts"],
+                    "non_passing": [
+                        "timeout",
+                        "interrupted",
+                        "missing-completion-evidence",
+                        "blocked",
+                    ],
+                    "delegation_contract": {
+                        "schema": ".ai/assets/skills/software-development-orchestrator/templates/external-task-delegation.schema.yaml",
+                        "dispatch_template": ".ai/assets/skills/software-development-orchestrator/templates/external-task-dispatch.template.yaml",
+                        "completion_template": ".ai/assets/skills/software-development-orchestrator/templates/external-task-completion.template.yaml",
+                        "validator": ".ai/assets/skills/software-development-orchestrator/scripts/validate-external-task-delegation.py",
+                        "prompt_envelope": [
+                            "BEGIN_EXTERNAL_TASK_DELEGATION",
+                            "END_EXTERNAL_TASK_DELEGATION",
+                        ],
+                        "completion_envelope": [
+                            "BEGIN_EXTERNAL_TASK_COMPLETION",
+                            "END_EXTERNAL_TASK_COMPLETION",
+                        ],
+                        "source_task_identity": "explicit-or-runtime-injected",
+                        "primary_delivery_modes": [
+                            "source-task-callback",
+                            "parent-event-wait",
+                        ],
+                        "fallback_delivery_modes": [
+                            "parent-event-wait",
+                            "single-terminal-readback",
+                        ],
+                        "parent_wait_timeout_state": "pending-awaiting-completion",
+                    },
+                    "parallelization_requires": [
+                        "dependency-dag",
+                        "artifact-isolation",
+                        "bounded-concurrency",
+                        "deterministic-evidence",
+                        "fail-closed-cancellation",
+                    ],
+                }
+                if test_execution.get("long_running") != expected_long_running:
+                    errors.append(
+                        f"{CAPABILITY_PROFILE}: test-execution.long_running must match "
+                        "the v1.4 external-task delegation contract"
+                    )
+    if schema_version in {"1.2", "1.3", "1.4"}:
         expected_orchestration = {
             "activation": {
                 "intent_class": "high-level-multi-stage-software-development",
@@ -2699,7 +2760,7 @@ def validate_capability_profile(skill_assets: dict[str, dict], errors: list[str]
                 "branch-and-handoff",
             ],
         }
-        if schema_version == "1.3":
+        if schema_version in {"1.3", "1.4"}:
             expected_orchestration["routine_validation"] = {
                 "authority": ".dev/project-config.yaml#validation.routine",
                 "local_default": "manual",
