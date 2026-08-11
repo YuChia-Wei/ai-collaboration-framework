@@ -8,10 +8,10 @@
 - `branch`: `codex/2026-08-12-v0-13-release-readiness`
 - `base_branch`: `main`
 - `status`: `in_progress`
-- `current_phase`: `external-completion-hardening`
+- `current_phase`: `release-candidate-preparation`
 - `artifact_root`: `.dev/workflows/2026-08-12-v0-13-release-readiness`
 - `created_at`: `2026-08-12T07:20:06+08:00`
-- `updated_at`: `2026-08-12T07:20:06+08:00`
+- `updated_at`: `2026-08-12T07:31:00+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md`
 - `template_version`: `1.2.0`
 
@@ -49,17 +49,17 @@
 ## Stages And Checkpoints
 
 1. Freeze `main@afd54f63db51d88bb573e758535ae9692f8aa61a`, live Issue/Project state, and the completed #187/#191/#192/#193 implementation evidence. `completed`
-2. Require delegated tasks to validate the complete terminal envelope before source-task delivery, then prove it with a real callback. `in_progress`
-3. Reconcile and close #187/#194 when their integration acceptance is satisfied. `pending`
-4. Instantiate and validate the exact v0.13 candidate, including notes, one-source upgrade policy, provider reconciliation, and real archive user-view evidence. `pending`
+2. Require delegated tasks to validate the complete terminal envelope before source-task delivery, then prove it with a real callback. `completed`
+3. Reconcile and close #187/#194 when their integration acceptance is satisfied. `in_progress`
+4. Instantiate and validate the exact v0.13 candidate, including notes, one-source upgrade policy, provider reconciliation, and real archive user-view evidence. `in_progress`
 5. Close #193, retain #61 as release coordination, push the branch, pass hosted checks, and merge with the selected topology. `pending`
 6. On the final clean integrated `main`, pass provider preflight and pre-tag preparation, then hand the printed annotated-tag command to the owner without executing it. `pending`
 
 ## Resume Checkpoint
 
-- Last completed action: created the dedicated branch from clean synchronized `main@afd54f63db51d88bb573e758535ae9692f8aa61a` and reconciled that #187 is already implemented, independently verified by `ASM-20260811-002`, and integrated.
-- Current task: `VAL005-002`.
-- Exact next action: implement mandatory pre-send completion-envelope validation and focused contract coverage, then run one real callback regression bound to a clean immutable commit.
+- Last completed action: schema 1.1 and its focused validators passed; delegated task `019ff328-1490-7cb3-87d1-13b3e246cbf9` delivered one complete callback after validating the persisted dispatch/completion pair on clean commit `14911780b0b78364ba454c9999e237ed9038f5a9`; the source task independently accepted the same pair.
+- Current task: `REL013-001`.
+- Exact next action: reconcile #187/#194 online, instantiate the v0.13 release source files, and build the real governed candidate archives for #193 user-view review.
 - Validation already available: PR #195 passed five hosted checks; `ASM-20260811-002` found all #187 findings addressed; `ASM-20260811-006` found no new #193 blocking finding but correctly deferred the real candidate review.
 - Blockers: no implementation blocker. Tag creation and publication are intentionally excluded owner actions.
 
@@ -67,4 +67,5 @@
 
 | Segment | Branch | Base | Checkpoint Type | Commit | Remote / Target | Recorded At | Reason | Resume Branch / Action |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| 1 | `codex/2026-08-12-v0-13-release-readiness` | `main@afd54f63db51d88bb573e758535ae9692f8aa61a` | workflow bootstrap | pending containing commit | local | `2026-08-12T07:20:06+08:00` | Complete #194 hardening and exact v0.13 pre-tag readiness in one release-boundary delivery | Implement `VAL005-002`, then author the candidate |
+| 1 | `codex/2026-08-12-v0-13-release-readiness` | `main@afd54f63db51d88bb573e758535ae9692f8aa61a` | workflow bootstrap | `fed4f2eaa42851fd8a9151586fbdc0c1c86332c7` | local | `2026-08-12T07:20:06+08:00` | Complete #194 hardening and exact v0.13 pre-tag readiness in one release-boundary delivery | Implement `VAL005-002`, then author the candidate |
+| 2 | `codex/2026-08-12-v0-13-release-readiness` | `main@afd54f63db51d88bb573e758535ae9692f8aa61a` | validated #194 checkpoint | `14911780b0b78364ba454c9999e237ed9038f5a9` | local callback regression | `2026-08-12T07:31:00+08:00` | Pin the pre-send contract before the real source-task callback | Reconcile #194 and continue `REL013-001` |

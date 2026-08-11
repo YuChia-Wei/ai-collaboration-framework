@@ -6,9 +6,9 @@
   "task_id": "VAL005-002",
   "workflow_id": "2026-08-12-v0-13-release-readiness",
   "owner_skill": "ai-context-governance",
-  "status": "in_progress",
+  "status": "completed",
   "created_at": "2026-08-12T07:20:06+08:00",
-  "updated_at": "2026-08-12T07:20:06+08:00",
+  "updated_at": "2026-08-12T07:31:00+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-5.6-sol",
   "reasoning_effort": "high",
@@ -46,15 +46,29 @@
       "real fixed-commit callback regression",
       "git diff --check"
     ],
-    "last_completed_step": "Recorded the malformed hosted-check completion envelope as non-passing evidence",
-    "next_action": "Implement and focused-validate the pre-send completion contract"
+    "last_completed_step": "Accepted one real schema 1.1 source-task callback after delegated pre-send validation and independent source-side cross-record validation",
+    "next_action": "Reconcile #194 online and continue REL013-001"
   },
   "results": {
-    "summary": "Pending implementation and real callback verification.",
-    "files_changed": [],
-    "tests_run": [],
-    "finding_status": "in_progress",
-    "residual_risk": "A delegated model can currently omit canonical completion fields even when the dispatch requests the same-contract schema.",
-    "follow_up_needed": true
+    "summary": "Schema 1.1 requires the delegated task to validate the persisted dispatch/completion pair before delivery and bind the callback to the validated record. The real callback regression passed on fixed clean commit 14911780b0b78364ba454c9999e237ed9038f5a9.",
+    "files_changed": [
+      "AGENTS.md",
+      "AGENTS.zh-TW.md",
+      ".dev/standards/WORKFLOW-GATE-POLICY.md",
+      ".ai/assets/skills/software-development-orchestrator/**",
+      ".ai/scripts/validate-ai-context.py",
+      ".dev/workflows/2026-08-12-v0-13-release-readiness/evidence/VAL005-002-external-task-dispatch.yaml",
+      ".dev/workflows/2026-08-12-v0-13-release-readiness/evidence/VAL005-002-external-task-completion.yaml"
+    ],
+    "tests_run": [
+      "external-task delegation contract: 14/14 passed",
+      "orchestrator capability contract: 14/14 passed",
+      "external-task schema-only validator: passed",
+      "AI context validator: passed",
+      "real source-task callback plus independent cross-record validator: passed"
+    ],
+    "finding_status": "resolved",
+    "residual_risk": "A runtime can still violate the contract, but any missing, failed, or drifting pre-send receipt now fails closed instead of being accepted as passing evidence.",
+    "follow_up_needed": false
   }
 }
