@@ -148,6 +148,24 @@ class GovernanceTermRoutingContractTests(unittest.TestCase):
             "validation-phase",
             handoff["release_phase_semantics"]["kind"],
         )
+        release_phase_checks = load_yaml(
+            Path(".dev/releases/v0.12.0/release-phase-checks.yaml")
+        )
+        self.assertEqual(
+            {"candidate", "tag", "publication", "finalization"},
+            set(release_phase_checks["phases"]),
+        )
+        for term_id in (
+            "source-release-validation.candidate-phase",
+            "source-release-validation.tag-phase",
+            "source-release-validation.publication-phase",
+            "source-release-validation.finalization-phase",
+        ):
+            with self.subTest(term_id=term_id):
+                self.assertEqual(
+                    "phases",
+                    terms[term_id]["machine_bindings"][0]["field"],
+                )
 
     def test_gwt_004_given_malformed_term_when_validated_then_registry_fails_closed(self) -> None:
         validator = runpy.run_path(

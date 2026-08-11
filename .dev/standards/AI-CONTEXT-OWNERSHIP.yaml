@@ -253,7 +253,7 @@ governance_term_routing:
       portable_disposition: upstream-only-non-actionable
       machine_bindings:
         - contract: .dev/releases/<version>/release-phase-checks.yaml
-          field: phase
+          field: phases
           literals:
             - candidate
       contextual_shorthand:
@@ -272,7 +272,7 @@ governance_term_routing:
       portable_disposition: upstream-only-non-actionable
       machine_bindings:
         - contract: .dev/releases/<version>/release-phase-checks.yaml
-          field: phase
+          field: phases
           literals:
             - tag
       contextual_shorthand:
@@ -291,7 +291,7 @@ governance_term_routing:
       portable_disposition: upstream-only-non-actionable
       machine_bindings:
         - contract: .dev/releases/<version>/release-phase-checks.yaml
-          field: phase
+          field: phases
           literals:
             - publication
       contextual_shorthand:
@@ -310,7 +310,7 @@ governance_term_routing:
       portable_disposition: upstream-only-non-actionable
       machine_bindings:
         - contract: .dev/releases/<version>/release-phase-checks.yaml
-          field: phase
+          field: phases
           literals:
             - finalization
       contextual_shorthand:
