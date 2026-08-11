@@ -97,7 +97,10 @@ or blocked execution remains non-passing. A parent event-wait timeout is only a
 pending transport state. If callback delivery fails after the delegated task
 has terminated, the parent may perform one terminal read-back and accept the
 report only when it satisfies the completion schema. This recovery does not
-authorize progress polling or relabel an execution failure.
+authorize progress polling or relabel an execution failure. `progress_updates`
+governs messages delivered to the source task; runtime-required commentary that
+stays inside the delegated task is runtime-local and is not a source progress
+callback.
 
 Parallel aggregate execution is a separate implementation decision. It needs
 independent contract coverage for the dependency DAG, artifact isolation,

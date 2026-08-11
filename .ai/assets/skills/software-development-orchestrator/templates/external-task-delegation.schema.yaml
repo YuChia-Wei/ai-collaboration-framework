@@ -95,6 +95,7 @@ completion:
     modes: [source-task-callback, parent-event-wait, single-terminal-readback]
     destination: source-task
     terminal_report_number: 1
+  delegated_task_id: "runtime task ID when exposed; otherwise the stable delegation_id"
 cross_record:
   required_equal:
     - delegation_id
@@ -111,7 +112,8 @@ transport_semantics:
   callback_failure_with_retrievable_terminal_report: recoverable-by-one-terminal-readback
   terminal_task_without_valid_completion_report: non-passing
   repeated_status_polling: prohibited
-  progress_narration: prohibited
+  source_task_progress_delivery: terminal-only
+  runtime_local_progress: runtime-policy-owned-and-not-source-delivery
 security:
   secret_values_in_envelope: prohibited
   issue_project_merge_release_or_publication_mutation: separately-authorized-only

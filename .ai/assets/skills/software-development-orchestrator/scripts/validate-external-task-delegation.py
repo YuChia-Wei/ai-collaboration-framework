@@ -127,6 +127,13 @@ def validate_schema_definition(schema: dict[str, Any]) -> list[str]:
         errors.append("schema callback recovery must permit one terminal readback")
     if transport_semantics.get("repeated_status_polling") != "prohibited":
         errors.append("schema repeated status polling must be prohibited")
+    if transport_semantics.get("source_task_progress_delivery") != "terminal-only":
+        errors.append("schema source-task progress delivery must remain terminal-only")
+    if (
+        transport_semantics.get("runtime_local_progress")
+        != "runtime-policy-owned-and-not-source-delivery"
+    ):
+        errors.append("schema runtime-local progress ownership is invalid")
     return errors
 
 

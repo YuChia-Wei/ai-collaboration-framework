@@ -142,6 +142,10 @@ class ExternalTaskDelegationContractTests(unittest.TestCase):
             "BEGIN_EXTERNAL_TASK_COMPLETION",
             SCHEMA["completion_transport"]["begin_marker"],
         )
+        self.assertEqual(
+            "runtime-policy-owned-and-not-source-delivery",
+            SCHEMA["transport_semantics"]["runtime_local_progress"],
+        )
 
     def test_gwt_002_given_one_marked_prompt_when_parsed_then_dispatch_is_valid(self) -> None:
         record = valid_dispatch()

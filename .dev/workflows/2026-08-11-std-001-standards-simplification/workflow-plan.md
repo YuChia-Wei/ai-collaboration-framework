@@ -15,11 +15,11 @@
 - `branch`: `codex/2026-08-11-std-001-pkg-navigation-closure`
 - `base_branch`: `main`
 - `branch_segment`: `4`
-- `status`: `in_progress`
-- `current_phase`: `integration-fix`
+- `status`: `completed`
+- `current_phase`: `completed`
 - `artifact_root`: `.dev/workflows/2026-08-11-std-001-standards-simplification`
 - `created_at`: `2026-08-11T13:31:10+08:00`
-- `updated_at`: `2026-08-12T01:03:48+08:00`
+- `updated_at`: `2026-08-12T01:14:01+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md`
 - `template_version`: `1.2.0`
 
@@ -64,16 +64,16 @@
 3. Complete R3 terminology ownership and definition-placement inventory. `completed`
 4. Build and review the controlled current-tree package projection, then finalize the decision ledger. `completed-with-v0.13-fail-closed-limitation`
 5. Present bounded delivery scopes for owner confirmation and create the approved successor Issues. `completed`
-6. Coordinate separately authorized successor deliveries and the final governed v0.13 package-candidate review. `in_progress`
-7. Codify #194, finish focused validation, and adopt schema-bound non-polling external execution for future long-running gates. `in_progress-cross-task-smoke`
+6. Coordinate separately authorized successor deliveries and the final governed v0.13 package-candidate review. `completed-with-v0.13-owner-deferral`
+7. Codify #194, finish focused validation, and adopt schema-bound non-polling external execution for future long-running gates. `completed`
 
 ## Resume Checkpoint
 
-- Last completed action: Added the schema-bound dispatch/completion envelopes, validator, focused 11-test regression, callback/event-wait recovery semantics, and capability-profile 1.4 validator repair after the first hosted run failed on the stale 1.0-1.3 allowlist.
-- Current task: `VAL005-001`.
-- Exact next action: commit the fixed subject, dispatch one real schema-valid cross-task regression with a source-task callback and one event-wait fallback, record its terminal receipt, then push PR #195 and use hosted checks as the merge gate.
+- Last completed action: Pinned commit `1a5fa40378594c3622eaabb7f7bd57a30fcf416b` passed the live schema-only regression in external task `019ff1cb-fd3f-7f92-8c75-eaebda9bc91c` and delivered exactly one schema-valid terminal callback to source task `019fee2e-80d3-72b1-9f34-f368c06126bc`; the dispatch and completion records are retained under `evidence/`.
+- Current task: none; all workflow-owned tasks are terminal, with the real v0.13 candidate review explicitly deferred to its owner condition.
+- Exact next action: the source owner pushes PR #195, delegates the hosted-check wait without polling this task, and merges only if the final remote head is fully green. Workflow completion does not claim PR integration, Issue closure, a v0.13 candidate, release, or publication.
 - Validation already completed: #191 is independently verified by `ASM-20260811-004`; #192 by `ASM-20260811-005`; #193 selected-payload, version, packaging, archive/apply, routing, and aggregate gates passed and `ASM-20260811-006` found no new blocking finding. Integration-gate attempts at `ccca869` preserved the earlier 52/54 regression receipt and the later 51/54 timeout receipt; all three timed-out commands pass independently, `ac54e78` raises only those registry budgets from 30 to 60 seconds, and the owner accepted that composite evidence for this integration. #194 focused capability tests passed 14/14 and deterministic acceptance passed 3/3.
-- Git state: current branch `codex/2026-08-11-std-001-pkg-navigation-closure@5bfb3e3`; PR #195 is open and blocked only by the three hosted checks caused by the stale capability-profile schema allowlist. The authorized fix is ready for a clean immutable checkpoint.
+- Git state: current branch contains fix checkpoint `1a5fa40378594c3622eaabb7f7bd57a30fcf416b` plus the containing workflow completion commit; PR #195 remains open and requires a new push so hosted checks evaluate the fixed head.
 - Branch history and checkpoint handoffs: integration is authorized but not yet transported. The normal handoff schema can represent only one exact passing `check-all.sh --critical` execution, so it cannot truthfully encode this owner-approved composite evidence. Under the owner's explicit higher-priority instruction, this workflow plan records the transport exception instead of fabricating a 54/54 command receipt. Hosted PR checks remain mandatory external evidence.
 - Blockers or unresolved decisions: the critical handoff checkpoint and hosted PR checks must pass before integration. No governed v0.13 release record or real candidate exists yet; #193/#61 closeout, Project state, tag, Release, and publication remain separately gated.
 
@@ -87,3 +87,4 @@
 | 3 | `codex/2026-08-11-std-001-r3-governance-terms` | `codex/2026-08-11-std-001-standards-simplification@088fee7` | local verified implementation | `92e7383` | local | `2026-08-11T21:40:15+08:00` | Preserve the completed #192 governance-term delivery and independent `ASM-20260811-005` evidence without merging its rollback unit | Start #193 from the updated coordination branch; use a validation-only combined view for #191/#192 package closure |
 | 4 | `codex/2026-08-11-std-001-pkg-navigation-closure` | `codex/2026-08-11-std-001-combined-validation@b1aacf8` | local verified implementation | `ff80d590`, `cef711a`, `fe969d3` | local | `2026-08-11T22:45:54+08:00` | Preserve selected-payload/component closure, bounded upgrade-test policy, and independent `ASM-20260811-006` evidence without claiming integration | Create the required incomplete-workflow handoff, then open the owner-authorized integration PR to `main` |
 | 4 | `codex/2026-08-11-std-001-pkg-navigation-closure` | `main@df7012b6` | owner-approved composite integration transport | `ccca869`, `ac54e78`, `735ed82` | local, PR pending | `2026-08-12T00:22:08+08:00` | Preserve the 51/54 aggregate timeout receipt, three independent passing commands, timeout calibration, and #194 no-polling rule without falsely claiming one 54/54 command | Push and open one PR; external hosted checks gate merge, eligible Issue closure, and branch cleanup |
+| 4 | `codex/2026-08-11-std-001-pkg-navigation-closure` | `main@df7012b6` | external-task contract and live callback checkpoint | `1a5fa40378594c3622eaabb7f7bd57a30fcf416b`, plus containing workflow completion commit | local, PR pending | `2026-08-12T01:14:01+08:00` | Repair capability-profile 1.4 validation, bind dispatch/completion envelopes, and preserve the successful source-task callback receipt | Push the final head; delegate one terminal hosted-check report; merge only after all checks pass |

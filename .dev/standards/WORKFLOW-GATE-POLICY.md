@@ -309,8 +309,10 @@ is automatically routed to its source.
 Select either a source-task callback or one parent event wait as the primary
 completion path. The callback must target the source task. The event wait
 subscribes once to the delegated task and wakes on terminal or attention state;
-it is not repeated polling. Progress callbacks, repeated waits, status probes,
-and progress narration remain prohibited. The external task returns exactly one
+it is not repeated polling. Progress callbacks into the source task, repeated
+waits, status probes, and source-side progress narration remain prohibited;
+runtime-required commentary confined to the delegated task is not a callback.
+The external task returns exactly one
 completion report conforming to the same schema and containing:
 
 - immutable commit SHA and clean-state preflight;

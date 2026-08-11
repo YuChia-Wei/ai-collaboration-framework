@@ -6,9 +6,9 @@
   "task_id": "VAL005-001",
   "workflow_id": "2026-08-11-std-001-standards-simplification",
   "owner_skill": "ai-context-governance",
-  "status": "in_progress",
+  "status": "completed",
   "created_at": "2026-08-12T00:15:37+08:00",
-  "updated_at": "2026-08-12T01:03:48+08:00",
+  "updated_at": "2026-08-12T01:14:01+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-5.6-sol",
   "reasoning_effort": "high",
@@ -30,6 +30,7 @@
       "Use the least expensive capable external task and prohibit primary-conversation polling",
       "Require schema-valid dispatch and completion envelopes with an explicit or runtime-injected source-task identity",
       "Allow a source-task callback or one parent event wait, with one terminal read-back only after callback transport failure",
+      "Apply terminal-only progress delivery to the source task while leaving runtime-local commentary to the delegated runtime",
       "Keep execution timeout, interruption, subject drift, missing terminal evidence, and blocked execution non-passing while treating parent wait timeout as pending",
       "Do not enable parallel aggregate execution without dependency and artifact-isolation contract evidence"
     ],
@@ -48,7 +49,7 @@
       "Add deterministic contract coverage and run focused validators",
       "Commit a clean immutable checkpoint",
       "Dispatch one focused regression command with the canonical prompt envelope and verify one callback or event-wait terminal report",
-      "Push the fixed branch and use hosted checks as the merge gate"
+      "Hand the fixed branch back to the source owner for the separately governed hosted PR integration gate"
     ],
     "validation": [
       "python .ai/assets/skills/software-development-orchestrator/scripts/tests/test_software_development_orchestrator_capability_contract.py -v",
@@ -59,11 +60,11 @@
       "python .ai/scripts/validate-ai-context.py",
       "git diff --check"
     ],
-    "last_completed_step": "Implemented and focused-validated the schema-bound dispatch/completion contract, callback/event-wait routes, and capability-profile 1.4 validator repair",
-    "next_action": "Commit the fixed subject, run one real cross-task callback smoke test, record its terminal receipt, then push PR #195"
+    "last_completed_step": "Pinned commit 1a5fa403 completed the live cross-task smoke and delivered exactly one schema-valid terminal callback to the source task",
+    "next_action": "The source owner may push the completed implementation and use hosted PR checks as the independent integration gate"
   },
   "results": {
-    "summary": "The long-running validation rule now uses a machine-valid dispatch/completion envelope, explicit callback or single event-wait delivery, and a bounded terminal-readback fallback without weakening execution failures.",
+    "summary": "The long-running validation rule now uses a machine-valid dispatch/completion envelope, explicit callback or single event-wait delivery, and a bounded terminal-readback fallback; a live fixed-commit smoke proved exactly one terminal callback reached the source task without weakening execution failures.",
     "files_changed": [
       "AGENTS.md",
       "AGENTS.zh-TW.md",
@@ -80,7 +81,9 @@
       ".ai/assets/skills/software-development-orchestrator/scripts/validate-external-task-delegation.py",
       ".ai/assets/skills/software-development-orchestrator/scripts/tests/test_software_development_orchestrator_capability_contract.py",
       ".ai/assets/skills/software-development-orchestrator/scripts/tests/test_external_task_delegation_contract.py",
-      ".ai/scripts/validate-ai-context.py"
+      ".ai/scripts/validate-ai-context.py",
+      ".dev/workflows/2026-08-11-std-001-standards-simplification/evidence/VAL005-001-external-task-dispatch.yaml",
+      ".dev/workflows/2026-08-11-std-001-standards-simplification/evidence/VAL005-001-external-task-completion.yaml"
     ],
     "tests_run": [
       "Stopped primary-conversation release-profile gate: terminated by owner policy change; not passed",
@@ -96,10 +99,15 @@
       "python .ai/scripts/tests/test_ai_context_wrapper_metadata.py -v outside sandbox: passed 16/16",
       "python .ai/scripts/tests/test_ai_context_language_policy.py -v outside sandbox: passed 10/10",
       "python .ai/assets/skills/software-development-orchestrator/scripts/validate-external-task-delegation.py --schema-only: passed",
+      "External task 019ff1cb-fd3f-7f92-8c75-eaebda9bc91c at pinned commit 1a5fa40378594c3622eaabb7f7bd57a30fcf416b: passed in 13.6 seconds and returned one source-task callback",
+      "python .ai/assets/skills/software-development-orchestrator/scripts/validate-external-task-delegation.py completion --dispatch dispatch: passed against the retained smoke receipts",
+      "Post-smoke python .ai/assets/skills/software-development-orchestrator/scripts/tests/test_external_task_delegation_contract.py -v outside sandbox: passed 11/11",
+      "Post-smoke python .ai/assets/skills/software-development-orchestrator/scripts/tests/test_software_development_orchestrator_capability_contract.py -v outside sandbox: passed 14/14",
+      "Post-smoke python .ai/scripts/validate-workflow-artifacts.py: passed",
       "git diff --check: passed"
     ],
-    "finding_status": "addressed-pending-cross-task-smoke-and-integration",
-    "residual_risk": "A real external task still needs to prove source-task terminal delivery against the fixed commit; hosted PR checks remain the merge gate and aggregate parallelization stays disabled.",
-    "follow_up_needed": true
+    "finding_status": "addressed",
+    "residual_risk": "Hosted PR checks remain the separate integration gate, and aggregate parallelization stays disabled until dependency and artifact-isolation safety are proven.",
+    "follow_up_needed": false
   }
 }

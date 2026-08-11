@@ -81,6 +81,9 @@ leaves validation pending; it is not an execution failure. If callback delivery
 fails after a terminal task state is independently visible, one terminal
 read-back is allowed. The read-back is acceptable only when it contains the
 matching schema-valid completion report; it must not become a polling loop.
+The dispatch's `progress_updates` field applies to delivery into the source
+task. Runtime-required commentary that remains inside the delegated task is
+allowed and must not wake or consume the source task as a progress callback.
 
 The delegated task may write only ignored validation artifacts and must not
 repair or broaden scope. It reports exactly one terminal outcome with source
