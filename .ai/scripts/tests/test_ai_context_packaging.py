@@ -927,7 +927,10 @@ class ReleaseWorkflowContractGwtTests(unittest.TestCase):
         # Then PR/manual execution is read-only and cannot publish or mutate tags.
         self.assertEqual({"pull_request", "workflow_dispatch"}, set(triggers))
         self.assertEqual({}, workflow["permissions"])
-        self.assertEqual({"contents": "read"}, jobs["package"]["permissions"])
+        self.assertEqual(
+            {"contents": "read", "issues": "read"},
+            jobs["package"]["permissions"],
+        )
         self.assertIn("actions/upload-artifact@v7", text)
         self.assertNotIn("actions/upload-artifact@v4", text)
         self.assertIn("--migration-source", text)
@@ -956,7 +959,10 @@ class ReleaseWorkflowContractGwtTests(unittest.TestCase):
         # Then only pushed v-tags trigger it and contents:write is isolated to publish.
         self.assertEqual(["v*"], workflow["on"]["push"]["tags"])
         self.assertEqual({}, workflow["permissions"])
-        self.assertEqual({"contents": "read"}, jobs["build"]["permissions"])
+        self.assertEqual(
+            {"contents": "read", "issues": "read"},
+            jobs["build"]["permissions"],
+        )
         self.assertEqual({"contents": "write"}, jobs["publish"]["permissions"])
         self.assertEqual("ai-context-release", jobs["publish"]["environment"])
         self.assertIn(r"^v[0-9]+\.[0-9]+\.[0-9]+$", text)

@@ -8,7 +8,7 @@
   "owner_skill": "ai-context-governance",
   "status": "in_progress",
   "created_at": "2026-08-11T08:21:27+08:00",
-  "updated_at": "2026-08-11T09:14:35+08:00",
+  "updated_at": "2026-08-11T09:44:33+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-5.6-sol",
   "reasoning_effort": "high",
@@ -56,8 +56,8 @@
       "controlled required-check execution with dotnet unavailable from PATH",
       "git diff --check"
     ],
-    "last_completed_step": "Removed framework-owned project and SDK selectors, established recipe-only target guidance, and completed the focused validation matrix",
-    "next_action": "Commit the remediation checkpoint, validate committed package projection, and run the PR profile with dotnet absent from PATH"
+    "last_completed_step": "Committed remediation, validated committed payload and seed projections, and corrected two pre-existing release workflow permission expectations found by the full packaging matrix",
+    "next_action": "Commit the permission-contract follow-up, run the PR profile with dotnet absent from PATH, and rerun the post-fix full packaging matrix"
   },
   "results": {
     "summary": "The source framework now supplies no tracked .NET project or SDK pin, selects no required dotnet command, and preserves mechanical validation only as target-selected reference recipes.",
@@ -89,10 +89,14 @@
       "document projection: 2/2 passed",
       "source dispositions: 8/8 passed",
       "repository identity: 11/11 passed",
+      "committed component-matrix and repository-seed packaging projections: 2/2 passed",
+      "canonical packaging first attempt: timed out at 364 seconds and was retained as failed evidence",
+      "canonical packaging measured rerun: 34 passed, 2 failed, 1 skipped in 891 seconds; failures were pre-existing permission expectations",
+      "corrected release workflow permission cases: 2/2 passed",
       "AI-context, shell-asset, workflow, and assessment validators passed"
     ],
     "finding_status": "partially-addressed",
-    "residual_risk": "Committed package projection, controlled no-dotnet aggregate execution, commit policy, and independent verification remain pending.",
+    "residual_risk": "Post-fix full packaging, controlled no-dotnet aggregate execution, commit policy, and independent verification remain pending.",
     "follow_up_needed": true
   }
 }

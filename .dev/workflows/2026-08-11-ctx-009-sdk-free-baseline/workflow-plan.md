@@ -19,7 +19,7 @@
 - `current_phase`: `validation`
 - `artifact_root`: `.dev/workflows/2026-08-11-ctx-009-sdk-free-baseline`
 - `created_at`: `2026-08-11T08:21:27+08:00`
-- `updated_at`: `2026-08-11T09:14:35+08:00`
+- `updated_at`: `2026-08-11T09:44:33+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md`
 - `template_version`: `1.2.0`
 
@@ -68,16 +68,16 @@
 
 ## Resume Checkpoint
 
-- Last completed action: Removed every tracked .NET project and SDK selector, replaced the bundled provider with reference-only target recipes, and passed the focused SDK-free and fail-closed validation matrix.
+- Last completed action: Committed remediation at `4abb7f1`, passed committed payload and seed projections, and repaired two pre-existing read-only permission expectations exposed by the full packaging matrix.
 - Current task: `CTX009-002`.
-- Exact next action: Commit the remediation checkpoint, then validate committed package projection and run the full PR profile with `dotnet` absent from `PATH`.
-- Validation already completed: SDK-free 5/5; fail-closed 38/38; dependency 17/17 plus live zero-project validation; repository configuration 13/13; registry 6/6; source include 4/4; GitHub workflow 9/9; example 4/4; profile 3/3; document 2/2; source disposition 8/8; repository identity 11/11; AI-context, shell-asset, workflow, and assessment validators.
-- Git state: Dedicated branch `codex/2026-08-11-ctx-009-sdk-free-baseline`; workflow bootstrap committed at `7652e5f1d11054878699046856fce12f0c19e587`; baseline assessment committed at `2e40c69e20f524f5bd91e81b214e6750f1e8fa9e`; remediation checkpoint is staged.
+- Exact next action: Commit the permission-contract follow-up, then run the full PR profile with `dotnet` absent from `PATH` and the post-fix packaging matrix.
+- Validation already completed: Focused matrix from the remediation checkpoint; committed component/seed packaging projections 2/2; canonical packaging first attempt timed out at 364 seconds; measured rerun completed 34 passed, 2 failed, and 1 skipped in 891 seconds; both corrected permission cases reran 2/2 passed.
+- Git state: Dedicated branch `codex/2026-08-11-ctx-009-sdk-free-baseline`; workflow bootstrap `7652e5f1`; baseline assessment `2e40c69e`; remediation `4abb7f1`; permission-contract follow-up is unstaged.
 - Branch history and checkpoint handoffs: Segment 1 is local only; no push, pull request, merge, tag, or publication exists.
-- Blockers or unresolved decisions: None for local #187 execution. Committed package projection, controlled no-`dotnet` aggregate validation, and independent verification remain. Push, pull request, merge, Issue closure, tag, and v0.13.0 publication remain unrequested.
+- Blockers or unresolved decisions: None for local #187 execution. Post-fix full packaging, controlled no-`dotnet` aggregate validation, and independent verification remain. Push, pull request, merge, Issue closure, tag, and v0.13.0 publication remain unrequested.
 
 ## Branch Lifecycle
 
 | Segment | Branch | Base | Checkpoint Type | Commit | Remote / Target | Recorded At | Reason | Resume Branch / Action |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| 1 | `codex/2026-08-11-ctx-009-sdk-free-baseline` | `main@a4fd14f0` | local-active | `7652e5f1`, `2e40c69e` | local | `2026-08-11T09:14:35+08:00` | Authorized #187 SDK-free baseline delivery and frozen baseline evidence | Commit `CTX009-002` remediation, then execute controlled terminal validation |
+| 1 | `codex/2026-08-11-ctx-009-sdk-free-baseline` | `main@a4fd14f0` | local-active | `7652e5f1`, `2e40c69e`, `4abb7f1` | local | `2026-08-11T09:44:33+08:00` | Authorized #187 SDK-free baseline delivery, frozen evidence, and remediation | Commit permission-contract follow-up, then execute controlled terminal validation |

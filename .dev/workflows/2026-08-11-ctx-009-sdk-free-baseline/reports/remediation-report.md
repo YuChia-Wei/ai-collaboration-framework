@@ -14,7 +14,7 @@
 - `owner_skill`: `ai-context-governance`
 - `status`: `draft`
 - `created_at`: `2026-08-11T09:03:09+08:00`
-- `updated_at`: `2026-08-11T09:14:35+08:00`
+- `updated_at`: `2026-08-11T09:44:33+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-remediation-report-template.md`
 - `template_version`: `2.0.0`
 - `baseline_assessment`: `ASM-20260811-001`
@@ -24,18 +24,18 @@
 
 - Authorized scope: Implement GitHub Issue #187 locally for v0.13.0 by removing framework-owned .NET SDK gates and compilable provider payload while preserving canonical engineering semantics as target-selected reference guidance.
 - Completed scope: Required validation and CI selection is Python-only; the bundled provider and root analyzer tests are retired; the SDK seed is removed; source includes are reference-only; on-demand analyzer and projection-test recipes preserve the target-owned adoption path.
-- Validation summary: Focused workflow, registry, source-include, shell-asset, dependency, SDK-free, fail-closed, repository-configuration, example, profile, document, source-disposition, and repository-identity contracts pass. Terminal no-`dotnet`, package-projection, full aggregate, and independent verification evidence remain pending.
+- Validation summary: Focused workflow, registry, source-include, shell-asset, dependency, SDK-free, fail-closed, repository-configuration, example, profile, document, source-disposition, repository-identity, and committed payload/seed projection contracts pass. The canonical packaging matrix first timed out at 364 seconds; a measured rerun completed 34 passed, 2 failed, and 1 skipped in 891 seconds. The two pre-existing permission-expectation failures were corrected and rerun 2/2 passed. Terminal no-`dotnet`, a post-fix full packaging matrix, full aggregate, and independent verification remain pending.
 - Closure decision: `not-ready`
 
 ## Finding Resolution Matrix
 
 | Assessment Finding | Before Severity | Status | Changed Files | Validation | Commit | Residual Risk |
 | --- | --- | --- | --- | --- | --- | --- |
-| `ASM-20260811-001#SDKGATE-001` | high | `partially-resolved` | `.ai/scripts/check-all.sh`, `.ai/scripts/validation-profile-registry.sh`, `.github/workflows/portable-gates.yml` | focused registry and workflow contracts pass | pending | controlled no-`dotnet` aggregate run pending |
-| `ASM-20260811-001#SDKPAYLOAD-001` | high | `partially-resolved` | `.ai/assets/tech-stacks/dotnet-backend/tooling/**`, `.ai/distribution/profiles/dotnet-backend.yaml`, `global.json`, `tools/**` | SDK-free inventory 5/5 passed; dependency validator reports zero managed projects | pending | committed package projection validation pending |
-| `ASM-20260811-001#SDKEVID-001` | high | `resolved` | `.ai/assets/tech-stacks/dotnet-backend/source-includes/evidence-manifest.yaml`, `.ai/scripts/validate-ai-context.py` | 4 source-include evidence tests pass | pending | target compatibility remains target-owned by design |
-| `ASM-20260811-001#SDKPROV-001` | high | `partially-resolved` | `.ai/assets/tech-stacks/dotnet-backend/tooling/on-demand-mechanical-validation/**` | recipe and diagnostic-mapping assertions pass | pending | package projection validation pending after commit |
-| `ASM-20260811-001#SDKDOC-001` | medium | `partially-resolved` | root and dotnet-backend README files, active standards, guides, scripts README, release runbook | AI-context, workflow, and focused contract validation in progress | pending | independent active-reference audit pending |
+| `ASM-20260811-001#SDKGATE-001` | high | `partially-resolved` | `.ai/scripts/check-all.sh`, `.ai/scripts/validation-profile-registry.sh`, `.github/workflows/portable-gates.yml` | focused registry and workflow contracts pass | `4abb7f1` | controlled no-`dotnet` aggregate run pending |
+| `ASM-20260811-001#SDKPAYLOAD-001` | high | `resolved` | `.ai/assets/tech-stacks/dotnet-backend/tooling/**`, `.ai/distribution/profiles/dotnet-backend.yaml`, `global.json`, `tools/**` | SDK-free inventory 5/5, zero managed projects, and committed payload/seed projection pass | `4abb7f1` | none inside the default payload |
+| `ASM-20260811-001#SDKEVID-001` | high | `resolved` | `.ai/assets/tech-stacks/dotnet-backend/source-includes/evidence-manifest.yaml`, `.ai/scripts/validate-ai-context.py` | 4 source-include evidence tests pass | `4abb7f1` | target compatibility remains target-owned by design |
+| `ASM-20260811-001#SDKPROV-001` | high | `resolved` | `.ai/assets/tech-stacks/dotnet-backend/tooling/on-demand-mechanical-validation/**` | recipe, diagnostic mapping, and committed payload assertions pass | `4abb7f1` | independent audit pending |
+| `ASM-20260811-001#SDKDOC-001` | medium | `partially-resolved` | root and dotnet-backend README files, active standards, guides, scripts README, release runbook, packaging permission contract | focused context contracts and repaired permission cases pass | `4abb7f1` plus pending test checkpoint | independent active-reference audit and full post-fix matrix pending |
 
 ## Changes And Evidence
 
@@ -49,9 +49,9 @@
 ### `ASM-20260811-001#SDKPAYLOAD-001`
 
 - Changes: Removed the bundled provider implementation, controlled fixture, root SDK pin, and framework-owned test projects; removed the downstream SDK seed and changed packaging assertions to reject compilable .NET artifacts.
-- Evidence: Staged changes remove the canonical provider project tree and `global.json`; the distribution profile contains no SDK seed.
-- Validation: SDK-free contract 5/5 passed; `git ls-files` returns no `.csproj`, `.sln`, `.slnx`, or `global.json`; the dependency validator reports `managed_projects=0` and `nuget_dependencies=0`.
-- Remaining risk: Committed package projection validation remains pending.
+- Evidence: Commit `4abb7f1` removes the canonical provider project tree and `global.json`; the distribution profile contains no SDK seed.
+- Validation: SDK-free contract 5/5 passed; `git ls-files` returns no `.csproj`, `.sln`, `.slnx`, or `global.json`; the dependency validator reports `managed_projects=0` and `nuget_dependencies=0`; committed component-matrix and repository-seed projections both pass.
+- Remaining risk: None inside the default payload; ignored local `bin`/`obj` output is not tracked or packaged.
 
 ### `ASM-20260811-001#SDKEVID-001`
 
@@ -65,13 +65,13 @@
 - Changes: Replaced provider identity, activation schemas, fixtures, source projects, and materialization language with a non-selecting on-demand recipe manifest, analyzer project recipe, severity snippet, diagnostic mapping, and projection-registration recipe.
 - Evidence: The recipe declares `reference-only`, `not-selected`, no SDK, no provider activation, and explicit target ownership of dependencies, wiring, severity, tests, CI, compatibility, and evidence.
 - Validation: Recipe-only and DBA1001-DBA1017 mapping assertions pass.
-- Remaining risk: Independent audit and committed package projection remain pending.
+- Remaining risk: Independent audit remains pending.
 
 ### `ASM-20260811-001#SDKDOC-001`
 
 - Changes: Reconciled repository entry docs, dotnet-backend indexes, active standards, spec-compliance templates, persistence guidance, dependency policy, scripts guidance, pull-request guidance, and publication prerequisites with the SDK-free boundary.
 - Evidence: Active guidance distinguishes framework reference semantics from target-selected implementation and target-owned validation.
-- Validation: AI-context validation and shell-asset validation pass; focused contract and link-sensitive package tests remain in the terminal matrix.
+- Validation: AI-context and shell-asset validation pass. The canonical packaging matrix completed 34 passed, 2 failed, and 1 skipped after an earlier 364-second timeout; both failures were baseline permission expectations that omitted the already-governed `issues: read` permission. The two corrected cases reran 2/2 passed; a full post-fix matrix remains pending.
 - Remaining risk: Independent auditor must confirm there is no active contradictory selection surface.
 
 ## Verification Assessment Reconciliation
@@ -89,7 +89,7 @@
 
 ## Closure Evidence
 
-- Required validations: focused checks complete; package projection, full aggregate PR profile without `dotnet`, commit policy, and independent verification pending.
-- Commit status: remediation changes are staged but uncommitted.
+- Required validations: focused checks and committed package projection complete; post-fix full packaging matrix, full aggregate PR profile without `dotnet`, commit policy, and independent verification pending.
+- Commit status: remediation committed at `4abb7f1`; permission-contract follow-up is pending commit.
 - Workflow/task status: `CTX009-002` in progress; `CTX009-003` pending.
-- Final next action: Commit the remediation checkpoint, validate the committed package projection, and run the full PR profile with `dotnet` absent from `PATH`.
+- Final next action: Commit the permission-contract follow-up, run the full PR profile with `dotnet` absent from `PATH`, and complete post-fix packaging plus independent verification.

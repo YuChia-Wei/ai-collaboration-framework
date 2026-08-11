@@ -8,7 +8,7 @@ task-level progress.
 
 | Workflow | Title | Owner | Status | Updated | Entry Point |
 | --- | --- | --- | --- | --- | --- |
-| [`2026-08-11-ctx-009-sdk-free-baseline`](2026-08-11-ctx-009-sdk-free-baseline/workflow.yaml) | Establish The v0.13 SDK-Free Framework Baseline | `ai-context-governance` | `in_progress` | `2026-08-11T09:14:35+08:00` | [plan](2026-08-11-ctx-009-sdk-free-baseline/workflow-plan.md) |
+| [`2026-08-11-ctx-009-sdk-free-baseline`](2026-08-11-ctx-009-sdk-free-baseline/workflow.yaml) | Establish The v0.13 SDK-Free Framework Baseline | `ai-context-governance` | `in_progress` | `2026-08-11T09:44:33+08:00` | [plan](2026-08-11-ctx-009-sdk-free-baseline/workflow-plan.md) |
 | [`2026-08-11-v0-12-release-readiness`](2026-08-11-v0-12-release-readiness/workflow.yaml) | v0.12 Source Disposition And Terminal Release Readiness | `ai-context-governance` | `completed` | `2026-08-11T01:48:35+08:00` | [plan](2026-08-11-v0-12-release-readiness/workflow-plan.md) |
 | [`2026-08-10-package-identity-consolidation`](2026-08-10-package-identity-consolidation/workflow.yaml) | Inventory Distribution Artifacts And Consolidate Product Identities | `ai-context-governance` | `completed` | `2026-08-10T23:04:31+08:00` | [plan](2026-08-10-package-identity-consolidation/workflow-plan.md) |
 | [`2026-08-10-immutable-history-validation`](2026-08-10-immutable-history-validation/workflow.yaml) | Layer Immutable .dev History Validation Without Weakening Evidence Integrity | `ai-context-governance` | `completed` | `2026-08-10T08:31:18+08:00` | [plan](2026-08-10-immutable-history-validation/workflow-plan.md) |
