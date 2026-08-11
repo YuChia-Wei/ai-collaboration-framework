@@ -11,7 +11,7 @@ ordering:
   array_contents: "retain declared source order"
 catalog_digest:
   algorithm: "sha256"
-  value: "8f42b3c6764bf5c3b86973bacd9ca58aa8deb2b1c9b8d51917a2d9ec04bbc309"
+  value: "707be51872083030f8b32b8f96754005cd5f09284f0c38a4d522e393de1d6aa9"
   canonicalization: "UTF-8 encoding of compact JSON with Unicode preserved, object keys sorted by Unicode code point, array order preserved, and exactly one terminal LF; the complete catalog_digest field is excluded from the input."
 selector_contract:
   capability_execution_mode_file_type: "unconstrained-by-source with an empty values list means no narrower source-backed predicate is declared; a resolver must not invent one or use it as a default fallback."
@@ -52,8 +52,8 @@ rules:
     decision_evidence: ["target Aggregate architecture or persistence profile"]
     derived_consumers: [".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/aggregate-standards.md", ".ai/assets/tech-stacks/dotnet-backend/references/BUILDING-BLOCKS-CLASS-INDEX.MD", ".ai/assets/tech-stacks/dotnet-backend/references/CODE-REVIEW-INDEX.MD"]
     status: "active"
-    source_file_sha256: "645254b41b160563bcfa9af2d4049dc4d1eb5183108961babbeda78357343128"
-    normative_text_sha256: "f509cf33e25f9d70f237dceb3d2a8b4f75bf86369a26695332ee3d2d3be13242"
+    source_file_sha256: "9844e261741fd6fcdf8c0489516c2b4be8ad8bb8074463c7e35942631c2dabd9"
+    normative_text_sha256: "262144bbec5431033e252c4c128025a5563f13f2d6c5610e86d51f7c19b4e4a3"
     normative_text: |
       ## Optional `EsAggregateRoot<TId>` Behavior Contract
 
@@ -105,10 +105,10 @@ rules:
       ```
 
       The repository-owned source include is under
-      [`source-includes/domain/`](../source-includes/domain/). Its behavior is compiled
-      and tested by
-      [`tools/DotnetBackendBuildingBlocks.Tests`](../../../../../tools/DotnetBackendBuildingBlocks.Tests/).
-      It is not a published package or complete reference product.
+      [`source-includes/domain/`](../source-includes/domain/). It is reference-only
+      framework material, not a published package or complete reference product. An
+      adopting target owns SDK compatibility, compilation, behavior tests, invocation
+      evidence, and upgrade reconciliation before claiming executable validation.
   - rule_id: "ARCH-UOW-001"
     kind: "normative-rule"
     semantic_owner:
@@ -311,7 +311,7 @@ rules:
     decision_evidence: [".dev/project-config.yaml architecture capability selection", "target repository requirements or architecture decision"]
     derived_consumers: [".ai/assets/tech-stacks/dotnet-backend/shared/common-rules.md"]
     status: "active"
-    source_file_sha256: "785580c7140811141c1bc76e37528ec21692c9efee28e149b833e394483465ab"
+    source_file_sha256: "04763da8d53e4a5921c82d216f4143676d7881350d9e87a39ffb950b45859bc0"
     normative_text_sha256: "5e5370bef9fae1d46a6df8518ab380422368a25d7bb0ca00affc1af3f726cfa7"
     normative_text: |
       ### 0. Soft-Delete Default Profile
@@ -430,7 +430,7 @@ rules:
     decision_evidence: ["target repository project configuration or architecture decision"]
     derived_consumers: [".ai/assets/tech-stacks/dotnet-backend/shared/architecture-config.md", ".ai/assets/tech-stacks/dotnet-backend/shared/common-rules.md"]
     status: "active"
-    source_file_sha256: "eb182d693ef14c4c2b098c7ba838cd73b219594659e068792787b8e0de7db10a"
+    source_file_sha256: "3d1af94d97205dd05e3d8e832c9f222a16e29c8660cb7d59e98ed5043664c904"
     normative_text_sha256: "128cc7e3a4315baa4ac69fbc944e11297eaaedef745de742350ebe522130f69c"
     normative_text: |
       ### Workload Mapping
@@ -827,7 +827,7 @@ unpacketized_documents:
       path: ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/projection-standards.md"
     migration_provenance:
       legacy_path: ".dev/standards/coding-standards/projection-standards.md"
-    source_file_sha256: "94e25f0f3707197b94d8bb3d42d9bacf96b8a1f34d2aaa41ae1391b7321ff271"
+    source_file_sha256: "e7016eba7ae63efa4c279f2e4288f12aa26f2d7a377bcd13a9c4a93f62a3d907"
     packet_state: "identity-allocation-required"
     resolver_disposition: "unpacketized-fail-closed"
     reason: "The migration matrix classifies this as profile-baseline-rule, but no registered stable rule_id exists. Do not derive a path-based ID or packet it."
@@ -843,7 +843,7 @@ unpacketized_documents:
       path: ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/repository-standards.md"
     migration_provenance:
       legacy_path: ".dev/standards/coding-standards/repository-standards.md"
-    source_file_sha256: "7b2f6cb2f4009075cc09c77d403bf3014d465fb2d7407acf2d26ca1e75b4b7b4"
+    source_file_sha256: "27c9b257b344271f4a0aeb7ad5fdd27340f020d4cfae795138e90dce1f38a65a"
     packet_state: "identity-allocation-required"
     resolver_disposition: "unpacketized-fail-closed"
     reason: "The migration matrix classifies this as profile-baseline-rule, but no registered stable rule_id exists. Do not derive a path-based ID or packet it."

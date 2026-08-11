@@ -13,18 +13,6 @@ from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parents[3]
 VALIDATOR_PATH = REPO_ROOT / ".ai/scripts/validate-dependency-versions.py"
-PROVIDER_ROOT_PROJECT = (
-    ".ai/assets/tech-stacks/dotnet-backend/tooling/"
-    "bundled-mechanical-validation/ProviderRoot.csproj"
-)
-PROVIDER_FIXTURE_PROJECT = (
-    ".ai/assets/tech-stacks/dotnet-backend/tooling/"
-    "bundled-mechanical-validation/fixtures/controlled/Fixture.csproj"
-)
-PROVIDER_TEST_PROJECT = (
-    ".ai/assets/tech-stacks/dotnet-backend/tooling/"
-    "bundled-mechanical-validation/tests/ProviderTests.csproj"
-)
 
 
 class DependencyVersionConsistencyTests(unittest.TestCase):
@@ -40,7 +28,7 @@ class DependencyVersionConsistencyTests(unittest.TestCase):
         workflow_python_versions: tuple[str, ...] = ("3.11",),
         workflow_steps: str | None = None,
         projects: dict[str, str] | None = None,
-        sdk_version: str = "10.0.100",
+        sdk_version: str | None = "10.0.100",
     ) -> None:
         if source:
             self.write(
@@ -81,8 +69,14 @@ class DependencyVersionConsistencyTests(unittest.TestCase):
                 ),
             )
 
-        self.write(root, "global.json", '{"sdk":{"version":"' + sdk_version + '"}}\n')
-        for relative_path, content in (projects or {"tools/App/App.csproj": self.csproj()}).items():
+        if sdk_version is not None:
+            self.write(root, "global.json", '{"sdk":{"version":"' + sdk_version + '"}}\n')
+        selected_projects = (
+            projects
+            if projects is not None
+            else {"tools/App/App.csproj": self.csproj()}
+        )
+        for relative_path, content in selected_projects.items():
             self.write(root, relative_path, content)
 
     @staticmethod
@@ -295,52 +289,14 @@ class DependencyVersionConsistencyTests(unittest.TestCase):
             self.assert_validation_failure(result, "prerequisite_exit_code 2 is reserved for")
             self.assertIn("path does not exist in source root", result.stdout + result.stderr)
 
-    def test_gwt_016_given_root_level_provider_project_version_drift_when_validated_then_it_fails_closed(self) -> None:
-        # Given the provider production root itself and tools root disagree on one package version.
-        references_v1 = '  <ItemGroup><PackageReference Include="MediatR" Version="12.2.0" /></ItemGroup>\n'
-        references_v2 = '  <ItemGroup><PackageReference Include="MediatR" Version="12.3.0" /></ItemGroup>\n'
-        result = self.validate_fixture(
-            projects={
-                "tools/App/App.csproj": self.csproj(references=references_v1),
-                PROVIDER_ROOT_PROJECT: self.csproj(references=references_v2),
-            }
-        )
+    def test_gwt_016_given_sdk_free_source_without_managed_projects_when_validated_then_it_passes(self) -> None:
+        result = self.validate_fixture(projects={}, sdk_version=None)
 
-        # When dependency scanning runs, then root-level provider production is included.
-        self.assert_validation_failure(
-            result,
-            "PackageReference mediatr resolves to conflicting versions",
-        )
-
-    def test_gwt_017_given_provider_fixture_project_when_validated_then_it_is_not_scanned(self) -> None:
-        # Given a fixture under the canonical provider root declares an invalid PackageReference.
-        result = self.validate_fixture(
-            projects={
-                "tools/App/App.csproj": self.csproj(),
-                PROVIDER_FIXTURE_PROJECT: self.csproj(
-                    references='  <ItemGroup><PackageReference Include="MediatR" /></ItemGroup>\n'
-                ),
-            }
-        )
-
-        # When dependency scanning runs, then fixture-only projects are excluded.
         self.assertEqual(0, result.returncode, result.stdout + result.stderr)
+        self.assertIn("managed_projects=0", result.stdout)
+        self.assertIn("nuget_dependencies=0", result.stdout)
 
-    def test_gwt_018_given_provider_test_project_when_validated_then_it_is_not_scanned(self) -> None:
-        # Given a provider-owned test project declares an invalid PackageReference.
-        result = self.validate_fixture(
-            projects={
-                "tools/App/App.csproj": self.csproj(),
-                PROVIDER_TEST_PROJECT: self.csproj(
-                    references='  <ItemGroup><PackageReference Include="MediatR" /></ItemGroup>\n'
-                ),
-            }
-        )
-
-        # When dependency scanning runs, then test-only projects are excluded.
-        self.assertEqual(0, result.returncode, result.stdout + result.stderr)
-
-    def test_gwt_019_given_unrelated_ai_project_when_validated_then_it_is_not_scanned(self) -> None:
+    def test_gwt_017_given_unrelated_ai_project_when_validated_then_it_is_not_scanned(self) -> None:
         # Given an unrelated .ai asset declares an invalid PackageReference outside both scan roots.
         result = self.validate_fixture(
             projects={

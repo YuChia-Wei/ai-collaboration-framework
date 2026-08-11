@@ -13,15 +13,14 @@ that a binding enforces.
 A .NET technology binding references an existing `constraint_id` and
 `capability_id`, then records the selected profile, provider identity, and any
 Diagnostic, package, command, or configuration details needed to enforce that
-constraint. A Roslyn analyzer and a runtime/configuration validator are
-separate capabilities even when distributed by the same bundled provider.
+constraint. A Roslyn analyzer and a runtime/configuration test are separate
+capabilities even when one target elects to create both from related recipes.
 
 The binding does not replace the referenced concept, rule, or constraint. A
 Diagnostic ID, analyzer project, provider path, package version, `.slnx`,
 `Directory.Build.props`, `.editorconfig`, or target package reference is not a
 normative semantic owner. Those target files remain target-owned and can only
-be selected, tuned, or changed through explicit target evidence and activation
-records.
+be selected, tuned, or changed through explicit target decisions and evidence.
 
 ## Consumption Boundary
 

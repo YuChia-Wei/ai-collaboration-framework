@@ -1093,33 +1093,18 @@ source_release_context_available() {
         [ -f "$PROJECT_ROOT/.ai/scripts/ai_context_package.py" ]
 }
 
-run_source_repository_dotnet_framework_tests() {
-    if ! check_is_selected "Dotnet Backend Analyzer Template Tests"; then
+run_source_repository_sdk_free_contract() {
+    if ! check_is_selected "SDK-Free Framework Contract"; then
         return
     fi
     if ! source_release_context_available; then
-        echo -e "${CYAN}ℹ${NC} NOT APPLICABLE: Dotnet Backend Analyzer Template Tests (source framework tests not packaged)"
-        echo -e "${CYAN}ℹ${NC} NOT APPLICABLE: Dotnet Backend Configuration Validation Tests (source framework tests not packaged)"
-        echo -e "${CYAN}ℹ${NC} NOT APPLICABLE: Dotnet Backend BuildingBlocks Behavior Tests (source framework tests not packaged)"
-        echo -e "${CYAN}ℹ${NC} NOT APPLICABLE: Bundled Mechanical Validation Provider Activation Tests (source framework tests not packaged)"
-        NOT_APPLICABLE=$((NOT_APPLICABLE + 4))
+        echo -e "${CYAN}ℹ${NC} NOT APPLICABLE: SDK-Free Framework Contract (source framework test not packaged)"
+        NOT_APPLICABLE=$((NOT_APPLICABLE + 1))
         return
     fi
 
-    run_command_check "dotnet test tools/DotnetBackendAnalyzers.Tests/DotnetBackendAnalyzers.Tests.csproj" \
-        "Dotnet Backend Analyzer Template Tests" \
-        "required" "true" "true"
-
-    run_command_check "dotnet test tools/DotnetBackendValidation.Tests/DotnetBackendValidation.Tests.csproj" \
-        "Dotnet Backend Configuration Validation Tests" \
-        "required" "true" "true"
-
-    run_command_check "dotnet test tools/DotnetBackendBuildingBlocks.Tests/DotnetBackendBuildingBlocks.Tests.csproj" \
-        "Dotnet Backend BuildingBlocks Behavior Tests" \
-        "required" "true" "true"
-
-    run_command_check "python .ai/assets/tech-stacks/dotnet-backend/tooling/bundled-mechanical-validation/tests/test_provider_activation_evaluator.py -v" \
-        "Bundled Mechanical Validation Provider Activation Tests" \
+    run_command_check "python .ai/scripts/tests/test_sdk_free_framework_contract.py -v" \
+        "SDK-Free Framework Contract" \
         "required" "true" "true"
 }
 
@@ -1437,10 +1422,10 @@ run_check "check-coding-standards.sh" \
     "Coding Standards Structural Integrity" \
     "required" "true" "true"
 
-run_source_repository_dotnet_framework_tests
+run_source_repository_sdk_free_contract
 
-# Repository source validation is covered by DBA1001 in analyzer tests.
-# Mapper source validation is covered by DBA1007-DBA1008 in analyzer tests.
+# Optional target analyzers and configuration tests are target-selected and are
+# never framework-owned required checks.
 
 # ====================================================================
 # Important Checks (run in full and quick modes)

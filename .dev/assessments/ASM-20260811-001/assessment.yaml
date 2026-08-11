@@ -1,0 +1,47 @@
+schema_version: "1.0"
+assessment_id: "ASM-20260811-001"
+commit_search_id: "ASM-20260811-001"
+assessment_type: "ai-context-audit"
+title: "v0.13 Framework-Owned .NET SDK Dependency Baseline"
+owner_skill: "ai-context-auditor"
+status: "final"
+report: "report.md"
+artifact_branch: "codex/2026-08-11-ctx-009-sdk-free-baseline"
+base_branch: "main"
+created_at: "2026-08-11T08:33:55+08:00"
+updated_at: "2026-08-11T08:33:55+08:00"
+template_source: ".dev/assessments/templates/assessment-locator-template.yaml"
+template_version: "1.0.0"
+report_template_source: ".ai/assets/skills/ai-context-auditor/templates/ai-context-audit-report-template.md"
+report_template_version: "2.1.0"
+subject_ref:
+  repository: "YuChia-Wei/ai-collaboration-framework"
+  branch: "codex/2026-08-11-ctx-009-sdk-free-baseline"
+  commit: "7652e5f1d11054878699046856fce12f0c19e587"
+scope:
+  included:
+    - "active framework-owned .NET SDK, project, package, and command selection"
+    - ".ai/scripts aggregate runner, validation registry, shell registry, and active contract tests"
+    - ".github portable gates and target-facing pull-request guidance"
+    - ".ai/assets dotnet-backend provider, source-include evidence, skills, standards, and indexes"
+    - ".ai/distribution payload and target-template projection contracts"
+    - "active root README and .dev guidance that select or describe mechanical validation"
+  excluded:
+    - "product source and product tests"
+    - "remediation or deletion of assessed surfaces"
+    - "EngineeringGuardrails.Contracts work tracked by GitHub Issue #179"
+    - "dated workflow, assessment, release, and publication history except active references to it"
+    - "push, pull request, merge, Issue closure, tag, or publication mutation"
+relations:
+  supersedes: []
+  superseded_by: []
+  related_assessments:
+    - "ASM-20260805-002"
+  workflow_refs:
+    - "2026-08-11-ctx-009-sdk-free-baseline"
+  backlog_refs: []
+  adr_refs: []
+resume:
+  last_completed_action: "Frozen five active SDK/provider findings and their tracked-file evidence before material remediation."
+  next_action: "Use ai-context-governance task CTX009-002 to remove framework-owned compilable projects and required SDK gates while preserving target-selected reference guidance."
+  blockers: []

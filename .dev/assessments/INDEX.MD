@@ -12,6 +12,8 @@ owns its identity, current lifecycle state, subject revision, and relationships.
 
 | Assessment | Title | Type | Owner | Status | Subject Commit | Updated | Report |
 | --- | --- | --- | --- | --- | --- | --- | --- |
+| [`ASM-20260811-002`](ASM-20260811-002/assessment.yaml) | v0.13 SDK-Free Framework Baseline Verification | `ai-context-verification` | `ai-context-auditor` | `final` | `889493a272bc272086c70dedd1a57d3f91eb790d` | `2026-08-11T10:14:06+08:00` | [report](ASM-20260811-002/report.md) |
+| [`ASM-20260811-001`](ASM-20260811-001/assessment.yaml) | v0.13 Framework-Owned .NET SDK Dependency Baseline | `ai-context-audit` | `ai-context-auditor` | `final` | `7652e5f1d11054878699046856fce12f0c19e587` | `2026-08-11T08:33:55+08:00` | [report](ASM-20260811-001/report.md) |
 | [`ASM-20260810-005`](ASM-20260810-005/assessment.yaml) | Terminal Validation Snapshot And Timeout Orchestration Incident | `ai-context-audit` | `ai-context-auditor` | `final` | `d39712b3acb2d886dc5541ecc9c93a101f412b60` | `2026-08-10T23:17:18+08:00` | [report](ASM-20260810-005/report.md) |
 | [`ASM-20260810-004`](ASM-20260810-004/assessment.yaml) | Product Identity Registry And Package Boundary Verification | `ai-context-verification` | `ai-context-auditor` | `final` | `572cb76350d87e77ef91235dc12fd731547595f5` | `2026-08-10T22:53:36+08:00` | [report](ASM-20260810-004/report.md) |
 | [`ASM-20260810-003`](ASM-20260810-003/assessment.yaml) | Distribution Source, Projection, And Published Artifact Inventory | `ai-context-audit` | `ai-context-auditor` | `final` | `343089ea2a05a10ee203fa5cbbc7a542db9b346f` | `2026-08-10T22:29:58+08:00` | [report](ASM-20260810-003/report.md) |

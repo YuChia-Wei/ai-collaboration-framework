@@ -1,0 +1,78 @@
+{
+  "template_id": "ai-context-governance-remediation-task",
+  "template_version": "1.1.0",
+  "template_created_at": "2026-07-10T18:22:49+08:00",
+  "template_updated_at": "2026-07-27T09:52:09+08:00",
+  "task_id": "CTX009-003",
+  "workflow_id": "2026-08-11-ctx-009-sdk-free-baseline",
+  "owner_skill": "ai-context-governance",
+  "status": "completed",
+  "created_at": "2026-08-11T08:21:27+08:00",
+  "updated_at": "2026-08-11T10:16:43+08:00",
+  "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
+  "model": "gpt-5.6-sol",
+  "reasoning_effort": "high",
+  "finding_ids": [
+    "ASM-20260811-001#SDKGATE-001",
+    "ASM-20260811-001#SDKPAYLOAD-001",
+    "ASM-20260811-001#SDKEVID-001",
+    "ASM-20260811-001#SDKPROV-001",
+    "ASM-20260811-001#SDKDOC-001"
+  ],
+  "scope": {
+    "target": "Independent verification, finding reconciliation, and local workflow closeout",
+    "files": [
+      ".dev/assessments/ASM-20260811-002/**",
+      ".dev/workflows/2026-08-11-ctx-009-sdk-free-baseline/**"
+    ],
+    "constraints": [
+      "ai-context-auditor owns the independent verification assessment and remains read-only on remediated context",
+      "Reconcile every baseline and verification finding explicitly",
+      "Do not claim blocked, timed-out, deferred, or unselected checks as passed",
+      "Keep local workflow completion separate from push, pull request, merge, Issue closure, tag, and publication state"
+    ],
+    "non_goals": [
+      "Further unscoped remediation",
+      "Transport or integration without separate authorization",
+      "v0.13.0 tag or release publication"
+    ]
+  },
+  "execution": {
+    "steps": [
+      "Create ASM-20260811-002 as an independent post-remediation assessment",
+      "Reconcile baseline findings, remediation evidence, and verification conclusions",
+      "Finalize the remediation report and workflow/task statuses",
+      "Validate assessment, workflow, commit, branch, and clean-tree evidence separately",
+      "Stop at the local owner handoff unless transport or integration is separately authorized"
+    ],
+    "validation": [
+      "python .ai/scripts/validate-assessment-artifacts.py",
+      "python .ai/scripts/validate-workflow-artifacts.py",
+      "python .ai/scripts/validate-git-commits.py --range main..HEAD --workflow-id 2026-08-11-ctx-009-sdk-free-baseline",
+      "git status --short --branch"
+    ],
+    "last_completed_step": "Finalized ASM-20260811-002, reconciled all five baseline findings, and recorded no new blocking finding",
+    "next_action": "None; local workflow closeout is complete and remote transport requires separate authorization"
+  },
+  "results": {
+    "summary": "Independent verification bound to remediation commit 889493a confirms a project-free and SDK-free required framework baseline and permits local workflow closeout.",
+    "files_changed": [
+      ".dev/assessments/ASM-20260811-002/assessment.yaml",
+      ".dev/assessments/ASM-20260811-002/report.md",
+      ".dev/assessments/INDEX.MD",
+      ".dev/workflows/2026-08-11-ctx-009-sdk-free-baseline/**"
+    ],
+    "tests_run": [
+      "assessment artifact validator passed for 48 assessments",
+      "assessment artifact tests: 9/9 passed outside the restricted sandbox",
+      "workflow implementation, lifecycle, and handoff tests: 7/7, 11/11, and 22/22 passed outside the restricted sandbox",
+      "workflow handoff registry validation passed for 8 checkpoints",
+      "verification re-read: SDK-free 5/5, dependency live zero-managed-project result, source governance passed, AI-context passed",
+      "controlled PR receipt reconciled: 37 selected passed, 15 executed, 22 reused, 18 unselected not-applicable, 0 failed, 0 blocked",
+      "canonical package matrix reconciled: 36 passed, 1 external-downstream skip"
+    ],
+    "finding_status": "addressed",
+    "residual_risk": "One frozen compatibility/advisory message retains a legacy project name but is not a required command or authority; remote integration and publication remain separate owner decisions.",
+    "follow_up_needed": false
+  }
+}

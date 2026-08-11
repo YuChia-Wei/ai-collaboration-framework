@@ -1,8 +1,0 @@
-schema_version: "1.0"
-evidence_id: "analyzers-invocation"
-provider_id: "ai-context-dotnet-bundled-mechanical-validation"
-framework_commit: "0123456789abcdef0123456789abcdef01234567"
-capability: "analyzers"
-kind: "invocation"
-status: "not-run-owner-directed"
-target_plan_sha256: "4f2d1fb38363d712b8cc9e919432a6d248d53660808a04efd65331d49690c8f9"

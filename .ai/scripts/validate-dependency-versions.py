@@ -21,13 +21,7 @@ guard_direct_entrypoint(".ai/scripts/validate-dependency-versions.py")
 
 DEFAULT_ROOT = Path(__file__).resolve().parents[2]
 SOURCE_PROFILE = Path(".ai/distribution/profiles/dotnet-backend.yaml")
-PROVIDER_PRODUCTION_ROOT = Path(
-    ".ai/assets/tech-stacks/dotnet-backend/tooling/bundled-mechanical-validation"
-)
-MANAGED_PROJECT_ROOTS = (
-    Path("tools"),
-    PROVIDER_PRODUCTION_ROOT,
-)
+MANAGED_PROJECT_ROOTS = (Path("tools"),)
 MINIMUM_PYTHON = (3, 11)
 REGISTRY_PATH = Path(".ai/scripts/python-entrypoints.json")
 REQUIREMENT_PIN = re.compile(
@@ -284,10 +278,6 @@ def managed_projects(root: Path) -> list[Path]:
             path
             for path in absolute_root.rglob("*.csproj")
             if not {"bin", "obj"}.intersection(path.relative_to(root).parts)
-            and not (
-                project_root == PROVIDER_PRODUCTION_ROOT
-                and {"fixtures", "tests"}.intersection(path.relative_to(absolute_root).parts)
-            )
         )
     return sorted(projects, key=lambda path: relative(path, root).encode("utf-8"))
 

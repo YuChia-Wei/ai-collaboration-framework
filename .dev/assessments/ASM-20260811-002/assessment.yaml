@@ -1,0 +1,45 @@
+schema_version: "1.0"
+assessment_id: "ASM-20260811-002"
+commit_search_id: "ASM-20260811-002"
+assessment_type: "ai-context-verification"
+title: "v0.13 SDK-Free Framework Baseline Verification"
+owner_skill: "ai-context-auditor"
+status: "final"
+report: "report.md"
+artifact_branch: "codex/2026-08-11-ctx-009-sdk-free-baseline"
+base_branch: "main"
+created_at: "2026-08-11T10:14:06+08:00"
+updated_at: "2026-08-11T10:14:06+08:00"
+template_source: ".dev/assessments/templates/assessment-locator-template.yaml"
+template_version: "1.0.0"
+report_template_source: ".ai/assets/skills/ai-context-auditor/templates/ai-context-audit-report-template.md"
+report_template_version: "2.1.0"
+subject_ref:
+  repository: "YuChia-Wei/ai-collaboration-framework"
+  branch: "codex/2026-08-11-ctx-009-sdk-free-baseline"
+  commit: "889493a272bc272086c70dedd1a57d3f91eb790d"
+scope:
+  included:
+    - "Issue #187 and the five ASM-20260811-001 SDK-free baseline findings"
+    - "Required validation profiles, aggregate runner, hosted portable workflow, and controlled no-dotnet PR evidence"
+    - "Tracked compilable artifacts, SDK selection, distribution payload and seed contracts, source-include evidence, and on-demand mechanical-validation guidance"
+    - "Active AI-context guidance, source governance, package projection, and final remediation commit range"
+  excluded:
+    - "Issue #179 and EngineeringGuardrails.Contracts adoption or publication"
+    - "Product source and target-repository implementation or test trees"
+    - "Ignored local bin/obj output and immutable dated workflow, assessment, and release history"
+    - "Push, pull request, merge, Issue closure, tag, and v0.13.0 publication"
+relations:
+  supersedes: []
+  superseded_by: []
+  related_assessments:
+    - "ASM-20260811-001"
+    - "ASM-20260805-002"
+  workflow_refs:
+    - "2026-08-11-ctx-009-sdk-free-baseline"
+  backlog_refs: []
+  adr_refs: []
+resume:
+  last_completed_action: "Independently verified the committed SDK-free baseline, reconciled all five baseline findings, and recorded no new blocking finding."
+  next_action: "The governance owner may close the local workflow; transport, integration, Issue closure, and release remain separately authorized decisions."
+  blockers: []

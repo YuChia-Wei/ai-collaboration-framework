@@ -119,8 +119,8 @@ class RepositoryConfigContractTests(unittest.TestCase):
     def test_gwt_008_given_source_root_config_is_packaged_directly_when_validated_then_it_fails(self) -> None:
         self.replace(
             ".ai/distribution/profiles/dotnet-backend.yaml",
-            "    source:\n      - global.json",
-            "    source:\n      - .editorconfig\n      - global.json",
+            "    source:\n      - .github/pull_request_template.md",
+            "    source:\n      - .editorconfig\n      - .github/pull_request_template.md",
         )
         self.assert_failure("source root .editorconfig must not be a target-template entry")
 

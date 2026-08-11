@@ -1,0 +1,87 @@
+{
+  "template_id": "ai-context-governance-remediation-task",
+  "template_version": "1.1.0",
+  "template_created_at": "2026-07-10T18:22:49+08:00",
+  "template_updated_at": "2026-07-27T09:52:09+08:00",
+  "task_id": "CTX009-001",
+  "workflow_id": "2026-08-11-ctx-009-sdk-free-baseline",
+  "owner_skill": "ai-context-governance",
+  "status": "completed",
+  "created_at": "2026-08-11T08:21:27+08:00",
+  "updated_at": "2026-08-11T08:33:55+08:00",
+  "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
+  "model": "gpt-5.6-sol",
+  "reasoning_effort": "high",
+  "finding_ids": [
+    "ASM-20260811-001#SDKGATE-001",
+    "ASM-20260811-001#SDKPAYLOAD-001",
+    "ASM-20260811-001#SDKEVID-001",
+    "ASM-20260811-001#SDKPROV-001",
+    "ASM-20260811-001#SDKDOC-001"
+  ],
+  "scope": {
+    "target": "Every active framework-owned .NET SDK gate and the contracts that select or describe it",
+    "files": [
+      ".ai/scripts/check-all.sh",
+      ".ai/scripts/validation-profile-registry.sh",
+      ".ai/assets/tech-stacks/dotnet-backend/tooling/**",
+      ".ai/distribution/**",
+      ".dev/releases/**",
+      "tools/**/*.csproj",
+      "global.json"
+    ],
+    "constraints": [
+      "Keep the assessed AI-context and validation surfaces read-only during the baseline audit",
+      "Treat codebase-memory-mcp and other indexes only as discovery accelerators under AICTX-EVIDENCE-001",
+      "Verify every material inventory conclusion against tracked files and repository-native validators",
+      "Keep #179 and EngineeringGuardrails.Contracts adoption outside this workflow"
+    ],
+    "non_goals": [
+      "Remediation before the baseline assessment is frozen",
+      "Product-source review outside AI-context and framework validation surfaces",
+      "Push, pull request, merge, Issue closure, tag, or release publication"
+    ]
+  },
+  "execution": {
+    "steps": [
+      "Create ASM-20260811-001 from the ai-context-auditor assessment template on the active workflow branch",
+      "Inventory all tracked .NET project, SDK pinning, runner, registry, distribution, provider, activation, example, index, and release references",
+      "Trace selection paths from aggregate and release entrypoints to every dotnet command or .NET project",
+      "Classify each surface as remove, rewrite, retain-reference-only, target-selected, conditional, or historical-excluded",
+      "Freeze findings and direct evidence before CTX009-002 starts"
+    ],
+    "validation": [
+      "python .ai/scripts/validate-assessment-artifacts.py",
+      "python .ai/scripts/validate-ai-context.py",
+      "git diff --check"
+    ],
+    "last_completed_step": "Finalized ASM-20260811-001 with five stable findings and direct tracked-file evidence",
+    "next_action": "Execute CTX009-002 remediation against the frozen finding set"
+  },
+  "results": {
+    "summary": "Inventoried every active framework-owned .NET project, SDK selector, required command, payload projection, activation contract, evidence claim, and direct guidance dependency before remediation.",
+    "files_changed": [
+      ".dev/assessments/ASM-20260811-001/assessment.yaml",
+      ".dev/assessments/ASM-20260811-001/report.md",
+      ".dev/assessments/INDEX.MD",
+      ".dev/workflows/2026-08-11-ctx-009-sdk-free-baseline/workflow.yaml",
+      ".dev/workflows/2026-08-11-ctx-009-sdk-free-baseline/workflow-plan.md",
+      ".dev/workflows/2026-08-11-ctx-009-sdk-free-baseline/tasks/CTX009-001.json",
+      ".dev/workflows/2026-08-11-ctx-009-sdk-free-baseline/tasks/CTX009-002.json"
+    ],
+    "tests_run": [
+      "python .ai/scripts/validate-ai-context.py (passed)",
+      "python .ai/scripts/validate-dependency-versions.py (passed)",
+      "python .ai/assets/tech-stacks/dotnet-backend/tooling/bundled-mechanical-validation/tests/test_provider_activation_evaluator.py -v (14 passed)",
+      "python .ai/scripts/tests/test_validation_profile_registry.py -v (5 passed)",
+      "python .ai/scripts/tests/test_ai_context_source_include_evidence.py -v (4 passed)",
+      "python .ai/scripts/tests/test_github_workflow_contract.py -v (8 passed)",
+      "python .ai/scripts/tests/test_fail_closed_validation.py -v (timed-out; not passed)",
+      "python .ai/scripts/tests/test_ai_context_packaging.py -v (diagnostic-only; sandbox errors and baseline assertion drift)",
+      "python .ai/scripts/tests/test_ai_context_example_evidence.py -v (blocked-by-environment)"
+    ],
+    "finding_status": "baselined",
+    "residual_risk": "The five findings remain active until CTX009-002 remediation and independent ASM-20260811-002 verification complete.",
+    "follow_up_needed": false
+  }
+}

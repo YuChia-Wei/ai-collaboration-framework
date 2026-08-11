@@ -104,10 +104,10 @@ public sealed class Order : EsAggregateRoot<OrderId>
 ```
 
 The repository-owned source include is under
-[`source-includes/domain/`](../source-includes/domain/). Its behavior is compiled
-and tested by
-[`tools/DotnetBackendBuildingBlocks.Tests`](../../../../../tools/DotnetBackendBuildingBlocks.Tests/).
-It is not a published package or complete reference product.
+[`source-includes/domain/`](../source-includes/domain/). It is reference-only
+framework material, not a published package or complete reference product. An
+adopting target owns SDK compatibility, compilation, behavior tests, invocation
+evidence, and upgrade reconciliation before claiming executable validation.
 
 ## Source-Include Ownership And Upgrade Rule
 
@@ -129,7 +129,7 @@ Until a package distribution decision exists:
 | `dotnet-mq-arch-lab` | `EsAggregateRoot<TId>` plus `DomainEntity` and `AggregateRoot` bases; explicit commit lifecycle | Preserve single-generic ES shape and commit lifecycle; do not require the other bases | The ES mechanics have executable downstream evidence; the inheritance chain is not required |
 | `dotnet-webapi-lab` | State-based Aggregates implement `IAggregateRoot<Guid>` directly | Preserve as evidence for interface-first normal Aggregates | Confirms that useful Aggregate models do not require a common base class |
 | Pre-v0.4.0 framework example | Converted `EsAggregateRoot<TId,TEvent>` placeholder embedded in `Plan.cs` | Rewrite to the canonical single-generic contract and keep the portfolio illustrative | Embedded placeholder contradicted `DBA1009` guidance and had no independent test route |
-| `DBA1009` | Detects descendants named `EsAggregateRoot` | Keep type-hierarchy recognition and test the canonical single-generic shape | The diagnostic must apply to target reimplementations as well as the supplied source include |
+| `DBA1009` | Reference mapping detects descendants named `EsAggregateRoot` | Keep type-hierarchy recognition in the target-selected analyzer recipe | A target implementation must test its own reimplementations as well as any copied source include |
 
 These repositories are evidence sources only. A target must be reconstructable
 from this repository's current standards and navigation without access to them.
@@ -139,13 +139,13 @@ from this repository's current standards and navigation without access to them.
 | Criterion | Deterministic check or review evidence |
 | --- | --- |
 | Bounded-context grammar | project-structure profile validation plus reviewer confirmation of workload mapping |
-| Dependency direction | analyzer/structural dependency checks |
+| Dependency direction | target-selected analyzer/architecture checks or explicit structural review |
 | Port ownership | repository, query, messaging, and purge checklist |
 | Aggregate/Repository semantics | `DBA1001`, `DBA1003`, `DBA1009`, and Aggregate review checklist |
 | Deletion policy | `DELETE-SOFT-001` selection or explicit target opt-out evidence |
 | CQRS/MQ boundary | Use Case/Handler and cross-BC communication checks |
 | Technology profile | `technologySelections` schema validation and target override evidence |
-| ES mechanical behavior | `DotnetBackendBuildingBlocks.Tests` plus `DBA1009` positive/negative tests |
+| ES mechanical behavior | target-owned behavior tests plus optional target-selected `DBA1009` positive/negative analyzer tests |
 
 No class-name index by itself proves reconstructability.
 

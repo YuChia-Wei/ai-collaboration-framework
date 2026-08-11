@@ -77,20 +77,12 @@ database.
 
 ## Validation
 
-For source-framework contributor verification only:
-
-```bash
-dotnet test tools/DotnetBackendValidation.Tests/DotnetBackendValidation.Tests.csproj
-```
-
-For a target that has separately selected and activated the provider in place,
-record and run its own target-owned runtime-validation test command. The root
-test project is not delivered to targets.
-
-When the target uses the supplied validation pattern, it provides an
-`IProjectionReadModel` marker and uses
-`ProjectionModelRegistrationValidator` to compare marker implementations with
-the assembled EF Core model.
+When the target selects EF projection registration validation, it creates and
+runs its own configuration test. The
+[reference-only recipe](../../../.ai/assets/tech-stacks/dotnet-backend/tooling/on-demand-mechanical-validation/recipes/projection-registration-test.md)
+uses a target-owned `IProjectionReadModel` marker and compares its concrete
+implementations with the assembled EF Core model. The framework supplies no
+runtime-validation project, SDK, package versions, or activation claim.
 
 Checklist:
 

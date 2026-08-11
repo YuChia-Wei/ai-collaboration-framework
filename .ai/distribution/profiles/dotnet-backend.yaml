@@ -318,7 +318,6 @@ entries:
   - id: repository-integration-seeds
     component_id: software-development-core
     source:
-      - global.json
       - .github/pull_request_template.md
     target: preserve-relative-path
     ownership: target-template
@@ -435,6 +434,7 @@ exclusions:
       - .ai/scripts/tests/test_ai_context_load_measurement.py
       - .ai/scripts/tests/test_repository_config_contract.py
       - .ai/scripts/tests/test_repository_identity.py
+      - .ai/scripts/tests/test_sdk_free_framework_contract.py
       - .ai/scripts/tests/test_source_dispositions.py
       - .ai/scripts/tests/test_skill_transition_contract.py
       - .ai/scripts/tests/test_github_backlog_provider.py

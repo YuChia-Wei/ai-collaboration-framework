@@ -8,7 +8,10 @@ shared, multi-skill, provider, release, package, workflow, and source-wide
 automation plus explicit compatibility entrypoints for already published
 commands.
 
-It is no longer the long-term home for authoritative C# semantic validation. Rules that inspect C# syntax, symbols, type dependencies, attributes, or framework API usage should move to dotnet-native validation mechanisms such as Roslyn analyzers, `.editorconfig`, `dotnet format`, architecture tests, integration tests, or dotnet tools.
+It is not the home for authoritative C# semantic validation. A target may
+explicitly select its own Roslyn analyzers, `.editorconfig`, `dotnet format`,
+architecture tests, integration tests, or tools; those choices are not
+framework release prerequisites.
 
 ## Source Tooling Prerequisites
 
@@ -19,10 +22,8 @@ checksum-stable dependency declared in the root `requirements.txt`:
 PyYAML==6.0.3
 ```
 
-The repository's .NET validation tools require an SDK that satisfies
-`global.json`; for v0.5.0 source work, install .NET SDK 10.0.300 or newer.
-An older 10.0 feature band such as 10.0.203 does not satisfy the declared
-10.0.300 baseline.
+The source framework has no .NET SDK prerequisite. A target that explicitly
+creates a managed project owns its SDK and package prerequisites.
 
 Create and activate a virtual environment using the conventions for the host,
 then install the source dependency from the repository root:
@@ -228,16 +229,14 @@ closeout merge after the tag.
 `validate-dependency-versions.py` is a deterministic offline gate. In the source
 framework repository it enforces byte-identical pinned Python requirement
 mirrors, requirements-file use and one Python version across GitHub workflows,
-exact and consistent direct package versions in the explicit scan roots
-`tools/` and
-`.ai/assets/tech-stacks/dotnet-backend/tooling/bundled-mechanical-validation/`.
-The provider root includes its production projects at every level, while its
-`fixtures/` and `tests/` subtrees are excluded. It does not scan unrelated
-`.ai/` assets. It also enforces an exact `global.json` SDK new enough for the
-managed projects. In initialized targets, source-only workflow and distribution
-checks become not applicable while managed-tool checks remain active. It does not
-query package registries or advisory databases and therefore makes no package-currency
-or vulnerability claim. The normative boundary is
+and the Python entrypoint registry. The framework contains no managed .NET
+project and selects no `global.json`. If an initialized target explicitly adds
+target-owned `tools/**/*.csproj`, the same validator conditionally requires
+exact and consistent direct package versions plus a target `global.json` whose
+SDK can build the selected target frameworks. It does not scan unrelated
+`.ai/` assets or require an SDK when no managed project exists. It does not
+query package registries or advisory databases and therefore makes no
+package-currency or vulnerability claim. The normative boundary is
 `.dev/standards/DEPENDENCY-VERSION-CONSISTENCY-POLICY.md`.
 
 `validate-file-disposition-manifest.py` validates a supplied remediation
@@ -477,20 +476,11 @@ Invalid profiles or extra arguments return exit code `2`. A successful aggregate
 result may contain explicit advisory warnings, deferred work, or not-applicable
 conditional checks, but it cannot contain an unexecuted selected required check.
 
-Future `check-all.sh` shape:
-
-```bash
-dotnet restore
-dotnet build
-dotnet test
-dotnet format --verify-no-changes
-dotnet tool run repo-context-lint
-```
-
-Current source-framework behavior:
-
-- runs source-only `dotnet test tools/DotnetBackendAnalyzers.Tests/DotnetBackendAnalyzers.Tests.csproj`;
-- does not invoke the retired repository grep checks.
+Current source-framework behavior is SDK-free: required profiles use Python and
+shell contracts and do not install or invoke `dotnet`. A target may separately
+select its own `dotnet restore`, build, test, format, analyzer, or architecture
+test commands; those commands and prerequisites remain target evidence and are
+not framework release gates. Retired repository grep checks remain retired.
 
 ### Compatibility And Manual Entry Points
 
@@ -523,7 +513,7 @@ their selected testing stack, analyzers, and executable test architecture
 checks. Removal or relocation requires a later governed disposition with
 downstream evidence.
 
-Completed replacement:
+Retained target-enforcement mapping:
 
 - repository rules: `DBA1001` enforces canonical/compatibility inheritance,
   Aggregate Root constraints, aggregate method surface, query-port read-only
@@ -533,12 +523,15 @@ Completed replacement:
 - mapper rules: `DBA1007` and `DBA1008`; the mapper grep scripts have been removed.
 - aggregate rules: `DBA1003` and `DBA1009`; the aggregate grep scripts have been removed while invariant completeness remains test and AI review work.
 - use case rules: `DBA1002` and `DBA1010` through `DBA1012`; the use case grep scripts have been removed while transaction and error-handling design remain AI review work.
-- projection rules: `DBA1013` covers EF write operations and `DotnetBackendValidation` verifies marker-based EF model registration; the projection grep/config scripts have been removed.
+- projection rules: `DBA1013` maps EF write-operation checks, while a target-owned configuration-test recipe covers marker-based EF model registration; the projection grep/config scripts have been removed.
 
-Analyzer production source is provider-owned and source-available by default:
+Reference-only creation guidance is available at:
 
-- `.ai/assets/tech-stacks/dotnet-backend/tooling/bundled-mechanical-validation/analyzers/`
-- `tools/DotnetBackendAnalyzers.Tests/` remains source-only framework verification.
+- `.ai/assets/tech-stacks/dotnet-backend/tooling/on-demand-mechanical-validation/`
+
+The framework supplies no analyzer project or test project. A target that
+selects a mapping owns implementation, SDK/package versions, wiring, severity,
+tests, CI, compatibility, and fresh evidence.
 
 ### Retired Generated Regex Checks
 

@@ -490,23 +490,27 @@ class DeterministicPackageGwtTests(unittest.TestCase):
             "dotnet-backend",
             payload[
                 ".ai/assets/tech-stacks/dotnet-backend/tooling/"
-                "bundled-mechanical-validation/analyzers/DotnetBackendAnalyzers.csproj"
+                "on-demand-mechanical-validation/recipe-manifest.yaml"
             ],
         )
         self.assertFalse(
             any(
-                path.startswith("tools/DotnetBackendAnalyzers/")
-                or path.startswith("tools/DotnetBackendValidation/")
+                path.lower().endswith((".csproj", ".sln", ".slnx"))
                 for path in payload
             ),
-            "relocated production provider paths must not remain in the payload",
+            "the default framework payload must not contain compilable .NET projects",
+        )
+        self.assertNotIn("global.json", payload)
+        self.assertFalse(
+            any("bundled-mechanical-validation" in path for path in payload),
+            "the retired bundled provider must not remain in the payload",
         )
         self.assertFalse(
             any(
                 path.startswith("tools/") and path.split("/", 2)[1].endswith(".Tests")
                 for path in payload
             ),
-            "root tools/*Tests projects are source-only framework verification",
+            "the SDK-free source framework must not project root tools projects",
         )
 
     def test_gwt_000aa_given_repository_configuration_when_payload_is_projected_then_dedicated_target_seeds_replace_source_truth(self) -> None:
@@ -923,7 +927,10 @@ class ReleaseWorkflowContractGwtTests(unittest.TestCase):
         # Then PR/manual execution is read-only and cannot publish or mutate tags.
         self.assertEqual({"pull_request", "workflow_dispatch"}, set(triggers))
         self.assertEqual({}, workflow["permissions"])
-        self.assertEqual({"contents": "read"}, jobs["package"]["permissions"])
+        self.assertEqual(
+            {"contents": "read", "issues": "read"},
+            jobs["package"]["permissions"],
+        )
         self.assertIn("actions/upload-artifact@v7", text)
         self.assertNotIn("actions/upload-artifact@v4", text)
         self.assertIn("--migration-source", text)
@@ -952,7 +959,10 @@ class ReleaseWorkflowContractGwtTests(unittest.TestCase):
         # Then only pushed v-tags trigger it and contents:write is isolated to publish.
         self.assertEqual(["v*"], workflow["on"]["push"]["tags"])
         self.assertEqual({}, workflow["permissions"])
-        self.assertEqual({"contents": "read"}, jobs["build"]["permissions"])
+        self.assertEqual(
+            {"contents": "read", "issues": "read"},
+            jobs["build"]["permissions"],
+        )
         self.assertEqual({"contents": "write"}, jobs["publish"]["permissions"])
         self.assertEqual("ai-context-release", jobs["publish"]["environment"])
         self.assertIn(r"^v[0-9]+\.[0-9]+\.[0-9]+$", text)
