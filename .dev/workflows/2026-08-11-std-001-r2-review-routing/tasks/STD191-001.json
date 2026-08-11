@@ -8,7 +8,7 @@
   "owner_skill": "ai-context-governance",
   "status": "in_progress",
   "created_at": "2026-08-11T20:20:48+08:00",
-  "updated_at": "2026-08-11T20:42:00+08:00",
+  "updated_at": "2026-08-11T20:45:00+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-5.6-sol",
   "reasoning_effort": "high",
@@ -56,8 +56,8 @@
       "package projection tests",
       "git diff --check"
     ],
-    "last_completed_step": "Implemented and locally validated the file-type/finding routing contract, narrowed role loads, replaced duplicate compatibility doctrine, and registered a fail-closed gate",
-    "next_action": "Commit the implementation snapshot, run commit-bound package projection validation, and complete an independent verification assessment"
+    "last_completed_step": "Committed implementation snapshot aea7a44 and passed commit-bound selected-payload projection validation",
+    "next_action": "Commit the focused package guard and evidence, then complete an independent verification assessment"
   },
   "results": {
     "summary": "Fourteen canonical review routes now select file-type standards and finding rule IDs; Code Reviewer entries and roles no longer eagerly load the monolithic/shared rule bundles, and semantic drift cases are fail-closed fixtures.",
@@ -76,7 +76,7 @@
       ".ai/scripts/shell-assets.yaml"
     ],
     "tests_run": [
-      "python .ai/scripts/tests/test_code_reviewer_routing_contract.py -v: passed 7/7",
+      "python .ai/scripts/tests/test_code_reviewer_routing_contract.py -v: passed 8/8 including commit-bound selected-payload projection",
       "python .ai/scripts/validate-ai-context.py: passed",
       "python .ai/assets/skills/software-development-orchestrator/scripts/tests/test_role_execution_acceptance.py -v: passed 6/6",
       "python .ai/scripts/tests/test_ai_context_sub_agent_adapters.py -v: passed 31/31 outside sandbox after sandbox temp denial",
@@ -86,7 +86,7 @@
       "python .ai/scripts/tests/test_ai_context_packaging.py -v: failed by 244-second timeout; not counted as passed"
     ],
     "finding_status": "remediated-awaiting-independent-verification",
-    "residual_risk": "Commit-bound package projection and independent post-remediation assessment remain; the full package matrix timed out and must not be reported as passed.",
+    "residual_risk": "Independent post-remediation assessment remains; the full package matrix timed out and must not be reported as passed even though the focused committed-payload check passed.",
     "follow_up_needed": true
   }
 }

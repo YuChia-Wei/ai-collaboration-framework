@@ -14,7 +14,7 @@
 - `owner_skill`: `ai-context-governance`
 - `status`: `draft`
 - `created_at`: `2026-08-11T20:20:48+08:00`
-- `updated_at`: `2026-08-11T20:42:00+08:00`
+- `updated_at`: `2026-08-11T20:45:00+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-remediation-report-template.md`
 - `template_version`: `2.0.0`
 - `baseline_assessment`: `ASM-20260811-003`
@@ -24,7 +24,7 @@
 
 - Authorized scope: Implement GitHub Issue #191 for `CRL-001` and `CRL-002` as one bounded Code Reviewer routing delivery.
 - Completed scope: canonical 14-route contract, route-first root/wrapper/skill guidance, selected-route role loads, compatibility stubs, engineering-rule ownership projection, negative/equivalence fixtures, and active fail-closed validation.
-- Validation summary: focused and structural suites passed; full package matrix timed out at 244 seconds and remains failed. Commit-bound focused package projection and independent audit are pending.
+- Validation summary: focused and structural suites passed, including committed selected-payload projection; full package matrix timed out at 244 seconds and remains failed. Independent audit is pending.
 - Closure decision: `not-ready`
 
 ## Finding Resolution Matrix
@@ -41,7 +41,7 @@
 - Changes: added a single route contract with fourteen file-type routes; made root guidance, canonical skill, wrappers, and four review roles select routes before standards; replaced three broad checklist paths and the quick reference with bounded compatibility stubs for `v0.13.x`.
 - Evidence: eager-load measurements fell from 43,747 to 24,005 bytes at top level, 65,017 to 36,557 general, 71,120 to 48,732 aggregate, 68,332 to 40,181 controller, and 68,497 to 35,334 reactor (31.5%-48.4% reduction).
 - Validation: `test_code_reviewer_routing_contract.py` proves every declared route is below its baseline and no review role statically references the old shared bundle.
-- Remaining risk: package selection is evaluated against committed Git blobs, so its focused check follows the implementation commit.
+- Remaining risk: independent verification remains; the focused committed-payload check passed, while the full package matrix timeout remains a separate failed result.
 
 ### `ASM-20260811-003#CRL-002`
 
@@ -66,7 +66,7 @@
 
 ## Closure Evidence
 
-- Required validations: focused routing 7/7; role execution 6/6; adapter 31/31; wrapper 16/16; language/parity 10/10; profile 3/3; document 2/2; effective-rule 3/3; registry 6/6; shell assets and `validate-ai-context.py` passed. Full package matrix timed out at 244 seconds and is explicitly failed.
-- Commit status: implementation snapshot pending commit.
+- Required validations: focused routing and committed payload 8/8; role execution 6/6; adapter 31/31; wrapper 16/16; language/parity 10/10; profile 3/3; document 2/2; effective-rule 3/3; registry 6/6; shell assets and `validate-ai-context.py` passed. Full package matrix timed out at 244 seconds and is explicitly failed.
+- Commit status: implementation snapshot `aea7a44`; focused package guard pending evidence commit.
 - Workflow/task status: remediation implemented; verification in progress.
-- Final next action: commit, run commit-bound focused package projection, and perform the independent assessment.
+- Final next action: commit the focused package guard and evidence, then perform the independent assessment.

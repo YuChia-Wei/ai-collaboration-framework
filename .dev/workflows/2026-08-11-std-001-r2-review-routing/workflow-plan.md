@@ -19,7 +19,7 @@
 - `current_phase`: `verification`
 - `artifact_root`: `.dev/workflows/2026-08-11-std-001-r2-review-routing`
 - `created_at`: `2026-08-11T20:20:48+08:00`
-- `updated_at`: `2026-08-11T20:42:00+08:00`
+- `updated_at`: `2026-08-11T20:45:00+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md`
 - `template_version`: `1.2.0`
 
@@ -54,11 +54,11 @@
 
 ## Resume Checkpoint
 
-- Last completed action: Implemented the route contract, compatibility stubs, role/reference narrowing, semantic fixtures, and active fail-closed validator; focused and aggregate validations passed.
+- Last completed action: Committed implementation snapshot `aea7a44` and passed a commit-bound selected-payload projection for the route, fixtures, roles, and compatibility entries.
 - Current task: `STD191-001`.
-- Exact next action: commit the validated implementation snapshot, run the commit-bound package projection check, and perform an independent post-remediation audit.
-- Validation already completed: focused routing 7/7, role execution 6/6, adapter 31/31, wrapper 16/16, language/parity 10/10, profile/document/effective-rule contracts, shell registry, and `validate-ai-context.py` passed. The full packaging matrix timed out at 244 seconds and is recorded as failed, not passed.
-- Git state: dedicated branch contains the validated #191 working tree; nothing from #191 is pushed or merged.
+- Exact next action: commit the focused package guard and updated evidence, then perform an independent post-remediation audit on that fixed commit.
+- Validation already completed: focused routing/package contract 8/8, role execution 6/6, adapter 31/31, wrapper 16/16, language/parity 10/10, profile/document/effective-rule contracts, shell registry, and `validate-ai-context.py` passed. The full packaging matrix timed out at 244 seconds and remains recorded as failed.
+- Git state: implementation commit `aea7a445f5f5042632cb0499b6dad7e2e8639af6`; one focused package guard and evidence update remain uncommitted; nothing from #191 is pushed or merged.
 - Branch history and checkpoint handoffs: local stacked branch from the unpushed #61 coordination checkpoint.
 - Blockers or unresolved decisions: none for local implementation; transport and integration remain unauthorized.
 
@@ -66,4 +66,4 @@
 
 | Segment | Branch | Base | Checkpoint Type | Commit | Remote / Target | Recorded At | Reason | Resume Branch / Action |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| 1 | `codex/2026-08-11-std-001-r2-review-routing` | `codex/2026-08-11-std-001-standards-simplification@73b12c6` | local implementation start | pending | local | `2026-08-11T20:20:48+08:00` | Execute #191 as an independent rollback unit | Inventory and remediate Code Reviewer routing |
+| 1 | `codex/2026-08-11-std-001-r2-review-routing` | `codex/2026-08-11-std-001-standards-simplification@73b12c6` | implementation checkpoint | `aea7a44` | local | `2026-08-11T20:44:00+08:00` | Execute #191 as an independent rollback unit | Commit focused package guard, then independently audit fixed snapshot |

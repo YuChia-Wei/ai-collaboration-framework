@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import fnmatch
+import sys
 import unittest
 from pathlib import Path
 
@@ -11,6 +12,10 @@ import yaml
 
 
 ROOT = Path(__file__).resolve().parents[3]
+SCRIPTS = ROOT / ".ai/scripts"
+sys.path.insert(0, str(SCRIPTS))
+import ai_context_package as PACKAGE  # noqa: E402
+
 ROUTING_PATH = Path(
     ".ai/assets/skills/code-reviewer/references/review-routing.yaml"
 )
@@ -261,6 +266,30 @@ class CodeReviewerRoutingContractTests(unittest.TestCase):
         for route_name, size in measured.items():
             with self.subTest(route=route_name, measured_bytes=size):
                 self.assertLess(size, BASELINE_BYTES[route_name])
+
+    def test_gwt_008_given_committed_profile_when_projected_then_routing_and_compatibility_entries_ship(self) -> None:
+        tree = PACKAGE.git_tree(ROOT, "HEAD")
+        profile = yaml.safe_load(
+            (
+                ROOT / ".ai/distribution/profiles/dotnet-backend.yaml"
+            ).read_text(encoding="utf-8")
+        )
+        payload = {
+            item.path: item
+            for item in PACKAGE.collect_payload(ROOT, tree, profile)
+        }
+        required = {
+            str(ROUTING_PATH).replace("\\", "/"),
+            str(FIXTURE_PATH).replace("\\", "/"),
+            ".ai/assets/skills/code-reviewer/skill.yaml",
+            *(str(path).replace("\\", "/") for path in ROLE_PATHS.values()),
+            *load_yaml(ROUTING_PATH)["compatibility"]["entries"],
+        }
+        self.assertTrue(required.issubset(payload))
+        for entry in load_yaml(ROUTING_PATH)["compatibility"]["entries"]:
+            with self.subTest(entry=entry):
+                self.assertIn(b"review-routing.yaml", payload[entry].content)
+                self.assertLess(len(payload[entry].content), 1_500)
 
 
 if __name__ == "__main__":
