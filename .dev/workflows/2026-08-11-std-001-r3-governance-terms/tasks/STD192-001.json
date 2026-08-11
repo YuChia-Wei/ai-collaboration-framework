@@ -1,0 +1,90 @@
+{
+  "template_id": "ai-context-governance-remediation-task",
+  "template_version": "1.1.0",
+  "template_created_at": "2026-07-10T18:22:49+08:00",
+  "template_updated_at": "2026-07-27T09:52:09+08:00",
+  "task_id": "STD192-001",
+  "workflow_id": "2026-08-11-std-001-r3-governance-terms",
+  "owner_skill": "ai-context-governance",
+  "status": "completed",
+  "created_at": "2026-08-11T20:58:53+08:00",
+  "updated_at": "2026-08-11T21:37:32+08:00",
+  "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
+  "model": "gpt-5.6-sol",
+  "reasoning_effort": "high",
+  "finding_ids": [
+    "ASM-20260811-003#GTM-001"
+  ],
+  "scope": {
+    "target": "Governance term qualification, canonical owner routing, and source versus portable release guidance",
+    "files": [
+      ".dev/standards/**",
+      ".dev/guides/**",
+      ".dev/releases/**",
+      ".ai/assets/shared/**",
+      ".ai/assets/skills/**",
+      ".ai/distribution/**",
+      ".ai/scripts/tests/**",
+      "AGENTS.md",
+      "AGENTS.zh-TW.md"
+    ],
+    "constraints": [
+      "Extend the existing ownership registry; do not create a terminology-specific skill or second definition authority",
+      "Preserve machine-readable literals, schema enums, compatibility records, and historical evidence",
+      "Keep source-release procedure source-only and portable target version/provenance/upgrade guidance actionable downstream",
+      "Prove routing and projection boundaries with deterministic fixtures"
+    ],
+    "non_goals": [
+      "Issue #191 Code Reviewer routing",
+      "Issue #193 payload navigation and component closure",
+      "Historical evidence rewrites",
+      "Project allocation, push, PR, merge, Issue closure, tag, Release, or publication"
+    ]
+  },
+  "execution": {
+    "steps": [
+      "Inventory active terms, namespaces, owners, contextual shorthand, forbidden ambiguity, and machine literals",
+      "Add compact qualified term routing to the existing ownership registry and owner-facing guidance",
+      "Separate portable target guidance from source-release-only procedure",
+      "Add negative fixtures and source/portable package-selection validation",
+      "Run focused and aggregate validation and request independent verification"
+    ],
+    "validation": [
+      "focused governance terminology routing tests",
+      "python .ai/scripts/validate-ai-context.py",
+      "python .ai/scripts/validate-workflow-artifacts.py",
+      "package profile/projection tests",
+      "git diff --check"
+    ],
+    "last_completed_step": "Reconciled GTM-001 through independent verification ASM-20260811-005 at fixed subject fe85095",
+    "next_action": "Record local completion in the parent #61 workflow and proceed to the separately scoped #193 combined package-view delivery"
+  },
+  "results": {
+    "summary": "Added 15 qualified governance-term routes, separated source-release procedure from the portable target version policy, preserved machine literals, and independently verified the committed package projection.",
+    "files_changed": [
+      ".dev/standards/AI-CONTEXT-OWNERSHIP.yaml",
+      ".dev/standards/AI-CONTEXT-OWNERSHIP.md",
+      ".dev/standards/AI-CONTEXT-SOURCE-RELEASE-POLICY.md",
+      ".dev/standards/AI-CONTEXT-VERSION-POLICY.md",
+      ".ai/assets/shared/governance/AI-CONTEXT-VERSION-POLICY.md",
+      ".ai/assets/shared/governance/portable-policy-manifest.yaml",
+      ".ai/distribution/profiles/dotnet-backend.yaml",
+      ".ai/scripts/validate-ai-context.py",
+      ".ai/scripts/tests/test_governance_term_routing_contract.py",
+      ".dev/assessments/ASM-20260811-005/assessment.yaml",
+      ".dev/assessments/ASM-20260811-005/report.md"
+    ],
+    "tests_run": [
+      "python .ai/scripts/tests/test_governance_term_routing_contract.py -v: passed 8/8",
+      "python .ai/scripts/validate-ai-context.py: passed with 15 qualified terms",
+      "C:\\Program Files\\Git\\bin\\bash.exe .ai/scripts/check-all.sh --profile fast: passed 32/32 required checks with one duration advisory",
+      "python .ai/scripts/tests/test_ai_context_package_smoke.py -v: passed 1/1 outside the filesystem sandbox",
+      "python .ai/scripts/validate-assessment-artifacts.py: passed for 50 assessments",
+      "python .ai/scripts/tests/test_assessment_artifacts.py -v: passed 9/9 outside the filesystem sandbox",
+      "python .ai/scripts/validate-workflow-artifacts.py: passed"
+    ],
+    "finding_status": "addressed",
+    "residual_risk": "Issue #193 still owns combined package navigation and component-reference closure; future machine-literal changes require an explicit versioned migration; fast-profile duration remains advisory.",
+    "follow_up_needed": true
+  }
+}

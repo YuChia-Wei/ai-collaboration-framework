@@ -114,7 +114,7 @@ The assessment commit SHA is not required inside the initial locator because it
 does not exist until after the locator is committed. Find artifact commits by
 the stable assessment ID in Git history.
 
-## Lifecycle
+## Assessment Lifecycle
 
 Use these states:
 
@@ -133,6 +133,10 @@ draft -> final -> superseded
 - Updating only locator lifecycle relationships does not rewrite the final
   report. Do not silently edit final report conclusions.
 - Use `<assessment-id>#<finding-id>` for durable finding references.
+
+`status: final` means assessment final: the report conclusions and finding IDs
+are frozen. It does not mean workflow completion, release finalization, hosted
+publication, or authority to remediate a finding.
 
 ## Branch Contract
 

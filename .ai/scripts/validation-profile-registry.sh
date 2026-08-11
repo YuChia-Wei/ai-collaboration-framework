@@ -114,6 +114,11 @@ register_check ai-context-source-include-evidence \
     "context,tests" "fast pr release nightly-full" \
     ".ai/distribution .ai/scripts/tests/test_ai_context_source_include_evidence.py" ai-context-navigation "python>=3.11" 30 cpu reuse-by-input source \
     "python .ai/scripts/tests/test_ai_context_source_include_evidence.py -v" always
+register_check governance-term-routing \
+    "Governance Term Routing And Release Projection Contract" required \
+    "governance,context,tests" "fast pr release nightly-full" \
+    ".dev/standards/AI-CONTEXT-OWNERSHIP.yaml .dev/standards/AI-CONTEXT-SOURCE-RELEASE-POLICY.md .ai/assets/shared/governance/AI-CONTEXT-VERSION-POLICY.md .ai/distribution .ai/scripts/tests/test_governance_term_routing_contract.py" ai-context-navigation "python>=3.11 git" 60 cpu reuse-by-input source \
+    "python .ai/scripts/tests/test_governance_term_routing_contract.py -v" source-release
 register_check target-ai-context-version \
     "AI Context Target Apply, Provenance And Customization Contracts" required \
     "context,target" "fast pr release nightly-full" \
@@ -129,6 +134,11 @@ register_check package-apply \
     "package,tests" "pr release nightly-full" \
     ".ai/scripts/ai_context_package_apply.py .ai/scripts/tests/test_ai_context_package_apply.py" '' "python>=3.11 git" 90 io reuse-by-input portable \
     "python .ai/scripts/tests/test_ai_context_package_apply.py -v" always
+register_check payload-user-view \
+    "Selected Payload User-View Fail-Closed Contract" required \
+    "package,navigation,components" "fast pr release nightly-full" \
+    ".ai/scripts/ai_context_package.py .ai/scripts/tests/test_payload_user_view_contract.py .ai/distribution/profiles/dotnet-backend.yaml" '' "python>=3.11" 30 cpu reuse-by-input source \
+    "python .ai/scripts/tests/test_payload_user_view_contract.py -v" source-release
 register_check package-smoke \
     "AI Context Package Smoke Tests" required \
     "package,smoke" "pr release nightly-full" \
@@ -147,7 +157,7 @@ register_check dependency-versions-tests \
 register_check python-source-entrypoints \
     "Source-Only Python Entrypoint Prerequisite Contract" required \
     "runtime,tests" "pr release nightly-full" \
-    ".ai/scripts requirements.txt" '' "python>=3.11" 30 cpu reuse-by-input source \
+    ".ai/scripts requirements.txt" '' "python>=3.11" 60 cpu reuse-by-input source \
     "python .ai/scripts/tests/test_python_source_entrypoints.py -v" always
 register_check shell-assets \
     "Shell Asset Classification And Git Modes" required \
@@ -184,6 +194,11 @@ register_check coding-standards-integrity \
     "standards,tests" "fast pr release nightly-full" \
     ".dev/standards .ai/scripts/tests/test_coding_standards_integrity_contract.py" '' "python>=3.11" 30 cpu reuse-by-input portable \
     "python .ai/scripts/tests/test_coding_standards_integrity_contract.py -v" always
+register_check code-review-routing-contract \
+    "Code Reviewer Routing Contract" required \
+    "context,review,tests" "fast pr release nightly-full" \
+    ".ai/assets/skills/code-reviewer .ai/assets/sub-agent-role-prompts .ai/assets/tech-stacks/dotnet-backend .ai/scripts/tests/test_code_reviewer_routing_contract.py" coding-standards-integrity "python>=3.11" 60 cpu reuse-by-input portable \
+    "python .ai/scripts/tests/test_code_reviewer_routing_contract.py -v" always
 register_check profile-projection \
     "Profile Projection Contract" required \
     "package,tests" "fast pr release nightly-full" \
@@ -277,7 +292,7 @@ register_check effective-rule-action-skill \
 register_check source-governance-manifest \
     "Source Governance Manifest Registry" required \
     "governance,source" "fast pr release nightly-full" \
-    ".ai/distribution/governance-checks.yaml .ai/distribution/repository-identity-policy.yaml .ai/scripts/validate-source-governance.py .ai/scripts/validate-repository-identity.py" '' "python>=3.11 git" 30 cpu reuse-by-input source \
+    ".ai/distribution/governance-checks.yaml .ai/distribution/repository-identity-policy.yaml .ai/scripts/validate-source-governance.py .ai/scripts/validate-repository-identity.py" '' "python>=3.11 git" 60 cpu reuse-by-input source \
     "python .ai/scripts/validate-source-governance.py" source-governance
 register_check repository-identity-tests \
     "Repository Identity Drift Fail-Closed Tests" required \

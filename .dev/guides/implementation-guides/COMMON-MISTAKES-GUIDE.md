@@ -3,12 +3,12 @@
 > 本指南收集在 .NET DDD + WolverineFx + EF Core 開發中常見錯誤及其解決方案。
 
 ## 📋 目錄
-1. [編譯錯誤](#編譯錯誤)
-2. [測試錯誤](#測試錯誤)
-3. [ASP.NET Core 錯誤](#aspnet-core-錯誤)
-4. [EF Core 錯誤](#ef-core-錯誤)
-5. [事件處理錯誤](#事件處理錯誤)
-6. [Domain 模型錯誤](#domain-模型錯誤)
+1. [編譯錯誤](#-編譯錯誤)
+2. [測試錯誤](#-測試錯誤)
+3. [ASP.NET Core 錯誤](#-aspnet-core-錯誤)
+4. [EF Core 錯誤](#-ef-core-錯誤)
+5. [事件處理錯誤](#-事件處理錯誤)
+6. [Domain 模型錯誤](#-domain-模型錯誤)
 
 ## 🔴 編譯錯誤
 

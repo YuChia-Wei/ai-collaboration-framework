@@ -1,0 +1,50 @@
+template_metadata:
+  template_id: "assessment-locator"
+  template_version: "1.0.0"
+  template_created_at: "2026-07-13T23:04:10+08:00"
+  template_updated_at: "2026-07-13T23:04:10+08:00"
+
+schema_version: "1.0"
+assessment_id: "ASM-20260811-005"
+commit_search_id: "ASM-20260811-005"
+assessment_type: "ai-context-verification"
+title: "Governance Term Routing And Release Projection Verification"
+owner_skill: "ai-context-auditor"
+status: "final"
+report: "report.md"
+artifact_branch: "codex/2026-08-11-std-001-r3-governance-terms"
+base_branch: "codex/2026-08-11-std-001-standards-simplification"
+created_at: "2026-08-11T21:34:43+08:00"
+updated_at: "2026-08-11T21:34:43+08:00"
+template_source: ".dev/assessments/templates/assessment-locator-template.yaml"
+template_version: "1.0.0"
+report_template_source: ".ai/assets/skills/ai-context-auditor/templates/ai-context-audit-report-template.md"
+report_template_version: "2.1.0"
+subject_ref:
+  repository: "YuChia-Wei/ai-collaboration-framework"
+  branch: "codex/2026-08-11-std-001-r3-governance-terms"
+  commit: "fe85095d1d13955414942770995932490a6fa987"
+scope:
+  included:
+    - "Issue #192 and ASM-20260811-003 finding GTM-001"
+    - "Qualified governance-term registry, owner policies, machine bindings, source release policy, portable version projection, and runtime wrappers"
+    - "Distribution exclusions and mappings, committed selected-payload projection, active focused validation, and aggregate fast profile"
+  excluded:
+    - "Issue #191 Code Reviewer remediation except as a sibling delivery reference"
+    - "Issue #193 payload navigation and component-reference closure remediation"
+    - "Product source and test implementation trees"
+    - "Push, pull request, merge, Issue closure, Project allocation, tag, Release, and publication"
+relations:
+  supersedes: []
+  superseded_by: []
+  related_assessments:
+    - "ASM-20260811-003"
+  workflow_refs:
+    - "2026-08-11-std-001-r3-governance-terms"
+    - "2026-08-11-std-001-standards-simplification"
+  backlog_refs: []
+  adr_refs: []
+resume:
+  last_completed_action: "Independently verified fixed commit fe85095 and reconciled GTM-001 as addressed with no new blocking finding."
+  next_action: "ai-context-governance may reconcile and close the local #192 workflow; transport, integration, Issue state, and Project allocation remain separate decisions."
+  blockers: []

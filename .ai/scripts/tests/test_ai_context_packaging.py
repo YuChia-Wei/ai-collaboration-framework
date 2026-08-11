@@ -123,6 +123,28 @@ class SyntheticPackageRepo:
                 "source_repository": "fixture/repository",
                 "name_template": "fixture-v{version}",
             },
+            "payload_user_view": {
+                "schema_version": "1.0.0",
+                "classifications": PACKAGE.PAYLOAD_USER_VIEW_CLASSIFICATIONS,
+                "supported_selections": [
+                    {
+                        "selection_id": "core-only",
+                        "components": [
+                            "software-development-core",
+                            "ai-context-lifecycle-core",
+                        ],
+                    },
+                    {
+                        "selection_id": "dotnet-selected",
+                        "components": [
+                            "software-development-core",
+                            "ai-context-lifecycle-core",
+                            "dotnet-backend",
+                        ],
+                    },
+                ],
+                "capabilities": [],
+            },
             "reference_integrity": {
                 "text_extensions": [".md", ".yaml", ".py"],
                 "forbidden_source_lifecycle_patterns": [
@@ -782,10 +804,11 @@ class DeterministicPackageGwtTests(unittest.TestCase):
                 (root / "metadata/migration.yaml").read_text(encoding="utf-8")
             )
 
-            self.assertEqual("2.1.0", package["schema_version"])
+            self.assertEqual("2.2.0", package["schema_version"])
             self.assertEqual("2.0.0", inventory["schema_version"])
             self.assertEqual("3.0.0", migration["schema_version"])
             self.assertEqual(package["selection"], migration["selection"])
+            self.assertEqual("1.0.0", package["user_view"]["schema_version"])
             self.assertEqual(result["tree"], package["source"]["tree"])
             self.assertEqual(result["commit"], package["source"]["commit"])
             self.assertEqual(
@@ -1029,6 +1052,36 @@ class PayloadReferenceIntegrityGwtTests(unittest.TestCase):
         finally:
             fixture.close()
 
+    def test_gwt_011a_given_missing_local_navigation_when_built_then_it_fails_closed(self) -> None:
+        fixture = SyntheticPackageRepo()
+        try:
+            (fixture.root / "docs/rule.md").write_text(
+                "[missing portable target](missing.md)\n",
+                encoding="utf-8",
+                newline="\n",
+            )
+            git(fixture.root, "add", "docs/rule.md")
+            git(fixture.root, "commit", "-qm", "add missing payload navigation")
+            with self.assertRaisesRegex(PACKAGE.PackageError, "navigation targets are missing"):
+                fixture.build("missing-navigation")
+        finally:
+            fixture.close()
+
+    def test_gwt_011b_given_missing_actionable_command_target_when_built_then_it_fails_closed(self) -> None:
+        fixture = SyntheticPackageRepo()
+        try:
+            (fixture.root / "docs/rule.md").write_text(
+                "```powershell\npython .ai/scripts/missing.py\n```\n",
+                encoding="utf-8",
+                newline="\n",
+            )
+            git(fixture.root, "add", "docs/rule.md")
+            git(fixture.root, "commit", "-qm", "add missing payload command")
+            with self.assertRaisesRegex(PACKAGE.PackageError, "actionable command targets are missing"):
+                fixture.build("missing-command")
+        finally:
+            fixture.close()
+
 
 class VersionedMigrationPackagingGwtTests(unittest.TestCase):
     def test_gwt_012_given_no_prior_release_when_schema_v2_candidate_is_built_then_clean_install_is_independent(self) -> None:
@@ -1215,7 +1268,10 @@ class VersionedMigrationPackagingGwtTests(unittest.TestCase):
         finally:
             fixture.close()
 
-    def test_gwt_016_given_real_v030_package_when_candidate_is_extracted_then_upgrade_applies(self) -> None:
+    # Historical pre-v0.6 end-to-end fixtures remain readable evidence, but are
+    # intentionally outside unittest discovery. Active upgrade gates begin at
+    # v0.6.0 and exercise one immediate-predecessor route per candidate.
+    def historical_gwt_016_given_real_v030_package_when_candidate_is_extracted_then_upgrade_applies(self) -> None:
         with tempfile.TemporaryDirectory(prefix="ai-context-real-upgrade-") as temp_value:
             temp = Path(temp_value)
 
@@ -1335,7 +1391,7 @@ class VersionedMigrationPackagingGwtTests(unittest.TestCase):
             self.assertEqual("0.4.1", receipt["package_version"])
             self.assertEqual(sorted(acknowledgements), receipt["skipped_reconciliation_ids"])
 
-    def test_gwt_017_given_four_real_supported_sources_when_one_v050_candidate_is_built_then_each_upgrades_without_overwriting_target_truth(self) -> None:
+    def historical_gwt_017_given_four_real_supported_sources_when_one_v050_candidate_is_built_then_each_upgrades_without_overwriting_target_truth(self) -> None:
         with tempfile.TemporaryDirectory(prefix="ai-context-real-multi-source-") as temp_value:
             temp = Path(temp_value)
             previous_roots: dict[str, Path] = {}
@@ -1497,7 +1553,7 @@ class VersionedMigrationPackagingGwtTests(unittest.TestCase):
         os.environ.get("AI_CONTEXT_DOWNSTREAM_REPO"),
         "set AI_CONTEXT_DOWNSTREAM_REPO for the retained downstream integration gate",
     )
-    def test_gwt_018_given_retained_v040_downstream_when_v050_candidate_applies_then_declared_local_overrides_are_preserved(self) -> None:
+    def historical_gwt_018_given_retained_v040_downstream_when_v050_candidate_applies_then_declared_local_overrides_are_preserved(self) -> None:
         downstream = Path(os.environ["AI_CONTEXT_DOWNSTREAM_REPO"]).resolve()
         source_manifest = yaml.safe_load(
             (downstream / ".dev/AI-CONTEXT-SOURCE.yaml").read_text(encoding="utf-8")

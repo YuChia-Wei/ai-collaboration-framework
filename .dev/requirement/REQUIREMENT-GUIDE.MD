@@ -77,8 +77,6 @@ flowchart LR
 
 ## 5) Existing Examples
 
-上方的「Copy & Fill」區塊是本目錄目前維護的唯一通用需求範本。下列文件是實際需求紀錄，可作為結構與內容密度的參考；它們不是可直接複製的通用範本：
-
-- [HISTORICAL-CONTEXT-NORMALIZATION-REQUIREMENTS.MD](HISTORICAL-CONTEXT-NORMALIZATION-REQUIREMENTS.MD)
-- [DOTNET-VALIDATOR-PHASE-3-REQUIREMENTS.MD](DOTNET-VALIDATOR-PHASE-3-REQUIREMENTS.MD)
-- [TECH-STACK-REQUIREMENTS.MD](TECH-STACK-REQUIREMENTS.MD)
+上方的「Copy & Fill」區塊是 portable payload 維護的唯一通用需求範本。
+來源庫的實際需求紀錄屬於 source project truth，刻意不隨套件提供；下游應從
+自己的可驗證需求建立 instance，不得依賴或猜測那些被排除的來源紀錄。

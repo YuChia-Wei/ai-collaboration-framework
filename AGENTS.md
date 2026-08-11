@@ -65,6 +65,33 @@ Workflow artifact rules:
 - Follow `.dev/standards/WORKFLOW-HANDOFF-POLICY.md` before transferring an active workflow across a model, runtime, host, machine, or fresh session; the receiving checkpoint must remain executable without hidden session context.
 - Select linear or merge-commit integration positively under `.dev/TEAM-GIT-FLOW-RULES.MD`; workflow mode alone does not select topology.
 
+### Long-Running Validation Gate
+
+- Treat a validation command as long-running when its profile is `release` or
+  `nightly-full`, it selects a full matrix, or its expected or observed wall
+  time is at least 120 seconds.
+- Finish tracked mutations and focused validation first, then bind the exact
+  command to a clean immutable commit before dispatching long-running
+  validation.
+- Run long-running validation in a separate external runtime task using the
+  least expensive capable execution profile. Keep it read-only except for
+  ignored validation artifacts, and do not let it repair failures.
+- Put exactly one marked dispatch envelope from
+  `.ai/assets/skills/software-development-orchestrator/templates/external-task-delegation.schema.yaml`
+  in the external-task prompt. Bind the source-task identity, immutable commit,
+  exact argument vector, permissions, stop conditions, and completion route.
+- Use either a callback to the source task or one parent event wait. Do not
+  execute repeated waits, status probes, or progress narration. Require exactly
+  one schema-valid terminal report with source/delegated task IDs, commit,
+  command, duration, outcome counts when available, and evidence.
+- Execution timeout, interruption, subject drift, missing terminal evidence,
+  and blocked execution are never passed. A parent wait timeout remains
+  pending. If callback delivery fails after terminal state, one terminal
+  read-back is allowed; it is not permission to poll.
+- Do not parallelize an aggregate runner until dependency ordering, isolated
+  artifacts, bounded concurrency, deterministic evidence, and fail-closed
+  cancellation have independent contract coverage.
+
 ### Assessment Gate
 
 - Follow `.dev/standards/ASSESSMENT-ARTIFACT-POLICY.md` when a read-only audit,
@@ -96,6 +123,11 @@ Use `ai-context-governance` for:
 - skill routing changes;
 - runtime wrapper sync;
 - context migration planning or execution.
+
+When governance terminology affects authority or state, resolve the qualified
+term and canonical owner through `.dev/standards/AI-CONTEXT-OWNERSHIP.yaml`.
+Never infer a cross-owner transition from bare candidate, validated,
+integration, publication, closeout, finalization, or lifecycle wording.
 
 Do not route pure AI documentation governance work to `bdd-gwt-test-designer`.
 
@@ -188,10 +220,12 @@ Use `code-reviewer` only when reviewing .NET backend code or dotnet-backend impl
 
 When code review applies:
 
-1. Read `.ai/assets/tech-stacks/dotnet-backend/references/CODE-REVIEW-INDEX.MD`.
-2. Read `.ai/assets/skills/code-reviewer/references/checklist-reference.md`.
-3. Identify file type and read the matching checklist under `.dev/standards/`.
-4. Build a checklist comparison table.
+1. Read `.ai/assets/skills/code-reviewer/references/review-routing.yaml`.
+2. Select routes by explicit scope, then type hierarchy, then path; stop when
+   the applicable route is unresolved.
+3. Load only the selected routes' canonical references and applicable finding
+   rule IDs; do not add compatibility checklists or unrelated standards.
+4. Build a scoped checklist comparison table.
 5. Categorize issues as `CRITICAL`, `MUST FIX`, or `SHOULD FIX`.
 6. If tests apply in the target repo, run the narrowest meaningful test command.
 

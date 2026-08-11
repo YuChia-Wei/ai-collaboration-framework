@@ -18,7 +18,8 @@ defaults:
     mandatory_references: [".ai/assets/sub-agent-role-prompts/problem-frame-sub-agent/references/authoring-playbook.md", ".ai/assets/skills/problem-frame-author/references/output-contract.md", ".dev/problem-frames/README.MD"]
   code_review_input_envelope: &code_review_input_envelope
     <<: *command_input_envelope
-    mandatory_references: [".ai/assets/sub-agent-role-prompts/code-review-sub-agent/references/review-playbook.md", ".ai/assets/sub-agent-role-prompts/code-review-sub-agent/references/review-prompt.md", ".ai/assets/tech-stacks/dotnet-backend/shared/code-review-checklist.md", ".ai/assets/tech-stacks/dotnet-backend/shared/common-rules.md", ".ai/assets/tech-stacks/dotnet-backend/shared/testing-strategy.md", ".ai/assets/skills/code-reviewer/skill.yaml"]
+    source_refs: ["work-item:SAR94-002", "loaded-rule-packet:opaque", "review-route:general-csharp"]
+    mandatory_references: [".ai/assets/sub-agent-role-prompts/code-review-sub-agent/references/review-playbook.md", ".ai/assets/sub-agent-role-prompts/code-review-sub-agent/references/review-prompt.md", ".ai/assets/skills/code-reviewer/references/review-routing.yaml", ".ai/assets/skills/code-reviewer/skill.yaml"]
   permissions: &permissions
     read_scope: [".dev/workflows/example"]
     write_scope: [".dev/workflows/example"]

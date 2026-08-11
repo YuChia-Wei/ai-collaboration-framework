@@ -52,6 +52,52 @@ outcomes. A partial checkpoint-shape check is not fresh-session acceptance.
 | `software-development-orchestrator` | Decide the development entry point, workflow mode, development capability routing, artifacts, validation, and commit checkpoints. | `.dev/workflows/<workflow-id>/`, development stage routing, handoff packets. |
 | Downstream skills | Execute specialist stages. | requirements, specs, architecture, implementation, review, compliance. |
 
+## Long-Running Validation Runtime Pattern
+
+Classify `release`, `nightly-full`, full-matrix, and validation expected or
+observed to take at least 120 seconds as long-running. The owning conversation
+first completes tracked mutations and focused checks, pins a clean immutable
+commit, and bounds the exact command and working directory.
+
+Create a separate external runtime task with the least expensive capable
+execution profile. Its prompt contains exactly one
+  `BEGIN_EXTERNAL_TASK_DELEGATION` / `END_EXTERNAL_TASK_DELEGATION` YAML envelope
+that conforms to `../templates/external-task-delegation.schema.yaml`. Start from
+the dispatch template, bind either an explicit or runtime-injected source-task
+identity, and name the source task as final integration owner.
+
+Select one completion path before dispatch:
+
+- `source-task-callback`: the delegated task sends its single schema-valid
+  terminal report to the source task;
+- `parent-event-wait`: the source task subscribes once to a completion event for
+  the delegated task and does not issue repeated status probes.
+
+The terminal message contains exactly one
+`BEGIN_EXTERNAL_TASK_COMPLETION` / `END_EXTERNAL_TASK_COMPLETION` envelope.
+
+Use an event wait as the normal callback fallback. A wait transport timeout
+leaves validation pending; it is not an execution failure. If callback delivery
+fails after a terminal task state is independently visible, one terminal
+read-back is allowed. The read-back is acceptable only when it contains the
+matching schema-valid completion report; it must not become a polling loop.
+The dispatch's `progress_updates` field applies to delivery into the source
+task. Runtime-required commentary that remains inside the delegated task is
+allowed and must not wake or consume the source task as a progress callback.
+
+The delegated task may write only ignored validation artifacts and must not
+repair or broaden scope. It reports exactly one terminal outcome with source
+and delegated task identities, commit, exact argument vector, duration, counts
+when available, evidence, and final tracked state. Runtime interruption,
+execution timeout, blocked execution, subject drift, or a terminal task without
+a valid completion report is non-passing.
+
+This runtime task is an execution surface, not proof of a canonical role or
+external skill. Keep role applicability, provider selection, and workflow
+integration under their existing owners. Do not enable parallel aggregate
+execution until its dependency, isolation, concurrency, evidence-ordering, and
+fail-closed cancellation contracts are independently verified.
+
 ## Codex Goal Pattern
 
 Use a Codex Goal for the durable software-development objective. Put `software-development-orchestrator` inside that goal as the development orchestration policy.

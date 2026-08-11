@@ -65,6 +65,31 @@ Workflow artifact 規則：
 - 在跨 model、runtime、host、machine 或 fresh session 轉交 active workflow 前，遵循 `.dev/standards/WORKFLOW-HANDOFF-POLICY.md`；receiving checkpoint 必須能在不依賴 hidden session context 的情況下執行。
 - 依 `.dev/TEAM-GIT-FLOW-RULES.MD` 明確選擇線性或 merge-commit 整合；workflow mode 本身不決定 topology。
 
+### 長時間驗證 Gate
+
+- 當 validation command 使用 `release` 或 `nightly-full` profile、選取 full
+  matrix，或預期／已觀測 wall time 至少 120 秒時，視為 long-running。
+- 必須先完成 tracked mutations 與 focused validation，再把 exact command
+  綁定至 clean immutable commit，之後才能派送長時間驗證。
+- 長時間驗證必須交給獨立 external runtime task，並使用足以完成工作的最低
+  成本 execution profile。除了 ignored validation artifacts 外維持唯讀，且
+  不得由該 task 修復失敗。
+- External-task prompt 必須放入一份符合
+  `.ai/assets/skills/software-development-orchestrator/templates/external-task-delegation.schema.yaml`
+  的 marked dispatch envelope，並綁定 source task identity、immutable commit、
+  exact argument vector、permissions、stop conditions 與 completion route。
+- Completion route 使用 callback 回來源 task，或由 parent 進行一次 event wait；
+  不得重複 waits、status probes 或 progress narration。External task 必須只送出
+  一份 schema-valid terminal report，包含 source/delegated task IDs、commit、
+  command、duration、可取得的 outcome counts 與 evidence。
+- Execution timeout、中止、subject drift、缺少 terminal evidence 或 blocked
+  execution 絕不等於 passed。Parent wait timeout 只維持 pending；若 callback
+  delivery 在 task terminal 後失敗，可做一次 terminal read-back，但不得藉此
+  進入 polling loop。
+- Aggregate runner 在 dependency ordering、artifact isolation、bounded
+  concurrency、deterministic evidence 與 fail-closed cancellation 都有獨立
+  contract coverage 前，不得平行化。
+
 ### Assessment Gate
 
 - 唯讀 audit、大型 code review、architecture assessment 或類似報告需要保存時，遵循 `.dev/standards/ASSESSMENT-ARTIFACT-POLICY.md`。
@@ -92,6 +117,11 @@ Workflow artifact 規則：
 - skill routing 調整；
 - runtime wrapper sync；
 - context migration 規劃或執行。
+
+當治理術語涉及 authority 或 state 時，必須透過
+`.dev/standards/AI-CONTEXT-OWNERSHIP.yaml` 解析 qualified term 與 canonical
+owner；不得從未限定的 candidate、validated、integration、publication、
+closeout、finalization 或 lifecycle 用語推論跨 owner transition。
 
 不要將純 AI 文件治理工作交給 `bdd-gwt-test-designer`。
 
@@ -181,10 +211,11 @@ environment-dependent tests 是 conditional。Outcome 只能記錄為 `passed`�
 
 適用 code review 時：
 
-1. 閱讀 `.ai/assets/tech-stacks/dotnet-backend/references/CODE-REVIEW-INDEX.MD`。
-2. 閱讀 `.ai/assets/skills/code-reviewer/references/checklist-reference.md`。
-3. 辨識檔案類型，並閱讀 `.dev/standards/` 下對應 checklist。
-4. 建立 checklist comparison table。
+1. 閱讀 `.ai/assets/skills/code-reviewer/references/review-routing.yaml`。
+2. 依序以明確 scope、type hierarchy、path 選擇 route；適用 route 無法解析時停止。
+3. 只載入所選 route 的 canonical references 與適用 finding rule IDs；
+   不額外載入 compatibility checklists 或無關 standards。
+4. 建立限定 scope 的 checklist comparison table。
 5. 將問題分類為 `CRITICAL`、`MUST FIX` 或 `SHOULD FIX`。
 6. 若目標 repo 適用測試，執行最窄且有意義的 test command。
 

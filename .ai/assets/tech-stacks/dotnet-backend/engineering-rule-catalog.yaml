@@ -11,7 +11,7 @@ ordering:
   array_contents: "retain declared source order"
 catalog_digest:
   algorithm: "sha256"
-  value: "707be51872083030f8b32b8f96754005cd5f09284f0c38a4d522e393de1d6aa9"
+  value: "acb85d42090f446b290bf01a79752b79ebe203919d301202984831bf4d81a9cb"
   canonicalization: "UTF-8 encoding of compact JSON with Unicode preserved, object keys sorted by Unicode code point, array order preserved, and exactly one terminal LF; the complete catalog_digest field is excluded from the input."
 selector_contract:
   capability_execution_mode_file_type: "unconstrained-by-source with an empty values list means no narrower source-backed predicate is declared; a resolver must not invent one or use it as a default fallback."
@@ -50,7 +50,7 @@ rules:
           values: []
     override_policy: "not-applicable"
     decision_evidence: ["target Aggregate architecture or persistence profile"]
-    derived_consumers: [".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/aggregate-standards.md", ".ai/assets/tech-stacks/dotnet-backend/references/BUILDING-BLOCKS-CLASS-INDEX.MD", ".ai/assets/tech-stacks/dotnet-backend/references/CODE-REVIEW-INDEX.MD"]
+    derived_consumers: [".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/aggregate-standards.md", ".ai/assets/tech-stacks/dotnet-backend/references/BUILDING-BLOCKS-CLASS-INDEX.MD", ".ai/assets/skills/code-reviewer/references/review-routing.yaml"]
     status: "active"
     source_file_sha256: "9844e261741fd6fcdf8c0489516c2b4be8ad8bb8074463c7e35942631c2dabd9"
     normative_text_sha256: "262144bbec5431033e252c4c128025a5563f13f2d6c5610e86d51f7c19b4e4a3"
@@ -140,7 +140,7 @@ rules:
           values: []
     override_policy: "explicit-target-decision"
     decision_evidence: ["named all-or-nothing invariant", "documented same-bounded-context consistency decision"]
-    derived_consumers: [".ai/assets/tech-stacks/dotnet-backend/shared/common-rules.md"]
+    derived_consumers: [".ai/assets/tech-stacks/dotnet-backend/shared/common-rules.md", ".ai/assets/skills/code-reviewer/references/review-routing.yaml"]
     status: "active"
     source_file_sha256: "bd3cb7fc48bbe7fb8c725f10d4baf2a31f24d4ac22aa29422d7d586daf1556a3"
     normative_text_sha256: "05eb3e1e98a560e35e0ecee16d77514544445467263cd169633a798cf7ef8be1"
@@ -220,7 +220,7 @@ rules:
           values: []
     override_policy: "forbidden"
     decision_evidence: null
-    derived_consumers: [".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/aggregate-standards.md", ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/test-standards.md"]
+    derived_consumers: [".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/aggregate-standards.md", ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/test-standards.md", ".ai/assets/skills/code-reviewer/references/review-routing.yaml"]
     status: "active"
     source_file_sha256: "3ab132dc92cf0120a488358f23abdbb90731a98556e71cff34a85cae4425eabc"
     normative_text_sha256: "45292a7bbc1fc9e6d4e845aa660681efda68e0e2394cecf1c6c2c76ebf3814f7"
@@ -263,7 +263,7 @@ rules:
           values: []
     override_policy: "not-applicable"
     decision_evidence: ["authorization, retention, legal, audit, and cleanup policy"]
-    derived_consumers: [".ai/assets/tech-stacks/dotnet-backend/shared/common-rules.md"]
+    derived_consumers: [".ai/assets/tech-stacks/dotnet-backend/shared/common-rules.md", ".ai/assets/skills/code-reviewer/references/review-routing.yaml"]
     status: "active"
     source_file_sha256: "dbcb817922af4ff243d8fab09bcdc3d1085dcd88f599ef39e65801b55772f626"
     normative_text_sha256: "7d8e43950811aa96c6cfc12f811deb9c8d13739989d4611176e5d0e4754c165e"
@@ -309,7 +309,7 @@ rules:
           values: []
     override_policy: "explicit-target-decision"
     decision_evidence: [".dev/project-config.yaml architecture capability selection", "target repository requirements or architecture decision"]
-    derived_consumers: [".ai/assets/tech-stacks/dotnet-backend/shared/common-rules.md"]
+    derived_consumers: [".ai/assets/tech-stacks/dotnet-backend/shared/common-rules.md", ".ai/assets/skills/code-reviewer/references/review-routing.yaml"]
     status: "active"
     source_file_sha256: "04763da8d53e4a5921c82d216f4143676d7881350d9e87a39ffb950b45859bc0"
     normative_text_sha256: "5e5370bef9fae1d46a6df8518ab380422368a25d7bb0ca00affc1af3f726cfa7"
@@ -382,7 +382,7 @@ rules:
           values: []
     override_policy: "forbidden"
     decision_evidence: null
-    derived_consumers: [".ai/assets/tech-stacks/dotnet-backend/shared/common-rules.md"]
+    derived_consumers: [".ai/assets/tech-stacks/dotnet-backend/shared/common-rules.md", ".ai/assets/skills/code-reviewer/references/review-routing.yaml"]
     status: "active"
     source_file_sha256: "7cf69343dcaa73f12f2dff85549f1627548301d2c72b3bd6c81d6cf2313225b6"
     normative_text_sha256: "1a3c010a5f2e863bcf60c7ddc333a23c7d96705e8c758bb4a89fa9cae111c01c"
@@ -490,7 +490,7 @@ rules:
           values: []
     override_policy: "explicit-target-decision"
     decision_evidence: ["target repository collaboration guidance", "target repository package and test configuration"]
-    derived_consumers: [".ai/assets/tech-stacks/dotnet-backend/shared/testing-strategy.md", ".ai/assets/tech-stacks/dotnet-backend/shared/common-rules.md"]
+    derived_consumers: [".ai/assets/tech-stacks/dotnet-backend/shared/testing-strategy.md", ".ai/assets/tech-stacks/dotnet-backend/shared/common-rules.md", ".ai/assets/skills/code-reviewer/references/review-routing.yaml"]
     status: "active"
     source_file_sha256: "c1b1a007f44176191fd59e38f2f5b7f1ff4673ca894a7f51b0b65fa697eab9d0"
     normative_text_sha256: "f74384cd191b1efab60eadba7e3703eff38c03d76bf6cdbb6fa388e1cc9e5693"
@@ -603,7 +603,7 @@ rules:
           values: []
     override_policy: "forbidden"
     decision_evidence: null
-    derived_consumers: [".ai/assets/tech-stacks/dotnet-backend/shared/testing-strategy.md", ".ai/assets/tech-stacks/dotnet-backend/shared/common-rules.md"]
+    derived_consumers: [".ai/assets/tech-stacks/dotnet-backend/shared/testing-strategy.md", ".ai/assets/tech-stacks/dotnet-backend/shared/common-rules.md", ".ai/assets/skills/code-reviewer/references/review-routing.yaml"]
     status: "active"
     source_file_sha256: "c1b1a007f44176191fd59e38f2f5b7f1ff4673ca894a7f51b0b65fa697eab9d0"
     normative_text_sha256: "f74384cd191b1efab60eadba7e3703eff38c03d76bf6cdbb6fa388e1cc9e5693"
@@ -716,7 +716,7 @@ rules:
           values: []
     override_policy: "explicit-target-decision"
     decision_evidence: [".dev/project-config.yaml technologySelections slot testing.mocking", "target repository test packages and configuration", "target repository collaboration or technology requirements"]
-    derived_consumers: [".ai/assets/tech-stacks/dotnet-backend/shared/testing-strategy.md", ".ai/assets/tech-stacks/dotnet-backend/shared/common-rules.md"]
+    derived_consumers: [".ai/assets/tech-stacks/dotnet-backend/shared/testing-strategy.md", ".ai/assets/tech-stacks/dotnet-backend/shared/common-rules.md", ".ai/assets/skills/code-reviewer/references/review-routing.yaml"]
     status: "active"
     source_file_sha256: "c1b1a007f44176191fd59e38f2f5b7f1ff4673ca894a7f51b0b65fa697eab9d0"
     normative_text_sha256: "8ff4679c135e2de0f7a370317da2da76ee4a5bf7ca6ef076dc85d0aaeed23503"
@@ -756,14 +756,6 @@ unpacketized_documents:
     migration_provenance:
       legacy_path: ".dev/standards/ASPNET-CORE-CONFIGURATION-CHECKLIST.md"
     source_file_sha256: "2e4b0d969f72c0296b83114fc6f6536e58245ed1f5e09a60cfc304bc1eeecb60"
-    packet_state: "identity-allocation-required"
-    resolver_disposition: "unpacketized-fail-closed"
-    reason: "The migration matrix classifies this as profile-baseline-rule, but no registered stable rule_id exists. Do not derive a path-based ID or packet it."
-  - canonical_source:
-      path: ".ai/assets/tech-stacks/dotnet-backend/standards/CODE-REVIEW-CHECKLIST.md"
-    migration_provenance:
-      legacy_path: ".dev/standards/CODE-REVIEW-CHECKLIST.md"
-    source_file_sha256: "355d4e82cc3274cd9bb95f6bfcc97423fcc59bcabe296527adf2214136daa2ea"
     packet_state: "identity-allocation-required"
     resolver_disposition: "unpacketized-fail-closed"
     reason: "The migration matrix classifies this as profile-baseline-rule, but no registered stable rule_id exists. Do not derive a path-based ID or packet it."

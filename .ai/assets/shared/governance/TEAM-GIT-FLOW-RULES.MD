@@ -16,11 +16,16 @@ protection rules, and permissions.
 - After integration, verify the target branch separately and do not claim
   publication or release completion from integration alone.
 
-## Integration Gate And Topology
+## Integration Gate And Merge Topology
 
 The target selects its review or integration gate independently from Git
 topology. A workflow does not inherently require a merge commit, and a linear
 history does not inherently permit direct push.
+
+Repository integration is the reviewed Git event that enters the target's
+configured integration branch. It is not workflow completion, assessment
+finality, release-source validation, hosted publication, or publication
+finalization.
 
 Choose linear integration when commits and the provider review record carry all
 needed evidence and the branch has no durable checkpoint, approval, handoff,

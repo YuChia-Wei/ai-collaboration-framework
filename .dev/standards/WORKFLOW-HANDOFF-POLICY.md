@@ -27,7 +27,8 @@ Create or refresh a checkpoint before:
 - delegating continuation to a lower-cost or otherwise less-contextual
   executor;
 - pushing or merging an incomplete workflow as a transport boundary;
-- handing off release candidate, tag, publication, or finalization work.
+- handing off framework version candidate validation, tag validation,
+  publication validation, or hosted finalization validation work.
 
 The checkpoint is not workflow completion. Keep the workflow and unfinished
 task active unless their own completion contracts are satisfied.
@@ -84,10 +85,14 @@ The repair exception does not authorize unrelated work.
 
 ## Release Handoffs
 
-Set `release_handoff: true` for candidate, tag, publication, or finalization
-handoffs. In addition to the critical gate, record the REL-owned phase-specific
-state command and bounded observed result. A release phase check must pass
-before release work continues; a failed phase check has no general
+Set `release_handoff: true` for source release validation-phase handoffs. The
+exact machine literals remain `candidate`, `tag`, `publication`, and
+`finalization`. They select REL-owned validation phases; they are not
+release-source statuses, provider states, or mutation authority.
+
+In addition to the critical gate, record the REL-owned phase-specific state
+command and bounded observed result. A source release phase check must pass
+before source release work continues; a failed phase check has no general
 continuation exception.
 
 HANDOFF owns this interface. REL owns the allowed phase vocabulary, the

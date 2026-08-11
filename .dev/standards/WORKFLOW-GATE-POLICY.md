@@ -275,6 +275,73 @@ A mandatory selected specialized test keeps closeout open until its outcome is
 acceptable under target policy. `deferred-with-owner` requires the responsible
 owner and follow-up condition; it is not implicit success.
 
+## Long-Running Validation Delegation Gate
+
+This gate applies in direct and workflow mode. It changes the execution surface,
+not the selected validation, severity, or pass/fail contract.
+
+A command is long-running when any condition is true:
+
+- its selected profile is `release` or `nightly-full`;
+- it selects a full package, compatibility, or history matrix;
+- repository evidence predicts at least 120 seconds of wall time; or
+- a prior comparable execution observed at least 120 seconds of wall time.
+
+Before dispatch, the owning conversation must finish tracked mutations, run the
+narrow focused checks, obtain a clean worktree, and bind the exact command to a
+full immutable commit SHA. Pending design decisions, mutable source state, and
+unbounded credentials are dispatch blockers.
+
+Run the command in a separate external runtime task using the least expensive
+execution profile that can faithfully execute and report the bounded command.
+Its scope is read-only except for ignored validation logs or artifacts. It must
+not repair, commit, push, mutate Issues or Projects, or broaden the command.
+
+The external-task prompt must contain exactly one marked dispatch envelope
+conforming to
+`.ai/assets/skills/software-development-orchestrator/templates/external-task-delegation.schema.yaml`.
+The envelope binds the source-task identity, final integration owner, immutable
+subject, exact argument vector, permission boundary, stop conditions, and one
+completion-delivery route. The source identity may be explicit or supplied by
+the runtime's delegation wrapper; do not assume a separate task's final output
+is automatically routed to its source.
+
+Select either a source-task callback or one parent event wait as the primary
+completion path. The callback must target the source task. The event wait
+subscribes once to the delegated task and wakes on terminal or attention state;
+it is not repeated polling. Progress callbacks into the source task, repeated
+waits, status probes, and source-side progress narration remain prohibited;
+runtime-required commentary confined to the delegated task is not a callback.
+The external task returns exactly one
+completion report conforming to the same schema and containing:
+
+- immutable commit SHA and clean-state preflight;
+- exact command and working directory;
+- start, completion, and wall-time evidence;
+- selected, executed, reused, failed, blocked, warning, deferred, and
+  not-applicable counts when the runner exposes them;
+- exit code plus log, evidence, or bounded output references; and
+- final tracked worktree state.
+
+Execution timeout, interruption, missing terminal evidence, subject drift, and
+blocked execution are non-passing. The owning workflow remains open until it
+receives and accepts an allowed final outcome. A parent event-wait timeout is a
+pending transport state, not a validation result. If callback delivery fails
+after the delegated task has reached a terminal state, the owner may perform
+one terminal read-back and accept only a matching schema-valid completion
+report. This bounded recovery is not permission to poll. When the runtime has
+neither callback, event wait, nor terminal read-back support, record
+`blocked-by-environment` or create a fresh-session handoff rather than running a
+primary-conversation polling loop.
+
+Keep canonical aggregate runners because they own profile selection,
+dependency ordering, unified evidence, and fail-closed classification. A future
+parallel runner is allowed only after independent contract coverage proves its
+dependency DAG, artifact and temporary-state isolation, bounded concurrency,
+deterministic evidence ordering, timeout propagation, and fail-closed
+cancellation. Until then, reduce interaction cost through external execution,
+not unverified parallelism or removal of the aggregate gate.
+
 ## Workflow Closing Checklist
 
 Before sending a final response in workflow mode, the agent must verify all of the following:

@@ -1,0 +1,74 @@
+{
+  "template_id": "ai-context-governance-remediation-task",
+  "template_version": "1.1.0",
+  "template_created_at": "2026-07-10T18:22:49+08:00",
+  "template_updated_at": "2026-07-27T09:52:09+08:00",
+  "task_id": "STD001-001",
+  "workflow_id": "2026-08-11-std-001-standards-simplification",
+  "owner_skill": "ai-context-governance",
+  "status": "completed",
+  "created_at": "2026-08-11T13:31:10+08:00",
+  "updated_at": "2026-08-11T20:56:40+08:00",
+  "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
+  "model": "gpt-5.6-sol",
+  "reasoning_effort": "high",
+  "finding_ids": [
+    "ASM-20260811-003#CRL-001",
+    "ASM-20260811-003#CRL-002"
+  ],
+  "scope": {
+    "target": "Round 2 code-review progressive-disclosure and reference-loading baseline",
+    "files": [
+      ".ai/assets/skills/code-reviewer/**",
+      ".agents/skills/code-reviewer/**",
+      ".claude/skills/code-reviewer/**",
+      ".ai/assets/tech-stacks/dotnet-backend/references/CODE-REVIEW-INDEX.MD",
+      ".dev/standards/**",
+      ".ai/distribution/**"
+    ],
+    "constraints": [
+      "Keep audited context read-only; only assessment and workflow artifacts may change during the baseline",
+      "Measure actual entry and conditional reference loading rather than inferring load from directory size",
+      "Preserve checklist, severity, output, and file-type routing semantics in every proposed simplification",
+      "Use actual package payload evidence in addition to the source tree"
+    ],
+    "non_goals": [
+      "Product .NET source or test review",
+      "Canonical code-review standard mutation before stable findings",
+      "New terminology-specific skill",
+      "Push, merge, Issue closure, tag, or publication"
+    ]
+  },
+  "execution": {
+    "steps": [
+      "Enumerate code-reviewer entries, canonical references, file-type routing, and package projection",
+      "Measure baseline files, bytes, words, and unconditional versus conditional reference sets",
+      "Trace checklist, severity, and output-contract ownership",
+      "Record stable R2 findings in ASM-20260811-003"
+    ],
+    "validation": [
+      "python .ai/scripts/validate-assessment-artifacts.py",
+      "python .ai/scripts/validate-ai-context.py",
+      "package payload projection and direct reference resolution",
+      "git diff --check"
+    ],
+    "last_completed_step": "Measured the declared general and specialist load sets, traced semantic drift, and recorded the keep/move/retire plus equivalence contract",
+    "next_action": "Present the local #191 result for owner review; keep integration, Project allocation, and transport separate"
+  },
+  "results": {
+    "summary": "Finalized the Round 2 baseline with exact file/byte/word load sets, two stable findings, a bounded disposition list, and deterministic before/after acceptance criteria.",
+    "files_changed": [
+      ".dev/assessments/ASM-20260811-003/report.md",
+      ".dev/workflows/2026-08-11-std-001-standards-simplification/reports/r2-reference-loading-baseline.md",
+      ".dev/workflows/2026-08-11-std-001-standards-simplification/reports/decision-ledger.md"
+    ],
+    "tests_run": [
+      "exact git blob/reference-set inventory at df7012b6",
+      "active reference-consumer inventory",
+      "source versus extracted-payload path comparison"
+    ],
+    "finding_status": "local-implementation-complete-pending-owner-review-and-integration",
+    "residual_risk": "The verified #191 delivery remains isolated on its local branch and therefore is not yet part of the coordination branch or any package candidate.",
+    "follow_up_needed": true
+  }
+}

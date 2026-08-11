@@ -61,7 +61,7 @@ Use for:
 ### Quality Gates
 - `.ai/assets/sub-agent-role-prompts/code-review-sub-agent/sub-agent.yaml`
 - `.ai/assets/sub-agent-role-prompts/reactor-code-review-sub-agent/sub-agent.yaml`
-- `.ai/assets/tech-stacks/dotnet-backend/shared/code-review-checklist.md`
+- `.ai/assets/skills/code-reviewer/references/review-routing.yaml`
 - `.ai/assets/skills/spec-compliance-validator/references/spec-compliance-rules.md`
 - `.ai/assets/skills/spec-compliance-validator/references/test-validation-steps.md`
 - `.ai/assets/skills/spec-compliance-validator/references/validation-command-templates.md`

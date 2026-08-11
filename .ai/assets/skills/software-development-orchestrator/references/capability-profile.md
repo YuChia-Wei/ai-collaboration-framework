@@ -68,6 +68,45 @@ Each task records `required_for_closeout` as a subset of `selected_levels`.
 Unit and integration remain the default selected levels; every conditional
 level needs a recorded selection source.
 
+Long-running validation uses a separate execution surface without changing the
+selected checks or their result semantics. Classify `release`, `nightly-full`,
+full-matrix, and any command with expected or observed wall time of at least 120
+seconds as long-running. Finish tracked mutations and focused checks first, then
+bind the exact command to a clean immutable commit.
+
+Dispatch the command to a separate external runtime task using the least
+expensive capable execution profile. Every prompt contains exactly one marked
+dispatch envelope conforming to
+`../templates/external-task-delegation.schema.yaml`; use the companion dispatch
+and completion templates and validate retained envelopes with
+`../scripts/validate-external-task-delegation.py`.
+
+The dispatch names the source-task identity as explicit or runtime-injected and
+selects either a source-task callback or one parent event wait. A callback must
+target the source task; an event wait subscribes once to the delegated task and
+does not repeatedly poll. The external task is read-only except for ignored
+validation artifacts, performs no repair, and emits exactly one terminal report
+with the commit, command, duration, outcome counts when available, evidence, and
+final worktree state.
+The terminal message similarly contains exactly one
+`BEGIN_EXTERNAL_TASK_COMPLETION` / `END_EXTERNAL_TASK_COMPLETION` envelope so
+the source task can validate it before accepting the outcome.
+
+An execution timeout, interruption, invalid subject, missing terminal report,
+or blocked execution remains non-passing. A parent event-wait timeout is only a
+pending transport state. If callback delivery fails after the delegated task
+has terminated, the parent may perform one terminal read-back and accept the
+report only when it satisfies the completion schema. This recovery does not
+authorize progress polling or relabel an execution failure. `progress_updates`
+governs messages delivered to the source task; runtime-required commentary that
+stays inside the delegated task is runtime-local and is not a source progress
+callback.
+
+Parallel aggregate execution is a separate implementation decision. It needs
+independent contract coverage for the dependency DAG, artifact isolation,
+bounded concurrency, deterministic evidence, and fail-closed cancellation
+before it may replace sequential aggregate execution.
+
 ## Selectable Spec Compliance
 
 Spec compliance is unselected by default and reports `not-applicable`. A target
@@ -94,7 +133,10 @@ Schema `1.2` records deterministic orchestration invariants for intent-class
 activation, approval pauses, selectable compliance, coherent commit batches,
 fresh-session evidence, and separate closeout evidence. Schema `1.3` adds the
 repository-owned routine-validation activation policy without changing the
-explicit command and lifecycle-command contracts.
+explicit command and lifecycle-command contracts. Schema `1.4` adds the
+long-running validation delegation, schema-bound dispatch/completion envelopes,
+event-driven completion delivery, no-repeated-polling rule, and safe
+parallelization prerequisites.
 
 Deterministic activation acceptance starts from the preclassified envelope
 defined in `acceptance-oracle.md`. Natural-language classification remains a

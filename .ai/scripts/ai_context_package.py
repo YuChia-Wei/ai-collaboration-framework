@@ -8,9 +8,11 @@ import hashlib
 import io
 import json
 import os
+import posixpath
 import re
 import subprocess
 import tarfile
+import urllib.parse
 import zipfile
 from dataclasses import dataclass
 from datetime import datetime, timezone
@@ -28,6 +30,32 @@ REPOSITORY_PATH_RE = re.compile(
     r"(?<![A-Za-z0-9_.-])(?:\.dev|\.ai|\.agents|\.claude|\.codex|\.github)/"
     r"[A-Za-z0-9._*/{}<>-]+(?:/[A-Za-z0-9._*/{}<>-]+)*/?"
 )
+MARKDOWN_LINK_RE = re.compile(r"!?\[[^\]\n]*\]\(([^)\n]+)\)")
+MARKDOWN_REFERENCE_DEFINITION_RE = re.compile(r"^\s{0,3}\[[^\]]+\]:\s*(\S+)")
+MARKDOWN_FENCE_RE = re.compile(r"^\s{0,3}(`{3,}|~{3,})")
+MARKDOWN_HEADING_RE = re.compile(r"^\s{0,3}#{1,6}\s+(.+?)\s*#*\s*$")
+MARKDOWN_SETEXT_RE = re.compile(r"^\s{0,3}(?:=+|-+)\s*$")
+MARKDOWN_HTML_ID_RE = re.compile(r"\bid=[\"']([^\"']+)[\"']", re.IGNORECASE)
+INLINE_CODE_RE = re.compile(r"(`+)(.+?)\1")
+ACTIONABLE_COMMAND_RE = re.compile(
+    r"^\s*(?:(?:[-*+]|\d+[.)])\s+|>\s*)*(?:\$\s*)?"
+    r"(?:python(?:3)?|bash|sh|pwsh|powershell(?:\.exe)?)\b",
+    re.IGNORECASE,
+)
+REPOSITORY_ROOT_PREFIXES = (".ai/", ".dev/", ".agents/", ".claude/", ".codex/", ".github/")
+PLACEHOLDER_TOKENS = ("*", "?", "<", ">", "{", "}")
+COMPONENT_PACKAGE_SCHEMAS = {"2.0.0", "2.1.0", "2.2.0"}
+IDENTITY_PACKAGE_SCHEMAS = {"1.1.0", "2.1.0", "2.2.0"}
+PAYLOAD_USER_VIEW_CLASSIFICATIONS = {
+    "markdown_local_links": "required-local-navigation",
+    "markdown_anchors": "required-local-anchor",
+    "component_cross_links": "navigation-only-not-activation",
+    "fenced_code": "non-actionable-example-unless-command",
+    "inline_code": "non-actionable-reference-unless-command",
+    "templates_and_placeholders": "non-actionable-template",
+    "external_urls": "external-not-validated",
+    "actionable_local_commands": "required-local-target",
+}
 DEFAULT_SELECTION = {
     "release_model": "single-versioned-componentized-release",
     "mandatory_components": [
@@ -520,7 +548,506 @@ def collect_payload(
     return sorted(output.values(), key=lambda item: item.path.encode("utf-8"))
 
 
-def validate_payload_reference_integrity(files: Iterable[PayloadFile], profile: dict) -> None:
+def _is_placeholder(value: str) -> bool:
+    return any(token in value for token in PLACEHOLDER_TOKENS)
+
+
+def _decode_payload_text(item: PayloadFile) -> str:
+    try:
+        return item.content.decode("utf-8")
+    except UnicodeDecodeError as exc:
+        raise PackageError(f"packaged text file is not UTF-8: {item.path}") from exc
+
+
+def _visible_markdown_lines(text: str) -> list[tuple[int, str]]:
+    visible: list[tuple[int, str]] = []
+    fence_character: str | None = None
+    fence_length = 0
+    for line_number, line in enumerate(text.splitlines(), 1):
+        marker = MARKDOWN_FENCE_RE.match(line)
+        if marker is not None:
+            token = marker.group(1)
+            if fence_character is None:
+                fence_character = token[0]
+                fence_length = len(token)
+            elif token[0] == fence_character and len(token) >= fence_length:
+                fence_character = None
+                fence_length = 0
+            continue
+        if fence_character is None:
+            visible.append((line_number, line))
+    return visible
+
+
+def _strip_inline_code(line: str) -> str:
+    return INLINE_CODE_RE.sub("", line)
+
+
+def _markdown_destination(value: str) -> str:
+    destination = value.strip()
+    if destination.startswith("<") and ">" in destination:
+        destination = destination[1 : destination.index(">")]
+    elif destination:
+        destination = destination.split()[0]
+    return urllib.parse.unquote(destination)
+
+
+def _resolve_markdown_target(source_path: str, raw_destination: str) -> tuple[str | None, str]:
+    destination = _markdown_destination(raw_destination)
+    if not destination:
+        return source_path, ""
+    if destination.startswith("//") or re.match(
+        r"^[A-Za-z][A-Za-z0-9+.-]*:", destination
+    ):
+        return None, ""
+    path_and_query, separator, fragment = destination.partition("#")
+    path_value = path_and_query.split("?", 1)[0]
+    if not separator:
+        fragment = ""
+    if not path_value:
+        target = source_path
+    elif path_value.startswith("/") or "\\" in path_value:
+        return "..", fragment
+    elif path_value.startswith(REPOSITORY_ROOT_PREFIXES):
+        target = posixpath.normpath(path_value)
+    else:
+        target = posixpath.normpath(
+            posixpath.join(posixpath.dirname(source_path), path_value)
+        )
+    if target == ".." or target.startswith("../"):
+        return "..", fragment
+    return target, fragment
+
+
+def _target_payload_items(
+    files_by_path: dict[str, PayloadFile], target: str
+) -> list[PayloadFile]:
+    exact = files_by_path.get(target.rstrip("/"))
+    if exact is not None:
+        return [exact]
+    prefix = target.rstrip("/") + "/"
+    return [item for path, item in files_by_path.items() if path.startswith(prefix)]
+
+
+def _github_heading_slug(value: str) -> str:
+    value = re.sub(r"!?\[([^\]]*)\]\([^)]*\)", r"\1", value)
+    value = re.sub(
+        r"</?(?:a|span|br|code|kbd|em|strong|sup|sub|details|summary)\b[^>]*>",
+        "",
+        value,
+        flags=re.IGNORECASE,
+    )
+    value = value.replace("`", "").replace("*", "").replace("~", "")
+    normalized = "".join(
+        character
+        for character in value.casefold()
+        if character.isalnum() or character.isspace() or character in {"-", "_"}
+    )
+    return re.sub(r"\s+", "-", normalized)
+
+
+def _markdown_anchors(text: str) -> set[str]:
+    visible = _visible_markdown_lines(text)
+    anchors: set[str] = set()
+    counts: dict[str, int] = {}
+
+    def add_heading(value: str) -> None:
+        base = _github_heading_slug(value)
+        if not base:
+            return
+        occurrence = counts.get(base, 0)
+        counts[base] = occurrence + 1
+        anchors.add(base if occurrence == 0 else f"{base}-{occurrence}")
+
+    previous_line = ""
+    for _, line in visible:
+        anchors.update(MARKDOWN_HTML_ID_RE.findall(line))
+        heading = MARKDOWN_HEADING_RE.match(line)
+        if heading is not None:
+            add_heading(heading.group(1))
+        elif MARKDOWN_SETEXT_RE.match(line) and previous_line.strip():
+            add_heading(previous_line.strip())
+        previous_line = line
+    return anchors
+
+
+def _normalized_components(profile: dict) -> list[dict]:
+    raw_components = profile.get("components")
+    if not isinstance(raw_components, list) or not raw_components:
+        raise PackageError("profile components must be a non-empty list")
+    normalized: list[dict] = []
+    for index, component in enumerate(raw_components):
+        if not isinstance(component, dict):
+            raise PackageError(f"profile components[{index}] must be a mapping")
+        normalized.append(
+            {
+                "component_id": component.get("component_id"),
+                "classification": component.get("classification"),
+                "required": component.get("required"),
+                "requires": component.get("requires"),
+            }
+        )
+    return normalized
+
+
+def payload_user_view_contract(profile: dict) -> dict:
+    reference_integrity = profile.get("reference_integrity")
+    user_view = profile.get("payload_user_view")
+    if not isinstance(reference_integrity, dict):
+        raise PackageError("profile reference_integrity must be a mapping")
+    if not isinstance(user_view, dict):
+        raise PackageError("profile payload_user_view must be a mapping")
+    return {
+        "schema_version": user_view.get("schema_version"),
+        "classifications": user_view.get("classifications"),
+        "reference_integrity": {
+            "text_extensions": reference_integrity.get("text_extensions"),
+            "forbidden_source_lifecycle_patterns": reference_integrity.get(
+                "forbidden_source_lifecycle_patterns"
+            ),
+        },
+        "components": _normalized_components(profile),
+        "supported_selections": user_view.get("supported_selections"),
+        "capabilities": user_view.get("capabilities"),
+    }
+
+
+def _validate_user_view_structure(contract: object) -> tuple[dict[str, dict], dict[str, set[str]], list[dict]]:
+    if not isinstance(contract, dict) or contract.get("schema_version") != "1.0.0":
+        raise PackageError("payload user_view must use schema 1.0.0")
+    if contract.get("classifications") != PAYLOAD_USER_VIEW_CLASSIFICATIONS:
+        raise PackageError("payload user_view classifications are missing or weakened")
+    reference = contract.get("reference_integrity")
+    if not isinstance(reference, dict):
+        raise PackageError("payload user_view reference_integrity must be a mapping")
+    extensions = reference.get("text_extensions")
+    forbidden = reference.get("forbidden_source_lifecycle_patterns")
+    if not isinstance(extensions, list) or not extensions or not all(
+        isinstance(item, str) and item.startswith(".") for item in extensions
+    ):
+        raise PackageError("reference_integrity.text_extensions must be a non-empty extension list")
+    if not isinstance(forbidden, list) or not forbidden or not all(
+        isinstance(item, str) and item for item in forbidden
+    ):
+        raise PackageError(
+            "reference_integrity.forbidden_source_lifecycle_patterns must be a non-empty list"
+        )
+
+    raw_components = contract.get("components")
+    if not isinstance(raw_components, list) or not raw_components:
+        raise PackageError("payload user_view components must be a non-empty list")
+    components: dict[str, dict] = {}
+    for component in raw_components:
+        if not isinstance(component, dict):
+            raise PackageError("payload user_view component entries must be mappings")
+        component_id = component.get("component_id")
+        requires = component.get("requires")
+        if (
+            not isinstance(component_id, str)
+            or not component_id
+            or component_id in components
+            or not isinstance(component.get("classification"), str)
+            or not isinstance(component.get("required"), bool)
+            or not isinstance(requires, list)
+            or len(requires) != len(set(requires))
+            or not all(isinstance(item, str) and item for item in requires)
+        ):
+            raise PackageError("payload user_view component contract is invalid or ambiguous")
+        components[component_id] = component
+    for component_id, component in components.items():
+        for dependency in component["requires"]:
+            if dependency == component_id or dependency not in components:
+                raise PackageError(
+                    f"component {component_id} has invalid dependency {dependency!r}"
+                )
+
+    visiting: set[str] = set()
+    visited: set[str] = set()
+
+    def visit(component_id: str) -> None:
+        if component_id in visiting:
+            raise PackageError(f"component dependency cycle includes {component_id}")
+        if component_id in visited:
+            return
+        visiting.add(component_id)
+        for dependency in components[component_id]["requires"]:
+            visit(dependency)
+        visiting.remove(component_id)
+        visited.add(component_id)
+
+    for component_id in components:
+        visit(component_id)
+
+    raw_selections = contract.get("supported_selections")
+    if not isinstance(raw_selections, list) or not raw_selections:
+        raise PackageError("payload user_view supported_selections must be a non-empty list")
+    required_components = {
+        component_id
+        for component_id, component in components.items()
+        if component["required"]
+    }
+    selections: dict[str, set[str]] = {}
+    for selection in raw_selections:
+        if not isinstance(selection, dict):
+            raise PackageError("payload user_view selection entries must be mappings")
+        selection_id = selection.get("selection_id")
+        selected = selection.get("components")
+        if (
+            not isinstance(selection_id, str)
+            or not selection_id
+            or selection_id in selections
+            or not isinstance(selected, list)
+            or len(selected) != len(set(selected))
+            or not all(isinstance(item, str) and item in components for item in selected)
+        ):
+            raise PackageError("payload user_view supported selection is invalid or ambiguous")
+        selected_set = set(selected)
+        if not required_components.issubset(selected_set):
+            raise PackageError(f"selection {selection_id} omits a required component")
+        for component_id in selected_set:
+            if not set(components[component_id]["requires"]).issubset(selected_set):
+                raise PackageError(
+                    f"selection {selection_id} is not closed under {component_id} dependencies"
+                )
+        selections[selection_id] = selected_set
+
+    capabilities = contract.get("capabilities")
+    if not isinstance(capabilities, list):
+        raise PackageError("payload user_view capabilities must be a list")
+    capability_ids: set[str] = set()
+    for capability in capabilities:
+        if not isinstance(capability, dict):
+            raise PackageError("payload user_view capability entries must be mappings")
+        capability_id = capability.get("capability_id")
+        owner_component = capability.get("owner_component")
+        path_patterns = capability.get("path_patterns")
+        availability = capability.get("availability")
+        if (
+            not isinstance(capability_id, str)
+            or not capability_id
+            or capability_id in capability_ids
+            or owner_component not in components
+            or not isinstance(path_patterns, list)
+            or not path_patterns
+            or not all(isinstance(item, str) and item for item in path_patterns)
+            or not isinstance(availability, dict)
+            or set(availability) != set(selections)
+        ):
+            raise PackageError("payload user_view capability contract is invalid or ambiguous")
+        for selection_id, selected in selections.items():
+            expected = "available" if owner_component in selected else "unavailable-not-selected"
+            if availability.get(selection_id) != expected:
+                raise PackageError(
+                    f"capability {capability_id} availability is invalid for {selection_id}"
+                )
+        capability_ids.add(capability_id)
+    return components, selections, capabilities
+
+
+def _validate_markdown_navigation(
+    files: list[PayloadFile], files_by_path: dict[str, PayloadFile]
+) -> None:
+    anchors = {
+        item.path: _markdown_anchors(_decode_payload_text(item))
+        for item in files
+        if PurePosixPath(item.path).suffix.lower() == ".md"
+    }
+    missing: list[str] = []
+    invalid_anchors: list[str] = []
+    unsafe: list[str] = []
+    for item in files:
+        if PurePosixPath(item.path).suffix.lower() != ".md":
+            continue
+        text = _decode_payload_text(item)
+        for line_number, line in _visible_markdown_lines(text):
+            visible_line = _strip_inline_code(line)
+            destinations = [
+                match.group(1) for match in MARKDOWN_LINK_RE.finditer(visible_line)
+            ]
+            definition = MARKDOWN_REFERENCE_DEFINITION_RE.match(visible_line)
+            if definition is not None:
+                destinations.append(definition.group(1))
+            for destination in destinations:
+                if _is_placeholder(destination):
+                    continue
+                target, fragment = _resolve_markdown_target(item.path, destination)
+                if target is None:
+                    continue
+                evidence = f"{item.path}:{line_number} -> {destination}"
+                if target == "..":
+                    unsafe.append(evidence)
+                    continue
+                targets = _target_payload_items(files_by_path, target)
+                if not targets:
+                    missing.append(evidence)
+                    continue
+                if fragment:
+                    exact = files_by_path.get(target)
+                    if (
+                        exact is None
+                        or PurePosixPath(exact.path).suffix.lower() != ".md"
+                        or fragment not in anchors.get(exact.path, set())
+                    ):
+                        invalid_anchors.append(evidence)
+    if unsafe:
+        raise PackageError(
+            "payload Markdown navigation escapes the payload root: "
+            + "; ".join(sorted(set(unsafe)))
+        )
+    if missing:
+        raise PackageError(
+            "payload Markdown navigation targets are missing: "
+            + "; ".join(sorted(set(missing)))
+        )
+    if invalid_anchors:
+        raise PackageError(
+            "payload Markdown anchors are missing: "
+            + "; ".join(sorted(set(invalid_anchors)))
+        )
+
+
+def _validate_actionable_markdown_commands(
+    files: list[PayloadFile], files_by_path: dict[str, PayloadFile]
+) -> None:
+    missing: list[str] = []
+    for item in files:
+        if PurePosixPath(item.path).suffix.lower() != ".md":
+            continue
+        for line_number, line in enumerate(_decode_payload_text(item).splitlines(), 1):
+            probes = [line, *(match.group(2) for match in INLINE_CODE_RE.finditer(line))]
+            for probe in probes:
+                if ACTIONABLE_COMMAND_RE.match(probe) is None:
+                    continue
+                for match in REPOSITORY_PATH_RE.finditer(probe):
+                    candidate = match.group(0)
+                    if _is_placeholder(candidate):
+                        continue
+                    if not _target_payload_items(files_by_path, candidate):
+                        missing.append(f"{item.path}:{line_number} -> {candidate}")
+    if missing:
+        raise PackageError(
+            "payload actionable command targets are missing: "
+            + "; ".join(sorted(set(missing)))
+        )
+
+
+def _validate_component_capabilities(
+    files: list[PayloadFile],
+    files_by_path: dict[str, PayloadFile],
+    components: dict[str, dict],
+    selections: dict[str, set[str]],
+    capabilities: list[dict],
+) -> None:
+    unknown = sorted({item.component_id for item in files} - set(components))
+    if unknown:
+        raise PackageError(f"payload files use unknown components: {unknown}")
+    for capability in capabilities:
+        capability_id = capability["capability_id"]
+        owner_component = capability["owner_component"]
+        matched = [
+            item
+            for item in files
+            if any(matches(item.path, pattern) for pattern in capability["path_patterns"])
+        ]
+        if not matched:
+            raise PackageError(f"capability {capability_id} path patterns matched no payload files")
+        wrong_component = sorted(
+            item.path for item in matched if item.component_id != owner_component
+        )
+        if wrong_component:
+            raise PackageError(
+                f"capability {capability_id} is not owned entirely by {owner_component}: "
+                + "; ".join(wrong_component)
+            )
+        references: list[tuple[str, str, list[PayloadFile]]] = []
+        for item in matched:
+            if PurePosixPath(item.path).suffix.lower() not in {
+                ".md",
+                ".yaml",
+                ".yml",
+                ".json",
+                ".toml",
+                ".txt",
+                ".sh",
+                ".ps1",
+            }:
+                continue
+            for match in REPOSITORY_PATH_RE.finditer(_decode_payload_text(item)):
+                candidate = match.group(0)
+                if _is_placeholder(candidate):
+                    continue
+                targets = _target_payload_items(files_by_path, candidate)
+                if not targets:
+                    raise PackageError(
+                        f"capability {capability_id} reference is missing: "
+                        f"{item.path} -> {candidate}"
+                    )
+                references.append((item.path, candidate, targets))
+        for selection_id, selected in selections.items():
+            selected_paths = {
+                item.path for item in files if item.component_id in selected
+            }
+            expected = capability["availability"][selection_id]
+            selected_capability_paths = {item.path for item in matched} & selected_paths
+            if expected == "unavailable-not-selected":
+                if selected_capability_paths:
+                    raise PackageError(
+                        f"capability {capability_id} leaks into unavailable selection {selection_id}"
+                    )
+                continue
+            if selected_capability_paths != {item.path for item in matched}:
+                raise PackageError(
+                    f"capability {capability_id} is incomplete in selection {selection_id}"
+                )
+            unresolved = sorted(
+                f"{source} -> {candidate}"
+                for source, candidate, targets in references
+                if not any(target.path in selected_paths for target in targets)
+            )
+            if unresolved:
+                raise PackageError(
+                    f"capability {capability_id} references are not closed in {selection_id}: "
+                    + "; ".join(unresolved)
+                )
+
+
+def validate_payload_user_view(files: Iterable[PayloadFile], contract: object) -> None:
+    payload_files = list(files)
+    files_by_path = {item.path: item for item in payload_files}
+    if len(files_by_path) != len(payload_files):
+        raise PackageError("payload user_view received duplicate target paths")
+    components, selections, capabilities = _validate_user_view_structure(contract)
+    reference = contract["reference_integrity"]
+    normalized_extensions = {
+        item.lower() for item in reference["text_extensions"]
+    }
+    forbidden = reference["forbidden_source_lifecycle_patterns"]
+    lifecycle_violations: list[str] = []
+    for item in payload_files:
+        if PurePosixPath(item.path).suffix.lower() not in normalized_extensions:
+            continue
+        for match in REPOSITORY_PATH_RE.finditer(_decode_payload_text(item)):
+            candidate = match.group(0)
+            if _is_placeholder(candidate):
+                continue
+            values = {candidate, candidate.rstrip("/")}
+            if any(matches(value, pattern) for value in values for pattern in forbidden):
+                lifecycle_violations.append(f"{item.path} -> {candidate}")
+    if lifecycle_violations:
+        raise PackageError(
+            "payload references excluded source lifecycle paths: "
+            + "; ".join(sorted(set(lifecycle_violations)))
+        )
+    _validate_markdown_navigation(payload_files, files_by_path)
+    _validate_actionable_markdown_commands(payload_files, files_by_path)
+    _validate_component_capabilities(
+        payload_files, files_by_path, components, selections, capabilities
+    )
+
+
+def _validate_legacy_payload_reference_integrity(
+    files: Iterable[PayloadFile], profile: dict
+) -> None:
     contract = profile.get("reference_integrity")
     if not isinstance(contract, dict):
         raise PackageError("profile reference_integrity must be a mapping")
@@ -541,21 +1068,25 @@ def validate_payload_reference_integrity(files: Iterable[PayloadFile], profile: 
     for item in files:
         if PurePosixPath(item.path).suffix.lower() not in normalized_extensions:
             continue
-        try:
-            text = item.content.decode("utf-8")
-        except UnicodeDecodeError as exc:
-            raise PackageError(f"packaged text file is not UTF-8: {item.path}") from exc
-        for match in REPOSITORY_PATH_RE.finditer(text):
+        for match in REPOSITORY_PATH_RE.finditer(_decode_payload_text(item)):
             candidate = match.group(0)
-            if any(token in candidate for token in ("*", "?", "<", ">", "{", "}")):
+            if _is_placeholder(candidate):
                 continue
             values = {candidate, candidate.rstrip("/")}
             if any(matches(value, pattern) for value in values for pattern in forbidden):
                 violations.append(f"{item.path} -> {candidate}")
     if violations:
         raise PackageError(
-            "payload references excluded source lifecycle paths: " + "; ".join(sorted(set(violations)))
+            "payload references excluded source lifecycle paths: "
+            + "; ".join(sorted(set(violations)))
         )
+
+
+def validate_payload_reference_integrity(files: Iterable[PayloadFile], profile: dict) -> None:
+    if isinstance(profile.get("payload_user_view"), dict):
+        validate_payload_user_view(files, payload_user_view_contract(profile))
+        return
+    _validate_legacy_payload_reference_integrity(files, profile)
 
 
 def yaml_bytes(value: dict) -> bytes:
@@ -1035,9 +1566,14 @@ def build_package(
     payload_files = collect_payload(repo, tree, profile, snapshot.blob_reader)
     if not payload_files:
         raise PackageError("package payload is empty")
+    component_aware = profile.get("schema_version") == "2.0.0"
+    user_view_contract = (
+        payload_user_view_contract(profile)
+        if isinstance(profile.get("payload_user_view"), dict)
+        else None
+    )
     validate_payload_reference_integrity(payload_files, profile)
     selection = component_selection(profile)
-    component_aware = profile.get("schema_version") == "2.0.0"
 
     file_document = inventory_document(payload_files, package_id, component_aware)
     files_content = yaml_bytes(file_document)
@@ -1111,7 +1647,11 @@ def build_package(
         migration_sources,
     )
     package_document = {
-        "schema_version": "2.1.0" if component_aware else "1.1.0",
+        "schema_version": (
+            "2.2.0"
+            if component_aware and user_view_contract is not None
+            else "2.1.0" if component_aware else "1.1.0"
+        ),
         "package_id": package_id,
         "profile_id": profile_id,
         "version": version,
@@ -1144,6 +1684,8 @@ def build_package(
     }
     if component_aware:
         package_document["selection"] = selection
+    if user_view_contract is not None:
+        package_document["user_view"] = user_view_contract
 
     relative_members: dict[str, tuple[bytes, int]] = {
         "INSTALL.md": (source_input_bytes[".ai/distribution/templates/INSTALL.md"], 0o644),
@@ -1323,12 +1865,12 @@ def validate_archive(path: Path) -> dict[str, tuple[bytes, int]]:
     if package.get("package_id") != root or inventory.get("package_id") != root or migration.get("package_id") != root:
         raise PackageError("package identity mismatch")
     package_schema = package.get("schema_version")
-    if package_schema not in {"1.0.0", "1.1.0", "2.0.0", "2.1.0"}:
+    if package_schema not in {"1.0.0", "1.1.0", *COMPONENT_PACKAGE_SCHEMAS}:
         raise PackageError(f"unsupported package schema version: {package_schema!r}")
-    if package_schema in {"2.0.0", "2.1.0"}:
+    if package_schema in COMPONENT_PACKAGE_SCHEMAS:
         validate_component_selection(package.get("selection"), "package selection")
     identity = package.get("identity")
-    if package_schema in {"1.1.0", "2.1.0"}:
+    if package_schema in IDENTITY_PACKAGE_SCHEMAS:
         source = package.get("source")
         if not isinstance(source, dict) or not all(
             isinstance(source.get(key), str) and re.fullmatch(r"[0-9a-f]{40}", source[key])
@@ -1400,7 +1942,9 @@ def validate_archive(path: Path) -> dict[str, tuple[bytes, int]]:
     payload_meta = package.get("payload", {})
     if payload_meta.get("file_count") != len(records) or payload_meta.get("sha256") != payload_digest(payload_items):
         raise PackageError("package payload count or digest mismatch")
-    if package_schema in {"1.1.0", "2.1.0"} and identity is not None:
+    if package_schema == "2.2.0":
+        validate_payload_user_view(payload_items, package.get("user_view"))
+    if package_schema in IDENTITY_PACKAGE_SCHEMAS and identity is not None:
         expected_identity = {
             "payload_fingerprint": payload_digest(payload_items),
             "files_manifest_digest": sha256_bytes(

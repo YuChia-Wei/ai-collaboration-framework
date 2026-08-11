@@ -640,7 +640,9 @@ class CheckAllRunnerGwtTests(unittest.TestCase):
     def test_gwt_011a_given_profile_selection_when_runner_starts_then_membership_is_registry_driven(self) -> None:
         fixture = SyntheticRunnerRepo()
         try:
-            # Given the canonical registry supplies five named profiles.
+            # Given the canonical registry supplies five named profiles and
+            # source-only checks can execute when their profile selects them.
+            fixture.enable_source_release_context()
             fast = fixture.execute("--profile", "fast")
             pr = fixture.execute("--profile", "pr")
             release = fixture.execute("--profile", "release")
@@ -652,11 +654,22 @@ class CheckAllRunnerGwtTests(unittest.TestCase):
                 self.assertEqual(0, result.returncode, result.stdout + result.stderr)
                 self.assertIn(f"profile={profile}", result.stdout)
                 self.assertIn("full-log:", result.stdout)
-            self.assertNotIn("AI Context Packaging GWT Tests", fast.stdout)
-            self.assertNotIn("AI Context Packaging GWT Tests", pr.stdout)
-            self.assertIn("AI Context Packaging GWT Tests", release.stdout)
+
+            def executed_check_ids(output: str) -> set[str]:
+                return {
+                    fields[0]
+                    for line in output.splitlines()
+                    if (fields := line.split()) and fields[-1] == "executed"
+                }
+
+            self.assertNotIn("package-full-matrix", executed_check_ids(fast.stdout))
+            self.assertNotIn("package-full-matrix", executed_check_ids(pr.stdout))
+            self.assertIn("package-full-matrix", executed_check_ids(release.stdout))
             self.assertTrue(
                 any("test_ai_context_package_apply.py -v" in line for line in fixture.sentinel())
+            )
+            self.assertTrue(
+                any("test_ai_context_packaging.py -v" in line for line in fixture.sentinel())
             )
         finally:
             fixture.close()

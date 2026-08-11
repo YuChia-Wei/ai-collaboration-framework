@@ -7,7 +7,7 @@ policies. It is not the canonical owner of .NET backend semantic standards.
 ## Source Governance
 
 - [AI context boundary](AI-CONTEXT-BOUNDARY.md), [language](AI-CONTEXT-LANGUAGE-POLICY.md), and [ownership](AI-CONTEXT-OWNERSHIP.md) policies
-- [AI context version policy](AI-CONTEXT-VERSION-POLICY.md)
+- [Portable AI context version, provenance, and upgrade policy](AI-CONTEXT-VERSION-POLICY.md)
 - [Assessment](ASSESSMENT-ARTIFACT-POLICY.md), [workflow artifact](WORKFLOW-ARTIFACT-POLICY.md), [workflow gate](WORKFLOW-GATE-POLICY.md), and [workflow handoff](WORKFLOW-HANDOFF-POLICY.md) policies
 - [Git commit](GIT-COMMIT-POLICY.md), [dependency-version consistency](DEPENDENCY-VERSION-CONSISTENCY-POLICY.md), and [target technology selection](TECHNOLOGY-SELECTION-POLICY.md) policies
 

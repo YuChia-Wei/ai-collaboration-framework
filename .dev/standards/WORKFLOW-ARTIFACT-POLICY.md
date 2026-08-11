@@ -138,6 +138,15 @@ Locators generated from template version `1.2.0` or later opt into
 - a completed task has a non-empty result summary and an addressed finding status;
 - legacy locators without the field remain compatible and are not silently reinterpreted.
 
+## Workflow Completion
+
+`status: completed` means workflow completion only: every workflow-owned task
+is terminal and the selected lifecycle contract is satisfied. The contextual
+alias `workflow closeout` may be used inside this section, but it does not mean
+repository integration, assessment finality, release-source validation,
+hosted publication, or publication finalization. Evidence for any of those
+separate events remains with its own owner.
+
 ## Final and Derived Artifacts
 
 - Do not silently overwrite a final baseline, review, or verification report.

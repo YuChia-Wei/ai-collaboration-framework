@@ -6,6 +6,14 @@ provider-neutral `role_execution` record defined by
 reviewer ran; the record supplies runtime evidence without transferring review
 judgment or finding ownership to the orchestrator.
 
+The canonical route selector is
+`.ai/assets/skills/code-reviewer/references/review-routing.yaml`. The role
+manifest's static references are execution scaffolding. After route selection,
+record the selected route IDs and canonical standards under
+`input_envelope.source_refs`; do not add unselected standards or compatibility
+entries. A multi-file scope may select multiple routes, but references are
+de-duplicated before review.
+
 When a #114 `loaded_rule_ids` packet is relevant, cite it only as an opaque
 `input_envelope.source_refs` entry. This skill does not create, resolve, or
 modify its provider or effective-state semantics.
@@ -17,11 +25,11 @@ uses `applicability.result: does-not-apply`,
 `selection.disposition: not-applicable`, and
 `selection.delegation_evaluation: null`. For a matching binding, retain the
 binding `role_asset_id` and exact `role_path`; load that manifest plus every
-reference it declares. List those references under
+reference it declares. List those static references under
 `input_envelope.mandatory_references` and its stop conditions under
 `input_envelope.stop_conditions`. Those are the bounded stage's explicit stop
 conditions. Populate the bounded reviewed scope,
-source/checklist references, constraints, actual permissions, expected and
+selected-route source references, constraints, actual permissions, expected and
 returned review output, and the parent in `final_integration_owner`.
 
 Applicable roles default to `direct`. Record

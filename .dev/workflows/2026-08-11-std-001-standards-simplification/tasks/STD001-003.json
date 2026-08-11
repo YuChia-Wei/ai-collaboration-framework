@@ -1,0 +1,89 @@
+{
+  "template_id": "ai-context-governance-remediation-task",
+  "template_version": "1.1.0",
+  "template_created_at": "2026-07-10T18:22:49+08:00",
+  "template_updated_at": "2026-07-27T09:52:09+08:00",
+  "task_id": "STD001-003",
+  "workflow_id": "2026-08-11-std-001-standards-simplification",
+  "owner_skill": "ai-context-governance",
+  "status": "deferred",
+  "created_at": "2026-08-11T13:31:10+08:00",
+  "updated_at": "2026-08-12T01:03:48+08:00",
+  "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
+  "model": "gpt-5.6-sol",
+  "reasoning_effort": "high",
+  "finding_ids": [
+    "ASM-20260811-003#PKG-001",
+    "ASM-20260811-003#CMP-001"
+  ],
+  "scope": {
+    "target": "Actual package-candidate user-view review and finding-bound delivery decision ledger",
+    "files": [
+      ".ai/distribution/**",
+      ".ai/scripts/ai_context_package.py",
+      ".dev/workflows/2026-08-11-std-001-standards-simplification/reports/decision-ledger.md"
+    ],
+    "constraints": [
+      "Review generated payload navigation and comprehension, not only source presence",
+      "Give every proposed move or deletion an owner, replacement, compatibility, migration, and equivalence disposition",
+      "Split findings that change different authorities, validators, or compatibility contracts into successor delivery scopes",
+      "Bound active upgrade tests to v0.6.0 and exactly one immediate-predecessor route per later release or breaking checkpoint",
+      "Do not treat a candidate build as release publication evidence"
+    ],
+    "non_goals": [
+      "Tag or GitHub Release creation",
+      "Issue closure before owner review",
+      "Unbounded remediation",
+      "OBS-001 architecture implementation"
+    ]
+  },
+  "execution": {
+    "steps": [
+      "Build the exact package candidate from the fixed subject commit",
+      "Review payload entrypoints and selected standards from a downstream user perspective",
+      "Compare source, routing, and package evidence",
+      "Publish a decision ledger with bounded delivery and successor-Issue recommendations"
+    ],
+    "validation": [
+      "package candidate build and manifest read-back",
+      "package payload reference checks",
+      "python .ai/scripts/validate-workflow-artifacts.py",
+      "git diff --check"
+    ],
+    "last_completed_step": "Completed #191/#192/#193 local delivery, #194 no-polling governance, focused validation, and an owner-approved composite integration gate without falsifying the timed-out aggregate receipt",
+    "next_action": "Resume only after the owner authorizes a real governed v0.13 candidate; PR #195 integration remains owned by VAL005-001 and does not satisfy this candidate-review condition"
+  },
+  "results": {
+    "summary": "The controlled baseline exposed downstream navigation and component closure failures; #191, #192, and #193 are now locally implemented and independently verified, while the real governed v0.13 candidate and downstream acceptance remain deferred.",
+    "files_changed": [
+      ".dev/assessments/ASM-20260811-003/report.md",
+      ".dev/workflows/2026-08-11-std-001-standards-simplification/reports/package-candidate-user-view.md",
+      ".dev/workflows/2026-08-11-std-001-standards-simplification/reports/decision-ledger.md",
+      ".dev/workflows/2026-08-11-std-001-standards-simplification/tasks/STD001-001.json",
+      ".dev/workflows/2026-08-11-std-001-standards-simplification/tasks/STD001-002.json",
+      ".dev/workflows/2026-08-11-std-001-standards-simplification/tasks/STD001-003.json",
+      ".dev/workflows/2026-08-11-std-001-standards-simplification/workflow-plan.md",
+      ".dev/workflows/2026-08-11-std-001-standards-simplification/workflow.yaml",
+      ".dev/workflows/2026-08-11-std-001-pkg-navigation-closure/**",
+      ".dev/assessments/ASM-20260811-006/**",
+      ".dev/workflows/INDEX.MD"
+    ],
+    "tests_run": [
+      "v0.13 package build: failed closed because no governed release record exists",
+      "controlled current-tree ZIP/tar build using v0.12 contract and verified v0.11 migration manifest: passed",
+      "python .ai/scripts/validate-ai-context-package.py <zip> <tar.gz>: passed",
+      "selected-payload Markdown navigation scan: failed with seven genuine missing targets",
+      "GitHub Issues #191, #192, and #193 creation/read-back: passed; Project automation state is Inbox with no workflow-owned field allocation",
+      "Issue #192 governance routing and exact package projection: passed 8/8",
+      "Issue #192 independent ASM-20260811-005: GTM-001 addressed",
+      "Issue #193 selected-payload, version, packaging, archive/apply, routing, and fast-profile gates: passed with preserved environment/advisory receipts",
+      "Issue #193 independent ASM-20260811-006: PKG-001 and CMP-001 addressed; no new blocking finding",
+      "Integration composite gate: 51/54 aggregate with three internal 30-second timeouts; all three exact commands passed independently and the owner accepted the combined evidence without relabeling the aggregate receipt",
+      "Issue #194 focused orchestrator capability contract: passed 14/14",
+      "Issue #194 deterministic orchestrator acceptance: passed 3/3"
+    ],
+    "finding_status": "deferred-with-owner-real-v0.13-candidate-not-authorized",
+    "residual_risk": "The controlled projection is not a real v0.13 candidate. PR #195 integration may proceed after its own hosted gates, but #193/#61 final candidate review, downstream acceptance, Project state, tag, Release, and publication remain separately deferred.",
+    "follow_up_needed": true
+  }
+}

@@ -1,0 +1,44 @@
+schema_version: "1.0"
+record_type: "external-task-dispatch"
+delegation_id: "pr-195-cross-task-smoke-01"
+task_kind: "cross-task-delivery-regression"
+source:
+  task_id_source: "runtime-injected"
+  task_id: null
+  final_integration_owner: "source-task"
+objective:
+  goal: "Validate the canonical delegation schema at the pinned commit and deliver exactly one terminal completion report to the source task."
+  non_goals:
+    - "repair any failure"
+    - "run broader repository tests"
+    - "mutate tracked files or external lifecycle state"
+subject:
+  repository_root: "C:/Github/YuChia/ai-collaboration-prompts-dotnet-backend"
+  commit_sha: "1a5fa40378594c3622eaabb7f7bd57a30fcf416b"
+  clean_worktree_required: true
+execution:
+  working_directory: "C:/Github/YuChia/ai-collaboration-prompts-dotnet-backend"
+  argv:
+    - "python"
+    - ".ai/assets/skills/software-development-orchestrator/scripts/validate-external-task-delegation.py"
+    - "--schema-only"
+  timeout_seconds: 120
+permissions:
+  read_scope:
+    - "repository"
+  write_scope:
+    - "ignored-validation-artifacts"
+  repair_allowed: false
+  external_mutations: []
+  secret_values: "prohibited"
+completion_delivery:
+  primary: "source-task-callback"
+  fallback: "parent-event-wait"
+  destination: "source-task"
+  progress_updates: "terminal-only"
+  max_terminal_reports: 1
+  report_schema: "same-contract#completion"
+stop_conditions:
+  - "HEAD or clean-worktree preflight does not match the pinned subject"
+  - "the exact command reaches a terminal outcome"
+  - "execution timeout or interruption occurs"

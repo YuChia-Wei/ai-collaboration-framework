@@ -4,6 +4,10 @@ asset_type: "skill-spec"
 title: "Code Reviewer"
 purpose: "Review .NET code in this repository for DDD, Clean Architecture, CQRS, and Event Sourcing compliance. This skill reviews, scores, and marks issues; it does not plan refactors or define target architecture."
 portability: "repo-portable"
+component_availability:
+  component_id: "dotnet-backend"
+  core_only: "unavailable-not-selected"
+  dotnet_selected: "available"
 audience: "agent-facing"
 source_of_truth: "canonical"
 capability_slots:
@@ -14,7 +18,7 @@ triggers:
   - "check this file"
 inputs:
   - "target file or reviewed scope"
-  - "repo standards and checklist rules"
+  - "file-type and finding route selected from the canonical review-routing contract"
 outputs:
   - "transient conversational review or standalone durable assessment"
   - "architecture-level findings"
@@ -28,6 +32,8 @@ constraints:
   - "Treat .ai/scripts C# grep checks as transitional aids, not final semantic validation"
   - "Keep review read-only; route remediation to software-development-orchestrator or the appropriate implementer"
   - "Pin durable assessments to the reviewed Git revision and use ASM-YYYYMMDD-NNN#CR-NNN finding references"
+  - "Load only the canonical standards selected by the file-type and finding route"
+  - "Do not treat compatibility indexes, shared summaries, or role prompts as semantic owners"
 role_bindings:
   - role_path: ".ai/assets/sub-agent-role-prompts/code-review-sub-agent/sub-agent.yaml"
     role_asset_id: "code-review-sub-agent"
@@ -55,20 +61,15 @@ role_bindings:
     load_obligation: "mandatory-when-applicable"
 workflow:
   - step: 1
-    description: "Complete any applicable effective-rule preflight, then read the review index and checklist and evaluate each review-role binding's applicability"
+    description: "Complete any applicable effective-rule preflight, read review-routing.yaml, select every matching file-type route, and evaluate each review-role binding's applicability"
   - step: 2
-    description: "Classify the reviewed scope, load every matching role manifest and mandatory reference, and build a checklist comparison"
+    description: "Load only the selected routes' canonical references, applicable finding rules, and matching role manifests; de-duplicate references and build a scoped checklist comparison"
   - step: 3
-    description: "Execute review directly by default or make an eligible bounded delegation, then separate architecture-level and code-level findings"
+    description: "After route and role selection, load the role-execution phase reference, execute directly by default or make an eligible bounded delegation, then separate architecture-level and code-level findings"
   - step: 4
-    description: "Return transient findings or persist an explicitly requested assessment, and hand the skill-owned role_execution records to the orchestrator for aggregation"
+    description: "After findings exist, load the output phase reference, return transient findings or persist an explicitly requested assessment, and hand role_execution records to the orchestrator for aggregation"
 references:
-  - ".ai/assets/tech-stacks/dotnet-backend/references/CODE-REVIEW-INDEX.MD"
-  - ".ai/assets/skills/code-reviewer/references/checklist-reference.md"
-  - ".ai/assets/skills/code-reviewer/references/role-execution.md"
-  - ".ai/assets/skills/code-reviewer/references/output-contract.md"
-  - ".ai/assets/tech-stacks/dotnet-backend/standards/CODE-REVIEW-CHECKLIST.md"
-  - ".dev/standards/ASSESSMENT-ARTIFACT-POLICY.md"
+  - ".ai/assets/skills/code-reviewer/references/review-routing.yaml"
 templates:
   - ".ai/assets/skills/code-reviewer/templates/code-review-assessment-report-template.md"
 examples:

@@ -83,6 +83,14 @@ When no explicit profile exists, or when the profile does not cover a capability
 - For `test-execution`, use target-owned commands, working directory,
   prerequisites, and policy. Record one exact supported outcome per selected
   level; never count `blocked-by-environment` as passed.
+- For a `release`, `nightly-full`, full-matrix, or at-least-120-second
+  validation, finish local mutations and focused checks, pin a clean immutable
+  commit, then dispatch the exact command to the least expensive capable
+  external runtime task. Build the prompt and terminal report from the canonical
+  external-task delegation schema and templates. Select a source-task callback
+  or one parent event wait; do not poll from the primary conversation. A
+  terminal callback failure may use one schema-valid terminal read-back, while
+  a parent wait timeout remains pending rather than passed or failed.
 - Treat spec compliance as unselected and `not-applicable` unless a target
   profile, problem-frame workflow, requirement, or owner decision selects it.
   Once selected, incomplete configuration or coverage below 100% fails closed.
@@ -109,6 +117,10 @@ When handing a stage to another skill or sub-agent, include:
    test execution is selected;
 7. validation expected before returning;
 8. approval state and the decision that would pause or resume execution.
+
+For a separate runtime task, also include the single marked dispatch envelope
+defined by `../templates/external-task-delegation.schema.yaml`. Do not rely on
+free-form prose to identify the source task or terminal delivery route.
 
 ## Role Execution Handoff and Aggregation
 

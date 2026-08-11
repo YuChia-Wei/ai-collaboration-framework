@@ -197,4 +197,4 @@ Full rules:
 - [Best Practices](./best-practices.md)
 - [Anti-Patterns](./anti-patterns.md)
 - [Legacy Todo/Wolverine profile example](./coding-guide.md) (not active product truth)
-- [Code Review Checklist](./CODE-REVIEW-CHECKLIST.md)
+- [Code Reviewer file-type and finding routing](../../../skills/code-reviewer/references/review-routing.yaml)

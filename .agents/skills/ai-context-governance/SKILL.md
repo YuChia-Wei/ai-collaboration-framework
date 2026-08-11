@@ -15,6 +15,8 @@ This is a thin current-runtime wrapper.
 - Spec: `.ai/assets/skills/ai-context-governance/skill.yaml`
 - Human Guide: `.dev/guides/ai-collaboration-guides/AI-CONTEXT-GOVERNANCE-SKILL-GUIDE.md`
 - References:
+  - `.dev/standards/AI-CONTEXT-OWNERSHIP.md`
+  - `.dev/standards/AI-CONTEXT-OWNERSHIP.yaml`
   - `.ai/assets/skills/ai-context-governance/references/context-boundary-playbook.md`
   - `.ai/assets/skills/ai-context-governance/references/language-policy-playbook.md`
   - `.ai/assets/skills/ai-context-governance/references/workflow-and-commit-playbook.md`
