@@ -12,27 +12,27 @@
 - `report_id`: `remediation-report-2026-08-11-std-001-r2-review-routing`
 - `workflow_id`: `2026-08-11-std-001-r2-review-routing`
 - `owner_skill`: `ai-context-governance`
-- `status`: `draft`
+- `status`: `final`
 - `created_at`: `2026-08-11T20:20:48+08:00`
-- `updated_at`: `2026-08-11T20:49:00+08:00`
+- `updated_at`: `2026-08-11T20:54:00+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-remediation-report-template.md`
 - `template_version`: `2.0.0`
 - `baseline_assessment`: `ASM-20260811-003`
-- `verification_assessment`: `pending`
+- `verification_assessment`: `ASM-20260811-004`
 
 ## Remediation Summary
 
 - Authorized scope: Implement GitHub Issue #191 for `CRL-001` and `CRL-002` as one bounded Code Reviewer routing delivery.
 - Completed scope: canonical 14-route contract, route-only eager entry, phase-lazy role/output contracts, selected-route role loads, compatibility stubs, engineering-rule ownership projection, negative/equivalence fixtures, and active fail-closed validation.
-- Validation summary: focused and structural suites passed, including committed selected-payload projection; full package matrix timed out at 244 seconds and remains failed. Independent audit is pending.
-- Closure decision: `not-ready`
+- Validation summary: focused and structural suites passed, including committed selected-payload projection; `ASM-20260811-004` independently verified both findings addressed. Full package matrix timed out at 244 seconds and remains failed.
+- Closure decision: `local-complete`
 
 ## Finding Resolution Matrix
 
 | Assessment Finding | Before Severity | Status | Changed Files | Validation | Commit | Residual Risk |
 | --- | --- | --- | --- | --- | --- | --- |
-| `ASM-20260811-003#CRL-001` | HIGH | `remediated-awaiting-verification` | routing contract, entries, roles, compatibility paths, validator | focused 7/7 plus measured load reduction | pending | independent audit and commit-bound package view |
-| `ASM-20260811-003#CRL-002` | HIGH | `remediated-awaiting-verification` | rule ownership, prompts/playbooks, negative fixtures | rule-ID/catalog parity and drift fixtures passed | pending | independent semantic verification |
+| `ASM-20260811-003#CRL-001` | HIGH | `verified-addressed` | routing contract, phase references, entries, roles, compatibility paths, validator | focused 8/8, 40.7%-60.1% reduction, `ASM-20260811-004` | `8b5b402` | v0.14.0 compatibility review |
+| `ASM-20260811-003#CRL-002` | HIGH | `verified-addressed` | rule ownership, prompts/playbooks, negative fixtures | rule-ID/catalog parity, drift fixtures, `ASM-20260811-004` | `8b5b402` | target-effective packets remain target-owned |
 
 ## Changes And Evidence
 
@@ -52,10 +52,10 @@
 
 ## Verification Assessment Reconciliation
 
-- Independent auditor: pending.
-- Confirmed resolved: none yet.
-- Recurring findings: pending.
-- New or regressed findings: pending.
+- Independent auditor: `ai-context-auditor` via `ASM-20260811-004`.
+- Confirmed resolved: `CRL-001`, `CRL-002`.
+- Recurring findings: none after the auditor-preflight phase-lazy correction.
+- New or regressed findings: none in #191 scope.
 
 ## Deferred Work
 
@@ -67,6 +67,6 @@
 ## Closure Evidence
 
 - Required validations: focused routing and committed payload 8/8; role execution 6/6; adapter 31/31; wrapper 16/16; language/parity 10/10; profile 3/3; document 2/2; effective-rule 3/3; registry 6/6; shell assets and `validate-ai-context.py` passed. Full package matrix timed out at 244 seconds and is explicitly failed.
-- Commit status: implementation snapshot `aea7a44`; focused package guard pending evidence commit.
-- Workflow/task status: remediation implemented; verification in progress.
-- Final next action: commit the focused package guard and evidence, then perform the independent assessment.
+- Commit status: implementation `aea7a44`; package guard `a5cece2`; phase-lazy correction `8b5b402`; verification assessment `0f200cf`.
+- Workflow/task status: local remediation and independent verification complete.
+- Final next action: commit workflow closeout; return to #61 coordination for #192. Push, PR, merge, Issue closure, and release remain unauthorized.
