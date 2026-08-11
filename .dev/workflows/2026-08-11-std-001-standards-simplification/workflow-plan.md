@@ -16,10 +16,10 @@
 - `base_branch`: `main`
 - `branch_segment`: `1`
 - `status`: `in_progress`
-- `current_phase`: `successor-implementation`
+- `current_phase`: `owner-review-and-governed-candidate`
 - `artifact_root`: `.dev/workflows/2026-08-11-std-001-standards-simplification`
 - `created_at`: `2026-08-11T13:31:10+08:00`
-- `updated_at`: `2026-08-11T21:40:15+08:00`
+- `updated_at`: `2026-08-11T22:45:54+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md`
 - `template_version`: `1.2.0`
 
@@ -35,6 +35,7 @@
 - Work item: [GitHub Issue #61](https://github.com/YuChia-Wei/ai-collaboration-framework/issues/61), read as OPEN on 2026-08-11.
 - Project read-back: Project #3 records `Status=Planned`, `Priority=P1 High`, `Owner review=Approved`, `Target release=v0.13.0`, and `Published in=Not yet published`.
 - Current owner instruction: local implementation of Issues [#191](https://github.com/YuChia-Wei/ai-collaboration-framework/issues/191), [#192](https://github.com/YuChia-Wei/ai-collaboration-framework/issues/192), and [#193](https://github.com/YuChia-Wei/ai-collaboration-framework/issues/193) is approved, in that order, with validated results returned for owner review. Project allocation, push, PR, merge, Issue closure, tag, Release, and publication remain separate decisions.
+- Upgrade-test direction: active upgrade testing begins at v0.6.0; routine later releases keep only the immediate-predecessor route; every breaking release establishes a predecessor-only migration checkpoint so historical Cartesian matrices do not become a standing gate.
 - Delivery cohesion: R2, R3, and package-candidate review share branch, reviewers, validation, v0.13 decision gate, and rollback; one workflow coordinates them without forcing unrelated authority changes into one delivery.
 - Planned integration: not selected until the decision ledger identifies whether the preparation artifacts stand alone or accompany one bounded remediation delivery.
 
@@ -42,7 +43,7 @@
 
 - Baseline assessment: `.dev/assessments/ASM-20260811-003/assessment.yaml`
 - Decision ledger: `.dev/workflows/2026-08-11-std-001-standards-simplification/reports/decision-ledger.md`
-- Verification assessment: allocate only after a bounded remediation is selected and implemented.
+- Verification assessments: `ASM-20260811-004`, `ASM-20260811-005`, and `ASM-20260811-006` independently fix and reconcile the three successor implementation subjects.
 - Tasks: `.dev/workflows/2026-08-11-std-001-standards-simplification/tasks/`
 
 ## Workstream Triage
@@ -64,13 +65,13 @@
 
 ## Resume Checkpoint
 
-- Last completed action: Completed the authorized local #192 delivery on `codex/2026-08-11-std-001-r3-governance-terms` at `92e7383`; independent assessment `ASM-20260811-005` verified fixed implementation subject `fe85095` and reconciled `GTM-001` as addressed. The branch remains local and unmerged for owner review.
+- Last completed action: Completed the authorized local #193 delivery on `codex/2026-08-11-std-001-pkg-navigation-closure`; implementation `ff80d590` and independent assessment `ASM-20260811-006` reconcile `PKG-001` and `CMP-001` as addressed. The branch remains local and unmerged for owner review.
 - Current task: `STD001-003`.
-- Exact next action: Create the dedicated #193 branch and distribution workflow, assemble a local validation-only combined view of the isolated #191 and #192 implementation checkpoints, remediate selected-payload navigation/component closure, and independently validate the resulting package without treating the combined view as an authorized merge.
-- Validation already completed: parent workflow/assessment validators passed; #191 routing and exact-subject payload contracts passed with `ASM-20260811-004` final; #192 governance routing passed 8/8, final fast profile passed 32/32 required checks, package smoke passed 1/1, and `ASM-20260811-005` is final. Earlier #191 package timeout and #192 source-governance timeouts remain recorded as failed rather than relabeled.
-- Git state: Coordination branch `codex/2026-08-11-std-001-standards-simplification` is based on local checkpoint `088fee7`; #191 is preserved separately at `f62f110`, #192 at `92e7383`, and neither branch has been pushed or merged.
+- Exact next action: return #191, #192, and #193 local results for owner review. If integration is later authorized, preserve their separate rollback units; then build the real previous-release-to-v0.13 candidate from governed release truth and repeat downstream owner/provider read-back.
+- Validation already completed: #191 is independently verified by `ASM-20260811-004`; #192 by `ASM-20260811-005`; #193 selected-payload, version, packaging, archive/apply, routing, and aggregate gates passed and `ASM-20260811-006` found no new blocking finding. Earlier package, sandbox, source-governance, and WSL timeout receipts remain recorded rather than relabeled.
+- Git state: #191 is preserved separately at `f62f110`, #192 at `92e7383`, and #193 locally contains implementation `ff80d590` plus assessment `cef711a`. None is pushed or merged.
 - Branch history and checkpoint handoffs: Nothing from #61 has been pushed or merged.
-- Blockers or unresolved decisions: Project field allocation and transport remain pending; no governed v0.13 release record or real candidate exists yet, so the final #193 candidate gate remains future work.
+- Blockers or unresolved decisions: Project field allocation, transport, integration, Issue state, and release authority remain pending; no governed v0.13 release record or real candidate exists yet, so final candidate and downstream acceptance remain `deferred-with-owner`.
 
 ## Branch Lifecycle
 
@@ -80,3 +81,4 @@
 | 1 | `codex/2026-08-11-std-001-standards-simplification` | `main@df7012b6` | local assessment checkpoint | `c001cc34617396bfbde2b8138c7a65f45fc484e0` | local | `2026-08-11T13:45:48+08:00` | Preserve the final baseline assessment, controlled projection review, and decision ledger before owner approval | Record owner approval and successor Issue read-back |
 | 2 | `codex/2026-08-11-std-001-r2-review-routing` | `codex/2026-08-11-std-001-standards-simplification@73b12c6` | local verified implementation | `f62f110` | local | `2026-08-11T20:56:40+08:00` | Preserve the completed #191 routing delivery and independent `ASM-20260811-004` evidence without merging its rollback unit | Start #192 from the updated coordination branch; retain #191 for owner review |
 | 3 | `codex/2026-08-11-std-001-r3-governance-terms` | `codex/2026-08-11-std-001-standards-simplification@088fee7` | local verified implementation | `92e7383` | local | `2026-08-11T21:40:15+08:00` | Preserve the completed #192 governance-term delivery and independent `ASM-20260811-005` evidence without merging its rollback unit | Start #193 from the updated coordination branch; use a validation-only combined view for #191/#192 package closure |
+| 4 | `codex/2026-08-11-std-001-pkg-navigation-closure` | `codex/2026-08-11-std-001-combined-validation@b1aacf8` | local verified implementation | `ff80d590`, `cef711a`, plus containing #193 closeout commit | local | `2026-08-11T22:45:54+08:00` | Preserve selected-payload/component closure, bounded upgrade-test policy, and independent `ASM-20260811-006` evidence without claiming integration | Owner reviews all three local deliveries; real governed v0.13 candidate remains deferred |

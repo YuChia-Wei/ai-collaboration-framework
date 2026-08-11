@@ -6,9 +6,9 @@
   "task_id": "STD193-001",
   "workflow_id": "2026-08-11-std-001-pkg-navigation-closure",
   "owner_skill": "ai-context-governance",
-  "status": "in_progress",
+  "status": "completed",
   "created_at": "2026-08-11T21:47:55+08:00",
-  "updated_at": "2026-08-11T21:47:55+08:00",
+  "updated_at": "2026-08-11T22:45:54+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-5.6-sol",
   "reasoning_effort": "high",
@@ -17,21 +17,26 @@
     "ASM-20260811-003#CMP-001"
   ],
   "scope": {
-    "target": "Selected-payload navigation, actionable local targets, component dependency closure, and archive user-view parity",
+    "target": "Selected-payload navigation, actionable local targets, component dependency closure, archive user-view parity, and the owner-directed bounded upgrade-test horizon",
     "files": [
       ".ai/distribution/**",
       ".ai/scripts/ai_context_package.py",
       ".ai/scripts/validate-ai-context-package.py",
+      ".ai/scripts/validate-ai-context-versions.py",
       ".ai/scripts/tests/**",
       ".ai/assets/**/INDEX*",
       ".ai/assets/**/README*",
-      ".dev/guides/**"
+      ".dev/guides/**",
+      ".dev/releases/**",
+      ".dev/standards/AI-CONTEXT-SOURCE-RELEASE-POLICY.md"
     ],
     "constraints": [
       "Validate the post-mapping selected payload rather than source-tree existence",
       "Classify anchors, examples, code spans, templates, placeholders, and external URLs before failing navigation",
       "Keep source-only guidance visibly non-actionable or exclude it from portable indexes",
       "Require explicit component reference/dependency closure for every supported selection",
+      "Start active upgrade testing at v0.6.0 and allow exactly one immediate-predecessor automatic route for each later governed package",
+      "Treat every breaking release as a migration checkpoint whose minimum automatic source is the immediately prior checkpoint",
       "Keep #191 and #192 semantic ownership unchanged",
       "Do not call the controlled combined projection a v0.13 release candidate"
     ],
@@ -59,15 +64,36 @@
       "fast and applicable package validation profiles",
       "git diff --check"
     ],
-    "last_completed_step": "Created the dedicated authorized #193 branch from validation-only combined base b1aacf8",
-    "next_action": "Reproduce the baseline link/component failures against the combined selected payload before editing validators or guidance"
+    "last_completed_step": "Recorded independent fixed-subject assessment ASM-20260811-006 after implementation ff80d590 addressed PKG-001 and CMP-001",
+    "next_action": "Return the local result for owner review; require separate authority for transport, integration, Issue or Project mutation, and the real v0.13 candidate"
   },
   "results": {
-    "summary": "Implementation in progress.",
-    "files_changed": [],
-    "tests_run": [],
-    "finding_status": "remediation-in-progress",
-    "residual_risk": "Selected payload navigation and component dependency closure remain unverified; real governed v0.13 candidate review is externally deferred.",
+    "summary": "Package schema 2.2 now fails closed on selected-payload user-view and component closure, Code Reviewer is dotnet-selected, portable navigation is closed, and routine upgrade testing is bounded to v0.6.0 plus one immediate predecessor route per later release or breaking checkpoint.",
+    "files_changed": [
+      ".ai/distribution/profiles/dotnet-backend.yaml",
+      ".ai/distribution/schemas/package.schema.yaml",
+      ".ai/scripts/ai_context_package.py",
+      ".ai/scripts/ai_context_package_apply.py",
+      ".ai/scripts/tests/test_payload_user_view_contract.py",
+      ".ai/scripts/tests/test_ai_context_packaging.py",
+      ".ai/scripts/tests/test_ai_context_version_governance.py",
+      ".ai/scripts/validate-ai-context-versions.py",
+      ".dev/standards/AI-CONTEXT-SOURCE-RELEASE-POLICY.md",
+      ".dev/releases/README.MD",
+      ".dev/assessments/ASM-20260811-006/report.md"
+    ],
+    "tests_run": [
+      "selected-payload user-view contract: passed 6/6",
+      "version governance: passed 23/23",
+      "packaging suite: passed 36/36 with no skip",
+      "focused archive, component metadata, and apply checks: passed 3/3",
+      "package apply suite: passed 30/30 outside sandbox; one Windows symlink privilege skip was not counted as passed",
+      "Code Reviewer routing: passed 8/8",
+      "explicit Git Bash fast profile: passed 34/34 required, 0 failed, 0 blocked, 1 not applicable; 99 seconds exceeded the 30-second advisory budget",
+      "independent assessment ASM-20260811-006: healthy-with-followups, no new blocking finding"
+    ],
+    "finding_status": "PKG-001-and-CMP-001-addressed-at-ff80d590",
+    "residual_risk": "No governed v0.13 release record exists; real candidate validation, downstream owner acceptance, provider read-back, transport, integration, and publication remain deferred-with-owner.",
     "follow_up_needed": true
   }
 }

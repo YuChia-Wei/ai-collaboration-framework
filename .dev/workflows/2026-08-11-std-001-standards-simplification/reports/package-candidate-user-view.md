@@ -79,3 +79,14 @@ The real v0.13 candidate review must repeat this user journey after a governed v
 
 - `ASM-20260811-003#PKG-001`: a validated archive can still contain broken navigation and actionable source-only release doctrine.
 - `ASM-20260811-003#CMP-001`: the .NET Code Reviewer entry is split across core and dotnet component identities.
+
+## Controlled After Evidence
+
+Issue #193 implementation `ff80d590006ebec8ccfbd540abb4083a9d386613` was evaluated as a fixed local subject by `ASM-20260811-006`. This remains controlled after-evidence rather than a governed v0.13 candidate.
+
+- The selected projection contains 628 files: software-development core 322, AI-context lifecycle core 110, dotnet-backend 194, and repo-backlog 2.
+- One schema 2.2 user-view contract now runs during package build and archive validation. It fails closed on broken local links and anchors, unavailable actionable commands, excluded lifecycle references, and incomplete component/capability selections.
+- All 22 Code Reviewer capability paths are owned by `dotnet-backend`; core-only declares Code Reviewer unavailable and dotnet-selected declares it available.
+- ZIP/tar inventory and user-view parity, versioned apply, routing, and the aggregate fast profile passed. Environment blocks, the initial WSL timeout, and the fast-profile duration advisory remain explicit receipts rather than rewritten passes.
+- `PKG-001` and `CMP-001` are addressed locally. A real governed v0.13 candidate must repeat the same contract against its immutable previous-release source and obtain downstream owner/provider read-back.
+- Active upgrade testing now begins at v0.6.0. Each later governed version has exactly one immediate-predecessor automatic route, and every breaking release establishes a predecessor-only checkpoint; the older broad matrix is retained only as non-discoverable history.

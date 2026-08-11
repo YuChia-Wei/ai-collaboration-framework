@@ -44,11 +44,11 @@
 
 - Online Issue: [#193 — `[STD-001/PKG] Fail Closed On Broken Payload Navigation And Component References`](https://github.com/YuChia-Wei/ai-collaboration-framework/issues/193)
 - Findings: `PKG-001`, `CMP-001`.
-- Canonical owners: distribution profile, package builder/validator, component mapping, package tests.
-- Main change: validate local links against the selected payload after mappings/exclusions; remove or re-route source-only entries from portable indexes/guides; classify the .NET Code Reviewer entry and roles consistently with their mandatory dotnet references.
-- Compatibility: keep archive schema and stable target paths; treat component reassignment as migration metadata, not silent deletion; source-only catalog entries may remain only when visibly non-actionable and link-safe.
-- Validator: negative fixtures for excluded Markdown targets, unavailable commands, cross-component mandatory references, and default/optional selection closure.
-- Rollback: one distribution-only delivery; does not change doctrine or release lifecycle semantics.
+- Canonical owners: distribution profile, package builder/validator, component mapping, package tests, and source version-governance validator/policy for the owner-directed test horizon.
+- Main change: validate local links against the selected payload after mappings/exclusions; remove or re-route source-only entries from portable indexes/guides; classify the .NET Code Reviewer entry and roles consistently with their mandatory dotnet references; start active upgrade tests at v0.6.0 and retain only an immediate-predecessor route for each later release or breaking checkpoint.
+- Compatibility: keep archive schema and stable target paths; treat component reassignment as migration metadata, not silent deletion; source-only catalog entries may remain only when visibly non-actionable and link-safe; retain pre-v0.6 matrix fixtures as non-discoverable history without rewriting published records.
+- Validator: negative fixtures for excluded Markdown targets, unavailable commands, cross-component mandatory references, default/optional selection closure, extra historical upgrade routes, and missing breaking checkpoints.
+- Rollback: one package-distribution and version-test-policy delivery; it does not change tag, publication, or immutable-release semantics.
 
 These three deliveries change different authorities, validators, compatibility contracts, and rollback units. They should not share one implementation PR merely because they originate from #61. Parent #61 remains the coordination Issue for the before/after v0.13 inventory and final candidate user review.
 
@@ -62,8 +62,8 @@ These three deliveries change different authorities, validators, compatibility c
 | role prompt/playbook duplicated checklists | role manifest plus targeted owner refs | one bounded role instruction | preserve role ID/applicability/stop conditions | #191 locally complete at `f62f110`; pending owner review/integration |
 | Code Reviewer references to shared common/testing | shared files remain for other consumers | finding-specific rule/section route | no global file deletion | #191 locally complete at `f62f110`; pending owner review/integration |
 | source release procedure inside target version guidance | source-only release policy | portable target version/provenance projection | stable target path; explicit source projection mapping | #192 locally complete at `92e7383`; `ASM-20260811-005` verified `GTM-001` addressed; pending owner review/integration |
-| package links to excluded source files | selected portable owner or non-actionable source-only note | link-safe target | package negative fixtures | #193 created; implementation pending separate authorization |
-| Code Reviewer core component classification | `dotnet-backend` component | component-closed selection | migration metadata preserves managed files | #193 created; implementation pending separate authorization |
+| package links to excluded source files | selected portable owner or non-actionable source-only note | link-safe target | package negative fixtures | #193 locally complete at `ff80d590`; `ASM-20260811-006` verifies `PKG-001` addressed; pending owner review/integration |
+| Code Reviewer core component classification | `dotnet-backend` component | component-closed selection | migration metadata preserves managed files | #193 locally complete at `ff80d590`; `ASM-20260811-006` verifies `CMP-001` addressed; pending owner review/integration |
 
 ## Owner Decisions And Issue Creation
 
@@ -76,3 +76,4 @@ These three deliveries change different authorities, validators, compatibility c
 7. Keep #61 open as v0.13 coordination until successor before/after evidence and the real governed v0.13 package-candidate review are complete.
 8. #191 completed local implementation and independent verification at `f62f110` / `ASM-20260811-004`; no Project allocation, push, PR, merge, Issue closure, or release action was performed.
 9. #192 completed local implementation and independent verification at `92e7383` / `ASM-20260811-005`; no Project allocation, push, PR, merge, Issue closure, or release action was performed.
+10. #193 completed local implementation and independent verification at `ff80d590` / `ASM-20260811-006`; the owner-directed v0.6.0 immediate-predecessor/breaking-checkpoint test horizon is active. No Project allocation, push, PR, merge, Issue closure, governed v0.13 candidate, or release action was performed.

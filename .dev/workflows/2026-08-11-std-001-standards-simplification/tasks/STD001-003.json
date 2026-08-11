@@ -8,7 +8,7 @@
   "owner_skill": "ai-context-governance",
   "status": "in_progress",
   "created_at": "2026-08-11T13:31:10+08:00",
-  "updated_at": "2026-08-11T21:40:15+08:00",
+  "updated_at": "2026-08-11T22:45:54+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-5.6-sol",
   "reasoning_effort": "high",
@@ -27,6 +27,7 @@
       "Review generated payload navigation and comprehension, not only source presence",
       "Give every proposed move or deletion an owner, replacement, compatibility, migration, and equivalence disposition",
       "Split findings that change different authorities, validators, or compatibility contracts into successor delivery scopes",
+      "Bound active upgrade tests to v0.6.0 and exactly one immediate-predecessor route per later release or breaking checkpoint",
       "Do not treat a candidate build as release publication evidence"
     ],
     "non_goals": [
@@ -49,11 +50,11 @@
       "python .ai/scripts/validate-workflow-artifacts.py",
       "git diff --check"
     ],
-    "last_completed_step": "Completed and independently verified the local #192 delivery at 92e7383 / ASM-20260811-005 without transport or integration",
-    "next_action": "Execute #193 against a validation-only combined view of the isolated #191 and #192 implementation checkpoints; keep Project allocation and transport separate"
+    "last_completed_step": "Completed local #193 implementation ff80d590 and independent ASM-20260811-006; PKG-001 and CMP-001 are addressed without transport or integration",
+    "next_action": "Return all three successor results for owner review, then require separate authority for integration and the real governed v0.13 candidate"
   },
   "results": {
-    "summary": "The controlled current-tree projection passed archive parity but failed downstream navigation; #191 and #192 are now locally implemented and independently verified, leaving #193 as the final isolated package-closure delivery.",
+    "summary": "The controlled baseline exposed downstream navigation and component closure failures; #191, #192, and #193 are now locally implemented and independently verified, while the real governed v0.13 candidate and downstream acceptance remain deferred.",
     "files_changed": [
       ".dev/assessments/ASM-20260811-003/report.md",
       ".dev/workflows/2026-08-11-std-001-standards-simplification/reports/package-candidate-user-view.md",
@@ -63,6 +64,8 @@
       ".dev/workflows/2026-08-11-std-001-standards-simplification/tasks/STD001-003.json",
       ".dev/workflows/2026-08-11-std-001-standards-simplification/workflow-plan.md",
       ".dev/workflows/2026-08-11-std-001-standards-simplification/workflow.yaml",
+      ".dev/workflows/2026-08-11-std-001-pkg-navigation-closure/**",
+      ".dev/assessments/ASM-20260811-006/**",
       ".dev/workflows/INDEX.MD"
     ],
     "tests_run": [
@@ -72,10 +75,12 @@
       "selected-payload Markdown navigation scan: failed with seven genuine missing targets",
       "GitHub Issues #191, #192, and #193 creation/read-back: passed; Project automation state is Inbox with no workflow-owned field allocation",
       "Issue #192 governance routing and exact package projection: passed 8/8",
-      "Issue #192 independent ASM-20260811-005: GTM-001 addressed"
+      "Issue #192 independent ASM-20260811-005: GTM-001 addressed",
+      "Issue #193 selected-payload, version, packaging, archive/apply, routing, and fast-profile gates: passed with preserved environment/advisory receipts",
+      "Issue #193 independent ASM-20260811-006: PKG-001 and CMP-001 addressed; no new blocking finding"
     ],
-    "finding_status": "issues-191-192-local-complete-issue-193-authorized",
-    "residual_risk": "The projection is not a real v0.13 candidate; #191 and #192 are not integrated, #193 remains unimplemented, and the final governed candidate gate still awaits release truth.",
+    "finding_status": "issues-191-192-193-local-complete-pending-owner-review-and-integration",
+    "residual_risk": "The controlled projection is not a real v0.13 candidate; none of the three rollback units is integrated, and final candidate validation, downstream acceptance, provider read-back, transport, Issue/Project state, and publication still await separate authority.",
     "follow_up_needed": true
   }
 }
