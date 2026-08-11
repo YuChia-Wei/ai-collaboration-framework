@@ -16,10 +16,10 @@
 - `base_branch`: `main`
 - `branch_segment`: `1`
 - `status`: `in_progress`
-- `current_phase`: `owner-decision`
+- `current_phase`: `successor-intake`
 - `artifact_root`: `.dev/workflows/2026-08-11-std-001-standards-simplification`
 - `created_at`: `2026-08-11T13:31:10+08:00`
-- `updated_at`: `2026-08-11T13:45:48+08:00`
+- `updated_at`: `2026-08-11T16:01:31+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md`
 - `template_version`: `1.2.0`
 
@@ -34,7 +34,7 @@
 
 - Work item: [GitHub Issue #61](https://github.com/YuChia-Wei/ai-collaboration-framework/issues/61), read as OPEN on 2026-08-11.
 - Project read-back: Project #3 records `Status=Planned`, `Priority=P1 High`, `Owner review=Approved`, `Target release=v0.13.0`, and `Published in=Not yet published`.
-- Current owner instruction: after merging #187, process #61 next. This activates the Issue-approved investigation and preparation scope; exact canonical mutations remain finding-bound.
+- Current owner instruction: the three-delivery ledger and existing ownership-registry placement are approved. Issues [#191](https://github.com/YuChia-Wei/ai-collaboration-framework/issues/191), [#192](https://github.com/YuChia-Wei/ai-collaboration-framework/issues/192), and [#193](https://github.com/YuChia-Wei/ai-collaboration-framework/issues/193) are created; Project allocation and implementation remain separate decisions.
 - Delivery cohesion: R2, R3, and package-candidate review share branch, reviewers, validation, v0.13 decision gate, and rollback; one workflow coordinates them without forcing unrelated authority changes into one delivery.
 - Planned integration: not selected until the decision ledger identifies whether the preparation artifacts stand alone or accompany one bounded remediation delivery.
 
@@ -59,20 +59,22 @@
 2. Complete R2 reference-loading inventory and doctrine-equivalence baseline. `completed`
 3. Complete R3 terminology ownership and definition-placement inventory. `completed`
 4. Build and review the controlled current-tree package projection, then finalize the decision ledger. `completed-with-v0.13-fail-closed-limitation`
-5. Present bounded delivery scopes for owner confirmation before canonical remediation or successor-Issue execution. `in_progress`
+5. Present bounded delivery scopes for owner confirmation and create the approved successor Issues. `completed`
+6. Coordinate separately authorized successor deliveries and the final governed v0.13 package-candidate review. `in_progress`
 
 ## Resume Checkpoint
 
-- Last completed action: Finalized `ASM-20260811-003` with five stable findings, measured R2/R3, validated a controlled current-tree package projection, and drafted three finding-bound successor deliveries.
+- Last completed action: Recorded owner approval of the three-delivery split and ownership-registry placement, then created and read back Issues #191, #192, and #193. Repository automation placed each in Project #3 `Inbox`; no workflow-owned Project fields were configured.
 - Current task: `STD001-003`.
-- Exact next action: Obtain owner approval or amendment of `reports/decision-ledger.md`, then create only the approved successor Issues and keep Project allocation separate.
+- Exact next action: Obtain separate Project allocation and implementation authorization for Issues #191-#193, then reconcile their before/after evidence and perform the real governed v0.13 package-candidate user review.
 - Validation already completed: workflow/assessment validators passed the bootstrap; exact Git-blob inventory completed; v0.13 package build failed closed for missing release truth; controlled projection ZIP/tar validation passed; extracted payload navigation failed with seven genuine missing targets.
-- Git state: Dedicated branch `codex/2026-08-11-std-001-standards-simplification`; assessment/workflow evidence changes are pending validation and commit.
-- Branch history and checkpoint handoffs: Segment 1 bootstrap commit is `a77db619fa48d44245845ee9f0e1d275103e1a42`; nothing from #61 has been pushed or merged.
-- Blockers or unresolved decisions: Owner approval of the three-delivery split and governance-term registry placement is required before canonical mutation or online successor-Issue creation.
+- Git state: Dedicated branch `codex/2026-08-11-std-001-standards-simplification`; bootstrap `a77db619fa48d44245845ee9f0e1d275103e1a42` and assessment checkpoint `c001cc34617396bfbde2b8138c7a65f45fc484e0` are local; this successor-intake update is pending validation and commit.
+- Branch history and checkpoint handoffs: Nothing from #61 has been pushed or merged.
+- Blockers or unresolved decisions: Project field allocation and implementation authorization for #191-#193 are pending; no governed v0.13 release record or real candidate exists yet.
 
 ## Branch Lifecycle
 
 | Segment | Branch | Base | Checkpoint Type | Commit | Remote / Target | Recorded At | Reason | Resume Branch / Action |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | 1 | `codex/2026-08-11-std-001-standards-simplification` | `main@df7012b6` | local audit bootstrap | `a77db619fa48d44245845ee9f0e1d275103e1a42` | local | `2026-08-11T13:31:10+08:00` | Begin the owner-approved #61 R2/R3 investigation and preparation scope | Review the final assessment and proposed successor delivery ledger |
+| 1 | `codex/2026-08-11-std-001-standards-simplification` | `main@df7012b6` | local assessment checkpoint | `c001cc34617396bfbde2b8138c7a65f45fc484e0` | local | `2026-08-11T13:45:48+08:00` | Preserve the final baseline assessment, controlled projection review, and decision ledger before owner approval | Record owner approval and successor Issue read-back |
