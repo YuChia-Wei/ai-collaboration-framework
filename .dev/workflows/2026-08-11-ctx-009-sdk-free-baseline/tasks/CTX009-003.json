@@ -1,0 +1,62 @@
+{
+  "template_id": "ai-context-governance-remediation-task",
+  "template_version": "1.1.0",
+  "template_created_at": "2026-07-10T18:22:49+08:00",
+  "template_updated_at": "2026-07-27T09:52:09+08:00",
+  "task_id": "CTX009-003",
+  "workflow_id": "2026-08-11-ctx-009-sdk-free-baseline",
+  "owner_skill": "ai-context-governance",
+  "status": "pending",
+  "created_at": "2026-08-11T08:21:27+08:00",
+  "updated_at": "2026-08-11T08:21:27+08:00",
+  "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
+  "model": "gpt-5.6-sol",
+  "reasoning_effort": "high",
+  "finding_ids": [
+    "#187",
+    "ASM-20260811-001#pending"
+  ],
+  "scope": {
+    "target": "Independent verification, finding reconciliation, and local workflow closeout",
+    "files": [
+      ".dev/assessments/ASM-20260811-002/**",
+      ".dev/workflows/2026-08-11-ctx-009-sdk-free-baseline/**"
+    ],
+    "constraints": [
+      "ai-context-auditor owns the independent verification assessment and remains read-only on remediated context",
+      "Reconcile every baseline and verification finding explicitly",
+      "Do not claim blocked, timed-out, deferred, or unselected checks as passed",
+      "Keep local workflow completion separate from push, pull request, merge, Issue closure, tag, and publication state"
+    ],
+    "non_goals": [
+      "Further unscoped remediation",
+      "Transport or integration without separate authorization",
+      "v0.13.0 tag or release publication"
+    ]
+  },
+  "execution": {
+    "steps": [
+      "Create ASM-20260811-002 as an independent post-remediation assessment",
+      "Reconcile baseline findings, remediation evidence, and verification conclusions",
+      "Finalize the remediation report and workflow/task statuses",
+      "Validate assessment, workflow, commit, branch, and clean-tree evidence separately",
+      "Stop at the local owner handoff unless transport or integration is separately authorized"
+    ],
+    "validation": [
+      "python .ai/scripts/validate-assessment-artifacts.py",
+      "python .ai/scripts/validate-workflow-artifacts.py",
+      "python .ai/scripts/validate-git-commits.py --range main..HEAD --workflow-id 2026-08-11-ctx-009-sdk-free-baseline",
+      "git status --short --branch"
+    ],
+    "last_completed_step": "",
+    "next_action": "Wait for CTX009-002 remediation and validation completion"
+  },
+  "results": {
+    "summary": "",
+    "files_changed": [],
+    "tests_run": [],
+    "finding_status": "not-addressed",
+    "residual_risk": "Independent verification has not run.",
+    "follow_up_needed": true
+  }
+}

@@ -1,0 +1,67 @@
+{
+  "template_id": "ai-context-governance-remediation-task",
+  "template_version": "1.1.0",
+  "template_created_at": "2026-07-10T18:22:49+08:00",
+  "template_updated_at": "2026-07-27T09:52:09+08:00",
+  "task_id": "CTX009-002",
+  "workflow_id": "2026-08-11-ctx-009-sdk-free-baseline",
+  "owner_skill": "ai-context-governance",
+  "status": "pending",
+  "created_at": "2026-08-11T08:21:27+08:00",
+  "updated_at": "2026-08-11T08:21:27+08:00",
+  "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
+  "model": "gpt-5.6-sol",
+  "reasoning_effort": "high",
+  "finding_ids": [
+    "#187",
+    "ASM-20260811-001#pending"
+  ],
+  "scope": {
+    "target": "SDK-free framework baseline and target-selected analyzer creation contract",
+    "files": [
+      ".ai/**",
+      ".dev/releases/**",
+      ".dev/guides/**",
+      "README.md",
+      "README.en.md",
+      "tools/**",
+      "global.json"
+    ],
+    "constraints": [
+      "Preserve canonical engineering rules, constraints, mappings, recipes, and package-free adoption guidance",
+      "Classify retained snippets as reference-only or target-validated with explicit compatibility responsibility",
+      "Required framework-owned release validation must not invoke dotnet or discover compilable .NET projects",
+      "Only an explicitly selected target-owned analyzer path may require a target SDK, Roslyn, severity, test, or CI policy"
+    ],
+    "non_goals": [
+      "EngineeringGuardrails.Contracts adoption or publication",
+      "A replacement framework-owned analyzer package, dotnet tool, or precompiled CLI",
+      "Historical evidence rewriting",
+      "External transport, integration, Issue closure, tag, or publication"
+    ]
+  },
+  "execution": {
+    "steps": [
+      "Bind the frozen ASM-20260811-001 findings to bounded remediation actions",
+      "Remove or retire framework-owned compilable .NET provider/test projects and root SDK pinning where selected by the active baseline",
+      "Remove required .NET invocations from aggregate, release, registry, CI, package, and distribution contracts",
+      "Rewrite provider, activation, index, example, and guidance surfaces around target-selected on-demand creation",
+      "Run direct repository-native and controlled no-dotnet validation and record exact outcomes"
+    ],
+    "validation": [
+      "repository-native AI-context, workflow, distribution, provider, example, link, and release validators",
+      "controlled required-check execution with dotnet unavailable from PATH",
+      "git diff --check"
+    ],
+    "last_completed_step": "",
+    "next_action": "Wait for CTX009-001 baseline assessment completion"
+  },
+  "results": {
+    "summary": "",
+    "files_changed": [],
+    "tests_run": [],
+    "finding_status": "not-addressed",
+    "residual_risk": "The exact remediation set depends on the frozen baseline inventory.",
+    "follow_up_needed": true
+  }
+}
