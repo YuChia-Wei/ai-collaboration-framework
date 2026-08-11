@@ -90,7 +90,10 @@ When no explicit profile exists, or when the profile does not cover a capability
   external-task delegation schema and templates. Select a source-task callback
   or one parent event wait; do not poll from the primary conversation. A
   terminal callback failure may use one schema-valid terminal read-back, while
-  a parent wait timeout remains pending rather than passed or failed.
+  a parent wait timeout remains pending rather than passed or failed. Before
+  delivery, the delegated task persists the dispatch and completed report in
+  ignored artifacts, validates that exact pair with the canonical validator,
+  and sends the validated completion record without modifying it.
 - Treat spec compliance as unselected and `not-applicable` unless a target
   profile, problem-frame workflow, requirement, or owner decision selects it.
   Once selected, incomplete configuration or coverage below 100% fails closed.
@@ -120,7 +123,9 @@ When handing a stage to another skill or sub-agent, include:
 
 For a separate runtime task, also include the single marked dispatch envelope
 defined by `../templates/external-task-delegation.schema.yaml`. Do not rely on
-free-form prose to identify the source task or terminal delivery route.
+free-form prose to identify the source task or terminal delivery route. Bind
+the ignored dispatch/completion artifact references and canonical pre-send
+validator argument vector in that envelope.
 
 ## Role Execution Handoff and Aggregation
 

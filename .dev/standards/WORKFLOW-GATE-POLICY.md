@@ -323,6 +323,13 @@ completion report conforming to the same schema and containing:
 - exit code plus log, evidence, or bounded output references; and
 - final tracked worktree state.
 
+Before delivery, the delegated task must persist the dispatch and completed
+report in its allowed ignored-artifact scope, run the canonical validator on
+that exact pair, and record the passing validator argument vector and artifact
+references inside the completion envelope. It then sends that validated record
+without post-validation edits. Missing or failed pre-send validation, record
+drift, or delivery of different bytes is non-passing.
+
 Execution timeout, interruption, missing terminal evidence, subject drift, and
 blocked execution are non-passing. The owning workflow remains open until it
 receives and accepts an allowed final outcome. A parent event-wait timeout is a

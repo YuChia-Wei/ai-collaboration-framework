@@ -92,6 +92,13 @@ The terminal message similarly contains exactly one
 `BEGIN_EXTERNAL_TASK_COMPLETION` / `END_EXTERNAL_TASK_COMPLETION` envelope so
 the source task can validate it before accepting the outcome.
 
+Before callback or terminal read-back delivery, the delegated task persists
+the dispatch and completed report in its ignored-artifact scope, validates that
+exact pair with the canonical validator, and records the successful validator
+argument vector and artifact references in the completion. It sends that
+validated record without post-validation edits; missing, failed, or drifting
+pre-send validation is non-passing.
+
 An execution timeout, interruption, invalid subject, missing terminal report,
 or blocked execution remains non-passing. A parent event-wait timeout is only a
 pending transport state. If callback delivery fails after the delegated task

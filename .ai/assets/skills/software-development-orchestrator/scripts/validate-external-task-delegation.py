@@ -62,8 +62,8 @@ def iso_with_offset(value: object) -> bool:
 
 def validate_schema_definition(schema: dict[str, Any]) -> list[str]:
     errors: list[str] = []
-    if schema.get("schema_version") != "1.0":
-        errors.append("schema.schema_version must be 1.0")
+    if schema.get("schema_version") != "1.1":
+        errors.append("schema.schema_version must be 1.1")
     if schema.get("contract_id") != "external-task-delegation":
         errors.append("schema.contract_id must be external-task-delegation")
     transport = schema.get("prompt_transport")
@@ -134,13 +134,19 @@ def validate_schema_definition(schema: dict[str, Any]) -> list[str]:
         != "runtime-policy-owned-and-not-source-delivery"
     ):
         errors.append("schema runtime-local progress ownership is invalid")
+    if transport_semantics.get("pre_send_completion_validation") != "required":
+        errors.append("schema pre-send completion validation must be required")
+    if transport_semantics.get("post_validation_record_mutation") != "prohibited":
+        errors.append("schema post-validation record mutation must be prohibited")
+    if transport_semantics.get("callback_payload") != "exact-validated-completion-record":
+        errors.append("schema callback payload must be the exact validated completion record")
     return errors
 
 
 def validate_dispatch(record: dict[str, Any], schema: dict[str, Any]) -> list[str]:
     errors = missing_fields(record, schema["dispatch"]["required"], "dispatch")
-    if record.get("schema_version") != "1.0":
-        errors.append("dispatch.schema_version must be 1.0")
+    if record.get("schema_version") != "1.1":
+        errors.append("dispatch.schema_version must be 1.1")
     if record.get("record_type") != "external-task-dispatch":
         errors.append("dispatch.record_type must be external-task-dispatch")
     if not non_empty_string(record.get("delegation_id")) or not ID_RE.fullmatch(
@@ -227,6 +233,52 @@ def validate_dispatch(record: dict[str, Any], schema: dict[str, Any]) -> list[st
             errors.append("dispatch.completion_delivery.max_terminal_reports must be 1")
         if delivery.get("report_schema") != "same-contract#completion":
             errors.append("dispatch.completion_delivery.report_schema is invalid")
+        pre_send = delivery.get("pre_send_validation")
+        errors.extend(
+            missing_fields(
+                pre_send,
+                contract["pre_send_validation"]["required"],
+                "dispatch.completion_delivery.pre_send_validation",
+            )
+        )
+        if isinstance(pre_send, dict):
+            if pre_send.get("required") is not True:
+                errors.append(
+                    "dispatch.completion_delivery.pre_send_validation.required must be true"
+                )
+            validator_argv = pre_send.get("validator_argv")
+            if not string_list(validator_argv, allow_empty=False):
+                errors.append(
+                    "dispatch.completion_delivery.pre_send_validation.validator_argv "
+                    "must be a non-empty string list"
+                )
+            elif (
+                not any(
+                    str(item).replace("\\", "/").endswith(
+                        "/validate-external-task-delegation.py"
+                    )
+                    for item in validator_argv
+                )
+                or "--dispatch" not in validator_argv
+            ):
+                errors.append(
+                    "dispatch.completion_delivery.pre_send_validation.validator_argv "
+                    "must invoke the canonical validator with --dispatch"
+                )
+            for field in ("dispatch_ref", "completion_ref"):
+                if not non_empty_string(pre_send.get(field)):
+                    errors.append(
+                        "dispatch.completion_delivery.pre_send_validation."
+                        f"{field} must be non-empty"
+                    )
+            if pre_send.get("failure_action") != "do-not-deliver-terminal-report":
+                errors.append(
+                    "dispatch.completion_delivery.pre_send_validation.failure_action is invalid"
+                )
+            if pre_send.get("payload_binding") != "exact-validated-completion-record":
+                errors.append(
+                    "dispatch.completion_delivery.pre_send_validation.payload_binding is invalid"
+                )
 
     if not string_list(record.get("stop_conditions"), allow_empty=False):
         errors.append("dispatch.stop_conditions must be a non-empty string list")
@@ -237,8 +289,8 @@ def validate_completion(
     record: dict[str, Any], schema: dict[str, Any], dispatch: dict[str, Any] | None = None
 ) -> list[str]:
     errors = missing_fields(record, schema["completion"]["required"], "completion")
-    if record.get("schema_version") != "1.0":
-        errors.append("completion.schema_version must be 1.0")
+    if record.get("schema_version") != "1.1":
+        errors.append("completion.schema_version must be 1.1")
     if record.get("record_type") != "external-task-completion":
         errors.append("completion.record_type must be external-task-completion")
     for field in ("delegation_id", "source_task_id", "delegated_task_id"):
@@ -318,6 +370,37 @@ def validate_completion(
             errors.append("completion.delivery.destination must be source-task")
         if delivery.get("terminal_report_number") != 1:
             errors.append("completion.delivery.terminal_report_number must be 1")
+        schema_validation = delivery.get("schema_validation")
+        errors.extend(
+            missing_fields(
+                schema_validation,
+                schema["completion"]["delivery"]["schema_validation"]["required"],
+                "completion.delivery.schema_validation",
+            )
+        )
+        if isinstance(schema_validation, dict):
+            if schema_validation.get("outcome") != "passed":
+                errors.append("completion.delivery.schema_validation.outcome must be passed")
+            if schema_validation.get("exit_code") != 0:
+                errors.append("completion.delivery.schema_validation.exit_code must be zero")
+            if not string_list(
+                schema_validation.get("validator_argv"), allow_empty=False
+            ):
+                errors.append(
+                    "completion.delivery.schema_validation.validator_argv must be a non-empty string list"
+                )
+            for field in ("dispatch_ref", "completion_ref"):
+                if not non_empty_string(schema_validation.get(field)):
+                    errors.append(
+                        f"completion.delivery.schema_validation.{field} must be non-empty"
+                    )
+            if (
+                schema_validation.get("payload_binding")
+                != "exact-validated-completion-record"
+            ):
+                errors.append(
+                    "completion.delivery.schema_validation.payload_binding is invalid"
+                )
 
     if outcome == "passed":
         expected_sha = subject.get("expected_commit_sha") if isinstance(subject, dict) else None
@@ -349,6 +432,15 @@ def validate_completion(
         source = dispatch.get("source", {})
         if source.get("task_id_source") == "explicit" and record.get("source_task_id") != source.get("task_id"):
             errors.append("completion.source_task_id must match explicit dispatch source")
+        dispatch_delivery = dispatch.get("completion_delivery", {})
+        pre_send = dispatch_delivery.get("pre_send_validation", {})
+        schema_validation = delivery.get("schema_validation", {}) if isinstance(delivery, dict) else {}
+        for field in ("validator_argv", "dispatch_ref", "completion_ref", "payload_binding"):
+            if schema_validation.get(field) != pre_send.get(field):
+                errors.append(
+                    "completion.delivery.schema_validation."
+                    f"{field} must match dispatch pre-send validation"
+                )
     return errors
 
 

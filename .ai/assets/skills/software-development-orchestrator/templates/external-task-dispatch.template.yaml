@@ -1,4 +1,4 @@
-schema_version: "1.0"
+schema_version: "1.1"
 record_type: "external-task-dispatch"
 delegation_id: "<stable-delegation-id>"
 task_kind: "long-running-validation"
@@ -32,6 +32,18 @@ completion_delivery:
   progress_updates: "terminal-only"
   max_terminal_reports: 1
   report_schema: "same-contract#completion"
+  pre_send_validation:
+    required: true
+    validator_argv:
+      - "python"
+      - ".ai/assets/skills/software-development-orchestrator/scripts/validate-external-task-delegation.py"
+      - "<ignored-completion-record-path>"
+      - "--dispatch"
+      - "<ignored-dispatch-record-path>"
+    dispatch_ref: "<ignored-dispatch-record-path>"
+    completion_ref: "<ignored-completion-record-path>"
+    failure_action: "do-not-deliver-terminal-report"
+    payload_binding: "exact-validated-completion-record"
 stop_conditions:
   - "preflight does not match the pinned subject"
   - "command reaches a terminal outcome"

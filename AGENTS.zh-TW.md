@@ -82,6 +82,9 @@ Workflow artifact 規則：
   不得重複 waits、status probes 或 progress narration。External task 必須只送出
   一份 schema-valid terminal report，包含 source/delegated task IDs、commit、
   command、duration、可取得的 outcome counts 與 evidence。
+- External task 送出前必須先將 dispatch 與完整 report 寫入 ignored artifacts，
+  使用 canonical validator 驗證這一對檔案，並原樣送出已驗證的 completion
+  record。若 pre-send validation 缺失或失敗，不得回報 passing callback。
 - Execution timeout、中止、subject drift、缺少 terminal evidence 或 blocked
   execution 絕不等於 passed。Parent wait timeout 只維持 pending；若 callback
   delivery 在 task terminal 後失敗，可做一次 terminal read-back，但不得藉此

@@ -232,6 +232,8 @@ class DevWorkflowCapabilityContractGwtTests(unittest.TestCase):
                     "single-terminal-readback",
                 ],
                 "parent_wait_timeout_state": "pending-awaiting-completion",
+                "pre_send_completion_validation": "required",
+                "callback_payload": "exact-validated-completion-record",
             },
             contract["delegation_contract"],
         )

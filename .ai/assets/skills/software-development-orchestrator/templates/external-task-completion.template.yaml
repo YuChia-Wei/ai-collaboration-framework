@@ -1,4 +1,4 @@
-schema_version: "1.0"
+schema_version: "1.1"
 record_type: "external-task-completion"
 delegation_id: "<matching-delegation-id>"
 source_task_id: "<resolved-source-task-id>"
@@ -30,3 +30,15 @@ delivery:
   mode: "source-task-callback" # source-task-callback | parent-event-wait | single-terminal-readback
   destination: "source-task"
   terminal_report_number: 1
+  schema_validation:
+    outcome: "passed"
+    exit_code: 0
+    validator_argv:
+      - "python"
+      - ".ai/assets/skills/software-development-orchestrator/scripts/validate-external-task-delegation.py"
+      - "<ignored-completion-record-path>"
+      - "--dispatch"
+      - "<ignored-dispatch-record-path>"
+    dispatch_ref: "<ignored-dispatch-record-path>"
+    completion_ref: "<ignored-completion-record-path>"
+    payload_binding: "exact-validated-completion-record"
