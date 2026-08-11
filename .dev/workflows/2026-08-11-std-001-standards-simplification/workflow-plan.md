@@ -19,7 +19,7 @@
 - `current_phase`: `successor-implementation`
 - `artifact_root`: `.dev/workflows/2026-08-11-std-001-standards-simplification`
 - `created_at`: `2026-08-11T13:31:10+08:00`
-- `updated_at`: `2026-08-11T20:18:57+08:00`
+- `updated_at`: `2026-08-11T21:40:15+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md`
 - `template_version`: `1.2.0`
 
@@ -64,11 +64,11 @@
 
 ## Resume Checkpoint
 
-- Last completed action: Recorded owner approval of the three-delivery split and ownership-registry placement, then created and read back Issues #191, #192, and #193. Repository automation placed each in Project #3 `Inbox`; no workflow-owned Project fields were configured.
+- Last completed action: Completed the authorized local #192 delivery on `codex/2026-08-11-std-001-r3-governance-terms` at `92e7383`; independent assessment `ASM-20260811-005` verified fixed implementation subject `fe85095` and reconciled `GTM-001` as addressed. The branch remains local and unmerged for owner review.
 - Current task: `STD001-003`.
-- Exact next action: Start the dedicated #191 branch and workflow, implement and verify its bounded reference-routing scope, then continue #192 and #193 without combining their rollback units.
-- Validation already completed: workflow/assessment validators passed the bootstrap; exact Git-blob inventory completed; v0.13 package build failed closed for missing release truth; controlled projection ZIP/tar validation passed; extracted payload navigation failed with seven genuine missing targets.
-- Git state: Dedicated branch `codex/2026-08-11-std-001-standards-simplification`; bootstrap `a77db619fa48d44245845ee9f0e1d275103e1a42` and assessment checkpoint `c001cc34617396bfbde2b8138c7a65f45fc484e0` are local; this successor-intake update is pending validation and commit.
+- Exact next action: Create the dedicated #193 branch and distribution workflow, assemble a local validation-only combined view of the isolated #191 and #192 implementation checkpoints, remediate selected-payload navigation/component closure, and independently validate the resulting package without treating the combined view as an authorized merge.
+- Validation already completed: parent workflow/assessment validators passed; #191 routing and exact-subject payload contracts passed with `ASM-20260811-004` final; #192 governance routing passed 8/8, final fast profile passed 32/32 required checks, package smoke passed 1/1, and `ASM-20260811-005` is final. Earlier #191 package timeout and #192 source-governance timeouts remain recorded as failed rather than relabeled.
+- Git state: Coordination branch `codex/2026-08-11-std-001-standards-simplification` is based on local checkpoint `088fee7`; #191 is preserved separately at `f62f110`, #192 at `92e7383`, and neither branch has been pushed or merged.
 - Branch history and checkpoint handoffs: Nothing from #61 has been pushed or merged.
 - Blockers or unresolved decisions: Project field allocation and transport remain pending; no governed v0.13 release record or real candidate exists yet, so the final #193 candidate gate remains future work.
 
@@ -78,3 +78,5 @@
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | 1 | `codex/2026-08-11-std-001-standards-simplification` | `main@df7012b6` | local audit bootstrap | `a77db619fa48d44245845ee9f0e1d275103e1a42` | local | `2026-08-11T13:31:10+08:00` | Begin the owner-approved #61 R2/R3 investigation and preparation scope | Review the final assessment and proposed successor delivery ledger |
 | 1 | `codex/2026-08-11-std-001-standards-simplification` | `main@df7012b6` | local assessment checkpoint | `c001cc34617396bfbde2b8138c7a65f45fc484e0` | local | `2026-08-11T13:45:48+08:00` | Preserve the final baseline assessment, controlled projection review, and decision ledger before owner approval | Record owner approval and successor Issue read-back |
+| 2 | `codex/2026-08-11-std-001-r2-review-routing` | `codex/2026-08-11-std-001-standards-simplification@73b12c6` | local verified implementation | `f62f110` | local | `2026-08-11T20:56:40+08:00` | Preserve the completed #191 routing delivery and independent `ASM-20260811-004` evidence without merging its rollback unit | Start #192 from the updated coordination branch; retain #191 for owner review |
+| 3 | `codex/2026-08-11-std-001-r3-governance-terms` | `codex/2026-08-11-std-001-standards-simplification@088fee7` | local verified implementation | `92e7383` | local | `2026-08-11T21:40:15+08:00` | Preserve the completed #192 governance-term delivery and independent `ASM-20260811-005` evidence without merging its rollback unit | Start #193 from the updated coordination branch; use a validation-only combined view for #191/#192 package closure |

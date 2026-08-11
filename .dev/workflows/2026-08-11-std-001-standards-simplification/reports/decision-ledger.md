@@ -56,12 +56,12 @@ These three deliveries change different authorities, validators, compatibility c
 
 | Candidate content | Canonical owner | Replacement entry | Compatibility / migration | Successor / implementation state |
 | --- | --- | --- | --- | --- |
-| full Code Review index examples and repeated rules | file-type routing contract plus canonical standards | stable `CODE-REVIEW-INDEX.MD` compatibility entry | stub first; removal only after declared migration window | #191 created; implementation pending separate authorization |
-| `checklist-reference.md` duplicated detection text | routing contract | stable stub linking to route | package reference and wrapper migration | #191 created; implementation pending separate authorization |
-| monolithic checklist sections | existing file-type standards / rule catalog | type and finding routes | rule-ID/digest equivalence required | #191 created; implementation pending separate authorization |
-| role prompt/playbook duplicated checklists | role manifest plus targeted owner refs | one bounded role instruction | preserve role ID/applicability/stop conditions | #191 created; implementation pending separate authorization |
-| Code Reviewer references to shared common/testing | shared files remain for other consumers | finding-specific rule/section route | no global file deletion | #191 created; implementation pending separate authorization |
-| source release procedure inside target version guidance | source-only release policy | portable target version/provenance projection | stable target path; explicit source projection mapping | #192 created; implementation pending separate authorization |
+| full Code Review index examples and repeated rules | file-type routing contract plus canonical standards | stable `CODE-REVIEW-INDEX.MD` compatibility entry | stub first; removal only after declared migration window | #191 locally complete at `f62f110`; pending owner review/integration |
+| `checklist-reference.md` duplicated detection text | routing contract | stable stub linking to route | package reference and wrapper migration | #191 locally complete at `f62f110`; pending owner review/integration |
+| monolithic checklist sections | existing file-type standards / rule catalog | type and finding routes | rule-ID/digest equivalence required | #191 locally complete at `f62f110`; pending owner review/integration |
+| role prompt/playbook duplicated checklists | role manifest plus targeted owner refs | one bounded role instruction | preserve role ID/applicability/stop conditions | #191 locally complete at `f62f110`; pending owner review/integration |
+| Code Reviewer references to shared common/testing | shared files remain for other consumers | finding-specific rule/section route | no global file deletion | #191 locally complete at `f62f110`; pending owner review/integration |
+| source release procedure inside target version guidance | source-only release policy | portable target version/provenance projection | stable target path; explicit source projection mapping | #192 locally complete at `92e7383`; `ASM-20260811-005` verified `GTM-001` addressed; pending owner review/integration |
 | package links to excluded source files | selected portable owner or non-actionable source-only note | link-safe target | package negative fixtures | #193 created; implementation pending separate authorization |
 | Code Reviewer core component classification | `dotnet-backend` component | component-closed selection | migration metadata preserves managed files | #193 created; implementation pending separate authorization |
 
@@ -74,3 +74,5 @@ These three deliveries change different authorities, validators, compatibility c
 5. On 2026-08-11 the owner separately authorized local implementation of all three bounded successor scopes, with results to be presented for review. Project allocation, push, PR, merge, Issue closure, tag, Release, and publication remain separate decisions.
 6. Execute #191, then #192, then #193 so the package delivery can validate the combined result.
 7. Keep #61 open as v0.13 coordination until successor before/after evidence and the real governed v0.13 package-candidate review are complete.
+8. #191 completed local implementation and independent verification at `f62f110` / `ASM-20260811-004`; no Project allocation, push, PR, merge, Issue closure, or release action was performed.
+9. #192 completed local implementation and independent verification at `92e7383` / `ASM-20260811-005`; no Project allocation, push, PR, merge, Issue closure, or release action was performed.

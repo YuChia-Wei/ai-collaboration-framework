@@ -8,7 +8,7 @@
   "owner_skill": "ai-context-governance",
   "status": "in_progress",
   "created_at": "2026-08-11T13:31:10+08:00",
-  "updated_at": "2026-08-11T20:18:57+08:00",
+  "updated_at": "2026-08-11T21:40:15+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-5.6-sol",
   "reasoning_effort": "high",
@@ -49,11 +49,11 @@
       "python .ai/scripts/validate-workflow-artifacts.py",
       "git diff --check"
     ],
-    "last_completed_step": "Recorded owner approval of the three-delivery ledger and created/read back GitHub Issues #191, #192, and #193",
-    "next_action": "Coordinate the authorized #191 and #192 deliveries, then execute #193 and the real v0.13 candidate review; keep Project allocation and transport separate"
+    "last_completed_step": "Completed and independently verified the local #192 delivery at 92e7383 / ASM-20260811-005 without transport or integration",
+    "next_action": "Execute #193 against a validation-only combined view of the isolated #191 and #192 implementation checkpoints; keep Project allocation and transport separate"
   },
   "results": {
-    "summary": "The controlled current-tree projection passed archive parity but failed downstream navigation; the owner approved three rollback-safe successor deliveries and Issues #191, #192, and #193 now hold their independent scopes.",
+    "summary": "The controlled current-tree projection passed archive parity but failed downstream navigation; #191 and #192 are now locally implemented and independently verified, leaving #193 as the final isolated package-closure delivery.",
     "files_changed": [
       ".dev/assessments/ASM-20260811-003/report.md",
       ".dev/workflows/2026-08-11-std-001-standards-simplification/reports/package-candidate-user-view.md",
@@ -70,10 +70,12 @@
       "controlled current-tree ZIP/tar build using v0.12 contract and verified v0.11 migration manifest: passed",
       "python .ai/scripts/validate-ai-context-package.py <zip> <tar.gz>: passed",
       "selected-payload Markdown navigation scan: failed with seven genuine missing targets",
-      "GitHub Issues #191, #192, and #193 creation/read-back: passed; Project automation state is Inbox with no workflow-owned field allocation"
+      "GitHub Issues #191, #192, and #193 creation/read-back: passed; Project automation state is Inbox with no workflow-owned field allocation",
+      "Issue #192 governance routing and exact package projection: passed 8/8",
+      "Issue #192 independent ASM-20260811-005: GTM-001 addressed"
     ],
-    "finding_status": "implementation-authorized-successor-issues-191-193",
-    "residual_risk": "The projection is not a real v0.13 candidate; Issues #191-#193 remain unimplemented and the final before/after candidate review awaits a governed v0.13 release record.",
+    "finding_status": "issues-191-192-local-complete-issue-193-authorized",
+    "residual_risk": "The projection is not a real v0.13 candidate; #191 and #192 are not integrated, #193 remains unimplemented, and the final governed candidate gate still awaits release truth.",
     "follow_up_needed": true
   }
 }
