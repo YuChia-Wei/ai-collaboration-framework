@@ -19,7 +19,7 @@
 - `current_phase`: `validation`
 - `artifact_root`: `.dev/workflows/2026-08-11-ctx-009-sdk-free-baseline`
 - `created_at`: `2026-08-11T08:21:27+08:00`
-- `updated_at`: `2026-08-11T09:44:33+08:00`
+- `updated_at`: `2026-08-11T09:51:04+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md`
 - `template_version`: `1.2.0`
 
@@ -68,16 +68,16 @@
 
 ## Resume Checkpoint
 
-- Last completed action: Committed remediation at `4abb7f1`, passed committed payload and seed projections, and repaired two pre-existing read-only permission expectations exposed by the full packaging matrix.
+- Last completed action: Proved `dotnet` absent in the controlled PR run, preserved its 35-pass and 2-failure receipt, and restored the immutable `code-review.sh` compatibility byte that caused both failures.
 - Current task: `CTX009-002`.
-- Exact next action: Commit the permission-contract follow-up, then run the full PR profile with `dotnet` absent from `PATH` and the post-fix packaging matrix.
-- Validation already completed: Focused matrix from the remediation checkpoint; committed component/seed packaging projections 2/2; canonical packaging first attempt timed out at 364 seconds; measured rerun completed 34 passed, 2 failed, and 1 skipped in 891 seconds; both corrected permission cases reran 2/2 passed.
-- Git state: Dedicated branch `codex/2026-08-11-ctx-009-sdk-free-baseline`; workflow bootstrap `7652e5f1`; baseline assessment `2e40c69e`; remediation `4abb7f1`; permission-contract follow-up is unstaged.
+- Exact next action: Commit the compatibility-byte restoration, then rerun the full PR profile with `dotnet` absent from `PATH`.
+- Validation already completed: Focused and committed packaging matrices; controlled PR first run proved `dotnet` absent and executed 37 required checks with 35 passed, 2 failed, and 0 blocked; direct source governance and Python entrypoint reruns now pass after restoring the immutable byte.
+- Git state: Dedicated branch `codex/2026-08-11-ctx-009-sdk-free-baseline`; workflow bootstrap `7652e5f1`; baseline assessment `2e40c69e`; remediation `4abb7f1`; permission contract `3fdd7a1`; compatibility-byte restoration is unstaged.
 - Branch history and checkpoint handoffs: Segment 1 is local only; no push, pull request, merge, tag, or publication exists.
-- Blockers or unresolved decisions: None for local #187 execution. Post-fix full packaging, controlled no-`dotnet` aggregate validation, and independent verification remain. Push, pull request, merge, Issue closure, tag, and v0.13.0 publication remain unrequested.
+- Blockers or unresolved decisions: None for local #187 execution. Clean no-`dotnet` aggregate rerun, post-fix full packaging, and independent verification remain. Push, pull request, merge, Issue closure, tag, and v0.13.0 publication remain unrequested.
 
 ## Branch Lifecycle
 
 | Segment | Branch | Base | Checkpoint Type | Commit | Remote / Target | Recorded At | Reason | Resume Branch / Action |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| 1 | `codex/2026-08-11-ctx-009-sdk-free-baseline` | `main@a4fd14f0` | local-active | `7652e5f1`, `2e40c69e`, `4abb7f1` | local | `2026-08-11T09:44:33+08:00` | Authorized #187 SDK-free baseline delivery, frozen evidence, and remediation | Commit permission-contract follow-up, then execute controlled terminal validation |
+| 1 | `codex/2026-08-11-ctx-009-sdk-free-baseline` | `main@a4fd14f0` | local-active | `7652e5f1`, `2e40c69e`, `4abb7f1`, `3fdd7a1` | local | `2026-08-11T09:51:04+08:00` | Authorized #187 SDK-free baseline delivery, frozen evidence, remediation, and validation-contract repair | Commit compatibility-byte restoration, then rerun controlled terminal validation |

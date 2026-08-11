@@ -296,7 +296,7 @@ fi
 # Projection Check
 if [ "$CHECK_PROJECTION_CONFIG" = true ]; then
     echo -e "${BLUE}ℹ${NC} Projection build diagnostic: DBA1013"
-    echo "  Run target-owned IProjectionReadModel EF registration tests when selected."
+    echo "  Run DotnetBackendValidation tests for IProjectionReadModel EF registration."
     echo "  Continue AI review for query shape, tracking policy, and read-model responsibility."
 fi
 
