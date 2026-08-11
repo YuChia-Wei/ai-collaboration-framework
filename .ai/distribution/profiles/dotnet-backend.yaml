@@ -324,6 +324,15 @@ entries:
     install_behavior: seed
 
 exclusions:
+  - id: source-release-governance
+    classification: source-only
+    patterns:
+      - .dev/standards/AI-CONTEXT-VERSION-POLICY.md
+      - .dev/standards/AI-CONTEXT-SOURCE-RELEASE-POLICY.md
+    reason: >-
+      The source compatibility router and source release procedure are not
+      downstream instructions. The portable version/provenance/upgrade policy
+      is projected to the stable target path through portable-policy-manifest.
   - id: source-codex-runtime-worker-profiles
     classification: source-only
     patterns:
@@ -438,6 +447,7 @@ exclusions:
       - .ai/scripts/tests/test_source_dispositions.py
       - .ai/scripts/tests/test_skill_transition_contract.py
       - .ai/scripts/tests/test_github_backlog_provider.py
+      - .ai/scripts/tests/test_governance_term_routing_contract.py
       - .ai/evaluation/**
       - .ai/assets/skills/ai-context-governance/templates/release-publication/**
       - '**/bin/**'

@@ -1,5 +1,11 @@
 # AI Context Release Publication Runbook
 
+本 runbook 實作 source-only
+[AI Context Source Release Policy](../../standards/AI-CONTEXT-SOURCE-RELEASE-POLICY.md)。
+本文件中的 `candidate`、`publication` 與 `finalization` 簡稱只在各自明確
+section 內成立，不得解讀成 target upgrade category、workflow completion
+或跨階段 mutation authority。
+
 ## Trigger
 
 當已核准的 governed framework release 已完成實作，需要從冷啟動環境建立候選、合併、建立 immutable annotated tag，並由 GitHub Actions 完成發布與 provider tracking 對帳時使用本文件。除明列且已核對的 release-specific exception 外，tag 仍由 owner 建立。從 `v0.12.0` 起，正常流程不再包含 post-tag source registry 收尾。

@@ -2,7 +2,7 @@
 
 This directory stores durable release identities, compatibility declarations, and migration guidance for the reusable AI context framework.
 
-Start with [INDEX.MD](INDEX.MD). Follow [AI-CONTEXT-VERSION-POLICY.md](../standards/AI-CONTEXT-VERSION-POLICY.md) for version selection, tag immutability, release lifecycle, target provenance, and publication gates.
+Start with [INDEX.MD](INDEX.MD). Follow the source-only [AI Context Source Release Policy](../standards/AI-CONTEXT-SOURCE-RELEASE-POLICY.md) for framework version-candidate preparation, release-source status, tag handoff, hosted publication, and hosted finalization validation. Target provenance and upgrade safety remain owned by the portable [AI Context Version Policy](../standards/AI-CONTEXT-VERSION-POLICY.md).
 
 Each version directory owns one `release.yaml`, `release-notes.md`, and `migration-guide.md`. Historical published records are immutable except for clearly identified factual corrections; candidate records remain editable until integration. From v0.12.0 onward, the integrated and tagged `status: validated` record is terminal source truth and is not rewritten after hosted publication.
 

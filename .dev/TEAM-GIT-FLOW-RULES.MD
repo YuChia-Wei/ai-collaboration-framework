@@ -106,6 +106,10 @@ Every change entering `main` requires a pull request. The pull-request gate and
 the Git topology are separate decisions: workflow mode does not require a merge
 commit, and direct mode does not bypass review.
 
+Repository integration is the reviewed Git event that enters the configured
+integration branch. It is not workflow completion, assessment finality,
+release-source validation, hosted publication, or publication finalization.
+
 ### Linear Integration
 
 Choose linear integration when the branch boundary adds no durable information

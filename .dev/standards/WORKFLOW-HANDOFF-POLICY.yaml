@@ -31,6 +31,13 @@ release_phases:
   - tag
   - publication
   - finalization
+release_phase_semantics:
+  namespace: source-release-validation
+  kind: validation-phase
+  not_authority_for:
+    - release-source-status-transition
+    - tag-mutation
+    - hosted-publication-mutation
 output:
   normalization: utf8-lf
   max_tail_lines: 40

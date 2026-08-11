@@ -46,6 +46,19 @@ This directory owns source-side, machine-readable contracts for building portabl
   v0.3.0-to-v0.5.0 migration. v0.0.1 is not silently treated as an automatic
   v0.5.0 source.
 
+## Package Candidate
+
+A `package candidate` is a deterministic source-built archive projection used
+for validation before hosted publication. It is owned by the distribution
+profile, package builder, package validator, and immutable source commit from
+which its bytes were collected.
+
+A package candidate is not a framework version candidate record, a target
+upgrade `automatic-candidate`, a published Release, or publication authority.
+Archive parity validates the envelope and inventory only; selected-payload
+navigation, component-reference closure, release-source gates, and hosted
+state retain their separate owners.
+
 ## Ownership Classes
 
 | Class | Meaning | Automatic update rule |

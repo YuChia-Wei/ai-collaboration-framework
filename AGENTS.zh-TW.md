@@ -93,6 +93,11 @@ Workflow artifact 規則：
 - runtime wrapper sync；
 - context migration 規劃或執行。
 
+當治理術語涉及 authority 或 state 時，必須透過
+`.dev/standards/AI-CONTEXT-OWNERSHIP.yaml` 解析 qualified term 與 canonical
+owner；不得從未限定的 candidate、validated、integration、publication、
+closeout、finalization 或 lifecycle 用語推論跨 owner transition。
+
 不要將純 AI 文件治理工作交給 `bdd-gwt-test-designer`。
 
 ### AI Context Audit

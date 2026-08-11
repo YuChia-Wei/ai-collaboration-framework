@@ -118,25 +118,21 @@ Shell or PowerShell scripts should be retired or replaced when they:
 - `check-coding-standards.sh`
 - `validate-ai-context.py`
 - `validate-assessment-artifacts.py`
-- `validate-ai-context-versions.py`
 - `validate-ai-context-target.py`
 - `resolve-effective-rule-packet.py`
-- `validate-ai-context-release-state.py`
-- `reconcile-ai-context-release-provider.py`
-- `validate-immutable-history.py`
-- `prepare-ai-context-release.py`
 - `validate-source-dispositions.py`
 - `validate-file-disposition-manifest.py`
 - `validate-git-commits.py`
 - `validate-workflow-handoff.py`
-- `build-ai-context-package.py`
-- `validate-ai-context-package.py`
 - `plan-ai-context-package-apply.py`
-- `render-ai-context-release-notes.py`
-- `validate-ai-behavior-evaluation.py`
-- `measure-ai-context-load.py`
 
 These scripts inspect AI context, markdown, prompt portability, or repository hygiene. They are not substitutes for dotnet C# validation.
+
+Source-maintainer release validation, tag handoff, hosted publication,
+provider reconciliation, release rendering, package building, immutable source
+history, and source load/evaluation entrypoints are intentionally excluded from
+target packages. Their names and commands belong to upstream source policy and
+runbooks; this portable instruction path does not make them target actions.
 
 `resolve-effective-rule-packet.py` is the shared, read-only action-time resolver for one exact
 `capability` / `execution_mode` / `technology_profile` / `file_type` tuple. It consumes only the
@@ -152,7 +148,7 @@ first and the state index last, with rollback for in-process exceptions. It does
 cross-file crash atomicity; a crash-mixed candidate remains unusable because freshness and digest
 validation fails closed.
 
-`validate-ai-context.py` checks objective repository facts: active index paths, literal table corruption, declared runtime-root status, canonical/Agents/Claude skill inventory parity, case-safe `AGENTS.md` and thin `CLAUDE.md` root entries, canonical wrapper-metadata target/path integrity, sub-agent dynamic/native dispositions, exact adapter target/path/schema/canonical-link/package-profile parity, policy-scoped agent-facing language, root bilingual entry ownership/link/structural markers, rule ownership registry structure, canonical skill/sub-agent schema compliance, canonical template-family hygiene, and deterministic development capability routing. It scans both tracked and untracked non-ignored files so a new context file cannot bypass the gate before staging, while filtering tracked paths that are deleted in the working tree. Language lint uses exact path-and-line exceptions for deliberate routing triggers; other Han prose and selected non-ASCII punctuation fail with a file and line number. Script source, generated/example/archive/migration material, workflows, product `src`/`test` trees, and human-facing `.dev` documentation are outside that language scan; Markdown documentation under `.ai/scripts` remains in scope. Root bilingual validation checks reciprocal ownership links, headings, links, fences, inline-code identifiers, tables, lists, and ordered backtick table paths. These are structural drift guards, not proof of semantic equivalence; retained semantic review remains required when a bilingual entry changes materially.
+`validate-ai-context.py` checks objective repository facts: active index paths, literal table corruption, declared runtime-root status, canonical/Agents/Claude skill inventory parity, case-safe `AGENTS.md` and thin `CLAUDE.md` root entries, canonical wrapper-metadata target/path integrity, sub-agent dynamic/native dispositions, exact adapter target/path/schema/canonical-link/package-profile parity, policy-scoped agent-facing language, root bilingual entry ownership/link/structural markers, rule ownership registry structure, qualified governance-term namespace/owner/shorthand/machine-binding routes, canonical skill/sub-agent schema compliance, canonical template-family hygiene, and deterministic development capability routing. It scans both tracked and untracked non-ignored files so a new context file cannot bypass the gate before staging, while filtering tracked paths that are deleted in the working tree. Language lint uses exact path-and-line exceptions for deliberate routing triggers; other Han prose and selected non-ASCII punctuation fail with a file and line number. Script source, generated/example/archive/migration material, workflows, product `src`/`test` trees, and human-facing `.dev` documentation are outside that language scan; Markdown documentation under `.ai/scripts` remains in scope. Root bilingual validation checks reciprocal ownership links, headings, links, fences, inline-code identifiers, tables, lists, and ordered backtick table paths. These are structural drift guards, not proof of semantic equivalence; retained semantic review remains required when a bilingual entry changes materially.
 
 `validate-workflow-artifacts.py` validates post-adoption workflow locator/task metadata, complete `.dev/workflows/INDEX.MD` directory coverage, locator-backed title/owner/status/timestamp/entrypoint parity, explicit legacy/no-locator rows, durable `.dev/backlog/items/*.yaml` identity/lifecycle/reference integrity, and fail-closed development implementation contracts for intent, execution mode, overlays, layered sources, subject revision, and acceptance criteria. Locators that opt into `lifecycle_contract: "1.0"` also enforce active-task cardinality, completed-workflow closure, and completed-task result semantics. Historical tasks and locators before their respective contract adoption remain compatible. The development implementation-contract and orchestrator acceptance tests live with `software-development-orchestrator`; the old `.ai/scripts/tests/` paths are thin compatibility entrypoints only.
 
@@ -161,25 +157,6 @@ index coverage, `ASM-YYYYMMDD-NNN` identity, template and report paths, assessed
 Git revision metadata, branch and timestamp contracts, lifecycle sections,
 resume safety, and assessment relationship integrity. It does not evaluate
 report prose or replace the producing skill's evidence review.
-
-`validate-ai-context-versions.py` is the source-side release-registry validator:
-it validates governed release identity, SemVer, immutable published
-tag-to-commit mappings, and compatibility declarations. It delegates
-component-aware target provenance and semantic customization checks to the
-shared downstream library.
-
-`validate-immutable-history.py` is the source-only routine/full validation
-layer for `.dev/workflows`, `.dev/assessments`, and `.dev/releases`. A full
-refresh executes the three native validators and records a content-addressed
-receipt that binds the exact source commit and tree, historical content,
-indexes, and validator/schema inputs. Routine verification accepts reuse only
-on the receipt commit's first-parent continuation and only when a closed Git
-diff proves those protected surfaces unchanged. Missing, stale, malformed, or
-mismatched evidence never becomes a pass: routine profiles execute the native
-full validators instead, while `release` and `nightly-full` always execute
-them. The receipt has no time-based TTL. This helper, its receipt, and its
-fixtures are source-only; downstream packages continue to validate target-local
-AI context without source history.
 
 `validate-ai-context-target.py` validates only downstream
 `.dev/ai-context/provenance.yaml` and `customizations.yaml`. It requires stable
@@ -192,39 +169,6 @@ is a read-only Git-tree comparison helper; it proposes an automatic candidate
 only when a supplied target file is byte-identical to the recorded base. Target
 truth, deletions, absent evidence, and source history remain reconciliation or
 exclusion items.
-
-`validate-ai-context-release-state.py` applies the REL-owned
-`.dev/releases/<version>/release-phase-checks.yaml` contract to one governed
-release. The requested stable version selects the contract and each sanctioned
-command embeds that same literal version. Candidate validation rejects unresolved
-placeholders, copied lifecycle fields, impossible timestamps, unrelated or
-incomplete online Issue references, dirty worktrees, package identity drift,
-and generated provenance in authored notes while allowing prior versions in
-compatibility and migration guidance. Tag validation requires an existing
-annotated tag and a validated registry record in the tagged tree. Hosted
-publication and finalization use GET-only GitHub API calls to verify the
-successful tag-triggered workflow, stable Release body, title, tag, and exact
-asset names. From v0.12 onward finalization accepts that terminal validated
-source record and does not require a post-tag published-record rewrite.
-
-`reconcile-ai-context-release-provider.py` validates the release-owned GitHub
-Issue and Project contract. `preflight` is read-only and requires every included
-Issue to be closed/completed with exact Done/P1/Approved/Target/Not-yet fields,
-while the coordination Issue remains planned and non-release. After the stable
-Release exists, `apply` idempotently sets included `Published in`, closes the
-coordination Issue, sets its Project status to Done, and reads the exact state
-back. The Project credential is available only inside the tag-triggered release
-environment; pull-request workflows never receive it.
-
-`prepare-ai-context-release.py` is the pre-tag interface. It requires the merged
-`main` candidate, reruns the candidate and critical gates, verifies the
-worktree remains clean, reads exact AI provenance from the latest registered
-handoff checkpoint, and prints a complete annotated-tag command for the
-repository owner. It never executes the printed command or pushes a ref. The
-printed command is valid only for the current `main` HEAD; any later merge to
-`main` requires rerunning preparation and discarding every older printed
-command. Normal v0.12-or-later publication creates no lifecycle-only source
-closeout merge after the tag.
 
 `validate-dependency-versions.py` is a deterministic offline gate. In the source
 framework repository it enforces byte-identical pinned Python requirement
@@ -318,13 +262,6 @@ missing, changed, or ignored path. This keeps plan preflight, post-install
 validation, and the target critical gate on one identity without treating a
 skipped path as a pass.
 
-`render-ai-context-release-notes.py` validates a governed release candidate and
-renders the GitHub Release body from its canonical release notes, migration
-guide, tag, and exact commit. Candidate mode can discover exactly one active
-governed candidate; publish mode fails unless the tagged-tree record is
-`validated`. The tag-triggered Action owns tag selection and Release mutation;
-the renderer never creates or changes Git refs or remote releases.
-
 `measure-ai-context-load.py` is the source-only deterministic measurement
 interface for representative repository-backed context traces. It requires a
 clean repository at the full declared `HEAD`, exactly the `runtime`,
@@ -352,13 +289,7 @@ python .ai/assets/skills/software-development-orchestrator/scripts/tests/test_so
 python .ai/scripts/tests/test_workflow_lifecycle_contract.py -v
 python .ai/scripts/tests/test_assessment_artifacts.py -v
 python .ai/scripts/tests/test_git_commit_policy.py -v
-python .ai/scripts/tests/test_ai_context_version_governance.py -v
 python .ai/scripts/tests/test_ai_context_package_apply.py -v
-python .ai/scripts/tests/test_ai_context_packaging.py -v
-python .ai/scripts/tests/test_ai_context_release_state.py -v
-python .ai/scripts/tests/test_prepare_ai_context_release.py -v
-python .ai/scripts/tests/test_release_notes_renderer.py -v
-python .ai/scripts/tests/test_ai_behavior_evaluation.py -v
 python .ai/scripts/tests/test_ai_context_load_measurement.py -v
 python .ai/scripts/tests/test_dependency_version_consistency.py -v
 python .ai/scripts/tests/test_file_disposition_manifest.py -v
@@ -367,11 +298,6 @@ python .ai/scripts/tests/test_source_dispositions.py -v
 python .ai/scripts/tests/test_governance_workflow_contract.py -v
 ```
 
-`test_ai_context_version_governance.py` and
-`test_ai_context_packaging.py` are source-repository release/build tests.
-`test_ai_behavior_evaluation.py` is the source-release deterministic behavior
-gate. It consumes only preclassified fixtures, performs no model or network
-calls, and compares exact normalized output with the checked-in baseline.
 `test_ai_context_load_measurement.py` proves the source-only context-load
 measurement contract in disposable synthetic Git repositories; it creates no
 official trace or release evidence.

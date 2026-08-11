@@ -35,6 +35,46 @@ them without creating a second semantic owner.
   cross-cutting identity families incrementally instead of attempting an
   unreviewed bulk migration.
 
+## Governance Term Routing
+
+The machine-readable registry's `governance_term_routing` section is an owner
+route index, not a glossary or second definition authority. A consumer uses the
+qualified term on first use, follows the declared canonical owner, and may use
+the listed shorthand only inside the same clearly qualified section.
+
+| Namespace | Qualified terms | Definition owner |
+| --- | --- | --- |
+| `source-release` | framework version candidate; release-source status validated; historical/exception release closeout | source-only release policy or closeout capability |
+| `distribution` | package candidate | source-only distribution contract |
+| `target-upgrade` | target upgrade `automatic-candidate` | `ai-context-upgrader` planning contract |
+| `git` | repository integration | `.dev/TEAM-GIT-FLOW-RULES.MD` |
+| `workflow` | workflow completion | `WORKFLOW-ARTIFACT-POLICY.md` |
+| `assessment` | assessment final | `ASSESSMENT-ARTIFACT-POLICY.md` |
+| `hosted-release` | hosted publication | source-only release policy |
+| `source-release-validation` | framework candidate, tag, publication, and finalization validation phases | source-only release policy and version-owned phase contract |
+| `governance` | governed subject lifecycle | the policy that owns the explicitly named subject |
+| `capability-selection` | subject-qualified skill/provider/capability candidate | the selected subject's canonical contract |
+
+The following separations are invariant routing rules:
+
+- conceptual state, machine status, validation phase, migration category, and
+  hosted/provider state are never interchangeable;
+- repository integration is not workflow completion, assessment finality,
+  source validation, or hosted publication;
+- `automatic-candidate` is a target-upgrade classification and never write
+  authorization;
+- `candidate`, `validated`, `published`, `closeout`, `finalization`, or
+  `lifecycle` without an explicit subject cannot establish an authority claim;
+- existing machine literals remain unchanged until an explicit versioned
+  migration says otherwise; and
+- historical records retain their original wording.
+
+Rows marked `source-only` remain non-actionable upstream context in a target
+package. Portable consumers must not follow them as target procedures. The
+portable version/provenance/upgrade owner deliberately excludes source release
+commands, release records, tag operations, hosted credentials, and provider
+mutation.
+
 ## Rule Catalogs
 
 - `.ai/assets/shared/governance/engineering-rule-catalog.yaml` is the canonical

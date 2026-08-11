@@ -47,6 +47,7 @@ wrapper_metadata:
     wrapper_path: ".claude/skills/ai-context-release-closeout/"
 human_guide: ".dev/guides/ai-collaboration-guides/AI-CONTEXT-RELEASE-CLOSEOUT-SKILL-GUIDE.md"
 references:
+  - ".dev/standards/AI-CONTEXT-SOURCE-RELEASE-POLICY.md"
   - ".dev/standards/WORKFLOW-HANDOFF-POLICY.md"
   - ".dev/standards/GIT-COMMIT-POLICY.md"
 examples:

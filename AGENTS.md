@@ -97,6 +97,11 @@ Use `ai-context-governance` for:
 - runtime wrapper sync;
 - context migration planning or execution.
 
+When governance terminology affects authority or state, resolve the qualified
+term and canonical owner through `.dev/standards/AI-CONTEXT-OWNERSHIP.yaml`.
+Never infer a cross-owner transition from bare candidate, validated,
+integration, publication, closeout, finalization, or lifecycle wording.
+
 Do not route pure AI documentation governance work to `bdd-gwt-test-designer`.
 
 ### AI Context Audit

@@ -43,6 +43,7 @@ _None._
 
 ## Related Governance
 
-- [Version policy](../standards/AI-CONTEXT-VERSION-POLICY.md)
+- [Source release policy](../standards/AI-CONTEXT-SOURCE-RELEASE-POLICY.md)
+- [Portable target version policy](../standards/AI-CONTEXT-VERSION-POLICY.md)
 - [Release publication runbook](../operations/runbooks/AI-CONTEXT-RELEASE-PUBLICATION-RUNBOOK.MD)
 - [Version-governance workflow](../workflows/2026-07-14-ai-context-version-governance/workflow.yaml)

@@ -71,6 +71,12 @@ LANGUAGE_ALLOWLIST: dict[Path, frozenset[str]] = {
 OWNERSHIP_REGISTRY = Path(".dev/standards/AI-CONTEXT-OWNERSHIP.yaml")
 RULE_STRENGTHS = {"invariant", "profile-default", "conditional", "example", "historical"}
 RULE_STATUSES = {"active", "deprecated", "historical"}
+GOVERNANCE_TERM_ID = re.compile(r"^[a-z0-9]+(?:[.-][a-z0-9]+)*$")
+GOVERNANCE_TERM_DISTRIBUTIONS = {"portable", "source-only"}
+GOVERNANCE_TERM_PORTABLE_DISPOSITIONS = {
+    "available",
+    "upstream-only-non-actionable",
+}
 ASSET_SCHEMA_VERSIONS = {
     "skill.yaml": "1.0",
     "sub-agent.yaml": "1.1",
@@ -1336,6 +1342,199 @@ def validate_rule_ownership(errors: list[str]) -> int:
             elif rule_id not in consumer_file.read_text(encoding="utf-8"):
                 errors.append(f"{label}: derived consumer {consumer} does not cite {rule_id}")
     return len(rules)
+
+
+def validate_governance_term_routing_data(
+    data: object,
+    errors: list[str],
+    *,
+    root: Path = ROOT,
+    source_context: bool | None = None,
+) -> int:
+    """Validate qualified governance-term routes without redefining their owners."""
+    if not isinstance(data, dict):
+        errors.append(f"{OWNERSHIP_REGISTRY}: root must be a mapping")
+        return 0
+
+    routing = data.get("governance_term_routing")
+    if not isinstance(routing, dict):
+        errors.append(
+            f"{OWNERSHIP_REGISTRY}: governance_term_routing must be a mapping"
+        )
+        return 0
+    if routing.get("schema_version") != "1.0":
+        errors.append(
+            f"{OWNERSHIP_REGISTRY}: governance_term_routing.schema_version must be 1.0"
+        )
+    if routing.get("registry_role") != "owner-route-index-not-definition-authority":
+        errors.append(
+            f"{OWNERSHIP_REGISTRY}: governance_term_routing.registry_role must remain an owner route index"
+        )
+
+    expected_contract = {
+        "qualified_first_use": "required",
+        "bare_alias_scope": "same-clearly-qualified-section-only",
+        "cross_owner_authority_inference": "forbidden",
+        "machine_literal_change": "explicit-versioned-migration-required",
+        "historical_rewrite": "forbidden",
+    }
+    if routing.get("consumer_contract") != expected_contract:
+        errors.append(
+            f"{OWNERSHIP_REGISTRY}: governance_term_routing.consumer_contract must preserve the qualified fail-closed contract"
+        )
+
+    terms = routing.get("terms")
+    if not isinstance(terms, list) or not terms:
+        errors.append(
+            f"{OWNERSHIP_REGISTRY}: governance_term_routing.terms must be a non-empty list"
+        )
+        return 0
+
+    if source_context is None:
+        source_context = (
+            root / ".ai/distribution/profiles/dotnet-backend.yaml"
+        ).is_file()
+
+    seen_ids: set[str] = set()
+    seen_qualified_terms: set[str] = set()
+    for index, term in enumerate(terms):
+        label = f"{OWNERSHIP_REGISTRY}:governance_term_routing.terms[{index}]"
+        if not isinstance(term, dict):
+            errors.append(f"{label}: term must be a mapping")
+            continue
+
+        term_id = term.get("term_id")
+        namespace = term.get("namespace")
+        qualified_term = term.get("qualified_term")
+        if not isinstance(term_id, str) or not GOVERNANCE_TERM_ID.fullmatch(term_id):
+            errors.append(f"{label}: term_id must be a stable qualified identifier")
+        elif term_id in seen_ids:
+            errors.append(f"{label}: duplicate term_id {term_id}")
+        else:
+            seen_ids.add(term_id)
+        if not isinstance(namespace, str) or not namespace:
+            errors.append(f"{label}: namespace must be a non-empty string")
+        elif isinstance(term_id, str) and not term_id.startswith(f"{namespace}."):
+            errors.append(f"{label}: term_id must begin with namespace {namespace}.")
+        if not isinstance(qualified_term, str) or not qualified_term.strip():
+            errors.append(f"{label}: qualified_term must be a non-empty string")
+        elif qualified_term in seen_qualified_terms:
+            errors.append(f"{label}: duplicate qualified_term {qualified_term!r}")
+        else:
+            seen_qualified_terms.add(qualified_term)
+
+        distribution = term.get("distribution")
+        portable_disposition = term.get("portable_disposition")
+        if distribution not in GOVERNANCE_TERM_DISTRIBUTIONS:
+            errors.append(f"{label}: invalid distribution {distribution!r}")
+        if portable_disposition not in GOVERNANCE_TERM_PORTABLE_DISPOSITIONS:
+            errors.append(
+                f"{label}: invalid portable_disposition {portable_disposition!r}"
+            )
+        expected_disposition = (
+            "available" if distribution == "portable" else "upstream-only-non-actionable"
+        )
+        if distribution in GOVERNANCE_TERM_DISTRIBUTIONS and portable_disposition != expected_disposition:
+            errors.append(
+                f"{label}: {distribution} requires portable_disposition {expected_disposition}"
+            )
+
+        owner = term.get("canonical_owner")
+        if not isinstance(owner, dict):
+            errors.append(f"{label}: canonical_owner must be a mapping")
+        else:
+            owner_value = owner.get("path")
+            anchor = owner.get("anchor")
+            owner_path: Path | None = None
+            if not isinstance(owner_value, str) or not owner_value:
+                errors.append(f"{label}: canonical_owner.path must be non-empty")
+            else:
+                owner_pure = PurePosixPath(owner_value)
+                if (
+                    Path(owner_value).is_absolute()
+                    or owner_pure.is_absolute()
+                    or "\\" in owner_value
+                    or any(part in {".", ".."} for part in owner_pure.parts)
+                ):
+                    errors.append(
+                        f"{label}: canonical_owner.path must be safe and repository-relative"
+                    )
+                else:
+                    owner_path = root / Path(*owner_pure.parts)
+            if not isinstance(anchor, str) or not anchor:
+                errors.append(f"{label}: canonical_owner.anchor must be non-empty")
+            elif owner_path is not None:
+                owner_required = distribution == "portable" or source_context
+                if not owner_path.is_file():
+                    if owner_required:
+                        errors.append(
+                            f"{label}: canonical owner is unavailable: {owner_value}"
+                        )
+                elif anchor not in owner_path.read_text(encoding="utf-8"):
+                    errors.append(
+                        f"{label}: canonical_owner.anchor not found in {owner_value}"
+                    )
+
+        bindings = term.get("machine_bindings")
+        if not isinstance(bindings, list):
+            errors.append(f"{label}: machine_bindings must be a list")
+        else:
+            for binding_index, binding in enumerate(bindings):
+                binding_label = f"{label}:machine_bindings[{binding_index}]"
+                if not isinstance(binding, dict):
+                    errors.append(f"{binding_label}: binding must be a mapping")
+                    continue
+                for field in ("contract", "field"):
+                    value = binding.get(field)
+                    if not isinstance(value, str) or not value:
+                        errors.append(f"{binding_label}: {field} must be non-empty")
+                literals = binding.get("literals")
+                if (
+                    not isinstance(literals, list)
+                    or not literals
+                    or not all(isinstance(value, str) and value for value in literals)
+                    or len(literals) != len(set(literals))
+                ):
+                    errors.append(
+                        f"{binding_label}: literals must be a non-empty unique string list"
+                    )
+
+        shorthand = term.get("contextual_shorthand")
+        if not isinstance(shorthand, dict):
+            errors.append(f"{label}: contextual_shorthand must be a mapping")
+        else:
+            aliases = shorthand.get("aliases")
+            forbidden = shorthand.get("forbidden_authority_claims")
+            allowed_scope = shorthand.get("allowed_scope")
+            if (
+                not isinstance(aliases, list)
+                or not aliases
+                or not all(isinstance(value, str) and value for value in aliases)
+            ):
+                errors.append(f"{label}: aliases must be a non-empty string list")
+            if not isinstance(allowed_scope, str) or not allowed_scope:
+                errors.append(f"{label}: allowed_scope must be non-empty")
+            if (
+                not isinstance(forbidden, list)
+                or not forbidden
+                or not all(isinstance(value, str) and value for value in forbidden)
+            ):
+                errors.append(
+                    f"{label}: forbidden_authority_claims must be a non-empty string list"
+                )
+
+    return len(terms)
+
+
+def validate_governance_term_routing(errors: list[str]) -> int:
+    """Load and validate the governance-term section of the ownership registry."""
+    registry_path = ROOT / OWNERSHIP_REGISTRY
+    try:
+        data = yaml.safe_load(registry_path.read_text(encoding="utf-8"))
+    except (OSError, yaml.YAMLError) as exc:
+        errors.append(f"{OWNERSHIP_REGISTRY}: governance term routing cannot be loaded: {exc}")
+        return 0
+    return validate_governance_term_routing_data(data, errors)
 
 
 def load_yaml_mapping(path: Path, errors: list[str]) -> dict | None:
@@ -2616,6 +2815,7 @@ def main() -> int:
     validate_bilingual_entries(errors)
     validate_runtime_entries(files, errors)
     ownership_rules = validate_rule_ownership(errors)
+    governance_terms = validate_governance_term_routing(errors)
     canonical_assets, skill_assets = validate_canonical_assets(errors)
     capability_mappings = validate_capability_profile(skill_assets, errors)
 
@@ -2649,7 +2849,8 @@ def main() -> int:
         f"AI context validation passed: {len(indexes)} active indexes, "
         f"{len(canonical)} canonical skills, {len(ACTIVE_RUNTIME_ROOTS)} current runtime roots, "
         f"{len(language_files)} language-policy files, {ownership_rules} owned rules, "
-        f"{canonical_assets} canonical manifests, {capability_mappings} capability mappings, "
+        f"{governance_terms} qualified governance terms, {canonical_assets} canonical manifests, "
+        f"{capability_mappings} capability mappings, "
         f"and {lesson_count} governed lessons."
     )
     print(

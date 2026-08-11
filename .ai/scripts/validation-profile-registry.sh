@@ -114,6 +114,11 @@ register_check ai-context-source-include-evidence \
     "context,tests" "fast pr release nightly-full" \
     ".ai/distribution .ai/scripts/tests/test_ai_context_source_include_evidence.py" ai-context-navigation "python>=3.11" 30 cpu reuse-by-input source \
     "python .ai/scripts/tests/test_ai_context_source_include_evidence.py -v" always
+register_check governance-term-routing \
+    "Governance Term Routing And Release Projection Contract" required \
+    "governance,context,tests" "fast pr release nightly-full" \
+    ".dev/standards/AI-CONTEXT-OWNERSHIP.yaml .dev/standards/AI-CONTEXT-SOURCE-RELEASE-POLICY.md .ai/assets/shared/governance/AI-CONTEXT-VERSION-POLICY.md .ai/distribution .ai/scripts/tests/test_governance_term_routing_contract.py" ai-context-navigation "python>=3.11 git" 60 cpu reuse-by-input source \
+    "python .ai/scripts/tests/test_governance_term_routing_contract.py -v" source-release
 register_check target-ai-context-version \
     "AI Context Target Apply, Provenance And Customization Contracts" required \
     "context,target" "fast pr release nightly-full" \

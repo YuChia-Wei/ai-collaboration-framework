@@ -1109,11 +1109,13 @@ run_source_repository_sdk_free_contract() {
 }
 
 run_source_repository_release_checks() {
-    if ! check_is_selected "AI Context Version Governance Fail-Closed Tests" &&
+    if ! check_is_selected "Governance Term Routing And Release Projection Contract" &&
+        ! check_is_selected "AI Context Version Governance Fail-Closed Tests" &&
         ! check_is_selected "AI Context Packaging GWT Tests"; then
         return
     fi
     if ! source_release_context_available; then
+        echo -e "${CYAN}ℹ${NC} NOT APPLICABLE: Governance Term Routing And Release Projection Contract (source release context not packaged)"
         echo -e "${CYAN}ℹ${NC} NOT APPLICABLE: AI Context Version Governance Fail-Closed Tests (source release context not packaged)"
         echo -e "${CYAN}ℹ${NC} NOT APPLICABLE: AI Context Packaging GWT Tests (source package builder not packaged)"
         echo -e "${CYAN}ℹ${NC} NOT APPLICABLE: AI Context Release State Fail-Closed Tests (source release context not packaged)"
@@ -1127,9 +1129,13 @@ run_source_repository_release_checks() {
         echo -e "${CYAN}ℹ${NC} NOT APPLICABLE: Skill Transition Compatibility Fail-Closed Tests (source release context not packaged)"
         echo -e "${CYAN}ℹ${NC} NOT APPLICABLE: Effective Rule Packet Resolution and Consumer Parity Tests (source release context not packaged)"
         echo -e "${CYAN}ℹ${NC} NOT APPLICABLE: Effective Rule Action Skill Consumption Contract (source release context not packaged)"
-        NOT_APPLICABLE=$((NOT_APPLICABLE + 13))
+        NOT_APPLICABLE=$((NOT_APPLICABLE + 14))
         return
     fi
+
+    run_command_check "python .ai/scripts/tests/test_governance_term_routing_contract.py -v" \
+        "Governance Term Routing And Release Projection Contract" \
+        "required" "true" "true"
 
     run_command_check "python .ai/scripts/tests/test_ai_context_version_governance.py -v" \
         "AI Context Version Governance Fail-Closed Tests" \

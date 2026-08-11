@@ -10,3 +10,6 @@ mappings:
   - source: "GIT-COMMIT-POLICY.md"
     target: ".dev/standards/GIT-COMMIT-POLICY.md"
     component_id: "software-development-core"
+  - source: "AI-CONTEXT-VERSION-POLICY.md"
+    target: ".dev/standards/AI-CONTEXT-VERSION-POLICY.md"
+    component_id: "ai-context-lifecycle-core"

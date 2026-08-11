@@ -13,6 +13,7 @@ This is a thin current-runtime wrapper.
 - Spec: `.ai/assets/skills/ai-context-release-closeout/skill.yaml`
 - Human Guide: `.dev/guides/ai-collaboration-guides/AI-CONTEXT-RELEASE-CLOSEOUT-SKILL-GUIDE.md`
 - References:
+  - `.dev/standards/AI-CONTEXT-SOURCE-RELEASE-POLICY.md`
   - `.dev/standards/WORKFLOW-HANDOFF-POLICY.md`
   - `.dev/standards/GIT-COMMIT-POLICY.md`
 
