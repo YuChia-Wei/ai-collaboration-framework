@@ -1358,6 +1358,10 @@ run_command_check "python .ai/scripts/tests/test_ai_context_package_apply.py -v"
     "AI Context Safe Apply GWT Tests" \
     "required" "true" "true"
 
+run_command_check "python .ai/scripts/tests/test_payload_user_view_contract.py -v" \
+    "Selected Payload User-View Fail-Closed Contract" \
+    "required" "true" "true"
+
 run_source_package_smoke
 
 run_command_check "python .ai/scripts/validate-dependency-versions.py" \

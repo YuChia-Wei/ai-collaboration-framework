@@ -15,6 +15,12 @@ before asking the user to create an annotated tag. Historical contracts remain
 with their release so their original gates can be revalidated without changing
 the next release.
 
+Active upgrade testing starts from the retained `v0.6.0` baseline. Each later
+governed package declares one automatic source: the immediate previous governed
+package. Breaking releases are migration checkpoints and cannot be crossed by
+an automatic-upgrade claim. Older release records stay immutable, but routine
+candidate gates do not rebuild their full historical source matrix.
+
 `release-notes.md` is authored source. Generated GitHub Release automation
 markers and provenance are renderer output and must not be committed to an
 authored notes file.

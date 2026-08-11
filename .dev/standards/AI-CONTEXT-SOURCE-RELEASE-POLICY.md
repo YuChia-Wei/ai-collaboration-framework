@@ -64,6 +64,31 @@ prepublication and postpublication provider reconciliation. Required included
 work, compatibility declarations, migration guidance, and source gates must be
 complete before the source record reaches `status: validated`.
 
+## Bounded Upgrade-Test Horizon
+
+`v0.6.0` is the retained baseline for active framework upgrade testing.
+Published package and migration contracts before that baseline remain immutable
+historical evidence, but routine source gates do not rebuild every older
+archive or replay a Cartesian cross-version matrix.
+
+For every governed package after `v0.6.0`:
+
+- `compatibility.automatic_upgrade_sources` contains exactly the immediate
+  previous governed package version, so the required automatic-upgrade gate has
+  one representative route;
+- a release with `compatibility.breaking_changes: true` is a migration
+  checkpoint and its `minimum_source_version` is that same immediate previous
+  version;
+- earlier versions may remain named only as reviewed reconciliation sources;
+  they do not add automatic-upgrade test routes; and
+- clean installation, the one declared automatic upgrade, rollback, and
+  target-owned reconciliation remain distinct evidence. Passing one never
+  substitutes for another.
+
+Supporting another automatic source is a new compatibility decision. It needs
+explicit owner approval, its own bounded work item, and versioned policy change;
+it is not inferred from a retrospective baseline or historical test.
+
 ## Repository Integration And Tag Handoff
 
 Integrate through the topology selected by

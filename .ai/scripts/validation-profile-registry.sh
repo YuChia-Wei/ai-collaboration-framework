@@ -134,6 +134,11 @@ register_check package-apply \
     "package,tests" "pr release nightly-full" \
     ".ai/scripts/ai_context_package_apply.py .ai/scripts/tests/test_ai_context_package_apply.py" '' "python>=3.11 git" 90 io reuse-by-input portable \
     "python .ai/scripts/tests/test_ai_context_package_apply.py -v" always
+register_check payload-user-view \
+    "Selected Payload User-View Fail-Closed Contract" required \
+    "package,navigation,components" "fast pr release nightly-full" \
+    ".ai/scripts/ai_context_package.py .ai/scripts/tests/test_payload_user_view_contract.py .ai/distribution/profiles/dotnet-backend.yaml" '' "python>=3.11" 30 cpu reuse-by-input source \
+    "python .ai/scripts/tests/test_payload_user_view_contract.py -v" source-release
 register_check package-smoke \
     "AI Context Package Smoke Tests" required \
     "package,smoke" "pr release nightly-full" \

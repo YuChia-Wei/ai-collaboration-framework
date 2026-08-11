@@ -111,6 +111,8 @@ entries:
           - .ai/assets/sub-agent-role-prompts/context-translator/**
       - component_id: dotnet-backend
         patterns:
+          - .ai/assets/skills/code-reviewer/**
+          - .ai/assets/sub-agent-role-prompts/*code-review-sub-agent/**
           - .ai/assets/tech-stacks/dotnet-backend/**
     target: .ai/assets/
     ownership: framework-managed
@@ -145,6 +147,9 @@ entries:
           - .ai/scripts/tests/test_ai_context_effective_rules.py
           - .ai/scripts/tests/test_semantic_customization_lifecycle.py
           - .ai/scripts/tests/test_semantic_customization_skill_contract.py
+      - component_id: dotnet-backend
+        patterns:
+          - .ai/scripts/code-review.sh
     target: .ai/scripts/
     ownership: framework-managed
     install_behavior: managed
@@ -160,6 +165,9 @@ entries:
           - .agents/skills/ai-context-upgrader/**
           - .agents/skills/ai-context-init/**
           - .agents/skills/repo-structure-sync/**
+      - component_id: dotnet-backend
+        patterns:
+          - .agents/skills/code-reviewer/**
     target: .agents/skills/
     ownership: framework-managed
     install_behavior: managed
@@ -175,6 +183,9 @@ entries:
           - .claude/skills/ai-context-upgrader/**
           - .claude/skills/ai-context-init/**
           - .claude/skills/repo-structure-sync/**
+      - component_id: dotnet-backend
+        patterns:
+          - .claude/skills/code-reviewer/**
     target: .claude/skills/
     ownership: framework-managed
     install_behavior: managed
@@ -448,6 +459,7 @@ exclusions:
       - .ai/scripts/tests/test_skill_transition_contract.py
       - .ai/scripts/tests/test_github_backlog_provider.py
       - .ai/scripts/tests/test_governance_term_routing_contract.py
+      - .ai/scripts/tests/test_payload_user_view_contract.py
       - .ai/evaluation/**
       - .ai/assets/skills/ai-context-governance/templates/release-publication/**
       - '**/bin/**'
@@ -477,6 +489,40 @@ generated_metadata:
   checksum_scope: all-envelope-members-except-metadata/SHA256SUMS.txt
   payload_digest: sha256-of-utf8-lines-sha256-two-spaces-target-path-newline
   archive_checksums: external-sidecars-not-archive-members
+
+payload_user_view:
+  schema_version: 1.0.0
+  classifications:
+    markdown_local_links: required-local-navigation
+    markdown_anchors: required-local-anchor
+    component_cross_links: navigation-only-not-activation
+    fenced_code: non-actionable-example-unless-command
+    inline_code: non-actionable-reference-unless-command
+    templates_and_placeholders: non-actionable-template
+    external_urls: external-not-validated
+    actionable_local_commands: required-local-target
+  supported_selections:
+    - selection_id: core-only
+      components:
+        - software-development-core
+        - ai-context-lifecycle-core
+    - selection_id: dotnet-selected
+      components:
+        - software-development-core
+        - ai-context-lifecycle-core
+        - dotnet-backend
+  capabilities:
+    - capability_id: code-reviewer
+      owner_component: dotnet-backend
+      path_patterns:
+        - .ai/assets/skills/code-reviewer/**
+        - .ai/assets/sub-agent-role-prompts/*code-review-sub-agent/**
+        - .agents/skills/code-reviewer/**
+        - .claude/skills/code-reviewer/**
+        - .ai/scripts/code-review.sh
+      availability:
+        core-only: unavailable-not-selected
+        dotnet-selected: available
 
 reference_integrity:
   text_extensions:

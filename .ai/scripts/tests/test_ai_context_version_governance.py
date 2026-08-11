@@ -411,6 +411,90 @@ class AiContextVersionGovernanceGwtTests(unittest.TestCase):
         self.assertIn("v0.0.1", compatibility["reconciliation_sources"])
         self.assertNotIn("v0.0.1", compatibility["automatic_upgrade_sources"])
 
+    def test_gwt_016_given_active_release_history_when_validated_then_v060_starts_the_single_route_horizon(self):
+        # Given the retained governed-package release history.
+        release_files = sorted((ROOT / ".dev/releases").glob("v*/release.yaml"))
+        records = []
+        for path in release_files:
+            data = yaml.safe_load(path.read_text(encoding="utf-8"))
+            version = data.get("version")
+            if (
+                data.get("distribution_kind") == "governed-package"
+                and isinstance(version, str)
+                and VALIDATE.version_key(version)
+                >= VALIDATE.version_key(VALIDATE.ACTIVE_UPGRADE_TEST_BASELINE)
+            ):
+                records.append((VALIDATE.version_key(version), version, data))
+        records.sort(key=lambda item: item[0])
+
+        # When the active horizon is inspected, then v0.6.0 is the baseline and
+        # every later candidate has one immediate-predecessor automatic route.
+        self.assertEqual("v0.6.0", records[0][1])
+        for index in range(1, len(records)):
+            _, version, data = records[index]
+            previous_version = records[index - 1][1]
+            compatibility = data["compatibility"]
+            self.assertEqual(
+                [previous_version],
+                compatibility["automatic_upgrade_sources"],
+                version,
+            )
+            if compatibility["breaking_changes"]:
+                self.assertEqual(
+                    previous_version,
+                    compatibility["minimum_source_version"],
+                    version,
+                )
+
+    def test_gwt_017_given_breaking_candidate_crosses_the_checkpoint_when_validated_then_it_fails_closed(self):
+        # Given a post-v0.6 breaking release that claims an older automatic route.
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            releases = root / ".dev/releases"
+            release_files = []
+            for version, compatibility in (
+                (
+                    "v0.6.0",
+                    {
+                        "breaking_changes": True,
+                        "minimum_source_version": "v0.5.0",
+                        "reconciliation_sources": ["v0.5.0"],
+                        "automatic_upgrade_sources": ["v0.5.0"],
+                    },
+                ),
+                (
+                    "v0.7.0",
+                    {
+                        "breaking_changes": True,
+                        "minimum_source_version": "v0.5.0",
+                        "reconciliation_sources": ["v0.5.0", "v0.6.0"],
+                        "automatic_upgrade_sources": ["v0.5.0"],
+                    },
+                ),
+            ):
+                path = releases / version / "release.yaml"
+                path.parent.mkdir(parents=True)
+                path.write_text(
+                    yaml.safe_dump(
+                        {
+                            "version": version,
+                            "distribution_kind": "governed-package",
+                            "compatibility": compatibility,
+                        },
+                        sort_keys=False,
+                    ),
+                    encoding="utf-8",
+                )
+                release_files.append(path)
+
+            # When the bounded horizon validator runs, then both the automatic
+            # route and breaking checkpoint reject crossing v0.6.0.
+            errors: list[str] = []
+            VALIDATE.validate_upgrade_test_horizon(release_files, errors)
+            self.assertEqual(2, len(errors))
+            self.assertTrue(any("immediate previous governed package v0.6.0" in error for error in errors))
+            self.assertTrue(any("migration checkpoint" in error for error in errors))
+
 
 if __name__ == "__main__":
     unittest.main()

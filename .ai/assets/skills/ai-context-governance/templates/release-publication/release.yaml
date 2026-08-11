@@ -65,6 +65,9 @@ provider_reconciliation:
         Published in: "Not applicable — not a release item"
 compatibility:
   breaking_changes: <true-or-false>
+  # Active upgrade testing starts at v0.6.0. For a later candidate, use the
+  # immediate previous governed package as the sole automatic source. A
+  # breaking release also uses it as the minimum source checkpoint.
   minimum_source_version: "<vMAJOR.MINOR.PATCH-or-null>"
   reconciliation_sources:
     - "<vMAJOR.MINOR.PATCH>"

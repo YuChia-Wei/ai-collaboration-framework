@@ -279,7 +279,6 @@ naming and comments and run entirely in disposable Git repositories:
 
 ```powershell
 python .ai/scripts/tests/test_fail_closed_validation.py -v
-python .ai/scripts/tests/test_immutable_history_validation.py -v
 python .ai/scripts/tests/test_ai_context_wrapper_metadata.py -v
 python .ai/scripts/tests/test_ai_context_root_entries.py -v
 python .ai/scripts/tests/test_ai_context_language_policy.py -v
@@ -290,13 +289,13 @@ python .ai/scripts/tests/test_workflow_lifecycle_contract.py -v
 python .ai/scripts/tests/test_assessment_artifacts.py -v
 python .ai/scripts/tests/test_git_commit_policy.py -v
 python .ai/scripts/tests/test_ai_context_package_apply.py -v
-python .ai/scripts/tests/test_ai_context_load_measurement.py -v
 python .ai/scripts/tests/test_dependency_version_consistency.py -v
 python .ai/scripts/tests/test_file_disposition_manifest.py -v
-python .ai/scripts/tests/test_repository_identity.py -v
-python .ai/scripts/tests/test_source_dispositions.py -v
-python .ai/scripts/tests/test_governance_workflow_contract.py -v
 ```
+
+Additional source-repository governance and release-history tests are intentionally
+excluded from the portable payload and therefore are not advertised here as runnable
+downstream commands.
 
 `test_ai_context_load_measurement.py` proves the source-only context-load
 measurement contract in disposable synthetic Git repositories; it creates no

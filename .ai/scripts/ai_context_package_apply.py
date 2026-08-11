@@ -24,6 +24,8 @@ from ai_context_target_provenance import (
 
 
 VERSION_RE = re.compile(r"^v?(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)$")
+COMPONENT_PACKAGE_SCHEMAS = {"2.0.0", "2.1.0", "2.2.0"}
+IDENTITY_PACKAGE_SCHEMAS = {"1.1.0", "2.1.0", "2.2.0"}
 
 
 class ApplyError(ValueError):
@@ -294,7 +296,7 @@ def resolve_effective_selection(
     package_schema = package.get("schema_version")
     default = (
         validate_component_selection(package.get("selection"), "package selection")
-        if package_schema == "2.0.0"
+        if package_schema in COMPONENT_PACKAGE_SCHEMAS
         else deepcopy(LEGACY_COMPONENT_SELECTION)
     )
     resolved = deepcopy(default)
@@ -307,13 +309,13 @@ def resolve_effective_selection(
                 if requested
                 else (
                     "clean-install-default"
-                    if package_schema == "2.0.0"
+                    if package_schema in COMPONENT_PACKAGE_SCHEMAS
                     else "legacy-package-contract"
                 )
             ),
             "evidence": [
                 "metadata/package.yaml#selection"
-                if package_schema == "2.0.0"
+                if package_schema in COMPONENT_PACKAGE_SCHEMAS
                 else "legacy-package-schema"
             ]
             + [f"cli:--enable-provider={provider}" for provider in requested],
@@ -450,9 +452,9 @@ def validate_package_root(package_root: Path) -> tuple[dict, dict[str, dict], di
     if inventory.get("package_id") != package_id or migration.get("package_id") != package_id:
         raise ApplyError("package identity mismatch")
     package_schema = package.get("schema_version")
-    if package_schema not in {"1.0.0", "1.1.0", "2.0.0", "2.1.0"}:
+    if package_schema not in {"1.0.0", "1.1.0", *COMPONENT_PACKAGE_SCHEMAS}:
         raise ApplyError(f"unsupported package schema version: {package_schema!r}")
-    if package_schema in {"2.0.0", "2.1.0"}:
+    if package_schema in COMPONENT_PACKAGE_SCHEMAS:
         selection = package.get("selection")
         if not isinstance(selection, dict):
             raise ApplyError("package selection must be a mapping")
@@ -473,7 +475,7 @@ def validate_package_root(package_root: Path) -> tuple[dict, dict[str, dict], di
     to_data = migration.get("to")
     if not isinstance(to_data, dict) or to_data.get("manifest_sha256") != manifest_sha:
         raise ApplyError("migration target manifest SHA does not match files.yaml")
-    if package_schema in {"1.1.0", "2.1.0"}:
+    if package_schema in IDENTITY_PACKAGE_SCHEMAS:
         source = package.get("source")
         identity = package.get("identity")
         if not isinstance(source, dict) or not all(
@@ -728,7 +730,7 @@ def build_plan(
     )
     default_selection = (
         validate_component_selection(package.get("selection"), "package selection")
-        if package.get("schema_version") == "2.0.0"
+        if package.get("schema_version") in COMPONENT_PACKAGE_SCHEMAS
         else deepcopy(LEGACY_COMPONENT_SELECTION)
     )
     resolved_selection, selection_resolution = resolve_effective_selection(
