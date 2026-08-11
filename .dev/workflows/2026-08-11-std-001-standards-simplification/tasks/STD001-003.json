@@ -6,13 +6,16 @@
   "task_id": "STD001-003",
   "workflow_id": "2026-08-11-std-001-standards-simplification",
   "owner_skill": "ai-context-governance",
-  "status": "pending",
+  "status": "in_progress",
   "created_at": "2026-08-11T13:31:10+08:00",
-  "updated_at": "2026-08-11T13:31:10+08:00",
+  "updated_at": "2026-08-11T13:45:48+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-5.6-sol",
   "reasoning_effort": "high",
-  "finding_ids": [],
+  "finding_ids": [
+    "ASM-20260811-003#PKG-001",
+    "ASM-20260811-003#CMP-001"
+  ],
   "scope": {
     "target": "Actual package-candidate user-view review and finding-bound delivery decision ledger",
     "files": [
@@ -46,15 +49,24 @@
       "python .ai/scripts/validate-workflow-artifacts.py",
       "git diff --check"
     ],
-    "last_completed_step": "",
-    "next_action": "Wait for STD001-001 and STD001-002 findings"
+    "last_completed_step": "Validated a controlled current-tree ZIP/tar projection, inspected component metadata and downstream navigation, and drafted three successor delivery scopes",
+    "next_action": "Obtain owner approval or amendment of the decision ledger before creating successor Issues or changing canonical files"
   },
   "results": {
-    "summary": "",
-    "files_changed": [],
-    "tests_run": [],
-    "finding_status": "not-addressed",
-    "residual_risk": "No actual package-candidate user-view review or decision partition exists yet.",
+    "summary": "The controlled current-tree projection passed archive parity but failed downstream navigation; the decision ledger partitions five findings into three rollback-safe successor deliveries.",
+    "files_changed": [
+      ".dev/assessments/ASM-20260811-003/report.md",
+      ".dev/workflows/2026-08-11-std-001-standards-simplification/reports/package-candidate-user-view.md",
+      ".dev/workflows/2026-08-11-std-001-standards-simplification/reports/decision-ledger.md"
+    ],
+    "tests_run": [
+      "v0.13 package build: failed closed because no governed release record exists",
+      "controlled current-tree ZIP/tar build using v0.12 contract and verified v0.11 migration manifest: passed",
+      "python .ai/scripts/validate-ai-context-package.py <zip> <tar.gz>: passed",
+      "selected-payload Markdown navigation scan: failed with seven genuine missing targets"
+    ],
+    "finding_status": "recorded-for-owner-decision",
+    "residual_risk": "The projection is not a real v0.13 candidate; canonical fixes and the final before/after candidate review await owner-approved successor deliveries.",
     "follow_up_needed": true
   }
 }

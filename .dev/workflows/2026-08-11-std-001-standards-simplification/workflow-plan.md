@@ -16,10 +16,10 @@
 - `base_branch`: `main`
 - `branch_segment`: `1`
 - `status`: `in_progress`
-- `current_phase`: `audit`
+- `current_phase`: `owner-decision`
 - `artifact_root`: `.dev/workflows/2026-08-11-std-001-standards-simplification`
 - `created_at`: `2026-08-11T13:31:10+08:00`
-- `updated_at`: `2026-08-11T13:31:10+08:00`
+- `updated_at`: `2026-08-11T13:45:48+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md`
 - `template_version`: `1.2.0`
 
@@ -55,24 +55,24 @@
 
 ## Stages And Checkpoints
 
-1. Freeze merged `main`, Issue/Project authority, workflow branch, and draft assessment. `in_progress`
-2. Complete R2 reference-loading inventory and doctrine-equivalence baseline. `pending`
-3. Complete R3 terminology ownership and definition-placement inventory. `pending`
-4. Build and review the actual package candidate, then finalize the decision ledger. `pending`
-5. Present bounded delivery scopes for owner confirmation before canonical remediation or successor-Issue execution. `pending`
+1. Freeze merged `main`, Issue/Project authority, workflow branch, and draft assessment. `completed`
+2. Complete R2 reference-loading inventory and doctrine-equivalence baseline. `completed`
+3. Complete R3 terminology ownership and definition-placement inventory. `completed`
+4. Build and review the controlled current-tree package projection, then finalize the decision ledger. `completed-with-v0.13-fail-closed-limitation`
+5. Present bounded delivery scopes for owner confirmation before canonical remediation or successor-Issue execution. `in_progress`
 
 ## Resume Checkpoint
 
-- Last completed action: Merged PR #190 as `df7012b6bf6ac360cfb47e2c79813384880665f8`, fast-forwarded local `main`, and read back #61 plus its Project fields.
-- Current task: `STD001-001`.
-- Exact next action: Bootstrap `ASM-20260811-003`, then inventory every code-review entry, file-type checklist, loaded reference, severity contract, output contract, and packaged consumer path.
-- Validation already completed: PR #190 five hosted checks passed; local `main`, `origin/main`, and merge SHA all equal `df7012b6bf6ac360cfb47e2c79813384880665f8`; #61 Project fields match the owner decision.
-- Git state: Clean dedicated branch `codex/2026-08-11-std-001-standards-simplification` from `main@df7012b6`.
-- Branch history and checkpoint handoffs: Segment 1 began locally after #187 integration; nothing from #61 has been pushed or merged.
-- Blockers or unresolved decisions: Exact canonical mutations and integration topology remain intentionally unresolved until stable findings and package-view evidence exist.
+- Last completed action: Finalized `ASM-20260811-003` with five stable findings, measured R2/R3, validated a controlled current-tree package projection, and drafted three finding-bound successor deliveries.
+- Current task: `STD001-003`.
+- Exact next action: Obtain owner approval or amendment of `reports/decision-ledger.md`, then create only the approved successor Issues and keep Project allocation separate.
+- Validation already completed: workflow/assessment validators passed the bootstrap; exact Git-blob inventory completed; v0.13 package build failed closed for missing release truth; controlled projection ZIP/tar validation passed; extracted payload navigation failed with seven genuine missing targets.
+- Git state: Dedicated branch `codex/2026-08-11-std-001-standards-simplification`; assessment/workflow evidence changes are pending validation and commit.
+- Branch history and checkpoint handoffs: Segment 1 bootstrap commit is `a77db619fa48d44245845ee9f0e1d275103e1a42`; nothing from #61 has been pushed or merged.
+- Blockers or unresolved decisions: Owner approval of the three-delivery split and governance-term registry placement is required before canonical mutation or online successor-Issue creation.
 
 ## Branch Lifecycle
 
 | Segment | Branch | Base | Checkpoint Type | Commit | Remote / Target | Recorded At | Reason | Resume Branch / Action |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| 1 | `codex/2026-08-11-std-001-standards-simplification` | `main@df7012b6` | local audit bootstrap | containing bootstrap commit | local | `2026-08-11T13:31:10+08:00` | Begin the owner-approved #61 R2/R3 investigation and preparation scope | Execute `STD001-001` and finalize the baseline before any canonical mutation |
+| 1 | `codex/2026-08-11-std-001-standards-simplification` | `main@df7012b6` | local audit bootstrap | `a77db619fa48d44245845ee9f0e1d275103e1a42` | local | `2026-08-11T13:31:10+08:00` | Begin the owner-approved #61 R2/R3 investigation and preparation scope | Review the final assessment and proposed successor delivery ledger |

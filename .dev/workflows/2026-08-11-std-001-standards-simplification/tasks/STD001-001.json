@@ -6,13 +6,16 @@
   "task_id": "STD001-001",
   "workflow_id": "2026-08-11-std-001-standards-simplification",
   "owner_skill": "ai-context-governance",
-  "status": "in_progress",
+  "status": "completed",
   "created_at": "2026-08-11T13:31:10+08:00",
-  "updated_at": "2026-08-11T13:31:10+08:00",
+  "updated_at": "2026-08-11T13:45:48+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-5.6-sol",
   "reasoning_effort": "high",
-  "finding_ids": [],
+  "finding_ids": [
+    "ASM-20260811-003#CRL-001",
+    "ASM-20260811-003#CRL-002"
+  ],
   "scope": {
     "target": "Round 2 code-review progressive-disclosure and reference-loading baseline",
     "files": [
@@ -49,15 +52,23 @@
       "package payload projection and direct reference resolution",
       "git diff --check"
     ],
-    "last_completed_step": "Created the dedicated workflow branch and confirmed #61 online authority",
-    "next_action": "Bootstrap and execute the R2 baseline inventory"
+    "last_completed_step": "Measured the declared general and specialist load sets, traced semantic drift, and recorded the keep/move/retire plus equivalence contract",
+    "next_action": "Proceed through the separate owner-approved Round 2 successor delivery"
   },
   "results": {
-    "summary": "",
-    "files_changed": [],
-    "tests_run": [],
-    "finding_status": "not-addressed",
-    "residual_risk": "The current reference-loading surface has not yet been measured.",
+    "summary": "Finalized the Round 2 baseline with exact file/byte/word load sets, two stable findings, a bounded disposition list, and deterministic before/after acceptance criteria.",
+    "files_changed": [
+      ".dev/assessments/ASM-20260811-003/report.md",
+      ".dev/workflows/2026-08-11-std-001-standards-simplification/reports/r2-reference-loading-baseline.md",
+      ".dev/workflows/2026-08-11-std-001-standards-simplification/reports/decision-ledger.md"
+    ],
+    "tests_run": [
+      "exact git blob/reference-set inventory at df7012b6",
+      "active reference-consumer inventory",
+      "source versus extracted-payload path comparison"
+    ],
+    "finding_status": "recorded-for-successor-delivery",
+    "residual_risk": "Current Code Reviewer routes remain broad and semantically duplicated until the owner approves and completes Delivery A.",
     "follow_up_needed": true
   }
 }
