@@ -19,7 +19,7 @@
 - `current_phase`: `integration-checkpoint`
 - `artifact_root`: `.dev/workflows/2026-08-11-std-001-standards-simplification`
 - `created_at`: `2026-08-11T13:31:10+08:00`
-- `updated_at`: `2026-08-12T00:19:04+08:00`
+- `updated_at`: `2026-08-12T00:22:08+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md`
 - `template_version`: `1.2.0`
 
@@ -69,12 +69,12 @@
 
 ## Resume Checkpoint
 
-- Last completed action: Implemented #194's canonical 120-second/external-task/no-polling policy and passed its focused machine-readable capability and deterministic acceptance tests.
+- Last completed action: Committed #194's canonical 120-second/external-task/no-polling policy as `735ed82` after focused capability, acceptance, language, and workflow validation.
 - Current task: `STD001-003`.
-- Exact next action: commit the #194 policy and owner-approved composite validation disposition, create and validate the incomplete-workflow handoff checkpoint, then push and open the single PR to `main`.
+- Exact next action: commit this truthful owner-approved composite transport record, push the branch, and open the single PR to `main`; delegate hosted-check waiting, merge, eligible Issue closure, and branch cleanup to a low-cost external task without polling here.
 - Validation already completed: #191 is independently verified by `ASM-20260811-004`; #192 by `ASM-20260811-005`; #193 selected-payload, version, packaging, archive/apply, routing, and aggregate gates passed and `ASM-20260811-006` found no new blocking finding. Integration-gate attempts at `ccca869` preserved the earlier 52/54 regression receipt and the later 51/54 timeout receipt; all three timed-out commands pass independently, `ac54e78` raises only those registry budgets from 30 to 60 seconds, and the owner accepted that composite evidence for this integration. #194 focused capability tests passed 14/14 and deterministic acceptance passed 3/3.
-- Git state: current branch `codex/2026-08-11-std-001-pkg-navigation-closure@ac54e78`; refreshed `origin/main@df7012b6`; #194 policy edits are in progress and no overlapping open pull request exists.
-- Branch history and checkpoint handoffs: integration is now authorized but not yet transported. Because the parent workflow remains active for the real v0.13 candidate review, the PR merge is an incomplete-workflow checkpoint and requires a registered machine-readable handoff.
+- Git state: clean current branch `codex/2026-08-11-std-001-pkg-navigation-closure@735ed82`; refreshed `origin/main@df7012b6`; no overlapping open pull request exists.
+- Branch history and checkpoint handoffs: integration is authorized but not yet transported. The normal handoff schema can represent only one exact passing `check-all.sh --critical` execution, so it cannot truthfully encode this owner-approved composite evidence. Under the owner's explicit higher-priority instruction, this workflow plan records the transport exception instead of fabricating a 54/54 command receipt. Hosted PR checks remain mandatory external evidence.
 - Blockers or unresolved decisions: the critical handoff checkpoint and hosted PR checks must pass before integration. No governed v0.13 release record or real candidate exists yet; #193/#61 closeout, Project state, tag, Release, and publication remain separately gated.
 
 ## Branch Lifecycle
@@ -86,3 +86,4 @@
 | 2 | `codex/2026-08-11-std-001-r2-review-routing` | `codex/2026-08-11-std-001-standards-simplification@73b12c6` | local verified implementation | `f62f110` | local | `2026-08-11T20:56:40+08:00` | Preserve the completed #191 routing delivery and independent `ASM-20260811-004` evidence without merging its rollback unit | Start #192 from the updated coordination branch; retain #191 for owner review |
 | 3 | `codex/2026-08-11-std-001-r3-governance-terms` | `codex/2026-08-11-std-001-standards-simplification@088fee7` | local verified implementation | `92e7383` | local | `2026-08-11T21:40:15+08:00` | Preserve the completed #192 governance-term delivery and independent `ASM-20260811-005` evidence without merging its rollback unit | Start #193 from the updated coordination branch; use a validation-only combined view for #191/#192 package closure |
 | 4 | `codex/2026-08-11-std-001-pkg-navigation-closure` | `codex/2026-08-11-std-001-combined-validation@b1aacf8` | local verified implementation | `ff80d590`, `cef711a`, `fe969d3` | local | `2026-08-11T22:45:54+08:00` | Preserve selected-payload/component closure, bounded upgrade-test policy, and independent `ASM-20260811-006` evidence without claiming integration | Create the required incomplete-workflow handoff, then open the owner-authorized integration PR to `main` |
+| 4 | `codex/2026-08-11-std-001-pkg-navigation-closure` | `main@df7012b6` | owner-approved composite integration transport | `ccca869`, `ac54e78`, `735ed82` | local, PR pending | `2026-08-12T00:22:08+08:00` | Preserve the 51/54 aggregate timeout receipt, three independent passing commands, timeout calibration, and #194 no-polling rule without falsely claiming one 54/54 command | Push and open one PR; external hosted checks gate merge, eligible Issue closure, and branch cleanup |
