@@ -71,4 +71,6 @@ These three deliveries change different authorities, validators, compatibility c
 2. The owner approved extending the existing AI-context ownership registry for governance-term routing instead of creating a terminology-specific skill or a second definition authority.
 3. Successor Issues #191, #192, and #193 were created and read back as open with the approved scope and labels.
 4. Repository automation added all three Issues to Project #3 in `Inbox`; no Priority, Target release, Owner review, Published in, or other Project field was configured by this workflow.
-5. Keep #61 open as v0.13 coordination until successor before/after evidence and the real governed v0.13 package-candidate review are complete.
+5. On 2026-08-11 the owner separately authorized local implementation of all three bounded successor scopes, with results to be presented for review. Project allocation, push, PR, merge, Issue closure, tag, Release, and publication remain separate decisions.
+6. Execute #191, then #192, then #193 so the package delivery can validate the combined result.
+7. Keep #61 open as v0.13 coordination until successor before/after evidence and the real governed v0.13 package-candidate review are complete.

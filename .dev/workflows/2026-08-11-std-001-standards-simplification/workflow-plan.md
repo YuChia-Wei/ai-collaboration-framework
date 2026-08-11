@@ -16,10 +16,10 @@
 - `base_branch`: `main`
 - `branch_segment`: `1`
 - `status`: `in_progress`
-- `current_phase`: `successor-intake`
+- `current_phase`: `successor-implementation`
 - `artifact_root`: `.dev/workflows/2026-08-11-std-001-standards-simplification`
 - `created_at`: `2026-08-11T13:31:10+08:00`
-- `updated_at`: `2026-08-11T16:01:31+08:00`
+- `updated_at`: `2026-08-11T20:18:57+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md`
 - `template_version`: `1.2.0`
 
@@ -34,7 +34,7 @@
 
 - Work item: [GitHub Issue #61](https://github.com/YuChia-Wei/ai-collaboration-framework/issues/61), read as OPEN on 2026-08-11.
 - Project read-back: Project #3 records `Status=Planned`, `Priority=P1 High`, `Owner review=Approved`, `Target release=v0.13.0`, and `Published in=Not yet published`.
-- Current owner instruction: the three-delivery ledger and existing ownership-registry placement are approved. Issues [#191](https://github.com/YuChia-Wei/ai-collaboration-framework/issues/191), [#192](https://github.com/YuChia-Wei/ai-collaboration-framework/issues/192), and [#193](https://github.com/YuChia-Wei/ai-collaboration-framework/issues/193) are created; Project allocation and implementation remain separate decisions.
+- Current owner instruction: local implementation of Issues [#191](https://github.com/YuChia-Wei/ai-collaboration-framework/issues/191), [#192](https://github.com/YuChia-Wei/ai-collaboration-framework/issues/192), and [#193](https://github.com/YuChia-Wei/ai-collaboration-framework/issues/193) is approved, in that order, with validated results returned for owner review. Project allocation, push, PR, merge, Issue closure, tag, Release, and publication remain separate decisions.
 - Delivery cohesion: R2, R3, and package-candidate review share branch, reviewers, validation, v0.13 decision gate, and rollback; one workflow coordinates them without forcing unrelated authority changes into one delivery.
 - Planned integration: not selected until the decision ledger identifies whether the preparation artifacts stand alone or accompany one bounded remediation delivery.
 
@@ -66,11 +66,11 @@
 
 - Last completed action: Recorded owner approval of the three-delivery split and ownership-registry placement, then created and read back Issues #191, #192, and #193. Repository automation placed each in Project #3 `Inbox`; no workflow-owned Project fields were configured.
 - Current task: `STD001-003`.
-- Exact next action: Obtain separate Project allocation and implementation authorization for Issues #191-#193, then reconcile their before/after evidence and perform the real governed v0.13 package-candidate user review.
+- Exact next action: Start the dedicated #191 branch and workflow, implement and verify its bounded reference-routing scope, then continue #192 and #193 without combining their rollback units.
 - Validation already completed: workflow/assessment validators passed the bootstrap; exact Git-blob inventory completed; v0.13 package build failed closed for missing release truth; controlled projection ZIP/tar validation passed; extracted payload navigation failed with seven genuine missing targets.
 - Git state: Dedicated branch `codex/2026-08-11-std-001-standards-simplification`; bootstrap `a77db619fa48d44245845ee9f0e1d275103e1a42` and assessment checkpoint `c001cc34617396bfbde2b8138c7a65f45fc484e0` are local; this successor-intake update is pending validation and commit.
 - Branch history and checkpoint handoffs: Nothing from #61 has been pushed or merged.
-- Blockers or unresolved decisions: Project field allocation and implementation authorization for #191-#193 are pending; no governed v0.13 release record or real candidate exists yet.
+- Blockers or unresolved decisions: Project field allocation and transport remain pending; no governed v0.13 release record or real candidate exists yet, so the final #193 candidate gate remains future work.
 
 ## Branch Lifecycle
 

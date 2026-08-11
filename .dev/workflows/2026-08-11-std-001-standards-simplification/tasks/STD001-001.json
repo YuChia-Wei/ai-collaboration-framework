@@ -8,7 +8,7 @@
   "owner_skill": "ai-context-governance",
   "status": "completed",
   "created_at": "2026-08-11T13:31:10+08:00",
-  "updated_at": "2026-08-11T16:01:31+08:00",
+  "updated_at": "2026-08-11T20:18:57+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-5.6-sol",
   "reasoning_effort": "high",
@@ -53,7 +53,7 @@
       "git diff --check"
     ],
     "last_completed_step": "Measured the declared general and specialist load sets, traced semantic drift, and recorded the keep/move/retire plus equivalence contract",
-    "next_action": "Await separate Project allocation and implementation authorization for GitHub Issue #191"
+    "next_action": "Execute the authorized Issue #191 scope in its dedicated branch and governance workflow; keep Project allocation and transport separate"
   },
   "results": {
     "summary": "Finalized the Round 2 baseline with exact file/byte/word load sets, two stable findings, a bounded disposition list, and deterministic before/after acceptance criteria.",
@@ -67,8 +67,8 @@
       "active reference-consumer inventory",
       "source versus extracted-payload path comparison"
     ],
-    "finding_status": "allocated-to-successor-issue-191",
-    "residual_risk": "Current Code Reviewer routes remain broad and semantically duplicated until Issue #191 is separately authorized, implemented, and verified.",
+    "finding_status": "implementation-authorized-successor-issue-191",
+    "residual_risk": "Current Code Reviewer routes remain broad and semantically duplicated until Issue #191 is implemented and independently verified.",
     "follow_up_needed": true
   }
 }
