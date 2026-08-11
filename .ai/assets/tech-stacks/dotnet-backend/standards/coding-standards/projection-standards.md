@@ -152,11 +152,11 @@ When an EF projection read model needs model registration validation, implement 
 
 ## Automated Validation Ownership
 
-- Roslyn analyzer:
+- Target-selected Roslyn analyzer or architecture test:
   - `IQueryRepository`-derived ports must not declare persistence write methods;
   - they must not return an Aggregate Root or child Entity;
   - projection services must not call provider write APIs.
-- Configuration tests:
+- Target-owned configuration tests:
   - assembled model registration for EF read models.
 - Tests / profiling / AI review:
   - query shape, N+1 behavior, index usage, tracking policy, mapping completeness, and performance.

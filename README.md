@@ -46,7 +46,7 @@ AI 協作知識庫與 .NET Backend Context Framework
 | 尋找可用的 AI skills | [`.ai/assets/skills/README.MD`](.ai/assets/skills/README.MD) |
 | 了解人類可閱讀的協作指南 | [`.dev/guides/ai-collaboration-guides/INDEX.MD`](.dev/guides/ai-collaboration-guides/INDEX.MD) |
 | 讓 Agent 在此來源庫中正確協作 | [`AGENTS.md`](AGENTS.md) |
-| 探索內建的可執行 .NET 驗證 provider | [`.ai/assets/tech-stacks/dotnet-backend/tooling/bundled-mechanical-validation/`](.ai/assets/tech-stacks/dotnet-backend/tooling/bundled-mechanical-validation/) |
+| 探索 target-selected 的 .NET 機械式驗證 recipe | [`.ai/assets/tech-stacks/dotnet-backend/tooling/on-demand-mechanical-validation/`](.ai/assets/tech-stacks/dotnet-backend/tooling/on-demand-mechanical-validation/) |
 | 取得或升級可攜式框架版本 | [`.dev/releases/INDEX.MD`](.dev/releases/INDEX.MD) |
 
 ## 核心內容
@@ -69,9 +69,9 @@ AI 協作知識庫與 .NET Backend Context Framework
 - WolverineFx、Dapper、EF Core、PostgreSQL、RabbitMQ 與 Kafka 等常見後端組合。
 - .NET 後端的架構設計、實作切片與 code review 指引。
 
-內建的 mechanical-validation provider 提供原始碼，預設不啟用。其穩定 landing page 將兩項可個別選取的能力分開：用於機械式架構規則的 Roslyn analyzers，以及用於檢查 target-owned registration 的 runtime/configuration validation。人類與 Agent 的指引仍位於 .NET standards 與 technology-stack context 中；這些文件不會取代可執行的驗證。
+框架預設不提供可編譯的 .NET provider、專案或 SDK pin。若目標專案需要 Roslyn analyzer 或 projection registration test，必須由 target owner 明確選取後，依 [on-demand recipe](.ai/assets/tech-stacks/dotnet-backend/tooling/on-demand-mechanical-validation/) 在目標庫建立並驗證。DBA1001–DBA1017 對應、severity 範例與 bounded snippets 僅為 `reference-only`；canonical standards 仍是語意 owner。
 
-此 provider 的 production 專案是位於 `.ai/assets/tech-stacks/dotnet-backend/tooling/bundled-mechanical-validation/` 下的可攜式資產。其 `tools/DotnetBackendAnalyzers.Tests/` 與 `tools/DotnetBackendValidation.Tests/` 專案仍屬於來源庫驗證，並刻意排除在下游封包之外。`tools/DotnetBackendBuildingBlocks.Tests/` 同樣驗證另行保留的 source-includes，而不屬於 mechanical-validation provider。
+目標庫自行負責 SDK、target framework、Roslyn／測試套件版本、專案 wiring、severity、CI、相容性與新鮮 evidence。Recipe 檔案存在不代表 capability 已啟用，也不建立 framework release 的 .NET SDK 依賴。
 
 ## 主要目錄
 

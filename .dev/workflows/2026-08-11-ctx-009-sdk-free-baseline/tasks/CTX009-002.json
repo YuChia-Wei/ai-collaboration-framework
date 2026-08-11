@@ -8,7 +8,7 @@
   "owner_skill": "ai-context-governance",
   "status": "in_progress",
   "created_at": "2026-08-11T08:21:27+08:00",
-  "updated_at": "2026-08-11T08:33:55+08:00",
+  "updated_at": "2026-08-11T09:14:35+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-5.6-sol",
   "reasoning_effort": "high",
@@ -56,15 +56,43 @@
       "controlled required-check execution with dotnet unavailable from PATH",
       "git diff --check"
     ],
-    "last_completed_step": "Bound remediation to the five frozen ASM-20260811-001 findings",
-    "next_action": "Remove framework-owned project and SDK selectors, then establish recipe-only target guidance"
+    "last_completed_step": "Removed framework-owned project and SDK selectors, established recipe-only target guidance, and completed the focused validation matrix",
+    "next_action": "Commit the remediation checkpoint, validate committed package projection, and run the PR profile with dotnet absent from PATH"
   },
   "results": {
-    "summary": "",
-    "files_changed": [],
-    "tests_run": [],
-    "finding_status": "not-addressed",
-    "residual_risk": "The exact remediation set depends on the frozen baseline inventory.",
+    "summary": "The source framework now supplies no tracked .NET project or SDK pin, selects no required dotnet command, and preserves mechanical validation only as target-selected reference recipes.",
+    "files_changed": [
+      ".ai/assets/tech-stacks/dotnet-backend/tooling/**",
+      ".ai/assets/tech-stacks/dotnet-backend/source-includes/evidence-manifest.yaml",
+      ".ai/assets/tech-stacks/dotnet-backend/engineering-rule-catalog.yaml",
+      ".ai/scripts/**",
+      ".ai/distribution/profiles/dotnet-backend.yaml",
+      ".github/workflows/portable-gates.yml",
+      ".dev/guides/**",
+      ".dev/operations/runbooks/AI-CONTEXT-RELEASE-PUBLICATION-RUNBOOK.MD",
+      ".dev/standards/DEPENDENCY-VERSION-CONSISTENCY-POLICY.md",
+      "README.md",
+      "README.en.md",
+      "global.json",
+      "tools/**"
+    ],
+    "tests_run": [
+      "SDK-free framework contract: 5/5 passed",
+      "fail-closed validation: 38/38 passed",
+      "dependency version consistency: 17/17 passed; live source reports managed_projects=0 and nuget_dependencies=0",
+      "repository configuration: 13/13 passed",
+      "validation profile registry: 6/6 passed",
+      "source-include evidence: 4/4 passed",
+      "GitHub workflow contract: 9/9 passed",
+      "example evidence: 4/4 passed",
+      "profile projection: 3/3 passed",
+      "document projection: 2/2 passed",
+      "source dispositions: 8/8 passed",
+      "repository identity: 11/11 passed",
+      "AI-context, shell-asset, workflow, and assessment validators passed"
+    ],
+    "finding_status": "partially-addressed",
+    "residual_risk": "Committed package projection, controlled no-dotnet aggregate execution, commit policy, and independent verification remain pending.",
     "follow_up_needed": true
   }
 }

@@ -13,8 +13,6 @@ on:
       - ".dev/workflows/**"
       - ".github/agents/**"
       - ".github/workflows/**"
-      - "tools/**"
-      - "global.json"
       - "requirements.txt"
   workflow_dispatch:
 
@@ -99,11 +97,6 @@ jobs:
 
       - name: Install pinned Python dependencies
         run: python -m pip install --disable-pip-version-check -r requirements.txt
-
-      - name: Set up .NET from global.json
-        uses: actions/setup-dotnet@v5
-        with:
-          global-json-file: global.json
 
       - name: Run the canonical PR profile
         shell: bash

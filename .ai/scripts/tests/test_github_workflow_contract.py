@@ -44,8 +44,6 @@ EXPECTED_PR_PATHS = {
         ".dev/workflows/**",
         ".github/agents/**",
         ".github/workflows/**",
-        "tools/**",
-        "global.json",
         "requirements.txt",
     },
     "package-candidate.yml": {
@@ -138,6 +136,18 @@ class GitHubWorkflowContractTests(unittest.TestCase):
             PUBLISH_CONCURRENCY,
             self.workflows["publish-release.yml"].get("concurrency"),
         )
+
+    def test_gwt_002a_given_portable_gate_when_steps_are_read_then_no_dotnet_sdk_is_selected(self) -> None:
+        workflow = self.workflows["portable-gates.yml"]
+        serialized_steps = "\n".join(
+            str(value)
+            for step in steps(workflow)
+            for value in step.values()
+        )
+        self.assertNotIn("setup-dotnet", serialized_steps)
+        self.assertNotIn("global-json-file", serialized_steps)
+        self.assertNotIn("global.json", workflow["on"]["pull_request"]["paths"])
+        self.assertNotIn("tools/**", workflow["on"]["pull_request"]["paths"])
 
     def test_gwt_003_given_workflow_jobs_when_permissions_checked_then_only_publish_mutates(self) -> None:
         for name, workflow in self.workflows.items():

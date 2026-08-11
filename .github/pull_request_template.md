@@ -18,7 +18,7 @@
 - e.g., Scalar UI, Kafka/RabbitMQ UI, console output
 
 ## Checklist
-- [ ] Builds locally: `dotnet build`
-- [ ] Tests pass: `dotnet test`
+- [ ] Selected repository-native build and test commands pass, or `not-applicable` is explained
+- [ ] Target-owned .NET commands were run only when this repository selected a .NET SDK/project contract
 - [ ] Docs updated (README/AGENTS.md, comments)
 - [ ] No secrets committed; config via env vars

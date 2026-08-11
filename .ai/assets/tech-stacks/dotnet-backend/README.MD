@@ -32,7 +32,7 @@ Excluded:
   standards/
   templates/
   tooling/
-    bundled-mechanical-validation/
+    on-demand-mechanical-validation/
 ```
 
 ## References
@@ -42,12 +42,12 @@ Excluded:
 - `references/CODE-REVIEW-INDEX.MD`
 - `examples/` - canonical .NET backend profile example landing path
 - `source-includes/domain/` - optional interface-first Domain contracts and the
-  executable-tested `EsAggregateRoot<TId>` source include
+  reference-only `EsAggregateRoot<TId>` source include; adopting targets own compilation and behavior evidence
 - `references/CODE-TEMPLATES.MD`
 - `references/COMMON-PITFALLS.MD`
 - `references/FAILURE-CASES.MD`
-- `tooling/bundled-mechanical-validation/` - source-available, inactive-by-default
-  provider for separately selected Roslyn analyzer and runtime-validation capabilities
+- `tooling/on-demand-mechanical-validation/` - reference-only DBA mapping and
+  target-owned analyzer/configuration-test creation recipes; no provider, project, or SDK is supplied
 
 ## Current Shared Materials
 

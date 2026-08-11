@@ -369,29 +369,12 @@ class CheckAllRunnerGwtTests(unittest.TestCase):
         finally:
             fixture.close()
 
-    def test_gwt_004_given_required_command_unavailable_when_selected_then_gate_fails(self) -> None:
+    def test_gwt_004_given_source_context_without_dotnet_when_selected_then_no_sdk_command_runs(self) -> None:
         fixture = SyntheticRunnerRepo()
         try:
-            # Given source-only required dotnet command checks are selected and
-            # deterministic stubs return command-not-found semantics.
+            # Given source-only checks are selected and any accidental dotnet
+            # invocation would fail with command-not-found semantics.
             fixture.enable_source_release_context()
-            # When critical mode executes all required dotnet checks.
-            result = fixture.execute("--critical", environment={"DOTNET_STUB_EXIT": "127"})
-
-            # Then all three selected command checks fail without workstation dependency.
-            self.assertEqual(1, result.returncode)
-            self.assertRegex(result.stdout, r"Required Failed: .*3")
-            self.assertEqual(3, sum(line.startswith("dotnet ") for line in fixture.sentinel()))
-        finally:
-            fixture.close()
-
-    def test_gwt_004a_given_dotnet_is_missing_when_critical_runs_then_gate_is_blocked(self) -> None:
-        fixture = SyntheticRunnerRepo()
-        try:
-            # Given source-only dotnet checks emit an unambiguous missing-command error.
-            fixture.enable_source_release_context()
-
-            # When critical mode runs against that host state.
             result = fixture.execute(
                 "--critical",
                 environment={
@@ -400,34 +383,15 @@ class CheckAllRunnerGwtTests(unittest.TestCase):
                 },
             )
 
-            # Then it remains non-passing but identifies the host prerequisite.
-            self.assertEqual(3, result.returncode, result.stdout + result.stderr)
-            self.assertIn("BLOCKED-BY-ENVIRONMENT", result.stdout)
-            self.assertIn("missing-dotnet-sdk", result.stdout)
-            self.assertRegex(result.stdout, r"Required Failed: .*0")
-            self.assertRegex(result.stdout, r"Required Blocked: .*3")
-        finally:
-            fixture.close()
-
-    def test_gwt_004b_given_msb1003_when_critical_runs_then_gate_fails(self) -> None:
-        fixture = SyntheticRunnerRepo()
-        try:
-            # Given source-only dotnet checks fail with a command/configuration error.
-            fixture.enable_source_release_context()
-
-            # When critical mode runs.
-            result = fixture.execute(
-                "--critical",
-                environment={
-                    "DOTNET_STUB_EXIT": "1",
-                    "DOTNET_STUB_OUTPUT": "MSB1003: Specify a project or solution file.",
-                },
+            # Then the source framework passes without selecting the dotnet
+            # stub, while the SDK-free Python contract is selected.
+            self.assertEqual(0, result.returncode, result.stdout + result.stderr)
+            sentinel = fixture.sentinel()
+            self.assertFalse(any(line.startswith("dotnet ") for line in sentinel))
+            self.assertTrue(
+                any("test_sdk_free_framework_contract.py" in line for line in sentinel),
+                sentinel,
             )
-
-            # Then the possible repository defect remains a genuine failure.
-            self.assertEqual(1, result.returncode, result.stdout + result.stderr)
-            self.assertNotIn("BLOCKED-BY-ENVIRONMENT", result.stdout)
-            self.assertRegex(result.stdout, r"Required Failed: .*3")
         finally:
             fixture.close()
 

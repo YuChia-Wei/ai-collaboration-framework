@@ -16,10 +16,10 @@
 - `base_branch`: `main`
 - `branch_segment`: `1`
 - `status`: `in_progress`
-- `current_phase`: `remediation`
+- `current_phase`: `validation`
 - `artifact_root`: `.dev/workflows/2026-08-11-ctx-009-sdk-free-baseline`
 - `created_at`: `2026-08-11T08:21:27+08:00`
-- `updated_at`: `2026-08-11T08:33:55+08:00`
+- `updated_at`: `2026-08-11T09:14:35+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md`
 - `template_version`: `1.2.0`
 
@@ -62,22 +62,22 @@
 
 1. Freeze the remote `main` and #187/Project authorization baseline, then create the dedicated workflow branch and artifacts. `completed`
 2. Produce `ASM-20260811-001` as a read-only inventory of every active framework-owned .NET SDK dependency and affected contract surface. `completed`
-3. Remove or reclassify framework-owned compilable .NET implementation and required release gates while preserving canonical engineering semantics and target-owned on-demand guidance. `in_progress`
-4. Run repository-native validation, including controlled execution with `dotnet` unavailable from `PATH`, and record exact outcomes. `pending`
+3. Remove or reclassify framework-owned compilable .NET implementation and required release gates while preserving canonical engineering semantics and target-owned on-demand guidance. `completed`
+4. Run repository-native validation, including controlled execution with `dotnet` unavailable from `PATH`, and record exact outcomes. `in_progress`
 5. Produce independent verification `ASM-20260811-002`, reconcile every finding, and close the local workflow only when commit and validation policy are satisfied. `pending`
 
 ## Resume Checkpoint
 
-- Last completed action: Finalized `ASM-20260811-001` with five stable findings covering required SDK gates, compilable payload, source-include evidence, provider activation, and active guidance drift.
+- Last completed action: Removed every tracked .NET project and SDK selector, replaced the bundled provider with reference-only target recipes, and passed the focused SDK-free and fail-closed validation matrix.
 - Current task: `CTX009-002`.
-- Exact next action: Remove the framework-owned project/SDK surfaces and replace the bundled provider activation contract with target-selected on-demand reference guidance.
-- Validation already completed: Baseline tracked-file inventory; AI-context and dependency validators; provider, registry, source-include, and workflow focused contracts; assessment and workflow artifact validation.
-- Git state: Dedicated branch `codex/2026-08-11-ctx-009-sdk-free-baseline`; workflow bootstrap committed at `7652e5f1d11054878699046856fce12f0c19e587`; assessment checkpoint changes are pending commit.
+- Exact next action: Commit the remediation checkpoint, then validate committed package projection and run the full PR profile with `dotnet` absent from `PATH`.
+- Validation already completed: SDK-free 5/5; fail-closed 38/38; dependency 17/17 plus live zero-project validation; repository configuration 13/13; registry 6/6; source include 4/4; GitHub workflow 9/9; example 4/4; profile 3/3; document 2/2; source disposition 8/8; repository identity 11/11; AI-context, shell-asset, workflow, and assessment validators.
+- Git state: Dedicated branch `codex/2026-08-11-ctx-009-sdk-free-baseline`; workflow bootstrap committed at `7652e5f1d11054878699046856fce12f0c19e587`; baseline assessment committed at `2e40c69e20f524f5bd91e81b214e6750f1e8fa9e`; remediation checkpoint is staged.
 - Branch history and checkpoint handoffs: Segment 1 is local only; no push, pull request, merge, tag, or publication exists.
-- Blockers or unresolved decisions: None for local #187 execution. Push, pull request, merge, Issue closure, tag, and v0.13.0 publication remain unrequested.
+- Blockers or unresolved decisions: None for local #187 execution. Committed package projection, controlled no-`dotnet` aggregate validation, and independent verification remain. Push, pull request, merge, Issue closure, tag, and v0.13.0 publication remain unrequested.
 
 ## Branch Lifecycle
 
 | Segment | Branch | Base | Checkpoint Type | Commit | Remote / Target | Recorded At | Reason | Resume Branch / Action |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| 1 | `codex/2026-08-11-ctx-009-sdk-free-baseline` | `main@a4fd14f0` | local-active | `7652e5f1` | local | `2026-08-11T08:21:27+08:00` | Authorized #187 SDK-free baseline delivery | Commit `ASM-20260811-001`, then execute `CTX009-002` remediation |
+| 1 | `codex/2026-08-11-ctx-009-sdk-free-baseline` | `main@a4fd14f0` | local-active | `7652e5f1`, `2e40c69e` | local | `2026-08-11T09:14:35+08:00` | Authorized #187 SDK-free baseline delivery and frozen baseline evidence | Commit `CTX009-002` remediation, then execute controlled terminal validation |

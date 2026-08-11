@@ -259,7 +259,8 @@ Imports, migrations, projection rebuilds, or purges that do not execute normal A
 
 ## Automated Validation Ownership
 
-Repository semantic diagnostics use Roslyn symbol/type analysis; filenames or grep are not CI authority.
+When a target selects repository automation, it uses Roslyn symbol/type analysis
+or an equivalent architecture test; filenames or grep are not CI authority.
 
 Validation MUST cover:
 
@@ -270,7 +271,9 @@ Validation MUST cover:
 - a child Entity cannot be a repository root; and
 - default severity for violations is `error`.
 
-The target repository enables analyzer/architecture-test rules for target-specific batch ports through a local marker. The portable analyzer does not depend on an unfinished Use Case/Handler taxonomy.
+The target repository may create analyzer/architecture-test rules for
+target-specific batch ports through a local marker. The reference recipe does
+not supply an analyzer or depend on an unfinished Use Case/Handler taxonomy.
 
 ## Review Checklist
 

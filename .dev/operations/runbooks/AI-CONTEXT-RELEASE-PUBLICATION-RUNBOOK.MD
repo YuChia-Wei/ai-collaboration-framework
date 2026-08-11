@@ -18,8 +18,9 @@
 
 - Source-side Python tooling requires Python 3.11 or newer plus the exact
   dependency in `requirements.txt`.
-- .NET validation requires SDK 10.0.300 or newer so the host satisfies
-  `global.json`; 10.0.203 is below the required feature band.
+- The source framework release gate is SDK-free and does not require a .NET
+  SDK. A downstream target may select its own SDK and .NET validation commands;
+  those target-owned prerequisites are outside this publication runbook.
 - A self-hosted GitHub Actions runner must be version 2.327.1 or newer. The
   candidate and publication workflows use the Node 24 artifact actions
   (`actions/upload-artifact@v7` and `actions/download-artifact@v8`); older

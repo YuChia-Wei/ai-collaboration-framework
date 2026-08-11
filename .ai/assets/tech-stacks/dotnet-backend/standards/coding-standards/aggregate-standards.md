@@ -30,10 +30,12 @@ is an explicit Aggregate profile, not a requirement for every Aggregate.
 
 ## 🏷️ Automated Check Boundaries
 
-`DBA1009` applies only to descendants of a type named `EsAggregateRoot`.
-`DBA1003` checks Aggregate/Entity infrastructure dependencies. Invariant
-completeness, event completeness, and target deletion-policy adoption still
-require tests and review.
+`DBA1009` and `DBA1003` are reference binding labels for an explicitly
+target-selected analyzer. The framework supplies no implementation. A target
+implementation scopes `DBA1009` to descendants of a type named
+`EsAggregateRoot` and uses `DBA1003` for Aggregate/Entity Infrastructure
+dependencies. Invariant completeness, event completeness, and target
+deletion-policy adoption still require target tests and review.
 
 Rule IDs: `AGGREGATE-ES-001`, `DELETE-SOFT-001`,
 `CONTRACT-SEMANTICS-001`.
@@ -45,9 +47,9 @@ normal-aggregate:
 event-sourced-aggregate:
   type: EsAggregateRoot<TId>
   apply-when-required: true
-  analyzer: DBA1009
+  optional-target-analyzer-binding: DBA1009
 all-aggregates:
-  infrastructure-dependency-analyzer: DBA1003
+  optional-target-infrastructure-binding: DBA1003
 ```
 
 ---

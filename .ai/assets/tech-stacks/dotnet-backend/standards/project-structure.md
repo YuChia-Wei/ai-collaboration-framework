@@ -316,5 +316,5 @@ The default profile does not require `DomainEntity<TId>`, non-ES
 `AggregateRoot<TId>`, or `ValueObject` base classes. Normal Aggregates implement
 `IAggregateRoot<TId>` directly. See the
 [BuildingBlocks Reconstruction Contract](BUILDING-BLOCKS-RECONSTRUCTION-CONTRACT.md)
-for the optional executable-tested `EsAggregateRoot<TId>` and target ownership
-rules.
+for the optional reference-only `EsAggregateRoot<TId>` contract and the
+adopting target's compilation, behavior-test, and upgrade ownership rules.

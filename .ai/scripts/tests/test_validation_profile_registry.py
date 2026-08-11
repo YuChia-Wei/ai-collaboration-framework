@@ -155,6 +155,24 @@ class ValidationProfileRegistryGwtTests(unittest.TestCase):
             ".ai/scripts/tests/test_immutable_history_validation.py", distribution
         )
 
+    def test_gwt_006_given_required_profiles_when_inspected_then_framework_sdk_is_not_selected(self) -> None:
+        _, checks = registry_snapshot()
+        contract = checks["sdk-free-framework-contract"]
+
+        self.assertEqual(
+            {"fast", "pr", "release", "nightly-full"},
+            set(contract[4].split()),
+        )
+        self.assertEqual("python>=3.11 git", contract[7])
+        self.assertEqual(
+            "python .ai/scripts/tests/test_sdk_free_framework_contract.py -v",
+            contract[12],
+        )
+        for check_id, fields in checks.items():
+            with self.subTest(check_id=check_id):
+                self.assertNotIn("dotnet", fields[7].split())
+                self.assertFalse(fields[12].lstrip().startswith("dotnet "))
+
 
 if __name__ == "__main__":
     unittest.main()

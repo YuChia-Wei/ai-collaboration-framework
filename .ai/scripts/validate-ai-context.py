@@ -751,7 +751,7 @@ def validate_source_include_evidence(
     root: Path = ROOT,
     manifest_path: Path = SOURCE_INCLUDE_EVIDENCE_MANIFEST,
 ) -> None:
-    """Validate executable-tested claims for source-includable framework assets."""
+    """Validate reference-only claims for source-includable framework assets."""
     try:
         manifest = yaml.safe_load((root / manifest_path).read_text(encoding="utf-8"))
     except (OSError, yaml.YAMLError) as exc:
@@ -779,17 +779,34 @@ def validate_source_include_evidence(
         ):
             errors.append(f"{label}: source-include path must be an existing local directory")
 
-        if entry.get("tier") != "executable-tested":
-            errors.append(f"{label}: source includes must declare executable-tested tier")
+        if entry.get("tier") != "reference-only":
+            errors.append(f"{label}: SDK-free source includes must declare reference-only tier")
 
+        for field in ("claim", "reason"):
+            value = entry.get(field)
+            if not isinstance(value, str) or not value.strip():
+                errors.append(f"{label}: reference-only tier requires non-empty {field}")
+
+        validators = entry.get("validators")
+        if not isinstance(validators, list):
+            errors.append(f"{label}: validators must be a list")
         for field in ("build_commands", "test_commands"):
             value = entry.get(field)
-            if not isinstance(value, list) or not value:
-                errors.append(f"{label}: executable-tested tier requires non-empty {field}")
+            if not isinstance(value, list) or value:
+                errors.append(f"{label}: SDK-free reference-only tier requires empty {field}")
 
-        test_project = entry.get("test_project")
-        if not isinstance(test_project, str) or not (root / test_project).is_file():
-            errors.append(f"{label}: declared test_project does not exist: {test_project}")
+        if "test_project" in entry:
+            errors.append(f"{label}: SDK-free reference-only tier must not declare test_project")
+
+        target_validation = entry.get("target_validation")
+        if not isinstance(target_validation, dict):
+            errors.append(f"{label}: target_validation must be a mapping")
+        else:
+            if target_validation.get("required") is not True:
+                errors.append(f"{label}: target_validation.required must be true")
+            responsibility = target_validation.get("responsibility")
+            if not isinstance(responsibility, str) or not responsibility.strip():
+                errors.append(f"{label}: target_validation.responsibility must be non-empty")
 
 
 def validate_example_placeholder_disposition(

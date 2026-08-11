@@ -204,26 +204,11 @@ register_check spec-implementation \
     "spec,optional" "pr release nightly-full" \
     ".dev/specs .ai/scripts/check-spec-compliance.sh" '' "python>=3.11 bash" 60 cpu no-reuse portable \
     "check-spec-compliance.sh SPEC_FILE TASK_NAME" spec-inputs
-register_check dotnet-analyzers \
-    "Dotnet Backend Analyzer Template Tests" required \
-    "dotnet,release" "pr release nightly-full" \
-    "tools/DotnetBackendAnalyzers.Tests" '' "dotnet" 180 dotnet reuse-by-input source \
-    "dotnet test tools/DotnetBackendAnalyzers.Tests/DotnetBackendAnalyzers.Tests.csproj" source-release
-register_check dotnet-validation \
-    "Dotnet Backend Configuration Validation Tests" required \
-    "dotnet,release" "pr release nightly-full" \
-    "tools/DotnetBackendValidation.Tests" '' "dotnet" 180 dotnet reuse-by-input source \
-    "dotnet test tools/DotnetBackendValidation.Tests/DotnetBackendValidation.Tests.csproj" source-release
-register_check dotnet-building-blocks \
-    "Dotnet Backend BuildingBlocks Behavior Tests" required \
-    "dotnet,release" "pr release nightly-full" \
-    "tools/DotnetBackendBuildingBlocks.Tests" '' "dotnet" 180 dotnet reuse-by-input source \
-    "dotnet test tools/DotnetBackendBuildingBlocks.Tests/DotnetBackendBuildingBlocks.Tests.csproj" source-release
-register_check bundled-provider-activation \
-    "Bundled Mechanical Validation Provider Activation Tests" required \
-    "dotnet,provider" "pr release nightly-full" \
-    ".ai/assets/tech-stacks/dotnet-backend/tooling/bundled-mechanical-validation" '' "python>=3.11" 60 cpu reuse-by-input source \
-    "python .ai/assets/tech-stacks/dotnet-backend/tooling/bundled-mechanical-validation/tests/test_provider_activation_evaluator.py -v" source-release
+register_check sdk-free-framework-contract \
+    "SDK-Free Framework Contract" required \
+    "portability,release" "fast pr release nightly-full" \
+    ".ai/scripts/tests/test_sdk_free_framework_contract.py .ai/assets/tech-stacks/dotnet-backend/tooling/on-demand-mechanical-validation .github/workflows/portable-gates.yml" '' "python>=3.11 git" 30 cpu reuse-by-input source \
+    "python .ai/scripts/tests/test_sdk_free_framework_contract.py -v" source-release
 register_check source-version-governance-tests \
     "AI Context Version Governance Fail-Closed Tests" required \
     "release,tests" "release nightly-full" \
