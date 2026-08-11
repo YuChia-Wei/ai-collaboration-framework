@@ -12,6 +12,7 @@ owns its identity, current lifecycle state, subject revision, and relationships.
 
 | Assessment | Title | Type | Owner | Status | Subject Commit | Updated | Report |
 | --- | --- | --- | --- | --- | --- | --- | --- |
+| [`ASM-20260811-004`](ASM-20260811-004/assessment.yaml) | Code Reviewer Progressive Disclosure Verification | `ai-context-verification` | `ai-context-auditor` | `final` | `8b5b40237aae0c953709378e628fbc898ff058f5` | `2026-08-11T20:52:30+08:00` | [report](ASM-20260811-004/report.md) |
 | [`ASM-20260811-003`](ASM-20260811-003/assessment.yaml) | v0.13 Standards Loading, Terminology, And Package-View Baseline | `ai-context-audit` | `ai-context-auditor` | `final` | `df7012b6bf6ac360cfb47e2c79813384880665f8` | `2026-08-11T13:45:48+08:00` | [report](ASM-20260811-003/report.md) |
 | [`ASM-20260811-002`](ASM-20260811-002/assessment.yaml) | v0.13 SDK-Free Framework Baseline Verification | `ai-context-verification` | `ai-context-auditor` | `final` | `889493a272bc272086c70dedd1a57d3f91eb790d` | `2026-08-11T10:14:06+08:00` | [report](ASM-20260811-002/report.md) |
 | [`ASM-20260811-001`](ASM-20260811-001/assessment.yaml) | v0.13 Framework-Owned .NET SDK Dependency Baseline | `ai-context-audit` | `ai-context-auditor` | `final` | `7652e5f1d11054878699046856fce12f0c19e587` | `2026-08-11T08:33:55+08:00` | [report](ASM-20260811-001/report.md) |
