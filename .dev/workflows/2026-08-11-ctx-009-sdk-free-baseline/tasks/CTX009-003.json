@@ -13,8 +13,11 @@
   "model": "gpt-5.6-sol",
   "reasoning_effort": "high",
   "finding_ids": [
-    "#187",
-    "ASM-20260811-001#pending"
+    "ASM-20260811-001#SDKGATE-001",
+    "ASM-20260811-001#SDKPAYLOAD-001",
+    "ASM-20260811-001#SDKEVID-001",
+    "ASM-20260811-001#SDKPROV-001",
+    "ASM-20260811-001#SDKDOC-001"
   ],
   "scope": {
     "target": "Independent verification, finding reconciliation, and local workflow closeout",
