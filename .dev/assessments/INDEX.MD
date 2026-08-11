@@ -12,6 +12,7 @@ owns its identity, current lifecycle state, subject revision, and relationships.
 
 | Assessment | Title | Type | Owner | Status | Subject Commit | Updated | Report |
 | --- | --- | --- | --- | --- | --- | --- | --- |
+| [`ASM-20260811-006`](ASM-20260811-006/assessment.yaml) | Selected Payload Navigation And Component Closure Verification | `ai-context-verification` | `ai-context-auditor` | `final` | `ff80d590006ebec8ccfbd540abb4083a9d386613` | `2026-08-11T22:43:14+08:00` | [report](ASM-20260811-006/report.md) |
 | [`ASM-20260811-005`](ASM-20260811-005/assessment.yaml) | Governance Term Routing And Release Projection Verification | `ai-context-verification` | `ai-context-auditor` | `final` | `fe85095d1d13955414942770995932490a6fa987` | `2026-08-11T21:34:43+08:00` | [report](ASM-20260811-005/report.md) |
 | [`ASM-20260811-004`](ASM-20260811-004/assessment.yaml) | Code Reviewer Progressive Disclosure Verification | `ai-context-verification` | `ai-context-auditor` | `final` | `8b5b40237aae0c953709378e628fbc898ff058f5` | `2026-08-11T20:52:30+08:00` | [report](ASM-20260811-004/report.md) |
 | [`ASM-20260811-003`](ASM-20260811-003/assessment.yaml) | v0.13 Standards Loading, Terminology, And Package-View Baseline | `ai-context-audit` | `ai-context-auditor` | `final` | `df7012b6bf6ac360cfb47e2c79813384880665f8` | `2026-08-11T13:45:48+08:00` | [report](ASM-20260811-003/report.md) |
