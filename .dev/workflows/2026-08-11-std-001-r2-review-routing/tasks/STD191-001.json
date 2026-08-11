@@ -1,0 +1,70 @@
+{
+  "template_id": "ai-context-governance-remediation-task",
+  "template_version": "1.1.0",
+  "template_created_at": "2026-07-10T18:22:49+08:00",
+  "template_updated_at": "2026-07-27T09:52:09+08:00",
+  "task_id": "STD191-001",
+  "workflow_id": "2026-08-11-std-001-r2-review-routing",
+  "owner_skill": "ai-context-governance",
+  "status": "in_progress",
+  "created_at": "2026-08-11T20:20:48+08:00",
+  "updated_at": "2026-08-11T20:20:48+08:00",
+  "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
+  "model": "gpt-5.6-sol",
+  "reasoning_effort": "high",
+  "finding_ids": [
+    "ASM-20260811-003#CRL-001",
+    "ASM-20260811-003#CRL-002"
+  ],
+  "scope": {
+    "target": "Code Reviewer entry, file-type and finding routing, role reference loading, and semantic equivalence",
+    "files": [
+      ".ai/assets/skills/code-reviewer/**",
+      ".agents/skills/code-reviewer/**",
+      ".claude/skills/code-reviewer/**",
+      ".ai/assets/tech-stacks/dotnet-backend/references/CODE-REVIEW-INDEX.MD",
+      ".ai/assets/tech-stacks/dotnet-backend/standards/**",
+      ".ai/assets/sub-agent-role-prompts/**",
+      ".ai/scripts/tests/**",
+      ".ai/distribution/**"
+    ],
+    "constraints": [
+      "Preserve checklist, severity, output contract, role applicability, and canonical engineering semantics",
+      "Retain stable compatibility entry paths for one declared migration window",
+      "Do not delete shared common/testing references used by other capabilities",
+      "Prove declared load reduction and semantic equivalence with deterministic fixtures"
+    ],
+    "non_goals": [
+      "Issue #192 terminology remediation",
+      "Issue #193 package navigation/component closure remediation",
+      "Product .NET source changes",
+      "Project allocation, push, PR, merge, Issue closure, or publication"
+    ]
+  },
+  "execution": {
+    "steps": [
+      "Inventory current entry, role, reference, standard, validator, and package routes",
+      "Define a compact file-type/finding routing contract and canonical owner mapping",
+      "Make general and specialist reference loading conditional and bounded",
+      "Add negative and equivalence fixtures plus before/after load evidence",
+      "Run focused and aggregate validation and request independent verification"
+    ],
+    "validation": [
+      "focused Code Reviewer routing contract tests",
+      "python .ai/scripts/validate-ai-context.py",
+      "python .ai/scripts/validate-workflow-artifacts.py",
+      "package projection tests",
+      "git diff --check"
+    ],
+    "last_completed_step": "Owner authorized Issue #191 implementation and the dedicated branch was created",
+    "next_action": "Inventory the exact current routing and consumer graph before editing canonical references"
+  },
+  "results": {
+    "summary": "",
+    "files_changed": [],
+    "tests_run": [],
+    "finding_status": "in-remediation",
+    "residual_risk": "Current broad loading and semantic drift remain until implementation and independent verification complete.",
+    "follow_up_needed": true
+  }
+}
