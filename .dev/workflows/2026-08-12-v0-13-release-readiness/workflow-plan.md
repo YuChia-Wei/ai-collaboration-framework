@@ -11,7 +11,7 @@
 - `current_phase`: `release-candidate-preparation`
 - `artifact_root`: `.dev/workflows/2026-08-12-v0-13-release-readiness`
 - `created_at`: `2026-08-12T07:20:06+08:00`
-- `updated_at`: `2026-08-12T07:31:00+08:00`
+- `updated_at`: `2026-08-12T07:49:24+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md`
 - `template_version`: `1.2.0`
 
@@ -50,18 +50,18 @@
 
 1. Freeze `main@afd54f63db51d88bb573e758535ae9692f8aa61a`, live Issue/Project state, and the completed #187/#191/#192/#193 implementation evidence. `completed`
 2. Require delegated tasks to validate the complete terminal envelope before source-task delivery, then prove it with a real callback. `completed`
-3. Reconcile and close #187/#194 when their integration acceptance is satisfied. `in_progress`
+3. Reconcile and close #187/#194 when their integration acceptance is satisfied. `completed`
 4. Instantiate and validate the exact v0.13 candidate, including notes, one-source upgrade policy, provider reconciliation, and real archive user-view evidence. `in_progress`
 5. Close #193, retain #61 as release coordination, push the branch, pass hosted checks, and merge with the selected topology. `pending`
 6. On the final clean integrated `main`, pass provider preflight and pre-tag preparation, then hand the printed annotated-tag command to the owner without executing it. `pending`
 
 ## Resume Checkpoint
 
-- Last completed action: schema 1.1 and its focused validators passed; delegated task `019ff328-1490-7cb3-87d1-13b3e246cbf9` delivered one complete callback after validating the persisted dispatch/completion pair on clean commit `14911780b0b78364ba454c9999e237ed9038f5a9`; the source task independently accepted the same pair.
+- Last completed action: candidate attempts 1 and 2 ended in preserved schema-valid failures: attempt 1 used an invalid profile selector; attempt 2 corrected the profile but hit write denial under `.codex/release/v0.13.0/candidate`. The source task independently validated both callbacks and proved `artifacts/v0.13.0/candidate` ignored and writable.
 - Current task: `REL013-001`.
-- Exact next action: reconcile #187/#194 online, instantiate the v0.13 release source files, and build the real governed candidate archives for #193 user-view review.
+- Exact next action: commit the retained failure evidence and explicit workflow authorization for attempt 3, then dispatch one clean-commit build whose only correction is `--output artifacts/v0.13.0/candidate`.
 - Validation already available: PR #195 passed five hosted checks; `ASM-20260811-002` found all #187 findings addressed; `ASM-20260811-006` found no new #193 blocking finding but correctly deferred the real candidate review.
-- Blockers: no implementation blocker. Tag creation and publication are intentionally excluded owner actions.
+- Blockers: #193 remains open pending the real archive user-view review. Tag creation and publication are intentionally excluded owner actions.
 
 ## Branch Lifecycle
 

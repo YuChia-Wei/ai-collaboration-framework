@@ -8,7 +8,7 @@ task-level progress.
 
 | Workflow | Title | Owner | Status | Updated | Entry Point |
 | --- | --- | --- | --- | --- | --- |
-| [`2026-08-12-v0-13-release-readiness`](2026-08-12-v0-13-release-readiness/workflow.yaml) | Prepare v0.13 Terminal Release Readiness | `ai-context-governance` | `in_progress` | `2026-08-12T07:31:00+08:00` | [plan](2026-08-12-v0-13-release-readiness/workflow-plan.md) |
+| [`2026-08-12-v0-13-release-readiness`](2026-08-12-v0-13-release-readiness/workflow.yaml) | Prepare v0.13 Terminal Release Readiness | `ai-context-governance` | `in_progress` | `2026-08-12T07:49:24+08:00` | [plan](2026-08-12-v0-13-release-readiness/workflow-plan.md) |
 | [`2026-08-11-std-001-pkg-navigation-closure`](2026-08-11-std-001-pkg-navigation-closure/workflow.yaml) | Fail Closed On Broken Payload Navigation And Component References | `ai-context-governance` | `completed` | `2026-08-11T23:30:58+08:00` | [plan](2026-08-11-std-001-pkg-navigation-closure/workflow-plan.md) |
 | [`2026-08-11-std-001-r2-review-routing`](2026-08-11-std-001-r2-review-routing/workflow.yaml) | Make Code Review References File-Type And Finding Scoped | `ai-context-governance` | `completed` | `2026-08-11T20:54:00+08:00` | [plan](2026-08-11-std-001-r2-review-routing/workflow-plan.md) |
 | [`2026-08-11-std-001-r3-governance-terms`](2026-08-11-std-001-r3-governance-terms/workflow.yaml) | Qualify Governance Terms And Separate Source Release Doctrine | `ai-context-governance` | `completed` | `2026-08-11T21:37:32+08:00` | [plan](2026-08-11-std-001-r3-governance-terms/workflow-plan.md) |

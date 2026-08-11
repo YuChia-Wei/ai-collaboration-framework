@@ -1,0 +1,72 @@
+schema_version: "1.1"
+record_type: "external-task-dispatch"
+delegation_id: "v0-13-real-candidate-build-02"
+task_kind: "long-running-validation"
+source:
+  task_id_source: "explicit"
+  task_id: "019fee2e-80d3-72b1-9f34-f368c06126bc"
+  final_integration_owner: "source-task:019fee2e-80d3-72b1-9f34-f368c06126bc"
+objective:
+  goal: "Build the real governed v0.13.0 ZIP and tar.gz candidate from the fixed release branch commit using the canonical profile YAML and exactly v0.12.0 as the automatic migration source."
+  non_goals:
+    - "erase or relabel the failed first attempt"
+    - "repair build or validation failures"
+    - "modify tracked repository files"
+    - "mutate GitHub, Git refs, Issues, Projects, tags, releases, or publication"
+subject:
+  repository_root: "C:/Github/YuChia/ai-collaboration-prompts-dotnet-backend"
+  commit_sha: "48130be3b443073e5583a9eb0a5cebdde7c267f2"
+  clean_worktree_required: true
+execution:
+  working_directory: "C:/Github/YuChia/ai-collaboration-prompts-dotnet-backend"
+  argv:
+    - "python"
+    - ".ai/scripts/build-ai-context-package.py"
+    - "--ref"
+    - "48130be3b443073e5583a9eb0a5cebdde7c267f2"
+    - "--version"
+    - "v0.13.0"
+    - "--output"
+    - ".codex/release/v0.13.0/candidate"
+    - "--profile"
+    - ".ai/distribution/profiles/dotnet-backend.yaml"
+    - "--previous-version"
+    - "v0.12.0"
+    - "--previous-files"
+    - ".codex/release/v0.13.0/source-v0.12.0/extracted/ai-context-dotnet-backend-v0.12.0/metadata/files.yaml"
+  timeout_seconds: 1200
+permissions:
+  read_scope:
+    - "repository"
+    - "verified v0.12.0 files inventory"
+    - "failed first-attempt receipt"
+  write_scope:
+    - "ignored-validation-artifacts"
+  repair_allowed: false
+  external_mutations: []
+  secret_values: "prohibited"
+completion_delivery:
+  primary: "source-task-callback"
+  fallback: "parent-event-wait"
+  destination: "source-task"
+  progress_updates: "terminal-only"
+  max_terminal_reports: 1
+  report_schema: "same-contract#completion"
+  pre_send_validation:
+    required: true
+    validator_argv:
+      - "python"
+      - ".ai/assets/skills/software-development-orchestrator/scripts/validate-external-task-delegation.py"
+      - ".codex/external-task/v0-13-real-candidate-build-02-completion.yaml"
+      - "--dispatch"
+      - ".codex/external-task/v0-13-real-candidate-build-02-dispatch.yaml"
+    dispatch_ref: ".codex/external-task/v0-13-real-candidate-build-02-dispatch.yaml"
+    completion_ref: ".codex/external-task/v0-13-real-candidate-build-02-completion.yaml"
+    failure_action: "do-not-deliver-terminal-report"
+    payload_binding: "exact-validated-completion-record"
+stop_conditions:
+  - "preflight does not match the pinned subject"
+  - "package build reaches a terminal outcome"
+  - "execution timeout or interruption occurs"
+  - "pre-send completion validation fails"
+  - "callback delivery reaches a terminal outcome"

@@ -9,7 +9,7 @@
   "title": "Prepare REL-v0.13.0 terminal pre-tag readiness",
   "status": "in_progress",
   "created_at": "2026-08-12T07:20:06+08:00",
-  "updated_at": "2026-08-12T07:31:00+08:00",
+  "updated_at": "2026-08-12T07:49:24+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/release-publication/release-publication-task.json",
   "model": "gpt-5.6-sol",
   "reasoning_effort": "high",
@@ -43,8 +43,41 @@
       "python .ai/scripts/reconcile-ai-context-release-provider.py --phase preflight --version v0.13.0",
       "python .ai/scripts/prepare-ai-context-release.py --version v0.13.0 via schema-valid frozen external task"
     ],
-    "last_completed_step": "VAL005-002 passed its real schema-valid callback regression on commit 14911780b0b78364ba454c9999e237ed9038f5a9",
-    "next_action": "Reconcile included Issue/Project state, instantiate the v0.13 release candidate, and build the real user-view archives"
+    "last_completed_step": "Preserved and source-validated candidate build attempts 1 and 2; proved artifacts/v0.13.0/candidate is Git-ignored and writable",
+    "next_action": "Commit the failed receipts and this workflow authorization, then execute candidate build attempt 3 on that clean immutable commit with only the output root corrected to artifacts/v0.13.0/candidate"
   },
-  "results": null
+  "results": {
+    "candidate_build_attempts": [
+      {
+        "attempt": 1,
+        "delegation_id": "v0-13-real-candidate-build-01",
+        "outcome": "failed",
+        "cause": "The profile selector was supplied as the profile name instead of the required repository-relative YAML path.",
+        "material_state_change_for_next_attempt": "Corrected --profile to .ai/distribution/profiles/dotnet-backend.yaml.",
+        "evidence": [
+          ".dev/workflows/2026-08-12-v0-13-release-readiness/evidence/REL013-001-candidate-build-01-dispatch.yaml",
+          ".dev/workflows/2026-08-12-v0-13-release-readiness/evidence/REL013-001-candidate-build-01-completion.yaml"
+        ]
+      },
+      {
+        "attempt": 2,
+        "delegation_id": "v0-13-real-candidate-build-02",
+        "outcome": "failed",
+        "cause": "The external runtime could read the governed inputs but did not have write permission for the ignored .codex candidate output directory.",
+        "material_state_change_for_next_attempt": "Proved the Git-ignored artifacts/v0.13.0/candidate root writable from the normal execution sandbox and removed the probe file.",
+        "evidence": [
+          ".dev/workflows/2026-08-12-v0-13-release-readiness/evidence/REL013-001-candidate-build-02-dispatch.yaml",
+          ".dev/workflows/2026-08-12-v0-13-release-readiness/evidence/REL013-001-candidate-build-02-completion.yaml"
+        ]
+      }
+    ],
+    "attempt_3_authorization": {
+      "authorized_by": "workflow",
+      "authorization_source": "REL013-001 under the owner's 2026-08-12 instruction to complete v0.13 through publication readiness",
+      "authorized_at": "2026-08-12T07:49:24+08:00",
+      "reason": "Two bounded executions exposed separate correctable invocation and output-ACL defects; both failures are preserved, both completion envelopes validate, and the next output root was independently proved ignored and writable.",
+      "bounded_change": "Change only --output from .codex/release/v0.13.0/candidate to artifacts/v0.13.0/candidate; retain the canonical profile YAML, v0.12.0 previous-version inventory, no-repair scope, and one terminal callback.",
+      "status": "authorized"
+    }
+  }
 }

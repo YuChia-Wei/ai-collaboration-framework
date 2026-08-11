@@ -1,0 +1,61 @@
+schema_version: "1.1"
+record_type: "external-task-completion"
+delegation_id: "v0-13-real-candidate-build-02"
+source_task_id: "019fee2e-80d3-72b1-9f34-f368c06126bc"
+delegated_task_id: "019ff335-f530-7893-ab46-33d60edff1b7"
+subject:
+  expected_commit_sha: "48130be3b443073e5583a9eb0a5cebdde7c267f2"
+  observed_commit_sha: "48130be3b443073e5583a9eb0a5cebdde7c267f2"
+preflight:
+  commit_matches: true
+  clean_worktree: true
+execution:
+  working_directory: "C:/Github/YuChia/ai-collaboration-prompts-dotnet-backend"
+  argv:
+    - "python"
+    - ".ai/scripts/build-ai-context-package.py"
+    - "--ref"
+    - "48130be3b443073e5583a9eb0a5cebdde7c267f2"
+    - "--version"
+    - "v0.13.0"
+    - "--output"
+    - ".codex/release/v0.13.0/candidate"
+    - "--profile"
+    - ".ai/distribution/profiles/dotnet-backend.yaml"
+    - "--previous-version"
+    - "v0.12.0"
+    - "--previous-files"
+    - ".codex/release/v0.13.0/source-v0.12.0/extracted/ai-context-dotnet-backend-v0.12.0/metadata/files.yaml"
+timing:
+  started_at: "2026-08-12T07:45:56.7175207+08:00"
+  completed_at: "2026-08-12T07:45:59.9646892+08:00"
+  duration_seconds: 3.2471685
+result:
+  outcome: "failed"
+  exit_code: 1
+  counts: null
+evidence:
+  refs:
+    - ".codex/release/v0.13.0/candidate/"
+    - ".codex/external-task/v0-13-real-candidate-build-02-dispatch.yaml"
+    - ".codex/external-task/v0-13-real-candidate-build-01-completion.yaml"
+  bounded_output: "Terminal failure from the single permitted execution: AI context package build failed: [Errno 13] Permission denied: '.codex\\release\\v0.13.0\\candidate\\ai-context-dotnet-backend-v0.13.0.zip'. The expected v0.13.0 ZIP, tar.gz, and checksum files were absent. Observed HEAD remained 48130be3b443073e5583a9eb0a5cebdde7c267f2 and git status --porcelain was empty. The prior v0-13-real-candidate-build-01 failed receipt was preserved unchanged."
+final_state:
+  clean_worktree: true
+  tracked_changes: []
+delivery:
+  mode: "source-task-callback"
+  destination: "source-task"
+  terminal_report_number: 1
+  schema_validation:
+    outcome: "passed"
+    exit_code: 0
+    validator_argv:
+      - "python"
+      - ".ai/assets/skills/software-development-orchestrator/scripts/validate-external-task-delegation.py"
+      - ".codex/external-task/v0-13-real-candidate-build-02-completion.yaml"
+      - "--dispatch"
+      - ".codex/external-task/v0-13-real-candidate-build-02-dispatch.yaml"
+    dispatch_ref: ".codex/external-task/v0-13-real-candidate-build-02-dispatch.yaml"
+    completion_ref: ".codex/external-task/v0-13-real-candidate-build-02-completion.yaml"
+    payload_binding: "exact-validated-completion-record"
