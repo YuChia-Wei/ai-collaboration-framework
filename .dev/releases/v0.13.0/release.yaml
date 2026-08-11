@@ -1,0 +1,126 @@
+schema_version: "1.0"
+release_id: "REL-v0.13.0"
+version: "v0.13.0"
+status: "validated"
+record_origin: "governed"
+distribution_kind: "governed-package"
+installable: true
+tag: null
+commit: null
+tagged_at: null
+recorded_at: null
+created_at: "2026-08-12T07:33:53+08:00"
+updated_at: "2026-08-12T07:33:53+08:00"
+planning:
+  github_issue_refs:
+    - "#187"
+    - "#191"
+    - "#192"
+    - "#193"
+    - "#194"
+provider_reconciliation:
+  schema_version: "1.0"
+  provider: "github"
+  repository: "YuChia-Wei/ai-collaboration-framework"
+  project_owner: "YuChia-Wei"
+  project_number: 3
+  included_issue_refs_source: "planning.github_issue_refs"
+  included_work:
+    prepublication:
+      issue_state: "closed"
+      state_reason: "completed"
+      project:
+        Status: "Done"
+        Priority: "P1 High"
+        Owner review: "Approved"
+        Target release: "v0.13.0"
+        Published in: "Not yet published"
+    postpublication:
+      issue_state: "closed"
+      state_reason: "completed"
+      project:
+        Status: "Done"
+        Priority: "P1 High"
+        Owner review: "Approved"
+        Target release: "v0.13.0"
+        Published in: "v0.13.0"
+  coordination:
+    issue_refs:
+      - "#61"
+    prepublication:
+      issue_state: "open"
+      state_reason: null
+      project:
+        Status: "Planned"
+        Priority: "P1 High"
+        Owner review: "Approved"
+        Target release: "v0.13.0"
+        Published in: "Not applicable — not a release item"
+    postpublication:
+      issue_state: "closed"
+      state_reason: "completed"
+      project:
+        Status: "Done"
+        Priority: "P1 High"
+        Owner review: "Approved"
+        Target release: "v0.13.0"
+        Published in: "Not applicable — not a release item"
+compatibility:
+  breaking_changes: true
+  minimum_source_version: "v0.12.0"
+  reconciliation_sources:
+    - "v0.12.0"
+  automatic_upgrade_sources:
+    - "v0.12.0"
+  affected_contracts:
+    - "framework-owned validation prerequisites and SDK-free source release baseline"
+    - "bundled mechanical validation provider replaced by target-selected on-demand analyzer recipes"
+    - "Code Reviewer file-type and finding-scoped reference routing and component ownership"
+    - "qualified governance terminology and source-release versus target-version ownership"
+    - "selected-payload navigation, actionable-command, and component closure validation"
+    - "external long-running validation delegation and schema 1.1 completion delivery"
+artifacts:
+  release_notes: "release-notes.md"
+  migration_guide: "migration-guide.md"
+distribution:
+  profile_id: "dotnet-backend"
+  package_id: "ai-context-dotnet-backend-v0.13.0"
+  schema_versions:
+    package: "2.2.0"
+    files: "2.0.0"
+    migration: "3.0.0"
+  artifacts:
+    zip: "ai-context-dotnet-backend-v0.13.0.zip"
+    zip_checksum: "ai-context-dotnet-backend-v0.13.0.zip.sha256"
+    tar_gz: "ai-context-dotnet-backend-v0.13.0.tar.gz"
+    tar_gz_checksum: "ai-context-dotnet-backend-v0.13.0.tar.gz.sha256"
+  migration:
+    default_mode: "dry-run"
+    apply_requires_clean_worktree: true
+    apply_requires_acknowledged_reconciliation: true
+  publication:
+    tag_owner: "user"
+    trigger: "user-created-tag"
+    automation: "github-actions"
+    creates_or_moves_tag: false
+validation:
+  evidence: "PR #195 integrated the SDK-free baseline, progressive review routing, qualified governance terms, and selected-payload closure after five hosted checks passed. Independent assessments ASM-20260811-002 and ASM-20260811-004 through ASM-20260811-006 found no remaining blocking findings. Workflow 2026-08-12-v0-13-release-readiness adds schema 1.1 pre-send callback acceptance and owns the real governed candidate, provider preflight, hosted PR, and merged-main pre-tag evidence."
+  workflow_id: "2026-08-12-v0-13-release-readiness"
+  related_workflows:
+    - "2026-08-11-ctx-009-sdk-free-baseline"
+    - "2026-08-11-std-001-r2-review-routing"
+    - "2026-08-11-std-001-r3-governance-terms"
+    - "2026-08-11-std-001-pkg-navigation-closure"
+    - "2026-08-11-std-001-standards-simplification"
+  related_assessments:
+    - "ASM-20260811-001"
+    - "ASM-20260811-002"
+    - "ASM-20260811-003"
+    - "ASM-20260811-004"
+    - "ASM-20260811-005"
+    - "ASM-20260811-006"
+  package_status: "validated"
+  post_merge_status: "pending"
+  failed_publication_run: null
+  published_run: null
+  public_release_url: null
