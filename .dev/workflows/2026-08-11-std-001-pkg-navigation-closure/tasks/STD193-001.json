@@ -8,7 +8,7 @@
   "owner_skill": "ai-context-governance",
   "status": "completed",
   "created_at": "2026-08-11T21:47:55+08:00",
-  "updated_at": "2026-08-11T22:45:54+08:00",
+  "updated_at": "2026-08-11T23:30:58+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-5.6-sol",
   "reasoning_effort": "high",
@@ -65,7 +65,7 @@
       "git diff --check"
     ],
     "last_completed_step": "Recorded independent fixed-subject assessment ASM-20260811-006 after implementation ff80d590 addressed PKG-001 and CMP-001",
-    "next_action": "Return the local result for owner review; require separate authority for transport, integration, Issue or Project mutation, and the real v0.13 candidate"
+    "next_action": "Use the parent #61 handoff for the owner-authorized integration PR; require separate authority for Issue or Project mutation and the real v0.13 candidate"
   },
   "results": {
     "summary": "Package schema 2.2 now fails closed on selected-payload user-view and component closure, Code Reviewer is dotnet-selected, portable navigation is closed, and routine upgrade testing is bounded to v0.6.0 plus one immediate predecessor route per later release or breaking checkpoint.",

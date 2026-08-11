@@ -14,7 +14,7 @@
 - `owner_skill`: `ai-context-governance`
 - `status`: `final`
 - `created_at`: `2026-08-11T21:47:55+08:00`
-- `updated_at`: `2026-08-11T22:45:54+08:00`
+- `updated_at`: `2026-08-11T23:30:58+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-remediation-report-template.md`
 - `template_version`: `2.0.0`
 - `baseline_assessment`: `ASM-20260811-003`
@@ -62,4 +62,4 @@
 - Preserved failure/advisory receipts: a first generic `bash` invocation resolved to WSL and timed out after 304.1 seconds; the exact Git Bash run later passed in 99 seconds but exceeded the 30-second advisory budget. Sandboxed ACL blocks were not counted as passes.
 - Commit status: implementation `ff80d590`; independent assessment `cef711a`; containing workflow closeout commit is local only.
 - Workflow/task status: completed for the authorized local source scope.
-- Final next action: owner review. Project allocation, push, PR, merge, Issue closure, real v0.13 candidate, tag, Release, and publication remain separately gated.
+- Final next action: use the parent #61 incomplete-workflow handoff for the owner-authorized PR and merge. Issue closure, Project mutation, the real v0.13 candidate, tag, Release, and publication remain separately gated.

@@ -19,7 +19,7 @@
 - `current_phase`: `completed`
 - `artifact_root`: `.dev/workflows/2026-08-11-std-001-pkg-navigation-closure`
 - `created_at`: `2026-08-11T21:47:55+08:00`
-- `updated_at`: `2026-08-11T22:45:54+08:00`
+- `updated_at`: `2026-08-11T23:30:58+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md`
 - `template_version`: `1.2.0`
 
@@ -35,6 +35,7 @@
 
 - Online Issue: [#193](https://github.com/YuChia-Wei/ai-collaboration-framework/issues/193), read back as OPEN on 2026-08-11.
 - Owner authorization: [issue comment 5253059500](https://github.com/YuChia-Wei/ai-collaboration-framework/issues/193#issuecomment-5253059500) authorizes local implementation and result review while reserving Project allocation, transport, integration, Issue closure, tag, Release, and publication.
+- Integration authorization: on 2026-08-11 the owner explicitly requested that the validated combined delivery be merged to `main` through the repository pull-request gate, followed by evidence-based cleanup of redundant branches. This does not authorize Issue close, Project mutation, tag, Release, or publication.
 - Validation-only base: `b1aacf8c4f08da72392cafc88a0c6eca1fad19ee`, assembled locally from #191 final `f62f110`, #192 final `92e7383`, and #61 coordination `818d5da` with both assessment/workflow index rows retained.
 - The combined base and this branch are local-only technical evidence. They are not a merge authorization, hosted integration record, or release candidate.
 
@@ -66,11 +67,11 @@
 
 - Last completed action: Implemented selected-payload user-view and component closure at `ff80d590`, then recorded independent fixed-subject verification `ASM-20260811-006` at `cef711a`; both baseline findings are addressed with no new blocker.
 - Current task: `STD193-001` is complete for the authorized local source scope.
-- Exact next action: return the local result for owner review. Any push, PR, merge, Issue closure, Project allocation, or governed v0.13 candidate must be separately authorized.
+- Exact next action: participate in the parent #61 incomplete-workflow handoff and owner-authorized integration PR; keep Issue closure, Project mutation, and the governed v0.13 candidate separate.
 - Validation already completed: selected-payload contract 6/6; version governance 23/23; packaging 36/36 with no skip; focused archive/metadata/apply 3/3; package apply 30/30 outside sandbox with one uncounted Windows symlink privilege skip; Code Reviewer routing 8/8; exact Git Bash fast profile 34/34 required with one not-applicable and a 99-second advisory-budget warning; workflow, assessment, context, version, shell, and whitespace validators passed.
-- Git state: local branch `codex/2026-08-11-std-001-pkg-navigation-closure` contains implementation `ff80d590` and assessment `cef711a`; nothing is pushed or merged.
+- Git state: clean local branch `codex/2026-08-11-std-001-pkg-navigation-closure@fe969d3`; transport and integration are authorized but not yet performed.
 - Branch history and checkpoint handoffs: #191 remains at `f62f110`, #192 at `92e7383`, and the #193 combined lineage remains local. The controlled projection is not hosted integration or a release candidate.
-- Blockers or unresolved decisions: none for local source completion. A real governed v0.13 candidate, downstream owner acceptance, provider read-back, transport, integration, and publication remain `deferred-with-owner`.
+- Blockers or unresolved decisions: repository critical handoff and hosted PR gates remain before integration. A real governed v0.13 candidate, downstream owner acceptance, provider read-back, Issue closure, Project state, tag, Release, and publication remain `deferred-with-owner`.
 
 ## Branch Lifecycle
 
