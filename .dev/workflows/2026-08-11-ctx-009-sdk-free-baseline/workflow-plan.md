@@ -15,11 +15,11 @@
 - `branch`: `codex/2026-08-11-ctx-009-sdk-free-baseline`
 - `base_branch`: `main`
 - `branch_segment`: `1`
-- `status`: `in_progress`
-- `current_phase`: `validation`
+- `status`: `completed`
+- `current_phase`: `completed`
 - `artifact_root`: `.dev/workflows/2026-08-11-ctx-009-sdk-free-baseline`
 - `created_at`: `2026-08-11T08:21:27+08:00`
-- `updated_at`: `2026-08-11T09:51:04+08:00`
+- `updated_at`: `2026-08-11T10:16:43+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md`
 - `template_version`: `1.2.0`
 
@@ -63,21 +63,21 @@
 1. Freeze the remote `main` and #187/Project authorization baseline, then create the dedicated workflow branch and artifacts. `completed`
 2. Produce `ASM-20260811-001` as a read-only inventory of every active framework-owned .NET SDK dependency and affected contract surface. `completed`
 3. Remove or reclassify framework-owned compilable .NET implementation and required release gates while preserving canonical engineering semantics and target-owned on-demand guidance. `completed`
-4. Run repository-native validation, including controlled execution with `dotnet` unavailable from `PATH`, and record exact outcomes. `in_progress`
-5. Produce independent verification `ASM-20260811-002`, reconcile every finding, and close the local workflow only when commit and validation policy are satisfied. `pending`
+4. Run repository-native validation, including controlled execution with `dotnet` unavailable from `PATH`, and record exact outcomes. `completed`
+5. Produce independent verification `ASM-20260811-002`, reconcile every finding, and close the local workflow only when commit and validation policy are satisfied. `completed`
 
 ## Resume Checkpoint
 
-- Last completed action: Proved `dotnet` absent in the controlled PR run, preserved its 35-pass and 2-failure receipt, and restored the immutable `code-review.sh` compatibility byte that caused both failures.
-- Current task: `CTX009-002`.
-- Exact next action: Commit the compatibility-byte restoration, then rerun the full PR profile with `dotnet` absent from `PATH`.
-- Validation already completed: Focused and committed packaging matrices; controlled PR first run proved `dotnet` absent and executed 37 required checks with 35 passed, 2 failed, and 0 blocked; direct source governance and Python entrypoint reruns now pass after restoring the immutable byte.
-- Git state: Dedicated branch `codex/2026-08-11-ctx-009-sdk-free-baseline`; workflow bootstrap `7652e5f1`; baseline assessment `2e40c69e`; remediation `4abb7f1`; permission contract `3fdd7a1`; compatibility-byte restoration is unstaged.
-- Branch history and checkpoint handoffs: Segment 1 is local only; no push, pull request, merge, tag, or publication exists.
-- Blockers or unresolved decisions: None for local #187 execution. Clean no-`dotnet` aggregate rerun, post-fix full packaging, and independent verification remain. Push, pull request, merge, Issue closure, tag, and v0.13.0 publication remain unrequested.
+- Last completed action: Finalized independent verification `ASM-20260811-002`, which addressed all five baseline findings and found no new blocking issue.
+- Current task: none; `CTX009-001`, `CTX009-002`, and `CTX009-003` are completed.
+- Exact next action: Wait for separate owner authorization before any push or pull-request creation.
+- Validation already completed: SDK-free 5/5; fail-closed 38/38; dependency 17/17 plus live zero-managed-project result; final package matrix 36 passed and 1 external-downstream skip; controlled no-`dotnet` PR receipt 37 selected checks passed with 15 executed and 22 fingerprint-reused, 18 unselected entries not-applicable, 0 failed, and 0 blocked; assessment, workflow, source-governance, AI-context, and focused package contracts passed.
+- Git state: Dedicated local branch `codex/2026-08-11-ctx-009-sdk-free-baseline`; implementation is committed through `889493a`; `ASM-20260811-002` and these terminal records are carried by the containing closeout commit.
+- Branch history and checkpoint handoffs: Segment 1 is locally complete; no push, pull request, merge, Issue closure, tag, or publication exists.
+- Blockers or unresolved decisions: None for local #187 completion. Hosted integration, external downstream validation, Issue closure, and v0.13.0 publication remain separate owner decisions.
 
 ## Branch Lifecycle
 
 | Segment | Branch | Base | Checkpoint Type | Commit | Remote / Target | Recorded At | Reason | Resume Branch / Action |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| 1 | `codex/2026-08-11-ctx-009-sdk-free-baseline` | `main@a4fd14f0` | local-active | `7652e5f1`, `2e40c69e`, `4abb7f1`, `3fdd7a1` | local | `2026-08-11T09:51:04+08:00` | Authorized #187 SDK-free baseline delivery, frozen evidence, remediation, and validation-contract repair | Commit compatibility-byte restoration, then rerun controlled terminal validation |
+| 1 | `codex/2026-08-11-ctx-009-sdk-free-baseline` | `main@a4fd14f0` | local verification checkpoint | `7652e5f1`, `2e40c69e`, `4abb7f1`, `3fdd7a1`, `889493a`, plus containing closeout commit | local | `2026-08-11T10:16:43+08:00` | Complete the authorized #187 SDK-free baseline, preserve failed/interim receipts, and obtain independent verification | Await separate owner authorization for push and pull-request creation |

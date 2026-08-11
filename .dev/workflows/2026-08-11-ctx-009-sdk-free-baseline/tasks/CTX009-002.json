@@ -6,9 +6,9 @@
   "task_id": "CTX009-002",
   "workflow_id": "2026-08-11-ctx-009-sdk-free-baseline",
   "owner_skill": "ai-context-governance",
-  "status": "in_progress",
+  "status": "completed",
   "created_at": "2026-08-11T08:21:27+08:00",
-  "updated_at": "2026-08-11T09:51:04+08:00",
+  "updated_at": "2026-08-11T10:16:43+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-5.6-sol",
   "reasoning_effort": "high",
@@ -56,8 +56,8 @@
       "controlled required-check execution with dotnet unavailable from PATH",
       "git diff --check"
     ],
-    "last_completed_step": "Ran the controlled no-dotnet PR profile, preserved its 35-pass and 2-failure receipt, and restored one immutable compatibility-script byte that caused both source-governance failures",
-    "next_action": "Commit the compatibility-byte restoration and rerun the PR profile with dotnet absent from PATH"
+    "last_completed_step": "Completed the final package matrix and controlled no-dotnet PR profile, with exact executed, reused, skipped, and failed-receipt dispositions preserved",
+    "next_action": "None; remediation and validation are complete, with independent verification recorded by CTX009-003"
   },
   "results": {
     "summary": "The source framework now supplies no tracked .NET project or SDK pin, selects no required dotnet command, and preserves mechanical validation only as target-selected reference recipes.",
@@ -96,10 +96,12 @@
       "controlled no-dotnet PR profile first run: dotnet absent; 37 executed, 35 passed, 2 failed, 0 blocked; both failures shared one code-review.sh source-governance drift",
       "post-restoration source governance: passed",
       "post-restoration Python source entrypoints: 3/3 passed",
+      "final canonical packaging matrix: 36 passed, 1 external-downstream integration case skipped in 890.131 seconds",
+      "final controlled no-dotnet PR profile: 37 selected checks passed, 15 executed, 22 fingerprint-reused, 18 unselected entries not-applicable, 0 failed, 0 blocked",
       "AI-context, shell-asset, workflow, and assessment validators passed"
     ],
-    "finding_status": "partially-addressed",
-    "residual_risk": "Clean controlled no-dotnet aggregate rerun, post-fix full packaging, commit policy, and independent verification remain pending.",
-    "follow_up_needed": true
+    "finding_status": "addressed",
+    "residual_risk": "Target compatibility remains target-owned; hosted integration and the environment-selected downstream package case remain separate gates.",
+    "follow_up_needed": false
   }
 }

@@ -6,9 +6,9 @@
   "task_id": "CTX009-003",
   "workflow_id": "2026-08-11-ctx-009-sdk-free-baseline",
   "owner_skill": "ai-context-governance",
-  "status": "pending",
+  "status": "completed",
   "created_at": "2026-08-11T08:21:27+08:00",
-  "updated_at": "2026-08-11T08:21:27+08:00",
+  "updated_at": "2026-08-11T10:16:43+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-5.6-sol",
   "reasoning_effort": "high",
@@ -51,15 +51,28 @@
       "python .ai/scripts/validate-git-commits.py --range main..HEAD --workflow-id 2026-08-11-ctx-009-sdk-free-baseline",
       "git status --short --branch"
     ],
-    "last_completed_step": "",
-    "next_action": "Wait for CTX009-002 remediation and validation completion"
+    "last_completed_step": "Finalized ASM-20260811-002, reconciled all five baseline findings, and recorded no new blocking finding",
+    "next_action": "None; local workflow closeout is complete and remote transport requires separate authorization"
   },
   "results": {
-    "summary": "",
-    "files_changed": [],
-    "tests_run": [],
-    "finding_status": "not-addressed",
-    "residual_risk": "Independent verification has not run.",
-    "follow_up_needed": true
+    "summary": "Independent verification bound to remediation commit 889493a confirms a project-free and SDK-free required framework baseline and permits local workflow closeout.",
+    "files_changed": [
+      ".dev/assessments/ASM-20260811-002/assessment.yaml",
+      ".dev/assessments/ASM-20260811-002/report.md",
+      ".dev/assessments/INDEX.MD",
+      ".dev/workflows/2026-08-11-ctx-009-sdk-free-baseline/**"
+    ],
+    "tests_run": [
+      "assessment artifact validator passed for 48 assessments",
+      "assessment artifact tests: 9/9 passed outside the restricted sandbox",
+      "workflow implementation, lifecycle, and handoff tests: 7/7, 11/11, and 22/22 passed outside the restricted sandbox",
+      "workflow handoff registry validation passed for 8 checkpoints",
+      "verification re-read: SDK-free 5/5, dependency live zero-managed-project result, source governance passed, AI-context passed",
+      "controlled PR receipt reconciled: 37 selected passed, 15 executed, 22 reused, 18 unselected not-applicable, 0 failed, 0 blocked",
+      "canonical package matrix reconciled: 36 passed, 1 external-downstream skip"
+    ],
+    "finding_status": "addressed",
+    "residual_risk": "One frozen compatibility/advisory message retains a legacy project name but is not a required command or authority; remote integration and publication remain separate owner decisions.",
+    "follow_up_needed": false
   }
 }

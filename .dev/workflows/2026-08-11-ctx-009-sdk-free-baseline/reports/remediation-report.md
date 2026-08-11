@@ -12,30 +12,30 @@
 - `report_id`: `remediation-report-2026-08-11-ctx-009-sdk-free-baseline`
 - `workflow_id`: `2026-08-11-ctx-009-sdk-free-baseline`
 - `owner_skill`: `ai-context-governance`
-- `status`: `draft`
+- `status`: `final`
 - `created_at`: `2026-08-11T09:03:09+08:00`
-- `updated_at`: `2026-08-11T09:51:04+08:00`
+- `updated_at`: `2026-08-11T10:16:43+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-remediation-report-template.md`
 - `template_version`: `2.0.0`
 - `baseline_assessment`: `ASM-20260811-001`
-- `verification_assessment`: `pending`
+- `verification_assessment`: `ASM-20260811-002`
 
 ## Remediation Summary
 
 - Authorized scope: Implement GitHub Issue #187 locally for v0.13.0 by removing framework-owned .NET SDK gates and compilable provider payload while preserving canonical engineering semantics as target-selected reference guidance.
 - Completed scope: Required validation and CI selection is Python-only; the bundled provider and root analyzer tests are retired; the SDK seed is removed; source includes are reference-only; on-demand analyzer and projection-test recipes preserve the target-owned adoption path.
-- Validation summary: Focused workflow, registry, source-include, shell-asset, dependency, SDK-free, fail-closed, repository-configuration, example, profile, document, source-disposition, repository-identity, and committed payload/seed projection contracts pass. The canonical packaging matrix first timed out at 364 seconds; a measured rerun completed 34 passed, 2 failed, and 1 skipped in 891 seconds. The two pre-existing permission-expectation failures were corrected and rerun 2/2 passed. A controlled no-`dotnet` PR profile then executed 37 required checks with 35 passed and 2 failed from one source-governance byte drift introduced in this workflow; the deprecated script byte was restored and both affected checks now pass individually. A clean aggregate rerun, post-fix full packaging matrix, and independent verification remain pending.
-- Closure decision: `not-ready`
+- Validation summary: Focused workflow, registry, source-include, shell-asset, dependency, SDK-free, fail-closed, repository-configuration, example, profile, document, source-disposition, repository-identity, and committed payload/seed projection contracts pass. The initial 364-second package timeout and interim 34-pass/2-fail/1-skip result remain preserved; after correcting the two stale permission expectations, the final full package matrix recorded 36 passed and 1 external-downstream skip in 890.131 seconds. The first controlled no-`dotnet` PR run preserved 35 passes and 2 source-governance failures; after restoring the immutable compatibility byte, the final receipt recorded 37 selected checks passed with 15 executed and 22 fingerprint-reused, 18 unselected entries not-applicable, 0 failed, and 0 blocked. `ASM-20260811-002` independently verified all five baseline findings as addressed.
+- Closure decision: `ready-for-local-closeout`
 
 ## Finding Resolution Matrix
 
 | Assessment Finding | Before Severity | Status | Changed Files | Validation | Commit | Residual Risk |
 | --- | --- | --- | --- | --- | --- | --- |
-| `ASM-20260811-001#SDKGATE-001` | high | `partially-resolved` | `.ai/scripts/check-all.sh`, `.ai/scripts/validation-profile-registry.sh`, `.github/workflows/portable-gates.yml` | focused registry and workflow contracts pass | `4abb7f1` | controlled no-`dotnet` aggregate run pending |
+| `ASM-20260811-001#SDKGATE-001` | high | `resolved` | `.ai/scripts/check-all.sh`, `.ai/scripts/validation-profile-registry.sh`, `.github/workflows/portable-gates.yml` | focused contracts and controlled no-`dotnet` PR receipt pass | `4abb7f1`, `889493a` | hosted PR gate remains separate |
 | `ASM-20260811-001#SDKPAYLOAD-001` | high | `resolved` | `.ai/assets/tech-stacks/dotnet-backend/tooling/**`, `.ai/distribution/profiles/dotnet-backend.yaml`, `global.json`, `tools/**` | SDK-free inventory 5/5, zero managed projects, and committed payload/seed projection pass | `4abb7f1` | none inside the default payload |
 | `ASM-20260811-001#SDKEVID-001` | high | `resolved` | `.ai/assets/tech-stacks/dotnet-backend/source-includes/evidence-manifest.yaml`, `.ai/scripts/validate-ai-context.py` | 4 source-include evidence tests pass | `4abb7f1` | target compatibility remains target-owned by design |
-| `ASM-20260811-001#SDKPROV-001` | high | `resolved` | `.ai/assets/tech-stacks/dotnet-backend/tooling/on-demand-mechanical-validation/**` | recipe, diagnostic mapping, and committed payload assertions pass | `4abb7f1` | independent audit pending |
-| `ASM-20260811-001#SDKDOC-001` | medium | `partially-resolved` | root and dotnet-backend README files, active standards, guides, scripts README, release runbook, packaging permission contract | focused context contracts, repaired permission cases, and source-governance checks pass | `4abb7f1`, `3fdd7a1`, plus pending byte-restoration checkpoint | aggregate rerun, independent active-reference audit, and full post-fix matrix pending |
+| `ASM-20260811-001#SDKPROV-001` | high | `resolved` | `.ai/assets/tech-stacks/dotnet-backend/tooling/on-demand-mechanical-validation/**` | recipe, diagnostic mapping, committed payload assertions, and independent audit pass | `4abb7f1` | no target activation or compatibility claim |
+| `ASM-20260811-001#SDKDOC-001` | medium | `resolved` | root and dotnet-backend README files, active standards, guides, scripts README, release runbook, packaging permission contract | focused context contracts, final package matrix, source governance, clean aggregate, and independent active-reference audit pass | `4abb7f1`, `3fdd7a1`, `889493a` | one frozen compatibility/advisory message is non-authoritative and not a required command |
 
 ## Changes And Evidence
 
@@ -44,7 +44,7 @@
 - Changes: Removed all required `dotnet test` and provider-activation checks from the profile registry and aggregate runner, introduced a required Python SDK-free contract, and removed hosted .NET setup from the portable PR workflow.
 - Evidence: The required check registry selects `sdk-free-framework-contract` for `fast`, `pr`, `release`, and `nightly-full`; portable gates contain no `setup-dotnet` step.
 - Validation: Registry contract 6/6 passed outside the sandbox after the sandboxed Git Bash signal-pipe failure; GitHub workflow contract 9/9 passed.
-- Remaining risk: The full PR profile still requires controlled execution with `dotnet` absent from `PATH`.
+- Remaining risk: Hosted PR execution remains an integration gate after push/PR authorization; the local no-`dotnet` requirement is satisfied.
 
 ### `ASM-20260811-001#SDKPAYLOAD-001`
 
@@ -65,21 +65,21 @@
 - Changes: Replaced provider identity, activation schemas, fixtures, source projects, and materialization language with a non-selecting on-demand recipe manifest, analyzer project recipe, severity snippet, diagnostic mapping, and projection-registration recipe.
 - Evidence: The recipe declares `reference-only`, `not-selected`, no SDK, no provider activation, and explicit target ownership of dependencies, wiring, severity, tests, CI, compatibility, and evidence.
 - Validation: Recipe-only and DBA1001-DBA1017 mapping assertions pass.
-- Remaining risk: Independent audit remains pending.
+- Remaining risk: No target activation or compatibility claim is made; target evidence remains target-owned.
 
 ### `ASM-20260811-001#SDKDOC-001`
 
 - Changes: Reconciled repository entry docs, dotnet-backend indexes, active standards, spec-compliance templates, persistence guidance, dependency policy, scripts guidance, pull-request guidance, and publication prerequisites with the SDK-free boundary.
 - Evidence: Active guidance distinguishes framework reference semantics from target-selected implementation and target-owned validation.
-- Validation: AI-context and shell-asset validation pass. The canonical packaging matrix completed 34 passed, 2 failed, and 1 skipped after an earlier 364-second timeout; both failures were baseline permission expectations that omitted the already-governed `issues: read` permission. The two corrected cases reran 2/2 passed. The first controlled no-`dotnet` PR run proved `dotnet` absent and passed the SDK-free contract but failed two checks from the same unauthorized `code-review.sh` byte drift; restoring the immutable candidate byte made source governance and Python source-entrypoint checks pass. A clean aggregate and full post-fix packaging matrix remain pending.
-- Remaining risk: Independent auditor must confirm there is no active contradictory selection surface.
+- Validation: AI-context and shell-asset validation pass. The earlier 364-second timeout and interim 34-pass/2-fail/1-skip package receipt remain visible; the two corrected permission cases passed 2/2 and the final full matrix recorded 36 passed plus 1 external-downstream skip. The first controlled no-`dotnet` run recorded 35 passes and 2 failures from one unauthorized `code-review.sh` byte drift; restoring the immutable candidate byte produced a final receipt with 37 selected checks passed, 15 executed, 22 reused, 0 failed, and 0 blocked. `ASM-20260811-002` found no contradictory required selection surface.
+- Remaining risk: `code-review.sh` retains one frozen legacy project-name message, but its manifest authority is advisory/compatibility and its replacement is target-owned; it is not selected as a required command.
 
 ## Verification Assessment Reconciliation
 
-- Independent auditor: `ai-context-auditor` via planned `ASM-20260811-002`.
-- Confirmed resolved: pending.
-- Recurring findings: pending.
-- New or regressed findings: pending.
+- Independent auditor: `ai-context-auditor` via final `ASM-20260811-002` at subject commit `889493a272bc272086c70dedd1a57d3f91eb790d`.
+- Confirmed resolved: `SDKGATE-001`, `SDKPAYLOAD-001`, `SDKEVID-001`, `SDKPROV-001`, and `SDKDOC-001`.
+- Recurring findings: none on required or authoritative framework surfaces.
+- New or regressed findings: none blocking; one transparent frozen advisory compatibility message is recorded as a non-blocking limitation.
 
 ## Deferred Work
 
@@ -89,7 +89,7 @@
 
 ## Closure Evidence
 
-- Required validations: focused checks and committed package projection complete; first controlled PR profile recorded 35 passed, 2 failed, 0 blocked with `dotnet` absent; post-fix full packaging, clean aggregate PR rerun, commit policy, and independent verification pending.
-- Commit status: remediation `4abb7f1`; permission-contract follow-up `3fdd7a1`; immutable compatibility-byte restoration pending commit.
-- Workflow/task status: `CTX009-002` in progress; `CTX009-003` pending.
-- Final next action: Commit the compatibility-byte restoration, rerun the full PR profile with `dotnet` absent from `PATH`, and complete post-fix packaging plus independent verification.
+- Required validations: focused checks and committed projections pass; final package matrix records 36 passed and 1 explicit external-downstream skip; final controlled no-`dotnet` PR receipt records 37 selected checks passed, 15 executed, 22 reused, 18 unselected not-applicable, 0 failed, and 0 blocked; independent verification is final.
+- Commit status: remediation `4abb7f1`; permission-contract follow-up `3fdd7a1`; immutable compatibility-byte restoration `889493a`; assessment and terminal workflow records are in the containing closeout commit.
+- Workflow/task status: `CTX009-001`, `CTX009-002`, and `CTX009-003` completed; workflow locally completed.
+- Final next action: Wait for separate owner authorization before push or pull-request creation. Merge, Issue closure, tag, and v0.13.0 publication remain later decisions.
