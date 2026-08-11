@@ -19,7 +19,7 @@
 - `current_phase`: `integration-checkpoint`
 - `artifact_root`: `.dev/workflows/2026-08-11-std-001-standards-simplification`
 - `created_at`: `2026-08-11T13:31:10+08:00`
-- `updated_at`: `2026-08-11T23:30:58+08:00`
+- `updated_at`: `2026-08-12T00:19:04+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md`
 - `template_version`: `1.2.0`
 
@@ -35,6 +35,8 @@
 - Work item: [GitHub Issue #61](https://github.com/YuChia-Wei/ai-collaboration-framework/issues/61), read as OPEN on 2026-08-11.
 - Project read-back: Project #3 records `Status=Planned`, `Priority=P1 High`, `Owner review=Approved`, `Target release=v0.13.0`, and `Published in=Not yet published`.
 - Current owner instruction: local implementations of Issues [#191](https://github.com/YuChia-Wei/ai-collaboration-framework/issues/191), [#192](https://github.com/YuChia-Wei/ai-collaboration-framework/issues/192), and [#193](https://github.com/YuChia-Wei/ai-collaboration-framework/issues/193) are accepted for repository integration. On 2026-08-11 the owner explicitly requested merge to `main`, followed by evidence-based branch reconciliation and deletion of branches with no unique delivery. Issue closure, Project mutation, v0.13 tag, Release, and publication remain separate decisions.
+- Long-running validation instruction: on 2026-08-12 the owner required long-running repository validation to execute only after local mutations and focused checks are complete, in a low-cost external task that reports once without polling by the primary conversation. [Issue #194](https://github.com/YuChia-Wei/ai-collaboration-framework/issues/194) is the online implementation authority; aggregate-runner parallelization remains prohibited until dependency and artifact-isolation safety is proven.
+- Composite integration-gate authorization: after reviewing the 51/54 aggregate receipt and the three exact timed-out commands passing independently, the owner explicitly accepted the combined evidence as sufficient for this integration. The aggregate receipt remains recorded as timed out rather than relabeled 54/54. The owner also deferred v0.13 packaging and authorized merge plus closure only for Issues whose own acceptance conditions are satisfied after integration read-back.
 - Upgrade-test direction: active upgrade testing begins at v0.6.0; routine later releases keep only the immediate-predecessor route; every breaking release establishes a predecessor-only migration checkpoint so historical Cartesian matrices do not become a standing gate.
 - Delivery cohesion: R2, R3, and package-candidate review share branch, reviewers, validation, v0.13 decision gate, and rollback; one workflow coordinates them without forcing unrelated authority changes into one delivery.
 - Planned integration: one pull request from `codex/2026-08-11-std-001-pkg-navigation-closure` to `main`, using a merge commit because the grouped #191/#192/#193 rollback units, four independent assessments, and this incomplete-workflow handoff boundary carry durable information. Direct main mutation remains forbidden; hosted checks and PR review must pass first.
@@ -53,6 +55,7 @@
 | R2 code-review progressive disclosure | #61 owner decision | `ai-context-auditor` -> `ai-context-governance` | measure current loading and propose file-type/finding routing | `STD001-001` | entry graph, reference set, checklist/severity/output-contract preservation |
 | R3 governance terminology | #61 owner decision | `ai-context-auditor` -> `ai-context-governance` | inventory definitions and propose one canonical owner plus contextual links | `STD001-002` | term/definition/consumer matrix, conflict and duplication evidence, validator/migration impact |
 | Package candidate user view | #61 owner decision | `ai-context-governance` | inspect actual payload and record delivery partitions | `STD001-003` | package projection, downstream navigation review, decision ledger, successor-Issue boundaries |
+| Long-running validation execution | #194 owner instruction | `ai-context-governance` | require fixed-commit external execution with no primary-conversation polling | `VAL005-001` | canonical policy, machine-readable contract, focused tests, external final report |
 
 ## Stages And Checkpoints
 
@@ -62,16 +65,17 @@
 4. Build and review the controlled current-tree package projection, then finalize the decision ledger. `completed-with-v0.13-fail-closed-limitation`
 5. Present bounded delivery scopes for owner confirmation and create the approved successor Issues. `completed`
 6. Coordinate separately authorized successor deliveries and the final governed v0.13 package-candidate review. `in_progress`
+7. Codify #194, finish focused validation, and adopt non-polling external execution for future long-running gates. `completed-with-owner-approved-composite-evidence`
 
 ## Resume Checkpoint
 
-- Last completed action: Read back the owner's main-integration and branch-cleanup instruction, refreshed `origin/main@df7012b6`, and proved the current branch contains the complete #191/#192/#193 delivery while the older local branches are ancestors or content-equivalent predecessors.
+- Last completed action: Implemented #194's canonical 120-second/external-task/no-polling policy and passed its focused machine-readable capability and deterministic acceptance tests.
 - Current task: `STD001-003`.
-- Exact next action: commit this integration authorization, run the repository critical gate, create and validate the incomplete-workflow handoff checkpoint, then push the current branch and open the single PR to `main`.
-- Validation already completed: #191 is independently verified by `ASM-20260811-004`; #192 by `ASM-20260811-005`; #193 selected-payload, version, packaging, archive/apply, routing, and aggregate gates passed and `ASM-20260811-006` found no new blocking finding. Earlier package, sandbox, source-governance, and WSL timeout receipts remain recorded rather than relabeled.
-- Git state: clean current branch `codex/2026-08-11-std-001-pkg-navigation-closure@fe969d3`; refreshed `origin/main@df7012b6`; no overlapping open pull request exists.
+- Exact next action: commit the #194 policy and owner-approved composite validation disposition, create and validate the incomplete-workflow handoff checkpoint, then push and open the single PR to `main`.
+- Validation already completed: #191 is independently verified by `ASM-20260811-004`; #192 by `ASM-20260811-005`; #193 selected-payload, version, packaging, archive/apply, routing, and aggregate gates passed and `ASM-20260811-006` found no new blocking finding. Integration-gate attempts at `ccca869` preserved the earlier 52/54 regression receipt and the later 51/54 timeout receipt; all three timed-out commands pass independently, `ac54e78` raises only those registry budgets from 30 to 60 seconds, and the owner accepted that composite evidence for this integration. #194 focused capability tests passed 14/14 and deterministic acceptance passed 3/3.
+- Git state: current branch `codex/2026-08-11-std-001-pkg-navigation-closure@ac54e78`; refreshed `origin/main@df7012b6`; #194 policy edits are in progress and no overlapping open pull request exists.
 - Branch history and checkpoint handoffs: integration is now authorized but not yet transported. Because the parent workflow remains active for the real v0.13 candidate review, the PR merge is an incomplete-workflow checkpoint and requires a registered machine-readable handoff.
-- Blockers or unresolved decisions: the critical handoff gate and hosted PR checks must pass before integration. No governed v0.13 release record or real candidate exists yet; Issue close, Project state, tag, Release, and publication remain separately gated.
+- Blockers or unresolved decisions: the critical handoff checkpoint and hosted PR checks must pass before integration. No governed v0.13 release record or real candidate exists yet; #193/#61 closeout, Project state, tag, Release, and publication remain separately gated.
 
 ## Branch Lifecycle
 

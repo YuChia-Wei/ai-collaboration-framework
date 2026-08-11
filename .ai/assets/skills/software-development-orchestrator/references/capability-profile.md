@@ -68,6 +68,25 @@ Each task records `required_for_closeout` as a subset of `selected_levels`.
 Unit and integration remain the default selected levels; every conditional
 level needs a recorded selection source.
 
+Long-running validation uses a separate execution surface without changing the
+selected checks or their result semantics. Classify `release`, `nightly-full`,
+full-matrix, and any command with expected or observed wall time of at least 120
+seconds as long-running. Finish tracked mutations and focused checks first, then
+bind the exact command to a clean immutable commit.
+
+Dispatch the command to a separate external runtime task using the least
+expensive capable execution profile. The primary implementation conversation
+reads back dispatch once and does not poll. The external task is read-only
+except for ignored validation artifacts, performs no repair, and emits one
+final report with the commit, command, duration, outcome counts, evidence, and
+final worktree state. Timeout, interruption, missing completion evidence, and
+blocked execution remain non-passing.
+
+Parallel aggregate execution is a separate implementation decision. It needs
+independent contract coverage for the dependency DAG, artifact isolation,
+bounded concurrency, deterministic evidence, and fail-closed cancellation
+before it may replace sequential aggregate execution.
+
 ## Selectable Spec Compliance
 
 Spec compliance is unselected by default and reports `not-applicable`. A target
@@ -94,7 +113,9 @@ Schema `1.2` records deterministic orchestration invariants for intent-class
 activation, approval pauses, selectable compliance, coherent commit batches,
 fresh-session evidence, and separate closeout evidence. Schema `1.3` adds the
 repository-owned routine-validation activation policy without changing the
-explicit command and lifecycle-command contracts.
+explicit command and lifecycle-command contracts. Schema `1.4` adds the
+long-running validation delegation, no-polling, final-report, and safe
+parallelization prerequisites.
 
 Deterministic activation acceptance starts from the preclassified envelope
 defined in `acceptance-oracle.md`. Natural-language classification remains a

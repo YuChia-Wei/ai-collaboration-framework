@@ -65,6 +65,29 @@ Workflow artifact rules:
 - Follow `.dev/standards/WORKFLOW-HANDOFF-POLICY.md` before transferring an active workflow across a model, runtime, host, machine, or fresh session; the receiving checkpoint must remain executable without hidden session context.
 - Select linear or merge-commit integration positively under `.dev/TEAM-GIT-FLOW-RULES.MD`; workflow mode alone does not select topology.
 
+### Long-Running Validation Gate
+
+- Treat a validation command as long-running when its profile is `release` or
+  `nightly-full`, it selects a full matrix, or its expected or observed wall
+  time is at least 120 seconds.
+- Finish tracked mutations and focused validation first, then bind the exact
+  command to a clean immutable commit before dispatching long-running
+  validation.
+- Run long-running validation in a separate external runtime task using the
+  least expensive capable execution profile. Keep it read-only except for
+  ignored validation artifacts, and do not let it repair failures.
+- The primary implementation conversation must not execute a repeated polling
+  loop. After one dispatch read-back it yields; the external task reports one
+  final result with commit, command, duration, outcome counts, and evidence
+  references.
+- Timeout, interruption, missing completion evidence, and blocked execution are
+  never passed. If the runtime cannot provide a separate completion-reporting
+  task, record the validation as blocked or hand it off; do not fall back to
+  synchronous polling in the primary conversation.
+- Do not parallelize an aggregate runner until dependency ordering, isolated
+  artifacts, bounded concurrency, deterministic evidence, and fail-closed
+  cancellation have independent contract coverage.
+
 ### Assessment Gate
 
 - Follow `.dev/standards/ASSESSMENT-ARTIFACT-POLICY.md` when a read-only audit,

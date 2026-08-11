@@ -65,6 +65,26 @@ Workflow artifact 規則：
 - 在跨 model、runtime、host、machine 或 fresh session 轉交 active workflow 前，遵循 `.dev/standards/WORKFLOW-HANDOFF-POLICY.md`；receiving checkpoint 必須能在不依賴 hidden session context 的情況下執行。
 - 依 `.dev/TEAM-GIT-FLOW-RULES.MD` 明確選擇線性或 merge-commit 整合；workflow mode 本身不決定 topology。
 
+### 長時間驗證 Gate
+
+- 當 validation command 使用 `release` 或 `nightly-full` profile、選取 full
+  matrix，或預期／已觀測 wall time 至少 120 秒時，視為 long-running。
+- 必須先完成 tracked mutations 與 focused validation，再把 exact command
+  綁定至 clean immutable commit，之後才能派送長時間驗證。
+- 長時間驗證必須交給獨立 external runtime task，並使用足以完成工作的最低
+  成本 execution profile。除了 ignored validation artifacts 外維持唯讀，且
+  不得由該 task 修復失敗。
+- 主要 implementation conversation 不得執行重複 polling loop。完成一次
+  dispatch read-back 後就應 yield；external task 完成時只回報一次 final
+  result，包含 commit、command、duration、outcome counts 與 evidence
+  references。
+- Timeout、中止、缺少 completion evidence 或 blocked execution 絕不等於
+  passed。若 runtime 無法提供可回報完成狀態的獨立 task，將 validation 記為
+  blocked 或 handoff；不得退回主要對話同步輪詢。
+- Aggregate runner 在 dependency ordering、artifact isolation、bounded
+  concurrency、deterministic evidence 與 fail-closed cancellation 都有獨立
+  contract coverage 前，不得平行化。
+
 ### Assessment Gate
 
 - 唯讀 audit、大型 code review、architecture assessment 或類似報告需要保存時，遵循 `.dev/standards/ASSESSMENT-ARTIFACT-POLICY.md`。

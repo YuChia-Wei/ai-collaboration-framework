@@ -83,6 +83,12 @@ When no explicit profile exists, or when the profile does not cover a capability
 - For `test-execution`, use target-owned commands, working directory,
   prerequisites, and policy. Record one exact supported outcome per selected
   level; never count `blocked-by-environment` as passed.
+- For a `release`, `nightly-full`, full-matrix, or at-least-120-second
+  validation, finish local mutations and focused checks, pin a clean immutable
+  commit, then dispatch the exact command to the least expensive capable
+  external runtime task. Read back dispatch once; do not poll from the primary
+  conversation. Accept only its single bounded final report as execution
+  evidence.
 - Treat spec compliance as unselected and `not-applicable` unless a target
   profile, problem-frame workflow, requirement, or owner decision selects it.
   Once selected, incomplete configuration or coverage below 100% fails closed.

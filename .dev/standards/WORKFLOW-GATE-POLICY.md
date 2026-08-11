@@ -275,6 +275,55 @@ A mandatory selected specialized test keeps closeout open until its outcome is
 acceptable under target policy. `deferred-with-owner` requires the responsible
 owner and follow-up condition; it is not implicit success.
 
+## Long-Running Validation Delegation Gate
+
+This gate applies in direct and workflow mode. It changes the execution surface,
+not the selected validation, severity, or pass/fail contract.
+
+A command is long-running when any condition is true:
+
+- its selected profile is `release` or `nightly-full`;
+- it selects a full package, compatibility, or history matrix;
+- repository evidence predicts at least 120 seconds of wall time; or
+- a prior comparable execution observed at least 120 seconds of wall time.
+
+Before dispatch, the owning conversation must finish tracked mutations, run the
+narrow focused checks, obtain a clean worktree, and bind the exact command to a
+full immutable commit SHA. Pending design decisions, mutable source state, and
+unbounded credentials are dispatch blockers.
+
+Run the command in a separate external runtime task using the least expensive
+execution profile that can faithfully execute and report the bounded command.
+Its scope is read-only except for ignored validation logs or artifacts. It must
+not repair, commit, push, mutate Issues or Projects, or broaden the command.
+
+The owning conversation may read back dispatch once, then must yield. It must
+not issue repeated waits, status probes, or progress narration. The external
+task returns one completion report containing:
+
+- immutable commit SHA and clean-state preflight;
+- exact command and working directory;
+- start, completion, and wall-time evidence;
+- selected, executed, reused, failed, blocked, warning, deferred, and
+  not-applicable counts when the runner exposes them;
+- exit code plus log, evidence, or bounded output references; and
+- final tracked worktree state.
+
+Timeout, interruption, missing completion evidence, and blocked execution are
+non-passing. The owning workflow remains open until it receives and accepts an
+allowed final outcome. When the runtime cannot provide an independent task that
+reports completion without polling, record `blocked-by-environment` or create a
+fresh-session handoff; never substitute synchronous polling in the owning
+conversation.
+
+Keep canonical aggregate runners because they own profile selection,
+dependency ordering, unified evidence, and fail-closed classification. A future
+parallel runner is allowed only after independent contract coverage proves its
+dependency DAG, artifact and temporary-state isolation, bounded concurrency,
+deterministic evidence ordering, timeout propagation, and fail-closed
+cancellation. Until then, reduce interaction cost through external execution,
+not unverified parallelism or removal of the aggregate gate.
+
 ## Workflow Closing Checklist
 
 Before sending a final response in workflow mode, the agent must verify all of the following:

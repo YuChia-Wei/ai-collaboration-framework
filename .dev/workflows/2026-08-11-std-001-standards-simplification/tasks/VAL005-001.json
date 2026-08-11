@@ -1,0 +1,86 @@
+{
+  "template_id": "ai-context-governance-remediation-task",
+  "template_version": "1.1.0",
+  "template_created_at": "2026-07-10T18:22:49+08:00",
+  "template_updated_at": "2026-07-27T09:52:09+08:00",
+  "task_id": "VAL005-001",
+  "workflow_id": "2026-08-11-std-001-standards-simplification",
+  "owner_skill": "ai-context-governance",
+  "status": "completed",
+  "created_at": "2026-08-12T00:15:37+08:00",
+  "updated_at": "2026-08-12T00:20:12+08:00",
+  "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
+  "model": "gpt-5.6-sol",
+  "reasoning_effort": "high",
+  "finding_ids": [],
+  "scope": {
+    "target": "Issue #194 long-running validation delegation and no-polling governance",
+    "files": [
+      "AGENTS.md",
+      "AGENTS.zh-TW.md",
+      ".dev/standards/WORKFLOW-GATE-POLICY.md",
+      ".ai/assets/skills/software-development-orchestrator/**",
+      ".dev/workflows/2026-08-11-std-001-standards-simplification/**"
+    ],
+    "constraints": [
+      "Keep canonical aggregate validation and fail-closed outcomes",
+      "Classify release, nightly-full, full-matrix, and at-least-120-second commands as long-running",
+      "Dispatch only after focused validation and a clean immutable commit",
+      "Use the least expensive capable external task and prohibit primary-conversation polling",
+      "Require one bounded final report and keep timeout, interruption, missing evidence, and blocked execution non-passing",
+      "Do not enable parallel aggregate execution without dependency and artifact-isolation contract evidence"
+    ],
+    "non_goals": [
+      "Implement aggregate-runner parallel execution",
+      "Remove check-all or weaken selected validation",
+      "Repair validation failures inside the external task",
+      "Create a v0.13 tag, Release, or publication",
+      "Close Issues or mutate Project fields"
+    ]
+  },
+  "execution": {
+    "steps": [
+      "Record Issue #194 authority and current failed/terminated execution receipts",
+      "Add canonical and machine-readable long-running validation rules",
+      "Add deterministic contract coverage and run focused validators",
+      "Commit a clean immutable checkpoint",
+      "Dispatch the exact release-profile gate to a low-cost external task and stop polling"
+    ],
+    "validation": [
+      "python .ai/assets/skills/software-development-orchestrator/scripts/tests/test_software_development_orchestrator_capability_contract.py -v",
+      "python .ai/assets/skills/software-development-orchestrator/scripts/tests/test_software_development_orchestrator_acceptance.py -v",
+      "python .ai/scripts/validate-workflow-artifacts.py",
+      "python .ai/scripts/validate-ai-context.py",
+      "git diff --check"
+    ],
+    "last_completed_step": "Implemented and focused-validated the canonical long-running validation delegation and no-polling contract",
+    "next_action": "Integrate the completed rule through the parent PR; apply it prospectively to later long-running validation"
+  },
+  "results": {
+    "summary": "Canonical aggregate execution is retained, while release/nightly/full-matrix or at-least-120-second validation must run in a least-cost capable external task after a clean fixed commit, with no primary-conversation polling.",
+    "files_changed": [
+      "AGENTS.md",
+      "AGENTS.zh-TW.md",
+      ".dev/standards/WORKFLOW-GATE-POLICY.md",
+      ".ai/assets/skills/software-development-orchestrator/references/capability-profile.yaml",
+      ".ai/assets/skills/software-development-orchestrator/references/capability-profile.md",
+      ".ai/assets/skills/software-development-orchestrator/references/routing-playbook.md",
+      ".ai/assets/skills/software-development-orchestrator/references/fallback-playbooks.md",
+      ".ai/assets/skills/software-development-orchestrator/references/runtime-coordination.md",
+      ".ai/assets/skills/software-development-orchestrator/skill.yaml",
+      ".ai/assets/skills/software-development-orchestrator/scripts/tests/test_software_development_orchestrator_capability_contract.py"
+    ],
+    "tests_run": [
+      "Stopped primary-conversation release-profile gate: terminated by owner policy change; not passed",
+      "Residual Bash/Python process read-back: none",
+      "GitHub Issue #194 creation and read-back: passed",
+      "python .ai/assets/skills/software-development-orchestrator/scripts/tests/test_software_development_orchestrator_capability_contract.py -v: passed 14/14",
+      "python .ai/assets/skills/software-development-orchestrator/scripts/tests/test_software_development_orchestrator_acceptance.py -v: passed 3/3",
+      "python .ai/scripts/tests/test_ai_context_language_policy.py -v: passed 10/10",
+      "python .ai/scripts/validate-workflow-artifacts.py: passed"
+    ],
+    "finding_status": "addressed-pending-integration",
+    "residual_risk": "Hosted PR checks still need to validate the integrated branch; aggregate parallelization remains disabled until independently proven safe.",
+    "follow_up_needed": false
+  }
+}

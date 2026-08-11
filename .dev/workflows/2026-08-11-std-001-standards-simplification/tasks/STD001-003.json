@@ -8,7 +8,7 @@
   "owner_skill": "ai-context-governance",
   "status": "in_progress",
   "created_at": "2026-08-11T13:31:10+08:00",
-  "updated_at": "2026-08-11T23:30:58+08:00",
+  "updated_at": "2026-08-12T00:19:04+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-5.6-sol",
   "reasoning_effort": "high",
@@ -51,7 +51,7 @@
       "git diff --check"
     ],
     "last_completed_step": "Completed local #193 implementation ff80d590 and independent ASM-20260811-006; PKG-001 and CMP-001 are addressed without transport or integration",
-    "next_action": "Create the required incomplete-workflow handoff and owner-authorized PR to main; keep the real governed v0.13 candidate as the next separately authorized continuation"
+    "next_action": "Commit the #194 validation-policy addition and owner-approved composite gate disposition, then create the required incomplete-workflow handoff and PR to main; keep the real governed v0.13 candidate as a deferred continuation"
   },
   "results": {
     "summary": "The controlled baseline exposed downstream navigation and component closure failures; #191, #192, and #193 are now locally implemented and independently verified, while the real governed v0.13 candidate and downstream acceptance remain deferred.",
@@ -77,10 +77,13 @@
       "Issue #192 governance routing and exact package projection: passed 8/8",
       "Issue #192 independent ASM-20260811-005: GTM-001 addressed",
       "Issue #193 selected-payload, version, packaging, archive/apply, routing, and fast-profile gates: passed with preserved environment/advisory receipts",
-      "Issue #193 independent ASM-20260811-006: PKG-001 and CMP-001 addressed; no new blocking finding"
+      "Issue #193 independent ASM-20260811-006: PKG-001 and CMP-001 addressed; no new blocking finding",
+      "Integration composite gate: 51/54 aggregate with three internal 30-second timeouts; all three exact commands passed independently and the owner accepted the combined evidence without relabeling the aggregate receipt",
+      "Issue #194 focused orchestrator capability contract: passed 14/14",
+      "Issue #194 deterministic orchestrator acceptance: passed 3/3"
     ],
     "finding_status": "issues-191-192-193-local-complete-pending-owner-review-and-integration",
-    "residual_risk": "The controlled projection is not a real v0.13 candidate. Repository integration is authorized but still awaits handoff and hosted PR gates; final candidate validation, downstream acceptance, Issue/Project state, tag, Release, and publication remain separate.",
+    "residual_risk": "The controlled projection is not a real v0.13 candidate. Repository integration is authorized but still awaits handoff and hosted PR gates; #193/#61 closeout, final candidate validation, downstream acceptance, Project state, tag, Release, and publication remain separate.",
     "follow_up_needed": true
   }
 }

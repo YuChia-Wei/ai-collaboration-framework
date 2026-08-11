@@ -52,6 +52,27 @@ outcomes. A partial checkpoint-shape check is not fresh-session acceptance.
 | `software-development-orchestrator` | Decide the development entry point, workflow mode, development capability routing, artifacts, validation, and commit checkpoints. | `.dev/workflows/<workflow-id>/`, development stage routing, handoff packets. |
 | Downstream skills | Execute specialist stages. | requirements, specs, architecture, implementation, review, compliance. |
 
+## Long-Running Validation Runtime Pattern
+
+Classify `release`, `nightly-full`, full-matrix, and validation expected or
+observed to take at least 120 seconds as long-running. The owning conversation
+first completes tracked mutations and focused checks, pins a clean immutable
+commit, and bounds the exact command and working directory.
+
+Create a separate external runtime task with the least expensive capable
+execution profile. It may write only ignored validation artifacts and must not
+repair or broaden scope. Read back successful dispatch once, then yield the
+owning conversation without repeated waits or progress messages. The task
+reports one final outcome with commit, command, duration, counts, evidence, and
+final tracked state. Runtime interruption, timeout, blocked execution, or a
+missing completion report is non-passing.
+
+This runtime task is an execution surface, not proof of a canonical role or
+external skill. Keep role applicability, provider selection, and workflow
+integration under their existing owners. Do not enable parallel aggregate
+execution until its dependency, isolation, concurrency, evidence-ordering, and
+fail-closed cancellation contracts are independently verified.
+
 ## Codex Goal Pattern
 
 Use a Codex Goal for the durable software-development objective. Put `software-development-orchestrator` inside that goal as the development orchestration policy.

@@ -19,6 +19,10 @@ import yaml
 
 ROOT = Path(__file__).resolve().parents[6]
 PROFILE = ROOT / ".ai/assets/skills/software-development-orchestrator/references/capability-profile.yaml"
+ROOT_GUIDE = ROOT / "AGENTS.md"
+ROOT_GUIDE_ZH_TW = ROOT / "AGENTS.zh-TW.md"
+WORKFLOW_GATE_POLICY = ROOT / ".dev/standards/WORKFLOW-GATE-POLICY.md"
+RUNTIME_COORDINATION = ROOT / ".ai/assets/skills/software-development-orchestrator/references/runtime-coordination.md"
 VALIDATOR_PATH = ROOT / ".ai/scripts/validate-workflow-artifacts.py"
 SPEC = importlib.util.spec_from_file_location("validate_workflow_artifacts", VALIDATOR_PATH)
 if SPEC is None or SPEC.loader is None:
@@ -143,7 +147,7 @@ class DevWorkflowCapabilityContractGwtTests(unittest.TestCase):
         self.profile = yaml.safe_load(PROFILE.read_text(encoding="utf-8"))
 
     def test_gwt_001_given_test_execution_when_profile_loaded_then_it_is_optional_and_unmapped(self) -> None:
-        self.assertEqual("1.3", self.profile["schema_version"])
+        self.assertEqual("1.4", self.profile["schema_version"])
         self.assertIn("test-execution", self.profile["allowed_slots"])
         self.assertNotIn("test-execution", self.profile["required_slots"])
         self.assertNotIn("test-execution", self.profile["mappings"])
@@ -176,6 +180,52 @@ class DevWorkflowCapabilityContractGwtTests(unittest.TestCase):
             ["e2e", "browser", "playwright", "environment-dependent"],
             conditional,
         )
+
+    def test_gwt_004a_given_long_running_validation_when_routed_then_it_is_external_and_non_polling(self) -> None:
+        contract = self.profile["capability_contracts"]["test-execution"]["long_running"]
+        self.assertEqual(120, contract["threshold_seconds"])
+        self.assertEqual(["release", "nightly-full"], contract["always_external_profiles"])
+        self.assertEqual(["full-matrix"], contract["always_external_scopes"])
+        self.assertEqual(
+            [
+                "tracked-mutations-complete",
+                "focused-validation-complete",
+                "clean-immutable-commit",
+                "exact-command-bounded",
+            ],
+            contract["dispatch_preconditions"],
+        )
+        self.assertEqual("separate-external-runtime-task", contract["execution_surface"])
+        self.assertEqual("least-expensive-capable", contract["executor_cost_policy"])
+        self.assertEqual("no-repeated-polling", contract["primary_conversation_wait_policy"])
+        self.assertEqual("one-final-report", contract["completion_signal"])
+        self.assertEqual(["ignored-validation-artifacts"], contract["allowed_write_scope"])
+        self.assertEqual(
+            ["timeout", "interrupted", "missing-completion-evidence", "blocked"],
+            contract["non_passing"],
+        )
+        self.assertEqual(
+            [
+                "dependency-dag",
+                "artifact-isolation",
+                "bounded-concurrency",
+                "deterministic-evidence",
+                "fail-closed-cancellation",
+            ],
+            contract["parallelization_requires"],
+        )
+
+        required_phrases = {
+            ROOT_GUIDE: ("Long-Running Validation Gate", "must not execute a repeated polling loop"),
+            ROOT_GUIDE_ZH_TW: ("長時間驗證 Gate", "不得執行重複 polling loop"),
+            WORKFLOW_GATE_POLICY: ("Long-Running Validation Delegation Gate", "least expensive"),
+            RUNTIME_COORDINATION: ("Long-Running Validation Runtime Pattern", "without repeated waits"),
+        }
+        for path, phrases in required_phrases.items():
+            text = " ".join(path.read_text(encoding="utf-8").split())
+            for phrase in phrases:
+                with self.subTest(path=path.relative_to(ROOT).as_posix(), phrase=phrase):
+                    self.assertIn(phrase, text)
 
     def test_gwt_005_given_profile_is_loaded_then_it_declares_the_preclassified_activation_contract(self) -> None:
         activation = self.profile["orchestration_contract"]["activation"]
