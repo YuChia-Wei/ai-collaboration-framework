@@ -188,11 +188,25 @@ class CodeReviewerRoutingContractTests(unittest.TestCase):
         skill = load_yaml(SKILL_PATH)
         expected = {
             str(ROUTING_PATH).replace("\\", "/"),
-            ".ai/assets/skills/code-reviewer/references/role-execution.md",
-            ".ai/assets/skills/code-reviewer/references/output-contract.md",
         }
         self.assertEqual(expected, set(skill["references"]))
         self.assertTrue(FORBIDDEN_STATIC_REFERENCES.isdisjoint(skill["references"]))
+
+        phase_references = load_yaml(ROUTING_PATH)["phase_references"]
+        self.assertEqual(
+            {
+                ".ai/assets/skills/code-reviewer/references/role-execution.md",
+                ".ai/assets/skills/code-reviewer/references/output-contract.md",
+            },
+            {
+                reference
+                for phase in phase_references.values()
+                for reference in phase["references"]
+            },
+        )
+        self.assertTrue(
+            all(phase["load_when"] for phase in phase_references.values())
+        )
 
         for wrapper in (
             Path(".agents/skills/code-reviewer/SKILL.md"),

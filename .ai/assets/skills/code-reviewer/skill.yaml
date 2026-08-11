@@ -61,13 +61,11 @@ workflow:
   - step: 2
     description: "Load only the selected routes' canonical references, applicable finding rules, and matching role manifests; de-duplicate references and build a scoped checklist comparison"
   - step: 3
-    description: "Execute review directly by default or make an eligible bounded delegation, then separate architecture-level and code-level findings"
+    description: "After route and role selection, load the role-execution phase reference, execute directly by default or make an eligible bounded delegation, then separate architecture-level and code-level findings"
   - step: 4
-    description: "Return transient findings or persist an explicitly requested assessment, and hand the skill-owned role_execution records to the orchestrator for aggregation"
+    description: "After findings exist, load the output phase reference, return transient findings or persist an explicitly requested assessment, and hand role_execution records to the orchestrator for aggregation"
 references:
   - ".ai/assets/skills/code-reviewer/references/review-routing.yaml"
-  - ".ai/assets/skills/code-reviewer/references/role-execution.md"
-  - ".ai/assets/skills/code-reviewer/references/output-contract.md"
 templates:
   - ".ai/assets/skills/code-reviewer/templates/code-review-assessment-report-template.md"
 examples:

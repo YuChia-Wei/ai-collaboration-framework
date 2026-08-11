@@ -19,7 +19,7 @@
 - `current_phase`: `verification`
 - `artifact_root`: `.dev/workflows/2026-08-11-std-001-r2-review-routing`
 - `created_at`: `2026-08-11T20:20:48+08:00`
-- `updated_at`: `2026-08-11T20:45:00+08:00`
+- `updated_at`: `2026-08-11T20:49:00+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md`
 - `template_version`: `1.2.0`
 
@@ -54,11 +54,11 @@
 
 ## Resume Checkpoint
 
-- Last completed action: Committed implementation snapshot `aea7a44` and passed a commit-bound selected-payload projection for the route, fixtures, roles, and compatibility entries.
+- Last completed action: Auditor preflight found role/output contracts still eager; governance converted them to explicit post-route execution/output phases and revalidated the route contract 8/8.
 - Current task: `STD191-001`.
-- Exact next action: commit the focused package guard and updated evidence, then perform an independent post-remediation audit on that fixed commit.
+- Exact next action: commit the phase-lazy correction and updated evidence, then restart the independent post-remediation audit on that fixed commit.
 - Validation already completed: focused routing/package contract 8/8, role execution 6/6, adapter 31/31, wrapper 16/16, language/parity 10/10, profile/document/effective-rule contracts, shell registry, and `validate-ai-context.py` passed. The full packaging matrix timed out at 244 seconds and remains recorded as failed.
-- Git state: implementation commit `aea7a445f5f5042632cb0499b6dad7e2e8639af6`; one focused package guard and evidence update remain uncommitted; nothing from #191 is pushed or merged.
+- Git state: implementation commits `aea7a44` and `a5cece2`; phase-lazy correction and evidence update remain uncommitted; nothing from #191 is pushed or merged.
 - Branch history and checkpoint handoffs: local stacked branch from the unpushed #61 coordination checkpoint.
 - Blockers or unresolved decisions: none for local implementation; transport and integration remain unauthorized.
 

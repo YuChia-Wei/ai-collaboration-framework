@@ -8,7 +8,7 @@
   "owner_skill": "ai-context-governance",
   "status": "in_progress",
   "created_at": "2026-08-11T20:20:48+08:00",
-  "updated_at": "2026-08-11T20:45:00+08:00",
+  "updated_at": "2026-08-11T20:49:00+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-5.6-sol",
   "reasoning_effort": "high",
@@ -56,11 +56,11 @@
       "package projection tests",
       "git diff --check"
     ],
-    "last_completed_step": "Committed implementation snapshot aea7a44 and passed commit-bound selected-payload projection validation",
-    "next_action": "Commit the focused package guard and evidence, then complete an independent verification assessment"
+    "last_completed_step": "Converted role-execution and output contracts from eager references to explicit post-route phases after auditor preflight, then revalidated 8/8",
+    "next_action": "Commit the phase-lazy correction and evidence, then restart the independent verification assessment on the fixed commit"
   },
   "results": {
-    "summary": "Fourteen canonical review routes now select file-type standards and finding rule IDs; Code Reviewer entries and roles no longer eagerly load the monolithic/shared rule bundles, and semantic drift cases are fail-closed fixtures.",
+    "summary": "Fourteen canonical review routes now select file-type standards and finding rule IDs; top-level loading is route-only, role/output contracts load at their declared phases, review roles do not eagerly load shared bundles, and semantic drift cases are fail-closed fixtures.",
     "files_changed": [
       ".ai/assets/skills/code-reviewer/**",
       ".agents/skills/code-reviewer/SKILL.md",

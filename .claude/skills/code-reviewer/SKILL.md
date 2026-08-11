@@ -20,8 +20,6 @@ This is a thin Claude-compatible wrapper.
 - Human Guide: `.dev/guides/ai-collaboration-guides/AI-REFACTORING-SKILL-BOUNDARY-GUIDE.md`
 - References:
   - `.ai/assets/skills/code-reviewer/references/review-routing.yaml`
-  - `.ai/assets/skills/code-reviewer/references/role-execution.md`
-  - `.ai/assets/skills/code-reviewer/references/output-contract.md`
 - Report Template: `.ai/assets/skills/code-reviewer/templates/code-review-assessment-report-template.md`
 
 ## Wrapper Rules

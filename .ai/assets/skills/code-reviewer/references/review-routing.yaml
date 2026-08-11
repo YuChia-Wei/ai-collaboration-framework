@@ -15,15 +15,22 @@ selection:
   multi_file_scope: "select every matching route, de-duplicate references, and do not load unrelated routes"
   unresolved_outcome: "stop-applicable-review"
 
-unconditional_references:
-  - ".ai/assets/skills/code-reviewer/references/role-execution.md"
-  - ".ai/assets/skills/code-reviewer/references/output-contract.md"
+phase_references:
+  role_execution:
+    load_when: "Routes and applicable role bindings have been selected."
+    references:
+      - ".ai/assets/skills/code-reviewer/references/role-execution.md"
+  output:
+    load_when: "Findings are ready to format or persistence mode must be selected."
+    references:
+      - ".ai/assets/skills/code-reviewer/references/output-contract.md"
 
 loading_contract:
   - "Load this routing contract before any .NET review standard."
   - "Load only canonical_references for selected routes."
   - "Load finding_rules references and rule_ids only when their finding_tag applies."
   - "Load test standards only when test files or test-quality findings are in scope."
+  - "Load phase_references only at their declared phase; they are not route-selection prerequisites."
   - "Do not load compatibility entries or broad shared summaries as a substitute for selected canonical references."
 
 semantic_guardrails:
