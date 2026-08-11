@@ -8,6 +8,7 @@ task-level progress.
 
 | Workflow | Title | Owner | Status | Updated | Entry Point |
 | --- | --- | --- | --- | --- | --- |
+| [`2026-08-11-std-001-pkg-navigation-closure`](2026-08-11-std-001-pkg-navigation-closure/workflow.yaml) | Fail Closed On Broken Payload Navigation And Component References | `ai-context-governance` | `in_progress` | `2026-08-11T21:47:55+08:00` | [plan](2026-08-11-std-001-pkg-navigation-closure/workflow-plan.md) |
 | [`2026-08-11-std-001-r2-review-routing`](2026-08-11-std-001-r2-review-routing/workflow.yaml) | Make Code Review References File-Type And Finding Scoped | `ai-context-governance` | `completed` | `2026-08-11T20:54:00+08:00` | [plan](2026-08-11-std-001-r2-review-routing/workflow-plan.md) |
 | [`2026-08-11-std-001-r3-governance-terms`](2026-08-11-std-001-r3-governance-terms/workflow.yaml) | Qualify Governance Terms And Separate Source Release Doctrine | `ai-context-governance` | `completed` | `2026-08-11T21:37:32+08:00` | [plan](2026-08-11-std-001-r3-governance-terms/workflow-plan.md) |
 | [`2026-08-11-std-001-standards-simplification`](2026-08-11-std-001-standards-simplification/workflow.yaml) | Prepare v0.13 Standards Simplification Round 2 And Round 3 | `ai-context-governance` | `in_progress` | `2026-08-11T21:40:15+08:00` | [plan](2026-08-11-std-001-standards-simplification/workflow-plan.md) |
