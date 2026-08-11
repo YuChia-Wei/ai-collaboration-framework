@@ -15,11 +15,11 @@
 - `branch`: `codex/2026-08-11-std-001-r3-governance-terms`
 - `base_branch`: `codex/2026-08-11-std-001-standards-simplification`
 - `branch_segment`: `1`
-- `status`: `in_progress`
-- `current_phase`: `bounded-remediation`
+- `status`: `completed`
+- `current_phase`: `closed`
 - `artifact_root`: `.dev/workflows/2026-08-11-std-001-r3-governance-terms`
 - `created_at`: `2026-08-11T20:58:53+08:00`
-- `updated_at`: `2026-08-11T20:58:53+08:00`
+- `updated_at`: `2026-08-11T21:37:32+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md`
 - `template_version`: `1.2.0`
 
@@ -47,22 +47,24 @@
 
 1. Baseline audit and evidence freeze. `completed`
 2. Finding triage and remediation authorization. `completed`
-3. Bounded remediation and validation. `in_progress`
-4. Independent post-remediation audit. `pending`
-5. Finding reconciliation and local closure. `pending`
+3. Bounded remediation and validation. `completed`
+4. Independent post-remediation audit. `completed`
+5. Finding reconciliation and local closure. `completed`
 
 ## Resume Checkpoint
 
-- Last completed action: Read back the open Issue #192 scope and owner authorization comment, then created this dedicated branch from the updated #61 coordination checkpoint `088fee7`.
-- Current task: `STD192-001`.
-- Exact next action: inventory the active owners, machine literals, portable projections, schemas, validators, and source-release consumers; then implement the smallest qualified routing and doctrine split.
-- Validation already completed: #61 baseline assessment `ASM-20260811-003` and R3 terminology matrix are final; live Issue authorization was read back.
-- Git state: local branch `codex/2026-08-11-std-001-r3-governance-terms` at parent `088fee7`; nothing from #192 is pushed or merged.
-- Branch history and checkpoint handoffs: #191 remains isolated at `f62f110`; this branch contains no #191 implementation commits.
-- Blockers or unresolved decisions: none for local implementation; transport and integration remain unauthorized.
+- Last completed action: Finalized independent verification `ASM-20260811-005`, which reconciled `GTM-001` as addressed at fixed subject `fe85095` with no new blocking finding.
+- Current task: none; `STD192-001` is completed.
+- Exact next action: record #192 local completion on the parent #61 workflow, then execute #193 against a deliberately combined local package view without inferring remote integration authority.
+- Validation already completed: governance routing 8/8; AI-context validator passed with 15 qualified terms; final fast profile selected 32 required checks with 12 executed, 20 evidence-reused, 0 failed, and 0 blocked; package smoke 1/1 outside the filesystem sandbox; 625 selected paths and 369 packaged Markdown documents contained no source-release command or source-policy link; assessment and workflow artifact validators passed.
+- Git state: dedicated local branch `codex/2026-08-11-std-001-r3-governance-terms`; implementation fixed at `fe85095`, assessment at `5299db5`, and terminal records are carried by the containing closeout commit; nothing is pushed or merged.
+- Branch history and checkpoint handoffs: #191 remains isolated at `f62f110`; this branch contains no #191 implementation commits. Two earlier `3c85863` aggregate source-governance timeouts remain failed receipts even though later exact-environment and final-subject runs passed.
+- Blockers or unresolved decisions: none for local #192 completion. Project allocation, transport, integration, Issue closure, tag, Release, and publication remain unauthorized.
 
 ## Branch Lifecycle
 
 | Segment | Branch | Base | Checkpoint Type | Commit | Remote / Target | Recorded At | Reason | Resume Branch / Action |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| 1 | `codex/2026-08-11-std-001-r3-governance-terms` | `codex/2026-08-11-std-001-standards-simplification@088fee7` | workflow bootstrap | pending | local | `2026-08-11T20:58:53+08:00` | Execute #192 as an independent rollback unit | Inventory active term owners and portable/source release projections |
+| 1 | `codex/2026-08-11-std-001-r3-governance-terms` | `codex/2026-08-11-std-001-standards-simplification@088fee7` | workflow bootstrap | `10581e8` | local | `2026-08-11T20:58:53+08:00` | Execute #192 as an independent rollback unit | Implement the qualified term registry and source/portable policy split |
+| 1 | `codex/2026-08-11-std-001-r3-governance-terms` | `codex/2026-08-11-std-001-standards-simplification@088fee7` | implementation checkpoint | `3c85863`, `fe85095` | local | `2026-08-11T21:30:58+08:00` | Qualify 15 terms, separate source release procedure, project the portable target policy, and correct release-phase machine binding | Run independent fixed-subject verification |
+| 1 | `codex/2026-08-11-std-001-r3-governance-terms` | `codex/2026-08-11-std-001-standards-simplification@088fee7` | independent verification checkpoint | `5299db5`, plus containing closeout commit | local | `2026-08-11T21:37:32+08:00` | Reconcile `GTM-001` as addressed and preserve time-specific failure/advisory evidence | Update parent #61 coordination; keep all remote actions separate |
