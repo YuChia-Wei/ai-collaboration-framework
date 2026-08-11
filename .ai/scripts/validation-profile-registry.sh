@@ -184,6 +184,11 @@ register_check coding-standards-integrity \
     "standards,tests" "fast pr release nightly-full" \
     ".dev/standards .ai/scripts/tests/test_coding_standards_integrity_contract.py" '' "python>=3.11" 30 cpu reuse-by-input portable \
     "python .ai/scripts/tests/test_coding_standards_integrity_contract.py -v" always
+register_check code-review-routing-contract \
+    "Code Reviewer Routing Contract" required \
+    "context,review,tests" "fast pr release nightly-full" \
+    ".ai/assets/skills/code-reviewer .ai/assets/sub-agent-role-prompts .ai/assets/tech-stacks/dotnet-backend .ai/scripts/tests/test_code_reviewer_routing_contract.py" coding-standards-integrity "python>=3.11" 30 cpu reuse-by-input portable \
+    "python .ai/scripts/tests/test_code_reviewer_routing_contract.py -v" always
 register_check profile-projection \
     "Profile Projection Contract" required \
     "package,tests" "fast pr release nightly-full" \

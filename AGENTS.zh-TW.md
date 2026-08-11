@@ -181,10 +181,11 @@ environment-dependent tests 是 conditional。Outcome 只能記錄為 `passed`�
 
 適用 code review 時：
 
-1. 閱讀 `.ai/assets/tech-stacks/dotnet-backend/references/CODE-REVIEW-INDEX.MD`。
-2. 閱讀 `.ai/assets/skills/code-reviewer/references/checklist-reference.md`。
-3. 辨識檔案類型，並閱讀 `.dev/standards/` 下對應 checklist。
-4. 建立 checklist comparison table。
+1. 閱讀 `.ai/assets/skills/code-reviewer/references/review-routing.yaml`。
+2. 依序以明確 scope、type hierarchy、path 選擇 route；適用 route 無法解析時停止。
+3. 只載入所選 route 的 canonical references 與適用 finding rule IDs；
+   不額外載入 compatibility checklists 或無關 standards。
+4. 建立限定 scope 的 checklist comparison table。
 5. 將問題分類為 `CRITICAL`、`MUST FIX` 或 `SHOULD FIX`。
 6. 若目標 repo 適用測試，執行最窄且有意義的 test command。
 

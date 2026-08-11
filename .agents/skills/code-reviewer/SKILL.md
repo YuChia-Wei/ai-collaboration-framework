@@ -19,12 +19,9 @@ This is a thin current-runtime wrapper.
 - Spec: `.ai/assets/skills/code-reviewer/skill.yaml`
 - Human Guide: `.dev/guides/ai-collaboration-guides/AI-REFACTORING-SKILL-BOUNDARY-GUIDE.md`
 - References:
-  - `.ai/assets/tech-stacks/dotnet-backend/references/CODE-REVIEW-INDEX.MD`
-  - `.ai/assets/skills/code-reviewer/references/checklist-reference.md`
+  - `.ai/assets/skills/code-reviewer/references/review-routing.yaml`
   - `.ai/assets/skills/code-reviewer/references/role-execution.md`
   - `.ai/assets/skills/code-reviewer/references/output-contract.md`
-  - `.ai/assets/tech-stacks/dotnet-backend/standards/CODE-REVIEW-CHECKLIST.md`
-  - `.dev/standards/ASSESSMENT-ARTIFACT-POLICY.md`
 - Report Template: `.ai/assets/skills/code-reviewer/templates/code-review-assessment-report-template.md`
 
 ## Wrapper Rules
@@ -35,7 +32,8 @@ If wrapper text and canonical spec differ, follow `.ai/assets/skills/code-review
 
 ## Validation Boundary
 
-Use software engineering reasoning and checklist comparison as the core review method.
+Select file-type and finding routes before loading their canonical standards, then use
+software engineering reasoning and a scoped checklist comparison as the core review method.
 Analyzer, architecture test, and dotnet test output may support the review when available.
 Do not treat transitional `.ai/scripts` grep-based C# checks as final semantic validation.
 Return ordinary reviews in conversation. Persist a review only when requested, using

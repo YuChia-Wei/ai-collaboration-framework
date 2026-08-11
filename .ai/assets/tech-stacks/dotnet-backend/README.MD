@@ -39,7 +39,8 @@ Excluded:
 
 - `references/BUILDING-BLOCKS-CLASS-INDEX.MD`
 - [BuildingBlocks reconstruction contract](standards/BUILDING-BLOCKS-RECONSTRUCTION-CONTRACT.md)
-- `references/CODE-REVIEW-INDEX.MD`
+- [Code Reviewer file-type and finding routing](../../skills/code-reviewer/references/review-routing.yaml)
+- `references/CODE-REVIEW-INDEX.MD` - `v0.13.x` compatibility entry only
 - `examples/` - canonical .NET backend profile example landing path
 - `source-includes/domain/` - optional interface-first Domain contracts and the
   reference-only `EsAggregateRoot<TId>` source include; adopting targets own compilation and behavior evidence
@@ -52,12 +53,11 @@ Excluded:
 ## Current Shared Materials
 
 - `shared/architecture-config.md`
-- `shared/code-review-checklist.md`
+- `shared/code-review-checklist.md` (`v0.13.x` compatibility entry only)
 - `shared/common-rules.md`
 - `shared/domain-rules.md`
 - `shared/dto-conventions.md`
 - `shared/testing-strategy.md` (active projection; `shared/testing-standards.md` is a compatibility entry)
-- `shared/testing-strategy.md`
 
 ## Rule Resolution
 

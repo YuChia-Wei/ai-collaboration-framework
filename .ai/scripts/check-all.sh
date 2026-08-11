@@ -1405,6 +1405,10 @@ run_command_check "python .ai/scripts/tests/test_coding_standards_integrity_cont
     "Coding Standards Integrity Claim Contract" \
     "required" "true" "true"
 
+run_command_check "python .ai/scripts/tests/test_code_reviewer_routing_contract.py -v" \
+    "Code Reviewer Routing Contract" \
+    "required" "true" "true"
+
 run_command_check "python .ai/scripts/tests/test_profile_projection_contract.py -v" \
     "Profile Projection Contract" \
     "required" "true" "true"

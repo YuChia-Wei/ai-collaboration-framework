@@ -188,10 +188,12 @@ Use `code-reviewer` only when reviewing .NET backend code or dotnet-backend impl
 
 When code review applies:
 
-1. Read `.ai/assets/tech-stacks/dotnet-backend/references/CODE-REVIEW-INDEX.MD`.
-2. Read `.ai/assets/skills/code-reviewer/references/checklist-reference.md`.
-3. Identify file type and read the matching checklist under `.dev/standards/`.
-4. Build a checklist comparison table.
+1. Read `.ai/assets/skills/code-reviewer/references/review-routing.yaml`.
+2. Select routes by explicit scope, then type hierarchy, then path; stop when
+   the applicable route is unresolved.
+3. Load only the selected routes' canonical references and applicable finding
+   rule IDs; do not add compatibility checklists or unrelated standards.
+4. Build a scoped checklist comparison table.
 5. Categorize issues as `CRITICAL`, `MUST FIX`, or `SHOULD FIX`.
 6. If tests apply in the target repo, run the narrowest meaningful test command.
 
