@@ -12,6 +12,7 @@
 - 將 framework version candidate、repository integration、hosted publication、validation phase 與 target upgrade 等治理詞彙綁回各自 canonical owner，分離 source-release procedure 與 portable target policy。
 - Package schema `2.2.0` 對 selected payload 的 local links、anchors、actionable commands、source-only lifecycle references、component dependencies、capability ownership 與 availability 採 fail-closed，ZIP 與 tar.gz 使用同一套 user-view contract。
 - 長時間 release／nightly／full-matrix validation 綁定 clean immutable commit 後交由低成本 external task；來源對話不輪詢，schema `1.1` 要求 task 在送出 callback 前驗證完整 dispatch／completion pair。
+- Pull request 的 candidate packaging 改以 PR base/head 間實際變更的 governed release record 選版；沒有候選時明確 not applicable，多筆候選則 fail closed，不再因歷史 `validated` release 或全域最高 SemVer 推導而誤選版本。
 
 ## Practical Effect
 
@@ -25,7 +26,7 @@ Framework 的可攜基線現在只要求受支援的 Python runtime 與宣告的
 
 ## Release Validation
 
-SDK-free、review routing、governance terminology 與 selected-payload deliveries 已由 PR #195 的五項 hosted checks 驗證，且六份 baseline／verification assessments 沒有留下 blocking finding。#194 的 schema `1.1` focused tests、AI-context validator 與真實 pre-send callback regression 已通過。最終 candidate archive、provider preflight、release-bound PR checks 與 merged-main pre-tag preparation 由 workflow `2026-08-12-v0-13-release-readiness` 固定與回讀。
+SDK-free、review routing、governance terminology 與 selected-payload deliveries 已由 PR #195 的五項 hosted checks 驗證，且六份 baseline／verification assessments 沒有留下 blocking finding。#194 的 schema `1.1` focused tests、AI-context validator 與真實 pre-send callback regression 已通過；#197 另以 Git-backed fixtures 驗證單一候選、無候選、多候選與 release record 刪除的選版邊界。最終 candidate archive、provider preflight、release-bound PR checks 與 merged-main pre-tag preparation 由 workflow `2026-08-12-v0-13-release-readiness` 固定與回讀。
 
 ## Publication Completion
 

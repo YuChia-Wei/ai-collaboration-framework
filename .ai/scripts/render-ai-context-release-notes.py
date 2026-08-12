@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import argparse
 import re
+import subprocess
 import sys
 from pathlib import Path
 
@@ -20,7 +21,11 @@ import yaml
 
 VERSION_RE = re.compile(r"^v\d+\.\d+\.\d+$")
 SHA_RE = re.compile(r"^[0-9a-f]{40}$")
+RELEASE_RECORD_PATH_RE = re.compile(
+    r"^\.dev/releases/(v\d+\.\d+\.\d+)/release\.yaml$"
+)
 ALLOWED_CANDIDATE_STATUSES = {"planned", "validated"}
+CANDIDATE_NOT_APPLICABLE_EXIT_CODE = 3
 BACKLOG_REF_RE = re.compile(r"^\.dev/backlog/items/([A-Z][A-Z0-9-]+)\.yaml$")
 ONLINE_ISSUE_REF_RE = re.compile(r"^#([1-9]\d*)$")
 PUBLISHED_FORBIDDEN_BODY_RE = re.compile(
@@ -38,6 +43,10 @@ PUBLISHED_REQUIRED_BODY_SECTIONS = (
 
 class ReleaseNotesError(ValueError):
     """Raised when release metadata cannot safely produce a release body."""
+
+
+class CandidateNotApplicable(ReleaseNotesError):
+    """Raised when a PR changes no eligible governed release candidate."""
 
 
 def load_mapping(path: Path) -> dict:
@@ -112,24 +121,100 @@ def included_work_ids(data: dict) -> list[str]:
     return ids
 
 
-def discover_candidate(root: Path) -> str:
+def normalize_git_sha(value: str, label: str) -> str:
+    sha = value.strip()
+    if not SHA_RE.fullmatch(sha):
+        raise ReleaseNotesError(
+            f"{label} must be a full lowercase 40-character Git SHA"
+        )
+    return sha
+
+
+def changed_release_record_paths(
+    root: Path, base_commit: str, head_commit: str
+) -> list[Path]:
+    base = normalize_git_sha(base_commit, "base commit")
+    head = normalize_git_sha(head_commit, "head commit")
+    try:
+        completed = subprocess.run(
+            [
+                "git",
+                "diff",
+                "--name-status",
+                "--no-renames",
+                f"{base}...{head}",
+                "--",
+                ".dev/releases/*/release.yaml",
+            ],
+            cwd=root,
+            check=False,
+            capture_output=True,
+            text=True,
+        )
+    except OSError as exc:
+        raise ReleaseNotesError(
+            f"cannot inspect changed release records: {exc}"
+        ) from exc
+    if completed.returncode != 0:
+        detail = (
+            completed.stderr.strip()
+            or completed.stdout.strip()
+            or "git diff failed"
+        )
+        raise ReleaseNotesError(f"cannot inspect changed release records: {detail}")
+
+    paths: list[Path] = []
+    for line in completed.stdout.splitlines():
+        fields = line.split("\t", 1)
+        if len(fields) != 2:
+            raise ReleaseNotesError(
+                f"unexpected changed release record entry: {line!r}"
+            )
+        status, relative_value = fields
+        if status == "D":
+            raise ReleaseNotesError(
+                f"changed release record must not be deleted: {relative_value}"
+            )
+        if status not in {"A", "M", "T"}:
+            raise ReleaseNotesError(
+                f"unsupported changed release record status {status!r}: {relative_value}"
+            )
+        if RELEASE_RECORD_PATH_RE.fullmatch(relative_value) is None:
+            raise ReleaseNotesError(
+                f"changed release record path is not canonical: {relative_value}"
+            )
+        paths.append(root / Path(relative_value))
+    return paths
+
+
+def discover_candidate(root: Path, base_commit: str, head_commit: str) -> str:
     candidates: list[str] = []
-    releases = root / ".dev" / "releases"
-    for path in sorted(releases.glob("v*/release.yaml")):
+    for path in changed_release_record_paths(root, base_commit, head_commit):
         data = load_mapping(path)
-        version = data.get("version")
+        relative = path.relative_to(root).as_posix()
+        match = RELEASE_RECORD_PATH_RE.fullmatch(relative)
+        if match is None:
+            raise ReleaseNotesError(f"release record path is not canonical: {relative}")
+        path_version = match.group(1)
         if (
-            isinstance(version, str)
-            and VERSION_RE.fullmatch(version)
-            and data.get("record_origin") == "governed"
+            data.get("record_origin") == "governed"
             and data.get("status") in ALLOWED_CANDIDATE_STATUSES
         ):
-            candidates.append(version)
-    if len(candidates) != 1:
-        joined = ", ".join(candidates) if candidates else "none"
+            if data.get("version") != path_version:
+                raise ReleaseNotesError(
+                    f"{relative} version does not match its release directory"
+                )
+            candidates.append(path_version)
+    candidates = sorted(set(candidates), key=version_tuple)
+    if not candidates:
+        raise CandidateNotApplicable(
+            "no governed planned or validated release record changed between "
+            f"{base_commit} and {head_commit}"
+        )
+    if len(candidates) > 1:
         raise ReleaseNotesError(
-            "candidate discovery requires exactly one governed planned or "
-            f"validated release; found {joined}"
+            "PR candidate selection requires exactly one changed governed planned or "
+            f"validated release record; found {', '.join(candidates)}"
         )
     return candidates[0]
 
@@ -184,8 +269,7 @@ def assert_published_body_source(
 
 
 def validate_release(root: Path, version: str, commit: str, mode: str) -> tuple[dict, Path, Path]:
-    if not SHA_RE.fullmatch(commit):
-        raise ReleaseNotesError("commit must be a full lowercase 40-character Git SHA")
+    commit = normalize_git_sha(commit, "commit")
     release_dir = root / ".dev" / "releases" / version
     record_path = release_dir / "release.yaml"
     data = load_mapping(record_path)
@@ -317,6 +401,8 @@ def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--root", type=Path, default=Path(__file__).resolve().parents[2])
     parser.add_argument("--version")
+    parser.add_argument("--base-commit")
+    parser.add_argument("--head-commit")
     parser.add_argument("--commit", required=True)
     parser.add_argument(
         "--mode", choices=("candidate", "publish", "published"), default="candidate"
@@ -327,7 +413,18 @@ def main() -> int:
 
     try:
         root = args.root.resolve()
-        version = normalize_version(args.version) if args.version else discover_candidate(root)
+        if args.version:
+            if args.base_commit or args.head_commit:
+                raise ReleaseNotesError(
+                    "explicit version must not be combined with base/head candidate selection"
+                )
+            version = normalize_version(args.version)
+        else:
+            if not args.base_commit or not args.head_commit:
+                raise ReleaseNotesError(
+                    "candidate selection requires both --base-commit and --head-commit"
+                )
+            version = discover_candidate(root, args.base_commit, args.head_commit)
         commit = args.commit.strip()
         data, notes, migration = validate_release(root, version, commit, args.mode)
         body = render_body(data, notes, migration, commit)
@@ -350,6 +447,9 @@ def main() -> int:
         }
         if args.github_output:
             append_github_outputs(args.github_output, outputs)
+    except CandidateNotApplicable as exc:
+        print(f"Release-note rendering not applicable: {exc}", file=sys.stderr)
+        return CANDIDATE_NOT_APPLICABLE_EXIT_CODE
     except (OSError, ReleaseNotesError) as exc:
         print(f"Release-note rendering failed: {exc}", file=sys.stderr)
         return 1
