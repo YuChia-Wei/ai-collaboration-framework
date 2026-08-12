@@ -24,6 +24,7 @@
 - Attempt 3 was explicitly workflow-authorized after proving `artifacts/v0.13.0/candidate` ignored and writable; it passed on clean commit `5ee9b2f5c6307795dd75627992e683144d56f391` and its callback was independently accepted.
 - Both real archives passed canonical package validation and external SHA-256 verification; 639 file members were byte-identical across ZIP and TAR, including the 633-file payload.
 - A dry-run and real apply from the verified published v0.12.0 payload passed. The apply changed 131 framework-managed operations and safely skipped the two acknowledged target-template reconciliations.
+- The version-owned candidate release-state gate passed at `ee348d79986279a9696609613855d77f63473fea` after live read-only Issue/Project reconciliation. A sandbox proxy-blocked attempt was not counted as passing.
 
 ## Residual Risk
 
