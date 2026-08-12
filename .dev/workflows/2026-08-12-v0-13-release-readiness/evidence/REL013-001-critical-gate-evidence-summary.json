@@ -1,0 +1,23 @@
+{
+  "dispositions": {
+    "cancelled": 0,
+    "executed": 9,
+    "not-selected": 52,
+    "reused": 0,
+    "timed-out": 0
+  },
+  "executed": 9,
+  "invocation_id": "20260812T020517Z-1638",
+  "not_selected": 52,
+  "outcomes": {
+    "blocked-by-environment": 0,
+    "deferred-with-owner": 0,
+    "failed": 0,
+    "not-applicable": 52,
+    "passed": 9
+  },
+  "profile": "release",
+  "records": 61,
+  "reused": 0,
+  "schema_version": "2.0.0"
+}

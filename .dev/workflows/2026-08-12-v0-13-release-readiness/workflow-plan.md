@@ -11,7 +11,7 @@
 - `current_phase`: `integration-validation`
 - `artifact_root`: `.dev/workflows/2026-08-12-v0-13-release-readiness`
 - `created_at`: `2026-08-12T07:20:06+08:00`
-- `updated_at`: `2026-08-12T08:10:31+08:00`
+- `updated_at`: `2026-08-12T10:23:22+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md`
 - `template_version`: `1.2.0`
 
@@ -57,11 +57,19 @@
 
 ## Resume Checkpoint
 
-- Last completed action: `python .ai/scripts/validate-ai-context-release-state.py --phase candidate --version v0.13.0` passed at clean commit `ee348d79986279a9696609613855d77f63473fea` with live read-only provider state.
+- Last completed action: the release profile behind `bash .ai/scripts/check-all.sh --critical` passed 9/9 executed checks at clean commit `a9a00dc29063fd5ed5ca86b15d62add11e02e798`; its external-task callback/dedup contract failed separately and remains explicitly unresolved.
 - Current task: `REL013-001`.
-- Exact next action: commit this candidate-gate receipt and delegate `bash .ai/scripts/check-all.sh --critical` from the resulting clean immutable commit using one schema-valid terminal callback.
+- Exact next action: commit the split release-gate and transport evidence, push the branch, open a ready PR, and require every hosted check to pass at the exact PR head before merge.
 - Validation already available: PR #195 passed five hosted checks; `ASM-20260811-002` found all #187 findings addressed; `ASM-20260811-006` found no new #193 blocking finding but correctly deferred the real candidate review.
-- Blockers: none at the candidate-review boundary. Tag creation and publication are intentionally excluded owner actions.
+- Blockers: none for the PR checkpoint after the owner's explicit acceptance of split evidence and no fourth local rerun. The callback/dedup defect remains residual risk and is not marked repaired. Tag creation and publication are intentionally excluded owner actions.
+
+## Critical Gate And Callback Disposition
+
+- Release gate execution: `passed` at `a9a00dc29063fd5ed5ca86b15d62add11e02e798`; the release runner executed 9 selected checks, passed all 9, and recorded 0 failed or blocked outcomes.
+- Profile selection: 52 registry checks were not selected by the release profile and are retained as `not-applicable`, not failures. The terminal compatibility summary separately called out Selected Git Commit Messages because `COMMIT_RANGE` was unset.
+- Callback transport: `failed`. The successful task's terminal payload did not exactly match its reported validated completion, and a delayed duplicate task overwrote the shared ignored completion path with a non-valid pending record.
+- Owner disposition: accept the independently retained release-runner evidence, retain callback/dedup as failed, stop local reruns, and proceed to exact-head hosted PR validation.
+- Durable evidence: `evidence/REL013-001-critical-gate-execution.yaml` and `evidence/REL013-001-critical-gate-transport.yaml`.
 
 ## Branch Lifecycle
 
@@ -71,3 +79,4 @@
 | 2 | `codex/2026-08-12-v0-13-release-readiness` | `main@afd54f63db51d88bb573e758535ae9692f8aa61a` | validated #194 checkpoint | `14911780b0b78364ba454c9999e237ed9038f5a9` | local callback regression | `2026-08-12T07:31:00+08:00` | Pin the pre-send contract before the real source-task callback | Reconcile #194 and continue `REL013-001` |
 | 3 | `codex/2026-08-12-v0-13-release-readiness` | `main@afd54f63db51d88bb573e758535ae9692f8aa61a` | candidate retry authorization | `5ee9b2f5c6307795dd75627992e683144d56f391` | local real candidate | `2026-08-12T07:54:30+08:00` | Preserve attempts 1/2 and authorize the bounded writable-output retry | Await #193 owner read-back of the passing candidate |
 | 4 | `codex/2026-08-12-v0-13-release-readiness` | `main@afd54f63db51d88bb573e758535ae9692f8aa61a` | candidate provider gate | `ee348d79986279a9696609613855d77f63473fea` | live read-only provider reconciliation | `2026-08-12T08:10:31+08:00` | Prove every included Issue and Project field satisfies candidate policy | Commit receipt, then delegate the critical gate |
+| 5 | `codex/2026-08-12-v0-13-release-readiness` | `main@afd54f63db51d88bb573e758535ae9692f8aa61a` | critical release gate subject | `a9a00dc29063fd5ed5ca86b15d62add11e02e798` | local owner-authorized host execution | `2026-08-12T10:05:34+08:00` | Preserve the 9/9 passing runner independently from the failed callback/dedup transport | Commit split evidence, push, open ready PR, and require exact-head hosted checks |

@@ -25,7 +25,9 @@
 - Both real archives passed canonical package validation and external SHA-256 verification; 639 file members were byte-identical across ZIP and TAR, including the 633-file payload.
 - A dry-run and real apply from the verified published v0.12.0 payload passed. The apply changed 131 framework-managed operations and safely skipped the two acknowledged target-template reconciliations.
 - The version-owned candidate release-state gate passed at `ee348d79986279a9696609613855d77f63473fea` after live read-only Issue/Project reconciliation. A sandbox proxy-blocked attempt was not counted as passing.
+- The release profile behind `--critical` passed 9/9 executed checks at clean commit `a9a00dc29063fd5ed5ca86b15d62add11e02e798`, with 0 failures and 0 environment blocks. Fifty-two registry checks were outside that profile and remain explicitly not selected.
+- The critical-gate callback/dedup transport failed independently: the successful task's terminal payload drifted from the reported validated record, and a delayed duplicate task overwrote the shared ignored completion path. The owner accepted the split execution/transport evidence, prohibited a fourth local rerun, and authorized exact-head hosted PR validation.
 
 ## Residual Risk
 
-The owner read back and accepted the real candidate, and #193 is closed with completed prepublication state. No tag is authorized until the final clean integrated `main` preparation command passes and prints the exact owner command.
+The owner read back and accepted the real candidate, and #193 is closed with completed prepublication state. The external-task callback/dedup defect remains unresolved and must not be represented as passing; it is not used as the release-runner oracle. No tag is authorized until the branch passes exact-head hosted checks, integrates through the selected merge-commit topology, and the final clean integrated `main` preparation command passes and prints the exact owner command.

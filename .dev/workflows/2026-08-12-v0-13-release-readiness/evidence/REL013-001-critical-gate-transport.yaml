@@ -1,0 +1,61 @@
+schema_version: "1.0"
+record_type: "external-task-transport-disposition"
+evidence_id: "REL013-001-critical-gate-transport"
+workflow_id: "2026-08-12-v0-13-release-readiness"
+task_id: "REL013-001"
+recorded_at: "2026-08-12T10:23:22+08:00"
+subject:
+  branch: "codex/2026-08-12-v0-13-release-readiness"
+  commit_sha: "a9a00dc29063fd5ed5ca86b15d62add11e02e798"
+  clean_worktree: true
+attempts:
+  - attempt: 1
+    delegation_id: "v0-13-critical-gate-01"
+    runtime_task_id: "019ff351-2682-7983-9301-08b3023bf587"
+    outcome: "blocked-by-environment"
+    gate_executed: false
+    cause: "The default Windows bash launcher failed to start with E_ACCESSDENIED."
+    completion_delivery: "failed-pre-send-validation"
+  - attempt: 2
+    delegation_id: "v0-13-critical-gate-02"
+    runtime_task_id: "019ff3af-3501-7e13-aaa5-b39e98090bc4"
+    outcome: "blocked-by-environment"
+    gate_executed: false
+    cause: "Git Bash failed before check execution because it could not create its signal pipe (Win32 error 5)."
+    completion_delivery: "schema-valid-callback-received"
+  - attempt: 3
+    delegation_id: "v0-13-critical-gate-03"
+    authorization: "Owner response '同意處理' authorized attempt 3 and one unsandboxed host execution."
+    runtime_tasks:
+      - runtime_task_id: "019ff3b6-cd9d-7df0-8ce8-7195e20cbc78"
+        gate_outcome: "passed"
+        gate_evidence: ".dev/workflows/2026-08-12-v0-13-release-readiness/evidence/REL013-001-critical-gate-execution.yaml"
+        delegated_pre_send_validation_reported: "passed"
+        terminal_payload_binding: "failed"
+        terminal_payload_defect: "The delivered observed_commit_sha omitted the 'ed' bytes present in the validated 40-character commit SHA."
+      - runtime_task_id: "019ff3b7-3c86-7e90-ae51-7df1843e7eab"
+        gate_outcome: "not-executed"
+        runtime_outcome: "blocked-by-environment"
+        cause: "A delayed duplicate task reached PowerShell argument parsing and stopped before Git Bash execution."
+        artifact_effect: "It overwrote the shared ignored completion path with a pending, non-valid completion record."
+duplicate_creation_cause:
+  outcome: "eventual-acceptance-after-create-thread-error"
+  detail: "The create-thread API returned a generic error; an immediate read-back found no task, but the first request was accepted later after the one bounded resend had also been accepted."
+source_side_validation:
+  callback_contract_outcome: "failed"
+  current_completion_ref: ".codex/external-task/v0-13-critical-gate-03-completion.yaml"
+  current_completion_sha256: "5f3d20f4007401f684e4d6c136f8fddd307f9fd72870e4dbd11becbfec9531b5"
+  current_completion_state: "blocked-by-environment with schema_validation pending"
+  exact_pair_validator_outcome: "failed"
+  release_gate_execution_outcome: "passed-separately"
+owner_disposition:
+  authorization_source: "Owner response '同意' after the split execution/transport finding."
+  authorized_at: "2026-08-12T10:23:22+08:00"
+  release_gate: "accept the independently retained 9/9 passing runner evidence"
+  callback_transport: "retain as failed; do not claim repair or closure"
+  rerun: "do not execute a fourth local critical gate"
+  next_action: "Commit the split evidence, push the workflow branch, open a ready PR, and require hosted checks to pass at the exact PR head."
+  exclusions:
+    - "No tag creation or push"
+    - "No GitHub Release or asset publication"
+    - "No relabeling of callback/dedup failure as passed"
