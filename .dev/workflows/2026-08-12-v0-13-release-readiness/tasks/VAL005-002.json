@@ -8,10 +8,10 @@
   "owner_skill": "ai-context-governance",
   "status": "completed",
   "created_at": "2026-08-12T07:20:06+08:00",
-  "updated_at": "2026-08-12T07:31:00+08:00",
+  "updated_at": "2026-08-12T16:56:34+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-5.6-sol",
-  "reasoning_effort": "high",
+  "reasoning_effort": "max",
   "finding_ids": ["#194"],
   "scope": {
     "target": "Schema-valid pre-send validation for every delegated terminal completion callback",
@@ -69,6 +69,12 @@
     ],
     "finding_status": "resolved",
     "residual_risk": "A runtime can still violate the contract, but any missing, failed, or drifting pre-send receipt now fails closed instead of being accepted as passing evidence.",
-    "follow_up_needed": false
+    "follow_up_needed": false,
+    "attribution_reconciliation": {
+      "outcome": "corrected",
+      "primary_execution": "OpenAI Codex (gpt-5.6-sol, max)",
+      "external_callback_evidence": "OpenAI Codex Sub-Agent (gpt-5.6-luna, high)",
+      "evidence": ".dev/workflows/2026-08-12-v0-13-release-readiness/evidence/REL013-001-ai-attribution-reconciliation.yaml"
+    }
   }
 }

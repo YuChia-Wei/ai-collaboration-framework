@@ -9,10 +9,10 @@
   "title": "Prepare REL-v0.13.0 terminal pre-tag readiness",
   "status": "in_progress",
   "created_at": "2026-08-12T07:20:06+08:00",
-  "updated_at": "2026-08-12T10:23:22+08:00",
+  "updated_at": "2026-08-12T16:56:34+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/release-publication/release-publication-task.json",
   "model": "gpt-5.6-sol",
-  "reasoning_effort": "high",
+  "reasoning_effort": "max",
   "finding_ids": ["#187", "#193", "#194", "#61"],
   "scope": {
     "release_id": "REL-v0.13.0",
@@ -44,7 +44,7 @@
       "python .ai/scripts/prepare-ai-context-release.py --version v0.13.0 via schema-valid frozen external task"
     ],
     "last_completed_step": "Accepted the independently retained 9/9 passing release runner at a9a00dc29063fd5ed5ca86b15d62add11e02e798 while retaining the external callback/dedup outcome as failed",
-    "next_action": "Commit the split evidence, push the workflow branch, open a ready PR, and require every hosted check to pass at the exact PR head"
+    "next_action": "Complete the evidence-preserving attribution merge, validate the corrected first-parent range, push the workflow branch, open a ready PR, and require every hosted check to pass at the exact PR head"
   },
   "results": {
     "candidate_build_attempts": [
@@ -131,6 +131,14 @@
       ],
       "owner_disposition": "accept split evidence, stop local reruns, and proceed to exact-head hosted PR validation",
       "evidence": ".dev/workflows/2026-08-12-v0-13-release-readiness/evidence/REL013-001-critical-gate-transport.yaml"
+    },
+    "ai_attribution_reconciliation": {
+      "outcome": "corrected-first-parent-built",
+      "primary_execution": "OpenAI Codex (gpt-5.6-sol, max)",
+      "external_execution": "OpenAI Codex Sub-Agent (gpt-5.6-luna, high) on commits retaining delegated evidence",
+      "original_evidence_head": "4dcf2c94a2fa2a625c8e6e35d592af2bbe0c024a",
+      "corrected_first_parent_head": "82ba7e73c1b389d492f3c24fe24aaafb80479222",
+      "evidence": ".dev/workflows/2026-08-12-v0-13-release-readiness/evidence/REL013-001-ai-attribution-reconciliation.yaml"
     }
   }
 }
