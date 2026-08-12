@@ -47,10 +47,19 @@ Each governed version uses `.dev/releases/<version>/`:
 
 - `release.yaml`: machine-readable source identity, source status,
   compatibility, planning, and evidence locator;
-- `release-notes.md`: authored changes, compatibility, validation, and known
-  limitations;
+- `release-notes.md`: publication-ready authored changes, compatibility,
+  validation, and known limitations;
 - `migration-guide.md`: source-version-aware target migration actions;
 - `release-phase-checks.yaml`: version-owned sanctioned validation commands.
+
+From `v0.13.0` onward, authored release notes are phase-neutral. They do not
+contain source candidate status, tag-handoff progress, pending publication, or
+future hosted-reconciliation claims. Those mutable states belong to
+`release.yaml`, workflow evidence, Issues, and Project state. Durable status
+that consumers need after publication, such as beta, deprecated, withdrawn, or
+support limitations, remains valid release-note content. Candidate review must
+therefore review the publication-ready wording rather than a phase-specific
+draft that becomes stale when the tag workflow succeeds.
 
 Instantiate the placeholder-only release-publication templates. Never copy a
 previous version directory, its run IDs, timestamps, commit, or observed

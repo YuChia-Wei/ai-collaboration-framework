@@ -1,9 +1,5 @@
 # REL-v0.13.0 — SDK-Free 基線、漸進式檢閱與封閉的發行包
 
-## Status
-
-已驗證的 framework version candidate。Publication 仍需 repository owner 在最終接受的 `main` commit 上建立並推送 annotated `v0.13.0` tag。
-
 ## Highlights
 
 - 將 framework-owned required checks 改為 SDK-free：source release 不再需要安裝 .NET SDK、restore Roslyn/NuGet，或建置 framework 自有的 `.csproj`。
@@ -27,7 +23,3 @@ Framework 的可攜基線現在只要求受支援的 Python runtime 與宣告的
 ## Release Validation
 
 SDK-free、review routing、governance terminology 與 selected-payload deliveries 已由 PR #195 的五項 hosted checks 驗證，且六份 baseline／verification assessments 沒有留下 blocking finding。#194 的 schema `1.1` focused tests、AI-context validator 與真實 pre-send callback regression 已通過；#197 另以 Git-backed fixtures 驗證單一候選、無候選、多候選與 release record 刪除的選版邊界。最終 candidate archive、provider preflight、release-bound PR checks 與 merged-main pre-tag preparation 由 workflow `2026-08-12-v0-13-release-readiness` 固定與回讀。
-
-## Publication Completion
-
-Owner 推送 exact annotated tag 後，tag-triggered hosted workflow 才會建立 GitHub Release、上傳四個 governed assets、將 Included Work 的 `Published in` 更新為 `v0.13.0`，並完成 coordination Issue #61。Tagged source record 維持 `status: validated`，不建立 post-tag source closeout commit。

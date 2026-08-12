@@ -28,13 +28,22 @@ ALLOWED_CANDIDATE_STATUSES = {"planned", "validated"}
 CANDIDATE_NOT_APPLICABLE_EXIT_CODE = 3
 BACKLOG_REF_RE = re.compile(r"^\.dev/backlog/items/([A-Z][A-Z0-9-]+)\.yaml$")
 ONLINE_ISSUE_REF_RE = re.compile(r"^#([1-9]\d*)$")
-PUBLISHED_FORBIDDEN_BODY_RE = re.compile(
+PHASE_NEUTRAL_RELEASE_NOTES_FROM = (0, 13, 0)
+PHASE_OWNED_RELEASE_NOTE_SECTION_RE = re.compile(
+    r"^## (?:Status|Publication Completion)\s*$",
+    re.MULTILINE,
+)
+TRANSIENT_PUBLICATION_CLAIM_RE = re.compile(
     r"\bnot tagged or published\b|"
     r"\b(?:tag|publication|finalization).{0,240}\b(?:remain|remains)\s+unperformed\b|"
+    r"\bpublication\s+(?:still\s+)?requires?\b|"
+    r"\bpublication\s+(?:is\s+)?(?:still\s+)?pending\b|"
+    r"\bPublication\s+仍需\b|"
+    r"^Owner 推送.{0,240}後.{0,240}才會建立 GitHub Release|"
     r"^Not published\.",
     re.IGNORECASE | re.DOTALL | re.MULTILINE,
 )
-PUBLISHED_REQUIRED_BODY_SECTIONS = (
+LEGACY_PUBLISHED_REQUIRED_BODY_SECTIONS = (
     "## Status",
     "## Release Validation",
     "## Publication Completion",
@@ -254,17 +263,41 @@ def assert_published_body_source(
             "published mode requires validation.public_release_url for the tag"
         )
     text = notes.read_text(encoding="utf-8").strip()
-    missing = [section for section in PUBLISHED_REQUIRED_BODY_SECTIONS if section not in text]
-    if missing:
-        raise ReleaseNotesError(
-            "published release notes must contain phase-owned sections: "
-            + ", ".join(missing)
-        )
-    if "## Status\n\nPublished." not in text:
-        raise ReleaseNotesError("published release notes must state Published.")
-    if PUBLISHED_FORBIDDEN_BODY_RE.search(text):
+    if version_tuple(version) < PHASE_NEUTRAL_RELEASE_NOTES_FROM:
+        missing = [
+            section
+            for section in LEGACY_PUBLISHED_REQUIRED_BODY_SECTIONS
+            if section not in text
+        ]
+        if missing:
+            raise ReleaseNotesError(
+                "legacy published release notes must contain phase-owned sections: "
+                + ", ".join(missing)
+            )
+        if "## Status\n\nPublished." not in text:
+            raise ReleaseNotesError("legacy published release notes must state Published.")
+    if TRANSIENT_PUBLICATION_CLAIM_RE.search(text):
         raise ReleaseNotesError(
             "published release notes must not retain candidate-only publication claims"
+        )
+
+
+def assert_phase_neutral_release_notes(data: dict, notes: Path) -> None:
+    version = data.get("version")
+    if (
+        not isinstance(version, str)
+        or version_tuple(version) < PHASE_NEUTRAL_RELEASE_NOTES_FROM
+    ):
+        return
+    text = notes.read_text(encoding="utf-8").strip()
+    if PHASE_OWNED_RELEASE_NOTE_SECTION_RE.search(text):
+        raise ReleaseNotesError(
+            "v0.13.0+ release notes must be phase-neutral and must not contain "
+            "Status or Publication Completion sections"
+        )
+    if TRANSIENT_PUBLICATION_CLAIM_RE.search(text):
+        raise ReleaseNotesError(
+            "v0.13.0+ release notes must not retain candidate-only publication claims"
         )
 
 
@@ -330,6 +363,7 @@ def validate_release(root: Path, version: str, commit: str, mode: str) -> tuple[
     migration = resolve_artifact(
         artifacts.get("migration_guide"), release_dir, "migration_guide"
     )
+    assert_phase_neutral_release_notes(data, notes)
     if mode == "published":
         assert_published_body_source(data, notes, version, commit)
     return data, notes, migration

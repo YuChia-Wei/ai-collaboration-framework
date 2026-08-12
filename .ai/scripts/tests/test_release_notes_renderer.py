@@ -59,12 +59,24 @@ def published_release_record() -> dict:
     return data
 
 
+def phase_neutral_release_record() -> dict:
+    data = release_record("3.0.0", ["v0.12.0"])
+    data.update({"release_id": "REL-v0.13.0", "version": "v0.13.0"})
+    data["planning"] = {"github_issue_refs": ["#198"]}
+    return data
+
+
 class ReleaseNotesRendererTests(unittest.TestCase):
-    def write_release(self, root: Path, data: dict) -> None:
-        release = root / ".dev/releases/v0.5.0"
+    def write_release(
+        self,
+        root: Path,
+        data: dict,
+        notes_text: str = "# Authored notes\n",
+    ) -> None:
+        release = root / ".dev/releases" / data["version"]
         release.mkdir(parents=True)
         (release / "release.yaml").write_text(yaml.safe_dump(data), encoding="utf-8")
-        (release / "release-notes.md").write_text("# Authored notes\n", encoding="utf-8")
+        (release / "release-notes.md").write_text(notes_text, encoding="utf-8")
         (release / "migration-guide.md").write_text("# Migration\n", encoding="utf-8")
 
     def write_discovery_release(
@@ -220,6 +232,92 @@ class ReleaseNotesRendererTests(unittest.TestCase):
 
             with self.assertRaisesRegex(RENDERER.ReleaseNotesError, "candidate-only"):
                 RENDERER.validate_release(root, "v0.5.0", COMMIT, "published")
+
+    def test_gwt_008a_given_v013_candidate_with_phase_owned_section_when_validated_then_it_fails_closed(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            self.write_release(
+                root,
+                phase_neutral_release_record(),
+                "# REL-v0.13.0\n\n## Status\n\nValidated candidate.\n",
+            )
+
+            with self.assertRaisesRegex(RENDERER.ReleaseNotesError, "phase-neutral"):
+                RENDERER.validate_release(root, "v0.13.0", COMMIT, "candidate")
+
+    def test_gwt_008b_given_v013_publish_with_pending_claim_when_validated_then_it_fails_closed(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            self.write_release(
+                root,
+                phase_neutral_release_record(),
+                "# REL-v0.13.0\n\nPublication 仍需 repository owner 推送 tag。\n",
+            )
+
+            with self.assertRaisesRegex(RENDERER.ReleaseNotesError, "candidate-only"):
+                RENDERER.validate_release(root, "v0.13.0", COMMIT, "publish")
+
+    def test_gwt_008c_given_v013_publish_with_durable_consumer_status_when_validated_then_it_is_allowed(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            self.write_release(
+                root,
+                phase_neutral_release_record(),
+                "# REL-v0.13.0\n\n"
+                "## Support Status\n\n"
+                "Deprecated APIs remain documented for migration.\n",
+            )
+
+            data, notes, migration = RENDERER.validate_release(
+                root, "v0.13.0", COMMIT, "publish"
+            )
+            rendered = RENDERER.render_body(data, notes, migration, COMMIT)
+
+            self.assertIn("## Support Status", rendered)
+            self.assertIn("Deprecated APIs", rendered)
+
+    def test_gwt_008d_given_v013_publish_cli_with_pending_claim_when_run_then_it_fails_closed(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            self.write_release(
+                root,
+                phase_neutral_release_record(),
+                "# REL-v0.13.0\n\nPublication still requires the release tag.\n",
+            )
+
+            completed = subprocess.run(
+                [
+                    sys.executable,
+                    str(RENDERER_PATH),
+                    "--root",
+                    str(root),
+                    "--version",
+                    "v0.13.0",
+                    "--commit",
+                    COMMIT,
+                    "--mode",
+                    "publish",
+                    "--output",
+                    str(root / "release-body.md"),
+                ],
+                check=False,
+                capture_output=True,
+                text=True,
+            )
+
+            self.assertEqual(1, completed.returncode)
+            self.assertIn("candidate-only", completed.stderr)
+            self.assertFalse((root / "release-body.md").exists())
+
+    def test_gwt_008e_given_release_template_when_read_then_it_is_phase_neutral(self) -> None:
+        template = (
+            REPO_ROOT
+            / ".ai/assets/skills/ai-context-governance/templates/release-publication/release-notes.md"
+        ).read_text(encoding="utf-8")
+
+        self.assertNotIn("## Status", template)
+        self.assertNotIn("## Publication Completion", template)
+        self.assertIn("<publication-ready-release-summary>", template)
 
     def test_gwt_009_given_validated_history_when_pr_adds_one_candidate_then_changed_candidate_is_selected(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
