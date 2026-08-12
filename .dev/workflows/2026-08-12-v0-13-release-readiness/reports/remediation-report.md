@@ -10,7 +10,7 @@
 | --- | --- | --- | --- |
 | #187 / `ASM-20260811-001` | addressed, integrated, and closed | `ASM-20260811-002`, PR #195 hosted checks, live Issue/Project read-back | no prepublication action |
 | #194 | resolved, validated, and closed | schema 1.1, focused tests, fixed commit `1491178`, retained dispatch/completion, independent cross-record validation, live Issue/Project read-back | no prepublication action |
-| #193 | implementation complete, candidate review deferred | `ASM-20260811-006`, PR #195 | review the real v0.13 archive and close before prepublication |
+| #193 | addressed, owner-approved, and closed | `ASM-20260811-006`, real candidate report, comment `5260333539`, live Issue/Project read-back | no prepublication action |
 | #61 | release coordination | R2/R3/package implementation integrated | retain open through candidate and tag handoff; close after hosted publication |
 
 ## Validation
@@ -27,4 +27,4 @@
 
 ## Residual Risk
 
-Issue #193 remains open until the owner reads back the real candidate report. No tag is authorized until the final clean integrated `main` preparation command passes and prints the exact owner command.
+The owner read back and accepted the real candidate, and #193 is closed with completed prepublication state. No tag is authorized until the final clean integrated `main` preparation command passes and prints the exact owner command.

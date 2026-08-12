@@ -9,7 +9,7 @@
   "title": "Prepare REL-v0.13.0 terminal pre-tag readiness",
   "status": "in_progress",
   "created_at": "2026-08-12T07:20:06+08:00",
-  "updated_at": "2026-08-12T08:03:22+08:00",
+  "updated_at": "2026-08-12T08:08:57+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/release-publication/release-publication-task.json",
   "model": "gpt-5.6-sol",
   "reasoning_effort": "high",
@@ -43,8 +43,8 @@
       "python .ai/scripts/reconcile-ai-context-release-provider.py --phase preflight --version v0.13.0",
       "python .ai/scripts/prepare-ai-context-release.py --version v0.13.0 via schema-valid frozen external task"
     ],
-    "last_completed_step": "Built and independently validated the real v0.13.0 ZIP/TAR candidate, proved byte parity, and applied it from a clean published-v0.12.0 target with only the two declared target-template reconciliations skipped",
-    "next_action": "Obtain explicit owner read-back of reports/v0.13-package-candidate-user-view.md; only after approval record and close #193, update its Project fields, and rerun the candidate release-state gate"
+    "last_completed_step": "Recorded owner acceptance of the real candidate, closed #193 as completed, and read back its Project item as Done / Approved / P1 High / v0.13.0 / Not yet published",
+    "next_action": "Commit the owner and provider read-back, then run the v0.13.0 candidate release-state gate from the clean checkpoint"
   },
   "results": {
     "candidate_build_attempts": [
@@ -96,8 +96,12 @@
       "archive_validation": "passed",
       "zip_tar_byte_parity": "passed",
       "upgrade_apply_from_v0.12.0": "passed-pending-target-upgrader",
-      "issue_193_acceptance": "seven-passed-one-pending-owner-readback",
-      "owner_review": "pending"
+      "issue_193_acceptance": "eight-passed",
+      "owner_review": "approved",
+      "owner_authorization": "User response '可以繼續' on 2026-08-12",
+      "github_comment_id": 5260333539,
+      "github_issue_state": "closed-completed",
+      "project_readback": "Done / Approved / P1 High / v0.13.0 / Not yet published"
     }
   }
 }

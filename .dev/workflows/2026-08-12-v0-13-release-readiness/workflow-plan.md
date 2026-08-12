@@ -11,7 +11,7 @@
 - `current_phase`: `release-candidate-preparation`
 - `artifact_root`: `.dev/workflows/2026-08-12-v0-13-release-readiness`
 - `created_at`: `2026-08-12T07:20:06+08:00`
-- `updated_at`: `2026-08-12T08:03:22+08:00`
+- `updated_at`: `2026-08-12T08:08:57+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md`
 - `template_version`: `1.2.0`
 
@@ -57,11 +57,11 @@
 
 ## Resume Checkpoint
 
-- Last completed action: workflow-authorized attempt 3 built both real archives from clean commit `5ee9b2f5c6307795dd75627992e683144d56f391`; source-side schema validation, archive validation, checksum verification, ZIP/TAR byte parity, and a real published-v0.12.0-to-v0.13.0 apply journey all passed.
+- Last completed action: the owner accepted the real candidate with `可以繼續`; evidence comment `5260333539` was added, #193 closed as completed, and the Project item was read back `Done / Approved / P1 High / v0.13.0 / Not yet published`.
 - Current task: `REL013-001`.
-- Exact next action: present `reports/v0.13-package-candidate-user-view.md` and both local archives for explicit owner read-back; do not close #193 or mark its owner review approved before that decision.
+- Exact next action: commit the owner/provider read-back, run `python .ai/scripts/validate-ai-context-release-state.py --phase candidate --version v0.13.0`, then prepare the clean immutable critical-gate checkpoint.
 - Validation already available: PR #195 passed five hosted checks; `ASM-20260811-002` found all #187 findings addressed; `ASM-20260811-006` found no new #193 blocking finding but correctly deferred the real candidate review.
-- Blockers: only #193 owner read-back remains before prepublication Issue/Project reconciliation. Tag creation and publication are intentionally excluded owner actions.
+- Blockers: none at the candidate-review boundary. Tag creation and publication are intentionally excluded owner actions.
 
 ## Branch Lifecycle
 
