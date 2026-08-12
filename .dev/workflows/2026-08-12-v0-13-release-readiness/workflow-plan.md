@@ -11,7 +11,7 @@
 - `current_phase`: `release-candidate-preparation`
 - `artifact_root`: `.dev/workflows/2026-08-12-v0-13-release-readiness`
 - `created_at`: `2026-08-12T07:20:06+08:00`
-- `updated_at`: `2026-08-12T07:49:24+08:00`
+- `updated_at`: `2026-08-12T08:03:22+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md`
 - `template_version`: `1.2.0`
 
@@ -57,11 +57,11 @@
 
 ## Resume Checkpoint
 
-- Last completed action: candidate attempts 1 and 2 ended in preserved schema-valid failures: attempt 1 used an invalid profile selector; attempt 2 corrected the profile but hit write denial under `.codex/release/v0.13.0/candidate`. The source task independently validated both callbacks and proved `artifacts/v0.13.0/candidate` ignored and writable.
+- Last completed action: workflow-authorized attempt 3 built both real archives from clean commit `5ee9b2f5c6307795dd75627992e683144d56f391`; source-side schema validation, archive validation, checksum verification, ZIP/TAR byte parity, and a real published-v0.12.0-to-v0.13.0 apply journey all passed.
 - Current task: `REL013-001`.
-- Exact next action: commit the retained failure evidence and explicit workflow authorization for attempt 3, then dispatch one clean-commit build whose only correction is `--output artifacts/v0.13.0/candidate`.
+- Exact next action: present `reports/v0.13-package-candidate-user-view.md` and both local archives for explicit owner read-back; do not close #193 or mark its owner review approved before that decision.
 - Validation already available: PR #195 passed five hosted checks; `ASM-20260811-002` found all #187 findings addressed; `ASM-20260811-006` found no new #193 blocking finding but correctly deferred the real candidate review.
-- Blockers: #193 remains open pending the real archive user-view review. Tag creation and publication are intentionally excluded owner actions.
+- Blockers: only #193 owner read-back remains before prepublication Issue/Project reconciliation. Tag creation and publication are intentionally excluded owner actions.
 
 ## Branch Lifecycle
 
@@ -69,3 +69,4 @@
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | 1 | `codex/2026-08-12-v0-13-release-readiness` | `main@afd54f63db51d88bb573e758535ae9692f8aa61a` | workflow bootstrap | `fed4f2eaa42851fd8a9151586fbdc0c1c86332c7` | local | `2026-08-12T07:20:06+08:00` | Complete #194 hardening and exact v0.13 pre-tag readiness in one release-boundary delivery | Implement `VAL005-002`, then author the candidate |
 | 2 | `codex/2026-08-12-v0-13-release-readiness` | `main@afd54f63db51d88bb573e758535ae9692f8aa61a` | validated #194 checkpoint | `14911780b0b78364ba454c9999e237ed9038f5a9` | local callback regression | `2026-08-12T07:31:00+08:00` | Pin the pre-send contract before the real source-task callback | Reconcile #194 and continue `REL013-001` |
+| 3 | `codex/2026-08-12-v0-13-release-readiness` | `main@afd54f63db51d88bb573e758535ae9692f8aa61a` | candidate retry authorization | `5ee9b2f5c6307795dd75627992e683144d56f391` | local real candidate | `2026-08-12T07:54:30+08:00` | Preserve attempts 1/2 and authorize the bounded writable-output retry | Await #193 owner read-back of the passing candidate |

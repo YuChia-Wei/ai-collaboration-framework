@@ -1,0 +1,63 @@
+schema_version: "1.1"
+record_type: "external-task-completion"
+delegation_id: "v0-13-real-candidate-build-03"
+source_task_id: "019fee2e-80d3-72b1-9f34-f368c06126bc"
+delegated_task_id: "v0-13-real-candidate-build-03"
+subject:
+  expected_commit_sha: "5ee9b2f5c6307795dd75627992e683144d56f391"
+  observed_commit_sha: "5ee9b2f5c6307795dd75627992e683144d56f391"
+preflight:
+  commit_matches: true
+  clean_worktree: true
+execution:
+  working_directory: "C:/Github/YuChia/ai-collaboration-prompts-dotnet-backend"
+  argv:
+    - "python"
+    - ".ai/scripts/build-ai-context-package.py"
+    - "--ref"
+    - "5ee9b2f5c6307795dd75627992e683144d56f391"
+    - "--version"
+    - "v0.13.0"
+    - "--output"
+    - "artifacts/v0.13.0/candidate"
+    - "--profile"
+    - ".ai/distribution/profiles/dotnet-backend.yaml"
+    - "--previous-version"
+    - "v0.12.0"
+    - "--previous-files"
+    - ".codex/release/v0.13.0/source-v0.12.0/extracted/ai-context-dotnet-backend-v0.12.0/metadata/files.yaml"
+timing:
+  started_at: "2026-08-12T07:54:25.30+08:00"
+  completed_at: "2026-08-12T07:54:30.69+08:00"
+  duration_seconds: 5.39
+result:
+  outcome: "passed"
+  exit_code: 0
+  counts: null
+evidence:
+  refs:
+    - "artifacts/v0.13.0/candidate/ai-context-dotnet-backend-v0.13.0.zip"
+    - "artifacts/v0.13.0/candidate/ai-context-dotnet-backend-v0.13.0.tar.gz"
+    - "artifacts/v0.13.0/candidate/ai-context-dotnet-backend-v0.13.0.zip.sha256"
+    - "artifacts/v0.13.0/candidate/ai-context-dotnet-backend-v0.13.0.tar.gz.sha256"
+    - ".codex/release/v0.13.0/source-v0.12.0/extracted/ai-context-dotnet-backend-v0.12.0/metadata/files.yaml"
+  bounded_output: "Built ai-context-dotnet-backend-v0.13.0 from 5ee9b2f5c6307795dd75627992e683144d56f391; ZIP and tar.gz candidates emitted; exit code 0."
+final_state:
+  clean_worktree: true
+  tracked_changes: []
+delivery:
+  mode: "source-task-callback"
+  destination: "source-task"
+  terminal_report_number: 1
+  schema_validation:
+    outcome: "passed"
+    exit_code: 0
+    validator_argv:
+      - "python"
+      - ".ai/assets/skills/software-development-orchestrator/scripts/validate-external-task-delegation.py"
+      - ".codex/external-task/v0-13-real-candidate-build-03-completion.yaml"
+      - "--dispatch"
+      - ".codex/external-task/v0-13-real-candidate-build-03-dispatch.yaml"
+    dispatch_ref: ".codex/external-task/v0-13-real-candidate-build-03-dispatch.yaml"
+    completion_ref: ".codex/external-task/v0-13-real-candidate-build-03-completion.yaml"
+    payload_binding: "exact-validated-completion-record"
