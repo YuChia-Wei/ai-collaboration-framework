@@ -42,6 +42,8 @@ capability_contracts:
         primary_delivery_modes: [source-task-callback, parent-event-wait]
         fallback_delivery_modes: [parent-event-wait, single-terminal-readback]
         parent_wait_timeout_state: pending-awaiting-completion
+        pre_send_completion_validation: required
+        callback_payload: exact-validated-completion-record
       parallelization_requires: [dependency-dag, artifact-isolation, bounded-concurrency, deterministic-evidence, fail-closed-cancellation]
 orchestration_contract:
   activation:

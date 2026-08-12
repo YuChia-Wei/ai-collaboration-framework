@@ -38,7 +38,7 @@ SHA = "5" * 40
 
 def valid_dispatch() -> dict:
     return {
-        "schema_version": "1.0",
+        "schema_version": "1.1",
         "record_type": "external-task-dispatch",
         "delegation_id": "pr-195-hosted-gate-01",
         "task_kind": "long-running-validation",
@@ -75,6 +75,20 @@ def valid_dispatch() -> dict:
             "progress_updates": "terminal-only",
             "max_terminal_reports": 1,
             "report_schema": "same-contract#completion",
+            "pre_send_validation": {
+                "required": True,
+                "validator_argv": [
+                    "python",
+                    ".ai/assets/skills/software-development-orchestrator/scripts/validate-external-task-delegation.py",
+                    ".external-task/pr-195-hosted-gate-01-completion.yaml",
+                    "--dispatch",
+                    ".external-task/pr-195-hosted-gate-01-dispatch.yaml",
+                ],
+                "dispatch_ref": ".external-task/pr-195-hosted-gate-01-dispatch.yaml",
+                "completion_ref": ".external-task/pr-195-hosted-gate-01-completion.yaml",
+                "failure_action": "do-not-deliver-terminal-report",
+                "payload_binding": "exact-validated-completion-record",
+            },
         },
         "stop_conditions": [
             "preflight mismatch",
@@ -86,7 +100,7 @@ def valid_dispatch() -> dict:
 
 def valid_completion() -> dict:
     return {
-        "schema_version": "1.0",
+        "schema_version": "1.1",
         "record_type": "external-task-completion",
         "delegation_id": "pr-195-hosted-gate-01",
         "source_task_id": "source-019f",
@@ -116,6 +130,20 @@ def valid_completion() -> dict:
             "mode": "source-task-callback",
             "destination": "source-task",
             "terminal_report_number": 1,
+            "schema_validation": {
+                "outcome": "passed",
+                "exit_code": 0,
+                "validator_argv": [
+                    "python",
+                    ".ai/assets/skills/software-development-orchestrator/scripts/validate-external-task-delegation.py",
+                    ".external-task/pr-195-hosted-gate-01-completion.yaml",
+                    "--dispatch",
+                    ".external-task/pr-195-hosted-gate-01-dispatch.yaml",
+                ],
+                "dispatch_ref": ".external-task/pr-195-hosted-gate-01-dispatch.yaml",
+                "completion_ref": ".external-task/pr-195-hosted-gate-01-completion.yaml",
+                "payload_binding": "exact-validated-completion-record",
+            },
         },
     }
 
@@ -260,6 +288,39 @@ class ExternalTaskDelegationContractTests(unittest.TestCase):
             with mock.patch.object(CONTEXT, "CAPABILITY_PROFILE", path):
                 CONTEXT.validate_capability_profile(skills, errors)
         self.assertTrue(any("test-execution.long_running" in error for error in errors))
+
+    def test_gwt_012_given_dispatch_without_mandatory_pre_send_validation_when_validated_then_it_is_rejected(self) -> None:
+        dispatch = valid_dispatch()
+        del dispatch["completion_delivery"]["pre_send_validation"]
+        errors = DELEGATION.validate_dispatch(dispatch, SCHEMA)
+        self.assertTrue(
+            any("pre_send_validation is required" in error for error in errors)
+        )
+
+    def test_gwt_013_given_completion_without_passing_schema_validation_when_validated_then_it_is_rejected(self) -> None:
+        completion = valid_completion()
+        completion["delivery"]["schema_validation"]["outcome"] = "failed"
+        completion["delivery"]["schema_validation"]["exit_code"] = 1
+        errors = DELEGATION.validate_completion(completion, SCHEMA, valid_dispatch())
+        self.assertTrue(
+            any("schema_validation.outcome must be passed" in error for error in errors)
+        )
+        self.assertTrue(
+            any("schema_validation.exit_code must be zero" in error for error in errors)
+        )
+
+    def test_gwt_014_given_validated_completion_record_drift_when_cross_checked_then_it_is_rejected(self) -> None:
+        completion = valid_completion()
+        completion["delivery"]["schema_validation"]["completion_ref"] = (
+            ".external-task/other-completion.yaml"
+        )
+        errors = DELEGATION.validate_completion(completion, SCHEMA, valid_dispatch())
+        self.assertTrue(
+            any(
+                "schema_validation.completion_ref must match dispatch" in error
+                for error in errors
+            )
+        )
 
 
 if __name__ == "__main__":

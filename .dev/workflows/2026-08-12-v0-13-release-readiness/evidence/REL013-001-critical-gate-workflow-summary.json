@@ -1,0 +1,26 @@
+{
+  "executed_results": 9,
+  "not_selected_results": 52,
+  "observability": {
+    "export_status": "unavailable",
+    "trace_id": null
+  },
+  "profile": "release",
+  "retry_count": 0,
+  "reused_results": 0,
+  "schema_version": "1.0.0",
+  "segments": {
+    "active_execution_ms": 11444,
+    "approval_wait_ms": null,
+    "environment_retry_ms": null,
+    "external_wait_ms": null,
+    "unknown_ms": 4556
+  },
+  "sub_agents": {
+    "availability": "unavailable",
+    "value": null
+  },
+  "validator_invocations": 61,
+  "wall_span_ms": 16000,
+  "workflow_id": null
+}

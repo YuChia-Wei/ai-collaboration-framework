@@ -4,6 +4,8 @@
 from __future__ import annotations
 
 import importlib.util
+import subprocess
+import sys
 import tempfile
 import unittest
 from pathlib import Path
@@ -19,6 +21,17 @@ if SPEC is None or SPEC.loader is None:
 RENDERER = importlib.util.module_from_spec(SPEC)
 SPEC.loader.exec_module(RENDERER)
 COMMIT = "a" * 40
+
+
+def git(root: Path, *args: str) -> str:
+    completed = subprocess.run(
+        ["git", *args],
+        cwd=root,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    return completed.stdout.strip()
 
 
 def release_record(migration_schema: str, sources: list[str]) -> dict:
@@ -53,6 +66,38 @@ class ReleaseNotesRendererTests(unittest.TestCase):
         (release / "release.yaml").write_text(yaml.safe_dump(data), encoding="utf-8")
         (release / "release-notes.md").write_text("# Authored notes\n", encoding="utf-8")
         (release / "migration-guide.md").write_text("# Migration\n", encoding="utf-8")
+
+    def write_discovery_release(
+        self,
+        root: Path,
+        version: str,
+        *,
+        status: str = "validated",
+        record_origin: str = "governed",
+    ) -> None:
+        release = root / ".dev" / "releases" / version
+        release.mkdir(parents=True, exist_ok=True)
+        data = {
+            "schema_version": "1.0",
+            "release_id": f"REL-{version}",
+            "version": version,
+            "status": status,
+            "record_origin": record_origin,
+        }
+        (release / "release.yaml").write_text(
+            yaml.safe_dump(data, sort_keys=False),
+            encoding="utf-8",
+        )
+
+    def initialize_git_repository(self, root: Path) -> None:
+        git(root, "init", "-q")
+        git(root, "config", "user.name", "Release fixture")
+        git(root, "config", "user.email", "release-fixture@example.invalid")
+
+    def commit_all(self, root: Path, message: str) -> str:
+        git(root, "add", ".")
+        git(root, "commit", "-qm", message)
+        return git(root, "rev-parse", "HEAD")
 
     def test_gwt_001_given_schema_2_multi_source_candidate_when_validated_then_renders(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
@@ -175,6 +220,92 @@ class ReleaseNotesRendererTests(unittest.TestCase):
 
             with self.assertRaisesRegex(RENDERER.ReleaseNotesError, "candidate-only"):
                 RENDERER.validate_release(root, "v0.5.0", COMMIT, "published")
+
+    def test_gwt_009_given_validated_history_when_pr_adds_one_candidate_then_changed_candidate_is_selected(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            self.initialize_git_repository(root)
+            self.write_discovery_release(root, "v0.12.0")
+            base = self.commit_all(root, "validated historical release")
+
+            self.write_discovery_release(root, "v0.13.0")
+            head = self.commit_all(root, "add current candidate")
+
+            self.assertEqual(
+                "v0.13.0",
+                RENDERER.discover_candidate(root, base, head),
+            )
+
+    def test_gwt_010_given_validated_history_when_pr_changes_no_release_record_then_packaging_is_not_applicable(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            self.initialize_git_repository(root)
+            self.write_discovery_release(root, "v0.12.0")
+            base = self.commit_all(root, "validated historical release")
+
+            (root / "README.md").write_text("tooling-only change\n", encoding="utf-8")
+            head = self.commit_all(root, "change tooling only")
+
+            with self.assertRaises(RENDERER.CandidateNotApplicable):
+                RENDERER.discover_candidate(root, base, head)
+            completed = subprocess.run(
+                [
+                    sys.executable,
+                    str(RENDERER_PATH),
+                    "--root",
+                    str(root),
+                    "--base-commit",
+                    base,
+                    "--head-commit",
+                    head,
+                    "--commit",
+                    head,
+                    "--output",
+                    str(root / "release-body.md"),
+                ],
+                check=False,
+                capture_output=True,
+                text=True,
+            )
+            self.assertEqual(
+                RENDERER.CANDIDATE_NOT_APPLICABLE_EXIT_CODE,
+                completed.returncode,
+                completed.stdout + completed.stderr,
+            )
+            self.assertIn("not applicable", completed.stderr)
+
+    def test_gwt_011_given_pr_changes_multiple_candidates_when_selected_then_it_fails_closed(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            self.initialize_git_repository(root)
+            self.write_discovery_release(root, "v0.12.0")
+            base = self.commit_all(root, "validated historical release")
+
+            self.write_discovery_release(root, "v0.13.0")
+            self.write_discovery_release(root, "v0.14.0", status="planned")
+            head = self.commit_all(root, "add two candidates")
+
+            with self.assertRaisesRegex(
+                RENDERER.ReleaseNotesError,
+                "found v0.13.0, v0.14.0",
+            ):
+                RENDERER.discover_candidate(root, base, head)
+
+    def test_gwt_012_given_pr_deletes_a_release_record_when_selected_then_it_fails_closed(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            self.initialize_git_repository(root)
+            self.write_discovery_release(root, "v0.12.0")
+            base = self.commit_all(root, "validated historical release")
+
+            (root / ".dev/releases/v0.12.0/release.yaml").unlink()
+            head = self.commit_all(root, "delete release record")
+
+            with self.assertRaisesRegex(
+                RENDERER.ReleaseNotesError,
+                "must not be deleted",
+            ):
+                RENDERER.discover_candidate(root, base, head)
 
 
 if __name__ == "__main__":

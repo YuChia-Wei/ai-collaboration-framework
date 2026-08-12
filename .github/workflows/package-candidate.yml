@@ -48,6 +48,8 @@ jobs:
         id: release
         env:
           REQUESTED_VERSION: ${{ inputs.version }}
+          PR_BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          PR_HEAD_SHA: ${{ github.event.pull_request.head.sha }}
         run: |
           set +e
           args=(
@@ -58,16 +60,19 @@ jobs:
           )
           if [[ -n "${REQUESTED_VERSION}" ]]; then
             args+=(--version "${REQUESTED_VERSION}")
+          else
+            args+=(--base-commit "${PR_BASE_SHA}" --head-commit "${PR_HEAD_SHA}")
           fi
           render_output="$(python .ai/scripts/render-ai-context-release-notes.py "${args[@]}" 2>&1)"
           render_status=$?
           set -e
           if [[ ${render_status} -ne 0 ]]; then
-            if [[ "${GITHUB_EVENT_NAME}" == "pull_request" \
-              && -z "${REQUESTED_VERSION}" \
-              && "${render_output}" == *"candidate discovery requires exactly one governed planned or validated release; found none"* ]]; then
+            if [[ ${render_status} -eq 3 \
+              && "${GITHUB_EVENT_NAME}" == "pull_request" \
+              && -z "${REQUESTED_VERSION}" ]]; then
               echo "available=false" >> "${GITHUB_OUTPUT}"
-              echo "::notice::No governed release candidate exists; packaging is not applicable to this pull request."
+              printf '%s\n' "${render_output}"
+              echo "::notice::No eligible governed release record changed; candidate packaging is not applicable to this pull request."
               exit 0
             fi
             printf '%s\n' "${render_output}" >&2

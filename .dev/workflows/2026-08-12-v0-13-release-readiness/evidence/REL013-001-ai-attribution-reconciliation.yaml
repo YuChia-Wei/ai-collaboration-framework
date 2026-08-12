@@ -1,0 +1,88 @@
+schema_version: "1.0"
+record_type: "ai-attribution-reconciliation"
+workflow_id: "2026-08-12-v0-13-release-readiness"
+task_id: "REL013-001"
+recorded_at: "2026-08-12T16:56:34+08:00"
+updated_at: "2026-08-12T17:48:18+08:00"
+authorization:
+  source: "Repository owner message '你處理一下..' on 2026-08-12"
+  scope: "Correct the v0.13 workflow branch AI attribution without force-push or loss of evidence-bound Git SHAs."
+owner_history_rewrite:
+  source: "Repository owner message '我已經自己調整好分支結果' on 2026-08-12"
+  checkpoint_head: "ff70dc38ab97d287dde9b5a3fe9f364a26b4c947"
+  outcome: "clean-linear-corrected-chain"
+  actor: "repository-owner"
+  original_chain_retention: "historical execution references only"
+  agent_force_push_authorized: false
+  future_agent_rule: "Explain any required force-push and obtain explicit authorization, or hand a prepared branch and exact owner commands back without pushing."
+primary_execution:
+  thread_id: "019fee2e-80d3-72b1-9f34-f368c06126bc"
+  runtime: "OpenAI Codex"
+  model: "gpt-5.6-sol"
+  reasoning_effort: "max"
+external_execution:
+  runtime: "OpenAI Codex Sub-Agent"
+  model: "gpt-5.6-luna"
+  reasoning_effort: "high"
+  materially_contributing_threads:
+    - "019ff328-1490-7cb3-87d1-13b3e246cbf9"
+    - "019ff332-81b2-76e3-972e-16ebcbbf6fa4"
+    - "019ff335-f530-7893-ab46-33d60edff1b7"
+    - "019ff33e-2087-7c82-88fc-b8db76e2c88e"
+    - "019ff3b6-cd9d-7df0-8ce8-7195e20cbc78"
+corrected_commits:
+  - original_sha: "fed4f2eaa42851fd8a9151586fbdc0c1c86332c7"
+    corrected_sha: "697b0d458812df31d4a30f4336f8ba6145069484"
+    contributors: ["OpenAI Codex (gpt-5.6-sol, max)"]
+  - original_sha: "14911780b0b78364ba454c9999e237ed9038f5a9"
+    corrected_sha: "a75fd3441dba02e1555a51dedb693cb1ee8eb443"
+    contributors: ["OpenAI Codex (gpt-5.6-sol, max)"]
+  - original_sha: "492aeff9cc75e18708891f0376b30115065a55bb"
+    corrected_sha: "1a50641bbb2a34c4e011321a06e45b5c67bc2a69"
+    contributors:
+      - "OpenAI Codex (gpt-5.6-sol, max)"
+      - "OpenAI Codex Sub-Agent (gpt-5.6-luna, high)"
+  - original_sha: "48130be3b443073e5583a9eb0a5cebdde7c267f2"
+    corrected_sha: "ea9a6ae941943fe3ae018d258313c55099ea2fe3"
+    contributors: ["OpenAI Codex (gpt-5.6-sol, max)"]
+  - original_sha: "5ee9b2f5c6307795dd75627992e683144d56f391"
+    corrected_sha: "df7cbd470e55fb28650a1d0d88f2f601bc7ee545"
+    contributors:
+      - "OpenAI Codex (gpt-5.6-sol, max)"
+      - "OpenAI Codex Sub-Agent (gpt-5.6-luna, high)"
+  - original_sha: "151d7f1580939843aec98d40f3f6e8b250cf5a39"
+    corrected_sha: "af3495eae0c714efc514bb5120f2b236abb70abb"
+    contributors:
+      - "OpenAI Codex (gpt-5.6-sol, max)"
+      - "OpenAI Codex Sub-Agent (gpt-5.6-luna, high)"
+  - original_sha: "ee348d79986279a9696609613855d77f63473fea"
+    corrected_sha: "9a72680a137caa85b87df4462cd5e2e8aa99b790"
+    contributors: ["OpenAI Codex (gpt-5.6-sol, max)"]
+  - original_sha: "a9a00dc29063fd5ed5ca86b15d62add11e02e798"
+    corrected_sha: "c4449b2f87947edaf13c4098bc35613aa27275c7"
+    contributors: ["OpenAI Codex (gpt-5.6-sol, max)"]
+  - original_sha: "4dcf2c94a2fa2a625c8e6e35d592af2bbe0c024a"
+    corrected_sha: "82ba7e73c1b389d492f3c24fe24aaafb80479222"
+    contributors:
+      - "OpenAI Codex (gpt-5.6-sol, max)"
+      - "OpenAI Codex Sub-Agent (gpt-5.6-luna, high)"
+topology:
+  strategy: "owner-rewritten-clean-linear-corrected-chain"
+  original_evidence_head: "4dcf2c94a2fa2a625c8e6e35d592af2bbe0c024a"
+  corrected_first_parent_head: "82ba7e73c1b389d492f3c24fe24aaafb80479222"
+  owner_rewritten_checkpoint: "ff70dc38ab97d287dde9b5a3fe9f364a26b4c947"
+  removed_preservation_merge: "9782bda97f6af354edcc3c14482b738a5f62103e"
+  first_parent_commit_count_at_checkpoint: 11
+  merge_commit_count_at_checkpoint: 0
+  force_push_required_after_owner_rewrite: false
+validation:
+  per_commit_validator: "passed-9-of-9"
+  tree_equivalence: "passed-9-of-9-original-to-corrected"
+  historical_workflow_range_validator: "passed-through-preservation-merge-11-of-11"
+  current_workflow_range_validator: "pending-after-issue-197-commit"
+  workflow_artifact_validator: "pending-after-issue-197-update"
+  ancestry:
+    corrected_first_parent_head_is_ancestor: true
+    original_evidence_head_is_ancestor: false
+    removed_preservation_merge_is_ancestor: false
+    local_matches_remote_at_owner_checkpoint: true

@@ -1,4 +1,4 @@
-schema_version: "1.0"
+schema_version: "1.1"
 contract_id: "external-task-delegation"
 purpose: "Provider-neutral dispatch and terminal-report envelopes for bounded work executed in a separate runtime task."
 prompt_transport:
@@ -48,13 +48,19 @@ dispatch:
     external_mutations: []
     secret_values: prohibited
   completion_delivery:
-    required: [primary, fallback, destination, progress_updates, max_terminal_reports, report_schema]
+    required: [primary, fallback, destination, progress_updates, max_terminal_reports, report_schema, pre_send_validation]
     primary_modes: [source-task-callback, parent-event-wait]
     fallback_modes: [parent-event-wait, single-terminal-readback, none]
     destination: source-task
     progress_updates: terminal-only
     max_terminal_reports: 1
     report_schema: "same-contract#completion"
+    pre_send_validation:
+      required: [required, validator_argv, dispatch_ref, completion_ref, failure_action, payload_binding]
+      required_value: true
+      validator_argv: "canonical delegation validator with completion_ref as record and --dispatch dispatch_ref"
+      failure_action: do-not-deliver-terminal-report
+      payload_binding: exact-validated-completion-record
   stop_conditions:
     minimum: 1
 completion:
@@ -91,10 +97,15 @@ completion:
   final_state:
     required: [clean_worktree, tracked_changes]
   delivery:
-    required: [mode, destination, terminal_report_number]
+    required: [mode, destination, terminal_report_number, schema_validation]
     modes: [source-task-callback, parent-event-wait, single-terminal-readback]
     destination: source-task
     terminal_report_number: 1
+    schema_validation:
+      required: [outcome, exit_code, validator_argv, dispatch_ref, completion_ref, payload_binding]
+      outcome: passed
+      exit_code: 0
+      payload_binding: exact-validated-completion-record
   delegated_task_id: "runtime task ID when exposed; otherwise the stable delegation_id"
 cross_record:
   required_equal:
@@ -114,6 +125,9 @@ transport_semantics:
   repeated_status_polling: prohibited
   source_task_progress_delivery: terminal-only
   runtime_local_progress: runtime-policy-owned-and-not-source-delivery
+  pre_send_completion_validation: required
+  post_validation_record_mutation: prohibited
+  callback_payload: exact-validated-completion-record
 security:
   secret_values_in_envelope: prohibited
   issue_project_merge_release_or_publication_mutation: separately-authorized-only

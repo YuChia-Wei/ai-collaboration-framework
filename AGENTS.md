@@ -84,6 +84,10 @@ Workflow artifact rules:
   execute repeated waits, status probes, or progress narration. Require exactly
   one schema-valid terminal report with source/delegated task IDs, commit,
   command, duration, outcome counts when available, and evidence.
+- Before delivery, the external task must persist the dispatch and completed
+  report as ignored artifacts, validate that exact pair with the canonical
+  validator, and send the validated completion record without changing it.
+  A missing or failed pre-send validation prohibits a passing callback.
 - Execution timeout, interruption, subject drift, missing terminal evidence,
   and blocked execution are never passed. A parent wait timeout remains
   pending. If callback delivery fails after terminal state, one terminal

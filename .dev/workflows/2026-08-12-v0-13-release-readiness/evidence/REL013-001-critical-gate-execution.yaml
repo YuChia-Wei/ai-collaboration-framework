@@ -1,0 +1,49 @@
+schema_version: "1.0"
+record_type: "release-gate-execution-evidence"
+evidence_id: "REL013-001-critical-gate-execution"
+workflow_id: "2026-08-12-v0-13-release-readiness"
+task_id: "REL013-001"
+recorded_at: "2026-08-12T10:23:22+08:00"
+subject:
+  branch: "codex/2026-08-12-v0-13-release-readiness"
+  commit_sha: "a9a00dc29063fd5ed5ca86b15d62add11e02e798"
+  clean_worktree: true
+execution:
+  argv:
+    - "C:/Program Files/Git/bin/bash.exe"
+    - ".ai/scripts/check-all.sh"
+    - "--critical"
+  compatibility_profile: "release"
+  environment_class: "windows-native"
+  runtime_task_id: "019ff3b6-cd9d-7df0-8ce8-7195e20cbc78"
+  invocation_id: "20260812T020517Z-1638"
+  started_at: "2026-08-12T10:05:21+08:00"
+  completed_at: "2026-08-12T10:05:34+08:00"
+  wall_span_ms: 16000
+result:
+  outcome: "passed"
+  exit_code: 0
+  selected: 9
+  executed: 9
+  passed: 9
+  failed: 0
+  blocked_by_environment: 0
+  not_selected: 52
+  explicit_terminal_not_applicable:
+    check: "Selected Git Commit Messages"
+    reason: "COMMIT_RANGE was not set for this fixed-commit release-profile invocation."
+evidence:
+  original_ignored_refs:
+    - "artifacts/validation/20260812T020517Z-1638/evidence-summary.json"
+    - "artifacts/validation/20260812T020517Z-1638/workflow-summary.json"
+    - "artifacts/validation/20260812T020517Z-1638/evidence.jsonl"
+  durable_refs:
+    - ".dev/workflows/2026-08-12-v0-13-release-readiness/evidence/REL013-001-critical-gate-evidence-summary.json"
+    - ".dev/workflows/2026-08-12-v0-13-release-readiness/evidence/REL013-001-critical-gate-workflow-summary.json"
+  source_sha256:
+    evidence_summary: "c62a23589b46e8392e7f83c00f24ff73de4455c114b7b1ad628e6a4d6d78c076"
+    workflow_summary: "fef0e0d6c59cb2f16e25d6f6a4b7365abf8abcbb7be0640e6d1768e0b0621e6"
+acceptance:
+  release_gate_execution: "accepted-passed"
+  external_task_callback_transport: "separately-failed"
+  interpretation: "The callback transport failure does not relabel the independently retained release-runner evidence, and the passing runner does not relabel the callback contract as passing."

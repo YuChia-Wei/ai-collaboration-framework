@@ -1,0 +1,174 @@
+{
+  "template_id": "ai-context-governance-release-publication-task",
+  "template_version": "1.1.0",
+  "template_created_at": "2026-07-24T13:35:00+08:00",
+  "template_updated_at": "2026-07-27T09:52:09+08:00",
+  "task_id": "REL013-001",
+  "workflow_id": "2026-08-12-v0-13-release-readiness",
+  "owner_skill": "ai-context-governance",
+  "title": "Prepare REL-v0.13.0 terminal pre-tag readiness",
+  "status": "in_progress",
+  "created_at": "2026-08-12T07:20:06+08:00",
+  "updated_at": "2026-08-12T17:48:18+08:00",
+  "template_source": ".ai/assets/skills/ai-context-governance/templates/release-publication/release-publication-task.json",
+  "model": "gpt-5.6-sol",
+  "reasoning_effort": "max",
+  "finding_ids": ["#187", "#193", "#194", "#197", "#61"],
+  "scope": {
+    "release_id": "REL-v0.13.0",
+    "release_record": ".dev/releases/v0.13.0/release.yaml",
+    "files": [
+      ".dev/releases/v0.13.0/**",
+      ".dev/releases/INDEX.MD",
+      ".ai/scripts/render-ai-context-release-notes.py",
+      ".ai/scripts/tests/test_release_notes_renderer.py",
+      ".ai/scripts/tests/test_ai_context_packaging.py",
+      ".github/workflows/package-candidate.yml",
+      ".dev/workflows/2026-08-12-v0-13-release-readiness/**"
+    ],
+    "out_of_scope": [
+      "creating, moving, deleting, recreating, or pushing Git tags",
+      "creating a GitHub Release or publishing assets",
+      "mutating an already published release"
+    ]
+  },
+  "execution": {
+    "steps": [
+      "Instantiate the release templates without copying a previous release instance",
+      "Bind exact included Issues and provider prepublication state",
+      "Bind pull-request candidate selection to eligible governed release records changed between the PR base and head",
+      "Build and review the governed ZIP and TAR candidate from the user-view boundary",
+      "Run candidate, hosted PR, provider-preflight, and final clean-main pre-tag gates",
+      "Report the generated annotated-tag command without executing it"
+    ],
+    "validation": [
+      "python .ai/scripts/validate-ai-context-release-state.py --phase candidate --version v0.13.0",
+      "python .ai/scripts/tests/test_release_notes_renderer.py -v",
+      "python .ai/scripts/tests/test_ai_context_packaging.py ReleaseWorkflowContractGwtTests.test_gwt_007_given_candidate_workflow_when_inspected_then_it_only_builds_read_only_artifacts -v",
+      "C:/Program Files/Git/bin/bash.exe .ai/scripts/check-all.sh --critical via owner-authorized host task (runner passed; callback transport failed and is recorded separately)",
+      "hosted PR checks",
+      "python .ai/scripts/reconcile-ai-context-release-provider.py --phase preflight --version v0.13.0",
+      "python .ai/scripts/prepare-ai-context-release.py --version v0.13.0 via schema-valid frozen external task"
+    ],
+    "last_completed_step": "Verified the owner's clean linear rewrite at ff70dc38ab97d287dde9b5a3fe9f364a26b4c947, preserved nine tree-equivalent historical execution mappings, focused-validated #197 changed-release candidate selection, and reconciled #197 to closed/completed provider state",
+    "next_action": "Commit the #197 batch, normal-push the exact head to PR #196, and require all hosted checks to pass before merge"
+  },
+  "results": {
+    "candidate_build_attempts": [
+      {
+        "attempt": 1,
+        "delegation_id": "v0-13-real-candidate-build-01",
+        "outcome": "failed",
+        "cause": "The profile selector was supplied as the profile name instead of the required repository-relative YAML path.",
+        "material_state_change_for_next_attempt": "Corrected --profile to .ai/distribution/profiles/dotnet-backend.yaml.",
+        "evidence": [
+          ".dev/workflows/2026-08-12-v0-13-release-readiness/evidence/REL013-001-candidate-build-01-dispatch.yaml",
+          ".dev/workflows/2026-08-12-v0-13-release-readiness/evidence/REL013-001-candidate-build-01-completion.yaml"
+        ]
+      },
+      {
+        "attempt": 2,
+        "delegation_id": "v0-13-real-candidate-build-02",
+        "outcome": "failed",
+        "cause": "The external runtime could read the governed inputs but did not have write permission for the ignored .codex candidate output directory.",
+        "material_state_change_for_next_attempt": "Proved the Git-ignored artifacts/v0.13.0/candidate root writable from the normal execution sandbox and removed the probe file.",
+        "evidence": [
+          ".dev/workflows/2026-08-12-v0-13-release-readiness/evidence/REL013-001-candidate-build-02-dispatch.yaml",
+          ".dev/workflows/2026-08-12-v0-13-release-readiness/evidence/REL013-001-candidate-build-02-completion.yaml"
+        ]
+      },
+      {
+        "attempt": 3,
+        "delegation_id": "v0-13-real-candidate-build-03",
+        "outcome": "passed",
+        "subject_commit": "5ee9b2f5c6307795dd75627992e683144d56f391",
+        "bounded_change": "Changed only the candidate output root to artifacts/v0.13.0/candidate after the workflow authorization and clean checkpoint.",
+        "evidence": [
+          ".dev/workflows/2026-08-12-v0-13-release-readiness/evidence/REL013-001-candidate-build-03-dispatch.yaml",
+          ".dev/workflows/2026-08-12-v0-13-release-readiness/evidence/REL013-001-candidate-build-03-completion.yaml"
+        ]
+      }
+    ],
+    "attempt_3_authorization": {
+      "authorized_by": "workflow",
+      "authorization_source": "REL013-001 under the owner's 2026-08-12 instruction to complete v0.13 through publication readiness",
+      "authorized_at": "2026-08-12T07:49:24+08:00",
+      "reason": "Two bounded executions exposed separate correctable invocation and output-ACL defects; both failures are preserved, both completion envelopes validate, and the next output root was independently proved ignored and writable.",
+      "bounded_change": "Change only --output from .codex/release/v0.13.0/candidate to artifacts/v0.13.0/candidate; retain the canonical profile YAML, v0.12.0 previous-version inventory, no-repair scope, and one terminal callback.",
+      "status": "consumed-by-passing-attempt"
+    },
+    "candidate_user_view_review": {
+      "report": ".dev/workflows/2026-08-12-v0-13-release-readiness/reports/v0.13-package-candidate-user-view.md",
+      "source_commit": "5ee9b2f5c6307795dd75627992e683144d56f391",
+      "archive_validation": "passed",
+      "zip_tar_byte_parity": "passed",
+      "upgrade_apply_from_v0.12.0": "passed-pending-target-upgrader",
+      "issue_193_acceptance": "eight-passed",
+      "owner_review": "approved",
+      "owner_authorization": "User response '可以繼續' on 2026-08-12",
+      "github_comment_id": 5260333539,
+      "github_issue_state": "closed-completed",
+      "project_readback": "Done / Approved / P1 High / v0.13.0 / Not yet published"
+    },
+    "candidate_release_state_gate": {
+      "command": "python .ai/scripts/validate-ai-context-release-state.py --phase candidate --version v0.13.0",
+      "subject_commit": "ee348d79986279a9696609613855d77f63473fea",
+      "outcome": "passed",
+      "provider_access": "live-read-only",
+      "sandbox_attempt": "blocked-by-environment-proxy-not-counted-as-pass"
+    },
+    "critical_release_gate": {
+      "command": "C:/Program Files/Git/bin/bash.exe .ai/scripts/check-all.sh --critical",
+      "subject_commit": "a9a00dc29063fd5ed5ca86b15d62add11e02e798",
+      "profile": "release",
+      "outcome": "passed",
+      "executed": 9,
+      "passed": 9,
+      "failed": 0,
+      "blocked_by_environment": 0,
+      "not_selected": 52,
+      "evidence": ".dev/workflows/2026-08-12-v0-13-release-readiness/evidence/REL013-001-critical-gate-execution.yaml"
+    },
+    "critical_gate_transport": {
+      "outcome": "failed",
+      "release_gate_effect": "none; release execution is recorded independently",
+      "causes": [
+        "successful terminal payload did not exactly match the reported validated completion",
+        "delayed duplicate task overwrote the shared ignored completion path with a pending non-valid record"
+      ],
+      "owner_disposition": "accept split evidence, stop local reruns, and proceed to exact-head hosted PR validation",
+      "evidence": ".dev/workflows/2026-08-12-v0-13-release-readiness/evidence/REL013-001-critical-gate-transport.yaml"
+    },
+    "ai_attribution_reconciliation": {
+      "outcome": "owner-rewritten-clean-linear-chain",
+      "primary_execution": "OpenAI Codex (gpt-5.6-sol, max)",
+      "external_execution": "OpenAI Codex Sub-Agent (gpt-5.6-luna, high) on commits retaining delegated evidence",
+      "original_evidence_head": "4dcf2c94a2fa2a625c8e6e35d592af2bbe0c024a",
+      "corrected_first_parent_head": "82ba7e73c1b389d492f3c24fe24aaafb80479222",
+      "owner_rewritten_checkpoint": "ff70dc38ab97d287dde9b5a3fe9f364a26b4c947",
+      "removed_preservation_merge": "9782bda97f6af354edcc3c14482b738a5f62103e",
+      "original_evidence_head_is_ancestor": false,
+      "removed_preservation_merge_is_ancestor": false,
+      "tree_equivalence": "passed-9-of-9-original-to-corrected",
+      "agent_force_push_authorized": false,
+      "future_force_push_rule": "Explain need and impact and obtain explicit owner authorization, or hand back a prepared branch and exact owner commands.",
+      "evidence": ".dev/workflows/2026-08-12-v0-13-release-readiness/evidence/REL013-001-ai-attribution-reconciliation.yaml"
+    },
+    "changed_release_binding": {
+      "issue": "#197",
+      "selection": "PR base/head changed governed release records only",
+      "zero_candidates": "not-applicable-exit-3",
+      "one_candidate": "selected-explicit-version",
+      "multiple_candidates": "fail-closed",
+      "deleted_release_record": "fail-closed",
+      "renderer_tests": "passed-13-of-13",
+      "workflow_contract_test": "passed-1-of-1",
+      "github_issue_state": "closed-completed",
+      "github_comment_id": 5265085663,
+      "project_readback": "Done / Approved / P1 High / v0.13.0 / Not yet published",
+      "precommit_provider_gate": "blocked-by-dirty-worktree-not-counted-as-pass",
+      "clean_commit_provider_revalidation": "pending",
+      "hosted_pr_checks": "pending-exact-head"
+    }
+  }
+}

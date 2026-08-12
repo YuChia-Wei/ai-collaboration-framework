@@ -2696,6 +2696,8 @@ def validate_capability_profile(skill_assets: dict[str, dict], errors: list[str]
                             "single-terminal-readback",
                         ],
                         "parent_wait_timeout_state": "pending-awaiting-completion",
+                        "pre_send_completion_validation": "required",
+                        "callback_payload": "exact-validated-completion-record",
                     },
                     "parallelization_requires": [
                         "dependency-dag",

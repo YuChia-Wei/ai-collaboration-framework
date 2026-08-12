@@ -76,6 +76,14 @@ Select one completion path before dispatch:
 The terminal message contains exactly one
 `BEGIN_EXTERNAL_TASK_COMPLETION` / `END_EXTERNAL_TASK_COMPLETION` envelope.
 
+Before sending it, the delegated task writes the dispatch and complete
+completion record to the ignored paths bound in `pre_send_validation`, runs the
+canonical delegation validator against that exact pair, and records the
+passing validator command and artifact references in `delivery.schema_validation`.
+It must then deliver that validated completion record without any
+post-validation edit. A missing or failed validation, mismatched artifact
+reference, or different delivered record is non-passing.
+
 Use an event wait as the normal callback fallback. A wait transport timeout
 leaves validation pending; it is not an execution failure. If callback delivery
 fails after a terminal task state is independently visible, one terminal
