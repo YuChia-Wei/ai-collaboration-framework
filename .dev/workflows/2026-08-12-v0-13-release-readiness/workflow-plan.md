@@ -11,7 +11,7 @@
 - `current_phase`: `integration-validation`
 - `artifact_root`: `.dev/workflows/2026-08-12-v0-13-release-readiness`
 - `created_at`: `2026-08-12T07:20:06+08:00`
-- `updated_at`: `2026-08-12T16:56:34+08:00`
+- `updated_at`: `2026-08-12T16:59:27+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md`
 - `template_version`: `1.2.0`
 
@@ -59,7 +59,7 @@
 
 - Last completed action: the release profile behind `bash .ai/scripts/check-all.sh --critical` passed 9/9 executed checks at clean commit `a9a00dc29063fd5ed5ca86b15d62add11e02e798`; its external-task callback/dedup contract failed separately and remains explicitly unresolved.
 - Current task: `REL013-001`.
-- Exact next action: complete the evidence-preserving attribution merge, validate the corrected first-parent range, push the branch, open a ready PR, and require every hosted check to pass at the exact PR head before merge.
+- Exact next action: fast-forward the workflow branch to the validated preservation merge, push it, open a ready PR, and require every hosted check to pass at the exact PR head before merge.
 - Validation already available: PR #195 passed five hosted checks; `ASM-20260811-002` found all #187 findings addressed; `ASM-20260811-006` found no new #193 blocking finding but correctly deferred the real candidate review.
 - Blockers: none for the PR checkpoint after the owner's explicit acceptance of split evidence and no fourth local rerun. The callback/dedup defect remains residual risk and is not marked repaired. Tag creation and publication are intentionally excluded owner actions.
 
@@ -76,7 +76,7 @@
 - Primary session metadata records `OpenAI Codex (gpt-5.6-sol, max)` for the v0.13 workflow commits; earlier `sol/high` trailers and task metadata were incorrect.
 - Delegated callback, candidate-build, and critical-gate evidence was produced by `OpenAI Codex Sub-Agent (gpt-5.6-luna, high)` and is represented only on commits that retain that material evidence.
 - Nine workflow commits were replayed in order with corrected trailers. The original evidence-bound SHA chain remains preserved for candidate, review, and validation references.
-- Selected topology: corrected first-parent chain plus the original `4dcf2c94a2fa2a625c8e6e35d592af2bbe0c024a` chain as an evidence-only second parent. The remote release branch can fast-forward; no force-push or evidence rewrite is required.
+- Completed topology: preservation merge `9782bda97f6af354edcc3c14482b738a5f62103e` has corrected head `a45496da23a9e091df41c84da860a994760c8bf3` as first parent and original evidence head `4dcf2c94a2fa2a625c8e6e35d592af2bbe0c024a` as second parent. The remote release branch can fast-forward; no force-push or evidence rewrite is required.
 - Durable mapping: `evidence/REL013-001-ai-attribution-reconciliation.yaml`.
 
 ## Branch Lifecycle
@@ -89,3 +89,4 @@
 | 4 | `codex/2026-08-12-v0-13-release-readiness` | `main@afd54f63db51d88bb573e758535ae9692f8aa61a` | candidate provider gate | `ee348d79986279a9696609613855d77f63473fea` | live read-only provider reconciliation | `2026-08-12T08:10:31+08:00` | Prove every included Issue and Project field satisfies candidate policy | Commit receipt, then delegate the critical gate |
 | 5 | `codex/2026-08-12-v0-13-release-readiness` | `main@afd54f63db51d88bb573e758535ae9692f8aa61a` | critical release gate subject | `a9a00dc29063fd5ed5ca86b15d62add11e02e798` | local owner-authorized host execution | `2026-08-12T10:05:34+08:00` | Preserve the 9/9 passing runner independently from the failed callback/dedup transport | Commit split evidence, push, open ready PR, and require exact-head hosted checks |
 | 6 | `codex/2026-08-12-v0-13-release-readiness` | `main@afd54f63db51d88bb573e758535ae9692f8aa61a` | AI attribution reconciliation | `82ba7e73c1b389d492f3c24fe24aaafb80479222` | local corrected first-parent chain | `2026-08-12T16:56:34+08:00` | Correct primary and sub-agent attribution while preserving every evidence-bound original SHA | Create the evidence-preserving second-parent merge and validate the exact first-parent range |
+| 7 | `codex/2026-08-12-v0-13-release-readiness` | `main@afd54f63db51d88bb573e758535ae9692f8aa61a` | evidence-preserving attribution merge | `9782bda97f6af354edcc3c14482b738a5f62103e` | local, remote fast-forward pending | `2026-08-12T16:59:27+08:00` | Keep corrected commits on first parent and every evidence-bound original SHA on second parent without rewriting shared history | Fast-forward the workflow branch, push, and run exact-head hosted PR checks |
