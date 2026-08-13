@@ -8,7 +8,7 @@
   "owner_skill": "ai-context-governance",
   "status": "in_progress",
   "created_at": "2026-08-14T07:03:23+08:00",
-  "updated_at": "2026-08-14T07:29:27+08:00",
+  "updated_at": "2026-08-14T07:47:10+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-5.6-sol",
   "reasoning_effort": "xhigh",
@@ -22,15 +22,15 @@
   "execution": {
     "steps": ["Define candidate-native validation manifest and command", "Classify portable versus source-only checks", "Run extracted candidates without source checkout resolution", "Add omission fixtures"],
     "validation": ["isolated extracted-package command", "missing-dependency fixtures", "Windows-compatible and POSIX execution"],
-    "last_completed_step": "Implemented checksum-governed schema 2.3 incoming validator identity, portable CLI execution, source-only test exclusion, and candidate workflow extraction gate",
-    "next_action": "Commit the implementation, build a real package from fixed HEAD, and execute the documented isolated command"
+    "last_completed_step": "Built and source-validated both archives at fixed HEAD 0c32a90, then inventoried all 14 portable help probes after fresh extraction exposed validate-shell-assets.py; added real help to the only two remaining false-pass entrypoints and made usage/no-validation-output a registry-wide contract",
+    "next_action": "Commit the registry-wide portable help correction, rebuild a real package from the new fixed HEAD, and execute the documented isolated command"
   },
   "results": {
     "summary": "Incoming package validation is candidate-owned and runs without source checkout access; source-only tests are excluded from portable success.",
-    "files_changed": [".ai/scripts/ai_context_package_validation.py", ".ai/scripts/validate-ai-context-payload.py", ".github/workflows/package-candidate.yml", ".ai/distribution/templates/INSTALL.md"],
-    "tests_run": ["8 Windows synthetic validator cases passed with one POSIX-only casefold fixture skipped", "4 portable entrypoint registry tests passed", "9 GitHub workflow contract tests passed", "30 apply reader compatibility tests passed with one Windows symlink fixture skipped"],
-    "finding_status": "implementation-complete-verification-pending",
-    "residual_risk": "Real extracted payload execution and POSIX fixture confirmation remain pending.",
+    "files_changed": [".ai/scripts/ai_context_package_validation.py", ".ai/scripts/validate-ai-context-payload.py", ".github/workflows/package-candidate.yml", ".ai/distribution/templates/INSTALL.md", ".ai/distribution/profiles/dotnet-backend.yaml", ".ai/scripts/README.md", ".dev/standards/DEPENDENCY-VERSION-CONSISTENCY-POLICY.md"],
+    "tests_run": ["8 Windows synthetic validator cases passed with one POSIX-only casefold fixture skipped", "2 focused producer and parity tests passed after the source-only pattern change", "6 payload user-view contract tests passed after the acceptance-oracle correction", "4 portable entrypoint registry tests passed with usage and no-validation-output required for all 14 portable commands", "normal source AI-context, shell-asset, and workflow-artifact validations passed after adding argparse help", "9 GitHub workflow contract tests passed", "30 apply reader compatibility tests passed with one Windows symlink fixture skipped", "fixed-HEAD 06e27ed real build failed closed because excluded skill-owned test commands remained actionable in payload documentation", "fixed-HEAD fcfb3a8 real build failed closed on the remaining source-only acceptance-oracle command", "fixed-HEAD f2d9955 build and two-archive validation passed; fresh extraction failed closed because validate-ai-context.py --help performed full validation", "fixed-HEAD 0c32a90 build and two-archive validation passed; fresh extraction failed closed because validate-shell-assets.py --help performed full validation"],
+    "finding_status": "verification-remediation-in-progress",
+    "residual_risk": "The registry-wide portable help correction is not yet committed or proven by a successful real extracted payload; POSIX confirmation also remains pending.",
     "follow_up_needed": true
   }
 }

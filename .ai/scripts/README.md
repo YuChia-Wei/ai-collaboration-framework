@@ -283,28 +283,14 @@ the actual `repository_loaded` events. A provider may report
 bytes-divided-by-four value is marked as a repository-loaded heuristic and is
 never treated as total prompt usage.
 
-Fail-closed validation and packaging regression tests use Given-When-Then
-naming and comments and run entirely in disposable Git repositories:
-
-```powershell
-python .ai/scripts/tests/test_fail_closed_validation.py -v
-python .ai/scripts/tests/test_ai_context_wrapper_metadata.py -v
-python .ai/scripts/tests/test_ai_context_root_entries.py -v
-python .ai/scripts/tests/test_ai_context_language_policy.py -v
-python .ai/assets/skills/software-development-orchestrator/scripts/tests/test_workflow_implementation_contract.py -v
-python .ai/assets/skills/software-development-orchestrator/scripts/tests/test_software_development_orchestrator_capability_contract.py -v
-python .ai/assets/skills/software-development-orchestrator/scripts/tests/test_software_development_orchestrator_acceptance.py -v
-python .ai/scripts/tests/test_workflow_lifecycle_contract.py -v
-python .ai/scripts/tests/test_assessment_artifacts.py -v
-python .ai/scripts/tests/test_git_commit_policy.py -v
-python .ai/scripts/tests/test_ai_context_package_apply.py -v
-python .ai/scripts/tests/test_dependency_version_consistency.py -v
-python .ai/scripts/tests/test_file_disposition_manifest.py -v
-```
-
-Additional source-repository governance and release-history tests are intentionally
-excluded from the portable payload and therefore are not advertised here as runnable
-downstream commands.
+Source-repository fail-closed and packaging regression tests use
+Given-When-Then naming and disposable Git repositories. All test trees under
+`.ai/scripts/tests/` and skill-owned `scripts/tests/` are explicitly
+source-only, are excluded from the portable payload, and cannot contribute to
+portable validation success. A freshly extracted package instead runs the
+candidate-owned `.ai/scripts/validate-ai-context-payload.py` command documented
+by the envelope `INSTALL.md`; its exact identity and arguments are recorded in
+`metadata/validation.json`.
 
 `test_ai_context_load_measurement.py` proves the source-only context-load
 measurement contract in disposable synthetic Git repositories; it creates no
@@ -321,9 +307,9 @@ unclassified retired names, overlapping rules, stale rules, or any attempted
 `current-operational` exception. These checks remain required when
 `check-all.sh` detects their exact source context, but the source-only
 validators, tests, registry, and workflow evidence are intentionally excluded
-from public target packages. `test_ai_context_package_apply.py` and the
-synthetic file-disposition fixture suite are downstream-supported and remain
-packaged and required. A packaged `check-all.sh` reports source-only checks as
+from public target packages. The package apply and file-disposition runtime
+capabilities remain downstream-supported, while their source test modules stay
+excluded. A packaged `check-all.sh` reports source-only checks as
 not applicable instead of requiring unavailable release history, Git tags,
 builder modules, workflow evidence, or source CI configuration.
 

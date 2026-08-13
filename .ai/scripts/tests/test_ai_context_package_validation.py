@@ -180,7 +180,10 @@ def build_fixture(
         "source_only_tests": {
             "classification": "source-only",
             "contributes_to_portable_success": False,
-            "patterns": [".ai/scripts/tests/**"],
+            "patterns": [
+                ".ai/scripts/tests/**",
+                ".ai/assets/skills/**/scripts/tests/**",
+            ],
         },
         "integrity_policy": {
             "path_case": "casefold-unique",

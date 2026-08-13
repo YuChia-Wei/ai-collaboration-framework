@@ -173,7 +173,10 @@ class SyntheticPackageRepo:
                 },
                 "source_only_tests": {
                     "classification": "source-only",
-                    "patterns": [".ai/scripts/tests/**"],
+                    "patterns": [
+                        ".ai/scripts/tests/**",
+                        ".ai/assets/skills/**/scripts/tests/**",
+                    ],
                     "contributes_to_portable_success": False,
                 },
                 "integrity_policy": {

@@ -3,6 +3,7 @@
 
 from __future__ import annotations
 
+import argparse
 import posixpath
 import re
 import subprocess
@@ -2853,7 +2854,10 @@ def validate_capability_profile(skill_assets: dict[str, dict], errors: list[str]
     return len(mappings)
 
 
-def main() -> int:
+def main(argv: list[str] | None = None) -> int:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.parse_args(argv)
+
     errors: list[str] = []
     files = tracked_files()
     indexes = active_indexes(files)

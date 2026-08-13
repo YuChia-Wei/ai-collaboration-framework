@@ -123,7 +123,10 @@ class PythonEntrypointContractTests(unittest.TestCase):
                     text=True,
                     check=False,
                 )
-                self.assertEqual(0, result.returncode, result.stdout + result.stderr)
+                output = result.stdout + result.stderr
+                self.assertEqual(0, result.returncode, output)
+                self.assertIn("usage:", output.lower(), item["path"])
+                self.assertNotIn("validation passed", output.lower(), item["path"])
 
     def test_gwt_004_given_machine_local_validation_opt_in_when_profile_is_read_then_it_is_source_only(self) -> None:
         profile = yaml.safe_load(PROFILE_PATH.read_text(encoding="utf-8"))
