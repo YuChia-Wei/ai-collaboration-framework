@@ -15,11 +15,11 @@
 - `branch`: `codex/2026-08-14-val-006-dependency-closure`
 - `base_branch`: `main`
 - `branch_segment`: `1`
-- `status`: `in_progress`
-- `current_phase`: `remediation`
+- `status`: `completed`
+- `current_phase`: `completed`
 - `artifact_root`: `.dev/workflows/2026-08-14-val-006-dependency-closure`
 - `created_at`: `2026-08-14T00:06:47+08:00`
-- `updated_at`: `2026-08-14T00:20:46+08:00`
+- `updated_at`: `2026-08-14T00:38:42+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md`
 - `template_version`: `1.2.0`
 
@@ -36,7 +36,7 @@
 
 - Baseline assessment: `.dev/assessments/ASM-20260813-001/assessment.yaml`
 - Remediation report: `.dev/workflows/2026-08-14-val-006-dependency-closure/reports/remediation-report.md`
-- Verification assessment: pending under `.dev/assessments/<verification-assessment-id>/assessment.yaml`
+- Verification assessment: `ASM-20260814-003` at `.dev/assessments/ASM-20260814-003/assessment.yaml`, committed as `f3647f8bd89bbcfaf75fd261681c92dce1ceb220`
 - Tasks: `.dev/workflows/2026-08-14-val-006-dependency-closure/tasks/`
 
 ## Live Intake And Dependency Analysis
@@ -71,9 +71,9 @@ Proposed merge order after this segment: #202; #201; #200; #204 runner correctne
 
 1. Baseline audit and live Issue/Git/GitHub evidence freeze — completed.
 2. Finding triage, delivery-cohesion analysis, and remediation authorization — completed.
-3. Bounded selector remediation and focused deterministic validation — completed; the durable implementation commit is pending.
-4. Fixed-commit aggregate validation, POSIX-path confirmation, and independent post-remediation audit — pending and must remain read-only/fail-closed.
-5. Finding reconciliation, commit verification, and merge-ready owner gate — pending. Push, PR, merge, Issue closure, and release remain separately unauthorized.
+3. Bounded selector remediation and focused deterministic validation — completed at implementation commit `4ecaa5cf5c079011f765542253f2faafb2b814ca`.
+4. Fixed-commit aggregate validation, POSIX-path confirmation, and independent post-remediation audit — completed; canonical WSL receipt `VAL006-003` passed 44/44 and `ASM-20260814-003` reconciled the baseline finding as resolved.
+5. Finding reconciliation, commit verification, and merge-ready owner gate — completed locally. Push, PR, merge, Issue closure, and release remain separately unauthorized and unverified.
 
 `software-development-orchestrator` is used only to coordinate the bounded tooling implementation, test, review, and commit checkpoints. It does not own this governance workflow or replace `ai-context-governance`. The read-only bounded worker supplies analysis evidence only and has no mutation or integration authority.
 
@@ -95,11 +95,11 @@ Proposed merge order after this segment: #202; #201; #200; #204 runner correctne
 
 ## Resume Checkpoint
 
-- Last completed action: implemented graph-wide cycle validation, deterministic dependency-first changed-path closure, exact selection evidence, cross-profile dependency disposition, and six deterministic fixtures; focused Windows-compatible validation passed.
-- Current task: `VALSEL-001-dependency-closure`.
-- Exact next action: validate workflow evidence, create the durable implementation commit, then dispatch the full aggregate-runner module against that exact clean commit and confirm the POSIX execution path before independent audit.
-- Validation already completed: final selector fixture class 6/6 passed in 26.703 seconds; profile-registry tests 6/6 passed; three existing aggregate-runner regressions 3/3 passed in 55.355 seconds; shell asset validator passed 16 assets; Bash syntax, Python AST parsing, workflow artifact validation, and `git diff --check` passed. The initial new-fixture run produced 4 passes and 2 failures because its synthetic path overlapped legitimate broad registry owners; after using a uniquely owned synthetic path, the complete class passed. The initial workflow validator run failed because the new locator was absent from the index; the indexed rerun passed 79 post-adoption workflows, 99 directories, and 55 backlog items.
-- Git state: dirty authorized implementation on the dedicated branch created from `main@a679d4990c3a37b59bb8592e4fc78180ef165c6b`; no push or hosted mutation.
+- Last completed action: reconciled independent final verification `ASM-20260814-003` against canonical clean implementation commit `4ecaa5cf5c079011f765542253f2faafb2b814ca`; no active implementation finding remained and `ASM-20260813-001#VALSEL-001` is resolved locally.
+- Current task: `VALSEL-001-dependency-closure` completed.
+- Exact next action: owner decides whether to authorize push and PR creation. Merge, Issue closure, Project/milestone mutation, release, and publication remain separate decisions.
+- Validation already completed: final Windows-compatible selector fixture class 6/6 passed in 26.703 seconds; POSIX WSL selector fixtures 6/6 passed in 19.760 seconds; profile-registry tests 6/6 passed; three existing aggregate-runner regressions 3/3 passed in 55.355 seconds; shell asset validator passed 16 assets; Bash syntax, Python AST parsing, workflow/assessment artifact validation, commit-policy validation, and Git diff checks passed. Canonical `VAL006-003` against clean `4ecaa5cf` passed the complete aggregate contract 44/44 in 46.443 seconds and its dispatch/completion pair passed the canonical schema validator. `ASM-20260814-003` independently revalidated that receipt and resolved the finding. The initial new-fixture run produced 4 passes and 2 failures because its synthetic path overlapped legitimate broad registry owners; after using a uniquely owned synthetic path, the complete class passed. The initial workflow validator run failed because the new locator was absent from the index; the indexed rerun passed. External `VAL006-001` remains blocked by Windows Temp `WinError 5`; `VAL006-002` passed only on superseded commit `125d85db` and is historical, not canonical.
+- Git state: local workflow branch with canonical implementation commit `4ecaa5cf`; assessment and governance closeout changes await the final local durable commit. No push or hosted mutation.
 - Branch history and checkpoint handoffs: segment 1 started locally; no push, PR, merge, or continuation checkpoint.
 - Blockers or unresolved decisions: none for #202. UPG-002 packet schema and retention are outside this workflow and remain an owner gate.
 
@@ -107,4 +107,4 @@ Proposed merge order after this segment: #202; #201; #200; #204 runner correctne
 
 | Segment | Branch | Base | Checkpoint Type | Commit | Remote / Target | Recorded At | Reason | Resume Branch / Action |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| 1 | `codex/2026-08-14-val-006-dependency-closure` | `main@a679d4990c3a37b59bb8592e4fc78180ef165c6b` | local active segment | pending | not pushed | `2026-08-14T00:06:47+08:00` | independently mergeable selector defect | finish task and independent verification on this branch |
+| 1 | `codex/2026-08-14-val-006-dependency-closure` | `main@a679d4990c3a37b59bb8592e4fc78180ef165c6b` | local merge-ready segment | implementation `4ecaa5cf5c079011f765542253f2faafb2b814ca`; assessment `f3647f8bd89bbcfaf75fd261681c92dce1ceb220`; this closeout stage | not pushed | `2026-08-14T00:38:42+08:00` | independently mergeable selector defect with fixed-head verification | obtain separate owner authority before push or PR creation |
