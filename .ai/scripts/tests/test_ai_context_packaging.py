@@ -6,9 +6,10 @@ from __future__ import annotations
 import os
 import subprocess
 import shutil
+import stat
 import sys
-import tempfile
 import unittest
+import uuid
 import warnings
 import zipfile
 from pathlib import Path
@@ -22,6 +23,37 @@ sys.path.insert(0, str(SCRIPTS))
 import ai_context_package as PACKAGE  # noqa: E402
 
 
+class RepositoryTemporaryDirectory:
+    """Use normal workspace ACLs instead of Windows tempfile 0700 ACLs."""
+
+    def __init__(self, prefix: str) -> None:
+        root = ROOT / ".tmp/test-ai-context-packaging"
+        root.mkdir(parents=True, exist_ok=True)
+        self.path = root / f"{prefix}{uuid.uuid4().hex}"
+        self.path.mkdir()
+        self.name = str(self.path)
+
+    @staticmethod
+    def _remove_readonly(function: object, path: str, _: object) -> None:
+        os.chmod(path, stat.S_IRUSR | stat.S_IWUSR | stat.S_IXUSR)
+        function(path)  # type: ignore[operator]
+
+    def cleanup(self) -> None:
+        if self.path.exists():
+            shutil.rmtree(self.path, onerror=self._remove_readonly)
+
+    def __enter__(self) -> str:
+        return self.name
+
+    def __exit__(self, *_: object) -> None:
+        self.cleanup()
+
+
+def repository_temporary_directory(prefix: str) -> RepositoryTemporaryDirectory:
+    """Keep large source-only fixtures inside the ignored writable workspace."""
+    return RepositoryTemporaryDirectory(prefix)
+
+
 def git(root: Path, *args: str) -> subprocess.CompletedProcess[str]:
     return subprocess.run(["git", *args], cwd=root, check=True, capture_output=True, text=True)
 
@@ -30,7 +62,7 @@ class SyntheticPackageRepo:
     """Own a minimal Git-backed package source and isolated output roots."""
 
     def __init__(self) -> None:
-        self._temporary = tempfile.TemporaryDirectory(prefix="ai-context-packaging-")
+        self._temporary = repository_temporary_directory("ai-context-packaging-")
         self.root = Path(self._temporary.name) / "source"
         self.root.mkdir()
         git(self.root, "init", "-q")
@@ -1406,7 +1438,7 @@ class VersionedMigrationPackagingGwtTests(unittest.TestCase):
     # intentionally outside unittest discovery. Active upgrade gates begin at
     # v0.6.0 and exercise one immediate-predecessor route per candidate.
     def historical_gwt_016_given_real_v030_package_when_candidate_is_extracted_then_upgrade_applies(self) -> None:
-        with tempfile.TemporaryDirectory(prefix="ai-context-real-upgrade-") as temp_value:
+        with repository_temporary_directory("ai-context-real-upgrade-") as temp_value:
             temp = Path(temp_value)
 
             # Given the immutable published v0.3.0 tree is built and extracted.
@@ -1526,7 +1558,7 @@ class VersionedMigrationPackagingGwtTests(unittest.TestCase):
             self.assertEqual(sorted(acknowledgements), receipt["skipped_reconciliation_ids"])
 
     def historical_gwt_017_given_four_real_supported_sources_when_one_v050_candidate_is_built_then_each_upgrades_without_overwriting_target_truth(self) -> None:
-        with tempfile.TemporaryDirectory(prefix="ai-context-real-multi-source-") as temp_value:
+        with repository_temporary_directory("ai-context-real-multi-source-") as temp_value:
             temp = Path(temp_value)
             previous_roots: dict[str, Path] = {}
             source_inputs: list[tuple[Path, str]] = []
@@ -1710,7 +1742,7 @@ class VersionedMigrationPackagingGwtTests(unittest.TestCase):
             ).stdout,
         )
 
-        with tempfile.TemporaryDirectory(prefix="ai-context-downstream-v050-") as temp_value:
+        with repository_temporary_directory("ai-context-downstream-v050-") as temp_value:
             temp = Path(temp_value)
             source_inputs: list[tuple[Path, str]] = []
             previous_roots: dict[str, Path] = {}

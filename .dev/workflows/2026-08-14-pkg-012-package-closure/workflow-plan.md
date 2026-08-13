@@ -16,10 +16,10 @@
 - `base_branch`: `codex/2026-08-14-val-006-dependency-closure`
 - `branch_segment`: `2`
 - `status`: `in_progress`
-- `current_phase`: `remediation-implementation`
+- `current_phase`: `payload-integrity-verification`
 - `artifact_root`: `.dev/workflows/2026-08-14-pkg-012-package-closure`
 - `created_at`: `2026-08-14T07:03:23+08:00`
-- `updated_at`: `2026-08-14T07:47:10+08:00`
+- `updated_at`: `2026-08-14T07:56:15+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md`
 - `template_version`: `1.2.0`
 
@@ -50,8 +50,8 @@
 
 1. Baseline audit, live Issue read-back, graph-assisted code discovery, and stacked clean checkpoint — completed.
 2. Finding triage, #200 boundary analysis, and task ownership — completed.
-3. Canonical ownership and isolated validation implementation with focused deterministic fixtures — primary implementation and source-only/help corrections are committed through `0c32a90`; the registry-wide completion of the help contract is pending commit.
-4. Complete payload-integrity validation, fixed-clean-commit aggregate/POSIX evidence, and independent post-remediation assessment — focused Windows fixtures plus `f2d9955` and `0c32a90` archive validation passed; fresh extraction exposed the only two remaining false-positive help paths, and corrected fixed-commit validation is pending.
+3. Canonical ownership and isolated validation implementation with focused deterministic fixtures — completed through `d30a1b7`; the same real archives and fresh candidate pass on Windows and Ubuntu WSL.
+4. Complete payload-integrity validation, fixed-clean-commit aggregate/POSIX evidence, and independent post-remediation assessment — POSIX and real-package evidence passed; the first external full matrix was blocked by user-Temp ACL, and its repository-local temporary isolation correction is pending commit and redispatch.
 5. Finding reconciliation and local closeout; continue stacking later #200-#208 segments without remote integration — pending.
 
 `ai-context-governance` owns the assessment-to-remediation lifecycle. `software-development-orchestrator` coordinates only bounded Python/tooling implementation, tests, review, long-running validation, and commits. Product source review, spec compliance, and release closeout are not selected.
@@ -72,11 +72,11 @@
 
 ## Resume Checkpoint
 
-- Last completed action: built and source-validated both real archives at `0c32a90c78583d48bc75177a77b68f9fe7389a66`, reproduced the next fresh-extraction false-positive, inventoried all 14 portable help probes, and prepared real help for the only two remaining offenders with a registry-wide assertion.
-- Current tasks: component ownership is complete; isolated validation and payload-integrity verification remain active while the correction and real extraction are pending.
-- Exact next action: commit the Issue-bound registry-wide portable-help correction, then build and validate a real package from that immutable HEAD on Windows and POSIX.
-- Validation already completed: predecessor #202 workflow commit-policy range passed; #201 focused suites passed as recorded in the remediation report; all failed build or fresh-extraction attempts remain explicit failure evidence.
-- Git state: branch `codex/2026-08-14-pkg-012-package-closure` based on local #202 closeout; the registry-wide portable-help correction and updated #201 workflow evidence are intentionally dirty.
+- Last completed action: passed real package/archive/fresh-candidate validation on Windows and WSL at `d30a1b7`, retained a schema-valid blocked full-matrix receipt, and prepared a normal-workspace-ACL temporary-directory correction that passes two focused cases without elevation.
+- Current tasks: component ownership and isolated validation are complete; payload-integrity aggregate verification is active.
+- Exact next action: commit the Issue-bound source-matrix temporary isolation correction, then dispatch a new immutable full-matrix attempt and independent auditor.
+- Validation already completed: predecessor #202 policy range, #201 focused suites, real Windows/WSL archives and candidate, and WSL case-fold fixture passed; every failed or blocked attempt remains explicit evidence.
+- Git state: branch `codex/2026-08-14-pkg-012-package-closure` based on local #202 closeout; only the source-matrix environment correction and updated #201 workflow evidence are intentionally dirty.
 - Branch history and checkpoint handoffs: cumulative segment 2; no push, PR, merge, Issue close, or release mutation.
 - Blockers or unresolved decisions: none yet for #201. Any need to redefine #200 transaction identity or #203 target-policy authority stops this task at its declared boundary.
 
@@ -84,4 +84,4 @@
 
 | Segment | Branch | Base | Checkpoint Type | Commit | Remote / Target | Recorded At | Reason | Resume Branch / Action |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| 2 | `codex/2026-08-14-pkg-012-package-closure` | `codex/2026-08-14-val-006-dependency-closure@f9483469dba4cbd64c20606e33597ffa30793c74` | local active stacked segment | workflow plan `caf2256123b1ab03e5da435f6eff9818543611aa`; implementation `06e27ed7585360dccf07f3933f0dce7cdd325561`; source-only/oracle corrections `fcfb3a83ded56c29e6c8dab47a028961d75bbe34`, `f2d9955068982dedb392e336565325ba67521584`; help correction `0c32a90c78583d48bc75177a77b68f9fe7389a66`; registry-wide help completion pending | not pushed | `2026-08-14T07:47:10+08:00` | package closure precedes durable apply and upgrade correctness | commit registry-wide help correction, rerun fixed-HEAD Windows/POSIX verification, then stack #200 |
+| 2 | `codex/2026-08-14-pkg-012-package-closure` | `codex/2026-08-14-val-006-dependency-closure@f9483469dba4cbd64c20606e33597ffa30793c74` | local active stacked segment | workflow plan `caf2256123b1ab03e5da435f6eff9818543611aa`; implementation/corrections through `d30a1b78ef7567112927d8b599ca7b1de22b7a41`; matrix environment correction pending | not pushed | `2026-08-14T07:56:15+08:00` | package closure precedes durable apply and upgrade correctness | commit matrix environment correction, run fixed-HEAD full matrix and audit, then stack #200 |
