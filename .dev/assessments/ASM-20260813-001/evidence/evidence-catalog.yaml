@@ -1,0 +1,69 @@
+schema_version: "1.0"
+assessment_id: "ASM-20260813-001"
+captured_at: "2026-08-13T22:26:44+08:00"
+preservation_contract: "exact-source-bytes"
+sources:
+  - source_id: "claude-opus-5-framework-analysis"
+    kind: "owner-supplied-external-review-package"
+    reported_author: "Claude Opus 5"
+    original_root: "C:/tmp/ai-collaboration-framework-analysis"
+    intake_boundary: "current effective reports only; archive is explicitly superseded and excluded"
+    authority: "attributed evidence and proposals only; not repository truth or implementation authorization"
+    files:
+      - retained_path: "external/original/claude-opus-5-framework-analysis/README.md"
+        source_path: "README.md"
+        role: "source scope, baseline, and archive exclusion declaration"
+        bytes: 1711
+        sha256: "1209b08c72a6ed5711287720b04c60521862cf97e8b0956aacdaffc3be09cac9"
+      - retained_path: "external/original/claude-opus-5-framework-analysis/ANALYSIS-v0.12.0.md"
+        source_path: "ANALYSIS-v0.12.0.md"
+        role: "current framework analysis at the reported v0.12 baseline"
+        bytes: 22226
+        sha256: "d3d95d382cb167907932553d48edc401254f399315f8bd6fd40b289e0f440f76"
+      - retained_path: "external/original/claude-opus-5-framework-analysis/UPGRADE-ASSESSMENT-工作專案-v0.6.0-升級至-v0.13.0.md"
+        source_path: "UPGRADE-ASSESSMENT-工作專案-v0.6.0-升級至-v0.13.0.md"
+        role: "company-project upgrade scenario with explicitly unavailable current customization evidence"
+        bytes: 19451
+        sha256: "a5645ca142894e34c8e98d59c2e5db36141142da31ac073c3044cb4e27af243e"
+  - source_id: "dotnet-mq-arch-lab-v013-upgrade"
+    kind: "downstream-upgrade-evidence"
+    repository: "C:/Github/YuChia/dotnet-mq-arch-lab"
+    commit: "14e6fe9287c6e8e95f64c678ddff3009fb9092b2"
+    worktree_state_at_capture: "clean"
+    intake_boundary: "downstream evidence only; not upstream canonical truth or implementation authorization"
+    files:
+      - retained_path: "external/original/dotnet-mq-arch-lab-v013-upgrade/upstream-feedback-brief.md"
+        source_path: ".dev/workflows/2026-08-12-ai-context-v0-13-upgrade/reports/upstream-feedback-brief.md"
+        bytes: 12351
+        sha256: "3791440385f21790ca62d5f4a0d0887ced3a044cc8539b39d766e4323788d398"
+      - retained_path: "external/original/dotnet-mq-arch-lab-v013-upgrade/upgrade-report.md"
+        source_path: ".dev/workflows/2026-08-12-ai-context-v0-13-upgrade/reports/upgrade-report.md"
+        bytes: 14479
+        sha256: "fdd3b54286fdc20c32df26bbb6d8733a6d5f78bf930c5ace1222fed7615fa712"
+      - retained_path: "external/original/dotnet-mq-arch-lab-v013-upgrade/08-developer-impact-and-score.md"
+        source_path: ".dev/workflows/2026-08-12-ai-context-v0-13-upgrade/reports/08-developer-impact-and-score.md"
+        bytes: 13125
+        sha256: "8bf62d8a6a7b9a9b020a44519a4bcc13f96e19b032ab531f30a89802de6e6077"
+      - retained_path: "external/original/dotnet-mq-arch-lab-v013-upgrade/09-discussion-branch-comparison.md"
+        source_path: ".dev/workflows/2026-08-12-ai-context-v0-13-upgrade/reports/09-discussion-branch-comparison.md"
+        bytes: 8266
+        sha256: "28093531229ce6a489bbad2a2c53f74a181c9bb59b7186bfdaa1bedec10c542c"
+      - retained_path: "external/original/dotnet-mq-arch-lab-v013-upgrade/ASM-20260813-008-report.md"
+        source_path: ".dev/assessments/ASM-20260813-008/report.md"
+        bytes: 17312
+        sha256: "344680d7572605c1d329165c80dbb2de4ad519b771a99109fb032095fbe5d442"
+      - retained_path: "external/original/dotnet-mq-arch-lab-v013-upgrade/post-upgrade-closeout-audit.yaml"
+        source_path: ".dev/workflows/2026-08-12-ai-context-v0-13-upgrade/evidence/post-upgrade-closeout-audit.yaml"
+        bytes: 2987
+        sha256: "75f4653e7ecb891ba4390da0deb843d006c6be50617130525319c8d2d57d3af0"
+observed_repositories:
+  - repository: "C:/Github/YuChia/dotnet-architecture-kit"
+    commit: "d0d23e922de1fc067404bb87859d2b798230c270"
+    worktree_state_at_observation: "clean"
+    retained_copy: false
+    reason: "separately governed repository remains its own canonical source"
+    inspected_paths:
+      - "docs/product/prd.md"
+      - "docs/product/product-plan.md"
+      - "src/Analyzers/EngineeringGuardrails.Analyzers.Core/**"
+      - "docs/diagnostics/DBA1001.md"

@@ -1,0 +1,46 @@
+schema_version: "1.0"
+assessment_id: "ASM-20260813-001"
+downstream_feedback_summary:
+  total: 17
+  still_valid: 14
+  fixed: 0
+  design_tradeoff_with_owner_direction: 2
+  needs_decision: 1
+  downstream_only: 0
+downstream_feedback:
+  - { id: "DS-01", summary: "Raw EOL hashes create false reconciliation", disposition: "design-tradeoff-owner-direction-selected-remediation-pending", target: "PKG-011" }
+  - { id: "DS-02", summary: "Planner omits drifted managed paths unchanged between releases", disposition: "still-valid", target: "PKG-011" }
+  - { id: "DS-03", summary: "Apply lacks durable recovery before the first write", disposition: "still-valid", target: "PKG-011" }
+  - { id: "DS-04", summary: "Downstream payload is not closed over its declared validation surface", disposition: "still-valid", target: "PKG-012" }
+  - { id: "DS-05", summary: "Changed-path dependency traversal can omit dependencies", disposition: "still-valid", target: "VAL-006" }
+  - { id: "DS-06", summary: "No consumable pre-finalization remediation packet", disposition: "needs-owner-schema-decision", target: "UPG-002" }
+  - { id: "DS-07", summary: "Installed predecessor validators can falsely pass incoming candidates", disposition: "still-valid", target: "PKG-012" }
+  - { id: "DS-08", summary: "Breaking commit grammar uses source time as target cutover", disposition: "still-valid", target: "UPG-002" }
+  - { id: "DS-09", summary: "Commit cutover is undocumented", disposition: "still-valid", target: "UPG-002" }
+  - { id: "DS-10", summary: "Receipt does not bind Git mode", disposition: "still-valid", target: "PKG-011" }
+  - { id: "DS-11", summary: "Selected-input fingerprint is not reproducible downstream", disposition: "design-tradeoff-owner-direction-selected-remediation-pending", target: "PKG-011" }
+  - { id: "DS-12", summary: "Evidence and resume semantics are structurally under-validated", disposition: "still-valid", target: "UPG-002" }
+  - { id: "DS-13", summary: "Profile-registry test imports source-only profile", disposition: "still-valid", target: "PKG-012" }
+  - { id: "DS-14", summary: "Portable code-review routing test imports source-only module", disposition: "still-valid", target: "PKG-012" }
+  - { id: "DS-15", summary: "Component ownership metadata disagrees", disposition: "still-valid", target: "PKG-012" }
+  - { id: "DS-16", summary: "Python fixture cleanup can leave unreadable ignored directories", disposition: "still-valid", target: "VAL-007" }
+  - { id: "DS-17", summary: "Package-native EOF blanks survive publication", disposition: "still-valid", target: "PKG-012" }
+claude_review:
+  - { id: "CL-VALSNAP-001", disposition: "partially-corrected-by-policy-not-enforced-by-runner", target: "VAL-007" }
+  - { id: "CL-VALTIME-001", disposition: "still-valid", target: "VAL-007" }
+  - { id: "CL-VALTEST-001", disposition: "still-valid", target: "VAL-007" }
+  - { id: "CL-VALCOST-001", disposition: "partially-corrected-by-delegation-policy", target: "VAL-007" }
+  - { id: "CL-NIGHTLY-001", disposition: "still-valid-lower-priority", target: "VAL-007" }
+  - { id: "CL-CONTEXT-LOAD-001", disposition: "qualified-current-root-empty-but-historical-controlled-trace-exists", target: "deferred" }
+  - { id: "CL-VALIDATOR-RATIO-001", disposition: "design-metric-covered-by-runtime-strategy-issue-149", target: "#149" }
+  - { id: "CL-UPGRADER-E2E-001", disposition: "superseded-by-dotnet-mq-arch-lab-v013-upgrade-evidence", target: "none" }
+company_upgrade_review:
+  - { id: "CO-MULTIHOP-001", disposition: "credible-general-ux-scenario-adopted-as-owner-compatibility-policy", target: "UPG-003" }
+  - { id: "CO-OVR-003", disposition: "covered-by-existing-issue", target: "#21" }
+  - { id: "CO-OVR-004", disposition: "corroborates-target-prospective-cutover-gap", target: "UPG-002" }
+  - { id: "CO-OVR-006-007", disposition: "evidence-limited-because-current-customizations-unavailable", target: "UPG-002" }
+  - { id: "CO-OVR-005", disposition: "target-owned-truth-to-preserve-not-framework-default", target: "UPG-002" }
+  - { id: "CO-ANALYZER-001", disposition: "overturned-by-owner-provider-and-template-clarification", target: "CTX-010" }
+owner_upgrade_compatibility:
+  - { id: "OWNER-UPGRADE-001", disposition: "accepted-retained-origin-policy", target: "UPG-003" }
+  - { id: "OWNER-UPGRADE-002", disposition: "accepted-one-entrypoint-route-policy", target: "UPG-003" }

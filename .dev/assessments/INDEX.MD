@@ -12,6 +12,7 @@ owns its identity, current lifecycle state, subject revision, and relationships.
 
 | Assessment | Title | Type | Owner | Status | Subject Commit | Updated | Report |
 | --- | --- | --- | --- | --- | --- | --- | --- |
+| [`ASM-20260813-001`](ASM-20260813-001/assessment.yaml) | v0.13 Downstream Upgrade And External Review Union Assessment | `ai-context-audit` | `ai-context-auditor` | `final` | `5c93e81f1f26e0c55f98cea08d014fc5c5fdc83c` | `2026-08-13T22:58:53+08:00` | [report](ASM-20260813-001/report.md) |
 | [`ASM-20260811-006`](ASM-20260811-006/assessment.yaml) | Selected Payload Navigation And Component Closure Verification | `ai-context-verification` | `ai-context-auditor` | `final` | `ff80d590006ebec8ccfbd540abb4083a9d386613` | `2026-08-11T22:43:14+08:00` | [report](ASM-20260811-006/report.md) |
 | [`ASM-20260811-005`](ASM-20260811-005/assessment.yaml) | Governance Term Routing And Release Projection Verification | `ai-context-verification` | `ai-context-auditor` | `final` | `fe85095d1d13955414942770995932490a6fa987` | `2026-08-11T21:34:43+08:00` | [report](ASM-20260811-005/report.md) |
 | [`ASM-20260811-004`](ASM-20260811-004/assessment.yaml) | Code Reviewer Progressive Disclosure Verification | `ai-context-verification` | `ai-context-auditor` | `final` | `8b5b40237aae0c953709378e628fbc898ff058f5` | `2026-08-11T20:52:30+08:00` | [report](ASM-20260811-004/report.md) |
@@ -99,6 +100,7 @@ follow repository-owned assessment templates.
 
 | Input | Source | Received | Normalized By | Status |
 | --- | --- | --- | --- | --- |
+| [`v0.13-upgrade-and-opus-union-2026-08-13`](ASM-20260813-001/evidence/evidence-catalog.yaml) | Owner-supplied Claude Opus 5 reports plus dotnet-mq-arch-lab v0.13 upgrade evidence | 2026-08-13 | [`ASM-20260813-001`](ASM-20260813-001/assessment.yaml) | `normalized` |
 | [`validation-cost-remediation-en-2026-08-05`](ASM-20260805-003/evidence/evidence-catalog.yaml) | Owner-supplied Opus 5 validation-cost review, English source | 2026-08-05 | [`ASM-20260805-003`](ASM-20260805-003/assessment.yaml) | `normalized` |
 | [`dotnet-architecture-discussion`](ASM-20260804-002/evidence/evidence-catalog.yaml) | dotnet-distributed-architecture-lab owner-led discussion at `b29ef35` | 2026-08-04 | [`ASM-20260804-002`](ASM-20260804-002/assessment.yaml) | `normalized` |
 | [`opus-5-periodic-review-2026-08-04`](ASM-20260804-001/evidence/external/README.md) | Claude Opus 5 periodic repository review, English source | 2026-08-04 | [`ASM-20260804-001`](ASM-20260804-001/assessment.yaml) | `normalized` |
