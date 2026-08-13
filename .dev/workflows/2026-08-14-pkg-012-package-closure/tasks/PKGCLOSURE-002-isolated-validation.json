@@ -1,0 +1,29 @@
+{
+  "template_id": "ai-context-governance-remediation-task",
+  "template_version": "1.1.0",
+  "template_created_at": "2026-07-10T18:22:49+08:00",
+  "template_updated_at": "2026-07-27T09:52:09+08:00",
+  "task_id": "PKGCLOSURE-002-isolated-validation",
+  "workflow_id": "2026-08-14-pkg-012-package-closure",
+  "owner_skill": "ai-context-governance",
+  "status": "pending",
+  "created_at": "2026-08-14T07:03:23+08:00",
+  "updated_at": "2026-08-14T07:03:23+08:00",
+  "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
+  "model": "gpt-5.6-sol",
+  "reasoning_effort": "xhigh",
+  "finding_ids": ["ASM-20260813-001#PKGCLOSURE-001", "DS-04", "DS-07", "DS-13", "DS-14"],
+  "scope": {
+    "target": "Freshly extracted package validation using deterministic incoming candidate authority with source-only checks excluded from portable success",
+    "files": [".ai/distribution/**", ".ai/scripts/ai_context_package.py", ".ai/scripts/validate-ai-context-package.py", ".ai/scripts/tests/test_ai_context_packaging.py"],
+    "constraints": ["Remove implicit source-tree import and profile access", "Record incoming validator identity", "Fail on missing runtime imports, schema, profile, or fixture"],
+    "non_goals": ["Predecessor upgrade policy cutover", "Target mutation", "Release publication"]
+  },
+  "execution": {
+    "steps": ["Define candidate-native validation manifest and command", "Classify portable versus source-only checks", "Run extracted candidates without source checkout resolution", "Add omission fixtures"],
+    "validation": ["isolated extracted-package command", "missing-dependency fixtures", "Windows-compatible and POSIX execution"],
+    "last_completed_step": "Pending component ownership authority",
+    "next_action": "Begin after PKGCLOSURE-001 establishes the payload authority"
+  },
+  "results": {"summary": "", "files_changed": [], "tests_run": [], "finding_status": "not-addressed", "residual_risk": "", "follow_up_needed": true}
+}
