@@ -198,6 +198,7 @@ class SyntheticRunnerRepo:
         self.root = Path(self._temporary.name)
         self.scripts = self.root / ".ai/scripts"
         self.bin = self.root / "bin"
+        self.validation_logs = self.root / "validation-logs"
         self.scripts.mkdir(parents=True)
         self.bin.mkdir()
         shutil.copy2(RUNNER_SOURCE, self.scripts / RUNNER_SOURCE.name)
@@ -312,6 +313,84 @@ class SyntheticRunnerRepo:
     def sentinel(self) -> list[str]:
         path = self.root / ".aic-sentinel"
         return path.read_text(encoding="utf-8").splitlines() if path.exists() else []
+
+    def override_dependencies(self, **dependencies_by_id: str) -> None:
+        with (self.scripts / PROFILE_REGISTRY_SOURCE.name).open(
+            "a", encoding="utf-8", newline="\n"
+        ) as registry:
+            for check_id, dependencies in dependencies_by_id.items():
+                registry.write(f'CHECK_DEPENDS["{check_id}"]="{dependencies}"\n')
+
+    def override_input_paths(self, **input_paths_by_id: str) -> None:
+        with (self.scripts / PROFILE_REGISTRY_SOURCE.name).open(
+            "a", encoding="utf-8", newline="\n"
+        ) as registry:
+            for check_id, input_paths in input_paths_by_id.items():
+                registry.write(f'CHECK_INPUT_PATHS["{check_id}"]="{input_paths}"\n')
+
+    def create_changed_path_revisions(self, relative_path: str) -> tuple[str, str]:
+        path = self.root / relative_path
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text("baseline\n", encoding="utf-8", newline="\n")
+        commands = (
+            ["git", "init", "--quiet"],
+            ["git", "add", "--all"],
+            [
+                "git",
+                "-c",
+                "user.name=Fixture",
+                "-c",
+                "user.email=fixture@example.invalid",
+                "commit",
+                "--quiet",
+                "-m",
+                "fixture baseline",
+            ],
+        )
+        for command in commands:
+            self._require_success(run(command, self.root))
+        base = self._require_stdout(run(["git", "rev-parse", "HEAD"], self.root))
+        path.write_text("changed\n", encoding="utf-8", newline="\n")
+        self._require_success(run(["git", "add", "--", relative_path], self.root))
+        self._require_success(
+            run(
+                [
+                    "git",
+                    "-c",
+                    "user.name=Fixture",
+                    "-c",
+                    "user.email=fixture@example.invalid",
+                    "commit",
+                    "--quiet",
+                    "-m",
+                    "fixture change",
+                ],
+                self.root,
+            )
+        )
+        head = self._require_stdout(run(["git", "rev-parse", "HEAD"], self.root))
+        return base, head
+
+    def selected_evidence_files(self) -> list[Path]:
+        return sorted(self.validation_logs.glob("*/selected-checks.tsv"))
+
+    @staticmethod
+    def selected_rows(path: Path) -> list[tuple[str, str]]:
+        return [
+            tuple(line.split("\t", 1))
+            for line in path.read_text(encoding="utf-8").splitlines()
+            if line
+        ]
+
+    @staticmethod
+    def _require_success(result: subprocess.CompletedProcess[str]) -> None:
+        if result.returncode != 0:
+            raise RuntimeError(result.stderr.strip())
+
+    @staticmethod
+    def _require_stdout(result: subprocess.CompletedProcess[str]) -> str:
+        SyntheticRunnerRepo._require_success(result)
+        return result.stdout.strip()
 
     def _write_child(self, name: str, exit_variable: str) -> None:
         self._write_stub(
@@ -994,6 +1073,194 @@ class CheckAllRunnerGwtTests(unittest.TestCase):
                 uv_commands[0],
             )
             self.assertTrue(any(line.startswith("managed-python ") for line in commands))
+        finally:
+            fixture.close()
+
+
+class ChangedPathDependencyClosureGwtTests(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls) -> None:
+        cls.real_before = real_repo_snapshot()
+
+    @classmethod
+    def tearDownClass(cls) -> None:
+        if cls.real_before != real_repo_snapshot():
+            raise AssertionError("changed-path fixtures mutated the real repository")
+
+    @staticmethod
+    def execute_changed_path(
+        fixture: SyntheticRunnerRepo, base: str, head: str
+    ) -> subprocess.CompletedProcess[str]:
+        return fixture.execute(
+            "--profile",
+            "pr",
+            "--base",
+            base,
+            "--head",
+            head,
+            environment={"AI_CONTEXT_VALIDATION_LOG_DIR": str(fixture.validation_logs)},
+        )
+
+    def test_gwt_001_given_direct_multilevel_root_then_full_closure_and_chain_are_recorded(
+        self,
+    ) -> None:
+        fixture = SyntheticRunnerRepo()
+        try:
+            fixture.override_dependencies(
+                **{
+                    "profile-projection": "dependency-versions-tests",
+                    "dependency-versions-tests": "dependency-versions",
+                }
+            )
+            changed_path = "fixture/profile-projection.txt"
+            fixture.override_input_paths(**{"profile-projection": changed_path})
+            base, head = fixture.create_changed_path_revisions(changed_path)
+
+            result = self.execute_changed_path(fixture, base, head)
+
+            self.assertEqual(0, result.returncode, result.stdout + result.stderr)
+            evidence = fixture.selected_evidence_files()
+            self.assertEqual(1, len(evidence))
+            rows = fixture.selected_rows(evidence[0])
+            self.assertEqual(
+                [
+                    ("dependency-versions", "dependency-chain:profile-projection -> dependency-versions-tests -> dependency-versions"),
+                    ("dependency-versions-tests", "dependency-chain:profile-projection -> dependency-versions-tests"),
+                    ("profile-projection", f"direct-path-match:{changed_path}"),
+                ],
+                rows,
+            )
+        finally:
+            fixture.close()
+
+    def test_gwt_002_given_diamond_dependency_then_shared_check_is_selected_once(self) -> None:
+        fixture = SyntheticRunnerRepo()
+        try:
+            fixture.override_dependencies(
+                **{
+                    "profile-projection": "dependency-versions-tests coding-standards-integrity",
+                    "dependency-versions-tests": "dependency-versions",
+                    "coding-standards-integrity": "dependency-versions",
+                }
+            )
+            changed_path = "fixture/profile-projection.txt"
+            fixture.override_input_paths(**{"profile-projection": changed_path})
+            base, head = fixture.create_changed_path_revisions(changed_path)
+
+            result = self.execute_changed_path(fixture, base, head)
+
+            self.assertEqual(0, result.returncode, result.stdout + result.stderr)
+            rows = fixture.selected_rows(fixture.selected_evidence_files()[0])
+            selected_ids = [check_id for check_id, _ in rows]
+            self.assertEqual(1, selected_ids.count("dependency-versions"))
+            self.assertEqual(
+                [
+                    "dependency-versions",
+                    "dependency-versions-tests",
+                    "coding-standards-integrity",
+                    "profile-projection",
+                ],
+                selected_ids,
+            )
+            dependency_executions = [
+                line
+                for line in fixture.sentinel()
+                if "validate-dependency-versions.py" in line
+            ]
+            self.assertEqual(1, len(dependency_executions), fixture.sentinel())
+        finally:
+            fixture.close()
+
+    def test_gwt_003_given_dependency_cycle_then_exact_path_fails_before_execution(self) -> None:
+        fixture = SyntheticRunnerRepo()
+        try:
+            fixture.override_dependencies(
+                **{
+                    "dependency-versions-tests": "profile-projection",
+                    "profile-projection": "dependency-versions-tests",
+                }
+            )
+
+            result = fixture.execute("--profile", "pr")
+
+            self.assertEqual(2, result.returncode, result.stdout + result.stderr)
+            self.assertIn(
+                "Dependency cycle detected: dependency-versions-tests -> profile-projection -> dependency-versions-tests",
+                result.stderr,
+            )
+            self.assertEqual([], fixture.sentinel())
+        finally:
+            fixture.close()
+
+    def test_gwt_004_given_unknown_dependency_then_registry_fails_before_execution(self) -> None:
+        fixture = SyntheticRunnerRepo()
+        try:
+            fixture.override_dependencies(**{"profile-projection": "missing-check"})
+
+            result = fixture.execute("--profile", "pr")
+
+            self.assertEqual(2, result.returncode, result.stdout + result.stderr)
+            self.assertIn(
+                "Unknown dependency 'missing-check' in validation check 'profile-projection'",
+                result.stderr,
+            )
+            self.assertEqual([], fixture.sentinel())
+        finally:
+            fixture.close()
+
+    def test_gwt_005_given_dependency_outside_profile_then_it_remains_selected_and_deferred(
+        self,
+    ) -> None:
+        fixture = SyntheticRunnerRepo()
+        try:
+            fixture.override_dependencies(**{"profile-projection": "test-di-compliance"})
+            changed_path = "fixture/profile-projection.txt"
+            fixture.override_input_paths(**{"profile-projection": changed_path})
+            base, head = fixture.create_changed_path_revisions(changed_path)
+
+            result = self.execute_changed_path(fixture, base, head)
+
+            self.assertEqual(0, result.returncode, result.stdout + result.stderr)
+            self.assertIn("DEFERRED: Test DI Compliance", result.stdout)
+            self.assertIn("deferred=1", result.stdout)
+            rows = fixture.selected_rows(fixture.selected_evidence_files()[0])
+            self.assertIn(
+                ("test-di-compliance", "dependency-chain:profile-projection -> test-di-compliance"),
+                rows,
+            )
+        finally:
+            fixture.close()
+
+    def test_gwt_006_given_multiple_direct_roots_then_evidence_is_repeatable(self) -> None:
+        fixture = SyntheticRunnerRepo()
+        try:
+            changed_path = "fixture/shared.txt"
+            fixture.override_input_paths(
+                **{
+                    "coding-standards-integrity": changed_path,
+                    "profile-projection": changed_path,
+                }
+            )
+            base, head = fixture.create_changed_path_revisions(changed_path)
+
+            first = self.execute_changed_path(fixture, base, head)
+            second = self.execute_changed_path(fixture, base, head)
+
+            self.assertEqual(0, first.returncode, first.stdout + first.stderr)
+            self.assertEqual(0, second.returncode, second.stdout + second.stderr)
+            evidence = fixture.selected_evidence_files()
+            self.assertEqual(2, len(evidence))
+            first_rows = fixture.selected_rows(evidence[0])
+            second_rows = fixture.selected_rows(evidence[1])
+            self.assertEqual(first_rows, second_rows)
+            self.assertIn(
+                ("coding-standards-integrity", f"direct-path-match:{changed_path}"),
+                first_rows,
+            )
+            self.assertIn(
+                ("profile-projection", f"direct-path-match:{changed_path}"),
+                first_rows,
+            )
         finally:
             fixture.close()
 

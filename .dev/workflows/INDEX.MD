@@ -9,6 +9,7 @@ task-level progress.
 | Workflow | Title | Owner | Status | Updated | Entry Point |
 | --- | --- | --- | --- | --- | --- |
 | [`2026-08-14-environment-execution-routing`](2026-08-14-environment-execution-routing/workflow.yaml) | Define Portable CLI Execution Routing | `ai-context-governance` | `completed` | `2026-08-14T22:40:39+08:00` | [plan](2026-08-14-environment-execution-routing/workflow-plan.md) |
+| [`2026-08-14-val-006-dependency-closure`](2026-08-14-val-006-dependency-closure/workflow.yaml) | VAL-006 changed-path dependency closure remediation | `ai-context-governance` | `in_progress` | `2026-08-14T00:20:46+08:00` | [plan](2026-08-14-val-006-dependency-closure/workflow-plan.md) |
 | [`2026-08-12-v0-13-release-readiness`](2026-08-12-v0-13-release-readiness/workflow.yaml) | Prepare v0.13 Terminal Release Readiness | `ai-context-governance` | `in_progress` | `2026-08-12T17:48:18+08:00` | [plan](2026-08-12-v0-13-release-readiness/workflow-plan.md) |
 | [`2026-08-11-std-001-pkg-navigation-closure`](2026-08-11-std-001-pkg-navigation-closure/workflow.yaml) | Fail Closed On Broken Payload Navigation And Component References | `ai-context-governance` | `completed` | `2026-08-11T23:30:58+08:00` | [plan](2026-08-11-std-001-pkg-navigation-closure/workflow-plan.md) |
 | [`2026-08-11-std-001-r2-review-routing`](2026-08-11-std-001-r2-review-routing/workflow.yaml) | Make Code Review References File-Type And Finding Scoped | `ai-context-governance` | `completed` | `2026-08-11T20:54:00+08:00` | [plan](2026-08-11-std-001-r2-review-routing/workflow-plan.md) |
