@@ -22,7 +22,17 @@ This package is a versioned framework payload, not a whole-repository overwrite.
    not treat a source-only CLI or release publication operation as part of the
    extracted target prerequisite contract.
 
-3. Validate the archive and its external `.sha256` sidecar.
+3. Validate the archive and its external `.sha256` sidecar. Then validate the
+   freshly extracted incoming candidate from the envelope root, using only the
+   checksum-governed validator and payload carried by that candidate:
+
+   ```text
+   python payload/.ai/scripts/validate-ai-context-payload.py --package-root .
+   ```
+
+   This is the portable validation success boundary. Source-only tests are
+   classified in `metadata/validation.json`, are not packaged, and cannot
+   contribute to this result.
 4. From the extracted envelope root, run a dry-run against the target and review every add, replace, remove, rename, and reconcile result:
 
    ```text

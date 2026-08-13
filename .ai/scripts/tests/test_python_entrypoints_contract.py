@@ -27,6 +27,7 @@ EXPECTED_PORTABLE_PATHS = {
     ".ai/assets/skills/software-development-orchestrator/scripts/validate-software-development-orchestrator-acceptance.py",
     ".ai/scripts/plan-ai-context-package-apply.py",
     ".ai/scripts/resolve-effective-rule-packet.py",
+    ".ai/scripts/validate-ai-context-payload.py",
     ".ai/scripts/validate-ai-context-target.py",
     ".ai/scripts/validate-ai-context.py",
     ".ai/scripts/validate-assessment-artifacts.py",
@@ -54,12 +55,12 @@ class PythonEntrypointContractTests(unittest.TestCase):
     def test_gwt_001_given_governed_registry_when_counted_then_portable_dependency_contract_is_complete(self) -> None:
         self.assertEqual("1.0", self.registry["schema_version"])
         self.assertEqual("3.11", self.registry["python_floor"])
-        self.assertEqual(31, len(self.entrypoints))
+        self.assertEqual(32, len(self.entrypoints))
         portable = [item for item in self.entrypoints if item["portable"]]
         pyyaml = [item for item in self.entrypoints if item["dependency_profile"] == ["PyYAML"]]
         stdlib = [item for item in self.entrypoints if not item["dependency_profile"]]
-        self.assertEqual(13, len(portable))
-        self.assertEqual(29, len(pyyaml))
+        self.assertEqual(14, len(portable))
+        self.assertEqual(30, len(pyyaml))
         self.assertEqual(2, len(stdlib))
         self.assertEqual("6.0.3", self.registry["governed_requirements"]["PyYAML"]["version"])
         self.assertEqual("requirements.txt", self.registry["governed_requirements"]["PyYAML"]["requirements_path"])
@@ -102,7 +103,7 @@ class PythonEntrypointContractTests(unittest.TestCase):
         self.assertEqual(".ai/scripts/**", runtime_entry["source"])
         self.assertEqual("software-development-core", runtime_entry["component_id"])
         projected = {item["path"] for item in self.entrypoints if item["portable"]}
-        self.assertEqual(13, len(projected))
+        self.assertEqual(14, len(projected))
         for path in SHARED_RUNTIME_ASSETS | projected:
             self.assertTrue(path.startswith(".ai/scripts/") or path.startswith(".ai/assets/skills/"), path)
         self.assertIn(

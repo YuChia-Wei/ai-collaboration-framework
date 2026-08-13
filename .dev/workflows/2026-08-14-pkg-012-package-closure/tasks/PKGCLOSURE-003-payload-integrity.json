@@ -8,7 +8,7 @@
   "owner_skill": "ai-context-governance",
   "status": "pending",
   "created_at": "2026-08-14T07:03:23+08:00",
-  "updated_at": "2026-08-14T07:03:23+08:00",
+  "updated_at": "2026-08-14T07:29:27+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-5.6-sol",
   "reasoning_effort": "xhigh",
@@ -22,8 +22,15 @@
   "execution": {
     "steps": ["Define payload-integrity contract", "Validate every built payload member and manifest record", "Add EOF/EOL/encoding/case/mode fixtures", "Reproduce identity after isolated extraction"],
     "validation": ["focused payload integrity fixtures", "archive validation", "isolated identity reproduction", "POSIX confirmation"],
-    "last_completed_step": "Pending isolated validation contract",
-    "next_action": "Begin after PKGCLOSURE-002 defines the candidate-native validation entrypoint"
+    "last_completed_step": "Applied complete-payload UTF-8/LF/EOF/mode validation, duplicate and casefold archive rejection, and normalized 37 source files that produced 38 invalid projected EOFs",
+    "next_action": "Validate a real ZIP and tar package from fixed HEAD on Windows and POSIX"
   },
-  "results": {"summary": "", "files_changed": [], "tests_run": [], "finding_status": "not-addressed", "residual_risk": "", "follow_up_needed": true}
+  "results": {
+    "summary": "Every payload member is governed as UTF-8 text with LF-only and exactly one terminal LF; modes, paths, checksums, casefold uniqueness, and proof parity fail closed.",
+    "files_changed": [".ai/scripts/ai_context_package.py", ".ai/distribution/schemas/package.schema.yaml", "37 payload source files with excess terminal LF"],
+    "tests_run": ["payload integrity synthetic matrix passed", "duplicate and casefold archive fixtures passed on Windows", "ZIP/tar producer parity passed"],
+    "finding_status": "implementation-complete-verification-pending",
+    "residual_risk": "POSIX archive mode and fixed-HEAD real package evidence remain pending.",
+    "follow_up_needed": true
+  }
 }

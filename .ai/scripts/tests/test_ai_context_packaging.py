@@ -9,6 +9,7 @@ import shutil
 import sys
 import tempfile
 import unittest
+import warnings
 import zipfile
 from pathlib import Path
 
@@ -56,11 +57,13 @@ class SyntheticPackageRepo:
             "portable project guidance\n", encoding="utf-8", newline="\n"
         )
         for script in (
+            "ai_context_package_validation.py",
             "ai_context_package_apply.py",
             "ai_context_effective_rules.py",
             "ai_context_target_provenance.py",
             "plan-ai-context-package-apply.py",
             "resolve-effective-rule-packet.py",
+            "validate-ai-context-payload.py",
             "python-entrypoints.json",
             "python_prerequisites.py",
         ):
@@ -153,6 +156,36 @@ class SyntheticPackageRepo:
                     ".dev/releases/v*/**",
                     ".dev/backlog/items/**",
                 ],
+            },
+            "package_validation": {
+                "schema_version": "package-validation/v1",
+                "authority": {
+                    "kind": "incoming-candidate",
+                    "validator": {
+                        "path": ".ai/scripts/validate-ai-context-payload.py",
+                        "argv": [
+                            "python",
+                            "payload/.ai/scripts/validate-ai-context-payload.py",
+                            "--package-root",
+                            ".",
+                        ],
+                    },
+                },
+                "source_only_tests": {
+                    "classification": "source-only",
+                    "patterns": [".ai/scripts/tests/**"],
+                    "contributes_to_portable_success": False,
+                },
+                "integrity_policy": {
+                    "path_case": "casefold-unique",
+                    "payload_text": "all",
+                    "text": {
+                        "encoding": "utf-8",
+                        "line_endings": "lf-only",
+                        "terminal_lf": "exactly-one",
+                    },
+                    "modes": {"allowed": ["0644", "0755"]},
+                },
             },
             "entries": [
                 {
@@ -410,7 +443,6 @@ class DeterministicPackageGwtTests(unittest.TestCase):
                             {
                                 "source": "POLICY.md",
                                 "target": ".dev/standards/POLICY.md",
-                                "component_id": "software-development-core",
                             }
                         ],
                     },
@@ -462,6 +494,63 @@ class DeterministicPackageGwtTests(unittest.TestCase):
             )
             self.assertEqual(b"provider-neutral workflow truth\n", projected.content)
             self.assertNotIn(b"hosted provider", projected.content)
+        finally:
+            fixture.close()
+
+    def test_gwt_0000a_given_template_mapping_claims_component_when_projected_then_profile_authority_fails_closed(self) -> None:
+        fixture = SyntheticPackageRepo()
+        try:
+            portable_root = fixture.root / ".ai/assets/shared/governance"
+            portable_root.mkdir(parents=True)
+            (portable_root / "POLICY.md").write_text(
+                "provider-neutral workflow truth\n", encoding="utf-8", newline="\n"
+            )
+            manifest_path = portable_root / "manifest.yaml"
+            manifest_path.write_text(
+                yaml.safe_dump(
+                    {
+                        "schema_version": "1.0",
+                        "source_root": ".",
+                        "mappings": [
+                            {
+                                "source": "POLICY.md",
+                                "target": ".dev/standards/POLICY.md",
+                                "component_id": "software-development-core",
+                            }
+                        ],
+                    },
+                    sort_keys=False,
+                ),
+                encoding="utf-8",
+                newline="\n",
+            )
+            profile_path = fixture.root / fixture.profile
+            profile = yaml.safe_load(profile_path.read_text(encoding="utf-8"))
+            profile["entries"].append(
+                {
+                    "id": "portable-policy",
+                    "component_id": "software-development-core",
+                    "source": ".ai/assets/shared/governance/**",
+                    "target": "mapping-declared-by-template-manifest",
+                    "template_manifest": ".ai/assets/shared/governance/manifest.yaml",
+                    "ownership": "framework-managed",
+                    "install_behavior": "managed",
+                }
+            )
+            profile_path.write_text(
+                yaml.safe_dump(profile, sort_keys=False), encoding="utf-8", newline="\n"
+            )
+            git(fixture.root, "add", ".")
+            git(fixture.root, "commit", "-qm", "conflicting component fixture")
+            tree = PACKAGE.git_tree(fixture.root, "HEAD")
+            committed_profile = PACKAGE.load_yaml_blob(
+                fixture.root, tree, fixture.profile
+            )
+            with self.assertRaisesRegex(
+                PACKAGE.PackageError,
+                "mapping component_id is forbidden",
+            ):
+                PACKAGE.collect_payload(fixture.root, tree, committed_profile)
         finally:
             fixture.close()
 
@@ -775,6 +864,34 @@ class DeterministicPackageGwtTests(unittest.TestCase):
         finally:
             fixture.close()
 
+    def test_gwt_004a_given_duplicate_or_casefold_archive_members_when_read_then_it_fails_closed(self) -> None:
+        fixture = SyntheticPackageRepo()
+        try:
+            cases = {
+                "duplicate": (
+                    ("fixture-v1.0.0/payload/docs/rule.md", b"one\n"),
+                    ("fixture-v1.0.0/payload/docs/rule.md", b"two\n"),
+                    "duplicate archive member",
+                ),
+                "casefold": (
+                    ("fixture-v1.0.0/payload/docs/Rule.md", b"one\n"),
+                    ("fixture-v1.0.0/payload/docs/rule.md", b"two\n"),
+                    "case-insensitive archive member collision",
+                ),
+            }
+            for name, (first, second, expected) in cases.items():
+                with self.subTest(name=name):
+                    path = fixture.output(f"{name}.zip")
+                    with warnings.catch_warnings():
+                        warnings.simplefilter("ignore", UserWarning)
+                        with zipfile.ZipFile(path, "w") as archive:
+                            archive.writestr(*first)
+                            archive.writestr(*second)
+                    with self.assertRaisesRegex(PACKAGE.PackageError, expected):
+                        PACKAGE.archive_files(path)
+        finally:
+            fixture.close()
+
     def test_gwt_005_given_zip_and_tar_from_one_build_when_validated_then_payload_and_modes_match(self) -> None:
         fixture = SyntheticPackageRepo()
         try:
@@ -805,13 +922,18 @@ class DeterministicPackageGwtTests(unittest.TestCase):
                 (root / "metadata/migration.yaml").read_text(encoding="utf-8")
             )
 
-            self.assertEqual("2.2.0", package["schema_version"])
+            self.assertEqual("2.3.0", package["schema_version"])
             self.assertEqual("2.0.0", inventory["schema_version"])
             self.assertEqual("3.0.0", migration["schema_version"])
             self.assertEqual(package["selection"], migration["selection"])
             self.assertEqual("1.0.0", package["user_view"]["schema_version"])
             self.assertEqual(result["tree"], package["source"]["tree"])
             self.assertEqual(result["commit"], package["source"]["commit"])
+            self.assertEqual(
+                "package-validation/v1", package["validation"]["schema_version"]
+            )
+            self.assertTrue((root / "metadata/validation.json").is_file())
+            self.assertTrue((root / "metadata/selected-inputs.json").is_file())
             self.assertEqual(
                 result["selected_input_fingerprint"],
                 package["identity"]["selected_input_fingerprint"],
@@ -975,6 +1097,9 @@ class ReleaseWorkflowContractGwtTests(unittest.TestCase):
         self.assertNotIn("--output dist/release-body.md", text)
         self.assertIn('gh release download "${migration_source}"', text)
         self.assertIn('ai-context-dotnet-backend-v${previous_version}.zip.sha256', text)
+        self.assertIn("Validate freshly extracted incoming candidate", text)
+        self.assertIn("validate-ai-context-payload.py", text)
+        self.assertIn("--package-root .", text)
         self.assertNotIn('--ref "refs/tags/${migration_source}"', text)
         self.assertNotIn("gh release create", text)
         self.assertNotIn("gh release upload", text)

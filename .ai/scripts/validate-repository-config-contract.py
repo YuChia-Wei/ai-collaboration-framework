@@ -197,9 +197,10 @@ def validate_template_manifest(root: Path, errors: list[str]) -> None:
             errors.append(
                 f"{TEMPLATE_MANIFEST.as_posix()}: require exactly one public-root/{name} -> {name} mapping"
             )
-        elif matches[0].get("component_id") != "software-development-core":
+        elif "component_id" in matches[0]:
             errors.append(
-                f"{TEMPLATE_MANIFEST.as_posix()}: {name} mapping must use software-development-core"
+                f"{TEMPLATE_MANIFEST.as_posix()}: {name} mapping must not define component_id; "
+                "the package profile owns component assignment"
             )
 
 
@@ -238,6 +239,24 @@ def validate_profile(root: Path, errors: list[str]) -> None:
         errors.append(f"{PROFILE.as_posix()}: public-root seed allowlist is missing")
     if public.get("ownership") != "target-template" or public.get("install_behavior") != "seed":
         errors.append(f"{PROFILE.as_posix()}: public-root seeds must remain target-template/seed")
+    component_overrides = public.get("component_overrides")
+    software_patterns: set[str] = set()
+    if isinstance(component_overrides, list):
+        for override in component_overrides:
+            if (
+                isinstance(override, dict)
+                and override.get("component_id") == "software-development-core"
+                and isinstance(override.get("patterns"), list)
+            ):
+                software_patterns.update(
+                    item for item in override["patterns"] if isinstance(item, str)
+                )
+    for name in (".editorconfig", ".gitattributes"):
+        source = f".ai/assets/skills/ai-context-init/templates/public-root/{name}"
+        if source not in software_patterns:
+            errors.append(
+                f"{PROFILE.as_posix()}: {source} must be assigned to software-development-core"
+            )
     source_root = find_by_id(profile.get("exclusions"), "source-root-truth")
     root_patterns = set(source_root.get("patterns", []))
     for name in (".editorconfig", ".gitattributes"):

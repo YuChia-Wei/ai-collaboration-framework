@@ -110,11 +110,20 @@ class RepositoryConfigContractTests(unittest.TestCase):
         self.replace(
             ".ai/assets/skills/ai-context-init/templates/public-template-manifest.yaml",
             "  - source: public-root/.editorconfig\n"
-            "    target: .editorconfig\n"
-            "    component_id: software-development-core\n",
+            "    target: .editorconfig\n",
             "",
         )
         self.assert_failure("public-root/.editorconfig -> .editorconfig")
+
+    def test_gwt_007a_given_template_mapping_claims_component_when_validated_then_it_fails(self) -> None:
+        self.replace(
+            ".ai/assets/skills/ai-context-init/templates/public-template-manifest.yaml",
+            "  - source: public-root/.editorconfig\n    target: .editorconfig\n",
+            "  - source: public-root/.editorconfig\n"
+            "    target: .editorconfig\n"
+            "    component_id: software-development-core\n",
+        )
+        self.assert_failure("mapping must not define component_id")
 
     def test_gwt_008_given_source_root_config_is_packaged_directly_when_validated_then_it_fails(self) -> None:
         self.replace(

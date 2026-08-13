@@ -44,8 +44,9 @@ ACTIONABLE_COMMAND_RE = re.compile(
 )
 REPOSITORY_ROOT_PREFIXES = (".ai/", ".dev/", ".agents/", ".claude/", ".codex/", ".github/")
 PLACEHOLDER_TOKENS = ("*", "?", "<", ">", "{", "}")
-COMPONENT_PACKAGE_SCHEMAS = {"2.0.0", "2.1.0", "2.2.0"}
-IDENTITY_PACKAGE_SCHEMAS = {"1.1.0", "2.1.0", "2.2.0"}
+COMPONENT_PACKAGE_SCHEMAS = {"2.0.0", "2.1.0", "2.2.0", "2.3.0"}
+IDENTITY_PACKAGE_SCHEMAS = {"1.1.0", "2.1.0", "2.2.0", "2.3.0"}
+PORTABLE_VALIDATION_PACKAGE_SCHEMAS = {"2.3.0"}
 PAYLOAD_USER_VIEW_CLASSIFICATIONS = {
     "markdown_local_links": "required-local-navigation",
     "markdown_anchors": "required-local-anchor",
@@ -373,6 +374,13 @@ def add_payload_file(files: dict[str, PayloadFile], candidate: PayloadFile) -> N
         raise PackageError(
             f"output collision at {target}: {previous.source_path} and {candidate.source_path}"
         )
+    folded_target = target.casefold()
+    for existing_target, previous in files.items():
+        if existing_target.casefold() == folded_target:
+            raise PackageError(
+                "case-insensitive output collision at "
+                f"{target}: {previous.source_path} projects {existing_target}"
+            )
     files[target] = candidate
 
 
@@ -476,19 +484,24 @@ def collect_payload(
             if not isinstance(mappings, list):
                 raise PackageError(f"{manifest_path}: mappings must be a list")
             for mapping in mappings:
+                if not isinstance(mapping, dict):
+                    raise PackageError(f"{manifest_path}: each mapping must be a mapping")
                 source_value, target_value = mapping.get("source"), mapping.get("target")
-                mapping_component_id = mapping.get("component_id") or infer_legacy_component(
-                    entry_id, target_value
-                )
                 if not isinstance(source_value, str) or not isinstance(target_value, str):
                     raise PackageError(f"{manifest_path}: mapping source and target must be strings")
-                if mapping_component_id not in component_ids:
+                if "component_id" in mapping:
                     raise PackageError(
-                        f"{manifest_path}: mapping has unknown component_id "
-                        f"{mapping_component_id!r}"
+                        f"{manifest_path}: mapping component_id is forbidden; "
+                        "the package profile is the component ownership authority"
                     )
                 source_path = safe_relative_path((base / source_value).as_posix(), "template source")
                 target_path = safe_relative_path(target_value, "template target")
+                mapping_component_id = resolve_entry_component(
+                    entry,
+                    source_path,
+                    component_id,
+                    component_ids,
+                )
                 source_entry = tree.get(source_path)
                 if source_entry is None:
                     raise PackageError(f"missing mapped template source: {source_path}")
@@ -1102,14 +1115,55 @@ def payload_digest(files: Iterable[PayloadFile]) -> str:
 
 def identity_fingerprint(document: dict) -> str:
     """Hash canonical, typed identity inputs without serializing YAML formatting."""
-    return sha256_bytes(
-        json.dumps(
-            document,
-            ensure_ascii=False,
-            separators=(",", ":"),
-            sort_keys=True,
-        ).encode("utf-8")
-    )
+    return sha256_bytes(canonical_json_bytes(document))
+
+
+def canonical_json_bytes(document: dict) -> bytes:
+    """Serialize a package proof as canonical UTF-8 JSON without a trailing LF."""
+    return json.dumps(
+        document,
+        ensure_ascii=False,
+        separators=(",", ":"),
+        sort_keys=True,
+    ).encode("utf-8")
+
+
+def selected_input_document(
+    source_inputs: dict[str, bytes],
+    payload_files: Iterable[PayloadFile],
+    migration_sources: Iterable[dict],
+) -> dict:
+    """Return the portable proof whose exact bytes own selected-input identity."""
+    return {
+        "schema_version": "package-selected-input/v1",
+        "source_inputs": [
+            {"path": path, "sha256": sha256_bytes(content)}
+            for path, content in sorted(
+                source_inputs.items(), key=lambda item: item[0].encode("utf-8")
+            )
+        ],
+        "payload": [
+            {
+                "path": item.path,
+                "sha256": item.sha256,
+                "mode": f"{item.mode:04o}",
+                "ownership": item.ownership,
+                "install_behavior": item.install_behavior,
+                "component_id": item.component_id,
+            }
+            for item in sorted(payload_files, key=lambda item: item.path.encode("utf-8"))
+        ],
+        "migration_sources": [
+            {
+                "version": item["version"],
+                "manifest_sha256": item["manifest_sha256"],
+            }
+            for item in sorted(
+                migration_sources,
+                key=lambda item: str(item["version"]),
+            )
+        ],
+    }
 
 
 def selected_input_fingerprint(
@@ -1119,37 +1173,111 @@ def selected_input_fingerprint(
 ) -> str:
     """Fingerprint only bytes/configuration that can affect package output."""
     return identity_fingerprint(
-        {
-            "schema_version": "package-selected-input/v1",
-            "source_inputs": [
-                {"path": path, "sha256": sha256_bytes(content)}
-                for path, content in sorted(
-                    source_inputs.items(), key=lambda item: item[0].encode("utf-8")
-                )
-            ],
-            "payload": [
-                {
-                    "path": item.path,
-                    "sha256": item.sha256,
-                    "mode": f"{item.mode:04o}",
-                    "ownership": item.ownership,
-                    "install_behavior": item.install_behavior,
-                    "component_id": item.component_id,
-                }
-                for item in sorted(payload_files, key=lambda item: item.path.encode("utf-8"))
-            ],
-            "migration_sources": [
-                {
-                    "version": item["version"],
-                    "manifest_sha256": item["manifest_sha256"],
-                }
-                for item in sorted(
-                    migration_sources,
-                    key=lambda item: str(item["version"]),
-                )
-            ],
-        }
+        selected_input_document(source_inputs, payload_files, migration_sources)
     )
+
+
+def package_validation_document(
+    profile: dict,
+    package_id: str,
+    payload_files: Iterable[PayloadFile],
+    selected_input_sha: str,
+) -> dict:
+    """Generate one incoming-candidate authority and integrity contract."""
+    payload_items = list(payload_files)
+    contract = profile.get("package_validation")
+    if not isinstance(contract, dict):
+        raise PackageError("package_validation must be a mapping for schema 2.3.0")
+    if contract.get("schema_version") != "package-validation/v1":
+        raise PackageError("package_validation schema_version must be package-validation/v1")
+    authority = contract.get("authority")
+    if not isinstance(authority, dict) or authority.get("kind") != "incoming-candidate":
+        raise PackageError("package_validation authority must be incoming-candidate")
+    validator = authority.get("validator")
+    if not isinstance(validator, dict):
+        raise PackageError("package_validation authority.validator must be a mapping")
+    validator_path = safe_relative_path(
+        validator.get("path"), "package validation validator path"
+    )
+    argv = validator.get("argv")
+    expected_argv = [
+        "python",
+        f"payload/{validator_path}",
+        "--package-root",
+        ".",
+    ]
+    if argv != expected_argv:
+        raise PackageError(
+            "package_validation authority.validator.argv must equal "
+            f"{expected_argv!r}"
+        )
+    payload_by_path = {item.path: item for item in payload_items}
+    validator_item = payload_by_path.get(validator_path)
+    if validator_item is None:
+        raise PackageError(
+            f"incoming package validator is absent from payload: {validator_path}"
+        )
+    source_only_checks = contract.get("source_only_tests")
+    if (
+        not isinstance(source_only_checks, dict)
+        or source_only_checks.get("classification") != "source-only"
+        or source_only_checks.get("contributes_to_portable_success") is not False
+        or not isinstance(source_only_checks.get("patterns"), list)
+        or not source_only_checks["patterns"]
+        or not all(isinstance(item, str) and item for item in source_only_checks["patterns"])
+    ):
+        raise PackageError(
+            "package_validation source_only_tests must declare non-contributing patterns"
+        )
+    for item in payload_by_path:
+        if any(matches(item, pattern) for pattern in source_only_checks["patterns"]):
+            raise PackageError(f"source-only check leaked into portable payload: {item}")
+    integrity = contract.get("integrity_policy")
+    expected_integrity = {
+        "path_case": "casefold-unique",
+        "payload_text": "all",
+        "text": {
+            "encoding": "utf-8",
+            "line_endings": "lf-only",
+            "terminal_lf": "exactly-one",
+        },
+        "modes": {"allowed": ["0644", "0755"]},
+    }
+    if integrity != expected_integrity:
+        raise PackageError(
+            "package_validation integrity_policy must use the complete payload v1 policy"
+        )
+    for item in payload_items:
+        try:
+            item.content.decode("utf-8")
+        except UnicodeDecodeError as exc:
+            raise PackageError(f"packaged text file is not UTF-8: {item.path}") from exc
+        if b"\r" in item.content:
+            raise PackageError(f"packaged text file is not LF-only: {item.path}")
+        if not item.content.endswith(b"\n") or item.content.endswith(b"\n\n"):
+            raise PackageError(
+                f"packaged text file must end with exactly one LF: {item.path}"
+            )
+        if f"{item.mode:04o}" not in expected_integrity["modes"]["allowed"]:
+            raise PackageError(f"packaged file has unsupported mode: {item.path}")
+    return {
+        "schema_version": "package-validation/v1",
+        "package_id": package_id,
+        "authority": {
+            "kind": "incoming-candidate",
+            "validator": {
+                "path": validator_path,
+                "sha256": validator_item.sha256,
+                "argv": expected_argv,
+            },
+        },
+        "selected_input_proof": {
+            "path": "metadata/selected-inputs.json",
+            "sha256": selected_input_sha,
+        },
+        "source_only_tests": source_only_checks,
+        "integrity_policy": integrity,
+    }
 
 
 def directory_members(paths: Iterable[str]) -> list[str]:
@@ -1641,14 +1769,26 @@ def build_package(
         ),
     }
     payload_sha = payload_digest(payload_files)
-    selected_inputs_sha = selected_input_fingerprint(
+    selected_inputs_document = selected_input_document(
         source_input_bytes,
         payload_files,
         migration_sources,
     )
+    selected_inputs_content = canonical_json_bytes(selected_inputs_document)
+    selected_inputs_sha = sha256_bytes(selected_inputs_content)
+    validation_document = None
+    validation_content = None
+    if component_aware and user_view_contract is not None:
+        validation_document = package_validation_document(
+            profile,
+            package_id,
+            payload_files,
+            selected_inputs_sha,
+        )
+        validation_content = canonical_json_bytes(validation_document)
     package_document = {
         "schema_version": (
-            "2.2.0"
+            "2.3.0"
             if component_aware and user_view_contract is not None
             else "2.1.0" if component_aware else "1.1.0"
         ),
@@ -1686,6 +1826,14 @@ def build_package(
         package_document["selection"] = selection
     if user_view_contract is not None:
         package_document["user_view"] = user_view_contract
+    if validation_content is not None:
+        package_document["validation"] = {
+            "schema_version": "package-validation/v1",
+            "manifest": "metadata/validation.json",
+            "manifest_sha256": sha256_bytes(validation_content),
+            "selected_inputs": "metadata/selected-inputs.json",
+            "selected_inputs_sha256": selected_inputs_sha,
+        }
 
     relative_members: dict[str, tuple[bytes, int]] = {
         "INSTALL.md": (source_input_bytes[".ai/distribution/templates/INSTALL.md"], 0o644),
@@ -1694,6 +1842,12 @@ def build_package(
         "metadata/files.yaml": (files_content, 0o644),
         "metadata/migration.yaml": (migration_content, 0o644),
     }
+    if validation_content is not None:
+        relative_members["metadata/selected-inputs.json"] = (
+            selected_inputs_content,
+            0o644,
+        )
+        relative_members["metadata/validation.json"] = (validation_content, 0o644)
     for item in payload_files:
         relative_members[f"payload/{item.path}"] = (item.content, item.mode)
     checksum_lines = "".join(
@@ -1735,13 +1889,30 @@ def build_package(
 
 def archive_files(path: Path) -> dict[str, tuple[bytes, int]]:
     files: dict[str, tuple[bytes, int]] = {}
+    folded_names: dict[str, str] = {}
+
+    def add_archive_file(name: str, content: bytes, mode: int) -> None:
+        safe_relative_path(name, "archive member")
+        if name in files:
+            raise PackageError(f"duplicate archive member: {name}")
+        folded = name.casefold()
+        if folded in folded_names:
+            raise PackageError(
+                f"case-insensitive archive member collision: {folded_names[folded]} and {name}"
+            )
+        folded_names[folded] = name
+        files[name] = (content, mode)
+
     if path.name.endswith(".zip"):
         with zipfile.ZipFile(path) as archive:
             for info in archive.infolist():
                 if info.is_dir():
                     continue
-                safe_relative_path(info.filename, "archive member")
-                files[info.filename] = (archive.read(info), (info.external_attr >> 16) & 0o777)
+                add_archive_file(
+                    info.filename,
+                    archive.read(info),
+                    (info.external_attr >> 16) & 0o777,
+                )
     elif path.name.endswith(".tar.gz"):
         with tarfile.open(path, "r:gz") as archive:
             for info in archive.getmembers():
@@ -1749,11 +1920,10 @@ def archive_files(path: Path) -> dict[str, tuple[bytes, int]]:
                     continue
                 if not info.isfile():
                     raise PackageError(f"unsupported tar member type: {info.name}")
-                safe_relative_path(info.name, "archive member")
                 stream = archive.extractfile(info)
                 if stream is None:
                     raise PackageError(f"cannot read tar member: {info.name}")
-                files[info.name] = (stream.read(), info.mode & 0o777)
+                add_archive_file(info.name, stream.read(), info.mode & 0o777)
     else:
         raise PackageError(f"unsupported archive: {path}")
     return files
@@ -1867,6 +2037,38 @@ def validate_archive(path: Path) -> dict[str, tuple[bytes, int]]:
     package_schema = package.get("schema_version")
     if package_schema not in {"1.0.0", "1.1.0", *COMPONENT_PACKAGE_SCHEMAS}:
         raise PackageError(f"unsupported package schema version: {package_schema!r}")
+    validation_document: dict | None = None
+    selected_input_proof: dict | None = None
+    if package_schema in PORTABLE_VALIDATION_PACKAGE_SCHEMAS:
+        validation_member = f"{prefix}metadata/validation.json"
+        selected_member = f"{prefix}metadata/selected-inputs.json"
+        for member in (validation_member, selected_member):
+            if member not in members:
+                raise PackageError(
+                    f"schema {package_schema} archive missing required member: {member}"
+                )
+        try:
+            validation_document = json.loads(members[validation_member][0].decode("utf-8"))
+            selected_input_proof = json.loads(members[selected_member][0].decode("utf-8"))
+        except (UnicodeDecodeError, json.JSONDecodeError) as exc:
+            raise PackageError(f"invalid portable validation metadata: {exc}") from exc
+        if not isinstance(validation_document, dict) or not isinstance(
+            selected_input_proof, dict
+        ):
+            raise PackageError("portable validation metadata roots must be mappings")
+        if canonical_json_bytes(validation_document) != members[validation_member][0]:
+            raise PackageError("validation.json must use canonical JSON bytes")
+        if canonical_json_bytes(selected_input_proof) != members[selected_member][0]:
+            raise PackageError("selected-inputs.json must use canonical JSON bytes")
+        validation_pointer = package.get("validation")
+        if not isinstance(validation_pointer, dict) or validation_pointer != {
+            "schema_version": "package-validation/v1",
+            "manifest": "metadata/validation.json",
+            "manifest_sha256": sha256_bytes(members[validation_member][0]),
+            "selected_inputs": "metadata/selected-inputs.json",
+            "selected_inputs_sha256": sha256_bytes(members[selected_member][0]),
+        }:
+            raise PackageError("package validation pointer does not match metadata bytes")
     if package_schema in COMPONENT_PACKAGE_SCHEMAS:
         validate_component_selection(package.get("selection"), "package selection")
     identity = package.get("identity")
@@ -1944,6 +2146,117 @@ def validate_archive(path: Path) -> dict[str, tuple[bytes, int]]:
         raise PackageError("package payload count or digest mismatch")
     if package_schema == "2.2.0":
         validate_payload_user_view(payload_items, package.get("user_view"))
+    if package_schema == "2.3.0":
+        validate_payload_user_view(payload_items, package.get("user_view"))
+        assert validation_document is not None
+        assert selected_input_proof is not None
+        selected_input_sha = sha256_bytes(
+            members[f"{prefix}metadata/selected-inputs.json"][0]
+        )
+        if selected_input_proof.get("schema_version") != "package-selected-input/v1":
+            raise PackageError("selected-inputs.json schema is missing or unsupported")
+        source_inputs = selected_input_proof.get("source_inputs")
+        if not isinstance(source_inputs, list) or any(
+            not isinstance(item, dict)
+            or not isinstance(item.get("path"), str)
+            or not SHA256_RE.fullmatch(str(item.get("sha256", "")))
+            for item in source_inputs
+        ):
+            raise PackageError("selected-inputs source_inputs are invalid")
+        if source_inputs != sorted(
+            source_inputs, key=lambda item: item["path"].encode("utf-8")
+        ):
+            raise PackageError("selected-inputs source_inputs are not deterministic")
+        expected_payload_proof = [
+            {
+                "path": item.path,
+                "sha256": item.sha256,
+                "mode": f"{item.mode:04o}",
+                "ownership": item.ownership,
+                "install_behavior": item.install_behavior,
+                "component_id": item.component_id,
+            }
+            for item in payload_items
+        ]
+        if selected_input_proof.get("payload") != expected_payload_proof:
+            raise PackageError("selected-inputs payload proof diverges from files.yaml")
+        expected_migration_sources = [
+            {
+                "version": item.get("version"),
+                "manifest_sha256": item.get("manifest_sha256"),
+            }
+            for item in migration.get("sources", [])
+        ]
+        if selected_input_proof.get("migration_sources") != expected_migration_sources:
+            raise PackageError("selected-inputs migration proof diverges from migration.yaml")
+        if validation_document.get("schema_version") != "package-validation/v1":
+            raise PackageError("validation.json schema is missing or unsupported")
+        if validation_document.get("selected_input_proof") != {
+            "path": "metadata/selected-inputs.json",
+            "sha256": selected_input_sha,
+        }:
+            raise PackageError("validation selected-input proof identity does not match")
+        authority = validation_document.get("authority")
+        validator = authority.get("validator") if isinstance(authority, dict) else None
+        if not isinstance(authority, dict) or authority.get("kind") != "incoming-candidate":
+            raise PackageError("validation authority must be incoming-candidate")
+        if not isinstance(validator, dict):
+            raise PackageError("validation authority validator is missing")
+        validator_path = validator.get("path")
+        if validator_path != ".ai/scripts/validate-ai-context-payload.py":
+            raise PackageError("validation authority validator path is invalid")
+        validator_member = f"{prefix}payload/{validator_path}"
+        if validator_member not in members or validator.get("sha256") != sha256_bytes(
+            members[validator_member][0]
+        ):
+            raise PackageError("incoming validator identity does not match payload bytes")
+        if validator.get("argv") != [
+            "python",
+            f"payload/{validator_path}",
+            "--package-root",
+            ".",
+        ]:
+            raise PackageError("incoming validator argv is not deterministic")
+        if validation_document.get("package_id") != root:
+            raise PackageError("validation package_id does not match package envelope")
+        source_only_checks = validation_document.get("source_only_tests")
+        if (
+            not isinstance(source_only_checks, dict)
+            or source_only_checks.get("classification") != "source-only"
+            or source_only_checks.get("contributes_to_portable_success") is not False
+            or not isinstance(source_only_checks.get("patterns"), list)
+        ):
+            raise PackageError("source-only validation classification is invalid")
+        integrity_policy = validation_document.get("integrity_policy")
+        if integrity_policy != {
+            "path_case": "casefold-unique",
+            "payload_text": "all",
+            "text": {
+                "encoding": "utf-8",
+                "line_endings": "lf-only",
+                "terminal_lf": "exactly-one",
+            },
+            "modes": {"allowed": ["0644", "0755"]},
+        }:
+            raise PackageError("portable payload integrity policy is weakened or unsupported")
+        for item in payload_items:
+            if any(
+                matches(item.path, pattern)
+                for pattern in source_only_checks["patterns"]
+                if isinstance(pattern, str)
+            ):
+                raise PackageError(
+                    f"source-only check leaked into portable payload: {item.path}"
+                )
+            _decode_payload_text(item)
+            if b"\r" in item.content:
+                raise PackageError(f"packaged text file is not LF-only: {item.path}")
+            if not item.content.endswith(b"\n") or item.content.endswith(b"\n\n"):
+                raise PackageError(
+                    f"packaged text file must end with exactly one LF: {item.path}"
+                )
+            if f"{item.mode:04o}" not in {"0644", "0755"}:
+                raise PackageError(f"packaged file has unsupported mode: {item.path}")
     if package_schema in IDENTITY_PACKAGE_SCHEMAS and identity is not None:
         expected_identity = {
             "payload_fingerprint": payload_digest(payload_items),
@@ -1957,6 +2270,14 @@ def validate_archive(path: Path) -> dict[str, tuple[bytes, int]]:
         for key, value in expected_identity.items():
             if identity.get(key) != value:
                 raise PackageError(f"package identity {key} does not match archive bytes")
+        if package_schema in PORTABLE_VALIDATION_PACKAGE_SCHEMAS:
+            assert selected_input_proof is not None
+            if identity.get("selected_input_fingerprint") != sha256_bytes(
+                canonical_json_bytes(selected_input_proof)
+            ):
+                raise PackageError(
+                    "package identity selected_input_fingerprint does not match proof bytes"
+                )
     return members
 
 

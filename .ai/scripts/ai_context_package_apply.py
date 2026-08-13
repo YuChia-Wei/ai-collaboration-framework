@@ -16,6 +16,10 @@ from typing import Iterable
 
 import yaml
 
+from ai_context_package_validation import (
+    PackageValidationError,
+    validate_extracted_package,
+)
 from ai_context_target_provenance import (
     TargetValidationError,
     framework_managed_ignore_message,
@@ -24,8 +28,8 @@ from ai_context_target_provenance import (
 
 
 VERSION_RE = re.compile(r"^v?(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)$")
-COMPONENT_PACKAGE_SCHEMAS = {"2.0.0", "2.1.0", "2.2.0"}
-IDENTITY_PACKAGE_SCHEMAS = {"1.1.0", "2.1.0", "2.2.0"}
+COMPONENT_PACKAGE_SCHEMAS = {"2.0.0", "2.1.0", "2.2.0", "2.3.0"}
+IDENTITY_PACKAGE_SCHEMAS = {"1.1.0", "2.1.0", "2.2.0", "2.3.0"}
 
 
 class ApplyError(ValueError):
@@ -508,6 +512,14 @@ def validate_package_root(package_root: Path) -> tuple[dict, dict[str, dict], di
             char not in "0123456789abcdef" for char in selected
         ):
             raise ApplyError("package identity selected_input_fingerprint is invalid")
+    if package_schema == "2.3.0":
+        try:
+            validate_extracted_package(
+                package_root,
+                run_portable_entrypoints=False,
+            )
+        except PackageValidationError as exc:
+            raise ApplyError(f"portable package validation failed: {exc}") from exc
     return package, records, migration, manifest_sha
 
 

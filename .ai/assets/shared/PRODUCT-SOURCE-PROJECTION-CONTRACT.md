@@ -78,4 +78,3 @@ inferred from profile availability.
   authority.
 - A migration is incomplete while the old and new full-text trees are both
   treated as canonical.
-

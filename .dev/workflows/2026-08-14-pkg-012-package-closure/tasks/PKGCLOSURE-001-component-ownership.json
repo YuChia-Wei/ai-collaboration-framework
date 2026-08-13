@@ -6,9 +6,9 @@
   "task_id": "PKGCLOSURE-001-component-ownership",
   "workflow_id": "2026-08-14-pkg-012-package-closure",
   "owner_skill": "ai-context-governance",
-  "status": "in_progress",
+  "status": "completed",
   "created_at": "2026-08-14T07:03:23+08:00",
-  "updated_at": "2026-08-14T07:09:30+08:00",
+  "updated_at": "2026-08-14T07:29:27+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-5.6-sol",
   "reasoning_effort": "xhigh",
@@ -22,8 +22,15 @@
   "execution": {
     "steps": ["Inventory every component assignment source", "Select and enforce one authority", "Generate or validate all derived projections", "Add deterministic failure and identity fixtures"],
     "validation": ["focused component ownership fixtures", "full packaging contract module", "workflow and diff checks"],
-    "last_completed_step": "Created workflow and started graph-assisted plus delegated read-only ownership inventory",
-    "next_action": "Reconcile inventories and define the smallest authoritative ownership change"
+    "last_completed_step": "Moved mapping-declared component assignment into the profile authority and bound files.yaml to a canonical selected-input proof",
+    "next_action": "Validate the real fixed-HEAD package projection and independent ownership evidence"
   },
-  "results": {"summary": "", "files_changed": [], "tests_run": [], "finding_status": "not-addressed", "residual_risk": "", "follow_up_needed": true}
+  "results": {
+    "summary": "The distribution profile is the single component authority; mapping manifests cannot carry component_id, and selected-input proof must exactly match files.yaml.",
+    "files_changed": [".ai/distribution/profiles/dotnet-backend.yaml", ".ai/assets/shared/governance/portable-policy-manifest.yaml", ".ai/assets/skills/ai-context-init/templates/public-template-manifest.yaml", ".ai/scripts/ai_context_package.py"],
+    "tests_run": ["3 focused package producer tests passed", "14 repository configuration contract tests passed"],
+    "finding_status": "implementation-complete-verification-pending",
+    "residual_risk": "Real fixed-HEAD package projection and independent verification remain pending.",
+    "follow_up_needed": true
+  }
 }

@@ -16,10 +16,10 @@
 - `base_branch`: `codex/2026-08-14-val-006-dependency-closure`
 - `branch_segment`: `2`
 - `status`: `in_progress`
-- `current_phase`: `remediation-planning`
+- `current_phase`: `remediation-implementation`
 - `artifact_root`: `.dev/workflows/2026-08-14-pkg-012-package-closure`
 - `created_at`: `2026-08-14T07:03:23+08:00`
-- `updated_at`: `2026-08-14T07:09:30+08:00`
+- `updated_at`: `2026-08-14T07:29:27+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md`
 - `template_version`: `1.2.0`
 
@@ -50,8 +50,8 @@
 
 1. Baseline audit, live Issue read-back, graph-assisted code discovery, and stacked clean checkpoint — completed.
 2. Finding triage, #200 boundary analysis, and task ownership — in progress.
-3. Canonical ownership and isolated validation implementation with focused deterministic fixtures — pending.
-4. Complete payload-integrity validation, fixed-clean-commit aggregate/POSIX evidence, and independent post-remediation assessment — pending.
+3. Canonical ownership and isolated validation implementation with focused deterministic fixtures — implementation complete; durable commit pending.
+4. Complete payload-integrity validation, fixed-clean-commit aggregate/POSIX evidence, and independent post-remediation assessment — focused Windows fixtures passed; fixed-commit validation pending.
 5. Finding reconciliation and local closeout; continue stacking later #200-#208 segments without remote integration — pending.
 
 `ai-context-governance` owns the assessment-to-remediation lifecycle. `software-development-orchestrator` coordinates only bounded Python/tooling implementation, tests, review, long-running validation, and commits. Product source review, spec compliance, and release closeout are not selected.
@@ -73,8 +73,8 @@
 ## Resume Checkpoint
 
 - Last completed action: rewrote every unpushed local commit subject to carry #201 or #202 as required by the owner, preserved fixed validation commit `4ecaa5cf`, and reconciled the new clean #202 checkpoint `f9483469dba4cbd64c20606e33597ffa30793c74`.
-- Current task: `PKGCLOSURE-001-component-ownership` planning, with parallel read-only inventory of #201 and #200 boundaries.
-- Exact next action: reconcile explorer evidence, finalize implementation ownership, and commit this workflow-planning checkpoint before changing package contracts.
+- Current tasks: all three PKGCLOSURE implementation tasks are active; producer, validator, ownership, integrity, and workflow changes are present in the working tree.
+- Exact next action: commit the Issue-bound implementation checkpoint, then build and validate a real package from that immutable HEAD on Windows and POSIX.
 - Validation already completed: predecessor #202 workflow commit-policy range passed; branch creation and Git status were clean.
 - Git state: branch `codex/2026-08-14-pkg-012-package-closure` based on local #202 closeout; workflow artifacts are the only intended dirty files.
 - Branch history and checkpoint handoffs: cumulative segment 2; no push, PR, merge, Issue close, or release mutation.
@@ -84,4 +84,4 @@
 
 | Segment | Branch | Base | Checkpoint Type | Commit | Remote / Target | Recorded At | Reason | Resume Branch / Action |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| 2 | `codex/2026-08-14-pkg-012-package-closure` | `codex/2026-08-14-val-006-dependency-closure@f9483469dba4cbd64c20606e33597ffa30793c74` | local active stacked segment | workflow plan `caf2256123b1ab03e5da435f6eff9818543611aa`; implementation pending | not pushed | `2026-08-14T07:09:30+08:00` | package closure precedes durable apply and upgrade correctness | finish #201 locally, verify, close, then stack #200 without remote integration |
+| 2 | `codex/2026-08-14-pkg-012-package-closure` | `codex/2026-08-14-val-006-dependency-closure@f9483469dba4cbd64c20606e33597ffa30793c74` | local active stacked segment | workflow plan `caf2256123b1ab03e5da435f6eff9818543611aa`; implementation checkpoint pending commit | not pushed | `2026-08-14T07:29:27+08:00` | package closure precedes durable apply and upgrade correctness | commit #201 implementation, run fixed-HEAD Windows/POSIX verification, then stack #200 |
