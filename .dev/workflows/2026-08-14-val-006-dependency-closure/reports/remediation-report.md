@@ -14,7 +14,7 @@
 - `owner_skill`: `ai-context-governance`
 - `status`: `final`
 - `created_at`: `2026-08-14T00:06:47+08:00`
-- `updated_at`: `2026-08-14T00:38:42+08:00`
+- `updated_at`: `2026-08-14T07:00:35+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-remediation-report-template.md`
 - `template_version`: `2.0.0`
 - `baseline_assessment`: `ASM-20260813-001`
@@ -25,7 +25,7 @@
 - Authorized scope: Issue #202 / `ASM-20260813-001#VALSEL-001` only.
 - Completed scope: bounded selector implementation, deterministic Windows-compatible and POSIX fixtures, canonical fixed-commit aggregate validation, and independent verification.
 - Validation summary: all selected implementation and artifact gates pass at canonical commit `4ecaa5cf`; historical blocked/superseded attempts remain explicitly non-canonical.
-- Closure decision: `local-workflow-complete-merge-ready-owner-gate`
+- Closure decision: `local-workflow-complete-cumulative-integration-deferred`
 
 ## Finding Resolution Matrix
 
@@ -62,4 +62,4 @@
 - Required validations: complete for the local segment; external receipt and independent assessment evidence are reconciled without rewriting blocked attempts.
 - Commit status: implementation commit `4ecaa5cf`; assessment commit `f3647f8`; this reconciliation is the final local closeout stage.
 - Workflow/task status: completed locally.
-- Final next action: stop for explicit push/PR authority after the local durable closeout commit. Merge, Issue closure, and release remain separate decisions.
+- Final next action: use this clean checkpoint as the base of the stacked #201 segment. The owner authorized cumulative push, PR, and merge only after all #200–#208 segments complete; Issue closure and release remain separate decisions.

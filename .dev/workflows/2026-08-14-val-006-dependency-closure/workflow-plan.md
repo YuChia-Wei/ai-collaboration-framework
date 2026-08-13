@@ -19,7 +19,7 @@
 - `current_phase`: `completed`
 - `artifact_root`: `.dev/workflows/2026-08-14-val-006-dependency-closure`
 - `created_at`: `2026-08-14T00:06:47+08:00`
-- `updated_at`: `2026-08-14T00:38:42+08:00`
+- `updated_at`: `2026-08-14T07:00:35+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md`
 - `template_version`: `1.2.0`
 
@@ -27,8 +27,8 @@
 
 - Problem statement: The changed-path selector can mark a direct match selected before dependency traversal. The selected-state guard then suppresses traversal and permits a false-pass selected set.
 - Authorized remediation scope: GitHub Issue #202 and `ASM-20260813-001#VALSEL-001`; correct dependency graph validation and changed-path selection evidence in the aggregate validation runner, with deterministic focused fixtures.
-- Authorization source: owner instruction in Codex source task `019ffb42-297b-7922-91ee-74d19e7b962a`, delegated to task `019ffbdb-f015-7581-a8e6-33cb09cb1155`, explicitly authorizing repository-native design, implementation, validation, local durable commits, and sub-agents for Issues #200 through #208.
-- Exclusions: process-tree supervision, immutable execution snapshots, timeout/cleanup and nightly scheduling (#204); package payload/apply work (#200/#201); upgrade packet and route work (#203/#206); provider runtime projections (#207/#208); .NET analyzer provider work (#205); push, pull request, merge, Issue closure, Project or milestone mutation, tag, release, and publication.
+- Authorization source: owner instruction in Codex source task `019ffb42-297b-7922-91ee-74d19e7b962a`, delegated to task `019ffbdb-f015-7581-a8e6-33cb09cb1155`, explicitly authorizing repository-native design, implementation, validation, local durable commits, and sub-agents for Issues #200 through #208. A subsequent owner instruction requires all items to complete before one cumulative push, pull request, and merge.
+- Exclusions: process-tree supervision, immutable execution snapshots, timeout/cleanup and nightly scheduling (#204); package payload/apply work (#200/#201); upgrade packet and route work (#203/#206); provider runtime projections (#207/#208); and .NET analyzer provider work (#205) remain outside this completed workflow and belong to later stacked segments. Issue closure, Project or milestone mutation, tag, release, and publication remain unauthorized.
 - Completion criteria: direct and transitive matches select the full closure; diamond dependencies execute once; cycles fail before execution with the exact path; unknown dependencies fail before execution; reasons and order are deterministic; disabled or not-applicable dependencies remain selected but preserve execution disposition; focused tests and workflow artifact validation pass; an independent post-remediation assessment records the fixed clean commit result.
 - Workflow proportionality: one remediation task is intentional. The workflow preserves the assessment-to-remediation-to-independent-verification lifecycle, cross-runtime evidence, and merge-ready owner gate that an Issue or commit alone does not own; no validation or closeout tasks are invented.
 
@@ -73,7 +73,7 @@ Proposed merge order after this segment: #202; #201; #200; #204 runner correctne
 2. Finding triage, delivery-cohesion analysis, and remediation authorization — completed.
 3. Bounded selector remediation and focused deterministic validation — completed at implementation commit `4ecaa5cf5c079011f765542253f2faafb2b814ca`.
 4. Fixed-commit aggregate validation, POSIX-path confirmation, and independent post-remediation audit — completed; canonical WSL receipt `VAL006-003` passed 44/44 and `ASM-20260814-003` reconciled the baseline finding as resolved.
-5. Finding reconciliation, commit verification, and merge-ready owner gate — completed locally. Push, PR, merge, Issue closure, and release remain separately unauthorized and unverified.
+5. Finding reconciliation and commit verification — completed locally. The owner subsequently authorized one cumulative push, PR, and merge only after all #200–#208 segments complete; Issue closure and release remain separately unauthorized.
 
 `software-development-orchestrator` is used only to coordinate the bounded tooling implementation, test, review, and commit checkpoints. It does not own this governance workflow or replace `ai-context-governance`. The read-only bounded worker supplies analysis evidence only and has no mutation or integration authority.
 
@@ -97,14 +97,14 @@ Proposed merge order after this segment: #202; #201; #200; #204 runner correctne
 
 - Last completed action: reconciled independent final verification `ASM-20260814-003` against canonical clean implementation commit `4ecaa5cf5c079011f765542253f2faafb2b814ca`; no active implementation finding remained and `ASM-20260813-001#VALSEL-001` is resolved locally.
 - Current task: `VALSEL-001-dependency-closure` completed.
-- Exact next action: owner decides whether to authorize push and PR creation. Merge, Issue closure, Project/milestone mutation, release, and publication remain separate decisions.
+- Exact next action: create the stacked #201 package-closure segment from this clean checkpoint. Defer push, PR, and merge until all #200–#208 segments complete and pass their gates.
 - Validation already completed: final Windows-compatible selector fixture class 6/6 passed in 26.703 seconds; POSIX WSL selector fixtures 6/6 passed in 19.760 seconds; profile-registry tests 6/6 passed; three existing aggregate-runner regressions 3/3 passed in 55.355 seconds; shell asset validator passed 16 assets; Bash syntax, Python AST parsing, workflow/assessment artifact validation, commit-policy validation, and Git diff checks passed. Canonical `VAL006-003` against clean `4ecaa5cf` passed the complete aggregate contract 44/44 in 46.443 seconds and its dispatch/completion pair passed the canonical schema validator. `ASM-20260814-003` independently revalidated that receipt and resolved the finding. The initial new-fixture run produced 4 passes and 2 failures because its synthetic path overlapped legitimate broad registry owners; after using a uniquely owned synthetic path, the complete class passed. The initial workflow validator run failed because the new locator was absent from the index; the indexed rerun passed. External `VAL006-001` remains blocked by Windows Temp `WinError 5`; `VAL006-002` passed only on superseded commit `125d85db` and is historical, not canonical.
-- Git state: local workflow branch with canonical implementation commit `4ecaa5cf`; assessment and governance closeout changes await the final local durable commit. No push or hosted mutation.
-- Branch history and checkpoint handoffs: segment 1 started locally; no push, PR, merge, or continuation checkpoint.
+- Git state: clean local workflow branch at governance closeout commit `951677057ce8101ae1ebddb42cf472b8b666c5d1`, containing implementation `4ecaa5cf` and assessment `f3647f8`; no push or hosted mutation.
+- Branch history and checkpoint handoffs: segment 1 completed locally. The owner's cumulative-integration instruction makes this commit the base for the next stacked local segment; no push, PR, or merge has occurred.
 - Blockers or unresolved decisions: none for #202. UPG-002 packet schema and retention are outside this workflow and remain an owner gate.
 
 ## Branch Lifecycle
 
 | Segment | Branch | Base | Checkpoint Type | Commit | Remote / Target | Recorded At | Reason | Resume Branch / Action |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| 1 | `codex/2026-08-14-val-006-dependency-closure` | `main@a679d4990c3a37b59bb8592e4fc78180ef165c6b` | local merge-ready segment | implementation `4ecaa5cf5c079011f765542253f2faafb2b814ca`; assessment `f3647f8bd89bbcfaf75fd261681c92dce1ceb220`; this closeout stage | not pushed | `2026-08-14T00:38:42+08:00` | independently mergeable selector defect with fixed-head verification | obtain separate owner authority before push or PR creation |
+| 1 | `codex/2026-08-14-val-006-dependency-closure` | `main@a679d4990c3a37b59bb8592e4fc78180ef165c6b` | local merge-ready segment | implementation `4ecaa5cf5c079011f765542253f2faafb2b814ca`; assessment `f3647f8bd89bbcfaf75fd261681c92dce1ceb220`; governance closeout `951677057ce8101ae1ebddb42cf472b8b666c5d1` | not pushed | `2026-08-14T07:00:35+08:00` | independently mergeable selector defect with fixed-head verification | stack the #201 segment locally; defer cumulative push, PR, and merge until all authorized items pass |
