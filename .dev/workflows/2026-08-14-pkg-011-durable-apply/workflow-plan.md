@@ -16,10 +16,10 @@
 - `base_branch`: `main`
 - `branch_segment`: `3`
 - `status`: `in_progress`
-- `current_phase`: `round-2-immutable-validation-preparation`
+- `current_phase`: `round-3-durable-commit-preparation`
 - `artifact_root`: `.dev/workflows/2026-08-14-pkg-011-durable-apply`
 - `created_at`: `2026-08-14T09:07:04+08:00`
-- `updated_at`: `2026-08-15T00:55:12+08:00`
+- `updated_at`: `2026-08-15T01:48:09+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md`
 - `template_version`: `1.2.0`
 
@@ -30,7 +30,7 @@
 - Authorization source: the owner authorized repository-native implementation of Issues #200-#208 and required all segments to complete locally before one cumulative push, PR, hosted-check gate, and merge; after Ubuntu 24.04 exposed the planner ordering regression, the owner explicitly instructed creation and implementation of Issue #209 on 2026-08-14.
 - Normative truth: the live Issue #200 acceptance criteria, `.dev/assessments/ASM-20260813-001/evidence/owner-decisions.yaml`, package/provenance schemas, AI-context ownership policy, target validation policy, and the verified #201 selected-input proof contract.
 - Exclusions: portable package closure remains owned and completed by #201; multi-version routing belongs to #206; prospective cutover and remediation packet belong to #203. Issue closure, Project/milestone allocation, tag, release, and publication remain unauthorized.
-- Completion criteria: every selected managed path is observed; dirty-worktree changes cannot be hidden by canonical identity; raw SHA-256 and Git mode bind plan/journal/receipt; the journal is durable before mutation; planned/applying/interrupted/rolled-back/finalized transitions are validated; recovery is exact and idempotent; partial writes, ACL/readonly, symlink/reparse, mode, delete, rename, and EOL cases fail closed on Windows-compatible and POSIX paths; package-native validation and independent fixed-head verification pass.
+- Completion criteria: every selected managed path is observed; dirty-worktree changes cannot be hidden by canonical identity; raw SHA-256 and Git mode bind plan/journal/receipt; the journal is durable before mutation; planned/applying/interrupted/rolling-back/rolled-back/finalized transitions are validated; recovery is exact and idempotent; partial writes, ACL/readonly, symlink/reparse, mode, delete, rename, and EOL cases fail closed on Windows-compatible and POSIX paths; package-native validation and independent fixed-head verification pass.
 
 ## Artifact Contract
 
@@ -68,7 +68,7 @@
 2. Workflow, source-repository routing boundary, state-machine/schema design, and deterministic GWT matrix — completed.
 3. Hybrid identity and full selected-state implementation with focused fixtures — completed.
 4. Durable journal, recovery/resume/rollback implementation and forced-interruption validation — completed.
-5. Cross-platform/package-native validation, Issue #209 boundary-order correction, fixed-clean-commit audit, finding reconciliation, and local closeout — in progress; the two round-2 P1s are remediated in the working tree with 47-case Windows/POSIX focused evidence and a no-finding independent current-diff review at `ca4a4fc063b668eda49022613bddccec5507f0f4`.
+5. Cross-platform/package-native validation, Issue #209 boundary-order correction, fixed-clean-commit audit, finding reconciliation, and local closeout — in progress; commit `3e7723df2051e5dbb697cc2f3353f08ac951282b` passed its immutable 38-test package matrix but the next fixed-head audit found rollback-progress and provenance-finalization defects. The first round-3 current-diff review then found an exact-boolean validation gap; after remediation and complete reruns, the independent re-review of diff `222253299fa2d327383a3c9530e153d637fbe31a` returned no P1/P2/P3 findings.
 
 ## Validation Strategy
 
@@ -87,13 +87,13 @@
 
 ## Resume Checkpoint
 
-- Last completed action: sealed exact post-state for every active operation in plan schema 2.1, made target-template rollback package-independent, bound journal prefix/lifecycle/target state before mutation or receipt, passed the latest Windows and WSL 47-case suites, and completed an independent no-finding review of scoped diff hash `ca4a4fc063b668eda49022613bddccec5507f0f4`.
+- Last completed action: independent read-only re-review accepted diff `222253299fa2d327383a3c9530e153d637fbe31a` with no P1/P2/P3 findings after the exact-boolean fix and cross-platform reruns.
 - Current task: `PKGAPPLY-003-recovery-validation`.
-- Exact next action: validate workflow evidence, create a new Issue #200 durable commit, then repeat the immutable long package matrix and final fixed-head audit.
-- Validation already completed: prior fixed-HEAD package matrix 38/38 with a schema-valid receipt; latest Windows package-apply suite 47 run / 46 passed / 1 symlink-privilege skip; latest WSL `Ubuntu-24.04` package-apply suite 47/47; extracted-package validator 16 passed/1 platform skip; assessment, workflow, and 16-commit policy validators passed before round-2 working-tree changes.
-- Git state: clean unpushed branch at `7b6bfbe85767d026d7f52a9df237da94ca4133dd` before round-2 audit evidence updates; `main` is the ancestor, `main..HEAD` has no merge commits, and `refs/codex-safety/pre-squash-20260814-pkg-011` retains the pre-compression local checkpoint.
+- Exact next action: validate the evidence-only re-review metadata, create a new Issue #200 durable commit, then repeat the immutable long package matrix and final fixed-head audit.
+- Validation already completed: commit `3e7723d` fixed-HEAD package matrix 38/38 with a schema-valid receipt; latest Windows package-apply suite 50 run / 49 passed / 1 symlink-privilege skip in 103.617 seconds; latest WSL `Ubuntu-24.04` package-apply suite 50/50 outside the sandbox in 25.660 seconds; finalized-evidence focused GWT034 1/1 with all five variants; semantic customization lifecycle 7/7; semantic customization skill contract 5/5; AST parse and `git diff --check`; workflow artifact validator; independent re-review with no P1/P2/P3 at `222253299fa2d327383a3c9530e153d637fbe31a`.
+- Git state: dirty unpushed round-3 working tree at base commit `3e7723df2051e5dbb697cc2f3353f08ac951282b`; `main` is the ancestor, `main..HEAD` has no merge commits, and `refs/codex-safety/pre-squash-20260814-pkg-011` retains the pre-compression local checkpoint.
 - Branch history and checkpoint handoffs: cumulative segment 3; no push, PR, merge, Issue close, or release mutation.
-- Blockers or unresolved decisions: no owner decision is required; a new immutable long-matrix receipt and a new fixed-head audit remain mandatory.
+- Blockers or unresolved decisions: no implementation decision is required; a new immutable long-matrix receipt and fixed-head audit remain mandatory. A durable verification assessment ID cannot be allocated safely until Issue #213's collision mechanism is separately authorized and implemented, so the non-assessment audit result must remain transient in the meantime.
 
 ## Branch Lifecycle
 
@@ -103,3 +103,5 @@
 | 3-rebase | `codex/2026-08-14-pkg-011-durable-apply` | `main@0eee7f21f2c6ed00df4ea06e76c342a368c6a59b` | local rebase and history-density reconciliation | 15 policy-valid commits; pre-compression recovery ref `refs/codex-safety/pre-squash-20260814-pkg-011` | not pushed | `2026-08-14T23:53:45+08:00` | incorporate merged #210 without a merge commit and reduce only same-stage unshared history | remediate fixed-head audit findings, then revalidate at a new clean commit |
 | 3-audit-remediation | `codex/2026-08-14-pkg-011-durable-apply` | `main@0eee7f21f2c6ed00df4ea06e76c342a368c6a59b` | working-tree remediation before immutable validation | pending Issue #200 commit | not pushed | `2026-08-15T00:16:49+08:00` | close three P1 transaction findings and deterministic coverage gaps without changing delivery topology | durable commit, long matrix, and fixed-clean-HEAD audit |
 | 3-audit-candidate-1 | `codex/2026-08-14-pkg-011-durable-apply` | `main@0eee7f21f2c6ed00df4ea06e76c342a368c6a59b` | immutable non-passing audit checkpoint | `7b6bfbe85767d026d7f52a9df237da94ca4133dd` | not pushed | `2026-08-15T00:39:58+08:00` | preserve 38/38 long-matrix pass and two-P1 final-audit failure without relabeling either | remediate sealed operation post-state and journal-prefix correctness on the same branch |
+| 3-audit-candidate-2 | `codex/2026-08-14-pkg-011-durable-apply` | `main@0eee7f21f2c6ed00df4ea06e76c342a368c6a59b` | immutable non-passing audit checkpoint | `3e7723df2051e5dbb697cc2f3353f08ac951282b` | not pushed | `2026-08-15T01:12:00+08:00` | preserve the round-2 38/38 long-matrix pass and the subsequent two-P1 fixed-head audit failure | remediate rollback progress and finalization proof on the same branch |
+| 3-audit-remediation-2 | `codex/2026-08-14-pkg-011-durable-apply` | `main@0eee7f21f2c6ed00df4ea06e76c342a368c6a59b` | round-3 current-diff review | pending Issue #200 commit | not pushed | `2026-08-15T01:34:44+08:00` | close rollback crash-recovery and finalized-provenance proof defects without erasing the non-passing checkpoint | independent diff review, durable commit, long matrix, and final fixed-head audit |

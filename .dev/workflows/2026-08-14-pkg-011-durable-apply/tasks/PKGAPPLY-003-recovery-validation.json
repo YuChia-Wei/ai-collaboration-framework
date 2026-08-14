@@ -8,7 +8,7 @@
   "owner_skill": "ai-context-governance",
   "status": "in_progress",
   "created_at": "2026-08-14T09:07:04+08:00",
-  "updated_at": "2026-08-15T00:55:12+08:00",
+  "updated_at": "2026-08-15T01:48:09+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-5.6-sol",
   "reasoning_effort": "xhigh",
@@ -22,15 +22,15 @@
   "execution": {
     "steps": ["Bind recovery to the exact caller target before any resume or rollback mutation", "Publish the complete planned journal atomically from a non-blocking preparation directory", "Use a write-through Windows source-path removal before advancing the journal", "Cover partial write, readonly/permission, symlink/reparse, EOL, delete, rename, and mode cases", "Force interruption after every journal, operation, receipt, and rollback boundary", "Validate recovery from a fresh process invocation", "Run package-native and cross-platform focused matrices", "Obtain independent fixed-head verification"],
     "validation": ["Windows-compatible focused suite", "Ubuntu-24.04 focused GWT-008 and complete package-apply suite", "POSIX focused suite", "package-native validation", "external-task receipt validation", "independent ai-context-auditor assessment"],
-    "last_completed_step": "Round-2 remediation sealed operation post-state, removed package-derived rollback reconstruction, validated journal progress and actual operation results, passed 47/47 on WSL plus 46/47 on Windows with one symlink-privilege skip, and completed a no-finding independent review of scoped diff hash ca4a4fc063b668eda49022613bddccec5507f0f4",
+    "last_completed_step": "Independent read-only re-review accepted exact diff 222253299fa2d327383a3c9530e153d637fbe31a with no P1/P2/P3 findings after the exact-boolean remediation and complete cross-platform reruns",
     "next_action": "Create a new Issue #200 durable commit, run the immutable long package matrix, and obtain a new fixed-head audit"
   },
   "results": {
-    "summary": "Both round-2 P1 recovery-evidence defects are remediated in the working tree with deterministic package-independent rollback, prefix corruption, restored-source, and post-progress recovery fixtures.",
-    "files_changed": [".ai/scripts/ai_context_package_apply.py", ".ai/scripts/tests/test_ai_context_package_apply.py", ".ai/scripts/ai_context_target_provenance.py"],
-    "tests_run": ["prior rebased fixed-HEAD package matrix: 38 passed with a schema-valid receipt", "latest WSL Ubuntu-24.04 package-apply suite: 47 passed", "latest Windows package-apply suite: 46 passed, 1 symlink-privilege skip", "round-2 focused target-template/prefix/corruption suite: 5 passed with all subcases", "extracted-package validator: 16 passed, 1 skipped"],
-    "finding_status": "round-2-remediated-awaiting-immutable-validation",
-    "residual_risk": "The independently reviewed round-2 changes are not yet bound to a new clean commit, long package matrix, and final fixed-head audit.",
+    "summary": "The round-3 rollback-progress and finalization-proof defects are remediated in the working tree with a journal-v2 rollback prefix, exact sealed rollback-start surface, finalized transition and prefix validation, and receipt-to-post-state cross-binding.",
+    "files_changed": [".ai/scripts/ai_context_package_apply.py", ".ai/scripts/ai_context_target_provenance.py", ".ai/scripts/tests/test_ai_context_package_apply.py", ".ai/scripts/README.md", ".ai/assets/skills/ai-context-upgrader/references/provenance-contract.md", ".dev/workflows/2026-08-14-pkg-011-durable-apply/**"],
+    "tests_run": ["commit 3e7723d fixed-HEAD package matrix: 38 passed with a schema-valid receipt", "latest WSL Ubuntu-24.04 package-apply suite outside sandbox: 50 passed in 25.660 seconds", "latest Windows package-apply suite: 49 passed, 1 symlink-privilege skip in 103.617 seconds", "GWT034 focused: 1 passed with five resealed variants", "semantic customization lifecycle: 7 passed outside sandbox", "semantic customization skill contract: 5 passed outside sandbox", "AST parse and git diff --check: passed before review remediation"],
+    "finding_status": "round-3-current-diff-reviewed-awaiting-durable-commit",
+    "residual_risk": "The independently reviewed remediation is not yet bound to a clean commit, long package matrix, and final fixed-head audit; durable verification assessment allocation remains gated by Issue #213.",
     "follow_up_needed": true
   }
 }

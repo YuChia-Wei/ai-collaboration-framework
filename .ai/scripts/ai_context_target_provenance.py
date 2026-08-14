@@ -258,10 +258,14 @@ def validate_apply_transaction_journals(
             errors.append(f"{child}: transaction journal is missing or invalid")
             continue
         state = journal.get("state")
-        if journal.get("schema_version") != "ai-context-package-apply-journal/v1" or journal.get("transaction_id") != child.name or journal.get("plan_sha256") != child.name:
+        journal_schema = journal.get("schema_version")
+        if journal_schema not in {
+            "ai-context-package-apply-journal/v1",
+            "ai-context-package-apply-journal/v2",
+        } or journal.get("transaction_id") != child.name or journal.get("plan_sha256") != child.name:
             errors.append(f"{journal_path}: transaction identity is invalid")
             continue
-        if state in {"planned", "applying", "interrupted"}:
+        if state in {"planned", "applying", "interrupted", "rolling-back"}:
             errors.append(f"{journal_path}: package apply transaction is {state}")
         elif state not in {"rolled-back", "finalized"}:
             errors.append(f"{journal_path}: package apply transaction state is invalid")
@@ -269,6 +273,11 @@ def validate_apply_transaction_journals(
             matched_receipt = True
             if state != "finalized":
                 errors.append(f"{journal_path}: pending receipt transaction is not finalized")
+                continue
+            if journal_schema != "ai-context-package-apply-journal/v2":
+                errors.append(
+                    f"{journal_path}: pending receipt transaction journal schema is unsupported"
+                )
                 continue
             receipt_path = root / PENDING_APPLY_RECEIPT
             actual_receipt_sha = hashlib.sha256(receipt_path.read_bytes()).hexdigest()
@@ -288,23 +297,185 @@ def validate_apply_transaction_journals(
             if declared_plan_sha != child.name or canonical_json_digest(unsigned) != child.name:
                 errors.append(f"{plan_path}: sealed transaction plan identity differs")
                 continue
-            active_ids = [
-                item.get("id")
-                for item in plan.get("operations", [])
+            operations = plan.get("operations")
+            operations_valid = (
+                isinstance(operations, list)
+                and all(
+                    isinstance(item, dict)
+                    and isinstance(item.get("id"), str)
+                    and bool(item.get("id"))
+                    and safe_target_path(item.get("path"))
+                    and item.get("action")
+                    in {
+                        "add",
+                        "replace",
+                        "remove",
+                        "rename",
+                        "noop",
+                        "reconcile",
+                        "unresolved",
+                    }
+                    and (
+                        item.get("action") != "rename"
+                        or safe_target_path(item.get("from_path"))
+                    )
+                    for item in operations
+                )
+            )
+            operation_items = operations if isinstance(operations, list) else []
+            active_operations = [
+                item
+                for item in operation_items
                 if isinstance(item, dict)
                 and item.get("action") in {"add", "replace", "remove", "rename"}
             ]
+            active_ids = [item.get("id") for item in active_operations]
+            post_state_records = plan.get("operation_post_states")
+            post_state_valid = (
+                plan.get("schema_version") == "2.1.0"
+                and operations_valid
+                and isinstance(post_state_records, list)
+                and len(post_state_records) == len(active_operations)
+                and all(
+                    isinstance(item.get("id"), str)
+                    and bool(item.get("id"))
+                    and safe_target_path(item.get("path"))
+                    and (
+                        item.get("action") != "rename"
+                        or safe_target_path(item.get("from_path"))
+                    )
+                    for item in active_operations
+                )
+                and len(active_ids) == len(set(active_ids))
+            )
+            if post_state_valid:
+                for operation, record in zip(
+                    active_operations, post_state_records, strict=True
+                ):
+                    expected_paths = [operation.get("path")]
+                    if operation.get("action") == "rename":
+                        expected_paths.append(operation.get("from_path"))
+                    paths = record.get("paths") if isinstance(record, dict) else None
+                    if (
+                        not isinstance(record, dict)
+                        or record.get("operation_id") != operation.get("id")
+                        or not isinstance(paths, list)
+                        or [
+                            item.get("path") if isinstance(item, dict) else None
+                            for item in paths
+                        ]
+                        != expected_paths
+                    ):
+                        post_state_valid = False
+                        break
+                    for path_index, item in enumerate(paths):
+                        state_record = item.get("state")
+                        if not isinstance(state_record, dict) or set(state_record) != {
+                            "exists",
+                            "sha256",
+                            "mode",
+                        }:
+                            post_state_valid = False
+                            break
+                        if state_record.get("exists") is True:
+                            if (
+                                operation.get("action") == "remove"
+                                or (
+                                    operation.get("action") == "rename"
+                                    and path_index == 1
+                                )
+                                or not isinstance(
+                                    state_record.get("sha256"), str
+                                )
+                                or not re.fullmatch(
+                                    r"[0-9a-f]{64}", state_record["sha256"]
+                                )
+                                or state_record.get("mode") not in {"0644", "0755"}
+                            ):
+                                post_state_valid = False
+                                break
+                        elif (
+                            state_record.get("exists") is not False
+                            or operation.get("action") in {"add", "replace"}
+                            or (
+                                operation.get("action") == "rename"
+                                and path_index == 0
+                            )
+                            or state_record
+                            != {
+                                "exists": False,
+                                "sha256": None,
+                                "mode": None,
+                            }
+                        ):
+                            post_state_valid = False
+                            break
+                    if not post_state_valid:
+                        break
+            if not post_state_valid:
+                errors.append(
+                    f"{plan_path}: sealed transaction post-state evidence is invalid"
+                )
+            expected_operation_order_sha = canonical_json_digest(active_ids)
+            transition_sequence = journal.get("transition_sequence")
+            minimum_sequence = len(active_ids) + 2
+            finalized_progress_valid = (
+                type(journal.get("next_apply_index")) is int
+                and journal.get("next_apply_index") == len(active_ids)
+                and journal.get("completed_operation_ids") == active_ids
+                and journal.get("operation_order_sha256")
+                == expected_operation_order_sha
+                and type(transition_sequence) is int
+                and transition_sequence >= minimum_sequence
+                and (transition_sequence - minimum_sequence) % 2 == 0
+                and type(journal.get("rollback_next_index")) is int
+                and journal.get("rollback_next_index") == 0
+                and journal.get("rollback_completed_paths") == []
+                and journal.get("rollback_start_state") is None
+            )
+            if not finalized_progress_valid:
+                errors.append(
+                    f"{journal_path}: finalized transaction progress is invalid"
+                )
+            post_state_by_operation = (
+                {
+                    record.get("operation_id"): {
+                        item.get("path"): item.get("state")
+                        for item in record.get("paths", [])
+                        if isinstance(item, dict)
+                    }
+                    for record in post_state_records
+                }
+                if post_state_valid
+                else {}
+            )
             expected_artifacts = [
-                (item.get("id"), item.get("path"))
-                for item in plan.get("operations", [])
-                if isinstance(item, dict)
-                and item.get("action") in {"add", "replace", "rename"}
+                (
+                    item.get("id"),
+                    item.get("path"),
+                    post_state_by_operation.get(item.get("id"), {})
+                    .get(item.get("path"), {})
+                    .get("sha256"),
+                    post_state_by_operation.get(item.get("id"), {})
+                    .get(item.get("path"), {})
+                    .get("mode"),
+                )
+                for item in active_operations
+                if item.get("action") in {"add", "replace", "rename"}
             ]
+            receipt_artifacts = (
+                receipt.get("applied_artifacts") if receipt is not None else None
+            )
             actual_artifacts = [
-                (item.get("operation_id"), item.get("path"))
-                for item in receipt.get("applied_artifacts", [])
+                (
+                    item.get("operation_id"),
+                    item.get("path"),
+                    item.get("raw_sha256"),
+                    item.get("git_mode"),
+                )
+                for item in receipt_artifacts
                 if isinstance(item, dict)
-            ] if receipt is not None else []
+            ] if isinstance(receipt_artifacts, list) else []
             expected_removed = [
                 (
                     item.get("id"),
@@ -312,19 +483,25 @@ def validate_apply_transaction_journals(
                     if item.get("action") == "rename"
                     else item.get("path"),
                 )
-                for item in plan.get("operations", [])
-                if isinstance(item, dict)
-                and item.get("action") in {"remove", "rename"}
+                for item in active_operations
+                if item.get("action") in {"remove", "rename"}
             ]
+            receipt_removed = (
+                receipt.get("removed_paths") if receipt is not None else None
+            )
             actual_removed = [
-                (item.get("operation_id"), item.get("path"))
-                for item in receipt.get("removed_paths", [])
+                (item.get("operation_id"), item.get("path"), item.get("result"))
+                for item in receipt_removed
                 if isinstance(item, dict)
-            ] if receipt is not None else []
+            ] if isinstance(receipt_removed, list) else []
+            expected_removed = [(*item, "absent") for item in expected_removed]
             if (
                 receipt is None
+                or not isinstance(receipt_artifacts, list)
+                or not isinstance(receipt_removed, list)
                 or receipt.get("plan_sha256") != child.name
                 or receipt.get("operation_order") != active_ids
+                or receipt.get("applied_operation_ids") != active_ids
                 or receipt.get("required_framework_paths")
                 != plan.get("required_framework_paths")
                 or receipt.get("selected_input_proof")

@@ -1681,7 +1681,12 @@ class AiContextPackageApplyGwtTests(unittest.TestCase):
                     fixture.close()
 
     def test_gwt_024_given_process_death_at_each_rollback_boundary_when_retried_then_exact_prestate_is_terminal(self) -> None:
-        for failed_boundary in ("after_rollback_restore", "after_rollback_journal"):
+        for failed_boundary in (
+            "after_rollback_start_journal",
+            "after_rollback_restore",
+            "after_rollback_progress_journal",
+            "after_rollback_journal",
+        ):
             with self.subTest(boundary=failed_boundary):
                 fixture = PackageApplyFixture()
                 try:
@@ -2201,6 +2206,301 @@ class AiContextPackageApplyGwtTests(unittest.TestCase):
                         self.assertFalse((fixture.target / ".ai/two.md").exists())
                 finally:
                     fixture.close()
+
+    def test_gwt_032_given_persisted_apply_prefix_when_rollback_dies_after_restore_then_fresh_process_continues_exactly(self) -> None:
+        for failed_boundary in (
+            "after_rollback_restore",
+            "after_rollback_progress_journal",
+        ):
+            with self.subTest(boundary=failed_boundary):
+                fixture = PackageApplyFixture()
+                try:
+                    fixture.make_package(
+                        {
+                            ".ai/one.md": (b"one\n", "framework-managed", "0644"),
+                            ".ai/two.md": (b"two\n", "framework-managed", "0644"),
+                        },
+                        [
+                            operation("001-add", "add", ".ai/one.md"),
+                            operation("002-add", "add", ".ai/two.md"),
+                        ],
+                    )
+                    plan = fixture.plan()
+
+                    def crash_apply(boundary: str, details: dict) -> None:
+                        if boundary == "after_progress_journal" and details["index"] == 0:
+                            raise APPLY.InjectedInterruption(
+                                "durable apply prefix persisted"
+                            )
+
+                    with self.assertRaises(APPLY.InjectedInterruption):
+                        APPLY.apply_plan(plan, boundary_hook=crash_apply)
+                    transaction_id = plan["plan_sha256"]
+
+                    def crash_rollback(boundary: str, details: dict) -> None:
+                        if (
+                            boundary == failed_boundary
+                            and details.get("path") == ".ai/one.md"
+                        ):
+                            raise APPLY.InjectedInterruption(
+                                f"rollback died at {failed_boundary}"
+                            )
+
+                    with self.assertRaises(APPLY.InjectedInterruption):
+                        APPLY.recover_transaction(
+                            fixture.target,
+                            transaction_id,
+                            "rollback",
+                            boundary_hook=crash_rollback,
+                        )
+                    root = APPLY.transaction_root(fixture.target, transaction_id)
+                    interrupted = yaml.safe_load(
+                        (root / "journal.yaml").read_text(encoding="utf-8")
+                    )
+                    self.assertEqual("rolling-back", interrupted["state"])
+                    self.assertEqual(
+                        (
+                            [".ai/two.md"]
+                            if failed_boundary == "after_rollback_restore"
+                            else [".ai/two.md", ".ai/one.md"]
+                        ),
+                        interrupted["rollback_completed_paths"],
+                    )
+
+                    command = [
+                        sys.executable,
+                        str(ROOT / ".ai/scripts/plan-ai-context-package-apply.py"),
+                        "--target-root",
+                        str(fixture.target),
+                        "--rollback",
+                        transaction_id,
+                    ]
+                    recovered = subprocess.run(
+                        command, check=False, capture_output=True, text=True
+                    )
+                    repeated = subprocess.run(
+                        command, check=False, capture_output=True, text=True
+                    )
+
+                    self.assertEqual(
+                        0, recovered.returncode, recovered.stdout + recovered.stderr
+                    )
+                    self.assertEqual(
+                        0, repeated.returncode, repeated.stdout + repeated.stderr
+                    )
+                    self.assertFalse((fixture.target / ".ai/one.md").exists())
+                    self.assertFalse((fixture.target / ".ai/two.md").exists())
+                    finalized = yaml.safe_load(
+                        (root / "journal.yaml").read_text(encoding="utf-8")
+                    )
+                    self.assertEqual("rolled-back", finalized["state"])
+                    self.assertEqual(
+                        [".ai/two.md", ".ai/one.md"],
+                        finalized["rollback_completed_paths"],
+                    )
+                finally:
+                    fixture.close()
+
+    def test_gwt_033_given_finalized_journal_progress_corruption_when_target_validates_then_provenance_gate_fails_closed(self) -> None:
+        corruptions = (
+            {"next_apply_index": 0},
+            {"next_apply_index": 2.0},
+            {"completed_operation_ids": []},
+            {"operation_order_sha256": "0" * 64},
+            {"transition_sequence": 3},
+            {"transition_sequence": 5},
+            {"rollback_next_index": 1},
+            {"rollback_next_index": False},
+        )
+        for corruption in corruptions:
+            with self.subTest(corruption=corruption):
+                fixture = PackageApplyFixture()
+                try:
+                    fixture.make_package(
+                        {
+                            ".ai/one.md": (b"one\n", "framework-managed", "0644"),
+                            ".ai/two.md": (b"two\n", "framework-managed", "0644"),
+                        },
+                        [
+                            operation("001-add", "add", ".ai/one.md"),
+                            operation("002-add", "add", ".ai/two.md"),
+                        ],
+                    )
+                    plan = fixture.plan()
+                    APPLY.apply_plan(plan)
+                    root = APPLY.transaction_root(
+                        fixture.target, plan["plan_sha256"]
+                    )
+                    journal_path = root / "journal.yaml"
+                    journal = yaml.safe_load(
+                        journal_path.read_text(encoding="utf-8")
+                    )
+                    journal.update(corruption)
+                    journal_path.write_text(
+                        yaml.safe_dump(journal, sort_keys=True),
+                        encoding="utf-8",
+                        newline="\n",
+                    )
+
+                    errors: list[str] = []
+                    TARGET.validate_pending_apply_receipt(fixture.target, errors)
+
+                    self.assertTrue(
+                        any(
+                            "finalized transaction progress is invalid" in error
+                            for error in errors
+                        ),
+                        errors,
+                    )
+                finally:
+                    fixture.close()
+
+    def test_gwt_034_given_resealed_unsupported_plan_or_post_state_when_target_validates_then_provenance_gate_fails_closed(self) -> None:
+        variants = (
+            "unsupported-schema",
+            "operations-not-list",
+            "add-declared-absent",
+            "remove-exists-integer-zero",
+            "rename-source-exists-integer-zero",
+        )
+        for variant in variants:
+            with self.subTest(variant=variant):
+                fixture = PackageApplyFixture()
+                try:
+                    if variant == "remove-exists-integer-zero":
+                        fixture.add_target(".ai/one.md", b"one\n")
+                        fixture.commit_target()
+                        fixture.make_package(
+                            {},
+                            [operation("001-remove", "remove", ".ai/one.md")],
+                            {
+                                ".ai/one.md": (
+                                    b"one\n",
+                                    "framework-managed",
+                                    "0644",
+                                )
+                            },
+                        )
+                    elif variant == "rename-source-exists-integer-zero":
+                        fixture.add_target(".ai/old.md", b"old\n")
+                        fixture.commit_target()
+                        fixture.make_package(
+                            {
+                                ".ai/new.md": (
+                                    b"new\n",
+                                    "framework-managed",
+                                    "0644",
+                                )
+                            },
+                            [
+                                operation(
+                                    "001-rename",
+                                    "rename",
+                                    ".ai/new.md",
+                                    from_path=".ai/old.md",
+                                )
+                            ],
+                            {
+                                ".ai/old.md": (
+                                    b"old\n",
+                                    "framework-managed",
+                                    "0644",
+                                )
+                            },
+                        )
+                    else:
+                        fixture.make_package(
+                            {
+                                ".ai/one.md": (
+                                    b"one\n",
+                                    "framework-managed",
+                                    "0644",
+                                )
+                            },
+                            [operation("001-add", "add", ".ai/one.md")],
+                        )
+                    original_plan = fixture.plan()
+                    APPLY.apply_plan(original_plan)
+                    original_id = original_plan["plan_sha256"]
+                    original_root = APPLY.transaction_root(
+                        fixture.target, original_id
+                    )
+                    plan_path = original_root / "plan.json"
+                    journal_path = original_root / "journal.yaml"
+                    receipt_path = fixture.target / APPLY.PENDING_RECEIPT_PATH
+                    sealed_plan = json.loads(plan_path.read_text(encoding="utf-8"))
+                    journal = yaml.safe_load(journal_path.read_text(encoding="utf-8"))
+                    receipt = yaml.safe_load(receipt_path.read_text(encoding="utf-8"))
+                    sealed_plan.pop("plan_sha256")
+                    if variant == "unsupported-schema":
+                        sealed_plan["schema_version"] = "2.0.0"
+                    elif variant == "operations-not-list":
+                        sealed_plan["operations"] = None
+                    elif variant == "remove-exists-integer-zero":
+                        sealed_plan["operation_post_states"][0]["paths"][0][
+                            "state"
+                        ] = {"exists": 0, "sha256": None, "mode": None}
+                    elif variant == "rename-source-exists-integer-zero":
+                        sealed_plan["operation_post_states"][0]["paths"][1][
+                            "state"
+                        ] = {"exists": 0, "sha256": None, "mode": None}
+                    else:
+                        sealed_plan["operation_post_states"][0]["paths"][0][
+                            "state"
+                        ] = {"exists": False, "sha256": None, "mode": None}
+                    if variant in {
+                        "remove-exists-integer-zero",
+                        "rename-source-exists-integer-zero",
+                    }:
+                        with self.assertRaisesRegex(
+                            APPLY.ApplyError,
+                            "absent post-state identity is invalid",
+                        ):
+                            APPLY.operation_post_state_map(sealed_plan)
+                    transaction_id = APPLY.canonical_digest(sealed_plan)
+                    sealed_plan["plan_sha256"] = transaction_id
+                    journal["transaction_id"] = transaction_id
+                    journal["plan_sha256"] = transaction_id
+                    receipt["transaction_id"] = transaction_id
+                    receipt["plan_sha256"] = transaction_id
+                    receipt_bytes = APPLY.deterministic_yaml_bytes(receipt)
+                    journal["final_receipt_sha256"] = APPLY.sha256_bytes(
+                        receipt_bytes
+                    )
+                    plan_path.write_text(
+                        json.dumps(
+                            sealed_plan,
+                            ensure_ascii=False,
+                            sort_keys=True,
+                            separators=(",", ":"),
+                        )
+                        + "\n",
+                        encoding="utf-8",
+                        newline="\n",
+                    )
+                    journal_path.write_text(
+                        yaml.safe_dump(journal, sort_keys=True),
+                        encoding="utf-8",
+                        newline="\n",
+                    )
+                    receipt_path.write_bytes(receipt_bytes)
+                    new_root = original_root.with_name(transaction_id)
+                    original_root.replace(new_root)
+
+                    errors: list[str] = []
+                    TARGET.validate_pending_apply_receipt(fixture.target, errors)
+
+                    self.assertTrue(
+                        any(
+                            "sealed transaction post-state evidence is invalid"
+                            in error
+                            for error in errors
+                        ),
+                        errors,
+                    )
+                finally:
+                    fixture.close()
+
 
 
 if __name__ == "__main__":

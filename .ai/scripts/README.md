@@ -259,7 +259,10 @@ Before the first target mutation, the tool durably stores the plan, ordered
 operation boundary, exact prestates, and recovery bytes under the target Git
 administrative `ai-context-package-apply/<transaction-id>/` directory. Atomic
 same-directory writes and a durable state machine (`planned`, `applying`,
-`interrupted`, `rolled-back`, `finalized`) make process-death recovery explicit.
+`interrupted`, `rolling-back`, `rolled-back`, `finalized`) make process-death
+recovery explicit. Rollback seals its starting target surface and persists an
+ordered reverse-prestate path prefix, so a retry can distinguish the one
+in-flight restore from completed and untouched rollback paths.
 Resume the exact sealed package with `--resume <transaction-id>`; restore the
 exact prestate without package availability with `--rollback <transaction-id>`.
 Both terminal operations are idempotent, while ambiguous state and unrelated

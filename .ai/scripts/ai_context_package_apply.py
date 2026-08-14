@@ -60,7 +60,15 @@ TARGET_EFFECTIVE_PACKET_DIRECTORY = ".dev/ai-context/effective-rule-packets"
 PENDING_RECEIPT_PATH = ".dev/AI-CONTEXT-APPLY-PENDING.yaml"
 APPLY_PLAN_SCHEMA_VERSION = "2.1.0"
 PENDING_RECEIPT_SCHEMA_VERSION = "2.0.0"
-TRANSACTION_STATES = {"planned", "applying", "interrupted", "rolled-back", "finalized"}
+JOURNAL_SCHEMA_VERSION = "ai-context-package-apply-journal/v2"
+TRANSACTION_STATES = {
+    "planned",
+    "applying",
+    "interrupted",
+    "rolling-back",
+    "rolled-back",
+    "finalized",
+}
 WINDOWS_MOVEFILE_REPLACE_EXISTING = 0x1
 WINDOWS_MOVEFILE_WRITE_THROUGH = 0x8
 
@@ -1410,7 +1418,11 @@ def operation_post_state_map(plan: dict) -> dict[str, dict[str, dict]]:
                     raise ApplyError(
                         f"apply plan present post-state identity is invalid: {operation['id']}"
                     )
-            elif state != {"exists": False, "sha256": None, "mode": None}:
+            elif state.get("exists") is not False or state != {
+                "exists": False,
+                "sha256": None,
+                "mode": None,
+            }:
                 raise ApplyError(
                     f"apply plan absent post-state identity is invalid: {operation['id']}"
                 )
@@ -1623,7 +1635,7 @@ def prepare_transaction(
                 {"transaction_id": transaction_id, "index": index, "path": relative},
             )
         journal = {
-            "schema_version": "ai-context-package-apply-journal/v1",
+            "schema_version": JOURNAL_SCHEMA_VERSION,
             "transaction_id": transaction_id,
             "state": "planned",
             "transition_sequence": 0,
@@ -1633,6 +1645,9 @@ def prepare_transaction(
             ),
             "next_apply_index": 0,
             "completed_operation_ids": [],
+            "rollback_next_index": 0,
+            "rollback_completed_paths": [],
+            "rollback_start_state": None,
             "acknowledgements": sorted(acknowledgements),
             "pre_state": pre_state,
             "protected_state": observation(protected_target_paths(target), target),
@@ -1696,6 +1711,53 @@ def validate_journal_progress(plan: dict, journal: dict) -> None:
     if type(transition_sequence) is not int or transition_sequence < 0:
         raise ApplyError("transaction journal transition sequence is invalid")
     state = journal.get("state")
+    rollback_paths = [
+        item.get("path")
+        for item in reversed(journal.get("pre_state", []))
+        if isinstance(item, dict)
+    ]
+    rollback_next_index = journal.get("rollback_next_index")
+    if (
+        type(rollback_next_index) is not int
+        or not 0 <= rollback_next_index <= len(rollback_paths)
+    ):
+        raise ApplyError("transaction journal rollback index is invalid")
+    rollback_completed = journal.get("rollback_completed_paths")
+    if rollback_completed != rollback_paths[:rollback_next_index]:
+        raise ApplyError("transaction journal rollback path prefix is invalid")
+    rollback_start_state = journal.get("rollback_start_state")
+    if state in {"rolling-back", "rolled-back"}:
+        if (
+            not isinstance(rollback_start_state, dict)
+            or list(sorted(rollback_start_state, key=lambda item: item.encode("utf-8")))
+            != touched_paths(plan)
+        ):
+            raise ApplyError("transaction journal rollback start state is invalid")
+        for relative, value in rollback_start_state.items():
+            if (
+                not isinstance(relative, str)
+                or not isinstance(value, dict)
+                or set(value)
+                != {
+                    "exists",
+                    "sha256",
+                    "mode",
+                    "git_sha256",
+                    "normalized_text_sha256",
+                    "tracked",
+                    "dirty",
+                    "git_eol_only",
+                }
+            ):
+                raise ApplyError("transaction journal rollback start state is invalid")
+    elif (
+        rollback_next_index != 0
+        or rollback_completed != []
+        or rollback_start_state is not None
+    ):
+        raise ApplyError("non-rollback journal contains rollback progress")
+    if state == "rolled-back" and rollback_next_index != len(rollback_paths):
+        raise ApplyError("rolled-back transaction journal is incomplete")
     receipt_digest = journal.get("final_receipt_sha256")
     if state == "planned" and next_index != 0:
         raise ApplyError("planned transaction journal cannot contain progress")
@@ -1704,6 +1766,12 @@ def validate_journal_progress(plan: dict, journal: dict) -> None:
             receipt_digest, str
         ) or not re.fullmatch(r"[0-9a-f]{64}", receipt_digest):
             raise ApplyError("finalized transaction journal is incomplete")
+        minimum_sequence = len(operations) + 2
+        if (
+            transition_sequence < minimum_sequence
+            or (transition_sequence - minimum_sequence) % 2 != 0
+        ):
+            raise ApplyError("finalized transaction transition sequence is impossible")
     elif receipt_digest is not None:
         raise ApplyError("non-finalized transaction journal has a receipt identity")
 
@@ -1736,6 +1804,36 @@ def states_match(target: Path, states: dict[str, dict]) -> bool:
     )
 
 
+def recorded_transaction_state_matches(
+    target: Path, current: dict, expected: dict
+) -> bool:
+    if current.get("exists") != expected.get("exists"):
+        return False
+    if current.get("sha256") != expected.get("sha256"):
+        return False
+    if current.get("mode") == expected.get("mode"):
+        return True
+    filemode = run_git(target, "config", "--bool", "core.filemode")
+    if filemode.returncode != 0 or filemode.stdout.strip() not in {"true", "false"}:
+        raise ApplyError("cannot determine target Git core.filemode")
+    return (
+        expected.get("exists") is True
+        and filemode.stdout.strip() == "false"
+        and current.get("mode") == "0644"
+        and expected.get("mode") == "0755"
+    )
+
+
+def recorded_states_match(
+    target: Path, current: dict[str, dict], expected: dict[str, dict]
+) -> bool:
+    return all(
+        relative in current
+        and recorded_transaction_state_matches(target, current[relative], state)
+        for relative, state in expected.items()
+    )
+
+
 def operation_pre_states(
     operation: dict, prestate: dict[str, dict]
 ) -> dict[str, dict]:
@@ -1764,6 +1862,10 @@ def current_operation_state_matches(
 
 def validate_transaction_surface(target: Path, plan: dict, journal: dict) -> None:
     validate_journal_progress(plan, journal)
+    if journal["state"] in {"rolling-back", "rolled-back"}:
+        validate_rollback_start_surface(target, plan, journal)
+        validate_rollback_surface(target, journal)
+        return
     operations = active_operations(plan)
     prestate = prestate_by_path(journal)
     poststate = operation_post_state_map(plan)
@@ -1785,6 +1887,61 @@ def validate_transaction_surface(target: Path, plan: dict, journal: dict) -> Non
         if not matches:
             raise ApplyError(
                 f"target state does not match transaction progress: {operation['id']}"
+            )
+
+
+def validate_rollback_surface(target: Path, journal: dict) -> None:
+    prestate = prestate_by_path(journal)
+    start_state = journal["rollback_start_state"]
+    rollback_paths = [item["path"] for item in reversed(journal["pre_state"])]
+    next_index = journal["rollback_next_index"]
+    for index, relative in enumerate(rollback_paths):
+        before = prestate[relative]["state"]
+        started = start_state[relative]
+        if journal["state"] == "rolled-back" or index < next_index:
+            matches = exact_state_matches(target, relative, before)
+        elif index == next_index:
+            matches = exact_state_matches(
+                target, relative, started
+            ) or exact_state_matches(target, relative, before)
+        else:
+            matches = exact_state_matches(target, relative, started)
+        if not matches:
+            raise ApplyError(
+                f"target state does not match rollback progress: {relative}"
+            )
+
+
+def validate_rollback_start_surface(
+    target: Path, plan: dict, journal: dict
+) -> None:
+    operations = active_operations(plan)
+    prestate = prestate_by_path(journal)
+    poststate = operation_post_state_map(plan)
+    start_state = journal["rollback_start_state"]
+    next_index = journal["next_apply_index"]
+    for index, operation in enumerate(operations):
+        before = operation_pre_states(operation, prestate)
+        after = poststate[operation["id"]]
+        if index < next_index:
+            matches = recorded_states_match(target, start_state, after)
+        elif index > next_index:
+            matches = recorded_states_match(target, start_state, before)
+        elif recorded_states_match(target, start_state, before) or recorded_states_match(
+            target, start_state, after
+        ):
+            matches = True
+        elif operation["action"] == "rename":
+            intermediate = {
+                operation["path"]: after[operation["path"]],
+                operation["from_path"]: before[operation["from_path"]],
+            }
+            matches = recorded_states_match(target, start_state, intermediate)
+        else:
+            matches = False
+        if not matches:
+            raise ApplyError(
+                f"rollback start state does not match transaction progress: {operation['id']}"
             )
 
 
@@ -2043,7 +2200,7 @@ def load_transaction(target: Path, transaction_id: str) -> tuple[Path, dict, dic
     plan_target = plan.get("target_root")
     if not isinstance(plan_target, str) or Path(plan_target).resolve() != target.resolve():
         raise ApplyError("transaction target root does not match recovery target")
-    if journal.get("schema_version") != "ai-context-package-apply-journal/v1":
+    if journal.get("schema_version") != JOURNAL_SCHEMA_VERSION:
         raise ApplyError("unsupported transaction journal schema")
     if journal.get("transaction_id") != transaction_id or journal.get("plan_sha256") != transaction_id:
         raise ApplyError("transaction journal identity is invalid")
@@ -2116,15 +2273,41 @@ def rollback_loaded_transaction(
     if journal["state"] == "finalized":
         raise ApplyError("finalized transaction cannot be rolled back")
     validate_transaction_surface(target, plan, journal)
-    for item in reversed(journal["pre_state"]):
+    rollback_items = list(reversed(journal["pre_state"]))
+    if journal["state"] != "rolling-back":
+        journal["state"] = "rolling-back"
+        journal["last_error"] = None
+        journal["rollback_next_index"] = 0
+        journal["rollback_completed_paths"] = []
+        journal["rollback_start_state"] = observation(touched_paths(plan), target)
+        persist_journal(root, journal)
+        invoke_boundary(
+            hook,
+            "after_rollback_start_journal",
+            {"transaction_id": journal["transaction_id"]},
+        )
+    for index in range(journal["rollback_next_index"], len(rollback_items)):
+        item = rollback_items[index]
         relative = item["path"]
         path = target / Path(*PurePosixPath(relative).parts)
-        if item["state"]["exists"]:
+        if exact_state_matches(target, relative, item["state"]):
+            pass
+        elif item["state"]["exists"]:
             backup = root / item["backup_path"]
             atomic_write_bytes(path, backup.read_bytes(), mode_int(item["state"]["mode"]))
         elif path.exists():
             durable_unlink(path, root)
         invoke_boundary(hook, "after_rollback_restore", {"path": relative})
+        journal["rollback_next_index"] = index + 1
+        journal["rollback_completed_paths"] = [
+            record["path"] for record in rollback_items[: index + 1]
+        ]
+        persist_journal(root, journal)
+        invoke_boundary(
+            hook,
+            "after_rollback_progress_journal",
+            {"index": index, "path": relative},
+        )
     receipt_path = target / PENDING_RECEIPT_PATH
     if receipt_path.exists():
         if receipt_path.is_symlink() or is_reparse_point(receipt_path):
@@ -2162,8 +2345,10 @@ def recover_transaction(
             persist_journal(root, journal)
         if action == "rollback":
             return rollback_loaded_transaction(root, plan, journal, boundary_hook)
-        if journal["state"] == "rolled-back":
-            raise ApplyError("rolled-back transaction cannot be resumed")
+        if journal["state"] in {"rolling-back", "rolled-back"}:
+            raise ApplyError(
+                f"{journal['state']} transaction cannot be resumed"
+            )
         if package_root is None:
             raise ApplyError("resume requires the exact extracted package root")
         _package, incoming, _migration, _manifest_sha = verify_package_binding(plan, package_root)
@@ -2221,9 +2406,11 @@ def apply_plan(
             try:
                 rollback_loaded_transaction(root, plan, journal, boundary_hook)
             except Exception as rollback_exc:
-                journal["state"] = "interrupted"
-                journal["last_error"] = f"{exc}; rollback failed: {rollback_exc}"
-                persist_journal(root, journal)
+                if journal["state"] == "rolling-back":
+                    journal["last_error"] = (
+                        f"{exc}; rollback failed: {rollback_exc}"
+                    )
+                    persist_journal(root, journal)
                 raise ApplyError(
                     f"package apply interrupted and rollback failed; recover transaction {journal['transaction_id']}: {rollback_exc}"
                 ) from exc
