@@ -79,6 +79,15 @@ guide at
 `.dev/guides/ai-collaboration-guides/PYTHON-PREREQUISITE-DIAGNOSTICS-GUIDE.zh-TW.md`
 for the approved modes and recovery process.
 
+`.dev/ai-context/local/environment-execution-routing.yaml` is an optional,
+per-clone execution-route binding covered by the tracked
+`/.dev/ai-context/local/` ignore rule. `validate-ai-context.py` validates the
+portable schema and, when the local file exists, rejects tracked, staged,
+unignored, symlinked, sensitive, ambiguous, or implicitly consented records.
+Agents never create or update the file implicitly; after a successful reusable
+recovery they must ask first under the canonical environment execution-routing
+contract.
+
 Source-only registered CLIs remain source-framework tooling. Their presence or
 absence in an extracted target is not a prerequisite failure, and release
 publication is outside this diagnostic contract.

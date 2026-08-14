@@ -9,12 +9,21 @@ authority_model:
   tracked_policy: ".dev/ai-context/environment-policy.yaml"
   local_readiness_snapshot:
     path: ".dev/ai-context/local/environment-readiness.json"
-    status: "prohibited-until-a-tracked-ignore-rule-exists"
+    status: "allowed-only-as-ignored-untracked-local-data"
     requirements:
       - "data-only JSON"
       - "contains no secret values"
       - "is ignored before it is created"
       - "is never an execution-pass receipt"
+  local_execution_routing:
+    path: ".dev/ai-context/local/environment-execution-routing.yaml"
+    contract: ".ai/assets/shared/ENVIRONMENT-EXECUTION-ROUTING-CONTRACT.md"
+    schema: ".ai/assets/shared/environment-execution-routing.schema.yaml"
+    requirements:
+      - "is ignored and untracked before it is created or updated"
+      - "is created or updated only after explicit user consent"
+      - "contains no secret or credential values"
+      - "is never packaged or promoted to tracked target truth"
   prerequisite_declarations:
     allowed_owners:
       - "validator registry"
@@ -85,4 +94,3 @@ consumer_behavior:
     - "A source-host fixture is not a portable default."
     - "Unknown, unavailable, disallowed, stale, or blocked readiness must not be silently upgraded to success."
   secret_handling: "Readiness records and evidence must not contain secret values."
-

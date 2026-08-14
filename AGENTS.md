@@ -19,6 +19,13 @@ This document is the canonical English agent-facing root collaboration guide. `A
 - Touch only files required by the task. Avoid unrelated cleanup, and remove artifacts introduced by your own changes.
 - Establish verifiable completion criteria before execution. Iterate until they pass, or report concrete blockers and any skipped validation.
 
+## Environment Execution Routing
+
+- Follow `.ai/assets/shared/ENVIRONMENT-EXECUTION-ROUTING-CONTRACT.md` when an operation may cross a shell, sandbox, host, WSL, container, CI, connector, credential, or external-task boundary.
+- Read the optional per-clone binding only from `.dev/ai-context/local/environment-execution-routing.yaml`. It must remain covered by `/.dev/ai-context/local/` in `.gitignore`, untracked, unstaged, secret-free, and outside package or provenance truth.
+- Never create or update that binding implicitly. When bounded diagnosis finds a stable route that successfully completes the requested operation, finish and verify the operation first, then ask whether the user wants to preserve the minimal route locally.
+- Before requesting persistence approval, state the operation/capability, exact local path, fields, create/merge/replace action, and secret exclusion. A decline or no answer writes nothing; approval still requires an ignore/untracked check and read-back.
+
 ## Repository Identity
 
 This repository exists to:

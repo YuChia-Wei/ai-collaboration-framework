@@ -25,6 +25,12 @@ This is the canonical English collaboration guide for AI agents and humans in th
 - Run the narrowest meaningful validation, record skipped checks, and do not claim completion while required gates fail.
 - Follow `.dev/standards/GIT-COMMIT-POLICY.md` for AI-assisted commits.
 
+## Environment Execution Routing
+
+- Follow `.ai/assets/shared/ENVIRONMENT-EXECUTION-ROUTING-CONTRACT.md` across shell, sandbox, host, WSL, container, CI, connector, credential, or external-task boundaries.
+- Keep personal routes only in the optional `.dev/ai-context/local/environment-execution-routing.yaml`, protected by the tracked `/.dev/ai-context/local/` ignore rule.
+- After bounded diagnosis finds a stable route that successfully completes the operation, ask before saving it. Disclose the exact path, fields, create/merge/replace action, and secret exclusion; decline or no answer writes nothing.
+
 ## Repository-Specific Context
 
 `ai-context-init` replaces this section with evidence-backed repository identity, navigation, stack facts, and local commands. Until that synchronization completes, treat copied or placeholder project facts as unresolved.

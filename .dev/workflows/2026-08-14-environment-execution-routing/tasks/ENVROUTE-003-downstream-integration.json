@@ -6,9 +6,9 @@
   "task_id": "ENVROUTE-003-downstream-integration",
   "workflow_id": "2026-08-14-environment-execution-routing",
   "owner_skill": "ai-context-governance",
-  "status": "pending",
+  "status": "in_progress",
   "created_at": "2026-08-14T21:40:34+08:00",
-  "updated_at": "2026-08-14T21:40:34+08:00",
+  "updated_at": "2026-08-14T21:58:42+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-5.6-sol",
   "reasoning_effort": "xhigh",
@@ -22,15 +22,15 @@
   "execution": {
     "steps": ["Register portable artifacts", "Add init and upgrade discovery boundaries", "Prove package exclusion and cross-platform validation"],
     "validation": ["Package manifest checks", "Init and upgrade contract tests", "Windows and Ubuntu-24.04 focused tests"],
-    "last_completed_step": "",
-    "next_action": "Wait for ENVROUTE-001 and ENVROUTE-002"
+    "last_completed_step": "Integrated init, upgrader, target-validator, package exclusion, wrapper, and human-guide boundaries",
+    "next_action": "Commit the immutable implementation checkpoint, then prove the committed package payload and rerun Ubuntu-24.04 validation"
   },
   "results": {
-    "summary": "",
-    "files_changed": [],
-    "tests_run": [],
-    "finding_status": "not-addressed",
-    "residual_risk": "Downstream compatibility has not been integrated.",
+    "summary": "Downstream init ensures only the ignore rule, upgrade preserves local values without reading them, target validation enforces the same contract, and package rules exclude all personal state.",
+    "files_changed": [".ai/distribution/profiles/dotnet-backend.yaml", ".ai/assets/skills/ai-context-init/**", ".ai/assets/skills/ai-context-upgrader/**", ".agents/skills/**", ".claude/skills/**", ".dev/guides/ai-collaboration-guides/**"],
+    "tests_run": ["py -3 .ai/scripts/tests/test_ai_context_wrapper_metadata.py -q", "py -3 .ai/scripts/tests/test_ai_context_language_policy.py -q", "py -3 .ai/scripts/tests/test_python_entrypoints_contract.py -q", "wsl.exe -d Ubuntu-24.04 -- bash -lc <focused routing tests>"],
+    "finding_status": "partially-resolved",
+    "residual_risk": "Committed package-payload proof remains pending because the packaging test reads immutable HEAD rather than dirty working-tree bytes.",
     "follow_up_needed": true
   }
 }

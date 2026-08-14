@@ -94,6 +94,15 @@ selections. Defaults are local `manual` and CI `unconfigured`. Preserve ignored
 `.dev/validation.local.conf` without reading or changing it. Lifecycle
 validation remains unaffected.
 
+### Environment Execution Routing Local State
+
+Treat `/.dev/ai-context/local/` as the tracked ignore contract for personal
+environment execution-routing data. Preserve an existing ignored
+`environment-execution-routing.yaml` without reading, packaging, overwriting,
+or migrating its values implicitly. If the incoming schema is incompatible,
+report owner decision required; a successful replacement route and renewed
+explicit consent are required before a local record is changed.
+
 Apply only explicitly accepted paths. Never use a bulk copy over the repository root. Re-read a path immediately before writing when it is target-owned or previously classified for reconciliation.
 
 When package preflight reports an ignored selected framework-managed path, do

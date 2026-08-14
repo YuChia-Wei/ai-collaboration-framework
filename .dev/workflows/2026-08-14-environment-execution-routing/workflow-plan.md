@@ -16,10 +16,10 @@
 - `base_branch`: `main`
 - `branch_segment`: `1`
 - `status`: `in_progress`
-- `current_phase`: `audit`
+- `current_phase`: `remediation`
 - `artifact_root`: `.dev/workflows/2026-08-14-environment-execution-routing`
 - `created_at`: `2026-08-14T21:40:34+08:00`
-- `updated_at`: `2026-08-14T21:40:34+08:00`
+- `updated_at`: `2026-08-14T21:58:42+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md`
 - `template_version`: `1.2.0`
 
@@ -56,23 +56,23 @@
 
 ## Stages And Checkpoints
 
-1. Freeze Issue #210 authorization and inventory existing readiness, package, init, upgrade, and validation boundaries. `in_progress`
-2. Implement the provider-neutral contract and schema. `pending`
-3. Implement Git-ignored local-binding validation and post-recovery consent behavior. `pending`
-4. Integrate downstream packaging and compatibility checks. `pending`
-5. Run focused Windows and explicit `Ubuntu-24.04` WSL validation outside the sandbox. `pending`
+1. Freeze Issue #210 authorization and inventory existing readiness, package, init, upgrade, and validation boundaries. `completed`
+2. Implement the provider-neutral contract and schema. `completed`
+3. Implement Git-ignored local-binding validation and post-recovery consent behavior. `completed`
+4. Integrate downstream packaging and compatibility checks. `in_progress`; committed-payload proof remains after the immutable checkpoint.
+5. Run focused Windows and explicit `Ubuntu-24.04` WSL validation outside the sandbox. `completed`; rerun on the immutable checkpoint remains part of stage 4 evidence.
 6. Present the implementation shape for owner review and adjustment. `pending`
 7. After owner review, obtain independent verification and reconcile the workflow. `pending`
 
 ## Resume Checkpoint
 
-- Last completed action: Created the dedicated workflow branch from clean `main` aligned with `origin/main`.
-- Current task: `ENVROUTE-001-contract-schema`.
-- Exact next action: Inventory the readiness schema, distribution allowlist, target validator, init/upgrader boundaries, indexes, and related tests before selecting exact artifact paths.
-- Validation already completed: Branch preflight only; implementation validation has not started.
-- Git state: Clean branch `codex/2026-08-14-environment-execution-routing` based on current `main`; no push, pull request, or merge.
+- Last completed action: Integrated the contract, schema, local-binding enforcement, agent guidance, target validator, init/upgrader behavior, and package exclusions; Windows and Ubuntu-24.04 focused tests pass.
+- Current task: `ENVROUTE-003-downstream-integration`.
+- Exact next action: Commit the implementation checkpoint, validate the committed package payload and Ubuntu-24.04 result, then present the result shape to the owner.
+- Validation already completed: Environment routing GWT 8/8 on Windows and Ubuntu-24.04; wrapper metadata 16/16; language policy 10/10; Python entrypoints 4/4; source AI-context validator passed; `git diff --check` passed.
+- Git state: Implementation is uncommitted on `codex/2026-08-14-environment-execution-routing`; bootstrap commit is `951fcae`; no push, pull request, or merge.
 - Branch history and checkpoint handoffs: None.
-- Blockers or unresolved decisions: Exact schema and local settings paths remain to be selected from repository conventions. The owner review checkpoint intentionally precedes independent verification and workflow closure.
+- Blockers or unresolved decisions: No implementation blocker. The owner review checkpoint intentionally precedes personal-binding creation, independent verification, and workflow closure.
 
 ## Branch Lifecycle
 

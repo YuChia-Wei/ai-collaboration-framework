@@ -26,6 +26,8 @@ This is a thin current-runtime wrapper.
   - `.ai/assets/skills/ai-context-upgrader/templates/ai-context-source-template.yaml`
   - `.ai/assets/skills/ai-context-upgrader/templates/provenance-template.yaml`
   - `.ai/assets/skills/ai-context-upgrader/templates/customizations-template.yaml`
+  - `.ai/assets/shared/ENVIRONMENT-EXECUTION-ROUTING-CONTRACT.md`
+  - `.ai/assets/shared/environment-execution-routing.schema.yaml`
 - `.ai/scripts/validate-ai-context-target.py`
 - `.ai/assets/skills/ai-context-upgrader/scripts/compare-ai-context-versions.py`
 

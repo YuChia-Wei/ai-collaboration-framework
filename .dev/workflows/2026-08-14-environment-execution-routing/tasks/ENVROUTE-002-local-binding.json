@@ -6,9 +6,9 @@
   "task_id": "ENVROUTE-002-local-binding",
   "workflow_id": "2026-08-14-environment-execution-routing",
   "owner_skill": "ai-context-governance",
-  "status": "pending",
+  "status": "completed",
   "created_at": "2026-08-14T21:40:34+08:00",
-  "updated_at": "2026-08-14T21:40:34+08:00",
+  "updated_at": "2026-08-14T21:58:42+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-5.6-sol",
   "reasoning_effort": "xhigh",
@@ -22,15 +22,15 @@
   "execution": {
     "steps": ["Select one conventional ignored path", "Implement validation and safe persistence boundary", "Add thin agent-facing post-recovery prompt rule"],
     "validation": ["git check-ignore and git ls-files proof", "Consent decline and approval tests", "Sensitive-field rejection tests"],
-    "last_completed_step": "",
-    "next_action": "Wait for ENVROUTE-001 contract shape"
+    "last_completed_step": "Implemented exact ignore, untracked, unstaged, consent, sensitive-field, retry, and symlink-boundary validation",
+    "next_action": "Do not create a personal binding unless the owner separately approves the disclosed local write"
   },
   "results": {
-    "summary": "",
-    "files_changed": [],
-    "tests_run": [],
-    "finding_status": "not-addressed",
-    "residual_risk": "Local persistence semantics are not implemented.",
-    "follow_up_needed": true
+    "summary": "Reserved one ignored per-clone YAML path and enforced that any present binding is secret-free, explicitly consented, ignored, untracked, and unstaged.",
+    "files_changed": [".gitignore", ".ai/scripts/ai_context_environment_routing.py", ".ai/scripts/validate-ai-context.py", ".ai/scripts/validate-ai-context-target.py", "AGENTS.md", "AGENTS.zh-TW.md"],
+    "tests_run": ["py -3 .ai/scripts/tests/test_environment_execution_routing.py -q", "git diff --check"],
+    "finding_status": "resolved",
+    "residual_risk": "The optional personal binding intentionally does not exist until a separately disclosed owner consent decision.",
+    "follow_up_needed": false
   }
 }
