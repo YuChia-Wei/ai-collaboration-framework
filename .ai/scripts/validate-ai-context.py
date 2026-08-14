@@ -20,7 +20,7 @@ guard_direct_entrypoint(".ai/scripts/validate-ai-context.py")
 import tomllib
 import yaml
 
-from ai_context_environment_routing import validate_environment_execution_routing
+from ai_context_cli_routing import validate_cli_execution_routing
 
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -2865,7 +2865,7 @@ def main() -> int:
     validate_example_evidence_contract(errors)
     validate_example_placeholder_disposition(errors)
     validate_source_include_evidence(errors)
-    environment_routes = validate_environment_execution_routing(errors, root=ROOT)
+    cli_routes = validate_cli_execution_routing(errors, root=ROOT)
     lesson_count = 0
     if (ROOT / SOURCE_GOVERNANCE_REGISTRY).is_file():
         lesson_count = validate_lesson_contract(files, errors)
@@ -2917,7 +2917,7 @@ def main() -> int:
         f"{len(language_files)} language-policy files, {ownership_rules} owned rules, "
         f"{governance_terms} qualified governance terms, {canonical_assets} canonical manifests, "
         f"{capability_mappings} capability mappings, "
-        f"{environment_routes} local environment routes, and {lesson_count} governed lessons."
+        f"{cli_routes} local CLI routes, and {lesson_count} governed lessons."
     )
     print(
         "Root bilingual entry ownership, links, and structural parity passed "

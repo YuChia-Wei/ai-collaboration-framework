@@ -8,13 +8,13 @@
   "owner_skill": "ai-context-governance",
   "status": "completed",
   "created_at": "2026-08-14T21:40:34+08:00",
-  "updated_at": "2026-08-14T21:58:42+08:00",
+  "updated_at": "2026-08-14T22:17:32+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-5.6-sol",
   "reasoning_effort": "xhigh",
   "finding_ids": ["Issue-210-contract"],
   "scope": {
-    "target": "Provider-neutral environment execution-routing contract and machine-readable schema",
+    "target": "Provider-neutral CLI execution-routing contract and machine-readable schema",
     "files": [".ai/assets/shared/**", ".ai/distribution/**", ".ai/INDEX.MD"],
     "constraints": ["Tracked files contain no personal route values", "Readiness and execution evidence remain distinct", "Provider adapters do not own portable semantics"],
     "non_goals": ["Personal binding creation", "Credentials or sessions", "Provider-specific portable defaults"]
@@ -26,9 +26,9 @@
     "next_action": "Present the implemented schema shape for owner review"
   },
   "results": {
-    "summary": "Added a provider-neutral environment execution-routing contract and machine-readable schema without populated host defaults.",
-    "files_changed": [".ai/assets/shared/ENVIRONMENT-EXECUTION-ROUTING-CONTRACT.md", ".ai/assets/shared/environment-execution-routing.schema.yaml", ".ai/assets/shared/README.MD", ".ai/INDEX.MD"],
-    "tests_run": ["py -3 .ai/scripts/tests/test_environment_execution_routing.py -q", "py -3 .ai/scripts/validate-ai-context.py"],
+    "summary": "Added a provider-neutral CLI execution-routing contract and machine-readable schema without populated host defaults or non-CLI routing fields.",
+    "files_changed": [".ai/assets/shared/CLI-EXECUTION-ROUTING-CONTRACT.md", ".ai/assets/shared/cli-execution-routing.schema.yaml", ".ai/assets/shared/README.MD", ".ai/INDEX.MD"],
+    "tests_run": ["py -3 .ai/scripts/tests/test_cli_execution_routing.py -q", "py -3 .ai/scripts/validate-ai-context.py"],
     "finding_status": "resolved",
     "residual_risk": "Future incompatible schema revisions will require an explicit versioned migration decision.",
     "follow_up_needed": false

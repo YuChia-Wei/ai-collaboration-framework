@@ -44,12 +44,12 @@ Use `.ai/assets/skills/ai-context-init/templates/public-root/AGENTS.md` only as 
 
 ### `.gitignore`
 
-Ensure the exact `/.dev/ai-context/local/` rule exists before any optional
-environment execution-routing binding can be created. This tracked rule is
+Ensure the exact `/.dev/ai-context/local/` rule exists before any optional CLI
+execution-routing binding can be created. This tracked rule is
 framework collaboration infrastructure, not a personal value. Do not create
-`.dev/ai-context/local/environment-execution-routing.yaml` during
+`.dev/ai-context/local/cli-execution-routing.yaml` during
 initialization; that file requires a later successful recovery plus explicit
-user consent under the environment execution-routing contract.
+user consent under the CLI execution-routing contract.
 
 ### `CLAUDE.md`
 

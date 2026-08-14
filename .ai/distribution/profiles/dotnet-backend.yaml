@@ -135,7 +135,7 @@ entries:
         patterns:
           - .ai/scripts/README.md
           - .ai/scripts/ai_context_package_apply.py
-          - .ai/scripts/ai_context_environment_routing.py
+          - .ai/scripts/ai_context_cli_routing.py
           - .ai/scripts/ai_context_effective_rules.py
           - .ai/scripts/ai_context_target_provenance.py
           - .ai/scripts/plan-ai-context-package-apply.py
@@ -454,7 +454,7 @@ exclusions:
       - .ai/scripts/tests/test_release_notes_renderer.py
       - .ai/scripts/tests/test_ai_behavior_evaluation.py
       - .ai/scripts/tests/test_ai_context_load_measurement.py
-      - .ai/scripts/tests/test_environment_execution_routing.py
+      - .ai/scripts/tests/test_cli_execution_routing.py
       - .ai/scripts/tests/test_repository_config_contract.py
       - .ai/scripts/tests/test_repository_identity.py
       - .ai/scripts/tests/test_sdk_free_framework_contract.py

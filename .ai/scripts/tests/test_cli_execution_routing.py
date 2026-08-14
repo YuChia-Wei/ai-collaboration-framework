@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""GWT tests for portable environment execution routing and ignored local state."""
+"""GWT tests for portable CLI execution routing and ignored local state."""
 
 from __future__ import annotations
 
@@ -19,7 +19,7 @@ import sys
 
 sys.path.insert(0, str(SCRIPTS))
 
-import ai_context_environment_routing as ROUTING
+import ai_context_cli_routing as ROUTING
 
 
 def git(root: Path, *args: str) -> subprocess.CompletedProcess[str]:
@@ -30,7 +30,7 @@ def git(root: Path, *args: str) -> subprocess.CompletedProcess[str]:
 
 class RoutingFixture:
     def __init__(self, *, ignored: bool = True) -> None:
-        self._temporary = tempfile.TemporaryDirectory(prefix="environment-routing-")
+        self._temporary = tempfile.TemporaryDirectory(prefix="cli-routing-")
         self.root = Path(self._temporary.name) / "target"
         self.root.mkdir()
         self.local = self.root / ROUTING.LOCAL_PATH
@@ -65,7 +65,7 @@ class RoutingFixture:
         self._temporary.cleanup()
 
 
-class EnvironmentExecutionRoutingGwtTests(unittest.TestCase):
+class CliExecutionRoutingGwtTests(unittest.TestCase):
     @staticmethod
     def valid_document() -> dict:
         requirements = {
@@ -77,21 +77,21 @@ class EnvironmentExecutionRoutingGwtTests(unittest.TestCase):
         }
         return {
             "schema_version": "1.0",
-            "record_type": "environment-execution-routing-local",
+            "record_type": "cli-execution-routing-local",
             "routes": [
                 {
                     "operation_id": "remote.metadata",
                     "capability_id": "remote-api",
                     "candidates": [
                         {
-                            "route_id": "primary-connector",
-                            "surface": "connector",
+                            "route_id": "sandboxed-cli",
+                            "surface": "sandboxed-cli",
                             "sandbox": "not-applicable",
-                            "selectors": {"connector": "preferred-provider"},
+                            "selectors": {"executable": "portable-cli"},
                             "working_directory": "repository-root",
                             "requirements": requirements,
                             "fallback": {
-                                "on": ["connector-gap"],
+                                "on": ["blocked-by-environment"],
                                 "to": ["host-cli"],
                                 "retry": "material-change-only",
                                 "max_attempts": 1,
@@ -99,7 +99,7 @@ class EnvironmentExecutionRoutingGwtTests(unittest.TestCase):
                         },
                         {
                             "route_id": "host-cli",
-                            "surface": "host-shell",
+                            "surface": "host-cli",
                             "sandbox": "outside",
                             "selectors": {"executable": "provider-cli"},
                             "working_directory": "repository-root",
@@ -129,7 +129,7 @@ class EnvironmentExecutionRoutingGwtTests(unittest.TestCase):
     def test_gwt_001_given_portable_contract_without_local_binding_when_validated_then_unconfigured_passes(self) -> None:
         errors: list[str] = []
 
-        count = ROUTING.validate_environment_execution_routing(errors, root=ROOT)
+        count = ROUTING.validate_cli_execution_routing(errors, root=ROOT)
 
         self.assertEqual(0, count)
         self.assertEqual([], errors)
@@ -140,7 +140,7 @@ class EnvironmentExecutionRoutingGwtTests(unittest.TestCase):
             fixture.write(self.valid_document())
             errors: list[str] = []
 
-            count = ROUTING.validate_environment_execution_routing(errors, root=fixture.root)
+            count = ROUTING.validate_cli_execution_routing(errors, root=fixture.root)
 
             self.assertEqual(1, count)
             self.assertEqual([], errors)
@@ -154,7 +154,7 @@ class EnvironmentExecutionRoutingGwtTests(unittest.TestCase):
             fixture.write(self.valid_document())
             errors: list[str] = []
 
-            ROUTING.validate_environment_execution_routing(errors, root=fixture.root)
+            ROUTING.validate_cli_execution_routing(errors, root=fixture.root)
 
             self.assertTrue(any("missing exact" in error for error in errors))
             self.assertTrue(any("is not Git-ignored" in error for error in errors))
@@ -169,7 +169,7 @@ class EnvironmentExecutionRoutingGwtTests(unittest.TestCase):
             fixture.assert_git("commit", "-qm", "incorrectly track personal route")
             errors: list[str] = []
 
-            ROUTING.validate_environment_execution_routing(errors, root=fixture.root)
+            ROUTING.validate_cli_execution_routing(errors, root=fixture.root)
 
             self.assertTrue(any("must not be Git-tracked" in error for error in errors))
         finally:
@@ -184,7 +184,7 @@ class EnvironmentExecutionRoutingGwtTests(unittest.TestCase):
             fixture.write(document)
             errors: list[str] = []
 
-            ROUTING.validate_environment_execution_routing(errors, root=fixture.root)
+            ROUTING.validate_cli_execution_routing(errors, root=fixture.root)
 
             self.assertTrue(any("forbidden field" in error and "token" in error for error in errors))
             self.assertTrue(any("persistence.consent must be explicit" in error for error in errors))
@@ -201,7 +201,7 @@ class EnvironmentExecutionRoutingGwtTests(unittest.TestCase):
             fixture.write(document)
             errors: list[str] = []
 
-            ROUTING.validate_environment_execution_routing(errors, root=fixture.root)
+            ROUTING.validate_cli_execution_routing(errors, root=fixture.root)
 
             self.assertTrue(any("fallback.on is invalid" in error for error in errors))
             self.assertTrue(any("max_attempts must equal 1" in error for error in errors))
@@ -225,7 +225,7 @@ class EnvironmentExecutionRoutingGwtTests(unittest.TestCase):
         )
 
         self.assertNotIn("Ubuntu-24.04", portable)
-        self.assertNotIn(".dev/ai-context/local/environment-execution-routing.yaml", {
+        self.assertNotIn(".dev/ai-context/local/cli-execution-routing.yaml", {
             path.as_posix() for path in ROOT.glob(".dev/ai-context/local/*")
         })
         self.assertIn(".dev/ai-context/local/**", local_state["patterns"])
@@ -233,7 +233,7 @@ class EnvironmentExecutionRoutingGwtTests(unittest.TestCase):
             ROOT / ".ai/scripts/validate-ai-context-target.py"
         ).read_text(encoding="utf-8")
         self.assertIn(
-            "validate_environment_execution_routing",
+            "validate_cli_execution_routing",
             target_validator,
         )
 
@@ -245,9 +245,26 @@ class EnvironmentExecutionRoutingGwtTests(unittest.TestCase):
         ):
             with self.subTest(path=path):
                 text = path.read_text(encoding="utf-8")
-                self.assertIn("environment-execution-routing.yaml", text)
+                self.assertIn("cli-execution-routing.yaml", text)
                 self.assertIn("create/merge/replace", text)
                 self.assertTrue("decline or no answer" in text or "拒絕或未回覆" in text)
+
+    def test_gwt_009_given_non_cli_surface_and_selector_when_validated_then_both_are_rejected(self) -> None:
+        fixture = RoutingFixture()
+        try:
+            document = self.valid_document()
+            candidate = document["routes"][0]["candidates"][0]
+            candidate["surface"] = "connector"
+            candidate["selectors"] = {"connector": "preferred-provider"}
+            fixture.write(document)
+            errors: list[str] = []
+
+            ROUTING.validate_cli_execution_routing(errors, root=fixture.root)
+
+            self.assertTrue(any("surface is invalid" in error for error in errors))
+            self.assertTrue(any("selectors has invalid fields" in error for error in errors))
+        finally:
+            fixture.close()
 
 
 if __name__ == "__main__":

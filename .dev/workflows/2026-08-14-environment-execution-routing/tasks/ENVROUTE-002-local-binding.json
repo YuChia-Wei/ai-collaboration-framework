@@ -8,7 +8,7 @@
   "owner_skill": "ai-context-governance",
   "status": "completed",
   "created_at": "2026-08-14T21:40:34+08:00",
-  "updated_at": "2026-08-14T21:58:42+08:00",
+  "updated_at": "2026-08-14T22:17:32+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-5.6-sol",
   "reasoning_effort": "xhigh",
@@ -27,8 +27,8 @@
   },
   "results": {
     "summary": "Reserved one ignored per-clone YAML path and enforced that any present binding is secret-free, explicitly consented, ignored, untracked, and unstaged.",
-    "files_changed": [".gitignore", ".ai/scripts/ai_context_environment_routing.py", ".ai/scripts/validate-ai-context.py", ".ai/scripts/validate-ai-context-target.py", "AGENTS.md", "AGENTS.zh-TW.md"],
-    "tests_run": ["py -3 .ai/scripts/tests/test_environment_execution_routing.py -q", "git diff --check"],
+    "files_changed": [".gitignore", ".ai/scripts/ai_context_cli_routing.py", ".ai/scripts/validate-ai-context.py", ".ai/scripts/validate-ai-context-target.py", "AGENTS.md", "AGENTS.zh-TW.md"],
+    "tests_run": ["py -3 .ai/scripts/tests/test_cli_execution_routing.py -q", "git diff --check"],
     "finding_status": "resolved",
     "residual_risk": "The optional personal binding intentionally does not exist until a separately disclosed owner consent decision.",
     "follow_up_needed": false

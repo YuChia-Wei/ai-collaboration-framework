@@ -486,7 +486,7 @@ class DeterministicPackageGwtTests(unittest.TestCase):
             ".agents/skills/ai-context-upgrader/SKILL.md",
             ".agents/skills/ai-context-init/SKILL.md",
             ".ai/scripts/ai_context_target_provenance.py",
-            ".ai/scripts/ai_context_environment_routing.py",
+            ".ai/scripts/ai_context_cli_routing.py",
             ".ai/scripts/ai_context_effective_rules.py",
             ".ai/scripts/resolve-effective-rule-packet.py",
             ".ai/scripts/validate-ai-context-target.py",
@@ -1759,7 +1759,7 @@ class VersionedMigrationPackagingGwtTests(unittest.TestCase):
         )
         portable_paths = (
             ".ai/assets/skills/software-development-orchestrator/scripts/validate-software-development-orchestrator-acceptance.py",
-            ".ai/scripts/ai_context_environment_routing.py",
+            ".ai/scripts/ai_context_cli_routing.py",
             ".ai/scripts/ai_context_effective_rules.py", ".ai/scripts/ai_context_target_provenance.py",
             ".ai/scripts/plan-ai-context-package-apply.py", ".ai/scripts/resolve-effective-rule-packet.py",
             ".ai/scripts/validate-ai-context-target.py",

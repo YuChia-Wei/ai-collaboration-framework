@@ -1,12 +1,12 @@
 schema_version: "1.0"
-contract_id: "environment-execution-routing"
-record_type: "environment-execution-routing-local"
+contract_id: "cli-execution-routing"
+record_type: "cli-execution-routing-local"
 purpose: >-
-  Define the portable shape of an optional per-clone execution-route binding
-  without supplying personal or host-specific default values.
+  Define the portable shape of an optional per-clone CLI execution-route
+  binding without supplying personal or host-specific default values.
 
 storage:
-  default_local_path: ".dev/ai-context/local/environment-execution-routing.yaml"
+  default_local_path: ".dev/ai-context/local/cli-execution-routing.yaml"
   gitignore_rule: "/.dev/ai-context/local/"
   tracked_instance: "prohibited"
   packaged_instance: "prohibited"
@@ -17,7 +17,7 @@ top_level:
   required: [schema_version, record_type, routes]
   allowed: [schema_version, record_type, routes]
   schema_version: "1.0"
-  record_type: "environment-execution-routing-local"
+  record_type: "cli-execution-routing-local"
 
 routes:
   type: "non-empty-list"
@@ -41,11 +41,11 @@ candidates:
     route_id:
       pattern: "^[a-z][a-z0-9-]*$"
     surface:
-      values: [sandboxed-shell, host-shell, wsl, container, ci, connector, external-task]
+      values: [sandboxed-cli, host-cli, wsl-cli, container-cli]
     sandbox:
       values: [inside, outside, runtime-default, not-applicable]
     selectors:
-      allowed_keys: [distribution, shell, executable, connector, container, ci_runner, task_profile]
+      allowed_keys: [distribution, shell, executable, container]
       values: "non-empty single-line strings; URIs and secret-bearing values are prohibited"
     working_directory:
       values: [repository-root, current-directory, explicit-local-path]
@@ -54,7 +54,7 @@ requirements:
   required: [network, credential_boundary, filesystem_write, privilege, approval]
   allowed: [network, credential_boundary, filesystem_write, privilege, approval]
   network: [forbidden, allowed, required]
-  credential_boundary: [none, runtime-managed, host-managed, connector-managed]
+  credential_boundary: [none, runtime-managed, host-managed]
   filesystem_write: [none, repository, ignored-local, external]
   privilege: [standard, elevated-owner-approved]
   approval: [not-required, required-before-execution]
@@ -62,7 +62,7 @@ requirements:
 fallback:
   required: [on, to, retry, max_attempts]
   allowed: [on, to, retry, max_attempts]
-  on: [unavailable, blocked-by-environment, connector-gap, stale]
+  on: [unavailable, blocked-by-environment, stale]
   forbidden_on: [disallowed]
   to: "unique route_id list resolved within the same operation"
   retry: "material-change-only"

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Portable validation for ignored per-clone environment execution routes."""
+"""Portable validation for ignored per-clone CLI execution routes."""
 
 from __future__ import annotations
 
@@ -11,9 +11,9 @@ from pathlib import Path, PurePosixPath
 import yaml
 
 
-CONTRACT_PATH = Path(".ai/assets/shared/ENVIRONMENT-EXECUTION-ROUTING-CONTRACT.md")
-SCHEMA_PATH = Path(".ai/assets/shared/environment-execution-routing.schema.yaml")
-LOCAL_PATH = Path(".dev/ai-context/local/environment-execution-routing.yaml")
+CONTRACT_PATH = Path(".ai/assets/shared/CLI-EXECUTION-ROUTING-CONTRACT.md")
+SCHEMA_PATH = Path(".ai/assets/shared/cli-execution-routing.schema.yaml")
+LOCAL_PATH = Path(".dev/ai-context/local/cli-execution-routing.yaml")
 IGNORE_RULE = "/.dev/ai-context/local/"
 
 OPERATION_ID = re.compile(r"^[a-z][a-z0-9-]*(?:\.[a-z][a-z0-9-]*)+$")
@@ -21,13 +21,10 @@ CAPABILITY_ID = re.compile(r"^[a-z][a-z0-9-]*(?:\.[a-z][a-z0-9-]*)*$")
 ROUTE_ID = re.compile(r"^[a-z][a-z0-9-]*$")
 
 SURFACES = {
-    "sandboxed-shell",
-    "host-shell",
-    "wsl",
-    "container",
-    "ci",
-    "connector",
-    "external-task",
+    "sandboxed-cli",
+    "host-cli",
+    "wsl-cli",
+    "container-cli",
 }
 SANDBOX_VALUES = {"inside", "outside", "runtime-default", "not-applicable"}
 WORKING_DIRECTORY_VALUES = {
@@ -39,10 +36,7 @@ SELECTOR_FIELDS = {
     "distribution",
     "shell",
     "executable",
-    "connector",
     "container",
-    "ci_runner",
-    "task_profile",
 }
 REQUIREMENT_VALUES = {
     "network": {"forbidden", "allowed", "required"},
@@ -50,7 +44,6 @@ REQUIREMENT_VALUES = {
         "none",
         "runtime-managed",
         "host-managed",
-        "connector-managed",
     },
     "filesystem_write": {"none", "repository", "ignored-local", "external"},
     "privilege": {"standard", "elevated-owner-approved"},
@@ -59,7 +52,6 @@ REQUIREMENT_VALUES = {
 FALLBACK_CONDITIONS = {
     "unavailable",
     "blocked-by-environment",
-    "connector-gap",
     "stale",
 }
 FORBIDDEN_FIELDS = {
@@ -105,7 +97,7 @@ def _load_yaml(path: Path, label: Path, errors: list[str]) -> dict | None:
 def _validate_contract(root: Path, errors: list[str], contract_path: Path, schema_path: Path) -> set[str]:
     contract_file = root / contract_path
     if not contract_file.is_file():
-        errors.append(f"{contract_path}: missing environment execution-routing contract")
+        errors.append(f"{contract_path}: missing CLI execution-routing contract")
     else:
         try:
             contract = contract_file.read_text(encoding="utf-8")
@@ -128,8 +120,8 @@ def _validate_contract(root: Path, errors: list[str], contract_path: Path, schem
 
     for key, expected in {
         "schema_version": "1.0",
-        "contract_id": "environment-execution-routing",
-        "record_type": "environment-execution-routing-local",
+        "contract_id": "cli-execution-routing",
+        "record_type": "cli-execution-routing-local",
     }.items():
         if schema.get(key) != expected:
             errors.append(f"{schema_path}: {key} must equal {expected!r}")
@@ -350,7 +342,7 @@ def _validate_route(route: object, index: int, local_path: Path, errors: list[st
         errors.append(f"{local_path}: {location}.persistence.recorded_at must include an offset")
 
 
-def validate_environment_execution_routing(
+def validate_cli_execution_routing(
     errors: list[str],
     *,
     root: Path,
@@ -377,8 +369,8 @@ def validate_environment_execution_routing(
         errors.append(f"{local_path}: top-level fields must equal {sorted(expected_top_level)}")
     if document.get("schema_version") != "1.0":
         errors.append(f"{local_path}: schema_version must equal '1.0'")
-    if document.get("record_type") != "environment-execution-routing-local":
-        errors.append(f"{local_path}: record_type must equal 'environment-execution-routing-local'")
+    if document.get("record_type") != "cli-execution-routing-local":
+        errors.append(f"{local_path}: record_type must equal 'cli-execution-routing-local'")
     _find_forbidden(document, "root", forbidden, local_path, errors)
 
     routes = document.get("routes")

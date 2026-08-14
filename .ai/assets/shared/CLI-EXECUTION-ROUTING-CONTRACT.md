@@ -1,9 +1,15 @@
-# Environment Execution Routing Contract
+# CLI Execution Routing Contract
 
 This contract defines how an agent selects, verifies, and optionally preserves
-the execution surface for an operation. It complements environment readiness:
-readiness describes whether a capability appears available, allowed, and
-verified; routing describes where and how an authorized operation executes.
+the local command-line execution route for an operation after higher-priority
+policy has selected CLI execution. It complements environment readiness:
+readiness describes whether a CLI capability appears available, allowed, and
+verified; routing describes where and how the authorized command executes.
+
+This contract does not select between CLI and connectors, CI, external tasks,
+agent delegation, browser automation, or other non-CLI capabilities. Those
+decisions remain with their owning policies. A connector-first policy may
+authorize a CLI fallback, but the local binding records only that CLI route.
 
 ## Authority Order
 
@@ -13,9 +19,9 @@ Resolve execution decisions in this order:
 2. system, enterprise, runtime, sandbox, and credential restrictions;
 3. this portable contract and its schema;
 4. an optional repository-local binding at
-   `.dev/ai-context/local/environment-execution-routing.yaml`;
+   `.dev/ai-context/local/cli-execution-routing.yaml`;
 5. fresh readiness evidence;
-6. the actual command, connector, or task receipt.
+6. the actual command receipt.
 
 A lower layer cannot weaken a higher layer. A configured or ready route does
 not prove that an operation ran or passed.
@@ -24,8 +30,8 @@ not prove that an operation ran or passed.
 
 - Git tracks this contract, the schema, validators, agent guidance, and the
   `/.dev/ai-context/local/` ignore rule.
-- Concrete host, distro, executable, connector, sandbox, and other personal
-  route values belong only in the ignored local binding.
+- Concrete host, distro, executable, shell, container, sandbox, and other
+  personal CLI route values belong only in the ignored local binding.
 - The local binding may exist inside the repository working directory, but it
   must be ignored and untracked before it is read as authoritative local input
   or written after consent.
@@ -37,24 +43,24 @@ not prove that an operation ran or passed.
 
 ## Route Resolution
 
-Each operation declares a stable `operation_id`, required `capability_id`, and
-an ordered list of route candidates. For each candidate:
+Each CLI operation declares a stable `operation_id`, required `capability_id`,
+and an ordered list of CLI route candidates. For each candidate:
 
 1. confirm the surface and selector are permitted by higher-priority policy;
 2. validate fresh readiness and any required approval;
-3. execute the exact selected route;
+3. execute the exact selected command route;
 4. record actual execution separately from the local binding;
 5. use fallback only for a schema-allowed condition.
 
-Never silently change shell, distro, connector, credential boundary, network
-boundary, sandbox boundary, privilege, or working directory. A `disallowed`
-route is terminal and cannot trigger fallback. Do not retry the same blocked
-route until a material environment fact has changed.
+Never silently change executable, shell, distro, container, credential
+boundary, network boundary, sandbox boundary, privilege, or working directory.
+A `disallowed` route is terminal and cannot trigger fallback. Do not retry the
+same blocked route until a material environment fact has changed.
 
 ## Post-Recovery Persistence
 
-When an execution route fails and bounded diagnosis finds a different route
-that successfully completes the requested operation:
+When a CLI route fails and bounded diagnosis finds a different CLI route that
+successfully completes the requested operation:
 
 1. verify the requested operation succeeded;
 2. determine whether the successful route is stable and reusable;
@@ -77,11 +83,12 @@ reuse.
 
 ## Portable Versus Local Values
 
-The portable schema defines surfaces, selectors, requirement vocabulary,
+The portable schema defines CLI surfaces, selectors, requirement vocabulary,
 fallback conditions, consent state, and validation behavior. It intentionally
 contains no populated host route. A WSL distribution name, executable path,
-connector selection, container identity, or sandbox choice is valid only in an
-ignored local record created after consent.
+shell, container identity, or sandbox choice is valid only in an ignored local
+record created after consent. Connector names, CI runners, task profiles, and
+external-task selectors are outside this schema.
 
 The local file is per clone. Removing it restores unconfigured route behavior.
 Initialization may ensure the ignore rule and agent guidance exist, but it must
@@ -102,8 +109,8 @@ Report `owner-decision-required`, `blocked-by-environment`, `disallowed`, or
 
 ## Canonical Schema And Validation
 
-- Schema: `.ai/assets/shared/environment-execution-routing.schema.yaml`
-- Local path: `.dev/ai-context/local/environment-execution-routing.yaml`
+- Schema: `.ai/assets/shared/cli-execution-routing.schema.yaml`
+- Local path: `.dev/ai-context/local/cli-execution-routing.yaml`
 - Ignore rule: `/.dev/ai-context/local/`
 - Validator: `.ai/scripts/validate-ai-context.py`
 

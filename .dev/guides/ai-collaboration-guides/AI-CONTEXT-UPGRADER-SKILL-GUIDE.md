@@ -45,7 +45,7 @@ downstream prerequisite contract。細節見
 `PYTHON-PREREQUISITE-DIAGNOSTICS-GUIDE.zh-TW.md`。
 
 升級同樣必須保留 `/.dev/ai-context/local/` ignore 規則，並將現有
-`environment-execution-routing.yaml` 視為 ignored、unpackaged 的個人狀態。
+`cli-execution-routing.yaml` 視為 ignored、unpackaged 的個人 CLI 狀態。
 Upgrader 不得讀取、覆寫、封裝或隱含遷移其中的值；若新 schema 不相容，
 應回報需要 owner decision。只有新的路由成功完成原操作，且使用者再次
 明確同意後，才可更新本機設定。
