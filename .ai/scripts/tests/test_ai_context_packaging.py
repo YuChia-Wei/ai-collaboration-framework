@@ -106,6 +106,7 @@ class SyntheticPackageRepo:
         for script in (
             "ai_context_package_validation.py",
             "ai_context_package_apply.py",
+            "ai_context_cli_routing.py",
             "ai_context_effective_rules.py",
             "ai_context_target_provenance.py",
             "plan-ai-context-package-apply.py",
