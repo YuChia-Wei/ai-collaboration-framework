@@ -1,0 +1,49 @@
+template_metadata:
+  template_id: "assessment-locator"
+  template_version: "1.0.0"
+  template_created_at: "2026-07-13T23:04:10+08:00"
+  template_updated_at: "2026-07-13T23:04:10+08:00"
+
+schema_version: "1.0"
+assessment_id: "ASM-20260814-003"
+commit_search_id: "ASM-20260814-003"
+assessment_type: "ai-context-verification"
+title: "VAL-006 Changed-Path Dependency Closure Verification"
+owner_skill: "ai-context-auditor"
+status: "final"
+report: "report.md"
+artifact_branch: "codex/2026-08-14-val-006-dependency-closure"
+base_branch: "main"
+created_at: "2026-08-14T00:36:35+08:00"
+updated_at: "2026-08-14T00:36:35+08:00"
+template_source: ".dev/assessments/templates/assessment-locator-template.yaml"
+template_version: "1.0.0"
+report_template_source: ".ai/assets/skills/ai-context-auditor/templates/ai-context-audit-report-template.md"
+report_template_version: "2.1.0"
+subject_ref:
+  repository: "YuChia-Wei/ai-collaboration-framework"
+  branch: "codex/2026-08-14-val-006-dependency-closure"
+  commit: "4ecaa5cf5c079011f765542253f2faafb2b814ca"
+scope:
+  included:
+    - "Committed remediation diff main..4ecaa5cf5c079011f765542253f2faafb2b814ca"
+    - "Changed-path selection, dependency validation, selection evidence, and focused validation contract surfaces"
+    - "VALSEL-001 baseline, active governance workflow, and Issue #202 scope recorded in repository artifacts"
+    - "VAL006-003 fixed-subject external-task dispatch and completion pair"
+  excluded:
+    - "Product source and product test trees; .ai/scripts/tests/test_fail_closed_validation.py is included only as an AI-context validation contract surface"
+    - "Remediation or edits to .ai/scripts/check-all.sh, its tests, workflow artifacts, or external receipts"
+    - "Remote transport, pull request, merge, Issue closure, Project or milestone mutation, tag, release, and publication"
+relations:
+  supersedes: []
+  superseded_by: []
+  related_assessments:
+    - "ASM-20260813-001"
+  workflow_refs:
+    - "2026-08-14-val-006-dependency-closure"
+  backlog_refs: []
+  adr_refs: []
+resume:
+  last_completed_action: "Independently verified the fixed clean subject, selector closure implementation, repository governance boundaries, and schema-valid VAL006-003 fixed-subject WSL aggregate receipt."
+  next_action: "Root integration owner may reconcile this final assessment with the active workflow; remote transport and closure remain unauthorized and unverified."
+  blockers: []
