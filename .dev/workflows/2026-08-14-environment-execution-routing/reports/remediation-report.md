@@ -14,7 +14,7 @@
 - `owner_skill`: `ai-context-governance`
 - `status`: `draft`
 - `created_at`: `2026-08-14T21:58:42+08:00`
-- `updated_at`: `2026-08-14T22:17:32+08:00`
+- `updated_at`: `2026-08-14T22:22:26+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-remediation-report-template.md`
 - `template_version`: `2.0.0`
 - `baseline_assessment`: `not-applicable; GitHub Issue #210 is the approved baseline`
@@ -24,16 +24,16 @@
 
 - Authorized scope: implement GitHub Issue #210 as a CLI-only local routing contract while keeping personal CLI values Git-ignored and requiring post-recovery consent before a local write.
 - Completed scope: portable CLI contract and schema, exact ignore boundary, source and target validation, agent behavior, init/upgrader preservation rules, package exclusion, indexes, wrappers, and guides. Connector, CI, external-task, browser, and delegation routing are explicitly excluded.
-- Validation summary: narrowed CLI-only routing GWT tests pass 9/9 on Windows, including non-CLI surface rejection; wrapper 16/16, language 10/10, and Python entrypoint 4/4 suites pass; source AI-context validation, workflow validation, and whitespace checks pass. Commit-bound package and Ubuntu-24.04 reruns remain.
+- Validation summary: narrowed CLI-only routing GWT tests pass 9/9 on Windows and immutable Ubuntu-24.04, including non-CLI surface rejection; wrapper 16/16, language 10/10, and Python entrypoint 4/4 suites pass; committed package lifecycle projection 1/1, source AI-context validation, workflow validation, and whitespace checks pass.
 - Closure decision: `not-ready`; owner review and independent verification remain.
 
 ## Finding Resolution Matrix
 
 | Assessment Finding | Before Severity | Status | Changed Files | Validation | Commit | Residual Risk |
 | --- | --- | --- | --- | --- | --- | --- |
-| `Issue-210-contract` | high | `resolved` | shared CLI contract, schema, indexes | CLI-only routing GWT and source validator | pending narrowed-contract commit | Versioned migration is required for a future incompatible schema. |
-| `Issue-210-local-persistence` | high | `resolved` | `.gitignore`, validators, root agent guidance | ignore, tracked, consent, sensitive-field, retry tests | pending narrowed-contract commit | No personal binding exists without a separate owner decision. |
-| `Issue-210-downstream` | high | `partially-resolved` | package profile, target validator, init/upgrader, wrappers, guides | Windows passed; package and WSL reruns pending | pending narrowed-contract commit | No downstream target repository has adopted the standard yet. |
+| `Issue-210-contract` | high | `resolved` | shared CLI contract, schema, indexes | CLI-only routing GWT and source validator | `f7529ee` | Versioned migration is required for a future incompatible schema. |
+| `Issue-210-local-persistence` | high | `resolved` | `.gitignore`, validators, root agent guidance | ignore, tracked, consent, sensitive-field, retry tests | `f7529ee` | No personal binding exists without a separate owner decision. |
+| `Issue-210-downstream` | high | `resolved` | package profile, target validator, init/upgrader, wrappers, guides | package projection, Windows, immutable WSL | `f7529ee` | No downstream target repository has adopted the standard yet. |
 | `Issue-210-verification` | high | `not-addressed` | none | independent audit intentionally deferred | pending | Owner adjustments must precede independent verification. |
 
 ## Changes And Evidence
@@ -42,21 +42,21 @@
 
 - Changes: defined authority order, portable route vocabulary, readiness versus execution evidence, bounded fallback, retry, consent, and fail-closed behavior.
 - Evidence: `.ai/assets/shared/CLI-EXECUTION-ROUTING-CONTRACT.md` and `.ai/assets/shared/cli-execution-routing.schema.yaml` contain no populated personal route or non-CLI selector.
-- Validation: source AI-context validator passed and the routing suite covers the unconfigured source state.
+- Validation: source AI-context validator passed; the CLI-only routing suite covers the unconfigured source state and rejects connector surface/selector input.
 - Remaining risk: owner review may adjust vocabulary or record shape before independent verification.
 
 ### `Issue-210-local-persistence`
 
 - Changes: reserved `.dev/ai-context/local/cli-execution-routing.yaml` under the tracked `/.dev/ai-context/local/` ignore rule and implemented deterministic validation.
 - Evidence: validation rejects missing ignore coverage, tracked or staged bindings, symlink boundaries, implicit consent, sensitive fields, invalid fallback, and repeated attempts.
-- Validation: Windows routing suite passed 8/8 outside the sandbox after the sandbox blocked the Python Temp fixture.
+- Validation: Windows CLI routing suite passed 9/9 outside the sandbox after the sandbox blocked the Python Temp fixture.
 - Remaining risk: local persistence is intentionally not exercised because no owner approval has been given to create the personal file.
 
 ### `Issue-210-downstream`
 
 - Changes: init creates only the tracked ignore boundary; upgrader preserves ignored local state without reading or migrating it; target validation consumes the shared validator; package rules include portable assets and exclude local state and test fixtures.
 - Evidence: wrapper metadata, language policy, Python entrypoint, source validator, and Ubuntu-24.04 routing tests pass.
-- Validation: the lifecycle component projection passed 1/1 against immutable commit `0970685`; Ubuntu-24.04 passed the routing suite 8/8 against the same commit.
+- Validation: the lifecycle component projection passed 1/1 against immutable commit `f7529ee`; Ubuntu-24.04 passed the CLI routing suite 9/9 against the same commit.
 - Remaining risk: no downstream target repository has adopted the standard yet.
 
 ## Verification Assessment Reconciliation
@@ -77,6 +77,6 @@
 ## Closure Evidence
 
 - Required validations: owner review and independent verification remain.
-- Commit status: local implementation checkpoint `0970685` is validated and unpushed.
+- Commit status: local CLI-only scope-correction checkpoint `f7529ee` is validated and unpushed.
 - Workflow/task status: `ENVROUTE-001` and `ENVROUTE-002` completed; `ENVROUTE-003` remains active for owner review; `VERIFY-001` pending.
 - Final next action: present the result shape without creating personal local state; apply owner adjustments or proceed to independent verification only after the owner decides.

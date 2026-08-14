@@ -19,7 +19,7 @@
 - `current_phase`: `remediation`
 - `artifact_root`: `.dev/workflows/2026-08-14-environment-execution-routing`
 - `created_at`: `2026-08-14T21:40:34+08:00`
-- `updated_at`: `2026-08-14T22:17:32+08:00`
+- `updated_at`: `2026-08-14T22:22:26+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md`
 - `template_version`: `1.2.0`
 
@@ -32,7 +32,7 @@
 
 ## Authorization And Delivery
 
-- Work item: GitHub Issue `#210`, `[TOOL-005] Define Portable Environment Execution Routing Standard`.
+- Work item: GitHub Issue `#210`, `[TOOL-005] Define Portable CLI Execution Routing Standard`.
 - Authorization: Owner message on 2026-08-14: `OK，進行實作，我要看成果的樣態再跟你說怎麼調整`.
 - Scope correction: Owner message on 2026-08-14: `OK，改 CLI-EXECUTION-ROUTING-CONTRACT`; the local contract is CLI-only and must not configure connector, CI, external-task, browser, or delegation routing.
 - Delivery cohesion: Contract, local-binding boundary, validation, package projection, and agent behavior form one atomic portable capability and share one review, rollback, and compatibility boundary.
@@ -67,11 +67,11 @@
 
 ## Resume Checkpoint
 
-- Last completed action: Immutable implementation commit `0970685` passed the committed package lifecycle projection and the Ubuntu-24.04 routing suite.
+- Last completed action: Owner scope-correction commit `f7529ee` renamed the contract to CLI execution routing, rejected non-CLI surfaces/selectors, passed the committed package lifecycle projection, and passed 9/9 on Ubuntu-24.04.
 - Current task: `ENVROUTE-003-downstream-integration` remains active for the owner review checkpoint; `VERIFY-001-independent-audit` remains pending.
-- Exact next action: Rename and narrow the contract to CLI-only surfaces, reject non-CLI fields, rerun Windows and Ubuntu-24.04 validation, and present the corrected result.
-- Validation already completed: CLI-only routing GWT 9/9 on Windows; wrapper metadata 16/16; language policy 10/10; Python entrypoints 4/4; source AI-context and workflow validators passed; `git diff --check` passed. Commit-bound package and Ubuntu-24.04 reruns remain for the narrowed contract.
-- Git state: Local implementation commit `0970685` follows bootstrap `951fcae` on `codex/2026-08-14-environment-execution-routing`; no push, pull request, or merge.
+- Exact next action: Present the corrected CLI-only contract for owner review; keep independent verification pending until the owner accepts the revised shape.
+- Validation already completed: CLI-only routing GWT 9/9 on Windows and immutable Ubuntu-24.04; wrapper metadata 16/16; language policy 10/10; Python entrypoints 4/4; committed package lifecycle projection 1/1; source AI-context and workflow validators passed; `git diff --check` passed.
+- Git state: Local CLI-only scope-correction commit `f7529ee` follows implementation/evidence commits `0970685` and `5881922` on `codex/2026-08-14-environment-execution-routing`; no push, pull request, or merge.
 - Branch history and checkpoint handoffs: None.
 - Blockers or unresolved decisions: No implementation blocker. The owner review checkpoint intentionally precedes personal-binding creation, independent verification, and workflow closure.
 
@@ -80,3 +80,4 @@
 | Segment | Branch | Base | Checkpoint Type | Commit | Remote / Target | Recorded At | Reason | Resume Branch / Action |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | 1 | `codex/2026-08-14-environment-execution-routing` | `main` | local-owner-review | `0970685` | local | `2026-08-14T22:05:43+08:00` | Implemented and validated Issue #210 without creating personal local state | Present result shape; adjust on this branch or proceed to independent verification after owner decision |
+| 2 | `codex/2026-08-14-environment-execution-routing` | `main` | local-owner-adjustment | `f7529ee` | local | `2026-08-14T22:22:26+08:00` | Restricted the contract and local binding to CLI-only execution routing | Present corrected shape; retain `VERIFY-001` as pending until owner acceptance |
