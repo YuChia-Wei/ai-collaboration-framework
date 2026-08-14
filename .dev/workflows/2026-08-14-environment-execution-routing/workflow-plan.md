@@ -19,7 +19,7 @@
 - `current_phase`: `remediation`
 - `artifact_root`: `.dev/workflows/2026-08-14-environment-execution-routing`
 - `created_at`: `2026-08-14T21:40:34+08:00`
-- `updated_at`: `2026-08-14T21:58:42+08:00`
+- `updated_at`: `2026-08-14T22:05:43+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md`
 - `template_version`: `1.2.0`
 
@@ -59,18 +59,18 @@
 1. Freeze Issue #210 authorization and inventory existing readiness, package, init, upgrade, and validation boundaries. `completed`
 2. Implement the provider-neutral contract and schema. `completed`
 3. Implement Git-ignored local-binding validation and post-recovery consent behavior. `completed`
-4. Integrate downstream packaging and compatibility checks. `in_progress`; committed-payload proof remains after the immutable checkpoint.
-5. Run focused Windows and explicit `Ubuntu-24.04` WSL validation outside the sandbox. `completed`; rerun on the immutable checkpoint remains part of stage 4 evidence.
-6. Present the implementation shape for owner review and adjustment. `pending`
+4. Integrate downstream packaging and compatibility checks. `completed`; lifecycle component projection passed against immutable commit `0970685`.
+5. Run focused Windows and explicit `Ubuntu-24.04` WSL validation outside the sandbox. `completed`; the immutable commit passed 8/8 in Ubuntu-24.04.
+6. Present the implementation shape for owner review and adjustment. `in_progress`
 7. After owner review, obtain independent verification and reconcile the workflow. `pending`
 
 ## Resume Checkpoint
 
-- Last completed action: Integrated the contract, schema, local-binding enforcement, agent guidance, target validator, init/upgrader behavior, and package exclusions; Windows and Ubuntu-24.04 focused tests pass.
-- Current task: `ENVROUTE-003-downstream-integration`.
-- Exact next action: Commit the implementation checkpoint, validate the committed package payload and Ubuntu-24.04 result, then present the result shape to the owner.
-- Validation already completed: Environment routing GWT 8/8 on Windows and Ubuntu-24.04; wrapper metadata 16/16; language policy 10/10; Python entrypoints 4/4; source AI-context validator passed; `git diff --check` passed.
-- Git state: Implementation is uncommitted on `codex/2026-08-14-environment-execution-routing`; bootstrap commit is `951fcae`; no push, pull request, or merge.
+- Last completed action: Immutable implementation commit `0970685` passed the committed package lifecycle projection and the Ubuntu-24.04 routing suite.
+- Current task: `ENVROUTE-003-downstream-integration` remains active for the owner review checkpoint; `VERIFY-001-independent-audit` remains pending.
+- Exact next action: Present the contract, local record shape, enforcement behavior, downstream lifecycle, and validation evidence for owner adjustment.
+- Validation already completed: Environment routing GWT 8/8 on Windows and immutable Ubuntu-24.04; wrapper metadata 16/16; language policy 10/10; Python entrypoints 4/4; committed package lifecycle projection 1/1; source AI-context and workflow validators passed; `git diff --check` passed.
+- Git state: Local implementation commit `0970685` follows bootstrap `951fcae` on `codex/2026-08-14-environment-execution-routing`; no push, pull request, or merge.
 - Branch history and checkpoint handoffs: None.
 - Blockers or unresolved decisions: No implementation blocker. The owner review checkpoint intentionally precedes personal-binding creation, independent verification, and workflow closure.
 
@@ -78,4 +78,4 @@
 
 | Segment | Branch | Base | Checkpoint Type | Commit | Remote / Target | Recorded At | Reason | Resume Branch / Action |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| 1 | `codex/2026-08-14-environment-execution-routing` | `main` | local-active | pending | local | `2026-08-14T21:40:34+08:00` | Authorized Issue #210 implementation with an owner review checkpoint | Continue `ENVROUTE-001-contract-schema` on the same branch |
+| 1 | `codex/2026-08-14-environment-execution-routing` | `main` | local-owner-review | `0970685` | local | `2026-08-14T22:05:43+08:00` | Implemented and validated Issue #210 without creating personal local state | Present result shape; adjust on this branch or proceed to independent verification after owner decision |
