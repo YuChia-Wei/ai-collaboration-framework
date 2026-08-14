@@ -1,0 +1,36 @@
+{
+  "template_id": "ai-context-governance-remediation-task",
+  "template_version": "1.1.0",
+  "template_created_at": "2026-07-10T18:22:49+08:00",
+  "template_updated_at": "2026-07-27T09:52:09+08:00",
+  "task_id": "PKGAPPLY-003-recovery-validation",
+  "workflow_id": "2026-08-14-pkg-011-durable-apply",
+  "owner_skill": "ai-context-governance",
+  "status": "pending",
+  "created_at": "2026-08-14T09:07:04+08:00",
+  "updated_at": "2026-08-14T09:07:04+08:00",
+  "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
+  "model": "gpt-5.6-sol",
+  "reasoning_effort": "xhigh",
+  "finding_ids": ["ASM-20260813-001#PKGAPPLY-001", "Issue-200-acceptance"],
+  "scope": {
+    "target": "Deterministic Windows-compatible and POSIX proof for durable recovery and package-native apply compatibility",
+    "files": [".ai/scripts/tests/test_ai_context_package_apply.py", ".ai/scripts/tests/test_ai_context_target_validation.py", ".ai/scripts/tests/test_ai_context_packaging.py", ".github/workflows/**"],
+    "constraints": ["Use deterministic fault injection rather than timing", "Preserve blocked/skipped states without relabeling", "Bind long-running validation to an immutable clean commit", "No repair by the independent validator"],
+    "non_goals": ["Nightly runner scheduling", "Product source review", "Release publication"]
+  },
+  "execution": {
+    "steps": ["Cover partial write, readonly/permission, symlink/reparse, EOL, delete, rename, and mode cases", "Force interruption after every operation boundary", "Validate recovery from a fresh process invocation", "Run package-native and cross-platform focused matrices", "Obtain independent fixed-head verification"],
+    "validation": ["Windows-compatible focused suite", "POSIX focused suite", "package-native validation", "external-task receipt validation", "independent ai-context-auditor assessment"],
+    "last_completed_step": "Acceptance matrix and immutable-evidence boundary recorded",
+    "next_action": "Begin after PKGAPPLY-002 transaction lifecycle passes focused deterministic tests"
+  },
+  "results": {
+    "summary": "",
+    "files_changed": [],
+    "tests_run": [],
+    "finding_status": "not-addressed",
+    "residual_risk": "No platform or independent closure evidence exists yet.",
+    "follow_up_needed": true
+  }
+}

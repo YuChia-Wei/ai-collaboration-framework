@@ -1,0 +1,36 @@
+{
+  "template_id": "ai-context-governance-remediation-task",
+  "template_version": "1.1.0",
+  "template_created_at": "2026-07-10T18:22:49+08:00",
+  "template_updated_at": "2026-07-27T09:52:09+08:00",
+  "task_id": "PKGAPPLY-001-hybrid-identity",
+  "workflow_id": "2026-08-14-pkg-011-durable-apply",
+  "owner_skill": "ai-context-governance",
+  "status": "in_progress",
+  "created_at": "2026-08-14T09:07:04+08:00",
+  "updated_at": "2026-08-14T09:07:04+08:00",
+  "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
+  "model": "gpt-5.6-sol",
+  "reasoning_effort": "xhigh",
+  "finding_ids": ["ASM-20260813-001#PKGAPPLY-001", "DS-01", "DS-02", "DS-10", "DS-11", "OWNER-HYBRID-001"],
+  "scope": {
+    "target": "Complete selected managed-state observation and Hybrid raw-byte/Git-mode/portable-proof identity",
+    "files": [".ai/scripts/ai_context_package_apply.py", ".ai/scripts/plan-ai-context-package-apply.py", ".ai/scripts/tests/test_ai_context_package_apply.py", ".ai/scripts/validate-ai-context-target.py"],
+    "constraints": ["Raw artifact bytes remain authoritative", "Tracked Git canonical identity may avoid autocrlf-only false conflicts but cannot hide dirty worktree changes", "Receipt binds raw SHA-256 and Git mode for every applied artifact", "Consume the #201 selected-input proof without redefining its authority", "Inspect every selected required/framework-managed path including unchanged paths"],
+    "non_goals": ["Durable journal mutation mechanics owned by PKGAPPLY-002", "Cross-version routing", "Release publication"]
+  },
+  "execution": {
+    "steps": ["Record the source-repository packet non-applicability boundary", "Separate raw, Git canonical, dirty-worktree, mode, and diagnostic identities", "Expand target observation to every selected managed path", "Bind plan and receipt to package selected-input proof", "Add autocrlf, dirty-worktree, unchanged drift, and mode fixtures"],
+    "validation": ["focused apply identity fixtures", "target validator compatibility", "package selected-input proof parity", "workflow and diff checks"],
+    "last_completed_step": "Live Issue #200, PKGAPPLY-001, owner Hybrid decision, #201 proof contract, current apply call chain, and the source-repository no-live-packet rule were read back",
+    "next_action": "Implement the bounded Hybrid identity behavior directly under ai-context-governance"
+  },
+  "results": {
+    "summary": "",
+    "files_changed": [],
+    "tests_run": [],
+    "finding_status": "not-addressed",
+    "residual_risk": "Durable transaction and interruption recovery remain dependent tasks.",
+    "follow_up_needed": true
+  }
+}
