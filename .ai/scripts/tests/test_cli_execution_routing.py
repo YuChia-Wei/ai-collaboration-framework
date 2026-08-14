@@ -127,12 +127,19 @@ class CliExecutionRoutingGwtTests(unittest.TestCase):
         }
 
     def test_gwt_001_given_portable_contract_without_local_binding_when_validated_then_unconfigured_passes(self) -> None:
-        errors: list[str] = []
+        fixture = RoutingFixture()
+        try:
+            errors: list[str] = []
 
-        count = ROUTING.validate_cli_execution_routing(errors, root=ROOT)
+            count = ROUTING.validate_cli_execution_routing(
+                errors,
+                root=fixture.root,
+            )
 
-        self.assertEqual(0, count)
-        self.assertEqual([], errors)
+            self.assertEqual(0, count)
+            self.assertEqual([], errors)
+        finally:
+            fixture.close()
 
     def test_gwt_002_given_explicitly_consented_ignored_binding_when_validated_then_passes(self) -> None:
         fixture = RoutingFixture()
@@ -225,9 +232,16 @@ class CliExecutionRoutingGwtTests(unittest.TestCase):
         )
 
         self.assertNotIn("Ubuntu-24.04", portable)
-        self.assertNotIn(".dev/ai-context/local/cli-execution-routing.yaml", {
-            path.as_posix() for path in ROOT.glob(".dev/ai-context/local/*")
-        })
+        self.assertEqual(
+            1,
+            git(
+                ROOT,
+                "ls-files",
+                "--error-unmatch",
+                "--",
+                ROUTING.LOCAL_PATH.as_posix(),
+            ).returncode,
+        )
         self.assertIn(".dev/ai-context/local/**", local_state["patterns"])
         target_validator = (
             ROOT / ".ai/scripts/validate-ai-context-target.py"

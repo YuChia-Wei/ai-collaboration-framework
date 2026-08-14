@@ -62,7 +62,7 @@ requirements:
 fallback:
   required: [on, to, retry, max_attempts]
   allowed: [on, to, retry, max_attempts]
-  on: [unavailable, blocked-by-environment, stale]
+  "on": [unavailable, blocked-by-environment, stale]
   forbidden_on: [disallowed]
   to: "unique route_id list resolved within the same operation"
   retry: "material-change-only"
