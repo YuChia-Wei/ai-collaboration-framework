@@ -15,11 +15,11 @@
 - `branch`: `codex/2026-08-14-pkg-012-package-closure`
 - `base_branch`: `codex/2026-08-14-val-006-dependency-closure`
 - `branch_segment`: `2`
-- `status`: `in_progress`
-- `current_phase`: `independent-finding-remediation`
+- `status`: `completed`
+- `current_phase`: `completed`
 - `artifact_root`: `.dev/workflows/2026-08-14-pkg-012-package-closure`
 - `created_at`: `2026-08-14T07:03:23+08:00`
-- `updated_at`: `2026-08-14T08:33:30+08:00`
+- `updated_at`: `2026-08-14T09:01:29+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md`
 - `template_version`: `1.2.0`
 
@@ -35,7 +35,7 @@
 
 - Baseline assessment: `.dev/assessments/ASM-20260813-001/assessment.yaml`
 - Remediation report: `.dev/workflows/2026-08-14-pkg-012-package-closure/reports/remediation-report.md`
-- Verification assessment: pending under `.dev/assessments/<verification-assessment-id>/assessment.yaml`
+- Verification assessment: `.dev/assessments/ASM-20260814-002/assessment.yaml`
 - Tasks: `.dev/workflows/2026-08-14-pkg-012-package-closure/tasks/`
 
 ## Finding Triage
@@ -50,9 +50,9 @@
 
 1. Baseline audit, live Issue read-back, graph-assisted code discovery, and stacked clean checkpoint — completed.
 2. Finding triage, #200 boundary analysis, and task ownership — completed.
-3. Canonical ownership and isolated validation implementation with focused deterministic fixtures — fixed-HEAD `ba7bc3f` audit found incomplete incoming schema/component authority and help-only runtime closure; both are remediated in the working tree with focused tests passing.
-4. Complete payload-integrity validation, fixed-clean-commit aggregate/POSIX evidence, and independent post-remediation assessment — attempt 1 blocked, attempt 2 rejected as non-trusted, attempt 3 failed 2 plus 1; all three exact failures now pass focused and await a new immutable matrix and audit.
-5. Finding reconciliation and local closeout; continue stacking later #200-#208 segments without remote integration — pending.
+3. Canonical ownership and isolated validation implementation with focused deterministic fixtures — completed; the `ba7bc3f` audit findings were corrected in Issue-bound commit `5f5cd028b630d5bddfa56a5b9069e5a40a3c34f8`.
+4. Complete payload-integrity validation, fixed-clean-commit aggregate/POSIX evidence, and independent post-remediation assessment — completed; attempt 5 passed 38/38 with a schema-valid receipt, WSL exact-requirements validation passed 17/17, and `ASM-20260814-002` verified all four prior findings closed.
+5. Finding reconciliation and local closeout; continue stacking later #200-#208 segments without remote integration — completed for #201. The cumulative local delivery continues with #200.
 
 `ai-context-governance` owns the assessment-to-remediation lifecycle. `software-development-orchestrator` coordinates only bounded Python/tooling implementation, tests, review, long-running validation, and commits. Product source review, spec compliance, and release closeout are not selected.
 
@@ -72,11 +72,11 @@
 
 ## Resume Checkpoint
 
-- Last completed action: failed closed on `ba7bc3f` independent audit and attempt-3 matrix evidence, then remediated schema/component/runtime closure plus all three matrix regressions; focused validator, registry, dependency, apply-reader, and exact failed-case tests pass.
-- Current tasks: all three remediation tasks are implementation-complete but reopened until immutable verification passes.
-- Exact next action: create an Issue-bound remediation commit, validate a real extracted candidate, dispatch a new immutable full-matrix attempt, confirm POSIX fixtures, and re-run the independent auditor.
-- Validation already completed: predecessor #202 policy range, #201 focused suites, real Windows/WSL archives and candidate, and WSL case-fold fixture passed; every failed or blocked attempt remains explicit evidence.
-- Git state: branch `codex/2026-08-14-pkg-012-package-closure` based on local #202 closeout; independent-audit and matrix remediations plus updated #201 workflow evidence are intentionally dirty.
+- Last completed action: independently verified exact clean implementation subject `5f5cd028b630d5bddfa56a5b9069e5a40a3c34f8`; `ASM-20260814-002` closes `PKG012-VERIFY-001` through `004` and the baseline package-closure finding.
+- Current tasks: all three remediation tasks are completed.
+- Exact next action: commit this #201 governance closeout, create a stacked Issue #200 branch, and consume the proven package selected-input/component identity without changing #201's portable-success boundary.
+- Validation already completed: real ZIP/tar and fresh extraction, Windows focused suites, isolated WSL exact-requirements 17/17, attempt-5 38/38 with canonical receipt validation, repository validators, and independent fixed-head audit. Every earlier failed or blocked attempt remains explicit evidence.
+- Git state: branch `codex/2026-08-14-pkg-012-package-closure` based on local #202 closeout; only #201 assessment and workflow closeout artifacts are pending their Issue-bound governance commit.
 - Branch history and checkpoint handoffs: cumulative segment 2; no push, PR, merge, Issue close, or release mutation.
 - Blockers or unresolved decisions: none yet for #201. Any need to redefine #200 transaction identity or #203 target-policy authority stops this task at its declared boundary.
 
@@ -84,4 +84,4 @@
 
 | Segment | Branch | Base | Checkpoint Type | Commit | Remote / Target | Recorded At | Reason | Resume Branch / Action |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| 2 | `codex/2026-08-14-pkg-012-package-closure` | `codex/2026-08-14-val-006-dependency-closure@f9483469dba4cbd64c20606e33597ffa30793c74` | local active stacked segment | workflow plan `caf2256123b1ab03e5da435f6eff9818543611aa`; implementation/corrections through failed-audit HEAD `ba7bc3f162a60a9739551a7a5cd570e68d43551d`; remediation pending | not pushed | `2026-08-14T08:33:30+08:00` | package closure precedes durable apply and upgrade correctness | commit independent findings, run real candidate/full matrix/POSIX/audit, then stack #200 |
+| 2 | `codex/2026-08-14-pkg-012-package-closure` | `codex/2026-08-14-val-006-dependency-closure@f9483469dba4cbd64c20606e33597ffa30793c74` | local completed stacked segment | workflow plan `caf2256123b1ab03e5da435f6eff9818543611aa`; verified implementation subject `5f5cd028b630d5bddfa56a5b9069e5a40a3c34f8`; verification `ASM-20260814-002` | not pushed | `2026-08-14T09:01:29+08:00` | package closure precedes durable apply and upgrade correctness | commit governance closeout, then stack #200 |

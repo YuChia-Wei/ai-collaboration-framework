@@ -6,9 +6,9 @@
   "task_id": "PKGCLOSURE-001-component-ownership",
   "workflow_id": "2026-08-14-pkg-012-package-closure",
   "owner_skill": "ai-context-governance",
-  "status": "pending",
+  "status": "completed",
   "created_at": "2026-08-14T07:03:23+08:00",
-  "updated_at": "2026-08-14T08:33:30+08:00",
+  "updated_at": "2026-08-14T09:01:29+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-5.6-sol",
   "reasoning_effort": "xhigh",
@@ -23,14 +23,14 @@
     "steps": ["Inventory every component assignment source", "Select and enforce one authority", "Generate or validate all derived projections", "Add deterministic failure and identity fixtures"],
     "validation": ["focused component ownership fixtures", "full packaging contract module", "workflow and diff checks"],
     "last_completed_step": "Remediated the ba7bc3f independent finding by validating exact package schema fields, component graph, selection closure, supported selections, capability ownership, inventory component IDs, and package/migration/clean-install parity",
-    "next_action": "Commit the remediation, pass a new immutable full matrix, and obtain independent verification on that exact HEAD"
+    "next_action": "Completed; Issue #200 may consume the verified selected-input and component identity without reopening this ownership boundary"
   },
   "results": {
     "summary": "The distribution profile remains the sole producer authority and the incoming validator now independently rejects divergent component, selection, user-view, inventory, migration, or clean-install projections.",
     "files_changed": [".ai/distribution/profiles/dotnet-backend.yaml", ".ai/assets/shared/governance/portable-policy-manifest.yaml", ".ai/assets/skills/ai-context-init/templates/public-template-manifest.yaml", ".ai/scripts/ai_context_package.py", ".ai/scripts/ai_context_package_validation.py", ".ai/scripts/tests/test_ai_context_package_validation.py"],
-    "tests_run": ["3 focused package producer/apply fixtures passed after matrix repair", "17 extracted-validator fixtures pass on Windows with one POSIX-only casefold skip", "30 apply-reader compatibility tests pass with one Windows symlink skip", "schema-required field parity fixture passes"],
-    "finding_status": "independent-finding-remediated-verification-pending",
-    "residual_risk": "A new immutable full-matrix pass and independent verification are required before resolution.",
-    "follow_up_needed": true
+    "tests_run": ["3 focused package producer/apply fixtures passed after matrix repair", "17 extracted-validator fixtures pass on Windows with one POSIX-only casefold skip", "17 extracted-validator fixtures pass in isolated WSL including casefold", "30 apply-reader compatibility tests pass with one Windows symlink skip", "attempt 5 immutable packaging matrix passed 38/38", "ASM-20260814-002 independently verified schema, component, selection, and ownership closure"],
+    "finding_status": "resolved-by-ASM-20260814-002",
+    "residual_risk": "Target transaction and Hybrid identity remain intentionally outside this task under Issue #200.",
+    "follow_up_needed": false
   }
 }
