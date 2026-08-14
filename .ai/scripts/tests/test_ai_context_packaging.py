@@ -3,6 +3,7 @@
 
 from __future__ import annotations
 
+import json
 import os
 import subprocess
 import shutil
@@ -27,9 +28,11 @@ class RepositoryTemporaryDirectory:
     """Use normal workspace ACLs instead of Windows tempfile 0700 ACLs."""
 
     def __init__(self, prefix: str) -> None:
-        root = ROOT / ".tmp/test-ai-context-packaging"
+        # Keep the deepest portable skill entry below the Win32 MAX_PATH
+        # boundary even when Git long-path support is not configured.
+        root = ROOT / ".tmp/p"
         root.mkdir(parents=True, exist_ok=True)
-        self.path = root / f"{prefix}{uuid.uuid4().hex}"
+        self.path = root / uuid.uuid4().hex[:12]
         self.path.mkdir()
         self.name = str(self.path)
 
@@ -55,7 +58,15 @@ def repository_temporary_directory(prefix: str) -> RepositoryTemporaryDirectory:
 
 
 def git(root: Path, *args: str) -> subprocess.CompletedProcess[str]:
-    return subprocess.run(["git", *args], cwd=root, check=True, capture_output=True, text=True)
+    result = subprocess.run(
+        ["git", *args], cwd=root, check=False, capture_output=True, text=True
+    )
+    if result.returncode != 0:
+        raise AssertionError(
+            f"git {' '.join(args)} failed with exit {result.returncode}: "
+            f"{(result.stdout + result.stderr).strip()}"
+        )
+    return result
 
 
 class SyntheticPackageRepo:
@@ -74,7 +85,11 @@ class SyntheticPackageRepo:
         (self.root / ".dev").mkdir()
         (self.root / "docs").mkdir()
         (self.root / ".ai/distribution/templates/INSTALL.md").write_text(
-            "# Install fixture\n", encoding="utf-8", newline="\n"
+            "# Install fixture\n\n"
+            "python -m pip install -r requirements.txt\n\n"
+            "python payload/.ai/scripts/validate-ai-context-payload.py --package-root .\n",
+            encoding="utf-8",
+            newline="\n",
         )
         (self.root / ".ai/distribution/templates/requirements.txt").write_text(
             "PyYAML==6.0.3\n", encoding="utf-8", newline="\n"
@@ -100,6 +115,14 @@ class SyntheticPackageRepo:
             "python_prerequisites.py",
         ):
             (self.root / ".ai/scripts" / script).write_bytes((SCRIPTS / script).read_bytes())
+        registry = json.loads((SCRIPTS / "python-entrypoints.json").read_text(encoding="utf-8"))
+        for entrypoint in registry["entrypoints"]:
+            if entrypoint.get("portable") is not True:
+                continue
+            relative = entrypoint["path"]
+            target = self.root / relative
+            target.parent.mkdir(parents=True, exist_ok=True)
+            target.write_bytes((ROOT / relative).read_bytes())
         (self.root / ".ai/scripts/render-ai-context-release-notes.py").write_text(
             "raise SystemExit('source-only renderer')\n",
             encoding="utf-8",
@@ -235,6 +258,14 @@ class SyntheticPackageRepo:
                     "id": "fixture-apply-scripts",
                     "component_id": "software-development-core",
                     "source": ".ai/scripts/**",
+                    "target": "preserve-relative-path",
+                    "ownership": "framework-managed",
+                    "install_behavior": "managed",
+                },
+                {
+                    "id": "fixture-portable-skill-scripts",
+                    "component_id": "software-development-core",
+                    "source": ".ai/assets/skills/**",
                     "target": "preserve-relative-path",
                     "ownership": "framework-managed",
                     "install_behavior": "managed",
@@ -1930,17 +1961,8 @@ class VersionedMigrationPackagingGwtTests(unittest.TestCase):
             ".ai/scripts/validate-workflow-artifacts.py", ".ai/scripts/validate-workflow-handoff.py",
         )
         try:
-            # Given v0.7.0 already carries every direct portable command path.
-            for path in portable_paths:
-                target = fixture.root / path
-                target.parent.mkdir(parents=True, exist_ok=True)
-                target.write_bytes((ROOT / path).read_bytes())
-            profile_path = fixture.root / fixture.profile
-            profile = yaml.safe_load(profile_path.read_text(encoding="utf-8"))
-            profile["entries"].append({"id": "portable-skill-cli", "component_id": "software-development-core", "source": ".ai/assets/skills/**", "target": "preserve-relative-path", "ownership": "framework-managed", "install_behavior": "managed"})
-            profile_path.write_text(yaml.safe_dump(profile, sort_keys=False), encoding="utf-8", newline="\n")
-            git(fixture.root, "add", ".")
-            git(fixture.root, "commit", "-qm", "v070 portable command fixture")
+            # Given v0.7.0 already carries every registry-declared portable path.
+            self.assertTrue(all((fixture.root / path).is_file() for path in portable_paths))
             previous = fixture.build("v070", version="0.7.0")
             previous_root = fixture.extract(previous, "v070-extract")
             previous_files = previous_root / "metadata/files.yaml"

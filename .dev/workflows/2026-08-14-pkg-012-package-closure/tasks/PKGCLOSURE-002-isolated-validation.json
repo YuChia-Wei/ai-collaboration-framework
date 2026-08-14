@@ -6,9 +6,9 @@
   "task_id": "PKGCLOSURE-002-isolated-validation",
   "workflow_id": "2026-08-14-pkg-012-package-closure",
   "owner_skill": "ai-context-governance",
-  "status": "completed",
+  "status": "pending",
   "created_at": "2026-08-14T07:03:23+08:00",
-  "updated_at": "2026-08-14T07:56:15+08:00",
+  "updated_at": "2026-08-14T08:33:30+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-5.6-sol",
   "reasoning_effort": "xhigh",
@@ -22,15 +22,15 @@
   "execution": {
     "steps": ["Define candidate-native validation manifest and command", "Classify portable versus source-only checks", "Run extracted candidates without source checkout resolution", "Add omission fixtures"],
     "validation": ["isolated extracted-package command", "missing-dependency fixtures", "Windows-compatible and POSIX execution"],
-    "last_completed_step": "Built and source-validated both archives at fixed HEAD d30a1b7, then passed candidate-owned fresh-extraction validation on Windows and Ubuntu WSL with all 14 portable entrypoints",
-    "next_action": "No remaining isolated-validator action; continue payload-integrity full-matrix verification under PKGCLOSURE-003"
+    "last_completed_step": "Remediated the ba7bc3f audit by requiring INSTALL.md and requirements.txt, exact registry dependency fields and pins, installed versions, recursive lazy-import closure, complete schema fields, and isolated candidate dependency installation in CI",
+    "next_action": "Commit the remediation and repeat real extracted-candidate validation at the new immutable HEAD"
   },
   "results": {
-    "summary": "Incoming package validation is candidate-owned and runs without source checkout access; source-only tests are excluded from portable success.",
+    "summary": "Incoming validation is candidate-owned and now proves the envelope runtime/dependency and schema/component closure rather than treating help-only execution as the full success claim.",
     "files_changed": [".ai/scripts/ai_context_package_validation.py", ".ai/scripts/validate-ai-context-payload.py", ".github/workflows/package-candidate.yml", ".ai/distribution/templates/INSTALL.md", ".ai/distribution/profiles/dotnet-backend.yaml", ".ai/scripts/README.md", ".dev/standards/DEPENDENCY-VERSION-CONSISTENCY-POLICY.md"],
     "tests_run": ["8 Windows synthetic validator cases passed with one POSIX-only casefold fixture skipped", "2 focused producer and parity tests passed after the source-only pattern change", "6 payload user-view contract tests passed after the acceptance-oracle correction", "4 portable entrypoint registry tests passed with usage and no-validation-output required for all 14 portable commands", "normal source AI-context, shell-asset, and workflow-artifact validations passed after adding argparse help", "9 GitHub workflow contract tests passed", "30 apply reader compatibility tests passed with one Windows symlink fixture skipped", "fixed-HEAD 06e27ed real build failed closed because excluded skill-owned test commands remained actionable in payload documentation", "fixed-HEAD fcfb3a8 real build failed closed on the remaining source-only acceptance-oracle command", "fixed-HEAD f2d9955 build and two-archive validation passed; fresh extraction failed closed because validate-ai-context.py --help performed full validation", "fixed-HEAD 0c32a90 build and two-archive validation passed; fresh extraction failed closed because validate-shell-assets.py --help performed full validation"],
-    "finding_status": "resolved",
-    "residual_risk": "None within isolated candidate validation; aggregate source-only matrix completion and independent assessment remain workflow-level gates.",
-    "follow_up_needed": false
+    "finding_status": "independent-finding-remediated-verification-pending",
+    "residual_risk": "Real new-HEAD archives, extracted candidate, full matrix, and independent audit remain required.",
+    "follow_up_needed": true
   }
 }

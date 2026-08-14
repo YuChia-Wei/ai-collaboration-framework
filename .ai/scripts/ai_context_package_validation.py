@@ -3,7 +3,9 @@
 
 from __future__ import annotations
 
+import ast
 import hashlib
+import importlib.util
 import json
 import os
 import re
@@ -25,6 +27,35 @@ EXPECTED_VALIDATOR_ARGV = [
     "--package-root",
     ".",
 ]
+VERSION_RE = re.compile(r"^[0-9]+\.[0-9]+\.[0-9]+$")
+FULL_SHA_RE = re.compile(r"^[0-9a-f]{40}$")
+EXPECTED_PACKAGE_KEYS = {
+    "schema_version",
+    "package_id",
+    "profile_id",
+    "version",
+    "release_id",
+    "selection",
+    "user_view",
+    "source",
+    "created_at",
+    "source_date_epoch",
+    "payload",
+    "identity",
+    "compatibility",
+    "validation",
+}
+SEMVER_RE = re.compile(r"^v?(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)$")
+PAYLOAD_USER_VIEW_CLASSIFICATIONS = {
+    "markdown_local_links": "required-local-navigation",
+    "markdown_anchors": "required-local-anchor",
+    "component_cross_links": "navigation-only-not-activation",
+    "fenced_code": "non-actionable-example-unless-command",
+    "inline_code": "non-actionable-reference-unless-command",
+    "templates_and_placeholders": "non-actionable-template",
+    "external_urls": "external-not-validated",
+    "actionable_local_commands": "required-local-target",
+}
 
 
 class PackageValidationError(ValueError):
@@ -75,6 +106,23 @@ def _safe_relative_path(value: object, label: str) -> str:
     if path.as_posix() != value:
         _fail(f"{label} is not normalized: {value!r}")
     return value
+
+
+def _path_matches(path: str, pattern: str) -> bool:
+    """Match package profile globs with ** crossing directories and * not crossing them."""
+
+    expression = re.escape(pattern)
+    expression = expression.replace(r"\*\*", ".*")
+    expression = expression.replace(r"\*", "[^/]*")
+    expression = expression.replace(r"\?", "[^/]")
+    return re.fullmatch(expression, path) is not None
+
+
+def _semver_key(value: str) -> tuple[int, int, int]:
+    match = SEMVER_RE.fullmatch(value)
+    if match is None:
+        _fail(f"invalid semantic version: {value!r}")
+    return tuple(int(item) for item in match.groups())
 
 
 def _path_under(root: Path, relative: str, label: str) -> Path:
@@ -262,28 +310,396 @@ def _require_string(value: object, label: str) -> str:
     return value
 
 
+def _validate_selection(
+    value: object, components: dict[str, dict[str, Any]] | None = None
+) -> tuple[dict[str, Any], set[str]]:
+    selection = _require_mapping(value, "package.yaml selection")
+    if set(selection) != {
+        "release_model",
+        "mandatory_components",
+        "profiles",
+        "providers",
+    }:
+        _fail("package.yaml selection fields do not match the schema authority")
+    if selection.get("release_model") != "single-versioned-componentized-release":
+        _fail("package.yaml selection release_model is invalid")
+    mandatory = _require_list(
+        selection.get("mandatory_components"),
+        "package.yaml selection mandatory_components",
+    )
+    if len(mandatory) != len(set(mandatory)) or set(mandatory) != {
+        "software-development-core",
+        "ai-context-lifecycle-core",
+    }:
+        _fail("package.yaml selection must contain exactly both mandatory cores")
+    profiles = _require_list(selection.get("profiles"), "package.yaml selection profiles")
+    if not profiles or len(profiles) != len(set(profiles)) or not all(
+        isinstance(item, str) and item for item in profiles
+    ):
+        _fail("package.yaml selection profiles must be unique component IDs")
+    providers = _require_mapping(
+        selection.get("providers"), "package.yaml selection providers"
+    )
+    selected = {*mandatory, *profiles}
+    for component_id, raw in providers.items():
+        provider = _require_mapping(raw, f"package.yaml provider {component_id}")
+        if set(provider) != {"enabled", "preservation"}:
+            _fail(f"package.yaml provider contract has unexpected fields: {component_id}")
+        if not isinstance(provider.get("enabled"), bool):
+            _fail(f"package.yaml provider enabled flag is invalid: {component_id}")
+        if provider.get("preservation") != "preserve-existing-if-recorded":
+            _fail(f"package.yaml provider preservation is invalid: {component_id}")
+        if provider["enabled"]:
+            selected.add(component_id)
+    if components is not None:
+        unknown = sorted(selected - set(components))
+        if unknown:
+            _fail(f"package.yaml selection refers to unknown components: {unknown!r}")
+        for component_id in selected:
+            missing = sorted(set(components[component_id]["requires"]) - selected)
+            if missing:
+                _fail(
+                    f"package.yaml selection is not closed under {component_id} dependencies: "
+                    f"{missing!r}"
+                )
+    return selection, selected
+
+
+def _validate_user_view(
+    package: dict[str, Any],
+    records: dict[str, dict[str, Any]],
+) -> None:
+    contract = _require_mapping(package.get("user_view"), "package.yaml user_view")
+    if set(contract) != {
+        "schema_version",
+        "classifications",
+        "reference_integrity",
+        "components",
+        "supported_selections",
+        "capabilities",
+    }:
+        _fail("package.yaml user_view fields do not match the schema authority")
+    if contract.get("schema_version") != "1.0.0":
+        _fail("package.yaml user_view must use schema 1.0.0")
+    if contract.get("classifications") != PAYLOAD_USER_VIEW_CLASSIFICATIONS:
+        _fail("package.yaml user_view classifications are missing or weakened")
+    reference = _require_mapping(
+        contract.get("reference_integrity"), "package.yaml user_view reference_integrity"
+    )
+    if set(reference) != {"text_extensions", "forbidden_source_lifecycle_patterns"}:
+        _fail("package.yaml user_view reference_integrity fields are invalid")
+    extensions = _require_list(
+        reference.get("text_extensions"), "package.yaml user_view text_extensions"
+    )
+    forbidden = _require_list(
+        reference.get("forbidden_source_lifecycle_patterns"),
+        "package.yaml user_view forbidden_source_lifecycle_patterns",
+    )
+    if not extensions or not all(isinstance(item, str) and item.startswith(".") for item in extensions):
+        _fail("package.yaml user_view text_extensions are invalid")
+    if not forbidden or not all(isinstance(item, str) and item for item in forbidden):
+        _fail("package.yaml user_view forbidden lifecycle patterns are invalid")
+
+    components: dict[str, dict[str, Any]] = {}
+    for index, raw in enumerate(
+        _require_list(contract.get("components"), "package.yaml user_view components")
+    ):
+        component = _require_mapping(raw, f"package.yaml user_view components[{index}]")
+        component_id = _require_string(
+            component.get("component_id"),
+            f"package.yaml user_view components[{index}].component_id",
+        )
+        requires = _require_list(
+            component.get("requires"),
+            f"package.yaml user_view components[{index}].requires",
+        )
+        allowed = {"component_id", "classification", "required", "requires", "default_enabled"}
+        if (
+            component_id in components
+            or not set(component).issubset(allowed)
+            or not isinstance(component.get("classification"), str)
+            or not isinstance(component.get("required"), bool)
+            or len(requires) != len(set(requires))
+            or not all(isinstance(item, str) and item for item in requires)
+            or (
+                "default_enabled" in component
+                and not isinstance(component["default_enabled"], bool)
+            )
+        ):
+            _fail("package.yaml user_view component contract is invalid or ambiguous")
+        components[component_id] = component
+    if not components:
+        _fail("package.yaml user_view components must not be empty")
+    for component_id, component in components.items():
+        invalid = [item for item in component["requires"] if item == component_id or item not in components]
+        if invalid:
+            _fail(f"package.yaml user_view component dependencies are invalid: {component_id}")
+    visiting: set[str] = set()
+    visited: set[str] = set()
+
+    def visit(component_id: str) -> None:
+        if component_id in visiting:
+            _fail(f"package.yaml user_view component dependency cycle includes {component_id}")
+        if component_id in visited:
+            return
+        visiting.add(component_id)
+        for dependency in components[component_id]["requires"]:
+            visit(dependency)
+        visiting.remove(component_id)
+        visited.add(component_id)
+
+    for component_id in components:
+        visit(component_id)
+
+    selection, selected = _validate_selection(package.get("selection"), components)
+    required_components = {
+        component_id for component_id, component in components.items() if component["required"]
+    }
+    if required_components != set(selection["mandatory_components"]):
+        _fail("package selection mandatory components diverge from user_view authority")
+    for profile_id in selection["profiles"]:
+        if components[profile_id]["classification"] != "technology-profile":
+            _fail(f"package selection profile has the wrong classification: {profile_id}")
+    for provider_id in selection["providers"]:
+        if provider_id not in components or components[provider_id]["classification"] != "optional-provider":
+            _fail(f"package selection provider has the wrong classification: {provider_id}")
+    optional_providers = {
+        component_id
+        for component_id, component in components.items()
+        if component["classification"] == "optional-provider"
+    }
+    if set(selection["providers"]) != optional_providers:
+        _fail("package selection provider projection diverges from user_view components")
+
+    selections: dict[str, set[str]] = {}
+    for index, raw in enumerate(
+        _require_list(
+            contract.get("supported_selections"),
+            "package.yaml user_view supported_selections",
+        )
+    ):
+        item = _require_mapping(raw, f"package.yaml supported_selections[{index}]")
+        if set(item) != {"selection_id", "components"}:
+            _fail("package.yaml supported selection fields are invalid")
+        selection_id = _require_string(
+            item.get("selection_id"), f"package.yaml supported_selections[{index}].selection_id"
+        )
+        component_ids = _require_list(
+            item.get("components"), f"package.yaml supported_selections[{index}].components"
+        )
+        selected_ids = set(component_ids)
+        if (
+            selection_id in selections
+            or len(component_ids) != len(selected_ids)
+            or not selected_ids.issubset(components)
+            or not required_components.issubset(selected_ids)
+        ):
+            _fail("package.yaml supported selection is invalid or ambiguous")
+        for component_id in selected_ids:
+            if not set(components[component_id]["requires"]).issubset(selected_ids):
+                _fail(f"package.yaml supported selection is not dependency closed: {selection_id}")
+        selections[selection_id] = selected_ids
+    if selected not in selections.values():
+        _fail("package default selection is absent from user_view supported selections")
+
+    record_components = {record["component_id"] for record in records.values()}
+    unknown_record_components = sorted(record_components - set(components))
+    if unknown_record_components:
+        _fail(f"files.yaml uses unknown component ownership: {unknown_record_components!r}")
+
+    capability_ids: set[str] = set()
+    for index, raw in enumerate(
+        _require_list(contract.get("capabilities"), "package.yaml user_view capabilities")
+    ):
+        capability = _require_mapping(raw, f"package.yaml user_view capabilities[{index}]")
+        if set(capability) != {"capability_id", "owner_component", "path_patterns", "availability"}:
+            _fail("package.yaml user_view capability fields are invalid")
+        capability_id = _require_string(
+            capability.get("capability_id"), f"package.yaml capability[{index}].capability_id"
+        )
+        owner = capability.get("owner_component")
+        patterns = _require_list(
+            capability.get("path_patterns"), f"package.yaml capability[{index}].path_patterns"
+        )
+        availability = _require_mapping(
+            capability.get("availability"), f"package.yaml capability[{index}].availability"
+        )
+        if (
+            capability_id in capability_ids
+            or owner not in components
+            or not patterns
+            or not all(isinstance(item, str) and item for item in patterns)
+            or set(availability) != set(selections)
+        ):
+            _fail("package.yaml user_view capability contract is invalid or ambiguous")
+        matched = {
+            path
+            for path in records
+            if any(_path_matches(path, pattern) for pattern in patterns)
+        }
+        if not matched or any(records[path]["component_id"] != owner for path in matched):
+            _fail(f"package capability ownership projection diverges: {capability_id}")
+        for selection_id, selection_components in selections.items():
+            expected = "available" if owner in selection_components else "unavailable-not-selected"
+            if availability.get(selection_id) != expected:
+                _fail(f"package capability availability diverges: {capability_id}/{selection_id}")
+        capability_ids.add(capability_id)
+
+
+def _validate_package_schema_and_projection(
+    package: dict[str, Any],
+    migration: dict[str, Any],
+    records: dict[str, dict[str, Any]],
+    files_digest: str,
+) -> None:
+    if set(package) != EXPECTED_PACKAGE_KEYS:
+        missing = sorted(EXPECTED_PACKAGE_KEYS - set(package))
+        extra = sorted(set(package) - EXPECTED_PACKAGE_KEYS)
+        _fail(f"package.yaml schema fields differ: missing={missing!r}; extra={extra!r}")
+    _require_string(package.get("profile_id"), "package.yaml profile_id")
+    version = _require_string(package.get("version"), "package.yaml version")
+    if VERSION_RE.fullmatch(version) is None or SEMVER_RE.fullmatch(version) is None:
+        _fail("package.yaml version must be MAJOR.MINOR.PATCH")
+    if package.get("release_id") != f"REL-v{version}":
+        _fail("package.yaml release_id does not match version")
+    source = _require_mapping(package.get("source"), "package.yaml source")
+    if set(source) != {"repository", "ref", "commit", "tree"}:
+        _fail("package.yaml source fields are invalid")
+    _require_string(source.get("repository"), "package.yaml source repository")
+    if not all(isinstance(source.get(key), str) and FULL_SHA_RE.fullmatch(source[key]) for key in ("commit", "tree")):
+        _fail("package.yaml source commit and tree must be full immutable SHAs")
+    ref = _require_string(source.get("ref"), "package.yaml source ref")
+    if ref != source["commit"] and ref != f"v{version}":
+        _fail("package.yaml source ref must be the full commit or exact release tag")
+    created_at = _require_string(package.get("created_at"), "package.yaml created_at")
+    if re.fullmatch(r"[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}(?:\.[0-9]+)?(?:Z|[+-][0-9]{2}:[0-9]{2})", created_at) is None:
+        _fail("package.yaml created_at must be timezone-qualified ISO 8601")
+    epoch = package.get("source_date_epoch")
+    if not isinstance(epoch, int) or isinstance(epoch, bool) or epoch < 0:
+        _fail("package.yaml source_date_epoch must be a non-negative integer")
+    compatibility = _require_mapping(package.get("compatibility"), "package.yaml compatibility")
+    if not {"minimum_governed_source", "breaking_changes"}.issubset(compatibility):
+        _fail("package.yaml compatibility is incomplete")
+    if SEMVER_RE.fullmatch(str(compatibility["minimum_governed_source"])) is None:
+        _fail("package.yaml minimum_governed_source must be an exact semantic version")
+    if not isinstance(compatibility["breaking_changes"], bool):
+        _fail("package.yaml breaking_changes must be boolean")
+    automatic = compatibility.get("automatic_upgrade_sources", [])
+    if (
+        not isinstance(automatic, list)
+        or len(automatic) != len(set(automatic))
+        or automatic != sorted(automatic, key=_semver_key)
+        or not all(isinstance(item, str) and SEMVER_RE.fullmatch(item) for item in automatic)
+    ):
+        _fail("package.yaml automatic_upgrade_sources must be unique ordered semantic versions")
+    _validate_user_view(package, records)
+    if migration.get("schema_version") != "3.0.0":
+        _fail("migration.yaml must use component-aware schema 3.0.0")
+    if set(migration) != {
+        "schema_version",
+        "package_id",
+        "selection",
+        "to",
+        "clean_install",
+        "sources",
+        "safety",
+    }:
+        _fail("migration.yaml fields do not match schema 3.0.0")
+    if migration.get("selection") != package.get("selection"):
+        _fail("migration.yaml selection diverges from package.yaml")
+    destination = _require_mapping(migration.get("to"), "migration.yaml to")
+    if destination != {"version": version, "manifest_sha256": files_digest}:
+        _fail("migration.yaml destination identity diverges from package.yaml/files.yaml")
+    safety = _require_mapping(migration.get("safety"), "migration.yaml safety")
+    expected_safety = {
+        "dry_run_default": True,
+        "clean_worktree_required": True,
+        "starting_commit_required": True,
+        "abort_on_unacknowledged_reconciliation": True,
+    }
+    if safety != expected_safety:
+        _fail("migration.yaml safety contract is missing or weakened")
+    clean_install = _require_mapping(
+        migration.get("clean_install"), "migration.yaml clean_install"
+    )
+    operations = _require_list(
+        clean_install.get("operations"), "migration.yaml clean_install operations"
+    )
+    indexed: dict[str, dict[str, Any]] = {}
+    operation_ids: list[str] = []
+    for index, raw in enumerate(operations):
+        operation = _require_mapping(raw, f"clean_install operations[{index}]")
+        if set(operation) != {
+            "id",
+            "kind",
+            "path",
+            "ownership",
+            "preconditions",
+            "component_id",
+        }:
+            _fail(f"clean-install operation fields are invalid at index {index}")
+        operation_ids.append(
+            _require_string(operation.get("id"), f"clean_install operations[{index}].id")
+        )
+        path = _safe_relative_path(
+            operation.get("path"), f"clean_install operations[{index}].path"
+        )
+        if path in indexed:
+            _fail(f"duplicate clean-install operation path: {path}")
+        indexed[path] = operation
+    if len(operation_ids) != len(set(operation_ids)) or operation_ids != sorted(operation_ids):
+        _fail("clean-install operation IDs must be unique and ordered")
+    if set(indexed) != set(records):
+        _fail("clean-install operations do not exactly cover files.yaml")
+    for path, operation in indexed.items():
+        if (
+            operation.get("kind") != "add"
+            or operation.get("ownership") != records[path]["ownership"]
+            or operation.get("component_id") != records[path]["component_id"]
+            or operation.get("preconditions") != ["destination_absent"]
+        ):
+            _fail(f"clean-install operation diverges from files.yaml: {path}")
+
+
 def _validate_inventory(
     package_root: Path, files: dict[str, Path], inventory: dict[str, Any], package_id: str
 ) -> dict[str, dict[str, Any]]:
     if inventory.get("schema_version") != "2.0.0":
         _fail("files.yaml must use schema 2.0.0")
+    if set(inventory) != {"schema_version", "package_id", "files"}:
+        _fail("files.yaml fields do not match schema 2.0.0")
     if inventory.get("package_id") != package_id:
         _fail("files.yaml package_id does not match package.yaml")
     records = _record_paths(_require_list(inventory.get("files"), "files.yaml files"), "files.yaml files")
     if list(records) != sorted(records, key=lambda item: item.encode("utf-8")):
         _fail("files.yaml files must be ordered by UTF-8 path")
     for relative, record in records.items():
-        required = ("sha256", "size", "mode", "ownership", "install_behavior", "component_id")
-        if not all(key in record for key in required):
-            _fail(f"files.yaml record is incomplete: {relative}")
+        expected_fields = {
+            "path",
+            "source_path",
+            "sha256",
+            "size",
+            "mode",
+            "ownership",
+            "install_behavior",
+            "entry_id",
+            "component_id",
+        }
+        if set(record) != expected_fields:
+            _fail(f"files.yaml record fields differ from schema: {relative}")
+        _safe_relative_path(record.get("source_path"), f"files.yaml source_path: {relative}")
+        _require_string(record.get("entry_id"), f"files.yaml entry_id: {relative}")
         if not _is_sha256(record["sha256"]):
             _fail(f"files.yaml record has invalid sha256: {relative}")
         if not isinstance(record["size"], int) or isinstance(record["size"], bool) or record["size"] < 0:
             _fail(f"files.yaml record has invalid size: {relative}")
         if record["mode"] not in {"0644", "0755"}:
             _fail(f"files.yaml record has invalid mode: {relative}")
-        for key in ("ownership", "install_behavior", "component_id"):
-            _require_string(record[key], f"files.yaml record {key}: {relative}")
+        if record["ownership"] not in {"framework-managed", "target-template"}:
+            _fail(f"files.yaml record ownership is invalid: {relative}")
+        if record["install_behavior"] not in {"managed", "seed", "reconcile"}:
+            _fail(f"files.yaml record install_behavior is invalid: {relative}")
+        _require_string(record["component_id"], f"files.yaml component_id: {relative}")
         envelope_path = f"payload/{relative}"
         payload = files.get(envelope_path)
         if payload is None:
@@ -316,6 +732,14 @@ def _validate_package_identity(
     records: dict[str, dict[str, Any]],
 ) -> dict[str, Any]:
     identity = _require_mapping(package.get("identity"), "package.yaml identity")
+    if set(identity) != {
+        "schema_version",
+        "selected_input_fingerprint",
+        "payload_fingerprint",
+        "files_manifest_digest",
+        "migration_digest",
+    }:
+        _fail("package.yaml identity fields are incomplete or unexpected")
     if identity.get("schema_version") != "1.0.0":
         _fail("package.yaml identity must use schema 1.0.0")
     expected = {
@@ -327,6 +751,8 @@ def _validate_package_identity(
         if identity.get(key) != digest:
             _fail(f"package identity {key} does not match package bytes")
     payload = _require_mapping(package.get("payload"), "package.yaml payload")
+    if set(payload) != {"root", "file_count", "sha256"}:
+        _fail("package.yaml payload fields are incomplete or unexpected")
     if (
         payload.get("root") != "payload"
         or payload.get("file_count") != len(records)
@@ -344,6 +770,14 @@ def _validate_validation_manifest(
     identity: dict[str, Any],
 ) -> tuple[dict[str, Any], dict[str, Any], bytes]:
     package_validation = _require_mapping(package.get("validation"), "package.yaml validation")
+    if set(package_validation) != {
+        "schema_version",
+        "manifest",
+        "manifest_sha256",
+        "selected_inputs",
+        "selected_inputs_sha256",
+    } or package_validation.get("schema_version") != "package-validation/v1":
+        _fail("package.yaml validation pointer does not match package-validation/v1")
     manifest_path = _safe_relative_path(
         package_validation.get("manifest"), "package.yaml validation manifest"
     )
@@ -366,6 +800,22 @@ def _validate_validation_manifest(
         _fail("package.yaml validation selected_inputs_sha256 does not match selected-inputs.json")
     validation = _load_json_object(manifest_bytes, "validation.json")
     proof = _load_json_object(proof_bytes, "selected-inputs.json")
+    if set(validation) != {
+        "schema_version",
+        "package_id",
+        "authority",
+        "selected_input_proof",
+        "source_only_tests",
+        "integrity_policy",
+    }:
+        _fail("validation.json fields are incomplete or unexpected")
+    if set(proof) != {
+        "schema_version",
+        "source_inputs",
+        "payload",
+        "migration_sources",
+    }:
+        _fail("selected-inputs.json fields are incomplete or unexpected")
     if canonical_json_bytes(validation) != manifest_bytes:
         _fail("validation.json is not canonical compact sorted JSON bytes")
     if validation.get("schema_version") != "package-validation/v1":
@@ -399,7 +849,9 @@ def _validate_ordered_records(
 
 
 def _validate_selected_input_proof(
+    package_root: Path,
     proof: dict[str, Any],
+    package: dict[str, Any],
     identity: dict[str, Any],
     records: dict[str, dict[str, Any]],
     migration: dict[str, Any],
@@ -412,6 +864,27 @@ def _validate_selected_input_proof(
         _safe_relative_path(source.get("path"), f"selected-input source_inputs[{index}].path")
         if not _is_sha256(source.get("sha256")) or set(source) != {"path", "sha256"}:
             _fail(f"selected-input source_inputs[{index}] is invalid")
+    source_by_path = {item["path"]: item["sha256"] for item in source_inputs}
+    version = package["version"]
+    profile_id = package["profile_id"]
+    expected_source_paths = {
+        ".ai/distribution/templates/INSTALL.md",
+        ".ai/distribution/templates/requirements.txt",
+        f".ai/distribution/profiles/{profile_id}.yaml",
+        f".dev/releases/v{version}/release.yaml",
+    }
+    if set(source_by_path) != expected_source_paths:
+        _fail("selected-input source_inputs do not identify the exact package authority inputs")
+    for envelope_path, source_path in (
+        ("INSTALL.md", ".ai/distribution/templates/INSTALL.md"),
+        ("requirements.txt", ".ai/distribution/templates/requirements.txt"),
+    ):
+        content = _read_regular(
+            _path_under(package_root, envelope_path, f"package {envelope_path}"),
+            f"package {envelope_path}",
+        )
+        if source_by_path[source_path] != _sha256(content):
+            _fail(f"selected-input {source_path} does not match extracted {envelope_path}")
     payload = _validate_ordered_records(
         _require_list(proof.get("payload"), "selected-input payload"), "selected-input payload"
     )
@@ -460,9 +933,11 @@ def _validate_validator_identity(
     package_root: Path, validation: dict[str, Any]
 ) -> None:
     authority = _require_mapping(validation.get("authority"), "validation.json authority")
-    if authority.get("kind") != "incoming-candidate":
+    if set(authority) != {"kind", "validator"} or authority.get("kind") != "incoming-candidate":
         _fail("validation.json authority kind must be incoming-candidate")
     validator = _require_mapping(authority.get("validator"), "validation.json authority validator")
+    if set(validator) != {"path", "sha256", "argv"}:
+        _fail("validation.json validator fields are incomplete or unexpected")
     if validator.get("path") != EXPECTED_VALIDATOR_PATH:
         _fail("validation.json validator path is not the portable incoming validator")
     if validator.get("argv") != EXPECTED_VALIDATOR_ARGV:
@@ -477,6 +952,12 @@ def _validate_validator_identity(
 
 def _validate_source_only_tests(validation: dict[str, Any], records: dict[str, dict[str, Any]]) -> None:
     source_only = _require_mapping(validation.get("source_only_tests"), "validation.json source_only_tests")
+    if set(source_only) != {
+        "classification",
+        "patterns",
+        "contributes_to_portable_success",
+    }:
+        _fail("source-only test contract fields are incomplete or unexpected")
     if (
         source_only.get("classification") != "source-only"
         or source_only.get("contributes_to_portable_success") is not False
@@ -496,6 +977,8 @@ def _validate_integrity_policy(
     records: dict[str, dict[str, Any]],
 ) -> None:
     policy = _require_mapping(validation.get("integrity_policy"), "validation.json integrity_policy")
+    if set(policy) != {"path_case", "payload_text", "text", "modes"}:
+        _fail("integrity policy fields are incomplete or unexpected")
     if policy.get("path_case") != "casefold-unique":
         _fail("integrity policy must require casefold-unique paths")
     if policy.get("payload_text") != "all":
@@ -524,30 +1007,126 @@ def _validate_integrity_policy(
             _fail(f"payload text must have exactly one terminal LF: {relative}")
 
 
-def _validate_portable_entrypoints(
+def _validate_envelope_runtime_contract(
     package_root: Path,
+    files: dict[str, Path],
     records: dict[str, dict[str, Any]],
     *,
     run: bool,
 ) -> int:
+    for relative in ("INSTALL.md", "requirements.txt"):
+        if relative not in files:
+            _fail(f"missing required package runtime document: {relative}")
+    install = _read_regular(files["INSTALL.md"], "INSTALL.md")
+    try:
+        install_text = install.decode("utf-8")
+    except UnicodeDecodeError as exc:
+        raise PackageValidationError("INSTALL.md is not UTF-8") from exc
+    documented = (
+        "python -m pip install -r requirements.txt",
+        "python payload/.ai/scripts/validate-ai-context-payload.py --package-root .",
+    )
+    if not all(command in install_text for command in documented):
+        _fail("INSTALL.md omits a required extracted-package command")
+
+    requirements = _read_regular(files["requirements.txt"], "requirements.txt")
+    try:
+        requirement_values = [
+            line.strip()
+            for line in requirements.decode("utf-8").splitlines()
+            if line.strip() and not line.lstrip().startswith("#")
+        ]
+    except UnicodeDecodeError as exc:
+        raise PackageValidationError("requirements.txt is not UTF-8") from exc
+
     registry_path = _path_under(
         package_root, f"payload/{ENTRYPOINT_REGISTRY_PATH}", "portable entrypoint registry"
     )
     registry = _load_json_object(_read_regular(registry_path, "portable entrypoint registry"), "portable entrypoint registry")
     if registry.get("schema_version") != "1.0":
         _fail("portable entrypoint registry must use schema 1.0")
+    if set(registry) != {
+        "schema_version",
+        "python_floor",
+        "governed_requirements",
+        "entrypoints",
+    }:
+        _fail("portable entrypoint registry fields are incomplete or unexpected")
+    floor = _require_string(registry.get("python_floor"), "portable Python floor")
+    floor_match = re.fullmatch(r"([0-9]+)\.([0-9]+)", floor)
+    if floor_match is None:
+        _fail("portable Python floor must be MAJOR.MINOR")
+    if sys.version_info[:2] < (int(floor_match.group(1)), int(floor_match.group(2))):
+        _fail(f"portable runtime requires Python {floor} or newer")
+    governed = _require_mapping(
+        registry.get("governed_requirements"), "portable governed_requirements"
+    )
+    expected_requirement_lines: set[str] = set()
+    for dependency, raw in governed.items():
+        requirement = _require_mapping(raw, f"portable dependency {dependency}")
+        if set(requirement) != {"version", "import_name", "requirements_path"}:
+            _fail(f"portable dependency contract is invalid: {dependency}")
+        version = _require_string(requirement.get("version"), f"portable dependency {dependency} version")
+        import_name = _require_string(
+            requirement.get("import_name"), f"portable dependency {dependency} import_name"
+        )
+        if requirement.get("requirements_path") != "requirements.txt":
+            _fail(f"portable dependency requirements path is invalid: {dependency}")
+        expected_requirement_lines.add(f"{dependency}=={version}")
+        specification = importlib.util.find_spec(import_name)
+        if specification is None:
+            _fail(f"portable dependency is not importable after requirements install: {dependency}")
+        try:
+            from importlib import metadata
+
+            installed_version = metadata.version(dependency)
+        except metadata.PackageNotFoundError as exc:
+            raise PackageValidationError(
+                f"portable dependency distribution is not installed: {dependency}"
+            ) from exc
+        if installed_version != version:
+            _fail(
+                f"portable dependency version differs from requirements.txt: "
+                f"{dependency} expected {version}, found {installed_version}"
+            )
+    if (
+        len(requirement_values) != len(set(requirement_values))
+        or set(requirement_values) != expected_requirement_lines
+    ):
+        _fail("requirements.txt diverges from portable governed_requirements")
+
     entrypoints = _require_list(registry.get("entrypoints"), "portable entrypoint registry entrypoints")
     all_paths: set[str] = set()
     portable: list[str] = []
     source_only: list[str] = []
+    declared_dependencies: dict[str, set[str]] = {}
     for index, raw in enumerate(entrypoints):
         entrypoint = _require_mapping(raw, f"portable entrypoint registry entrypoints[{index}]")
+        if set(entrypoint) != {
+            "path",
+            "portable",
+            "dependency_profile",
+            "prerequisite_exit_code",
+        }:
+            _fail("portable entrypoint registry record fields are invalid")
         relative = _safe_relative_path(entrypoint.get("path"), f"portable entrypoint registry entrypoints[{index}].path")
         if relative in all_paths:
             _fail(f"duplicate portable entrypoint registry path: {relative}")
         all_paths.add(relative)
         if not isinstance(entrypoint.get("portable"), bool):
             _fail(f"portable entrypoint registry portable flag is invalid: {relative}")
+        dependency_profile = _require_list(
+            entrypoint.get("dependency_profile"),
+            f"portable entrypoint dependency_profile: {relative}",
+        )
+        if (
+            len(dependency_profile) != len(set(dependency_profile))
+            or not all(isinstance(item, str) and item in governed for item in dependency_profile)
+            or not isinstance(entrypoint.get("prerequisite_exit_code"), int)
+            or isinstance(entrypoint.get("prerequisite_exit_code"), bool)
+        ):
+            _fail(f"portable entrypoint dependency contract is invalid: {relative}")
+        declared_dependencies[relative] = set(dependency_profile)
         (portable if entrypoint["portable"] else source_only).append(relative)
     _require_casefold_unique(all_paths, "portable entrypoint registry paths")
     for relative in portable:
@@ -556,6 +1135,62 @@ def _validate_portable_entrypoints(
     for relative in source_only:
         if relative in records:
             _fail(f"source-only entrypoint is present in payload: {relative}")
+
+    python_paths = {
+        relative for relative in records if PurePosixPath(relative).suffix == ".py"
+    }
+    modules: dict[str, list[str]] = {}
+    for relative in python_paths:
+        modules.setdefault(PurePosixPath(relative).stem, []).append(relative)
+    governed_imports = {
+        requirement["import_name"]: dependency
+        for dependency, requirement in governed.items()
+    }
+    for entrypoint in portable:
+        queued = [entrypoint]
+        compiled: set[str] = set()
+        used_governed: set[str] = set()
+        while queued:
+            relative = queued.pop()
+            if relative in compiled:
+                continue
+            content = _read_regular(
+                _path_under(package_root, f"payload/{relative}", "portable Python closure"),
+                f"payload/{relative}",
+            )
+            try:
+                source = content.decode("utf-8")
+                tree = ast.parse(source, filename=relative)
+                compile(tree, relative, "exec")
+            except (UnicodeDecodeError, SyntaxError) as exc:
+                raise PackageValidationError(f"portable Python source is invalid: {relative}") from exc
+            compiled.add(relative)
+            imported: set[str] = set()
+            for node in ast.walk(tree):
+                if isinstance(node, ast.Import):
+                    imported.update(alias.name.split(".", 1)[0] for alias in node.names)
+                elif isinstance(node, ast.ImportFrom) and node.level == 0 and node.module:
+                    imported.add(node.module.split(".", 1)[0])
+            for module in imported:
+                if module in governed_imports:
+                    used_governed.add(governed_imports[module])
+                    continue
+                if module in sys.stdlib_module_names:
+                    continue
+                candidates = modules.get(module, [])
+                if len(candidates) == 1:
+                    queued.extend(candidates)
+                elif len(candidates) > 1:
+                    _fail(f"portable local import is ambiguous: {module} (from {relative})")
+                else:
+                    _fail(f"portable import is neither local nor governed: {module} (from {relative})")
+        if not used_governed.issubset(declared_dependencies[entrypoint]):
+            _fail(
+                f"portable dependency_profile omits an import-closure dependency: {entrypoint}; "
+                f"declared={sorted(declared_dependencies[entrypoint])!r}; "
+                f"observed={sorted(used_governed)!r}"
+            )
+
     if not run:
         return 0
     environment = {
@@ -593,6 +1228,8 @@ def _validate_portable_entrypoints(
                 f"portable entrypoint --help failed: {relative}; exit={result.returncode}; "
                 f"output={output[:1000]!r}"
             )
+        if "usage:" not in (result.stdout + result.stderr).lower():
+            _fail(f"portable entrypoint --help did not expose an argparse contract: {relative}")
     return len(portable)
 
 
@@ -604,6 +1241,8 @@ def validate_extracted_package(
     package_root = package_root.resolve()
     files = _validate_checksum_coverage(package_root)
     required = {
+        "INSTALL.md",
+        "requirements.txt",
         "metadata/package.yaml",
         "metadata/files.yaml",
         "metadata/migration.yaml",
@@ -627,16 +1266,21 @@ def validate_extracted_package(
     records = _validate_inventory(package_root, files, inventory, package_id)
     files_bytes = _read_regular(files_path, "files.yaml")
     migration_bytes = _read_regular(migration_path, "migration.yaml")
+    _validate_package_schema_and_projection(
+        package, migration, records, _sha256(files_bytes)
+    )
     identity = _validate_package_identity(package, files_bytes, migration_bytes, records)
     validation, proof, _ = _validate_validation_manifest(
         package_root, files, package, package_id, identity
     )
-    _validate_selected_input_proof(proof, identity, records, migration)
+    _validate_selected_input_proof(
+        package_root, proof, package, identity, records, migration
+    )
     _validate_validator_identity(package_root, validation)
     _validate_source_only_tests(validation, records)
     _validate_integrity_policy(package_root, validation, records)
-    portable_verified = _validate_portable_entrypoints(
-        package_root, records, run=run_portable_entrypoints
+    portable_verified = _validate_envelope_runtime_contract(
+        package_root, files, records, run=run_portable_entrypoints
     )
     return {
         "package_id": package_id,

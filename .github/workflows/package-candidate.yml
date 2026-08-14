@@ -155,7 +155,10 @@ jobs:
             "dist/${{ steps.release.outputs.package_id }}.zip" \
             "${candidate_extract}"
           cd "${candidate_extract}/${{ steps.release.outputs.package_id }}"
-          python payload/.ai/scripts/validate-ai-context-payload.py \
+          python -m venv "${RUNNER_TEMP}/incoming-candidate-venv"
+          "${RUNNER_TEMP}/incoming-candidate-venv/bin/python" -m pip install --disable-pip-version-check -r requirements.txt
+          "${RUNNER_TEMP}/incoming-candidate-venv/bin/python" \
+            payload/.ai/scripts/validate-ai-context-payload.py \
             --package-root .
 
       - name: Render source disposition read-back
