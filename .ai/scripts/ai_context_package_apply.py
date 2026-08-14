@@ -271,7 +271,7 @@ def reject_symlink_boundary(root: Path, relative: str) -> None:
     for part in PurePosixPath(relative).parts:
         current = current / part
         if current.is_symlink() or is_reparse_point(current):
-            raise ApplyError(f"symlink or reparse-point boundary is not allowed: {relative}")
+            raise ApplyError(f"symlink boundary or reparse-point boundary is not allowed: {relative}")
 
 
 def existing_case_map(root: Path) -> dict[str, str]:
@@ -840,6 +840,7 @@ def ignored_framework_paths(target: Path, required: list[dict]) -> list[dict]:
     for item in required:
         path = item["path"]
         component_id = item["component_id"]
+        reject_symlink_boundary(target, path)
         try:
             rule = git_ignore_rule(target, path)
         except TargetValidationError as exc:

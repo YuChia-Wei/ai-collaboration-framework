@@ -19,15 +19,15 @@
 - `current_phase`: `fixed-commit-validation`
 - `artifact_root`: `.dev/workflows/2026-08-14-pkg-011-durable-apply`
 - `created_at`: `2026-08-14T09:07:04+08:00`
-- `updated_at`: `2026-08-14T09:46:01+08:00`
+- `updated_at`: `2026-08-14T21:06:24+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md`
 - `template_version`: `1.2.0`
 
 ## Objective And Scope
 
 - Problem statement: package planning observes migration operation paths rather than the complete selected managed state, while apply snapshots rollback state only in memory and writes recovery evidence after mutations. Drift can be omitted, raw/EOL identity can create false reconciliation, Git mode is incompletely bound, and interruption can leave an unrecorded mixed state.
-- Authorized remediation scope: GitHub Issue #200, `ASM-20260813-001#PKGAPPLY-001`, DS-01/02/03/10/11, and `OWNER-HYBRID-001`; implement complete managed-state inspection, Hybrid raw/Git identity, durable pre-mutation journal, explicit transaction states, idempotent resume/rollback, and platform failure evidence.
-- Authorization source: the owner authorized repository-native implementation of Issues #200-#208 and required all segments to complete locally before one cumulative push, PR, hosted-check gate, and merge.
+- Authorized remediation scope: GitHub Issues #200 and #209, `ASM-20260813-001#PKGAPPLY-001`, DS-01/02/03/10/11, and `OWNER-HYBRID-001`; implement complete managed-state inspection, Hybrid raw/Git identity, durable pre-mutation journal, explicit transaction states, idempotent resume/rollback, platform failure evidence, and boundary-first Git-ignore inspection.
+- Authorization source: the owner authorized repository-native implementation of Issues #200-#208 and required all segments to complete locally before one cumulative push, PR, hosted-check gate, and merge; after Ubuntu 24.04 exposed the planner ordering regression, the owner explicitly instructed creation and implementation of Issue #209 on 2026-08-14.
 - Normative truth: the live Issue #200 acceptance criteria, `.dev/assessments/ASM-20260813-001/evidence/owner-decisions.yaml`, package/provenance schemas, AI-context ownership policy, target validation policy, and the verified #201 selected-input proof contract.
 - Exclusions: portable package closure remains owned and completed by #201; multi-version routing belongs to #206; prospective cutover and remediation packet belong to #203. Issue closure, Project/milestone allocation, tag, release, and publication remain unauthorized.
 - Completion criteria: every selected managed path is observed; dirty-worktree changes cannot be hidden by canonical identity; raw SHA-256 and Git mode bind plan/journal/receipt; the journal is durable before mutation; planned/applying/interrupted/rolled-back/finalized transitions are validated; recovery is exact and idempotent; partial writes, ACL/readonly, symlink/reparse, mode, delete, rename, and EOL cases fail closed on Windows-compatible and POSIX paths; package-native validation and independent fixed-head verification pass.
@@ -47,6 +47,7 @@
 | `ASM-20260813-001#PKGAPPLY-001` / DS-01, DS-02, DS-10, DS-11 | HIGH | `ai-context-governance` coordinating `slice-implementer` | observe complete selected state and apply `OWNER-HYBRID-001` | `PKGAPPLY-001-hybrid-identity` | raw/Git identity, selected proof, unchanged-drift, autocrlf, dirty-tree, and mode fixtures |
 | `ASM-20260813-001#PKGAPPLY-001` / DS-03 | HIGH | `ai-context-governance` coordinating `slice-implementer` | persist an exact pre-mutation transaction and recovery state machine | `PKGAPPLY-002-durable-transaction` | state transitions, fsync/atomic write, interruption at every boundary, idempotent resume/rollback |
 | Issue #200 platform acceptance criteria | HIGH | `software-development-orchestrator` for bounded validation | prove fail-closed recovery and package-native compatibility | `PKGAPPLY-003-recovery-validation` | Windows/POSIX ACL, readonly, symlink/reparse, partial-write, EOL, delete, rename, mode, and full focused matrix |
+| Issue #209 symlink planner regression | HIGH | `ai-context-governance` | reject symlink/reparse boundaries before selected-path Git-ignore inspection and retain a stable domain diagnostic | `PKGAPPLY-003-recovery-validation` | focused GWT-008 and full package-apply suite on `Ubuntu-24.04` |
 
 ## Implementation Routing Contract
 
@@ -67,7 +68,7 @@
 2. Workflow, source-repository routing boundary, state-machine/schema design, and deterministic GWT matrix — completed.
 3. Hybrid identity and full selected-state implementation with focused fixtures — completed.
 4. Durable journal, recovery/resume/rollback implementation and forced-interruption validation — completed.
-5. Cross-platform/package-native validation, fixed-clean-commit audit, finding reconciliation, and local closeout — in progress.
+5. Cross-platform/package-native validation, Issue #209 boundary-order correction, fixed-clean-commit audit, finding reconciliation, and local closeout — in progress.
 
 ## Validation Strategy
 
@@ -86,11 +87,11 @@
 
 ## Resume Checkpoint
 
-- Last completed action: completed Hybrid identity, durable transaction, target validator, CLI recovery, documentation, deterministic fixtures, and independent current-diff re-review.
+- Last completed action: corrected Issue #209 so selected framework paths reject symlink/reparse boundaries before Git-ignore inspection; focused GWT-008 and all 35 package-apply tests passed on `Ubuntu-24.04` outside the sandbox.
 - Current task: `PKGAPPLY-003-recovery-validation`.
-- Exact next action: commit the Issue #200 implementation, then dispatch the 123-second package matrix and POSIX/fixed-head verification at the exact clean commit.
-- Validation already completed: package apply 35 passed/1 privilege skip; lifecycle 7 passed; effective rules 18 passed/2 privilege skips; dirty-tree package matrix 38 passed in 123.462 seconds; independent review passed after two P1 corrections.
-- Git state: Issue #200 implementation and workflow evidence intentionally uncommitted on `codex/2026-08-14-pkg-011-durable-apply` pending commit-policy validation.
+- Exact next action: dispatch the 123-second package matrix and POSIX/fixed-head verification at the exact clean Issue #209 corrective commit.
+- Validation already completed: package apply 35 passed/1 privilege skip on Windows-compatible execution; Issue #209 GWT-008 passed 1/1 and the complete package-apply suite passed 35/35 on `Ubuntu-24.04`; lifecycle 7 passed; effective rules 18 passed/2 privilege skips; dirty-tree package matrix 38 passed in 123.462 seconds; independent review passed after two P1 corrections.
+- Git state: Issue #200 implementation is committed at `a91d57c`; the Issue #209 corrective change and workflow evidence form the current clean commit boundary on `codex/2026-08-14-pkg-011-durable-apply` before immutable validation.
 - Branch history and checkpoint handoffs: cumulative segment 3; no push, PR, merge, Issue close, or release mutation.
 - Blockers or unresolved decisions: none; clean immutable external validation remains required by policy.
 
