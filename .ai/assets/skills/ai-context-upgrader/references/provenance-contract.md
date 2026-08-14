@@ -62,6 +62,12 @@ retain both files as active authorities.
 - Do not delete customizations merely because incoming framework paths changed;
   reconcile capability, rule, or contract equivalence and disposition.
 - Do not change the source version to describe a partially applied or failed upgrade. Record such work under `reconciliation.unresolved` while retaining the last validated source.
+- A package apply journal in `planned`, `applying`, `interrupted`, or
+  `rolled-back` state never authorizes provenance advancement. Only a schema-2
+  pending receipt bound to a `finalized` transaction, exact selected-input
+  proof, raw managed-path results, and intended Git modes may proceed to target
+  validation. Resume and rollback preserve the last validated provenance bytes
+  and cannot add selection or reconciliation authority.
 - Do not treat an omitted rule record, a cached packet, or an action skill's
   memory as baseline acceptance. Missing, stale, ambiguous, unknown,
   unpacketized, or invariant-conflicting state fails closed until owner

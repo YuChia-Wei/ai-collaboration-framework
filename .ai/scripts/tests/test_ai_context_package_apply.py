@@ -773,7 +773,7 @@ class AiContextPackageApplyGwtTests(unittest.TestCase):
             # Then an exact-case mismatch does not suppress the selected adapter on Windows or POSIX.
             self.assertEqual([], plan["ignored_framework_paths"])
             self.assertEqual("add", plan["operations"][0]["action"])
-            self.assertEqual("1.1.0", receipt["schema_version"])
+            self.assertEqual("2.0.0", receipt["schema_version"])
             self.assertEqual(path, receipt["required_framework_paths"][0]["path"])
             self.assertIsNone(TARGET.git_ignore_rule(fixture.target, path))
         finally:
@@ -1209,13 +1209,208 @@ class AiContextPackageApplyGwtTests(unittest.TestCase):
             self.assertEqual("replace", plan["operations"][0]["action"])
             self.assertEqual([], receipt["skipped_reconciliation_ids"])
             self.assertEqual(b"incoming\n", (fixture.target / ".ai/tool.sh").read_bytes())
+            self.assertEqual(
+                APPLY.sha256_bytes(b"incoming\n"),
+                receipt["applied_artifacts"][0]["raw_sha256"],
+            )
+            self.assertEqual("0755", receipt["applied_artifacts"][0]["git_mode"])
             errors: list[str] = []
             TARGET.validate_pending_apply_receipt(fixture.target, errors)
             self.assertEqual([], errors)
         finally:
             fixture.close()
 
-    def test_gwt_013_given_cli_without_apply_when_executed_then_it_remains_dry_run(self) -> None:
+    def test_gwt_013_given_unchanged_selected_managed_path_drift_when_planned_then_apply_fails_closed(self) -> None:
+        fixture = PackageApplyFixture()
+        try:
+            path = ".ai/stable.md"
+            fixture.add_target(path, b"committed target drift\n")
+            fixture.commit_target()
+            fixture.make_package(
+                {path: (b"release bytes\n", "framework-managed", "0644")},
+                [],
+                {path: (b"release bytes\n", "framework-managed", "0644")},
+            )
+
+            plan = fixture.plan()
+
+            self.assertEqual([path], [item["path"] for item in plan["managed_state_conflicts"]])
+            with self.assertRaisesRegex(APPLY.ApplyError, "unchanged framework-managed paths"):
+                APPLY.apply_plan(plan)
+            self.assertEqual(b"committed target drift\n", (fixture.target / path).read_bytes())
+        finally:
+            fixture.close()
+
+    def test_gwt_014_given_clean_autocrlf_projection_when_planned_then_git_identity_avoids_false_drift(self) -> None:
+        fixture = PackageApplyFixture()
+        try:
+            path = ".ai/eol.md"
+            git(fixture.target, "config", "core.autocrlf", "true")
+            fixture.add_target(path, b"release bytes\r\n")
+            fixture.commit_target()
+            fixture.make_package(
+                {path: (b"release bytes\n", "framework-managed", "0644")},
+                [],
+                {path: (b"release bytes\n", "framework-managed", "0644")},
+            )
+
+            plan = fixture.plan()
+            receipt = APPLY.apply_plan(plan)
+            errors: list[str] = []
+            TARGET.validate_pending_apply_receipt(fixture.target, errors)
+
+            observed = plan["observed"][path]
+            self.assertNotEqual(APPLY.sha256_bytes(b"release bytes\n"), observed["sha256"])
+            self.assertEqual(APPLY.sha256_bytes(b"release bytes\n"), observed["git_sha256"])
+            self.assertTrue(observed["git_eol_only"])
+            self.assertEqual([], plan["managed_state_conflicts"])
+            self.assertEqual(
+                "git-eol-canonical",
+                receipt["selected_managed_path_results"][0]["match_basis"],
+            )
+            self.assertEqual([], errors)
+        finally:
+            fixture.close()
+
+    def test_gwt_015_given_process_death_between_operations_when_resumed_then_transaction_finalizes_once(self) -> None:
+        fixture = PackageApplyFixture()
+        try:
+            fixture.make_package(
+                {
+                    ".ai/first.md": (b"first\n", "framework-managed", "0644"),
+                    ".ai/second.md": (b"second\n", "framework-managed", "0644"),
+                },
+                [
+                    operation("001-first", "add", ".ai/first.md"),
+                    operation("002-second", "add", ".ai/second.md"),
+                ],
+            )
+            plan = fixture.plan()
+
+            def crash(boundary: str, details: dict) -> None:
+                if boundary == "after_operation" and details.get("index") == 0:
+                    raise APPLY.InjectedInterruption("simulated process death")
+
+            with self.assertRaises(APPLY.InjectedInterruption):
+                APPLY.apply_plan(plan, boundary_hook=crash)
+            transaction_id = plan["plan_sha256"]
+            _root, _saved_plan, interrupted = APPLY.load_transaction(
+                fixture.target, transaction_id
+            )
+            self.assertEqual("applying", interrupted["state"])
+            self.assertEqual(0, interrupted["next_apply_index"])
+            interrupted_errors: list[str] = []
+            TARGET.validate_pending_apply_receipt(fixture.target, interrupted_errors)
+            self.assertTrue(
+                any("package apply transaction is applying" in error for error in interrupted_errors),
+                interrupted_errors,
+            )
+
+            receipt = APPLY.recover_transaction(
+                fixture.target, transaction_id, "resume", fixture.package
+            )
+            repeated = APPLY.recover_transaction(
+                fixture.target, transaction_id, "resume", fixture.package
+            )
+
+            self.assertEqual(receipt, repeated)
+            self.assertEqual("finalized", receipt["transaction_state"])
+            self.assertEqual(b"first\n", (fixture.target / ".ai/first.md").read_bytes())
+            self.assertEqual(b"second\n", (fixture.target / ".ai/second.md").read_bytes())
+            _root, _saved_plan, finalized = APPLY.load_transaction(
+                fixture.target, transaction_id
+            )
+            self.assertEqual("finalized", finalized["state"])
+            finalized_errors: list[str] = []
+            TARGET.validate_pending_apply_receipt(fixture.target, finalized_errors)
+            self.assertEqual([], finalized_errors)
+            receipt_path = fixture.target / APPLY.PENDING_RECEIPT_PATH
+            tampered = yaml.safe_load(receipt_path.read_text(encoding="utf-8"))
+            tampered["package_id"] = "tampered-package"
+            receipt_path.write_text(
+                yaml.safe_dump(tampered, sort_keys=False),
+                encoding="utf-8",
+                newline="\n",
+            )
+            tamper_errors: list[str] = []
+            TARGET.validate_pending_apply_receipt(fixture.target, tamper_errors)
+            self.assertTrue(
+                any("finalized receipt SHA-256 differs" in error for error in tamper_errors),
+                tamper_errors,
+            )
+        finally:
+            fixture.close()
+
+    def test_gwt_016_given_partial_rename_when_rolled_back_then_exact_prestate_and_terminal_idempotence_hold(self) -> None:
+        fixture = PackageApplyFixture()
+        try:
+            source = ".ai/old.md"
+            destination = ".ai/new.md"
+            fixture.add_target(source, b"old bytes\n")
+            fixture.commit_target()
+            fixture.make_package(
+                {destination: (b"new bytes\n", "framework-managed", "0644")},
+                [operation("001-rename", "rename", destination, from_path=source)],
+                {source: (b"old bytes\n", "framework-managed", "0644")},
+            )
+            plan = fixture.plan()
+
+            def crash(boundary: str, _details: dict) -> None:
+                if boundary == "after_destination_replace":
+                    raise APPLY.InjectedInterruption("simulated partial rename")
+
+            with self.assertRaises(APPLY.InjectedInterruption):
+                APPLY.apply_plan(plan, boundary_hook=crash)
+            self.assertTrue((fixture.target / source).is_file())
+            self.assertTrue((fixture.target / destination).is_file())
+
+            transaction_id = plan["plan_sha256"]
+            journal = APPLY.recover_transaction(
+                fixture.target, transaction_id, "rollback"
+            )
+            repeated = APPLY.recover_transaction(
+                fixture.target, transaction_id, "rollback"
+            )
+
+            self.assertEqual("rolled-back", journal["state"])
+            self.assertEqual(journal, repeated)
+            self.assertEqual(b"old bytes\n", (fixture.target / source).read_bytes())
+            self.assertFalse((fixture.target / destination).exists())
+            self.assertEqual(
+                "", git(fixture.target, "status", "--porcelain", "--untracked-files=all").stdout
+            )
+        finally:
+            fixture.close()
+
+    def test_gwt_017_given_readonly_destination_when_apply_starts_then_it_fails_before_transaction_mutation(self) -> None:
+        fixture = PackageApplyFixture()
+        readonly = fixture.target / ".ai/readonly.md"
+        try:
+            fixture.add_target(".ai/readonly.md", b"old bytes\n")
+            fixture.commit_target()
+            fixture.make_package(
+                {".ai/readonly.md": (b"new bytes\n", "framework-managed", "0644")},
+                [operation("001-replace", "replace", ".ai/readonly.md")],
+                {".ai/readonly.md": (b"old bytes\n", "framework-managed", "0644")},
+            )
+            plan = fixture.plan()
+            os.chmod(readonly, 0o444)
+            if readonly.stat().st_mode & 0o200:
+                self.skipTest("host filesystem does not expose a readonly mode")
+
+            with self.assertRaisesRegex(APPLY.ApplyError, "read-only"):
+                APPLY.apply_plan(plan)
+
+            self.assertEqual(b"old bytes\n", readonly.read_bytes())
+            self.assertFalse(
+                APPLY.transaction_root(fixture.target, plan["plan_sha256"]).exists()
+            )
+        finally:
+            if readonly.exists():
+                os.chmod(readonly, 0o644)
+            fixture.close()
+
+    def test_gwt_018_given_cli_without_apply_when_executed_then_it_remains_dry_run(self) -> None:
         fixture = PackageApplyFixture()
         try:
             # Given a package with one safe addition and the target CLI entrypoint.
@@ -1245,7 +1440,7 @@ class AiContextPackageApplyGwtTests(unittest.TestCase):
         finally:
             fixture.close()
 
-    def test_gwt_014_given_plan_output_inside_package_or_target_when_cli_runs_then_it_fails_before_writing(self) -> None:
+    def test_gwt_019_given_plan_output_inside_package_or_target_when_cli_runs_then_it_fails_before_writing(self) -> None:
         fixture = PackageApplyFixture()
         try:
             # Given a valid package and output paths that would invalidate the envelope or clean target.

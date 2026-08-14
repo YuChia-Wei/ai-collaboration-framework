@@ -4,9 +4,11 @@
 from __future__ import annotations
 
 import hashlib
+import json
 import os
 import re
 import shutil
+import stat
 import subprocess
 import tempfile
 from datetime import datetime
@@ -134,6 +136,215 @@ def framework_managed_ignore_message(
     )
 
 
+def target_enforces_filemode(root: Path) -> bool:
+    try:
+        result = subprocess.run(
+            ["git", "config", "--bool", "core.filemode"],
+            cwd=root,
+            check=False,
+            capture_output=True,
+            text=True,
+        )
+    except OSError as exc:
+        raise TargetValidationError(f"cannot inspect target Git core.filemode: {exc}") from exc
+    value = result.stdout.strip()
+    if result.returncode != 0 or value not in {"true", "false"}:
+        raise TargetValidationError("cannot inspect target Git core.filemode")
+    return value == "true"
+
+
+def canonical_json_digest(value: object) -> str:
+    content = json.dumps(
+        value,
+        ensure_ascii=False,
+        sort_keys=True,
+        separators=(",", ":"),
+        allow_nan=False,
+    ).encode("utf-8")
+    return hashlib.sha256(content).hexdigest()
+
+
+def git_eol_projection_matches(root: Path, path: str, content: bytes, expected_sha: str) -> bool:
+    try:
+        status = subprocess.run(
+            ["git", "status", "--porcelain", "--untracked-files=all", "--", path],
+            cwd=root,
+            check=False,
+            capture_output=True,
+            text=True,
+        )
+        index = subprocess.run(
+            ["git", "show", f":{path}"], cwd=root, check=False, capture_output=True
+        )
+        attributes = subprocess.run(
+            [
+                "git",
+                "check-attr",
+                "filter",
+                "ident",
+                "working-tree-encoding",
+                "--",
+                path,
+            ],
+            cwd=root,
+            check=False,
+            capture_output=True,
+            text=True,
+        )
+    except OSError:
+        return False
+    if status.returncode != 0 or status.stdout or index.returncode != 0 or attributes.returncode != 0:
+        return False
+    attribute_values = [
+        line.rsplit(": ", 1)[1]
+        for line in attributes.stdout.splitlines()
+        if ": " in line
+    ]
+    return (
+        len(attribute_values) == 3
+        and all(value == "unspecified" for value in attribute_values)
+        and hashlib.sha256(index.stdout).hexdigest() == expected_sha
+        and content != index.stdout
+        and content.replace(b"\r\n", b"\n") == index.stdout
+    )
+
+
+def apply_transaction_directory(root: Path) -> Path | None:
+    try:
+        result = subprocess.run(
+            [
+                "git",
+                "rev-parse",
+                "--path-format=absolute",
+                "--git-path",
+                "ai-context-package-apply",
+            ],
+            cwd=root,
+            check=False,
+            capture_output=True,
+            text=True,
+        )
+    except OSError as exc:
+        raise TargetValidationError(f"cannot inspect package apply transactions: {exc}") from exc
+    if result.returncode != 0 or not result.stdout.strip():
+        return None
+    value = Path(result.stdout.strip())
+    return value if value.is_absolute() else (root / value).resolve()
+
+
+def validate_apply_transaction_journals(
+    root: Path, receipt: dict | None, errors: list[str]
+) -> None:
+    try:
+        transaction_directory = apply_transaction_directory(root)
+    except TargetValidationError as exc:
+        errors.append(str(exc))
+        return
+    if transaction_directory is None or not transaction_directory.exists():
+        if receipt is not None and receipt.get("schema_version") == "2.0.0":
+            errors.append("schema 2.0.0 pending receipt has no durable transaction evidence")
+        return
+    if transaction_directory.is_symlink() or not transaction_directory.is_dir():
+        errors.append(f"{transaction_directory}: transaction directory is unsafe")
+        return
+    receipt_transaction = receipt.get("transaction_id") if receipt is not None else None
+    matched_receipt = False
+    for child in sorted(transaction_directory.iterdir(), key=lambda path: path.name):
+        if not child.is_dir() or not re.fullmatch(r"[0-9a-f]{64}", child.name):
+            continue
+        journal_path = child / "journal.yaml"
+        journal = load_mapping(journal_path, errors) if journal_path.is_file() else None
+        if journal is None:
+            errors.append(f"{child}: transaction journal is missing or invalid")
+            continue
+        state = journal.get("state")
+        if journal.get("schema_version") != "ai-context-package-apply-journal/v1" or journal.get("transaction_id") != child.name or journal.get("plan_sha256") != child.name:
+            errors.append(f"{journal_path}: transaction identity is invalid")
+            continue
+        if state in {"planned", "applying", "interrupted"}:
+            errors.append(f"{journal_path}: package apply transaction is {state}")
+        elif state not in {"rolled-back", "finalized"}:
+            errors.append(f"{journal_path}: package apply transaction state is invalid")
+        if child.name == receipt_transaction:
+            matched_receipt = True
+            if state != "finalized":
+                errors.append(f"{journal_path}: pending receipt transaction is not finalized")
+                continue
+            receipt_path = root / PENDING_APPLY_RECEIPT
+            actual_receipt_sha = hashlib.sha256(receipt_path.read_bytes()).hexdigest()
+            if journal.get("final_receipt_sha256") != actual_receipt_sha:
+                errors.append(f"{journal_path}: finalized receipt SHA-256 differs")
+            plan_path = child / "plan.json"
+            try:
+                plan = json.loads(plan_path.read_text(encoding="utf-8"))
+            except (OSError, UnicodeDecodeError, json.JSONDecodeError) as exc:
+                errors.append(f"{plan_path}: sealed transaction plan is invalid: {exc}")
+                continue
+            if not isinstance(plan, dict):
+                errors.append(f"{plan_path}: sealed transaction plan must be a mapping")
+                continue
+            unsigned = dict(plan)
+            declared_plan_sha = unsigned.pop("plan_sha256", None)
+            if declared_plan_sha != child.name or canonical_json_digest(unsigned) != child.name:
+                errors.append(f"{plan_path}: sealed transaction plan identity differs")
+                continue
+            active_ids = [
+                item.get("id")
+                for item in plan.get("operations", [])
+                if isinstance(item, dict)
+                and item.get("action") in {"add", "replace", "remove", "rename"}
+            ]
+            expected_artifacts = [
+                (item.get("id"), item.get("path"))
+                for item in plan.get("operations", [])
+                if isinstance(item, dict)
+                and item.get("action") in {"add", "replace", "rename"}
+            ]
+            actual_artifacts = [
+                (item.get("operation_id"), item.get("path"))
+                for item in receipt.get("applied_artifacts", [])
+                if isinstance(item, dict)
+            ] if receipt is not None else []
+            expected_removed = [
+                (
+                    item.get("id"),
+                    item.get("from_path")
+                    if item.get("action") == "rename"
+                    else item.get("path"),
+                )
+                for item in plan.get("operations", [])
+                if isinstance(item, dict)
+                and item.get("action") in {"remove", "rename"}
+            ]
+            actual_removed = [
+                (item.get("operation_id"), item.get("path"))
+                for item in receipt.get("removed_paths", [])
+                if isinstance(item, dict)
+            ] if receipt is not None else []
+            if (
+                receipt is None
+                or receipt.get("plan_sha256") != child.name
+                or receipt.get("operation_order") != active_ids
+                or receipt.get("required_framework_paths")
+                != plan.get("required_framework_paths")
+                or receipt.get("selected_input_proof")
+                != plan.get("package_selected_input_proof")
+                or receipt.get("package_id") != plan.get("package_id")
+                or receipt.get("package_version") != plan.get("package_version")
+                or receipt.get("package_manifest_sha256")
+                != plan.get("package_manifest_sha256")
+                or receipt.get("migration_sha256") != plan.get("migration_sha256")
+                or receipt.get("target_starting_commit")
+                != plan.get("target_starting_commit")
+                or receipt.get("selection") != plan.get("selection")
+                or actual_artifacts != expected_artifacts
+                or actual_removed != expected_removed
+            ):
+                errors.append(f"{receipt_path}: receipt differs from the sealed transaction plan")
+    if receipt is not None and receipt.get("schema_version") == "2.0.0" and not matched_receipt:
+        errors.append("schema 2.0.0 pending receipt transaction evidence does not match")
+
+
 def validate_pending_apply_receipt(root: Path, errors: list[str]) -> None:
     """Validate selected managed bytes and ignore state carried by a new receipt."""
     receipt_path = root / PENDING_APPLY_RECEIPT
@@ -141,13 +352,58 @@ def validate_pending_apply_receipt(root: Path, errors: list[str]) -> None:
         errors.append(f"{receipt_path}: pending apply receipt must not be a symlink")
         return
     if not receipt_path.is_file():
+        validate_apply_transaction_journals(root, None, errors)
         return
     receipt = load_mapping(receipt_path, errors)
     if receipt is None:
         return
-    if receipt.get("schema_version") not in {"1.0.0", "1.1.0"}:
+    validate_apply_transaction_journals(root, receipt, errors)
+    schema_version = receipt.get("schema_version")
+    if schema_version not in {"1.0.0", "1.1.0", "2.0.0"}:
         errors.append(f"{receipt_path}: unsupported pending apply receipt schema")
         return
+    enforce_filemode = True
+    schema2_results_by_path: dict[str, dict] = {}
+    if schema_version == "2.0.0":
+        try:
+            enforce_filemode = target_enforces_filemode(root)
+        except TargetValidationError as exc:
+            errors.append(str(exc))
+        if receipt.get("status") != "pending-validation":
+            errors.append(f"{receipt_path}: schema 2.0.0 status must be pending-validation")
+        if receipt.get("transaction_state") != "finalized":
+            errors.append(f"{receipt_path}: schema 2.0.0 transaction_state must be finalized")
+        transaction_id = receipt.get("transaction_id")
+        plan_sha = receipt.get("plan_sha256")
+        if not isinstance(transaction_id, str) or not re.fullmatch(r"[0-9a-f]{64}", transaction_id):
+            errors.append(f"{receipt_path}: transaction_id must be a lowercase SHA-256")
+        if plan_sha != transaction_id:
+            errors.append(f"{receipt_path}: plan_sha256 must equal transaction_id")
+        selected_proof = receipt.get("selected_input_proof")
+        if selected_proof is not None and (
+            not isinstance(selected_proof, dict)
+            or selected_proof.get("path") != "metadata/selected-inputs.json"
+            or not isinstance(selected_proof.get("sha256"), str)
+            or not re.fullmatch(r"[0-9a-f]{64}", selected_proof["sha256"])
+        ):
+            errors.append(f"{receipt_path}: selected_input_proof is invalid")
+        operation_order = receipt.get("operation_order")
+        applied_ids = receipt.get("applied_operation_ids")
+        if not isinstance(operation_order, list) or not all(
+            isinstance(value, str) and value for value in operation_order
+        ):
+            errors.append(f"{receipt_path}: operation_order must be a string list")
+        elif operation_order != applied_ids or len(operation_order) != len(set(operation_order)):
+            errors.append(
+                f"{receipt_path}: operation_order must be unique and equal applied_operation_ids"
+            )
+        declared_results = receipt.get("selected_managed_path_results")
+        if isinstance(declared_results, list):
+            schema2_results_by_path = {
+                item.get("path"): item
+                for item in declared_results
+                if isinstance(item, dict) and isinstance(item.get("path"), str)
+            }
     required = receipt.get("required_framework_paths")
     if required is None:
         if receipt.get("schema_version") == "1.1.0":
@@ -168,6 +424,7 @@ def validate_pending_apply_receipt(root: Path, errors: list[str]) -> None:
         path = item.get("path")
         component_id = item.get("component_id")
         expected_sha = item.get("sha256")
+        expected_mode = item.get("mode")
         if not safe_target_path(path):
             errors.append(f"{label}.path must be a safe POSIX target path")
             continue
@@ -184,6 +441,8 @@ def validate_pending_apply_receipt(root: Path, errors: list[str]) -> None:
             r"[0-9a-f]{64}", expected_sha
         ):
             errors.append(f"{label}.sha256 must be a lowercase SHA-256")
+        if schema_version == "2.0.0" and expected_mode not in {"0644", "0755"}:
+            errors.append(f"{label}.mode must be 0644 or 0755")
         candidate = root / Path(*PurePosixPath(path).parts)
         if candidate.is_symlink() or not candidate.is_file():
             errors.append(f"required framework-managed path is absent: {path}")
@@ -191,9 +450,22 @@ def validate_pending_apply_receipt(root: Path, errors: list[str]) -> None:
         if isinstance(expected_sha, str) and re.fullmatch(r"[0-9a-f]{64}", expected_sha):
             actual_sha = hashlib.sha256(candidate.read_bytes()).hexdigest()
             if actual_sha != expected_sha:
-                errors.append(
-                    f"required framework-managed path bytes differ: {path}"
-                )
+                result_record = schema2_results_by_path.get(path, {})
+                if not (
+                    schema_version == "2.0.0"
+                    and result_record.get("match_basis") == "git-eol-canonical"
+                    and result_record.get("observed_raw_sha256") == actual_sha
+                    and git_eol_projection_matches(
+                        root, path, candidate.read_bytes(), expected_sha
+                    )
+                ):
+                    errors.append(
+                        f"required framework-managed path bytes differ: {path}"
+                    )
+        if schema_version == "2.0.0" and enforce_filemode and expected_mode in {"0644", "0755"}:
+            actual_mode = "0755" if candidate.stat().st_mode & stat.S_IXUSR else "0644"
+            if actual_mode != expected_mode:
+                errors.append(f"required framework-managed path mode differs: {path}")
         if isinstance(component_id, str) and component_id:
             try:
                 rule = git_ignore_rule(root, path)
@@ -208,6 +480,105 @@ def validate_pending_apply_receipt(root: Path, errors: list[str]) -> None:
         errors.append(
             f"{receipt_path}: required framework paths must use UTF-8 bytewise order"
         )
+    if schema_version != "2.0.0":
+        return
+    required_by_path = {
+        item.get("path"): item for item in required if isinstance(item, dict)
+    }
+    artifacts = receipt.get("applied_artifacts")
+    if not isinstance(artifacts, list):
+        errors.append(f"{receipt_path}: applied_artifacts must be a list")
+    else:
+        artifact_paths: list[str] = []
+        for index, item in enumerate(artifacts):
+            label = f"{receipt_path}: applied_artifacts[{index}]"
+            if not isinstance(item, dict):
+                errors.append(f"{label} must be a mapping")
+                continue
+            path = item.get("path")
+            raw_sha = item.get("raw_sha256")
+            git_mode = item.get("git_mode")
+            if not safe_target_path(path):
+                errors.append(f"{label}.path must be a safe POSIX target path")
+                continue
+            artifact_paths.append(path)
+            candidate = root / Path(*PurePosixPath(path).parts)
+            if candidate.is_symlink() or not candidate.is_file():
+                errors.append(f"applied artifact is absent: {path}")
+                continue
+            if not isinstance(raw_sha, str) or not re.fullmatch(r"[0-9a-f]{64}", raw_sha):
+                errors.append(f"{label}.raw_sha256 must be a lowercase SHA-256")
+            elif hashlib.sha256(candidate.read_bytes()).hexdigest() != raw_sha:
+                errors.append(f"applied artifact bytes differ: {path}")
+            if git_mode not in {"0644", "0755"}:
+                errors.append(f"{label}.git_mode must be 0644 or 0755")
+            elif enforce_filemode:
+                actual_mode = "0755" if candidate.stat().st_mode & stat.S_IXUSR else "0644"
+                if actual_mode != git_mode:
+                    errors.append(f"applied artifact mode differs: {path}")
+        if len(artifact_paths) != len(set(artifact_paths)):
+            errors.append(f"{receipt_path}: applied artifact paths must be unique")
+    removed = receipt.get("removed_paths")
+    if not isinstance(removed, list):
+        errors.append(f"{receipt_path}: removed_paths must be a list")
+    else:
+        for index, item in enumerate(removed):
+            label = f"{receipt_path}: removed_paths[{index}]"
+            if not isinstance(item, dict) or not safe_target_path(item.get("path")) or item.get("result") != "absent":
+                errors.append(f"{label} must bind a safe absent path")
+                continue
+            candidate = root / Path(*PurePosixPath(item["path"]).parts)
+            if candidate.exists() or candidate.is_symlink():
+                errors.append(f"removed path is present: {item['path']}")
+    results = receipt.get("selected_managed_path_results")
+    if not isinstance(results, list):
+        errors.append(f"{receipt_path}: selected_managed_path_results must be a list")
+    else:
+        result_paths = [item.get("path") for item in results if isinstance(item, dict)]
+        if result_paths != ordered:
+            errors.append(
+                f"{receipt_path}: selected managed results must exactly match required paths"
+            )
+        for index, item in enumerate(results):
+            if not isinstance(item, dict):
+                continue
+            required_item = required_by_path.get(item.get("path"))
+            candidate = (
+                root / Path(*PurePosixPath(item["path"]).parts)
+                if safe_target_path(item.get("path"))
+                else None
+            )
+            observed_sha = (
+                hashlib.sha256(candidate.read_bytes()).hexdigest()
+                if candidate is not None and candidate.is_file() and not candidate.is_symlink()
+                else None
+            )
+            basis = item.get("match_basis")
+            identity_matches = (
+                required_item is not None
+                and item.get("expected_raw_sha256") == required_item.get("sha256")
+                and item.get("observed_raw_sha256") == observed_sha
+                and item.get("expected_git_mode") == required_item.get("mode")
+                and item.get("observed_git_mode") == required_item.get("mode")
+                and item.get("disposition") == "package-identical"
+                and (
+                    (basis == "raw" and observed_sha == required_item.get("sha256"))
+                    or (
+                        basis == "git-eol-canonical"
+                        and candidate is not None
+                        and git_eol_projection_matches(
+                            root,
+                            item["path"],
+                            candidate.read_bytes(),
+                            required_item.get("sha256"),
+                        )
+                    )
+                )
+            )
+            if not identity_matches:
+                errors.append(
+                    f"{receipt_path}: selected_managed_path_results[{index}] identity differs"
+                )
 
 
 def validate_string_references(

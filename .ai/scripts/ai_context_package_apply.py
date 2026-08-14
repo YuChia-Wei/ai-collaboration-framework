@@ -4,15 +4,18 @@
 from __future__ import annotations
 
 import hashlib
+import json
 import os
 import re
 import shutil
 import stat
 import subprocess
+import tempfile
+from contextlib import contextmanager
 from copy import deepcopy
 from dataclasses import dataclass
 from pathlib import Path, PurePosixPath
-from typing import Iterable
+from typing import Callable, Iterable, Iterator
 
 import yaml
 
@@ -54,6 +57,9 @@ LEGACY_COMPONENT_SELECTION = deepcopy(DEFAULT_COMPONENT_SELECTION)
 LEGACY_COMPONENT_SELECTION["providers"]["repo-backlog"]["enabled"] = True
 TARGET_EFFECTIVE_STATE_PATH = ".dev/ai-context/effective-rules.yaml"
 TARGET_EFFECTIVE_PACKET_DIRECTORY = ".dev/ai-context/effective-rule-packets"
+PENDING_RECEIPT_PATH = ".dev/AI-CONTEXT-APPLY-PENDING.yaml"
+TRANSACTION_SCHEMA_VERSION = "2.0.0"
+TRANSACTION_STATES = {"planned", "applying", "interrupted", "rolled-back", "finalized"}
 
 
 @dataclass(frozen=True)
@@ -61,10 +67,38 @@ class FileState:
     exists: bool
     sha256: str | None
     mode: str | None
+    git_sha256: str | None = None
+    normalized_text_sha256: str | None = None
+    tracked: bool = False
+    dirty: bool = False
+    git_eol_only: bool = False
+
+
+class InjectedInterruption(BaseException):
+    """Deterministic test-only process interruption that bypasses rollback."""
 
 
 def sha256_bytes(content: bytes) -> str:
     return hashlib.sha256(content).hexdigest()
+
+
+def canonical_digest(value: object) -> str:
+    content = json.dumps(
+        value,
+        ensure_ascii=False,
+        sort_keys=True,
+        separators=(",", ":"),
+        allow_nan=False,
+    ).encode("utf-8")
+    return sha256_bytes(content)
+
+
+def normalized_text_digest(content: bytes) -> str | None:
+    try:
+        text = content.decode("utf-8")
+    except UnicodeDecodeError:
+        return None
+    return sha256_bytes(text.replace("\r\n", "\n").replace("\r", "\n").encode("utf-8"))
 
 
 def normalize_version(value: object, label: str) -> str:
@@ -109,6 +143,12 @@ def run_git(root: Path, *args: str) -> subprocess.CompletedProcess[str]:
     )
 
 
+def run_git_bytes(root: Path, *args: str) -> subprocess.CompletedProcess[bytes]:
+    return subprocess.run(
+        ["git", *args], cwd=root, check=False, capture_output=True
+    )
+
+
 def clean_target_head(root: Path) -> str:
     if not (root / ".git").exists():
         raise ApplyError("target must be a Git repository")
@@ -139,29 +179,99 @@ def tracked_mode(root: Path, relative: str) -> str | None:
     raise ApplyError(f"unsupported target Git mode {mode} for {relative}")
 
 
+def tracked_bytes(root: Path, relative: str) -> bytes | None:
+    if tracked_mode(root, relative) is None:
+        return None
+    result = run_git_bytes(root, "show", f":{relative}")
+    if result.returncode != 0:
+        raise ApplyError(f"cannot read tracked Git bytes for {relative}")
+    return result.stdout
+
+
+def path_is_dirty(root: Path, relative: str) -> bool:
+    result = run_git(root, "status", "--porcelain", "--untracked-files=all", "--", relative)
+    if result.returncode != 0:
+        raise ApplyError(f"cannot inspect target Git state for {relative}")
+    return bool(result.stdout)
+
+
+def has_no_git_content_transform(root: Path, relative: str) -> bool:
+    result = run_git(
+        root,
+        "check-attr",
+        "filter",
+        "ident",
+        "working-tree-encoding",
+        "--",
+        relative,
+    )
+    if result.returncode != 0:
+        raise ApplyError(f"cannot inspect target Git attributes for {relative}")
+    values = []
+    for line in result.stdout.splitlines():
+        parts = line.rsplit(": ", 1)
+        if len(parts) != 2:
+            raise ApplyError(f"cannot parse target Git attributes for {relative}")
+        values.append(parts[1])
+    return len(values) == 3 and all(value == "unspecified" for value in values)
+
+
 def filesystem_mode(path: Path) -> str:
     return "0755" if path.stat().st_mode & stat.S_IXUSR else "0644"
+
+
+def is_reparse_point(path: Path) -> bool:
+    try:
+        attributes = path.lstat().st_file_attributes
+    except (AttributeError, FileNotFoundError):
+        return False
+    return bool(attributes & getattr(stat, "FILE_ATTRIBUTE_REPARSE_POINT", 0))
 
 
 def file_state(root: Path, relative: str) -> FileState:
     path = root / Path(*PurePosixPath(relative).parts)
     if not path.exists():
         return FileState(False, None, None)
-    if path.is_symlink() or not path.is_file():
+    if path.is_symlink() or is_reparse_point(path) or not path.is_file():
         raise ApplyError(f"target path must be a regular file: {relative}")
+    content = path.read_bytes()
+    tracked_git_mode = tracked_mode(root, relative)
+    tracked = tracked_git_mode is not None
+    dirty = path_is_dirty(root, relative)
+    index_content = tracked_bytes(root, relative) if tracked else None
     return FileState(
         True,
-        sha256_bytes(path.read_bytes()),
-        tracked_mode(root, relative) or filesystem_mode(path),
+        sha256_bytes(content),
+        tracked_git_mode if tracked and not dirty else filesystem_mode(path),
+        sha256_bytes(index_content) if index_content is not None else None,
+        normalized_text_digest(content),
+        tracked,
+        dirty,
+        index_content is not None
+        and content != index_content
+        and content.replace(b"\r\n", b"\n") == index_content,
     )
+
+
+def state_record(state: FileState) -> dict:
+    return {
+        "exists": state.exists,
+        "sha256": state.sha256,
+        "mode": state.mode,
+        "git_sha256": state.git_sha256,
+        "normalized_text_sha256": state.normalized_text_sha256,
+        "tracked": state.tracked,
+        "dirty": state.dirty,
+        "git_eol_only": state.git_eol_only,
+    }
 
 
 def reject_symlink_boundary(root: Path, relative: str) -> None:
     current = root
     for part in PurePosixPath(relative).parts:
         current = current / part
-        if current.is_symlink():
-            raise ApplyError(f"symlink boundary is not allowed: {relative}")
+        if current.is_symlink() or is_reparse_point(current):
+            raise ApplyError(f"symlink or reparse-point boundary is not allowed: {relative}")
 
 
 def existing_case_map(root: Path) -> dict[str, str]:
@@ -652,7 +762,19 @@ def migration_selection(
 
 
 def state_matches(root: Path, state: FileState, record: dict) -> bool:
-    if not state.exists or state.sha256 != record.get("sha256"):
+    if not state.exists:
+        return False
+    raw_match = state.sha256 == record.get("sha256")
+    canonical_match = (
+        state.tracked
+        and not state.dirty
+        and state.git_eol_only
+        and state.git_sha256 == record.get("sha256")
+        and state.normalized_text_sha256 == record.get("sha256")
+        and isinstance(record.get("path"), str)
+        and has_no_git_content_transform(root, record["path"])
+    )
+    if not raw_match and not canonical_match:
         return False
     if state.mode == record.get("mode"):
         return True
@@ -671,7 +793,7 @@ def observation(paths: Iterable[str], target: Path) -> dict[str, dict]:
     for path in sorted(set(paths), key=lambda item: item.encode("utf-8")):
         reject_symlink_boundary(target, path)
         state = file_state(target, path)
-        result[path] = {"exists": state.exists, "sha256": state.sha256, "mode": state.mode}
+        result[path] = state_record(state)
     return result
 
 
@@ -684,16 +806,32 @@ def required_framework_paths(incoming: dict[str, dict]) -> list[dict]:
             continue
         component_id = record.get("component_id")
         if not isinstance(component_id, str) or not component_id:
-            continue
+            component_id = "legacy-framework-core"
         required.append(
             {
                 "path": path,
                 "component_id": component_id,
                 "ownership": "framework-managed",
                 "sha256": record["sha256"],
+                "mode": record["mode"],
             }
         )
     return required
+
+
+def selected_input_proof_identity(package: dict) -> dict | None:
+    if package.get("schema_version") != "2.3.0":
+        return None
+    validation = package.get("validation")
+    if not isinstance(validation, dict):
+        raise ApplyError("package validation identity is missing")
+    path = validation.get("selected_inputs")
+    digest = validation.get("selected_inputs_sha256")
+    if path != "metadata/selected-inputs.json" or not isinstance(digest, str) or not re.fullmatch(
+        r"[0-9a-f]{64}", digest
+    ):
+        raise ApplyError("package selected-input proof identity is invalid")
+    return {"path": path, "sha256": digest}
 
 
 def ignored_framework_paths(target: Path, required: list[dict]) -> list[dict]:
@@ -860,7 +998,32 @@ def build_plan(
             continue
         if path not in removal_paths and path not in source_paths:
             raise ApplyError(f"removed previous path has no migration operation: {path}")
-    observed = observation(operation_paths, target)
+    observed_paths = [*operation_paths, *(item["path"] for item in required_paths)]
+    observed = observation(observed_paths, target)
+    managed_state_conflicts: list[dict] = []
+    for path in sorted(incoming, key=lambda item: item.encode("utf-8")):
+        record = incoming[path]
+        if record.get("ownership") != "framework-managed" or path not in previous:
+            continue
+        previous_record = previous[path]
+        unchanged = all(
+            previous_record.get(key) == record.get(key)
+            for key in ("sha256", "mode", "ownership")
+        )
+        if unchanged and not state_matches(target, FileState(**observed[path]), previous_record):
+            managed_state_conflicts.append(
+                {
+                    "path": path,
+                    "component_id": record.get("component_id"),
+                    "ownership": "framework-managed",
+                    "reason": "selected managed path differs from the unchanged previous release identity",
+                    "observed": observed[path],
+                    "expected_previous": {
+                        "sha256": previous_record["sha256"],
+                        "mode": previous_record["mode"],
+                    },
+                }
+            )
     planned: list[dict] = []
     for item in normalized:
         operation_id, kind, path, source = item["id"], item["kind"], item["path"], item["from_path"]
@@ -918,14 +1081,15 @@ def build_plan(
         for item in planned
         if item["action"] in {"noop", "reconcile", "unresolved"}
     ]
-    return {
-        "schema_version": "1.1.0",
+    plan = {
+        "schema_version": "2.0.0",
         "package_id": package["package_id"],
         "package_version": package.get("version"),
         "package_manifest_sha256": manifest_sha,
         "migration_sha256": sha256_bytes(
             (package_root / "metadata/migration.yaml").read_bytes()
         ),
+        "package_selected_input_proof": selected_input_proof_identity(package),
         "package_root": str(package_root.resolve()),
         "target_root": str(target),
         "target_starting_commit": head,
@@ -945,28 +1109,254 @@ def build_plan(
         },
         "required_framework_paths": required_paths,
         "ignored_framework_paths": ignored_paths,
+        "managed_state_conflicts": managed_state_conflicts,
         "observed": observed,
         "operations": planned,
     }
+    plan["plan_sha256"] = canonical_digest(plan)
+    return plan
 
 
 def mode_int(mode: str) -> int:
     return 0o755 if mode == "0755" else 0o644
 
 
+def fsync_directory(path: Path) -> None:
+    """Persist a directory entry where the host exposes directory fsync."""
+    if os.name == "nt":
+        return
+    descriptor = os.open(path, os.O_RDONLY)
+    try:
+        os.fsync(descriptor)
+    finally:
+        os.close(descriptor)
+
+
+def atomic_replace(temporary: Path, destination: Path) -> None:
+    if os.name != "nt":
+        os.replace(temporary, destination)
+        return
+    import ctypes
+    from ctypes import wintypes
+
+    kernel32 = ctypes.WinDLL("kernel32", use_last_error=True)
+    replace_file = kernel32.ReplaceFileW
+    replace_file.argtypes = [
+        wintypes.LPCWSTR,
+        wintypes.LPCWSTR,
+        wintypes.LPCWSTR,
+        wintypes.DWORD,
+        wintypes.LPVOID,
+        wintypes.LPVOID,
+    ]
+    replace_file.restype = wintypes.BOOL
+    move_file = kernel32.MoveFileExW
+    move_file.argtypes = [wintypes.LPCWSTR, wintypes.LPCWSTR, wintypes.DWORD]
+    move_file.restype = wintypes.BOOL
+    if destination.exists():
+        succeeded = replace_file(
+            str(destination), str(temporary), None, 0x1, None, None
+        )
+    else:
+        succeeded = move_file(str(temporary), str(destination), 0x9)
+    if not succeeded:
+        raise ctypes.WinError(ctypes.get_last_error())
+
+
+def atomic_write_bytes(path: Path, content: bytes, mode: int = 0o644) -> None:
+    if path.is_symlink() or is_reparse_point(path):
+        raise ApplyError(f"cannot atomically replace symlink or reparse point: {path}")
+    path.parent.mkdir(parents=True, exist_ok=True)
+    descriptor, temporary_name = tempfile.mkstemp(
+        prefix=f".{path.name}.", suffix=".tmp", dir=path.parent
+    )
+    temporary = Path(temporary_name)
+    try:
+        offset = 0
+        while offset < len(content):
+            written = os.write(descriptor, content[offset:])
+            if written <= 0:
+                raise ApplyError(f"short write while staging {path}")
+            offset += written
+        os.fsync(descriptor)
+        os.fchmod(descriptor, mode)
+        os.fsync(descriptor)
+        os.close(descriptor)
+        descriptor = -1
+        atomic_replace(temporary, path)
+        fsync_directory(path.parent)
+    finally:
+        if descriptor >= 0:
+            os.close(descriptor)
+        if temporary.exists():
+            temporary.unlink()
+
+
+def atomic_write_yaml(path: Path, value: dict) -> bytes:
+    content = yaml.safe_dump(value, sort_keys=False, allow_unicode=True).encode("utf-8")
+    atomic_write_bytes(path, content)
+    return content
+
+
+def durable_unlink(path: Path) -> None:
+    path.unlink()
+    fsync_directory(path.parent)
+
+
 def write_payload(package_root: Path, target: Path, path: str, record: dict) -> None:
     destination = target / Path(*PurePosixPath(path).parts)
     reject_symlink_boundary(target, path)
-    destination.parent.mkdir(parents=True, exist_ok=True)
     source = package_root / "payload" / Path(*PurePosixPath(path).parts)
-    destination.write_bytes(source.read_bytes())
-    os.chmod(destination, mode_int(record["mode"]))
+    content = source.read_bytes()
+    if sha256_bytes(content) != record["sha256"]:
+        raise ApplyError(f"package payload changed after validation: {path}")
+    atomic_write_bytes(destination, content, mode_int(record["mode"]))
 
 
-def apply_plan(plan: dict, acknowledgements: set[str] | None = None) -> dict:
-    acknowledgements = acknowledgements or set()
-    target = Path(plan["target_root"])
-    package_root = Path(plan["package_root"])
+def plan_digest(plan: dict) -> str:
+    unsigned = deepcopy(plan)
+    declared = unsigned.pop("plan_sha256", None)
+    digest = canonical_digest(unsigned)
+    if declared != digest:
+        raise ApplyError("apply plan digest is invalid")
+    return digest
+
+
+def transaction_id_for_plan(plan: dict) -> str:
+    return plan_digest(plan)
+
+
+def git_admin_transaction_base(target: Path) -> Path:
+    result = run_git(target, "rev-parse", "--path-format=absolute", "--git-path", "ai-context-package-apply")
+    if result.returncode != 0:
+        result = run_git(target, "rev-parse", "--git-path", "ai-context-package-apply")
+    if result.returncode != 0 or not result.stdout.strip():
+        raise ApplyError("cannot resolve target Git administrative transaction directory")
+    value = Path(result.stdout.strip())
+    return value if value.is_absolute() else (target / value).resolve()
+
+
+@contextmanager
+def transaction_lock(target: Path) -> Iterator[None]:
+    base = git_admin_transaction_base(target)
+    base.mkdir(parents=True, exist_ok=True)
+    lock_path = base / "transaction.lock"
+    handle = lock_path.open("a+b")
+    try:
+        handle.seek(0, os.SEEK_END)
+        if handle.tell() == 0:
+            handle.write(b"0")
+            handle.flush()
+            os.fsync(handle.fileno())
+        handle.seek(0)
+        if os.name == "nt":
+            import msvcrt
+
+            try:
+                msvcrt.locking(handle.fileno(), msvcrt.LK_NBLCK, 1)
+            except OSError as exc:
+                raise ApplyError("another AI context package transaction is active") from exc
+        else:
+            import fcntl
+
+            try:
+                fcntl.flock(handle.fileno(), fcntl.LOCK_EX | fcntl.LOCK_NB)
+            except OSError as exc:
+                raise ApplyError("another AI context package transaction is active") from exc
+        try:
+            yield
+        finally:
+            handle.seek(0)
+            if os.name == "nt":
+                msvcrt.locking(handle.fileno(), msvcrt.LK_UNLCK, 1)
+            else:
+                fcntl.flock(handle.fileno(), fcntl.LOCK_UN)
+    finally:
+        handle.close()
+
+
+def transaction_root(target: Path, transaction_id: str) -> Path:
+    if not re.fullmatch(r"[0-9a-f]{64}", transaction_id):
+        raise ApplyError("transaction ID must be a lowercase SHA-256")
+    return git_admin_transaction_base(target) / transaction_id
+
+
+def active_operations(plan: dict) -> list[dict]:
+    return [
+        item
+        for item in plan.get("operations", [])
+        if item.get("action") in {"add", "replace", "remove", "rename"}
+    ]
+
+
+def touched_paths(plan: dict) -> list[str]:
+    values: set[str] = set()
+    for item in active_operations(plan):
+        values.add(item["path"])
+        if item.get("from_path"):
+            values.add(item["from_path"])
+    return sorted(values, key=lambda value: value.encode("utf-8"))
+
+
+def planned_created_parents(target: Path, plan: dict) -> list[str]:
+    parents: set[str] = set()
+    destinations = [
+        item["path"]
+        for item in active_operations(plan)
+        if item["action"] in {"add", "replace", "rename"}
+    ]
+    destinations.append(PENDING_RECEIPT_PATH)
+    for relative in destinations:
+        parent = PurePosixPath(relative).parent
+        lineage: list[PurePosixPath] = []
+        while str(parent) not in {"", "."}:
+            lineage.append(parent)
+            parent = parent.parent
+        for candidate in reversed(lineage):
+            native = target / Path(*candidate.parts)
+            if not native.exists():
+                parents.add(candidate.as_posix())
+            elif native.is_symlink() or is_reparse_point(native) or not native.is_dir():
+                raise ApplyError(f"target parent boundary is unsafe: {candidate.as_posix()}")
+    return sorted(parents, key=lambda value: (len(PurePosixPath(value).parts), value.encode("utf-8")))
+
+
+def protected_target_paths(target: Path) -> list[str]:
+    fixed = {
+        ".dev/AI-CONTEXT-SOURCE.yaml",
+        ".dev/ai-context/provenance.yaml",
+        ".dev/ai-context/customizations.yaml",
+        ".dev/ai-context/effective-rules.yaml",
+    }
+    packet_root = target / TARGET_EFFECTIVE_PACKET_DIRECTORY
+    if packet_root.exists():
+        if packet_root.is_symlink() or is_reparse_point(packet_root) or not packet_root.is_dir():
+            raise ApplyError(f"target-owned packet boundary is unsafe: {TARGET_EFFECTIVE_PACKET_DIRECTORY}")
+        for candidate in packet_root.rglob("*"):
+            if candidate.is_symlink() or is_reparse_point(candidate):
+                raise ApplyError(
+                    f"target-owned packet boundary is unsafe: {candidate.relative_to(target).as_posix()}"
+                )
+            if candidate.is_file():
+                fixed.add(candidate.relative_to(target).as_posix())
+    return sorted(
+        (path for path in fixed if (target / Path(*PurePosixPath(path).parts)).exists()),
+        key=lambda value: value.encode("utf-8"),
+    )
+
+
+def preflight_writable(target: Path, plan: dict) -> None:
+    for relative in touched_paths(plan):
+        reject_symlink_boundary(target, relative)
+        path = target / Path(*PurePosixPath(relative).parts)
+        if path.exists() and not path.is_file():
+            raise ApplyError(f"target path must be a regular file: {relative}")
+        if path.exists() and not (path.stat().st_mode & stat.S_IWRITE):
+            raise ApplyError(f"target path is read-only: {relative}")
+    planned_created_parents(target, plan)
+
+
+def verify_package_binding(plan: dict, package_root: Path) -> tuple[dict, dict[str, dict], dict, str]:
     package, incoming, migration, manifest_sha = validate_package_root(package_root)
     if manifest_sha != plan.get("package_manifest_sha256"):
         raise ApplyError("package manifest changed after planning")
@@ -974,6 +1364,20 @@ def apply_plan(plan: dict, acknowledgements: set[str] | None = None) -> dict:
         "migration_sha256"
     ):
         raise ApplyError("migration contract changed after planning")
+    if selected_input_proof_identity(package) != plan.get("package_selected_input_proof"):
+        raise ApplyError("package selected-input proof changed after planning")
+    return package, incoming, migration, manifest_sha
+
+
+def verify_plan_for_apply(
+    plan: dict, acknowledgements: set[str]
+) -> tuple[dict, dict[str, dict], str, set[str]]:
+    if plan.get("schema_version") != TRANSACTION_SCHEMA_VERSION:
+        raise ApplyError("unsupported apply plan schema")
+    plan_digest(plan)
+    target = Path(plan["target_root"])
+    package_root = Path(plan["package_root"])
+    package, incoming, _migration, manifest_sha = verify_package_binding(plan, package_root)
     if clean_target_head(target) != plan.get("target_starting_commit"):
         raise ApplyError("target HEAD changed after planning")
     previous_files_value = plan.get("previous_files")
@@ -984,14 +1388,11 @@ def apply_plan(plan: dict, acknowledgements: set[str] | None = None) -> dict:
         previous_files,
         plan.get("selection_request", {}).get("enable_providers", []),
     )
-    if (
-        resolved_selection != plan.get("selection")
-        or selection_resolution != plan.get("selection_resolution")
+    if resolved_selection != plan.get("selection") or selection_resolution != plan.get(
+        "selection_resolution"
     ):
         raise ApplyError("selection authority changed after planning")
-    incoming = filter_component_records(
-        incoming, enabled_components(resolved_selection)
-    )
+    incoming = filter_component_records(incoming, enabled_components(resolved_selection))
     required_paths = required_framework_paths(incoming)
     if required_paths != plan.get("required_framework_paths"):
         raise ApplyError("required framework-managed path identity changed after planning")
@@ -1007,6 +1408,14 @@ def apply_plan(plan: dict, acknowledgements: set[str] | None = None) -> dict:
     current_observed = observation(plan.get("observed", {}).keys(), target)
     if current_observed != plan.get("observed"):
         raise ApplyError("target file state changed after planning")
+    conflicts = plan.get("managed_state_conflicts")
+    if not isinstance(conflicts, list):
+        raise ApplyError("apply plan managed-state conflicts are invalid")
+    if conflicts:
+        raise ApplyError(
+            "selected unchanged framework-managed paths require reconciliation: "
+            f"{[item.get('path') for item in conflicts]}"
+        )
     reconciles = {item["id"] for item in plan["operations"] if item["action"] == "reconcile"}
     unknown = acknowledgements - reconciles
     if unknown:
@@ -1014,70 +1423,497 @@ def apply_plan(plan: dict, acknowledgements: set[str] | None = None) -> dict:
     missing = reconciles - acknowledgements
     if missing:
         raise ApplyError(f"unacknowledged reconciliation items: {sorted(missing)}")
-    receipt_relative = ".dev/AI-CONTEXT-APPLY-PENDING.yaml"
-    receipt_path = target / receipt_relative
-    if receipt_path.exists() or receipt_path.is_symlink():
-        raise ApplyError(f"pending receipt already exists: {receipt_relative}")
-    active = [item for item in plan["operations"] if item["action"] in {"add", "replace", "remove", "rename"}]
-    touched = {item["path"] for item in active}
-    touched.update(item["from_path"] for item in active if item.get("from_path"))
-    parent_candidates = {receipt_path.parent}
-    for relative in touched:
-        parent = (target / Path(*PurePosixPath(relative).parts)).parent
-        while parent != target and parent.is_relative_to(target):
-            parent_candidates.add(parent)
-            parent = parent.parent
-    existing_parents = {path for path in parent_candidates if path.exists()}
-    snapshots: dict[str, tuple[bytes, int] | None] = {}
-    for relative in touched:
-        path = target / Path(*PurePosixPath(relative).parts)
-        snapshots[relative] = (path.read_bytes(), path.stat().st_mode) if path.exists() else None
-    try:
-        for item in active:
-            action, path = item["action"], item["path"]
-            if action in {"add", "replace"}:
-                write_payload(package_root, target, path, incoming[path])
-            elif action == "remove":
-                (target / Path(*PurePosixPath(path).parts)).unlink()
-            elif action == "rename":
-                source = target / Path(*PurePosixPath(item["from_path"]).parts)
-                source.unlink()
-                write_payload(package_root, target, path, incoming[path])
-        receipt_path.parent.mkdir(parents=True, exist_ok=True)
-        receipt = {
-            "schema_version": "1.1.0",
-            "status": "pending-validation",
-            "package_id": package["package_id"],
-            "package_version": package.get("version"),
-            "package_manifest_sha256": manifest_sha,
-            "target_starting_commit": plan["target_starting_commit"],
-            "applied_operation_ids": [item["id"] for item in active],
-            "skipped_reconciliation_ids": sorted(reconciles),
-            "selection": plan["selection"],
-            "selection_default": plan["selection_default"],
-            "selection_resolution": plan["selection_resolution"],
-            "component_operation_counts": {
-                "applied": count_components(active),
-                "skipped": plan["component_operation_counts"]["would_skip"],
-            },
-            "required_framework_paths": required_paths,
-            "provenance_updated": False,
-        }
-        receipt_path.write_text(yaml.safe_dump(receipt, sort_keys=False), encoding="utf-8", newline="\n")
-    except Exception as exc:
-        for relative, snapshot in snapshots.items():
-            path = target / Path(*PurePosixPath(relative).parts)
-            if snapshot is None:
-                if path.exists() and path.is_file():
-                    path.unlink()
-            else:
-                path.parent.mkdir(parents=True, exist_ok=True)
-                path.write_bytes(snapshot[0])
-                os.chmod(path, stat.S_IMODE(snapshot[1]))
-        if receipt_path.exists() and receipt_path.is_file():
-            receipt_path.unlink()
-        for directory in sorted(parent_candidates - existing_parents, key=lambda item: len(item.parts), reverse=True):
-            if directory.exists() and directory.is_dir() and not any(directory.iterdir()):
-                directory.rmdir()
-        raise ApplyError(f"package apply rolled back: {exc}") from exc
+    receipt_path = target / PENDING_RECEIPT_PATH
+    if receipt_path.exists() or receipt_path.is_symlink() or is_reparse_point(receipt_path):
+        raise ApplyError(f"pending receipt already exists: {PENDING_RECEIPT_PATH}")
+    preflight_writable(target, plan)
+    return package, incoming, manifest_sha, reconciles
+
+
+def prepare_transaction(target: Path, plan: dict, acknowledgements: set[str]) -> tuple[Path, dict]:
+    transaction_id = transaction_id_for_plan(plan)
+    root = transaction_root(target, transaction_id)
+    if root.exists():
+        raise ApplyError(
+            f"transaction evidence already exists; resume or roll back {transaction_id}"
+        )
+    (root / "prestate").mkdir(parents=True)
+    plan_bytes = json.dumps(
+        plan, ensure_ascii=False, sort_keys=True, separators=(",", ":"), allow_nan=False
+    ).encode("utf-8") + b"\n"
+    atomic_write_bytes(root / "plan.json", plan_bytes)
+    pre_state: list[dict] = []
+    for index, relative in enumerate(touched_paths(plan)):
+        state = file_state(target, relative)
+        backup_path = None
+        backup_sha = None
+        if state.exists:
+            content = (target / Path(*PurePosixPath(relative).parts)).read_bytes()
+            backup_name = f"{index:04d}-{sha256_bytes(relative.encode('utf-8'))}.bin"
+            backup = root / "prestate" / backup_name
+            atomic_write_bytes(backup, content, mode_int(state.mode or "0644"))
+            backup_path = f"prestate/{backup_name}"
+            backup_sha = sha256_bytes(content)
+        pre_state.append(
+            {
+                "path": relative,
+                "state": state_record(state),
+                "backup_path": backup_path,
+                "backup_sha256": backup_sha,
+            }
+        )
+    journal = {
+        "schema_version": "ai-context-package-apply-journal/v1",
+        "transaction_id": transaction_id,
+        "state": "planned",
+        "transition_sequence": 0,
+        "plan_sha256": plan["plan_sha256"],
+        "operation_order_sha256": canonical_digest(
+            [item["id"] for item in active_operations(plan)]
+        ),
+        "next_apply_index": 0,
+        "completed_operation_ids": [],
+        "acknowledgements": sorted(acknowledgements),
+        "pre_state": pre_state,
+        "protected_state": observation(protected_target_paths(target), target),
+        "planned_created_parents": planned_created_parents(target, plan),
+        "last_error": None,
+        "final_receipt_sha256": None,
+    }
+    atomic_write_yaml(root / "journal.yaml", journal)
+    fsync_directory(root)
+    return root, journal
+
+
+def persist_journal(root: Path, journal: dict) -> None:
+    journal["transition_sequence"] = int(journal.get("transition_sequence", 0)) + 1
+    atomic_write_yaml(root / "journal.yaml", journal)
+
+
+def exact_state_matches(target: Path, relative: str, expected: dict) -> bool:
+    reject_symlink_boundary(target, relative)
+    current = file_state(target, relative)
+    return (
+        current.exists == expected.get("exists")
+        and current.sha256 == expected.get("sha256")
+        and current.mode == expected.get("mode")
+    )
+
+
+def expected_present_state(record: dict) -> dict:
+    return {"exists": True, "sha256": record["sha256"], "mode": record["mode"]}
+
+
+def prestate_by_path(journal: dict) -> dict[str, dict]:
+    return {item["path"]: item for item in journal["pre_state"]}
+
+
+def invoke_boundary(
+    hook: Callable[[str, dict], None] | None, name: str, details: dict
+) -> None:
+    if hook is not None:
+        hook(name, details)
+
+
+def execute_operation(
+    package_root: Path,
+    target: Path,
+    incoming: dict[str, dict],
+    operation: dict,
+    index: int,
+    prestate: dict[str, dict],
+    hook: Callable[[str, dict], None] | None,
+) -> None:
+    action = operation["action"]
+    relative = operation["path"]
+    expected = expected_present_state(incoming[relative]) if action in {"add", "replace", "rename"} else None
+    if action in {"add", "replace"}:
+        if exact_state_matches(target, relative, expected):
+            return
+        if not exact_state_matches(target, relative, prestate[relative]["state"]):
+            raise ApplyError(f"ambiguous transaction state for {relative}")
+        write_payload(package_root, target, relative, incoming[relative])
+        invoke_boundary(hook, "after_destination_replace", {"index": index, "operation_id": operation["id"]})
+        return
+    if action == "remove":
+        if exact_state_matches(target, relative, {"exists": False, "sha256": None, "mode": None}):
+            return
+        if not exact_state_matches(target, relative, prestate[relative]["state"]):
+            raise ApplyError(f"ambiguous transaction state for {relative}")
+        durable_unlink(target / Path(*PurePosixPath(relative).parts))
+        invoke_boundary(hook, "after_source_remove", {"index": index, "operation_id": operation["id"]})
+        return
+    if action == "rename":
+        source_relative = operation["from_path"]
+        source_pre = prestate[source_relative]["state"]
+        destination_pre = prestate[relative]["state"]
+        source_absent = {"exists": False, "sha256": None, "mode": None}
+        source_is_pre = exact_state_matches(target, source_relative, source_pre)
+        source_is_absent = exact_state_matches(target, source_relative, source_absent)
+        destination_is_pre = exact_state_matches(target, relative, destination_pre)
+        destination_is_post = exact_state_matches(target, relative, expected)
+        if source_is_absent and destination_is_post:
+            return
+        if not source_is_pre or not (destination_is_pre or destination_is_post):
+            raise ApplyError(f"ambiguous rename transaction state for {source_relative} -> {relative}")
+        if destination_is_pre:
+            write_payload(package_root, target, relative, incoming[relative])
+            invoke_boundary(hook, "after_destination_replace", {"index": index, "operation_id": operation["id"]})
+        durable_unlink(target / Path(*PurePosixPath(source_relative).parts))
+        invoke_boundary(hook, "after_source_remove", {"index": index, "operation_id": operation["id"]})
+        return
+    raise ApplyError(f"unsupported active operation action: {action}")
+
+
+def verify_protected_state(target: Path, journal: dict) -> None:
+    current = observation(journal.get("protected_state", {}).keys(), target)
+    if current != journal.get("protected_state"):
+        raise ApplyError("target-owned authority changed during package transaction")
+
+
+def build_final_receipt(
+    plan: dict,
+    journal: dict,
+    incoming: dict[str, dict],
+    reconciles: set[str],
+) -> dict:
+    target = Path(plan["target_root"])
+    artifacts: list[dict] = []
+    removed: list[dict] = []
+    for item in active_operations(plan):
+        if item["action"] in {"add", "replace", "rename"}:
+            state = file_state(target, item["path"])
+            artifacts.append(
+                {
+                    "operation_id": item["id"],
+                    "path": item["path"],
+                    "raw_sha256": state.sha256,
+                    "git_mode": incoming[item["path"]]["mode"],
+                    "observed_filesystem_mode": state.mode,
+                }
+            )
+        if item["action"] == "remove":
+            removed.append({"operation_id": item["id"], "path": item["path"], "result": "absent"})
+        elif item["action"] == "rename":
+            removed.append({"operation_id": item["id"], "path": item["from_path"], "result": "absent"})
+    results: list[dict] = []
+    reconciliation_paths = {
+        item["path"] for item in plan["operations"] if item["action"] == "reconcile"
+    }
+    for item in plan["required_framework_paths"]:
+        state = file_state(target, item["path"])
+        matches_incoming = state_matches(target, state, item)
+        if not matches_incoming and item["path"] not in reconciliation_paths:
+            raise ApplyError(f"required framework-managed result differs: {item['path']}")
+        results.append(
+            {
+                "path": item["path"],
+                "expected_raw_sha256": item["sha256"],
+                "expected_git_mode": item["mode"],
+                "observed_raw_sha256": state.sha256,
+                "observed_git_mode": item["mode"] if matches_incoming else state.mode,
+                "observed_filesystem_mode": state.mode,
+                "disposition": "package-identical" if matches_incoming else "reconciliation-preserved",
+                "match_basis": (
+                    "raw"
+                    if state.sha256 == item["sha256"]
+                    else "git-eol-canonical"
+                    if matches_incoming
+                    else "mismatch"
+                ),
+            }
+        )
+    return {
+        "schema_version": TRANSACTION_SCHEMA_VERSION,
+        "status": "pending-validation",
+        "transaction_state": "finalized",
+        "transaction_id": journal["transaction_id"],
+        "plan_sha256": plan["plan_sha256"],
+        "package_id": plan["package_id"],
+        "package_version": plan.get("package_version"),
+        "package_manifest_sha256": plan["package_manifest_sha256"],
+        "migration_sha256": plan["migration_sha256"],
+        "selected_input_proof": plan.get("package_selected_input_proof"),
+        "target_starting_commit": plan["target_starting_commit"],
+        "operation_order": [item["id"] for item in active_operations(plan)],
+        "applied_operation_ids": [item["id"] for item in active_operations(plan)],
+        "skipped_reconciliation_ids": sorted(reconciles),
+        "selection": plan["selection"],
+        "selection_default": plan["selection_default"],
+        "selection_resolution": plan["selection_resolution"],
+        "component_operation_counts": {
+            "applied": count_components(active_operations(plan)),
+            "skipped": plan["component_operation_counts"]["would_skip"],
+        },
+        "applied_artifacts": artifacts,
+        "removed_paths": removed,
+        "required_framework_paths": plan["required_framework_paths"],
+        "selected_managed_path_results": results,
+        "provenance_updated": False,
+    }
+
+
+def run_transaction(
+    root: Path,
+    journal: dict,
+    plan: dict,
+    package_root: Path,
+    incoming: dict[str, dict],
+    reconciles: set[str],
+    hook: Callable[[str, dict], None] | None = None,
+) -> dict:
+    target = Path(plan["target_root"])
+    journal["state"] = "applying"
+    journal["last_error"] = None
+    persist_journal(root, journal)
+    invoke_boundary(hook, "after_applying_journal", {"transaction_id": journal["transaction_id"]})
+    operations = active_operations(plan)
+    prestate = prestate_by_path(journal)
+    for index in range(int(journal["next_apply_index"]), len(operations)):
+        operation = operations[index]
+        execute_operation(package_root, target, incoming, operation, index, prestate, hook)
+        invoke_boundary(hook, "after_operation", {"index": index, "operation_id": operation["id"]})
+        journal["completed_operation_ids"] = [item["id"] for item in operations[: index + 1]]
+        journal["next_apply_index"] = index + 1
+        persist_journal(root, journal)
+    verify_protected_state(target, journal)
+    receipt = build_final_receipt(plan, journal, incoming, reconciles)
+    receipt_path = target / PENDING_RECEIPT_PATH
+    reject_symlink_boundary(target, PENDING_RECEIPT_PATH)
+    expected_bytes = yaml.safe_dump(receipt, sort_keys=False, allow_unicode=True).encode("utf-8")
+    if receipt_path.exists():
+        if receipt_path.is_symlink() or is_reparse_point(receipt_path) or receipt_path.read_bytes() != expected_bytes:
+            raise ApplyError("pending receipt is ambiguous after interruption")
+    else:
+        atomic_write_bytes(receipt_path, expected_bytes)
+    invoke_boundary(hook, "after_receipt", {"transaction_id": journal["transaction_id"]})
+    journal["final_receipt_sha256"] = sha256_bytes(expected_bytes)
+    journal["state"] = "finalized"
+    persist_journal(root, journal)
+    invoke_boundary(hook, "after_finalized_journal", {"transaction_id": journal["transaction_id"]})
     return receipt
+
+
+def load_transaction(target: Path, transaction_id: str) -> tuple[Path, dict, dict]:
+    root = transaction_root(target, transaction_id)
+    plan_path = root / "plan.json"
+    journal_path = root / "journal.yaml"
+    if not plan_path.is_file() or plan_path.is_symlink() or not journal_path.is_file() or journal_path.is_symlink():
+        raise ApplyError(f"transaction evidence is missing: {transaction_id}")
+    try:
+        plan = json.loads(plan_path.read_text(encoding="utf-8"))
+        journal = yaml.safe_load(journal_path.read_text(encoding="utf-8"))
+    except (json.JSONDecodeError, UnicodeDecodeError, yaml.YAMLError) as exc:
+        raise ApplyError("transaction evidence cannot be parsed") from exc
+    if not isinstance(plan, dict) or not isinstance(journal, dict):
+        raise ApplyError("transaction evidence must contain mappings")
+    if plan_digest(plan) != transaction_id:
+        raise ApplyError("transaction plan identity does not match transaction ID")
+    if journal.get("schema_version") != "ai-context-package-apply-journal/v1":
+        raise ApplyError("unsupported transaction journal schema")
+    if journal.get("transaction_id") != transaction_id or journal.get("plan_sha256") != transaction_id:
+        raise ApplyError("transaction journal identity is invalid")
+    if journal.get("state") not in TRANSACTION_STATES:
+        raise ApplyError("transaction journal state is invalid")
+    if journal.get("operation_order_sha256") != canonical_digest(
+        [item["id"] for item in active_operations(plan)]
+    ):
+        raise ApplyError("transaction operation order changed")
+    pre_state = journal.get("pre_state")
+    if not isinstance(pre_state, list) or [item.get("path") for item in pre_state] != touched_paths(plan):
+        raise ApplyError("transaction pre-state path set is invalid")
+    for item in pre_state:
+        state = item.get("state")
+        if not isinstance(state, dict):
+            raise ApplyError("transaction pre-state record is invalid")
+        if state.get("exists"):
+            backup_value = item.get("backup_path")
+            backup = root / str(backup_value)
+            if not isinstance(backup_value, str) or not backup.is_file() or backup.is_symlink():
+                raise ApplyError(f"transaction backup is missing: {item.get('path')}")
+            if sha256_bytes(backup.read_bytes()) != item.get("backup_sha256") or item.get("backup_sha256") != state.get("sha256"):
+                raise ApplyError(f"transaction backup identity differs: {item.get('path')}")
+        elif item.get("backup_path") is not None or item.get("backup_sha256") is not None:
+            raise ApplyError(f"absent pre-state has a backup: {item.get('path')}")
+    return root, plan, journal
+
+
+def changed_target_paths(target: Path) -> set[str]:
+    changed: set[str] = set()
+    for arguments in (
+        ("diff", "--name-only", "-z"),
+        ("diff", "--cached", "--name-only", "-z"),
+        ("ls-files", "--others", "--exclude-standard", "-z"),
+    ):
+        result = run_git_bytes(target, *arguments)
+        if result.returncode != 0:
+            raise ApplyError("cannot inspect recovery worktree state")
+        changed.update(
+            value.decode("utf-8", errors="surrogateescape")
+            for value in result.stdout.split(b"\0")
+            if value
+        )
+    return changed
+
+
+def verify_recovery_surface(target: Path, plan: dict, journal: dict) -> None:
+    if run_git(target, "rev-parse", "HEAD").stdout.strip() != plan.get("target_starting_commit"):
+        raise ApplyError("target HEAD changed after transaction planning")
+    allowed = set(touched_paths(plan)) | {PENDING_RECEIPT_PATH}
+    unrelated = changed_target_paths(target) - allowed
+    if unrelated:
+        raise ApplyError(f"unrelated target changes block recovery: {sorted(unrelated)}")
+    verify_protected_state(target, journal)
+
+
+def legal_transaction_state(
+    target: Path, plan: dict, journal: dict, incoming: dict[str, dict]
+) -> bool:
+    legal: dict[str, list[dict]] = {
+        item["path"]: [item["state"]] for item in journal["pre_state"]
+    }
+    absent = {"exists": False, "sha256": None, "mode": None}
+    for operation in active_operations(plan):
+        if operation["action"] in {"add", "replace", "rename"}:
+            legal[operation["path"]].append(expected_present_state(incoming[operation["path"]]))
+        if operation["action"] == "remove":
+            legal[operation["path"]].append(absent)
+        if operation["action"] == "rename":
+            legal[operation["from_path"]].append(absent)
+    return all(
+        any(exact_state_matches(target, relative, expected) for expected in candidates)
+        for relative, candidates in legal.items()
+    )
+
+
+def rollback_loaded_transaction(
+    root: Path,
+    plan: dict,
+    journal: dict,
+    incoming: dict[str, dict],
+    hook: Callable[[str, dict], None] | None = None,
+) -> dict:
+    target = Path(plan["target_root"])
+    if journal["state"] == "rolled-back":
+        if not all(exact_state_matches(target, item["path"], item["state"]) for item in journal["pre_state"]):
+            raise ApplyError("rolled-back transaction no longer matches its exact pre-state")
+        return journal
+    if journal["state"] == "finalized":
+        raise ApplyError("finalized transaction cannot be rolled back")
+    if not legal_transaction_state(target, plan, journal, incoming):
+        raise ApplyError("ambiguous target state blocks rollback")
+    for item in reversed(journal["pre_state"]):
+        relative = item["path"]
+        path = target / Path(*PurePosixPath(relative).parts)
+        if item["state"]["exists"]:
+            backup = root / item["backup_path"]
+            atomic_write_bytes(path, backup.read_bytes(), mode_int(item["state"]["mode"]))
+        elif path.exists():
+            durable_unlink(path)
+        invoke_boundary(hook, "after_rollback_restore", {"path": relative})
+    receipt_path = target / PENDING_RECEIPT_PATH
+    if receipt_path.exists():
+        if receipt_path.is_symlink() or is_reparse_point(receipt_path):
+            raise ApplyError("unsafe pending receipt blocks rollback")
+        durable_unlink(receipt_path)
+    for relative in reversed(journal.get("planned_created_parents", [])):
+        directory = target / Path(*PurePosixPath(relative).parts)
+        if directory.exists() and directory.is_dir() and not any(directory.iterdir()):
+            directory.rmdir()
+            fsync_directory(directory.parent)
+    if not all(exact_state_matches(target, item["path"], item["state"]) for item in journal["pre_state"]):
+        raise ApplyError("rollback did not restore the exact transaction pre-state")
+    journal["state"] = "rolled-back"
+    journal["last_error"] = None
+    persist_journal(root, journal)
+    invoke_boundary(hook, "after_rollback_journal", {"transaction_id": journal["transaction_id"]})
+    return journal
+
+
+def recover_transaction(
+    target: Path,
+    transaction_id: str,
+    action: str,
+    package_root: Path | None = None,
+    boundary_hook: Callable[[str, dict], None] | None = None,
+) -> dict:
+    if action not in {"resume", "rollback"}:
+        raise ApplyError("recovery action must be resume or rollback")
+    with transaction_lock(target):
+        root, plan, journal = load_transaction(target, transaction_id)
+        verify_recovery_surface(target, plan, journal)
+        if journal["state"] == "applying":
+            journal["state"] = "interrupted"
+            journal["last_error"] = "recovered an abandoned applying state"
+            persist_journal(root, journal)
+        if action == "rollback":
+            incoming = {
+                item["path"]: item for item in plan["required_framework_paths"]
+            }
+            return rollback_loaded_transaction(root, plan, journal, incoming, boundary_hook)
+        if journal["state"] == "rolled-back":
+            raise ApplyError("rolled-back transaction cannot be resumed")
+        if package_root is None:
+            raise ApplyError("resume requires the exact extracted package root")
+        _package, incoming, _migration, _manifest_sha = verify_package_binding(plan, package_root)
+        incoming = filter_component_records(incoming, enabled_components(plan["selection"]))
+        if journal["state"] == "finalized":
+            receipt_path = target / PENDING_RECEIPT_PATH
+            if not receipt_path.is_file() or sha256_bytes(receipt_path.read_bytes()) != journal.get("final_receipt_sha256"):
+                raise ApplyError("finalized transaction receipt identity differs")
+            receipt = yaml.safe_load(receipt_path.read_text(encoding="utf-8"))
+            if not isinstance(receipt, dict):
+                raise ApplyError("finalized transaction receipt is invalid")
+            return receipt
+        reconciles = {
+            item["id"] for item in plan["operations"] if item["action"] == "reconcile"
+        }
+        return run_transaction(
+            root, journal, plan, package_root, incoming, reconciles, boundary_hook
+        )
+
+
+def apply_plan(
+    plan: dict,
+    acknowledgements: set[str] | None = None,
+    boundary_hook: Callable[[str, dict], None] | None = None,
+) -> dict:
+    acknowledgements = acknowledgements or set()
+    target = Path(plan["target_root"])
+    package_root = Path(plan["package_root"])
+    with transaction_lock(target):
+        _package, incoming, _manifest_sha, reconciles = verify_plan_for_apply(
+            plan, acknowledgements
+        )
+        root, journal = prepare_transaction(target, plan, acknowledgements)
+        invoke_boundary(
+            boundary_hook,
+            "after_planned_journal",
+            {"transaction_id": journal["transaction_id"]},
+        )
+        try:
+            return run_transaction(
+                root,
+                journal,
+                plan,
+                package_root,
+                incoming,
+                reconciles,
+                boundary_hook,
+            )
+        except Exception as exc:
+            journal["state"] = "interrupted"
+            journal["last_error"] = str(exc)
+            persist_journal(root, journal)
+            try:
+                rollback_loaded_transaction(root, plan, journal, incoming, boundary_hook)
+            except Exception as rollback_exc:
+                journal["state"] = "interrupted"
+                journal["last_error"] = f"{exc}; rollback failed: {rollback_exc}"
+                persist_journal(root, journal)
+                raise ApplyError(
+                    f"package apply interrupted and rollback failed; recover transaction {journal['transaction_id']}: {rollback_exc}"
+                ) from exc
+            raise ApplyError(
+                f"package apply rolled back transaction {journal['transaction_id']}: {exc}"
+            ) from exc

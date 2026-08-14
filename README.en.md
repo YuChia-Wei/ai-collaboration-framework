@@ -208,11 +208,13 @@ python3.11 payload/.ai/scripts/plan-ai-context-package-apply.py \
 
 Replace `OP-001` and `OP-002` with operation IDs from the reviewed plan, or remove those lines when no acknowledgement is required. After applying, read:
 
+The plan's `plan_sha256` is also the durable transaction ID. If the process stops after the journal is durable, run `--resume <transaction-id>` with the exact same package, or run `--rollback <transaction-id>` without depending on package availability. Recovery accepts no new selection or acknowledgement. Unrelated worktree changes, package/proof drift, corrupt prestates, and ambiguous partial writes fail closed. The transaction journal and exact recovery bytes stay in the target Git administrative directory and never masquerade as target-repository content.
+
 ```powershell
 Get-Content "$TargetRoot\.dev\AI-CONTEXT-APPLY-PENDING.yaml"
 ```
 
-This receipt records applied components, skipped reconciliation items, and source evidence. It does not finalize target provenance.
+This schema-2 receipt binds the transaction and plan, selected-input proof, each applied artifact's raw SHA-256 and Git mode, the complete selected managed state, applied components, skipped reconciliation items, and source evidence. It does not finalize target provenance.
 
 #### 3. Run `ai-context-init` in the target repository
 

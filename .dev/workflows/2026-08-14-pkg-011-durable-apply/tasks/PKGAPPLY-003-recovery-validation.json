@@ -6,9 +6,9 @@
   "task_id": "PKGAPPLY-003-recovery-validation",
   "workflow_id": "2026-08-14-pkg-011-durable-apply",
   "owner_skill": "ai-context-governance",
-  "status": "pending",
+  "status": "in_progress",
   "created_at": "2026-08-14T09:07:04+08:00",
-  "updated_at": "2026-08-14T09:07:04+08:00",
+  "updated_at": "2026-08-14T09:46:01+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-5.6-sol",
   "reasoning_effort": "xhigh",
@@ -22,15 +22,15 @@
   "execution": {
     "steps": ["Cover partial write, readonly/permission, symlink/reparse, EOL, delete, rename, and mode cases", "Force interruption after every operation boundary", "Validate recovery from a fresh process invocation", "Run package-native and cross-platform focused matrices", "Obtain independent fixed-head verification"],
     "validation": ["Windows-compatible focused suite", "POSIX focused suite", "package-native validation", "external-task receipt validation", "independent ai-context-auditor assessment"],
-    "last_completed_step": "Acceptance matrix and immutable-evidence boundary recorded",
-    "next_action": "Begin after PKGAPPLY-002 transaction lifecycle passes focused deterministic tests"
+    "last_completed_step": "Windows-compatible focused, semantic-lifecycle, effective-rule, and dirty-tree package matrices passed; independent current-diff review findings were remediated and re-reviewed",
+    "next_action": "Commit the Issue #200 implementation, then dispatch the long package matrix and POSIX/fixed-head audit against the exact clean commit"
   },
   "results": {
-    "summary": "",
-    "files_changed": [],
-    "tests_run": [],
-    "finding_status": "not-addressed",
-    "residual_risk": "No platform or independent closure evidence exists yet.",
+    "summary": "Focused acceptance is green; the 38-case package matrix also passed on the dirty implementation tree but took 123.462 seconds and therefore must be repeated externally at the clean immutable commit.",
+    "files_changed": [".ai/scripts/tests/test_ai_context_package_apply.py", ".ai/scripts/ai_context_target_provenance.py"],
+    "tests_run": ["package apply: 35 passed, 1 skipped", "semantic customization lifecycle: 7 passed", "effective rules: 18 passed, 2 skipped", "package producer matrix dirty-tree evidence: 38 passed in 123.462s"],
+    "finding_status": "verification-in-progress",
+    "residual_risk": "The long matrix lacks clean immutable external-task evidence; POSIX and final fixed-head audit remain pending.",
     "follow_up_needed": true
   }
 }

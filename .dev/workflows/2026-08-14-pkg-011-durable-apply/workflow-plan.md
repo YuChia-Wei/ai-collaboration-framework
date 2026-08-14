@@ -16,10 +16,10 @@
 - `base_branch`: `codex/2026-08-14-pkg-012-package-closure`
 - `branch_segment`: `3`
 - `status`: `in_progress`
-- `current_phase`: `implementation-planning`
+- `current_phase`: `fixed-commit-validation`
 - `artifact_root`: `.dev/workflows/2026-08-14-pkg-011-durable-apply`
 - `created_at`: `2026-08-14T09:07:04+08:00`
-- `updated_at`: `2026-08-14T09:07:04+08:00`
+- `updated_at`: `2026-08-14T09:46:01+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md`
 - `template_version`: `1.2.0`
 
@@ -64,10 +64,10 @@
 ## Stages And Checkpoints
 
 1. Baseline audit, live Issue read-back, verified #201 dependency checkpoint, graph-assisted apply-chain discovery, and stacked branch — completed.
-2. Workflow, source-repository routing boundary, state-machine/schema design, and deterministic GWT matrix — in progress.
-3. Hybrid identity and full selected-state implementation with focused fixtures — pending.
-4. Durable journal, recovery/resume/rollback implementation and forced-interruption validation — pending.
-5. Cross-platform/package-native validation, fixed-clean-commit audit, finding reconciliation, and local closeout — pending.
+2. Workflow, source-repository routing boundary, state-machine/schema design, and deterministic GWT matrix — completed.
+3. Hybrid identity and full selected-state implementation with focused fixtures — completed.
+4. Durable journal, recovery/resume/rollback implementation and forced-interruption validation — completed.
+5. Cross-platform/package-native validation, fixed-clean-commit audit, finding reconciliation, and local closeout — in progress.
 
 ## Validation Strategy
 
@@ -81,18 +81,18 @@
 
 - This segment consumes but does not redefine #201 package validation/selected-input proof.
 - Implementation commits remain Issue #200-bound and independently revertible before later upgrade work.
-- Recovery artifacts live in the target repository under the established pending-receipt authority and never overwrite target-owned/customization truth.
+- Recovery artifacts live under the target Git administrative directory; only the finalized pending-validation receipt lives under the established target authority. Neither surface overwrites provenance, customization, or effective-rule truth.
 - The cumulative PR to `main` remains deferred until all #200-#208 segments complete.
 
 ## Resume Checkpoint
 
-- Last completed action: created the dedicated stacked branch from clean #201 closeout and re-read live Issue #200 as open with unchanged owner-selected Hybrid and durability criteria.
-- Current task: `PKGAPPLY-001-hybrid-identity`.
-- Exact next action: formalize plan/journal schemas and operation-boundary fixtures, then implement complete selected-state observation and Hybrid identity under the governance owner.
-- Validation already completed: predecessor #201 commit/assessment/workflow policies passed; current branch starts clean at `55551a8bf4fa53591f78fd85b3f5e2f67a9ddd82`.
-- Git state: workflow artifacts intentionally uncommitted on `codex/2026-08-14-pkg-011-durable-apply`.
+- Last completed action: completed Hybrid identity, durable transaction, target validator, CLI recovery, documentation, deterministic fixtures, and independent current-diff re-review.
+- Current task: `PKGAPPLY-003-recovery-validation`.
+- Exact next action: commit the Issue #200 implementation, then dispatch the 123-second package matrix and POSIX/fixed-head verification at the exact clean commit.
+- Validation already completed: package apply 35 passed/1 privilege skip; lifecycle 7 passed; effective rules 18 passed/2 privilege skips; dirty-tree package matrix 38 passed in 123.462 seconds; independent review passed after two P1 corrections.
+- Git state: Issue #200 implementation and workflow evidence intentionally uncommitted on `codex/2026-08-14-pkg-011-durable-apply` pending commit-policy validation.
 - Branch history and checkpoint handoffs: cumulative segment 3; no push, PR, merge, Issue close, or release mutation.
-- Blockers or unresolved decisions: none; `OWNER-HYBRID-001` and live Issue #200 provide the necessary design authority.
+- Blockers or unresolved decisions: none; clean immutable external validation remains required by policy.
 
 ## Branch Lifecycle
 

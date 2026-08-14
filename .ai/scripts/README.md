@@ -250,13 +250,29 @@ closed. Incoming, previous, and operation sets are filtered together so a
 disabled provider never generates removal work. Existing target
 templates and locally changed managed files become reconciliation items.
 Acknowledging such an item skips it; acknowledgement never grants overwrite or
-delete permission. `--apply` rechecks the complete binding, applies only safe
-operations transactionally, and writes
-`.dev/AI-CONTEXT-APPLY-PENDING.yaml`. It never updates validated source
-provenance; the receipt records the resolved/default selection, authority
-evidence, and applied/skipped counts by component. Apply revalidates that
-authority before mutation. `ai-context-init` or `ai-context-upgrader` owns
-validation and provenance finalization.
+delete permission. `--apply` rechecks the complete binding, rejects drift in
+unchanged selected managed paths, and seals a schema-2 plan. Raw bytes are the
+authority; a clean tracked Git projection may satisfy the previous identity
+only when its index bytes and LF-normalized UTF-8 bytes match and no content
+transform attribute is configured. The transaction ID is the plan SHA-256.
+Before the first target mutation, the tool durably stores the plan, ordered
+operation boundary, exact prestates, and recovery bytes under the target Git
+administrative `ai-context-package-apply/<transaction-id>/` directory. Atomic
+same-directory writes and a durable state machine (`planned`, `applying`,
+`interrupted`, `rolled-back`, `finalized`) make process-death recovery explicit.
+Resume the exact sealed package with `--resume <transaction-id>`; restore the
+exact prestate without package availability with `--rollback <transaction-id>`.
+Both terminal operations are idempotent, while ambiguous state and unrelated
+worktree changes fail closed.
+
+Only a finalized apply writes `.dev/AI-CONTEXT-APPLY-PENDING.yaml`. Its schema-2
+receipt binds the plan and selected-input proof identities, operation order,
+every applied artifact's raw SHA-256 and intended Git mode, removed paths, the
+complete selected framework-managed identity, resolved/default selection, and
+applied/skipped counts by component. It never updates validated source
+provenance. `ai-context-init` or `ai-context-upgrader` owns validation and
+provenance finalization; reconciliation-preserved managed paths remain an
+explicit target-validation failure until owner resolution.
 
 For every selected framework-managed path, dry run also records an exact target
 Git ignore match (`source`, line, and pattern). An ignored path is an explicit

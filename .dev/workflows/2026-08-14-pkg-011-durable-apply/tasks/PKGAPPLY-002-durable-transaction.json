@@ -6,9 +6,9 @@
   "task_id": "PKGAPPLY-002-durable-transaction",
   "workflow_id": "2026-08-14-pkg-011-durable-apply",
   "owner_skill": "ai-context-governance",
-  "status": "pending",
+  "status": "completed",
   "created_at": "2026-08-14T09:07:04+08:00",
-  "updated_at": "2026-08-14T09:07:04+08:00",
+  "updated_at": "2026-08-14T09:46:01+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-5.6-sol",
   "reasoning_effort": "xhigh",
@@ -22,15 +22,15 @@
   "execution": {
     "steps": ["Define journal and receipt schema/state invariants", "Persist exact byte/mode pre-state and journal before mutation", "Implement atomic operation boundaries and durable state transitions", "Implement exact resume and rollback entrypoints", "Reject stale, foreign, malformed, symlink/reparse, ACL/readonly, and partial-write state"],
     "validation": ["state-transition fixtures", "forced interruption after every operation boundary", "idempotent resume and rollback", "receipt/provenance validator compatibility"],
-    "last_completed_step": "Dependency on verified Hybrid identity task recorded",
-    "next_action": "Begin after PKGAPPLY-001 identity invariants are fixed and focused tests pass"
+    "last_completed_step": "Implemented Git-admin plan/prestate backups, atomic durable writes, explicit lifecycle transitions, fresh-process resume, exact rollback, terminal idempotence, and active-transaction target gates",
+    "next_action": "Completed; dispatch clean-commit platform and package-native verification"
   },
   "results": {
-    "summary": "",
-    "files_changed": [],
-    "tests_run": [],
-    "finding_status": "not-addressed",
-    "residual_risk": "Platform and cross-process behavior remain unverified until PKGAPPLY-003.",
-    "follow_up_needed": true
+    "summary": "The sealed plan, exact raw prestates, modes, operation order, and recovery bytes are durable before target mutation. Transactions use planned/applying/interrupted/rolled-back/finalized states; resume and rollback reject drift and are terminal-idempotent. Windows replacement uses write-through native atomic operations.",
+    "files_changed": [".ai/scripts/ai_context_package_apply.py", ".ai/scripts/ai_context_target_provenance.py", ".ai/scripts/plan-ai-context-package-apply.py", ".ai/scripts/tests/test_ai_context_package_apply.py"],
+    "tests_run": ["deterministic process-death resume fixture: passed", "partial rename rollback and repeated rollback fixture: passed", "readonly preflight fixture: passed", "receipt/journal tamper fixture: passed"],
+    "finding_status": "addressed",
+    "residual_risk": "POSIX execution and immutable-commit full matrix remain in PKGAPPLY-003.",
+    "follow_up_needed": false
   }
 }
