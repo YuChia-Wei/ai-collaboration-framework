@@ -1,0 +1,36 @@
+{
+  "template_id": "ai-context-governance-remediation-task",
+  "template_version": "1.1.0",
+  "template_created_at": "2026-07-10T18:22:49+08:00",
+  "template_updated_at": "2026-07-27T09:52:09+08:00",
+  "task_id": "VERIFY-001-independent-audit",
+  "workflow_id": "2026-08-14-environment-execution-routing",
+  "owner_skill": "ai-context-auditor",
+  "status": "pending",
+  "created_at": "2026-08-14T21:40:34+08:00",
+  "updated_at": "2026-08-14T21:40:34+08:00",
+  "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
+  "model": "gpt-5.6-sol",
+  "reasoning_effort": "xhigh",
+  "finding_ids": ["Issue-210-verification"],
+  "scope": {
+    "target": "Independent read-only verification after owner review",
+    "files": ["Issue #210 implementation diff", ".dev/workflows/2026-08-14-environment-execution-routing/**"],
+    "constraints": ["Read-only verification", "No self-repair", "Owner adjustments precede final audit"],
+    "non_goals": ["Implementation changes", "Issue closure", "Push, pull request, merge, or publication"]
+  },
+  "execution": {
+    "steps": ["Wait for owner review", "Create independent assessment", "Reconcile findings and closure evidence"],
+    "validation": ["Independent ai-context-auditor assessment", "Workflow and commit range validation"],
+    "last_completed_step": "",
+    "next_action": "Wait for owner review of the implementation shape"
+  },
+  "results": {
+    "summary": "",
+    "files_changed": [],
+    "tests_run": [],
+    "finding_status": "not-addressed",
+    "residual_risk": "Independent verification is intentionally deferred until after owner review.",
+    "follow_up_needed": true
+  }
+}

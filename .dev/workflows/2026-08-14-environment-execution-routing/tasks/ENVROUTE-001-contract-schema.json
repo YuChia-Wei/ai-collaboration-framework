@@ -1,0 +1,36 @@
+{
+  "template_id": "ai-context-governance-remediation-task",
+  "template_version": "1.1.0",
+  "template_created_at": "2026-07-10T18:22:49+08:00",
+  "template_updated_at": "2026-07-27T09:52:09+08:00",
+  "task_id": "ENVROUTE-001-contract-schema",
+  "workflow_id": "2026-08-14-environment-execution-routing",
+  "owner_skill": "ai-context-governance",
+  "status": "in_progress",
+  "created_at": "2026-08-14T21:40:34+08:00",
+  "updated_at": "2026-08-14T21:40:34+08:00",
+  "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
+  "model": "gpt-5.6-sol",
+  "reasoning_effort": "xhigh",
+  "finding_ids": ["Issue-210-contract"],
+  "scope": {
+    "target": "Provider-neutral environment execution-routing contract and machine-readable schema",
+    "files": [".ai/assets/shared/**", ".ai/distribution/**", ".ai/INDEX.MD"],
+    "constraints": ["Tracked files contain no personal route values", "Readiness and execution evidence remain distinct", "Provider adapters do not own portable semantics"],
+    "non_goals": ["Personal binding creation", "Credentials or sessions", "Provider-specific portable defaults"]
+  },
+  "execution": {
+    "steps": ["Inventory existing contracts and schema conventions", "Define route, fallback, retry, evidence, and consent semantics", "Add deterministic schema validation and indexes"],
+    "validation": ["Schema-positive fixtures", "Ambiguity and authority-inversion negative fixtures", "AI-context and distribution validation"],
+    "last_completed_step": "Workflow and authorization bootstrap",
+    "next_action": "Inventory repository-native readiness, distribution, and schema conventions"
+  },
+  "results": {
+    "summary": "",
+    "files_changed": [],
+    "tests_run": [],
+    "finding_status": "not-addressed",
+    "residual_risk": "Exact artifact paths and compatibility consumers are not yet confirmed.",
+    "follow_up_needed": true
+  }
+}
