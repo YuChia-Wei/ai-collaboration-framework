@@ -19,7 +19,7 @@
 - `current_phase`: `remediation-planning`
 - `artifact_root`: `.dev/workflows/2026-08-14-pkg-012-package-closure`
 - `created_at`: `2026-08-14T07:03:23+08:00`
-- `updated_at`: `2026-08-14T07:03:23+08:00`
+- `updated_at`: `2026-08-14T07:09:30+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md`
 - `template_version`: `1.2.0`
 
@@ -72,7 +72,7 @@
 
 ## Resume Checkpoint
 
-- Last completed action: created the dedicated stacked branch from clean #202 checkpoint `4df161faf010f43a9cd0e37ef22c4a1f631c3d7c` and froze Issue #201 plus baseline evidence.
+- Last completed action: rewrote every unpushed local commit subject to carry #201 or #202 as required by the owner, preserved fixed validation commit `4ecaa5cf`, and reconciled the new clean #202 checkpoint `f9483469dba4cbd64c20606e33597ffa30793c74`.
 - Current task: `PKGCLOSURE-001-component-ownership` planning, with parallel read-only inventory of #201 and #200 boundaries.
 - Exact next action: reconcile explorer evidence, finalize implementation ownership, and commit this workflow-planning checkpoint before changing package contracts.
 - Validation already completed: predecessor #202 workflow commit-policy range passed; branch creation and Git status were clean.
@@ -84,4 +84,4 @@
 
 | Segment | Branch | Base | Checkpoint Type | Commit | Remote / Target | Recorded At | Reason | Resume Branch / Action |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| 2 | `codex/2026-08-14-pkg-012-package-closure` | `codex/2026-08-14-val-006-dependency-closure@4df161faf010f43a9cd0e37ef22c4a1f631c3d7c` | local active stacked segment | pending | not pushed | `2026-08-14T07:03:23+08:00` | package closure precedes durable apply and upgrade correctness | finish #201 locally, verify, close, then stack #200 without remote integration |
+| 2 | `codex/2026-08-14-pkg-012-package-closure` | `codex/2026-08-14-val-006-dependency-closure@f9483469dba4cbd64c20606e33597ffa30793c74` | local active stacked segment | workflow plan `caf2256123b1ab03e5da435f6eff9818543611aa`; implementation pending | not pushed | `2026-08-14T07:09:30+08:00` | package closure precedes durable apply and upgrade correctness | finish #201 locally, verify, close, then stack #200 without remote integration |

@@ -14,7 +14,7 @@
 - `owner_skill`: `ai-context-governance`
 - `status`: `draft`
 - `created_at`: `2026-08-14T07:03:23+08:00`
-- `updated_at`: `2026-08-14T07:03:23+08:00`
+- `updated_at`: `2026-08-14T07:09:30+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-remediation-report-template.md`
 - `template_version`: `2.0.0`
 - `baseline_assessment`: `ASM-20260813-001`

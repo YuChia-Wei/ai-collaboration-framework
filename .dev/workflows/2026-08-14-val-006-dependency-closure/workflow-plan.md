@@ -19,7 +19,7 @@
 - `current_phase`: `completed`
 - `artifact_root`: `.dev/workflows/2026-08-14-val-006-dependency-closure`
 - `created_at`: `2026-08-14T00:06:47+08:00`
-- `updated_at`: `2026-08-14T07:00:35+08:00`
+- `updated_at`: `2026-08-14T07:09:30+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md`
 - `template_version`: `1.2.0`
 
@@ -36,7 +36,7 @@
 
 - Baseline assessment: `.dev/assessments/ASM-20260813-001/assessment.yaml`
 - Remediation report: `.dev/workflows/2026-08-14-val-006-dependency-closure/reports/remediation-report.md`
-- Verification assessment: `ASM-20260814-003` at `.dev/assessments/ASM-20260814-003/assessment.yaml`, committed as `f3647f8bd89bbcfaf75fd261681c92dce1ceb220`
+- Verification assessment: `ASM-20260814-003` at `.dev/assessments/ASM-20260814-003/assessment.yaml`, committed as `a7b625ff832e55767246fb18e90800949b323f5a`
 - Tasks: `.dev/workflows/2026-08-14-val-006-dependency-closure/tasks/`
 
 ## Live Intake And Dependency Analysis
@@ -99,7 +99,7 @@ Proposed merge order after this segment: #202; #201; #200; #204 runner correctne
 - Current task: `VALSEL-001-dependency-closure` completed.
 - Exact next action: create the stacked #201 package-closure segment from this clean checkpoint. Defer push, PR, and merge until all #200–#208 segments complete and pass their gates.
 - Validation already completed: final Windows-compatible selector fixture class 6/6 passed in 26.703 seconds; POSIX WSL selector fixtures 6/6 passed in 19.760 seconds; profile-registry tests 6/6 passed; three existing aggregate-runner regressions 3/3 passed in 55.355 seconds; shell asset validator passed 16 assets; Bash syntax, Python AST parsing, workflow/assessment artifact validation, commit-policy validation, and Git diff checks passed. Canonical `VAL006-003` against clean `4ecaa5cf` passed the complete aggregate contract 44/44 in 46.443 seconds and its dispatch/completion pair passed the canonical schema validator. `ASM-20260814-003` independently revalidated that receipt and resolved the finding. The initial new-fixture run produced 4 passes and 2 failures because its synthetic path overlapped legitimate broad registry owners; after using a uniquely owned synthetic path, the complete class passed. The initial workflow validator run failed because the new locator was absent from the index; the indexed rerun passed. External `VAL006-001` remains blocked by Windows Temp `WinError 5`; `VAL006-002` passed only on superseded commit `125d85db` and is historical, not canonical.
-- Git state: clean local workflow branch at governance closeout commit `951677057ce8101ae1ebddb42cf472b8b666c5d1`, containing implementation `4ecaa5cf` and assessment `f3647f8`; no push or hosted mutation.
+- Git state: clean local workflow checkpoint at governance closeout commit `f9483469dba4cbd64c20606e33597ffa30793c74`, containing implementation `4ecaa5cf`, assessment `a7b625f`, and closeout `bbb32d3`; no push or hosted mutation. All local commit subjects are Issue-bound after the owner-required unpushed rewrite.
 - Branch history and checkpoint handoffs: segment 1 completed locally. The owner's cumulative-integration instruction makes this commit the base for the next stacked local segment; no push, PR, or merge has occurred.
 - Blockers or unresolved decisions: none for #202. UPG-002 packet schema and retention are outside this workflow and remain an owner gate.
 
@@ -107,4 +107,4 @@ Proposed merge order after this segment: #202; #201; #200; #204 runner correctne
 
 | Segment | Branch | Base | Checkpoint Type | Commit | Remote / Target | Recorded At | Reason | Resume Branch / Action |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| 1 | `codex/2026-08-14-val-006-dependency-closure` | `main@a679d4990c3a37b59bb8592e4fc78180ef165c6b` | local merge-ready segment | implementation `4ecaa5cf5c079011f765542253f2faafb2b814ca`; assessment `f3647f8bd89bbcfaf75fd261681c92dce1ceb220`; governance closeout `951677057ce8101ae1ebddb42cf472b8b666c5d1` | not pushed | `2026-08-14T07:00:35+08:00` | independently mergeable selector defect with fixed-head verification | stack the #201 segment locally; defer cumulative push, PR, and merge until all authorized items pass |
+| 1 | `codex/2026-08-14-val-006-dependency-closure` | `main@a679d4990c3a37b59bb8592e4fc78180ef165c6b` | local merge-ready segment | implementation `4ecaa5cf5c079011f765542253f2faafb2b814ca`; assessment `a7b625ff832e55767246fb18e90800949b323f5a`; governance closeout and authority reconciliation through `f9483469dba4cbd64c20606e33597ffa30793c74` | not pushed | `2026-08-14T07:09:30+08:00` | independently mergeable selector defect with fixed-head verification | stack the #201 segment locally; defer cumulative push, PR, and merge until all authorized items pass |
