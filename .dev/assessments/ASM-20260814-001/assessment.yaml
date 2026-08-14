@@ -1,0 +1,48 @@
+template_metadata:
+  template_id: "assessment-locator"
+  template_version: "1.0.0"
+  template_created_at: "2026-07-13T23:04:10+08:00"
+  template_updated_at: "2026-07-13T23:04:10+08:00"
+
+schema_version: "1.0"
+assessment_id: "ASM-20260814-001"
+commit_search_id: "ASM-20260814-001"
+assessment_type: "ai-context-verification"
+title: "CLI Execution Routing Contract Verification"
+owner_skill: "ai-context-auditor"
+status: "final"
+report: "report.md"
+artifact_branch: "codex/2026-08-14-environment-execution-routing"
+base_branch: "main"
+created_at: "2026-08-14T22:38:38+08:00"
+updated_at: "2026-08-14T22:38:38+08:00"
+template_source: ".dev/assessments/templates/assessment-locator-template.yaml"
+template_version: "1.0.0"
+report_template_source: ".ai/assets/skills/ai-context-auditor/templates/ai-context-audit-report-template.md"
+report_template_version: "2.1.0"
+subject_ref:
+  repository: "YuChia-Wei/ai-collaboration-framework"
+  branch: "codex/2026-08-14-environment-execution-routing"
+  commit: "cca50f67f8a8a460a78af95820cdddd5781ec71b"
+scope:
+  included:
+    - "GitHub Issue #210 CLI-only execution-routing contract, schema, validation, guidance, package projection, and downstream lifecycle integration"
+    - "Ignored per-clone binding boundary, consent semantics, fail-closed checks, Windows host execution, and Ubuntu-24.04 WSL execution"
+    - "Workflow 2026-08-14-environment-execution-routing remediation evidence through commit cca50f67"
+  excluded:
+    - "Product source and test implementation trees"
+    - "Non-CLI connector, CI, browser, external-task, and delegation routing"
+    - "Downstream repository adoption, release, tag, publication, and personal secret or credential values"
+    - "Hosted pull-request checks and remote integration, which occur after this fixed-subject assessment"
+relations:
+  supersedes: []
+  superseded_by: []
+  related_assessments: []
+  workflow_refs:
+    - "2026-08-14-environment-execution-routing"
+  backlog_refs: []
+  adr_refs: []
+resume:
+  last_completed_action: "Verified fixed commit cca50f67 as a CLI-only, fail-closed, Git-ignored local routing contract with passing Windows and Ubuntu-24.04 focused execution evidence."
+  next_action: "ai-context-governance may reconcile the workflow and use this assessment as the pre-PR verification checkpoint; hosted checks and merge remain separate gates."
+  blockers: []

@@ -1,0 +1,36 @@
+{
+  "template_id": "ai-context-governance-remediation-task",
+  "template_version": "1.1.0",
+  "template_created_at": "2026-07-10T18:22:49+08:00",
+  "template_updated_at": "2026-07-27T09:52:09+08:00",
+  "task_id": "ENVROUTE-003-downstream-integration",
+  "workflow_id": "2026-08-14-environment-execution-routing",
+  "owner_skill": "ai-context-governance",
+  "status": "completed",
+  "created_at": "2026-08-14T21:40:34+08:00",
+  "updated_at": "2026-08-14T22:40:39+08:00",
+  "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
+  "model": "gpt-5.6-sol",
+  "reasoning_effort": "xhigh",
+  "finding_ids": ["Issue-210-downstream"],
+  "scope": {
+    "target": "Downstream packaging, initialization, upgrade, and compatibility boundary",
+    "files": [".ai/distribution/**", ".ai/assets/skills/ai-context-init/**", ".ai/assets/skills/ai-context-upgrader/**", ".ai/scripts/tests/**"],
+    "constraints": ["Portable assets are packaged", "Local values are never packaged or promoted to target truth", "Synthetic fixtures contain no source-host defaults"],
+    "non_goals": ["Release publication", "Target repository mutation", "Mandatory WSL, GitHub, or connector adoption"]
+  },
+  "execution": {
+    "steps": ["Register portable artifacts", "Add init and upgrade discovery boundaries", "Prove package exclusion and cross-platform validation"],
+    "validation": ["Package manifest checks", "Init and upgrade contract tests", "Windows and Ubuntu-24.04 focused tests"],
+    "last_completed_step": "Owner accepted the CLI-only shape, requested the machine-local binding, and ASM-20260814-001 verified fixed subject cca50f67 without a blocking finding",
+    "next_action": "Use the authorized pull-request delivery gate; no further local remediation is pending"
+  },
+  "results": {
+    "summary": "Downstream init ensures only the ignore rule, upgrade preserves local values without reading them, target validation enforces the same contract, and package rules exclude all personal state.",
+    "files_changed": [".ai/distribution/profiles/dotnet-backend.yaml", ".ai/assets/skills/ai-context-init/**", ".ai/assets/skills/ai-context-upgrader/**", ".agents/skills/**", ".claude/skills/**", ".dev/guides/ai-collaboration-guides/**"],
+    "tests_run": ["py -3 .ai/scripts/tests/test_cli_execution_routing.py -q (9/9 Windows)", "wsl.exe -d Ubuntu-24.04 -- bash -lc <commit-bound CLI routing tests> (9/9)", "py -3 .ai/scripts/tests/test_ai_context_packaging.py DeterministicPackageGwtTests.test_gwt_000a_given_real_component_matrix_when_payload_is_projected_then_both_mandatory_cores_keep_their_capabilities -q (1/1)", "py -3 .ai/scripts/tests/test_ai_context_wrapper_metadata.py -q (16/16)", "py -3 .ai/scripts/tests/test_ai_context_language_policy.py -q (10/10)", "py -3 .ai/scripts/tests/test_python_entrypoints_contract.py -q (4/4)"],
+    "finding_status": "resolved",
+    "residual_risk": "No downstream target repository has adopted the standard yet; hosted checks and remote merge remain separate gates.",
+    "follow_up_needed": false
+  }
+}

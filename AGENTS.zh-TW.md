@@ -19,6 +19,13 @@
 - 僅修改任務所需的檔案。避免無關的清理，並移除自身變更所引入的 artifacts。
 - 執行前先建立可驗證的完成條件。反覆修正直到條件通過；否則應回報具體阻礙與任何略過的 validation。
 
+## CLI 執行路由
+
+- 上層政策選定 CLI 執行後，若命令可能跨越 shell、sandbox、host、WSL 或 container 邊界，遵循 `.ai/assets/shared/CLI-EXECUTION-ROUTING-CONTRACT.md`。Connector、CI、external-task、browser 與 delegation routing 不屬於本機 CLI contract。
+- 僅從 `.dev/ai-context/local/cli-execution-routing.yaml` 讀取選用的 per-clone binding。此檔案必須由 `.gitignore` 的 `/.dev/ai-context/local/` 規則涵蓋、保持 untracked 與 unstaged、不含秘密，且不得成為 package 或 provenance truth。
+- 不得隱含建立或更新該 binding。當 bounded diagnosis 找到能成功完成所要求操作的穩定 CLI 路由時，先完成並驗證操作，再詢問使用者是否要在本機保存最小路由資訊。
+- 請求保存核准前，先說明 operation/capability、確切本機路徑、欄位、create/merge/replace 動作，以及不會保存秘密。使用者拒絕或未回覆時不得寫入；即使核准，仍須先確認 ignore/untracked 狀態並在寫入後讀回。
+
 ## Repository 定位
 
 這個 repository 的用途是：
