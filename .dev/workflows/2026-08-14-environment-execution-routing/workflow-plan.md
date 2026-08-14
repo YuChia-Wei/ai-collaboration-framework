@@ -15,11 +15,11 @@
 - `branch`: `codex/2026-08-14-environment-execution-routing`
 - `base_branch`: `main`
 - `branch_segment`: `1`
-- `status`: `in_progress`
-- `current_phase`: `remediation`
+- `status`: `completed`
+- `current_phase`: `completed`
 - `artifact_root`: `.dev/workflows/2026-08-14-environment-execution-routing`
 - `created_at`: `2026-08-14T21:40:34+08:00`
-- `updated_at`: `2026-08-14T22:22:26+08:00`
+- `updated_at`: `2026-08-14T22:40:39+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md`
 - `template_version`: `1.2.0`
 
@@ -37,13 +37,13 @@
 - Scope correction: Owner message on 2026-08-14: `OK，改 CLI-EXECUTION-ROUTING-CONTRACT`; the local contract is CLI-only and must not configure connector, CI, external-task, browser, or delegation routing.
 - Delivery cohesion: Contract, local-binding boundary, validation, package projection, and agent behavior form one atomic portable capability and share one review, rollback, and compatibility boundary.
 - Workflow justification: This changes canonical portable rules and future agent behavior across `.ai`, `.dev`, runtime discovery, packaging, and validation. The workflow preserves the owner review checkpoint before independent verification and closure.
-- Planned topology: Linear integration is the initial recommendation because this is one coherent capability; integration remains owner-controlled and may be reconsidered if later review creates a durable approval or handoff boundary.
+- Planned topology: Merge-commit integration. The branch now contains durable owner-review, personal-binding consent, named WSL cross-host validation, and independent verification checkpoints that should remain grouped as one review and rollback unit.
 
 ## Artifact Contract
 
 - Baseline assessment: `not-applicable`; Issue #210 plus completed readiness Issue #147 are the approved design baseline.
 - Remediation report: `.dev/workflows/2026-08-14-environment-execution-routing/reports/remediation-report.md`
-- Verification assessment: `pending owner review`; independent post-remediation verification will receive a new assessment ID if the reviewed implementation proceeds to closure.
+- Verification assessment: `ASM-20260814-001`; final at fixed subject commit `cca50f67` with no blocking finding.
 - Tasks: `.dev/workflows/2026-08-14-environment-execution-routing/tasks/`
 
 ## Finding Triage
@@ -53,7 +53,7 @@
 | `Issue-210-contract` | high | `ai-context-governance` | implement | `ENVROUTE-001-contract-schema` | schema and contract tests |
 | `Issue-210-local-persistence` | high | `ai-context-governance` | implement | `ENVROUTE-002-local-binding` | ignore, consent, and sensitive-field negative tests |
 | `Issue-210-downstream` | high | `ai-context-governance` | implement | `ENVROUTE-003-downstream-integration` | package, init/upgrade, Windows, and WSL checks |
-| `Issue-210-verification` | high | `ai-context-auditor` | pending owner review | `VERIFY-001-independent-audit` | independent read-only assessment |
+| `Issue-210-verification` | high | `ai-context-auditor` | verified | `VERIFY-001-independent-audit` | `ASM-20260814-001` |
 
 ## Stages And Checkpoints
 
@@ -62,18 +62,19 @@
 3. Implement Git-ignored local-binding validation and post-recovery consent behavior. `completed`
 4. Integrate downstream packaging and compatibility checks. `completed`; lifecycle component projection passed against immutable commit `0970685`.
 5. Run focused Windows and explicit `Ubuntu-24.04` WSL validation outside the sandbox. `completed`; the immutable commit passed 8/8 in Ubuntu-24.04.
-6. Present the implementation shape for owner review and adjustment. `in_progress`
-7. After owner review, obtain independent verification and reconcile the workflow. `pending`
+6. Present the implementation shape for owner review and adjustment. `completed`; the owner approved CLI-only scope, requested the per-machine binding, and authorized PR integration.
+7. After owner review, obtain independent verification and reconcile the workflow. `completed`; `ASM-20260814-001` found no blocking regression.
+8. Push, open a ready pull request, require hosted checks and stable head, then merge to `main` using merge-commit topology. `authorized external delivery gate`; this transport step does not redefine workflow completion.
 
 ## Resume Checkpoint
 
-- Last completed action: Owner scope-correction commit `f7529ee` renamed the contract to CLI execution routing, rejected non-CLI surfaces/selectors, passed the committed package lifecycle projection, and passed 9/9 on Ubuntu-24.04.
-- Current task: `ENVROUTE-003-downstream-integration` remains active for the owner review checkpoint; `VERIFY-001-independent-audit` remains pending.
-- Exact next action: Present the corrected CLI-only contract for owner review; keep independent verification pending until the owner accepts the revised shape.
-- Validation already completed: CLI-only routing GWT 9/9 on Windows and immutable Ubuntu-24.04; wrapper metadata 16/16; language policy 10/10; Python entrypoints 4/4; committed package lifecycle projection 1/1; source AI-context and workflow validators passed; `git diff --check` passed.
-- Git state: Local CLI-only scope-correction commit `f7529ee` follows implementation/evidence commits `0970685` and `5881922` on `codex/2026-08-14-environment-execution-routing`; no push, pull request, or merge.
+- Last completed action: `ASM-20260814-001` independently verified fixed subject commit `cca50f67` after owner acceptance; Windows and Ubuntu-24.04 focused tests, source validation with four local routes, package projection, ignore checks, and assessment validation passed.
+- Current task: Local workflow closure is complete. Remote PR transport and hosted integration are the authorized next gate, not an unfinished remediation task.
+- Exact next action: Validate the full workflow commit range, push the branch, create a ready PR to `main`, watch hosted checks once, and merge only if the head remains unchanged and all gates pass.
+- Validation already completed: CLI-only routing GWT 9/9 on Windows and Ubuntu-24.04; wrapper metadata 16/16; language policy 10/10; Python entrypoints 4/4; committed package lifecycle projection 1/1; source AI-context and assessment validators passed; local route remains ignored/untracked; `git diff --check` passed.
+- Git state: Verification assessment commit `a6a0625` follows the validated implementation at `cca50f67` on `codex/2026-08-14-environment-execution-routing`; no push, pull request, or merge at this checkpoint.
 - Branch history and checkpoint handoffs: None.
-- Blockers or unresolved decisions: No implementation blocker. The owner review checkpoint intentionally precedes personal-binding creation, independent verification, and workflow closure.
+- Blockers or unresolved decisions: None locally. Hosted checks and stable-head read-back remain fail-closed external merge gates.
 
 ## Branch Lifecycle
 
@@ -81,3 +82,4 @@
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | 1 | `codex/2026-08-14-environment-execution-routing` | `main` | local-owner-review | `0970685` | local | `2026-08-14T22:05:43+08:00` | Implemented and validated Issue #210 without creating personal local state | Present result shape; adjust on this branch or proceed to independent verification after owner decision |
 | 2 | `codex/2026-08-14-environment-execution-routing` | `main` | local-owner-adjustment | `f7529ee` | local | `2026-08-14T22:22:26+08:00` | Restricted the contract and local binding to CLI-only execution routing | Present corrected shape; retain `VERIFY-001` as pending until owner acceptance |
+| 3 | `codex/2026-08-14-environment-execution-routing` | `main` | local-verification | `a6a0625` | local | `2026-08-14T22:40:39+08:00` | Owner accepted the shape, requested the machine-local binding, authorized PR integration, and `ASM-20260814-001` found no blocking regression | Validate and push this branch; create a ready PR and merge only after hosted gates pass |

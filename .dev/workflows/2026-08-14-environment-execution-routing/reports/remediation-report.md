@@ -12,20 +12,20 @@
 - `report_id`: `remediation-report-2026-08-14-environment-execution-routing`
 - `workflow_id`: `2026-08-14-environment-execution-routing`
 - `owner_skill`: `ai-context-governance`
-- `status`: `draft`
+- `status`: `final`
 - `created_at`: `2026-08-14T21:58:42+08:00`
-- `updated_at`: `2026-08-14T22:22:26+08:00`
+- `updated_at`: `2026-08-14T22:40:39+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-remediation-report-template.md`
 - `template_version`: `2.0.0`
 - `baseline_assessment`: `not-applicable; GitHub Issue #210 is the approved baseline`
-- `verification_assessment`: `pending owner review`
+- `verification_assessment`: `ASM-20260814-001`
 
 ## Remediation Summary
 
 - Authorized scope: implement GitHub Issue #210 as a CLI-only local routing contract while keeping personal CLI values Git-ignored and requiring post-recovery consent before a local write.
 - Completed scope: portable CLI contract and schema, exact ignore boundary, source and target validation, agent behavior, init/upgrader preservation rules, package exclusion, indexes, wrappers, and guides. Connector, CI, external-task, browser, and delegation routing are explicitly excluded.
 - Validation summary: narrowed CLI-only routing GWT tests pass 9/9 on Windows and immutable Ubuntu-24.04, including non-CLI surface rejection; wrapper 16/16, language 10/10, and Python entrypoint 4/4 suites pass; committed package lifecycle projection 1/1, source AI-context validation, workflow validation, and whitespace checks pass.
-- Closure decision: `not-ready`; owner review and independent verification remain.
+- Closure decision: `ready-for-authorized-pull-request`; owner review is accepted and `ASM-20260814-001` found no blocking regression. Hosted checks and stable-head merge remain separate fail-closed gates.
 
 ## Finding Resolution Matrix
 
@@ -34,7 +34,7 @@
 | `Issue-210-contract` | high | `resolved` | shared CLI contract, schema, indexes | CLI-only routing GWT and source validator | `f7529ee` | Versioned migration is required for a future incompatible schema. |
 | `Issue-210-local-persistence` | high | `resolved` | `.gitignore`, validators, root agent guidance | ignore, tracked, consent, sensitive-field, retry tests | `f7529ee` | No personal binding exists without a separate owner decision. |
 | `Issue-210-downstream` | high | `resolved` | package profile, target validator, init/upgrader, wrappers, guides | package projection, Windows, immutable WSL | `f7529ee` | No downstream target repository has adopted the standard yet. |
-| `Issue-210-verification` | high | `not-addressed` | none | independent audit intentionally deferred | pending | Owner adjustments must precede independent verification. |
+| `Issue-210-verification` | high | `verified` | `.dev/assessments/ASM-20260814-001/**` | fixed-subject audit, Windows/Ubuntu-24.04 GWT, source and package validation | `a6a0625` | Hosted checks, downstream adoption, and remote integration remain separate. |
 
 ## Changes And Evidence
 
@@ -61,22 +61,22 @@
 
 ## Verification Assessment Reconciliation
 
-- Independent auditor: pending owner review.
-- Confirmed resolved: pending.
-- Recurring findings: pending.
-- New or regressed findings: pending.
+- Independent auditor: `ai-context-auditor`, assessment `ASM-20260814-001`, fixed subject `cca50f67`.
+- Confirmed resolved: `Issue-210-contract`, `Issue-210-local-persistence`, and `Issue-210-downstream`.
+- Recurring findings: none.
+- New or regressed findings: none blocking.
 
 ## Deferred Work
 
 | Finding | Reason | Owner | Next Action |
 | --- | --- | --- | --- |
-| Personal local binding | Requires a separate disclosed consent decision after a stable successful route | repository owner | Review the proposed path and fields; approve, adjust, or decline. |
-| Independent post-remediation audit | Owner requested to inspect and adjust the result shape first | `ai-context-auditor` | Run only after owner review. |
-| Push, PR, merge, Issue closure, release | Not authorized | repository owner | Decide separately. |
+| Downstream adoption | Source contract and package projection are verified, but no target repository has adopted the standard | downstream owner | Adopt the portable contract while preserving per-clone local values. |
+| Issue closure | PR integration does not imply Issue closure | repository owner | Close separately after remote evidence is reviewed if desired. |
+| Release and publication | Outside Issue #210 implementation and PR authorization | repository owner | Authorize separately if a release is desired. |
 
 ## Closure Evidence
 
-- Required validations: owner review and independent verification remain.
-- Commit status: local CLI-only scope-correction checkpoint `f7529ee` is validated and unpushed.
-- Workflow/task status: `ENVROUTE-001` and `ENVROUTE-002` completed; `ENVROUTE-003` remains active for owner review; `VERIFY-001` pending.
-- Final next action: present the result shape without creating personal local state; apply owner adjustments or proceed to independent verification only after the owner decides.
+- Required validations: owner review accepted; `ASM-20260814-001` final with no blocking finding; assessment validator passed for 54 assessments. Full workflow/range validation is the final local PR prerequisite.
+- Commit status: implementation fixed at `cca50f67`; verification assessment committed as `a6a0625`; workflow reconciliation is the final local commit before push.
+- Workflow/task status: all four tasks completed and the workflow is closed locally. PR transport and hosted merge are authorized external gates, not remediation state.
+- Final next action: push the branch, create a ready pull request with merge-commit topology, watch hosted checks once, and merge only if every gate passes with an unchanged head.

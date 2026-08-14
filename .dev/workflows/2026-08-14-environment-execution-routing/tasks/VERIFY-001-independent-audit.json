@@ -6,9 +6,9 @@
   "task_id": "VERIFY-001-independent-audit",
   "workflow_id": "2026-08-14-environment-execution-routing",
   "owner_skill": "ai-context-auditor",
-  "status": "pending",
+  "status": "completed",
   "created_at": "2026-08-14T21:40:34+08:00",
-  "updated_at": "2026-08-14T21:40:34+08:00",
+  "updated_at": "2026-08-14T22:40:39+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-5.6-sol",
   "reasoning_effort": "xhigh",
@@ -22,15 +22,15 @@
   "execution": {
     "steps": ["Wait for owner review", "Create independent assessment", "Reconcile findings and closure evidence"],
     "validation": ["Independent ai-context-auditor assessment", "Workflow and commit range validation"],
-    "last_completed_step": "",
-    "next_action": "Wait for owner review of the implementation shape"
+    "last_completed_step": "Created final verification assessment ASM-20260814-001 for fixed subject cca50f67 and found no blocking regression",
+    "next_action": "ai-context-governance may use the assessment for workflow and pull-request readiness reconciliation"
   },
   "results": {
-    "summary": "",
-    "files_changed": [],
-    "tests_run": [],
-    "finding_status": "not-addressed",
-    "residual_risk": "Independent verification is intentionally deferred until after owner review.",
-    "follow_up_needed": true
+    "summary": "ASM-20260814-001 verified the CLI-only contract, ignored/untracked personal boundary, consent and fail-closed rules, downstream package lifecycle integration, and Windows plus Ubuntu-24.04 execution evidence.",
+    "files_changed": [".dev/assessments/ASM-20260814-001/assessment.yaml", ".dev/assessments/ASM-20260814-001/report.md", ".dev/assessments/INDEX.MD"],
+    "tests_run": ["py -3 .ai/scripts/tests/test_cli_execution_routing.py -q (9/9 Windows)", "wsl.exe -d Ubuntu-24.04 -- bash -lc <focused CLI routing test> (9/9)", "py -3 .ai/scripts/validate-ai-context.py (passed; 4 local CLI routes)", "py -3 .ai/scripts/tests/test_ai_context_packaging.py <focused component projection> -q (1/1)", "py -3 .ai/scripts/validate-assessment-artifacts.py (54 assessments)"],
+    "finding_status": "verified",
+    "residual_risk": "Hosted pull-request checks, stable-head verification, remote merge, downstream adoption, and release/publication are separate gates.",
+    "follow_up_needed": false
   }
 }
