@@ -1614,6 +1614,7 @@ class AiContextPackageApplyGwtTests(unittest.TestCase):
             "after_applying_journal",
             "after_destination_replace",
             "after_operation",
+            "after_progress_journal",
             "after_source_remove",
             "after_receipt",
             "after_finalized_journal",
@@ -1909,6 +1910,295 @@ class AiContextPackageApplyGwtTests(unittest.TestCase):
                             (fixture.target / ".ai/rule.md").read_bytes(),
                         )
                     self.assertTrue(tombstones[0].is_file())
+                finally:
+                    fixture.close()
+
+    def test_gwt_028_given_target_template_add_when_fresh_process_rolls_back_then_package_independent_prestate_is_restored(self) -> None:
+        for failed_boundary in ("after_destination_replace", "after_progress_journal"):
+            with self.subTest(boundary=failed_boundary):
+                fixture = PackageApplyFixture()
+                try:
+                    fixture.make_package(
+                        {
+                            "AGENTS.md": (
+                                b"target template\n",
+                                "target-template",
+                                "0644",
+                            )
+                        },
+                        [
+                            operation(
+                                "001-add",
+                                "add",
+                                "AGENTS.md",
+                                ownership="target-template",
+                            )
+                        ],
+                    )
+                    plan = fixture.plan()
+                    self.assertEqual(
+                        {
+                            "exists": True,
+                            "sha256": APPLY.sha256_bytes(b"target template\n"),
+                            "mode": "0644",
+                        },
+                        plan["operation_post_states"][0]["paths"][0]["state"],
+                    )
+
+                    def crash(boundary: str, _details: dict) -> None:
+                        if boundary == failed_boundary:
+                            raise APPLY.InjectedInterruption(
+                                f"process died at {failed_boundary}"
+                            )
+
+                    with self.assertRaises(APPLY.InjectedInterruption):
+                        APPLY.apply_plan(plan, boundary_hook=crash)
+                    transaction_id = plan["plan_sha256"]
+                    command = [
+                        sys.executable,
+                        str(ROOT / ".ai/scripts/plan-ai-context-package-apply.py"),
+                        "--target-root",
+                        str(fixture.target),
+                        "--rollback",
+                        transaction_id,
+                    ]
+
+                    rolled_back = subprocess.run(
+                        command,
+                        check=False,
+                        capture_output=True,
+                        text=True,
+                    )
+                    repeated = subprocess.run(
+                        command,
+                        check=False,
+                        capture_output=True,
+                        text=True,
+                    )
+
+                    self.assertEqual(
+                        0, rolled_back.returncode, rolled_back.stdout + rolled_back.stderr
+                    )
+                    self.assertEqual(
+                        0, repeated.returncode, repeated.stdout + repeated.stderr
+                    )
+                    self.assertFalse((fixture.target / "AGENTS.md").exists())
+                    journal = yaml.safe_load(
+                        (
+                            APPLY.transaction_root(fixture.target, transaction_id)
+                            / "journal.yaml"
+                        ).read_text(encoding="utf-8")
+                    )
+                    self.assertEqual("rolled-back", journal["state"])
+                    self.assertEqual(
+                        "",
+                        git(
+                            fixture.target,
+                            "status",
+                            "--porcelain",
+                            "--untracked-files=all",
+                        ).stdout,
+                    )
+                finally:
+                    fixture.close()
+
+    def test_gwt_029_given_corrupt_journal_progress_when_recovered_then_it_fails_before_mutation(self) -> None:
+        corruptions = (
+            {"next_apply_index": -1},
+            {"next_apply_index": True},
+            {"next_apply_index": "1"},
+            {"next_apply_index": 3},
+            {"next_apply_index": 1, "completed_operation_ids": []},
+            {"next_apply_index": 1, "completed_operation_ids": ["002-add"]},
+            {
+                "state": "planned",
+                "next_apply_index": 1,
+                "completed_operation_ids": ["001-add"],
+            },
+            {
+                "state": "finalized",
+                "next_apply_index": 2,
+                "completed_operation_ids": ["001-add", "002-add"],
+                "final_receipt_sha256": None,
+            },
+            {"state": "interrupted", "final_receipt_sha256": "0" * 64},
+        )
+        for corruption in corruptions:
+            with self.subTest(corruption=corruption):
+                fixture = PackageApplyFixture()
+                try:
+                    fixture.make_package(
+                        {
+                            ".ai/one.md": (b"one\n", "framework-managed", "0644"),
+                            ".ai/two.md": (b"two\n", "framework-managed", "0644"),
+                        },
+                        [
+                            operation("001-add", "add", ".ai/one.md"),
+                            operation("002-add", "add", ".ai/two.md"),
+                        ],
+                    )
+                    plan = fixture.plan()
+
+                    def crash(boundary: str, _details: dict) -> None:
+                        if boundary == "after_planned_journal":
+                            raise APPLY.InjectedInterruption("planned transaction")
+
+                    with self.assertRaises(APPLY.InjectedInterruption):
+                        APPLY.apply_plan(plan, boundary_hook=crash)
+                    root = APPLY.transaction_root(fixture.target, plan["plan_sha256"])
+                    journal_path = root / "journal.yaml"
+                    journal = yaml.safe_load(journal_path.read_text(encoding="utf-8"))
+                    journal.update(corruption)
+                    journal_path.write_text(
+                        yaml.safe_dump(journal, sort_keys=True),
+                        encoding="utf-8",
+                    )
+                    before = journal_path.read_bytes()
+
+                    with self.assertRaises(APPLY.ApplyError):
+                        APPLY.recover_transaction(
+                            fixture.target,
+                            plan["plan_sha256"],
+                            "rollback",
+                        )
+
+                    self.assertEqual(before, journal_path.read_bytes())
+                    self.assertFalse((fixture.target / ".ai/one.md").exists())
+                    self.assertFalse((fixture.target / ".ai/two.md").exists())
+                finally:
+                    fixture.close()
+
+    def test_gwt_030_given_completed_remove_or_rename_prefix_with_restored_source_when_resumed_then_false_finalization_is_rejected(self) -> None:
+        for action in ("remove", "rename"):
+            with self.subTest(action=action):
+                fixture = PackageApplyFixture()
+                try:
+                    fixture.add_target(".ai/source.md", b"previous\n")
+                    fixture.commit_target()
+                    incoming = (
+                        {}
+                        if action == "remove"
+                        else {
+                            ".ai/destination.md": (
+                                b"incoming\n",
+                                "framework-managed",
+                                "0644",
+                            )
+                        }
+                    )
+                    operation_record = (
+                        operation("001-remove", "remove", ".ai/source.md")
+                        if action == "remove"
+                        else operation(
+                            "001-rename",
+                            "rename",
+                            ".ai/destination.md",
+                            from_path=".ai/source.md",
+                        )
+                    )
+                    fixture.make_package(
+                        incoming,
+                        [operation_record],
+                        {
+                            ".ai/source.md": (
+                                b"previous\n",
+                                "framework-managed",
+                                "0644",
+                            )
+                        },
+                    )
+                    plan = fixture.plan()
+
+                    def crash(boundary: str, details: dict) -> None:
+                        if boundary == "after_progress_journal" and details["index"] == 0:
+                            raise APPLY.InjectedInterruption("durable prefix persisted")
+
+                    with self.assertRaises(APPLY.InjectedInterruption):
+                        APPLY.apply_plan(plan, boundary_hook=crash)
+                    (fixture.target / ".ai/source.md").write_bytes(b"previous\n")
+                    transaction_id = plan["plan_sha256"]
+
+                    for recovery_action in ("resume", "rollback"):
+                        with self.assertRaisesRegex(
+                            APPLY.ApplyError,
+                            "target state does not match transaction progress",
+                        ):
+                            APPLY.recover_transaction(
+                                fixture.target,
+                                transaction_id,
+                                recovery_action,
+                                fixture.package if recovery_action == "resume" else None,
+                            )
+
+                    journal = yaml.safe_load(
+                        (
+                            APPLY.transaction_root(fixture.target, transaction_id)
+                            / "journal.yaml"
+                        ).read_text(encoding="utf-8")
+                    )
+                    self.assertEqual("applying", journal["state"])
+                    self.assertIsNone(journal["final_receipt_sha256"])
+                    self.assertFalse(
+                        (fixture.target / APPLY.PENDING_RECEIPT_PATH).exists()
+                    )
+                finally:
+                    fixture.close()
+
+    def test_gwt_031_given_persisted_operation_prefix_when_recovered_then_resume_and_rollback_are_idempotent(self) -> None:
+        for recovery_action in ("resume", "rollback"):
+            with self.subTest(action=recovery_action):
+                fixture = PackageApplyFixture()
+                try:
+                    fixture.make_package(
+                        {
+                            ".ai/one.md": (b"one\n", "framework-managed", "0644"),
+                            ".ai/two.md": (b"two\n", "framework-managed", "0644"),
+                        },
+                        [
+                            operation("001-add", "add", ".ai/one.md"),
+                            operation("002-add", "add", ".ai/two.md"),
+                        ],
+                    )
+                    plan = fixture.plan()
+
+                    def crash(boundary: str, details: dict) -> None:
+                        if boundary == "after_progress_journal" and details["index"] == 0:
+                            raise APPLY.InjectedInterruption("durable prefix persisted")
+
+                    with self.assertRaises(APPLY.InjectedInterruption):
+                        APPLY.apply_plan(plan, boundary_hook=crash)
+                    transaction_id = plan["plan_sha256"]
+                    journal = yaml.safe_load(
+                        (
+                            APPLY.transaction_root(fixture.target, transaction_id)
+                            / "journal.yaml"
+                        ).read_text(encoding="utf-8")
+                    )
+                    self.assertEqual(1, journal["next_apply_index"])
+                    self.assertEqual(["001-add"], journal["completed_operation_ids"])
+
+                    recovered = APPLY.recover_transaction(
+                        fixture.target,
+                        transaction_id,
+                        recovery_action,
+                        fixture.package if recovery_action == "resume" else None,
+                    )
+                    repeated = APPLY.recover_transaction(
+                        fixture.target,
+                        transaction_id,
+                        recovery_action,
+                        fixture.package if recovery_action == "resume" else None,
+                    )
+
+                    self.assertEqual(recovered, repeated)
+                    if recovery_action == "resume":
+                        self.assertEqual("finalized", recovered["transaction_state"])
+                        self.assertEqual(b"one\n", (fixture.target / ".ai/one.md").read_bytes())
+                        self.assertEqual(b"two\n", (fixture.target / ".ai/two.md").read_bytes())
+                    else:
+                        self.assertEqual("rolled-back", recovered["state"])
+                        self.assertFalse((fixture.target / ".ai/one.md").exists())
+                        self.assertFalse((fixture.target / ".ai/two.md").exists())
                 finally:
                     fixture.close()
 

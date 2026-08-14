@@ -58,7 +58,8 @@ LEGACY_COMPONENT_SELECTION["providers"]["repo-backlog"]["enabled"] = True
 TARGET_EFFECTIVE_STATE_PATH = ".dev/ai-context/effective-rules.yaml"
 TARGET_EFFECTIVE_PACKET_DIRECTORY = ".dev/ai-context/effective-rule-packets"
 PENDING_RECEIPT_PATH = ".dev/AI-CONTEXT-APPLY-PENDING.yaml"
-TRANSACTION_SCHEMA_VERSION = "2.0.0"
+APPLY_PLAN_SCHEMA_VERSION = "2.1.0"
+PENDING_RECEIPT_SCHEMA_VERSION = "2.0.0"
 TRANSACTION_STATES = {"planned", "applying", "interrupted", "rolled-back", "finalized"}
 WINDOWS_MOVEFILE_REPLACE_EXISTING = 0x1
 WINDOWS_MOVEFILE_WRITE_THROUGH = 0x8
@@ -835,6 +836,35 @@ def required_framework_paths(incoming: dict[str, dict]) -> list[dict]:
     return required
 
 
+def expected_operation_post_states(
+    operations: Iterable[dict], incoming: dict[str, dict]
+) -> list[dict]:
+    """Seal the exact successful state of every active operation path."""
+    absent = {"exists": False, "sha256": None, "mode": None}
+    result: list[dict] = []
+    for operation in operations:
+        action = operation.get("action")
+        if action not in {"add", "replace", "remove", "rename"}:
+            continue
+        paths: list[dict] = []
+        if action in {"add", "replace", "rename"}:
+            relative = operation["path"]
+            record = incoming.get(relative)
+            if not isinstance(record, dict):
+                raise ApplyError(
+                    f"active operation destination is absent from incoming inventory: {relative}"
+                )
+            paths.append(
+                {"path": relative, "state": expected_present_state(record)}
+            )
+        if action == "remove":
+            paths.append({"path": operation["path"], "state": absent})
+        elif action == "rename":
+            paths.append({"path": operation["from_path"], "state": absent})
+        result.append({"operation_id": operation["id"], "paths": paths})
+    return result
+
+
 def selected_input_proof_identity(package: dict) -> dict | None:
     if package.get("schema_version") != "2.3.0":
         return None
@@ -1099,7 +1129,7 @@ def build_plan(
         if item["action"] in {"noop", "reconcile", "unresolved"}
     ]
     plan = {
-        "schema_version": "2.0.0",
+        "schema_version": APPLY_PLAN_SCHEMA_VERSION,
         "package_id": package["package_id"],
         "package_version": package.get("version"),
         "package_manifest_sha256": manifest_sha,
@@ -1129,6 +1159,7 @@ def build_plan(
         "managed_state_conflicts": managed_state_conflicts,
         "observed": observed,
         "operations": planned,
+        "operation_post_states": expected_operation_post_states(planned, incoming),
     }
     plan["plan_sha256"] = canonical_digest(plan)
     return plan
@@ -1342,6 +1373,52 @@ def active_operations(plan: dict) -> list[dict]:
     ]
 
 
+def operation_post_state_map(plan: dict) -> dict[str, dict[str, dict]]:
+    operations = active_operations(plan)
+    records = plan.get("operation_post_states")
+    if not isinstance(records, list) or len(records) != len(operations):
+        raise ApplyError("apply plan operation post-state evidence is invalid")
+    result: dict[str, dict[str, dict]] = {}
+    for operation, record in zip(operations, records, strict=True):
+        if not isinstance(record, dict) or record.get("operation_id") != operation["id"]:
+            raise ApplyError("apply plan operation post-state order is invalid")
+        paths = record.get("paths")
+        expected_paths = [operation["path"]]
+        if operation["action"] == "rename":
+            expected_paths.append(operation["from_path"])
+        if not isinstance(paths, list) or [
+            item.get("path") if isinstance(item, dict) else None for item in paths
+        ] != expected_paths:
+            raise ApplyError(
+                f"apply plan operation post-state paths are invalid: {operation['id']}"
+            )
+        by_path: dict[str, dict] = {}
+        for item in paths:
+            state = item.get("state")
+            if not isinstance(state, dict) or set(state) != {
+                "exists",
+                "sha256",
+                "mode",
+            }:
+                raise ApplyError(
+                    f"apply plan operation post-state record is invalid: {operation['id']}"
+                )
+            if state.get("exists") is True:
+                if not isinstance(state.get("sha256"), str) or not re.fullmatch(
+                    r"[0-9a-f]{64}", state["sha256"]
+                ) or state.get("mode") not in {"0644", "0755"}:
+                    raise ApplyError(
+                        f"apply plan present post-state identity is invalid: {operation['id']}"
+                    )
+            elif state != {"exists": False, "sha256": None, "mode": None}:
+                raise ApplyError(
+                    f"apply plan absent post-state identity is invalid: {operation['id']}"
+                )
+            by_path[item["path"]] = state
+        result[operation["id"]] = by_path
+    return result
+
+
 def touched_paths(plan: dict) -> list[str]:
     values: set[str] = set()
     for item in active_operations(plan):
@@ -1425,7 +1502,7 @@ def verify_package_binding(plan: dict, package_root: Path) -> tuple[dict, dict[s
 def verify_plan_for_apply(
     plan: dict, acknowledgements: set[str]
 ) -> tuple[dict, dict[str, dict], str, set[str]]:
-    if plan.get("schema_version") != TRANSACTION_SCHEMA_VERSION:
+    if plan.get("schema_version") != APPLY_PLAN_SCHEMA_VERSION:
         raise ApplyError("unsupported apply plan schema")
     plan_digest(plan)
     target = Path(plan["target_root"])
@@ -1449,6 +1526,11 @@ def verify_plan_for_apply(
     required_paths = required_framework_paths(incoming)
     if required_paths != plan.get("required_framework_paths"):
         raise ApplyError("required framework-managed path identity changed after planning")
+    operation_post_states = expected_operation_post_states(
+        plan.get("operations", []), incoming
+    )
+    if operation_post_states != plan.get("operation_post_states"):
+        raise ApplyError("active operation post-state identity changed after planning")
     current_ignored = ignored_framework_paths(target, required_paths)
     if current_ignored != plan.get("ignored_framework_paths"):
         raise ApplyError("target Git ignore rules changed after planning")
@@ -1600,6 +1682,112 @@ def prestate_by_path(journal: dict) -> dict[str, dict]:
     return {item["path"]: item for item in journal["pre_state"]}
 
 
+def validate_journal_progress(plan: dict, journal: dict) -> None:
+    operations = active_operations(plan)
+    operation_post_state_map(plan)
+    next_index = journal.get("next_apply_index")
+    if type(next_index) is not int or not 0 <= next_index <= len(operations):
+        raise ApplyError("transaction journal next operation index is invalid")
+    completed = journal.get("completed_operation_ids")
+    expected_completed = [item["id"] for item in operations[:next_index]]
+    if completed != expected_completed:
+        raise ApplyError("transaction journal completed operation prefix is invalid")
+    transition_sequence = journal.get("transition_sequence")
+    if type(transition_sequence) is not int or transition_sequence < 0:
+        raise ApplyError("transaction journal transition sequence is invalid")
+    state = journal.get("state")
+    receipt_digest = journal.get("final_receipt_sha256")
+    if state == "planned" and next_index != 0:
+        raise ApplyError("planned transaction journal cannot contain progress")
+    if state == "finalized":
+        if next_index != len(operations) or not isinstance(
+            receipt_digest, str
+        ) or not re.fullmatch(r"[0-9a-f]{64}", receipt_digest):
+            raise ApplyError("finalized transaction journal is incomplete")
+    elif receipt_digest is not None:
+        raise ApplyError("non-finalized transaction journal has a receipt identity")
+
+
+def transaction_state_matches(
+    target: Path, relative: str, expected: dict
+) -> bool:
+    if expected.get("exists") is not True:
+        return exact_state_matches(target, relative, expected)
+    reject_symlink_boundary(target, relative)
+    current = file_state(target, relative)
+    if not current.exists or current.sha256 != expected.get("sha256"):
+        return False
+    if current.mode == expected.get("mode"):
+        return True
+    filemode = run_git(target, "config", "--bool", "core.filemode")
+    if filemode.returncode != 0 or filemode.stdout.strip() not in {"true", "false"}:
+        raise ApplyError("cannot determine target Git core.filemode")
+    return (
+        filemode.stdout.strip() == "false"
+        and current.mode == "0644"
+        and expected.get("mode") == "0755"
+    )
+
+
+def states_match(target: Path, states: dict[str, dict]) -> bool:
+    return all(
+        transaction_state_matches(target, relative, expected)
+        for relative, expected in states.items()
+    )
+
+
+def operation_pre_states(
+    operation: dict, prestate: dict[str, dict]
+) -> dict[str, dict]:
+    paths = [operation["path"]]
+    if operation["action"] == "rename":
+        paths.append(operation["from_path"])
+    return {relative: prestate[relative]["state"] for relative in paths}
+
+
+def current_operation_state_matches(
+    target: Path,
+    operation: dict,
+    pre_states: dict[str, dict],
+    post_states: dict[str, dict],
+) -> bool:
+    if states_match(target, pre_states) or states_match(target, post_states):
+        return True
+    if operation["action"] != "rename":
+        return False
+    intermediate = {
+        operation["path"]: post_states[operation["path"]],
+        operation["from_path"]: pre_states[operation["from_path"]],
+    }
+    return states_match(target, intermediate)
+
+
+def validate_transaction_surface(target: Path, plan: dict, journal: dict) -> None:
+    validate_journal_progress(plan, journal)
+    operations = active_operations(plan)
+    prestate = prestate_by_path(journal)
+    poststate = operation_post_state_map(plan)
+    state = journal["state"]
+    next_index = journal["next_apply_index"]
+    for index, operation in enumerate(operations):
+        before = operation_pre_states(operation, prestate)
+        after = poststate[operation["id"]]
+        if state in {"planned", "rolled-back"}:
+            matches = states_match(target, before)
+        elif state == "finalized" or index < next_index:
+            matches = states_match(target, after)
+        elif index == next_index:
+            matches = current_operation_state_matches(
+                target, operation, before, after
+            )
+        else:
+            matches = states_match(target, before)
+        if not matches:
+            raise ApplyError(
+                f"target state does not match transaction progress: {operation['id']}"
+            )
+
+
 def invoke_boundary(
     hook: Callable[[str, dict], None] | None, name: str, details: dict
 ) -> None:
@@ -1671,6 +1859,9 @@ def build_final_receipt(
     reconciles: set[str],
 ) -> dict:
     target = Path(plan["target_root"])
+    if journal.get("next_apply_index") != len(active_operations(plan)):
+        raise ApplyError("transaction operations are incomplete before receipt")
+    validate_transaction_surface(target, plan, journal)
     artifacts: list[dict] = []
     removed: list[dict] = []
     for item in active_operations(plan):
@@ -1686,8 +1877,16 @@ def build_final_receipt(
                 }
             )
         if item["action"] == "remove":
+            if file_state(target, item["path"]).exists:
+                raise ApplyError(
+                    f"removed operation path is still present: {item['path']}"
+                )
             removed.append({"operation_id": item["id"], "path": item["path"], "result": "absent"})
         elif item["action"] == "rename":
+            if file_state(target, item["from_path"]).exists:
+                raise ApplyError(
+                    f"renamed operation source is still present: {item['from_path']}"
+                )
             removed.append({"operation_id": item["id"], "path": item["from_path"], "result": "absent"})
     results: list[dict] = []
     reconciliation_paths = {
@@ -1717,7 +1916,7 @@ def build_final_receipt(
             }
         )
     return {
-        "schema_version": TRANSACTION_SCHEMA_VERSION,
+        "schema_version": PENDING_RECEIPT_SCHEMA_VERSION,
         "status": "pending-validation",
         "transaction_state": "finalized",
         "transaction_id": journal["transaction_id"],
@@ -1756,6 +1955,7 @@ def run_transaction(
     hook: Callable[[str, dict], None] | None = None,
 ) -> dict:
     target = Path(plan["target_root"])
+    validate_transaction_surface(target, plan, journal)
     journal["state"] = "applying"
     journal["last_error"] = None
     persist_journal(root, journal)
@@ -1771,6 +1971,15 @@ def run_transaction(
         journal["completed_operation_ids"] = [item["id"] for item in operations[: index + 1]]
         journal["next_apply_index"] = index + 1
         persist_journal(root, journal)
+        invoke_boundary(
+            hook,
+            "after_progress_journal",
+            {
+                "index": index,
+                "operation_id": operation["id"],
+                "next_apply_index": index + 1,
+            },
+        )
     verify_protected_state(target, journal)
     receipt = build_final_receipt(plan, journal, incoming, reconciles)
     receipt_path = target / PENDING_RECEIPT_PATH
@@ -1827,6 +2036,8 @@ def load_transaction(target: Path, transaction_id: str) -> tuple[Path, dict, dic
         raise ApplyError("transaction evidence cannot be parsed") from exc
     if not isinstance(plan, dict) or not isinstance(journal, dict):
         raise ApplyError("transaction evidence must contain mappings")
+    if plan.get("schema_version") != APPLY_PLAN_SCHEMA_VERSION:
+        raise ApplyError("unsupported transaction apply plan schema")
     if plan_digest(plan) != transaction_id:
         raise ApplyError("transaction plan identity does not match transaction ID")
     plan_target = plan.get("target_root")
@@ -1858,6 +2069,7 @@ def load_transaction(target: Path, transaction_id: str) -> tuple[Path, dict, dic
                 raise ApplyError(f"transaction backup identity differs: {item.get('path')}")
         elif item.get("backup_path") is not None or item.get("backup_sha256") is not None:
             raise ApplyError(f"absent pre-state has a backup: {item.get('path')}")
+    validate_journal_progress(plan, journal)
     return root, plan, journal
 
 
@@ -1887,33 +2099,13 @@ def verify_recovery_surface(target: Path, plan: dict, journal: dict) -> None:
     if unrelated:
         raise ApplyError(f"unrelated target changes block recovery: {sorted(unrelated)}")
     verify_protected_state(target, journal)
-
-
-def legal_transaction_state(
-    target: Path, plan: dict, journal: dict, incoming: dict[str, dict]
-) -> bool:
-    legal: dict[str, list[dict]] = {
-        item["path"]: [item["state"]] for item in journal["pre_state"]
-    }
-    absent = {"exists": False, "sha256": None, "mode": None}
-    for operation in active_operations(plan):
-        if operation["action"] in {"add", "replace", "rename"}:
-            legal[operation["path"]].append(expected_present_state(incoming[operation["path"]]))
-        if operation["action"] == "remove":
-            legal[operation["path"]].append(absent)
-        if operation["action"] == "rename":
-            legal[operation["from_path"]].append(absent)
-    return all(
-        any(exact_state_matches(target, relative, expected) for expected in candidates)
-        for relative, candidates in legal.items()
-    )
+    validate_transaction_surface(target, plan, journal)
 
 
 def rollback_loaded_transaction(
     root: Path,
     plan: dict,
     journal: dict,
-    incoming: dict[str, dict],
     hook: Callable[[str, dict], None] | None = None,
 ) -> dict:
     target = Path(plan["target_root"])
@@ -1923,8 +2115,7 @@ def rollback_loaded_transaction(
         return journal
     if journal["state"] == "finalized":
         raise ApplyError("finalized transaction cannot be rolled back")
-    if not legal_transaction_state(target, plan, journal, incoming):
-        raise ApplyError("ambiguous target state blocks rollback")
+    validate_transaction_surface(target, plan, journal)
     for item in reversed(journal["pre_state"]):
         relative = item["path"]
         path = target / Path(*PurePosixPath(relative).parts)
@@ -1970,10 +2161,7 @@ def recover_transaction(
             journal["last_error"] = "recovered an abandoned applying state"
             persist_journal(root, journal)
         if action == "rollback":
-            incoming = {
-                item["path"]: item for item in plan["required_framework_paths"]
-            }
-            return rollback_loaded_transaction(root, plan, journal, incoming, boundary_hook)
+            return rollback_loaded_transaction(root, plan, journal, boundary_hook)
         if journal["state"] == "rolled-back":
             raise ApplyError("rolled-back transaction cannot be resumed")
         if package_root is None:
@@ -2031,7 +2219,7 @@ def apply_plan(
             journal["last_error"] = str(exc)
             persist_journal(root, journal)
             try:
-                rollback_loaded_transaction(root, plan, journal, incoming, boundary_hook)
+                rollback_loaded_transaction(root, plan, journal, boundary_hook)
             except Exception as rollback_exc:
                 journal["state"] = "interrupted"
                 journal["last_error"] = f"{exc}; rollback failed: {rollback_exc}"
