@@ -13,13 +13,13 @@
 - `workflow_kind`: `ai-context-maintenance`
 - `owner_skill`: `ai-context-governance`
 - `branch`: `codex/2026-08-14-pkg-011-durable-apply`
-- `base_branch`: `codex/2026-08-14-pkg-012-package-closure`
+- `base_branch`: `main`
 - `branch_segment`: `3`
 - `status`: `in_progress`
-- `current_phase`: `fixed-commit-validation`
+- `current_phase`: `immutable-validation-preparation`
 - `artifact_root`: `.dev/workflows/2026-08-14-pkg-011-durable-apply`
 - `created_at`: `2026-08-14T09:07:04+08:00`
-- `updated_at`: `2026-08-14T21:06:24+08:00`
+- `updated_at`: `2026-08-15T00:16:49+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md`
 - `template_version`: `1.2.0`
 
@@ -68,7 +68,7 @@
 2. Workflow, source-repository routing boundary, state-machine/schema design, and deterministic GWT matrix — completed.
 3. Hybrid identity and full selected-state implementation with focused fixtures — completed.
 4. Durable journal, recovery/resume/rollback implementation and forced-interruption validation — completed.
-5. Cross-platform/package-native validation, Issue #209 boundary-order correction, fixed-clean-commit audit, finding reconciliation, and local closeout — in progress.
+5. Cross-platform/package-native validation, Issue #209 boundary-order correction, fixed-clean-commit audit, finding reconciliation, and local closeout — in progress; all fixed-head audit findings are remediated in the working tree and await immutable-commit validation plus a fresh independent audit.
 
 ## Validation Strategy
 
@@ -87,16 +87,18 @@
 
 ## Resume Checkpoint
 
-- Last completed action: corrected Issue #209 so selected framework paths reject symlink/reparse boundaries before Git-ignore inspection; focused GWT-008 and all 35 package-apply tests passed on `Ubuntu-24.04` outside the sandbox.
+- Last completed action: remediated all fixed-head audit findings and received a no-finding independent current-diff re-review at scoped diff `2632fb943e6b9662e67771cc8348778a853e6551` after Windows and WSL focused suites passed.
 - Current task: `PKGAPPLY-003-recovery-validation`.
-- Exact next action: dispatch the 123-second package matrix and POSIX/fixed-head verification at the exact clean Issue #209 corrective commit.
-- Validation already completed: package apply 35 passed/1 privilege skip on Windows-compatible execution; Issue #209 GWT-008 passed 1/1 and the complete package-apply suite passed 35/35 on `Ubuntu-24.04`; lifecycle 7 passed; effective rules 18 passed/2 privilege skips; dirty-tree package matrix 38 passed in 123.462 seconds; independent review passed after two P1 corrections.
-- Git state: Issue #200 implementation is committed at `a91d57c`; the Issue #209 corrective change and workflow evidence form the current clean commit boundary on `codex/2026-08-14-pkg-011-durable-apply` before immutable validation.
+- Exact next action: finish current-diff re-review, validate workflow evidence, create an Issue #200 durable commit, then run the long package matrix and final independent audit against that fixed clean commit.
+- Validation already completed: rebased fixed-HEAD package matrix 38/38 with a schema-valid receipt; latest Windows package-apply suite 43 run / 42 passed / 1 symlink-privilege skip; latest WSL `Ubuntu-24.04` package-apply suite 43/43; extracted-package validator 16 passed/1 platform skip; assessment, workflow, and 15-commit policy validators passed after compression.
+- Git state: unpushed branch with the intended #200 remediation working-tree diff; `main` is the ancestor, `main..HEAD` has no merge commits, and `refs/codex-safety/pre-squash-20260814-pkg-011` retains the pre-compression local checkpoint.
 - Branch history and checkpoint handoffs: cumulative segment 3; no push, PR, merge, Issue close, or release mutation.
-- Blockers or unresolved decisions: none; clean immutable external validation remains required by policy.
+- Blockers or unresolved decisions: no owner decision is required; long-running validation and the final fixed-clean-HEAD audit remain mandatory before local #200 closeout.
 
 ## Branch Lifecycle
 
 | Segment | Branch | Base | Checkpoint Type | Commit | Remote / Target | Recorded At | Reason | Resume Branch / Action |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | 3 | `codex/2026-08-14-pkg-011-durable-apply` | `codex/2026-08-14-pkg-012-package-closure@55551a8bf4fa53591f78fd85b3f5e2f67a9ddd82` | local active stacked segment | workflow artifacts pending | not pushed | `2026-08-14T09:07:04+08:00` | durable apply consumes verified package identity and precedes upgrade correctness | validate rules, implement, verify, and locally close #200 |
+| 3-rebase | `codex/2026-08-14-pkg-011-durable-apply` | `main@0eee7f21f2c6ed00df4ea06e76c342a368c6a59b` | local rebase and history-density reconciliation | 15 policy-valid commits; pre-compression recovery ref `refs/codex-safety/pre-squash-20260814-pkg-011` | not pushed | `2026-08-14T23:53:45+08:00` | incorporate merged #210 without a merge commit and reduce only same-stage unshared history | remediate fixed-head audit findings, then revalidate at a new clean commit |
+| 3-audit-remediation | `codex/2026-08-14-pkg-011-durable-apply` | `main@0eee7f21f2c6ed00df4ea06e76c342a368c6a59b` | working-tree remediation before immutable validation | pending Issue #200 commit | not pushed | `2026-08-15T00:16:49+08:00` | close three P1 transaction findings and deterministic coverage gaps without changing delivery topology | durable commit, long matrix, and fixed-clean-HEAD audit |

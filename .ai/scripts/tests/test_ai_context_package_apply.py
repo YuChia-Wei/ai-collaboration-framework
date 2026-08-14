@@ -6,11 +6,13 @@ from __future__ import annotations
 import importlib.util
 import json
 import os
+import shutil
 import subprocess
 import sys
 import tempfile
 import unittest
 from pathlib import Path
+from unittest import mock
 
 import yaml
 
@@ -1471,6 +1473,444 @@ class AiContextPackageApplyGwtTests(unittest.TestCase):
                 self.assertFalse(output.exists())
         finally:
             fixture.close()
+
+    def test_gwt_020_given_transaction_evidence_copied_to_another_target_when_recovered_then_plan_target_mismatch_fails_before_mutation(self) -> None:
+        fixture = PackageApplyFixture()
+        other_target = fixture.root / "other-target"
+        try:
+            fixture.make_package(
+                {".ai/rule.md": (b"incoming\n", "framework-managed", "0644")},
+                [operation("001-add", "add", ".ai/rule.md")],
+            )
+            plan = fixture.plan()
+
+            def crash(boundary: str, _details: dict) -> None:
+                if boundary == "after_planned_journal":
+                    raise APPLY.InjectedInterruption("retain planned transaction")
+
+            with self.assertRaises(APPLY.InjectedInterruption):
+                APPLY.apply_plan(plan, boundary_hook=crash)
+            subprocess.run(
+                ["git", "clone", "-q", str(fixture.target), str(other_target)],
+                check=True,
+                capture_output=True,
+                text=True,
+            )
+            transaction_id = plan["plan_sha256"]
+            copied_root = APPLY.transaction_root(other_target, transaction_id)
+            copied_root.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copytree(
+                APPLY.transaction_root(fixture.target, transaction_id), copied_root
+            )
+
+            for action in ("resume", "rollback"):
+                with self.subTest(action=action):
+                    with self.assertRaisesRegex(
+                        APPLY.ApplyError,
+                        "transaction target root does not match recovery target",
+                    ):
+                        APPLY.recover_transaction(
+                            other_target,
+                            transaction_id,
+                            action,
+                            fixture.package if action == "resume" else None,
+                        )
+            self.assertFalse((fixture.target / ".ai/rule.md").exists())
+            self.assertFalse((other_target / ".ai/rule.md").exists())
+        finally:
+            fixture.close()
+
+    def test_gwt_021_given_process_death_during_transaction_preparation_when_retried_then_complete_journal_publishes_without_a_wedge(self) -> None:
+        for failed_boundary in (
+            "after_preparation_root",
+            "after_preparation_plan",
+            "after_preparation_backup",
+            "after_preparation_journal",
+        ):
+            with self.subTest(boundary=failed_boundary):
+                fixture = PackageApplyFixture()
+                try:
+                    fixture.add_target(".ai/rule.md", b"previous\n")
+                    fixture.commit_target()
+                    fixture.make_package(
+                        {
+                            ".ai/rule.md": (
+                                b"incoming\n",
+                                "framework-managed",
+                                "0644",
+                            )
+                        },
+                        [operation("001-replace", "replace", ".ai/rule.md")],
+                        {
+                            ".ai/rule.md": (
+                                b"previous\n",
+                                "framework-managed",
+                                "0644",
+                            )
+                        },
+                    )
+                    plan = fixture.plan()
+
+                    def crash(boundary: str, _details: dict) -> None:
+                        if boundary == failed_boundary:
+                            raise APPLY.InjectedInterruption(
+                                f"process died at {failed_boundary}"
+                            )
+
+                    with self.assertRaises(APPLY.InjectedInterruption):
+                        APPLY.apply_plan(plan, boundary_hook=crash)
+                    transaction_id = plan["plan_sha256"]
+                    final_root = APPLY.transaction_root(
+                        fixture.target, transaction_id
+                    )
+                    self.assertFalse(final_root.exists())
+                    self.assertEqual(b"previous\n", (fixture.target / ".ai/rule.md").read_bytes())
+                    self.assertTrue(
+                        list(
+                            final_root.parent.glob(
+                                f".{transaction_id}.preparing-*"
+                            )
+                        )
+                    )
+
+                    receipt = APPLY.apply_plan(plan)
+
+                    self.assertEqual("finalized", receipt["transaction_state"])
+                    self.assertTrue((final_root / "journal.yaml").is_file())
+                    self.assertEqual(
+                        b"incoming\n", (fixture.target / ".ai/rule.md").read_bytes()
+                    )
+                finally:
+                    fixture.close()
+
+    def test_gwt_022_given_windows_source_removal_when_journal_can_advance_then_write_through_move_precedes_unlink(self) -> None:
+        fixture = PackageApplyFixture()
+        try:
+            source = fixture.root / "delete-me.txt"
+            source.write_bytes(b"content\n")
+            transaction_root = fixture.root / "transaction"
+            transaction_root.mkdir()
+            calls: list[tuple[Path, Path, int]] = []
+
+            def move(source_path: Path, destination_path: Path, flags: int) -> None:
+                calls.append((source_path, destination_path, flags))
+                os.replace(source_path, destination_path)
+
+            with mock.patch.object(APPLY.os, "name", "nt"), mock.patch.object(
+                APPLY, "windows_move_path", side_effect=move
+            ):
+                APPLY.durable_unlink(source, transaction_root)
+
+            self.assertFalse(source.exists())
+            self.assertEqual(1, len(calls))
+            self.assertEqual(APPLY.WINDOWS_MOVEFILE_WRITE_THROUGH, calls[0][2])
+            self.assertEqual(transaction_root / "deleted", calls[0][1].parent)
+        finally:
+            fixture.close()
+
+    def test_gwt_023_given_process_death_at_each_apply_boundary_when_resumed_then_transaction_finalizes_exactly_once(self) -> None:
+        boundaries = (
+            "after_planned_journal",
+            "after_applying_journal",
+            "after_destination_replace",
+            "after_operation",
+            "after_source_remove",
+            "after_receipt",
+            "after_finalized_journal",
+        )
+        for failed_boundary in boundaries:
+            with self.subTest(boundary=failed_boundary):
+                fixture = PackageApplyFixture()
+                try:
+                    is_remove = failed_boundary == "after_source_remove"
+                    if is_remove:
+                        fixture.add_target(".ai/rule.md", b"previous\n")
+                        fixture.commit_target()
+                        fixture.make_package(
+                            {},
+                            [operation("001-remove", "remove", ".ai/rule.md")],
+                            {
+                                ".ai/rule.md": (
+                                    b"previous\n",
+                                    "framework-managed",
+                                    "0644",
+                                )
+                            },
+                        )
+                    else:
+                        fixture.make_package(
+                            {
+                                ".ai/rule.md": (
+                                    b"incoming\n",
+                                    "framework-managed",
+                                    "0644",
+                                )
+                            },
+                            [operation("001-add", "add", ".ai/rule.md")],
+                        )
+                    plan = fixture.plan()
+
+                    def crash(boundary: str, _details: dict) -> None:
+                        if boundary == failed_boundary:
+                            raise APPLY.InjectedInterruption(
+                                f"process died at {failed_boundary}"
+                            )
+
+                    with self.assertRaises(APPLY.InjectedInterruption):
+                        APPLY.apply_plan(plan, boundary_hook=crash)
+                    transaction_id = plan["plan_sha256"]
+
+                    receipt = APPLY.recover_transaction(
+                        fixture.target, transaction_id, "resume", fixture.package
+                    )
+                    repeated = APPLY.recover_transaction(
+                        fixture.target, transaction_id, "resume", fixture.package
+                    )
+
+                    self.assertEqual(receipt, repeated)
+                    self.assertEqual("finalized", receipt["transaction_state"])
+                    if is_remove:
+                        self.assertFalse((fixture.target / ".ai/rule.md").exists())
+                    else:
+                        self.assertEqual(
+                            b"incoming\n",
+                            (fixture.target / ".ai/rule.md").read_bytes(),
+                        )
+                finally:
+                    fixture.close()
+
+    def test_gwt_024_given_process_death_at_each_rollback_boundary_when_retried_then_exact_prestate_is_terminal(self) -> None:
+        for failed_boundary in ("after_rollback_restore", "after_rollback_journal"):
+            with self.subTest(boundary=failed_boundary):
+                fixture = PackageApplyFixture()
+                try:
+                    fixture.make_package(
+                        {
+                            ".ai/rule.md": (
+                                b"incoming\n",
+                                "framework-managed",
+                                "0644",
+                            )
+                        },
+                        [operation("001-add", "add", ".ai/rule.md")],
+                    )
+                    plan = fixture.plan()
+
+                    def interrupt_apply(boundary: str, _details: dict) -> None:
+                        if boundary == "after_destination_replace":
+                            raise APPLY.InjectedInterruption("partial add")
+
+                    with self.assertRaises(APPLY.InjectedInterruption):
+                        APPLY.apply_plan(plan, boundary_hook=interrupt_apply)
+                    transaction_id = plan["plan_sha256"]
+
+                    def interrupt_rollback(boundary: str, _details: dict) -> None:
+                        if boundary == failed_boundary:
+                            raise APPLY.InjectedInterruption(
+                                f"process died at {failed_boundary}"
+                            )
+
+                    with self.assertRaises(APPLY.InjectedInterruption):
+                        APPLY.recover_transaction(
+                            fixture.target,
+                            transaction_id,
+                            "rollback",
+                            boundary_hook=interrupt_rollback,
+                        )
+                    journal = APPLY.recover_transaction(
+                        fixture.target, transaction_id, "rollback"
+                    )
+                    repeated = APPLY.recover_transaction(
+                        fixture.target, transaction_id, "rollback"
+                    )
+
+                    self.assertEqual("rolled-back", journal["state"])
+                    self.assertEqual(journal, repeated)
+                    self.assertFalse((fixture.target / ".ai/rule.md").exists())
+                    self.assertEqual(
+                        "",
+                        git(
+                            fixture.target,
+                            "status",
+                            "--porcelain",
+                            "--untracked-files=all",
+                        ).stdout,
+                    )
+                finally:
+                    fixture.close()
+
+    def test_gwt_025_given_mixed_key_pending_receipt_when_resumed_then_ambiguity_fails_closed(self) -> None:
+        fixture = PackageApplyFixture()
+        try:
+            fixture.make_package(
+                {
+                    ".ai/rule.md": (
+                        b"incoming\n",
+                        "framework-managed",
+                        "0644",
+                    )
+                },
+                [operation("001-add", "add", ".ai/rule.md")],
+            )
+            plan = fixture.plan()
+
+            def crash(boundary: str, _details: dict) -> None:
+                if boundary == "after_receipt":
+                    raise APPLY.InjectedInterruption("receipt persisted")
+
+            with self.assertRaises(APPLY.InjectedInterruption):
+                APPLY.apply_plan(plan, boundary_hook=crash)
+            receipt_path = fixture.target / APPLY.PENDING_RECEIPT_PATH
+            receipt_path.write_text(
+                "1: attacker\nschema_version: apply-receipt/v2\n",
+                encoding="utf-8",
+            )
+
+            with self.assertRaisesRegex(
+                APPLY.ApplyError,
+                "pending receipt is ambiguous after interruption",
+            ):
+                APPLY.recover_transaction(
+                    fixture.target,
+                    plan["plan_sha256"],
+                    "resume",
+                    fixture.package,
+                )
+
+            self.assertEqual(
+                "1: attacker\nschema_version: apply-receipt/v2\n",
+                receipt_path.read_text(encoding="utf-8"),
+            )
+            journal = yaml.safe_load(
+                (
+                    APPLY.transaction_root(fixture.target, plan["plan_sha256"])
+                    / "journal.yaml"
+                ).read_text(encoding="utf-8")
+            )
+            self.assertEqual("applying", journal["state"])
+            self.assertIsNone(journal["final_receipt_sha256"])
+        finally:
+            fixture.close()
+
+    def test_gwt_026_given_windows_cross_volume_tombstone_when_removed_then_it_fails_before_move(self) -> None:
+        fixture = PackageApplyFixture()
+        try:
+            source = fixture.root / "delete-me.txt"
+            source.write_bytes(b"content\n")
+            transaction_root = fixture.root / "transaction"
+            transaction_root.mkdir()
+            tombstone_root = transaction_root / "deleted"
+            original_stat = Path.stat
+
+            def different_volume(path: Path, *args: object, **kwargs: object) -> object:
+                if path == source:
+                    return mock.Mock(st_dev=1)
+                if path == tombstone_root:
+                    return mock.Mock(st_dev=2)
+                return original_stat(path, *args, **kwargs)
+
+            with mock.patch.object(APPLY.os, "name", "nt"), mock.patch.object(
+                Path, "stat", autospec=True, side_effect=different_volume
+            ), mock.patch.object(APPLY, "windows_move_path") as move:
+                with self.assertRaisesRegex(
+                    APPLY.ApplyError,
+                    "cannot durably remove a target path across Windows volumes",
+                ):
+                    APPLY.durable_unlink(source, transaction_root)
+
+            move.assert_not_called()
+            self.assertEqual(b"content\n", source.read_bytes())
+        finally:
+            fixture.close()
+
+    def test_gwt_027_given_windows_tombstone_cleanup_failure_when_recovered_then_resume_and_rollback_are_idempotent(self) -> None:
+        for recovery_action in ("resume", "rollback"):
+            with self.subTest(action=recovery_action):
+                fixture = PackageApplyFixture()
+                try:
+                    fixture.add_target(".ai/rule.md", b"previous\n")
+                    fixture.commit_target()
+                    fixture.make_package(
+                        {},
+                        [operation("001-remove", "remove", ".ai/rule.md")],
+                        {
+                            ".ai/rule.md": (
+                                b"previous\n",
+                                "framework-managed",
+                                "0644",
+                            )
+                        },
+                    )
+                    plan = fixture.plan()
+                    original_durable_unlink = APPLY.durable_unlink
+                    original_unlink = Path.unlink
+
+                    def move(source_path: Path, destination_path: Path, _flags: int) -> None:
+                        os.replace(source_path, destination_path)
+
+                    def retain_tombstone(path: Path, *args: object, **kwargs: object) -> None:
+                        if path.suffix == ".deleted":
+                            raise PermissionError("retained for recovery")
+                        original_unlink(path, *args, **kwargs)
+
+                    def crash(boundary: str, _details: dict) -> None:
+                        if boundary == "after_source_remove":
+                            raise APPLY.InjectedInterruption("source removal persisted")
+
+                    def windows_durable_unlink(
+                        path: Path, transaction_root_path: Path
+                    ) -> None:
+                        with mock.patch.object(
+                            APPLY.os, "name", "nt"
+                        ), mock.patch.object(
+                            APPLY, "windows_move_path", side_effect=move
+                        ), mock.patch.object(
+                            Path,
+                            "unlink",
+                            autospec=True,
+                            side_effect=retain_tombstone,
+                        ):
+                            original_durable_unlink(path, transaction_root_path)
+
+                    with mock.patch.object(
+                        APPLY,
+                        "durable_unlink",
+                        side_effect=windows_durable_unlink,
+                    ):
+                        with self.assertRaises(APPLY.InjectedInterruption):
+                            APPLY.apply_plan(plan, boundary_hook=crash)
+
+                    root = APPLY.transaction_root(fixture.target, plan["plan_sha256"])
+                    tombstones = list((root / "deleted").glob("*.deleted"))
+                    self.assertEqual(1, len(tombstones))
+                    self.assertFalse((fixture.target / ".ai/rule.md").exists())
+
+                    recovered = APPLY.recover_transaction(
+                        fixture.target,
+                        plan["plan_sha256"],
+                        recovery_action,
+                        fixture.package if recovery_action == "resume" else None,
+                    )
+                    repeated = APPLY.recover_transaction(
+                        fixture.target,
+                        plan["plan_sha256"],
+                        recovery_action,
+                        fixture.package if recovery_action == "resume" else None,
+                    )
+
+                    self.assertEqual(recovered, repeated)
+                    if recovery_action == "resume":
+                        self.assertEqual("finalized", recovered["transaction_state"])
+                        self.assertFalse((fixture.target / ".ai/rule.md").exists())
+                    else:
+                        self.assertEqual("rolled-back", recovered["state"])
+                        self.assertEqual(
+                            b"previous\n",
+                            (fixture.target / ".ai/rule.md").read_bytes(),
+                        )
+                    self.assertTrue(tombstones[0].is_file())
+                finally:
+                    fixture.close()
 
 
 if __name__ == "__main__":

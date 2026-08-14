@@ -60,6 +60,8 @@ TARGET_EFFECTIVE_PACKET_DIRECTORY = ".dev/ai-context/effective-rule-packets"
 PENDING_RECEIPT_PATH = ".dev/AI-CONTEXT-APPLY-PENDING.yaml"
 TRANSACTION_SCHEMA_VERSION = "2.0.0"
 TRANSACTION_STATES = {"planned", "applying", "interrupted", "rolled-back", "finalized"}
+WINDOWS_MOVEFILE_REPLACE_EXISTING = 0x1
+WINDOWS_MOVEFILE_WRITE_THROUGH = 0x8
 
 
 @dataclass(frozen=True)
@@ -78,6 +80,11 @@ class InjectedInterruption(BaseException):
     """Deterministic test-only process interruption that bypasses rollback."""
 
 
+class NoAliasSafeDumper(yaml.SafeDumper):
+    def ignore_aliases(self, data: object) -> bool:
+        return True
+
+
 def sha256_bytes(content: bytes) -> str:
     return hashlib.sha256(content).hexdigest()
 
@@ -91,6 +98,15 @@ def canonical_digest(value: object) -> str:
         allow_nan=False,
     ).encode("utf-8")
     return sha256_bytes(content)
+
+
+def deterministic_yaml_bytes(value: object) -> bytes:
+    return yaml.dump(
+        value,
+        Dumper=NoAliasSafeDumper,
+        sort_keys=True,
+        allow_unicode=True,
+    ).encode("utf-8")
 
 
 def normalized_text_digest(content: bytes) -> str | None:
@@ -1133,6 +1149,18 @@ def fsync_directory(path: Path) -> None:
         os.close(descriptor)
 
 
+def windows_move_path(source: Path, destination: Path, flags: int) -> None:
+    import ctypes
+    from ctypes import wintypes
+
+    kernel32 = ctypes.WinDLL("kernel32", use_last_error=True)
+    move_file = kernel32.MoveFileExW
+    move_file.argtypes = [wintypes.LPCWSTR, wintypes.LPCWSTR, wintypes.DWORD]
+    move_file.restype = wintypes.BOOL
+    if not move_file(str(source), str(destination), flags):
+        raise ctypes.WinError(ctypes.get_last_error())
+
+
 def atomic_replace(temporary: Path, destination: Path) -> None:
     if os.name != "nt":
         os.replace(temporary, destination)
@@ -1151,17 +1179,18 @@ def atomic_replace(temporary: Path, destination: Path) -> None:
         wintypes.LPVOID,
     ]
     replace_file.restype = wintypes.BOOL
-    move_file = kernel32.MoveFileExW
-    move_file.argtypes = [wintypes.LPCWSTR, wintypes.LPCWSTR, wintypes.DWORD]
-    move_file.restype = wintypes.BOOL
     if destination.exists():
         succeeded = replace_file(
             str(destination), str(temporary), None, 0x1, None, None
         )
+        if not succeeded:
+            raise ctypes.WinError(ctypes.get_last_error())
     else:
-        succeeded = move_file(str(temporary), str(destination), 0x9)
-    if not succeeded:
-        raise ctypes.WinError(ctypes.get_last_error())
+        windows_move_path(
+            temporary,
+            destination,
+            WINDOWS_MOVEFILE_REPLACE_EXISTING | WINDOWS_MOVEFILE_WRITE_THROUGH,
+        )
 
 
 def atomic_write_bytes(path: Path, content: bytes, mode: int = 0o644) -> None:
@@ -1194,14 +1223,37 @@ def atomic_write_bytes(path: Path, content: bytes, mode: int = 0o644) -> None:
 
 
 def atomic_write_yaml(path: Path, value: dict) -> bytes:
-    content = yaml.safe_dump(value, sort_keys=False, allow_unicode=True).encode("utf-8")
+    content = deterministic_yaml_bytes(value)
     atomic_write_bytes(path, content)
     return content
 
 
-def durable_unlink(path: Path) -> None:
-    path.unlink()
-    fsync_directory(path.parent)
+def durable_unlink(path: Path, transaction_root_path: Path) -> None:
+    if os.name != "nt":
+        path.unlink()
+        fsync_directory(path.parent)
+        return
+    tombstone_root = transaction_root_path / "deleted"
+    tombstone_root.mkdir(parents=True, exist_ok=True)
+    if path.stat().st_dev != tombstone_root.stat().st_dev:
+        raise ApplyError(
+            f"cannot durably remove a target path across Windows volumes: {path}"
+        )
+    stem = sha256_bytes(str(path.resolve()).encode("utf-8"))
+    index = 0
+    while True:
+        tombstone = tombstone_root / f"{stem}-{index:04d}.deleted"
+        if not tombstone.exists():
+            break
+        index += 1
+    windows_move_path(path, tombstone, WINDOWS_MOVEFILE_WRITE_THROUGH)
+    try:
+        tombstone.unlink()
+    except OSError:
+        # The write-through rename already made the governed source path
+        # durably absent. A retained Git-admin tombstone is safe to collect
+        # after recovery and must not weaken the journal boundary.
+        pass
 
 
 def write_payload(package_root: Path, target: Path, path: str, record: dict) -> None:
@@ -1431,59 +1483,98 @@ def verify_plan_for_apply(
     return package, incoming, manifest_sha, reconciles
 
 
-def prepare_transaction(target: Path, plan: dict, acknowledgements: set[str]) -> tuple[Path, dict]:
+def prepare_transaction(
+    target: Path,
+    plan: dict,
+    acknowledgements: set[str],
+    hook: Callable[[str, dict], None] | None = None,
+) -> tuple[Path, dict]:
     transaction_id = transaction_id_for_plan(plan)
     root = transaction_root(target, transaction_id)
     if root.exists():
         raise ApplyError(
             f"transaction evidence already exists; resume or roll back {transaction_id}"
         )
-    (root / "prestate").mkdir(parents=True)
-    plan_bytes = json.dumps(
-        plan, ensure_ascii=False, sort_keys=True, separators=(",", ":"), allow_nan=False
-    ).encode("utf-8") + b"\n"
-    atomic_write_bytes(root / "plan.json", plan_bytes)
-    pre_state: list[dict] = []
-    for index, relative in enumerate(touched_paths(plan)):
-        state = file_state(target, relative)
-        backup_path = None
-        backup_sha = None
-        if state.exists:
-            content = (target / Path(*PurePosixPath(relative).parts)).read_bytes()
-            backup_name = f"{index:04d}-{sha256_bytes(relative.encode('utf-8'))}.bin"
-            backup = root / "prestate" / backup_name
-            atomic_write_bytes(backup, content, mode_int(state.mode or "0644"))
-            backup_path = f"prestate/{backup_name}"
-            backup_sha = sha256_bytes(content)
-        pre_state.append(
-            {
-                "path": relative,
-                "state": state_record(state),
-                "backup_path": backup_path,
-                "backup_sha256": backup_sha,
-            }
+    base = root.parent
+    preparation = Path(
+        tempfile.mkdtemp(prefix=f".{transaction_id}.preparing-", dir=base)
+    )
+    try:
+        invoke_boundary(
+            hook, "after_preparation_root", {"transaction_id": transaction_id}
         )
-    journal = {
-        "schema_version": "ai-context-package-apply-journal/v1",
-        "transaction_id": transaction_id,
-        "state": "planned",
-        "transition_sequence": 0,
-        "plan_sha256": plan["plan_sha256"],
-        "operation_order_sha256": canonical_digest(
-            [item["id"] for item in active_operations(plan)]
-        ),
-        "next_apply_index": 0,
-        "completed_operation_ids": [],
-        "acknowledgements": sorted(acknowledgements),
-        "pre_state": pre_state,
-        "protected_state": observation(protected_target_paths(target), target),
-        "planned_created_parents": planned_created_parents(target, plan),
-        "last_error": None,
-        "final_receipt_sha256": None,
-    }
-    atomic_write_yaml(root / "journal.yaml", journal)
-    fsync_directory(root)
-    return root, journal
+        (preparation / "prestate").mkdir()
+        plan_bytes = json.dumps(
+            plan,
+            ensure_ascii=False,
+            sort_keys=True,
+            separators=(",", ":"),
+            allow_nan=False,
+        ).encode("utf-8") + b"\n"
+        atomic_write_bytes(preparation / "plan.json", plan_bytes)
+        invoke_boundary(hook, "after_preparation_plan", {"transaction_id": transaction_id})
+        pre_state: list[dict] = []
+        for index, relative in enumerate(touched_paths(plan)):
+            state = file_state(target, relative)
+            backup_path = None
+            backup_sha = None
+            if state.exists:
+                content = (target / Path(*PurePosixPath(relative).parts)).read_bytes()
+                backup_name = (
+                    f"{index:04d}-{sha256_bytes(relative.encode('utf-8'))}.bin"
+                )
+                backup = preparation / "prestate" / backup_name
+                atomic_write_bytes(backup, content, mode_int(state.mode or "0644"))
+                backup_path = f"prestate/{backup_name}"
+                backup_sha = sha256_bytes(content)
+            pre_state.append(
+                {
+                    "path": relative,
+                    "state": state_record(state),
+                    "backup_path": backup_path,
+                    "backup_sha256": backup_sha,
+                }
+            )
+            invoke_boundary(
+                hook,
+                "after_preparation_backup",
+                {"transaction_id": transaction_id, "index": index, "path": relative},
+            )
+        journal = {
+            "schema_version": "ai-context-package-apply-journal/v1",
+            "transaction_id": transaction_id,
+            "state": "planned",
+            "transition_sequence": 0,
+            "plan_sha256": plan["plan_sha256"],
+            "operation_order_sha256": canonical_digest(
+                [item["id"] for item in active_operations(plan)]
+            ),
+            "next_apply_index": 0,
+            "completed_operation_ids": [],
+            "acknowledgements": sorted(acknowledgements),
+            "pre_state": pre_state,
+            "protected_state": observation(protected_target_paths(target), target),
+            "planned_created_parents": planned_created_parents(target, plan),
+            "last_error": None,
+            "final_receipt_sha256": None,
+        }
+        atomic_write_yaml(preparation / "journal.yaml", journal)
+        fsync_directory(preparation)
+        invoke_boundary(
+            hook, "after_preparation_journal", {"transaction_id": transaction_id}
+        )
+        if root.exists():
+            raise ApplyError(
+                f"transaction evidence already exists; resume or roll back {transaction_id}"
+            )
+        atomic_replace(preparation, root)
+        fsync_directory(base)
+        return root, journal
+    except Exception:
+        if preparation.exists():
+            shutil.rmtree(preparation)
+            fsync_directory(base)
+        raise
 
 
 def persist_journal(root: Path, journal: dict) -> None:
@@ -1517,6 +1608,7 @@ def invoke_boundary(
 
 
 def execute_operation(
+    root: Path,
     package_root: Path,
     target: Path,
     incoming: dict[str, dict],
@@ -1541,7 +1633,7 @@ def execute_operation(
             return
         if not exact_state_matches(target, relative, prestate[relative]["state"]):
             raise ApplyError(f"ambiguous transaction state for {relative}")
-        durable_unlink(target / Path(*PurePosixPath(relative).parts))
+        durable_unlink(target / Path(*PurePosixPath(relative).parts), root)
         invoke_boundary(hook, "after_source_remove", {"index": index, "operation_id": operation["id"]})
         return
     if action == "rename":
@@ -1560,7 +1652,7 @@ def execute_operation(
         if destination_is_pre:
             write_payload(package_root, target, relative, incoming[relative])
             invoke_boundary(hook, "after_destination_replace", {"index": index, "operation_id": operation["id"]})
-        durable_unlink(target / Path(*PurePosixPath(source_relative).parts))
+        durable_unlink(target / Path(*PurePosixPath(source_relative).parts), root)
         invoke_boundary(hook, "after_source_remove", {"index": index, "operation_id": operation["id"]})
         return
     raise ApplyError(f"unsupported active operation action: {action}")
@@ -1672,7 +1764,9 @@ def run_transaction(
     prestate = prestate_by_path(journal)
     for index in range(int(journal["next_apply_index"]), len(operations)):
         operation = operations[index]
-        execute_operation(package_root, target, incoming, operation, index, prestate, hook)
+        execute_operation(
+            root, package_root, target, incoming, operation, index, prestate, hook
+        )
         invoke_boundary(hook, "after_operation", {"index": index, "operation_id": operation["id"]})
         journal["completed_operation_ids"] = [item["id"] for item in operations[: index + 1]]
         journal["next_apply_index"] = index + 1
@@ -1681,10 +1775,35 @@ def run_transaction(
     receipt = build_final_receipt(plan, journal, incoming, reconciles)
     receipt_path = target / PENDING_RECEIPT_PATH
     reject_symlink_boundary(target, PENDING_RECEIPT_PATH)
-    expected_bytes = yaml.safe_dump(receipt, sort_keys=False, allow_unicode=True).encode("utf-8")
+    expected_bytes = deterministic_yaml_bytes(receipt)
     if receipt_path.exists():
-        if receipt_path.is_symlink() or is_reparse_point(receipt_path) or receipt_path.read_bytes() != expected_bytes:
+        if receipt_path.is_symlink() or is_reparse_point(receipt_path):
             raise ApplyError("pending receipt is ambiguous after interruption")
+        existing_bytes = receipt_path.read_bytes()
+        if existing_bytes != expected_bytes:
+            try:
+                existing_receipt = yaml.safe_load(existing_bytes)
+            except yaml.YAMLError as exc:
+                raise ApplyError(
+                    "pending receipt is ambiguous after interruption"
+                ) from exc
+            if not isinstance(existing_receipt, dict) or not all(
+                isinstance(key, str) for key in existing_receipt
+            ):
+                raise ApplyError("pending receipt is ambiguous after interruption")
+            differing_fields = sorted(
+                key
+                for key in set(existing_receipt) | set(receipt)
+                if existing_receipt.get(key) != receipt.get(key)
+            )
+            detail = (
+                f" fields differ: {differing_fields}"
+                if differing_fields
+                else " deterministic bytes differ"
+            )
+            raise ApplyError(
+                f"pending receipt is ambiguous after interruption;{detail}"
+            )
     else:
         atomic_write_bytes(receipt_path, expected_bytes)
     invoke_boundary(hook, "after_receipt", {"transaction_id": journal["transaction_id"]})
@@ -1710,6 +1829,9 @@ def load_transaction(target: Path, transaction_id: str) -> tuple[Path, dict, dic
         raise ApplyError("transaction evidence must contain mappings")
     if plan_digest(plan) != transaction_id:
         raise ApplyError("transaction plan identity does not match transaction ID")
+    plan_target = plan.get("target_root")
+    if not isinstance(plan_target, str) or Path(plan_target).resolve() != target.resolve():
+        raise ApplyError("transaction target root does not match recovery target")
     if journal.get("schema_version") != "ai-context-package-apply-journal/v1":
         raise ApplyError("unsupported transaction journal schema")
     if journal.get("transaction_id") != transaction_id or journal.get("plan_sha256") != transaction_id:
@@ -1810,13 +1932,13 @@ def rollback_loaded_transaction(
             backup = root / item["backup_path"]
             atomic_write_bytes(path, backup.read_bytes(), mode_int(item["state"]["mode"]))
         elif path.exists():
-            durable_unlink(path)
+            durable_unlink(path, root)
         invoke_boundary(hook, "after_rollback_restore", {"path": relative})
     receipt_path = target / PENDING_RECEIPT_PATH
     if receipt_path.exists():
         if receipt_path.is_symlink() or is_reparse_point(receipt_path):
             raise ApplyError("unsafe pending receipt blocks rollback")
-        durable_unlink(receipt_path)
+        durable_unlink(receipt_path, root)
     for relative in reversed(journal.get("planned_created_parents", [])):
         directory = target / Path(*PurePosixPath(relative).parts)
         if directory.exists() and directory.is_dir() and not any(directory.iterdir()):
@@ -1886,7 +2008,9 @@ def apply_plan(
         _package, incoming, _manifest_sha, reconciles = verify_plan_for_apply(
             plan, acknowledgements
         )
-        root, journal = prepare_transaction(target, plan, acknowledgements)
+        root, journal = prepare_transaction(
+            target, plan, acknowledgements, boundary_hook
+        )
         invoke_boundary(
             boundary_hook,
             "after_planned_journal",

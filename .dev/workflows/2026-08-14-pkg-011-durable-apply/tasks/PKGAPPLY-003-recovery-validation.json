@@ -8,7 +8,7 @@
   "owner_skill": "ai-context-governance",
   "status": "in_progress",
   "created_at": "2026-08-14T09:07:04+08:00",
-  "updated_at": "2026-08-14T21:06:24+08:00",
+  "updated_at": "2026-08-15T00:16:49+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-5.6-sol",
   "reasoning_effort": "xhigh",
@@ -20,17 +20,17 @@
     "non_goals": ["Nightly runner scheduling", "Product source review", "Release publication"]
   },
   "execution": {
-    "steps": ["Cover partial write, readonly/permission, symlink/reparse, EOL, delete, rename, and mode cases", "Reject symlink/reparse boundaries before selected-path Git-ignore inspection", "Force interruption after every operation boundary", "Validate recovery from a fresh process invocation", "Run package-native and cross-platform focused matrices", "Obtain independent fixed-head verification"],
+    "steps": ["Bind recovery to the exact caller target before any resume or rollback mutation", "Publish the complete planned journal atomically from a non-blocking preparation directory", "Use a write-through Windows source-path removal before advancing the journal", "Cover partial write, readonly/permission, symlink/reparse, EOL, delete, rename, and mode cases", "Force interruption after every journal, operation, receipt, and rollback boundary", "Validate recovery from a fresh process invocation", "Run package-native and cross-platform focused matrices", "Obtain independent fixed-head verification"],
     "validation": ["Windows-compatible focused suite", "Ubuntu-24.04 focused GWT-008 and complete package-apply suite", "POSIX focused suite", "package-native validation", "external-task receipt validation", "independent ai-context-auditor assessment"],
-    "last_completed_step": "Issue #209 boundary ordering and diagnostic stability were corrected; focused GWT-008 passed 1/1 and the complete package-apply suite passed 35/35 on Ubuntu-24.04 outside the sandbox",
-    "next_action": "Dispatch the long package matrix and POSIX/fixed-head audit against the exact clean Issue #209 corrective commit"
+    "last_completed_step": "All fixed-head audit findings were remediated; the latest package-apply suite passed 43/43 on WSL Ubuntu-24.04 and 42/43 on Windows with only the documented symlink-privilege skip; independent current-diff re-review returned no findings at scoped diff 2632fb943e6b9662e67771cc8348778a853e6551",
+    "next_action": "Validate workflow artifacts, commit the Issue #200 remediation, then run the external long matrix and a final fixed-clean-HEAD audit"
   },
   "results": {
-    "summary": "Issue #209 is locally corrected and its Ubuntu-24.04 acceptance is green; the 38-case package matrix also passed on the dirty implementation tree but took 123.462 seconds and therefore must be repeated externally at the clean immutable commit.",
+    "summary": "The three P1 transaction defects and deterministic coverage gaps found by the fixed-head audit are remediated in the working tree; immutable-commit validation and a fresh independent audit remain before #200 verification can close.",
     "files_changed": [".ai/scripts/ai_context_package_apply.py", ".ai/scripts/tests/test_ai_context_package_apply.py", ".ai/scripts/ai_context_target_provenance.py"],
-    "tests_run": ["package apply Windows-compatible: 35 passed, 1 skipped", "Issue #209 Ubuntu-24.04 GWT-008: 1 passed", "Issue #209 Ubuntu-24.04 package apply: 35 passed", "semantic customization lifecycle: 7 passed", "effective rules: 18 passed, 2 skipped", "package producer matrix dirty-tree evidence: 38 passed in 123.462s"],
-    "finding_status": "verification-in-progress",
-    "residual_risk": "The long matrix lacks clean immutable external-task evidence; POSIX and final fixed-head audit remain pending.",
+    "tests_run": ["rebased fixed-HEAD package matrix: 38 passed with a schema-valid receipt", "latest WSL Ubuntu-24.04 package-apply suite: 43 passed", "latest Windows package-apply suite: 42 passed, 1 symlink-privilege skip", "extracted-package validator: 16 passed, 1 skipped", "assessment, workflow, and 15-commit policy validation passed after compression"],
+    "finding_status": "audit-remediated-awaiting-fixed-head-verification",
+    "residual_risk": "The working-tree result is not yet bound to an immutable commit, the long package matrix has not run against that commit, and the final independent fixed-head auditor has not accepted it.",
     "follow_up_needed": true
   }
 }
