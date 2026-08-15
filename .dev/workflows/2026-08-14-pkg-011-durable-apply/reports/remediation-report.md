@@ -12,9 +12,9 @@
 - `report_id`: `remediation-report-2026-08-14-pkg-011-durable-apply`
 - `workflow_id`: `2026-08-14-pkg-011-durable-apply`
 - `owner_skill`: `ai-context-governance`
-- `status`: `round-5-focused-validated-awaiting-durable-commit`
+- `status`: `round-5-durable-committed-awaiting-cumulative-validation`
 - `created_at`: `2026-08-14T09:07:04+08:00`
-- `updated_at`: `2026-08-15T09:49:40+08:00`
+- `updated_at`: `2026-08-15T09:54:35+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-remediation-report-template.md`
 - `template_version`: `2.0.0`
 - `baseline_assessment`: `ASM-20260813-001`
@@ -25,13 +25,13 @@
 - Authorized scope: Issues #200 and #209 / `ASM-20260813-001#PKGAPPLY-001`, DS-01/02/03/10/11, and `OWNER-HYBRID-001`.
 - Completed scope: complete selected managed-state and proof identity; narrow raw/clean-Git Hybrid identity; durable Git-admin prestates and journal; atomic publication of a complete journal; exact-target recovery; supported write-through Windows replacement and removal; sealed active-operation post-state; validated journal prefixes and target surfaces; package-independent rollback; durable journal-v2 rollback progress; journal-v3 deterministic target staging; preparation and recovery admission before cleanup or target/journal mutation; exact package and receipt binding; apply/receipt/rollback hard-death recovery; retained-staging finalization rejection; finalized transition, operation prefix, plan post-state, receipt artifact, removal, resolved-target, live-HEAD, exact-operation, parent-boundary, and exact effective-rule packet-root validation; resume/rollback CLI; schema-2 receipt and target gates; boundary-first Git-ignore inspection; stable symlink/reparse diagnostic; documentation and deterministic Windows/POSIX fixtures.
 - Validation summary: the round-5 focused Windows fixtures passed GWT-023 in 26.030 seconds, GWT-024 in 12.415 seconds, GWT-036 in 22.676 seconds, GWT-041 through GWT-043 in 16.129 seconds, GWT-044 through GWT-045 in 8.550 seconds, and adjacent GWT-009/GWT-039/GWT-040 in 7.334 seconds. Three changed Python files parsed, the task JSON parsed, the repository workflow-artifact validator passed all 82 post-adoption workflows, 102 indexed workflow directories, and 55 backlog items, and scoped `git diff --check` passed. A scoped transient current-diff audit found three zero-mutation/parity risks in the predecessor handoff; all were remediated and the final scoped review found no remaining P1/P2/P3 issue. No long-running, full-matrix, release, or nightly-full command was run because the owner requires all planned #200-#208 local changes, focused tests, reviews, and commits first.
-- Closure decision: `awaiting-round-5-durable-commit`
+- Closure decision: `round-5-durable-checkpoint-complete`
 
 ## Finding Resolution Matrix
 
 | Assessment Finding | Before Severity | Status | Changed Files | Validation | Commit | Residual Risk |
 | --- | --- | --- | --- | --- | --- | --- |
-| `ASM-20260813-001#PKGAPPLY-001` | HIGH | `round-5-focused-validated-awaiting-durable-commit` | apply engine, target receipt validator, focused tests, workflow evidence | prior fixed-head failures remain retained; round-5 GWT-023/024/036/041-045 plus adjacent GWT-009/039/040 passed and scoped current-diff review is accepted | prior non-passing checkpoints retained; round-5 commit pending | cumulative immutable Windows matrix and final fixed-head audit remain sequencing-deferred |
+| `ASM-20260813-001#PKGAPPLY-001` | HIGH | `round-5-durable-committed-awaiting-cumulative-validation` | apply engine, target receipt validator, focused tests, workflow evidence | prior fixed-head failures remain retained; round-5 GWT-023/024/036/041-045 plus adjacent GWT-009/039/040 passed and scoped current-diff review is accepted | `28613098f91f6cca52cfc3b1ff88ea2e4ce9d59b` | cumulative immutable Windows matrix and final fixed-head audit remain sequencing-deferred |
 | `Issue-209-acceptance` | HIGH | `resolved-locally` | `.ai/scripts/ai_context_package_apply.py`, workflow evidence | GWT-008 passed 1/1 and complete package-apply suite passed 35/35 on `Ubuntu-24.04` outside the sandbox | pending | clean fixed-head validation remains shared with PKG-011 |
 
 ## Changes And Evidence
@@ -41,7 +41,7 @@
 - Changes: plan schema 2 and complete managed observation; CRLF-only clean Git fallback with raw authority; exact #201 proof pointer/digest propagation; Git-admin durable plan/prestates/journal; native atomic writes; atomic journal publication; exact-target recovery; Windows write-through tombstones; explicit lifecycle and recovery CLI; deterministic YAML receipts; strict receipt-to-journal/plan binding; active-transaction target gate; raw artifact SHA/Git mode receipts; target-owned authority preservation; documentation.
 - Evidence: live Issue #200, DS-01/02/03/10/11, `OWNER-HYBRID-001`, verified #201 proof contract, 56 focused GWT cases, lifecycle/effective-rule regressions, 38-case package matrix, and independent read-only review/re-review.
 - Validation: working-tree suites passed; the 38-case runner exceeded 120 seconds and must be repeated against the clean implementation commit through the external-task contract.
-- Remaining risk: the remediated working tree still requires a new clean immutable commit, long matrix receipt, and independent fixed-head audit.
+- Remaining risk: the round-5 implementation is durably committed, while the cumulative long-matrix receipt and independent fixed-head audit remain sequencing-deferred until all planned #200-#208 local work is complete.
 
 ### Fixed-Head Audit Remediation
 
@@ -113,6 +113,6 @@
 ## Closure Evidence
 
 - Required validations: round-5 focused recovery, finalization, packet-root, target, HEAD, and receipt fixtures pass after the review fixes; a cumulative immutable Windows full suite and fixed-head audit remain required after the owner sequencing gate opens.
-- Commit status: `7b6bfbe`, `3e7723d`, and `df36a29` remain retained non-passing audit checkpoints; `75e0c67` remains the round-4 durable implementation checkpoint, and the next durable `#200` commit will contain the round-5 audited remediation.
+- Commit status: `7b6bfbe`, `3e7723d`, and `df36a29` remain retained non-passing audit checkpoints; `75e0c67` remains the round-4 durable implementation checkpoint, and `28613098f91f6cca52cfc3b1ff88ea2e4ce9d59b` is the unpushed round-5 durable implementation checkpoint.
 - Workflow/task status: round-5 focused review passed only after the three predecessor-work corrections above. Long-running/full-matrix/release/nightly-full validation remains intentionally deferred until all planned #200-#208 local changes, focused tests, reviews, and commits are complete. Durable verification assessment allocation remains gated by Issue #213 and is not inferred from implementation completion.
-- Final next action: create the round-5 Issue #200 durable commit, then continue the remaining #200-#208 local work without dispatching long validation yet.
+- Final next action: continue the remaining authorized #200-#208 local work from its recorded state without dispatching long validation yet; Issue #213 remains unimplemented absent separate authorization.
