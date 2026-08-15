@@ -1,0 +1,64 @@
+{
+  "template_id": "ai-context-governance-remediation-task",
+  "template_version": "1.1.0",
+  "template_created_at": "2026-07-10T18:22:49+08:00",
+  "template_updated_at": "2026-07-27T09:52:09+08:00",
+  "task_id": "VAL007-001-supervision-snapshot",
+  "workflow_id": "2026-08-15-val-007-terminal-validation",
+  "owner_skill": "ai-context-governance",
+  "status": "in_progress",
+  "created_at": "2026-08-15T13:39:00+08:00",
+  "updated_at": "2026-08-15T19:48:37+08:00",
+  "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
+  "model": "gpt-5.6-sol",
+  "reasoning_effort": "max",
+  "finding_ids": ["ASM-20260810-005#VALSNAP-001", "ASM-20260810-005#VALTIME-001", "ASM-20260813-001#VALRUN-001", "Issue-204-acceptance"],
+  "scope": {
+    "target": "Cross-platform complete process-tree supervision, immutable terminal admission, and sealed execution artifacts",
+    "files": [".ai/scripts/check-all.sh", ".ai/scripts/validation-evidence.py", ".ai/scripts/tests/test_fail_closed_validation.py", ".ai/scripts/tests/test_validation_evidence.py"],
+    "constraints": ["Prove descendant termination before returning", "Fail closed on pre/post identity drift", "Do not append to a sealed log", "Use deterministic child and grandchild fixtures", "Run focused validation only"],
+    "non_goals": ["Issue #215 registry count redesign", "Release or nightly-full execution", "External-task delegation redesign", "Push, PR, merge, or publication"]
+  },
+  "execution": {
+    "steps": ["Specify the snapshot and supervisor result schemas", "Add failing Windows/POSIX tree and drift fixtures", "Implement process-tree supervision and sealed result artifacts", "Integrate snapshot admission and abort semantics into the aggregate runner", "Run focused tests and independent current-diff review"],
+    "validation": ["Focused supervisor and validation-evidence unit tests", "Selected fail-closed runner integration tests", "bash syntax check", "workflow artifact validation", "git diff --check"],
+    "last_completed_step": "Replaced only cross-domain list-order equality with exact validator-set parity, added semantic permutation and retained-integrity GWTs, passed Windows and Ubuntu focused tests, and received independent P0=0/P1=0 reviews",
+    "next_action": "Create and push the durable #204 correction, then require one exact-head hosted-check watch and stop on failure or head drift"
+  },
+  "results": {
+    "summary": "The aggregate runner now admits a contained immutable bootstrap snapshot, supervises validator and evidence-control process trees, authenticates pre/post identity and terminal artifacts, fails closed on drift, cancellation, timeout, malformed preparation, or terminal mismatch, and publishes a cache-discoverable terminal manifest only after exact staged-manifest and supervisor verification.",
+    "files_changed": [
+      ".ai/scripts/check-all.sh",
+      ".ai/scripts/validation_process_supervisor.py",
+      ".ai/scripts/validation-evidence.py",
+      ".ai/scripts/validation-profile-registry.sh",
+      ".ai/scripts/shell-assets.yaml",
+      ".ai/scripts/README.md",
+      ".ai/scripts/tests/test_validation_process_supervisor.py",
+      ".ai/scripts/tests/test_validation_evidence.py",
+      ".ai/scripts/tests/test_validation_profile_registry.py",
+      ".ai/scripts/tests/test_fail_closed_validation.py"
+    ],
+    "tests_run": [
+      "Windows validation_process_supervisor module: OK, 19 tests with 8 platform skips",
+      "WSL Ubuntu-24.04 validation_process_supervisor module: OK, 19 tests with 3 platform skips",
+      "bounded validation-evidence GWT groups: passed with one expected Windows symlink-privilege skip",
+      "runner GWT-032 through GWT-038: passed 7/7 in 115.683 seconds",
+      "runner GWT-019 stale-message batch retained as 7/8; exact corrected GWT-019 rerun passed 1/1 in 1.244 seconds",
+      "independent fixed-head audit of 59dae454bcfe55fed9873eac834449583750c4a5: no P0 or P1 finding",
+      "PR #216 initial Ubuntu fast and PR gates failed before validator launch because normalized_path expanded before local input_path assignment",
+      "CI remediation GWT-019: Windows passed 1/1 in 1.322 seconds; Ubuntu-24.04 passed 1/1 in 25.334 seconds; Ubuntu bash syntax passed",
+      "PR #216 second hosted attempt: governance 35 executed checks and portable PR 41 executed checks passed before both supervised finalize children exited 1 with cannot read repository snapshot",
+      "Repo-relative finalize remediation: final routine contract 2/2 passed in 24.484 seconds; final Windows GWT-035/009/019 set 3/3 passed in 6.942 seconds; Ubuntu-24.04 GWT-035 passed 1/1 in 1.228 seconds",
+      "Independent current-diff review after repository-boundary admission: P0=0, P1=0; diff-check passed",
+      "PR #216 exact-head eff73df attempt: build, Ubuntu prerequisite, and Windows prerequisite passed; governance run 31880798815/job 95002974622 and portable run 31880798749/job 95002974208 failed closed at seal",
+      "Hosted artifacts 9245967617 and 9245973619 each contain 63 unique preparation, event, and evidence IDs with identical sets; preparation matches prepare-log order and events match evidence order, while only cross-domain order differs",
+      "Seal-order remediation: Windows exact routine class passed 4/4 in 39.941 seconds under its 60-second registry timeout; Ubuntu-24.04 GWT-036/037 passed 2/2 in 5.421 seconds; adjacent fingerprint-parity GWT-033 passed 1/1 in 4.403 seconds",
+      "Independent seal-contract safety and test-quality reviews: P0=0, P1=0; no fixed inventory count or source-text assertion was introduced",
+      "Final AST parsing, task JSON validation, workflow-artifact validation across 83 post-adoption workflows, and git diff --check passed"
+    ],
+    "finding_status": "remediated-locally-awaiting-hosted-gate",
+    "residual_risk": "Required hosted gates have not yet observed the exact-set correction. Evidence/event duplicate coverage is not explicit in GWT-037 although the unchanged guard runs before dict collapse; the shared preparation parser's duplicate diagnostic retains a pre-existing fingerprint-selection label. Pre-target-launch Git selection admission and read-only supervision authenticators remain bounded no-launch/no-pass TCBs; artifact assembly and hard-link publication remain an atomic shell TCB. Long-running cumulative validation and Issue closure remain separate.",
+    "follow_up_needed": true
+  }
+}

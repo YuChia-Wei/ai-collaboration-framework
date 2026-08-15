@@ -1,0 +1,49 @@
+{
+  "template_id": "ai-context-governance-remediation-task",
+  "template_version": "1.1.0",
+  "template_created_at": "2026-07-10T18:22:49+08:00",
+  "template_updated_at": "2026-07-27T09:52:09+08:00",
+  "task_id": "VAL007-002-evidence-cleanup",
+  "workflow_id": "2026-08-15-val-007-terminal-validation",
+  "owner_skill": "ai-context-governance",
+  "status": "completed",
+  "created_at": "2026-08-15T13:39:00+08:00",
+  "updated_at": "2026-08-15T15:03:24+08:00",
+  "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
+  "model": "gpt-5.6-sol",
+  "reasoning_effort": "max",
+  "finding_ids": ["ASM-20260810-005#VALTEST-001", "ASM-20260813-001#DS-16", "Issue-204-acceptance"],
+  "scope": {
+    "target": "Bound nested subprocesses, make cleanup failures visible, and measure duplicate validation coverage before consolidation",
+    "files": [".ai/scripts/validate-immutable-history.py", ".ai/distribution/validation/immutable-history-validation.yaml", ".ai/scripts/tests/test_immutable_history_validation.py", ".ai/scripts/tests/test_fail_closed_validation.py", ".dev/workflows/2026-08-15-val-007-terminal-validation/**"],
+    "constraints": ["Do not raise aggregate timeout as a substitute for supervision", "Preserve unique fail-closed coverage", "Record cleanup failures deterministically", "Run focused validation only"],
+    "non_goals": ["Broad test-suite cleanup", "Issue #215 magic-count remediation", "Full validation matrix"]
+  },
+  "execution": {
+    "steps": ["Inventory unique and duplicate synthetic fixture coverage", "Add explicit nested subprocess bounds", "Make teardown and retained-artifact cleanup outcomes observable", "Consolidate only proven duplication", "Run focused tests and review"],
+    "validation": ["Focused immutable-history tests", "Selected cleanup and duplicate-coverage contract tests", "workflow artifact validation", "git diff --check"],
+    "last_completed_step": "Bound every native immutable-history validator and Git helper, made the prerequisite fixture cleanup observable, retained the measured duplicate-coverage inventory, and completed focused review",
+    "next_action": "Task 001 must retain the outer process-tree supervisor around nested validators; no further task 002 mutation is planned"
+  },
+  "results": {
+    "summary": "Native full-validator commands now require strict positive timeouts, stop before later validators on timeout, and cannot write a receipt after failure; helper Git calls are bounded and the shadowed-PyYAML prerequisite fixture uses strict OS-temporary cleanup.",
+    "files_changed": [
+      ".ai/distribution/IMMUTABLE-HISTORY-VALIDATION-CONTRACT.md",
+      ".ai/distribution/validation/immutable-history-validation.yaml",
+      ".ai/scripts/validate-immutable-history.py",
+      ".ai/scripts/tests/test_immutable_history_validation.py",
+      ".ai/scripts/tests/test_python_prerequisites.py",
+      ".dev/workflows/2026-08-15-val-007-terminal-validation/reports/coverage-inventory.md"
+    ],
+    "tests_run": [
+      "GWT-020/021/022 immutable-history timeout contract: passed",
+      "GWT-008/013/015 immutable-history regression selection: passed",
+      "GWT-014 Python prerequisite cleanup contract: passed",
+      "downstream immutable-history CLI contract: passed",
+      "git diff --check: passed"
+    ],
+    "finding_status": "resolved",
+    "residual_risk": "A nested validator can still create grandchildren; task 001's outer supervisor owns complete descendant containment. Existing ignored bytecode caches predate this task and were not removed.",
+    "follow_up_needed": false
+  }
+}

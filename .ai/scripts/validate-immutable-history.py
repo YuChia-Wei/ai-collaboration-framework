@@ -37,6 +37,7 @@ import yaml
 
 FULL_REQUIRED_EXIT = 10
 ERROR_EXIT = 2
+GIT_COMMAND_TIMEOUT_SECONDS = 30
 SHA_RE = re.compile(r"^[0-9a-f]{40}$")
 HEX_DIGEST_RE = re.compile(r"^[0-9a-f]{64}$")
 RELEASE_TAG_RE = re.compile(r"^v(?:0|[1-9]\d*)\.(?:0|[1-9]\d*)\.(?:0|[1-9]\d*)$")
@@ -120,6 +121,13 @@ DuplicateKeySafeLoader.add_constructor(
 
 
 @dataclass(frozen=True)
+class NativeFullValidator:
+    check_id: str
+    command: tuple[str, ...]
+    timeout_seconds: int
+
+
+@dataclass(frozen=True)
 class Contract:
     contract_id: str
     history_roots: tuple[str, ...]
@@ -132,7 +140,7 @@ class Contract:
     routine_profiles: tuple[str, ...]
     full_profiles: tuple[str, ...]
     full_gates: tuple[str, ...]
-    native_full_validators: tuple[tuple[str, tuple[str, ...]], ...]
+    native_full_validators: tuple[NativeFullValidator, ...]
     downstream_target_command: tuple[str, ...]
 
 
@@ -263,13 +271,22 @@ def load_contract(path: Path) -> Contract:
     raw_validators = source["native_full_validators"]
     if not isinstance(raw_validators, list) or not raw_validators:
         raise ImmutableHistoryError("contract.source.native_full_validators must be a non-empty list")
-    native_validators: list[tuple[str, tuple[str, ...]]] = []
+    native_validators: list[NativeFullValidator] = []
     for index, item in enumerate(raw_validators):
-        validator = require_exact_keys(item, {"check_id", "command"}, f"contract.source.native_full_validators[{index}]")
+        validator = require_exact_keys(
+            item,
+            {"check_id", "command", "timeout_seconds"},
+            f"contract.source.native_full_validators[{index}]",
+        )
         check_id = validator["check_id"]
         if not isinstance(check_id, str) or not check_id:
             raise ImmutableHistoryError(f"contract.source.native_full_validators[{index}].check_id must be a string")
         command = strict_string_list(validator["command"], f"contract.source.native_full_validators[{index}].command")
+        timeout_seconds = validator["timeout_seconds"]
+        if isinstance(timeout_seconds, bool) or not isinstance(timeout_seconds, int) or timeout_seconds <= 0:
+            raise ImmutableHistoryError(
+                f"contract.source.native_full_validators[{index}].timeout_seconds must be a positive integer"
+            )
         if any("\x00" in argument for argument in command):
             raise ImmutableHistoryError(f"contract.source.native_full_validators[{index}].command contains NUL")
         if (
@@ -282,8 +299,14 @@ def load_contract(path: Path) -> Contract:
             raise ImmutableHistoryError(
                 f"contract.source.native_full_validators[{index}].command must invoke one fingerprinted Python validator"
             )
-        native_validators.append((check_id, command))
-    if tuple(item[0] for item in native_validators) != REUSABLE_CHECK_IDS:
+        native_validators.append(
+            NativeFullValidator(
+                check_id=check_id,
+                command=command,
+                timeout_seconds=timeout_seconds,
+            )
+        )
+    if tuple(item.check_id for item in native_validators) != REUSABLE_CHECK_IDS:
         raise ImmutableHistoryError("contract.source.native_full_validators must declare the governed reusable check IDs in order")
 
     downstream = require_exact_keys(root["downstream"], {"mode", "source_history_receipt", "target_local_validation"}, "contract.downstream")
@@ -315,7 +338,12 @@ def git_bytes(repo: Path, arguments: Sequence[str], *, error: str) -> bytes:
             cwd=repo,
             check=False,
             capture_output=True,
+            timeout=GIT_COMMAND_TIMEOUT_SECONDS,
         )
+    except subprocess.TimeoutExpired as exc:
+        raise ImmutableHistoryError(
+            f"{error}: git command timed out after {GIT_COMMAND_TIMEOUT_SECONDS} seconds"
+        ) from exc
     except OSError as exc:
         raise ImmutableHistoryError(f"{error}: {exc}") from exc
     if result.returncode != 0:
@@ -741,16 +769,31 @@ def refresh_source(
 
     executed: list[str] = []
     executed_commands: list[list[str]] = []
-    for check_id, command in contract.native_full_validators:
-        runtime_command = (sys.executable, *command[1:])
+    executed_timeout_seconds: list[int] = []
+    for validator in contract.native_full_validators:
+        runtime_command = (sys.executable, *validator.command[1:])
         try:
-            result = subprocess.run(runtime_command, cwd=repo, check=False, capture_output=True, text=True, encoding="utf-8", errors="replace")
+            result = subprocess.run(
+                runtime_command,
+                cwd=repo,
+                check=False,
+                capture_output=True,
+                text=True,
+                encoding="utf-8",
+                errors="replace",
+                timeout=validator.timeout_seconds,
+            )
+        except subprocess.TimeoutExpired as exc:
+            raise ImmutableHistoryError(
+                f"native validator {validator.check_id} timed out after {validator.timeout_seconds} seconds"
+            ) from exc
         except OSError as exc:
-            raise ImmutableHistoryError(f"native validator {check_id} could not start: {exc}") from exc
+            raise ImmutableHistoryError(f"native validator {validator.check_id} could not start: {exc}") from exc
         if result.returncode != 0:
-            raise ImmutableHistoryError(f"native validator {check_id} failed with exit {result.returncode}")
-        executed.append(check_id)
+            raise ImmutableHistoryError(f"native validator {validator.check_id} failed with exit {result.returncode}")
+        executed.append(validator.check_id)
         executed_commands.append(list(runtime_command))
+        executed_timeout_seconds.append(validator.timeout_seconds)
 
     bindings = source_bindings(repo, source_revision, contract, include_release_refs=True)
     write_receipt(repo / contract.receipt_path, receipt_payload(contract, bindings))
@@ -761,7 +804,12 @@ def refresh_source(
             source_revision=source_revision,
             source_tree=bindings["tree"],
             receipt_commit=None,
-            extra={"executed_check_ids": executed, "executed_commands": executed_commands, "receipt_path": contract.receipt_path},
+            extra={
+                "executed_check_ids": executed,
+                "executed_commands": executed_commands,
+                "executed_timeout_seconds": executed_timeout_seconds,
+                "receipt_path": contract.receipt_path,
+            },
         ),
         0,
     )

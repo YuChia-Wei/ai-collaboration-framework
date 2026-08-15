@@ -156,6 +156,8 @@ check_all_required_commands:
   - python .ai/scripts/tests/test_github_workflow_contract.py -v
   - python .ai/scripts/tests/test_fail_closed_validation.py -v
   - python .ai/scripts/tests/test_validation_profile_registry.py -v
+  - python .ai/scripts/tests/test_validation_process_supervisor.py -v
+  - python .ai/scripts/tests/test_validation_evidence.py ValidationEvidenceRoutineContractGwtTests -v
   - python .ai/scripts/tests/test_validation_evidence.py -v
   - python .ai/scripts/tests/test_immutable_history_validation.py -v
   - python .ai/scripts/tests/test_coding_standards_integrity_contract.py -v
