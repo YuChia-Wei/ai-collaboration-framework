@@ -6,9 +6,9 @@
   "task_id": "VAL007-001-supervision-snapshot",
   "workflow_id": "2026-08-15-val-007-terminal-validation",
   "owner_skill": "ai-context-governance",
-  "status": "in_progress",
+  "status": "completed",
   "created_at": "2026-08-15T13:39:00+08:00",
-  "updated_at": "2026-08-15T13:39:00+08:00",
+  "updated_at": "2026-08-15T17:52:54+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-5.6-sol",
   "reasoning_effort": "max",
@@ -22,15 +22,33 @@
   "execution": {
     "steps": ["Specify the snapshot and supervisor result schemas", "Add failing Windows/POSIX tree and drift fixtures", "Implement process-tree supervision and sealed result artifacts", "Integrate snapshot admission and abort semantics into the aggregate runner", "Run focused tests and independent current-diff review"],
     "validation": ["Focused supervisor and validation-evidence unit tests", "Selected fail-closed runner integration tests", "bash syntax check", "workflow artifact validation", "git diff --check"],
-    "last_completed_step": "Read back the live Issue, baseline assessments, current runner/evidence implementation, and source-repository action boundary",
-    "next_action": "Reconcile parallel inventories and implement the smallest deterministic supervisor and snapshot contract"
+    "last_completed_step": "Fixed clean implementation HEAD 59dae454bcfe55fed9873eac834449583750c4a5 and completed independent fixed-head review with no P0 or P1 finding",
+    "next_action": "Keep long-running validation deferred until the owner-approved cumulative #200-#208 gate; push and PR creation require separate authorization"
   },
   "results": {
-    "summary": "",
-    "files_changed": [],
-    "tests_run": [],
-    "finding_status": "not-addressed",
-    "residual_risk": "Current direct-PID timeout and unbound repository identity remain until implementation and focused verification complete.",
-    "follow_up_needed": true
+    "summary": "The aggregate runner now admits a contained immutable bootstrap snapshot, supervises validator and evidence-control process trees, authenticates pre/post identity and terminal artifacts, fails closed on drift, cancellation, timeout, malformed preparation, or terminal mismatch, and publishes a cache-discoverable terminal manifest only after exact staged-manifest and supervisor verification.",
+    "files_changed": [
+      ".ai/scripts/check-all.sh",
+      ".ai/scripts/validation_process_supervisor.py",
+      ".ai/scripts/validation-evidence.py",
+      ".ai/scripts/validation-profile-registry.sh",
+      ".ai/scripts/shell-assets.yaml",
+      ".ai/scripts/README.md",
+      ".ai/scripts/tests/test_validation_process_supervisor.py",
+      ".ai/scripts/tests/test_validation_evidence.py",
+      ".ai/scripts/tests/test_validation_profile_registry.py",
+      ".ai/scripts/tests/test_fail_closed_validation.py"
+    ],
+    "tests_run": [
+      "Windows validation_process_supervisor module: OK, 19 tests with 8 platform skips",
+      "WSL Ubuntu-24.04 validation_process_supervisor module: OK, 19 tests with 3 platform skips",
+      "bounded validation-evidence GWT groups: passed with one expected Windows symlink-privilege skip",
+      "runner GWT-032 through GWT-038: passed 7/7 in 115.683 seconds",
+      "runner GWT-019 stale-message batch retained as 7/8; exact corrected GWT-019 rerun passed 1/1 in 1.244 seconds",
+      "independent fixed-head audit of 59dae454bcfe55fed9873eac834449583750c4a5: no P0 or P1 finding"
+    ],
+    "finding_status": "resolved-locally",
+    "residual_risk": "Pre-target-launch Git selection admission and read-only supervision authenticators remain bounded no-launch/no-pass TCBs. Artifact assembly and hard-link publication remain an atomic shell TCB. The unique invocation directory assumes no untrusted concurrent writer. Long-running cumulative validation, hosted gates, push, PR, merge, and Issue closure remain separate.",
+    "follow_up_needed": false
   }
 }

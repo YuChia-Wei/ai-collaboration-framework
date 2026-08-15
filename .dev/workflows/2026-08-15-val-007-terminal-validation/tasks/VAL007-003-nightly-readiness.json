@@ -6,9 +6,9 @@
   "task_id": "VAL007-003-nightly-readiness",
   "workflow_id": "2026-08-15-val-007-terminal-validation",
   "owner_skill": "ai-context-governance",
-  "status": "pending",
+  "status": "completed",
   "created_at": "2026-08-15T13:39:00+08:00",
-  "updated_at": "2026-08-15T13:39:00+08:00",
+  "updated_at": "2026-08-15T17:52:54+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-5.6-sol",
   "reasoning_effort": "max",
@@ -22,15 +22,21 @@
   "execution": {
     "steps": ["Select a readiness-only workflow shape", "Declare bounded concurrency and cancellation", "Bind deterministic ignored evidence and hosted artifact paths", "Add contract tests proving nightly-full is not triggered by this change", "Run workflow syntax and focused contract validation"],
     "validation": ["Focused workflow contract tests", "YAML parse", "workflow artifact validation", "git diff --check"],
-    "last_completed_step": "Confirmed no current scheduled nightly workflow and recorded the owner boundary: readiness only, no nightly-full execution",
-    "next_action": "Begin only after tasks 001 and 002 establish the safe runner contract"
+    "last_completed_step": "Added and independently reviewed a job-level hard-disabled nightly-full readiness workflow with bounded concurrency and deterministic artifacts",
+    "next_action": "A later owner-authorized tracked change may activate the job only after cumulative #200-#208 validation and release-readiness gates are satisfied"
   },
   "results": {
-    "summary": "",
-    "files_changed": [],
-    "tests_run": [],
-    "finding_status": "not-addressed",
-    "residual_risk": "No nightly readiness contract exists yet; an actual schedule remains prohibited.",
+    "summary": "A schedule and manual dispatch shape now exist, but the sole job is guarded by job-level `if: ${{ false }}`. Checkout, setup, nightly-full execution, and upload therefore remain unreachable until a tracked reviewable change activates the gate.",
+    "files_changed": [
+      ".github/workflows/nightly-full-readiness.yml",
+      ".ai/scripts/tests/test_github_workflow_contract.py"
+    ],
+    "tests_run": [
+      "GitHub workflow contract module: passed 10/10 in 0.322 seconds",
+      "independent fixed-head nightly readiness GWT: passed 1/1; job-level hard-disable confirmed"
+    ],
+    "finding_status": "resolved-readiness-only",
+    "residual_risk": "Nightly-full has not run and is not enabled. Activation, hosted execution, artifact read-back, and release readiness remain separately authorized work.",
     "follow_up_needed": true
   }
 }

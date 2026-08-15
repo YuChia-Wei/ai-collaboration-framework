@@ -15,11 +15,11 @@
 - `branch`: `codex/2026-08-15-val-007-terminal-validation`
 - `base_branch`: `main`
 - `branch_segment`: `1`
-- `status`: `in_progress`
-- `current_phase`: `remediation`
+- `status`: `completed`
+- `current_phase`: `completed`
 - `artifact_root`: `.dev/workflows/2026-08-15-val-007-terminal-validation`
 - `created_at`: `2026-08-15T13:39:00+08:00`
-- `updated_at`: `2026-08-15T13:39:00+08:00`
+- `updated_at`: `2026-08-15T17:52:54+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md`
 - `template_version`: `1.2.0`
 
@@ -30,14 +30,14 @@
 - Authorization source: the owner confirmed the eight-step plan and authorized starting #204 as an independent PR. Repository implementation and focused validation are authorized; Project/milestone mutation, Issue closure, push, PR creation, merge, tag, release, and publication remain separate decisions.
 - Normative truth: live Issue #204 acceptance criteria, the two baseline assessments, the long-running validation gate in `AGENTS.md`, the validation profile registry, and the existing external-task terminal receipt contract.
 - Exclusions: Issue #215 registry-count improvements; Issues #203 and #205-#208; Issue #149 runtime/model comparison; changes to #194 external-task delegation semantics; an actual `release`, `nightly-full`, full-matrix, or at-least-120-second validation run; downstream repositories; hosted publication.
-- Completion criteria: timeout and cancellation leave no supervised descendant; pre/post identity drift fails closed and stops the chain; exact argv, commit/tree/status identity, duration, outcome, cleanup, log digest, and retained artifacts are sealed; nested validators are bounded; cleanup failures are visible; focused Windows/POSIX fixtures cover tree and delayed-writer behavior; duplicate fixture coverage is measured before consolidation; nightly readiness declares bounded concurrency, deterministic artifact ownership, cancellation, and an owner without running the nightly profile.
+- Completion criteria: satisfied locally at clean implementation commit `59dae454bcfe55fed9873eac834449583750c4a5`. Timeout and cancellation leave no supervised descendant; pre/post identity drift fails closed and stops the chain; exact argv, commit/tree/status identity, duration, outcome, cleanup, log digest, and retained artifacts are sealed; nested validators are bounded; cleanup failures are visible; focused Windows/POSIX fixtures cover tree and delayed-writer behavior; duplicate fixture coverage was measured before consolidation; nightly readiness declares bounded concurrency and deterministic artifact ownership but remains hard-disabled without running the nightly profile.
 
 ## Artifact Contract
 
 - Baseline assessments: `.dev/assessments/ASM-20260810-005/assessment.yaml` and `.dev/assessments/ASM-20260813-001/assessment.yaml`
 - Remediation report: `.dev/workflows/2026-08-15-val-007-terminal-validation/reports/remediation-report.md`
 - Pre-remediation coverage inventory: `.dev/workflows/2026-08-15-val-007-terminal-validation/reports/coverage-inventory.md`
-- Verification assessment: to be created only after a clean fixed implementation commit and independent read-only review
+- Verification evidence: independent fixed-head review of clean `59dae454bcfe55fed9873eac834449583750c4a5` found no P0/P1 issue; no standalone assessment was required for this bounded workflow
 - Tasks: `.dev/workflows/2026-08-15-val-007-terminal-validation/tasks/`
 
 ## Finding Triage
@@ -52,7 +52,7 @@
 ## Source-Repository Action Routing
 
 - `bdd-gwt-test-designer`: evaluated but not selected for execution. Its action requires a freshness-verified live target effective-rule packet; this framework source repository is prohibited from creating one. The acceptance scenarios below are maintained directly by the governance owner and no resolver success is fabricated.
-- `slice-implementer`: evaluated but not selected for the same source-repository packet boundary. `ai-context-governance` directly owns this Python source-framework remediation.
+- `slice-implementer`: a delegated follow-up attempted its required effective-rule resolution and stopped without mutation because `.dev/ai-context/provenance.yaml` is intentionally absent in this source repository. Existing Issue #204 governance authority then owned the bounded direct remediation; no framework-default rule packet was fabricated.
 - `software-development-orchestrator`: coordinates focused test execution, independent review, durable commit checkpoints, and the later immutable external-task gate without taking governance ownership.
 - Runtime evidence: task records persist `gpt-5.6-sol` with `max` reasoning effort. The user-selected Ultra execution mode is a runtime orchestration mode and is not substituted for those schema fields.
 - `role_execution`: not applicable because no action-skill execution is selected; the read-only explorer tasks provide inventory evidence only and do not transfer implementation ownership.
@@ -73,11 +73,11 @@
 
 ## Stages And Checkpoints
 
-1. Baseline/live-state read-back, branch isolation, runner/test/nightly inventory, and workflow bootstrap.
-2. Process-tree supervisor, immutable admission, sealed result/log artifacts, and Windows/POSIX focused fixtures.
-3. Nested timeout, deterministic cleanup, evidence schema/finalization, and duplicate-coverage disposition.
-4. Nightly readiness contract and focused repository validation; no long-running profile execution.
-5. Durable clean commit, independent fixed-head review, finding reconciliation, and an owner decision on the independent PR.
+1. Completed: baseline/live-state read-back, branch isolation, runner/test/nightly inventory, and workflow bootstrap.
+2. Completed: process-tree supervisor, immutable admission, sealed result/log artifacts, and Windows/POSIX focused fixtures.
+3. Completed: nested timeout, deterministic cleanup, evidence schema/finalization, and duplicate-coverage disposition.
+4. Completed: hard-disabled nightly readiness contract and focused repository validation; nightly-full was not executed.
+5. Completed locally: durable clean implementation commit `59dae454bcfe55fed9873eac834449583750c4a5`, independent fixed-head review with no P0/P1, and finding reconciliation. Push, PR creation, hosted gates, and merge remain owner decisions.
 
 ## Validation Strategy
 
@@ -88,16 +88,17 @@
 
 ## Resume Checkpoint
 
-- Last completed action: re-read clean `main@76c51574c7b2fdf59e8648eb105570589053ecf0`, live Issues #204 and #215, baseline assessments, relevant runner/evidence/profile code, and created the dedicated workflow branch.
-- Current task: `VAL007-001-supervision-snapshot`.
-- Exact next action: finish parallel read-only inventory, select the minimal cross-platform supervisor/evidence design, implement focused tests first, and then change the runner.
-- Validation already completed: branch/workflow collision checks, clean-entry Git read-back, workflow bootstrap validation, and a pre-remediation static coverage/cost inventory. No validation suite was executed for that inventory.
-- Git state: branch `codex/2026-08-15-val-007-terminal-validation` from clean `main@76c51574c7b2fdf59e8648eb105570589053ecf0`; no push or PR exists for this workflow.
-- Branch history and checkpoint handoffs: segment 1 is local and unshared; bootstrap commit pending.
-- Blockers or unresolved decisions: no implementation blocker. Exact process-tree mechanism and nightly readiness shape remain subject to focused design/review; actual nightly execution is explicitly excluded.
+- Last completed action: independent read-only fixed-head acceptance audit of clean implementation commit `59dae454bcfe55fed9873eac834449583750c4a5`; no P0/P1 finding and no repository mutation.
+- Current task: local workflow closeout; all three VAL-007 tasks are completed.
+- Exact next action: after this closeout commit, preserve the clean local branch and request an owner decision for push/PR. Do not execute cumulative long-running validation until all planned #200-#208 changes and focused reviews/commits are complete.
+- Validation already completed: Windows and WSL supervisor modules; bounded evidence GWT groups; selected fail-closed runner batches; workflow and registry contract modules; AST, Bash syntax, YAML/workflow, and diff checks; independent current-diff and fixed-head reviews. The historical GWT-019 stale-message failure and sandbox-blocked attempts remain retained rather than relabeled.
+- Git state: branch `codex/2026-08-15-val-007-terminal-validation`; implementation HEAD `59dae454bcfe55fed9873eac834449583750c4a5` was clean and is not pushed. No PR exists for this workflow.
+- Branch history and checkpoint handoffs: segment 1 remains local and unshared. Durable implementation boundaries are `254d0d7`, `910944f`, and `59dae45`; workflow bootstrap is `0965a2c`.
+- Blockers or unresolved decisions: no local #204 implementation blocker. Push/PR, hosted gates, Issue closure, merge, cumulative external validation, nightly activation, and release remain separate decisions.
 
 ## Branch Lifecycle
 
 | Segment | Branch | Base | Checkpoint Type | Commit | Remote / Target | Recorded At | Reason | Resume Branch / Action |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| 1 | `codex/2026-08-15-val-007-terminal-validation` | `main@76c51574c7b2fdf59e8648eb105570589053ecf0` | local workflow bootstrap | pending | not pushed | `2026-08-15T13:39:00+08:00` | isolate #204 as its owner-approved independent delivery | implement and validate focused VAL-007 remediation |
+| 1 | `codex/2026-08-15-val-007-terminal-validation` | `main@76c51574c7b2fdf59e8648eb105570589053ecf0` | local workflow bootstrap | `0965a2cf288c79fe91df3e291806d1bf66e9f8c9` | not pushed | `2026-08-15T13:39:00+08:00` | isolate #204 as its owner-approved independent delivery | implement and validate focused VAL-007 remediation |
+| 1 | `codex/2026-08-15-val-007-terminal-validation` | `0965a2cf288c79fe91df3e291806d1bf66e9f8c9` | clean fixed-head implementation review | `59dae454bcfe55fed9873eac834449583750c4a5` | not pushed | `2026-08-15T17:52:54+08:00` | preserve reviewed process-tree, evidence, and disabled-readiness implementation | commit closeout records, then return push/PR decision to owner |
