@@ -1,0 +1,36 @@
+{
+  "template_id": "ai-context-governance-remediation-task",
+  "template_version": "1.1.0",
+  "template_created_at": "2026-07-10T18:22:49+08:00",
+  "template_updated_at": "2026-07-27T09:52:09+08:00",
+  "task_id": "VAL007-001-supervision-snapshot",
+  "workflow_id": "2026-08-15-val-007-terminal-validation",
+  "owner_skill": "ai-context-governance",
+  "status": "in_progress",
+  "created_at": "2026-08-15T13:39:00+08:00",
+  "updated_at": "2026-08-15T13:39:00+08:00",
+  "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
+  "model": "gpt-5.6-sol",
+  "reasoning_effort": "max",
+  "finding_ids": ["ASM-20260810-005#VALSNAP-001", "ASM-20260810-005#VALTIME-001", "ASM-20260813-001#VALRUN-001", "Issue-204-acceptance"],
+  "scope": {
+    "target": "Cross-platform complete process-tree supervision, immutable terminal admission, and sealed execution artifacts",
+    "files": [".ai/scripts/check-all.sh", ".ai/scripts/validation-evidence.py", ".ai/scripts/tests/test_fail_closed_validation.py", ".ai/scripts/tests/test_validation_evidence.py"],
+    "constraints": ["Prove descendant termination before returning", "Fail closed on pre/post identity drift", "Do not append to a sealed log", "Use deterministic child and grandchild fixtures", "Run focused validation only"],
+    "non_goals": ["Issue #215 registry count redesign", "Release or nightly-full execution", "External-task delegation redesign", "Push, PR, merge, or publication"]
+  },
+  "execution": {
+    "steps": ["Specify the snapshot and supervisor result schemas", "Add failing Windows/POSIX tree and drift fixtures", "Implement process-tree supervision and sealed result artifacts", "Integrate snapshot admission and abort semantics into the aggregate runner", "Run focused tests and independent current-diff review"],
+    "validation": ["Focused supervisor and validation-evidence unit tests", "Selected fail-closed runner integration tests", "bash syntax check", "workflow artifact validation", "git diff --check"],
+    "last_completed_step": "Read back the live Issue, baseline assessments, current runner/evidence implementation, and source-repository action boundary",
+    "next_action": "Reconcile parallel inventories and implement the smallest deterministic supervisor and snapshot contract"
+  },
+  "results": {
+    "summary": "",
+    "files_changed": [],
+    "tests_run": [],
+    "finding_status": "not-addressed",
+    "residual_risk": "Current direct-PID timeout and unbound repository identity remain until implementation and focused verification complete.",
+    "follow_up_needed": true
+  }
+}
