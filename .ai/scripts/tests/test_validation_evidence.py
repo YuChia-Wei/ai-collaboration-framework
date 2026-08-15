@@ -2346,5 +2346,97 @@ class ValidationEvidenceRoutineContractGwtTests(ValidationEvidenceFixture):
         self.assertNotEqual(0, wrong.returncode)
         self.assertFalse(wrong_output.exists())
 
+    def test_gwt_035_given_repository_relative_finalize_refs_when_supervised_then_snapshot_resolves_from_repository_root(self) -> None:
+        self.install_tracked_helper("tracked repository-relative finalize fixture")
+        snapshot = self.capture_snapshot(
+            profile="fast", name="fast-snapshot-pre.json"
+        )
+        fingerprint, _reusable = self.lookup(profile="fast")
+        execution_receipt = self.write_receipt(
+            snapshot, name="fixture-check-result"
+        )
+        changed_paths_digest = hashlib.sha256(b"inputs/rule.md\n").hexdigest()
+        events = self.logs / "events.tsv"
+        events.write_text(
+            "\t".join((
+                "fixture-check",
+                "validator-v1",
+                fingerprint,
+                "passed",
+                "executed",
+                "1000",
+                "1010",
+                "false",
+                self.log.name,
+                "-1",
+                "fixture",
+                changed_paths_digest,
+                execution_receipt.name,
+                "required",
+            )) + "\n",
+            encoding="utf-8",
+        )
+        paths = {
+            "snapshot": snapshot,
+            "events": events,
+            "evidence": self.evidence,
+        }
+        command = self.control_argv(
+            "finalize",
+            paths,
+            profile="fast",
+            preparation_python=None,
+        )
+        self.assertEqual(
+            self.evidence.relative_to(self.repo).as_posix(),
+            command[command.index("--evidence") + 1],
+        )
+        self.assertEqual(
+            snapshot.relative_to(self.repo).as_posix(),
+            command[command.index("--snapshot") + 1],
+        )
+
+        finalized, control_log, control_result = self.supervise(
+            snapshot,
+            *command,
+            name="control-finalize-repository-relative",
+        )
+        diagnostic = (
+            control_log.read_text(encoding="utf-8", errors="replace")
+            if control_log.is_file()
+            else "missing retained control log"
+        )
+        self.assertEqual(0, finalized.returncode, finalized.stderr + diagnostic)
+        verified = self.helper(
+            "verify-supervision-result",
+            "--repo", str(self.repo),
+            "--snapshot", str(snapshot),
+            "--result-path", str(control_result),
+        )
+        self.assertEqual(0, verified.returncode, verified.stderr)
+        self.assertEqual("completed\ttrue\t0", verified.stdout.strip())
+
+        records = [
+            json.loads(line)
+            for line in self.evidence.read_text(encoding="utf-8").splitlines()
+            if line
+        ]
+        self.assertEqual(1, len(records))
+        record = records[0]
+        self.assertEqual("fixture-check", record["validator_id"])
+        self.assertEqual(
+            self.log.relative_to(self.repo).as_posix(),
+            record["log_ref"],
+        )
+        self.assertEqual(
+            execution_receipt.relative_to(self.repo).as_posix(),
+            record["execution"]["receipt_ref"],
+        )
+        expected_snapshot = json.loads(snapshot.read_text(encoding="utf-8"))
+        self.assertEqual(
+            expected_snapshot["identity_digest"],
+            record["execution"]["snapshot"]["identity_digest"],
+        )
+
 if __name__ == "__main__":
     unittest.main()

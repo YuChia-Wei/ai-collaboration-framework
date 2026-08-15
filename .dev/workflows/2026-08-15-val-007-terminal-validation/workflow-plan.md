@@ -15,11 +15,11 @@
 - `branch`: `codex/2026-08-15-val-007-terminal-validation`
 - `base_branch`: `main`
 - `branch_segment`: `1`
-- `status`: `completed`
-- `current_phase`: `completed`
+- `status`: `in_progress`
+- `current_phase`: `hosted-ci-gate`
 - `artifact_root`: `.dev/workflows/2026-08-15-val-007-terminal-validation`
 - `created_at`: `2026-08-15T13:39:00+08:00`
-- `updated_at`: `2026-08-15T18:10:52+08:00`
+- `updated_at`: `2026-08-15T18:55:09+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md`
 - `template_version`: `1.2.0`
 
@@ -30,7 +30,7 @@
 - Authorization source: the owner confirmed the eight-step plan and authorized starting #204 as an independent PR. Repository implementation and focused validation are authorized; Project/milestone mutation, Issue closure, push, PR creation, merge, tag, release, and publication remain separate decisions.
 - Normative truth: live Issue #204 acceptance criteria, the two baseline assessments, the long-running validation gate in `AGENTS.md`, the validation profile registry, and the existing external-task terminal receipt contract.
 - Exclusions: Issue #215 registry-count improvements; Issues #203 and #205-#208; Issue #149 runtime/model comparison; changes to #194 external-task delegation semantics; an actual `release`, `nightly-full`, full-matrix, or at-least-120-second validation run; downstream repositories; hosted publication.
-- Completion criteria: satisfied locally at clean implementation commit `59dae454bcfe55fed9873eac834449583750c4a5`. Timeout and cancellation leave no supervised descendant; pre/post identity drift fails closed and stops the chain; exact argv, commit/tree/status identity, duration, outcome, cleanup, log digest, and retained artifacts are sealed; nested validators are bounded; cleanup failures are visible; focused Windows/POSIX fixtures cover tree and delayed-writer behavior; duplicate fixture coverage was measured before consolidation; nightly readiness declares bounded concurrency and deterministic artifact ownership but remains hard-disabled without running the nightly profile.
+- Completion criteria: the repository-relative snapshot defect exposed at hosted branch head `a60dcac687b07c8f1df95b43162474e05dd4f29d` is locally remediated and independently reviewed. The original process-tree, drift, evidence, cleanup, focused fixture, and hard-disabled nightly-readiness criteria remain satisfied. Workflow completion remains gated on a durable corrective commit and passing required hosted checks at that exact pushed head.
 
 ## Artifact Contract
 
@@ -77,7 +77,8 @@
 2. Completed: process-tree supervisor, immutable admission, sealed result/log artifacts, and Windows/POSIX focused fixtures.
 3. Completed: nested timeout, deterministic cleanup, evidence schema/finalization, and duplicate-coverage disposition.
 4. Completed: hard-disabled nightly readiness contract and focused repository validation; nightly-full was not executed.
-5. Completed locally: durable clean implementation commit `59dae454bcfe55fed9873eac834449583750c4a5`, independent fixed-head review with no P0/P1, and finding reconciliation. Push, PR creation, hosted gates, and merge remain owner decisions.
+5. Completed locally: durable clean implementation commit `59dae454bcfe55fed9873eac834449583750c4a5`, independent fixed-head review with no P0/P1, and finding reconciliation.
+6. Local remediation completed: resolve the repo-relative snapshot through the repository artifact boundary; execute GWT-035 on Windows and Ubuntu; retain event-relative log/result semantics; obtain an independent P0=0/P1=0 review. In progress: create and push the durable correction, then require one exact-head hosted-check watch before merge.
 
 ## Validation Strategy
 
@@ -88,13 +89,13 @@
 
 ## Resume Checkpoint
 
-- Last completed action: corrected the common PR #216 Ubuntu startup failure in `7b4be71e00ef09289b2d17b77c00b23ddcbc3c9c`; exact Windows and Ubuntu GWT-019 plus Ubuntu Bash syntax passed, and independent review found no P0/P1.
-- Current task: local workflow closeout; all three VAL-007 tasks are completed.
-- Exact next action: push the CI remediation to PR #216 and use one exact-head hosted-check watch. Stop on any required-check failure or head drift; do not merge until the owner decision after every required gate passes.
+- Last completed action: changed `build_record` to admit `--snapshot` through the repository-root artifact boundary, added supervised GWT-035 using the runner's repo-relative argv, passed Windows GWT-035/009/019 3/3 in 6.942 seconds and Ubuntu-24.04 GWT-035 1/1 in 1.228 seconds, and received an independent P0=0/P1=0 review.
+- Current task: `VAL007-001-supervision-snapshot` remains in progress only for durable commit and exact-head hosted-gate evidence.
+- Exact next action: commit and push the bounded #204 correction, then use one exact-head hosted-check watch. Stop on any required-check failure or head drift; merge only after every required gate passes.
 - Validation already completed: Windows and WSL supervisor modules; bounded evidence GWT groups; selected fail-closed runner batches; workflow and registry contract modules; AST, Bash syntax, YAML/workflow, and diff checks; independent current-diff and fixed-head reviews. The historical GWT-019 stale-message failure and sandbox-blocked attempts remain retained rather than relabeled.
-- Git state: branch `codex/2026-08-15-val-007-terminal-validation`; PR #216 is open as draft. The first hosted head `94f7d9e` retained two identical pre-launch Ubuntu failures; CI remediation commit is `7b4be71e00ef09289b2d17b77c00b23ddcbc3c9c` with closeout sync pending.
+- Git state: branch `codex/2026-08-15-val-007-terminal-validation`; PR #216 is open as draft at `a60dcac687b07c8f1df95b43162474e05dd4f29d`. The first hosted attempt exposed the fixed Ubuntu startup failure; the second exposed the repo-relative finalization defect after every selected validator completed.
 - Branch history and checkpoint handoffs: durable implementation boundaries are `254d0d7`, `910944f`, `59dae45`, and CI portability fix `7b4be71`; workflow bootstrap is `0965a2c`, initial closeout is `94f7d9e`.
-- Blockers or unresolved decisions: no local #204 implementation blocker. Push/PR, hosted gates, Issue closure, merge, cumulative external validation, nightly activation, and release remain separate decisions.
+- Blockers or unresolved decisions: local remediation has no P0/P1 blocker; required hosted gates must still re-observe the fix at the exact pushed head. Issue closure, cumulative external validation, nightly activation, and release remain separate decisions.
 
 ## Branch Lifecycle
 
@@ -103,3 +104,4 @@
 | 1 | `codex/2026-08-15-val-007-terminal-validation` | `main@76c51574c7b2fdf59e8648eb105570589053ecf0` | local workflow bootstrap | `0965a2cf288c79fe91df3e291806d1bf66e9f8c9` | not pushed | `2026-08-15T13:39:00+08:00` | isolate #204 as its owner-approved independent delivery | implement and validate focused VAL-007 remediation |
 | 1 | `codex/2026-08-15-val-007-terminal-validation` | `0965a2cf288c79fe91df3e291806d1bf66e9f8c9` | clean fixed-head implementation review | `59dae454bcfe55fed9873eac834449583750c4a5` | not pushed | `2026-08-15T17:52:54+08:00` | preserve reviewed process-tree, evidence, and disabled-readiness implementation | commit closeout records, then return push/PR decision to owner |
 | 1 | `codex/2026-08-15-val-007-terminal-validation` | `94f7d9e911e0f85d5330bc09c6b6c2b110d598a2` | hosted CI portability remediation | `7b4be71e00ef09289b2d17b77c00b23ddcbc3c9c` | PR #216 update pending | `2026-08-15T18:10:52+08:00` | split portable artifact-path declaration from ordered assignment after identical Ubuntu startup failures | commit closeout sync, push, and watch exact-head hosted checks once |
+| 1 | `codex/2026-08-15-val-007-terminal-validation` | `a60dcac687b07c8f1df95b43162474e05dd4f29d` | hosted CI finalization remediation | current corrective commit | PR #216 remains draft | `2026-08-15T18:55:09+08:00` | both Ubuntu jobs reached finalization and exposed duplicate evidence-directory prefixing of a repo-relative snapshot ref | local fix and review complete; commit, push, and run one exact-head hosted watch |

@@ -2288,9 +2288,11 @@ def build_record(arguments: argparse.Namespace) -> dict[str, Any]:
         "duration_ms": arguments.duration_ms,
     }
     snapshot_argument = getattr(arguments, "snapshot", None)
-    snapshot_path = Path(snapshot_argument) if snapshot_argument else None
-    if snapshot_path is not None and not snapshot_path.is_absolute():
-        snapshot_path = Path(arguments.evidence).parent / snapshot_path
+    snapshot_path = (
+        artifact_path_inside(repo, snapshot_argument, "repository snapshot")
+        if snapshot_argument
+        else None
+    )
     result_argument = getattr(arguments, "result_path", None)
     result_path = Path(result_argument) if result_argument else None
     receipt: dict[str, Any] | None = None

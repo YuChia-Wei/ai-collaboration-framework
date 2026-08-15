@@ -6,9 +6,9 @@
   "task_id": "VAL007-001-supervision-snapshot",
   "workflow_id": "2026-08-15-val-007-terminal-validation",
   "owner_skill": "ai-context-governance",
-  "status": "completed",
+  "status": "in_progress",
   "created_at": "2026-08-15T13:39:00+08:00",
-  "updated_at": "2026-08-15T18:10:52+08:00",
+  "updated_at": "2026-08-15T18:55:09+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-5.6-sol",
   "reasoning_effort": "max",
@@ -22,8 +22,8 @@
   "execution": {
     "steps": ["Specify the snapshot and supervisor result schemas", "Add failing Windows/POSIX tree and drift fixtures", "Implement process-tree supervision and sealed result artifacts", "Integrate snapshot admission and abort semantics into the aggregate runner", "Run focused tests and independent current-diff review"],
     "validation": ["Focused supervisor and validation-evidence unit tests", "Selected fail-closed runner integration tests", "bash syntax check", "workflow artifact validation", "git diff --check"],
-    "last_completed_step": "Remediated the shared Ubuntu hosted startup failure in commit 7b4be71e00ef09289b2d17b77c00b23ddcbc3c9c and independently reviewed the exact four-line initialization fix with no P0 or P1 finding",
-    "next_action": "Push the CI remediation and require one exact-head hosted-check watch; keep long-running validation deferred until the owner-approved cumulative #200-#208 gate"
+    "last_completed_step": "Resolved the finalize snapshot through the repository artifact boundary, added supervised repository-relative GWT-035, passed focused Windows and Ubuntu validation, and received independent P0=0/P1=0 review",
+    "next_action": "Create and push the durable #204 correction, then require one exact-head hosted-check watch and stop on failure or head drift"
   },
   "results": {
     "summary": "The aggregate runner now admits a contained immutable bootstrap snapshot, supervises validator and evidence-control process trees, authenticates pre/post identity and terminal artifacts, fails closed on drift, cancellation, timeout, malformed preparation, or terminal mismatch, and publishes a cache-discoverable terminal manifest only after exact staged-manifest and supervisor verification.",
@@ -47,10 +47,13 @@
       "runner GWT-019 stale-message batch retained as 7/8; exact corrected GWT-019 rerun passed 1/1 in 1.244 seconds",
       "independent fixed-head audit of 59dae454bcfe55fed9873eac834449583750c4a5: no P0 or P1 finding",
       "PR #216 initial Ubuntu fast and PR gates failed before validator launch because normalized_path expanded before local input_path assignment",
-      "CI remediation GWT-019: Windows passed 1/1 in 1.322 seconds; Ubuntu-24.04 passed 1/1 in 25.334 seconds; Ubuntu bash syntax passed"
+      "CI remediation GWT-019: Windows passed 1/1 in 1.322 seconds; Ubuntu-24.04 passed 1/1 in 25.334 seconds; Ubuntu bash syntax passed",
+      "PR #216 second hosted attempt: governance 35 executed checks and portable PR 41 executed checks passed before both supervised finalize children exited 1 with cannot read repository snapshot",
+      "Repo-relative finalize remediation: final routine contract 2/2 passed in 24.484 seconds; final Windows GWT-035/009/019 set 3/3 passed in 6.942 seconds; Ubuntu-24.04 GWT-035 passed 1/1 in 1.228 seconds",
+      "Independent current-diff review after repository-boundary admission: P0=0, P1=0; diff-check passed"
     ],
-    "finding_status": "resolved-locally",
-    "residual_risk": "Pre-target-launch Git selection admission and read-only supervision authenticators remain bounded no-launch/no-pass TCBs. Artifact assembly and hard-link publication remain an atomic shell TCB. The unique invocation directory assumes no untrusted concurrent writer. Long-running cumulative validation, hosted gates, push, PR, merge, and Issue closure remain separate.",
-    "follow_up_needed": false
+    "finding_status": "remediated-locally-awaiting-hosted-gate",
+    "residual_risk": "Required hosted gates have not yet re-observed the repo-relative finalization fix. Pre-target-launch Git selection admission and read-only supervision authenticators remain bounded no-launch/no-pass TCBs; artifact assembly and hard-link publication remain an atomic shell TCB. Long-running cumulative validation and Issue closure remain separate.",
+    "follow_up_needed": true
   }
 }

@@ -12,9 +12,9 @@
 - `report_id`: `remediation-report-2026-08-15-val-007-terminal-validation`
 - `workflow_id`: `2026-08-15-val-007-terminal-validation`
 - `owner_skill`: `ai-context-governance`
-- `status`: `completed`
+- `status`: `in_progress`
 - `created_at`: `2026-08-15T13:39:00+08:00`
-- `updated_at`: `2026-08-15T18:10:52+08:00`
+- `updated_at`: `2026-08-15T18:55:09+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-remediation-report-template.md`
 - `template_version`: `2.0.0`
 - `baseline_assessment`: `ASM-20260810-005; ASM-20260813-001`
@@ -25,13 +25,13 @@
 - Authorized scope: Issue #204 complete process-tree supervision, immutable pre/post snapshot, bounded timeout/cancellation/cleanup, sealed evidence, duplicate-coverage measurement, and nightly readiness without a nightly-full run.
 - Completed scope: bounded native immutable-history subprocesses; cross-platform process-tree containment; immutable bootstrap and pre/post admission; authenticated preparation, validator, control, and terminal receipts; exact staged-manifest publication; fail-closed cache/receipt reuse; lower-sensitivity semantic fixtures; and a job-level hard-disabled nightly readiness workflow.
 - Validation summary: Windows/WSL supervisor fixtures, bounded evidence groups, named runner batches, workflow/registry contracts, syntax/AST/diff checks, iterative independent current-diff reviews, and an exact clean fixed-head review completed. The fixed-head reviewer found no P0/P1. No release, nightly-full, full matrix, or owner-authorized cumulative external validation was run.
-- Closure decision: `terminal-local-closeout-awaiting-owner-push-pr-decision`
+- Closure decision: `local-fix-reviewed-awaiting-exact-head-hosted-gates`
 
 ## Finding Resolution Matrix
 
 | Assessment Finding | Before Severity | Status | Changed Files | Validation | Commit | Residual Risk |
 | --- | --- | --- | --- | --- | --- | --- |
-| `ASM-20260810-005#VALSNAP-001` / `ASM-20260813-001#VALRUN-001` | HIGH | `resolved-locally` | runner, supervisor, evidence helper, registry, focused tests | contained bootstrap; pre/post drift, prepare parity, terminal pair, collision, and signal GWTs; fixed-head review | `910944f`, `59dae45` | read-only selection/authenticator and atomic shell publication TCBs remain explicit |
+| `ASM-20260810-005#VALSNAP-001` / `ASM-20260813-001#VALRUN-001` | HIGH | `remediated-locally-awaiting-hosted-gate` | runner, supervisor, evidence helper, registry, focused tests | contained bootstrap; pre/post drift, prepare parity, terminal pair, collision, signal, and supervised repo-relative finalize GWTs | `910944f`, `59dae45`, current correction | exact pushed head must pass hosted finalization; read-only selection/authenticator and atomic shell publication TCBs remain explicit |
 | `ASM-20260810-005#VALTIME-001` | HIGH | `resolved-locally` | supervisor and process-tree fixtures | Windows module OK with 8 platform skips; WSL module OK with 3 platform skips; independent protocol re-review | `910944f` | non-Linux POSIX fails closed when complete containment is unavailable |
 | `ASM-20260810-005#VALTEST-001` / DS-16 | MEDIUM | `resolved-locally` | immutable-history validator/contract/tests, prerequisite fixture, coverage inventory | focused timeout GWT-020/021/022, adjacent regressions, strict cleanup fixture | `254d0d7` | direct immutable-history refresh has per-command bounds; complete descendant proof belongs to the outer runner supervisor |
 | `ASM-20260810-005#VALCOST-001` / nightly cluster | MEDIUM | `resolved-readiness-only` | evidence registry split, semantic workflow contracts, disabled readiness workflow | registry 6/6; workflow 10/10; fixed-head readiness GWT 1/1 | `59dae45` | nightly-full remains disabled and unexecuted pending a separately reviewed tracked activation |
@@ -70,12 +70,20 @@
 - Disposition: commit `7b4be71e00ef09289b2d17b77c00b23ddcbc3c9c` separates declaration and ordered assignment without changing Windows conversion or boundary semantics. Exact GWT-019 passed on Windows in 1.322 seconds and Ubuntu-24.04 in 25.334 seconds; Ubuntu Bash syntax and scoped diff checks passed. Independent read-only review found no P0/P1.
 - Required next evidence: one exact-head hosted-check watch after the remediation and closeout-sync commits are pushed. The first failed runs remain retained and are not relabeled.
 
+### PR #216 Hosted CI Finalization Regression
+
+- Hosted evidence: `Read-only governance contract` run `31878944344` / job `94998686109` completed 35 selected executions, and `Ubuntu PR profile gate` run `31878944451` / job `94998686454` completed 41 selected executions. Both then failed closed in supervised finalization with `validation evidence failed closed: cannot read repository snapshot`.
+- Root cause: `check-all.sh` correctly passes a repository-relative snapshot ref, while `build_record` treats every relative snapshot as evidence-directory-relative and prefixes the full invocation directory a second time. The retained snapshot and pre/post identity are valid; seal was not launched because finalization failed first.
+- Remediation: `build_record` now resolves `arguments.snapshot` immediately through the repository-root artifact boundary while preserving evidence-directory-relative event log/result values. GWT-035 executes the exact repo-relative finalize argv under the process supervisor and authenticates the resulting receipt, log ref, and snapshot identity.
+- Focused evidence: the final routine contract class passed 2/2 in 24.484 seconds; final Windows GWT-035/009/019 passed 3/3 in 6.942 seconds; Ubuntu-24.04 GWT-035 passed 1/1 in 1.228 seconds. Independent current-diff review reported P0=0/P1=0 and confirmed that the GWT deterministically fails the old duplicated-prefix behavior without relying on global inventory counts.
+- Boundary: the hosted failures remain failed evidence and are not relabeled. No release, nightly-full, full matrix, Issue closure, merge, tag, or publication is authorized by this remediation.
+
 ## Verification Assessment Reconciliation
 
 - Independent auditors: separate supervisor, evidence, runner-integration, terminal-publication, and fixed-head reviewers examined the changing diff. Their P1 findings covered argv privacy, detached descendants, PID reuse, launch-handshake races, incomplete seal semantics, cache/preparation parity, selection binding, signal windows, publication ownership, and terminal-pair authentication; each was remediated and re-reviewed.
 - Confirmed resolved: the final current-diff review reported P0=0/P1=0. The clean fixed-head reviewer verified exact subject `59dae454bcfe55fed9873eac834449583750c4a5`, clean index/worktree, base ancestry, diff integrity, and hard-disabled readiness, and found no P0/P1.
 - Recurring findings: none at fixed head.
-- New or regressed findings: none at fixed head. Exact governed-workflow job maps remain a non-blocking semantic-maintenance sensitivity assigned to Issue #215.
+- New or regressed findings: hosted CI exposed repository-relative snapshot resolution as a regression in evidence finalization; it is now remediated locally and awaits exact-head hosted evidence. Exact governed-workflow job maps remain a separate non-blocking semantic-maintenance sensitivity assigned to Issue #215.
 
 ## Deferred Work
 
@@ -89,5 +97,5 @@
 
 - Required local validations: focused supervisor/snapshot/evidence/cleanup/workflow contracts and independent fixed-head review are complete. Later cumulative external-task validation is deliberately deferred, not passed or waived.
 - Commit status: workflow bootstrap `0965a2c`; bounded nested cleanup `254d0d7`; process-tree supervisor `910944f`; integrated evidence, runner, tests, and disabled readiness `59dae454bcfe55fed9873eac834449583750c4a5`; initial closeout `94f7d9e`; Ubuntu hosted-startup portability fix `7b4be71e00ef09289b2d17b77c00b23ddcbc3c9c`. These durable boundaries are intentionally retained; squashing would discard reviewed safety checkpoints without materially reducing the final diff.
-- Workflow/task status: all three #204 tasks are locally completed. Issue #204 remains open; no push, PR, hosted gate, merge, Issue closure, tag, release, or publication was performed.
-- Final next action: commit this CI closeout sync, push PR #216, and use one exact-head hosted-check watch. Stop on any failure or head drift; do not run cumulative long validation or activate nightly-full during this independent delivery.
+- Workflow/task status: `VAL007-001-supervision-snapshot` remains in progress only for the durable correction and exact-head hosted gate; the other two #204 tasks remain completed. Issue #204 and draft PR #216 remain open.
+- Final next action: commit and push the reviewed correction, then use one exact-head hosted-check watch. Stop on any failure or head drift; do not run cumulative long validation or activate nightly-full during this independent delivery.
