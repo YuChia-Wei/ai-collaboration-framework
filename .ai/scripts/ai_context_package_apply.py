@@ -71,6 +71,9 @@ TRANSACTION_STATES = {
 }
 WINDOWS_MOVEFILE_REPLACE_EXISTING = 0x1
 WINDOWS_MOVEFILE_WRITE_THROUGH = 0x8
+WINDOWS_ATOMIC_REPLACE_FLAGS = (
+    WINDOWS_MOVEFILE_REPLACE_EXISTING | WINDOWS_MOVEFILE_WRITE_THROUGH
+)
 
 
 @dataclass(frozen=True)
@@ -1178,7 +1181,11 @@ def mode_int(mode: str) -> int:
 
 
 def fsync_directory(path: Path) -> None:
-    """Persist a directory entry where the host exposes directory fsync."""
+    """Persist a directory entry where the host exposes directory fsync.
+
+    Windows namespace durability is supplied by MoveFileExW with
+    MOVEFILE_WRITE_THROUGH at each atomic replacement or removal boundary.
+    """
     if os.name == "nt":
         return
     descriptor = os.open(path, os.O_RDONLY)
@@ -1201,35 +1208,10 @@ def windows_move_path(source: Path, destination: Path, flags: int) -> None:
 
 
 def atomic_replace(temporary: Path, destination: Path) -> None:
-    if os.name != "nt":
-        os.replace(temporary, destination)
+    if os.name == "nt":
+        windows_move_path(temporary, destination, WINDOWS_ATOMIC_REPLACE_FLAGS)
         return
-    import ctypes
-    from ctypes import wintypes
-
-    kernel32 = ctypes.WinDLL("kernel32", use_last_error=True)
-    replace_file = kernel32.ReplaceFileW
-    replace_file.argtypes = [
-        wintypes.LPCWSTR,
-        wintypes.LPCWSTR,
-        wintypes.LPCWSTR,
-        wintypes.DWORD,
-        wintypes.LPVOID,
-        wintypes.LPVOID,
-    ]
-    replace_file.restype = wintypes.BOOL
-    if destination.exists():
-        succeeded = replace_file(
-            str(destination), str(temporary), None, 0x1, None, None
-        )
-        if not succeeded:
-            raise ctypes.WinError(ctypes.get_last_error())
-    else:
-        windows_move_path(
-            temporary,
-            destination,
-            WINDOWS_MOVEFILE_REPLACE_EXISTING | WINDOWS_MOVEFILE_WRITE_THROUGH,
-        )
+    os.replace(temporary, destination)
 
 
 def atomic_write_bytes(path: Path, content: bytes, mode: int = 0o644) -> None:
@@ -2102,6 +2084,22 @@ def build_final_receipt(
     }
 
 
+def expected_rollback_receipt_bytes(plan: dict, journal: dict) -> bytes:
+    """Rebuild the only pending receipt rollback may remove without a package."""
+    post_states = operation_post_state_map(plan)
+    incoming: dict[str, dict] = {}
+    for operation in active_operations(plan):
+        if operation["action"] in {"add", "replace", "rename"}:
+            state = post_states[operation["id"]][operation["path"]]
+            incoming[operation["path"]] = {"mode": state["mode"]}
+    reconciles = {
+        item["id"] for item in plan["operations"] if item["action"] == "reconcile"
+    }
+    return deterministic_yaml_bytes(
+        build_final_receipt(plan, journal, incoming, reconciles)
+    )
+
+
 def run_transaction(
     root: Path,
     journal: dict,
@@ -2266,13 +2264,28 @@ def rollback_loaded_transaction(
     hook: Callable[[str, dict], None] | None = None,
 ) -> dict:
     target = Path(plan["target_root"])
+    receipt_path = target / PENDING_RECEIPT_PATH
+    reject_symlink_boundary(target, PENDING_RECEIPT_PATH)
+    if receipt_path.is_symlink() or is_reparse_point(receipt_path):
+        raise ApplyError("unsafe pending receipt blocks rollback")
     if journal["state"] == "rolled-back":
         if not all(exact_state_matches(target, item["path"], item["state"]) for item in journal["pre_state"]):
             raise ApplyError("rolled-back transaction no longer matches its exact pre-state")
+        if receipt_path.exists():
+            raise ApplyError("rolled-back transaction still has a pending receipt")
         return journal
     if journal["state"] == "finalized":
         raise ApplyError("finalized transaction cannot be rolled back")
     validate_transaction_surface(target, plan, journal)
+    if receipt_path.exists():
+        reject_symlink_boundary(target, PENDING_RECEIPT_PATH)
+        if journal["state"] == "rolling-back":
+            raise ApplyError("rolling-back transaction still has a pending receipt")
+        expected_receipt = expected_rollback_receipt_bytes(plan, journal)
+        if receipt_path.read_bytes() != expected_receipt:
+            raise ApplyError("pending receipt does not match rollback transaction")
+        reject_symlink_boundary(target, PENDING_RECEIPT_PATH)
+        durable_unlink(receipt_path, root)
     rollback_items = list(reversed(journal["pre_state"]))
     if journal["state"] != "rolling-back":
         journal["state"] = "rolling-back"
@@ -2308,11 +2321,6 @@ def rollback_loaded_transaction(
             "after_rollback_progress_journal",
             {"index": index, "path": relative},
         )
-    receipt_path = target / PENDING_RECEIPT_PATH
-    if receipt_path.exists():
-        if receipt_path.is_symlink() or is_reparse_point(receipt_path):
-            raise ApplyError("unsafe pending receipt blocks rollback")
-        durable_unlink(receipt_path, root)
     for relative in reversed(journal.get("planned_created_parents", [])):
         directory = target / Path(*PurePosixPath(relative).parts)
         if directory.exists() and directory.is_dir() and not any(directory.iterdir()):
@@ -2320,6 +2328,9 @@ def rollback_loaded_transaction(
             fsync_directory(directory.parent)
     if not all(exact_state_matches(target, item["path"], item["state"]) for item in journal["pre_state"]):
         raise ApplyError("rollback did not restore the exact transaction pre-state")
+    reject_symlink_boundary(target, PENDING_RECEIPT_PATH)
+    if receipt_path.exists() or receipt_path.is_symlink() or is_reparse_point(receipt_path):
+        raise ApplyError("rollback did not remove the pending receipt boundary")
     journal["state"] = "rolled-back"
     journal["last_error"] = None
     persist_journal(root, journal)
@@ -2339,12 +2350,12 @@ def recover_transaction(
     with transaction_lock(target):
         root, plan, journal = load_transaction(target, transaction_id)
         verify_recovery_surface(target, plan, journal)
+        if action == "rollback":
+            return rollback_loaded_transaction(root, plan, journal, boundary_hook)
         if journal["state"] == "applying":
             journal["state"] = "interrupted"
             journal["last_error"] = "recovered an abandoned applying state"
             persist_journal(root, journal)
-        if action == "rollback":
-            return rollback_loaded_transaction(root, plan, journal, boundary_hook)
         if journal["state"] in {"rolling-back", "rolled-back"}:
             raise ApplyError(
                 f"{journal['state']} transaction cannot be resumed"

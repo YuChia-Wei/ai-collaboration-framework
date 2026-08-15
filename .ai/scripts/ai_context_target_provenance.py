@@ -36,6 +36,23 @@ RELATIONSHIPS = {"extends", "replaces", "deviates", "target-only"}
 EQUIVALENCE = {"absent", "partial", "equivalent-candidate", "conflicting"}
 DISPOSITIONS = {"retain", "merge", "supersede", "retire", "unresolved"}
 PENDING_APPLY_RECEIPT = ".dev/AI-CONTEXT-APPLY-PENDING.yaml"
+FILE_ATTRIBUTE_REPARSE_POINT = 0x400
+SEALED_OPERATION_KEYS = {
+    "id",
+    "kind",
+    "path",
+    "from_path",
+    "ownership",
+    "component_id",
+    "action",
+    "reason",
+}
+RESERVED_APPLY_PATHS = {
+    ".dev/AI-CONTEXT-SOURCE.yaml",
+    PENDING_APPLY_RECEIPT,
+    ".dev/ai-context/provenance.yaml",
+    ".dev/ai-context/customizations.yaml",
+}
 
 
 class TargetValidationError(ValueError):
@@ -86,6 +103,176 @@ def safe_target_path(value: object) -> bool:
     return not path.is_absolute() and all(
         part not in {"", ".", ".."} for part in path.parts
     )
+
+
+def is_reparse_point(path: Path) -> bool:
+    try:
+        metadata = path.lstat()
+    except (FileNotFoundError, OSError):
+        return False
+    return bool(
+        stat.S_ISLNK(metadata.st_mode)
+        or getattr(metadata, "st_file_attributes", 0)
+        & FILE_ATTRIBUTE_REPARSE_POINT
+    )
+
+
+def target_path_without_links(root: Path, relative: str) -> Path:
+    if not safe_target_path(relative):
+        raise TargetValidationError(f"unsafe target path: {relative!r}")
+    candidate = root
+    for part in PurePosixPath(relative).parts:
+        candidate /= part
+        if candidate.is_symlink() or is_reparse_point(candidate):
+            raise TargetValidationError(
+                f"target path crosses a symlink or reparse boundary: {relative}"
+            )
+    return candidate
+
+
+def checked_target_path(
+    root: Path, relative: str, label: str, errors: list[str]
+) -> Path | None:
+    try:
+        return target_path_without_links(root, relative)
+    except TargetValidationError as exc:
+        errors.append(f"{label}: {exc}")
+        return None
+
+
+def current_target_head(root: Path) -> str:
+    try:
+        result = subprocess.run(
+            ["git", "rev-parse", "HEAD"],
+            cwd=root,
+            check=False,
+            capture_output=True,
+            text=True,
+        )
+    except OSError as exc:
+        raise TargetValidationError(f"cannot inspect target HEAD: {exc}") from exc
+    head = result.stdout.strip()
+    if result.returncode != 0 or not SHA_RE.fullmatch(head):
+        detail = result.stderr.strip()
+        raise TargetValidationError(
+            f"cannot inspect target HEAD: {detail or result.returncode}"
+        )
+    return head
+
+
+def selected_component_ids(selection: object) -> set[str] | None:
+    if not isinstance(selection, dict):
+        return None
+    mandatory = selection.get("mandatory_components")
+    profiles = selection.get("profiles")
+    providers = selection.get("providers")
+    if (
+        not isinstance(mandatory, list)
+        or not all(isinstance(item, str) and item for item in mandatory)
+        or not isinstance(profiles, list)
+        or not all(isinstance(item, str) and item for item in profiles)
+        or not isinstance(providers, dict)
+    ):
+        return None
+    selected = set(mandatory) | set(profiles)
+    for provider_id, provider in providers.items():
+        if (
+            not isinstance(provider_id, str)
+            or not provider_id
+            or not isinstance(provider, dict)
+            or type(provider.get("enabled")) is not bool
+        ):
+            return None
+        if provider["enabled"]:
+            selected.add(provider_id)
+    return selected
+
+
+def validate_sealed_operations(
+    plan: dict, plan_path: Path, errors: list[str]
+) -> list[dict] | None:
+    operations = plan.get("operations")
+    selected = selected_component_ids(plan.get("selection"))
+    if not isinstance(operations, list) or selected is None:
+        errors.append(f"{plan_path}: sealed transaction operation evidence is invalid")
+        return None
+    allowed_actions = {
+        "add": {"add", "reconcile", "unresolved"},
+        "replace": {"replace", "reconcile", "unresolved"},
+        "remove": {"remove", "noop", "reconcile", "unresolved"},
+        "rename": {"rename", "reconcile", "unresolved"},
+        "reconcile": {"reconcile", "unresolved"},
+    }
+    ids: list[str] = []
+    touched: set[str] = set()
+    valid = True
+    for item in operations:
+        if not isinstance(item, dict) or set(item) != SEALED_OPERATION_KEYS:
+            valid = False
+            continue
+        operation_id = item.get("id")
+        kind = item.get("kind")
+        path = item.get("path")
+        source = item.get("from_path")
+        ownership = item.get("ownership")
+        component_id = item.get("component_id")
+        action = item.get("action")
+        if (
+            not isinstance(operation_id, str)
+            or not operation_id
+            or kind not in allowed_actions
+            or action not in allowed_actions.get(kind, set())
+            or not safe_target_path(path)
+            or not isinstance(item.get("reason"), str)
+            or not item.get("reason")
+            or ownership
+            not in {"framework-managed", "target-template", "target-owned"}
+            or (
+                component_id is not None
+                and (
+                    not isinstance(component_id, str)
+                    or not component_id
+                    or component_id not in selected
+                )
+            )
+        ):
+            valid = False
+            continue
+        if kind == "rename":
+            if not safe_target_path(source) or source == path:
+                valid = False
+                continue
+        elif source is not None:
+            valid = False
+            continue
+        if (
+            (kind in {"replace", "remove", "rename"} and ownership != "framework-managed")
+            or (ownership == "target-template" and kind not in {"add", "reconcile"})
+            or (ownership == "target-owned" and kind != "reconcile")
+        ):
+            valid = False
+            continue
+        operation_paths = [path] + ([source] if source is not None else [])
+        if any(
+            candidate in RESERVED_APPLY_PATHS
+            or candidate == EFFECTIVE_STATE_PATH
+            or candidate.startswith(".dev/ai-context/effective-rule-packets/")
+            or candidate in touched
+            for candidate in operation_paths
+        ):
+            valid = False
+            continue
+        touched.update(operation_paths)
+        ids.append(operation_id)
+    if (
+        not valid
+        or len(ids) != len(operations)
+        or len(ids) != len(set(ids))
+        or ids != sorted(ids, key=lambda value: value.encode("utf-8"))
+    ):
+        errors.append(f"{plan_path}: sealed transaction operation evidence is invalid")
+        return None
+    return operations
 
 
 def git_ignore_rule(root: Path, path: str) -> dict[str, object] | None:
@@ -240,20 +427,38 @@ def validate_apply_transaction_journals(
     except TargetValidationError as exc:
         errors.append(str(exc))
         return
-    if transaction_directory is None or not transaction_directory.exists():
+    if transaction_directory is None:
         if receipt is not None and receipt.get("schema_version") == "2.0.0":
             errors.append("schema 2.0.0 pending receipt has no durable transaction evidence")
         return
-    if transaction_directory.is_symlink() or not transaction_directory.is_dir():
+    if transaction_directory.is_symlink() or is_reparse_point(transaction_directory):
+        errors.append(f"{transaction_directory}: transaction directory is unsafe")
+        return
+    if not transaction_directory.exists():
+        if receipt is not None and receipt.get("schema_version") == "2.0.0":
+            errors.append("schema 2.0.0 pending receipt has no durable transaction evidence")
+        return
+    if not transaction_directory.is_dir():
         errors.append(f"{transaction_directory}: transaction directory is unsafe")
         return
     receipt_transaction = receipt.get("transaction_id") if receipt is not None else None
     matched_receipt = False
     for child in sorted(transaction_directory.iterdir(), key=lambda path: path.name):
-        if not child.is_dir() or not re.fullmatch(r"[0-9a-f]{64}", child.name):
+        if (
+            child.is_symlink()
+            or is_reparse_point(child)
+            or not child.is_dir()
+            or not re.fullmatch(r"[0-9a-f]{64}", child.name)
+        ):
             continue
         journal_path = child / "journal.yaml"
-        journal = load_mapping(journal_path, errors) if journal_path.is_file() else None
+        journal = (
+            load_mapping(journal_path, errors)
+            if journal_path.is_file()
+            and not journal_path.is_symlink()
+            and not is_reparse_point(journal_path)
+            else None
+        )
         if journal is None:
             errors.append(f"{child}: transaction journal is missing or invalid")
             continue
@@ -280,10 +485,18 @@ def validate_apply_transaction_journals(
                 )
                 continue
             receipt_path = root / PENDING_APPLY_RECEIPT
-            actual_receipt_sha = hashlib.sha256(receipt_path.read_bytes()).hexdigest()
+            try:
+                receipt_path = target_path_without_links(root, PENDING_APPLY_RECEIPT)
+                actual_receipt_sha = hashlib.sha256(receipt_path.read_bytes()).hexdigest()
+            except (TargetValidationError, OSError) as exc:
+                errors.append(f"{receipt_path}: pending receipt boundary is invalid: {exc}")
+                continue
             if journal.get("final_receipt_sha256") != actual_receipt_sha:
                 errors.append(f"{journal_path}: finalized receipt SHA-256 differs")
             plan_path = child / "plan.json"
+            if plan_path.is_symlink() or is_reparse_point(plan_path):
+                errors.append(f"{plan_path}: sealed transaction plan boundary is unsafe")
+                continue
             try:
                 plan = json.loads(plan_path.read_text(encoding="utf-8"))
             except (OSError, UnicodeDecodeError, json.JSONDecodeError) as exc:
@@ -297,32 +510,29 @@ def validate_apply_transaction_journals(
             if declared_plan_sha != child.name or canonical_json_digest(unsigned) != child.name:
                 errors.append(f"{plan_path}: sealed transaction plan identity differs")
                 continue
-            operations = plan.get("operations")
-            operations_valid = (
-                isinstance(operations, list)
-                and all(
-                    isinstance(item, dict)
-                    and isinstance(item.get("id"), str)
-                    and bool(item.get("id"))
-                    and safe_target_path(item.get("path"))
-                    and item.get("action")
-                    in {
-                        "add",
-                        "replace",
-                        "remove",
-                        "rename",
-                        "noop",
-                        "reconcile",
-                        "unresolved",
-                    }
-                    and (
-                        item.get("action") != "rename"
-                        or safe_target_path(item.get("from_path"))
-                    )
-                    for item in operations
+            sealed_target = plan.get("target_root")
+            sealed_head = plan.get("target_starting_commit")
+            try:
+                target_matches = (
+                    isinstance(sealed_target, str)
+                    and Path(sealed_target).is_absolute()
+                    and Path(sealed_target).resolve() == root.resolve()
                 )
-            )
-            operation_items = operations if isinstance(operations, list) else []
+                head_matches = (
+                    isinstance(sealed_head, str)
+                    and bool(SHA_RE.fullmatch(sealed_head))
+                    and current_target_head(root) == sealed_head
+                )
+            except (OSError, TargetValidationError):
+                target_matches = False
+                head_matches = False
+            if not target_matches:
+                errors.append(f"{plan_path}: sealed target root differs from current target")
+            if not head_matches:
+                errors.append(f"{plan_path}: sealed target starting commit differs from current HEAD")
+            operation_items = validate_sealed_operations(plan, plan_path, errors)
+            operations_valid = operation_items is not None
+            operation_items = operation_items or []
             active_operations = [
                 item
                 for item in operation_items
@@ -524,9 +734,11 @@ def validate_apply_transaction_journals(
 
 def validate_pending_apply_receipt(root: Path, errors: list[str]) -> None:
     """Validate selected managed bytes and ignore state carried by a new receipt."""
-    receipt_path = root / PENDING_APPLY_RECEIPT
-    if receipt_path.is_symlink():
-        errors.append(f"{receipt_path}: pending apply receipt must not be a symlink")
+    root = root.resolve()
+    receipt_path = checked_target_path(
+        root, PENDING_APPLY_RECEIPT, "pending apply receipt", errors
+    )
+    if receipt_path is None:
         return
     if not receipt_path.is_file():
         validate_apply_transaction_journals(root, None, errors)
@@ -620,8 +832,10 @@ def validate_pending_apply_receipt(root: Path, errors: list[str]) -> None:
             errors.append(f"{label}.sha256 must be a lowercase SHA-256")
         if schema_version == "2.0.0" and expected_mode not in {"0644", "0755"}:
             errors.append(f"{label}.mode must be 0644 or 0755")
-        candidate = root / Path(*PurePosixPath(path).parts)
-        if candidate.is_symlink() or not candidate.is_file():
+        candidate = checked_target_path(root, path, label, errors)
+        if candidate is None:
+            continue
+        if not candidate.is_file():
             errors.append(f"required framework-managed path is absent: {path}")
             continue
         if isinstance(expected_sha, str) and re.fullmatch(r"[0-9a-f]{64}", expected_sha):
@@ -679,8 +893,10 @@ def validate_pending_apply_receipt(root: Path, errors: list[str]) -> None:
                 errors.append(f"{label}.path must be a safe POSIX target path")
                 continue
             artifact_paths.append(path)
-            candidate = root / Path(*PurePosixPath(path).parts)
-            if candidate.is_symlink() or not candidate.is_file():
+            candidate = checked_target_path(root, path, label, errors)
+            if candidate is None:
+                continue
+            if not candidate.is_file():
                 errors.append(f"applied artifact is absent: {path}")
                 continue
             if not isinstance(raw_sha, str) or not re.fullmatch(r"[0-9a-f]{64}", raw_sha):
@@ -704,8 +920,10 @@ def validate_pending_apply_receipt(root: Path, errors: list[str]) -> None:
             if not isinstance(item, dict) or not safe_target_path(item.get("path")) or item.get("result") != "absent":
                 errors.append(f"{label} must bind a safe absent path")
                 continue
-            candidate = root / Path(*PurePosixPath(item["path"]).parts)
-            if candidate.exists() or candidate.is_symlink():
+            candidate = checked_target_path(root, item["path"], label, errors)
+            if candidate is None:
+                continue
+            if candidate.exists():
                 errors.append(f"removed path is present: {item['path']}")
     results = receipt.get("selected_managed_path_results")
     if not isinstance(results, list):
@@ -720,11 +938,14 @@ def validate_pending_apply_receipt(root: Path, errors: list[str]) -> None:
             if not isinstance(item, dict):
                 continue
             required_item = required_by_path.get(item.get("path"))
-            candidate = (
-                root / Path(*PurePosixPath(item["path"]).parts)
-                if safe_target_path(item.get("path"))
-                else None
-            )
+            candidate = None
+            if safe_target_path(item.get("path")):
+                candidate = checked_target_path(
+                    root,
+                    item["path"],
+                    f"{receipt_path}: selected_managed_path_results[{index}]",
+                    errors,
+                )
             observed_sha = (
                 hashlib.sha256(candidate.read_bytes()).hexdigest()
                 if candidate is not None and candidate.is_file() and not candidate.is_symlink()
@@ -1264,6 +1485,14 @@ def finalize_context(
     effective_resolver_evidence: list[str] | None = None,
 ) -> dict:
     root = root.resolve()
+    for relative in (
+        ".dev/AI-CONTEXT-SOURCE.yaml",
+        ".dev/ai-context/provenance.yaml",
+        ".dev/ai-context/customizations.yaml",
+        EFFECTIVE_STATE_PATH,
+        ".dev/ai-context/effective-rule-packets",
+    ):
+        target_path_without_links(root, relative)
     context = root / ".dev/ai-context"
     legacy = root / ".dev/AI-CONTEXT-SOURCE.yaml"
     provenance_path = context / "provenance.yaml"

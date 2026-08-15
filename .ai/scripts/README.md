@@ -258,7 +258,8 @@ transform attribute is configured. The transaction ID is the plan SHA-256.
 Before the first target mutation, the tool durably stores the plan, ordered
 operation boundary, exact prestates, and recovery bytes under the target Git
 administrative `ai-context-package-apply/<transaction-id>/` directory. Atomic
-same-directory writes and a durable state machine (`planned`, `applying`,
+same-directory writes (including Windows `MoveFileExW` write-through namespace
+transitions) and a durable state machine (`planned`, `applying`,
 `interrupted`, `rolling-back`, `rolled-back`, `finalized`) make process-death
 recovery explicit. Rollback seals its starting target surface and persists an
 ordered reverse-prestate path prefix, so a retry can distinguish the one
@@ -268,8 +269,12 @@ exact prestate without package availability with `--rollback <transaction-id>`.
 Both terminal operations are idempotent, while ambiguous state and unrelated
 worktree changes fail closed.
 
-Only a finalized apply writes `.dev/AI-CONTEXT-APPLY-PENDING.yaml`. Its schema-2
-receipt binds the plan and selected-input proof identities, operation order,
+An apply publishes `.dev/AI-CONTEXT-APPLY-PENDING.yaml` immediately before its
+final journal transition. The receipt is non-authoritative until the durable
+`finalized` journal binds its exact SHA-256; interruption at that boundary must
+be resumed or rolled back. Target validation additionally requires the sealed
+target root and starting commit to match the current target and `HEAD`. Its
+schema-2 receipt binds the plan and selected-input proof identities, operation order,
 every applied artifact's raw SHA-256 and intended Git mode, removed paths, the
 complete selected framework-managed identity, resolved/default selection, and
 applied/skipped counts by component. It never updates validated source

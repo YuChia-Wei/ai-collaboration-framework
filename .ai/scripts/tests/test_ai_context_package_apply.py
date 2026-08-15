@@ -285,6 +285,50 @@ def operation(
     return value
 
 
+def reseal_applied_transaction(
+    fixture: PackageApplyFixture,
+    original_plan: dict,
+    mutate,
+) -> tuple[Path, dict]:
+    original_root = APPLY.transaction_root(fixture.target, original_plan["plan_sha256"])
+    plan_path = original_root / "plan.json"
+    journal_path = original_root / "journal.yaml"
+    receipt_path = fixture.target / APPLY.PENDING_RECEIPT_PATH
+    sealed_plan = json.loads(plan_path.read_text(encoding="utf-8"))
+    journal = yaml.safe_load(journal_path.read_text(encoding="utf-8"))
+    receipt = yaml.safe_load(receipt_path.read_text(encoding="utf-8"))
+    sealed_plan.pop("plan_sha256")
+    mutate(sealed_plan)
+    transaction_id = APPLY.canonical_digest(sealed_plan)
+    sealed_plan["plan_sha256"] = transaction_id
+    journal["transaction_id"] = transaction_id
+    journal["plan_sha256"] = transaction_id
+    receipt["transaction_id"] = transaction_id
+    receipt["plan_sha256"] = transaction_id
+    receipt_bytes = APPLY.deterministic_yaml_bytes(receipt)
+    journal["final_receipt_sha256"] = APPLY.sha256_bytes(receipt_bytes)
+    plan_path.write_text(
+        json.dumps(
+            sealed_plan,
+            ensure_ascii=False,
+            sort_keys=True,
+            separators=(",", ":"),
+        )
+        + "\n",
+        encoding="utf-8",
+        newline="\n",
+    )
+    journal_path.write_text(
+        yaml.safe_dump(journal, sort_keys=True),
+        encoding="utf-8",
+        newline="\n",
+    )
+    receipt_path.write_bytes(receipt_bytes)
+    new_root = original_root.with_name(transaction_id)
+    original_root.replace(new_root)
+    return new_root, sealed_plan
+
+
 class AiContextPackageApplyGwtTests(unittest.TestCase):
     def test_gwt_000_given_portable_prerequisite_runtime_when_clean_installed_then_all_shared_and_registered_assets_are_selected(self) -> None:
         fixture = PackageApplyFixture()
@@ -2500,6 +2544,299 @@ class AiContextPackageApplyGwtTests(unittest.TestCase):
                     )
                 finally:
                     fixture.close()
+
+    def test_gwt_035_given_windows_existing_destination_when_atomically_replaced_then_supported_write_through_move_is_used(self) -> None:
+        with tempfile.TemporaryDirectory(prefix="ai-context-atomic-replace-") as temporary:
+            root = Path(temporary)
+            staged = root / "staged.tmp"
+            destination = root / "journal.yaml"
+            staged.write_bytes(b"new\n")
+            destination.write_bytes(b"old\n")
+            observed: list[tuple[Path, Path, int]] = []
+
+            def move(source: Path, target: Path, flags: int) -> None:
+                observed.append((source, target, flags))
+                os.replace(source, target)
+
+            with mock.patch.object(APPLY.os, "name", "nt"), mock.patch.object(
+                APPLY, "windows_move_path", side_effect=move
+            ):
+                APPLY.atomic_replace(staged, destination)
+
+            self.assertEqual(b"new\n", destination.read_bytes())
+            self.assertEqual(
+                [(staged, destination, 0x9)],
+                observed,
+            )
+            self.assertEqual(0x9, APPLY.WINDOWS_ATOMIC_REPLACE_FLAGS)
+
+    def test_gwt_036_given_resealed_malformed_operations_when_target_validates_then_exact_schema_fails_closed(self) -> None:
+        variants = (
+            "missing-kind",
+            "kind-action-mismatch",
+            "unknown-component",
+            "extra-field",
+            "unsorted-identifiers",
+            "forbidden-ownership",
+            "forbidden-from-path",
+            "reserved-effective-path",
+            "duplicate-touched-path",
+        )
+        for variant in variants:
+            with self.subTest(variant=variant):
+                fixture = PackageApplyFixture()
+                try:
+                    fixture.make_package(
+                        {
+                            ".ai/one.md": (b"one\n", "framework-managed", "0644"),
+                            ".ai/two.md": (b"two\n", "framework-managed", "0644"),
+                        },
+                        [
+                            operation("001-add", "add", ".ai/one.md"),
+                            operation("002-add", "add", ".ai/two.md"),
+                        ],
+                    )
+                    plan = fixture.plan()
+                    APPLY.apply_plan(plan)
+
+                    def mutate(sealed: dict) -> None:
+                        operations = sealed["operations"]
+                        if variant == "missing-kind":
+                            operations[0].pop("kind")
+                        elif variant == "kind-action-mismatch":
+                            operations[0]["kind"] = "remove"
+                        elif variant == "unknown-component":
+                            operations[0]["component_id"] = "not-selected"
+                        elif variant == "extra-field":
+                            operations[0]["unexpected"] = True
+                        elif variant == "unsorted-identifiers":
+                            operations.reverse()
+                        elif variant == "forbidden-ownership":
+                            operations[0]["ownership"] = "target-owned"
+                        elif variant == "forbidden-from-path":
+                            operations[0]["from_path"] = ".ai/source.md"
+                        elif variant == "reserved-effective-path":
+                            operations[0]["path"] = TARGET.EFFECTIVE_STATE_PATH
+                        else:
+                            operations[1]["path"] = operations[0]["path"]
+
+                    reseal_applied_transaction(fixture, plan, mutate)
+                    errors: list[str] = []
+                    TARGET.validate_pending_apply_receipt(fixture.target, errors)
+
+                    self.assertTrue(
+                        any(
+                            "sealed transaction operation evidence is invalid" in error
+                            for error in errors
+                        ),
+                        errors,
+                    )
+                finally:
+                    fixture.close()
+
+    def test_gwt_037_given_copied_target_or_changed_head_when_finalized_then_target_binding_fails_before_provenance_write(self) -> None:
+        for variant in ("different-root", "changed-head"):
+            with self.subTest(variant=variant):
+                fixture = PackageApplyFixture()
+                try:
+                    fixture.make_package(
+                        {".ai/one.md": (b"one\n", "framework-managed", "0644")},
+                        [operation("001-add", "add", ".ai/one.md")],
+                    )
+                    plan = fixture.plan()
+                    APPLY.apply_plan(plan)
+                    if variant == "different-root":
+                        reseal_applied_transaction(
+                            fixture,
+                            plan,
+                            lambda sealed: sealed.__setitem__(
+                                "target_root", str(fixture.root / "different-target")
+                            ),
+                        )
+                        expected = "sealed target root differs from current target"
+                    else:
+                        (fixture.target / "HEAD-DRIFT.md").write_text(
+                            "drift\n", encoding="utf-8"
+                        )
+                        git(fixture.target, "add", "HEAD-DRIFT.md")
+                        git(fixture.target, "commit", "-qm", "head drift")
+                        expected = "sealed target starting commit differs from current HEAD"
+
+                    errors: list[str] = []
+                    TARGET.validate_pending_apply_receipt(fixture.target, errors)
+                    self.assertTrue(any(expected in error for error in errors), errors)
+                    provenance_path = fixture.target / ".dev/ai-context/provenance.yaml"
+                    with self.assertRaisesRegex(TARGET.TargetValidationError, expected):
+                        TARGET.finalize_context(fixture.target, {}, {})
+                    self.assertFalse(provenance_path.exists())
+                finally:
+                    fixture.close()
+
+    def test_gwt_038_given_managed_path_reparse_parent_when_target_validates_then_external_bytes_are_not_authoritative(self) -> None:
+        fixture = PackageApplyFixture()
+        try:
+            fixture.make_package(
+                {
+                    ".ai/linked/managed.md": (
+                        b"managed\n",
+                        "framework-managed",
+                        "0644",
+                    )
+                },
+                [operation("001-add", "add", ".ai/linked/managed.md")],
+            )
+            plan = fixture.plan()
+            APPLY.apply_plan(plan)
+            blocked_parent = fixture.target / ".ai/linked"
+            original = TARGET.is_reparse_point
+
+            def simulated_reparse(path: Path) -> bool:
+                return Path(path) == blocked_parent or original(path)
+
+            errors: list[str] = []
+            with mock.patch.object(
+                TARGET, "is_reparse_point", side_effect=simulated_reparse
+            ):
+                TARGET.validate_pending_apply_receipt(fixture.target, errors)
+
+            self.assertTrue(
+                any("crosses a symlink or reparse boundary" in error for error in errors),
+                errors,
+            )
+            outside = fixture.root / "outside-linked"
+            try:
+                blocked_parent.replace(outside)
+                blocked_parent.symlink_to(outside, target_is_directory=True)
+            except OSError:
+                if outside.exists() and not blocked_parent.exists():
+                    outside.replace(blocked_parent)
+            else:
+                actual_errors: list[str] = []
+                TARGET.validate_pending_apply_receipt(
+                    fixture.target, actual_errors
+                )
+                self.assertTrue(
+                    any(
+                        "crosses a symlink or reparse boundary" in error
+                        for error in actual_errors
+                    ),
+                    actual_errors,
+                )
+        finally:
+            fixture.close()
+
+    def test_gwt_039_given_dangling_pending_receipt_boundary_when_rollback_runs_then_terminal_state_is_refused(self) -> None:
+        fixture = PackageApplyFixture()
+        try:
+            fixture.make_package(
+                {".ai/one.md": (b"one\n", "framework-managed", "0644")},
+                [operation("001-add", "add", ".ai/one.md")],
+            )
+            plan = fixture.plan()
+
+            def crash(boundary: str, details: dict) -> None:
+                if boundary == "after_progress_journal":
+                    raise APPLY.InjectedInterruption("preserve apply prefix")
+
+            with self.assertRaises(APPLY.InjectedInterruption):
+                APPLY.apply_plan(plan, boundary_hook=crash)
+            receipt_path = fixture.target / APPLY.PENDING_RECEIPT_PATH
+            transaction_id = plan["plan_sha256"]
+
+            receipt_path.parent.mkdir(parents=True, exist_ok=True)
+            receipt_path.write_bytes(b"unbound: receipt\n")
+            journal_path = (
+                APPLY.transaction_root(fixture.target, transaction_id)
+                / "journal.yaml"
+            )
+            journal_before = journal_path.read_bytes()
+            with self.assertRaisesRegex(
+                APPLY.ApplyError, "pending receipt does not match rollback transaction"
+            ):
+                APPLY.recover_transaction(fixture.target, transaction_id, "rollback")
+            self.assertEqual(b"unbound: receipt\n", receipt_path.read_bytes())
+            self.assertEqual(journal_before, journal_path.read_bytes())
+            self.assertTrue((fixture.target / ".ai/one.md").is_file())
+            receipt_path.unlink()
+
+            receipt_parent = fixture.target / ".dev"
+            with mock.patch.object(
+                APPLY,
+                "is_reparse_point",
+                side_effect=lambda path: Path(path) == receipt_parent,
+            ):
+                with self.assertRaisesRegex(
+                    APPLY.ApplyError,
+                    "symlink boundary or reparse-point boundary is not allowed",
+                ):
+                    APPLY.recover_transaction(
+                        fixture.target, transaction_id, "rollback"
+                    )
+            self.assertEqual(journal_before, journal_path.read_bytes())
+            self.assertTrue((fixture.target / ".ai/one.md").is_file())
+
+            with mock.patch.object(
+                APPLY,
+                "is_reparse_point",
+                side_effect=lambda path: Path(path) == receipt_path,
+            ):
+                with self.assertRaisesRegex(
+                    APPLY.ApplyError,
+                    "symlink boundary or reparse-point boundary is not allowed",
+                ):
+                    APPLY.recover_transaction(
+                        fixture.target, transaction_id, "rollback"
+                    )
+            self.assertTrue((fixture.target / ".ai/one.md").is_file())
+
+            recovered = APPLY.recover_transaction(
+                fixture.target, transaction_id, "rollback"
+            )
+            self.assertEqual("rolled-back", recovered["state"])
+            with mock.patch.object(
+                APPLY,
+                "is_reparse_point",
+                side_effect=lambda path: Path(path) == receipt_path,
+            ):
+                with self.assertRaisesRegex(
+                    APPLY.ApplyError,
+                    "symlink boundary or reparse-point boundary is not allowed",
+                ):
+                    APPLY.recover_transaction(
+                        fixture.target, transaction_id, "rollback"
+                    )
+        finally:
+            fixture.close()
+
+    def test_gwt_040_given_exact_receipt_published_before_final_journal_when_rollback_runs_then_only_bound_receipt_is_removed(self) -> None:
+        fixture = PackageApplyFixture()
+        try:
+            fixture.make_package(
+                {".ai/one.md": (b"one\n", "framework-managed", "0644")},
+                [operation("001-add", "add", ".ai/one.md")],
+            )
+            plan = fixture.plan()
+
+            def crash(boundary: str, details: dict) -> None:
+                if boundary == "after_receipt":
+                    raise APPLY.InjectedInterruption(
+                        "receipt published before finalized journal"
+                    )
+
+            with self.assertRaises(APPLY.InjectedInterruption):
+                APPLY.apply_plan(plan, boundary_hook=crash)
+            receipt_path = fixture.target / APPLY.PENDING_RECEIPT_PATH
+            self.assertTrue(receipt_path.is_file())
+
+            recovered = APPLY.recover_transaction(
+                fixture.target, plan["plan_sha256"], "rollback"
+            )
+
+            self.assertEqual("rolled-back", recovered["state"])
+            self.assertFalse(receipt_path.exists())
+            self.assertFalse((fixture.target / ".ai/one.md").exists())
+        finally:
+            fixture.close()
 
 
 
