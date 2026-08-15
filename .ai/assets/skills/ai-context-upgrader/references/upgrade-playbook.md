@@ -113,6 +113,17 @@ required framework path/component/ownership/byte identity so the target
 validator, critical gate, and provenance finalization reject the same missing,
 changed, or still-ignored payload.
 
+For a schema-2 package apply, treat the receipt as evidence only after its
+transaction is `finalized`. The exact plan, selected-input proof, ordered
+operation boundaries, prestates, and recovery bytes are sealed under the
+target Git administrative `ai-context-package-apply/<transaction-id>/`
+directory before target mutation. An `applying` or `interrupted` journal is not
+upgrade success: use the exact package and `--resume <transaction-id>`, or use
+`--rollback <transaction-id>` to restore the exact prestate. Never rebuild a
+fresh plan, add authority, or advance provenance during recovery. The pending
+receipt must bind actual raw post-write SHA-256 values and intended Git modes;
+normalized text hashes are diagnostics only.
+
 For `moved-to` or `merged-into`, preserve target-local source content until its
 destination has been reconciled. For `retired`, remove automatically only when
 the target source is byte-identical to base and the migration guide explicitly

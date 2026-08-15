@@ -22,7 +22,17 @@ This package is a versioned framework payload, not a whole-repository overwrite.
    not treat a source-only CLI or release publication operation as part of the
    extracted target prerequisite contract.
 
-3. Validate the archive and its external `.sha256` sidecar.
+3. Validate the archive and its external `.sha256` sidecar. Then validate the
+   freshly extracted incoming candidate from the envelope root, using only the
+   checksum-governed validator and payload carried by that candidate:
+
+   ```text
+   python payload/.ai/scripts/validate-ai-context-payload.py --package-root .
+   ```
+
+   This is the portable validation success boundary. Source-only tests are
+   classified in `metadata/validation.json`, are not packaged, and cannot
+   contribute to this result.
 4. From the extracted envelope root, run a dry-run against the target and review every add, replace, remove, rename, and reconcile result:
 
    ```text
@@ -54,7 +64,23 @@ This package is a versioned framework payload, not a whole-repository overwrite.
    python payload/.ai/scripts/plan-ai-context-package-apply.py --package-root . --target-root <target-repository> --apply --acknowledge <operation-id>
    ```
 
-6. Review `.dev/AI-CONTEXT-APPLY-PENDING.yaml`, including its default and
+   The reviewed plan's `plan_sha256` is also the durable transaction ID. If the
+   process stops after the planned journal is durable, use exactly one of:
+
+   ```text
+   python payload/.ai/scripts/plan-ai-context-package-apply.py --package-root . --target-root <target-repository> --resume <transaction-id>
+   python payload/.ai/scripts/plan-ai-context-package-apply.py --target-root <target-repository> --rollback <transaction-id>
+   ```
+
+   Resume revalidates the exact extracted package. Rollback uses the Git-admin
+   prestates and therefore remains available when the package is not. Neither
+   command accepts new selection flags or acknowledgements. Unrelated target
+   changes, changed package/proof bytes, corrupt recovery evidence, readonly or
+   unsafe reparse boundaries, and ambiguous partial operations fail closed.
+
+6. Review `.dev/AI-CONTEXT-APPLY-PENDING.yaml`, including its plan and
+   transaction identity, selected-input proof, raw artifact hashes and Git
+   modes, removed paths, complete selected managed-path results, default and
    resolved selection, resolution evidence, and applied/skipped component
    operation counts. Then run
    `ai-context-init` after a clean installation or `ai-context-upgrader`

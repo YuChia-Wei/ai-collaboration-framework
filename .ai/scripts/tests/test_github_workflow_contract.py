@@ -47,8 +47,12 @@ EXPECTED_PR_PATHS = {
         "requirements.txt",
     },
     "package-candidate.yml": {
+        ".agents/**",
         ".ai/distribution/**",
+        ".ai/assets/**",
         ".ai/scripts/**",
+        ".claude/**",
+        ".dev/guides/**",
         ".dev/releases/**",
         ".github/workflows/package-candidate.yml",
         ".github/workflows/publish-release.yml",
@@ -352,6 +356,14 @@ class GitHubWorkflowContractTests(unittest.TestCase):
         )
         self.assertNotIn("env", candidate_contract)
         self.assertIn("--phase contract", candidate_contract["run"])
+        incoming_validation = next(
+            step
+            for step in self.workflows["package-candidate.yml"]["jobs"]["package"]["steps"]
+            if step.get("name") == "Validate freshly extracted incoming candidate"
+        )
+        self.assertIn("python -m zipfile -e", incoming_validation["run"])
+        self.assertIn("validate-ai-context-payload.py", incoming_validation["run"])
+        self.assertIn("--package-root .", incoming_validation["run"])
 
 
 if __name__ == "__main__":

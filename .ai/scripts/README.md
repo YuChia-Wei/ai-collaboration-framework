@@ -250,13 +250,37 @@ closed. Incoming, previous, and operation sets are filtered together so a
 disabled provider never generates removal work. Existing target
 templates and locally changed managed files become reconciliation items.
 Acknowledging such an item skips it; acknowledgement never grants overwrite or
-delete permission. `--apply` rechecks the complete binding, applies only safe
-operations transactionally, and writes
-`.dev/AI-CONTEXT-APPLY-PENDING.yaml`. It never updates validated source
-provenance; the receipt records the resolved/default selection, authority
-evidence, and applied/skipped counts by component. Apply revalidates that
-authority before mutation. `ai-context-init` or `ai-context-upgrader` owns
-validation and provenance finalization.
+delete permission. `--apply` rechecks the complete binding, rejects drift in
+unchanged selected managed paths, and seals a schema-2 plan. Raw bytes are the
+authority; a clean tracked Git projection may satisfy the previous identity
+only when its index bytes and LF-normalized UTF-8 bytes match and no content
+transform attribute is configured. The transaction ID is the plan SHA-256.
+Before the first target mutation, the tool durably stores the plan, ordered
+operation boundary, exact prestates, and recovery bytes under the target Git
+administrative `ai-context-package-apply/<transaction-id>/` directory. Atomic
+same-directory writes (including Windows `MoveFileExW` write-through namespace
+transitions) and a durable state machine (`planned`, `applying`,
+`interrupted`, `rolling-back`, `rolled-back`, `finalized`) make process-death
+recovery explicit. Rollback seals its starting target surface and persists an
+ordered reverse-prestate path prefix, so a retry can distinguish the one
+in-flight restore from completed and untouched rollback paths.
+Resume the exact sealed package with `--resume <transaction-id>`; restore the
+exact prestate without package availability with `--rollback <transaction-id>`.
+Both terminal operations are idempotent, while ambiguous state and unrelated
+worktree changes fail closed.
+
+An apply publishes `.dev/AI-CONTEXT-APPLY-PENDING.yaml` immediately before its
+final journal transition. The receipt is non-authoritative until the durable
+`finalized` journal binds its exact SHA-256; interruption at that boundary must
+be resumed or rolled back. Target validation additionally requires the sealed
+target root and starting commit to match the current target and `HEAD`. Its
+schema-2 receipt binds the plan and selected-input proof identities, operation order,
+every applied artifact's raw SHA-256 and intended Git mode, removed paths, the
+complete selected framework-managed identity, resolved/default selection, and
+applied/skipped counts by component. It never updates validated source
+provenance. `ai-context-init` or `ai-context-upgrader` owns validation and
+provenance finalization; reconciliation-preserved managed paths remain an
+explicit target-validation failure until owner resolution.
 
 For every selected framework-managed path, dry run also records an exact target
 Git ignore match (`source`, line, and pattern). An ignored path is an explicit
@@ -283,28 +307,14 @@ the actual `repository_loaded` events. A provider may report
 bytes-divided-by-four value is marked as a repository-loaded heuristic and is
 never treated as total prompt usage.
 
-Fail-closed validation and packaging regression tests use Given-When-Then
-naming and comments and run entirely in disposable Git repositories:
-
-```powershell
-python .ai/scripts/tests/test_fail_closed_validation.py -v
-python .ai/scripts/tests/test_ai_context_wrapper_metadata.py -v
-python .ai/scripts/tests/test_ai_context_root_entries.py -v
-python .ai/scripts/tests/test_ai_context_language_policy.py -v
-python .ai/assets/skills/software-development-orchestrator/scripts/tests/test_workflow_implementation_contract.py -v
-python .ai/assets/skills/software-development-orchestrator/scripts/tests/test_software_development_orchestrator_capability_contract.py -v
-python .ai/assets/skills/software-development-orchestrator/scripts/tests/test_software_development_orchestrator_acceptance.py -v
-python .ai/scripts/tests/test_workflow_lifecycle_contract.py -v
-python .ai/scripts/tests/test_assessment_artifacts.py -v
-python .ai/scripts/tests/test_git_commit_policy.py -v
-python .ai/scripts/tests/test_ai_context_package_apply.py -v
-python .ai/scripts/tests/test_dependency_version_consistency.py -v
-python .ai/scripts/tests/test_file_disposition_manifest.py -v
-```
-
-Additional source-repository governance and release-history tests are intentionally
-excluded from the portable payload and therefore are not advertised here as runnable
-downstream commands.
+Source-repository fail-closed and packaging regression tests use
+Given-When-Then naming and disposable Git repositories. All test trees under
+`.ai/scripts/tests/` and skill-owned `scripts/tests/` are explicitly
+source-only, are excluded from the portable payload, and cannot contribute to
+portable validation success. A freshly extracted package instead runs the
+candidate-owned `.ai/scripts/validate-ai-context-payload.py` command documented
+by the envelope `INSTALL.md`; its exact identity and arguments are recorded in
+`metadata/validation.json`.
 
 `test_ai_context_load_measurement.py` proves the source-only context-load
 measurement contract in disposable synthetic Git repositories; it creates no
@@ -321,9 +331,9 @@ unclassified retired names, overlapping rules, stale rules, or any attempted
 `current-operational` exception. These checks remain required when
 `check-all.sh` detects their exact source context, but the source-only
 validators, tests, registry, and workflow evidence are intentionally excluded
-from public target packages. `test_ai_context_package_apply.py` and the
-synthetic file-disposition fixture suite are downstream-supported and remain
-packaged and required. A packaged `check-all.sh` reports source-only checks as
+from public target packages. The package apply and file-disposition runtime
+capabilities remain downstream-supported, while their source test modules stay
+excluded. A packaged `check-all.sh` reports source-only checks as
 not applicable instead of requiring unavailable release history, Git tags,
 builder modules, workflow evidence, or source CI configuration.
 

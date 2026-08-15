@@ -3,12 +3,15 @@
 
 from __future__ import annotations
 
+import json
 import os
 import subprocess
 import shutil
+import stat
 import sys
-import tempfile
 import unittest
+import uuid
+import warnings
 import zipfile
 from pathlib import Path
 
@@ -21,15 +24,56 @@ sys.path.insert(0, str(SCRIPTS))
 import ai_context_package as PACKAGE  # noqa: E402
 
 
+class RepositoryTemporaryDirectory:
+    """Use normal workspace ACLs instead of Windows tempfile 0700 ACLs."""
+
+    def __init__(self, prefix: str) -> None:
+        # Keep the deepest portable skill entry below the Win32 MAX_PATH
+        # boundary even when Git long-path support is not configured.
+        root = ROOT / ".tmp/p"
+        root.mkdir(parents=True, exist_ok=True)
+        self.path = root / uuid.uuid4().hex[:12]
+        self.path.mkdir()
+        self.name = str(self.path)
+
+    @staticmethod
+    def _remove_readonly(function: object, path: str, _: object) -> None:
+        os.chmod(path, stat.S_IRUSR | stat.S_IWUSR | stat.S_IXUSR)
+        function(path)  # type: ignore[operator]
+
+    def cleanup(self) -> None:
+        if self.path.exists():
+            shutil.rmtree(self.path, onerror=self._remove_readonly)
+
+    def __enter__(self) -> str:
+        return self.name
+
+    def __exit__(self, *_: object) -> None:
+        self.cleanup()
+
+
+def repository_temporary_directory(prefix: str) -> RepositoryTemporaryDirectory:
+    """Keep large source-only fixtures inside the ignored writable workspace."""
+    return RepositoryTemporaryDirectory(prefix)
+
+
 def git(root: Path, *args: str) -> subprocess.CompletedProcess[str]:
-    return subprocess.run(["git", *args], cwd=root, check=True, capture_output=True, text=True)
+    result = subprocess.run(
+        ["git", *args], cwd=root, check=False, capture_output=True, text=True
+    )
+    if result.returncode != 0:
+        raise AssertionError(
+            f"git {' '.join(args)} failed with exit {result.returncode}: "
+            f"{(result.stdout + result.stderr).strip()}"
+        )
+    return result
 
 
 class SyntheticPackageRepo:
     """Own a minimal Git-backed package source and isolated output roots."""
 
     def __init__(self) -> None:
-        self._temporary = tempfile.TemporaryDirectory(prefix="ai-context-packaging-")
+        self._temporary = repository_temporary_directory("ai-context-packaging-")
         self.root = Path(self._temporary.name) / "source"
         self.root.mkdir()
         git(self.root, "init", "-q")
@@ -41,7 +85,11 @@ class SyntheticPackageRepo:
         (self.root / ".dev").mkdir()
         (self.root / "docs").mkdir()
         (self.root / ".ai/distribution/templates/INSTALL.md").write_text(
-            "# Install fixture\n", encoding="utf-8", newline="\n"
+            "# Install fixture\n\n"
+            "python -m pip install -r requirements.txt\n\n"
+            "python payload/.ai/scripts/validate-ai-context-payload.py --package-root .\n",
+            encoding="utf-8",
+            newline="\n",
         )
         (self.root / ".ai/distribution/templates/requirements.txt").write_text(
             "PyYAML==6.0.3\n", encoding="utf-8", newline="\n"
@@ -56,15 +104,26 @@ class SyntheticPackageRepo:
             "portable project guidance\n", encoding="utf-8", newline="\n"
         )
         for script in (
+            "ai_context_package_validation.py",
             "ai_context_package_apply.py",
+            "ai_context_cli_routing.py",
             "ai_context_effective_rules.py",
             "ai_context_target_provenance.py",
             "plan-ai-context-package-apply.py",
             "resolve-effective-rule-packet.py",
+            "validate-ai-context-payload.py",
             "python-entrypoints.json",
             "python_prerequisites.py",
         ):
             (self.root / ".ai/scripts" / script).write_bytes((SCRIPTS / script).read_bytes())
+        registry = json.loads((SCRIPTS / "python-entrypoints.json").read_text(encoding="utf-8"))
+        for entrypoint in registry["entrypoints"]:
+            if entrypoint.get("portable") is not True:
+                continue
+            relative = entrypoint["path"]
+            target = self.root / relative
+            target.parent.mkdir(parents=True, exist_ok=True)
+            target.write_bytes((ROOT / relative).read_bytes())
         (self.root / ".ai/scripts/render-ai-context-release-notes.py").write_text(
             "raise SystemExit('source-only renderer')\n",
             encoding="utf-8",
@@ -154,6 +213,39 @@ class SyntheticPackageRepo:
                     ".dev/backlog/items/**",
                 ],
             },
+            "package_validation": {
+                "schema_version": "package-validation/v1",
+                "authority": {
+                    "kind": "incoming-candidate",
+                    "validator": {
+                        "path": ".ai/scripts/validate-ai-context-payload.py",
+                        "argv": [
+                            "python",
+                            "payload/.ai/scripts/validate-ai-context-payload.py",
+                            "--package-root",
+                            ".",
+                        ],
+                    },
+                },
+                "source_only_tests": {
+                    "classification": "source-only",
+                    "patterns": [
+                        ".ai/scripts/tests/**",
+                        ".ai/assets/skills/**/scripts/tests/**",
+                    ],
+                    "contributes_to_portable_success": False,
+                },
+                "integrity_policy": {
+                    "path_case": "casefold-unique",
+                    "payload_text": "all",
+                    "text": {
+                        "encoding": "utf-8",
+                        "line_endings": "lf-only",
+                        "terminal_lf": "exactly-one",
+                    },
+                    "modes": {"allowed": ["0644", "0755"]},
+                },
+            },
             "entries": [
                 {
                     "id": "fixture-docs",
@@ -167,6 +259,14 @@ class SyntheticPackageRepo:
                     "id": "fixture-apply-scripts",
                     "component_id": "software-development-core",
                     "source": ".ai/scripts/**",
+                    "target": "preserve-relative-path",
+                    "ownership": "framework-managed",
+                    "install_behavior": "managed",
+                },
+                {
+                    "id": "fixture-portable-skill-scripts",
+                    "component_id": "software-development-core",
+                    "source": ".ai/assets/skills/**",
                     "target": "preserve-relative-path",
                     "ownership": "framework-managed",
                     "install_behavior": "managed",
@@ -410,7 +510,6 @@ class DeterministicPackageGwtTests(unittest.TestCase):
                             {
                                 "source": "POLICY.md",
                                 "target": ".dev/standards/POLICY.md",
-                                "component_id": "software-development-core",
                             }
                         ],
                     },
@@ -462,6 +561,63 @@ class DeterministicPackageGwtTests(unittest.TestCase):
             )
             self.assertEqual(b"provider-neutral workflow truth\n", projected.content)
             self.assertNotIn(b"hosted provider", projected.content)
+        finally:
+            fixture.close()
+
+    def test_gwt_0000a_given_template_mapping_claims_component_when_projected_then_profile_authority_fails_closed(self) -> None:
+        fixture = SyntheticPackageRepo()
+        try:
+            portable_root = fixture.root / ".ai/assets/shared/governance"
+            portable_root.mkdir(parents=True)
+            (portable_root / "POLICY.md").write_text(
+                "provider-neutral workflow truth\n", encoding="utf-8", newline="\n"
+            )
+            manifest_path = portable_root / "manifest.yaml"
+            manifest_path.write_text(
+                yaml.safe_dump(
+                    {
+                        "schema_version": "1.0",
+                        "source_root": ".",
+                        "mappings": [
+                            {
+                                "source": "POLICY.md",
+                                "target": ".dev/standards/POLICY.md",
+                                "component_id": "software-development-core",
+                            }
+                        ],
+                    },
+                    sort_keys=False,
+                ),
+                encoding="utf-8",
+                newline="\n",
+            )
+            profile_path = fixture.root / fixture.profile
+            profile = yaml.safe_load(profile_path.read_text(encoding="utf-8"))
+            profile["entries"].append(
+                {
+                    "id": "portable-policy",
+                    "component_id": "software-development-core",
+                    "source": ".ai/assets/shared/governance/**",
+                    "target": "mapping-declared-by-template-manifest",
+                    "template_manifest": ".ai/assets/shared/governance/manifest.yaml",
+                    "ownership": "framework-managed",
+                    "install_behavior": "managed",
+                }
+            )
+            profile_path.write_text(
+                yaml.safe_dump(profile, sort_keys=False), encoding="utf-8", newline="\n"
+            )
+            git(fixture.root, "add", ".")
+            git(fixture.root, "commit", "-qm", "conflicting component fixture")
+            tree = PACKAGE.git_tree(fixture.root, "HEAD")
+            committed_profile = PACKAGE.load_yaml_blob(
+                fixture.root, tree, fixture.profile
+            )
+            with self.assertRaisesRegex(
+                PACKAGE.PackageError,
+                "mapping component_id is forbidden",
+            ):
+                PACKAGE.collect_payload(fixture.root, tree, committed_profile)
         finally:
             fixture.close()
 
@@ -775,6 +931,34 @@ class DeterministicPackageGwtTests(unittest.TestCase):
         finally:
             fixture.close()
 
+    def test_gwt_004a_given_duplicate_or_casefold_archive_members_when_read_then_it_fails_closed(self) -> None:
+        fixture = SyntheticPackageRepo()
+        try:
+            cases = {
+                "duplicate": (
+                    ("fixture-v1.0.0/payload/docs/rule.md", b"one\n"),
+                    ("fixture-v1.0.0/payload/docs/rule.md", b"two\n"),
+                    "duplicate archive member",
+                ),
+                "casefold": (
+                    ("fixture-v1.0.0/payload/docs/Rule.md", b"one\n"),
+                    ("fixture-v1.0.0/payload/docs/rule.md", b"two\n"),
+                    "case-insensitive archive member collision",
+                ),
+            }
+            for name, (first, second, expected) in cases.items():
+                with self.subTest(name=name):
+                    path = fixture.output(f"{name}.zip")
+                    with warnings.catch_warnings():
+                        warnings.simplefilter("ignore", UserWarning)
+                        with zipfile.ZipFile(path, "w") as archive:
+                            archive.writestr(*first)
+                            archive.writestr(*second)
+                    with self.assertRaisesRegex(PACKAGE.PackageError, expected):
+                        PACKAGE.archive_files(path)
+        finally:
+            fixture.close()
+
     def test_gwt_005_given_zip_and_tar_from_one_build_when_validated_then_payload_and_modes_match(self) -> None:
         fixture = SyntheticPackageRepo()
         try:
@@ -805,13 +989,18 @@ class DeterministicPackageGwtTests(unittest.TestCase):
                 (root / "metadata/migration.yaml").read_text(encoding="utf-8")
             )
 
-            self.assertEqual("2.2.0", package["schema_version"])
+            self.assertEqual("2.3.0", package["schema_version"])
             self.assertEqual("2.0.0", inventory["schema_version"])
             self.assertEqual("3.0.0", migration["schema_version"])
             self.assertEqual(package["selection"], migration["selection"])
             self.assertEqual("1.0.0", package["user_view"]["schema_version"])
             self.assertEqual(result["tree"], package["source"]["tree"])
             self.assertEqual(result["commit"], package["source"]["commit"])
+            self.assertEqual(
+                "package-validation/v1", package["validation"]["schema_version"]
+            )
+            self.assertTrue((root / "metadata/validation.json").is_file())
+            self.assertTrue((root / "metadata/selected-inputs.json").is_file())
             self.assertEqual(
                 result["selected_input_fingerprint"],
                 package["identity"]["selected_input_fingerprint"],
@@ -975,6 +1164,9 @@ class ReleaseWorkflowContractGwtTests(unittest.TestCase):
         self.assertNotIn("--output dist/release-body.md", text)
         self.assertIn('gh release download "${migration_source}"', text)
         self.assertIn('ai-context-dotnet-backend-v${previous_version}.zip.sha256', text)
+        self.assertIn("Validate freshly extracted incoming candidate", text)
+        self.assertIn("validate-ai-context-payload.py", text)
+        self.assertIn("--package-root .", text)
         self.assertNotIn('--ref "refs/tags/${migration_source}"', text)
         self.assertNotIn("gh release create", text)
         self.assertNotIn("gh release upload", text)
@@ -1278,7 +1470,7 @@ class VersionedMigrationPackagingGwtTests(unittest.TestCase):
     # intentionally outside unittest discovery. Active upgrade gates begin at
     # v0.6.0 and exercise one immediate-predecessor route per candidate.
     def historical_gwt_016_given_real_v030_package_when_candidate_is_extracted_then_upgrade_applies(self) -> None:
-        with tempfile.TemporaryDirectory(prefix="ai-context-real-upgrade-") as temp_value:
+        with repository_temporary_directory("ai-context-real-upgrade-") as temp_value:
             temp = Path(temp_value)
 
             # Given the immutable published v0.3.0 tree is built and extracted.
@@ -1398,7 +1590,7 @@ class VersionedMigrationPackagingGwtTests(unittest.TestCase):
             self.assertEqual(sorted(acknowledgements), receipt["skipped_reconciliation_ids"])
 
     def historical_gwt_017_given_four_real_supported_sources_when_one_v050_candidate_is_built_then_each_upgrades_without_overwriting_target_truth(self) -> None:
-        with tempfile.TemporaryDirectory(prefix="ai-context-real-multi-source-") as temp_value:
+        with repository_temporary_directory("ai-context-real-multi-source-") as temp_value:
             temp = Path(temp_value)
             previous_roots: dict[str, Path] = {}
             source_inputs: list[tuple[Path, str]] = []
@@ -1582,7 +1774,7 @@ class VersionedMigrationPackagingGwtTests(unittest.TestCase):
             ).stdout,
         )
 
-        with tempfile.TemporaryDirectory(prefix="ai-context-downstream-v050-") as temp_value:
+        with repository_temporary_directory("ai-context-downstream-v050-") as temp_value:
             temp = Path(temp_value)
             source_inputs: list[tuple[Path, str]] = []
             previous_roots: dict[str, Path] = {}
@@ -1770,17 +1962,8 @@ class VersionedMigrationPackagingGwtTests(unittest.TestCase):
             ".ai/scripts/validate-workflow-artifacts.py", ".ai/scripts/validate-workflow-handoff.py",
         )
         try:
-            # Given v0.7.0 already carries every direct portable command path.
-            for path in portable_paths:
-                target = fixture.root / path
-                target.parent.mkdir(parents=True, exist_ok=True)
-                target.write_bytes((ROOT / path).read_bytes())
-            profile_path = fixture.root / fixture.profile
-            profile = yaml.safe_load(profile_path.read_text(encoding="utf-8"))
-            profile["entries"].append({"id": "portable-skill-cli", "component_id": "software-development-core", "source": ".ai/assets/skills/**", "target": "preserve-relative-path", "ownership": "framework-managed", "install_behavior": "managed"})
-            profile_path.write_text(yaml.safe_dump(profile, sort_keys=False), encoding="utf-8", newline="\n")
-            git(fixture.root, "add", ".")
-            git(fixture.root, "commit", "-qm", "v070 portable command fixture")
+            # Given v0.7.0 already carries every registry-declared portable path.
+            self.assertTrue(all((fixture.root / path).is_file() for path in portable_paths))
             previous = fixture.build("v070", version="0.7.0")
             previous_root = fixture.extract(previous, "v070-extract")
             previous_files = previous_root / "metadata/files.yaml"

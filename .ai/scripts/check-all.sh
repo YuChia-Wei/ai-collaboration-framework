@@ -45,7 +45,11 @@ declare -A CHECK_CACHE_POLICY=()
 declare -A CHECK_DISPOSITION=()
 declare -A CHECK_COMMAND=()
 declare -A CHECK_APPLICABILITY=()
+declare -A DISCOVERED_CHECK_IDS=()
+declare -A DEPENDENCY_VALIDATION_STATE=()
+declare -ag DEPENDENCY_VALIDATION_STACK=()
 declare -A SELECTED_CHECK_IDS=()
+declare -ag SELECTED_CHECK_ORDER=()
 declare -A SELECTION_REASON_BY_ID=()
 declare -A CHANGED_PATHS=()
 declare -A IMMUTABLE_HISTORY_RECEIPT_REUSE_BY_ID=()
@@ -114,6 +118,42 @@ profiles_include() {
     return 1
 }
 
+report_dependency_cycle() {
+    local repeated=$1 index start=-1 cycle=
+    for index in "${!DEPENDENCY_VALIDATION_STACK[@]}"; do
+        if [ "${DEPENDENCY_VALIDATION_STACK[$index]}" = "$repeated" ]; then
+            start=$index
+            break
+        fi
+    done
+    if [ "$start" -lt 0 ]; then
+        echo "Dependency cycle detected: $repeated -> $repeated" >&2
+        return 1
+    fi
+    for ((index = start; index < ${#DEPENDENCY_VALIDATION_STACK[@]}; index++)); do
+        [ -z "$cycle" ] || cycle="$cycle -> "
+        cycle="$cycle${DEPENDENCY_VALIDATION_STACK[$index]}"
+    done
+    echo "Dependency cycle detected: $cycle -> $repeated" >&2
+    return 1
+}
+
+validate_dependency_graph_node() {
+    local id=$1 dependency last_index
+    case "${DEPENDENCY_VALIDATION_STATE[$id]:-unvisited}" in
+        visited) return 0 ;;
+        visiting) report_dependency_cycle "$id"; return 1 ;;
+    esac
+    DEPENDENCY_VALIDATION_STATE["$id"]=visiting
+    DEPENDENCY_VALIDATION_STACK+=("$id")
+    for dependency in ${CHECK_DEPENDS[$id]}; do
+        validate_dependency_graph_node "$dependency" || return 1
+    done
+    last_index=$((${#DEPENDENCY_VALIDATION_STACK[@]} - 1))
+    unset "DEPENDENCY_VALIDATION_STACK[$last_index]"
+    DEPENDENCY_VALIDATION_STATE["$id"]=visited
+}
+
 validate_profile_registry() {
     local profile id dependency
     for profile in fast pr release closeout nightly-full; do
@@ -147,29 +187,55 @@ validate_profile_registry() {
             }
         done
     done
+    DEPENDENCY_VALIDATION_STATE=()
+    DEPENDENCY_VALIDATION_STACK=()
+    for id in "${CHECK_IDS[@]}"; do
+        validate_dependency_graph_node "$id" || return 1
+    done
+}
+
+reset_selection_state() {
+    DISCOVERED_CHECK_IDS=()
+    SELECTED_CHECK_IDS=()
+    SELECTED_CHECK_ORDER=()
+    SELECTION_REASON_BY_ID=()
+}
+
+discover_selection_root() {
+    local id=$1 reason=$2
+    DISCOVERED_CHECK_IDS["$id"]=discovered
+    [ -n "${SELECTION_REASON_BY_ID[$id]:-}" ] || SELECTION_REASON_BY_ID["$id"]=$reason
 }
 
 select_with_dependencies() {
-    local id=$1 dependency
+    local id=$1 chain=${2:-$1} dependency
     [ -n "${CHECK_DESCRIPTION[$id]:-}" ] || return 1
     [ -n "${SELECTED_CHECK_IDS[$id]:-}" ] && return 0
-    SELECTED_CHECK_IDS["$id"]=selected
     for dependency in ${CHECK_DEPENDS[$id]}; do
-        select_with_dependencies "$dependency" || return 1
+        select_with_dependencies "$dependency" "$chain -> $dependency" || return 1
+    done
+    SELECTED_CHECK_IDS["$id"]=selected
+    SELECTED_CHECK_ORDER+=("$id")
+    [ -n "${SELECTION_REASON_BY_ID[$id]:-}" ] || SELECTION_REASON_BY_ID["$id"]="dependency-chain:$chain"
+}
+
+expand_discovered_roots() {
+    local id
+    for id in "${CHECK_IDS[@]}"; do
+        [ -n "${DISCOVERED_CHECK_IDS[$id]:-}" ] || continue
+        select_with_dependencies "$id" "$id" || return 1
     done
 }
 
 prepare_full_profile_selection() {
     local reason=$1 id
-    SELECTED_CHECK_IDS=()
+    reset_selection_state
     for id in "${CHECK_IDS[@]}"; do
         if profiles_include "${CHECK_PROFILES[$id]}" "$PROFILE"; then
-            select_with_dependencies "$id" || return 1
+            discover_selection_root "$id" "profile-inclusion:$PROFILE${reason:+;escalation:$reason}"
         fi
     done
-    for id in "${!SELECTED_CHECK_IDS[@]}"; do
-        SELECTION_REASON_BY_ID["$id"]="full-profile-escalation:$reason"
-    done
+    expand_discovered_roots
 }
 
 path_is_safe() {
@@ -242,27 +308,26 @@ collect_changed_paths() {
 }
 
 prepare_changed_path_selection() {
-    local base=$1 head=$2 path id owned active_owned
+    local base=$1 head=$2 path id owned
+    reset_selection_state
     if ! collect_changed_paths "$base" "$head"; then
         SELECTION_ESCALATION_REASON=changed-path-diff-unavailable
         prepare_full_profile_selection "$SELECTION_ESCALATION_REASON"
         return
     fi
-    for path in "${!CHANGED_PATHS[@]}"; do
+    while IFS= read -r path; do
+        [ -n "$path" ] || continue
         if is_global_invalidator "$path"; then
             SELECTION_ESCALATION_REASON=global-invalidator
             prepare_full_profile_selection "$SELECTION_ESCALATION_REASON"
             return
         fi
         owned=false
-        active_owned=false
         for id in "${CHECK_IDS[@]}"; do
             if input_owns_path "$path" "${CHECK_INPUT_PATHS[$id]}"; then
                 owned=true
                 if profiles_include "${CHECK_PROFILES[$id]}" "$PROFILE"; then
-                    active_owned=true
-                    SELECTED_CHECK_IDS["$id"]=selected
-                    SELECTION_REASON_BY_ID["$id"]=changed-path-match
+                    discover_selection_root "$id" "direct-path-match:$path"
                 fi
             fi
         done
@@ -271,17 +336,8 @@ prepare_changed_path_selection() {
             prepare_full_profile_selection "$SELECTION_ESCALATION_REASON"
             return
         fi
-    done
-    for id in "${!SELECTED_CHECK_IDS[@]}"; do
-        select_with_dependencies "$id" || {
-            SELECTION_ESCALATION_REASON=dependency-resolution-failed
-            prepare_full_profile_selection "$SELECTION_ESCALATION_REASON"
-            return
-        }
-    done
-    for id in "${!SELECTED_CHECK_IDS[@]}"; do
-        [ -n "${SELECTION_REASON_BY_ID[$id]:-}" ] || SELECTION_REASON_BY_ID["$id"]=dependency-expansion
-    done
+    done < <(printf '%s\n' "${!CHANGED_PATHS[@]}" | LC_ALL=C sort)
+    expand_discovered_roots || return 1
     SELECTION_MODE=changed-path
 }
 
@@ -491,8 +547,8 @@ immutable_history_check_is_protected() {
 
 select_immutable_history_check() {
     local id=$1 reason=$2
-    select_with_dependencies "$id" || return 1
-    SELECTION_REASON_BY_ID["$id"]=$reason
+    SELECTION_REASON_BY_ID["$id"]="explicit-request:$reason"
+    select_with_dependencies "$id" "$id" || return 1
 }
 
 select_immutable_history_full_checks() {
@@ -577,7 +633,7 @@ prepare_immutable_history_layer() {
             echo "Immutable history receipt omitted required reusable check id: $id" >&2
             return 1
         }
-        SELECTION_REASON_BY_ID["$id"]="immutable-history-receipt:$source_revision"
+        SELECTION_REASON_BY_ID["$id"]="explicit-request:immutable-history-receipt:$source_revision"
     done
 }
 
@@ -609,6 +665,11 @@ LOG_BASE="${AI_CONTEXT_VALIDATION_LOG_DIR:-$PROJECT_ROOT/artifacts/validation}"
 INVOCATION_ID="$(date -u +%Y%m%dT%H%M%SZ)-$$"
 LOG_DIR="$LOG_BASE/$INVOCATION_ID"
 mkdir -p "$LOG_DIR"
+EVIDENCE_SELECTED_CHECKS="$LOG_DIR/selected-checks.tsv"
+: > "$EVIDENCE_SELECTED_CHECKS"
+for id in "${SELECTED_CHECK_ORDER[@]}"; do
+    printf '%s\t%s\n' "$id" "${SELECTION_REASON_BY_ID[$id]}" >> "$EVIDENCE_SELECTED_CHECKS"
+done
 # Child contract tests must distinguish the aggregate runner's retained
 # diagnostics from mutations made by the entrypoint being tested.
 export AI_CONTEXT_VALIDATION_RUN_LOG_DIR="$LOG_DIR"
@@ -1464,7 +1525,10 @@ fi
 # Additional Checks (only in full mode)
 # ====================================================================
 
-if [ "$PROFILE" == "nightly-full" ]; then
+if [ "$PROFILE" == "nightly-full" ] ||
+    check_is_selected "Test DI Compliance" ||
+    check_is_selected "Template Synchronization" ||
+    check_is_selected "ADR Index Update"; then
     echo ""
     echo -e "${MAGENTA}════ Additional Checks ════${NC}"
 

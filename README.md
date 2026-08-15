@@ -201,11 +201,13 @@ python3.11 payload/.ai/scripts/plan-ai-context-package-apply.py \
 
 將範例中的 `OP-001`、`OP-002` 換成剛才 plan 實際列出的 operation ID；沒有需要 acknowledgement 的項目時，移除這兩行。套用後先閱讀：
 
+Plan 的 `plan_sha256` 同時是 durable transaction ID。若程序在 journal 持久化後中斷，請以相同 package 執行 `--resume <transaction-id>`，或不依賴 package 執行 `--rollback <transaction-id>`。復原不接受新的 selection 或 acknowledgement；不相關的 worktree 變更、package/proof 漂移、損壞的 prestate 與模糊的部分寫入都會 fail closed。交易 journal 與 exact recovery bytes 位於目標 Git administrative directory，不會冒充 target repository 內容。
+
 ```powershell
 Get-Content "$TargetRoot\.dev\AI-CONTEXT-APPLY-PENDING.yaml"
 ```
 
-這份 receipt 說明套用的 component、略過的 reconciliation 與來源證據；它尚未完成 target provenance 的最終初始化。
+這份 schema-2 receipt 說明 transaction／plan、selected-input proof、每個 applied artifact 的 raw SHA-256 與 Git mode、完整 selected managed state、套用的 component、略過的 reconciliation 與來源證據；它尚未完成 target provenance 的最終初始化。
 
 #### 3. 在目標專案使用 `ai-context-init`
 

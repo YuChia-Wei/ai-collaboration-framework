@@ -4,7 +4,11 @@ on:
   pull_request:
     paths:
       - ".ai/distribution/**"
+      - ".ai/assets/**"
       - ".ai/scripts/**"
+      - ".agents/**"
+      - ".claude/**"
+      - ".dev/guides/**"
       - ".dev/releases/**"
       - ".github/workflows/package-candidate.yml"
       - ".github/workflows/publish-release.yml"
@@ -141,6 +145,21 @@ jobs:
           python .ai/scripts/validate-ai-context-package.py \
             "dist/${{ steps.release.outputs.package_id }}.zip" \
             "dist/${{ steps.release.outputs.package_id }}.tar.gz"
+
+      - name: Validate freshly extracted incoming candidate
+        if: steps.release.outputs.available == 'true'
+        run: |
+          candidate_extract="${RUNNER_TEMP}/incoming-candidate"
+          mkdir -p "${candidate_extract}"
+          python -m zipfile -e \
+            "dist/${{ steps.release.outputs.package_id }}.zip" \
+            "${candidate_extract}"
+          cd "${candidate_extract}/${{ steps.release.outputs.package_id }}"
+          python -m venv "${RUNNER_TEMP}/incoming-candidate-venv"
+          "${RUNNER_TEMP}/incoming-candidate-venv/bin/python" -m pip install --disable-pip-version-check -r requirements.txt
+          "${RUNNER_TEMP}/incoming-candidate-venv/bin/python" \
+            payload/.ai/scripts/validate-ai-context-payload.py \
+            --package-root .
 
       - name: Render source disposition read-back
         if: steps.release.outputs.available == 'true'

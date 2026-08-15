@@ -4,9 +4,11 @@
 from __future__ import annotations
 
 import hashlib
+import json
 import os
 import re
 import shutil
+import stat
 import subprocess
 import tempfile
 from datetime import datetime
@@ -34,6 +36,24 @@ RELATIONSHIPS = {"extends", "replaces", "deviates", "target-only"}
 EQUIVALENCE = {"absent", "partial", "equivalent-candidate", "conflicting"}
 DISPOSITIONS = {"retain", "merge", "supersede", "retire", "unresolved"}
 PENDING_APPLY_RECEIPT = ".dev/AI-CONTEXT-APPLY-PENDING.yaml"
+EFFECTIVE_PACKET_DIRECTORY = ".dev/ai-context/effective-rule-packets"
+FILE_ATTRIBUTE_REPARSE_POINT = 0x400
+SEALED_OPERATION_KEYS = {
+    "id",
+    "kind",
+    "path",
+    "from_path",
+    "ownership",
+    "component_id",
+    "action",
+    "reason",
+}
+RESERVED_APPLY_PATHS = {
+    ".dev/AI-CONTEXT-SOURCE.yaml",
+    PENDING_APPLY_RECEIPT,
+    ".dev/ai-context/provenance.yaml",
+    ".dev/ai-context/customizations.yaml",
+}
 
 
 class TargetValidationError(ValueError):
@@ -86,6 +106,204 @@ def safe_target_path(value: object) -> bool:
     )
 
 
+def is_reparse_point(path: Path) -> bool:
+    try:
+        metadata = path.lstat()
+    except (FileNotFoundError, OSError):
+        return False
+    return bool(
+        stat.S_ISLNK(metadata.st_mode)
+        or getattr(metadata, "st_file_attributes", 0)
+        & FILE_ATTRIBUTE_REPARSE_POINT
+    )
+
+
+def target_path_without_links(root: Path, relative: str) -> Path:
+    if not safe_target_path(relative):
+        raise TargetValidationError(f"unsafe target path: {relative!r}")
+    candidate = root
+    for part in PurePosixPath(relative).parts:
+        candidate /= part
+        if candidate.is_symlink() or is_reparse_point(candidate):
+            raise TargetValidationError(
+                f"target path crosses a symlink or reparse boundary: {relative}"
+            )
+    return candidate
+
+
+def checked_target_path(
+    root: Path, relative: str, label: str, errors: list[str]
+) -> Path | None:
+    try:
+        return target_path_without_links(root, relative)
+    except TargetValidationError as exc:
+        errors.append(f"{label}: {exc}")
+        return None
+
+
+def current_target_head(root: Path) -> str:
+    try:
+        result = subprocess.run(
+            ["git", "rev-parse", "HEAD"],
+            cwd=root,
+            check=False,
+            capture_output=True,
+            text=True,
+        )
+    except OSError as exc:
+        raise TargetValidationError(f"cannot inspect target HEAD: {exc}") from exc
+    head = result.stdout.strip()
+    if result.returncode != 0 or not SHA_RE.fullmatch(head):
+        detail = result.stderr.strip()
+        raise TargetValidationError(
+            f"cannot inspect target HEAD: {detail or result.returncode}"
+        )
+    return head
+
+
+def selected_component_ids(selection: object) -> set[str] | None:
+    if not isinstance(selection, dict):
+        return None
+    mandatory = selection.get("mandatory_components")
+    profiles = selection.get("profiles")
+    providers = selection.get("providers")
+    if (
+        not isinstance(mandatory, list)
+        or not all(isinstance(item, str) and item for item in mandatory)
+        or not isinstance(profiles, list)
+        or not all(isinstance(item, str) and item for item in profiles)
+        or not isinstance(providers, dict)
+    ):
+        return None
+    selected = set(mandatory) | set(profiles)
+    for provider_id, provider in providers.items():
+        if (
+            not isinstance(provider_id, str)
+            or not provider_id
+            or not isinstance(provider, dict)
+            or type(provider.get("enabled")) is not bool
+        ):
+            return None
+        if provider["enabled"]:
+            selected.add(provider_id)
+    return selected
+
+
+def validate_sealed_operations(
+    plan: dict, plan_path: Path, errors: list[str]
+) -> list[dict] | None:
+    operations = plan.get("operations")
+    selected = selected_component_ids(plan.get("selection"))
+    if not isinstance(operations, list) or selected is None:
+        errors.append(f"{plan_path}: sealed transaction operation evidence is invalid")
+        return None
+    allowed_actions = {
+        "add": {"add", "reconcile", "unresolved"},
+        "replace": {"replace", "reconcile", "unresolved"},
+        "remove": {"remove", "noop", "reconcile", "unresolved"},
+        "rename": {"rename", "reconcile", "unresolved"},
+        "reconcile": {"reconcile", "unresolved"},
+    }
+    ids: list[str] = []
+    touched: set[str] = set()
+    valid = True
+    for item in operations:
+        if not isinstance(item, dict) or set(item) != SEALED_OPERATION_KEYS:
+            valid = False
+            continue
+        operation_id = item.get("id")
+        kind = item.get("kind")
+        path = item.get("path")
+        source = item.get("from_path")
+        ownership = item.get("ownership")
+        component_id = item.get("component_id")
+        action = item.get("action")
+        if (
+            not isinstance(operation_id, str)
+            or not operation_id
+            or kind not in allowed_actions
+            or action not in allowed_actions.get(kind, set())
+            or not safe_target_path(path)
+            or not isinstance(item.get("reason"), str)
+            or not item.get("reason")
+            or ownership
+            not in {"framework-managed", "target-template", "target-owned"}
+            or (
+                component_id is not None
+                and (
+                    not isinstance(component_id, str)
+                    or not component_id
+                    or component_id not in selected
+                )
+            )
+        ):
+            valid = False
+            continue
+        if kind == "rename":
+            if not safe_target_path(source) or source == path:
+                valid = False
+                continue
+        elif source is not None:
+            valid = False
+            continue
+        if (
+            (kind in {"replace", "remove", "rename"} and ownership != "framework-managed")
+            or (ownership == "target-template" and kind not in {"add", "reconcile"})
+            or (ownership == "target-owned" and kind != "reconcile")
+        ):
+            valid = False
+            continue
+        operation_paths = [path] + ([source] if source is not None else [])
+        if any(
+            candidate in RESERVED_APPLY_PATHS
+            or candidate == EFFECTIVE_STATE_PATH
+            or candidate == EFFECTIVE_PACKET_DIRECTORY
+            or candidate.startswith(f"{EFFECTIVE_PACKET_DIRECTORY}/")
+            or candidate in touched
+            for candidate in operation_paths
+        ):
+            valid = False
+            continue
+        touched.update(operation_paths)
+        ids.append(operation_id)
+    if (
+        not valid
+        or len(ids) != len(operations)
+        or len(ids) != len(set(ids))
+        or ids != sorted(ids, key=lambda value: value.encode("utf-8"))
+    ):
+        errors.append(f"{plan_path}: sealed transaction operation evidence is invalid")
+        return None
+    return operations
+
+
+def transaction_staging_records(
+    transaction_id: str, operations: list[dict]
+) -> list[dict[str, str]]:
+    destinations = {PENDING_APPLY_RECEIPT}
+    for item in operations:
+        if item.get("action") in {"add", "replace", "remove", "rename"}:
+            destinations.add(item["path"])
+            if item.get("from_path"):
+                destinations.add(item["from_path"])
+    records: list[dict[str, str]] = []
+    for destination in sorted(destinations, key=lambda value: value.encode("utf-8")):
+        destination_path = PurePosixPath(destination)
+        digest = hashlib.sha256(
+            f"{transaction_id}\0{destination}".encode("utf-8")
+        ).hexdigest()
+        records.append(
+            {
+                "destination": destination,
+                "path": (
+                    destination_path.parent
+                    / f".ai-context-apply-{digest}.staging"
+                ).as_posix(),
+            }
+        )
+    return records
+
+
 def git_ignore_rule(root: Path, path: str) -> dict[str, object] | None:
     """Return the exact target Git ignore rule for one untracked path."""
     if not safe_target_path(path):
@@ -134,20 +352,504 @@ def framework_managed_ignore_message(
     )
 
 
+def target_enforces_filemode(root: Path) -> bool:
+    try:
+        result = subprocess.run(
+            ["git", "config", "--bool", "core.filemode"],
+            cwd=root,
+            check=False,
+            capture_output=True,
+            text=True,
+        )
+    except OSError as exc:
+        raise TargetValidationError(f"cannot inspect target Git core.filemode: {exc}") from exc
+    value = result.stdout.strip()
+    if result.returncode != 0 or value not in {"true", "false"}:
+        raise TargetValidationError("cannot inspect target Git core.filemode")
+    return value == "true"
+
+
+def canonical_json_digest(value: object) -> str:
+    content = json.dumps(
+        value,
+        ensure_ascii=False,
+        sort_keys=True,
+        separators=(",", ":"),
+        allow_nan=False,
+    ).encode("utf-8")
+    return hashlib.sha256(content).hexdigest()
+
+
+def git_eol_projection_matches(root: Path, path: str, content: bytes, expected_sha: str) -> bool:
+    try:
+        status = subprocess.run(
+            ["git", "status", "--porcelain", "--untracked-files=all", "--", path],
+            cwd=root,
+            check=False,
+            capture_output=True,
+            text=True,
+        )
+        index = subprocess.run(
+            ["git", "show", f":{path}"], cwd=root, check=False, capture_output=True
+        )
+        attributes = subprocess.run(
+            [
+                "git",
+                "check-attr",
+                "filter",
+                "ident",
+                "working-tree-encoding",
+                "--",
+                path,
+            ],
+            cwd=root,
+            check=False,
+            capture_output=True,
+            text=True,
+        )
+    except OSError:
+        return False
+    if status.returncode != 0 or status.stdout or index.returncode != 0 or attributes.returncode != 0:
+        return False
+    attribute_values = [
+        line.rsplit(": ", 1)[1]
+        for line in attributes.stdout.splitlines()
+        if ": " in line
+    ]
+    return (
+        len(attribute_values) == 3
+        and all(value == "unspecified" for value in attribute_values)
+        and hashlib.sha256(index.stdout).hexdigest() == expected_sha
+        and content != index.stdout
+        and content.replace(b"\r\n", b"\n") == index.stdout
+    )
+
+
+def apply_transaction_directory(root: Path) -> Path | None:
+    try:
+        result = subprocess.run(
+            [
+                "git",
+                "rev-parse",
+                "--path-format=absolute",
+                "--git-path",
+                "ai-context-package-apply",
+            ],
+            cwd=root,
+            check=False,
+            capture_output=True,
+            text=True,
+        )
+    except OSError as exc:
+        raise TargetValidationError(f"cannot inspect package apply transactions: {exc}") from exc
+    if result.returncode != 0 or not result.stdout.strip():
+        return None
+    value = Path(result.stdout.strip())
+    return value if value.is_absolute() else (root / value).resolve()
+
+
+def validate_apply_transaction_journals(
+    root: Path, receipt: dict | None, errors: list[str]
+) -> None:
+    try:
+        transaction_directory = apply_transaction_directory(root)
+    except TargetValidationError as exc:
+        errors.append(str(exc))
+        return
+    if transaction_directory is None:
+        if receipt is not None and receipt.get("schema_version") == "2.0.0":
+            errors.append("schema 2.0.0 pending receipt has no durable transaction evidence")
+        return
+    if transaction_directory.is_symlink() or is_reparse_point(transaction_directory):
+        errors.append(f"{transaction_directory}: transaction directory is unsafe")
+        return
+    if not transaction_directory.exists():
+        if receipt is not None and receipt.get("schema_version") == "2.0.0":
+            errors.append("schema 2.0.0 pending receipt has no durable transaction evidence")
+        return
+    if not transaction_directory.is_dir():
+        errors.append(f"{transaction_directory}: transaction directory is unsafe")
+        return
+    receipt_transaction = receipt.get("transaction_id") if receipt is not None else None
+    matched_receipt = False
+    for child in sorted(transaction_directory.iterdir(), key=lambda path: path.name):
+        if (
+            child.is_symlink()
+            or is_reparse_point(child)
+            or not child.is_dir()
+            or not re.fullmatch(r"[0-9a-f]{64}", child.name)
+        ):
+            continue
+        journal_path = child / "journal.yaml"
+        journal = (
+            load_mapping(journal_path, errors)
+            if journal_path.is_file()
+            and not journal_path.is_symlink()
+            and not is_reparse_point(journal_path)
+            else None
+        )
+        if journal is None:
+            errors.append(f"{child}: transaction journal is missing or invalid")
+            continue
+        state = journal.get("state")
+        journal_schema = journal.get("schema_version")
+        if journal_schema not in {
+            "ai-context-package-apply-journal/v1",
+            "ai-context-package-apply-journal/v2",
+            "ai-context-package-apply-journal/v3",
+        } or journal.get("transaction_id") != child.name or journal.get("plan_sha256") != child.name:
+            errors.append(f"{journal_path}: transaction identity is invalid")
+            continue
+        if state in {"planned", "applying", "interrupted", "rolling-back"}:
+            errors.append(f"{journal_path}: package apply transaction is {state}")
+        elif state not in {"rolled-back", "finalized"}:
+            errors.append(f"{journal_path}: package apply transaction state is invalid")
+        if child.name == receipt_transaction:
+            matched_receipt = True
+            if state != "finalized":
+                errors.append(f"{journal_path}: pending receipt transaction is not finalized")
+                continue
+            if journal_schema != "ai-context-package-apply-journal/v3":
+                errors.append(
+                    f"{journal_path}: pending receipt transaction journal schema is unsupported"
+                )
+                continue
+            receipt_path = root / PENDING_APPLY_RECEIPT
+            try:
+                receipt_path = target_path_without_links(root, PENDING_APPLY_RECEIPT)
+                actual_receipt_sha = hashlib.sha256(receipt_path.read_bytes()).hexdigest()
+            except (TargetValidationError, OSError) as exc:
+                errors.append(f"{receipt_path}: pending receipt boundary is invalid: {exc}")
+                continue
+            if journal.get("final_receipt_sha256") != actual_receipt_sha:
+                errors.append(f"{journal_path}: finalized receipt SHA-256 differs")
+            plan_path = child / "plan.json"
+            if plan_path.is_symlink() or is_reparse_point(plan_path):
+                errors.append(f"{plan_path}: sealed transaction plan boundary is unsafe")
+                continue
+            try:
+                plan = json.loads(plan_path.read_text(encoding="utf-8"))
+            except (OSError, UnicodeDecodeError, json.JSONDecodeError) as exc:
+                errors.append(f"{plan_path}: sealed transaction plan is invalid: {exc}")
+                continue
+            if not isinstance(plan, dict):
+                errors.append(f"{plan_path}: sealed transaction plan must be a mapping")
+                continue
+            unsigned = dict(plan)
+            declared_plan_sha = unsigned.pop("plan_sha256", None)
+            if declared_plan_sha != child.name or canonical_json_digest(unsigned) != child.name:
+                errors.append(f"{plan_path}: sealed transaction plan identity differs")
+                continue
+            sealed_target = plan.get("target_root")
+            sealed_head = plan.get("target_starting_commit")
+            try:
+                target_matches = (
+                    isinstance(sealed_target, str)
+                    and Path(sealed_target).is_absolute()
+                    and Path(sealed_target).resolve() == root.resolve()
+                )
+                head_matches = (
+                    isinstance(sealed_head, str)
+                    and bool(SHA_RE.fullmatch(sealed_head))
+                    and current_target_head(root) == sealed_head
+                )
+            except (OSError, TargetValidationError):
+                target_matches = False
+                head_matches = False
+            if not target_matches:
+                errors.append(f"{plan_path}: sealed target root differs from current target")
+            if not head_matches:
+                errors.append(f"{plan_path}: sealed target starting commit differs from current HEAD")
+            operation_items = validate_sealed_operations(plan, plan_path, errors)
+            operations_valid = operation_items is not None
+            operation_items = operation_items or []
+            active_operations = [
+                item
+                for item in operation_items
+                if isinstance(item, dict)
+                and item.get("action") in {"add", "replace", "remove", "rename"}
+            ]
+            active_ids = [item.get("id") for item in active_operations]
+            if operations_valid:
+                expected_staging = transaction_staging_records(
+                    child.name, active_operations
+                )
+                staging_valid = (
+                    journal.get("target_staging_paths") == expected_staging
+                )
+                if staging_valid:
+                    for item in expected_staging:
+                        try:
+                            staging_path = target_path_without_links(
+                                root, item["path"]
+                            )
+                        except TargetValidationError as exc:
+                            errors.append(
+                                f"{journal_path}: transaction staging boundary is invalid: {exc}"
+                            )
+                            break
+                        if staging_path.exists():
+                            errors.append(
+                                f"{journal_path}: transaction staging path remains: {item['path']}"
+                            )
+                            break
+                else:
+                    errors.append(
+                        f"{journal_path}: transaction staging path evidence is invalid"
+                    )
+            post_state_records = plan.get("operation_post_states")
+            post_state_valid = (
+                plan.get("schema_version") == "2.1.0"
+                and operations_valid
+                and isinstance(post_state_records, list)
+                and len(post_state_records) == len(active_operations)
+                and all(
+                    isinstance(item.get("id"), str)
+                    and bool(item.get("id"))
+                    and safe_target_path(item.get("path"))
+                    and (
+                        item.get("action") != "rename"
+                        or safe_target_path(item.get("from_path"))
+                    )
+                    for item in active_operations
+                )
+                and len(active_ids) == len(set(active_ids))
+            )
+            if post_state_valid:
+                for operation, record in zip(
+                    active_operations, post_state_records, strict=True
+                ):
+                    expected_paths = [operation.get("path")]
+                    if operation.get("action") == "rename":
+                        expected_paths.append(operation.get("from_path"))
+                    paths = record.get("paths") if isinstance(record, dict) else None
+                    if (
+                        not isinstance(record, dict)
+                        or record.get("operation_id") != operation.get("id")
+                        or not isinstance(paths, list)
+                        or [
+                            item.get("path") if isinstance(item, dict) else None
+                            for item in paths
+                        ]
+                        != expected_paths
+                    ):
+                        post_state_valid = False
+                        break
+                    for path_index, item in enumerate(paths):
+                        state_record = item.get("state")
+                        if not isinstance(state_record, dict) or set(state_record) != {
+                            "exists",
+                            "sha256",
+                            "mode",
+                        }:
+                            post_state_valid = False
+                            break
+                        if state_record.get("exists") is True:
+                            if (
+                                operation.get("action") == "remove"
+                                or (
+                                    operation.get("action") == "rename"
+                                    and path_index == 1
+                                )
+                                or not isinstance(
+                                    state_record.get("sha256"), str
+                                )
+                                or not re.fullmatch(
+                                    r"[0-9a-f]{64}", state_record["sha256"]
+                                )
+                                or state_record.get("mode") not in {"0644", "0755"}
+                            ):
+                                post_state_valid = False
+                                break
+                        elif (
+                            state_record.get("exists") is not False
+                            or operation.get("action") in {"add", "replace"}
+                            or (
+                                operation.get("action") == "rename"
+                                and path_index == 0
+                            )
+                            or state_record
+                            != {
+                                "exists": False,
+                                "sha256": None,
+                                "mode": None,
+                            }
+                        ):
+                            post_state_valid = False
+                            break
+                    if not post_state_valid:
+                        break
+            if not post_state_valid:
+                errors.append(
+                    f"{plan_path}: sealed transaction post-state evidence is invalid"
+                )
+            expected_operation_order_sha = canonical_json_digest(active_ids)
+            transition_sequence = journal.get("transition_sequence")
+            minimum_sequence = len(active_ids) + 2
+            finalized_progress_valid = (
+                type(journal.get("next_apply_index")) is int
+                and journal.get("next_apply_index") == len(active_ids)
+                and journal.get("completed_operation_ids") == active_ids
+                and journal.get("operation_order_sha256")
+                == expected_operation_order_sha
+                and type(transition_sequence) is int
+                and transition_sequence >= minimum_sequence
+                and (transition_sequence - minimum_sequence) % 2 == 0
+                and type(journal.get("rollback_next_index")) is int
+                and journal.get("rollback_next_index") == 0
+                and journal.get("rollback_completed_paths") == []
+                and journal.get("rollback_start_state") is None
+            )
+            if not finalized_progress_valid:
+                errors.append(
+                    f"{journal_path}: finalized transaction progress is invalid"
+                )
+            post_state_by_operation = (
+                {
+                    record.get("operation_id"): {
+                        item.get("path"): item.get("state")
+                        for item in record.get("paths", [])
+                        if isinstance(item, dict)
+                    }
+                    for record in post_state_records
+                }
+                if post_state_valid
+                else {}
+            )
+            expected_artifacts = [
+                (
+                    item.get("id"),
+                    item.get("path"),
+                    post_state_by_operation.get(item.get("id"), {})
+                    .get(item.get("path"), {})
+                    .get("sha256"),
+                    post_state_by_operation.get(item.get("id"), {})
+                    .get(item.get("path"), {})
+                    .get("mode"),
+                )
+                for item in active_operations
+                if item.get("action") in {"add", "replace", "rename"}
+            ]
+            receipt_artifacts = (
+                receipt.get("applied_artifacts") if receipt is not None else None
+            )
+            actual_artifacts = [
+                (
+                    item.get("operation_id"),
+                    item.get("path"),
+                    item.get("raw_sha256"),
+                    item.get("git_mode"),
+                )
+                for item in receipt_artifacts
+                if isinstance(item, dict)
+            ] if isinstance(receipt_artifacts, list) else []
+            expected_removed = [
+                (
+                    item.get("id"),
+                    item.get("from_path")
+                    if item.get("action") == "rename"
+                    else item.get("path"),
+                )
+                for item in active_operations
+                if item.get("action") in {"remove", "rename"}
+            ]
+            receipt_removed = (
+                receipt.get("removed_paths") if receipt is not None else None
+            )
+            actual_removed = [
+                (item.get("operation_id"), item.get("path"), item.get("result"))
+                for item in receipt_removed
+                if isinstance(item, dict)
+            ] if isinstance(receipt_removed, list) else []
+            expected_removed = [(*item, "absent") for item in expected_removed]
+            if (
+                receipt is None
+                or not isinstance(receipt_artifacts, list)
+                or not isinstance(receipt_removed, list)
+                or receipt.get("plan_sha256") != child.name
+                or receipt.get("operation_order") != active_ids
+                or receipt.get("applied_operation_ids") != active_ids
+                or receipt.get("required_framework_paths")
+                != plan.get("required_framework_paths")
+                or receipt.get("selected_input_proof")
+                != plan.get("package_selected_input_proof")
+                or receipt.get("package_id") != plan.get("package_id")
+                or receipt.get("package_version") != plan.get("package_version")
+                or receipt.get("package_manifest_sha256")
+                != plan.get("package_manifest_sha256")
+                or receipt.get("migration_sha256") != plan.get("migration_sha256")
+                or receipt.get("target_starting_commit")
+                != plan.get("target_starting_commit")
+                or receipt.get("selection") != plan.get("selection")
+                or actual_artifacts != expected_artifacts
+                or actual_removed != expected_removed
+            ):
+                errors.append(f"{receipt_path}: receipt differs from the sealed transaction plan")
+    if receipt is not None and receipt.get("schema_version") == "2.0.0" and not matched_receipt:
+        errors.append("schema 2.0.0 pending receipt transaction evidence does not match")
+
+
 def validate_pending_apply_receipt(root: Path, errors: list[str]) -> None:
     """Validate selected managed bytes and ignore state carried by a new receipt."""
-    receipt_path = root / PENDING_APPLY_RECEIPT
-    if receipt_path.is_symlink():
-        errors.append(f"{receipt_path}: pending apply receipt must not be a symlink")
+    root = root.resolve()
+    receipt_path = checked_target_path(
+        root, PENDING_APPLY_RECEIPT, "pending apply receipt", errors
+    )
+    if receipt_path is None:
         return
     if not receipt_path.is_file():
+        validate_apply_transaction_journals(root, None, errors)
         return
     receipt = load_mapping(receipt_path, errors)
     if receipt is None:
         return
-    if receipt.get("schema_version") not in {"1.0.0", "1.1.0"}:
+    validate_apply_transaction_journals(root, receipt, errors)
+    schema_version = receipt.get("schema_version")
+    if schema_version not in {"1.0.0", "1.1.0", "2.0.0"}:
         errors.append(f"{receipt_path}: unsupported pending apply receipt schema")
         return
+    enforce_filemode = True
+    schema2_results_by_path: dict[str, dict] = {}
+    if schema_version == "2.0.0":
+        try:
+            enforce_filemode = target_enforces_filemode(root)
+        except TargetValidationError as exc:
+            errors.append(str(exc))
+        if receipt.get("status") != "pending-validation":
+            errors.append(f"{receipt_path}: schema 2.0.0 status must be pending-validation")
+        if receipt.get("transaction_state") != "finalized":
+            errors.append(f"{receipt_path}: schema 2.0.0 transaction_state must be finalized")
+        transaction_id = receipt.get("transaction_id")
+        plan_sha = receipt.get("plan_sha256")
+        if not isinstance(transaction_id, str) or not re.fullmatch(r"[0-9a-f]{64}", transaction_id):
+            errors.append(f"{receipt_path}: transaction_id must be a lowercase SHA-256")
+        if plan_sha != transaction_id:
+            errors.append(f"{receipt_path}: plan_sha256 must equal transaction_id")
+        selected_proof = receipt.get("selected_input_proof")
+        if selected_proof is not None and (
+            not isinstance(selected_proof, dict)
+            or selected_proof.get("path") != "metadata/selected-inputs.json"
+            or not isinstance(selected_proof.get("sha256"), str)
+            or not re.fullmatch(r"[0-9a-f]{64}", selected_proof["sha256"])
+        ):
+            errors.append(f"{receipt_path}: selected_input_proof is invalid")
+        operation_order = receipt.get("operation_order")
+        applied_ids = receipt.get("applied_operation_ids")
+        if not isinstance(operation_order, list) or not all(
+            isinstance(value, str) and value for value in operation_order
+        ):
+            errors.append(f"{receipt_path}: operation_order must be a string list")
+        elif operation_order != applied_ids or len(operation_order) != len(set(operation_order)):
+            errors.append(
+                f"{receipt_path}: operation_order must be unique and equal applied_operation_ids"
+            )
+        declared_results = receipt.get("selected_managed_path_results")
+        if isinstance(declared_results, list):
+            schema2_results_by_path = {
+                item.get("path"): item
+                for item in declared_results
+                if isinstance(item, dict) and isinstance(item.get("path"), str)
+            }
     required = receipt.get("required_framework_paths")
     if required is None:
         if receipt.get("schema_version") == "1.1.0":
@@ -168,6 +870,7 @@ def validate_pending_apply_receipt(root: Path, errors: list[str]) -> None:
         path = item.get("path")
         component_id = item.get("component_id")
         expected_sha = item.get("sha256")
+        expected_mode = item.get("mode")
         if not safe_target_path(path):
             errors.append(f"{label}.path must be a safe POSIX target path")
             continue
@@ -184,16 +887,33 @@ def validate_pending_apply_receipt(root: Path, errors: list[str]) -> None:
             r"[0-9a-f]{64}", expected_sha
         ):
             errors.append(f"{label}.sha256 must be a lowercase SHA-256")
-        candidate = root / Path(*PurePosixPath(path).parts)
-        if candidate.is_symlink() or not candidate.is_file():
+        if schema_version == "2.0.0" and expected_mode not in {"0644", "0755"}:
+            errors.append(f"{label}.mode must be 0644 or 0755")
+        candidate = checked_target_path(root, path, label, errors)
+        if candidate is None:
+            continue
+        if not candidate.is_file():
             errors.append(f"required framework-managed path is absent: {path}")
             continue
         if isinstance(expected_sha, str) and re.fullmatch(r"[0-9a-f]{64}", expected_sha):
             actual_sha = hashlib.sha256(candidate.read_bytes()).hexdigest()
             if actual_sha != expected_sha:
-                errors.append(
-                    f"required framework-managed path bytes differ: {path}"
-                )
+                result_record = schema2_results_by_path.get(path, {})
+                if not (
+                    schema_version == "2.0.0"
+                    and result_record.get("match_basis") == "git-eol-canonical"
+                    and result_record.get("observed_raw_sha256") == actual_sha
+                    and git_eol_projection_matches(
+                        root, path, candidate.read_bytes(), expected_sha
+                    )
+                ):
+                    errors.append(
+                        f"required framework-managed path bytes differ: {path}"
+                    )
+        if schema_version == "2.0.0" and enforce_filemode and expected_mode in {"0644", "0755"}:
+            actual_mode = "0755" if candidate.stat().st_mode & stat.S_IXUSR else "0644"
+            if actual_mode != expected_mode:
+                errors.append(f"required framework-managed path mode differs: {path}")
         if isinstance(component_id, str) and component_id:
             try:
                 rule = git_ignore_rule(root, path)
@@ -208,6 +928,112 @@ def validate_pending_apply_receipt(root: Path, errors: list[str]) -> None:
         errors.append(
             f"{receipt_path}: required framework paths must use UTF-8 bytewise order"
         )
+    if schema_version != "2.0.0":
+        return
+    required_by_path = {
+        item.get("path"): item for item in required if isinstance(item, dict)
+    }
+    artifacts = receipt.get("applied_artifacts")
+    if not isinstance(artifacts, list):
+        errors.append(f"{receipt_path}: applied_artifacts must be a list")
+    else:
+        artifact_paths: list[str] = []
+        for index, item in enumerate(artifacts):
+            label = f"{receipt_path}: applied_artifacts[{index}]"
+            if not isinstance(item, dict):
+                errors.append(f"{label} must be a mapping")
+                continue
+            path = item.get("path")
+            raw_sha = item.get("raw_sha256")
+            git_mode = item.get("git_mode")
+            if not safe_target_path(path):
+                errors.append(f"{label}.path must be a safe POSIX target path")
+                continue
+            artifact_paths.append(path)
+            candidate = checked_target_path(root, path, label, errors)
+            if candidate is None:
+                continue
+            if not candidate.is_file():
+                errors.append(f"applied artifact is absent: {path}")
+                continue
+            if not isinstance(raw_sha, str) or not re.fullmatch(r"[0-9a-f]{64}", raw_sha):
+                errors.append(f"{label}.raw_sha256 must be a lowercase SHA-256")
+            elif hashlib.sha256(candidate.read_bytes()).hexdigest() != raw_sha:
+                errors.append(f"applied artifact bytes differ: {path}")
+            if git_mode not in {"0644", "0755"}:
+                errors.append(f"{label}.git_mode must be 0644 or 0755")
+            elif enforce_filemode:
+                actual_mode = "0755" if candidate.stat().st_mode & stat.S_IXUSR else "0644"
+                if actual_mode != git_mode:
+                    errors.append(f"applied artifact mode differs: {path}")
+        if len(artifact_paths) != len(set(artifact_paths)):
+            errors.append(f"{receipt_path}: applied artifact paths must be unique")
+    removed = receipt.get("removed_paths")
+    if not isinstance(removed, list):
+        errors.append(f"{receipt_path}: removed_paths must be a list")
+    else:
+        for index, item in enumerate(removed):
+            label = f"{receipt_path}: removed_paths[{index}]"
+            if not isinstance(item, dict) or not safe_target_path(item.get("path")) or item.get("result") != "absent":
+                errors.append(f"{label} must bind a safe absent path")
+                continue
+            candidate = checked_target_path(root, item["path"], label, errors)
+            if candidate is None:
+                continue
+            if candidate.exists():
+                errors.append(f"removed path is present: {item['path']}")
+    results = receipt.get("selected_managed_path_results")
+    if not isinstance(results, list):
+        errors.append(f"{receipt_path}: selected_managed_path_results must be a list")
+    else:
+        result_paths = [item.get("path") for item in results if isinstance(item, dict)]
+        if result_paths != ordered:
+            errors.append(
+                f"{receipt_path}: selected managed results must exactly match required paths"
+            )
+        for index, item in enumerate(results):
+            if not isinstance(item, dict):
+                continue
+            required_item = required_by_path.get(item.get("path"))
+            candidate = None
+            if safe_target_path(item.get("path")):
+                candidate = checked_target_path(
+                    root,
+                    item["path"],
+                    f"{receipt_path}: selected_managed_path_results[{index}]",
+                    errors,
+                )
+            observed_sha = (
+                hashlib.sha256(candidate.read_bytes()).hexdigest()
+                if candidate is not None and candidate.is_file() and not candidate.is_symlink()
+                else None
+            )
+            basis = item.get("match_basis")
+            identity_matches = (
+                required_item is not None
+                and item.get("expected_raw_sha256") == required_item.get("sha256")
+                and item.get("observed_raw_sha256") == observed_sha
+                and item.get("expected_git_mode") == required_item.get("mode")
+                and item.get("observed_git_mode") == required_item.get("mode")
+                and item.get("disposition") == "package-identical"
+                and (
+                    (basis == "raw" and observed_sha == required_item.get("sha256"))
+                    or (
+                        basis == "git-eol-canonical"
+                        and candidate is not None
+                        and git_eol_projection_matches(
+                            root,
+                            item["path"],
+                            candidate.read_bytes(),
+                            required_item.get("sha256"),
+                        )
+                    )
+                )
+            )
+            if not identity_matches:
+                errors.append(
+                    f"{receipt_path}: selected_managed_path_results[{index}] identity differs"
+                )
 
 
 def validate_string_references(
@@ -716,6 +1542,14 @@ def finalize_context(
     effective_resolver_evidence: list[str] | None = None,
 ) -> dict:
     root = root.resolve()
+    for relative in (
+        ".dev/AI-CONTEXT-SOURCE.yaml",
+        ".dev/ai-context/provenance.yaml",
+        ".dev/ai-context/customizations.yaml",
+        EFFECTIVE_STATE_PATH,
+        ".dev/ai-context/effective-rule-packets",
+    ):
+        target_path_without_links(root, relative)
     context = root / ".dev/ai-context"
     legacy = root / ".dev/AI-CONTEXT-SOURCE.yaml"
     provenance_path = context / "provenance.yaml"

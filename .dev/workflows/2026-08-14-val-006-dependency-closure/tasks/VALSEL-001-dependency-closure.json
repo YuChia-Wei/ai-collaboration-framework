@@ -1,0 +1,81 @@
+{
+  "template_id": "ai-context-governance-remediation-task",
+  "template_version": "1.1.0",
+  "template_created_at": "2026-07-10T18:22:49+08:00",
+  "template_updated_at": "2026-07-27T09:52:09+08:00",
+  "task_id": "VALSEL-001-dependency-closure",
+  "workflow_id": "2026-08-14-val-006-dependency-closure",
+  "owner_skill": "ai-context-governance",
+  "status": "completed",
+  "created_at": "2026-08-14T00:06:47+08:00",
+  "updated_at": "2026-08-14T07:09:30+08:00",
+  "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
+  "model": "gpt-5.6-sol",
+  "reasoning_effort": "xhigh",
+  "finding_ids": [
+    "ASM-20260813-001#VALSEL-001"
+  ],
+  "scope": {
+    "target": "Changed-path validation selection dependency closure and deterministic evidence",
+    "files": [
+      ".ai/scripts/check-all.sh",
+      ".ai/scripts/tests/test_fail_closed_validation.py",
+      ".dev/workflows/2026-08-14-val-006-dependency-closure/**"
+    ],
+    "constraints": [
+      "Keep ai-context-governance as the canonical remediation owner",
+      "Separate visiting and selected states so traversal cannot be suppressed",
+      "Fail before any check execution on unknown dependencies or cycles",
+      "Emit deterministic exact selection order and provenance",
+      "Preserve existing full and release behavior except for required dependency closure",
+      "Do not broaden into Issue #204 runner supervision or Issues #200/#201 package behavior"
+    ],
+    "non_goals": [
+      "process-tree, timeout, snapshot, cleanup, or nightly scheduling changes",
+      "package planner/apply or upgrader changes",
+      "push, pull request, merge, Issue closure, release, or publication"
+    ]
+  },
+  "execution": {
+    "steps": [
+      "Read back the current selector, registry validation, execution order, and fixture seams",
+      "Implement a cycle-safe dependency traversal with deterministic post-order selection",
+      "Preserve direct/profile/dependency reason provenance without overwriting the strongest root reason",
+      "Add deterministic direct, transitive, diamond, cycle, unknown, disabled/not-applicable, and multiple-root fixtures",
+      "Run focused tests, static shell validation, artifact validation, review, and independent fixed-commit verification"
+    ],
+    "validation": [
+      "python -m unittest <focused selector tests>",
+      "python -m unittest .ai/scripts/tests/test_fail_closed_validation.py",
+      "bash -n .ai/scripts/check-all.sh",
+      "python .ai/scripts/validate-workflow-artifacts.py --root .",
+      "git diff --check"
+    ],
+    "last_completed_step": "Independent assessment ASM-20260814-003 verified canonical commit 4ecaa5cf and reconciled VALSEL-001 as resolved",
+    "next_action": "Stack the #201 segment locally from the clean #202 checkpoint; defer the owner-authorized cumulative push, PR, and merge until all #200-#208 segments pass; do not infer Issue closure or release authority"
+  },
+  "results": {
+    "summary": "Discovery, visiting, and selected states are separated; registry cycles fail with exact paths; dependencies finalize before roots; evidence is deterministic; cross-profile dependencies remain selected with their runtime disposition.",
+    "files_changed": [
+      ".ai/scripts/check-all.sh",
+      ".ai/scripts/tests/test_fail_closed_validation.py",
+      ".dev/workflows/INDEX.MD",
+      ".dev/workflows/2026-08-14-val-006-dependency-closure/**"
+    ],
+    "tests_run": [
+      "ChangedPathDependencyClosureGwtTests: 6 passed in 26.703s",
+      "ValidationProfileRegistryTests: 6 passed",
+      "selected existing CheckAllRunnerGwtTests: 3 passed in 55.355s",
+      "validate-shell-assets.py: 16 assets passed",
+      "bash -n check-all.sh validation-profile-registry.sh: passed",
+      "validate-workflow-artifacts.py: 79 workflows, 99 directories, 55 backlog items passed after index correction",
+      "Ubuntu 24.04 WSL selector fixtures: 6 passed in 19.760s",
+      "VAL006-003 on canonical clean 4ecaa5cf: full aggregate module 44 passed in 46.443s; external-task receipt schema passed",
+      "ASM-20260814-003: final independent verification, no recurring or new implementation finding",
+      "git diff --check, commit-policy validation, and Python AST parsing: passed"
+    ],
+    "finding_status": "ASM-20260813-001#VALSEL-001-resolved-at-4ecaa5cf",
+    "residual_risk": "Windows Temp and Bash-service ACL attempts remain blocked-by-environment; remote CI, integration, and Issue closure are unverified and separately unauthorized.",
+    "follow_up_needed": true
+  }
+}

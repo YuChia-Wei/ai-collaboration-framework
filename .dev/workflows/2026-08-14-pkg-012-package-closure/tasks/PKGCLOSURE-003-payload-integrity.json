@@ -1,0 +1,36 @@
+{
+  "template_id": "ai-context-governance-remediation-task",
+  "template_version": "1.1.0",
+  "template_created_at": "2026-07-10T18:22:49+08:00",
+  "template_updated_at": "2026-07-27T09:52:09+08:00",
+  "task_id": "PKGCLOSURE-003-payload-integrity",
+  "workflow_id": "2026-08-14-pkg-012-package-closure",
+  "owner_skill": "ai-context-governance",
+  "status": "completed",
+  "created_at": "2026-08-14T07:03:23+08:00",
+  "updated_at": "2026-08-14T09:01:29+08:00",
+  "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
+  "model": "gpt-5.6-sol",
+  "reasoning_effort": "xhigh",
+  "finding_ids": ["ASM-20260813-001#PKGCLOSURE-001", "DS-17"],
+  "scope": {
+    "target": "Full built-payload byte, path, case, encoding, line-ending, EOF, executable-mode, and manifest closure",
+    "files": [".ai/scripts/ai_context_package.py", ".ai/distribution/schemas/**", ".ai/scripts/tests/test_ai_context_packaging.py"],
+    "constraints": ["Validate built payload rather than source tracked files", "Keep Git blob bytes and Git mode authoritative", "Use deterministic fixtures on Windows-compatible and POSIX paths"],
+    "non_goals": ["Target state identity", "Process-tree supervision", "Release publication"]
+  },
+  "execution": {
+    "steps": ["Define payload-integrity contract", "Validate every built payload member and manifest record", "Add EOF/EOL/encoding/case/mode fixtures", "Reproduce identity after isolated extraction"],
+    "validation": ["focused payload integrity fixtures", "archive validation", "isolated identity reproduction", "POSIX confirmation"],
+    "last_completed_step": "Preserved attempts 1 and 2 as blocked/non-trusted, reproduced attempt 3 as 38 run with 2 failures and 1 error, then repaired missing portable fixture paths, duplicate fixture mutation, exact Git diagnostics, and short normal-ACL fixture roots; all three failed cases now pass focused",
+    "next_action": "Completed; retain attempts 1-4 as non-passing and attempt 5 as the trusted immutable full-matrix result"
+  },
+  "results": {
+    "summary": "Every payload member is governed as UTF-8 text with LF-only and exactly one terminal LF; modes, paths, checksums, casefold uniqueness, and proof parity fail closed.",
+    "files_changed": [".ai/scripts/ai_context_package.py", ".ai/distribution/schemas/package.schema.yaml", ".ai/scripts/tests/test_ai_context_packaging.py", "37 payload source files with excess terminal LF"],
+    "tests_run": ["payload integrity synthetic matrix passed", "duplicate and casefold archive fixtures passed on Windows and POSIX", "real fixed-head ZIP/tar and fresh candidate passed", "attempt 1: 38 run, 9 passed, 28 Temp ACL errors, 1 skipped, blocked-by-environment", "attempt 2: rejected as non-trusted because redirection failed and no counts/output were produced", "attempt 3: 38 run in 83.597 seconds, 2 failures plus 1 error; exact failures retained", "attempt 4: tests passed but completion receipt pending/null made the attempt non-passing", "attempt 5: 38/38 passed in 98.518 seconds and its final completion record passed the canonical validator", "ASM-20260814-002 independently verified payload integrity closure"],
+    "finding_status": "resolved-by-ASM-20260814-002",
+    "residual_risk": "No recurring payload-integrity defect remains at the verified subject.",
+    "follow_up_needed": false
+  }
+}
