@@ -1,0 +1,50 @@
+template_metadata:
+  template_id: "assessment-locator"
+  template_version: "1.0.0"
+  template_created_at: "2026-07-13T23:04:10+08:00"
+  template_updated_at: "2026-07-13T23:04:10+08:00"
+
+schema_version: "1.0"
+assessment_id: "ASM-20260815-001"
+commit_search_id: "ASM-20260815-001"
+assessment_type: "ai-context-verification"
+title: "PKG-011 Durable Package Apply Verification"
+owner_skill: "ai-context-auditor"
+status: "final"
+report: "report.md"
+artifact_branch: "codex/2026-08-14-pkg-011-durable-apply"
+base_branch: "main"
+created_at: "2026-08-15T11:18:26+08:00"
+updated_at: "2026-08-15T11:18:26+08:00"
+template_source: ".dev/assessments/templates/assessment-locator-template.yaml"
+template_version: "1.0.0"
+report_template_source: ".ai/assets/skills/ai-context-auditor/templates/ai-context-audit-report-template.md"
+report_template_version: "2.1.0"
+subject_ref:
+  repository: "YuChia-Wei/ai-collaboration-framework"
+  branch: "codex/2026-08-14-pkg-011-durable-apply"
+  commit: "52cb86533a23324e07a59c49ff44f59329c5760a"
+scope:
+  included:
+    - "Committed PKG-011 and Issue #200 remediation through exact clean subject 52cb86533a23324e07a59c49ff44f59329c5760a"
+    - "Selected managed-state identity, pre-mutation journal durability, journal-v3 deterministic staging, apply and rollback recovery, receipt and finalization authority, and exact effective-rule packet-root enforcement"
+    - "Focused Windows-host evidence, the schema-valid 38-case immutable package matrix, and independent fixed-head review"
+    - "Baseline finding ASM-20260813-001#PKGAPPLY-001 and local Issue #209 boundary-order dependency"
+  excluded:
+    - "Issues #203 through #208 and any continuation workflow implementation"
+    - "Issue #213 assessment-allocation implementation"
+    - "Remote pull-request integration, merge, Issue closure, tag, release, and publication"
+relations:
+  supersedes: []
+  superseded_by: []
+  related_assessments:
+    - "ASM-20260813-001"
+    - "ASM-20260814-002"
+  workflow_refs:
+    - "2026-08-14-pkg-011-durable-apply"
+  backlog_refs: []
+  adr_refs: []
+resume:
+  last_completed_action: "Independently verified Issue #200 durability and recovery behavior at exact clean subject 52cb86533a23324e07a59c49ff44f59329c5760a; the immutable package matrix passed 38/38 and no P1, P2, or P3 finding remained."
+  next_action: "ai-context-governance may reconcile the completed PKG-011 workflow, then the root integration owner may update PR #214 and gate its exact remote head before asking the owner whether to merge."
+  blockers: []

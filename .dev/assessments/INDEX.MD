@@ -12,6 +12,7 @@ owns its identity, current lifecycle state, subject revision, and relationships.
 
 | Assessment | Title | Type | Owner | Status | Subject Commit | Updated | Report |
 | --- | --- | --- | --- | --- | --- | --- | --- |
+| [`ASM-20260815-001`](ASM-20260815-001/assessment.yaml) | PKG-011 Durable Package Apply Verification | `ai-context-verification` | `ai-context-auditor` | `final` | `52cb86533a23324e07a59c49ff44f59329c5760a` | `2026-08-15T11:18:26+08:00` | [report](ASM-20260815-001/report.md) |
 | [`ASM-20260814-003`](ASM-20260814-003/assessment.yaml) | VAL-006 Changed-Path Dependency Closure Verification | `ai-context-verification` | `ai-context-auditor` | `final` | `4ecaa5cf5c079011f765542253f2faafb2b814ca` | `2026-08-14T00:36:35+08:00` | [report](ASM-20260814-003/report.md) |
 | [`ASM-20260814-002`](ASM-20260814-002/assessment.yaml) | PKG-012 Portable Package Closure Verification | `ai-context-verification` | `ai-context-auditor` | `final` | `5f5cd028b630d5bddfa56a5b9069e5a40a3c34f8` | `2026-08-14T09:01:29+08:00` | [report](ASM-20260814-002/report.md) |
 | [`ASM-20260814-001`](ASM-20260814-001/assessment.yaml) | CLI Execution Routing Contract Verification | `ai-context-verification` | `ai-context-auditor` | `final` | `cca50f67f8a8a460a78af95820cdddd5781ec71b` | `2026-08-14T22:38:38+08:00` | [report](ASM-20260814-001/report.md) |
