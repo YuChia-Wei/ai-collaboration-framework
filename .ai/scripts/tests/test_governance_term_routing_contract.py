@@ -240,7 +240,24 @@ class GovernanceTermRoutingContractTests(unittest.TestCase):
             ".dev/standards/AI-CONTEXT-VERSION-POLICY.md",
             mapping["target"],
         )
-        self.assertEqual("ai-context-lifecycle-core", mapping["component_id"])
+        self.assertNotIn("component_id", mapping)
+        projection_entry = next(
+            item
+            for item in profile["entries"]
+            if item["id"] == "portable-governance-policy-projections"
+        )
+        component_ids = {
+            item["component_id"] for item in profile["components"]
+        }
+        self.assertEqual(
+            "ai-context-lifecycle-core",
+            PACKAGE.resolve_entry_component(
+                projection_entry,
+                PORTABLE_VERSION_POLICY.as_posix(),
+                projection_entry["component_id"],
+                component_ids,
+            ),
+        )
 
     def test_gwt_008_given_committed_profile_when_projected_then_only_portable_version_policy_ships(self) -> None:
         tree = PACKAGE.git_tree(ROOT, "HEAD")

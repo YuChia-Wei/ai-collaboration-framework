@@ -12,9 +12,9 @@
 - `report_id`: `remediation-report-2026-08-14-pkg-011-durable-apply`
 - `workflow_id`: `2026-08-14-pkg-011-durable-apply`
 - `owner_skill`: `ai-context-governance`
-- `status`: `checkpoint-pr-preparation-workflow-active`
+- `status`: `issue-200-terminal-validation-in-progress`
 - `created_at`: `2026-08-14T09:07:04+08:00`
-- `updated_at`: `2026-08-15T10:38:41+08:00`
+- `updated_at`: `2026-08-15T11:00:45+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-remediation-report-template.md`
 - `template_version`: `2.0.0`
 - `baseline_assessment`: `ASM-20260813-001`
@@ -24,8 +24,8 @@
 
 - Authorized scope: Issues #200 and #209 / `ASM-20260813-001#PKGAPPLY-001`, DS-01/02/03/10/11, and `OWNER-HYBRID-001`.
 - Completed scope: complete selected managed-state and proof identity; narrow raw/clean-Git Hybrid identity; durable Git-admin prestates and journal; atomic publication of a complete journal; exact-target recovery; supported write-through Windows replacement and removal; sealed active-operation post-state; validated journal prefixes and target surfaces; package-independent rollback; durable journal-v2 rollback progress; journal-v3 deterministic target staging; preparation and recovery admission before cleanup or target/journal mutation; exact package and receipt binding; apply/receipt/rollback hard-death recovery; retained-staging finalization rejection; finalized transition, operation prefix, plan post-state, receipt artifact, removal, resolved-target, live-HEAD, exact-operation, parent-boundary, and exact effective-rule packet-root validation; resume/rollback CLI; schema-2 receipt and target gates; boundary-first Git-ignore inspection; stable symlink/reparse diagnostic; documentation and deterministic Windows/POSIX fixtures.
-- Validation summary: the round-5 focused Windows fixtures passed GWT-023 in 26.030 seconds, GWT-024 in 12.415 seconds, GWT-036 in 22.676 seconds, GWT-041 through GWT-043 in 16.129 seconds, GWT-044 through GWT-045 in 8.550 seconds, and adjacent GWT-009/GWT-039/GWT-040 in 7.334 seconds. Three changed Python files parsed, the task JSON parsed, the repository workflow-artifact validator passed all 82 post-adoption workflows, 102 indexed workflow directories, and 55 backlog items, and scoped `git diff --check` passed. A scoped transient current-diff audit found three zero-mutation/parity risks in the predecessor handoff; all were remediated and the final scoped review found no remaining P1/P2/P3 issue. No long-running, full-matrix, release, or nightly-full command was run because the owner requires all planned #200-#208 local changes, focused tests, reviews, and commits first.
-- Closure decision: `checkpoint-merge-authorized-workflow-remains-active`
+- Validation summary: the round-5 focused Windows fixtures passed GWT-023 in 26.030 seconds, GWT-024 in 12.415 seconds, GWT-036 in 22.676 seconds, GWT-041 through GWT-043 in 16.129 seconds, GWT-044 through GWT-045 in 8.550 seconds, and adjacent GWT-009/GWT-039/GWT-040 in 7.334 seconds. After the owner resumed #200, hosted-contract remediation passed prerequisite 14/14 and governance routing 8/8; the #200 hard-death pair passed 2/2 in 40.720 seconds and the adjacent admission/staging/receipt/rollback set passed 9/9 in 57.773 seconds on the approved Windows host route. Initial sandbox fixture attempts remain `blocked-by-environment` with `WinError 5`. No full package matrix or release/nightly validation has run in this resumed phase because the exact clean candidate commit is not yet fixed.
+- Closure decision: `checkpoint-merge-deferred-owner-authorized-issue-200-completion`
 
 ## Finding Resolution Matrix
 
