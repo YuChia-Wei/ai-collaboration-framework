@@ -34,6 +34,14 @@ writes no receipt unless all return zero:
 2. `assessment-artifacts`
 3. `source-ai-context-version`
 
+Each native-validator entry declares a strictly positive `timeout_seconds`.
+The refresh helper applies that bound to the exact declared command, stops at
+the first timeout, does not launch the remaining validators, and writes no
+receipt. The bound prevents an individual native validator from holding the
+refresh indefinitely; when refresh is selected through `check-all.sh`, the
+outer validation process supervisor remains responsible for proving cleanup of
+the validator's complete descendant tree.
+
 The resulting deterministic YAML receipt contains no timestamp or TTL. It
 binds the exact full source revision and root tree OID plus SHA-256 digests of
 the immutable-history root tree objects, validator fingerprint blobs, schema

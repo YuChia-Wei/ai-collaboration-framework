@@ -67,14 +67,17 @@ source:
       - "immutable-history-change"
   native_full_validators:
     - check_id: "workflow-artifacts"
+      timeout_seconds: 30
       command:
         - "python"
         - ".ai/scripts/validate-workflow-artifacts.py"
     - check_id: "assessment-artifacts"
+      timeout_seconds: 30
       command:
         - "python"
         - ".ai/scripts/validate-assessment-artifacts.py"
     - check_id: "source-ai-context-version"
+      timeout_seconds: 30
       command:
         - "python"
         - ".ai/scripts/validate-ai-context-versions.py"

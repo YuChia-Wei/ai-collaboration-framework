@@ -7,7 +7,6 @@ import importlib.util
 import io
 import json
 import os
-import shutil
 import subprocess
 import sys
 import tempfile
@@ -17,6 +16,7 @@ from contextlib import redirect_stderr, redirect_stdout
 
 
 ROOT = Path(__file__).resolve().parents[3]
+DIRECT_ENTRYPOINT_TIMEOUT_SECONDS = 15
 MODULE_PATH = ROOT / ".ai/scripts/python_prerequisites.py"
 SPEC = importlib.util.spec_from_file_location("python_prerequisites", MODULE_PATH)
 if SPEC is None or SPEC.loader is None:
@@ -253,23 +253,22 @@ class PythonPrerequisiteGwtTests(unittest.TestCase):
 
     def test_gwt_014_given_direct_portable_cli_and_shadowed_yaml_when_json_requested_then_it_blocks_without_repo_bytecode(self) -> None:
         before = list(ROOT.rglob("__pycache__")) + list(ROOT.rglob("*.pyc"))
-        fixture_parent = ROOT / ".ai/scripts/tests/.python-prerequisite-fixtures"
-        fixture_parent.mkdir(exist_ok=True)
-        shadow = Path(tempfile.mkdtemp(prefix="shadow-", dir=fixture_parent))
-        try:
-            try:
-                (shadow / "yaml.py").write_text("raise ImportError('shadowed PyYAML')\n", encoding="utf-8")
-            except PermissionError as error:
-                raise unittest.SkipTest(f"workspace fixture ACL blocks direct subprocess smoke: {error}") from error
+        with tempfile.TemporaryDirectory(prefix="python-prerequisite-shadow-") as shadow_root:
+            shadow = Path(shadow_root)
+            (shadow / "yaml.py").write_text("raise ImportError('shadowed PyYAML')\n", encoding="utf-8")
             environment = dict(os.environ)
             environment.update({"PYTHONPATH": str(shadow), "PYTHONDONTWRITEBYTECODE": "1"})
-            result = subprocess.run([sys.executable, "-B", str(ROOT / ".ai/scripts/validate-ai-context.py"), "--diagnostic-format=json"], cwd=ROOT, env=environment, capture_output=True, text=True, encoding="utf-8", errors="replace", check=False)
-        finally:
-            shutil.rmtree(shadow, ignore_errors=True)
-            try:
-                fixture_parent.rmdir()
-            except OSError:
-                pass
+            result = subprocess.run(
+                [sys.executable, "-B", str(ROOT / ".ai/scripts/validate-ai-context.py"), "--diagnostic-format=json"],
+                cwd=ROOT,
+                env=environment,
+                capture_output=True,
+                text=True,
+                encoding="utf-8",
+                errors="replace",
+                check=False,
+                timeout=DIRECT_ENTRYPOINT_TIMEOUT_SECONDS,
+            )
         self.assertEqual(1, result.returncode, result.stdout + result.stderr)
         self.assertEqual("", result.stderr)
         payload = json.loads(result.stdout)

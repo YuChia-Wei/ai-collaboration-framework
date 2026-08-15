@@ -36,6 +36,7 @@
 
 - Baseline assessments: `.dev/assessments/ASM-20260810-005/assessment.yaml` and `.dev/assessments/ASM-20260813-001/assessment.yaml`
 - Remediation report: `.dev/workflows/2026-08-15-val-007-terminal-validation/reports/remediation-report.md`
+- Pre-remediation coverage inventory: `.dev/workflows/2026-08-15-val-007-terminal-validation/reports/coverage-inventory.md`
 - Verification assessment: to be created only after a clean fixed implementation commit and independent read-only review
 - Tasks: `.dev/workflows/2026-08-15-val-007-terminal-validation/tasks/`
 
@@ -90,7 +91,7 @@
 - Last completed action: re-read clean `main@76c51574c7b2fdf59e8648eb105570589053ecf0`, live Issues #204 and #215, baseline assessments, relevant runner/evidence/profile code, and created the dedicated workflow branch.
 - Current task: `VAL007-001-supervision-snapshot`.
 - Exact next action: finish parallel read-only inventory, select the minimal cross-platform supervisor/evidence design, implement focused tests first, and then change the runner.
-- Validation already completed: branch/workflow collision checks and clean-entry Git read-back only.
+- Validation already completed: branch/workflow collision checks, clean-entry Git read-back, workflow bootstrap validation, and a pre-remediation static coverage/cost inventory. No validation suite was executed for that inventory.
 - Git state: branch `codex/2026-08-15-val-007-terminal-validation` from clean `main@76c51574c7b2fdf59e8648eb105570589053ecf0`; no push or PR exists for this workflow.
 - Branch history and checkpoint handoffs: segment 1 is local and unshared; bootstrap commit pending.
 - Blockers or unresolved decisions: no implementation blocker. Exact process-tree mechanism and nightly readiness shape remain subject to focused design/review; actual nightly execution is explicitly excluded.

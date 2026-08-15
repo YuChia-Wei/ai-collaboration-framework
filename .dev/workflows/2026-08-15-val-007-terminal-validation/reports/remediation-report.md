@@ -23,7 +23,7 @@
 ## Remediation Summary
 
 - Authorized scope: Issue #204 complete process-tree supervision, immutable pre/post snapshot, bounded timeout/cancellation/cleanup, sealed evidence, duplicate-coverage measurement, and nightly readiness without a nightly-full run.
-- Completed scope: workflow bootstrap and current-state inventory only.
+- Completed scope: workflow bootstrap, current-state inventory, and the required pre-remediation coverage/cost measurement.
 - Validation summary: clean-entry Git and live-Issue read-back completed; focused implementation validation pending.
 - Closure decision: `not-ready`
 
@@ -41,7 +41,7 @@
 ### `ASM-20260810-005#VALSNAP-001`, `#VALTIME-001`, `#VALTEST-001`, `#VALCOST-001`
 
 - Changes: pending.
-- Evidence: baseline assessments, live Issue #204, and parallel read-only runner/test/nightly inventories.
+- Evidence: baseline assessments, live Issue #204, parallel read-only runner/test/nightly inventories, and `reports/coverage-inventory.md`.
 - Validation: pending focused checks; long-running validation prohibited at this stage.
 - Remaining risk: all baseline risks remain until implementation and independent verification complete.
 

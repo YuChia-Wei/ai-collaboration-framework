@@ -4,12 +4,15 @@
 from __future__ import annotations
 
 import hashlib
+import importlib.util
 import json
 import subprocess
 import sys
 import tempfile
+import time
 import unittest
 from pathlib import Path
+from unittest import mock
 
 import yaml
 
@@ -21,6 +24,8 @@ REUSABLE_IDS = [
     "assessment-artifacts",
     "source-ai-context-version",
 ]
+GIT_HELPER_TIMEOUT_SECONDS = 15
+VALIDATOR_HELPER_TIMEOUT_SECONDS = 30
 ROUTINE_ALLOWLIST = [
     ".ai/distribution/validation/immutable-history-receipt.yaml",
     ".ai/assets/**",
@@ -75,6 +80,7 @@ class ImmutableHistoryValidationGwtTests(unittest.TestCase):
             capture_output=True,
             text=True,
             encoding="utf-8",
+            timeout=GIT_HELPER_TIMEOUT_SECONDS,
         )
         self.assertEqual(0, result.returncode, result.stdout + result.stderr)
         return result
@@ -133,7 +139,11 @@ class ImmutableHistoryValidationGwtTests(unittest.TestCase):
                     ],
                 },
                 "native_full_validators": [
-                    {"check_id": check_id, "command": ["python", ".ai/scripts/fixture-validator.py"]}
+                    {
+                        "check_id": check_id,
+                        "timeout_seconds": 30,
+                        "command": ["python", ".ai/scripts/fixture-validator.py"],
+                    }
                     for check_id in REUSABLE_IDS
                 ],
             },
@@ -182,6 +192,7 @@ class ImmutableHistoryValidationGwtTests(unittest.TestCase):
             capture_output=True,
             text=True,
             encoding="utf-8",
+            timeout=VALIDATOR_HELPER_TIMEOUT_SECONDS,
         )
 
     def parse(self, result: subprocess.CompletedProcess[str], expected_code: int) -> dict[str, object]:
@@ -310,6 +321,7 @@ class ImmutableHistoryValidationGwtTests(unittest.TestCase):
         self.assertEqual("native-full-validation-passed", payload["reason"])
         self.assertEqual(REUSABLE_IDS, payload["executed_check_ids"])
         self.assertTrue(all(command[0] == sys.executable for command in payload["executed_commands"]))
+        self.assertEqual([30, 30, 30], payload["executed_timeout_seconds"])
         self.assertEqual(".ai/distribution/validation/immutable-history-receipt.yaml", payload["receipt_path"])
         self.assertTrue(self.receipt_path.is_file())
 
@@ -350,6 +362,7 @@ class ImmutableHistoryValidationGwtTests(unittest.TestCase):
             capture_output=True,
             text=True,
             encoding="utf-8",
+            timeout=VALIDATOR_HELPER_TIMEOUT_SECONDS,
         )
         payload = self.parse(result, 2)
         self.assertEqual("error", payload["outcome"])
@@ -473,6 +486,99 @@ class ImmutableHistoryValidationGwtTests(unittest.TestCase):
             payload["reason"],
         )
 
+    def test_gwt_020_given_missing_or_invalid_native_timeout_when_loaded_then_contract_is_rejected(self) -> None:
+        original = self.contract_path.read_text(encoding="utf-8")
+        cases = (
+            (
+                "missing",
+                None,
+                "contract.source.native_full_validators[0] has invalid keys (missing=timeout_seconds)",
+            ),
+            (
+                "non-positive",
+                0,
+                "contract.source.native_full_validators[0].timeout_seconds must be a positive integer",
+            ),
+        )
+
+        for label, timeout_seconds, expected_reason in cases:
+            with self.subTest(case=label):
+                contract = yaml.safe_load(original)
+                validator = contract["source"]["native_full_validators"][0]
+                if timeout_seconds is None:
+                    del validator["timeout_seconds"]
+                else:
+                    validator["timeout_seconds"] = timeout_seconds
+                self.contract_path.write_text(
+                    yaml.safe_dump(contract, sort_keys=False),
+                    encoding="utf-8",
+                    newline="\n",
+                )
+
+                payload = self.parse(self.invoke("verify"), 2)
+
+                self.assertEqual("error", payload["outcome"])
+                self.assertEqual(expected_reason, payload["reason"])
+
+    def test_gwt_021_given_native_validator_exceeds_its_bound_when_refreshed_then_receipt_and_remaining_validators_are_blocked(self) -> None:
+        timeout_validator = ".ai/scripts/fixture-timeout-validator.py"
+        second_validator = ".ai/scripts/fixture-second-validator.py"
+        third_validator = ".ai/scripts/fixture-third-validator.py"
+        second_marker = self.repo / "second-validator-ran.txt"
+        third_marker = self.repo / "third-validator-ran.txt"
+        self.write(timeout_validator, "import time\ntime.sleep(10)\n")
+        self.write(
+            second_validator,
+            "from pathlib import Path\nPath('second-validator-ran.txt').write_text('ran\\n', encoding='utf-8')\n",
+        )
+        self.write(
+            third_validator,
+            "from pathlib import Path\nPath('third-validator-ran.txt').write_text('ran\\n', encoding='utf-8')\n",
+        )
+        contract = yaml.safe_load(self.contract_path.read_text(encoding="utf-8"))
+        contract["source"]["fingerprint_paths"]["validators"] = [
+            timeout_validator,
+            second_validator,
+            third_validator,
+        ]
+        contract["source"]["native_full_validators"] = [
+            {
+                "check_id": "workflow-artifacts",
+                "timeout_seconds": 1,
+                "command": ["python", timeout_validator],
+            },
+            {
+                "check_id": "assessment-artifacts",
+                "timeout_seconds": 30,
+                "command": ["python", second_validator],
+            },
+            {
+                "check_id": "source-ai-context-version",
+                "timeout_seconds": 30,
+                "command": ["python", third_validator],
+            },
+        ]
+        self.contract_path.write_text(
+            yaml.safe_dump(contract, sort_keys=False),
+            encoding="utf-8",
+            newline="\n",
+        )
+        self.commit_all("bind native validator timeout fixture")
+
+        started = time.monotonic()
+        payload = self.parse(self.invoke("refresh"), 2)
+        duration = time.monotonic() - started
+
+        self.assertLess(duration, 5.0)
+        self.assertEqual("error", payload["outcome"])
+        self.assertEqual(
+            "native validator workflow-artifacts timed out after 1 seconds",
+            payload["reason"],
+        )
+        self.assertFalse(self.receipt_path.exists())
+        self.assertFalse(second_marker.exists())
+        self.assertFalse(third_marker.exists())
+
 
 class SourceImmutableHistoryContractTests(unittest.TestCase):
     def test_gwt_015_given_source_contract_when_loaded_then_runtime_validator_inputs_are_protected_without_a_broad_ai_allowance(self) -> None:
@@ -505,14 +611,17 @@ class SourceImmutableHistoryContractTests(unittest.TestCase):
             [
                 {
                     "check_id": "workflow-artifacts",
+                    "timeout_seconds": 30,
                     "command": ["python", ".ai/scripts/validate-workflow-artifacts.py"],
                 },
                 {
                     "check_id": "assessment-artifacts",
+                    "timeout_seconds": 30,
                     "command": ["python", ".ai/scripts/validate-assessment-artifacts.py"],
                 },
                 {
                     "check_id": "source-ai-context-version",
+                    "timeout_seconds": 30,
                     "command": ["python", ".ai/scripts/validate-ai-context-versions.py"],
                 },
             ],
@@ -523,6 +632,36 @@ class SourceImmutableHistoryContractTests(unittest.TestCase):
         verify_body = helper_source.split("def verify_source", 1)[1].split("def refresh_source", 1)[0]
         self.assertIn("include_release_refs=False", verify_body)
         self.assertIn("release_ref_records(repo, source_revision)", verify_body)
+
+    def test_gwt_022_given_git_command_exceeds_its_bound_when_read_then_timeout_is_mapped_without_host_path(self) -> None:
+        module_name = "validate_immutable_history_timeout_test"
+        spec = importlib.util.spec_from_file_location(module_name, HELPER)
+        self.assertIsNotNone(spec)
+        self.assertIsNotNone(spec.loader if spec else None)
+        module = importlib.util.module_from_spec(spec)  # type: ignore[arg-type]
+        sys.modules[module_name] = module
+        try:
+            spec.loader.exec_module(module)  # type: ignore[union-attr]
+            expired = subprocess.TimeoutExpired(
+                cmd=["git", "status"],
+                timeout=module.GIT_COMMAND_TIMEOUT_SECONDS,
+            )
+            with mock.patch.object(module.subprocess, "run", side_effect=expired) as run:
+                with self.assertRaises(module.ImmutableHistoryError) as caught:
+                    module.git_bytes(
+                        ROOT / "host-path-must-not-appear",
+                        ["status"],
+                        error="fixture Git read failed",
+                    )
+
+            self.assertEqual(
+                "fixture Git read failed: git command timed out after 30 seconds",
+                str(caught.exception),
+            )
+            self.assertNotIn("host-path-must-not-appear", str(caught.exception))
+            self.assertEqual(30, run.call_args.kwargs["timeout"])
+        finally:
+            sys.modules.pop(module_name, None)
 
 if __name__ == "__main__":
     unittest.main()
