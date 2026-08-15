@@ -14,7 +14,7 @@
 - `owner_skill`: `ai-context-governance`
 - `status`: `in_progress`
 - `created_at`: `2026-08-15T13:39:00+08:00`
-- `updated_at`: `2026-08-15T18:55:09+08:00`
+- `updated_at`: `2026-08-15T19:48:37+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-remediation-report-template.md`
 - `template_version`: `2.0.0`
 - `baseline_assessment`: `ASM-20260810-005; ASM-20260813-001`
@@ -56,6 +56,7 @@
 - Changes: native immutable-history validators require strict positive per-command timeouts, Git helpers are bounded, timeout stops later validators and receipt publication, and the prerequisite shadow fixture uses strict OS-temporary cleanup. The fast/PR evidence contract selects one semantic routine class; exhaustive evidence coverage is release/nightly-only.
 - Evidence: focused nested timeout/cleanup tests passed. `reports/coverage-inventory.md` retains the pre-remediation duplication measurements and the post-remediation selection decisions.
 - Test-history disclosure: one interim whole-file evidence command unexpectedly took 121.283 seconds. It was immediately treated as long-running, never rerun, and replaced by bounded groups. A seven-method runner batch passed in 115.683 seconds but must be split before future expansion. Sandbox `WinError 5`, Git Bash signal-pipe access denial, WSL `E_ACCESSDENIED`, and concurrent-worktree immutability-guard attempts remain blocked evidence, not passing results.
+- Current seal-order disclosure: the first GWT-036/037 sandbox attempt stopped during OS Temp fixture setup with two `WinError 5` errors in 0.004 seconds and was not counted as test evidence; the exact host rerun passed 2/2. A `py_compile` diagnostic was separately blocked by an existing repo-local `__pycache__` ACL and was not counted; read-only AST parsing is used for the final syntax proof.
 
 ### Nightly-Full Readiness
 
@@ -78,12 +79,21 @@
 - Focused evidence: the final routine contract class passed 2/2 in 24.484 seconds; final Windows GWT-035/009/019 passed 3/3 in 6.942 seconds; Ubuntu-24.04 GWT-035 passed 1/1 in 1.228 seconds. Independent current-diff review reported P0=0/P1=0 and confirmed that the GWT deterministically fails the old duplicated-prefix behavior without relying on global inventory counts.
 - Boundary: the hosted failures remain failed evidence and are not relabeled. No release, nightly-full, full matrix, Issue closure, merge, tag, or publication is authorized by this remediation.
 
+### PR #216 Hosted CI Seal-Order Contract Review
+
+- Hosted evidence: at exact branch head `eff73dfa6db3f6713098ac8b3f4416e792d931ce`, build plus both prerequisite lanes passed. `Read-only governance contract` run `31880798815` / job `95002974622` and `Ubuntu PR profile gate` run `31880798749` / job `95002974208` reached supervised seal and failed closed with `preparation-selection validators do not match evidence order`.
+- Artifact read-back: artifacts `9245967617` and `9245973619` each contain exactly 63 unique preparation, event, and evidence validator IDs with identical sets and no duplicates. Preparation selection matches the supervised prepare log in canonical registry order. Events match finalized evidence in not-selected-first plus actual runner-call order. The two domains intentionally differ in order.
+- Scenario decision: retain and test preparation-to-prepare-log order, event-to-evidence order, duplicate rejection, exact preparation/evidence ID-set parity, and every per-ID version/fingerprint/reuse check. Reject the cross-domain preparation-to-evidence list-order requirement. Skipping seal would remove necessary integrity coverage; reordering execution evidence would add mutation and obscure execution history solely to satisfy an unsupported assertion.
+- Remediation: replaced only the two cross-domain list comparisons with exact set comparisons and changed the diagnostic to validator-set membership. GWT-036 proves the same unique IDs can seal in different valid domain orders. GWT-037 proves same-cardinality set replacement, duplicate preparation IDs, prepare-log reorder with a newly authenticated receipt, and event/evidence reorder remain non-passing and produce no manifest.
+- Focused evidence: the Windows exact routine class passed 4/4 in 39.941 seconds under its 60-second registry timeout; Ubuntu-24.04 GWT-036/037 passed 2/2 in 5.421 seconds; adjacent fingerprint-parity GWT-033 passed 1/1 in 4.403 seconds. Independent safety and test-quality reviews found P0=0/P1=0 and confirmed the positive case fails the old implementation for the intended list-equality reason.
+- Classification: P1 merge blocker, not P0. Both jobs failed closed, published no terminal manifest, and retained useful diagnosis. The failed runs remain failed evidence and are not relabeled.
+
 ## Verification Assessment Reconciliation
 
 - Independent auditors: separate supervisor, evidence, runner-integration, terminal-publication, and fixed-head reviewers examined the changing diff. Their P1 findings covered argv privacy, detached descendants, PID reuse, launch-handshake races, incomplete seal semantics, cache/preparation parity, selection binding, signal windows, publication ownership, and terminal-pair authentication; each was remediated and re-reviewed.
 - Confirmed resolved: the final current-diff review reported P0=0/P1=0. The clean fixed-head reviewer verified exact subject `59dae454bcfe55fed9873eac834449583750c4a5`, clean index/worktree, base ancestry, diff integrity, and hard-disabled readiness, and found no P0/P1.
 - Recurring findings: none at fixed head.
-- New or regressed findings: hosted CI exposed repository-relative snapshot resolution as a regression in evidence finalization; it is now remediated locally and awaits exact-head hosted evidence. Exact governed-workflow job maps remain a separate non-blocking semantic-maintenance sensitivity assigned to Issue #215.
+- New or regressed findings: hosted CI confirmed the snapshot remediation and then exposed an unsupported cross-domain ordering assertion in sealing. The invariant is locally narrowed to exact validator-set parity while retaining both same-domain order contracts; independent review found no P0/P1. Evidence/event duplicate coverage and the shared parser's preparation duplicate label remain non-blocking P2s. Exact governed-workflow job maps remain a separate semantic-maintenance sensitivity assigned to Issue #215.
 
 ## Deferred Work
 
@@ -97,5 +107,5 @@
 
 - Required local validations: focused supervisor/snapshot/evidence/cleanup/workflow contracts and independent fixed-head review are complete. Later cumulative external-task validation is deliberately deferred, not passed or waived.
 - Commit status: workflow bootstrap `0965a2c`; bounded nested cleanup `254d0d7`; process-tree supervisor `910944f`; integrated evidence, runner, tests, and disabled readiness `59dae454bcfe55fed9873eac834449583750c4a5`; initial closeout `94f7d9e`; Ubuntu hosted-startup portability fix `7b4be71e00ef09289b2d17b77c00b23ddcbc3c9c`. These durable boundaries are intentionally retained; squashing would discard reviewed safety checkpoints without materially reducing the final diff.
-- Workflow/task status: `VAL007-001-supervision-snapshot` remains in progress only for the durable correction and exact-head hosted gate; the other two #204 tasks remain completed. Issue #204 and draft PR #216 remain open.
+- Workflow/task status: `VAL007-001-supervision-snapshot` remains in progress only for the durable seal-contract correction and exact-head hosted gate; the other two #204 tasks remain completed. Issue #204 and draft PR #216 remain open.
 - Final next action: commit and push the reviewed correction, then use one exact-head hosted-check watch. Stop on any failure or head drift; do not run cumulative long validation or activate nightly-full during this independent delivery.

@@ -3370,8 +3370,8 @@ def validate_prepare_control_log(
         lines = log_path.read_text(encoding="utf-8", errors="strict").splitlines()
     except (OSError, UnicodeError) as exc:
         raise EvidenceError("prepare control log is not readable UTF-8") from exc
-    if list(preparation_contracts) != list(records_by_id):
-        raise EvidenceError("prepare selection order does not match evidence validators")
+    if set(preparation_contracts) != set(records_by_id):
+        raise EvidenceError("preparation-selection validators do not match evidence")
     if len(lines) != len(preparation_contracts):
         raise EvidenceError("prepare control output cardinality does not match selection")
     cache = None if profile in {"release", "nightly-full"} else load_cache(cache_path)
@@ -4129,8 +4129,8 @@ def seal_invocation(arguments: argparse.Namespace) -> None:
     }
     if set(fingerprint_contracts) != set(records_by_id) - immutable_reused_ids:
         raise EvidenceError("fingerprint-selection validators do not match evidence")
-    if list(preparation_contracts) != list(records_by_id):
-        raise EvidenceError("preparation-selection validators do not match evidence order")
+    if set(preparation_contracts) != set(records_by_id):
+        raise EvidenceError("preparation-selection validators do not match evidence")
     file_records: dict[str, dict[str, object]] = {}
     git_snapshot = git_input_snapshot(repo)
     input_fingerprints: dict[str, str] = {}

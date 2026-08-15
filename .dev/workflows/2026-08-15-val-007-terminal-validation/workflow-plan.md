@@ -19,7 +19,7 @@
 - `current_phase`: `hosted-ci-gate`
 - `artifact_root`: `.dev/workflows/2026-08-15-val-007-terminal-validation`
 - `created_at`: `2026-08-15T13:39:00+08:00`
-- `updated_at`: `2026-08-15T18:55:09+08:00`
+- `updated_at`: `2026-08-15T19:48:37+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md`
 - `template_version`: `1.2.0`
 
@@ -30,7 +30,7 @@
 - Authorization source: the owner confirmed the eight-step plan and authorized starting #204 as an independent PR. Repository implementation and focused validation are authorized; Project/milestone mutation, Issue closure, push, PR creation, merge, tag, release, and publication remain separate decisions.
 - Normative truth: live Issue #204 acceptance criteria, the two baseline assessments, the long-running validation gate in `AGENTS.md`, the validation profile registry, and the existing external-task terminal receipt contract.
 - Exclusions: Issue #215 registry-count improvements; Issues #203 and #205-#208; Issue #149 runtime/model comparison; changes to #194 external-task delegation semantics; an actual `release`, `nightly-full`, full-matrix, or at-least-120-second validation run; downstream repositories; hosted publication.
-- Completion criteria: the repository-relative snapshot defect exposed at hosted branch head `a60dcac687b07c8f1df95b43162474e05dd4f29d` is locally remediated and independently reviewed. The original process-tree, drift, evidence, cleanup, focused fixture, and hard-disabled nightly-readiness criteria remain satisfied. Workflow completion remains gated on a durable corrective commit and passing required hosted checks at that exact pushed head.
+- Completion criteria: the repository-relative snapshot defect exposed at hosted branch head `a60dcac687b07c8f1df95b43162474e05dd4f29d` remains remediated. The next hosted head `eff73dfa6db3f6713098ac8b3f4416e792d931ce` exposed an invalid cross-domain ordering assumption between canonical preparation order and execution evidence order. The local correction now preserves strict preparation-to-prepare-log order, strict event-to-evidence order, duplicate rejection, and exact preparation/evidence validator-set parity while allowing those two deterministic domains to use different orders. Workflow completion remains gated on a durable corrective commit and passing required hosted checks at that exact pushed head.
 
 ## Artifact Contract
 
@@ -78,7 +78,8 @@
 3. Completed: nested timeout, deterministic cleanup, evidence schema/finalization, and duplicate-coverage disposition.
 4. Completed: hard-disabled nightly readiness contract and focused repository validation; nightly-full was not executed.
 5. Completed locally: durable clean implementation commit `59dae454bcfe55fed9873eac834449583750c4a5`, independent fixed-head review with no P0/P1, and finding reconciliation.
-6. Local remediation completed: resolve the repo-relative snapshot through the repository artifact boundary; execute GWT-035 on Windows and Ubuntu; retain event-relative log/result semantics; obtain an independent P0=0/P1=0 review. In progress: create and push the durable correction, then require one exact-head hosted-check watch before merge.
+6. Completed: resolve the repo-relative snapshot through the repository artifact boundary; execute GWT-035 on Windows and Ubuntu; retain event-relative log/result semantics; obtain an independent P0=0/P1=0 review; commit and push as `eff73dfa6db3f6713098ac8b3f4416e792d931ce`.
+7. Completed locally: replace only the invalid cross-domain list-order equality with exact unique-set parity; retain both same-domain order contracts; add real-seal GWT-036/037 for valid permutation, set replacement, duplicate preparation IDs, prepare-log reorder, and event/evidence reorder; pass Windows and Ubuntu focused validation; receive independent P0=0/P1=0 safety and test-quality reviews. In progress: create and push the durable correction, then require one exact-head hosted-check watch before merge.
 
 ## Validation Strategy
 
@@ -89,13 +90,13 @@
 
 ## Resume Checkpoint
 
-- Last completed action: changed `build_record` to admit `--snapshot` through the repository-root artifact boundary, added supervised GWT-035 using the runner's repo-relative argv, passed Windows GWT-035/009/019 3/3 in 6.942 seconds and Ubuntu-24.04 GWT-035 1/1 in 1.228 seconds, and received an independent P0=0/P1=0 review.
-- Current task: `VAL007-001-supervision-snapshot` remains in progress only for durable commit and exact-head hosted-gate evidence.
+- Last completed action: corrected both cross-domain comparisons to exact validator sets; added semantic GWT-036/037; passed the Windows exact routine class 4/4 in 39.941 seconds, Ubuntu-24.04 GWT-036/037 2/2 in 5.421 seconds, and adjacent GWT-033 1/1 in 4.403 seconds; independent reviews found P0=0/P1=0; AST, JSON, workflow-artifact, and diff checks passed.
+- Current task: `VAL007-001-supervision-snapshot` remains in progress only for the durable correction and a new exact-head hosted gate.
 - Exact next action: commit and push the bounded #204 correction, then use one exact-head hosted-check watch. Stop on any required-check failure or head drift; merge only after every required gate passes.
 - Validation already completed: Windows and WSL supervisor modules; bounded evidence GWT groups; selected fail-closed runner batches; workflow and registry contract modules; AST, Bash syntax, YAML/workflow, and diff checks; independent current-diff and fixed-head reviews. The historical GWT-019 stale-message failure and sandbox-blocked attempts remain retained rather than relabeled.
-- Git state: branch `codex/2026-08-15-val-007-terminal-validation`; PR #216 is open as draft at `a60dcac687b07c8f1df95b43162474e05dd4f29d`. The first hosted attempt exposed the fixed Ubuntu startup failure; the second exposed the repo-relative finalization defect after every selected validator completed.
+- Git state: branch `codex/2026-08-15-val-007-terminal-validation`; PR #216 is open as draft at `eff73dfa6db3f6713098ac8b3f4416e792d931ce`. At that exact head, both failed artifacts contain 63 unique preparation, event, and evidence IDs with identical sets. Preparation and its supervised log share canonical registry order; events and evidence share not-selected-first plus actual execution order. Only the unsupported cross-domain order equality failed.
 - Branch history and checkpoint handoffs: durable implementation boundaries are `254d0d7`, `910944f`, `59dae45`, and CI portability fix `7b4be71`; workflow bootstrap is `0965a2c`, initial closeout is `94f7d9e`.
-- Blockers or unresolved decisions: local remediation has no P0/P1 blocker; required hosted gates must still re-observe the fix at the exact pushed head. Issue closure, cumulative external validation, nightly activation, and release remain separate decisions.
+- Blockers or unresolved decisions: no local P0/P1 remains. Two non-blocking P2s are retained: evidence/event duplicate coverage is not explicit in GWT-037 even though the unchanged guard runs before dict collapse, and the shared parser's preparation duplicate diagnostic still says `fingerprint-selection artifact`. Issue closure, cumulative external validation, nightly activation, and release remain separate decisions.
 
 ## Branch Lifecycle
 
@@ -104,4 +105,5 @@
 | 1 | `codex/2026-08-15-val-007-terminal-validation` | `main@76c51574c7b2fdf59e8648eb105570589053ecf0` | local workflow bootstrap | `0965a2cf288c79fe91df3e291806d1bf66e9f8c9` | not pushed | `2026-08-15T13:39:00+08:00` | isolate #204 as its owner-approved independent delivery | implement and validate focused VAL-007 remediation |
 | 1 | `codex/2026-08-15-val-007-terminal-validation` | `0965a2cf288c79fe91df3e291806d1bf66e9f8c9` | clean fixed-head implementation review | `59dae454bcfe55fed9873eac834449583750c4a5` | not pushed | `2026-08-15T17:52:54+08:00` | preserve reviewed process-tree, evidence, and disabled-readiness implementation | commit closeout records, then return push/PR decision to owner |
 | 1 | `codex/2026-08-15-val-007-terminal-validation` | `94f7d9e911e0f85d5330bc09c6b6c2b110d598a2` | hosted CI portability remediation | `7b4be71e00ef09289b2d17b77c00b23ddcbc3c9c` | PR #216 update pending | `2026-08-15T18:10:52+08:00` | split portable artifact-path declaration from ordered assignment after identical Ubuntu startup failures | commit closeout sync, push, and watch exact-head hosted checks once |
-| 1 | `codex/2026-08-15-val-007-terminal-validation` | `a60dcac687b07c8f1df95b43162474e05dd4f29d` | hosted CI finalization remediation | current corrective commit | PR #216 remains draft | `2026-08-15T18:55:09+08:00` | both Ubuntu jobs reached finalization and exposed duplicate evidence-directory prefixing of a repo-relative snapshot ref | local fix and review complete; commit, push, and run one exact-head hosted watch |
+| 1 | `codex/2026-08-15-val-007-terminal-validation` | `a60dcac687b07c8f1df95b43162474e05dd4f29d` | hosted CI finalization remediation | `eff73dfa6db3f6713098ac8b3f4416e792d931ce` | PR #216 exact-head attempt failed at seal | `2026-08-15T18:55:09+08:00` | both Ubuntu jobs reached finalization and exposed duplicate evidence-directory prefixing of a repo-relative snapshot ref | snapshot path fixed; next hosted head exposed the separate seal-order contract defect |
+| 1 | `codex/2026-08-15-val-007-terminal-validation` | `eff73dfa6db3f6713098ac8b3f4416e792d931ce` | hosted CI seal-contract remediation | current corrective commit | PR #216 remains draft | `2026-08-15T19:47:04+08:00` | both Ubuntu jobs proved complete unique-set parity but exposed an invalid equality requirement between canonical preparation order and execution evidence order | local exact-set correction, semantic tests, and P0=0/P1=0 review complete; commit, push, and watch exact head once |

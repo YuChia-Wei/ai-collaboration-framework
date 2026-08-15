@@ -2066,6 +2066,195 @@ class ValidationEvidenceBootstrapReadinessGwtTests(ValidationEvidenceFixture):
 class ValidationEvidenceRoutineContractGwtTests(ValidationEvidenceFixture):
     """Routine proof for supervised control roles and staged terminal publication."""
 
+    def write_ordered_preparation(
+        self,
+        paths: dict[str, Path],
+        rows: list[str],
+        *,
+        profile: str,
+    ) -> None:
+        paths["preparation_selection"].write_text(
+            "\n".join(rows) + "\n", encoding="utf-8"
+        )
+        paths["control_results"] = self.write_control_results(  # type: ignore[assignment]
+            paths,
+            profile=profile,
+            preparation_python=None,
+        )
+
+    def test_gwt_036_given_distinct_valid_preparation_and_evidence_orders_when_sealed_then_exact_unique_set_parity_is_accepted(self) -> None:
+        profile = "release"
+        paths = self.prepare_invocation([
+            {
+                "id": "not-selected-a",
+                "outcome": "not-applicable",
+                "disposition": "not-selected",
+            },
+            {
+                "id": "not-selected-c",
+                "outcome": "not-applicable",
+                "disposition": "not-selected",
+            },
+            {
+                "id": "executed-b",
+                "outcome": "passed",
+                "disposition": "executed",
+            },
+        ], profile=profile)
+        rows_by_id = {
+            line.split("\t", 1)[0]: line
+            for line in paths["preparation_selection"].read_text(
+                encoding="utf-8"
+            ).splitlines()
+        }
+        preparation_order = ["not-selected-a", "executed-b", "not-selected-c"]
+        self.write_ordered_preparation(
+            paths,
+            [rows_by_id[validator_id] for validator_id in preparation_order],
+            profile=profile,
+        )
+        evidence_order = [
+            json.loads(line)["validator_id"]
+            for line in paths["evidence"].read_text(encoding="utf-8").splitlines()
+            if line
+        ]
+        self.assertNotEqual(preparation_order, evidence_order)
+        self.assertEqual(set(preparation_order), set(evidence_order))
+
+        sealed, output = self.seal_prepared(
+            paths, output_name="different-valid-orders.json"
+        )
+
+        self.assertEqual(0, sealed.returncode, sealed.stderr)
+        self.assertTrue(output.is_file())
+
+    def test_gwt_037_given_membership_or_same_domain_order_violation_when_sealed_then_integrity_checks_remain_fail_closed(self) -> None:
+        profile = "release"
+        paths = self.prepare_invocation([
+            {
+                "id": "not-selected-a",
+                "outcome": "not-applicable",
+                "disposition": "not-selected",
+            },
+            {
+                "id": "not-selected-c",
+                "outcome": "not-applicable",
+                "disposition": "not-selected",
+            },
+            {
+                "id": "executed-b",
+                "outcome": "passed",
+                "disposition": "executed",
+            },
+        ], profile=profile)
+        rows_by_id = {
+            line.split("\t", 1)[0]: line
+            for line in paths["preparation_selection"].read_text(
+                encoding="utf-8"
+            ).splitlines()
+        }
+        valid_preparation_order = ["not-selected-a", "executed-b", "not-selected-c"]
+
+        replacement_fields = rows_by_id["not-selected-c"].split("\t")
+        replacement_fields[0] = "unexpected-d"
+        self.write_ordered_preparation(
+            paths,
+            [
+                rows_by_id["not-selected-a"],
+                rows_by_id["executed-b"],
+                "\t".join(replacement_fields),
+            ],
+            profile=profile,
+        )
+        mismatched, mismatch_output = self.seal_prepared(
+            paths, output_name="mismatched-validator-set.json"
+        )
+        with self.subTest(contract="exact-validator-set-membership"):
+            self.assertNotEqual(0, mismatched.returncode)
+            self.assertIn(
+                "preparation-selection validators do not match evidence",
+                mismatched.stderr,
+            )
+            self.assertFalse(mismatch_output.exists())
+
+        paths["preparation_selection"].write_text(
+            "\n".join((
+                rows_by_id["not-selected-a"],
+                rows_by_id["executed-b"],
+                rows_by_id["executed-b"],
+            )) + "\n",
+            encoding="utf-8",
+        )
+        duplicated, duplicate_output = self.seal_prepared(
+            paths, output_name="duplicate-preparation-validator.json"
+        )
+        with self.subTest(contract="unique-preparation-validator-ids"):
+            self.assertNotEqual(0, duplicated.returncode)
+            self.assertIn("duplicate validator ids", duplicated.stderr)
+            self.assertFalse(duplicate_output.exists())
+
+        self.write_ordered_preparation(
+            paths,
+            [rows_by_id[validator_id] for validator_id in valid_preparation_order],
+            profile=profile,
+        )
+        prepare_log = self.logs / "control-prepare.log"
+        prepare_lines = prepare_log.read_text(encoding="utf-8").splitlines()
+        prepare_log.write_text(
+            "\n".join((prepare_lines[0], prepare_lines[2], prepare_lines[1])) + "\n",
+            encoding="utf-8",
+        )
+        expected_argv = self.control_argv(
+            "prepare", paths, profile=profile, preparation_python=None
+        )
+        safe_python = (
+            f"<absolute-path>/{Path(sys.executable).name}"
+            if Path(sys.executable).is_absolute()
+            else sys.executable
+        )
+        reordered_prepare_result = self.write_receipt(
+            paths["snapshot"],
+            log_path=prepare_log,
+            name="reordered-prepare-control",
+            safe_argv=[safe_python, *expected_argv[1:]],
+            effective_argv=expected_argv,
+            accepted_child_exit_codes=[0],
+        )
+        controls = dict(paths["control_results"])  # type: ignore[arg-type]
+        controls["prepare"] = reordered_prepare_result
+        paths["control_results"] = controls  # type: ignore[assignment]
+        reordered_prepare, prepare_output = self.seal_prepared(
+            paths, output_name="reordered-prepare-log.json"
+        )
+        with self.subTest(contract="preparation-to-prepare-log-order"):
+            self.assertNotEqual(0, reordered_prepare.returncode)
+            self.assertIn(
+                "prepare control output order or reuse state is invalid",
+                reordered_prepare.stderr,
+            )
+            self.assertFalse(prepare_output.exists())
+
+        self.write_ordered_preparation(
+            paths,
+            [rows_by_id[validator_id] for validator_id in valid_preparation_order],
+            profile=profile,
+        )
+        evidence_lines = paths["evidence"].read_text(encoding="utf-8").splitlines()
+        paths["evidence"].write_text(
+            "\n".join((evidence_lines[1], evidence_lines[0], evidence_lines[2])) + "\n",
+            encoding="utf-8",
+        )
+        reordered_evidence, evidence_output = self.seal_prepared(
+            paths, output_name="reordered-evidence.json"
+        )
+        with self.subTest(contract="events-to-evidence-order"):
+            self.assertNotEqual(0, reordered_evidence.returncode)
+            self.assertIn(
+                "events and evidence validators are not bound one-to-one in order",
+                reordered_evidence.stderr,
+            )
+            self.assertFalse(evidence_output.exists())
+
     def test_gwt_030_given_exact_supervised_controls_and_staged_manifest_when_published_then_terminal_pair_is_reusable(self) -> None:
         self.install_tracked_helper("tracked control helper fixture")
         bootstrap_snapshot = self.logs / "fast-snapshot-pre.json"
