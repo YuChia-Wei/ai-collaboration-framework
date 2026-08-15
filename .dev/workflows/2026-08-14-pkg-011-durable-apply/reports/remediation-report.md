@@ -12,9 +12,9 @@
 - `report_id`: `remediation-report-2026-08-14-pkg-011-durable-apply`
 - `workflow_id`: `2026-08-14-pkg-011-durable-apply`
 - `owner_skill`: `ai-context-governance`
-- `status`: `round-4-current-diff-reviewed-awaiting-durable-commit`
+- `status`: `round-5-focused-validated-awaiting-durable-commit`
 - `created_at`: `2026-08-14T09:07:04+08:00`
-- `updated_at`: `2026-08-15T08:17:23+08:00`
+- `updated_at`: `2026-08-15T09:49:40+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-remediation-report-template.md`
 - `template_version`: `2.0.0`
 - `baseline_assessment`: `ASM-20260813-001`
@@ -23,15 +23,15 @@
 ## Remediation Summary
 
 - Authorized scope: Issues #200 and #209 / `ASM-20260813-001#PKGAPPLY-001`, DS-01/02/03/10/11, and `OWNER-HYBRID-001`.
-- Completed scope: complete selected managed-state and proof identity; narrow raw/clean-Git Hybrid identity; durable Git-admin prestates and journal; atomic publication of a complete journal; exact-target recovery; supported write-through Windows replacement and removal; sealed active-operation post-state; validated journal prefixes and target surfaces; package-independent rollback; durable journal-v2 `rolling-back` progress and sealed rollback-start surface; finalized transition, operation prefix, plan post-state, receipt artifact, removal, resolved-target, live-HEAD, exact-operation, and parent-boundary validation; deterministic exact-receipt rollback deletion; resume/rollback CLI; schema-2 receipt and target gates; boundary-first Git-ignore inspection; stable symlink/reparse diagnostic; documentation and deterministic Windows/POSIX fixtures.
-- Validation summary: commit `df36a29ad36c6eb5103f44fe90e27da282a679de` passed the immutable package matrix 38/38 with a schema-valid receipt, but its fixed-head audit remained non-passing and identified the round-4 findings. After remediation, WSL `Ubuntu-24.04` passed 56/56 outside the sandbox in 21.963 seconds, affected Windows fixtures passed 4/4 and final receipt-boundary fixtures passed 2/2, adjacent semantic customization suites passed 7/7 plus 5/5, and the final current-diff reviewer returned no P1/P2/P3 findings. A clean-commit Windows full run remains mandatory.
-- Closure decision: `awaiting-round-4-durable-commit`
+- Completed scope: complete selected managed-state and proof identity; narrow raw/clean-Git Hybrid identity; durable Git-admin prestates and journal; atomic publication of a complete journal; exact-target recovery; supported write-through Windows replacement and removal; sealed active-operation post-state; validated journal prefixes and target surfaces; package-independent rollback; durable journal-v2 rollback progress; journal-v3 deterministic target staging; preparation and recovery admission before cleanup or target/journal mutation; exact package and receipt binding; apply/receipt/rollback hard-death recovery; retained-staging finalization rejection; finalized transition, operation prefix, plan post-state, receipt artifact, removal, resolved-target, live-HEAD, exact-operation, parent-boundary, and exact effective-rule packet-root validation; resume/rollback CLI; schema-2 receipt and target gates; boundary-first Git-ignore inspection; stable symlink/reparse diagnostic; documentation and deterministic Windows/POSIX fixtures.
+- Validation summary: the round-5 focused Windows fixtures passed GWT-023 in 26.030 seconds, GWT-024 in 12.415 seconds, GWT-036 in 22.676 seconds, GWT-041 through GWT-043 in 16.129 seconds, GWT-044 through GWT-045 in 8.550 seconds, and adjacent GWT-009/GWT-039/GWT-040 in 7.334 seconds. Three changed Python files parsed, the task JSON parsed, the repository workflow-artifact validator passed all 82 post-adoption workflows, 102 indexed workflow directories, and 55 backlog items, and scoped `git diff --check` passed. A scoped transient current-diff audit found three zero-mutation/parity risks in the predecessor handoff; all were remediated and the final scoped review found no remaining P1/P2/P3 issue. No long-running, full-matrix, release, or nightly-full command was run because the owner requires all planned #200-#208 local changes, focused tests, reviews, and commits first.
+- Closure decision: `awaiting-round-5-durable-commit`
 
 ## Finding Resolution Matrix
 
 | Assessment Finding | Before Severity | Status | Changed Files | Validation | Commit | Residual Risk |
 | --- | --- | --- | --- | --- | --- | --- |
-| `ASM-20260813-001#PKGAPPLY-001` | HIGH | `round-4-remediated-awaiting-durable-commit` | apply engine, target receipt validator, CLI, focused tests, install/upgrader docs, workflow evidence | commits `7b6bfbe`, `3e7723d`, and `df36a29` passed their matrices but failed subsequent fixed-head audits; round-4 WSL is 56/56 and current-diff review is accepted | prior non-passing checkpoints retained; round-4 commit pending | immutable Windows matrix and final fixed-head audit remain |
+| `ASM-20260813-001#PKGAPPLY-001` | HIGH | `round-5-focused-validated-awaiting-durable-commit` | apply engine, target receipt validator, focused tests, workflow evidence | prior fixed-head failures remain retained; round-5 GWT-023/024/036/041-045 plus adjacent GWT-009/039/040 passed and scoped current-diff review is accepted | prior non-passing checkpoints retained; round-5 commit pending | cumulative immutable Windows matrix and final fixed-head audit remain sequencing-deferred |
 | `Issue-209-acceptance` | HIGH | `resolved-locally` | `.ai/scripts/ai_context_package_apply.py`, workflow evidence | GWT-008 passed 1/1 and complete package-apply suite passed 35/35 on `Ubuntu-24.04` outside the sandbox | pending | clean fixed-head validation remains shared with PKG-011 |
 
 ## Changes And Evidence
@@ -81,6 +81,14 @@
 - P1/P2 receipt rollback: rollback now rejects receipt parent and leaf boundaries, reconstructs the only legal receipt bytes from the sealed plan and current exact post-state without the package, refuses mismatched ordinary receipts before journal or target mutation, and removes an exact receipt before entering `rolling-back`.
 - Deterministic evidence: GWT035-040 cover Windows replacement flags, malformed resealed operations, copied-root/changed-HEAD finalization, simulated and POSIX parent boundaries, ordinary/dangling receipt rejection, and the exact receipt-after-publication rollback case. WSL passed 56/56 after all fixes; the latest current-diff review found no P1/P2/P3.
 
+### Current-Diff Review Round 5
+
+- Reviewed surface: the predecessor's three-file uncommitted handoff on `75e0c67a3a3002c77627dc279a2c3b2fc0d96fc8`, followed by each remediation delta. This remained a transient read-only audit and did not allocate the Issue #213 durable assessment.
+- P1 recovery admission: resume and rollback could remove deterministic staging before rejecting target, HEAD, target-surface, package, or receipt drift. Recovery now performs read-only journal-derived admission, exact package/receipt validation, and a second surface check before staging cleanup or any journal/target mutation.
+- P1 preparation admission: a hard death after preparation could leave intended post-state bytes written externally; automatic rollback from a still-`planned` journal could then overwrite bytes the transaction never applied. The runner now persists an `applying` copy before mutating the live journal, and a rejected one-step preparation leaves the original planned journal and external bytes unchanged.
+- P2 transition parity: persisting a rejection transition on the untouched planned journal made a later valid resume fail finalization parity. Rejected preparation now preserves transition sequence zero and no `last_error`; the exact-post fixture proves later resume and target validation succeed after the original prestate is restored.
+- Final disposition: strengthened GWT-041, GWT-042, GWT-044, and GWT-045 cover dirty target, changed HEAD, validation-time target drift, wrong package, invalid pending receipt, and retained staging with exact zero-mutation assertions. The final scoped diff review found no remaining P1/P2/P3 issue.
+
 ### `Issue-209-acceptance`
 
 - Changes: preflight each selected framework-managed path through the symlink/reparse boundary guard before `git check-ignore`; retain `symlink boundary` as a stable diagnostic phrase while preserving reparse-point coverage.
@@ -90,10 +98,10 @@
 
 ## Verification Assessment Reconciliation
 
-- Independent auditor: prior fixed-head audits successively exposed recovery, sealed-prefix, rollback-progress, finalization, Windows durability, target-binding, and receipt-boundary defects. Each non-passing checkpoint and its successful matrix remain retained separately. The round-4 current-diff reviewer accepted the latest remediation with no P1/P2/P3; final clean-commit verification is not complete.
+- Independent auditor: prior fixed-head audits successively exposed recovery, sealed-prefix, rollback-progress, finalization, Windows durability, target-binding, and receipt-boundary defects. Each non-passing checkpoint and its successful matrix remains retained separately. The round-5 predecessor-work audit was transient and scoped to the current diff; it found and remediated three admission/parity risks, then found no remaining P1/P2/P3 issue. Final clean-commit verification is not complete and is not relabeled as passed.
 - Confirmed resolved: receipt bytes now bind the finalized journal and sealed plan; Hybrid CRLF identity now passes end to end through target validation.
 - Recurring findings: none from the earlier receipt/Hybrid re-review scope.
-- New or regressed findings: the round-4 reviewer first found an ordinary mismatched-receipt deletion gap and then a receipt-parent boundary gap; both were corrected with no-mutation fixtures, and the final re-review found no P1/P2/P3.
+- New or regressed findings: round 5 found pre-admission staging cleanup, automatic rollback from a still-planned transaction, and rejected-transition parity risks in the predecessor handoff. All were corrected with deterministic no-mutation and successful-resume fixtures; the final scoped review found no P1/P2/P3.
 
 ## Deferred Work
 
@@ -104,7 +112,7 @@
 
 ## Closure Evidence
 
-- Required validations: round-4 WSL and affected Windows fixtures plus adjacent semantic lifecycle suites pass after the review fixes; current-diff re-review passed; a new immutable Windows full suite and fixed-head audit are required.
-- Commit status: unpushed history was compressed without crossing preserved audit boundaries; `7b6bfbe`, `3e7723d`, and `df36a29` are retained non-passing audit checkpoints and the next durable `#200` commit will contain round-4 remediation.
-- Workflow/task status: round-4 current-diff review passed only after two receipt rollback corrections; immutable gates remain pending. Durable verification assessment allocation remains gated by Issue #213 and is not inferred from implementation completion.
-- Final next action: create the next Issue #200 durable commit, then repeat the immutable long matrix and fixed-head audit.
+- Required validations: round-5 focused recovery, finalization, packet-root, target, HEAD, and receipt fixtures pass after the review fixes; a cumulative immutable Windows full suite and fixed-head audit remain required after the owner sequencing gate opens.
+- Commit status: `7b6bfbe`, `3e7723d`, and `df36a29` remain retained non-passing audit checkpoints; `75e0c67` remains the round-4 durable implementation checkpoint, and the next durable `#200` commit will contain the round-5 audited remediation.
+- Workflow/task status: round-5 focused review passed only after the three predecessor-work corrections above. Long-running/full-matrix/release/nightly-full validation remains intentionally deferred until all planned #200-#208 local changes, focused tests, reviews, and commits are complete. Durable verification assessment allocation remains gated by Issue #213 and is not inferred from implementation completion.
+- Final next action: create the round-5 Issue #200 durable commit, then continue the remaining #200-#208 local work without dispatching long validation yet.

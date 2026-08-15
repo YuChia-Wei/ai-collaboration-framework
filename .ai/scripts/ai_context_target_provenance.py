@@ -36,6 +36,7 @@ RELATIONSHIPS = {"extends", "replaces", "deviates", "target-only"}
 EQUIVALENCE = {"absent", "partial", "equivalent-candidate", "conflicting"}
 DISPOSITIONS = {"retain", "merge", "supersede", "retire", "unresolved"}
 PENDING_APPLY_RECEIPT = ".dev/AI-CONTEXT-APPLY-PENDING.yaml"
+EFFECTIVE_PACKET_DIRECTORY = ".dev/ai-context/effective-rule-packets"
 FILE_ATTRIBUTE_REPARSE_POINT = 0x400
 SEALED_OPERATION_KEYS = {
     "id",
@@ -256,7 +257,8 @@ def validate_sealed_operations(
         if any(
             candidate in RESERVED_APPLY_PATHS
             or candidate == EFFECTIVE_STATE_PATH
-            or candidate.startswith(".dev/ai-context/effective-rule-packets/")
+            or candidate == EFFECTIVE_PACKET_DIRECTORY
+            or candidate.startswith(f"{EFFECTIVE_PACKET_DIRECTORY}/")
             or candidate in touched
             for candidate in operation_paths
         ):
@@ -273,6 +275,33 @@ def validate_sealed_operations(
         errors.append(f"{plan_path}: sealed transaction operation evidence is invalid")
         return None
     return operations
+
+
+def transaction_staging_records(
+    transaction_id: str, operations: list[dict]
+) -> list[dict[str, str]]:
+    destinations = {PENDING_APPLY_RECEIPT}
+    for item in operations:
+        if item.get("action") in {"add", "replace", "remove", "rename"}:
+            destinations.add(item["path"])
+            if item.get("from_path"):
+                destinations.add(item["from_path"])
+    records: list[dict[str, str]] = []
+    for destination in sorted(destinations, key=lambda value: value.encode("utf-8")):
+        destination_path = PurePosixPath(destination)
+        digest = hashlib.sha256(
+            f"{transaction_id}\0{destination}".encode("utf-8")
+        ).hexdigest()
+        records.append(
+            {
+                "destination": destination,
+                "path": (
+                    destination_path.parent
+                    / f".ai-context-apply-{digest}.staging"
+                ).as_posix(),
+            }
+        )
+    return records
 
 
 def git_ignore_rule(root: Path, path: str) -> dict[str, object] | None:
@@ -467,6 +496,7 @@ def validate_apply_transaction_journals(
         if journal_schema not in {
             "ai-context-package-apply-journal/v1",
             "ai-context-package-apply-journal/v2",
+            "ai-context-package-apply-journal/v3",
         } or journal.get("transaction_id") != child.name or journal.get("plan_sha256") != child.name:
             errors.append(f"{journal_path}: transaction identity is invalid")
             continue
@@ -479,7 +509,7 @@ def validate_apply_transaction_journals(
             if state != "finalized":
                 errors.append(f"{journal_path}: pending receipt transaction is not finalized")
                 continue
-            if journal_schema != "ai-context-package-apply-journal/v2":
+            if journal_schema != "ai-context-package-apply-journal/v3":
                 errors.append(
                     f"{journal_path}: pending receipt transaction journal schema is unsupported"
                 )
@@ -540,6 +570,33 @@ def validate_apply_transaction_journals(
                 and item.get("action") in {"add", "replace", "remove", "rename"}
             ]
             active_ids = [item.get("id") for item in active_operations]
+            if operations_valid:
+                expected_staging = transaction_staging_records(
+                    child.name, active_operations
+                )
+                staging_valid = (
+                    journal.get("target_staging_paths") == expected_staging
+                )
+                if staging_valid:
+                    for item in expected_staging:
+                        try:
+                            staging_path = target_path_without_links(
+                                root, item["path"]
+                            )
+                        except TargetValidationError as exc:
+                            errors.append(
+                                f"{journal_path}: transaction staging boundary is invalid: {exc}"
+                            )
+                            break
+                        if staging_path.exists():
+                            errors.append(
+                                f"{journal_path}: transaction staging path remains: {item['path']}"
+                            )
+                            break
+                else:
+                    errors.append(
+                        f"{journal_path}: transaction staging path evidence is invalid"
+                    )
             post_state_records = plan.get("operation_post_states")
             post_state_valid = (
                 plan.get("schema_version") == "2.1.0"

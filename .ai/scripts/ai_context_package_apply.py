@@ -60,7 +60,7 @@ TARGET_EFFECTIVE_PACKET_DIRECTORY = ".dev/ai-context/effective-rule-packets"
 PENDING_RECEIPT_PATH = ".dev/AI-CONTEXT-APPLY-PENDING.yaml"
 APPLY_PLAN_SCHEMA_VERSION = "2.1.0"
 PENDING_RECEIPT_SCHEMA_VERSION = "2.0.0"
-JOURNAL_SCHEMA_VERSION = "ai-context-package-apply-journal/v2"
+JOURNAL_SCHEMA_VERSION = "ai-context-package-apply-journal/v3"
 TRANSACTION_STATES = {
     "planned",
     "applying",
@@ -1214,14 +1214,35 @@ def atomic_replace(temporary: Path, destination: Path) -> None:
     os.replace(temporary, destination)
 
 
-def atomic_write_bytes(path: Path, content: bytes, mode: int = 0o644) -> None:
+def atomic_write_bytes(
+    path: Path,
+    content: bytes,
+    mode: int = 0o644,
+    *,
+    temporary_path: Path | None = None,
+    hook: Callable[[str, dict], None] | None = None,
+    boundary_details: dict | None = None,
+) -> None:
     if path.is_symlink() or is_reparse_point(path):
         raise ApplyError(f"cannot atomically replace symlink or reparse point: {path}")
     path.parent.mkdir(parents=True, exist_ok=True)
-    descriptor, temporary_name = tempfile.mkstemp(
-        prefix=f".{path.name}.", suffix=".tmp", dir=path.parent
-    )
-    temporary = Path(temporary_name)
+    if temporary_path is None:
+        descriptor, temporary_name = tempfile.mkstemp(
+            prefix=f".{path.name}.", suffix=".tmp", dir=path.parent
+        )
+        temporary = Path(temporary_name)
+    else:
+        temporary = temporary_path
+        if temporary.parent != path.parent:
+            raise ApplyError(f"atomic staging path must share its destination parent: {path}")
+        if temporary.exists() or temporary.is_symlink() or is_reparse_point(temporary):
+            raise ApplyError(f"atomic staging path already exists or is unsafe: {temporary}")
+        descriptor = os.open(
+            temporary,
+            os.O_WRONLY | os.O_CREAT | os.O_EXCL | getattr(os, "O_BINARY", 0),
+            0o600,
+        )
+    preserve_temporary = False
     try:
         offset = 0
         while offset < len(content):
@@ -1234,12 +1255,21 @@ def atomic_write_bytes(path: Path, content: bytes, mode: int = 0o644) -> None:
         os.fsync(descriptor)
         os.close(descriptor)
         descriptor = -1
+        if hook is not None:
+            invoke_boundary(
+                hook,
+                "after_target_staging_fsync",
+                {**(boundary_details or {}), "staging_path": str(temporary)},
+            )
         atomic_replace(temporary, path)
         fsync_directory(path.parent)
+    except InjectedInterruption:
+        preserve_temporary = True
+        raise
     finally:
         if descriptor >= 0:
             os.close(descriptor)
-        if temporary.exists():
+        if temporary.exists() and not preserve_temporary:
             temporary.unlink()
 
 
@@ -1277,14 +1307,29 @@ def durable_unlink(path: Path, transaction_root_path: Path) -> None:
         pass
 
 
-def write_payload(package_root: Path, target: Path, path: str, record: dict) -> None:
+def write_payload(
+    package_root: Path,
+    target: Path,
+    path: str,
+    record: dict,
+    journal: dict,
+    hook: Callable[[str, dict], None] | None,
+    boundary_details: dict,
+) -> None:
     destination = target / Path(*PurePosixPath(path).parts)
     reject_symlink_boundary(target, path)
     source = package_root / "payload" / Path(*PurePosixPath(path).parts)
     content = source.read_bytes()
     if sha256_bytes(content) != record["sha256"]:
         raise ApplyError(f"package payload changed after validation: {path}")
-    atomic_write_bytes(destination, content, mode_int(record["mode"]))
+    atomic_write_bytes(
+        destination,
+        content,
+        mode_int(record["mode"]),
+        temporary_path=target_staging_path(target, journal, path),
+        hook=hook,
+        boundary_details={**boundary_details, "destination": path, "purpose": "apply"},
+    )
 
 
 def plan_digest(plan: dict) -> str:
@@ -1422,6 +1467,53 @@ def touched_paths(plan: dict) -> list[str]:
     return sorted(values, key=lambda value: value.encode("utf-8"))
 
 
+def target_staging_records(plan: dict) -> list[dict[str, str]]:
+    """Derive the only target-side staging paths authorized for a transaction."""
+    transaction_id = transaction_id_for_plan(plan)
+    destinations = set(touched_paths(plan)) | {PENDING_RECEIPT_PATH}
+    records: list[dict[str, str]] = []
+    staging_paths: set[str] = set()
+    for destination in sorted(destinations, key=lambda value: value.encode("utf-8")):
+        destination = safe_path(destination, "transaction staging destination")
+        destination_path = PurePosixPath(destination)
+        digest = sha256_bytes(
+            f"{transaction_id}\0{destination}".encode("utf-8")
+        )
+        staging = (
+            destination_path.parent / f".ai-context-apply-{digest}.staging"
+        ).as_posix()
+        if staging in destinations or staging in staging_paths:
+            raise ApplyError("transaction staging path collision")
+        staging_paths.add(staging)
+        records.append({"destination": destination, "path": staging})
+    return records
+
+
+def target_staging_path(target: Path, journal: dict, destination: str) -> Path:
+    records = journal.get("target_staging_paths")
+    if not isinstance(records, list):
+        raise ApplyError("transaction staging path evidence is invalid")
+    matches = [
+        item.get("path")
+        for item in records
+        if isinstance(item, dict) and item.get("destination") == destination
+    ]
+    if len(matches) != 1 or not isinstance(matches[0], str):
+        raise ApplyError(f"transaction staging path is missing: {destination}")
+    staging = matches[0]
+    reject_symlink_boundary(target, staging)
+    return target / Path(*PurePosixPath(staging).parts)
+
+
+def require_target_staging_absent(target: Path, records: list[dict[str, str]]) -> None:
+    for item in records:
+        relative = item["path"]
+        reject_symlink_boundary(target, relative)
+        path = target / Path(*PurePosixPath(relative).parts)
+        if path.exists() or path.is_symlink() or is_reparse_point(path):
+            raise ApplyError(f"transaction staging path already exists or is unsafe: {relative}")
+
+
 def planned_created_parents(target: Path, plan: dict) -> list[str]:
     parents: set[str] = set()
     destinations = [
@@ -1478,6 +1570,16 @@ def preflight_writable(target: Path, plan: dict) -> None:
         if path.exists() and not (path.stat().st_mode & stat.S_IWRITE):
             raise ApplyError(f"target path is read-only: {relative}")
     planned_created_parents(target, plan)
+    require_target_staging_absent(target, target_staging_records(plan))
+
+
+def verify_preparation_admission(target: Path, plan: dict) -> None:
+    if clean_target_head(target) != plan.get("target_starting_commit"):
+        raise ApplyError("target HEAD changed during transaction preparation")
+    current_observed = observation(plan.get("observed", {}).keys(), target)
+    if current_observed != plan.get("observed"):
+        raise ApplyError("target file state changed during transaction preparation")
+    require_target_staging_absent(target, target_staging_records(plan))
 
 
 def verify_package_binding(plan: dict, package_root: Path) -> tuple[dict, dict[str, dict], dict, str]:
@@ -1566,6 +1668,7 @@ def prepare_transaction(
     hook: Callable[[str, dict], None] | None = None,
 ) -> tuple[Path, dict]:
     transaction_id = transaction_id_for_plan(plan)
+    verify_preparation_admission(target, plan)
     root = transaction_root(target, transaction_id)
     if root.exists():
         raise ApplyError(
@@ -1592,10 +1695,19 @@ def prepare_transaction(
         pre_state: list[dict] = []
         for index, relative in enumerate(touched_paths(plan)):
             state = file_state(target, relative)
+            recorded_state = state_record(state)
+            if recorded_state != plan.get("observed", {}).get(relative):
+                raise ApplyError(
+                    f"target file state changed during transaction preparation: {relative}"
+                )
             backup_path = None
             backup_sha = None
             if state.exists:
                 content = (target / Path(*PurePosixPath(relative).parts)).read_bytes()
+                if sha256_bytes(content) != state.sha256:
+                    raise ApplyError(
+                        f"target file changed while transaction backup was captured: {relative}"
+                    )
                 backup_name = (
                     f"{index:04d}-{sha256_bytes(relative.encode('utf-8'))}.bin"
                 )
@@ -1606,7 +1718,7 @@ def prepare_transaction(
             pre_state.append(
                 {
                     "path": relative,
-                    "state": state_record(state),
+                    "state": recorded_state,
                     "backup_path": backup_path,
                     "backup_sha256": backup_sha,
                 }
@@ -1634,14 +1746,17 @@ def prepare_transaction(
             "pre_state": pre_state,
             "protected_state": observation(protected_target_paths(target), target),
             "planned_created_parents": planned_created_parents(target, plan),
+            "target_staging_paths": target_staging_records(plan),
             "last_error": None,
             "final_receipt_sha256": None,
         }
+        verify_preparation_admission(target, plan)
         atomic_write_yaml(preparation / "journal.yaml", journal)
         fsync_directory(preparation)
         invoke_boundary(
             hook, "after_preparation_journal", {"transaction_id": transaction_id}
         )
+        verify_preparation_admission(target, plan)
         if root.exists():
             raise ApplyError(
                 f"transaction evidence already exists; resume or roll back {transaction_id}"
@@ -1682,6 +1797,9 @@ def prestate_by_path(journal: dict) -> dict[str, dict]:
 def validate_journal_progress(plan: dict, journal: dict) -> None:
     operations = active_operations(plan)
     operation_post_state_map(plan)
+    expected_staging = target_staging_records(plan)
+    if journal.get("target_staging_paths") != expected_staging:
+        raise ApplyError("transaction journal staging path evidence is invalid")
     next_index = journal.get("next_apply_index")
     if type(next_index) is not int or not 0 <= next_index <= len(operations):
         raise ApplyError("transaction journal next operation index is invalid")
@@ -1939,6 +2057,7 @@ def execute_operation(
     package_root: Path,
     target: Path,
     incoming: dict[str, dict],
+    journal: dict,
     operation: dict,
     index: int,
     prestate: dict[str, dict],
@@ -1952,7 +2071,15 @@ def execute_operation(
             return
         if not exact_state_matches(target, relative, prestate[relative]["state"]):
             raise ApplyError(f"ambiguous transaction state for {relative}")
-        write_payload(package_root, target, relative, incoming[relative])
+        write_payload(
+            package_root,
+            target,
+            relative,
+            incoming[relative],
+            journal,
+            hook,
+            {"index": index, "operation_id": operation["id"]},
+        )
         invoke_boundary(hook, "after_destination_replace", {"index": index, "operation_id": operation["id"]})
         return
     if action == "remove":
@@ -1977,7 +2104,15 @@ def execute_operation(
         if not source_is_pre or not (destination_is_pre or destination_is_post):
             raise ApplyError(f"ambiguous rename transaction state for {source_relative} -> {relative}")
         if destination_is_pre:
-            write_payload(package_root, target, relative, incoming[relative])
+            write_payload(
+                package_root,
+                target,
+                relative,
+                incoming[relative],
+                journal,
+                hook,
+                {"index": index, "operation_id": operation["id"]},
+            )
             invoke_boundary(hook, "after_destination_replace", {"index": index, "operation_id": operation["id"]})
         durable_unlink(target / Path(*PurePosixPath(source_relative).parts), root)
         invoke_boundary(hook, "after_source_remove", {"index": index, "operation_id": operation["id"]})
@@ -2100,6 +2235,16 @@ def expected_rollback_receipt_bytes(plan: dict, journal: dict) -> bytes:
     )
 
 
+def recovery_receipt_path(target: Path) -> Path:
+    reject_symlink_boundary(target, PENDING_RECEIPT_PATH)
+    receipt_path = target / PENDING_RECEIPT_PATH
+    if receipt_path.is_symlink() or is_reparse_point(receipt_path):
+        raise ApplyError("unsafe pending receipt blocks recovery")
+    if receipt_path.exists() and not receipt_path.is_file():
+        raise ApplyError("pending receipt must be a regular file during recovery")
+    return receipt_path
+
+
 def run_transaction(
     root: Path,
     journal: dict,
@@ -2110,17 +2255,30 @@ def run_transaction(
     hook: Callable[[str, dict], None] | None = None,
 ) -> dict:
     target = Path(plan["target_root"])
-    validate_transaction_surface(target, plan, journal)
-    journal["state"] = "applying"
-    journal["last_error"] = None
-    persist_journal(root, journal)
+    require_target_staging_absent(target, journal["target_staging_paths"])
+    verify_recovery_surface(target, plan, journal)
+    admitted_journal = deepcopy(journal)
+    admitted_journal["state"] = "applying"
+    admitted_journal["last_error"] = None
+    persist_journal(root, admitted_journal)
+    journal.clear()
+    journal.update(admitted_journal)
     invoke_boundary(hook, "after_applying_journal", {"transaction_id": journal["transaction_id"]})
     operations = active_operations(plan)
     prestate = prestate_by_path(journal)
     for index in range(int(journal["next_apply_index"]), len(operations)):
+        verify_recovery_surface(target, plan, journal)
         operation = operations[index]
         execute_operation(
-            root, package_root, target, incoming, operation, index, prestate, hook
+            root,
+            package_root,
+            target,
+            incoming,
+            journal,
+            operation,
+            index,
+            prestate,
+            hook,
         )
         invoke_boundary(hook, "after_operation", {"index": index, "operation_id": operation["id"]})
         journal["completed_operation_ids"] = [item["id"] for item in operations[: index + 1]]
@@ -2135,6 +2293,7 @@ def run_transaction(
                 "next_apply_index": index + 1,
             },
         )
+    verify_recovery_surface(target, plan, journal)
     verify_protected_state(target, journal)
     receipt = build_final_receipt(plan, journal, incoming, reconciles)
     receipt_path = target / PENDING_RECEIPT_PATH
@@ -2169,8 +2328,21 @@ def run_transaction(
                 f"pending receipt is ambiguous after interruption;{detail}"
             )
     else:
-        atomic_write_bytes(receipt_path, expected_bytes)
+        atomic_write_bytes(
+            receipt_path,
+            expected_bytes,
+            temporary_path=target_staging_path(
+                target, journal, PENDING_RECEIPT_PATH
+            ),
+            hook=hook,
+            boundary_details={
+                "transaction_id": journal["transaction_id"],
+                "destination": PENDING_RECEIPT_PATH,
+                "purpose": "receipt",
+            },
+        )
     invoke_boundary(hook, "after_receipt", {"transaction_id": journal["transaction_id"]})
+    verify_recovery_surface(target, plan, journal)
     journal["final_receipt_sha256"] = sha256_bytes(expected_bytes)
     journal["state"] = "finalized"
     persist_journal(root, journal)
@@ -2246,10 +2418,40 @@ def changed_target_paths(target: Path) -> set[str]:
     return changed
 
 
-def verify_recovery_surface(target: Path, plan: dict, journal: dict) -> None:
+def cleanup_transaction_staging(
+    target: Path, root: Path, plan: dict, journal: dict
+) -> None:
+    expected = target_staging_records(plan)
+    if journal.get("target_staging_paths") != expected:
+        raise ApplyError("transaction journal staging path evidence is invalid")
+    for item in expected:
+        relative = item["path"]
+        reject_symlink_boundary(target, relative)
+        path = target / Path(*PurePosixPath(relative).parts)
+        if path.is_symlink() or is_reparse_point(path):
+            raise ApplyError(f"transaction staging path is unsafe: {relative}")
+        if not path.exists():
+            continue
+        if not path.is_file():
+            raise ApplyError(f"transaction staging path is not a regular file: {relative}")
+        durable_unlink(path, root)
+
+
+def verify_recovery_surface(
+    target: Path,
+    plan: dict,
+    journal: dict,
+    *,
+    allow_target_staging: bool = False,
+) -> None:
     if run_git(target, "rev-parse", "HEAD").stdout.strip() != plan.get("target_starting_commit"):
         raise ApplyError("target HEAD changed after transaction planning")
     allowed = set(touched_paths(plan)) | {PENDING_RECEIPT_PATH}
+    if allow_target_staging:
+        expected_staging = target_staging_records(plan)
+        if journal.get("target_staging_paths") != expected_staging:
+            raise ApplyError("transaction journal staging path evidence is invalid")
+        allowed.update(item["path"] for item in expected_staging)
     unrelated = changed_target_paths(target) - allowed
     if unrelated:
         raise ApplyError(f"unrelated target changes block recovery: {sorted(unrelated)}")
@@ -2264,10 +2466,7 @@ def rollback_loaded_transaction(
     hook: Callable[[str, dict], None] | None = None,
 ) -> dict:
     target = Path(plan["target_root"])
-    receipt_path = target / PENDING_RECEIPT_PATH
-    reject_symlink_boundary(target, PENDING_RECEIPT_PATH)
-    if receipt_path.is_symlink() or is_reparse_point(receipt_path):
-        raise ApplyError("unsafe pending receipt blocks rollback")
+    receipt_path = recovery_receipt_path(target)
     if journal["state"] == "rolled-back":
         if not all(exact_state_matches(target, item["path"], item["state"]) for item in journal["pre_state"]):
             raise ApplyError("rolled-back transaction no longer matches its exact pre-state")
@@ -2300,6 +2499,7 @@ def rollback_loaded_transaction(
             {"transaction_id": journal["transaction_id"]},
         )
     for index in range(journal["rollback_next_index"], len(rollback_items)):
+        verify_recovery_surface(target, plan, journal)
         item = rollback_items[index]
         relative = item["path"]
         path = target / Path(*PurePosixPath(relative).parts)
@@ -2307,7 +2507,18 @@ def rollback_loaded_transaction(
             pass
         elif item["state"]["exists"]:
             backup = root / item["backup_path"]
-            atomic_write_bytes(path, backup.read_bytes(), mode_int(item["state"]["mode"]))
+            atomic_write_bytes(
+                path,
+                backup.read_bytes(),
+                mode_int(item["state"]["mode"]),
+                temporary_path=target_staging_path(target, journal, relative),
+                hook=hook,
+                boundary_details={
+                    "transaction_id": journal["transaction_id"],
+                    "destination": relative,
+                    "purpose": "rollback",
+                },
+            )
         elif path.exists():
             durable_unlink(path, root)
         invoke_boundary(hook, "after_rollback_restore", {"path": relative})
@@ -2349,6 +2560,62 @@ def recover_transaction(
         raise ApplyError("recovery action must be resume or rollback")
     with transaction_lock(target):
         root, plan, journal = load_transaction(target, transaction_id)
+        verify_recovery_surface(
+            target, plan, journal, allow_target_staging=True
+        )
+        receipt_path = recovery_receipt_path(target)
+        reconciles = {
+            item["id"] for item in plan["operations"] if item["action"] == "reconcile"
+        }
+        if action == "rollback" and journal["state"] == "finalized":
+            raise ApplyError("finalized transaction cannot be rolled back")
+        if action == "rollback" and receipt_path.exists():
+            if journal["state"] == "rolling-back":
+                raise ApplyError("rolling-back transaction still has a pending receipt")
+            if journal["state"] == "rolled-back":
+                raise ApplyError("rolled-back transaction still has a pending receipt")
+            if receipt_path.read_bytes() != expected_rollback_receipt_bytes(
+                plan, journal
+            ):
+                raise ApplyError("pending receipt does not match rollback transaction")
+        if action == "resume" and journal["state"] in {"rolling-back", "rolled-back"}:
+            raise ApplyError(
+                f"{journal['state']} transaction cannot be resumed"
+            )
+        incoming: dict[str, dict] | None = None
+        if action == "resume":
+            if package_root is None:
+                raise ApplyError("resume requires the exact extracted package root")
+            _package, incoming, _migration, _manifest_sha = verify_package_binding(
+                plan, package_root
+            )
+            incoming = filter_component_records(
+                incoming, enabled_components(plan["selection"])
+            )
+            if journal["state"] == "finalized" and not receipt_path.is_file():
+                raise ApplyError("finalized transaction receipt identity differs")
+            if receipt_path.exists():
+                if (
+                    journal["state"] not in {"applying", "interrupted", "finalized"}
+                    or journal["next_apply_index"] != len(active_operations(plan))
+                ):
+                    raise ApplyError("pending receipt is ambiguous after interruption")
+                expected_receipt = build_final_receipt(
+                    plan, journal, incoming, reconciles
+                )
+                expected_receipt_bytes = deterministic_yaml_bytes(expected_receipt)
+                if receipt_path.read_bytes() != expected_receipt_bytes:
+                    raise ApplyError("pending receipt is ambiguous after interruption")
+                if (
+                    journal["state"] == "finalized"
+                    and sha256_bytes(expected_receipt_bytes)
+                    != journal.get("final_receipt_sha256")
+                ):
+                    raise ApplyError("finalized transaction receipt identity differs")
+        verify_recovery_surface(
+            target, plan, journal, allow_target_staging=True
+        )
+        cleanup_transaction_staging(target, root, plan, journal)
         verify_recovery_surface(target, plan, journal)
         if action == "rollback":
             return rollback_loaded_transaction(root, plan, journal, boundary_hook)
@@ -2356,25 +2623,15 @@ def recover_transaction(
             journal["state"] = "interrupted"
             journal["last_error"] = "recovered an abandoned applying state"
             persist_journal(root, journal)
-        if journal["state"] in {"rolling-back", "rolled-back"}:
-            raise ApplyError(
-                f"{journal['state']} transaction cannot be resumed"
-            )
-        if package_root is None:
-            raise ApplyError("resume requires the exact extracted package root")
-        _package, incoming, _migration, _manifest_sha = verify_package_binding(plan, package_root)
-        incoming = filter_component_records(incoming, enabled_components(plan["selection"]))
         if journal["state"] == "finalized":
-            receipt_path = target / PENDING_RECEIPT_PATH
             if not receipt_path.is_file() or sha256_bytes(receipt_path.read_bytes()) != journal.get("final_receipt_sha256"):
                 raise ApplyError("finalized transaction receipt identity differs")
             receipt = yaml.safe_load(receipt_path.read_text(encoding="utf-8"))
             if not isinstance(receipt, dict):
                 raise ApplyError("finalized transaction receipt is invalid")
             return receipt
-        reconciles = {
-            item["id"] for item in plan["operations"] if item["action"] == "reconcile"
-        }
+        if incoming is None:
+            raise ApplyError("resume package binding is unavailable")
         return run_transaction(
             root, journal, plan, package_root, incoming, reconciles, boundary_hook
         )
@@ -2411,6 +2668,10 @@ def apply_plan(
                 boundary_hook,
             )
         except Exception as exc:
+            if journal["state"] == "planned":
+                raise ApplyError(
+                    f"package apply rejected before target mutation; recover transaction {journal['transaction_id']}: {exc}"
+                ) from exc
             journal["state"] = "interrupted"
             journal["last_error"] = str(exc)
             persist_journal(root, journal)

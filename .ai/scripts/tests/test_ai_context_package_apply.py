@@ -2580,6 +2580,7 @@ class AiContextPackageApplyGwtTests(unittest.TestCase):
             "forbidden-ownership",
             "forbidden-from-path",
             "reserved-effective-path",
+            "reserved-effective-packet-root",
             "duplicate-touched-path",
         )
         for variant in variants:
@@ -2617,6 +2618,8 @@ class AiContextPackageApplyGwtTests(unittest.TestCase):
                             operations[0]["from_path"] = ".ai/source.md"
                         elif variant == "reserved-effective-path":
                             operations[0]["path"] = TARGET.EFFECTIVE_STATE_PATH
+                        elif variant == "reserved-effective-packet-root":
+                            operations[0]["path"] = TARGET.EFFECTIVE_PACKET_DIRECTORY
                         else:
                             operations[1]["path"] = operations[0]["path"]
 
@@ -2835,6 +2838,367 @@ class AiContextPackageApplyGwtTests(unittest.TestCase):
             self.assertEqual("rolled-back", recovered["state"])
             self.assertFalse(receipt_path.exists())
             self.assertFalse((fixture.target / ".ai/one.md").exists())
+        finally:
+            fixture.close()
+
+    def test_gwt_041_given_target_changes_during_preparation_when_transaction_is_admitted_then_new_state_is_never_adopted(self) -> None:
+        for boundary in ("after_preparation_backup", "after_planned_journal"):
+            for variant in ("dirty-edit", "head-drift", "exact-post"):
+                with self.subTest(boundary=boundary, variant=variant):
+                    fixture = PackageApplyFixture()
+                    try:
+                        fixture.add_target(".ai/one.md", b"old\n")
+                        fixture.commit_target()
+                        fixture.make_package(
+                            {".ai/one.md": (b"new\n", "framework-managed", "0644")},
+                            [operation("001-replace", "replace", ".ai/one.md")],
+                            previous={
+                                ".ai/one.md": (b"old\n", "framework-managed", "0644")
+                            },
+                        )
+                        plan = fixture.plan("0.9.0")
+
+                        def mutate(observed_boundary: str, _details: dict) -> None:
+                            if observed_boundary != boundary:
+                                return
+                            path = fixture.target / ".ai/one.md"
+                            path.write_bytes(
+                                b"new\n" if variant == "exact-post" else b"concurrent\n"
+                            )
+                            if variant == "head-drift":
+                                git(fixture.target, "add", ".ai/one.md")
+                                git(fixture.target, "commit", "-qm", "concurrent head drift")
+
+                        with self.assertRaises(APPLY.ApplyError):
+                            APPLY.apply_plan(plan, boundary_hook=mutate)
+
+                        self.assertEqual(
+                            b"new\n" if variant == "exact-post" else b"concurrent\n",
+                            (fixture.target / ".ai/one.md").read_bytes(),
+                        )
+                        transaction_root = APPLY.transaction_root(
+                            fixture.target, plan["plan_sha256"]
+                        )
+                        self.assertEqual(
+                            boundary == "after_planned_journal",
+                            transaction_root.exists(),
+                        )
+                        if transaction_root.exists():
+                            journal = yaml.safe_load(
+                                (transaction_root / "journal.yaml").read_text(
+                                    encoding="utf-8"
+                                )
+                            )
+                            self.assertEqual("planned", journal["state"])
+                            self.assertEqual(0, journal["next_apply_index"])
+                            self.assertEqual(0, journal["transition_sequence"])
+                            self.assertIsNone(journal["last_error"])
+                        self.assertFalse(
+                            (fixture.target / APPLY.PENDING_RECEIPT_PATH).exists()
+                        )
+                        if (
+                            boundary == "after_planned_journal"
+                            and variant == "exact-post"
+                        ):
+                            (fixture.target / ".ai/one.md").write_bytes(b"old\n")
+                            receipt = APPLY.recover_transaction(
+                                fixture.target,
+                                plan["plan_sha256"],
+                                "resume",
+                                package_root=fixture.package,
+                            )
+                            errors: list[str] = []
+                            TARGET.validate_pending_apply_receipt(
+                                fixture.target, errors
+                            )
+                            self.assertEqual("finalized", receipt["transaction_state"])
+                            self.assertEqual([], errors)
+                    finally:
+                        fixture.close()
+
+    def test_gwt_042_given_process_death_after_target_staging_fsync_when_resumed_then_only_journal_bound_staging_is_collected(self) -> None:
+        fixture = PackageApplyFixture()
+        try:
+            fixture.make_package(
+                {".ai/one.md": (b"one\n", "framework-managed", "0644")},
+                [operation("001-add", "add", ".ai/one.md")],
+            )
+            plan = fixture.plan()
+            staging_record = next(
+                item
+                for item in APPLY.target_staging_records(plan)
+                if item["destination"] == ".ai/one.md"
+            )
+            staging_path = fixture.target / staging_record["path"]
+
+            def crash(boundary: str, details: dict) -> None:
+                if (
+                    boundary == "after_target_staging_fsync"
+                    and details.get("destination") == ".ai/one.md"
+                    and details.get("purpose") == "apply"
+                ):
+                    raise APPLY.InjectedInterruption("simulated hard process death")
+
+            with self.assertRaises(APPLY.InjectedInterruption):
+                APPLY.apply_plan(plan, boundary_hook=crash)
+
+            self.assertTrue(staging_path.is_file())
+            self.assertEqual(b"one\n", staging_path.read_bytes())
+            self.assertFalse((fixture.target / ".ai/one.md").exists())
+            journal_path = (
+                APPLY.transaction_root(fixture.target, plan["plan_sha256"])
+                / "journal.yaml"
+            )
+            journal_before_rejected_resume = journal_path.read_bytes()
+
+            with self.assertRaises(APPLY.ApplyError):
+                APPLY.recover_transaction(
+                    fixture.target,
+                    plan["plan_sha256"],
+                    "resume",
+                    package_root=fixture.root / "wrong-package",
+                )
+
+            self.assertTrue(staging_path.is_file())
+            self.assertEqual(b"one\n", staging_path.read_bytes())
+            self.assertEqual(
+                journal_before_rejected_resume, journal_path.read_bytes()
+            )
+            self.assertFalse((fixture.target / ".ai/one.md").exists())
+
+            verify_package_binding = APPLY.verify_package_binding
+
+            def mutate_after_package_binding(
+                sealed_plan: dict, package_root: Path
+            ) -> tuple[dict, dict[str, dict], dict, str]:
+                binding = verify_package_binding(sealed_plan, package_root)
+                destination = fixture.target / ".ai/one.md"
+                destination.parent.mkdir(parents=True, exist_ok=True)
+                destination.write_bytes(b"concurrent\n")
+                return binding
+
+            with mock.patch.object(
+                APPLY,
+                "verify_package_binding",
+                side_effect=mutate_after_package_binding,
+            ), self.assertRaisesRegex(
+                APPLY.ApplyError, "target state does not match transaction progress"
+            ):
+                APPLY.recover_transaction(
+                    fixture.target,
+                    plan["plan_sha256"],
+                    "resume",
+                    package_root=fixture.package,
+                )
+
+            self.assertTrue(staging_path.is_file())
+            self.assertEqual(b"one\n", staging_path.read_bytes())
+            self.assertEqual(
+                journal_before_rejected_resume, journal_path.read_bytes()
+            )
+            self.assertEqual(
+                b"concurrent\n", (fixture.target / ".ai/one.md").read_bytes()
+            )
+            (fixture.target / ".ai/one.md").unlink()
+
+            receipt = APPLY.recover_transaction(
+                fixture.target,
+                plan["plan_sha256"],
+                "resume",
+                package_root=fixture.package,
+            )
+
+            self.assertEqual("finalized", receipt["transaction_state"])
+            self.assertFalse(staging_path.exists())
+            self.assertEqual(
+                b"one\n", (fixture.target / ".ai/one.md").read_bytes()
+            )
+        finally:
+            fixture.close()
+
+    def test_gwt_043_given_finalized_transaction_with_retained_staging_when_target_validates_then_finalization_fails_closed(self) -> None:
+        fixture = PackageApplyFixture()
+        try:
+            fixture.make_package(
+                {".ai/one.md": (b"one\n", "framework-managed", "0644")},
+                [operation("001-add", "add", ".ai/one.md")],
+            )
+            plan = fixture.plan()
+            APPLY.apply_plan(plan)
+            staging_record = next(
+                item
+                for item in APPLY.target_staging_records(plan)
+                if item["destination"] == ".ai/one.md"
+            )
+            staging_path = fixture.target / staging_record["path"]
+            staging_path.write_bytes(b"retained\n")
+
+            errors: list[str] = []
+            TARGET.validate_pending_apply_receipt(fixture.target, errors)
+
+            self.assertTrue(
+                any("transaction staging path remains" in error for error in errors),
+                errors,
+            )
+            with self.assertRaisesRegex(
+                TARGET.TargetValidationError, "transaction staging path remains"
+            ):
+                TARGET.finalize_context(fixture.target, {}, {})
+        finally:
+            fixture.close()
+
+    def test_gwt_044_given_process_death_during_receipt_staging_when_resumed_then_receipt_is_rebuilt_from_sealed_state(self) -> None:
+        fixture = PackageApplyFixture()
+        try:
+            fixture.make_package(
+                {".ai/one.md": (b"one\n", "framework-managed", "0644")},
+                [operation("001-add", "add", ".ai/one.md")],
+            )
+            plan = fixture.plan()
+            staging_record = next(
+                item
+                for item in APPLY.target_staging_records(plan)
+                if item["destination"] == APPLY.PENDING_RECEIPT_PATH
+            )
+            staging_path = fixture.target / staging_record["path"]
+
+            def crash(boundary: str, details: dict) -> None:
+                if (
+                    boundary == "after_target_staging_fsync"
+                    and details.get("purpose") == "receipt"
+                ):
+                    raise APPLY.InjectedInterruption("receipt staging interrupted")
+
+            with self.assertRaises(APPLY.InjectedInterruption):
+                APPLY.apply_plan(plan, boundary_hook=crash)
+
+            self.assertTrue(staging_path.is_file())
+            receipt_path = fixture.target / APPLY.PENDING_RECEIPT_PATH
+            self.assertFalse(receipt_path.exists())
+            journal_path = (
+                APPLY.transaction_root(fixture.target, plan["plan_sha256"])
+                / "journal.yaml"
+            )
+            journal_before_rejected_resume = journal_path.read_bytes()
+            receipt_path.write_bytes(b"unbound receipt\n")
+
+            with self.assertRaisesRegex(
+                APPLY.ApplyError, "pending receipt is ambiguous after interruption"
+            ):
+                APPLY.recover_transaction(
+                    fixture.target,
+                    plan["plan_sha256"],
+                    "resume",
+                    package_root=fixture.package,
+                )
+
+            self.assertTrue(staging_path.is_file())
+            self.assertEqual(b"unbound receipt\n", receipt_path.read_bytes())
+            self.assertEqual(
+                journal_before_rejected_resume, journal_path.read_bytes()
+            )
+            receipt_path.unlink()
+
+            receipt = APPLY.recover_transaction(
+                fixture.target,
+                plan["plan_sha256"],
+                "resume",
+                package_root=fixture.package,
+            )
+
+            self.assertEqual("finalized", receipt["transaction_state"])
+            self.assertFalse(staging_path.exists())
+            self.assertTrue(
+                (fixture.target / APPLY.PENDING_RECEIPT_PATH).is_file()
+            )
+        finally:
+            fixture.close()
+
+    def test_gwt_045_given_process_death_during_rollback_staging_when_rollback_retries_then_prestate_is_restored(self) -> None:
+        fixture = PackageApplyFixture()
+        try:
+            fixture.add_target(".ai/one.md", b"old\n")
+            fixture.commit_target()
+            fixture.make_package(
+                {".ai/one.md": (b"new\n", "framework-managed", "0644")},
+                [operation("001-replace", "replace", ".ai/one.md")],
+                previous={
+                    ".ai/one.md": (b"old\n", "framework-managed", "0644")
+                },
+            )
+            plan = fixture.plan("0.9.0")
+
+            def stop_after_apply(boundary: str, details: dict) -> None:
+                if boundary == "after_progress_journal":
+                    raise APPLY.InjectedInterruption("retain applied prefix")
+
+            with self.assertRaises(APPLY.InjectedInterruption):
+                APPLY.apply_plan(plan, boundary_hook=stop_after_apply)
+
+            staging_record = next(
+                item
+                for item in APPLY.target_staging_records(plan)
+                if item["destination"] == ".ai/one.md"
+            )
+            staging_path = fixture.target / staging_record["path"]
+
+            def crash_rollback(boundary: str, details: dict) -> None:
+                if (
+                    boundary == "after_target_staging_fsync"
+                    and details.get("purpose") == "rollback"
+                ):
+                    raise APPLY.InjectedInterruption("rollback staging interrupted")
+
+            with self.assertRaises(APPLY.InjectedInterruption):
+                APPLY.recover_transaction(
+                    fixture.target,
+                    plan["plan_sha256"],
+                    "rollback",
+                    boundary_hook=crash_rollback,
+                )
+
+            self.assertTrue(staging_path.is_file())
+            self.assertEqual(
+                b"new\n", (fixture.target / ".ai/one.md").read_bytes()
+            )
+            receipt_path = fixture.target / APPLY.PENDING_RECEIPT_PATH
+            receipt_path.parent.mkdir(parents=True, exist_ok=True)
+            receipt_path.write_bytes(b"unbound receipt\n")
+            journal_path = (
+                APPLY.transaction_root(fixture.target, plan["plan_sha256"])
+                / "journal.yaml"
+            )
+            journal_before_rejected_rollback = journal_path.read_bytes()
+
+            with self.assertRaisesRegex(
+                APPLY.ApplyError,
+                "rolling-back transaction still has a pending receipt",
+            ):
+                APPLY.recover_transaction(
+                    fixture.target, plan["plan_sha256"], "rollback"
+                )
+
+            self.assertTrue(staging_path.is_file())
+            self.assertEqual(
+                b"new\n", (fixture.target / ".ai/one.md").read_bytes()
+            )
+            self.assertEqual(
+                b"unbound receipt\n", receipt_path.read_bytes()
+            )
+            self.assertEqual(
+                journal_before_rejected_rollback, journal_path.read_bytes()
+            )
+            receipt_path.unlink()
+
+            recovered = APPLY.recover_transaction(
+                fixture.target, plan["plan_sha256"], "rollback"
+            )
+
+            self.assertEqual("rolled-back", recovered["state"])
+            self.assertFalse(staging_path.exists())
+            self.assertEqual(
+                b"old\n", (fixture.target / ".ai/one.md").read_bytes()
+            )
         finally:
             fixture.close()
 

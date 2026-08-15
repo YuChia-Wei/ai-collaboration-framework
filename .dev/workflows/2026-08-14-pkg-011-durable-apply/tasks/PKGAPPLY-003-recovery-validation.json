@@ -8,29 +8,29 @@
   "owner_skill": "ai-context-governance",
   "status": "in_progress",
   "created_at": "2026-08-14T09:07:04+08:00",
-  "updated_at": "2026-08-15T08:17:23+08:00",
+  "updated_at": "2026-08-15T09:49:40+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-5.6-sol",
   "reasoning_effort": "xhigh",
   "finding_ids": ["ASM-20260813-001#PKGAPPLY-001", "Issue-200-acceptance", "Issue-209-acceptance"],
   "scope": {
     "target": "Deterministic Windows-compatible and POSIX proof for durable recovery, package-native apply compatibility, and boundary-first Git-ignore inspection",
-    "files": [".ai/scripts/ai_context_package_apply.py", ".ai/scripts/tests/test_ai_context_package_apply.py", ".ai/scripts/tests/test_ai_context_target_validation.py", ".ai/scripts/tests/test_ai_context_packaging.py", ".github/workflows/**"],
-    "constraints": ["Use deterministic fault injection rather than timing", "Preserve blocked/skipped states without relabeling", "Bind long-running validation to an immutable clean commit", "No repair by the independent validator"],
+    "files": [".ai/scripts/ai_context_package_apply.py", ".ai/scripts/ai_context_target_provenance.py", ".ai/scripts/tests/test_ai_context_package_apply.py", ".ai/scripts/tests/test_ai_context_target_validation.py", ".ai/scripts/tests/test_ai_context_packaging.py", ".github/workflows/**"],
+    "constraints": ["Use deterministic fault injection rather than timing", "Preserve blocked/skipped states without relabeling", "Bind long-running validation to an immutable clean commit", "Do not dispatch long-running, full-matrix, release, or nightly-full validation until all planned #200-#208 local changes, focused tests, reviews, and commits are complete", "No repair by the independent validator"],
     "non_goals": ["Nightly runner scheduling", "Product source review", "Release publication"]
   },
   "execution": {
     "steps": ["Bind recovery to the exact caller target before any resume or rollback mutation", "Publish the complete planned journal atomically from a non-blocking preparation directory", "Use a write-through Windows source-path removal before advancing the journal", "Cover partial write, readonly/permission, symlink/reparse, EOL, delete, rename, and mode cases", "Force interruption after every journal, operation, receipt, and rollback boundary", "Validate recovery from a fresh process invocation", "Run package-native and cross-platform focused matrices", "Obtain independent fixed-head verification"],
     "validation": ["Windows-compatible focused suite", "Ubuntu-24.04 focused GWT-008 and complete package-apply suite", "POSIX focused suite", "package-native validation", "external-task receipt validation", "independent ai-context-auditor assessment"],
-    "last_completed_step": "Round-4 current-diff re-review accepted Windows write-through replacement, current target and HEAD binding, exact operation validation, parent-boundary checks, and deterministic exact-receipt rollback deletion with no P1/P2/P3 findings",
-    "next_action": "Create a new Issue #200 durable commit, dispatch the immutable Windows package-apply suite, and obtain a new fixed-head audit"
+    "last_completed_step": "Round-5 predecessor-work audit and remediation completed preparation/mutation TOCTOU admission, journal-v3 deterministic target staging, apply/receipt/rollback hard-death recovery, retained-staging finalization rejection, exact effective-rule packet-root guarding, and strengthened GWT-036 plus GWT-041 through GWT-045",
+    "next_action": "Commit this round-5 batch as an Issue #200 durable checkpoint; after the containing commit, continue the remaining #200-#208 local work before any long-running validation dispatch"
   },
   "results": {
-    "summary": "The round-4 fixed-head findings are remediated in the working tree with supported Windows write-through replacement, current target and HEAD finalization binding, exact sealed-operation validation, target parent-boundary checks, and package-independent exact-receipt rollback deletion.",
-    "files_changed": [".ai/scripts/ai_context_package_apply.py", ".ai/scripts/ai_context_target_provenance.py", ".ai/scripts/tests/test_ai_context_package_apply.py", ".ai/scripts/README.md", ".ai/assets/skills/ai-context-upgrader/references/provenance-contract.md", ".dev/workflows/2026-08-14-pkg-011-durable-apply/**"],
-    "tests_run": ["commit df36a29 fixed-HEAD package matrix: 38 passed with a schema-valid receipt followed by a retained non-passing audit", "latest WSL Ubuntu-24.04 package-apply suite outside sandbox after all changes: 56 passed in 21.963 seconds", "affected Windows round-4 fixtures: 4 passed", "receipt-boundary Windows fixtures: 2 passed", "semantic customization lifecycle: 7 passed outside sandbox", "semantic customization skill contract: 5 passed outside sandbox", "AST parse and git diff --check: passed", "final current-diff review: no P1/P2/P3"],
-    "finding_status": "round-4-current-diff-reviewed-awaiting-durable-commit",
-    "residual_risk": "The independently reviewed round-4 remediation is not yet bound to a clean commit, immutable Windows full suite, and final fixed-head audit; durable verification assessment allocation remains gated by Issue #213.",
+    "summary": "The round-5 predecessor handoff is audited and remediated so recovery validates target, HEAD, surface, exact package, and exact receipt before cleanup or journal/target mutation; journal-v3 uses deterministic target staging and finalization rejects retained staging or non-exact effective-rule packet roots.",
+    "files_changed": [".ai/scripts/ai_context_package_apply.py", ".ai/scripts/ai_context_target_provenance.py", ".ai/scripts/tests/test_ai_context_package_apply.py", ".dev/workflows/2026-08-14-pkg-011-durable-apply/**"],
+    "tests_run": ["GWT-023 apply hard-death boundaries: 1 passed in 26.030 seconds with 8 deterministic boundary subcases", "GWT-024 rollback hard-death boundaries: 1 passed in 12.415 seconds with 4 deterministic boundary subcases", "GWT-036 exact effective-rule packet-root guard: 1 passed in 22.676 seconds", "GWT-041 through GWT-043 preparation admission, resume staging, and retained-stage finalization: 3 passed in 16.129 seconds", "GWT-044 through GWT-045 receipt and rollback retained-staging recovery: 2 passed in 8.550 seconds", "GWT-009, GWT-039, and GWT-040 adjacent target, HEAD, and receipt regressions: 3 passed in 7.334 seconds", "three changed Python files: AST parse passed", "task JSON parse, workflow artifact validation, and scoped git diff --check: passed", "round-5 scoped current-diff review: no remaining P1/P2/P3 finding after remediation"],
+    "finding_status": "round-5-focused-validated-awaiting-durable-commit",
+    "residual_risk": "The round-5 remediation is not yet bound to its durable commit. Long-running/full-matrix/release/nightly-full validation is intentionally sequencing-deferred until all planned #200-#208 local changes, focused tests, reviews, and commits are complete; durable verification assessment allocation remains gated by Issue #213.",
     "follow_up_needed": true
   }
 }
