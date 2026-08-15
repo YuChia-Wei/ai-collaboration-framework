@@ -8,7 +8,7 @@ task-level progress.
 
 | Workflow | Title | Owner | Status | Updated | Entry Point |
 | --- | --- | --- | --- | --- | --- |
-| [`2026-08-15-val-007-terminal-validation`](2026-08-15-val-007-terminal-validation/workflow.yaml) | Seal Terminal Validation Supervision And Evidence | `ai-context-governance` | `completed` | `2026-08-15T17:52:54+08:00` | [plan](2026-08-15-val-007-terminal-validation/workflow-plan.md) |
+| [`2026-08-15-val-007-terminal-validation`](2026-08-15-val-007-terminal-validation/workflow.yaml) | Seal Terminal Validation Supervision And Evidence | `ai-context-governance` | `completed` | `2026-08-15T18:10:52+08:00` | [plan](2026-08-15-val-007-terminal-validation/workflow-plan.md) |
 | [`2026-08-14-environment-execution-routing`](2026-08-14-environment-execution-routing/workflow.yaml) | Define Portable CLI Execution Routing | `ai-context-governance` | `completed` | `2026-08-14T22:40:39+08:00` | [plan](2026-08-14-environment-execution-routing/workflow-plan.md) |
 | [`2026-08-14-pkg-011-durable-apply`](2026-08-14-pkg-011-durable-apply/workflow.yaml) | PKG-011 durable package apply and Hybrid identity remediation | `ai-context-governance` | `completed` | `2026-08-15T11:22:12+08:00` | [plan](2026-08-14-pkg-011-durable-apply/workflow-plan.md) |
 | [`2026-08-14-pkg-012-package-closure`](2026-08-14-pkg-012-package-closure/workflow.yaml) | PKG-012 portable package closure remediation | `ai-context-governance` | `completed` | `2026-08-14T09:01:29+08:00` | [plan](2026-08-14-pkg-012-package-closure/workflow-plan.md) |

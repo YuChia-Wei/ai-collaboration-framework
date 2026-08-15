@@ -19,7 +19,7 @@
 - `current_phase`: `completed`
 - `artifact_root`: `.dev/workflows/2026-08-15-val-007-terminal-validation`
 - `created_at`: `2026-08-15T13:39:00+08:00`
-- `updated_at`: `2026-08-15T17:52:54+08:00`
+- `updated_at`: `2026-08-15T18:10:52+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md`
 - `template_version`: `1.2.0`
 
@@ -88,12 +88,12 @@
 
 ## Resume Checkpoint
 
-- Last completed action: independent read-only fixed-head acceptance audit of clean implementation commit `59dae454bcfe55fed9873eac834449583750c4a5`; no P0/P1 finding and no repository mutation.
+- Last completed action: corrected the common PR #216 Ubuntu startup failure in `7b4be71e00ef09289b2d17b77c00b23ddcbc3c9c`; exact Windows and Ubuntu GWT-019 plus Ubuntu Bash syntax passed, and independent review found no P0/P1.
 - Current task: local workflow closeout; all three VAL-007 tasks are completed.
-- Exact next action: after this closeout commit, preserve the clean local branch and request an owner decision for push/PR. Do not execute cumulative long-running validation until all planned #200-#208 changes and focused reviews/commits are complete.
+- Exact next action: push the CI remediation to PR #216 and use one exact-head hosted-check watch. Stop on any required-check failure or head drift; do not merge until the owner decision after every required gate passes.
 - Validation already completed: Windows and WSL supervisor modules; bounded evidence GWT groups; selected fail-closed runner batches; workflow and registry contract modules; AST, Bash syntax, YAML/workflow, and diff checks; independent current-diff and fixed-head reviews. The historical GWT-019 stale-message failure and sandbox-blocked attempts remain retained rather than relabeled.
-- Git state: branch `codex/2026-08-15-val-007-terminal-validation`; implementation HEAD `59dae454bcfe55fed9873eac834449583750c4a5` was clean and is not pushed. No PR exists for this workflow.
-- Branch history and checkpoint handoffs: segment 1 remains local and unshared. Durable implementation boundaries are `254d0d7`, `910944f`, and `59dae45`; workflow bootstrap is `0965a2c`.
+- Git state: branch `codex/2026-08-15-val-007-terminal-validation`; PR #216 is open as draft. The first hosted head `94f7d9e` retained two identical pre-launch Ubuntu failures; CI remediation commit is `7b4be71e00ef09289b2d17b77c00b23ddcbc3c9c` with closeout sync pending.
+- Branch history and checkpoint handoffs: durable implementation boundaries are `254d0d7`, `910944f`, `59dae45`, and CI portability fix `7b4be71`; workflow bootstrap is `0965a2c`, initial closeout is `94f7d9e`.
 - Blockers or unresolved decisions: no local #204 implementation blocker. Push/PR, hosted gates, Issue closure, merge, cumulative external validation, nightly activation, and release remain separate decisions.
 
 ## Branch Lifecycle
@@ -102,3 +102,4 @@
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | 1 | `codex/2026-08-15-val-007-terminal-validation` | `main@76c51574c7b2fdf59e8648eb105570589053ecf0` | local workflow bootstrap | `0965a2cf288c79fe91df3e291806d1bf66e9f8c9` | not pushed | `2026-08-15T13:39:00+08:00` | isolate #204 as its owner-approved independent delivery | implement and validate focused VAL-007 remediation |
 | 1 | `codex/2026-08-15-val-007-terminal-validation` | `0965a2cf288c79fe91df3e291806d1bf66e9f8c9` | clean fixed-head implementation review | `59dae454bcfe55fed9873eac834449583750c4a5` | not pushed | `2026-08-15T17:52:54+08:00` | preserve reviewed process-tree, evidence, and disabled-readiness implementation | commit closeout records, then return push/PR decision to owner |
+| 1 | `codex/2026-08-15-val-007-terminal-validation` | `94f7d9e911e0f85d5330bc09c6b6c2b110d598a2` | hosted CI portability remediation | `7b4be71e00ef09289b2d17b77c00b23ddcbc3c9c` | PR #216 update pending | `2026-08-15T18:10:52+08:00` | split portable artifact-path declaration from ordered assignment after identical Ubuntu startup failures | commit closeout sync, push, and watch exact-head hosted checks once |

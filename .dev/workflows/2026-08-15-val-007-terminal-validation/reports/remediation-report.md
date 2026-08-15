@@ -14,7 +14,7 @@
 - `owner_skill`: `ai-context-governance`
 - `status`: `completed`
 - `created_at`: `2026-08-15T13:39:00+08:00`
-- `updated_at`: `2026-08-15T17:52:54+08:00`
+- `updated_at`: `2026-08-15T18:10:52+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-remediation-report-template.md`
 - `template_version`: `2.0.0`
 - `baseline_assessment`: `ASM-20260810-005; ASM-20260813-001`
@@ -63,6 +63,13 @@
 - Admission: the sole job has job-level `if: ${{ false }}`. Checkout, setup, command execution, and upload are unreachable until a tracked reviewed change alters that gate.
 - Evidence: workflow contract 10/10 passed in 0.322 seconds; the fixed-head reviewer independently passed the dedicated readiness GWT and confirmed the hard-disable.
 
+### PR #216 Hosted CI Startup Portability Remediation
+
+- Initial evidence: `Read-only governance contract` run `31878447436` / job `94997476877` and `Ubuntu PR profile gate` run `31878447393` / job `94997476608` both failed before validator launch with `realpath: '': No such file or directory` followed by the repository evidence-boundary rejection. The other three hosted checks passed.
+- Root cause: `repo_relative_artifact` declared `input_path=$1` and `normalized_path=$input_path` in one Bash `local` command. Bash expanded both right-hand sides before executing `local`, so Ubuntu retained an empty normalized path. Git Bash masked the defect because its subsequent `cygpath` branch overwrote the value.
+- Disposition: commit `7b4be71e00ef09289b2d17b77c00b23ddcbc3c9c` separates declaration and ordered assignment without changing Windows conversion or boundary semantics. Exact GWT-019 passed on Windows in 1.322 seconds and Ubuntu-24.04 in 25.334 seconds; Ubuntu Bash syntax and scoped diff checks passed. Independent read-only review found no P0/P1.
+- Required next evidence: one exact-head hosted-check watch after the remediation and closeout-sync commits are pushed. The first failed runs remain retained and are not relabeled.
+
 ## Verification Assessment Reconciliation
 
 - Independent auditors: separate supervisor, evidence, runner-integration, terminal-publication, and fixed-head reviewers examined the changing diff. Their P1 findings covered argv privacy, detached descendants, PID reuse, launch-handshake races, incomplete seal semantics, cache/preparation parity, selection binding, signal windows, publication ownership, and terminal-pair authentication; each was remediated and re-reviewed.
@@ -81,6 +88,6 @@
 ## Closure Evidence
 
 - Required local validations: focused supervisor/snapshot/evidence/cleanup/workflow contracts and independent fixed-head review are complete. Later cumulative external-task validation is deliberately deferred, not passed or waived.
-- Commit status: workflow bootstrap `0965a2c`; bounded nested cleanup `254d0d7`; process-tree supervisor `910944f`; integrated evidence, runner, tests, and disabled readiness `59dae454bcfe55fed9873eac834449583750c4a5`. These durable boundaries are intentionally retained; squashing would discard reviewed safety checkpoints without materially reducing the final diff.
+- Commit status: workflow bootstrap `0965a2c`; bounded nested cleanup `254d0d7`; process-tree supervisor `910944f`; integrated evidence, runner, tests, and disabled readiness `59dae454bcfe55fed9873eac834449583750c4a5`; initial closeout `94f7d9e`; Ubuntu hosted-startup portability fix `7b4be71e00ef09289b2d17b77c00b23ddcbc3c9c`. These durable boundaries are intentionally retained; squashing would discard reviewed safety checkpoints without materially reducing the final diff.
 - Workflow/task status: all three #204 tasks are locally completed. Issue #204 remains open; no push, PR, hosted gate, merge, Issue closure, tag, release, or publication was performed.
-- Final next action: commit this closeout record, verify a clean local HEAD, and return the push/PR decision to the owner. Do not run cumulative long validation or activate nightly-full during this independent delivery.
+- Final next action: commit this CI closeout sync, push PR #216, and use one exact-head hosted-check watch. Stop on any failure or head drift; do not run cumulative long validation or activate nightly-full during this independent delivery.
