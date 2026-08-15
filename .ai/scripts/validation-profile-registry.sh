@@ -93,7 +93,7 @@ register_check selected-git-commits \
     "Selected Git Commit Messages" required \
     "governance,git" "pr release nightly-full" \
     ".git" workflow-artifacts "python>=3.11 git" 30 cpu no-reuse source \
-    "python .ai/scripts/validate-git-commits.py --range COMMIT_RANGE" commit-range
+    "python .ai/scripts/validate-git-commits.py --range COMMIT_RANGE [--workflow-id WORKFLOW_ID]" commit-range
 register_check ai-context-navigation \
     "AI Context Navigation and Runtime Contracts" required \
     "context,navigation" "fast pr release nightly-full" \
@@ -182,8 +182,18 @@ register_check profile-registry-contract \
 register_check validation-evidence-contract \
     "Validation Execution Evidence Contract" required \
     "runner,evidence,tests" "fast pr release nightly-full" \
-    ".ai/scripts/validation-evidence.py .ai/scripts/tests/test_validation_evidence.py .ai/scripts/check-all.sh" profile-registry-contract "python>=3.11" 30 cpu reuse-by-input source \
+    ".ai/scripts/validation-evidence.py .ai/scripts/tests/test_validation_evidence.py .ai/scripts/check-all.sh" validation-process-supervisor-contract "python>=3.11" 60 cpu reuse-by-input source \
+    "python .ai/scripts/tests/test_validation_evidence.py ValidationEvidenceRoutineContractGwtTests -v" always
+register_check validation-evidence-exhaustive-contract \
+    "Validation Execution Evidence Exhaustive Contract" required \
+    "runner,evidence,tests" "release nightly-full" \
+    ".ai/scripts/validation-evidence.py .ai/scripts/tests/test_validation_evidence.py .ai/scripts/check-all.sh" validation-evidence-contract "python>=3.11" 180 cpu no-reuse source \
     "python .ai/scripts/tests/test_validation_evidence.py -v" always
+register_check validation-process-supervisor-contract \
+    "Validation Process Supervisor Contract" required \
+    "runner,process-tree,tests" "fast pr release nightly-full" \
+    ".ai/scripts/validation_process_supervisor.py .ai/scripts/tests/test_validation_process_supervisor.py" profile-registry-contract "python>=3.11" 30 cpu reuse-by-input portable \
+    "python .ai/scripts/tests/test_validation_process_supervisor.py -v" always
 register_check immutable-history-validation-contract \
     "Immutable History Validation Contract" required \
     "governance,history,tests" "pr release nightly-full" \

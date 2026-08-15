@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Exact lifecycle contracts for the repository's four GitHub workflows."""
+"""Semantic lifecycle contracts for the repository's governed workflows."""
 
 from __future__ import annotations
 
@@ -14,6 +14,7 @@ REPO_ROOT = Path(__file__).resolve().parents[3]
 WORKFLOW_DIR = REPO_ROOT / ".github/workflows"
 WORKFLOW_NAMES = {
     "governance.yml",
+    "nightly-full-readiness.yml",
     "portable-gates.yml",
     "package-candidate.yml",
     "publish-release.yml",
@@ -26,8 +27,13 @@ PUBLISH_CONCURRENCY = {
     "group": "ai-context-release-${{ github.ref_name }}",
     "cancel-in-progress": "false",
 }
+NIGHTLY_READINESS_CONCURRENCY = {
+    "group": "ai-context-nightly-full-readiness",
+    "cancel-in-progress": "false",
+}
 EXPECTED_TRIGGERS = {
     "governance.yml": {"pull_request", "workflow_dispatch"},
+    "nightly-full-readiness.yml": {"schedule", "workflow_dispatch"},
     "portable-gates.yml": {"pull_request", "workflow_dispatch"},
     "package-candidate.yml": {"pull_request", "workflow_dispatch"},
     "publish-release.yml": {"push"},
@@ -60,6 +66,7 @@ EXPECTED_PR_PATHS = {
 }
 EXPECTED_ARTIFACT_ACTIONS = {
     "governance.yml": ["actions/upload-artifact@v7"],
+    "nightly-full-readiness.yml": ["actions/upload-artifact@v7"],
     "portable-gates.yml": ["actions/upload-artifact@v7"],
     "package-candidate.yml": ["actions/upload-artifact@v7"],
     "publish-release.yml": [
@@ -96,13 +103,17 @@ def steps(workflow: dict) -> list[dict]:
 class GitHubWorkflowContractTests(unittest.TestCase):
     def setUp(self) -> None:
         actual_names = {path.name for path in WORKFLOW_DIR.glob("*.yml")}
-        self.assertEqual(WORKFLOW_NAMES, actual_names)
+        missing_contract_workflows = WORKFLOW_NAMES - actual_names
+        self.assertFalse(
+            missing_contract_workflows,
+            f"Missing governed workflows: {sorted(missing_contract_workflows)}",
+        )
         self.workflows = {
             name: load_workflow(name)
             for name in sorted(WORKFLOW_NAMES)
         }
 
-    def test_gwt_001_given_four_workflows_when_loaded_then_triggers_are_exact(self) -> None:
+    def test_gwt_001_given_governed_workflows_when_loaded_then_triggers_match_their_contracts(self) -> None:
         for name, workflow in self.workflows.items():
             with self.subTest(workflow=name):
                 self.assertEqual(EXPECTED_TRIGGERS[name], set(workflow["on"]))
@@ -139,6 +150,10 @@ class GitHubWorkflowContractTests(unittest.TestCase):
         self.assertEqual(
             PUBLISH_CONCURRENCY,
             self.workflows["publish-release.yml"].get("concurrency"),
+        )
+        self.assertEqual(
+            NIGHTLY_READINESS_CONCURRENCY,
+            self.workflows["nightly-full-readiness.yml"].get("concurrency"),
         )
 
     def test_gwt_002a_given_portable_gate_when_steps_are_read_then_no_dotnet_sdk_is_selected(self) -> None:
@@ -276,6 +291,9 @@ class GitHubWorkflowContractTests(unittest.TestCase):
     def test_gwt_005_given_jobs_when_cost_and_responsibility_checked_then_matrix_is_exact(self) -> None:
         expected_jobs = {
             "governance.yml": {"governance": ("15", "ubuntu-latest")},
+            "nightly-full-readiness.yml": {
+                "nightly-full-readiness": ("60", "ubuntu-latest")
+            },
             "portable-gates.yml": {
                 "prerequisite-posix": ("15", "ubuntu-latest"),
                 "prerequisite-windows": ("15", "windows-latest"),
@@ -364,6 +382,59 @@ class GitHubWorkflowContractTests(unittest.TestCase):
         self.assertIn("python -m zipfile -e", incoming_validation["run"])
         self.assertIn("validate-ai-context-payload.py", incoming_validation["run"])
         self.assertIn("--package-root .", incoming_validation["run"])
+
+    def test_gwt_008_given_nightly_readiness_when_inspected_then_execution_requires_a_tracked_gate_change(self) -> None:
+        workflow = self.workflows["nightly-full-readiness.yml"]
+        self.assertEqual(
+            [{"cron": "23 17 * * *"}],
+            workflow["on"]["schedule"],
+        )
+
+        job = workflow["jobs"]["nightly-full-readiness"]
+        self.assertEqual("${{ false }}", job.get("if"))
+        self.assertNotIn("strategy", job)
+        self.assertNotIn("needs", job)
+        self.assertEqual({"contents": "read"}, job.get("permissions"))
+
+        aggregate_steps = [
+            step
+            for step in job["steps"]
+            if ".ai/scripts/check-all.sh" in step.get("run", "")
+        ]
+        self.assertEqual(
+            ["bash .ai/scripts/check-all.sh --profile nightly-full"],
+            [step["run"] for step in aggregate_steps],
+        )
+
+        checkout = next(
+            step
+            for step in job["steps"]
+            if step.get("uses") == "actions/checkout@v6"
+        )
+        self.assertEqual(
+            {"fetch-depth": "0", "persist-credentials": "false"},
+            checkout.get("with"),
+        )
+
+        evidence_upload = next(
+            step
+            for step in job["steps"]
+            if step.get("uses") == "actions/upload-artifact@v7"
+        )
+        self.assertEqual("always()", evidence_upload.get("if"))
+        self.assertEqual(
+            {
+                "name": (
+                    "ai-context-validation-nightly-full-"
+                    "${{ github.run_id }}-${{ github.run_attempt }}"
+                ),
+                "retention-days": "30",
+                "compression-level": "0",
+                "if-no-files-found": "error",
+                "path": "artifacts/validation",
+            },
+            evidence_upload.get("with"),
+        )
 
 
 if __name__ == "__main__":

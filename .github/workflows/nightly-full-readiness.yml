@@ -1,0 +1,52 @@
+name: Nightly Full Validation Readiness
+
+on:
+  schedule:
+    - cron: "23 17 * * *"
+  workflow_dispatch:
+
+permissions: {}
+
+# VAL-007 readiness only. Activation requires a later tracked change after the
+# owner-authorized cumulative validation gate; queued runs never cancel an
+# already-running immutable validation attempt.
+concurrency:
+  group: ai-context-nightly-full-readiness
+  cancel-in-progress: false
+
+jobs:
+  nightly-full-readiness:
+    name: Nightly-full validation (hard-disabled readiness)
+    if: ${{ false }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    permissions:
+      contents: read
+    steps:
+      - name: Check out the immutable candidate tree
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+
+      - name: Install pinned Python dependencies
+        run: python -m pip install --disable-pip-version-check -r requirements.txt
+
+      - name: Run the canonical nightly-full profile
+        shell: bash
+        run: bash .ai/scripts/check-all.sh --profile nightly-full
+
+      - name: Upload deterministic validation evidence
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: ai-context-validation-nightly-full-${{ github.run_id }}-${{ github.run_attempt }}
+          retention-days: 30
+          compression-level: 0
+          if-no-files-found: error
+          path: artifacts/validation

@@ -397,17 +397,47 @@ pass with the same validator/profile/input/environment identity may be reported
 as `reused`; that remains distinct from a new execution in both the compact
 summary and evidence record.
 
+Before any validation command is launched, the runner retains a repository
+admission snapshot. `release` and `nightly-full` require a clean, operation-free
+commit; `fast` and `pr` may use a stable dirty snapshot, but any subsequent
+HEAD, index, tracked/untracked content, or Git-operation drift aborts the
+remaining command chain. Admission failure retains a private failure artifact
+and launches no check.
+
+Launched checks run through `validation_process_supervisor.py`. Windows uses a
+Job Object and supported Linux hosts use subreaper-aware descendant tracking;
+unsupported POSIX containment is rejected before launch. A passing execution
+requires a sealed log, complete descendant cleanup, exact effective-argv and
+duration binding, a privacy-safe persisted argv, and matching raw plus adapter
+receipts. Timeout, cancellation, snapshot drift, launch failure, and unproven
+cleanup are never reusable passes. Selected checks that never launch are
+recorded explicitly as `not-executed` and cannot impersonate supervised
+execution.
+
+After every selected ID has exactly one event, the runner verifies the final
+repository snapshot, atomically writes summaries, and seals their canonical
+digests with the selection, logs, receipts, and evidence records. Cache reads
+and writes are disabled for terminal profiles. For eligible non-terminal
+profiles, a new pass becomes reusable only after the complete invocation seal
+has succeeded; failed finalization or sealing publishes neither a passing
+manifest nor new reusable cache state.
+
 For the source-only immutable-history checks, `fast` and `pr` may also report
 `reused` from the tracked full-validation receipt. This path does not consume a
-host-local cache and does not rescan unchanged historical blobs. A release,
+host-local cache and does not rescan unchanged historical blobs. The receipt
+decision is itself a supervised preparation: its exact selected Python
+interpreter and verifier argument vector are authenticated without persisting
+the interpreter's host path, and its wrapper, raw receipt, log, snapshot, and
+tracked receipt are included in the final invocation seal. A release,
 scheduled full run, protected-path change, validator/schema change, unknown
 diff path, or invalid receipt forces fresh native execution. Downstream runs do
 not load this source receipt.
 
 `check-all.sh` uses four enforcement classes:
 
-- `required`: when selected by the active mode, the check must execute; missing,
-  non-executable/unlaunchable, or non-zero outcomes fail the aggregate gate;
+- `required`: when selected by the active mode, the check must execute or carry
+  an authenticated eligible reuse source; missing, non-executable/unlaunchable,
+  or non-zero outcomes fail the aggregate gate;
 - `conditional-required`: absence of all applicability inputs is reported as not
   applicable, partial configuration fails, and an applicable check is required;
 - `advisory`: execution problems and non-zero outcomes remain visible warnings
@@ -418,7 +448,8 @@ not load this source receipt.
 Profile non-selection is distinct from a selected required check being skipped.
 Invalid profiles or extra arguments return exit code `2`. A successful aggregate
 result may contain explicit advisory warnings, deferred work, or not-applicable
-conditional checks, but it cannot contain an unexecuted selected required check.
+conditional checks, but it cannot contain a selected required check that has
+neither a supervised execution nor an authenticated eligible reuse source.
 
 Current source-framework behavior is SDK-free: required profiles use Python and
 shell contracts and do not install or invoke `dotnet`. A target may separately

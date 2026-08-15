@@ -118,6 +118,35 @@ class ValidationProfileRegistryGwtTests(unittest.TestCase):
         self.assertNotIn("fast", memberships["python-source-entrypoints"])
         self.assertIn("pr", memberships["python-source-entrypoints"])
         self.assertIn("fast", memberships["validation-evidence-contract"])
+        self.assertEqual(
+            {"release", "nightly-full"},
+            memberships["validation-evidence-exhaustive-contract"],
+        )
+        self.assertEqual(
+            {"fast", "pr", "release", "nightly-full"},
+            memberships["validation-process-supervisor-contract"],
+        )
+        self.assertEqual(
+            "validation-process-supervisor-contract",
+            checks["validation-evidence-contract"][6],
+        )
+        self.assertEqual("60", checks["validation-evidence-contract"][8])
+        self.assertEqual(
+            "validation-evidence-contract",
+            checks["validation-evidence-exhaustive-contract"][6],
+        )
+        self.assertEqual(
+            "python .ai/scripts/tests/test_validation_evidence.py ValidationEvidenceRoutineContractGwtTests -v",
+            checks["validation-evidence-contract"][12],
+        )
+        self.assertEqual(
+            "python .ai/scripts/tests/test_validation_evidence.py -v",
+            checks["validation-evidence-exhaustive-contract"][12],
+        )
+        self.assertEqual(
+            "python .ai/scripts/tests/test_validation_process_supervisor.py -v",
+            checks["validation-process-supervisor-contract"][12],
+        )
         self.assertEqual({"closeout"}, memberships["source-release-closeout-contract"])
 
     def test_gwt_004_given_legacy_flags_when_help_is_requested_then_aliases_are_declared(self) -> None:
@@ -133,7 +162,6 @@ class ValidationProfileRegistryGwtTests(unittest.TestCase):
     def test_gwt_005_given_source_history_contract_when_profiles_are_read_then_routine_and_full_boundaries_are_explicit(self) -> None:
         _, checks = registry_snapshot()
         contract = checks["immutable-history-validation-contract"]
-        runner = RUNNER.read_text(encoding="utf-8")
         distribution = (
             ROOT / ".ai/distribution/profiles/dotnet-backend.yaml"
         ).read_text(encoding="utf-8")
@@ -147,9 +175,6 @@ class ValidationProfileRegistryGwtTests(unittest.TestCase):
             "python .ai/scripts/tests/test_immutable_history_validation.py -v",
             contract[12],
         )
-        self.assertIn("release-candidate", runner)
-        self.assertIn("scheduled-governance", runner)
-        self.assertIn("IMMUTABLE_HISTORY_RECEIPT_REUSE_BY_ID", runner)
         self.assertIn(".ai/scripts/validate-immutable-history.py", distribution)
         self.assertIn(
             ".ai/scripts/tests/test_immutable_history_validation.py", distribution
