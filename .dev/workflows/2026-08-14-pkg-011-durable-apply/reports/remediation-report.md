@@ -12,27 +12,27 @@
 - `report_id`: `remediation-report-2026-08-14-pkg-011-durable-apply`
 - `workflow_id`: `2026-08-14-pkg-011-durable-apply`
 - `owner_skill`: `ai-context-governance`
-- `status`: `issue-200-terminal-validation-in-progress`
+- `status`: `completed`
 - `created_at`: `2026-08-14T09:07:04+08:00`
-- `updated_at`: `2026-08-15T11:00:45+08:00`
+- `updated_at`: `2026-08-15T11:22:12+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-remediation-report-template.md`
 - `template_version`: `2.0.0`
 - `baseline_assessment`: `ASM-20260813-001`
-- `verification_assessment`: `pending`
+- `verification_assessment`: `ASM-20260815-001`
 
 ## Remediation Summary
 
 - Authorized scope: Issues #200 and #209 / `ASM-20260813-001#PKGAPPLY-001`, DS-01/02/03/10/11, and `OWNER-HYBRID-001`.
 - Completed scope: complete selected managed-state and proof identity; narrow raw/clean-Git Hybrid identity; durable Git-admin prestates and journal; atomic publication of a complete journal; exact-target recovery; supported write-through Windows replacement and removal; sealed active-operation post-state; validated journal prefixes and target surfaces; package-independent rollback; durable journal-v2 rollback progress; journal-v3 deterministic target staging; preparation and recovery admission before cleanup or target/journal mutation; exact package and receipt binding; apply/receipt/rollback hard-death recovery; retained-staging finalization rejection; finalized transition, operation prefix, plan post-state, receipt artifact, removal, resolved-target, live-HEAD, exact-operation, parent-boundary, and exact effective-rule packet-root validation; resume/rollback CLI; schema-2 receipt and target gates; boundary-first Git-ignore inspection; stable symlink/reparse diagnostic; documentation and deterministic Windows/POSIX fixtures.
-- Validation summary: the round-5 focused Windows fixtures passed GWT-023 in 26.030 seconds, GWT-024 in 12.415 seconds, GWT-036 in 22.676 seconds, GWT-041 through GWT-043 in 16.129 seconds, GWT-044 through GWT-045 in 8.550 seconds, and adjacent GWT-009/GWT-039/GWT-040 in 7.334 seconds. After the owner resumed #200, hosted-contract remediation passed prerequisite 14/14 and governance routing 8/8; the #200 hard-death pair passed 2/2 in 40.720 seconds and the adjacent admission/staging/receipt/rollback set passed 9/9 in 57.773 seconds on the approved Windows host route. Initial sandbox fixture attempts remain `blocked-by-environment` with `WinError 5`. No full package matrix or release/nightly validation has run in this resumed phase because the exact clean candidate commit is not yet fixed.
-- Closure decision: `checkpoint-merge-deferred-owner-authorized-issue-200-completion`
+- Validation summary: the round-5 focused Windows fixtures passed GWT-023 in 26.030 seconds, GWT-024 in 12.415 seconds, GWT-036 in 22.676 seconds, GWT-041 through GWT-043 in 16.129 seconds, GWT-044 through GWT-045 in 8.550 seconds, and adjacent GWT-009/GWT-039/GWT-040 in 7.334 seconds. After the owner resumed #200, hosted-contract remediation passed prerequisite 14/14 and governance routing 8/8; the #200 hard-death pair passed 2/2 in 40.720 seconds and the adjacent admission/staging/receipt/rollback set passed 9/9 in 57.773 seconds on the approved Windows host route. Initial sandbox fixture attempts remain `blocked-by-environment` with `WinError 5`. Exact clean candidate `52cb86533a23324e07a59c49ff44f59329c5760a` passed the external package matrix 38/38 in 145.791 seconds; the receipt pair passed the canonical validator, and `ASM-20260815-001` found no P1/P2/P3 defect. Release and nightly-full validation were not run.
+- Closure decision: `terminal-local-closeout-awaiting-pr-gates-and-owner-merge-decision`
 
 ## Finding Resolution Matrix
 
 | Assessment Finding | Before Severity | Status | Changed Files | Validation | Commit | Residual Risk |
 | --- | --- | --- | --- | --- | --- | --- |
-| `ASM-20260813-001#PKGAPPLY-001` | HIGH | `round-5-durable-committed-awaiting-cumulative-validation` | apply engine, target receipt validator, focused tests, workflow evidence | prior fixed-head failures remain retained; round-5 GWT-023/024/036/041-045 plus adjacent GWT-009/039/040 passed and scoped current-diff review is accepted | `28613098f91f6cca52cfc3b1ff88ea2e4ce9d59b` | cumulative immutable Windows matrix and final fixed-head audit remain sequencing-deferred |
-| `Issue-209-acceptance` | HIGH | `resolved-locally` | `.ai/scripts/ai_context_package_apply.py`, workflow evidence | GWT-008 passed 1/1 and complete package-apply suite passed 35/35 on `Ubuntu-24.04` outside the sandbox | pending | clean fixed-head validation remains shared with PKG-011 |
+| `ASM-20260813-001#PKGAPPLY-001` | HIGH | `resolved` | apply engine, target receipt validator, focused tests, workflow and assessment evidence | prior fixed-head failures remain retained; clean `52cb865` passed 38/38 and `ASM-20260815-001` found no P1/P2/P3 defect | `52cb86533a23324e07a59c49ff44f59329c5760a`; assessment `07ef6fff190d446804943e8fbd4887880c425943` | remote hosted gates and merge remain separate integration boundaries |
+| `Issue-209-acceptance` | HIGH | `resolved-locally` | `.ai/scripts/ai_context_package_apply.py`, workflow evidence | GWT-008 passed 1/1 and complete package-apply suite passed 35/35 on `Ubuntu-24.04` outside the sandbox; shared final package matrix passed 38/38 | `97b2af7` | live Issue remains open pending separate lifecycle authority |
 
 ## Changes And Evidence
 
@@ -41,7 +41,7 @@
 - Changes: plan schema 2 and complete managed observation; CRLF-only clean Git fallback with raw authority; exact #201 proof pointer/digest propagation; Git-admin durable plan/prestates/journal; native atomic writes; atomic journal publication; exact-target recovery; Windows write-through tombstones; explicit lifecycle and recovery CLI; deterministic YAML receipts; strict receipt-to-journal/plan binding; active-transaction target gate; raw artifact SHA/Git mode receipts; target-owned authority preservation; documentation.
 - Evidence: live Issue #200, DS-01/02/03/10/11, `OWNER-HYBRID-001`, verified #201 proof contract, 56 focused GWT cases, lifecycle/effective-rule regressions, 38-case package matrix, and independent read-only review/re-review.
 - Validation: working-tree suites passed; the 38-case runner exceeded 120 seconds and must be repeated against the clean implementation commit through the external-task contract.
-- Remaining risk: the round-5 implementation is durably committed, while the cumulative long-matrix receipt and independent fixed-head audit remain sequencing-deferred until all planned #200-#208 local work is complete.
+- Remaining risk: none in the bounded local #200 implementation. Hosted PR gates, merge, Issue closure, and later Issues remain separate lifecycle boundaries.
 
 ### Fixed-Head Audit Remediation
 
@@ -94,11 +94,11 @@
 - Changes: preflight each selected framework-managed path through the symlink/reparse boundary guard before `git check-ignore`; retain `symlink boundary` as a stable diagnostic phrase while preserving reparse-point coverage.
 - Evidence: live Issue #209, focused GWT-008, and the complete 35-test package-apply suite on WSL distribution `Ubuntu-24.04` outside the sandbox.
 - Validation: focused 1/1 and complete 35/35 passed with no skip.
-- Remaining risk: the existing PKG-011 immutable-commit long matrix and fixed-head audit remain pending.
+- Remaining risk: none in the bounded local #209 dependency; its live Issue remains open until separately authorized closeout.
 
 ## Verification Assessment Reconciliation
 
-- Independent auditor: prior fixed-head audits successively exposed recovery, sealed-prefix, rollback-progress, finalization, Windows durability, target-binding, and receipt-boundary defects. Each non-passing checkpoint and its successful matrix remains retained separately. The round-5 predecessor-work audit was transient and scoped to the current diff; it found and remediated three admission/parity risks, then found no remaining P1/P2/P3 issue. Final clean-commit verification is not complete and is not relabeled as passed.
+- Independent auditor: prior fixed-head audits successively exposed recovery, sealed-prefix, rollback-progress, finalization, Windows durability, target-binding, and receipt-boundary defects. Each non-passing checkpoint and its successful matrix remains retained separately. The round-5 predecessor-work audit found and remediated three admission/parity risks. Final assessment `ASM-20260815-001` then verified exact clean subject `52cb86533a23324e07a59c49ff44f59329c5760a`, re-read the schema-valid 38/38 receipt pair, and found no P1/P2/P3 defect.
 - Confirmed resolved: receipt bytes now bind the finalized journal and sealed plan; Hybrid CRLF identity now passes end to end through target validation.
 - Recurring findings: none from the earlier receipt/Hybrid re-review scope.
 - New or regressed findings: round 5 found pre-admission staging cleanup, automatic rollback from a still-planned transaction, and rejected-transition parity risks in the predecessor handoff. All were corrected with deterministic no-mutation and successful-resume fixtures; the final scoped review found no P1/P2/P3.
@@ -112,7 +112,7 @@
 
 ## Closure Evidence
 
-- Required validations: round-5 focused recovery, finalization, packet-root, target, HEAD, and receipt fixtures pass after the review fixes. The checkpoint PR requires exact-head hosted-check and merge-gate read-back; the final immutable Windows full suite and fixed-head audit remain required before terminal #200 closure.
-- Commit status: the 21-commit pre-checkpoint sequence remains intentionally uncompressed after review. `7b6bfbe`, `3e7723d`, and `df36a29` retain non-passing fixed-head audit boundaries; `75e0c67` and `28613098f91f6cca52cfc3b1ff88ea2e4ce9d59b` retain round-4/round-5 remediation boundaries. Rewriting would invalidate exact-SHA evidence and require new fixed-head verification.
-- Workflow/task status: #202 and #201 are locally completed with final assessments, #209 is resolved locally, and #200 remains an active partial checkpoint. The owner authorized checkpoint integration now; this does not authorize Issue closure, release, publication, or implementation of #213.
-- Final next action: push the retained-history branch, open a ready checkpoint PR with `Refs #200/#201/#202/#209`, enforce exact-head hosted gates, and merge only with merge-commit topology after every gate passes. Resume remaining work from updated `main` on a new continuation branch.
+- Required validations: round-5 focused recovery, finalization, packet-root, target, HEAD, and receipt fixtures passed. Exact clean `52cb865` passed the immutable package matrix 38/38 in 145.791 seconds, the receipt pair passed the canonical validator twice, and `ASM-20260815-001` independently found no P1/P2/P3 defect. PR #214 still requires exact-head hosted-check and merge-gate read-back after the closeout commits are pushed.
+- Commit status: the retained pre-checkpoint sequence remains intentionally uncompressed after review. `7b6bfbe`, `3e7723d`, and `df36a29` retain non-passing fixed-head audit boundaries; `75e0c67` and `28613098f91f6cca52cfc3b1ff88ea2e4ce9d59b` retain round-4/round-5 remediation boundaries; `52cb865` and `07ef6ff` preserve the final candidate and assessment boundaries. Rewriting would invalidate exact-SHA evidence and require new fixed-head verification.
+- Workflow/task status: #202 and #201 are locally completed with final assessments, #209 is resolved locally, and #200 is locally completed with final assessment `ASM-20260815-001`. All live Issues remain open. This does not authorize Issue closure, merge, release, publication, continuation work, or implementation of #213.
+- Final next action: commit this closeout, fast-forward the existing PR #214, enforce one exact-head hosted-check watch, and stop on any required-gate failure. If every gate passes, return the merge decision to the owner; do not merge automatically.
