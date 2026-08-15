@@ -274,7 +274,10 @@ sha256_regular_file() {
 }
 
 repo_relative_artifact() {
-    local input_path=$1 normalized_root=$PROJECT_ROOT normalized_path=$input_path relative
+    local input_path normalized_root normalized_path relative
+    input_path=$1
+    normalized_root=$PROJECT_ROOT
+    normalized_path=$input_path
     if command -v cygpath >/dev/null 2>&1; then
         normalized_root=$(cygpath -u "$PROJECT_ROOT") || return 1
         normalized_path=$(cygpath -u "$input_path") || return 1
