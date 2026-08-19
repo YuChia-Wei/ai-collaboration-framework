@@ -25,11 +25,16 @@ class GitHubBacklogProviderTests(unittest.TestCase):
     def setUpClass(cls) -> None:
         cls.config = PROVIDER.load_yaml_mapping(CONFIG)
         cls.plan = PROVIDER.build_plan(REPO_ROOT, CONFIG, "HEAD")
+        cls.item_ids = [item["backlog_id"] for item in cls.plan["items"]]
         cls.items = {item["backlog_id"]: item for item in cls.plan["items"]}
 
-    def test_gwt_001_given_canonical_backlog_when_projected_then_all_55_ids_are_unique(self) -> None:
-        self.assertEqual(55, self.plan["counts"]["total"])
-        self.assertEqual(55, len(self.items))
+    def test_gwt_001_given_canonical_backlog_when_projected_then_all_ids_are_unique(self) -> None:
+        self.assertEqual(self.plan["counts"]["total"], len(self.item_ids))
+        self.assertEqual(
+            len(self.item_ids),
+            len(self.items),
+            f"duplicate backlog IDs in plan: {self.item_ids}",
+        )
 
     def test_gwt_002_given_stage_a_when_planned_then_no_online_write_is_available(self) -> None:
         self.assertFalse(self.plan["online_writes_performed"])
@@ -81,9 +86,21 @@ class GitHubBacklogProviderTests(unittest.TestCase):
         for batch in self.plan["remaining_batches"]:
             ordered.extend(batch)
         post_adoption = set(self.config["migration"]["post_adoption_backlog_ids"])
-        self.assertEqual(41, len(ordered))
-        self.assertEqual(set(self.items) - post_adoption, set(ordered))
-        self.assertEqual([10, 10, 10, 7], [len(batch) for batch in self.plan["remaining_batches"]])
+        expected_migration_ids = set(self.items) - post_adoption
+        self.assertEqual(
+            self.config["migration"]["expected_item_count"],
+            len(ordered),
+        )
+        self.assertEqual(
+            len(ordered),
+            len(set(ordered)),
+            f"duplicate migration backlog IDs: {ordered}",
+        )
+        self.assertEqual(expected_migration_ids, set(ordered))
+        self.assertEqual(
+            self.config["migration"]["remaining_batch_sizes"],
+            [len(batch) for batch in self.plan["remaining_batches"]],
+        )
         self.assertEqual(
             [
                 "SKILL-002",
@@ -151,11 +168,20 @@ class GitHubBacklogProviderTests(unittest.TestCase):
             ["Active Backlog", "Roadmap", "Owner Review", "History by Release"],
             [view["name"] for view in config["views"]],
         )
-        self.assertEqual(2, len(config["automation"]["allowlist"]))
+        expected_automation = {
+            ("issue_opened_in_repository", "auto_add_to_project_and_initialize_status_inbox"),
+            ("issue_closed", "set_status_done"),
+        }
+        actual_automation = [
+            (entry["trigger"], entry["action"])
+            for entry in config["automation"]["allowlist"]
+        ]
         self.assertEqual(
-            "auto_add_to_project_and_initialize_status_inbox",
-            config["automation"]["allowlist"][0]["action"],
+            len(expected_automation),
+            len(actual_automation),
+            "automation allowlist must not contain duplicate or unapproved entries",
         )
+        self.assertEqual(expected_automation, set(actual_automation))
 
     def test_gwt_012_given_public_intake_then_only_proposal_form_is_enabled(self) -> None:
         form = yaml.safe_load(
@@ -191,7 +217,14 @@ class GitHubBacklogProviderTests(unittest.TestCase):
         self.assertTrue(all(item["read_back"]["labels_match"] for item in receipt["items"]))
         self.assertTrue(all(item["read_back"]["markers_match"] for item in receipt["items"]))
         if receipt["stage"] == "stage-b-read-back-complete":
-            self.assertEqual(41, len(mapped_ids))
+            expected_migration_ids = set(self.items) - set(
+                self.config["migration"]["post_adoption_backlog_ids"]
+            )
+            self.assertEqual(expected_migration_ids, set(mapped_ids))
+            self.assertEqual(
+                self.config["migration"]["expected_item_count"],
+                len(mapped_ids),
+            )
             self.assertIsNotNone(receipt["project"]["number"])
 
     def test_gwt_015_given_source_provider_tools_then_distribution_profile_excludes_them(self) -> None:

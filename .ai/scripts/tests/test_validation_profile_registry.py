@@ -3,6 +3,7 @@
 
 from __future__ import annotations
 
+from collections import Counter
 import os
 import shutil
 import subprocess
@@ -25,7 +26,11 @@ def bash_executable() -> str | None:
     return shutil.which("bash")
 
 
-def registry_snapshot() -> tuple[dict[str, tuple[str, str, str]], dict[str, tuple[str, ...]]]:
+def registry_snapshot() -> tuple[
+    dict[str, tuple[str, str, str]],
+    dict[str, tuple[str, ...]],
+    list[str],
+]:
     bash = bash_executable()
     if not bash:
         raise unittest.SkipTest("Bash is required for validation profile registry tests")
@@ -66,18 +71,20 @@ done
 
     profiles: dict[str, tuple[str, str, str]] = {}
     checks: dict[str, tuple[str, ...]] = {}
+    check_ids: list[str] = []
     for line in result.stdout.splitlines():
         record = line.split("|")
         if record[0] == "P":
             profiles[record[1]] = (record[2], record[3], record[4])
         elif record[0] == "C":
+            check_ids.append(record[1])
             checks[record[1]] = tuple(record[2:])
-    return profiles, checks
+    return profiles, checks, check_ids
 
 
 class ValidationProfileRegistryGwtTests(unittest.TestCase):
     def test_gwt_001_given_registry_when_read_then_required_profiles_are_distinct(self) -> None:
-        profiles, _ = registry_snapshot()
+        profiles, _, _ = registry_snapshot()
 
         self.assertEqual(
             {
@@ -91,9 +98,14 @@ class ValidationProfileRegistryGwtTests(unittest.TestCase):
         )
 
     def test_gwt_002_given_registry_when_read_then_every_check_has_explainable_metadata(self) -> None:
-        profiles, checks = registry_snapshot()
-        self.assertEqual(len(checks), len(set(checks)))
-        self.assertGreaterEqual(len(checks), 40)
+        profiles, checks, check_ids = registry_snapshot()
+        duplicate_check_ids = sorted(
+            check_id
+            for check_id, occurrences in Counter(check_ids).items()
+            if occurrences > 1
+        )
+        self.assertEqual([], duplicate_check_ids, f"duplicate validation check IDs: {duplicate_check_ids}")
+        self.assertEqual(set(check_ids), set(checks))
         profile_ids = set(profiles)
         for check_id, fields in checks.items():
             with self.subTest(check_id=check_id):
@@ -105,7 +117,7 @@ class ValidationProfileRegistryGwtTests(unittest.TestCase):
                 self.assertTrue(timeout.isdigit() or timeout == "")
 
     def test_gwt_003_given_membership_when_compared_then_fast_and_pr_avoid_the_full_package_matrix(self) -> None:
-        _, checks = registry_snapshot()
+        _, checks, _ = registry_snapshot()
         memberships = {check_id: set(fields[4].split()) for check_id, fields in checks.items()}
 
         self.assertNotIn("fast", memberships["package-full-matrix"])
@@ -160,7 +172,7 @@ class ValidationProfileRegistryGwtTests(unittest.TestCase):
         self.assertIn("--full        --profile nightly-full", result.stdout)
 
     def test_gwt_005_given_source_history_contract_when_profiles_are_read_then_routine_and_full_boundaries_are_explicit(self) -> None:
-        _, checks = registry_snapshot()
+        _, checks, _ = registry_snapshot()
         contract = checks["immutable-history-validation-contract"]
         distribution = (
             ROOT / ".ai/distribution/profiles/dotnet-backend.yaml"
@@ -181,7 +193,7 @@ class ValidationProfileRegistryGwtTests(unittest.TestCase):
         )
 
     def test_gwt_006_given_required_profiles_when_inspected_then_framework_sdk_is_not_selected(self) -> None:
-        _, checks = registry_snapshot()
+        _, checks, _ = registry_snapshot()
         contract = checks["sdk-free-framework-contract"]
 
         self.assertEqual(

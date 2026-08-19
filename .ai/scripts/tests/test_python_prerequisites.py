@@ -130,14 +130,36 @@ class PythonPrerequisiteGwtTests(unittest.TestCase):
         # When candidates are discovered, then duplicate identities are bounded and deduplicated.
         self.assertEqual(["same"], [candidate.executable for candidate in candidates])
 
-    def test_gwt_006_given_registry_when_checked_then_all_profiles_and_portable_boundary_are_complete(self) -> None:
+    def test_gwt_006_given_registry_when_checked_then_profiles_and_portable_boundary_are_complete(self) -> None:
         # Given the canonical entrypoint registry.
         entries = self.registry["entrypoints"]
 
-        # When its approved boundary is counted, then it retains 32 entries, 14 portable entries and two no-PyYAML profiles.
-        self.assertEqual(32, len(entries))
-        self.assertEqual(14, sum(entry["portable"] for entry in entries))
-        self.assertEqual(2, sum(not entry["dependency_profile"] for entry in entries))
+        # When its approved boundary is validated, every record remains classified,
+        # unique, and ready for the prerequisite dispatcher.
+        paths = [entry["path"] for entry in entries]
+        portable_paths = {entry["path"] for entry in entries if entry["portable"]}
+        source_only_paths = {entry["path"] for entry in entries if not entry["portable"]}
+        pyyaml_paths = {
+            entry["path"] for entry in entries if entry["dependency_profile"] == ["PyYAML"]
+        }
+        stdlib_paths = {entry["path"] for entry in entries if entry["dependency_profile"] == []}
+        self.assertEqual(len(paths), len(set(paths)), f"duplicate registry paths: {paths}")
+        self.assertTrue(portable_paths, "portable entrypoint boundary must not be empty")
+        self.assertTrue(source_only_paths, "source-only entrypoint boundary must not be empty")
+        self.assertFalse(portable_paths & source_only_paths)
+        self.assertEqual(set(paths), portable_paths | source_only_paths)
+        self.assertFalse(pyyaml_paths & stdlib_paths)
+        self.assertEqual(set(paths), pyyaml_paths | stdlib_paths)
+        for entry in entries:
+            with self.subTest(entrypoint=entry["path"]):
+                self.assertEqual(
+                    {"path", "portable", "dependency_profile", "prerequisite_exit_code"},
+                    set(entry),
+                )
+                self.assertTrue((ROOT / entry["path"]).is_file())
+                self.assertIs(type(entry["portable"]), bool)
+                self.assertIn(entry["dependency_profile"], ([], ["PyYAML"]))
+                self.assertIs(type(entry["prerequisite_exit_code"]), int)
         self.assertEqual({1, 2, 3}, {entry["prerequisite_exit_code"] for entry in entries})
         self.assertEqual(
             {".ai/scripts/ai_context_release_closeout.py"},

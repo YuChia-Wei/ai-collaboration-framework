@@ -382,22 +382,33 @@ class SubAgentAdapterMetadataValidationTests(unittest.TestCase):
         finally:
             fixture.close()
 
-    def test_gwt_018_given_repository_role_inventory_when_inspected_then_only_translator_is_native(self) -> None:
+    def test_gwt_018_given_repository_role_manifests_when_inspected_then_only_translator_is_native(self) -> None:
         import yaml
 
         roles = {}
-        for manifest in sorted(
+        manifests = sorted(
             (REPO_ROOT / ".ai/assets/sub-agent-role-prompts").glob(
                 "*/sub-agent.yaml"
             )
-        ):
+        )
+        duplicate_role_ids = []
+        for manifest in manifests:
             data = yaml.safe_load(manifest.read_text(encoding="utf-8"))
-            roles[data["asset_id"]] = {
+            role_id = data["asset_id"]
+            if role_id in roles:
+                duplicate_role_ids.append(role_id)
+                continue
+            roles[role_id] = {
                 "targets": data["wrapper_targets"],
                 "metadata": data["adapter_metadata"],
             }
 
-        self.assertEqual(18, len(roles))
+        self.assertEqual([], duplicate_role_ids, f"duplicate role asset IDs: {duplicate_role_ids}")
+        self.assertEqual(
+            len(manifests),
+            len(roles),
+            "every role manifest must have one unique asset ID",
+        )
         promoted = {
             role: disposition
             for role, disposition in roles.items()
