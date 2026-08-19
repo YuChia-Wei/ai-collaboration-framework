@@ -3,7 +3,7 @@ contract_id: "github-terminal-issue-closure"
 repository: "YuChia-Wei/ai-collaboration-framework"
 validation_stage: "declaration"
 pull_request:
-  number: null
+  number: 221
   head_sha: null
   body: |-
     Closes #212

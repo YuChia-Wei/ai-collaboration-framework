@@ -69,13 +69,13 @@
 
 ## Resume Checkpoint
 
-- Last completed action: verified the user-performed PR #220 `--no-ff` merge and provider read-back, then passed continuation-focused closure 54/54 and provider 20/20 with different admitted/integration SHAs across all four supported topologies.
+- Last completed action: committed and pushed the validated continuation as `0b6e797a2e55f5be4e5db234a3dbe15d2b7f8b26`, created draft PR #221, and read back `main@6a878d65` with provider head `0b6e797a`.
 - Current task: `GOV008-002-terminal-continuation`, with the remaining prospective contract refinement retained in `GOV008-001` until fresh verification.
-- Exact next action: finish affected governance validation, create the continuation commit/PR, bind its provider number and admitted head, then obtain a fresh exact-head audit receipt and hosted admission.
-- Validation already completed: continuation terminal closure 54/54 and GitHub provider 20/20.
-- Git state: branch `codex/2026-08-19-gov-008-terminal-issue-closure-cont-02` starts from merge commit `6a878d65`; continuation changes are uncommitted.
+- Exact next action: commit and push the PR #221 provider-number binding, freeze that resulting provider head, then obtain a fresh exact-head audit receipt and hosted admission.
+- Validation already completed: continuation terminal closure 54/54, GitHub provider 20/20, repository configuration fixtures 14/14, and all affected workflow/source/distribution validators.
+- Git state: branch `codex/2026-08-19-gov-008-terminal-issue-closure-cont-02` starts from merge commit `6a878d65`; checkpoint `0b6e797a` is pushed and draft PR #221 is open.
 - Branch history and checkpoint handoffs: PR A is the retained merge checkpoint; segment 2 is the terminal continuation.
-- Blockers or unresolved decisions: continuation PR/provider identity, audit receipt, hosted checks, live admission, integration, and post-merge provider read-back remain pending. No second GitHub identity is required.
+- Blockers or unresolved decisions: audit receipt, hosted checks, live admission, owner-selected integration topology, and post-merge provider read-back remain pending. No second GitHub identity is required.
 
 ## Branch Lifecycle
 
@@ -91,4 +91,4 @@
 | 8 | `codex/2026-08-19-gov-008-terminal-issue-closure` | `main@174eb835058dff40f67624df682d7d531ee9949b` | failed fresh exact-head audit | `91826703df14d45eae6a8bcaf2d506f3c6f1c86a` | PR #220 | `2026-08-20T00:34:55+08:00` | preserve stale/fabricated event metadata admission finding while retaining all earlier repairs | live-read and bind PR number/base/head/body, rerun edited-body checks, validate, commit, push, and re-audit |
 | 9 | `codex/2026-08-19-gov-008-terminal-issue-closure` | `main@174eb835058dff40f67624df682d7d531ee9949b` | failed fresh exact-head audit | `11ec97d13718d999b11a05cae281603263876c01` | PR #220 | `2026-08-20T00:42:58+08:00` | preserve omitted event-repository binding finding while retaining live PR metadata and all earlier repairs | bind event top-level/base repository to live governed repository, validate, commit, push, and re-audit |
 | 10 | `codex/2026-08-19-gov-008-terminal-issue-closure` | `main@174eb835058dff40f67624df682d7d531ee9949b` | merged self-hosting checkpoint | `f8cffd33af799b6b92f748c99e82ff9bd344fbb7` | PR #220 / `main@6a878d65565920271047f42b25b39f05afe68592` | `2026-08-20T03:09:54+08:00` | final audit passed, five checks succeeded, and owner used `--no-ff`; #212 remained open/Inbox | create segment 2 from refreshed main and terminally reconcile #212/#204 |
-| 11 | `codex/2026-08-19-gov-008-terminal-issue-closure-cont-02` | `main@6a878d65565920271047f42b25b39f05afe68592` | local continuation | pending | not pushed | `2026-08-20T03:34:43+08:00` | owner selected source single-maintainer semantics and topology-neutral SHA evidence | validate, commit, publish, audit, admit, integrate, and read back without a post-merge repair commit |
+| 11 | `codex/2026-08-19-gov-008-terminal-issue-closure-cont-02` | `main@6a878d65565920271047f42b25b39f05afe68592` | draft PR bootstrap | `0b6e797a2e55f5be4e5db234a3dbe15d2b7f8b26` | PR #221 | `2026-08-20T03:45:44+08:00` | obtain the provider-assigned continuation PR number while preserving topology-neutral SHA evidence | bind #221, push the provider-bound head, then audit and admit that exact head |

@@ -8,7 +8,7 @@
   "owner_skill": "ai-context-governance",
   "status": "in_progress",
   "created_at": "2026-08-19T23:09:17+08:00",
-  "updated_at": "2026-08-20T03:34:43+08:00",
+  "updated_at": "2026-08-20T03:45:58+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-5.6-sol",
   "reasoning_effort": "high",
@@ -22,15 +22,15 @@
   "execution": {
     "steps": ["verify PR A integration and #212 open state", "reconcile current VAL-007 projection", "validate terminal continuation", "merge and read back Issues and Projects"],
     "validation": ["new closure validator", "workflow and AI-context validation", "fresh fixed-head audit", "hosted checks", "provider read-back"],
-    "last_completed_step": "Verified PR #220 merge commit 6a878d65 from admitted head f8cffd33 and read back #212 open/InBox; created the continuation declaration for #212 and #204",
-    "next_action": "validate, commit, publish the continuation PR, then use the prospective single-maintainer receipt and provider-owned hosted admission"
+    "last_completed_step": "Committed and pushed the validated continuation as 0b6e797a, created draft PR #221, and read back main@6a878d65 with provider head 0b6e797a",
+    "next_action": "commit and push the provider-number binding, then freeze the resulting PR #221 head for fresh independent audit and provider-owned hosted admission"
   },
   "results": {
     "summary": "PR A is integrated. Terminal continuation is active with a source-only single-maintainer receipt and topology-neutral integration evidence.",
     "files_changed": ["GOV-008 continuation evidence", "source provider review/integration contract", "VAL-007 reconciliation records"],
     "tests_run": ["terminal closure 54/54", "GitHub provider 20/20", "workflow artifacts 84/84 post-adoption workflows", "source governance manifest/disposition passed", "governance workflow 7/7", "GitHub workflow 10/10", "repository config direct validator plus host fixture suite 14/14", "brand-neutral distribution 2/2", "SDK-free distribution GWT 005", "workflow handoff registry passed"],
     "finding_status": "in-progress",
-    "residual_risk": "Continuation PR number/head, exact-head audit receipt, hosted checks, live admission, integration, and Issue/Project read-back do not exist yet.",
+    "residual_risk": "PR #221 exists, but its provider-number binding, exact-head audit receipt, hosted checks, live admission, integration, and Issue/Project read-back remain pending.",
     "follow_up_needed": true
   }
 }
