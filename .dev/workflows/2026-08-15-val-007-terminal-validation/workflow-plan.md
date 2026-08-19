@@ -15,11 +15,11 @@
 - `branch`: `codex/2026-08-15-val-007-terminal-validation`
 - `base_branch`: `main`
 - `branch_segment`: `1`
-- `status`: `in_progress`
-- `current_phase`: `hosted-ci-gate`
+- `status`: `completed`
+- `current_phase`: `completed`
 - `artifact_root`: `.dev/workflows/2026-08-15-val-007-terminal-validation`
 - `created_at`: `2026-08-15T13:39:00+08:00`
-- `updated_at`: `2026-08-15T19:48:37+08:00`
+- `updated_at`: `2026-08-20T03:34:43+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md`
 - `template_version`: `1.2.0`
 
@@ -79,7 +79,8 @@
 4. Completed: hard-disabled nightly readiness contract and focused repository validation; nightly-full was not executed.
 5. Completed locally: durable clean implementation commit `59dae454bcfe55fed9873eac834449583750c4a5`, independent fixed-head review with no P0/P1, and finding reconciliation.
 6. Completed: resolve the repo-relative snapshot through the repository artifact boundary; execute GWT-035 on Windows and Ubuntu; retain event-relative log/result semantics; obtain an independent P0=0/P1=0 review; commit and push as `eff73dfa6db3f6713098ac8b3f4416e792d931ce`.
-7. Completed locally: replace only the invalid cross-domain list-order equality with exact unique-set parity; retain both same-domain order contracts; add real-seal GWT-036/037 for valid permutation, set replacement, duplicate preparation IDs, prepare-log reorder, and event/evidence reorder; pass Windows and Ubuntu focused validation; receive independent P0=0/P1=0 safety and test-quality reviews. In progress: create and push the durable correction, then require one exact-head hosted-check watch before merge.
+7. Completed: replace only the invalid cross-domain list-order equality with exact unique-set parity; retain both same-domain order contracts; add real-seal GWT-036/037; pass Windows and Ubuntu focused validation; receive independent P0=0/P1=0 reviews; integrate final PR #216 head `9a7432cd656b84392847c966b5044af7e82161c1` as merge commit `c032090a5d07ba5163e6b83735f68dc0ea4545e6` after all five required hosted checks succeeded.
+8. Reconciled: readiness-only Issue #204 delivery is complete. Nightly activation/execution and cumulative long-running validation remain explicitly deferred, not failed or silently included.
 
 ## Validation Strategy
 
@@ -91,12 +92,12 @@
 ## Resume Checkpoint
 
 - Last completed action: corrected both cross-domain comparisons to exact validator sets; added semantic GWT-036/037; passed the Windows exact routine class 4/4 in 39.941 seconds, Ubuntu-24.04 GWT-036/037 2/2 in 5.421 seconds, and adjacent GWT-033 1/1 in 4.403 seconds; independent reviews found P0=0/P1=0; AST, JSON, workflow-artifact, and diff checks passed.
-- Current task: `VAL007-001-supervision-snapshot` remains in progress only for the durable correction and a new exact-head hosted gate.
-- Exact next action: commit and push the bounded #204 correction, then use one exact-head hosted-check watch. Stop on any required-check failure or head drift; merge only after every required gate passes.
+- Current task: none; all VAL-007 implementation tasks are completed.
+- Exact next action: none in this workflow. A separate owner-authorized workflow may later activate nightly-full.
 - Validation already completed: Windows and WSL supervisor modules; bounded evidence GWT groups; selected fail-closed runner batches; workflow and registry contract modules; AST, Bash syntax, YAML/workflow, and diff checks; independent current-diff and fixed-head reviews. The historical GWT-019 stale-message failure and sandbox-blocked attempts remain retained rather than relabeled.
-- Git state: branch `codex/2026-08-15-val-007-terminal-validation`; PR #216 is open as draft at `eff73dfa6db3f6713098ac8b3f4416e792d931ce`. At that exact head, both failed artifacts contain 63 unique preparation, event, and evidence IDs with identical sets. Preparation and its supervised log share canonical registry order; events and evidence share not-selected-first plus actual execution order. Only the unsupported cross-domain order equality failed.
+- Git state: PR #216 is merged. Admitted head `9a7432cd656b84392847c966b5044af7e82161c1` integrated through merge commit `c032090a5d07ba5163e6b83735f68dc0ea4545e6`.
 - Branch history and checkpoint handoffs: durable implementation boundaries are `254d0d7`, `910944f`, `59dae45`, and CI portability fix `7b4be71`; workflow bootstrap is `0965a2c`, initial closeout is `94f7d9e`.
-- Blockers or unresolved decisions: no local P0/P1 remains. Two non-blocking P2s are retained: evidence/event duplicate coverage is not explicit in GWT-037 even though the unchanged guard runs before dict collapse, and the shared parser's preparation duplicate diagnostic still says `fingerprint-selection artifact`. Issue closure, cumulative external validation, nightly activation, and release remain separate decisions.
+- Blockers or unresolved decisions: none for VAL-007 readiness-only completion. Two non-blocking P2s are retained; cumulative external validation, nightly activation, and release remain separate decisions. Issue #204 terminal provider closure is delegated to GOV-008 segment 2 without reopening this completed workflow.
 
 ## Branch Lifecycle
 

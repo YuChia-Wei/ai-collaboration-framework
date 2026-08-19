@@ -131,10 +131,16 @@ set, and the live GitHub response must exactly match the snapshot's PR number,
 repository, base, head, body, review/check-run identities, and timestamps. Those live PR
 facts must also equal the current event snapshot; PR-body edits rerun the
 declaration workflows. That merge-admission run must bind
-the approved review and the complete successful required-check set to the same
+the configured source review gate and the complete successful required-check set to the same
 immutable head. Do not commit the volatile snapshot; any head drift
 invalidates it and requires a fresh independent audit, hosted read-back, and
 admission run.
+
+The admitted PR head identifies the exact reviewed content; it does not select
+or constrain integration topology. Fast-forward, rebase, squash, and merge
+commit remain valid. Post-merge reconciliation records the provider's actual
+integration commit separately and must not require a source repair commit merely
+to make the integration SHA equal the admitted head.
 
 ### Linear Integration
 

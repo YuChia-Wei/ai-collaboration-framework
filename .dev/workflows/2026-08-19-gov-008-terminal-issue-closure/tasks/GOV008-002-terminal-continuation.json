@@ -6,9 +6,9 @@
   "task_id": "GOV008-002-terminal-continuation",
   "workflow_id": "2026-08-19-gov-008-terminal-issue-closure",
   "owner_skill": "ai-context-governance",
-  "status": "pending",
+  "status": "in_progress",
   "created_at": "2026-08-19T23:09:17+08:00",
-  "updated_at": "2026-08-19T23:09:17+08:00",
+  "updated_at": "2026-08-20T03:55:21+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-5.6-sol",
   "reasoning_effort": "high",
@@ -16,21 +16,21 @@
   "scope": {
     "target": "terminal provider reconciliation for Issues #212 and #204",
     "files": ["current GOV-008 and VAL-007 workflow/provider closeout records"],
-    "constraints": ["start from refreshed main after PR A", "Closes #212 and Closes #204 only", "nightly activation remains deferred"],
+    "constraints": ["start from refreshed main after PR A", "Closes #212 and Closes #204 only", "nightly activation remains deferred", "source repository is single-maintainer", "squash, rebase, fast-forward, and merge-commit remain valid", "no post-merge source repair commit"],
     "non_goals": ["nightly-full execution", "release or publication", "unrelated Issue closure"]
   },
   "execution": {
     "steps": ["verify PR A integration and #212 open state", "reconcile current VAL-007 projection", "validate terminal continuation", "merge and read back Issues and Projects"],
     "validation": ["new closure validator", "workflow and AI-context validation", "fresh fixed-head audit", "hosted checks", "provider read-back"],
-    "last_completed_step": "",
-    "next_action": "wait for PR A integration"
+    "last_completed_step": "The fresh 934d9806 audit confirmed the repaired resume wording and terminal semantics, but failed because the active workflow locator and plan timestamps still predated the reconciliation",
+    "next_action": "Ensure the commit containing this reconciliation is pushed, resolve that exact PR #221 head from the provider, and request a new read-only independent audit before any receipt or admission"
   },
   "results": {
-    "summary": "Pending PR A integration.",
-    "files_changed": [],
-    "tests_run": [],
-    "finding_status": "not-addressed",
-    "residual_risk": "Terminal closeout cannot begin before the self-hosting contract integrates.",
+    "summary": "PR A is integrated. Terminal continuation is active with a source-only single-maintainer receipt and topology-neutral integration evidence.",
+    "files_changed": ["GOV-008 continuation evidence", "source provider review/integration contract", "VAL-007 reconciliation records"],
+    "tests_run": ["terminal closure 54/54", "GitHub provider 20/20", "workflow artifacts 84/84 post-adoption workflows", "source governance manifest/disposition passed", "governance workflow 7/7", "GitHub workflow 10/10", "repository config direct validator plus host fixture suite 14/14", "brand-neutral distribution 2/2", "SDK-free distribution GWT 005", "workflow handoff registry passed"],
+    "finding_status": "in-progress",
+    "residual_risk": "The 06f32f78 and 934d9806 audit failures are preserved. Five hosted contexts passed at both heads, but a new exact-head audit, receipt, live admission, integration, and Issue/Project read-back remain pending after this timestamp reconciliation changes the head.",
     "follow_up_needed": true
   }
 }

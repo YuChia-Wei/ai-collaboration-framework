@@ -7,8 +7,8 @@ pull_request:
   head_sha: aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
   body: |-
     Closes #212
-  integration: {status: merged, expected_head_sha: aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa, merged_head_sha: aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa}
-  review: {status: approved, head_sha: aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa}
+  integration: {status: merged, topology: squash, admitted_head_sha: aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa, integration_commit_sha: cccccccccccccccccccccccccccccccccccccccc, provider_read_back: true}
+  review: {status: single-maintainer-audit-passed, head_sha: aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa, reviewer_login: YuChia-Wei, receipt_contract: github-terminal-issue-closure-audit/v1}
   required_check_contexts: [governance]
   hosted_checks:
     - {name: governance, conclusion: success, required: true, head_sha: aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa}
@@ -21,4 +21,4 @@ issues:
     closing_keyword: Closes
     closure_deferred_reason: null
     next_terminal_gate_or_owner: null
-    read_back: {performed: true, merged_head_sha: aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa, issue_state: closed, issue_state_reason: completed, project_status: Done}
+    read_back: {performed: true, integration_commit_sha: cccccccccccccccccccccccccccccccccccccccc, issue_state: closed, issue_state_reason: completed, project_status: Done}

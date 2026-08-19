@@ -8,13 +8,30 @@
 
 ## Current Disposition
 
-- Status: `remediated-pending-fresh-verification`
+- Status: `remediated-pending-continuation-verification`
 - Finding: `GOV-008-CLOSURE-ASYMMETRY`
-- Current delivery: PR A contract implementation, intentionally `deferred` for Issue #212.
+- Current delivery: PR A integrated the contract with a truthful deferred #212 disposition; segment 2 is the terminal continuation for #212 and #204.
 - Deferred reason: `self-hosting contract must integrate before it can govern its own terminal closeout`.
 - Next terminal gate: `continuation closeout PR after PR A merges`.
 - Focused local validation began at 18 closure scenarios and reached 29/29 at the second repair head; GitHub provider, repository configuration, entrypoint and prerequisite registries, workflow/shell/source governance, downstream distribution, and AI-context contracts also passed locally. Sandbox Windows Temp permission failures were retained as blocked attempts; the same affected suites passed on the host.
-- Independent exact-head audit, hosted checks, integration, and provider read-back remain pending and must not be inferred from this record.
+- PR A's final independent audit and five required hosted checks passed; PR #220 merged as `6a878d65`, and provider read-back kept #212 open/Inbox. The continuation's audit, hosted admission, integration, and terminal read-back remain pending and must not be inferred.
+
+## PR A Final Checkpoint And Owner Reconciliation
+
+- Final admitted head: `f8cffd33af799b6b92f748c99e82ff9bd344fbb7`.
+- Integration: user-performed `--no-ff` merge commit `6a878d65565920271047f42b25b39f05afe68592` on 2026-08-20.
+- Provider result: five required checks succeeded; #212 remained open with Project status `Inbox`, matching PR A's deferred disposition.
+- Historical review caveat: PR A had a free-form exact-head independent audit comment and no GitHub `APPROVED` review. No structured receipt is retroactively fabricated.
+- Owner decision: this source repository is single-maintainer. Prospectively, admission accepts only a strict exact-head `github-terminal-issue-closure-audit/v1` receipt from `YuChia-Wei`; ordinary comments never pass, effective change requests remain blocking, and downstream review policy stays target-owned.
+- Integration decision: admitted PR head and provider integration commit are separate evidence. Fast-forward, rebase, squash, and merge-commit remain supported; no post-merge source repair commit is required merely to reconcile SHA identity.
+
+## Segment 2 Focused Validation
+
+- Terminal closure GWT: 54/54 passed.
+- GitHub provider contract: 20/20 passed.
+- Positive topology coverage requires identical SHAs for fast-forward and deliberately different admitted/integration SHAs for rebase, squash, and merge-commit.
+- Workflow artifacts, source governance/disposition, workflow handoff, governance workflow 7/7, GitHub workflow 10/10, repository configuration, brand-neutral distribution 2/2, and SDK-free distribution GWT 005 passed. The repository-config fixture suite was blocked twice by sandbox dotfile ACLs, then passed 14/14 on the host; blocked attempts are not relabeled.
+- Remaining gates: broader affected governance validation, durable commit, fresh exact-head independent audit receipt, hosted checks, live admission, integration, and Issue/Project provider read-back.
 
 ## Failed Exact-Head Audit
 
@@ -97,3 +114,21 @@
 - Provider read-back: three required checks succeeded; governance and Ubuntu PR-profile checks were running, and no approval existed. No hosted or admission success is claimed.
 - Repair: parse top-level and base repository identity from the event, bind the governed repository into live admission facts, reject event/provider repository drift in declaration, capture, and replay, and add an explicit foreign-event scenario.
 - Focused validation: closure 49/49 passed after the bounded repository-identity repair; broader governed validation remains required before the next commit.
+
+## Continuation Audit Of Provider-Bound Head
+
+- Audited head: `06f32f785cad287e838d1cd93840a3ab20942b9d` on draft PR #221, with base `6a878d65565920271047f42b25b39f05afe68592`.
+- Disposition: `FAIL`.
+- Preserved results: strict single-maintainer receipt handling, effective change-request blocking, complete repository-bound Issue disposition, and the admitted-head/integration-commit split for fast-forward, rebase, squash, and merge-commit passed review. Five hosted contexts succeeded, but are not admission by themselves.
+- Blocking finding: the provider-number binding was complete in the audited commit while the task and workflow resume checkpoint still described that binding as the next action and retained `0b6e797a` as the current checkpoint.
+- Repair: preserve this failed audit, make the durable resume state describe the completed binding and required re-audit, and avoid an impossible self-reference by selecting the next exact subject through provider read-back after the reconciliation commit is pushed.
+- Focused validation: the auditor independently passed terminal closure 54/54, GitHub provider 20/20, terminal static validation for two records, and workflow artifact validation for 84 workflows, 104 indexed directories, and 55 backlog items.
+
+## Continuation Audit Of Reconciled Checkpoint Head
+
+- Audited head: `934d98061da9ccfd4926cf6f1ab38f67e74f48b3` on draft PR #221, with unchanged base `6a878d65565920271047f42b25b39f05afe68592`.
+- Disposition: `FAIL`.
+- Preserved results: the prior resume-checkpoint repair is self-contained without an impossible self-embedded SHA; strict receipt binding, effective review blocking, complete Issue partition, provider completeness, and topology-neutral integration evidence remained intact. Five hosted contexts succeeded, but reviews remained empty.
+- Blocking finding: `workflow.yaml` and the workflow-plan metadata retained `updated_at: 2026-08-20T03:34:43+08:00`, earlier than the reconciliation progress they contained.
+- Repair: synchronize the active workflow locator, plan, and task timestamps while preserving both failed audits, then select the new exact head through provider read-back and audit it afresh.
+- Focused validation: the auditor independently passed terminal closure 54/54, GitHub provider 20/20, static validation for two records, and workflow artifact validation for 84 workflows, 104 indexed directories, and 55 backlog items.

@@ -7,7 +7,7 @@ pull_request:
   head_sha: null
   body: |-
     Refs #212
-  integration: {status: pending, expected_head_sha: null, merged_head_sha: null}
+  integration: {status: pending, topology: null, admitted_head_sha: null, integration_commit_sha: null, provider_read_back: false}
   review: {status: pending}
   required_check_contexts: []
   hosted_checks: []
@@ -20,4 +20,4 @@ issues:
     closing_keyword: null
     closure_deferred_reason: checkpoint delivery requires continuation
     next_terminal_gate_or_owner: continuation pull request after integration
-    read_back: {performed: false, merged_head_sha: null, issue_state: null, issue_state_reason: null, project_status: null}
+    read_back: {performed: false, integration_commit_sha: null, issue_state: null, issue_state_reason: null, project_status: null}

@@ -30,3 +30,4 @@ A closing keyword records terminal intent; it never authorizes work.
 - [ ] Docs updated (README/AGENTS.md, comments)
 - [ ] No secrets committed; config via env vars
 - [ ] Every named Issue has exactly one validated delivery disposition
+- [ ] The repository's target-owned review gate is satisfied (this source repo uses an exact-head single-maintainer audit receipt)
