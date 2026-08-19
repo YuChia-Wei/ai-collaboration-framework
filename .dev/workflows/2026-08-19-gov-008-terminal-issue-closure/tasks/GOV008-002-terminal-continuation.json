@@ -8,7 +8,7 @@
   "owner_skill": "ai-context-governance",
   "status": "in_progress",
   "created_at": "2026-08-19T23:09:17+08:00",
-  "updated_at": "2026-08-20T03:52:04+08:00",
+  "updated_at": "2026-08-20T03:55:21+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-5.6-sol",
   "reasoning_effort": "high",
@@ -22,7 +22,7 @@
   "execution": {
     "steps": ["verify PR A integration and #212 open state", "reconcile current VAL-007 projection", "validate terminal continuation", "merge and read back Issues and Projects"],
     "validation": ["new closure validator", "workflow and AI-context validation", "fresh fixed-head audit", "hosted checks", "provider read-back"],
-    "last_completed_step": "Bound PR #221 in commit 06f32f78; its fresh exact-head audit failed only because this task and the workflow resume checkpoint still described that binding as pending",
+    "last_completed_step": "The fresh 934d9806 audit confirmed the repaired resume wording and terminal semantics, but failed because the active workflow locator and plan timestamps still predated the reconciliation",
     "next_action": "Ensure the commit containing this reconciliation is pushed, resolve that exact PR #221 head from the provider, and request a new read-only independent audit before any receipt or admission"
   },
   "results": {
@@ -30,7 +30,7 @@
     "files_changed": ["GOV-008 continuation evidence", "source provider review/integration contract", "VAL-007 reconciliation records"],
     "tests_run": ["terminal closure 54/54", "GitHub provider 20/20", "workflow artifacts 84/84 post-adoption workflows", "source governance manifest/disposition passed", "governance workflow 7/7", "GitHub workflow 10/10", "repository config direct validator plus host fixture suite 14/14", "brand-neutral distribution 2/2", "SDK-free distribution GWT 005", "workflow handoff registry passed"],
     "finding_status": "in-progress",
-    "residual_risk": "The 06f32f78 audit failure is preserved. Five hosted contexts passed there, but a new exact-head audit, receipt, live admission, integration, and Issue/Project read-back remain pending after this reconciliation changes the head.",
+    "residual_risk": "The 06f32f78 and 934d9806 audit failures are preserved. Five hosted contexts passed at both heads, but a new exact-head audit, receipt, live admission, integration, and Issue/Project read-back remain pending after this timestamp reconciliation changes the head.",
     "follow_up_needed": true
   }
 }

@@ -123,3 +123,12 @@
 - Blocking finding: the provider-number binding was complete in the audited commit while the task and workflow resume checkpoint still described that binding as the next action and retained `0b6e797a` as the current checkpoint.
 - Repair: preserve this failed audit, make the durable resume state describe the completed binding and required re-audit, and avoid an impossible self-reference by selecting the next exact subject through provider read-back after the reconciliation commit is pushed.
 - Focused validation: the auditor independently passed terminal closure 54/54, GitHub provider 20/20, terminal static validation for two records, and workflow artifact validation for 84 workflows, 104 indexed directories, and 55 backlog items.
+
+## Continuation Audit Of Reconciled Checkpoint Head
+
+- Audited head: `934d98061da9ccfd4926cf6f1ab38f67e74f48b3` on draft PR #221, with unchanged base `6a878d65565920271047f42b25b39f05afe68592`.
+- Disposition: `FAIL`.
+- Preserved results: the prior resume-checkpoint repair is self-contained without an impossible self-embedded SHA; strict receipt binding, effective review blocking, complete Issue partition, provider completeness, and topology-neutral integration evidence remained intact. Five hosted contexts succeeded, but reviews remained empty.
+- Blocking finding: `workflow.yaml` and the workflow-plan metadata retained `updated_at: 2026-08-20T03:34:43+08:00`, earlier than the reconciliation progress they contained.
+- Repair: synchronize the active workflow locator, plan, and task timestamps while preserving both failed audits, then select the new exact head through provider read-back and audit it afresh.
+- Focused validation: the auditor independently passed terminal closure 54/54, GitHub provider 20/20, static validation for two records, and workflow artifact validation for 84 workflows, 104 indexed directories, and 55 backlog items.
