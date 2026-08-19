@@ -19,7 +19,7 @@
 - `current_phase`: `remediation`
 - `artifact_root`: `.dev/workflows/2026-08-19-gov-008-terminal-issue-closure`
 - `created_at`: `2026-08-19T23:09:17+08:00`
-- `updated_at`: `2026-08-20T00:15:27+08:00`
+- `updated_at`: `2026-08-20T00:25:30+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md`
 - `template_version`: `1.2.0`
 
@@ -69,11 +69,11 @@
 
 ## Resume Checkpoint
 
-- Last completed action: fresh independent audit of `11f0914d3125e9c275b21a7bf3ecbd0209e62ff7` returned FAIL because duplicate valid `rel="next"` relations could skip a reviews page; every earlier finding remained fixed.
+- Last completed action: fresh independent audit of `7bdca9da523e39ae77af2d108541c2ae539be8d4` returned FAIL for incomplete/foreign Issue partitioning, commit-message closing bypass, merge-ref workflow checkout, stale SDK-free seed expectation, and multi-token Link truncation; earlier findings remained fixed.
 - Current task: `GOV008-001-contract-implementation`.
-- Exact next action: commit and push duplicate-relation rejection, then obtain another fresh independent exact-head audit before hosted admission or merge.
-- Validation already completed: current repair passes closure 41/41 and diff checks; the preceding head's hosted state remains nonterminal.
-- Git state: draft PR #220 exists at pushed head `11f0914d3125e9c275b21a7bf3ecbd0209e62ff7`; six failed audits are preserved and the bounded sixth repair is uncommitted.
+- Exact next action: commit and push complete Issue/commit partition plus hosted checkout/test repair, then obtain another fresh independent exact-head audit before hosted admission or merge.
+- Validation already completed: current repair passes closure 45/45, provider 20/20, workflow 10/10, repository/workflow/source/AI-context validators, and SDK-free GWT 005; full local SDK-free discovery sees pre-existing ignored `.codex/release` projects and remains blocked locally.
+- Git state: draft PR #220 exists at pushed head `7bdca9da523e39ae77af2d108541c2ae539be8d4`; seven failed audits are preserved and the bounded seventh repair is uncommitted.
 - Branch history and checkpoint handoffs: none yet.
 - Blockers or unresolved decisions: independent fixed-head audit, hosted checks, PR A integration, and provider read-back remain pending.
 
@@ -87,3 +87,4 @@
 | 4 | `codex/2026-08-19-gov-008-terminal-issue-closure` | `main@174eb835058dff40f67624df682d7d531ee9949b` | failed fresh exact-head audit | `5dca98d3da1a29b6d088c4bd44ce7161d5e901f2` | PR #220 | `2026-08-20T00:04:39+08:00` | preserve effective-review, pagination-completeness, and capture-path safety findings plus hosted failures | enforce decisive review state, complete safe pagination, and stdout-only capture, then validate, commit, push, and re-audit |
 | 5 | `codex/2026-08-19-gov-008-terminal-issue-closure` | `main@174eb835058dff40f67624df682d7d531ee9949b` | failed fresh exact-head audit | `2f93ecb18aaa5e823f0b40ab2f1ccdcf472e8ac1` | PR #220 | `2026-08-20T00:10:45+08:00` | preserve malformed/short pagination and non-replayable capture findings | fail closed on Link/total mismatches, separate YAML/status streams, validate, commit, push, and re-audit |
 | 6 | `codex/2026-08-19-gov-008-terminal-issue-closure` | `main@174eb835058dff40f67624df682d7d531ee9949b` | failed fresh exact-head audit | `11f0914d3125e9c275b21a7bf3ecbd0209e62ff7` | PR #220 | `2026-08-20T00:15:27+08:00` | preserve duplicate-next page-skipping finding | reject duplicate relations, validate, commit, push, and re-audit |
+| 7 | `codex/2026-08-19-gov-008-terminal-issue-closure` | `main@174eb835058dff40f67624df682d7d531ee9949b` | failed fresh exact-head audit | `7bdca9da523e39ae77af2d108541c2ae539be8d4` | PR #220 | `2026-08-20T00:25:30+08:00` | preserve Issue partition, commit-message, hosted checkout/test, and relation-token findings | implement bounded repair, validate, commit, push, and re-audit |

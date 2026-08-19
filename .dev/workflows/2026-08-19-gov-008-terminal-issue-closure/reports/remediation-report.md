@@ -69,3 +69,11 @@
 - Preserved fixes: all prior provider, lifecycle, capture, body, and exact-head protections passed review.
 - Repair: reject every duplicate pagination relation before selecting the unique next page.
 - Focused validation: closure 41/41 passed with diff checks.
+
+## Fresh Audit Of Unique-Relation Head
+
+- Audited head: `7bdca9da523e39ae77af2d108541c2ae539be8d4`
+- Disposition: `FAIL`
+- Blocking findings: PR-body references were not a complete repository-bound disposition partition; commit-message closing keywords bypassed deferred intent; required workflows checked out the merge ref rather than PR head; the removed downstream seed left an SDK-free test stale; multi-token Link relations could truncate pagination.
+- Repair: preserve and validate repository qualifiers, reject every undeclared/foreign target, scan merge-base-to-head commit messages and forbid closing keywords, reject multi-token relations, checkout the exact PR head in governance/PR-profile jobs, and assert the retired seed entry is absent.
+- Focused validation: closure 45/45, GitHub provider 20/20, GitHub workflow 10/10, and all affected governance validators passed. SDK-free GWT 005 passed; its full local suite remains blocked only by pre-existing ignored `.codex/release` projects absent on hosted runners.

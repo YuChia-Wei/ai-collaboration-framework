@@ -132,12 +132,10 @@ class SdkFreeFrameworkContractTests(unittest.TestCase):
                 encoding="utf-8"
             )
         )
-        integration = next(
-            entry
-            for entry in profile["entries"]
-            if entry["id"] == "repository-integration-seeds"
+        self.assertNotIn(
+            "repository-integration-seeds",
+            {entry["id"] for entry in profile["entries"]},
         )
-        self.assertNotIn("global.json", integration["source"])
 
 
 if __name__ == "__main__":

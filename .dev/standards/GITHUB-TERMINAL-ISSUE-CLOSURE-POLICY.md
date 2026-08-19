@@ -16,6 +16,12 @@ Every Issue named by a pull request has exactly one disposition:
 
 A pull request may mix the two modes for different Issues. A single Issue may
 not use both modes or both reference forms.
+The complete set of `Refs`, `Closes`, `Fixes`, and `Resolves` targets in the PR
+body must equal the record's Issue set. Qualified targets must name this
+repository; foreign-repository references fail. Commit messages in the
+base-to-head range may not contain closing keywords, so a deferred or omitted
+Issue cannot bypass the PR-body disposition gate when the commit reaches the
+default branch.
 
 ## Terminal-Close Gate
 

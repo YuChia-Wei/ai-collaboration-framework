@@ -36,6 +36,12 @@ class TerminalIssueClosureGwtTests(unittest.TestCase):
         cls.config = yaml.safe_load(
             (ROOT / ".dev/backlog/providers/github.yaml").read_text(encoding="utf-8")
         )
+        cls.commit_messages_patcher = mock.patch.object(VALIDATOR, "commit_messages", return_value="")
+        cls.commit_messages_patcher.start()
+
+    @classmethod
+    def tearDownClass(cls) -> None:
+        cls.commit_messages_patcher.stop()
 
     def errors(self, candidate: dict) -> list[str]:
         return VALIDATOR.validate_record(candidate, self.config)
@@ -418,6 +424,36 @@ class TerminalIssueClosureGwtTests(unittest.TestCase):
         with mock.patch.object(VALIDATOR, "github_api_json", return_value=([{"id": 1}], link)):
             with self.assertRaisesRegex(ValueError, "duplicate pagination relation 'next'"):
                 VALIDATOR.github_api_paginated("https://api.github.com/example?page=1", "test-token")
+
+    def test_gwt_042_given_multi_token_link_relation_when_read_then_it_fails_closed(self) -> None:
+        link = '<https://api.github.com/example?page=2>; rel="next last"'
+        with mock.patch.object(VALIDATOR, "github_api_json", return_value=([{"id": 1}], link)):
+            with self.assertRaisesRegex(ValueError, "unsupported pagination relation"):
+                VALIDATOR.github_api_paginated("https://api.github.com/example?page=1", "test-token")
+
+    def test_gwt_043_given_body_references_undeclared_issue_when_validated_then_it_fails(self) -> None:
+        data = fixture("deferred-positive.yaml")
+        data["pull_request"]["body"] = "Refs #212\nCloses #999"
+        self.assert_error(data, "Issue #999 is referenced without exactly one disposition")
+
+    def test_gwt_044_given_body_closes_foreign_same_number_when_validated_then_it_fails(self) -> None:
+        data = fixture("terminal-positive.yaml")
+        data["pull_request"]["body"] = "Closes attacker/other#212"
+        self.assert_error(data, "references foreign repository Issue attacker/other#212")
+
+    def test_gwt_045_given_deferred_issue_when_commit_message_closes_it_then_it_fails(self) -> None:
+        data = fixture("deferred-positive.yaml")
+        errors = VALIDATOR.validate_record(
+            data,
+            self.config,
+            {
+                "pr_number": 300,
+                "head_sha": "a" * 40,
+                "body": "Refs #212",
+                "commit_messages": "fix: complete work\n\nCloses #212",
+            },
+        )
+        self.assertTrue(any("commit messages must not contain closing keyword" in error for error in errors), errors)
 
 
 if __name__ == "__main__":

@@ -31,7 +31,7 @@ CONFIG = ROOT / ".dev/backlog/providers/github.yaml"
 SHA = re.compile(r"^[0-9a-f]{40}$")
 ISSUE_REFERENCE = re.compile(
     r"(?i)\b(refs?|close[sd]?|fix(?:e[sd])?|resolve[sd]?)\s*:?\s+"
-    r"(?:[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+)?#([1-9][0-9]*)\b"
+    r"(?:([A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+))?#([1-9][0-9]*)\b"
 )
 STAGES = {"declaration", "merge-admission", "reconciliation"}
 
@@ -61,8 +61,19 @@ def normalized_keyword(value: str) -> str:
     return "Resolves"
 
 
-def issue_references(body: str, number: int) -> list[str]:
-    return [normalized_keyword(keyword) for keyword, value in ISSUE_REFERENCE.findall(body) if int(value) == number]
+def parsed_issue_references(text: str) -> list[tuple[str, str | None, int]]:
+    return [
+        (normalized_keyword(keyword), repository or None, int(value))
+        for keyword, repository, value in ISSUE_REFERENCE.findall(text)
+    ]
+
+
+def issue_references(body: str, repository: str, number: int) -> list[str]:
+    return [
+        keyword
+        for keyword, qualified_repository, value in parsed_issue_references(body)
+        if value == number and (qualified_repository is None or qualified_repository.casefold() == repository.casefold())
+    ]
 
 
 def runtime_from_event(path: Path) -> dict[str, Any]:
@@ -74,9 +85,11 @@ def runtime_from_event(path: Path) -> dict[str, Any]:
     if not isinstance(pull_request, dict):
         raise ValueError(f"{path}: pull_request event payload is required")
     head = pull_request.get("head")
+    base = pull_request.get("base")
     return {
         "pr_number": event.get("number"),
         "head_sha": head.get("sha") if isinstance(head, dict) else None,
+        "base_sha": base.get("sha") if isinstance(base, dict) else None,
         "body": pull_request.get("body") or "",
     }
 
@@ -92,6 +105,27 @@ def checkout_head() -> str:
     if result.returncode != 0 or not SHA.fullmatch(result.stdout.strip()):
         raise ValueError("unable to resolve the current checkout HEAD")
     return result.stdout.strip()
+
+
+def commit_messages(base_sha: str, head_sha: str) -> str:
+    if not SHA.fullmatch(base_sha or "") or not SHA.fullmatch(head_sha or ""):
+        raise ValueError("current PR event requires exact base and head SHAs")
+    merge_base_result = subprocess.run(
+        ["git", "merge-base", base_sha, head_sha], cwd=ROOT, capture_output=True, text=True, check=False
+    )
+    merge_base = merge_base_result.stdout.strip()
+    if merge_base_result.returncode != 0 or not SHA.fullmatch(merge_base):
+        raise ValueError("unable to resolve the current PR merge base")
+    result = subprocess.run(
+        ["git", "log", "--format=%B", f"{merge_base}..{head_sha}"],
+        cwd=ROOT,
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    if result.returncode != 0:
+        raise ValueError("unable to read current PR commit messages")
+    return result.stdout
 
 
 def bind_admission_evidence(
@@ -185,6 +219,8 @@ def github_api_paginated(url: str, token: str, item_key: str | None = None) -> l
                 if not match:
                     raise ValueError("GitHub provider returned a malformed pagination Link header")
                 relation = match.group(2)
+                if not re.fullmatch(r"[a-z]+", relation):
+                    raise ValueError(f"GitHub provider returned unsupported pagination relation {relation!r}")
                 if relation in relations:
                     raise ValueError(f"GitHub provider returned duplicate pagination relation {relation!r}")
                 relations.add(relation)
@@ -406,7 +442,7 @@ def validate_record(record: dict[str, Any], config: dict[str, Any], runtime: dic
         authorization = issue.get("work_authorization", {})
         if not isinstance(authorization, dict) or authorization.get("online_issue_bound") is not True or authorization.get("explicit_owner_approval") is not True:
             errors.append(f"Issue #{number} requires binding and explicit owner approval independent of keywords")
-        references = issue_references(body, number)
+        references = issue_references(body, config["repository"], number)
         read_back = issue.get("read_back", {})
         if not isinstance(read_back, dict):
             errors.append(f"Issue #{number} read_back must be a mapping")
@@ -444,6 +480,23 @@ def validate_record(record: dict[str, Any], config: dict[str, Any], runtime: dic
             expected_read_back = {"performed": True, "merged_head_sha": head_sha, "issue_state": "closed", "issue_state_reason": "completed", "project_status": "Done"}
             if read_back != expected_read_back:
                 errors.append(f"terminal Issue #{number} requires matching post-merge Issue and Project read-back")
+    commit_text = runtime.get("commit_messages", "") if runtime is not None else ""
+    if not isinstance(commit_text, str):
+        errors.append("current PR commit messages must be text")
+        commit_text = ""
+    body_refs = parsed_issue_references(body)
+    commit_refs = parsed_issue_references(commit_text)
+    all_refs = [("PR body", item) for item in body_refs] + [("commit message", item) for item in commit_refs]
+    referenced_numbers: set[int] = set()
+    for source, (keyword, qualified_repository, number) in all_refs:
+        if qualified_repository is not None and qualified_repository.casefold() != config["repository"].casefold():
+            errors.append(f"{source} references foreign repository Issue {qualified_repository}#{number}")
+            continue
+        referenced_numbers.add(number)
+        if source == "commit message" and keyword != "Refs":
+            errors.append(f"commit messages must not contain closing keyword {keyword} for Issue #{number}")
+    for number in sorted(referenced_numbers - numbers):
+        errors.append(f"Issue #{number} is referenced without exactly one disposition record")
     return errors
 
 
@@ -493,6 +546,7 @@ def main(argv: list[str] | None = None) -> int:
         try:
             if runtime.get("head_sha") != checkout_head():
                 errors.append("current PR event head does not match checkout HEAD")
+            runtime["commit_messages"] = commit_messages(runtime.get("base_sha"), runtime.get("head_sha"))
         except ValueError as exc:
             errors.append(str(exc))
         records = [item for item in records if item[1].get("pull_request", {}).get("number") == runtime.get("pr_number")]

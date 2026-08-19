@@ -8,7 +8,7 @@
   "owner_skill": "ai-context-governance",
   "status": "in_progress",
   "created_at": "2026-08-19T23:09:17+08:00",
-  "updated_at": "2026-08-20T00:15:27+08:00",
+  "updated_at": "2026-08-20T00:25:30+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-5.6-sol",
   "reasoning_effort": "high",
@@ -22,15 +22,15 @@
   "execution": {
     "steps": ["implement contract and guidance", "add deterministic fixtures", "register source-only validation", "validate and freeze exact head"],
     "validation": ["focused GWT", "workflow/config/source governance", "distribution exclusion", "fresh fixed-head audit", "hosted checks"],
-    "last_completed_step": "fresh audit of 11f0914d failed because duplicate next relations could skip a provider page",
-    "next_action": "commit duplicate-relation rejection, push, and obtain a fresh exact-head audit"
+    "last_completed_step": "fresh audit of 7bdca9da failed for Issue partition, commit-message, hosted checkout/test, and multi-token relation gaps",
+    "next_action": "commit the bounded complete-partition and hosted repair, push, and obtain a fresh exact-head audit"
   },
   "results": {
-    "summary": "Six failed exact-head audits are preserved; the current bounded repair rejects duplicate pagination relations so a provider page cannot be skipped.",
+    "summary": "Seven failed exact-head audits are preserved; the current bounded repair completes repository-bound Issue partitioning across PR body and commit messages and restores exact-head hosted execution.",
     "files_changed": ["GitHub provider contract and PR template", "terminal closure policy, validator, fixtures, and source-only registrations", "workflow and Git closeout guidance", "GOV-008 workflow records"],
-    "tests_run": ["terminal closure 41/41", "GitHub provider 20/20", "repository config 14/14", "entrypoint 7/7", "source entrypoint 3/3", "registry 6/6", "dependency 19/19", "prerequisite 14/14", "brand-neutral distribution 2/2", "workflow/shell/source-governance/AI-context validators"],
+    "tests_run": ["terminal closure 45/45", "GitHub provider 20/20", "GitHub workflow 10/10", "SDK-free GWT 005 passed; full local suite blocked by ignored .codex/release projects", "repository config 14/14", "entrypoint 7/7", "source entrypoint 3/3", "registry 6/6", "dependency 19/19", "prerequisite 14/14", "brand-neutral distribution 2/2", "workflow/shell/source-governance/AI-context validators"],
     "finding_status": "remediated-pending-fresh-verification",
-    "residual_risk": "The sixth audit repair is uncommitted; fresh audit, hosted validation, non-mutating admission, and integration remain pending.",
+    "residual_risk": "The seventh audit repair is uncommitted; fresh audit, hosted validation, non-mutating admission, and integration remain pending.",
     "follow_up_needed": true
   }
 }
