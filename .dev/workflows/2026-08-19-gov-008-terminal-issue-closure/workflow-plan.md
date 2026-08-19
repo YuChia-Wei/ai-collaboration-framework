@@ -19,7 +19,7 @@
 - `current_phase`: `remediation`
 - `artifact_root`: `.dev/workflows/2026-08-19-gov-008-terminal-issue-closure`
 - `created_at`: `2026-08-19T23:09:17+08:00`
-- `updated_at`: `2026-08-19T23:28:39+08:00`
+- `updated_at`: `2026-08-19T23:31:54+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md`
 - `template_version`: `1.2.0`
 
@@ -71,9 +71,9 @@
 
 - Last completed action: independent audit of `4fe042f8a1d0483b311b327a22fa0b7e320300c4` returned FAIL for current-PR binding, inline closing-keyword detection, head-bound review/check completeness, and stale workflow truth; the bounded repair now separates declaration, merge admission, and reconciliation while keeping exactly two closure modes.
 - Current task: `GOV008-001-contract-implementation`.
-- Exact next action: finish repair validation, create a corrective commit, then push only far enough to open PR A and bind its assigned PR number before the fresh final audit.
+- Exact next action: commit the PR #220 binding and checkout-head gate, push the new head, then obtain a fresh independent exact-head audit before readiness or merge.
 - Validation already completed: original focused suites passed; repaired closure suite passes 23/23 and provider 20/20, including inline/qualified closing keywords, PR/head mismatch, review/check head drift, and required-context completeness.
-- Git state: dedicated branch at failed audited commit `4fe042f8a1d0483b311b327a22fa0b7e320300c4` with bounded uncommitted audit repairs; nothing pushed.
+- Git state: draft PR #220 exists at pushed corrective head `8ae7ec75cbaf43c5b22b574006f182a2586bc33f`; the durable declaration is now bound to PR #220 and the current checkout/event head gate is an uncommitted final repair.
 - Branch history and checkpoint handoffs: none yet.
 - Blockers or unresolved decisions: independent fixed-head audit, hosted checks, PR A integration, and provider read-back remain pending.
 
@@ -81,4 +81,4 @@
 
 | Segment | Branch | Base | Checkpoint Type | Commit | Remote / Target | Recorded At | Reason | Resume Branch / Action |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| 1 | `codex/2026-08-19-gov-008-terminal-issue-closure` | `main@174eb835058dff40f67624df682d7d531ee9949b` | failed exact-head audit | `4fe042f8a1d0483b311b327a22fa0b7e320300c4` | not pushed | `2026-08-19T23:28:39+08:00` | preserve four blocking validator/workflow findings before any transport | complete bounded repair, commit, then open draft PR for number binding |
+| 1 | `codex/2026-08-19-gov-008-terminal-issue-closure` | `main@174eb835058dff40f67624df682d7d531ee9949b` | draft PR bootstrap | `8ae7ec75cbaf43c5b22b574006f182a2586bc33f` | PR #220 | `2026-08-19T23:31:54+08:00` | obtain the provider-assigned PR number required for exact event binding; this is not review or hosted success | bind #220, push the new head, and obtain fresh audit |

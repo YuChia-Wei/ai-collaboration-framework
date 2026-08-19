@@ -6,6 +6,7 @@ from __future__ import annotations
 import importlib.util
 import unittest
 from pathlib import Path
+from unittest import mock
 
 import yaml
 
@@ -171,30 +172,46 @@ class TerminalIssueClosureGwtTests(unittest.TestCase):
         self.assertTrue(any("head_sha does not match" in error for error in errors), errors)
 
     def test_gwt_024_given_current_pr_event_when_exact_record_is_selected_then_cli_passes(self) -> None:
-        self.assertEqual(
-            0,
-            VALIDATOR.main(
-                [
-                    "--record",
-                    str(FIXTURES / "terminal-positive.yaml"),
-                    "--event-path",
-                    str(FIXTURES / "pr-event-terminal.json"),
-                ]
-            ),
-        )
+        with mock.patch.object(VALIDATOR, "checkout_head", return_value="a" * 40):
+            self.assertEqual(
+                0,
+                VALIDATOR.main(
+                    [
+                        "--record",
+                        str(FIXTURES / "terminal-positive.yaml"),
+                        "--event-path",
+                        str(FIXTURES / "pr-event-terminal.json"),
+                    ]
+                ),
+            )
 
     def test_gwt_025_given_current_pr_event_when_no_bound_record_exists_then_cli_fails(self) -> None:
-        self.assertEqual(
-            1,
-            VALIDATOR.main(
-                [
-                    "--record",
-                    str(FIXTURES / "deferred-positive.yaml"),
-                    "--event-path",
-                    str(FIXTURES / "pr-event-terminal.json"),
-                ]
-            ),
-        )
+        with mock.patch.object(VALIDATOR, "checkout_head", return_value="a" * 40):
+            self.assertEqual(
+                1,
+                VALIDATOR.main(
+                    [
+                        "--record",
+                        str(FIXTURES / "deferred-positive.yaml"),
+                        "--event-path",
+                        str(FIXTURES / "pr-event-terminal.json"),
+                    ]
+                ),
+            )
+
+    def test_gwt_026_given_current_pr_event_when_checkout_head_drifts_then_cli_fails(self) -> None:
+        with mock.patch.object(VALIDATOR, "checkout_head", return_value="b" * 40):
+            self.assertEqual(
+                1,
+                VALIDATOR.main(
+                    [
+                        "--record",
+                        str(FIXTURES / "terminal-positive.yaml"),
+                        "--event-path",
+                        str(FIXTURES / "pr-event-terminal.json"),
+                    ]
+                ),
+            )
 
 
 if __name__ == "__main__":

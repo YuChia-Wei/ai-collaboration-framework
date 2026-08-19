@@ -22,3 +22,4 @@
 - Disposition: `FAIL`
 - Blocking findings: no current PR/head binding; inline/qualified closing keywords bypassed deferred prohibition; review and required checks were neither exact-head-bound nor completeness-checked; workflow checkpoint predated the audit.
 - Repair: separate declaration, merge-admission, and reconciliation validation stages; select exactly one current-PR record from the GitHub event; bind review and the exact required-context set to the same head; detect inline and qualified GitHub closing forms; refresh durable workflow truth.
+- Provider binding: draft PR #220 was created at `8ae7ec75cbaf43c5b22b574006f182a2586bc33f`; its assigned number is now bound into the declaration record, and PR-event validation also requires the event head to equal the checked-out commit.

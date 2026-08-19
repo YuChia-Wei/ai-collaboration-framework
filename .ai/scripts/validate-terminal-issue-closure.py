@@ -7,6 +7,7 @@ import argparse
 import json
 import os
 import re
+import subprocess
 import sys
 from pathlib import Path
 from typing import Any
@@ -74,6 +75,19 @@ def runtime_from_event(path: Path) -> dict[str, Any]:
         "head_sha": head.get("sha") if isinstance(head, dict) else None,
         "body": pull_request.get("body") or "",
     }
+
+
+def checkout_head() -> str:
+    result = subprocess.run(
+        ["git", "rev-parse", "HEAD"],
+        cwd=ROOT,
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    if result.returncode != 0 or not SHA.fullmatch(result.stdout.strip()):
+        raise ValueError("unable to resolve the current checkout HEAD")
+    return result.stdout.strip()
 
 
 def validate_provider_evidence(pull_request: dict[str, Any], runtime: dict[str, Any] | None, errors: list[str]) -> None:
@@ -245,6 +259,11 @@ def main(argv: list[str] | None = None) -> int:
         except ValueError as exc:
             errors.append(str(exc))
     if runtime is not None:
+        try:
+            if runtime.get("head_sha") != checkout_head():
+                errors.append("current PR event head does not match checkout HEAD")
+        except ValueError as exc:
+            errors.append(str(exc))
         records = [item for item in records if item[1].get("pull_request", {}).get("number") == runtime.get("pr_number")]
         if len(records) != 1:
             errors.append(f"current PR #{runtime.get('pr_number')} must have exactly one bound disposition record")
