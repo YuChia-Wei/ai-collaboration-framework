@@ -2,6 +2,7 @@ name: AI Context Governance
 
 on:
   pull_request:
+    types: [opened, synchronize, reopened, edited]
     paths:
       - "**"
   workflow_dispatch:

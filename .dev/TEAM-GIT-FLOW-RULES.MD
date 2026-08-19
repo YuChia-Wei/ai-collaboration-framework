@@ -127,8 +127,10 @@ to stdout and writes no repository path; trusted orchestration may retain it
 under ignored validation artifacts. A replay instead uses the untracked
 `--admission-evidence` snapshot plus `--verify-provider-live`. The
 provider configuration owns the required-check
-set, and the live GitHub response must exactly match the snapshot's provider
-review/check-run identities and timestamps. That merge-admission run must bind
+set, and the live GitHub response must exactly match the snapshot's PR number,
+base, head, body, review/check-run identities, and timestamps. Those live PR
+facts must also equal the current event snapshot; PR-body edits rerun the
+declaration workflows. That merge-admission run must bind
 the approved review and the complete successful required-check set to the same
 immutable head. Do not commit the volatile snapshot; any head drift
 invalidates it and requires a fresh independent audit, hosted read-back, and

@@ -77,3 +77,13 @@
 - Blocking findings: PR-body references were not a complete repository-bound disposition partition; commit-message closing keywords bypassed deferred intent; required workflows checked out the merge ref rather than PR head; the removed downstream seed left an SDK-free test stale; multi-token Link relations could truncate pagination.
 - Repair: preserve and validate repository qualifiers, reject every undeclared/foreign target, scan merge-base-to-head commit messages and forbid closing keywords, reject multi-token relations, checkout the exact PR head in governance/PR-profile jobs, and assert the retired seed entry is absent.
 - Focused validation: closure 45/45, GitHub provider 20/20, GitHub workflow 10/10, and all affected governance validators passed. SDK-free GWT 005 passed; its full local suite remains blocked only by pre-existing ignored `.codex/release` projects absent on hosted runners.
+
+## Fresh Audit Of Complete-Issue-Partition Head
+
+- Audited head: `91826703df14d45eae6a8bcaf2d506f3c6f1c86a`
+- Disposition: `FAIL`
+- Preserved fixes: complete repository-bound Issue partitioning, commit-message scanning, exact-head declaration checkout, SDK-free expectation repair, pagination, reviewer, admission, replay, and prior lifecycle protections passed review.
+- Blocking finding: merge admission did not fetch live PR metadata, so a stale or fabricated event body/base could conceal a same-head PR-body edit or suppress the commit range while exact reviews/checks still passed.
+- Provider read-back: three required checks succeeded; governance and Ubuntu PR-profile checks were still running, and no approval existed. No hosted or admission success is claimed.
+- Repair: capture and replay now fetch live PR number, base, head, body, reviews, and checks; require those facts to equal the event and snapshot; scan the provider-proven base-to-head range; and rerun declaration workflows for PR-body `edited` events.
+- Focused validation: closure 48/48, GitHub provider 20/20, and GitHub workflow 10/10 passed. The directly affected governance workflow contract was updated for exact-head checkout and edited-event coverage.

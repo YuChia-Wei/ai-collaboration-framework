@@ -173,7 +173,7 @@ def bind_admission_evidence(
     bound = copy.deepcopy(record)
     bound["validation_stage"] = "merge-admission"
     bound_pr = bound["pull_request"]
-    for field in ("number", "head_sha", "review", "required_check_contexts", "hosted_checks"):
+    for field in ("number", "base_sha", "head_sha", "body", "review", "required_check_contexts", "hosted_checks"):
         bound_pr[field] = copy.deepcopy(evidence_pr.get(field))
     return bound, errors
 
@@ -242,11 +242,35 @@ def read_live_provider_facts(
     repository: str, pr_number: int, head_sha: str, required_contexts: list[str], token: str
 ) -> dict[str, Any]:
     api_root = f"https://api.github.com/repos/{repository}"
+    metadata, metadata_link = github_api_json(f"{api_root}/pulls/{pr_number}", token)
+    if metadata_link is not None:
+        raise ValueError("GitHub pull request metadata returned an unexpected pagination Link header")
+    if not isinstance(metadata, dict) or metadata.get("number") != pr_number:
+        raise ValueError("GitHub provider returned mismatched pull request metadata")
+    live_head = metadata.get("head")
+    live_base = metadata.get("base")
+    live_base_repository = live_base.get("repo") if isinstance(live_base, dict) else None
+    live_base_repository_name = (
+        live_base_repository.get("full_name") if isinstance(live_base_repository, dict) else None
+    )
+    live_head_sha = live_head.get("sha") if isinstance(live_head, dict) else None
+    live_base_sha = live_base.get("sha") if isinstance(live_base, dict) else None
+    if not isinstance(live_base_repository_name, str) or live_base_repository_name.casefold() != repository.casefold():
+        raise ValueError("GitHub pull request base repository does not match the governed repository")
+    if not isinstance(live_head_sha, str) or not SHA.fullmatch(live_head_sha):
+        raise ValueError("GitHub provider returned an invalid pull request head SHA")
+    if live_head_sha != head_sha:
+        raise ValueError("GitHub pull request head does not match the current event head")
+    if not isinstance(live_base_sha, str) or not SHA.fullmatch(live_base_sha):
+        raise ValueError("GitHub provider returned an invalid pull request base SHA")
+    live_body = metadata.get("body") or ""
+    if not isinstance(live_body, str):
+        raise ValueError("GitHub provider returned an invalid pull request body")
     reviews = github_api_paginated(f"{api_root}/pulls/{pr_number}/reviews?per_page=100", token)
-    runs = github_api_paginated(f"{api_root}/commits/{head_sha}/check-runs?per_page=100", token, "check_runs")
+    runs = github_api_paginated(f"{api_root}/commits/{live_head_sha}/check-runs?per_page=100", token, "check_runs")
     latest_by_reviewer: dict[str, dict[str, Any]] = {}
     for item in reviews:
-        if not isinstance(item, dict) or item.get("commit_id") != head_sha or item.get("state") not in {"APPROVED", "CHANGES_REQUESTED"}:
+        if not isinstance(item, dict) or item.get("commit_id") != live_head_sha or item.get("state") not in {"APPROVED", "CHANGES_REQUESTED"}:
             continue
         user = item.get("user")
         login = user.get("login") if isinstance(user, dict) else None
@@ -268,7 +292,7 @@ def read_live_provider_facts(
         latest = approved[-1]
         review = {
             "status": "approved",
-            "head_sha": head_sha,
+            "head_sha": live_head_sha,
             "provider_review_id": latest.get("id"),
             "submitted_at": latest.get("submitted_at"),
         }
@@ -292,11 +316,22 @@ def read_live_provider_facts(
     ]
     return {
         "number": pr_number,
-        "head_sha": head_sha,
+        "base_sha": live_base_sha,
+        "head_sha": live_head_sha,
+        "body": live_body,
         "review": review,
         "required_check_contexts": required_contexts,
         "hosted_checks": hosted_checks,
     }
+
+
+def validate_live_runtime(live: dict[str, Any], runtime: dict[str, Any]) -> list[str]:
+    errors: list[str] = []
+    for field in ("pr_number", "base_sha", "head_sha", "body"):
+        live_field = "number" if field == "pr_number" else field
+        if live.get(live_field) != runtime.get(field):
+            errors.append(f"current PR event {field} does not match fresh GitHub pull request metadata")
+    return errors
 
 
 def build_live_admission_evidence(
@@ -308,6 +343,9 @@ def build_live_admission_evidence(
     pull_request = read_live_provider_facts(
         record.get("repository"), runtime.get("pr_number"), runtime.get("head_sha"), required, token
     )
+    runtime_errors = validate_live_runtime(pull_request, runtime)
+    if runtime_errors:
+        raise ValueError("; ".join(runtime_errors))
     return {
         "schema_version": "1.0",
         "contract_id": "github-terminal-issue-closure-admission",
@@ -334,7 +372,7 @@ def validate_live_provider_evidence(
         return [str(exc)]
     if evidence.get("pull_request") != live:
         return ["admission evidence does not exactly match fresh GitHub provider read-back"]
-    return []
+    return validate_live_runtime(live, runtime)
 
 
 def validate_provider_evidence(pull_request: dict[str, Any], runtime: dict[str, Any] | None, errors: list[str]) -> None:

@@ -61,7 +61,8 @@ adding another closure mode:
 - `reconciliation` additionally binds the expected/merged head and post-merge
   Issue/Project read-back.
 
-On a GitHub pull-request event the required validator check selects exactly one
+On a GitHub pull-request event, including a PR-body `edited` activity, the
+required validator check selects exactly one
 `declaration` record bound to that current PR number and validates the live
 event body, event head, and checked-out head. A missing, duplicate,
 historical-only, non-declaration, or mismatched record fails. That required
@@ -73,11 +74,14 @@ without writing a repository path. Trusted orchestration may retain that
 stdout under ignored validation artifacts. Replaying such a snapshot requires the current event snapshot,
 `--admission-evidence <path>`, and `--verify-provider-live`. The admission snapshot uses contract
 `github-terminal-issue-closure-admission` and supplies the exact PR number,
-head, approved review, required-check context set, and successful hosted checks.
+base, head, body, approved review, required-check context set, and successful
+hosted checks.
 The provider configuration, not the snapshot, owns the complete required-check
 context set. Live verification re-reads GitHub with `GITHUB_TOKEN` and requires
 the snapshot's provider review/check-run identifiers, timestamps, conclusions,
-and heads to match that fresh response exactly. A replayed snapshot without
+heads, PR body, and base to match that fresh response exactly. The live PR
+metadata must also match the current event before its base-to-head commit range
+is accepted. A replayed snapshot without
 live verification is rejected. The validator itself never writes the capture,
 eliminating repository symlink/reparse and overwrite races. It overlays those verified volatile facts
 only onto a tracked declaration in memory and requires every fact to match the

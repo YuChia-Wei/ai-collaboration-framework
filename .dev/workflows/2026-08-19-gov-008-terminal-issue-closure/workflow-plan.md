@@ -19,7 +19,7 @@
 - `current_phase`: `remediation`
 - `artifact_root`: `.dev/workflows/2026-08-19-gov-008-terminal-issue-closure`
 - `created_at`: `2026-08-19T23:09:17+08:00`
-- `updated_at`: `2026-08-20T00:25:30+08:00`
+- `updated_at`: `2026-08-20T00:34:55+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md`
 - `template_version`: `1.2.0`
 
@@ -47,7 +47,7 @@
 ## Stages And Checkpoints
 
 1. Completed locally: implement the canonical source-only contract, template, validator, fixtures, guidance, distribution boundary, and PR A deferred evidence.
-2. In progress: remediate the failed exact-head audit of `4fe042f8a1d0483b311b327a22fa0b7e320300c4`, then create a corrective commit and obtain a fresh audit.
+2. In progress: remediate the eighth failed exact-head audit of `91826703df14d45eae6a8bcaf2d506f3c6f1c86a`, then create a corrective commit and obtain a fresh audit.
 3. Pending: merge PR A and read back that #212 remains open by design.
 4. Pending: continue from refreshed `main`, terminally reconcile #212 and #204, and complete provider read-back.
 
@@ -69,11 +69,11 @@
 
 ## Resume Checkpoint
 
-- Last completed action: fresh independent audit of `7bdca9da523e39ae77af2d108541c2ae539be8d4` returned FAIL for incomplete/foreign Issue partitioning, commit-message closing bypass, merge-ref workflow checkout, stale SDK-free seed expectation, and multi-token Link truncation; earlier findings remained fixed.
+- Last completed action: fresh independent audit of `91826703df14d45eae6a8bcaf2d506f3c6f1c86a` returned FAIL because admission trusted stale or fabricated event body/base instead of live PR metadata; earlier findings remained fixed.
 - Current task: `GOV008-001-contract-implementation`.
-- Exact next action: commit and push complete Issue/commit partition plus hosted checkout/test repair, then obtain another fresh independent exact-head audit before hosted admission or merge.
-- Validation already completed: current repair passes closure 45/45, provider 20/20, workflow 10/10, repository/workflow/source/AI-context validators, and SDK-free GWT 005; full local SDK-free discovery sees pre-existing ignored `.codex/release` projects and remains blocked locally.
-- Git state: draft PR #220 exists at pushed head `7bdca9da523e39ae77af2d108541c2ae539be8d4`; seven failed audits are preserved and the bounded seventh repair is uncommitted.
+- Exact next action: commit and push live PR metadata/event binding plus edited-event workflow repair, then obtain another fresh independent exact-head audit before hosted admission or merge.
+- Validation already completed: current repair passes closure 48/48, provider 20/20, workflow 10/10, and the directly affected governance workflow contract after updating its exact-head checkout expectation; broader governed validation remains to run before commit.
+- Git state: draft PR #220 exists at pushed head `91826703df14d45eae6a8bcaf2d506f3c6f1c86a`; eight failed audits are preserved and the bounded eighth repair is uncommitted.
 - Branch history and checkpoint handoffs: none yet.
 - Blockers or unresolved decisions: independent fixed-head audit, hosted checks, PR A integration, and provider read-back remain pending.
 
@@ -88,3 +88,4 @@
 | 5 | `codex/2026-08-19-gov-008-terminal-issue-closure` | `main@174eb835058dff40f67624df682d7d531ee9949b` | failed fresh exact-head audit | `2f93ecb18aaa5e823f0b40ab2f1ccdcf472e8ac1` | PR #220 | `2026-08-20T00:10:45+08:00` | preserve malformed/short pagination and non-replayable capture findings | fail closed on Link/total mismatches, separate YAML/status streams, validate, commit, push, and re-audit |
 | 6 | `codex/2026-08-19-gov-008-terminal-issue-closure` | `main@174eb835058dff40f67624df682d7d531ee9949b` | failed fresh exact-head audit | `11f0914d3125e9c275b21a7bf3ecbd0209e62ff7` | PR #220 | `2026-08-20T00:15:27+08:00` | preserve duplicate-next page-skipping finding | reject duplicate relations, validate, commit, push, and re-audit |
 | 7 | `codex/2026-08-19-gov-008-terminal-issue-closure` | `main@174eb835058dff40f67624df682d7d531ee9949b` | failed fresh exact-head audit | `7bdca9da523e39ae77af2d108541c2ae539be8d4` | PR #220 | `2026-08-20T00:25:30+08:00` | preserve Issue partition, commit-message, hosted checkout/test, and relation-token findings | implement bounded repair, validate, commit, push, and re-audit |
+| 8 | `codex/2026-08-19-gov-008-terminal-issue-closure` | `main@174eb835058dff40f67624df682d7d531ee9949b` | failed fresh exact-head audit | `91826703df14d45eae6a8bcaf2d506f3c6f1c86a` | PR #220 | `2026-08-20T00:34:55+08:00` | preserve stale/fabricated event metadata admission finding while retaining all earlier repairs | live-read and bind PR number/base/head/body, rerun edited-body checks, validate, commit, push, and re-audit |

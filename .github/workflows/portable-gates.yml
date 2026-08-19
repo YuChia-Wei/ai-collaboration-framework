@@ -2,6 +2,7 @@ name: Portable AI Context Gates
 
 on:
   pull_request:
+    types: [opened, synchronize, reopened, edited]
     paths:
       - ".ai/**"
       - ".agents/**"

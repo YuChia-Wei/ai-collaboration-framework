@@ -4,7 +4,9 @@ repository: YuChia-Wei/ai-collaboration-framework
 provider: github
 pull_request:
   number: 300
+  base_sha: bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
   head_sha: aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+  body: "Refs #212"
   review: {status: approved, head_sha: aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa, provider_review_id: 7001, submitted_at: "2026-08-19T15:45:00Z"}
   required_check_contexts:
     - Read-only governance contract

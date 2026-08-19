@@ -328,7 +328,12 @@ class TerminalIssueClosureGwtTests(unittest.TestCase):
         with mock.patch.object(VALIDATOR, "read_live_provider_facts", return_value=pull_request):
             evidence = VALIDATOR.build_live_admission_evidence(
                 fixture("declaration-bound.yaml"),
-                {"pr_number": 300, "head_sha": "a" * 40, "body": "Refs #212"},
+                {
+                    "pr_number": 300,
+                    "base_sha": "b" * 40,
+                    "head_sha": "a" * 40,
+                    "body": "Refs #212",
+                },
                 self.config,
                 "test-token",
             )
@@ -337,6 +342,15 @@ class TerminalIssueClosureGwtTests(unittest.TestCase):
         self.assertEqual(pull_request, evidence["pull_request"])
 
     def test_gwt_035_given_comment_after_change_request_when_read_live_then_block_remains(self) -> None:
+        metadata = {
+            "number": 300,
+            "body": "Refs #212",
+            "head": {"sha": "a" * 40},
+            "base": {
+                "sha": "b" * 40,
+                "repo": {"full_name": "YuChia-Wei/ai-collaboration-framework"},
+            },
+        }
         reviews = [
             {"id": 10, "state": "CHANGES_REQUESTED", "commit_id": "a" * 40, "user": {"login": "alice"}},
             {"id": 11, "state": "COMMENTED", "commit_id": "a" * 40, "user": {"login": "alice"}},
@@ -353,12 +367,17 @@ class TerminalIssueClosureGwtTests(unittest.TestCase):
             for item in fixture("admission-positive.yaml")["pull_request"]["hosted_checks"]
         ]
         required = self.config["work_item_binding"]["merge_gate"]["required_check_contexts"]
-        with mock.patch.object(VALIDATOR, "github_api_paginated", side_effect=[reviews, checks]):
+        with (
+            mock.patch.object(VALIDATOR, "github_api_json", return_value=(metadata, None)),
+            mock.patch.object(VALIDATOR, "github_api_paginated", side_effect=[reviews, checks]),
+        ):
             facts = VALIDATOR.read_live_provider_facts(
                 "YuChia-Wei/ai-collaboration-framework", 300, "a" * 40, required, "test-token"
             )
         self.assertEqual("blocked", facts["review"]["status"])
         self.assertEqual([10], facts["review"]["blocking_provider_review_ids"])
+        self.assertEqual("b" * 40, facts["base_sha"])
+        self.assertEqual("Refs #212", facts["body"])
 
     def test_gwt_036_given_provider_next_link_when_read_then_all_pages_are_combined(self) -> None:
         next_url = "https://api.github.com/example?page=2"
@@ -454,6 +473,86 @@ class TerminalIssueClosureGwtTests(unittest.TestCase):
             },
         )
         self.assertTrue(any("commit messages must not contain closing keyword" in error for error in errors), errors)
+
+    def test_gwt_046_given_stale_event_body_when_live_capture_runs_then_it_fails_closed(self) -> None:
+        live = fixture("admission-positive.yaml")["pull_request"]
+        runtime = {
+            "pr_number": 300,
+            "base_sha": "b" * 40,
+            "head_sha": "a" * 40,
+            "body": "Closes #999",
+        }
+        with mock.patch.object(VALIDATOR, "read_live_provider_facts", return_value=live):
+            with self.assertRaisesRegex(ValueError, "body does not match fresh GitHub"):
+                VALIDATOR.build_live_admission_evidence(
+                    fixture("declaration-bound.yaml"), runtime, self.config, "test-token"
+                )
+
+    def test_gwt_047_given_fabricated_event_base_when_live_replay_runs_then_it_fails_closed(self) -> None:
+        evidence = fixture("admission-positive.yaml")
+        runtime = {
+            "pr_number": 300,
+            "base_sha": "a" * 40,
+            "head_sha": "a" * 40,
+            "body": "Refs #212",
+        }
+        with (
+            mock.patch.object(VALIDATOR, "read_live_provider_facts", return_value=evidence["pull_request"]),
+            mock.patch.dict(VALIDATOR.os.environ, {"GITHUB_TOKEN": "test-token"}),
+        ):
+            errors = VALIDATOR.validate_live_provider_evidence(
+                evidence, fixture("declaration-bound.yaml"), runtime, self.config
+            )
+        self.assertTrue(any("base_sha does not match fresh GitHub" in error for error in errors), errors)
+
+    def test_gwt_048_given_live_pr_identity_or_head_mismatch_when_read_then_it_fails_closed(self) -> None:
+        candidates = [
+            (
+                {
+                    "number": 999,
+                    "body": "Refs #212",
+                    "head": {"sha": "a" * 40},
+                    "base": {
+                        "sha": "b" * 40,
+                        "repo": {"full_name": "YuChia-Wei/ai-collaboration-framework"},
+                    },
+                },
+                "mismatched pull request metadata",
+            ),
+            (
+                {
+                    "number": 300,
+                    "body": "Refs #212",
+                    "head": {"sha": "a" * 40},
+                    "base": {"sha": "b" * 40, "repo": {"full_name": "attacker/other"}},
+                },
+                "base repository does not match",
+            ),
+            (
+                {
+                    "number": 300,
+                    "body": "Refs #212",
+                    "head": {"sha": "c" * 40},
+                    "base": {
+                        "sha": "b" * 40,
+                        "repo": {"full_name": "YuChia-Wei/ai-collaboration-framework"},
+                    },
+                },
+                "head does not match the current event head",
+            ),
+        ]
+        required = self.config["work_item_binding"]["merge_gate"]["required_check_contexts"]
+        for metadata, fragment in candidates:
+            with self.subTest(fragment=fragment):
+                with mock.patch.object(VALIDATOR, "github_api_json", return_value=(metadata, None)):
+                    with self.assertRaisesRegex(ValueError, fragment):
+                        VALIDATOR.read_live_provider_facts(
+                            "YuChia-Wei/ai-collaboration-framework",
+                            300,
+                            "a" * 40,
+                            required,
+                            "test-token",
+                        )
 
 
 if __name__ == "__main__":
