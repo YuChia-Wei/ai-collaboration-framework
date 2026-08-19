@@ -69,13 +69,13 @@
 
 ## Resume Checkpoint
 
-- Last completed action: committed and pushed the validated continuation as `0b6e797a2e55f5be4e5db234a3dbe15d2b7f8b26`, created draft PR #221, and read back `main@6a878d65` with provider head `0b6e797a`.
+- Last completed action: bound PR #221 in `06f32f785cad287e838d1cd93840a3ab20942b9d`; the fresh exact-head audit failed only because this resume checkpoint still described that completed binding as pending.
 - Current task: `GOV008-002-terminal-continuation`, with the remaining prospective contract refinement retained in `GOV008-001` until fresh verification.
-- Exact next action: commit and push the PR #221 provider-number binding, freeze that resulting provider head, then obtain a fresh exact-head audit receipt and hosted admission.
-- Validation already completed: continuation terminal closure 54/54, GitHub provider 20/20, repository configuration fixtures 14/14, and all affected workflow/source/distribution validators.
-- Git state: branch `codex/2026-08-19-gov-008-terminal-issue-closure-cont-02` starts from merge commit `6a878d65`; checkpoint `0b6e797a` is pushed and draft PR #221 is open.
+- Exact next action: ensure the commit containing this reconciliation is pushed, resolve that exact PR #221 head from the provider, and request a new read-only independent audit before any receipt or admission.
+- Validation already completed: continuation terminal closure 54/54, GitHub provider 20/20, repository configuration fixtures 14/14, and all affected workflow/source/distribution validators; the failed `06f32f78` audit independently reran closure 54/54, provider 20/20, static records, and workflow artifacts.
+- Git state: branch `codex/2026-08-19-gov-008-terminal-issue-closure-cont-02` starts from merge commit `6a878d65`; draft PR #221 is open and provider head `06f32f78` was the failed audit subject. The commit containing this checkpoint intentionally does not self-embed its own SHA; provider read-back selects the next exact audit subject after push.
 - Branch history and checkpoint handoffs: PR A is the retained merge checkpoint; segment 2 is the terminal continuation.
-- Blockers or unresolved decisions: audit receipt, hosted checks, live admission, owner-selected integration topology, and post-merge provider read-back remain pending. No second GitHub identity is required.
+- Blockers or unresolved decisions: the failed `06f32f78` audit is non-passing; a new exact-head audit receipt, hosted read-back for that new head, live admission, owner-selected integration topology, and post-merge provider read-back remain pending. No second GitHub identity is required.
 
 ## Branch Lifecycle
 
@@ -92,3 +92,4 @@
 | 9 | `codex/2026-08-19-gov-008-terminal-issue-closure` | `main@174eb835058dff40f67624df682d7d531ee9949b` | failed fresh exact-head audit | `11ec97d13718d999b11a05cae281603263876c01` | PR #220 | `2026-08-20T00:42:58+08:00` | preserve omitted event-repository binding finding while retaining live PR metadata and all earlier repairs | bind event top-level/base repository to live governed repository, validate, commit, push, and re-audit |
 | 10 | `codex/2026-08-19-gov-008-terminal-issue-closure` | `main@174eb835058dff40f67624df682d7d531ee9949b` | merged self-hosting checkpoint | `f8cffd33af799b6b92f748c99e82ff9bd344fbb7` | PR #220 / `main@6a878d65565920271047f42b25b39f05afe68592` | `2026-08-20T03:09:54+08:00` | final audit passed, five checks succeeded, and owner used `--no-ff`; #212 remained open/Inbox | create segment 2 from refreshed main and terminally reconcile #212/#204 |
 | 11 | `codex/2026-08-19-gov-008-terminal-issue-closure-cont-02` | `main@6a878d65565920271047f42b25b39f05afe68592` | draft PR bootstrap | `0b6e797a2e55f5be4e5db234a3dbe15d2b7f8b26` | PR #221 | `2026-08-20T03:45:44+08:00` | obtain the provider-assigned continuation PR number while preserving topology-neutral SHA evidence | bind #221, push the provider-bound head, then audit and admit that exact head |
+| 12 | `codex/2026-08-19-gov-008-terminal-issue-closure-cont-02` | `main@6a878d65565920271047f42b25b39f05afe68592` | failed fresh exact-head audit | `06f32f785cad287e838d1cd93840a3ab20942b9d` | PR #221 | `2026-08-20T03:52:04+08:00` | preserve the stale resume-checkpoint finding; receipt safety, Issue partition, topology separation, tests, and five hosted contexts otherwise passed | reconcile durable checkpoint truth, push, provider-read the containing head, and re-audit without self-embedding that commit SHA |

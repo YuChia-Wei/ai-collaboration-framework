@@ -114,3 +114,12 @@
 - Provider read-back: three required checks succeeded; governance and Ubuntu PR-profile checks were running, and no approval existed. No hosted or admission success is claimed.
 - Repair: parse top-level and base repository identity from the event, bind the governed repository into live admission facts, reject event/provider repository drift in declaration, capture, and replay, and add an explicit foreign-event scenario.
 - Focused validation: closure 49/49 passed after the bounded repository-identity repair; broader governed validation remains required before the next commit.
+
+## Continuation Audit Of Provider-Bound Head
+
+- Audited head: `06f32f785cad287e838d1cd93840a3ab20942b9d` on draft PR #221, with base `6a878d65565920271047f42b25b39f05afe68592`.
+- Disposition: `FAIL`.
+- Preserved results: strict single-maintainer receipt handling, effective change-request blocking, complete repository-bound Issue disposition, and the admitted-head/integration-commit split for fast-forward, rebase, squash, and merge-commit passed review. Five hosted contexts succeeded, but are not admission by themselves.
+- Blocking finding: the provider-number binding was complete in the audited commit while the task and workflow resume checkpoint still described that binding as the next action and retained `0b6e797a` as the current checkpoint.
+- Repair: preserve this failed audit, make the durable resume state describe the completed binding and required re-audit, and avoid an impossible self-reference by selecting the next exact subject through provider read-back after the reconciliation commit is pushed.
+- Focused validation: the auditor independently passed terminal closure 54/54, GitHub provider 20/20, terminal static validation for two records, and workflow artifact validation for 84 workflows, 104 indexed directories, and 55 backlog items.
