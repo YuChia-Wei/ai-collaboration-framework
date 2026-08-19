@@ -69,9 +69,11 @@ class SourceDispositionContractTests(unittest.TestCase):
 
     def test_gwt_001_given_exact_disposition_coverage_when_validated_then_no_implicit_omission_remains(self) -> None:
         report = self.validate(contract())
+        paths = [entry["path"] for entry in report["paths"]]
         self.assertEqual(0, report["coverage"]["implicit_omissions"])
-        self.assertEqual(1, report["coverage"]["disposition_paths"])
-        self.assertEqual(".dev/omitted.md", report["paths"][0]["path"])
+        self.assertEqual(report["coverage"]["disposition_paths"], len(paths))
+        self.assertEqual(len(paths), len(set(paths)), f"duplicate disposition paths: {paths}")
+        self.assertEqual({".dev/omitted.md"}, set(paths))
 
     def test_gwt_002_given_a_new_implicit_omission_when_validated_then_it_fails_closed(self) -> None:
         with self.assertRaisesRegex(SOURCE_DISPOSITIONS.SourceDispositionError, "missing=.*new.md"):
@@ -119,9 +121,11 @@ class SourceDispositionContractTests(unittest.TestCase):
 
     def test_gwt_008_given_the_current_repository_when_validated_then_all_current_omissions_are_governed(self) -> None:
         report = SOURCE_DISPOSITIONS.validate_repository(ROOT)
-        self.assertEqual(32, report["coverage"]["disposition_paths"])
+        paths = [entry["path"] for entry in report["paths"]]
         self.assertEqual(0, report["coverage"]["implicit_omissions"])
-        self.assertEqual(32, len(report["paths"]))
+        self.assertTrue(paths, "current source-disposition coverage must not be empty")
+        self.assertEqual(report["coverage"]["disposition_paths"], len(paths))
+        self.assertEqual(len(paths), len(set(paths)), f"duplicate disposition paths: {paths}")
 
 
 if __name__ == "__main__":

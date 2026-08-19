@@ -310,6 +310,40 @@ class DependencyVersionConsistencyTests(unittest.TestCase):
         # When dependency scanning runs, then it does not broaden into all .ai assets.
         self.assertEqual(0, result.returncode, result.stdout + result.stderr)
 
+    def test_gwt_018_given_a_legal_source_only_entrypoint_when_validated_then_no_inventory_count_update_is_required(self) -> None:
+        with tempfile.TemporaryDirectory(prefix="dependency-version-consistency-") as temporary:
+            root = Path(temporary)
+            self.create_fixture(root)
+            registry_path = root / ".ai/scripts/python-entrypoints.json"
+            registry = json.loads(registry_path.read_text(encoding="utf-8"))
+            registry["entrypoints"].append(
+                {
+                    "path": ".ai/scripts/source-only-regression-fixture.py",
+                    "portable": False,
+                    "dependency_profile": ["PyYAML"],
+                    "prerequisite_exit_code": 1,
+                }
+            )
+            self.write(root, ".ai/scripts/source-only-regression-fixture.py", "# fixture entrypoint\n")
+            registry_path.write_text(json.dumps(registry), encoding="utf-8")
+
+            result = self.run_validator(root)
+
+        self.assertEqual(0, result.returncode, result.stdout + result.stderr)
+
+    def test_gwt_019_given_a_malformed_entrypoint_record_when_validated_then_it_fails_closed(self) -> None:
+        with tempfile.TemporaryDirectory(prefix="dependency-version-consistency-") as temporary:
+            root = Path(temporary)
+            self.create_fixture(root)
+            registry_path = root / ".ai/scripts/python-entrypoints.json"
+            registry = json.loads(registry_path.read_text(encoding="utf-8"))
+            del registry["entrypoints"][0]["dependency_profile"]
+            registry_path.write_text(json.dumps(registry), encoding="utf-8")
+
+            result = self.run_validator(root)
+
+        self.assert_validation_failure(result, "must contain exactly path, portable, dependency_profile, and prerequisite_exit_code")
+
 
 if __name__ == "__main__":
     unittest.main()

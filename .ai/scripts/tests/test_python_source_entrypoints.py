@@ -69,12 +69,28 @@ class PythonSourceEntrypointTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
         registry = json.loads(REGISTRY_PATH.read_text(encoding="utf-8"))
-        cls.source_only = [item for item in registry["entrypoints"] if not item["portable"]]
+        cls.entrypoints = registry["entrypoints"]
+        cls.source_only = [item for item in cls.entrypoints if not item["portable"]]
+        cls.portable = [item for item in cls.entrypoints if item["portable"]]
         cls.pyyaml_source_only = [item for item in cls.source_only if item["dependency_profile"] == ["PyYAML"]]
         cls.stdlib_source_only = [item for item in cls.source_only if not item["dependency_profile"]]
 
-    def test_gwt_001_given_source_only_registry_when_help_is_requested_then_all_eighteen_direct_clis_remain_callable(self) -> None:
-        self.assertEqual(18, len(self.source_only))
+    def test_gwt_001_given_source_only_registry_when_help_is_requested_then_each_direct_cli_remains_callable(self) -> None:
+        all_paths = {item["path"] for item in self.entrypoints}
+        source_only_paths = {item["path"] for item in self.source_only}
+        portable_paths = {item["path"] for item in self.portable}
+        pyyaml_source_only_paths = {item["path"] for item in self.pyyaml_source_only}
+        stdlib_source_only_paths = {item["path"] for item in self.stdlib_source_only}
+        self.assertEqual(
+            len(self.entrypoints),
+            len(all_paths),
+            "source entrypoint registry paths must be unique",
+        )
+        self.assertTrue(source_only_paths, "source-only entrypoint partition must not be empty")
+        self.assertFalse(portable_paths & source_only_paths)
+        self.assertEqual(all_paths, portable_paths | source_only_paths)
+        self.assertFalse(pyyaml_source_only_paths & stdlib_source_only_paths)
+        self.assertEqual(source_only_paths, pyyaml_source_only_paths | stdlib_source_only_paths)
         for item in self.source_only:
             with self.subTest(entrypoint=item["path"]):
                 result = subprocess.run(
@@ -87,7 +103,7 @@ class PythonSourceEntrypointTests(unittest.TestCase):
                 self.assertEqual(0, result.returncode, result.stdout + result.stderr)
 
     def test_gwt_002_given_shadowed_yaml_when_source_only_pyyaml_clis_run_then_each_blocks_before_target_body_or_writes(self) -> None:
-        self.assertEqual(17, len(self.pyyaml_source_only))
+        self.assertTrue(self.pyyaml_source_only, "PyYAML source-only entrypoint set must not be empty")
         before = protected_snapshot()
         with tempfile.TemporaryDirectory(prefix="python-source-entrypoints-") as temporary:
             shadow = Path(temporary) / "yaml.py"
@@ -118,9 +134,9 @@ class PythonSourceEntrypointTests(unittest.TestCase):
         self.assertEqual(before, protected_snapshot())
 
     def test_gwt_003_given_source_only_registry_when_stdlib_entry_is_selected_then_compare_has_an_empty_dependency_profile(self) -> None:
-        self.assertEqual(1, len(self.stdlib_source_only))
-        self.assertEqual(STDLIB_COMPARE, self.stdlib_source_only[0]["path"])
-        self.assertEqual([], self.stdlib_source_only[0]["dependency_profile"])
+        stdlib_entries = {item["path"]: item for item in self.stdlib_source_only}
+        self.assertEqual({STDLIB_COMPARE}, set(stdlib_entries))
+        self.assertEqual([], stdlib_entries[STDLIB_COMPARE]["dependency_profile"])
 
 
 if __name__ == "__main__":
