@@ -1,24 +1,38 @@
 schema_version: "1.0"
 contract_id: "github-terminal-issue-closure"
 repository: "YuChia-Wei/ai-collaboration-framework"
-validation_stage: "declaration"
+validation_stage: "reconciliation"
 pull_request:
   number: 221
-  head_sha: null
+  head_sha: "3725722a4f2bc882ca0771ae9742d83a66ad6a2a"
   body: |-
     Closes #212
     Closes #204
   integration:
-    status: "pending"
-    topology: null
-    admitted_head_sha: null
-    integration_commit_sha: null
-    provider_read_back: false
+    status: "merged"
+    topology: "merge-commit"
+    admitted_head_sha: "3725722a4f2bc882ca0771ae9742d83a66ad6a2a"
+    integration_commit_sha: "059f11c86d7afeb82fdbf7f454b52e4c9f942e90"
+    provider_read_back: true
   review:
-    status: "pending"
-    head_sha: null
-  required_check_contexts: []
-  hosted_checks: []
+    status: "single-maintainer-audit-passed"
+    head_sha: "3725722a4f2bc882ca0771ae9742d83a66ad6a2a"
+    reviewer_login: "YuChia-Wei"
+    receipt_contract: "github-terminal-issue-closure-audit/v1"
+    provider_review_id: 4976215566
+    submitted_at: "2026-08-19T19:58:44Z"
+  required_check_contexts:
+    - "Read-only governance contract"
+    - "Build and validate candidate"
+    - "Ubuntu prerequisite contract"
+    - "Windows prerequisite contract"
+    - "Ubuntu PR profile gate"
+  hosted_checks:
+    - {name: "Read-only governance contract", conclusion: "success", required: true, head_sha: "3725722a4f2bc882ca0771ae9742d83a66ad6a2a", provider_check_run_id: 96206758647, completed_at: "2026-08-19T19:57:32Z"}
+    - {name: "Build and validate candidate", conclusion: "success", required: true, head_sha: "3725722a4f2bc882ca0771ae9742d83a66ad6a2a", provider_check_run_id: 96206757551, completed_at: "2026-08-19T19:57:05Z"}
+    - {name: "Ubuntu prerequisite contract", conclusion: "success", required: true, head_sha: "3725722a4f2bc882ca0771ae9742d83a66ad6a2a", provider_check_run_id: 96206758453, completed_at: "2026-08-19T19:57:03Z"}
+    - {name: "Windows prerequisite contract", conclusion: "success", required: true, head_sha: "3725722a4f2bc882ca0771ae9742d83a66ad6a2a", provider_check_run_id: 96206758475, completed_at: "2026-08-19T19:57:34Z"}
+    - {name: "Ubuntu PR profile gate", conclusion: "success", required: true, head_sha: "3725722a4f2bc882ca0771ae9742d83a66ad6a2a", provider_check_run_id: 96206758058, completed_at: "2026-08-19T19:57:45Z"}
 issues:
   - number: 212
     mode: "terminal-close"
@@ -28,7 +42,7 @@ issues:
     closing_keyword: "Closes"
     closure_deferred_reason: null
     next_terminal_gate_or_owner: null
-    read_back: {performed: false, integration_commit_sha: null, issue_state: null, issue_state_reason: null, project_status: null}
+    read_back: {performed: true, integration_commit_sha: "059f11c86d7afeb82fdbf7f454b52e4c9f942e90", issue_state: "closed", issue_state_reason: "completed", project_status: "Done"}
   - number: 204
     mode: "terminal-close"
     work_authorization: {online_issue_bound: true, explicit_owner_approval: true}
@@ -37,7 +51,7 @@ issues:
     closing_keyword: "Closes"
     closure_deferred_reason: null
     next_terminal_gate_or_owner: null
-    read_back: {performed: false, integration_commit_sha: null, issue_state: null, issue_state_reason: null, project_status: null}
+    read_back: {performed: true, integration_commit_sha: "059f11c86d7afeb82fdbf7f454b52e4c9f942e90", issue_state: "closed", issue_state_reason: "completed", project_status: "Done"}
 separate_deferred_work:
   nightly_full_activation:
     status: "deferred"

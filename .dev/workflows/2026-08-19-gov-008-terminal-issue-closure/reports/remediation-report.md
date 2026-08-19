@@ -8,13 +8,14 @@
 
 ## Current Disposition
 
-- Status: `remediated-pending-continuation-verification`
+- Status: `completed`
 - Finding: `GOV-008-CLOSURE-ASYMMETRY`
-- Current delivery: PR A integrated the contract with a truthful deferred #212 disposition; segment 2 is the terminal continuation for #212 and #204.
-- Deferred reason: `self-hosting contract must integrate before it can govern its own terminal closeout`.
-- Next terminal gate: `continuation closeout PR after PR A merges`.
+- Finding outcome: `resolved`.
+- Current delivery: PR #220 integrated the contract with a truthful deferred #212 disposition; PR #221 then completed terminal-close delivery for #212 and #204.
+- Deferred work: nightly-full activation and execution remain separate owner-authorized work and are not a GOV-008 closure blocker.
+- Next terminal gate: none for GOV-008.
 - Focused local validation began at 18 closure scenarios and reached 29/29 at the second repair head; GitHub provider, repository configuration, entrypoint and prerequisite registries, workflow/shell/source governance, downstream distribution, and AI-context contracts also passed locally. Sandbox Windows Temp permission failures were retained as blocked attempts; the same affected suites passed on the host.
-- PR A's final independent audit and five required hosted checks passed; PR #220 merged as `6a878d65`, and provider read-back kept #212 open/Inbox. The continuation's audit, hosted admission, integration, and terminal read-back remain pending and must not be inferred.
+- PR A's final independent audit and five required hosted checks passed; PR #220 merged as `6a878d65`, and provider read-back kept #212 open/Inbox. PR #221 later passed fresh exact-head audit and admission, merged as `059f11c8`, and terminal provider read-back proved both Issues closed/completed with both Project cards Done.
 
 ## PR A Final Checkpoint And Owner Reconciliation
 
@@ -31,7 +32,7 @@
 - GitHub provider contract: 20/20 passed.
 - Positive topology coverage requires identical SHAs for fast-forward and deliberately different admitted/integration SHAs for rebase, squash, and merge-commit.
 - Workflow artifacts, source governance/disposition, workflow handoff, governance workflow 7/7, GitHub workflow 10/10, repository configuration, brand-neutral distribution 2/2, and SDK-free distribution GWT 005 passed. The repository-config fixture suite was blocked twice by sandbox dotfile ACLs, then passed 14/14 on the host; blocked attempts are not relabeled.
-- Remaining gates: broader affected governance validation, durable commit, fresh exact-head independent audit receipt, hosted checks, live admission, integration, and Issue/Project provider read-back.
+- Completed gates: durable provider-bound commits, fresh exact-head independent audit PASS, strict maintainer receipt, five successful hosted checks, live admission replay, merge-commit integration, and Issue/Project provider read-back.
 
 ## Failed Exact-Head Audit
 
@@ -132,3 +133,14 @@
 - Blocking finding: `workflow.yaml` and the workflow-plan metadata retained `updated_at: 2026-08-20T03:34:43+08:00`, earlier than the reconciliation progress they contained.
 - Repair: synchronize the active workflow locator, plan, and task timestamps while preserving both failed audits, then select the new exact head through provider read-back and audit it afresh.
 - Focused validation: the auditor independently passed terminal closure 54/54, GitHub provider 20/20, static validation for two records, and workflow artifact validation for 84 workflows, 104 indexed directories, and 55 backlog items.
+
+## Final Continuation Audit, Admission, And Provider Reconciliation
+
+- Admitted head: `3725722a4f2bc882ca0771ae9742d83a66ad6a2a` on PR #221, with base `6a878d65565920271047f42b25b39f05afe68592`.
+- Independent audit: `PASS`; no blocking finding. The two earlier continuation failures remain preserved above and are not relabeled.
+- Review evidence: strict `github-terminal-issue-closure-audit/v1` receipt from `YuChia-Wei`, provider review ID `4976215566`, submitted at `2026-08-19T19:58:44Z`.
+- Hosted admission: all five provider-owned required contexts succeeded at the admitted head; live capture and immediate replay both passed.
+- Integration: PR #221 merged with `merge-commit` topology at `2026-08-19T23:05:20Z`; provider integration commit `059f11c86d7afeb82fdbf7f454b52e4c9f942e90` is intentionally distinct from the admitted head.
+- Terminal read-back: Issues #212 and #204 are `closed` with reason `completed`; both GitHub Project #3 cards are `Done`.
+- Closeout correction: PR #221 merged with the tracked workflow still carrying its pre-merge `in_progress` checkpoint. The owner explicitly authorized this data-only reconciliation; it corrects durable lifecycle state without changing the admitted implementation or provider result.
+- Residual risk: none for `GOV-008-CLOSURE-ASYMMETRY`. Nightly-full activation and execution remain separately deferred and require their own owner authorization.

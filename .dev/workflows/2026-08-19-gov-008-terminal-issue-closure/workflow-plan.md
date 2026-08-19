@@ -15,11 +15,11 @@
 - `branch`: `codex/2026-08-19-gov-008-terminal-issue-closure-cont-02`
 - `base_branch`: `main`
 - `branch_segment`: `2`
-- `status`: `in_progress`
-- `current_phase`: `remediation`
+- `status`: `completed`
+- `current_phase`: `completed`
 - `artifact_root`: `.dev/workflows/2026-08-19-gov-008-terminal-issue-closure`
 - `created_at`: `2026-08-19T23:09:17+08:00`
-- `updated_at`: `2026-08-20T03:55:21+08:00`
+- `updated_at`: `2026-08-20T07:17:17+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md`
 - `template_version`: `1.2.0`
 
@@ -27,15 +27,15 @@
 
 - Problem statement: the source GitHub provider prevents premature Issue closure but has no symmetric terminal gate, so an accepted final delivery can integrate while its authoritative Issue and Project state remain open.
 - Authorized remediation scope: Issue #212; the source GitHub provider contract, PR template, deterministic validator and focused GWT fixtures, source-governance check registration, downstream exclusion, and directly affected Git/workflow closeout guidance.
-- Authorization source: the repository owner explicitly authorized implementation, validation, push, independent review, merge, and terminal continuation for #212, then explicitly approved the multi-surface governance and packaging patch after its risk was disclosed.
+- Authorization source: the repository owner explicitly authorized implementation, validation, push, independent review, merge, and terminal continuation for #212, then explicitly approved the multi-surface governance and packaging patch after its risk was disclosed; after integration, the owner explicitly authorized direct lifecycle-data correction while retaining commit and push ownership.
 - Exclusions: downstream GitHub keyword requirements; historical Issue/PR/workflow rewrites; releases, tags, publication, nightly activation, and implementation of Issues #203 or #205-#208/#213.
-- Completion criteria: PR A integrates the two-mode contract using deferred self-hosting semantics and #212 remains open; a continuation PR then validates terminal-close for #212 and #204, binds audit/check evidence to its admitted head, permits any supported integration topology, and provider read-back proves both Issues completed and Project cards Done without a post-merge source repair commit.
+- Completion criteria: PR A integrates the two-mode contract using deferred self-hosting semantics and #212 remains open; a continuation PR then validates terminal-close for #212 and #204, binds audit/check evidence to its admitted head, permits any supported integration topology, and provider read-back proves both Issues completed and Project cards Done without requiring a post-merge source repair merely to reconcile commit identity. The later owner-authorized data-only correction closes the durable workflow state that the merged PR left stale.
 - Workflow justification: the two-PR self-hosting boundary preserves an independently resumable integration checkpoint that no Issue, single commit, or conversation can represent alone.
 
 ## Artifact Contract
 
 - Remediation report: `.dev/workflows/2026-08-19-gov-008-terminal-issue-closure/reports/remediation-report.md`
-- Closure evidence: PR A bootstrap read-back and the continuation declaration under `.dev/workflows/2026-08-19-gov-008-terminal-issue-closure/evidence/`
+- Closure evidence: PR A bootstrap read-back and the continuation reconciliation under `.dev/workflows/2026-08-19-gov-008-terminal-issue-closure/evidence/`
 - Tasks: `.dev/workflows/2026-08-19-gov-008-terminal-issue-closure/tasks/`
 
 ## Finding Triage
@@ -49,7 +49,7 @@
 1. Completed locally: implement the canonical source-only contract, template, validator, fixtures, guidance, distribution boundary, and PR A deferred evidence.
 2. Completed: remediate all nine failed audits; fresh audit of final PR A head `f8cffd33af799b6b92f748c99e82ff9bd344fbb7` passed and five required hosted checks succeeded.
 3. Completed: PR #220 merged with `--no-ff` as `6a878d65565920271047f42b25b39f05afe68592`; provider read-back kept #212 open and its Project status `Inbox` by design.
-4. In progress: on refreshed continuation branch, encode the owner's single-maintainer source decision, preserve target-owned downstream policy, separate admitted head from integration commit, and terminally reconcile #212 and #204.
+4. Completed: PR #221 admitted exact head `3725722a4f2bc882ca0771ae9742d83a66ad6a2a`, integrated with merge-commit topology as `059f11c86d7afeb82fdbf7f454b52e4c9f942e90`, and provider read-back proved #212 and #204 closed/completed with both Project cards Done.
 
 ## Self-Hosting PR A Disposition
 
@@ -69,13 +69,13 @@
 
 ## Resume Checkpoint
 
-- Last completed action: the fresh audit of `934d98061da9ccfd4926cf6f1ab38f67e74f48b3` confirmed the resume wording and all terminal semantics, but failed because the active workflow locator and plan timestamps still predated the recorded reconciliation.
-- Current task: `GOV008-002-terminal-continuation`, with the remaining prospective contract refinement retained in `GOV008-001` until fresh verification.
-- Exact next action: ensure the commit containing this reconciliation is pushed, resolve that exact PR #221 head from the provider, and request a new read-only independent audit before any receipt or admission.
-- Validation already completed: continuation terminal closure 54/54, GitHub provider 20/20, repository configuration fixtures 14/14, and all affected workflow/source/distribution validators; both failed continuation audits independently reran closure 54/54, provider 20/20, static records, and workflow artifacts.
-- Git state: branch `codex/2026-08-19-gov-008-terminal-issue-closure-cont-02` starts from merge commit `6a878d65`; draft PR #221 is open and provider head `934d9806` was the latest failed audit subject. The commit containing this checkpoint intentionally does not self-embed its own SHA; provider read-back selects the next exact audit subject after push.
+- Last completed action: PR #221 passed fresh exact-head audit, strict receipt, five hosted checks, and live admission at `3725722a`; merge-commit integration produced `059f11c8`, and provider read-back proved both terminal Issues closed/completed with Project status Done.
+- Current task: none; `GOV008-001-contract-implementation` and `GOV008-002-terminal-continuation` are completed.
+- Exact next action: none for GOV-008. Nightly-full activation and execution remain a separately owner-authorized deferred work item.
+- Validation already completed: continuation terminal closure 54/54, GitHub provider 20/20, repository configuration fixtures 14/14, all affected workflow/source/distribution validators, fresh exact-head independent audit PASS, five hosted contexts successful, live admission replay PASS, and final reconciliation validation PASS.
+- Git state: the provider-integrated source state is `main@059f11c86d7afeb82fdbf7f454b52e4c9f942e90`; the agent prepared this closeout correction without committing or pushing it, per owner instruction.
 - Branch history and checkpoint handoffs: PR A is the retained merge checkpoint; segment 2 is the terminal continuation.
-- Blockers or unresolved decisions: the failed `06f32f78` and `934d9806` audits are non-passing; a new exact-head audit receipt, hosted read-back for that new head, live admission, owner-selected integration topology, and post-merge provider read-back remain pending. No second GitHub identity is required.
+- Blockers or unresolved decisions: none for GOV-008. The two failed continuation audits remain preserved as historical evidence and were superseded only by the fresh PASS at `3725722a`; nightly-full remains separate deferred work.
 
 ## Branch Lifecycle
 
@@ -94,3 +94,5 @@
 | 11 | `codex/2026-08-19-gov-008-terminal-issue-closure-cont-02` | `main@6a878d65565920271047f42b25b39f05afe68592` | draft PR bootstrap | `0b6e797a2e55f5be4e5db234a3dbe15d2b7f8b26` | PR #221 | `2026-08-20T03:45:44+08:00` | obtain the provider-assigned continuation PR number while preserving topology-neutral SHA evidence | bind #221, push the provider-bound head, then audit and admit that exact head |
 | 12 | `codex/2026-08-19-gov-008-terminal-issue-closure-cont-02` | `main@6a878d65565920271047f42b25b39f05afe68592` | failed fresh exact-head audit | `06f32f785cad287e838d1cd93840a3ab20942b9d` | PR #221 | `2026-08-20T03:52:04+08:00` | preserve the stale resume-checkpoint finding; receipt safety, Issue partition, topology separation, tests, and five hosted contexts otherwise passed | reconcile durable checkpoint truth, push, provider-read the containing head, and re-audit without self-embedding that commit SHA |
 | 13 | `codex/2026-08-19-gov-008-terminal-issue-closure-cont-02` | `main@6a878d65565920271047f42b25b39f05afe68592` | failed fresh exact-head audit | `934d98061da9ccfd4926cf6f1ab38f67e74f48b3` | PR #221 | `2026-08-20T03:55:21+08:00` | preserve the stale locator/plan timestamp finding; the prior checkpoint repair and terminal semantics otherwise passed | synchronize active workflow timestamps, push, provider-read the containing head, and re-audit |
+| 14 | `codex/2026-08-19-gov-008-terminal-issue-closure-cont-02` | `main@6a878d65565920271047f42b25b39f05afe68592` | passed fresh exact-head audit and admission | `3725722a4f2bc882ca0771ae9742d83a66ad6a2a` | PR #221 | `2026-08-20T03:58:44+08:00` | fresh independent audit passed; strict receipt, five hosted contexts, and live admission bound the exact head | integrate using the owner-selected topology and perform provider read-back |
+| 15 | `codex/2026-08-19-gov-008-terminal-issue-closure-cont-02` | `main@6a878d65565920271047f42b25b39f05afe68592` | completed terminal integration | `3725722a4f2bc882ca0771ae9742d83a66ad6a2a` | PR #221 / `main@059f11c86d7afeb82fdbf7f454b52e4c9f942e90` | `2026-08-20T07:05:22+08:00` | merge-commit integration preserved admitted-head identity separately; both Issues closed/completed and both Project cards reached Done | none; GOV-008 completed, nightly-full remains separately deferred |
