@@ -13,7 +13,7 @@
 - Current delivery: PR A contract implementation, intentionally `deferred` for Issue #212.
 - Deferred reason: `self-hosting contract must integrate before it can govern its own terminal closeout`.
 - Next terminal gate: `continuation closeout PR after PR A merges`.
-- Focused local validation passed for the new 18-scenario closure suite, GitHub provider, repository configuration, entrypoint and prerequisite registries, workflow/shell/source governance, downstream distribution, and AI-context contracts. Sandbox Windows Temp permission failures were retained as blocked attempts; the same affected suites passed on the host.
+- Focused local validation began at 18 closure scenarios and reached 29/29 at the second repair head; GitHub provider, repository configuration, entrypoint and prerequisite registries, workflow/shell/source governance, downstream distribution, and AI-context contracts also passed locally. Sandbox Windows Temp permission failures were retained as blocked attempts; the same affected suites passed on the host.
 - Independent exact-head audit, hosted checks, integration, and provider read-back remain pending and must not be inferred from this record.
 
 ## Failed Exact-Head Audit
@@ -31,3 +31,13 @@
 - Preserved fixes: current-PR selection, event/checkout head binding, inline and qualified closing-keyword detection, and exact-head provider-evidence validation all passed review.
 - Blocking finding: the registered check validated a tracked `declaration` without mandating non-self-referential merge-admission evidence; workflow checkpoint text also lagged the audited head.
 - Repair: make the required event check explicitly declaration-only and mandate a fresh untracked provider admission snapshot before merge, overlaid in memory and invalidated by head drift; refresh workflow truth.
+
+## Fresh Audit Of Non-Mutating Admission Head
+
+- Audited head: `1a54e94a3b07fcc1771b38484b594b457de904d8`
+- Disposition: `FAIL`
+- Preserved fixes: declaration-only event validation, exact PR/event/checkout binding, closing-keyword detection, and the untracked overlay model passed review.
+- Blocking findings: the overlay could downgrade a later lifecycle record, and its required contexts/provider facts were self-declared rather than independently complete and fresh.
+- Provider read-back: `Read-only governance contract` and `Ubuntu PR profile gate` failed at the audited head; three other jobs succeeded, and no review approval existed.
+- Repair: only declarations may be overlaid; the tracked provider config owns the complete five-context set; admission now requires live GitHub verification of review/check-run IDs, timestamps, conclusions, and exact heads, with negative coverage for omission, stage downgrade, missing live verification, and snapshot/live mismatch.
+- Focused validation: closure 35/35 and GitHub provider 20/20 passed with repository configuration, workflow, source-governance, AI-context, and diff checks.

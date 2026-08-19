@@ -295,6 +295,13 @@ class GitHubBacklogProviderTests(unittest.TestCase):
                     "mode": "required",
                     "disposition_required_per_issue": True,
                     "missing_binding_blocks_merge": True,
+                    "required_check_contexts": [
+                        "Read-only governance contract",
+                        "Build and validate candidate",
+                        "Ubuntu prerequisite contract",
+                        "Windows prerequisite contract",
+                        "Ubuntu PR profile gate",
+                    ],
                 },
             },
             config["work_item_binding"],

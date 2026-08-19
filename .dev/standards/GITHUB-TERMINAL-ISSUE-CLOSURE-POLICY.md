@@ -61,16 +61,24 @@ event body, event head, and checked-out head. A missing, duplicate,
 historical-only, non-declaration, or mismatched record fails. That required
 check proves declaration only; it must not be represented as merge admission.
 
-Before merge, the integrator must capture a fresh provider read-back outside
-the tracked tree and run the validator with both the current event snapshot and
-`--admission-evidence <path>`. The admission snapshot uses contract
+Before merge, the integrator must use `--capture-admission-evidence` with a
+fresh event snapshot to generate and validate the provider read-back directly
+under the ignored `artifacts/validation/terminal-issue-closure/` directory.
+Replaying that snapshot requires the current event snapshot,
+`--admission-evidence <path>`, and `--verify-provider-live`. The admission snapshot uses contract
 `github-terminal-issue-closure-admission` and supplies the exact PR number,
 head, approved review, required-check context set, and successful hosted checks.
-The validator overlays those volatile facts onto the tracked declaration in
-memory and requires every fact to match the same event and checkout head. The
-snapshot must remain untracked, must not be reused after head drift, and must
+The provider configuration, not the snapshot, owns the complete required-check
+context set. Live verification re-reads GitHub with `GITHUB_TOKEN` and requires
+the snapshot's provider review/check-run identifiers, timestamps, conclusions,
+and heads to match that fresh response exactly. A replayed snapshot without
+live verification is rejected. The capture path is constrained to the ignored
+evidence directory and refuses overwrite. The validator overlays those verified volatile facts
+only onto a tracked declaration in memory and requires every fact to match the
+same event and checkout head. A later lifecycle stage cannot be downgraded by
+an admission overlay. The snapshot must remain untracked, must not be reused after head drift, and must
 not be committed to the candidate it validates. Missing admission evidence is
-a merge blocker, even when the declaration check passes. This non-mutating
+a merge blocker, even when the declaration check passes. This live-verified non-mutating
 overlay avoids a self-referential commit whose evidence changes its own head.
 
 Without an event the validator is only a static contract check. The aggregate

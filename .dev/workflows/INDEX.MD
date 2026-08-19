@@ -8,7 +8,7 @@ task-level progress.
 
 | Workflow | Title | Owner | Status | Updated | Entry Point |
 | --- | --- | --- | --- | --- | --- |
-| [`2026-08-19-gov-008-terminal-issue-closure`](2026-08-19-gov-008-terminal-issue-closure/workflow.yaml) | Add Terminal And Deferred GitHub Issue Closure Modes | `ai-context-governance` | `in_progress` | `2026-08-19T23:39:59+08:00` | [plan](2026-08-19-gov-008-terminal-issue-closure/workflow-plan.md) |
+| [`2026-08-19-gov-008-terminal-issue-closure`](2026-08-19-gov-008-terminal-issue-closure/workflow.yaml) | Add Terminal And Deferred GitHub Issue Closure Modes | `ai-context-governance` | `in_progress` | `2026-08-19T23:56:53+08:00` | [plan](2026-08-19-gov-008-terminal-issue-closure/workflow-plan.md) |
 | [`2026-08-15-val-007-terminal-validation`](2026-08-15-val-007-terminal-validation/workflow.yaml) | Seal Terminal Validation Supervision And Evidence | `ai-context-governance` | `in_progress` | `2026-08-15T19:48:37+08:00` | [plan](2026-08-15-val-007-terminal-validation/workflow-plan.md) |
 | [`2026-08-14-environment-execution-routing`](2026-08-14-environment-execution-routing/workflow.yaml) | Define Portable CLI Execution Routing | `ai-context-governance` | `completed` | `2026-08-14T22:40:39+08:00` | [plan](2026-08-14-environment-execution-routing/workflow-plan.md) |
 | [`2026-08-14-pkg-011-durable-apply`](2026-08-14-pkg-011-durable-apply/workflow.yaml) | PKG-011 durable package apply and Hybrid identity remediation | `ai-context-governance` | `completed` | `2026-08-15T11:22:12+08:00` | [plan](2026-08-14-pkg-011-durable-apply/workflow-plan.md) |

@@ -308,6 +308,13 @@ def validate_config(config: dict[str, Any], backlog_ids: set[str]) -> None:
             "mode": "required",
             "disposition_required_per_issue": True,
             "missing_binding_blocks_merge": True,
+            "required_check_contexts": [
+                "Read-only governance contract",
+                "Build and validate candidate",
+                "Ubuntu prerequisite contract",
+                "Windows prerequisite contract",
+                "Ubuntu PR profile gate",
+            ],
         },
     }
     if config.get("work_item_binding") != expected_binding:

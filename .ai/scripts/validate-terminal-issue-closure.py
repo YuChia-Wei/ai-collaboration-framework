@@ -10,6 +10,8 @@ import os
 import re
 import subprocess
 import sys
+import urllib.error
+import urllib.request
 from pathlib import Path
 from typing import Any
 
@@ -91,26 +93,193 @@ def checkout_head() -> str:
     return result.stdout.strip()
 
 
-def bind_admission_evidence(record: dict[str, Any], evidence: dict[str, Any]) -> tuple[dict[str, Any], list[str]]:
+def bind_admission_evidence(
+    record: dict[str, Any], evidence: dict[str, Any], config: dict[str, Any]
+) -> tuple[dict[str, Any], list[str]]:
     errors: list[str] = []
+    if record.get("validation_stage") != "declaration":
+        errors.append("admission evidence may only overlay a tracked declaration record")
     if evidence.get("schema_version") != "1.0":
         errors.append("admission evidence schema_version must be 1.0")
     if evidence.get("contract_id") != "github-terminal-issue-closure-admission":
         errors.append("admission evidence contract_id must be github-terminal-issue-closure-admission")
     if evidence.get("repository") != record.get("repository"):
         errors.append("admission evidence repository must match the disposition record")
+    if evidence.get("provider") != "github":
+        errors.append("admission evidence provider must be github")
     durable_pr = record.get("pull_request")
     evidence_pr = evidence.get("pull_request")
     if not isinstance(durable_pr, dict) or not isinstance(evidence_pr, dict):
         return record, errors + ["admission evidence pull_request must be a mapping"]
     if evidence_pr.get("number") != durable_pr.get("number"):
         errors.append("admission evidence pull_request.number must match the disposition record")
+    required = config.get("work_item_binding", {}).get("merge_gate", {}).get("required_check_contexts")
+    if not isinstance(required, list) or not required:
+        errors.append("provider merge gate must own a non-empty required_check_contexts list")
+    elif evidence_pr.get("required_check_contexts") != required:
+        errors.append("admission evidence must exactly match provider-owned required_check_contexts")
+    review = evidence_pr.get("review")
+    review_id = review.get("provider_review_id") if isinstance(review, dict) else None
+    if not isinstance(review_id, int) or isinstance(review_id, bool) or review_id <= 0:
+        errors.append("admission evidence review requires a positive provider_review_id")
+    if not isinstance(review, dict) or not non_empty(review.get("submitted_at")):
+        errors.append("admission evidence review requires provider submitted_at")
+    checks = evidence_pr.get("hosted_checks")
+    if not isinstance(checks, list):
+        checks = []
+    for index, check in enumerate(checks):
+        if not isinstance(check, dict):
+            continue
+        check_id = check.get("provider_check_run_id")
+        if not isinstance(check_id, int) or isinstance(check_id, bool) or check_id <= 0:
+            errors.append(f"admission evidence hosted_checks[{index}] requires a positive provider_check_run_id")
+        if not non_empty(check.get("completed_at")):
+            errors.append(f"admission evidence hosted_checks[{index}] requires provider completed_at")
     bound = copy.deepcopy(record)
     bound["validation_stage"] = "merge-admission"
     bound_pr = bound["pull_request"]
     for field in ("number", "head_sha", "review", "required_check_contexts", "hosted_checks"):
         bound_pr[field] = copy.deepcopy(evidence_pr.get(field))
     return bound, errors
+
+
+def github_api_json(url: str, token: str) -> Any:
+    request = urllib.request.Request(
+        url,
+        headers={
+            "Accept": "application/vnd.github+json",
+            "Authorization": f"Bearer {token}",
+            "X-GitHub-Api-Version": "2022-11-28",
+            "User-Agent": "terminal-issue-closure-validator",
+        },
+    )
+    try:
+        with urllib.request.urlopen(request, timeout=30) as response:
+            return json.load(response)
+    except (OSError, urllib.error.HTTPError, urllib.error.URLError, json.JSONDecodeError) as exc:
+        raise ValueError(f"GitHub provider read-back failed: {exc}") from exc
+
+
+def read_live_provider_facts(
+    repository: str, pr_number: int, head_sha: str, required_contexts: list[str], token: str
+) -> dict[str, Any]:
+    api_root = f"https://api.github.com/repos/{repository}"
+    reviews = github_api_json(f"{api_root}/pulls/{pr_number}/reviews?per_page=100", token)
+    check_payload = github_api_json(f"{api_root}/commits/{head_sha}/check-runs?per_page=100", token)
+    if not isinstance(reviews, list) or not isinstance(check_payload, dict):
+        raise ValueError("GitHub provider read-back returned an unexpected schema")
+    latest_by_reviewer: dict[str, dict[str, Any]] = {}
+    for item in reviews:
+        if not isinstance(item, dict) or item.get("commit_id") != head_sha:
+            continue
+        user = item.get("user")
+        login = user.get("login") if isinstance(user, dict) else None
+        if not non_empty(login):
+            continue
+        current = latest_by_reviewer.get(login)
+        if current is None or int(item.get("id", 0)) > int(current.get("id", 0)):
+            latest_by_reviewer[login] = item
+    blocking = [item for item in latest_by_reviewer.values() if item.get("state") == "CHANGES_REQUESTED"]
+    approved = [item for item in latest_by_reviewer.values() if item.get("state") == "APPROVED"]
+    approved.sort(key=lambda item: int(item.get("id", 0)))
+    review = {"status": "pending"}
+    if blocking:
+        review = {
+            "status": "blocked",
+            "blocking_provider_review_ids": sorted(item.get("id") for item in blocking),
+        }
+    elif approved:
+        latest = approved[-1]
+        review = {
+            "status": "approved",
+            "head_sha": head_sha,
+            "provider_review_id": latest.get("id"),
+            "submitted_at": latest.get("submitted_at"),
+        }
+    runs = check_payload.get("check_runs")
+    if not isinstance(runs, list):
+        raise ValueError("GitHub provider read-back did not return check_runs")
+    latest_by_name: dict[str, dict[str, Any]] = {}
+    for item in runs:
+        if not isinstance(item, dict) or item.get("name") not in required_contexts:
+            continue
+        current = latest_by_name.get(item["name"])
+        if current is None or int(item.get("id", 0)) > int(current.get("id", 0)):
+            latest_by_name[item["name"]] = item
+    hosted_checks = [
+        {
+            "name": name,
+            "conclusion": latest_by_name.get(name, {}).get("conclusion"),
+            "required": True,
+            "head_sha": latest_by_name.get(name, {}).get("head_sha"),
+            "provider_check_run_id": latest_by_name.get(name, {}).get("id"),
+            "completed_at": latest_by_name.get(name, {}).get("completed_at"),
+        }
+        for name in required_contexts
+    ]
+    return {
+        "number": pr_number,
+        "head_sha": head_sha,
+        "review": review,
+        "required_check_contexts": required_contexts,
+        "hosted_checks": hosted_checks,
+    }
+
+
+def build_live_admission_evidence(
+    record: dict[str, Any], runtime: dict[str, Any], config: dict[str, Any], token: str
+) -> dict[str, Any]:
+    required = config.get("work_item_binding", {}).get("merge_gate", {}).get("required_check_contexts")
+    if not isinstance(required, list) or not required:
+        raise ValueError("provider merge gate must own a non-empty required_check_contexts list")
+    pull_request = read_live_provider_facts(
+        record.get("repository"), runtime.get("pr_number"), runtime.get("head_sha"), required, token
+    )
+    return {
+        "schema_version": "1.0",
+        "contract_id": "github-terminal-issue-closure-admission",
+        "repository": record.get("repository"),
+        "provider": "github",
+        "pull_request": pull_request,
+    }
+
+
+def capture_live_admission_evidence(
+    path: Path, record: dict[str, Any], runtime: dict[str, Any], config: dict[str, Any]
+) -> dict[str, Any]:
+    token = os.environ.get("GITHUB_TOKEN")
+    if not token:
+        raise ValueError("live provider capture requires GITHUB_TOKEN")
+    capture_root = (ROOT / "artifacts/validation/terminal-issue-closure").resolve()
+    target = (path if path.is_absolute() else ROOT / path).resolve()
+    if target.parent != capture_root or target.suffix not in {".yaml", ".yml"}:
+        raise ValueError("admission capture path must be a YAML file directly under artifacts/validation/terminal-issue-closure")
+    if target.exists():
+        raise ValueError(f"admission capture path already exists: {target}")
+    evidence = build_live_admission_evidence(record, runtime, config, token)
+    target.parent.mkdir(parents=True, exist_ok=True)
+    target.write_text(yaml.safe_dump(evidence, sort_keys=False), encoding="utf-8")
+    return evidence
+
+
+def validate_live_provider_evidence(
+    evidence: dict[str, Any], record: dict[str, Any], runtime: dict[str, Any], config: dict[str, Any]
+) -> list[str]:
+    token = os.environ.get("GITHUB_TOKEN")
+    if not token:
+        return ["live provider verification requires GITHUB_TOKEN"]
+    required = config.get("work_item_binding", {}).get("merge_gate", {}).get("required_check_contexts")
+    if not isinstance(required, list) or not required:
+        return ["provider merge gate must own a non-empty required_check_contexts list"]
+    try:
+        live = read_live_provider_facts(
+            record.get("repository"), runtime.get("pr_number"), runtime.get("head_sha"), required, token
+        )
+    except ValueError as exc:
+        return [str(exc)]
+    if evidence.get("pull_request") != live:
+        return ["admission evidence does not exactly match fresh GitHub provider read-back"]
+    return []
 
 
 def validate_provider_evidence(pull_request: dict[str, Any], runtime: dict[str, Any] | None, errors: list[str]) -> None:
@@ -263,7 +432,10 @@ def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--record", action="append", type=Path)
     parser.add_argument("--event-path", type=Path)
-    parser.add_argument("--admission-evidence", type=Path)
+    admission = parser.add_mutually_exclusive_group()
+    admission.add_argument("--admission-evidence", type=Path)
+    admission.add_argument("--capture-admission-evidence", type=Path)
+    parser.add_argument("--verify-provider-live", action="store_true")
     args = parser.parse_args(argv)
     config = load_mapping(CONFIG)
     paths = args.record or sorted(ROOT.glob(".dev/workflows/*/evidence/terminal-issue-closure*.yaml"))
@@ -275,6 +447,9 @@ def main(argv: list[str] | None = None) -> int:
         event_path = Path(os.environ["GITHUB_EVENT_PATH"])
     runtime = runtime_from_event(event_path) if event_path is not None else None
     admission_evidence: dict[str, Any] | None = None
+    if args.capture_admission_evidence is not None and runtime is None:
+        print("Terminal Issue closure validation failed:\n- admission capture requires a current PR event snapshot", file=sys.stderr)
+        return 1
     if args.admission_evidence is not None:
         try:
             admission_evidence = load_mapping(args.admission_evidence)
@@ -283,6 +458,9 @@ def main(argv: list[str] | None = None) -> int:
             return 1
         if runtime is None:
             print("Terminal Issue closure validation failed:\n- admission evidence requires a current PR event snapshot", file=sys.stderr)
+            return 1
+        if not args.verify_provider_live:
+            print("Terminal Issue closure validation failed:\n- admission evidence requires --verify-provider-live", file=sys.stderr)
             return 1
     records: list[tuple[Path, dict[str, Any]]] = []
     errors: list[str] = []
@@ -304,8 +482,17 @@ def main(argv: list[str] | None = None) -> int:
     for candidate, record in records:
         effective = record
         binding_errors: list[str] = []
+        if args.capture_admission_evidence is not None and runtime is not None:
+            try:
+                admission_evidence = capture_live_admission_evidence(
+                    args.capture_admission_evidence, record, runtime, config
+                )
+            except ValueError as exc:
+                binding_errors.append(str(exc))
         if admission_evidence is not None:
-            effective, binding_errors = bind_admission_evidence(record, admission_evidence)
+            effective, binding_errors = bind_admission_evidence(record, admission_evidence, config)
+            if runtime is not None:
+                binding_errors.extend(validate_live_provider_evidence(admission_evidence, record, runtime, config))
         elif runtime is not None and record.get("validation_stage") != "declaration":
             binding_errors.append("current PR required check validates declaration only; merge admission requires --admission-evidence")
         errors.extend(f"{candidate.relative_to(ROOT)}: {error}" for error in binding_errors)
@@ -315,7 +502,7 @@ def main(argv: list[str] | None = None) -> int:
         for error in errors:
             print(f"- {error}", file=sys.stderr)
         return 1
-    if admission_evidence is not None:
+    if admission_evidence is not None or args.capture_admission_evidence is not None:
         mode = "non-mutating merge admission"
     elif runtime is not None:
         mode = "current PR declaration"

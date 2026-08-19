@@ -228,9 +228,57 @@ class TerminalIssueClosureGwtTests(unittest.TestCase):
             )
 
     def test_gwt_028_given_untracked_admission_snapshot_when_exact_head_evidence_passes_then_cli_passes(self) -> None:
-        with mock.patch.object(VALIDATOR, "checkout_head", return_value="a" * 40):
+        evidence = fixture("admission-positive.yaml")
+        with (
+            mock.patch.object(VALIDATOR, "checkout_head", return_value="a" * 40),
+            mock.patch.object(VALIDATOR, "read_live_provider_facts", return_value=evidence["pull_request"]),
+            mock.patch.dict(VALIDATOR.os.environ, {"GITHUB_TOKEN": "test-token"}),
+        ):
             self.assertEqual(
                 0,
+                VALIDATOR.main(
+                    [
+                        "--record",
+                        str(FIXTURES / "declaration-bound.yaml"),
+                        "--event-path",
+                        str(FIXTURES / "pr-event-deferred.json"),
+                        "--admission-evidence",
+                        str(FIXTURES / "admission-positive.yaml"),
+                        "--verify-provider-live",
+                    ]
+                ),
+            )
+
+    def test_gwt_029_given_admission_snapshot_when_head_drifts_then_cli_fails(self) -> None:
+        evidence = fixture("admission-positive.yaml")
+        evidence["pull_request"]["head_sha"] = "b" * 40
+        bound, errors = VALIDATOR.bind_admission_evidence(fixture("declaration-bound.yaml"), evidence, self.config)
+        errors.extend(
+            VALIDATOR.validate_record(
+                bound,
+                self.config,
+                {"pr_number": 300, "head_sha": "a" * 40, "body": "Refs #212"},
+            )
+        )
+        self.assertTrue(any("head_sha does not match" in error for error in errors), errors)
+
+    def test_gwt_030_given_later_lifecycle_record_when_admission_is_supplied_then_downgrade_fails(self) -> None:
+        _, errors = VALIDATOR.bind_admission_evidence(
+            fixture("terminal-positive.yaml"), fixture("admission-positive.yaml"), self.config
+        )
+        self.assertTrue(any("only overlay a tracked declaration" in error for error in errors), errors)
+
+    def test_gwt_031_given_snapshot_omits_provider_owned_context_when_bound_then_it_fails(self) -> None:
+        evidence = fixture("admission-positive.yaml")
+        evidence["pull_request"]["required_check_contexts"] = ["Read-only governance contract"]
+        evidence["pull_request"]["hosted_checks"] = evidence["pull_request"]["hosted_checks"][:1]
+        _, errors = VALIDATOR.bind_admission_evidence(fixture("declaration-bound.yaml"), evidence, self.config)
+        self.assertTrue(any("provider-owned required_check_contexts" in error for error in errors), errors)
+
+    def test_gwt_032_given_snapshot_without_live_provider_verification_when_admitted_then_it_fails(self) -> None:
+        with mock.patch.object(VALIDATOR, "checkout_head", return_value="a" * 40):
+            self.assertEqual(
+                1,
                 VALIDATOR.main(
                     [
                         "--record",
@@ -243,18 +291,52 @@ class TerminalIssueClosureGwtTests(unittest.TestCase):
                 ),
             )
 
-    def test_gwt_029_given_admission_snapshot_when_head_drifts_then_cli_fails(self) -> None:
+    def test_gwt_033_given_snapshot_differs_from_fresh_provider_readback_when_admitted_then_it_fails(self) -> None:
         evidence = fixture("admission-positive.yaml")
-        evidence["pull_request"]["head_sha"] = "b" * 40
-        bound, errors = VALIDATOR.bind_admission_evidence(fixture("declaration-bound.yaml"), evidence)
-        errors.extend(
-            VALIDATOR.validate_record(
-                bound,
-                self.config,
-                {"pr_number": 300, "head_sha": "a" * 40, "body": "Refs #212"},
+        live = fixture("admission-positive.yaml")["pull_request"]
+        live["hosted_checks"][0]["provider_check_run_id"] = 9999
+        with (
+            mock.patch.object(VALIDATOR, "checkout_head", return_value="a" * 40),
+            mock.patch.object(VALIDATOR, "read_live_provider_facts", return_value=live),
+            mock.patch.dict(VALIDATOR.os.environ, {"GITHUB_TOKEN": "test-token"}),
+        ):
+            self.assertEqual(
+                1,
+                VALIDATOR.main(
+                    [
+                        "--record",
+                        str(FIXTURES / "declaration-bound.yaml"),
+                        "--event-path",
+                        str(FIXTURES / "pr-event-deferred.json"),
+                        "--admission-evidence",
+                        str(FIXTURES / "admission-positive.yaml"),
+                        "--verify-provider-live",
+                    ]
+                ),
             )
-        )
-        self.assertTrue(any("head_sha does not match" in error for error in errors), errors)
+
+    def test_gwt_034_given_live_provider_facts_when_built_then_snapshot_has_provider_identity(self) -> None:
+        pull_request = fixture("admission-positive.yaml")["pull_request"]
+        with mock.patch.object(VALIDATOR, "read_live_provider_facts", return_value=pull_request):
+            evidence = VALIDATOR.build_live_admission_evidence(
+                fixture("declaration-bound.yaml"),
+                {"pr_number": 300, "head_sha": "a" * 40, "body": "Refs #212"},
+                self.config,
+                "test-token",
+            )
+        self.assertEqual("github", evidence["provider"])
+        self.assertEqual("github-terminal-issue-closure-admission", evidence["contract_id"])
+        self.assertEqual(pull_request, evidence["pull_request"])
+
+    def test_gwt_035_given_capture_path_outside_ignored_evidence_root_when_requested_then_it_fails(self) -> None:
+        with mock.patch.dict(VALIDATOR.os.environ, {"GITHUB_TOKEN": "test-token"}):
+            with self.assertRaisesRegex(ValueError, "directly under artifacts/validation"):
+                VALIDATOR.capture_live_admission_evidence(
+                    ROOT / "admission.yaml",
+                    fixture("declaration-bound.yaml"),
+                    {"pr_number": 300, "head_sha": "a" * 40, "body": "Refs #212"},
+                    self.config,
+                )
 
 
 if __name__ == "__main__":

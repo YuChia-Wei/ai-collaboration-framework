@@ -1,11 +1,20 @@
 schema_version: "1.0"
 contract_id: github-terminal-issue-closure-admission
 repository: YuChia-Wei/ai-collaboration-framework
+provider: github
 pull_request:
   number: 300
   head_sha: aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-  review: {status: approved, head_sha: aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa}
-  required_check_contexts: [governance, portable]
+  review: {status: approved, head_sha: aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa, provider_review_id: 7001, submitted_at: "2026-08-19T15:45:00Z"}
+  required_check_contexts:
+    - Read-only governance contract
+    - Build and validate candidate
+    - Ubuntu prerequisite contract
+    - Windows prerequisite contract
+    - Ubuntu PR profile gate
   hosted_checks:
-    - {name: governance, conclusion: success, required: true, head_sha: aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa}
-    - {name: portable, conclusion: success, required: true, head_sha: aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa}
+    - {name: Read-only governance contract, conclusion: success, required: true, head_sha: aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa, provider_check_run_id: 8001, completed_at: "2026-08-19T15:45:01Z"}
+    - {name: Build and validate candidate, conclusion: success, required: true, head_sha: aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa, provider_check_run_id: 8002, completed_at: "2026-08-19T15:45:02Z"}
+    - {name: Ubuntu prerequisite contract, conclusion: success, required: true, head_sha: aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa, provider_check_run_id: 8003, completed_at: "2026-08-19T15:45:03Z"}
+    - {name: Windows prerequisite contract, conclusion: success, required: true, head_sha: aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa, provider_check_run_id: 8004, completed_at: "2026-08-19T15:45:04Z"}
+    - {name: Ubuntu PR profile gate, conclusion: success, required: true, head_sha: aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa, provider_check_run_id: 8005, completed_at: "2026-08-19T15:45:05Z"}

@@ -69,6 +69,12 @@ work_item_binding:
     mode: "required"
     disposition_required_per_issue: true
     missing_binding_blocks_merge: true
+    required_check_contexts:
+      - "Read-only governance contract"
+      - "Build and validate candidate"
+      - "Ubuntu prerequisite contract"
+      - "Windows prerequisite contract"
+      - "Ubuntu PR profile gate"
 issue_closure:
   policy: ".dev/standards/GITHUB-TERMINAL-ISSUE-CLOSURE-POLICY.md"
   distribution: "source-repository-only"
