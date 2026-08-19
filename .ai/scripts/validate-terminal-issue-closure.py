@@ -181,12 +181,17 @@ def github_api_paginated(url: str, token: str, item_key: str | None = None) -> l
         if link:
             for part in link.split(","):
                 match = re.fullmatch(r'\s*<([^>]+)>;\s*rel="([^"]+)"\s*', part)
-                if match and match.group(2) == "next":
+                if not match:
+                    raise ValueError("GitHub provider returned a malformed pagination Link header")
+                if match.group(2) == "next":
                     candidate = match.group(1)
-                    break
-        if candidate is None and len(page) == 100:
-            total = payload.get("total_count") if isinstance(payload, dict) else None
-            if not isinstance(total, int) or len(items) < total:
+        total = payload.get("total_count") if isinstance(payload, dict) else None
+        if item_key is not None and (not isinstance(total, int) or isinstance(total, bool) or total < 0):
+            raise ValueError("GitHub provider paginated mapping requires a valid total_count")
+        if candidate is None and isinstance(total, int) and len(items) != total:
+            raise ValueError("GitHub provider pagination does not match total_count")
+        if candidate is None and len(page) == 100 and not isinstance(total, int):
+            if item_key is None:
                 raise ValueError("GitHub provider pagination is incomplete at the page limit")
         next_url = candidate
     return items
@@ -521,7 +526,8 @@ def main(argv: list[str] | None = None) -> int:
         mode = "current PR declaration"
     else:
         mode = "static contract"
-    print(f"Terminal Issue closure {mode} validation passed for {len(records)} record(s).")
+    status_stream = sys.stderr if args.capture_admission_evidence else sys.stdout
+    print(f"Terminal Issue closure {mode} validation passed for {len(records)} record(s).", file=status_stream)
     return 0
 
 

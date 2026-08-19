@@ -51,3 +51,12 @@
 - Provider read-back: `Read-only governance contract` and `Ubuntu PR profile gate` failed; three other jobs succeeded and no review existed.
 - Repair: only decisive review states supersede each other; provider pagination is complete, loop/host constrained, and fails closed at an unproven full page; live capture writes no path and emits verified evidence to stdout for trusted optional retention.
 - Focused validation: closure 38/38 and GitHub provider 20/20 passed with repository configuration, workflow, source-governance, AI-context, and diff checks.
+
+## Fresh Audit Of Complete Provider Pagination Head
+
+- Audited head: `2f93ecb18aaa5e823f0b40ab2f1ccdcf472e8ac1`
+- Disposition: `FAIL`
+- Preserved fixes: decisive review handling, safe multi-page provider reads, filesystem-free capture, and all prior lifecycle/body/head/provider bindings passed review.
+- Blocking findings: malformed short-page Link headers and short-page `total_count` mismatches were accepted; capture mixed YAML and status on stdout so the evidence was not replayable.
+- Repair: every non-empty Link part must parse, final provider mappings must exactly match `total_count`, and capture reserves stdout for YAML while sending status to stderr.
+- Focused validation: closure 40/40 and GitHub provider 20/20 passed; current workflow and diff checks also passed.

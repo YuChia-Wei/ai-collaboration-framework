@@ -3,7 +3,9 @@
 
 from __future__ import annotations
 
+import contextlib
 import importlib.util
+import io
 import unittest
 from pathlib import Path
 from unittest import mock
@@ -371,10 +373,14 @@ class TerminalIssueClosureGwtTests(unittest.TestCase):
 
     def test_gwt_038_given_live_capture_when_admitted_then_no_output_path_is_accepted_or_written(self) -> None:
         evidence = fixture("admission-positive.yaml")
+        stdout = io.StringIO()
+        stderr = io.StringIO()
         with (
             mock.patch.object(VALIDATOR, "checkout_head", return_value="a" * 40),
             mock.patch.object(VALIDATOR, "build_live_admission_evidence", return_value=evidence),
             mock.patch.dict(VALIDATOR.os.environ, {"GITHUB_TOKEN": "test-token"}),
+            contextlib.redirect_stdout(stdout),
+            contextlib.redirect_stderr(stderr),
         ):
             self.assertEqual(
                 0,
@@ -388,6 +394,21 @@ class TerminalIssueClosureGwtTests(unittest.TestCase):
                     ]
                 ),
             )
+        self.assertEqual(evidence, yaml.safe_load(stdout.getvalue()))
+        self.assertIn("validation passed", stderr.getvalue())
+
+    def test_gwt_039_given_malformed_provider_link_header_when_read_then_it_fails(self) -> None:
+        with mock.patch.object(VALIDATOR, "github_api_json", return_value=([{"id": 1}], "malformed-link-header")):
+            with self.assertRaisesRegex(ValueError, "malformed pagination Link"):
+                VALIDATOR.github_api_paginated("https://api.github.com/example", "test-token")
+
+    def test_gwt_040_given_short_check_page_disagrees_with_total_count_when_read_then_it_fails(self) -> None:
+        payload = {"total_count": 200, "check_runs": [{"id": 1}]}
+        with mock.patch.object(VALIDATOR, "github_api_json", return_value=(payload, None)):
+            with self.assertRaisesRegex(ValueError, "does not match total_count"):
+                VALIDATOR.github_api_paginated(
+                    "https://api.github.com/example", "test-token", "check_runs"
+                )
 
 
 if __name__ == "__main__":
