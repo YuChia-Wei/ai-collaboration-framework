@@ -343,14 +343,6 @@ entries:
     template_source_resolution: manifest-directory-relative
     ownership: target-template
     install_behavior: seed
-  - id: repository-integration-seeds
-    component_id: software-development-core
-    source:
-      - .github/pull_request_template.md
-    target: preserve-relative-path
-    ownership: target-template
-    install_behavior: seed
-
 exclusions:
   - id: source-release-governance
     classification: source-only
@@ -376,6 +368,8 @@ exclusions:
   - id: source-local-work-management-policy
     classification: source-only
     patterns:
+      - .github/pull_request_template.md
+      - .dev/standards/GITHUB-TERMINAL-ISSUE-CLOSURE-POLICY.md
       - .dev/standards/WORKFLOW-GATE-POLICY.md
       - .dev/standards/GIT-COMMIT-POLICY.md
       - .dev/TEAM-GIT-FLOW-RULES.MD
@@ -452,6 +446,7 @@ exclusions:
       - .ai/scripts/validate-ai-behavior-evaluation.py
       - .ai/scripts/measure-ai-context-load.py
       - .ai/scripts/validate-repository-config-contract.py
+      - .ai/scripts/validate-terminal-issue-closure.py
       - .ai/scripts/validate-repository-identity.py
       - .ai/scripts/validate-skill-transition.py
       - .ai/scripts/github_backlog_provider.py
@@ -474,6 +469,7 @@ exclusions:
       - .ai/scripts/tests/test_ai_context_load_measurement.py
       - .ai/scripts/tests/test_cli_execution_routing.py
       - .ai/scripts/tests/test_repository_config_contract.py
+      - .ai/scripts/tests/test_terminal_issue_closure.py
       - .ai/scripts/tests/test_repository_identity.py
       - .ai/scripts/tests/test_sdk_free_framework_contract.py
       - .ai/scripts/tests/test_source_dispositions.py

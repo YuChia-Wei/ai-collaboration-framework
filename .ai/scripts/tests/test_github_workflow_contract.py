@@ -126,6 +126,13 @@ class GitHubWorkflowContractTests(unittest.TestCase):
             ".dev/assessments/**",
             self.workflows["portable-gates.yml"]["on"]["pull_request"]["paths"],
         )
+        expected_disposition_activities = ["opened", "synchronize", "reopened", "edited"]
+        for name in ("governance.yml", "portable-gates.yml"):
+            with self.subTest(workflow=name):
+                self.assertEqual(
+                    expected_disposition_activities,
+                    self.workflows[name]["on"]["pull_request"]["types"],
+                )
         for name, expected_paths in EXPECTED_PR_PATHS.items():
             with self.subTest(workflow=name):
                 self.assertEqual(

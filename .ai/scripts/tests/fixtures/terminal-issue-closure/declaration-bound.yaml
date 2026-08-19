@@ -1,0 +1,23 @@
+schema_version: "1.0"
+contract_id: github-terminal-issue-closure
+repository: YuChia-Wei/ai-collaboration-framework
+validation_stage: declaration
+pull_request:
+  number: 300
+  head_sha: null
+  body: |-
+    Refs #212
+  integration: {status: pending, expected_head_sha: null, merged_head_sha: null}
+  review: {status: pending}
+  required_check_contexts: []
+  hosted_checks: []
+issues:
+  - number: 212
+    mode: deferred
+    work_authorization: {online_issue_bound: true, explicit_owner_approval: true}
+    final_accepted_delivery: false
+    workflow: {scope_complete: false, tasks_complete: false, applicable_verification_complete: false}
+    closing_keyword: null
+    closure_deferred_reason: checkpoint delivery requires continuation
+    next_terminal_gate_or_owner: continuation pull request after integration
+    read_back: {performed: false, merged_head_sha: null, issue_state: null, issue_state_reason: null, project_status: null}

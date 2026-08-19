@@ -51,6 +51,10 @@ class GovernanceWorkflowContractTests(unittest.TestCase):
             set(self.workflow["on"]["pull_request"]["paths"]),
         )
         self.assertEqual(["**"], self.workflow["on"]["pull_request"]["paths"])
+        self.assertEqual(
+            ["opened", "synchronize", "reopened", "edited"],
+            self.workflow["on"]["pull_request"]["types"],
+        )
 
     def test_gwt_002_given_governance_workflow_when_checked_then_permissions_are_read_only(self) -> None:
         self.assertEqual({}, self.workflow.get("permissions"))
@@ -62,7 +66,11 @@ class GovernanceWorkflowContractTests(unittest.TestCase):
         steps = [step for job in self.workflow["jobs"].values() for step in job["steps"]]
         checkout = next(step for step in steps if step.get("uses") == "actions/checkout@v6")
         self.assertEqual(
-            {"fetch-depth": "0", "persist-credentials": "false"},
+            {
+                "fetch-depth": "0",
+                "persist-credentials": "false",
+                "ref": "${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || github.sha }}",
+            },
             checkout.get("with"),
         )
         setup_python = next(step for step in steps if step.get("uses") == "actions/setup-python@v6")

@@ -2,6 +2,7 @@ name: Portable AI Context Gates
 
 on:
   pull_request:
+    types: [opened, synchronize, reopened, edited]
     paths:
       - ".ai/**"
       - ".agents/**"
@@ -89,6 +90,7 @@ jobs:
         with:
           fetch-depth: 0
           persist-credentials: false
+          ref: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || github.sha }}
 
       - name: Set up Python
         uses: actions/setup-python@v6

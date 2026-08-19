@@ -1,0 +1,21 @@
+{
+  "number": 300,
+  "repository": {
+    "full_name": "attacker/other"
+  },
+  "pull_request": {
+    "body": "Refs #212",
+    "base": {
+      "sha": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+      "repo": {
+        "full_name": "attacker/other"
+      }
+    },
+    "head": {
+      "sha": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "repo": {
+        "full_name": "attacker/other"
+      }
+    }
+  }
+}

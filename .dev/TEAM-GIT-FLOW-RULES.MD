@@ -110,6 +110,32 @@ Repository integration is the reviewed Git event that enters the configured
 integration branch. It is not workflow completion, assessment finality,
 release-source validation, hosted publication, or publication finalization.
 
+For this source repository, repository integration and GitHub Issue closure
+also remain separate facts. Every named Issue in a material pull request must
+declare exactly one `terminal-close` or `deferred` disposition under
+`.dev/standards/GITHUB-TERMINAL-ISSUE-CLOSURE-POLICY.md`. A terminal disposition
+requires a matching approved closing keyword and post-merge Issue/Project
+read-back; a deferred disposition uses `Refs`, records its reason and next gate
+or owner, and must remain open. A closing keyword never authorizes work.
+
+The required pull-request check validates only the tracked declaration against
+the live PR event and checkout head. Immediately before integration, obtain a
+fresh provider read-back and run
+`.ai/scripts/validate-terminal-issue-closure.py` with the current event snapshot
+and `--capture-admission-evidence`. The validator emits the verified snapshot
+to stdout and writes no repository path; trusted orchestration may retain it
+under ignored validation artifacts. A replay instead uses the untracked
+`--admission-evidence` snapshot plus `--verify-provider-live`. The
+provider configuration owns the required-check
+set, and the live GitHub response must exactly match the snapshot's PR number,
+repository, base, head, body, review/check-run identities, and timestamps. Those live PR
+facts must also equal the current event snapshot; PR-body edits rerun the
+declaration workflows. That merge-admission run must bind
+the approved review and the complete successful required-check set to the same
+immutable head. Do not commit the volatile snapshot; any head drift
+invalidates it and requires a fresh independent audit, hosted read-back, and
+admission run.
+
 ### Linear Integration
 
 Choose linear integration when the branch boundary adds no durable information

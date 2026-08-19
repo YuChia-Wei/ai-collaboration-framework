@@ -193,11 +193,13 @@ class GitHubBacklogProviderTests(unittest.TestCase):
         self.assertEqual(["kind:proposal"], form["labels"])
         self.assertFalse(issue_config["blank_issues_enabled"])
 
-    def test_gwt_013_given_pr_template_then_it_references_but_never_auto_closes_issues(self) -> None:
+    def test_gwt_013_given_pr_template_then_it_requires_per_issue_disposition(self) -> None:
         template = (REPO_ROOT / ".github/pull_request_template.md").read_text(encoding="utf-8")
         self.assertIn("Refs #", template)
-        for keyword in ("Closes #", "Fixes #", "Resolves #"):
-            self.assertNotIn(keyword, template)
+        self.assertIn("terminal-close", template)
+        self.assertIn("deferred", template)
+        self.assertIn("closure_deferred_reason", template)
+        self.assertIn("Next terminal gate or owner", template)
 
     def test_gwt_014_given_stage_b_receipt_then_every_recorded_mapping_is_verified_and_canonical(self) -> None:
         receipt = PROVIDER.load_yaml_mapping(
@@ -291,11 +293,26 @@ class GitHubBacklogProviderTests(unittest.TestCase):
                 },
                 "merge_gate": {
                     "mode": "required",
-                    "reference_format": "Refs #<issue-number>",
+                    "disposition_required_per_issue": True,
                     "missing_binding_blocks_merge": True,
+                    "required_check_contexts": [
+                        "Read-only governance contract",
+                        "Build and validate candidate",
+                        "Ubuntu prerequisite contract",
+                        "Windows prerequisite contract",
+                        "Ubuntu PR profile gate",
+                    ],
                 },
             },
             config["work_item_binding"],
+        )
+        self.assertEqual(
+            ["terminal-close", "deferred"],
+            config["issue_closure"]["modes"],
+        )
+        self.assertEqual(
+            "source-repository-only",
+            config["issue_closure"]["distribution"],
         )
 
 

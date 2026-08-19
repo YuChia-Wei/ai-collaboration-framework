@@ -37,8 +37,10 @@ ORIGINAL_RULE = ".dev/assessments/**/evidence/external/original/** binary"
 LEGACY_RULE = f"{LEGACY_EVIDENCE.as_posix()} binary"
 SOURCE_ONLY_SCRIPTS = {
     ".ai/scripts/validate-repository-config-contract.py",
+    ".ai/scripts/validate-terminal-issue-closure.py",
     ".ai/scripts/validate-skill-transition.py",
     ".ai/scripts/tests/test_repository_config_contract.py",
+    ".ai/scripts/tests/test_terminal_issue_closure.py",
     ".ai/scripts/tests/test_skill_transition_contract.py",
 }
 
@@ -223,13 +225,11 @@ def validate_profile(root: Path, errors: list[str]) -> None:
         return
     entries = profile.get("entries")
     integration = find_by_id(entries, "repository-integration-seeds")
-    integration_sources = integration.get("source", [])
-    if not isinstance(integration_sources, list):
-        errors.append(f"{PROFILE.as_posix()}: repository-integration-seeds source must be a list")
-        integration_sources = []
-    for name in (".editorconfig", ".gitattributes"):
-        if name in integration_sources:
-            errors.append(f"{PROFILE.as_posix()}: source root {name} must not be a target-template entry")
+    if integration:
+        errors.append(
+            f"{PROFILE.as_posix()}: repository-integration-seeds must be absent; "
+            "the source PR template is source-repository-only"
+        )
     public = find_by_id(entries, "public-root-and-catalog-seeds")
     public_sources = public.get("source", [])
     if not isinstance(public_sources, list) or (

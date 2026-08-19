@@ -37,6 +37,7 @@
     {"path": ".ai/scripts/validate-immutable-history.py", "portable": false, "dependency_profile": ["PyYAML"], "prerequisite_exit_code": 2},
     {"path": ".ai/scripts/validate-ai-context-versions.py", "portable": false, "dependency_profile": ["PyYAML"], "prerequisite_exit_code": 1},
     {"path": ".ai/scripts/validate-repository-config-contract.py", "portable": false, "dependency_profile": ["PyYAML"], "prerequisite_exit_code": 1},
+    {"path": ".ai/scripts/validate-terminal-issue-closure.py", "portable": false, "dependency_profile": ["PyYAML"], "prerequisite_exit_code": 1},
     {"path": ".ai/scripts/validate-skill-transition.py", "portable": false, "dependency_profile": ["PyYAML"], "prerequisite_exit_code": 1},
     {"path": ".ai/scripts/validate-repository-identity.py", "portable": false, "dependency_profile": ["PyYAML"], "prerequisite_exit_code": 1},
     {"path": ".ai/scripts/validate-source-dispositions.py", "portable": false, "dependency_profile": ["PyYAML"], "prerequisite_exit_code": 1},

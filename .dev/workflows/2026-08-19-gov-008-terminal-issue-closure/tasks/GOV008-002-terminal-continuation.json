@@ -1,0 +1,36 @@
+{
+  "template_id": "ai-context-governance-remediation-task",
+  "template_version": "1.1.0",
+  "template_created_at": "2026-07-10T18:22:49+08:00",
+  "template_updated_at": "2026-07-27T09:52:09+08:00",
+  "task_id": "GOV008-002-terminal-continuation",
+  "workflow_id": "2026-08-19-gov-008-terminal-issue-closure",
+  "owner_skill": "ai-context-governance",
+  "status": "pending",
+  "created_at": "2026-08-19T23:09:17+08:00",
+  "updated_at": "2026-08-19T23:09:17+08:00",
+  "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
+  "model": "gpt-5.6-sol",
+  "reasoning_effort": "high",
+  "finding_ids": ["GOV-008-CLOSURE-ASYMMETRY"],
+  "scope": {
+    "target": "terminal provider reconciliation for Issues #212 and #204",
+    "files": ["current GOV-008 and VAL-007 workflow/provider closeout records"],
+    "constraints": ["start from refreshed main after PR A", "Closes #212 and Closes #204 only", "nightly activation remains deferred"],
+    "non_goals": ["nightly-full execution", "release or publication", "unrelated Issue closure"]
+  },
+  "execution": {
+    "steps": ["verify PR A integration and #212 open state", "reconcile current VAL-007 projection", "validate terminal continuation", "merge and read back Issues and Projects"],
+    "validation": ["new closure validator", "workflow and AI-context validation", "fresh fixed-head audit", "hosted checks", "provider read-back"],
+    "last_completed_step": "",
+    "next_action": "wait for PR A integration"
+  },
+  "results": {
+    "summary": "Pending PR A integration.",
+    "files_changed": [],
+    "tests_run": [],
+    "finding_status": "not-addressed",
+    "residual_risk": "Terminal closeout cannot begin before the self-hosting contract integrates.",
+    "follow_up_needed": true
+  }
+}
