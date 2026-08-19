@@ -1,14 +1,18 @@
 schema_version: "1.0"
 contract_id: github-terminal-issue-closure
 repository: YuChia-Wei/ai-collaboration-framework
+validation_stage: reconciliation
 pull_request:
+  number: 301
+  head_sha: bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
   body: |-
     Fixes #211
     Refs #212
   integration: {status: merged, expected_head_sha: bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb, merged_head_sha: bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb}
-  review: {status: approved}
+  review: {status: approved, head_sha: bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb}
+  required_check_contexts: [governance]
   hosted_checks:
-    - {name: governance, conclusion: success}
+    - {name: governance, conclusion: success, required: true, head_sha: bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb}
 issues:
   - number: 211
     mode: terminal-close

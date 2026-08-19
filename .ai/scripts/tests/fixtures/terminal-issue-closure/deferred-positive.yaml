@@ -1,11 +1,15 @@
 schema_version: "1.0"
 contract_id: github-terminal-issue-closure
 repository: YuChia-Wei/ai-collaboration-framework
+validation_stage: declaration
 pull_request:
+  number: null
+  head_sha: null
   body: |-
     Refs #212
   integration: {status: pending, expected_head_sha: null, merged_head_sha: null}
   review: {status: pending}
+  required_check_contexts: []
   hosted_checks: []
 issues:
   - number: 212

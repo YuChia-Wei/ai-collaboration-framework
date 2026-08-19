@@ -95,7 +95,7 @@ class TerminalIssueClosureGwtTests(unittest.TestCase):
     def test_gwt_012_given_merged_deferred_delivery_when_issue_is_closed_then_it_fails_closed(self) -> None:
         data = fixture("mixed-positive.yaml")
         data["issues"][1]["read_back"]["issue_state"] = "closed"
-        self.assert_error(data, "must remain open")
+        self.assert_error(data, "must prove it remains open")
 
     def test_gwt_013_given_terminal_delivery_when_project_is_not_done_then_it_fails_closed(self) -> None:
         data = fixture("terminal-positive.yaml")
@@ -107,7 +107,7 @@ class TerminalIssueClosureGwtTests(unittest.TestCase):
             with self.subTest(conclusion=conclusion):
                 data = fixture("terminal-positive.yaml")
                 data["pull_request"]["hosted_checks"][0]["conclusion"] = conclusion
-                self.assert_error(data, "every hosted check to succeed")
+                self.assert_error(data, "must succeed")
 
     def test_gwt_015_given_terminal_delivery_when_review_is_blocked_then_it_fails_closed(self) -> None:
         data = fixture("terminal-positive.yaml")
@@ -136,6 +136,65 @@ class TerminalIssueClosureGwtTests(unittest.TestCase):
             ".dev/standards/GITHUB-TERMINAL-ISSUE-CLOSURE-POLICY.md",
             ".ai/scripts/validate-terminal-issue-closure.py",
         }.issubset(excluded))
+
+    def test_gwt_019_given_deferred_body_when_inline_closing_keyword_exists_then_it_fails_closed(self) -> None:
+        data = fixture("deferred-positive.yaml")
+        data["pull_request"]["body"] = "Refs #212\n\nThis work Closes #212 after review."
+        self.assert_error(data, "requires exactly Refs")
+
+    def test_gwt_020_given_deferred_body_when_qualified_closing_keyword_exists_then_it_fails_closed(self) -> None:
+        data = fixture("deferred-positive.yaml")
+        data["pull_request"]["body"] = "Refs #212\nFixes YuChia-Wei/ai-collaboration-framework#212"
+        self.assert_error(data, "requires exactly Refs")
+
+    def test_gwt_021_given_review_or_check_head_drift_when_admitted_then_it_fails_closed(self) -> None:
+        for target in ("review", "check"):
+            with self.subTest(target=target):
+                data = fixture("terminal-positive.yaml")
+                if target == "review":
+                    data["pull_request"]["review"]["head_sha"] = "b" * 40
+                    self.assert_error(data, "approved review must be bound")
+                else:
+                    data["pull_request"]["hosted_checks"][0]["head_sha"] = "b" * 40
+                    self.assert_error(data, "hosted check 'governance' must be bound")
+
+    def test_gwt_022_given_required_context_is_missing_when_admitted_then_it_fails_closed(self) -> None:
+        data = fixture("terminal-positive.yaml")
+        data["pull_request"]["required_check_contexts"].append("portable")
+        self.assert_error(data, "exactly cover required_check_contexts")
+
+    def test_gwt_023_given_current_pr_event_when_number_or_head_mismatches_then_it_fails_closed(self) -> None:
+        data = fixture("terminal-positive.yaml")
+        runtime = {"pr_number": 999, "head_sha": "b" * 40, "body": "Closes #212"}
+        errors = VALIDATOR.validate_record(data, self.config, runtime)
+        self.assertTrue(any("number does not match" in error for error in errors), errors)
+        self.assertTrue(any("head_sha does not match" in error for error in errors), errors)
+
+    def test_gwt_024_given_current_pr_event_when_exact_record_is_selected_then_cli_passes(self) -> None:
+        self.assertEqual(
+            0,
+            VALIDATOR.main(
+                [
+                    "--record",
+                    str(FIXTURES / "terminal-positive.yaml"),
+                    "--event-path",
+                    str(FIXTURES / "pr-event-terminal.json"),
+                ]
+            ),
+        )
+
+    def test_gwt_025_given_current_pr_event_when_no_bound_record_exists_then_cli_fails(self) -> None:
+        self.assertEqual(
+            1,
+            VALIDATOR.main(
+                [
+                    "--record",
+                    str(FIXTURES / "deferred-positive.yaml"),
+                    "--event-path",
+                    str(FIXTURES / "pr-event-terminal.json"),
+                ]
+            ),
+        )
 
 
 if __name__ == "__main__":

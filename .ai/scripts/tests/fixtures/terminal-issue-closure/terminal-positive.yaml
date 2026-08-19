@@ -1,13 +1,17 @@
 schema_version: "1.0"
 contract_id: github-terminal-issue-closure
 repository: YuChia-Wei/ai-collaboration-framework
+validation_stage: reconciliation
 pull_request:
+  number: 300
+  head_sha: aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
   body: |-
     Closes #212
   integration: {status: merged, expected_head_sha: aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa, merged_head_sha: aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa}
-  review: {status: approved}
+  review: {status: approved, head_sha: aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa}
+  required_check_contexts: [governance]
   hosted_checks:
-    - {name: governance, conclusion: success}
+    - {name: governance, conclusion: success, required: true, head_sha: aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa}
 issues:
   - number: 212
     mode: terminal-close

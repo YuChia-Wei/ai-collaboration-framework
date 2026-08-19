@@ -16,10 +16,10 @@
 - `base_branch`: `main`
 - `branch_segment`: `1`
 - `status`: `in_progress`
-- `current_phase`: `post-audit`
+- `current_phase`: `remediation`
 - `artifact_root`: `.dev/workflows/2026-08-19-gov-008-terminal-issue-closure`
 - `created_at`: `2026-08-19T23:09:17+08:00`
-- `updated_at`: `2026-08-19T23:18:20+08:00`
+- `updated_at`: `2026-08-19T23:28:39+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md`
 - `template_version`: `1.2.0`
 
@@ -47,7 +47,7 @@
 ## Stages And Checkpoints
 
 1. Completed locally: implement the canonical source-only contract, template, validator, fixtures, guidance, distribution boundary, and PR A deferred evidence.
-2. In progress: commit and obtain fresh independent exact-head review; then push and require hosted success at that exact head.
+2. In progress: remediate the failed exact-head audit of `4fe042f8a1d0483b311b327a22fa0b7e320300c4`, then create a corrective commit and obtain a fresh audit.
 3. Pending: merge PR A and read back that #212 remains open by design.
 4. Pending: continue from refreshed `main`, terminally reconcile #212 and #204, and complete provider read-back.
 
@@ -69,11 +69,11 @@
 
 ## Resume Checkpoint
 
-- Last completed action: the coherent PR A patch passed focused terminal/provider/config/workflow/shell/source-governance/entrypoint/registry/dependency/distribution/AI-context validation; sandbox Temp failures were preserved and the same affected temp-fixture suites passed on the host.
+- Last completed action: independent audit of `4fe042f8a1d0483b311b327a22fa0b7e320300c4` returned FAIL for current-PR binding, inline closing-keyword detection, head-bound review/check completeness, and stale workflow truth; the bounded repair now separates declaration, merge admission, and reconciliation while keeping exactly two closure modes.
 - Current task: `GOV008-001-contract-implementation`.
-- Exact next action: create the durable validated implementation commit, freeze that exact head for independent audit, and do not push until the audit disposition is PASS.
-- Validation already completed: terminal closure 18/18; GitHub provider 20/20; repository config 14/14; entrypoint 7/7; source entrypoint 3/3; registry 6/6; dependency 19/19; prerequisite 14/14; brand-neutral distribution 2/2; workflow artifact, shell asset, repository config, source governance, AI-context, Bash syntax, and diff checks passed.
-- Git state: dedicated branch with authorized in-progress changes; no GOV-008 commit or push yet.
+- Exact next action: finish repair validation, create a corrective commit, then push only far enough to open PR A and bind its assigned PR number before the fresh final audit.
+- Validation already completed: original focused suites passed; repaired closure suite passes 23/23 and provider 20/20, including inline/qualified closing keywords, PR/head mismatch, review/check head drift, and required-context completeness.
+- Git state: dedicated branch at failed audited commit `4fe042f8a1d0483b311b327a22fa0b7e320300c4` with bounded uncommitted audit repairs; nothing pushed.
 - Branch history and checkpoint handoffs: none yet.
 - Blockers or unresolved decisions: independent fixed-head audit, hosted checks, PR A integration, and provider read-back remain pending.
 
@@ -81,4 +81,4 @@
 
 | Segment | Branch | Base | Checkpoint Type | Commit | Remote / Target | Recorded At | Reason | Resume Branch / Action |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| 1 | `codex/2026-08-19-gov-008-terminal-issue-closure` | `main@174eb835058dff40f67624df682d7d531ee9949b` | local workflow bootstrap | pending | not pushed | `2026-08-19T23:09:17+08:00` | preserve the required two-PR self-hosting boundary | complete and validate PR A |
+| 1 | `codex/2026-08-19-gov-008-terminal-issue-closure` | `main@174eb835058dff40f67624df682d7d531ee9949b` | failed exact-head audit | `4fe042f8a1d0483b311b327a22fa0b7e320300c4` | not pushed | `2026-08-19T23:28:39+08:00` | preserve four blocking validator/workflow findings before any transport | complete bounded repair, commit, then open draft PR for number binding |

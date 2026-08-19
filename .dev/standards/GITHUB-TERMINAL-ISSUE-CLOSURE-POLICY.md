@@ -45,7 +45,21 @@ must prove the deferred Issue remains open and is not projected as `Done`.
 
 `.dev/backlog/providers/github.yaml` owns the selected provider configuration.
 `.ai/scripts/validate-terminal-issue-closure.py` validates durable disposition
-records deterministically. The aggregate source governance profile runs that
-validator and its GWT tests. This policy, its validator and tests, provider
+records deterministically through three fail-closed validation stages without
+adding another closure mode:
+
+- `declaration` validates the per-Issue PR intent and reference syntax;
+- `merge-admission` binds the current PR number and head, approved review,
+  exact required-check context set, and every successful required check to the
+  same head; and
+- `reconciliation` additionally binds the expected/merged head and post-merge
+  Issue/Project read-back.
+
+On a GitHub pull-request event the validator selects exactly one record bound
+to that current PR number and validates the live event body and head. A missing,
+duplicate, historical-only, or mismatched record fails. Without an event it is
+only a static contract check and must not be represented as merge admission.
+The aggregate source governance profile runs that validator and its GWT tests.
+This policy, its validator and tests, provider
 configuration, dated evidence, and the source PR template are excluded from
 downstream packages; historical records are not rewritten.
