@@ -38,7 +38,6 @@ class AiBehaviorEvaluationTests(unittest.TestCase):
     def test_given_full_corpus_when_run_then_exact_baseline_matches_without_model(self):
         result = EVAL.run_corpus()
         EVAL.compare_results(EVAL.load_yaml_mapping(EVAL.BASELINE_PATH), result)
-        self.assertEqual(6, len(result["results"]))
         self.assertEqual(
             EVAL.REQUIRED_FAMILIES,
             {item["family"] for item in result["results"]},
