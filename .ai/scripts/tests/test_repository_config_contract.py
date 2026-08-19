@@ -125,13 +125,20 @@ class RepositoryConfigContractTests(unittest.TestCase):
         )
         self.assert_failure("mapping must not define component_id")
 
-    def test_gwt_008_given_source_root_config_is_packaged_directly_when_validated_then_it_fails(self) -> None:
+    def test_gwt_008_given_source_pr_template_seed_when_validated_then_it_fails(self) -> None:
         self.replace(
             ".ai/distribution/profiles/dotnet-backend.yaml",
-            "    source:\n      - .github/pull_request_template.md",
-            "    source:\n      - .editorconfig\n      - .github/pull_request_template.md",
+            "exclusions:\n",
+            "  - id: repository-integration-seeds\n"
+            "    component_id: software-development-core\n"
+            "    source:\n"
+            "      - .github/pull_request_template.md\n"
+            "    target: preserve-relative-path\n"
+            "    ownership: target-template\n"
+            "    install_behavior: seed\n\n"
+            "exclusions:\n",
         )
-        self.assert_failure("source root .editorconfig must not be a target-template entry")
+        self.assert_failure("repository-integration-seeds must be absent")
 
     def test_gwt_009_given_validator_is_not_source_only_when_validated_then_it_fails(self) -> None:
         self.replace(

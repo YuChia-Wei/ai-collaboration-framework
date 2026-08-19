@@ -306,7 +306,7 @@ def validate_config(config: dict[str, Any], backlog_ids: set[str]) -> None:
         },
         "merge_gate": {
             "mode": "required",
-            "reference_format": "Refs #<issue-number>",
+            "disposition_required_per_issue": True,
             "missing_binding_blocks_merge": True,
         },
     }
@@ -314,6 +314,39 @@ def validate_config(config: dict[str, Any], backlog_ids: set[str]) -> None:
         errors.append(
             "work_item_binding differs from the approved required source-repository contract"
         )
+    expected_issue_closure = {
+        "policy": ".dev/standards/GITHUB-TERMINAL-ISSUE-CLOSURE-POLICY.md",
+        "distribution": "source-repository-only",
+        "modes": ["terminal-close", "deferred"],
+        "approved_closing_keywords": ["Closes", "Fixes", "Resolves"],
+        "deferred_reference_keyword": "Refs",
+        "mixed_per_issue_dispositions": True,
+        "closing_keyword_authorizes_work": False,
+        "terminal_requires": [
+            "final-accepted-delivery",
+            "complete-scope-tasks-and-applicable-verification",
+            "approved-review-and-successful-hosted-checks",
+            "exact-terminal-integration",
+            "matching-approved-closing-keyword",
+            "post-merge-issue-and-project-read-back",
+        ],
+        "deferred_requires": [
+            "Refs",
+            "no-closing-keyword-for-that-issue",
+            "closure_deferred_reason",
+            "next-terminal-gate-or-owner",
+        ],
+        "nonterminal_on": [
+            "hosted-failed",
+            "hosted-cancelled",
+            "hosted-timed-out",
+            "head-drift",
+            "review-block",
+            "missing-or-mismatched-read-back",
+        ],
+    }
+    if config.get("issue_closure") != expected_issue_closure:
+        errors.append("issue_closure differs from the approved source-only terminal/deferred contract")
     automation = config.get("automation", {})
     allowlist = automation.get("allowlist", []) if isinstance(automation, dict) else []
     if allowlist != [

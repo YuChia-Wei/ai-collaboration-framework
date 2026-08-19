@@ -110,6 +110,14 @@ Repository integration is the reviewed Git event that enters the configured
 integration branch. It is not workflow completion, assessment finality,
 release-source validation, hosted publication, or publication finalization.
 
+For this source repository, repository integration and GitHub Issue closure
+also remain separate facts. Every named Issue in a material pull request must
+declare exactly one `terminal-close` or `deferred` disposition under
+`.dev/standards/GITHUB-TERMINAL-ISSUE-CLOSURE-POLICY.md`. A terminal disposition
+requires a matching approved closing keyword and post-merge Issue/Project
+read-back; a deferred disposition uses `Refs`, records its reason and next gate
+or owner, and must remain open. A closing keyword never authorizes work.
+
 ### Linear Integration
 
 Choose linear integration when the branch boundary adds no durable information

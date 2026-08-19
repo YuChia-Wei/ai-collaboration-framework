@@ -2012,6 +2012,8 @@ run_source_repository_governance_checks() {
     if ! source_governance_context_available; then
         for description in \
             "Source Governance Manifest Registry" \
+            "Terminal Issue Closure Contract" \
+            "Terminal Issue Closure Fail-Closed Tests" \
             "Repository Identity Drift Fail-Closed Tests"; do
             record_selected_without_execution \
                 "$description" \
@@ -2031,6 +2033,14 @@ run_source_repository_governance_checks() {
 
     run_command_check "python .ai/scripts/validate-source-governance.py" \
         "Source Governance Manifest Registry" \
+        "required" "true" "true"
+
+    run_command_check "python .ai/scripts/validate-terminal-issue-closure.py" \
+        "Terminal Issue Closure Contract" \
+        "required" "true" "true"
+
+    run_command_check "python .ai/scripts/tests/test_terminal_issue_closure.py -v" \
+        "Terminal Issue Closure Fail-Closed Tests" \
         "required" "true" "true"
 
     run_command_check "python .ai/scripts/tests/test_repository_identity.py -v" \

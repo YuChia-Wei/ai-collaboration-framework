@@ -29,11 +29,6 @@ issue:
   infer_sub_issues: false
   lock_closed_issues: false
   assignee_default: null
-  pr_reference_keyword: "Refs"
-  forbidden_pr_close_keywords:
-    - "Closes"
-    - "Fixes"
-    - "Resolves"
   hidden_markers:
     backlog_id: "canonical-backlog-id"
     migration_id: "migration-id"
@@ -72,8 +67,40 @@ work_item_binding:
     missing_binding: "block material execution until an online GitHub Issue records the scope and explicit owner authorization"
   merge_gate:
     mode: "required"
-    reference_format: "Refs #<issue-number>"
+    disposition_required_per_issue: true
     missing_binding_blocks_merge: true
+issue_closure:
+  policy: ".dev/standards/GITHUB-TERMINAL-ISSUE-CLOSURE-POLICY.md"
+  distribution: "source-repository-only"
+  modes:
+    - "terminal-close"
+    - "deferred"
+  approved_closing_keywords:
+    - "Closes"
+    - "Fixes"
+    - "Resolves"
+  deferred_reference_keyword: "Refs"
+  mixed_per_issue_dispositions: true
+  closing_keyword_authorizes_work: false
+  terminal_requires:
+    - "final-accepted-delivery"
+    - "complete-scope-tasks-and-applicable-verification"
+    - "approved-review-and-successful-hosted-checks"
+    - "exact-terminal-integration"
+    - "matching-approved-closing-keyword"
+    - "post-merge-issue-and-project-read-back"
+  deferred_requires:
+    - "Refs"
+    - "no-closing-keyword-for-that-issue"
+    - "closure_deferred_reason"
+    - "next-terminal-gate-or-owner"
+  nonterminal_on:
+    - "hosted-failed"
+    - "hosted-cancelled"
+    - "hosted-timed-out"
+    - "head-drift"
+    - "review-block"
+    - "missing-or-mismatched-read-back"
 labels:
   - name: "kind:story"
     color: "1D76DB"

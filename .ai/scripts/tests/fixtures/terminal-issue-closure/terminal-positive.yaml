@@ -1,0 +1,20 @@
+schema_version: "1.0"
+contract_id: github-terminal-issue-closure
+repository: YuChia-Wei/ai-collaboration-framework
+pull_request:
+  body: |-
+    Closes #212
+  integration: {status: merged, expected_head_sha: aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa, merged_head_sha: aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa}
+  review: {status: approved}
+  hosted_checks:
+    - {name: governance, conclusion: success}
+issues:
+  - number: 212
+    mode: terminal-close
+    work_authorization: {online_issue_bound: true, explicit_owner_approval: true}
+    final_accepted_delivery: true
+    workflow: {scope_complete: true, tasks_complete: true, applicable_verification_complete: true}
+    closing_keyword: Closes
+    closure_deferred_reason: null
+    next_terminal_gate_or_owner: null
+    read_back: {performed: true, merged_head_sha: aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa, issue_state: closed, issue_state_reason: completed, project_status: Done}
