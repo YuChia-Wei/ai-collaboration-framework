@@ -87,3 +87,13 @@
 - Provider read-back: three required checks succeeded; governance and Ubuntu PR-profile checks were still running, and no approval existed. No hosted or admission success is claimed.
 - Repair: capture and replay now fetch live PR number, base, head, body, reviews, and checks; require those facts to equal the event and snapshot; scan the provider-proven base-to-head range; and rerun declaration workflows for PR-body `edited` events.
 - Focused validation: closure 48/48, GitHub provider 20/20, and GitHub workflow 10/10 passed. The directly affected governance workflow contract was updated for exact-head checkout and edited-event coverage.
+
+## Fresh Audit Of Live-PR-Metadata Head
+
+- Audited head: `11ec97d13718d999b11a05cae281603263876c01`
+- Disposition: `FAIL`
+- Preserved fixes: live number/base/head/body binding, provider-proven commit range, edited-event reruns, complete Issue partitioning, pagination, review/check completeness, non-mutating overlay, and all earlier source-only lifecycle protections passed review.
+- Blocking finding: the event parser omitted repository identity, so an event naming a foreign top-level/base repository could still compare equal on number/base/head/body even though the live endpoint independently proved the governed repository.
+- Provider read-back: three required checks succeeded; governance and Ubuntu PR-profile checks were running, and no approval existed. No hosted or admission success is claimed.
+- Repair: parse top-level and base repository identity from the event, bind the governed repository into live admission facts, reject event/provider repository drift in declaration, capture, and replay, and add an explicit foreign-event scenario.
+- Focused validation: closure 49/49 passed after the bounded repository-identity repair; broader governed validation remains required before the next commit.

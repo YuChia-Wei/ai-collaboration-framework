@@ -4,6 +4,7 @@ repository: YuChia-Wei/ai-collaboration-framework
 provider: github
 pull_request:
   number: 300
+  repository: YuChia-Wei/ai-collaboration-framework
   base_sha: bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
   head_sha: aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
   body: "Refs #212"

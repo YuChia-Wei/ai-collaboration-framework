@@ -330,6 +330,8 @@ class TerminalIssueClosureGwtTests(unittest.TestCase):
                 fixture("declaration-bound.yaml"),
                 {
                     "pr_number": 300,
+                    "repository": "YuChia-Wei/ai-collaboration-framework",
+                    "base_repository": "YuChia-Wei/ai-collaboration-framework",
                     "base_sha": "b" * 40,
                     "head_sha": "a" * 40,
                     "body": "Refs #212",
@@ -478,6 +480,8 @@ class TerminalIssueClosureGwtTests(unittest.TestCase):
         live = fixture("admission-positive.yaml")["pull_request"]
         runtime = {
             "pr_number": 300,
+            "repository": "YuChia-Wei/ai-collaboration-framework",
+            "base_repository": "YuChia-Wei/ai-collaboration-framework",
             "base_sha": "b" * 40,
             "head_sha": "a" * 40,
             "body": "Closes #999",
@@ -492,6 +496,8 @@ class TerminalIssueClosureGwtTests(unittest.TestCase):
         evidence = fixture("admission-positive.yaml")
         runtime = {
             "pr_number": 300,
+            "repository": "YuChia-Wei/ai-collaboration-framework",
+            "base_repository": "YuChia-Wei/ai-collaboration-framework",
             "base_sha": "a" * 40,
             "head_sha": "a" * 40,
             "body": "Refs #212",
@@ -553,6 +559,25 @@ class TerminalIssueClosureGwtTests(unittest.TestCase):
                             required,
                             "test-token",
                         )
+
+    def test_gwt_049_given_fabricated_event_repository_when_validated_then_it_fails_closed(self) -> None:
+        runtime = VALIDATOR.runtime_from_event(FIXTURES / "pr-event-foreign-repository.json")
+        live = fixture("admission-positive.yaml")["pull_request"]
+        errors = VALIDATOR.validate_live_runtime(live, runtime)
+        self.assertTrue(any("event repository does not match fresh GitHub" in error for error in errors), errors)
+        self.assertTrue(any("event base_repository does not match fresh GitHub" in error for error in errors), errors)
+        with mock.patch.object(VALIDATOR, "checkout_head", return_value="a" * 40):
+            self.assertEqual(
+                1,
+                VALIDATOR.main(
+                    [
+                        "--record",
+                        str(FIXTURES / "declaration-bound.yaml"),
+                        "--event-path",
+                        str(FIXTURES / "pr-event-foreign-repository.json"),
+                    ]
+                ),
+            )
 
 
 if __name__ == "__main__":

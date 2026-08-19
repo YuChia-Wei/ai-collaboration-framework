@@ -74,13 +74,13 @@ without writing a repository path. Trusted orchestration may retain that
 stdout under ignored validation artifacts. Replaying such a snapshot requires the current event snapshot,
 `--admission-evidence <path>`, and `--verify-provider-live`. The admission snapshot uses contract
 `github-terminal-issue-closure-admission` and supplies the exact PR number,
-base, head, body, approved review, required-check context set, and successful
+repository, base, head, body, approved review, required-check context set, and successful
 hosted checks.
 The provider configuration, not the snapshot, owns the complete required-check
 context set. Live verification re-reads GitHub with `GITHUB_TOKEN` and requires
 the snapshot's provider review/check-run identifiers, timestamps, conclusions,
-heads, PR body, and base to match that fresh response exactly. The live PR
-metadata must also match the current event before its base-to-head commit range
+heads, PR body, repository, and base to match that fresh response exactly. The
+live PR metadata must also match the current event before its base-to-head commit range
 is accepted. A replayed snapshot without
 live verification is rejected. The validator itself never writes the capture,
 eliminating repository symlink/reparse and overwrite races. It overlays those verified volatile facts

@@ -86,8 +86,14 @@ def runtime_from_event(path: Path) -> dict[str, Any]:
         raise ValueError(f"{path}: pull_request event payload is required")
     head = pull_request.get("head")
     base = pull_request.get("base")
+    repository = event.get("repository")
+    base_repository = base.get("repo") if isinstance(base, dict) else None
     return {
         "pr_number": event.get("number"),
+        "repository": repository.get("full_name") if isinstance(repository, dict) else None,
+        "base_repository": (
+            base_repository.get("full_name") if isinstance(base_repository, dict) else None
+        ),
         "head_sha": head.get("sha") if isinstance(head, dict) else None,
         "base_sha": base.get("sha") if isinstance(base, dict) else None,
         "body": pull_request.get("body") or "",
@@ -173,7 +179,7 @@ def bind_admission_evidence(
     bound = copy.deepcopy(record)
     bound["validation_stage"] = "merge-admission"
     bound_pr = bound["pull_request"]
-    for field in ("number", "base_sha", "head_sha", "body", "review", "required_check_contexts", "hosted_checks"):
+    for field in ("number", "repository", "base_sha", "head_sha", "body", "review", "required_check_contexts", "hosted_checks"):
         bound_pr[field] = copy.deepcopy(evidence_pr.get(field))
     return bound, errors
 
@@ -316,6 +322,7 @@ def read_live_provider_facts(
     ]
     return {
         "number": pr_number,
+        "repository": repository,
         "base_sha": live_base_sha,
         "head_sha": live_head_sha,
         "body": live_body,
@@ -327,6 +334,15 @@ def read_live_provider_facts(
 
 def validate_live_runtime(live: dict[str, Any], runtime: dict[str, Any]) -> list[str]:
     errors: list[str] = []
+    live_repository = live.get("repository")
+    for field in ("repository", "base_repository"):
+        event_repository = runtime.get(field)
+        if (
+            not isinstance(live_repository, str)
+            or not isinstance(event_repository, str)
+            or live_repository.casefold() != event_repository.casefold()
+        ):
+            errors.append(f"current PR event {field} does not match fresh GitHub pull request metadata")
     for field in ("pr_number", "base_sha", "head_sha", "body"):
         live_field = "number" if field == "pr_number" else field
         if live.get(live_field) != runtime.get(field):
@@ -582,6 +598,15 @@ def main(argv: list[str] | None = None) -> int:
             errors.append(str(exc))
     if runtime is not None:
         try:
+            selected_repository = config.get("repository")
+            for field in ("repository", "base_repository"):
+                event_repository = runtime.get(field)
+                if (
+                    not isinstance(selected_repository, str)
+                    or not isinstance(event_repository, str)
+                    or selected_repository.casefold() != event_repository.casefold()
+                ):
+                    errors.append(f"current PR event {field} does not match the selected GitHub provider")
             if runtime.get("head_sha") != checkout_head():
                 errors.append("current PR event head does not match checkout HEAD")
             runtime["commit_messages"] = commit_messages(runtime.get("base_sha"), runtime.get("head_sha"))
