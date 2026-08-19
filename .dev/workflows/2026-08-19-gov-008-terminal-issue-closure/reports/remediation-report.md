@@ -60,3 +60,12 @@
 - Blocking findings: malformed short-page Link headers and short-page `total_count` mismatches were accepted; capture mixed YAML and status on stdout so the evidence was not replayable.
 - Repair: every non-empty Link part must parse, final provider mappings must exactly match `total_count`, and capture reserves stdout for YAML while sending status to stderr.
 - Focused validation: closure 40/40 and GitHub provider 20/20 passed; current workflow and diff checks also passed.
+
+## Fresh Audit Of Strict Pagination Head
+
+- Audited head: `11f0914d3125e9c275b21a7bf3ecbd0209e62ff7`
+- Disposition: `FAIL`
+- Blocking finding: duplicate valid `rel="next"` relations overwrote each other and could skip an uncounted reviews page.
+- Preserved fixes: all prior provider, lifecycle, capture, body, and exact-head protections passed review.
+- Repair: reject every duplicate pagination relation before selecting the unique next page.
+- Focused validation: closure 41/41 passed with diff checks.

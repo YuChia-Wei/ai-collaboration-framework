@@ -178,12 +178,17 @@ def github_api_paginated(url: str, token: str, item_key: str | None = None) -> l
             raise ValueError("GitHub provider read-back returned an unexpected paginated schema")
         items.extend(page)
         candidate: str | None = None
+        relations: set[str] = set()
         if link:
             for part in link.split(","):
                 match = re.fullmatch(r'\s*<([^>]+)>;\s*rel="([^"]+)"\s*', part)
                 if not match:
                     raise ValueError("GitHub provider returned a malformed pagination Link header")
-                if match.group(2) == "next":
+                relation = match.group(2)
+                if relation in relations:
+                    raise ValueError(f"GitHub provider returned duplicate pagination relation {relation!r}")
+                relations.add(relation)
+                if relation == "next":
                     candidate = match.group(1)
         total = payload.get("total_count") if isinstance(payload, dict) else None
         if item_key is not None and (not isinstance(total, int) or isinstance(total, bool) or total < 0):

@@ -410,6 +410,15 @@ class TerminalIssueClosureGwtTests(unittest.TestCase):
                     "https://api.github.com/example", "test-token", "check_runs"
                 )
 
+    def test_gwt_041_given_duplicate_next_relations_when_read_then_it_fails_without_skipping(self) -> None:
+        link = (
+            '<https://api.github.com/example?page=2>; rel="next", '
+            '<https://api.github.com/example?page=3>; rel="next"'
+        )
+        with mock.patch.object(VALIDATOR, "github_api_json", return_value=([{"id": 1}], link)):
+            with self.assertRaisesRegex(ValueError, "duplicate pagination relation 'next'"):
+                VALIDATOR.github_api_paginated("https://api.github.com/example?page=1", "test-token")
+
 
 if __name__ == "__main__":
     unittest.main()
