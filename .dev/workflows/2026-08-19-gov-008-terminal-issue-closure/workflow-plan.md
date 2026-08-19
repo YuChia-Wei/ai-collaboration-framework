@@ -19,7 +19,7 @@
 - `current_phase`: `remediation`
 - `artifact_root`: `.dev/workflows/2026-08-19-gov-008-terminal-issue-closure`
 - `created_at`: `2026-08-19T23:09:17+08:00`
-- `updated_at`: `2026-08-19T23:56:53+08:00`
+- `updated_at`: `2026-08-20T00:04:39+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md`
 - `template_version`: `1.2.0`
 
@@ -69,11 +69,11 @@
 
 ## Resume Checkpoint
 
-- Last completed action: fresh independent audit of `1a54e94a3b07fcc1771b38484b594b457de904d8` returned FAIL because admission could downgrade a later lifecycle record and the snapshot self-declared provider completeness/freshness; earlier declaration/event/body protections remained fixed.
+- Last completed action: fresh independent audit of `5dca98d3da1a29b6d088c4bd44ce7161d5e901f2` returned FAIL for comment-masked change requests, incomplete provider pagination, and unsafe filesystem capture; earlier provider ownership/live verification and closure protections remained fixed.
 - Current task: `GOV008-001-contract-implementation`.
-- Exact next action: validate and commit the live-provider verification repair, push the new head, then obtain another fresh independent exact-head audit before hosted admission or merge.
-- Validation already completed: live-provider verification repair passes closure 35/35 and provider 20/20 plus repository/workflow/source-governance/AI-context and diff checks; the preceding head's hosted governance and Ubuntu PR profile failures remain preserved.
-- Git state: draft PR #220 exists at pushed head `1a54e94a3b07fcc1771b38484b594b457de904d8`; three failed audits are preserved and the bounded live-provider verification repair is uncommitted.
+- Exact next action: commit and push the decisive-review/pagination/stdout-capture repair, then obtain another fresh independent exact-head audit before hosted admission or merge.
+- Validation already completed: current repair passes closure 38/38 and provider 20/20 plus repository/workflow/source-governance/AI-context and diff checks; the preceding head's two hosted failures remain preserved.
+- Git state: draft PR #220 exists at pushed head `5dca98d3da1a29b6d088c4bd44ce7161d5e901f2`; four failed audits are preserved and the bounded fourth repair is uncommitted.
 - Branch history and checkpoint handoffs: none yet.
 - Blockers or unresolved decisions: independent fixed-head audit, hosted checks, PR A integration, and provider read-back remain pending.
 
@@ -84,3 +84,4 @@
 | 1 | `codex/2026-08-19-gov-008-terminal-issue-closure` | `main@174eb835058dff40f67624df682d7d531ee9949b` | draft PR bootstrap | `8ae7ec75cbaf43c5b22b574006f182a2586bc33f` | PR #220 | `2026-08-19T23:31:54+08:00` | obtain the provider-assigned PR number required for exact event binding; this is not review or hosted success | bind #220, push the new head, and obtain fresh audit |
 | 2 | `codex/2026-08-19-gov-008-terminal-issue-closure` | `main@174eb835058dff40f67624df682d7d531ee9949b` | failed fresh exact-head audit | `40f0821b3443b79a5e9f4400dc77afc8e509f012` | PR #220 | `2026-08-19T23:39:59+08:00` | preserve the optional/self-referential merge-admission finding and stale checkpoint evidence | implement non-mutating provider admission overlay, validate, commit, push, and re-audit |
 | 3 | `codex/2026-08-19-gov-008-terminal-issue-closure` | `main@174eb835058dff40f67624df682d7d531ee9949b` | failed fresh exact-head audit | `1a54e94a3b07fcc1771b38484b594b457de904d8` | PR #220 | `2026-08-19T23:53:01+08:00` | preserve stage-downgrade and self-authenticating provider snapshot findings plus hosted failures | require declaration-only overlays and live GitHub verification against provider-owned contexts, validate, commit, push, and re-audit |
+| 4 | `codex/2026-08-19-gov-008-terminal-issue-closure` | `main@174eb835058dff40f67624df682d7d531ee9949b` | failed fresh exact-head audit | `5dca98d3da1a29b6d088c4bd44ce7161d5e901f2` | PR #220 | `2026-08-20T00:04:39+08:00` | preserve effective-review, pagination-completeness, and capture-path safety findings plus hosted failures | enforce decisive review state, complete safe pagination, and stdout-only capture, then validate, commit, push, and re-audit |

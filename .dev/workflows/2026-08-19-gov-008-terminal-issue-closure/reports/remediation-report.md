@@ -41,3 +41,13 @@
 - Provider read-back: `Read-only governance contract` and `Ubuntu PR profile gate` failed at the audited head; three other jobs succeeded, and no review approval existed.
 - Repair: only declarations may be overlaid; the tracked provider config owns the complete five-context set; admission now requires live GitHub verification of review/check-run IDs, timestamps, conclusions, and exact heads, with negative coverage for omission, stage downgrade, missing live verification, and snapshot/live mismatch.
 - Focused validation: closure 35/35 and GitHub provider 20/20 passed with repository configuration, workflow, source-governance, AI-context, and diff checks.
+
+## Fresh Audit Of Live Provider Capture Head
+
+- Audited head: `5dca98d3da1a29b6d088c4bd44ce7161d5e901f2`
+- Disposition: `FAIL`
+- Preserved fixes: provider-owned complete contexts, live token replay/equality, declaration-only overlays, event/body/head binding, and prior closure semantics passed review.
+- Blocking findings: a later comment could mask an effective change request; reviews/check runs were limited to one provider page; filesystem capture was vulnerable to reparse-root escape and overwrite races.
+- Provider read-back: `Read-only governance contract` and `Ubuntu PR profile gate` failed; three other jobs succeeded and no review existed.
+- Repair: only decisive review states supersede each other; provider pagination is complete, loop/host constrained, and fails closed at an unproven full page; live capture writes no path and emits verified evidence to stdout for trusted optional retention.
+- Focused validation: closure 38/38 and GitHub provider 20/20 passed with repository configuration, workflow, source-governance, AI-context, and diff checks.

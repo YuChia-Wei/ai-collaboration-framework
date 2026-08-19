@@ -328,15 +328,66 @@ class TerminalIssueClosureGwtTests(unittest.TestCase):
         self.assertEqual("github-terminal-issue-closure-admission", evidence["contract_id"])
         self.assertEqual(pull_request, evidence["pull_request"])
 
-    def test_gwt_035_given_capture_path_outside_ignored_evidence_root_when_requested_then_it_fails(self) -> None:
-        with mock.patch.dict(VALIDATOR.os.environ, {"GITHUB_TOKEN": "test-token"}):
-            with self.assertRaisesRegex(ValueError, "directly under artifacts/validation"):
-                VALIDATOR.capture_live_admission_evidence(
-                    ROOT / "admission.yaml",
-                    fixture("declaration-bound.yaml"),
-                    {"pr_number": 300, "head_sha": "a" * 40, "body": "Refs #212"},
-                    self.config,
-                )
+    def test_gwt_035_given_comment_after_change_request_when_read_live_then_block_remains(self) -> None:
+        reviews = [
+            {"id": 10, "state": "CHANGES_REQUESTED", "commit_id": "a" * 40, "user": {"login": "alice"}},
+            {"id": 11, "state": "COMMENTED", "commit_id": "a" * 40, "user": {"login": "alice"}},
+            {"id": 12, "state": "APPROVED", "commit_id": "a" * 40, "user": {"login": "bob"}},
+        ]
+        checks = [
+            {
+                "id": item["provider_check_run_id"],
+                "name": item["name"],
+                "conclusion": item["conclusion"],
+                "head_sha": item["head_sha"],
+                "completed_at": item["completed_at"],
+            }
+            for item in fixture("admission-positive.yaml")["pull_request"]["hosted_checks"]
+        ]
+        required = self.config["work_item_binding"]["merge_gate"]["required_check_contexts"]
+        with mock.patch.object(VALIDATOR, "github_api_paginated", side_effect=[reviews, checks]):
+            facts = VALIDATOR.read_live_provider_facts(
+                "YuChia-Wei/ai-collaboration-framework", 300, "a" * 40, required, "test-token"
+            )
+        self.assertEqual("blocked", facts["review"]["status"])
+        self.assertEqual([10], facts["review"]["blocking_provider_review_ids"])
+
+    def test_gwt_036_given_provider_next_link_when_read_then_all_pages_are_combined(self) -> None:
+        next_url = "https://api.github.com/example?page=2"
+        with mock.patch.object(
+            VALIDATOR,
+            "github_api_json",
+            side_effect=[([{"id": 1}], f'<{next_url}>; rel="next"'), ([{"id": 2}], None)],
+        ):
+            self.assertEqual(
+                [{"id": 1}, {"id": 2}],
+                VALIDATOR.github_api_paginated("https://api.github.com/example?page=1", "test-token"),
+            )
+
+    def test_gwt_037_given_full_provider_page_without_completion_proof_when_read_then_it_fails(self) -> None:
+        with mock.patch.object(VALIDATOR, "github_api_json", return_value=([{"id": value} for value in range(100)], None)):
+            with self.assertRaisesRegex(ValueError, "pagination is incomplete"):
+                VALIDATOR.github_api_paginated("https://api.github.com/example", "test-token")
+
+    def test_gwt_038_given_live_capture_when_admitted_then_no_output_path_is_accepted_or_written(self) -> None:
+        evidence = fixture("admission-positive.yaml")
+        with (
+            mock.patch.object(VALIDATOR, "checkout_head", return_value="a" * 40),
+            mock.patch.object(VALIDATOR, "build_live_admission_evidence", return_value=evidence),
+            mock.patch.dict(VALIDATOR.os.environ, {"GITHUB_TOKEN": "test-token"}),
+        ):
+            self.assertEqual(
+                0,
+                VALIDATOR.main(
+                    [
+                        "--record",
+                        str(FIXTURES / "declaration-bound.yaml"),
+                        "--event-path",
+                        str(FIXTURES / "pr-event-deferred.json"),
+                        "--capture-admission-evidence",
+                    ]
+                ),
+            )
 
 
 if __name__ == "__main__":

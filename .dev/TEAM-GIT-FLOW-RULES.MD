@@ -122,9 +122,10 @@ The required pull-request check validates only the tracked declaration against
 the live PR event and checkout head. Immediately before integration, obtain a
 fresh provider read-back and run
 `.ai/scripts/validate-terminal-issue-closure.py` with the current event snapshot
-and `--capture-admission-evidence` targeting a new YAML file directly under
-`artifacts/validation/terminal-issue-closure/`. A replay instead uses the
-untracked `--admission-evidence` snapshot plus `--verify-provider-live`. The
+and `--capture-admission-evidence`. The validator emits the verified snapshot
+to stdout and writes no repository path; trusted orchestration may retain it
+under ignored validation artifacts. A replay instead uses the untracked
+`--admission-evidence` snapshot plus `--verify-provider-live`. The
 provider configuration owns the required-check
 set, and the live GitHub response must exactly match the snapshot's provider
 review/check-run identities and timestamps. That merge-admission run must bind

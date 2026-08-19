@@ -8,7 +8,7 @@
   "owner_skill": "ai-context-governance",
   "status": "in_progress",
   "created_at": "2026-08-19T23:09:17+08:00",
-  "updated_at": "2026-08-19T23:56:53+08:00",
+  "updated_at": "2026-08-20T00:04:39+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-5.6-sol",
   "reasoning_effort": "high",
@@ -22,15 +22,15 @@
   "execution": {
     "steps": ["implement contract and guidance", "add deterministic fixtures", "register source-only validation", "validate and freeze exact head"],
     "validation": ["focused GWT", "workflow/config/source governance", "distribution exclusion", "fresh fixed-head audit", "hosted checks"],
-    "last_completed_step": "fresh audit of 1a54e94a failed because admission could downgrade lifecycle and self-declare provider completeness",
-    "next_action": "validate and commit declaration-only live GitHub verification, push, and obtain a fresh exact-head audit"
+    "last_completed_step": "fresh audit of 5dca98d3 failed for effective-review, pagination, and filesystem-capture safety",
+    "next_action": "commit decisive-review, complete-pagination, and stdout-only capture repair, push, and obtain a fresh exact-head audit"
   },
   "results": {
-    "summary": "Three failed exact-head audits are preserved; the current bounded repair requires declaration-only overlays and live GitHub verification against the provider-owned complete check set.",
+    "summary": "Four failed exact-head audits are preserved; the current bounded repair enforces decisive review state, complete safe provider pagination, and filesystem-free live capture.",
     "files_changed": ["GitHub provider contract and PR template", "terminal closure policy, validator, fixtures, and source-only registrations", "workflow and Git closeout guidance", "GOV-008 workflow records"],
-    "tests_run": ["terminal closure 35/35", "GitHub provider 20/20", "repository config 14/14", "entrypoint 7/7", "source entrypoint 3/3", "registry 6/6", "dependency 19/19", "prerequisite 14/14", "brand-neutral distribution 2/2", "workflow/shell/source-governance/AI-context validators"],
+    "tests_run": ["terminal closure 38/38", "GitHub provider 20/20", "repository config 14/14", "entrypoint 7/7", "source entrypoint 3/3", "registry 6/6", "dependency 19/19", "prerequisite 14/14", "brand-neutral distribution 2/2", "workflow/shell/source-governance/AI-context validators"],
     "finding_status": "remediated-pending-fresh-verification",
-    "residual_risk": "The live-provider verification repair is uncommitted; fresh audit, hosted validation, non-mutating admission, and integration remain pending.",
+    "residual_risk": "The fourth audit repair is uncommitted; fresh audit, hosted validation, non-mutating admission, and integration remain pending.",
     "follow_up_needed": true
   }
 }

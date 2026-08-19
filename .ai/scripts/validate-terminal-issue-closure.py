@@ -11,6 +11,7 @@ import re
 import subprocess
 import sys
 import urllib.error
+import urllib.parse
 import urllib.request
 from pathlib import Path
 from typing import Any
@@ -143,7 +144,7 @@ def bind_admission_evidence(
     return bound, errors
 
 
-def github_api_json(url: str, token: str) -> Any:
+def github_api_json(url: str, token: str) -> tuple[Any, str | None]:
     request = urllib.request.Request(
         url,
         headers={
@@ -155,22 +156,51 @@ def github_api_json(url: str, token: str) -> Any:
     )
     try:
         with urllib.request.urlopen(request, timeout=30) as response:
-            return json.load(response)
+            return json.load(response), response.headers.get("Link")
     except (OSError, urllib.error.HTTPError, urllib.error.URLError, json.JSONDecodeError) as exc:
         raise ValueError(f"GitHub provider read-back failed: {exc}") from exc
+
+
+def github_api_paginated(url: str, token: str, item_key: str | None = None) -> list[Any]:
+    items: list[Any] = []
+    visited: set[str] = set()
+    next_url: str | None = url
+    while next_url is not None:
+        parsed = urllib.parse.urlparse(next_url)
+        if parsed.scheme != "https" or parsed.hostname != "api.github.com":
+            raise ValueError("GitHub pagination next link must remain on https://api.github.com")
+        if next_url in visited or len(visited) >= 100:
+            raise ValueError("GitHub pagination loop or page limit exceeded")
+        visited.add(next_url)
+        payload, link = github_api_json(next_url, token)
+        page = payload.get(item_key) if item_key is not None and isinstance(payload, dict) else payload
+        if not isinstance(page, list):
+            raise ValueError("GitHub provider read-back returned an unexpected paginated schema")
+        items.extend(page)
+        candidate: str | None = None
+        if link:
+            for part in link.split(","):
+                match = re.fullmatch(r'\s*<([^>]+)>;\s*rel="([^"]+)"\s*', part)
+                if match and match.group(2) == "next":
+                    candidate = match.group(1)
+                    break
+        if candidate is None and len(page) == 100:
+            total = payload.get("total_count") if isinstance(payload, dict) else None
+            if not isinstance(total, int) or len(items) < total:
+                raise ValueError("GitHub provider pagination is incomplete at the page limit")
+        next_url = candidate
+    return items
 
 
 def read_live_provider_facts(
     repository: str, pr_number: int, head_sha: str, required_contexts: list[str], token: str
 ) -> dict[str, Any]:
     api_root = f"https://api.github.com/repos/{repository}"
-    reviews = github_api_json(f"{api_root}/pulls/{pr_number}/reviews?per_page=100", token)
-    check_payload = github_api_json(f"{api_root}/commits/{head_sha}/check-runs?per_page=100", token)
-    if not isinstance(reviews, list) or not isinstance(check_payload, dict):
-        raise ValueError("GitHub provider read-back returned an unexpected schema")
+    reviews = github_api_paginated(f"{api_root}/pulls/{pr_number}/reviews?per_page=100", token)
+    runs = github_api_paginated(f"{api_root}/commits/{head_sha}/check-runs?per_page=100", token, "check_runs")
     latest_by_reviewer: dict[str, dict[str, Any]] = {}
     for item in reviews:
-        if not isinstance(item, dict) or item.get("commit_id") != head_sha:
+        if not isinstance(item, dict) or item.get("commit_id") != head_sha or item.get("state") not in {"APPROVED", "CHANGES_REQUESTED"}:
             continue
         user = item.get("user")
         login = user.get("login") if isinstance(user, dict) else None
@@ -196,9 +226,6 @@ def read_live_provider_facts(
             "provider_review_id": latest.get("id"),
             "submitted_at": latest.get("submitted_at"),
         }
-    runs = check_payload.get("check_runs")
-    if not isinstance(runs, list):
-        raise ValueError("GitHub provider read-back did not return check_runs")
     latest_by_name: dict[str, dict[str, Any]] = {}
     for item in runs:
         if not isinstance(item, dict) or item.get("name") not in required_contexts:
@@ -242,24 +269,6 @@ def build_live_admission_evidence(
         "provider": "github",
         "pull_request": pull_request,
     }
-
-
-def capture_live_admission_evidence(
-    path: Path, record: dict[str, Any], runtime: dict[str, Any], config: dict[str, Any]
-) -> dict[str, Any]:
-    token = os.environ.get("GITHUB_TOKEN")
-    if not token:
-        raise ValueError("live provider capture requires GITHUB_TOKEN")
-    capture_root = (ROOT / "artifacts/validation/terminal-issue-closure").resolve()
-    target = (path if path.is_absolute() else ROOT / path).resolve()
-    if target.parent != capture_root or target.suffix not in {".yaml", ".yml"}:
-        raise ValueError("admission capture path must be a YAML file directly under artifacts/validation/terminal-issue-closure")
-    if target.exists():
-        raise ValueError(f"admission capture path already exists: {target}")
-    evidence = build_live_admission_evidence(record, runtime, config, token)
-    target.parent.mkdir(parents=True, exist_ok=True)
-    target.write_text(yaml.safe_dump(evidence, sort_keys=False), encoding="utf-8")
-    return evidence
 
 
 def validate_live_provider_evidence(
@@ -434,7 +443,7 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--event-path", type=Path)
     admission = parser.add_mutually_exclusive_group()
     admission.add_argument("--admission-evidence", type=Path)
-    admission.add_argument("--capture-admission-evidence", type=Path)
+    admission.add_argument("--capture-admission-evidence", action="store_true")
     parser.add_argument("--verify-provider-live", action="store_true")
     args = parser.parse_args(argv)
     config = load_mapping(CONFIG)
@@ -447,7 +456,7 @@ def main(argv: list[str] | None = None) -> int:
         event_path = Path(os.environ["GITHUB_EVENT_PATH"])
     runtime = runtime_from_event(event_path) if event_path is not None else None
     admission_evidence: dict[str, Any] | None = None
-    if args.capture_admission_evidence is not None and runtime is None:
+    if args.capture_admission_evidence and runtime is None:
         print("Terminal Issue closure validation failed:\n- admission capture requires a current PR event snapshot", file=sys.stderr)
         return 1
     if args.admission_evidence is not None:
@@ -482,16 +491,18 @@ def main(argv: list[str] | None = None) -> int:
     for candidate, record in records:
         effective = record
         binding_errors: list[str] = []
-        if args.capture_admission_evidence is not None and runtime is not None:
-            try:
-                admission_evidence = capture_live_admission_evidence(
-                    args.capture_admission_evidence, record, runtime, config
-                )
-            except ValueError as exc:
-                binding_errors.append(str(exc))
+        if args.capture_admission_evidence and runtime is not None:
+            token = os.environ.get("GITHUB_TOKEN")
+            if not token:
+                binding_errors.append("live provider capture requires GITHUB_TOKEN")
+            else:
+                try:
+                    admission_evidence = build_live_admission_evidence(record, runtime, config, token)
+                except ValueError as exc:
+                    binding_errors.append(str(exc))
         if admission_evidence is not None:
             effective, binding_errors = bind_admission_evidence(record, admission_evidence, config)
-            if runtime is not None:
+            if runtime is not None and args.admission_evidence is not None:
                 binding_errors.extend(validate_live_provider_evidence(admission_evidence, record, runtime, config))
         elif runtime is not None and record.get("validation_stage") != "declaration":
             binding_errors.append("current PR required check validates declaration only; merge admission requires --admission-evidence")
@@ -502,7 +513,9 @@ def main(argv: list[str] | None = None) -> int:
         for error in errors:
             print(f"- {error}", file=sys.stderr)
         return 1
-    if admission_evidence is not None or args.capture_admission_evidence is not None:
+    if args.capture_admission_evidence and admission_evidence is not None:
+        print(yaml.safe_dump(admission_evidence, sort_keys=False), end="")
+    if admission_evidence is not None or args.capture_admission_evidence:
         mode = "non-mutating merge admission"
     elif runtime is not None:
         mode = "current PR declaration"
