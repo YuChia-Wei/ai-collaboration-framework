@@ -8,8 +8,8 @@ pull_request:
   body: |-
     Fixes #211
     Refs #212
-  integration: {status: merged, expected_head_sha: bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb, merged_head_sha: bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb}
-  review: {status: approved, head_sha: bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb}
+  integration: {status: merged, topology: merge-commit, admitted_head_sha: bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb, integration_commit_sha: cccccccccccccccccccccccccccccccccccccccc, provider_read_back: true}
+  review: {status: single-maintainer-audit-passed, head_sha: bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb, reviewer_login: YuChia-Wei, receipt_contract: github-terminal-issue-closure-audit/v1}
   required_check_contexts: [governance]
   hosted_checks:
     - {name: governance, conclusion: success, required: true, head_sha: bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb}
@@ -22,7 +22,7 @@ issues:
     closing_keyword: Fixes
     closure_deferred_reason: null
     next_terminal_gate_or_owner: null
-    read_back: {performed: true, merged_head_sha: bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb, issue_state: closed, issue_state_reason: completed, project_status: Done}
+    read_back: {performed: true, integration_commit_sha: cccccccccccccccccccccccccccccccccccccccc, issue_state: closed, issue_state_reason: completed, project_status: Done}
   - number: 212
     mode: deferred
     work_authorization: {online_issue_bound: true, explicit_owner_approval: true}
@@ -31,4 +31,4 @@ issues:
     closing_keyword: null
     closure_deferred_reason: final acceptance remains pending
     next_terminal_gate_or_owner: owner acceptance review
-    read_back: {performed: true, merged_head_sha: bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb, issue_state: open, issue_state_reason: null, project_status: Verification}
+    read_back: {performed: true, integration_commit_sha: cccccccccccccccccccccccccccccccccccccccc, issue_state: open, issue_state_reason: null, project_status: Verification}

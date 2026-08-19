@@ -295,6 +295,12 @@ class GitHubBacklogProviderTests(unittest.TestCase):
                     "mode": "required",
                     "disposition_required_per_issue": True,
                     "missing_binding_blocks_merge": True,
+                    "review_gate": {
+                        "mode": "single-maintainer-audit-receipt",
+                        "maintainer_login": "YuChia-Wei",
+                        "receipt_contract": "github-terminal-issue-closure-audit/v1",
+                        "downstream_policy": "target-owned",
+                    },
                     "required_check_contexts": [
                         "Read-only governance contract",
                         "Build and validate candidate",

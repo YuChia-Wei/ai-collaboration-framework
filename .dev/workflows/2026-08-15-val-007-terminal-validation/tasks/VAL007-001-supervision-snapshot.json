@@ -6,9 +6,9 @@
   "task_id": "VAL007-001-supervision-snapshot",
   "workflow_id": "2026-08-15-val-007-terminal-validation",
   "owner_skill": "ai-context-governance",
-  "status": "in_progress",
+  "status": "completed",
   "created_at": "2026-08-15T13:39:00+08:00",
-  "updated_at": "2026-08-15T19:48:37+08:00",
+  "updated_at": "2026-08-20T03:34:43+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-5.6-sol",
   "reasoning_effort": "max",
@@ -22,8 +22,8 @@
   "execution": {
     "steps": ["Specify the snapshot and supervisor result schemas", "Add failing Windows/POSIX tree and drift fixtures", "Implement process-tree supervision and sealed result artifacts", "Integrate snapshot admission and abort semantics into the aggregate runner", "Run focused tests and independent current-diff review"],
     "validation": ["Focused supervisor and validation-evidence unit tests", "Selected fail-closed runner integration tests", "bash syntax check", "workflow artifact validation", "git diff --check"],
-    "last_completed_step": "Replaced only cross-domain list-order equality with exact validator-set parity, added semantic permutation and retained-integrity GWTs, passed Windows and Ubuntu focused tests, and received independent P0=0/P1=0 reviews",
-    "next_action": "Create and push the durable #204 correction, then require one exact-head hosted-check watch and stop on failure or head drift"
+    "last_completed_step": "PR #216 integrated admitted head 9a7432cd as merge commit c032090a after all five required hosted checks succeeded",
+    "next_action": "none; nightly-full activation and cumulative validation remain separate deferred work"
   },
   "results": {
     "summary": "The aggregate runner now admits a contained immutable bootstrap snapshot, supervises validator and evidence-control process trees, authenticates pre/post identity and terminal artifacts, fails closed on drift, cancellation, timeout, malformed preparation, or terminal mismatch, and publishes a cache-discoverable terminal manifest only after exact staged-manifest and supervisor verification.",
@@ -57,8 +57,8 @@
       "Independent seal-contract safety and test-quality reviews: P0=0, P1=0; no fixed inventory count or source-text assertion was introduced",
       "Final AST parsing, task JSON validation, workflow-artifact validation across 83 post-adoption workflows, and git diff --check passed"
     ],
-    "finding_status": "remediated-locally-awaiting-hosted-gate",
-    "residual_risk": "Required hosted gates have not yet observed the exact-set correction. Evidence/event duplicate coverage is not explicit in GWT-037 although the unchanged guard runs before dict collapse; the shared preparation parser's duplicate diagnostic retains a pre-existing fingerprint-selection label. Pre-target-launch Git selection admission and read-only supervision authenticators remain bounded no-launch/no-pass TCBs; artifact assembly and hard-link publication remain an atomic shell TCB. Long-running cumulative validation and Issue closure remain separate.",
-    "follow_up_needed": true
+    "finding_status": "resolved",
+    "residual_risk": "Evidence/event duplicate coverage and the shared preparation parser diagnostic remain non-blocking P2 observations. Nightly activation and cumulative long-running validation remain separately deferred and are not implied by this completion.",
+    "follow_up_needed": false
   }
 }

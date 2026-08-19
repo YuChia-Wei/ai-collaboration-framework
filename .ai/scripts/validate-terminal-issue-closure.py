@@ -34,6 +34,17 @@ ISSUE_REFERENCE = re.compile(
     r"(?:([A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+))?#([1-9][0-9]*)\b"
 )
 STAGES = {"declaration", "merge-admission", "reconciliation"}
+INTEGRATION_TOPOLOGIES = {"fast-forward", "rebase", "squash", "merge-commit"}
+AUDIT_RECEIPT = re.compile(
+    r"^<!-- github-terminal-issue-closure-audit/v1\n(?P<payload>\{.*\})\n-->$",
+    re.DOTALL,
+)
+SOURCE_REVIEW_GATE = {
+    "mode": "single-maintainer-audit-receipt",
+    "maintainer_login": "YuChia-Wei",
+    "receipt_contract": "github-terminal-issue-closure-audit/v1",
+    "downstream_policy": "target-owned",
+}
 
 
 def load_mapping(path: Path) -> dict[str, Any]:
@@ -48,6 +59,43 @@ def load_mapping(path: Path) -> dict[str, Any]:
 
 def non_empty(value: object) -> bool:
     return isinstance(value, str) and bool(value.strip())
+
+
+def audit_receipt(body: object) -> dict[str, Any] | None:
+    if not isinstance(body, str):
+        return None
+    match = AUDIT_RECEIPT.fullmatch(body.strip())
+    if match is None:
+        return None
+    try:
+        value = json.loads(match.group("payload"))
+    except json.JSONDecodeError:
+        return None
+    expected_fields = {
+        "repository",
+        "pull_request",
+        "base_sha",
+        "head_sha",
+        "outcome",
+        "blocking_findings",
+        "audit_scope",
+    }
+    if not isinstance(value, dict) or set(value) != expected_fields:
+        return None
+    if (
+        not non_empty(value.get("repository"))
+        or not isinstance(value.get("pull_request"), int)
+        or isinstance(value.get("pull_request"), bool)
+        or value["pull_request"] <= 0
+        or not isinstance(value.get("base_sha"), str)
+        or not SHA.fullmatch(value["base_sha"])
+        or not isinstance(value.get("head_sha"), str)
+        or not SHA.fullmatch(value["head_sha"])
+        or not isinstance(value.get("blocking_findings"), int)
+        or isinstance(value.get("blocking_findings"), bool)
+    ):
+        return None
+    return value
 
 
 def normalized_keyword(value: str) -> str:
@@ -245,7 +293,12 @@ def github_api_paginated(url: str, token: str, item_key: str | None = None) -> l
 
 
 def read_live_provider_facts(
-    repository: str, pr_number: int, head_sha: str, required_contexts: list[str], token: str
+    repository: str,
+    pr_number: int,
+    head_sha: str,
+    required_contexts: list[str],
+    review_gate: dict[str, Any],
+    token: str,
 ) -> dict[str, Any]:
     api_root = f"https://api.github.com/repos/{repository}"
     metadata, metadata_link = github_api_json(f"{api_root}/pulls/{pr_number}", token)
@@ -274,31 +327,57 @@ def read_live_provider_facts(
         raise ValueError("GitHub provider returned an invalid pull request body")
     reviews = github_api_paginated(f"{api_root}/pulls/{pr_number}/reviews?per_page=100", token)
     runs = github_api_paginated(f"{api_root}/commits/{live_head_sha}/check-runs?per_page=100", token, "check_runs")
+    if review_gate != SOURCE_REVIEW_GATE:
+        raise ValueError("provider merge gate must own the approved source single-maintainer review_gate")
+    maintainer_login = review_gate["maintainer_login"]
     latest_by_reviewer: dict[str, dict[str, Any]] = {}
     for item in reviews:
-        if not isinstance(item, dict) or item.get("commit_id") != live_head_sha or item.get("state") not in {"APPROVED", "CHANGES_REQUESTED"}:
+        if not isinstance(item, dict) or item.get("commit_id") != live_head_sha:
             continue
         user = item.get("user")
         login = user.get("login") if isinstance(user, dict) else None
         if not non_empty(login):
             continue
+        state = item.get("state")
+        receipt = audit_receipt(item.get("body")) if state == "COMMENTED" else None
+        if state not in {"APPROVED", "CHANGES_REQUESTED"} and receipt is None:
+            continue
+        if receipt is not None:
+            expected_receipt = {
+                "repository": repository,
+                "pull_request": pr_number,
+                "base_sha": live_base_sha,
+                "head_sha": live_head_sha,
+                "outcome": "passed",
+                "blocking_findings": 0,
+                "audit_scope": "fresh-exact-head-independent",
+            }
+            if login.casefold() != maintainer_login.casefold() or receipt != expected_receipt:
+                continue
+            item = {**item, "audit_receipt": receipt}
         current = latest_by_reviewer.get(login)
         if current is None or int(item.get("id", 0)) > int(current.get("id", 0)):
             latest_by_reviewer[login] = item
     blocking = [item for item in latest_by_reviewer.values() if item.get("state") == "CHANGES_REQUESTED"]
-    approved = [item for item in latest_by_reviewer.values() if item.get("state") == "APPROVED"]
-    approved.sort(key=lambda item: int(item.get("id", 0)))
+    accepted = [
+        item
+        for login, item in latest_by_reviewer.items()
+        if login.casefold() == maintainer_login.casefold() and item.get("audit_receipt") is not None
+    ]
+    accepted.sort(key=lambda item: int(item.get("id", 0)))
     review = {"status": "pending"}
     if blocking:
         review = {
             "status": "blocked",
             "blocking_provider_review_ids": sorted(item.get("id") for item in blocking),
         }
-    elif approved:
-        latest = approved[-1]
+    elif accepted:
+        latest = accepted[-1]
         review = {
-            "status": "approved",
+            "status": "single-maintainer-audit-passed",
             "head_sha": live_head_sha,
+            "reviewer_login": maintainer_login,
+            "receipt_contract": review_gate["receipt_contract"],
             "provider_review_id": latest.get("id"),
             "submitted_at": latest.get("submitted_at"),
         }
@@ -354,10 +433,11 @@ def build_live_admission_evidence(
     record: dict[str, Any], runtime: dict[str, Any], config: dict[str, Any], token: str
 ) -> dict[str, Any]:
     required = config.get("work_item_binding", {}).get("merge_gate", {}).get("required_check_contexts")
+    review_gate = config.get("work_item_binding", {}).get("merge_gate", {}).get("review_gate")
     if not isinstance(required, list) or not required:
         raise ValueError("provider merge gate must own a non-empty required_check_contexts list")
     pull_request = read_live_provider_facts(
-        record.get("repository"), runtime.get("pr_number"), runtime.get("head_sha"), required, token
+        record.get("repository"), runtime.get("pr_number"), runtime.get("head_sha"), required, review_gate, token
     )
     runtime_errors = validate_live_runtime(pull_request, runtime)
     if runtime_errors:
@@ -378,11 +458,12 @@ def validate_live_provider_evidence(
     if not token:
         return ["live provider verification requires GITHUB_TOKEN"]
     required = config.get("work_item_binding", {}).get("merge_gate", {}).get("required_check_contexts")
+    review_gate = config.get("work_item_binding", {}).get("merge_gate", {}).get("review_gate")
     if not isinstance(required, list) or not required:
         return ["provider merge gate must own a non-empty required_check_contexts list"]
     try:
         live = read_live_provider_facts(
-            record.get("repository"), runtime.get("pr_number"), runtime.get("head_sha"), required, token
+            record.get("repository"), runtime.get("pr_number"), runtime.get("head_sha"), required, review_gate, token
         )
     except ValueError as exc:
         return [str(exc)]
@@ -391,7 +472,9 @@ def validate_live_provider_evidence(
     return validate_live_runtime(live, runtime)
 
 
-def validate_provider_evidence(pull_request: dict[str, Any], runtime: dict[str, Any] | None, errors: list[str]) -> None:
+def validate_provider_evidence(
+    pull_request: dict[str, Any], runtime: dict[str, Any] | None, config: dict[str, Any], errors: list[str]
+) -> None:
     number = pull_request.get("number")
     head_sha = pull_request.get("head_sha")
     if not isinstance(number, int) or isinstance(number, bool) or number <= 0:
@@ -404,10 +487,15 @@ def validate_provider_evidence(pull_request: dict[str, Any], runtime: dict[str, 
         if runtime.get("head_sha") != head_sha:
             errors.append("record pull_request.head_sha does not match current PR event")
     review = pull_request.get("review")
-    if not isinstance(review, dict) or review.get("status") != "approved":
-        errors.append("merge admission requires approved review")
+    review_gate = config.get("work_item_binding", {}).get("merge_gate", {}).get("review_gate", {})
+    if not isinstance(review, dict) or review.get("status") != "single-maintainer-audit-passed":
+        errors.append("merge admission requires a passing single-maintainer audit receipt")
     elif review.get("head_sha") != head_sha:
-        errors.append("approved review must be bound to pull_request.head_sha")
+        errors.append("single-maintainer audit receipt must be bound to pull_request.head_sha")
+    elif review.get("reviewer_login") != review_gate.get("maintainer_login"):
+        errors.append("single-maintainer audit receipt must come from the configured maintainer")
+    elif review.get("receipt_contract") != review_gate.get("receipt_contract"):
+        errors.append("single-maintainer audit receipt must use the configured receipt contract")
     required = pull_request.get("required_check_contexts")
     checks = pull_request.get("hosted_checks")
     if not isinstance(required, list) or not required or any(not non_empty(item) for item in required):
@@ -440,6 +528,39 @@ def validate_provider_evidence(pull_request: dict[str, Any], runtime: dict[str, 
         errors.append("hosted checks must exactly cover required_check_contexts")
 
 
+def validate_integration(
+    integration: dict[str, Any], stage: object, admitted_head_sha: object, errors: list[str]
+) -> str | None:
+    if stage != "reconciliation":
+        expected = {
+            "status": "pending",
+            "topology": None,
+            "admitted_head_sha": None,
+            "integration_commit_sha": None,
+            "provider_read_back": False,
+        }
+        if integration != expected:
+            errors.append("pre-integration record must retain the exact pending integration shape")
+        return None
+    integration_commit_sha = integration.get("integration_commit_sha")
+    if integration.get("status") != "merged":
+        errors.append("reconciliation requires provider integration status merged")
+    if integration.get("topology") not in INTEGRATION_TOPOLOGIES:
+        errors.append("reconciliation requires a supported integration topology")
+    if integration.get("admitted_head_sha") != admitted_head_sha:
+        errors.append("reconciliation must bind the admitted PR head without requiring commit identity preservation")
+    if not isinstance(integration_commit_sha, str) or not SHA.fullmatch(integration_commit_sha):
+        errors.append("reconciliation requires an exact provider integration_commit_sha")
+        integration_commit_sha = None
+    if integration.get("topology") == "fast-forward" and integration_commit_sha != admitted_head_sha:
+        errors.append("fast-forward reconciliation requires integration_commit_sha to equal admitted_head_sha")
+    if integration.get("topology") == "fast-forward" and integration_commit_sha != admitted_head_sha:
+        errors.append("fast-forward reconciliation requires integration_commit_sha to equal admitted_head_sha")
+    if integration.get("provider_read_back") is not True:
+        errors.append("reconciliation requires fresh provider integration read-back")
+    return integration_commit_sha
+
+
 def validate_record(record: dict[str, Any], config: dict[str, Any], runtime: dict[str, Any] | None = None) -> list[str]:
     errors: list[str] = []
     contract = config.get("issue_closure", {})
@@ -452,6 +573,13 @@ def validate_record(record: dict[str, Any], config: dict[str, Any], runtime: dic
         errors.append("provider closing_keyword_authorizes_work must be false")
     if contract.get("mixed_per_issue_dispositions") is not True:
         errors.append("provider must allow mixed per-Issue dispositions")
+    if contract.get("integration_topologies") != ["fast-forward", "rebase", "squash", "merge-commit"]:
+        errors.append("provider must allow all supported integration topologies")
+    if contract.get("post_merge_source_mutation_required") is not False:
+        errors.append("provider must not require a post-merge source mutation")
+    review_gate = config.get("work_item_binding", {}).get("merge_gate", {}).get("review_gate")
+    if review_gate != SOURCE_REVIEW_GATE:
+        errors.append("provider review_gate must match the source single-maintainer audit receipt contract")
     if record.get("schema_version") != "1.0":
         errors.append("schema_version must be 1.0")
     if record.get("contract_id") != "github-terminal-issue-closure":
@@ -471,8 +599,9 @@ def validate_record(record: dict[str, Any], config: dict[str, Any], runtime: dic
     if not isinstance(integration, dict):
         errors.append("pull_request.integration must be a mapping")
         integration = {}
+    integration_commit_sha = validate_integration(integration, stage, pull_request.get("head_sha"), errors)
     if stage in {"merge-admission", "reconciliation"}:
-        validate_provider_evidence(pull_request, runtime, errors)
+        validate_provider_evidence(pull_request, runtime, config, errors)
     issues = record.get("issues")
     if not isinstance(issues, list) or not issues:
         return errors + ["issues must be a non-empty list"]
@@ -511,9 +640,12 @@ def validate_record(record: dict[str, Any], config: dict[str, Any], runtime: dic
             if not non_empty(issue.get("next_terminal_gate_or_owner")):
                 errors.append(f"deferred Issue #{number} requires next_terminal_gate_or_owner")
             if stage == "reconciliation":
-                if integration.get("status") != "merged" or integration.get("merged_head_sha") != pull_request.get("head_sha"):
-                    errors.append(f"deferred Issue #{number} reconciliation requires exact merged-head integration")
-                if read_back.get("performed") is not True or read_back.get("issue_state") != "open" or read_back.get("project_status") == "Done":
+                if (
+                    read_back.get("performed") is not True
+                    or read_back.get("integration_commit_sha") != integration_commit_sha
+                    or read_back.get("issue_state") != "open"
+                    or read_back.get("project_status") == "Done"
+                ):
                     errors.append(f"deferred Issue #{number} reconciliation must prove it remains open and not Done")
             continue
         closing_keyword = issue.get("closing_keyword")
@@ -528,10 +660,7 @@ def validate_record(record: dict[str, Any], config: dict[str, Any], runtime: dic
         if issue.get("final_accepted_delivery") is not True:
             errors.append(f"terminal Issue #{number} requires final_accepted_delivery=true")
         if stage == "reconciliation":
-            head_sha = pull_request.get("head_sha")
-            if integration.get("status") != "merged" or integration.get("expected_head_sha") != head_sha or integration.get("merged_head_sha") != head_sha:
-                errors.append(f"terminal Issue #{number} reconciliation requires exact merged-head integration")
-            expected_read_back = {"performed": True, "merged_head_sha": head_sha, "issue_state": "closed", "issue_state_reason": "completed", "project_status": "Done"}
+            expected_read_back = {"performed": True, "integration_commit_sha": integration_commit_sha, "issue_state": "closed", "issue_state_reason": "completed", "project_status": "Done"}
             if read_back != expected_read_back:
                 errors.append(f"terminal Issue #{number} requires matching post-merge Issue and Project read-back")
     commit_text = runtime.get("commit_messages", "") if runtime is not None else ""

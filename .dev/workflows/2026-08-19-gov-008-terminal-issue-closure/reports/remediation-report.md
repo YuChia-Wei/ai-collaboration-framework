@@ -8,13 +8,30 @@
 
 ## Current Disposition
 
-- Status: `remediated-pending-fresh-verification`
+- Status: `remediated-pending-continuation-verification`
 - Finding: `GOV-008-CLOSURE-ASYMMETRY`
-- Current delivery: PR A contract implementation, intentionally `deferred` for Issue #212.
+- Current delivery: PR A integrated the contract with a truthful deferred #212 disposition; segment 2 is the terminal continuation for #212 and #204.
 - Deferred reason: `self-hosting contract must integrate before it can govern its own terminal closeout`.
 - Next terminal gate: `continuation closeout PR after PR A merges`.
 - Focused local validation began at 18 closure scenarios and reached 29/29 at the second repair head; GitHub provider, repository configuration, entrypoint and prerequisite registries, workflow/shell/source governance, downstream distribution, and AI-context contracts also passed locally. Sandbox Windows Temp permission failures were retained as blocked attempts; the same affected suites passed on the host.
-- Independent exact-head audit, hosted checks, integration, and provider read-back remain pending and must not be inferred from this record.
+- PR A's final independent audit and five required hosted checks passed; PR #220 merged as `6a878d65`, and provider read-back kept #212 open/Inbox. The continuation's audit, hosted admission, integration, and terminal read-back remain pending and must not be inferred.
+
+## PR A Final Checkpoint And Owner Reconciliation
+
+- Final admitted head: `f8cffd33af799b6b92f748c99e82ff9bd344fbb7`.
+- Integration: user-performed `--no-ff` merge commit `6a878d65565920271047f42b25b39f05afe68592` on 2026-08-20.
+- Provider result: five required checks succeeded; #212 remained open with Project status `Inbox`, matching PR A's deferred disposition.
+- Historical review caveat: PR A had a free-form exact-head independent audit comment and no GitHub `APPROVED` review. No structured receipt is retroactively fabricated.
+- Owner decision: this source repository is single-maintainer. Prospectively, admission accepts only a strict exact-head `github-terminal-issue-closure-audit/v1` receipt from `YuChia-Wei`; ordinary comments never pass, effective change requests remain blocking, and downstream review policy stays target-owned.
+- Integration decision: admitted PR head and provider integration commit are separate evidence. Fast-forward, rebase, squash, and merge-commit remain supported; no post-merge source repair commit is required merely to reconcile SHA identity.
+
+## Segment 2 Focused Validation
+
+- Terminal closure GWT: 54/54 passed.
+- GitHub provider contract: 20/20 passed.
+- Positive topology coverage requires identical SHAs for fast-forward and deliberately different admitted/integration SHAs for rebase, squash, and merge-commit.
+- Workflow artifacts, source governance/disposition, workflow handoff, governance workflow 7/7, GitHub workflow 10/10, repository configuration, brand-neutral distribution 2/2, and SDK-free distribution GWT 005 passed. The repository-config fixture suite was blocked twice by sandbox dotfile ACLs, then passed 14/14 on the host; blocked attempts are not relabeled.
+- Remaining gates: broader affected governance validation, durable commit, fresh exact-head independent audit receipt, hosted checks, live admission, integration, and Issue/Project provider read-back.
 
 ## Failed Exact-Head Audit
 

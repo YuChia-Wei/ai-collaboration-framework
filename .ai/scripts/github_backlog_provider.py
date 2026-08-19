@@ -308,6 +308,12 @@ def validate_config(config: dict[str, Any], backlog_ids: set[str]) -> None:
             "mode": "required",
             "disposition_required_per_issue": True,
             "missing_binding_blocks_merge": True,
+            "review_gate": {
+                "mode": "single-maintainer-audit-receipt",
+                "maintainer_login": "YuChia-Wei",
+                "receipt_contract": "github-terminal-issue-closure-audit/v1",
+                "downstream_policy": "target-owned",
+            },
             "required_check_contexts": [
                 "Read-only governance contract",
                 "Build and validate candidate",
@@ -329,11 +335,13 @@ def validate_config(config: dict[str, Any], backlog_ids: set[str]) -> None:
         "deferred_reference_keyword": "Refs",
         "mixed_per_issue_dispositions": True,
         "closing_keyword_authorizes_work": False,
+        "integration_topologies": ["fast-forward", "rebase", "squash", "merge-commit"],
+        "post_merge_source_mutation_required": False,
         "terminal_requires": [
             "final-accepted-delivery",
             "complete-scope-tasks-and-applicable-verification",
-            "approved-review-and-successful-hosted-checks",
-            "exact-terminal-integration",
+            "source-review-gate-and-successful-hosted-checks",
+            "admitted-head-and-provider-integration-read-back",
             "matching-approved-closing-keyword",
             "post-merge-issue-and-project-read-back",
         ],

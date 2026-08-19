@@ -9,8 +9,10 @@ pull_request:
     Refs #212
   integration:
     status: "pending"
-    expected_head_sha: null
-    merged_head_sha: null
+    topology: null
+    admitted_head_sha: null
+    integration_commit_sha: null
+    provider_read_back: false
   review:
     status: "pending"
     head_sha: null
@@ -32,7 +34,18 @@ issues:
     next_terminal_gate_or_owner: "continuation closeout PR after PR A merges"
     read_back:
       performed: false
-      merged_head_sha: null
+      integration_commit_sha: null
       issue_state: null
       issue_state_reason: null
       project_status: null
+historical_checkpoint:
+  disposition: "bootstrap-merged-before-single-maintainer-receipt-policy"
+  provider_pull_request: 220
+  admitted_head_sha: "f8cffd33af799b6b92f748c99e82ff9bd344fbb7"
+  topology: "merge-commit"
+  integration_commit_sha: "6a878d65565920271047f42b25b39f05afe68592"
+  merged_at: "2026-08-20T03:09:54+08:00"
+  hosted_required_checks: "five-successful-at-admitted-head"
+  review_evidence: "free-form exact-head independent audit comment; no retroactive structured receipt claimed"
+  issue_212_read_back: {issue_state: open, project_status: Inbox}
+  owner_reconciliation: "single-maintainer receipt policy applies prospectively from the continuation"

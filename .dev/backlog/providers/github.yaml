@@ -69,6 +69,11 @@ work_item_binding:
     mode: "required"
     disposition_required_per_issue: true
     missing_binding_blocks_merge: true
+    review_gate:
+      mode: "single-maintainer-audit-receipt"
+      maintainer_login: "YuChia-Wei"
+      receipt_contract: "github-terminal-issue-closure-audit/v1"
+      downstream_policy: "target-owned"
     required_check_contexts:
       - "Read-only governance contract"
       - "Build and validate candidate"
@@ -88,11 +93,17 @@ issue_closure:
   deferred_reference_keyword: "Refs"
   mixed_per_issue_dispositions: true
   closing_keyword_authorizes_work: false
+  integration_topologies:
+    - "fast-forward"
+    - "rebase"
+    - "squash"
+    - "merge-commit"
+  post_merge_source_mutation_required: false
   terminal_requires:
     - "final-accepted-delivery"
     - "complete-scope-tasks-and-applicable-verification"
-    - "approved-review-and-successful-hosted-checks"
-    - "exact-terminal-integration"
+    - "source-review-gate-and-successful-hosted-checks"
+    - "admitted-head-and-provider-integration-read-back"
     - "matching-approved-closing-keyword"
     - "post-merge-issue-and-project-read-back"
   deferred_requires:

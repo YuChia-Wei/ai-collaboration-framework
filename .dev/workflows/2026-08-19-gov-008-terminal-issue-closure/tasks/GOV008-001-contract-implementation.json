@@ -6,9 +6,9 @@
   "task_id": "GOV008-001-contract-implementation",
   "workflow_id": "2026-08-19-gov-008-terminal-issue-closure",
   "owner_skill": "ai-context-governance",
-  "status": "in_progress",
+  "status": "completed",
   "created_at": "2026-08-19T23:09:17+08:00",
-  "updated_at": "2026-08-20T00:42:58+08:00",
+  "updated_at": "2026-08-20T03:34:43+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-5.6-sol",
   "reasoning_effort": "high",
@@ -22,15 +22,15 @@
   "execution": {
     "steps": ["implement contract and guidance", "add deterministic fixtures", "register source-only validation", "validate and freeze exact head"],
     "validation": ["focused GWT", "workflow/config/source governance", "distribution exclusion", "fresh fixed-head audit", "hosted checks"],
-    "last_completed_step": "fresh audit of 11ec97d1 failed because the event repository identity was not bound to the live governed repository",
-    "next_action": "commit the bounded event/live repository-identity repair, push, and obtain a fresh exact-head audit"
+    "last_completed_step": "PR #220 passed fresh exact-head audit and five hosted checks, merged as 6a878d65, and read-back kept #212 open; the continuation now implements the owner-selected single-maintainer review gate and topology-neutral SHA semantics",
+    "next_action": "none; prospective admission and terminal provider reconciliation are owned by GOV008-002"
   },
   "results": {
-    "summary": "Nine failed exact-head audits are preserved; the current bounded repair binds event top-level/base repository identity to the live governed PR facts.",
+    "summary": "Nine failed audits are preserved and PR #220 integrated the repaired two-mode contract. The continuation removes the impossible self-approval assumption with a strict maintainer audit receipt and separates admitted content identity from integration commit identity.",
     "files_changed": ["GitHub provider contract and PR template", "terminal closure policy, validator, fixtures, and source-only registrations", "workflow and Git closeout guidance", "GOV-008 workflow records"],
-    "tests_run": ["terminal closure 49/49", "GitHub provider 20/20", "GitHub workflow 10/10", "governance workflow contract 7/7", "SDK-free GWT 005 passed; full local suite blocked by ignored .codex/release projects", "repository config 14/14", "entrypoint 7/7", "source entrypoint 3/3", "registry 6/6", "dependency 19/19", "prerequisite 14/14", "brand-neutral distribution 2/2", "workflow/shell/source-governance/AI-context validators"],
-    "finding_status": "remediated-pending-fresh-verification",
-    "residual_risk": "The ninth audit repair is uncommitted; fresh audit, hosted validation, non-mutating admission, and integration remain pending.",
-    "follow_up_needed": true
+    "tests_run": ["PR #220 terminal closure 49/49 plus later audit repairs", "PR #220 five required hosted checks successful", "continuation terminal closure 54/54", "GitHub provider 20/20"],
+    "finding_status": "resolved",
+    "residual_risk": "Prospective admission and terminal provider reconciliation remain in GOV008-002; no PR A result is retroactively relabeled.",
+    "follow_up_needed": false
   }
 }
