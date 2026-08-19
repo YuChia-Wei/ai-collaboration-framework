@@ -1,0 +1,11 @@
+schema_version: "1.0"
+contract_id: github-terminal-issue-closure-admission
+repository: YuChia-Wei/ai-collaboration-framework
+pull_request:
+  number: 300
+  head_sha: aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+  review: {status: approved, head_sha: aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa}
+  required_check_contexts: [governance, portable]
+  hosted_checks:
+    - {name: governance, conclusion: success, required: true, head_sha: aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa}
+    - {name: portable, conclusion: success, required: true, head_sha: aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa}

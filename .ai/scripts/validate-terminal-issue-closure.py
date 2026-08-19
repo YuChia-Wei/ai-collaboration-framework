@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import argparse
+import copy
 import json
 import os
 import re
@@ -88,6 +89,28 @@ def checkout_head() -> str:
     if result.returncode != 0 or not SHA.fullmatch(result.stdout.strip()):
         raise ValueError("unable to resolve the current checkout HEAD")
     return result.stdout.strip()
+
+
+def bind_admission_evidence(record: dict[str, Any], evidence: dict[str, Any]) -> tuple[dict[str, Any], list[str]]:
+    errors: list[str] = []
+    if evidence.get("schema_version") != "1.0":
+        errors.append("admission evidence schema_version must be 1.0")
+    if evidence.get("contract_id") != "github-terminal-issue-closure-admission":
+        errors.append("admission evidence contract_id must be github-terminal-issue-closure-admission")
+    if evidence.get("repository") != record.get("repository"):
+        errors.append("admission evidence repository must match the disposition record")
+    durable_pr = record.get("pull_request")
+    evidence_pr = evidence.get("pull_request")
+    if not isinstance(durable_pr, dict) or not isinstance(evidence_pr, dict):
+        return record, errors + ["admission evidence pull_request must be a mapping"]
+    if evidence_pr.get("number") != durable_pr.get("number"):
+        errors.append("admission evidence pull_request.number must match the disposition record")
+    bound = copy.deepcopy(record)
+    bound["validation_stage"] = "merge-admission"
+    bound_pr = bound["pull_request"]
+    for field in ("number", "head_sha", "review", "required_check_contexts", "hosted_checks"):
+        bound_pr[field] = copy.deepcopy(evidence_pr.get(field))
+    return bound, errors
 
 
 def validate_provider_evidence(pull_request: dict[str, Any], runtime: dict[str, Any] | None, errors: list[str]) -> None:
@@ -240,6 +263,7 @@ def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--record", action="append", type=Path)
     parser.add_argument("--event-path", type=Path)
+    parser.add_argument("--admission-evidence", type=Path)
     args = parser.parse_args(argv)
     config = load_mapping(CONFIG)
     paths = args.record or sorted(ROOT.glob(".dev/workflows/*/evidence/terminal-issue-closure*.yaml"))
@@ -250,6 +274,16 @@ def main(argv: list[str] | None = None) -> int:
     if event_path is None and os.environ.get("GITHUB_EVENT_PATH"):
         event_path = Path(os.environ["GITHUB_EVENT_PATH"])
     runtime = runtime_from_event(event_path) if event_path is not None else None
+    admission_evidence: dict[str, Any] | None = None
+    if args.admission_evidence is not None:
+        try:
+            admission_evidence = load_mapping(args.admission_evidence)
+        except ValueError as exc:
+            print(f"Terminal Issue closure validation failed:\n- {exc}", file=sys.stderr)
+            return 1
+        if runtime is None:
+            print("Terminal Issue closure validation failed:\n- admission evidence requires a current PR event snapshot", file=sys.stderr)
+            return 1
     records: list[tuple[Path, dict[str, Any]]] = []
     errors: list[str] = []
     for path in paths:
@@ -268,13 +302,25 @@ def main(argv: list[str] | None = None) -> int:
         if len(records) != 1:
             errors.append(f"current PR #{runtime.get('pr_number')} must have exactly one bound disposition record")
     for candidate, record in records:
-        errors.extend(f"{candidate.relative_to(ROOT)}: {error}" for error in validate_record(record, config, runtime))
+        effective = record
+        binding_errors: list[str] = []
+        if admission_evidence is not None:
+            effective, binding_errors = bind_admission_evidence(record, admission_evidence)
+        elif runtime is not None and record.get("validation_stage") != "declaration":
+            binding_errors.append("current PR required check validates declaration only; merge admission requires --admission-evidence")
+        errors.extend(f"{candidate.relative_to(ROOT)}: {error}" for error in binding_errors)
+        errors.extend(f"{candidate.relative_to(ROOT)}: {error}" for error in validate_record(effective, config, runtime))
     if errors:
         print("Terminal Issue closure validation failed:", file=sys.stderr)
         for error in errors:
             print(f"- {error}", file=sys.stderr)
         return 1
-    mode = "current PR event" if runtime is not None else "static contract"
+    if admission_evidence is not None:
+        mode = "non-mutating merge admission"
+    elif runtime is not None:
+        mode = "current PR declaration"
+    else:
+        mode = "static contract"
     print(f"Terminal Issue closure {mode} validation passed for {len(records)} record(s).")
     return 0
 

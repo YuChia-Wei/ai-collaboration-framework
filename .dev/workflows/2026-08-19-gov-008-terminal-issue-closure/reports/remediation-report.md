@@ -23,3 +23,11 @@
 - Blocking findings: no current PR/head binding; inline/qualified closing keywords bypassed deferred prohibition; review and required checks were neither exact-head-bound nor completeness-checked; workflow checkpoint predated the audit.
 - Repair: separate declaration, merge-admission, and reconciliation validation stages; select exactly one current-PR record from the GitHub event; bind review and the exact required-context set to the same head; detect inline and qualified GitHub closing forms; refresh durable workflow truth.
 - Provider binding: draft PR #220 was created at `8ae7ec75cbaf43c5b22b574006f182a2586bc33f`; its assigned number is now bound into the declaration record, and PR-event validation also requires the event head to equal the checked-out commit.
+
+## Fresh Audit Of Provider-Bound Head
+
+- Audited head: `40f0821b3443b79a5e9f4400dc77afc8e509f012`
+- Disposition: `FAIL`
+- Preserved fixes: current-PR selection, event/checkout head binding, inline and qualified closing-keyword detection, and exact-head provider-evidence validation all passed review.
+- Blocking finding: the registered check validated a tracked `declaration` without mandating non-self-referential merge-admission evidence; workflow checkpoint text also lagged the audited head.
+- Repair: make the required event check explicitly declaration-only and mandate a fresh untracked provider admission snapshot before merge, overlaid in memory and invalidated by head drift; refresh workflow truth.

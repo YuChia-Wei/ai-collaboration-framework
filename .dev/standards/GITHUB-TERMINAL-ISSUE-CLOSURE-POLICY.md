@@ -55,11 +55,26 @@ adding another closure mode:
 - `reconciliation` additionally binds the expected/merged head and post-merge
   Issue/Project read-back.
 
-On a GitHub pull-request event the validator selects exactly one record bound
-to that current PR number and validates the live event body and head. A missing,
-duplicate, historical-only, or mismatched record fails. Without an event it is
-only a static contract check and must not be represented as merge admission.
-The aggregate source governance profile runs that validator and its GWT tests.
+On a GitHub pull-request event the required validator check selects exactly one
+`declaration` record bound to that current PR number and validates the live
+event body, event head, and checked-out head. A missing, duplicate,
+historical-only, non-declaration, or mismatched record fails. That required
+check proves declaration only; it must not be represented as merge admission.
+
+Before merge, the integrator must capture a fresh provider read-back outside
+the tracked tree and run the validator with both the current event snapshot and
+`--admission-evidence <path>`. The admission snapshot uses contract
+`github-terminal-issue-closure-admission` and supplies the exact PR number,
+head, approved review, required-check context set, and successful hosted checks.
+The validator overlays those volatile facts onto the tracked declaration in
+memory and requires every fact to match the same event and checkout head. The
+snapshot must remain untracked, must not be reused after head drift, and must
+not be committed to the candidate it validates. Missing admission evidence is
+a merge blocker, even when the declaration check passes. This non-mutating
+overlay avoids a self-referential commit whose evidence changes its own head.
+
+Without an event the validator is only a static contract check. The aggregate
+source governance profile runs the declaration validator and its GWT tests.
 This policy, its validator and tests, provider
 configuration, dated evidence, and the source PR template are excluded from
 downstream packages; historical records are not rewritten.

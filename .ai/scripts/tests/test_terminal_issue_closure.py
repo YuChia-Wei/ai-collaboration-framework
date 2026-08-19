@@ -178,9 +178,9 @@ class TerminalIssueClosureGwtTests(unittest.TestCase):
                 VALIDATOR.main(
                     [
                         "--record",
-                        str(FIXTURES / "terminal-positive.yaml"),
+                        str(FIXTURES / "declaration-bound.yaml"),
                         "--event-path",
-                        str(FIXTURES / "pr-event-terminal.json"),
+                        str(FIXTURES / "pr-event-deferred.json"),
                     ]
                 ),
             )
@@ -206,12 +206,55 @@ class TerminalIssueClosureGwtTests(unittest.TestCase):
                 VALIDATOR.main(
                     [
                         "--record",
+                        str(FIXTURES / "declaration-bound.yaml"),
+                        "--event-path",
+                        str(FIXTURES / "pr-event-deferred.json"),
+                    ]
+                ),
+            )
+
+    def test_gwt_027_given_declaration_check_when_record_claims_later_stage_then_cli_fails(self) -> None:
+        with mock.patch.object(VALIDATOR, "checkout_head", return_value="a" * 40):
+            self.assertEqual(
+                1,
+                VALIDATOR.main(
+                    [
+                        "--record",
                         str(FIXTURES / "terminal-positive.yaml"),
                         "--event-path",
                         str(FIXTURES / "pr-event-terminal.json"),
                     ]
                 ),
             )
+
+    def test_gwt_028_given_untracked_admission_snapshot_when_exact_head_evidence_passes_then_cli_passes(self) -> None:
+        with mock.patch.object(VALIDATOR, "checkout_head", return_value="a" * 40):
+            self.assertEqual(
+                0,
+                VALIDATOR.main(
+                    [
+                        "--record",
+                        str(FIXTURES / "declaration-bound.yaml"),
+                        "--event-path",
+                        str(FIXTURES / "pr-event-deferred.json"),
+                        "--admission-evidence",
+                        str(FIXTURES / "admission-positive.yaml"),
+                    ]
+                ),
+            )
+
+    def test_gwt_029_given_admission_snapshot_when_head_drifts_then_cli_fails(self) -> None:
+        evidence = fixture("admission-positive.yaml")
+        evidence["pull_request"]["head_sha"] = "b" * 40
+        bound, errors = VALIDATOR.bind_admission_evidence(fixture("declaration-bound.yaml"), evidence)
+        errors.extend(
+            VALIDATOR.validate_record(
+                bound,
+                self.config,
+                {"pr_number": 300, "head_sha": "a" * 40, "body": "Refs #212"},
+            )
+        )
+        self.assertTrue(any("head_sha does not match" in error for error in errors), errors)
 
 
 if __name__ == "__main__":

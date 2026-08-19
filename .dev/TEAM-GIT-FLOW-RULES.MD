@@ -118,6 +118,16 @@ requires a matching approved closing keyword and post-merge Issue/Project
 read-back; a deferred disposition uses `Refs`, records its reason and next gate
 or owner, and must remain open. A closing keyword never authorizes work.
 
+The required pull-request check validates only the tracked declaration against
+the live PR event and checkout head. Immediately before integration, obtain a
+fresh provider read-back and run
+`.ai/scripts/validate-terminal-issue-closure.py` with the current event snapshot
+and an untracked `--admission-evidence` snapshot. That merge-admission run must
+bind the approved review and the complete successful required-check set to the
+same immutable head. Do not commit the volatile snapshot; any head drift
+invalidates it and requires a fresh independent audit, hosted read-back, and
+admission run.
+
 ### Linear Integration
 
 Choose linear integration when the branch boundary adds no durable information
