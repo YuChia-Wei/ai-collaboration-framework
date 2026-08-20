@@ -19,6 +19,8 @@ This is a thin current-runtime wrapper.
   - `.ai/assets/skills/ai-context-upgrader/references/three-way-merge-boundaries.md`
   - `.ai/assets/skills/ai-context-upgrader/references/provenance-contract.md`
   - `.ai/assets/skills/ai-context-upgrader/references/output-contract.md`
+  - `.ai/assets/skills/ai-context-upgrader/references/role-execution-bindings.yaml`
+  - `.ai/assets/skills/ai-context-upgrader/references/role-execution-bindings.schema.yaml`
   - `.ai/assets/skills/ai-context-governance/references/semantic-customization-lifecycle.md`
   - `.ai/assets/skills/ai-context-governance/templates/customizations.schema.yaml`
   - `.ai/assets/skills/ai-context-governance/templates/effective-rule-state.schema.yaml`
@@ -36,6 +38,9 @@ This is a thin current-runtime wrapper.
   - `.ai/assets/skills/ai-context-upgrader/templates/multi-hop-upgrade-transaction.schema.yaml`
   - `.ai/assets/shared/CLI-EXECUTION-ROUTING-CONTRACT.md`
   - `.ai/assets/shared/cli-execution-routing.schema.yaml`
+  - `.ai/assets/shared/ROLE-EXECUTION-CONTRACT.md`
+  - `.ai/assets/shared/provider-neutral-capability-registry.yaml`
+  - `.ai/assets/shared/provider-projection-registry.yaml`
 - `.ai/scripts/validate-ai-context-target.py`
 - `.ai/scripts/plan-ai-context-upgrade.py`
 - `.ai/assets/skills/ai-context-upgrader/scripts/compare-ai-context-versions.py`

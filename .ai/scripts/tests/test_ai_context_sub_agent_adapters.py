@@ -558,6 +558,13 @@ class SubAgentAdapterMetadataValidationTests(unittest.TestCase):
                 },
                 "problem-frame-author": {"problem-frame-sub-agent": "primary"},
                 "ai-context-init": {"context-translator": "conditional"},
+                "ai-context-upgrader": {
+                    "mechanical-evidence-worker": "conditional",
+                    "reconciliation-worker": "conditional",
+                    "semantic-governance-analyst": "conditional",
+                    "evidence-report-synthesizer": "conditional",
+                    "fixed-head-independent-auditor": "conditional",
+                },
             },
             {owner: bindings for owner, bindings in owners.items() if bindings},
         )

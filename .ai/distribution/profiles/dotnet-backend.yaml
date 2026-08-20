@@ -195,7 +195,13 @@ entries:
     install_behavior: managed
   - id: codex-agent-adapters
     component_id: software-development-core
-    source: .codex/agents/**
+    source:
+      - .codex/agents/context-translator.toml
+      - .codex/agents/bounded-routine-worker.toml
+      - .codex/agents/reconciliation-worker.toml
+      - .codex/agents/semantic-governance-analyst.toml
+      - .codex/agents/evidence-report-synthesizer.toml
+      - .codex/agents/fixed-head-independent-auditor.toml
     target: .codex/agents/
     ownership: framework-managed
     install_behavior: managed
@@ -365,18 +371,16 @@ exclusions:
       Framework-source applicability and execution evidence bind this source
       repository's Git identity and must never become downstream provenance,
       target-effective state, or portable package truth.
-  - id: source-codex-runtime-worker-profiles
+  - id: source-codex-general-runtime-fallback-profile
     classification: source-only
     patterns:
       - .codex/agents/bounded-general-worker.toml
-      - .codex/agents/bounded-routine-worker.toml
     reason: >-
-      Source-repository Codex execution profiles select a runtime/model tier but
-      do not own canonical skill or sub-agent-role semantics. Downstream
-      projection is expressly excluded by PRODUCT-SOURCE-001 and CLI-TOOLING-001.
-      A future change requires an explicit owner-approved contract revision and
-      canonical role or adapter selection; context-translator remains the only
-      promoted canonical runtime-native role adapter.
+      The bounded-general-worker remains a source-repository fallback profile.
+      It does not own canonical skill or sub-agent-role semantics and is not a
+      portable generic capability projection. The configured generic capability
+      profiles are separately selected by the exact Codex allowlist above;
+      Claude and Copilot generic capability projections remain deferred.
   - id: source-local-work-management-policy
     classification: source-only
     patterns:

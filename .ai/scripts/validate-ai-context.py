@@ -153,6 +153,89 @@ ROLE_BINDING_PROJECTION_HEADERS = (
 CAPABILITY_PROFILE = Path(
     ".ai/assets/skills/software-development-orchestrator/references/capability-profile.yaml"
 )
+SAG003_ROLE_IDS = frozenset(
+    {
+        "mechanical-evidence-worker",
+        "reconciliation-worker",
+        "semantic-governance-analyst",
+        "evidence-report-synthesizer",
+        "fixed-head-independent-auditor",
+    }
+)
+SAG003_CAPABILITY_REGISTRY = Path(
+    ".ai/assets/shared/provider-neutral-capability-registry.yaml"
+)
+SAG003_CAPABILITY_REGISTRY_SCHEMA = Path(
+    ".ai/assets/shared/provider-neutral-capability-registry.schema.yaml"
+)
+SAG003_PROVIDER_PROJECTION_REGISTRY = Path(
+    ".ai/assets/shared/provider-projection-registry.yaml"
+)
+SAG003_PROVIDER_PROJECTION_REGISTRY_SCHEMA = Path(
+    ".ai/assets/shared/provider-projection-registry.schema.yaml"
+)
+SAG003_UPGRADER_ROLE_BINDINGS = Path(
+    ".ai/assets/skills/ai-context-upgrader/references/role-execution-bindings.yaml"
+)
+SAG003_EXECUTION_CONTRACT = Path(".ai/assets/shared/ROLE-EXECUTION-CONTRACT.md")
+SAG003_MUTATION_BOUNDARIES = {
+    "read-only",
+    "workflow-authorized-output-only",
+}
+SAG003_CODEX_PROFILE_ROOT = PurePosixPath(".codex/agents")
+SAG003_CODEX_PROFILE_KEYS = {
+    "name",
+    "description",
+    "model",
+    "model_reasoning_effort",
+    "sandbox_mode",
+    "developer_instructions",
+}
+SAG003_CODEX_PROFILE_NAMES = {
+    "mechanical-evidence-worker": "bounded-routine-worker",
+    "reconciliation-worker": "reconciliation-worker",
+    "semantic-governance-analyst": "semantic-governance-analyst",
+    "evidence-report-synthesizer": "evidence-report-synthesizer",
+    "fixed-head-independent-auditor": "fixed-head-independent-auditor",
+}
+SAG003_CODEX_SANDBOX_MODE = "read-only"
+SAG003_CANONICAL_PROVIDER_FIELDS = {
+    "model",
+    "model_reasoning_effort",
+    "service_tier",
+    "service-tier",
+    "fast",
+    "sandbox",
+    "sandbox_mode",
+    "runtime_enabled",
+    "runtime-enabled",
+    "provider",
+    "provider_projection",
+    "provider-projection",
+    "configured_provider",
+    "configuration_state",
+    "current_session",
+    "current_session_availability",
+    "runtime_availability",
+    "invocation_evidence",
+    "actual_invocation",
+    "profile_path",
+    "runtime_path",
+    "adapter_path",
+}
+SAG003_CANONICAL_PROVIDER_VALUE = re.compile(
+    r"(?:^|[^a-z0-9])(?:gpt(?:-[a-z0-9.-]+)?|claude|copilot|codex|"
+    r"model_reasoning_effort|service[ _-]?tier|fast|sandbox(?:_mode)?|"
+    r"\.codex/agents|\.claude/agents|\.github/agents)(?:$|[^a-z0-9])",
+    re.IGNORECASE,
+)
+SAG003_STATIC_RUNTIME_CLAIMS = {
+    "runtime-enabled",
+    "runtime-invoked",
+    "invoked",
+    "invocation-proven",
+    "session-available",
+}
 PROJECT_CONFIG_TEMPLATE = Path(
     ".ai/assets/skills/ai-context-init/templates/project-config.template.yaml"
 )
@@ -2854,6 +2937,724 @@ def validate_capability_profile(skill_assets: dict[str, dict], errors: list[str]
     return len(mappings)
 
 
+def sag003_load_yaml_mapping(
+    root: Path, path: Path, errors: list[str]
+) -> dict | None:
+    """Load one required SAG-003 YAML mapping beneath an explicit root."""
+    absolute = root / path
+    if not absolute.is_file():
+        errors.append(f"{path}: required SAG-003 contract file is missing")
+        return None
+    try:
+        value = yaml.safe_load(absolute.read_text(encoding="utf-8"))
+    except (OSError, yaml.YAMLError) as exc:
+        errors.append(f"{path}: invalid YAML: {exc}")
+        return None
+    if not isinstance(value, dict):
+        errors.append(f"{path}: root must be a mapping")
+        return None
+    return value
+
+
+def sag003_exact_keys(
+    value: object,
+    expected: set[str],
+    errors: list[str],
+    label: str,
+) -> dict | None:
+    """Require an exact mapping shape for a non-extensible SAG-003 record."""
+    if not isinstance(value, dict):
+        errors.append(f"{label} must be a mapping")
+        return None
+    keys = set(value)
+    missing = sorted(expected - keys)
+    extra = sorted(repr(key) for key in keys - expected)
+    if missing:
+        errors.append(f"{label}: missing required fields {missing}")
+    if extra:
+        errors.append(f"{label}: unsupported fields {extra}")
+    return value
+
+
+def sag003_non_empty_string_list(value: object) -> bool:
+    """Return whether a list is non-empty and contains only non-empty strings."""
+    return (
+        isinstance(value, list)
+        and bool(value)
+        and all(isinstance(item, str) and item.strip() for item in value)
+    )
+
+
+def sag003_safe_relative_path(
+    value: object,
+    errors: list[str],
+    label: str,
+) -> Path | None:
+    """Return a safe repository-relative path without silently normalizing it."""
+    if not isinstance(value, str) or not value:
+        errors.append(f"{label} must be a non-empty repository-relative path")
+        return None
+    pure = PurePosixPath(value)
+    if (
+        Path(value).is_absolute()
+        or pure.is_absolute()
+        or "\\" in value
+        or any(part in {".", ".."} for part in pure.parts)
+        or any(character in value for character in "<>*?[]{}")
+    ):
+        errors.append(f"{label} must be a safe repository-relative exact path")
+        return None
+    return Path(*pure.parts)
+
+
+def validate_sag003_provider_neutral_value(
+    value: object,
+    errors: list[str],
+    label: str,
+) -> None:
+    """Reject provider/runtime settings from the canonical capability authority."""
+    if isinstance(value, dict):
+        for key, item in value.items():
+            if not isinstance(key, str):
+                errors.append(f"{label}: canonical field names must be strings")
+                continue
+            normalized = key.casefold().replace(" ", "_").replace("-", "_")
+            forbidden = {
+                field.casefold().replace(" ", "_").replace("-", "_")
+                for field in SAG003_CANONICAL_PROVIDER_FIELDS
+            }
+            provider_prefixes = (
+                "model_",
+                "provider_",
+                "runtime_",
+                "current_session_",
+                "invocation_",
+                "service_tier_",
+                "sandbox_",
+                "codex_",
+                "claude_",
+                "copilot_",
+            )
+            if normalized in forbidden or normalized.startswith(provider_prefixes):
+                errors.append(
+                    f"{label}.{key}: provider/runtime field leaks into the canonical registry"
+                )
+            validate_sag003_provider_neutral_value(item, errors, f"{label}.{key}")
+        return
+    if isinstance(value, list):
+        for index, item in enumerate(value):
+            validate_sag003_provider_neutral_value(item, errors, f"{label}[{index}]")
+        return
+    if isinstance(value, str) and SAG003_CANONICAL_PROVIDER_VALUE.search(value):
+        errors.append(
+            f"{label}: provider/runtime value leaks into the canonical registry"
+        )
+
+
+def sag003_active_role_binding_owners(
+    root: Path,
+    errors: list[str],
+) -> dict[str, list[tuple[str, Path]]]:
+    """Collect only exact, active canonical owners for the five SAG-003 roles."""
+    owners: dict[str, list[tuple[str, Path]]] = {
+        role_id: [] for role_id in SAG003_ROLE_IDS
+    }
+    for skill_path in sorted((root / ".ai/assets/skills").glob("*/skill.yaml")):
+        try:
+            skill = yaml.safe_load(skill_path.read_text(encoding="utf-8"))
+        except (OSError, yaml.YAMLError):
+            continue
+        if not isinstance(skill, dict) or skill.get("status") != "active":
+            continue
+        skill_id = skill.get("asset_id")
+        if not isinstance(skill_id, str) or not skill_id:
+            continue
+        bindings = skill.get("role_bindings", [])
+        if not isinstance(bindings, list):
+            continue
+        relative_skill_path = skill_path.relative_to(root)
+        for index, binding in enumerate(bindings):
+            if not isinstance(binding, dict):
+                continue
+            role_id = binding.get("role_asset_id")
+            if role_id not in SAG003_ROLE_IDS:
+                continue
+            label = f"{relative_skill_path}: role_bindings[{index}]"
+            expected_path = expected_role_binding_path(role_id)
+            valid = True
+            if set(binding) != ROLE_BINDING_REQUIRED_FIELDS:
+                errors.append(
+                    f"{label}: SAG-003 owner binding must use the exact canonical role_binding fields"
+                )
+                valid = False
+            if binding.get("role_path") != expected_path:
+                errors.append(
+                    f"{label}.role_path must be the exact canonical role path {expected_path}"
+                )
+                valid = False
+            if binding.get("expected_role_status") != ROLE_BINDING_EXPECTED_STATUS:
+                errors.append(
+                    f"{label}.expected_role_status must be {ROLE_BINDING_EXPECTED_STATUS!r}"
+                )
+                valid = False
+            if binding.get("binding_kind") not in ROLE_BINDING_KINDS:
+                errors.append(
+                    f"{label}.binding_kind must be one of {sorted(ROLE_BINDING_KINDS)}"
+                )
+                valid = False
+            if not isinstance(binding.get("applicability"), str) or not binding[
+                "applicability"
+            ].strip():
+                errors.append(f"{label}.applicability must be a non-empty declarative string")
+                valid = False
+            if binding.get("load_obligation") != ROLE_BINDING_LOAD_OBLIGATION:
+                errors.append(
+                    f"{label}.load_obligation must be {ROLE_BINDING_LOAD_OBLIGATION!r}"
+                )
+                valid = False
+            if valid:
+                owners[role_id].append((skill_id, relative_skill_path))
+    return owners
+
+
+def validate_sag003_capability_registry(
+    errors: list[str], *, root: Path = ROOT
+) -> tuple[dict[str, dict], dict[str, list[tuple[str, Path]]]]:
+    """Validate the provider-neutral role authority without making it provider-aware."""
+    for schema_path in (
+        SAG003_CAPABILITY_REGISTRY_SCHEMA,
+        SAG003_PROVIDER_PROJECTION_REGISTRY_SCHEMA,
+    ):
+        if not (root / schema_path).is_file():
+            errors.append(f"{schema_path}: required SAG-003 schema file is missing")
+
+    registry = sag003_load_yaml_mapping(root, SAG003_CAPABILITY_REGISTRY, errors)
+    if registry is None:
+        return {}, {role_id: [] for role_id in SAG003_ROLE_IDS}
+    sag003_exact_keys(
+        registry,
+        {"schema_version", "registry_id", "source_of_truth", "capabilities"},
+        errors,
+        str(SAG003_CAPABILITY_REGISTRY),
+    )
+    if registry.get("schema_version") != "1.0":
+        errors.append(f"{SAG003_CAPABILITY_REGISTRY}: schema_version must be '1.0'")
+    for field in ("registry_id",):
+        if not isinstance(registry.get(field), str) or not registry[field].strip():
+            errors.append(f"{SAG003_CAPABILITY_REGISTRY}.{field} must be a non-empty string")
+    if registry.get("source_of_truth") != "canonical":
+        errors.append(f"{SAG003_CAPABILITY_REGISTRY}.source_of_truth must be 'canonical'")
+
+    capabilities = registry.get("capabilities")
+    if not isinstance(capabilities, list):
+        errors.append(f"{SAG003_CAPABILITY_REGISTRY}.capabilities must be a list")
+        return {}, {role_id: [] for role_id in SAG003_ROLE_IDS}
+
+    capability_by_role: dict[str, dict] = {}
+    seen_capability_ids: set[str] = set()
+    expected_fields = {
+        "capability_id",
+        "role_path",
+        "role_asset_id",
+        "capability_tags",
+        "default_mutation_boundary",
+        "deterministic_authority",
+        "execution_contract",
+    }
+    for index, capability in enumerate(capabilities):
+        label = f"{SAG003_CAPABILITY_REGISTRY}: capabilities[{index}]"
+        mapping = sag003_exact_keys(capability, expected_fields, errors, label)
+        if mapping is None:
+            continue
+        validate_sag003_provider_neutral_value(mapping, errors, label)
+        capability_id = mapping.get("capability_id")
+        if not isinstance(capability_id, str) or not KEBAB_ID.fullmatch(capability_id):
+            errors.append(f"{label}.capability_id must be a non-empty kebab-case string")
+        elif capability_id in seen_capability_ids:
+            errors.append(f"{label}.capability_id duplicates {capability_id!r}")
+        else:
+            seen_capability_ids.add(capability_id)
+
+        role_id = mapping.get("role_asset_id")
+        if not isinstance(role_id, str) or role_id not in SAG003_ROLE_IDS:
+            errors.append(f"{label}.role_asset_id must be one of {sorted(SAG003_ROLE_IDS)}")
+            continue
+        if role_id in capability_by_role:
+            errors.append(f"{label}.role_asset_id duplicates {role_id!r}")
+            continue
+        capability_by_role[role_id] = mapping
+
+        expected_path = expected_role_binding_path(role_id)
+        role_path = mapping.get("role_path")
+        if role_path != expected_path:
+            errors.append(f"{label}.role_path must be the exact canonical role path {expected_path}")
+        relative_role_path = sag003_safe_relative_path(role_path, errors, f"{label}.role_path")
+        if relative_role_path is not None:
+            manifest_path = root / relative_role_path
+            if not manifest_path.is_file():
+                errors.append(f"{label}.role_path is dangling: {role_path!r}")
+            else:
+                try:
+                    role_manifest = yaml.safe_load(manifest_path.read_text(encoding="utf-8"))
+                except (OSError, yaml.YAMLError) as exc:
+                    errors.append(f"{label}.role_path cannot load role manifest: {exc}")
+                else:
+                    if not isinstance(role_manifest, dict):
+                        errors.append(f"{label}.role_path role manifest must be a mapping")
+                    else:
+                        if role_manifest.get("asset_id") != role_id:
+                            errors.append(
+                                f"{label}.role_asset_id must exactly match the role manifest"
+                            )
+                        if role_manifest.get("status") != "active":
+                            errors.append(f"{label}: target role must be active")
+                        if role_manifest.get("wrapper_targets") != [] or role_manifest.get(
+                            "adapter_metadata"
+                        ) != {}:
+                            errors.append(
+                                f"{label}: SAG-003 role manifests must remain dynamically loaded "
+                                "with empty wrapper_targets and adapter_metadata"
+                            )
+                        validate_sag003_provider_neutral_value(
+                            role_manifest, errors, f"{label}.role_manifest"
+                        )
+
+        if not sag003_non_empty_string_list(mapping.get("capability_tags")):
+            errors.append(f"{label}.capability_tags must be a non-empty string list")
+        elif len(mapping["capability_tags"]) != len(set(mapping["capability_tags"])):
+            errors.append(f"{label}.capability_tags must not contain duplicates")
+        if mapping.get("default_mutation_boundary") not in SAG003_MUTATION_BOUNDARIES:
+            errors.append(
+                f"{label}.default_mutation_boundary must be one of "
+                f"{sorted(SAG003_MUTATION_BOUNDARIES)}"
+            )
+        authority = sag003_exact_keys(
+            mapping.get("deterministic_authority"),
+            {"required", "surfaces", "agent_boundary"},
+            errors,
+            f"{label}.deterministic_authority",
+        )
+        if authority is not None:
+            if authority.get("required") is not True:
+                errors.append(
+                    f"{label}.deterministic_authority.required must be true"
+                )
+            if not sag003_non_empty_string_list(authority.get("surfaces")):
+                errors.append(
+                    f"{label}.deterministic_authority.surfaces must be a non-empty string list"
+                )
+            if not isinstance(authority.get("agent_boundary"), str) or not authority[
+                "agent_boundary"
+            ].strip():
+                errors.append(
+                    f"{label}.deterministic_authority.agent_boundary must be a non-empty string"
+                )
+        if mapping.get("execution_contract") != SAG003_EXECUTION_CONTRACT.as_posix():
+            errors.append(
+                f"{label}.execution_contract must be "
+                f"{SAG003_EXECUTION_CONTRACT.as_posix()!r}"
+            )
+
+    if set(capability_by_role) != SAG003_ROLE_IDS:
+        errors.append(
+            f"{SAG003_CAPABILITY_REGISTRY}: role_asset_ids must be exactly "
+            f"{sorted(SAG003_ROLE_IDS)}; actual={sorted(capability_by_role)}"
+        )
+
+    owners = sag003_active_role_binding_owners(root, errors)
+    for role_id in sorted(SAG003_ROLE_IDS):
+        matching_owners = owners[role_id]
+        if not matching_owners:
+            errors.append(
+                f"{SAG003_CAPABILITY_REGISTRY}: {role_id} is central-only and ownerless; "
+                "require at least one active owning-skill role_binding"
+            )
+    return capability_by_role, owners
+
+
+def validate_sag003_codex_profile(
+    root: Path,
+    profile: dict,
+    errors: list[str],
+    label: str,
+) -> None:
+    """Validate one static Codex projection without claiming it was loaded."""
+    profile_path = profile.get("profile_path")
+    relative = sag003_safe_relative_path(profile_path, errors, f"{label}.profile_path")
+    if relative is None:
+        return
+    expected_root = SAG003_CODEX_PROFILE_ROOT.parts
+    if PurePosixPath(profile_path).parts[: len(expected_root)] != expected_root:
+        errors.append(
+            f"{label}.profile_path must be under {SAG003_CODEX_PROFILE_ROOT.as_posix()}"
+        )
+        return
+    if not str(profile_path).endswith(".toml"):
+        errors.append(f"{label}.profile_path must name a TOML file")
+        return
+    file_path = root / relative
+    if not file_path.is_file():
+        errors.append(f"{label}.profile_path does not exist: {profile_path}")
+        return
+    exact_paths = {
+        item.relative_to(root).as_posix().casefold(): item.relative_to(root).as_posix()
+        for item in (root / Path(*expected_root)).rglob("*.toml")
+        if item.is_file()
+    }
+    exact_path = exact_paths.get(str(profile_path).casefold())
+    if exact_path != profile_path:
+        errors.append(
+            f"{label}.profile_path has an exact-case mismatch: {profile_path!r} -> {exact_path!r}"
+        )
+        return
+    try:
+        toml = tomllib.loads(file_path.read_text(encoding="utf-8"))
+    except (OSError, tomllib.TOMLDecodeError) as exc:
+        errors.append(f"{label}.profile_path is not valid Codex TOML: {exc}")
+        return
+    missing = sorted(SAG003_CODEX_PROFILE_KEYS - set(toml))
+    extra = sorted(repr(key) for key in set(toml) - SAG003_CODEX_PROFILE_KEYS)
+    if missing:
+        errors.append(f"{label}.profile_path is missing Codex profile fields {missing}")
+    if extra:
+        errors.append(f"{label}.profile_path has unsupported Codex profile fields {extra}")
+    for field in SAG003_CODEX_PROFILE_KEYS:
+        if not isinstance(toml.get(field), str) or not toml[field].strip():
+            errors.append(f"{label}.profile_path.{field} must be a non-empty string")
+    role_id = profile.get("role_asset_id")
+    expected_profile_name = (
+        SAG003_CODEX_PROFILE_NAMES.get(role_id) if isinstance(role_id, str) else None
+    )
+    if expected_profile_name is None:
+        errors.append(f"{label}.role_asset_id has no allowed Codex profile-name projection")
+    elif (
+        profile.get("profile_name") != expected_profile_name
+        or toml.get("name") != expected_profile_name
+    ):
+        errors.append(
+            f"{label}: profile_name and TOML name must equal the allowed Codex projection "
+            f"{expected_profile_name!r}"
+        )
+    for field in ("model", "model_reasoning_effort", "sandbox_mode"):
+        if toml.get(field) != profile.get(field):
+            errors.append(f"{label}: TOML {field} must match the static projection registry")
+    canonical_role_path = expected_role_binding_path(role_id) if isinstance(role_id, str) else ""
+    if canonical_role_path and canonical_role_path not in str(toml.get("developer_instructions", "")):
+        errors.append(f"{label}.profile_path must cite canonical role {canonical_role_path}")
+    instructions = str(toml.get("developer_instructions", "")).casefold()
+    if any(claim in instructions for claim in SAG003_STATIC_RUNTIME_CLAIMS):
+        errors.append(f"{label}.profile_path must not fabricate runtime-enabled or invoked evidence")
+
+
+def validate_sag003_provider_projection_registry(
+    capability_by_role: dict[str, dict],
+    errors: list[str],
+    *,
+    root: Path = ROOT,
+) -> list[str]:
+    """Validate static provider projections while retaining an unknown session state."""
+    registry = sag003_load_yaml_mapping(root, SAG003_PROVIDER_PROJECTION_REGISTRY, errors)
+    if registry is None:
+        return []
+    expected_fields = {
+        "schema_version",
+        "registry_id",
+        "source_of_truth",
+        "canonical_contract",
+        "provider_projections",
+        "current_session",
+        "package_projection",
+    }
+    sag003_exact_keys(registry, expected_fields, errors, str(SAG003_PROVIDER_PROJECTION_REGISTRY))
+    if registry.get("schema_version") != "1.0":
+        errors.append(f"{SAG003_PROVIDER_PROJECTION_REGISTRY}: schema_version must be '1.0'")
+    if not isinstance(registry.get("registry_id"), str) or not registry["registry_id"].strip():
+        errors.append(f"{SAG003_PROVIDER_PROJECTION_REGISTRY}.registry_id must be a non-empty string")
+    if registry.get("source_of_truth") != "canonical":
+        errors.append(f"{SAG003_PROVIDER_PROJECTION_REGISTRY}.source_of_truth must be 'canonical'")
+
+    canonical = sag003_exact_keys(
+        registry.get("canonical_contract"),
+        {"availability", "registry_path", "role_asset_ids"},
+        errors,
+        f"{SAG003_PROVIDER_PROJECTION_REGISTRY}.canonical_contract",
+    )
+    if canonical is not None:
+        if canonical.get("availability") != "canonical-contract-available":
+            errors.append("provider projection canonical_contract.availability must be canonical-contract-available")
+        if canonical.get("registry_path") != SAG003_CAPABILITY_REGISTRY.as_posix():
+            errors.append("provider projection canonical_contract.registry_path must bind the capability registry")
+        role_ids = canonical.get("role_asset_ids")
+        if not isinstance(role_ids, list) or len(role_ids) != len(set(role_ids)) or set(role_ids) != SAG003_ROLE_IDS:
+            errors.append("provider projection canonical_contract.role_asset_ids must be the exact five SAG-003 roles")
+    if set(capability_by_role) != SAG003_ROLE_IDS:
+        errors.append("provider projection cannot be valid while the canonical capability set is incomplete")
+
+    projections = sag003_exact_keys(
+        registry.get("provider_projections"),
+        {"codex", "claude", "copilot"},
+        errors,
+        f"{SAG003_PROVIDER_PROJECTION_REGISTRY}.provider_projections",
+    )
+    codex_paths: list[str] = []
+    if projections is not None:
+        codex = sag003_exact_keys(
+            projections.get("codex"),
+            {"configuration_state", "profiles"},
+            errors,
+            f"{SAG003_PROVIDER_PROJECTION_REGISTRY}.provider_projections.codex",
+        )
+        if codex is not None:
+            if codex.get("configuration_state") != "codex-runtime-configured":
+                errors.append("Codex projection must be statically configured, not runtime-enabled")
+            profiles = codex.get("profiles")
+            if not isinstance(profiles, list):
+                errors.append("Codex projection profiles must be a list")
+            else:
+                seen_roles: set[str] = set()
+                seen_paths: set[str] = set()
+                profile_fields = {
+                    "role_asset_id",
+                    "profile_path",
+                    "profile_name",
+                    "model",
+                    "model_reasoning_effort",
+                    "sandbox_mode",
+                }
+                for index, profile in enumerate(profiles):
+                    label = f"Codex projection profiles[{index}]"
+                    mapping = sag003_exact_keys(profile, profile_fields, errors, label)
+                    if mapping is None:
+                        continue
+                    role_id = mapping.get("role_asset_id")
+                    if not isinstance(role_id, str) or role_id not in SAG003_ROLE_IDS:
+                        errors.append(f"{label}.role_asset_id must be one of the five SAG-003 roles")
+                    elif role_id in seen_roles:
+                        errors.append(f"{label}.role_asset_id duplicates {role_id!r}")
+                    else:
+                        seen_roles.add(role_id)
+                    for field in ("profile_path", "profile_name", "model", "model_reasoning_effort"):
+                        if not isinstance(mapping.get(field), str) or not mapping[field].strip():
+                            errors.append(f"{label}.{field} must be a non-empty string")
+                    if mapping.get("sandbox_mode") != SAG003_CODEX_SANDBOX_MODE:
+                        errors.append(
+                            f"{label}.sandbox_mode must remain read-only for SAG-003"
+                        )
+                    profile_path = mapping.get("profile_path")
+                    if isinstance(profile_path, str):
+                        if profile_path in seen_paths:
+                            errors.append(f"{label}.profile_path duplicates {profile_path!r}")
+                        else:
+                            seen_paths.add(profile_path)
+                            codex_paths.append(profile_path)
+                    validate_sag003_codex_profile(root, mapping, errors, label)
+                if seen_roles != SAG003_ROLE_IDS:
+                    errors.append("Codex projection profiles must cover the exact five SAG-003 roles")
+
+        for provider in ("claude", "copilot"):
+            mapping = sag003_exact_keys(
+                projections.get(provider),
+                {"configuration_state", "profiles", "deferred_reason"},
+                errors,
+                f"{SAG003_PROVIDER_PROJECTION_REGISTRY}.provider_projections.{provider}",
+            )
+            if mapping is None:
+                continue
+            if mapping.get("configuration_state") != f"{provider}-runtime-deferred":
+                errors.append(f"{provider} projection must remain runtime-deferred, never unsupported")
+            if mapping.get("profiles") != []:
+                errors.append(f"{provider} deferred projection profiles must be an empty list")
+            if not isinstance(mapping.get("deferred_reason"), str) or not mapping[
+                "deferred_reason"
+            ].strip():
+                errors.append(f"{provider} deferred projection requires a non-empty deferred_reason")
+
+    current_session = sag003_exact_keys(
+        registry.get("current_session"),
+        {"availability", "invocation_evidence"},
+        errors,
+        f"{SAG003_PROVIDER_PROJECTION_REGISTRY}.current_session",
+    )
+    if current_session is not None and current_session != {
+        "availability": "unknown",
+        "invocation_evidence": "not-claimed",
+    }:
+        errors.append("provider projection current_session must remain unknown with invocation not-claimed")
+
+    package_projection = sag003_exact_keys(
+        registry.get("package_projection"),
+        {"configured_provider", "profile_paths", "deferred_provider_runtime_paths"},
+        errors,
+        f"{SAG003_PROVIDER_PROJECTION_REGISTRY}.package_projection",
+    )
+    if package_projection is not None:
+        if package_projection.get("configured_provider") != "codex":
+            errors.append("package_projection.configured_provider must be codex")
+        paths = package_projection.get("profile_paths")
+        if not isinstance(paths, list) or len(paths) != len(set(paths)) or set(paths) != set(codex_paths):
+            errors.append("package_projection.profile_paths must exactly equal configured Codex paths")
+        if package_projection.get("deferred_provider_runtime_paths") != []:
+            errors.append("package_projection must not include Claude or Copilot deferred runtime paths")
+
+    def reject_static_claims(value: object, label: str) -> None:
+        if isinstance(value, dict):
+            for key, item in value.items():
+                if isinstance(key, str) and key.casefold() in {"invoked", "runtime_enabled", "runtime-enabled"}:
+                    errors.append(f"{label}.{key}: static configuration cannot claim invocation or runtime enabled")
+                reject_static_claims(item, f"{label}.{key}")
+        elif isinstance(value, list):
+            for index, item in enumerate(value):
+                reject_static_claims(item, f"{label}[{index}]")
+        elif isinstance(value, str) and value.casefold() in SAG003_STATIC_RUNTIME_CLAIMS:
+            errors.append(f"{label}: static configuration cannot claim {value!r}")
+
+    reject_static_claims(registry, str(SAG003_PROVIDER_PROJECTION_REGISTRY))
+    return codex_paths
+
+
+def validate_sag003_upgrader_role_bindings(
+    owners: dict[str, list[tuple[str, Path]]],
+    errors: list[str],
+    *,
+    root: Path = ROOT,
+) -> int:
+    """Validate the upgrader's bounded-role plan against canonical skill bindings."""
+    manifest = sag003_load_yaml_mapping(root, SAG003_UPGRADER_ROLE_BINDINGS, errors)
+    if manifest is None:
+        return 0
+    expected_fields = {
+        "schema_version",
+        "binding_manifest_id",
+        "owning_skill",
+        "role_binding_authority",
+        "execution_contract",
+        "role_bindings",
+    }
+    sag003_exact_keys(manifest, expected_fields, errors, str(SAG003_UPGRADER_ROLE_BINDINGS))
+    if manifest.get("schema_version") != "1.0":
+        errors.append(f"{SAG003_UPGRADER_ROLE_BINDINGS}: schema_version must be '1.0'")
+    if not isinstance(manifest.get("binding_manifest_id"), str) or not manifest[
+        "binding_manifest_id"
+    ].strip():
+        errors.append(f"{SAG003_UPGRADER_ROLE_BINDINGS}.binding_manifest_id must be non-empty")
+    if manifest.get("owning_skill") != "ai-context-upgrader":
+        errors.append(f"{SAG003_UPGRADER_ROLE_BINDINGS}.owning_skill must be ai-context-upgrader")
+    if not isinstance(manifest.get("role_binding_authority"), str) or not manifest[
+        "role_binding_authority"
+    ].strip():
+        errors.append(f"{SAG003_UPGRADER_ROLE_BINDINGS}.role_binding_authority must be non-empty")
+    if manifest.get("execution_contract") != SAG003_EXECUTION_CONTRACT.as_posix():
+        errors.append(
+            f"{SAG003_UPGRADER_ROLE_BINDINGS}.execution_contract must be "
+            f"{SAG003_EXECUTION_CONTRACT.as_posix()!r}"
+        )
+
+    bindings = manifest.get("role_bindings")
+    if not isinstance(bindings, list):
+        errors.append(f"{SAG003_UPGRADER_ROLE_BINDINGS}.role_bindings must be a list")
+        return 0
+    binding_fields = {
+        "role_asset_id",
+        "role_path",
+        "recommendation",
+        "stage",
+        "inputs",
+        "outputs",
+        "mutation_boundary",
+        "concurrency",
+        "stop_and_escalation",
+        "direct_sequential_fallback",
+        "selection_guard",
+    }
+    seen_roles: set[str] = set()
+    for index, binding in enumerate(bindings):
+        label = f"{SAG003_UPGRADER_ROLE_BINDINGS}: role_bindings[{index}]"
+        mapping = sag003_exact_keys(binding, binding_fields, errors, label)
+        if mapping is None:
+            continue
+        role_id = mapping.get("role_asset_id")
+        if not isinstance(role_id, str) or role_id not in SAG003_ROLE_IDS:
+            errors.append(f"{label}.role_asset_id must be one of the five SAG-003 roles")
+            continue
+        if role_id in seen_roles:
+            errors.append(f"{label}.role_asset_id duplicates {role_id!r}")
+        seen_roles.add(role_id)
+        expected_path = expected_role_binding_path(role_id)
+        if mapping.get("role_path") != expected_path:
+            errors.append(f"{label}.role_path must be the exact canonical role path {expected_path}")
+        if mapping.get("recommendation") not in {"recommended", "optional"}:
+            errors.append(f"{label}.recommendation must be recommended or optional")
+        for field in ("stage", "inputs", "outputs", "stop_and_escalation", "selection_guard"):
+            if not sag003_non_empty_string_list(mapping.get(field)):
+                errors.append(f"{label}.{field} must be a non-empty string list")
+        if mapping.get("mutation_boundary") not in SAG003_MUTATION_BOUNDARIES:
+            errors.append(f"{label}.mutation_boundary must be a supported SAG-003 boundary")
+        concurrency = sag003_exact_keys(
+            mapping.get("concurrency"),
+            {"maximum_parallel_instances", "disjoint_scope_required"},
+            errors,
+            f"{label}.concurrency",
+        )
+        if concurrency is not None:
+            maximum = concurrency.get("maximum_parallel_instances")
+            if not isinstance(maximum, int) or isinstance(maximum, bool) or maximum < 1:
+                errors.append(f"{label}.concurrency.maximum_parallel_instances must be an integer >= 1")
+            if not isinstance(concurrency.get("disjoint_scope_required"), bool):
+                errors.append(f"{label}.concurrency.disjoint_scope_required must be boolean")
+        fallback = sag003_exact_keys(
+            mapping.get("direct_sequential_fallback"),
+            {"allowed", "same_contract_required"},
+            errors,
+            f"{label}.direct_sequential_fallback",
+        )
+        if fallback is not None and fallback != {
+            "allowed": True,
+            "same_contract_required": True,
+        }:
+            errors.append(f"{label}.direct_sequential_fallback must allow only same-contract direct fallback")
+
+        if role_id == "fixed-head-independent-auditor":
+            guard = " ".join(mapping.get("selection_guard", [])).casefold()
+            has_terminal_high_risk = "terminal" in guard and "high-risk" in guard
+            has_routine_profile_prohibition = (
+                "routine" in guard
+                and "profile" in guard
+                and any(token in guard for token in ("only", "not", "reject", "prohibit"))
+            )
+            if not has_terminal_high_risk or not has_routine_profile_prohibition:
+                errors.append(
+                    f"{label}.selection_guard must restrict the terminal auditor to explicit "
+                    "terminal/high-risk gates and reject routine task/profile presence"
+                )
+
+        owner_records = owners.get(role_id, [])
+        upgrader_records = [
+            record for record in owner_records if record[0] == "ai-context-upgrader"
+        ]
+        if upgrader_records != [
+            ("ai-context-upgrader", Path(".ai/assets/skills/ai-context-upgrader/skill.yaml"))
+        ]:
+            errors.append(
+                f"{label}: ai-context-upgrader must have exactly one active canonical role_binding; "
+                f"actual={[(owner, str(path)) for owner, path in owner_records]!r}"
+            )
+
+    if seen_roles != SAG003_ROLE_IDS:
+        errors.append(
+            f"{SAG003_UPGRADER_ROLE_BINDINGS}.role_bindings must cover the exact five SAG-003 roles"
+        )
+    return len(seen_roles)
+
+
+def validate_sag003_provider_role_projection_contract(
+    errors: list[str], *, root: Path = ROOT
+) -> int:
+    """Bind provider-neutral roles, static projections, and upgrader use without runtime claims."""
+    capability_by_role, owners = validate_sag003_capability_registry(errors, root=root)
+    validate_sag003_provider_projection_registry(capability_by_role, errors, root=root)
+    return validate_sag003_upgrader_role_bindings(owners, errors, root=root)
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.parse_args(argv)
@@ -2888,6 +3689,7 @@ def main(argv: list[str] | None = None) -> int:
     governance_terms = validate_governance_term_routing(errors)
     canonical_assets, skill_assets = validate_canonical_assets(errors)
     capability_mappings = validate_capability_profile(skill_assets, errors)
+    sag003_role_bindings = validate_sag003_provider_role_projection_contract(errors)
 
     for runtime_root in ACTIVE_RUNTIME_ROOTS:
         if not (ROOT / runtime_root).is_dir():
@@ -2921,6 +3723,7 @@ def main(argv: list[str] | None = None) -> int:
         f"{len(language_files)} language-policy files, {ownership_rules} owned rules, "
         f"{governance_terms} qualified governance terms, {canonical_assets} canonical manifests, "
         f"{capability_mappings} capability mappings, "
+        f"{sag003_role_bindings} SAG-003 role bindings, "
         f"{cli_routes} local CLI routes, and {lesson_count} governed lessons."
     )
     print(
