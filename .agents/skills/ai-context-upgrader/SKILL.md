@@ -14,6 +14,7 @@ This is a thin current-runtime wrapper.
 - Human Guide: `.dev/guides/ai-collaboration-guides/AI-CONTEXT-UPGRADER-SKILL-GUIDE.md`
 - References:
   - `.dev/standards/AI-CONTEXT-VERSION-POLICY.md`
+  - `.ai/assets/skills/ai-context-upgrader/references/upgrade-support-policy.md`
   - `.ai/assets/skills/ai-context-upgrader/references/upgrade-playbook.md`
   - `.ai/assets/skills/ai-context-upgrader/references/three-way-merge-boundaries.md`
   - `.ai/assets/skills/ai-context-upgrader/references/provenance-contract.md`
@@ -28,9 +29,12 @@ This is a thin current-runtime wrapper.
   - `.ai/assets/skills/ai-context-upgrader/templates/customizations-template.yaml`
   - `.ai/assets/skills/ai-context-upgrader/templates/upgrade-remediation-packet.schema.yaml`
   - `.ai/assets/skills/ai-context-upgrader/templates/upgrade-remediation-decision.schema.yaml`
+  - `.ai/assets/skills/ai-context-upgrader/templates/upgrade-route-matrix.template.yaml`
+  - `.ai/assets/skills/ai-context-upgrader/templates/upgrade-route-matrix.schema.yaml`
   - `.ai/assets/shared/CLI-EXECUTION-ROUTING-CONTRACT.md`
   - `.ai/assets/shared/cli-execution-routing.schema.yaml`
 - `.ai/scripts/validate-ai-context-target.py`
+- `.ai/scripts/plan-ai-context-upgrade.py`
 - `.ai/assets/skills/ai-context-upgrader/scripts/compare-ai-context-versions.py`
 
 ## Wrapper Rules

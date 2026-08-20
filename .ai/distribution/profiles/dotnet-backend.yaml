@@ -138,7 +138,9 @@ entries:
           - .ai/scripts/ai_context_cli_routing.py
           - .ai/scripts/ai_context_effective_rules.py
           - .ai/scripts/ai_context_target_provenance.py
+          - .ai/scripts/ai_context_upgrade_routes.py
           - .ai/scripts/plan-ai-context-package-apply.py
+          - .ai/scripts/plan-ai-context-upgrade.py
           - .ai/scripts/resolve-effective-rule-packet.py
           - .ai/scripts/validate-ai-context.py
           - .ai/scripts/validate-ai-context-target.py

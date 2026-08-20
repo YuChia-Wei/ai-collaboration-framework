@@ -2205,6 +2205,10 @@ run_command_check "python .ai/scripts/tests/test_payload_user_view_contract.py -
 
 run_source_package_smoke
 
+run_command_check "python .ai/scripts/tests/test_ai_context_packaging.py UpgradeRoutePackageProjectionGwtTests -v" \
+    "AI Context Upgrade Route Package Projection" \
+    "required" "true" "true"
+
 run_command_check "python .ai/scripts/validate-dependency-versions.py" \
     "Offline Dependency And Version Consistency" \
     "required" "true" "true"

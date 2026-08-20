@@ -1,0 +1,49 @@
+schema_version: "1.0"
+contract_id: github-terminal-issue-closure
+repository: YuChia-Wei/ai-collaboration-framework
+validation_stage: declaration
+pull_request:
+  number: 226
+  head_sha: null
+  body: |-
+    ## Summary
+
+    - adds the read-only UPG-003 S1 support policy, route matrix schema/template, resolver, and portable CLI
+    - preserves exactly four route kinds and fails closed on ambiguity, semantic-cutover bypass, missing/tampered assets, duplicate YAML keys, and matrix-only edge/cutover relabeling
+    - binds checksums, validator argv, exact from/to versions, ordered required cutover claims, canonical receipts, raw output bytes, and explicit deprecation evidence
+    - keeps historical v0.6.0, v0.9.0, and immediate-predecessor routes reconciliation-required until exact portable validator evidence exists
+
+    ## Validation
+
+    - focused route suite: 24/24 passed
+    - isolated route package projection: 1/1 passed
+    - GWT014 and GWT020 package upgrade selectors: 1/1 passed each
+    - validation registry: 6/6 passed
+    - workflow, AI-context, commit range, AST/YAML/JSON, and diff checks passed
+    - fresh independent exact-head audit: PASS at `26d5ccbcd063e28df7d3cfddeb2a715c6f193644`
+
+    Retained failure evidence is not promoted: the unchanged full packaging module failed at `a57e484b` after 156.213s on the now-repaired GWT014/GWT020 fixtures; it was not rerun unchanged.
+
+    ## Disposition
+
+    Refs #206
+
+    Closure reason: route resolution is complete; transaction and v0.14 release proof remain.
+
+    Next gate: S2 multi-hop transaction.
+
+    #206 must remain open and In progress.
+  integration: {status: pending, topology: null, admitted_head_sha: null, integration_commit_sha: null, provider_read_back: false}
+  review: {status: pending}
+  required_check_contexts: []
+  hosted_checks: []
+issues:
+  - number: 206
+    mode: deferred
+    work_authorization: {online_issue_bound: true, explicit_owner_approval: true}
+    final_accepted_delivery: false
+    workflow: {scope_complete: false, tasks_complete: false, applicable_verification_complete: false}
+    closing_keyword: null
+    closure_deferred_reason: route resolution is complete; transaction and v0.14 release proof remain
+    next_terminal_gate_or_owner: S2 multi-hop transaction
+    read_back: {performed: false, integration_commit_sha: null, issue_state: null, issue_state_reason: null, project_status: null}
