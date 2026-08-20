@@ -1,0 +1,102 @@
+{
+  "template_id": "software-development-orchestrator/development-workflow-task",
+  "template_version": "1.5.0",
+  "template_created_at": "2026-07-10T18:25:11+08:00",
+  "template_updated_at": "2026-08-05T02:12:00+08:00",
+  "workflow_id": "2026-08-20-ctx-010-engineering-guardrails",
+  "task_id": "CTX-010",
+  "owner_skill": "ai-context-governance",
+  "related_plan_id": "development-plan-2026-08-20-ctx-010-engineering-guardrails",
+  "status": "in_progress",
+  "created_at": "2026-08-20T14:45:44+08:00",
+  "updated_at": "2026-08-20T14:45:44+08:00",
+  "template_source": ".ai/assets/skills/software-development-orchestrator/templates/development-workflow-task-template.json",
+  "model": "gpt-5.6-sol",
+  "reasoning_effort": "high",
+  "workflow_locator": ".dev/workflows/2026-08-20-ctx-010-engineering-guardrails/workflow.yaml",
+  "scope": {
+    "goal": "Implement Issue #205 as an optional official-recommended Engineering Guardrails provider contract with honest unavailable-provider behavior.",
+    "target": "Provider-neutral semantic rules, .NET binding, upgrade diagnostics, target-owned analyzer templates, and portable package-native validation.",
+    "files": [],
+    "constraints": [
+      "Keep recommendation, selection, readiness, compatibility, and execution evidence separate.",
+      "Do not auto-install or silently select the provider.",
+      "Do not claim execution without exact readiness evidence.",
+      "Keep the framework release SDK-free.",
+      "Keep analyzer adoption separate from Contracts adoption."
+    ],
+    "non_goals": [
+      "Modify the Engineering Guardrails repository",
+      "Invent a NuGet package ID, version, feed, publication contract, or readiness state",
+      "Implement Issue #179",
+      "Restore GitHub Project fields",
+      "Modify local roadmap or backlog files",
+      "Tag, Release, publish, or activate nightly-full"
+    ]
+  },
+  "inputs": {
+    "requirements": ["https://github.com/YuChia-Wei/ai-collaboration-framework/issues/205"],
+    "specifications": [
+      ".ai/assets/skills/ai-context-governance/skill.yaml",
+      "current provider-neutral and .NET technology contracts selected by the implementation inventory"
+    ],
+    "architecture_decisions": [
+      "Stable provider capability identity does not depend on a package ID",
+      "official-recommended and not-selected may coexist",
+      "selected-but-unavailable and readiness-unproven are valid fail-closed states",
+      "target-owned analyzer templates are bounded starting points, not a bundled provider"
+    ],
+    "user_constraints": ["Original v0.14.0 delivery prompt and current instruction to continue while Project restoration is handled separately"]
+  },
+  "execution": {
+    "capability_slot": "ai-context-governance",
+    "approval_contract": {
+      "status": "approved",
+      "required_before": "implementation",
+      "authorization_source": ["explicit repository-owner v0.14 prompt"],
+      "pending_decision": ""
+    },
+    "implementation_contract": null,
+    "test_execution_contract": null,
+    "role_execution_records": [],
+    "spec_compliance": {
+      "selected": false,
+      "activation_source": [],
+      "expected_outcome": "not-applicable"
+    },
+    "steps": [
+      "Inventory current provider-neutral, .NET, recipe, package, schema, and test surfaces.",
+      "Resolve the explicit framework-source effective-rule packet for implementation.",
+      "Implement provider-state separation, fail-closed evidence semantics, terminology, and target-owned templates.",
+      "Add focused positive and fail-closed portable package-native fixtures.",
+      "Validate, commit, audit, pass hosted checks, and terminal-close Issue #205 at the admitted head."
+    ],
+    "validation": [
+      "focused CTX-010 schema and package fixtures",
+      "python .ai/scripts/validate-workflow-artifacts.py",
+      "python .ai/scripts/validate-ai-context.py",
+      "python .ai/scripts/validate-source-governance.py",
+      "git diff --check"
+    ],
+    "commit_checkpoint": "One terminal-close PR for Issue #205 after focused validation.",
+    "deferred_items": []
+  },
+  "results": {
+    "summary": "Inventory and contract reconciliation are in progress.",
+    "files_changed": [],
+    "approval_evidence": ["explicit repository-owner v0.14 authorization"],
+    "test_execution": [],
+    "role_execution_aggregation": [],
+    "spec_compliance": {
+      "outcome": "not-applicable",
+      "coverage_percent": null,
+      "evidence": []
+    },
+    "validation_evidence": [
+      "External Engineering Guardrails main is d0d23e922de1fc067404bb87859d2b798230c270 with no tags or Releases and non-packable project configuration.",
+      "The external README explicitly leaves NuGet identities, package boundaries, version policy, and publication contract undefined."
+    ],
+    "commits": [],
+    "follow_up_needed": true
+  }
+}
