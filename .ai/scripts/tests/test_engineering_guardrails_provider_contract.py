@@ -30,6 +30,7 @@ README_PATH = RECIPE_ROOT / "README.md"
 MANIFEST_PATH = RECIPE_ROOT / "recipe-manifest.yaml"
 RECIPE_PATH = RECIPE_ROOT / "recipes/analyzer-project.md"
 CHECK_ALL_PATH = REPO_ROOT / ".ai/scripts/check-all.sh"
+SHELL_ASSETS_PATH = REPO_ROOT / ".ai/scripts/shell-assets.yaml"
 
 
 def load_yaml(path: Path) -> dict:
@@ -1394,13 +1395,13 @@ class EngineeringGuardrailsProviderContractGwtTests(unittest.TestCase):
 
     def test_gwt_010_given_the_provider_check_is_selected_when_the_aggregate_runner_executes_then_evidence_is_emitted(self) -> None:
         check_all = CHECK_ALL_PATH.read_text(encoding="utf-8")
+        shell_assets = load_yaml(SHELL_ASSETS_PATH)
         runner = "run_source_repository_engineering_guardrails_provider_contract"
+        command = "python .ai/scripts/tests/test_engineering_guardrails_provider_contract.py -v"
         self.assertEqual(2, check_all.count(runner))
-        self.assertIn(
-            'run_command_check "python .ai/scripts/tests/test_engineering_guardrails_provider_contract.py -v"',
-            check_all,
-        )
+        self.assertIn(f'run_command_check "{command}"', check_all)
         self.assertIn('"Engineering Guardrails Provider Contract"', check_all)
+        self.assertIn(command, shell_assets["check_all_required_commands"])
 
 
 if __name__ == "__main__":
