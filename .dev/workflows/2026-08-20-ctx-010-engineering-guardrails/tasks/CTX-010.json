@@ -9,7 +9,7 @@
   "related_plan_id": "development-plan-2026-08-20-ctx-010-engineering-guardrails",
   "status": "in_progress",
   "created_at": "2026-08-20T14:45:44+08:00",
-  "updated_at": "2026-08-20T15:10:49+08:00",
+  "updated_at": "2026-08-20T15:28:28+08:00",
   "template_source": ".ai/assets/skills/software-development-orchestrator/templates/development-workflow-task-template.json",
   "model": "gpt-5.6-sol",
   "reasoning_effort": "high",
@@ -82,7 +82,7 @@
     "deferred_items": []
   },
   "results": {
-    "summary": "Provider contract implementation and focused validation are complete at 16584c9968705a9cd99db37872bb92543bbcdbd4; immutable package smoke, exact-head audit, and hosted admission remain.",
+    "summary": "The first exact-head audit failed 09aa506fcf2250da97e45c4cb9f573e120931d5c because the provider validator accepted fabricated readiness, execution receipts, and removed prohibitions. Repair b3425f56cefeb54f79ed38d8ad7719a78708f0f0 strengthens the schema, validator, and negative mutations; replacement immutable validation and audit remain.",
     "files_changed": [
       "provider-local Engineering Guardrails contract and schema",
       "target-owned provider selection, analyzer, analyzer-test, and code-fix decision starting templates",
@@ -116,6 +116,21 @@
         "command": "initial focused implementation attempts",
         "outcome": "passed-with-retained-repair-failures",
         "evidence": "retained local pycache permission failure and initial synthetic-state fixture-path failure before corrected reruns"
+      },
+      {
+        "command": "external package smoke at 09aa506fcf2250da97e45c4cb9f573e120931d5c",
+        "outcome": "passed-but-invalidated-by-subsequent-repair",
+        "evidence": "validated external-task completion: 1 test, exit 0, 1.368s, clean exact subject; replacement required after audit repair changed the head"
+      },
+      {
+        "command": "fresh Sol High exact-head audit at 09aa506fcf2250da97e45c4cb9f573e120931d5c",
+        "outcome": "failed",
+        "evidence": "high blocker: framework_delivery ready claim, selected-unavailable and synthetic execution receipts, and empty prohibitions all produced contract_errors == [] and left the 5-test provider suite passing"
+      },
+      {
+        "command": "post-audit provider contract fixture at b3425f56cefeb54f79ed38d8ad7719a78708f0f0",
+        "outcome": "passed",
+        "evidence": "5 tests; exact unavailable delivery, all supplied flags false, explicit null execution receipts for all four shipped states, exact prohibition list, missing-field and type checks"
       }
     ],
     "role_execution_aggregation": [],
@@ -128,11 +143,14 @@
       "External Engineering Guardrails main is d0d23e922de1fc067404bb87859d2b798230c270 with no tags or Releases and non-packable project configuration.",
       "The external README explicitly leaves NuGet identities, package boundaries, version policy, and publication contract undefined.",
       "Framework-source packet 09b7c4c770c5a6d5f79f5b48cc0d1d353d65a5260df9bb489351cc44ddc660ae resolved at clean bootstrap commit ea6bf4e5a721a572c9408703d14abeaaafd678e5 with AICTX-EVIDENCE-001 and TEST-GWT-001.",
-      "validate-ai-context, validate-source-governance, validate-shell-assets, YAML parsing, static newline/whitespace checks, and git diff checks passed."
+      "validate-ai-context, validate-source-governance, validate-shell-assets, YAML parsing, static newline/whitespace checks, and git diff checks passed.",
+      "The first independent audit failure at 09aa506fcf2250da97e45c4cb9f573e120931d5c is retained and not counted as a passing admission gate."
     ],
     "commits": [
       "ea6bf4e5a721a572c9408703d14abeaaafd678e5",
-      "16584c9968705a9cd99db37872bb92543bbcdbd4"
+      "16584c9968705a9cd99db37872bb92543bbcdbd4",
+      "09aa506fcf2250da97e45c4cb9f573e120931d5c",
+      "b3425f56cefeb54f79ed38d8ad7719a78708f0f0"
     ],
     "follow_up_needed": true
   }
