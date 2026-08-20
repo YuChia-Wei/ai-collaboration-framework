@@ -9,7 +9,7 @@
   "related_plan_id": "development-plan-2026-08-20-upg-002-remediation-packet",
   "status": "in_progress",
   "created_at": "2026-08-20T09:10:41+08:00",
-  "updated_at": "2026-08-20T13:29:18+08:00",
+  "updated_at": "2026-08-20T13:54:15+08:00",
   "template_source": ".ai/assets/skills/software-development-orchestrator/templates/development-workflow-task-template.json",
   "model": "gpt-5.6-sol",
   "reasoning_effort": "high",
@@ -72,7 +72,7 @@
     "deferred_items": []
   },
   "results": {
-    "summary": "Implementation and focused validation are complete; exact-head audit and hosted provider admission remain before terminal-close integration.",
+    "summary": "Implementation and focused repair validation are complete. The first hosted PR profile and fresh exact-head audit failed at 66dc77d901dec3eaebf6356183f1b6f0c55f12ef; their findings were repaired in 9dfa46b928247681c58ac0978803aee203067d33. Replacement audit and hosted admission remain before terminal-close integration.",
     "files_changed": [
       "upgrader packet, decision, target-validation, provenance, and output contracts",
       "package plan/apply/recovery and record-only CLI runtime",
@@ -172,6 +172,36 @@
         "command": "post-repair focused UPG-002 lifecycle selections",
         "outcome": "passed",
         "evidence": "GWT047-GWT059 each passed in bounded host groups after their material repairs, including rollback before and after target validation, retained output bytes, v3/2.1 compatibility, later clean apply, terminal retry, and candidate identity rejection"
+      },
+      {
+        "command": "hosted PR #224 Portable AI Context Gates run 32335941157 at 66dc77d901dec3eaebf6356183f1b6f0c55f12ef",
+        "outcome": "failed",
+        "evidence": "Ubuntu PR profile failed package-apply with GWT000c error, GWT002 failure, and GWT004 error; the prerequisite, Windows, governance, and package-candidate jobs passed"
+      },
+      {
+        "command": "fresh Sol High exact-head audit at 66dc77d901dec3eaebf6356183f1b6f0c55f12ef",
+        "outcome": "failed",
+        "evidence": "Found absent target-validation profile fail-open, incomplete effective-state rollback, stale workflow evidence, and subject drift caused by concurrent repair; the audit performed no repair"
+      },
+      {
+        "command": "hosted regression repairs GWT000c/GWT002/GWT004 with provider and owner-decision guards",
+        "outcome": "passed",
+        "evidence": "5 tests passed through the authorized host route"
+      },
+      {
+        "command": "post-audit target-validation and terminal-rollback repair coverage",
+        "outcome": "passed",
+        "evidence": "semantic lifecycle 10/10; corrected combined GWT049 and GWT060 2/2; recorder and independent target validator reject absent executable profiles; terminal-link failure restores effective state and packets"
+      },
+      {
+        "command": "initial combined GWT049 and GWT060 integration selector",
+        "outcome": "failed",
+        "evidence": "one malformed GWT049 selector and one GWT060 error-message expectation mismatch were retained before the corrected 2/2 run"
+      },
+      {
+        "command": "post-audit Python syntax compilation",
+        "outcome": "passed-with-retained-blocked-attempt",
+        "evidence": "sandbox py_compile was blocked by __pycache__ permissions; the identical host-routed command passed"
       }
     ],
     "role_execution_aggregation": [],
@@ -188,9 +218,14 @@
       "Python AST, duplicate-test-name scan, YAML parse, module import, and git diff --check passed",
       "read-only pre-commit review found five semantic/evidence gaps; implementation repairs and focused regression proofs are complete",
       "read-only current-byte repair verification found no residual release-blocking finding in the repaired lifecycle, output-byte, identity, recovery, compatibility, or workflow-evidence areas",
-      "clean-install recovery GWT015 and GWT042 passed after restoring their finalized-only expectations; strengthened GWT049 package-side terminal load, GWT052 lifecycle tamper rejection, and GWT056 later clean finalization all passed"
+      "clean-install recovery GWT015 and GWT042 passed after restoring their finalized-only expectations; strengthened GWT049 package-side terminal load, GWT052 lifecycle tamper rejection, and GWT056 later clean finalization all passed",
+      "first fixed-head audit and hosted PR profile failures are retained and are not counted as passing evidence for the repaired head",
+      "repair commit 9dfa46b928247681c58ac0978803aee203067d33 closes the absent-profile and mixed-effective-state audit findings plus the three hosted compatibility regressions"
     ],
-    "commits": [],
+    "commits": [
+      "66dc77d901dec3eaebf6356183f1b6f0c55f12ef",
+      "9dfa46b928247681c58ac0978803aee203067d33"
+    ],
     "follow_up_needed": true
   }
 }
