@@ -1,0 +1,122 @@
+{
+  "template_id": "software-development-orchestrator/development-workflow-task",
+  "template_version": "1.5.0",
+  "template_created_at": "2026-07-10T18:25:11+08:00",
+  "template_updated_at": "2026-08-05T02:12:00+08:00",
+  "workflow_id": "2026-08-20-upg-003-multi-hop-upgrade",
+  "task_id": "UPG-003-S2",
+  "owner_skill": "ai-context-upgrader",
+  "related_plan_id": "development-plan-2026-08-20-upg-003-multi-hop-upgrade",
+  "status": "in_progress",
+  "created_at": "2026-08-20T20:03:45+08:00",
+  "updated_at": "2026-08-20T20:03:45+08:00",
+  "template_source": ".ai/assets/skills/software-development-orchestrator/templates/development-workflow-task-template.json",
+  "model": "gpt-5.6-sol",
+  "reasoning_effort": "high",
+  "workflow_locator": ".dev/workflows/2026-08-20-upg-003-multi-hop-upgrade/workflow.yaml",
+  "scope": {
+    "goal": "Deliver Issue #206 S2 as one evidence-bound multi-hop upgrade operation.",
+    "target": "Compose the merged S1 resolver with #200/#201 durable package transactions and #203 per-hop remediation, validation, finalization, resume, and rollback semantics.",
+    "files": [],
+    "constraints": [
+      "Every hop binds an immutable package, manifest, checksum, validator, decision, target-validation receipt, and terminal receipt.",
+      "A later hop may start only from the exact finalized checkpoint of the preceding hop and the same unchanged Git HEAD.",
+      "Resume rejects route, matrix, hop, package, decision, receipt, authority, or target-state drift.",
+      "Rollback restores only the active unfinalized hop to the last finalized consistent checkpoint and never claims reversal of already finalized hops.",
+      "No mixed provenance, skipped owner decision, fabricated validator execution, or direct semantic-cutover bypass is accepted."
+    ],
+    "non_goals": [
+      "Create the v0.14.0 source candidate",
+      "Close Issue #206",
+      "Restore Project fields",
+      "Modify historical roadmap/backlog files",
+      "Create a tag or Release or publish assets/packages"
+    ]
+  },
+  "inputs": {
+    "requirements": ["https://github.com/YuChia-Wei/ai-collaboration-framework/issues/206"],
+    "specifications": [
+      ".ai/assets/skills/ai-context-upgrader/references/upgrade-support-policy.md",
+      ".ai/scripts/ai_context_upgrade_routes.py",
+      ".ai/scripts/ai_context_package_apply.py",
+      ".ai/scripts/ai_context_target_provenance.py"
+    ],
+    "architecture_decisions": [
+      "Reuse the S1 selected route as the sole route authority.",
+      "Reuse single-hop transaction and finalization evidence instead of creating weaker parallel receipts.",
+      "Treat each finalized hop as an immutable checkpoint; route rollback applies only to the active unfinalized hop."
+    ],
+    "user_constraints": [
+      "Use one Issue #206 and one workflow across S1, S2, and S3.",
+      "S2 is deferred with Refs #206 and keeps #206 open.",
+      "Use full-recommended delegation with at most two concurrent workers and no #207 role claim before #207 integrates."
+    ]
+  },
+  "execution": {
+    "capability_slot": "ai-context-upgrader",
+    "approval_contract": {
+      "status": "approved",
+      "required_before": "implementation",
+      "authorization_source": ["explicit repository-owner v0.14.0 delivery prompt"],
+      "pending_decision": ""
+    },
+    "implementation_contract": null,
+    "test_execution_contract": null,
+    "role_execution_records": [
+      {
+        "role": "pre-#207 bounded deterministic inventory context",
+        "provider": "Codex",
+        "model": "gpt-5.6-terra",
+        "reasoning_effort": "max",
+        "outcome": "in_progress",
+        "scope": "Read-only mapping of exact S1, package transaction, remediation, finalization, resume, rollback, and fixture surfaces.",
+        "canonical_role_claimed": false
+      },
+      {
+        "role": "pre-#207 bounded implementation context",
+        "provider": "Codex",
+        "model": "gpt-5.6-terra",
+        "reasoning_effort": "max",
+        "outcome": "in_progress",
+        "scope": "Truthful S2 state-machine and shared API implementation under root integration ownership.",
+        "canonical_role_claimed": false
+      }
+    ],
+    "spec_compliance": {
+      "selected": false,
+      "activation_source": [],
+      "expected_outcome": "not-applicable"
+    },
+    "steps": [
+      "Map shared route, per-hop transaction, finalization, checkpoint, resume, and rollback boundaries.",
+      "Implement a sealed route transaction and later-hop exact-checkpoint admission.",
+      "Add focused positive and fail-closed multi-hop GWTs.",
+      "Run fresh exact-head independent audit and hosted admission.",
+      "Deliver one deferred PR and retain Issue #206 open for S3."
+    ],
+    "validation": [
+      "focused multi-hop transaction GWTs",
+      "existing affected package/finalization regression selectors",
+      "isolated package projection and source governance",
+      "fresh exact-head independent audit",
+      "required hosted checks"
+    ],
+    "commit_checkpoint": "One deferred S2 PR using Refs #206; Issue remains open for S3.",
+    "deferred_items": ["S3 v0.14.0 source candidate and terminal closure"]
+  },
+  "results": {
+    "summary": "S2 started from clean integrated S1 main 41a1b4bcc942b9a412d55a8dab77bcc5d7b6fbf2.",
+    "files_changed": [],
+    "approval_evidence": ["explicit repository-owner v0.14.0 delivery prompt"],
+    "test_execution": [],
+    "role_execution_aggregation": [],
+    "spec_compliance": {
+      "outcome": "not-applicable",
+      "coverage_percent": null,
+      "evidence": []
+    },
+    "validation_evidence": [],
+    "commits": [],
+    "follow_up_needed": true
+  }
+}

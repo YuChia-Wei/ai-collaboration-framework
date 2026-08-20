@@ -12,12 +12,12 @@
 - `workflow_id`: `2026-08-20-upg-003-multi-hop-upgrade`
 - `plan_id`: `development-plan-2026-08-20-upg-003-multi-hop-upgrade`
 - `owner_skill`: `software-development-orchestrator`
-- `branch`: `codex/2026-08-20-upg-003-route-resolution-s1-admission`
+- `branch`: `codex/2026-08-20-upg-003-multi-hop-upgrade-s2`
 - `base_branch`: `main`
-- `branch_segment`: `1`
+- `branch_segment`: `2`
 - `status`: `active`
 - `created_at`: `2026-08-20T17:03:25+08:00`
-- `updated_at`: `2026-08-20T19:45:54+08:00`
+- `updated_at`: `2026-08-20T20:03:45+08:00`
 - `template_source`: `.ai/assets/skills/software-development-orchestrator/templates/development-workflow-plan-template.md`
 - `template_version`: `1.4.0`
 - `workflow_locator`: `.dev/workflows/2026-08-20-upg-003-multi-hop-upgrade/workflow.yaml`
@@ -26,7 +26,7 @@
 ## Development Objective
 
 - Product or software outcome: Preserve supported v0.6.0, v0.9.0, and immediate-predecessor upgrades behind one user operation while resolving exact routes before mutation.
-- Current lifecycle entry point: S1 read-only support policy, matrix, resolver, package projection, and fail-closed route evidence.
+- Current lifecycle entry point: S2 evidence-bound multi-hop transaction, exact finalized-hop checkpoints, resume, and active-hop rollback.
 - User constraints: Use one online Issue #206 and this one technical workflow across three sequential PRs; S1 and S2 defer closure, S3 terminal-closes #206.
 - Non-goals: Target mutation in S1; duplicating #200 transactions or #203 remediation/finalization; changing historical backlog/roadmap; Project-field restoration; tag, Release, publication, or nightly activation.
 
@@ -81,13 +81,15 @@ Before #207 integrates, every delegated context is generic and is not evidence t
 
 | Stage | Role / Canonical Path | Owning Skill | Final/Current Disposition | Attempt Summary | Final Integration Owner / Decision | Record or Task Reference |
 | --- | --- | --- | --- | --- | --- | --- |
-| UPG-003-S1 | pre-#207 generic bounded context / no canonical path | ai-context-upgrader | repair committed, admission pending | Terra Max performed live-contract, package-asset, package-projection, and typed-evidence repair work. Fresh Sol High passed the exact `26d5ccbcd063e28df7d3cfddeb2a715c6f193644` core-contract head with zero findings. The read-only audit of declaration head `b87d0bd071696195976e77afd4fc59264f76aee5` failed only on stale workflow text, while hosted governance and Ubuntu PR jobs failed on one shared missing evidence-producing validator wiring. Commit `2e468445ff876c78b4284e3548134dfdf37bb5b3` contains the focused repair and awaits fresh audit and hosted checks. | root / new exact-head admission by a different fresh independent audit and fresh hosted checks | `tasks/UPG-003-S1.json` |
+| UPG-003-S1 | pre-#207 generic bounded contexts / no canonical path | ai-context-upgrader | integrated | Terra Max performed bounded implementation and repair work. Fresh Sol High passed exact admitted head `95b37747cee83cbe837bca9438b2450ee8c1bb85`; five hosted contexts and live merge admission passed; PR #226 merged as `41a1b4bcc942b9a412d55a8dab77bcc5d7b6fbf2`. Earlier failed audits and hosted attempts remain retained. | root / merged exact admitted head and kept #206 open | `tasks/UPG-003-S1.json` |
+| UPG-003-S2 | pre-#207 generic bounded contexts / no canonical path | ai-context-upgrader | in progress | Two Terra Max contexts own read-only deterministic inventory and bounded shared implementation design. The first design checkpoint correctly stopped because a two-file wrapper could not satisfy later-hop dirty-target admission, pending-receipt checkpointing, and truthful rollback. | root / integrate only a shared fail-closed state machine, then require a fresh independent auditor | `tasks/UPG-003-S2.json` |
 
 ## Approval Gates
 
 | Transition | Status | Authorization Source | Pending Decision |
 | --- | --- | --- | --- |
 | Issue contract -> S1 implementation | approved | Explicit repository-owner v0.14.0 delivery prompt authorizes #206 S1/S2/S3 implementation, PR, audit, and merge. | none |
+| Merged S1 -> S2 implementation | approved | Explicit repository-owner v0.14.0 delivery prompt and merged exact S1 admission. | none |
 
 ## Validation Strategy
 
@@ -120,24 +122,25 @@ Before #207 integrates, every delegated context is generic and is not evidence t
 
 ## Progress And Handoff
 
-- Current stage: UPG-003-S1 core route contract passed independent exact-head audit at `26d5ccbcd063e28df7d3cfddeb2a715c6f193644`. Draft PR #226 declaration head `b87d0bd071696195976e77afd4fc59264f76aee5` then failed read-only audit only on stale workflow-state claims and failed two hosted jobs from shared missing runner wiring. Commit `2e468445ff876c78b4284e3548134dfdf37bb5b3` repairs both and requires fresh exact-head audit and hosted admission before merge.
-- Completed stages: Live Issue/Project/PR read-back, exact existing-surface inventory, route contract, resolver, CLI, portable projection, focused source tests, and isolated package test.
-- Deferred stages and reasons: S2 waits for merged S1; S3 waits for S2 plus #207/#208 integration.
+- Current stage: UPG-003-S2 started from clean integrated S1 main `41a1b4bcc942b9a412d55a8dab77bcc5d7b6fbf2`. Shared transaction/finalization boundaries are being mapped before mutation; a wrapper-only design was rejected because it could not truthfully satisfy later-hop and rollback invariants.
+- Completed stages: S1 route policy, matrix, resolver, portable CLI/projection, exact-head independent audit, hosted admission, deferred PR #226 merge, and online #206/#222 read-back.
+- Deferred stages and reasons: S3 waits for merged S2 plus #207/#208 integration.
 - Open decisions: None for S1; unavailable or ambiguous assets become reconciliation-required rather than inferred.
-- Continuation instructions: Complete S1 on the current branch, deliver one deferred PR, keep #206 open, then create a fresh S2 branch from integrated main while retaining this workflow.
+- Continuation instructions: Complete S2 on the current branch, deliver one deferred PR with `Refs #206`, keep #206 open, and do not claim route-wide reversal of already finalized hops.
 - Target policy references: `.ai/assets/skills/ai-context-upgrader/skill.yaml`; `.dev/standards/WORKFLOW-GATE-POLICY.md`; `.dev/standards/GITHUB-TERMINAL-ISSUE-CLOSURE-POLICY.md`.
 - Registered handoff checkpoint: none.
-- Branch history and checkpoint handoffs: Segment 1 starts from clean integrated main `ead96acb0ac4ea73a94c6de59604b47f1f78b5ae`.
+- Branch history and checkpoint handoffs: Segment 1 starts from clean integrated main `ead96acb0ac4ea73a94c6de59604b47f1f78b5ae`; Segment 2 starts from S1 merge `41a1b4bcc942b9a412d55a8dab77bcc5d7b6fbf2`.
 
 ## Branch Lifecycle
 
 | Segment | Branch | Base | Checkpoint Type | Commit | Remote / Target | Recorded At | Reason | Resume Branch / Action |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | 1 | `codex/2026-08-20-upg-003-route-resolution-s1-admission` | `main@ead96acb0ac4ea73a94c6de59604b47f1f78b5ae` | active-stage | `2e468445ff876c78b4284e3548134dfdf37bb5b3` | draft PR #226 / PR S1 | `2026-08-20T19:45:54+08:00` | Declaration-head audit and hosted missing-validator failures are repaired at an exact committed head. | Obtain a fresh independent exact-head audit and fresh hosted admission, then merge S1 before branching S2 from integrated main. |
+| 2 | `codex/2026-08-20-upg-003-multi-hop-upgrade-s2` | `main@41a1b4bcc942b9a412d55a8dab77bcc5d7b6fbf2` | active-stage | `41a1b4bcc942b9a412d55a8dab77bcc5d7b6fbf2` | local S2 branch / PR pending | `2026-08-20T20:03:45+08:00` | S1 integrated with exact audit, hosted, admission, and online read-back; S2 begins on one retained workflow. | Implement and validate the shared multi-hop state machine before creating the deferred S2 PR. |
 
 ## Completion Summary
 
-- Outcome: S1 remains in progress. The core route contract audit passed at `26d5ccbcd063e28df7d3cfddeb2a715c6f193644`; declaration-head audit and hosted failures at `b87d0bd071696195976e77afd4fc59264f76aee5` are repaired at `2e468445ff876c78b4284e3548134dfdf37bb5b3`. Fresh audit, hosted admission, merge, and online read-back remain.
+- Outcome: S1 is integrated; S2 is in progress from exact merge `41a1b4bcc942b9a412d55a8dab77bcc5d7b6fbf2`. Issue #206 remains open and the next deferred gate is a truthful multi-hop transaction PR.
 - Changed artifacts: Upgrade support policy, canonical matrix schema/template, read-only resolver and CLI, skill/profile registration, focused route and package-projection GWTs, validation registry, and this workflow evidence.
 - Approved requirement/specification evidence: Live Issue #206 and explicit owner instructions.
 - Implementation completion evidence: Resolver emits only four governed route kinds, cross-binds checksum sidecars, validator argv, canonical receipts, output bytes, and owner-approved deprecation evidence, and never accepts a target or invokes package apply. Commit `14621d0c2f6bceb795d33d38f7ec86e2b607c354` additionally cross-binds receipt from/to versions and ordered required cutover claims, rejects matrix duplicate keys, and uses retained canonical candidate authority bytes.
