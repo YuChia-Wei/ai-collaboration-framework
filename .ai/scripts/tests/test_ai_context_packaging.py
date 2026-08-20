@@ -214,6 +214,9 @@ class SyntheticPackageRepo:
                     ".dev/releases/v*/**",
                     ".dev/backlog/items/**",
                 ],
+                "target_owned_reference_patterns": list(
+                    PACKAGE.TARGET_OWNED_REFERENCE_PATTERNS
+                ),
             },
             "package_validation": {
                 "schema_version": "package-validation/v1",
@@ -2539,17 +2542,17 @@ class VersionedMigrationPackagingGwtTests(unittest.TestCase):
         fixture = SyntheticPackageRepo()
         try:
             # Given immutable inventories for two supported prior releases.
-            v080 = fixture.build("v080", "0.8.0")
-            v080_files = fixture.extract(v080, "v080-extracted") / "metadata/files.yaml"
-            (fixture.root / "docs/rule.md").write_text("v090 rule\n", encoding="utf-8", newline="\n")
-            git(fixture.root, "add", "docs/rule.md")
-            git(fixture.root, "commit", "-qm", "v0.9.0 source")
             v090 = fixture.build("v090", "0.9.0")
             v090_files = fixture.extract(v090, "v090-extracted") / "metadata/files.yaml"
+            (fixture.root / "docs/rule.md").write_text("v0130 rule\n", encoding="utf-8", newline="\n")
+            git(fixture.root, "add", "docs/rule.md")
+            git(fixture.root, "commit", "-qm", "v0.13.0 source")
+            v0130 = fixture.build("v0130", "0.13.0")
+            v0130_files = fixture.extract(v0130, "v0130-extracted") / "metadata/files.yaml"
             (fixture.root / "docs/rule.md").write_text("v100 rule\n", encoding="utf-8", newline="\n")
             git(fixture.root, "add", "docs/rule.md")
             git(fixture.root, "commit", "-qm", "v1.0.0 source")
-            fixture.ensure_release("1.0.0", ["v0.8.0", "v0.9.0"])
+            fixture.ensure_release("1.0.0", ["v0.9.0", "v0.13.0"])
 
             # When the builder receives the exact version-and-inventory pairs out of order.
             result = PACKAGE.build_package(
@@ -2558,18 +2561,32 @@ class VersionedMigrationPackagingGwtTests(unittest.TestCase):
                 "1.0.0",
                 fixture.output("v2-candidate"),
                 fixture.profile,
-                previous_sources=[(v090_files, "0.9.0"), (v080_files, "0.8.0")],
+                previous_sources=[(v0130_files, "0.13.0"), (v090_files, "0.9.0")],
             )
             migration = yaml.safe_load(
                 (fixture.extract(result, "v2-candidate-extracted") / "metadata/migration.yaml").read_text(encoding="utf-8")
             )
+            selected_inputs = json.loads(
+                (
+                    fixture.extract(result, "v2-selected-inputs-extracted")
+                    / "metadata/selected-inputs.json"
+                ).read_text(encoding="utf-8")
+            )
             # Then source selection identity is retained and serialized in ascending version order.
-            self.assertEqual(["0.8.0", "0.9.0"], [source["version"] for source in migration["sources"]])
+            self.assertEqual(["0.9.0", "0.13.0"], [source["version"] for source in migration["sources"]])
             self.assertEqual(
-                [PACKAGE.sha256_bytes(v080_files.read_bytes()), PACKAGE.sha256_bytes(v090_files.read_bytes())],
+                ["0.9.0", "0.13.0"],
+                [source["version"] for source in selected_inputs["migration_sources"]],
+            )
+            self.assertEqual(
+                [PACKAGE.sha256_bytes(v090_files.read_bytes()), PACKAGE.sha256_bytes(v0130_files.read_bytes())],
                 [source["manifest_sha256"] for source in migration["sources"]],
             )
             self.assertTrue(all(isinstance(source["operations"], list) for source in migration["sources"]))
+            self.assertEqual(
+                PACKAGE.validate_archive(Path(result["zip"])),
+                PACKAGE.validate_archive(Path(result["tar_gz"])),
+            )
         finally:
             fixture.close()
 

@@ -1330,7 +1330,9 @@ def selected_input_document(
             }
             for item in sorted(
                 migration_sources,
-                key=lambda item: str(item["version"]),
+                key=lambda item: tuple(
+                    int(part) for part in str(item["version"]).split(".")
+                ),
             )
         ],
     }
