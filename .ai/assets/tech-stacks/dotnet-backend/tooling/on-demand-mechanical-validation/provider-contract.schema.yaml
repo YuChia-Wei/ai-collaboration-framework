@@ -18,6 +18,8 @@ contract:
     - "evidence_receipt_contracts"
     - "prohibitions"
   required_literals:
+    schema_version: "1.0"
+    contract_id: "dotnet-engineering-guardrails-provider-contract"
     contract_tier: "reference-only"
     technology_profile: "dotnet-backend"
 capability:
@@ -25,8 +27,20 @@ capability:
     - "id"
     - "provider_binding"
     - "stable_identity_requirement"
+    - "scope"
+  required_literals:
+    id: "dotnet.mechanical-validation"
+    provider_binding: "engineering-guardrails"
+    stable_identity_requirement: "The capability ID remains stable even when no provider package identity is known."
+    scope: "Optional target-selected mechanical validation for a bounded diagnostic subset."
   package_identity_independent: true
 recommendation:
+  required_fields:
+    - "status"
+    - "selection_independent"
+    - "default_selection_state"
+    - "auto_install"
+    - "silent_selection"
   required_literals:
     status: "official-recommended"
     selection_independent: true
@@ -43,12 +57,11 @@ canonical_provider_package_identity:
     - "identity_evidence"
   required_literals:
     status: "unknown"
+    nuget_id: null
+    version: null
+    feed: null
     publication_contract: "unknown"
-  required_null_fields:
-    - "nuget_id"
-    - "version"
-    - "feed"
-    - "identity_evidence"
+    identity_evidence: null
 framework_delivery:
   required_fields:
     - "status"
@@ -56,13 +69,33 @@ framework_delivery:
     - "supplied_readiness_receipt"
     - "supplied_compatibility_receipt"
     - "supplied_execution_receipt"
+    - "reason"
   required_literals:
     status: "real-provider-unavailable"
     supplied_executable: false
     supplied_readiness_receipt: false
     supplied_compatibility_receipt: false
     supplied_execution_receipt: false
+    reason: "This framework has no exact provider package identity, publication evidence, or fresh real-provider receipt."
+fallback:
+  required_fields:
+    - "status"
+    - "ownership"
+    - "materials"
+  required_literals:
+    status: "available"
+    ownership: "target-owned-after-copy"
+    materials:
+      - "templates/provider-selection.template.yaml"
+      - "templates/minimal-diagnostic-analyzer.cs.template"
+      - "templates/minimal-diagnostic-analyzer-test.cs.template"
+      - "templates/code-fix-decision.md"
 state_semantics:
+  required_fields:
+    - "default_state"
+    - "states"
+  required_literals:
+    default_state: "not-selected"
   required_states:
     - "declined"
     - "not-selected"
@@ -72,9 +105,12 @@ state_semantics:
     declined:
       recommendation.status: "official-recommended"
       selection.status: "declined"
+      selection.decision_evidence: "explicit-target-decision-required"
       fallback.status: "available"
       readiness.status: "not-claimed"
+      readiness.receipt: null
       compatibility.status: "not-claimed"
+      compatibility.receipt: null
       execution.status: "not-claimed"
       execution.receipt: null
     not-selected:
@@ -84,20 +120,37 @@ state_semantics:
       selection.silent_selection: "forbidden"
       capability_gap.status: "mechanical-validation-capability-not-selected"
       capability_gap.fallback: "target-owned-templates-available"
+      readiness.status: "not-claimed"
+      readiness.receipt: null
+      compatibility.status: "not-claimed"
+      compatibility.receipt: null
       execution.status: "not-claimed"
       execution.receipt: null
     selected-unavailable:
+      recommendation.status: "official-recommended"
       selection.status: "selected"
+      required_missing_evidence:
+        - "exact-provider-package-identity"
+        - "exact-provider-version"
+        - "provider-feed"
+        - "fresh-readiness-receipt"
+        - "compatibility-receipt"
       readiness.status: "unproven"
+      readiness.receipt: null
       compatibility.status: "unproven"
+      compatibility.receipt: null
       execution.status: "prohibited"
       execution.receipt: null
     synthetic-readiness-proven:
+      recommendation.status: "official-recommended"
       selection.status: "selected"
       readiness.status: "synthetic-proven"
       readiness.proof_scope: "schema-transition-only"
+      readiness.receipt_type: "engineering-guardrails-provider-readiness-receipt"
       readiness.receipt_digest_required: true
+      readiness.receipt: null
       compatibility.status: "unproven"
+      compatibility.receipt: null
       execution.status: "rejected"
       execution.required_real_receipt: true
       execution.receipt: null
@@ -110,10 +163,47 @@ evidence_receipt_contracts:
     - "receipt_type"
     - "digest"
     - "required_fields"
+  digest_required_fields:
+    - "algorithm"
+    - "field"
+    - "required"
   digest_literals:
     algorithm: "sha256"
     field: "receipt_sha256"
     required: true
+  receipt_requirements:
+    readiness:
+      receipt_type: "engineering-guardrails-provider-readiness-receipt"
+      required_fields:
+        - "receipt_type"
+        - "capability_id"
+        - "provider_package_identity"
+        - "observed_at"
+        - "fresh_until"
+        - "outcome"
+        - "receipt_sha256"
+    compatibility:
+      receipt_type: "engineering-guardrails-provider-compatibility-receipt"
+      required_fields:
+        - "receipt_type"
+        - "capability_id"
+        - "provider_package_identity"
+        - "target_sdk"
+        - "target_framework"
+        - "roslyn_api_surface"
+        - "outcome"
+        - "receipt_sha256"
+    execution:
+      receipt_type: "engineering-guardrails-provider-execution-receipt"
+      required_fields:
+        - "receipt_type"
+        - "capability_id"
+        - "provider_package_identity"
+        - "target_commit"
+        - "command"
+        - "outcome"
+        - "evidence_location"
+        - "receipt_sha256"
 prohibitions:
   required_exact_values:
     - "The framework must not infer selection from recommendation or reference-file presence."
@@ -137,23 +227,50 @@ provider_selection_template:
     - "execution"
     - "evidence_receipts"
     - "fallback"
+    - "notes"
   required_literals:
+    schema_version: "1.0"
+    record_type: "engineering-guardrails-provider-selection"
     template_status: "reference-only"
+    ownership.source: "framework-managed-reference"
     ownership.after_copy: "target-owned"
+    capability.id: "dotnet.mechanical-validation"
+    capability.provider_binding: "engineering-guardrails"
+    recommendation.status: "official-recommended"
+    recommendation.selection_independent: true
     selection.status: "not-selected"
     provider_package_identity.status: "unknown"
+    provider_package_identity.publication_contract: "unknown"
+    capability_gap.status: "mechanical-validation-capability-not-selected"
+    capability_gap.fallback: "target-owned-templates-available"
     readiness.status: "not-claimed"
     compatibility.status: "not-claimed"
     execution.status: "not-claimed"
+    execution.required_real_receipt: true
+    fallback.status: "available"
+    fallback.analyzer_template: "minimal-diagnostic-analyzer.cs.template"
+    fallback.analyzer_test_template: "minimal-diagnostic-analyzer-test.cs.template"
+    fallback.code_fix_decision_template: "code-fix-decision.md"
+    notes:
+      - "Copying this record makes it target-owned; fill it only from target decision and exact evidence."
+      - "A synthetic readiness receipt may prove a schema transition only and cannot prove real-provider execution."
   required_null_paths:
+    - "ownership.target_record_path"
+    - "selection.target_decision"
+    - "selection.decision_evidence"
     - "provider_package_identity.nuget_id"
     - "provider_package_identity.version"
     - "provider_package_identity.feed"
     - "provider_package_identity.identity_evidence"
+    - "readiness.receipt"
+    - "compatibility.receipt"
+    - "execution.receipt"
     - "evidence_receipts.selection"
     - "evidence_receipts.readiness"
     - "evidence_receipts.compatibility"
     - "evidence_receipts.execution"
+  required_empty_list_paths:
+    - "selection.selected_diagnostic_subset"
 template_prohibitions:
   - ".csproj"
   - ".sln"
