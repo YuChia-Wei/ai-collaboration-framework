@@ -9,7 +9,7 @@
   "related_plan_id": "development-plan-2026-08-20-upg-003-multi-hop-upgrade",
   "status": "in_progress",
   "created_at": "2026-08-21T03:12:02+08:00",
-  "updated_at": "2026-08-21T03:27:31+08:00",
+  "updated_at": "2026-08-21T03:31:31+08:00",
   "template_source": ".ai/assets/skills/software-development-orchestrator/templates/development-workflow-task-template.json",
   "model": "gpt-5.6-sol",
   "reasoning_effort": "high",
@@ -25,6 +25,8 @@
       ".ai/scripts/tests/test_ai_context_release_state.py",
       ".ai/scripts/validate-ai-context-versions.py",
       ".ai/scripts/tests/test_ai_context_version_governance.py",
+      ".ai/scripts/tests/test_ai_context_packaging.py",
+      ".dev/standards/INDEX.MD",
       ".dev/workflows/2026-08-20-upg-003-multi-hop-upgrade/**",
       ".dev/workflows/INDEX.MD"
     ],
@@ -112,6 +114,8 @@
       ".ai/scripts/tests/test_ai_context_release_state.py",
       ".ai/scripts/validate-ai-context-versions.py",
       ".ai/scripts/tests/test_ai_context_version_governance.py",
+      ".ai/scripts/tests/test_ai_context_packaging.py",
+      ".dev/standards/INDEX.MD",
       ".dev/workflows/2026-08-20-upg-003-multi-hop-upgrade/workflow.yaml",
       ".dev/workflows/2026-08-20-upg-003-multi-hop-upgrade/workflow-plan.md",
       ".dev/workflows/2026-08-20-upg-003-multi-hop-upgrade/tasks/UPG-003-S3.json",
@@ -153,6 +157,16 @@
         "command": "py -3 -B .ai/scripts/validate-ai-context-versions.py --root . --no-git",
         "outcome": "passed",
         "evidence": "Source version governance passed for 17 release records with the explicit v0.14.0 retained-source horizon."
+      },
+      {
+        "command": "python .ai/scripts/build-ai-context-package.py --repo . --ref 7680190bf673c403ffbb970c75d397f91606872c --version v0.14.0 --output artifacts/validation/upg003-s3/v0.14.0/package --migration-source v0.6.0 <files.yaml> --migration-source v0.9.0 <files.yaml> --migration-source v0.13.0 <files.yaml>",
+        "outcome": "failed",
+        "evidence": "The corrected immutable build failed before archive output because portable .dev/standards/INDEX.MD linked the source-only excluded GITHUB-TERMINAL-ISSUE-CLOSURE-POLICY.md; no package or route PASS evidence was produced."
+      },
+      {
+        "command": "py -3 -B .ai/scripts/tests/test_ai_context_packaging.py PayloadReferenceIntegrityGwtTests.test_gwt_011c_given_source_only_terminal_policy_when_index_is_projected_then_it_is_not_a_portable_link -v",
+        "outcome": "passed",
+        "evidence": "Focused source-only navigation projection guard passed 1/1 in 0.032 seconds."
       }
     ],
     "role_execution_aggregation": [],
@@ -164,7 +178,8 @@
       "Phase-A release.yaml fixes the exact nine Included Work refs and automatic upgrade inputs v0.13.0, v0.9.0, and v0.6.0; it deliberately retains no support-matrix or route PASS evidence before an immutable package-build commit.",
       "Release-state validation now requires canonical source-only route receipts and accepts an open terminal Issue only when exactly one tracked terminal-close declaration matches a live open PR at the current Git HEAD; post-merge provider closure remains mandatory.",
       "The package builder requires automatic_upgrade_sources to equal the exact ordered migration-source set, so the candidate records all three retained origins rather than inventing an indirect route or omitting an input.",
-      "Immutable Phase-A build at 803a0771ada510a9c5faf630a36a096d74117a64 failed before package creation because builder canonical order is v0.6.0, v0.9.0, v0.13.0; the canonical template, release record, and active version-governance horizon now use that numeric order."
+      "Immutable Phase-A build at 803a0771ada510a9c5faf630a36a096d74117a64 failed before package creation because builder canonical order is v0.6.0, v0.9.0, v0.13.0; the canonical template, release record, and active version-governance horizon now use that numeric order.",
+      "Immutable build at 7680190bf673c403ffbb970c75d397f91606872c then failed before archive output on a portable standards-index link to a source-only excluded terminal-close policy; the index now preserves the source-only filename as non-navigation text instead of weakening payload reference validation."
     ],
     "commits": [],
     "follow_up_needed": true

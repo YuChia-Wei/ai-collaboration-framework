@@ -123,7 +123,7 @@ Before #207 integrates, every delegated context is generic and is not evidence t
 
 ## Progress And Handoff
 
-- Current stage: S3 is active from clean integrated main `bf8ad9c624ffc2154722dfb266c9090c72e4ac5f`; the Phase-A release scaffold and fail-closed release-state contract pass 36/36 focused tests. The first immutable build at `803a0771ada510a9c5faf630a36a096d74117a64` failed before package creation on descending-versus-canonical numeric migration-source order; the source contract is repaired and awaits a new immutable commit.
+- Current stage: S3 is active from clean integrated main `bf8ad9c624ffc2154722dfb266c9090c72e4ac5f`; the Phase-A release scaffold and fail-closed release-state contract pass 36/36 focused tests. Immutable builds at `803a0771ada510a9c5faf630a36a096d74117a64` and `7680190bf673c403ffbb970c75d397f91606872c` failed before package output on, respectively, source ordering and a portable link to a source-only policy. Both failures remain retained; the source contracts are repaired and await a new immutable commit.
 - Completed stages: S1 route resolution through PR #226 and S2 multi-hop transaction through PR #227, each with exact-head independent audit, hosted admission, merge-at-admitted-head, and online #206/#222 read-back.
 - Deferred stages and reasons: Long release-profile and cumulative pre-tag validation wait for a clean immutable S3 source-candidate commit; publication remains owner-only and unauthorized.
 - Open decisions: None for S1; unavailable or ambiguous assets become reconciliation-required rather than inferred.

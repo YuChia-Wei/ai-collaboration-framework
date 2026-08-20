@@ -1503,6 +1503,31 @@ class PayloadReferenceIntegrityGwtTests(unittest.TestCase):
         finally:
             fixture.close()
 
+    def test_gwt_011c_given_source_only_terminal_policy_when_index_is_projected_then_it_is_not_a_portable_link(self) -> None:
+        # Given the GitHub terminal-close policy is explicitly source-only.
+        profile = yaml.safe_load(
+            (ROOT / ".ai/distribution/profiles/dotnet-backend.yaml").read_text(
+                encoding="utf-8"
+            )
+        )
+        excluded = {
+            pattern
+            for entry in profile["exclusions"]
+            for pattern in entry["patterns"]
+        }
+        self.assertIn(
+            ".dev/standards/GITHUB-TERMINAL-ISSUE-CLOSURE-POLICY.md",
+            excluded,
+        )
+
+        # When the portable standards index is inspected, then it identifies
+        # that policy without creating a local Markdown target the package omits.
+        index_text = (ROOT / ".dev/standards/INDEX.MD").read_text(encoding="utf-8")
+        self.assertIn("`GITHUB-TERMINAL-ISSUE-CLOSURE-POLICY.md`", index_text)
+        self.assertNotIn(
+            "](GITHUB-TERMINAL-ISSUE-CLOSURE-POLICY.md)", index_text
+        )
+
 
 class UpgradeRoutePackageProjectionGwtTests(unittest.TestCase):
     """Exercise route planning only through an extracted mandatory-core payload."""
