@@ -1,6 +1,6 @@
-schema_version: "<release-record-schema-version>"
-release_id: "REL-<vMAJOR.MINOR.PATCH>"
-version: "<vMAJOR.MINOR.PATCH>"
+schema_version: "1.0"
+release_id: "REL-v0.14.0"
+version: "v0.14.0"
 status: "validated"
 record_origin: "governed"
 distribution_kind: "governed-package"
@@ -9,13 +9,19 @@ tag: null
 commit: null
 tagged_at: null
 recorded_at: null
-created_at: "<ISO-8601-offset-timestamp>"
-updated_at: "<ISO-8601-offset-timestamp>"
+created_at: "2026-08-21T03:17:21+08:00"
+updated_at: "2026-08-21T03:17:21+08:00"
 planning:
-  # Source-repository releases from v0.10.0 onward bind release scope to live
-  # GitHub Issues. Historical releases retain their existing backlog_refs.
   github_issue_refs:
-    - "#<online-github-issue-number>"
+    - "#200"
+    - "#201"
+    - "#202"
+    - "#203"
+    - "#204"
+    - "#205"
+    - "#206"
+    - "#207"
+    - "#208"
 provider_reconciliation:
   schema_version: "1.0"
   provider: "github"
@@ -31,7 +37,7 @@ provider_reconciliation:
         Status: "Done"
         Priority: "P1 High"
         Owner review: "Approved"
-        Target release: "<vMAJOR.MINOR.PATCH>"
+        Target release: "v0.14.0"
         Published in: "Not yet published"
     postpublication:
       issue_state: "closed"
@@ -40,11 +46,11 @@ provider_reconciliation:
         Status: "Done"
         Priority: "P1 High"
         Owner review: "Approved"
-        Target release: "<vMAJOR.MINOR.PATCH>"
-        Published in: "<vMAJOR.MINOR.PATCH>"
+        Target release: "v0.14.0"
+        Published in: "v0.14.0"
   coordination:
     issue_refs:
-      - "#<release-coordination-issue-number>"
+      - "#222"
     prepublication:
       issue_state: "open"
       state_reason: null
@@ -52,7 +58,7 @@ provider_reconciliation:
         Status: "Planned"
         Priority: "P1 High"
         Owner review: "Approved"
-        Target release: "<vMAJOR.MINOR.PATCH>"
+        Target release: "v0.14.0"
         Published in: "Not applicable — not a release item"
     postpublication:
       issue_state: "closed"
@@ -61,46 +67,45 @@ provider_reconciliation:
         Status: "Done"
         Priority: "P1 High"
         Owner review: "Approved"
-        Target release: "<vMAJOR.MINOR.PATCH>"
+        Target release: "v0.14.0"
         Published in: "Not applicable — not a release item"
 compatibility:
-  breaking_changes: <true-or-false>
-  # v0.14.0 and later retain v0.6.0, v0.9.0, and the immediate predecessor in
-  # the source-only support matrix until an explicit owner deprecation. Keep
-  # automatic_upgrade_sources must equal the exact package migration inputs.
-  # Remove a retained origin here only when the support matrix proves its
-  # orchestrated route rather than a direct source-specific migration.
+  breaking_changes: true
   minimum_source_version: "v0.6.0"
   reconciliation_sources:
-    - "<immediate-predecessor>"
+    - "v0.13.0"
     - "v0.9.0"
     - "v0.6.0"
   automatic_upgrade_sources:
-    - "<immediate-predecessor>"
+    - "v0.13.0"
     - "v0.9.0"
     - "v0.6.0"
   affected_contracts:
-    - "<affected-public-contract>"
+    - "upgrade remediation"
+    - "guardrails choice"
+    - "retained-origin routing and transaction"
+    - "provider-neutral roles"
+    - "delegation preflight"
 artifacts:
   release_notes: "release-notes.md"
   migration_guide: "migration-guide.md"
   support_matrix: "support-matrix.yaml"
   route_evidence:
-    - "route-evidence/<immediate-predecessor>-to-<vMAJOR.MINOR.PATCH>.json"
-    - "route-evidence/v0.9.0-to-<vMAJOR.MINOR.PATCH>.json"
-    - "route-evidence/v0.6.0-to-<vMAJOR.MINOR.PATCH>.json"
+    - "route-evidence/v0.13.0-to-v0.14.0.json"
+    - "route-evidence/v0.9.0-to-v0.14.0.json"
+    - "route-evidence/v0.6.0-to-v0.14.0.json"
 distribution:
   profile_id: "dotnet-backend"
-  package_id: "ai-context-dotnet-backend-<vMAJOR.MINOR.PATCH>"
+  package_id: "ai-context-dotnet-backend-v0.14.0"
   schema_versions:
-    package: "<package-schema-version>"
-    files: "<files-schema-version>"
-    migration: "<migration-schema-version>"
+    package: "2.3.0"
+    files: "2.0.0"
+    migration: "3.0.0"
   artifacts:
-    zip: "ai-context-dotnet-backend-<vMAJOR.MINOR.PATCH>.zip"
-    zip_checksum: "ai-context-dotnet-backend-<vMAJOR.MINOR.PATCH>.zip.sha256"
-    tar_gz: "ai-context-dotnet-backend-<vMAJOR.MINOR.PATCH>.tar.gz"
-    tar_gz_checksum: "ai-context-dotnet-backend-<vMAJOR.MINOR.PATCH>.tar.gz.sha256"
+    zip: "ai-context-dotnet-backend-v0.14.0.zip"
+    zip_checksum: "ai-context-dotnet-backend-v0.14.0.zip.sha256"
+    tar_gz: "ai-context-dotnet-backend-v0.14.0.tar.gz"
+    tar_gz_checksum: "ai-context-dotnet-backend-v0.14.0.tar.gz.sha256"
   migration:
     default_mode: "dry-run"
     apply_requires_clean_worktree: true
@@ -111,11 +116,11 @@ distribution:
     automation: "github-actions"
     creates_or_moves_tag: false
 validation:
-  evidence: "<validation-evidence-summary>"
-  workflow_id: "<workflow-id>"
+  evidence: "Phase-A governed source-candidate scaffold; package archive and retained-origin route proof await an immutable foundation commit."
+  workflow_id: "2026-08-20-upg-003-multi-hop-upgrade"
   related_workflows: []
   related_assessments: []
-  package_status: "<planned-or-validated>"
+  package_status: "validated"
   post_merge_status: "pending"
   failed_publication_run: null
   published_run: null

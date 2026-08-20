@@ -30,6 +30,13 @@ from typing import Any, Callable
 
 import yaml
 
+from ai_context_upgrade_routes import (
+    MatrixValidationError,
+    canonical_json as canonical_route_json,
+    load_route_matrix,
+    resolve_upgrade_route,
+)
+
 
 VERSION_RE = re.compile(r"^v(?:0|[1-9]\d*)\.(?:0|[1-9]\d*)\.(?:0|[1-9]\d*)$")
 SHA_RE = re.compile(r"^[0-9a-f]{40}$")
@@ -139,7 +146,7 @@ def read_only_command_allowed(args: list[str]) -> bool:
         return bool(
             re.fullmatch(
                 r"repos/[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+/"
-                r"(?:issues/[1-9]\d*|releases/tags/v\d+\.\d+\.\d+|actions/runs/\d+|"
+                r"(?:issues/[1-9]\d*|pulls/[1-9]\d*|releases/tags/v\d+\.\d+\.\d+|actions/runs/\d+|"
                 r"actions/workflows/publish-release\.yml/runs\?"
                 r"event=push&head_sha=[0-9a-f]{40})",
                 args[4],
@@ -388,8 +395,190 @@ def validate_online_issue_refs(
                     f"#{number}: online Issue must declare Target Release {version}"
                 )
         elif issue.get("state") != "closed" or issue.get("state_reason") != "completed":
+            if version_key(version) >= (0, 14, 0) and pending_terminal_issue_delivery(
+                root,
+                repository,
+                int(number),
+                runner,
+            ):
+                continue
             raise ReleaseStateError(
-                f"#{number}: release-ready Issue must be closed with completed reason"
+                f"#{number}: release-ready Issue must be closed with completed reason "
+                "or be the exact open terminal-close Issue of the current source-candidate PR"
+            )
+
+
+def pending_terminal_issue_delivery(
+    root: Path,
+    repository: str,
+    issue_number: int,
+    runner=subprocess.run,
+) -> bool:
+    """Allow only the exact current PR to carry its own final Included Work closure.
+
+    This does not treat an open Issue as completed.  It permits pre-merge source
+    validation only when one tracked terminal declaration is bound to a live open
+    PR at the current HEAD.  Post-merge validation still requires the provider
+    Issue to be closed/completed because the declaration PR is no longer open.
+    """
+
+    matches: list[dict[str, Any]] = []
+    for path in sorted(
+        root.glob(".dev/workflows/*/evidence/terminal-issue-closure-declaration.yaml")
+    ):
+        try:
+            record = load_mapping(path)
+        except ReleaseStateError:
+            continue
+        if record.get("repository") != repository or record.get("validation_stage") != "declaration":
+            continue
+        issues = record.get("issues")
+        if not isinstance(issues, list):
+            continue
+        selected = [
+            item
+            for item in issues
+            if isinstance(item, dict) and item.get("number") == issue_number
+        ]
+        if len(selected) != 1:
+            continue
+        issue = selected[0]
+        workflow = issue.get("workflow")
+        authorization = issue.get("work_authorization")
+        read_back = issue.get("read_back")
+        if (
+            issue.get("mode") != "terminal-close"
+            or issue.get("final_accepted_delivery") is not True
+            or issue.get("closing_keyword") != "Closes"
+            or issue.get("closure_deferred_reason") is not None
+            or issue.get("next_terminal_gate_or_owner") is not None
+            or workflow
+            != {
+                "scope_complete": True,
+                "tasks_complete": True,
+                "applicable_verification_complete": True,
+            }
+            or authorization
+            != {"online_issue_bound": True, "explicit_owner_approval": True}
+            or not isinstance(read_back, dict)
+            or read_back.get("performed") is not False
+        ):
+            continue
+        pull_request = record.get("pull_request")
+        if not isinstance(pull_request, dict):
+            continue
+        pr_number = pull_request.get("number")
+        body = pull_request.get("body")
+        if (
+            not isinstance(pr_number, int)
+            or isinstance(pr_number, bool)
+            or pr_number <= 0
+            or not isinstance(body, str)
+            or not re.search(rf"(?m)^Closes #{issue_number}\s*$", body)
+        ):
+            continue
+        matches.append({"number": pr_number, "body": body})
+    if len(matches) != 1:
+        return False
+    selected = matches[0]
+    raw = run_read_only(
+        root,
+        ["gh", "api", "--method", "GET", f"repos/{repository}/pulls/{selected['number']}"],
+        runner,
+    )
+    try:
+        pull_request = json.loads(raw)
+    except json.JSONDecodeError:
+        return False
+    if not isinstance(pull_request, dict):
+        return False
+    head = pull_request.get("head")
+    base = pull_request.get("base")
+    base_repository = base.get("repo") if isinstance(base, dict) else None
+    return (
+        pull_request.get("number") == selected["number"]
+        and pull_request.get("state") == "open"
+        and pull_request.get("merged_at") is None
+        and pull_request.get("body") == selected["body"]
+        and isinstance(head, dict)
+        and head.get("sha") == git_head(root, runner)
+        and isinstance(base_repository, dict)
+        and base_repository.get("full_name") == repository
+    )
+
+
+def validate_retained_origin_route_evidence(
+    root: Path,
+    version: str,
+    artifacts: dict[str, Any],
+) -> None:
+    """Validate the v0.14+ source-only support matrix and canonical route receipts."""
+
+    if version_key(version) < (0, 14, 0):
+        expected = {
+            "release_notes": "release-notes.md",
+            "migration_guide": "migration-guide.md",
+        }
+        if artifacts != expected:
+            raise ReleaseStateError("artifacts must name the two canonical authored files")
+        return
+    origins = ("v0.13.0", "v0.9.0", "v0.6.0")
+    expected_evidence = [
+        f"route-evidence/{origin}-to-{version}.json" for origin in origins
+    ]
+    expected = {
+        "release_notes": "release-notes.md",
+        "migration_guide": "migration-guide.md",
+        "support_matrix": "support-matrix.yaml",
+        "route_evidence": expected_evidence,
+    }
+    if artifacts != expected:
+        raise ReleaseStateError(
+            "v0.14+ artifacts must exactly name authored files, support matrix, "
+            "and ordered retained-origin route evidence"
+        )
+    release_dir = root / ".dev" / "releases" / version
+    matrix_path = release_dir / "support-matrix.yaml"
+    try:
+        matrix, matrix_bytes = load_route_matrix(matrix_path)
+    except MatrixValidationError as exc:
+        raise ReleaseStateError(f"{matrix_path}: {exc}") from exc
+    target = matrix.get("target") if isinstance(matrix, dict) else None
+    if (
+        matrix.get("matrix_id") != f"upgrade-route-matrix-{version}"
+        or not isinstance(target, dict)
+        or target.get("version") != version
+        or target.get("release_id") != f"REL-{version}"
+    ):
+        raise ReleaseStateError("support matrix identity must match the candidate release")
+    matrix_reference = f".dev/releases/{version}/support-matrix.yaml"
+    for origin, evidence_ref in zip(origins, expected_evidence, strict=True):
+        try:
+            result = resolve_upgrade_route(
+                matrix,
+                origin=origin,
+                target=version,
+                matrix_bytes=matrix_bytes,
+                asset_root=release_dir,
+                matrix_reference=matrix_reference,
+            )
+        except MatrixValidationError as exc:
+            raise ReleaseStateError(
+                f"{matrix_path}: cannot prove {origin} to {version}: {exc}"
+            ) from exc
+        if result.get("route_kind") not in {"direct", "orchestrated-multi-hop"}:
+            raise ReleaseStateError(
+                f"{origin} to {version} must resolve direct or orchestrated-multi-hop"
+            )
+        evidence_path = release_dir / evidence_ref
+        try:
+            evidence_bytes = evidence_path.read_bytes()
+        except OSError as exc:
+            raise ReleaseStateError(f"cannot read {evidence_path}: {exc}") from exc
+        expected_bytes = canonical_route_json(result).encode("utf-8")
+        if evidence_bytes != expected_bytes:
+            raise ReleaseStateError(
+                f"{evidence_path}: route evidence differs from canonical resolver output"
             )
 
 
@@ -452,11 +641,7 @@ def validate_candidate_record(
             "compatibility.automatic_upgrade_sources must be non-empty stable versions"
         )
     artifacts = nested_mapping(data.get("artifacts"), "artifacts")
-    if artifacts != {
-        "release_notes": "release-notes.md",
-        "migration_guide": "migration-guide.md",
-    }:
-        raise ReleaseStateError("artifacts must name the two canonical authored files")
+    validate_retained_origin_route_evidence(root, version, artifacts)
     distribution = nested_mapping(data.get("distribution"), "distribution")
     if distribution.get("profile_id") != "dotnet-backend":
         raise ReleaseStateError("distribution.profile_id must be dotnet-backend")
@@ -468,9 +653,22 @@ def validate_candidate_record(
     schema_versions = nested_mapping(
         distribution.get("schema_versions"), "distribution.schema_versions"
     )
-    if len(sources) > 1 and schema_versions.get("migration") != "2.0.0":
+    if (
+        version_key(version) < (0, 6, 0)
+        and len(sources) > 1
+        and schema_versions.get("migration") != "2.0.0"
+    ):
         raise ReleaseStateError(
             "multiple automatic sources require migration schema 2.0.0"
+        )
+    if version_key(version) >= (0, 14, 0) and schema_versions != {
+        "package": "2.3.0",
+        "files": "2.0.0",
+        "migration": "3.0.0",
+    }:
+        raise ReleaseStateError(
+            "v0.14+ release candidates require package/files/migration schemas "
+            "2.3.0/2.0.0/3.0.0"
         )
     expected_asset_names = {
         "zip": f"{expected_package}.zip",
