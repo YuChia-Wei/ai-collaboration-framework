@@ -29,6 +29,7 @@ CODE_FIX_TEMPLATE_PATH = RECIPE_ROOT / "templates/code-fix-decision.md"
 README_PATH = RECIPE_ROOT / "README.md"
 MANIFEST_PATH = RECIPE_ROOT / "recipe-manifest.yaml"
 RECIPE_PATH = RECIPE_ROOT / "recipes/analyzer-project.md"
+CHECK_ALL_PATH = REPO_ROOT / ".ai/scripts/check-all.sh"
 
 
 def load_yaml(path: Path) -> dict:
@@ -1390,6 +1391,16 @@ class EngineeringGuardrailsProviderContractGwtTests(unittest.TestCase):
         for category, mutation in mutations:
             with self.subTest(category=category):
                 self.assert_coordinated_mutation_rejected(category, mutation)
+
+    def test_gwt_010_given_the_provider_check_is_selected_when_the_aggregate_runner_executes_then_evidence_is_emitted(self) -> None:
+        check_all = CHECK_ALL_PATH.read_text(encoding="utf-8")
+        runner = "run_source_repository_engineering_guardrails_provider_contract"
+        self.assertEqual(2, check_all.count(runner))
+        self.assertIn(
+            'run_command_check "python .ai/scripts/tests/test_engineering_guardrails_provider_contract.py -v"',
+            check_all,
+        )
+        self.assertIn('"Engineering Guardrails Provider Contract"', check_all)
 
 
 if __name__ == "__main__":
