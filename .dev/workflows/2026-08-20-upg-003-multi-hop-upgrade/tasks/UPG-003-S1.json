@@ -168,6 +168,11 @@
         "command": "py -3 -B .ai/scripts/tests/test_ai_context_packaging.py VersionedMigrationPackagingGwtTests.test_gwt_020_given_v070_payload_when_candidate_projects_shared_prerequisites_then_clean_install_and_upgrade_keep_portable_commands -v",
         "outcome": "passed",
         "evidence": "1 test passed in 61.524 seconds outside the sandbox using the same extracted planner and explicit remediation-decision contract."
+      },
+      {
+        "command": "py -3 -B .ai/scripts/validate-git-commits.py --range a57e484ba6456358971f86bcf3198acf04e6ac1e..71c4ec35d2e79eff192648d4a34534f6f95de12f --workflow-id 2026-08-20-upg-003-multi-hop-upgrade",
+        "outcome": "failed",
+        "evidence": "The checkpoint used an inferred nonexistent full SHA after only a short Git identity had been read; git rev-list exited 128 before commit-policy evaluation. The actual Git read-back is 71c4ec35ff180a70934333cdd296eb4b016050f8, and the incorrect identity was not promoted."
       }
     ],
     "role_execution_aggregation": [
@@ -192,7 +197,7 @@
     "commits": [
       "f6de771bb37a6224fb09543edf911f61aa7ab2bc",
       "a57e484ba6456358971f86bcf3198acf04e6ac1e",
-      "71c4ec35d2e79eff192648d4a34534f6f95de12f"
+      "71c4ec35ff180a70934333cdd296eb4b016050f8"
     ],
     "follow_up_needed": true
   }
