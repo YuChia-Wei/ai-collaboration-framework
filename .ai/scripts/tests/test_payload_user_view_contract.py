@@ -52,6 +52,9 @@ def user_view_contract(*, code_reviewer: bool = False) -> dict:
         "classifications": dict(PACKAGE.PAYLOAD_USER_VIEW_CLASSIFICATIONS),
         "reference_integrity": {
             "text_extensions": [".md", ".yaml", ".sh"],
+            "target_owned_reference_patterns": list(
+                PACKAGE.TARGET_OWNED_REFERENCE_PATTERNS
+            ),
             "forbidden_source_lifecycle_patterns": [
                 ".dev/workflows/20*/**",
                 ".dev/assessments/ASM-*/**",

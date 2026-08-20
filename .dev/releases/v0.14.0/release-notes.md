@@ -26,36 +26,29 @@ ZIP/TAR package parity was validated at immutable package foundation
 `60572c01e31abf58191d38adb5ca39e05338b08d`. The planner-byte fix and three
 receipt-bound canonical direct-route proofs for v0.13.0, v0.9.0, and v0.6.0
 are committed in distinct source candidate
-`ad1973304e7fd2f170434c1fb5c77ff20c229fae`. Its exact-head audit found stale
-active narratives, first reconciled in draft/open PR #232 initial head
-`aaae7aaf9f64be49574f9b35a6ca7e011bf9d593` against
-`main@bf8ad9c624ffc2154722dfb266c9090c72e4ac5f`. At historical pushed head
-`0a9a25784d6fd3ba2429fb19bd04b45fac327029`, the candidate phase failed because
-the helper looked only for `terminal-issue-closure-declaration.yaml` and missed
-the same-workflow suffixed S3 declaration.
+`ad1973304e7fd2f170434c1fb5c77ff20c229fae`. The suffixed-declaration validator
+fix is committed and pushed at `ea0414edf1260f0a317ee4b406b9eafb29d7f859`.
 
-That validator fix is committed and pushed at
-`ea0414edf1260f0a317ee4b406b9eafb29d7f859`, where the exact clean candidate
-release-state gate passed. A fresh Sol High exact-head audit of that commit
-terminally failed with exactly one blocking finding: active narratives were
-stale. It otherwise passed release-state 36/36, route 25/25,
-terminal/workflow/AI-context/source-governance/version-registry/commit-policy/
-AST-YAML-JSON-diff checks, and the package plus three route cross-bindings; the
-audit made no repair.
+At pushed clean head `60e68922752ffc331bcd614db1676c94605a21fa`, the candidate
+release-state gate passed and a fresh exact-head Sol audit passed with its
+receipt submitted. One hosted watch then completed with Build and validate
+candidate, Read-only governance contract, and Ubuntu PR profile gate failed;
+Ubuntu and Windows prerequisite contracts passed. Each failed-job log was
+fetched once. The candidate failure is the renderer's stale multi-source
+requirement for migration schema `2.0.0`, whereas v0.14.0 uses `3.0.0`; the
+governance/profile failures share a payload-user-view fixture that omitted the
+canonical `target_owned_reference_patterns` allowlist.
 
-In the single live audit snapshot, draft/open PR #232 had exact base
-`bf8ad9c624ffc2154722dfb266c9090c72e4ac5f`, head
-`ea0414edf1260f0a317ee4b406b9eafb29d7f859`, and body; #206 was open
-terminal-close and #222 open deferred. Build and validate candidate was a
-completed `FAILURE`; Read-only governance and Ubuntu PR profile were
-`IN_PROGRESS`; and Ubuntu and Windows prerequisites were `SUCCESS`. No logs
-were fetched. These are hosted observations, not hosted admission.
-
-The next admissible subject is the exact PR head containing this narrative
-reconciliation: rerun the candidate release-state gate on that exact clean head,
-then obtain a fresh Sol audit and hosted admission. Issue #206 remains open,
-#222 remains deferred, and no hosted admission, merge, Issue closure, provider
-closure, tag, GitHub Release, or publication is claimed.
+The only current repair is uncommitted in the renderer, release-notes tests,
+and payload-user-view fixture. The renderer sandbox baseline was blocked by
+Temp `WinError 5`; the payload baseline had 4 failures and 3 errors. Normal ACL
+renderer 20/20, payload 6/6, direct candidate renderer CLI, AST/scoped diff, and
+independent precommit review passed. This is not hosted admission. Commit and
+push the exact repair plus reconciled narratives, then rerun the candidate gate,
+obtain a fresh Sol audit and receipt, and run one hosted watch. PR #232 remains
+draft/open/unmerged; #206 remains open terminal-close; #222 remains deferred;
+no hosted admission, merge, Issue closure, provider closure, tag, GitHub
+Release, or publication is claimed.
 
 <!--
 The renderer appends canonical Included Work and release provenance. Keep this

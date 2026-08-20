@@ -9,7 +9,7 @@
   "related_plan_id": "development-plan-2026-08-20-upg-003-multi-hop-upgrade",
   "status": "in_progress",
   "created_at": "2026-08-21T03:12:02+08:00",
-  "updated_at": "2026-08-21T06:43:18+08:00",
+  "updated_at": "2026-08-21T07:15:11+08:00",
   "template_source": ".ai/assets/skills/software-development-orchestrator/templates/development-workflow-task-template.json",
   "model": "gpt-5.6-sol",
   "reasoning_effort": "high",
@@ -101,12 +101,12 @@
       "missing or tampered asset and semantic-cutover bypass rejection",
       "exact-head independent audit and hosted terminal admission"
     ],
-    "commit_checkpoint": "The suffixed-declaration validator fix is committed and pushed at ea0414edf1260f0a317ee4b406b9eafb29d7f859, where the exact clean candidate release-state gate passed. The next admissible subject is the exact PR head containing this narrative reconciliation: rerun the candidate release-state gate on that exact clean head, then obtain a fresh Sol audit and hosted admission.",
+    "commit_checkpoint": "At pushed clean 60e68922752ffc331bcd614db1676c94605a21fa, candidate release-state passed and a fresh exact-head Sol audit passed with its receipt submitted. One hosted watch then completed with candidate, governance, and Ubuntu-profile failures plus two prerequisite passes; each failed-job log was fetched once. The exact three-file repair is uncommitted. Commit/push repair plus narratives, then rerun candidate gate, fresh Sol audit/receipt, and one hosted watch.",
     "deferred_items": ["Cumulative merged-main release profile and pre-tag readiness verdict under Issue #222"]
   },
   "results": {
     "finding_status": "in_progress",
-    "summary": "At immutable package foundation 60572c01e31abf58191d38adb5ca39e05338b08d on codex/2026-08-21-upg-003-v014-source-candidate-s3, the canonical builder and package-native validator passed for ai-context-dotnet-backend-v0.14.0: ZIP sha256 6f332f2a17549eb46109d1b2786cdefb32839eea18520cd65476c246d1337116 (1404420 bytes) and TAR.GZ sha256 b08b18012f1db1cb8367f0e9bd378b6e079b6a31171d68d538fe77c1d363c35a (992036 bytes); the validator output was AI context package validation passed for 2 archive(s). The planner-byte fix and three receipt-bound retained-origin direct route proofs are committed in distinct source candidate ad1973304e7fd2f170434c1fb5c77ff20c229fae. Historical package, receipt, planner-byte, fixture, and sandbox failures remain retained below. The suffixed-declaration validator fix is committed and pushed at ea0414edf1260f0a317ee4b406b9eafb29d7f859, where the exact clean candidate release-state gate passed. Fresh Sol High audit of that exact head terminally failed with exactly one blocking stale-narratives finding; it otherwise passed release-state 36/36, route 25/25, terminal/workflow/AI-context/source-governance/version-registry/commit-policy/AST-YAML-JSON-diff checks, and the package plus three route cross-bindings, with no repair. The single live snapshot was draft/open PR #232 at exact base bf8ad9c624ffc2154722dfb266c9090c72e4ac5f, head ea0414edf1260f0a317ee4b406b9eafb29d7f859, and exact body; #206 open terminal-close, #222 open deferred, Build and validate candidate completed FAILURE, Read-only governance and Ubuntu PR profile IN_PROGRESS, and Ubuntu and Windows prerequisites SUCCESS. No logs were fetched. S3 remains in progress; #206 remains open and #222 deferred. No hosted admission, merge, Issue closure, provider closure, tag, or publication is claimed.",
+    "summary": "At immutable package foundation 60572c01e31abf58191d38adb5ca39e05338b08d on codex/2026-08-21-upg-003-v014-source-candidate-s3, the canonical builder and package-native validator passed for ai-context-dotnet-backend-v0.14.0: ZIP sha256 6f332f2a17549eb46109d1b2786cdefb32839eea18520cd65476c246d1337116 (1404420 bytes) and TAR.GZ sha256 b08b18012f1db1cb8367f0e9bd378b6e079b6a31171d68d538fe77c1d363c35a (992036 bytes); the validator output was AI context package validation passed for 2 archive(s). The planner-byte fix and three receipt-bound retained-origin direct route proofs are committed in distinct source candidate ad1973304e7fd2f170434c1fb5c77ff20c229fae. Historical package, receipt, planner-byte, fixture, and sandbox failures remain retained below. At pushed clean head 60e68922752ffc331bcd614db1676c94605a21fa, the candidate gate passed and a fresh exact-head Sol audit passed with its receipt submitted. One hosted watch then completed with Build and validate candidate, Read-only governance contract, and Ubuntu PR profile gate failed; Ubuntu and Windows prerequisite contracts passed; each failed-job log was fetched once. Candidate root cause is stale renderer schema 2.0.0 versus v0.14 schema 3.0.0; governance/profile share payload-user-view fixture omission of canonical target_owned_reference_patterns. The only repair is uncommitted in three source/test files: renderer sandbox baseline blocked by Temp WinError 5, payload baseline failed 4/3, normal ACL renderer 20/20 and payload 6/6 passed, direct candidate renderer CLI plus AST/scoped diff passed, and independent precommit review passed. S3 remains in progress; PR #232 is draft/open/unmerged, #206 open terminal-close, #222 deferred. No hosted admission, merge, Issue closure, provider closure, tag, release, or publication is claimed.",
     "files_changed": [
       ".dev/releases/v0.14.0/release.yaml",
       ".dev/releases/v0.14.0/release-notes.md",
@@ -121,6 +121,9 @@
       ".ai/scripts/tests/test_ai_context_release_state.py",
       ".ai/scripts/validate-ai-context-versions.py",
       ".ai/scripts/tests/test_ai_context_version_governance.py",
+      ".ai/scripts/render-ai-context-release-notes.py",
+      ".ai/scripts/tests/test_release_notes_renderer.py",
+      ".ai/scripts/tests/test_payload_user_view_contract.py",
       ".ai/distribution/profiles/dotnet-backend.yaml",
       ".ai/scripts/ai_context_package.py",
       ".ai/scripts/tests/test_ai_context_packaging.py",
@@ -317,6 +320,31 @@
         "command": "python .ai/scripts/validate-ai-context-release-state.py --phase candidate --version v0.14.0",
         "outcome": "passed",
         "evidence": "At clean pushed ea0414edf1260f0a317ee4b406b9eafb29d7f859, the exact candidate release-state gate passed. This local source gate is not hosted admission."
+      },
+      {
+        "command": "py -3 -B .ai/scripts/tests/test_release_notes_renderer.py -v",
+        "outcome": "blocked-by-environment",
+        "evidence": "The initial sandbox run was blocked by Temp WinError 5 while creating temporary fixtures; it did not reach renderer assertions."
+      },
+      {
+        "command": "py -3 -B .ai/scripts/tests/test_payload_user_view_contract.py -v",
+        "outcome": "failed",
+        "evidence": "Baseline failed with 4 failures and 3 errors because the test fixture omitted canonical target_owned_reference_patterns; production package logic was not changed."
+      },
+      {
+        "command": "py -3 -B .ai/scripts/tests/test_release_notes_renderer.py -v",
+        "outcome": "passed",
+        "evidence": "Normal Windows ACL rerun passed 20/20 after v0.14 multi-source renderer validation required schema 3.0.0 while pre-v0.14 remains schema 2.0.0."
+      },
+      {
+        "command": "py -3 -B .ai/scripts/tests/test_payload_user_view_contract.py -v",
+        "outcome": "passed",
+        "evidence": "Normal Windows ACL rerun passed 6/6 after the fixture used list(PACKAGE.TARGET_OWNED_REFERENCE_PATTERNS)."
+      },
+      {
+        "command": "candidate renderer CLI plus Python AST parse and scoped git diff --check for the three repair files",
+        "outcome": "passed",
+        "evidence": "The working-tree v0.14 candidate renderer command passed, its temporary output was removed, all three Python files parsed, and scoped diff-check passed."
       }
     ],
     "role_execution_aggregation": [],
@@ -365,7 +393,11 @@
       "Historical framework-source rule resolution at clean 0a9a25784d6fd3ba2429fb19bd04b45fac327029 resolved AICTX-EVIDENCE-001 and TEST-GWT-001 with packet 2b95be6d8338103d49eaade3bca08a361074ff698f547d6573f29e6f57a91d68. The earlier attempted python technology route failed; the corrected exact route was dotnet-backend/python.",
       "Fresh Sol High audit of exact head ea0414edf1260f0a317ee4b406b9eafb29d7f859 terminally failed with exactly one blocking finding: active narratives still described the prior 0a9a state, the pre-commit repair state, and commit/push as next work. It otherwise passed release-state 36/36, route 25/25, terminal/workflow/AI-context/source-governance/version-registry/commit-policy/AST-YAML-JSON-diff checks, and package plus three route cross-bindings; the audit made no repair.",
       "The single live audit snapshot showed draft/open PR #232 at exact base bf8ad9c624ffc2154722dfb266c9090c72e4ac5f, head ea0414edf1260f0a317ee4b406b9eafb29d7f859, and exact body; #206 was open terminal-close and #222 open deferred. Build and validate candidate completed FAILURE, Read-only governance and Ubuntu PR profile were IN_PROGRESS, and Ubuntu and Windows prerequisites were SUCCESS. No logs were fetched; these are observations, not hosted admission.",
-      "Next gate: the exact PR head containing this narrative reconciliation is the next admissible subject. Re-run the candidate release-state gate on that exact clean head, then obtain a fresh Sol audit and hosted admission. Keep S3 in_progress, #206 open, #222 deferred, and do not claim hosted admission, merge, Issue closure, provider closure, tag, or publication."
+      "At pushed clean 60e68922752ffc331bcd614db1676c94605a21fa, the candidate release-state gate passed; a fresh exact-head Sol audit also passed and its audit receipt was submitted. That audit does not cover the later uncommitted three-file repair.",
+      "One hosted watch at 60e68922752ffc331bcd614db1676c94605a21fa completed with Build and validate candidate, Read-only governance contract, and Ubuntu PR profile gate failures; Ubuntu and Windows prerequisite contracts passed. Each failed-job log was fetched exactly once; this is not hosted admission.",
+      "Candidate root cause: render-ai-context-release-notes.py required migration schema 2.0.0 for every multi-source candidate although v0.14.0 uses 3.0.0. Governance/profile shared root cause: test_payload_user_view_contract.py fixture omitted canonical target_owned_reference_patterns.",
+      "Current uncommitted repair is limited to renderer source and its release-notes tests plus payload-user-view fixture. Renderer sandbox baseline is blocked by Temp WinError 5; payload baseline failed 4 failures/3 errors; normal ACL renderer 20/20, payload 6/6, direct candidate renderer CLI, AST/scoped diff, and independent precommit review passed.",
+      "Next gate: commit/push the exact repair plus reconciled narratives; rerun candidate release-state on that clean head; obtain a fresh Sol audit and receipt; then run one hosted watch. Keep S3 in_progress, PR #232 draft/open/unmerged, #206 open terminal-close, #222 deferred, and do not claim hosted admission, merge, Issue closure, provider closure, tag, release, or publication."
     ],
     "commits": [
       "803a0771ada510a9c5faf630a36a096d74117a64",
