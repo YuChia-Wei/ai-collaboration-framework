@@ -120,7 +120,7 @@ Before #207 integrates, every delegated context is generic and is not evidence t
 
 ## Progress And Handoff
 
-- Current stage: UPG-003-S1 bounded regression repair validates raw path aliases and #203-compatible package fixtures; a new repair commit and fresh independent audit remain.
+- Current stage: UPG-003-S1 bounded regression repair is committed at `71c4ec35d2e79eff192648d4a34534f6f95de12f`; a fresh independent exact-head audit remains.
 - Completed stages: Live Issue/Project/PR read-back, exact existing-surface inventory, route contract, resolver, CLI, portable projection, focused source tests, and isolated package test.
 - Deferred stages and reasons: S2 waits for merged S1; S3 waits for S2 plus #207/#208 integration.
 - Open decisions: None for S1; unavailable or ambiguous assets become reconciliation-required rather than inferred.
@@ -146,6 +146,6 @@ Before #207 integrates, every delegated context is generic and is not evidence t
 - Review disposition: Pending fresh exact-head independent audit.
 - Validation evidence: Base identity `ead96acb0ac4ea73a94c6de59604b47f1f78b5ae`; framework-source packet `b244520f8cb7653c067e2fe13a2aeef62f9974f8f345b0cac2dee3c63159ff05`; live published v0.6-v0.13 identities; historical packages have no portable validator and v0.10-v0.11 remains deferred-with-owner. Fresh Sol High audit of `f6de771bb37a6224fb09543edf911f61aa7ab2bc` failed on self-attested route/deprecation evidence, and the fresh audit of `a57e484ba6456358971f86bcf3198acf04e6ac1e` failed because raw path aliases normalized before validation; neither audit made a repair. The bounded regression repair now rejects those aliases and makes the synthetic target provenance/decision fixtures truthful under #203. Failed sandbox, fixture, and external-capture attempts remain recorded and are not promoted; a fresh audit is required after the next commit.
 - Workflow task state: in progress.
-- Commits: pending.
+- Commits: `f6de771bb37a6224fb09543edf911f61aa7ab2bc`, `a57e484ba6456358971f86bcf3198acf04e6ac1e`, and `71c4ec35d2e79eff192648d4a34534f6f95de12f`.
 - Branch / checkpoint / handoff evidence: Dedicated S1 branch created from exact integrated main.
 - Residual risks: Historical origin routes remain reconciliation-required until a later candidate supplies and proves an exact compatible edge validator; Project-field restoration is owned by another conversation.

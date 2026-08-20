@@ -189,7 +189,11 @@
       ,"Fresh Sol High exact-head audit of a57e484ba6456358971f86bcf3198acf04e6ac1e failed because raw aliases ./dot, a/./b, and a//b normalized before matrix identity validation; no repair occurred in the audit context."
       ,"The bounded regression repair rejects raw aliases before PurePosixPath normalization and updates GWT-014/GWT-020 fixtures to bind the sealed predecessor source plus an explicit canonical remediation packet and decision before apply. Post-repair route tests pass 21 of 21 and the two selectors pass 1 of 1 each."
     ],
-    "commits": [],
+    "commits": [
+      "f6de771bb37a6224fb09543edf911f61aa7ab2bc",
+      "a57e484ba6456358971f86bcf3198acf04e6ac1e",
+      "71c4ec35d2e79eff192648d4a34534f6f95de12f"
+    ],
     "follow_up_needed": true
   }
 }
