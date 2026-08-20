@@ -3,7 +3,10 @@
 
 from __future__ import annotations
 
+from collections.abc import Callable
 from copy import deepcopy
+import hashlib
+import json
 import unittest
 from pathlib import Path
 
@@ -37,10 +40,69 @@ def load_yaml(path: Path) -> dict:
 
 MISSING = object()
 
+# Issue #205 accepted baseline v1. These values deliberately live in executable
+# test code rather than in the mutable YAML inputs. A legitimate future baseline
+# requires an explicit owner decision plus a new ID/version and every affected
+# digest constant and schema declaration updated together.
+ISSUE_205_BASELINE_ID = "issue-205-engineering-guardrails-provider-contract-v1"
+ISSUE_205_BASELINE_VERSION = 1
+ISSUE_205_BASELINE_ISSUE_REFERENCE = {
+    "number": 205,
+    "url": "https://github.com/YuChia-Wei/ai-collaboration-framework/issues/205",
+}
+ISSUE_205_BASELINE_CHANGE_CONTROL = (
+    "An explicit owner decision must authorize a baseline change. The owner must "
+    "assign a new baseline_id and baseline_version and update every affected "
+    "Issue #205 accepted digest constant and schema declaration together."
+)
+ISSUE_205_BASELINE_SCHEMA_DIGEST_CONTROL = (
+    "The accepted schema SHA-256 is an Issue #205 test-helper constant rather "
+    "than a schema field, so the schema digest cannot self-reference."
+)
+ISSUE_205_BASELINE_CANONICALIZATION = {
+    "input": "YAML-loaded document data",
+    "serialization": "JSON",
+    "json_options": {
+        "sort_keys": True,
+        "separators": [",", ":"],
+        "ensure_ascii": False,
+        "allow_nan": False,
+    },
+    "array_order": "preserved",
+    "encoding": "UTF-8",
+    "digest_algorithm": "sha256",
+}
+ISSUE_205_BASELINE_PROVIDER_CONTRACT_SHA256 = (
+    "69c020829aed4371f2b3e81ba41f2c95932623a6467b36cba7aa5fdcf593bee7"
+)
+ISSUE_205_BASELINE_PROVIDER_SELECTION_TEMPLATE_SHA256 = (
+    "9dcf04ee3137c6e2f330e7b4b1138c50a5881c153a9912582f192cbb419d9d29"
+)
+# This value is not declared in the schema: including it there would make the
+# schema's canonical digest self-referential.
+ISSUE_205_BASELINE_SCHEMA_SHA256 = (
+    "e98afb302ae8194151d5584634ade7fb282fbf31ad0f110bab2b5cedc6ba47db"
+)
+ISSUE_205_BASELINE_AUTHORITY = {
+    "baseline_id": ISSUE_205_BASELINE_ID,
+    "baseline_version": ISSUE_205_BASELINE_VERSION,
+    "issue_reference": ISSUE_205_BASELINE_ISSUE_REFERENCE,
+    "change_control": ISSUE_205_BASELINE_CHANGE_CONTROL,
+    "schema_digest_control": ISSUE_205_BASELINE_SCHEMA_DIGEST_CONTROL,
+    "canonicalization": ISSUE_205_BASELINE_CANONICALIZATION,
+    "artifact_digests": {
+        "provider_contract_sha256": ISSUE_205_BASELINE_PROVIDER_CONTRACT_SHA256,
+        "provider_selection_template_sha256": (
+            ISSUE_205_BASELINE_PROVIDER_SELECTION_TEMPLATE_SHA256
+        ),
+    },
+}
+
 SCHEMA_ROOT_FIELDS = (
     "schema_version",
     "schema_id",
     "applies_to",
+    "baseline_authority",
     "contract",
     "capability",
     "recommendation",
@@ -178,6 +240,36 @@ def display_value(value: object) -> str:
     return repr("<missing>") if value is MISSING else repr(value)
 
 
+def canonical_json_sha256(document: object) -> str:
+    """Hash YAML-loaded data as canonical compact UTF-8 JSON for Issue #205."""
+    serialized = json.dumps(
+        document,
+        sort_keys=True,
+        separators=(",", ":"),
+        ensure_ascii=False,
+        allow_nan=False,
+    )
+    return hashlib.sha256(serialized.encode("utf-8")).hexdigest()
+
+
+def require_issue_205_baseline_digest(
+    errors: list[str], artifact: str, document: object, expected: str
+) -> None:
+    try:
+        actual = canonical_json_sha256(document)
+    except (TypeError, ValueError) as error:
+        errors.append(
+            f"{artifact} must be canonicalizable under the Issue #205 baseline: "
+            f"{error}"
+        )
+        return
+    if actual != expected:
+        errors.append(
+            f"{artifact} canonical SHA-256 must equal Issue #205 accepted baseline "
+            f"{expected!r}, found {actual!r}"
+        )
+
+
 def require_exact_value(
     errors: list[str], path: str, actual: object, expected: object
 ) -> None:
@@ -189,6 +281,8 @@ def require_exact_value(
         matches = type(actual) is bool and actual is expected
     elif type(expected) is str:
         matches = type(actual) is str and actual == expected
+    elif type(expected) is int:
+        matches = type(actual) is int and actual == expected
     elif type(expected) is list:
         matches = type(actual) is list and actual == expected
     else:
@@ -308,6 +402,18 @@ def schema_errors(schema: dict) -> list[str]:
     require_exact_string_list(
         errors, "schema.applies_to", schema.get("applies_to", MISSING), list(SCHEMA_APPLIES_TO)
     )
+    require_exact_tree(
+        errors,
+        "schema.baseline_authority",
+        schema.get("baseline_authority", MISSING),
+        ISSUE_205_BASELINE_AUTHORITY,
+    )
+    require_issue_205_baseline_digest(
+        errors,
+        "schema",
+        schema,
+        ISSUE_205_BASELINE_SCHEMA_SHA256,
+    )
     require_exact_string_list(
         errors,
         "schema.template_prohibitions",
@@ -411,6 +517,12 @@ def schema_errors(schema: dict) -> list[str]:
 
 def selection_template_errors(template: dict, schema: dict) -> list[str]:
     errors: list[str] = []
+    require_issue_205_baseline_digest(
+        errors,
+        "provider_selection_template",
+        template,
+        ISSUE_205_BASELINE_PROVIDER_SELECTION_TEMPLATE_SHA256,
+    )
     rules = schema["provider_selection_template"]
     require_exact_keys(
         errors, "provider_selection_template", template, rules["required_fields"]
@@ -439,6 +551,12 @@ def contract_errors(
         return errors
     if not isinstance(contract, dict):
         return [f"contract must be a mapping, found {display_value(contract)}"]
+    require_issue_205_baseline_digest(
+        errors,
+        "contract",
+        contract,
+        ISSUE_205_BASELINE_PROVIDER_CONTRACT_SHA256,
+    )
 
     contract_rules = schema["contract"]
     require_exact_keys(errors, "contract", contract, contract_rules["required_fields"])
@@ -569,6 +687,176 @@ def contract_errors(
     return errors
 
 
+CoordinatedMutation = Callable[[dict, dict, dict], None]
+
+
+def rewrite_mutable_authority_digests_for_attack(
+    schema: dict, contract: dict, template: dict
+) -> None:
+    """Simulate an attacker keeping mutable schema digest declarations in sync."""
+    schema["baseline_authority"]["artifact_digests"] = {
+        "provider_contract_sha256": canonical_json_sha256(contract),
+        "provider_selection_template_sha256": canonical_json_sha256(template),
+    }
+
+
+def mutate_coordinated_capability_id(
+    schema: dict, contract: dict, template: dict
+) -> None:
+    value = "dotnet.provider-specific-validation"
+    schema["capability"]["required_literals"]["id"] = value
+    schema["provider_selection_template"]["required_literals"]["capability.id"] = value
+    contract["capability"]["id"] = value
+    template["capability"]["id"] = value
+
+
+def mutate_coordinated_capability_binding(
+    schema: dict, contract: dict, template: dict
+) -> None:
+    value = "provider-package-specific"
+    schema["capability"]["required_literals"]["provider_binding"] = value
+    schema["provider_selection_template"]["required_literals"][
+        "capability.provider_binding"
+    ] = value
+    contract["capability"]["provider_binding"] = value
+    template["capability"]["provider_binding"] = value
+
+
+def mutate_coordinated_boolean(
+    schema: dict, contract: dict, template: dict
+) -> None:
+    schema["recommendation"]["required_literals"]["selection_independent"] = False
+    schema["provider_selection_template"]["required_literals"][
+        "recommendation.selection_independent"
+    ] = False
+    contract["recommendation"]["selection_independent"] = False
+    template["recommendation"]["selection_independent"] = False
+
+
+def mutate_coordinated_unavailable_flag(
+    schema: dict, contract: dict, template: dict
+) -> None:
+    del template  # The unavailable delivery claim exists only in the contract.
+    schema["framework_delivery"]["required_literals"]["supplied_executable"] = True
+    contract["framework_delivery"]["supplied_executable"] = True
+
+
+def mutate_coordinated_receipt_field(
+    schema: dict, contract: dict, template: dict
+) -> None:
+    del template
+    schema["evidence_receipt_contracts"]["receipt_requirements"]["execution"][
+        "required_fields"
+    ].remove("command")
+    contract["evidence_receipt_contracts"]["execution"]["required_fields"].remove(
+        "command"
+    )
+
+
+def mutate_coordinated_receipt_type(
+    schema: dict, contract: dict, template: dict
+) -> None:
+    del template
+    value = "engineering-guardrails-provider-runtime-receipt"
+    schema["evidence_receipt_contracts"]["receipt_requirements"]["execution"][
+        "receipt_type"
+    ] = value
+    contract["evidence_receipt_contracts"]["execution"]["receipt_type"] = value
+
+
+def mutate_coordinated_receipt_kind(
+    schema: dict, contract: dict, template: dict
+) -> None:
+    del template
+    kind = "runtime"
+    receipt_type = "engineering-guardrails-provider-runtime-receipt"
+    required_fields = list(
+        contract["evidence_receipt_contracts"]["execution"]["required_fields"]
+    )
+    schema["evidence_receipt_contracts"]["required_kinds"].append(kind)
+    schema["evidence_receipt_contracts"]["receipt_requirements"][kind] = {
+        "receipt_type": receipt_type,
+        "required_fields": required_fields,
+    }
+    contract["evidence_receipt_contracts"][kind] = {
+        "receipt_type": receipt_type,
+        "digest": deepcopy(contract["evidence_receipt_contracts"]["execution"]["digest"]),
+        "required_fields": required_fields,
+    }
+
+
+def mutate_coordinated_state_set(
+    schema: dict, contract: dict, template: dict
+) -> None:
+    del template
+    state = "selected-ready"
+    schema["state_semantics"]["required_states"].append(state)
+    schema["state_semantics"]["state_requirements"][state] = {
+        "readiness.status": "proven"
+    }
+    contract["state_semantics"]["states"][state] = {
+        "readiness": {"status": "proven"}
+    }
+
+
+def mutate_coordinated_state_requirement(
+    schema: dict, contract: dict, template: dict
+) -> None:
+    del template
+    schema["state_semantics"]["state_requirements"]["not-selected"][
+        "selection.auto_install"
+    ] = "allowed"
+    contract["state_semantics"]["states"]["not-selected"]["selection"][
+        "auto_install"
+    ] = "allowed"
+
+
+def mutate_coordinated_prohibition(
+    schema: dict, contract: dict, template: dict
+) -> None:
+    del template
+    schema["prohibitions"]["required_exact_values"].pop()
+    contract["prohibitions"].pop()
+
+
+def mutate_coordinated_fallback(
+    schema: dict, contract: dict, template: dict
+) -> None:
+    del template
+    value = "framework-owned"
+    schema["fallback"]["required_literals"]["ownership"] = value
+    contract["fallback"]["ownership"] = value
+
+
+def mutate_coordinated_template_selection(
+    schema: dict, contract: dict, template: dict
+) -> None:
+    del contract
+    schema["provider_selection_template"]["required_literals"]["selection.status"] = (
+        "selected"
+    )
+    template["selection"]["status"] = "selected"
+
+
+def mutate_coordinated_template_null_receipt(
+    schema: dict, contract: dict, template: dict
+) -> None:
+    del contract
+    schema["provider_selection_template"]["required_null_paths"].remove(
+        "readiness.receipt"
+    )
+    del template["readiness"]["receipt"]
+
+
+def mutate_coordinated_added_contract_claim(
+    schema: dict, contract: dict, template: dict
+) -> None:
+    del template
+    claim = "unproven_execution_claim"
+    schema["contract"]["required_fields"].append(claim)
+    contract[claim] = "provider-evidence-not-required"
+
+
 class EngineeringGuardrailsProviderContractGwtTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
@@ -599,6 +887,30 @@ class EngineeringGuardrailsProviderContractGwtTests(unittest.TestCase):
         self.assertTrue(
             any(expected_fragment in error for error in errors),
             f"Expected {expected_fragment!r}; errors were: {errors}",
+        )
+
+    def assert_coordinated_mutation_rejected(
+        self, category: str, mutation: CoordinatedMutation
+    ) -> None:
+        """Show an attacker cannot make schema plus artifacts drift together."""
+        schema = deepcopy(self.schema)
+        contract = deepcopy(self.contract)
+        template = deepcopy(self.selection_template)
+        mutation(schema, contract, template)
+        rewrite_mutable_authority_digests_for_attack(schema, contract, template)
+
+        errors = self.errors_for(
+            schema=schema,
+            contract=contract,
+            template=template,
+        )
+        self.assertTrue(
+            any(
+                "schema canonical SHA-256 must equal Issue #205 accepted baseline"
+                in error
+                for error in errors
+            ),
+            f"{category} coordinated mutation escaped the immutable baseline: {errors}",
         )
 
     def test_gwt_001_given_the_shipped_contract_when_checked_then_the_unavailable_provider_states_are_complete(self) -> None:
@@ -1057,6 +1369,27 @@ class EngineeringGuardrailsProviderContractGwtTests(unittest.TestCase):
             self.assertIn(f"`{state}`", recipe)
         self.assertIn("separate types and", readme)
         self.assertIn("separately typed and digested", recipe)
+
+    def test_gwt_009_given_coordinated_schema_and_artifact_drift_when_checked_then_issue_205_baseline_rejects_every_category(self) -> None:
+        mutations: tuple[tuple[str, CoordinatedMutation], ...] = (
+            ("capability id", mutate_coordinated_capability_id),
+            ("capability binding", mutate_coordinated_capability_binding),
+            ("boolean", mutate_coordinated_boolean),
+            ("unavailable flag", mutate_coordinated_unavailable_flag),
+            ("receipt field", mutate_coordinated_receipt_field),
+            ("receipt type", mutate_coordinated_receipt_type),
+            ("receipt kind", mutate_coordinated_receipt_kind),
+            ("state set", mutate_coordinated_state_set),
+            ("state requirement", mutate_coordinated_state_requirement),
+            ("prohibition", mutate_coordinated_prohibition),
+            ("fallback", mutate_coordinated_fallback),
+            ("template selection", mutate_coordinated_template_selection),
+            ("template null receipt", mutate_coordinated_template_null_receipt),
+            ("added contract claim", mutate_coordinated_added_contract_claim),
+        )
+        for category, mutation in mutations:
+            with self.subTest(category=category):
+                self.assert_coordinated_mutation_rejected(category, mutation)
 
 
 if __name__ == "__main__":

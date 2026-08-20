@@ -3,6 +3,36 @@ schema_id: "dotnet-engineering-guardrails-provider-contract-schema"
 applies_to:
   - "provider-contract.yaml"
   - "templates/provider-selection.template.yaml"
+# Version 1 is the Issue #205 accepted baseline. The schema's own digest is
+# intentionally held by the test helper, because declaring it here would be
+# self-referential.
+baseline_authority:
+  baseline_id: "issue-205-engineering-guardrails-provider-contract-v1"
+  baseline_version: 1
+  issue_reference:
+    number: 205
+    url: "https://github.com/YuChia-Wei/ai-collaboration-framework/issues/205"
+  change_control: >-
+    An explicit owner decision must authorize a baseline change. The owner must
+    assign a new baseline_id and baseline_version and update every affected
+    Issue #205 accepted digest constant and schema declaration together.
+  schema_digest_control: >-
+    The accepted schema SHA-256 is an Issue #205 test-helper constant rather
+    than a schema field, so the schema digest cannot self-reference.
+  canonicalization:
+    input: "YAML-loaded document data"
+    serialization: "JSON"
+    json_options:
+      sort_keys: true
+      separators: [",", ":"]
+      ensure_ascii: false
+      allow_nan: false
+    array_order: "preserved"
+    encoding: "UTF-8"
+    digest_algorithm: "sha256"
+  artifact_digests:
+    provider_contract_sha256: "69c020829aed4371f2b3e81ba41f2c95932623a6467b36cba7aa5fdcf593bee7"
+    provider_selection_template_sha256: "9dcf04ee3137c6e2f330e7b4b1138c50a5881c153a9912582f192cbb419d9d29"
 contract:
   required_fields:
     - "schema_version"
