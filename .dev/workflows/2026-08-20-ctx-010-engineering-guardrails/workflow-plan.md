@@ -17,7 +17,7 @@
 - `branch_segment`: `1`
 - `status`: `active`
 - `created_at`: `2026-08-20T14:45:44+08:00`
-- `updated_at`: `2026-08-20T14:45:44+08:00`
+- `updated_at`: `2026-08-20T15:10:49+08:00`
 - `template_source`: `.ai/assets/skills/software-development-orchestrator/templates/development-workflow-plan-template.md`
 - `template_version`: `1.4.0`
 - `workflow_locator`: `.dev/workflows/2026-08-20-ctx-010-engineering-guardrails/workflow.yaml`
@@ -57,7 +57,7 @@ Before #207 integration, delegated contexts are recorded only as generic bounded
 
 | Stage | Role / Canonical Path | Owning Skill | Final/Current Disposition | Attempt Summary | Final Integration Owner / Decision | Record or Task Reference |
 | --- | --- | --- | --- | --- | --- | --- |
-| CTX-010 | pre-#207 bounded context / no canonical path | ai-context-governance | delegated | A Terra Max context is performing a read-only deterministic inventory; implementation ownership remains with root until a bounded writer is assigned. | root / pending | transient agent receipt |
+| CTX-010 | pre-#207 bounded context / no canonical path | ai-context-governance | completed | One Terra Max context completed a read-only deterministic inventory. A separate Terra Max context implemented the bounded provider-contract slice. Neither invocation is a #207 canonical role claim. | root / accepted after direct file review and focused validation | transient agent receipts and commit `16584c9968705a9cd99db37872bb92543bbcdbd4` |
 
 ## Approval Gates
 
@@ -84,8 +84,8 @@ Before #207 integration, delegated contexts are recorded only as generic bounded
 
 | Level | Outcome | Evidence | Deferral Owner / Follow-up |
 | --- | --- | --- | --- |
-| unit | pending | Focused schema, readiness, compatibility, terminology, and template structural fixtures remain to run. | root / after implementation |
-| integration | pending | Portable package-native selected/declined/unavailable/synthetic-proven paths and hosted checks remain to run. | root / after clean commit |
+| unit | passed-with-retained-failures | Provider contract 5/5, SDK-free contract 5/5, and validation registry 6/6 passed. Retained first failures: local pycache permission, initial synthetic-state fixture path, local release-extract discovery, isolated Git object store, and sandbox Git Bash signal pipe. | root / no focused unit work remains |
+| integration | in-progress | Exact committed-HEAD real-profile package projection GWT passed 1/1 in 27.328s; package smoke, independent audit, and hosted checks remain. | root / clean immutable validation and provider admission |
 
 ## Spec Compliance Selection
 
@@ -96,11 +96,11 @@ Before #207 integration, delegated contexts are recorded only as generic bounded
 
 ## Progress And Handoff
 
-- Current stage: CTX-010 implementation inventory and contract reconciliation.
-- Completed stages: Live Issue read-back; exact external-provider repository, commit, packability, tag, Release, and identity-boundary read-back; dedicated workflow branch creation.
+- Current stage: CTX-010 clean immutable validation and independent provider admission.
+- Completed stages: Live Issue read-back; exact external-provider repository, commit, packability, tag, Release, and identity-boundary read-back; dedicated workflow branch; explicit framework-source packet; deterministic inventory; bounded provider contract, state schema, target-owned templates, documentation, and focused fixtures; focused source and package validation.
 - Deferred stages and reasons: None within #205.
 - Open decisions: No owner-sensitive decision is pending; unavailable provider identity/readiness must remain explicitly unknown or unproven.
-- Continuation instructions: Complete the deterministic inventory, create the framework-source effective-rule packet, implement the smallest coherent provider contract and fixtures, then validate and prepare the exact-head terminal-close PR.
+- Continuation instructions: Record this implementation evidence, dispatch the clean immutable package smoke, obtain a fresh read-only Sol High exact-head audit, then push and prepare the terminal-close PR with hosted admission.
 - Target policy references: `.agents/skills/ai-context-governance/SKILL.md`; `.ai/assets/skills/ai-context-governance/skill.yaml`.
 - Registered handoff checkpoint: none.
 - Branch history and checkpoint handoffs: Segment 1 branches from clean integrated main `8bcb26f1440b49f357cc494217eabd67d400e64f`.
@@ -109,19 +109,19 @@ Before #207 integration, delegated contexts are recorded only as generic bounded
 
 | Segment | Branch | Base | Checkpoint Type | Commit | Remote / Target | Recorded At | Reason | Resume Branch / Action |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| 1 | `codex/2026-08-20-ctx-010-engineering-guardrails` | `main@8bcb26f1440b49f357cc494217eabd67d400e64f` | active | pending | local | `2026-08-20T14:45:44+08:00` | Preserve provider-state and independent-audit lifecycle evidence for #205. | Complete inventory and bounded implementation on this branch. |
+| 1 | `codex/2026-08-20-ctx-010-engineering-guardrails` | `main@8bcb26f1440b49f357cc494217eabd67d400e64f` | implementation-ready | `16584c9968705a9cd99db37872bb92543bbcdbd4` | local | `2026-08-20T15:10:49+08:00` | Preserve provider-state and independent-audit lifecycle evidence for #205. | Commit evidence, run immutable package smoke and audit, then open the terminal-close PR. |
 
 ## Completion Summary
 
-- Outcome: In progress.
-- Changed artifacts: Workflow locator, plan, task, and index entry only at this checkpoint.
+- Outcome: Implementation and focused validation complete; package smoke, exact-head audit, and hosted admission pending.
+- Changed artifacts: Provider-local contract/schema, target-owned analyzer and test starting templates, recipe documentation, focused GWTs, SDK-free/package assertions, and validation registry membership.
 - Approved requirement/specification evidence: Live Issue #205 plus explicit repository-owner v0.14 authorization.
-- Implementation completion evidence: Pending.
-- Required test outcomes: Pending.
+- Implementation completion evidence: Stable capability identity; official-recommended and not-selected coexistence; explicit declined, selected-unavailable, and synthetic readiness semantics; separately typed/digested readiness, compatibility, and execution receipts; no real provider identity or execution claim; SDK-free target-owned templates.
+- Required test outcomes: Focused provider 5/5, SDK-free 5/5, registry 6/6, and exact committed-HEAD package projection 1/1 passed; package smoke and hosted checks remain.
 - Selected compliance evidence: Not applicable.
 - Review disposition: Fresh exact-head independent audit pending after implementation and clean commit.
-- Validation evidence: Clean main and exact external provider unavailability evidence captured before branch creation.
+- Validation evidence: Framework-source packet `09b7c4c770c5a6d5f79f5b48cc0d1d353d65a5260df9bb489351cc44ddc660ae`; validate-ai-context, validate-source-governance, validate-shell-assets, YAML/static checks, and focused GWTs passed; first failures remain retained in the task record.
 - Workflow task state: in progress.
-- Commits: none.
-- Branch / checkpoint / handoff evidence: dedicated branch created from `8bcb26f1440b49f357cc494217eabd67d400e64f`.
+- Commits: `ea6bf4e5a721a572c9408703d14abeaaafd678e5` workflow bootstrap; `16584c9968705a9cd99db37872bb92543bbcdbd4` provider implementation.
+- Branch / checkpoint / handoff evidence: dedicated branch created from `8bcb26f1440b49f357cc494217eabd67d400e64f`; implementation commit is clean and package-visible.
 - Residual risks: The provider has analyzers and tests in source but no approved packable distribution identity or hosted release; all real-provider execution claims must remain unavailable until external evidence changes.

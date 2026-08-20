@@ -9,7 +9,7 @@
   "related_plan_id": "development-plan-2026-08-20-ctx-010-engineering-guardrails",
   "status": "in_progress",
   "created_at": "2026-08-20T14:45:44+08:00",
-  "updated_at": "2026-08-20T14:45:44+08:00",
+  "updated_at": "2026-08-20T15:10:49+08:00",
   "template_source": ".ai/assets/skills/software-development-orchestrator/templates/development-workflow-task-template.json",
   "model": "gpt-5.6-sol",
   "reasoning_effort": "high",
@@ -82,10 +82,42 @@
     "deferred_items": []
   },
   "results": {
-    "summary": "Inventory and contract reconciliation are in progress.",
-    "files_changed": [],
+    "summary": "Provider contract implementation and focused validation are complete at 16584c9968705a9cd99db37872bb92543bbcdbd4; immutable package smoke, exact-head audit, and hosted admission remain.",
+    "files_changed": [
+      "provider-local Engineering Guardrails contract and schema",
+      "target-owned provider selection, analyzer, analyzer-test, and code-fix decision starting templates",
+      "mechanical-validation recipe manifest and documentation",
+      "focused provider, SDK-free, and package projection GWTs",
+      "validation profile registry membership"
+    ],
     "approval_evidence": ["explicit repository-owner v0.14 authorization"],
-    "test_execution": [],
+    "test_execution": [
+      {
+        "command": "py -3 -B .ai/scripts/tests/test_engineering_guardrails_provider_contract.py -v",
+        "outcome": "passed",
+        "evidence": "5 tests; declined, not-selected, selected-unavailable, synthetic readiness, invented identity rejection, target-owned templates, and documentation/manifest agreement"
+      },
+      {
+        "command": "py -3 -B .ai/scripts/tests/test_sdk_free_framework_contract.py -v",
+        "outcome": "passed-with-retained-repair-failures",
+        "evidence": "5 tests; retained initial physical-scan failure from ignored .codex/release extracts and first isolated-index object-store failure before the corrected real-index run passed"
+      },
+      {
+        "command": "py -3 -B .ai/scripts/tests/test_validation_profile_registry.py -v",
+        "outcome": "passed-with-retained-blocked-attempt",
+        "evidence": "6 tests on authorized host route; sandbox Git Bash signal-pipe failure retained"
+      },
+      {
+        "command": "py -3 -B .ai/scripts/tests/test_ai_context_packaging.py DeterministicPackageGwtTests.test_gwt_000a_given_real_component_matrix_when_payload_is_projected_then_both_mandatory_cores_keep_their_capabilities -v",
+        "outcome": "passed",
+        "evidence": "1 exact committed-HEAD package projection test in 27.328s"
+      },
+      {
+        "command": "initial focused implementation attempts",
+        "outcome": "passed-with-retained-repair-failures",
+        "evidence": "retained local pycache permission failure and initial synthetic-state fixture-path failure before corrected reruns"
+      }
+    ],
     "role_execution_aggregation": [],
     "spec_compliance": {
       "outcome": "not-applicable",
@@ -94,9 +126,14 @@
     },
     "validation_evidence": [
       "External Engineering Guardrails main is d0d23e922de1fc067404bb87859d2b798230c270 with no tags or Releases and non-packable project configuration.",
-      "The external README explicitly leaves NuGet identities, package boundaries, version policy, and publication contract undefined."
+      "The external README explicitly leaves NuGet identities, package boundaries, version policy, and publication contract undefined.",
+      "Framework-source packet 09b7c4c770c5a6d5f79f5b48cc0d1d353d65a5260df9bb489351cc44ddc660ae resolved at clean bootstrap commit ea6bf4e5a721a572c9408703d14abeaaafd678e5 with AICTX-EVIDENCE-001 and TEST-GWT-001.",
+      "validate-ai-context, validate-source-governance, validate-shell-assets, YAML parsing, static newline/whitespace checks, and git diff checks passed."
     ],
-    "commits": [],
+    "commits": [
+      "ea6bf4e5a721a572c9408703d14abeaaafd678e5",
+      "16584c9968705a9cd99db37872bb92543bbcdbd4"
+    ],
     "follow_up_needed": true
   }
 }
