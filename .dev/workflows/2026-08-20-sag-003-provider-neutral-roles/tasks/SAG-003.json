@@ -9,7 +9,7 @@
   "related_plan_id": "development-plan-2026-08-20-sag-003-provider-neutral-roles",
   "status": "in_progress",
   "created_at": "2026-08-20T23:55:54+08:00",
-  "updated_at": "2026-08-21T00:45:00+08:00",
+  "updated_at": "2026-08-21T01:00:00+08:00",
   "template_source": ".ai/assets/skills/software-development-orchestrator/templates/development-workflow-task-template.json",
   "model": "gpt-5.6-sol",
   "reasoning_effort": "high",
@@ -130,7 +130,7 @@
     "deferred_items": ["Claude runtime projection", "GitHub Copilot runtime projection", "Issue #208 delegation opt-in and preflight"]
   },
   "results": {
-    "summary": "SAG-003 candidate contracts, Codex-only static projections, upgrader bindings, validators, package projection, and runner wiring are implemented and locally focused-validated; commit, fixed-head audit, hosted checks, and integration remain pending, so no new canonical role existence or invocation is claimed.",
+    "summary": "SAG-003 candidate contracts, Codex-only static projections, upgrader bindings, validators, package projection, and runner wiring are implemented and locally focused-validated at implementation commit 3a99e0f808cbf6455d9b39067a229f5855450e65; draft PR #228 and its terminal-close declaration exist, while fixed-head audit, hosted checks, and integration remain pending, so no new canonical role existence or invocation is claimed.",
     "files_changed": [
       "five candidate canonical role manifests and playbooks",
       "provider-neutral capability and provider-projection registries plus schemas",
@@ -158,10 +158,11 @@
     "validation_evidence": [
       "Live Issue #207 is open and Project status read-back is Inbox; Project-field restoration is intentionally not performed in this context.",
       "No open pull request targets Issue #207 at admission.",
-      "Base main and origin/main are e27540bb34721a14d097316af8f5fd708b6982b2 with a clean worktree."
-      ,"Precommit semantic review PASS on candidate scope digest 8c1e4f1c24498bb68c198f71ed3e72c21225ebb152c66c64e5ef6b30e7cf0469 before this workflow-only evidence update."
+      "Base main and origin/main are e27540bb34721a14d097316af8f5fd708b6982b2 with a clean worktree.",
+      "Precommit semantic review PASS on candidate scope digest 8c1e4f1c24498bb68c198f71ed3e72c21225ebb152c66c64e5ef6b30e7cf0469 before this workflow-only evidence update.",
+      "Draft PR #228: https://github.com/YuChia-Wei/ai-collaboration-framework/pull/228; terminal-close declaration added with review, hosted checks, integration, and read-back pending."
     ],
-    "commits": [],
+    "commits": ["3a99e0f808cbf6455d9b39067a229f5855450e65"],
     "follow_up_needed": true
   }
 }

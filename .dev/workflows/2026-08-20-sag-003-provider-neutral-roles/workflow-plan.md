@@ -17,7 +17,7 @@
 - `branch_segment`: `1`
 - `status`: `active`
 - `created_at`: `2026-08-20T23:55:54+08:00`
-- `updated_at`: `2026-08-21T00:45:00+08:00`
+- `updated_at`: `2026-08-21T01:00:00+08:00`
 - `template_source`: `.ai/assets/skills/software-development-orchestrator/templates/development-workflow-plan-template.md`
 - `template_version`: `1.4.0`
 - `workflow_locator`: `.dev/workflows/2026-08-20-sag-003-provider-neutral-roles/workflow.yaml`
@@ -96,14 +96,14 @@ Before #207 integrates, all delegated work remains generic pre-#207 context and 
 
 ## Progress And Handoff
 
-- Current stage: SAG-003 candidate implementation and focused validation complete; immutable commit and fixed-head audit pending.
+- Current stage: Draft PR #228 terminal-close declaration head preparation; fresh fixed-head audit and hosted admission pending.
 - Completed stages: Online admission, inventories, implementation, focused validation, package/runner wiring, and precommit semantic review.
 - Deferred stages and reasons: Claude/Copilot projections require separate design/validation/authorization; Issue #208 owns delegation opt-in and Codex advisory preflight.
 - Open decisions: None; live owner decisions select Codex-only projection and sequential fallback.
-- Continuation instructions: Record this evidence, commit the candidate, push/create the terminal-close PR, add the governed declaration, then obtain a fresh no-repair Sol High audit at the exact final head before hosted admission and merge.
+- Continuation instructions: Commit and push the tracked PR #228 declaration, synchronize the live body byte-for-byte, then obtain a fresh no-repair Sol High audit at that exact clean head before hosted admission and merge.
 - Target policy references: `.ai/assets/shared/ROLE-EXECUTION-CONTRACT.md`; `.dev/standards/WORKFLOW-GATE-POLICY.md`; `.dev/standards/GITHUB-TERMINAL-ISSUE-CLOSURE-POLICY.md`.
 - Registered handoff checkpoint: none.
-- Branch history and checkpoint handoffs: Segment 1 starts from exact integrated main `e27540bb34721a14d097316af8f5fd708b6982b2`.
+- Branch history and checkpoint handoffs: Segment 1 starts from exact integrated main `e27540bb34721a14d097316af8f5fd708b6982b2`; implementation commit is `3a99e0f808cbf6455d9b39067a229f5855450e65`; PR #228 declaration head is pending commit.
 
 ## Branch Lifecycle
 
@@ -122,6 +122,6 @@ Before #207 integrates, all delegated work remains generic pre-#207 context and 
 - Review disposition: Terra Max precommit semantic review PASS; final independent Sol High fixed-head audit pending.
 - Validation evidence: Clean integrated base, live Issue admission, local focused pass evidence, retained environment/fixture failures, and Codex doctor partial diagnostics.
 - Workflow task state: in progress.
-- Commits: none.
+- Commits: `3a99e0f808cbf6455d9b39067a229f5855450e65` implementation; declaration commit pending.
 - Branch / checkpoint / handoff evidence: Dedicated SAG-003 branch from `e27540bb34721a14d097316af8f5fd708b6982b2`.
 - Residual risks: `codex doctor --json` cannot prove current-session provider availability and failed unrelated reachability/state checks; hosted gates and fresh fixed-head audit remain mandatory; #207 roles are not integrated or invoked until admitted merge.

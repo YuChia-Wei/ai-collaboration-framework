@@ -1,0 +1,47 @@
+schema_version: "1.0"
+contract_id: github-terminal-issue-closure
+repository: YuChia-Wei/ai-collaboration-framework
+validation_stage: declaration
+pull_request:
+  number: 228
+  head_sha: null
+  body: |-
+    ## Summary
+
+    - adds five reusable provider-neutral candidate capability roles for mechanical evidence, reconciliation, semantic governance, evidence synthesis, and fixed-head independent audit
+    - keeps canonical contracts free of provider/model/session fields while projecting only Codex read-only runtime configuration
+    - retains Claude and GitHub Copilot as deferred rather than unsupported, and preserves the specialized context-translator adapters
+    - keeps deterministic tools authoritative, direct sequential fallback contract-equivalent, and terminal-auditor selection explicit and fail closed
+
+    ## Validation
+
+    - AI-context validation: PASS
+    - provider role projection fixtures: 8/8 PASS
+    - existing sub-agent adapter fixtures: 31/31 PASS on the normal Windows ACL boundary
+    - wrapper metadata fixtures: 16/16 PASS on the normal Windows ACL boundary
+    - provider role portable package projection: PASS
+    - validation registry: 7/7 PASS on the normal Windows ACL boundary
+    - shell assets, workflow artifacts, AST/TOML parsing, commit policy, and diff checks: PASS
+    - Terra Max precommit semantic review: PASS
+
+    Retained sandbox ACL, Git Bash signal-pipe, initial fixture-collision, and Codex doctor diagnostic failures remain recorded in the SAG-003 workflow and are not promoted. Current-session runtime availability and genuine invocation remain unknown/not-claimed.
+
+    ## Disposition
+
+    Closes #207
+
+    Exact-head independent audit, hosted checks, and merge admission remain mandatory before integration. This declaration does not claim the candidate roles are integrated or were invoked.
+  integration: {status: pending, topology: null, admitted_head_sha: null, integration_commit_sha: null, provider_read_back: false}
+  review: {status: pending}
+  required_check_contexts: []
+  hosted_checks: []
+issues:
+  - number: 207
+    mode: terminal-close
+    work_authorization: {online_issue_bound: true, explicit_owner_approval: true}
+    final_accepted_delivery: true
+    workflow: {scope_complete: true, tasks_complete: true, applicable_verification_complete: true}
+    closing_keyword: Closes
+    closure_deferred_reason: null
+    next_terminal_gate_or_owner: null
+    read_back: {performed: false, integration_commit_sha: null, issue_state: null, issue_state_reason: null, project_status: null}
