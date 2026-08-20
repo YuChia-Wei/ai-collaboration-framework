@@ -329,12 +329,33 @@ class GitHubWorkflowContractTests(unittest.TestCase):
         )
 
     def test_gwt_006_given_candidate_state_requires_online_issue_readback_when_run_then_token_is_available(self) -> None:
+        selected_commit = "${{ github.event.pull_request.head.sha || github.sha }}"
+        candidate_checkout = next(
+            step
+            for step in steps(self.workflows["package-candidate.yml"])
+            if step.get("name") == "Check out candidate commit"
+        )
         candidate_step = next(
             step
             for step in steps(self.workflows["package-candidate.yml"])
             if step.get("name") == "Validate exact candidate state"
         )
-        self.assertEqual({"GH_TOKEN": "${{ github.token }}"}, candidate_step.get("env"))
+        self.assertEqual(selected_commit, candidate_checkout["with"].get("ref"))
+        self.assertEqual(
+            {
+                "GH_TOKEN": "${{ github.token }}",
+                "CANDIDATE_COMMIT": selected_commit,
+            },
+            candidate_step.get("env"),
+        )
+        self.assertEqual(
+            candidate_checkout["with"]["ref"],
+            candidate_step["env"]["CANDIDATE_COMMIT"],
+        )
+        command = candidate_step["run"]
+        self.assertIn('--commit "${CANDIDATE_COMMIT}"', command)
+        self.assertNotIn('--commit "${GITHUB_SHA}"', command)
+        self.assertNotIn('candidate_commit="${GITHUB_SHA}"', command)
 
     def test_gwt_007_given_project_write_token_when_workflows_checked_then_only_tag_jobs_receive_it(self) -> None:
         for name in WORKFLOW_NAMES - {"publish-release.yml"}:

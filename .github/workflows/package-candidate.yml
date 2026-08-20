@@ -37,6 +37,7 @@ jobs:
       - name: Check out candidate commit
         uses: actions/checkout@v6
         with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
           fetch-depth: 0
           persist-credentials: false
 
@@ -93,11 +94,12 @@ jobs:
         if: steps.release.outputs.available == 'true'
         env:
           GH_TOKEN: ${{ github.token }}
+          CANDIDATE_COMMIT: ${{ github.event.pull_request.head.sha || github.sha }}
         run: |
           python .ai/scripts/validate-ai-context-release-state.py \
             --phase candidate \
             --version "${{ steps.release.outputs.version }}" \
-            --commit "${GITHUB_SHA}" \
+            --commit "${CANDIDATE_COMMIT}" \
             --branch "${GITHUB_HEAD_REF:-${GITHUB_REF_NAME}}"
 
       - name: Validate provider reconciliation contract
