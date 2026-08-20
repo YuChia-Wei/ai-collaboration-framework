@@ -17,7 +17,7 @@
 - `branch_segment`: `1`
 - `status`: `active`
 - `created_at`: `2026-08-20T17:03:25+08:00`
-- `updated_at`: `2026-08-20T19:09:18+08:00`
+- `updated_at`: `2026-08-20T19:21:28+08:00`
 - `template_source`: `.ai/assets/skills/software-development-orchestrator/templates/development-workflow-plan-template.md`
 - `template_version`: `1.4.0`
 - `workflow_locator`: `.dev/workflows/2026-08-20-upg-003-multi-hop-upgrade/workflow.yaml`
@@ -120,7 +120,7 @@ Before #207 integrates, every delegated context is generic and is not evidence t
 
 ## Progress And Handoff
 
-- Current stage: UPG-003-S1 exact-head audit of `635abaeb532a2383dfb03cc1d13bd50e41f7e80b` failed; the bounded route-receipt, strict-YAML, and fixture-authority repair is committed at `14621d0c2f6bceb795d33d38f7ec86e2b607c354`. A fresh independent exact-head audit remains.
+- Current stage: UPG-003-S1 passed independent exact-head audit at `26d5ccbcd063e28df7d3cfddeb2a715c6f193644`. Draft PR #226 exists; its tracked deferred declaration requires a new exact-head audit and hosted admission before merge.
 - Completed stages: Live Issue/Project/PR read-back, exact existing-surface inventory, route contract, resolver, CLI, portable projection, focused source tests, and isolated package test.
 - Deferred stages and reasons: S2 waits for merged S1; S3 waits for S2 plus #207/#208 integration.
 - Open decisions: None for S1; unavailable or ambiguous assets become reconciliation-required rather than inferred.
@@ -133,19 +133,19 @@ Before #207 integrates, every delegated context is generic and is not evidence t
 
 | Segment | Branch | Base | Checkpoint Type | Commit | Remote / Target | Recorded At | Reason | Resume Branch / Action |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| 1 | `codex/2026-08-20-upg-003-route-resolution-s1-admission` | `main@ead96acb0ac4ea73a94c6de59604b47f1f78b5ae` | active-stage | `14621d0c2f6bceb795d33d38f7ec86e2b607c354` | local / PR S1 | `2026-08-20T19:09:18+08:00` | The failed 635abaeb audit is repaired at an exact committed head; fresh audit remains. | Obtain a new exact-head audit, then complete S1 before branching S2 from integrated main. |
+| 1 | `codex/2026-08-20-upg-003-route-resolution-s1-admission` | `main@ead96acb0ac4ea73a94c6de59604b47f1f78b5ae` | active-stage | `26d5ccbcd063e28df7d3cfddeb2a715c6f193644` | draft PR #226 / PR S1 | `2026-08-20T19:21:28+08:00` | Exact-head audit passed; tracked deferred declaration is being added. | Audit the declaration head, pass hosted admission, then merge S1 before branching S2 from integrated main. |
 
 ## Completion Summary
 
-- Outcome: S1 remains in progress. The 635abaeb exact-head audit failed; its bounded repair is committed at `14621d0c2f6bceb795d33d38f7ec86e2b607c354`, while new exact-head audit, hosted checks, PR merge, and online read-back remain.
+- Outcome: S1 remains in progress. Audit passed at `26d5ccbcd063e28df7d3cfddeb2a715c6f193644`; draft PR #226 and its deferred declaration exist, while declaration-head audit, hosted admission, merge, and online read-back remain.
 - Changed artifacts: Upgrade support policy, canonical matrix schema/template, read-only resolver and CLI, skill/profile registration, focused route and package-projection GWTs, validation registry, and this workflow evidence.
 - Approved requirement/specification evidence: Live Issue #206 and explicit owner instructions.
 - Implementation completion evidence: Resolver emits only four governed route kinds, cross-binds checksum sidecars, validator argv, canonical receipts, output bytes, and owner-approved deprecation evidence, and never accepts a target or invokes package apply. Commit `14621d0c2f6bceb795d33d38f7ec86e2b607c354` additionally cross-binds receipt from/to versions and ordered required cutover claims, rejects matrix duplicate keys, and uses retained canonical candidate authority bytes.
 - Required test outcomes: Prior route 20/20, isolated package projection 1/1, validation registry 6/6, and shell-assets validation passed. The first full-module external attempt failed because its output capture was missing and remains failed evidence. The exact a57e484ba6456358971f86bcf3198acf04e6ac1e full-module task then failed after 156.213 seconds with GWT-014/GWT-020 fixture failures; it remains failed evidence and was not rerun unchanged. The repair committed at `14621d0c2f6bceb795d33d38f7ec86e2b607c354` passes route 24/24 in 0.895 seconds plus GWT-014 1/1 in 67.216 seconds and GWT-020 1/1 in 61.502 seconds on the normal Windows ACL boundary; those results need a fresh exact-head audit.
 - Selected compliance evidence: Not applicable.
-- Review disposition: Fresh exact-head independent audit failed at `635abaeb532a2383dfb03cc1d13bd50e41f7e80b`; committed repair `14621d0c2f6bceb795d33d38f7ec86e2b607c354` needs a different fresh independent audit.
+- Review disposition: Fresh exact-head independent audit passed at `26d5ccbcd063e28df7d3cfddeb2a715c6f193644`; the later declaration commit must receive its own fresh audit.
 - Validation evidence: Base identity `ead96acb0ac4ea73a94c6de59604b47f1f78b5ae`; framework-source packet `b244520f8cb7653c067e2fe13a2aeef62f9974f8f345b0cac2dee3c63159ff05`; live published v0.6-v0.13 identities; historical packages have no portable validator and v0.10-v0.11 remains deferred-with-owner. Fresh Sol High audits of `f6de771bb37a6224fb09543edf911f61aa7ab2bc` and `a57e484ba6456358971f86bcf3198acf04e6ac1e` failed without repair in their audit contexts. The audit of `635abaeb532a2383dfb03cc1d13bd50e41f7e80b` likewise made no repair and found: edge receipts could be matrix-relabelled because they omitted `from_version`, `to_version`, and required cutover claims; route-matrix YAML accepted duplicate keys; and GWT-014/GWT-020 used placeholder candidate authority digests. Commit `14621d0c2f6bceb795d33d38f7ec86e2b607c354` contains the focused repair and requires a new audit. Failed sandbox, fixture, and external-capture attempts remain recorded and are not promoted.
 - Workflow task state: in progress.
-- Commits: `f6de771bb37a6224fb09543edf911f61aa7ab2bc`, `a57e484ba6456358971f86bcf3198acf04e6ac1e`, `71c4ec35ff180a70934333cdd296eb4b016050f8`, `ce0b4b6988030af1994edbbf37786fe7a7fbd952`, `635abaeb532a2383dfb03cc1d13bd50e41f7e80b`, and `14621d0c2f6bceb795d33d38f7ec86e2b607c354`.
+- Commits: `f6de771bb37a6224fb09543edf911f61aa7ab2bc`, `a57e484ba6456358971f86bcf3198acf04e6ac1e`, `71c4ec35ff180a70934333cdd296eb4b016050f8`, `ce0b4b6988030af1994edbbf37786fe7a7fbd952`, `635abaeb532a2383dfb03cc1d13bd50e41f7e80b`, `14621d0c2f6bceb795d33d38f7ec86e2b607c354`, and `26d5ccbcd063e28df7d3cfddeb2a715c6f193644`.
 - Branch / checkpoint / handoff evidence: Dedicated S1 admission branch `codex/2026-08-20-upg-003-route-resolution-s1-admission` continues from exact integrated main.
 - Residual risks: Historical origin routes remain reconciliation-required until a later candidate supplies and proves an exact compatible edge validator; the local audit repair requires a new independent exact-head audit; Project-field restoration is owned by another conversation.

@@ -9,7 +9,7 @@
   "related_plan_id": "development-plan-2026-08-20-upg-003-multi-hop-upgrade",
   "status": "in_progress",
   "created_at": "2026-08-20T17:03:25+08:00",
-  "updated_at": "2026-08-20T19:09:18+08:00",
+  "updated_at": "2026-08-20T19:21:28+08:00",
   "template_source": ".ai/assets/skills/software-development-orchestrator/templates/development-workflow-task-template.json",
   "model": "gpt-5.6-sol",
   "reasoning_effort": "high",
@@ -87,6 +87,15 @@
         "outcome": "failed",
         "scope": "Read-only exact-head semantic audit of 635abaeb532a2383dfb03cc1d13bd50e41f7e80b; found upgrade-edge receipt route/cutover claims were matrix-relabelable, matrix YAML accepted duplicate keys, and GWT014/GWT020 used placeholder candidate authority digests.",
         "canonical_role_claimed": false
+      },
+      {
+        "role": "pre-#207 fresh independent audit context",
+        "provider": "Codex",
+        "model": "gpt-5.6-sol",
+        "reasoning_effort": "high",
+        "outcome": "passed",
+        "scope": "Read-only exact-head semantic audit of 26d5ccbcd063e28df7d3cfddeb2a715c6f193644; verified exact edge/cutover binding, strict YAML, canonical candidate authority, and retained failure evidence with zero findings.",
+        "canonical_role_claimed": false
       }
     ],
     "spec_compliance": {"selected": false, "activation_source": [], "expected_outcome": "not-applicable"},
@@ -96,7 +105,7 @@
     "deferred_items": ["S2 multi-hop transaction", "S3 v0.14.0 source candidate and terminal closure"]
   },
   "results": {
-    "summary": "Core route contract repair is committed at 14621d0c2f6bceb795d33d38f7ec86e2b607c354 after the 635abaeb exact-head audit failed; a fresh exact-head audit and normal S1 admission remain in progress.",
+    "summary": "Core route contract passed independent audit at 26d5ccbcd063e28df7d3cfddeb2a715c6f193644; draft PR #226 exists and the tracked deferred declaration is pending a new exact-head audit and hosted admission.",
     "files_changed": [
       ".ai/assets/skills/ai-context-upgrader/skill.yaml",
       ".ai/assets/skills/ai-context-upgrader/references/upgrade-support-policy.md",
@@ -108,6 +117,7 @@
       ".ai/scripts/tests/test_ai_context_upgrade_routes.py",
       ".ai/scripts/tests/test_ai_context_packaging.py",
       ".ai/scripts/validation-profile-registry.sh",
+      ".dev/workflows/2026-08-20-upg-003-multi-hop-upgrade/evidence/terminal-issue-closure-declaration.yaml",
       ".agents/skills/ai-context-upgrader/SKILL.md",
       ".claude/skills/ai-context-upgrader/SKILL.md"
     ],
@@ -219,6 +229,7 @@
       ,"The bounded regression repair rejects raw aliases before PurePosixPath normalization and updates GWT-014/GWT-020 fixtures to bind the sealed predecessor source plus an explicit canonical remediation packet and decision before apply. Post-repair route tests pass 21 of 21 and the two selectors pass 1 of 1 each."
       ,"Fresh Sol High exact-head audit of 635abaeb532a2383dfb03cc1d13bd50e41f7e80b failed because upgrade-edge-validation/v1 did not bind edge from/to versions or matrix-level required cutover claims, load_route_matrix used permissive duplicate-key YAML parsing, and GWT-014/GWT-020 used placeholder candidate authority digests. The audit was read-only and made no repair."
       ,"The bounded repair committed at 14621d0c2f6bceb795d33d38f7ec86e2b607c354 makes upgrade-edge-validation/v1 cross-bind from_version, to_version, and ordered {cutover_id, required, state} claims; uses strict duplicate-key YAML loading; retains canonical candidate provenance/customizations bytes before the explicit remediation decision; and passes route 24/24 plus GWT-014/GWT-020 selectors 1/1 each. A fresh exact-head audit remains required."
+      ,"Fresh Sol High exact-head audit of 26d5ccbcd063e28df7d3cfddeb2a715c6f193644 passed with zero findings. Draft PR #226 is deferred with Refs #206; its tracked declaration causes a new head and therefore requires fresh audit and hosted admission before merge."
     ],
     "commits": [
       "f6de771bb37a6224fb09543edf911f61aa7ab2bc",
@@ -226,7 +237,8 @@
       "71c4ec35ff180a70934333cdd296eb4b016050f8",
       "ce0b4b6988030af1994edbbf37786fe7a7fbd952",
       "635abaeb532a2383dfb03cc1d13bd50e41f7e80b",
-      "14621d0c2f6bceb795d33d38f7ec86e2b607c354"
+      "14621d0c2f6bceb795d33d38f7ec86e2b607c354",
+      "26d5ccbcd063e28df7d3cfddeb2a715c6f193644"
     ],
     "follow_up_needed": true
   }
