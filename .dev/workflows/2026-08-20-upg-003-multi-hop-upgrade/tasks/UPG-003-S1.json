@@ -7,9 +7,9 @@
   "task_id": "UPG-003-S1",
   "owner_skill": "ai-context-upgrader",
   "related_plan_id": "development-plan-2026-08-20-upg-003-multi-hop-upgrade",
-  "status": "in_progress",
+  "status": "completed",
   "created_at": "2026-08-20T17:03:25+08:00",
-  "updated_at": "2026-08-20T19:45:54+08:00",
+  "updated_at": "2026-08-20T20:03:45+08:00",
   "template_source": ".ai/assets/skills/software-development-orchestrator/templates/development-workflow-task-template.json",
   "model": "gpt-5.6-sol",
   "reasoning_effort": "high",
@@ -117,7 +117,8 @@
     "deferred_items": ["S2 multi-hop transaction", "S3 v0.14.0 source candidate and terminal closure"]
   },
   "results": {
-    "summary": "Core route contract passed independent audit at 26d5ccbcd063e28df7d3cfddeb2a715c6f193644. Declaration-head audit and hosted failures at b87d0bd071696195976e77afd4fc59264f76aee5 are repaired at 2e468445ff876c78b4284e3548134dfdf37bb5b3; fresh exact-head audit and hosted admission remain.",
+    "finding_status": "addressed",
+    "summary": "S1 integrated through deferred PR #226. Exact admitted head 95b37747cee83cbe837bca9438b2450ee8c1bb85 passed fresh independent audit, all five required hosted checks, and live merge admission; merge commit 41a1b4bcc942b9a412d55a8dab77bcc5d7b6fbf2 was read back while Issue #206 remained open.",
     "files_changed": [
       ".ai/assets/skills/ai-context-upgrader/skill.yaml",
       ".ai/assets/skills/ai-context-upgrader/references/upgrade-support-policy.md",
@@ -283,8 +284,9 @@
       "14621d0c2f6bceb795d33d38f7ec86e2b607c354",
       "26d5ccbcd063e28df7d3cfddeb2a715c6f193644",
       "b87d0bd071696195976e77afd4fc59264f76aee5",
-      "2e468445ff876c78b4284e3548134dfdf37bb5b3"
+      "2e468445ff876c78b4284e3548134dfdf37bb5b3",
+      "95b37747cee83cbe837bca9438b2450ee8c1bb85"
     ],
-    "follow_up_needed": true
+    "follow_up_needed": false
   }
 }

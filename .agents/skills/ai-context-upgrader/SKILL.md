@@ -31,6 +31,9 @@ This is a thin current-runtime wrapper.
   - `.ai/assets/skills/ai-context-upgrader/templates/upgrade-remediation-decision.schema.yaml`
   - `.ai/assets/skills/ai-context-upgrader/templates/upgrade-route-matrix.template.yaml`
   - `.ai/assets/skills/ai-context-upgrader/templates/upgrade-route-matrix.schema.yaml`
+  - `.ai/assets/skills/ai-context-upgrader/references/multi-hop-upgrade-transaction-contract.md`
+  - `.ai/assets/skills/ai-context-upgrader/templates/multi-hop-upgrade-transaction.template.yaml`
+  - `.ai/assets/skills/ai-context-upgrader/templates/multi-hop-upgrade-transaction.schema.yaml`
   - `.ai/assets/shared/CLI-EXECUTION-ROUTING-CONTRACT.md`
   - `.ai/assets/shared/cli-execution-routing.schema.yaml`
 - `.ai/scripts/validate-ai-context-target.py`

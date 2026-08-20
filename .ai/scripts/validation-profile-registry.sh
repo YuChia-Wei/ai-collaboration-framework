@@ -149,6 +149,11 @@ register_check upgrade-route-package-projection \
     "package,upgrade-route,tests" "fast pr release nightly-full" \
     ".ai/distribution/profiles/dotnet-backend.yaml .ai/assets/skills/ai-context-upgrader .ai/assets/skills/ai-context-governance .ai/assets/shared .ai/scripts/ai_context_package.py .ai/scripts/ai_context_upgrade_routes.py .ai/scripts/plan-ai-context-upgrade.py .ai/scripts/tests/test_ai_context_packaging.py" '' "python>=3.11 git" 30 io reuse-by-input source \
     "python .ai/scripts/tests/test_ai_context_packaging.py UpgradeRoutePackageProjectionGwtTests -v" always
+register_check multi-hop-upgrade-transaction \
+    "AI Context Multi-Hop Upgrade Transaction GWT Tests" required \
+    "upgrade,transaction,tests" "fast pr release nightly-full" \
+    ".ai/assets/skills/ai-context-upgrader .ai/distribution/profiles/dotnet-backend.yaml .ai/scripts/ai_context_multi_hop_upgrade.py .ai/scripts/ai_context_package_apply.py .ai/scripts/ai_context_target_provenance.py .ai/scripts/ai_context_upgrade_routes.py .ai/scripts/tests/test_ai_context_multi_hop_upgrade.py" '' "python>=3.11 git" 90 io reuse-by-input portable \
+    "python .ai/scripts/tests/test_ai_context_multi_hop_upgrade.py -v" always
 register_check dependency-versions \
     "Offline Dependency And Version Consistency" required \
     "dependency,metadata" "fast pr release nightly-full" \

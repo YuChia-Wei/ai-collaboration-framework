@@ -3,34 +3,34 @@ contract_id: github-terminal-issue-closure
 repository: YuChia-Wei/ai-collaboration-framework
 validation_stage: declaration
 pull_request:
-  number: 226
+  number: 227
   head_sha: null
   body: |-
     ## Summary
 
-    - adds the read-only UPG-003 S1 support policy, route matrix schema/template, resolver, and portable CLI
-    - preserves exactly four route kinds and fails closed on ambiguity, semantic-cutover bypass, missing/tampered assets, duplicate YAML keys, and matrix-only edge/cutover relabeling
-    - binds checksums, validator argv, exact from/to versions, ordered required cutover claims, canonical receipts, raw output bytes, and explicit deprecation evidence
-    - keeps historical v0.6.0, v0.9.0, and immediate-predecessor routes reconciliation-required until exact portable validator evidence exists
+    - adds one evidence-bound multi-hop upgrade operation that composes the S1 route resolver with durable per-hop package, remediation, target-validation, finalization, resume, and active-hop rollback semantics
+    - seals a path-free resolver result, exact route intent, per-hop package/checksum/manifest/validator/decision/receipt evidence, and immutable finalized checkpoints
+    - keeps child apply plan 2.2 and journal v4 unchanged while retaining outer route state only in the Git administrative directory
+    - fails closed on direct-route bypass, missing or tampered assets, unsupported schemas, validator disagreement, stale decisions or receipts, mixed provenance, checkpoint drift, and crash/retry mismatch
 
     ## Validation
 
-    - focused route suite: 24/24 passed
-    - isolated route package projection: 1/1 passed
-    - GWT014 and GWT020 package upgrade selectors: 1/1 passed each
-    - validation registry: 6/6 passed
-    - workflow, AI-context, commit range, AST/YAML/JSON, and diff checks passed
-    - fresh independent exact-head audit: PASS at `26d5ccbcd063e28df7d3cfddeb2a715c6f193644`
+    - fresh independent Sol High exact-head audit: PASS at 1eeab510717ce1473ce51343d07a09fbdb3b0e37
+    - real unmocked two-hop GWT010: PASS in 77.160 seconds
+    - GWT003 and GWT017: 2/2 PASS
+    - GWT032 forged-evidence rollback/checkpoint-resume rejection: PASS
+    - portable package projection: PASS
+    - workflow, AI-context, commit range, shell-assets, wrapper metadata, validation registry, AST, and diff checks: PASS
 
-    Retained failure evidence is not promoted: the unchanged full packaging module failed at `a57e484b` after 156.213s on the now-repaired GWT014/GWT020 fixtures; it was not rerun unchanged.
+    Retained failure, timeout, cancellation, and sandbox-only blocked evidence remains recorded in the UPG-003-S2 workflow task and is not promoted.
 
     ## Disposition
 
     Refs #206
 
-    Closure reason: route resolution is complete; transaction and v0.14 release proof remain.
+    Closure reason: multi-hop transaction is complete; v0.14 release proof remains.
 
-    Next gate: S2 multi-hop transaction.
+    Next gate: S3 v0.14.0 source candidate.
 
     #206 must remain open and In progress.
   integration: {status: pending, topology: null, admitted_head_sha: null, integration_commit_sha: null, provider_read_back: false}
@@ -44,6 +44,6 @@ issues:
     final_accepted_delivery: false
     workflow: {scope_complete: false, tasks_complete: false, applicable_verification_complete: false}
     closing_keyword: null
-    closure_deferred_reason: route resolution is complete; transaction and v0.14 release proof remain
-    next_terminal_gate_or_owner: S2 multi-hop transaction
+    closure_deferred_reason: multi-hop transaction is complete; v0.14 release proof remains
+    next_terminal_gate_or_owner: S3 v0.14.0 source candidate
     read_back: {performed: false, integration_commit_sha: null, issue_state: null, issue_state_reason: null, project_status: null}

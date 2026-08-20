@@ -1511,6 +1511,34 @@ class UpgradeRoutePackageProjectionGwtTests(unittest.TestCase):
         ".ai/scripts/ai_context_upgrade_routes.py",
         ".ai/scripts/plan-ai-context-upgrade.py",
     )
+    MULTI_HOP_RUNTIME_SCRIPTS = (
+        ".ai/scripts/ai_context_multi_hop_upgrade.py",
+    )
+    MULTI_HOP_CONTRACT_PATHS = (
+        ".ai/assets/skills/ai-context-upgrader/references/"
+        "multi-hop-upgrade-transaction-contract.md",
+        ".ai/assets/skills/ai-context-upgrader/templates/"
+        "multi-hop-upgrade-transaction.template.yaml",
+        ".ai/assets/skills/ai-context-upgrader/templates/"
+        "multi-hop-upgrade-transaction.schema.yaml",
+    )
+    MULTI_HOP_CONTRACT_MARKERS = {
+        MULTI_HOP_CONTRACT_PATHS[0]: (
+            "resolver-result.json",
+            "result-to-intent-to-hop-to-checkpoint-to-target",
+            "validator.asset",
+        ),
+        MULTI_HOP_CONTRACT_PATHS[1]: (
+            "resolver_result:",
+            "validator_path: \"hops/0000/validator.asset\"",
+            "supplied matrix_root",
+        ),
+        MULTI_HOP_CONTRACT_PATHS[2]: (
+            "resolver_result:",
+            "materialized_validator_pattern",
+            "resolver-result -> route-intent -> promoted hop -> checkpoint -> target validation",
+        ),
+    }
     CORE_COMPONENTS = {
         "software-development-core",
         "ai-context-lifecycle-core",
@@ -1539,7 +1567,11 @@ class UpgradeRoutePackageProjectionGwtTests(unittest.TestCase):
             for override in source_entries["canonical-ai-assets"]["component_overrides"]
             if override["component_id"] == "ai-context-lifecycle-core"
         )
-        self.assertTrue(set(self.ROUTE_SCRIPTS) <= set(runtime_override["patterns"]))
+        self.assertTrue(
+            set(self.ROUTE_SCRIPTS)
+            | set(self.MULTI_HOP_RUNTIME_SCRIPTS)
+            <= set(runtime_override["patterns"])
+        )
         self.assertIn(
             ".ai/assets/skills/ai-context-upgrader/**", asset_override["patterns"]
         )
@@ -1552,6 +1584,7 @@ class UpgradeRoutePackageProjectionGwtTests(unittest.TestCase):
             if Path(path).suffix.lower() in {".md", ".yaml"}
         ]
         self.assertTrue(reference_paths)
+        self.assertTrue(set(self.MULTI_HOP_CONTRACT_PATHS) <= set(reference_paths))
 
         fixture = SyntheticPackageRepo()
         try:
@@ -1578,7 +1611,10 @@ class UpgradeRoutePackageProjectionGwtTests(unittest.TestCase):
             version_policy_target.write_bytes(
                 (ROOT / self.PORTABLE_VERSION_POLICY).read_bytes()
             )
-            for path in self.ROUTE_SCRIPTS:
+            for path in (
+                *self.ROUTE_SCRIPTS,
+                *self.MULTI_HOP_RUNTIME_SCRIPTS,
+            ):
                 target = fixture.root / path
                 target.parent.mkdir(parents=True, exist_ok=True)
                 target.write_bytes((ROOT / path).read_bytes())
@@ -1589,7 +1625,10 @@ class UpgradeRoutePackageProjectionGwtTests(unittest.TestCase):
             fixture_entries["fixture-apply-scripts"]["component_overrides"] = [
                 {
                     "component_id": "ai-context-lifecycle-core",
-                    "patterns": list(self.ROUTE_SCRIPTS),
+                    "patterns": [
+                        *self.ROUTE_SCRIPTS,
+                        *self.MULTI_HOP_RUNTIME_SCRIPTS,
+                    ],
                 }
             ]
             fixture_entries["fixture-portable-skill-scripts"][
@@ -1644,7 +1683,10 @@ class UpgradeRoutePackageProjectionGwtTests(unittest.TestCase):
             self.assertTrue(
                 all(
                     records[path]["component_id"] == "ai-context-lifecycle-core"
-                    for path in self.ROUTE_SCRIPTS
+                    for path in (
+                        *self.ROUTE_SCRIPTS,
+                        *self.MULTI_HOP_RUNTIME_SCRIPTS,
+                    )
                 )
             )
             self.assertTrue(
@@ -1664,6 +1706,21 @@ class UpgradeRoutePackageProjectionGwtTests(unittest.TestCase):
                 target.write_bytes((package_root / "payload" / path).read_bytes())
             self.assertTrue(all((core_only / path).is_file() for path in reference_paths))
             self.assertTrue(all((core_only / path).is_file() for path in self.ROUTE_SCRIPTS))
+            self.assertTrue(
+                all(
+                    (core_only / path).is_file()
+                    for path in (
+                        *self.MULTI_HOP_RUNTIME_SCRIPTS,
+                        *self.MULTI_HOP_CONTRACT_PATHS,
+                    )
+                )
+            )
+            for path, markers in self.MULTI_HOP_CONTRACT_MARKERS.items():
+                projected = (core_only / path).read_text(encoding="utf-8")
+                self.assertTrue(
+                    all(marker in projected for marker in markers),
+                    f"core-only projection lost required multi-hop contract markers: {path}",
+                )
 
             execution_root = fixture.output("upgrade-route-execution")
             target_root = execution_root / "target"
@@ -1699,6 +1756,41 @@ class UpgradeRoutePackageProjectionGwtTests(unittest.TestCase):
                 (core_only / self.ROUTE_SCRIPTS[0]).resolve(),
                 Path(resolver_probe.stdout.strip()).resolve(),
             )
+
+            multi_hop_probe = subprocess.run(
+                [
+                    sys.executable,
+                    "-c",
+                    (
+                        "from pathlib import Path\n"
+                        "import ai_context_multi_hop_upgrade as multi_hop\n"
+                        "try:\n"
+                        "    multi_hop.run_multi_hop_upgrade('unsupported', Path('.'))\n"
+                        "except multi_hop.MultiHopUpgradeError as exc:\n"
+                        "    print(multi_hop.__file__)\n"
+                        "    print(exc)\n"
+                        "else:\n"
+                        "    raise SystemExit('unsupported action was accepted')\n"
+                    ),
+                ],
+                cwd=execution_root,
+                env=environment,
+                capture_output=True,
+                text=True,
+                check=False,
+            )
+            self.assertEqual(
+                0,
+                multi_hop_probe.returncode,
+                multi_hop_probe.stdout + multi_hop_probe.stderr,
+            )
+            multi_hop_lines = multi_hop_probe.stdout.splitlines()
+            self.assertEqual(2, len(multi_hop_lines))
+            self.assertEqual(
+                (core_only / self.MULTI_HOP_RUNTIME_SCRIPTS[0]).resolve(),
+                Path(multi_hop_lines[0]).resolve(),
+            )
+            self.assertEqual("multi-hop operation action is unsupported", multi_hop_lines[1])
 
             def asset(asset_id: str, path: str, content: bytes) -> dict[str, str]:
                 asset_path = matrix_root / path
