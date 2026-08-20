@@ -12,12 +12,12 @@
 - `workflow_id`: `2026-08-20-sag-003-provider-neutral-roles`
 - `plan_id`: `development-plan-2026-08-20-sag-003-provider-neutral-roles`
 - `owner_skill`: `software-development-orchestrator`
-- `branch`: `codex/2026-08-20-sag-003-provider-neutral-roles`
+- `branch`: `codex/2026-08-21-sag-003-provider-neutral-roles-admission`
 - `base_branch`: `main`
 - `branch_segment`: `1`
 - `status`: `active`
 - `created_at`: `2026-08-20T23:55:54+08:00`
-- `updated_at`: `2026-08-21T00:45:00+08:00`
+- `updated_at`: `2026-08-21T01:00:00+08:00`
 - `template_source`: `.ai/assets/skills/software-development-orchestrator/templates/development-workflow-plan-template.md`
 - `template_version`: `1.4.0`
 - `workflow_locator`: `.dev/workflows/2026-08-20-sag-003-provider-neutral-roles/workflow.yaml`
@@ -96,20 +96,21 @@ Before #207 integrates, all delegated work remains generic pre-#207 context and 
 
 ## Progress And Handoff
 
-- Current stage: SAG-003 candidate implementation and focused validation complete; immutable commit and fixed-head audit pending.
+- Current stage: Replacement draft PR #229 terminal-close declaration head preparation; fresh fixed-head audit and hosted admission pending.
 - Completed stages: Online admission, inventories, implementation, focused validation, package/runner wiring, and precommit semantic review.
 - Deferred stages and reasons: Claude/Copilot projections require separate design/validation/authorization; Issue #208 owns delegation opt-in and Codex advisory preflight.
 - Open decisions: None; live owner decisions select Codex-only projection and sequential fallback.
-- Continuation instructions: Record this evidence, commit the candidate, push/create the terminal-close PR, add the governed declaration, then obtain a fresh no-repair Sol High audit at the exact final head before hosted admission and merge.
+- Continuation instructions: Commit and push the tracked PR #229 declaration, verify the live body byte-for-byte, then obtain a fresh no-repair Sol High audit at that exact clean head before hosted admission and merge.
 - Target policy references: `.ai/assets/shared/ROLE-EXECUTION-CONTRACT.md`; `.dev/standards/WORKFLOW-GATE-POLICY.md`; `.dev/standards/GITHUB-TERMINAL-ISSUE-CLOSURE-POLICY.md`.
 - Registered handoff checkpoint: none.
-- Branch history and checkpoint handoffs: Segment 1 starts from exact integrated main `e27540bb34721a14d097316af8f5fd708b6982b2`.
+- Branch history and checkpoint handoffs: Segment 1 retained superseded PR #228 audit PASS plus hosted FAIL without rewriting its shared history; Segment 2 restarts from exact integrated main `e27540bb34721a14d097316af8f5fd708b6982b2` with clean-history implementation commit `3c627d827c7908e335ad2a57e44433fd34f16f9d`; PR #229 declaration head is pending commit.
 
 ## Branch Lifecycle
 
 | Segment | Branch | Base | Checkpoint Type | Commit | Remote / Target | Recorded At | Reason | Resume Branch / Action |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| 1 | `codex/2026-08-20-sag-003-provider-neutral-roles` | `main@e27540bb34721a14d097316af8f5fd708b6982b2` | active-stage | `e27540bb34721a14d097316af8f5fd708b6982b2` | local branch / PR pending | `2026-08-20T23:55:54+08:00` | Start authorized #207 delivery without claiming pre-integration role existence. | Complete inventory, implementation, focused validation, and immutable audit subject. |
+| 1 | `codex/2026-08-20-sag-003-provider-neutral-roles` | `main@e27540bb34721a14d097316af8f5fd708b6982b2` | superseded-hosted-failure | `243c810ee83a6b014af59343d9e3212fca1f05a7` | PR #228 | `2026-08-21T00:47:48+08:00` | Preserve exact-head audit PASS and hosted admission failures without force-push or validator weakening. | Use the clean-history replacement branch and PR #229. |
+| 2 | `codex/2026-08-21-sag-003-provider-neutral-roles-admission` | `main@e27540bb34721a14d097316af8f5fd708b6982b2` | active-stage | `3c627d827c7908e335ad2a57e44433fd34f16f9d` | PR #229 | `2026-08-21T01:08:11+08:00` | Recreate the same candidate content plus portable-fixture repair with a compliant one-commit range. | Commit declaration, obtain fresh exact-head audit, pass hosted admission, then merge exact head. |
 
 ## Completion Summary
 
@@ -120,8 +121,8 @@ Before #207 integrates, all delegated work remains generic pre-#207 context and 
 - Required test outcomes: Focused local gates passed; immutable exact-head audit and hosted checks remain pending.
 - Selected compliance evidence: Not applicable.
 - Review disposition: Terra Max precommit semantic review PASS; final independent Sol High fixed-head audit pending.
-- Validation evidence: Clean integrated base, live Issue admission, local focused pass evidence, retained environment/fixture failures, and Codex doctor partial diagnostics.
+- Validation evidence: Clean integrated base, live Issue admission, local focused pass evidence, retained environment/fixture failures, superseded PR #228 audit/hosted evidence, and Codex doctor partial diagnostics.
 - Workflow task state: in progress.
-- Commits: none.
-- Branch / checkpoint / handoff evidence: Dedicated SAG-003 branch from `e27540bb34721a14d097316af8f5fd708b6982b2`.
+- Commits: `3c627d827c7908e335ad2a57e44433fd34f16f9d` clean-history implementation; declaration commit pending.
+- Branch / checkpoint / handoff evidence: Replacement SAG-003 admission branch from `e27540bb34721a14d097316af8f5fd708b6982b2`; superseded PR #228 remains retained failure evidence.
 - Residual risks: `codex doctor --json` cannot prove current-session provider availability and failed unrelated reachability/state checks; hosted gates and fresh fixed-head audit remain mandatory; #207 roles are not integrated or invoked until admitted merge.
