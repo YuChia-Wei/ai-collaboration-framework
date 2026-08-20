@@ -198,10 +198,67 @@ class ProviderRoleProjectionFixture:
                     "availability": "canonical-contract-available",
                     "registry_path": ".ai/assets/shared/provider-neutral-capability-registry.yaml",
                     "role_asset_ids": list(self.role_ids),
+                    "delegation_intent": {
+                        "root_capability": "frontier",
+                        "delegated_capability": "balanced",
+                        "quality_posture": "quality-first",
+                        "delegation": "optional",
+                        "quota_sensitivity": "quota-sensitive",
+                        "fallback": "disclosed",
+                    },
                 },
                 "provider_projections": {
                     "codex": {
                         "configuration_state": "codex-runtime-configured",
+                        "delegation_advisory": {
+                            "schema_version": "1.0",
+                            "configuration_scope": "static-provider-projection",
+                            "max_concurrent_workers": 2,
+                            "fast_priority": "disabled",
+                            "model_mismatch_disposition": "advisory-one-prompt",
+                            "mismatch_prompt_limit": 1,
+                            "mismatch_choice_boundary": "current-vs-recommended/continue-or-switch",
+                            "root_preflight": {
+                                "recommended_root": {
+                                    "model": "gpt-5.6-sol",
+                                    "model_reasoning_effort": "xhigh",
+                                    "service_tier": "priority",
+                                },
+                                "observed_current_state": {
+                                    "active_model": "unknown",
+                                    "active_reasoning_effort": "unknown",
+                                    "active_speed_service_tier": "unknown",
+                                    "configuration_default_inference": "forbidden",
+                                },
+                                "quota_cost_disclosure": "required-before-switch",
+                                "verified_switch_action": {
+                                    "verification_state": "not-verified",
+                                    "shortest_verified_ui_or_command": None,
+                                    "evidence_refs": [],
+                                },
+                                "unavailable_fallback": {
+                                    "prompt_required": True,
+                                    "options": [
+                                        "gpt-5.6-terra/xhigh",
+                                        "current-model",
+                                    ],
+                                },
+                                "owner_run_fast_priority": {
+                                    "status": "disabled",
+                                    "activation": "explicit-owner-choice-required",
+                                },
+                            },
+                            "worker_preference": {
+                                "model": "gpt-5.6-terra",
+                                "model_reasoning_effort": "max",
+                                "unavailable_fallback": "root-sequential",
+                            },
+                            "terminal_auditor_preference": {
+                                "model": "gpt-5.6-sol",
+                                "model_reasoning_effort": "max",
+                                "unavailable_fallback": "fresh-sol-high-independent-context",
+                            },
+                        },
                         "profiles": profiles,
                     },
                     "claude": {
@@ -403,6 +460,177 @@ class ProviderRoleProjectionContractTests(unittest.TestCase):
             role["current_session_availability"] = "available"
             role["invocation_evidence"] = "claimed"
             fixture.write_yaml(role_path, role)
+            _, errors = fixture.validate()
+            self.assert_error(errors, "provider/runtime field leaks")
+        finally:
+            fixture.close()
+
+    def test_gwt_009_given_fast_priority_is_enabled_when_validated_then_fails_closed(self) -> None:
+        fixture = ProviderRoleProjectionFixture()
+        try:
+            registry = fixture.read_yaml(
+                ".ai/assets/shared/provider-projection-registry.yaml"
+            )
+            registry["provider_projections"]["codex"]["delegation_advisory"][
+                "fast_priority"
+            ] = "enabled"
+            fixture.write_yaml(
+                ".ai/assets/shared/provider-projection-registry.yaml", registry
+            )
+            _, errors = fixture.validate()
+            self.assert_error(errors, "delegation_advisory.fast_priority must be 'disabled'")
+        finally:
+            fixture.close()
+
+    def test_gwt_010_given_model_mismatch_is_blocking_when_validated_then_fails_closed(self) -> None:
+        fixture = ProviderRoleProjectionFixture()
+        try:
+            registry = fixture.read_yaml(
+                ".ai/assets/shared/provider-projection-registry.yaml"
+            )
+            registry["provider_projections"]["codex"]["delegation_advisory"][
+                "model_mismatch_disposition"
+            ] = "blocking"
+            fixture.write_yaml(
+                ".ai/assets/shared/provider-projection-registry.yaml", registry
+            )
+            _, errors = fixture.validate()
+            self.assert_error(
+                errors,
+                "delegation_advisory.model_mismatch_disposition must be 'advisory-one-prompt'",
+            )
+        finally:
+            fixture.close()
+
+    def test_gwt_011_given_deferred_projection_copies_codex_advisory_when_validated_then_fails_closed(self) -> None:
+        fixture = ProviderRoleProjectionFixture()
+        try:
+            registry = fixture.read_yaml(
+                ".ai/assets/shared/provider-projection-registry.yaml"
+            )
+            registry["provider_projections"]["claude"]["delegation_advisory"] = registry[
+                "provider_projections"
+            ]["codex"]["delegation_advisory"].copy()
+            fixture.write_yaml(
+                ".ai/assets/shared/provider-projection-registry.yaml", registry
+            )
+            _, errors = fixture.validate()
+            self.assert_error(errors, "provider_projections.claude: unsupported fields")
+        finally:
+            fixture.close()
+
+    def test_gwt_012_given_root_preflight_recommendation_is_not_sol_xhigh_priority_when_validated_then_fails_closed(self) -> None:
+        fixture = ProviderRoleProjectionFixture()
+        try:
+            registry = fixture.read_yaml(
+                ".ai/assets/shared/provider-projection-registry.yaml"
+            )
+            registry["provider_projections"]["codex"]["delegation_advisory"][
+                "root_preflight"
+            ]["recommended_root"]["model_reasoning_effort"] = "high"
+            fixture.write_yaml(
+                ".ai/assets/shared/provider-projection-registry.yaml", registry
+            )
+            _, errors = fixture.validate()
+            self.assert_error(errors, "must be the Sol xhigh priority recommendation")
+        finally:
+            fixture.close()
+
+    def test_gwt_013_given_observed_session_infers_static_config_when_validated_then_fails_closed(self) -> None:
+        fixture = ProviderRoleProjectionFixture()
+        try:
+            registry = fixture.read_yaml(
+                ".ai/assets/shared/provider-projection-registry.yaml"
+            )
+            registry["provider_projections"]["codex"]["delegation_advisory"][
+                "root_preflight"
+            ]["observed_current_state"]["active_model"] = "gpt-5.6-terra"
+            fixture.write_yaml(
+                ".ai/assets/shared/provider-projection-registry.yaml", registry
+            )
+            _, errors = fixture.validate()
+            self.assert_error(
+                errors,
+                "must remain unknown without configuration-default inference",
+            )
+        finally:
+            fixture.close()
+
+    def test_gwt_014_given_unverified_switch_action_names_a_command_when_validated_then_fails_closed(self) -> None:
+        fixture = ProviderRoleProjectionFixture()
+        try:
+            registry = fixture.read_yaml(
+                ".ai/assets/shared/provider-projection-registry.yaml"
+            )
+            switch = registry["provider_projections"]["codex"][
+                "delegation_advisory"
+            ]["root_preflight"]["verified_switch_action"]
+            switch["shortest_verified_ui_or_command"] = "codex --model gpt-5.6-sol"
+            switch["evidence_refs"] = ["unverified-command"]
+            fixture.write_yaml(
+                ".ai/assets/shared/provider-projection-registry.yaml", registry
+            )
+            _, errors = fixture.validate()
+            self.assert_error(
+                errors,
+                "may name a shortest UI or command only when verified",
+            )
+        finally:
+            fixture.close()
+
+    def test_gwt_015_given_recommended_root_fallback_is_silent_when_validated_then_fails_closed(self) -> None:
+        fixture = ProviderRoleProjectionFixture()
+        try:
+            registry = fixture.read_yaml(
+                ".ai/assets/shared/provider-projection-registry.yaml"
+            )
+            registry["provider_projections"]["codex"]["delegation_advisory"][
+                "root_preflight"
+            ]["unavailable_fallback"] = {
+                "prompt_required": False,
+                "options": ["gpt-5.6-terra/xhigh"],
+            }
+            fixture.write_yaml(
+                ".ai/assets/shared/provider-projection-registry.yaml", registry
+            )
+            _, errors = fixture.validate()
+            self.assert_error(errors, "prompt_required must be true")
+            self.assert_error(errors, "must ask Terra xhigh or the current model")
+        finally:
+            fixture.close()
+
+    def test_gwt_016_given_owner_run_fast_priority_is_activated_when_validated_then_fails_closed(self) -> None:
+        fixture = ProviderRoleProjectionFixture()
+        try:
+            registry = fixture.read_yaml(
+                ".ai/assets/shared/provider-projection-registry.yaml"
+            )
+            registry["provider_projections"]["codex"]["delegation_advisory"][
+                "root_preflight"
+            ]["owner_run_fast_priority"]["status"] = "enabled"
+            fixture.write_yaml(
+                ".ai/assets/shared/provider-projection-registry.yaml", registry
+            )
+            _, errors = fixture.validate()
+            self.assert_error(
+                errors,
+                "must remain disabled until an explicit owner choice",
+            )
+        finally:
+            fixture.close()
+
+    def test_gwt_017_given_canonical_intent_contains_a_model_when_validated_then_fails_closed(self) -> None:
+        fixture = ProviderRoleProjectionFixture()
+        try:
+            registry = fixture.read_yaml(
+                ".ai/assets/shared/provider-projection-registry.yaml"
+            )
+            registry["canonical_contract"]["delegation_intent"]["model"] = (
+                "gpt-5.6-sol"
+            )
+            fixture.write_yaml(
+                ".ai/assets/shared/provider-projection-registry.yaml", registry
+            )
             _, errors = fixture.validate()
             self.assert_error(errors, "provider/runtime field leaks")
         finally:

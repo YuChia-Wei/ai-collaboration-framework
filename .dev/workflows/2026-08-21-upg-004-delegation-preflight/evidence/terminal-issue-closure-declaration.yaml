@@ -1,0 +1,51 @@
+schema_version: "1.0"
+contract_id: github-terminal-issue-closure
+repository: YuChia-Wei/ai-collaboration-framework
+validation_stage: declaration
+pull_request:
+  number: 231
+  head_sha: null
+  body: |-
+    ## Summary
+
+    - add provider-neutral per-run delegation modes: none, analysis-only, and full-recommended, with the same canonical stage obligations
+    - make eligible role selection and the terminal independent auditor explicit; routine work never auto-selects the auditor
+    - add a Codex-only advisory preflight for the recommended root, worker, auditor, and disabled Fast/priority settings without treating static configuration as active-session truth
+    - require exact requested, observed, selected, owner-consent, authorization, evidence, and canonical-stage fallback records
+    - retain reproducible official documentation and Codex CLI/runtime-schema receipts without raw doctor output, credentials, or secrets
+    - supersede closed PR #230 without rewriting its history; its four audit blockers and five passing hosted checks remain historical evidence
+
+    ## Validation
+
+    - UPG-004 focused fixtures: 18/18 PASS
+    - provider projection fixtures: 17/17 PASS
+    - provider-role package projection: 1/1 PASS
+    - wrapper metadata: 16/16 PASS on the authorized normal Windows ACL boundary
+    - validate-ai-context.py: PASS
+    - validate-workflow-artifacts.py: PASS
+    - canonical commit policy: PASS for the replacement implementation commit
+    - JSON, YAML, AST, and diff checks: PASS
+
+    ## Boundaries
+
+    - no current-session model, reasoning, service-tier, or canonical-role invocation claim
+    - Fast/priority remains disabled for this owner-selected run
+    - Claude and Copilot runtime equivalence remains deferred
+    - Project-field restoration is outside this PR
+    - no tag, Release, asset/package publication, nightly activation, external-repository mutation, force-push, or secret persistence
+
+    Closes #208
+  integration: {status: pending, topology: null, admitted_head_sha: null, integration_commit_sha: null, provider_read_back: false}
+  review: {status: pending}
+  required_check_contexts: []
+  hosted_checks: []
+issues:
+  - number: 208
+    mode: terminal-close
+    work_authorization: {online_issue_bound: true, explicit_owner_approval: true}
+    final_accepted_delivery: true
+    workflow: {scope_complete: true, tasks_complete: true, applicable_verification_complete: true}
+    closing_keyword: Closes
+    closure_deferred_reason: null
+    next_terminal_gate_or_owner: null
+    read_back: {performed: false, integration_commit_sha: null, issue_state: null, issue_state_reason: null, project_status: null}

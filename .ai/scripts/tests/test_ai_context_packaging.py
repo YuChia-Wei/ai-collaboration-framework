@@ -2097,6 +2097,13 @@ class ProviderRolePackageProjectionGwtTests(unittest.TestCase):
         ".ai/assets/skills/ai-context-upgrader/references/"
         "role-execution-bindings.schema.yaml",
     )
+    DELEGATION_RUN_PATHS = (
+        ".ai/assets/skills/ai-context-upgrader/references/delegation-run-contract.md",
+        ".ai/assets/skills/ai-context-upgrader/references/"
+        "delegation-run-contract.schema.yaml",
+        ".ai/assets/skills/ai-context-upgrader/templates/"
+        "delegation-run-record.template.yaml",
+    )
     CODEX_PROFILE_PATHS = (
         ".codex/agents/bounded-routine-worker.toml",
         ".codex/agents/reconciliation-worker.toml",
@@ -2143,6 +2150,7 @@ class ProviderRolePackageProjectionGwtTests(unittest.TestCase):
                 *self.ROLE_ASSET_PATHS,
                 *self.REGISTRY_PATHS,
                 *self.BINDING_PATHS,
+                *self.DELEGATION_RUN_PATHS,
                 *self.CODEX_PROFILE_PATHS,
                 *self.TRANSLATOR_PATHS,
             )
@@ -2225,10 +2233,83 @@ class ProviderRolePackageProjectionGwtTests(unittest.TestCase):
                 (payload_root / self.REGISTRY_PATHS[2]).read_text(encoding="utf-8")
             )
             self.assertEqual(
+                {
+                    "root_capability": "frontier",
+                    "delegated_capability": "balanced",
+                    "quality_posture": "quality-first",
+                    "delegation": "optional",
+                    "quota_sensitivity": "quota-sensitive",
+                    "fallback": "disclosed",
+                },
+                projection_registry["canonical_contract"]["delegation_intent"],
+            )
+            self.assertEqual(
                 "codex-runtime-configured",
                 projection_registry["provider_projections"]["codex"][
                     "configuration_state"
                 ],
+            )
+            self.assertEqual(
+                {
+                    "schema_version": "1.0",
+                    "configuration_scope": "static-provider-projection",
+                    "max_concurrent_workers": 2,
+                    "fast_priority": "disabled",
+                    "model_mismatch_disposition": "advisory-one-prompt",
+                    "mismatch_prompt_limit": 1,
+                    "mismatch_choice_boundary": "current-vs-recommended/continue-or-switch",
+                    "root_preflight": {
+                        "recommended_root": {
+                            "model": "gpt-5.6-sol",
+                            "model_reasoning_effort": "xhigh",
+                            "service_tier": "priority",
+                        },
+                        "observed_current_state": {
+                            "active_model": "unknown",
+                            "active_reasoning_effort": "unknown",
+                            "active_speed_service_tier": "unknown",
+                            "configuration_default_inference": "forbidden",
+                        },
+                        "quota_cost_disclosure": "required-before-switch",
+                        "verified_switch_action": {
+                            "verification_state": "not-verified",
+                            "shortest_verified_ui_or_command": None,
+                            "evidence_refs": [],
+                        },
+                        "unavailable_fallback": {
+                            "prompt_required": True,
+                            "options": [
+                                "gpt-5.6-terra/xhigh",
+                                "current-model",
+                            ],
+                        },
+                        "owner_run_fast_priority": {
+                            "status": "disabled",
+                            "activation": "explicit-owner-choice-required",
+                        },
+                    },
+                    "worker_preference": {
+                        "model": "gpt-5.6-terra",
+                        "model_reasoning_effort": "max",
+                        "unavailable_fallback": "root-sequential",
+                    },
+                    "terminal_auditor_preference": {
+                        "model": "gpt-5.6-sol",
+                        "model_reasoning_effort": "max",
+                        "unavailable_fallback": "fresh-sol-high-independent-context",
+                    },
+                },
+                projection_registry["provider_projections"]["codex"][
+                    "delegation_advisory"
+                ],
+            )
+            self.assertNotIn(
+                "delegation_advisory",
+                projection_registry["provider_projections"]["claude"],
+            )
+            self.assertNotIn(
+                "delegation_advisory",
+                projection_registry["provider_projections"]["copilot"],
             )
             self.assertEqual(
                 "claude-runtime-deferred",
@@ -2250,6 +2331,13 @@ class ProviderRolePackageProjectionGwtTests(unittest.TestCase):
                 list(self.CODEX_PROFILE_PATHS),
                 projection_registry["package_projection"]["profile_paths"],
             )
+            delegation_record = yaml.safe_load(
+                (payload_root / self.DELEGATION_RUN_PATHS[2]).read_text(encoding="utf-8")
+            )
+            self.assertEqual("full-recommended", delegation_record["selection"]["mode"])
+            self.assertEqual(2, delegation_record["selection"]["max_concurrent_workers"])
+            self.assertEqual(0, delegation_record["selection"]["prompt"]["count"])
+            self.assertFalse(delegation_record["selection"]["resume"]["repeat_prompt"])
 
             for role_id in self.ROLE_ASSET_IDS:
                 self.assertNotIn(f".claude/agents/{role_id}.md", records)

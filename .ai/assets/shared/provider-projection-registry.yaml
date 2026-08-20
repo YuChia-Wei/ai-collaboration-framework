@@ -10,9 +10,55 @@ canonical_contract:
     - "semantic-governance-analyst"
     - "evidence-report-synthesizer"
     - "fixed-head-independent-auditor"
+  delegation_intent:
+    root_capability: "frontier"
+    delegated_capability: "balanced"
+    quality_posture: "quality-first"
+    delegation: "optional"
+    quota_sensitivity: "quota-sensitive"
+    fallback: "disclosed"
 provider_projections:
   codex:
     configuration_state: "codex-runtime-configured"
+    delegation_advisory:
+      schema_version: "1.0"
+      configuration_scope: "static-provider-projection"
+      max_concurrent_workers: 2
+      fast_priority: "disabled"
+      model_mismatch_disposition: "advisory-one-prompt"
+      mismatch_prompt_limit: 1
+      mismatch_choice_boundary: "current-vs-recommended/continue-or-switch"
+      root_preflight:
+        recommended_root:
+          model: "gpt-5.6-sol"
+          model_reasoning_effort: "xhigh"
+          service_tier: "priority"
+        observed_current_state:
+          active_model: "unknown"
+          active_reasoning_effort: "unknown"
+          active_speed_service_tier: "unknown"
+          configuration_default_inference: "forbidden"
+        quota_cost_disclosure: "required-before-switch"
+        verified_switch_action:
+          verification_state: "not-verified"
+          shortest_verified_ui_or_command: null
+          evidence_refs: []
+        unavailable_fallback:
+          prompt_required: true
+          options:
+            - "gpt-5.6-terra/xhigh"
+            - "current-model"
+        owner_run_fast_priority:
+          status: "disabled"
+          activation: "explicit-owner-choice-required"
+      worker_preference:
+        model: "gpt-5.6-terra"
+        model_reasoning_effort: "max"
+        unavailable_fallback: "root-sequential"
+      terminal_auditor_preference:
+        model: "gpt-5.6-sol"
+        model_reasoning_effort: "max"
+        unavailable_fallback: "fresh-sol-high-independent-context"
     profiles:
       - role_asset_id: "mechanical-evidence-worker"
         profile_path: ".codex/agents/bounded-routine-worker.toml"

@@ -21,6 +21,8 @@ This is a thin Claude-compatible wrapper.
   - `.ai/assets/skills/ai-context-upgrader/references/output-contract.md`
   - `.ai/assets/skills/ai-context-upgrader/references/role-execution-bindings.yaml`
   - `.ai/assets/skills/ai-context-upgrader/references/role-execution-bindings.schema.yaml`
+  - `.ai/assets/skills/ai-context-upgrader/references/delegation-run-contract.md`
+  - `.ai/assets/skills/ai-context-upgrader/references/delegation-run-contract.schema.yaml`
   - `.ai/assets/skills/ai-context-governance/references/semantic-customization-lifecycle.md`
   - `.ai/assets/skills/ai-context-governance/templates/customizations.schema.yaml`
   - `.ai/assets/skills/ai-context-governance/templates/effective-rule-state.schema.yaml`
@@ -29,6 +31,7 @@ This is a thin Claude-compatible wrapper.
   - `.ai/assets/skills/ai-context-upgrader/templates/ai-context-source-template.yaml`
   - `.ai/assets/skills/ai-context-upgrader/templates/provenance-template.yaml`
   - `.ai/assets/skills/ai-context-upgrader/templates/customizations-template.yaml`
+  - `.ai/assets/skills/ai-context-upgrader/templates/delegation-run-record.template.yaml`
   - `.ai/assets/skills/ai-context-upgrader/templates/upgrade-remediation-packet.schema.yaml`
   - `.ai/assets/skills/ai-context-upgrader/templates/upgrade-remediation-decision.schema.yaml`
   - `.ai/assets/skills/ai-context-upgrader/templates/upgrade-route-matrix.template.yaml`
