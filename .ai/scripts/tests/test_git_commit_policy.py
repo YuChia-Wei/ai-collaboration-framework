@@ -43,6 +43,16 @@ Co-Authored-By: OpenAI Codex (gpt-5.6-sol, high) <noreply@openai.com>
 """
 
 
+def subject_grammar_adoption(tip: str) -> dict[str, str]:
+    return {
+        "policy_id": "git-commit-subject/v2",
+        "legacy_history_tip": tip,
+        "adopted_at": "2026-08-20T09:00:00+08:00",
+        "incoming_policy_sha256": VALIDATOR.policy_sha256(POLICY_PATH),
+        "decision_evidence": ".dev/workflows/upgrade/decision.md#commit-grammar",
+    }
+
+
 class GitCommitPolicyTests(unittest.TestCase):
     def validate(self, message: str, workflow_id: str | None = WORKFLOW_ID) -> list[str]:
         errors: list[str] = []
@@ -210,6 +220,83 @@ Co-Authored-By: OpenAI Codex (gpt-5.6-sol, high) <noreply@openai.com>
                 "2026-08-10T00:39:59+08:00",
             ),
         )
+
+    def test_gwt_020_given_validated_target_adoption_when_legacy_commit_is_reachable_then_legacy_subject_passes(self) -> None:
+        legacy_sha = "a" * 40
+
+        def git_result(*args: str, root: Path) -> str:
+            if "--format=%B" in args and args[-1] == legacy_sha:
+                return workflow_message("docs(#176|legacy): preserve target history")
+            return "2026-08-20T09:00:00+08:00\n"
+
+        with (
+            mock.patch.object(VALIDATOR, "git", side_effect=git_result),
+            mock.patch.object(VALIDATOR, "git_returncode", return_value=0),
+        ):
+            errors = VALIDATOR.validate_commits(
+                [legacy_sha],
+                POLICY,
+                workflow_id=WORKFLOW_ID,
+                adoption_evidence=subject_grammar_adoption(legacy_sha),
+                incoming_policy_sha256=VALIDATOR.policy_sha256(POLICY_PATH),
+            )
+
+        self.assertEqual([], errors)
+
+    def test_gwt_021_given_validated_target_adoption_when_post_boundary_commit_uses_legacy_subject_then_it_fails(self) -> None:
+        legacy_sha = "a" * 40
+        post_adoption_sha = "b" * 40
+
+        def git_result(*args: str, root: Path) -> str:
+            if "--format=%B" in args and args[-1] == post_adoption_sha:
+                return workflow_message("docs(#177|legacy): reject after adoption")
+            return "2026-08-10T00:39:59+08:00\n"
+
+        def reachability(*args: str, root: Path) -> int:
+            return 1 if args[:3] == ("merge-base", "--is-ancestor", post_adoption_sha) else 0
+
+        with (
+            mock.patch.object(VALIDATOR, "git", side_effect=git_result),
+            mock.patch.object(VALIDATOR, "git_returncode", side_effect=reachability),
+        ):
+            errors = VALIDATOR.validate_commits(
+                [post_adoption_sha],
+                POLICY,
+                workflow_id=WORKFLOW_ID,
+                adoption_evidence=subject_grammar_adoption(legacy_sha),
+                incoming_policy_sha256=VALIDATOR.policy_sha256(POLICY_PATH),
+            )
+
+        self.assertTrue(any("subject does not match" in error for error in errors))
+
+    def test_gwt_022_given_nonexistent_or_unreachable_target_boundary_when_validated_then_it_fails_closed(self) -> None:
+        for return_codes, expected in (
+            ([1], "does not resolve"),
+            ([0, 0, 1], "not reachable"),
+        ):
+            with self.subTest(return_codes=return_codes):
+                with mock.patch.object(
+                    VALIDATOR,
+                    "git_returncode",
+                    side_effect=return_codes,
+                ):
+                    errors = VALIDATOR.validate_commits(
+                        ["b" * 40],
+                        POLICY,
+                        workflow_id=WORKFLOW_ID,
+                        adoption_evidence=subject_grammar_adoption("a" * 40),
+                        incoming_policy_sha256=VALIDATOR.policy_sha256(POLICY_PATH),
+                    )
+                self.assertTrue(any(expected in error for error in errors), errors)
+
+    def test_gwt_023_given_explicit_target_boundary_when_timestamp_predates_source_cutover_then_boundary_still_selects_canonical(self) -> None:
+        pattern = VALIDATOR.subject_pattern_for_commit(
+            POLICY,
+            datetime.fromisoformat("2026-08-10T00:39:59+08:00"),
+            use_legacy_subject_grammar=False,
+        )
+
+        self.assertEqual(POLICY["subject_pattern"], pattern)
 
 
 if __name__ == "__main__":

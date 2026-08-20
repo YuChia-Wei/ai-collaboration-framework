@@ -146,23 +146,9 @@ class SemanticCustomizationLifecycleTests(unittest.TestCase):
                 "status": "verified",
                 "evidence": ".dev/assessments/ASM-20260724-002/report.md",
             }
+            # This exercise finalizes reconciliation on an unchanged validated
+            # source. A source advance is separately packet-gated below.
             upgraded = copy.deepcopy(provenance)
-            upgraded["previous_source"] = upgraded["source"]
-            upgraded["source"] = {
-                "repository": "owner/framework",
-                "release_id": "REL-v0.7.0",
-                "version": "v0.7.0",
-                "tag": "v0.7.0",
-                "commit": "b" * 40,
-            }
-            upgraded["installation"]["last_upgraded_at"] = AT
-            upgraded["last_migration"] = {
-                "status": "completed",
-                "from_version": "v0.6.0",
-                "to_version": "v0.7.0",
-                "completed_at": AT,
-                "evidence": ".dev/assessments/ASM-20260724-002/report.md",
-            }
 
             # Target validation succeeds before provenance finalization.
             ledger_candidate = root / "ledger-candidate.yaml"
@@ -179,6 +165,43 @@ class SemanticCustomizationLifecycleTests(unittest.TestCase):
             self.assertIn(
                 "CUST-TEAM-001", ledger_path.read_text(encoding="utf-8")
             )
+
+    def test_gwt_001b_given_source_advance_without_a_sealed_remediation_packet_when_finalized_then_prior_provenance_is_preserved(self) -> None:
+        with tempfile.TemporaryDirectory(prefix="customization-upgrade-gate-") as value:
+            root = Path(value)
+            TARGET.initialize_context(root, SOURCE_V060, SELECTION, AT)
+            provenance_path = root / ".dev/ai-context/provenance.yaml"
+            before = provenance_path.read_bytes()
+            candidate = TARGET.load_mapping(provenance_path, [])
+            assert candidate is not None
+            candidate["previous_source"] = candidate["source"]
+            candidate["source"] = {
+                "repository": "owner/framework",
+                "release_id": "REL-v0.7.0",
+                "version": "v0.7.0",
+                "tag": "v0.7.0",
+                "commit": "b" * 40,
+            }
+            candidate["installation"]["last_upgraded_at"] = AT
+            candidate["last_migration"] = {
+                "status": "completed",
+                "from_version": "v0.6.0",
+                "to_version": "v0.7.0",
+                "completed_at": AT,
+                "evidence": ".dev/assessments/ASM-20260724-002/report.md",
+            }
+
+            with self.assertRaisesRegex(
+                TARGET.TargetValidationError,
+                "upgrade finalization requires a finalized pending apply receipt",
+            ):
+                TARGET.finalize_context(
+                    root,
+                    candidate,
+                    {"schema_version": "1.0", "customizations": []},
+                )
+
+            self.assertEqual(before, provenance_path.read_bytes())
 
     def test_gwt_002_given_failed_post_upgrade_verification_when_finalized_then_prior_provenance_is_preserved(self) -> None:
         with tempfile.TemporaryDirectory(prefix="customization-rollback-") as value:
