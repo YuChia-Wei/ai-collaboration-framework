@@ -765,19 +765,20 @@ def validate_apply_transaction_journals(
             expected_operation_order_sha = canonical_json_digest(active_ids)
             transition_sequence = journal.get("transition_sequence")
             minimum_sequence = len(active_ids) + 2
-            transition_sequence_valid = (
-                type(transition_sequence) is int
-                and transition_sequence >= minimum_sequence
-                and (
-                    journal_schema != "ai-context-package-apply-journal/v4"
-                    or journal.get("target_validation_receipt_sha256") is None
-                    or transition_sequence >= minimum_sequence + 1
+            if journal_schema == "ai-context-package-apply-journal/v4":
+                expected_transition_sequence = expected_v4_transition_sequence(
+                    plan, state, len(active_ids)
                 )
-                and (
-                    journal_schema == "ai-context-package-apply-journal/v4"
-                    or (transition_sequence - minimum_sequence) % 2 == 0
+                transition_sequence_valid = (
+                    type(transition_sequence) is int
+                    and transition_sequence == expected_transition_sequence
                 )
-            )
+            else:
+                transition_sequence_valid = (
+                    type(transition_sequence) is int
+                    and transition_sequence >= minimum_sequence
+                    and (transition_sequence - minimum_sequence) % 2 == 0
+                )
             finalized_progress_valid = (
                 type(journal.get("next_apply_index")) is int
                 and journal.get("next_apply_index") == len(active_ids)
@@ -1296,6 +1297,21 @@ def active_operation_ids(plan: dict, plan_path: Path, errors: list[str]) -> list
         for item in operations
         if item.get("action") in {"add", "replace", "remove", "rename"}
     ]
+
+
+def expected_v4_transition_sequence(
+    plan: dict, state: object, active_operation_count: int
+) -> int | None:
+    """Return the only valid semantic sequence for an emitted v4 terminal state."""
+    if state == "awaiting-target-validation":
+        return active_operation_count + 2
+    if state == "validated":
+        return active_operation_count + 3
+    if state == "finalized":
+        return active_operation_count + (
+            4 if plan.get("previous_version") is not None else 2
+        )
+    return None
 
 
 def current_authority_digest(root: Path, relative: str, errors: list[str]) -> str | None:

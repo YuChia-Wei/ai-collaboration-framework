@@ -272,6 +272,22 @@ class PackageApplyFixture:
         git(self.target, "add", "--", ".dev/ai-context/provenance.yaml")
 
 
+def seed_executable_target_validation_profile(fixture: PackageApplyFixture) -> None:
+    fixture.add_target(
+        ".dev/project-config.yaml",
+        yaml.safe_dump(
+            {
+                "validation": {
+                    "routine": {
+                        "argv": ["python", "-c", "print('target validation')"]
+                    }
+                }
+            },
+            sort_keys=False,
+        ).encode("utf-8"),
+    )
+
+
 def operation(
     identifier: str,
     kind: str,
@@ -1786,6 +1802,7 @@ class AiContextPackageApplyGwtTests(unittest.TestCase):
             # Given target bytes match the executable base, but Git explicitly cannot
             # represent the executable bit on this worktree.
             git(fixture.target, "config", "core.filemode", "false")
+            seed_executable_target_validation_profile(fixture)
             fixture.add_target(".ai/tool.sh", b"same bytes\n")
             fixture.commit_target()
             fixture.make_package(
@@ -1808,9 +1825,7 @@ class AiContextPackageApplyGwtTests(unittest.TestCase):
                 receipt["applied_artifacts"][0]["raw_sha256"],
             )
             self.assertEqual("0755", receipt["applied_artifacts"][0]["git_mode"])
-            errors: list[str] = []
-            TARGET.validate_pending_apply_receipt(fixture.target, errors)
-            self.assertEqual([], errors)
+            self.assertEqual("awaiting-target-validation", receipt["transaction_state"])
         finally:
             fixture.close()
 
@@ -1827,10 +1842,13 @@ class AiContextPackageApplyGwtTests(unittest.TestCase):
             )
 
             plan = fixture.plan()
+            decision = fixture_remediation_decision(plan)
 
             self.assertEqual([path], [item["path"] for item in plan["managed_state_conflicts"]])
-            with self.assertRaisesRegex(APPLY.ApplyError, "unchanged framework-managed paths"):
-                APPLY.apply_plan(plan)
+            with self.assertRaisesRegex(
+                APPLY.ApplyError, "approved decision cannot override unresolved package conflicts"
+            ):
+                APPLY.apply_plan(plan, remediation_decision=decision)
             self.assertEqual(b"committed target drift\n", (fixture.target / path).read_bytes())
         finally:
             fixture.close()
@@ -1840,6 +1858,7 @@ class AiContextPackageApplyGwtTests(unittest.TestCase):
         try:
             path = ".ai/eol.md"
             git(fixture.target, "config", "core.autocrlf", "true")
+            seed_executable_target_validation_profile(fixture)
             fixture.add_target(path, b"release bytes\r\n")
             fixture.commit_target()
             fixture.make_package(
@@ -1850,8 +1869,6 @@ class AiContextPackageApplyGwtTests(unittest.TestCase):
 
             plan = fixture.plan()
             receipt = APPLY.apply_plan(plan)
-            errors: list[str] = []
-            TARGET.validate_pending_apply_receipt(fixture.target, errors)
 
             observed = plan["observed"][path]
             self.assertNotEqual(APPLY.sha256_bytes(b"release bytes\n"), observed["sha256"])
@@ -1862,7 +1879,7 @@ class AiContextPackageApplyGwtTests(unittest.TestCase):
                 "git-eol-canonical",
                 receipt["selected_managed_path_results"][0]["match_basis"],
             )
-            self.assertEqual([], errors)
+            self.assertEqual("awaiting-target-validation", receipt["transaction_state"])
         finally:
             fixture.close()
 
@@ -2122,6 +2139,7 @@ class AiContextPackageApplyGwtTests(unittest.TestCase):
             with self.subTest(boundary=failed_boundary):
                 fixture = PackageApplyFixture()
                 try:
+                    seed_executable_target_validation_profile(fixture)
                     fixture.add_target(".ai/rule.md", b"previous\n")
                     fixture.commit_target()
                     fixture.make_package(
@@ -2167,7 +2185,9 @@ class AiContextPackageApplyGwtTests(unittest.TestCase):
 
                     receipt = APPLY.apply_plan(plan)
 
-                    self.assertEqual("finalized", receipt["transaction_state"])
+                    self.assertEqual(
+                        "awaiting-target-validation", receipt["transaction_state"]
+                    )
                     self.assertTrue((final_root / "journal.yaml").is_file())
                     self.assertEqual(
                         b"incoming\n", (fixture.target / ".ai/rule.md").read_bytes()
@@ -2216,7 +2236,11 @@ class AiContextPackageApplyGwtTests(unittest.TestCase):
                 fixture = PackageApplyFixture()
                 try:
                     is_remove = failed_boundary == "after_source_remove"
+                    expected_transaction_state = (
+                        "awaiting-target-validation" if is_remove else "finalized"
+                    )
                     if is_remove:
+                        seed_executable_target_validation_profile(fixture)
                         fixture.add_target(".ai/rule.md", b"previous\n")
                         fixture.commit_target()
                         fixture.make_package(
@@ -2261,7 +2285,9 @@ class AiContextPackageApplyGwtTests(unittest.TestCase):
                     )
 
                     self.assertEqual(receipt, repeated)
-                    self.assertEqual("finalized", receipt["transaction_state"])
+                    self.assertEqual(
+                        expected_transaction_state, receipt["transaction_state"]
+                    )
                     if is_remove:
                         self.assertFalse((fixture.target / ".ai/rule.md").exists())
                     else:
@@ -2426,6 +2452,7 @@ class AiContextPackageApplyGwtTests(unittest.TestCase):
             with self.subTest(action=recovery_action):
                 fixture = PackageApplyFixture()
                 try:
+                    seed_executable_target_validation_profile(fixture)
                     fixture.add_target(".ai/rule.md", b"previous\n")
                     fixture.commit_target()
                     fixture.make_package(
@@ -2498,7 +2525,10 @@ class AiContextPackageApplyGwtTests(unittest.TestCase):
 
                     self.assertEqual(recovered, repeated)
                     if recovery_action == "resume":
-                        self.assertEqual("finalized", recovered["transaction_state"])
+                        self.assertEqual(
+                            "awaiting-target-validation",
+                            recovered["transaction_state"],
+                        )
                         self.assertFalse((fixture.target / ".ai/rule.md").exists())
                     else:
                         self.assertEqual("rolled-back", recovered["state"])
@@ -2944,6 +2974,88 @@ class AiContextPackageApplyGwtTests(unittest.TestCase):
                         ),
                         errors,
                     )
+                    if "transition_sequence" in corruption:
+                        with self.assertRaisesRegex(
+                            APPLY.ApplyError,
+                            "transaction journal transition sequence is impossible",
+                        ):
+                            APPLY.recover_transaction(
+                                fixture.target,
+                                plan["plan_sha256"],
+                                "resume",
+                                fixture.package,
+                            )
+                finally:
+                    fixture.close()
+
+    def test_gwt_033a_given_exact_v4_finalized_or_validated_sequences_when_recovered_and_target_validates_then_both_pass(self) -> None:
+        for scenario in ("clean-finalized", "upgrade-validated"):
+            with self.subTest(scenario=scenario):
+                fixture = PackageApplyFixture()
+                try:
+                    if scenario == "clean-finalized":
+                        fixture.make_package(
+                            {".ai/rule.md": (b"incoming\n", "framework-managed", "0644")},
+                            [operation("001-add", "add", ".ai/rule.md")],
+                        )
+                        plan = fixture.plan()
+                        receipt = APPLY.apply_plan(plan)
+                        expected_state = "finalized"
+                        expected_sequence = len(APPLY.active_operations(plan)) + 2
+                    else:
+                        package = make_schema_23_upgrade_package(fixture)
+                        candidate_provenance, candidate_ledger = fixture_upgrade_authorities(
+                            fixture, package["selection"], package["previous_content"]
+                        )
+                        plan = fixture.plan("0.9.0")
+                        receipt = APPLY.apply_plan(
+                            plan,
+                            remediation_decision=fixture_remediation_decision(
+                                plan,
+                                candidate_provenance=candidate_provenance,
+                                candidate_ledger=candidate_ledger,
+                            ),
+                        )
+                        record_passed_target_validation(fixture, plan)
+                        expected_state = "validated"
+                        expected_sequence = len(APPLY.active_operations(plan)) + 3
+
+                    root = APPLY.transaction_root(fixture.target, plan["plan_sha256"])
+                    journal = yaml.safe_load((root / "journal.yaml").read_text(encoding="utf-8"))
+                    self.assertEqual(expected_state, journal["state"])
+                    self.assertEqual(expected_sequence, journal["transition_sequence"])
+                    self.assertEqual(
+                        receipt,
+                        APPLY.recover_transaction(
+                            fixture.target,
+                            plan["plan_sha256"],
+                            "resume",
+                            fixture.package,
+                        ),
+                    )
+                    errors: list[str] = []
+                    TARGET.validate_pending_apply_receipt(
+                        fixture.target,
+                        errors,
+                        enforce_terminal_invariants=scenario == "clean-finalized",
+                    )
+                    self.assertEqual([], errors)
+                    if scenario == "upgrade-validated":
+                        finalization = TARGET.finalize_context(
+                            fixture.target, candidate_provenance, candidate_ledger
+                        )
+                        finalized = yaml.safe_load(
+                            (root / "journal.yaml").read_text(encoding="utf-8")
+                        )
+                        self.assertEqual("finalized", finalization["status"])
+                        self.assertEqual("finalized", finalized["state"])
+                        self.assertEqual(
+                            len(APPLY.active_operations(plan)) + 4,
+                            finalized["transition_sequence"],
+                        )
+                        errors = []
+                        TARGET.validate_pending_apply_receipt(fixture.target, errors)
+                        self.assertEqual([], errors)
                 finally:
                     fixture.close()
 
@@ -3395,6 +3507,7 @@ class AiContextPackageApplyGwtTests(unittest.TestCase):
                 with self.subTest(boundary=boundary, variant=variant):
                     fixture = PackageApplyFixture()
                     try:
+                        seed_executable_target_validation_profile(fixture)
                         fixture.add_target(".ai/one.md", b"old\n")
                         fixture.commit_target()
                         fixture.make_package(
@@ -3455,12 +3568,10 @@ class AiContextPackageApplyGwtTests(unittest.TestCase):
                                 "resume",
                                 package_root=fixture.package,
                             )
-                            errors: list[str] = []
-                            TARGET.validate_pending_apply_receipt(
-                                fixture.target, errors
+                            self.assertEqual(
+                                "awaiting-target-validation",
+                                receipt["transaction_state"],
                             )
-                            self.assertEqual("finalized", receipt["transaction_state"])
-                            self.assertEqual([], errors)
                     finally:
                         fixture.close()
 

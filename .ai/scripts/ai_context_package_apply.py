@@ -2475,8 +2475,33 @@ def prepare_transaction(
         raise
 
 
-def persist_journal(root: Path, journal: dict) -> None:
-    journal["transition_sequence"] = int(journal.get("transition_sequence", 0)) + 1
+def expected_v4_transition_sequence(plan: dict, journal: dict) -> int | None:
+    """Return the semantic v4 transition position, not its write-attempt count."""
+    if journal.get("schema_version") != JOURNAL_SCHEMA_VERSION:
+        return None
+    state = journal.get("state")
+    if state in {"planned", "rejected"}:
+        return 0
+    next_index = journal.get("next_apply_index")
+    if state in {"applying", "interrupted"}:
+        return next_index + 1 if type(next_index) is int and next_index >= 0 else None
+    operation_count = len(active_operations(plan))
+    if state == "awaiting-target-validation":
+        return operation_count + 2
+    if state == "validated":
+        return operation_count + 3
+    if state == "finalized":
+        return operation_count + (4 if is_upgrade_plan(plan) else 2)
+    return None
+
+
+def persist_journal(root: Path, plan: dict, journal: dict) -> None:
+    expected_sequence = expected_v4_transition_sequence(plan, journal)
+    journal["transition_sequence"] = (
+        expected_sequence
+        if expected_sequence is not None
+        else int(journal.get("transition_sequence", 0)) + 1
+    )
     atomic_write_yaml(root / "journal.yaml", journal)
 
 
@@ -2515,6 +2540,13 @@ def validate_journal_progress(plan: dict, journal: dict) -> None:
     if type(transition_sequence) is not int or transition_sequence < 0:
         raise ApplyError("transaction journal transition sequence is invalid")
     state = journal.get("state")
+    expected_v4_sequence = expected_v4_transition_sequence(plan, journal)
+    if (
+        journal.get("schema_version") == JOURNAL_SCHEMA_VERSION
+        and expected_v4_sequence is not None
+        and transition_sequence != expected_v4_sequence
+    ):
+        raise ApplyError("transaction journal transition sequence is impossible")
     rollback_paths = [
         item.get("path")
         for item in reversed(journal.get("pre_state", []))
@@ -2579,15 +2611,16 @@ def validate_journal_progress(plan: dict, journal: dict) -> None:
             receipt_digest, str
         ) or not re.fullmatch(r"[0-9a-f]{64}", receipt_digest):
             raise ApplyError("applied transaction journal is incomplete")
-        minimum_sequence = len(operations) + 2
-        if is_upgrade_plan(plan):
-            minimum_sequence += {
-                "awaiting-target-validation": 0,
-                "validated": 1,
-                "finalized": 2,
-            }[state]
-        if transition_sequence < minimum_sequence:
-            raise ApplyError("applied transaction transition sequence is impossible")
+        if journal.get("schema_version") != JOURNAL_SCHEMA_VERSION:
+            minimum_sequence = len(operations) + 2
+            if is_upgrade_plan(plan):
+                minimum_sequence += {
+                    "awaiting-target-validation": 0,
+                    "validated": 1,
+                    "finalized": 2,
+                }[state]
+            if transition_sequence < minimum_sequence:
+                raise ApplyError("applied transaction transition sequence is impossible")
     elif state in {"rolling-back", "rolled-back"} and receipt_digest is not None:
         require_sha256(receipt_digest, "rollback transaction receipt SHA-256")
     elif receipt_digest is not None:
@@ -3312,7 +3345,7 @@ def run_transaction(
     admitted_journal = deepcopy(journal)
     admitted_journal["state"] = "applying"
     admitted_journal["last_error"] = None
-    persist_journal(root, admitted_journal)
+    persist_journal(root, plan, admitted_journal)
     journal.clear()
     journal.update(admitted_journal)
     invoke_boundary(hook, "after_applying_journal", {"transaction_id": journal["transaction_id"]})
@@ -3335,7 +3368,7 @@ def run_transaction(
         invoke_boundary(hook, "after_operation", {"index": index, "operation_id": operation["id"]})
         journal["completed_operation_ids"] = [item["id"] for item in operations[: index + 1]]
         journal["next_apply_index"] = index + 1
-        persist_journal(root, journal)
+        persist_journal(root, plan, journal)
         invoke_boundary(
             hook,
             "after_progress_journal",
@@ -3399,7 +3432,7 @@ def run_transaction(
     journal["state"] = (
         "awaiting-target-validation" if is_upgrade_plan(plan) else "finalized"
     )
-    persist_journal(root, journal)
+    persist_journal(root, plan, journal)
     invoke_boundary(hook, "after_finalized_journal", {"transaction_id": journal["transaction_id"]})
     return receipt
 
@@ -3569,7 +3602,7 @@ def record_target_validation_receipt(
             raise ApplyError("target validation receipt file differs after write")
         journal["target_validation_receipt_sha256"] = receipt_digest
         journal["state"] = "validated"
-        persist_journal(root, journal)
+        persist_journal(root, plan, journal)
         invoke_boundary(
             boundary_hook,
             "after_target_validation_receipt_journal",
@@ -3688,7 +3721,7 @@ def rollback_loaded_transaction(
         journal["rollback_next_index"] = 0
         journal["rollback_completed_paths"] = []
         journal["rollback_start_state"] = observation(touched_paths(plan), target)
-        persist_journal(root, journal)
+        persist_journal(root, plan, journal)
         invoke_boundary(
             hook,
             "after_rollback_start_journal",
@@ -3722,7 +3755,7 @@ def rollback_loaded_transaction(
         journal["rollback_completed_paths"] = [
             record["path"] for record in rollback_items[: index + 1]
         ]
-        persist_journal(root, journal)
+        persist_journal(root, plan, journal)
         invoke_boundary(
             hook,
             "after_rollback_progress_journal",
@@ -3740,7 +3773,7 @@ def rollback_loaded_transaction(
         raise ApplyError("rollback did not remove the pending receipt boundary")
     journal["state"] = "rolled-back"
     journal["last_error"] = None
-    persist_journal(root, journal)
+    persist_journal(root, plan, journal)
     invoke_boundary(hook, "after_rollback_journal", {"transaction_id": journal["transaction_id"]})
     return journal
 
@@ -3834,7 +3867,7 @@ def recover_transaction(
         if journal["state"] == "applying":
             journal["state"] = "interrupted"
             journal["last_error"] = "recovered an abandoned applying state"
-            persist_journal(root, journal)
+            persist_journal(root, plan, journal)
         if journal["state"] in {
             "awaiting-target-validation",
             "validated",
@@ -3919,7 +3952,7 @@ def apply_plan(
                 ) from exc
             journal["state"] = "interrupted"
             journal["last_error"] = str(exc)
-            persist_journal(root, journal)
+            persist_journal(root, plan, journal)
             try:
                 rollback_loaded_transaction(root, plan, journal, boundary_hook)
             except Exception as rollback_exc:
@@ -3927,7 +3960,7 @@ def apply_plan(
                     journal["last_error"] = (
                         f"{exc}; rollback failed: {rollback_exc}"
                     )
-                    persist_journal(root, journal)
+                    persist_journal(root, plan, journal)
                 raise ApplyError(
                     f"package apply interrupted and rollback failed; recover transaction {journal['transaction_id']}: {rollback_exc}"
                 ) from exc
