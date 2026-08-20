@@ -124,6 +124,34 @@ fresh plan, add authority, or advance provenance during recovery. The pending
 receipt must bind actual raw post-write SHA-256 values and intended Git modes;
 normalized text hashes are diagnostics only.
 
+Before the first target write, seal one `upgrade-remediation-packet/v1` under
+the same transaction and render any human remediation report solely from that
+machine packet. The packet binds incoming and predecessor identities, target
+starting HEAD and observed prestate, package/plan/selection evidence, target
+validation profile, semantic reconciliation proposal, and incoming validator
+identity. A distinct `upgrade-remediation-decision/v1` must bind that packet
+to explicit owner approval. An automatic candidate never grants write
+authority: every mutable operation must be accepted by the decision.
+Rejected, stale, interrupted, rolled-back, incomplete, or packet/journal
+mismatch evidence remains recoverable evidence and cannot advance provenance.
+
+When an initialized target adopts the incoming Git commit-subject grammar,
+write `policy_adoptions.commit_subject_grammar` only in the successful
+provenance candidate and require the sealed owner decision to carry the exact
+same `policy_adoptions` value. It binds policy ID, raw incoming policy SHA-256,
+repository-relative decision evidence, an ISO-offset adoption time, and the
+target `legacy_history_tip`. Validation applies the legacy grammar only to
+commits reachable from that tip; the time is audit evidence, never the
+selector. The tip must resolve and remain reachable from target HEAD.
+
+The approved decision also binds canonical JSON digests of the exact candidate
+provenance and customization ledger. Operation IDs alone do not authorize an
+arbitrary later authority document: any candidate source, selection, migration,
+policy-adoption, or semantic-customization drift requires a new packet and
+owner decision. The automatic proposal carries ordered actionable operation
+records as well as their stable IDs so a consumer need not infer writes from a
+human report.
+
 For `moved-to` or `merged-into`, preserve target-local source content until its
 destination has been reconciled. For `retired`, remove automatically only when
 the target source is byte-identical to base and the migration guide explicitly
@@ -134,6 +162,27 @@ After changes, request an independent post-upgrade `ai-context-auditor`
 assessment, run `.ai/scripts/validate-ai-context-target.py`, and then run the
 target's required repository gate. If any check fails, retain the previous
 provenance bytes and report rollback options.
+
+For a source-version advancement, finalization additionally requires the exact
+fresh accepted packet and decision, target-validated transaction journal, derived
+report digest, passing `incoming-candidate` validator execution receipt, and
+target validation profile snapshot/bytes/argv to agree with the same target
+root, starting HEAD, package, plan, selection, and observed prestate. A
+predecessor pass cannot substitute for the incoming candidate result.
+
+Run the target-owned validation profile through the already selected CLI route
+after package writes and before provenance finalization. Do not run it
+implicitly inside package application. Seal a canonical
+`target-validation-receipt/v1` that binds the executed argv, profile bytes,
+transaction, plan, packet, owner decision, pending apply receipt, target
+identity, passed exit status, timestamps, and retained output bytes whose raw
+digest equals the receipt output digest. A missing, stale,
+failed, or tampered receipt blocks finalization.
+
+Package writes enter `awaiting-target-validation`; a bound passing receipt
+enters `validated`. Either state remains rollback-capable while provenance is
+unchanged. Only successful provenance publication plus the immutable terminal
+receipt advances the journal to `finalized`, after which rollback is forbidden.
 
 Regenerate effective-rule state and only the packets selected by verified route
 records after reconciliation. Each target semantic delta must carry its complete
@@ -157,3 +206,13 @@ and deferred migration. Required framework-managed package paths must have
 landed with their expected bytes and remain visible to target Git before
 finalization; otherwise preserve prior provenance bytes. Do not retain the
 legacy manifest as a second authority after a successful schema-2 migration.
+After authority bytes are successfully published, write exactly one immutable
+`terminal-receipt.json` under the sealed transaction. It binds transaction and
+plan IDs, packet/decision/pending-receipt digests, resulting
+provenance/customization digests, outcome, and its own digest; then bind the
+fixed path and raw hash as the journal's sole terminal-only transition.
+Subsequent target validation must verify the terminal receipt's canonical
+bytes, self-digest, journal binding, target-validation receipt, and resulting
+authority byte digests. If authority publication was interrupted before that
+exact terminal transition, an identical retry may complete it; no mismatched
+receipt or candidate may be repaired in place.

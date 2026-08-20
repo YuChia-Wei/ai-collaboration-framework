@@ -26,6 +26,7 @@ if SPEC is None or SPEC.loader is None:
 APPLY = importlib.util.module_from_spec(SPEC)
 sys.modules[SPEC.name] = APPLY
 SPEC.loader.exec_module(APPLY)
+RAW_APPLY_PLAN = APPLY.apply_plan
 
 import ai_context_target_provenance as TARGET  # noqa: E402
 
@@ -252,14 +253,39 @@ class PackageApplyFixture:
         path.parent.mkdir(parents=True, exist_ok=True)
         selection = yaml.safe_load(yaml.safe_dump(APPLY.DEFAULT_COMPONENT_SELECTION))
         selection["providers"]["repo-backlog"]["enabled"] = enabled
+        provenance, _ledger = TARGET.build_initialization_documents(
+            {
+                "repository": "https://example.invalid/framework",
+                "release_id": "REL-v0.9.0",
+                "version": "v0.9.0",
+                "tag": "v0.9.0",
+                "commit": "a" * 40,
+            },
+            selection,
+            "2026-08-20T12:00:00+08:00",
+        )
         path.write_text(
-            yaml.safe_dump(
-                {"schema_version": "2.0", "selection": selection}, sort_keys=False
-            ),
+            yaml.safe_dump(provenance, sort_keys=False),
             encoding="utf-8",
             newline="\n",
         )
         git(self.target, "add", "--", ".dev/ai-context/provenance.yaml")
+
+
+def seed_executable_target_validation_profile(fixture: PackageApplyFixture) -> None:
+    fixture.add_target(
+        ".dev/project-config.yaml",
+        yaml.safe_dump(
+            {
+                "validation": {
+                    "routine": {
+                        "argv": ["python", "-c", "print('target validation')"]
+                    }
+                }
+            },
+            sort_keys=False,
+        ).encode("utf-8"),
+    )
 
 
 def operation(
@@ -283,6 +309,537 @@ def operation(
     if component_id is not None:
         value["component_id"] = component_id
     return value
+
+
+def fixture_remediation_decision(
+    plan: dict,
+    status: str = "approved",
+    candidate_provenance: dict | None = None,
+    candidate_ledger: dict | None = None,
+) -> dict:
+    packet = APPLY.build_upgrade_remediation_packet(plan)
+    proposal = packet["automatic_proposal"]
+    return {
+        "schema_version": "upgrade-remediation-decision/v1",
+        "packet_sha256": packet["canonical_digest"],
+        "plan_sha256": plan["plan_sha256"],
+        "transaction_id": plan["plan_sha256"],
+        "status": status,
+        "owner": "fixture-owner",
+        "decided_at": "2026-08-20T12:00:00+08:00",
+        "evidence": "fixture-decision",
+        "reason": "exercise explicit upgrade authorization binding",
+        "accepted_operation_ids": (
+            proposal["apply_operation_ids"] if status == "approved" else []
+        ),
+        "reconciliation_ids": (
+            proposal["reconciliation_ids"] if status == "approved" else []
+        ),
+        "policy_adoptions": None,
+        "candidate_authority": (
+            {
+                "provenance_sha256": TARGET.canonical_json_digest(
+                    candidate_provenance
+                )
+                if candidate_provenance is not None
+                else "a" * 64,
+                "customizations_sha256": TARGET.canonical_json_digest(candidate_ledger)
+                if candidate_ledger is not None
+                else "b" * 64,
+            }
+            if status == "approved"
+            else None
+        ),
+    }
+
+
+def apply_fixture_plan(
+    plan: dict,
+    acknowledgements: set[str] | None = None,
+    boundary_hook=None,
+    remediation_decision: dict | None = None,
+) -> dict:
+    """Give historical automatic fixtures explicit authority without hiding conflicts."""
+    acknowledgements = acknowledgements or set()
+    if not plan.get("upgrade_remediation_required"):
+        return RAW_APPLY_PLAN(plan, acknowledgements, boundary_hook)
+    packet = APPLY.build_upgrade_remediation_packet(plan)
+    proposal = packet["automatic_proposal"]
+    if remediation_decision is None:
+        if (
+            proposal["unresolved_operation_ids"]
+            or proposal["ignored_framework_paths"]
+            or proposal["managed_state_conflicts"]
+        ):
+            return RAW_APPLY_PLAN(plan, acknowledgements, boundary_hook)
+        if proposal["reconciliation_ids"]:
+            if acknowledgements != set(proposal["reconciliation_ids"]):
+                return RAW_APPLY_PLAN(plan, acknowledgements, boundary_hook)
+            remediation_decision = fixture_remediation_decision(plan)
+            acknowledgements = set()
+        else:
+            remediation_decision = fixture_remediation_decision(plan)
+    return RAW_APPLY_PLAN(
+        plan,
+        acknowledgements,
+        boundary_hook,
+        remediation_decision=remediation_decision,
+    )
+
+
+def make_schema_23_upgrade_package(fixture: PackageApplyFixture) -> dict:
+    """Build a small portable v2.3 envelope with an executable incoming validator."""
+    package_id = "fixture-ai-context-dotnet-backend-1.0.0"
+    version = "1.0.0"
+    selection = yaml.safe_load(yaml.safe_dump(APPLY.DEFAULT_COMPONENT_SELECTION))
+    validator_path = ".ai/scripts/validate-ai-context-payload.py"
+    install_content = (
+        b"# Install\n\n"
+        b"python -m pip install -r requirements.txt\n\n"
+        b"python payload/.ai/scripts/validate-ai-context-payload.py --package-root .\n"
+    )
+    payload = {
+        validator_path: (ROOT / ".ai/scripts/validate-ai-context-payload.py").read_bytes(),
+        ".ai/scripts/ai_context_package_validation.py": (
+            ROOT / ".ai/scripts/ai_context_package_validation.py"
+        ).read_bytes(),
+        ".ai/scripts/python-entrypoints.json": (
+            json.dumps(
+                {
+                    "schema_version": "1.0",
+                    "python_floor": "3.11",
+                    "governed_requirements": {
+                        "PyYAML": {
+                            "version": "6.0.3",
+                            "import_name": "yaml",
+                            "requirements_path": "requirements.txt",
+                        }
+                    },
+                    "entrypoints": [
+                        {
+                            "path": validator_path,
+                            "portable": True,
+                            "dependency_profile": ["PyYAML"],
+                            "prerequisite_exit_code": 1,
+                        },
+                        {
+                            "path": ".ai/scripts/portable.py",
+                            "portable": True,
+                            "dependency_profile": [],
+                            "prerequisite_exit_code": 1,
+                        },
+                    ],
+                },
+                ensure_ascii=False,
+                sort_keys=True,
+                separators=(",", ":"),
+            ).encode("utf-8")
+            + b"\n"
+        ),
+        ".ai/scripts/portable.py": b"#!/usr/bin/env python3\nimport argparse\nargparse.ArgumentParser().parse_args()\n",
+        ".ai/assets/shared/example.md": b"# Incoming schema-2.3 fixture\n",
+    }
+    component_by_path = {
+        validator_path: "ai-context-lifecycle-core",
+        ".ai/scripts/ai_context_package_validation.py": "ai-context-lifecycle-core",
+        ".ai/assets/shared/example.md": "dotnet-backend",
+    }
+    records: list[dict] = []
+    for relative, content in sorted(payload.items(), key=lambda item: item[0].encode("utf-8")):
+        destination = fixture.package / "payload" / relative
+        destination.parent.mkdir(parents=True, exist_ok=True)
+        destination.write_bytes(content)
+        records.append(
+            fixture.record(
+                relative,
+                content,
+                component_id=component_by_path.get(
+                    relative, "software-development-core"
+                ),
+            )
+        )
+
+    previous_content = b"# Previous schema-2.3 fixture\n"
+    previous_document = {
+        "schema_version": "2.0.0",
+        "package_id": "fixture-ai-context-dotnet-backend-0.9.0",
+        "files": [
+            fixture.record(
+                ".ai/assets/shared/example.md",
+                previous_content,
+                component_id="dotnet-backend",
+            )
+        ],
+    }
+    fixture.previous_path = fixture.root / "previous-files.yaml"
+    fixture.previous_path.write_text(
+        yaml.safe_dump(previous_document, sort_keys=False),
+        encoding="utf-8",
+        newline="\n",
+    )
+    previous_sha = APPLY.sha256_bytes(fixture.previous_path.read_bytes())
+    files_document = {
+        "schema_version": "2.0.0",
+        "package_id": package_id,
+        "files": records,
+    }
+    files_content = yaml.safe_dump(files_document, sort_keys=False).encode("utf-8")
+    source_operations = []
+    clean_operations = []
+    for index, record in enumerate(records, 1):
+        component_id = record["component_id"]
+        source_operations.append(
+            operation(
+                f"upgrade-{index:04d}",
+                "replace" if record["path"] == ".ai/assets/shared/example.md" else "add",
+                record["path"],
+                component_id=component_id,
+            )
+        )
+        clean_operations.append(
+            operation(
+                f"clean-install-{index:04d}",
+                "add",
+                record["path"],
+                component_id=component_id,
+            )
+        )
+    migration = {
+        "schema_version": "3.0.0",
+        "package_id": package_id,
+        "selection": selection,
+        "to": {"version": version, "manifest_sha256": APPLY.sha256_bytes(files_content)},
+        "clean_install": {"operations": clean_operations},
+        "sources": [
+            {
+                "version": "0.9.0",
+                "manifest_sha256": previous_sha,
+                "operations": source_operations,
+            }
+        ],
+        "safety": {
+            "dry_run_default": True,
+            "clean_worktree_required": True,
+            "starting_commit_required": True,
+            "abort_on_unacknowledged_reconciliation": True,
+        },
+    }
+    migration_content = yaml.safe_dump(migration, sort_keys=False).encode("utf-8")
+    proof = {
+        "schema_version": "package-selected-input/v1",
+        "source_inputs": [
+            {
+                "path": ".ai/distribution/profiles/dotnet-backend.yaml",
+                "sha256": APPLY.sha256_bytes(b"dotnet-profile\n"),
+            },
+            {
+                "path": ".ai/distribution/templates/INSTALL.md",
+                "sha256": APPLY.sha256_bytes(install_content),
+            },
+            {
+                "path": ".ai/distribution/templates/requirements.txt",
+                "sha256": APPLY.sha256_bytes(b"PyYAML==6.0.3\n"),
+            },
+            {
+                "path": ".dev/releases/v1.0.0/release.yaml",
+                "sha256": APPLY.sha256_bytes(b"release\n"),
+            },
+        ],
+        "payload": [
+            {
+                key: record[key]
+                for key in (
+                    "path",
+                    "sha256",
+                    "mode",
+                    "ownership",
+                    "install_behavior",
+                    "component_id",
+                )
+            }
+            for record in records
+        ],
+        "migration_sources": [
+            {"version": "0.9.0", "manifest_sha256": previous_sha}
+        ],
+    }
+    package_canonical_json = lambda document: json.dumps(
+        document, ensure_ascii=False, sort_keys=True, separators=(",", ":")
+    ).encode("utf-8")
+    proof_content = package_canonical_json(proof)
+    validation = {
+        "schema_version": "package-validation/v1",
+        "package_id": package_id,
+        "authority": {
+            "kind": "incoming-candidate",
+            "validator": {
+                "path": validator_path,
+                "sha256": APPLY.sha256_bytes(payload[validator_path]),
+                "argv": [
+                    "python",
+                    "payload/.ai/scripts/validate-ai-context-payload.py",
+                    "--package-root",
+                    ".",
+                ],
+            },
+        },
+        "selected_input_proof": {
+            "path": "metadata/selected-inputs.json",
+            "sha256": APPLY.sha256_bytes(proof_content),
+        },
+        "source_only_tests": {
+            "classification": "source-only",
+            "contributes_to_portable_success": False,
+            "patterns": [
+                ".ai/scripts/tests/**",
+                ".ai/assets/skills/**/scripts/tests/**",
+            ],
+        },
+        "integrity_policy": {
+            "path_case": "casefold-unique",
+            "payload_text": "all",
+            "text": {
+                "encoding": "utf-8",
+                "line_endings": "lf-only",
+                "terminal_lf": "exactly-one",
+            },
+            "modes": {"allowed": ["0644", "0755"]},
+        },
+    }
+    validation_content = package_canonical_json(validation)
+    payload_fingerprint = APPLY.sha256_bytes(
+        "".join(
+            f"{record['sha256']}  {record['path']}\n" for record in records
+        ).encode("utf-8")
+    )
+    package = {
+        "schema_version": "2.3.0",
+        "package_id": package_id,
+        "profile_id": "dotnet-backend",
+        "version": version,
+        "release_id": "REL-v1.0.0",
+        "selection": selection,
+        "user_view": {
+            "schema_version": "1.0.0",
+            "classifications": {
+                "markdown_local_links": "required-local-navigation",
+                "markdown_anchors": "required-local-anchor",
+                "component_cross_links": "navigation-only-not-activation",
+                "fenced_code": "non-actionable-example-unless-command",
+                "inline_code": "non-actionable-reference-unless-command",
+                "templates_and_placeholders": "non-actionable-template",
+                "external_urls": "external-not-validated",
+                "actionable_local_commands": "required-local-target",
+            },
+            "reference_integrity": {
+                "text_extensions": [".md", ".yaml", ".py"],
+                "forbidden_source_lifecycle_patterns": [".dev/releases/v*/**"],
+            },
+            "components": [
+                {
+                    "component_id": "software-development-core",
+                    "classification": "mandatory-core",
+                    "required": True,
+                    "requires": [],
+                },
+                {
+                    "component_id": "ai-context-lifecycle-core",
+                    "classification": "mandatory-core",
+                    "required": True,
+                    "requires": [],
+                },
+                {
+                    "component_id": "dotnet-backend",
+                    "classification": "technology-profile",
+                    "required": False,
+                    "requires": ["software-development-core"],
+                },
+                {
+                    "component_id": "repo-backlog",
+                    "classification": "optional-provider",
+                    "required": False,
+                    "requires": ["software-development-core"],
+                },
+            ],
+            "supported_selections": [
+                {
+                    "selection_id": "dotnet-backend-default",
+                    "components": [
+                        "software-development-core",
+                        "ai-context-lifecycle-core",
+                        "dotnet-backend",
+                    ],
+                }
+            ],
+            "capabilities": [],
+        },
+        "source": {
+            "repository": "https://example.invalid/framework",
+            "ref": "a" * 40,
+            "commit": "a" * 40,
+            "tree": "b" * 40,
+        },
+        "created_at": "2026-08-20T00:00:00Z",
+        "source_date_epoch": 1787184000,
+        "identity": {
+            "schema_version": "1.0.0",
+            "selected_input_fingerprint": APPLY.sha256_bytes(proof_content),
+            "payload_fingerprint": payload_fingerprint,
+            "files_manifest_digest": APPLY.sha256_bytes(files_content),
+            "migration_digest": APPLY.sha256_bytes(migration_content),
+        },
+        "payload": {
+            "root": "payload",
+            "file_count": len(records),
+            "sha256": payload_fingerprint,
+        },
+        "compatibility": {
+            "minimum_governed_source": "0.1.0",
+            "breaking_changes": False,
+            "automatic_upgrade_sources": ["0.9.0"],
+        },
+        "validation": {
+            "schema_version": "package-validation/v1",
+            "manifest": "metadata/validation.json",
+            "manifest_sha256": APPLY.sha256_bytes(validation_content),
+            "selected_inputs": "metadata/selected-inputs.json",
+            "selected_inputs_sha256": APPLY.sha256_bytes(proof_content),
+        },
+    }
+    (fixture.package / "INSTALL.md").write_bytes(install_content)
+    (fixture.package / "requirements.txt").write_text(
+        "PyYAML==6.0.3\n", encoding="utf-8", newline="\n"
+    )
+    (fixture.package / "metadata/package.yaml").write_text(
+        yaml.safe_dump(package, sort_keys=False), encoding="utf-8", newline="\n"
+    )
+    (fixture.package / "metadata/files.yaml").write_bytes(files_content)
+    (fixture.package / "metadata/migration.yaml").write_bytes(migration_content)
+    (fixture.package / "metadata/validation.json").write_bytes(validation_content)
+    (fixture.package / "metadata/selected-inputs.json").write_bytes(proof_content)
+    fixture.reseal()
+    return {"previous_content": previous_content, "selection": selection}
+
+
+def fixture_upgrade_authorities(
+    fixture: PackageApplyFixture, selection: dict, previous_content: bytes
+) -> tuple[dict, dict]:
+    """Install credible prior authority and return a valid successor candidate pair."""
+    fixture.add_target(".ai/assets/shared/example.md", previous_content)
+    fixture.add_target(
+        ".dev/project-config.yaml",
+        yaml.safe_dump(
+            {
+                "validation": {
+                    "routine": {
+                        "argv": ["python", "-c", "print('target validation')"]
+                    }
+                }
+            },
+            sort_keys=False,
+        ).encode("utf-8"),
+    )
+    fixture.commit_target("fixture target before initialized authority")
+    previous_source = {
+        "repository": "https://example.invalid/framework",
+        "release_id": "REL-v0.9.0",
+        "version": "v0.9.0",
+        "tag": "v0.9.0",
+        "commit": "c" * 40,
+    }
+    initialized = TARGET.initialize_context(
+        fixture.target,
+        previous_source,
+        selection,
+        "2026-08-20T10:00:00+08:00",
+    )
+    if initialized.get("status") != "initialized":
+        raise AssertionError(f"fixture authority initialization failed: {initialized}")
+    git(fixture.target, "add", ".dev/ai-context")
+    fixture.commit_target("fixture initialized authority")
+    candidate_source = {
+        "repository": "https://example.invalid/framework",
+        "release_id": "REL-v1.0.0",
+        "version": "v1.0.0",
+        "tag": "v1.0.0",
+        "commit": "a" * 40,
+    }
+    candidate_provenance, candidate_ledger = TARGET.build_initialization_documents(
+        candidate_source,
+        selection,
+        "2026-08-20T12:00:00+08:00",
+    )
+    candidate_provenance["previous_source"] = previous_source
+    candidate_provenance["installation"]["last_upgraded_at"] = (
+        "2026-08-20T12:00:00+08:00"
+    )
+    candidate_provenance["last_migration"] = {
+        "status": "completed",
+        "from_version": "v0.9.0",
+        "to_version": "v1.0.0",
+        "completed_at": "2026-08-20T12:00:00+08:00",
+        "evidence": "tests/upgrade-finalization.md",
+    }
+    return candidate_provenance, candidate_ledger
+
+
+def record_passed_target_validation(
+    fixture: PackageApplyFixture, plan: dict
+) -> dict:
+    """Seal a supplied passed target validation record through the public recorder."""
+    transaction = APPLY.transaction_root(fixture.target, plan["plan_sha256"])
+    packet = json.loads(
+        (transaction / APPLY.REMEDIATION_PACKET_PATH).read_text(encoding="utf-8")
+    )
+    journal = yaml.safe_load((transaction / "journal.yaml").read_text(encoding="utf-8"))
+    pending_path = fixture.target / APPLY.PENDING_RECEIPT_PATH
+    profile = packet["target_validation_profile"]
+    validation_output = b"target validation passed\n"
+    transaction_id = plan["plan_sha256"]
+    evidence_path = (
+        APPLY.transaction_root(fixture.target, transaction_id)
+        / APPLY.TARGET_VALIDATION_OUTPUT_PATH
+    )
+    evidence_path.write_bytes(validation_output)
+    supplied = {
+        "schema_version": "target-validation-receipt/v1",
+        "transaction_id": plan["plan_sha256"],
+        "plan_sha256": plan["plan_sha256"],
+        "packet_sha256": packet["canonical_digest"],
+        "decision_sha256": journal["remediation_decision_sha256"],
+        "target": {
+            "root": packet["target"]["root"],
+            "starting_commit": packet["target"]["starting_commit"],
+            "observed_prestate_sha256": packet["target"][
+                "observed_prestate_sha256"
+            ],
+        },
+        "target_validation_profile": profile,
+        "target_validation_profile_digest": packet[
+            "target_validation_profile_digest"
+        ],
+        "pending_receipt": {
+            "path": APPLY.PENDING_RECEIPT_PATH,
+            "sha256": APPLY.sha256_bytes(pending_path.read_bytes()),
+        },
+        "execution": {
+            "argv": profile["argv"],
+            "outcome": "passed",
+            "exit_code": 0,
+            "started_at": "2026-08-20T12:00:00+08:00",
+            "completed_at": "2026-08-20T12:00:01+08:00",
+            "output_sha256": APPLY.sha256_bytes(validation_output),
+            "evidence": (
+                f".git/ai-context-package-apply/{transaction_id}/"
+                f"{APPLY.TARGET_VALIDATION_OUTPUT_PATH}"
+            ),
+        },
+    }
+    supplied_path = fixture.root / "supplied-target-validation-receipt.json"
+    supplied_path.write_bytes(APPLY.canonical_json_bytes(supplied))
+    return APPLY.record_target_validation_receipt(
+        fixture.target, plan["plan_sha256"], supplied_path
+    )
 
 
 def reseal_applied_transaction(
@@ -330,6 +887,11 @@ def reseal_applied_transaction(
 
 
 class AiContextPackageApplyGwtTests(unittest.TestCase):
+    def setUp(self) -> None:
+        self._prior_apply_plan = APPLY.apply_plan
+        APPLY.apply_plan = apply_fixture_plan
+        self.addCleanup(setattr, APPLY, "apply_plan", self._prior_apply_plan)
+
     def test_gwt_000_given_portable_prerequisite_runtime_when_clean_installed_then_all_shared_and_registered_assets_are_selected(self) -> None:
         fixture = PackageApplyFixture()
         try:
@@ -978,7 +1540,9 @@ class AiContextPackageApplyGwtTests(unittest.TestCase):
             )
             # When the reconcile is acknowledged and the plan is applied.
             plan = fixture.plan()
-            with self.assertRaisesRegex(APPLY.ApplyError, "unacknowledged reconciliation"):
+            with self.assertRaisesRegex(
+                APPLY.ApplyError, "unacknowledged reconciliation items: \\['002-seed'\\]"
+            ):
                 APPLY.apply_plan(plan)
             receipt = APPLY.apply_plan(plan, {"002-seed"})
             # Then acknowledgement skips the seed rather than authorizing overwrite.
@@ -1238,6 +1802,7 @@ class AiContextPackageApplyGwtTests(unittest.TestCase):
             # Given target bytes match the executable base, but Git explicitly cannot
             # represent the executable bit on this worktree.
             git(fixture.target, "config", "core.filemode", "false")
+            seed_executable_target_validation_profile(fixture)
             fixture.add_target(".ai/tool.sh", b"same bytes\n")
             fixture.commit_target()
             fixture.make_package(
@@ -1260,9 +1825,7 @@ class AiContextPackageApplyGwtTests(unittest.TestCase):
                 receipt["applied_artifacts"][0]["raw_sha256"],
             )
             self.assertEqual("0755", receipt["applied_artifacts"][0]["git_mode"])
-            errors: list[str] = []
-            TARGET.validate_pending_apply_receipt(fixture.target, errors)
-            self.assertEqual([], errors)
+            self.assertEqual("awaiting-target-validation", receipt["transaction_state"])
         finally:
             fixture.close()
 
@@ -1279,10 +1842,13 @@ class AiContextPackageApplyGwtTests(unittest.TestCase):
             )
 
             plan = fixture.plan()
+            decision = fixture_remediation_decision(plan)
 
             self.assertEqual([path], [item["path"] for item in plan["managed_state_conflicts"]])
-            with self.assertRaisesRegex(APPLY.ApplyError, "unchanged framework-managed paths"):
-                APPLY.apply_plan(plan)
+            with self.assertRaisesRegex(
+                APPLY.ApplyError, "approved decision cannot override unresolved package conflicts"
+            ):
+                APPLY.apply_plan(plan, remediation_decision=decision)
             self.assertEqual(b"committed target drift\n", (fixture.target / path).read_bytes())
         finally:
             fixture.close()
@@ -1292,6 +1858,7 @@ class AiContextPackageApplyGwtTests(unittest.TestCase):
         try:
             path = ".ai/eol.md"
             git(fixture.target, "config", "core.autocrlf", "true")
+            seed_executable_target_validation_profile(fixture)
             fixture.add_target(path, b"release bytes\r\n")
             fixture.commit_target()
             fixture.make_package(
@@ -1302,8 +1869,6 @@ class AiContextPackageApplyGwtTests(unittest.TestCase):
 
             plan = fixture.plan()
             receipt = APPLY.apply_plan(plan)
-            errors: list[str] = []
-            TARGET.validate_pending_apply_receipt(fixture.target, errors)
 
             observed = plan["observed"][path]
             self.assertNotEqual(APPLY.sha256_bytes(b"release bytes\n"), observed["sha256"])
@@ -1314,7 +1879,7 @@ class AiContextPackageApplyGwtTests(unittest.TestCase):
                 "git-eol-canonical",
                 receipt["selected_managed_path_results"][0]["match_basis"],
             )
-            self.assertEqual([], errors)
+            self.assertEqual("awaiting-target-validation", receipt["transaction_state"])
         finally:
             fixture.close()
 
@@ -1574,6 +2139,7 @@ class AiContextPackageApplyGwtTests(unittest.TestCase):
             with self.subTest(boundary=failed_boundary):
                 fixture = PackageApplyFixture()
                 try:
+                    seed_executable_target_validation_profile(fixture)
                     fixture.add_target(".ai/rule.md", b"previous\n")
                     fixture.commit_target()
                     fixture.make_package(
@@ -1619,7 +2185,9 @@ class AiContextPackageApplyGwtTests(unittest.TestCase):
 
                     receipt = APPLY.apply_plan(plan)
 
-                    self.assertEqual("finalized", receipt["transaction_state"])
+                    self.assertEqual(
+                        "awaiting-target-validation", receipt["transaction_state"]
+                    )
                     self.assertTrue((final_root / "journal.yaml").is_file())
                     self.assertEqual(
                         b"incoming\n", (fixture.target / ".ai/rule.md").read_bytes()
@@ -1668,7 +2236,11 @@ class AiContextPackageApplyGwtTests(unittest.TestCase):
                 fixture = PackageApplyFixture()
                 try:
                     is_remove = failed_boundary == "after_source_remove"
+                    expected_transaction_state = (
+                        "awaiting-target-validation" if is_remove else "finalized"
+                    )
                     if is_remove:
+                        seed_executable_target_validation_profile(fixture)
                         fixture.add_target(".ai/rule.md", b"previous\n")
                         fixture.commit_target()
                         fixture.make_package(
@@ -1713,7 +2285,9 @@ class AiContextPackageApplyGwtTests(unittest.TestCase):
                     )
 
                     self.assertEqual(receipt, repeated)
-                    self.assertEqual("finalized", receipt["transaction_state"])
+                    self.assertEqual(
+                        expected_transaction_state, receipt["transaction_state"]
+                    )
                     if is_remove:
                         self.assertFalse((fixture.target / ".ai/rule.md").exists())
                     else:
@@ -1878,6 +2452,7 @@ class AiContextPackageApplyGwtTests(unittest.TestCase):
             with self.subTest(action=recovery_action):
                 fixture = PackageApplyFixture()
                 try:
+                    seed_executable_target_validation_profile(fixture)
                     fixture.add_target(".ai/rule.md", b"previous\n")
                     fixture.commit_target()
                     fixture.make_package(
@@ -1950,7 +2525,10 @@ class AiContextPackageApplyGwtTests(unittest.TestCase):
 
                     self.assertEqual(recovered, repeated)
                     if recovery_action == "resume":
-                        self.assertEqual("finalized", recovered["transaction_state"])
+                        self.assertEqual(
+                            "awaiting-target-validation",
+                            recovered["transaction_state"],
+                        )
                         self.assertFalse((fixture.target / ".ai/rule.md").exists())
                     else:
                         self.assertEqual("rolled-back", recovered["state"])
@@ -2396,6 +2974,88 @@ class AiContextPackageApplyGwtTests(unittest.TestCase):
                         ),
                         errors,
                     )
+                    if "transition_sequence" in corruption:
+                        with self.assertRaisesRegex(
+                            APPLY.ApplyError,
+                            "transaction journal transition sequence is impossible",
+                        ):
+                            APPLY.recover_transaction(
+                                fixture.target,
+                                plan["plan_sha256"],
+                                "resume",
+                                fixture.package,
+                            )
+                finally:
+                    fixture.close()
+
+    def test_gwt_033a_given_exact_v4_finalized_or_validated_sequences_when_recovered_and_target_validates_then_both_pass(self) -> None:
+        for scenario in ("clean-finalized", "upgrade-validated"):
+            with self.subTest(scenario=scenario):
+                fixture = PackageApplyFixture()
+                try:
+                    if scenario == "clean-finalized":
+                        fixture.make_package(
+                            {".ai/rule.md": (b"incoming\n", "framework-managed", "0644")},
+                            [operation("001-add", "add", ".ai/rule.md")],
+                        )
+                        plan = fixture.plan()
+                        receipt = APPLY.apply_plan(plan)
+                        expected_state = "finalized"
+                        expected_sequence = len(APPLY.active_operations(plan)) + 2
+                    else:
+                        package = make_schema_23_upgrade_package(fixture)
+                        candidate_provenance, candidate_ledger = fixture_upgrade_authorities(
+                            fixture, package["selection"], package["previous_content"]
+                        )
+                        plan = fixture.plan("0.9.0")
+                        receipt = APPLY.apply_plan(
+                            plan,
+                            remediation_decision=fixture_remediation_decision(
+                                plan,
+                                candidate_provenance=candidate_provenance,
+                                candidate_ledger=candidate_ledger,
+                            ),
+                        )
+                        record_passed_target_validation(fixture, plan)
+                        expected_state = "validated"
+                        expected_sequence = len(APPLY.active_operations(plan)) + 3
+
+                    root = APPLY.transaction_root(fixture.target, plan["plan_sha256"])
+                    journal = yaml.safe_load((root / "journal.yaml").read_text(encoding="utf-8"))
+                    self.assertEqual(expected_state, journal["state"])
+                    self.assertEqual(expected_sequence, journal["transition_sequence"])
+                    self.assertEqual(
+                        receipt,
+                        APPLY.recover_transaction(
+                            fixture.target,
+                            plan["plan_sha256"],
+                            "resume",
+                            fixture.package,
+                        ),
+                    )
+                    errors: list[str] = []
+                    TARGET.validate_pending_apply_receipt(
+                        fixture.target,
+                        errors,
+                        enforce_terminal_invariants=scenario == "clean-finalized",
+                    )
+                    self.assertEqual([], errors)
+                    if scenario == "upgrade-validated":
+                        finalization = TARGET.finalize_context(
+                            fixture.target, candidate_provenance, candidate_ledger
+                        )
+                        finalized = yaml.safe_load(
+                            (root / "journal.yaml").read_text(encoding="utf-8")
+                        )
+                        self.assertEqual("finalized", finalization["status"])
+                        self.assertEqual("finalized", finalized["state"])
+                        self.assertEqual(
+                            len(APPLY.active_operations(plan)) + 4,
+                            finalized["transition_sequence"],
+                        )
+                        errors = []
+                        TARGET.validate_pending_apply_receipt(fixture.target, errors)
+                        self.assertEqual([], errors)
                 finally:
                     fixture.close()
 
@@ -2847,6 +3507,7 @@ class AiContextPackageApplyGwtTests(unittest.TestCase):
                 with self.subTest(boundary=boundary, variant=variant):
                     fixture = PackageApplyFixture()
                     try:
+                        seed_executable_target_validation_profile(fixture)
                         fixture.add_target(".ai/one.md", b"old\n")
                         fixture.commit_target()
                         fixture.make_package(
@@ -2907,12 +3568,10 @@ class AiContextPackageApplyGwtTests(unittest.TestCase):
                                 "resume",
                                 package_root=fixture.package,
                             )
-                            errors: list[str] = []
-                            TARGET.validate_pending_apply_receipt(
-                                fixture.target, errors
+                            self.assertEqual(
+                                "awaiting-target-validation",
+                                receipt["transaction_state"],
                             )
-                            self.assertEqual("finalized", receipt["transaction_state"])
-                            self.assertEqual([], errors)
                     finally:
                         fixture.close()
 
@@ -3202,6 +3861,622 @@ class AiContextPackageApplyGwtTests(unittest.TestCase):
         finally:
             fixture.close()
 
+    def test_gwt_046_given_upgrade_without_owner_decision_when_apply_then_no_target_mutation_is_authorized(self) -> None:
+        fixture = PackageApplyFixture()
+        try:
+            fixture.add_target(".ai/managed.md", b"old\n")
+            fixture.commit_target()
+            fixture.make_package(
+                {".ai/managed.md": (b"new\n", "framework-managed", "0644")},
+                [operation("001-replace", "replace", ".ai/managed.md")],
+                previous={
+                    ".ai/managed.md": (b"old\n", "framework-managed", "0644")
+                },
+            )
+            plan = fixture.plan("0.9.0")
+
+            with self.assertRaisesRegex(
+                APPLY.ApplyError, "requires an explicit approved remediation decision"
+            ):
+                RAW_APPLY_PLAN(plan)
+
+            self.assertEqual(b"old\n", (fixture.target / ".ai/managed.md").read_bytes())
+            self.assertFalse(
+                APPLY.transaction_root(fixture.target, plan["plan_sha256"]).exists()
+            )
+        finally:
+            fixture.close()
+
+    def test_gwt_047_given_rejected_upgrade_decision_when_apply_then_packet_report_and_decision_are_retained(self) -> None:
+        fixture = PackageApplyFixture()
+        try:
+            fixture.add_target(".ai/managed.md", b"local owner change\n")
+            fixture.commit_target()
+            fixture.make_package(
+                {".ai/managed.md": (b"new\n", "framework-managed", "0644")},
+                [operation("001-replace", "replace", ".ai/managed.md")],
+                previous={
+                    ".ai/managed.md": (b"old\n", "framework-managed", "0644")
+                },
+            )
+            plan = fixture.plan("0.9.0")
+            decision = fixture_remediation_decision(plan, "rejected")
+
+            with self.assertRaisesRegex(APPLY.ApplyError, "rejected by owner decision"):
+                APPLY.apply_plan(plan, remediation_decision=decision)
+
+            root = APPLY.transaction_root(fixture.target, plan["plan_sha256"])
+            journal = yaml.safe_load((root / "journal.yaml").read_text(encoding="utf-8"))
+            self.assertEqual("rejected", journal["state"])
+            self.assertTrue((root / APPLY.REMEDIATION_PACKET_PATH).is_file())
+            self.assertTrue((root / APPLY.REMEDIATION_DECISION_PATH).is_file())
+            report = (root / APPLY.REMEDIATION_REPORT_PATH).read_text(encoding="utf-8")
+            self.assertEqual(
+                f"derived_from_packet_digest: {decision['packet_sha256']}",
+                report.splitlines()[0],
+            )
+            _root, loaded_plan, loaded_journal = APPLY.load_transaction(
+                fixture.target, plan["plan_sha256"]
+            )
+            self.assertEqual(plan, loaded_plan)
+            self.assertEqual("rejected", loaded_journal["state"])
+            self.assertEqual(
+                b"local owner change\n",
+                (fixture.target / ".ai/managed.md").read_bytes(),
+            )
+            self.assertFalse(
+                (fixture.target / APPLY.PENDING_RECEIPT_PATH).exists()
+            )
+        finally:
+            fixture.close()
+
+    def test_gwt_048_given_approved_upgrade_decision_when_apply_then_artifacts_precede_target_mutation_and_are_bound(self) -> None:
+        fixture = PackageApplyFixture()
+        try:
+            fixture.add_target(".ai/managed.md", b"old\n")
+            fixture.commit_target()
+            fixture.make_package(
+                {".ai/managed.md": (b"new\n", "framework-managed", "0644")},
+                [operation("001-replace", "replace", ".ai/managed.md")],
+                previous={
+                    ".ai/managed.md": (b"old\n", "framework-managed", "0644")
+                },
+            )
+            plan = fixture.plan("0.9.0")
+            decision = fixture_remediation_decision(plan)
+            observed_before_write: list[bool] = []
+
+            def assert_prewrite_artifacts(boundary: str, _details: dict) -> None:
+                if boundary != "after_planned_journal":
+                    return
+                root = APPLY.transaction_root(fixture.target, plan["plan_sha256"])
+                observed_before_write.append(
+                    all(
+                        (root / relative).is_file()
+                        for relative in (
+                            APPLY.REMEDIATION_PACKET_PATH,
+                            APPLY.REMEDIATION_REPORT_PATH,
+                            APPLY.REMEDIATION_DECISION_PATH,
+                            APPLY.INCOMING_VALIDATION_RECEIPT_PATH,
+                        )
+                    )
+                    and (fixture.target / ".ai/managed.md").read_bytes() == b"old\n"
+                )
+
+            receipt = APPLY.apply_plan(
+                plan,
+                boundary_hook=assert_prewrite_artifacts,
+                remediation_decision=decision,
+            )
+
+            root = APPLY.transaction_root(fixture.target, plan["plan_sha256"])
+            journal = yaml.safe_load((root / "journal.yaml").read_text(encoding="utf-8"))
+            self.assertEqual([True], observed_before_write)
+            self.assertEqual(
+                "awaiting-target-validation", receipt["transaction_state"]
+            )
+            self.assertEqual("awaiting-target-validation", journal["state"])
+            self.assertEqual(plan["target_observed_prestate_sha256"], journal["target_observed_prestate_sha256"])
+            self.assertTrue(
+                isinstance(journal["incoming_validation_receipt_sha256"], str)
+            )
+            self.assertEqual(b"new\n", (fixture.target / ".ai/managed.md").read_bytes())
+        finally:
+            fixture.close()
+
+    def test_gwt_049_given_schema_23_upgrade_and_passed_target_validation_when_finalized_then_terminal_receipt_is_idempotent(self) -> None:
+        fixture = PackageApplyFixture()
+        try:
+            package = make_schema_23_upgrade_package(fixture)
+            candidate_provenance, candidate_ledger = fixture_upgrade_authorities(
+                fixture, package["selection"], package["previous_content"]
+            )
+            plan = fixture.plan("0.9.0")
+            self.assertTrue(plan["upgrade_remediation_required"])
+            self.assertEqual("passed", plan["incoming_package_validation"]["execution"]["outcome"])
+            decision = fixture_remediation_decision(
+                plan,
+                candidate_provenance=candidate_provenance,
+                candidate_ledger=candidate_ledger,
+            )
+
+            APPLY.apply_plan(plan, remediation_decision=decision)
+            record_passed_target_validation(fixture, plan)
+            transaction_id = plan["plan_sha256"]
+            supplied_receipt = fixture.root / "supplied-target-validation-receipt.json"
+            managed_path = fixture.target / ".ai/assets/shared/example.md"
+            managed_before_cli = managed_path.read_bytes()
+            record_cli = [
+                sys.executable,
+                str(ROOT / ".ai/scripts/plan-ai-context-package-apply.py"),
+                "--target-root",
+                str(fixture.target),
+                "--record-target-validation-receipt",
+                transaction_id,
+                "--target-validation-receipt",
+                str(supplied_receipt),
+            ]
+            cli_result = subprocess.run(record_cli, capture_output=True, text=True)
+            self.assertEqual(0, cli_result.returncode, cli_result.stderr)
+            self.assertEqual(managed_before_cli, managed_path.read_bytes())
+            invalid_cli = subprocess.run(
+                [*record_cli, "--package-root", str(fixture.package)],
+                capture_output=True,
+                text=True,
+            )
+            self.assertNotEqual(0, invalid_cli.returncode)
+            self.assertIn("does not accept --package-root", invalid_cli.stderr)
+            first = TARGET.finalize_context(
+                fixture.target, candidate_provenance, candidate_ledger
+            )
+            transaction = APPLY.transaction_root(fixture.target, plan["plan_sha256"])
+            terminal = transaction / TARGET.TERMINAL_RECEIPT_PATH
+            terminal_bytes = terminal.read_bytes()
+
+            second = TARGET.finalize_context(
+                fixture.target, candidate_provenance, candidate_ledger
+            )
+
+            self.assertEqual("finalized", first["status"])
+            self.assertEqual(first["terminal_receipt"], second["terminal_receipt"])
+            self.assertEqual(terminal_bytes, terminal.read_bytes())
+            _root, _plan, finalized_journal = APPLY.load_transaction(
+                fixture.target, transaction_id
+            )
+            self.assertEqual("finalized", finalized_journal["state"])
+            self.assertEqual([], TARGET.validate_target(fixture.target))
+        finally:
+            fixture.close()
+
+    def test_gwt_050_given_candidate_authority_mismatch_when_finalized_then_prior_authority_is_preserved(self) -> None:
+        fixture = PackageApplyFixture()
+        try:
+            package = make_schema_23_upgrade_package(fixture)
+            candidate_provenance, candidate_ledger = fixture_upgrade_authorities(
+                fixture, package["selection"], package["previous_content"]
+            )
+            plan = fixture.plan("0.9.0")
+            decision = fixture_remediation_decision(
+                plan,
+                candidate_provenance=candidate_provenance,
+                candidate_ledger=candidate_ledger,
+            )
+            APPLY.apply_plan(plan, remediation_decision=decision)
+            record_passed_target_validation(fixture, plan)
+            provenance_path = fixture.target / ".dev/ai-context/provenance.yaml"
+            ledger_path = fixture.target / ".dev/ai-context/customizations.yaml"
+            prior = (provenance_path.read_bytes(), ledger_path.read_bytes())
+            candidate_provenance["installation"]["last_upgraded_at"] = "2026-08-20T13:00:00+08:00"
+
+            with self.assertRaisesRegex(
+                TARGET.TargetValidationError, "candidate authority differs"
+            ):
+                TARGET.finalize_context(
+                    fixture.target, candidate_provenance, candidate_ledger
+                )
+
+            self.assertEqual(prior, (provenance_path.read_bytes(), ledger_path.read_bytes()))
+            self.assertFalse(
+                (APPLY.transaction_root(fixture.target, plan["plan_sha256"])
+                 / TARGET.TERMINAL_RECEIPT_PATH).exists()
+            )
+        finally:
+            fixture.close()
+
+    def test_gwt_051_given_missing_or_tampered_target_validation_when_finalized_then_authority_does_not_advance(self) -> None:
+        fixture = PackageApplyFixture()
+        try:
+            package = make_schema_23_upgrade_package(fixture)
+            candidate_provenance, candidate_ledger = fixture_upgrade_authorities(
+                fixture, package["selection"], package["previous_content"]
+            )
+            plan = fixture.plan("0.9.0")
+            decision = fixture_remediation_decision(
+                plan,
+                candidate_provenance=candidate_provenance,
+                candidate_ledger=candidate_ledger,
+            )
+            APPLY.apply_plan(plan, remediation_decision=decision)
+            provenance_path = fixture.target / ".dev/ai-context/provenance.yaml"
+            prior = provenance_path.read_bytes()
+
+            with self.assertRaisesRegex(
+                TARGET.TargetValidationError, "target validation receipt"
+            ):
+                TARGET.finalize_context(
+                    fixture.target, candidate_provenance, candidate_ledger
+                )
+            self.assertEqual(prior, provenance_path.read_bytes())
+            record_passed_target_validation(fixture, plan)
+            transaction = APPLY.transaction_root(fixture.target, plan["plan_sha256"])
+            validation_evidence = transaction / APPLY.TARGET_VALIDATION_OUTPUT_PATH
+            validation_evidence.unlink()
+
+            with self.assertRaisesRegex(
+                TARGET.TargetValidationError, "execution evidence bytes"
+            ):
+                TARGET.finalize_context(
+                    fixture.target, candidate_provenance, candidate_ledger
+                )
+            self.assertEqual(prior, provenance_path.read_bytes())
+            validation_evidence.write_bytes(b"target validation passed\n")
+            (transaction / TARGET.TARGET_VALIDATION_RECEIPT_PATH).write_bytes(b"{}\n")
+
+            with self.assertRaisesRegex(
+                TARGET.TargetValidationError, "target validation receipt"
+            ):
+                TARGET.finalize_context(
+                    fixture.target, candidate_provenance, candidate_ledger
+                )
+            self.assertEqual(prior, provenance_path.read_bytes())
+        finally:
+            fixture.close()
+
+    def test_gwt_052_given_authority_advanced_before_terminal_binding_when_retried_then_exact_terminal_is_rebound(self) -> None:
+        fixture = PackageApplyFixture()
+        try:
+            package = make_schema_23_upgrade_package(fixture)
+            candidate_provenance, candidate_ledger = fixture_upgrade_authorities(
+                fixture, package["selection"], package["previous_content"]
+            )
+            plan = fixture.plan("0.9.0")
+            decision = fixture_remediation_decision(
+                plan,
+                candidate_provenance=candidate_provenance,
+                candidate_ledger=candidate_ledger,
+            )
+            APPLY.apply_plan(plan, remediation_decision=decision)
+            record_passed_target_validation(fixture, plan)
+            provenance_path = fixture.target / ".dev/ai-context/provenance.yaml"
+            ledger_path = fixture.target / ".dev/ai-context/customizations.yaml"
+            provenance_path.write_text(
+                yaml.safe_dump(candidate_provenance, sort_keys=False),
+                encoding="utf-8",
+                newline="\n",
+            )
+            ledger_path.write_text(
+                yaml.safe_dump(candidate_ledger, sort_keys=False),
+                encoding="utf-8",
+                newline="\n",
+            )
+
+            errors = TARGET.validate_target(fixture.target)
+            self.assertTrue(any("terminal receipt" in error for error in errors), errors)
+            recovered = TARGET.finalize_context(
+                fixture.target, candidate_provenance, candidate_ledger
+            )
+            transaction = APPLY.transaction_root(fixture.target, plan["plan_sha256"])
+            terminal = transaction / TARGET.TERMINAL_RECEIPT_PATH
+            self.assertEqual("finalized", recovered["status"])
+            self.assertTrue(terminal.is_file())
+            self.assertEqual([], TARGET.validate_target(fixture.target))
+            journal_path = transaction / "journal.yaml"
+            journal_bytes = journal_path.read_bytes()
+            journal = yaml.safe_load(journal_bytes)
+            journal["state"] = "awaiting-target-validation"
+            journal_path.write_text(
+                yaml.safe_dump(journal, sort_keys=False),
+                encoding="utf-8",
+                newline="\n",
+            )
+            self.assertTrue(
+                any(
+                    "terminal receipt journal state is not finalized" in error
+                    for error in TARGET.validate_target(fixture.target)
+                )
+            )
+            journal_path.write_bytes(journal_bytes)
+            terminal.write_bytes(b"{}\n")
+            self.assertTrue(
+                any("terminal receipt" in error for error in TARGET.validate_target(fixture.target))
+            )
+        finally:
+            fixture.close()
+
+    def test_gwt_053_given_rejected_schema_23_upgrade_when_target_validated_then_rejection_is_retained_without_pending_receipt(self) -> None:
+        fixture = PackageApplyFixture()
+        try:
+            package = make_schema_23_upgrade_package(fixture)
+            fixture_upgrade_authorities(
+                fixture, package["selection"], package["previous_content"]
+            )
+            plan = fixture.plan("0.9.0")
+            decision = fixture_remediation_decision(plan, status="rejected")
+
+            with self.assertRaisesRegex(APPLY.ApplyError, "rejected by owner decision"):
+                APPLY.apply_plan(plan, remediation_decision=decision)
+
+            transaction = APPLY.transaction_root(fixture.target, plan["plan_sha256"])
+            journal = yaml.safe_load((transaction / "journal.yaml").read_text(encoding="utf-8"))
+            self.assertEqual("rejected", journal["state"])
+            self.assertIsNone(journal["target_validation_receipt_path"])
+            self.assertIsNone(journal["target_validation_receipt_sha256"])
+            self.assertFalse((fixture.target / APPLY.PENDING_RECEIPT_PATH).exists())
+            self.assertEqual([], TARGET.validate_target(fixture.target))
+        finally:
+            fixture.close()
+
+    def test_gwt_054_given_historical_v3_plan_21_when_pending_receipt_validated_then_compatibility_is_preserved(self) -> None:
+        fixture = PackageApplyFixture()
+        try:
+            fixture.make_package(
+                {".ai/managed.md": (b"new\n", "framework-managed", "0644")},
+                [operation("001-add", "add", ".ai/managed.md")],
+            )
+            plan = fixture.plan()
+            RAW_APPLY_PLAN(plan)
+            transaction, sealed = reseal_applied_transaction(
+                fixture,
+                plan,
+                lambda sealed: sealed.__setitem__("schema_version", "2.1.0"),
+            )
+            journal_path = transaction / "journal.yaml"
+            journal = yaml.safe_load(journal_path.read_text(encoding="utf-8"))
+            journal["schema_version"] = "ai-context-package-apply-journal/v3"
+            journal["target_staging_paths"] = TARGET.transaction_staging_records(
+                sealed["plan_sha256"],
+                [
+                    item
+                    for item in sealed["operations"]
+                    if item["action"] in {"add", "replace", "remove", "rename"}
+                ],
+            )
+            journal_path.write_text(
+                yaml.safe_dump(journal, sort_keys=False), encoding="utf-8", newline="\n"
+            )
+
+            errors: list[str] = []
+            TARGET.validate_pending_apply_receipt(fixture.target, errors)
+
+            self.assertEqual([], errors)
+        finally:
+            fixture.close()
+
+    def test_gwt_055_given_retained_rejection_and_later_pending_apply_when_target_validated_then_the_unrelated_receipt_is_allowed(self) -> None:
+        fixture = PackageApplyFixture()
+        try:
+            package = make_schema_23_upgrade_package(fixture)
+            fixture_upgrade_authorities(
+                fixture, package["selection"], package["previous_content"]
+            )
+            rejected_plan = fixture.plan("0.9.0")
+            with self.assertRaisesRegex(APPLY.ApplyError, "rejected by owner decision"):
+                APPLY.apply_plan(
+                    rejected_plan,
+                    remediation_decision=fixture_remediation_decision(
+                        rejected_plan, status="rejected"
+                    ),
+                )
+            shutil.rmtree(fixture.package)
+            (fixture.package / "metadata").mkdir(parents=True)
+            (fixture.package / "payload").mkdir()
+            fixture.previous_path = None
+            fixture.make_package(
+                {".ai/later-clean-install.md": (b"later\n", "framework-managed", "0644")},
+                [operation("001-add", "add", ".ai/later-clean-install.md")],
+            )
+            later_plan = fixture.plan()
+            RAW_APPLY_PLAN(later_plan)
+
+            pending = yaml.safe_load(
+                (fixture.target / APPLY.PENDING_RECEIPT_PATH).read_text(encoding="utf-8")
+            )
+            self.assertNotEqual(rejected_plan["plan_sha256"], pending["transaction_id"])
+            self.assertEqual([], TARGET.validate_target(fixture.target))
+        finally:
+            fixture.close()
+
+    def test_gwt_056_given_historical_terminal_upgrade_and_later_apply_when_target_validated_then_the_old_authority_is_not_rechecked(self) -> None:
+        fixture = PackageApplyFixture()
+        try:
+            package = make_schema_23_upgrade_package(fixture)
+            candidate_provenance, candidate_ledger = fixture_upgrade_authorities(
+                fixture, package["selection"], package["previous_content"]
+            )
+            upgrade_plan = fixture.plan("0.9.0")
+            APPLY.apply_plan(
+                upgrade_plan,
+                remediation_decision=fixture_remediation_decision(
+                    upgrade_plan,
+                    candidate_provenance=candidate_provenance,
+                    candidate_ledger=candidate_ledger,
+                ),
+            )
+            record_passed_target_validation(fixture, upgrade_plan)
+            TARGET.finalize_context(fixture.target, candidate_provenance, candidate_ledger)
+            (fixture.target / APPLY.PENDING_RECEIPT_PATH).unlink()
+            git(fixture.target, "add", "-A")
+            fixture.commit_target("fixture finalized upgrade checkpoint")
+            shutil.rmtree(fixture.package)
+            (fixture.package / "metadata").mkdir(parents=True)
+            (fixture.package / "payload").mkdir()
+            fixture.previous_path = None
+            fixture.make_package(
+                {".ai/later-history.md": (b"later\n", "framework-managed", "0644")},
+                [operation("001-add", "add", ".ai/later-history.md")],
+            )
+            later_plan = fixture.plan()
+            RAW_APPLY_PLAN(later_plan)
+
+            self.assertEqual([], TARGET.validate_target(fixture.target))
+            current_provenance = TARGET.load_mapping(
+                fixture.target / ".dev/ai-context/provenance.yaml", []
+            )
+            current_ledger = TARGET.load_mapping(
+                fixture.target / ".dev/ai-context/customizations.yaml", []
+            )
+            assert current_provenance is not None
+            assert current_ledger is not None
+            self.assertEqual(
+                "finalized",
+                TARGET.finalize_context(
+                    fixture.target, current_provenance, current_ledger
+                )["status"],
+            )
+        finally:
+            fixture.close()
+
+    def test_gwt_057_given_owner_bound_candidate_with_wrong_package_source_when_finalized_then_sealed_identity_wins(self) -> None:
+        fixture = PackageApplyFixture()
+        try:
+            package = make_schema_23_upgrade_package(fixture)
+            candidate_provenance, candidate_ledger = fixture_upgrade_authorities(
+                fixture, package["selection"], package["previous_content"]
+            )
+            candidate_provenance["source"]["commit"] = "d" * 40
+            plan = fixture.plan("0.9.0")
+            decision = fixture_remediation_decision(
+                plan,
+                candidate_provenance=candidate_provenance,
+                candidate_ledger=candidate_ledger,
+            )
+            APPLY.apply_plan(plan, remediation_decision=decision)
+            record_passed_target_validation(fixture, plan)
+            provenance_path = fixture.target / ".dev/ai-context/provenance.yaml"
+            prior = provenance_path.read_bytes()
+
+            with self.assertRaisesRegex(
+                TARGET.TargetValidationError,
+                "candidate source differs from sealed package identity",
+            ):
+                TARGET.finalize_context(
+                    fixture.target, candidate_provenance, candidate_ledger
+                )
+
+            self.assertEqual(prior, provenance_path.read_bytes())
+        finally:
+            fixture.close()
+
+    def test_gwt_058_given_package_applied_without_target_validation_when_rolled_back_then_prior_target_is_restored(self) -> None:
+        fixture = PackageApplyFixture()
+        try:
+            package = make_schema_23_upgrade_package(fixture)
+            fixture_upgrade_authorities(
+                fixture, package["selection"], package["previous_content"]
+            )
+            plan = fixture.plan("0.9.0")
+            decision = fixture_remediation_decision(plan)
+
+            receipt = APPLY.apply_plan(plan, remediation_decision=decision)
+            transaction = APPLY.transaction_root(fixture.target, plan["plan_sha256"])
+            journal = yaml.safe_load(
+                (transaction / "journal.yaml").read_text(encoding="utf-8")
+            )
+            self.assertEqual(
+                "awaiting-target-validation", receipt["transaction_state"]
+            )
+            self.assertEqual("awaiting-target-validation", journal["state"])
+
+            rolled_back = APPLY.recover_transaction(
+                fixture.target, plan["plan_sha256"], "rollback"
+            )
+
+            self.assertEqual("rolled-back", rolled_back["state"])
+            self.assertEqual(
+                package["previous_content"],
+                (fixture.target / ".ai/assets/shared/example.md").read_bytes(),
+            )
+            self.assertFalse((fixture.target / APPLY.PENDING_RECEIPT_PATH).exists())
+            self.assertEqual([], TARGET.validate_target(fixture.target))
+        finally:
+            fixture.close()
+
+    def test_gwt_059_given_target_validation_passed_before_provenance_when_rolled_back_then_validation_evidence_is_retained(self) -> None:
+        fixture = PackageApplyFixture()
+        try:
+            package = make_schema_23_upgrade_package(fixture)
+            fixture_upgrade_authorities(
+                fixture, package["selection"], package["previous_content"]
+            )
+            plan = fixture.plan("0.9.0")
+            decision = fixture_remediation_decision(plan)
+            APPLY.apply_plan(plan, remediation_decision=decision)
+            record_passed_target_validation(fixture, plan)
+            transaction = APPLY.transaction_root(fixture.target, plan["plan_sha256"])
+
+            rolled_back = APPLY.recover_transaction(
+                fixture.target, plan["plan_sha256"], "rollback"
+            )
+
+            self.assertEqual("rolled-back", rolled_back["state"])
+            self.assertTrue(
+                (transaction / APPLY.TARGET_VALIDATION_RECEIPT_PATH).is_file()
+            )
+            self.assertTrue(
+                (transaction / APPLY.TARGET_VALIDATION_OUTPUT_PATH).is_file()
+            )
+            self.assertFalse((fixture.target / APPLY.PENDING_RECEIPT_PATH).exists())
+            self.assertEqual([], TARGET.validate_target(fixture.target))
+        finally:
+            fixture.close()
+
+    def test_gwt_060_given_upgrade_without_an_executable_target_validation_profile_when_recorded_or_finalized_then_it_fails_closed(self) -> None:
+        fixture = PackageApplyFixture()
+        try:
+            # Given an initialized upgrade target whose committed validation profile is absent.
+            package = make_schema_23_upgrade_package(fixture)
+            candidate_provenance, candidate_ledger = fixture_upgrade_authorities(
+                fixture, package["selection"], package["previous_content"]
+            )
+            git(fixture.target, "rm", "-q", "--", ".dev/project-config.yaml")
+            fixture.commit_target("fixture removes target validation profile")
+            plan = fixture.plan("0.9.0")
+            decision = fixture_remediation_decision(
+                plan,
+                candidate_provenance=candidate_provenance,
+                candidate_ledger=candidate_ledger,
+            )
+            APPLY.apply_plan(plan, remediation_decision=decision)
+            transaction = APPLY.transaction_root(fixture.target, plan["plan_sha256"])
+            provenance_path = fixture.target / ".dev/ai-context/provenance.yaml"
+            ledger_path = fixture.target / ".dev/ai-context/customizations.yaml"
+            prior_authority = (provenance_path.read_bytes(), ledger_path.read_bytes())
+
+            # When a passed receipt is supplied without an executable target routine.
+            with self.assertRaisesRegex(
+                APPLY.ApplyError,
+                "requires a present executable target validation profile",
+            ):
+                record_passed_target_validation(fixture, plan)
+
+            # Then no receipt is bound and finalization preserves the prior authority.
+            journal = yaml.safe_load((transaction / "journal.yaml").read_text(encoding="utf-8"))
+            self.assertEqual("awaiting-target-validation", journal["state"])
+            self.assertIsNone(journal["target_validation_receipt_sha256"])
+            self.assertFalse((transaction / APPLY.TARGET_VALIDATION_RECEIPT_PATH).exists())
+            with self.assertRaisesRegex(
+                TARGET.TargetValidationError,
+                "present executable target validation profile",
+            ):
+                TARGET.finalize_context(
+                    fixture.target, candidate_provenance, candidate_ledger
+                )
+            self.assertEqual(
+                prior_authority,
+                (provenance_path.read_bytes(), ledger_path.read_bytes()),
+            )
+        finally:
+            fixture.close()
 
 
 if __name__ == "__main__":

@@ -51,8 +51,31 @@ The executable subset of this policy is declared in
 `GIT-COMMIT-POLICY.yaml` and enforced by
 `.ai/scripts/validate-git-commits.py`. The Markdown document remains the
 human-facing source for intent and exceptions; keep both files synchronized.
-The validator selects the canonical pattern prospectively and the named legacy
-pattern only for commits before the recorded cutover.
+For source-repository history without target adoption evidence, the validator
+selects the canonical pattern prospectively and the named legacy pattern only
+for commits before the recorded cutover.
+
+### Initialized Target Adoption
+
+An initialized target can adopt this grammar without rewriting its history by
+recording the optional validated provenance field
+`policy_adoptions.commit_subject_grammar`:
+
+```yaml
+policy_id: git-commit-subject/v2
+legacy_history_tip: <full lowercase 40-character target commit SHA>
+adopted_at: <ISO-8601 timestamp with offset>
+incoming_policy_sha256: <raw SHA-256 of this incoming YAML policy>
+decision_evidence: <repository-relative decision record>
+```
+
+When explicit target adoption evidence is supplied to the validator, the
+legacy pattern applies only to commits reachable from `legacy_history_tip`.
+Commits after that history boundary must use the canonical grammar even if
+their timestamp predates the source cutover. The adoption timestamp is audit
+evidence only; it never selects a grammar. A missing, malformed,
+nonexistent, or non-reachable boundary fails closed. If no target adoption
+context is supplied, source-repository timestamp behavior remains unchanged.
 
 ## Scope
 

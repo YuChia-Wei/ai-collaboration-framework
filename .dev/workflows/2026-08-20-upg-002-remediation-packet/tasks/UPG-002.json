@@ -1,0 +1,259 @@
+{
+  "template_id": "software-development-orchestrator/development-workflow-task",
+  "template_version": "1.5.0",
+  "template_created_at": "2026-07-10T18:25:11+08:00",
+  "template_updated_at": "2026-08-05T02:12:00+08:00",
+  "workflow_id": "2026-08-20-upg-002-remediation-packet",
+  "task_id": "UPG-002",
+  "owner_skill": "ai-context-upgrader",
+  "related_plan_id": "development-plan-2026-08-20-upg-002-remediation-packet",
+  "status": "in_progress",
+  "created_at": "2026-08-20T09:10:41+08:00",
+  "updated_at": "2026-08-20T14:30:35+08:00",
+  "template_source": ".ai/assets/skills/software-development-orchestrator/templates/development-workflow-task-template.json",
+  "model": "gpt-5.6-sol",
+  "reasoning_effort": "high",
+  "workflow_locator": ".dev/workflows/2026-08-20-upg-002-remediation-packet/workflow.yaml",
+  "scope": {
+    "goal": "Implement Issue #203 prospective validation cutover and durable canonical remediation packet evidence.",
+    "target": "Initialized-target upgrade planning, mutation, finalization, resume, rollback, and terminal receipt surfaces.",
+    "files": [],
+    "constraints": [
+      "Persist the canonical machine-readable packet before first target mutation or provenance finalization.",
+      "Derive human-readable output from the canonical packet.",
+      "Retain interrupted, rejected, and rollback evidence plus a compact immutable terminal receipt after success.",
+      "Keep automatic proposals separate from owner-approved writes.",
+      "Select incoming validation prospectively without rewriting historical commits."
+    ],
+    "non_goals": [
+      "Project field restoration",
+      "Multi-hop route implementation",
+      "Local roadmap or backlog mutation",
+      "Tag, Release, publication, or nightly activation"
+    ]
+  },
+  "inputs": {
+    "requirements": ["https://github.com/YuChia-Wei/ai-collaboration-framework/issues/203"],
+    "specifications": [".ai/assets/skills/ai-context-upgrader/skill.yaml"],
+    "architecture_decisions": ["Prospective adoption boundary and immutable remediation evidence"],
+    "user_constraints": ["Original v0.14.0 delivery prompt and current instruction to continue independently of Project restoration"]
+  },
+  "execution": {
+    "capability_slot": "initialized-target-upgrade",
+    "approval_contract": {
+      "status": "approved",
+      "required_before": "implementation",
+      "authorization_source": ["explicit repository-owner prompt"],
+      "pending_decision": ""
+    },
+    "implementation_contract": null,
+    "test_execution_contract": null,
+    "role_execution_records": [],
+    "spec_compliance": {
+      "selected": false,
+      "activation_source": [],
+      "expected_outcome": "not-applicable"
+    },
+    "steps": [
+      "Inventory plan/apply/finalization and prospective-cutover surfaces.",
+      "Reconcile the packet schema and persistence boundary with #200 and #201.",
+      "Implement packet, validation selection, receipts, and fail-closed gates.",
+      "Add focused positive and negative fixtures.",
+      "Validate, commit, and complete exact-head provider admission."
+    ],
+    "validation": [
+      "python .ai/scripts/validate-workflow-artifacts.py",
+      "focused upgrader and package-native tests",
+      "python .ai/scripts/validate-ai-context.py",
+      "python .ai/scripts/validate-source-governance.py",
+      "git diff --check"
+    ],
+    "commit_checkpoint": "One terminal-close PR for Issue #203 after focused validation.",
+    "deferred_items": []
+  },
+  "results": {
+    "summary": "Implementation and focused repair validation are complete. Admission failed at 66dc77d901dec3eaebf6356183f1b6f0c55f12ef and again at 07fdace9811c32b1713f4d9da33bca3e38a04f98. The second hosted artifact exposed ten stale fixtures and one genuine exact-transition fail-open, repaired in 076f5ac4460021c4396351bb3c2b30003253f5a4. A new exact-head audit and hosted admission remain before terminal-close integration.",
+    "files_changed": [
+      "upgrader packet, decision, target-validation, provenance, and output contracts",
+      "package plan/apply/recovery and record-only CLI runtime",
+      "target-prospective commit grammar validator and policy",
+      "target provenance finalization, historical transaction, and terminal invariant runtime",
+      "focused package, policy, and semantic lifecycle fixtures",
+      "canonical upgrader skill plus Codex and Claude thin wrapper references"
+    ],
+    "approval_evidence": ["explicit owner authorization"],
+    "test_execution": [
+      {
+        "command": "nine fixed package/finalization GWTs in one process",
+        "outcome": "timed-out",
+        "evidence": "unittest emitted Ran 9 tests in 110.620s / OK, but the host wrapper ended exit 124 at 112.109s; not counted as passed"
+      },
+      {
+        "command": "GWT049-GWT052 fixed finalization group",
+        "outcome": "passed",
+        "evidence": "4 tests in 70.686s; exit 0"
+      },
+      {
+        "command": "GWT047 and GWT053-GWT056 retention/compatibility group",
+        "outcome": "passed",
+        "evidence": "5 tests in 40.286s; exit 0"
+      },
+      {
+        "command": "initial #200/#203 regression selector",
+        "outcome": "failed",
+        "evidence": "two obsolete test names were not found; four selected tests passed but the command ended with two loader errors"
+      },
+      {
+        "command": "correctly named GWT031-GWT032 recovery group",
+        "outcome": "passed",
+        "evidence": "2 tests in 18.563s; exit 0"
+      },
+      {
+        "command": "initial GWT049 plus GWT057 candidate-package binding selection",
+        "outcome": "failed",
+        "evidence": "the new semantic binding rejected both fixtures because the packet uses migration.selected_input.previous_version, not version; retained before the field-mapping repair"
+      },
+      {
+        "command": "post-repair GWT049 plus GWT057 candidate-package binding selection",
+        "outcome": "passed",
+        "evidence": "2 tests in 35.980s through the authorized host route; exit 0"
+      },
+      {
+        "command": "adjacent GWT050 plus GWT052 finalization regressions",
+        "outcome": "passed",
+        "evidence": "2 tests in 35.041s through the authorized host route; exit 0"
+      },
+      {
+        "command": "sandbox attempt for post-repair GWT049 plus GWT057",
+        "outcome": "blocked-by-environment",
+        "evidence": "WinError 5 prevented temporary Git fixture directories; preserved before successful authorized host reroute"
+      },
+      {
+        "command": "test_semantic_customization_lifecycle.py",
+        "outcome": "passed",
+        "evidence": "first run exposed an overbroad evidence trigger; after narrowing to source/policy advancement or pending v4 upgrade, the current post-binding suite passed 8 tests"
+      },
+      {
+        "command": "test_git_commit_policy.py",
+        "outcome": "passed",
+        "evidence": "23 tests"
+      },
+      {
+        "command": "test_ai_context_wrapper_metadata.py",
+        "outcome": "passed",
+        "evidence": "16 tests"
+      },
+      {
+        "command": "focused package reference-integrity GWT010",
+        "outcome": "passed",
+        "evidence": "1 test"
+      },
+      {
+        "command": "initial retained-output GWT049/GWT051/GWT052 selection",
+        "outcome": "failed",
+        "evidence": "a non-ignored tests/target-validation.log correctly surfaced as unrelated recovery drift; repaired by reserving transaction-owned target-validation-output.log"
+      },
+      {
+        "command": "initial lifecycle GWT048/GWT049/GWT051 selection",
+        "outcome": "failed",
+        "evidence": "GWT048 retained the obsolete finalized expectation and GWT051 initially rejected awaiting-target-validation before receipt validation; both repaired"
+      },
+      {
+        "command": "initial terminal/source/rollback GWT052/GWT057/GWT058 selection",
+        "outcome": "failed",
+        "evidence": "GWT058 exposed rolling-back receipt identity rejection; repaired while retaining sealed receipt evidence"
+      },
+      {
+        "command": "initial history/rollback GWT053-GWT056/GWT059 selection",
+        "outcome": "failed",
+        "evidence": "GWT055-GWT056 exposed a clean-apply receipt-state compatibility mismatch; repaired by deriving the expected immutable receipt state from the sealed plan"
+      },
+      {
+        "command": "post-repair focused UPG-002 lifecycle selections",
+        "outcome": "passed",
+        "evidence": "GWT047-GWT059 each passed in bounded host groups after their material repairs, including rollback before and after target validation, retained output bytes, v3/2.1 compatibility, later clean apply, terminal retry, and candidate identity rejection"
+      },
+      {
+        "command": "hosted PR #224 Portable AI Context Gates run 32335941157 at 66dc77d901dec3eaebf6356183f1b6f0c55f12ef",
+        "outcome": "failed",
+        "evidence": "Ubuntu PR profile failed package-apply with GWT000c error, GWT002 failure, and GWT004 error; the prerequisite, Windows, governance, and package-candidate jobs passed"
+      },
+      {
+        "command": "fresh Sol High exact-head audit at 66dc77d901dec3eaebf6356183f1b6f0c55f12ef",
+        "outcome": "failed",
+        "evidence": "Found absent target-validation profile fail-open, incomplete effective-state rollback, stale workflow evidence, and subject drift caused by concurrent repair; the audit performed no repair"
+      },
+      {
+        "command": "hosted regression repairs GWT000c/GWT002/GWT004 with provider and owner-decision guards",
+        "outcome": "passed",
+        "evidence": "5 tests passed through the authorized host route"
+      },
+      {
+        "command": "post-audit target-validation and terminal-rollback repair coverage",
+        "outcome": "passed",
+        "evidence": "semantic lifecycle 10/10; corrected combined GWT049 and GWT060 2/2; recorder and independent target validator reject absent executable profiles; terminal-link failure restores effective state and packets"
+      },
+      {
+        "command": "initial combined GWT049 and GWT060 integration selector",
+        "outcome": "failed",
+        "evidence": "one malformed GWT049 selector and one GWT060 error-message expectation mismatch were retained before the corrected 2/2 run"
+      },
+      {
+        "command": "post-audit Python syntax compilation",
+        "outcome": "passed-with-retained-blocked-attempt",
+        "evidence": "sandbox py_compile was blocked by __pycache__ permissions; the identical host-routed command passed"
+      },
+      {
+        "command": "hosted PR #224 Portable AI Context Gates run 32337576239 at 07fdace9811c32b1713f4d9da33bca3e38a04f98",
+        "outcome": "failed",
+        "evidence": "exact-head governance and prerequisite checks passed, but the complete 76-test package module reported 11 failures: ten stale lifecycle/profile/decision fixtures and one real impossible transition-sequence acceptance in GWT033"
+      },
+      {
+        "command": "second fresh Sol High exact-head audit at 07fdace9811c32b1713f4d9da33bca3e38a04f98",
+        "outcome": "failed",
+        "evidence": "confirmed the first semantic repairs and clean subject, then failed solely because the current required hosted package-apply check was red; no repair was performed"
+      },
+      {
+        "command": "initial second-hosted-repair aggregate focused selector",
+        "outcome": "timed-out",
+        "evidence": "exit 124 at 124.033s with no emitted test output; not counted as passed and not repeated unchanged"
+      },
+      {
+        "command": "second-hosted-repair disjoint focused groups",
+        "outcome": "passed-with-retained-repair-failures",
+        "evidence": "GWT012a/GWT013/GWT014 3/3; GWT021 all four variants; GWT023/GWT027/GWT033 3/3; GWT041; new GWT033a clean/validated/finalized guard; and historical GWT054 all passed after fixture-only correction failures were retained"
+      },
+      {
+        "command": "full package-apply module after second repair",
+        "outcome": "deferred-to-clean-immutable-hosted-validation",
+        "evidence": "focused subsets alone exceeded 120s cumulatively; repository policy requires the long-running full module to bind to a clean immutable commit"
+      }
+    ],
+    "role_execution_aggregation": [],
+    "spec_compliance": {
+      "outcome": "not-applicable",
+      "coverage_percent": null,
+      "evidence": []
+    },
+    "validation_evidence": [
+      "validate-ai-context passed after deterministic wrapper reference synchronization",
+      "validate-source-governance passed",
+      "validate-source-dispositions passed before staging; staged-path read-back remains pending",
+      "validate-workflow-artifacts passed",
+      "Python AST, duplicate-test-name scan, YAML parse, module import, and git diff --check passed",
+      "read-only pre-commit review found five semantic/evidence gaps; implementation repairs and focused regression proofs are complete",
+      "read-only current-byte repair verification found no residual release-blocking finding in the repaired lifecycle, output-byte, identity, recovery, compatibility, or workflow-evidence areas",
+      "clean-install recovery GWT015 and GWT042 passed after restoring their finalized-only expectations; strengthened GWT049 package-side terminal load, GWT052 lifecycle tamper rejection, and GWT056 later clean finalization all passed",
+      "first fixed-head audit and hosted PR profile failures are retained and are not counted as passing evidence for the repaired head",
+      "repair commit 9dfa46b928247681c58ac0978803aee203067d33 closes the absent-profile and mixed-effective-state audit findings plus the first three hosted compatibility regressions",
+      "second hosted artifact and audit failures at 07fdace9811c32b1713f4d9da33bca3e38a04f98 remain non-passing evidence",
+      "repair commit 076f5ac4460021c4396351bb3c2b30003253f5a4 enforces exact state-aware v4 transition sequences in both recovery and target validation and reconciles the complete hosted fixture set"
+    ],
+    "commits": [
+      "66dc77d901dec3eaebf6356183f1b6f0c55f12ef",
+      "9dfa46b928247681c58ac0978803aee203067d33",
+      "076f5ac4460021c4396351bb3c2b30003253f5a4"
+    ],
+    "follow_up_needed": true
+  }
+}

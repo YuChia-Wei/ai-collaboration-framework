@@ -26,6 +26,8 @@ This is a thin Claude-compatible wrapper.
   - `.ai/assets/skills/ai-context-upgrader/templates/ai-context-source-template.yaml`
   - `.ai/assets/skills/ai-context-upgrader/templates/provenance-template.yaml`
   - `.ai/assets/skills/ai-context-upgrader/templates/customizations-template.yaml`
+  - `.ai/assets/skills/ai-context-upgrader/templates/upgrade-remediation-packet.schema.yaml`
+  - `.ai/assets/skills/ai-context-upgrader/templates/upgrade-remediation-decision.schema.yaml`
   - `.ai/assets/shared/CLI-EXECUTION-ROUTING-CONTRACT.md`
   - `.ai/assets/shared/cli-execution-routing.schema.yaml`
 - `.ai/scripts/validate-ai-context-target.py`
