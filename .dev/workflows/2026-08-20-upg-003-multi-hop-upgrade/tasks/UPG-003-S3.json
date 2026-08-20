@@ -1,0 +1,78 @@
+{
+  "template_id": "software-development-orchestrator/development-workflow-task",
+  "template_version": "1.5.0",
+  "template_created_at": "2026-07-10T18:25:11+08:00",
+  "template_updated_at": "2026-08-05T02:12:00+08:00",
+  "workflow_id": "2026-08-20-upg-003-multi-hop-upgrade",
+  "task_id": "UPG-003-S3",
+  "owner_skill": "ai-context-upgrader",
+  "related_plan_id": "development-plan-2026-08-20-upg-003-multi-hop-upgrade",
+  "status": "in_progress",
+  "created_at": "2026-08-21T00:00:28+08:00",
+  "updated_at": "2026-08-21T00:00:28+08:00",
+  "template_source": ".ai/assets/skills/software-development-orchestrator/templates/development-workflow-task-template.json",
+  "model": "gpt-5.6-sol",
+  "reasoning_effort": "high",
+  "workflow_locator": ".dev/workflows/2026-08-20-upg-003-multi-hop-upgrade/workflow.yaml",
+  "scope": {
+    "goal": "Complete Issue #206 S3 and instantiate the governed v0.14.0 source candidate.",
+    "target": "Prove v0.13.0, v0.9.0, and v0.6.0 routes to one exact v0.14.0 candidate and terminal-close Issue #206.",
+    "files": [],
+    "constraints": [
+      "Start only after #207 and #208 integrate into main.",
+      "Use the exact nine-Issue Included Work snapshot selected by the repository owner.",
+      "Keep coordination Issue #222 open and do not create a tag, Release, assets, or package publication.",
+      "Require fresh exact-head independent audit, hosted checks, live admission, and post-merge #206 read-back."
+    ],
+    "non_goals": ["Restore Project fields", "Modify historical roadmap/backlog files", "Publish v0.14.0"]
+  },
+  "inputs": {
+    "requirements": ["https://github.com/YuChia-Wei/ai-collaboration-framework/issues/206"],
+    "specifications": [
+      ".ai/assets/skills/ai-context-upgrader/references/upgrade-support-policy.md",
+      ".ai/assets/skills/ai-context-upgrader/references/multi-hop-upgrade-transaction-contract.md"
+    ],
+    "architecture_decisions": [
+      "Reuse integrated S1 route resolution and S2 immutable per-hop checkpoints.",
+      "Candidate Issue refs are an immutable release snapshot, not current backlog authority."
+    ],
+    "user_constraints": ["S3 terminal-closes #206 only after #207/#208 integration and exact candidate proof."]
+  },
+  "execution": {
+    "capability_slot": "ai-context-upgrader",
+    "approval_contract": {
+      "status": "approved",
+      "required_before": "implementation",
+      "authorization_source": ["explicit repository-owner v0.14.0 delivery prompt"],
+      "pending_decision": ""
+    },
+    "implementation_contract": null,
+    "test_execution_contract": null,
+    "role_execution_records": [],
+    "spec_compliance": {"selected": false, "activation_source": [], "expected_outcome": "not-applicable"},
+    "steps": [
+      "Freeze the exact integrated prerequisite head.",
+      "Create canonical v0.14.0 release records and route evidence.",
+      "Validate package and all supported retained-origin routes.",
+      "Obtain exact-head audit, hosted admission, terminal-close PR, merge, and #206 read-back."
+    ],
+    "validation": ["candidate package", "v0.13/v0.9/v0.6 routes", "release profile", "fresh exact-head audit", "required hosted checks"],
+    "commit_checkpoint": "One terminal-close S3 PR for Issue #206; coordination Issue #222 remains open.",
+    "deferred_items": ["v0.14.0 tag, GitHub Release, assets, and package publication"]
+  },
+  "results": {
+    "summary": "Pending integration of #207 and #208.",
+    "files_changed": [],
+    "approval_evidence": ["explicit repository-owner v0.14.0 delivery prompt"],
+    "test_execution": [],
+    "role_execution_aggregation": [],
+    "spec_compliance": {"outcome": "not-applicable", "coverage_percent": null, "evidence": []},
+    "validation_evidence": [
+      "S1 merged as 41a1b4bcc942b9a412d55a8dab77bcc5d7b6fbf2.",
+      "S2 merged as e27540bb34721a14d097316af8f5fd708b6982b2.",
+      "Issue #206 remains open for S3."
+    ],
+    "commits": [],
+    "follow_up_needed": true
+  }
+}
