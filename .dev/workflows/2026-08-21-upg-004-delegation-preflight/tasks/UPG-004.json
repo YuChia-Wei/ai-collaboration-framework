@@ -7,9 +7,9 @@
   "task_id": "UPG-004",
   "owner_skill": "ai-context-governance",
   "related_plan_id": "development-plan-2026-08-21-upg-004-delegation-preflight",
-  "status": "in_progress",
+  "status": "completed",
   "created_at": "2026-08-21T01:35:16+08:00",
-  "updated_at": "2026-08-21T02:38:13+08:00",
+  "updated_at": "2026-08-21T02:42:09+08:00",
   "template_source": ".ai/assets/skills/software-development-orchestrator/templates/development-workflow-task-template.json",
   "model": "gpt-5.6-sol",
   "reasoning_effort": "high",
@@ -90,6 +90,22 @@
           "AI-context validation passed"
         ],
         "canonical_role_claimed": false
+      },
+      {
+        "role": "generic bounded UPG-004 audit-repair context",
+        "provider": "Codex",
+        "model": "gpt-5.6-terra",
+        "reasoning_effort": "max",
+        "outcome": "passed",
+        "scope": "Repair the exact PR #230 audit blockers in the portable contract, Codex projection, validator, and focused/package fixtures without changing workflow ownership or GitHub state.",
+        "evidence": [
+          "framework-source packet digest 5229c969e8a1bc0aeb41014870ae45a7098f316eec7d05b416bc616b5fb09c8a",
+          "focused UPG-004 tests 18/18 passed after retained 17/18 pre-evidence repair failure",
+          "provider projection tests 17/17 passed",
+          "package projection test 1/1 passed",
+          "AI-context validation passed"
+        ],
+        "canonical_role_claimed": false
       }
     ],
     "spec_compliance": {"selected": false, "activation_source": [], "expected_outcome": "not-applicable"},
@@ -114,7 +130,7 @@
   },
   "results": {
     "finding_status": "addressed",
-    "summary": "UPG-004 portable run selection, Codex advisory contracts, validators, package projection, and execution evidence are technically complete on a clean-history replacement branch. PR #230 is closed and superseded after an exact-head audit found four blockers; the replacement PR and terminal declaration remain pending. No canonical-role invocation or current-session model/profile claim is made.",
+    "summary": "UPG-004 portable run selection, Codex advisory contracts, validators, package projection, execution evidence, and terminal declaration are technically complete on clean-history replacement PR #231. PR #230 is closed and superseded after an exact-head audit found four blockers. No canonical-role invocation or current-session model/profile claim is made.",
     "files_changed": [
       "delegation run contract, schema, and template",
       "upgrader canonical spec and thin wrappers",
@@ -145,9 +161,10 @@
       "PR #230 head 5cb4c46fdd571ad692a72ae7fed42ab60820a342 passed five hosted checks but failed fresh exact-head audit on four blockers and was closed without merge."
     ],
     "commits": [
-      "99dcb440864c1186d6fe64701065da08a7fb143d (superseded PR #230 historical evidence)",
-      "5cb4c46fdd571ad692a72ae7fed42ab60820a342 (superseded PR #230 failed-audit head)"
+      "99dcb440864c1186d6fe64701065da08a7fb143d",
+      "5cb4c46fdd571ad692a72ae7fed42ab60820a342",
+      "f7e4ba4014e31f15e35a0b8add116ac4b8fd4ec7"
     ],
-    "follow_up_needed": true
+    "follow_up_needed": false
   }
 }

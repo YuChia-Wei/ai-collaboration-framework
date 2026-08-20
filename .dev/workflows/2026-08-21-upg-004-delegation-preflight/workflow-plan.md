@@ -15,9 +15,9 @@
 - `branch`: `codex/2026-08-21-upg-004-delegation-preflight-admission`
 - `base_branch`: `main`
 - `branch_segment`: `2`
-- `status`: `in_progress`
+- `status`: `completed`
 - `created_at`: `2026-08-21T01:35:16+08:00`
-- `updated_at`: `2026-08-21T02:38:13+08:00`
+- `updated_at`: `2026-08-21T02:42:09+08:00`
 - `template_source`: `.ai/assets/skills/software-development-orchestrator/templates/development-workflow-plan-template.md`
 - `template_version`: `1.4.0`
 - `workflow_locator`: `.dev/workflows/2026-08-21-upg-004-delegation-preflight/workflow.yaml`
@@ -79,11 +79,11 @@
 
 ## Progress And Handoff
 
-- Current stage: The clean-history replacement implementation and local focused gates are complete; its first policy-compliant commit, replacement PR, terminal declaration, exact-head audit, and hosted merge admission remain pending.
-- Completed stages: #207 integration, official OpenAI and local Codex runtime-schema refresh, UPG-004 inventory, contract/validator implementation, focused/package validation, execution-evidence reconciliation, and preservation of the failed PR #230 audit and hosted evidence.
+- Current stage: The clean-history replacement source workflow is complete with a truthful terminal declaration for draft PR #231; exact-head audit and hosted merge admission remain external PR gates.
+- Completed stages: #207 integration, official OpenAI and local Codex runtime-schema refresh, UPG-004 inventory, contract/validator implementation and repair, focused/package validation, execution-evidence reconciliation, preservation of the failed PR #230 evidence, policy-compliant replacement commit `f7e4ba4014e31f15e35a0b8add116ac4b8fd4ec7`, draft PR #231 creation/read-back, and terminal declaration.
 - Deferred stages and reasons: Claude/Copilot runtime projection and any Fast activation require separate Issues/authorization.
 - Open decisions: None; owner selections are fixed in this workflow.
-- Continuation instructions: Create and push one policy-compliant clean-history implementation commit, open the replacement draft PR, add its exact terminal declaration in a second compliant commit, obtain a fresh no-repair Sol High exact-head audit plus hosted checks, then merge only that admitted head and read back Issue #208. Project-field restoration remains outside this workflow.
+- Continuation instructions: Commit and push the PR #231 terminal declaration, obtain a fresh no-repair Sol High exact-head audit plus hosted checks, then perform non-mutating admission, merge only that admitted head, and read back Issue #208. Project-field restoration remains outside this workflow.
 - Target policy references: `.ai/assets/shared/ROLE-EXECUTION-CONTRACT.md`; `.ai/assets/skills/ai-context-upgrader/skill.yaml`; `.dev/standards/WORKFLOW-GATE-POLICY.md`.
 - Registered handoff checkpoint: none.
 - Branch history and checkpoint handoffs: Segment 1 records the rejected original PR #230 head. Segment 2 is a no-rewrite squash reconstruction from integrated #207 main `f7591d8499ade36fb88193408e434710cbf437a0`.
@@ -93,11 +93,11 @@
 | Segment | Branch | Base | Checkpoint Type | Commit | Remote / Target | Recorded At | Reason | Resume Branch / Action |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | 1 | `codex/2026-08-21-upg-004-delegation-preflight` | `main@f7591d8499ade36fb88193408e434710cbf437a0` | audit-failed-superseded | `5cb4c46fdd571ad692a72ae7fed42ab60820a342` | closed PR #230 | `2026-08-21T02:08:34+08:00` | Preserve the four exact-head audit blockers and five passing hosted checks without rewriting history. | Reconstruct on segment 2 with compliant commits and repaired product evidence. |
-| 2 | `codex/2026-08-21-upg-004-delegation-preflight-admission` | `main@f7591d8499ade36fb88193408e434710cbf437a0` | replacement-implementation-ready | pending first commit | replacement PR pending | `2026-08-21T02:38:13+08:00` | Carry the repaired implementation, exact fallback semantics, and fresh runtime receipt as one clean-history candidate. | Commit, push, create replacement PR, then add its terminal declaration. |
+| 2 | `codex/2026-08-21-upg-004-delegation-preflight-admission` | `main@f7591d8499ade36fb88193408e434710cbf437a0` | replacement-declaration-ready | `f7e4ba4014e31f15e35a0b8add116ac4b8fd4ec7` | draft PR #231 | `2026-08-21T02:42:09+08:00` | Carry the repaired implementation, exact fallback semantics, fresh runtime receipt, and exact PR declaration as one clean-history candidate. | Push the declaration head for independent audit and hosted admission. |
 
 ## Completion Summary
 
-- Outcome: UPG-004 implementation is locally complete on a clean-history replacement candidate. PR #230 is closed and superseded after a fresh audit found four blockers; no active terminal declaration exists until the replacement PR is created.
+- Outcome: UPG-004 source workflow and technical task are complete on clean-history replacement PR #231 with a truthful terminal declaration. PR #230 remains closed and superseded after a fresh audit found four blockers.
 - Changed artifacts: Portable delegation run contract/schema/template, upgrader spec and wrappers, Codex advisory projection, AI-context validator, focused/package fixtures, and workflow execution evidence.
 - Approved requirement/specification evidence: Live Issue #208 and explicit owner authorization.
 - Implementation completion evidence: Provider-neutral run-state and Codex-only advisory surfaces are implemented without transaction/provenance changes.
@@ -105,7 +105,7 @@
 - Selected compliance evidence: Not applicable.
 - Review disposition: PR #230 exact-head audit failed on commit-policy, missing root preflight, weak mode/fallback validation, and missing reproducible delivery-time evidence. The replacement still requires a fresh independent audit at its final declaration head; the writer does not certify its own head.
 - Validation evidence: Integrated main identity, live Issue read-back, official documentation, local runtime-schema diagnostics, and `.dev/workflows/2026-08-21-upg-004-delegation-preflight/evidence/codex-runtime-preflight.yaml`.
-- Workflow task state: in progress; replacement PR admission and integration remain separate.
-- Commits: rejected segment 1 heads `99dcb440864c1186d6fe64701065da08a7fb143d` and `5cb4c46fdd571ad692a72ae7fed42ab60820a342` are historical evidence only; segment 2 has no commit yet.
+- Workflow task state: completed; replacement PR admission and integration remain separate.
+- Commits: rejected segment 1 heads `99dcb440864c1186d6fe64701065da08a7fb143d` and `5cb4c46fdd571ad692a72ae7fed42ab60820a342` are historical evidence only; segment 2 implementation commit is `f7e4ba4014e31f15e35a0b8add116ac4b8fd4ec7`; the declaration commit is identified by subsequent exact Git/PR read-back rather than self-reference.
 - Branch / checkpoint / handoff evidence: Dedicated clean-history replacement branch from `f7591d8499ade36fb88193408e434710cbf437a0`.
 - Residual risks: Static Codex config cannot prove active session state; fresh diagnostics are warning-only because rollout-file/state inventory differs, while active session model/effort/tier remain unknown.
