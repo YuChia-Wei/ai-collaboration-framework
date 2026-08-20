@@ -556,6 +556,22 @@ class MultiHopFixture:
         self.matrix_raw = yaml.safe_dump(matrix, sort_keys=True).encode("utf-8")
         self.matrix_path.write_bytes(self.matrix_raw)
 
+    def _reseal_e2e_route_evidence(self) -> None:
+        """Rebind modified selected assets into their S1 receipts and matrix."""
+        assert self.e2e is not None
+        for edge in self.e2e["edges"]:
+            validation = edge["validation"]
+            report_identity = validation["report"]
+            report_path = self.matrix_root / report_identity["path"]
+            report = json.loads(report_path.read_text(encoding="utf-8"))
+            report["artifacts"] = deepcopy(edge["artifacts"])
+            report["validator_argv"] = deepcopy(validation["validator_argv"])
+            report["output_sha256"] = validation["output"]["sha256"]
+            report_raw = ROUTES.canonical_json(report).encode("utf-8")
+            report_path.write_bytes(report_raw)
+            report_identity["sha256"] = APPLY.sha256_bytes(report_raw)
+        self._write_e2e_matrix()
+
     def prepare_e2e(self) -> dict:
         """Seed an initialized v0.9 target plus two real package route edges."""
         selection = deepcopy(APPLY.DEFAULT_COMPONENT_SELECTION)
@@ -1667,25 +1683,21 @@ class MultiHopUpgradeGwtTests(unittest.TestCase):
         checksum.write_text(f"{archive_sha}  {archive.name}\n", encoding="utf-8", newline="\n")
         edge["artifacts"]["archive"]["sha256"] = archive_sha
         edge["artifacts"]["checksum"]["sha256"] = APPLY.sha256_bytes(checksum.read_bytes())
-        with mock.patch.object(
-            MULTI.ROUTES,
-            "resolve_matrix_file",
-            side_effect=lambda *_args, **_kwargs: self.fixture.resolution(),
-        ):
-            begun = MULTI.begin_multi_hop_upgrade(
+        self.fixture._reseal_e2e_route_evidence()
+        begun = MULTI.begin_multi_hop_upgrade(
+            self.fixture.target,
+            self.fixture.matrix_path,
+            origin="v0.9.0",
+            target_version="v0.11.0",
+        )
+        with self.assertRaisesRegex(MULTI.MultiHopUpgradeError, "unsupported package schema"):
+            MULTI.prepare_next_hop(
                 self.fixture.target,
-                self.fixture.matrix_path,
-                origin="v0.9.0",
-                target_version="v0.11.0",
+                begun["route_transaction_id"],
+                matrix_root=self.fixture.matrix_root,
+                initial_previous_files_path=e2e["initial_files"],
+                initial_previous_version="0.9.0",
             )
-            with self.assertRaisesRegex(MULTI.MultiHopUpgradeError, "unsupported package schema"):
-                MULTI.prepare_next_hop(
-                    self.fixture.target,
-                    begun["route_transaction_id"],
-                    matrix_root=self.fixture.matrix_root,
-                    initial_previous_files_path=e2e["initial_files"],
-                    initial_previous_version="0.9.0",
-                )
 
     def test_gwt_019_given_selected_validator_that_disagrees_with_its_expected_output_when_prepare_is_requested_then_it_is_retained_as_failed(self) -> None:
         e2e = self.fixture.prepare_e2e()
@@ -1697,25 +1709,21 @@ class MultiHopUpgradeGwtTests(unittest.TestCase):
             newline="\n",
         )
         edge["artifacts"]["validator"]["sha256"] = APPLY.sha256_bytes(validator.read_bytes())
-        with mock.patch.object(
-            MULTI.ROUTES,
-            "resolve_matrix_file",
-            side_effect=lambda *_args, **_kwargs: self.fixture.resolution(),
-        ):
-            begun = MULTI.begin_multi_hop_upgrade(
+        self.fixture._reseal_e2e_route_evidence()
+        begun = MULTI.begin_multi_hop_upgrade(
+            self.fixture.target,
+            self.fixture.matrix_path,
+            origin="v0.9.0",
+            target_version="v0.11.0",
+        )
+        with self.assertRaisesRegex(MULTI.MultiHopUpgradeError, "validator execution did not match"):
+            MULTI.prepare_next_hop(
                 self.fixture.target,
-                self.fixture.matrix_path,
-                origin="v0.9.0",
-                target_version="v0.11.0",
+                begun["route_transaction_id"],
+                matrix_root=self.fixture.matrix_root,
+                initial_previous_files_path=e2e["initial_files"],
+                initial_previous_version="0.9.0",
             )
-            with self.assertRaisesRegex(MULTI.MultiHopUpgradeError, "validator execution did not match"):
-                MULTI.prepare_next_hop(
-                    self.fixture.target,
-                    begun["route_transaction_id"],
-                    matrix_root=self.fixture.matrix_root,
-                    initial_previous_files_path=e2e["initial_files"],
-                    initial_previous_version="0.9.0",
-                )
         route_root, _intent, journal = MULTI._load_route(
             self.fixture.target, begun["route_transaction_id"]
         )

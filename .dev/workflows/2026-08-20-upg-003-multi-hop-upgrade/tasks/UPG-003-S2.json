@@ -9,7 +9,7 @@
   "related_plan_id": "development-plan-2026-08-20-upg-003-multi-hop-upgrade",
   "status": "in_progress",
   "created_at": "2026-08-20T20:03:45+08:00",
-  "updated_at": "2026-08-20T23:29:13+08:00",
+  "updated_at": "2026-08-20T23:41:30+08:00",
   "template_source": ".ai/assets/skills/software-development-orchestrator/templates/development-workflow-task-template.json",
   "model": "gpt-5.6-sol",
   "reasoning_effort": "high",
@@ -107,6 +107,15 @@
         "outcome": "passed",
         "scope": "Read-only audit of exact clean implementation head 1eeab510717ce1473ce51343d07a09fbdb3b0e37 passed with zero findings; the later PR declaration commit requires its own fresh audit.",
         "canonical_role_claimed": false
+      },
+      {
+        "role": "pre-#207 fresh independent PR-head audit context",
+        "provider": "Codex",
+        "model": "gpt-5.6-sol",
+        "reasoning_effort": "high",
+        "outcome": "failed",
+        "scope": "Read-only audit of exact clean PR declaration head 980df0356782d43cc0e571c4e2ca8f3ef1c1f0e0 found GWT018/GWT019 fixtures terminated at route admission before their unsupported-schema and validator-disagreement gates; no repair occurred in the audit context.",
+        "canonical_role_claimed": false
       }
     ],
     "spec_compliance": {
@@ -132,7 +141,7 @@
     "deferred_items": ["S3 v0.14.0 source candidate and terminal closure"]
   },
   "results": {
-    "summary": "S2 implementation head 1eeab510717ce1473ce51343d07a09fbdb3b0e37 passed fresh Sol High audit; draft PR #227 exists and its tracked deferred declaration is being bound before the final exact-head audit and hosted admission.",
+    "summary": "PR #227 declaration head 980df0356782d43cc0e571c4e2ca8f3ef1c1f0e0 failed exact-head audit and two hosted contexts on GWT018/GWT019 fixture drift; the bounded fixture-only repair passes locally and requires a new commit, audit, and hosted admission.",
     "files_changed": [
       ".agents/skills/ai-context-upgrader/SKILL.md",
       ".ai/assets/skills/ai-context-upgrader/skill.yaml",
@@ -234,6 +243,26 @@
         "evidence": "The aggregate batch timed out after 114.028 seconds and is not counted as passed; disjoint targeted cases produced terminal results."
       },
       {
+        "command": "exact PR-head GWT018 and GWT019",
+        "outcome": "failed",
+        "evidence": "At exact head 980df0356782d43cc0e571c4e2ca8f3ef1c1f0e0, both tests terminated during begin with `multi-hop upgrade requires an orchestrated-multi-hop route` before unsupported-package-schema and validator-disagreement assertions. This invalidates the earlier exact-subject group claim for these two fixtures."
+      },
+      {
+        "command": "host Python focused S2 GWT018 and GWT019 after fixture reseal",
+        "outcome": "passed",
+        "evidence": "Two tests passed in 3.106 seconds after fixture-only resealing of modified edge artifacts, canonical validator receipt, receipt digest, and matrix bytes; production runtime and exact sealed-result semantics were unchanged."
+      },
+      {
+        "command": "first root GWT018/GWT019 selector verification",
+        "outcome": "failed",
+        "evidence": "The first root command used abbreviated nonexistent method names and failed two loader selectors before test logic; it is not promoted as a semantic result."
+      },
+      {
+        "command": "corrected root GWT018/GWT019 selector verification",
+        "outcome": "passed",
+        "evidence": "The exact full method selectors passed 2 of 2 in 2.885 seconds on the normal Windows ACL boundary."
+      },
+      {
         "command": "sandbox temporary-directory fixture attempts",
         "outcome": "blocked-by-environment",
         "evidence": "Windows sandbox Temp ACL returned WinError 5 before test logic. Exact commands were rerun on the authorized normal-ACL boundary. Two resulting inaccessible workspace test-residue directories were later verified and removed before commit preparation."
@@ -260,11 +289,15 @@
       ,"Implementation commit a30f7e0407594edb03962283e6756a9dabb3b787 contains the admitted S2 source, contracts, tests, projection, and precommit evidence; commit-policy validation passed for both S2 branch commits."
       ,"Fresh independent Sol High audit of exact clean head 1eeab510717ce1473ce51343d07a09fbdb3b0e37 passed with zero findings; unmocked GWT010 passed in 77.160 seconds, GWT003/GWT017 passed 2 of 2, GWT032 passed in 44.790 seconds, and portable projection passed."
       ,"Draft PR #227 was created at exact head 1eeab510717ce1473ce51343d07a09fbdb3b0e37 with Refs #206, the required deferred reason, and next gate S3 v0.14.0 source candidate; #206 remains open."
+      ,"Fresh Sol High read-only audit of PR declaration head 980df0356782d43cc0e571c4e2ca8f3ef1c1f0e0 failed because GWT018/GWT019 did not reseal modified S1 edge evidence and therefore never reached their intended gates; no repair occurred in the audit context."
+      ,"At exact 980df0356782d43cc0e571c4e2ca8f3ef1c1f0e0, hosted governance run 32386740538 and Ubuntu PR profile in run 32386740473 failed on the same GWT018/GWT019 errors; Build candidate, Ubuntu prerequisite, and Windows prerequisite passed."
+      ,"The bounded fixture-only repair preserves the real resolver and production fail-closed semantics, reseals the modified edge evidence, and passes GWT018/GWT019 2 of 2 in 3.106 seconds; new immutable audit and hosted subjects remain required."
     ],
     "commits": [
       "fc991eb0ac4a7fc50402896e6b2adf20581ebfb8",
       "a30f7e0407594edb03962283e6756a9dabb3b787",
-      "1eeab510717ce1473ce51343d07a09fbdb3b0e37"
+      "1eeab510717ce1473ce51343d07a09fbdb3b0e37",
+      "980df0356782d43cc0e571c4e2ca8f3ef1c1f0e0"
     ],
     "follow_up_needed": true
   }
