@@ -9,7 +9,7 @@
   "related_plan_id": "development-plan-2026-08-20-ctx-010-engineering-guardrails",
   "status": "in_progress",
   "created_at": "2026-08-20T14:45:44+08:00",
-  "updated_at": "2026-08-20T15:55:31+08:00",
+  "updated_at": "2026-08-20T16:15:04+08:00",
   "template_source": ".ai/assets/skills/software-development-orchestrator/templates/development-workflow-task-template.json",
   "model": "gpt-5.6-sol",
   "reasoning_effort": "high",
@@ -82,7 +82,7 @@
     "deferred_items": []
   },
   "results": {
-    "summary": "Two exact-head audits failed and remain retained. The second audit at 91d4025c5b11b91d05971b82ac94be0f03bb2044 found stable capability identity, strict booleans, and exact receipt evidence could drift. Repair 3c222110cbc503d546efe08a3c1d8e5c54da0e53 seals all claim-bearing invariants and passes 8 focused GWTs; third immutable validation and audit remain.",
+    "summary": "Three exact-head audits failed and remain retained. The third audit at e93f5847896e38192284d2a71012ce4033efb8f6 found coordinated schema plus artifact weakenings stayed green. Repair e68c0186128bb039f347846eddfc4938fd0cdfce adds a versioned Issue #205 baseline and canonical schema, contract, and template digests; 9 focused GWTs pass and fourth immutable validation/audit remain.",
     "files_changed": [
       "provider-local Engineering Guardrails contract and schema",
       "target-owned provider selection, analyzer, analyzer-test, and code-fix decision starting templates",
@@ -146,6 +146,21 @@
         "command": "post-second-audit provider contract fixture at 3c222110cbc503d546efe08a3c1d8e5c54da0e53",
         "outcome": "passed-with-retained-blocked-attempt",
         "evidence": "8 tests; exact claim-bearing invariants and systematic negative mutations passed. Sandboxed py_compile cache creation remained blocked; the host compile passed."
+      },
+      {
+        "command": "third external package smoke at e93f5847896e38192284d2a71012ce4033efb8f6",
+        "outcome": "passed-but-invalidated-by-subsequent-repair",
+        "evidence": "validated external-task completion: 1 test, exit 0, 1.458s, clean exact subject; replacement required after the third audit repair"
+      },
+      {
+        "command": "fresh Sol High third exact-head audit at e93f5847896e38192284d2a71012ce4033efb8f6",
+        "outcome": "failed",
+        "evidence": "high blocker: fourteen coordinated schema plus contract/template weakenings returned no errors; representative capability/provider drift left the full 8-test suite green"
+      },
+      {
+        "command": "post-third-audit provider contract fixture at e68c0186128bb039f347846eddfc4938fd0cdfce",
+        "outcome": "passed",
+        "evidence": "9 tests; versioned Issue #205 authority, canonical schema/contract/template digests, and fourteen coordinated mutation categories"
       }
     ],
     "role_execution_aggregation": [],
@@ -160,7 +175,8 @@
       "Framework-source packet 09b7c4c770c5a6d5f79f5b48cc0d1d353d65a5260df9bb489351cc44ddc660ae resolved at clean bootstrap commit ea6bf4e5a721a572c9408703d14abeaaafd678e5 with AICTX-EVIDENCE-001 and TEST-GWT-001.",
       "validate-ai-context, validate-source-governance, validate-shell-assets, YAML parsing, static newline/whitespace checks, and git diff checks passed.",
       "The first independent audit failure at 09aa506fcf2250da97e45c4cb9f573e120931d5c is retained and not counted as a passing admission gate.",
-      "The second independent audit failure at 91d4025c5b11b91d05971b82ac94be0f03bb2044 is retained and not counted as a passing admission gate."
+      "The second independent audit failure at 91d4025c5b11b91d05971b82ac94be0f03bb2044 is retained and not counted as a passing admission gate.",
+      "The third independent audit failure at e93f5847896e38192284d2a71012ce4033efb8f6 is retained and not counted as a passing admission gate."
     ],
     "commits": [
       "ea6bf4e5a721a572c9408703d14abeaaafd678e5",
@@ -168,7 +184,9 @@
       "09aa506fcf2250da97e45c4cb9f573e120931d5c",
       "b3425f56cefeb54f79ed38d8ad7719a78708f0f0",
       "91d4025c5b11b91d05971b82ac94be0f03bb2044",
-      "3c222110cbc503d546efe08a3c1d8e5c54da0e53"
+      "3c222110cbc503d546efe08a3c1d8e5c54da0e53",
+      "e93f5847896e38192284d2a71012ce4033efb8f6",
+      "e68c0186128bb039f347846eddfc4938fd0cdfce"
     ],
     "follow_up_needed": true
   }

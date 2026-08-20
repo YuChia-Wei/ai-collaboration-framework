@@ -17,7 +17,7 @@
 - `branch_segment`: `1`
 - `status`: `active`
 - `created_at`: `2026-08-20T14:45:44+08:00`
-- `updated_at`: `2026-08-20T15:55:31+08:00`
+- `updated_at`: `2026-08-20T16:15:04+08:00`
 - `template_source`: `.ai/assets/skills/software-development-orchestrator/templates/development-workflow-plan-template.md`
 - `template_version`: `1.4.0`
 - `workflow_locator`: `.dev/workflows/2026-08-20-ctx-010-engineering-guardrails/workflow.yaml`
@@ -57,7 +57,7 @@ Before #207 integration, delegated contexts are recorded only as generic bounded
 
 | Stage | Role / Canonical Path | Owning Skill | Final/Current Disposition | Attempt Summary | Final Integration Owner / Decision | Record or Task Reference |
 | --- | --- | --- | --- | --- | --- | --- |
-| CTX-010 | pre-#207 bounded context / no canonical path | ai-context-governance | completed | Terra Max contexts completed inventory, implementation, two immutable smokes, and two bounded audit repairs. Fresh Sol High contexts independently failed heads `09aa506f` and `91d4025c` without repair. None is a #207 canonical role claim. | root / both findings accepted and repaired; third audit pending | transient receipts; latest repair `3c222110cbc503d546efe08a3c1d8e5c54da0e53` |
+| CTX-010 | pre-#207 bounded context / no canonical path | ai-context-governance | completed | Terra Max contexts completed inventory, implementation, three immutable smokes, and three bounded audit repairs. Fresh Sol High contexts independently failed `09aa506f`, `91d4025c`, and `e93f5847` without repair. None is a #207 role claim. | root / all findings accepted and repaired; fourth audit pending | transient receipts; versioned baseline repair `e68c0186128bb039f347846eddfc4938fd0cdfce` |
 
 ## Approval Gates
 
@@ -84,8 +84,8 @@ Before #207 integration, delegated contexts are recorded only as generic bounded
 
 | Level | Outcome | Evidence | Deferral Owner / Follow-up |
 | --- | --- | --- | --- |
-| unit | passed-with-retained-failures | Provider contract 5/5, SDK-free contract 5/5, and validation registry 6/6 passed. Retained first failures: local pycache permission, initial synthetic-state fixture path, local release-extract discovery, isolated Git object store, and sandbox Git Bash signal pipe. | root / no focused unit work remains |
-| integration | in-progress | Package projection passed 1/1. Immutable smokes passed at `09aa506f` and `91d4025c`, but both heads were invalidated by later audit repairs. A third smoke, third audit, and hosted checks remain at the sealed-invariant head. | root / clean immutable revalidation and provider admission |
+| unit | passed-with-retained-failures | Provider contract 9/9, SDK-free 5/5, and registry 6/6 passed. Retained pycache, initial fixture, local extract, isolated object-store, and sandbox Git Bash failures remain. | root / no focused unit work remains |
+| integration | in-progress | Package projection passed 1/1. Smokes passed at `09aa506f`, `91d4025c`, and `e93f5847`, but each head was invalidated by a later audit repair. A fourth smoke/audit and hosted checks remain at the versioned-baseline head. | root / clean immutable revalidation and provider admission |
 
 ## Spec Compliance Selection
 
@@ -97,10 +97,10 @@ Before #207 integration, delegated contexts are recorded only as generic bounded
 ## Progress And Handoff
 
 - Current stage: CTX-010 post-audit repair revalidation and independent provider admission.
-- Completed stages: Live Issue and provider read-back; workflow/packet/inventory; implementation and focused validation; two immutable smokes; first audit FAIL and fabricated-claim repair; second audit FAIL and systematic sealing of stable identity, strict booleans, exact states, receipt types/fields, fallback, prohibitions, and selection-template claims.
+- Completed stages: Live Issue/provider read-back; workflow/packet/inventory; implementation/focused validation; three immutable smokes; three independent audit FAIL cycles; fail-closed claim sealing; versioned Issue #205 baseline with canonical schema/contract/template digests and fourteen coordinated-mutation categories.
 - Deferred stages and reasons: None within #205.
 - Open decisions: No owner-sensitive decision is pending; unavailable provider identity/readiness must remain explicitly unknown or unproven.
-- Continuation instructions: Commit the second-audit and sealed-invariant repair evidence, rerun immutable package smoke at the new head, obtain a third fresh read-only Sol High exact-head audit, then push and prepare the terminal-close PR with hosted admission.
+- Continuation instructions: Commit the third-audit and versioned-baseline repair evidence, rerun immutable package smoke at the new head, obtain a fourth fresh Sol High exact-head audit, then push and prepare the terminal-close PR with hosted admission.
 - Target policy references: `.agents/skills/ai-context-governance/SKILL.md`; `.ai/assets/skills/ai-context-governance/skill.yaml`.
 - Registered handoff checkpoint: none.
 - Branch history and checkpoint handoffs: Segment 1 branches from clean integrated main `8bcb26f1440b49f357cc494217eabd67d400e64f`.
@@ -109,19 +109,19 @@ Before #207 integration, delegated contexts are recorded only as generic bounded
 
 | Segment | Branch | Base | Checkpoint Type | Commit | Remote / Target | Recorded At | Reason | Resume Branch / Action |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| 1 | `codex/2026-08-20-ctx-010-engineering-guardrails` | `main@8bcb26f1440b49f357cc494217eabd67d400e64f` | audit-repair-02 | `3c222110cbc503d546efe08a3c1d8e5c54da0e53` | local | `2026-08-20T15:55:31+08:00` | Second audit at `91d4025c` proved stable identity, booleans, and exact receipt evidence could drift. | Commit evidence and replace the second invalidated smoke/audit at the new exact head. |
+| 1 | `codex/2026-08-20-ctx-010-engineering-guardrails` | `main@8bcb26f1440b49f357cc494217eabd67d400e64f` | audit-repair-03 | `e68c0186128bb039f347846eddfc4938fd0cdfce` | local | `2026-08-20T16:15:04+08:00` | Third audit proved coordinated schema plus artifact weakening stayed green. | Commit evidence and replace the third invalidated smoke/audit at the versioned-baseline head. |
 
 ## Completion Summary
 
-- Outcome: Implementation and two focused audit repairs complete. Both exact-head audit failures are retained; third package smoke, third audit, and hosted admission are pending.
+- Outcome: Implementation and three audit repairs complete. All three exact-head failures are retained; fourth package smoke, fourth audit, and hosted admission are pending.
 - Changed artifacts: Provider-local contract/schema, target-owned analyzer and test starting templates, recipe documentation, focused GWTs, SDK-free/package assertions, and validation registry membership.
 - Approved requirement/specification evidence: Live Issue #205 plus explicit repository-owner v0.14 authorization.
 - Implementation completion evidence: Stable capability identity; official-recommended and not-selected coexistence; explicit declined, selected-unavailable, and synthetic readiness semantics; separately typed/digested readiness, compatibility, and execution receipts; no real provider identity or execution claim; SDK-free target-owned templates.
-- Required test outcomes: Focused provider 5/5, SDK-free 5/5, registry 6/6, and exact package projection 1/1 passed. Package smoke 1/1 passed only at the invalidated pre-repair head; replacement smoke and hosted checks remain.
+- Required test outcomes: Provider 9/9, SDK-free 5/5, registry 6/6, and package projection 1/1 passed. Three package smokes passed only at invalidated pre-repair heads; replacement smoke and hosted checks remain.
 - Selected compliance evidence: Not applicable.
-- Review disposition: Sol High audit FAIL at `09aa506f` found fabricated readiness/receipt/prohibition gaps. Re-audit FAIL at `91d4025c` found stable identity, strict boolean, and exact receipt-field gaps. Repair `3c222110` systematically seals all claim-bearing schema, contract, state, receipt, fallback, prohibition, and template invariants; third audit remains mandatory.
+- Review disposition: Three Sol High FAILs progressively found one-sided fabricated claims, additional claim-invariant drift, then coordinated schema/artifact weakening. Repair `e68c0186` adds a versioned Issue #205 authority baseline with independent canonical digests and coordinated mutation protection; fourth audit remains mandatory.
 - Validation evidence: Framework-source packet `09b7c4c770c5a6d5f79f5b48cc0d1d353d65a5260df9bb489351cc44ddc660ae`; validate-ai-context, validate-source-governance, validate-shell-assets, YAML/static checks, and focused GWTs passed; first failures remain retained in the task record.
 - Workflow task state: in progress.
-- Commits: `ea6bf4e5` bootstrap; `16584c99` implementation; `09aa506f` first evidence; `b3425f56` first repair; `91d4025c` first-audit evidence; `3c222110` second repair.
+- Commits: `ea6bf4e5` bootstrap; `16584c99` implementation; `09aa506f`, `91d4025c`, and `e93f5847` evidence heads; `b3425f56`, `3c222110`, and `e68c0186` audit repairs.
 - Branch / checkpoint / handoff evidence: dedicated branch created from `8bcb26f1440b49f357cc494217eabd67d400e64f`; implementation commit is clean and package-visible.
 - Residual risks: The provider has analyzers and tests in source but no approved packable distribution identity or hosted release; all real-provider execution claims must remain unavailable until external evidence changes.
