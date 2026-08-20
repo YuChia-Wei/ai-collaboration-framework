@@ -990,7 +990,21 @@ class AiContextReleaseStateGwtTests(unittest.TestCase):
             "contract_id": "github-terminal-issue-closure",
             "repository": repository,
             "validation_stage": "declaration",
-            "pull_request": {"number": 231, "head_sha": None, "body": body},
+            "pull_request": {
+                "number": 231,
+                "head_sha": None,
+                "body": body,
+                "integration": {
+                    "status": "pending",
+                    "topology": None,
+                    "admitted_head_sha": None,
+                    "integration_commit_sha": None,
+                    "provider_read_back": False,
+                },
+                "review": {"status": "pending"},
+                "required_check_contexts": [],
+                "hosted_checks": [],
+            },
             "issues": [
                 {
                     "number": issue_number,
@@ -1008,7 +1022,13 @@ class AiContextReleaseStateGwtTests(unittest.TestCase):
                     "closing_keyword": "Closes",
                     "closure_deferred_reason": None,
                     "next_terminal_gate_or_owner": None,
-                    "read_back": {"performed": False},
+                    "read_back": {
+                        "performed": False,
+                        "integration_commit_sha": None,
+                        "issue_state": None,
+                        "issue_state_reason": None,
+                        "project_status": None,
+                    },
                 }
             ],
         }
@@ -1038,11 +1058,41 @@ class AiContextReleaseStateGwtTests(unittest.TestCase):
             root = Path(temp)
             declaration_path = (
                 root
-                / ".dev/workflows/s3/evidence/terminal-issue-closure-declaration.yaml"
+                / ".dev/workflows/s3/evidence/terminal-issue-closure-s3-pr-231.yaml"
             )
             declaration_path.parent.mkdir(parents=True)
             declaration_path.write_text(
                 yaml.safe_dump(declaration, sort_keys=False),
+                encoding="utf-8",
+            )
+            deferred = json.loads(json.dumps(declaration))
+            deferred["pull_request"]["number"] = 227
+            deferred["pull_request"]["body"] = (
+                "## Disposition\n\n"
+                "Refs #206\n\n"
+                "Closure deferred reason for #206: later release proof remains.\n\n"
+                "Next terminal gate for #206: complete the later release proof."
+            )
+            deferred_issue = deferred["issues"][0]
+            deferred_issue.update(
+                {
+                    "mode": "deferred",
+                    "final_accepted_delivery": False,
+                    "workflow": {
+                        "scope_complete": False,
+                        "tasks_complete": False,
+                        "applicable_verification_complete": False,
+                    },
+                    "closing_keyword": None,
+                    "closure_deferred_reason": "later release proof remains",
+                    "next_terminal_gate_or_owner": "complete the later release proof",
+                }
+            )
+            historical_path = (
+                declaration_path.parent / "terminal-issue-closure-declaration.yaml"
+            )
+            historical_path.write_text(
+                yaml.safe_dump(deferred, sort_keys=False),
                 encoding="utf-8",
             )
             self.assertTrue(
@@ -1059,6 +1109,52 @@ class AiContextReleaseStateGwtTests(unittest.TestCase):
                     repository,
                     issue_number,
                     runner_for("b" * 40),
+                )
+            )
+            duplicate_path = (
+                declaration_path.parent / "terminal-issue-closure-duplicate.yaml"
+            )
+            duplicate_path.write_text(
+                yaml.safe_dump(declaration, sort_keys=False),
+                encoding="utf-8",
+            )
+            self.assertFalse(
+                STATE.pending_terminal_issue_delivery(
+                    root,
+                    repository,
+                    issue_number,
+                    runner_for(SHA),
+                )
+            )
+            duplicate_path.unlink()
+            malformed_path = (
+                declaration_path.parent / "terminal-issue-closure-malformed.yaml"
+            )
+            malformed_path.write_text("unrelated: true\n", encoding="utf-8")
+            wrong_contract = json.loads(json.dumps(declaration))
+            wrong_contract["contract_id"] = "unrelated-contract"
+            wrong_contract_path = (
+                declaration_path.parent / "terminal-issue-closure-wrong-contract.yaml"
+            )
+            wrong_contract_path.write_text(
+                yaml.safe_dump(wrong_contract, sort_keys=False),
+                encoding="utf-8",
+            )
+            self.assertTrue(
+                STATE.pending_terminal_issue_delivery(
+                    root,
+                    repository,
+                    issue_number,
+                    runner_for(SHA),
+                )
+            )
+            declaration_path.unlink()
+            self.assertFalse(
+                STATE.pending_terminal_issue_delivery(
+                    root,
+                    repository,
+                    issue_number,
+                    runner_for(SHA),
                 )
             )
 

@@ -22,8 +22,8 @@ continuation:
     - ".dev/standards/WORKFLOW-GATE-POLICY.md"
     - ".dev/standards/GITHUB-TERMINAL-ISSUE-CLOSURE-POLICY.md"
   handoff_checkpoint: null
-  next_gate: "Draft PR #232 exists at initial head aaae7aaf9f64be49574f9b35a6ca7e011bf9d593 against main@bf8ad9c624ffc2154722dfb266c9090c72e4ac5f; committing this declaration will advance the head. Renew fresh exact-head independent audit and hosted admission on the resulting head; #206 remains open until merge and #222 remains deferred. No admission, hosted result, merge, or closure exists."
+  next_gate: "Validate the combined workflow and validator diff, then commit and push the validator-fix evidence. Re-run candidate admission on that new exact clean head, then obtain a fresh Sol audit and hosted admission. The pushed 0a9a25784d6fd3ba2429fb19bd04b45fac327029 PR #232 base/head/body read-back passed; #206 and #222 were OPEN, while five hosted checks were IN_PROGRESS observations rather than results. Keep #206 open, #222 deferred, and do not claim candidate admission, hosted success, merge, Issue closure, or provider closure."
 created_at: "2026-08-20T17:03:25+08:00"
-updated_at: "2026-08-21T05:47:52+08:00"
+updated_at: "2026-08-21T06:20:04+08:00"
 template_source: ".ai/assets/skills/software-development-orchestrator/templates/workflow-locator-template.yaml"
 template_version: "1.3.0"

@@ -424,13 +424,18 @@ def pending_terminal_issue_delivery(
 
     matches: list[dict[str, Any]] = []
     for path in sorted(
-        root.glob(".dev/workflows/*/evidence/terminal-issue-closure-declaration.yaml")
+        root.glob(".dev/workflows/*/evidence/terminal-issue-closure*.yaml")
     ):
         try:
             record = load_mapping(path)
         except ReleaseStateError:
             continue
-        if record.get("repository") != repository or record.get("validation_stage") != "declaration":
+        if (
+            record.get("schema_version") != "1.0"
+            or record.get("contract_id") != "github-terminal-issue-closure"
+            or record.get("repository") != repository
+            or record.get("validation_stage") != "declaration"
+        ):
             continue
         issues = record.get("issues")
         if not isinstance(issues, list):

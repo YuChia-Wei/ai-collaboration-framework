@@ -31,10 +31,20 @@ commit found only stale active narratives, repaired in draft/open PR #232
 initial head `aaae7aaf9f64be49574f9b35a6ca7e011bf9d593` against
 `main@bf8ad9c624ffc2154722dfb266c9090c72e4ac5f`.
 
-The tracked declaration commit will advance the PR head. Fresh exact-head
-independent audit, hosted admission, merge, and cumulative pre-tag readiness
-remain pending. Issue #206 remains open until merge, and #222 remains deferred.
-No tag, GitHub Release, or publication is claimed.
+After pushed head `0a9a25784d6fd3ba2429fb19bd04b45fac327029`, one live
+PR #232 read-back passed the exact base, head, and body binding; #206 and #222
+remained open. Its five hosted checks were `IN_PROGRESS` observations, not
+results. The candidate phase then failed because the helper looked only for
+`terminal-issue-closure-declaration.yaml` and missed the same-workflow suffixed
+S3 declaration. The uncommitted repair scans canonical
+`terminal-issue-closure*.yaml` records with exact schema, contract, uniqueness,
+and live PR/current-HEAD/body/base requirements; it is not candidate admission.
+
+The next gate is combined-diff validation, commit and push of the validator-fix
+evidence, candidate re-admission on the new exact clean head, then fresh Sol
+audit and hosted admission. Issue #206 remains open until merge, #222 remains
+deferred, and no candidate/hosted admission, merge, Issue closure, provider
+closure, tag, GitHub Release, or publication is claimed.
 
 <!--
 The renderer appends canonical Included Work and release provenance. Keep this
