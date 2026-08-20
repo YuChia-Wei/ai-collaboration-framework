@@ -50,6 +50,48 @@ REMEDIATION_PACKET_SCHEMA = "upgrade-remediation-packet/v1"
 REMEDIATION_DECISION_SCHEMA = "upgrade-remediation-decision/v1"
 TARGET_VALIDATION_RECEIPT_SCHEMA = "target-validation-receipt/v1"
 TERMINAL_RECEIPT_SCHEMA = "upgrade-remediation-terminal-receipt/v1"
+MULTI_HOP_ROUTE_DIRECTORY = "ai-context-multi-hop-upgrade"
+MULTI_HOP_ROUTE_INTENT_SCHEMA = "ai-context-multi-hop-upgrade-intent/v1"
+MULTI_HOP_ROUTE_JOURNAL_SCHEMA = "ai-context-multi-hop-upgrade-journal/v1"
+MULTI_HOP_ROUTE_CHECKPOINT_SCHEMA = "ai-context-multi-hop-upgrade-checkpoint/v1"
+MULTI_HOP_RESOLVER_RESULT_PATH = "resolver-result.json"
+MULTI_HOP_RESOLVER_RESULT_SCHEMA = "ai-context-multi-hop-upgrade-resolver-result/v1"
+MULTI_HOP_ROUTE_CONTEXT_SCHEMA = "ai-context-multi-hop-checkpoint-context/v1"
+MULTI_HOP_INITIAL_ROUTE_CONTEXT_SCHEMA = "ai-context-multi-hop-initial-route-context/v1"
+MULTI_HOP_PREPARED_HOP_SCHEMA = "multi-hop-prepared-hop/v1"
+MULTI_HOP_VALIDATOR_EXECUTION_SCHEMA = "multi-hop-edge-validator-execution/v1"
+MULTI_HOP_PACKAGE_KEYS = {
+    "archive_path",
+    "archive_sha256",
+    "checksum_sha256",
+    "migration_artifact_sha256",
+    "validator_path",
+    "validator_artifact_sha256",
+    "extracted_root",
+    "package_id",
+    "package_version",
+    "package_manifest_sha256",
+    "migration_sha256",
+    "files_manifest_sha256",
+}
+MULTI_HOP_VALIDATOR_EXECUTION_KEYS = {
+    "record_path",
+    "record_sha256",
+    "stdout_path",
+    "stdout_sha256",
+}
+MULTI_HOP_VALIDATOR_RECORD_KEYS = {
+    "schema_version",
+    "hop_index",
+    "edge_id",
+    "validator_argv",
+    "validator_sha256",
+    "expected_output_sha256",
+    "stdout_sha256",
+    "stderr_sha256",
+    "return_code",
+    "outcome",
+}
 FILE_ATTRIBUTE_REPARSE_POINT = 0x400
 SEALED_OPERATION_KEYS = {
     "id",
@@ -467,6 +509,1418 @@ def apply_transaction_directory(root: Path) -> Path | None:
         return None
     value = Path(result.stdout.strip())
     return value if value.is_absolute() else (root / value).resolve()
+
+
+def multi_hop_route_directory(root: Path) -> Path | None:
+    try:
+        result = subprocess.run(
+            [
+                "git",
+                "rev-parse",
+                "--path-format=absolute",
+                "--git-path",
+                MULTI_HOP_ROUTE_DIRECTORY,
+            ],
+            cwd=root,
+            check=False,
+            capture_output=True,
+            text=True,
+        )
+    except OSError as exc:
+        raise TargetValidationError(
+            f"cannot inspect multi-hop route transactions: {exc}"
+        ) from exc
+    if result.returncode != 0 or not result.stdout.strip():
+        return None
+    value = Path(result.stdout.strip())
+    return value if value.is_absolute() else (root / value).resolve()
+
+
+def route_regular_bytes(path: Path, label: str, errors: list[str]) -> bytes | None:
+    if path.is_symlink() or is_reparse_point(path) or not path.is_file():
+        errors.append(f"{path}: {label} must be a regular file")
+        return None
+    try:
+        return path.read_bytes()
+    except OSError as exc:
+        errors.append(f"{path}: cannot read {label}: {exc}")
+        return None
+
+
+def route_canonical_json(path: Path, label: str, errors: list[str]) -> tuple[dict, bytes] | None:
+    raw = route_regular_bytes(path, label, errors)
+    if raw is None:
+        return None
+    try:
+        value = json.loads(raw.decode("utf-8"))
+    except (UnicodeDecodeError, json.JSONDecodeError) as exc:
+        errors.append(f"{path}: {label} is not canonical JSON: {exc}")
+        return None
+    encoded = (
+        json.dumps(value, ensure_ascii=False, sort_keys=True, separators=(",", ":"))
+        + "\n"
+    ).encode("utf-8")
+    if not isinstance(value, dict) or raw != encoded:
+        errors.append(f"{path}: {label} is not canonical JSON")
+        return None
+    return value, raw
+
+
+def route_deterministic_yaml(path: Path, label: str, errors: list[str]) -> dict | None:
+    raw = route_regular_bytes(path, label, errors)
+    if raw is None:
+        return None
+    try:
+        value = yaml.safe_load(raw.decode("utf-8"))
+    except (UnicodeDecodeError, yaml.YAMLError) as exc:
+        errors.append(f"{path}: {label} cannot be parsed: {exc}")
+        return None
+    encoded = yaml.safe_dump(value, sort_keys=True, allow_unicode=True).encode("utf-8")
+    if not isinstance(value, dict) or raw != encoded:
+        errors.append(f"{path}: {label} is not deterministic YAML")
+        return None
+    return value
+
+
+def route_mapping(path: Path, label: str, errors: list[str]) -> dict | None:
+    raw = route_regular_bytes(path, label, errors)
+    if raw is None:
+        return None
+    try:
+        value = yaml.safe_load(raw.decode("utf-8"))
+    except (UnicodeDecodeError, yaml.YAMLError) as exc:
+        errors.append(f"{path}: {label} cannot be parsed: {exc}")
+        return None
+    if not isinstance(value, dict):
+        errors.append(f"{path}: {label} must be a mapping")
+        return None
+    return value
+
+
+def route_sha(value: object) -> bool:
+    return isinstance(value, str) and bool(re.fullmatch(r"[0-9a-f]{64}", value))
+
+
+def route_safe_relative(value: object) -> bool:
+    if not isinstance(value, str) or not value or "\\" in value:
+        return False
+    path = PurePosixPath(value)
+    return not path.is_absolute() and all(part not in {"", ".", ".."} for part in path.parts)
+
+
+def route_edge_identity(value: object) -> bool:
+    return (
+        isinstance(value, dict)
+        and set(value)
+        == {"edge_id", "order", "from_version", "to_version", "identity_sha256"}
+        and isinstance(value.get("edge_id"), str)
+        and bool(value["edge_id"])
+        and type(value.get("order")) is int
+        and value["order"] >= 1
+        and isinstance(value.get("from_version"), str)
+        and bool(VERSION_RE.fullmatch(value["from_version"]))
+        and isinstance(value.get("to_version"), str)
+        and bool(VERSION_RE.fullmatch(value["to_version"]))
+        and route_sha(value.get("identity_sha256"))
+    )
+
+
+def route_full_edge_identity(value: object) -> dict | None:
+    """Project one canonical full S1 edge into its sealed compact identity."""
+    if not isinstance(value, dict):
+        return None
+    try:
+        identity = {
+            "edge_id": value["edge_id"],
+            "order": value["order"],
+            "from_version": value["from_version"],
+            "to_version": value["to_version"],
+            "identity_sha256": canonical_json_digest(value),
+        }
+    except (KeyError, TypeError, ValueError):
+        return None
+    return identity if route_edge_identity(identity) else None
+
+
+def sealed_multi_hop_resolver_edges(
+    route_root: Path, intent: object, errors: list[str]
+) -> list[dict] | None:
+    """Load the durable full S1 selection bound by one outer route intent.
+
+    A route transaction retains raw matrix bytes for identity, but it does not
+    copy the source matrix's surrounding asset tree.  Re-running the S1 asset
+    resolver from that Git-admin directory would therefore turn a valid sealed
+    transaction into a false failure.  Instead, begin-time S1 resolution is
+    retained once as a canonical, path-free full-edge result.  This helper
+    proves its raw bytes, identity, and compact-intent projection before any
+    target-side promoted-hop evidence is accepted.
+    """
+    prefix = f"{route_root}: multi-hop sealed resolver result"
+    if not isinstance(intent, dict):
+        errors.append(f"{prefix} intent is invalid")
+        return None
+    matrix = intent.get("matrix")
+    reference = intent.get("resolver_result")
+    route = intent.get("route")
+    if (
+        not isinstance(matrix, dict)
+        or set(matrix) != {"path", "sha256", "byte_length"}
+        or matrix.get("path") != "route-matrix.yaml"
+        or not route_sha(matrix.get("sha256"))
+        or type(matrix.get("byte_length")) is not int
+        or matrix["byte_length"] < 0
+        or not isinstance(reference, dict)
+        or set(reference) != {"path", "sha256", "byte_length"}
+        or reference.get("path") != MULTI_HOP_RESOLVER_RESULT_PATH
+        or not route_sha(reference.get("sha256"))
+        or type(reference.get("byte_length")) is not int
+        or reference["byte_length"] < 0
+        or not isinstance(route, dict)
+        or set(route) != {"route_id", "edges"}
+        or not isinstance(route.get("route_id"), str)
+        or not route["route_id"]
+        or not isinstance(route.get("edges"), list)
+        or not all(route_edge_identity(item) for item in route["edges"])
+    ):
+        errors.append(f"{prefix} identity is invalid")
+        return None
+    matrix_raw = route_regular_bytes(route_root / matrix["path"], "multi-hop route matrix", errors)
+    if (
+        matrix_raw is None
+        or len(matrix_raw) != matrix["byte_length"]
+        or sha256_bytes(matrix_raw) != matrix["sha256"]
+    ):
+        errors.append(f"{prefix} matrix bytes differ")
+        return None
+    loaded = route_canonical_json(
+        route_root / reference["path"], "multi-hop sealed resolver result", errors
+    )
+    if loaded is None:
+        return None
+    result, result_raw = loaded
+    if (
+        len(result_raw) != reference["byte_length"]
+        or sha256_bytes(result_raw) != reference["sha256"]
+    ):
+        errors.append(f"{prefix} bytes differ")
+        return None
+    selected = result.get("selected_route") if isinstance(result, dict) else None
+    result_matrix = result.get("matrix") if isinstance(result, dict) else None
+    if (
+        not isinstance(result, dict)
+        or set(result)
+        != {"schema_version", "origin", "target", "matrix", "route_kind", "selected_route"}
+        or result.get("schema_version") != MULTI_HOP_RESOLVER_RESULT_SCHEMA
+        or result.get("origin") != intent.get("origin")
+        or result.get("target") != intent.get("target")
+        or result.get("route_kind") != "orchestrated-multi-hop"
+        or not isinstance(result_matrix, dict)
+        or set(result_matrix) != {"matrix_id", "sha256", "byte_length"}
+        or not isinstance(result_matrix.get("matrix_id"), str)
+        or not result_matrix["matrix_id"]
+        or result_matrix.get("sha256") != matrix["sha256"]
+        or result_matrix.get("byte_length") != matrix["byte_length"]
+        or not isinstance(selected, dict)
+        or set(selected) != {"route_id", "edge_count", "edges"}
+        or selected.get("route_id") != route["route_id"]
+        or type(selected.get("edge_count")) is not int
+        or not isinstance(selected.get("edges"), list)
+        or selected["edge_count"] != len(selected["edges"])
+        or len(selected["edges"]) < 2
+    ):
+        errors.append(f"{prefix} fields differ from route intent")
+        return None
+    compact: list[dict] = []
+    for index, full_edge in enumerate(selected["edges"]):
+        identity = route_full_edge_identity(full_edge)
+        if identity is None:
+            errors.append(f"{prefix} full edge {index} identity is invalid")
+            return None
+        compact.append(identity)
+    if compact != route["edges"] or [item["order"] for item in compact] != list(
+        range(1, len(compact) + 1)
+    ):
+        errors.append(f"{prefix} full edges differ from compact route intent")
+        return None
+    return [dict(edge) for edge in selected["edges"]]
+
+
+ROUTE_TARGET_STATE_KEYS = {
+    "exists",
+    "sha256",
+    "mode",
+    "git_sha256",
+    "normalized_text_sha256",
+    "tracked",
+    "dirty",
+    "git_eol_only",
+}
+
+
+def route_target_state(root: Path, relative: str, errors: list[str]) -> dict | None:
+    """Reconstruct the exact package-apply checkpoint state record read-only."""
+    candidate = checked_target_path(root, relative, "multi-hop checkpoint target path", errors)
+    if candidate is None:
+        return None
+    if not candidate.exists():
+        return {
+            "exists": False,
+            "sha256": None,
+            "mode": None,
+            "git_sha256": None,
+            "normalized_text_sha256": None,
+            "tracked": False,
+            "dirty": False,
+            "git_eol_only": False,
+        }
+    if candidate.is_symlink() or is_reparse_point(candidate) or not candidate.is_file():
+        errors.append(f"{candidate}: multi-hop checkpoint target path must be a regular file")
+        return None
+    try:
+        content = candidate.read_bytes()
+        stage = subprocess.run(
+            ["git", "ls-files", "--stage", "--", relative],
+            cwd=root,
+            check=False,
+            capture_output=True,
+            text=True,
+        )
+        status = subprocess.run(
+            ["git", "status", "--porcelain", "--untracked-files=all", "--", relative],
+            cwd=root,
+            check=False,
+            capture_output=True,
+            text=True,
+        )
+    except OSError as exc:
+        errors.append(f"{candidate}: cannot inspect multi-hop checkpoint target state: {exc}")
+        return None
+    if stage.returncode != 0 or status.returncode != 0:
+        errors.append(f"{candidate}: cannot inspect multi-hop checkpoint Git state")
+        return None
+    modes = {line.split(" ", 1)[0] for line in stage.stdout.splitlines() if line}
+    if len(modes) > 1 or any(mode not in {"100644", "100755"} for mode in modes):
+        errors.append(f"{candidate}: multi-hop checkpoint target Git mode is invalid")
+        return None
+    tracked = bool(modes)
+    dirty = bool(status.stdout)
+    index_content: bytes | None = None
+    if tracked:
+        try:
+            indexed = subprocess.run(
+                ["git", "show", f":{relative}"],
+                cwd=root,
+                check=False,
+                capture_output=True,
+            )
+        except OSError as exc:
+            errors.append(f"{candidate}: cannot read multi-hop checkpoint index bytes: {exc}")
+            return None
+        if indexed.returncode != 0:
+            errors.append(f"{candidate}: cannot read multi-hop checkpoint index bytes")
+            return None
+        index_content = indexed.stdout
+    try:
+        normalized = hashlib.sha256(
+            content.decode("utf-8").replace("\r\n", "\n").replace("\r", "\n").encode("utf-8")
+        ).hexdigest()
+    except UnicodeDecodeError:
+        normalized = None
+    git_eol_only = False
+    if tracked and index_content is not None and content != index_content and content.replace(b"\r\n", b"\n") == index_content:
+        try:
+            attributes = subprocess.run(
+                ["git", "check-attr", "filter", "ident", "working-tree-encoding", "--", relative],
+                cwd=root,
+                check=False,
+                capture_output=True,
+                text=True,
+            )
+        except OSError as exc:
+            errors.append(f"{candidate}: cannot inspect multi-hop checkpoint attributes: {exc}")
+            return None
+        values = [line.rsplit(": ", 1)[1] for line in attributes.stdout.splitlines() if ": " in line]
+        git_eol_only = (
+            attributes.returncode == 0
+            and len(values) == 3
+            and all(value == "unspecified" for value in values)
+        )
+    return {
+        "exists": True,
+        "sha256": hashlib.sha256(content).hexdigest(),
+        "mode": (
+            "0755" if tracked and not dirty and next(iter(modes)) == "100755"
+            else "0644" if tracked and not dirty
+            else "0755" if candidate.stat().st_mode & stat.S_IXUSR else "0644"
+        ),
+        "git_sha256": hashlib.sha256(index_content).hexdigest() if index_content is not None else None,
+        "normalized_text_sha256": normalized,
+        "tracked": tracked,
+        "dirty": dirty,
+        "git_eol_only": git_eol_only,
+    }
+
+
+def route_target_surface(root: Path, errors: list[str]) -> dict[str, dict] | None:
+    changed: set[str] = set()
+    for arguments in (
+        ("diff", "--name-only", "-z"),
+        ("diff", "--cached", "--name-only", "-z"),
+        ("ls-files", "--others", "--exclude-standard", "-z"),
+    ):
+        try:
+            result = subprocess.run(
+                ["git", *arguments], cwd=root, check=False, capture_output=True
+            )
+        except OSError as exc:
+            errors.append(f"cannot inspect multi-hop checkpoint surface: {exc}")
+            return None
+        if result.returncode != 0:
+            errors.append("cannot inspect multi-hop checkpoint surface")
+            return None
+        changed.update(
+            value.decode("utf-8", errors="surrogateescape")
+            for value in result.stdout.split(b"\0")
+            if value
+        )
+    result: dict[str, dict] = {}
+    for relative in sorted(changed, key=lambda value: value.encode("utf-8")):
+        # The receipt is proven by the checkpoint archive rather than the
+        # target surface, and is intentionally absent once a hop is sealed.
+        if relative == PENDING_APPLY_RECEIPT:
+            continue
+        if not route_safe_relative(relative):
+            errors.append(f"unsafe multi-hop checkpoint surface path: {relative!r}")
+            return None
+        state = route_target_state(root, relative, errors)
+        if state is None:
+            return None
+        result[relative] = state
+    return result
+
+
+def route_target_surface_valid(value: object) -> bool:
+    if not isinstance(value, dict):
+        return False
+    for relative, state in value.items():
+        if not route_safe_relative(relative) or not isinstance(state, dict) or set(state) != ROUTE_TARGET_STATE_KEYS:
+            return False
+        if type(state.get("exists")) is not bool or type(state.get("tracked")) is not bool or type(state.get("dirty")) is not bool or type(state.get("git_eol_only")) is not bool:
+            return False
+        if state["exists"]:
+            if state.get("mode") not in {"0644", "0755"} or not route_sha(state.get("sha256")):
+                return False
+            if state["tracked"] and not route_sha(state.get("git_sha256")):
+                return False
+            if not state["tracked"] and state.get("git_sha256") is not None:
+                return False
+            if state.get("normalized_text_sha256") is not None and not route_sha(state.get("normalized_text_sha256")):
+                return False
+        elif state != {
+            "exists": False,
+            "sha256": None,
+            "mode": None,
+            "git_sha256": None,
+            "normalized_text_sha256": None,
+            "tracked": False,
+            "dirty": False,
+            "git_eol_only": False,
+        }:
+            return False
+    return True
+
+
+def route_child_context_matches(
+    value: object,
+    *,
+    route_transaction_id: str,
+    route_intent_sha256: str,
+    edges: list[dict],
+    hop_index: int,
+    predecessor_checkpoint_sha256: str | None,
+    predecessor_of_predecessor_checkpoint_sha256: str | None,
+) -> bool:
+    if not 0 <= hop_index < len(edges):
+        return False
+    edge = edges[hop_index]
+    if hop_index == 0:
+        return value == {
+            "schema_version": MULTI_HOP_INITIAL_ROUTE_CONTEXT_SCHEMA,
+            "route_transaction_id": route_transaction_id,
+            "route_intent_sha256": route_intent_sha256,
+            "next_hop_index": 0,
+            "edge_id": edge["edge_id"],
+            "edge_order": edge["order"],
+            "from_version": edge["from_version"],
+            "to_version": edge["to_version"],
+        }
+    return value == {
+        "schema_version": MULTI_HOP_ROUTE_CONTEXT_SCHEMA,
+        "route_transaction_id": route_transaction_id,
+        "route_intent_sha256": route_intent_sha256,
+        "checkpoint_index": hop_index - 1,
+        "checkpoint_sha256": predecessor_checkpoint_sha256,
+        "checkpoint_predecessor_sha256": predecessor_of_predecessor_checkpoint_sha256,
+        "next_hop_index": hop_index,
+        "edge_id": edge["edge_id"],
+        "edge_order": edge["order"],
+        "from_version": edge["from_version"],
+        "to_version": edge["to_version"],
+    }
+
+
+def route_relative_path(
+    route_root: Path, relative: object, label: str, errors: list[str]
+) -> Path | None:
+    """Resolve one retained route-admin path without crossing link boundaries."""
+    if not route_safe_relative(relative):
+        errors.append(f"{route_root}: {label} path is unsafe")
+        return None
+    assert isinstance(relative, str)
+    candidate = route_root
+    for part in PurePosixPath(relative).parts:
+        candidate /= part
+        if candidate.is_symlink() or is_reparse_point(candidate):
+            errors.append(f"{candidate}: {label} crosses a symlink or reparse boundary")
+            return None
+    return candidate
+
+
+def route_checksum_binds_archive(
+    checksum_raw: bytes, archive_raw: bytes, archive_name: str
+) -> bool:
+    """Accept only the two standard sha256sum separators retained by S1."""
+    try:
+        match = re.fullmatch(
+            r"(?P<sha256>[0-9a-f]{64}) (?P<marker>[ *])(?P<filename>[^/\\\r\n]+)\n",
+            checksum_raw.decode("utf-8"),
+        )
+    except UnicodeDecodeError:
+        return False
+    return (
+        match is not None
+        and match.group("sha256") == sha256_bytes(archive_raw)
+        and match.group("filename") == archive_name
+    )
+
+
+def validate_promoted_multi_hop_evidence(
+    route_root: Path,
+    hop_index: int,
+    edge: dict,
+    full_edge: object,
+    expected_package: object,
+    expected_execution: object | None,
+    expected_plan_sha256: object,
+    errors: list[str],
+) -> tuple[dict, dict, Path] | None:
+    """Validate the one promoted hop tree used by active and sealed route state.
+
+    The outer journal and checkpoint reference this tree; they must never be
+    able to replace its archive, extraction, validator execution, or semantic
+    plan identity with merely self-consistent mappings.
+    """
+    error_start = len(errors)
+    prefix = f"{route_root}: multi-hop promoted hop {hop_index}"
+    full_identity = route_full_edge_identity(full_edge)
+    if (
+        type(hop_index) is not int
+        or hop_index < 0
+        or not route_edge_identity(edge)
+        or full_identity != edge
+        or not isinstance(full_edge, dict)
+    ):
+        errors.append(f"{prefix} identity is invalid")
+        return None
+    full_artifacts = full_edge.get("artifacts")
+    full_validation = full_edge.get("validation")
+    if (
+        not isinstance(full_artifacts, dict)
+        or not isinstance(full_validation, dict)
+        or not isinstance(full_artifacts.get("archive"), dict)
+        or not isinstance(full_artifacts.get("checksum"), dict)
+        or not isinstance(full_artifacts.get("manifest"), dict)
+        or not isinstance(full_artifacts.get("validator"), dict)
+        or not isinstance(full_validation.get("validator_argv"), list)
+        or not full_validation["validator_argv"]
+        or not all(
+            isinstance(item, str) and item for item in full_validation["validator_argv"]
+        )
+        or not isinstance(full_validation.get("output"), dict)
+        or not route_sha(full_artifacts["archive"].get("sha256"))
+        or not route_sha(full_artifacts["checksum"].get("sha256"))
+        or not route_sha(full_artifacts["manifest"].get("sha256"))
+        or not route_sha(full_artifacts["validator"].get("sha256"))
+        or not route_sha(full_validation["output"].get("sha256"))
+    ):
+        errors.append(f"{prefix} sealed full edge contract is invalid")
+        return None
+    hop_name = f"{hop_index:04d}"
+    hop_root = route_root / "hops" / hop_name
+    if hop_root.is_symlink() or is_reparse_point(hop_root) or not hop_root.is_dir():
+        errors.append(f"{prefix} evidence root is missing or unsafe")
+        return None
+    evidence_loaded = route_canonical_json(
+        hop_root / "evidence.json", "multi-hop prepared-hop evidence", errors
+    )
+    if evidence_loaded is None:
+        return None
+    evidence, _evidence_raw = evidence_loaded
+    if (
+        set(evidence)
+        != {
+            "schema_version",
+            "hop_index",
+            "edge",
+            "package",
+            "validator_execution",
+            "plan_sha256",
+        }
+        or evidence.get("schema_version") != MULTI_HOP_PREPARED_HOP_SCHEMA
+        or evidence.get("hop_index") != hop_index
+        or evidence.get("edge") != edge
+        or not route_sha(evidence.get("plan_sha256"))
+        or evidence.get("plan_sha256") != expected_plan_sha256
+        or not isinstance(evidence.get("package"), dict)
+        or not isinstance(evidence.get("validator_execution"), dict)
+    ):
+        errors.append(f"{prefix} prepared evidence identity differs")
+        return None
+    package = evidence["package"]
+    execution = evidence["validator_execution"]
+    if package != expected_package:
+        errors.append(f"{prefix} prepared package differs from route state")
+    if expected_execution is not None and execution != expected_execution:
+        errors.append(f"{prefix} prepared validator execution differs from route state")
+    if (
+        set(package) != MULTI_HOP_PACKAGE_KEYS
+        or not all(
+            route_sha(package.get(key))
+            for key in {
+                "archive_sha256",
+                "checksum_sha256",
+                "migration_artifact_sha256",
+                "validator_artifact_sha256",
+                "package_manifest_sha256",
+                "migration_sha256",
+                "files_manifest_sha256",
+            }
+        )
+        or not isinstance(package.get("package_id"), str)
+        or not package.get("package_id")
+        or not isinstance(package.get("package_version"), str)
+        or not package.get("package_version")
+    ):
+        errors.append(f"{prefix} package identity is invalid")
+        return None
+    archive_relative = package["archive_path"]
+    archive_parts = (
+        tuple(PurePosixPath(archive_relative).parts)
+        if route_safe_relative(archive_relative)
+        else ()
+    )
+    extracted_relative = package["extracted_root"]
+    extracted_parts = (
+        tuple(PurePosixPath(extracted_relative).parts)
+        if route_safe_relative(extracted_relative)
+        else ()
+    )
+    if (
+        len(archive_parts) != 3
+        or archive_parts[:2] != ("hops", hop_name)
+        or not archive_parts[2]
+        or len(extracted_parts) != 4
+        or extracted_parts[:3] != ("hops", hop_name, "extracted")
+        or not extracted_parts[3]
+    ):
+        errors.append(f"{prefix} package paths are invalid")
+        return None
+    validator_relative = package["validator_path"]
+    validator_parts = (
+        tuple(PurePosixPath(validator_relative).parts)
+        if route_safe_relative(validator_relative)
+        else ()
+    )
+    if validator_parts != ("hops", hop_name, "validator.asset"):
+        errors.append(f"{prefix} validator asset path is invalid")
+        return None
+    archive_path = route_relative_path(route_root, archive_relative, "multi-hop archive", errors)
+    extracted_root = route_relative_path(
+        route_root, extracted_relative, "multi-hop extracted package", errors
+    )
+    checksum_path = route_relative_path(
+        route_root, f"hops/{hop_name}/checksum.sha256", "multi-hop checksum", errors
+    )
+    migration_artifact_path = route_relative_path(
+        route_root, f"hops/{hop_name}/migration.yaml", "multi-hop migration artifact", errors
+    )
+    validator_asset_path = route_relative_path(
+        route_root, validator_relative, "multi-hop retained validator asset", errors
+    )
+    if extracted_root is None or extracted_root.is_symlink() or is_reparse_point(extracted_root) or not extracted_root.is_dir():
+        errors.append(f"{prefix} extracted package root is missing or unsafe")
+    archive_raw = (
+        route_regular_bytes(archive_path, "multi-hop package archive", errors)
+        if archive_path is not None
+        else None
+    )
+    checksum_raw = (
+        route_regular_bytes(checksum_path, "multi-hop package checksum", errors)
+        if checksum_path is not None
+        else None
+    )
+    migration_artifact_raw = (
+        route_regular_bytes(
+            migration_artifact_path, "multi-hop migration artifact", errors
+        )
+        if migration_artifact_path is not None
+        else None
+    )
+    validator_asset_raw = (
+        route_regular_bytes(
+            validator_asset_path, "multi-hop retained validator asset", errors
+        )
+        if validator_asset_path is not None
+        else None
+    )
+    if archive_raw is not None and sha256_bytes(archive_raw) != package["archive_sha256"]:
+        errors.append(f"{prefix} archive digest differs")
+    if checksum_raw is not None and sha256_bytes(checksum_raw) != package["checksum_sha256"]:
+        errors.append(f"{prefix} checksum digest differs")
+    if (
+        checksum_raw is not None
+        and archive_raw is not None
+        and not route_checksum_binds_archive(checksum_raw, archive_raw, archive_parts[2])
+    ):
+        errors.append(f"{prefix} checksum does not bind the retained archive")
+    if (
+        migration_artifact_raw is not None
+        and sha256_bytes(migration_artifact_raw) != package["migration_artifact_sha256"]
+    ):
+        errors.append(f"{prefix} migration artifact digest differs")
+    if (
+        validator_asset_raw is not None
+        and sha256_bytes(validator_asset_raw) != package["validator_artifact_sha256"]
+    ):
+        errors.append(f"{prefix} retained validator asset digest differs")
+    if (
+        package.get("archive_sha256") != full_artifacts["archive"].get("sha256")
+        or package.get("checksum_sha256") != full_artifacts["checksum"].get("sha256")
+        or package.get("migration_artifact_sha256")
+        != full_artifacts["manifest"].get("sha256")
+        or package.get("validator_artifact_sha256")
+        != full_artifacts["validator"].get("sha256")
+    ):
+        errors.append(f"{prefix} package differs from sealed full edge artifacts")
+
+    package_document: dict | None = None
+    package_manifest_sha: str | None = None
+    if extracted_root is not None and extracted_root.is_dir() and not extracted_root.is_symlink() and not is_reparse_point(extracted_root):
+        try:
+            import ai_context_package_apply as package_apply
+
+            package_document, _incoming, _migration, package_manifest_sha = (
+                package_apply.validate_package_root(extracted_root)
+            )
+        except (ImportError, OSError, ValueError) as exc:
+            errors.append(f"{prefix} extracted package is invalid: {exc}")
+    migration_path = route_relative_path(
+        route_root,
+        f"{extracted_relative}/metadata/migration.yaml",
+        "multi-hop extracted migration",
+        errors,
+    )
+    files_path = route_relative_path(
+        route_root,
+        f"{extracted_relative}/metadata/files.yaml",
+        "multi-hop extracted files manifest",
+        errors,
+    )
+    migration_raw = (
+        route_regular_bytes(migration_path, "multi-hop extracted migration", errors)
+        if migration_path is not None
+        else None
+    )
+    files_raw = (
+        route_regular_bytes(files_path, "multi-hop extracted files manifest", errors)
+        if files_path is not None
+        else None
+    )
+    if (
+        package_document is None
+        or package_manifest_sha is None
+        or package.get("package_id") != package_document.get("package_id")
+        or package.get("package_version") != package_document.get("version")
+        or package.get("package_manifest_sha256") != package_manifest_sha
+        or migration_raw is None
+        or package.get("migration_sha256") != sha256_bytes(migration_raw)
+        or migration_artifact_raw is None
+        or migration_raw != migration_artifact_raw
+        or files_raw is None
+        or package.get("files_manifest_sha256") != sha256_bytes(files_raw)
+    ):
+        errors.append(f"{prefix} extracted package identity differs")
+
+    if set(execution) != MULTI_HOP_VALIDATOR_EXECUTION_KEYS or not all(
+        route_sha(execution.get(key)) for key in {"record_sha256", "stdout_sha256"}
+    ):
+        errors.append(f"{prefix} validator execution identity is invalid")
+        return None
+    record_relative = execution["record_path"]
+    stdout_relative = execution["stdout_path"]
+    if (
+        tuple(PurePosixPath(record_relative).parts)
+        if route_safe_relative(record_relative)
+        else ()
+    ) != ("hops", hop_name, "validator-execution.json") or (
+        tuple(PurePosixPath(stdout_relative).parts)
+        if route_safe_relative(stdout_relative)
+        else ()
+    ) != ("hops", hop_name, "validator.stdout.log"):
+        errors.append(f"{prefix} validator execution paths are invalid")
+        return None
+    record_path = route_relative_path(route_root, record_relative, "multi-hop validator record", errors)
+    stdout_path = route_relative_path(route_root, stdout_relative, "multi-hop validator stdout", errors)
+    stderr_path = route_relative_path(
+        route_root, f"hops/{hop_name}/validator.stderr.log", "multi-hop validator stderr", errors
+    )
+    record_loaded = (
+        route_canonical_json(record_path, "multi-hop validator record", errors)
+        if record_path is not None
+        else None
+    )
+    stdout = (
+        route_regular_bytes(stdout_path, "multi-hop validator stdout", errors)
+        if stdout_path is not None
+        else None
+    )
+    stderr = (
+        route_regular_bytes(stderr_path, "multi-hop validator stderr", errors)
+        if stderr_path is not None
+        else None
+    )
+    if record_loaded is not None:
+        record, record_raw = record_loaded
+        if (
+            set(record) != MULTI_HOP_VALIDATOR_RECORD_KEYS
+            or record.get("schema_version") != MULTI_HOP_VALIDATOR_EXECUTION_SCHEMA
+            or record.get("hop_index") != hop_index
+            or record.get("edge_id") != edge.get("edge_id")
+            or not isinstance(record.get("validator_argv"), list)
+            or not record.get("validator_argv")
+            or not all(isinstance(item, str) and item for item in record["validator_argv"])
+            or not route_sha(record.get("validator_sha256"))
+            or record.get("validator_sha256") != package.get("validator_artifact_sha256")
+            or record.get("validator_sha256")
+            != full_artifacts["validator"].get("sha256")
+            or not route_sha(record.get("expected_output_sha256"))
+            or record.get("expected_output_sha256")
+            != full_validation["output"].get("sha256")
+            or not route_sha(record.get("stdout_sha256"))
+            or not route_sha(record.get("stderr_sha256"))
+            or type(record.get("return_code")) is not int
+            or record.get("return_code") != 0
+            or record.get("outcome") != "passed"
+            or record.get("validator_argv") != full_validation["validator_argv"]
+            or sha256_bytes(record_raw) != execution.get("record_sha256")
+            or stdout is None
+            or sha256_bytes(stdout) != execution.get("stdout_sha256")
+            or record.get("stdout_sha256") != execution.get("stdout_sha256")
+            or record.get("expected_output_sha256") != execution.get("stdout_sha256")
+            or stderr is None
+            or stderr != b""
+            or record.get("stderr_sha256") != sha256_bytes(stderr)
+        ):
+            errors.append(f"{prefix} validator execution evidence differs")
+    if len(errors) != error_start:
+        return None
+    assert isinstance(extracted_root, Path)
+    return package, execution, extracted_root
+
+
+def validate_transient_bound_multi_hop_proposal(
+    route_root: Path,
+    child_directory: Path,
+    journal: dict,
+    active: dict,
+    active_plan: dict,
+    edges: list[dict],
+    intent_raw: bytes,
+    checkpoint_shas: list[str],
+    checkpoint_predecessors: list[str | None],
+    promoted: tuple[dict, dict, Path] | None,
+    errors: list[str],
+) -> None:
+    """Read-only acceptance of the one post-bind/pre-unlink crash residue."""
+    transaction = active.get("child_transaction_id")
+    index = active.get("hop_index")
+    if not isinstance(transaction, str) or type(index) is not int:
+        return
+    proposal_path = route_root / "hops" / f"{index:04d}" / "preparation.json"
+    if proposal_path.is_symlink() or is_reparse_point(proposal_path):
+        errors.append(f"{route_root}: bound multi-hop proposal path is unsafe")
+        return
+    if not proposal_path.exists():
+        return
+    if journal.get("state") not in {"awaiting-target-validation", "finalizing"}:
+        errors.append(f"{route_root}: bound multi-hop proposal is stale outside its crash state")
+        return
+    proposal_loaded = route_canonical_json(
+        proposal_path, "bound multi-hop proposal plan", errors
+    )
+    if proposal_loaded is None:
+        return
+    proposal, proposal_raw = proposal_loaded
+    expected_child_state = (
+        "awaiting-target-validation"
+        if journal["state"] == "awaiting-target-validation"
+        else "validated"
+    )
+    child_journal = route_mapping(
+        child_directory / transaction / "journal.yaml",
+        "bound child package apply journal",
+        errors,
+    )
+    if (
+        sha256_bytes(proposal_raw) != active.get("proposal_plan_sha256")
+        or proposal.get("schema_version") != "2.2.0"
+        or proposal.get("plan_sha256") != transaction
+        or canonical_json_digest(
+            {key: value for key, value in proposal.items() if key != "plan_sha256"}
+        )
+        != transaction
+        or proposal != active_plan
+        or not route_child_context_matches(
+            proposal.get("multi_hop_checkpoint_context"),
+            route_transaction_id=route_root.name,
+            route_intent_sha256=sha256_bytes(intent_raw),
+            edges=edges,
+            hop_index=index,
+            predecessor_checkpoint_sha256=(
+                checkpoint_shas[index - 1] if index and len(checkpoint_shas) >= index else None
+            ),
+            predecessor_of_predecessor_checkpoint_sha256=(
+                checkpoint_predecessors[index - 1]
+                if index and len(checkpoint_predecessors) >= index
+                else None
+            ),
+        )
+        or (
+            promoted is not None
+            and proposal.get("package_root") != str(promoted[2])
+        )
+        or (
+            promoted is not None
+            and proposal.get("package_manifest_sha256")
+            != promoted[0]["package_manifest_sha256"]
+        )
+        or (
+            promoted is not None
+            and proposal.get("migration_sha256") != promoted[0]["migration_sha256"]
+        )
+        or child_journal is None
+        or child_journal.get("state") != expected_child_state
+    ):
+        errors.append(f"{route_root}: bound multi-hop proposal differs from child evidence")
+
+
+def validate_multi_hop_route_transactions(root: Path, errors: list[str]) -> None:
+    """Validate retained S2 checkpoints without treating them as target authority.
+
+    The only copied byte is the pending receipt archived before its global
+    clearance.  All package/remediation/validation/terminal records remain
+    referenced at the existing child package-apply transaction path.
+    """
+    try:
+        route_directory = multi_hop_route_directory(root)
+        child_directory = apply_transaction_directory(root)
+    except TargetValidationError as exc:
+        errors.append(str(exc))
+        return
+    if route_directory is None or not route_directory.exists():
+        return
+    if route_directory.is_symlink() or is_reparse_point(route_directory) or not route_directory.is_dir():
+        errors.append(f"{route_directory}: multi-hop route directory is unsafe")
+        return
+    if child_directory is not None and (
+        child_directory.is_symlink()
+        or is_reparse_point(child_directory)
+        or (child_directory.exists() and not child_directory.is_dir())
+    ):
+        errors.append("multi-hop route package-apply transaction directory is unsafe")
+        return
+    for route_root in sorted(route_directory.iterdir(), key=lambda item: item.name):
+        if route_root.name == "transaction.lock" and route_root.is_file():
+            continue
+        # A process can crash after creating the private atomic-promotion
+        # directory but before it has a route intent.  It is not executable
+        # route state.  Safely recognize only the exact tempfile namespace so
+        # it cannot permanently block validation of an admitted route.
+        if re.fullmatch(r"\.[0-9a-f]{64}\.preparing-[A-Za-z0-9_-]+", route_root.name):
+            if (
+                route_root.is_symlink()
+                or is_reparse_point(route_root)
+                or not route_root.is_dir()
+            ):
+                errors.append(f"{route_root}: multi-hop preparation residue is unsafe")
+            continue
+        if (
+            route_root.is_symlink()
+            or is_reparse_point(route_root)
+            or not route_root.is_dir()
+            or not re.fullmatch(r"[0-9a-f]{64}", route_root.name)
+        ):
+            errors.append(f"{route_root}: multi-hop route transaction directory is invalid")
+            continue
+        intent_loaded = route_canonical_json(
+            route_root / "route-intent.json", "multi-hop route intent", errors
+        )
+        journal = route_deterministic_yaml(
+            route_root / "journal.yaml", "multi-hop route journal", errors
+        )
+        if intent_loaded is None or journal is None:
+            continue
+        intent, intent_raw = intent_loaded
+        intent_required = {
+            "schema_version", "route_transaction_id", "target_root", "target_starting_commit",
+            "origin", "target", "matrix", "resolver_result", "route",
+        }
+        if set(intent) != intent_required or intent.get("schema_version") != MULTI_HOP_ROUTE_INTENT_SCHEMA:
+            errors.append(f"{route_root}: multi-hop route intent fields are invalid")
+            continue
+        seed = dict(intent)
+        transaction_id = seed.pop("route_transaction_id", None)
+        if transaction_id != route_root.name or canonical_json_digest(seed) != route_root.name:
+            errors.append(f"{route_root}: multi-hop route transaction identity differs")
+            continue
+        if intent.get("target_root") != str(root.resolve()) or intent.get("target_starting_commit") != current_target_head(root):
+            errors.append(f"{route_root}: multi-hop route target identity differs")
+        matrix = intent.get("matrix")
+        if (
+            not isinstance(matrix, dict)
+            or set(matrix) != {"path", "sha256", "byte_length"}
+            or matrix.get("path") != "route-matrix.yaml"
+            or not route_sha(matrix.get("sha256"))
+            or type(matrix.get("byte_length")) is not int
+            or matrix["byte_length"] < 0
+        ):
+            errors.append(f"{route_root}: multi-hop route matrix identity is invalid")
+            continue
+        matrix_raw = route_regular_bytes(route_root / "route-matrix.yaml", "multi-hop route matrix", errors)
+        if matrix_raw is None or len(matrix_raw) != matrix["byte_length"] or sha256_bytes(matrix_raw) != matrix["sha256"]:
+            errors.append(f"{route_root}: multi-hop route matrix bytes differ")
+            continue
+        route = intent.get("route")
+        edges = route.get("edges") if isinstance(route, dict) else None
+        if (
+            not isinstance(route, dict)
+            or set(route) != {"route_id", "edges"}
+            or not isinstance(route.get("route_id"), str)
+            or not route["route_id"]
+            or not isinstance(edges, list)
+            or len(edges) < 2
+            or not all(route_edge_identity(edge) for edge in edges)
+            or [edge["order"] for edge in edges] != list(range(1, len(edges) + 1))
+        ):
+            errors.append(f"{route_root}: multi-hop ordered edge identities are invalid")
+            continue
+        full_edges = sealed_multi_hop_resolver_edges(route_root, intent, errors)
+        if full_edges is None:
+            continue
+        journal_required = {
+            "schema_version", "route_transaction_id", "route_intent_sha256", "target_root",
+            "target_starting_commit", "state", "next_hop_index", "last_checkpoint_index",
+            "last_checkpoint_sha256", "active_hop",
+        }
+        if (
+            set(journal) != journal_required
+            or journal.get("schema_version") != MULTI_HOP_ROUTE_JOURNAL_SCHEMA
+            or journal.get("route_transaction_id") != route_root.name
+            or journal.get("route_intent_sha256") != sha256_bytes(intent_raw)
+            or journal.get("target_root") != intent.get("target_root")
+            or journal.get("target_starting_commit") != intent.get("target_starting_commit")
+            or journal.get("state") not in {
+                "planned", "awaiting-owner-decision", "applying", "awaiting-target-validation",
+                "validating", "finalizing", "checkpointing", "checkpointed", "rolling-back",
+                "completed", "rolled-back",
+            }
+            or type(journal.get("next_hop_index")) is not int
+            or not 0 <= journal["next_hop_index"] <= len(edges)
+        ):
+            errors.append(f"{route_root}: multi-hop route journal identity is invalid")
+            continue
+        last_index = journal.get("last_checkpoint_index")
+        last_sha = journal.get("last_checkpoint_sha256")
+        if (last_index is None) != (last_sha is None) or (
+            last_index is not None
+            and (type(last_index) is not int or not 0 <= last_index < len(edges) or not route_sha(last_sha))
+        ):
+            errors.append(f"{route_root}: multi-hop route journal checkpoint binding is invalid")
+            continue
+        expected_count = 0 if last_index is None else last_index + 1
+        if journal["state"] in {"checkpointed", "completed"} and (
+            journal.get("active_hop") is not None or journal["next_hop_index"] != expected_count
+        ):
+            errors.append(f"{route_root}: checkpointed multi-hop route journal progress is invalid")
+        if journal["state"] == "completed" and journal["next_hop_index"] != len(edges):
+            errors.append(f"{route_root}: completed multi-hop route does not cover every edge")
+        previous_sha: str | None = None
+        checkpoint_shas: list[str] = []
+        checkpoint_predecessors: list[str | None] = []
+        last_checkpoint: dict | None = None
+        child_ids: set[str] = set()
+        for index in range(expected_count):
+            checkpoint_loaded = route_canonical_json(
+                route_root / "checkpoints" / f"{index:04d}.json",
+                "multi-hop route checkpoint",
+                errors,
+            )
+            if checkpoint_loaded is None:
+                continue
+            checkpoint, checkpoint_raw = checkpoint_loaded
+            checkpoint_sha = sha256_bytes(checkpoint_raw)
+            unsigned = dict(checkpoint)
+            declared = unsigned.pop("digest", None)
+            required_checkpoint = {
+                "schema_version", "route_transaction_id", "route_intent_sha256", "checkpoint_index",
+                "predecessor_checkpoint_sha256", "edge", "package", "child_transaction",
+                "pending_receipt", "authority", "target_surface", "digest",
+            }
+            if (
+                set(checkpoint) != required_checkpoint
+                or checkpoint.get("schema_version") != MULTI_HOP_ROUTE_CHECKPOINT_SCHEMA
+                or checkpoint.get("route_transaction_id") != route_root.name
+                or checkpoint.get("route_intent_sha256") != sha256_bytes(intent_raw)
+                or checkpoint.get("checkpoint_index") != index
+                or checkpoint.get("predecessor_checkpoint_sha256") != previous_sha
+                or checkpoint.get("edge") != edges[index]
+                or declared != canonical_json_digest(unsigned)
+            ):
+                errors.append(f"{route_root}: multi-hop checkpoint {index} identity differs")
+                continue
+            previous_sha = checkpoint_sha
+            checkpoint_shas.append(checkpoint_sha)
+            checkpoint_predecessors.append(checkpoint.get("predecessor_checkpoint_sha256"))
+            last_checkpoint = checkpoint
+            child = checkpoint.get("child_transaction")
+            package = checkpoint.get("package")
+            pending = checkpoint.get("pending_receipt")
+            authority = checkpoint.get("authority")
+            target_surface = checkpoint.get("target_surface")
+            child_required = {
+                "transaction_id", "plan_sha256", "evidence_path", "package_manifest_sha256",
+                "migration_sha256", "remediation_packet_sha256", "remediation_decision_sha256",
+                "incoming_validation_receipt_sha256", "target_validation_receipt_sha256",
+                "terminal_receipt_sha256",
+            }
+            if (
+                not isinstance(child, dict)
+                or set(child) != child_required
+                or not all(route_sha(child.get(key)) for key in child_required if key != "evidence_path")
+                or child.get("plan_sha256") != child.get("transaction_id")
+                or child.get("evidence_path") != f"ai-context-package-apply/{child.get('transaction_id')}"
+                or child.get("transaction_id") in child_ids
+            ):
+                errors.append(f"{route_root}: multi-hop checkpoint {index} child evidence is invalid")
+                continue
+            child_ids.add(child["transaction_id"])
+            if (
+                not isinstance(pending, dict)
+                or set(pending) != {"path", "sha256", "archive_path"}
+                or pending.get("path") != PENDING_APPLY_RECEIPT
+                or not route_sha(pending.get("sha256"))
+                or not route_safe_relative(pending.get("archive_path"))
+                or not isinstance(authority, dict)
+                or set(authority) != {"provenance_sha256", "customizations_sha256"}
+                or not all(route_sha(authority.get(key)) for key in authority)
+                or not isinstance(target_surface, dict)
+                or set(target_surface) != {"starting_commit", "paths"}
+                or target_surface.get("starting_commit") != intent.get("target_starting_commit")
+                or not route_target_surface_valid(target_surface.get("paths"))
+            ):
+                errors.append(f"{route_root}: multi-hop checkpoint {index} receipt or target evidence is invalid")
+                continue
+            promoted = validate_promoted_multi_hop_evidence(
+                route_root,
+                index,
+                edges[index],
+                full_edges[index],
+                package,
+                None,
+                child["plan_sha256"],
+                errors,
+            )
+            archive = route_root / Path(*PurePosixPath(pending["archive_path"]).parts)
+            archived = route_regular_bytes(archive, "checkpointed pending receipt archive", errors)
+            if archived is None or sha256_bytes(archived) != pending["sha256"]:
+                errors.append(f"{route_root}: multi-hop checkpoint {index} archived pending receipt differs")
+            if child_directory is None or not child_directory.is_dir():
+                errors.append(f"{route_root}: multi-hop checkpoint {index} has no child transaction directory")
+                continue
+            child_root = child_directory / child["transaction_id"]
+            child_journal = route_mapping(child_root / "journal.yaml", "child package apply journal", errors)
+            child_plan_loaded = route_canonical_json(child_root / "plan.json", "child package apply plan", errors)
+            terminal_loaded = route_canonical_json(child_root / TERMINAL_RECEIPT_PATH, "child terminal receipt", errors)
+            if child_journal is None or child_plan_loaded is None or terminal_loaded is None:
+                continue
+            child_plan, child_plan_raw = child_plan_loaded
+            terminal, terminal_raw = terminal_loaded
+            if (
+                child_plan.get("schema_version") != "2.2.0"
+                or canonical_json_digest(
+                    {key: value for key, value in child_plan.items() if key != "plan_sha256"}
+                ) != child["plan_sha256"]
+                or child_plan.get("plan_sha256") != child["plan_sha256"]
+                or child_plan.get("package_manifest_sha256") != child["package_manifest_sha256"]
+                or child_plan.get("migration_sha256") != child["migration_sha256"]
+                or not route_child_context_matches(
+                    child_plan.get("multi_hop_checkpoint_context"),
+                    route_transaction_id=route_root.name,
+                    route_intent_sha256=sha256_bytes(intent_raw),
+                    edges=edges,
+                    hop_index=index,
+                    predecessor_checkpoint_sha256=(checkpoint_shas[index - 1] if index and len(checkpoint_shas) >= index else None),
+                    predecessor_of_predecessor_checkpoint_sha256=(checkpoint_predecessors[index - 1] if index and len(checkpoint_predecessors) >= index else None),
+                )
+                or child_journal.get("schema_version") != "ai-context-package-apply-journal/v4"
+                or child_journal.get("state") != "finalized"
+                or child_journal.get("terminal_receipt_sha256") != child["terminal_receipt_sha256"]
+                or sha256_bytes(terminal_raw) != child["terminal_receipt_sha256"]
+                or child_journal.get("remediation_packet_sha256") != child["remediation_packet_sha256"]
+                or child_journal.get("remediation_decision_sha256") != child["remediation_decision_sha256"]
+                or child_journal.get("incoming_validation_receipt_sha256") != child["incoming_validation_receipt_sha256"]
+                or child_journal.get("target_validation_receipt_sha256") != child["target_validation_receipt_sha256"]
+                or terminal.get("transaction_id") != child["transaction_id"]
+                or terminal.get("plan_sha256") != child["plan_sha256"]
+                or terminal.get("pending_receipt_sha256") != pending["sha256"]
+                or terminal.get("target_validation_receipt_sha256") != child["target_validation_receipt_sha256"]
+                or terminal.get("provenance_sha256") != authority["provenance_sha256"]
+                or terminal.get("customizations_sha256") != authority["customizations_sha256"]
+            ):
+                errors.append(f"{route_root}: multi-hop checkpoint {index} child terminal evidence differs")
+            if promoted is not None:
+                _promoted_package, _promoted_execution, package_root = promoted
+                if (
+                    child_plan.get("package_root") != str(package_root)
+                    or child_plan.get("package_manifest_sha256")
+                    != package["package_manifest_sha256"]
+                    or child_plan.get("migration_sha256") != package["migration_sha256"]
+                ):
+                    errors.append(
+                        f"{route_root}: multi-hop checkpoint {index} child package evidence differs"
+                    )
+            historical_error_start = len(errors)
+            validate_historical_finalized_upgrade_transaction(
+                root, child["transaction_id"], child_journal, errors
+            )
+            if len(errors) != historical_error_start:
+                errors.append(
+                    f"{route_root}: multi-hop checkpoint {index} sealed child evidence differs"
+                )
+        if expected_count and previous_sha != last_sha:
+            errors.append(f"{route_root}: multi-hop route journal last checkpoint digest differs")
+        active_states = {
+            "awaiting-owner-decision",
+            "applying",
+            "awaiting-target-validation",
+            "validating",
+            "finalizing",
+            "checkpointing",
+            "rolling-back",
+        }
+        active = journal.get("active_hop")
+        if journal["state"] in active_states:
+            base_active_keys = {
+                "hop_index",
+                "edge",
+                "package",
+                "validator_execution",
+                "plan_sha256",
+                "proposal_plan_sha256",
+                "child_transaction_id",
+            }
+            child_active_keys = base_active_keys | {
+                "pending_receipt_sha256",
+                "child_evidence_path",
+            }
+            if (
+                not isinstance(active, dict)
+                or (set(active) != base_active_keys and set(active) != child_active_keys)
+                or type(active.get("hop_index")) is not int
+                or active["hop_index"] != journal["next_hop_index"]
+                or not 0 <= active["hop_index"] < len(edges)
+                or active.get("edge") != edges[active["hop_index"]]
+                or not route_sha(active.get("plan_sha256"))
+                or not route_sha(active.get("proposal_plan_sha256"))
+                or not isinstance(active.get("package"), dict)
+                or not isinstance(active.get("validator_execution"), dict)
+            ):
+                errors.append(f"{route_root}: active multi-hop route evidence is invalid")
+            else:
+                transaction = active.get("child_transaction_id")
+                index = active["hop_index"]
+                hop_root = route_root / "hops" / f"{index:04d}"
+                promoted = validate_promoted_multi_hop_evidence(
+                    route_root,
+                    index,
+                    edges[index],
+                    full_edges[index],
+                    active.get("package"),
+                    active.get("validator_execution"),
+                    active.get("plan_sha256"),
+                    errors,
+                )
+                if transaction is None:
+                    if set(active) != base_active_keys or journal["state"] not in {
+                        "awaiting-owner-decision",
+                        "applying",
+                    }:
+                        errors.append(f"{route_root}: active multi-hop route child identity is invalid")
+                    proposal_loaded = route_canonical_json(
+                        hop_root / "preparation.json",
+                        "active multi-hop proposal plan",
+                        errors,
+                    )
+                    if proposal_loaded is not None:
+                        proposal, proposal_raw = proposal_loaded
+                        if (
+                            sha256_bytes(proposal_raw)
+                            != active.get("proposal_plan_sha256")
+                            or proposal.get("schema_version") != "2.2.0"
+                            or proposal.get("plan_sha256") != active.get("plan_sha256")
+                            or canonical_json_digest(
+                                {
+                                    key: value
+                                    for key, value in proposal.items()
+                                    if key != "plan_sha256"
+                                }
+                            )
+                            != active.get("plan_sha256")
+                            or (
+                                promoted is not None
+                                and proposal.get("package_root")
+                                != str(promoted[2])
+                            )
+                            or (
+                                promoted is not None
+                                and proposal.get("package_manifest_sha256")
+                                != promoted[0]["package_manifest_sha256"]
+                            )
+                            or (
+                                promoted is not None
+                                and proposal.get("migration_sha256")
+                                != promoted[0]["migration_sha256"]
+                            )
+                            or not route_child_context_matches(
+                                proposal.get("multi_hop_checkpoint_context"),
+                                route_transaction_id=route_root.name,
+                                route_intent_sha256=sha256_bytes(intent_raw),
+                                edges=edges,
+                                hop_index=index,
+                                predecessor_checkpoint_sha256=(
+                                    checkpoint_shas[index - 1]
+                                    if index and len(checkpoint_shas) >= index
+                                    else None
+                                ),
+                                predecessor_of_predecessor_checkpoint_sha256=(
+                                    checkpoint_predecessors[index - 1]
+                                    if index and len(checkpoint_predecessors) >= index
+                                    else None
+                                ),
+                            )
+                        ):
+                            errors.append(
+                                f"{route_root}: active multi-hop proposal plan differs"
+                            )
+                elif (
+                    not route_sha(transaction)
+                    or set(active) != child_active_keys
+                    or active.get("plan_sha256") != transaction
+                    or not route_sha(active.get("pending_receipt_sha256"))
+                    or active.get("child_evidence_path") != f"ai-context-package-apply/{transaction}"
+                    or child_directory is None
+                    or not (child_directory / transaction).is_dir()
+                ):
+                    errors.append(f"{route_root}: active multi-hop route child binding is invalid")
+                else:
+                    active_plan_loaded = route_canonical_json(
+                        child_directory / transaction / "plan.json",
+                        "active child package apply plan",
+                        errors,
+                    )
+                    if active_plan_loaded is not None:
+                        active_plan, active_plan_raw = active_plan_loaded
+                        index = active["hop_index"]
+                        if (
+                            canonical_json_digest(
+                                {key: value for key, value in active_plan.items() if key != "plan_sha256"}
+                            ) != transaction
+                            or active_plan.get("plan_sha256") != transaction
+                            or (
+                                promoted is not None
+                                and active_plan.get("package_root") != str(promoted[2])
+                            )
+                            or (
+                                promoted is not None
+                                and active_plan.get("package_manifest_sha256")
+                                != promoted[0]["package_manifest_sha256"]
+                            )
+                            or (
+                                promoted is not None
+                                and active_plan.get("migration_sha256")
+                                != promoted[0]["migration_sha256"]
+                            )
+                            or not route_child_context_matches(
+                                active_plan.get("multi_hop_checkpoint_context"),
+                                route_transaction_id=route_root.name,
+                                route_intent_sha256=sha256_bytes(intent_raw),
+                                edges=edges,
+                                hop_index=index,
+                                predecessor_checkpoint_sha256=(checkpoint_shas[index - 1] if index and len(checkpoint_shas) >= index else None),
+                                predecessor_of_predecessor_checkpoint_sha256=(checkpoint_predecessors[index - 1] if index and len(checkpoint_predecessors) >= index else None),
+                            )
+                        ):
+                            errors.append(f"{route_root}: active multi-hop child route context differs")
+                        validate_transient_bound_multi_hop_proposal(
+                            route_root,
+                            child_directory,
+                            journal,
+                            active,
+                            active_plan,
+                            edges,
+                            intent_raw,
+                            checkpoint_shas,
+                            checkpoint_predecessors,
+                            promoted,
+                            errors,
+                        )
+        elif active is not None:
+            errors.append(f"{route_root}: inactive multi-hop route retains active-hop evidence")
+        if journal["state"] in {"checkpointed", "completed"} and last_checkpoint is not None:
+            current_surface = route_target_surface(root, errors)
+            authority = last_checkpoint.get("authority")
+            target_surface = last_checkpoint.get("target_surface")
+            provenance = route_regular_bytes(
+                root / ".dev/ai-context/provenance.yaml",
+                "current multi-hop checkpoint provenance",
+                errors,
+            )
+            customizations = route_regular_bytes(
+                root / ".dev/ai-context/customizations.yaml",
+                "current multi-hop checkpoint customizations",
+                errors,
+            )
+            if (
+                current_surface is None
+                or not isinstance(authority, dict)
+                or not isinstance(target_surface, dict)
+                or current_surface != target_surface.get("paths")
+                or provenance is None
+                or customizations is None
+                or hashlib.sha256(provenance).hexdigest() != authority.get("provenance_sha256")
+                or hashlib.sha256(customizations).hexdigest() != authority.get("customizations_sha256")
+            ):
+                errors.append(f"{route_root}: final multi-hop checkpoint surface or authority differs")
 
 
 def validate_apply_transaction_journals(
@@ -887,6 +2341,7 @@ def validate_apply_transaction_journals(
                 errors.extend(upgrade_errors)
                 if upgrade_evidence is not None and enforce_terminal_invariants:
                     validate_terminal_receipt_invariant(root, upgrade_evidence, errors)
+    validate_multi_hop_route_transactions(root, errors)
     if receipt is not None and receipt.get("schema_version") == "2.0.0" and not matched_receipt:
         errors.append("schema 2.0.0 pending receipt transaction evidence does not match")
 

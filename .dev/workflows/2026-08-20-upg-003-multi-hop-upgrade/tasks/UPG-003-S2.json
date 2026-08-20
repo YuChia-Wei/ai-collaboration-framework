@@ -9,7 +9,7 @@
   "related_plan_id": "development-plan-2026-08-20-upg-003-multi-hop-upgrade",
   "status": "in_progress",
   "created_at": "2026-08-20T20:03:45+08:00",
-  "updated_at": "2026-08-20T20:03:45+08:00",
+  "updated_at": "2026-08-20T23:14:27+08:00",
   "template_source": ".ai/assets/skills/software-development-orchestrator/templates/development-workflow-task-template.json",
   "model": "gpt-5.6-sol",
   "reasoning_effort": "high",
@@ -68,7 +68,7 @@
         "provider": "Codex",
         "model": "gpt-5.6-terra",
         "reasoning_effort": "max",
-        "outcome": "in_progress",
+        "outcome": "completed",
         "scope": "Read-only mapping of exact S1, package transaction, remediation, finalization, resume, rollback, and fixture surfaces.",
         "canonical_role_claimed": false
       },
@@ -77,8 +77,26 @@
         "provider": "Codex",
         "model": "gpt-5.6-terra",
         "reasoning_effort": "max",
-        "outcome": "in_progress",
-        "scope": "Truthful S2 state-machine and shared API implementation under root integration ownership.",
+        "outcome": "completed",
+        "scope": "Truthful S2 state-machine, shared API, canonical contract, portable projection, and focused fail-closed fixture implementation under root integration ownership.",
+        "canonical_role_claimed": false
+      },
+      {
+        "role": "pre-#207 independent semantic review context",
+        "provider": "Codex",
+        "model": "gpt-5.6-terra",
+        "reasoning_effort": "max",
+        "outcome": "completed",
+        "scope": "Read-only current-byte review found and verified repairs for exact checkpoint evidence, retained validator evidence, crash recovery, rollback, and checkpointing-resume boundaries.",
+        "canonical_role_claimed": false
+      },
+      {
+        "role": "pre-#207 fresh independent precommit re-audit context",
+        "provider": "Codex",
+        "model": "gpt-5.6-terra",
+        "reasoning_effort": "max",
+        "outcome": "passed",
+        "scope": "Read-only final-byte re-audit passed GWT003, GWT017, and GWT032 with an identical pre/post manifest; this is not the required PR exact-head Sol High audit.",
         "canonical_role_claimed": false
       }
     ],
@@ -105,18 +123,132 @@
     "deferred_items": ["S3 v0.14.0 source candidate and terminal closure"]
   },
   "results": {
-    "summary": "S2 started from clean integrated S1 main 41a1b4bcc942b9a412d55a8dab77bcc5d7b6fbf2.",
-    "files_changed": [],
+    "summary": "S2 implementation and focused precommit admission are complete on the local branch; immutable commit, exact-head Sol High audit, hosted checks, deferred PR admission, and merge remain.",
+    "files_changed": [
+      ".agents/skills/ai-context-upgrader/SKILL.md",
+      ".ai/assets/skills/ai-context-upgrader/skill.yaml",
+      ".ai/assets/skills/ai-context-upgrader/references/multi-hop-upgrade-transaction-contract.md",
+      ".ai/assets/skills/ai-context-upgrader/templates/multi-hop-upgrade-transaction.schema.yaml",
+      ".ai/assets/skills/ai-context-upgrader/templates/multi-hop-upgrade-transaction.template.yaml",
+      ".ai/distribution/profiles/dotnet-backend.yaml",
+      ".ai/scripts/ai_context_multi_hop_upgrade.py",
+      ".ai/scripts/ai_context_package_apply.py",
+      ".ai/scripts/ai_context_target_provenance.py",
+      ".ai/scripts/check-all.sh",
+      ".ai/scripts/shell-assets.yaml",
+      ".ai/scripts/tests/test_ai_context_multi_hop_upgrade.py",
+      ".ai/scripts/tests/test_ai_context_packaging.py",
+      ".ai/scripts/validation-profile-registry.sh",
+      ".claude/skills/ai-context-upgrader/SKILL.md"
+    ],
     "approval_evidence": ["explicit repository-owner v0.14.0 delivery prompt"],
-    "test_execution": [],
-    "role_execution_aggregation": [],
+    "test_execution": [
+      {
+        "command": "host Python focused S2 GWT010",
+        "outcome": "passed",
+        "evidence": "One real unmocked two-hop route completed apply, target receipt, per-hop finalization, checkpoint admission, and completed-state tamper rejection in 86.172 seconds. A later current-byte run with additional completed-state assertions passed in 89.240 seconds before subsequent branch-local resume guards changed only separate paths."
+      },
+      {
+        "command": "host Python focused S2 GWT001-GWT009",
+        "outcome": "passed",
+        "evidence": "Nine tests passed in 7.597 seconds for initial/later-hop context, incomplete checkpoint rejection, direct-route rejection, checksum formats, crash idempotence, active evidence shape, portable import, and wrong-hop child rejection."
+      },
+      {
+        "command": "host Python focused S2 GWT013-GWT019 and GWT022",
+        "outcome": "passed",
+        "evidence": "Eight tests passed in 14.012 seconds for prepared-evidence tampering, failed preparation retention, minimum multi-hop route, staging residue, missing archive, unsupported package schema, validator disagreement, and matrix drift."
+      },
+      {
+        "command": "host Python focused S2 GWT020 and GWT021",
+        "outcome": "passed",
+        "evidence": "Missing/stale owner decisions fail before child mutation and permit only an exact-decision retry; missing/stale target-validation receipts preserve the unfinalized child and do not advance authority."
+      },
+      {
+        "command": "host Python focused S2 GWT024-GWT030",
+        "outcome": "passed",
+        "evidence": "Checkpoint child packet/decision/receipts, retained archive, proposal crash windows, rejected-child recovery, real S1 resolver-result sealing, retained validator.asset, and coordinated post-child evidence forgeries all fail closed."
+      },
+      {
+        "command": "host Python focused S2 GWT032",
+        "outcome": "passed",
+        "evidence": "Fresh independent re-audit passed 1 of 1 in 55.574 seconds; forged promoted validator evidence is rejected before rollback or checkpointing-resume changes journal, authority, target surface, or checkpoint bytes."
+      },
+      {
+        "command": "host Python focused S2 GWT003 and GWT017",
+        "outcome": "passed",
+        "evidence": "Fresh independent re-audit passed 2 of 2 in 1.974 seconds after the first precommit review proved both paths failed prematurely at resolver-result normalization. Direct routes now reject at the orchestrated-multi-hop gate and missing archives reach the pre-mutation materialization gate."
+      },
+      {
+        "command": "python .ai/scripts/tests/test_ai_context_packaging.py UpgradeRoutePackageProjectionGwtTests -v",
+        "outcome": "passed",
+        "evidence": "One core-only package projection test passed in 4.135 seconds with the multi-hop runtime, contract, schema, and template present and importable."
+      },
+      {
+        "command": "python .ai/scripts/tests/test_validation_profile_registry.py -v",
+        "outcome": "passed",
+        "evidence": "Seven tests passed in 0.586 seconds on the normal Windows ACL boundary after the earlier sandbox Git Bash signal-pipe failure; multi-hop validation is wired for fast, PR, release, and nightly profiles without activating nightly."
+      },
+      {
+        "command": "py -3 -B .ai/scripts/validate-ai-context.py",
+        "outcome": "failed",
+        "evidence": "The first post-workflow run found the new upgrader workflow step value `1a` violated the positive-integer contract. The canonical step sequence was renumbered without changing semantics."
+      },
+      {
+        "command": "py -3 -B .ai/scripts/validate-ai-context.py",
+        "outcome": "passed",
+        "evidence": "The materially changed rerun passed all source AI-context indexes, skills, wrappers, manifests, mappings, and bilingual entry checks."
+      },
+      {
+        "command": "py -3 -B .ai/scripts/tests/test_ai_context_wrapper_metadata.py -v",
+        "outcome": "blocked-by-environment",
+        "evidence": "The sandbox run produced 16 Temp ACL WinError 5 setup errors before assertions; it is not counted as a test failure or pass."
+      },
+      {
+        "command": "py -3 -B .ai/scripts/tests/test_ai_context_wrapper_metadata.py -v",
+        "outcome": "passed",
+        "evidence": "The authorized normal-ACL rerun passed 16 of 16 in 0.136 seconds."
+      },
+      {
+        "command": "py -3 -B .ai/scripts/validate-workflow-artifacts.py and validate-shell-assets.py",
+        "outcome": "passed",
+        "evidence": "Workflow artifact validation passed for 88 post-adoption workflows and shell-asset parity passed for 16 tracked assets after current evidence reconciliation."
+      },
+      {
+        "command": "combined focused S2 GWT010-GWT012",
+        "outcome": "cancelled",
+        "evidence": "The combined run emitted no terminal unittest result before parent-directed termination near the bounded execution limit; it is not counted as passed. The long and short cases were subsequently run separately."
+      },
+      {
+        "command": "fresh precommit 11-test batch",
+        "outcome": "timed-out",
+        "evidence": "The aggregate batch timed out after 114.028 seconds and is not counted as passed; disjoint targeted cases produced terminal results."
+      },
+      {
+        "command": "sandbox temporary-directory fixture attempts",
+        "outcome": "blocked-by-environment",
+        "evidence": "Windows sandbox Temp ACL returned WinError 5 before test logic. Exact commands were rerun on the authorized normal-ACL boundary. Two resulting inaccessible workspace test-residue directories were later verified and removed before commit preparation."
+      }
+    ],
+    "role_execution_aggregation": [
+      "Generic pre-#207 Terra Max contexts completed bounded implementation, contract projection, semantic review, and final precommit re-audit; no #207 canonical role or invocation is claimed."
+    ],
     "spec_compliance": {
       "outcome": "not-applicable",
       "coverage_percent": null,
       "evidence": []
     },
-    "validation_evidence": [],
-    "commits": [],
+    "validation_evidence": [
+      "S2 starts from exact merged S1 main 41a1b4bcc942b9a412d55a8dab77bcc5d7b6fbf2 on branch codex/2026-08-20-upg-003-multi-hop-upgrade-s2.",
+      "The child apply plan remains schema 2.2.0 and the child journal remains ai-context-package-apply-journal/v4; route-wide state is retained separately under the Git administrative directory.",
+      "A path-free sealed resolver-result binds the raw matrix identity and full selected S1 edges; prepare fresh-resolves supplied assets and retains exact validator bytes without requiring external assets during target finalization.",
+      "Every later hop requires the exact preceding finalized checkpoint, unchanged Git HEAD, exact package/checksum/manifest/validator/decision/receipt chain, and matching target authority/surface.",
+      "Rollback is limited to the active unfinalized hop; resume and checkpointing revalidate sealed active evidence before mutation and never claim reversal of finalized checkpoints.",
+      "The first final precommit review failed GWT003/GWT017 because resolver-result normalization preempted their intended gates; the bounded repair retained exact equality and the fresh independent re-audit passed GWT003/GWT017/GWT032 with identical pre/post manifest 1ef51c665da89a829594cfaafae7c3c18bd23b0171c770af0875b20d085415b0.",
+      "Current pre-workflow core SHA-256 identities: multi-hop 285946d97bfa5268149e60b58ca0c911d58064465aee3e87fccc7ce7e3956883; package apply cd64f875b7a9ff0857d431aabfac78b9ae9ea036a15660a32170469265b26980; target provenance 1ba6d939e2ea7f625ea165fc7f97f43fe6b3d724caed605bc1f81d528bea285a; focused tests 3b090e6b7f26af2ed4ef4ba88c7d57750a5bba527b0f0401a6c9d8106e6514b1.",
+      "AST parsing, YAML/contract/runtime alignment, shell-assets parity, wrapper metadata, package projection, validation registry, and git diff --check passed in focused execution.",
+      "No Project-field restoration was attempted; that online mechanical recovery remains owned by the separate conversation selected by the repository owner."
+    ],
+    "commits": ["fc991eb0ac4a7fc50402896e6b2adf20581ebfb8"],
     "follow_up_needed": true
   }
 }

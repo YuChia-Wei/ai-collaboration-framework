@@ -17,7 +17,7 @@
 - `branch_segment`: `2`
 - `status`: `active`
 - `created_at`: `2026-08-20T17:03:25+08:00`
-- `updated_at`: `2026-08-20T20:03:45+08:00`
+- `updated_at`: `2026-08-20T23:14:27+08:00`
 - `template_source`: `.ai/assets/skills/software-development-orchestrator/templates/development-workflow-plan-template.md`
 - `template_version`: `1.4.0`
 - `workflow_locator`: `.dev/workflows/2026-08-20-upg-003-multi-hop-upgrade/workflow.yaml`
@@ -82,7 +82,7 @@ Before #207 integrates, every delegated context is generic and is not evidence t
 | Stage | Role / Canonical Path | Owning Skill | Final/Current Disposition | Attempt Summary | Final Integration Owner / Decision | Record or Task Reference |
 | --- | --- | --- | --- | --- | --- | --- |
 | UPG-003-S1 | pre-#207 generic bounded contexts / no canonical path | ai-context-upgrader | integrated | Terra Max performed bounded implementation and repair work. Fresh Sol High passed exact admitted head `95b37747cee83cbe837bca9438b2450ee8c1bb85`; five hosted contexts and live merge admission passed; PR #226 merged as `41a1b4bcc942b9a412d55a8dab77bcc5d7b6fbf2`. Earlier failed audits and hosted attempts remain retained. | root / merged exact admitted head and kept #206 open | `tasks/UPG-003-S1.json` |
-| UPG-003-S2 | pre-#207 generic bounded contexts / no canonical path | ai-context-upgrader | in progress | Two Terra Max contexts own read-only deterministic inventory and bounded shared implementation design. The first design checkpoint correctly stopped because a two-file wrapper could not satisfy later-hop dirty-target admission, pending-receipt checkpointing, and truthful rollback. | root / integrate only a shared fail-closed state machine, then require a fresh independent auditor | `tasks/UPG-003-S2.json` |
+| UPG-003-S2 | pre-#207 generic bounded contexts / no canonical path | ai-context-upgrader | implementation validated / immutable commit pending | Terra Max contexts completed bounded implementation, contract projection, repeated semantic review, and a fresh final-byte precommit re-audit. The first precommit review failed two prematurely intercepted negative fixtures; after bounded repair, the fresh re-audit passed GWT003/GWT017/GWT032 with unchanged bytes. No #207 role is claimed. | root / create immutable commit, then require fresh Sol High exact-head audit and hosted admission | `tasks/UPG-003-S2.json` |
 
 ## Approval Gates
 
@@ -110,8 +110,8 @@ Before #207 integrates, every delegated context is generic and is not evidence t
 
 | Level | Outcome | Evidence | Deferral Owner / Follow-up |
 | --- | --- | --- | --- |
-| unit | passed | Host Python route resolver suite passed 20/20 after typed evidence repair, including sidecar/archive binding, validator argv and output receipts, owner approval, and symlink escape. | none |
-| integration | passed | Isolated core-only extracted-package projection passed 1/1 after the current receipt fixture was reconciled; validation registry passed 7/7 on the authorized host boundary. | Fresh independent audit and hosted exact-head checks remain admission gates. |
+| unit | passed | Focused S2 groups cover route/active context, exact checkpoint admission, decision/receipt gates, prepared-evidence tampering, interruption/recovery, active-hop rollback, and resolver-result/validator-asset binding. Final re-audit passed GWT003/GWT017/GWT032. | none |
+| integration | passed | Real unmocked two-hop GWT010 passed within 120 seconds; isolated core-only package projection, wrapper metadata, shell-assets parity, and validation registry passed. Aggregate timeout/cancelled attempts remain non-passing evidence. | Immutable exact-head Sol High audit and hosted exact-head checks remain admission gates. |
 
 ## Spec Compliance Selection
 
@@ -122,11 +122,11 @@ Before #207 integrates, every delegated context is generic and is not evidence t
 
 ## Progress And Handoff
 
-- Current stage: UPG-003-S2 started from clean integrated S1 main `41a1b4bcc942b9a412d55a8dab77bcc5d7b6fbf2`. Shared transaction/finalization boundaries are being mapped before mutation; a wrapper-only design was rejected because it could not truthfully satisfy later-hop and rollback invariants.
+- Current stage: UPG-003-S2 implementation and focused precommit admission are complete from integrated S1 main `41a1b4bcc942b9a412d55a8dab77bcc5d7b6fbf2`. An immutable implementation/evidence commit, fresh Sol High exact-head audit, hosted admission, deferred PR, and merge remain.
 - Completed stages: S1 route policy, matrix, resolver, portable CLI/projection, exact-head independent audit, hosted admission, deferred PR #226 merge, and online #206/#222 read-back.
 - Deferred stages and reasons: S3 waits for merged S2 plus #207/#208 integration.
 - Open decisions: None for S1; unavailable or ambiguous assets become reconciliation-required rather than inferred.
-- Continuation instructions: Complete S2 on the current branch, deliver one deferred PR with `Refs #206`, keep #206 open, and do not claim route-wide reversal of already finalized hops.
+- Continuation instructions: Commit the validated S2 bytes and current workflow evidence, obtain a fresh read-only Sol High exact-head audit and hosted admission, then deliver one deferred PR with `Refs #206`; keep #206 open and do not claim route-wide reversal of finalized hops.
 - Target policy references: `.ai/assets/skills/ai-context-upgrader/skill.yaml`; `.dev/standards/WORKFLOW-GATE-POLICY.md`; `.dev/standards/GITHUB-TERMINAL-ISSUE-CLOSURE-POLICY.md`.
 - Registered handoff checkpoint: none.
 - Branch history and checkpoint handoffs: Segment 1 starts from clean integrated main `ead96acb0ac4ea73a94c6de59604b47f1f78b5ae`; Segment 2 starts from S1 merge `41a1b4bcc942b9a412d55a8dab77bcc5d7b6fbf2`.
@@ -136,19 +136,19 @@ Before #207 integrates, every delegated context is generic and is not evidence t
 | Segment | Branch | Base | Checkpoint Type | Commit | Remote / Target | Recorded At | Reason | Resume Branch / Action |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | 1 | `codex/2026-08-20-upg-003-route-resolution-s1-admission` | `main@ead96acb0ac4ea73a94c6de59604b47f1f78b5ae` | active-stage | `2e468445ff876c78b4284e3548134dfdf37bb5b3` | draft PR #226 / PR S1 | `2026-08-20T19:45:54+08:00` | Declaration-head audit and hosted missing-validator failures are repaired at an exact committed head. | Obtain a fresh independent exact-head audit and fresh hosted admission, then merge S1 before branching S2 from integrated main. |
-| 2 | `codex/2026-08-20-upg-003-multi-hop-upgrade-s2` | `main@41a1b4bcc942b9a412d55a8dab77bcc5d7b6fbf2` | active-stage | `41a1b4bcc942b9a412d55a8dab77bcc5d7b6fbf2` | local S2 branch / PR pending | `2026-08-20T20:03:45+08:00` | S1 integrated with exact audit, hosted, admission, and online read-back; S2 begins on one retained workflow. | Implement and validate the shared multi-hop state machine before creating the deferred S2 PR. |
+| 2 | `codex/2026-08-20-upg-003-multi-hop-upgrade-s2` | `main@41a1b4bcc942b9a412d55a8dab77bcc5d7b6fbf2` | active-stage | `fc991eb0ac4a7fc50402896e6b2adf20581ebfb8` | local S2 branch / PR pending | `2026-08-20T23:14:27+08:00` | S2 source, canonical transaction contract, portable projection, and focused fail-closed admission are complete; fresh precommit re-audit passed current bytes. | Create immutable implementation/evidence commit, then obtain fresh Sol High exact-head audit and hosted admission before PR merge. |
 
 ## Completion Summary
 
-- Outcome: S1 is integrated; S2 is in progress from exact merge `41a1b4bcc942b9a412d55a8dab77bcc5d7b6fbf2`. Issue #206 remains open and the next deferred gate is a truthful multi-hop transaction PR.
-- Changed artifacts: Upgrade support policy, canonical matrix schema/template, read-only resolver and CLI, skill/profile registration, focused route and package-projection GWTs, validation registry, and this workflow evidence.
+- Outcome: S1 is integrated; S2 implementation has passed focused precommit admission but remains in progress until an exact immutable head passes independent Sol High audit, hosted checks, and deferred PR admission. Issue #206 remains open.
+- Changed artifacts: Multi-hop transaction runtime, child package/finalization composition, canonical transaction contract/schema/template, skill/profile and wrapper projection, validation runner wiring, focused transaction and package-projection GWTs, and this workflow evidence.
 - Approved requirement/specification evidence: Live Issue #206 and explicit owner instructions.
 - Implementation completion evidence: Resolver emits only four governed route kinds, cross-binds checksum sidecars, validator argv, canonical receipts, output bytes, and owner-approved deprecation evidence, and never accepts a target or invokes package apply. Commit `14621d0c2f6bceb795d33d38f7ec86e2b607c354` additionally cross-binds receipt from/to versions and ordered required cutover claims, rejects matrix duplicate keys, and uses retained canonical candidate authority bytes.
 - Required test outcomes: Prior route 20/20, isolated package projection 1/1, validation registry 6/6, and shell-assets validation passed. The first full-module external attempt failed because its output capture was missing and remains failed evidence. The exact a57e484ba6456358971f86bcf3198acf04e6ac1e full-module task then failed after 156.213 seconds with GWT-014/GWT-020 fixture failures; it remains failed evidence and was not rerun unchanged. The repair committed at `14621d0c2f6bceb795d33d38f7ec86e2b607c354` passes route 24/24 in 0.895 seconds plus GWT-014 1/1 in 67.216 seconds and GWT-020 1/1 in 61.502 seconds on the normal Windows ACL boundary. For the current bounded CI repair, Bash syntax, shell-assets validation, and validation registry 7/7 in 0.525 seconds passed. Package projection first failed 1/1 in 2.855 seconds because its synthetic receipt lacked the current exact from/to/cutover fields; after materially changing only that fixture, the selector passed 1/1 in 2.971 seconds. No full package module or hosted job was rerun.
 - Selected compliance evidence: Not applicable.
 - Review disposition: Fresh exact-head independent audit passed at `26d5ccbcd063e28df7d3cfddeb2a715c6f193644` with zero findings. The read-only audit of `b87d0bd071696195976e77afd4fc59264f76aee5` failed only on stale workflow claims and made no repair. Commit `2e468445ff876c78b4284e3548134dfdf37bb5b3` requires fresh audit.
 - Validation evidence: Base identity `ead96acb0ac4ea73a94c6de59604b47f1f78b5ae`; framework-source packet `b244520f8cb7653c067e2fe13a2aeef62f9974f8f345b0cac2dee3c63159ff05`; live published v0.6-v0.13 identities; historical packages have no portable validator and v0.10-v0.11 remains deferred-with-owner. Fresh Sol High audits of `f6de771bb37a6224fb09543edf911f61aa7ab2bc` and `a57e484ba6456358971f86bcf3198acf04e6ac1e` failed without repair in their audit contexts. The audit of `635abaeb532a2383dfb03cc1d13bd50e41f7e80b` likewise made no repair and found: edge receipts could be matrix-relabelled because they omitted `from_version`, `to_version`, and required cutover claims; route-matrix YAML accepted duplicate keys; and GWT-014/GWT-020 used placeholder candidate authority digests. Commit `14621d0c2f6bceb795d33d38f7ec86e2b607c354` contains that focused repair; `26d5ccbcd063e28df7d3cfddeb2a715c6f193644` passed its exact-head audit. Declaration head `b87d0bd071696195976e77afd4fc59264f76aee5` failed audit only on stale workflow claims. At exact `b87d`, hosted governance job `96408142630` and Ubuntu PR job `96408142919` failed from the shared missing evidence-producing `upgrade-route-package-projection` execution; Build and validate candidate, Ubuntu prerequisite contract, and Windows prerequisite contract passed. No hosted job was rerun. Failed sandbox, fixture, and external-capture attempts remain recorded and are not promoted.
-- Workflow task state: in progress.
+- Workflow task state: in progress; implementation validated, exact-head/hosted/PR admission pending.
 - Commits: `f6de771bb37a6224fb09543edf911f61aa7ab2bc`, `a57e484ba6456358971f86bcf3198acf04e6ac1e`, `71c4ec35ff180a70934333cdd296eb4b016050f8`, `ce0b4b6988030af1994edbbf37786fe7a7fbd952`, `635abaeb532a2383dfb03cc1d13bd50e41f7e80b`, `14621d0c2f6bceb795d33d38f7ec86e2b607c354`, `26d5ccbcd063e28df7d3cfddeb2a715c6f193644`, `b87d0bd071696195976e77afd4fc59264f76aee5`, and `2e468445ff876c78b4284e3548134dfdf37bb5b3`.
-- Branch / checkpoint / handoff evidence: Dedicated S1 admission branch `codex/2026-08-20-upg-003-route-resolution-s1-admission` continues from exact integrated main.
-- Residual risks: Historical origin routes remain reconciliation-required until a later candidate supplies and proves an exact compatible edge validator; commit `2e468445ff876c78b4284e3548134dfdf37bb5b3` requires fresh independent exact-head audit and fresh hosted admission; Project-field restoration is owned by another conversation.
+- Branch / checkpoint / handoff evidence: S2 branch `codex/2026-08-20-upg-003-multi-hop-upgrade-s2` starts from exact S1 merge `41a1b4bcc942b9a412d55a8dab77bcc5d7b6fbf2`; transition commit is `fc991eb0ac4a7fc50402896e6b2adf20581ebfb8`.
+- Residual risks: The current S2 bytes still require an immutable commit, fresh independent Sol High exact-head audit, hosted checks, live deferred-PR admission, and post-merge read-back. Historical origin routes remain reconciliation-required until S3 supplies and proves candidate assets. Project-field restoration remains owned by another conversation.
