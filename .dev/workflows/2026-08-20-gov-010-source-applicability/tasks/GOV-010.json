@@ -1,0 +1,104 @@
+{
+  "template_id": "ai-context-governance-remediation-task",
+  "template_version": "1.1.0",
+  "template_created_at": "2026-07-10T18:22:49+08:00",
+  "template_updated_at": "2026-07-27T09:52:09+08:00",
+  "task_id": "GOV-010",
+  "workflow_id": "2026-08-20-gov-010-source-applicability",
+  "owner_skill": "ai-context-governance",
+  "status": "completed",
+  "created_at": "2026-08-20T08:17:32+08:00",
+  "updated_at": "2026-08-20T08:49:21+08:00",
+  "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
+  "model": "gpt-5.6-sol",
+  "reasoning_effort": "high",
+  "finding_ids": [
+    "#219#GOV-010"
+  ],
+  "scope": {
+    "target": "Framework-source and initialized-target effective-rule applicability boundary",
+    "files": [
+      ".dev/standards/AI-CONTEXT-SOURCE-EFFECTIVE-RULES.yaml",
+      ".dev/standards/AI-CONTEXT-SOURCE-EFFECTIVE-RULE-EVIDENCE.schema.yaml",
+      ".dev/standards/AI-CONTEXT-BOUNDARY.md",
+      ".ai/scripts/ai_context_effective_rules.py",
+      ".ai/scripts/resolve-effective-rule-packet.py",
+      ".ai/scripts/README.md",
+      ".ai/assets/CANONICAL-SCHEMA.MD",
+      ".ai/assets/skills/software-development-orchestrator/skill.yaml",
+      ".ai/assets/skills/requirement-author/skill.yaml",
+      ".ai/assets/skills/spec-author/skill.yaml",
+      ".ai/assets/skills/problem-frame-author/skill.yaml",
+      ".ai/assets/skills/ddd-ca-hex-architect/skill.yaml",
+      ".ai/assets/skills/bdd-gwt-test-designer/skill.yaml",
+      ".ai/assets/skills/slice-implementer/skill.yaml",
+      ".ai/assets/skills/local-change-implementer/skill.yaml",
+      ".ai/assets/skills/code-reviewer/skill.yaml",
+      ".ai/assets/skills/spec-compliance-validator/skill.yaml",
+      ".ai/assets/skills/ai-context-governance/references/semantic-customization-lifecycle.md",
+      ".ai/distribution/profiles/dotnet-backend.yaml",
+      ".ai/scripts/tests/test_ai_context_effective_rules.py",
+      ".ai/scripts/tests/test_effective_rule_action_skill_contract.py",
+      ".ai/scripts/tests/test_ai_context_packaging.py"
+    ],
+    "constraints": [
+      "Preserve initialized-target fail-closed behavior.",
+      "Do not fabricate downstream provenance for framework-source work.",
+      "Do not permit remembered-default, broad-scan, or alternate-skill fallback.",
+      "Bind source evidence to exact repository, commit, canonical rule bytes and digests, selectors, and applicability mode.",
+      "Exclude source-only execution evidence from packages and downstream provenance.",
+      "Keep runtime wrappers thin and aligned with canonical skill specs."
+    ],
+    "non_goals": [
+      "Historical evidence rewrite",
+      "Local roadmap or backlog changes",
+      "Tag, Release, publication, or nightly activation",
+      "Unrelated Issue implementation"
+    ]
+  },
+  "execution": {
+    "steps": [
+      "Inventory existing resolver, schemas, action-skill declarations, packaging boundary, wrappers, and fixtures.",
+      "Implement the explicit two-mode applicability and diagnostic contract.",
+      "Add focused positive, negative, packaging, and wrapper-parity fixtures.",
+      "Run focused validation and freeze a clean exact head.",
+      "Obtain a fresh independent audit, hosted checks, merge admission, and post-merge read-back."
+    ],
+    "validation": [
+      "python .ai/scripts/validate-workflow-artifacts.py",
+      "Focused effective-rule resolver and action-skill contract tests",
+      "Focused package/distribution exclusion tests",
+      "python .ai/scripts/validate-ai-context.py",
+      "python .ai/scripts/validate-source-governance.py",
+      "git diff --check"
+    ],
+    "last_completed_step": "Committed, pushed, and exercised the explicit framework-source and initialized-target applicability boundary at clean checkpoint 19d2c952014c2a135bd9a34824cf9e5610932ec8.",
+    "next_action": "Workflow-level provider admission for PR #223: final exact-head source evidence, independent audit, hosted checks, merge, and read-back."
+  },
+  "results": {
+    "summary": "The bounded GOV-010 implementation task is complete; workflow-level PR #223 provider admission and post-merge read-back remain.",
+    "files_changed": [
+      "source applicability policy and transient evidence schema",
+      "mode-explicit resolver and CLI",
+      "ten canonical action-skill consumption contracts",
+      "source-only package exclusions and package fixture",
+      "canonical boundary and resolver documentation",
+      "focused resolver and contract tests"
+    ],
+    "tests_run": [
+      "PASS: py -3 -B .ai/scripts/tests/test_ai_context_effective_rules.py (27 tests, 2 existing skips)",
+      "PASS: python .ai/scripts/tests/test_effective_rule_action_skill_contract.py (3 tests)",
+      "PASS: py -3 .ai/scripts/tests/test_ai_context_packaging.py DeterministicPackageGwtTests.test_gwt_000b_given_source_effective_rule_policy_schema_and_evidence_when_built_then_downstream_excludes_them_and_retains_resolver (1 test)",
+      "PASS: py -3 .ai/scripts/tests/test_ai_context_wrapper_metadata.py (16 tests)",
+      "PASS: python .ai/scripts/validate-ai-context.py",
+      "PASS: python .ai/scripts/validate-source-governance.py",
+      "PASS: python .ai/scripts/validate-source-dispositions.py",
+      "PASS: python .ai/scripts/validate-workflow-artifacts.py",
+      "PASS: git diff --check",
+      "FAILED NON-GATING: py -3 .ai/scripts/tests/test_ai_context_packaging.py timed out after 124.025 seconds; no output, no rerun, later cleanup read-back found no run-owned process or .tmp/p residue"
+    ],
+    "finding_status": "remediated",
+    "residual_risk": "No implementation finding remains; exact-head independent audit, hosted checks, merge admission, and provider read-back remain workflow gates.",
+    "follow_up_needed": false
+  }
+}

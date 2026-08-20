@@ -26,6 +26,7 @@ SECTION_KEYS = (
     "applies_when",
     "excludes",
     "resolver",
+    "applicability",
     "selectors",
     "unresolved_outcome",
     "consumption_order",
@@ -39,16 +40,48 @@ SELECTORS = (
     "technology_profile",
     "file_type",
 )
-EVIDENCE = (
+COMMON_EVIDENCE = (
     "resolver_outcome",
+    "applicability_mode",
     "loaded_rule_ids",
-    "baseline.framework_version",
-    "target_state.digest",
     "request.capability",
     "request.execution_mode",
     "request.technology_profile",
     "request.file_type",
+    "rules[].normative_statement_digest",
+    "packet_digest",
 )
+SOURCE_EVIDENCE = (
+    "source_repository.id",
+    "source_repository.root",
+    "source_repository.origin_url",
+    "source_repository.commit",
+    "source_repository.git_status.digest",
+    "execution_files[].path",
+    "execution_files[].blob_digest",
+    "execution_files[].working_tree_digest",
+    "selection_evidence",
+    "catalogs[].digest",
+)
+TARGET_EVIDENCE = (
+    "baseline.framework_version",
+    "target_state.digest",
+)
+APPLICABILITY = {
+    "selector": "applicability_mode",
+    "modes": {
+        "framework-source": {
+            "authority": ".dev/standards/AI-CONTEXT-SOURCE-EFFECTIVE-RULES.yaml",
+            "rule_selection": "explicit source_rule_ids and selection_evidence",
+            "downstream_provenance": "not-applicable",
+        },
+        "initialized-target": {
+            "authority": ".dev/ai-context/provenance.yaml",
+            "rule_selection": "exact target effective-state route",
+            "downstream_provenance": "required",
+        },
+    },
+}
 SEMANTIC_CONSISTENCY = {
     "identity": "rule_id",
     "statement_bytes": "exact UTF-8 rules[].normative_statement bytes",
@@ -58,9 +91,14 @@ SEMANTIC_CONSISTENCY = {
         "across consumers"
     ),
     "default_mismatch_outcome": "warning",
-    "stricter_policy_owner": "target-owned",
+    "stricter_policy_owner": (
+        "source-governance-owned in framework-source mode; "
+        "target-owned in initialized-target mode"
+    ),
 }
 PROHIBITIONS = (
+    "Do not infer applicability mode from repository contents, remembered state, or missing downstream provenance.",
+    "Do not require, fabricate, or persist downstream provenance in framework-source mode.",
     "Do not scan broad target or framework documents to discover rule semantics.",
     "Do not fall back to framework defaults.",
     "Do not select an alternate route when the exact request route is unresolved.",
@@ -68,8 +106,9 @@ PROHIBITIONS = (
     "Keep analyzer severity and warnings-as-errors separate and target-owned.",
 )
 CONSUMPTION_ORDER = (
-    "Consume a freshness-verified task-scoped packet before reading profile "
-    "references needed for the applicable action."
+    "Select the applicability mode explicitly, then consume its "
+    "freshness-verified task-scoped evidence before reading profile references "
+    "needed for the applicable action."
 )
 
 
@@ -104,10 +143,30 @@ class EffectiveRuleActionSkillContractTests(unittest.TestCase):
                     ".ai/scripts/resolve-effective-rule-packet.py",
                     contract["resolver"],
                 )
+                self.assertEqual(APPLICABILITY, contract["applicability"])
                 self.assertEqual(SELECTORS, tuple(contract["selectors"]))
                 self.assertEqual("stop-applicable-action", contract["unresolved_outcome"])
                 self.assertEqual(CONSUMPTION_ORDER, contract["consumption_order"])
-                self.assertEqual(EVIDENCE, tuple(contract["evidence"]["required"]))
+                self.assertEqual(
+                    COMMON_EVIDENCE,
+                    tuple(contract["evidence"]["required_common"]),
+                )
+                self.assertEqual(
+                    SOURCE_EVIDENCE,
+                    tuple(
+                        contract["evidence"]["required_by_mode"][
+                            "framework-source"
+                        ]
+                    ),
+                )
+                self.assertEqual(
+                    TARGET_EVIDENCE,
+                    tuple(
+                        contract["evidence"]["required_by_mode"][
+                            "initialized-target"
+                        ]
+                    ),
+                )
                 self.assertEqual(
                     SEMANTIC_CONSISTENCY,
                     contract["semantic_consistency"],
@@ -121,6 +180,8 @@ class EffectiveRuleActionSkillContractTests(unittest.TestCase):
 
         self.assertIn("## Effective Rule Consumption", schema)
         self.assertIn("`.ai/scripts/resolve-effective-rule-packet.py`", schema)
+        self.assertIn("`framework-source`", schema)
+        self.assertIn("`initialized-target`", schema)
         self.assertIn("`rules[].normative_statement` bytes", schema)
         self.assertIn("`rules[].normative_statement_digest`", schema)
         self.assertIn("analyzer severity and warnings-as-errors", schema)

@@ -464,6 +464,67 @@ class DeterministicPackageGwtTests(unittest.TestCase):
         finally:
             fixture.close()
 
+    def test_gwt_000b_given_source_effective_rule_policy_schema_and_evidence_when_built_then_downstream_excludes_them_and_retains_resolver(self) -> None:
+        fixture = SyntheticPackageRepo()
+        source_only_paths = (
+            ".dev/standards/AI-CONTEXT-SOURCE-EFFECTIVE-RULES.yaml",
+            ".dev/standards/AI-CONTEXT-SOURCE-EFFECTIVE-RULE-EVIDENCE.schema.yaml",
+            ".dev/workflows/2026-08-20-source-effective-rule/evidence/source-execution.yaml",
+        )
+        resolver_path = ".ai/scripts/resolve-effective-rule-packet.py"
+        try:
+            for path in source_only_paths:
+                target = fixture.root / path
+                target.parent.mkdir(parents=True, exist_ok=True)
+                target.write_text(
+                    "source-only effective-rule execution bytes\n",
+                    encoding="utf-8",
+                    newline="\n",
+                )
+            profile_path = fixture.root / fixture.profile
+            profile = yaml.safe_load(profile_path.read_text(encoding="utf-8"))
+            profile["exclusions"].extend(
+                [
+                    {
+                        "id": "source-effective-rule-execution",
+                        "classification": "source-only",
+                        "patterns": list(source_only_paths[:2]),
+                        "reason": "Source applicability policy and schema are not portable.",
+                    },
+                    {
+                        "id": "source-effective-rule-workflow-evidence",
+                        "classification": "source-only",
+                        "patterns": [".dev/workflows/*/**"],
+                        "reason": "Source execution evidence is not portable.",
+                    },
+                ]
+            )
+            profile_path.write_text(
+                yaml.safe_dump(profile, sort_keys=False), encoding="utf-8", newline="\n"
+            )
+            git(fixture.root, "add", ".")
+            git(fixture.root, "commit", "-qm", "source effective rule packaging fixture")
+
+            result = fixture.build("source-effective-rule-exclusion")
+            package_id = str(result["package_id"])
+            source_members = {
+                f"{package_id}/payload/{path}" for path in source_only_paths
+            }
+            resolver_member = f"{package_id}/payload/{resolver_path}"
+            for archive_name in ("zip", "tar_gz"):
+                with self.subTest(archive=archive_name):
+                    members = PACKAGE.validate_archive(Path(result[archive_name]))
+                    self.assertTrue(source_members.isdisjoint(members))
+                    self.assertIn(resolver_member, members)
+
+            payload = fixture.extract(result, "source-effective-rule-extracted") / "payload"
+            self.assertTrue((payload / resolver_path).is_file())
+            self.assertTrue(
+                all(not (payload / path).exists() for path in source_only_paths)
+            )
+        finally:
+            fixture.close()
+
     def test_gwt_000c_given_repository_identity_gate_when_profile_is_read_then_all_control_files_are_source_only(self) -> None:
         profile = yaml.safe_load(
             (ROOT / ".ai/distribution/profiles/dotnet-backend.yaml").read_text(
@@ -485,6 +546,17 @@ class DeterministicPackageGwtTests(unittest.TestCase):
         self.assertIn(
             ".ai/distribution/**",
             exclusions["source-distribution-control"]["patterns"],
+        )
+        self.assertEqual(
+            {
+                ".dev/standards/AI-CONTEXT-SOURCE-EFFECTIVE-RULES.yaml",
+                ".dev/standards/AI-CONTEXT-SOURCE-EFFECTIVE-RULE-EVIDENCE.schema.yaml",
+            },
+            set(exclusions["source-effective-rule-execution"]["patterns"]),
+        )
+        self.assertEqual(
+            "source-only",
+            exclusions["source-effective-rule-execution"]["classification"],
         )
 
     def test_gwt_0000_given_source_local_policy_and_portable_mapping_when_projected_then_target_gets_only_portable_bytes(self) -> None:
