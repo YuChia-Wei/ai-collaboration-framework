@@ -6,9 +6,9 @@
   "task_id": "GOV-010",
   "workflow_id": "2026-08-20-gov-010-source-applicability",
   "owner_skill": "ai-context-governance",
-  "status": "in_progress",
+  "status": "completed",
   "created_at": "2026-08-20T08:17:32+08:00",
-  "updated_at": "2026-08-20T08:46:07+08:00",
+  "updated_at": "2026-08-20T08:49:21+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-5.6-sol",
   "reasoning_effort": "high",
@@ -72,11 +72,11 @@
       "python .ai/scripts/validate-source-governance.py",
       "git diff --check"
     ],
-    "last_completed_step": "Implemented and focused-validated the explicit framework-source and initialized-target applicability boundary.",
-    "next_action": "Commit and push the implementation checkpoint, create the terminal-close PR and declaration, then freeze the final exact head for source execution evidence and independent audit."
+    "last_completed_step": "Committed, pushed, and exercised the explicit framework-source and initialized-target applicability boundary at clean checkpoint 19d2c952014c2a135bd9a34824cf9e5610932ec8.",
+    "next_action": "Workflow-level provider admission for PR #223: final exact-head source evidence, independent audit, hosted checks, merge, and read-back."
   },
   "results": {
-    "summary": "Implementation and focused local validation are complete; final exact-head source execution, independent audit, hosted checks, and provider admission remain.",
+    "summary": "The bounded GOV-010 implementation task is complete; workflow-level PR #223 provider admission and post-merge read-back remain.",
     "files_changed": [
       "source applicability policy and transient evidence schema",
       "mode-explicit resolver and CLI",
@@ -97,8 +97,8 @@
       "PASS: git diff --check",
       "FAILED NON-GATING: py -3 .ai/scripts/tests/test_ai_context_packaging.py timed out after 124.025 seconds; no output, no rerun, later cleanup read-back found no run-owned process or .tmp/p residue"
     ],
-    "finding_status": "remediated-pending-independent-verification",
-    "residual_risk": "The actual framework-source packet intentionally cannot resolve until these exact policy, schema, resolver, and catalog bytes exist in Git HEAD.",
-    "follow_up_needed": true
+    "finding_status": "remediated",
+    "residual_risk": "No implementation finding remains; exact-head independent audit, hosted checks, merge admission, and provider read-back remain workflow gates.",
+    "follow_up_needed": false
   }
 }
