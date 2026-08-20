@@ -1,0 +1,66 @@
+schema_version: "1.0"
+registry_id: "provider-capability-projections"
+source_of_truth: "canonical"
+canonical_contract:
+  availability: "canonical-contract-available"
+  registry_path: ".ai/assets/shared/provider-neutral-capability-registry.yaml"
+  role_asset_ids:
+    - "mechanical-evidence-worker"
+    - "reconciliation-worker"
+    - "semantic-governance-analyst"
+    - "evidence-report-synthesizer"
+    - "fixed-head-independent-auditor"
+provider_projections:
+  codex:
+    configuration_state: "codex-runtime-configured"
+    profiles:
+      - role_asset_id: "mechanical-evidence-worker"
+        profile_path: ".codex/agents/bounded-routine-worker.toml"
+        profile_name: "bounded-routine-worker"
+        model: "gpt-5.6-terra"
+        model_reasoning_effort: "medium"
+        sandbox_mode: "read-only"
+      - role_asset_id: "reconciliation-worker"
+        profile_path: ".codex/agents/reconciliation-worker.toml"
+        profile_name: "reconciliation-worker"
+        model: "gpt-5.6-terra"
+        model_reasoning_effort: "high"
+        sandbox_mode: "read-only"
+      - role_asset_id: "semantic-governance-analyst"
+        profile_path: ".codex/agents/semantic-governance-analyst.toml"
+        profile_name: "semantic-governance-analyst"
+        model: "gpt-5.6-sol"
+        model_reasoning_effort: "xhigh"
+        sandbox_mode: "read-only"
+      - role_asset_id: "evidence-report-synthesizer"
+        profile_path: ".codex/agents/evidence-report-synthesizer.toml"
+        profile_name: "evidence-report-synthesizer"
+        model: "gpt-5.6-terra"
+        model_reasoning_effort: "high"
+        sandbox_mode: "read-only"
+      - role_asset_id: "fixed-head-independent-auditor"
+        profile_path: ".codex/agents/fixed-head-independent-auditor.toml"
+        profile_name: "fixed-head-independent-auditor"
+        model: "gpt-5.6-sol"
+        model_reasoning_effort: "max"
+        sandbox_mode: "read-only"
+  claude:
+    configuration_state: "claude-runtime-deferred"
+    profiles: []
+    deferred_reason: "No generic capability projection is configured by this registry; deferred does not mean permanently unsupported."
+  copilot:
+    configuration_state: "copilot-runtime-deferred"
+    profiles: []
+    deferred_reason: "No generic capability projection is configured by this registry; deferred does not mean permanently unsupported."
+current_session:
+  availability: "unknown"
+  invocation_evidence: "not-claimed"
+package_projection:
+  configured_provider: "codex"
+  profile_paths:
+    - ".codex/agents/bounded-routine-worker.toml"
+    - ".codex/agents/reconciliation-worker.toml"
+    - ".codex/agents/semantic-governance-analyst.toml"
+    - ".codex/agents/evidence-report-synthesizer.toml"
+    - ".codex/agents/fixed-head-independent-auditor.toml"
+  deferred_provider_runtime_paths: []

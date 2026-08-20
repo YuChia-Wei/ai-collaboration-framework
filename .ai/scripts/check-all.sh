@@ -2209,6 +2209,10 @@ run_command_check "python .ai/scripts/tests/test_ai_context_packaging.py Upgrade
     "AI Context Upgrade Route Package Projection" \
     "required" "true" "true"
 
+run_command_check "python .ai/scripts/tests/test_ai_context_packaging.py ProviderRolePackageProjectionGwtTests -v" \
+    "Provider-Neutral Role Package Projection" \
+    "required" "true" "true"
+
 run_command_check "python .ai/scripts/tests/test_ai_context_multi_hop_upgrade.py -v" \
     "AI Context Multi-Hop Upgrade Transaction GWT Tests" \
     "required" "true" "true"

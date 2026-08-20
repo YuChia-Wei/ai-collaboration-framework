@@ -1,0 +1,167 @@
+{
+  "template_id": "software-development-orchestrator/development-workflow-task",
+  "template_version": "1.5.0",
+  "template_created_at": "2026-07-10T18:25:11+08:00",
+  "template_updated_at": "2026-08-05T02:12:00+08:00",
+  "workflow_id": "2026-08-20-sag-003-provider-neutral-roles",
+  "task_id": "SAG-003",
+  "owner_skill": "ai-context-governance",
+  "related_plan_id": "development-plan-2026-08-20-sag-003-provider-neutral-roles",
+  "status": "in_progress",
+  "created_at": "2026-08-20T23:55:54+08:00",
+  "updated_at": "2026-08-21T00:45:00+08:00",
+  "template_source": ".ai/assets/skills/software-development-orchestrator/templates/development-workflow-task-template.json",
+  "model": "gpt-5.6-sol",
+  "reasoning_effort": "high",
+  "workflow_locator": ".dev/workflows/2026-08-20-sag-003-provider-neutral-roles/workflow.yaml",
+  "scope": {
+    "goal": "Deliver live Issue #207 as five reusable provider-neutral capability roles plus a Codex-only runtime projection.",
+    "target": "Separate canonical role contracts, skill bindings, provider projection configuration, current-session availability, and genuine invocation evidence without duplicating upgrade-only agents.",
+    "files": [
+      ".ai/assets/sub-agent-role-prompts/mechanical-evidence-worker/**",
+      ".ai/assets/sub-agent-role-prompts/reconciliation-worker/**",
+      ".ai/assets/sub-agent-role-prompts/semantic-governance-analyst/**",
+      ".ai/assets/sub-agent-role-prompts/evidence-report-synthesizer/**",
+      ".ai/assets/sub-agent-role-prompts/fixed-head-independent-auditor/**",
+      ".ai/assets/shared/provider-neutral-capability-registry*.yaml",
+      ".ai/assets/shared/provider-projection-registry*.yaml",
+      ".ai/assets/skills/ai-context-upgrader/**",
+      ".codex/agents/*.toml",
+      ".ai/scripts/validate-ai-context.py",
+      ".ai/scripts/tests/test_provider_role_projection_contract.py",
+      ".ai/scripts/tests/test_ai_context_sub_agent_adapters.py",
+      ".ai/scripts/tests/test_ai_context_packaging.py",
+      ".ai/scripts/validation-profile-registry.sh",
+      ".ai/scripts/check-all.sh",
+      ".ai/scripts/shell-assets.yaml",
+      ".ai/distribution/profiles/dotnet-backend.yaml",
+      ".ai/SUB-AGENT-SYSTEM.MD",
+      ".agents/skills/ai-context-upgrader/SKILL.md",
+      ".claude/skills/ai-context-upgrader/SKILL.md"
+    ],
+    "constraints": [
+      "Canonical roles contain no Codex/OpenAI model, reasoning, service-tier, sandbox, or runtime-path fields.",
+      "Codex projection remains provider-specific and validates against the actual repository runtime schema.",
+      "Claude and Copilot remain deferred, not permanently unsupported or falsely configured.",
+      "Static configuration, current availability, and genuine invocation are distinct evidence states.",
+      "Deterministic tools remain mechanical authority and routine work does not auto-start the terminal auditor."
+    ],
+    "non_goals": [
+      "Implement Claude or Copilot runtime adapters",
+      "Duplicate upgrade-only roles",
+      "Implement Issue #208 delegation prompting",
+      "Restore Project fields",
+      "Create a tag, Release, or publish assets/packages"
+    ]
+  },
+  "inputs": {
+    "requirements": ["https://github.com/YuChia-Wei/ai-collaboration-framework/issues/207"],
+    "specifications": [
+      ".ai/assets/shared/ROLE-EXECUTION-CONTRACT.md",
+      ".ai/assets/skills/ai-context-upgrader/skill.yaml"
+    ],
+    "architecture_decisions": [
+      "Canonical role contracts and skill bindings are provider-neutral.",
+      "Codex model and reasoning fields exist only in the Codex projection.",
+      "Existing direct/delegated/unavailable/not-applicable execution evidence remains authoritative."
+    ],
+    "user_constraints": [
+      "Implement all five named roles; do not silently defer SAG-003.",
+      "Use Terra Max for bounded inventory and implementation support and fresh Sol High for exact-head audit.",
+      "Before integration, do not claim the new canonical roles already exist or were invoked."
+    ]
+  },
+  "execution": {
+    "capability_slot": "ai-context-governance",
+    "approval_contract": {
+      "status": "approved",
+      "required_before": "implementation",
+      "authorization_source": ["explicit repository-owner v0.14.0 delivery prompt"],
+      "pending_decision": ""
+    },
+    "implementation_contract": null,
+    "test_execution_contract": null,
+    "role_execution_records": [
+      {
+        "role": "pre-#207 bounded role/projection inventory context",
+        "provider": "Codex",
+        "model": "gpt-5.6-terra",
+        "reasoning_effort": "max",
+        "outcome": "completed",
+        "scope": "Read-only inventory of existing canonical role, Codex projection, runtime schema, execution-evidence, and specialized adapter surfaces.",
+        "canonical_role_claimed": false
+      },
+      {
+        "role": "pre-#207 bounded validation/package inventory context",
+        "provider": "Codex",
+        "model": "gpt-5.6-terra",
+        "reasoning_effort": "max",
+        "outcome": "completed",
+        "scope": "Read-only inventory of package projection, validators, binding manifests, negative fixtures, and runner wiring.",
+        "canonical_role_claimed": false
+      },
+      {
+        "role": "pre-#207 bounded semantic review context",
+        "provider": "Codex",
+        "model": "gpt-5.6-terra",
+        "reasoning_effort": "max",
+        "outcome": "passed",
+        "scope": "Read-only semantic review of the uncommitted candidate role, provider projection, validator, and package boundaries; not fixed-head certification.",
+        "canonical_role_claimed": false
+      }
+    ],
+    "spec_compliance": {"selected": false, "activation_source": [], "expected_outcome": "not-applicable"},
+    "steps": [
+      "Inventory and reuse existing role, reachability, execution-evidence, and adapter contracts.",
+      "Implement five provider-neutral role contracts and shared capability/binding registries.",
+      "Implement and validate the Codex-only provider projection without false runtime claims.",
+      "Add focused package, runtime-schema, and fail-closed fixtures.",
+      "Obtain fresh exact-head audit, hosted checks, terminal-close PR, and online read-back."
+    ],
+    "validation": [
+      "canonical contract/provider-leak fixtures",
+      "Codex runtime-schema validation",
+      "skill binding and execution-evidence fixtures",
+      "isolated package projection",
+      "fresh exact-head independent audit",
+      "required hosted checks"
+    ],
+    "commit_checkpoint": "One terminal-close PR for Issue #207 after exact-head audit and hosted admission.",
+    "deferred_items": ["Claude runtime projection", "GitHub Copilot runtime projection", "Issue #208 delegation opt-in and preflight"]
+  },
+  "results": {
+    "summary": "SAG-003 candidate contracts, Codex-only static projections, upgrader bindings, validators, package projection, and runner wiring are implemented and locally focused-validated; commit, fixed-head audit, hosted checks, and integration remain pending, so no new canonical role existence or invocation is claimed.",
+    "files_changed": [
+      "five candidate canonical role manifests and playbooks",
+      "provider-neutral capability and provider-projection registries plus schemas",
+      "ai-context-upgrader role bindings and thin wrapper references",
+      "five Codex static profile projections including evolved bounded-routine-worker",
+      "AI-context validator and focused fail-closed fixtures",
+      "portable package projection and fast/PR runner wiring"
+    ],
+    "approval_evidence": ["explicit repository-owner v0.14.0 delivery prompt"],
+    "test_execution": [
+      "PASS: py -3 -B .ai/scripts/validate-ai-context.py",
+      "PASS 8/8: py -3 -B .ai/scripts/tests/test_provider_role_projection_contract.py -v",
+      "BLOCKED sandbox TEMP ACL then PASS 31/31 on normal Windows ACL: test_ai_context_sub_agent_adapters.py",
+      "BLOCKED sandbox TEMP ACL then PASS 16/16 on normal Windows ACL: test_ai_context_wrapper_metadata.py",
+      "FAIL fixture output collision before assertions, then PASS 1/1 after removing the duplicate fixture entry: ProviderRolePackageProjectionGwtTests",
+      "BLOCKED sandbox Git Bash signal pipe then PASS 7/7 on normal Windows ACL: test_validation_profile_registry.py",
+      "PASS: validate-shell-assets.py, validate-workflow-artifacts.py, AST/TOML parse, and git diff --check",
+      "DIAGNOSTIC FAILED overall: codex doctor --json; config.load and local Codex 0.147.0 were OK, but provider reachability and local state-database checks failed, so current-session availability remains unknown"
+    ],
+    "role_execution_aggregation": [
+      "Two pre-#207 generic Terra Max inventories completed without canonical role claims.",
+      "One pre-#207 generic Terra Max read-only semantic review passed the latest uncommitted candidate bytes; it is not fixed-head certification."
+    ],
+    "spec_compliance": {"outcome": "not-applicable", "coverage_percent": null, "evidence": []},
+    "validation_evidence": [
+      "Live Issue #207 is open and Project status read-back is Inbox; Project-field restoration is intentionally not performed in this context.",
+      "No open pull request targets Issue #207 at admission.",
+      "Base main and origin/main are e27540bb34721a14d097316af8f5fd708b6982b2 with a clean worktree."
+      ,"Precommit semantic review PASS on candidate scope digest 8c1e4f1c24498bb68c198f71ed3e72c21225ebb152c66c64e5ef6b30e7cf0469 before this workflow-only evidence update."
+    ],
+    "commits": [],
+    "follow_up_needed": true
+  }
+}

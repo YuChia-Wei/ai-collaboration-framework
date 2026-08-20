@@ -1547,6 +1547,13 @@ class UpgradeRoutePackageProjectionGwtTests(unittest.TestCase):
         ".ai/assets/shared/governance/AI-CONTEXT-VERSION-POLICY.md"
     )
     TARGET_VERSION_POLICY = ".dev/standards/AI-CONTEXT-VERSION-POLICY.md"
+    PORTABLE_SHARED_REFERENCE_PATHS = (
+        ".ai/assets/shared/CLI-EXECUTION-ROUTING-CONTRACT.md",
+        ".ai/assets/shared/cli-execution-routing.schema.yaml",
+        ".ai/assets/shared/ROLE-EXECUTION-CONTRACT.md",
+        ".ai/assets/shared/provider-neutral-capability-registry.yaml",
+        ".ai/assets/shared/provider-projection-registry.yaml",
+    )
 
     def test_gwt_021_given_route_assets_when_core_only_payload_is_extracted_then_planner_isolated_and_asset_failures_stay_closed(self) -> None:
         source_profile = yaml.safe_load(
@@ -1599,10 +1606,7 @@ class UpgradeRoutePackageProjectionGwtTests(unittest.TestCase):
                 fixture_assets / "ai-context-governance",
                 ignore=shutil.ignore_patterns("__pycache__"),
             )
-            for path in (
-                ".ai/assets/shared/CLI-EXECUTION-ROUTING-CONTRACT.md",
-                ".ai/assets/shared/cli-execution-routing.schema.yaml",
-            ):
+            for path in self.PORTABLE_SHARED_REFERENCE_PATHS:
                 target = fixture.root / path
                 target.parent.mkdir(parents=True, exist_ok=True)
                 target.write_bytes((ROOT / path).read_bytes())
@@ -1646,10 +1650,7 @@ class UpgradeRoutePackageProjectionGwtTests(unittest.TestCase):
                 {
                     "id": "fixture-shared-upgrade-assets",
                     "component_id": "software-development-core",
-                    "source": [
-                        ".ai/assets/shared/CLI-EXECUTION-ROUTING-CONTRACT.md",
-                        ".ai/assets/shared/cli-execution-routing.schema.yaml",
-                    ],
+                    "source": list(self.PORTABLE_SHARED_REFERENCE_PATHS),
                     "target": "preserve-relative-path",
                     "ownership": "framework-managed",
                     "install_behavior": "managed",
@@ -2054,6 +2055,206 @@ class UpgradeRoutePackageProjectionGwtTests(unittest.TestCase):
                     if path.is_file()
                 },
             )
+        finally:
+            fixture.close()
+
+
+class ProviderRolePackageProjectionGwtTests(unittest.TestCase):
+    """Project SAG-003 candidates without inventing provider runtime parity."""
+
+    ROLE_ASSET_IDS = (
+        "mechanical-evidence-worker",
+        "reconciliation-worker",
+        "semantic-governance-analyst",
+        "evidence-report-synthesizer",
+        "fixed-head-independent-auditor",
+    )
+    ROLE_ASSET_PATHS = (
+        ".ai/assets/sub-agent-role-prompts/mechanical-evidence-worker/sub-agent.yaml",
+        ".ai/assets/sub-agent-role-prompts/mechanical-evidence-worker/references/"
+        "mechanical-evidence-playbook.md",
+        ".ai/assets/sub-agent-role-prompts/reconciliation-worker/sub-agent.yaml",
+        ".ai/assets/sub-agent-role-prompts/reconciliation-worker/references/"
+        "reconciliation-playbook.md",
+        ".ai/assets/sub-agent-role-prompts/semantic-governance-analyst/sub-agent.yaml",
+        ".ai/assets/sub-agent-role-prompts/semantic-governance-analyst/references/"
+        "semantic-governance-analysis-playbook.md",
+        ".ai/assets/sub-agent-role-prompts/evidence-report-synthesizer/sub-agent.yaml",
+        ".ai/assets/sub-agent-role-prompts/evidence-report-synthesizer/references/"
+        "evidence-report-synthesis-playbook.md",
+        ".ai/assets/sub-agent-role-prompts/fixed-head-independent-auditor/sub-agent.yaml",
+        ".ai/assets/sub-agent-role-prompts/fixed-head-independent-auditor/references/"
+        "fixed-head-independent-audit-playbook.md",
+    )
+    REGISTRY_PATHS = (
+        ".ai/assets/shared/provider-neutral-capability-registry.yaml",
+        ".ai/assets/shared/provider-neutral-capability-registry.schema.yaml",
+        ".ai/assets/shared/provider-projection-registry.yaml",
+        ".ai/assets/shared/provider-projection-registry.schema.yaml",
+    )
+    BINDING_PATHS = (
+        ".ai/assets/skills/ai-context-upgrader/references/role-execution-bindings.yaml",
+        ".ai/assets/skills/ai-context-upgrader/references/"
+        "role-execution-bindings.schema.yaml",
+    )
+    CODEX_PROFILE_PATHS = (
+        ".codex/agents/bounded-routine-worker.toml",
+        ".codex/agents/reconciliation-worker.toml",
+        ".codex/agents/semantic-governance-analyst.toml",
+        ".codex/agents/evidence-report-synthesizer.toml",
+        ".codex/agents/fixed-head-independent-auditor.toml",
+    )
+    TRANSLATOR_PATHS = (
+        ".ai/assets/sub-agent-role-prompts/context-translator/sub-agent.yaml",
+        ".ai/assets/sub-agent-role-prompts/context-translator/references/"
+        "translation-playbook.md",
+        ".codex/agents/context-translator.toml",
+        ".claude/agents/context-translator.md",
+        ".github/agents/context-translator.agent.md",
+    )
+
+    def test_gwt_022_given_provider_role_candidates_when_packaged_then_contracts_and_static_projection_stay_separate(self) -> None:
+        source_profile = yaml.safe_load(
+            (ROOT / ".ai/distribution/profiles/dotnet-backend.yaml").read_text(
+                encoding="utf-8"
+            )
+        )
+        source_entries = {entry["id"]: entry for entry in source_profile["entries"]}
+        self.assertEqual(
+            {"software-development-core", "ai-context-lifecycle-core", "dotnet-backend"},
+            {
+                source_entries["canonical-ai-assets"]["component_id"],
+                *(
+                    override["component_id"]
+                    for override in source_entries["canonical-ai-assets"][
+                        "component_overrides"
+                    ]
+                ),
+            },
+        )
+        self.assertEqual(
+            {".codex/agents/context-translator.toml", *self.CODEX_PROFILE_PATHS},
+            set(source_entries["codex-agent-adapters"]["source"]),
+        )
+
+        fixture = SyntheticPackageRepo()
+        try:
+            projected_paths = (
+                *self.ROLE_ASSET_PATHS,
+                *self.REGISTRY_PATHS,
+                *self.BINDING_PATHS,
+                *self.CODEX_PROFILE_PATHS,
+                *self.TRANSLATOR_PATHS,
+            )
+            for path in projected_paths:
+                target = fixture.root / path
+                target.parent.mkdir(parents=True, exist_ok=True)
+                target.write_bytes((ROOT / path).read_bytes())
+
+            profile_path = fixture.root / fixture.profile
+            profile = yaml.safe_load(profile_path.read_text(encoding="utf-8"))
+            profile["entries"].extend(
+                [
+                    {
+                        "id": "fixture-provider-role-assets",
+                        "component_id": "software-development-core",
+                        "source": [
+                            *self.ROLE_ASSET_PATHS,
+                            *self.REGISTRY_PATHS,
+                            *self.TRANSLATOR_PATHS[:2],
+                        ],
+                        "target": "preserve-relative-path",
+                        "ownership": "framework-managed",
+                        "install_behavior": "managed",
+                    },
+                    {
+                        "id": "fixture-codex-role-profiles",
+                        "component_id": "software-development-core",
+                        "source": [
+                            *self.CODEX_PROFILE_PATHS,
+                            self.TRANSLATOR_PATHS[2],
+                        ],
+                        "target": "preserve-relative-path",
+                        "ownership": "framework-managed",
+                        "install_behavior": "managed",
+                    },
+                    {
+                        "id": "fixture-translator-provider-adapters",
+                        "component_id": "software-development-core",
+                        "source": list(self.TRANSLATOR_PATHS[3:]),
+                        "target": "preserve-relative-path",
+                        "ownership": "framework-managed",
+                        "install_behavior": "managed",
+                    },
+                ]
+            )
+            profile_path.write_text(
+                yaml.safe_dump(profile, sort_keys=False), encoding="utf-8", newline="\n"
+            )
+            git(fixture.root, "add", ".")
+            git(fixture.root, "commit", "-qm", "provider role package projection fixture")
+
+            package_result = fixture.build("provider-role-package")
+            package_root = fixture.extract(
+                package_result, "provider-role-package-extracted"
+            )
+            inventory = yaml.safe_load(
+                (package_root / "metadata/files.yaml").read_text(encoding="utf-8")
+            )
+            records = {record["path"]: record for record in inventory["files"]}
+            self.assertTrue(set(projected_paths) <= set(records))
+            self.assertTrue(
+                all(
+                    records[path]["component_id"] == "software-development-core"
+                    for path in projected_paths
+                )
+            )
+
+            payload_root = package_root / "payload"
+            capability_registry = yaml.safe_load(
+                (payload_root / self.REGISTRY_PATHS[0]).read_text(encoding="utf-8")
+            )
+            self.assertEqual(
+                set(self.ROLE_ASSET_IDS),
+                {
+                    capability["role_asset_id"]
+                    for capability in capability_registry["capabilities"]
+                },
+            )
+            projection_registry = yaml.safe_load(
+                (payload_root / self.REGISTRY_PATHS[2]).read_text(encoding="utf-8")
+            )
+            self.assertEqual(
+                "codex-runtime-configured",
+                projection_registry["provider_projections"]["codex"][
+                    "configuration_state"
+                ],
+            )
+            self.assertEqual(
+                "claude-runtime-deferred",
+                projection_registry["provider_projections"]["claude"][
+                    "configuration_state"
+                ],
+            )
+            self.assertEqual(
+                "copilot-runtime-deferred",
+                projection_registry["provider_projections"]["copilot"][
+                    "configuration_state"
+                ],
+            )
+            self.assertEqual(
+                {"availability": "unknown", "invocation_evidence": "not-claimed"},
+                projection_registry["current_session"],
+            )
+            self.assertEqual(
+                list(self.CODEX_PROFILE_PATHS),
+                projection_registry["package_projection"]["profile_paths"],
+            )
+
+            for role_id in self.ROLE_ASSET_IDS:
+                self.assertNotIn(f".claude/agents/{role_id}.md", records)
+                self.assertNotIn(f".github/agents/{role_id}.agent.md", records)
+            self.assertTrue(set(self.TRANSLATOR_PATHS[2:]) <= set(records))
         finally:
             fixture.close()
 
