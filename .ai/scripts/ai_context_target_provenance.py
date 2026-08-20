@@ -1462,6 +1462,7 @@ def validate_target_validation_profile(
     errors: list[str],
     *,
     require_current_target: bool = True,
+    require_executable_profile: bool = False,
 ) -> tuple[dict, str] | None:
     initial_error_count = len(errors)
     profile = packet.get("target_validation_profile")
@@ -1478,15 +1479,22 @@ def validate_target_validation_profile(
     expected_sha = profile.get("sha256")
     if not safe_target_path(path):
         errors.append("upgrade remediation packet: target validation profile path is invalid")
-    if not isinstance(argv, list) or not all(
+    argv_is_valid = isinstance(argv, list) and all(
         isinstance(item, str) and item for item in argv
-    ):
-        errors.append("upgrade remediation packet: target validation profile argv is invalid")
-    if expected_sha is not None and (
-        not isinstance(expected_sha, str)
-        or not re.fullmatch(r"[0-9a-f]{64}", expected_sha)
-    ):
-        errors.append("upgrade remediation packet: target validation profile SHA-256 is invalid")
+    )
+    sha_is_valid = isinstance(expected_sha, str) and re.fullmatch(
+        r"[0-9a-f]{64}", expected_sha
+    )
+    if require_executable_profile:
+        if not argv_is_valid or not argv or not sha_is_valid:
+            errors.append(
+                "upgrade finalization requires a present executable target validation profile"
+            )
+    else:
+        if not argv_is_valid:
+            errors.append("upgrade remediation packet: target validation profile argv is invalid")
+        if expected_sha is not None and not sha_is_valid:
+            errors.append("upgrade remediation packet: target validation profile SHA-256 is invalid")
     if not isinstance(profile.get("snapshot"), dict):
         errors.append("upgrade remediation packet: target validation profile snapshot is invalid")
     if len(errors) != initial_error_count:
@@ -2077,7 +2085,11 @@ def validate_upgrade_finalization_evidence(
     if expected_report is not None and report_raw != expected_report:
         errors.append("upgrade remediation report packet digest differs")
     profile = validate_target_validation_profile(
-        root, packet, errors, require_current_target=not historical
+        root,
+        packet,
+        errors,
+        require_current_target=not historical,
+        require_executable_profile=expected_status == "approved" and not historical,
     )
     incoming = (
         validate_incoming_validation_receipt(
@@ -3275,6 +3287,19 @@ def finalize_context(
                     effective_state_candidate,
                     resolver_evidence=effective_resolver_evidence or [],
                 )
+                # Terminal receipt and journal binding are still pending.  Keep the
+                # complete effective-publication surface in this transaction's
+                # in-process rollback set, including routes that did not exist
+                # before publication.
+                for relative in (
+                    EFFECTIVE_STATE_PATH,
+                    *sorted(packets, key=lambda value: value.encode("utf-8")),
+                ):
+                    path = target_path_without_links(root, relative)
+                    if path.is_file():
+                        previous[path] = path.read_bytes()
+                    elif not path.exists():
+                        previous[path] = None
                 write_effective_state_and_packets(root, state, packets)
             if upgrade_evidence is not None:
                 terminal_path, terminal_sha256, terminal_created = write_terminal_receipt(

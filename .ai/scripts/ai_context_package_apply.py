@@ -2695,6 +2695,14 @@ def validate_target_validation_receipt(
     ):
         raise ApplyError("target validation receipt packet profile is invalid")
     if (
+        not isinstance(profile.get("sha256"), str)
+        or not re.fullmatch(r"[0-9a-f]{64}", profile["sha256"])
+        or not profile["argv"]
+    ):
+        raise ApplyError(
+            "target validation receipt requires a present executable target validation profile"
+        )
+    if (
         receipt.get("target_validation_profile") != profile
         or receipt.get("target_validation_profile_digest")
         != packet.get("target_validation_profile_digest")

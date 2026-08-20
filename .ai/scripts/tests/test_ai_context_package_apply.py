@@ -253,10 +253,19 @@ class PackageApplyFixture:
         path.parent.mkdir(parents=True, exist_ok=True)
         selection = yaml.safe_load(yaml.safe_dump(APPLY.DEFAULT_COMPONENT_SELECTION))
         selection["providers"]["repo-backlog"]["enabled"] = enabled
+        provenance, _ledger = TARGET.build_initialization_documents(
+            {
+                "repository": "https://example.invalid/framework",
+                "release_id": "REL-v0.9.0",
+                "version": "v0.9.0",
+                "tag": "v0.9.0",
+                "commit": "a" * 40,
+            },
+            selection,
+            "2026-08-20T12:00:00+08:00",
+        )
         path.write_text(
-            yaml.safe_dump(
-                {"schema_version": "2.0", "selection": selection}, sort_keys=False
-            ),
+            yaml.safe_dump(provenance, sort_keys=False),
             encoding="utf-8",
             newline="\n",
         )
@@ -351,6 +360,7 @@ def apply_fixture_plan(
             if acknowledgements != set(proposal["reconciliation_ids"]):
                 return RAW_APPLY_PLAN(plan, acknowledgements, boundary_hook)
             remediation_decision = fixture_remediation_decision(plan)
+            acknowledgements = set()
         else:
             remediation_decision = fixture_remediation_decision(plan)
     return RAW_APPLY_PLAN(
@@ -1515,7 +1525,7 @@ class AiContextPackageApplyGwtTests(unittest.TestCase):
             # When the reconcile is acknowledged and the plan is applied.
             plan = fixture.plan()
             with self.assertRaisesRegex(
-                APPLY.ApplyError, "requires an explicit approved remediation decision"
+                APPLY.ApplyError, "unacknowledged reconciliation items: \\['002-seed'\\]"
             ):
                 APPLY.apply_plan(plan)
             receipt = APPLY.apply_plan(plan, {"002-seed"})
@@ -4306,6 +4316,54 @@ class AiContextPackageApplyGwtTests(unittest.TestCase):
             )
             self.assertFalse((fixture.target / APPLY.PENDING_RECEIPT_PATH).exists())
             self.assertEqual([], TARGET.validate_target(fixture.target))
+        finally:
+            fixture.close()
+
+    def test_gwt_060_given_upgrade_without_an_executable_target_validation_profile_when_recorded_or_finalized_then_it_fails_closed(self) -> None:
+        fixture = PackageApplyFixture()
+        try:
+            # Given an initialized upgrade target whose committed validation profile is absent.
+            package = make_schema_23_upgrade_package(fixture)
+            candidate_provenance, candidate_ledger = fixture_upgrade_authorities(
+                fixture, package["selection"], package["previous_content"]
+            )
+            git(fixture.target, "rm", "-q", "--", ".dev/project-config.yaml")
+            fixture.commit_target("fixture removes target validation profile")
+            plan = fixture.plan("0.9.0")
+            decision = fixture_remediation_decision(
+                plan,
+                candidate_provenance=candidate_provenance,
+                candidate_ledger=candidate_ledger,
+            )
+            APPLY.apply_plan(plan, remediation_decision=decision)
+            transaction = APPLY.transaction_root(fixture.target, plan["plan_sha256"])
+            provenance_path = fixture.target / ".dev/ai-context/provenance.yaml"
+            ledger_path = fixture.target / ".dev/ai-context/customizations.yaml"
+            prior_authority = (provenance_path.read_bytes(), ledger_path.read_bytes())
+
+            # When a passed receipt is supplied without an executable target routine.
+            with self.assertRaisesRegex(
+                APPLY.ApplyError,
+                "requires a present executable target validation profile",
+            ):
+                record_passed_target_validation(fixture, plan)
+
+            # Then no receipt is bound and finalization preserves the prior authority.
+            journal = yaml.safe_load((transaction / "journal.yaml").read_text(encoding="utf-8"))
+            self.assertEqual("awaiting-target-validation", journal["state"])
+            self.assertIsNone(journal["target_validation_receipt_sha256"])
+            self.assertFalse((transaction / APPLY.TARGET_VALIDATION_RECEIPT_PATH).exists())
+            with self.assertRaisesRegex(
+                TARGET.TargetValidationError,
+                "present executable target validation profile",
+            ):
+                TARGET.finalize_context(
+                    fixture.target, candidate_provenance, candidate_ledger
+                )
+            self.assertEqual(
+                prior_authority,
+                (provenance_path.read_bytes(), ledger_path.read_bytes()),
+            )
         finally:
             fixture.close()
 
