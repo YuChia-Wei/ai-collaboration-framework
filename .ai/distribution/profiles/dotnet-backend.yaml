@@ -611,3 +611,11 @@ reference_integrity:
     - .dev/assessments/ASM-*/**
     - .dev/releases/v*/**
     - .dev/backlog/items/**
+  target_owned_reference_patterns:
+    - .dev/AI-CONTEXT-SOURCE.yaml
+    - .dev/ai-context/provenance.yaml
+    - .dev/ai-context/customizations.yaml
+    - .dev/ai-context/effective-rules.yaml
+    - .dev/ai-context/effective-rule-packets/**
+    - .dev/ai-context/local/**
+    - .dev/validation.local.conf

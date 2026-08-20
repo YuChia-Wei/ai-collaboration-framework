@@ -629,6 +629,13 @@ class DeterministicPackageGwtTests(unittest.TestCase):
             },
             canonical_profile["package"]["deterministic"]["content_bytes"],
         )
+        target_owned_reference_patterns = canonical_profile["reference_integrity"][
+            "target_owned_reference_patterns"
+        ]
+        self.assertEqual(
+            list(PACKAGE.TARGET_OWNED_REFERENCE_PATTERNS),
+            target_owned_reference_patterns,
+        )
         fixture = SyntheticPackageRepo()
         source_only_paths = (
             ".dev/standards/AI-CONTEXT-SOURCE-EFFECTIVE-RULES.yaml",
@@ -693,6 +700,20 @@ class DeterministicPackageGwtTests(unittest.TestCase):
             profile_path = fixture.root / fixture.profile
             profile = yaml.safe_load(profile_path.read_text(encoding="utf-8"))
             profile["portable_projection"] = portable_projection
+            profile["reference_integrity"]["target_owned_reference_patterns"] = (
+                target_owned_reference_patterns
+            )
+            profile["payload_user_view"]["capabilities"].append(
+                {
+                    "capability_id": "fixture-effective-rule-skill",
+                    "owner_component": "software-development-core",
+                    "path_patterns": [skill_path],
+                    "availability": {
+                        "core-only": "available",
+                        "dotnet-selected": "available",
+                    },
+                }
+            )
             profile["exclusions"].extend(
                 [
                     {
@@ -756,6 +777,26 @@ class DeterministicPackageGwtTests(unittest.TestCase):
                     ]
                 ),
             )
+
+            source_skill["effective_rule_consumption"]["applicability"]["modes"][
+                "initialized-target"
+            ]["authority"] = ".dev/ai-context/unknown.yaml"
+            skill.write_text(
+                yaml.safe_dump(source_skill, sort_keys=False),
+                encoding="utf-8",
+                newline="\n",
+            )
+            git(fixture.root, "add", skill_path)
+            git(
+                fixture.root,
+                "commit",
+                "-qm",
+                "unlisted target-owned reference fixture",
+            )
+            with self.assertRaisesRegex(
+                PACKAGE.PackageError, r"\.dev/ai-context/unknown\.yaml"
+            ):
+                fixture.build("source-effective-rule-unlisted-target")
         finally:
             fixture.close()
 

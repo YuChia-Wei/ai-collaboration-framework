@@ -44,6 +44,15 @@ ACTIONABLE_COMMAND_RE = re.compile(
 )
 REPOSITORY_ROOT_PREFIXES = (".ai/", ".dev/", ".agents/", ".claude/", ".codex/", ".github/")
 PLACEHOLDER_TOKENS = ("*", "?", "<", ">", "{", "}")
+TARGET_OWNED_REFERENCE_PATTERNS = (
+    ".dev/AI-CONTEXT-SOURCE.yaml",
+    ".dev/ai-context/provenance.yaml",
+    ".dev/ai-context/customizations.yaml",
+    ".dev/ai-context/effective-rules.yaml",
+    ".dev/ai-context/effective-rule-packets/**",
+    ".dev/ai-context/local/**",
+    ".dev/validation.local.conf",
+)
 COMPONENT_PACKAGE_SCHEMAS = {"2.0.0", "2.1.0", "2.2.0", "2.3.0"}
 IDENTITY_PACKAGE_SCHEMAS = {"1.1.0", "2.1.0", "2.2.0", "2.3.0"}
 PORTABLE_VALIDATION_PACKAGE_SCHEMAS = {"2.3.0"}
@@ -859,6 +868,9 @@ def payload_user_view_contract(profile: dict) -> dict:
             "forbidden_source_lifecycle_patterns": reference_integrity.get(
                 "forbidden_source_lifecycle_patterns"
             ),
+            "target_owned_reference_patterns": reference_integrity.get(
+                "target_owned_reference_patterns"
+            ),
         },
         "components": _normalized_components(profile),
         "supported_selections": user_view.get("supported_selections"),
@@ -876,6 +888,7 @@ def _validate_user_view_structure(contract: object) -> tuple[dict[str, dict], di
         raise PackageError("payload user_view reference_integrity must be a mapping")
     extensions = reference.get("text_extensions")
     forbidden = reference.get("forbidden_source_lifecycle_patterns")
+    target_owned = reference.get("target_owned_reference_patterns")
     if not isinstance(extensions, list) or not extensions or not all(
         isinstance(item, str) and item.startswith(".") for item in extensions
     ):
@@ -885,6 +898,10 @@ def _validate_user_view_structure(contract: object) -> tuple[dict[str, dict], di
     ):
         raise PackageError(
             "reference_integrity.forbidden_source_lifecycle_patterns must be a non-empty list"
+        )
+    if target_owned != list(TARGET_OWNED_REFERENCE_PATTERNS):
+        raise PackageError(
+            "reference_integrity.target_owned_reference_patterns must use the canonical exact allowlist"
         )
 
     raw_components = contract.get("components")
@@ -1091,6 +1108,7 @@ def _validate_component_capabilities(
     components: dict[str, dict],
     selections: dict[str, set[str]],
     capabilities: list[dict],
+    target_owned_reference_patterns: list[str],
 ) -> None:
     unknown = sorted({item.component_id for item in files} - set(components))
     if unknown:
@@ -1129,6 +1147,11 @@ def _validate_component_capabilities(
             for match in REPOSITORY_PATH_RE.finditer(_decode_payload_text(item)):
                 candidate = match.group(0)
                 if _is_placeholder(candidate):
+                    continue
+                if any(
+                    matches(candidate, pattern)
+                    for pattern in target_owned_reference_patterns
+                ):
                     continue
                 targets = _target_payload_items(files_by_path, candidate)
                 if not targets:
@@ -1172,6 +1195,7 @@ def validate_payload_user_view(files: Iterable[PayloadFile], contract: object) -
         raise PackageError("payload user_view received duplicate target paths")
     components, selections, capabilities = _validate_user_view_structure(contract)
     reference = contract["reference_integrity"]
+    target_owned_reference_patterns = reference["target_owned_reference_patterns"]
     normalized_extensions = {
         item.lower() for item in reference["text_extensions"]
     }
@@ -1195,7 +1219,12 @@ def validate_payload_user_view(files: Iterable[PayloadFile], contract: object) -
     _validate_markdown_navigation(payload_files, files_by_path)
     _validate_actionable_markdown_commands(payload_files, files_by_path)
     _validate_component_capabilities(
-        payload_files, files_by_path, components, selections, capabilities
+        payload_files,
+        files_by_path,
+        components,
+        selections,
+        capabilities,
+        target_owned_reference_patterns,
     )
 
 

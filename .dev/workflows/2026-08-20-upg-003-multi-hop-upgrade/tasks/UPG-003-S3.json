@@ -9,7 +9,7 @@
   "related_plan_id": "development-plan-2026-08-20-upg-003-multi-hop-upgrade",
   "status": "in_progress",
   "created_at": "2026-08-21T03:12:02+08:00",
-  "updated_at": "2026-08-21T03:54:54+08:00",
+  "updated_at": "2026-08-21T04:10:28+08:00",
   "template_source": ".ai/assets/skills/software-development-orchestrator/templates/development-workflow-task-template.json",
   "model": "gpt-5.6-sol",
   "reasoning_effort": "high",
@@ -104,7 +104,7 @@
   },
   "results": {
     "finding_status": "in_progress",
-    "summary": "The Phase-A v0.14.0 source-candidate scaffold and fail-closed release-state contract are locally validated; retained immutable builder failures exposed a portable skill-manifest projection gap, whose corrected nested-applicability implementation now awaits its immutable foundation commit and Phase-B rebuild.",
+    "summary": "The Phase-A v0.14.0 source-candidate scaffold and fail-closed release-state contract are locally validated; four retained immutable builder failures exposed portable projection and target-owned runtime-reference gaps, whose current exact allowlist repair awaits its immutable foundation commit and a new Phase-B rebuild.",
     "files_changed": [
       ".dev/releases/v0.14.0/release.yaml",
       ".dev/releases/v0.14.0/release-notes.md",
@@ -211,6 +211,11 @@
         "command": "py -3 -B .ai/scripts/tests/test_ai_context_packaging.py DeterministicPackageGwtTests.test_gwt_000b_given_source_effective_rule_policy_schema_and_evidence_when_built_then_downstream_excludes_them_and_retains_resolver -v",
         "outcome": "passed",
         "evidence": "The corrected focused GWT passed 1/1, proving the projected skill retains initialized-target only while its canonical source fixture retains both modes."
+      },
+      {
+        "command": "python .ai/scripts/build-ai-context-package.py --repo . --ref 2e6c5906882705e00b80f656c22c2925ed75c63a --version v0.14.0 --output artifacts/validation/upg003-s3/v0.14.0/package --migration-source v0.6.0 <files.yaml> --migration-source v0.9.0 <files.yaml> --migration-source v0.13.0 <files.yaml>",
+        "outcome": "failed",
+        "evidence": "The single canonical builder attempt at the exact clean subject failed before archive creation: capability code-reviewer reference is missing: .ai/assets/skills/code-reviewer/skill.yaml -> .dev/ai-context/provenance.yaml. No output directory, package, support matrix, or routes were produced."
       }
     ],
     "role_execution_aggregation": [],
@@ -230,7 +235,13 @@
       "The all-skill direct portable-projection probe passed: 10 skill manifests were projected and 7 were byte-unchanged. This is direct helper evidence only, not package, matrix, or route proof.",
       "The first PowerShell JSON display parse message is retained as a display-tool misuse only; S3 task JSON and workflow YAML parsing passed, and the display error is not a product, package, or validator failure.",
       "Terra precommit review first failed with two retained findings: source-only required_by_mode/prose remained in projected output, and the profile content_bytes contract falsely represented transformed payload bytes as Git-blob bytes. The repair removes the source-only mode/prose from projected output and makes the actual profile content-byte contract truthful for projected bytes.",
-      "Current Terra precommit re-review passed: all 10 actual skill manifests are target-only with no framework-source mode, code-reviewer source bytes remain unchanged and projection is idempotent, malformed source-mode evidence fails closed, both package-collection paths are covered, the actual profile content-byte contract is truthful, the focused GWT passes, and scoped diff-check passes. No immutable builder success is claimed."
+      "Current Terra precommit re-review passed: all 10 actual skill manifests are target-only with no framework-source mode, code-reviewer source bytes remain unchanged and projection is idempotent, malformed source-mode evidence fails closed, both package-collection paths are covered, the actual profile content-byte contract is truthful, the focused GWT passes, and scoped diff-check passes. No immutable builder success is claimed.",
+      "At exact clean subject 2e6c5906882705e00b80f656c22c2925ed75c63a, three historical candidate files were hash-reverified before the single canonical builder attempt failed before archive output on the missing code-reviewer -> .dev/ai-context/provenance.yaml reference. No output directory, package, matrix, or route evidence exists for that attempt.",
+      "The current uncommitted repair uses an exact canonical target-owned reference allowlist limited to legacy source, provenance, customizations, effective rules, packets, local, and validation.local runtime inputs. Capability/reference closure may accept only those absent listed paths as target-owned runtime inputs; actionable-command validation remains unchanged and strict required-local-target, and .dev/ai-context/unknown.yaml remains a failure.",
+      "Focused GWT evidence passes for positive provenance and negative unknown-path rejection, and AST, YAML, and scoped diff checks pass. This repair has not yet been committed and does not claim immutable builder success; the next gate remains immutable commit then a new builder attempt.",
+      "Fresh framework-source resolution on the final precommit bytes passed with AICTX-EVIDENCE-001 and TEST-GWT-001; packet digest 992a69bf3c0b37fe5d23df7e3158b86ca53e1935537de0f31426137cc9d6db50 and git-status digest 280bb711d90b9f304e80f655b94a0d998b9810dad88b1bdef7488574f221e3bb bind exact HEAD 2e6c5906882705e00b80f656c22c2925ed75c63a and the five modified paths.",
+      "Fresh read-only Terra review passed on three-file diff fingerprint b6eae2a746bbf0f6125d8eb6a480b08295a1742b7dcea3ca179413197f073909: only capability closure recognizes the exact target-owned allowlist; navigation and actionable-command targets remain strict; the real code-reviewer/current-profile probe passed, while unknown, source-only, navigation, and actionable missing targets rejected. The dedicated GWT positive remains a synthetic fixture seeded from the canonical profile, so the direct real-profile probe is not promoted to package evidence.",
+      "Final precommit gates passed: focused GWT 1/1, validate-ai-context, validate-workflow-artifacts, validate-source-governance, and global git diff --check. No package build was rerun on the mutable subject."
     ],
     "commits": [],
     "follow_up_needed": true
