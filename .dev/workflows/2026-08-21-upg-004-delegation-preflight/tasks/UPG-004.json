@@ -7,9 +7,9 @@
   "task_id": "UPG-004",
   "owner_skill": "ai-context-governance",
   "related_plan_id": "development-plan-2026-08-21-upg-004-delegation-preflight",
-  "status": "in_progress",
+  "status": "completed",
   "created_at": "2026-08-21T01:35:16+08:00",
-  "updated_at": "2026-08-21T02:03:19+08:00",
+  "updated_at": "2026-08-21T02:08:34+08:00",
   "template_source": ".ai/assets/skills/software-development-orchestrator/templates/development-workflow-task-template.json",
   "model": "gpt-5.6-sol",
   "reasoning_effort": "high",
@@ -113,7 +113,8 @@
     "deferred_items": ["Claude runtime projection", "GitHub Copilot runtime projection", "Fast/priority activation"]
   },
   "results": {
-    "summary": "UPG-004 portable run selection and Codex advisory contracts are implemented and focused validation passes; independent audit, hosted admission, integration, and online closeout remain pending.",
+    "finding_status": "addressed",
+    "summary": "UPG-004 portable run selection, Codex advisory contracts, validators, package projection, execution evidence, and terminal declaration are technically complete. PR #230 remains unmerged pending a fresh exact-head audit and hosted merge admission; no canonical-role invocation or current-session model/profile claim is made.",
     "files_changed": [
       "delegation run contract, schema, and template",
       "upgrader canonical spec and thin wrappers",
@@ -141,7 +142,10 @@
       "Owner-selected run settings are explicit and suppress repeat prompting."
       ,"Per-run delegation evidence is retained at .dev/workflows/2026-08-21-upg-004-delegation-preflight/evidence/delegation-run.yaml and remains outside target provenance and transactions."
     ],
-    "commits": [],
-    "follow_up_needed": true
+    "commits": [
+      "6a96fd1dfb4ace29ef8a807299136513ed6f76a2",
+      "99dcb440864c1186d6fe64701065da08a7fb143d"
+    ],
+    "follow_up_needed": false
   }
 }

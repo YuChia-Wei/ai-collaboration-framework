@@ -1,0 +1,45 @@
+schema_version: "1.0"
+contract_id: github-terminal-issue-closure
+repository: YuChia-Wei/ai-collaboration-framework
+validation_stage: declaration
+pull_request:
+  number: 230
+  head_sha: null
+  body: |-
+    ## Summary
+
+    - adds a provider-neutral per-independent-run delegation selection contract for `none`, `analysis-only`, and `full-recommended`, with one prompt at most and no repeat prompt on resume
+    - keeps every mode on the same ordered canonical upgrade stages, requires exact evidence for any root-sequential fallback, and retains the terminal independent audit as explicit and fail closed
+    - adds a Codex-only static advisory for Terra Max worker preference, Sol Max terminal-auditor preference, owner-selected fallbacks, and disabled Fast/priority without treating static configuration as current-session state
+    - keeps Claude and GitHub Copilot deferred, leaves target provenance and package/multi-hop transactions unchanged, and records this run only as workflow execution evidence
+
+    ## Validation
+
+    - UPG-004 delegation fixtures: 12/12 PASS
+    - provider role projection fixtures: 11/11 PASS
+    - wrapper metadata fixtures: 16/16 PASS on the normal Windows ACL boundary
+    - provider role package projection: 1/1 PASS
+    - AI-context and workflow artifact validators: PASS
+    - AST/YAML parsing and diff checks: PASS
+
+    The sandbox wrapper-metadata attempt was blocked before assertions by Windows `%TEMP%` ACL and remains retained separately from the successful normal-ACL rerun. Static provider projection remains distinct from current-session availability and genuine invocation; no canonical-role invocation is claimed by this delivery.
+
+    ## Disposition
+
+    Closes #208
+
+    Exact-head independent audit, hosted checks, and non-mutating merge admission remain mandatory before integration. This declaration does not claim the change is merged or that a provider/model/profile was active in the current session.
+  integration: {status: pending, topology: null, admitted_head_sha: null, integration_commit_sha: null, provider_read_back: false}
+  review: {status: pending}
+  required_check_contexts: []
+  hosted_checks: []
+issues:
+  - number: 208
+    mode: terminal-close
+    work_authorization: {online_issue_bound: true, explicit_owner_approval: true}
+    final_accepted_delivery: true
+    workflow: {scope_complete: true, tasks_complete: true, applicable_verification_complete: true}
+    closing_keyword: Closes
+    closure_deferred_reason: null
+    next_terminal_gate_or_owner: null
+    read_back: {performed: false, integration_commit_sha: null, issue_state: null, issue_state_reason: null, project_status: null}

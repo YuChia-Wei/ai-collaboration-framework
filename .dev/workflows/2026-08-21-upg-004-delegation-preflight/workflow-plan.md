@@ -15,9 +15,9 @@
 - `branch`: `codex/2026-08-21-upg-004-delegation-preflight`
 - `base_branch`: `main`
 - `branch_segment`: `1`
-- `status`: `active`
+- `status`: `completed`
 - `created_at`: `2026-08-21T01:35:16+08:00`
-- `updated_at`: `2026-08-21T02:03:19+08:00`
+- `updated_at`: `2026-08-21T02:08:34+08:00`
 - `template_source`: `.ai/assets/skills/software-development-orchestrator/templates/development-workflow-plan-template.md`
 - `template_version`: `1.4.0`
 - `workflow_locator`: `.dev/workflows/2026-08-21-upg-004-delegation-preflight/workflow.yaml`
@@ -79,11 +79,11 @@
 
 ## Progress And Handoff
 
-- Current stage: UPG-004-C package, hosted, and independent-audit admission.
-- Completed stages: #207 integrated; official OpenAI mapping and local Codex runtime-schema evidence refreshed; UPG-004-A inventory and UPG-004-B contract/validator implementation passed focused validation.
+- Current stage: Source workflow and task completed with a truthful terminal-close declaration; fresh exact-head audit and hosted merge admission remain external PR admission gates.
+- Completed stages: #207 integration, official OpenAI and local Codex runtime-schema refresh, UPG-004 inventory, contract/validator implementation, focused/package validation, execution-evidence reconciliation, draft PR #230, and terminal declaration.
 - Deferred stages and reasons: Claude/Copilot runtime projection and any Fast activation require separate Issues/authorization.
 - Open decisions: None; owner selections are fixed in this workflow.
-- Continuation instructions: Reconcile the retained execution evidence, commit a clean exact head, obtain a fresh independent audit plus hosted admission, then merge only the admitted head.
+- Continuation instructions: Push the declaration head, obtain a fresh no-repair Sol High exact-head audit plus hosted checks, then perform non-mutating admission, merge only that exact head, and read back Issue #208 and Project state outside this completed technical workflow.
 - Target policy references: `.ai/assets/shared/ROLE-EXECUTION-CONTRACT.md`; `.ai/assets/skills/ai-context-upgrader/skill.yaml`; `.dev/standards/WORKFLOW-GATE-POLICY.md`.
 - Registered handoff checkpoint: none.
 - Branch history and checkpoint handoffs: Segment 1 starts from integrated #207 main `f7591d8499ade36fb88193408e434710cbf437a0`.
@@ -92,19 +92,19 @@
 
 | Segment | Branch | Base | Checkpoint Type | Commit | Remote / Target | Recorded At | Reason | Resume Branch / Action |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| 1 | `codex/2026-08-21-upg-004-delegation-preflight` | `main@f7591d8499ade36fb88193408e434710cbf437a0` | active-stage | `f7591d8499ade36fb88193408e434710cbf437a0` | local branch / PR pending | `2026-08-21T01:35:16+08:00` | Start authorized #208 delivery from integrated SAG-003 contracts. | Complete inventory and implementation on this branch. |
+| 1 | `codex/2026-08-21-upg-004-delegation-preflight` | `main@f7591d8499ade36fb88193408e434710cbf437a0` | implementation-complete | `99dcb440864c1186d6fe64701065da08a7fb143d` | draft PR #230 | `2026-08-21T02:08:34+08:00` | Complete the authorized contract, validator, focused/package validation, and per-run evidence. | Push the current declaration head for independent audit and hosted admission. |
 
 ## Completion Summary
 
-- Outcome: In progress; the contract and focused validation are complete, but no #208 completion, canonical-role invocation, PR, merge, or release claim exists yet.
+- Outcome: UPG-004 source workflow and technical task are complete with a locally validated candidate and truthful terminal declaration; PR #230 remains unmerged pending external exact-head audit and hosted admission.
 - Changed artifacts: Portable delegation run contract/schema/template, upgrader spec and wrappers, Codex advisory projection, AI-context validator, focused/package fixtures, and workflow execution evidence.
 - Approved requirement/specification evidence: Live Issue #208 and explicit owner authorization.
 - Implementation completion evidence: Provider-neutral run-state and Codex-only advisory surfaces are implemented without transaction/provenance changes.
 - Required test outcomes: Focused UPG-004 12/12, provider projection 11/11, wrapper metadata 16/16 on the normal ACL boundary, package projection 1/1, AST/YAML/diff checks, and AI-context validation passed; the sandbox wrapper attempt remains retained as blocked by `%TEMP%` ACL. Hosted and exact-head gates remain pending.
 - Selected compliance evidence: Not applicable.
-- Review disposition: Pending fresh exact-head independent audit.
+- Review disposition: Pending fresh exact-head independent audit at the final declaration head; the writer does not certify its own head.
 - Validation evidence: Integrated main identity, live Issue read-back, official documentation, and local runtime-schema diagnostics.
-- Workflow task state: in progress pending independent audit, hosted admission, and integration.
-- Commits: workflow bootstrap pending.
+- Workflow task state: completed; external PR admission and integration remain separate.
+- Commits: `6a96fd1dfb4ace29ef8a807299136513ed6f76a2` workflow bootstrap; `99dcb440864c1186d6fe64701065da08a7fb143d` implementation/evidence; the current declaration commit is intentionally identified by external Git/PR exact-head read-back rather than self-reference.
 - Branch / checkpoint / handoff evidence: Dedicated #208 branch from `f7591d8499ade36fb88193408e434710cbf437a0`.
 - Residual risks: Static Codex config cannot prove active session state; provider reachability/state diagnostics failed and remain non-blocking unknown evidence.
