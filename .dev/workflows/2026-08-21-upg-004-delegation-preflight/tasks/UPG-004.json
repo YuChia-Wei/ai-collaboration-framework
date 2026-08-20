@@ -1,0 +1,127 @@
+{
+  "template_id": "software-development-orchestrator/development-workflow-task",
+  "template_version": "1.5.0",
+  "template_created_at": "2026-07-10T18:25:11+08:00",
+  "template_updated_at": "2026-08-05T02:12:00+08:00",
+  "workflow_id": "2026-08-21-upg-004-delegation-preflight",
+  "task_id": "UPG-004",
+  "owner_skill": "ai-context-governance",
+  "related_plan_id": "development-plan-2026-08-21-upg-004-delegation-preflight",
+  "status": "in_progress",
+  "created_at": "2026-08-21T01:35:16+08:00",
+  "updated_at": "2026-08-21T01:35:16+08:00",
+  "template_source": ".ai/assets/skills/software-development-orchestrator/templates/development-workflow-task-template.json",
+  "model": "gpt-5.6-sol",
+  "reasoning_effort": "high",
+  "workflow_locator": ".dev/workflows/2026-08-21-upg-004-delegation-preflight/workflow.yaml",
+  "scope": {
+    "goal": "Deliver live Issue #208 as provider-neutral per-run delegation selection plus Codex advisory preflight.",
+    "target": "ai-context-upgrader run-state, role binding, provider projection, validation, package, and execution evidence surfaces",
+    "files": [
+      ".ai/assets/skills/ai-context-upgrader/**",
+      ".ai/assets/shared/**",
+      ".codex/agents/**",
+      ".ai/scripts/**",
+      ".ai/distribution/profiles/dotnet-backend.yaml",
+      ".dev/workflows/2026-08-21-upg-004-delegation-preflight/**"
+    ],
+    "constraints": [
+      "Support none, analysis-only, and full-recommended with identical canonical stage obligations.",
+      "Ask at most once per independent run; explicit owner choice and resume suppress repeat prompt.",
+      "Unknown runtime state remains unknown and static config never proves active session state.",
+      "Model mismatch is advisory; fallback is explicit, consent-bound, and never silent.",
+      "Root sequential fallback remains contract-equivalent and final independent audit fails closed.",
+      "Codex fields stay provider-specific; Claude/Copilot equivalence is not invented.",
+      "Fast/priority is disabled for this owner-selected run."
+    ],
+    "non_goals": [
+      "Implement Claude or Copilot runtime adapters",
+      "Persist global preferences or target provenance",
+      "Activate Fast/priority or nightly-full",
+      "Restore Project fields",
+      "Create a tag, Release, or publish assets/packages"
+    ]
+  },
+  "inputs": {
+    "requirements": ["https://github.com/YuChia-Wei/ai-collaboration-framework/issues/208"],
+    "specifications": [
+      ".ai/assets/shared/ROLE-EXECUTION-CONTRACT.md",
+      ".ai/assets/shared/provider-neutral-capability-registry.yaml",
+      ".ai/assets/shared/provider-projection-registry.yaml",
+      ".ai/assets/skills/ai-context-upgrader/references/role-execution-bindings.yaml",
+      ".ai/assets/skills/ai-context-upgrader/skill.yaml"
+    ],
+    "architecture_decisions": [
+      "Delegation selection and model preflight are per-run execution state, not target provenance.",
+      "Canonical selection expresses capability intent; provider model/reasoning/speed fields remain projection-only.",
+      "Deterministic tools remain authoritative and independent final audit remains mandatory."
+    ],
+    "user_constraints": [
+      "Select full-recommended with maximum two concurrent workers.",
+      "Terra unavailable falls back to root sequential execution.",
+      "Sol Max auditor unavailable falls back to a fresh Sol High independent context.",
+      "Fast/priority is disabled and must not be silently enabled.",
+      "Do not ask the fixed owner selections again."
+    ]
+  },
+  "execution": {
+    "capability_slot": "ai-context-governance",
+    "approval_contract": {
+      "status": "approved",
+      "required_before": "implementation",
+      "authorization_source": ["explicit repository-owner v0.14.0 delivery prompt"],
+      "pending_decision": ""
+    },
+    "implementation_contract": null,
+    "test_execution_contract": null,
+    "role_execution_records": [
+      {
+        "role": "generic bounded UPG-004 surface inventory context",
+        "provider": "Codex",
+        "model": "gpt-5.6-terra",
+        "reasoning_effort": "max",
+        "outcome": "in_progress",
+        "scope": "Read-only inventory of integrated SAG-003 bindings, upgrader run state, provider projection, package, validator, and fixture surfaces.",
+        "canonical_role_claimed": false
+      }
+    ],
+    "spec_compliance": {"selected": false, "activation_source": [], "expected_outcome": "not-applicable"},
+    "steps": [
+      "Inventory reusable run-state, role binding, projection, package, and validation surfaces.",
+      "Implement provider-neutral delegation selection and exact fallback evidence.",
+      "Implement Codex-only advisory preflight with unknown-state and explicit-choice semantics.",
+      "Add focused fixtures for all modes, resume, fallback, mismatch, and fail-closed audit.",
+      "Obtain fresh exact-head audit, hosted checks, terminal-close PR, and online read-back."
+    ],
+    "validation": [
+      "none/analysis-only/full-recommended canonical stage parity",
+      "ask-once and resume suppression",
+      "unknown runtime and advisory mismatch",
+      "exact fallback consent evidence",
+      "root sequential contract parity",
+      "missing independent audit fail closed",
+      "Codex-only field and package projection"
+    ],
+    "commit_checkpoint": "One terminal-close PR for Issue #208 after exact-head audit and hosted admission.",
+    "deferred_items": ["Claude runtime projection", "GitHub Copilot runtime projection", "Fast/priority activation"]
+  },
+  "results": {
+    "summary": "UPG-004 workflow admitted on integrated #207 main; implementation inventory is in progress and no runtime invocation or completion is claimed.",
+    "files_changed": ["workflow locator, plan, task, and index entry"],
+    "approval_evidence": ["explicit repository-owner v0.14.0 delivery prompt"],
+    "test_execution": [
+      "PASS: official OpenAI model/reasoning/Fast guidance refreshed from official sources",
+      "DIAGNOSTIC: Codex CLI 0.147.0 bundled model schema inspected",
+      "DIAGNOSTIC FAILED overall: codex doctor --json; static config loaded, but provider reachability and state database checks failed, so active-session state remains unknown"
+    ],
+    "role_execution_aggregation": ["Generic Terra Max inventory is in progress; no canonical-role invocation is claimed."],
+    "spec_compliance": {"outcome": "not-applicable", "coverage_percent": null, "evidence": []},
+    "validation_evidence": [
+      "Integrated main and origin/main are f7591d8499ade36fb88193408e434710cbf437a0 with a clean worktree.",
+      "Live Issue #208 is open and Project status read-back is Inbox; Project-field restoration is intentionally not performed here.",
+      "Owner-selected run settings are explicit and suppress repeat prompting."
+    ],
+    "commits": [],
+    "follow_up_needed": true
+  }
+}
