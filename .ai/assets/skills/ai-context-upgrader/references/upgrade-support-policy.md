@@ -28,14 +28,33 @@ The canonical contract is
   `direct`, while two or more can become `orchestrated-multi-hop` only after
   verification.
 - Every edge binds four identities: `archive`, `checksum`, `manifest`, and
-  `validator`, plus a validation-report identity and validation state. An
-  identity has `asset_id`, a safe matrix-relative POSIX `path`, and a raw
-  SHA-256. The resolver checks every byte identity without executing it.
+  `validator`, plus a non-empty `validator_argv`, canonical validation receipt,
+  and separate raw validation-output identity. The validator identity is the
+  exact executable asset and `validator_argv` must name its exact
+  matrix-relative path exactly once, while preserving any interpreter and
+  option tokens. An identity has `asset_id`, a safe matrix-relative POSIX
+  `path`, and a raw SHA-256. The resolver checks every byte identity without
+  executing it.
+- A checksum sidecar is evidence, not just a hashed file. Its verified UTF-8
+  bytes must be exactly one standard `sha256sum` record whose digest and
+  filename match the verified archive bytes and archive basename. Updating the
+  sidecar identity after putting a wrong archive digest in it remains unsafe.
+- An edge validation receipt is canonical UTF-8 JSON. It must bind the exact
+  edge ID, all four edge identities, validator argv, `passed` outcome, integer
+  exit code `0`, and the output SHA-256. That output digest must equal both the
+  declared output identity and separately retained raw output bytes. The matrix
+  validation state cannot disagree with the receipt.
 - Semantic cutovers are declared once at matrix level. A required cutover must
   have a `passed` record in at least one ordered edge of a selected route.
 - A deprecation is valid only with `complete: true`, `unsupported` disposition,
-  a reason, and exact notice, owner-decision, and validator identities. Missing
-  or tampered deprecation evidence invalidates the matrix; it does not create a
+  a reason, and exact notice, owner-decision, validator-receipt, and output
+  identities. Notice and owner decision are strict typed UTF-8 JSON or YAML and
+  cross-bind deprecation ID, role, origin, and target. The owner decision must
+  have `status: approved`, `approved: true`, a non-empty owner, and an ISO-8601
+  decision timestamp with a numeric UTC offset. The validator receipt is
+  canonical JSON that cross-binds notice and decision identities, a passed
+  outcome, exit code `0`, and retained output bytes. Missing, malformed, or
+  tampered deprecation evidence invalidates the matrix; it does not create a
   weaker unsupported fallback.
 
 ## Deterministic Selection
@@ -72,7 +91,9 @@ produce identical evidence bytes.
 
 Invalid matrix syntax, unsafe paths, invalid identity shape, or incomplete or
 tampered deprecation evidence is a fail-closed command error rather than a new
-route kind.
+route kind. Missing, malformed, tampered, or cross-mismatched in-scope edge
+evidence instead produces `reconciliation-required`; no resolver path executes
+an asset, changes a target, or creates a fifth result kind.
 
 ## Historical Package Validator Boundary
 

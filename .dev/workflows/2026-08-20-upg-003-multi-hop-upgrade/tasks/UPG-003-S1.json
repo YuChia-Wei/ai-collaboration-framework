@@ -9,7 +9,7 @@
   "related_plan_id": "development-plan-2026-08-20-upg-003-multi-hop-upgrade",
   "status": "in_progress",
   "created_at": "2026-08-20T17:03:25+08:00",
-  "updated_at": "2026-08-20T17:43:00+08:00",
+  "updated_at": "2026-08-20T18:14:32+08:00",
   "template_source": ".ai/assets/skills/software-development-orchestrator/templates/development-workflow-task-template.json",
   "model": "gpt-5.6-sol",
   "reasoning_effort": "high",
@@ -58,7 +58,16 @@
         "model": "gpt-5.6-terra",
         "reasoning_effort": "max",
         "outcome": "completed",
-        "scope": "Live release assets and historical validator inventory; portable package projection and registry fixture.",
+        "scope": "Live release assets and historical validator inventory; portable package projection, registry fixture, and typed route/deprecation evidence repair.",
+        "canonical_role_claimed": false
+      },
+      {
+        "role": "pre-#207 fresh independent audit context",
+        "provider": "Codex",
+        "model": "gpt-5.6-sol",
+        "reasoning_effort": "high",
+        "outcome": "failed",
+        "scope": "Read-only exact-head semantic audit of f6de771bb37a6224fb09543edf911f61aa7ab2bc; found self-attested checksum, validator receipt, and owner-decision evidence.",
         "canonical_role_claimed": false
       }
     ],
@@ -89,7 +98,7 @@
       {
         "command": "py -3 .ai/scripts/tests/test_ai_context_upgrade_routes.py",
         "outcome": "passed",
-        "evidence": "13 tests passed in 0.454 seconds after the final template-metadata and historical-edge changes."
+        "evidence": "20 tests passed in 0.689 seconds on the host after typed sidecar, receipt, output, owner-decision, and symlink-boundary repair."
       },
       {
         "command": "python -B .ai/scripts/tests/test_ai_context_packaging.py UpgradeRoutePackageProjectionGwtTests -v",
@@ -115,6 +124,11 @@
         "command": "initial isolated package projection fixture attempts",
         "outcome": "failed",
         "evidence": "First attempt exposed a source-only compare script; second exposed a copied __pycache__ bytecode file. Both fixture defects were corrected before the passing third run."
+      },
+      {
+        "command": "external task upg003-s1-full-package-f6de771b: py -3 -B .ai/scripts/tests/test_ai_context_packaging.py",
+        "outcome": "failed",
+        "evidence": "The immutable external task returned in 0.037 seconds without its required stdout/stderr capture, so command completion could not be proven; subject and cleanup remained exact and clean. It was not retried."
       }
     ],
     "role_execution_aggregation": [
@@ -131,6 +145,8 @@
       "The v0.10.0 to v0.11.0 source release record remains deferred-with-owner; current retained-origin routes are reconciliation-required until a later candidate supplies and proves an exact compatible validator.",
       "Focused read-only route GWTs pass 13 of 13 on the authorized host Python route, including missing and tampered assets, ambiguity, cutover bypass, deprecation, and mutation sentinel coverage.",
       "The first source AI-context validation exposed four missing thin-wrapper references; after synchronizing only those reference lists, the validator passed."
+      ,"Fresh Sol High exact-head audit of f6de771bb37a6224fb09543edf911f61aa7ab2bc failed because matrix-self-hashed evidence did not semantically bind checksum contents, validator execution receipts, or owner approval; no repair occurred in the audit context."
+      ,"The bounded typed-evidence repair requires standard archive sidecars, exact validator argv, canonical cross-bound passed receipts and output bytes, typed owner-approved deprecation records, and fail-closed symlink escape; host route tests pass 20 of 20 and isolated package projection passes 1 of 1."
     ],
     "commits": [],
     "follow_up_needed": true

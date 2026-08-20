@@ -83,6 +83,10 @@ properties:
             required: [archive, checksum, manifest, validator]
             exact_keys: [archive, checksum, manifest, validator]
             values: asset-identity
+            invariants:
+              - "checksum raw bytes are exactly one UTF-8 sha256sum record: <64 lowercase hex><space><space-or-asterisk><archive basename><LF>"
+              - "checksum digest and filename must equal the actual verified archive bytes and basename"
+              - "validator is the exact executable asset identity named exactly once by validation.validator_argv"
           semantic_cutovers:
             type: ordered-list
             item_required: [cutover_id, state]
@@ -92,10 +96,28 @@ properties:
             invariants:
               - "cutover_id is unique within one edge"
           validation:
-            required: [state, report]
+            required: [state, validator_argv, report, output]
+            exact_keys: [state, validator_argv, report, output]
             properties:
               state: {enum: [passed, failed, blocked, not-run, deferred-with-owner]}
-              report: asset-identity
+              validator_argv:
+                type: ordered-list
+                min_items: 1
+                items: non-empty-string
+                invariant: "argv contains artifacts.validator.path exactly once; every item is a non-empty string"
+              report:
+                type: asset-identity
+                format: canonical-utf8-json
+                exact_keys: [schema_version, edge_id, artifacts, validator_argv, outcome, exit_code, output_sha256]
+                schema_version: upgrade-edge-validation/v1
+                invariants:
+                  - "edge_id equals edge.edge_id"
+                  - "artifacts exactly equals the edge archive, checksum, manifest, and validator identities"
+                  - "validator_argv exactly equals validation.validator_argv"
+                  - "outcome is passed and equals validation.state"
+                  - "exit_code is integer 0"
+                  - "output_sha256 equals validation.output.sha256 and the raw output asset digest"
+              output: asset-identity
     invariants:
       - "route_id is unique"
       - "edges form the exact ordered origin-to-target chain"
@@ -121,15 +143,40 @@ properties:
       complete: {const: true}
       reason: non-empty-string
       evidence:
-        required: [deprecation_notice, owner_decision, validator]
-        exact_keys: [deprecation_notice, owner_decision, validator]
-        values: asset-identity
+        required: [deprecation_notice, owner_decision, validator, output]
+        exact_keys: [deprecation_notice, owner_decision, validator, output]
+        properties:
+          deprecation_notice:
+            type: asset-identity
+            format: strict-utf8-json-or-yaml
+            exact_keys: [schema_version, deprecation_id, role, origin, target, disposition, reason]
+            schema_version: upgrade-deprecation-notice/v1
+            invariants:
+              - "deprecation_id, role, origin, target, disposition, and reason exactly equal the matrix deprecation"
+          owner_decision:
+            type: asset-identity
+            format: strict-utf8-json-or-yaml
+            exact_keys: [schema_version, deprecation_id, role, origin, target, status, approved, owner, decided_at]
+            schema_version: upgrade-deprecation-owner-decision/v1
+            invariants:
+              - "deprecation_id, role, origin, and target exactly equal the matrix deprecation"
+              - "status is approved, approved is true, owner is non-empty, and decided_at is ISO-8601 with a numeric offset"
+          validator:
+            type: asset-identity
+            format: canonical-utf8-json
+            exact_keys: [schema_version, deprecation_id, role, origin, target, deprecation_notice, owner_decision, outcome, exit_code, output_sha256]
+            schema_version: upgrade-deprecation-validation/v1
+            invariants:
+              - "receipt cross-binds the deprecation notice and owner decision identities"
+              - "outcome is passed, exit_code is integer 0, and output_sha256 equals evidence.output raw bytes and identity"
+          output: asset-identity
     invariants:
       - "deprecation_id, role, and origin are unique"
       - "a deprecated role or origin is not retained"
       - "role v0.9.0 has origin v0.9.0"
       - "role v0.6.0 has origin v0.6.0"
       - "all declared evidence assets exist and match their raw SHA-256"
+      - "typed notice, owner decision, validator receipt, and output bytes cross-bind exactly; incomplete or tampered deprecation evidence invalidates the matrix"
 asset_identity:
   required: [asset_id, path, sha256]
   properties:

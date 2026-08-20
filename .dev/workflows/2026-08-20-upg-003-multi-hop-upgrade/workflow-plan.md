@@ -17,7 +17,7 @@
 - `branch_segment`: `1`
 - `status`: `active`
 - `created_at`: `2026-08-20T17:03:25+08:00`
-- `updated_at`: `2026-08-20T17:43:00+08:00`
+- `updated_at`: `2026-08-20T18:14:32+08:00`
 - `template_source`: `.ai/assets/skills/software-development-orchestrator/templates/development-workflow-plan-template.md`
 - `template_version`: `1.4.0`
 - `workflow_locator`: `.dev/workflows/2026-08-20-upg-003-multi-hop-upgrade/workflow.yaml`
@@ -81,7 +81,7 @@ Before #207 integrates, every delegated context is generic and is not evidence t
 
 | Stage | Role / Canonical Path | Owning Skill | Final/Current Disposition | Attempt Summary | Final Integration Owner / Decision | Record or Task Reference |
 | --- | --- | --- | --- | --- | --- | --- |
-| UPG-003-S1 | pre-#207 generic bounded context / no canonical path | ai-context-upgrader | completed-current-slice | Terra Max performed live-contract, package-asset, package-projection, and code-surface work; root repaired and verified the core resolver. | root / exact-head admission only after fresh independent audit | `tasks/UPG-003-S1.json` |
+| UPG-003-S1 | pre-#207 generic bounded context / no canonical path | ai-context-upgrader | repair-validated | Terra Max performed live-contract, package-asset, package-projection, and typed-evidence repair work; the first fresh Sol High audit failed the prior head and did not repair it. | root / new exact-head admission only after a different fresh independent audit | `tasks/UPG-003-S1.json` |
 
 ## Approval Gates
 
@@ -108,7 +108,7 @@ Before #207 integrates, every delegated context is generic and is not evidence t
 
 | Level | Outcome | Evidence | Deferral Owner / Follow-up |
 | --- | --- | --- | --- |
-| unit | passed | Host Python route resolver suite passed 13/13, including direct, multi-hop, deferred edge, ambiguity, asset failure, cutover, deprecation, and mutation-sentinel cases. | none |
+| unit | passed | Host Python route resolver suite passed 20/20 after typed evidence repair, including sidecar/archive binding, validator argv and output receipts, owner approval, and symlink escape. | none |
 | integration | passed | Isolated core-only extracted-package projection passed 1/1; validation registry passed 6/6 on the authorized host boundary. | Hosted exact-head checks remain an admission gate. |
 
 ## Spec Compliance Selection
@@ -120,7 +120,7 @@ Before #207 integrates, every delegated context is generic and is not evidence t
 
 ## Progress And Handoff
 
-- Current stage: UPG-003-S1 final local admission before commit and independent audit.
+- Current stage: UPG-003-S1 typed-evidence repair validated; a new repair commit and fresh independent audit remain.
 - Completed stages: Live Issue/Project/PR read-back, exact existing-surface inventory, route contract, resolver, CLI, portable projection, focused source tests, and isolated package test.
 - Deferred stages and reasons: S2 waits for merged S1; S3 waits for S2 plus #207/#208 integration.
 - Open decisions: None for S1; unavailable or ambiguous assets become reconciliation-required rather than inferred.
@@ -140,11 +140,11 @@ Before #207 integrates, every delegated context is generic and is not evidence t
 - Outcome: S1 implementation and focused validation complete; commit, exact-head audit, hosted checks, PR merge, and online read-back remain.
 - Changed artifacts: Upgrade support policy, canonical matrix schema/template, read-only resolver and CLI, skill/profile registration, focused route and package-projection GWTs, validation registry, and this workflow evidence.
 - Approved requirement/specification evidence: Live Issue #206 and explicit owner instructions.
-- Implementation completion evidence: Resolver emits only four governed route kinds, binds raw matrix and exact selected edge evidence, and never accepts a target or invokes package apply.
-- Required test outcomes: Route 13/13; isolated package projection 1/1; validation registry 6/6; shell-assets validation passed.
+- Implementation completion evidence: Resolver emits only four governed route kinds, cross-binds checksum sidecars, validator argv, canonical receipts, output bytes, and owner-approved deprecation evidence, and never accepts a target or invokes package apply.
+- Required test outcomes: Route 20/20; isolated package projection 1/1; validation registry 6/6; shell-assets validation passed. The first full-module external attempt failed because its output capture was missing and remains failed evidence.
 - Selected compliance evidence: Not applicable.
 - Review disposition: Pending fresh exact-head independent audit.
-- Validation evidence: Base identity `ead96acb0ac4ea73a94c6de59604b47f1f78b5ae`; framework-source packet `b244520f8cb7653c067e2fe13a2aeef62f9974f8f345b0cac2dee3c63159ff05`; live published v0.6-v0.13 identities; historical packages have no portable validator and v0.10-v0.11 remains deferred-with-owner; focused passing results above. Failed sandbox/fixture attempts remain recorded in the task artifact and are not promoted.
+- Validation evidence: Base identity `ead96acb0ac4ea73a94c6de59604b47f1f78b5ae`; framework-source packet `b244520f8cb7653c067e2fe13a2aeef62f9974f8f345b0cac2dee3c63159ff05`; live published v0.6-v0.13 identities; historical packages have no portable validator and v0.10-v0.11 remains deferred-with-owner. Fresh Sol High audit of `f6de771bb37a6224fb09543edf911f61aa7ab2bc` failed on self-attested route/deprecation evidence; the audit made no repair. Typed evidence repair now has focused passing results but requires a new commit and independent audit. Failed sandbox, fixture, and external-capture attempts remain recorded and are not promoted.
 - Workflow task state: in progress.
 - Commits: pending.
 - Branch / checkpoint / handoff evidence: Dedicated S1 branch created from exact integrated main.

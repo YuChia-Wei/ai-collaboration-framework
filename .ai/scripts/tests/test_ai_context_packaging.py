@@ -1572,6 +1572,18 @@ class UpgradeRoutePackageProjectionGwtTests(unittest.TestCase):
                     "sha256": hashlib.sha256(content).hexdigest(),
                 }
 
+            def canonical_json_asset(asset_id: str, path: str, value: dict) -> dict[str, str]:
+                return asset(
+                    asset_id,
+                    path,
+                    (
+                        json.dumps(
+                            value, ensure_ascii=False, sort_keys=True, separators=(",", ":")
+                        )
+                        + "\n"
+                    ).encode("utf-8"),
+                )
+
             target_manifest = asset(
                 "target-manifest", "artifacts/target/manifest.yaml", b"target manifest\n"
             )
@@ -1583,27 +1595,96 @@ class UpgradeRoutePackageProjectionGwtTests(unittest.TestCase):
             v090_manifest = asset(
                 "v090-manifest", "artifacts/v0.9.0/manifest.yaml", b"v090 manifest\n"
             )
+            edge_archive = asset("edge-archive", "artifacts/edge/package.tar.gz", b"archive\n")
             edge_artifacts = {
-                "archive": asset("edge-archive", "artifacts/edge/package.tar.gz", b"archive\n"),
-                "checksum": asset("edge-checksum", "artifacts/edge/SHA256SUMS", b"checksum\n"),
+                "archive": edge_archive,
+                "checksum": asset(
+                    "edge-checksum",
+                    "artifacts/edge/SHA256SUMS",
+                    f"{edge_archive['sha256']}  package.tar.gz\n".encode("utf-8"),
+                ),
                 "manifest": asset("edge-manifest", "artifacts/edge/migration.yaml", b"migration\n"),
-                "validator": asset("edge-validator", "artifacts/edge/validator.json", b"validator\n"),
+                "validator": asset("edge-validator", "artifacts/edge/validator.py", b"validator\n"),
             }
-            validation_report = asset(
+            validator_argv = [
+                "python",
+                edge_artifacts["validator"]["path"],
+                "--edge-id",
+                "v100-to-v120",
+            ]
+            validation_output = asset(
+                "edge-validation-output",
+                "artifacts/edge/validation-output.log",
+                b"edge validation output\n",
+            )
+            validation_report = canonical_json_asset(
                 "edge-validation-report",
                 "artifacts/edge/validation-report.json",
-                b"validation report\n",
+                {
+                    "schema_version": "upgrade-edge-validation/v1",
+                    "edge_id": "v100-to-v120",
+                    "artifacts": edge_artifacts,
+                    "validator_argv": validator_argv,
+                    "outcome": "passed",
+                    "exit_code": 0,
+                    "output_sha256": validation_output["sha256"],
+                },
+            )
+            deprecation_id = "v060-unsupported"
+            deprecation_reason = "fixture deprecation is complete"
+            deprecation_notice = canonical_json_asset(
+                "v060-notice",
+                "deprecations/v060/notice.json",
+                {
+                    "schema_version": "upgrade-deprecation-notice/v1",
+                    "deprecation_id": deprecation_id,
+                    "role": "v0.6.0",
+                    "origin": "v0.6.0",
+                    "target": "v1.2.0",
+                    "disposition": "unsupported",
+                    "reason": deprecation_reason,
+                },
+            )
+            deprecation_decision = canonical_json_asset(
+                "v060-decision",
+                "deprecations/v060/owner-decision.json",
+                {
+                    "schema_version": "upgrade-deprecation-owner-decision/v1",
+                    "deprecation_id": deprecation_id,
+                    "role": "v0.6.0",
+                    "origin": "v0.6.0",
+                    "target": "v1.2.0",
+                    "status": "approved",
+                    "approved": True,
+                    "owner": "fixture-governance-owner",
+                    "decided_at": "2026-08-20T00:00:00+08:00",
+                },
+            )
+            deprecation_output = asset(
+                "v060-validation-output",
+                "deprecations/v060/validation-output.log",
+                b"deprecation validation output\n",
             )
             deprecation_evidence = {
-                "deprecation_notice": asset(
-                    "v060-notice", "deprecations/v060/notice.md", b"notice\n"
+                "deprecation_notice": deprecation_notice,
+                "owner_decision": deprecation_decision,
+                "validator": canonical_json_asset(
+                    "v060-validator",
+                    "deprecations/v060/validation.json",
+                    {
+                        "schema_version": "upgrade-deprecation-validation/v1",
+                        "deprecation_id": deprecation_id,
+                        "role": "v0.6.0",
+                        "origin": "v0.6.0",
+                        "target": "v1.2.0",
+                        "deprecation_notice": deprecation_notice,
+                        "owner_decision": deprecation_decision,
+                        "outcome": "passed",
+                        "exit_code": 0,
+                        "output_sha256": deprecation_output["sha256"],
+                    },
                 ),
-                "owner_decision": asset(
-                    "v060-decision", "deprecations/v060/owner-decision.md", b"decision\n"
-                ),
-                "validator": asset(
-                    "v060-validator", "deprecations/v060/validator.json", b"validator\n"
-                ),
+                "output": deprecation_output,
             }
             matrix = {
                 "schema_version": "1.0",
@@ -1654,7 +1735,9 @@ class UpgradeRoutePackageProjectionGwtTests(unittest.TestCase):
                                 ],
                                 "validation": {
                                     "state": "passed",
+                                    "validator_argv": validator_argv,
                                     "report": validation_report,
+                                    "output": validation_output,
                                 },
                             }
                         ],
@@ -1662,13 +1745,13 @@ class UpgradeRoutePackageProjectionGwtTests(unittest.TestCase):
                 ],
                 "deprecations": [
                     {
-                        "deprecation_id": "v060-unsupported",
+                        "deprecation_id": deprecation_id,
                         "role": "v0.6.0",
                         "origin": "v0.6.0",
                         "target": "v1.2.0",
                         "disposition": "unsupported",
                         "complete": True,
-                        "reason": "fixture deprecation is complete",
+                        "reason": deprecation_reason,
                         "evidence": deprecation_evidence,
                     }
                 ],

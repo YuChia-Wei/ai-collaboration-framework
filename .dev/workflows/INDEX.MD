@@ -8,7 +8,7 @@ task-level progress.
 
 | Workflow | Title | Owner | Status | Updated | Entry Point |
 | --- | --- | --- | --- | --- | --- |
-| [`2026-08-20-upg-003-multi-hop-upgrade`](2026-08-20-upg-003-multi-hop-upgrade/workflow.yaml) | UPG-003 Retained-Origin Multi-Hop Upgrade | `software-development-orchestrator` | `in_progress` | `2026-08-20T17:43:00+08:00` | [plan](2026-08-20-upg-003-multi-hop-upgrade/workflow-plan.md) |
+| [`2026-08-20-upg-003-multi-hop-upgrade`](2026-08-20-upg-003-multi-hop-upgrade/workflow.yaml) | UPG-003 Retained-Origin Multi-Hop Upgrade | `software-development-orchestrator` | `in_progress` | `2026-08-20T18:14:32+08:00` | [plan](2026-08-20-upg-003-multi-hop-upgrade/workflow-plan.md) |
 | [`2026-08-20-ctx-010-engineering-guardrails`](2026-08-20-ctx-010-engineering-guardrails/workflow.yaml) | CTX-010 Optional Engineering Guardrails Provider Contract | `software-development-orchestrator` | `in_progress` | `2026-08-20T16:15:04+08:00` | [plan](2026-08-20-ctx-010-engineering-guardrails/workflow-plan.md) |
 | [`2026-08-20-upg-002-remediation-packet`](2026-08-20-upg-002-remediation-packet/workflow.yaml) | UPG-002 Prospective Cutover And Durable Remediation Packet | `software-development-orchestrator` | `in_progress` | `2026-08-20T14:30:35+08:00` | [plan](2026-08-20-upg-002-remediation-packet/workflow-plan.md) |
 | [`2026-08-20-gov-010-source-applicability`](2026-08-20-gov-010-source-applicability/workflow.yaml) | GOV-010 Source-Repository Effective-Rule Applicability | `ai-context-governance` | `completed` | `2026-08-20T08:49:21+08:00` | [plan](2026-08-20-gov-010-source-applicability/workflow-plan.md) |

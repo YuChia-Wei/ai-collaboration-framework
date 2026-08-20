@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 from collections.abc import Mapping, Sequence
+from datetime import datetime
 from hashlib import sha256
 import json
 from pathlib import Path, PurePosixPath
@@ -24,11 +25,21 @@ ROUTE_KINDS = frozenset(
 )
 RETAINED_ORIGIN_ROLES = frozenset({"immediate-predecessor", "v0.9.0", "v0.6.0"})
 EDGE_ARTIFACT_NAMES = ("archive", "checksum", "manifest", "validator")
-DEPRECATION_EVIDENCE_NAMES = ("deprecation_notice", "owner_decision", "validator")
+DEPRECATION_EVIDENCE_NAMES = ("deprecation_notice", "owner_decision", "validator", "output")
 SHA256_RE = re.compile(r"[0-9a-f]{64}\Z")
 SHA1_RE = re.compile(r"[0-9a-f]{40}\Z")
 VERSION_RE = re.compile(r"v[0-9]+\.[0-9]+\.[0-9]+(?:[-+][0-9A-Za-z.-]+)?\Z")
 VALIDATION_STATES = frozenset({"passed", "failed", "blocked", "not-run", "deferred-with-owner"})
+EDGE_VALIDATION_RECEIPT_SCHEMA_VERSION = "upgrade-edge-validation/v1"
+DEPRECATION_NOTICE_SCHEMA_VERSION = "upgrade-deprecation-notice/v1"
+DEPRECATION_DECISION_SCHEMA_VERSION = "upgrade-deprecation-owner-decision/v1"
+DEPRECATION_VALIDATION_RECEIPT_SCHEMA_VERSION = "upgrade-deprecation-validation/v1"
+CHECKSUM_SIDECAR_RE = re.compile(
+    r"(?P<sha256>[0-9a-f]{64}) (?P<mode>[ *])(?P<filename>[^/\\\x00\r\n]+)\n"
+)
+ISO_OFFSET_TIMESTAMP_RE = re.compile(
+    r"[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}(?:\.[0-9]+)?[+-][0-9]{2}:[0-9]{2}"
+)
 
 
 class UpgradeRouteError(ValueError):
@@ -37,6 +48,14 @@ class UpgradeRouteError(ValueError):
 
 class MatrixValidationError(UpgradeRouteError):
     """The matrix contract is incomplete, contradictory, or unsafe."""
+
+
+class EvidenceValidationError(UpgradeRouteError):
+    """Parsed evidence is missing, malformed, or cross-bound to another record."""
+
+    def __init__(self, code: str, detail: str) -> None:
+        super().__init__(detail)
+        self.code = code
 
 
 def canonical_json(value: Any) -> str:
@@ -49,6 +68,156 @@ def sha256_bytes(value: bytes) -> str:
     """Return a lowercase SHA-256 digest for raw evidence bytes."""
 
     return sha256(value).hexdigest()
+
+
+def _json_object_without_duplicate_keys(pairs: list[tuple[str, Any]]) -> dict[str, Any]:
+    """Construct a JSON object while rejecting duplicate keys deterministically."""
+
+    result: dict[str, Any] = {}
+    for key, value in pairs:
+        if key in result:
+            raise ValueError(f"duplicate JSON key: {key}")
+        result[key] = value
+    return result
+
+
+def _reject_json_constant(value: str) -> None:
+    """Reject non-standard JSON constants such as NaN and Infinity."""
+
+    raise ValueError(f"non-standard JSON constant: {value}")
+
+
+class _StrictYamlLoader(yaml.SafeLoader):
+    """Safe YAML loader that rejects duplicate and non-string mapping keys."""
+
+
+def _construct_strict_yaml_mapping(
+    loader: _StrictYamlLoader, node: yaml.nodes.MappingNode, deep: bool = False
+) -> dict[str, Any]:
+    result: dict[str, Any] = {}
+    for key_node, value_node in node.value:
+        key = loader.construct_object(key_node, deep=deep)
+        if not isinstance(key, str):
+            raise MatrixValidationError("typed YAML evidence keys must be strings")
+        if key in result:
+            raise MatrixValidationError(f"typed YAML evidence duplicates key: {key}")
+        result[key] = loader.construct_object(value_node, deep=deep)
+    return result
+
+
+_StrictYamlLoader.add_constructor(
+    yaml.resolver.BaseResolver.DEFAULT_MAPPING_TAG, _construct_strict_yaml_mapping
+)
+
+
+def _canonical_json_object(raw: bytes, code_prefix: str) -> dict[str, Any]:
+    """Load one UTF-8 canonical JSON object with no duplicate keys."""
+
+    try:
+        text = raw.decode("utf-8")
+    except UnicodeDecodeError as exc:
+        raise EvidenceValidationError(
+            f"{code_prefix}-invalid-encoding", "evidence must be UTF-8 JSON"
+        ) from exc
+    try:
+        value = json.loads(
+            text,
+            object_pairs_hook=_json_object_without_duplicate_keys,
+            parse_constant=_reject_json_constant,
+        )
+    except (TypeError, ValueError, json.JSONDecodeError) as exc:
+        raise EvidenceValidationError(
+            f"{code_prefix}-invalid-json", "evidence must be a valid JSON object"
+        ) from exc
+    if not isinstance(value, dict):
+        raise EvidenceValidationError(
+            f"{code_prefix}-invalid-shape", "evidence must be a JSON object"
+        )
+    if canonical_json(value).encode("utf-8") != raw:
+        raise EvidenceValidationError(
+            f"{code_prefix}-not-canonical", "evidence JSON must use the canonical encoding"
+        )
+    return value
+
+
+def _typed_document_object(raw: bytes, path: str, code_prefix: str) -> dict[str, Any]:
+    """Load strict JSON or YAML evidence according to its declared asset path."""
+
+    suffix = PurePosixPath(path).suffix.lower()
+    if suffix == ".json":
+        try:
+            text = raw.decode("utf-8")
+        except UnicodeDecodeError as exc:
+            raise EvidenceValidationError(
+                f"{code_prefix}-invalid-encoding", "JSON evidence must be UTF-8"
+            ) from exc
+        try:
+            value = json.loads(
+                text,
+                object_pairs_hook=_json_object_without_duplicate_keys,
+                parse_constant=_reject_json_constant,
+            )
+        except (TypeError, ValueError, json.JSONDecodeError) as exc:
+            raise EvidenceValidationError(
+                f"{code_prefix}-invalid-json", "evidence must be valid JSON"
+            ) from exc
+    elif suffix in {".yaml", ".yml"}:
+        try:
+            text = raw.decode("utf-8")
+        except UnicodeDecodeError as exc:
+            raise EvidenceValidationError(
+                f"{code_prefix}-invalid-encoding", "YAML evidence must be UTF-8"
+            ) from exc
+        try:
+            value = yaml.load(text, Loader=_StrictYamlLoader)
+        except MatrixValidationError as exc:
+            raise EvidenceValidationError(
+                f"{code_prefix}-invalid-yaml", "YAML evidence must use unique string keys"
+            ) from exc
+        except yaml.YAMLError as exc:
+            raise EvidenceValidationError(
+                f"{code_prefix}-invalid-yaml", "evidence must be valid YAML"
+            ) from exc
+    else:
+        raise EvidenceValidationError(
+            f"{code_prefix}-invalid-format", "evidence must use a .json, .yaml, or .yml path"
+        )
+    if not isinstance(value, dict):
+        raise EvidenceValidationError(
+            f"{code_prefix}-invalid-shape", "evidence must be a mapping"
+        )
+    return value
+
+
+def _validated_argv(value: Any, label: str, executable: Mapping[str, str]) -> list[str]:
+    """Require an ordered non-empty argv bound to the declared executable asset."""
+
+    argv = _list(value, label)
+    if not argv:
+        raise MatrixValidationError(f"{label} must be a non-empty list")
+    normalized = [_string(item, f"{label}[{index}]") for index, item in enumerate(argv)]
+    if normalized.count(executable["path"]) != 1:
+        raise MatrixValidationError(
+            f"{label} must contain the validator executable asset path exactly once"
+        )
+    return normalized
+
+
+def _iso_offset_timestamp(value: Any, label: str) -> str:
+    """Require one ISO-8601 timestamp with an explicit numeric UTC offset."""
+
+    value = _string(value, label)
+    if not ISO_OFFSET_TIMESTAMP_RE.fullmatch(value):
+        raise MatrixValidationError(f"{label} must be an ISO-8601 timestamp with an offset")
+    try:
+        parsed = datetime.fromisoformat(value)
+    except ValueError as exc:
+        raise MatrixValidationError(
+            f"{label} must be an ISO-8601 timestamp with an offset"
+        ) from exc
+    if parsed.tzinfo is None or parsed.utcoffset() is None:
+        raise MatrixValidationError(f"{label} must include a UTC offset")
+    return value
 
 
 def load_route_matrix(matrix_path: Path) -> tuple[dict[str, Any], bytes]:
@@ -239,10 +408,18 @@ def _validate_edge(
     artifacts = _mapping(data["artifacts"], f"{label}.artifacts")
     _exact_keys(artifacts, set(EDGE_ARTIFACT_NAMES), f"{label}.artifacts")
     validation = _mapping(data["validation"], f"{label}.validation")
-    _exact_keys(validation, {"state", "report"}, f"{label}.validation")
+    _exact_keys(
+        validation,
+        {"state", "validator_argv", "report", "output"},
+        f"{label}.validation",
+    )
     validation_state = _string(validation["state"], f"{label}.validation.state")
     if validation_state not in VALIDATION_STATES:
         raise MatrixValidationError(f"{label}.validation.state is not supported")
+    normalized_artifacts = {
+        name: _asset_identity(artifacts[name], f"{label}.artifacts.{name}")
+        for name in EDGE_ARTIFACT_NAMES
+    }
     seen_cutovers: set[str] = set()
     edge_cutovers: list[dict[str, str]] = []
     for cutover_index, cutover in enumerate(_list(data["semantic_cutovers"], f"{label}.semantic_cutovers")):
@@ -264,14 +441,17 @@ def _validate_edge(
         "order": expected_order,
         "from_version": _version(data["from_version"], f"{label}.from_version"),
         "to_version": _version(data["to_version"], f"{label}.to_version"),
-        "artifacts": {
-            name: _asset_identity(artifacts[name], f"{label}.artifacts.{name}")
-            for name in EDGE_ARTIFACT_NAMES
-        },
+        "artifacts": normalized_artifacts,
         "semantic_cutovers": edge_cutovers,
         "validation": {
             "state": validation_state,
+            "validator_argv": _validated_argv(
+                validation["validator_argv"],
+                f"{label}.validation.validator_argv",
+                normalized_artifacts["validator"],
+            ),
             "report": _asset_identity(validation["report"], f"{label}.validation.report"),
+            "output": _asset_identity(validation["output"], f"{label}.validation.output"),
         },
     }
 
@@ -457,21 +637,32 @@ def _asset_path(asset_root: Path, identity: Mapping[str, str]) -> Path:
     return candidate
 
 
-def _asset_diagnostic(
+def _verified_asset_bytes(
     asset_root: Path, identity: Mapping[str, str], context: Mapping[str, str]
-) -> dict[str, str] | None:
-    path = _asset_path(asset_root, identity)
+) -> tuple[bytes | None, dict[str, str] | None]:
+    """Read one identity only when it is safe, present, and matches raw bytes."""
+
     try:
-        actual = sha256_bytes(path.read_bytes())
+        path = _asset_path(asset_root, identity)
+    except MatrixValidationError:
+        return None, {
+            **context,
+            "asset_id": identity["asset_id"],
+            "code": "unsafe-asset-path",
+            "path": identity["path"],
+        }
+    try:
+        raw = path.read_bytes()
     except OSError:
-        return {
+        return None, {
             **context,
             "asset_id": identity["asset_id"],
             "code": "missing-asset",
             "path": identity["path"],
         }
+    actual = sha256_bytes(raw)
     if actual != identity["sha256"]:
-        return {
+        return None, {
             **context,
             "actual_sha256": actual,
             "asset_id": identity["asset_id"],
@@ -479,14 +670,360 @@ def _asset_diagnostic(
             "expected_sha256": identity["sha256"],
             "path": identity["path"],
         }
+    return raw, None
+
+
+def _asset_diagnostic(
+    asset_root: Path, identity: Mapping[str, str], context: Mapping[str, str]
+) -> dict[str, str] | None:
+    _, diagnostic = _verified_asset_bytes(asset_root, identity, context)
+    return diagnostic
+
+
+def _checksum_sidecar_diagnostic(
+    edge: Mapping[str, Any], verified_artifacts: Mapping[str, bytes], context: Mapping[str, str]
+) -> dict[str, str] | None:
+    """Verify one exact standard SHA-256 sidecar against its archive bytes and name."""
+
+    archive = verified_artifacts.get("archive")
+    sidecar = verified_artifacts.get("checksum")
+    if archive is None or sidecar is None:
+        return None
+    try:
+        text = sidecar.decode("utf-8")
+    except UnicodeDecodeError:
+        return {**context, "artifact": "checksum", "code": "checksum-sidecar-invalid-encoding"}
+    match = CHECKSUM_SIDECAR_RE.fullmatch(text)
+    if match is None:
+        return {**context, "artifact": "checksum", "code": "checksum-sidecar-invalid-format"}
+    expected_filename = PurePosixPath(edge["artifacts"]["archive"]["path"]).name
+    if match.group("filename") != expected_filename:
+        return {**context, "artifact": "checksum", "code": "checksum-archive-filename-mismatch"}
+    if match.group("sha256") != sha256_bytes(archive):
+        return {**context, "artifact": "checksum", "code": "checksum-archive-digest-mismatch"}
     return None
+
+
+def _edge_validation_receipt_diagnostic(
+    edge: Mapping[str, Any], report: bytes, output: bytes, context: Mapping[str, str]
+) -> dict[str, str] | None:
+    """Parse a canonical edge receipt and bind it to the declared edge evidence."""
+
+    report_identity = edge["validation"]["report"]
+    if PurePosixPath(report_identity["path"]).suffix.lower() != ".json":
+        return {
+            **context,
+            "artifact": "validation-report",
+            "code": "edge-validation-report-invalid-format",
+        }
+    try:
+        receipt = _canonical_json_object(report, "edge-validation-report")
+        try:
+            _exact_keys(
+                receipt,
+                {
+                    "schema_version",
+                    "edge_id",
+                    "artifacts",
+                    "validator_argv",
+                    "outcome",
+                    "exit_code",
+                    "output_sha256",
+                },
+                "edge validation report",
+            )
+            schema_version = _string(receipt["schema_version"], "edge validation report.schema_version")
+            edge_id = _string(receipt["edge_id"], "edge validation report.edge_id")
+            artifacts = _mapping(receipt["artifacts"], "edge validation report.artifacts")
+            _exact_keys(artifacts, set(EDGE_ARTIFACT_NAMES), "edge validation report.artifacts")
+            reported_artifacts = {
+                name: _asset_identity(
+                    artifacts[name], f"edge validation report.artifacts.{name}"
+                )
+                for name in EDGE_ARTIFACT_NAMES
+            }
+            argv = _validated_argv(
+                receipt["validator_argv"],
+                "edge validation report.validator_argv",
+                edge["artifacts"]["validator"],
+            )
+            outcome = _string(receipt["outcome"], "edge validation report.outcome")
+            if type(receipt["exit_code"]) is not int:
+                raise MatrixValidationError("edge validation report.exit_code must be an integer")
+            output_sha256 = _sha256(
+                receipt["output_sha256"], "edge validation report.output_sha256"
+            )
+        except MatrixValidationError as exc:
+            raise EvidenceValidationError(
+                "edge-validation-report-invalid-shape", str(exc)
+            ) from exc
+        if schema_version != EDGE_VALIDATION_RECEIPT_SCHEMA_VERSION:
+            raise EvidenceValidationError(
+                "edge-validation-report-schema-mismatch", "edge validation report schema is unsupported"
+            )
+        if edge_id != edge["edge_id"]:
+            raise EvidenceValidationError(
+                "edge-validation-report-edge-mismatch", "edge validation report names another edge"
+            )
+        if any(
+            reported_artifacts[name] != edge["artifacts"][name] for name in EDGE_ARTIFACT_NAMES
+        ):
+            raise EvidenceValidationError(
+                "edge-validation-report-artifact-mismatch",
+                "edge validation report artifacts do not match the matrix edge",
+            )
+        if argv != edge["validation"]["validator_argv"]:
+            raise EvidenceValidationError(
+                "edge-validation-report-validator-argv-mismatch",
+                "edge validation report argv does not match the matrix edge",
+            )
+        if outcome != "passed":
+            raise EvidenceValidationError(
+                "edge-validation-report-outcome-not-passed",
+                "edge validation report outcome must be passed",
+            )
+        if edge["validation"]["state"] != outcome:
+            raise EvidenceValidationError(
+                "edge-validation-state-mismatch",
+                "matrix validation state does not match the edge validation report",
+            )
+        if receipt["exit_code"] != 0:
+            raise EvidenceValidationError(
+                "edge-validation-report-exit-code-not-zero",
+                "edge validation report exit code must be zero",
+            )
+        if output_sha256 != edge["validation"]["output"]["sha256"]:
+            raise EvidenceValidationError(
+                "edge-validation-report-output-digest-mismatch",
+                "edge validation report output digest does not match the matrix output identity",
+            )
+        if output_sha256 != sha256_bytes(output):
+            raise EvidenceValidationError(
+                "edge-validation-output-digest-mismatch",
+                "edge validation output raw bytes do not match the report digest",
+            )
+    except EvidenceValidationError as exc:
+        return {**context, "artifact": "validation-report", "code": exc.code}
+    return None
+
+
+def _validate_deprecation_notice(deprecation: Mapping[str, Any], raw: bytes) -> None:
+    """Require a typed notice that names precisely one deprecation declaration."""
+
+    try:
+        notice = _typed_document_object(
+            raw,
+            deprecation["evidence"]["deprecation_notice"]["path"],
+            "deprecation-notice",
+        )
+        _exact_keys(
+            notice,
+            {
+                "schema_version",
+                "deprecation_id",
+                "role",
+                "origin",
+                "target",
+                "disposition",
+                "reason",
+            },
+            "deprecation notice",
+        )
+        schema_version = _string(notice["schema_version"], "deprecation notice.schema_version")
+        deprecation_id = _string(notice["deprecation_id"], "deprecation notice.deprecation_id")
+        role = _string(notice["role"], "deprecation notice.role")
+        origin = _version(notice["origin"], "deprecation notice.origin")
+        target = _version(notice["target"], "deprecation notice.target")
+        disposition = _string(notice["disposition"], "deprecation notice.disposition")
+        reason = _string(notice["reason"], "deprecation notice.reason")
+    except MatrixValidationError as exc:
+        raise EvidenceValidationError("deprecation-notice-invalid-shape", str(exc)) from exc
+    if schema_version != DEPRECATION_NOTICE_SCHEMA_VERSION:
+        raise EvidenceValidationError(
+            "deprecation-notice-schema-mismatch", "deprecation notice schema is unsupported"
+        )
+    if (
+        deprecation_id != deprecation["deprecation_id"]
+        or role != deprecation["role"]
+        or origin != deprecation["origin"]
+        or target != deprecation["target"]
+        or disposition != deprecation["disposition"]
+        or reason != deprecation["reason"]
+    ):
+        raise EvidenceValidationError(
+            "deprecation-notice-cross-bind-mismatch",
+            "deprecation notice does not match its matrix declaration",
+        )
+
+
+def _validate_deprecation_owner_decision(deprecation: Mapping[str, Any], raw: bytes) -> None:
+    """Require one owner-approved, offset-timestamped typed decision."""
+
+    try:
+        decision = _typed_document_object(
+            raw,
+            deprecation["evidence"]["owner_decision"]["path"],
+            "deprecation-owner-decision",
+        )
+        _exact_keys(
+            decision,
+            {
+                "schema_version",
+                "deprecation_id",
+                "role",
+                "origin",
+                "target",
+                "status",
+                "approved",
+                "owner",
+                "decided_at",
+            },
+            "deprecation owner decision",
+        )
+        schema_version = _string(
+            decision["schema_version"], "deprecation owner decision.schema_version"
+        )
+        deprecation_id = _string(
+            decision["deprecation_id"], "deprecation owner decision.deprecation_id"
+        )
+        role = _string(decision["role"], "deprecation owner decision.role")
+        origin = _version(decision["origin"], "deprecation owner decision.origin")
+        target = _version(decision["target"], "deprecation owner decision.target")
+        status = _string(decision["status"], "deprecation owner decision.status")
+        owner = _string(decision["owner"], "deprecation owner decision.owner")
+        decided_at = _iso_offset_timestamp(
+            decision["decided_at"], "deprecation owner decision.decided_at"
+        )
+    except MatrixValidationError as exc:
+        raise EvidenceValidationError(
+            "deprecation-owner-decision-invalid-shape", str(exc)
+        ) from exc
+    if schema_version != DEPRECATION_DECISION_SCHEMA_VERSION:
+        raise EvidenceValidationError(
+            "deprecation-owner-decision-schema-mismatch",
+            "deprecation owner decision schema is unsupported",
+        )
+    if decision["approved"] is not True or status != "approved":
+        raise EvidenceValidationError(
+            "deprecation-owner-decision-not-approved",
+            "deprecation owner decision must be status approved and approved true",
+        )
+    if not owner or not decided_at:
+        raise EvidenceValidationError(
+            "deprecation-owner-decision-incomplete", "deprecation owner decision is incomplete"
+        )
+    if (
+        deprecation_id != deprecation["deprecation_id"]
+        or role != deprecation["role"]
+        or origin != deprecation["origin"]
+        or target != deprecation["target"]
+    ):
+        raise EvidenceValidationError(
+            "deprecation-owner-decision-cross-bind-mismatch",
+            "deprecation owner decision does not match its matrix declaration",
+        )
+
+
+def _validate_deprecation_validator_receipt(
+    deprecation: Mapping[str, Any], raw: bytes, output: bytes
+) -> None:
+    """Require a canonical passing receipt bound to the notice, decision, and output bytes."""
+
+    receipt_identity = deprecation["evidence"]["validator"]
+    if PurePosixPath(receipt_identity["path"]).suffix.lower() != ".json":
+        raise EvidenceValidationError(
+            "deprecation-validator-receipt-invalid-format",
+            "deprecation validator receipt must use a .json path",
+        )
+    receipt = _canonical_json_object(raw, "deprecation-validator-receipt")
+    try:
+        _exact_keys(
+            receipt,
+            {
+                "schema_version",
+                "deprecation_id",
+                "role",
+                "origin",
+                "target",
+                "deprecation_notice",
+                "owner_decision",
+                "outcome",
+                "exit_code",
+                "output_sha256",
+            },
+            "deprecation validator receipt",
+        )
+        schema_version = _string(
+            receipt["schema_version"], "deprecation validator receipt.schema_version"
+        )
+        deprecation_id = _string(
+            receipt["deprecation_id"], "deprecation validator receipt.deprecation_id"
+        )
+        role = _string(receipt["role"], "deprecation validator receipt.role")
+        origin = _version(receipt["origin"], "deprecation validator receipt.origin")
+        target = _version(receipt["target"], "deprecation validator receipt.target")
+        notice = _asset_identity(
+            receipt["deprecation_notice"], "deprecation validator receipt.deprecation_notice"
+        )
+        decision = _asset_identity(
+            receipt["owner_decision"], "deprecation validator receipt.owner_decision"
+        )
+        outcome = _string(receipt["outcome"], "deprecation validator receipt.outcome")
+        if type(receipt["exit_code"]) is not int:
+            raise MatrixValidationError("deprecation validator receipt.exit_code must be an integer")
+        output_sha256 = _sha256(
+            receipt["output_sha256"], "deprecation validator receipt.output_sha256"
+        )
+    except MatrixValidationError as exc:
+        raise EvidenceValidationError(
+            "deprecation-validator-receipt-invalid-shape", str(exc)
+        ) from exc
+    if schema_version != DEPRECATION_VALIDATION_RECEIPT_SCHEMA_VERSION:
+        raise EvidenceValidationError(
+            "deprecation-validator-receipt-schema-mismatch",
+            "deprecation validator receipt schema is unsupported",
+        )
+    if (
+        deprecation_id != deprecation["deprecation_id"]
+        or role != deprecation["role"]
+        or origin != deprecation["origin"]
+        or target != deprecation["target"]
+    ):
+        raise EvidenceValidationError(
+            "deprecation-validator-receipt-cross-bind-mismatch",
+            "deprecation validator receipt does not match its matrix declaration",
+        )
+    if (
+        notice != deprecation["evidence"]["deprecation_notice"]
+        or decision != deprecation["evidence"]["owner_decision"]
+    ):
+        raise EvidenceValidationError(
+            "deprecation-validator-receipt-evidence-mismatch",
+            "deprecation validator receipt names different notice or decision evidence",
+        )
+    if outcome != "passed" or receipt["exit_code"] != 0:
+        raise EvidenceValidationError(
+            "deprecation-validator-receipt-not-passed",
+            "deprecation validator receipt must report passed with exit code zero",
+        )
+    if output_sha256 != deprecation["evidence"]["output"]["sha256"]:
+        raise EvidenceValidationError(
+            "deprecation-validator-receipt-output-digest-mismatch",
+            "deprecation validator receipt output digest does not match the matrix output identity",
+        )
+    if output_sha256 != sha256_bytes(output):
+        raise EvidenceValidationError(
+            "deprecation-validator-output-digest-mismatch",
+            "deprecation validator output raw bytes do not match the receipt digest",
+        )
 
 
 def _deprecation_evidence_errors(matrix: Mapping[str, Any], asset_root: Path) -> None:
     errors: list[str] = []
     for deprecation in matrix["deprecations"]:
+        verified: dict[str, bytes] = {}
         for name in DEPRECATION_EVIDENCE_NAMES:
-            diagnostic = _asset_diagnostic(
+            raw, diagnostic = _verified_asset_bytes(
                 asset_root,
                 deprecation["evidence"][name],
                 {"deprecation_id": deprecation["deprecation_id"], "evidence": name},
@@ -495,6 +1032,18 @@ def _deprecation_evidence_errors(matrix: Mapping[str, Any], asset_root: Path) ->
                 errors.append(
                     f"{diagnostic['deprecation_id']}.{diagnostic['evidence']}: {diagnostic['code']}"
                 )
+            elif raw is not None:
+                verified[name] = raw
+        if len(verified) != len(DEPRECATION_EVIDENCE_NAMES):
+            continue
+        try:
+            _validate_deprecation_notice(deprecation, verified["deprecation_notice"])
+            _validate_deprecation_owner_decision(deprecation, verified["owner_decision"])
+            _validate_deprecation_validator_receipt(
+                deprecation, verified["validator"], verified["output"]
+            )
+        except EvidenceValidationError as exc:
+            errors.append(f"{deprecation['deprecation_id']}: {exc.code}")
     if errors:
         raise MatrixValidationError(
             "incomplete deprecation evidence invalidates matrix: " + ", ".join(sorted(errors))
@@ -508,21 +1057,46 @@ def _route_diagnostics(
     covered_cutovers: set[str] = set()
     for edge in route["edges"]:
         edge_context = {"edge_id": edge["edge_id"], "route_id": route["route_id"]}
+        verified_artifacts: dict[str, bytes] = {}
         for name in EDGE_ARTIFACT_NAMES:
-            diagnostic = _asset_diagnostic(
+            raw, diagnostic = _verified_asset_bytes(
                 asset_root,
                 edge["artifacts"][name],
                 {**edge_context, "artifact": name},
             )
             if diagnostic is not None:
                 diagnostics.append(diagnostic)
-        validation_diagnostic = _asset_diagnostic(
+            elif raw is not None:
+                verified_artifacts[name] = raw
+        report, validation_diagnostic = _verified_asset_bytes(
             asset_root,
             edge["validation"]["report"],
             {**edge_context, "artifact": "validation-report"},
         )
         if validation_diagnostic is not None:
             diagnostics.append(validation_diagnostic)
+        output, output_diagnostic = _verified_asset_bytes(
+            asset_root,
+            edge["validation"]["output"],
+            {**edge_context, "artifact": "validation-output"},
+        )
+        if output_diagnostic is not None:
+            diagnostics.append(output_diagnostic)
+        checksum_diagnostic = _checksum_sidecar_diagnostic(
+            edge, verified_artifacts, edge_context
+        )
+        if checksum_diagnostic is not None:
+            diagnostics.append(checksum_diagnostic)
+        if (
+            len(verified_artifacts) == len(EDGE_ARTIFACT_NAMES)
+            and report is not None
+            and output is not None
+        ):
+            receipt_diagnostic = _edge_validation_receipt_diagnostic(
+                edge, report, output, edge_context
+            )
+            if receipt_diagnostic is not None:
+                diagnostics.append(receipt_diagnostic)
         if edge["validation"]["state"] != "passed":
             diagnostics.append(
                 {

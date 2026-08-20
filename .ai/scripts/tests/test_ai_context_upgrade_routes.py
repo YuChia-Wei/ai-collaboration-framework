@@ -10,6 +10,7 @@ import subprocess
 import sys
 import tempfile
 import unittest
+from unittest import mock
 from pathlib import Path
 
 import yaml
@@ -71,6 +72,14 @@ class RouteFixture:
             "sha256": hashlib.sha256(content).hexdigest(),
         }
 
+    def canonical_json_asset(self, path: str, value: dict) -> dict[str, str]:
+        return self.asset(path, ROUTES.canonical_json(value).encode("utf-8"))
+
+    def rewrite_asset(self, identity: dict[str, str], content: bytes) -> None:
+        destination = self.root / identity["path"]
+        destination.write_bytes(content)
+        identity["sha256"] = hashlib.sha256(content).hexdigest()
+
     def origin(self, role: str, version: str, commit_character: str) -> dict:
         return {
             "role": role,
@@ -101,6 +110,17 @@ class RouteFixture:
             "manifest": self.asset(f"{prefix}/migration.yaml", f"edge: {edge_id}\n".encode()),
             "validator": self.asset(f"{prefix}/validator.py", b"print('validated')\n"),
         }
+        validator_argv = ["python", artifacts["validator"]["path"], "--edge-id", edge_id]
+        output = self.asset(f"{prefix}/validation-output.log", f"validated {edge_id}\n".encode())
+        report = {
+            "schema_version": ROUTES.EDGE_VALIDATION_RECEIPT_SCHEMA_VERSION,
+            "edge_id": edge_id,
+            "artifacts": artifacts,
+            "validator_argv": validator_argv,
+            "outcome": validation_state,
+            "exit_code": 0 if validation_state == "passed" else 1,
+            "output_sha256": output["sha256"],
+        }
         return {
             "edge_id": edge_id,
             "order": 1,
@@ -114,10 +134,9 @@ class RouteFixture:
             ),
             "validation": {
                 "state": validation_state,
-                "report": self.asset(
-                    f"{prefix}/validation.json",
-                    json.dumps({"state": validation_state}, sort_keys=True).encode(),
-                ),
+                "validator_argv": validator_argv,
+                "report": self.canonical_json_asset(f"{prefix}/validation.json", report),
+                "output": output,
             },
         }
 
@@ -143,24 +162,65 @@ class RouteFixture:
         )
 
     def complete_deprecation(self, role: str, origin: str) -> dict:
+        deprecation_id = f"deprecate-{origin}"
+        reason = "Owner-approved support retirement"
+        notice = self.canonical_json_asset(
+            f"deprecations/{origin}/notice.json",
+            {
+                "schema_version": ROUTES.DEPRECATION_NOTICE_SCHEMA_VERSION,
+                "deprecation_id": deprecation_id,
+                "role": role,
+                "origin": origin,
+                "target": self.target,
+                "disposition": "unsupported",
+                "reason": reason,
+            },
+        )
+        decision = self.canonical_json_asset(
+            f"deprecations/{origin}/owner-decision.json",
+            {
+                "schema_version": ROUTES.DEPRECATION_DECISION_SCHEMA_VERSION,
+                "deprecation_id": deprecation_id,
+                "role": role,
+                "origin": origin,
+                "target": self.target,
+                "status": "approved",
+                "approved": True,
+                "owner": "framework-governance-owner",
+                "decided_at": "2026-08-20T00:00:00+08:00",
+            },
+        )
+        output = self.asset(
+            f"deprecations/{origin}/validation-output.log", b"deprecation evidence validated\n"
+        )
+        receipt = self.canonical_json_asset(
+            f"deprecations/{origin}/validation.json",
+            {
+                "schema_version": ROUTES.DEPRECATION_VALIDATION_RECEIPT_SCHEMA_VERSION,
+                "deprecation_id": deprecation_id,
+                "role": role,
+                "origin": origin,
+                "target": self.target,
+                "deprecation_notice": notice,
+                "owner_decision": decision,
+                "outcome": "passed",
+                "exit_code": 0,
+                "output_sha256": output["sha256"],
+            },
+        )
         return {
-            "deprecation_id": f"deprecate-{origin}",
+            "deprecation_id": deprecation_id,
             "role": role,
             "origin": origin,
             "target": self.target,
             "disposition": "unsupported",
             "complete": True,
-            "reason": "Owner-approved support retirement",
+            "reason": reason,
             "evidence": {
-                "deprecation_notice": self.asset(
-                    f"deprecations/{origin}/release-notes.md", b"support retired\n"
-                ),
-                "owner_decision": self.asset(
-                    f"deprecations/{origin}/owner-decision.json", b'{"approved":true}\n'
-                ),
-                "validator": self.asset(
-                    f"deprecations/{origin}/validation.json", b'{"state":"passed"}\n'
-                ),
+                "deprecation_notice": notice,
+                "owner_decision": decision,
+                "validator": receipt,
+                "output": output,
             },
         }
 
@@ -317,6 +377,141 @@ class UpgradeRouteTests(unittest.TestCase):
 
         with self.assertRaisesRegex(ROUTES.MatrixValidationError, "incomplete deprecation evidence"):
             self.fixture.resolve("v0.6.0")
+
+    def test_gwt_010a_given_wrong_checksum_sidecar_with_updated_self_hash_when_resolved_then_reconciliation_is_required(self) -> None:
+        edge = self.fixture.edge("v0.13.0", self.fixture.target)
+        self.fixture.matrix["routes"] = [self.fixture.route("direct", "v0.13.0", [edge])]
+        self.fixture.rewrite_asset(
+            edge["artifacts"]["checksum"],
+            f"{'0' * 64}  package.tar.gz\n".encode("utf-8"),
+        )
+
+        result = self.fixture.resolve("v0.13.0")
+
+        self.assertEqual("reconciliation-required", result["route_kind"])
+        self.assertIn(
+            "checksum-archive-digest-mismatch",
+            {item["code"] for item in result["diagnostics"]},
+        )
+
+    def test_gwt_010b_given_failed_validation_report_with_updated_self_hash_when_resolved_then_reconciliation_is_required(self) -> None:
+        edge = self.fixture.edge("v0.13.0", self.fixture.target)
+        self.fixture.matrix["routes"] = [self.fixture.route("direct", "v0.13.0", [edge])]
+        report_path = self.fixture.root / edge["validation"]["report"]["path"]
+        report = json.loads(report_path.read_text(encoding="utf-8"))
+        report["outcome"] = "failed"
+        report["exit_code"] = 1
+        self.fixture.rewrite_asset(
+            edge["validation"]["report"], ROUTES.canonical_json(report).encode("utf-8")
+        )
+
+        result = self.fixture.resolve("v0.13.0")
+
+        self.assertEqual("reconciliation-required", result["route_kind"])
+        self.assertIn(
+            "edge-validation-report-outcome-not-passed",
+            {item["code"] for item in result["diagnostics"]},
+        )
+
+    def test_gwt_010c_given_missing_or_mismatched_validator_argv_when_checked_then_the_contract_fails_closed(self) -> None:
+        missing = self.fixture.edge("v0.13.0", self.fixture.target)
+        self.fixture.matrix["routes"] = [self.fixture.route("direct", "v0.13.0", [missing])]
+        del missing["validation"]["validator_argv"]
+
+        with self.assertRaisesRegex(ROUTES.MatrixValidationError, "validator_argv"):
+            self.fixture.resolve("v0.13.0")
+
+        mismatched = self.fixture.edge("v0.13.0", self.fixture.target)
+        self.fixture.matrix["routes"] = [self.fixture.route("direct", "v0.13.0", [mismatched])]
+        mismatched["validation"]["validator_argv"] = [
+            mismatched["artifacts"]["validator"]["path"],
+            "--different-contract",
+        ]
+
+        result = self.fixture.resolve("v0.13.0")
+
+        self.assertEqual("reconciliation-required", result["route_kind"])
+        self.assertIn(
+            "edge-validation-report-validator-argv-mismatch",
+            {item["code"] for item in result["diagnostics"]},
+        )
+
+    def test_gwt_010d_given_absent_or_cross_mismatched_output_bytes_when_resolved_then_reconciliation_is_required(self) -> None:
+        edge = self.fixture.edge("v0.13.0", self.fixture.target)
+        self.fixture.matrix["routes"] = [self.fixture.route("direct", "v0.13.0", [edge])]
+        output_path = self.fixture.root / edge["validation"]["output"]["path"]
+        output_path.unlink()
+
+        absent = self.fixture.resolve("v0.13.0")
+
+        self.assertEqual("reconciliation-required", absent["route_kind"])
+        self.assertIn("missing-asset", {item["code"] for item in absent["diagnostics"]})
+
+        self.fixture.rewrite_asset(
+            edge["validation"]["output"], b"other validation output bytes\n"
+        )
+        mismatched = self.fixture.resolve("v0.13.0")
+
+        self.assertEqual("reconciliation-required", mismatched["route_kind"])
+        self.assertIn(
+            "edge-validation-report-output-digest-mismatch",
+            {item["code"] for item in mismatched["diagnostics"]},
+        )
+
+    def test_gwt_010e_given_approved_false_owner_decision_when_resolved_then_deprecation_invalidates_the_matrix(self) -> None:
+        self.fixture.matrix["retained_origins"] = [
+            item for item in self.fixture.matrix["retained_origins"] if item["role"] != "v0.6.0"
+        ]
+        deprecation = self.fixture.complete_deprecation("v0.6.0", "v0.6.0")
+        self.fixture.matrix["deprecations"] = [deprecation]
+        decision_path = self.fixture.root / deprecation["evidence"]["owner_decision"]["path"]
+        decision = json.loads(decision_path.read_text(encoding="utf-8"))
+        decision["approved"] = False
+        self.fixture.rewrite_asset(
+            deprecation["evidence"]["owner_decision"],
+            ROUTES.canonical_json(decision).encode("utf-8"),
+        )
+
+        with self.assertRaisesRegex(ROUTES.MatrixValidationError, "not-approved"):
+            self.fixture.resolve("v0.6.0")
+
+    def test_gwt_010f_given_edge_asset_symlink_escape_when_resolved_then_reconciliation_is_required(self) -> None:
+        edge = self.fixture.edge("v0.13.0", self.fixture.target)
+        self.fixture.matrix["routes"] = [self.fixture.route("direct", "v0.13.0", [edge])]
+        archive_path = self.fixture.root / edge["artifacts"]["archive"]["path"]
+        archive_path.unlink()
+        with tempfile.TemporaryDirectory(prefix="upgrade-route-outside-") as outside_directory:
+            outside_path = Path(outside_directory) / "archive.tar.gz"
+            outside_path.write_bytes(b"outside route asset\n")
+            try:
+                archive_path.symlink_to(outside_path)
+            except OSError:
+                original_resolve = ROUTES.Path.resolve
+
+                def simulated_resolve(path: Path, *args: object, **kwargs: object) -> Path:
+                    if path == archive_path:
+                        return outside_path
+                    return original_resolve(path, *args, **kwargs)
+
+                with mock.patch.object(
+                    ROUTES.Path, "resolve", autospec=True, side_effect=simulated_resolve
+                ):
+                    result = self.fixture.resolve("v0.13.0")
+            else:
+                result = self.fixture.resolve("v0.13.0")
+
+        self.assertEqual("reconciliation-required", result["route_kind"])
+        self.assertIn("unsafe-asset-path", {item["code"] for item in result["diagnostics"]})
+
+    def test_gwt_010g_given_matrix_and_receipt_states_disagree_when_resolved_then_reconciliation_is_required(self) -> None:
+        edge = self.fixture.edge("v0.13.0", self.fixture.target)
+        self.fixture.matrix["routes"] = [self.fixture.route("direct", "v0.13.0", [edge])]
+        edge["validation"]["state"] = "failed"
+
+        result = self.fixture.resolve("v0.13.0")
+
+        self.assertEqual("reconciliation-required", result["route_kind"])
+        self.assertIn("edge-validation-state-mismatch", {item["code"] for item in result["diagnostics"]})
 
     def test_gwt_011_given_explicit_matrix_cli_when_run_then_output_is_canonical_and_read_only(self) -> None:
         edge = self.fixture.edge("v0.13.0", self.fixture.target)
