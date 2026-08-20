@@ -9,7 +9,7 @@
   "related_plan_id": "development-plan-2026-08-20-upg-003-multi-hop-upgrade",
   "status": "in_progress",
   "created_at": "2026-08-21T03:12:02+08:00",
-  "updated_at": "2026-08-21T03:20:56+08:00",
+  "updated_at": "2026-08-21T03:27:31+08:00",
   "template_source": ".ai/assets/skills/software-development-orchestrator/templates/development-workflow-task-template.json",
   "model": "gpt-5.6-sol",
   "reasoning_effort": "high",
@@ -23,6 +23,8 @@
       ".ai/assets/skills/ai-context-governance/templates/release-publication/**",
       ".ai/scripts/validate-ai-context-release-state.py",
       ".ai/scripts/tests/test_ai_context_release_state.py",
+      ".ai/scripts/validate-ai-context-versions.py",
+      ".ai/scripts/tests/test_ai_context_version_governance.py",
       ".dev/workflows/2026-08-20-upg-003-multi-hop-upgrade/**",
       ".dev/workflows/INDEX.MD"
     ],
@@ -108,6 +110,8 @@
       ".ai/assets/skills/ai-context-governance/templates/release-publication/release.yaml",
       ".ai/scripts/validate-ai-context-release-state.py",
       ".ai/scripts/tests/test_ai_context_release_state.py",
+      ".ai/scripts/validate-ai-context-versions.py",
+      ".ai/scripts/tests/test_ai_context_version_governance.py",
       ".dev/workflows/2026-08-20-upg-003-multi-hop-upgrade/workflow.yaml",
       ".dev/workflows/2026-08-20-upg-003-multi-hop-upgrade/workflow-plan.md",
       ".dev/workflows/2026-08-20-upg-003-multi-hop-upgrade/tasks/UPG-003-S3.json",
@@ -129,6 +133,26 @@
         "command": "py -3 -B .ai/scripts/tests/test_ai_context_release_state.py -v",
         "outcome": "passed",
         "evidence": "Normal Windows ACL full focused module passed 36/36 in 0.742 seconds."
+      },
+      {
+        "command": "python .ai/scripts/build-ai-context-package.py --repo . --ref 803a0771ada510a9c5faf630a36a096d74117a64 --version v0.14.0 --output artifacts/validation/upg003-s3/v0.14.0/package --migration-source v0.13.0 <files.yaml> --migration-source v0.9.0 <files.yaml> --migration-source v0.6.0 <files.yaml>",
+        "outcome": "failed",
+        "evidence": "The immutable Phase-A build failed before package creation because the builder canonicalized migration sources to numeric ascending order while release.yaml declared descending order; no package or route PASS evidence was produced."
+      },
+      {
+        "command": "py -3 -B .ai/scripts/tests/test_ai_context_version_governance.py -v",
+        "outcome": "failed",
+        "evidence": "First full run passed 23/24; GWT017 retained the superseded immediate-predecessor diagnostic text after the governed-source message was generalized."
+      },
+      {
+        "command": "py -3 -B .ai/scripts/tests/test_ai_context_version_governance.py -v",
+        "outcome": "passed",
+        "evidence": "After correcting only the stale diagnostic assertion, the normal Windows ACL module passed 24/24 in 1.332 seconds."
+      },
+      {
+        "command": "py -3 -B .ai/scripts/validate-ai-context-versions.py --root . --no-git",
+        "outcome": "passed",
+        "evidence": "Source version governance passed for 17 release records with the explicit v0.14.0 retained-source horizon."
       }
     ],
     "role_execution_aggregation": [],
@@ -139,7 +163,8 @@
       "Live Issue #206 and coordination Issue #222 remain open; Project-field restoration is not claimed.",
       "Phase-A release.yaml fixes the exact nine Included Work refs and automatic upgrade inputs v0.13.0, v0.9.0, and v0.6.0; it deliberately retains no support-matrix or route PASS evidence before an immutable package-build commit.",
       "Release-state validation now requires canonical source-only route receipts and accepts an open terminal Issue only when exactly one tracked terminal-close declaration matches a live open PR at the current Git HEAD; post-merge provider closure remains mandatory.",
-      "The package builder requires automatic_upgrade_sources to equal the exact ordered migration-source set, so the candidate records all three retained origins rather than inventing an indirect route or omitting an input."
+      "The package builder requires automatic_upgrade_sources to equal the exact ordered migration-source set, so the candidate records all three retained origins rather than inventing an indirect route or omitting an input.",
+      "Immutable Phase-A build at 803a0771ada510a9c5faf630a36a096d74117a64 failed before package creation because builder canonical order is v0.6.0, v0.9.0, v0.13.0; the canonical template, release record, and active version-governance horizon now use that numeric order."
     ],
     "commits": [],
     "follow_up_needed": true

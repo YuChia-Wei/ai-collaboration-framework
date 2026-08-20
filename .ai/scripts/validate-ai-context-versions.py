@@ -28,6 +28,9 @@ VERSION_RE = re.compile(r"^v(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)$")
 SEMVER_RE = re.compile(r"^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)$")
 SHA_RE = re.compile(r"^[0-9a-f]{40}$")
 ACTIVE_UPGRADE_TEST_BASELINE = "v0.6.0"
+RETAINED_UPGRADE_TEST_SOURCES = {
+    "v0.14.0": ["v0.6.0", "v0.9.0", "v0.13.0"],
+}
 V010_AGENT_PUBLICATION_AUTHORITY = {
     "tag_owner": "owner-authorized-terra-agent",
     "trigger": "owner-approved-v0.10.0-agent-tag",
@@ -72,7 +75,7 @@ def version_key(value: str) -> tuple[int, int, int]:
 def validate_upgrade_test_horizon(
     release_files: list[Path], errors: list[str]
 ) -> None:
-    """Bound routine upgrade evidence to one immediate-predecessor route."""
+    """Bind routine upgrade evidence to the governed source horizon."""
     governed: list[tuple[tuple[int, int, int], str, Path, dict]] = []
     for path in release_files:
         local_errors: list[str] = []
@@ -96,21 +99,28 @@ def validate_upgrade_test_horizon(
         compatibility = data.get("compatibility")
         if not isinstance(compatibility, dict):
             continue
-        expected_sources = [previous_version]
+        expected_sources = RETAINED_UPGRADE_TEST_SOURCES.get(
+            version, [previous_version]
+        )
         if compatibility.get("automatic_upgrade_sources") != expected_sources:
             errors.append(
                 f"{path}: active upgrade-test horizon starts at "
                 f"{ACTIVE_UPGRADE_TEST_BASELINE}; {version} must declare exactly "
-                f"the immediate previous governed package {previous_version} in "
+                f"the governed package sources {expected_sources} in numeric order in "
                 "compatibility.automatic_upgrade_sources"
             )
+        expected_minimum = (
+            expected_sources[0]
+            if version in RETAINED_UPGRADE_TEST_SOURCES
+            else previous_version
+        )
         if (
             compatibility.get("breaking_changes") is True
-            and compatibility.get("minimum_source_version") != previous_version
+            and compatibility.get("minimum_source_version") != expected_minimum
         ):
             errors.append(
                 f"{path}: breaking release {version} is a migration checkpoint and "
-                f"compatibility.minimum_source_version must be {previous_version}"
+                f"compatibility.minimum_source_version must be {expected_minimum}"
             )
 
 
