@@ -1761,8 +1761,17 @@ class UpgradeRoutePackageProjectionGwtTests(unittest.TestCase):
                 {
                     "schema_version": "upgrade-edge-validation/v1",
                     "edge_id": "v100-to-v120",
+                    "from_version": "v1.0.0",
+                    "to_version": "v1.2.0",
                     "artifacts": edge_artifacts,
                     "validator_argv": validator_argv,
+                    "semantic_cutovers": [
+                        {
+                            "cutover_id": "route-evidence",
+                            "required": True,
+                            "state": "passed",
+                        }
+                    ],
                     "outcome": "passed",
                     "exit_code": 0,
                     "output_sha256": validation_output["sha256"],

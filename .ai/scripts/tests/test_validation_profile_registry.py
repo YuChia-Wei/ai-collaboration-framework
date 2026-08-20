@@ -210,6 +210,30 @@ class ValidationProfileRegistryGwtTests(unittest.TestCase):
                 self.assertNotIn("dotnet", fields[7].split())
                 self.assertFalse(fields[12].lstrip().startswith("dotnet "))
 
+    def test_gwt_007_given_fast_or_pr_check_when_runner_is_inspected_then_each_has_evidence_producing_wiring(self) -> None:
+        _, checks, _ = registry_snapshot()
+        runner = RUNNER.read_text(encoding="utf-8")
+        specialized_wiring = {
+            "selected-git-commits": '"${COMMIT_VALIDATION_ARGV[@]}"',
+            "coding-standards-structural": 'run_check "check-coding-standards.sh"',
+            "spec-implementation": 'run_check "check-spec-compliance.sh"',
+        }
+
+        for check_id, fields in checks.items():
+            description, memberships, command = fields[0], set(fields[4].split()), fields[12]
+            if not {"fast", "pr"} & memberships:
+                continue
+            with self.subTest(check_id=check_id):
+                wiring = specialized_wiring.get(
+                    check_id, f'run_command_check "{command}"'
+                )
+                self.assertIn(wiring, runner, f"{check_id} has no runner execution wiring")
+                self.assertIn(
+                    f'"{description}"',
+                    runner,
+                    f"{check_id} has no evidence-producing description binding",
+                )
+
 
 if __name__ == "__main__":
     unittest.main()

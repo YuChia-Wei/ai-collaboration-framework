@@ -9,7 +9,7 @@
   "related_plan_id": "development-plan-2026-08-20-upg-003-multi-hop-upgrade",
   "status": "in_progress",
   "created_at": "2026-08-20T17:03:25+08:00",
-  "updated_at": "2026-08-20T19:21:28+08:00",
+  "updated_at": "2026-08-20T19:42:53+08:00",
   "template_source": ".ai/assets/skills/software-development-orchestrator/templates/development-workflow-task-template.json",
   "model": "gpt-5.6-sol",
   "reasoning_effort": "high",
@@ -24,9 +24,12 @@
       ".ai/assets/skills/ai-context-upgrader/templates/upgrade-route-matrix.template.yaml",
       ".ai/distribution/profiles/dotnet-backend.yaml",
       ".ai/scripts/ai_context_upgrade_routes.py",
+      ".ai/scripts/check-all.sh",
       ".ai/scripts/plan-ai-context-upgrade.py",
+      ".ai/scripts/shell-assets.yaml",
       ".ai/scripts/tests/test_ai_context_upgrade_routes.py",
       ".ai/scripts/tests/test_ai_context_packaging.py",
+      ".ai/scripts/tests/test_validation_profile_registry.py",
       ".ai/scripts/validation-profile-registry.sh",
       ".agents/skills/ai-context-upgrader/SKILL.md",
       ".claude/skills/ai-context-upgrader/SKILL.md"
@@ -96,6 +99,15 @@
         "outcome": "passed",
         "scope": "Read-only exact-head semantic audit of 26d5ccbcd063e28df7d3cfddeb2a715c6f193644; verified exact edge/cutover binding, strict YAML, canonical candidate authority, and retained failure evidence with zero findings.",
         "canonical_role_claimed": false
+      },
+      {
+        "role": "pre-#207 fresh independent audit context",
+        "provider": "Codex",
+        "model": "gpt-5.6-sol",
+        "reasoning_effort": "high",
+        "outcome": "failed",
+        "scope": "Read-only exact-head audit of b87d0bd071696195976e77afd4fc59264f76aee5; the only finding was workflow drift where role-coordination and residual-risk text still described an older uncommitted and unaudited repair. No repair occurred in the audit context.",
+        "canonical_role_claimed": false
       }
     ],
     "spec_compliance": {"selected": false, "activation_source": [], "expected_outcome": "not-applicable"},
@@ -105,7 +117,7 @@
     "deferred_items": ["S2 multi-hop transaction", "S3 v0.14.0 source candidate and terminal closure"]
   },
   "results": {
-    "summary": "Core route contract passed independent audit at 26d5ccbcd063e28df7d3cfddeb2a715c6f193644; draft PR #226 exists and the tracked deferred declaration is pending a new exact-head audit and hosted admission.",
+    "summary": "Core route contract passed independent audit at 26d5ccbcd063e28df7d3cfddeb2a715c6f193644. Declaration head b87d0bd071696195976e77afd4fc59264f76aee5 failed audit only on stale workflow claims and failed two hosted jobs on shared missing evidence-producing validator wiring. The bounded local repair passes focused checks but remains uncommitted and unaudited.",
     "files_changed": [
       ".ai/assets/skills/ai-context-upgrader/skill.yaml",
       ".ai/assets/skills/ai-context-upgrader/references/upgrade-support-policy.md",
@@ -113,9 +125,12 @@
       ".ai/assets/skills/ai-context-upgrader/templates/upgrade-route-matrix.template.yaml",
       ".ai/distribution/profiles/dotnet-backend.yaml",
       ".ai/scripts/ai_context_upgrade_routes.py",
+      ".ai/scripts/check-all.sh",
       ".ai/scripts/plan-ai-context-upgrade.py",
+      ".ai/scripts/shell-assets.yaml",
       ".ai/scripts/tests/test_ai_context_upgrade_routes.py",
       ".ai/scripts/tests/test_ai_context_packaging.py",
+      ".ai/scripts/tests/test_validation_profile_registry.py",
       ".ai/scripts/validation-profile-registry.sh",
       ".dev/workflows/2026-08-20-upg-003-multi-hop-upgrade/evidence/terminal-issue-closure-declaration.yaml",
       ".agents/skills/ai-context-upgrader/SKILL.md",
@@ -207,6 +222,31 @@
         "command": "py -3 -B .ai/scripts/tests/test_ai_context_packaging.py VersionedMigrationPackagingGwtTests.test_gwt_020_given_v070_payload_when_candidate_projects_shared_prerequisites_then_clean_install_and_upgrade_keep_portable_commands -v",
         "outcome": "passed",
         "evidence": "1 test passed in 61.502 seconds outside the sandbox under the same packet-before-mutation and explicit-decision contract."
+      },
+      {
+        "command": "C:\\Program Files\\Git\\bin\\bash.exe -n .ai/scripts/check-all.sh",
+        "outcome": "passed",
+        "evidence": "Shell syntax passed after adding the exact evidence-producing upgrade-route-package-projection runner wiring."
+      },
+      {
+        "command": "py -3 -B .ai/scripts/tests/test_validation_profile_registry.py -v",
+        "outcome": "passed",
+        "evidence": "7 tests passed in 0.525 seconds; GWT-007 proves every fast/pr registry-selected check has evidence-producing runner wiring, including the exact upgrade-route package projection command and description."
+      },
+      {
+        "command": "py -3 -B .ai/scripts/validate-shell-assets.py",
+        "outcome": "passed",
+        "evidence": "check_all_required_commands stays in exact parity with the new check-all command literal."
+      },
+      {
+        "command": "py -3 -B .ai/scripts/tests/test_ai_context_packaging.py UpgradeRoutePackageProjectionGwtTests -v",
+        "outcome": "failed",
+        "evidence": "The first focused run failed 1 of 1 in 2.855 seconds because the synthetic validation receipt omitted the current exact from_version, to_version, and semantic_cutovers contract; expected direct but resolved reconciliation-required. Production fail-closed behavior was preserved."
+      },
+      {
+        "command": "py -3 -B .ai/scripts/tests/test_ai_context_packaging.py UpgradeRoutePackageProjectionGwtTests -v",
+        "outcome": "passed",
+        "evidence": "After materially changing only the fixture receipt to the current exact edge/cutover contract, 1 test passed in 2.971 seconds. The full packaging module was not run."
       }
     ],
     "role_execution_aggregation": [
@@ -230,6 +270,9 @@
       ,"Fresh Sol High exact-head audit of 635abaeb532a2383dfb03cc1d13bd50e41f7e80b failed because upgrade-edge-validation/v1 did not bind edge from/to versions or matrix-level required cutover claims, load_route_matrix used permissive duplicate-key YAML parsing, and GWT-014/GWT-020 used placeholder candidate authority digests. The audit was read-only and made no repair."
       ,"The bounded repair committed at 14621d0c2f6bceb795d33d38f7ec86e2b607c354 makes upgrade-edge-validation/v1 cross-bind from_version, to_version, and ordered {cutover_id, required, state} claims; uses strict duplicate-key YAML loading; retains canonical candidate provenance/customizations bytes before the explicit remediation decision; and passes route 24/24 plus GWT-014/GWT-020 selectors 1/1 each. A fresh exact-head audit remains required."
       ,"Fresh Sol High exact-head audit of 26d5ccbcd063e28df7d3cfddeb2a715c6f193644 passed with zero findings. Draft PR #226 is deferred with Refs #206; its tracked declaration causes a new head and therefore requires fresh audit and hosted admission before merge."
+      ,"Fresh Sol High read-only audit of declaration head b87d0bd071696195976e77afd4fc59264f76aee5 failed only because the workflow role-coordination row and residual-risk text still claimed an older repair was local and unaudited. The audit context made no repair."
+      ,"At exact b87d0bd071696195976e77afd4fc59264f76aee5, hosted governance job 96408142630 and Ubuntu PR job 96408142919 failed from the shared absence of evidence-producing upgrade-route-package-projection execution. Build and validate candidate, Ubuntu prerequisite contract, and Windows prerequisite contract passed. No hosted job was rerun."
+      ,"The bounded local repair adds the exact package-projection run_command_check and shell-manifest entry, proves every fast/pr registry selection has evidence-producing runner wiring, and reconciles the focused synthetic receipt with the current exact edge/cutover contract. Shell syntax, shell-assets validation, registry 7/7, and the materially changed package selector 1/1 pass; a new committed head still requires fresh independent audit and hosted admission."
     ],
     "commits": [
       "f6de771bb37a6224fb09543edf911f61aa7ab2bc",
@@ -238,7 +281,8 @@
       "ce0b4b6988030af1994edbbf37786fe7a7fbd952",
       "635abaeb532a2383dfb03cc1d13bd50e41f7e80b",
       "14621d0c2f6bceb795d33d38f7ec86e2b607c354",
-      "26d5ccbcd063e28df7d3cfddeb2a715c6f193644"
+      "26d5ccbcd063e28df7d3cfddeb2a715c6f193644",
+      "b87d0bd071696195976e77afd4fc59264f76aee5"
     ],
     "follow_up_needed": true
   }
