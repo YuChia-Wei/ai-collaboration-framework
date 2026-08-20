@@ -1887,6 +1887,23 @@ run_source_repository_sdk_free_contract() {
         "required" "true" "true"
 }
 
+run_source_repository_engineering_guardrails_provider_contract() {
+    if ! check_is_selected "Engineering Guardrails Provider Contract"; then
+        return
+    fi
+    if ! source_release_context_available; then
+        record_selected_without_execution \
+            "Engineering Guardrails Provider Contract" \
+            "not-applicable" \
+            "source framework test not packaged"
+        return
+    fi
+
+    run_command_check "python .ai/scripts/tests/test_engineering_guardrails_provider_contract.py -v" \
+        "Engineering Guardrails Provider Contract" \
+        "required" "true" "true"
+}
+
 run_source_repository_release_checks() {
     local description
     if ! source_release_context_available; then
@@ -2272,6 +2289,7 @@ run_check "check-coding-standards.sh" \
     "check-coding-standards.sh"
 
 run_source_repository_sdk_free_contract
+run_source_repository_engineering_guardrails_provider_contract
 
 # Optional target analyzers and configuration tests are target-selected and are
 # never framework-owned required checks.

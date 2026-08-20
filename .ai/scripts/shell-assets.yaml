@@ -168,3 +168,4 @@ check_all_required_commands:
   - python .ai/scripts/tests/test_document_projection_contract.py -v
   - python .ai/scripts/tests/test_ai_context_source_include_evidence.py -v
   - python .ai/scripts/tests/test_sdk_free_framework_contract.py -v
+  - python .ai/scripts/tests/test_engineering_guardrails_provider_contract.py -v

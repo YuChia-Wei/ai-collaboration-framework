@@ -1,0 +1,193 @@
+{
+  "template_id": "software-development-orchestrator/development-workflow-task",
+  "template_version": "1.5.0",
+  "template_created_at": "2026-07-10T18:25:11+08:00",
+  "template_updated_at": "2026-08-05T02:12:00+08:00",
+  "workflow_id": "2026-08-20-ctx-010-engineering-guardrails",
+  "task_id": "CTX-010",
+  "owner_skill": "ai-context-governance",
+  "related_plan_id": "development-plan-2026-08-20-ctx-010-engineering-guardrails",
+  "status": "in_progress",
+  "created_at": "2026-08-20T14:45:44+08:00",
+  "updated_at": "2026-08-20T16:15:04+08:00",
+  "template_source": ".ai/assets/skills/software-development-orchestrator/templates/development-workflow-task-template.json",
+  "model": "gpt-5.6-sol",
+  "reasoning_effort": "high",
+  "workflow_locator": ".dev/workflows/2026-08-20-ctx-010-engineering-guardrails/workflow.yaml",
+  "scope": {
+    "goal": "Implement Issue #205 as an optional official-recommended Engineering Guardrails provider contract with honest unavailable-provider behavior.",
+    "target": "Provider-neutral semantic rules, .NET binding, upgrade diagnostics, target-owned analyzer templates, and portable package-native validation.",
+    "files": [],
+    "constraints": [
+      "Keep recommendation, selection, readiness, compatibility, and execution evidence separate.",
+      "Do not auto-install or silently select the provider.",
+      "Do not claim execution without exact readiness evidence.",
+      "Keep the framework release SDK-free.",
+      "Keep analyzer adoption separate from Contracts adoption."
+    ],
+    "non_goals": [
+      "Modify the Engineering Guardrails repository",
+      "Invent a NuGet package ID, version, feed, publication contract, or readiness state",
+      "Implement Issue #179",
+      "Restore GitHub Project fields",
+      "Modify local roadmap or backlog files",
+      "Tag, Release, publish, or activate nightly-full"
+    ]
+  },
+  "inputs": {
+    "requirements": ["https://github.com/YuChia-Wei/ai-collaboration-framework/issues/205"],
+    "specifications": [
+      ".ai/assets/skills/ai-context-governance/skill.yaml",
+      "current provider-neutral and .NET technology contracts selected by the implementation inventory"
+    ],
+    "architecture_decisions": [
+      "Stable provider capability identity does not depend on a package ID",
+      "official-recommended and not-selected may coexist",
+      "selected-but-unavailable and readiness-unproven are valid fail-closed states",
+      "target-owned analyzer templates are bounded starting points, not a bundled provider"
+    ],
+    "user_constraints": ["Original v0.14.0 delivery prompt and current instruction to continue while Project restoration is handled separately"]
+  },
+  "execution": {
+    "capability_slot": "ai-context-governance",
+    "approval_contract": {
+      "status": "approved",
+      "required_before": "implementation",
+      "authorization_source": ["explicit repository-owner v0.14 prompt"],
+      "pending_decision": ""
+    },
+    "implementation_contract": null,
+    "test_execution_contract": null,
+    "role_execution_records": [],
+    "spec_compliance": {
+      "selected": false,
+      "activation_source": [],
+      "expected_outcome": "not-applicable"
+    },
+    "steps": [
+      "Inventory current provider-neutral, .NET, recipe, package, schema, and test surfaces.",
+      "Resolve the explicit framework-source effective-rule packet for implementation.",
+      "Implement provider-state separation, fail-closed evidence semantics, terminology, and target-owned templates.",
+      "Add focused positive and fail-closed portable package-native fixtures.",
+      "Validate, commit, audit, pass hosted checks, and terminal-close Issue #205 at the admitted head."
+    ],
+    "validation": [
+      "focused CTX-010 schema and package fixtures",
+      "python .ai/scripts/validate-workflow-artifacts.py",
+      "python .ai/scripts/validate-ai-context.py",
+      "python .ai/scripts/validate-source-governance.py",
+      "git diff --check"
+    ],
+    "commit_checkpoint": "One terminal-close PR for Issue #205 after focused validation.",
+    "deferred_items": []
+  },
+  "results": {
+    "summary": "Three exact-head audits failed and remain retained. The third audit at e93f5847896e38192284d2a71012ce4033efb8f6 found coordinated schema plus artifact weakenings stayed green. Repair e68c0186128bb039f347846eddfc4938fd0cdfce adds a versioned Issue #205 baseline and canonical schema, contract, and template digests; 9 focused GWTs pass and fourth immutable validation/audit remain.",
+    "files_changed": [
+      "provider-local Engineering Guardrails contract and schema",
+      "target-owned provider selection, analyzer, analyzer-test, and code-fix decision starting templates",
+      "mechanical-validation recipe manifest and documentation",
+      "focused provider, SDK-free, and package projection GWTs",
+      "validation profile registry membership"
+    ],
+    "approval_evidence": ["explicit repository-owner v0.14 authorization"],
+    "test_execution": [
+      {
+        "command": "py -3 -B .ai/scripts/tests/test_engineering_guardrails_provider_contract.py -v",
+        "outcome": "passed",
+        "evidence": "5 tests; declined, not-selected, selected-unavailable, synthetic readiness, invented identity rejection, target-owned templates, and documentation/manifest agreement"
+      },
+      {
+        "command": "py -3 -B .ai/scripts/tests/test_sdk_free_framework_contract.py -v",
+        "outcome": "passed-with-retained-repair-failures",
+        "evidence": "5 tests; retained initial physical-scan failure from ignored .codex/release extracts and first isolated-index object-store failure before the corrected real-index run passed"
+      },
+      {
+        "command": "py -3 -B .ai/scripts/tests/test_validation_profile_registry.py -v",
+        "outcome": "passed-with-retained-blocked-attempt",
+        "evidence": "6 tests on authorized host route; sandbox Git Bash signal-pipe failure retained"
+      },
+      {
+        "command": "py -3 -B .ai/scripts/tests/test_ai_context_packaging.py DeterministicPackageGwtTests.test_gwt_000a_given_real_component_matrix_when_payload_is_projected_then_both_mandatory_cores_keep_their_capabilities -v",
+        "outcome": "passed",
+        "evidence": "1 exact committed-HEAD package projection test in 27.328s"
+      },
+      {
+        "command": "initial focused implementation attempts",
+        "outcome": "passed-with-retained-repair-failures",
+        "evidence": "retained local pycache permission failure and initial synthetic-state fixture-path failure before corrected reruns"
+      },
+      {
+        "command": "external package smoke at 09aa506fcf2250da97e45c4cb9f573e120931d5c",
+        "outcome": "passed-but-invalidated-by-subsequent-repair",
+        "evidence": "validated external-task completion: 1 test, exit 0, 1.368s, clean exact subject; replacement required after audit repair changed the head"
+      },
+      {
+        "command": "fresh Sol High exact-head audit at 09aa506fcf2250da97e45c4cb9f573e120931d5c",
+        "outcome": "failed",
+        "evidence": "high blocker: framework_delivery ready claim, selected-unavailable and synthetic execution receipts, and empty prohibitions all produced contract_errors == [] and left the 5-test provider suite passing"
+      },
+      {
+        "command": "post-audit provider contract fixture at b3425f56cefeb54f79ed38d8ad7719a78708f0f0",
+        "outcome": "passed",
+        "evidence": "5 tests; exact unavailable delivery, all supplied flags false, explicit null execution receipts for all four shipped states, exact prohibition list, missing-field and type checks"
+      },
+      {
+        "command": "replacement external package smoke at 91d4025c5b11b91d05971b82ac94be0f03bb2044",
+        "outcome": "passed-but-invalidated-by-subsequent-repair",
+        "evidence": "validated external-task completion: 1 test, exit 0, 1.544s, clean exact subject; replacement required after the second audit repair"
+      },
+      {
+        "command": "fresh Sol High exact-head re-audit at 91d4025c5b11b91d05971b82ac94be0f03bb2044",
+        "outcome": "failed",
+        "evidence": "high blocker: changed stable capability ID, integer selection_independent, weakened readiness/execution field sets, and combined mutations left contract_errors empty and the 5-test suite green"
+      },
+      {
+        "command": "post-second-audit provider contract fixture at 3c222110cbc503d546efe08a3c1d8e5c54da0e53",
+        "outcome": "passed-with-retained-blocked-attempt",
+        "evidence": "8 tests; exact claim-bearing invariants and systematic negative mutations passed. Sandboxed py_compile cache creation remained blocked; the host compile passed."
+      },
+      {
+        "command": "third external package smoke at e93f5847896e38192284d2a71012ce4033efb8f6",
+        "outcome": "passed-but-invalidated-by-subsequent-repair",
+        "evidence": "validated external-task completion: 1 test, exit 0, 1.458s, clean exact subject; replacement required after the third audit repair"
+      },
+      {
+        "command": "fresh Sol High third exact-head audit at e93f5847896e38192284d2a71012ce4033efb8f6",
+        "outcome": "failed",
+        "evidence": "high blocker: fourteen coordinated schema plus contract/template weakenings returned no errors; representative capability/provider drift left the full 8-test suite green"
+      },
+      {
+        "command": "post-third-audit provider contract fixture at e68c0186128bb039f347846eddfc4938fd0cdfce",
+        "outcome": "passed",
+        "evidence": "9 tests; versioned Issue #205 authority, canonical schema/contract/template digests, and fourteen coordinated mutation categories"
+      }
+    ],
+    "role_execution_aggregation": [],
+    "spec_compliance": {
+      "outcome": "not-applicable",
+      "coverage_percent": null,
+      "evidence": []
+    },
+    "validation_evidence": [
+      "External Engineering Guardrails main is d0d23e922de1fc067404bb87859d2b798230c270 with no tags or Releases and non-packable project configuration.",
+      "The external README explicitly leaves NuGet identities, package boundaries, version policy, and publication contract undefined.",
+      "Framework-source packet 09b7c4c770c5a6d5f79f5b48cc0d1d353d65a5260df9bb489351cc44ddc660ae resolved at clean bootstrap commit ea6bf4e5a721a572c9408703d14abeaaafd678e5 with AICTX-EVIDENCE-001 and TEST-GWT-001.",
+      "validate-ai-context, validate-source-governance, validate-shell-assets, YAML parsing, static newline/whitespace checks, and git diff checks passed.",
+      "The first independent audit failure at 09aa506fcf2250da97e45c4cb9f573e120931d5c is retained and not counted as a passing admission gate.",
+      "The second independent audit failure at 91d4025c5b11b91d05971b82ac94be0f03bb2044 is retained and not counted as a passing admission gate.",
+      "The third independent audit failure at e93f5847896e38192284d2a71012ce4033efb8f6 is retained and not counted as a passing admission gate."
+    ],
+    "commits": [
+      "ea6bf4e5a721a572c9408703d14abeaaafd678e5",
+      "16584c9968705a9cd99db37872bb92543bbcdbd4",
+      "09aa506fcf2250da97e45c4cb9f573e120931d5c",
+      "b3425f56cefeb54f79ed38d8ad7719a78708f0f0",
+      "91d4025c5b11b91d05971b82ac94be0f03bb2044",
+      "3c222110cbc503d546efe08a3c1d8e5c54da0e53",
+      "e93f5847896e38192284d2a71012ce4033efb8f6",
+      "e68c0186128bb039f347846eddfc4938fd0cdfce"
+    ],
+    "follow_up_needed": true
+  }
+}
