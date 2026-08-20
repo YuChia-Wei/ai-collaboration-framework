@@ -97,6 +97,9 @@ routes:
             - "--edge-id"
             - "<origin>-to-<target>"
           report:
+            # Its canonical upgrade-edge-validation/v1 JSON receipt also binds
+            # this edge_id, from_version, to_version, all artifacts, argv, and
+            # ordered semantic_cutovers as {cutover_id, required, state}.
             asset_id: "<edge>-validation-report"
             path: "artifacts/<edge>/validation-report.json"
             sha256: "<lowercase-sha256>"

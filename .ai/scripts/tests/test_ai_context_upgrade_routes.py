@@ -112,11 +112,26 @@ class RouteFixture:
         }
         validator_argv = ["python", artifacts["validator"]["path"], "--edge-id", edge_id]
         output = self.asset(f"{prefix}/validation-output.log", f"validated {edge_id}\n".encode())
+        semantic_cutovers = (
+            [{"cutover_id": "remediation-packet-v1", "state": "passed"}]
+            if covers_cutover
+            else []
+        )
         report = {
             "schema_version": ROUTES.EDGE_VALIDATION_RECEIPT_SCHEMA_VERSION,
             "edge_id": edge_id,
+            "from_version": from_version,
+            "to_version": to_version,
             "artifacts": artifacts,
             "validator_argv": validator_argv,
+            "semantic_cutovers": [
+                {
+                    "cutover_id": cutover["cutover_id"],
+                    "required": True,
+                    "state": cutover["state"],
+                }
+                for cutover in semantic_cutovers
+            ],
             "outcome": validation_state,
             "exit_code": 0 if validation_state == "passed" else 1,
             "output_sha256": output["sha256"],
@@ -127,11 +142,7 @@ class RouteFixture:
             "from_version": from_version,
             "to_version": to_version,
             "artifacts": artifacts,
-            "semantic_cutovers": (
-                [{"cutover_id": "remediation-packet-v1", "state": "passed"}]
-                if covers_cutover
-                else []
-            ),
+            "semantic_cutovers": semantic_cutovers,
             "validation": {
                 "state": validation_state,
                 "validator_argv": validator_argv,
@@ -523,6 +534,55 @@ class UpgradeRouteTests(unittest.TestCase):
                     ROUTES.MatrixValidationError, "safe matrix-relative path"
                 ):
                     ROUTES.validate_matrix(candidate)
+
+    def test_gwt_010i_given_matrix_added_cutover_with_unchanged_receipt_when_resolved_then_reconciliation_is_required(self) -> None:
+        edge = self.fixture.edge("v0.13.0", self.fixture.target, covers_cutover=False)
+        self.fixture.matrix["routes"] = [self.fixture.route("direct", "v0.13.0", [edge])]
+        edge["semantic_cutovers"] = [
+            {"cutover_id": "remediation-packet-v1", "state": "passed"}
+        ]
+
+        result = self.fixture.resolve("v0.13.0")
+
+        self.assertEqual("reconciliation-required", result["route_kind"])
+        self.assertIn(
+            "edge-validation-report-cutover-mismatch",
+            {item["code"] for item in result["diagnostics"]},
+        )
+
+    def test_gwt_010j_given_relabelled_edge_with_unchanged_receipt_when_resolved_then_reconciliation_is_required(self) -> None:
+        relabelled = self.fixture.edge("v0.13.0", self.fixture.target)
+        relabelled["to_version"] = "v0.9.0"
+        successor = self.fixture.edge("v0.9.0", self.fixture.target)
+        self.fixture.matrix["routes"] = [
+            self.fixture.route("relabelled-chain", "v0.13.0", [relabelled, successor])
+        ]
+
+        result = self.fixture.resolve("v0.13.0")
+
+        self.assertEqual("reconciliation-required", result["route_kind"])
+        self.assertIn(
+            "edge-validation-report-route-mismatch",
+            {item["code"] for item in result["diagnostics"]},
+        )
+
+    def test_gwt_010k_given_duplicate_matrix_keys_when_loaded_then_the_matrix_fails_closed(self) -> None:
+        for label, content in (
+            (
+                "top-level",
+                "schema_version: '1.0'\nschema_version: '9.9'\n",
+            ),
+            (
+                "nested",
+                "target:\n  version: v0.14.0\n  version: v0.9.0\n",
+            ),
+        ):
+            with self.subTest(label=label):
+                matrix_path = self.fixture.root / f"duplicate-{label}.yaml"
+                matrix_path.write_text(content, encoding="utf-8", newline="\n")
+
+                with self.assertRaisesRegex(ROUTES.MatrixValidationError, "unique string keys"):
+                    ROUTES.load_route_matrix(matrix_path)
 
     def test_gwt_011_given_explicit_matrix_cli_when_run_then_output_is_canonical_and_read_only(self) -> None:
         edge = self.fixture.edge("v0.13.0", self.fixture.target)

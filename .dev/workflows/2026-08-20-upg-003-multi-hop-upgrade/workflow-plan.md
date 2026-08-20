@@ -12,12 +12,12 @@
 - `workflow_id`: `2026-08-20-upg-003-multi-hop-upgrade`
 - `plan_id`: `development-plan-2026-08-20-upg-003-multi-hop-upgrade`
 - `owner_skill`: `software-development-orchestrator`
-- `branch`: `codex/2026-08-20-upg-003-route-resolution-s1`
+- `branch`: `codex/2026-08-20-upg-003-route-resolution-s1-admission`
 - `base_branch`: `main`
 - `branch_segment`: `1`
 - `status`: `active`
 - `created_at`: `2026-08-20T17:03:25+08:00`
-- `updated_at`: `2026-08-20T18:14:32+08:00`
+- `updated_at`: `2026-08-20T19:06:27+08:00`
 - `template_source`: `.ai/assets/skills/software-development-orchestrator/templates/development-workflow-plan-template.md`
 - `template_version`: `1.4.0`
 - `workflow_locator`: `.dev/workflows/2026-08-20-upg-003-multi-hop-upgrade/workflow.yaml`
@@ -81,7 +81,7 @@ Before #207 integrates, every delegated context is generic and is not evidence t
 
 | Stage | Role / Canonical Path | Owning Skill | Final/Current Disposition | Attempt Summary | Final Integration Owner / Decision | Record or Task Reference |
 | --- | --- | --- | --- | --- | --- | --- |
-| UPG-003-S1 | pre-#207 generic bounded context / no canonical path | ai-context-upgrader | repair-validated | Terra Max performed live-contract, package-asset, package-projection, and typed-evidence repair work; the first fresh Sol High audit failed the prior head and did not repair it. | root / new exact-head admission only after a different fresh independent audit | `tasks/UPG-003-S1.json` |
+| UPG-003-S1 | pre-#207 generic bounded context / no canonical path | ai-context-upgrader | audit-failed, bounded repair locally validated | Terra Max performed live-contract, package-asset, package-projection, and typed-evidence repair work. Fresh Sol High audits failed prior heads; the 635abaeb audit found route/cutover receipt binding, duplicate-YAML, and candidate-authority defects. The current repair has focused tests only and is not yet a committed audit subject. | root / commit the repair, then new exact-head admission by a different fresh independent audit | `tasks/UPG-003-S1.json` |
 
 ## Approval Gates
 
@@ -120,7 +120,7 @@ Before #207 integrates, every delegated context is generic and is not evidence t
 
 ## Progress And Handoff
 
-- Current stage: UPG-003-S1 bounded regression repair is committed at `71c4ec35ff180a70934333cdd296eb4b016050f8`; a fresh independent exact-head audit remains.
+- Current stage: UPG-003-S1 exact-head audit of `635abaeb532a2383dfb03cc1d13bd50e41f7e80b` failed; the bounded route-receipt, strict-YAML, and fixture-authority repair is locally tested but uncommitted. A fresh independent exact-head audit remains after a new commit.
 - Completed stages: Live Issue/Project/PR read-back, exact existing-surface inventory, route contract, resolver, CLI, portable projection, focused source tests, and isolated package test.
 - Deferred stages and reasons: S2 waits for merged S1; S3 waits for S2 plus #207/#208 integration.
 - Open decisions: None for S1; unavailable or ambiguous assets become reconciliation-required rather than inferred.
@@ -133,19 +133,19 @@ Before #207 integrates, every delegated context is generic and is not evidence t
 
 | Segment | Branch | Base | Checkpoint Type | Commit | Remote / Target | Recorded At | Reason | Resume Branch / Action |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| 1 | `codex/2026-08-20-upg-003-route-resolution-s1` | `main@ead96acb0ac4ea73a94c6de59604b47f1f78b5ae` | active-stage | pending | local / PR S1 | `2026-08-20T17:03:25+08:00` | Read-only route resolution must integrate before transaction composition. | Complete S1, then branch S2 from integrated main. |
+| 1 | `codex/2026-08-20-upg-003-route-resolution-s1-admission` | `main@ead96acb0ac4ea73a94c6de59604b47f1f78b5ae` | active-stage | `635abaeb532a2383dfb03cc1d13bd50e41f7e80b` | local / PR S1 | `2026-08-20T18:47:01+08:00` | The admission branch identity was corrected; its fresh audit failed and a bounded repair is in progress. | Commit the repair, obtain a new exact-head audit, then complete S1 before branching S2 from integrated main. |
 
 ## Completion Summary
 
-- Outcome: S1 implementation and focused validation complete; commit, exact-head audit, hosted checks, PR merge, and online read-back remain.
+- Outcome: S1 remains in progress. The 635abaeb exact-head audit failed; a bounded local repair has focused validation, while commit, new exact-head audit, hosted checks, PR merge, and online read-back remain.
 - Changed artifacts: Upgrade support policy, canonical matrix schema/template, read-only resolver and CLI, skill/profile registration, focused route and package-projection GWTs, validation registry, and this workflow evidence.
 - Approved requirement/specification evidence: Live Issue #206 and explicit owner instructions.
-- Implementation completion evidence: Resolver emits only four governed route kinds, cross-binds checksum sidecars, validator argv, canonical receipts, output bytes, and owner-approved deprecation evidence, and never accepts a target or invokes package apply.
-- Required test outcomes: Prior route 20/20, isolated package projection 1/1, validation registry 6/6, and shell-assets validation passed. The first full-module external attempt failed because its output capture was missing and remains failed evidence. The exact a57e484ba6456358971f86bcf3198acf04e6ac1e full-module task then failed after 156.213 seconds with GWT-014/GWT-020 fixture failures; it remains failed evidence and was not rerun unchanged. The bounded follow-up passes route 21/21 plus GWT-014 and GWT-020 selectors 1/1 each on the normal Windows ACL boundary.
+- Implementation completion evidence: Resolver emits only four governed route kinds, cross-binds checksum sidecars, validator argv, canonical receipts, output bytes, and owner-approved deprecation evidence, and never accepts a target or invokes package apply. The current local repair additionally cross-binds receipt from/to versions and ordered required cutover claims, rejects matrix duplicate keys, and uses retained canonical candidate authority bytes.
+- Required test outcomes: Prior route 20/20, isolated package projection 1/1, validation registry 6/6, and shell-assets validation passed. The first full-module external attempt failed because its output capture was missing and remains failed evidence. The exact a57e484ba6456358971f86bcf3198acf04e6ac1e full-module task then failed after 156.213 seconds with GWT-014/GWT-020 fixture failures; it remains failed evidence and was not rerun unchanged. The current bounded local repair passes route 24/24 in 0.895 seconds plus GWT-014 1/1 in 67.216 seconds and GWT-020 1/1 in 61.502 seconds on the normal Windows ACL boundary; those results need a later committed exact-head audit.
 - Selected compliance evidence: Not applicable.
-- Review disposition: Pending fresh exact-head independent audit.
-- Validation evidence: Base identity `ead96acb0ac4ea73a94c6de59604b47f1f78b5ae`; framework-source packet `b244520f8cb7653c067e2fe13a2aeef62f9974f8f345b0cac2dee3c63159ff05`; live published v0.6-v0.13 identities; historical packages have no portable validator and v0.10-v0.11 remains deferred-with-owner. Fresh Sol High audit of `f6de771bb37a6224fb09543edf911f61aa7ab2bc` failed on self-attested route/deprecation evidence, and the fresh audit of `a57e484ba6456358971f86bcf3198acf04e6ac1e` failed because raw path aliases normalized before validation; neither audit made a repair. The bounded regression repair now rejects those aliases and makes the synthetic target provenance/decision fixtures truthful under #203. Failed sandbox, fixture, and external-capture attempts remain recorded and are not promoted; a fresh audit is required after the next commit.
+- Review disposition: Fresh exact-head independent audit failed at `635abaeb532a2383dfb03cc1d13bd50e41f7e80b`; local repair needs a new commit and a different fresh independent audit.
+- Validation evidence: Base identity `ead96acb0ac4ea73a94c6de59604b47f1f78b5ae`; framework-source packet `b244520f8cb7653c067e2fe13a2aeef62f9974f8f345b0cac2dee3c63159ff05`; live published v0.6-v0.13 identities; historical packages have no portable validator and v0.10-v0.11 remains deferred-with-owner. Fresh Sol High audits of `f6de771bb37a6224fb09543edf911f61aa7ab2bc` and `a57e484ba6456358971f86bcf3198acf04e6ac1e` failed without repair in their audit contexts. The audit of `635abaeb532a2383dfb03cc1d13bd50e41f7e80b` likewise made no repair and found: edge receipts could be matrix-relabelled because they omitted `from_version`, `to_version`, and required cutover claims; route-matrix YAML accepted duplicate keys; and GWT-014/GWT-020 used placeholder candidate authority digests. The current local repair passes its focused tests but has not become a committed audit subject. Failed sandbox, fixture, and external-capture attempts remain recorded and are not promoted.
 - Workflow task state: in progress.
-- Commits: `f6de771bb37a6224fb09543edf911f61aa7ab2bc`, `a57e484ba6456358971f86bcf3198acf04e6ac1e`, and `71c4ec35ff180a70934333cdd296eb4b016050f8`.
-- Branch / checkpoint / handoff evidence: Dedicated S1 branch created from exact integrated main.
-- Residual risks: Historical origin routes remain reconciliation-required until a later candidate supplies and proves an exact compatible edge validator; Project-field restoration is owned by another conversation.
+- Commits: `f6de771bb37a6224fb09543edf911f61aa7ab2bc`, `a57e484ba6456358971f86bcf3198acf04e6ac1e`, `71c4ec35ff180a70934333cdd296eb4b016050f8`, `ce0b4b6988030af1994edbbf37786fe7a7fbd952`, and `635abaeb532a2383dfb03cc1d13bd50e41f7e80b`.
+- Branch / checkpoint / handoff evidence: Dedicated S1 admission branch `codex/2026-08-20-upg-003-route-resolution-s1-admission` continues from exact integrated main.
+- Residual risks: Historical origin routes remain reconciliation-required until a later candidate supplies and proves an exact compatible edge validator; the local audit repair requires a new independent exact-head audit; Project-field restoration is owned by another conversation.

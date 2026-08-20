@@ -228,7 +228,15 @@ def load_route_matrix(matrix_path: Path) -> tuple[dict[str, Any], bytes]:
     except OSError as exc:
         raise MatrixValidationError(f"cannot read matrix {matrix_path}: {exc}") from exc
     try:
-        value = yaml.safe_load(raw)
+        text = raw.decode("utf-8")
+    except UnicodeDecodeError as exc:
+        raise MatrixValidationError(f"cannot parse matrix {matrix_path}: matrix must be UTF-8 YAML") from exc
+    try:
+        value = yaml.load(text, Loader=_StrictYamlLoader)
+    except MatrixValidationError as exc:
+        raise MatrixValidationError(
+            f"cannot parse matrix {matrix_path}: matrix must use unique string keys"
+        ) from exc
     except yaml.YAMLError as exc:
         raise MatrixValidationError(f"cannot parse matrix {matrix_path}: {exc}") from exc
     if not isinstance(value, dict):
@@ -391,7 +399,7 @@ def _validate_edge(
     value: Any,
     label: str,
     expected_order: int,
-    cutover_ids: set[str],
+    cutover_requirements: Mapping[str, bool],
 ) -> dict[str, Any]:
     data = _mapping(value, label)
     _exact_keys(
@@ -425,21 +433,27 @@ def _validate_edge(
         for name in EDGE_ARTIFACT_NAMES
     }
     seen_cutovers: set[str] = set()
-    edge_cutovers: list[dict[str, str]] = []
+    edge_cutovers: list[dict[str, Any]] = []
     for cutover_index, cutover in enumerate(_list(data["semantic_cutovers"], f"{label}.semantic_cutovers")):
         cutover_label = f"{label}.semantic_cutovers[{cutover_index}]"
         cutover_data = _mapping(cutover, cutover_label)
         _exact_keys(cutover_data, {"cutover_id", "state"}, cutover_label)
         cutover_id = _string(cutover_data["cutover_id"], f"{cutover_label}.cutover_id")
         state = _string(cutover_data["state"], f"{cutover_label}.state")
-        if cutover_id not in cutover_ids:
+        if cutover_id not in cutover_requirements:
             raise MatrixValidationError(f"{cutover_label}.cutover_id is not declared")
         if cutover_id in seen_cutovers:
             raise MatrixValidationError(f"{label}.semantic_cutovers must not duplicate cutover IDs")
         if state not in VALIDATION_STATES:
             raise MatrixValidationError(f"{cutover_label}.state is not supported")
         seen_cutovers.add(cutover_id)
-        edge_cutovers.append({"cutover_id": cutover_id, "state": state})
+        edge_cutovers.append(
+            {
+                "cutover_id": cutover_id,
+                "required": cutover_requirements[cutover_id],
+                "state": state,
+            }
+        )
     return {
         "edge_id": _string(data["edge_id"], f"{label}.edge_id"),
         "order": expected_order,
@@ -464,7 +478,7 @@ def _validate_routes(
     value: Any,
     retained_versions: set[str],
     target_version: str,
-    cutover_ids: set[str],
+    cutover_requirements: Mapping[str, bool],
 ) -> list[dict[str, Any]]:
     routes = _list(value, "routes")
     route_ids: set[str] = set()
@@ -487,7 +501,12 @@ def _validate_routes(
         if not edge_values:
             raise MatrixValidationError(f"{label}.edges must not be empty")
         edges = [
-            _validate_edge(edge, f"{label}.edges[{edge_index}]", edge_index + 1, cutover_ids)
+            _validate_edge(
+                edge,
+                f"{label}.edges[{edge_index}]",
+                edge_index + 1,
+                cutover_requirements,
+            )
             for edge_index, edge in enumerate(edge_values)
         ]
         if edges[0]["from_version"] != origin:
@@ -604,7 +623,7 @@ def validate_matrix(matrix: Mapping[str, Any]) -> dict[str, Any]:
         data["routes"],
         retained_versions,
         target["version"],
-        {item["cutover_id"] for item in cutovers},
+        {item["cutover_id"]: item["required"] for item in cutovers},
     )
     retained_roles = {item["role"] for item in origins}
     deprecations = _validate_deprecations(
@@ -728,8 +747,11 @@ def _edge_validation_receipt_diagnostic(
                 {
                     "schema_version",
                     "edge_id",
+                    "from_version",
+                    "to_version",
                     "artifacts",
                     "validator_argv",
+                    "semantic_cutovers",
                     "outcome",
                     "exit_code",
                     "output_sha256",
@@ -738,6 +760,10 @@ def _edge_validation_receipt_diagnostic(
             )
             schema_version = _string(receipt["schema_version"], "edge validation report.schema_version")
             edge_id = _string(receipt["edge_id"], "edge validation report.edge_id")
+            from_version = _version(
+                receipt["from_version"], "edge validation report.from_version"
+            )
+            to_version = _version(receipt["to_version"], "edge validation report.to_version")
             artifacts = _mapping(receipt["artifacts"], "edge validation report.artifacts")
             _exact_keys(artifacts, set(EDGE_ARTIFACT_NAMES), "edge validation report.artifacts")
             reported_artifacts = {
@@ -751,6 +777,26 @@ def _edge_validation_receipt_diagnostic(
                 "edge validation report.validator_argv",
                 edge["artifacts"]["validator"],
             )
+            reported_cutovers: list[dict[str, Any]] = []
+            for index, cutover in enumerate(
+                _list(receipt["semantic_cutovers"], "edge validation report.semantic_cutovers")
+            ):
+                label = f"edge validation report.semantic_cutovers[{index}]"
+                cutover_data = _mapping(cutover, label)
+                _exact_keys(cutover_data, {"cutover_id", "required", "state"}, label)
+                cutover_id = _string(cutover_data["cutover_id"], f"{label}.cutover_id")
+                if not isinstance(cutover_data["required"], bool):
+                    raise MatrixValidationError(f"{label}.required must be boolean")
+                state = _string(cutover_data["state"], f"{label}.state")
+                if state not in VALIDATION_STATES:
+                    raise MatrixValidationError(f"{label}.state is not supported")
+                reported_cutovers.append(
+                    {
+                        "cutover_id": cutover_id,
+                        "required": cutover_data["required"],
+                        "state": state,
+                    }
+                )
             outcome = _string(receipt["outcome"], "edge validation report.outcome")
             if type(receipt["exit_code"]) is not int:
                 raise MatrixValidationError("edge validation report.exit_code must be an integer")
@@ -769,6 +815,11 @@ def _edge_validation_receipt_diagnostic(
             raise EvidenceValidationError(
                 "edge-validation-report-edge-mismatch", "edge validation report names another edge"
             )
+        if from_version != edge["from_version"] or to_version != edge["to_version"]:
+            raise EvidenceValidationError(
+                "edge-validation-report-route-mismatch",
+                "edge validation report route does not match the matrix edge",
+            )
         if any(
             reported_artifacts[name] != edge["artifacts"][name] for name in EDGE_ARTIFACT_NAMES
         ):
@@ -780,6 +831,11 @@ def _edge_validation_receipt_diagnostic(
             raise EvidenceValidationError(
                 "edge-validation-report-validator-argv-mismatch",
                 "edge validation report argv does not match the matrix edge",
+            )
+        if reported_cutovers != edge["semantic_cutovers"]:
+            raise EvidenceValidationError(
+                "edge-validation-report-cutover-mismatch",
+                "edge validation report cutovers do not match the matrix edge",
             )
         if outcome != "passed":
             raise EvidenceValidationError(

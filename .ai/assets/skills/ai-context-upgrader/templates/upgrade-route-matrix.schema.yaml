@@ -108,12 +108,14 @@ properties:
               report:
                 type: asset-identity
                 format: canonical-utf8-json
-                exact_keys: [schema_version, edge_id, artifacts, validator_argv, outcome, exit_code, output_sha256]
+                exact_keys: [schema_version, edge_id, from_version, to_version, artifacts, validator_argv, semantic_cutovers, outcome, exit_code, output_sha256]
                 schema_version: upgrade-edge-validation/v1
                 invariants:
                   - "edge_id equals edge.edge_id"
+                  - "from_version and to_version exactly equal edge.from_version and edge.to_version"
                   - "artifacts exactly equals the edge archive, checksum, manifest, and validator identities"
                   - "validator_argv exactly equals validation.validator_argv"
+                  - "semantic_cutovers exactly equals the ordered edge cutover claims after each declared cutover's matrix-level required value is bound as {cutover_id, required, state}"
                   - "outcome is passed and equals validation.state"
                   - "exit_code is integer 0"
                   - "output_sha256 equals validation.output.sha256 and the raw output asset digest"

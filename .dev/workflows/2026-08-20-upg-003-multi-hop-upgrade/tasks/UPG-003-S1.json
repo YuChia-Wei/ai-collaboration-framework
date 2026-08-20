@@ -9,7 +9,7 @@
   "related_plan_id": "development-plan-2026-08-20-upg-003-multi-hop-upgrade",
   "status": "in_progress",
   "created_at": "2026-08-20T17:03:25+08:00",
-  "updated_at": "2026-08-20T18:14:32+08:00",
+  "updated_at": "2026-08-20T19:06:27+08:00",
   "template_source": ".ai/assets/skills/software-development-orchestrator/templates/development-workflow-task-template.json",
   "model": "gpt-5.6-sol",
   "reasoning_effort": "high",
@@ -78,6 +78,15 @@
         "outcome": "failed",
         "scope": "Read-only exact-head semantic audit of a57e484ba6456358971f86bcf3198acf04e6ac1e; found raw matrix path aliases normalized before validation.",
         "canonical_role_claimed": false
+      },
+      {
+        "role": "pre-#207 fresh independent audit context",
+        "provider": "Codex",
+        "model": "gpt-5.6-sol",
+        "reasoning_effort": "high",
+        "outcome": "failed",
+        "scope": "Read-only exact-head semantic audit of 635abaeb532a2383dfb03cc1d13bd50e41f7e80b; found upgrade-edge receipt route/cutover claims were matrix-relabelable, matrix YAML accepted duplicate keys, and GWT014/GWT020 used placeholder candidate authority digests.",
+        "canonical_role_claimed": false
       }
     ],
     "spec_compliance": {"selected": false, "activation_source": [], "expected_outcome": "not-applicable"},
@@ -87,7 +96,7 @@
     "deferred_items": ["S2 multi-hop transaction", "S3 v0.14.0 source candidate and terminal closure"]
   },
   "results": {
-    "summary": "Core route contract implemented; portable projection and final admission remain in progress.",
+    "summary": "Core route contract is repaired locally after the 635abaeb exact-head audit failed; a fresh exact-head audit and normal S1 admission remain in progress.",
     "files_changed": [
       ".ai/assets/skills/ai-context-upgrader/skill.yaml",
       ".ai/assets/skills/ai-context-upgrader/references/upgrade-support-policy.md",
@@ -173,6 +182,21 @@
         "command": "py -3 -B .ai/scripts/validate-git-commits.py --range a57e484ba6456358971f86bcf3198acf04e6ac1e..71c4ec35d2e79eff192648d4a34534f6f95de12f --workflow-id 2026-08-20-upg-003-multi-hop-upgrade",
         "outcome": "failed",
         "evidence": "The checkpoint used an inferred nonexistent full SHA after only a short Git identity had been read; git rev-list exited 128 before commit-policy evaluation. The actual Git read-back is 71c4ec35ff180a70934333cdd296eb4b016050f8, and the incorrect identity was not promoted."
+      },
+      {
+        "command": "py -3 -B .ai/scripts/tests/test_ai_context_upgrade_routes.py -v",
+        "outcome": "passed",
+        "evidence": "24 tests passed in 0.895 seconds outside the sandbox for the bounded local repair after the 635abaeb audit: exact receipt from/to/cutover binding, matrix-only relabel rejection, and strict duplicate-key YAML loading."
+      },
+      {
+        "command": "py -3 -B .ai/scripts/tests/test_ai_context_packaging.py VersionedMigrationPackagingGwtTests.test_gwt_014_given_governed_previous_inventory_when_built_then_versioned_operations_apply -v",
+        "outcome": "passed",
+        "evidence": "1 test passed in 67.216 seconds outside the sandbox. The explicit decision binds SHA-256 values calculated from retained canonical candidate-provenance and candidate-customizations document bytes."
+      },
+      {
+        "command": "py -3 -B .ai/scripts/tests/test_ai_context_packaging.py VersionedMigrationPackagingGwtTests.test_gwt_020_given_v070_payload_when_candidate_projects_shared_prerequisites_then_clean_install_and_upgrade_keep_portable_commands -v",
+        "outcome": "passed",
+        "evidence": "1 test passed in 61.502 seconds outside the sandbox under the same packet-before-mutation and explicit-decision contract."
       }
     ],
     "role_execution_aggregation": [
@@ -193,11 +217,15 @@
       ,"The bounded typed-evidence repair requires standard archive sidecars, exact validator argv, canonical cross-bound passed receipts and output bytes, typed owner-approved deprecation records, and fail-closed symlink escape; host route tests pass 20 of 20 and isolated package projection passes 1 of 1."
       ,"Fresh Sol High exact-head audit of a57e484ba6456358971f86bcf3198acf04e6ac1e failed because raw aliases ./dot, a/./b, and a//b normalized before matrix identity validation; no repair occurred in the audit context."
       ,"The bounded regression repair rejects raw aliases before PurePosixPath normalization and updates GWT-014/GWT-020 fixtures to bind the sealed predecessor source plus an explicit canonical remediation packet and decision before apply. Post-repair route tests pass 21 of 21 and the two selectors pass 1 of 1 each."
+      ,"Fresh Sol High exact-head audit of 635abaeb532a2383dfb03cc1d13bd50e41f7e80b failed because upgrade-edge-validation/v1 did not bind edge from/to versions or matrix-level required cutover claims, load_route_matrix used permissive duplicate-key YAML parsing, and GWT-014/GWT-020 used placeholder candidate authority digests. The audit was read-only and made no repair."
+      ,"The current bounded local repair makes upgrade-edge-validation/v1 cross-bind from_version, to_version, and ordered {cutover_id, required, state} claims; uses strict duplicate-key YAML loading; retains canonical candidate provenance/customizations bytes before the explicit remediation decision; and passes route 24/24 plus GWT-014/GWT-020 selectors 1/1 each. This is uncommitted evidence and requires a fresh audit after a new exact head is created."
     ],
     "commits": [
       "f6de771bb37a6224fb09543edf911f61aa7ab2bc",
       "a57e484ba6456358971f86bcf3198acf04e6ac1e",
-      "71c4ec35ff180a70934333cdd296eb4b016050f8"
+      "71c4ec35ff180a70934333cdd296eb4b016050f8",
+      "ce0b4b6988030af1994edbbf37786fe7a7fbd952",
+      "635abaeb532a2383dfb03cc1d13bd50e41f7e80b"
     ],
     "follow_up_needed": true
   }

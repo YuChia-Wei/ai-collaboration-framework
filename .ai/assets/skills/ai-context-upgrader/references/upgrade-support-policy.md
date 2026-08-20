@@ -40,10 +40,14 @@ The canonical contract is
   filename match the verified archive bytes and archive basename. Updating the
   sidecar identity after putting a wrong archive digest in it remains unsafe.
 - An edge validation receipt is canonical UTF-8 JSON. It must bind the exact
-  edge ID, all four edge identities, validator argv, `passed` outcome, integer
-  exit code `0`, and the output SHA-256. That output digest must equal both the
-  declared output identity and separately retained raw output bytes. The matrix
-  validation state cannot disagree with the receipt.
+  edge ID, `from_version`, `to_version`, all four edge identities, validator
+  argv, and the ordered edge semantic-cutover claims after the matrix-level
+  `required` value has been bound into each `{cutover_id, required, state}`
+  record, plus `passed` outcome, integer exit code `0`, and the output SHA-256.
+  That output digest must equal both the declared output identity and separately
+  retained raw output bytes. The matrix validation state cannot disagree with
+  the receipt. Relabelling a matrix edge or adding a cutover claim without a
+  corresponding immutable receipt is reconciliation-required.
 - Semantic cutovers are declared once at matrix level. A required cutover must
   have a `passed` record in at least one ordered edge of a selected route.
 - A deprecation is valid only with `complete: true`, `unsupported` disposition,

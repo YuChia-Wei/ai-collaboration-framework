@@ -23,6 +23,7 @@ ROOT = Path(__file__).resolve().parents[3]
 SCRIPTS = ROOT / ".ai/scripts"
 sys.path.insert(0, str(SCRIPTS))
 import ai_context_package as PACKAGE  # noqa: E402
+import ai_context_target_provenance as TARGET  # noqa: E402
 
 
 class RepositoryTemporaryDirectory:
@@ -434,6 +435,51 @@ def apply_extracted_upgrade_with_explicit_decision(
         raise AssertionError(prepared.stdout + prepared.stderr)
     packet = json.loads(packet_path.read_text(encoding="utf-8"))
     proposal = packet["automatic_proposal"]
+    package = packet["package"]
+    previous_source = packet["provenance"]["source"]
+    candidate_provenance, candidate_customizations = TARGET.build_initialization_documents(
+        {
+            "repository": package["source"]["repository"],
+            "release_id": f"REL-v{package['version']}",
+            "version": f"v{package['version']}",
+            "tag": f"v{package['version']}",
+            "commit": package["source"]["commit"],
+        },
+        packet["selection"],
+        "2026-08-20T12:00:00+08:00",
+    )
+    candidate_provenance["previous_source"] = previous_source
+    candidate_provenance["installation"]["last_upgraded_at"] = "2026-08-20T12:00:00+08:00"
+    candidate_provenance["last_migration"] = {
+        "status": "completed",
+        "from_version": f"v{previous_version}",
+        "to_version": f"v{package['version']}",
+        "completed_at": "2026-08-20T12:00:00+08:00",
+        "evidence": "tests/upgrade-finalization.md",
+    }
+
+    def canonical_candidate_bytes(document: object) -> bytes:
+        return json.dumps(
+            document,
+            ensure_ascii=False,
+            sort_keys=True,
+            separators=(",", ":"),
+            allow_nan=False,
+        ).encode("utf-8")
+
+    candidate_provenance_bytes = canonical_candidate_bytes(candidate_provenance)
+    candidate_customizations_bytes = canonical_candidate_bytes(candidate_customizations)
+    (evidence_root / "candidate-provenance.json").write_bytes(candidate_provenance_bytes)
+    (evidence_root / "candidate-customizations.json").write_bytes(candidate_customizations_bytes)
+    candidate_authority = {
+        "provenance_sha256": hashlib.sha256(candidate_provenance_bytes).hexdigest(),
+        "customizations_sha256": hashlib.sha256(candidate_customizations_bytes).hexdigest(),
+    }
+    if candidate_authority != {
+        "provenance_sha256": TARGET.canonical_json_digest(candidate_provenance),
+        "customizations_sha256": TARGET.canonical_json_digest(candidate_customizations),
+    }:
+        raise AssertionError("fixture candidate authority must bind retained canonical documents")
     decision = {
         "schema_version": "upgrade-remediation-decision/v1",
         "packet_sha256": packet["canonical_digest"],
@@ -446,15 +492,8 @@ def apply_extracted_upgrade_with_explicit_decision(
         "reason": "exercise explicit package upgrade authorization",
         "accepted_operation_ids": proposal["apply_operation_ids"],
         "reconciliation_ids": proposal["reconciliation_ids"],
-        "policy_adoptions": None,
-        "candidate_authority": {
-            "provenance_sha256": hashlib.sha256(
-                b"fixture pending candidate provenance"
-            ).hexdigest(),
-            "customizations_sha256": hashlib.sha256(
-                b"fixture pending candidate customizations"
-            ).hexdigest(),
-        },
+        "policy_adoptions": candidate_provenance.get("policy_adoptions"),
+        "candidate_authority": candidate_authority,
     }
     decision_path.write_text(
         json.dumps(decision, sort_keys=True, separators=(",", ":")) + "\n",
