@@ -69,6 +69,15 @@
         "outcome": "failed",
         "scope": "Read-only exact-head semantic audit of f6de771bb37a6224fb09543edf911f61aa7ab2bc; found self-attested checksum, validator receipt, and owner-decision evidence.",
         "canonical_role_claimed": false
+      },
+      {
+        "role": "pre-#207 fresh independent audit context",
+        "provider": "Codex",
+        "model": "gpt-5.6-sol",
+        "reasoning_effort": "high",
+        "outcome": "failed",
+        "scope": "Read-only exact-head semantic audit of a57e484ba6456358971f86bcf3198acf04e6ac1e; found raw matrix path aliases normalized before validation.",
+        "canonical_role_claimed": false
       }
     ],
     "spec_compliance": {"selected": false, "activation_source": [], "expected_outcome": "not-applicable"},
@@ -129,6 +138,36 @@
         "command": "external task upg003-s1-full-package-f6de771b: py -3 -B .ai/scripts/tests/test_ai_context_packaging.py",
         "outcome": "failed",
         "evidence": "The immutable external task returned in 0.037 seconds without its required stdout/stderr capture, so command completion could not be proven; subject and cleanup remained exact and clean. It was not retried."
+      },
+      {
+        "command": "external task upg003-s1-full-package-a57e484b: py -3 -B .ai/scripts/tests/test_ai_context_packaging.py",
+        "outcome": "failed",
+        "evidence": "Exact clean subject a57e484ba6456358971f86bcf3198acf04e6ac1e exited 1 after 156.213 seconds; direct in-memory output digest 74ab8bcd224c6125ca348ffbdcfaaae365868d10a25a7a9dd241c019c93f6f4b recorded GWT-014 target provenance source identity and GWT-020 portable command failures. Head remained exact, cleanup passed, and the unchanged module was not retried."
+      },
+      {
+        "command": "py -3 -B .ai/scripts/tests/test_ai_context_upgrade_routes.py -v",
+        "outcome": "blocked-by-environment",
+        "evidence": "Sandbox execution could not initialize its Windows Temp fixtures because WinError 5 denied directory creation and cleanup. No resolver assertion result was accepted from this run; normal-ACL rerun was a changed execution boundary."
+      },
+      {
+        "command": "py -3 -B .ai/scripts/tests/test_ai_context_packaging.py VersionedMigrationPackagingGwtTests.test_gwt_014_given_governed_previous_inventory_when_built_then_versioned_operations_apply -v",
+        "outcome": "blocked-by-environment",
+        "evidence": "Sandbox execution reached the planner but WinError 5 denied temporary .git transaction staging and fixture cleanup. No semantic failure was inferred; the normal-ACL rerun used the changed execution boundary."
+      },
+      {
+        "command": "py -3 -B .ai/scripts/tests/test_ai_context_upgrade_routes.py -v",
+        "outcome": "passed",
+        "evidence": "21 tests passed in 0.731 seconds outside the sandbox after the raw matrix-path alias repair; the sandbox attempt remains blocked-by-environment because Windows Temp ACLs denied fixture setup."
+      },
+      {
+        "command": "py -3 -B .ai/scripts/tests/test_ai_context_packaging.py VersionedMigrationPackagingGwtTests.test_gwt_014_given_governed_previous_inventory_when_built_then_versioned_operations_apply -v",
+        "outcome": "passed",
+        "evidence": "1 test passed in 66.443 seconds outside the sandbox using the extracted planner, packet-before-mutation, and explicit remediation-decision contract."
+      },
+      {
+        "command": "py -3 -B .ai/scripts/tests/test_ai_context_packaging.py VersionedMigrationPackagingGwtTests.test_gwt_020_given_v070_payload_when_candidate_projects_shared_prerequisites_then_clean_install_and_upgrade_keep_portable_commands -v",
+        "outcome": "passed",
+        "evidence": "1 test passed in 61.524 seconds outside the sandbox using the same extracted planner and explicit remediation-decision contract."
       }
     ],
     "role_execution_aggregation": [
@@ -147,6 +186,8 @@
       "The first source AI-context validation exposed four missing thin-wrapper references; after synchronizing only those reference lists, the validator passed."
       ,"Fresh Sol High exact-head audit of f6de771bb37a6224fb09543edf911f61aa7ab2bc failed because matrix-self-hashed evidence did not semantically bind checksum contents, validator execution receipts, or owner approval; no repair occurred in the audit context."
       ,"The bounded typed-evidence repair requires standard archive sidecars, exact validator argv, canonical cross-bound passed receipts and output bytes, typed owner-approved deprecation records, and fail-closed symlink escape; host route tests pass 20 of 20 and isolated package projection passes 1 of 1."
+      ,"Fresh Sol High exact-head audit of a57e484ba6456358971f86bcf3198acf04e6ac1e failed because raw aliases ./dot, a/./b, and a//b normalized before matrix identity validation; no repair occurred in the audit context."
+      ,"The bounded regression repair rejects raw aliases before PurePosixPath normalization and updates GWT-014/GWT-020 fixtures to bind the sealed predecessor source plus an explicit canonical remediation packet and decision before apply. Post-repair route tests pass 21 of 21 and the two selectors pass 1 of 1 each."
     ],
     "commits": [],
     "follow_up_needed": true

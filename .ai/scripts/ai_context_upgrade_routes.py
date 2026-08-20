@@ -292,6 +292,10 @@ def _safe_relative_path(value: Any, label: str) -> str:
     value = _string(value, label)
     if "\\" in value:
         raise MatrixValidationError(f"{label} must use POSIX separators")
+    # PurePosixPath normalizes dot and duplicate-separator aliases, while the
+    # matrix binds raw asset identity. Reject aliases before normalization.
+    if any(part in {"", ".", ".."} for part in value.split("/")):
+        raise MatrixValidationError(f"{label} must be a safe matrix-relative path")
     path = PurePosixPath(value)
     if (
         path.is_absolute()

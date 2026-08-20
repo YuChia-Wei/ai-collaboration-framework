@@ -370,6 +370,105 @@ class SyntheticPackageRepo:
         return destination / str(result["package_id"])
 
 
+def seed_upgrade_target_provenance(
+    target: Path, previous_package_root: Path, selection: dict
+) -> None:
+    """Seed only the exact predecessor authority that an upgrade planner reads."""
+    package = yaml.safe_load(
+        (previous_package_root / "metadata/package.yaml").read_text(encoding="utf-8")
+    )
+    source = package["source"]
+    provenance = target / ".dev/ai-context/provenance.yaml"
+    provenance.parent.mkdir(parents=True, exist_ok=True)
+    provenance.write_text(
+        yaml.safe_dump(
+            {
+                "source": {
+                    "repository": source["repository"],
+                    "release_id": package["release_id"],
+                    "version": f"v{package['version']}",
+                    "tag": f"v{package['version']}",
+                    "commit": source["commit"],
+                },
+                "selection": selection,
+            },
+            sort_keys=False,
+        ),
+        encoding="utf-8",
+        newline="\n",
+    )
+
+
+def apply_extracted_upgrade_with_explicit_decision(
+    *,
+    planner: Path,
+    package_root: Path,
+    target_root: Path,
+    previous_files: Path,
+    previous_version: str,
+    evidence_root: Path,
+) -> subprocess.CompletedProcess[str]:
+    """Exercise the public packet-before-mutation upgrade contract in isolation."""
+    packet_path = evidence_root / "remediation-packet.json"
+    decision_path = evidence_root / "remediation-decision.json"
+    evidence_root.mkdir(parents=True, exist_ok=True)
+    base_arguments = [
+        sys.executable,
+        str(planner),
+        "--package-root",
+        str(package_root),
+        "--target-root",
+        str(target_root),
+        "--previous-files",
+        str(previous_files),
+        "--previous-version",
+        previous_version,
+    ]
+    prepared = subprocess.run(
+        [*base_arguments, "--remediation-packet-output", str(packet_path)],
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+    if prepared.returncode != 0:
+        raise AssertionError(prepared.stdout + prepared.stderr)
+    packet = json.loads(packet_path.read_text(encoding="utf-8"))
+    proposal = packet["automatic_proposal"]
+    decision = {
+        "schema_version": "upgrade-remediation-decision/v1",
+        "packet_sha256": packet["canonical_digest"],
+        "plan_sha256": packet["plan_sha256"],
+        "transaction_id": packet["transaction_id"],
+        "status": "approved",
+        "owner": "fixture-owner",
+        "decided_at": "2026-08-20T12:00:00+08:00",
+        "evidence": "fixture-remediation-decision",
+        "reason": "exercise explicit package upgrade authorization",
+        "accepted_operation_ids": proposal["apply_operation_ids"],
+        "reconciliation_ids": proposal["reconciliation_ids"],
+        "policy_adoptions": None,
+        "candidate_authority": {
+            "provenance_sha256": hashlib.sha256(
+                b"fixture pending candidate provenance"
+            ).hexdigest(),
+            "customizations_sha256": hashlib.sha256(
+                b"fixture pending candidate customizations"
+            ).hexdigest(),
+        },
+    }
+    decision_path.write_text(
+        json.dumps(decision, sort_keys=True, separators=(",", ":")) + "\n",
+        encoding="utf-8",
+        newline="\n",
+    )
+    return subprocess.run(
+        [*base_arguments, "--apply", "--remediation-decision", str(decision_path)],
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+
+
 class GitObjectReaderGwtTests(unittest.TestCase):
     def test_gwt_000_given_shared_snapshot_when_multiple_payload_blobs_are_read_then_one_batch_process_is_reused(self) -> None:
         fixture = SyntheticPackageRepo()
@@ -1930,30 +2029,23 @@ class VersionedMigrationPackagingGwtTests(unittest.TestCase):
             # And the planner from the extracted candidate upgrades the extracted base.
             target = fixture.output("upgrade-target")
             shutil.copytree(previous_root / "payload", target)
-            provenance = target / ".dev/ai-context/provenance.yaml"
-            provenance.parent.mkdir(parents=True, exist_ok=True)
-            provenance.write_text(
-                yaml.safe_dump(
-                    {
-                        "selection": {
-                            "release_model": "single-versioned-componentized-release",
-                            "mandatory_components": [
-                                "software-development-core",
-                                "ai-context-lifecycle-core",
-                            ],
-                            "profiles": ["dotnet-backend"],
-                            "providers": {
-                                "repo-backlog": {
-                                    "enabled": False,
-                                    "preservation": "preserve-existing-if-recorded",
-                                }
-                            },
+            seed_upgrade_target_provenance(
+                target,
+                previous_root,
+                {
+                    "release_model": "single-versioned-componentized-release",
+                    "mandatory_components": [
+                        "software-development-core",
+                        "ai-context-lifecycle-core",
+                    ],
+                    "profiles": ["dotnet-backend"],
+                    "providers": {
+                        "repo-backlog": {
+                            "enabled": False,
+                            "preservation": "preserve-existing-if-recorded",
                         }
                     },
-                    sort_keys=False,
-                ),
-                encoding="utf-8",
-                newline="\n",
+                },
             )
             git(target, "init", "-q")
             git(target, "config", "user.name", "Fixture")
@@ -1961,23 +2053,13 @@ class VersionedMigrationPackagingGwtTests(unittest.TestCase):
             git(target, "add", ".")
             git(target, "commit", "-qm", "governed previous package")
             planner = candidate_root / "payload/.ai/scripts/plan-ai-context-package-apply.py"
-            applied = subprocess.run(
-                [
-                    sys.executable,
-                    str(planner),
-                    "--package-root",
-                    str(candidate_root),
-                    "--target-root",
-                    str(target),
-                    "--previous-files",
-                    str(previous_files),
-                    "--previous-version",
-                    "0.9.0",
-                    "--apply",
-                ],
-                check=False,
-                capture_output=True,
-                text=True,
+            applied = apply_extracted_upgrade_with_explicit_decision(
+                planner=planner,
+                package_root=candidate_root,
+                target_root=target,
+                previous_files=previous_files,
+                previous_version="0.9.0",
+                evidence_root=fixture.output("gwt014-remediation-evidence"),
             )
             self.assertEqual(0, applied.returncode, applied.stdout + applied.stderr)
             self.assertEqual(b"incoming rule\n", (target / "docs/rule.md").read_bytes())
@@ -2528,30 +2610,23 @@ class VersionedMigrationPackagingGwtTests(unittest.TestCase):
             # And the candidate planner upgrades a v0.7 payload while retaining those same paths.
             target = fixture.output("v070-target")
             shutil.copytree(previous_payload, target)
-            provenance = target / ".dev/ai-context/provenance.yaml"
-            provenance.parent.mkdir(parents=True, exist_ok=True)
-            provenance.write_text(
-                yaml.safe_dump(
-                    {
-                        "selection": {
-                            "release_model": "single-versioned-componentized-release",
-                            "mandatory_components": [
-                                "software-development-core",
-                                "ai-context-lifecycle-core",
-                            ],
-                            "profiles": ["dotnet-backend"],
-                            "providers": {
-                                "repo-backlog": {
-                                    "enabled": False,
-                                    "preservation": "preserve-existing-if-recorded",
-                                }
-                            },
+            seed_upgrade_target_provenance(
+                target,
+                previous_root,
+                {
+                    "release_model": "single-versioned-componentized-release",
+                    "mandatory_components": [
+                        "software-development-core",
+                        "ai-context-lifecycle-core",
+                    ],
+                    "profiles": ["dotnet-backend"],
+                    "providers": {
+                        "repo-backlog": {
+                            "enabled": False,
+                            "preservation": "preserve-existing-if-recorded",
                         }
                     },
-                    sort_keys=False,
-                ),
-                encoding="utf-8",
-                newline="\n",
+                },
             )
             git(target, "init", "-q")
             git(target, "config", "user.name", "Fixture")
@@ -2559,7 +2634,14 @@ class VersionedMigrationPackagingGwtTests(unittest.TestCase):
             git(target, "add", ".")
             git(target, "commit", "-qm", "v070 payload")
             planner = candidate_payload / ".ai/scripts/plan-ai-context-package-apply.py"
-            applied = subprocess.run([sys.executable, str(planner), "--package-root", str(candidate_root), "--target-root", str(target), "--previous-files", str(previous_files), "--previous-version", "0.7.0", "--apply"], capture_output=True, text=True, check=False)
+            applied = apply_extracted_upgrade_with_explicit_decision(
+                planner=planner,
+                package_root=candidate_root,
+                target_root=target,
+                previous_files=previous_files,
+                previous_version="0.7.0",
+                evidence_root=fixture.output("gwt020-remediation-evidence"),
+            )
             self.assertEqual(0, applied.returncode, applied.stdout + applied.stderr)
             self.assertTrue(all((target / path).is_file() for path in shared_assets + portable_paths))
             self.assertEqual(direct_bytes, {path: (target / path).read_bytes() for path in portable_paths})

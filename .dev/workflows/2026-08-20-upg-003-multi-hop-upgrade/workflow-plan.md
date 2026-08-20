@@ -120,7 +120,7 @@ Before #207 integrates, every delegated context is generic and is not evidence t
 
 ## Progress And Handoff
 
-- Current stage: UPG-003-S1 typed-evidence repair validated; a new repair commit and fresh independent audit remain.
+- Current stage: UPG-003-S1 bounded regression repair validates raw path aliases and #203-compatible package fixtures; a new repair commit and fresh independent audit remain.
 - Completed stages: Live Issue/Project/PR read-back, exact existing-surface inventory, route contract, resolver, CLI, portable projection, focused source tests, and isolated package test.
 - Deferred stages and reasons: S2 waits for merged S1; S3 waits for S2 plus #207/#208 integration.
 - Open decisions: None for S1; unavailable or ambiguous assets become reconciliation-required rather than inferred.
@@ -141,10 +141,10 @@ Before #207 integrates, every delegated context is generic and is not evidence t
 - Changed artifacts: Upgrade support policy, canonical matrix schema/template, read-only resolver and CLI, skill/profile registration, focused route and package-projection GWTs, validation registry, and this workflow evidence.
 - Approved requirement/specification evidence: Live Issue #206 and explicit owner instructions.
 - Implementation completion evidence: Resolver emits only four governed route kinds, cross-binds checksum sidecars, validator argv, canonical receipts, output bytes, and owner-approved deprecation evidence, and never accepts a target or invokes package apply.
-- Required test outcomes: Route 20/20; isolated package projection 1/1; validation registry 6/6; shell-assets validation passed. The first full-module external attempt failed because its output capture was missing and remains failed evidence.
+- Required test outcomes: Prior route 20/20, isolated package projection 1/1, validation registry 6/6, and shell-assets validation passed. The first full-module external attempt failed because its output capture was missing and remains failed evidence. The exact a57e484ba6456358971f86bcf3198acf04e6ac1e full-module task then failed after 156.213 seconds with GWT-014/GWT-020 fixture failures; it remains failed evidence and was not rerun unchanged. The bounded follow-up passes route 21/21 plus GWT-014 and GWT-020 selectors 1/1 each on the normal Windows ACL boundary.
 - Selected compliance evidence: Not applicable.
 - Review disposition: Pending fresh exact-head independent audit.
-- Validation evidence: Base identity `ead96acb0ac4ea73a94c6de59604b47f1f78b5ae`; framework-source packet `b244520f8cb7653c067e2fe13a2aeef62f9974f8f345b0cac2dee3c63159ff05`; live published v0.6-v0.13 identities; historical packages have no portable validator and v0.10-v0.11 remains deferred-with-owner. Fresh Sol High audit of `f6de771bb37a6224fb09543edf911f61aa7ab2bc` failed on self-attested route/deprecation evidence; the audit made no repair. Typed evidence repair now has focused passing results but requires a new commit and independent audit. Failed sandbox, fixture, and external-capture attempts remain recorded and are not promoted.
+- Validation evidence: Base identity `ead96acb0ac4ea73a94c6de59604b47f1f78b5ae`; framework-source packet `b244520f8cb7653c067e2fe13a2aeef62f9974f8f345b0cac2dee3c63159ff05`; live published v0.6-v0.13 identities; historical packages have no portable validator and v0.10-v0.11 remains deferred-with-owner. Fresh Sol High audit of `f6de771bb37a6224fb09543edf911f61aa7ab2bc` failed on self-attested route/deprecation evidence, and the fresh audit of `a57e484ba6456358971f86bcf3198acf04e6ac1e` failed because raw path aliases normalized before validation; neither audit made a repair. The bounded regression repair now rejects those aliases and makes the synthetic target provenance/decision fixtures truthful under #203. Failed sandbox, fixture, and external-capture attempts remain recorded and are not promoted; a fresh audit is required after the next commit.
 - Workflow task state: in progress.
 - Commits: pending.
 - Branch / checkpoint / handoff evidence: Dedicated S1 branch created from exact integrated main.

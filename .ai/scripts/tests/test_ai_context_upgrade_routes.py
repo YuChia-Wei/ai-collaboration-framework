@@ -513,6 +513,17 @@ class UpgradeRouteTests(unittest.TestCase):
         self.assertEqual("reconciliation-required", result["route_kind"])
         self.assertIn("edge-validation-state-mismatch", {item["code"] for item in result["diagnostics"]})
 
+    def test_gwt_010h_given_raw_matrix_path_aliases_when_validated_then_each_fails_before_normalization(self) -> None:
+        for alias in ("./dot", "a/./b", "a//b"):
+            with self.subTest(alias=alias):
+                candidate = deepcopy(self.fixture.matrix)
+                candidate["target"]["manifest"]["path"] = alias
+
+                with self.assertRaisesRegex(
+                    ROUTES.MatrixValidationError, "safe matrix-relative path"
+                ):
+                    ROUTES.validate_matrix(candidate)
+
     def test_gwt_011_given_explicit_matrix_cli_when_run_then_output_is_canonical_and_read_only(self) -> None:
         edge = self.fixture.edge("v0.13.0", self.fixture.target)
         self.fixture.matrix["routes"] = [self.fixture.route("direct", "v0.13.0", [edge])]
