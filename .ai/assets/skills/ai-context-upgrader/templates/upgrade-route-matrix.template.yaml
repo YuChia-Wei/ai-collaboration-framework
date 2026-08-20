@@ -1,0 +1,96 @@
+template_metadata:
+  template_id: "upgrade-route-matrix"
+  template_version: "1.0.0"
+  created_at: "2026-08-20T00:00:00+08:00"
+  updated_at: "2026-08-20T00:00:00+08:00"
+
+# This is a source-framework route inventory, not a target plan. Replace every
+# placeholder with exact release evidence before a resolver may consume it.
+schema_version: "1.0"
+matrix_id: "upgrade-route-matrix-<target-version>"
+target:
+  version: "v0.0.0"
+  release_id: "REL-v0.0.0"
+  commit: "<40-character-lowercase-git-sha>"
+  manifest:
+    asset_id: "target-release-manifest"
+    path: "artifacts/<target>/manifest.yaml"
+    sha256: "<lowercase-sha256>"
+
+# All three governed roles must be accounted for across retained_origins and
+# deprecations. The immediate predecessor is a role, while the two historical
+# support origins are literal release versions.
+retained_origins:
+  - role: "immediate-predecessor"
+    version: "v0.0.0"
+    release_id: "REL-v0.0.0"
+    commit: "<40-character-lowercase-git-sha>"
+    manifest:
+      asset_id: "immediate-predecessor-manifest"
+      path: "artifacts/<immediate-predecessor>/manifest.yaml"
+      sha256: "<lowercase-sha256>"
+  - role: "v0.9.0"
+    version: "v0.9.0"
+    release_id: "REL-v0.9.0"
+    commit: "<40-character-lowercase-git-sha>"
+    manifest:
+      asset_id: "v0.9.0-manifest"
+      path: "artifacts/v0.9.0/manifest.yaml"
+      sha256: "<lowercase-sha256>"
+  - role: "v0.6.0"
+    version: "v0.6.0"
+    release_id: "REL-v0.6.0"
+    commit: "<40-character-lowercase-git-sha>"
+    manifest:
+      asset_id: "v0.6.0-manifest"
+      path: "artifacts/v0.6.0/manifest.yaml"
+      sha256: "<lowercase-sha256>"
+
+semantic_cutovers:
+  - cutover_id: "<stable-semantic-cutover-id>"
+    required: true
+    description: "<why every safe route to the target must pass this cutover>"
+
+# Each candidate route supplies its exact ordered edge sequence. A direct route
+# contains one edge; an orchestrated route contains more than one. Do not mark
+# a kind here: the resolver derives it after verifying all evidence.
+routes:
+  - route_id: "<origin>-to-<target>-direct"
+    origin: "v0.0.0"
+    target: "v0.0.0"
+    edges:
+      - edge_id: "<origin>-to-<target>"
+        order: 1
+        from_version: "v0.0.0"
+        to_version: "v0.0.0"
+        artifacts:
+          archive:
+            asset_id: "<edge>-archive"
+            path: "artifacts/<edge>/package.tar.gz"
+            sha256: "<lowercase-sha256>"
+          checksum:
+            asset_id: "<edge>-checksums"
+            path: "artifacts/<edge>/SHA256SUMS"
+            sha256: "<lowercase-sha256>"
+          manifest:
+            asset_id: "<edge>-manifest"
+            path: "artifacts/<edge>/migration.yaml"
+            sha256: "<lowercase-sha256>"
+          validator:
+            asset_id: "<edge>-validator"
+            path: "artifacts/<edge>/incoming-validator.json"
+            sha256: "<lowercase-sha256>"
+        semantic_cutovers:
+          - cutover_id: "<stable-semantic-cutover-id>"
+            state: "passed"
+        validation:
+          state: "passed"
+          report:
+            asset_id: "<edge>-validation-report"
+            path: "artifacts/<edge>/validation-report.json"
+            sha256: "<lowercase-sha256>"
+
+# A deprecated role is unsupported only when every complete evidence asset is
+# declared and verifies. Move that role from retained_origins into this list;
+# an incomplete record invalidates the entire matrix.
+deprecations: []

@@ -1,0 +1,138 @@
+{
+  "template_id": "software-development-orchestrator/development-workflow-task",
+  "template_version": "1.5.0",
+  "template_created_at": "2026-07-10T18:25:11+08:00",
+  "template_updated_at": "2026-08-05T02:12:00+08:00",
+  "workflow_id": "2026-08-20-upg-003-multi-hop-upgrade",
+  "task_id": "UPG-003-S1",
+  "owner_skill": "ai-context-upgrader",
+  "related_plan_id": "development-plan-2026-08-20-upg-003-multi-hop-upgrade",
+  "status": "in_progress",
+  "created_at": "2026-08-20T17:03:25+08:00",
+  "updated_at": "2026-08-20T17:43:00+08:00",
+  "template_source": ".ai/assets/skills/software-development-orchestrator/templates/development-workflow-task-template.json",
+  "model": "gpt-5.6-sol",
+  "reasoning_effort": "high",
+  "workflow_locator": ".dev/workflows/2026-08-20-upg-003-multi-hop-upgrade/workflow.yaml",
+  "scope": {
+    "goal": "Deliver Issue #206 S1 support policy, matrix, and read-only route resolver.",
+    "target": "Exact retained-origin routes for immediate predecessor, v0.9.0, and v0.6.0 without target mutation.",
+    "files": [
+      ".ai/assets/skills/ai-context-upgrader/skill.yaml",
+      ".ai/assets/skills/ai-context-upgrader/references/upgrade-support-policy.md",
+      ".ai/assets/skills/ai-context-upgrader/templates/upgrade-route-matrix.schema.yaml",
+      ".ai/assets/skills/ai-context-upgrader/templates/upgrade-route-matrix.template.yaml",
+      ".ai/distribution/profiles/dotnet-backend.yaml",
+      ".ai/scripts/ai_context_upgrade_routes.py",
+      ".ai/scripts/plan-ai-context-upgrade.py",
+      ".ai/scripts/tests/test_ai_context_upgrade_routes.py",
+      ".ai/scripts/tests/test_ai_context_packaging.py",
+      ".ai/scripts/validation-profile-registry.sh",
+      ".agents/skills/ai-context-upgrader/SKILL.md",
+      ".claude/skills/ai-context-upgrader/SKILL.md"
+    ],
+    "constraints": [
+      "Use exactly direct, orchestrated-multi-hop, reconciliation-required, and unsupported route kinds.",
+      "Bind exact route edges, assets, validators, checksums, and semantic cutovers.",
+      "Fail before mutation on ambiguity, missing assets, unsupported schemas, validator disagreement, or cutover bypass.",
+      "Require explicit owner, matrix, and release-note evidence for support deprecation.",
+      "Keep Issue #206 open after S1."
+    ],
+    "non_goals": ["Mutate a target", "Implement S2 transaction composition or S3 release proof", "Duplicate #200 transaction or #203 remediation/finalization authority", "Restore Project fields", "Modify roadmap/backlog history", "Create a tag or Release or publish assets/packages"]
+  },
+  "inputs": {
+    "requirements": ["https://github.com/YuChia-Wei/ai-collaboration-framework/issues/206"],
+    "specifications": [".ai/assets/skills/ai-context-upgrader/skill.yaml", ".ai/distribution/schemas/package.schema.yaml", ".ai/distribution/schemas/migration.schema.yaml"],
+    "architecture_decisions": ["S1 returns a sealed read-only plan and never calls package apply.", "A proven direct route is preferred only when it preserves required semantic cutovers.", "A retained origin cannot become unsupported without complete explicit deprecation evidence."],
+    "user_constraints": ["One Issue #206 and one workflow across three sequential PRs.", "S1 uses Refs #206 and records that transaction and release proof remain."]
+  },
+  "execution": {
+    "capability_slot": "ai-context-upgrader",
+    "approval_contract": {"status": "approved", "required_before": "implementation", "authorization_source": ["explicit repository-owner v0.14.0 delivery prompt"], "pending_decision": ""},
+    "implementation_contract": null,
+    "test_execution_contract": null,
+    "role_execution_records": [
+      {
+        "role": "pre-#207 generic bounded context",
+        "provider": "Codex",
+        "model": "gpt-5.6-terra",
+        "reasoning_effort": "max",
+        "outcome": "completed",
+        "scope": "Live release assets and historical validator inventory; portable package projection and registry fixture.",
+        "canonical_role_claimed": false
+      }
+    ],
+    "spec_compliance": {"selected": false, "activation_source": [], "expected_outcome": "not-applicable"},
+    "steps": ["Inventory live retained-origin release assets and current package/migration authority.", "Define the route matrix schema and support-policy contract.", "Implement the pure resolver and one read-only CLI entrypoint.", "Project and validate the matrix in isolated packages.", "Run focused, immutable, independent, hosted, and deferred Issue admission gates."],
+    "validation": ["focused route resolver GWTs", "isolated package projection and checksum closure", "workflow and source governance validation", "fresh exact-head independent audit", "required hosted checks"],
+    "commit_checkpoint": "One deferred S1 PR using Refs #206; Issue remains open for S2/S3.",
+    "deferred_items": ["S2 multi-hop transaction", "S3 v0.14.0 source candidate and terminal closure"]
+  },
+  "results": {
+    "summary": "Core route contract implemented; portable projection and final admission remain in progress.",
+    "files_changed": [
+      ".ai/assets/skills/ai-context-upgrader/skill.yaml",
+      ".ai/assets/skills/ai-context-upgrader/references/upgrade-support-policy.md",
+      ".ai/assets/skills/ai-context-upgrader/templates/upgrade-route-matrix.schema.yaml",
+      ".ai/assets/skills/ai-context-upgrader/templates/upgrade-route-matrix.template.yaml",
+      ".ai/distribution/profiles/dotnet-backend.yaml",
+      ".ai/scripts/ai_context_upgrade_routes.py",
+      ".ai/scripts/plan-ai-context-upgrade.py",
+      ".ai/scripts/tests/test_ai_context_upgrade_routes.py",
+      ".ai/scripts/tests/test_ai_context_packaging.py",
+      ".ai/scripts/validation-profile-registry.sh",
+      ".agents/skills/ai-context-upgrader/SKILL.md",
+      ".claude/skills/ai-context-upgrader/SKILL.md"
+    ],
+    "approval_evidence": ["explicit repository-owner v0.14.0 authorization"],
+    "test_execution": [
+      {
+        "command": "py -3 .ai/scripts/tests/test_ai_context_upgrade_routes.py",
+        "outcome": "passed",
+        "evidence": "13 tests passed in 0.454 seconds after the final template-metadata and historical-edge changes."
+      },
+      {
+        "command": "python -B .ai/scripts/tests/test_ai_context_packaging.py UpgradeRoutePackageProjectionGwtTests -v",
+        "outcome": "passed",
+        "evidence": "1 isolated core-only package projection test passed in 2.913 seconds."
+      },
+      {
+        "command": "python -B .ai/scripts/tests/test_validation_profile_registry.py -v",
+        "outcome": "passed",
+        "evidence": "6 tests passed in 0.443 seconds on the authorized host boundary after sandbox Git Bash signal-pipe failure."
+      },
+      {
+        "command": "py -3 .ai/scripts/validate-ai-context.py",
+        "outcome": "passed",
+        "evidence": "Canonical skill and both runtime-wrapper reference surfaces passed after the first run exposed and repaired four missing wrapper references."
+      },
+      {
+        "command": "python -m py_compile .ai/scripts/tests/test_ai_context_packaging.py",
+        "outcome": "blocked-by-environment",
+        "evidence": "Existing __pycache__ ACL denied the write; read-only AST parsing passed instead."
+      },
+      {
+        "command": "initial isolated package projection fixture attempts",
+        "outcome": "failed",
+        "evidence": "First attempt exposed a source-only compare script; second exposed a copied __pycache__ bytecode file. Both fixture defects were corrected before the passing third run."
+      }
+    ],
+    "role_execution_aggregation": [
+      "Generic pre-#207 bounded contexts completed deterministic inventories and package fixture work; no #207 canonical role or invocation is claimed."
+    ],
+    "spec_compliance": {"outcome": "not-applicable", "coverage_percent": null, "evidence": []},
+    "validation_evidence": [
+      "Bootstrap main and origin/main are ead96acb0ac4ea73a94c6de59604b47f1f78b5ae with a clean worktree.",
+      "Live Issue #206 is open and has no linked PR; current Project Status read-back was Inbox and was not mutated.",
+      "Generic pre-#207 Terra Max contexts performed live-contract and code-surface inventories; no #207 canonical role is claimed.",
+      "Framework-source effective rules resolved at ead96acb0ac4ea73a94c6de59604b47f1f78b5ae with AICTX-EVIDENCE-001 and TEST-GWT-001; packet digest b244520f8cb7653c067e2fe13a2aeef62f9974f8f345b0cac2dee3c63159ff05.",
+      "Live GitHub read-back proved annotated published v0.6.0 through v0.13.0 tags and Releases with all ZIP/TAR sidecars matching provider SHA-256 digests; source release.yaml status alone was not used as hosted-publication proof.",
+      "All published v0.7.0 through v0.13.0 package metadata and payload inventories lack an executable portable per-package validator contract. Source archive and release-state validators remain source-only and are not promoted to upgrade-edge evidence.",
+      "The v0.10.0 to v0.11.0 source release record remains deferred-with-owner; current retained-origin routes are reconciliation-required until a later candidate supplies and proves an exact compatible validator.",
+      "Focused read-only route GWTs pass 13 of 13 on the authorized host Python route, including missing and tampered assets, ambiguity, cutover bypass, deprecation, and mutation sentinel coverage.",
+      "The first source AI-context validation exposed four missing thin-wrapper references; after synchronizing only those reference lists, the validator passed."
+    ],
+    "commits": [],
+    "follow_up_needed": true
+  }
+}

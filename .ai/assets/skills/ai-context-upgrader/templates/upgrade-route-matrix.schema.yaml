@@ -1,0 +1,152 @@
+schema_version: "1.0"
+document: upgrade-route-matrix.yaml
+purpose: >-
+  Declare the complete, evidence-bound read-only route inventory for one
+  requested AI-context framework target release.
+encoding: utf-8-yaml
+required:
+  - schema_version
+  - matrix_id
+  - target
+  - retained_origins
+  - semantic_cutovers
+  - routes
+  - deprecations
+properties:
+  template_metadata:
+    optional: true
+    required: [template_id, template_version, created_at, updated_at]
+    exact_keys: [template_id, template_version, created_at, updated_at]
+    values: non-empty-string
+  schema_version:
+    const: "1.0"
+  matrix_id: non-empty-string
+  target:
+    required: [version, release_id, commit, manifest]
+    properties:
+      version: semver-tag-with-v-prefix
+      release_id: "REL- plus target.version"
+      commit: full-lowercase-git-sha
+      manifest: asset-identity
+  retained_origins:
+    type: ordered-list
+    governed_roles:
+      - immediate-predecessor
+      - v0.9.0
+      - v0.6.0
+    item_required: [role, version, release_id, commit, manifest]
+    properties:
+      role:
+        enum: [immediate-predecessor, v0.9.0, v0.6.0]
+      version: semver-tag-with-v-prefix
+      release_id: "REL- plus version"
+      commit: full-lowercase-git-sha
+      manifest: asset-identity
+    invariants:
+      - "role v0.9.0 has version v0.9.0"
+      - "role v0.6.0 has version v0.6.0"
+      - "roles and versions are unique"
+      - "each governed role appears exactly once across retained_origins and deprecations"
+  semantic_cutovers:
+    type: ordered-list
+    item_required: [cutover_id, required, description]
+    properties:
+      cutover_id: non-empty-string
+      required: boolean
+      description: non-empty-string
+    invariants:
+      - "cutover_id is unique"
+  routes:
+    type: ordered-list
+    item_required: [route_id, origin, target, edges]
+    properties:
+      route_id: non-empty-string
+      origin: retained-origin-version
+      target: "equals target.version"
+      edges:
+        type: ordered-list
+        min_items: 1
+        item_required:
+          - edge_id
+          - order
+          - from_version
+          - to_version
+          - artifacts
+          - semantic_cutovers
+          - validation
+        properties:
+          edge_id: non-empty-string
+          order: one-based-contiguous-in-list-order
+          from_version: semver-tag-with-v-prefix
+          to_version: semver-tag-with-v-prefix
+          artifacts:
+            required: [archive, checksum, manifest, validator]
+            exact_keys: [archive, checksum, manifest, validator]
+            values: asset-identity
+          semantic_cutovers:
+            type: ordered-list
+            item_required: [cutover_id, state]
+            properties:
+              cutover_id: declared-semantic-cutover-id
+              state: {enum: [passed, failed, blocked, not-run, deferred-with-owner]}
+            invariants:
+              - "cutover_id is unique within one edge"
+          validation:
+            required: [state, report]
+            properties:
+              state: {enum: [passed, failed, blocked, not-run, deferred-with-owner]}
+              report: asset-identity
+    invariants:
+      - "route_id is unique"
+      - "edges form the exact ordered origin-to-target chain"
+      - "a route is direct only when it has exactly one edge; the resolver derives route kind"
+      - "every required semantic cutover is passed by a selected route"
+  deprecations:
+    type: ordered-list
+    item_required:
+      - deprecation_id
+      - role
+      - origin
+      - target
+      - disposition
+      - complete
+      - reason
+      - evidence
+    properties:
+      deprecation_id: non-empty-string
+      role: {enum: [immediate-predecessor, v0.9.0, v0.6.0]}
+      origin: semver-tag-with-v-prefix
+      target: "equals target.version"
+      disposition: {const: unsupported}
+      complete: {const: true}
+      reason: non-empty-string
+      evidence:
+        required: [deprecation_notice, owner_decision, validator]
+        exact_keys: [deprecation_notice, owner_decision, validator]
+        values: asset-identity
+    invariants:
+      - "deprecation_id, role, and origin are unique"
+      - "a deprecated role or origin is not retained"
+      - "role v0.9.0 has origin v0.9.0"
+      - "role v0.6.0 has origin v0.6.0"
+      - "all declared evidence assets exist and match their raw SHA-256"
+asset_identity:
+  required: [asset_id, path, sha256]
+  properties:
+    asset_id: non-empty-string
+    path: safe-matrix-relative-posix-path
+    sha256: lowercase-sha256
+  path_safety: reject-absolute-dot-dot-backslash-empty-drive-and-symlink-escape
+resolution_contract:
+  route_kinds: [direct, orchestrated-multi-hop, reconciliation-required, unsupported]
+  matrix_bytes: "raw input bytes and SHA-256 are emitted in every result"
+  discovery: "explicit matrix, origin, and target only; no remembered defaults or directory scan"
+  selection:
+    - "prefer one proven direct route unless it bypasses a required semantic cutover"
+    - "otherwise choose one complete safe multi-hop chain"
+    - "multiple complete safe candidates are reconciliation-required"
+    - "missing, tampered, failed, deferred-with-owner, or incomplete in-scope evidence is reconciliation-required"
+    - "outside matrix or fully explicit complete deprecation is unsupported"
+  deprecation_failure: incomplete-or-tampered-deprecation-evidence-invalidates-the-matrix
+  side_effects: read-only; package-apply-forbidden; target-mutation-forbidden
+additional_properties: false

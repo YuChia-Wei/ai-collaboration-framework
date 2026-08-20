@@ -3,6 +3,7 @@
 
 from __future__ import annotations
 
+import hashlib
 import json
 import os
 import subprocess
@@ -1361,6 +1362,376 @@ class PayloadReferenceIntegrityGwtTests(unittest.TestCase):
             git(fixture.root, "commit", "-qm", "add missing payload command")
             with self.assertRaisesRegex(PACKAGE.PackageError, "actionable command targets are missing"):
                 fixture.build("missing-command")
+        finally:
+            fixture.close()
+
+
+class UpgradeRoutePackageProjectionGwtTests(unittest.TestCase):
+    """Exercise route planning only through an extracted mandatory-core payload."""
+
+    ROUTE_SCRIPTS = (
+        ".ai/scripts/ai_context_upgrade_routes.py",
+        ".ai/scripts/plan-ai-context-upgrade.py",
+    )
+    CORE_COMPONENTS = {
+        "software-development-core",
+        "ai-context-lifecycle-core",
+    }
+    PORTABLE_VERSION_POLICY = (
+        ".ai/assets/shared/governance/AI-CONTEXT-VERSION-POLICY.md"
+    )
+    TARGET_VERSION_POLICY = ".dev/standards/AI-CONTEXT-VERSION-POLICY.md"
+
+    def test_gwt_021_given_route_assets_when_core_only_payload_is_extracted_then_planner_isolated_and_asset_failures_stay_closed(self) -> None:
+        source_profile = yaml.safe_load(
+            (ROOT / ".ai/distribution/profiles/dotnet-backend.yaml").read_text(
+                encoding="utf-8"
+            )
+        )
+        source_entries = {entry["id"]: entry for entry in source_profile["entries"]}
+        runtime_override = next(
+            override
+            for override in source_entries["ai-runtime-scripts"][
+                "component_overrides"
+            ]
+            if override["component_id"] == "ai-context-lifecycle-core"
+        )
+        asset_override = next(
+            override
+            for override in source_entries["canonical-ai-assets"]["component_overrides"]
+            if override["component_id"] == "ai-context-lifecycle-core"
+        )
+        self.assertTrue(set(self.ROUTE_SCRIPTS) <= set(runtime_override["patterns"]))
+        self.assertIn(
+            ".ai/assets/skills/ai-context-upgrader/**", asset_override["patterns"]
+        )
+
+        skill_spec_path = ROOT / ".ai/assets/skills/ai-context-upgrader/skill.yaml"
+        skill_spec = yaml.safe_load(skill_spec_path.read_text(encoding="utf-8"))
+        reference_paths = [
+            path
+            for path in skill_spec["references"]
+            if Path(path).suffix.lower() in {".md", ".yaml"}
+        ]
+        self.assertTrue(reference_paths)
+
+        fixture = SyntheticPackageRepo()
+        try:
+            fixture_assets = fixture.root / ".ai/assets/skills"
+            shutil.copytree(
+                ROOT / ".ai/assets/skills/ai-context-upgrader",
+                fixture_assets / "ai-context-upgrader",
+                ignore=shutil.ignore_patterns("__pycache__"),
+            )
+            shutil.copytree(
+                ROOT / ".ai/assets/skills/ai-context-governance",
+                fixture_assets / "ai-context-governance",
+                ignore=shutil.ignore_patterns("__pycache__"),
+            )
+            for path in (
+                ".ai/assets/shared/CLI-EXECUTION-ROUTING-CONTRACT.md",
+                ".ai/assets/shared/cli-execution-routing.schema.yaml",
+            ):
+                target = fixture.root / path
+                target.parent.mkdir(parents=True, exist_ok=True)
+                target.write_bytes((ROOT / path).read_bytes())
+            version_policy_target = fixture.root / self.TARGET_VERSION_POLICY
+            version_policy_target.parent.mkdir(parents=True, exist_ok=True)
+            version_policy_target.write_bytes(
+                (ROOT / self.PORTABLE_VERSION_POLICY).read_bytes()
+            )
+            for path in self.ROUTE_SCRIPTS:
+                target = fixture.root / path
+                target.parent.mkdir(parents=True, exist_ok=True)
+                target.write_bytes((ROOT / path).read_bytes())
+
+            profile_path = fixture.root / fixture.profile
+            profile = yaml.safe_load(profile_path.read_text(encoding="utf-8"))
+            fixture_entries = {entry["id"]: entry for entry in profile["entries"]}
+            fixture_entries["fixture-apply-scripts"]["component_overrides"] = [
+                {
+                    "component_id": "ai-context-lifecycle-core",
+                    "patterns": list(self.ROUTE_SCRIPTS),
+                }
+            ]
+            fixture_entries["fixture-portable-skill-scripts"][
+                "component_overrides"
+            ] = [
+                {
+                    "component_id": "ai-context-lifecycle-core",
+                    "patterns": [
+                        ".ai/assets/skills/ai-context-upgrader/**",
+                        ".ai/assets/skills/ai-context-governance/**",
+                    ],
+                }
+            ]
+            profile["entries"].append(
+                {
+                    "id": "fixture-shared-upgrade-assets",
+                    "component_id": "software-development-core",
+                    "source": [
+                        ".ai/assets/shared/CLI-EXECUTION-ROUTING-CONTRACT.md",
+                        ".ai/assets/shared/cli-execution-routing.schema.yaml",
+                    ],
+                    "target": "preserve-relative-path",
+                    "ownership": "framework-managed",
+                    "install_behavior": "managed",
+                }
+            )
+            profile["exclusions"].append(
+                {
+                    "id": "fixture-source-only-upgrader-compare",
+                    "classification": "source-only",
+                    "patterns": [
+                        ".ai/assets/skills/ai-context-upgrader/scripts/"
+                        "compare-ai-context-versions.py"
+                    ],
+                    "reason": "Source comparison tooling is not portable package truth.",
+                }
+            )
+            profile_path.write_text(
+                yaml.safe_dump(profile, sort_keys=False), encoding="utf-8", newline="\n"
+            )
+            git(fixture.root, "add", ".")
+            git(fixture.root, "commit", "-qm", "route package projection fixture")
+
+            package_result = fixture.build("upgrade-route-package")
+            package_root = fixture.extract(
+                package_result, "upgrade-route-package-extracted"
+            )
+            inventory = yaml.safe_load(
+                (package_root / "metadata/files.yaml").read_text(encoding="utf-8")
+            )
+            records = {record["path"]: record for record in inventory["files"]}
+            self.assertTrue(
+                all(
+                    records[path]["component_id"] == "ai-context-lifecycle-core"
+                    for path in self.ROUTE_SCRIPTS
+                )
+            )
+            self.assertTrue(
+                all(
+                    path in records
+                    and records[path]["component_id"] in self.CORE_COMPONENTS
+                    for path in reference_paths
+                )
+            )
+
+            core_only = fixture.output("upgrade-route-core-only")
+            for path, record in records.items():
+                if record["component_id"] not in self.CORE_COMPONENTS:
+                    continue
+                target = core_only / path
+                target.parent.mkdir(parents=True, exist_ok=True)
+                target.write_bytes((package_root / "payload" / path).read_bytes())
+            self.assertTrue(all((core_only / path).is_file() for path in reference_paths))
+            self.assertTrue(all((core_only / path).is_file() for path in self.ROUTE_SCRIPTS))
+
+            execution_root = fixture.output("upgrade-route-execution")
+            target_root = execution_root / "target"
+            target_root.mkdir(parents=True)
+            target_marker = target_root / "target-owned.txt"
+            target_marker.write_bytes(b"retain target bytes\n")
+            target_before = {
+                path.relative_to(target_root).as_posix(): path.read_bytes()
+                for path in target_root.rglob("*")
+                if path.is_file()
+            }
+            matrix_root = execution_root / "matrix"
+            matrix_root.mkdir()
+
+            environment = os.environ.copy()
+            environment["PYTHONPATH"] = str(core_only / ".ai/scripts")
+            resolver_probe = subprocess.run(
+                [
+                    sys.executable,
+                    "-c",
+                    "import ai_context_upgrade_routes as route; print(route.__file__)",
+                ],
+                cwd=execution_root,
+                env=environment,
+                capture_output=True,
+                text=True,
+                check=False,
+            )
+            self.assertEqual(
+                0, resolver_probe.returncode, resolver_probe.stdout + resolver_probe.stderr
+            )
+            self.assertEqual(
+                (core_only / self.ROUTE_SCRIPTS[0]).resolve(),
+                Path(resolver_probe.stdout.strip()).resolve(),
+            )
+
+            def asset(asset_id: str, path: str, content: bytes) -> dict[str, str]:
+                asset_path = matrix_root / path
+                asset_path.parent.mkdir(parents=True, exist_ok=True)
+                asset_path.write_bytes(content)
+                return {
+                    "asset_id": asset_id,
+                    "path": path,
+                    "sha256": hashlib.sha256(content).hexdigest(),
+                }
+
+            target_manifest = asset(
+                "target-manifest", "artifacts/target/manifest.yaml", b"target manifest\n"
+            )
+            immediate_manifest = asset(
+                "immediate-manifest",
+                "artifacts/v1.0.0/manifest.yaml",
+                b"immediate manifest\n",
+            )
+            v090_manifest = asset(
+                "v090-manifest", "artifacts/v0.9.0/manifest.yaml", b"v090 manifest\n"
+            )
+            edge_artifacts = {
+                "archive": asset("edge-archive", "artifacts/edge/package.tar.gz", b"archive\n"),
+                "checksum": asset("edge-checksum", "artifacts/edge/SHA256SUMS", b"checksum\n"),
+                "manifest": asset("edge-manifest", "artifacts/edge/migration.yaml", b"migration\n"),
+                "validator": asset("edge-validator", "artifacts/edge/validator.json", b"validator\n"),
+            }
+            validation_report = asset(
+                "edge-validation-report",
+                "artifacts/edge/validation-report.json",
+                b"validation report\n",
+            )
+            deprecation_evidence = {
+                "deprecation_notice": asset(
+                    "v060-notice", "deprecations/v060/notice.md", b"notice\n"
+                ),
+                "owner_decision": asset(
+                    "v060-decision", "deprecations/v060/owner-decision.md", b"decision\n"
+                ),
+                "validator": asset(
+                    "v060-validator", "deprecations/v060/validator.json", b"validator\n"
+                ),
+            }
+            matrix = {
+                "schema_version": "1.0",
+                "matrix_id": "fixture-upgrade-routes",
+                "target": {
+                    "version": "v1.2.0",
+                    "release_id": "REL-v1.2.0",
+                    "commit": "a" * 40,
+                    "manifest": target_manifest,
+                },
+                "retained_origins": [
+                    {
+                        "role": "immediate-predecessor",
+                        "version": "v1.0.0",
+                        "release_id": "REL-v1.0.0",
+                        "commit": "b" * 40,
+                        "manifest": immediate_manifest,
+                    },
+                    {
+                        "role": "v0.9.0",
+                        "version": "v0.9.0",
+                        "release_id": "REL-v0.9.0",
+                        "commit": "c" * 40,
+                        "manifest": v090_manifest,
+                    },
+                ],
+                "semantic_cutovers": [
+                    {
+                        "cutover_id": "route-evidence",
+                        "required": True,
+                        "description": "fixture route evidence is complete",
+                    }
+                ],
+                "routes": [
+                    {
+                        "route_id": "v100-to-v120",
+                        "origin": "v1.0.0",
+                        "target": "v1.2.0",
+                        "edges": [
+                            {
+                                "edge_id": "v100-to-v120",
+                                "order": 1,
+                                "from_version": "v1.0.0",
+                                "to_version": "v1.2.0",
+                                "artifacts": edge_artifacts,
+                                "semantic_cutovers": [
+                                    {"cutover_id": "route-evidence", "state": "passed"}
+                                ],
+                                "validation": {
+                                    "state": "passed",
+                                    "report": validation_report,
+                                },
+                            }
+                        ],
+                    }
+                ],
+                "deprecations": [
+                    {
+                        "deprecation_id": "v060-unsupported",
+                        "role": "v0.6.0",
+                        "origin": "v0.6.0",
+                        "target": "v1.2.0",
+                        "disposition": "unsupported",
+                        "complete": True,
+                        "reason": "fixture deprecation is complete",
+                        "evidence": deprecation_evidence,
+                    }
+                ],
+            }
+            matrix_path = matrix_root / "upgrade-route-matrix.yaml"
+            matrix_path.write_text(
+                yaml.safe_dump(matrix, sort_keys=False), encoding="utf-8", newline="\n"
+            )
+
+            def resolve() -> subprocess.CompletedProcess[str]:
+                return subprocess.run(
+                    [
+                        sys.executable,
+                        str(core_only / self.ROUTE_SCRIPTS[1]),
+                        "--matrix",
+                        str(matrix_path),
+                        "--origin",
+                        "v1.0.0",
+                        "--target",
+                        "v1.2.0",
+                    ],
+                    cwd=execution_root,
+                    env=environment,
+                    capture_output=True,
+                    text=True,
+                    check=False,
+                )
+
+            direct = resolve()
+            self.assertEqual(0, direct.returncode, direct.stdout + direct.stderr)
+            direct_result = json.loads(direct.stdout)
+            self.assertEqual("direct", direct_result["route_kind"])
+            self.assertTrue(direct_result["read_only"])
+            self.assertEqual("v100-to-v120", direct_result["selected_route"]["route_id"])
+
+            validator_path = matrix_root / edge_artifacts["validator"]["path"]
+            validator_path.unlink()
+            missing = resolve()
+            self.assertEqual(0, missing.returncode, missing.stdout + missing.stderr)
+            missing_result = json.loads(missing.stdout)
+            self.assertEqual("reconciliation-required", missing_result["route_kind"])
+            self.assertIn(
+                "missing-asset",
+                {diagnostic["code"] for diagnostic in missing_result["diagnostics"]},
+            )
+
+            validator_path.write_bytes(b"tampered validator\n")
+            tampered = resolve()
+            self.assertEqual(0, tampered.returncode, tampered.stdout + tampered.stderr)
+            tampered_result = json.loads(tampered.stdout)
+            self.assertEqual("reconciliation-required", tampered_result["route_kind"])
+            self.assertIn(
+                "tampered-asset",
+                {diagnostic["code"] for diagnostic in tampered_result["diagnostics"]},
+            )
+            self.assertEqual(
+                target_before,
+                {
+                    path.relative_to(target_root).as_posix(): path.read_bytes()
+                    for path in target_root.rglob("*")
+                    if path.is_file()
+                },
+            )
         finally:
             fixture.close()
 

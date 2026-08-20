@@ -144,6 +144,11 @@ register_check package-smoke \
     "package,smoke" "pr release nightly-full" \
     ".ai/scripts/ai_context_package.py .ai/scripts/tests/test_ai_context_package_smoke.py .ai/distribution" package-apply "python>=3.11 git" 120 io reuse-by-fingerprint source \
     "python .ai/scripts/tests/test_ai_context_package_smoke.py -v" source-release
+register_check upgrade-route-package-projection \
+    "AI Context Upgrade Route Package Projection" required \
+    "package,upgrade-route,tests" "fast pr release nightly-full" \
+    ".ai/distribution/profiles/dotnet-backend.yaml .ai/assets/skills/ai-context-upgrader .ai/assets/skills/ai-context-governance .ai/assets/shared .ai/scripts/ai_context_package.py .ai/scripts/ai_context_upgrade_routes.py .ai/scripts/plan-ai-context-upgrade.py .ai/scripts/tests/test_ai_context_packaging.py" '' "python>=3.11 git" 30 io reuse-by-input source \
+    "python .ai/scripts/tests/test_ai_context_packaging.py UpgradeRoutePackageProjectionGwtTests -v" always
 register_check dependency-versions \
     "Offline Dependency And Version Consistency" required \
     "dependency,metadata" "fast pr release nightly-full" \
