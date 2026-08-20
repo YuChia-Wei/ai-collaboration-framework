@@ -737,12 +737,24 @@ class DeterministicPackageGwtTests(unittest.TestCase):
             "repo-backlog",
             payload[".dev/backlog/README.MD"],
         )
-        self.assertEqual(
-            "dotnet-backend",
-            payload[
-                ".ai/assets/tech-stacks/dotnet-backend/tooling/"
-                "on-demand-mechanical-validation/recipe-manifest.yaml"
-            ],
+        provider_contract_assets = (
+            ".ai/assets/tech-stacks/dotnet-backend/tooling/"
+            "on-demand-mechanical-validation/recipe-manifest.yaml",
+            ".ai/assets/tech-stacks/dotnet-backend/tooling/"
+            "on-demand-mechanical-validation/provider-contract.yaml",
+            ".ai/assets/tech-stacks/dotnet-backend/tooling/"
+            "on-demand-mechanical-validation/provider-contract.schema.yaml",
+            ".ai/assets/tech-stacks/dotnet-backend/tooling/"
+            "on-demand-mechanical-validation/templates/provider-selection.template.yaml",
+            ".ai/assets/tech-stacks/dotnet-backend/tooling/"
+            "on-demand-mechanical-validation/templates/minimal-diagnostic-analyzer.cs.template",
+            ".ai/assets/tech-stacks/dotnet-backend/tooling/"
+            "on-demand-mechanical-validation/templates/minimal-diagnostic-analyzer-test.cs.template",
+            ".ai/assets/tech-stacks/dotnet-backend/tooling/"
+            "on-demand-mechanical-validation/templates/code-fix-decision.md",
+        )
+        self.assertTrue(
+            all(payload[path] == "dotnet-backend" for path in provider_contract_assets)
         )
         self.assertFalse(
             any(

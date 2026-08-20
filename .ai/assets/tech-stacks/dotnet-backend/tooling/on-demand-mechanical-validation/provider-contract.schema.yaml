@@ -1,0 +1,139 @@
+schema_version: "1.0"
+schema_id: "dotnet-engineering-guardrails-provider-contract-schema"
+applies_to:
+  - "provider-contract.yaml"
+  - "templates/provider-selection.template.yaml"
+contract:
+  required_fields:
+    - "schema_version"
+    - "contract_id"
+    - "contract_tier"
+    - "technology_profile"
+    - "capability"
+    - "recommendation"
+    - "provider_package_identity"
+    - "framework_delivery"
+    - "fallback"
+    - "state_semantics"
+    - "evidence_receipt_contracts"
+    - "prohibitions"
+  required_literals:
+    contract_tier: "reference-only"
+    technology_profile: "dotnet-backend"
+capability:
+  required_fields:
+    - "id"
+    - "provider_binding"
+    - "stable_identity_requirement"
+  package_identity_independent: true
+recommendation:
+  required_literals:
+    status: "official-recommended"
+    selection_independent: true
+    default_selection_state: "not-selected"
+    auto_install: "forbidden"
+    silent_selection: "forbidden"
+canonical_provider_package_identity:
+  required_fields:
+    - "status"
+    - "nuget_id"
+    - "version"
+    - "feed"
+    - "publication_contract"
+    - "identity_evidence"
+  required_literals:
+    status: "unknown"
+    publication_contract: "unknown"
+  required_null_fields:
+    - "nuget_id"
+    - "version"
+    - "feed"
+    - "identity_evidence"
+state_semantics:
+  required_states:
+    - "declined"
+    - "not-selected"
+    - "selected-unavailable"
+    - "synthetic-readiness-proven"
+  state_requirements:
+    declined:
+      recommendation.status: "official-recommended"
+      selection.status: "declined"
+      fallback.status: "available"
+      readiness.status: "not-claimed"
+      compatibility.status: "not-claimed"
+      execution.status: "not-claimed"
+    not-selected:
+      recommendation.status: "official-recommended"
+      selection.status: "not-selected"
+      selection.auto_install: "forbidden"
+      selection.silent_selection: "forbidden"
+      capability_gap.status: "mechanical-validation-capability-not-selected"
+      capability_gap.fallback: "target-owned-templates-available"
+      execution.status: "not-claimed"
+    selected-unavailable:
+      selection.status: "selected"
+      readiness.status: "unproven"
+      compatibility.status: "unproven"
+      execution.status: "prohibited"
+    synthetic-readiness-proven:
+      selection.status: "selected"
+      readiness.status: "synthetic-proven"
+      readiness.proof_scope: "schema-transition-only"
+      readiness.receipt_digest_required: true
+      compatibility.status: "unproven"
+      execution.status: "rejected"
+      execution.required_real_receipt: true
+evidence_receipt_contracts:
+  required_kinds:
+    - "readiness"
+    - "compatibility"
+    - "execution"
+  required_receipt_fields:
+    - "receipt_type"
+    - "digest"
+    - "required_fields"
+  digest_literals:
+    algorithm: "sha256"
+    field: "receipt_sha256"
+    required: true
+provider_selection_template:
+  required_fields:
+    - "schema_version"
+    - "record_type"
+    - "template_status"
+    - "ownership"
+    - "capability"
+    - "recommendation"
+    - "selection"
+    - "provider_package_identity"
+    - "capability_gap"
+    - "readiness"
+    - "compatibility"
+    - "execution"
+    - "evidence_receipts"
+    - "fallback"
+  required_literals:
+    template_status: "reference-only"
+    ownership.after_copy: "target-owned"
+    selection.status: "not-selected"
+    provider_package_identity.status: "unknown"
+    readiness.status: "not-claimed"
+    compatibility.status: "not-claimed"
+    execution.status: "not-claimed"
+  required_null_paths:
+    - "provider_package_identity.nuget_id"
+    - "provider_package_identity.version"
+    - "provider_package_identity.feed"
+    - "provider_package_identity.identity_evidence"
+    - "evidence_receipts.selection"
+    - "evidence_receipts.readiness"
+    - "evidence_receipts.compatibility"
+    - "evidence_receipts.execution"
+template_prohibitions:
+  - ".csproj"
+  - ".sln"
+  - ".slnx"
+  - "global.json"
+  - "PackageReference"
+  - "dotnet command"

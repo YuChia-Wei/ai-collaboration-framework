@@ -20,6 +20,7 @@ RECIPE_ROOT = Path(
 )
 PROJECT_SUFFIXES = {".csproj", ".sln", ".slnx"}
 DISCOVERY_SKIP_PARTS = {".git", ".tmp", "artifacts", "bin", "obj", "__pycache__"}
+LOCAL_RELEASE_EXTRACT_ROOTS = {(".codex", "release")}
 
 
 def tracked_paths() -> set[str]:
@@ -42,8 +43,12 @@ class SdkFreeFrameworkContractTests(unittest.TestCase):
     def test_gwt_001_given_framework_tree_when_projects_are_discovered_then_none_are_supplied(self) -> None:
         physical_projects: list[str] = []
         for directory, child_directories, filenames in os.walk(REPO_ROOT, topdown=True):
+            relative_parts = Path(directory).relative_to(REPO_ROOT).parts
             child_directories[:] = [
-                name for name in child_directories if name not in DISCOVERY_SKIP_PARTS
+                name
+                for name in child_directories
+                if name not in DISCOVERY_SKIP_PARTS
+                and (*relative_parts, name) not in LOCAL_RELEASE_EXTRACT_ROOTS
             ]
             for filename in filenames:
                 path = Path(directory, filename)
@@ -68,6 +73,12 @@ class SdkFreeFrameworkContractTests(unittest.TestCase):
             (RECIPE_ROOT / "README.md").as_posix(),
             (RECIPE_ROOT / "recipe-manifest.yaml").as_posix(),
             (RECIPE_ROOT / "diagnostic-mapping.yaml").as_posix(),
+            (RECIPE_ROOT / "provider-contract.yaml").as_posix(),
+            (RECIPE_ROOT / "provider-contract.schema.yaml").as_posix(),
+            (RECIPE_ROOT / "templates/provider-selection.template.yaml").as_posix(),
+            (RECIPE_ROOT / "templates/minimal-diagnostic-analyzer.cs.template").as_posix(),
+            (RECIPE_ROOT / "templates/minimal-diagnostic-analyzer-test.cs.template").as_posix(),
+            (RECIPE_ROOT / "templates/code-fix-decision.md").as_posix(),
             (RECIPE_ROOT / "recipes/analyzer-project.md").as_posix(),
             (RECIPE_ROOT / "recipes/analyzer-severity.editorconfig.snippet").as_posix(),
             (RECIPE_ROOT / "recipes/projection-registration-test.md").as_posix(),
@@ -82,6 +93,18 @@ class SdkFreeFrameworkContractTests(unittest.TestCase):
         self.assertFalse(manifest["compilable_payload"])
         self.assertEqual("none", manifest["framework_sdk_requirement"])
         self.assertEqual("none", manifest["activation_contract"])
+        self.assertEqual(
+            "official-recommended",
+            manifest["provider_contract"]["recommendation_status"],
+        )
+        self.assertEqual(
+            "unknown",
+            manifest["provider_contract"]["canonical_provider_package_identity"],
+        )
+        self.assertEqual(
+            "real-provider-unavailable",
+            manifest["provider_contract"]["framework_delivery"],
+        )
 
         mapping = yaml.safe_load(
             (REPO_ROOT / RECIPE_ROOT / "diagnostic-mapping.yaml").read_text(encoding="utf-8")
