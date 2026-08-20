@@ -26,11 +26,15 @@ ZIP/TAR package parity was validated at immutable package foundation
 `60572c01e31abf58191d38adb5ca39e05338b08d`. The planner-byte fix and three
 receipt-bound canonical direct-route proofs for v0.13.0, v0.9.0, and v0.6.0
 are committed in distinct source candidate
-`ad1973304e7fd2f170434c1fb5c77ff20c229fae`.
+`ad1973304e7fd2f170434c1fb5c77ff20c229fae`. The exact-head audit of that
+commit found only stale active narratives, repaired in draft/open PR #232
+initial head `aaae7aaf9f64be49574f9b35a6ca7e011bf9d593` against
+`main@bf8ad9c624ffc2154722dfb266c9090c72e4ac5f`.
 
-The governed terminal-close PR for #206, hosted admission, merge, and
-cumulative pre-tag readiness remain pending. No tag, GitHub Release, or
-publication is claimed.
+The tracked declaration commit will advance the PR head. Fresh exact-head
+independent audit, hosted admission, merge, and cumulative pre-tag readiness
+remain pending. Issue #206 remains open until merge, and #222 remains deferred.
+No tag, GitHub Release, or publication is claimed.
 
 <!--
 The renderer appends canonical Included Work and release provenance. Keep this

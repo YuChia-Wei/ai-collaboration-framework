@@ -9,7 +9,7 @@
   "related_plan_id": "development-plan-2026-08-20-upg-003-multi-hop-upgrade",
   "status": "in_progress",
   "created_at": "2026-08-21T03:12:02+08:00",
-  "updated_at": "2026-08-21T05:33:32+08:00",
+  "updated_at": "2026-08-21T05:47:52+08:00",
   "template_source": ".ai/assets/skills/software-development-orchestrator/templates/development-workflow-task-template.json",
   "model": "gpt-5.6-sol",
   "reasoning_effort": "high",
@@ -101,12 +101,12 @@
       "missing or tampered asset and semantic-cutover bypass rejection",
       "exact-head independent audit and hosted terminal admission"
     ],
-    "commit_checkpoint": "One terminal-close S3 PR using Closes #206 and retaining Issue #222 open.",
+    "commit_checkpoint": "Draft/open PR #232 uses Closes #206 and Refs #222; the pending declaration commit will advance its initial head before fresh audit and hosted admission.",
     "deferred_items": ["Cumulative merged-main release profile and pre-tag readiness verdict under Issue #222"]
   },
   "results": {
     "finding_status": "in_progress",
-    "summary": "At immutable package foundation 60572c01e31abf58191d38adb5ca39e05338b08d on codex/2026-08-21-upg-003-v014-source-candidate-s3, the canonical builder and package-native validator passed for ai-context-dotnet-backend-v0.14.0: ZIP sha256 6f332f2a17549eb46109d1b2786cdefb32839eea18520cd65476c246d1337116 (1404420 bytes) and TAR.GZ sha256 b08b18012f1db1cb8367f0e9bd378b6e079b6a31171d68d538fe77c1d363c35a (992036 bytes); the validator output was AI context package validation passed for 2 archive(s). The planner-byte fix and three receipt-bound retained-origin direct route proofs are committed in distinct source candidate ad1973304e7fd2f170434c1fb5c77ff20c229fae. Historical package, receipt, planner-byte, fixture, and sandbox failures remain retained below. Precommit independent audit passed on dirty diff fingerprint ef764808542c2a4e7ff0295d0dd05ec18e8ac1815d1711d107a16a873aac5e2a. The exact-head Sol High audit of ad197 terminally failed only because active narrative records were stale. After the material planner-byte fix, normal-network release-state validation progressed past route bytes but stopped at the expected open-#206 terminal-close-PR admission gate; #206 and #222 remain open. S3 remains in progress: no PR, candidate admission, hosted admission, merge, or post-merge provider closure is claimed.",
+    "summary": "At immutable package foundation 60572c01e31abf58191d38adb5ca39e05338b08d on codex/2026-08-21-upg-003-v014-source-candidate-s3, the canonical builder and package-native validator passed for ai-context-dotnet-backend-v0.14.0: ZIP sha256 6f332f2a17549eb46109d1b2786cdefb32839eea18520cd65476c246d1337116 (1404420 bytes) and TAR.GZ sha256 b08b18012f1db1cb8367f0e9bd378b6e079b6a31171d68d538fe77c1d363c35a (992036 bytes); the validator output was AI context package validation passed for 2 archive(s). The planner-byte fix and three receipt-bound retained-origin direct route proofs are committed in distinct source candidate ad1973304e7fd2f170434c1fb5c77ff20c229fae. Historical package, receipt, planner-byte, fixture, and sandbox failures remain retained below. Draft/open PR #232 exists against main@bf8ad9c624ffc2154722dfb266c9090c72e4ac5f at initial head aaae7aaf9f64be49574f9b35a6ca7e011bf9d593; this declaration commit will advance the head. The exact-head Sol High audit of ad1973304e7fd2f170434c1fb5c77ff20c229fae failed only because active narratives were stale, repaired in aaae7aaf9f64be49574f9b35a6ca7e011bf9d593. Fresh exact-head independent audit and hosted admission remain pending. #206 remains open until merge, #222 remains deferred, and S3 remains in progress with no admission, hosted success, merge, or post-merge provider closure claimed.",
     "files_changed": [
       ".dev/releases/v0.14.0/release.yaml",
       ".dev/releases/v0.14.0/release-notes.md",
@@ -128,6 +128,7 @@
       ".dev/workflows/2026-08-20-upg-003-multi-hop-upgrade/workflow.yaml",
       ".dev/workflows/2026-08-20-upg-003-multi-hop-upgrade/workflow-plan.md",
       ".dev/workflows/2026-08-20-upg-003-multi-hop-upgrade/tasks/UPG-003-S3.json",
+      ".dev/workflows/2026-08-20-upg-003-multi-hop-upgrade/evidence/terminal-issue-closure-s3-pr-232.yaml",
       ".dev/workflows/INDEX.MD"
     ],
     "approval_evidence": ["explicit repository-owner v0.14.0 delivery prompt"],
@@ -327,8 +328,9 @@
       "After the material planner-byte fix, sandbox candidate release-state validation failed at the GitHub proxy before the Issue #200 GET. The normal-network rerun progressed past route bytes and stopped at the expected gate: #206: release-ready Issue must be closed with completed reason or be the exact open terminal-close Issue of the current source-candidate PR. This is not candidate admission; #206 and coordination #222 remain open.",
       "The planner-byte fix and three receipt-bound direct-route proofs are committed in source candidate ad1973304e7fd2f170434c1fb5c77ff20c229fae, distinct from immutable package foundation 60572c01e31abf58191d38adb5ca39e05338b08d.",
       "Precommit independent audit passed on dirty diff fingerprint ef764808542c2a4e7ff0295d0dd05ec18e8ac1815d1711d107a16a873aac5e2a.",
-      "The exact-head Sol High audit of ad1973304e7fd2f170434c1fb5c77ff20c229fae terminally failed only because active workflow and release narrative records were stale; it did not establish candidate admission, hosted admission, pull-request creation, merge, or post-merge provider closure.",
-      "Current next gate: create the governed terminal-close declaration and PR for #206 while deferring #222, then renew exact-head independent audit and hosted admission. Do not claim PR creation, candidate admission, hosted success, merge, Issue closure, or post-merge provider read-back before those events occur.",
+      "The exact-head Sol High audit of ad1973304e7fd2f170434c1fb5c77ff20c229fae terminally failed only because active workflow and release narrative records were stale; the repair is in draft/open PR #232 initial head aaae7aaf9f64be49574f9b35a6ca7e011bf9d593.",
+      "Declaration evidence path: .dev/workflows/2026-08-20-upg-003-multi-hop-upgrade/evidence/terminal-issue-closure-s3-pr-232.yaml records terminal-close #206 and deferred #222 with head_sha null, pending review/integration, and empty required or hosted checks. PR #232 is draft/open against main@bf8ad9c624ffc2154722dfb266c9090c72e4ac5f at initial head aaae7aaf9f64be49574f9b35a6ca7e011bf9d593; committing the declaration will advance that head.",
+      "Current next gate: commit and push the governed terminal-close declaration to draft/open PR #232, then renew exact-head independent audit and hosted admission. #206 remains open until merge and #222 remains deferred. Do not claim candidate admission, hosted success, merge, Issue closure, or post-merge provider read-back before those events occur.",
       "Historical framework-source resolver evidence bound dirty precommit bytes at HEAD 60572c01e31abf58191d38adb5ca39e05338b08d: resolved rules AICTX-EVIDENCE-001 and TEST-GWT-001; selection evidence .ai/assets/skills/local-change-implementer/skill.yaml plus active UPG-003-S3 task; packet digest 38d24ac505fcc8c37cadab05467401fd7d23f9e6b59e70810b87e19b98b1d7bf; git-status digest c7ccd8c9b69b94bae11cd2eb9203d05e83ed38d42daaebef62e3c91525c1e813; freshness was verified. This is not candidate admission."
     ],
     "commits": [
@@ -338,7 +340,8 @@
       "2e6c5906882705e00b80f656c22c2925ed75c63a",
       "b24da15f1948a9b17361fa49232c94485b4777e1",
       "60572c01e31abf58191d38adb5ca39e05338b08d",
-      "ad1973304e7fd2f170434c1fb5c77ff20c229fae"
+      "ad1973304e7fd2f170434c1fb5c77ff20c229fae",
+      "aaae7aaf9f64be49574f9b35a6ca7e011bf9d593"
     ],
     "follow_up_needed": true
   }
