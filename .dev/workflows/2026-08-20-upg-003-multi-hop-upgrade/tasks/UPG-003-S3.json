@@ -9,7 +9,7 @@
   "related_plan_id": "development-plan-2026-08-20-upg-003-multi-hop-upgrade",
   "status": "in_progress",
   "created_at": "2026-08-21T03:12:02+08:00",
-  "updated_at": "2026-08-21T03:31:31+08:00",
+  "updated_at": "2026-08-21T03:54:54+08:00",
   "template_source": ".ai/assets/skills/software-development-orchestrator/templates/development-workflow-task-template.json",
   "model": "gpt-5.6-sol",
   "reasoning_effort": "high",
@@ -25,6 +25,8 @@
       ".ai/scripts/tests/test_ai_context_release_state.py",
       ".ai/scripts/validate-ai-context-versions.py",
       ".ai/scripts/tests/test_ai_context_version_governance.py",
+      ".ai/distribution/profiles/dotnet-backend.yaml",
+      ".ai/scripts/ai_context_package.py",
       ".ai/scripts/tests/test_ai_context_packaging.py",
       ".dev/standards/INDEX.MD",
       ".dev/workflows/2026-08-20-upg-003-multi-hop-upgrade/**",
@@ -102,7 +104,7 @@
   },
   "results": {
     "finding_status": "in_progress",
-    "summary": "The Phase-A v0.14.0 source-candidate scaffold and fail-closed release-state contract are locally validated; immutable-commit package construction and retained-origin route proof remain in progress.",
+    "summary": "The Phase-A v0.14.0 source-candidate scaffold and fail-closed release-state contract are locally validated; retained immutable builder failures exposed a portable skill-manifest projection gap, whose corrected nested-applicability implementation now awaits its immutable foundation commit and Phase-B rebuild.",
     "files_changed": [
       ".dev/releases/v0.14.0/release.yaml",
       ".dev/releases/v0.14.0/release-notes.md",
@@ -114,6 +116,8 @@
       ".ai/scripts/tests/test_ai_context_release_state.py",
       ".ai/scripts/validate-ai-context-versions.py",
       ".ai/scripts/tests/test_ai_context_version_governance.py",
+      ".ai/distribution/profiles/dotnet-backend.yaml",
+      ".ai/scripts/ai_context_package.py",
       ".ai/scripts/tests/test_ai_context_packaging.py",
       ".dev/standards/INDEX.MD",
       ".dev/workflows/2026-08-20-upg-003-multi-hop-upgrade/workflow.yaml",
@@ -167,6 +171,46 @@
         "command": "py -3 -B .ai/scripts/tests/test_ai_context_packaging.py PayloadReferenceIntegrityGwtTests.test_gwt_011c_given_source_only_terminal_policy_when_index_is_projected_then_it_is_not_a_portable_link -v",
         "outcome": "passed",
         "evidence": "Focused source-only navigation projection guard passed 1/1 in 0.032 seconds."
+      },
+      {
+        "command": "python .ai/scripts/build-ai-context-package.py --repo . --ref a66f1901584cc2dba89065273e998bdc6f1b3c20 --version v0.14.0 --output artifacts/validation/upg003-s3/v0.14.0/package --migration-source v0.6.0 <files.yaml> --migration-source v0.9.0 <files.yaml> --migration-source v0.13.0 <files.yaml>",
+        "outcome": "failed",
+        "evidence": "The third immutable build failed before archive output because the canonical code-reviewer skill manifest referenced the excluded framework-source AI-CONTEXT-SOURCE-EFFECTIVE-RULES.yaml authority; no package, support-matrix, or route PASS evidence was produced."
+      },
+      {
+        "command": "py -3 -B .ai/scripts/tests/test_ai_context_packaging.py DeterministicPackageGwtTests.test_gwt_000b_given_source_effective_rule_policy_schema_and_evidence_when_built_then_downstream_excludes_them_and_retains_resolver -v",
+        "outcome": "passed",
+        "evidence": "The initial synthetic focused guard passed 1/1, but its flat modes fixture did not exercise the canonical nested effective_rule_consumption.applicability.modes layout."
+      },
+      {
+        "command": "py -3 -B -c \"import pathlib, sys, yaml; sys.path.insert(0, str(pathlib.Path('.ai/scripts').resolve())); import ai_context_package as package; profile = yaml.safe_load(pathlib.Path('.ai/distribution/profiles/dotnet-backend.yaml').read_text(encoding='utf-8')); source_path = '.ai/assets/skills/code-reviewer/skill.yaml'; source = pathlib.Path(source_path).read_bytes(); projected = package.project_portable_payload_content(source_path, source, profile); data = yaml.safe_load(projected); assert set(data['effective_rule_consumption']['applicability']['modes']) == {'initialized-target'}; assert b'AI-CONTEXT-SOURCE-EFFECTIVE-RULES.yaml' not in projected and b'AI-CONTEXT-SOURCE-EFFECTIVE-RULES.yaml' in source\"",
+        "outcome": "failed",
+        "evidence": "The real code-reviewer manifest probe exposed that the first helper read flat effective_rule_consumption modes although canonical manifests nest modes beneath applicability. The helper and synthetic fixture were corrected; this failure remains retained and does not produce package evidence."
+      },
+      {
+        "command": "py -3 -B -c \"import ast, pathlib; ast.parse(pathlib.Path('.ai/scripts/ai_context_package.py').read_text(encoding='utf-8'))\"",
+        "outcome": "passed",
+        "evidence": "Python AST parsing passed after the nested-applicability correction."
+      },
+      {
+        "command": "py -3 -B -c \"import pathlib, yaml; yaml.safe_load(pathlib.Path('.ai/distribution/profiles/dotnet-backend.yaml').read_text(encoding='utf-8'))\"",
+        "outcome": "passed",
+        "evidence": "The portable projection profile YAML parsed after the correction."
+      },
+      {
+        "command": "git diff --check -- .ai/scripts/ai_context_package.py .ai/distribution/profiles/dotnet-backend.yaml .ai/scripts/tests/test_ai_context_packaging.py",
+        "outcome": "passed",
+        "evidence": "The scoped portable-projection diff check passed."
+      },
+      {
+        "command": "py -3 -B -c \"import pathlib, sys, yaml; sys.path.insert(0, str(pathlib.Path('.ai/scripts').resolve())); import ai_context_package as package; profile = yaml.safe_load(pathlib.Path('.ai/distribution/profiles/dotnet-backend.yaml').read_text(encoding='utf-8')); source_path = '.ai/assets/skills/code-reviewer/skill.yaml'; source = pathlib.Path(source_path).read_bytes(); projected = package.project_portable_payload_content(source_path, source, profile); data = yaml.safe_load(projected); assert set(data['effective_rule_consumption']['applicability']['modes']) == {'initialized-target'}; assert b'AI-CONTEXT-SOURCE-EFFECTIVE-RULES.yaml' not in projected and b'AI-CONTEXT-SOURCE-EFFECTIVE-RULES.yaml' in source\"",
+        "outcome": "passed",
+        "evidence": "After the nested-applicability repair, the real code-reviewer probe retained only initialized-target mode in the projected payload and excluded the framework-source authority reference."
+      },
+      {
+        "command": "py -3 -B .ai/scripts/tests/test_ai_context_packaging.py DeterministicPackageGwtTests.test_gwt_000b_given_source_effective_rule_policy_schema_and_evidence_when_built_then_downstream_excludes_them_and_retains_resolver -v",
+        "outcome": "passed",
+        "evidence": "The corrected focused GWT passed 1/1, proving the projected skill retains initialized-target only while its canonical source fixture retains both modes."
       }
     ],
     "role_execution_aggregation": [],
@@ -179,7 +223,14 @@
       "Release-state validation now requires canonical source-only route receipts and accepts an open terminal Issue only when exactly one tracked terminal-close declaration matches a live open PR at the current Git HEAD; post-merge provider closure remains mandatory.",
       "The package builder requires automatic_upgrade_sources to equal the exact ordered migration-source set, so the candidate records all three retained origins rather than inventing an indirect route or omitting an input.",
       "Immutable Phase-A build at 803a0771ada510a9c5faf630a36a096d74117a64 failed before package creation because builder canonical order is v0.6.0, v0.9.0, v0.13.0; the canonical template, release record, and active version-governance horizon now use that numeric order.",
-      "Immutable build at 7680190bf673c403ffbb970c75d397f91606872c then failed before archive output on a portable standards-index link to a source-only excluded terminal-close policy; the index now preserves the source-only filename as non-navigation text instead of weakening payload reference validation."
+      "Immutable build at 7680190bf673c403ffbb970c75d397f91606872c then failed before archive output on a portable standards-index link to a source-only excluded terminal-close policy; the index now preserves the source-only filename as non-navigation text instead of weakening payload reference validation.",
+      "Immutable build at a66f1901584cc2dba89065273e998bdc6f1b3c20 then failed before archive output because canonical skill manifests carry both framework-source and initialized-target effective-rule modes, while the framework-source authority is correctly excluded from portable packages.",
+      "The first synthetic portable-projection GWT passed but a real code-reviewer manifest probe exposed an incorrect flat-mode assumption. The helper and fixture now project the canonical nested applicability modes, and AST, YAML, scoped diff, real-manifest probe, and corrected focused GWT evidence pass; no package, support-matrix, or route success is claimed before the immutable foundation commit and Phase-B rebuild.",
+      "Post-change framework-source resolver evidence resolved with AICTX-EVIDENCE-001 and TEST-GWT-001; packet digest 4d6de587bed1dd8ffd811e3af0aaf38210399f9f8c0dc385da8a9e126bd9c5c4 and git-status digest faa62aeb658456fbb6626fb2c71e0874566716c3670c458feadb6be81f681cad. Selection evidence is the local-change-implementer skill plus active UPG-003-S3 task.",
+      "The all-skill direct portable-projection probe passed: 10 skill manifests were projected and 7 were byte-unchanged. This is direct helper evidence only, not package, matrix, or route proof.",
+      "The first PowerShell JSON display parse message is retained as a display-tool misuse only; S3 task JSON and workflow YAML parsing passed, and the display error is not a product, package, or validator failure.",
+      "Terra precommit review first failed with two retained findings: source-only required_by_mode/prose remained in projected output, and the profile content_bytes contract falsely represented transformed payload bytes as Git-blob bytes. The repair removes the source-only mode/prose from projected output and makes the actual profile content-byte contract truthful for projected bytes.",
+      "Current Terra precommit re-review passed: all 10 actual skill manifests are target-only with no framework-source mode, code-reviewer source bytes remain unchanged and projection is idempotent, malformed source-mode evidence fails closed, both package-collection paths are covered, the actual profile content-byte contract is truthful, the focused GWT passes, and scoped diff-check passes. No immutable builder success is claimed."
     ],
     "commits": [],
     "follow_up_needed": true

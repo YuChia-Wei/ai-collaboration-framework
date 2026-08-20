@@ -367,6 +367,139 @@ def load_yaml_blob(
     return value
 
 
+def project_portable_payload_content(
+    source_path: str,
+    content: bytes,
+    profile: dict,
+) -> bytes:
+    """Remove framework-source-only skill routing from initialized-target packages."""
+
+    projection = profile.get("portable_projection")
+    if projection is None:
+        return content
+    expected = {
+        "skill_effective_rule_consumption": {
+            "source_pattern": ".ai/assets/skills/*/skill.yaml",
+            "applicability_mode": "initialized-target",
+            "excluded_mode": "framework-source",
+        }
+    }
+    if projection != expected:
+        raise PackageError(
+            "portable_projection must use the canonical initialized-target skill projection"
+        )
+    contract = projection["skill_effective_rule_consumption"]
+    if not matches(source_path, contract["source_pattern"]):
+        return content
+    try:
+        document = yaml.safe_load(content.decode("utf-8"))
+    except (UnicodeDecodeError, yaml.YAMLError) as exc:
+        raise PackageError(
+            f"cannot project portable skill manifest {source_path}: {exc}"
+        ) from exc
+    if not isinstance(document, dict):
+        raise PackageError(
+            f"portable skill manifest root must be a mapping: {source_path}"
+        )
+    consumption = document.get("effective_rule_consumption")
+    if not isinstance(consumption, dict):
+        return content
+    applicability = consumption.get("applicability")
+    if not isinstance(applicability, dict):
+        raise PackageError(
+            f"portable skill effective-rule applicability is invalid: {source_path}"
+        )
+    if applicability.get("selector") != "applicability_mode":
+        raise PackageError(
+            f"portable skill effective-rule selector is invalid: {source_path}"
+        )
+    modes = applicability.get("modes")
+    if not isinstance(modes, dict):
+        raise PackageError(
+            f"portable skill effective-rule modes are invalid: {source_path}"
+        )
+    excluded_mode = contract["excluded_mode"]
+    applicability_mode = contract["applicability_mode"]
+    mode_ids = set(modes)
+    if mode_ids == {applicability_mode}:
+        if not isinstance(modes[applicability_mode], dict):
+            raise PackageError(
+                f"portable skill effective-rule mode contract is invalid: {source_path}"
+            )
+        if b"framework-source" in content:
+            raise PackageError(
+                f"portable skill contains partially projected framework-source semantics: {source_path}"
+            )
+        return content
+    if mode_ids != {excluded_mode, applicability_mode}:
+        raise PackageError(
+            f"portable skill effective-rule modes are not the canonical source/target pair: {source_path}"
+        )
+    if not all(isinstance(modes[mode], dict) for mode in modes):
+        raise PackageError(
+            f"portable skill effective-rule mode contracts are invalid: {source_path}"
+        )
+
+    evidence = consumption.get("evidence")
+    required_by_mode = (
+        evidence.get("required_by_mode") if isinstance(evidence, dict) else None
+    )
+    if (
+        not isinstance(required_by_mode, dict)
+        or set(required_by_mode) != {excluded_mode, applicability_mode}
+        or not all(
+            isinstance(required_by_mode[mode], list) for mode in required_by_mode
+        )
+    ):
+        raise PackageError(
+            f"portable skill mode-specific evidence contract is invalid: {source_path}"
+        )
+
+    semantic_consistency = consumption.get("semantic_consistency")
+    source_owner = (
+        "source-governance-owned in framework-source mode; "
+        "target-owned in initialized-target mode"
+    )
+    if (
+        not isinstance(semantic_consistency, dict)
+        or semantic_consistency.get("stricter_policy_owner") != source_owner
+    ):
+        raise PackageError(
+            f"portable skill policy-owner contract is invalid: {source_path}"
+        )
+
+    prohibitions = consumption.get("prohibitions")
+    source_prohibition = (
+        "Do not require, fabricate, or persist downstream provenance in "
+        "framework-source mode."
+    )
+    if (
+        not isinstance(prohibitions, list)
+        or prohibitions.count(source_prohibition) != 1
+    ):
+        raise PackageError(
+            f"portable skill source-prohibition contract is invalid: {source_path}"
+        )
+
+    del modes[excluded_mode]
+    del required_by_mode[excluded_mode]
+    semantic_consistency["stricter_policy_owner"] = (
+        "target-owned in initialized-target mode"
+    )
+    prohibitions.remove(source_prohibition)
+    projected = yaml.safe_dump(
+        document,
+        sort_keys=False,
+        allow_unicode=True,
+        width=4096,
+    ).encode("utf-8")
+    if b"framework-source" in projected:
+        raise PackageError(
+            f"portable skill projection retains framework-source semantics: {source_path}"
+        )
+    return projected
+
+
 def add_payload_file(files: dict[str, PayloadFile], candidate: PayloadFile) -> None:
     target = safe_relative_path(candidate.path, "target path")
     if target in files:
@@ -510,7 +643,11 @@ def collect_payload(
                     PayloadFile(
                         target_path,
                         source_path,
-                        git_blob(repo, source_entry, reader),
+                        project_portable_payload_content(
+                            source_path,
+                            git_blob(repo, source_entry, reader),
+                            profile,
+                        ),
                         REGULAR_MODES[source_entry.mode],
                         ownership,
                         behavior,
@@ -527,7 +664,11 @@ def collect_payload(
                 if not matches(source_path, source_pattern) or is_excluded(source_path, exclusions):
                     continue
                 source_entry = tree[source_path]
-                content = git_blob(repo, source_entry, reader)
+                content = project_portable_payload_content(
+                    source_path,
+                    git_blob(repo, source_entry, reader),
+                    profile,
+                )
                 if target_rule == "preserve-relative-path":
                     target_path = source_path
                 elif isinstance(target_rule, str) and target_rule.endswith("/"):

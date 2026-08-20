@@ -9,6 +9,12 @@ profile:
 
 release_model: single-versioned-componentized-release
 
+portable_projection:
+  skill_effective_rule_consumption:
+    source_pattern: .ai/assets/skills/*/skill.yaml
+    applicability_mode: initialized-target
+    excluded_mode: framework-source
+
 components:
   - component_id: software-development-core
     classification: mandatory-core
@@ -66,7 +72,9 @@ package:
     payload_root: payload
   deterministic:
     source: immutable-git-commit-tree
-    content_bytes: git-blob-bytes
+    content_bytes:
+      default: git-blob-bytes
+      portable_projection: deterministic-yaml-serialization-of-selected-git-blob
     executable_source: git-tree-mode-100755
     unsupported_git_entries: reject-symlink-submodule-and-non-regular
     path_order: utf8-bytewise-ascending

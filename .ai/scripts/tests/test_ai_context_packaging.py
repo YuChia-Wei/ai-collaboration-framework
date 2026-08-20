@@ -604,6 +604,31 @@ class DeterministicPackageGwtTests(unittest.TestCase):
             fixture.close()
 
     def test_gwt_000b_given_source_effective_rule_policy_schema_and_evidence_when_built_then_downstream_excludes_them_and_retains_resolver(self) -> None:
+        canonical_profile = yaml.safe_load(
+            (ROOT / ".ai/distribution/profiles/dotnet-backend.yaml").read_text(
+                encoding="utf-8"
+            )
+        )
+        portable_projection = canonical_profile["portable_projection"]
+        self.assertEqual(
+            {
+                "skill_effective_rule_consumption": {
+                    "source_pattern": ".ai/assets/skills/*/skill.yaml",
+                    "applicability_mode": "initialized-target",
+                    "excluded_mode": "framework-source",
+                }
+            },
+            portable_projection,
+        )
+        self.assertEqual(
+            {
+                "default": "git-blob-bytes",
+                "portable_projection": (
+                    "deterministic-yaml-serialization-of-selected-git-blob"
+                ),
+            },
+            canonical_profile["package"]["deterministic"]["content_bytes"],
+        )
         fixture = SyntheticPackageRepo()
         source_only_paths = (
             ".dev/standards/AI-CONTEXT-SOURCE-EFFECTIVE-RULES.yaml",
@@ -611,6 +636,7 @@ class DeterministicPackageGwtTests(unittest.TestCase):
             ".dev/workflows/2026-08-20-source-effective-rule/evidence/source-execution.yaml",
         )
         resolver_path = ".ai/scripts/resolve-effective-rule-packet.py"
+        skill_path = ".ai/assets/skills/fixture/skill.yaml"
         try:
             for path in source_only_paths:
                 target = fixture.root / path
@@ -620,8 +646,53 @@ class DeterministicPackageGwtTests(unittest.TestCase):
                     encoding="utf-8",
                     newline="\n",
                 )
+            skill = fixture.root / skill_path
+            skill.parent.mkdir(parents=True, exist_ok=True)
+            skill.write_text(
+                yaml.safe_dump(
+                    {
+                        "name": "fixture",
+                        "effective_rule_consumption": {
+                            "applicability": {
+                                "selector": "applicability_mode",
+                                "modes": {
+                                    "framework-source": {
+                                        "authority": source_only_paths[0],
+                                        "evidence": source_only_paths[2],
+                                    },
+                                    "initialized-target": {
+                                        "authority": ".dev/ai-context/provenance.yaml"
+                                    },
+                                },
+                            },
+                            "evidence": {
+                                "required_by_mode": {
+                                    "framework-source": ["source_repository.id"],
+                                    "initialized-target": ["target_state.digest"],
+                                }
+                            },
+                            "semantic_consistency": {
+                                "stricter_policy_owner": (
+                                    "source-governance-owned in framework-source mode; "
+                                    "target-owned in initialized-target mode"
+                                )
+                            },
+                            "prohibitions": [
+                                (
+                                    "Do not require, fabricate, or persist downstream "
+                                    "provenance in framework-source mode."
+                                )
+                            ],
+                        },
+                    },
+                    sort_keys=False,
+                ),
+                encoding="utf-8",
+                newline="\n",
+            )
             profile_path = fixture.root / fixture.profile
             profile = yaml.safe_load(profile_path.read_text(encoding="utf-8"))
+            profile["portable_projection"] = portable_projection
             profile["exclusions"].extend(
                 [
                     {
@@ -660,6 +731,30 @@ class DeterministicPackageGwtTests(unittest.TestCase):
             self.assertTrue((payload / resolver_path).is_file())
             self.assertTrue(
                 all(not (payload / path).exists() for path in source_only_paths)
+            )
+            projected_skill = yaml.safe_load(
+                (payload / skill_path).read_text(encoding="utf-8")
+            )
+            self.assertEqual(
+                {"initialized-target"},
+                set(
+                    projected_skill["effective_rule_consumption"]["applicability"][
+                        "modes"
+                    ]
+                ),
+            )
+            self.assertNotIn(
+                "framework-source",
+                (payload / skill_path).read_text(encoding="utf-8"),
+            )
+            source_skill = yaml.safe_load(skill.read_text(encoding="utf-8"))
+            self.assertEqual(
+                {"framework-source", "initialized-target"},
+                set(
+                    source_skill["effective_rule_consumption"]["applicability"][
+                        "modes"
+                    ]
+                ),
             )
         finally:
             fixture.close()
