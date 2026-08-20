@@ -22,9 +22,15 @@ only from the completed support matrix and its receipt-bound evidence.
 
 ## Release Validation
 
-This Phase-A scaffold deliberately makes no route PASS claim. A deterministic
-archive, its exact migration manifest, and resolver output are deferred until
-the immutable foundation commit is available for package construction.
+ZIP/TAR package parity was validated at immutable package foundation
+`60572c01e31abf58191d38adb5ca39e05338b08d`. The planner-byte fix and three
+receipt-bound canonical direct-route proofs for v0.13.0, v0.9.0, and v0.6.0
+are committed in distinct source candidate
+`ad1973304e7fd2f170434c1fb5c77ff20c229fae`.
+
+The governed terminal-close PR for #206, hosted admission, merge, and
+cumulative pre-tag readiness remain pending. No tag, GitHub Release, or
+publication is claimed.
 
 <!--
 The renderer appends canonical Included Work and release provenance. Keep this

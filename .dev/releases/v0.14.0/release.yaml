@@ -10,7 +10,7 @@ commit: null
 tagged_at: null
 recorded_at: null
 created_at: "2026-08-21T03:17:21+08:00"
-updated_at: "2026-08-21T03:17:21+08:00"
+updated_at: "2026-08-21T05:33:32+08:00"
 planning:
   github_issue_refs:
     - "#200"
@@ -116,7 +116,7 @@ distribution:
     automation: "github-actions"
     creates_or_moves_tag: false
 validation:
-  evidence: "Phase-A governed source-candidate scaffold; package archive and retained-origin route proof await an immutable foundation commit."
+  evidence: "ZIP/TAR package parity was validated at immutable package foundation 60572c01e31abf58191d38adb5ca39e05338b08d. The planner-byte fix and three receipt-bound direct route proofs are committed in distinct source candidate ad1973304e7fd2f170434c1fb5c77ff20c229fae; the source package commit and source candidate commit are distinct. Post-merge provider closure remains pending. No tag or publication is claimed."
   workflow_id: "2026-08-20-upg-003-multi-hop-upgrade"
   related_workflows: []
   related_assessments: []
