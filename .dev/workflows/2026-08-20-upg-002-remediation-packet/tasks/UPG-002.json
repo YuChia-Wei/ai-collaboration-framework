@@ -9,7 +9,7 @@
   "related_plan_id": "development-plan-2026-08-20-upg-002-remediation-packet",
   "status": "in_progress",
   "created_at": "2026-08-20T09:10:41+08:00",
-  "updated_at": "2026-08-20T13:54:15+08:00",
+  "updated_at": "2026-08-20T14:30:35+08:00",
   "template_source": ".ai/assets/skills/software-development-orchestrator/templates/development-workflow-task-template.json",
   "model": "gpt-5.6-sol",
   "reasoning_effort": "high",
@@ -72,7 +72,7 @@
     "deferred_items": []
   },
   "results": {
-    "summary": "Implementation and focused repair validation are complete. The first hosted PR profile and fresh exact-head audit failed at 66dc77d901dec3eaebf6356183f1b6f0c55f12ef; their findings were repaired in 9dfa46b928247681c58ac0978803aee203067d33. Replacement audit and hosted admission remain before terminal-close integration.",
+    "summary": "Implementation and focused repair validation are complete. Admission failed at 66dc77d901dec3eaebf6356183f1b6f0c55f12ef and again at 07fdace9811c32b1713f4d9da33bca3e38a04f98. The second hosted artifact exposed ten stale fixtures and one genuine exact-transition fail-open, repaired in 076f5ac4460021c4396351bb3c2b30003253f5a4. A new exact-head audit and hosted admission remain before terminal-close integration.",
     "files_changed": [
       "upgrader packet, decision, target-validation, provenance, and output contracts",
       "package plan/apply/recovery and record-only CLI runtime",
@@ -202,6 +202,31 @@
         "command": "post-audit Python syntax compilation",
         "outcome": "passed-with-retained-blocked-attempt",
         "evidence": "sandbox py_compile was blocked by __pycache__ permissions; the identical host-routed command passed"
+      },
+      {
+        "command": "hosted PR #224 Portable AI Context Gates run 32337576239 at 07fdace9811c32b1713f4d9da33bca3e38a04f98",
+        "outcome": "failed",
+        "evidence": "exact-head governance and prerequisite checks passed, but the complete 76-test package module reported 11 failures: ten stale lifecycle/profile/decision fixtures and one real impossible transition-sequence acceptance in GWT033"
+      },
+      {
+        "command": "second fresh Sol High exact-head audit at 07fdace9811c32b1713f4d9da33bca3e38a04f98",
+        "outcome": "failed",
+        "evidence": "confirmed the first semantic repairs and clean subject, then failed solely because the current required hosted package-apply check was red; no repair was performed"
+      },
+      {
+        "command": "initial second-hosted-repair aggregate focused selector",
+        "outcome": "timed-out",
+        "evidence": "exit 124 at 124.033s with no emitted test output; not counted as passed and not repeated unchanged"
+      },
+      {
+        "command": "second-hosted-repair disjoint focused groups",
+        "outcome": "passed-with-retained-repair-failures",
+        "evidence": "GWT012a/GWT013/GWT014 3/3; GWT021 all four variants; GWT023/GWT027/GWT033 3/3; GWT041; new GWT033a clean/validated/finalized guard; and historical GWT054 all passed after fixture-only correction failures were retained"
+      },
+      {
+        "command": "full package-apply module after second repair",
+        "outcome": "deferred-to-clean-immutable-hosted-validation",
+        "evidence": "focused subsets alone exceeded 120s cumulatively; repository policy requires the long-running full module to bind to a clean immutable commit"
       }
     ],
     "role_execution_aggregation": [],
@@ -220,11 +245,14 @@
       "read-only current-byte repair verification found no residual release-blocking finding in the repaired lifecycle, output-byte, identity, recovery, compatibility, or workflow-evidence areas",
       "clean-install recovery GWT015 and GWT042 passed after restoring their finalized-only expectations; strengthened GWT049 package-side terminal load, GWT052 lifecycle tamper rejection, and GWT056 later clean finalization all passed",
       "first fixed-head audit and hosted PR profile failures are retained and are not counted as passing evidence for the repaired head",
-      "repair commit 9dfa46b928247681c58ac0978803aee203067d33 closes the absent-profile and mixed-effective-state audit findings plus the three hosted compatibility regressions"
+      "repair commit 9dfa46b928247681c58ac0978803aee203067d33 closes the absent-profile and mixed-effective-state audit findings plus the first three hosted compatibility regressions",
+      "second hosted artifact and audit failures at 07fdace9811c32b1713f4d9da33bca3e38a04f98 remain non-passing evidence",
+      "repair commit 076f5ac4460021c4396351bb3c2b30003253f5a4 enforces exact state-aware v4 transition sequences in both recovery and target validation and reconciles the complete hosted fixture set"
     ],
     "commits": [
       "66dc77d901dec3eaebf6356183f1b6f0c55f12ef",
-      "9dfa46b928247681c58ac0978803aee203067d33"
+      "9dfa46b928247681c58ac0978803aee203067d33",
+      "076f5ac4460021c4396351bb3c2b30003253f5a4"
     ],
     "follow_up_needed": true
   }

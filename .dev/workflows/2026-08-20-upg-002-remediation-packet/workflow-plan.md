@@ -17,7 +17,7 @@
 - `branch_segment`: `1`
 - `status`: `active`
 - `created_at`: `2026-08-20T09:10:41+08:00`
-- `updated_at`: `2026-08-20T13:54:15+08:00`
+- `updated_at`: `2026-08-20T14:30:35+08:00`
 - `template_source`: `.ai/assets/skills/software-development-orchestrator/templates/development-workflow-plan-template.md`
 - `template_version`: `1.4.0`
 - `workflow_locator`: `.dev/workflows/2026-08-20-upg-002-remediation-packet/workflow.yaml`
@@ -95,11 +95,11 @@ Pre-#207 delegated Terra contexts are recorded only as generic bounded execution
 
 ## Progress And Handoff
 
-- Current stage: UPG-002 post-audit repair integrated; replacement exact-head audit and hosted admission are pending.
+- Current stage: UPG-002 second hosted/audit repair integrated; a third exact-head audit and hosted admission are pending.
 - Completed stages: Live Issue read; owning-skill contract read; clean source applicability packet; dedicated branch; packet/decision/receipt runtime; prospective policy cutover; candidate-authority, predecessor, package, migration, and incoming-validation identity binding; transaction-owned validation-output binding; rollback-capable pre-provenance lifecycle; rejected/historical/terminal invariants; focused validation.
 - Deferred stages and reasons: None within #203.
 - Open decisions: No owner-sensitive implementation decision is pending. Multi-hop pending-receipt consumption remains owned by #206, not this single-hop slice.
-- Continuation instructions: Validate and commit this truthful workflow closeout, push the repaired PR head, obtain a new fresh exact-head independent audit and new hosted checks, then merge only that admitted head.
+- Continuation instructions: Commit this truthful second-gate evidence, push the exact repaired PR head, dispatch the clean immutable full package module through hosted validation, obtain a third fresh exact-head independent audit, then merge only that admitted head.
 - Target policy references: `.agents/skills/ai-context-upgrader/SKILL.md`; `.ai/assets/skills/ai-context-upgrader/skill.yaml`.
 - Registered handoff checkpoint: none.
 - Branch history and checkpoint handoffs: Segment 1 branches from clean integrated main `61fbf701b064d05b91cce2ecd778ab8a09ddc57e`.
@@ -108,19 +108,19 @@ Pre-#207 delegated Terra contexts are recorded only as generic bounded execution
 
 | Segment | Branch | Base | Checkpoint Type | Commit | Remote / Target | Recorded At | Reason | Resume Branch / Action |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| 1 | `codex/2026-08-20-upg-002-remediation-packet` | `main@61fbf701b064d05b91cce2ecd778ab8a09ddc57e` | repair-ready | `9dfa46b928247681c58ac0978803aee203067d33` | origin / PR #224 | `2026-08-20T13:54:15+08:00` | Deliver #203 and repair the first fixed-head audit plus hosted findings. | Validate this workflow-only evidence commit, push, and replace both invalidated gates. |
+| 1 | `codex/2026-08-20-upg-002-remediation-packet` | `main@61fbf701b064d05b91cce2ecd778ab8a09ddc57e` | repair-ready | `076f5ac4460021c4396351bb3c2b30003253f5a4` | origin / PR #224 | `2026-08-20T14:30:35+08:00` | Deliver #203 and repair both failed hosted/audit admission cycles. | Commit workflow evidence, push, and replace the invalidated gates at a new exact head. |
 
 ## Completion Summary
 
-- Outcome: implementation and focused repair validation complete; the first fixed-head audit and hosted PR profile failed at `66dc77d901dec3eaebf6356183f1b6f0c55f12ef`, their findings were repaired in `9dfa46b928247681c58ac0978803aee203067d33`, and replacement provider admission remains required.
+- Outcome: implementation and focused repair validation complete. The first admission cycle failed at `66dc77d901dec3eaebf6356183f1b6f0c55f12ef`; the second exact-head hosted run and audit failed at `07fdace9811c32b1713f4d9da33bca3e38a04f98`; the newly exposed exact-transition fail-open and stale fixtures are repaired in `076f5ac4460021c4396351bb3c2b30003253f5a4`. Replacement provider admission remains required.
 - Changed artifacts: upgrader contracts/schemas/wrappers, package apply/record CLI, target finalization runtime, commit policy, focused fixtures, and this workflow evidence.
 - Approved requirement/specification evidence: live Issue #203 and explicit owner instructions.
 - Implementation completion evidence: canonical packet before mutation, derived report, separate exact owner decision, record-only target-validation receipt, target-prospective policy adoption, candidate authority plus sealed package/migration identity binding, retained rejected/historical evidence, and durable terminal invariant are implemented.
-- Required test outcomes: focused positive/fail-closed suites passed; one combined suite timeout and one obsolete-selector failure are retained truthfully; immutable-head broad validation remains pending.
+- Required test outcomes: focused positive/fail-closed suites passed, including exact v4 sequence rejection and valid clean/validated/finalized states; aggregate focused selectors and the earlier full module timeout are retained truthfully; clean immutable hosted full-module validation remains pending.
 - Selected compliance evidence: not applicable.
-- Review disposition: initial pre-commit semantic review found rollback, output-byte, exact-identity, recovery-boundary, and workflow-evidence gaps; repairs and focused tests are complete, and read-only current-byte repair verification found no residual blocker in those areas. Fresh exact-head Sol High audit remains pending.
+- Review disposition: the first Sol High audit found semantic and workflow blockers; the second Sol High audit confirmed those repairs and failed only on the exact hosted check. Full hosted artifact reconciliation then found ten stale fixtures and one genuine transition-sequence fail-open; all are repaired, and a third fresh exact-head Sol High audit remains pending.
 - Validation evidence: focused package/finalization groups, recovery, candidate-package drift rejection, policy, semantic lifecycle, wrapper metadata, package reference integrity, AI-context/source/workflow validators, AST/YAML/import checks, and diff check passed. The sandbox temp-fixture WinError 5 was preserved; the same two-test selection passed 2/2 through the authorized host route, followed by adjacent finalization regressions 2/2.
 - Workflow task state: in progress.
-- Commits: `66dc77d901dec3eaebf6356183f1b6f0c55f12ef` (initial implementation) and `9dfa46b928247681c58ac0978803aee203067d33` (hosted/audit repair). The workflow-only evidence commit that contains this line is identified by the exact PR head read-back rather than a self-referential embedded SHA.
-- Branch / checkpoint / handoff evidence: PR #224 was created at `66dc77d901dec3eaebf6356183f1b6f0c55f12ef`; hosted run `32335941157` and the first fresh Sol High audit both failed at that head. Repairs are committed locally at `9dfa46b928247681c58ac0978803aee203067d33` and are not admitted until pushed, rechecked, and newly audited.
+- Commits: `66dc77d901dec3eaebf6356183f1b6f0c55f12ef` (initial implementation), `9dfa46b928247681c58ac0978803aee203067d33` (first audit repair), and `076f5ac4460021c4396351bb3c2b30003253f5a4` (full-suite transition repair). Workflow-only evidence commits are identified by exact PR head read-back rather than self-referential embedded SHAs.
+- Branch / checkpoint / handoff evidence: PR #224 hosted run `32335941157` and the first Sol High audit failed at `66dc77d901dec3eaebf6356183f1b6f0c55f12ef`. Governance run `32337576214` passed, but Portable run `32337576239` and the second Sol High audit failed at `07fdace9811c32b1713f4d9da33bca3e38a04f98`. The complete hosted artifact exposed 11 package-test failures; ten were stale fixtures and GWT033 identified a real exact-transition gap, repaired in `076f5ac4460021c4396351bb3c2b30003253f5a4`.
 - Residual risks: The active pending apply receipt remains the current single-hop validation authority; #206 must consume/archive that boundary between sequential hops without weakening current target validation. The derived human report remains less detailed than the canonical machine packet, but the machine packet is the owner-selected authority and the report is derived.
