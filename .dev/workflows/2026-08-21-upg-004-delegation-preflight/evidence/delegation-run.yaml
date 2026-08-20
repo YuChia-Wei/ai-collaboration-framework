@@ -1,0 +1,47 @@
+schema_version: "1.0"
+delegation_run_id: "2026-08-21-upg-004-delegation-preflight"
+selection:
+  mode: "full-recommended"
+  max_concurrent_workers: 2
+  eligible_role_asset_ids:
+    - "mechanical-evidence-worker"
+    - "reconciliation-worker"
+    - "semantic-governance-analyst"
+    - "evidence-report-synthesizer"
+    - "fixed-head-independent-auditor"
+  terminal_independent_auditor_auto_selected: false
+  decision_source: "explicit-owner-choice"
+  owner_choice_evidence:
+    - "explicit repository-owner v0.14.0 delivery prompt"
+  prompt:
+    count: 0
+    disposition: "suppressed-by-explicit-choice"
+  resume:
+    reuse_existing_selection: true
+    repeat_prompt: false
+execution_support:
+  state: "verified-available"
+  evidence_refs:
+    - ".dev/workflows/2026-08-21-upg-004-delegation-preflight/tasks/UPG-004.json#execution.role_execution_records"
+canonical_stage_ids:
+  - "route-and-evidence-discovery"
+  - "three-way-classification-and-reconciliation"
+  - "semantic-customization-and-governance-analysis"
+  - "plan-report-handoff-or-feedback-synthesis"
+  - "terminal-fixed-head-independent-audit"
+execution_path:
+  kind: "delegation-evaluation"
+  canonical_stage_ids:
+    - "route-and-evidence-discovery"
+    - "three-way-classification-and-reconciliation"
+    - "semantic-customization-and-governance-analysis"
+    - "plan-report-handoff-or-feedback-synthesis"
+    - "terminal-fixed-head-independent-audit"
+fallbacks: []
+terminal_independent_audit:
+  required: true
+  selection_basis: "explicit-terminal-or-high-risk"
+  status: "pending"
+  subject_commit: null
+  independence: "fresh-independent-context"
+  evidence_refs: []

@@ -236,6 +236,87 @@ SAG003_STATIC_RUNTIME_CLAIMS = {
     "invocation-proven",
     "session-available",
 }
+UPG004_DELEGATION_RUN_CONTRACT = Path(
+    ".ai/assets/skills/ai-context-upgrader/references/delegation-run-contract.md"
+)
+UPG004_DELEGATION_RUN_SCHEMA = Path(
+    ".ai/assets/skills/ai-context-upgrader/references/delegation-run-contract.schema.yaml"
+)
+UPG004_DELEGATION_RUN_TEMPLATE = Path(
+    ".ai/assets/skills/ai-context-upgrader/templates/delegation-run-record.template.yaml"
+)
+UPG004_UPGRADER_SKILL = Path(".ai/assets/skills/ai-context-upgrader/skill.yaml")
+UPG004_WRAPPER_PATHS = (
+    Path(".agents/skills/ai-context-upgrader/SKILL.md"),
+    Path(".claude/skills/ai-context-upgrader/SKILL.md"),
+)
+UPG004_CANONICAL_STAGE_IDS = (
+    "route-and-evidence-discovery",
+    "three-way-classification-and-reconciliation",
+    "semantic-customization-and-governance-analysis",
+    "plan-report-handoff-or-feedback-synthesis",
+    "terminal-fixed-head-independent-audit",
+)
+UPG004_DELEGATION_MODES = ("none", "analysis-only", "full-recommended")
+UPG004_ROLE_ASSET_IDS = (
+    "mechanical-evidence-worker",
+    "reconciliation-worker",
+    "semantic-governance-analyst",
+    "evidence-report-synthesizer",
+    "fixed-head-independent-auditor",
+)
+UPG004_ANALYSIS_ONLY_ROLE_ASSET_IDS = (
+    "semantic-governance-analyst",
+    "fixed-head-independent-auditor",
+)
+UPG004_ANALYSIS_ONLY_ROOT_AUTHORITIES = (
+    "mechanical-evidence",
+    "checksum",
+    "copy",
+    "planner",
+    "apply",
+    "receipt",
+    "build",
+    "test",
+    "git",
+)
+UPG004_MODE_SEMANTICS = {
+    "none": {
+        "eligible_role_asset_ids": [],
+        "max_concurrent_workers": 0,
+        "allowed_execution_path_kinds": ["root-sequential"],
+        "terminal_independent_auditor_auto_selected": False,
+    },
+    "analysis-only": {
+        "eligible_role_asset_ids": list(UPG004_ANALYSIS_ONLY_ROLE_ASSET_IDS),
+        "max_concurrent_workers": 2,
+        "allowed_execution_path_kinds": [
+            "delegation-evaluation",
+            "root-sequential",
+        ],
+        "terminal_independent_auditor_auto_selected": False,
+        "root_deterministic_authorities": list(
+            UPG004_ANALYSIS_ONLY_ROOT_AUTHORITIES
+        ),
+    },
+    "full-recommended": {
+        "eligible_role_asset_ids": list(UPG004_ROLE_ASSET_IDS),
+        "max_concurrent_workers": 2,
+        "allowed_execution_path_kinds": [
+            "delegation-evaluation",
+            "root-sequential",
+        ],
+        "terminal_independent_auditor_auto_selected": False,
+    },
+}
+UPG004_ROOT_FALLBACK_SCOPE = "role-evaluation"
+UPG004_TERMINAL_FALLBACK_SCOPE = "terminal-independent-audit"
+UPG004_EXECUTION_SUPPORT_STATES = {
+    "unknown",
+    "verified-available",
+    "verified-unavailable",
+}
+UPG004_TERMINAL_AUDIT_STATUSES = {"pending", "passed", "failed", "blocked"}
 PROJECT_CONFIG_TEMPLATE = Path(
     ".ai/assets/skills/ai-context-init/templates/project-config.template.yaml"
 )
@@ -3051,6 +3132,809 @@ def validate_sag003_provider_neutral_value(
         )
 
 
+def upg004_load_yaml_mapping(
+    root: Path, path: Path, errors: list[str]
+) -> dict | None:
+    """Load one required UPG-004 YAML mapping beneath an explicit root."""
+    absolute = root / path
+    if not absolute.is_file():
+        errors.append(f"{path}: required UPG-004 contract file is missing")
+        return None
+    try:
+        value = yaml.safe_load(absolute.read_text(encoding="utf-8"))
+    except (OSError, yaml.YAMLError) as exc:
+        errors.append(f"{path}: invalid YAML: {exc}")
+        return None
+    if not isinstance(value, dict):
+        errors.append(f"{path}: root must be a mapping")
+        return None
+    return value
+
+
+def upg004_non_empty_string_list(value: object) -> bool:
+    """Return whether a value is a non-empty list of non-empty strings."""
+    return (
+        isinstance(value, list)
+        and bool(value)
+        and all(isinstance(item, str) and item.strip() for item in value)
+    )
+
+
+def upg004_has_exact_stages(value: object) -> bool:
+    """Return whether one path retains the ordered canonical stage set."""
+    return value == list(UPG004_CANONICAL_STAGE_IDS)
+
+
+def validate_upg004_codex_delegation_advisory(
+    value: object,
+    errors: list[str],
+    label: str,
+) -> None:
+    """Validate the static Codex-only advisory without claiming session support."""
+    advisory = sag003_exact_keys(
+        value,
+        {
+            "schema_version",
+            "configuration_scope",
+            "max_concurrent_workers",
+            "fast_priority",
+            "model_mismatch_disposition",
+            "mismatch_prompt_limit",
+            "mismatch_choice_boundary",
+            "root_preflight",
+            "worker_preference",
+            "terminal_auditor_preference",
+        },
+        errors,
+        label,
+    )
+    if advisory is None:
+        return
+    expected = {
+        "schema_version": "1.0",
+        "configuration_scope": "static-provider-projection",
+        "max_concurrent_workers": 2,
+        "fast_priority": "disabled",
+        "model_mismatch_disposition": "advisory-one-prompt",
+        "mismatch_prompt_limit": 1,
+        "mismatch_choice_boundary": "current-vs-recommended/continue-or-switch",
+    }
+    for field, expected_value in expected.items():
+        if advisory.get(field) != expected_value:
+            errors.append(f"{label}.{field} must be {expected_value!r}")
+
+    root_preflight = sag003_exact_keys(
+        advisory.get("root_preflight"),
+        {
+            "recommended_root",
+            "observed_current_state",
+            "quota_cost_disclosure",
+            "verified_switch_action",
+            "unavailable_fallback",
+            "owner_run_fast_priority",
+        },
+        errors,
+        f"{label}.root_preflight",
+    )
+    if root_preflight is not None:
+        recommended_root = sag003_exact_keys(
+            root_preflight.get("recommended_root"),
+            {"model", "model_reasoning_effort", "service_tier"},
+            errors,
+            f"{label}.root_preflight.recommended_root",
+        )
+        if recommended_root is not None and recommended_root != {
+            "model": "gpt-5.6-sol",
+            "model_reasoning_effort": "xhigh",
+            "service_tier": "priority",
+        }:
+            errors.append(
+                f"{label}.root_preflight.recommended_root must be the Sol xhigh priority recommendation"
+            )
+        observed_current_state = sag003_exact_keys(
+            root_preflight.get("observed_current_state"),
+            {
+                "active_model",
+                "active_reasoning_effort",
+                "active_speed_service_tier",
+                "configuration_default_inference",
+            },
+            errors,
+            f"{label}.root_preflight.observed_current_state",
+        )
+        if observed_current_state is not None and observed_current_state != {
+            "active_model": "unknown",
+            "active_reasoning_effort": "unknown",
+            "active_speed_service_tier": "unknown",
+            "configuration_default_inference": "forbidden",
+        }:
+            errors.append(
+                f"{label}.root_preflight.observed_current_state must remain unknown without configuration-default inference"
+            )
+        if root_preflight.get("quota_cost_disclosure") != "required-before-switch":
+            errors.append(
+                f"{label}.root_preflight.quota_cost_disclosure must be 'required-before-switch'"
+            )
+        verified_switch_action = sag003_exact_keys(
+            root_preflight.get("verified_switch_action"),
+            {
+                "verification_state",
+                "shortest_verified_ui_or_command",
+                "evidence_refs",
+            },
+            errors,
+            f"{label}.root_preflight.verified_switch_action",
+        )
+        if verified_switch_action is not None:
+            verification_state = verified_switch_action.get("verification_state")
+            shortest_action = verified_switch_action.get(
+                "shortest_verified_ui_or_command"
+            )
+            evidence_refs = verified_switch_action.get("evidence_refs")
+            if verification_state == "not-verified":
+                if shortest_action is not None or evidence_refs != []:
+                    errors.append(
+                        f"{label}.root_preflight.verified_switch_action may name a shortest UI or command only when verified"
+                    )
+            elif verification_state == "verified":
+                if not isinstance(shortest_action, str) or not shortest_action.strip():
+                    errors.append(
+                        f"{label}.root_preflight.verified_switch_action.verified requires a non-empty shortest UI or command"
+                    )
+                if not upg004_non_empty_string_list(evidence_refs):
+                    errors.append(
+                        f"{label}.root_preflight.verified_switch_action.verified requires evidence refs"
+                    )
+            else:
+                errors.append(
+                    f"{label}.root_preflight.verified_switch_action.verification_state must be 'verified' or 'not-verified'"
+                )
+        unavailable_fallback = sag003_exact_keys(
+            root_preflight.get("unavailable_fallback"),
+            {"prompt_required", "options"},
+            errors,
+            f"{label}.root_preflight.unavailable_fallback",
+        )
+        if unavailable_fallback is not None:
+            if unavailable_fallback.get("prompt_required") is not True:
+                errors.append(
+                    f"{label}.root_preflight.unavailable_fallback.prompt_required must be true"
+                )
+            if unavailable_fallback.get("options") != [
+                "gpt-5.6-terra/xhigh",
+                "current-model",
+            ]:
+                errors.append(
+                    f"{label}.root_preflight.unavailable_fallback must ask Terra xhigh or the current model"
+                )
+        owner_run_fast_priority = sag003_exact_keys(
+            root_preflight.get("owner_run_fast_priority"),
+            {"status", "activation"},
+            errors,
+            f"{label}.root_preflight.owner_run_fast_priority",
+        )
+        if owner_run_fast_priority is not None and owner_run_fast_priority != {
+            "status": "disabled",
+            "activation": "explicit-owner-choice-required",
+        }:
+            errors.append(
+                f"{label}.root_preflight.owner_run_fast_priority must remain disabled until an explicit owner choice"
+            )
+
+    for field, expected_model, expected_fallback in (
+        ("worker_preference", "gpt-5.6-terra", "root-sequential"),
+        (
+            "terminal_auditor_preference",
+            "gpt-5.6-sol",
+            "fresh-sol-high-independent-context",
+        ),
+    ):
+        preference = sag003_exact_keys(
+            advisory.get(field),
+            {"model", "model_reasoning_effort", "unavailable_fallback"},
+            errors,
+            f"{label}.{field}",
+        )
+        if preference is None:
+            continue
+        if preference.get("model") != expected_model:
+            errors.append(f"{label}.{field}.model must be {expected_model!r}")
+        if preference.get("model_reasoning_effort") != "max":
+            errors.append(f"{label}.{field}.model_reasoning_effort must be 'max'")
+        if preference.get("unavailable_fallback") != expected_fallback:
+            errors.append(
+                f"{label}.{field}.unavailable_fallback must be {expected_fallback!r}"
+            )
+
+
+def validate_upg004_delegation_run_schema(errors: list[str], *, root: Path) -> bool:
+    """Validate the non-extensible portable delegation-record schema."""
+    schema = upg004_load_yaml_mapping(root, UPG004_DELEGATION_RUN_SCHEMA, errors)
+    if schema is None:
+        return False
+    expected_fields = {
+        "schema_version",
+        "document",
+        "source_of_truth",
+        "required",
+        "properties",
+        "invariants",
+        "additional_properties",
+    }
+    sag003_exact_keys(schema, expected_fields, errors, str(UPG004_DELEGATION_RUN_SCHEMA))
+    if schema.get("schema_version") != "1.0":
+        errors.append(f"{UPG004_DELEGATION_RUN_SCHEMA}.schema_version must be '1.0'")
+    if schema.get("document") != "delegation-run-record.yaml":
+        errors.append(f"{UPG004_DELEGATION_RUN_SCHEMA}.document must be delegation-run-record.yaml")
+    if schema.get("source_of_truth") != "workflow-execution-evidence":
+        errors.append(
+            f"{UPG004_DELEGATION_RUN_SCHEMA}.source_of_truth must be workflow-execution-evidence"
+        )
+    required = schema.get("required")
+    expected_required = {
+        "schema_version",
+        "delegation_run_id",
+        "selection",
+        "execution_support",
+        "canonical_stage_ids",
+        "execution_path",
+        "fallbacks",
+        "terminal_independent_audit",
+    }
+    if not isinstance(required, list) or set(required) != expected_required:
+        errors.append(f"{UPG004_DELEGATION_RUN_SCHEMA}.required must cover the exact run record")
+    if schema.get("additional_properties") is not False:
+        errors.append(f"{UPG004_DELEGATION_RUN_SCHEMA}.additional_properties must be false")
+
+    properties = sag003_exact_keys(
+        schema.get("properties"),
+        expected_required,
+        errors,
+        f"{UPG004_DELEGATION_RUN_SCHEMA}.properties",
+    )
+    if properties is None:
+        return False
+    selection = sag003_exact_keys(
+        properties.get("selection"),
+        {"required", "supported_modes", "prompt", "resume", "mode_semantics"},
+        errors,
+        f"{UPG004_DELEGATION_RUN_SCHEMA}.properties.selection",
+    )
+    if selection is not None:
+        expected_selection_required = {
+            "mode",
+            "max_concurrent_workers",
+            "decision_source",
+            "owner_choice_evidence",
+            "eligible_role_asset_ids",
+            "terminal_independent_auditor_auto_selected",
+            "prompt",
+            "resume",
+        }
+        if set(selection.get("required", [])) != expected_selection_required:
+            errors.append(
+                f"{UPG004_DELEGATION_RUN_SCHEMA}.properties.selection.required "
+                "must retain the exact mode-eligibility fields"
+            )
+        if selection.get("supported_modes") != list(UPG004_DELEGATION_MODES):
+            errors.append(
+                f"{UPG004_DELEGATION_RUN_SCHEMA}.properties.selection.supported_modes "
+                "must retain none, analysis-only, and full-recommended"
+            )
+        for field, fields in (
+            ("prompt", {"count", "disposition"}),
+            ("resume", {"reuse_existing_selection", "repeat_prompt"}),
+        ):
+            nested = sag003_exact_keys(
+                selection.get(field),
+                {"required"},
+                errors,
+                f"{UPG004_DELEGATION_RUN_SCHEMA}.properties.selection.{field}",
+            )
+            if nested is not None and set(nested.get("required", [])) != fields:
+                errors.append(
+                    f"{UPG004_DELEGATION_RUN_SCHEMA}.properties.selection.{field}.required "
+                    f"must be {sorted(fields)}"
+                )
+        mode_semantics = sag003_exact_keys(
+            selection.get("mode_semantics"),
+            set(UPG004_DELEGATION_MODES),
+            errors,
+            f"{UPG004_DELEGATION_RUN_SCHEMA}.properties.selection.mode_semantics",
+        )
+        if mode_semantics is not None:
+            for mode, expected_semantics in UPG004_MODE_SEMANTICS.items():
+                actual = sag003_exact_keys(
+                    mode_semantics.get(mode),
+                    set(expected_semantics),
+                    errors,
+                    f"{UPG004_DELEGATION_RUN_SCHEMA}.properties.selection.mode_semantics.{mode}",
+                )
+                if actual is not None and actual != expected_semantics:
+                    errors.append(
+                        f"{UPG004_DELEGATION_RUN_SCHEMA}.properties.selection.mode_semantics.{mode} "
+                        "must retain the exact fail-closed mode semantics"
+                    )
+    support = sag003_exact_keys(
+        properties.get("execution_support"),
+        {"required", "states"},
+        errors,
+        f"{UPG004_DELEGATION_RUN_SCHEMA}.properties.execution_support",
+    )
+    if support is not None and set(support.get("states", [])) != UPG004_EXECUTION_SUPPORT_STATES:
+        errors.append(
+            f"{UPG004_DELEGATION_RUN_SCHEMA}.properties.execution_support.states "
+            "must retain unknown and both verified states"
+        )
+    stages = sag003_exact_keys(
+        properties.get("canonical_stage_ids"),
+        {"ordered_const"},
+        errors,
+        f"{UPG004_DELEGATION_RUN_SCHEMA}.properties.canonical_stage_ids",
+    )
+    if stages is not None and not upg004_has_exact_stages(stages.get("ordered_const")):
+        errors.append(
+            f"{UPG004_DELEGATION_RUN_SCHEMA}.properties.canonical_stage_ids "
+            "must retain the ordered canonical stages"
+        )
+    execution_path = sag003_exact_keys(
+        properties.get("execution_path"),
+        {"required", "kinds"},
+        errors,
+        f"{UPG004_DELEGATION_RUN_SCHEMA}.properties.execution_path",
+    )
+    if execution_path is not None and set(execution_path.get("kinds", [])) != {
+        "delegation-evaluation",
+        "root-sequential",
+    }:
+        errors.append(
+            f"{UPG004_DELEGATION_RUN_SCHEMA}.properties.execution_path.kinds "
+            "must retain delegation-evaluation and root-sequential"
+        )
+    fallbacks = sag003_exact_keys(
+        properties.get("fallbacks"),
+        {"type", "record_required"},
+        errors,
+        f"{UPG004_DELEGATION_RUN_SCHEMA}.properties.fallbacks",
+    )
+    if fallbacks is not None:
+        expected_fallback_fields = {
+            "scope",
+            "disposition",
+            "trigger",
+            "requested",
+            "observed",
+            "selected",
+            "owner_consent",
+            "authorization_evidence",
+            "evidence_refs",
+            "canonical_stage_ids",
+        }
+        if fallbacks.get("type") != "ordered-list":
+            errors.append(
+                f"{UPG004_DELEGATION_RUN_SCHEMA}.properties.fallbacks.type must be ordered-list"
+            )
+        if set(fallbacks.get("record_required", [])) != expected_fallback_fields:
+            errors.append(
+                f"{UPG004_DELEGATION_RUN_SCHEMA}.properties.fallbacks.record_required "
+                "must retain exact requested, observed, selected, owner-consent, and evidence fields"
+            )
+    audit = sag003_exact_keys(
+        properties.get("terminal_independent_audit"),
+        {"required", "statuses"},
+        errors,
+        f"{UPG004_DELEGATION_RUN_SCHEMA}.properties.terminal_independent_audit",
+    )
+    if audit is not None and set(audit.get("statuses", [])) != UPG004_TERMINAL_AUDIT_STATUSES:
+        errors.append(
+            f"{UPG004_DELEGATION_RUN_SCHEMA}.properties.terminal_independent_audit.statuses "
+            "must retain all fail-closed audit states"
+        )
+    expected_invariants = {
+        "per-independent-run-selection",
+        "explicit-choice-suppresses-prompt",
+        "prompt-count-is-at-most-one",
+        "resume-never-repeats-prompt",
+        "canonical-stage-order-is-identical-across-paths",
+        "mode-eligibility-and-concurrency-are-exact",
+        "analysis-only-mechanical-authority-remains-root-driven",
+        "terminal-auditor-is-never-automatic",
+        "unknown-support-does-not-prove-invocation",
+        "fallback-requires-exact-request-observed-selected-owner-consent-and-evidence",
+        "terminal-audit-is-explicit-and-fail-closed",
+        "record-never-enters-target-provenance",
+    }
+    if not isinstance(schema.get("invariants"), list) or set(schema["invariants"]) != expected_invariants:
+        errors.append(f"{UPG004_DELEGATION_RUN_SCHEMA}.invariants must retain the UPG-004 boundaries")
+    return True
+
+
+def validate_upg004_delegation_run_record(
+    record: object,
+    errors: list[str],
+    *,
+    label: str,
+) -> bool:
+    """Validate one portable delegation record without assuming its retained path."""
+    if not isinstance(record, dict):
+        errors.append(f"{label}: root must be a mapping")
+        return False
+    # Keep the existing error-path construction local to this reusable validator.
+    UPG004_DELEGATION_RUN_TEMPLATE = Path(label)
+    expected_fields = {
+        "schema_version",
+        "delegation_run_id",
+        "selection",
+        "execution_support",
+        "canonical_stage_ids",
+        "execution_path",
+        "fallbacks",
+        "terminal_independent_audit",
+    }
+    sag003_exact_keys(record, expected_fields, errors, str(UPG004_DELEGATION_RUN_TEMPLATE))
+    validate_sag003_provider_neutral_value(record, errors, str(UPG004_DELEGATION_RUN_TEMPLATE))
+    if record.get("schema_version") != "1.0":
+        errors.append(f"{UPG004_DELEGATION_RUN_TEMPLATE}.schema_version must be '1.0'")
+    if not isinstance(record.get("delegation_run_id"), str) or not record["delegation_run_id"].strip():
+        errors.append(f"{UPG004_DELEGATION_RUN_TEMPLATE}.delegation_run_id must be non-empty")
+
+    selection = sag003_exact_keys(
+        record.get("selection"),
+        {
+            "mode",
+            "max_concurrent_workers",
+            "decision_source",
+            "owner_choice_evidence",
+            "eligible_role_asset_ids",
+            "terminal_independent_auditor_auto_selected",
+            "prompt",
+            "resume",
+        },
+        errors,
+        f"{UPG004_DELEGATION_RUN_TEMPLATE}.selection",
+    )
+    if selection is not None:
+        mode = selection.get("mode")
+        if mode not in UPG004_DELEGATION_MODES:
+            errors.append(f"{UPG004_DELEGATION_RUN_TEMPLATE}.selection.mode is not supported")
+        mode_semantics = UPG004_MODE_SEMANTICS.get(mode)
+        if mode_semantics is not None:
+            if (
+                selection.get("eligible_role_asset_ids")
+                != mode_semantics["eligible_role_asset_ids"]
+            ):
+                errors.append(
+                    f"{UPG004_DELEGATION_RUN_TEMPLATE}.selection.eligible_role_asset_ids "
+                    "must retain the exact mode-eligible roles"
+                )
+            if (
+                selection.get("max_concurrent_workers")
+                != mode_semantics["max_concurrent_workers"]
+            ):
+                errors.append(
+                    f"{UPG004_DELEGATION_RUN_TEMPLATE}.selection.max_concurrent_workers "
+                    "must retain the exact mode concurrency"
+                )
+            if (
+                selection.get("terminal_independent_auditor_auto_selected")
+                is not mode_semantics["terminal_independent_auditor_auto_selected"]
+            ):
+                errors.append(
+                    f"{UPG004_DELEGATION_RUN_TEMPLATE}.selection.terminal_independent_auditor_auto_selected "
+                    "must remain false"
+                )
+        elif selection.get("max_concurrent_workers") != 2:
+            errors.append(
+                f"{UPG004_DELEGATION_RUN_TEMPLATE}.selection.max_concurrent_workers must be 2"
+            )
+        if selection.get("decision_source") not in {
+            "explicit-owner-choice",
+            "prompted-owner-choice",
+        }:
+            errors.append(
+                f"{UPG004_DELEGATION_RUN_TEMPLATE}.selection.decision_source is not supported"
+            )
+        if not upg004_non_empty_string_list(selection.get("owner_choice_evidence")):
+            errors.append(
+                f"{UPG004_DELEGATION_RUN_TEMPLATE}.selection.owner_choice_evidence "
+                "must be a non-empty string list"
+            )
+        prompt = sag003_exact_keys(
+            selection.get("prompt"),
+            {"count", "disposition"},
+            errors,
+            f"{UPG004_DELEGATION_RUN_TEMPLATE}.selection.prompt",
+        )
+        if prompt is not None:
+            count = prompt.get("count")
+            if isinstance(count, bool) or count not in {0, 1}:
+                errors.append(
+                    f"{UPG004_DELEGATION_RUN_TEMPLATE}.selection.prompt.count must be 0 or 1"
+                )
+            if selection.get("decision_source") == "explicit-owner-choice" and prompt != {
+                "count": 0,
+                "disposition": "suppressed-by-explicit-choice",
+            }:
+                errors.append(
+                    f"{UPG004_DELEGATION_RUN_TEMPLATE}.selection.prompt must suppress an explicit choice"
+                )
+            if selection.get("decision_source") == "prompted-owner-choice" and prompt != {
+                "count": 1,
+                "disposition": "recorded-owner-choice",
+            }:
+                errors.append(
+                    f"{UPG004_DELEGATION_RUN_TEMPLATE}.selection.prompt must retain one prompted choice"
+                )
+        resume = sag003_exact_keys(
+            selection.get("resume"),
+            {"reuse_existing_selection", "repeat_prompt"},
+            errors,
+            f"{UPG004_DELEGATION_RUN_TEMPLATE}.selection.resume",
+        )
+        if resume is not None and resume != {
+            "reuse_existing_selection": True,
+            "repeat_prompt": False,
+        }:
+            errors.append(
+                f"{UPG004_DELEGATION_RUN_TEMPLATE}.selection.resume must reuse without a repeat prompt"
+            )
+
+    support = sag003_exact_keys(
+        record.get("execution_support"),
+        {"state", "evidence_refs"},
+        errors,
+        f"{UPG004_DELEGATION_RUN_TEMPLATE}.execution_support",
+    )
+    if support is not None:
+        state = support.get("state")
+        evidence_refs = support.get("evidence_refs")
+        if state not in UPG004_EXECUTION_SUPPORT_STATES:
+            errors.append(f"{UPG004_DELEGATION_RUN_TEMPLATE}.execution_support.state is not supported")
+        if state == "unknown" and evidence_refs != []:
+            errors.append(
+                f"{UPG004_DELEGATION_RUN_TEMPLATE}.execution_support.unknown must have no evidence refs"
+            )
+        if state in {"verified-available", "verified-unavailable"} and not upg004_non_empty_string_list(evidence_refs):
+            errors.append(
+                f"{UPG004_DELEGATION_RUN_TEMPLATE}.execution_support verified states require evidence refs"
+            )
+
+    if not upg004_has_exact_stages(record.get("canonical_stage_ids")):
+        errors.append(f"{UPG004_DELEGATION_RUN_TEMPLATE}.canonical_stage_ids must retain ordered stages")
+    execution_path = sag003_exact_keys(
+        record.get("execution_path"),
+        {"kind", "canonical_stage_ids"},
+        errors,
+        f"{UPG004_DELEGATION_RUN_TEMPLATE}.execution_path",
+    )
+    if execution_path is not None:
+        if execution_path.get("kind") not in {"delegation-evaluation", "root-sequential"}:
+            errors.append(f"{UPG004_DELEGATION_RUN_TEMPLATE}.execution_path.kind is not supported")
+        if not upg004_has_exact_stages(execution_path.get("canonical_stage_ids")):
+            errors.append(
+                f"{UPG004_DELEGATION_RUN_TEMPLATE}.execution_path must retain ordered stages"
+            )
+
+    fallbacks = record.get("fallbacks")
+    if not isinstance(fallbacks, list):
+        errors.append(f"{UPG004_DELEGATION_RUN_TEMPLATE}.fallbacks must be a list")
+        fallbacks = []
+    fallback_scopes: set[str] = set()
+    for index, fallback in enumerate(fallbacks):
+        label = f"{UPG004_DELEGATION_RUN_TEMPLATE}.fallbacks[{index}]"
+        mapping = sag003_exact_keys(
+            fallback,
+            {
+                "scope",
+                "disposition",
+                "trigger",
+                "requested",
+                "observed",
+                "selected",
+                "owner_consent",
+                "authorization_evidence",
+                "evidence_refs",
+                "canonical_stage_ids",
+            },
+            errors,
+            label,
+        )
+        if mapping is None:
+            continue
+        validate_sag003_provider_neutral_value(mapping, errors, label)
+        scope = mapping.get("scope")
+        if scope not in {
+            UPG004_ROOT_FALLBACK_SCOPE,
+            UPG004_TERMINAL_FALLBACK_SCOPE,
+        }:
+            errors.append(f"{label}.scope is not supported")
+            continue
+        if scope in fallback_scopes:
+            errors.append(f"{label}.scope duplicates {scope!r}")
+        fallback_scopes.add(scope)
+        expected_disposition = (
+            "root-sequential"
+            if scope == UPG004_ROOT_FALLBACK_SCOPE
+            else "fresh-independent-context"
+        )
+        if mapping.get("disposition") != expected_disposition:
+            errors.append(f"{label}.disposition must be {expected_disposition!r}")
+        expected_requested = (
+            "delegation-evaluation"
+            if scope == UPG004_ROOT_FALLBACK_SCOPE
+            else "terminal-independent-audit"
+        )
+        expected_observed = (
+            "delegation-support-unavailable"
+            if scope == UPG004_ROOT_FALLBACK_SCOPE
+            else "primary-independent-auditor-unavailable"
+        )
+        if mapping.get("requested") != expected_requested:
+            errors.append(f"{label}.requested must be {expected_requested!r}")
+        if mapping.get("observed") != expected_observed:
+            errors.append(f"{label}.observed must be {expected_observed!r}")
+        if mapping.get("selected") != expected_disposition:
+            errors.append(f"{label}.selected must be {expected_disposition!r}")
+        if selection is not None and mapping.get("owner_consent") != selection.get(
+            "decision_source"
+        ):
+            errors.append(
+                f"{label}.owner_consent must exactly match the run decision_source"
+            )
+        if not isinstance(mapping.get("trigger"), str) or not mapping["trigger"].strip():
+            errors.append(f"{label}.trigger must be non-empty")
+        for field in ("authorization_evidence", "evidence_refs"):
+            if not upg004_non_empty_string_list(mapping.get(field)):
+                errors.append(f"{label}.{field} must be a non-empty string list")
+        expected_stages = (
+            list(UPG004_CANONICAL_STAGE_IDS)
+            if scope == UPG004_ROOT_FALLBACK_SCOPE
+            else ["terminal-fixed-head-independent-audit"]
+        )
+        if mapping.get("canonical_stage_ids") != expected_stages:
+            errors.append(f"{label}.canonical_stage_ids does not preserve the required stages")
+
+    if selection is not None and execution_path is not None:
+        mode = selection.get("mode")
+        path_kind = execution_path.get("kind")
+        mode_semantics = UPG004_MODE_SEMANTICS.get(mode)
+        if mode_semantics is not None and path_kind not in mode_semantics[
+            "allowed_execution_path_kinds"
+        ]:
+            errors.append(
+                f"{UPG004_DELEGATION_RUN_TEMPLATE}: {mode} mode must use one of its exact execution paths"
+            )
+        if mode == "none" and fallbacks:
+            errors.append(f"{UPG004_DELEGATION_RUN_TEMPLATE}: none mode must not record a fallback")
+        if (
+            mode != "none"
+            and path_kind == "root-sequential"
+            and UPG004_ROOT_FALLBACK_SCOPE not in fallback_scopes
+        ):
+            errors.append(
+                f"{UPG004_DELEGATION_RUN_TEMPLATE}: root-sequential fallback requires exact evidence"
+            )
+
+    audit = sag003_exact_keys(
+        record.get("terminal_independent_audit"),
+        {
+            "required",
+            "selection_basis",
+            "status",
+            "subject_commit",
+            "independence",
+            "evidence_refs",
+        },
+        errors,
+        f"{UPG004_DELEGATION_RUN_TEMPLATE}.terminal_independent_audit",
+    )
+    if audit is not None:
+        if audit.get("required") is not True:
+            errors.append(f"{UPG004_DELEGATION_RUN_TEMPLATE}.terminal_independent_audit.required must be true")
+        if audit.get("selection_basis") != "explicit-terminal-or-high-risk":
+            errors.append(
+                f"{UPG004_DELEGATION_RUN_TEMPLATE}.terminal_independent_audit "
+                "must use an explicit terminal-or-high-risk basis"
+            )
+        status = audit.get("status")
+        if status not in UPG004_TERMINAL_AUDIT_STATUSES:
+            errors.append(f"{UPG004_DELEGATION_RUN_TEMPLATE}.terminal_independent_audit.status is not supported")
+        if audit.get("independence") != "fresh-independent-context":
+            errors.append(
+                f"{UPG004_DELEGATION_RUN_TEMPLATE}.terminal_independent_audit "
+                "must retain fresh-independent-context"
+            )
+        if status == "pending" and (audit.get("subject_commit") is not None or audit.get("evidence_refs") != []):
+            errors.append(
+                f"{UPG004_DELEGATION_RUN_TEMPLATE}.terminal_independent_audit pending state must not claim evidence"
+            )
+        if status in {"passed", "failed", "blocked"}:
+            subject = audit.get("subject_commit")
+            if not isinstance(subject, str) or re.fullmatch(r"[0-9a-f]{40}", subject) is None:
+                errors.append(
+                    f"{UPG004_DELEGATION_RUN_TEMPLATE}.terminal_independent_audit "
+                    "terminal evidence requires a 40-character lowercase subject commit"
+                )
+            if not upg004_non_empty_string_list(audit.get("evidence_refs")):
+                errors.append(
+                    f"{UPG004_DELEGATION_RUN_TEMPLATE}.terminal_independent_audit "
+                    "terminal evidence requires non-empty evidence refs"
+                )
+    return True
+
+
+def validate_upg004_delegation_run_record_path(
+    errors: list[str],
+    *,
+    root: Path,
+    record_path: Path,
+) -> bool:
+    """Load and validate any retained portable delegation-run record."""
+    record = upg004_load_yaml_mapping(root, record_path, errors)
+    if record is None:
+        return False
+    return validate_upg004_delegation_run_record(
+        record,
+        errors,
+        label=str(record_path),
+    )
+
+
+def validate_upg004_delegation_run_template(errors: list[str], *, root: Path) -> bool:
+    """Validate the packaged owner-selection template through the reusable path."""
+    return validate_upg004_delegation_run_record_path(
+        errors,
+        root=root,
+        record_path=UPG004_DELEGATION_RUN_TEMPLATE,
+    )
+
+
+def validate_upg004_delegation_run_contract(errors: list[str], *, root: Path = ROOT) -> int:
+    """Validate portable UPG-004 records, wrappers, and canonical boundaries."""
+    document_path = root / UPG004_DELEGATION_RUN_CONTRACT
+    if not document_path.is_file():
+        errors.append(f"{UPG004_DELEGATION_RUN_CONTRACT}: required UPG-004 contract file is missing")
+    else:
+        document = document_path.read_text(encoding="utf-8")
+        for marker in (
+            "# Delegation Run Contract",
+            "## Portable Execution Intent",
+            "## Modes",
+            "selection.eligible_role_asset_ids",
+            "`none`",
+            "`analysis-only`",
+            "`full-recommended`",
+            "## Prompt And Resume",
+            "## Support And Fallback Evidence",
+            "## Terminal Independent Audit",
+        ):
+            if marker not in document:
+                errors.append(f"{UPG004_DELEGATION_RUN_CONTRACT}: missing required marker {marker!r}")
+
+    validate_upg004_delegation_run_schema(errors, root=root)
+    validate_upg004_delegation_run_template(errors, root=root)
+    required_references = {
+        UPG004_DELEGATION_RUN_CONTRACT.as_posix(),
+        UPG004_DELEGATION_RUN_SCHEMA.as_posix(),
+        UPG004_DELEGATION_RUN_TEMPLATE.as_posix(),
+    }
+    skill = upg004_load_yaml_mapping(root, UPG004_UPGRADER_SKILL, errors)
+    if skill is not None:
+        references = skill.get("references")
+        if not isinstance(references, list) or not required_references <= set(references):
+            errors.append(f"{UPG004_UPGRADER_SKILL}: missing UPG-004 delegation references")
+    for wrapper_path in UPG004_WRAPPER_PATHS:
+        absolute = root / wrapper_path
+        if not absolute.is_file():
+            errors.append(f"{wrapper_path}: required current-runtime wrapper is missing")
+            continue
+        wrapper = absolute.read_text(encoding="utf-8")
+        for reference in required_references:
+            if reference not in wrapper:
+                errors.append(f"{wrapper_path}: missing UPG-004 delegation reference {reference}")
+    return 1
+
+
 def sag003_active_role_binding_owners(
     root: Path,
     errors: list[str],
@@ -3375,11 +4259,16 @@ def validate_sag003_provider_projection_registry(
 
     canonical = sag003_exact_keys(
         registry.get("canonical_contract"),
-        {"availability", "registry_path", "role_asset_ids"},
+        {"availability", "registry_path", "role_asset_ids", "delegation_intent"},
         errors,
         f"{SAG003_PROVIDER_PROJECTION_REGISTRY}.canonical_contract",
     )
     if canonical is not None:
+        validate_sag003_provider_neutral_value(
+            canonical,
+            errors,
+            f"{SAG003_PROVIDER_PROJECTION_REGISTRY}.canonical_contract",
+        )
         if canonical.get("availability") != "canonical-contract-available":
             errors.append("provider projection canonical_contract.availability must be canonical-contract-available")
         if canonical.get("registry_path") != SAG003_CAPABILITY_REGISTRY.as_posix():
@@ -3387,6 +4276,30 @@ def validate_sag003_provider_projection_registry(
         role_ids = canonical.get("role_asset_ids")
         if not isinstance(role_ids, list) or len(role_ids) != len(set(role_ids)) or set(role_ids) != SAG003_ROLE_IDS:
             errors.append("provider projection canonical_contract.role_asset_ids must be the exact five SAG-003 roles")
+        intent = sag003_exact_keys(
+            canonical.get("delegation_intent"),
+            {
+                "root_capability",
+                "delegated_capability",
+                "quality_posture",
+                "delegation",
+                "quota_sensitivity",
+                "fallback",
+            },
+            errors,
+            f"{SAG003_PROVIDER_PROJECTION_REGISTRY}.canonical_contract.delegation_intent",
+        )
+        if intent is not None and intent != {
+            "root_capability": "frontier",
+            "delegated_capability": "balanced",
+            "quality_posture": "quality-first",
+            "delegation": "optional",
+            "quota_sensitivity": "quota-sensitive",
+            "fallback": "disclosed",
+        }:
+            errors.append(
+                "provider projection canonical_contract.delegation_intent must retain only the portable frontier/balanced/quality-first optional quota-sensitive disclosed intent"
+            )
     if set(capability_by_role) != SAG003_ROLE_IDS:
         errors.append("provider projection cannot be valid while the canonical capability set is incomplete")
 
@@ -3400,13 +4313,18 @@ def validate_sag003_provider_projection_registry(
     if projections is not None:
         codex = sag003_exact_keys(
             projections.get("codex"),
-            {"configuration_state", "profiles"},
+            {"configuration_state", "delegation_advisory", "profiles"},
             errors,
             f"{SAG003_PROVIDER_PROJECTION_REGISTRY}.provider_projections.codex",
         )
         if codex is not None:
             if codex.get("configuration_state") != "codex-runtime-configured":
                 errors.append("Codex projection must be statically configured, not runtime-enabled")
+            validate_upg004_codex_delegation_advisory(
+                codex.get("delegation_advisory"),
+                errors,
+                f"{SAG003_PROVIDER_PROJECTION_REGISTRY}.provider_projections.codex.delegation_advisory",
+            )
             profiles = codex.get("profiles")
             if not isinstance(profiles, list):
                 errors.append("Codex projection profiles must be a list")
@@ -3690,6 +4608,7 @@ def main(argv: list[str] | None = None) -> int:
     canonical_assets, skill_assets = validate_canonical_assets(errors)
     capability_mappings = validate_capability_profile(skill_assets, errors)
     sag003_role_bindings = validate_sag003_provider_role_projection_contract(errors)
+    upg004_delegation_contracts = validate_upg004_delegation_run_contract(errors)
 
     for runtime_root in ACTIVE_RUNTIME_ROOTS:
         if not (ROOT / runtime_root).is_dir():
@@ -3724,6 +4643,7 @@ def main(argv: list[str] | None = None) -> int:
         f"{governance_terms} qualified governance terms, {canonical_assets} canonical manifests, "
         f"{capability_mappings} capability mappings, "
         f"{sag003_role_bindings} SAG-003 role bindings, "
+        f"{upg004_delegation_contracts} UPG-004 delegation contracts, "
         f"{cli_routes} local CLI routes, and {lesson_count} governed lessons."
     )
     print(

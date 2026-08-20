@@ -1,0 +1,92 @@
+schema_version: "codex-runtime-preflight-receipt/v1"
+captured_at: "2026-08-21T02:20:59+08:00"
+repository: "YuChia-Wei/ai-collaboration-framework"
+workflow_id: "2026-08-21-upg-004-delegation-preflight"
+issue: 208
+official_sources:
+  accessed_at: "2026-08-21T02:21:23+08:00"
+  pages:
+    - url: "https://openai.com/index/previewing-gpt-5-6-sol/"
+      evidence: "Sol is the flagship tier, Terra is balanced for everyday work, Luna is fast and affordable, and stronger reasoning is available for harder work."
+    - url: "https://developers.openai.com/api/docs/models"
+      evidence: "Sol is the frontier default for complex work, Terra balances intelligence and cost, and Luna is cost-sensitive and high-volume."
+    - url: "https://developers.openai.com/api/docs/guides/latest-model"
+      evidence: "Medium is a balanced starting point, high or xhigh require measured quality gain, and max is reserved for the hardest quality-first workloads."
+    - url: "https://help.openai.com/en/articles/11647665-fast-mode-faq"
+      evidence: "Priority was renamed Fast; priority and fast service-tier values coexist, availability varies, and Fast is billed at a premium."
+    - url: "https://openai.com/index/advancing-the-price-performance-frontier-with-gpt-5-6/"
+      evidence: "Fast replaces Priority Processing in the API and aligns with Codex fast mode; Terra and Luna are positioned for lower-cost work."
+commands:
+  - argv: ["codex", "--version"]
+    exit_code: 0
+    stdout: "codex-cli 0.147.0"
+    stdout_sha256: "e650241e2b5b2257faf4d2c864b5776c0e984c2fc44da4bbcf4e81be6cdfcf45"
+  - argv: ["codex", "debug", "models", "--bundled"]
+    exit_code: 0
+    stdout_sha256: "1b11ce8cb9a08119f5ef4f9293674b134b20711baaa4ba4802b3a8c8e27e733e"
+    selected_models:
+      - slug: "gpt-5.6-sol"
+        default_reasoning_level: "low"
+        supported_reasoning_levels: ["low", "medium", "high", "xhigh", "max", "ultra"]
+        additional_speed_tiers: ["fast"]
+        service_tiers: [{id: "priority", name: "Fast", description: "1.5x speed, increased usage"}]
+      - slug: "gpt-5.6-terra"
+        default_reasoning_level: "medium"
+        supported_reasoning_levels: ["low", "medium", "high", "xhigh", "max", "ultra"]
+        additional_speed_tiers: ["fast"]
+        service_tiers: [{id: "priority", name: "Fast", description: "1.5x speed, increased usage"}]
+      - slug: "gpt-5.6-luna"
+        default_reasoning_level: "medium"
+        supported_reasoning_levels: ["low", "medium", "high", "xhigh", "max"]
+        additional_speed_tiers: ["fast"]
+        service_tiers: [{id: "priority", name: "Fast", description: "1.5x speed, increased usage"}]
+  - argv: ["codex", "doctor", "--json"]
+    exit_code: 0
+    stdout_sha256: "ad4fdbe0227c55f72459a5c3a2a84ee66ed4a7e59f7bef68c94990d5fcc55254"
+    schema_version: 1
+    generated_at: "1787250059s since unix epoch"
+    overall_status: "warning"
+    codex_version: "0.147.0"
+    selected_checks:
+      config_load: {status: "ok", summary: "config loaded", static_model: "gpt-5.6-terra"}
+      provider_reachability: {status: "ok", summary: "active provider endpoints are reachable over HTTP"}
+      websocket_reachability: {status: "ok", summary: "Responses WebSocket handshake succeeded"}
+      state_integrity: {status: "ok", summary: "state paths and databases are inspectable"}
+      rollout_parity: {status: "warning", summary: "rollout files and state DB thread inventory differ"}
+run_preflight:
+  recommendation:
+    source: "https://github.com/YuChia-Wei/ai-collaboration-framework/issues/208"
+    model: "gpt-5.6-sol"
+    reasoning_effort: "xhigh"
+    speed_service_tier: "priority"
+  observed_current:
+    active_model: "unknown"
+    active_reasoning_effort: "unknown"
+    active_speed_service_tier: "unknown"
+    detection_confidence: "unknown"
+    static_config_model: "gpt-5.6-terra"
+    static_config_is_active_session_evidence: false
+  explicit_owner_selection:
+    source: "explicit repository-owner v0.14.0 delivery prompt"
+    model: "gpt-5.6-sol"
+    reasoning_effort: "high"
+    fast_priority: "disabled"
+    repeat_prompt_suppressed: true
+    prompt_count: 0
+  comparison:
+    model: "matches-recommendation"
+    reasoning_effort: "advisory-deviation-accepted-by-explicit-owner-choice"
+    speed_service_tier: "advisory-deviation-accepted-by-explicit-owner-choice"
+    blocking: false
+    switch_attempted: false
+  disclosure:
+    fast_priority_has_quota_or_cost_impact: true
+    fast_priority_silently_enabled: false
+    shortest_verified_switch_action: null
+    reason: "The owner explicitly selected the current model/depth and disabled Fast; no repeat prompt or switch instruction is permitted for this run."
+security:
+  credentials_read: false
+  credential_values_persisted: false
+  secrets_persisted: false
+  raw_doctor_output_persisted: false
+  retained_fields: "Only command identity, stdout digest, version/schema, selected non-secret model metadata, selected diagnostic states, and the owner decision are retained."
