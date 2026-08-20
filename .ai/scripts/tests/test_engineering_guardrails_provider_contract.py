@@ -35,12 +35,12 @@ def load_yaml(path: Path) -> dict:
     return loaded
 
 
-def nested_value(document: dict, dotted_path: str) -> object:
+def nested_value(document: dict, dotted_path: str, missing: object = None) -> object:
     current: object = document
     for segment in dotted_path.split("."):
-        if not isinstance(current, dict):
-            return None
-        current = current.get(segment)
+        if not isinstance(current, dict) or segment not in current:
+            return missing
+        current = current[segment]
     return current
 
 
@@ -82,6 +82,23 @@ def contract_errors(contract: dict, schema: dict) -> list[str]:
         if package_identity.get(field) is not None:
             errors.append(f"canonical provider_package_identity.{field} must remain null")
 
+    framework_delivery = contract.get("framework_delivery")
+    framework_delivery_rules = schema["framework_delivery"]
+    if not isinstance(framework_delivery, dict):
+        errors.append("framework_delivery must be a mapping")
+    else:
+        for field in framework_delivery_rules["required_fields"]:
+            if field not in framework_delivery:
+                errors.append(f"framework_delivery is missing required field: {field}")
+        for field, expected in framework_delivery_rules["required_literals"].items():
+            actual = framework_delivery.get(field)
+            if actual != expected or (
+                isinstance(expected, bool) and type(actual) is not bool
+            ):
+                errors.append(
+                    f"framework_delivery.{field} must be {expected!r}, found {actual!r}"
+                )
+
     states = contract.get("state_semantics", {}).get("states", {})
     state_rules = schema["state_semantics"]
     for state in state_rules["required_states"]:
@@ -89,7 +106,7 @@ def contract_errors(contract: dict, schema: dict) -> list[str]:
             errors.append(f"state_semantics.states is missing required state: {state}")
             continue
         for dotted_path, expected in state_rules["state_requirements"][state].items():
-            actual = nested_value(states[state], dotted_path)
+            actual = nested_value(states[state], dotted_path, missing="<missing>")
             if actual != expected:
                 errors.append(
                     f"{state}.{dotted_path} must be {expected!r}, found {actual!r}"
@@ -120,6 +137,16 @@ def contract_errors(contract: dict, schema: dict) -> list[str]:
     if len(receipt_types) != len(set(receipt_types)):
         errors.append("readiness, compatibility, and execution receipt types must differ")
 
+    required_prohibitions = schema["prohibitions"]["required_exact_values"]
+    if not isinstance(required_prohibitions, list) or not required_prohibitions:
+        errors.append(
+            "schema.prohibitions.required_exact_values must be a non-empty list"
+        )
+    elif contract.get("prohibitions") != required_prohibitions:
+        errors.append(
+            "prohibitions must exactly match schema.prohibitions.required_exact_values"
+        )
+
     return errors
 
 
@@ -140,13 +167,87 @@ class EngineeringGuardrailsProviderContractGwtTests(unittest.TestCase):
         self.assertFalse(self.contract["framework_delivery"]["supplied_compatibility_receipt"])
         self.assertFalse(self.contract["framework_delivery"]["supplied_execution_receipt"])
 
-    def test_gwt_002_given_invented_identity_or_synthetic_execution_claim_when_checked_then_it_fails_closed(self) -> None:
+    def test_gwt_002_given_a_mutated_unavailable_contract_when_checked_then_it_fails_closed(self) -> None:
         with self.subTest("invented provider package identity"):
             candidate = deepcopy(self.contract)
             candidate["provider_package_identity"]["nuget_id"] = "Invented.Provider"
             errors = contract_errors(candidate, self.schema)
             self.assertIn(
                 "canonical provider_package_identity.nuget_id must remain null", errors
+            )
+
+        with self.subTest("framework delivery cannot claim a real provider"):
+            candidate = deepcopy(self.contract)
+            candidate["framework_delivery"]["status"] = "real-provider-ready"
+            errors = contract_errors(candidate, self.schema)
+            self.assertIn(
+                "framework_delivery.status must be 'real-provider-unavailable', "
+                "found 'real-provider-ready'",
+                errors,
+            )
+
+        for field in (
+            "supplied_executable",
+            "supplied_readiness_receipt",
+            "supplied_compatibility_receipt",
+            "supplied_execution_receipt",
+        ):
+            with self.subTest(f"framework delivery cannot mark {field} supplied"):
+                candidate = deepcopy(self.contract)
+                candidate["framework_delivery"][field] = True
+                errors = contract_errors(candidate, self.schema)
+                self.assertIn(
+                    f"framework_delivery.{field} must be False, found True", errors
+                )
+
+        with self.subTest("framework delivery values must be booleans"):
+            candidate = deepcopy(self.contract)
+            candidate["framework_delivery"]["supplied_executable"] = 0
+            errors = contract_errors(candidate, self.schema)
+            self.assertIn(
+                "framework_delivery.supplied_executable must be False, found 0",
+                errors,
+            )
+
+        for state in (
+            "declined",
+            "not-selected",
+            "selected-unavailable",
+            "synthetic-readiness-proven",
+        ):
+            with self.subTest(f"{state} cannot carry an execution receipt"):
+                candidate = deepcopy(self.contract)
+                candidate["state_semantics"]["states"][state]["execution"][
+                    "receipt"
+                ] = {"receipt_type": "invented"}
+                errors = contract_errors(candidate, self.schema)
+                self.assertTrue(
+                    any(
+                        error.startswith(f"{state}.execution.receipt must be None")
+                        for error in errors
+                    ),
+                    errors,
+                )
+
+            with self.subTest(f"{state} must explicitly record a null receipt"):
+                candidate = deepcopy(self.contract)
+                del candidate["state_semantics"]["states"][state]["execution"][
+                    "receipt"
+                ]
+                errors = contract_errors(candidate, self.schema)
+                self.assertIn(
+                    f"{state}.execution.receipt must be None, found '<missing>'",
+                    errors,
+                )
+
+        with self.subTest("canonical prohibitions cannot be removed"):
+            candidate = deepcopy(self.contract)
+            candidate["prohibitions"] = []
+            errors = contract_errors(candidate, self.schema)
+            self.assertIn(
+                "prohibitions must exactly match "
+                "schema.prohibitions.required_exact_values",
+                errors,
             )
 
         with self.subTest("synthetic readiness cannot become real execution"):

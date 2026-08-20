@@ -49,6 +49,19 @@ canonical_provider_package_identity:
     - "version"
     - "feed"
     - "identity_evidence"
+framework_delivery:
+  required_fields:
+    - "status"
+    - "supplied_executable"
+    - "supplied_readiness_receipt"
+    - "supplied_compatibility_receipt"
+    - "supplied_execution_receipt"
+  required_literals:
+    status: "real-provider-unavailable"
+    supplied_executable: false
+    supplied_readiness_receipt: false
+    supplied_compatibility_receipt: false
+    supplied_execution_receipt: false
 state_semantics:
   required_states:
     - "declined"
@@ -63,6 +76,7 @@ state_semantics:
       readiness.status: "not-claimed"
       compatibility.status: "not-claimed"
       execution.status: "not-claimed"
+      execution.receipt: null
     not-selected:
       recommendation.status: "official-recommended"
       selection.status: "not-selected"
@@ -71,11 +85,13 @@ state_semantics:
       capability_gap.status: "mechanical-validation-capability-not-selected"
       capability_gap.fallback: "target-owned-templates-available"
       execution.status: "not-claimed"
+      execution.receipt: null
     selected-unavailable:
       selection.status: "selected"
       readiness.status: "unproven"
       compatibility.status: "unproven"
       execution.status: "prohibited"
+      execution.receipt: null
     synthetic-readiness-proven:
       selection.status: "selected"
       readiness.status: "synthetic-proven"
@@ -84,6 +100,7 @@ state_semantics:
       compatibility.status: "unproven"
       execution.status: "rejected"
       execution.required_real_receipt: true
+      execution.receipt: null
 evidence_receipt_contracts:
   required_kinds:
     - "readiness"
@@ -97,6 +114,13 @@ evidence_receipt_contracts:
     algorithm: "sha256"
     field: "receipt_sha256"
     required: true
+prohibitions:
+  required_exact_values:
+    - "The framework must not infer selection from recommendation or reference-file presence."
+    - "The framework must not install or select a provider automatically."
+    - "A synthetic readiness receipt must not prove a real-provider execution claim."
+    - "Compatibility, readiness, and execution receipts must remain separately typed and digested."
+    - "The framework must not claim a NuGet identity, version, feed, publication contract, compatibility result, or execution result without exact target evidence."
 provider_selection_template:
   required_fields:
     - "schema_version"
