@@ -7,9 +7,9 @@
   "task_id": "SAG-003",
   "owner_skill": "ai-context-governance",
   "related_plan_id": "development-plan-2026-08-20-sag-003-provider-neutral-roles",
-  "status": "in_progress",
+  "status": "completed",
   "created_at": "2026-08-20T23:55:54+08:00",
-  "updated_at": "2026-08-21T01:11:18+08:00",
+  "updated_at": "2026-08-21T01:20:58+08:00",
   "template_source": ".ai/assets/skills/software-development-orchestrator/templates/development-workflow-task-template.json",
   "model": "gpt-5.6-sol",
   "reasoning_effort": "high",
@@ -116,21 +116,21 @@
       "Implement five provider-neutral role contracts and shared capability/binding registries.",
       "Implement and validate the Codex-only provider projection without false runtime claims.",
       "Add focused package, runtime-schema, and fail-closed fixtures.",
-      "Obtain fresh exact-head audit, hosted checks, terminal-close PR, and online read-back."
+      "Prepare the exact source head, terminal-close PR, and tracked declaration for separate external audit, hosted merge admission, and provider read-back."
     ],
     "validation": [
       "canonical contract/provider-leak fixtures",
       "Codex runtime-schema validation",
       "skill binding and execution-evidence fixtures",
       "isolated package projection",
-      "fresh exact-head independent audit",
-      "required hosted checks"
+      "terminal declaration static and live-body parity"
     ],
-    "commit_checkpoint": "One terminal-close PR for Issue #207 after exact-head audit and hosted admission.",
+    "commit_checkpoint": "One source-complete terminal-close PR candidate before separate exact-head audit and hosted merge admission.",
     "deferred_items": ["Claude runtime projection", "GitHub Copilot runtime projection", "Issue #208 delegation opt-in and preflight"]
   },
   "results": {
-    "summary": "SAG-003 candidate contracts, Codex-only static projections, upgrader bindings, validators, package projection, and runner wiring are implemented and locally focused-validated at clean-history implementation commit 3c627d827c7908e335ad2a57e44433fd34f16f9d; draft PR #229 and its terminal-close declaration exist, while fresh fixed-head audit, hosted checks, and integration remain pending, so no new canonical role existence or invocation is claimed.",
+    "finding_status": "addressed",
+    "summary": "SAG-003 candidate contracts, Codex-only static projections, upgrader bindings, validators, package projection, runner wiring, and terminal declaration are technically complete. PR #229 remains unmerged pending external exact-head audit and hosted merge admission on the final state-record head, so no new canonical role existence or invocation is claimed.",
     "files_changed": [
       "five candidate canonical role manifests and playbooks",
       "provider-neutral capability and provider-projection registries plus schemas",
@@ -148,6 +148,8 @@
       "FAIL fixture output collision before assertions, then PASS 1/1 after removing the duplicate fixture entry: ProviderRolePackageProjectionGwtTests",
       "FAIL hosted Linux route-package projection on superseded PR #228 because three new portable shared references were absent from the synthetic fixture; PASS 1/1 after adding the explicit shared assets on the replacement candidate",
       "FAIL hosted terminal-closure gate on superseded PR #228 because its declaration commit message contained a closing keyword; no validator exception or shared-history rewrite was used, and replacement PR #229 has a clean one-commit implementation range",
+      "PASS hosted on PR #229 head 943c3197299e092da217342543f502cc72f80ef9: build, read-only governance, Ubuntu PR profile, Ubuntu prerequisite, and Windows prerequisite contexts",
+      "FAIL independent audit on PR #229 head 943c3197299e092da217342543f502cc72f80ef9 solely because workflow/task truth remained in progress while the terminal declaration asserted completion; this state-record repair closes that contradiction and invalidates the old audit for admission",
       "BLOCKED sandbox Git Bash signal pipe then PASS 7/7 on normal Windows ACL: test_validation_profile_registry.py",
       "PASS: validate-shell-assets.py, validate-workflow-artifacts.py, AST/TOML parse, and git diff --check",
       "DIAGNOSTIC FAILED overall: codex doctor --json; config.load and local Codex 0.147.0 were OK, but provider reachability and local state-database checks failed, so current-session availability remains unknown"
@@ -155,7 +157,8 @@
     "role_execution_aggregation": [
       "Two pre-#207 generic Terra Max inventories completed without canonical role claims.",
       "One pre-#207 generic Terra Max read-only semantic review passed the latest uncommitted candidate bytes; it is not fixed-head certification.",
-      "A fresh Sol High read-only audit passed superseded PR #228 head 243c810ee83a6b014af59343d9e3212fca1f05a7 with zero semantic findings, but hosted admission failed and that audit does not certify replacement PR #229."
+      "A fresh Sol High read-only audit passed superseded PR #228 head 243c810ee83a6b014af59343d9e3212fca1f05a7 with zero semantic findings, but hosted admission failed and that audit does not certify replacement PR #229.",
+      "A fresh Sol High read-only audit failed replacement PR #229 head 943c3197299e092da217342543f502cc72f80ef9 only on stale workflow/declaration truth; all role, provider, package, commit, PR-body, and hosted semantics otherwise had no blocker."
     ],
     "spec_compliance": {"outcome": "not-applicable", "coverage_percent": null, "evidence": []},
     "validation_evidence": [
@@ -164,9 +167,13 @@
       "Base main and origin/main are e27540bb34721a14d097316af8f5fd708b6982b2 with a clean worktree.",
       "Precommit semantic review PASS on candidate scope digest 8c1e4f1c24498bb68c198f71ed3e72c21225ebb152c66c64e5ef6b30e7cf0469 before this workflow-only evidence update.",
       "Superseded draft PR #228 failed hosted admission at exact head 243c810ee83a6b014af59343d9e3212fca1f05a7, was closed after PR #229 creation, and is not merge-admissible.",
-      "Replacement draft PR #229: https://github.com/YuChia-Wei/ai-collaboration-framework/pull/229 at implementation head 3c627d827c7908e335ad2a57e44433fd34f16f9d; terminal-close declaration added with fresh review, hosted checks, integration, and read-back pending."
+      "Replacement draft PR #229: https://github.com/YuChia-Wei/ai-collaboration-framework/pull/229 at implementation head 3c627d827c7908e335ad2a57e44433fd34f16f9d; terminal-close declaration added, with external exact-head review, hosted merge admission, integration, and provider read-back remaining outside the completed source task."
     ],
-    "commits": ["3c627d827c7908e335ad2a57e44433fd34f16f9d"],
-    "follow_up_needed": true
+    "commits": [
+      "3c627d827c7908e335ad2a57e44433fd34f16f9d",
+      "f85f62ab9567dbee036b5ef748ab381db7daf76a",
+      "943c3197299e092da217342543f502cc72f80ef9"
+    ],
+    "follow_up_needed": false
   }
 }

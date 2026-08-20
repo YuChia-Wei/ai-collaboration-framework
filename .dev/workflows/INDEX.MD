@@ -8,7 +8,7 @@ task-level progress.
 
 | Workflow | Title | Owner | Status | Updated | Entry Point |
 | --- | --- | --- | --- | --- | --- |
-| [`2026-08-20-sag-003-provider-neutral-roles`](2026-08-20-sag-003-provider-neutral-roles/workflow.yaml) | SAG-003 Provider-Neutral Capability Roles | `software-development-orchestrator` | `in_progress` | `2026-08-21T01:11:18+08:00` | [plan](2026-08-20-sag-003-provider-neutral-roles/workflow-plan.md) |
+| [`2026-08-20-sag-003-provider-neutral-roles`](2026-08-20-sag-003-provider-neutral-roles/workflow.yaml) | SAG-003 Provider-Neutral Capability Roles | `software-development-orchestrator` | `completed` | `2026-08-21T01:20:58+08:00` | [plan](2026-08-20-sag-003-provider-neutral-roles/workflow-plan.md) |
 | [`2026-08-20-upg-003-multi-hop-upgrade`](2026-08-20-upg-003-multi-hop-upgrade/workflow.yaml) | UPG-003 Retained-Origin Multi-Hop Upgrade | `software-development-orchestrator` | `in_progress` | `2026-08-21T00:00:28+08:00` | [plan](2026-08-20-upg-003-multi-hop-upgrade/workflow-plan.md) |
 | [`2026-08-20-ctx-010-engineering-guardrails`](2026-08-20-ctx-010-engineering-guardrails/workflow.yaml) | CTX-010 Optional Engineering Guardrails Provider Contract | `software-development-orchestrator` | `in_progress` | `2026-08-20T16:15:04+08:00` | [plan](2026-08-20-ctx-010-engineering-guardrails/workflow-plan.md) |
 | [`2026-08-20-upg-002-remediation-packet`](2026-08-20-upg-002-remediation-packet/workflow.yaml) | UPG-002 Prospective Cutover And Durable Remediation Packet | `software-development-orchestrator` | `in_progress` | `2026-08-20T14:30:35+08:00` | [plan](2026-08-20-upg-002-remediation-packet/workflow-plan.md) |
