@@ -1,0 +1,88 @@
+schema_version: "1.0"
+document: "provider-projection-registry.yaml"
+required:
+  - schema_version
+  - registry_id
+  - source_of_truth
+  - canonical_contract
+  - provider_projections
+  - current_session
+  - package_projection
+properties:
+  schema_version:
+    const: "1.0"
+  registry_id: stable-lowercase-kebab-id
+  source_of_truth:
+    const: "canonical"
+  canonical_contract:
+    required:
+      - availability
+      - registry_path
+      - role_asset_ids
+    availability:
+      const: "canonical-contract-available"
+  provider_projections:
+    required_keys:
+      - codex
+      - claude
+      - copilot
+    codex:
+      required:
+        - configuration_state
+        - profiles
+      configuration_state:
+        const: "codex-runtime-configured"
+      profiles:
+        type: unique-non-empty-list
+        record_required:
+          - role_asset_id
+          - profile_path
+          - profile_name
+          - model
+          - model_reasoning_effort
+          - sandbox_mode
+        sandbox_mode:
+          const: "read-only"
+    claude:
+      required:
+        - configuration_state
+        - profiles
+        - deferred_reason
+      configuration_state:
+        const: "claude-runtime-deferred"
+      profiles:
+        const: []
+    copilot:
+      required:
+        - configuration_state
+        - profiles
+        - deferred_reason
+      configuration_state:
+        const: "copilot-runtime-deferred"
+      profiles:
+        const: []
+  current_session:
+    required:
+      - availability
+      - invocation_evidence
+    availability:
+      const: "unknown"
+    invocation_evidence:
+      const: "not-claimed"
+  package_projection:
+    required:
+      - configured_provider
+      - profile_paths
+      - deferred_provider_runtime_paths
+    configured_provider:
+      const: "codex"
+invariants:
+  - static-configuration-is-not-current-session-availability
+  - static-configuration-is-not-genuine-invocation-evidence
+  - deferred-projections-are-not-permanent-unsupported-claims
+  - generic-capability-package-projection-contains-only-configured-codex-profile-paths
+  - specialized-adapters-do-not-prove-generic-capability-support
+prohibited_static_claim_fields:
+  - runtime_enabled
+  - invoked
+additional_properties: false
