@@ -202,6 +202,23 @@ class ProviderRoleProjectionFixture:
                 "provider_projections": {
                     "codex": {
                         "configuration_state": "codex-runtime-configured",
+                        "delegation_advisory": {
+                            "schema_version": "1.0",
+                            "configuration_scope": "static-provider-projection",
+                            "max_concurrent_workers": 2,
+                            "fast_priority": "disabled",
+                            "model_mismatch_disposition": "advisory-not-blocking",
+                            "worker_preference": {
+                                "model": "gpt-5.6-terra",
+                                "model_reasoning_effort": "max",
+                                "unavailable_fallback": "root-sequential",
+                            },
+                            "terminal_auditor_preference": {
+                                "model": "gpt-5.6-sol",
+                                "model_reasoning_effort": "max",
+                                "unavailable_fallback": "fresh-sol-high-independent-context",
+                            },
+                        },
                         "profiles": profiles,
                     },
                     "claude": {
@@ -405,6 +422,60 @@ class ProviderRoleProjectionContractTests(unittest.TestCase):
             fixture.write_yaml(role_path, role)
             _, errors = fixture.validate()
             self.assert_error(errors, "provider/runtime field leaks")
+        finally:
+            fixture.close()
+
+    def test_gwt_009_given_fast_priority_is_enabled_when_validated_then_fails_closed(self) -> None:
+        fixture = ProviderRoleProjectionFixture()
+        try:
+            registry = fixture.read_yaml(
+                ".ai/assets/shared/provider-projection-registry.yaml"
+            )
+            registry["provider_projections"]["codex"]["delegation_advisory"][
+                "fast_priority"
+            ] = "enabled"
+            fixture.write_yaml(
+                ".ai/assets/shared/provider-projection-registry.yaml", registry
+            )
+            _, errors = fixture.validate()
+            self.assert_error(errors, "delegation_advisory.fast_priority must be 'disabled'")
+        finally:
+            fixture.close()
+
+    def test_gwt_010_given_model_mismatch_is_blocking_when_validated_then_fails_closed(self) -> None:
+        fixture = ProviderRoleProjectionFixture()
+        try:
+            registry = fixture.read_yaml(
+                ".ai/assets/shared/provider-projection-registry.yaml"
+            )
+            registry["provider_projections"]["codex"]["delegation_advisory"][
+                "model_mismatch_disposition"
+            ] = "blocking"
+            fixture.write_yaml(
+                ".ai/assets/shared/provider-projection-registry.yaml", registry
+            )
+            _, errors = fixture.validate()
+            self.assert_error(
+                errors,
+                "delegation_advisory.model_mismatch_disposition must be 'advisory-not-blocking'",
+            )
+        finally:
+            fixture.close()
+
+    def test_gwt_011_given_deferred_projection_copies_codex_advisory_when_validated_then_fails_closed(self) -> None:
+        fixture = ProviderRoleProjectionFixture()
+        try:
+            registry = fixture.read_yaml(
+                ".ai/assets/shared/provider-projection-registry.yaml"
+            )
+            registry["provider_projections"]["claude"]["delegation_advisory"] = registry[
+                "provider_projections"
+            ]["codex"]["delegation_advisory"].copy()
+            fixture.write_yaml(
+                ".ai/assets/shared/provider-projection-registry.yaml", registry
+            )
+            _, errors = fixture.validate()
+            self.assert_error(errors, "provider_projections.claude: unsupported fields")
         finally:
             fixture.close()
 

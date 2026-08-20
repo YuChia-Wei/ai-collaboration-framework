@@ -29,9 +29,43 @@ properties:
     codex:
       required:
         - configuration_state
+        - delegation_advisory
         - profiles
       configuration_state:
         const: "codex-runtime-configured"
+      delegation_advisory:
+        required:
+          - schema_version
+          - configuration_scope
+          - max_concurrent_workers
+          - fast_priority
+          - model_mismatch_disposition
+          - worker_preference
+          - terminal_auditor_preference
+        schema_version:
+          const: "1.0"
+        configuration_scope:
+          const: "static-provider-projection"
+        max_concurrent_workers:
+          const: 2
+        fast_priority:
+          const: "disabled"
+        model_mismatch_disposition:
+          const: "advisory-not-blocking"
+        worker_preference:
+          required:
+            - model
+            - model_reasoning_effort
+            - unavailable_fallback
+          unavailable_fallback:
+            const: "root-sequential"
+        terminal_auditor_preference:
+          required:
+            - model
+            - model_reasoning_effort
+            - unavailable_fallback
+          unavailable_fallback:
+            const: "fresh-sol-high-independent-context"
       profiles:
         type: unique-non-empty-list
         record_required:

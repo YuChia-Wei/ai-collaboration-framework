@@ -13,6 +13,20 @@ canonical_contract:
 provider_projections:
   codex:
     configuration_state: "codex-runtime-configured"
+    delegation_advisory:
+      schema_version: "1.0"
+      configuration_scope: "static-provider-projection"
+      max_concurrent_workers: 2
+      fast_priority: "disabled"
+      model_mismatch_disposition: "advisory-not-blocking"
+      worker_preference:
+        model: "gpt-5.6-terra"
+        model_reasoning_effort: "max"
+        unavailable_fallback: "root-sequential"
+      terminal_auditor_preference:
+        model: "gpt-5.6-sol"
+        model_reasoning_effort: "max"
+        unavailable_fallback: "fresh-sol-high-independent-context"
     profiles:
       - role_asset_id: "mechanical-evidence-worker"
         profile_path: ".codex/agents/bounded-routine-worker.toml"

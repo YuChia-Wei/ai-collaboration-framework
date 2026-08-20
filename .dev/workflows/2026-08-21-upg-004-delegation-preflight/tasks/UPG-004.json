@@ -9,7 +9,7 @@
   "related_plan_id": "development-plan-2026-08-21-upg-004-delegation-preflight",
   "status": "in_progress",
   "created_at": "2026-08-21T01:35:16+08:00",
-  "updated_at": "2026-08-21T01:35:16+08:00",
+  "updated_at": "2026-08-21T02:03:19+08:00",
   "template_source": ".ai/assets/skills/software-development-orchestrator/templates/development-workflow-task-template.json",
   "model": "gpt-5.6-sol",
   "reasoning_effort": "high",
@@ -80,8 +80,15 @@
         "provider": "Codex",
         "model": "gpt-5.6-terra",
         "reasoning_effort": "max",
-        "outcome": "in_progress",
-        "scope": "Read-only inventory of integrated SAG-003 bindings, upgrader run state, provider projection, package, validator, and fixture surfaces.",
+        "outcome": "passed",
+        "scope": "Bounded inventory and implementation of the authorized UPG-004 portable run contract, Codex advisory projection, validator, and focused/package fixtures.",
+        "evidence": [
+          "framework-source packet digest 2db579d960524f2d9b56ef0bbfbeac9f1db365542a691f4d0a15cb55323c5822",
+          "focused UPG-004 tests 12/12 passed",
+          "provider projection tests 11/11 passed",
+          "package projection test 1/1 passed",
+          "AI-context validation passed"
+        ],
         "canonical_role_claimed": false
       }
     ],
@@ -106,20 +113,33 @@
     "deferred_items": ["Claude runtime projection", "GitHub Copilot runtime projection", "Fast/priority activation"]
   },
   "results": {
-    "summary": "UPG-004 workflow admitted on integrated #207 main; implementation inventory is in progress and no runtime invocation or completion is claimed.",
-    "files_changed": ["workflow locator, plan, task, and index entry"],
+    "summary": "UPG-004 portable run selection and Codex advisory contracts are implemented and focused validation passes; independent audit, hosted admission, integration, and online closeout remain pending.",
+    "files_changed": [
+      "delegation run contract, schema, and template",
+      "upgrader canonical spec and thin wrappers",
+      "Codex-only provider advisory registry and schema",
+      "AI-context validator and focused/package fixtures",
+      "workflow execution evidence"
+    ],
     "approval_evidence": ["explicit repository-owner v0.14.0 delivery prompt"],
     "test_execution": [
       "PASS: official OpenAI model/reasoning/Fast guidance refreshed from official sources",
       "DIAGNOSTIC: Codex CLI 0.147.0 bundled model schema inspected",
-      "DIAGNOSTIC FAILED overall: codex doctor --json; static config loaded, but provider reachability and state database checks failed, so active-session state remains unknown"
+      "DIAGNOSTIC FAILED overall: codex doctor --json; static config loaded, but provider reachability and state database checks failed, so active-session state remains unknown",
+      "PASS: UPG-004 focused fixtures 12/12",
+      "PASS: provider projection fixtures 11/11",
+      "BLOCKED-BY-ENVIRONMENT: wrapper metadata sandbox attempt failed 16/16 before assertions because Windows %TEMP% fixture directories returned WinError 5",
+      "PASS: identical wrapper metadata command on the authorized normal ACL boundary 16/16",
+      "PASS: provider-role package projection 1/1",
+      "PASS: validate-ai-context.py including 1 UPG-004 delegation contract"
     ],
-    "role_execution_aggregation": ["Generic Terra Max inventory is in progress; no canonical-role invocation is claimed."],
+    "role_execution_aggregation": ["Generic Terra Max bounded inventory/implementation passed; no canonical-role invocation is claimed."],
     "spec_compliance": {"outcome": "not-applicable", "coverage_percent": null, "evidence": []},
     "validation_evidence": [
       "Integrated main and origin/main are f7591d8499ade36fb88193408e434710cbf437a0 with a clean worktree.",
       "Live Issue #208 is open and Project status read-back is Inbox; Project-field restoration is intentionally not performed here.",
       "Owner-selected run settings are explicit and suppress repeat prompting."
+      ,"Per-run delegation evidence is retained at .dev/workflows/2026-08-21-upg-004-delegation-preflight/evidence/delegation-run.yaml and remains outside target provenance and transactions."
     ],
     "commits": [],
     "follow_up_needed": true

@@ -1,0 +1,91 @@
+schema_version: "1.0"
+document: "delegation-run-record.yaml"
+source_of_truth: "workflow-execution-evidence"
+required:
+  - schema_version
+  - delegation_run_id
+  - selection
+  - execution_support
+  - canonical_stage_ids
+  - execution_path
+  - fallbacks
+  - terminal_independent_audit
+properties:
+  schema_version:
+    const: "1.0"
+  delegation_run_id: stable-run-id
+  selection:
+    required:
+      - mode
+      - max_concurrent_workers
+      - decision_source
+      - owner_choice_evidence
+      - prompt
+      - resume
+    supported_modes:
+      - "none"
+      - "analysis-only"
+      - "full-recommended"
+    prompt:
+      required:
+        - count
+        - disposition
+    resume:
+      required:
+        - reuse_existing_selection
+        - repeat_prompt
+  execution_support:
+    required:
+      - state
+      - evidence_refs
+    states:
+      - "unknown"
+      - "verified-available"
+      - "verified-unavailable"
+  canonical_stage_ids:
+    ordered_const:
+      - "route-and-evidence-discovery"
+      - "three-way-classification-and-reconciliation"
+      - "semantic-customization-and-governance-analysis"
+      - "plan-report-handoff-or-feedback-synthesis"
+      - "terminal-fixed-head-independent-audit"
+  execution_path:
+    required:
+      - kind
+      - canonical_stage_ids
+    kinds:
+      - "delegation-evaluation"
+      - "root-sequential"
+  fallbacks:
+    type: ordered-list
+    record_required:
+      - scope
+      - disposition
+      - trigger
+      - authorization_evidence
+      - evidence_refs
+      - canonical_stage_ids
+  terminal_independent_audit:
+    required:
+      - required
+      - selection_basis
+      - status
+      - subject_commit
+      - independence
+      - evidence_refs
+    statuses:
+      - "pending"
+      - "passed"
+      - "failed"
+      - "blocked"
+invariants:
+  - per-independent-run-selection
+  - explicit-choice-suppresses-prompt
+  - prompt-count-is-at-most-one
+  - resume-never-repeats-prompt
+  - canonical-stage-order-is-identical-across-paths
+  - unknown-support-does-not-prove-invocation
+  - fallback-requires-exact-evidence
+  - terminal-audit-is-explicit-and-fail-closed
+  - record-never-enters-target-provenance
+additional_properties: false
