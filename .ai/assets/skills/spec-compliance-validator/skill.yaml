@@ -51,31 +51,60 @@ effective_rule_consumption:
   excludes:
     - "Problem-frame drafting, implementation remediation, or status reporting that does not validate selected compliance."
   resolver: ".ai/scripts/resolve-effective-rule-packet.py"
+  applicability:
+    selector: "applicability_mode"
+    modes:
+      framework-source:
+        authority: ".dev/standards/AI-CONTEXT-SOURCE-EFFECTIVE-RULES.yaml"
+        rule_selection: "explicit source_rule_ids and selection_evidence"
+        downstream_provenance: "not-applicable"
+      initialized-target:
+        authority: ".dev/ai-context/provenance.yaml"
+        rule_selection: "exact target effective-state route"
+        downstream_provenance: "required"
   selectors:
     - "capability"
     - "execution_mode"
     - "technology_profile"
     - "file_type"
   unresolved_outcome: "stop-applicable-action"
-  consumption_order: "Consume a freshness-verified task-scoped packet before reading profile references needed for the applicable action."
+  consumption_order: "Select the applicability mode explicitly, then consume its freshness-verified task-scoped evidence before reading profile references needed for the applicable action."
   evidence:
-    required:
+    required_common:
       - "resolver_outcome"
+      - "applicability_mode"
       - "loaded_rule_ids"
-      - "baseline.framework_version"
-      - "target_state.digest"
       - "request.capability"
       - "request.execution_mode"
       - "request.technology_profile"
       - "request.file_type"
+      - "rules[].normative_statement_digest"
+      - "packet_digest"
+    required_by_mode:
+      framework-source:
+        - "source_repository.id"
+        - "source_repository.root"
+        - "source_repository.origin_url"
+        - "source_repository.commit"
+        - "source_repository.git_status.digest"
+        - "execution_files[].path"
+        - "execution_files[].blob_digest"
+        - "execution_files[].working_tree_digest"
+        - "selection_evidence"
+        - "catalogs[].digest"
+      initialized-target:
+        - "baseline.framework_version"
+        - "target_state.digest"
   semantic_consistency:
     identity: "rule_id"
     statement_bytes: "exact UTF-8 rules[].normative_statement bytes"
     statement_digest: "rules[].normative_statement_digest"
     cross_consumer_requirement: "the same rule_id must resolve to byte-equivalent effective semantics across consumers"
     default_mismatch_outcome: "warning"
-    stricter_policy_owner: "target-owned"
+    stricter_policy_owner: "source-governance-owned in framework-source mode; target-owned in initialized-target mode"
   prohibitions:
+    - "Do not infer applicability mode from repository contents, remembered state, or missing downstream provenance."
+    - "Do not require, fabricate, or persist downstream provenance in framework-source mode."
     - "Do not scan broad target or framework documents to discover rule semantics."
     - "Do not fall back to framework defaults."
     - "Do not select an alternate route when the exact request route is unresolved."

@@ -1,0 +1,87 @@
+schema_version: "1.0"
+document: "transient framework-source effective-rule execution evidence"
+classification: "source-only-transient"
+purpose: "Bind one explicit framework-source action request to exact repository, Git, policy, resolver, catalog, selector, selection, and canonical rule bytes without creating downstream provenance."
+required:
+  - schema_version
+  - resolver_outcome
+  - applicability_mode
+  - source_repository
+  - execution_files
+  - request
+  - selection_evidence
+  - catalogs
+  - loaded_rule_ids
+  - rules
+  - freshness
+  - packet_digest
+fixed:
+  schema_version: "1.0"
+  resolver_outcome: "resolved"
+  applicability_mode: "framework-source"
+source_repository:
+  required: [id, root, origin_url, commit, git_status]
+  id: "must equal the source policy repository.id"
+  root: "canonical absolute path returned by git rev-parse --show-toplevel"
+  origin_url: "must exactly equal one source policy accepted_origin_urls value"
+  commit: "40-character lowercase Git SHA returned by git rev-parse HEAD"
+  git_status:
+    required: [porcelain_v1, digest]
+    porcelain_v1: "exact UTF-8 stdout bytes from git status --porcelain=v1 --untracked-files=all decoded without transformation"
+    digest: "lowercase SHA-256 of the exact porcelain_v1 UTF-8 bytes"
+execution_files:
+  type: "non-empty-list"
+  ordering: "path ascending"
+  record:
+    required: [path, blob_digest, working_tree_digest]
+    path: "one exact source policy execution.required_head_bound_paths entry"
+    blob_digest: "lowercase SHA-256 of the exact Git HEAD blob bytes"
+    working_tree_digest: "lowercase SHA-256 of the regular non-symlink working-tree bytes; must equal blob_digest"
+request:
+  required: [capability, execution_mode, technology_profile, file_type]
+  fields: "non-empty explicit strings; wildcards and inferred defaults are forbidden"
+  technology_profile: "must resolve through the source policy catalogs.technology_profiles mapping"
+selection_evidence: "non-empty, unique, ascending safe repository-relative references supplied explicitly by the caller"
+catalogs:
+  type: "exactly-two-records"
+  ordering: "catalog_id ascending"
+  record:
+    required: [catalog_id, path, digest]
+    catalog_id: [selected-profile, shared]
+    path: "must equal the fixed source policy path"
+    digest: "verified catalog digest bound to the exact HEAD catalog bytes"
+loaded_rule_ids: "non-empty, unique, ascending explicit caller selection"
+rules:
+  type: "non-empty-list exactly covering loaded_rule_ids in ascending order"
+  record:
+    required: [rule_id, catalog_id, catalog_selector, normative_statement, normative_statement_digest]
+    rule_id: "must resolve exactly once from the two fixed HEAD catalogs"
+    catalog_id: [selected-profile, shared]
+    catalog_selector: "exact stable catalog record selector"
+    normative_statement: "exact complete catalog normative_text bytes represented as an LF-normalized string with one terminal LF"
+    normative_statement_digest: "lowercase SHA-256 of normative_statement UTF-8 bytes and equal to the selected catalog declaration"
+freshness:
+  required: [status, verified_inputs]
+  status: "verified"
+  verified_inputs:
+    required: [repository_commit, execution_file_digests, catalog_digests]
+    repository_commit: "must equal source_repository.commit"
+    execution_file_digests: "must exactly project execution_files path and blob_digest values"
+    catalog_digests: "must exactly project catalogs"
+packet_digest:
+  algorithm: "sha256"
+  canonicalization: "UTF-8 compact JSON with Unicode preserved, object keys sorted, array order retained, exactly one terminal LF, and packet_digest omitted"
+persistence:
+  allowed: "stdout or ignored validation evidence explicitly owned by the source workflow"
+  forbidden:
+    - ".dev/ai-context/provenance.yaml"
+    - ".dev/ai-context/customizations.yaml"
+    - ".dev/ai-context/effective-rules.yaml"
+    - ".dev/ai-context/effective-rule-packets/**"
+    - "downstream package payloads"
+fail_closed:
+  - "missing or inferred applicability mode, rule selection, or selection evidence"
+  - "wrong repository identity, origin, root, commit, or unsafe Git command result"
+  - "missing, untracked, non-regular, symlinked, dirty, or digest-mismatched required execution path"
+  - "unknown, duplicate, unsorted, ambiguous, or type-invalid rule identity"
+  - "catalog, normative statement, selector, freshness, or packet digest mismatch"

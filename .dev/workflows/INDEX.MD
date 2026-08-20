@@ -8,6 +8,7 @@ task-level progress.
 
 | Workflow | Title | Owner | Status | Updated | Entry Point |
 | --- | --- | --- | --- | --- | --- |
+| [`2026-08-20-gov-010-source-applicability`](2026-08-20-gov-010-source-applicability/workflow.yaml) | GOV-010 Source-Repository Effective-Rule Applicability | `ai-context-governance` | `in_progress` | `2026-08-20T08:46:07+08:00` | [plan](2026-08-20-gov-010-source-applicability/workflow-plan.md) |
 | [`2026-08-19-gov-008-terminal-issue-closure`](2026-08-19-gov-008-terminal-issue-closure/workflow.yaml) | Add Terminal And Deferred GitHub Issue Closure Modes | `ai-context-governance` | `completed` | `2026-08-20T07:17:17+08:00` | [plan](2026-08-19-gov-008-terminal-issue-closure/workflow-plan.md) |
 | [`2026-08-15-val-007-terminal-validation`](2026-08-15-val-007-terminal-validation/workflow.yaml) | Seal Terminal Validation Supervision And Evidence | `ai-context-governance` | `completed` | `2026-08-20T03:34:43+08:00` | [plan](2026-08-15-val-007-terminal-validation/workflow-plan.md) |
 | [`2026-08-14-environment-execution-routing`](2026-08-14-environment-execution-routing/workflow.yaml) | Define Portable CLI Execution Routing | `ai-context-governance` | `completed` | `2026-08-14T22:40:39+08:00` | [plan](2026-08-14-environment-execution-routing/workflow-plan.md) |

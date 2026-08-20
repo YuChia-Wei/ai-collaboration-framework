@@ -1,14 +1,16 @@
 #!/usr/bin/env python3
-"""Given-When-Then tests for target-effective rule packet resolution."""
+"""Given-When-Then tests for explicit source and target rule-packet resolution."""
 
 from __future__ import annotations
 
 import copy
 import shutil
+import subprocess
 import sys
 import tempfile
 import unittest
 from pathlib import Path
+from unittest import mock
 
 import yaml
 
@@ -51,6 +53,58 @@ CONSUMER_ROUTES = (
 )
 DEFAULT_CONSUMER_ROUTES = (CONSUMER_ROUTES[0],)
 EVIDENCE = ".dev/decisions/effective-rules.md"
+SOURCE_RULE_IDS = ["AICTX-EVIDENCE-001", "TEST-GWT-001"]
+SOURCE_SELECTION_EVIDENCE = [
+    ".dev/standards/AI-CONTEXT-SOURCE-EFFECTIVE-RULES.yaml",
+]
+
+
+class FrameworkSourceFixture:
+    """Own a minimal committed framework-source repository fixture."""
+
+    def __init__(self) -> None:
+        self._temporary = tempfile.TemporaryDirectory(prefix="framework-source-rules-")
+        self.root = Path(self._temporary.name)
+        self.policy = yaml.safe_load(
+            (ROOT / RULES.SOURCE_EFFECTIVE_RULES_POLICY_PATH).read_text(
+                encoding="utf-8"
+            )
+        )
+        for relative in self.policy["execution"]["required_head_bound_paths"]:
+            source = ROOT / relative
+            destination = self.root / relative
+            destination.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copyfile(source, destination)
+        self.git("init", "-q")
+        self.git("config", "user.name", "Fixture")
+        self.git("config", "user.email", "fixture@example.invalid")
+        self.git("remote", "add", "origin", self.policy["repository"]["accepted_origin_urls"][0])
+        self.git("add", "--all")
+        self.git("commit", "-qm", "fixture source state")
+
+    def close(self) -> None:
+        self._temporary.cleanup()
+
+    def git(self, *arguments: str) -> subprocess.CompletedProcess[str]:
+        result = subprocess.run(
+            ["git", *arguments],
+            cwd=self.root,
+            check=False,
+            capture_output=True,
+            text=True,
+            encoding="utf-8",
+        )
+        if result.returncode != 0:
+            raise AssertionError(
+                f"git {' '.join(arguments)} failed with exit {result.returncode}: "
+                f"{(result.stdout + result.stderr).strip()}"
+            )
+        return result
+
+    def append(self, relative: str, value: str) -> None:
+        path = self.root / relative
+        with path.open("a", encoding="utf-8", newline="\n") as handle:
+            handle.write(value)
 
 
 class EffectiveRuleFixture:
@@ -200,6 +254,378 @@ class EffectiveRuleFixture:
     @staticmethod
     def assert_stable_state_digest(state: dict) -> None:
         assert state["target_state_digest"] == RULES.target_state_digest(state)
+
+
+class FrameworkSourceRuleResolverTests(unittest.TestCase):
+    def resolve_source(
+        self,
+        fixture: FrameworkSourceFixture,
+        *,
+        source_rule_ids: list[str] | None = None,
+        selection_evidence: list[str] | None = None,
+    ) -> dict:
+        return RULES.resolve_effective_rule_packet_for_mode(
+            fixture.root,
+            applicability_mode="framework-source",
+            **REQUEST,
+            source_rule_ids=(
+                SOURCE_RULE_IDS if source_rule_ids is None else source_rule_ids
+            ),
+            selection_evidence=(
+                SOURCE_SELECTION_EVIDENCE
+                if selection_evidence is None
+                else selection_evidence
+            ),
+        )
+
+    def test_gwt_010_given_committed_framework_source_and_explicit_selection_when_resolved_then_source_packet_binds_exact_head_inputs(self) -> None:
+        fixture = FrameworkSourceFixture()
+        try:
+            packet = self.resolve_source(fixture)
+
+            self.assertEqual("resolved", packet["resolver_outcome"])
+            self.assertEqual("framework-source", packet["applicability_mode"])
+            self.assertEqual(
+                fixture.git("rev-parse", "--show-toplevel").stdout.rstrip("\r\n"),
+                packet["source_repository"]["root"],
+            )
+            self.assertEqual(
+                fixture.root.resolve().as_posix(),
+                Path(packet["source_repository"]["root"]).resolve().as_posix(),
+            )
+            self.assertEqual("", packet["source_repository"]["git_status"]["porcelain_v1"])
+            self.assertEqual(
+                RULES._sha256_bytes(b""),
+                packet["source_repository"]["git_status"]["digest"],
+            )
+            self.assertEqual(SOURCE_RULE_IDS, packet["loaded_rule_ids"])
+            self.assertEqual(SOURCE_SELECTION_EVIDENCE, packet["selection_evidence"])
+            self.assertEqual(
+                sorted(record["path"] for record in packet["execution_files"]),
+                [record["path"] for record in packet["execution_files"]],
+            )
+            for record in packet["execution_files"]:
+                self.assertEqual(record["blob_digest"], record["working_tree_digest"])
+            self.assertEqual(
+                ["selected-profile", "shared"],
+                [record["catalog_id"] for record in packet["catalogs"]],
+            )
+            self.assertEqual(SOURCE_RULE_IDS, [rule["rule_id"] for rule in packet["rules"]])
+            for rule in packet["rules"]:
+                self.assertEqual(
+                    RULES._sha256_bytes(rule["normative_statement"].encode("utf-8")),
+                    rule["normative_statement_digest"],
+                )
+            self.assertEqual(packet["packet_digest"], RULES.packet_digest(packet))
+            self.assertEqual(
+                packet["catalogs"],
+                packet["freshness"]["verified_inputs"]["catalog_digests"],
+            )
+        finally:
+            fixture.close()
+
+    def test_gwt_011_given_missing_target_provenance_when_modes_are_explicit_then_source_resolves_and_initialized_target_fails_closed(self) -> None:
+        fixture = FrameworkSourceFixture()
+        try:
+            self.assertEqual("framework-source", self.resolve_source(fixture)["applicability_mode"])
+            with self.assertRaisesRegex(RULES.EffectiveRuleError, "target provenance"):
+                RULES.resolve_effective_rule_packet_for_mode(
+                    fixture.root,
+                    applicability_mode="initialized-target",
+                    **REQUEST,
+                )
+        finally:
+            fixture.close()
+
+    def test_gwt_012_given_dirty_required_source_execution_file_when_resolved_then_exact_head_binding_fails_closed(self) -> None:
+        fixture = FrameworkSourceFixture()
+        try:
+            fixture.append(RULES.SOURCE_RESOLVER_MODULE_PATH, "\n# fixture mutation\n")
+            with self.assertRaisesRegex(
+                RULES.SourceEffectiveRuleError,
+                "source-execution-digest.*exact HEAD blob",
+            ):
+                self.resolve_source(fixture)
+        finally:
+            fixture.close()
+
+    def test_gwt_012a_given_staged_deletion_with_matching_working_bytes_when_resolved_then_fixed_source_path_is_still_dirty(self) -> None:
+        fixture = FrameworkSourceFixture()
+        try:
+            fixture.git("rm", "--cached", RULES.SOURCE_RESOLVER_CLI_PATH)
+            self.assertTrue((fixture.root / RULES.SOURCE_RESOLVER_CLI_PATH).is_file())
+            with self.assertRaisesRegex(
+                RULES.SourceEffectiveRuleError,
+                "source-execution-digest.*dirty against HEAD",
+            ):
+                self.resolve_source(fixture)
+        finally:
+            fixture.close()
+
+    def test_gwt_013_given_wrong_source_origin_when_resolved_then_repository_identity_fails_closed(self) -> None:
+        fixture = FrameworkSourceFixture()
+        try:
+            fixture.git(
+                "remote",
+                "set-url",
+                "origin",
+                "https://example.invalid/not-the-framework.git",
+            )
+            with self.assertRaisesRegex(
+                RULES.SourceEffectiveRuleError,
+                "source-repository.*not accepted",
+            ):
+                self.resolve_source(fixture)
+        finally:
+            fixture.close()
+
+    def test_gwt_014_given_missing_duplicate_unsorted_or_unknown_source_rule_selection_when_resolved_then_no_selection_is_inferred(self) -> None:
+        fixture = FrameworkSourceFixture()
+        try:
+            cases = (
+                (None, "non-empty list"),
+                ([SOURCE_RULE_IDS[0], SOURCE_RULE_IDS[0]], "must not be duplicated"),
+                (list(reversed(SOURCE_RULE_IDS)), "must be ascending"),
+                (["UNKNOWN-RULE-001"], "unknown or ambiguous"),
+            )
+            for source_rule_ids, diagnostic in cases:
+                with self.subTest(source_rule_ids=source_rule_ids):
+                    with self.assertRaisesRegex(
+                        RULES.SourceEffectiveRuleError,
+                        f"source-rule-selection.*{diagnostic}",
+                    ):
+                        if source_rule_ids is None:
+                            RULES.resolve_effective_rule_packet_for_mode(
+                                fixture.root,
+                                applicability_mode="framework-source",
+                                **REQUEST,
+                                source_rule_ids=None,
+                                selection_evidence=SOURCE_SELECTION_EVIDENCE,
+                            )
+                        else:
+                            self.resolve_source(
+                                fixture,
+                                source_rule_ids=source_rule_ids,
+                            )
+            with self.assertRaisesRegex(
+                RULES.SourceEffectiveRuleError,
+                "source-rule-selection.*selection evidence",
+            ):
+                self.resolve_source(fixture, selection_evidence=[])
+            missing_reference = ".dev/decisions/missing-source-evidence.md"
+            with self.assertRaisesRegex(
+                RULES.SourceEffectiveRuleError,
+                "source-rule-selection.*missing or ambiguous in HEAD",
+            ):
+                self.resolve_source(
+                    fixture,
+                    selection_evidence=[missing_reference],
+                )
+            fabricated_reference = ".dev/decisions/fabricated-source-evidence.md"
+            fabricated_path = fixture.root / fabricated_reference
+            fabricated_path.parent.mkdir(parents=True, exist_ok=True)
+            fabricated_path.write_text("fabricated\n", encoding="utf-8", newline="\n")
+            with self.assertRaisesRegex(
+                RULES.SourceEffectiveRuleError,
+                "source-rule-selection.*missing or ambiguous in HEAD",
+            ):
+                self.resolve_source(
+                    fixture,
+                    selection_evidence=[fabricated_reference],
+                )
+            with self.assertRaisesRegex(
+                RULES.SourceEffectiveRuleError,
+                "source-rule-selection.*regular HEAD blob",
+            ):
+                self.resolve_source(fixture, selection_evidence=[".dev"])
+        finally:
+            fixture.close()
+
+    def test_gwt_015_given_fabricated_downstream_provenance_or_dirty_source_policy_when_source_resolved_then_downstream_is_not_consumed_and_policy_is_head_bound(self) -> None:
+        fixture = FrameworkSourceFixture()
+        try:
+            provenance = fixture.root / RULES.PROVENANCE_PATH
+            provenance.parent.mkdir(parents=True, exist_ok=True)
+            provenance.write_text("fabricated: true\n", encoding="utf-8", newline="\n")
+            packet = self.resolve_source(fixture)
+            self.assertNotIn("target_state", packet)
+            self.assertNotIn("baseline", packet)
+            self.assertIn(
+                "?? .dev/ai-context/provenance.yaml",
+                packet["source_repository"]["git_status"]["porcelain_v1"],
+            )
+            fixture.append(RULES.SOURCE_EFFECTIVE_RULES_POLICY_PATH, "\n# fabricated\n")
+            with self.assertRaisesRegex(
+                RULES.SourceEffectiveRuleError,
+                "source-execution-digest.*exact HEAD blob",
+            ):
+                self.resolve_source(fixture)
+        finally:
+            fixture.close()
+
+    def test_gwt_015a_given_status_drift_after_selection_validation_when_source_packet_is_emitted_then_final_status_is_bound(self) -> None:
+        fixture = FrameworkSourceFixture()
+        original = RULES._source_verify_selection_evidence
+
+        def verify_then_change_status(root: Path, evidence: list[str]) -> None:
+            original(root, evidence)
+            (root / "status-drift-after-selection.txt").write_text(
+                "untracked status drift\n",
+                encoding="utf-8",
+                newline="\n",
+            )
+
+        try:
+            with mock.patch.object(
+                RULES,
+                "_source_verify_selection_evidence",
+                side_effect=verify_then_change_status,
+            ):
+                packet = self.resolve_source(fixture)
+            status = packet["source_repository"]["git_status"]
+            self.assertIn("?? status-drift-after-selection.txt", status["porcelain_v1"])
+            self.assertEqual(
+                RULES._sha256_bytes(status["porcelain_v1"].encode("utf-8")),
+                status["digest"],
+            )
+        finally:
+            fixture.close()
+
+    def test_gwt_016_given_cli_mode_and_mode_specific_arguments_when_invoked_then_mode_is_mandatory_and_cross_mode_arguments_fail(self) -> None:
+        fixture = FrameworkSourceFixture()
+        target = EffectiveRuleFixture()
+        try:
+            target.write_ready_state()
+            command = [sys.executable, "-B", str(ROOT / RULES.SOURCE_RESOLVER_CLI_PATH)]
+            dimensions = [
+                "--capability",
+                REQUEST["capability"],
+                "--execution-mode",
+                REQUEST["execution_mode"],
+                "--technology-profile",
+                REQUEST["technology_profile"],
+                "--file-type",
+                REQUEST["file_type"],
+            ]
+
+            missing_mode = subprocess.run(
+                [*command, "--root", str(fixture.root), *dimensions],
+                cwd=ROOT,
+                check=False,
+                capture_output=True,
+                text=True,
+                encoding="utf-8",
+            )
+            self.assertEqual(2, missing_mode.returncode)
+            self.assertIn("--applicability-mode", missing_mode.stderr)
+
+            source = subprocess.run(
+                [
+                    *command,
+                    "--root",
+                    str(fixture.root),
+                    "--applicability-mode",
+                    "framework-source",
+                    *dimensions,
+                    "--source-rule-id",
+                    SOURCE_RULE_IDS[0],
+                    "--source-rule-id",
+                    SOURCE_RULE_IDS[1],
+                    "--selection-evidence",
+                    SOURCE_SELECTION_EVIDENCE[0],
+                ],
+                cwd=ROOT,
+                check=False,
+                capture_output=True,
+                text=True,
+                encoding="utf-8",
+            )
+            self.assertEqual(0, source.returncode, source.stderr)
+            self.assertEqual(
+                "framework-source",
+                yaml.safe_load(source.stdout)["applicability_mode"],
+            )
+
+            missing_target_provenance = subprocess.run(
+                [
+                    *command,
+                    "--root",
+                    str(fixture.root),
+                    "--applicability-mode",
+                    "initialized-target",
+                    *dimensions,
+                ],
+                cwd=ROOT,
+                check=False,
+                capture_output=True,
+                text=True,
+                encoding="utf-8",
+            )
+            self.assertEqual(1, missing_target_provenance.returncode)
+            self.assertIn(
+                "downstream-provenance-missing",
+                missing_target_provenance.stderr,
+            )
+
+            target_success = subprocess.run(
+                [
+                    *command,
+                    "--root",
+                    str(target.root),
+                    "--applicability-mode",
+                    "initialized-target",
+                    *dimensions,
+                ],
+                cwd=ROOT,
+                check=False,
+                capture_output=True,
+                text=True,
+                encoding="utf-8",
+            )
+            self.assertEqual(0, target_success.returncode, target_success.stderr)
+            self.assertNotIn("applicability_mode", yaml.safe_load(target_success.stdout))
+
+            target_source_argument = subprocess.run(
+                [
+                    *command,
+                    "--root",
+                    str(target.root),
+                    "--applicability-mode",
+                    "initialized-target",
+                    *dimensions,
+                    "--source-rule-id",
+                    SOURCE_RULE_IDS[0],
+                ],
+                cwd=ROOT,
+                check=False,
+                capture_output=True,
+                text=True,
+                encoding="utf-8",
+            )
+            self.assertEqual(1, target_source_argument.returncode)
+            self.assertIn("framework-source-only", target_source_argument.stderr)
+
+            source_candidate = subprocess.run(
+                [
+                    *command,
+                    "--root",
+                    str(fixture.root),
+                    "--applicability-mode",
+                    "framework-source",
+                    *dimensions,
+                    "--emit-candidate",
+                ],
+                cwd=ROOT,
+                check=False,
+                capture_output=True,
+                text=True,
+                encoding="utf-8",
+            )
+            self.assertEqual(1, source_candidate.returncode)
+            self.assertIn("source-applicability", source_candidate.stderr)
+        finally:
+            target.close()
+            fixture.close()
 
 
 class EffectiveRuleResolverTests(unittest.TestCase):

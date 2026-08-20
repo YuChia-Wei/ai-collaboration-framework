@@ -353,6 +353,15 @@ exclusions:
       The source compatibility router and source release procedure are not
       downstream instructions. The portable version/provenance/upgrade policy
       is projected to the stable target path through portable-policy-manifest.
+  - id: source-effective-rule-execution
+    classification: source-only
+    patterns:
+      - .dev/standards/AI-CONTEXT-SOURCE-EFFECTIVE-RULE-EVIDENCE.schema.yaml
+      - .dev/standards/AI-CONTEXT-SOURCE-EFFECTIVE-RULES.yaml
+    reason: >-
+      Framework-source applicability and execution evidence bind this source
+      repository's Git identity and must never become downstream provenance,
+      target-effective state, or portable package truth.
   - id: source-codex-runtime-worker-profiles
     classification: source-only
     patterns:
