@@ -802,7 +802,7 @@ select_immutable_history_full_checks() {
 }
 
 prepare_immutable_history_layer() {
-    local rc outcome reason source_revision source_tree receipt_commit reusable_ids extra id
+    local rc outcome reason source_revision source_tree receipt_commit reusable_ids extra id preparation_line
     local -a preparation_lines=()
     if ! immutable_history_source_context_available; then
         return 0
@@ -853,8 +853,9 @@ prepare_immutable_history_layer() {
         echo "Immutable history supervised preparation did not emit exactly one TSV decision." >&2
         return 1
     fi
+    preparation_line="${preparation_lines[0]%$'\r'}"
     IFS=$'\t' read -r outcome reason source_revision source_tree receipt_commit reusable_ids extra \
-        <<< "${preparation_lines[0]}"
+        <<< "$preparation_line"
     if [ -n "$extra" ]; then
         echo "Immutable history supervised preparation emitted an invalid TSV decision." >&2
         return 1
