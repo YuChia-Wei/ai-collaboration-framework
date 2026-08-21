@@ -397,9 +397,19 @@ class SyntheticRunnerRepo:
             '              invalid-cache) fixture_reuse=maybe; fixture_prior_log= ;;\n'
             '              extra-column) fixture_suffix="$(printf \'\\textra\')" ;;\n'
             '              missing-row) fixture_first=false; continue ;;\n'
+            '              crlf-invalid-id) fixture_output_id=invalid_id ;;\n'
+            '              crlf-invalid-fingerprint) fixture_fingerprint=invalid ;;\n'
+            '              crlf-invalid-cache) fixture_reuse=maybe; fixture_prior_log= ;;\n'
+            '              crlf-false-prior-log) fixture_reuse=false; fixture_prior_log="fixture-cache/$validator_id.log" ;;\n'
+            '              crlf-extra-column) fixture_suffix="$(printf \'\\textra\')" ;;\n'
+            '              crlf-internal-cr) fixture_output_id="$(printf "%s\\r" "$fixture_output_id")" ;;\n'
             '            esac\n'
             '          fi\n'
-            '          printf "%s\\t%s\\t%s\\t%s%s\\n" "$fixture_output_id" "$fixture_fingerprint" "$fixture_reuse" "$fixture_prior_log" "$fixture_suffix"\n'
+            '          if [[ "${EVIDENCE_STUB_PREPARE_MODE:-valid}" = crlf-* ]]; then\n'
+            '            printf "%s\\t%s\\t%s\\t%s%s\\r\\n" "$fixture_output_id" "$fixture_fingerprint" "$fixture_reuse" "$fixture_prior_log" "$fixture_suffix"\n'
+            '          else\n'
+            '            printf "%s\\t%s\\t%s\\t%s%s\\n" "$fixture_output_id" "$fixture_fingerprint" "$fixture_reuse" "$fixture_prior_log" "$fixture_suffix"\n'
+            '          fi\n'
             '          if [ "$fixture_first" = true ] && [ "${EVIDENCE_STUB_PREPARE_MODE:-valid}" = duplicate-id ]; then\n'
             '            printf "%s\\t%s\\t%s\\t%s\\n" "$fixture_output_id" "$fixture_fingerprint" "$fixture_reuse" "$fixture_prior_log"\n'
             '          fi\n'
@@ -2244,6 +2254,70 @@ class CheckAllRunnerGwtTests(unittest.TestCase):
                         ),
                     )
                     self.assertFalse((invocation / "sealed-manifest.json").exists())
+                finally:
+                    fixture.close()
+
+    def test_gwt_037a_given_crlf_cache_preparation_rows_without_reuse_when_admission_runs_then_validation_continues(
+        self,
+    ) -> None:
+        fixture = SyntheticRunnerRepo()
+        try:
+            fixture.restrict_profile_to("pr", "profile-registry-contract")
+
+            result = fixture.execute(
+                "--quick",
+                environment={
+                    "AI_CONTEXT_VALIDATION_LOG_DIR": str(fixture.validation_logs),
+                    "EVIDENCE_STUB_PREPARE_MODE": "crlf-valid",
+                },
+            )
+
+            self.assertEqual(0, result.returncode, result.stdout + result.stderr)
+            self.assertTrue(
+                any("test_validation_profile_registry.py" in line for line in fixture.sentinel()),
+                fixture.sentinel(),
+            )
+            invocation = fixture.invocation_directories()[0]
+            self.assertIn(b"\r\n", (invocation / "control-prepare.log").read_bytes())
+        finally:
+            fixture.close()
+
+    def test_gwt_037b_given_crlf_cache_preparation_rows_have_invalid_data_when_admission_runs_then_runner_fails_before_checks(
+        self,
+    ) -> None:
+        cases = {
+            "crlf-false-prior-log": "log without a cache hit",
+            "crlf-extra-column": "row must contain exactly four columns",
+            "crlf-invalid-cache": "invalid cache flag",
+            "crlf-invalid-fingerprint": "invalid fingerprint",
+            "crlf-invalid-id": "invalid check id",
+            "crlf-internal-cr": "invalid check id",
+        }
+        for mode, expected_error in cases.items():
+            with self.subTest(mode=mode):
+                fixture = SyntheticRunnerRepo()
+                try:
+                    fixture.restrict_profile_to("pr", "profile-registry-contract")
+                    result = fixture.execute(
+                        "--quick",
+                        environment={
+                            "AI_CONTEXT_VALIDATION_LOG_DIR": str(
+                                fixture.validation_logs
+                            ),
+                            "EVIDENCE_STUB_PREPARE_MODE": mode,
+                        },
+                    )
+
+                    self.assertEqual(2, result.returncode, result.stdout + result.stderr)
+                    self.assertIn(expected_error, result.stderr)
+                    self.assertIn(
+                        "preparation failed under process-tree supervision",
+                        result.stderr,
+                    )
+                    self.assertFalse(
+                        any(".ai/scripts/" in line for line in fixture.sentinel()),
+                        fixture.sentinel(),
+                    )
                 finally:
                     fixture.close()
 

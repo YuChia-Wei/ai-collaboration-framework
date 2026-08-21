@@ -1025,7 +1025,7 @@ prepare_validation_evidence() {
 }
 
 prepare_all_validation_evidence() {
-    local id version prepared line record fingerprint cache_hit prior_log rest tab_count row_count=0
+    local id version prepared line parse_line record fingerprint cache_hit prior_log rest tab_count row_count=0
     local -A expected_ids=() seen_ids=()
     [ -f "$EVIDENCE_HELPER" ] || {
         echo "Validation evidence helper is missing: $EVIDENCE_HELPER" >&2
@@ -1053,11 +1053,12 @@ prepare_all_validation_evidence() {
     fi
     prepared=$(< "$LOG_DIR/control-prepare.log")
     while IFS= read -r line; do
-        [ -n "$line" ] || {
+        parse_line="${line%$'\r'}"
+        [ -n "$parse_line" ] || {
             echo "Validation evidence preparation contains a blank or empty row" >&2
             return 1
         }
-        rest=$line
+        rest=$parse_line
         tab_count=0
         while [[ "$rest" == *$'\t'* ]]; do
             rest=${rest#*$'\t'}
@@ -1067,7 +1068,7 @@ prepare_all_validation_evidence() {
             echo "Validation evidence preparation row must contain exactly four columns" >&2
             return 1
         }
-        IFS=$'\t' read -r record fingerprint cache_hit prior_log <<< "$line"
+        IFS=$'\t' read -r record fingerprint cache_hit prior_log <<< "$parse_line"
         [[ "$record" =~ ^[a-z0-9][a-z0-9-]*$ ]] || {
             echo "Validation evidence preparation contains an invalid check id" >&2
             return 1
