@@ -104,6 +104,64 @@ def user_view_contract(*, code_reviewer: bool = False) -> dict:
 
 
 class PayloadUserViewContractTests(unittest.TestCase):
+    def test_given_v22_archive_without_target_owned_patterns_when_validated_then_only_legacy_reference_closure_is_implicit(self) -> None:
+        files = [
+            payload_file(
+                ".ai/assets/skills/code-reviewer/skill.yaml",
+                'source: ".dev/AI-CONTEXT-SOURCE.yaml"\n',
+                "dotnet-backend",
+            )
+        ]
+        legacy = user_view_contract(code_reviewer=True)
+        del legacy["reference_integrity"]["target_owned_reference_patterns"]
+
+        PACKAGE.validate_payload_user_view(
+            files, legacy, archive_package_schema="2.2.0"
+        )
+
+        with self.subTest("current source profile remains strict"):
+            source_profile = {
+                "components": legacy["components"],
+                "reference_integrity": legacy["reference_integrity"],
+                "payload_user_view": {
+                    "schema_version": legacy["schema_version"],
+                    "classifications": legacy["classifications"],
+                    "supported_selections": legacy["supported_selections"],
+                    "capabilities": legacy["capabilities"],
+                },
+            }
+            with self.assertRaisesRegex(
+                PACKAGE.PackageError,
+                "target_owned_reference_patterns must use the canonical exact allowlist",
+            ):
+                PACKAGE.validate_payload_reference_integrity(files, source_profile)
+
+        with self.subTest("v23 archive remains strict"):
+            with self.assertRaisesRegex(
+                PACKAGE.PackageError,
+                "target_owned_reference_patterns must use the canonical exact allowlist",
+            ):
+                PACKAGE.validate_payload_user_view(
+                    files, legacy, archive_package_schema="2.3.0"
+                )
+
+        with self.subTest("present altered list always fails closed"):
+            altered = user_view_contract(code_reviewer=True)
+            altered["reference_integrity"]["target_owned_reference_patterns"] = list(
+                PACKAGE.TARGET_OWNED_REFERENCE_PATTERNS[1:]
+            )
+            for archive_package_schema in (None, "2.2.0", "2.3.0"):
+                with self.subTest(archive_package_schema=archive_package_schema):
+                    with self.assertRaisesRegex(
+                        PACKAGE.PackageError,
+                        "target_owned_reference_patterns must use the canonical exact allowlist",
+                    ):
+                        PACKAGE.validate_payload_user_view(
+                            files,
+                            altered,
+                            archive_package_schema=archive_package_schema,
+                        )
+
     def test_given_navigation_classes_when_targets_exist_then_contract_passes(self) -> None:
         files = [
             payload_file(

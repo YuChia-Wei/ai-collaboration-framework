@@ -51,11 +51,27 @@ sole log fetch, run `32428716122` / job `96615867346`, showed the candidate
 validator received the pull-request merge-ref `GITHUB_SHA` rather than the exact
 #206 terminal-close head, while the local exact-head candidate gate had passed.
 
-The current source-candidate head carries literal-expression-free durable
-evidence for the two-file checkout/validator-commit correction, using the same
-pull-request-head-or-dispatch commit selector. Focused 10/10, YAML/diff, and
-independent mutation review passed. The first independent review failure—that
-`PR_HEAD_SHA` alone left checkout at merge ref—is retained. Next: exact clean
+At pushed clean `fab9cf6787f0d4fad9384c29a6e0f514389667ba`, the exact local
+candidate gate passed. A fresh exact-head Sol audit then failed with no receipt
+after live candidate run `32431077702` / job `96622569129` failed. The audit
+identified two blockers: an archived v0.13 schema 2.2 package without canonical
+`target_owned_reference_patterns`, and downstream renderer, builder, and
+source-disposition behavior still binding merge-ref `GITHUB_SHA` instead of the
+selected candidate identity.
+
+The current source-candidate head is `fab9`; the next commit will bind the
+four-file compatibility and identity repair. Only an archived schema 2.2.0
+package with that absent field infers the exact canonical list; altered present
+values, current packages, and schema 2.3 packages with the field absent remain
+fail-closed. The retained v0.13 archive and canonical v0.14 package at
+`60572c01` pass. One job-level `CANDIDATE_COMMIT` selects the PR head or
+dispatch SHA and binds checkout, renderer, validator, builder, source
+disposition, and artifact identity; `PR_BASE_SHA` and `PR_HEAD_SHA` remain
+separate for changed-record discovery. Current-byte payload 7/7 and
+workflow-contract 10/10, AST/YAML/diff checks, and independent read-only review
+of raw binary Git diff SHA-256
+`4ecaef44a9b0636588df882308a3ea784c80e5669daf5b68bf7614590b93e349` passed
+with no blockers. Next: parent commit and push of the exact repair head, the
 candidate gate, fresh Sol audit and receipt, then one hosted watch. PR #232
 remains draft/open/unmerged; #206 open terminal-close; #222 deferred; no hosted
 admission, merge, Issue closure, provider closure, tag, GitHub Release, or

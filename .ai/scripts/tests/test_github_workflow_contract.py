@@ -231,7 +231,7 @@ class GitHubWorkflowContractTests(unittest.TestCase):
         )
         self.assertEqual(
             {
-                "name": "${{ steps.release.outputs.package_id }}-${{ github.sha }}",
+                "name": "${{ steps.release.outputs.package_id }}-${{ env.CANDIDATE_COMMIT }}",
                 "retention-days": "14",
                 "compression-level": "0",
                 "if-no-files-found": "error",
@@ -330,32 +330,38 @@ class GitHubWorkflowContractTests(unittest.TestCase):
 
     def test_gwt_006_given_candidate_state_requires_online_issue_readback_when_run_then_token_is_available(self) -> None:
         selected_commit = "${{ github.event.pull_request.head.sha || github.sha }}"
+        candidate_workflow = self.workflows["package-candidate.yml"]
+        candidate_job = candidate_workflow["jobs"]["package"]
         candidate_checkout = next(
             step
-            for step in steps(self.workflows["package-candidate.yml"])
+            for step in steps(candidate_workflow)
             if step.get("name") == "Check out candidate commit"
         )
-        candidate_step = next(
-            step
-            for step in steps(self.workflows["package-candidate.yml"])
-            if step.get("name") == "Validate exact candidate state"
-        )
-        self.assertEqual(selected_commit, candidate_checkout["with"].get("ref"))
+        self.assertEqual({"CANDIDATE_COMMIT": selected_commit}, candidate_job.get("env"))
+        self.assertEqual("${{ env.CANDIDATE_COMMIT }}", candidate_checkout["with"].get("ref"))
         self.assertEqual(
-            {
-                "GH_TOKEN": "${{ github.token }}",
-                "CANDIDATE_COMMIT": selected_commit,
-            },
-            candidate_step.get("env"),
-        )
-        self.assertEqual(
+            "${{ env.CANDIDATE_COMMIT }}",
             candidate_checkout["with"]["ref"],
-            candidate_step["env"]["CANDIDATE_COMMIT"],
         )
-        command = candidate_step["run"]
-        self.assertIn('--commit "${CANDIDATE_COMMIT}"', command)
-        self.assertNotIn('--commit "${GITHUB_SHA}"', command)
-        self.assertNotIn('candidate_commit="${GITHUB_SHA}"', command)
+
+        expected_commands = {
+            "Resolve candidate and render release body": ('--commit "${CANDIDATE_COMMIT}"', 1),
+            "Validate exact candidate state": ('--commit "${CANDIDATE_COMMIT}"', 1),
+            "Build deterministic archives": ('--ref "${CANDIDATE_COMMIT}"', 1),
+            "Render source disposition read-back": ('--ref "${CANDIDATE_COMMIT}"', 2),
+        }
+        candidate_steps = {step["name"]: step for step in steps(candidate_workflow)}
+        for step_name, (expected_argument, expected_count) in expected_commands.items():
+            with self.subTest(step=step_name):
+                step = candidate_steps[step_name]
+                command = step["run"]
+                self.assertEqual(expected_count, command.count(expected_argument))
+                self.assertNotIn("${GITHUB_SHA}", command)
+                self.assertNotIn("${{ github.sha }}", command)
+                self.assertNotIn(selected_commit, command)
+
+        candidate_state_step = candidate_steps["Validate exact candidate state"]
+        self.assertEqual({"GH_TOKEN": "${{ github.token }}"}, candidate_state_step.get("env"))
 
     def test_gwt_007_given_project_write_token_when_workflows_checked_then_only_tag_jobs_receive_it(self) -> None:
         for name in WORKFLOW_NAMES - {"publish-release.yml"}:

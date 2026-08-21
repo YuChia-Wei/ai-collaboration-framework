@@ -878,7 +878,9 @@ def payload_user_view_contract(profile: dict) -> dict:
     }
 
 
-def _validate_user_view_structure(contract: object) -> tuple[dict[str, dict], dict[str, set[str]], list[dict]]:
+def _validate_user_view_structure(
+    contract: object, *, archive_package_schema: str | None = None
+) -> tuple[dict[str, dict], dict[str, set[str]], list[dict], list[str]]:
     if not isinstance(contract, dict) or contract.get("schema_version") != "1.0.0":
         raise PackageError("payload user_view must use schema 1.0.0")
     if contract.get("classifications") != PAYLOAD_USER_VIEW_CLASSIFICATIONS:
@@ -888,7 +890,6 @@ def _validate_user_view_structure(contract: object) -> tuple[dict[str, dict], di
         raise PackageError("payload user_view reference_integrity must be a mapping")
     extensions = reference.get("text_extensions")
     forbidden = reference.get("forbidden_source_lifecycle_patterns")
-    target_owned = reference.get("target_owned_reference_patterns")
     if not isinstance(extensions, list) or not extensions or not all(
         isinstance(item, str) and item.startswith(".") for item in extensions
     ):
@@ -899,7 +900,17 @@ def _validate_user_view_structure(contract: object) -> tuple[dict[str, dict], di
         raise PackageError(
             "reference_integrity.forbidden_source_lifecycle_patterns must be a non-empty list"
         )
-    if target_owned != list(TARGET_OWNED_REFERENCE_PATTERNS):
+    canonical_target_owned = list(TARGET_OWNED_REFERENCE_PATTERNS)
+    if "target_owned_reference_patterns" not in reference:
+        if archive_package_schema == "2.2.0":
+            target_owned = canonical_target_owned
+        else:
+            raise PackageError(
+                "reference_integrity.target_owned_reference_patterns must use the canonical exact allowlist"
+            )
+    else:
+        target_owned = reference["target_owned_reference_patterns"]
+    if target_owned != canonical_target_owned:
         raise PackageError(
             "reference_integrity.target_owned_reference_patterns must use the canonical exact allowlist"
         )
@@ -1012,7 +1023,7 @@ def _validate_user_view_structure(contract: object) -> tuple[dict[str, dict], di
                     f"capability {capability_id} availability is invalid for {selection_id}"
                 )
         capability_ids.add(capability_id)
-    return components, selections, capabilities
+    return components, selections, capabilities, canonical_target_owned
 
 
 def _validate_markdown_navigation(
@@ -1188,14 +1199,25 @@ def _validate_component_capabilities(
                 )
 
 
-def validate_payload_user_view(files: Iterable[PayloadFile], contract: object) -> None:
+def validate_payload_user_view(
+    files: Iterable[PayloadFile],
+    contract: object,
+    *,
+    archive_package_schema: str | None = None,
+) -> None:
     payload_files = list(files)
     files_by_path = {item.path: item for item in payload_files}
     if len(files_by_path) != len(payload_files):
         raise PackageError("payload user_view received duplicate target paths")
-    components, selections, capabilities = _validate_user_view_structure(contract)
+    (
+        components,
+        selections,
+        capabilities,
+        target_owned_reference_patterns,
+    ) = _validate_user_view_structure(
+        contract, archive_package_schema=archive_package_schema
+    )
     reference = contract["reference_integrity"]
-    target_owned_reference_patterns = reference["target_owned_reference_patterns"]
     normalized_extensions = {
         item.lower() for item in reference["text_extensions"]
     }
@@ -2317,9 +2339,17 @@ def validate_archive(path: Path) -> dict[str, tuple[bytes, int]]:
     if payload_meta.get("file_count") != len(records) or payload_meta.get("sha256") != payload_digest(payload_items):
         raise PackageError("package payload count or digest mismatch")
     if package_schema == "2.2.0":
-        validate_payload_user_view(payload_items, package.get("user_view"))
+        validate_payload_user_view(
+            payload_items,
+            package.get("user_view"),
+            archive_package_schema=package_schema,
+        )
     if package_schema == "2.3.0":
-        validate_payload_user_view(payload_items, package.get("user_view"))
+        validate_payload_user_view(
+            payload_items,
+            package.get("user_view"),
+            archive_package_schema=package_schema,
+        )
         assert validation_document is not None
         assert selected_input_proof is not None
         selected_input_sha = sha256_bytes(
