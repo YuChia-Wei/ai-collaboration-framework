@@ -1,0 +1,41 @@
+schema_version: "1.0"
+contract_id: github-terminal-issue-closure
+repository: YuChia-Wei/ai-collaboration-framework
+validation_stage: declaration
+pull_request:
+  number: 234
+  head_sha: null
+  body: |-
+    ## Why
+
+    The integrated-main v0.14 readiness preparation passed the immutable-history decision parser, but Windows Python emitted `control-prepare.log` TSV rows with CRLF. Git Bash retained the terminal carriage return, so a valid `cache_hit=false` row with an empty prior-log field appeared nonempty and blocked preparation before any full checks launched.
+
+    ## What
+
+    - Strip exactly one terminal carriage return from each in-memory supervised evidence-preparation row before blank-row, tab-count, and TSV field validation.
+    - Keep the retained raw log bytes and every existing cache-hit, fingerprint, identity, column-count, prior-log, outcome, and child-exit fail-closed check unchanged.
+    - Add focused CRLF positive and malformed negative GWT coverage.
+
+    ## Validation
+
+    - Focused GWT037a-GWT037b: 2/2 passed in 42.053s on the normal host ACL boundary.
+    - Bash syntax, Python AST, diff checks, and commit policy passed.
+    - Fresh Sol High precommit review: PASS, zero blockers, raw diff SHA-256 d7d762c0e7667031414577469b8c2e187f6255a5495d2ccbe4dd580feee2c96c.
+
+    ## Boundary
+
+    Refs #222. This PR does not create or execute a v0.14.0 tag, GitHub Release, publication, or nightly activation.
+  integration: {status: pending, topology: null, admitted_head_sha: null, integration_commit_sha: null, provider_read_back: false}
+  review: {status: pending}
+  required_check_contexts: []
+  hosted_checks: []
+issues:
+  - number: 222
+    mode: deferred
+    work_authorization: {online_issue_bound: true, explicit_owner_approval: true}
+    final_accepted_delivery: false
+    workflow: {scope_complete: false, tasks_complete: false, applicable_verification_complete: false}
+    closing_keyword: null
+    closure_deferred_reason: the integrated-main readiness gate exposed and repaired the Windows CRLF control-prepare evidence-row parser defect before cumulative validation can complete
+    next_terminal_gate_or_owner: merge the exact admitted evidence-row parser repair, rerun cumulative release readiness on the resulting clean integrated main, obtain a fresh independent exact-head audit, and record the online verdict without tagging or publishing
+    read_back: {performed: false, integration_commit_sha: null, issue_state: null, issue_state_reason: null, project_status: null}
