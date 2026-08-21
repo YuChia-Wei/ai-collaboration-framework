@@ -1,0 +1,41 @@
+schema_version: "1.0"
+contract_id: github-terminal-issue-closure
+repository: YuChia-Wei/ai-collaboration-framework
+validation_stage: declaration
+pull_request:
+  number: 233
+  head_sha: null
+  body: |-
+    ## Why
+
+    The integrated-main v0.14 readiness preparation reached the immutable-history supervisor, but Windows Python emitted its valid full-required TSV decision with CRLF. Git Bash retained the terminal carriage return and rejected the decision before any full checks launched.
+
+    ## What
+
+    - Strip exactly one terminal carriage return from the in-memory supervised preparation line before TSV parsing.
+    - Keep retained raw evidence and every existing identity, reusable-ID, extra-column, outcome, and child-exit fail-closed check unchanged.
+    - Add focused CRLF positive and malformed negative GWT coverage.
+
+    ## Validation
+
+    - Focused GWT012a-GWT012h: 8/8 passed in 112.990s on the normal host ACL boundary.
+    - Bash syntax, Python AST, diff checks, and commit policy passed.
+    - Fresh Sol High precommit review: PASS, zero blockers, raw diff SHA-256 6c8f0a2f29eba13fa598c0f67b5b9129888162904848db7202da3329e06c49af.
+
+    ## Boundary
+
+    Refs #222. This PR does not create or execute a v0.14.0 tag, GitHub Release, publication, or nightly activation.
+  integration: {status: pending, topology: null, admitted_head_sha: null, integration_commit_sha: null, provider_read_back: false}
+  review: {status: pending}
+  required_check_contexts: []
+  hosted_checks: []
+issues:
+  - number: 222
+    mode: deferred
+    work_authorization: {online_issue_bound: true, explicit_owner_approval: true}
+    final_accepted_delivery: false
+    workflow: {scope_complete: false, tasks_complete: false, applicable_verification_complete: false}
+    closing_keyword: null
+    closure_deferred_reason: the integrated-main release readiness gate exposed and repairs a Windows CRLF parser defect before cumulative validation can complete
+    next_terminal_gate_or_owner: merge the exact admitted parser repair, rerun cumulative release readiness on the resulting clean integrated main, obtain a fresh independent exact-head audit, and record the online verdict without tagging or publishing
+    read_back: {performed: false, integration_commit_sha: null, issue_state: null, issue_state_reason: null, project_status: null}
