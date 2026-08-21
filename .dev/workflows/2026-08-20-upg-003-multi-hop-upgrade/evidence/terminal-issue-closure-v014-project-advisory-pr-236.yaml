@@ -1,0 +1,71 @@
+schema_version: "1.0"
+contract_id: github-terminal-issue-closure
+repository: YuChia-Wei/ai-collaboration-framework
+validation_stage: declaration
+pull_request:
+  number: 236
+  head_sha: null
+  body: |-
+    ## Why
+
+    The v0.14.0 release scope is already explicit and its implementation Issues are complete, but provider reconciliation schema 1.0 treated all five GitHub Project fields as mandatory. That made missing historical allocation metadata block an otherwise validated release.
+
+    ## What
+
+    - Add backward-compatible provider reconciliation schema 1.1, which validates only explicitly listed canonical Project fields while rejecting unknown fields.
+    - Keep schema 1.0 exact five-field behavior unchanged for historical releases.
+    - Configure v0.14.0 to require Included Work Issues #200-#208 closed/completed with Status Done, and coordination Issue #222 open before publication then closed/completed with Status Done after publication.
+    - Treat Priority, Owner review, Target release, and Published in as advisory for v0.14.0; omitted fields are neither required nor mutated.
+
+    ## Validation
+
+    - Focused provider reconciliation GWT: 11/11 passed.
+    - Live read-only v0.14.0 provider preflight: passed against GitHub Project #3.
+    - validate-ai-context.py, AST/YAML, diff checks, commit policy, and fresh independent six-file review: passed.
+
+    ## Related Issues
+
+    - Issue #235
+    - Delivery disposition: terminal-close
+    - Reference: Closes #235
+    - Owner authorization: the owner explicitly clarified that historical Project metadata is advisory and must not block v0.14.0 publication.
+
+    - Issue #222
+    - Delivery disposition: deferred
+    - Reference: Refs #222
+    - closure_deferred_reason: this PR repairs the source reconciliation gate but does not create the owner-controlled v0.14.0 tag or publish a GitHub Release.
+    - Next terminal gate or owner: merge the exact admitted repair, rerun pre-tag preparation on the resulting clean main, then return the current tag decision to the owner.
+
+    ## Delivery And Integration
+
+    - Delivery grouping: cohesive v0.14.0 release-gate repair
+    - Execution record: direct
+    - Selected topology: linear
+    - Topology reason: one bounded backward-compatible contract repair with no independently resumable branch boundary.
+
+    ## Boundary
+
+    This PR does not create or execute a v0.14.0 tag, GitHub Release, publication, nightly activation, or Project mutation.
+  integration: {status: pending, topology: null, admitted_head_sha: null, integration_commit_sha: null, provider_read_back: false}
+  review: {status: pending}
+  required_check_contexts: []
+  hosted_checks: []
+issues:
+  - number: 235
+    mode: terminal-close
+    work_authorization: {online_issue_bound: true, explicit_owner_approval: true}
+    final_accepted_delivery: true
+    workflow: {scope_complete: true, tasks_complete: true, applicable_verification_complete: true}
+    closing_keyword: Closes
+    closure_deferred_reason: null
+    next_terminal_gate_or_owner: null
+    read_back: {performed: false, integration_commit_sha: null, issue_state: null, issue_state_reason: null, project_status: null}
+  - number: 222
+    mode: deferred
+    work_authorization: {online_issue_bound: true, explicit_owner_approval: true}
+    final_accepted_delivery: false
+    workflow: {scope_complete: false, tasks_complete: false, applicable_verification_complete: false}
+    closing_keyword: null
+    closure_deferred_reason: this PR repairs the source reconciliation gate but does not create the owner-controlled v0.14.0 tag or publish a GitHub Release
+    next_terminal_gate_or_owner: merge the exact admitted repair, rerun pre-tag preparation on the resulting clean main, then return the current tag decision to the owner
+    read_back: {performed: false, integration_commit_sha: null, issue_state: null, issue_state_reason: null, project_status: null}
