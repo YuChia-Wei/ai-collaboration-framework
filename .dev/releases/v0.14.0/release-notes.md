@@ -59,23 +59,28 @@ identified two blockers: an archived v0.13 schema 2.2 package without canonical
 source-disposition behavior still binding merge-ref `GITHUB_SHA` instead of the
 selected candidate identity.
 
-The current source-candidate head is `fab9`; the next commit will bind the
-four-file compatibility and identity repair. Only an archived schema 2.2.0
-package with that absent field infers the exact canonical list; altered present
-values, current packages, and schema 2.3 packages with the field absent remain
-fail-closed. The retained v0.13 archive and canonical v0.14 package at
-`60572c01` pass. One job-level `CANDIDATE_COMMIT` selects the PR head or
-dispatch SHA and binds checkout, renderer, validator, builder, source
-disposition, and artifact identity; `PR_BASE_SHA` and `PR_HEAD_SHA` remain
-separate for changed-record discovery. Current-byte payload 7/7 and
-workflow-contract 10/10, AST/YAML/diff checks, and independent read-only review
-of raw binary Git diff SHA-256
+Repair head `3a466b2133e8ef20d752f08d2e1b4b9df8869eed` is committed and
+pushed. Its exact 15-commit range from
+`bf8ad9c624ffc2154722dfb266c9090c72e4ac5f` passed commit policy. A sandbox
+candidate attempt was blocked only by proxy `127.0.0.1:9` during read-only
+Issue #200 GET; normal-network exact candidate validation then passed at clean
+pushed repair head `3a466`. Only an archived schema 2.2.0 package with the
+field absent infers the exact canonical list; altered present values, current
+packages, and schema 2.3 packages with the field absent remain fail-closed.
+The retained v0.13 archive and canonical v0.14 package at `60572c01` pass.
+
+One job-level `CANDIDATE_COMMIT` selects the PR head or dispatch SHA and binds
+checkout, renderer, validator, builder, source disposition, and artifact
+identity; `PR_BASE_SHA` and `PR_HEAD_SHA` remain separate for changed-record
+discovery. Current-byte payload 7/7 and workflow-contract 10/10, AST/YAML/diff
+checks, and independent read-only review of raw binary Git diff SHA-256
 `4ecaef44a9b0636588df882308a3ea784c80e5669daf5b68bf7614590b93e349` passed
-with no blockers. Next: parent commit and push of the exact repair head, the
-candidate gate, fresh Sol audit and receipt, then one hosted watch. PR #232
-remains draft/open/unmerged; #206 open terminal-close; #222 deferred; no hosted
-admission, merge, Issue closure, provider closure, tag, GitHub Release, or
-publication is claimed.
+with no blockers. This evidence-only reconciliation will advance the head; the
+resulting clean evidence head still requires exact candidate revalidation,
+fresh Sol audit and receipt, then one hosted watch. PR #232 remains draft/open/
+unmerged; #206 open terminal-close; #222 deferred; no hosted admission, merge,
+Issue closure, provider closure, tag, GitHub Release, or publication is
+claimed.
 
 <!--
 The renderer appends canonical Included Work and release provenance. Keep this

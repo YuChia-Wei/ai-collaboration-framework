@@ -9,7 +9,7 @@
   "related_plan_id": "development-plan-2026-08-20-upg-003-multi-hop-upgrade",
   "status": "in_progress",
   "created_at": "2026-08-21T03:12:02+08:00",
-  "updated_at": "2026-08-21T08:32:20+08:00",
+  "updated_at": "2026-08-21T08:38:12+08:00",
   "template_source": ".ai/assets/skills/software-development-orchestrator/templates/development-workflow-task-template.json",
   "model": "gpt-5.6-sol",
   "reasoning_effort": "high",
@@ -101,12 +101,12 @@
       "missing or tampered asset and semantic-cutover bypass rejection",
       "exact-head independent audit and hosted terminal admission"
     ],
-    "commit_checkpoint": "At pushed clean fab9cf6787f0d4fad9384c29a6e0f514389667ba, the exact local candidate gate passed. Fresh exact-head Sol audit then failed/no receipt after live candidate run 32431077702/job 96622569129 failed: retained v0.13 archive schema 2.2 lacks canonical target_owned_reference_patterns, and renderer/builder/source-disposition still bind merge-ref GITHUB_SHA rather than selected candidate identity. The current source-candidate head is fab9; the next commit will bind the exact four-file repair. Compatibility infers only the exact canonical list for archived schema 2.2.0 with absent field; altered present values, current packages, and schema 2.3 missing values fail closed. One job-level CANDIDATE_COMMIT selects PR head or dispatch SHA and binds all candidate identity consumers; PR_BASE_SHA and PR_HEAD_SHA remain changed-record discovery inputs. Payload 7/7, workflow-contract 10/10, retained v0.13 archive, canonical v0.14 package-60572c01, AST/YAML/diff, and no-blocker review of raw binary Git diff SHA-256 4ecaef44a9b0636588df882308a3ea784c80e5669daf5b68bf7614590b93e349 pass. Next: parent commit/push exact repair head, candidate gate, fresh Sol audit/receipt, one hosted watch.",
+    "commit_checkpoint": "Repair head 3a466b2133e8ef20d752f08d2e1b4b9df8869eed is committed and pushed. Its exact 15-commit range from bf8ad9c624ffc2154722dfb266c9090c72e4ac5f passed commit policy. Sandbox candidate attempt was blocked only by proxy 127.0.0.1:9 at read-only Issue #200 GET; normal-network exact candidate gate passed at clean pushed repair head 3a466. Fab9 candidate PASS and audit FAIL/no receipt after run 32431077702/job 96622569129 remain historical blocker evidence. Compatibility infers only the canonical list for archived schema 2.2.0 absent field; altered present/current/schema 2.3 missing values fail closed. CANDIDATE_COMMIT binds candidate identity consumers; PR_BASE_SHA/PR_HEAD_SHA remain discovery inputs. Payload 7/7, workflow-contract 10/10, retained archive, canonical package, AST/YAML/diff, and raw diff review 4ecaef44a9b0636588df882308a3ea784c80e5669daf5b68bf7614590b93e349 pass. This evidence-only reconciliation advances the head; resulting clean evidence head requires candidate revalidation, Sol audit/receipt, and one hosted watch.",
     "deferred_items": ["Cumulative merged-main release profile and pre-tag readiness verdict under Issue #222"]
   },
   "results": {
     "finding_status": "in_progress",
-    "summary": "At immutable package foundation 60572c01e31abf58191d38adb5ca39e05338b08d on codex/2026-08-21-upg-003-v014-source-candidate-s3, the canonical builder and package-native validator passed for ai-context-dotnet-backend-v0.14.0: ZIP sha256 6f332f2a17549eb46109d1b2786cdefb32839eea18520cd65476c246d1337116 (1404420 bytes) and TAR.GZ sha256 b08b18012f1db1cb8367f0e9bd378b6e079b6a31171d68d538fe77c1d363c35a (992036 bytes); the validator output was AI context package validation passed for 2 archive(s). Historical package, receipt, planner-byte, fixture, sandbox, b4b38, and 66ec attempts remain retained below. At pushed clean fab9cf6787f0d4fad9384c29a6e0f514389667ba, the exact local candidate gate passed. Fresh exact-head Sol audit then failed/no receipt after live candidate run 32431077702/job 96622569129 failed: archived v0.13 schema 2.2 lacks canonical target_owned_reference_patterns, and renderer, builder, and source disposition still bind merge-ref GITHUB_SHA instead of selected candidate identity. The current source-candidate head is fab9; the next commit will bind the exact four-file repair. The repair infers only absent field on archived schema 2.2.0, keeps altered present/current/schema-2.3 missing cases fail-closed, and introduces job-level CANDIDATE_COMMIT for checkout, renderer, validator, builder, source disposition, and artifact identity while preserving PR_BASE_SHA/PR_HEAD_SHA for changed-record discovery. Current-byte payload 7/7, workflow-contract 10/10, retained v0.13 archive, canonical v0.14 package-60572c01, AST/YAML/diff, and independent read-only review of raw binary Git diff SHA-256 4ecaef44a9b0636588df882308a3ea784c80e5669daf5b68bf7614590b93e349 passed with no blockers. S3 remains in progress; PR #232 draft/open/unmerged, #206 open terminal-close, #222 deferred. No hosted admission, merge, closure, tag, Release, or publication is claimed.",
+    "summary": "At immutable package foundation 60572c01e31abf58191d38adb5ca39e05338b08d, canonical v0.14 package builder and validator passed. Historical package, receipt, planner-byte, fixture, sandbox, b4b38, 66ec, and fab9 attempts remain retained. Repair head 3a466b2133e8ef20d752f08d2e1b4b9df8869eed is committed and pushed; its exact 15-commit range from bf8ad9c624ffc2154722dfb266c9090c72e4ac5f passed commit policy. Sandbox candidate attempt was blocked only by proxy 127.0.0.1:9 during read-only Issue #200 GET; normal-network exact candidate validation passed at clean pushed repair head 3a466. Fab9 candidate PASS and audit FAIL/no receipt after run 32431077702/job 96622569129 remain historical blocker evidence. Compatibility remains archived-schema-2.2 absent-field only, with altered present/current/schema-2.3 missing cases fail-closed; CANDIDATE_COMMIT binds candidate identity consumers while PR_BASE_SHA/PR_HEAD_SHA remain discovery inputs. Payload 7/7, workflow-contract 10/10, retained v0.13 archive, canonical v0.14 package, AST/YAML/diff, and raw-diff review 4ecaef44a9b0636588df882308a3ea784c80e5669daf5b68bf7614590b93e349 passed. This evidence-only reconciliation advances the head; resulting clean evidence head still requires exact candidate revalidation, fresh Sol audit/receipt, then one hosted watch. S3 remains in progress; PR #232 draft/open/unmerged, #206 open terminal-close, #222 deferred. No hosted admission, merge, closure, tag, Release, or publication is claimed.",
     "files_changed": [
       ".dev/releases/v0.14.0/release.yaml",
       ".dev/releases/v0.14.0/release-notes.md",
@@ -417,6 +417,21 @@
         "command": "independent read-only fixed-head review of exact current four-file diff",
         "outcome": "passed",
         "evidence": "Review passed with no blockers. Its normalized-text diff fingerprint was fa4b53d1a15ad95b66f57a25d4eb14bddb254234f721554bf2dfc91c42a7990b after PowerShell line normalization; raw binary Git stdout diff SHA-256 was 4ecaef44a9b0636588df882308a3ea784c80e5669daf5b68bf7614590b93e349."
+      },
+      {
+        "command": "exact 15-commit commit-policy validation from bf8ad9c624ffc2154722dfb266c9090c72e4ac5f to repair head 3a466b2133e8ef20d752f08d2e1b4b9df8869eed",
+        "outcome": "passed",
+        "evidence": "The exact 15-commit range passed commit policy."
+      },
+      {
+        "command": "sandbox candidate validation at repair head 3a466b2133e8ef20d752f08d2e1b4b9df8869eed",
+        "outcome": "blocked-by-environment",
+        "evidence": "The only block was proxy 127.0.0.1:9 during read-only Issue #200 GET; it is not candidate PASS."
+      },
+      {
+        "command": "normal-network exact candidate validation at clean pushed repair head 3a466b2133e8ef20d752f08d2e1b4b9df8869eed",
+        "outcome": "passed",
+        "evidence": "Exact candidate gate passed at clean pushed repair head 3a466. This is not hosted admission."
       }
     ],
     "role_execution_aggregation": [],
@@ -471,10 +486,10 @@
       "Historical two-file package-candidate workflow correction evidence used the same pull-request-head-or-dispatch selector for checkout and validator commit; focused coverage passed 10/10 with YAML/diff and independent mutation review. The first independent review failure remains retained because a PR_HEAD_SHA-only change left checkout at the merge ref.",
       "Retained b4 candidate attempt sequence: attempt 1 failed before online admission at release.yaml on forbidden unfilled template marker; after YAML wording repair, attempt 2 failed before online admission at release-notes.md on the same marker; after both release-scope repairs, attempt 3 reached read-only Issue #200 GET and was blocked by local proxy 127.0.0.1:9. It is distinct from the older planner-byte proxy event, and no candidate PASS occurred. This is narrative encoding, not workflow identity failure; the later wording correction is historical evidence only.",
       "Historical renderer and payload findings remain retained: the renderer required schema 2.0.0 although v0.14.0 multi-source uses 3.0.0; the payload-user-view fixture omitted canonical target_owned_reference_patterns; renderer sandbox baseline was blocked by Temp WinError 5; payload baseline failed 4 failures/3 errors; normal ACL renderer 20/20, payload 6/6, direct candidate renderer CLI, AST/scoped diff, and independent precommit review passed.",
-      "At pushed clean fab9cf6787f0d4fad9384c29a6e0f514389667ba, exact local candidate validation passed. Fresh exact-head Sol audit failed/no receipt after live run 32431077702 / job 96622569129 failed: retained v0.13 archive schema 2.2 lacks canonical target_owned_reference_patterns, and renderer/builder/source-disposition bind merge-ref GITHUB_SHA instead of selected candidate identity.",
-      "The current source-candidate head is fab9; the next commit will bind the exact four-file repair. Compatibility infers only the exact canonical list when archived schema 2.2.0 has the field absent; present altered values, current packages, and schema 2.3 packages with the field absent remain fail-closed. One job-level CANDIDATE_COMMIT selects PR head or dispatch SHA and binds checkout, renderer, validator, builder, source disposition, and artifact identity; PR_BASE_SHA and PR_HEAD_SHA remain separate changed-record discovery inputs.",
+      "At pushed clean fab9cf6787f0d4fad9384c29a6e0f514389667ba, exact local candidate validation passed. Its fresh exact-head Sol audit failed/no receipt after live run 32431077702 / job 96622569129 exposed archived v0.13 schema-2.2 missing-field and merge-ref identity blockers; this is historical evidence.",
+      "Repair head 3a466b2133e8ef20d752f08d2e1b4b9df8869eed is committed and pushed. Its exact 15-commit range from bf8ad9c624ffc2154722dfb266c9090c72e4ac5f passed commit policy. Sandbox candidate attempt was blocked only by proxy 127.0.0.1:9 during read-only Issue #200 GET, then normal-network exact candidate validation passed at clean pushed repair head 3a466. Compatibility remains archived-schema-2.2 absent-field only; altered present/current/schema-2.3 missing cases remain fail-closed. One job-level CANDIDATE_COMMIT binds candidate identity consumers while PR_BASE_SHA and PR_HEAD_SHA remain changed-record discovery inputs.",
       "Current-byte payload 7/7 and workflow-contract 10/10 passed. The actual retained v0.13 archive, canonical v0.14 package at 60572c01, AST/YAML/scoped diff checks, and independent read-only four-file review of raw binary Git diff SHA-256 4ecaef44a9b0636588df882308a3ea784c80e5669daf5b68bf7614590b93e349 also passed; the review reported no blockers. Its normalized-text diff fingerprint was fa4b53d1a15ad95b66f57a25d4eb14bddb254234f721554bf2dfc91c42a7990b after PowerShell line normalization.",
-      "Next gates: parent commit and push of the exact repair head, exact clean candidate release-state validation, fresh exact-head Sol audit with receipt, then one hosted watch. Keep S3 in_progress, PR #232 draft/open/unmerged, #206 open terminal-close, #222 deferred, and do not claim hosted admission, merge, Issue closure, provider closure, tag, Release, or publication."
+      "This evidence-only reconciliation will advance the head. Next gates for the resulting clean evidence head: exact candidate revalidation, fresh exact-head Sol audit with receipt, then one hosted watch. Keep S3 in_progress, PR #232 draft/open/unmerged, #206 open terminal-close, #222 deferred, and do not claim hosted admission, merge, Issue closure, provider closure, tag, Release, or publication."
     ],
     "commits": [
       "803a0771ada510a9c5faf630a36a096d74117a64",
@@ -489,7 +504,8 @@
       "ea0414edf1260f0a317ee4b406b9eafb29d7f859",
       "66ec616b4d2c5e42129ae1a09557039d15ddb7df",
       "b4b38b136d69a1d3e3938598edcb4c6d7285b795",
-      "fab9cf6787f0d4fad9384c29a6e0f514389667ba"
+      "fab9cf6787f0d4fad9384c29a6e0f514389667ba",
+      "3a466b2133e8ef20d752f08d2e1b4b9df8869eed"
     ],
     "follow_up_needed": true
   }
