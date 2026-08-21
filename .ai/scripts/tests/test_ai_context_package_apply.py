@@ -29,6 +29,7 @@ SPEC.loader.exec_module(APPLY)
 RAW_APPLY_PLAN = APPLY.apply_plan
 
 import ai_context_target_provenance as TARGET  # noqa: E402
+import ai_context_package_validation as PACKAGE_VALIDATION  # noqa: E402
 
 
 def git(root: Path, *args: str) -> subprocess.CompletedProcess[str]:
@@ -634,6 +635,9 @@ def make_schema_23_upgrade_package(fixture: PackageApplyFixture) -> dict:
             "reference_integrity": {
                 "text_extensions": [".md", ".yaml", ".py"],
                 "forbidden_source_lifecycle_patterns": [".dev/releases/v*/**"],
+                "target_owned_reference_patterns": list(
+                    PACKAGE_VALIDATION.TARGET_OWNED_REFERENCE_PATTERNS
+                ),
             },
             "components": [
                 {
