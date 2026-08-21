@@ -9,7 +9,7 @@
   "related_plan_id": "development-plan-2026-08-20-upg-003-multi-hop-upgrade",
   "status": "in_progress",
   "created_at": "2026-08-21T03:12:02+08:00",
-  "updated_at": "2026-08-21T09:17:22+08:00",
+  "updated_at": "2026-08-21T09:50:49+08:00",
   "template_source": ".ai/assets/skills/software-development-orchestrator/templates/development-workflow-task-template.json",
   "model": "gpt-5.6-sol",
   "reasoning_effort": "high",
@@ -101,12 +101,12 @@
       "missing or tampered asset and semantic-cutover bypass rejection",
       "exact-head independent audit and hosted terminal admission"
     ],
-    "commit_checkpoint": "Evidence head d31b4be659ea7f7e5eff96087e61e69a23388366 passed 16-commit policy, candidate, fresh Sol audit/zero-blocker receipt, and provider-live readback. Its one hosted watch four PASS/one FAIL is historical only: run 32434135866/job 96631749666 correctly bound CANDIDATE_COMMIT=d31 and exposed stale two-field package-local payload validation. Repair head 4a1217160bf272420bb673445dfe34336f383291 is committed/pushed with exact third target_owned_reference_patterns ordered-seven allowlist validation, fail-closed variants, schema-2.3-only package-local enforcement, and unchanged external schema-2.2 compatibility. Package 18 PASS plus expected Windows casefold skip, payload 7/7, AST/diff, raw two-file review f36e3709..., 17-commit policy, and normal-network candidate passed. This evidence-only reconciliation advances the head; resulting clean evidence head requires candidate revalidation, fresh Sol audit/new receipt, and one hosted watch.",
+    "commit_checkpoint": "Clean evidence head 792849c7933e0e03fab3733b7138e151058d8daa passed 18-commit policy, candidate, fresh Sol audit/zero-blocker receipt, and provider readback. Its hosted watch is historical 792 evidence: candidate/prerequisites passed; governance/Ubuntu profile failed from shared schema-2.3 fixture drift before intended GWT006/GWT014 assertions. Repair checkpoint c7fc49a5dbfc5753172a5b32f5e1d36175f9f930 is committed/pushed with one fixture importing canonical TARGET_OWNED_REFERENCE_PATTERNS; no production/historical change. Postfix focused tests, AST/diff, raw review a689309..., 19-commit policy, and candidate passed; sandbox Temp ACL block retained. This reconciliation advances the head; resulting clean evidence head requires candidate revalidation, fresh Sol audit/new receipt, then one hosted watch.",
     "deferred_items": ["Cumulative merged-main release profile and pre-tag readiness verdict under Issue #222"]
   },
   "results": {
     "finding_status": "in_progress",
-    "summary": "At immutable package foundation 60572c01e31abf58191d38adb5ca39e05338b08d, canonical v0.14 package builder and validator passed; prior candidate/audit attempts remain retained. Evidence head d31b4be659ea7f7e5eff96087e61e69a23388366 passed 16-commit policy, candidate, fresh Sol audit/zero-blocker receipt, and provider-live terminal readback. Its hosted watch four PASS/one FAIL is historical only: failed run 32434135866/job 96631749666 correctly used CANDIDATE_COMMIT=d31 but package-local validation still allowed two old reference_integrity fields. Repair head 4a1217160bf272420bb673445dfe34336f383291 is committed/pushed with schema-2.3 third-field ordered-seven allowlist validation; missing/altered/reordered/duplicate/extra fail closed and external schema-2.2 compatibility is unchanged. Package validation 18 PASS plus expected Windows casefold skip, payload 7/7, AST/diff, raw two-file review beginning f36e3709, 17-commit policy, and normal-network candidate passed. d31 receipt/hosted evidence is not reusable. This evidence-only reconciliation advances the head; resulting clean evidence head still requires candidate revalidation, fresh Sol audit/new receipt, then one hosted watch. S3 remains in progress; PR #232 draft/open/unmerged, #206 open terminal-close, #222 open/deferred. No hosted admission, merge, closure, tag, Release, or publication is claimed.",
+    "summary": "At immutable package foundation 60572c01e31abf58191d38adb5ca39e05338b08d, canonical v0.14 package builder and validator passed; all earlier candidate/audit checkpoints remain historical. Clean evidence head 792849c7933e0e03fab3733b7138e151058d8daa passed 18-commit policy, candidate, fresh Sol audit/zero-blocker receipt, and provider readback; its hosted 4/1 watch is historical only and exposed shared schema-2.3 fixture drift before GWT006/GWT014 assertions. Current repair checkpoint c7fc49a5dbfc5753172a5b32f5e1d36175f9f930 is committed/pushed: one test fixture imports canonical TARGET_OWNED_REFERENCE_PATTERNS, with no production, duplicate-allowlist, or historical change. Postfix focused GWTs, AST/diff, one-file review beginning a689309, 19-commit policy, and candidate gate passed; sandbox Temp ACL block remains retained. This reconciliation advances the head; resulting clean evidence head still requires candidate revalidation, fresh Sol audit/new receipt, then one hosted watch. S3 remains in progress; PR #232 draft/open/unmerged, #206 open terminal-close, #222 open/deferred. No hosted admission, merge, closure, tag, Release, or publication is claimed.",
     "files_changed": [
       ".dev/releases/v0.14.0/release.yaml",
       ".dev/releases/v0.14.0/release-notes.md",
@@ -452,6 +452,21 @@
         "command": "independent two-file review at repair head 4a1217160bf272420bb673445dfe34336f383291",
         "outcome": "passed",
         "evidence": "Independent review passed; raw diff fingerprint begins f36e3709."
+      },
+      {
+        "command": "exact 18-commit policy, candidate, fresh Sol audit, receipt, and provider readback at 792849c7933e0e03fab3733b7138e151058d8daa",
+        "outcome": "passed",
+        "evidence": "The audit had zero blockers and receipt is historical for 792 after later mutation."
+      },
+      {
+        "command": "one hosted watch at 792849c7933e0e03fab3733b7138e151058d8daa",
+        "outcome": "failed",
+        "evidence": "Candidate and prerequisites passed; governance and Ubuntu profile failed from shared schema-2.3 fixture drift. No admission is inferred."
+      },
+      {
+        "command": "postfix focused transaction validation at repair checkpoint c7fc49a5dbfc5753172a5b32f5e1d36175f9f930",
+        "outcome": "passed",
+        "evidence": "GWT006+014 passed 2/2, GWT011-013 passed 3/3, real GWT010 passed, AST/diff and one-file review beginning a689309 passed; 19-commit policy and candidate gate passed."
       }
     ],
     "role_execution_aggregation": [],
@@ -527,7 +542,9 @@
       "fab9cf6787f0d4fad9384c29a6e0f514389667ba",
       "3a466b2133e8ef20d752f08d2e1b4b9df8869eed",
       "d31b4be659ea7f7e5eff96087e61e69a23388366",
-      "4a1217160bf272420bb673445dfe34336f383291"
+      "4a1217160bf272420bb673445dfe34336f383291",
+      "792849c7933e0e03fab3733b7138e151058d8daa",
+      "c7fc49a5dbfc5753172a5b32f5e1d36175f9f930"
     ],
     "follow_up_needed": true
   }

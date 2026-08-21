@@ -59,30 +59,28 @@ identified two blockers: an archived v0.13 schema 2.2 package without canonical
 source-disposition behavior still binding merge-ref `GITHUB_SHA` instead of the
 selected candidate identity.
 
-Evidence head `d31b4be659ea7f7e5eff96087e61e69a23388366` passed its exact
-16-commit policy, candidate gate, fresh Sol audit with zero blockers, canonical
-PR #232 COMMENTED review receipt, and provider-live terminal-contract readback.
-Its one hosted watch terminated four PASS / one FAIL: the failed Build and
-validate candidate run `32434135866` / job `96631749666` correctly used
-`CANDIDATE_COMMIT=d31` but package-local payload validation still allowed only
-two old `reference_integrity` fields.
+Clean evidence head `792849c7933e0e03fab3733b7138e151058d8daa` passed its
+exact 18-commit policy, candidate gate, fresh Sol audit with zero blockers,
+canonical PR review receipt, and provider-live readback. Its single hosted
+watch is historical 792 evidence: candidate and Ubuntu/Windows prerequisites
+passed; governance and Ubuntu profile failed only because a shared schema-2.3
+fixture omitted `target_owned_reference_patterns`, causing GWT006 ERROR and
+GWT014 FAIL before their intended assertions.
 
-Repair head `4a1217160bf272420bb673445dfe34336f383291` is committed and pushed.
-Portable validation now requires the third `target_owned_reference_patterns`
-field and its ordered seven-item canonical allowlist; missing, altered,
-reordered, duplicate, or extra values fail closed. Package-local enforcement is
-schema-2.3-only; external historical schema-2.2 compatibility is unchanged.
-Focused package validation had 18 passes plus one expected Windows casefold
-skip; payload 7/7, AST/diff, two-file review with raw diff beginning
-`f36e3709`, exact 17-commit policy, and normal-network candidate gate passed.
+Repair checkpoint `c7fc49a5dbfc5753172a5b32f5e1d36175f9f930` is committed and
+pushed. One test fixture imports canonical
+`ai_context_package_validation.TARGET_OWNED_REFERENCE_PATTERNS` and projects it
+into the shared fixture; there is no production, duplicate-allowlist, or
+historical change. Postfix focused tests, AST/diff, one-file review beginning
+`a689309`, exact 19-commit policy, and candidate gate passed; the sandbox Temp
+ACL block remains retained.
 
-The d31 receipt and hosted results remain historical only and cannot be reused
-for a new head. This evidence-only reconciliation will advance the head; the
-resulting clean evidence head still requires candidate revalidation, fresh Sol
-audit and new receipt, then one hosted watch. PR #232 remains draft/open/
-unmerged; #206 open terminal-close; #222 open/deferred; no hosted admission,
-merge, Issue closure, provider closure, tag, GitHub Release, or publication is
-claimed.
+The 792 receipt and hosted results cannot be reused after later mutation. This
+evidence-only reconciliation advances the head; the resulting clean evidence
+head requires candidate revalidation, fresh Sol audit/new receipt, then one
+hosted watch. PR #232 remains draft/open/unmerged; #206 open terminal-close;
+#222 open/deferred; no hosted admission, merge, Issue closure, provider closure,
+tag, GitHub Release, or publication is claimed.
 
 <!--
 The renderer appends canonical Included Work and release provenance. Keep this
