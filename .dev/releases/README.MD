@@ -30,7 +30,12 @@ matches the accepted canonical backlog set. From v0.10.0 onward,
 `planning.github_issue_refs` binds Included Work to online Issues; v0.11.0 and
 later require those implementation Issues to be closed as completed before the
 candidate is valid. From v0.12.0 onward, `provider_reconciliation` also binds
-the exact prepublication and postpublication Issue/Project fields. The renderer
+the exact prepublication and postpublication Issue/Project fields. Contract
+version `1.0` requires all five canonical Project fields for historical
+compatibility. Contract version `1.1` validates and reconciles only the
+explicitly listed canonical Project fields; omitted fields are advisory and are
+neither required nor mutated, while unknown fields still fail closed. Issue
+state and state reason remain mandatory in both versions. The renderer
 appends one generated `Included Work` section per reference while preserving
 human-authored notes. Missing, duplicate, unrelated, incomplete, or
 provider-mismatched references fail closed. Historical release records and

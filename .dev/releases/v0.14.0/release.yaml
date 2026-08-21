@@ -10,7 +10,7 @@ commit: null
 tagged_at: null
 recorded_at: null
 created_at: "2026-08-21T03:17:21+08:00"
-updated_at: "2026-08-21T10:06:50+08:00"
+updated_at: "2026-08-21T13:52:05+08:00"
 planning:
   github_issue_refs:
     - "#200"
@@ -23,7 +23,7 @@ planning:
     - "#207"
     - "#208"
 provider_reconciliation:
-  schema_version: "1.0"
+  schema_version: "1.1"
   provider: "github"
   repository: "YuChia-Wei/ai-collaboration-framework"
   project_owner: "YuChia-Wei"
@@ -35,40 +35,23 @@ provider_reconciliation:
       state_reason: "completed"
       project:
         Status: "Done"
-        Priority: "P1 High"
-        Owner review: "Approved"
-        Target release: "v0.14.0"
-        Published in: "Not yet published"
     postpublication:
       issue_state: "closed"
       state_reason: "completed"
       project:
         Status: "Done"
-        Priority: "P1 High"
-        Owner review: "Approved"
-        Target release: "v0.14.0"
-        Published in: "v0.14.0"
   coordination:
     issue_refs:
       - "#222"
     prepublication:
       issue_state: "open"
       state_reason: null
-      project:
-        Status: "Planned"
-        Priority: "P1 High"
-        Owner review: "Approved"
-        Target release: "v0.14.0"
-        Published in: "Not applicable — not a release item"
+      project: {}
     postpublication:
       issue_state: "closed"
       state_reason: "completed"
       project:
         Status: "Done"
-        Priority: "P1 High"
-        Owner review: "Approved"
-        Target release: "v0.14.0"
-        Published in: "Not applicable — not a release item"
 compatibility:
   breaking_changes: true
   minimum_source_version: "v0.6.0"

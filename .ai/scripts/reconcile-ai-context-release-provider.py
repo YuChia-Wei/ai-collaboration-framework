@@ -46,6 +46,7 @@ PROJECT_FIELDS = {
     "Target release",
     "Published in",
 }
+CONTRACT_SCHEMA_VERSIONS = {"1.0", "1.1"}
 
 
 class ProviderReconciliationError(ValueError):
@@ -84,7 +85,7 @@ def _issue_number(value: object, label: str) -> int:
     return int(match.group(1))
 
 
-def _expectation(value: object, label: str) -> dict[str, Any]:
+def _expectation(value: object, label: str, schema_version: str) -> dict[str, Any]:
     data = _mapping(value, label)
     _exact_keys(data, EXPECTATION_KEYS, label)
     issue_state = _non_empty_string(data.get("issue_state"), f"{label}.issue_state").lower()
@@ -101,12 +102,12 @@ def _expectation(value: object, label: str) -> dict[str, Any]:
     unknown = sorted(set(project) - PROJECT_FIELDS)
     if unknown:
         raise ProviderReconciliationError(f"{label}.project has unknown fields: {unknown}")
-    if set(project) != PROJECT_FIELDS:
+    if schema_version == "1.0" and set(project) != PROJECT_FIELDS:
         missing = sorted(PROJECT_FIELDS - set(project))
         raise ProviderReconciliationError(f"{label}.project is missing fields: {missing}")
     normalized_project = {
         field: _non_empty_string(project.get(field), f"{label}.project.{field}")
-        for field in sorted(PROJECT_FIELDS)
+        for field in sorted(project)
     }
     return {
         "issue_state": issue_state,
@@ -115,11 +116,15 @@ def _expectation(value: object, label: str) -> dict[str, Any]:
     }
 
 
-def _transition(value: object, label: str) -> dict[str, dict[str, Any]]:
+def _transition(
+    value: object,
+    label: str,
+    schema_version: str,
+) -> dict[str, dict[str, Any]]:
     data = _mapping(value, label)
     _exact_keys(data, TRANSITION_KEYS, label)
     return {
-        phase: _expectation(data.get(phase), f"{label}.{phase}")
+        phase: _expectation(data.get(phase), f"{label}.{phase}", schema_version)
         for phase in sorted(TRANSITION_KEYS)
     }
 
@@ -140,8 +145,11 @@ def load_release_contract(root: Path, version: str) -> tuple[dict[str, Any], lis
 
     contract = _mapping(release.get("provider_reconciliation"), "provider_reconciliation")
     _exact_keys(contract, CONTRACT_KEYS, "provider_reconciliation")
-    if contract.get("schema_version") != "1.0":
-        raise ProviderReconciliationError("provider_reconciliation.schema_version must be 1.0")
+    schema_version = contract.get("schema_version")
+    if schema_version not in CONTRACT_SCHEMA_VERSIONS:
+        raise ProviderReconciliationError(
+            "provider_reconciliation.schema_version must be 1.0 or 1.1"
+        )
     if contract.get("provider") != "github":
         raise ProviderReconciliationError("provider_reconciliation.provider must be github")
     repository = _non_empty_string(contract.get("repository"), "provider_reconciliation.repository")
@@ -169,7 +177,11 @@ def load_release_contract(root: Path, version: str) -> tuple[dict[str, Any], lis
     if len(included) != len(set(included)):
         raise ProviderReconciliationError("planning.github_issue_refs must not contain duplicates")
 
-    included_work = _transition(contract.get("included_work"), "provider_reconciliation.included_work")
+    included_work = _transition(
+        contract.get("included_work"),
+        "provider_reconciliation.included_work",
+        schema_version,
+    )
     coordination = _mapping(contract.get("coordination"), "provider_reconciliation.coordination")
     _exact_keys(coordination, {"issue_refs", *TRANSITION_KEYS}, "provider_reconciliation.coordination")
     raw_coordination = coordination.get("issue_refs")
@@ -187,7 +199,7 @@ def load_release_contract(root: Path, version: str) -> tuple[dict[str, Any], lis
         raise ProviderReconciliationError("included and coordination issue refs must be disjoint")
 
     normalized = {
-        "schema_version": "1.0",
+        "schema_version": schema_version,
         "provider": "github",
         "repository": repository,
         "project_owner": owner,
@@ -198,10 +210,12 @@ def load_release_contract(root: Path, version: str) -> tuple[dict[str, Any], lis
             "prepublication": _expectation(
                 coordination.get("prepublication"),
                 "provider_reconciliation.coordination.prepublication",
+                schema_version,
             ),
             "postpublication": _expectation(
                 coordination.get("postpublication"),
                 "provider_reconciliation.coordination.postpublication",
+                schema_version,
             ),
         },
     }
@@ -424,7 +438,7 @@ def validate_transition_snapshot(
                         f"{label} Issue #{issue_number} terminal reason must be {after['state_reason']}"
                     )
             item = snapshot["items"][issue_number]
-            for field in PROJECT_FIELDS:
+            for field in set(before["project"]) & set(after["project"]):
                 actual = _actual_project_value(item, field)
                 allowed = {before["project"][field], after["project"][field]}
                 if actual not in allowed:
@@ -491,8 +505,8 @@ def apply_reconciliation(
     included_after = contract["included_work"]["postpublication"]
     for issue_number in included:
         item = snapshot["items"][issue_number]
-        desired = included_after["project"]["Published in"]
-        if _actual_project_value(item, "Published in") != desired:
+        desired = included_after["project"].get("Published in")
+        if desired is not None and _actual_project_value(item, "Published in") != desired:
             _edit_project_field(runner, snapshot, issue_number, "Published in", desired)
 
     coordination_after = contract["coordination"]["postpublication"]
@@ -512,8 +526,8 @@ def apply_reconciliation(
                 ]
             )
         item = snapshot["items"][issue_number]
-        desired_status = coordination_after["project"]["Status"]
-        if _actual_project_value(item, "Status") != desired_status:
+        desired_status = coordination_after["project"].get("Status")
+        if desired_status is not None and _actual_project_value(item, "Status") != desired_status:
             _edit_project_field(runner, snapshot, issue_number, "Status", desired_status)
 
 
