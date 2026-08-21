@@ -59,23 +59,24 @@ identified two blockers: an archived v0.13 schema 2.2 package without canonical
 source-disposition behavior still binding merge-ref `GITHUB_SHA` instead of the
 selected candidate identity.
 
-Clean evidence head `792849c7933e0e03fab3733b7138e151058d8daa` passed its
-exact 18-commit policy, candidate gate, fresh Sol audit with zero blockers,
+Clean evidence head `91040b463b1cf4f1575af9b2d2abb8a3993c0ee0` passed its
+exact 20-commit policy, candidate gate, fresh Sol audit with zero blockers,
 canonical PR review receipt, and provider-live readback. Its single hosted
-watch is historical 792 evidence: candidate and Ubuntu/Windows prerequisites
-passed; governance and Ubuntu profile failed only because a shared schema-2.3
-fixture omitted `target_owned_reference_patterns`, causing GWT006 ERROR and
-GWT014 FAIL before their intended assertions.
+watch is historical 910 evidence: candidate, governance, and Ubuntu/Windows
+prerequisites passed; Ubuntu PR profile failed only because a shared schema-2.3
+package-apply fixture still had two `reference_integrity` fields before
+lifecycle assertions. The failed log was fetched once; multi-hop passed in
+34.5 seconds, confirming fixture drift rather than a validator weakness.
 
-Repair checkpoint `c7fc49a5dbfc5753172a5b32f5e1d36175f9f930` is committed and
-pushed. One test fixture imports canonical
-`ai_context_package_validation.TARGET_OWNED_REFERENCE_PATTERNS` and projects it
-into the shared fixture; there is no production, duplicate-allowlist, or
-historical change. Postfix focused tests, AST/diff, one-file review beginning
-`a689309`, exact 19-commit policy, and candidate gate passed; the sandbox Temp
-ACL block remains retained.
+Repair checkpoint `d9995e5b0a7cfcc54a5037418a485408892a24d7` is committed and
+pushed. One test fixture imports and reuses canonical
+`ai_context_package_validation.TARGET_OWNED_REFERENCE_PATTERNS`; there is no
+production, duplicate-allowlist, or historical change. Postfix GWT001 and real
+schema-2.3 GWT049, AST/diff, one-file review beginning `5fbf1da`, exact
+21-commit policy, and candidate gate passed; the sandbox Temp ACL block remains
+retained.
 
-The 792 receipt and hosted results cannot be reused after later mutation. This
+The 910 receipt and hosted results cannot be reused after later mutation. This
 evidence-only reconciliation advances the head; the resulting clean evidence
 head requires candidate revalidation, fresh Sol audit/new receipt, then one
 hosted watch. PR #232 remains draft/open/unmerged; #206 open terminal-close;
