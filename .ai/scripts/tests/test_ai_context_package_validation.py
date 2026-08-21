@@ -21,9 +21,11 @@ sys.path.insert(0, str(SCRIPTS))
 from ai_context_package_validation import (  # noqa: E402
     EXPECTED_PACKAGE_KEYS,
     PackageValidationError,
+    TARGET_OWNED_REFERENCE_PATTERNS,
     canonical_json_bytes,
     validate_extracted_package,
 )
+import ai_context_package as PACKAGE_BUILDER  # noqa: E402
 
 
 PACKAGE_ID = "ai-context-dotnet-backend-0.13.0"
@@ -289,6 +291,9 @@ def build_fixture(
             "reference_integrity": {
                 "text_extensions": [".md", ".yaml", ".py"],
                 "forbidden_source_lifecycle_patterns": [".dev/releases/v*/**"],
+                "target_owned_reference_patterns": list(
+                    TARGET_OWNED_REFERENCE_PATTERNS
+                ),
             },
             "components": [
                 {"component_id": "software-development-core", "classification": "mandatory-core", "required": True, "requires": []},
@@ -372,6 +377,20 @@ class PackageValidationTests(unittest.TestCase):
 
         self.assertEqual(set(schema["required"]), EXPECTED_PACKAGE_KEYS)
 
+    def test_given_current_profile_user_view_when_projected_then_portable_validator_uses_the_same_target_owned_allowlist(self) -> None:
+        profile = yaml.safe_load(
+            (
+                ROOT / ".ai/distribution/profiles/dotnet-backend.yaml"
+            ).read_text(encoding="utf-8")
+        )
+
+        contract = PACKAGE_BUILDER.payload_user_view_contract(profile)
+
+        self.assertEqual(
+            list(TARGET_OWNED_REFERENCE_PATTERNS),
+            contract["reference_integrity"]["target_owned_reference_patterns"],
+        )
+
     def test_given_requirement_pin_drift_when_validated_then_it_fails_closed(self) -> None:
         package_root = build_fixture(
             self.root, requirements_content=b"PyYAML==6.0.2\n"
@@ -412,6 +431,36 @@ class PackageValidationTests(unittest.TestCase):
 
         with self.assertRaisesRegex(PackageValidationError, "unknown components"):
             validate_extracted_package(package_root, run_portable_entrypoints=False)
+
+    def test_given_target_owned_reference_patterns_are_missing_or_altered_when_validated_then_it_fails_closed(self) -> None:
+        cases = {
+            "missing": (None, "reference_integrity fields"),
+            "altered": (
+                list(TARGET_OWNED_REFERENCE_PATTERNS[1:]),
+                "target_owned_reference_patterns",
+            ),
+        }
+        for name, (patterns, expected) in cases.items():
+            with self.subTest(name=name):
+                with tempfile.TemporaryDirectory(dir=ROOT / ".ai/scripts/tests") as temporary:
+                    package_root = build_fixture(Path(temporary))
+                    package_path = package_root / "metadata/package.yaml"
+                    package = yaml.safe_load(package_path.read_text(encoding="utf-8"))
+                    reference = package["user_view"]["reference_integrity"]
+                    if patterns is None:
+                        del reference["target_owned_reference_patterns"]
+                    else:
+                        reference["target_owned_reference_patterns"] = patterns
+                    package_path.write_bytes(yaml_bytes(package))
+                    rewrite_checksums(package_root)
+
+                    with self.assertRaisesRegex(
+                        PackageValidationError,
+                        expected,
+                    ):
+                        validate_extracted_package(
+                            package_root, run_portable_entrypoints=False
+                        )
 
     def test_given_package_and_migration_selection_differ_when_validated_then_it_fails_closed(self) -> None:
         package_root = build_fixture(self.root)
