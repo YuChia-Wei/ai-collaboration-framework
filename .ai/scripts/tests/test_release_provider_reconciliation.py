@@ -84,6 +84,17 @@ def release_record() -> dict:
     }
 
 
+def scoped_release_record() -> dict:
+    data = release_record()
+    contract = data["provider_reconciliation"]
+    contract["schema_version"] = "1.1"
+    contract["included_work"]["prepublication"]["project"] = {"Status": "Done"}
+    contract["included_work"]["postpublication"]["project"] = {"Status": "Done"}
+    contract["coordination"]["prepublication"]["project"] = {}
+    contract["coordination"]["postpublication"]["project"] = {"Status": "Done"}
+    return data
+
+
 class FixtureRepo:
     def __init__(self) -> None:
         self.temp = tempfile.TemporaryDirectory()
@@ -259,6 +270,63 @@ class ReleaseProviderReconciliationTests(unittest.TestCase):
             "must be disjoint",
         ):
             self.execute("preflight")
+
+    def test_gwt_007_given_v11_scoped_fields_when_advisory_values_are_absent_then_preflight_passes(self) -> None:
+        self.fixture.write(scoped_release_record())
+        for item in self.gh.items.values():
+            item["priority"] = None
+            item["owner review"] = None
+            item["target release"] = None
+            item["published in"] = None
+        self.gh.items[169]["status"] = "Inbox"
+
+        result = self.execute("preflight")
+
+        self.assertEqual("passed", result["status"])
+        self.assertEqual([], self.gh.mutations)
+
+    def test_gwt_008_given_v11_scoped_fields_when_apply_runs_then_only_required_state_converges(self) -> None:
+        self.fixture.write(scoped_release_record())
+        self.gh.items[169]["status"] = "Inbox"
+
+        result = self.execute("apply")
+
+        self.assertEqual("passed", result["status"])
+        self.assertEqual("CLOSED", self.gh.issues[169]["state"])
+        self.assertEqual("Done", self.gh.items[169]["status"])
+        self.assertEqual(2, len(self.gh.mutations))
+        self.assertFalse(
+            any(
+                command[1:3] == ["project", "item-edit"] and "field-4" in command
+                for command in self.gh.mutations
+            )
+        )
+
+    def test_gwt_009_given_v10_contract_when_a_project_field_is_missing_then_it_still_fails_closed(self) -> None:
+        data = release_record()
+        del data["provider_reconciliation"]["included_work"]["prepublication"]["project"][
+            "Target release"
+        ]
+        self.fixture.write(data)
+
+        with self.assertRaisesRegex(
+            RECONCILIATION.ProviderReconciliationError,
+            "project is missing fields:.*Target release",
+        ):
+            self.execute("contract")
+
+    def test_gwt_010_given_v11_contract_when_an_unknown_project_field_is_present_then_it_fails_closed(self) -> None:
+        data = scoped_release_record()
+        data["provider_reconciliation"]["included_work"]["prepublication"]["project"][
+            "Release train"
+        ] = VERSION
+        self.fixture.write(data)
+
+        with self.assertRaisesRegex(
+            RECONCILIATION.ProviderReconciliationError,
+            "project has unknown fields:.*Release train",
+        ):
+            self.execute("contract")
 
 
 if __name__ == "__main__":

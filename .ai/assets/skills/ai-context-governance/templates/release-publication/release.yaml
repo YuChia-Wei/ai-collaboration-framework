@@ -17,6 +17,9 @@ planning:
   github_issue_refs:
     - "#<online-github-issue-number>"
 provider_reconciliation:
+  # 1.0 requires all five canonical Project fields below. Use 1.1 only when an
+  # owner-approved release contract intentionally treats omitted canonical
+  # Project fields as advisory; unknown fields always fail closed.
   schema_version: "1.0"
   provider: "github"
   repository: "YuChia-Wei/ai-collaboration-framework"
