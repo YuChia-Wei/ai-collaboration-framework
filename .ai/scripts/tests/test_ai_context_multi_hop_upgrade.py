@@ -21,6 +21,7 @@ sys.path.insert(0, str(ROOT / ".ai/scripts"))
 
 import ai_context_multi_hop_upgrade as MULTI  # noqa: E402
 import ai_context_package_apply as APPLY  # noqa: E402
+import ai_context_package_validation as PACKAGE_VALIDATION  # noqa: E402
 import ai_context_target_provenance as TARGET  # noqa: E402
 import ai_context_upgrade_routes as ROUTES  # noqa: E402
 
@@ -353,6 +354,9 @@ class MultiHopFixture:
                 "reference_integrity": {
                     "text_extensions": [".md", ".yaml", ".py"],
                     "forbidden_source_lifecycle_patterns": [".dev/releases/v*/**"],
+                    "target_owned_reference_patterns": list(
+                        PACKAGE_VALIDATION.TARGET_OWNED_REFERENCE_PATTERNS
+                    ),
                 },
                 "components": [
                     {"component_id": "software-development-core", "classification": "mandatory-core", "required": True, "requires": []},
