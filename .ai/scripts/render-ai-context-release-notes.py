@@ -351,9 +351,16 @@ def validate_release(root: Path, version: str, commit: str, mode: str) -> tuple[
     migration_schema_version = (
         schema_versions.get("migration") if isinstance(schema_versions, dict) else None
     )
-    if len(automatic_sources) > 1 and migration_schema_version != "2.0.0":
+    required_multi_source_schema = (
+        "3.0.0" if version_tuple(version) >= (0, 14, 0) else "2.0.0"
+    )
+    if (
+        len(automatic_sources) > 1
+        and migration_schema_version != required_multi_source_schema
+    ):
         raise ReleaseNotesError(
-            "multiple automatic upgrade sources require migration schema 2.0.0"
+            "multiple automatic upgrade sources require migration schema "
+            f"{required_multi_source_schema}"
         )
     included_work_ids(data)
     artifacts = data.get("artifacts")

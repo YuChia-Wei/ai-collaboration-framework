@@ -1,0 +1,127 @@
+schema_version: "1.0"
+release_id: "REL-v0.14.0"
+version: "v0.14.0"
+status: "validated"
+record_origin: "governed"
+distribution_kind: "governed-package"
+installable: true
+tag: null
+commit: null
+tagged_at: null
+recorded_at: null
+created_at: "2026-08-21T03:17:21+08:00"
+updated_at: "2026-08-21T10:06:50+08:00"
+planning:
+  github_issue_refs:
+    - "#200"
+    - "#201"
+    - "#202"
+    - "#203"
+    - "#204"
+    - "#205"
+    - "#206"
+    - "#207"
+    - "#208"
+provider_reconciliation:
+  schema_version: "1.0"
+  provider: "github"
+  repository: "YuChia-Wei/ai-collaboration-framework"
+  project_owner: "YuChia-Wei"
+  project_number: 3
+  included_issue_refs_source: "planning.github_issue_refs"
+  included_work:
+    prepublication:
+      issue_state: "closed"
+      state_reason: "completed"
+      project:
+        Status: "Done"
+        Priority: "P1 High"
+        Owner review: "Approved"
+        Target release: "v0.14.0"
+        Published in: "Not yet published"
+    postpublication:
+      issue_state: "closed"
+      state_reason: "completed"
+      project:
+        Status: "Done"
+        Priority: "P1 High"
+        Owner review: "Approved"
+        Target release: "v0.14.0"
+        Published in: "v0.14.0"
+  coordination:
+    issue_refs:
+      - "#222"
+    prepublication:
+      issue_state: "open"
+      state_reason: null
+      project:
+        Status: "Planned"
+        Priority: "P1 High"
+        Owner review: "Approved"
+        Target release: "v0.14.0"
+        Published in: "Not applicable — not a release item"
+    postpublication:
+      issue_state: "closed"
+      state_reason: "completed"
+      project:
+        Status: "Done"
+        Priority: "P1 High"
+        Owner review: "Approved"
+        Target release: "v0.14.0"
+        Published in: "Not applicable — not a release item"
+compatibility:
+  breaking_changes: true
+  minimum_source_version: "v0.6.0"
+  reconciliation_sources:
+    - "v0.13.0"
+    - "v0.9.0"
+    - "v0.6.0"
+  automatic_upgrade_sources:
+    - "v0.6.0"
+    - "v0.9.0"
+    - "v0.13.0"
+  affected_contracts:
+    - "upgrade remediation"
+    - "guardrails choice"
+    - "retained-origin routing and transaction"
+    - "provider-neutral roles"
+    - "delegation preflight"
+artifacts:
+  release_notes: "release-notes.md"
+  migration_guide: "migration-guide.md"
+  support_matrix: "support-matrix.yaml"
+  route_evidence:
+    - "route-evidence/v0.13.0-to-v0.14.0.json"
+    - "route-evidence/v0.9.0-to-v0.14.0.json"
+    - "route-evidence/v0.6.0-to-v0.14.0.json"
+distribution:
+  profile_id: "dotnet-backend"
+  package_id: "ai-context-dotnet-backend-v0.14.0"
+  schema_versions:
+    package: "2.3.0"
+    files: "2.0.0"
+    migration: "3.0.0"
+  artifacts:
+    zip: "ai-context-dotnet-backend-v0.14.0.zip"
+    zip_checksum: "ai-context-dotnet-backend-v0.14.0.zip.sha256"
+    tar_gz: "ai-context-dotnet-backend-v0.14.0.tar.gz"
+    tar_gz_checksum: "ai-context-dotnet-backend-v0.14.0.tar.gz.sha256"
+  migration:
+    default_mode: "dry-run"
+    apply_requires_clean_worktree: true
+    apply_requires_acknowledged_reconciliation: true
+  publication:
+    tag_owner: "user"
+    trigger: "user-created-tag"
+    automation: "github-actions"
+    creates_or_moves_tag: false
+validation:
+  evidence: "ZIP/TAR package parity was validated at immutable package foundation 60572c01e31abf58191d38adb5ca39e05338b08d. Earlier b4b38, 66ec, fab9, 3a466, d31, 4a121716, 792, and c7 observations remain historical. Clean head 91040b463b1cf4f1575af9b2d2abb8a3993c0ee0 passed exact 20-commit policy, candidate gate, fresh Sol audit with zero blockers, canonical receipt, and provider-live readback. Its exactly one hosted watch is historical for 910: candidate passed 43s in run 32437898191/job 96642683276; governance passed 1m51 in run 32437898342/job 96642683267; Ubuntu prerequisite passed 11s in run 32437898190/job 96642682869; Windows prerequisite passed 31s in run 32437898190/job 96642682915; Ubuntu PR profile failed 2m22 in run 32437898190/job 96642682974. The failed log was fetched once: multi-hop passed 34.5s, while package-apply stopped because its shared schema-2.3 fixture still had only two reference_integrity fields before lifecycle assertions. Repair checkpoint d9995e5b0a7cfcc54a5037418a485408892a24d7 is committed/pushed; one test fixture imports/reuses canonical ai_context_package_validation.TARGET_OWNED_REFERENCE_PATTERNS, with no duplicate allowlist, production, or historical change. Postfix GWT001 passed 0.806s (independent 0.548s), real schema-2.3 GWT049 passed 25.778s (independent 24.690s), AST/diff and independent one-file review raw diff beginning 5fbf1da passed; sandbox Temp ACL block remains retained. Exact 21-commit policy and candidate gate at d999 passed. 910 receipt and hosted evidence cannot be reused after this mutation. This evidence-only reconciliation advances the head; resulting clean evidence head requires candidate revalidation, fresh Sol audit/new receipt, then one hosted watch. S3 remains in progress; PR #232 draft/open/unmerged, #206 open terminal-close, #222 open/deferred; no admission, merge, closure, tag, Release, or publication is claimed."
+  workflow_id: "2026-08-20-upg-003-multi-hop-upgrade"
+  related_workflows: []
+  related_assessments: []
+  package_status: "validated"
+  post_merge_status: "pending"
+  failed_publication_run: null
+  published_run: null
+  public_release_url: null

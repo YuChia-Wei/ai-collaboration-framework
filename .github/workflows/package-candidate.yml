@@ -30,6 +30,8 @@ jobs:
     name: Build and validate candidate
     runs-on: ubuntu-latest
     timeout-minutes: 15
+    env:
+      CANDIDATE_COMMIT: ${{ github.event.pull_request.head.sha || github.sha }}
     permissions:
       contents: read
       issues: read
@@ -37,6 +39,7 @@ jobs:
       - name: Check out candidate commit
         uses: actions/checkout@v6
         with:
+          ref: ${{ env.CANDIDATE_COMMIT }}
           fetch-depth: 0
           persist-credentials: false
 
@@ -57,7 +60,7 @@ jobs:
         run: |
           set +e
           args=(
-            --commit "${GITHUB_SHA}"
+            --commit "${CANDIDATE_COMMIT}"
             --mode candidate
             --output "${RUNNER_TEMP}/release-body.md"
             --github-output "${GITHUB_OUTPUT}"
@@ -97,7 +100,7 @@ jobs:
           python .ai/scripts/validate-ai-context-release-state.py \
             --phase candidate \
             --version "${{ steps.release.outputs.version }}" \
-            --commit "${GITHUB_SHA}" \
+            --commit "${CANDIDATE_COMMIT}" \
             --branch "${GITHUB_HEAD_REF:-${GITHUB_REF_NAME}}"
 
       - name: Validate provider reconciliation contract
@@ -114,7 +117,7 @@ jobs:
           MIGRATION_SOURCES: ${{ steps.release.outputs.migration_sources }}
         run: |
           build_args=(
-            --ref "${GITHUB_SHA}"
+            --ref "${CANDIDATE_COMMIT}"
             --version "${{ steps.release.outputs.version }}"
             --output dist
           )
@@ -165,11 +168,11 @@ jobs:
         if: steps.release.outputs.available == 'true'
         run: |
           python .ai/scripts/validate-source-dispositions.py \
-            --ref "${GITHUB_SHA}" \
+            --ref "${CANDIDATE_COMMIT}" \
             --format json \
             --output "${RUNNER_TEMP}/source-dispositions.json"
           python .ai/scripts/validate-source-dispositions.py \
-            --ref "${GITHUB_SHA}" \
+            --ref "${CANDIDATE_COMMIT}" \
             --format markdown \
             --output "${RUNNER_TEMP}/source-dispositions.md"
 
@@ -177,7 +180,7 @@ jobs:
         if: steps.release.outputs.available == 'true'
         uses: actions/upload-artifact@v7
         with:
-          name: ${{ steps.release.outputs.package_id }}-${{ github.sha }}
+          name: ${{ steps.release.outputs.package_id }}-${{ env.CANDIDATE_COMMIT }}
           retention-days: 14
           compression-level: 0
           if-no-files-found: error

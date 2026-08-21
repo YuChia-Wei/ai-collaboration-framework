@@ -609,20 +609,44 @@ class UpgradeRouteTests(unittest.TestCase):
             ],
             check=False,
             capture_output=True,
-            text=True,
-            encoding="utf-8",
         )
 
-        self.assertEqual(0, result.returncode, result.stderr)
-        parsed = json.loads(result.stdout)
+        self.assertEqual(0, result.returncode, result.stderr.decode("utf-8"))
+        self.assertEqual(b"", result.stderr)
+        self.assertNotIn(b"\r", result.stdout)
+        parsed = json.loads(result.stdout.decode("utf-8"))
         self.assertEqual(hashlib.sha256(matrix_bytes).hexdigest(), parsed["matrix"]["sha256"])
-        self.assertEqual(ROUTES.canonical_json(parsed), result.stdout)
+        self.assertEqual(ROUTES.canonical_json(parsed).encode("utf-8"), result.stdout)
         after = {
             path.relative_to(self.fixture.root): path.read_bytes()
             for path in self.fixture.root.rglob("*")
             if path.is_file()
         }
         self.assertEqual(before, after)
+
+    def test_gwt_011a_given_invalid_matrix_cli_when_run_then_error_is_canonical_utf8_lf(self) -> None:
+        missing_matrix = self.fixture.root / "missing-upgrade-route-matrix.yaml"
+
+        result = subprocess.run(
+            [
+                sys.executable,
+                str(ROOT / ".ai/scripts/plan-ai-context-upgrade.py"),
+                "--matrix",
+                str(missing_matrix),
+                "--origin",
+                "v0.13.0",
+                "--target",
+                self.fixture.target,
+            ],
+            check=False,
+            capture_output=True,
+        )
+
+        self.assertEqual(2, result.returncode)
+        self.assertEqual(b"", result.stdout)
+        self.assertNotIn(b"\r", result.stderr)
+        parsed = json.loads(result.stderr.decode("utf-8"))
+        self.assertEqual(ROUTES.canonical_json(parsed).encode("utf-8"), result.stderr)
 
     def test_gwt_012_given_governed_role_omitted_without_deprecation_then_matrix_fails_closed(self) -> None:
         candidate = deepcopy(self.fixture.matrix)

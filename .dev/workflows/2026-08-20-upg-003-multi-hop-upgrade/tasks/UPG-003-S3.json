@@ -8,38 +8,73 @@
   "owner_skill": "ai-context-upgrader",
   "related_plan_id": "development-plan-2026-08-20-upg-003-multi-hop-upgrade",
   "status": "in_progress",
-  "created_at": "2026-08-21T00:00:28+08:00",
-  "updated_at": "2026-08-21T00:00:28+08:00",
+  "created_at": "2026-08-21T03:12:02+08:00",
+  "updated_at": "2026-08-21T10:06:50+08:00",
   "template_source": ".ai/assets/skills/software-development-orchestrator/templates/development-workflow-task-template.json",
   "model": "gpt-5.6-sol",
   "reasoning_effort": "high",
   "workflow_locator": ".dev/workflows/2026-08-20-upg-003-multi-hop-upgrade/workflow.yaml",
   "scope": {
-    "goal": "Complete Issue #206 S3 and instantiate the governed v0.14.0 source candidate.",
-    "target": "Prove v0.13.0, v0.9.0, and v0.6.0 routes to one exact v0.14.0 candidate and terminal-close Issue #206.",
-    "files": [],
-    "constraints": [
-      "Start only after #207 and #208 integrate into main.",
-      "Use the exact nine-Issue Included Work snapshot selected by the repository owner.",
-      "Keep coordination Issue #222 open and do not create a tag, Release, assets, or package publication.",
-      "Require fresh exact-head independent audit, hosted checks, live admission, and post-merge #206 read-back."
+    "goal": "Instantiate and prove the governed v0.14.0 source candidate across v0.13.0, v0.9.0, and v0.6.0 retained origins, then terminal-close Issue #206.",
+    "target": "v0.14.0 release record, notes, migration, phase contract, support matrix, route evidence, package identity, release validators, and UPG-003 terminal evidence",
+    "files": [
+      ".dev/releases/v0.14.0/**",
+      ".dev/releases/INDEX.MD",
+      ".ai/assets/skills/ai-context-governance/templates/release-publication/**",
+      ".ai/scripts/validate-ai-context-release-state.py",
+      ".ai/scripts/tests/test_ai_context_release_state.py",
+      ".ai/scripts/validate-ai-context-versions.py",
+      ".ai/scripts/tests/test_ai_context_version_governance.py",
+      ".ai/scripts/plan-ai-context-upgrade.py",
+      ".ai/scripts/tests/test_ai_context_upgrade_routes.py",
+      ".ai/distribution/profiles/dotnet-backend.yaml",
+      ".ai/scripts/ai_context_package.py",
+      ".ai/scripts/tests/test_ai_context_packaging.py",
+      ".dev/standards/INDEX.MD",
+      ".dev/workflows/2026-08-20-upg-003-multi-hop-upgrade/**",
+      ".dev/workflows/INDEX.MD"
     ],
-    "non_goals": ["Restore Project fields", "Modify historical roadmap/backlog files", "Publish v0.14.0"]
+    "constraints": [
+      "Use exactly one online Issue #206 and this one technical workflow across S1, S2, and S3.",
+      "Use the exact Included Work snapshot #200 through #208 in order; #209 remains traceability-only.",
+      "Prove one-entrypoint routes for v0.13.0, v0.9.0, and v0.6.0 without manual sequential application.",
+      "Keep release and workflow records source-only; do not place them in downstream provenance or packages.",
+      "Keep #206 open until the admitted S3 PR merges and keep coordination Issue #222 open.",
+      "Do not claim Project-field restoration from this workflow."
+    ],
+    "non_goals": [
+      "Create or push v0.14.0 tag",
+      "Create or modify a GitHub Release",
+      "Publish assets or packages",
+      "Activate nightly-full",
+      "Modify an external repository or local historical backlog/roadmap"
+    ]
   },
   "inputs": {
-    "requirements": ["https://github.com/YuChia-Wei/ai-collaboration-framework/issues/206"],
+    "requirements": [
+      "https://github.com/YuChia-Wei/ai-collaboration-framework/issues/206",
+      "https://github.com/YuChia-Wei/ai-collaboration-framework/issues/222"
+    ],
     "specifications": [
+      ".ai/assets/skills/ai-context-governance/templates/release-publication/",
+      ".ai/assets/skills/ai-context-upgrader/templates/upgrade-route-matrix.schema.yaml",
       ".ai/assets/skills/ai-context-upgrader/references/upgrade-support-policy.md",
       ".ai/assets/skills/ai-context-upgrader/references/multi-hop-upgrade-transaction-contract.md"
     ],
     "architecture_decisions": [
-      "Reuse integrated S1 route resolution and S2 immutable per-hop checkpoints.",
-      "Candidate Issue refs are an immutable release snapshot, not current backlog authority."
+      "S1 owns read-only route resolution and S2 owns target-local transaction semantics; S3 supplies exact release assets and proof rather than reimplementing them.",
+      "Concrete release support matrix and route evidence remain source-only under .dev/releases/v0.14.0.",
+      "Candidate source validation and post-merge provider closure are separate evidence boundaries."
     ],
-    "user_constraints": ["S3 terminal-closes #206 only after #207/#208 integration and exact candidate proof."]
+    "user_constraints": [
+      "planning.github_issue_refs is exactly #200, #201, #202, #203, #204, #205, #206, #207, and #208.",
+      "Release notes may mention #209 only as a defect correction.",
+      "The S3 PR terminal-closes #206 and defers coordination Issue #222.",
+      "No tag, Release, asset/package publication, nightly activation, Project restoration, or external mutation."
+    ]
   },
   "execution": {
-    "capability_slot": "ai-context-upgrader",
+    "capability_slot": "ai-context-governance",
     "approval_contract": {
       "status": "approved",
       "required_before": "implementation",
@@ -51,28 +86,486 @@
     "role_execution_records": [],
     "spec_compliance": {"selected": false, "activation_source": [], "expected_outcome": "not-applicable"},
     "steps": [
-      "Freeze the exact integrated prerequisite head.",
-      "Create canonical v0.14.0 release records and route evidence.",
-      "Validate package and all supported retained-origin routes.",
-      "Obtain exact-head audit, hosted admission, terminal-close PR, merge, and #206 read-back."
+      "Instantiate canonical v0.14.0 release records and exact online Issue snapshot.",
+      "Build and bind one source-specific v0.14.0 candidate package for all retained origins.",
+      "Create and verify the support matrix, edge receipts, and route evidence.",
+      "Reconcile release validation so source proof and post-merge provider closure remain fail closed.",
+      "Commit, independently audit, pass hosted checks, terminal-close #206, and read back integration."
     ],
-    "validation": ["candidate package", "v0.13/v0.9/v0.6 routes", "release profile", "fresh exact-head audit", "required hosted checks"],
-    "commit_checkpoint": "One terminal-close S3 PR for Issue #206; coordination Issue #222 remains open.",
-    "deferred_items": ["v0.14.0 tag, GitHub Release, assets, and package publication"]
+    "validation": [
+      "candidate release record and canonical authored files",
+      "deterministic package identity and schema 2.3.0/2.0.0/3.0.0",
+      "v0.13.0 to v0.14.0 route",
+      "v0.9.0 to v0.14.0 route",
+      "v0.6.0 to v0.14.0 route",
+      "missing or tampered asset and semantic-cutover bypass rejection",
+      "exact-head independent audit and hosted terminal admission"
+    ],
+    "commit_checkpoint": "Clean head 91040b463b1cf4f1575af9b2d2abb8a3993c0ee0 passed 20-commit policy, candidate, fresh Sol audit/zero-blocker receipt, and provider readback. Its hosted watch is historical 910 evidence: candidate/governance/prerequisites passed; Ubuntu profile failed only because shared schema-2.3 package-apply fixture still had two reference_integrity fields before lifecycle assertions. Repair checkpoint d9995e5b0a7cfcc54a5037418a485408892a24d7 is committed/pushed with one fixture importing canonical TARGET_OWNED_REFERENCE_PATTERNS; no duplicate, production, or historical change. Postfix GWT001, real GWT049, AST/diff, one-file review 5fbf1da..., 21-commit policy, and candidate passed; sandbox Temp ACL retained. This reconciliation advances the head; resulting clean evidence head requires candidate revalidation, fresh Sol audit/new receipt, then one hosted watch.",
+    "deferred_items": ["Cumulative merged-main release profile and pre-tag readiness verdict under Issue #222"]
   },
   "results": {
-    "summary": "Pending integration of #207 and #208.",
-    "files_changed": [],
+    "finding_status": "in_progress",
+    "summary": "At immutable package foundation 60572c01e31abf58191d38adb5ca39e05338b08d, canonical v0.14 package builder and validator passed; all earlier checkpoints remain historical. Clean head 91040b463b1cf4f1575af9b2d2abb8a3993c0ee0 passed 20-commit policy, candidate, fresh Sol audit/zero-blocker receipt, and provider readback. Its one hosted watch is historical only: candidate, governance, and prerequisites passed, while Ubuntu profile failed from schema-2.3 package-apply fixture drift before lifecycle assertions. Current repair checkpoint d9995e5b0a7cfcc54a5037418a485408892a24d7 is committed/pushed: one fixture imports/reuses canonical TARGET_OWNED_REFERENCE_PATTERNS, with no duplicate, production, or historical change. Postfix GWT001 and real schema-2.3 GWT049, AST/diff, one-file review beginning 5fbf1da, 21-commit policy, and candidate gate passed; sandbox Temp ACL remains retained. This reconciliation advances the head; resulting clean evidence head still requires candidate revalidation, fresh Sol audit/new receipt, then one hosted watch. S3 remains in progress; PR #232 draft/open/unmerged, #206 open terminal-close, #222 open/deferred. No hosted admission, merge, closure, tag, Release, or publication is claimed.",
+    "files_changed": [
+      ".dev/releases/v0.14.0/release.yaml",
+      ".dev/releases/v0.14.0/release-notes.md",
+      ".dev/releases/v0.14.0/migration-guide.md",
+      ".dev/releases/v0.14.0/release-phase-checks.yaml",
+      ".dev/releases/v0.14.0/support-matrix.yaml",
+      ".dev/releases/v0.14.0/route-assets/**",
+      ".dev/releases/v0.14.0/route-evidence/**",
+      ".dev/releases/INDEX.MD",
+      ".ai/assets/skills/ai-context-governance/templates/release-publication/release.yaml",
+      ".ai/scripts/validate-ai-context-release-state.py",
+      ".ai/scripts/tests/test_ai_context_release_state.py",
+      ".ai/scripts/validate-ai-context-versions.py",
+      ".ai/scripts/tests/test_ai_context_version_governance.py",
+      ".ai/scripts/render-ai-context-release-notes.py",
+      ".ai/scripts/tests/test_release_notes_renderer.py",
+      ".ai/scripts/tests/test_payload_user_view_contract.py",
+      ".github/workflows/package-candidate.yml",
+      ".ai/scripts/tests/test_github_workflow_contract.py",
+      ".ai/distribution/profiles/dotnet-backend.yaml",
+      ".ai/scripts/ai_context_package.py",
+      ".ai/scripts/tests/test_ai_context_packaging.py",
+      ".dev/standards/INDEX.MD",
+      ".dev/workflows/2026-08-20-upg-003-multi-hop-upgrade/workflow.yaml",
+      ".dev/workflows/2026-08-20-upg-003-multi-hop-upgrade/workflow-plan.md",
+      ".dev/workflows/2026-08-20-upg-003-multi-hop-upgrade/tasks/UPG-003-S3.json",
+      ".dev/workflows/2026-08-20-upg-003-multi-hop-upgrade/evidence/terminal-issue-closure-s3-pr-232.yaml",
+      ".dev/workflows/INDEX.MD"
+    ],
     "approval_evidence": ["explicit repository-owner v0.14.0 delivery prompt"],
-    "test_execution": [],
+    "test_execution": [
+      {
+        "command": "py -3 -B .ai/scripts/tests/test_ai_context_release_state.py AiContextReleaseStateGwtTests.test_gwt_031_given_v014_retained_origins_when_route_evidence_matches_then_all_routes_pass AiContextReleaseStateGwtTests.test_gwt_032_given_v014_tampered_or_unproven_route_when_validated_then_it_fails_closed AiContextReleaseStateGwtTests.test_gwt_033_given_open_terminal_issue_bound_to_current_pr_when_candidate_checked_then_only_exact_head_passes -v",
+        "outcome": "blocked-by-environment",
+        "evidence": "Sandbox Windows TEMP fixture creation failed with WinError 5 before product assertions."
+      },
+      {
+        "command": "py -3 -B .ai/scripts/tests/test_ai_context_release_state.py AiContextReleaseStateGwtTests.test_gwt_031_given_v014_retained_origins_when_route_evidence_matches_then_all_routes_pass AiContextReleaseStateGwtTests.test_gwt_032_given_v014_tampered_or_unproven_route_when_validated_then_it_fails_closed AiContextReleaseStateGwtTests.test_gwt_033_given_open_terminal_issue_bound_to_current_pr_when_candidate_checked_then_only_exact_head_passes -v",
+        "outcome": "passed",
+        "evidence": "Normal Windows ACL rerun passed 3/3 in 0.052 seconds after the first semantic run exposed and the implementation repaired canonical Windows route bytes plus the narrow read-only pull-request endpoint allowlist."
+      },
+      {
+        "command": "py -3 -B .ai/scripts/tests/test_ai_context_release_state.py -v",
+        "outcome": "passed",
+        "evidence": "Normal Windows ACL full focused module passed 36/36 in 0.742 seconds."
+      },
+      {
+        "command": "python .ai/scripts/build-ai-context-package.py --repo . --ref 803a0771ada510a9c5faf630a36a096d74117a64 --version v0.14.0 --output artifacts/validation/upg003-s3/v0.14.0/package --migration-source v0.13.0 <files.yaml> --migration-source v0.9.0 <files.yaml> --migration-source v0.6.0 <files.yaml>",
+        "outcome": "failed",
+        "evidence": "The immutable Phase-A build failed before package creation because the builder canonicalized migration sources to numeric ascending order while release.yaml declared descending order; no package or route PASS evidence was produced."
+      },
+      {
+        "command": "py -3 -B .ai/scripts/tests/test_ai_context_version_governance.py -v",
+        "outcome": "failed",
+        "evidence": "First full run passed 23/24; GWT017 retained the superseded immediate-predecessor diagnostic text after the governed-source message was generalized."
+      },
+      {
+        "command": "py -3 -B .ai/scripts/tests/test_ai_context_version_governance.py -v",
+        "outcome": "passed",
+        "evidence": "After correcting only the stale diagnostic assertion, the normal Windows ACL module passed 24/24 in 1.332 seconds."
+      },
+      {
+        "command": "py -3 -B .ai/scripts/validate-ai-context-versions.py --root . --no-git",
+        "outcome": "passed",
+        "evidence": "Source version governance passed for 17 release records with the explicit v0.14.0 retained-source horizon."
+      },
+      {
+        "command": "python .ai/scripts/build-ai-context-package.py --repo . --ref 7680190bf673c403ffbb970c75d397f91606872c --version v0.14.0 --output artifacts/validation/upg003-s3/v0.14.0/package --migration-source v0.6.0 <files.yaml> --migration-source v0.9.0 <files.yaml> --migration-source v0.13.0 <files.yaml>",
+        "outcome": "failed",
+        "evidence": "The corrected immutable build failed before archive output because portable .dev/standards/INDEX.MD linked the source-only excluded GITHUB-TERMINAL-ISSUE-CLOSURE-POLICY.md; no package or route PASS evidence was produced."
+      },
+      {
+        "command": "py -3 -B .ai/scripts/tests/test_ai_context_packaging.py PayloadReferenceIntegrityGwtTests.test_gwt_011c_given_source_only_terminal_policy_when_index_is_projected_then_it_is_not_a_portable_link -v",
+        "outcome": "passed",
+        "evidence": "Focused source-only navigation projection guard passed 1/1 in 0.032 seconds."
+      },
+      {
+        "command": "python .ai/scripts/build-ai-context-package.py --repo . --ref a66f1901584cc2dba89065273e998bdc6f1b3c20 --version v0.14.0 --output artifacts/validation/upg003-s3/v0.14.0/package --migration-source v0.6.0 <files.yaml> --migration-source v0.9.0 <files.yaml> --migration-source v0.13.0 <files.yaml>",
+        "outcome": "failed",
+        "evidence": "The third immutable build failed before archive output because the canonical code-reviewer skill manifest referenced the excluded framework-source AI-CONTEXT-SOURCE-EFFECTIVE-RULES.yaml authority; no package, support-matrix, or route PASS evidence was produced."
+      },
+      {
+        "command": "py -3 -B .ai/scripts/tests/test_ai_context_packaging.py DeterministicPackageGwtTests.test_gwt_000b_given_source_effective_rule_policy_schema_and_evidence_when_built_then_downstream_excludes_them_and_retains_resolver -v",
+        "outcome": "passed",
+        "evidence": "The initial synthetic focused guard passed 1/1, but its flat modes fixture did not exercise the canonical nested effective_rule_consumption.applicability.modes layout."
+      },
+      {
+        "command": "py -3 -B -c \"import pathlib, sys, yaml; sys.path.insert(0, str(pathlib.Path('.ai/scripts').resolve())); import ai_context_package as package; profile = yaml.safe_load(pathlib.Path('.ai/distribution/profiles/dotnet-backend.yaml').read_text(encoding='utf-8')); source_path = '.ai/assets/skills/code-reviewer/skill.yaml'; source = pathlib.Path(source_path).read_bytes(); projected = package.project_portable_payload_content(source_path, source, profile); data = yaml.safe_load(projected); assert set(data['effective_rule_consumption']['applicability']['modes']) == {'initialized-target'}; assert b'AI-CONTEXT-SOURCE-EFFECTIVE-RULES.yaml' not in projected and b'AI-CONTEXT-SOURCE-EFFECTIVE-RULES.yaml' in source\"",
+        "outcome": "failed",
+        "evidence": "The real code-reviewer manifest probe exposed that the first helper read flat effective_rule_consumption modes although canonical manifests nest modes beneath applicability. The helper and synthetic fixture were corrected; this failure remains retained and does not produce package evidence."
+      },
+      {
+        "command": "py -3 -B -c \"import ast, pathlib; ast.parse(pathlib.Path('.ai/scripts/ai_context_package.py').read_text(encoding='utf-8'))\"",
+        "outcome": "passed",
+        "evidence": "Python AST parsing passed after the nested-applicability correction."
+      },
+      {
+        "command": "py -3 -B -c \"import pathlib, yaml; yaml.safe_load(pathlib.Path('.ai/distribution/profiles/dotnet-backend.yaml').read_text(encoding='utf-8'))\"",
+        "outcome": "passed",
+        "evidence": "The portable projection profile YAML parsed after the correction."
+      },
+      {
+        "command": "git diff --check -- .ai/scripts/ai_context_package.py .ai/distribution/profiles/dotnet-backend.yaml .ai/scripts/tests/test_ai_context_packaging.py",
+        "outcome": "passed",
+        "evidence": "The scoped portable-projection diff check passed."
+      },
+      {
+        "command": "py -3 -B -c \"import pathlib, sys, yaml; sys.path.insert(0, str(pathlib.Path('.ai/scripts').resolve())); import ai_context_package as package; profile = yaml.safe_load(pathlib.Path('.ai/distribution/profiles/dotnet-backend.yaml').read_text(encoding='utf-8')); source_path = '.ai/assets/skills/code-reviewer/skill.yaml'; source = pathlib.Path(source_path).read_bytes(); projected = package.project_portable_payload_content(source_path, source, profile); data = yaml.safe_load(projected); assert set(data['effective_rule_consumption']['applicability']['modes']) == {'initialized-target'}; assert b'AI-CONTEXT-SOURCE-EFFECTIVE-RULES.yaml' not in projected and b'AI-CONTEXT-SOURCE-EFFECTIVE-RULES.yaml' in source\"",
+        "outcome": "passed",
+        "evidence": "After the nested-applicability repair, the real code-reviewer probe retained only initialized-target mode in the projected payload and excluded the framework-source authority reference."
+      },
+      {
+        "command": "py -3 -B .ai/scripts/tests/test_ai_context_packaging.py DeterministicPackageGwtTests.test_gwt_000b_given_source_effective_rule_policy_schema_and_evidence_when_built_then_downstream_excludes_them_and_retains_resolver -v",
+        "outcome": "passed",
+        "evidence": "The corrected focused GWT passed 1/1, proving the projected skill retains initialized-target only while its canonical source fixture retains both modes."
+      },
+      {
+        "command": "python .ai/scripts/build-ai-context-package.py --repo . --ref 2e6c5906882705e00b80f656c22c2925ed75c63a --version v0.14.0 --output artifacts/validation/upg003-s3/v0.14.0/package --migration-source v0.6.0 <files.yaml> --migration-source v0.9.0 <files.yaml> --migration-source v0.13.0 <files.yaml>",
+        "outcome": "failed",
+        "evidence": "The single canonical builder attempt at the exact clean subject failed before archive creation: capability code-reviewer reference is missing: .ai/assets/skills/code-reviewer/skill.yaml -> .dev/ai-context/provenance.yaml. No output directory, package, support matrix, or routes were produced."
+      },
+      {
+        "command": "sole canonical package builder at b24da15f1948a9b17361fa49232c94485b4777e1 after rehashing exact v0.6.0, v0.9.0, and v0.13.0 historical inputs",
+        "outcome": "passed",
+        "evidence": "The build produced ZIP sha256 1445f0bf05e0f1e9a99700cbd70d23e6a021bc663a2f5ad10719018fe515ded9 and TAR.GZ sha256 a0f2d0b26d19dfaab3014015344e01c6e48c675febfcddf64003b143970e1669. Archive creation alone did not establish package-native validator parity, support-matrix evidence, or routes."
+      },
+      {
+        "command": "canonical package-native validator against the b24da15f1948a9b17361fa49232c94485b4777e1 candidate archives",
+        "outcome": "failed",
+        "evidence": "The one validator attempt failed: selected-inputs migration proof diverges from migration.yaml. migration.yaml used semantic numeric order v0.6.0, v0.9.0, v0.13.0 while selected-inputs.json used lexical order v0.13.0, v0.6.0, v0.9.0. Parity was not established; no support-matrix or route files were created."
+      },
+      {
+        "command": "py -3 -B .ai/scripts/tests/test_ai_context_packaging.py VersionedMigrationPackagingGwtTests.test_gwt_013_given_multiple_exact_prior_inventories_when_schema_v2_candidate_is_built_then_sources_are_ordered_and_bound -v",
+        "outcome": "failed",
+        "evidence": "The first focused GWT013 run failed because SyntheticPackageRepo lacked the required target_owned_reference_patterns profile field. This actionable fixture failure was repaired and remains retained; it is not package or package-native validator evidence."
+      },
+      {
+        "command": "py -3 -B .ai/scripts/tests/test_ai_context_packaging.py VersionedMigrationPackagingGwtTests.test_gwt_013_given_multiple_exact_prior_inventories_when_schema_v2_candidate_is_built_then_sources_are_ordered_and_bound -v",
+        "outcome": "passed",
+        "evidence": "After selected_input_document was changed to semantic numeric version ordering and GWT013 was strengthened with the v0.9.0/v0.13.0 crossover, selected/migration order assertions, and ZIP/TAR native validation, the current focused GWT013 passed 1/1. This is mutable focused-test evidence only, not rebuilt package success."
+      },
+      {
+        "command": "immutable canonical builder and package-native validator at 60572c01e31abf58191d38adb5ca39e05338b08d using exact retained-origin files.yaml inputs",
+        "outcome": "passed",
+        "evidence": "Built ai-context-dotnet-backend-v0.14.0: ZIP sha256 6f332f2a17549eb46109d1b2786cdefb32839eea18520cd65476c246d1337116 (1404420 bytes) and TAR.GZ sha256 b08b18012f1db1cb8367f0e9bd378b6e079b6a31171d68d538fe77c1d363c35a (992036 bytes). Package validation output: AI context package validation passed for 2 archive(s)."
+      },
+      {
+        "command": "focused raw-byte success/error GWTs for .ai/scripts/plan-ai-context-upgrade.py",
+        "outcome": "blocked-by-environment",
+        "evidence": "The first sandbox run was blocked by WinError 5 before assertions. This is retained as an environment block, not a passing test."
+      },
+      {
+        "command": "focused raw-byte success/error GWTs for .ai/scripts/plan-ai-context-upgrade.py",
+        "outcome": "passed",
+        "evidence": "The normal Windows ACL rerun passed 2/2 in 0.355 seconds after the source fix used sys.stdout.buffer and sys.stderr.buffer. This remains focused mutable-source evidence only."
+      },
+      {
+        "command": "candidate release-state validation after the material planner-byte fix",
+        "outcome": "blocked-by-environment",
+        "evidence": "The sandbox attempt failed at the GitHub proxy before the Issue #200 GET; it produced no candidate-admission result."
+      },
+      {
+        "command": "candidate release-state validation after the material planner-byte fix",
+        "outcome": "failed",
+        "evidence": "The normal-network rerun progressed past the canonical route bytes and failed the expected next admission gate: #206: release-ready Issue must be closed with completed reason or be the exact open terminal-close Issue of the current source-candidate PR. #206 and coordination #222 remain open."
+      },
+      {
+        "command": "py -3 -B .ai/scripts/tests/test_ai_context_upgrade_routes.py -v",
+        "outcome": "passed",
+        "evidence": "Normal Windows ACL full route module passed 25/25 in 1.293 seconds."
+      },
+      {
+        "command": "py -3 -B .ai/scripts/tests/test_ai_context_release_state.py GWT031 GWT032 GWT033 -v",
+        "outcome": "passed",
+        "evidence": "Normal Windows ACL release-state focused GWT031-033 passed 3/3 in 0.058 seconds."
+      },
+      {
+        "command": "validate-ai-context",
+        "outcome": "passed",
+        "evidence": "validate-ai-context passed."
+      },
+      {
+        "command": "validate-source-governance",
+        "outcome": "passed",
+        "evidence": "validate-source-governance passed."
+      },
+      {
+        "command": "AST/YAML/JSON parse plus global git diff --check",
+        "outcome": "passed",
+        "evidence": "AST, YAML, and JSON parsing plus the global diff-check passed."
+      },
+      {
+        "command": "python .ai/scripts/validate-ai-context-release-state.py --phase candidate --version v0.14.0",
+        "outcome": "failed",
+        "evidence": "After pushed 0a9a25784d6fd3ba2429fb19bd04b45fac327029, the exact candidate phase failed: #206: release-ready Issue must be closed with completed reason or be the exact open terminal-close Issue of the current source-candidate PR. The pre-fix helper scanned only terminal-issue-closure-declaration.yaml and missed the same-workflow suffixed S3 PR #232 declaration; this is not candidate admission."
+      },
+      {
+        "command": "py -3 -B .ai/scripts/tests/test_ai_context_release_state.py AiContextReleaseStateGwtTests.test_gwt_033_given_open_terminal_issue_bound_to_current_pr_when_candidate_checked_then_only_exact_head_passes -v",
+        "outcome": "blocked-by-environment",
+        "evidence": "The first sandbox GWT033 run was blocked before logic by Temp WinError 5."
+      },
+      {
+        "command": "py -3 -B .ai/scripts/tests/test_ai_context_release_state.py AiContextReleaseStateGwtTests.test_gwt_033_given_open_terminal_issue_bound_to_current_pr_when_candidate_checked_then_only_exact_head_passes -v",
+        "outcome": "passed",
+        "evidence": "The normal Windows ACL focused GWT033 rerun passed after the canonical suffixed-declaration discovery repair."
+      },
+      {
+        "command": "py -3 -B .ai/scripts/tests/test_ai_context_release_state.py -v",
+        "outcome": "passed",
+        "evidence": "The normal Windows ACL full release-state module passed 36/36 after the repair."
+      },
+      {
+        "command": "python .ai/scripts/validate-ai-context-release-state.py --phase candidate --version v0.14.0",
+        "outcome": "passed",
+        "evidence": "At clean pushed ea0414edf1260f0a317ee4b406b9eafb29d7f859, the exact candidate release-state gate passed. This local source gate is not hosted admission."
+      },
+      {
+        "command": "py -3 -B .ai/scripts/tests/test_release_notes_renderer.py -v",
+        "outcome": "blocked-by-environment",
+        "evidence": "The initial sandbox run was blocked by Temp WinError 5 while creating temporary fixtures; it did not reach renderer assertions."
+      },
+      {
+        "command": "py -3 -B .ai/scripts/tests/test_payload_user_view_contract.py -v",
+        "outcome": "failed",
+        "evidence": "Baseline failed with 4 failures and 3 errors because the test fixture omitted canonical target_owned_reference_patterns; production package logic was not changed."
+      },
+      {
+        "command": "py -3 -B .ai/scripts/tests/test_release_notes_renderer.py -v",
+        "outcome": "passed",
+        "evidence": "Normal Windows ACL rerun passed 20/20 after v0.14 multi-source renderer validation required schema 3.0.0 while pre-v0.14 remains schema 2.0.0."
+      },
+      {
+        "command": "py -3 -B .ai/scripts/tests/test_payload_user_view_contract.py -v",
+        "outcome": "passed",
+        "evidence": "Normal Windows ACL rerun passed 6/6 after the fixture used list(PACKAGE.TARGET_OWNED_REFERENCE_PATTERNS)."
+      },
+      {
+        "command": "candidate renderer CLI plus Python AST parse and scoped git diff --check for the three repair files",
+        "outcome": "passed",
+        "evidence": "The working-tree v0.14 candidate renderer command passed, its temporary output was removed, all three Python files parsed, and scoped diff-check passed."
+      },
+      {
+        "command": "python .ai/scripts/validate-ai-context-release-state.py --phase candidate --version v0.14.0",
+        "outcome": "passed",
+        "evidence": "At pushed clean 66ec616b4d2c5e42129ae1a09557039d15ddb7df, the exact local candidate release-state gate passed. This is not hosted admission."
+      },
+      {
+        "command": "focused package-candidate workflow-contract GWTs",
+        "outcome": "passed",
+        "evidence": "The current source-candidate checkout/validator-commit correction passed focused coverage 10/10; YAML parse, scoped diff, and independent mutation review also passed."
+      },
+      {
+        "command": "python .ai/scripts/validate-ai-context-release-state.py --phase candidate --version v0.14.0",
+        "outcome": "failed",
+        "evidence": "Attempt 1 at pushed clean b4b38b136d69a1d3e3938598edcb4c6d7285b795 failed before online admission at release.yaml because literal GitHub expression durable evidence was rejected as a forbidden unfilled template marker. This is narrative encoding, not workflow identity failure."
+      },
+      {
+        "command": "python .ai/scripts/validate-ai-context-release-state.py --phase candidate --version v0.14.0",
+        "outcome": "failed",
+        "evidence": "Attempt 2, after the release.yaml wording repair, failed before online admission at release-notes.md on the same forbidden unfilled template marker. No candidate PASS occurred."
+      },
+      {
+        "command": "python .ai/scripts/validate-ai-context-release-state.py --phase candidate --version v0.14.0",
+        "outcome": "blocked-by-environment",
+        "evidence": "Attempt 3, after both release-scope wording repairs, reached read-only Issue #200 GET and was blocked by local proxy 127.0.0.1:9 connection refusal. It is distinct from the older planner-byte proxy event and is not candidate PASS."
+      },
+      {
+        "command": "python .ai/scripts/validate-ai-context-release-state.py --phase candidate --version v0.14.0 at clean fab9cf6787f0d4fad9384c29a6e0f514389667ba",
+        "outcome": "passed",
+        "evidence": "The exact local candidate gate passed at the pushed clean fab9 subject. This is not hosted admission."
+      },
+      {
+        "command": "fresh exact-head Sol audit of fab9cf6787f0d4fad9384c29a6e0f514389667ba",
+        "outcome": "failed",
+        "evidence": "The audit failed with no receipt after the live candidate failure exposed two blockers: archived v0.13 schema 2.2 lacks canonical target_owned_reference_patterns, and renderer/builder/source-disposition still use merge-ref GITHUB_SHA instead of selected candidate identity."
+      },
+      {
+        "command": "live Build and validate candidate run 32431077702 / job 96622569129",
+        "outcome": "failed",
+        "evidence": "The live candidate job failed. It is evidence for the audit blockers and is not hosted admission."
+      },
+      {
+        "command": "current-byte payload user-view contract suite",
+        "outcome": "passed",
+        "evidence": "Focused payload coverage passed 7/7 for the exact current four-file repair bytes."
+      },
+      {
+        "command": "current-byte package-candidate workflow-contract suite",
+        "outcome": "passed",
+        "evidence": "Focused workflow-contract coverage passed 10/10 for job-level CANDIDATE_COMMIT binding and separate PR base/head discovery inputs."
+      },
+      {
+        "command": "retained v0.13 archive compatibility validation",
+        "outcome": "passed",
+        "evidence": "The actual retained v0.13 archive passed under the narrowly scoped archived-schema-2.2 absent-field compatibility rule."
+      },
+      {
+        "command": "canonical v0.14 package validation at 60572c01e31abf58191d38adb5ca39e05338b08d",
+        "outcome": "passed",
+        "evidence": "The canonical v0.14 package passed; this retained immutable evidence is distinct from mutable repair coverage."
+      },
+      {
+        "command": "Python AST parse, YAML parse, and scoped git diff --check for the current four-file repair",
+        "outcome": "passed",
+        "evidence": "AST, YAML, and scoped diff checks passed."
+      },
+      {
+        "command": "independent read-only fixed-head review of exact current four-file diff",
+        "outcome": "passed",
+        "evidence": "Review passed with no blockers. Its normalized-text diff fingerprint was fa4b53d1a15ad95b66f57a25d4eb14bddb254234f721554bf2dfc91c42a7990b after PowerShell line normalization; raw binary Git stdout diff SHA-256 was 4ecaef44a9b0636588df882308a3ea784c80e5669daf5b68bf7614590b93e349."
+      },
+      {
+        "command": "exact 15-commit commit-policy validation from bf8ad9c624ffc2154722dfb266c9090c72e4ac5f to repair head 3a466b2133e8ef20d752f08d2e1b4b9df8869eed",
+        "outcome": "passed",
+        "evidence": "The exact 15-commit range passed commit policy."
+      },
+      {
+        "command": "sandbox candidate validation at repair head 3a466b2133e8ef20d752f08d2e1b4b9df8869eed",
+        "outcome": "blocked-by-environment",
+        "evidence": "The only block was proxy 127.0.0.1:9 during read-only Issue #200 GET; it is not candidate PASS."
+      },
+      {
+        "command": "normal-network exact candidate validation at clean pushed repair head 3a466b2133e8ef20d752f08d2e1b4b9df8869eed",
+        "outcome": "passed",
+        "evidence": "Exact candidate gate passed at clean pushed repair head 3a466. This is not hosted admission."
+      },
+      {
+        "command": "exact 16-commit policy, candidate, fresh Sol audit, receipt, and provider-live readback at d31b4be659ea7f7e5eff96087e61e69a23388366",
+        "outcome": "passed",
+        "evidence": "Audit reported zero blockers and canonical receipt was submitted as PR #232 COMMENTED review; this evidence is historical for d31 only."
+      },
+      {
+        "command": "one hosted watch at d31b4be659ea7f7e5eff96087e61e69a23388366",
+        "outcome": "failed",
+        "evidence": "Four checks passed and Build and validate candidate failed in run 32434135866/job 96631749666; no admission is inferred."
+      },
+      {
+        "command": "focused portable package validation at repair head 4a1217160bf272420bb673445dfe34336f383291",
+        "outcome": "passed",
+        "evidence": "18 cases passed and one Windows casefold case was expected to skip; payload 7/7, AST/diff, 17-commit policy, and normal-network candidate also passed."
+      },
+      {
+        "command": "independent two-file review at repair head 4a1217160bf272420bb673445dfe34336f383291",
+        "outcome": "passed",
+        "evidence": "Independent review passed; raw diff fingerprint begins f36e3709."
+      },
+      {
+        "command": "exact 18-commit policy, candidate, fresh Sol audit, receipt, and provider readback at 792849c7933e0e03fab3733b7138e151058d8daa",
+        "outcome": "passed",
+        "evidence": "The audit had zero blockers and receipt is historical for 792 after later mutation."
+      },
+      {
+        "command": "one hosted watch at 792849c7933e0e03fab3733b7138e151058d8daa",
+        "outcome": "failed",
+        "evidence": "Candidate and prerequisites passed; governance and Ubuntu profile failed from shared schema-2.3 fixture drift. No admission is inferred."
+      },
+      {
+        "command": "postfix focused transaction validation at repair checkpoint c7fc49a5dbfc5753172a5b32f5e1d36175f9f930",
+        "outcome": "passed",
+        "evidence": "GWT006+014 passed 2/2, GWT011-013 passed 3/3, real GWT010 passed, AST/diff and one-file review beginning a689309 passed; 19-commit policy and candidate gate passed."
+      },
+      {
+        "command": "exact 20-commit policy, candidate, fresh Sol audit, receipt, and provider readback at 91040b463b1cf4f1575af9b2d2abb8a3993c0ee0",
+        "outcome": "passed",
+        "evidence": "The audit had zero blockers and its canonical receipt/readback are historical for 910 after later mutation."
+      },
+      {
+        "command": "one hosted watch at 91040b463b1cf4f1575af9b2d2abb8a3993c0ee0",
+        "outcome": "failed",
+        "evidence": "Candidate, governance, and Ubuntu/Windows prerequisites passed; Ubuntu profile failed from shared schema-2.3 package-apply fixture drift before lifecycle assertions. The failed log was fetched once; no admission is inferred."
+      },
+      {
+        "command": "postfix focused package-apply fixture validation at repair checkpoint d9995e5b0a7cfcc54a5037418a485408892a24d7",
+        "outcome": "passed",
+        "evidence": "GWT001 passed 0.806s (independent 0.548s), real schema-2.3 GWT049 passed 25.778s (independent 24.690s), AST/diff and one-file review beginning 5fbf1da passed; 21-commit policy and candidate gate passed. Sandbox Temp ACL remains blocked evidence."
+      }
+    ],
     "role_execution_aggregation": [],
     "spec_compliance": {"outcome": "not-applicable", "coverage_percent": null, "evidence": []},
     "validation_evidence": [
-      "S1 merged as 41a1b4bcc942b9a412d55a8dab77bcc5d7b6fbf2.",
-      "S2 merged as e27540bb34721a14d097316af8f5fd708b6982b2.",
-      "Issue #206 remains open for S3."
+      "Local main and origin/main were clean and equal at bf8ad9c624ffc2154722dfb266c9090c72e4ac5f before the S3 branch.",
+      "Framework-source packet resolved with AICTX-EVIDENCE-001 and TEST-GWT-001; packet digest d01b6e5462fc645ada446a5edeef703059234713211fc6995e000da01d3cc700.",
+      "Live Issue #206 and coordination Issue #222 remain open; Project-field restoration is not claimed.",
+      "Initial Phase-A release.yaml work fixed the exact nine Included Work refs and automatic upgrade inputs v0.13.0, v0.9.0, and v0.6.0 before immutable package and direct-route proof were later established.",
+      "Release-state validation now requires canonical source-only route receipts and accepts an open terminal Issue only when exactly one tracked terminal-close declaration matches a live open PR at the current Git HEAD; post-merge provider closure remains mandatory.",
+      "The package builder requires automatic_upgrade_sources to equal the exact ordered migration-source set, so the candidate records all three retained origins rather than inventing an indirect route or omitting an input.",
+      "Immutable Phase-A build at 803a0771ada510a9c5faf630a36a096d74117a64 failed before package creation because builder canonical order is v0.6.0, v0.9.0, v0.13.0; the canonical template, release record, and active version-governance horizon now use that numeric order.",
+      "Immutable build at 7680190bf673c403ffbb970c75d397f91606872c then failed before archive output on a portable standards-index link to a source-only excluded terminal-close policy; the index now preserves the source-only filename as non-navigation text instead of weakening payload reference validation.",
+      "Immutable build at a66f1901584cc2dba89065273e998bdc6f1b3c20 then failed before archive output because canonical skill manifests carry both framework-source and initialized-target effective-rule modes, while the framework-source authority is correctly excluded from portable packages.",
+      "The first synthetic portable-projection GWT passed but a real code-reviewer manifest probe exposed an incorrect flat-mode assumption. The helper and fixture now project the canonical nested applicability modes, and AST, YAML, scoped diff, real-manifest probe, and corrected focused GWT evidence pass; no package, support-matrix, or route success is claimed before the immutable foundation commit and Phase-B rebuild.",
+      "Post-change framework-source resolver evidence resolved with AICTX-EVIDENCE-001 and TEST-GWT-001; packet digest 4d6de587bed1dd8ffd811e3af0aaf38210399f9f8c0dc385da8a9e126bd9c5c4 and git-status digest faa62aeb658456fbb6626fb2c71e0874566716c3670c458feadb6be81f681cad. Selection evidence is the local-change-implementer skill plus active UPG-003-S3 task.",
+      "The all-skill direct portable-projection probe passed: 10 skill manifests were projected and 7 were byte-unchanged. This is direct helper evidence only, not package, matrix, or route proof.",
+      "The first PowerShell JSON display parse message is retained as a display-tool misuse only; S3 task JSON and workflow YAML parsing passed, and the display error is not a product, package, or validator failure.",
+      "Terra precommit review first failed with two retained findings: source-only required_by_mode/prose remained in projected output, and the profile content_bytes contract falsely represented transformed payload bytes as Git-blob bytes. The repair removes the source-only mode/prose from projected output and makes the actual profile content-byte contract truthful for projected bytes.",
+      "The historical Terra precommit re-review passed: all 10 actual skill manifests are target-only with no framework-source mode, code-reviewer source bytes remain unchanged and projection is idempotent, malformed source-mode evidence fails closed, both package-collection paths are covered, the actual profile content-byte contract is truthful, the focused GWT passes, and scoped diff-check passes. No immutable builder success was claimed by that review alone.",
+      "At exact clean subject 2e6c5906882705e00b80f656c22c2925ed75c63a, three historical candidate files were hash-reverified before the single canonical builder attempt failed before archive output on the missing code-reviewer -> .dev/ai-context/provenance.yaml reference. No output directory, package, matrix, or route evidence exists for that attempt.",
+      "The historical precommit repair used an exact canonical target-owned reference allowlist limited to legacy source, provenance, customizations, effective rules, packets, local, and validation.local runtime inputs. Capability/reference closure may accept only those absent listed paths as target-owned runtime inputs; actionable-command validation remains unchanged and strict required-local-target, and .dev/ai-context/unknown.yaml remains a failure.",
+      "Focused GWT evidence passed for positive provenance and negative unknown-path rejection, with AST, YAML, and scoped diff checks passing. This historical repair did not by itself claim immutable builder success.",
+      "Fresh framework-source resolution on the final precommit bytes passed with AICTX-EVIDENCE-001 and TEST-GWT-001; packet digest 992a69bf3c0b37fe5d23df7e3158b86ca53e1935537de0f31426137cc9d6db50 and git-status digest 280bb711d90b9f304e80f655b94a0d998b9810dad88b1bdef7488574f221e3bb bind exact HEAD 2e6c5906882705e00b80f656c22c2925ed75c63a and the five modified paths.",
+      "Fresh read-only Terra review passed on three-file diff fingerprint b6eae2a746bbf0f6125d8eb6a480b08295a1742b7dcea3ca179413197f073909: only capability closure recognizes the exact target-owned allowlist; navigation and actionable-command targets remain strict; the real code-reviewer/current-profile probe passed, while unknown, source-only, navigation, and actionable missing targets rejected. The dedicated GWT positive remains a synthetic fixture seeded from the canonical profile, so the direct real-profile probe is not promoted to package evidence.",
+      "Final precommit gates passed: focused GWT 1/1, validate-ai-context, validate-workflow-artifacts, validate-source-governance, and global git diff --check. No package build was rerun on the mutable subject.",
+      "The sole canonical builder on immutable b24da15f1948a9b17361fa49232c94485b4777e1 succeeded only after rehashing exact v0.6.0, v0.9.0, and v0.13.0 historical inputs: ZIP sha256 1445f0bf05e0f1e9a99700cbd70d23e6a021bc663a2f5ad10719018fe515ded9 and TAR.GZ sha256 a0f2d0b26d19dfaab3014015344e01c6e48c675febfcddf64003b143970e1669. The one canonical package-native validator attempt then failed selected-inputs migration proof diverges from migration.yaml because migration.yaml uses semantic numeric v0.6.0, v0.9.0, v0.13.0 while selected-inputs.json used lexical v0.13.0, v0.6.0, v0.9.0; parity, support-matrix, and route evidence were not established.",
+      "The subsequent committed repair makes selected_input_document use semantic numeric version ordering and strengthens VersionedMigrationPackaging GWT013 with the v0.9.0/v0.13.0 crossover, selected/migration order assertions, and ZIP/TAR native validation. The first focused GWT013 failed because SyntheticPackageRepo lacked target_owned_reference_patterns; that actionable fixture error was repaired, and the later GWT013 passed 1/1. No rebuilt package success is claimed by that focused test alone.",
+      "Immutable package foundation: HEAD 60572c01e31abf58191d38adb5ca39e05338b08d on codex/2026-08-21-upg-003-v014-source-candidate-s3. The canonical builder and package-native validator passed for ai-context-dotnet-backend-v0.14.0: ZIP sha256 6f332f2a17549eb46109d1b2786cdefb32839eea18520cd65476c246d1337116 size 1404420 and TAR.GZ sha256 b08b18012f1db1cb8367f0e9bd378b6e079b6a31171d68d538fe77c1d363c35a size 992036; output was AI context package validation passed for 2 archive(s).",
+      "Exact historical files.yaml SHA-256 inputs for the successful immutable foundation are v0.6.0 20ca69ef4e1b4085476a2b15eeba93da7a75ea580fd2ab9f6c8815938b0af3be, v0.9.0 c293247612eb2f01ef42e4d7c55be4ff36201cdf034157c518de871ec2acb5c7, and v0.13.0 850b74f5f23825f42912ac401a52692bc4cf02627fd9f8a452753f41611fbce4.",
+      "Canonical direct route evidence is v0.13.0 ef7b9683f830b65089c3ab828e759270a02db33a7f21df080c8d01dff259da4e size 2292 with receipt ff278808c9470ccb143cd9f7af8ec5ac1c797b720d1c744a4873ed2a34d48401; v0.9.0 04f651c16ea79d10e454f180649eb066762201b70bcbf30d4552652c25606b1b size 2281 with receipt 8a957f7e0163ed14b52c65a06abe7ac18a88b60c5b12d1868203050652539e24; and v0.6.0 28f989d984e85276a1eb8c7e6c20420a7a651e28c043db9c7556613c5ffee725 size 2281 with receipt d6a078fb308730de12dd26695a1fea4f6602feb5bdbe1e1846960c090a446e41. Each evidence file is canonical UTF-8 with exactly one LF, no CR, route_kind direct, and diagnostics 0.",
+      "Route-history failures remain retained: the first v0.6.0 validator rejected target files manifest.files uses unsupported YAML structure because its parser treated a numeric sha256 field incorrectly; after the [a-z0-9_] repair, the v0.6.0 rerun and first v0.9.0/v0.13.0 runs passed. Initial receipts had double LF and planners returned reconciliation-required/not-canonical until canonical receipt repair reduced them to one LF.",
+      "The next planner outputs were semantically direct but used CRLF, so the candidate validator rejected their canonical bytes. The subsequently committed .ai/scripts/plan-ai-context-upgrade.py source fix at ad1973304e7fd2f170434c1fb5c77ff20c229fae writes through sys.stdout.buffer and sys.stderr.buffer; its first focused raw-byte success/error GWT run was blocked by sandbox WinError 5 before assertions, and the normal ACL rerun passed 2/2 in 0.355 seconds.",
+      "After the material planner-byte fix, sandbox candidate release-state validation failed at the GitHub proxy before the Issue #200 GET. The normal-network rerun progressed past route bytes and stopped at the expected gate: #206: release-ready Issue must be closed with completed reason or be the exact open terminal-close Issue of the current source-candidate PR. This is not candidate admission; #206 and coordination #222 remain open.",
+      "The planner-byte fix and three receipt-bound direct-route proofs are committed in source candidate ad1973304e7fd2f170434c1fb5c77ff20c229fae, distinct from immutable package foundation 60572c01e31abf58191d38adb5ca39e05338b08d.",
+      "Precommit independent audit passed on dirty diff fingerprint ef764808542c2a4e7ff0295d0dd05ec18e8ac1815d1711d107a16a873aac5e2a.",
+      "The exact-head Sol High audit of ad1973304e7fd2f170434c1fb5c77ff20c229fae terminally failed only because active workflow and release narrative records were stale; its repair was first recorded in draft/open PR #232 initial head aaae7aaf9f64be49574f9b35a6ca7e011bf9d593 and later pushed at 0a9a25784d6fd3ba2429fb19bd04b45fac327029.",
+      "Declaration evidence path: .dev/workflows/2026-08-20-upg-003-multi-hop-upgrade/evidence/terminal-issue-closure-s3-pr-232.yaml records terminal-close #206 and deferred #222 with head_sha null, pending review/integration, and empty required or hosted checks. It was pushed in draft/open PR #232 at 0a9a25784d6fd3ba2429fb19bd04b45fac327029; live exact base/head/body read-back passed, but this declaration remains neither review/admission nor integration evidence.",
+      "The validator fix is committed and pushed at ea0414edf1260f0a317ee4b406b9eafb29d7f859; its exact clean candidate release-state gate passed there. This is not hosted admission.",
+      "Historical framework-source resolver evidence bound dirty precommit bytes at HEAD 60572c01e31abf58191d38adb5ca39e05338b08d: resolved rules AICTX-EVIDENCE-001 and TEST-GWT-001; selection evidence .ai/assets/skills/local-change-implementer/skill.yaml plus active UPG-003-S3 task; packet digest 38d24ac505fcc8c37cadab05467401fd7d23f9e6b59e70810b87e19b98b1d7bf; git-status digest c7ccd8c9b69b94bae11cd2eb9203d05e83ed38d42daaebef62e3c91525c1e813; freshness was verified. This is not candidate admission.",
+      "At pushed clean head 0a9a25784d6fd3ba2429fb19bd04b45fac327029, one live PR #232 read-back passed exact base/head/body binding; #206 and #222 were OPEN, and five hosted checks were IN_PROGRESS observations rather than results.",
+      "The exact candidate command then failed with #206: release-ready Issue must be closed with completed reason or be the exact open terminal-close Issue of the current source-candidate PR. Root cause: the helper scanned only fixed terminal-issue-closure-declaration.yaml, missing same-workflow terminal-issue-closure-s3-pr-232.yaml.",
+      "The committed and pushed ea0414edf1260f0a317ee4b406b9eafb29d7f859 repair scans canonical terminal-issue-closure*.yaml and requires schema 1.0, exact github-terminal-issue-closure contract ID, a unique eligible terminal-close record, and exact live PR/current HEAD/body/base matching. Its exact clean candidate release-state gate passed; it is not hosted admission.",
+      "GWT033 first sandbox execution was blocked before logic by Temp WinError 5; normal ACL focused GWT033 passed and the full release-state module passed 36/36. The block remains blocked evidence, not a pass.",
+      "The first independent precommit review failed on wrong-contract fail-open and a malformed deferred fixture. After repair, re-review passed with manifest 4fbdc164c2b7e811dfb7316bfe4eb879809167a78651f3c11506dcb9f848382e and diff 4e37d38e9bcf02ae9fae3b3ffeade5f5c85fdf58bda834866738fdf107e9e787.",
+      "Historical framework-source rule resolution at clean 0a9a25784d6fd3ba2429fb19bd04b45fac327029 resolved AICTX-EVIDENCE-001 and TEST-GWT-001 with packet 2b95be6d8338103d49eaade3bca08a361074ff698f547d6573f29e6f57a91d68. The earlier attempted python technology route failed; the corrected exact route was dotnet-backend/python.",
+      "Fresh Sol High audit of exact head ea0414edf1260f0a317ee4b406b9eafb29d7f859 terminally failed with exactly one blocking finding: active narratives still described the prior 0a9a state, the pre-commit repair state, and commit/push as next work. It otherwise passed release-state 36/36, route 25/25, terminal/workflow/AI-context/source-governance/version-registry/commit-policy/AST-YAML-JSON-diff checks, and package plus three route cross-bindings; the audit made no repair.",
+      "The single live audit snapshot showed draft/open PR #232 at exact base bf8ad9c624ffc2154722dfb266c9090c72e4ac5f, head ea0414edf1260f0a317ee4b406b9eafb29d7f859, and exact body; #206 was open terminal-close and #222 open deferred. Build and validate candidate completed FAILURE, Read-only governance and Ubuntu PR profile were IN_PROGRESS, and Ubuntu and Windows prerequisites were SUCCESS. No logs were fetched; these are observations, not hosted admission.",
+      "At pushed clean 66ec616b4d2c5e42129ae1a09557039d15ddb7df, the exact candidate release-state gate passed. A fresh exact-head Sol audit failed exactly one cross-artifact finding: active narratives still described the now-committed prior renderer/payload repair as uncommitted and commit/push next. The audit otherwise passed renderer 20/20, payload 6/6, route 25/25, release-state 36/36, direct renderer, terminal, workflow, source, AI, version, 12-commit, package, and route evidence; it made no repair and submitted no receipt.",
+      "Separate live checks for 66ec terminally reached four PASS / one FAIL: governance, Ubuntu profile, Ubuntu prerequisite, and Windows prerequisite passed; Build and validate candidate failed. This is not hosted admission.",
+      "The one fetched candidate log was run 32428716122 / job 96615867346. It showed that the workflow sent pull-request merge-ref GITHUB_SHA to the candidate validator, which failed exact #206 terminal-close binding, while the local candidate gate using the exact head passed.",
+      "Historical two-file package-candidate workflow correction evidence used the same pull-request-head-or-dispatch selector for checkout and validator commit; focused coverage passed 10/10 with YAML/diff and independent mutation review. The first independent review failure remains retained because a PR_HEAD_SHA-only change left checkout at the merge ref.",
+      "Retained b4 candidate attempt sequence: attempt 1 failed before online admission at release.yaml on forbidden unfilled template marker; after YAML wording repair, attempt 2 failed before online admission at release-notes.md on the same marker; after both release-scope repairs, attempt 3 reached read-only Issue #200 GET and was blocked by local proxy 127.0.0.1:9. It is distinct from the older planner-byte proxy event, and no candidate PASS occurred. This is narrative encoding, not workflow identity failure; the later wording correction is historical evidence only.",
+      "Historical renderer and payload findings remain retained: the renderer required schema 2.0.0 although v0.14.0 multi-source uses 3.0.0; the payload-user-view fixture omitted canonical target_owned_reference_patterns; renderer sandbox baseline was blocked by Temp WinError 5; payload baseline failed 4 failures/3 errors; normal ACL renderer 20/20, payload 6/6, direct candidate renderer CLI, AST/scoped diff, and independent precommit review passed.",
+      "At pushed clean fab9cf6787f0d4fad9384c29a6e0f514389667ba, exact local candidate validation passed. Its fresh exact-head Sol audit failed/no receipt after live run 32431077702 / job 96622569129 exposed archived v0.13 schema-2.2 missing-field and merge-ref identity blockers; this is historical evidence.",
+      "Evidence head d31 passed policy, candidate, fresh audit/receipt, and provider readback; its hosted watch four PASS/one FAIL is historical only. Repair head 4a1217160bf272420bb673445dfe34336f383291 is committed/pushed with exact third-field ordered-seven allowlist enforcement, schema-2.3-only package-local validation, unchanged external schema-2.2 compatibility, 17-commit policy PASS, and normal-network candidate PASS.",
+      "Current-byte payload 7/7 and workflow-contract 10/10 passed. The actual retained v0.13 archive, canonical v0.14 package at 60572c01, AST/YAML/scoped diff checks, and independent read-only four-file review of raw binary Git diff SHA-256 4ecaef44a9b0636588df882308a3ea784c80e5669daf5b68bf7614590b93e349 also passed; the review reported no blockers. Its normalized-text diff fingerprint was fa4b53d1a15ad95b66f57a25d4eb14bddb254234f721554bf2dfc91c42a7990b after PowerShell line normalization.",
+      "Evidence head 792 and repair checkpoint c7 are historical. Clean head 91040b463b1cf4f1575af9b2d2abb8a3993c0ee0 passed exact 20-commit policy, candidate gate, fresh Sol audit with zero blockers, canonical receipt, and provider-live readback. Its exactly one hosted watch passed candidate 43s (run 32437898191/job 96642683276), governance 1m51 (run 32437898342/job 96642683267), Ubuntu prerequisite 11s (run 32437898190/job 96642682869), and Windows prerequisite 31s (run 32437898190/job 96642682915), while Ubuntu PR profile failed 2m22 (run 32437898190/job 96642682974).",
+      "The failed 910 log was fetched once: multi-hop passed 34.5 seconds; package-apply stopped because its shared schema-2.3 fixture still had only two reference_integrity fields, so portable validation failed before intended lifecycle assertions. Local source/reproduction confirmed fixture drift only.",
+      "Repair checkpoint d9995e5b0a7cfcc54a5037418a485408892a24d7 is committed/pushed. One package-apply test fixture imports/reuses ai_context_package_validation.TARGET_OWNED_REFERENCE_PATTERNS; no duplicate allowlist, production, or historical change. Postfix GWT001 passed 0.806s (independent 0.548s), real schema-2.3 GWT049 passed 25.778s (independent 24.690s), AST/diff and independent one-file review raw diff beginning 5fbf1da passed; sandbox Temp ACL remains blocked evidence. Exact 21-commit policy and candidate gate passed at d999.",
+      "This evidence-only reconciliation will advance the head. Next gates for the resulting clean evidence head: exact candidate revalidation, fresh exact-head Sol audit with new receipt, then one hosted watch. Keep S3 in_progress, PR #232 draft/open/unmerged, #206 open terminal-close, #222 open/deferred, and do not claim hosted admission, merge, Issue closure, provider closure, tag, Release, or publication."
     ],
-    "commits": [],
+    "commits": [
+      "803a0771ada510a9c5faf630a36a096d74117a64",
+      "7680190bf673c403ffbb970c75d397f91606872c",
+      "a66f1901584cc2dba89065273e998bdc6f1b3c20",
+      "2e6c5906882705e00b80f656c22c2925ed75c63a",
+      "b24da15f1948a9b17361fa49232c94485b4777e1",
+      "60572c01e31abf58191d38adb5ca39e05338b08d",
+      "ad1973304e7fd2f170434c1fb5c77ff20c229fae",
+      "aaae7aaf9f64be49574f9b35a6ca7e011bf9d593",
+      "0a9a25784d6fd3ba2429fb19bd04b45fac327029",
+      "ea0414edf1260f0a317ee4b406b9eafb29d7f859",
+      "66ec616b4d2c5e42129ae1a09557039d15ddb7df",
+      "b4b38b136d69a1d3e3938598edcb4c6d7285b795",
+      "fab9cf6787f0d4fad9384c29a6e0f514389667ba",
+      "3a466b2133e8ef20d752f08d2e1b4b9df8869eed",
+      "d31b4be659ea7f7e5eff96087e61e69a23388366",
+      "4a1217160bf272420bb673445dfe34336f383291",
+      "792849c7933e0e03fab3733b7138e151058d8daa",
+      "c7fc49a5dbfc5753172a5b32f5e1d36175f9f930",
+      "91040b463b1cf4f1575af9b2d2abb8a3993c0ee0",
+      "d9995e5b0a7cfcc54a5037418a485408892a24d7"
+    ],
     "follow_up_needed": true
   }
 }

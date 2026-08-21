@@ -880,6 +880,284 @@ class AiContextReleaseStateGwtTests(unittest.TestCase):
                     True,
                 )
 
+    def test_gwt_031_given_v014_retained_origins_when_route_evidence_matches_then_all_routes_pass(self):
+        version = "v0.14.0"
+        origins = ("v0.13.0", "v0.9.0", "v0.6.0")
+        artifacts = {
+            "release_notes": "release-notes.md",
+            "migration_guide": "migration-guide.md",
+            "support_matrix": "support-matrix.yaml",
+            "route_evidence": [
+                f"route-evidence/{origin}-to-{version}.json" for origin in origins
+            ],
+        }
+        matrix = {
+            "matrix_id": "upgrade-route-matrix-v0.14.0",
+            "target": {"version": version, "release_id": "REL-v0.14.0"},
+        }
+
+        def resolved(_matrix, *, origin, target, **_kwargs):
+            return {
+                "diagnostics": [],
+                "matrix": {"matrix_id": matrix["matrix_id"]},
+                "origin": origin,
+                "read_only": True,
+                "route_kind": "direct",
+                "selected_route": {"route_id": f"{origin}-to-{target}-direct"},
+                "target": target,
+            }
+
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            evidence_root = root / ".dev" / "releases" / version / "route-evidence"
+            evidence_root.mkdir(parents=True)
+            for origin in origins:
+                result = resolved(matrix, origin=origin, target=version)
+                (evidence_root / f"{origin}-to-{version}.json").write_bytes(
+                    STATE.canonical_route_json(result).encode("utf-8"),
+                )
+            with patch.object(STATE, "load_route_matrix", return_value=(matrix, b"matrix")):
+                with patch.object(STATE, "resolve_upgrade_route", side_effect=resolved):
+                    STATE.validate_retained_origin_route_evidence(root, version, artifacts)
+
+    def test_gwt_032_given_v014_tampered_or_unproven_route_when_validated_then_it_fails_closed(self):
+        version = "v0.14.0"
+        origins = ("v0.13.0", "v0.9.0", "v0.6.0")
+        artifacts = {
+            "release_notes": "release-notes.md",
+            "migration_guide": "migration-guide.md",
+            "support_matrix": "support-matrix.yaml",
+            "route_evidence": [
+                f"route-evidence/{origin}-to-{version}.json" for origin in origins
+            ],
+        }
+        matrix = {
+            "matrix_id": "upgrade-route-matrix-v0.14.0",
+            "target": {"version": version, "release_id": "REL-v0.14.0"},
+        }
+
+        def resolved(_matrix, *, origin, target, **_kwargs):
+            return {
+                "diagnostics": [],
+                "matrix": {"matrix_id": matrix["matrix_id"]},
+                "origin": origin,
+                "read_only": True,
+                "route_kind": "direct",
+                "selected_route": {"route_id": f"{origin}-to-{target}-direct"},
+                "target": target,
+            }
+
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            evidence_root = root / ".dev" / "releases" / version / "route-evidence"
+            evidence_root.mkdir(parents=True)
+            for origin in origins:
+                result = resolved(matrix, origin=origin, target=version)
+                (evidence_root / f"{origin}-to-{version}.json").write_bytes(
+                    STATE.canonical_route_json(result).encode("utf-8"),
+                )
+            (evidence_root / f"v0.9.0-to-{version}.json").write_text(
+                '{"tampered":true}\n',
+                encoding="utf-8",
+            )
+            with patch.object(STATE, "load_route_matrix", return_value=(matrix, b"matrix")):
+                with patch.object(STATE, "resolve_upgrade_route", side_effect=resolved):
+                    with self.assertRaisesRegex(
+                        STATE.ReleaseStateError,
+                        "differs from canonical resolver output",
+                    ):
+                        STATE.validate_retained_origin_route_evidence(root, version, artifacts)
+
+            def unresolved(_matrix, *, origin, target, **_kwargs):
+                result = resolved(_matrix, origin=origin, target=target)
+                result["route_kind"] = "reconciliation-required"
+                return result
+
+            with patch.object(STATE, "load_route_matrix", return_value=(matrix, b"matrix")):
+                with patch.object(STATE, "resolve_upgrade_route", side_effect=unresolved):
+                    with self.assertRaisesRegex(
+                        STATE.ReleaseStateError,
+                        "must resolve direct or orchestrated-multi-hop",
+                    ):
+                        STATE.validate_retained_origin_route_evidence(root, version, artifacts)
+
+    def test_gwt_033_given_open_terminal_issue_bound_to_current_pr_when_candidate_checked_then_only_exact_head_passes(self):
+        issue_number = 206
+        repository = "owner/repo"
+        body = "## Disposition\n\nCloses #206"
+        declaration = {
+            "schema_version": "1.0",
+            "contract_id": "github-terminal-issue-closure",
+            "repository": repository,
+            "validation_stage": "declaration",
+            "pull_request": {
+                "number": 231,
+                "head_sha": None,
+                "body": body,
+                "integration": {
+                    "status": "pending",
+                    "topology": None,
+                    "admitted_head_sha": None,
+                    "integration_commit_sha": None,
+                    "provider_read_back": False,
+                },
+                "review": {"status": "pending"},
+                "required_check_contexts": [],
+                "hosted_checks": [],
+            },
+            "issues": [
+                {
+                    "number": issue_number,
+                    "mode": "terminal-close",
+                    "work_authorization": {
+                        "online_issue_bound": True,
+                        "explicit_owner_approval": True,
+                    },
+                    "final_accepted_delivery": True,
+                    "workflow": {
+                        "scope_complete": True,
+                        "tasks_complete": True,
+                        "applicable_verification_complete": True,
+                    },
+                    "closing_keyword": "Closes",
+                    "closure_deferred_reason": None,
+                    "next_terminal_gate_or_owner": None,
+                    "read_back": {
+                        "performed": False,
+                        "integration_commit_sha": None,
+                        "issue_state": None,
+                        "issue_state_reason": None,
+                        "project_status": None,
+                    },
+                }
+            ],
+        }
+
+        def runner_for(head_sha):
+            def execute(args, cwd, capture_output, text, check):
+                if args == ["git", "rev-parse", "HEAD"]:
+                    output = SHA + "\n"
+                elif args == ["gh", "api", "--method", "GET", "repos/owner/repo/pulls/231"]:
+                    output = json.dumps(
+                        {
+                            "number": 231,
+                            "state": "open",
+                            "merged_at": None,
+                            "body": body,
+                            "head": {"sha": head_sha},
+                            "base": {"repo": {"full_name": repository}},
+                        }
+                    )
+                else:
+                    raise AssertionError(args)
+                return subprocess.CompletedProcess(args, 0, output, "")
+
+            return execute
+
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            declaration_path = (
+                root
+                / ".dev/workflows/s3/evidence/terminal-issue-closure-s3-pr-231.yaml"
+            )
+            declaration_path.parent.mkdir(parents=True)
+            declaration_path.write_text(
+                yaml.safe_dump(declaration, sort_keys=False),
+                encoding="utf-8",
+            )
+            deferred = json.loads(json.dumps(declaration))
+            deferred["pull_request"]["number"] = 227
+            deferred["pull_request"]["body"] = (
+                "## Disposition\n\n"
+                "Refs #206\n\n"
+                "Closure deferred reason for #206: later release proof remains.\n\n"
+                "Next terminal gate for #206: complete the later release proof."
+            )
+            deferred_issue = deferred["issues"][0]
+            deferred_issue.update(
+                {
+                    "mode": "deferred",
+                    "final_accepted_delivery": False,
+                    "workflow": {
+                        "scope_complete": False,
+                        "tasks_complete": False,
+                        "applicable_verification_complete": False,
+                    },
+                    "closing_keyword": None,
+                    "closure_deferred_reason": "later release proof remains",
+                    "next_terminal_gate_or_owner": "complete the later release proof",
+                }
+            )
+            historical_path = (
+                declaration_path.parent / "terminal-issue-closure-declaration.yaml"
+            )
+            historical_path.write_text(
+                yaml.safe_dump(deferred, sort_keys=False),
+                encoding="utf-8",
+            )
+            self.assertTrue(
+                STATE.pending_terminal_issue_delivery(
+                    root,
+                    repository,
+                    issue_number,
+                    runner_for(SHA),
+                )
+            )
+            self.assertFalse(
+                STATE.pending_terminal_issue_delivery(
+                    root,
+                    repository,
+                    issue_number,
+                    runner_for("b" * 40),
+                )
+            )
+            duplicate_path = (
+                declaration_path.parent / "terminal-issue-closure-duplicate.yaml"
+            )
+            duplicate_path.write_text(
+                yaml.safe_dump(declaration, sort_keys=False),
+                encoding="utf-8",
+            )
+            self.assertFalse(
+                STATE.pending_terminal_issue_delivery(
+                    root,
+                    repository,
+                    issue_number,
+                    runner_for(SHA),
+                )
+            )
+            duplicate_path.unlink()
+            malformed_path = (
+                declaration_path.parent / "terminal-issue-closure-malformed.yaml"
+            )
+            malformed_path.write_text("unrelated: true\n", encoding="utf-8")
+            wrong_contract = json.loads(json.dumps(declaration))
+            wrong_contract["contract_id"] = "unrelated-contract"
+            wrong_contract_path = (
+                declaration_path.parent / "terminal-issue-closure-wrong-contract.yaml"
+            )
+            wrong_contract_path.write_text(
+                yaml.safe_dump(wrong_contract, sort_keys=False),
+                encoding="utf-8",
+            )
+            self.assertTrue(
+                STATE.pending_terminal_issue_delivery(
+                    root,
+                    repository,
+                    issue_number,
+                    runner_for(SHA),
+                )
+            )
+            declaration_path.unlink()
+            self.assertFalse(
+                STATE.pending_terminal_issue_delivery(
+                    root,
+                    repository,
+                    issue_number,
+                    runner_for(SHA),
+                )
+            )
+
 
 if __name__ == "__main__":
     unittest.main()

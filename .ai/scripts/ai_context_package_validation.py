@@ -56,6 +56,15 @@ PAYLOAD_USER_VIEW_CLASSIFICATIONS = {
     "external_urls": "external-not-validated",
     "actionable_local_commands": "required-local-target",
 }
+TARGET_OWNED_REFERENCE_PATTERNS = (
+    ".dev/AI-CONTEXT-SOURCE.yaml",
+    ".dev/ai-context/provenance.yaml",
+    ".dev/ai-context/customizations.yaml",
+    ".dev/ai-context/effective-rules.yaml",
+    ".dev/ai-context/effective-rule-packets/**",
+    ".dev/ai-context/local/**",
+    ".dev/validation.local.conf",
+)
 
 
 class PackageValidationError(ValueError):
@@ -386,7 +395,11 @@ def _validate_user_view(
     reference = _require_mapping(
         contract.get("reference_integrity"), "package.yaml user_view reference_integrity"
     )
-    if set(reference) != {"text_extensions", "forbidden_source_lifecycle_patterns"}:
+    if set(reference) != {
+        "text_extensions",
+        "forbidden_source_lifecycle_patterns",
+        "target_owned_reference_patterns",
+    }:
         _fail("package.yaml user_view reference_integrity fields are invalid")
     extensions = _require_list(
         reference.get("text_extensions"), "package.yaml user_view text_extensions"
@@ -395,10 +408,19 @@ def _validate_user_view(
         reference.get("forbidden_source_lifecycle_patterns"),
         "package.yaml user_view forbidden_source_lifecycle_patterns",
     )
+    target_owned = _require_list(
+        reference.get("target_owned_reference_patterns"),
+        "package.yaml user_view target_owned_reference_patterns",
+    )
     if not extensions or not all(isinstance(item, str) and item.startswith(".") for item in extensions):
         _fail("package.yaml user_view text_extensions are invalid")
     if not forbidden or not all(isinstance(item, str) and item for item in forbidden):
         _fail("package.yaml user_view forbidden lifecycle patterns are invalid")
+    if target_owned != list(TARGET_OWNED_REFERENCE_PATTERNS):
+        _fail(
+            "package.yaml user_view target_owned_reference_patterns must use the "
+            "canonical exact allowlist"
+        )
 
     components: dict[str, dict[str, Any]] = {}
     for index, raw in enumerate(

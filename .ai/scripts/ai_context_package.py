@@ -44,6 +44,15 @@ ACTIONABLE_COMMAND_RE = re.compile(
 )
 REPOSITORY_ROOT_PREFIXES = (".ai/", ".dev/", ".agents/", ".claude/", ".codex/", ".github/")
 PLACEHOLDER_TOKENS = ("*", "?", "<", ">", "{", "}")
+TARGET_OWNED_REFERENCE_PATTERNS = (
+    ".dev/AI-CONTEXT-SOURCE.yaml",
+    ".dev/ai-context/provenance.yaml",
+    ".dev/ai-context/customizations.yaml",
+    ".dev/ai-context/effective-rules.yaml",
+    ".dev/ai-context/effective-rule-packets/**",
+    ".dev/ai-context/local/**",
+    ".dev/validation.local.conf",
+)
 COMPONENT_PACKAGE_SCHEMAS = {"2.0.0", "2.1.0", "2.2.0", "2.3.0"}
 IDENTITY_PACKAGE_SCHEMAS = {"1.1.0", "2.1.0", "2.2.0", "2.3.0"}
 PORTABLE_VALIDATION_PACKAGE_SCHEMAS = {"2.3.0"}
@@ -367,6 +376,139 @@ def load_yaml_blob(
     return value
 
 
+def project_portable_payload_content(
+    source_path: str,
+    content: bytes,
+    profile: dict,
+) -> bytes:
+    """Remove framework-source-only skill routing from initialized-target packages."""
+
+    projection = profile.get("portable_projection")
+    if projection is None:
+        return content
+    expected = {
+        "skill_effective_rule_consumption": {
+            "source_pattern": ".ai/assets/skills/*/skill.yaml",
+            "applicability_mode": "initialized-target",
+            "excluded_mode": "framework-source",
+        }
+    }
+    if projection != expected:
+        raise PackageError(
+            "portable_projection must use the canonical initialized-target skill projection"
+        )
+    contract = projection["skill_effective_rule_consumption"]
+    if not matches(source_path, contract["source_pattern"]):
+        return content
+    try:
+        document = yaml.safe_load(content.decode("utf-8"))
+    except (UnicodeDecodeError, yaml.YAMLError) as exc:
+        raise PackageError(
+            f"cannot project portable skill manifest {source_path}: {exc}"
+        ) from exc
+    if not isinstance(document, dict):
+        raise PackageError(
+            f"portable skill manifest root must be a mapping: {source_path}"
+        )
+    consumption = document.get("effective_rule_consumption")
+    if not isinstance(consumption, dict):
+        return content
+    applicability = consumption.get("applicability")
+    if not isinstance(applicability, dict):
+        raise PackageError(
+            f"portable skill effective-rule applicability is invalid: {source_path}"
+        )
+    if applicability.get("selector") != "applicability_mode":
+        raise PackageError(
+            f"portable skill effective-rule selector is invalid: {source_path}"
+        )
+    modes = applicability.get("modes")
+    if not isinstance(modes, dict):
+        raise PackageError(
+            f"portable skill effective-rule modes are invalid: {source_path}"
+        )
+    excluded_mode = contract["excluded_mode"]
+    applicability_mode = contract["applicability_mode"]
+    mode_ids = set(modes)
+    if mode_ids == {applicability_mode}:
+        if not isinstance(modes[applicability_mode], dict):
+            raise PackageError(
+                f"portable skill effective-rule mode contract is invalid: {source_path}"
+            )
+        if b"framework-source" in content:
+            raise PackageError(
+                f"portable skill contains partially projected framework-source semantics: {source_path}"
+            )
+        return content
+    if mode_ids != {excluded_mode, applicability_mode}:
+        raise PackageError(
+            f"portable skill effective-rule modes are not the canonical source/target pair: {source_path}"
+        )
+    if not all(isinstance(modes[mode], dict) for mode in modes):
+        raise PackageError(
+            f"portable skill effective-rule mode contracts are invalid: {source_path}"
+        )
+
+    evidence = consumption.get("evidence")
+    required_by_mode = (
+        evidence.get("required_by_mode") if isinstance(evidence, dict) else None
+    )
+    if (
+        not isinstance(required_by_mode, dict)
+        or set(required_by_mode) != {excluded_mode, applicability_mode}
+        or not all(
+            isinstance(required_by_mode[mode], list) for mode in required_by_mode
+        )
+    ):
+        raise PackageError(
+            f"portable skill mode-specific evidence contract is invalid: {source_path}"
+        )
+
+    semantic_consistency = consumption.get("semantic_consistency")
+    source_owner = (
+        "source-governance-owned in framework-source mode; "
+        "target-owned in initialized-target mode"
+    )
+    if (
+        not isinstance(semantic_consistency, dict)
+        or semantic_consistency.get("stricter_policy_owner") != source_owner
+    ):
+        raise PackageError(
+            f"portable skill policy-owner contract is invalid: {source_path}"
+        )
+
+    prohibitions = consumption.get("prohibitions")
+    source_prohibition = (
+        "Do not require, fabricate, or persist downstream provenance in "
+        "framework-source mode."
+    )
+    if (
+        not isinstance(prohibitions, list)
+        or prohibitions.count(source_prohibition) != 1
+    ):
+        raise PackageError(
+            f"portable skill source-prohibition contract is invalid: {source_path}"
+        )
+
+    del modes[excluded_mode]
+    del required_by_mode[excluded_mode]
+    semantic_consistency["stricter_policy_owner"] = (
+        "target-owned in initialized-target mode"
+    )
+    prohibitions.remove(source_prohibition)
+    projected = yaml.safe_dump(
+        document,
+        sort_keys=False,
+        allow_unicode=True,
+        width=4096,
+    ).encode("utf-8")
+    if b"framework-source" in projected:
+        raise PackageError(
+            f"portable skill projection retains framework-source semantics: {source_path}"
+        )
+    return projected
+
+
 def add_payload_file(files: dict[str, PayloadFile], candidate: PayloadFile) -> None:
     target = safe_relative_path(candidate.path, "target path")
     if target in files:
@@ -510,7 +652,11 @@ def collect_payload(
                     PayloadFile(
                         target_path,
                         source_path,
-                        git_blob(repo, source_entry, reader),
+                        project_portable_payload_content(
+                            source_path,
+                            git_blob(repo, source_entry, reader),
+                            profile,
+                        ),
                         REGULAR_MODES[source_entry.mode],
                         ownership,
                         behavior,
@@ -527,7 +673,11 @@ def collect_payload(
                 if not matches(source_path, source_pattern) or is_excluded(source_path, exclusions):
                     continue
                 source_entry = tree[source_path]
-                content = git_blob(repo, source_entry, reader)
+                content = project_portable_payload_content(
+                    source_path,
+                    git_blob(repo, source_entry, reader),
+                    profile,
+                )
                 if target_rule == "preserve-relative-path":
                     target_path = source_path
                 elif isinstance(target_rule, str) and target_rule.endswith("/"):
@@ -718,6 +868,9 @@ def payload_user_view_contract(profile: dict) -> dict:
             "forbidden_source_lifecycle_patterns": reference_integrity.get(
                 "forbidden_source_lifecycle_patterns"
             ),
+            "target_owned_reference_patterns": reference_integrity.get(
+                "target_owned_reference_patterns"
+            ),
         },
         "components": _normalized_components(profile),
         "supported_selections": user_view.get("supported_selections"),
@@ -725,7 +878,9 @@ def payload_user_view_contract(profile: dict) -> dict:
     }
 
 
-def _validate_user_view_structure(contract: object) -> tuple[dict[str, dict], dict[str, set[str]], list[dict]]:
+def _validate_user_view_structure(
+    contract: object, *, archive_package_schema: str | None = None
+) -> tuple[dict[str, dict], dict[str, set[str]], list[dict], list[str]]:
     if not isinstance(contract, dict) or contract.get("schema_version") != "1.0.0":
         raise PackageError("payload user_view must use schema 1.0.0")
     if contract.get("classifications") != PAYLOAD_USER_VIEW_CLASSIFICATIONS:
@@ -744,6 +899,20 @@ def _validate_user_view_structure(contract: object) -> tuple[dict[str, dict], di
     ):
         raise PackageError(
             "reference_integrity.forbidden_source_lifecycle_patterns must be a non-empty list"
+        )
+    canonical_target_owned = list(TARGET_OWNED_REFERENCE_PATTERNS)
+    if "target_owned_reference_patterns" not in reference:
+        if archive_package_schema == "2.2.0":
+            target_owned = canonical_target_owned
+        else:
+            raise PackageError(
+                "reference_integrity.target_owned_reference_patterns must use the canonical exact allowlist"
+            )
+    else:
+        target_owned = reference["target_owned_reference_patterns"]
+    if target_owned != canonical_target_owned:
+        raise PackageError(
+            "reference_integrity.target_owned_reference_patterns must use the canonical exact allowlist"
         )
 
     raw_components = contract.get("components")
@@ -854,7 +1023,7 @@ def _validate_user_view_structure(contract: object) -> tuple[dict[str, dict], di
                     f"capability {capability_id} availability is invalid for {selection_id}"
                 )
         capability_ids.add(capability_id)
-    return components, selections, capabilities
+    return components, selections, capabilities, canonical_target_owned
 
 
 def _validate_markdown_navigation(
@@ -950,6 +1119,7 @@ def _validate_component_capabilities(
     components: dict[str, dict],
     selections: dict[str, set[str]],
     capabilities: list[dict],
+    target_owned_reference_patterns: list[str],
 ) -> None:
     unknown = sorted({item.component_id for item in files} - set(components))
     if unknown:
@@ -989,6 +1159,11 @@ def _validate_component_capabilities(
                 candidate = match.group(0)
                 if _is_placeholder(candidate):
                     continue
+                if any(
+                    matches(candidate, pattern)
+                    for pattern in target_owned_reference_patterns
+                ):
+                    continue
                 targets = _target_payload_items(files_by_path, candidate)
                 if not targets:
                     raise PackageError(
@@ -1024,12 +1199,24 @@ def _validate_component_capabilities(
                 )
 
 
-def validate_payload_user_view(files: Iterable[PayloadFile], contract: object) -> None:
+def validate_payload_user_view(
+    files: Iterable[PayloadFile],
+    contract: object,
+    *,
+    archive_package_schema: str | None = None,
+) -> None:
     payload_files = list(files)
     files_by_path = {item.path: item for item in payload_files}
     if len(files_by_path) != len(payload_files):
         raise PackageError("payload user_view received duplicate target paths")
-    components, selections, capabilities = _validate_user_view_structure(contract)
+    (
+        components,
+        selections,
+        capabilities,
+        target_owned_reference_patterns,
+    ) = _validate_user_view_structure(
+        contract, archive_package_schema=archive_package_schema
+    )
     reference = contract["reference_integrity"]
     normalized_extensions = {
         item.lower() for item in reference["text_extensions"]
@@ -1054,7 +1241,12 @@ def validate_payload_user_view(files: Iterable[PayloadFile], contract: object) -
     _validate_markdown_navigation(payload_files, files_by_path)
     _validate_actionable_markdown_commands(payload_files, files_by_path)
     _validate_component_capabilities(
-        payload_files, files_by_path, components, selections, capabilities
+        payload_files,
+        files_by_path,
+        components,
+        selections,
+        capabilities,
+        target_owned_reference_patterns,
     )
 
 
@@ -1160,7 +1352,9 @@ def selected_input_document(
             }
             for item in sorted(
                 migration_sources,
-                key=lambda item: str(item["version"]),
+                key=lambda item: tuple(
+                    int(part) for part in str(item["version"]).split(".")
+                ),
             )
         ],
     }
@@ -2145,9 +2339,17 @@ def validate_archive(path: Path) -> dict[str, tuple[bytes, int]]:
     if payload_meta.get("file_count") != len(records) or payload_meta.get("sha256") != payload_digest(payload_items):
         raise PackageError("package payload count or digest mismatch")
     if package_schema == "2.2.0":
-        validate_payload_user_view(payload_items, package.get("user_view"))
+        validate_payload_user_view(
+            payload_items,
+            package.get("user_view"),
+            archive_package_schema=package_schema,
+        )
     if package_schema == "2.3.0":
-        validate_payload_user_view(payload_items, package.get("user_view"))
+        validate_payload_user_view(
+            payload_items,
+            package.get("user_view"),
+            archive_package_schema=package_schema,
+        )
         assert validation_document is not None
         assert selected_input_proof is not None
         selected_input_sha = sha256_bytes(

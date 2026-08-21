@@ -133,6 +133,29 @@ class ReleaseNotesRendererTests(unittest.TestCase):
             with self.assertRaisesRegex(RENDERER.ReleaseNotesError, "schema 2.0.0"):
                 RENDERER.validate_release(root, "v0.5.0", COMMIT, "candidate")
 
+    def test_gwt_002a_given_v014_schema_3_multi_source_candidate_when_validated_then_renders(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            data = release_record("3.0.0", ["v0.6.0", "v0.9.0", "v0.13.0"])
+            data.update({"release_id": "REL-v0.14.0", "version": "v0.14.0"})
+            data["planning"] = {"github_issue_refs": ["#203"]}
+            self.write_release(root, data)
+            rendered, _, _ = RENDERER.validate_release(root, "v0.14.0", COMMIT, "candidate")
+            self.assertEqual(
+                ["v0.6.0", "v0.9.0", "v0.13.0"],
+                rendered["compatibility"]["automatic_upgrade_sources"],
+            )
+
+    def test_gwt_002b_given_v014_schema_1_multi_source_candidate_when_validated_then_fails_closed(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            data = release_record("1.0.0", ["v0.6.0", "v0.9.0", "v0.13.0"])
+            data.update({"release_id": "REL-v0.14.0", "version": "v0.14.0"})
+            data["planning"] = {"github_issue_refs": ["#203"]}
+            self.write_release(root, data)
+            with self.assertRaisesRegex(RENDERER.ReleaseNotesError, "schema 3.0.0"):
+                RENDERER.validate_release(root, "v0.14.0", COMMIT, "candidate")
+
     def test_gwt_003_given_schema_1_single_source_when_validated_then_remains_compatible(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)

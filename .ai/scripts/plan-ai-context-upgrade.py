@@ -25,9 +25,9 @@ def main(argv: list[str] | None = None) -> int:
     try:
         result = resolve_matrix_file(args.matrix, origin=args.origin, target=args.target)
     except MatrixValidationError as exc:
-        sys.stderr.write(canonical_json({"error": str(exc)}))
+        sys.stderr.buffer.write(canonical_json({"error": str(exc)}).encode("utf-8"))
         return 2
-    sys.stdout.write(canonical_json(result))
+    sys.stdout.buffer.write(canonical_json(result).encode("utf-8"))
     return 0
 
 

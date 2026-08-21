@@ -65,19 +65,31 @@ provider_reconciliation:
         Published in: "Not applicable — not a release item"
 compatibility:
   breaking_changes: <true-or-false>
-  # Active upgrade testing starts at v0.6.0. For a later candidate, use the
-  # immediate previous governed package as the sole automatic source. A
-  # breaking release also uses it as the minimum source checkpoint.
-  minimum_source_version: "<vMAJOR.MINOR.PATCH-or-null>"
+  # v0.14.0 and later retain v0.6.0, v0.9.0, and the immediate predecessor in
+  # the source-only support matrix until an explicit owner deprecation. Keep
+  # automatic_upgrade_sources must equal the exact package migration inputs in
+  # canonical numeric ascending order.
+  # Remove a retained origin here only when the support matrix proves its
+  # orchestrated route rather than a direct source-specific migration.
+  minimum_source_version: "v0.6.0"
   reconciliation_sources:
-    - "<vMAJOR.MINOR.PATCH>"
+    - "<immediate-predecessor>"
+    - "v0.9.0"
+    - "v0.6.0"
   automatic_upgrade_sources:
-    - "<vMAJOR.MINOR.PATCH>"
+    - "v0.6.0"
+    - "v0.9.0"
+    - "<immediate-predecessor>"
   affected_contracts:
     - "<affected-public-contract>"
 artifacts:
   release_notes: "release-notes.md"
   migration_guide: "migration-guide.md"
+  support_matrix: "support-matrix.yaml"
+  route_evidence:
+    - "route-evidence/<immediate-predecessor>-to-<vMAJOR.MINOR.PATCH>.json"
+    - "route-evidence/v0.9.0-to-<vMAJOR.MINOR.PATCH>.json"
+    - "route-evidence/v0.6.0-to-<vMAJOR.MINOR.PATCH>.json"
 distribution:
   profile_id: "dotnet-backend"
   package_id: "ai-context-dotnet-backend-<vMAJOR.MINOR.PATCH>"

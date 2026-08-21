@@ -411,7 +411,7 @@ class AiContextVersionGovernanceGwtTests(unittest.TestCase):
         self.assertIn("v0.0.1", compatibility["reconciliation_sources"])
         self.assertNotIn("v0.0.1", compatibility["automatic_upgrade_sources"])
 
-    def test_gwt_016_given_active_release_history_when_validated_then_v060_starts_the_single_route_horizon(self):
+    def test_gwt_016_given_active_release_history_when_validated_then_v060_starts_the_governed_route_horizon(self):
         # Given the retained governed-package release history.
         release_files = sorted((ROOT / ".dev/releases").glob("v*/release.yaml"))
         records = []
@@ -427,21 +427,27 @@ class AiContextVersionGovernanceGwtTests(unittest.TestCase):
                 records.append((VALIDATE.version_key(version), version, data))
         records.sort(key=lambda item: item[0])
 
-        # When the active horizon is inspected, then v0.6.0 is the baseline and
-        # every later candidate has one immediate-predecessor automatic route.
+        # When the active horizon is inspected, then v0.6.0 is the baseline;
+        # v0.14.0 retains its three governed origins while earlier releases keep
+        # the immediate-predecessor route.
         self.assertEqual("v0.6.0", records[0][1])
         for index in range(1, len(records)):
             _, version, data = records[index]
             previous_version = records[index - 1][1]
             compatibility = data["compatibility"]
+            expected_sources = VALIDATE.RETAINED_UPGRADE_TEST_SOURCES.get(
+                version, [previous_version]
+            )
             self.assertEqual(
-                [previous_version],
+                expected_sources,
                 compatibility["automatic_upgrade_sources"],
                 version,
             )
             if compatibility["breaking_changes"]:
                 self.assertEqual(
-                    previous_version,
+                    expected_sources[0]
+                    if version in VALIDATE.RETAINED_UPGRADE_TEST_SOURCES
+                    else previous_version,
                     compatibility["minimum_source_version"],
                     version,
                 )
@@ -492,8 +498,67 @@ class AiContextVersionGovernanceGwtTests(unittest.TestCase):
             errors: list[str] = []
             VALIDATE.validate_upgrade_test_horizon(release_files, errors)
             self.assertEqual(2, len(errors))
-            self.assertTrue(any("immediate previous governed package v0.6.0" in error for error in errors))
+            self.assertTrue(any("governed package sources ['v0.6.0']" in error for error in errors))
             self.assertTrue(any("migration checkpoint" in error for error in errors))
+
+    def test_gwt_018_given_v014_retained_origins_when_horizon_validated_then_numeric_order_is_exact(self):
+        # Given v0.14.0 retains three automatic sources across the active horizon.
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            releases = root / ".dev/releases"
+            release_files = []
+            for version, compatibility in (
+                (
+                    "v0.13.0",
+                    {
+                        "breaking_changes": False,
+                        "minimum_source_version": "v0.12.0",
+                        "automatic_upgrade_sources": ["v0.12.0"],
+                    },
+                ),
+                (
+                    "v0.14.0",
+                    {
+                        "breaking_changes": True,
+                        "minimum_source_version": "v0.6.0",
+                        "automatic_upgrade_sources": [
+                            "v0.6.0",
+                            "v0.9.0",
+                            "v0.13.0",
+                        ],
+                    },
+                ),
+            ):
+                path = releases / version / "release.yaml"
+                path.parent.mkdir(parents=True)
+                path.write_text(
+                    yaml.safe_dump(
+                        {
+                            "version": version,
+                            "distribution_kind": "governed-package",
+                            "compatibility": compatibility,
+                        },
+                        sort_keys=False,
+                    ),
+                    encoding="utf-8",
+                )
+                release_files.append(path)
+
+            # When the exact numeric order is validated, then it passes.
+            errors: list[str] = []
+            VALIDATE.validate_upgrade_test_horizon(release_files, errors)
+            self.assertEqual([], errors)
+
+            # But when only the retained-source order changes, then it fails closed.
+            data = yaml.safe_load(release_files[-1].read_text(encoding="utf-8"))
+            data["compatibility"]["automatic_upgrade_sources"].reverse()
+            release_files[-1].write_text(
+                yaml.safe_dump(data, sort_keys=False), encoding="utf-8"
+            )
+            errors = []
+            VALIDATE.validate_upgrade_test_horizon(release_files, errors)
+            self.assertEqual(1, len(errors))
+            self.assertIn("numeric order", errors[0])
 
 
 if __name__ == "__main__":

@@ -214,6 +214,9 @@ class SyntheticPackageRepo:
                     ".dev/releases/v*/**",
                     ".dev/backlog/items/**",
                 ],
+                "target_owned_reference_patterns": list(
+                    PACKAGE.TARGET_OWNED_REFERENCE_PATTERNS
+                ),
             },
             "package_validation": {
                 "schema_version": "package-validation/v1",
@@ -604,6 +607,38 @@ class DeterministicPackageGwtTests(unittest.TestCase):
             fixture.close()
 
     def test_gwt_000b_given_source_effective_rule_policy_schema_and_evidence_when_built_then_downstream_excludes_them_and_retains_resolver(self) -> None:
+        canonical_profile = yaml.safe_load(
+            (ROOT / ".ai/distribution/profiles/dotnet-backend.yaml").read_text(
+                encoding="utf-8"
+            )
+        )
+        portable_projection = canonical_profile["portable_projection"]
+        self.assertEqual(
+            {
+                "skill_effective_rule_consumption": {
+                    "source_pattern": ".ai/assets/skills/*/skill.yaml",
+                    "applicability_mode": "initialized-target",
+                    "excluded_mode": "framework-source",
+                }
+            },
+            portable_projection,
+        )
+        self.assertEqual(
+            {
+                "default": "git-blob-bytes",
+                "portable_projection": (
+                    "deterministic-yaml-serialization-of-selected-git-blob"
+                ),
+            },
+            canonical_profile["package"]["deterministic"]["content_bytes"],
+        )
+        target_owned_reference_patterns = canonical_profile["reference_integrity"][
+            "target_owned_reference_patterns"
+        ]
+        self.assertEqual(
+            list(PACKAGE.TARGET_OWNED_REFERENCE_PATTERNS),
+            target_owned_reference_patterns,
+        )
         fixture = SyntheticPackageRepo()
         source_only_paths = (
             ".dev/standards/AI-CONTEXT-SOURCE-EFFECTIVE-RULES.yaml",
@@ -611,6 +646,7 @@ class DeterministicPackageGwtTests(unittest.TestCase):
             ".dev/workflows/2026-08-20-source-effective-rule/evidence/source-execution.yaml",
         )
         resolver_path = ".ai/scripts/resolve-effective-rule-packet.py"
+        skill_path = ".ai/assets/skills/fixture/skill.yaml"
         try:
             for path in source_only_paths:
                 target = fixture.root / path
@@ -620,8 +656,67 @@ class DeterministicPackageGwtTests(unittest.TestCase):
                     encoding="utf-8",
                     newline="\n",
                 )
+            skill = fixture.root / skill_path
+            skill.parent.mkdir(parents=True, exist_ok=True)
+            skill.write_text(
+                yaml.safe_dump(
+                    {
+                        "name": "fixture",
+                        "effective_rule_consumption": {
+                            "applicability": {
+                                "selector": "applicability_mode",
+                                "modes": {
+                                    "framework-source": {
+                                        "authority": source_only_paths[0],
+                                        "evidence": source_only_paths[2],
+                                    },
+                                    "initialized-target": {
+                                        "authority": ".dev/ai-context/provenance.yaml"
+                                    },
+                                },
+                            },
+                            "evidence": {
+                                "required_by_mode": {
+                                    "framework-source": ["source_repository.id"],
+                                    "initialized-target": ["target_state.digest"],
+                                }
+                            },
+                            "semantic_consistency": {
+                                "stricter_policy_owner": (
+                                    "source-governance-owned in framework-source mode; "
+                                    "target-owned in initialized-target mode"
+                                )
+                            },
+                            "prohibitions": [
+                                (
+                                    "Do not require, fabricate, or persist downstream "
+                                    "provenance in framework-source mode."
+                                )
+                            ],
+                        },
+                    },
+                    sort_keys=False,
+                ),
+                encoding="utf-8",
+                newline="\n",
+            )
             profile_path = fixture.root / fixture.profile
             profile = yaml.safe_load(profile_path.read_text(encoding="utf-8"))
+            profile["portable_projection"] = portable_projection
+            profile["reference_integrity"]["target_owned_reference_patterns"] = (
+                target_owned_reference_patterns
+            )
+            profile["payload_user_view"]["capabilities"].append(
+                {
+                    "capability_id": "fixture-effective-rule-skill",
+                    "owner_component": "software-development-core",
+                    "path_patterns": [skill_path],
+                    "availability": {
+                        "core-only": "available",
+                        "dotnet-selected": "available",
+                    },
+                }
+            )
             profile["exclusions"].extend(
                 [
                     {
@@ -661,6 +756,50 @@ class DeterministicPackageGwtTests(unittest.TestCase):
             self.assertTrue(
                 all(not (payload / path).exists() for path in source_only_paths)
             )
+            projected_skill = yaml.safe_load(
+                (payload / skill_path).read_text(encoding="utf-8")
+            )
+            self.assertEqual(
+                {"initialized-target"},
+                set(
+                    projected_skill["effective_rule_consumption"]["applicability"][
+                        "modes"
+                    ]
+                ),
+            )
+            self.assertNotIn(
+                "framework-source",
+                (payload / skill_path).read_text(encoding="utf-8"),
+            )
+            source_skill = yaml.safe_load(skill.read_text(encoding="utf-8"))
+            self.assertEqual(
+                {"framework-source", "initialized-target"},
+                set(
+                    source_skill["effective_rule_consumption"]["applicability"][
+                        "modes"
+                    ]
+                ),
+            )
+
+            source_skill["effective_rule_consumption"]["applicability"]["modes"][
+                "initialized-target"
+            ]["authority"] = ".dev/ai-context/unknown.yaml"
+            skill.write_text(
+                yaml.safe_dump(source_skill, sort_keys=False),
+                encoding="utf-8",
+                newline="\n",
+            )
+            git(fixture.root, "add", skill_path)
+            git(
+                fixture.root,
+                "commit",
+                "-qm",
+                "unlisted target-owned reference fixture",
+            )
+            with self.assertRaisesRegex(
+                PACKAGE.PackageError, r"\.dev/ai-context/unknown\.yaml"
+            ):
+                fixture.build("source-effective-rule-unlisted-target")
         finally:
             fixture.close()
 
@@ -1502,6 +1641,31 @@ class PayloadReferenceIntegrityGwtTests(unittest.TestCase):
                 fixture.build("missing-command")
         finally:
             fixture.close()
+
+    def test_gwt_011c_given_source_only_terminal_policy_when_index_is_projected_then_it_is_not_a_portable_link(self) -> None:
+        # Given the GitHub terminal-close policy is explicitly source-only.
+        profile = yaml.safe_load(
+            (ROOT / ".ai/distribution/profiles/dotnet-backend.yaml").read_text(
+                encoding="utf-8"
+            )
+        )
+        excluded = {
+            pattern
+            for entry in profile["exclusions"]
+            for pattern in entry["patterns"]
+        }
+        self.assertIn(
+            ".dev/standards/GITHUB-TERMINAL-ISSUE-CLOSURE-POLICY.md",
+            excluded,
+        )
+
+        # When the portable standards index is inspected, then it identifies
+        # that policy without creating a local Markdown target the package omits.
+        index_text = (ROOT / ".dev/standards/INDEX.MD").read_text(encoding="utf-8")
+        self.assertIn("`GITHUB-TERMINAL-ISSUE-CLOSURE-POLICY.md`", index_text)
+        self.assertNotIn(
+            "](GITHUB-TERMINAL-ISSUE-CLOSURE-POLICY.md)", index_text
+        )
 
 
 class UpgradeRoutePackageProjectionGwtTests(unittest.TestCase):
@@ -2378,17 +2542,17 @@ class VersionedMigrationPackagingGwtTests(unittest.TestCase):
         fixture = SyntheticPackageRepo()
         try:
             # Given immutable inventories for two supported prior releases.
-            v080 = fixture.build("v080", "0.8.0")
-            v080_files = fixture.extract(v080, "v080-extracted") / "metadata/files.yaml"
-            (fixture.root / "docs/rule.md").write_text("v090 rule\n", encoding="utf-8", newline="\n")
-            git(fixture.root, "add", "docs/rule.md")
-            git(fixture.root, "commit", "-qm", "v0.9.0 source")
             v090 = fixture.build("v090", "0.9.0")
             v090_files = fixture.extract(v090, "v090-extracted") / "metadata/files.yaml"
+            (fixture.root / "docs/rule.md").write_text("v0130 rule\n", encoding="utf-8", newline="\n")
+            git(fixture.root, "add", "docs/rule.md")
+            git(fixture.root, "commit", "-qm", "v0.13.0 source")
+            v0130 = fixture.build("v0130", "0.13.0")
+            v0130_files = fixture.extract(v0130, "v0130-extracted") / "metadata/files.yaml"
             (fixture.root / "docs/rule.md").write_text("v100 rule\n", encoding="utf-8", newline="\n")
             git(fixture.root, "add", "docs/rule.md")
             git(fixture.root, "commit", "-qm", "v1.0.0 source")
-            fixture.ensure_release("1.0.0", ["v0.8.0", "v0.9.0"])
+            fixture.ensure_release("1.0.0", ["v0.9.0", "v0.13.0"])
 
             # When the builder receives the exact version-and-inventory pairs out of order.
             result = PACKAGE.build_package(
@@ -2397,18 +2561,32 @@ class VersionedMigrationPackagingGwtTests(unittest.TestCase):
                 "1.0.0",
                 fixture.output("v2-candidate"),
                 fixture.profile,
-                previous_sources=[(v090_files, "0.9.0"), (v080_files, "0.8.0")],
+                previous_sources=[(v0130_files, "0.13.0"), (v090_files, "0.9.0")],
             )
             migration = yaml.safe_load(
                 (fixture.extract(result, "v2-candidate-extracted") / "metadata/migration.yaml").read_text(encoding="utf-8")
             )
+            selected_inputs = json.loads(
+                (
+                    fixture.extract(result, "v2-selected-inputs-extracted")
+                    / "metadata/selected-inputs.json"
+                ).read_text(encoding="utf-8")
+            )
             # Then source selection identity is retained and serialized in ascending version order.
-            self.assertEqual(["0.8.0", "0.9.0"], [source["version"] for source in migration["sources"]])
+            self.assertEqual(["0.9.0", "0.13.0"], [source["version"] for source in migration["sources"]])
             self.assertEqual(
-                [PACKAGE.sha256_bytes(v080_files.read_bytes()), PACKAGE.sha256_bytes(v090_files.read_bytes())],
+                ["0.9.0", "0.13.0"],
+                [source["version"] for source in selected_inputs["migration_sources"]],
+            )
+            self.assertEqual(
+                [PACKAGE.sha256_bytes(v090_files.read_bytes()), PACKAGE.sha256_bytes(v0130_files.read_bytes())],
                 [source["manifest_sha256"] for source in migration["sources"]],
             )
             self.assertTrue(all(isinstance(source["operations"], list) for source in migration["sources"]))
+            self.assertEqual(
+                PACKAGE.validate_archive(Path(result["zip"])),
+                PACKAGE.validate_archive(Path(result["tar_gz"])),
+            )
         finally:
             fixture.close()
 

@@ -1,0 +1,62 @@
+schema_version: "1.0"
+contract_id: github-terminal-issue-closure
+repository: YuChia-Wei/ai-collaboration-framework
+validation_stage: declaration
+pull_request:
+  number: 232
+  head_sha: null
+  body: |-
+    ## Summary
+
+    - instantiate the governed v0.14.0 source candidate with the exact Included Work snapshot #200 through #208
+    - bind `ai-context-dotnet-backend-v0.14.0` to deterministic ZIP/TAR package validation and exact retained-origin manifests
+    - add receipt-bound direct upgrade routes from v0.13.0, v0.9.0, and v0.6.0 with the required remediation-packet semantic cutover
+    - preserve every failed builder, validator, receipt, planner-byte, sandbox, and audit attempt without promoting it
+
+    ## Validation
+
+    - package-native validation: PASS for ZIP/TAR parity
+    - upgrade-route focused module: 25/25 PASS
+    - v0.14 release-state focused GWT031-033: 3/3 PASS
+    - validate-ai-context, validate-workflow-artifacts, validate-source-governance, exact commit policy, AST, YAML, JSON, and diff checks: PASS
+    - independent Terra Max precommit review: PASS
+    - exact-head Sol High audit of `ad1973304e7fd2f170434c1fb5c77ff20c229fae`: FAIL only on stale active narratives; repaired in `aaae7aaf9f64be49574f9b35a6ca7e011bf9d593`
+
+    ## Boundaries
+
+    - the package source commit `60572c01e31abf58191d38adb5ca39e05338b08d` is distinct from the source-candidate head
+    - cumulative integrated-main release readiness and the owner tag decision remain pending
+    - no tag, GitHub Release, asset/package publication, nightly activation, external-repository mutation, force-push, Project-field restoration, or secret persistence occurred
+
+    ## Disposition
+
+    Closes #206
+
+    Refs #222
+
+    Closure deferred reason for #222: the v0.14.0 source candidate completes UPG-003, while cumulative integrated-main pre-tag readiness remains.
+
+    Next terminal gate for #222: merge the exact admitted candidate, run cumulative release-profile, upgrade, hosted, provider-preflight, and independent final-audit gates, then record the readiness verdict without tagging or publishing.
+  integration: {status: pending, topology: null, admitted_head_sha: null, integration_commit_sha: null, provider_read_back: false}
+  review: {status: pending}
+  required_check_contexts: []
+  hosted_checks: []
+issues:
+  - number: 206
+    mode: terminal-close
+    work_authorization: {online_issue_bound: true, explicit_owner_approval: true}
+    final_accepted_delivery: true
+    workflow: {scope_complete: true, tasks_complete: true, applicable_verification_complete: true}
+    closing_keyword: Closes
+    closure_deferred_reason: null
+    next_terminal_gate_or_owner: null
+    read_back: {performed: false, integration_commit_sha: null, issue_state: null, issue_state_reason: null, project_status: null}
+  - number: 222
+    mode: deferred
+    work_authorization: {online_issue_bound: true, explicit_owner_approval: true}
+    final_accepted_delivery: false
+    workflow: {scope_complete: false, tasks_complete: false, applicable_verification_complete: false}
+    closing_keyword: null
+    closure_deferred_reason: the v0.14.0 source candidate completes UPG-003, while cumulative integrated-main pre-tag readiness remains
+    next_terminal_gate_or_owner: merge the exact admitted candidate, run cumulative release-profile, upgrade, hosted, provider-preflight, and independent final-audit gates, then record the readiness verdict without tagging or publishing
+    read_back: {performed: false, integration_commit_sha: null, issue_state: null, issue_state_reason: null, project_status: null}
