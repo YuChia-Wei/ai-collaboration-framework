@@ -441,6 +441,10 @@ class SyntheticRunnerRepo:
             '  case "${IMMUTABLE_HISTORY_STUB_MODE:-error}" in\n'
             '    reusable) printf "routine-reusable\\treceipt-valid\\t1111111111111111111111111111111111111111\\t2222222222222222222222222222222222222222\\t3333333333333333333333333333333333333333\\tworkflow-artifacts,assessment-artifacts,source-ai-context-version\\n"; exit 0 ;;\n'
             '    full) printf "full-required\\timmutable-history-change\\t1111111111111111111111111111111111111111\\t2222222222222222222222222222222222222222\\t3333333333333333333333333333333333333333\\t\\n"; exit 10 ;;\n'
+            '    crlf-full) printf "full-required\\tprofile-requires-full-validation\\t\\t\\t\\t\\r\\n"; exit 10 ;;\n'
+            '    crlf-full-with-identity-cr) printf "full-required\\tprofile-requires-full-validation\\t\\r\\t\\t\\t\\r\\n"; exit 10 ;;\n'
+            '    crlf-full-with-reusable-ids) printf "full-required\\tprofile-requires-full-validation\\t\\t\\t\\tworkflow-artifacts\\r\\n"; exit 10 ;;\n'
+            '    crlf-full-extra-column) printf "full-required\\tprofile-requires-full-validation\\t\\t\\t\\t\\textra\\r\\n"; exit 10 ;;\n'
             '    forged-full) printf "full-required\\timmutable-history-change\\t1111111111111111111111111111111111111111\\t2222222222222222222222222222222222222222\\t3333333333333333333333333333333333333333\\t\\n"; exit 1 ;;\n'
             '    *) printf "configuration-error\\tfixture-error\\t\\t\\t\\t\\n"; exit 2 ;;\n'
             '  esac\n'
@@ -1249,6 +1253,62 @@ class CheckAllRunnerGwtTests(unittest.TestCase):
             self.assertFalse(any("validate-ai-context-versions.py" in line for line in commands))
         finally:
             fixture.close()
+
+    def test_gwt_012g_given_crlf_full_required_decision_without_identities_when_release_runs_then_native_history_validators_execute(self) -> None:
+        fixture = SyntheticRunnerRepo()
+        try:
+            fixture.enable_source_release_context()
+            fixture.enable_immutable_history_context()
+
+            result = fixture.execute(
+                "--profile",
+                "release",
+                environment={"IMMUTABLE_HISTORY_STUB_MODE": "crlf-full"},
+            )
+
+            self.assertEqual(0, result.returncode, result.stdout + result.stderr)
+            commands = fixture.sentinel()
+            self.assertTrue(any("validate-immutable-history.py verify" in line for line in commands))
+            self.assertTrue(any("validate-workflow-artifacts.py" in line for line in commands))
+            self.assertTrue(any("validate-assessment-artifacts.py" in line for line in commands))
+            self.assertTrue(any("validate-ai-context-versions.py" in line for line in commands))
+        finally:
+            fixture.close()
+
+    def test_gwt_012h_given_crlf_full_required_decision_has_identity_or_shape_data_when_fast_runs_then_runner_stops_before_checks(self) -> None:
+        for mode in (
+            "crlf-full-with-identity-cr",
+            "crlf-full-with-reusable-ids",
+            "crlf-full-extra-column",
+        ):
+            with self.subTest(mode=mode):
+                fixture = SyntheticRunnerRepo()
+                try:
+                    fixture.enable_source_release_context()
+                    fixture.enable_immutable_history_context()
+
+                    result = fixture.execute(
+                        "--profile",
+                        "fast",
+                        environment={"IMMUTABLE_HISTORY_STUB_MODE": mode},
+                    )
+
+                    self.assertEqual(2, result.returncode, result.stdout + result.stderr)
+                    commands = fixture.sentinel()
+                    self.assertTrue(
+                        any("validate-immutable-history.py verify" in line for line in commands)
+                    )
+                    self.assertFalse(
+                        any("validate-workflow-artifacts.py" in line for line in commands)
+                    )
+                    self.assertFalse(
+                        any("validate-assessment-artifacts.py" in line for line in commands)
+                    )
+                    self.assertFalse(
+                        any("validate-ai-context-versions.py" in line for line in commands)
+                    )
+                finally:
+                    fixture.close()
 
     def test_gwt_013_given_explicit_python3_when_critical_runs_then_runner_uses_it(self) -> None:
         fixture = SyntheticRunnerRepo()
