@@ -29,13 +29,20 @@ are committed in distinct source candidate
 `ad1973304e7fd2f170434c1fb5c77ff20c229fae`. The suffixed-declaration validator
 fix is committed and pushed at `ea0414edf1260f0a317ee4b406b9eafb29d7f859`.
 
-At pushed clean head `66ec616b4d2c5e42129ae1a09557039d15ddb7df`, the candidate
-release-state gate passed. A fresh exact-head Sol audit then failed with exactly
-one cross-artifact finding: active narratives still called the now-committed
-prior repair uncommitted and described commit/push as next work. It otherwise
-passed renderer 20/20, payload 6/6, route 25/25, release-state 36/36, direct
-renderer, terminal/workflow/source/AI/version/12-commit checks, and package plus
-route cross-bindings; it made no repair and no receipt was submitted.
+At pushed clean head `b4b38b136d69a1d3e3938598edcb4c6d7285b795`, the exact
+local candidate command failed before online admission because durable
+`release.yaml` evidence contained a literal GitHub expression, rejected as an
+unfilled template marker. The exact diagnostic is retained in the S3 task
+evidence. This is a narrative-encoding failure, not a workflow identity failure.
+
+The preceding clean `66ec616b4d2c5e42129ae1a09557039d15ddb7df` candidate
+release-state gate pass remains retained evidence. Its fresh exact-head Sol audit
+then failed with exactly one cross-artifact finding: active narratives still
+called the now-committed prior repair uncommitted and described commit/push as
+next work. It otherwise passed renderer 20/20, payload 6/6, route 25/25,
+release-state 36/36, direct renderer, terminal/workflow/source/AI/version/
+12-commit checks, and package plus route cross-bindings; it made no repair and
+no receipt was submitted.
 
 Separate live checks then terminally reached four PASS / one FAIL: Read-only
 governance contract, Ubuntu PR profile gate, Ubuntu prerequisite contract, and
@@ -44,14 +51,15 @@ sole log fetch, run `32428716122` / job `96615867346`, showed the candidate
 validator received the pull-request merge-ref `GITHUB_SHA` rather than the exact
 #206 terminal-close head, while the local exact-head candidate gate had passed.
 
-The current source-candidate head carries the two-file checkout/validator-commit
-correction using `${{ github.event.pull_request.head.sha || github.sha }}`.
-Focused 10/10, YAML/diff, and independent mutation review passed. The first
-independent review failure—that `PR_HEAD_SHA` alone left checkout at merge ref—is
-retained. Next: exact clean candidate gate, fresh Sol audit and receipt, then one
-hosted watch. PR #232 remains draft/open/unmerged; #206 open terminal-close; #222
-deferred; no hosted admission, merge, Issue closure, provider closure, tag,
-GitHub Release, or publication is claimed.
+The current source-candidate head carries literal-expression-free durable
+evidence for the two-file checkout/validator-commit correction, using the same
+pull-request-head-or-dispatch commit selector. Focused 10/10, YAML/diff, and
+independent mutation review passed. The first independent review failure—that
+`PR_HEAD_SHA` alone left checkout at merge ref—is retained. Next: exact clean
+candidate gate, fresh Sol audit and receipt, then one hosted watch. PR #232
+remains draft/open/unmerged; #206 open terminal-close; #222 deferred; no hosted
+admission, merge, Issue closure, provider closure, tag, GitHub Release, or
+publication is claimed.
 
 <!--
 The renderer appends canonical Included Work and release provenance. Keep this

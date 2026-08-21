@@ -9,7 +9,7 @@
   "related_plan_id": "development-plan-2026-08-20-upg-003-multi-hop-upgrade",
   "status": "in_progress",
   "created_at": "2026-08-21T03:12:02+08:00",
-  "updated_at": "2026-08-21T07:43:17+08:00",
+  "updated_at": "2026-08-21T07:51:45+08:00",
   "template_source": ".ai/assets/skills/software-development-orchestrator/templates/development-workflow-task-template.json",
   "model": "gpt-5.6-sol",
   "reasoning_effort": "high",
@@ -101,12 +101,12 @@
       "missing or tampered asset and semantic-cutover bypass rejection",
       "exact-head independent audit and hosted terminal admission"
     ],
-    "commit_checkpoint": "At pushed clean 66ec616b4d2c5e42129ae1a09557039d15ddb7df, candidate gate passed. Fresh exact-head Sol audit failed only because active narratives still called the now-committed prior repair uncommitted and commit/push next; it made no repair and submitted no receipt. Separate live checks reached four PASS / one FAIL because merge-ref GITHUB_SHA reached the candidate validator. The source-candidate head carries the two-file checkout/validator-commit correction. Next: exact clean candidate gate, fresh Sol audit/receipt, one hosted watch.",
+    "commit_checkpoint": "At pushed clean b4b38b136d69a1d3e3938598edcb4c6d7285b795, the retained current candidate sequence was: first failed before online admission at release.yaml on a forbidden unfilled template marker; after YAML wording repair, second failed before online admission at release-notes.md on the same marker; after both release-scope repairs, third reached read-only Issue #200 GET and was blocked by local proxy 127.0.0.1:9. No candidate PASS occurred. This is narrative encoding, not workflow identity failure. Retain 66ec candidate PASS, its one-finding stale-narrative Sol audit FAIL/no receipt, four PASS / one FAIL live checks, and merge-ref GITHUB_SHA root cause. The source-candidate head carries placeholder-free durable evidence for the two-file checkout/validator-commit correction. Next: exact clean candidate gate, fresh Sol audit/receipt, one hosted watch.",
     "deferred_items": ["Cumulative merged-main release profile and pre-tag readiness verdict under Issue #222"]
   },
   "results": {
     "finding_status": "in_progress",
-    "summary": "At immutable package foundation 60572c01e31abf58191d38adb5ca39e05338b08d on codex/2026-08-21-upg-003-v014-source-candidate-s3, the canonical builder and package-native validator passed for ai-context-dotnet-backend-v0.14.0: ZIP sha256 6f332f2a17549eb46109d1b2786cdefb32839eea18520cd65476c246d1337116 (1404420 bytes) and TAR.GZ sha256 b08b18012f1db1cb8367f0e9bd378b6e079b6a31171d68d538fe77c1d363c35a (992036 bytes); the validator output was AI context package validation passed for 2 archive(s). The planner-byte fix and three receipt-bound retained-origin direct route proofs are committed in distinct source candidate ad1973304e7fd2f170434c1fb5c77ff20c229fae. Historical package, receipt, planner-byte, fixture, and sandbox failures remain retained below. At pushed clean 66ec616b4d2c5e42129ae1a09557039d15ddb7df, candidate gate passed. Fresh exact-head Sol audit failed exactly one cross-artifact finding because active narratives called the now-committed prior repair uncommitted and commit/push next; otherwise renderer20/payload6/route25/release-state36/direct renderer/terminal/workflow/source/AI/version/12-commit/package+routes passed, with no repair or receipt. Separate live checks reached governance/Ubuntu-profile/Ubuntu-prerequisite/Windows-prerequisite PASS and Build-and-validate-candidate FAIL. Log run 32428716122/job 96615867346 showed merge-ref GITHUB_SHA reached exact #206 terminal-close binding; local exact-head candidate passed. The source-candidate head carries the two-file checkout/validator-commit correction using github.event.pull_request.head.sha || github.sha; focused 10/10, YAML/diff, and independent mutation review passed, while PR_HEAD_SHA-only first review failure remains retained. S3 remains in progress; PR #232 draft/open/unmerged, #206 open terminal-close, #222 deferred. No hosted admission, merge, closure, tag, Release, or publication is claimed.",
+    "summary": "At immutable package foundation 60572c01e31abf58191d38adb5ca39e05338b08d on codex/2026-08-21-upg-003-v014-source-candidate-s3, the canonical builder and package-native validator passed for ai-context-dotnet-backend-v0.14.0: ZIP sha256 6f332f2a17549eb46109d1b2786cdefb32839eea18520cd65476c246d1337116 (1404420 bytes) and TAR.GZ sha256 b08b18012f1db1cb8367f0e9bd378b6e079b6a31171d68d538fe77c1d363c35a (992036 bytes); the validator output was AI context package validation passed for 2 archive(s). The planner-byte fix and three receipt-bound retained-origin direct route proofs are committed in distinct source candidate ad1973304e7fd2f170434c1fb5c77ff20c229fae. Historical package, receipt, planner-byte, fixture, and sandbox failures remain retained below. At pushed clean 66ec616b4d2c5e42129ae1a09557039d15ddb7df, candidate gate passed; its fresh exact-head Sol audit failed exactly one stale-narrative finding with no repair or receipt, while renderer20/payload6/route25/release-state36/direct renderer/terminal/workflow/source/AI/version/12-commit/package+routes passed. Separate live checks reached governance/Ubuntu-profile/Ubuntu-prerequisite/Windows-prerequisite PASS and Build-and-validate-candidate FAIL. Log run 32428716122/job 96615867346 showed merge-ref GITHUB_SHA reached exact #206 terminal-close binding. At pushed clean b4b38b136d69a1d3e3938598edcb4c6d7285b795, current candidate attempt 1 failed before online admission at release.yaml on forbidden unfilled template marker; after YAML wording repair, attempt 2 failed before online admission at release-notes.md on the same marker; after both release-scope repairs, attempt 3 reached read-only Issue #200 GET and was blocked by local proxy 127.0.0.1:9. No candidate PASS occurred. This is narrative encoding, not workflow identity failure. The source-candidate head carries placeholder-free durable evidence for the two-file checkout/validator-commit correction using the same pull-request-head-or-dispatch commit selector; focused 10/10, YAML/diff, and independent mutation review passed, while PR_HEAD_SHA-only first review failure remains retained. S3 remains in progress; PR #232 draft/open/unmerged, #206 open terminal-close, #222 deferred. No hosted admission, merge, closure, tag, Release, or publication is claimed.",
     "files_changed": [
       ".dev/releases/v0.14.0/release.yaml",
       ".dev/releases/v0.14.0/release-notes.md",
@@ -357,6 +357,21 @@
         "command": "focused package-candidate workflow-contract GWTs",
         "outcome": "passed",
         "evidence": "The current source-candidate checkout/validator-commit correction passed focused coverage 10/10; YAML parse, scoped diff, and independent mutation review also passed."
+      },
+      {
+        "command": "python .ai/scripts/validate-ai-context-release-state.py --phase candidate --version v0.14.0",
+        "outcome": "failed",
+        "evidence": "Attempt 1 at pushed clean b4b38b136d69a1d3e3938598edcb4c6d7285b795 failed before online admission at release.yaml because literal GitHub expression durable evidence was rejected as a forbidden unfilled template marker. This is narrative encoding, not workflow identity failure."
+      },
+      {
+        "command": "python .ai/scripts/validate-ai-context-release-state.py --phase candidate --version v0.14.0",
+        "outcome": "failed",
+        "evidence": "Attempt 2, after the release.yaml wording repair, failed before online admission at release-notes.md on the same forbidden unfilled template marker. No candidate PASS occurred."
+      },
+      {
+        "command": "python .ai/scripts/validate-ai-context-release-state.py --phase candidate --version v0.14.0",
+        "outcome": "blocked-by-environment",
+        "evidence": "Attempt 3, after both release-scope wording repairs, reached read-only Issue #200 GET and was blocked by local proxy 127.0.0.1:9 connection refusal. It is distinct from the older planner-byte proxy event and is not candidate PASS."
       }
     ],
     "role_execution_aggregation": [],
@@ -408,7 +423,8 @@
       "At pushed clean 66ec616b4d2c5e42129ae1a09557039d15ddb7df, the exact candidate release-state gate passed. A fresh exact-head Sol audit failed exactly one cross-artifact finding: active narratives still described the now-committed prior renderer/payload repair as uncommitted and commit/push next. The audit otherwise passed renderer 20/20, payload 6/6, route 25/25, release-state 36/36, direct renderer, terminal, workflow, source, AI, version, 12-commit, package, and route evidence; it made no repair and submitted no receipt.",
       "Separate live checks for 66ec terminally reached four PASS / one FAIL: governance, Ubuntu profile, Ubuntu prerequisite, and Windows prerequisite passed; Build and validate candidate failed. This is not hosted admission.",
       "The one fetched candidate log was run 32428716122 / job 96615867346. It showed that the workflow sent pull-request merge-ref GITHUB_SHA to the candidate validator, which failed exact #206 terminal-close binding, while the local candidate gate using the exact head passed.",
-      "The current source-candidate head carries the two-file correction in package-candidate workflow and workflow-contract GWT: checkout ref and validator commit are both bound to exact ${{ github.event.pull_request.head.sha || github.sha }}. Focused coverage passed 10/10; YAML/diff and independent mutation review passed. The first independent review failure remains retained because a PR_HEAD_SHA-only change left checkout at the merge ref.",
+      "The current source-candidate head carries placeholder-free durable evidence for the two-file correction in package-candidate workflow and workflow-contract GWT: checkout ref and validator commit use the same pull-request-head-or-dispatch commit selector. Focused coverage passed 10/10; YAML/diff and independent mutation review passed. The first independent review failure remains retained because a PR_HEAD_SHA-only change left checkout at the merge ref.",
+      "Retained b4 candidate attempt sequence: attempt 1 failed before online admission at release.yaml on forbidden unfilled template marker; after YAML wording repair, attempt 2 failed before online admission at release-notes.md on the same marker; after both release-scope repairs, attempt 3 reached read-only Issue #200 GET and was blocked by local proxy 127.0.0.1:9. It is distinct from the older planner-byte proxy event, and no candidate PASS occurred. This is narrative encoding, not workflow identity failure. The source-candidate head now carries placeholder-free durable evidence wording.",
       "Historical renderer and payload findings remain retained: the renderer required schema 2.0.0 although v0.14.0 multi-source uses 3.0.0; the payload-user-view fixture omitted canonical target_owned_reference_patterns; renderer sandbox baseline was blocked by Temp WinError 5; payload baseline failed 4 failures/3 errors; normal ACL renderer 20/20, payload 6/6, direct candidate renderer CLI, AST/scoped diff, and independent precommit review passed.",
       "Next gates: exact clean candidate release-state validation, fresh exact-head Sol audit with receipt, then one hosted watch. Keep S3 in_progress, PR #232 draft/open/unmerged, #206 open terminal-close, #222 deferred, and do not claim hosted admission, merge, Issue closure, provider closure, tag, Release, or publication."
     ],
@@ -423,7 +439,8 @@
       "aaae7aaf9f64be49574f9b35a6ca7e011bf9d593",
       "0a9a25784d6fd3ba2429fb19bd04b45fac327029",
       "ea0414edf1260f0a317ee4b406b9eafb29d7f859",
-      "66ec616b4d2c5e42129ae1a09557039d15ddb7df"
+      "66ec616b4d2c5e42129ae1a09557039d15ddb7df",
+      "b4b38b136d69a1d3e3938598edcb4c6d7285b795"
     ],
     "follow_up_needed": true
   }
