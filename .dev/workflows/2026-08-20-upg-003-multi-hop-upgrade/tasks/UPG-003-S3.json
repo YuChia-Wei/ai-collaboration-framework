@@ -9,7 +9,7 @@
   "related_plan_id": "development-plan-2026-08-20-upg-003-multi-hop-upgrade",
   "status": "in_progress",
   "created_at": "2026-08-21T03:12:02+08:00",
-  "updated_at": "2026-08-21T08:38:12+08:00",
+  "updated_at": "2026-08-21T09:17:22+08:00",
   "template_source": ".ai/assets/skills/software-development-orchestrator/templates/development-workflow-task-template.json",
   "model": "gpt-5.6-sol",
   "reasoning_effort": "high",
@@ -101,12 +101,12 @@
       "missing or tampered asset and semantic-cutover bypass rejection",
       "exact-head independent audit and hosted terminal admission"
     ],
-    "commit_checkpoint": "Repair head 3a466b2133e8ef20d752f08d2e1b4b9df8869eed is committed and pushed. Its exact 15-commit range from bf8ad9c624ffc2154722dfb266c9090c72e4ac5f passed commit policy. Sandbox candidate attempt was blocked only by proxy 127.0.0.1:9 at read-only Issue #200 GET; normal-network exact candidate gate passed at clean pushed repair head 3a466. Fab9 candidate PASS and audit FAIL/no receipt after run 32431077702/job 96622569129 remain historical blocker evidence. Compatibility infers only the canonical list for archived schema 2.2.0 absent field; altered present/current/schema 2.3 missing values fail closed. CANDIDATE_COMMIT binds candidate identity consumers; PR_BASE_SHA/PR_HEAD_SHA remain discovery inputs. Payload 7/7, workflow-contract 10/10, retained archive, canonical package, AST/YAML/diff, and raw diff review 4ecaef44a9b0636588df882308a3ea784c80e5669daf5b68bf7614590b93e349 pass. This evidence-only reconciliation advances the head; resulting clean evidence head requires candidate revalidation, Sol audit/receipt, and one hosted watch.",
+    "commit_checkpoint": "Evidence head d31b4be659ea7f7e5eff96087e61e69a23388366 passed 16-commit policy, candidate, fresh Sol audit/zero-blocker receipt, and provider-live readback. Its one hosted watch four PASS/one FAIL is historical only: run 32434135866/job 96631749666 correctly bound CANDIDATE_COMMIT=d31 and exposed stale two-field package-local payload validation. Repair head 4a1217160bf272420bb673445dfe34336f383291 is committed/pushed with exact third target_owned_reference_patterns ordered-seven allowlist validation, fail-closed variants, schema-2.3-only package-local enforcement, and unchanged external schema-2.2 compatibility. Package 18 PASS plus expected Windows casefold skip, payload 7/7, AST/diff, raw two-file review f36e3709..., 17-commit policy, and normal-network candidate passed. This evidence-only reconciliation advances the head; resulting clean evidence head requires candidate revalidation, fresh Sol audit/new receipt, and one hosted watch.",
     "deferred_items": ["Cumulative merged-main release profile and pre-tag readiness verdict under Issue #222"]
   },
   "results": {
     "finding_status": "in_progress",
-    "summary": "At immutable package foundation 60572c01e31abf58191d38adb5ca39e05338b08d, canonical v0.14 package builder and validator passed. Historical package, receipt, planner-byte, fixture, sandbox, b4b38, 66ec, and fab9 attempts remain retained. Repair head 3a466b2133e8ef20d752f08d2e1b4b9df8869eed is committed and pushed; its exact 15-commit range from bf8ad9c624ffc2154722dfb266c9090c72e4ac5f passed commit policy. Sandbox candidate attempt was blocked only by proxy 127.0.0.1:9 during read-only Issue #200 GET; normal-network exact candidate validation passed at clean pushed repair head 3a466. Fab9 candidate PASS and audit FAIL/no receipt after run 32431077702/job 96622569129 remain historical blocker evidence. Compatibility remains archived-schema-2.2 absent-field only, with altered present/current/schema-2.3 missing cases fail-closed; CANDIDATE_COMMIT binds candidate identity consumers while PR_BASE_SHA/PR_HEAD_SHA remain discovery inputs. Payload 7/7, workflow-contract 10/10, retained v0.13 archive, canonical v0.14 package, AST/YAML/diff, and raw-diff review 4ecaef44a9b0636588df882308a3ea784c80e5669daf5b68bf7614590b93e349 passed. This evidence-only reconciliation advances the head; resulting clean evidence head still requires exact candidate revalidation, fresh Sol audit/receipt, then one hosted watch. S3 remains in progress; PR #232 draft/open/unmerged, #206 open terminal-close, #222 deferred. No hosted admission, merge, closure, tag, Release, or publication is claimed.",
+    "summary": "At immutable package foundation 60572c01e31abf58191d38adb5ca39e05338b08d, canonical v0.14 package builder and validator passed; prior candidate/audit attempts remain retained. Evidence head d31b4be659ea7f7e5eff96087e61e69a23388366 passed 16-commit policy, candidate, fresh Sol audit/zero-blocker receipt, and provider-live terminal readback. Its hosted watch four PASS/one FAIL is historical only: failed run 32434135866/job 96631749666 correctly used CANDIDATE_COMMIT=d31 but package-local validation still allowed two old reference_integrity fields. Repair head 4a1217160bf272420bb673445dfe34336f383291 is committed/pushed with schema-2.3 third-field ordered-seven allowlist validation; missing/altered/reordered/duplicate/extra fail closed and external schema-2.2 compatibility is unchanged. Package validation 18 PASS plus expected Windows casefold skip, payload 7/7, AST/diff, raw two-file review beginning f36e3709, 17-commit policy, and normal-network candidate passed. d31 receipt/hosted evidence is not reusable. This evidence-only reconciliation advances the head; resulting clean evidence head still requires candidate revalidation, fresh Sol audit/new receipt, then one hosted watch. S3 remains in progress; PR #232 draft/open/unmerged, #206 open terminal-close, #222 open/deferred. No hosted admission, merge, closure, tag, Release, or publication is claimed.",
     "files_changed": [
       ".dev/releases/v0.14.0/release.yaml",
       ".dev/releases/v0.14.0/release-notes.md",
@@ -432,6 +432,26 @@
         "command": "normal-network exact candidate validation at clean pushed repair head 3a466b2133e8ef20d752f08d2e1b4b9df8869eed",
         "outcome": "passed",
         "evidence": "Exact candidate gate passed at clean pushed repair head 3a466. This is not hosted admission."
+      },
+      {
+        "command": "exact 16-commit policy, candidate, fresh Sol audit, receipt, and provider-live readback at d31b4be659ea7f7e5eff96087e61e69a23388366",
+        "outcome": "passed",
+        "evidence": "Audit reported zero blockers and canonical receipt was submitted as PR #232 COMMENTED review; this evidence is historical for d31 only."
+      },
+      {
+        "command": "one hosted watch at d31b4be659ea7f7e5eff96087e61e69a23388366",
+        "outcome": "failed",
+        "evidence": "Four checks passed and Build and validate candidate failed in run 32434135866/job 96631749666; no admission is inferred."
+      },
+      {
+        "command": "focused portable package validation at repair head 4a1217160bf272420bb673445dfe34336f383291",
+        "outcome": "passed",
+        "evidence": "18 cases passed and one Windows casefold case was expected to skip; payload 7/7, AST/diff, 17-commit policy, and normal-network candidate also passed."
+      },
+      {
+        "command": "independent two-file review at repair head 4a1217160bf272420bb673445dfe34336f383291",
+        "outcome": "passed",
+        "evidence": "Independent review passed; raw diff fingerprint begins f36e3709."
       }
     ],
     "role_execution_aggregation": [],
@@ -487,9 +507,9 @@
       "Retained b4 candidate attempt sequence: attempt 1 failed before online admission at release.yaml on forbidden unfilled template marker; after YAML wording repair, attempt 2 failed before online admission at release-notes.md on the same marker; after both release-scope repairs, attempt 3 reached read-only Issue #200 GET and was blocked by local proxy 127.0.0.1:9. It is distinct from the older planner-byte proxy event, and no candidate PASS occurred. This is narrative encoding, not workflow identity failure; the later wording correction is historical evidence only.",
       "Historical renderer and payload findings remain retained: the renderer required schema 2.0.0 although v0.14.0 multi-source uses 3.0.0; the payload-user-view fixture omitted canonical target_owned_reference_patterns; renderer sandbox baseline was blocked by Temp WinError 5; payload baseline failed 4 failures/3 errors; normal ACL renderer 20/20, payload 6/6, direct candidate renderer CLI, AST/scoped diff, and independent precommit review passed.",
       "At pushed clean fab9cf6787f0d4fad9384c29a6e0f514389667ba, exact local candidate validation passed. Its fresh exact-head Sol audit failed/no receipt after live run 32431077702 / job 96622569129 exposed archived v0.13 schema-2.2 missing-field and merge-ref identity blockers; this is historical evidence.",
-      "Repair head 3a466b2133e8ef20d752f08d2e1b4b9df8869eed is committed and pushed. Its exact 15-commit range from bf8ad9c624ffc2154722dfb266c9090c72e4ac5f passed commit policy. Sandbox candidate attempt was blocked only by proxy 127.0.0.1:9 during read-only Issue #200 GET, then normal-network exact candidate validation passed at clean pushed repair head 3a466. Compatibility remains archived-schema-2.2 absent-field only; altered present/current/schema-2.3 missing cases remain fail-closed. One job-level CANDIDATE_COMMIT binds candidate identity consumers while PR_BASE_SHA and PR_HEAD_SHA remain changed-record discovery inputs.",
+      "Evidence head d31 passed policy, candidate, fresh audit/receipt, and provider readback; its hosted watch four PASS/one FAIL is historical only. Repair head 4a1217160bf272420bb673445dfe34336f383291 is committed/pushed with exact third-field ordered-seven allowlist enforcement, schema-2.3-only package-local validation, unchanged external schema-2.2 compatibility, 17-commit policy PASS, and normal-network candidate PASS.",
       "Current-byte payload 7/7 and workflow-contract 10/10 passed. The actual retained v0.13 archive, canonical v0.14 package at 60572c01, AST/YAML/scoped diff checks, and independent read-only four-file review of raw binary Git diff SHA-256 4ecaef44a9b0636588df882308a3ea784c80e5669daf5b68bf7614590b93e349 also passed; the review reported no blockers. Its normalized-text diff fingerprint was fa4b53d1a15ad95b66f57a25d4eb14bddb254234f721554bf2dfc91c42a7990b after PowerShell line normalization.",
-      "This evidence-only reconciliation will advance the head. Next gates for the resulting clean evidence head: exact candidate revalidation, fresh exact-head Sol audit with receipt, then one hosted watch. Keep S3 in_progress, PR #232 draft/open/unmerged, #206 open terminal-close, #222 deferred, and do not claim hosted admission, merge, Issue closure, provider closure, tag, Release, or publication."
+      "This evidence-only reconciliation will advance the head. Next gates for the resulting clean evidence head: exact candidate revalidation, fresh exact-head Sol audit with new receipt, then one hosted watch. Keep S3 in_progress, PR #232 draft/open/unmerged, #206 open terminal-close, #222 open/deferred, and do not claim hosted admission, merge, Issue closure, provider closure, tag, Release, or publication."
     ],
     "commits": [
       "803a0771ada510a9c5faf630a36a096d74117a64",
@@ -505,7 +525,9 @@
       "66ec616b4d2c5e42129ae1a09557039d15ddb7df",
       "b4b38b136d69a1d3e3938598edcb4c6d7285b795",
       "fab9cf6787f0d4fad9384c29a6e0f514389667ba",
-      "3a466b2133e8ef20d752f08d2e1b4b9df8869eed"
+      "3a466b2133e8ef20d752f08d2e1b4b9df8869eed",
+      "d31b4be659ea7f7e5eff96087e61e69a23388366",
+      "4a1217160bf272420bb673445dfe34336f383291"
     ],
     "follow_up_needed": true
   }

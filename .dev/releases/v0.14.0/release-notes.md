@@ -59,27 +59,29 @@ identified two blockers: an archived v0.13 schema 2.2 package without canonical
 source-disposition behavior still binding merge-ref `GITHUB_SHA` instead of the
 selected candidate identity.
 
-Repair head `3a466b2133e8ef20d752f08d2e1b4b9df8869eed` is committed and
-pushed. Its exact 15-commit range from
-`bf8ad9c624ffc2154722dfb266c9090c72e4ac5f` passed commit policy. A sandbox
-candidate attempt was blocked only by proxy `127.0.0.1:9` during read-only
-Issue #200 GET; normal-network exact candidate validation then passed at clean
-pushed repair head `3a466`. Only an archived schema 2.2.0 package with the
-field absent infers the exact canonical list; altered present values, current
-packages, and schema 2.3 packages with the field absent remain fail-closed.
-The retained v0.13 archive and canonical v0.14 package at `60572c01` pass.
+Evidence head `d31b4be659ea7f7e5eff96087e61e69a23388366` passed its exact
+16-commit policy, candidate gate, fresh Sol audit with zero blockers, canonical
+PR #232 COMMENTED review receipt, and provider-live terminal-contract readback.
+Its one hosted watch terminated four PASS / one FAIL: the failed Build and
+validate candidate run `32434135866` / job `96631749666` correctly used
+`CANDIDATE_COMMIT=d31` but package-local payload validation still allowed only
+two old `reference_integrity` fields.
 
-One job-level `CANDIDATE_COMMIT` selects the PR head or dispatch SHA and binds
-checkout, renderer, validator, builder, source disposition, and artifact
-identity; `PR_BASE_SHA` and `PR_HEAD_SHA` remain separate for changed-record
-discovery. Current-byte payload 7/7 and workflow-contract 10/10, AST/YAML/diff
-checks, and independent read-only review of raw binary Git diff SHA-256
-`4ecaef44a9b0636588df882308a3ea784c80e5669daf5b68bf7614590b93e349` passed
-with no blockers. This evidence-only reconciliation will advance the head; the
-resulting clean evidence head still requires exact candidate revalidation,
-fresh Sol audit and receipt, then one hosted watch. PR #232 remains draft/open/
-unmerged; #206 open terminal-close; #222 deferred; no hosted admission, merge,
-Issue closure, provider closure, tag, GitHub Release, or publication is
+Repair head `4a1217160bf272420bb673445dfe34336f383291` is committed and pushed.
+Portable validation now requires the third `target_owned_reference_patterns`
+field and its ordered seven-item canonical allowlist; missing, altered,
+reordered, duplicate, or extra values fail closed. Package-local enforcement is
+schema-2.3-only; external historical schema-2.2 compatibility is unchanged.
+Focused package validation had 18 passes plus one expected Windows casefold
+skip; payload 7/7, AST/diff, two-file review with raw diff beginning
+`f36e3709`, exact 17-commit policy, and normal-network candidate gate passed.
+
+The d31 receipt and hosted results remain historical only and cannot be reused
+for a new head. This evidence-only reconciliation will advance the head; the
+resulting clean evidence head still requires candidate revalidation, fresh Sol
+audit and new receipt, then one hosted watch. PR #232 remains draft/open/
+unmerged; #206 open terminal-close; #222 open/deferred; no hosted admission,
+merge, Issue closure, provider closure, tag, GitHub Release, or publication is
 claimed.
 
 <!--
