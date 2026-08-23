@@ -4832,6 +4832,93 @@ class AiContextPackageApplyGwtTests(unittest.TestCase):
         finally:
             fixture.close()
 
+    def test_gwt_067_given_finalized_v5_snapshot_with_missing_progress_log_when_target_validates_then_recovery_parity_fails_closed(self) -> None:
+        fixture = PackageApplyFixture()
+        try:
+            fixture.make_package(
+                {".ai/one.md": (b"one\n", "framework-managed", "0644")},
+                [operation("001-add", "add", ".ai/one.md")],
+            )
+            plan = fixture.plan()
+            RAW_APPLY_PLAN(plan)
+            transaction = APPLY.transaction_root(fixture.target, plan["plan_sha256"])
+            (transaction / APPLY.JOURNAL_PROGRESS_PATH).unlink()
+            journal_path = transaction / "journal.yaml"
+            journal = yaml.safe_load(journal_path.read_text(encoding="utf-8"))
+            journal["progress_record_count"] = 0
+            journal["progress_tail_sha256"] = None
+            journal_path.write_text(
+                yaml.safe_dump(journal, sort_keys=True),
+                encoding="utf-8",
+                newline="\n",
+            )
+
+            errors: list[str] = []
+            TARGET.validate_pending_apply_receipt(fixture.target, errors)
+            self.assertTrue(
+                any("v5 progress semantics differ from sealed plan" in item for item in errors),
+                errors,
+            )
+            with self.assertRaisesRegex(
+                APPLY.ApplyError, "transaction journal snapshot progress differs from its log"
+            ):
+                APPLY.load_transaction(fixture.target, plan["plan_sha256"])
+        finally:
+            fixture.close()
+
+    def test_gwt_068_given_finalized_v5_with_compacted_rollback_progress_when_target_validates_then_recovery_state_invariants_fail_closed(self) -> None:
+        fixture = PackageApplyFixture()
+        try:
+            fixture.make_package(
+                {".ai/one.md": (b"one\n", "framework-managed", "0644")},
+                [operation("001-add", "add", ".ai/one.md")],
+            )
+            plan = fixture.plan()
+            RAW_APPLY_PLAN(plan)
+            transaction = APPLY.transaction_root(fixture.target, plan["plan_sha256"])
+            journal_path = transaction / "journal.yaml"
+            journal = yaml.safe_load(journal_path.read_text(encoding="utf-8"))
+            rollback_path = journal["pre_state"][-1]["path"]
+            rollback_record = {
+                "schema_version": APPLY.JOURNAL_PROGRESS_SCHEMA_VERSION,
+                "sequence": 1,
+                "phase": "rollback",
+                "previous_record_sha256": None,
+                "transition_sequence": 1,
+                "rollback_index": 0,
+                "path": rollback_path,
+            }
+            rollback_record["record_sha256"] = APPLY.canonical_digest(
+                rollback_record
+            )
+            (transaction / APPLY.JOURNAL_PROGRESS_PATH).write_bytes(
+                APPLY.canonical_json_bytes(rollback_record)
+            )
+            journal["completed_operation_ids"] = []
+            journal["next_apply_index"] = 0
+            journal["rollback_completed_paths"] = [rollback_path]
+            journal["rollback_next_index"] = 1
+            journal["progress_record_count"] = 1
+            journal["progress_tail_sha256"] = rollback_record["record_sha256"]
+            journal_path.write_text(
+                yaml.safe_dump(journal, sort_keys=True),
+                encoding="utf-8",
+                newline="\n",
+            )
+
+            errors: list[str] = []
+            TARGET.validate_pending_apply_receipt(fixture.target, errors)
+            self.assertTrue(
+                any("non-rollback journal contains rollback progress" in item for item in errors),
+                errors,
+            )
+            with self.assertRaisesRegex(
+                APPLY.ApplyError, "non-rollback journal contains rollback progress"
+            ):
+                APPLY.load_transaction(fixture.target, plan["plan_sha256"])
+        finally:
+            fixture.close()
+
 
 if __name__ == "__main__":
     unittest.main()

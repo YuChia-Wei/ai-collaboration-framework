@@ -1955,19 +1955,21 @@ def validate_v5_progress_log(
     if not progress_path.exists():
         if count != 0:
             errors.append(f"{progress_path}: v5 progress log is missing")
-        return
-    if (
-        not progress_path.is_file()
-        or progress_path.is_symlink()
-        or is_reparse_point(progress_path)
-    ):
-        errors.append(f"{progress_path}: v5 progress log is unsafe")
-        return
-    try:
-        raw = progress_path.read_bytes()
-    except OSError as exc:
-        errors.append(f"{progress_path}: cannot read v5 progress log: {exc}")
-        return
+            return
+        raw = b""
+    else:
+        if (
+            not progress_path.is_file()
+            or progress_path.is_symlink()
+            or is_reparse_point(progress_path)
+        ):
+            errors.append(f"{progress_path}: v5 progress log is unsafe")
+            return
+        try:
+            raw = progress_path.read_bytes()
+        except OSError as exc:
+            errors.append(f"{progress_path}: cannot read v5 progress log: {exc}")
+            return
     framed = raw[: raw.rfind(b"\n") + 1] if raw and not raw.endswith(b"\n") else raw
     records: list[dict] = []
     previous: str | None = None
@@ -2090,7 +2092,10 @@ def validate_v5_progress_log(
     try:
         import ai_context_package_apply as package_apply
 
-        package_apply.replay_journal_progress(transaction, plan, journal)
+        effective_journal = package_apply.replay_journal_progress(
+            transaction, plan, journal
+        )
+        package_apply.validate_journal_progress(plan, effective_journal)
     except (ImportError, OSError, KeyError, TypeError, ValueError) as exc:
         errors.append(
             f"{progress_path}: v5 progress semantics differ from sealed plan: {exc}"
