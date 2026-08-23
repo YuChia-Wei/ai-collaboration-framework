@@ -1,0 +1,27 @@
+template_metadata:
+  template_id: "ai-context-governance-workflow-locator"
+  template_version: "1.2.0"
+  created_at: "2026-07-10T18:22:49+08:00"
+  updated_at: "2026-07-15T08:36:00+08:00"
+
+workflow_id: "2026-08-23-retained-origin-route-evidence"
+schema_version: "1.0"
+lifecycle_contract: "1.0"
+workflow_kind: "ai-context-maintenance"
+title: "Fail closed retained-origin route evidence"
+owner_skill: "ai-context-governance"
+status: "in_progress"
+current_phase: "verify"
+branch: "codex/2026-08-23-retained-origin-route-evidence"
+base_branch: "main"
+artifact_root: ".dev/workflows/2026-08-23-retained-origin-route-evidence"
+entrypoint: "workflow-plan.md"
+created_at: "2026-08-23T16:21:28+08:00"
+updated_at: "2026-08-23T16:45:57+08:00"
+template_source: ".ai/assets/skills/ai-context-governance/templates/workflow-locator-template.yaml"
+template_version: "1.2.0"
+work_items:
+  - provider: "github"
+    repository: "YuChia-Wei/ai-collaboration-framework"
+    issue: 237
+    url: "https://github.com/YuChia-Wei/ai-collaboration-framework/issues/237"

@@ -1,0 +1,59 @@
+{
+  "template_id": "ai-context-governance-remediation-task",
+  "template_version": "1.1.0",
+  "template_created_at": "2026-07-10T18:22:49+08:00",
+  "template_updated_at": "2026-07-27T09:52:09+08:00",
+  "task_id": "UPG-005-S1",
+  "workflow_id": "2026-08-23-retained-origin-route-evidence",
+  "owner_skill": "ai-context-governance",
+  "status": "completed",
+  "created_at": "2026-08-23T16:21:28+08:00",
+  "updated_at": "2026-08-23T16:45:57+08:00",
+  "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
+  "model": "gpt-5.6-sol",
+  "reasoning_effort": "high",
+  "finding_ids": [
+    "ISSUE-237#edge-proof-false-positive"
+  ],
+  "scope": {
+    "target": "Repository-owned retained-origin direct-edge proof and v0.14.0 route artifacts",
+    "files": [
+      ".dev/workflows/2026-08-23-retained-origin-route-evidence/reports/remediation-report.md"
+    ],
+    "constraints": [
+      "Use only repository, artifact, test, and live-provider evidence.",
+      "Do not read or reference the external analysis folder.",
+      "Do not mutate v0.14.0 tag, Release identity, or published asset bytes."
+    ],
+    "non_goals": [
+      "Historical asset replacement",
+      "Downstream target mutation",
+      "Journal performance remediation"
+    ]
+  },
+  "execution": {
+    "steps": [
+      "Inventory route proof, package validator, and package-apply authorities.",
+      "Reproduce the self-inconsistent archive rejection and edge-proof pass.",
+      "Freeze exact artifact and command evidence for implementation."
+    ],
+    "validation": [
+      "Repository-owned reproduction commands and exact outputs"
+    ],
+    "last_completed_step": "Reproduced edge exit 0 versus embedded incoming-validator exit 1 for all retained origins and compared route versus published package identities.",
+    "next_action": "Completed; continue with UPG-005-S2 implementation."
+  },
+  "results": {
+    "summary": "Repository-owned evidence independently confirms an edge-proof false positive and same human package/release identity with different payload fingerprints.",
+    "files_changed": [
+      ".dev/workflows/2026-08-23-retained-origin-route-evidence/reports/remediation-report.md"
+    ],
+    "tests_run": [
+      "baseline validate-direct-edge.py for v0.13.0, v0.9.0, v0.6.0: exit 0 before repair",
+      "route archive embedded validate-ai-context-payload.py: exit 1"
+    ],
+    "finding_status": "confirmed-and-handed-to-remediation",
+    "residual_risk": "Historical v0.14.0 route evidence remains non-passing until an owner-selected recovery is executed.",
+    "follow_up_needed": false
+  }
+}

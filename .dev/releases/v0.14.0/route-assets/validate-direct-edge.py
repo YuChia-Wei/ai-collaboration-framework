@@ -3,7 +3,8 @@
 
 This validator is deliberately source-only and self-contained: it reads only
 the explicitly named release-local assets, uses the Python standard library,
-and never extracts an archive or mutates a target repository.
+extracts only into an isolated temporary directory, executes the archive's
+declared incoming-candidate validator, and never mutates a target repository.
 """
 
 from __future__ import annotations
@@ -11,9 +12,12 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import os
 import re
 import stat
+import subprocess
 import sys
+import tempfile
 import zipfile
 from pathlib import Path, PurePosixPath
 from typing import Any
@@ -545,7 +549,7 @@ def validate_selected_inputs(
     package: dict[str, str],
     payload_projection: list[dict[str, str]],
     migration_sources: list[dict[str, str]],
-) -> None:
+) -> dict[str, Any]:
     selected_raw = members["metadata/selected-inputs.json"][0]
     validation_raw = members["metadata/validation.json"][0]
     selected = strict_json_object(selected_raw, "selected-inputs", canonical=True)
@@ -572,9 +576,105 @@ def validate_selected_inputs(
         "selected_input_proof"
     ) != {"path": "metadata/selected-inputs.json", "sha256": sha256_bytes(selected_raw)}:
         raise ValidationError("validation selected-input proof does not match")
+    return validation
 
 
-def validate_edge(args: argparse.Namespace) -> dict[str, str]:
+def execute_portable_validation(
+    members: dict[str, tuple[bytes, int]],
+    package: dict[str, str],
+    validation: dict[str, Any],
+) -> dict[str, Any]:
+    """Execute and record the archive-declared incoming validation authority."""
+
+    if validation.get("package_id") != package["package_id"]:
+        raise ValidationError("portable validation package identity does not match")
+    authority = validation.get("authority")
+    if not isinstance(authority, dict) or set(authority) != {"kind", "validator"}:
+        raise ValidationError("portable validation authority is incomplete")
+    if authority.get("kind") != "incoming-candidate":
+        raise ValidationError("portable validation authority is not incoming-candidate")
+    validator = authority.get("validator")
+    if not isinstance(validator, dict) or set(validator) != {"argv", "path", "sha256"}:
+        raise ValidationError("portable validator identity is incomplete")
+    validator_path = safe_payload_path(validator.get("path"), "portable validator path")
+    validator_sha256 = validator.get("sha256")
+    if not isinstance(validator_sha256, str) or not SHA256_RE.fullmatch(validator_sha256):
+        raise ValidationError("portable validator SHA-256 is invalid")
+    argv = validator.get("argv")
+    expected_argv = ["python", f"payload/{validator_path}", "--package-root", "."]
+    if argv != expected_argv:
+        raise ValidationError("portable validator argv is not deterministic")
+    validator_member = f"payload/{validator_path}"
+    validator_bytes = members.get(validator_member)
+    if validator_bytes is None or sha256_bytes(validator_bytes[0]) != validator_sha256:
+        raise ValidationError("portable validator payload identity differs")
+
+    with tempfile.TemporaryDirectory(prefix="retained-origin-edge-") as temporary:
+        package_root = Path(temporary) / EXPECTED_PACKAGE_ID
+        for relative, (content, mode) in members.items():
+            destination = package_root / Path(*PurePosixPath(relative).parts)
+            destination.parent.mkdir(parents=True, exist_ok=True)
+            destination.write_bytes(content)
+            destination.chmod(mode)
+        environment = {
+            key: value
+            for key, value in os.environ.items()
+            if key not in {"PYTHONPATH", "PYTHONHOME"}
+        }
+        environment["PYTHONDONTWRITEBYTECODE"] = "1"
+        environment["PYTHONNOUSERSITE"] = "1"
+        try:
+            result = subprocess.run(
+                [sys.executable, *argv[1:]],
+                cwd=package_root,
+                env=environment,
+                capture_output=True,
+                text=True,
+                encoding="utf-8",
+                errors="replace",
+                timeout=60,
+                check=False,
+            )
+        except OSError as exc:
+            raise ValidationError("portable validator could not start") from exc
+        except subprocess.TimeoutExpired as exc:
+            raise ValidationError("portable validator timed out") from exc
+    output_sha256 = sha256_bytes(
+        (result.stdout + "\0" + result.stderr).encode("utf-8")
+    )
+    if result.returncode != 0:
+        raise ValidationError(
+            "incoming portable validation failed: "
+            f"exit={result.returncode}; output_sha256={output_sha256}"
+        )
+    return {
+        "schema_version": "incoming-package-validation/v1",
+        "authority": {
+            "kind": "incoming-candidate",
+            "manifest": {
+                "path": "metadata/validation.json",
+                "sha256": sha256_bytes(members["metadata/validation.json"][0]),
+            },
+            "validator": {
+                "path": validator_path,
+                "sha256": validator_sha256,
+                "argv": argv,
+            },
+        },
+        "package_identity": {
+            "package_id": package["package_id"],
+            "release_id": package["release_id"],
+            "payload_fingerprint": package["payload_fingerprint"],
+        },
+        "execution": {
+            "outcome": "passed",
+            "exit_code": 0,
+            "output_sha256": output_sha256,
+        },
+    }
+
+
+def validate_edge(args: argparse.Namespace) -> dict[str, Any]:
     if args.cutover_id != EXPECTED_CUTOVER_ID:
         raise ValidationError("requested semantic cutover is not the v0.14 cutover")
     origin = args.origin_version
@@ -646,7 +746,10 @@ def validate_edge(args: argparse.Namespace) -> dict[str, str]:
     payload_projection = validate_payload(members, records, package)
     if package["payload_fingerprint"] != package["payload_sha256"]:
         raise ValidationError("package payload fingerprints disagree")
-    validate_selected_inputs(members, package, payload_projection, migration["sources"])
+    validation = validate_selected_inputs(
+        members, package, payload_projection, migration["sources"]
+    )
+    portable_validation = execute_portable_validation(members, package, validation)
 
     origin_manifest_raw = origin_manifest_path.read_bytes()
     origin_sha256 = sha256_bytes(origin_manifest_raw)
@@ -670,6 +773,7 @@ def validate_edge(args: argparse.Namespace) -> dict[str, str]:
         "origin_manifest_sha256": origin_sha256,
         "origin_source_commit": origin_spec["commit"],
         "package_id": EXPECTED_PACKAGE_ID,
+        "portable_validation": portable_validation,
         "source_commit": EXPECTED_SOURCE_COMMIT,
         "target_manifest_sha256": sha256_bytes(target_manifest_raw),
         "to_version": EXPECTED_TARGET_VERSION,

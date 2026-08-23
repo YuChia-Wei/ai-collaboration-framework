@@ -28,20 +28,26 @@ class RouteFixture:
         self.root = Path(self._temporary.name)
         self.serial = 0
         self.target = "v0.14.0"
+        self.package_identity = {
+            "package_id": "ai-context-dotnet-backend-v0.14.0",
+            "release_id": "REL-v0.14.0",
+            "payload_fingerprint": hashlib.sha256(b"canonical-target-payload").hexdigest(),
+        }
         self.matrix = {
             "template_metadata": {
                 "template_id": "upgrade-route-matrix",
-                "template_version": "1.0.0",
+                "template_version": "1.1.0",
                 "created_at": "2026-08-20T00:00:00+08:00",
                 "updated_at": "2026-08-20T00:00:00+08:00",
             },
-            "schema_version": "1.0",
+            "schema_version": ROUTES.SCHEMA_VERSION,
             "matrix_id": "v0.14.0-supported-upgrades",
             "target": {
                 "version": self.target,
                 "release_id": "REL-v0.14.0",
                 "commit": "e" * 40,
                 "manifest": self.asset("target/manifest.yaml", b"target-manifest"),
+                "package_identity": self.package_identity,
             },
             "retained_origins": [
                 self.origin("immediate-predecessor", "v0.13.0", "a"),
@@ -132,6 +138,32 @@ class RouteFixture:
                 }
                 for cutover in semantic_cutovers
             ],
+            "portable_validation": {
+                "schema_version": ROUTES.PORTABLE_VALIDATION_SCHEMA_VERSION,
+                "authority": {
+                    "kind": "incoming-candidate",
+                    "manifest": {
+                        "path": "metadata/validation.json",
+                        "sha256": hashlib.sha256(b"validation-manifest").hexdigest(),
+                    },
+                    "validator": {
+                        "path": ".ai/scripts/validate-ai-context-payload.py",
+                        "sha256": hashlib.sha256(b"portable-validator").hexdigest(),
+                        "argv": [
+                            "python",
+                            "payload/.ai/scripts/validate-ai-context-payload.py",
+                            "--package-root",
+                            ".",
+                        ],
+                    },
+                },
+                "package_identity": deepcopy(self.package_identity),
+                "execution": {
+                    "outcome": "passed",
+                    "exit_code": 0,
+                    "output_sha256": hashlib.sha256(b"portable-validation-output").hexdigest(),
+                },
+            },
             "outcome": validation_state,
             "exit_code": 0 if validation_state == "passed" else 1,
             "output_sha256": output["sha256"],
@@ -252,6 +284,23 @@ class UpgradeRouteTests(unittest.TestCase):
         self.assertEqual("direct", result["route_kind"])
         self.assertEqual(edge["artifacts"], result["selected_route"]["edges"][0]["artifacts"])
         self.assertRegex(result["matrix"]["sha256"], r"^[0-9a-f]{64}$")
+
+    def test_gwt_001a_given_all_retained_origins_when_portable_proof_matches_then_each_route_is_direct(self) -> None:
+        origins = ("v0.13.0", "v0.9.0", "v0.6.0")
+        self.fixture.matrix["routes"] = [
+            self.fixture.route(
+                f"{origin}-direct",
+                origin,
+                [self.fixture.edge(origin, self.fixture.target)],
+            )
+            for origin in origins
+        ]
+
+        for origin in origins:
+            with self.subTest(origin=origin):
+                result = self.fixture.resolve(origin)
+                self.assertEqual("direct", result["route_kind"])
+                self.assertEqual([], result["diagnostics"])
 
     def test_gwt_002_given_unique_v06_chain_when_resolved_then_order_is_immutable(self) -> None:
         edges = [
@@ -421,6 +470,24 @@ class UpgradeRouteTests(unittest.TestCase):
         self.assertEqual("reconciliation-required", result["route_kind"])
         self.assertIn(
             "edge-validation-report-outcome-not-passed",
+            {item["code"] for item in result["diagnostics"]},
+        )
+
+    def test_gwt_010l_given_same_package_and_release_with_different_payload_when_resolved_then_it_fails_closed(self) -> None:
+        edge = self.fixture.edge("v0.13.0", self.fixture.target)
+        self.fixture.matrix["routes"] = [self.fixture.route("direct", "v0.13.0", [edge])]
+        report_path = self.fixture.root / edge["validation"]["report"]["path"]
+        report = json.loads(report_path.read_text(encoding="utf-8"))
+        report["portable_validation"]["package_identity"]["payload_fingerprint"] = "f" * 64
+        self.fixture.rewrite_asset(
+            edge["validation"]["report"], ROUTES.canonical_json(report).encode("utf-8")
+        )
+
+        result = self.fixture.resolve("v0.13.0")
+
+        self.assertEqual("reconciliation-required", result["route_kind"])
+        self.assertIn(
+            "edge-package-payload-identity-conflict",
             {item["code"] for item in result["diagnostics"]},
         )
 
@@ -656,6 +723,68 @@ class UpgradeRouteTests(unittest.TestCase):
 
         with self.assertRaisesRegex(ROUTES.MatrixValidationError, "account for exactly"):
             ROUTES.validate_matrix(candidate)
+
+    def test_gwt_013_given_self_inconsistent_v014_archive_when_each_retained_edge_runs_then_none_can_pass(self) -> None:
+        release_dir = ROOT / ".dev/releases/v0.14.0"
+        script = release_dir / "route-assets/validate-direct-edge.py"
+        for origin in ("v0.13.0", "v0.9.0", "v0.6.0"):
+            with self.subTest(origin=origin):
+                result = subprocess.run(
+                    [
+                        sys.executable,
+                        "-B",
+                        str(script),
+                        "--edge-id",
+                        f"{origin}-to-v0.14.0",
+                        "--origin-version",
+                        origin,
+                        "--archive",
+                        "route-assets/v0.14.0/ai-context-dotnet-backend-v0.14.0.zip",
+                        "--checksum",
+                        "route-assets/v0.14.0/ai-context-dotnet-backend-v0.14.0.zip.sha256",
+                        "--target-manifest",
+                        "route-assets/v0.14.0/metadata/files.yaml",
+                        "--origin-manifest",
+                        f"route-assets/origins/{origin}/metadata/files.yaml",
+                        "--migration",
+                        "route-assets/v0.14.0/metadata/migration.yaml",
+                        "--cutover-id",
+                        "remediation-packet-v1",
+                    ],
+                    cwd=release_dir,
+                    capture_output=True,
+                    text=True,
+                    encoding="utf-8",
+                    errors="replace",
+                    check=False,
+                )
+                self.assertEqual(1, result.returncode)
+                self.assertIn("incoming portable validation failed", result.stderr)
+
+    def test_gwt_014_given_legacy_v014_matrix_when_each_retained_origin_is_resolved_then_portable_proof_is_required(self) -> None:
+        matrix_path = ROOT / ".dev/releases/v0.14.0/support-matrix.yaml"
+        matrix, matrix_bytes = ROUTES.load_route_matrix(matrix_path)
+        current_validator_sha256 = hashlib.sha256(
+            (matrix_path.parent / "route-assets/validate-direct-edge.py").read_bytes()
+        ).hexdigest()
+        for route in matrix["routes"]:
+            for edge in route["edges"]:
+                edge["artifacts"]["validator"]["sha256"] = current_validator_sha256
+        for origin in ("v0.13.0", "v0.9.0", "v0.6.0"):
+            with self.subTest(origin=origin):
+                result = ROUTES.resolve_upgrade_route(
+                    matrix,
+                    origin=origin,
+                    target="v0.14.0",
+                    matrix_bytes=matrix_bytes,
+                    asset_root=matrix_path.parent,
+                    matrix_reference=matrix_path.as_posix(),
+                )
+                self.assertEqual("reconciliation-required", result["route_kind"])
+                self.assertIn(
+                    "edge-portable-validation-proof-missing",
+                    {diagnostic["code"] for diagnostic in result["diagnostics"]},
+                )
 
 
 if __name__ == "__main__":
