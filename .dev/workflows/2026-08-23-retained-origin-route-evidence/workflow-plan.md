@@ -19,7 +19,7 @@
 - `current_phase`: `verify`
 - `artifact_root`: `.dev/workflows/2026-08-23-retained-origin-route-evidence`
 - `created_at`: `2026-08-23T16:21:28+08:00`
-- `updated_at`: `2026-08-23T17:06:39+08:00`
+- `updated_at`: `2026-08-23T17:20:27+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md`
 - `template_version`: `1.2.0`
 
@@ -56,11 +56,11 @@
 
 ## Resume Checkpoint
 
-- Last completed action: Reconciled the first exact-head audit's P1 per-edge multi-hop identity finding and P2 boolean exit-code finding; focused route 30/30, packaging 1/1, and package-apply 2/2 passed.
+- Last completed action: Reconciled the second exact-head audit's P1 production multi-hop fixture finding; the real schema-1.1/v2 two-hop admission/apply/validate/finalize/checkpoint test passed 1/1 in 56.025 seconds.
 - Current task: `UPG-005-S3`
-- Exact next action: Commit the fixed-head finding corrections and request a repeat exact-head read-only `ai-context-auditor` verification on the new clean head.
-- Validation already completed: route 30/30, packaging 1/1, package-apply 2/2, release-state 36/36 on the prior implementation head, workflow artifacts 91/91 before this refresh, AST syntax and diff checks.
-- Git state: Initial implementation commit `6c3e1e2c` is retained with a failed exact-head audit; P1/P2 corrections are uncommitted.
+- Exact next action: Commit the production multi-hop integration correction and request a third exact-head read-only `ai-context-auditor` verification on the new clean head.
+- Validation already completed: route 30/30, packaging 1/1, package-apply 2/2, release-state 36/36, production-path multi-hop 1/1, workflow artifacts 91/91 before this refresh, AST syntax and diff checks.
+- Git state: Commits `6c3e1e2c` and `04fe7875` retain the first and second failed exact-head audits; the production multi-hop fixture correction is uncommitted.
 - Branch history and checkpoint handoffs: Segment 1 only; no push or merge.
 - Blockers or unresolved decisions: After fixed-head review, the owner must choose whether historical v0.14.0 source records remain untouched or receive a separately authorized repository-only failed-proof correction. Neither option changes published bytes or allocates a release.
 

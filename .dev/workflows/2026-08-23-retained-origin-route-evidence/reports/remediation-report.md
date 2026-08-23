@@ -14,11 +14,11 @@
 - `owner_skill`: `ai-context-governance`
 - `status`: `in_progress`
 - `created_at`: `2026-08-23T16:21:28+08:00`
-- `updated_at`: `2026-08-23T17:06:39+08:00`
+- `updated_at`: `2026-08-23T17:20:27+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-remediation-report-template.md`
 - `template_version`: `2.0.0`
 - `baseline_assessment`: `live GitHub Issue #237 and repository-owned reproduction`
-- `verification_assessment`: `6c3e1e2c failed with P1=1/P2=1; corrected head pending repeat exact-head review`
+- `verification_assessment`: `6c3e1e2c failed P1=1/P2=1; 04fe7875 failed P1=1; corrected head pending third exact-head review`
 
 ## Remediation Summary
 
@@ -65,6 +65,7 @@
 - Focused `UpgradeRoutePackageProjectionGwtTests.test_gwt_021...`: 1/1 passed in 3.113 seconds after fixed-head finding remediation.
 - Focused package-apply GWT-049 and GWT-049a: 2/2 passed in 15.440 seconds after fixed-head finding remediation.
 - `python -B .ai/scripts/tests/test_ai_context_release_state.py -v`: 36/36 passed in 0.640 seconds after fixed-head finding remediation.
+- Real production-path multi-hop GWT-010 using schema 1.1, v2 receipts, and two distinct per-edge package identities: 1/1 passed in 56.025 seconds after the second fixed-head finding remediation.
 - `python .ai/scripts/validate-workflow-artifacts.py`: passed for 91 post-adoption workflows, 111 indexed workflow directories, and 55 backlog items before the report/task closeout update; it must be rerun after those updates.
 - Read-only AST parsing passed for the four changed Python implementation/test entrypoints; `git diff --check` passed.
 - The first package-apply selector command used the wrong unittest class name and produced two loader errors without executing tests. The corrected selectors produced the passing evidence above.
@@ -88,5 +89,7 @@
 
 - The first exact-head audit bound to `6c3e1e2c75ad493268261c5c046b006bb3f22834` returned P0=0, P1=1, P2=1, P3=0. It correctly rejected final-target identity reuse for intermediate multi-hop edges and boolean portable exit-code acceptance. That commit is retained as failed review evidence and is not an acceptable handoff checkpoint.
 - The corrections bind each hop to its materialized package identity, require the final edge to equal the target identity, add a three-distinct-identity multi-hop assertion, and reject boolean exit code. A new immutable local commit and repeat read-only audit are required.
+- The second exact-head audit bound to `04fe7875baa09a1911f65054de634f5146a9cc63` confirmed those findings resolved but returned P0=0, P1=1, P2=0, P3=0 because the real production multi-hop admission fixture still emitted legacy schema 1.0 evidence. That head is also retained as failed review evidence and is not an acceptable handoff checkpoint.
+- The integration correction upgrades that real two-hop fixture to schema 1.1, two v2 portable receipts, distinct v0.10.0/v0.11.0 per-edge package identities, and the final target identity binding. Its single production-path apply/validate/finalize/checkpoint scenario passed and requires a third exact-head audit.
 - If review finds a defect, repair creates a new head and invalidates the earlier review.
 - After fixed-head review, stop for the owner to select historical recovery choice A or B. Do not infer release version, push, PR, merge, Issue closure, or publication authorization.

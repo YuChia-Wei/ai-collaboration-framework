@@ -410,6 +410,16 @@ class MultiHopFixture:
         package_root: Path,
     ) -> dict:
         """Archive one package and retain all S1 edge asset identities."""
+        package = yaml.safe_load(
+            (package_root / "metadata/package.yaml").read_text(encoding="utf-8")
+        )
+        validation_raw = (package_root / "metadata/validation.json").read_bytes()
+        validation = json.loads(validation_raw.decode("utf-8"))
+        package_identity = {
+            "package_id": package["package_id"],
+            "release_id": package["release_id"],
+            "payload_fingerprint": package["identity"]["payload_fingerprint"],
+        }
         package_dir = self.matrix_root / "packages"
         manifest_dir = self.matrix_root / "manifests"
         validator_dir = self.matrix_root / "validators"
@@ -467,6 +477,7 @@ class MultiHopFixture:
             "manifest": asset(f"hop-{hop_index}-manifest", manifest),
             "validator": asset(f"hop-{hop_index}-validator", validator),
         }
+        edge["package_identity"] = package_identity
         edge["semantic_cutovers"] = [{"cutover_id": "fixture-cutover", "state": "passed"}]
         validator_argv = [sys.executable, validator.relative_to(self.matrix_root).as_posix()]
         edge["validation"] = {
@@ -484,6 +495,25 @@ class MultiHopFixture:
             "semantic_cutovers": [
                 {"cutover_id": "fixture-cutover", "required": True, "state": "passed"}
             ],
+            "portable_validation": {
+                "schema_version": ROUTES.PORTABLE_VALIDATION_SCHEMA_VERSION,
+                "authority": {
+                    "kind": "incoming-candidate",
+                    "manifest": {
+                        "path": "metadata/validation.json",
+                        "sha256": APPLY.sha256_bytes(validation_raw),
+                    },
+                    "validator": deepcopy(validation["authority"]["validator"]),
+                },
+                "package_identity": deepcopy(package_identity),
+                "execution": {
+                    "outcome": "passed",
+                    "exit_code": 0,
+                    "output_sha256": APPLY.sha256_bytes(
+                        f"incoming-validation-{hop_index}\n".encode("utf-8")
+                    ),
+                },
+            },
             "outcome": "passed",
             "exit_code": 0,
             "output_sha256": edge["validation"]["output"]["sha256"],
@@ -508,13 +538,16 @@ class MultiHopFixture:
         assert self.e2e is not None
         self.matrix_id = "fixture-v0.11.0-supported-upgrades"
         matrix = {
-            "schema_version": "1.0",
+            "schema_version": ROUTES.SCHEMA_VERSION,
             "matrix_id": self.matrix_id,
             "target": {
                 "version": "v0.11.0",
                 "release_id": "REL-v0.11.0",
                 "commit": "b" * 40,
                 "manifest": self._matrix_asset("route-metadata/target.yaml", b"v0.11 target\n"),
+                "package_identity": deepcopy(
+                    self.e2e["edges"][-1]["package_identity"]
+                ),
             },
             "retained_origins": [
                 {
@@ -1257,6 +1290,10 @@ class MultiHopUpgradeGwtTests(unittest.TestCase):
 
     def test_gwt_010_given_two_exact_packages_when_each_child_is_applied_validated_finalized_and_checkpointed_then_route_completes(self) -> None:
         e2e = self.fixture.prepare_e2e()
+        self.assertEqual(
+            ["REL-v0.10.0", "REL-v0.11.0"],
+            [edge["package_identity"]["release_id"] for edge in e2e["edges"]],
+        )
         # This is the production admission path: source S1 resolution and
         # supplied source assets must both be real, not mocked resolver output.
         with self.subTest("unmocked-real-s1-two-hop"):
