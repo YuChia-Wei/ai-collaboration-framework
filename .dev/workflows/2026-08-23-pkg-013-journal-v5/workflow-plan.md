@@ -20,7 +20,7 @@
 - `current_phase`: `post-audit`
 - `artifact_root`: `.dev/workflows/2026-08-23-pkg-013-journal-v5`
 - `created_at`: `2026-08-23T18:53:54+08:00`
-- `updated_at`: `2026-08-23T21:34:50+08:00`
+- `updated_at`: `2026-08-23T21:48:08+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md`
 - `template_version`: `1.2.0`
 
@@ -76,11 +76,11 @@ The `bdd-gwt-test-designer` stage must cover at least:
 
 ## Resume Checkpoint
 
-- Last completed action: `5b65ca6c266c637353393279ce2717bcac9143d4` passed 90/90 full validation, but its audit retained P2=1 because material lifecycle updates kept stale `updated_at` metadata.
-- Current task: this SHA-neutral candidate contains only the bounded lifecycle-timestamp repair and retained failure evidence; exact-head full validation and independent review are pending.
+- Last completed action: `d2a471ec2210ffc429f81734853cea7223357747` passed 90/90 full validation, but its audit retained P2=1 because its `updated_at` value preceded the completion receipt it recorded.
+- Current task: this SHA-neutral candidate contains only the chronology repair and retained failure evidence; exact-head full validation and independent review are pending.
 - Exact next action: rerun immutable-head full validation and independent review, require five successful hosted checks, capture live admission, then integrate PR #240 using merge-commit topology.
-- Validation completed: `5b1060be`, `0bcb6e25`, and `5b65ca6c` each passed 90 tests with 0 failures and 1 Windows capability skip using schema-valid dispatch/completion evidence; their respective P2 audit failures remain retained.
-- Git state: branch `codex/issue-239-journal-v5`; the current PR candidate contains the committed timestamp repair and must remain unchanged through its exact-head gates.
+- Validation completed: `5b1060be`, `0bcb6e25`, `5b65ca6c`, and `d2a471ec` each passed 90 tests with 0 failures and 1 Windows capability skip using schema-valid dispatch/completion evidence; their respective P2 audit failures remain retained.
+- Git state: branch `codex/issue-239-journal-v5`; the current PR candidate contains the committed timestamp-chronology repair and must remain unchanged through its exact-head gates.
 - Branch history and checkpoint handoffs: none.
 - Blockers or unresolved decisions: merge is blocked until the reconciled exact head passes full validation, independent audit, hosted checks, and live admission; release allocation remains intentionally unassigned.
 
@@ -92,3 +92,4 @@ The `bdd-gwt-test-designer` stage must cover at least:
 | 2 | `codex/issue-239-journal-v5` | `main` at `92270db07404602210d1c24594a669709dbd5b1f` | PR-head remediation | `5b1060bed0056271ba7406810e5e4c5f519ffffc` | PR #240 | `2026-08-23T21:10:52+08:00` | Full suite passed and implementation P1 findings resolved; audit retained one P2 stale-lifecycle contradiction | reconcile all workflow truth, commit, and rerun exact-head gates |
 | 3 | `codex/issue-239-journal-v5` | `main` at `92270db07404602210d1c24594a669709dbd5b1f` | lifecycle-evidence reconciliation | `0bcb6e25d8a1490e0ecb33d3ab7d3cd3d6754eb5` | PR #240 | `2026-08-23T21:10:52+08:00` | Full suite passed; audit retained one P2 self-referential pending/current-state contradiction | commit SHA-neutral current truth and rerun exact-head gates |
 | 4 | `codex/issue-239-journal-v5` | `main` at `92270db07404602210d1c24594a669709dbd5b1f` | lifecycle-timestamp repair | `5b65ca6c266c637353393279ce2717bcac9143d4` | PR #240 | `2026-08-23T21:34:50+08:00` | Full suite passed; audit retained one P2 stale `updated_at` metadata finding | update every materially changed lifecycle surface and rerun exact-head gates |
+| 5 | `codex/issue-239-journal-v5` | `main` at `92270db07404602210d1c24594a669709dbd5b1f` | timestamp chronology repair | `d2a471ec2210ffc429f81734853cea7223357747` | PR #240 | `2026-08-23T21:48:08+08:00` | Full suite passed; audit retained one P2 because `updated_at` preceded the recorded completion receipt | use a timestamp after both validation and audit evidence, then rerun exact-head gates |

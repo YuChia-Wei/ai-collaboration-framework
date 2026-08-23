@@ -143,3 +143,16 @@
 - Every materially changed lifecycle surface with workflow-owned `updated_at` metadata now uses one consistent current timestamp.
 - The `5b65ca6c` full-suite pass and failed audit remain exact historical evidence.
 - The current candidate is SHA-neutral and requires a fresh exact-head full-suite receipt, independent audit, hosted checks, and live admission before integration.
+
+## Candidate `d2a471ec2210ffc429f81734853cea7223357747`
+
+- Subject and base matched; tracked worktree and index were clean at audit start and end.
+- Full suite result: 90 passed, 0 failed, 1 skipped in 502.738 seconds; the schema-valid receipt completed at `2026-08-23T21:47:37.8709007+08:00`.
+- Independent result: `failed`; P1=0, P2=1, P3=0. Implementation, tests, contracts, and guides remained byte-identical to the P1-resolved `5b1060be` subject.
+- P2: the workflow-owned `updated_at` value was 24.714 seconds earlier than the `5b65ca6c` full-suite completion receipt already recorded in those lifecycle surfaces.
+
+## Timestamp Chronology Remediation
+
+- All materially changed workflow-owned `updated_at` values now use `2026-08-23T21:48:08+08:00`, after both the `d2a471ec` audit and its `2026-08-23T21:47:37.8709007+08:00` full-suite completion receipt.
+- The `d2a471ec` full-suite pass and failed audit remain exact historical evidence.
+- The current candidate remains SHA-neutral and requires a fresh exact-head full-suite receipt, independent audit, hosted checks, and live admission before integration.
