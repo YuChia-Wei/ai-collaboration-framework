@@ -34,6 +34,28 @@ from ai_context_package_apply import (
 )
 
 
+def progress_reporter(event: str, details: dict) -> None:
+    messages = {
+        "after_planned_journal": "transaction prepared",
+        "after_progress_journal": "apply operation durably completed",
+        "after_finalized_journal": "apply transaction checkpointed",
+        "after_rollback_progress_journal": "rollback path durably restored",
+        "after_rollback_journal": "rollback transaction completed",
+        "after_target_validation_receipt_journal": "target validation receipt bound",
+    }
+    message = messages.get(event)
+    if message is None:
+        return
+    suffix = " ".join(
+        f"{key}={details[key]}" for key in sorted(details) if details[key] is not None
+    )
+    print(
+        f"AI context package apply progress: {message}"
+        + (f" ({suffix})" if suffix else ""),
+        file=sys.stderr,
+    )
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--package-root", type=Path)
@@ -47,6 +69,11 @@ def main() -> int:
         ),
     )
     parser.add_argument("--acknowledge", action="append", default=[])
+    parser.add_argument(
+        "--progress",
+        action="store_true",
+        help="Report lifecycle progress to stderr without changing stdout.",
+    )
     parser.add_argument(
         "--enable-provider",
         action="append",
@@ -91,6 +118,7 @@ def main() -> int:
         ),
     )
     args = parser.parse_args()
+    boundary_hook = progress_reporter if args.progress else None
     try:
         if (
             args.resume
@@ -123,6 +151,7 @@ def main() -> int:
                     args.target_root,
                     args.record_target_validation_receipt,
                     args.target_validation_receipt,
+                    boundary_hook,
                 )
                 print(
                     yaml.safe_dump(
@@ -142,6 +171,7 @@ def main() -> int:
                 args.resume or args.rollback,
                 "resume" if args.resume else "rollback",
                 args.package_root,
+                boundary_hook,
             )
             label = "apply_receipt" if args.resume else "rollback_journal"
             print(yaml.safe_dump({label: result}, sort_keys=False), end="")
@@ -215,6 +245,7 @@ def main() -> int:
         receipt = apply_plan(
             plan,
             set(args.acknowledge),
+            boundary_hook,
             remediation_decision=decision,
         )
         print(yaml.safe_dump({"apply_receipt": receipt}, sort_keys=False), end="")

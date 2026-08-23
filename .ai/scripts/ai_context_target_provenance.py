@@ -1682,7 +1682,11 @@ def validate_multi_hop_route_transactions(root: Path, errors: list[str]) -> None
                     predecessor_checkpoint_sha256=(checkpoint_shas[index - 1] if index and len(checkpoint_shas) >= index else None),
                     predecessor_of_predecessor_checkpoint_sha256=(checkpoint_predecessors[index - 1] if index and len(checkpoint_predecessors) >= index else None),
                 )
-                or child_journal.get("schema_version") != "ai-context-package-apply-journal/v4"
+                or child_journal.get("schema_version")
+                not in {
+                    "ai-context-package-apply-journal/v4",
+                    "ai-context-package-apply-journal/v5",
+                }
                 or child_journal.get("state") != "finalized"
                 or child_journal.get("terminal_receipt_sha256") != child["terminal_receipt_sha256"]
                 or sha256_bytes(terminal_raw) != child["terminal_receipt_sha256"]
@@ -1923,6 +1927,130 @@ def validate_multi_hop_route_transactions(root: Path, errors: list[str]) -> None
                 errors.append(f"{route_root}: final multi-hop checkpoint surface or authority differs")
 
 
+def validate_v5_progress_log(
+    transaction: Path, journal: dict, errors: list[str]
+) -> None:
+    if journal.get("schema_version") != "ai-context-package-apply-journal/v5":
+        return
+    path_value = journal.get("progress_log_path")
+    count = journal.get("progress_record_count")
+    tail = journal.get("progress_tail_sha256")
+    if (
+        path_value != "progress.jsonl"
+        or type(count) is not int
+        or count < 0
+        or (count == 0 and tail is not None)
+        or (
+            count > 0
+            and (
+                not isinstance(tail, str)
+                or not re.fullmatch(r"[0-9a-f]{64}", tail)
+            )
+        )
+    ):
+        errors.append(f"{transaction / 'journal.yaml'}: v5 progress binding is invalid")
+        return
+    progress_path = transaction / "progress.jsonl"
+    if not progress_path.exists():
+        if count != 0:
+            errors.append(f"{progress_path}: v5 progress log is missing")
+        return
+    if (
+        not progress_path.is_file()
+        or progress_path.is_symlink()
+        or is_reparse_point(progress_path)
+    ):
+        errors.append(f"{progress_path}: v5 progress log is unsafe")
+        return
+    try:
+        raw = progress_path.read_bytes()
+    except OSError as exc:
+        errors.append(f"{progress_path}: cannot read v5 progress log: {exc}")
+        return
+    framed = raw[: raw.rfind(b"\n") + 1] if raw and not raw.endswith(b"\n") else raw
+    records: list[dict] = []
+    previous: str | None = None
+    for sequence, line in enumerate(framed.splitlines(keepends=True), start=1):
+        try:
+            record = json.loads(line.decode("utf-8"))
+        except (UnicodeDecodeError, json.JSONDecodeError):
+            errors.append(f"{progress_path}: v5 progress log cannot be parsed")
+            return
+        canonical = (
+            json.dumps(
+                record,
+                ensure_ascii=False,
+                sort_keys=True,
+                separators=(",", ":"),
+                allow_nan=False,
+            ).encode("utf-8")
+            + b"\n"
+            if isinstance(record, dict)
+            else b""
+        )
+        if canonical != line:
+            errors.append(f"{progress_path}: v5 progress record is not canonical")
+            return
+        phase = record.get("phase")
+        common = {
+            "schema_version",
+            "sequence",
+            "phase",
+            "previous_record_sha256",
+            "transition_sequence",
+            "record_sha256",
+        }
+        expected_keys = (
+            common | {"operation_index", "operation_id"}
+            if phase == "apply"
+            else common | {"rollback_index", "path"}
+            if phase == "rollback"
+            else set()
+        )
+        unsigned = dict(record)
+        declared = unsigned.pop("record_sha256", None)
+        if (
+            not expected_keys
+            or set(record) != expected_keys
+            or record.get("schema_version") != "ai-context-package-apply-progress/v1"
+            or type(record.get("sequence")) is not int
+            or record.get("sequence") != sequence
+            or record.get("previous_record_sha256") != previous
+            or type(record.get("transition_sequence")) is not int
+            or record["transition_sequence"] < 0
+            or (
+                phase == "apply"
+                and (
+                    type(record.get("operation_index")) is not int
+                    or not isinstance(record.get("operation_id"), str)
+                )
+            )
+            or (
+                phase == "rollback"
+                and (
+                    type(record.get("rollback_index")) is not int
+                    or not isinstance(record.get("path"), str)
+                )
+            )
+            or not isinstance(declared, str)
+            or canonical_json_digest(unsigned) != declared
+        ):
+            errors.append(f"{progress_path}: v5 progress record is invalid")
+            return
+        previous = declared
+        records.append(record)
+    if count > len(records) or (count and records[count - 1]["record_sha256"] != tail):
+        errors.append(f"{progress_path}: v5 progress snapshot binding differs")
+    elif journal.get("state") in {
+        "awaiting-target-validation",
+        "validated",
+        "rejected",
+        "rolled-back",
+        "finalized",
+    } and count != len(records):
+        errors.append(f"{progress_path}: terminal v5 progress is not fully compacted")
+
+
 def validate_apply_transaction_journals(
     root: Path,
     receipt: dict | None,
@@ -1977,9 +2105,11 @@ def validate_apply_transaction_journals(
             "ai-context-package-apply-journal/v2",
             "ai-context-package-apply-journal/v3",
             "ai-context-package-apply-journal/v4",
+            "ai-context-package-apply-journal/v5",
         } or journal.get("transaction_id") != child.name or journal.get("plan_sha256") != child.name:
             errors.append(f"{journal_path}: transaction identity is invalid")
             continue
+        validate_v5_progress_log(child, journal, errors)
         if state in {"planned", "applying", "interrupted", "rolling-back"}:
             errors.append(f"{journal_path}: package apply transaction is {state}")
         elif state not in {
@@ -1991,13 +2121,20 @@ def validate_apply_transaction_journals(
         }:
             errors.append(f"{journal_path}: package apply transaction state is invalid")
         if state == "rejected":
-            if journal_schema != "ai-context-package-apply-journal/v4":
+            if journal_schema not in {
+                "ai-context-package-apply-journal/v4",
+                "ai-context-package-apply-journal/v5",
+            }:
                 errors.append(f"{journal_path}: rejected transaction journal schema is unsupported")
             else:
                 validate_rejected_upgrade_transaction(root, child.name, journal, errors)
             continue
         if (
-            journal_schema == "ai-context-package-apply-journal/v4"
+            journal_schema
+            in {
+                "ai-context-package-apply-journal/v4",
+                "ai-context-package-apply-journal/v5",
+            }
             and state == "finalized"
             and child.name != receipt_transaction
         ):
@@ -2006,7 +2143,11 @@ def validate_apply_transaction_journals(
             )
             continue
         if (
-            journal_schema == "ai-context-package-apply-journal/v4"
+            journal_schema
+            in {
+                "ai-context-package-apply-journal/v4",
+                "ai-context-package-apply-journal/v5",
+            }
             and state in {"awaiting-target-validation", "validated"}
             and child.name != receipt_transaction
         ):
@@ -2027,6 +2168,7 @@ def validate_apply_transaction_journals(
             if journal_schema not in {
                 "ai-context-package-apply-journal/v3",
                 "ai-context-package-apply-journal/v4",
+                "ai-context-package-apply-journal/v5",
             }:
                 errors.append(
                     f"{journal_path}: pending receipt transaction journal schema is unsupported"
@@ -2065,7 +2207,11 @@ def validate_apply_transaction_journals(
                 continue
             expected_receipt_state = (
                 "awaiting-target-validation"
-                if journal_schema == "ai-context-package-apply-journal/v4"
+                if journal_schema
+                in {
+                    "ai-context-package-apply-journal/v4",
+                    "ai-context-package-apply-journal/v5",
+                }
                 and plan.get("previous_version") is not None
                 else "finalized"
             )
@@ -2219,7 +2365,10 @@ def validate_apply_transaction_journals(
             expected_operation_order_sha = canonical_json_digest(active_ids)
             transition_sequence = journal.get("transition_sequence")
             minimum_sequence = len(active_ids) + 2
-            if journal_schema == "ai-context-package-apply-journal/v4":
+            if journal_schema in {
+                "ai-context-package-apply-journal/v4",
+                "ai-context-package-apply-journal/v5",
+            }:
                 expected_transition_sequence = expected_v4_transition_sequence(
                     plan, state, len(active_ids)
                 )
@@ -2331,7 +2480,11 @@ def validate_apply_transaction_journals(
             ):
                 errors.append(f"{receipt_path}: receipt differs from the sealed transaction plan")
             if (
-                journal_schema == "ai-context-package-apply-journal/v4"
+                journal_schema
+                in {
+                    "ai-context-package-apply-journal/v4",
+                    "ai-context-package-apply-journal/v5",
+                }
                 and plan.get("upgrade_remediation_required") is True
             ):
                 upgrade_errors: list[str] = []
@@ -3319,11 +3472,16 @@ def validate_upgrade_finalization_evidence(
         else {"rejected"}
     )
     if (
-        journal.get("schema_version") != "ai-context-package-apply-journal/v4"
+        journal.get("schema_version")
+        not in (
+            {"ai-context-package-apply-journal/v4", "ai-context-package-apply-journal/v5"}
+            if historical
+            else {"ai-context-package-apply-journal/v5"}
+        )
         or journal.get("state") not in expected_journal_states
     ):
         errors.append(
-            "upgrade transaction journal state differs from the required v4 lifecycle"
+            "upgrade transaction journal state differs from the required v5 lifecycle"
         )
         return None
     plan_loaded = read_transaction_json(transaction, "plan.json", "sealed transaction plan", errors)
@@ -3668,6 +3826,14 @@ def validate_rejected_upgrade_transaction(
         and journal.get("rollback_next_index") == 0
         and journal.get("rollback_completed_paths") == []
         and journal.get("rollback_start_state") is None
+        and (
+            journal.get("schema_version") == "ai-context-package-apply-journal/v4"
+            or (
+                journal.get("progress_log_path") == "progress.jsonl"
+                and journal.get("progress_record_count") == 0
+                and journal.get("progress_tail_sha256") is None
+            )
+        )
         and journal.get("final_receipt_sha256") is None
         and journal.get("terminal_receipt_path") is None
         and journal.get("terminal_receipt_sha256") is None
@@ -3957,8 +4123,8 @@ def validate_terminal_receipt_invariant(
         errors.append(f"{path}: terminal receipt authority bytes are invalid")
 
 
-def has_pending_v4_upgrade_transaction(root: Path) -> bool:
-    """Detect the one resumable v4 finalization boundary without treating it as valid."""
+def has_pending_v5_upgrade_transaction(root: Path) -> bool:
+    """Detect the one resumable v5 finalization boundary without treating it as valid."""
     errors: list[str] = []
     receipt_path = checked_target_path(
         root, PENDING_APPLY_RECEIPT, "pending apply receipt", errors
@@ -4009,7 +4175,7 @@ def has_pending_v4_upgrade_transaction(root: Path) -> bool:
     )
     return (
         isinstance(journal, dict)
-        and journal.get("schema_version") == "ai-context-package-apply-journal/v4"
+        and journal.get("schema_version") == "ai-context-package-apply-journal/v5"
         and journal.get("state")
         in {"awaiting-target-validation", "validated", "finalized"}
         and plan_is_upgrade
@@ -4692,7 +4858,7 @@ def finalize_context(
             existing_provenance.get("source") != provenance.get("source")
             or existing_provenance.get("policy_adoptions")
             != provenance.get("policy_adoptions")
-            or has_pending_v4_upgrade_transaction(root)
+            or has_pending_v5_upgrade_transaction(root)
         )
     )
     pending_errors: list[str] = []

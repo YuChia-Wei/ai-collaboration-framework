@@ -2617,11 +2617,8 @@ class AiContextPackageApplyGwtTests(unittest.TestCase):
                         0, repeated.returncode, repeated.stdout + repeated.stderr
                     )
                     self.assertFalse((fixture.target / "AGENTS.md").exists())
-                    journal = yaml.safe_load(
-                        (
-                            APPLY.transaction_root(fixture.target, transaction_id)
-                            / "journal.yaml"
-                        ).read_text(encoding="utf-8")
+                    _root, _plan, journal = APPLY.load_transaction(
+                        fixture.target, transaction_id
                     )
                     self.assertEqual("rolled-back", journal["state"])
                     self.assertEqual(
@@ -2764,11 +2761,8 @@ class AiContextPackageApplyGwtTests(unittest.TestCase):
                                 fixture.package if recovery_action == "resume" else None,
                             )
 
-                    journal = yaml.safe_load(
-                        (
-                            APPLY.transaction_root(fixture.target, transaction_id)
-                            / "journal.yaml"
-                        ).read_text(encoding="utf-8")
+                    _root, _plan, journal = APPLY.load_transaction(
+                        fixture.target, transaction_id
                     )
                     self.assertEqual("applying", journal["state"])
                     self.assertIsNone(journal["final_receipt_sha256"])
@@ -2802,11 +2796,8 @@ class AiContextPackageApplyGwtTests(unittest.TestCase):
                     with self.assertRaises(APPLY.InjectedInterruption):
                         APPLY.apply_plan(plan, boundary_hook=crash)
                     transaction_id = plan["plan_sha256"]
-                    journal = yaml.safe_load(
-                        (
-                            APPLY.transaction_root(fixture.target, transaction_id)
-                            / "journal.yaml"
-                        ).read_text(encoding="utf-8")
+                    _root, _plan, journal = APPLY.load_transaction(
+                        fixture.target, transaction_id
                     )
                     self.assertEqual(1, journal["next_apply_index"])
                     self.assertEqual(["001-add"], journal["completed_operation_ids"])
@@ -2882,9 +2873,8 @@ class AiContextPackageApplyGwtTests(unittest.TestCase):
                             "rollback",
                             boundary_hook=crash_rollback,
                         )
-                    root = APPLY.transaction_root(fixture.target, transaction_id)
-                    interrupted = yaml.safe_load(
-                        (root / "journal.yaml").read_text(encoding="utf-8")
+                    _root, _plan, interrupted = APPLY.load_transaction(
+                        fixture.target, transaction_id
                     )
                     self.assertEqual("rolling-back", interrupted["state"])
                     self.assertEqual(
@@ -2920,7 +2910,7 @@ class AiContextPackageApplyGwtTests(unittest.TestCase):
                     self.assertFalse((fixture.target / ".ai/one.md").exists())
                     self.assertFalse((fixture.target / ".ai/two.md").exists())
                     finalized = yaml.safe_load(
-                        (root / "journal.yaml").read_text(encoding="utf-8")
+                        (_root / "journal.yaml").read_text(encoding="utf-8")
                     )
                     self.assertEqual("rolled-back", finalized["state"])
                     self.assertEqual(
@@ -2995,7 +2985,7 @@ class AiContextPackageApplyGwtTests(unittest.TestCase):
                 finally:
                     fixture.close()
 
-    def test_gwt_033a_given_exact_v4_finalized_or_validated_sequences_when_recovered_and_target_validates_then_both_pass(self) -> None:
+    def test_gwt_033a_given_exact_v5_finalized_or_validated_sequences_when_recovered_and_target_validates_then_both_pass(self) -> None:
         for scenario in ("clean-finalized", "upgrade-validated"):
             with self.subTest(scenario=scenario):
                 fixture = PackageApplyFixture()
@@ -4517,6 +4507,222 @@ class AiContextPackageApplyGwtTests(unittest.TestCase):
                 prior_authority,
                 (provenance_path.read_bytes(), ledger_path.read_bytes()),
             )
+        finally:
+            fixture.close()
+
+    def test_gwt_061_given_n_v5_operations_when_applied_then_journal_write_work_is_linear_and_each_prefix_is_durable(self) -> None:
+        def execute(count: int) -> tuple[APPLY.JournalWriteStats, list[int]]:
+            fixture = PackageApplyFixture()
+            try:
+                incoming = {
+                    f".ai/generated/file-{index:03d}.md":
+                    (f"payload-{index}\n".encode("utf-8"), "framework-managed", "0644")
+                    for index in range(count)
+                }
+                operations = [
+                    operation(
+                        f"{index:03d}-add",
+                        "add",
+                        f".ai/generated/file-{index:03d}.md",
+                    )
+                    for index in range(count)
+                ]
+                fixture.make_package(incoming, operations)
+                plan = fixture.plan()
+                durable_prefixes: list[int] = []
+
+                def observe_boundary(event: str, details: dict) -> None:
+                    if event != "after_progress_journal":
+                        return
+                    _root, _plan, recovered = APPLY.load_transaction(
+                        fixture.target, plan["plan_sha256"]
+                    )
+                    durable_prefixes.append(recovered["next_apply_index"])
+                    self.assertEqual(
+                        details["next_apply_index"], recovered["next_apply_index"]
+                    )
+
+                stats = APPLY.JournalWriteStats()
+
+                # When N operations are applied through journal v5.
+                RAW_APPLY_PLAN(
+                    plan,
+                    boundary_hook=observe_boundary,
+                    journal_io_hook=stats.observe,
+                )
+
+                # Then every prefix is durable and logical journal writes are N + O(1).
+                self.assertEqual(list(range(1, count + 1)), durable_prefixes)
+                self.assertEqual(count, stats.append_write_calls)
+                self.assertEqual(3, stats.snapshot_write_calls)
+                self.assertEqual(count + 3, stats.write_calls)
+                return stats, durable_prefixes
+            finally:
+                fixture.close()
+
+        small, _ = execute(4)
+        large, _ = execute(8)
+        self.assertLess(large.bytes_written, small.bytes_written * 3)
+
+    def test_gwt_062_given_crash_after_v5_progress_append_when_resumed_then_the_operation_prefix_replays_exactly_once(self) -> None:
+        fixture = PackageApplyFixture()
+        try:
+            incoming = {
+                ".ai/one.md": (b"one\n", "framework-managed", "0644"),
+                ".ai/two.md": (b"two\n", "framework-managed", "0644"),
+            }
+            fixture.make_package(
+                incoming,
+                [
+                    operation("001-add", "add", ".ai/one.md"),
+                    operation("002-add", "add", ".ai/two.md"),
+                ],
+            )
+            plan = fixture.plan()
+
+            def interrupt_after_first_durable_prefix(event: str, details: dict) -> None:
+                if event == "after_progress_journal" and details["next_apply_index"] == 1:
+                    raise APPLY.InjectedInterruption("fixture crash after durable append")
+
+            # When the process dies after the first append is fsynced but before a snapshot.
+            with self.assertRaises(APPLY.InjectedInterruption):
+                RAW_APPLY_PLAN(plan, boundary_hook=interrupt_after_first_durable_prefix)
+            transaction = APPLY.transaction_root(fixture.target, plan["plan_sha256"])
+            snapshot = yaml.safe_load(
+                (transaction / "journal.yaml").read_text(encoding="utf-8")
+            )
+            self.assertEqual(0, snapshot["next_apply_index"])
+            self.assertEqual(1, len((transaction / APPLY.JOURNAL_PROGRESS_PATH).read_text(encoding="utf-8").splitlines()))
+            with (transaction / APPLY.JOURNAL_PROGRESS_PATH).open("ab") as progress:
+                progress.write(b'{"schema_version":"torn')
+
+            receipt = APPLY.recover_transaction(
+                fixture.target, plan["plan_sha256"], "resume", fixture.package
+            )
+
+            # Then replay advances the durable prefix and the second operation runs once.
+            self.assertEqual(["001-add", "002-add"], receipt["applied_operation_ids"])
+            _root, _plan, journal = APPLY.load_transaction(
+                fixture.target, plan["plan_sha256"]
+            )
+            self.assertEqual("finalized", journal["state"])
+            self.assertEqual(["001-add", "002-add"], journal["completed_operation_ids"])
+            self.assertEqual(
+                2,
+                len(
+                    (transaction / APPLY.JOURNAL_PROGRESS_PATH)
+                    .read_text(encoding="utf-8")
+                    .splitlines()
+                ),
+            )
+            self.assertEqual(b"one\n", (fixture.target / ".ai/one.md").read_bytes())
+            self.assertEqual(b"two\n", (fixture.target / ".ai/two.md").read_bytes())
+        finally:
+            fixture.close()
+
+    def test_gwt_063_given_unfinished_or_terminal_v4_when_new_v5_apply_starts_then_only_unfinished_evidence_blocks(self) -> None:
+        fixture = PackageApplyFixture()
+        try:
+            fixture.make_package(
+                {".ai/new.md": (b"new\n", "framework-managed", "0644")},
+                [operation("001-add", "add", ".ai/new.md")],
+            )
+            plan = fixture.plan()
+            legacy_id = "b" * 64
+            legacy_root = APPLY.transaction_root(fixture.target, legacy_id)
+            legacy_root.mkdir(parents=True)
+            legacy_journal_path = legacy_root / "journal.yaml"
+            legacy = {
+                "schema_version": APPLY.LEGACY_JOURNAL_SCHEMA_VERSION,
+                "transaction_id": legacy_id,
+                "plan_sha256": legacy_id,
+                "state": "applying",
+            }
+            legacy_journal_path.write_text(
+                yaml.safe_dump(legacy, sort_keys=False), encoding="utf-8", newline="\n"
+            )
+
+            # When an unfinished v4 transaction exists, new mutation is rejected safely.
+            with self.assertRaisesRegex(
+                APPLY.ApplyError,
+                "unsupported-transaction-journal-version.*prior tooling.*owner-directed manual recovery",
+            ):
+                RAW_APPLY_PLAN(plan)
+            self.assertFalse((fixture.target / ".ai/new.md").exists())
+            self.assertFalse(APPLY.transaction_root(fixture.target, plan["plan_sha256"]).exists())
+
+            # When the same v4 record is terminal archival evidence, it is left unchanged.
+            legacy["state"] = "finalized"
+            legacy_journal_path.write_text(
+                yaml.safe_dump(legacy, sort_keys=False), encoding="utf-8", newline="\n"
+            )
+            archival_bytes = legacy_journal_path.read_bytes()
+            receipt = RAW_APPLY_PLAN(plan)
+
+            # Then a new v5 transaction succeeds without recovering or converting v4.
+            self.assertEqual(["001-add"], receipt["applied_operation_ids"])
+            self.assertEqual(archival_bytes, legacy_journal_path.read_bytes())
+            self.assertEqual(
+                APPLY.JOURNAL_SCHEMA_VERSION,
+                yaml.safe_load(
+                    (
+                        APPLY.transaction_root(fixture.target, plan["plan_sha256"])
+                        / "journal.yaml"
+                    ).read_text(encoding="utf-8")
+                )["schema_version"],
+            )
+            v5_root = APPLY.transaction_root(fixture.target, plan["plan_sha256"])
+            v5_journal_path = v5_root / "journal.yaml"
+            unsupported = yaml.safe_load(v5_journal_path.read_text(encoding="utf-8"))
+            unsupported["schema_version"] = APPLY.LEGACY_JOURNAL_SCHEMA_VERSION
+            v5_journal_path.write_text(
+                yaml.safe_dump(unsupported, sort_keys=False),
+                encoding="utf-8",
+                newline="\n",
+            )
+            with self.assertRaisesRegex(
+                APPLY.ApplyError,
+                "unsupported-transaction-journal-version.*journal v4 recovery is not supported",
+            ):
+                APPLY.recover_transaction(
+                    fixture.target,
+                    plan["plan_sha256"],
+                    "resume",
+                    fixture.package,
+                )
+        finally:
+            fixture.close()
+
+    def test_gwt_064_given_progress_opt_in_when_cli_applies_then_only_stderr_receives_progress(self) -> None:
+        fixture = PackageApplyFixture()
+        try:
+            fixture.make_package(
+                {".ai/progress.md": (b"progress\n", "framework-managed", "0644")},
+                [operation("001-add", "add", ".ai/progress.md")],
+            )
+
+            # When the CLI applies with explicit progress reporting.
+            result = subprocess.run(
+                [
+                    sys.executable,
+                    str(ROOT / ".ai/scripts/plan-ai-context-package-apply.py"),
+                    "--package-root",
+                    str(fixture.package),
+                    "--target-root",
+                    str(fixture.target),
+                    "--apply",
+                    "--progress",
+                ],
+                capture_output=True,
+                text=True,
+            )
+
+            # Then stdout keeps its prior contract and progress appears only on stderr.
+            self.assertEqual(0, result.returncode, result.stderr)
+            self.assertIn("apply_receipt:", result.stdout)
+            self.assertNotIn("AI context package apply progress:", result.stdout)
+            self.assertIn("AI context package apply progress:", result.stderr)
+            self.assertIn("apply operation durably completed", result.stderr)
         finally:
             fixture.close()
 

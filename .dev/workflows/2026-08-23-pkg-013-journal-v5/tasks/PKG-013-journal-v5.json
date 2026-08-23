@@ -1,0 +1,110 @@
+{
+  "template_id": "ai-context-governance-remediation-task",
+  "template_version": "1.1.0",
+  "template_created_at": "2026-07-10T18:22:49+08:00",
+  "template_updated_at": "2026-07-27T09:52:09+08:00",
+  "task_id": "PKG-013-journal-v5",
+  "workflow_id": "2026-08-23-pkg-013-journal-v5",
+  "owner_skill": "ai-context-governance",
+  "orchestrator_skill": "software-development-orchestrator",
+  "status": "in_progress",
+  "created_at": "2026-08-23T18:53:54+08:00",
+  "updated_at": "2026-08-23T19:18:44+08:00",
+  "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
+  "model": "gpt-5",
+  "reasoning_effort": "high",
+  "finding_ids": ["Issue-239", "PKG-013"],
+  "authorization": {
+    "source": "https://github.com/YuChia-Wei/ai-collaboration-framework/issues/239",
+    "allowed": ["workflow-artifacts", "implementation", "focused-validation", "independent-read-only-review", "local-commits"],
+    "prohibited": ["push", "pull-request", "merge", "issue-mutation", "project-mutation", "release-allocation", "tag", "release", "publication", "downstream-mutation"]
+  },
+  "scope": {
+    "target": "Journal v5 for the Python AI context package-apply lifecycle",
+    "files": [
+      ".ai/scripts/ai_context_package_apply.py",
+      ".ai/scripts/ai_context_target_provenance.py",
+      ".ai/scripts/plan-ai-context-package-apply.py",
+      ".ai/scripts/tests/test_ai_context_package_apply.py",
+      ".ai/assets/skills/ai-context-upgrader/"
+    ],
+    "constraints": [
+      "New transactions write and recover v5 only.",
+      "Unfinished v4 blocks new mutation; terminal v4 does not.",
+      "Every completed operation has a durable boundary.",
+      "Acceptance uses deterministic write-call and byte counts, not wall-clock timing.",
+      "Progress is opt-in stderr only."
+    ],
+    "non_goals": [
+      "v4 recovery, rollback, migration, conversion, or dual-version compatibility",
+      "Issues #149 and #168",
+      "CLI/runtime rewrite",
+      "downstream migration",
+      "release-note, tag, release, or publication work"
+    ]
+  },
+  "execution": {
+    "capability_slot": "implementation",
+    "implementation_contract": {
+      "intent": "bug-fix",
+      "execution_mode": "generic",
+      "overlays": [],
+      "authorization_source": ["Issue-239", "source-thread-owner-delegation"],
+      "normative_truth": ["Issue-239", "AGENTS.md", ".dev/workflows/2026-08-23-pkg-013-journal-v5/workflow-plan.md"],
+      "finding_evidence": [],
+      "subject_revision": "92270db07404602210d1c24594a669709dbd5b1f",
+      "acceptance_criteria": [
+        "v5 journal write amplification is linear or bounded",
+        "v5 crash recovery preserves exactly-once semantics",
+        "v4 safety classification never performs v4 recovery",
+        "optional progress never writes to stdout"
+      ]
+    },
+    "steps": [
+      "Resolve framework-source effective-rule evidence for each applicable routed action.",
+      "Design GWT scenarios from Issue #239.",
+      "Implement journal v5 append-only durable progress and minimal v4 safety classification.",
+      "Implement deterministic journal I/O instrumentation and stderr-only progress.",
+      "Update owning validator, templates, tests, and documentation.",
+      "Run focused and proportionate broader validation.",
+      "Commit and obtain exact-head independent read-only review."
+    ],
+    "validation": [
+      "focused package-apply journal v5 GWT tests",
+      "package-apply crash-boundary and platform-policy tests",
+      "target provenance tests",
+      "repository workflow and AI-context validators"
+    ],
+    "role_execution_records": [],
+    "last_completed_step": "Implemented journal v5 append-only progress, deterministic journal I/O instrumentation, v4 mutation-safety classification, stderr-only progress, owning validation, and focused GWT coverage.",
+    "next_action": "Commit the immutable implementation candidate, then run the full package-apply suite and exact-head independent read-only audit."
+  },
+  "results": {
+    "summary": "Journal v5 snapshots durable lifecycle state while newline-framed, fsynced, digest-chained progress records retain one durable boundary per completed apply or rollback operation with linear logical journal writes.",
+    "files_changed": [
+      ".ai/scripts/ai_context_package_apply.py",
+      ".ai/scripts/ai_context_target_provenance.py",
+      ".ai/scripts/plan-ai-context-package-apply.py",
+      ".ai/scripts/tests/test_ai_context_package_apply.py",
+      ".ai/assets/skills/ai-context-upgrader/skill.yaml",
+      ".ai/assets/skills/ai-context-upgrader/references/multi-hop-upgrade-transaction-contract.md",
+      ".ai/assets/skills/ai-context-upgrader/references/provenance-contract.md",
+      ".ai/assets/skills/ai-context-upgrader/templates/multi-hop-upgrade-transaction.schema.yaml",
+      ".dev/guides/implementation-guides/quick-setup.md"
+    ],
+    "tests_run": [
+      "focused GWT-061 through GWT-064: 4 passed after fixture correction",
+      "focused GWT-029, GWT-031, GWT-032, GWT-033a, GWT-033, and GWT-040: 6 passed",
+      "python .ai/scripts/validate-ai-context.py: passed",
+      "python .ai/scripts/validate-source-governance.py: passed",
+      "python .ai/scripts/validate-workflow-artifacts.py: passed",
+      "python -m py_compile for changed Python modules: passed",
+      "git diff --check: passed",
+      "initial sandbox execution: blocked-by-environment by Windows Temp ACL and rerun on host",
+      "pre-correction test_gwt_03 selector: 4 assertion failures from raw snapshot assumptions; affected tests now load effective v5 replay state and pass"
+    ],
+    "finding_status": "in-progress",
+    "residual_risk": "",
+    "follow_up_needed": true
+  }
+}

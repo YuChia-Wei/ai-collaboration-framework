@@ -8,6 +8,7 @@ task-level progress.
 
 | Workflow | Title | Owner | Status | Updated | Entry Point |
 | --- | --- | --- | --- | --- | --- |
+| [`2026-08-23-pkg-013-journal-v5`](2026-08-23-pkg-013-journal-v5/workflow.yaml) | PKG-013 bounded package-apply journal v5 | `ai-context-governance` | `in_progress` | `2026-08-23T19:18:44+08:00` | [plan](2026-08-23-pkg-013-journal-v5/workflow-plan.md) |
 | [`2026-08-23-retained-origin-route-evidence`](2026-08-23-retained-origin-route-evidence/workflow.yaml) | Fail closed retained-origin route evidence | `ai-context-governance` | `completed` | `2026-08-23T17:33:48+08:00` | [plan](2026-08-23-retained-origin-route-evidence/workflow-plan.md) |
 | [`2026-08-21-upg-004-delegation-preflight`](2026-08-21-upg-004-delegation-preflight/workflow.yaml) | UPG-004 Delegation Opt-In And Codex Advisory Preflight | `software-development-orchestrator` | `completed` | `2026-08-21T02:42:09+08:00` | [plan](2026-08-21-upg-004-delegation-preflight/workflow-plan.md) |
 | [`2026-08-20-sag-003-provider-neutral-roles`](2026-08-20-sag-003-provider-neutral-roles/workflow.yaml) | SAG-003 Provider-Neutral Capability Roles | `software-development-orchestrator` | `completed` | `2026-08-21T01:20:58+08:00` | [plan](2026-08-20-sag-003-provider-neutral-roles/workflow-plan.md) |
