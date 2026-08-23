@@ -156,3 +156,16 @@
 - All materially changed workflow-owned `updated_at` values now use `2026-08-23T21:48:08+08:00`, after both the `d2a471ec` audit and its `2026-08-23T21:47:37.8709007+08:00` full-suite completion receipt.
 - The `d2a471ec` full-suite pass and failed audit remain exact historical evidence.
 - The current candidate remains SHA-neutral and requires a fresh exact-head full-suite receipt, independent audit, hosted checks, and live admission before integration.
+
+## Candidate `fb3ea0c6fb5e02ce438e90fb2c5fdd4b1a1bd31a`
+
+- Subject and base matched; tracked worktree and index were clean at audit start and end.
+- Full suite result: 90 passed, 0 failed, 1 skipped in 507.722 seconds; the schema-valid receipt completed at `2026-08-23T21:59:26.6924963+08:00`.
+- Independent result: `failed`; P1=0, P2=0, P3=1. Runtime behavior and prior safety repairs remained intact.
+- P3: shared v4/v5 target-validation helpers retained v4-only internal naming and docstrings, creating a maintenance-contract mismatch without changing runtime compatibility.
+
+## Internal Documentation Remediation
+
+- Shared transition-sequence validation now uses version-neutral naming and documentation.
+- Target-validation binding and receipt docstrings now describe the current transaction behavior without claiming v4-only sealing or recovery.
+- The `fb3ea0c6` full-suite pass and failed audit remain exact historical evidence; the current candidate remains SHA-neutral and pending exact-head gates.

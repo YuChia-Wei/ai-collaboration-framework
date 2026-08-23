@@ -14,18 +14,18 @@
 - `owner_skill`: `ai-context-governance`
 - `status`: `draft`
 - `created_at`: `2026-08-23T18:53:54+08:00`
-- `updated_at`: `2026-08-23T21:48:08+08:00`
+- `updated_at`: `2026-08-23T22:10:06+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-remediation-report-template.md`
 - `template_version`: `2.0.0`
 - `baseline_assessment`: live GitHub Issue #239 and repository-owned journal v4 behavior
-- `verification_assessment`: `5b1060be`, `0bcb6e25`, `5b65ca6c`, and `d2a471ec` each passed 90-test full validation but failed P1/P2/P3=0/1/0 on successive lifecycle-evidence findings; the SHA-neutral timestamp-chronology candidate is committed and exact-head verification is pending
+- `verification_assessment`: `5b1060be`, `0bcb6e25`, `5b65ca6c`, `d2a471ec`, and `fb3ea0c6` each passed 90-test full validation; the first four retained P2 lifecycle-evidence findings and `fb3ea0c6` retained one P3 internal-documentation finding; the SHA-neutral bounded repair is committed and exact-head verification is pending
 
 ## Remediation Summary
 
 - Authorized scope: journal v5 only, bounded write amplification, durable per-operation progress, v4 mutation-safety classification without v4 recovery, deterministic I/O instrumentation, stderr-only opt-in progress, and owning contracts/tests/documentation.
 - Completed scope: digest-chained append-only v5 apply/rollback progress, identity-bound snapshots and target/recovery validation parity, safe Git-admin transaction boundaries, deterministic logical write-call/byte accounting, and `--progress` on stderr.
 - Excluded scope remained unchanged for v4 resume/rollback/migration/conversion, Issues #149/#168, CLI/runtime rewrite, downstream mutation, release notes, Issue/Project mutation, release allocation, tag, Release, and publication. PR #240 push and merge-commit integration are separately owner-authorized.
-- Closure decision: `blocked-pending-exact-head-verification`; implementation P1 findings are resolved and the bounded timestamp-chronology repair is committed, while its fresh exact-head audit remains pending.
+- Closure decision: `blocked-pending-exact-head-verification`; implementation P1 findings are resolved and the bounded internal-documentation repair is committed, while its fresh exact-head audit remains pending.
 
 ## Finding Resolution Matrix
 
@@ -52,6 +52,8 @@
 - Exact-head `0bcb6e25` full suite passed 90 tests with 0 failures and 1 Windows privilege skip in 504.673 seconds; its audit retained one P2 self-referential pending/current-state contradiction.
 - Exact-head `5b65ca6c` full suite passed 90 tests with 0 failures and 1 Windows privilege skip in 503.441 seconds; its audit retained one P2 stale `updated_at` metadata finding.
 - Exact-head `d2a471ec` full suite passed 90 tests with 0 failures and 1 Windows privilege skip in 502.738 seconds, completing at `2026-08-23T21:47:37.8709007+08:00`; its audit retained one P2 because the workflow timestamp preceded that recorded receipt.
+- Exact-head `fb3ea0c6` full suite passed 90 tests with 0 failures and 1 Windows privilege skip in 507.722 seconds, completing at `2026-08-23T21:59:26.6924963+08:00`; its audit retained one P3 v4-only internal naming/docstring mismatch on shared validation paths.
+- After the P3 repair, the first dotted unittest selector failed to load and the corrected sandbox run was blocked by Windows Temp ACL; the host-boundary rerun of GWT-033a and GWT-052 passed 2 tests in 39.584 seconds.
 - `validate-ai-context.py`, `validate-source-governance.py`, `validate-workflow-artifacts.py`, Python syntax compilation, and `git diff --check` passed before closeout and are rerun on final evidence.
 - Retained non-pass evidence includes sandbox Temp ACL blocking, initial raw-snapshot assertion failures before v5 replay-aware corrections, and one wrong unittest selector loader error before its corrected selector passed.
 
@@ -68,4 +70,4 @@
 - Historical accepted implementation commit: `c3ffc2f4d2b576943595f2b0b99692f39d7895e5`; repair commit `5b1060be` resolved the later implementation findings but failed its workflow-truth audit.
 - Workflow/task status: `in_progress` / `post-audit` for lifecycle-evidence reconciliation and exact-head verification; PR #240 remains draft.
 - Remote and release state: Issue #239 remains open and Project/release allocation remains unassigned; no tag, Release, publication, or downstream mutation is authorized.
-- Exact next gate: keep the committed SHA-neutral timestamp-chronology candidate unchanged, obtain an immutable-head full-suite receipt plus fresh independent audit, require hosted checks, capture live merge admission, and only then integrate PR #240 with merge-commit topology.
+- Exact next gate: keep the committed SHA-neutral internal-documentation candidate unchanged, obtain an immutable-head full-suite receipt plus fresh independent audit, require hosted checks, capture live merge admission, and only then integrate PR #240 with merge-commit topology.

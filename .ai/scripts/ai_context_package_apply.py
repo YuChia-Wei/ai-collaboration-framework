@@ -3770,7 +3770,7 @@ def validate_target_validation_receipt_binding(
     allow_unbound: bool = False,
     allow_cleared_multi_hop_pending_receipt: bool = False,
 ) -> dict | None:
-    """Verify the v4 file-to-journal binding, allowing only record-mode recovery."""
+    """Verify the target-validation file-to-journal binding for record recovery."""
     if not is_upgrade_plan(plan) or journal.get("state") == "rejected":
         unexpected = root / TARGET_VALIDATION_RECEIPT_PATH
         if unexpected.exists() or unexpected.is_symlink() or is_reparse_point(unexpected):

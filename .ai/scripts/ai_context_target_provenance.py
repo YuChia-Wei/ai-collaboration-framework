@@ -2417,7 +2417,7 @@ def validate_apply_transaction_journals(
                 "ai-context-package-apply-journal/v4",
                 "ai-context-package-apply-journal/v5",
             }:
-                expected_transition_sequence = expected_v4_transition_sequence(
+                expected_transition_sequence = expected_terminal_transition_sequence(
                     plan, state, len(active_ids)
                 )
                 transition_sequence_valid = (
@@ -2955,10 +2955,10 @@ def active_operation_ids(plan: dict, plan_path: Path, errors: list[str]) -> list
     ]
 
 
-def expected_v4_transition_sequence(
+def expected_terminal_transition_sequence(
     plan: dict, state: object, active_operation_count: int
 ) -> int | None:
-    """Return the only valid semantic sequence for an emitted v4 terminal state."""
+    """Return the only valid semantic sequence for a supported terminal state."""
     if state == "awaiting-target-validation":
         return active_operation_count + 2
     if state == "validated":
@@ -3310,7 +3310,7 @@ def validate_target_validation_receipt(
     pending_receipt_sha256: str,
     errors: list[str],
 ) -> tuple[str, Path] | None:
-    """Validate the post-write target-owned validation record sealed in v4."""
+    """Validate the post-write target-owned record sealed by the transaction."""
     journal_artifact_path(
         journal,
         "target_validation_receipt_path",
