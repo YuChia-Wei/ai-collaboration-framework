@@ -1982,6 +1982,11 @@ class UpgradeRoutePackageProjectionGwtTests(unittest.TestCase):
             target_manifest = asset(
                 "target-manifest", "artifacts/target/manifest.yaml", b"target manifest\n"
             )
+            target_package_identity = {
+                "package_id": "fixture-ai-context-v1.2.0",
+                "release_id": "REL-v1.2.0",
+                "payload_fingerprint": hashlib.sha256(b"fixture target payload").hexdigest(),
+            }
             immediate_manifest = asset(
                 "immediate-manifest",
                 "artifacts/v1.0.0/manifest.yaml",
@@ -2016,7 +2021,7 @@ class UpgradeRoutePackageProjectionGwtTests(unittest.TestCase):
                 "edge-validation-report",
                 "artifacts/edge/validation-report.json",
                 {
-                    "schema_version": "upgrade-edge-validation/v1",
+                    "schema_version": "upgrade-edge-validation/v2",
                     "edge_id": "v100-to-v120",
                     "from_version": "v1.0.0",
                     "to_version": "v1.2.0",
@@ -2029,6 +2034,38 @@ class UpgradeRoutePackageProjectionGwtTests(unittest.TestCase):
                             "state": "passed",
                         }
                     ],
+                    "portable_validation": {
+                        "schema_version": "incoming-package-validation/v1",
+                        "authority": {
+                            "kind": "incoming-candidate",
+                            "manifest": {
+                                "path": "metadata/validation.json",
+                                "sha256": hashlib.sha256(
+                                    b"fixture incoming validation manifest"
+                                ).hexdigest(),
+                            },
+                            "validator": {
+                                "path": ".ai/scripts/validate-ai-context-payload.py",
+                                "sha256": hashlib.sha256(
+                                    b"fixture incoming validator"
+                                ).hexdigest(),
+                                "argv": [
+                                    "python",
+                                    "payload/.ai/scripts/validate-ai-context-payload.py",
+                                    "--package-root",
+                                    ".",
+                                ],
+                            },
+                        },
+                        "package_identity": target_package_identity,
+                        "execution": {
+                            "outcome": "passed",
+                            "exit_code": 0,
+                            "output_sha256": hashlib.sha256(
+                                b"fixture incoming validation output"
+                            ).hexdigest(),
+                        },
+                    },
                     "outcome": "passed",
                     "exit_code": 0,
                     "output_sha256": validation_output["sha256"],
@@ -2091,13 +2128,14 @@ class UpgradeRoutePackageProjectionGwtTests(unittest.TestCase):
                 "output": deprecation_output,
             }
             matrix = {
-                "schema_version": "1.0",
+                "schema_version": "1.1",
                 "matrix_id": "fixture-upgrade-routes",
                 "target": {
                     "version": "v1.2.0",
                     "release_id": "REL-v1.2.0",
                     "commit": "a" * 40,
                     "manifest": target_manifest,
+                    "package_identity": target_package_identity,
                 },
                 "retained_origins": [
                     {
@@ -2133,6 +2171,7 @@ class UpgradeRoutePackageProjectionGwtTests(unittest.TestCase):
                                 "order": 1,
                                 "from_version": "v1.0.0",
                                 "to_version": "v1.2.0",
+                                "package_identity": target_package_identity,
                                 "artifacts": edge_artifacts,
                                 "semantic_cutovers": [
                                     {"cutover_id": "route-evidence", "state": "passed"}

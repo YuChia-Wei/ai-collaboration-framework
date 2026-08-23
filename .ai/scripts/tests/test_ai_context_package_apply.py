@@ -388,7 +388,9 @@ def apply_fixture_plan(
     )
 
 
-def make_schema_23_upgrade_package(fixture: PackageApplyFixture) -> dict:
+def make_schema_23_upgrade_package(
+    fixture: PackageApplyFixture, *, validator_content: bytes | None = None
+) -> dict:
     """Build a small portable v2.3 envelope with an executable incoming validator."""
     package_id = "fixture-ai-context-dotnet-backend-1.0.0"
     version = "1.0.0"
@@ -400,7 +402,8 @@ def make_schema_23_upgrade_package(fixture: PackageApplyFixture) -> dict:
         b"python payload/.ai/scripts/validate-ai-context-payload.py --package-root .\n"
     )
     payload = {
-        validator_path: (ROOT / ".ai/scripts/validate-ai-context-payload.py").read_bytes(),
+        validator_path: validator_content
+        or (ROOT / ".ai/scripts/validate-ai-context-payload.py").read_bytes(),
         ".ai/scripts/ai_context_package_validation.py": (
             ROOT / ".ai/scripts/ai_context_package_validation.py"
         ).read_bytes(),
@@ -4049,6 +4052,41 @@ class AiContextPackageApplyGwtTests(unittest.TestCase):
             )
             self.assertEqual("finalized", finalized_journal["state"])
             self.assertEqual([], TARGET.validate_target(fixture.target))
+        finally:
+            fixture.close()
+
+    def test_gwt_049a_given_self_consistent_envelope_with_failing_incoming_validator_when_planned_then_target_is_unchanged(self) -> None:
+        fixture = PackageApplyFixture()
+        try:
+            fixture.add_target("owner.txt", b"owner state\n")
+            fixture.commit_target()
+            target_before = {
+                path.relative_to(fixture.target).as_posix(): path.read_bytes()
+                for path in fixture.target.rglob("*")
+                if path.is_file() and ".git" not in path.parts
+            }
+            make_schema_23_upgrade_package(
+                fixture,
+                validator_content=(
+                    b"#!/usr/bin/env python3\n"
+                    b"raise SystemExit('fixture incoming validation rejection')\n"
+                ),
+            )
+
+            with self.assertRaisesRegex(
+                APPLY.ApplyError, "incoming package validator failed"
+            ):
+                fixture.plan("0.9.0")
+
+            self.assertEqual(
+                target_before,
+                {
+                    path.relative_to(fixture.target).as_posix(): path.read_bytes()
+                    for path in fixture.target.rglob("*")
+                    if path.is_file() and ".git" not in path.parts
+                },
+            )
+            self.assertFalse(APPLY.git_admin_transaction_base(fixture.target).exists())
         finally:
             fixture.close()
 

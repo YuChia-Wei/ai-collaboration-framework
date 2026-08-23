@@ -1,0 +1,63 @@
+{
+  "template_id": "ai-context-governance-remediation-task",
+  "template_version": "1.1.0",
+  "template_created_at": "2026-07-10T18:22:49+08:00",
+  "template_updated_at": "2026-07-27T09:52:09+08:00",
+  "task_id": "UPG-005-S3",
+  "workflow_id": "2026-08-23-retained-origin-route-evidence",
+  "owner_skill": "ai-context-governance",
+  "status": "completed",
+  "created_at": "2026-08-23T16:21:28+08:00",
+  "updated_at": "2026-08-23T17:33:48+08:00",
+  "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
+  "model": "gpt-5.6-sol",
+  "reasoning_effort": "high",
+  "finding_ids": [
+    "ISSUE-237#retained-route-regression",
+    "ISSUE-237#historical-recovery"
+  ],
+  "scope": {
+    "target": "Exact-head verification, remediation evidence, and immutable v0.14.0 recovery recommendation",
+    "files": [
+      ".dev/workflows/2026-08-23-retained-origin-route-evidence/reports/remediation-report.md"
+    ],
+    "constraints": [
+      "Review is read-only and bound to an immutable local commit.",
+      "Release recommendation does not allocate v0.14.1 or v0.15.0.",
+      "No push, PR, merge, Issue/Project mutation, tag, Release, or publication."
+    ],
+    "non_goals": [
+      "Executing historical release recovery",
+      "Choosing a release version"
+    ]
+  },
+  "execution": {
+    "steps": [
+      "Run final focused validation and workflow commit checks.",
+      "Obtain read-only fixed-head review evidence.",
+      "Reconcile findings in the remediation report.",
+      "Record release batching recommendation and any owner decision."
+    ],
+    "validation": [
+      "focused validation passed before immutable commit",
+      "workflow artifact validation passed before final report/task refresh"
+    ],
+    "last_completed_step": "Third exact-head review accepted bf9dbd11021846a88d421a96af89fa19ddf2b7d7 with no P0-P3 findings; owner selected historical recovery option A.",
+    "next_action": "Completed. Leave historical v0.14.0 source records unchanged and defer the first passing schema-1.1/v2 inventory to a separately selected future release."
+  },
+  "results": {
+    "summary": "Implementation, focused validation, and exact-head review are complete. Owner selected option A, so historical v0.14.0 source records remain unchanged and legacy routes remain reconciliation-required.",
+    "files_changed": [
+      ".dev/workflows/2026-08-23-retained-origin-route-evidence/reports/remediation-report.md"
+    ],
+    "tests_run": [
+      "exact-head 6c3e1e2c audit: failed, P0=0/P1=1/P2=1/P3=0",
+      "exact-head 04fe7875 audit: failed, P0=0/P1=1/P2=0/P3=0",
+      "exact-head bf9dbd11 audit: accepted, P0=0/P1=0/P2=0/P3=0",
+      "owner historical recovery decision: option A"
+    ],
+    "finding_status": "resolved-with-owner-deferred-historical-record",
+    "residual_risk": "Historical v0.14.0 legacy routes remain reconciliation-required by explicit owner choice; the first passing schema-1.1/v2 inventory belongs to a future separately allocated release.",
+    "follow_up_needed": false
+  }
+}

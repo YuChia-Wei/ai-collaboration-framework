@@ -1,0 +1,84 @@
+{
+  "template_id": "ai-context-governance-remediation-task",
+  "template_version": "1.1.0",
+  "template_created_at": "2026-07-10T18:22:49+08:00",
+  "template_updated_at": "2026-07-27T09:52:09+08:00",
+  "task_id": "UPG-005-S2",
+  "workflow_id": "2026-08-23-retained-origin-route-evidence",
+  "owner_skill": "ai-context-governance",
+  "status": "completed",
+  "created_at": "2026-08-23T16:21:28+08:00",
+  "updated_at": "2026-08-23T17:20:27+08:00",
+  "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
+  "model": "gpt-5.6-sol",
+  "reasoning_effort": "high",
+  "finding_ids": [
+    "ISSUE-237#edge-proof-false-positive",
+    "ISSUE-237#payload-identity-conflict",
+    "ISSUE-237#retained-route-regression"
+  ],
+  "scope": {
+    "target": "Portable package validation authority, edge result schema, artifact identity, and retained-origin regression fixtures",
+    "files": [
+      ".dev/releases/v0.14.0/route-assets/validate-direct-edge.py",
+      ".ai/scripts/ai_context_upgrade_routes.py",
+      ".ai/assets/skills/ai-context-upgrader/references/upgrade-support-policy.md",
+      ".ai/assets/skills/ai-context-upgrader/templates/upgrade-route-matrix.schema.yaml",
+      ".ai/assets/skills/ai-context-upgrader/templates/upgrade-route-matrix.template.yaml",
+      ".ai/scripts/tests/test_ai_context_upgrade_routes.py",
+      ".ai/scripts/tests/test_ai_context_multi_hop_upgrade.py",
+      ".ai/scripts/tests/test_ai_context_packaging.py",
+      ".ai/scripts/tests/test_ai_context_package_apply.py"
+    ],
+    "constraints": [
+      "Fail closed without weakening package-apply pre-mutation validation.",
+      "Protect v0.6.0, v0.9.0, and v0.13.0 direct routes.",
+      "Do not modify immutable published v0.14.0 asset bytes."
+    ],
+    "non_goals": [
+      "Retained-origin expansion or deprecation",
+      "Release allocation"
+    ]
+  },
+  "execution": {
+    "steps": [
+      "Design and implement the portable validation authority record.",
+      "Close conflicting payload identity ambiguity.",
+      "Add mismatch, identity conflict, and all-origin route regressions.",
+      "Run focused route, packaging, and upgrade validation."
+    ],
+    "validation": [
+      "route regression suite 30/30",
+      "focused packaging projection 1/1",
+      "focused package-apply 2/2",
+      "release-state regression suite 36/36",
+      "real production-path multi-hop GWT-010 1/1"
+    ],
+    "last_completed_step": "Implemented portable incoming validation receipts, per-edge package identity including distinct intermediate hops, exact integer exit handling, legacy fail-closed routing, and all requested regressions.",
+    "next_action": "Completed; continue with UPG-005-S3 fixed-head review and historical recommendation."
+  },
+  "results": {
+    "summary": "Self-inconsistent archives cannot pass edge proof; conflicting payload identity fails closed; all three retained origins and package-apply pre-mutation behavior are covered.",
+    "files_changed": [
+      ".dev/releases/v0.14.0/route-assets/validate-direct-edge.py",
+      ".ai/scripts/ai_context_upgrade_routes.py",
+      ".ai/assets/skills/ai-context-upgrader/references/upgrade-support-policy.md",
+      ".ai/assets/skills/ai-context-upgrader/templates/upgrade-route-matrix.schema.yaml",
+      ".ai/assets/skills/ai-context-upgrader/templates/upgrade-route-matrix.template.yaml",
+      ".ai/scripts/tests/test_ai_context_upgrade_routes.py",
+      ".ai/scripts/tests/test_ai_context_multi_hop_upgrade.py",
+      ".ai/scripts/tests/test_ai_context_packaging.py",
+      ".ai/scripts/tests/test_ai_context_package_apply.py"
+    ],
+    "tests_run": [
+      "python -B .ai/scripts/tests/test_ai_context_upgrade_routes.py -v: 30 passed",
+      "focused packaging GWT-021: 1 passed",
+      "focused package-apply GWT-049 and GWT-049a: 2 passed",
+      "python -B .ai/scripts/tests/test_ai_context_release_state.py -v: 36 passed",
+      "focused real production-path multi-hop GWT-010: 1 passed"
+    ],
+    "finding_status": "remediated-locally",
+    "residual_risk": "Legacy v0.14.0 records remain reconciliation-required and require an owner recovery choice.",
+    "follow_up_needed": false
+  }
+}

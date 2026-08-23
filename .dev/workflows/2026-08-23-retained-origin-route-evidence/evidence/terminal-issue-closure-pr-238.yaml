@@ -1,0 +1,93 @@
+schema_version: "1.0"
+contract_id: github-terminal-issue-closure
+repository: YuChia-Wei/ai-collaboration-framework
+validation_stage: declaration
+pull_request:
+  number: 238
+  head_sha: null
+  body: |-
+    ## Summary
+
+    - make retained-origin route evidence prove the incoming package validation chain instead of accepting a self-consistent archive
+    - bind payload identity independently for each upgrade edge and reject conflicting payload identity
+    - protect the v0.6.0, v0.9.0, and v0.13.0 routes with focused and real multi-hop regression coverage
+
+    ## Changes
+
+    - harden incoming route validation and retained-origin edge proof
+    - close conflicting payload-identity acceptance paths
+    - add focused route, packaging, package-apply, release-state, and production multi-hop evidence
+    - retain the completed AI-context governance workflow and independent review trail
+
+    ## Related Issues
+
+    - Issue #: 237
+    - Delivery disposition: `terminal-close`
+    - Reference: Closes #237
+    - `closure_deferred_reason` (required for deferred): not applicable
+    - Next terminal gate or owner (required for deferred): not applicable
+    - Owner authorization or approved no-Issue exception: the repository owner explicitly authorized creating this PR, integrating it with `--no-ff`, and closing Issue #237 after confirming the Issue scope is complete on 2026-08-23.
+
+    ## Delivery And Integration
+
+    - Delivery grouping: single work item
+    - Execution record: workflow
+    - Selected topology: merge commit
+    - Topology reason: the five meaningful implementation commits, retained owner decision, workflow evidence, and independent audit form one durable review and rollback boundary; the owner explicitly requested `--no-ff`.
+
+    ## Validation
+
+    - retained-origin route suite: 30/30 passed
+    - packaging regression: 1/1 passed
+    - package-apply regression: 2/2 passed
+    - release-state regression: 36/36 passed
+    - unmocked production multi-hop admission: 1/1 passed
+    - commit policy: 5/5 implementation commits passed
+    - workflow artifact validation: 91 workflows, 111 indexed directories, and 55 backlog items passed
+    - independent implementation-head review: P0=0, P1=0, P2=0, P3=0 at `fb69527b7ccf42967c02e9990aff5d0e7074c5b3`
+
+    ## Boundaries
+
+    - no v0.14.0 tag, Release identity, or public asset bytes are modified
+    - no v0.14.1 or v0.15.0 allocation is selected here
+    - no downstream target, release, publication, or unrelated Project mutation
+
+    ## Checklist
+
+    - [x] Selected repository-native focused commands pass
+    - [x] Target-owned .NET commands are not applicable to this Python/governance change
+    - [x] Required workflow and evidence documentation is updated
+    - [x] No secrets committed
+    - [x] Every named Issue has exactly one delivery disposition
+    - [ ] The exact final PR head passes all required hosted checks
+    - [ ] The exact final PR head has the required single-maintainer audit receipt
+  integration:
+    status: pending
+    topology: null
+    admitted_head_sha: null
+    integration_commit_sha: null
+    provider_read_back: false
+  review:
+    status: pending
+  required_check_contexts: []
+  hosted_checks: []
+issues:
+  - number: 237
+    mode: terminal-close
+    work_authorization:
+      online_issue_bound: true
+      explicit_owner_approval: true
+    final_accepted_delivery: true
+    workflow:
+      scope_complete: true
+      tasks_complete: true
+      applicable_verification_complete: true
+    closing_keyword: Closes
+    closure_deferred_reason: null
+    next_terminal_gate_or_owner: null
+    read_back:
+      performed: false
+      integration_commit_sha: null
+      issue_state: null
+      issue_state_reason: null
+      project_status: null
