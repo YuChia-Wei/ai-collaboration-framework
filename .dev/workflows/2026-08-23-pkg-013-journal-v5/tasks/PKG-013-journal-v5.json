@@ -1,0 +1,148 @@
+{
+  "template_id": "ai-context-governance-remediation-task",
+  "template_version": "1.1.0",
+  "template_created_at": "2026-07-10T18:22:49+08:00",
+  "template_updated_at": "2026-07-27T09:52:09+08:00",
+  "task_id": "PKG-013-journal-v5",
+  "workflow_id": "2026-08-23-pkg-013-journal-v5",
+  "owner_skill": "ai-context-governance",
+  "orchestrator_skill": "software-development-orchestrator",
+  "status": "in_progress",
+  "created_at": "2026-08-23T18:53:54+08:00",
+  "updated_at": "2026-08-23T22:22:27+08:00",
+  "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
+  "model": "gpt-5",
+  "reasoning_effort": "high",
+  "finding_ids": ["Issue-239", "PKG-013"],
+  "authorization": {
+    "source": "Issue #239 and source-thread owner authorization, extended on 2026-08-23 to PR #240 push and merge-commit integration",
+    "allowed": ["workflow-artifacts", "implementation", "focused-validation", "independent-read-only-review", "local-commits", "push", "pull-request", "merge-commit-integration"],
+    "prohibited": ["issue-mutation", "project-mutation", "release-allocation", "tag", "release", "publication", "downstream-mutation"]
+  },
+  "scope": {
+    "target": "Journal v5 for the Python AI context package-apply lifecycle",
+    "files": [
+      ".ai/scripts/ai_context_package_apply.py",
+      ".ai/scripts/ai_context_target_provenance.py",
+      ".ai/scripts/plan-ai-context-package-apply.py",
+      ".ai/scripts/tests/test_ai_context_package_apply.py",
+      ".ai/assets/skills/ai-context-upgrader/"
+    ],
+    "constraints": [
+      "New transactions write and recover v5 only.",
+      "Unfinished v4 blocks new mutation; terminal v4 does not.",
+      "Every completed operation has a durable boundary.",
+      "Acceptance uses deterministic write-call and byte counts, not wall-clock timing.",
+      "Progress is opt-in stderr only."
+    ],
+    "non_goals": [
+      "v4 recovery, rollback, migration, conversion, or dual-version compatibility",
+      "Issues #149 and #168",
+      "CLI/runtime rewrite",
+      "downstream migration",
+      "release-note, tag, release, or publication work"
+    ]
+  },
+  "execution": {
+    "capability_slot": "implementation",
+    "implementation_contract": {
+      "intent": "bug-fix",
+      "execution_mode": "generic",
+      "overlays": [],
+      "authorization_source": ["Issue-239", "source-thread-owner-delegation"],
+      "normative_truth": ["Issue-239", "AGENTS.md", ".dev/workflows/2026-08-23-pkg-013-journal-v5/workflow-plan.md"],
+      "finding_evidence": [],
+      "subject_revision": "92270db07404602210d1c24594a669709dbd5b1f",
+      "acceptance_criteria": [
+        "v5 journal write amplification is linear or bounded",
+        "v5 crash recovery preserves exactly-once semantics",
+        "v4 safety classification never performs v4 recovery",
+        "optional progress never writes to stdout"
+      ]
+    },
+    "steps": [
+      "Resolve framework-source effective-rule evidence for each applicable routed action.",
+      "Design GWT scenarios from Issue #239.",
+      "Implement journal v5 append-only durable progress and minimal v4 safety classification.",
+      "Implement deterministic journal I/O instrumentation and stderr-only progress.",
+      "Update owning validator, templates, tests, and documentation.",
+      "Run focused and proportionate broader validation.",
+      "Commit and obtain exact-head independent read-only review."
+    ],
+    "validation": [
+      "focused package-apply journal v5 GWT tests",
+      "package-apply crash-boundary and platform-policy tests",
+      "target provenance tests",
+      "repository workflow and AI-context validators"
+    ],
+    "role_execution_records": [],
+    "last_completed_step": "Evidence head 79b9c560 passed a schema-valid 90-test full suite but failed P3=1 because one historical transaction classifier shared by v4/v5 retained v4-only naming and documentation.",
+    "next_action": "Keep this committed SHA-neutral version-neutral classifier candidate unchanged, rerun immutable-head full validation and independent review, require five hosted checks, capture live admission, and merge PR #240 with merge-commit topology only if every gate passes."
+  },
+  "results": {
+    "summary": "Journal v5 snapshots durable lifecycle state while newline-framed, fsynced, digest-chained progress records retain one durable boundary per completed apply or rollback operation with linear logical journal writes.",
+    "files_changed": [
+      ".ai/scripts/ai_context_package_apply.py",
+      ".ai/scripts/ai_context_target_provenance.py",
+      ".ai/scripts/plan-ai-context-package-apply.py",
+      ".ai/scripts/tests/test_ai_context_package_apply.py",
+      ".ai/assets/skills/ai-context-upgrader/skill.yaml",
+      ".ai/assets/skills/ai-context-upgrader/references/multi-hop-upgrade-transaction-contract.md",
+      ".ai/assets/skills/ai-context-upgrader/references/provenance-contract.md",
+      ".ai/assets/skills/ai-context-upgrader/templates/multi-hop-upgrade-transaction.schema.yaml",
+      ".dev/guides/implementation-guides/quick-setup.md"
+    ],
+    "tests_run": [
+      "focused GWT-061 through GWT-064: 4 passed after fixture correction",
+      "focused GWT-029, GWT-031, GWT-032, GWT-033a, GWT-033, and GWT-040: 6 passed",
+      "python .ai/scripts/validate-ai-context.py: passed",
+      "python .ai/scripts/validate-source-governance.py: passed",
+      "python .ai/scripts/validate-workflow-artifacts.py: passed",
+      "python -m py_compile for changed Python modules: passed",
+      "git diff --check: passed",
+      "initial sandbox execution: blocked-by-environment by Windows Temp ACL and rerun on host",
+      "pre-correction test_gwt_03 selector: 4 assertion failures from raw snapshot assumptions; affected tests now load effective v5 replay state and pass",
+      "fixed-head c196c558 full suite: 82 passed, 0 failed, 1 skipped in 474.157 seconds; schema 1.1 completion validated",
+      "fixed-head c196c558 independent audit: failed with P1 v4 recovery mutation guard gap and P1 target progress semantic validation gap",
+      "post-audit GWT-065 and GWT-066: 2 passed",
+      "post-audit GWT-062 and GWT-063: 2 passed",
+      "post-audit GWT-049, GWT-052, GWT-053, and GWT-056: 4 passed",
+      "fixed-head ed48ec99 full suite: 84 passed, 0 failed, 1 skipped in 481.154 seconds; schema 1.1 completion validated",
+      "fixed-head ed48ec99 independent audit: failed with P1 missing-log semantic bypass and P2 incomplete journal-state validation parity",
+      "post-second-audit GWT-067 and GWT-068: 2 passed",
+      "post-second-audit GWT-065 and GWT-066: 2 passed",
+      "post-second-audit GWT-053 and GWT-056: 2 passed",
+      "fixed-head 34753883 full suite: 86 passed, 0 failed, 1 skipped in 496.087 seconds; schema 1.1 completion validated",
+      "fixed-head 34753883 independent audit: failed with P1 broken progress-log symlink/reparse boundary",
+      "post-third-audit GWT-069: 1 passed",
+      "post-third-audit GWT-062, GWT-067, and GWT-068: 3 passed",
+      "fixed-head 679bc0be full suite: 87 passed, 0 failed, 1 skipped in 503.146 seconds; schema 1.1 completion validated",
+      "fixed-head 679bc0be independent audit: failed with P1 transaction-root ancestor symlink/reparse boundary",
+      "post-fourth-audit GWT-070: 1 passed",
+      "post-fourth-audit GWT-062, GWT-063, and GWT-069: 3 passed",
+      "post-fourth-audit wrong safe-add selector: 1 unittest loader error; corrected GWT-002 selector passed",
+      "fixed-head c3ffc2f4 full suite: 88 passed, 0 failed, 1 skipped in 533.226 seconds; schema 1.1 completion validated",
+      "fixed-head c3ffc2f4 independent audit: accepted with P1=0, P2=0, P3=0",
+      "fixed-head 6502c296 independent PR-head audit: failed with P1 transaction-lock leaf redirection and P1 unclassified legacy-journal leaf bypass",
+      "post-PR-head-audit GWT-062, GWT-063, GWT-065, and GWT-069 through GWT-072: 7 passed on the normal Windows host ACL boundary",
+      "fixed-head 5b1060be full suite: 90 passed, 0 failed, 1 skipped in 516.047 seconds; schema 1.1 completion validated",
+      "fixed-head 5b1060be independent audit: both prior P1 findings resolved; failed with P2 stale workflow lifecycle evidence",
+      "fixed-head 0bcb6e25 full suite: 90 passed, 0 failed, 1 skipped in 504.673 seconds; schema 1.1 completion validated",
+      "fixed-head 0bcb6e25 independent audit: implementation remained resolved; failed with P2 self-referential pending/current-state workflow evidence",
+      "fixed-head 5b65ca6c full suite: 90 passed, 0 failed, 1 skipped in 503.441 seconds; schema 1.1 completion validated",
+      "fixed-head 5b65ca6c independent audit: implementation remained resolved; failed with P2 stale updated_at metadata on material lifecycle updates",
+      "fixed-head d2a471ec full suite: 90 passed, 0 failed, 1 skipped in 502.738 seconds; schema 1.1 completion validated at 2026-08-23T21:47:37.8709007+08:00",
+      "fixed-head d2a471ec independent audit: implementation remained resolved; failed with P2 because updated_at preceded the recorded full-suite completion receipt",
+      "fixed-head fb3ea0c6 full suite: 90 passed, 0 failed, 1 skipped in 507.722 seconds; schema 1.1 completion validated at 2026-08-23T21:59:26.6924963+08:00",
+      "fixed-head fb3ea0c6 independent audit: runtime behavior remained resolved; failed with P3 v4-only internal naming/docstrings on shared v4/v5 validation paths",
+      "P3 repair wrong dotted unittest selector: loader error; corrected to the script-owned class selector",
+      "P3 repair focused test sandbox attempt: blocked-by-environment by Windows Temp ACL",
+      "P3 repair focused GWT-033a and GWT-052 host rerun: 2 passed in 39.584 seconds",
+      "fixed-head 79b9c560 full suite: 90 passed, 0 failed, 1 skipped in 556.907 seconds; schema 1.1 completion validated at 2026-08-23T22:21:55.4670373+08:00",
+      "fixed-head 79b9c560 independent audit: runtime behavior remained resolved; failed with P3 v4-only historical classifier naming/docstring on a shared v4/v5 path"
+    ],
+    "finding_status": "verification-pending",
+    "residual_risk": "Native Windows junction coverage falls back to deterministic reparse classification when link creation is unavailable, and adversarial concurrent path replacement between validation and open is not covered by deterministic fixtures.",
+    "follow_up_needed": true
+  }
+}

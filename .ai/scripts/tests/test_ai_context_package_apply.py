@@ -11,6 +11,7 @@ import subprocess
 import sys
 import tempfile
 import unittest
+from contextlib import nullcontext
 from pathlib import Path
 from unittest import mock
 
@@ -2617,11 +2618,8 @@ class AiContextPackageApplyGwtTests(unittest.TestCase):
                         0, repeated.returncode, repeated.stdout + repeated.stderr
                     )
                     self.assertFalse((fixture.target / "AGENTS.md").exists())
-                    journal = yaml.safe_load(
-                        (
-                            APPLY.transaction_root(fixture.target, transaction_id)
-                            / "journal.yaml"
-                        ).read_text(encoding="utf-8")
+                    _root, _plan, journal = APPLY.load_transaction(
+                        fixture.target, transaction_id
                     )
                     self.assertEqual("rolled-back", journal["state"])
                     self.assertEqual(
@@ -2764,11 +2762,8 @@ class AiContextPackageApplyGwtTests(unittest.TestCase):
                                 fixture.package if recovery_action == "resume" else None,
                             )
 
-                    journal = yaml.safe_load(
-                        (
-                            APPLY.transaction_root(fixture.target, transaction_id)
-                            / "journal.yaml"
-                        ).read_text(encoding="utf-8")
+                    _root, _plan, journal = APPLY.load_transaction(
+                        fixture.target, transaction_id
                     )
                     self.assertEqual("applying", journal["state"])
                     self.assertIsNone(journal["final_receipt_sha256"])
@@ -2802,11 +2797,8 @@ class AiContextPackageApplyGwtTests(unittest.TestCase):
                     with self.assertRaises(APPLY.InjectedInterruption):
                         APPLY.apply_plan(plan, boundary_hook=crash)
                     transaction_id = plan["plan_sha256"]
-                    journal = yaml.safe_load(
-                        (
-                            APPLY.transaction_root(fixture.target, transaction_id)
-                            / "journal.yaml"
-                        ).read_text(encoding="utf-8")
+                    _root, _plan, journal = APPLY.load_transaction(
+                        fixture.target, transaction_id
                     )
                     self.assertEqual(1, journal["next_apply_index"])
                     self.assertEqual(["001-add"], journal["completed_operation_ids"])
@@ -2882,9 +2874,8 @@ class AiContextPackageApplyGwtTests(unittest.TestCase):
                             "rollback",
                             boundary_hook=crash_rollback,
                         )
-                    root = APPLY.transaction_root(fixture.target, transaction_id)
-                    interrupted = yaml.safe_load(
-                        (root / "journal.yaml").read_text(encoding="utf-8")
+                    _root, _plan, interrupted = APPLY.load_transaction(
+                        fixture.target, transaction_id
                     )
                     self.assertEqual("rolling-back", interrupted["state"])
                     self.assertEqual(
@@ -2920,7 +2911,7 @@ class AiContextPackageApplyGwtTests(unittest.TestCase):
                     self.assertFalse((fixture.target / ".ai/one.md").exists())
                     self.assertFalse((fixture.target / ".ai/two.md").exists())
                     finalized = yaml.safe_load(
-                        (root / "journal.yaml").read_text(encoding="utf-8")
+                        (_root / "journal.yaml").read_text(encoding="utf-8")
                     )
                     self.assertEqual("rolled-back", finalized["state"])
                     self.assertEqual(
@@ -2995,7 +2986,7 @@ class AiContextPackageApplyGwtTests(unittest.TestCase):
                 finally:
                     fixture.close()
 
-    def test_gwt_033a_given_exact_v4_finalized_or_validated_sequences_when_recovered_and_target_validates_then_both_pass(self) -> None:
+    def test_gwt_033a_given_exact_v5_finalized_or_validated_sequences_when_recovered_and_target_validates_then_both_pass(self) -> None:
         for scenario in ("clean-finalized", "upgrade-validated"):
             with self.subTest(scenario=scenario):
                 fixture = PackageApplyFixture()
@@ -4519,6 +4510,678 @@ class AiContextPackageApplyGwtTests(unittest.TestCase):
             )
         finally:
             fixture.close()
+
+    def test_gwt_061_given_n_v5_operations_when_applied_then_journal_write_work_is_linear_and_each_prefix_is_durable(self) -> None:
+        def execute(count: int) -> tuple[APPLY.JournalWriteStats, list[int]]:
+            fixture = PackageApplyFixture()
+            try:
+                incoming = {
+                    f".ai/generated/file-{index:03d}.md":
+                    (f"payload-{index}\n".encode("utf-8"), "framework-managed", "0644")
+                    for index in range(count)
+                }
+                operations = [
+                    operation(
+                        f"{index:03d}-add",
+                        "add",
+                        f".ai/generated/file-{index:03d}.md",
+                    )
+                    for index in range(count)
+                ]
+                fixture.make_package(incoming, operations)
+                plan = fixture.plan()
+                durable_prefixes: list[int] = []
+
+                def observe_boundary(event: str, details: dict) -> None:
+                    if event != "after_progress_journal":
+                        return
+                    _root, _plan, recovered = APPLY.load_transaction(
+                        fixture.target, plan["plan_sha256"]
+                    )
+                    durable_prefixes.append(recovered["next_apply_index"])
+                    self.assertEqual(
+                        details["next_apply_index"], recovered["next_apply_index"]
+                    )
+
+                stats = APPLY.JournalWriteStats()
+
+                # When N operations are applied through journal v5.
+                RAW_APPLY_PLAN(
+                    plan,
+                    boundary_hook=observe_boundary,
+                    journal_io_hook=stats.observe,
+                )
+
+                # Then every prefix is durable and logical journal writes are N + O(1).
+                self.assertEqual(list(range(1, count + 1)), durable_prefixes)
+                self.assertEqual(count, stats.append_write_calls)
+                self.assertEqual(3, stats.snapshot_write_calls)
+                self.assertEqual(count + 3, stats.write_calls)
+                return stats, durable_prefixes
+            finally:
+                fixture.close()
+
+        small, _ = execute(4)
+        large, _ = execute(8)
+        self.assertLess(large.bytes_written, small.bytes_written * 3)
+
+    def test_gwt_062_given_crash_after_v5_progress_append_when_resumed_then_the_operation_prefix_replays_exactly_once(self) -> None:
+        fixture = PackageApplyFixture()
+        try:
+            incoming = {
+                ".ai/one.md": (b"one\n", "framework-managed", "0644"),
+                ".ai/two.md": (b"two\n", "framework-managed", "0644"),
+            }
+            fixture.make_package(
+                incoming,
+                [
+                    operation("001-add", "add", ".ai/one.md"),
+                    operation("002-add", "add", ".ai/two.md"),
+                ],
+            )
+            plan = fixture.plan()
+
+            def interrupt_after_first_durable_prefix(event: str, details: dict) -> None:
+                if event == "after_progress_journal" and details["next_apply_index"] == 1:
+                    raise APPLY.InjectedInterruption("fixture crash after durable append")
+
+            # When the process dies after the first append is fsynced but before a snapshot.
+            with self.assertRaises(APPLY.InjectedInterruption):
+                RAW_APPLY_PLAN(plan, boundary_hook=interrupt_after_first_durable_prefix)
+            transaction = APPLY.transaction_root(fixture.target, plan["plan_sha256"])
+            snapshot = yaml.safe_load(
+                (transaction / "journal.yaml").read_text(encoding="utf-8")
+            )
+            self.assertEqual(0, snapshot["next_apply_index"])
+            self.assertEqual(1, len((transaction / APPLY.JOURNAL_PROGRESS_PATH).read_text(encoding="utf-8").splitlines()))
+            with (transaction / APPLY.JOURNAL_PROGRESS_PATH).open("ab") as progress:
+                progress.write(b'{"schema_version":"torn')
+
+            receipt = APPLY.recover_transaction(
+                fixture.target, plan["plan_sha256"], "resume", fixture.package
+            )
+
+            # Then replay advances the durable prefix and the second operation runs once.
+            self.assertEqual(["001-add", "002-add"], receipt["applied_operation_ids"])
+            _root, _plan, journal = APPLY.load_transaction(
+                fixture.target, plan["plan_sha256"]
+            )
+            self.assertEqual("finalized", journal["state"])
+            self.assertEqual(["001-add", "002-add"], journal["completed_operation_ids"])
+            self.assertEqual(
+                2,
+                len(
+                    (transaction / APPLY.JOURNAL_PROGRESS_PATH)
+                    .read_text(encoding="utf-8")
+                    .splitlines()
+                ),
+            )
+            self.assertEqual(b"one\n", (fixture.target / ".ai/one.md").read_bytes())
+            self.assertEqual(b"two\n", (fixture.target / ".ai/two.md").read_bytes())
+        finally:
+            fixture.close()
+
+    def test_gwt_063_given_unfinished_or_terminal_v4_when_new_v5_apply_starts_then_only_unfinished_evidence_blocks(self) -> None:
+        fixture = PackageApplyFixture()
+        try:
+            fixture.make_package(
+                {".ai/new.md": (b"new\n", "framework-managed", "0644")},
+                [operation("001-add", "add", ".ai/new.md")],
+            )
+            plan = fixture.plan()
+            legacy_id = "b" * 64
+            legacy_root = APPLY.transaction_root(fixture.target, legacy_id)
+            legacy_root.mkdir(parents=True)
+            legacy_journal_path = legacy_root / "journal.yaml"
+            legacy = {
+                "schema_version": APPLY.LEGACY_JOURNAL_SCHEMA_VERSION,
+                "transaction_id": legacy_id,
+                "plan_sha256": legacy_id,
+                "state": "applying",
+            }
+            legacy_journal_path.write_text(
+                yaml.safe_dump(legacy, sort_keys=False), encoding="utf-8", newline="\n"
+            )
+
+            # When an unfinished v4 transaction exists, new mutation is rejected safely.
+            with self.assertRaisesRegex(
+                APPLY.ApplyError,
+                "unsupported-transaction-journal-version.*prior tooling.*owner-directed manual recovery",
+            ):
+                RAW_APPLY_PLAN(plan)
+            self.assertFalse((fixture.target / ".ai/new.md").exists())
+            self.assertFalse(APPLY.transaction_root(fixture.target, plan["plan_sha256"]).exists())
+
+            # When the same v4 record is terminal archival evidence, it is left unchanged.
+            legacy["state"] = "finalized"
+            legacy_journal_path.write_text(
+                yaml.safe_dump(legacy, sort_keys=False), encoding="utf-8", newline="\n"
+            )
+            archival_bytes = legacy_journal_path.read_bytes()
+            receipt = RAW_APPLY_PLAN(plan)
+
+            # Then a new v5 transaction succeeds without recovering or converting v4.
+            self.assertEqual(["001-add"], receipt["applied_operation_ids"])
+            self.assertEqual(archival_bytes, legacy_journal_path.read_bytes())
+            self.assertEqual(
+                APPLY.JOURNAL_SCHEMA_VERSION,
+                yaml.safe_load(
+                    (
+                        APPLY.transaction_root(fixture.target, plan["plan_sha256"])
+                        / "journal.yaml"
+                    ).read_text(encoding="utf-8")
+                )["schema_version"],
+            )
+            v5_root = APPLY.transaction_root(fixture.target, plan["plan_sha256"])
+            v5_journal_path = v5_root / "journal.yaml"
+            unsupported = yaml.safe_load(v5_journal_path.read_text(encoding="utf-8"))
+            unsupported["schema_version"] = APPLY.LEGACY_JOURNAL_SCHEMA_VERSION
+            v5_journal_path.write_text(
+                yaml.safe_dump(unsupported, sort_keys=False),
+                encoding="utf-8",
+                newline="\n",
+            )
+            with self.assertRaisesRegex(
+                APPLY.ApplyError,
+                "unsupported-transaction-journal-version.*journal v4 recovery is not supported",
+            ):
+                APPLY.recover_transaction(
+                    fixture.target,
+                    plan["plan_sha256"],
+                    "resume",
+                    fixture.package,
+                )
+        finally:
+            fixture.close()
+
+    def test_gwt_064_given_progress_opt_in_when_cli_applies_then_only_stderr_receives_progress(self) -> None:
+        fixture = PackageApplyFixture()
+        try:
+            fixture.make_package(
+                {".ai/progress.md": (b"progress\n", "framework-managed", "0644")},
+                [operation("001-add", "add", ".ai/progress.md")],
+            )
+
+            # When the CLI applies with explicit progress reporting.
+            result = subprocess.run(
+                [
+                    sys.executable,
+                    str(ROOT / ".ai/scripts/plan-ai-context-package-apply.py"),
+                    "--package-root",
+                    str(fixture.package),
+                    "--target-root",
+                    str(fixture.target),
+                    "--apply",
+                    "--progress",
+                ],
+                capture_output=True,
+                text=True,
+            )
+
+            # Then stdout keeps its prior contract and progress appears only on stderr.
+            self.assertEqual(0, result.returncode, result.stderr)
+            self.assertIn("apply_receipt:", result.stdout)
+            self.assertNotIn("AI context package apply progress:", result.stdout)
+            self.assertIn("AI context package apply progress:", result.stderr)
+            self.assertIn("apply operation durably completed", result.stderr)
+        finally:
+            fixture.close()
+
+    def test_gwt_065_given_unfinished_v4_when_v5_recovery_would_mutate_then_resume_and_rollback_are_blocked(self) -> None:
+        fixture = PackageApplyFixture()
+        try:
+            fixture.make_package(
+                {
+                    ".ai/one.md": (b"one\n", "framework-managed", "0644"),
+                    ".ai/two.md": (b"two\n", "framework-managed", "0644"),
+                },
+                [
+                    operation("001-add", "add", ".ai/one.md"),
+                    operation("002-add", "add", ".ai/two.md"),
+                ],
+            )
+            plan = fixture.plan()
+
+            def interrupt_after_first_durable_prefix(event: str, details: dict) -> None:
+                if event == "after_progress_journal" and details["next_apply_index"] == 1:
+                    raise APPLY.InjectedInterruption("fixture crash after durable append")
+
+            with self.assertRaises(APPLY.InjectedInterruption):
+                RAW_APPLY_PLAN(plan, boundary_hook=interrupt_after_first_durable_prefix)
+            legacy_id = "c" * 64
+            legacy_root = APPLY.transaction_root(fixture.target, legacy_id)
+            legacy_root.mkdir(parents=True)
+            (legacy_root / "journal.yaml").write_text(
+                yaml.safe_dump(
+                    {
+                        "schema_version": APPLY.LEGACY_JOURNAL_SCHEMA_VERSION,
+                        "transaction_id": legacy_id,
+                        "plan_sha256": legacy_id,
+                        "state": "applying",
+                    },
+                    sort_keys=False,
+                ),
+                encoding="utf-8",
+                newline="\n",
+            )
+
+            for action, package_root in (("resume", fixture.package), ("rollback", None)):
+                with self.assertRaisesRegex(
+                    APPLY.ApplyError,
+                    "unsupported-transaction-journal-version.*prior tooling.*owner-directed manual recovery",
+                ):
+                    APPLY.recover_transaction(
+                        fixture.target,
+                        plan["plan_sha256"],
+                        action,
+                        package_root,
+                    )
+
+            self.assertEqual(b"one\n", (fixture.target / ".ai/one.md").read_bytes())
+            self.assertFalse((fixture.target / ".ai/two.md").exists())
+        finally:
+            fixture.close()
+
+    def test_gwt_066_given_digest_valid_v5_progress_that_differs_from_sealed_plan_when_target_validates_then_it_fails_closed(self) -> None:
+        fixture = PackageApplyFixture()
+        try:
+            fixture.make_package(
+                {
+                    ".ai/one.md": (b"one\n", "framework-managed", "0644"),
+                    ".ai/two.md": (b"two\n", "framework-managed", "0644"),
+                },
+                [
+                    operation("001-add", "add", ".ai/one.md"),
+                    operation("002-add", "add", ".ai/two.md"),
+                ],
+            )
+            plan = fixture.plan()
+            RAW_APPLY_PLAN(plan)
+            transaction = APPLY.transaction_root(fixture.target, plan["plan_sha256"])
+            progress_path = transaction / APPLY.JOURNAL_PROGRESS_PATH
+            records = [
+                json.loads(line)
+                for line in progress_path.read_text(encoding="utf-8").splitlines()
+            ]
+            records[0]["operation_id"] = "digest-valid-but-not-in-sealed-plan"
+            previous = None
+            for record in records:
+                record["previous_record_sha256"] = previous
+                record.pop("record_sha256", None)
+                record["record_sha256"] = APPLY.canonical_digest(record)
+                previous = record["record_sha256"]
+            progress_path.write_bytes(b"".join(APPLY.canonical_json_bytes(item) for item in records))
+            journal_path = transaction / "journal.yaml"
+            journal = yaml.safe_load(journal_path.read_text(encoding="utf-8"))
+            journal["progress_tail_sha256"] = previous
+            journal_path.write_text(
+                yaml.safe_dump(journal, sort_keys=True),
+                encoding="utf-8",
+                newline="\n",
+            )
+
+            errors: list[str] = []
+            TARGET.validate_pending_apply_receipt(fixture.target, errors)
+            self.assertTrue(
+                any("v5 progress semantics differ from sealed plan" in item for item in errors),
+                errors,
+            )
+            with self.assertRaisesRegex(
+                APPLY.ApplyError, "transaction journal apply progress is invalid"
+            ):
+                APPLY.load_transaction(fixture.target, plan["plan_sha256"])
+        finally:
+            fixture.close()
+
+    def test_gwt_067_given_finalized_v5_snapshot_with_missing_progress_log_when_target_validates_then_recovery_parity_fails_closed(self) -> None:
+        fixture = PackageApplyFixture()
+        try:
+            fixture.make_package(
+                {".ai/one.md": (b"one\n", "framework-managed", "0644")},
+                [operation("001-add", "add", ".ai/one.md")],
+            )
+            plan = fixture.plan()
+            RAW_APPLY_PLAN(plan)
+            transaction = APPLY.transaction_root(fixture.target, plan["plan_sha256"])
+            (transaction / APPLY.JOURNAL_PROGRESS_PATH).unlink()
+            journal_path = transaction / "journal.yaml"
+            journal = yaml.safe_load(journal_path.read_text(encoding="utf-8"))
+            journal["progress_record_count"] = 0
+            journal["progress_tail_sha256"] = None
+            journal_path.write_text(
+                yaml.safe_dump(journal, sort_keys=True),
+                encoding="utf-8",
+                newline="\n",
+            )
+
+            errors: list[str] = []
+            TARGET.validate_pending_apply_receipt(fixture.target, errors)
+            self.assertTrue(
+                any("v5 progress semantics differ from sealed plan" in item for item in errors),
+                errors,
+            )
+            with self.assertRaisesRegex(
+                APPLY.ApplyError, "transaction journal snapshot progress differs from its log"
+            ):
+                APPLY.load_transaction(fixture.target, plan["plan_sha256"])
+        finally:
+            fixture.close()
+
+    def test_gwt_068_given_finalized_v5_with_compacted_rollback_progress_when_target_validates_then_recovery_state_invariants_fail_closed(self) -> None:
+        fixture = PackageApplyFixture()
+        try:
+            fixture.make_package(
+                {".ai/one.md": (b"one\n", "framework-managed", "0644")},
+                [operation("001-add", "add", ".ai/one.md")],
+            )
+            plan = fixture.plan()
+            RAW_APPLY_PLAN(plan)
+            transaction = APPLY.transaction_root(fixture.target, plan["plan_sha256"])
+            journal_path = transaction / "journal.yaml"
+            journal = yaml.safe_load(journal_path.read_text(encoding="utf-8"))
+            rollback_path = journal["pre_state"][-1]["path"]
+            rollback_record = {
+                "schema_version": APPLY.JOURNAL_PROGRESS_SCHEMA_VERSION,
+                "sequence": 1,
+                "phase": "rollback",
+                "previous_record_sha256": None,
+                "transition_sequence": 1,
+                "rollback_index": 0,
+                "path": rollback_path,
+            }
+            rollback_record["record_sha256"] = APPLY.canonical_digest(
+                rollback_record
+            )
+            (transaction / APPLY.JOURNAL_PROGRESS_PATH).write_bytes(
+                APPLY.canonical_json_bytes(rollback_record)
+            )
+            journal["completed_operation_ids"] = []
+            journal["next_apply_index"] = 0
+            journal["rollback_completed_paths"] = [rollback_path]
+            journal["rollback_next_index"] = 1
+            journal["progress_record_count"] = 1
+            journal["progress_tail_sha256"] = rollback_record["record_sha256"]
+            journal_path.write_text(
+                yaml.safe_dump(journal, sort_keys=True),
+                encoding="utf-8",
+                newline="\n",
+            )
+
+            errors: list[str] = []
+            TARGET.validate_pending_apply_receipt(fixture.target, errors)
+            self.assertTrue(
+                any("non-rollback journal contains rollback progress" in item for item in errors),
+                errors,
+            )
+            with self.assertRaisesRegex(
+                APPLY.ApplyError, "non-rollback journal contains rollback progress"
+            ):
+                APPLY.load_transaction(fixture.target, plan["plan_sha256"])
+        finally:
+            fixture.close()
+
+    def test_gwt_069_given_broken_progress_link_when_v5_resumes_or_writes_then_no_target_or_external_mutation_occurs(self) -> None:
+        fixture = PackageApplyFixture()
+        try:
+            fixture.make_package(
+                {
+                    ".ai/one.md": (b"one\n", "framework-managed", "0644"),
+                    ".ai/two.md": (b"two\n", "framework-managed", "0644"),
+                },
+                [
+                    operation("001-add", "add", ".ai/one.md"),
+                    operation("002-add", "add", ".ai/two.md"),
+                ],
+            )
+            plan = fixture.plan()
+
+            def interrupt_after_first_durable_prefix(event: str, details: dict) -> None:
+                if event == "after_progress_journal" and details["next_apply_index"] == 1:
+                    raise APPLY.InjectedInterruption("fixture crash after durable append")
+
+            with self.assertRaises(APPLY.InjectedInterruption):
+                RAW_APPLY_PLAN(plan, boundary_hook=interrupt_after_first_durable_prefix)
+            transaction = APPLY.transaction_root(fixture.target, plan["plan_sha256"])
+            progress_path = transaction / APPLY.JOURNAL_PROGRESS_PATH
+            progress_path.unlink()
+            outside = fixture.root / "outside-progress.jsonl"
+            try:
+                progress_path.symlink_to(outside)
+            except OSError:
+                link_context = mock.patch.object(
+                    APPLY,
+                    "is_reparse_point",
+                    side_effect=lambda path: Path(path) == progress_path,
+                )
+            else:
+                link_context = mock.patch.object(
+                    APPLY,
+                    "is_reparse_point",
+                    wraps=APPLY.is_reparse_point,
+                )
+
+            with link_context:
+                with self.assertRaisesRegex(
+                    APPLY.ApplyError, "transaction journal progress log is unsafe"
+                ):
+                    APPLY.recover_transaction(
+                        fixture.target,
+                        plan["plan_sha256"],
+                        "resume",
+                        fixture.package,
+                    )
+                with self.assertRaisesRegex(
+                    APPLY.ApplyError, "transaction journal progress log is unsafe"
+                ):
+                    APPLY.durable_append_bytes(progress_path, b"{}\n")
+                journal = yaml.safe_load(
+                    (transaction / "journal.yaml").read_text(encoding="utf-8")
+                )
+                with self.assertRaisesRegex(
+                    APPLY.ApplyError, "transaction journal progress log is unsafe"
+                ):
+                    APPLY.truncate_incomplete_progress_tail(transaction, journal)
+
+            self.assertEqual(b"one\n", (fixture.target / ".ai/one.md").read_bytes())
+            self.assertFalse((fixture.target / ".ai/two.md").exists())
+            self.assertFalse(outside.exists())
+        finally:
+            fixture.close()
+
+    def test_gwt_070_given_transaction_root_link_when_v5_resumes_or_validates_then_no_external_journal_or_target_mutation_occurs(self) -> None:
+        fixture = PackageApplyFixture()
+        try:
+            fixture.make_package(
+                {
+                    ".ai/one.md": (b"one\n", "framework-managed", "0644"),
+                    ".ai/two.md": (b"two\n", "framework-managed", "0644"),
+                },
+                [
+                    operation("001-add", "add", ".ai/one.md"),
+                    operation("002-add", "add", ".ai/two.md"),
+                ],
+            )
+            plan = fixture.plan()
+
+            def interrupt_after_first_durable_prefix(event: str, details: dict) -> None:
+                if event == "after_progress_journal" and details["next_apply_index"] == 1:
+                    raise APPLY.InjectedInterruption("fixture crash after durable append")
+
+            with self.assertRaises(APPLY.InjectedInterruption):
+                RAW_APPLY_PLAN(plan, boundary_hook=interrupt_after_first_durable_prefix)
+            transaction = APPLY.transaction_root(fixture.target, plan["plan_sha256"])
+            outside = fixture.root / "outside-transaction"
+            shutil.copytree(transaction, outside)
+            outside_progress = outside / APPLY.JOURNAL_PROGRESS_PATH
+            outside_progress_before = outside_progress.read_bytes()
+            shutil.rmtree(transaction)
+            try:
+                transaction.symlink_to(outside, target_is_directory=True)
+            except OSError:
+                transaction.mkdir()
+                apply_link_context = mock.patch.object(
+                    APPLY,
+                    "is_reparse_point",
+                    side_effect=lambda path: Path(path) == transaction,
+                )
+                target_link_context = mock.patch.object(
+                    TARGET,
+                    "is_reparse_point",
+                    side_effect=lambda path: Path(path) == transaction,
+                )
+            else:
+                apply_link_context = mock.patch.object(
+                    APPLY,
+                    "is_reparse_point",
+                    wraps=APPLY.is_reparse_point,
+                )
+                target_link_context = mock.patch.object(
+                    TARGET,
+                    "is_reparse_point",
+                    wraps=TARGET.is_reparse_point,
+                )
+
+            with apply_link_context, target_link_context:
+                with self.assertRaisesRegex(
+                    APPLY.ApplyError, "transaction root is unsafe"
+                ):
+                    APPLY.recover_transaction(
+                        fixture.target,
+                        plan["plan_sha256"],
+                        "resume",
+                        fixture.package,
+                    )
+                with self.assertRaisesRegex(
+                    APPLY.ApplyError, "transaction root is unsafe"
+                ):
+                    APPLY.durable_append_bytes(
+                        transaction / APPLY.JOURNAL_PROGRESS_PATH, b"{}\n"
+                    )
+                errors: list[str] = []
+                TARGET.validate_apply_transaction_journals(
+                    fixture.target, None, errors
+                )
+                self.assertTrue(
+                    any("transaction root is unsafe" in item for item in errors),
+                    errors,
+                )
+
+            self.assertEqual(outside_progress_before, outside_progress.read_bytes())
+            self.assertEqual(b"one\n", (fixture.target / ".ai/one.md").read_bytes())
+            self.assertFalse((fixture.target / ".ai/two.md").exists())
+        finally:
+            fixture.close()
+
+    def test_gwt_071_given_transaction_lock_link_when_apply_starts_then_no_external_or_target_mutation_occurs(self) -> None:
+        fixture = PackageApplyFixture()
+        try:
+            fixture.make_package(
+                {".ai/one.md": (b"one\n", "framework-managed", "0644")},
+                [operation("001-add", "add", ".ai/one.md")],
+            )
+            plan = fixture.plan()
+            base = APPLY.git_admin_transaction_base(fixture.target)
+            base.mkdir(parents=True)
+            lock_path = base / "transaction.lock"
+            outside = fixture.root / "outside-lock"
+            try:
+                lock_path.symlink_to(outside)
+            except OSError:
+                lock_path.write_bytes(b"sentinel")
+                link_context = mock.patch.object(
+                    APPLY,
+                    "is_reparse_point",
+                    side_effect=lambda path: Path(path) == lock_path,
+                )
+            else:
+                link_context = mock.patch.object(
+                    APPLY,
+                    "is_reparse_point",
+                    wraps=APPLY.is_reparse_point,
+                )
+
+            with link_context, self.assertRaisesRegex(
+                APPLY.ApplyError, "transaction lock is unsafe"
+            ):
+                RAW_APPLY_PLAN(plan)
+
+            self.assertFalse((fixture.target / ".ai/one.md").exists())
+            self.assertFalse(
+                APPLY.transaction_root(fixture.target, plan["plan_sha256"]).exists()
+            )
+            self.assertFalse(outside.exists())
+            if not lock_path.is_symlink():
+                self.assertEqual(b"sentinel", lock_path.read_bytes())
+        finally:
+            fixture.close()
+
+    def test_gwt_072_given_untrusted_legacy_journal_leaf_when_new_v5_apply_starts_then_mutation_fails_closed(self) -> None:
+        for variant in ("missing", "unsafe", "unreadable", "malformed"):
+            with self.subTest(variant=variant):
+                fixture = PackageApplyFixture()
+                try:
+                    fixture.make_package(
+                        {".ai/new.md": (b"new\n", "framework-managed", "0644")},
+                        [operation("001-add", "add", ".ai/new.md")],
+                    )
+                    plan = fixture.plan()
+                    legacy_id = "d" * 64
+                    legacy_root = APPLY.transaction_root(fixture.target, legacy_id)
+                    legacy_root.mkdir(parents=True)
+                    journal_path = legacy_root / "journal.yaml"
+                    legacy = {
+                        "schema_version": APPLY.LEGACY_JOURNAL_SCHEMA_VERSION,
+                        "transaction_id": legacy_id,
+                        "plan_sha256": legacy_id,
+                        "state": "applying",
+                    }
+                    leaf_context = nullcontext()
+                    read_context = nullcontext()
+                    if variant != "missing":
+                        journal_path.write_text(
+                            (
+                                "not: [valid"
+                                if variant == "malformed"
+                                else yaml.safe_dump(legacy, sort_keys=False)
+                            ),
+                            encoding="utf-8",
+                            newline="\n",
+                        )
+                    if variant == "unsafe":
+                        leaf_context = mock.patch.object(
+                            APPLY,
+                            "is_reparse_point",
+                            side_effect=lambda path: Path(path) == journal_path,
+                        )
+                    elif variant == "unreadable":
+                        original_read_text = Path.read_text
+
+                        def reject_legacy_read(path: Path, *args: object, **kwargs: object) -> str:
+                            if Path(path) == journal_path:
+                                raise PermissionError("fixture denies legacy journal read")
+                            return original_read_text(path, *args, **kwargs)
+
+                        read_context = mock.patch.object(
+                            Path,
+                            "read_text",
+                            autospec=True,
+                            side_effect=reject_legacy_read,
+                        )
+
+                    with leaf_context, read_context, self.assertRaisesRegex(
+                        APPLY.ApplyError,
+                        "unsupported-transaction-journal-version.*cannot be proven terminal.*prior tooling.*owner-directed manual recovery",
+                    ):
+                        RAW_APPLY_PLAN(plan)
+
+                    self.assertFalse((fixture.target / ".ai/new.md").exists())
+                    self.assertFalse(
+                        APPLY.transaction_root(
+                            fixture.target, plan["plan_sha256"]
+                        ).exists()
+                    )
+                finally:
+                    fixture.close()
 
 
 if __name__ == "__main__":

@@ -62,7 +62,12 @@ TARGET_EFFECTIVE_PACKET_DIRECTORY = ".dev/ai-context/effective-rule-packets"
 PENDING_RECEIPT_PATH = ".dev/AI-CONTEXT-APPLY-PENDING.yaml"
 APPLY_PLAN_SCHEMA_VERSION = "2.2.0"
 PENDING_RECEIPT_SCHEMA_VERSION = "2.0.0"
-JOURNAL_SCHEMA_VERSION = "ai-context-package-apply-journal/v4"
+JOURNAL_SCHEMA_VERSION = "ai-context-package-apply-journal/v5"
+LEGACY_JOURNAL_SCHEMA_VERSION = "ai-context-package-apply-journal/v4"
+JOURNAL_PROGRESS_SCHEMA_VERSION = "ai-context-package-apply-progress/v1"
+JOURNAL_PROGRESS_PATH = "progress.jsonl"
+JOURNAL_TERMINAL_STATES = frozenset({"finalized", "rolled-back", "rejected"})
+UNSUPPORTED_JOURNAL_VERSION_CLASSIFICATION = "unsupported-transaction-journal-version"
 MULTI_HOP_ROUTE_CONTEXT_KEY = "multi_hop_checkpoint_context"
 MULTI_HOP_ROUTE_CONTEXT_SCHEMA_VERSION = "ai-context-multi-hop-checkpoint-context/v1"
 MULTI_HOP_INITIAL_ROUTE_CONTEXT_SCHEMA_VERSION = "ai-context-multi-hop-initial-route-context/v1"
@@ -109,6 +114,24 @@ class FileState:
     tracked: bool = False
     dirty: bool = False
     git_eol_only: bool = False
+
+
+@dataclass
+class JournalWriteStats:
+    """Deterministic logical journal I/O counters for tests and diagnostics."""
+
+    write_calls: int = 0
+    bytes_written: int = 0
+    snapshot_write_calls: int = 0
+    append_write_calls: int = 0
+
+    def observe(self, event: dict) -> None:
+        self.write_calls += int(event["write_calls"])
+        self.bytes_written += int(event["bytes_written"])
+        if event["kind"] == "snapshot":
+            self.snapshot_write_calls += int(event["write_calls"])
+        elif event["kind"] == "append":
+            self.append_write_calls += int(event["write_calls"])
 
 
 class InjectedInterruption(BaseException):
@@ -1896,6 +1919,68 @@ def atomic_write_yaml(path: Path, value: dict) -> bytes:
     return content
 
 
+def observe_journal_io(
+    hook: Callable[[dict], None] | None,
+    *,
+    kind: str,
+    path: Path,
+    bytes_written: int,
+) -> None:
+    if hook is not None:
+        hook(
+            {
+                "kind": kind,
+                "path": str(path),
+                "write_calls": 1,
+                "bytes_written": bytes_written,
+            }
+        )
+
+
+def durable_append_bytes(
+    path: Path,
+    content: bytes,
+    journal_io_hook: Callable[[dict], None] | None = None,
+) -> None:
+    """Append one framed record and durably publish it before returning."""
+    if not content or not content.endswith(b"\n"):
+        raise ApplyError("durable journal append must be one newline-framed record")
+    require_safe_transaction_root(path.parent)
+    if path.is_symlink() or is_reparse_point(path):
+        raise ApplyError("transaction journal progress log is unsafe")
+    existed = path.exists()
+    try:
+        descriptor = os.open(
+            path,
+            os.O_WRONLY
+            | os.O_CREAT
+            | os.O_APPEND
+            | getattr(os, "O_BINARY", 0)
+            | getattr(os, "O_NOFOLLOW", 0),
+            0o600,
+        )
+    except OSError as exc:
+        raise ApplyError(f"cannot safely append transaction journal progress: {path}") from exc
+    try:
+        offset = 0
+        while offset < len(content):
+            written = os.write(descriptor, content[offset:])
+            if written <= 0:
+                raise ApplyError(f"short write while appending {path}")
+            offset += written
+        os.fsync(descriptor)
+    finally:
+        os.close(descriptor)
+    if not existed:
+        fsync_directory(path.parent)
+    observe_journal_io(
+        journal_io_hook,
+        kind="append",
+        path=path,
+        bytes_written=len(content),
+    )
+
+
 def durable_unlink(path: Path, transaction_root_path: Path) -> None:
     if os.name != "nt":
         path.unlink()
@@ -2367,10 +2452,41 @@ def verify_multi_hop_checkpoint_for_active_child(
 @contextmanager
 def transaction_lock(target: Path) -> Iterator[None]:
     base = git_admin_transaction_base(target)
+    require_safe_transaction_directory(
+        base, "transaction base", allow_missing=True
+    )
     base.mkdir(parents=True, exist_ok=True)
+    require_safe_transaction_directory(base, "transaction base")
     lock_path = base / "transaction.lock"
-    handle = lock_path.open("a+b")
+    if (
+        lock_path.is_symlink()
+        or is_reparse_point(lock_path)
+        or (lock_path.exists() and not lock_path.is_file())
+    ):
+        raise ApplyError("transaction lock is unsafe")
+    descriptor = -1
+    handle = None
     try:
+        try:
+            descriptor = os.open(
+                lock_path,
+                os.O_RDWR
+                | os.O_CREAT
+                | os.O_APPEND
+                | getattr(os, "O_BINARY", 0)
+                | getattr(os, "O_NOFOLLOW", 0),
+                0o600,
+            )
+        except OSError as exc:
+            raise ApplyError("cannot safely open transaction lock") from exc
+        if (
+            lock_path.is_symlink()
+            or is_reparse_point(lock_path)
+            or not stat.S_ISREG(os.fstat(descriptor).st_mode)
+        ):
+            raise ApplyError("transaction lock is unsafe")
+        handle = os.fdopen(descriptor, "a+b")
+        descriptor = -1
         handle.seek(0, os.SEEK_END)
         if handle.tell() == 0:
             handle.write(b"0")
@@ -2400,7 +2516,10 @@ def transaction_lock(target: Path) -> Iterator[None]:
             else:
                 fcntl.flock(handle.fileno(), fcntl.LOCK_UN)
     finally:
-        handle.close()
+        if handle is not None:
+            handle.close()
+        elif descriptor >= 0:
+            os.close(descriptor)
 
 
 @contextmanager
@@ -2417,6 +2536,74 @@ def transaction_root(target: Path, transaction_id: str) -> Path:
     if not re.fullmatch(r"[0-9a-f]{64}", transaction_id):
         raise ApplyError("transaction ID must be a lowercase SHA-256")
     return git_admin_transaction_base(target) / transaction_id
+
+
+def require_safe_transaction_directory(
+    path: Path, label: str, *, allow_missing: bool = False
+) -> None:
+    if path.is_symlink() or is_reparse_point(path):
+        raise ApplyError(f"{label} is unsafe")
+    if path.exists():
+        if not path.is_dir():
+            raise ApplyError(f"{label} is unsafe")
+    elif not allow_missing:
+        raise ApplyError(f"{label} is missing")
+
+
+def require_safe_transaction_root(root: Path, *, allow_missing: bool = False) -> None:
+    require_safe_transaction_directory(root.parent, "transaction base")
+    require_safe_transaction_directory(
+        root, "transaction root", allow_missing=allow_missing
+    )
+
+
+def reject_unfinished_v4_transactions(target: Path) -> None:
+    """Block new mutation without offering v4 recovery or conversion."""
+
+    def block_unclassified_legacy_transaction(child: Path, reason: str) -> None:
+        raise ApplyError(
+            f"{UNSUPPORTED_JOURNAL_VERSION_CLASSIFICATION}: legacy transaction "
+            f"{child.name} {reason} and cannot be proven terminal; use prior tooling "
+            "that supports journal v4 or perform owner-directed manual recovery"
+        )
+
+    base = git_admin_transaction_base(target)
+    if not base.is_dir():
+        return
+    for child in sorted(base.iterdir(), key=lambda item: item.name):
+        if not re.fullmatch(r"[0-9a-f]{64}", child.name):
+            continue
+        require_safe_transaction_root(child)
+        journal_path = child / "journal.yaml"
+        if (
+            journal_path.is_symlink()
+            or is_reparse_point(journal_path)
+            or (journal_path.exists() and not journal_path.is_file())
+        ):
+            block_unclassified_legacy_transaction(child, "has unsafe journal evidence")
+        if not journal_path.exists():
+            block_unclassified_legacy_transaction(child, "has missing journal evidence")
+        try:
+            journal = yaml.safe_load(journal_path.read_text(encoding="utf-8"))
+        except (OSError, UnicodeDecodeError, yaml.YAMLError):
+            block_unclassified_legacy_transaction(child, "has unreadable journal evidence")
+        if not isinstance(journal, dict):
+            block_unclassified_legacy_transaction(child, "has invalid journal evidence")
+        schema_version = journal.get("schema_version")
+        if schema_version == JOURNAL_SCHEMA_VERSION:
+            continue
+        if schema_version != LEGACY_JOURNAL_SCHEMA_VERSION:
+            block_unclassified_legacy_transaction(
+                child, "has an unsupported journal version"
+            )
+        state = journal.get("state")
+        if state in JOURNAL_TERMINAL_STATES:
+            continue
+        raise ApplyError(
+            f"{UNSUPPORTED_JOURNAL_VERSION_CLASSIFICATION}: unfinished journal v4 "
+            f"transaction {child.name} blocks new target mutation; use prior tooling "
+            "that supports journal v4 or perform owner-directed manual recovery"
+        )
 
 
 def active_operations(plan: dict) -> list[dict]:
@@ -2754,6 +2941,7 @@ def prepare_transaction(
     acknowledgements: set[str],
     remediation: tuple[dict, dict] | None = None,
     hook: Callable[[str, dict], None] | None = None,
+    journal_io_hook: Callable[[dict], None] | None = None,
     route_operation_authorized: bool = False,
 ) -> tuple[Path, dict]:
     transaction_id = transaction_id_for_plan(plan)
@@ -2761,6 +2949,7 @@ def prepare_transaction(
         target, plan, route_operation_authorized=route_operation_authorized
     )
     root = transaction_root(target, transaction_id)
+    require_safe_transaction_root(root, allow_missing=True)
     if root.exists():
         raise ApplyError(
             f"transaction evidence already exists; resume or roll back {transaction_id}"
@@ -2897,6 +3086,9 @@ def prepare_transaction(
             "rollback_next_index": 0,
             "rollback_completed_paths": [],
             "rollback_start_state": None,
+            "progress_log_path": JOURNAL_PROGRESS_PATH,
+            "progress_record_count": 0,
+            "progress_tail_sha256": None,
             "acknowledgements": sorted(acknowledgements),
             "pre_state": pre_state,
             "protected_state": observation(protected_target_paths(target), target),
@@ -2914,7 +3106,14 @@ def prepare_transaction(
         verify_preparation_admission(
             target, plan, route_operation_authorized=route_operation_authorized
         )
-        atomic_write_yaml(preparation / "journal.yaml", journal)
+        journal_path = preparation / "journal.yaml"
+        journal_bytes = atomic_write_yaml(journal_path, journal)
+        observe_journal_io(
+            journal_io_hook,
+            kind="snapshot",
+            path=journal_path,
+            bytes_written=len(journal_bytes),
+        )
         fsync_directory(preparation)
         invoke_boundary(
             hook, "after_preparation_journal", {"transaction_id": transaction_id}
@@ -2922,11 +3121,13 @@ def prepare_transaction(
         verify_preparation_admission(
             target, plan, route_operation_authorized=route_operation_authorized
         )
+        require_safe_transaction_root(root, allow_missing=True)
         if root.exists():
             raise ApplyError(
                 f"transaction evidence already exists; resume or roll back {transaction_id}"
             )
         atomic_replace(preparation, root)
+        require_safe_transaction_root(root)
         fsync_directory(base)
         return root, journal
     except Exception:
@@ -2936,8 +3137,8 @@ def prepare_transaction(
         raise
 
 
-def expected_v4_transition_sequence(plan: dict, journal: dict) -> int | None:
-    """Return the semantic v4 transition position, not its write-attempt count."""
+def expected_v5_transition_sequence(plan: dict, journal: dict) -> int | None:
+    """Return the semantic v5 transition position, not its write-attempt count."""
     if journal.get("schema_version") != JOURNAL_SCHEMA_VERSION:
         return None
     state = journal.get("state")
@@ -2956,14 +3157,279 @@ def expected_v4_transition_sequence(plan: dict, journal: dict) -> int | None:
     return None
 
 
-def persist_journal(root: Path, plan: dict, journal: dict) -> None:
-    expected_sequence = expected_v4_transition_sequence(plan, journal)
+def persist_journal(
+    root: Path,
+    plan: dict,
+    journal: dict,
+    journal_io_hook: Callable[[dict], None] | None = None,
+) -> None:
+    require_safe_transaction_root(root)
+    expected_sequence = expected_v5_transition_sequence(plan, journal)
     journal["transition_sequence"] = (
         expected_sequence
         if expected_sequence is not None
         else int(journal.get("transition_sequence", 0)) + 1
     )
-    atomic_write_yaml(root / "journal.yaml", journal)
+    journal_path = root / "journal.yaml"
+    content = atomic_write_yaml(journal_path, journal)
+    observe_journal_io(
+        journal_io_hook,
+        kind="snapshot",
+        path=journal_path,
+        bytes_written=len(content),
+    )
+
+
+def progress_log_path(root: Path, journal: dict) -> Path:
+    if journal.get("progress_log_path") != JOURNAL_PROGRESS_PATH:
+        raise ApplyError("transaction journal progress log path is invalid")
+    return root / JOURNAL_PROGRESS_PATH
+
+
+def load_progress_records(root: Path, journal: dict) -> tuple[list[dict], bool]:
+    require_safe_transaction_root(root)
+    path = progress_log_path(root, journal)
+    if path.is_symlink() or is_reparse_point(path):
+        raise ApplyError("transaction journal progress log is unsafe")
+    if not path.exists():
+        return [], False
+    if not path.is_file():
+        raise ApplyError("transaction journal progress log is unsafe")
+    raw = path.read_bytes()
+    trailing_partial = bool(raw) and not raw.endswith(b"\n")
+    framed = raw[: raw.rfind(b"\n") + 1] if trailing_partial else raw
+    records: list[dict] = []
+    previous_digest: str | None = None
+    for sequence, line in enumerate(framed.splitlines(keepends=True), start=1):
+        try:
+            record = json.loads(line.decode("utf-8"))
+        except (UnicodeDecodeError, json.JSONDecodeError) as exc:
+            raise ApplyError("transaction journal progress log cannot be parsed") from exc
+        if not isinstance(record, dict) or canonical_json_bytes(record) != line:
+            raise ApplyError("transaction journal progress record is not canonical JSON")
+        phase = record.get("phase")
+        common = {
+            "schema_version",
+            "sequence",
+            "phase",
+            "previous_record_sha256",
+            "transition_sequence",
+            "record_sha256",
+        }
+        expected_keys = (
+            common | {"operation_index", "operation_id"}
+            if phase == "apply"
+            else common | {"rollback_index", "path"}
+            if phase == "rollback"
+            else set()
+        )
+        if (
+            not expected_keys
+            or set(record) != expected_keys
+            or record.get("schema_version") != JOURNAL_PROGRESS_SCHEMA_VERSION
+            or type(record.get("sequence")) is not int
+            or record.get("sequence") != sequence
+            or record.get("previous_record_sha256") != previous_digest
+            or type(record.get("transition_sequence")) is not int
+            or record["transition_sequence"] < 0
+            or (
+                phase == "apply"
+                and (
+                    type(record.get("operation_index")) is not int
+                    or not isinstance(record.get("operation_id"), str)
+                )
+            )
+            or (
+                phase == "rollback"
+                and (
+                    type(record.get("rollback_index")) is not int
+                    or not isinstance(record.get("path"), str)
+                )
+            )
+        ):
+            raise ApplyError("transaction journal progress record is invalid")
+        unsigned = dict(record)
+        declared_digest = unsigned.pop("record_sha256", None)
+        if (
+            not isinstance(declared_digest, str)
+            or canonical_digest(unsigned) != declared_digest
+        ):
+            raise ApplyError("transaction journal progress record digest is invalid")
+        previous_digest = declared_digest
+        records.append(record)
+    return records, trailing_partial
+
+
+def progress_prefixes(
+    plan: dict, journal: dict, records: list[dict]
+) -> tuple[list[str], list[str]]:
+    operations = active_operations(plan)
+    rollback_paths = [item["path"] for item in reversed(journal["pre_state"])]
+    completed_operations: list[str] = []
+    completed_rollback_paths: list[str] = []
+    rollback_started = False
+    previous_transition = 0
+    for record in records:
+        transition = record["transition_sequence"]
+        if transition <= previous_transition:
+            raise ApplyError("transaction journal progress transition is not monotonic")
+        previous_transition = transition
+        if record["phase"] == "apply":
+            index = len(completed_operations)
+            if (
+                rollback_started
+                or index >= len(operations)
+                or record.get("operation_index") != index
+                or record.get("operation_id") != operations[index]["id"]
+                or transition != index + 2
+            ):
+                raise ApplyError("transaction journal apply progress is invalid")
+            completed_operations.append(operations[index]["id"])
+            continue
+        rollback_started = True
+        index = len(completed_rollback_paths)
+        if (
+            index >= len(rollback_paths)
+            or record.get("rollback_index") != index
+            or record.get("path") != rollback_paths[index]
+        ):
+            raise ApplyError("transaction journal rollback progress is invalid")
+        completed_rollback_paths.append(rollback_paths[index])
+    return completed_operations, completed_rollback_paths
+
+
+def replay_journal_progress(root: Path, plan: dict, snapshot: dict) -> dict:
+    records, _trailing_partial = load_progress_records(root, snapshot)
+    compacted_count = snapshot.get("progress_record_count")
+    if type(compacted_count) is not int or not 0 <= compacted_count <= len(records):
+        raise ApplyError("transaction journal progress record count is invalid")
+    compacted_tail = snapshot.get("progress_tail_sha256")
+    expected_tail = (
+        records[compacted_count - 1]["record_sha256"] if compacted_count else None
+    )
+    if compacted_tail != expected_tail:
+        raise ApplyError("transaction journal progress tail binding is invalid")
+    compacted_apply, compacted_rollback = progress_prefixes(
+        plan, snapshot, records[:compacted_count]
+    )
+    if (
+        snapshot.get("completed_operation_ids") != compacted_apply
+        or snapshot.get("next_apply_index") != len(compacted_apply)
+        or snapshot.get("rollback_completed_paths") != compacted_rollback
+        or snapshot.get("rollback_next_index") != len(compacted_rollback)
+    ):
+        raise ApplyError("transaction journal snapshot progress differs from its log")
+    effective = deepcopy(snapshot)
+    for record in records[compacted_count:]:
+        if record["phase"] == "apply":
+            if effective.get("state") not in {"applying", "interrupted"}:
+                raise ApplyError("transaction journal apply progress follows an invalid state")
+            effective["completed_operation_ids"].append(record["operation_id"])
+            effective["next_apply_index"] += 1
+        else:
+            if effective.get("state") != "rolling-back":
+                raise ApplyError("transaction journal rollback progress follows an invalid state")
+            effective["rollback_completed_paths"].append(record["path"])
+            effective["rollback_next_index"] += 1
+        effective["transition_sequence"] = record["transition_sequence"]
+        effective["progress_record_count"] = record["sequence"]
+        effective["progress_tail_sha256"] = record["record_sha256"]
+    progress_prefixes(plan, effective, records)
+    return effective
+
+
+def truncate_incomplete_progress_tail(root: Path, journal: dict) -> None:
+    require_safe_transaction_root(root)
+    path = progress_log_path(root, journal)
+    if path.is_symlink() or is_reparse_point(path):
+        raise ApplyError("transaction journal progress log is unsafe")
+    if not path.exists():
+        return
+    if not path.is_file():
+        raise ApplyError("transaction journal progress log is unsafe")
+    raw = path.read_bytes()
+    if not raw or raw.endswith(b"\n"):
+        return
+    valid_length = raw.rfind(b"\n") + 1
+    try:
+        descriptor = os.open(
+            path,
+            os.O_RDWR
+            | getattr(os, "O_BINARY", 0)
+            | getattr(os, "O_NOFOLLOW", 0),
+        )
+    except OSError as exc:
+        raise ApplyError(
+            f"cannot safely truncate transaction journal progress: {path}"
+        ) from exc
+    try:
+        os.ftruncate(descriptor, valid_length)
+        os.fsync(descriptor)
+    finally:
+        os.close(descriptor)
+
+
+def append_progress_record(
+    root: Path,
+    plan: dict,
+    journal: dict,
+    *,
+    phase: str,
+    index: int,
+    value: str,
+    journal_io_hook: Callable[[dict], None] | None = None,
+) -> None:
+    records, trailing_partial = load_progress_records(root, journal)
+    if trailing_partial:
+        truncate_incomplete_progress_tail(root, journal)
+    if journal.get("progress_record_count") != len(records):
+        raise ApplyError("transaction journal in-memory progress differs from its log")
+    sequence = len(records) + 1
+    if phase == "apply":
+        expected = active_operations(plan)
+        if (
+            index != journal.get("next_apply_index")
+            or index >= len(expected)
+            or value != expected[index]["id"]
+        ):
+            raise ApplyError("transaction journal apply append is out of order")
+        transition_sequence = index + 2
+        phase_fields = {"operation_index": index, "operation_id": value}
+    elif phase == "rollback":
+        rollback_paths = [item["path"] for item in reversed(journal["pre_state"])]
+        if (
+            index != journal.get("rollback_next_index")
+            or index >= len(rollback_paths)
+            or value != rollback_paths[index]
+        ):
+            raise ApplyError("transaction journal rollback append is out of order")
+        transition_sequence = int(journal["transition_sequence"]) + 1
+        phase_fields = {"rollback_index": index, "path": value}
+    else:
+        raise ApplyError("transaction journal progress phase is invalid")
+    record = {
+        "schema_version": JOURNAL_PROGRESS_SCHEMA_VERSION,
+        "sequence": sequence,
+        "phase": phase,
+        "previous_record_sha256": journal.get("progress_tail_sha256"),
+        "transition_sequence": transition_sequence,
+        **phase_fields,
+    }
+    record["record_sha256"] = canonical_digest(record)
+    durable_append_bytes(
+        progress_log_path(root, journal),
+        canonical_json_bytes(record),
+        journal_io_hook,
+    )
+    if phase == "apply":
+        journal["completed_operation_ids"].append(value)
+        journal["next_apply_index"] = index + 1
+    else:
+        journal["rollback_completed_paths"].append(value)
+        journal["rollback_next_index"] = index + 1
+    journal["transition_sequence"] = transition_sequence
+    journal["progress_record_count"] = sequence
+    journal["progress_tail_sha256"] = record["record_sha256"]
 
 
 def exact_state_matches(target: Path, relative: str, expected: dict) -> bool:
@@ -2997,15 +3463,31 @@ def validate_journal_progress(plan: dict, journal: dict) -> None:
     expected_completed = [item["id"] for item in operations[:next_index]]
     if completed != expected_completed:
         raise ApplyError("transaction journal completed operation prefix is invalid")
+    progress_record_count = journal.get("progress_record_count")
+    progress_tail = journal.get("progress_tail_sha256")
+    if (
+        journal.get("progress_log_path") != JOURNAL_PROGRESS_PATH
+        or type(progress_record_count) is not int
+        or progress_record_count < 0
+        or (progress_record_count == 0 and progress_tail is not None)
+        or (
+            progress_record_count > 0
+            and (
+                not isinstance(progress_tail, str)
+                or not re.fullmatch(r"[0-9a-f]{64}", progress_tail)
+            )
+        )
+    ):
+        raise ApplyError("transaction journal progress log binding is invalid")
     transition_sequence = journal.get("transition_sequence")
     if type(transition_sequence) is not int or transition_sequence < 0:
         raise ApplyError("transaction journal transition sequence is invalid")
     state = journal.get("state")
-    expected_v4_sequence = expected_v4_transition_sequence(plan, journal)
+    expected_v5_sequence = expected_v5_transition_sequence(plan, journal)
     if (
         journal.get("schema_version") == JOURNAL_SCHEMA_VERSION
-        and expected_v4_sequence is not None
-        and transition_sequence != expected_v4_sequence
+        and expected_v5_sequence is not None
+        and transition_sequence != expected_v5_sequence
     ):
         raise ApplyError("transaction journal transition sequence is impossible")
     rollback_paths = [
@@ -3288,7 +3770,7 @@ def validate_target_validation_receipt_binding(
     allow_unbound: bool = False,
     allow_cleared_multi_hop_pending_receipt: bool = False,
 ) -> dict | None:
-    """Verify the v4 file-to-journal binding, allowing only record-mode recovery."""
+    """Verify the target-validation file-to-journal binding for record recovery."""
     if not is_upgrade_plan(plan) or journal.get("state") == "rejected":
         unexpected = root / TARGET_VALIDATION_RECEIPT_PATH
         if unexpected.exists() or unexpected.is_symlink() or is_reparse_point(unexpected):
@@ -3804,6 +4286,7 @@ def run_transaction(
     incoming: dict[str, dict],
     reconciles: set[str],
     hook: Callable[[str, dict], None] | None = None,
+    journal_io_hook: Callable[[dict], None] | None = None,
 ) -> dict:
     target = Path(plan["target_root"])
     require_target_staging_absent(target, journal["target_staging_paths"])
@@ -3811,7 +4294,7 @@ def run_transaction(
     admitted_journal = deepcopy(journal)
     admitted_journal["state"] = "applying"
     admitted_journal["last_error"] = None
-    persist_journal(root, plan, admitted_journal)
+    persist_journal(root, plan, admitted_journal, journal_io_hook)
     journal.clear()
     journal.update(admitted_journal)
     invoke_boundary(hook, "after_applying_journal", {"transaction_id": journal["transaction_id"]})
@@ -3832,9 +4315,15 @@ def run_transaction(
             hook,
         )
         invoke_boundary(hook, "after_operation", {"index": index, "operation_id": operation["id"]})
-        journal["completed_operation_ids"] = [item["id"] for item in operations[: index + 1]]
-        journal["next_apply_index"] = index + 1
-        persist_journal(root, plan, journal)
+        append_progress_record(
+            root,
+            plan,
+            journal,
+            phase="apply",
+            index=index,
+            value=operation["id"],
+            journal_io_hook=journal_io_hook,
+        )
         invoke_boundary(
             hook,
             "after_progress_journal",
@@ -3898,7 +4387,7 @@ def run_transaction(
     journal["state"] = (
         "awaiting-target-validation" if is_upgrade_plan(plan) else "finalized"
     )
-    persist_journal(root, plan, journal)
+    persist_journal(root, plan, journal, journal_io_hook)
     invoke_boundary(hook, "after_finalized_journal", {"transaction_id": journal["transaction_id"]})
     return receipt
 
@@ -3911,6 +4400,7 @@ def load_transaction(
     allow_cleared_multi_hop_pending_receipt: bool = False,
 ) -> tuple[Path, dict, dict]:
     root = transaction_root(target, transaction_id)
+    require_safe_transaction_root(root)
     plan_path = root / "plan.json"
     journal_path = root / "journal.yaml"
     if not plan_path.is_file() or plan_path.is_symlink() or not journal_path.is_file() or journal_path.is_symlink():
@@ -3929,6 +4419,12 @@ def load_transaction(
     plan_target = plan.get("target_root")
     if not isinstance(plan_target, str) or Path(plan_target).resolve() != target.resolve():
         raise ApplyError("transaction target root does not match recovery target")
+    if journal.get("schema_version") == LEGACY_JOURNAL_SCHEMA_VERSION:
+        raise ApplyError(
+            f"{UNSUPPORTED_JOURNAL_VERSION_CLASSIFICATION}: journal v4 recovery is not "
+            "supported; use prior tooling that supports journal v4 or perform "
+            "owner-directed manual recovery"
+        )
     if journal.get("schema_version") != JOURNAL_SCHEMA_VERSION:
         raise ApplyError("unsupported transaction journal schema")
     if journal.get("transaction_id") != transaction_id or journal.get("plan_sha256") != transaction_id:
@@ -3961,6 +4457,7 @@ def load_transaction(
                 raise ApplyError(f"transaction backup identity differs: {item.get('path')}")
         elif item.get("backup_path") is not None or item.get("backup_sha256") is not None:
             raise ApplyError(f"absent pre-state has a backup: {item.get('path')}")
+    journal = replay_journal_progress(root, plan, journal)
     validate_journal_progress(plan, journal)
     validate_upgrade_remediation_artifacts(
         root,
@@ -4356,6 +4853,7 @@ def rollback_loaded_transaction(
     plan: dict,
     journal: dict,
     hook: Callable[[str, dict], None] | None = None,
+    journal_io_hook: Callable[[dict], None] | None = None,
 ) -> dict:
     target = Path(plan["target_root"])
     receipt_path = recovery_receipt_path(target)
@@ -4384,7 +4882,7 @@ def rollback_loaded_transaction(
         journal["rollback_next_index"] = 0
         journal["rollback_completed_paths"] = []
         journal["rollback_start_state"] = observation(touched_paths(plan), target)
-        persist_journal(root, plan, journal)
+        persist_journal(root, plan, journal, journal_io_hook)
         invoke_boundary(
             hook,
             "after_rollback_start_journal",
@@ -4414,11 +4912,15 @@ def rollback_loaded_transaction(
         elif path.exists():
             durable_unlink(path, root)
         invoke_boundary(hook, "after_rollback_restore", {"path": relative})
-        journal["rollback_next_index"] = index + 1
-        journal["rollback_completed_paths"] = [
-            record["path"] for record in rollback_items[: index + 1]
-        ]
-        persist_journal(root, plan, journal)
+        append_progress_record(
+            root,
+            plan,
+            journal,
+            phase="rollback",
+            index=index,
+            value=relative,
+            journal_io_hook=journal_io_hook,
+        )
         invoke_boundary(
             hook,
             "after_rollback_progress_journal",
@@ -4436,7 +4938,7 @@ def rollback_loaded_transaction(
         raise ApplyError("rollback did not remove the pending receipt boundary")
     journal["state"] = "rolled-back"
     journal["last_error"] = None
-    persist_journal(root, plan, journal)
+    persist_journal(root, plan, journal, journal_io_hook)
     invoke_boundary(hook, "after_rollback_journal", {"transaction_id": journal["transaction_id"]})
     return journal
 
@@ -4447,6 +4949,7 @@ def _recover_transaction(
     action: str,
     package_root: Path | None = None,
     boundary_hook: Callable[[str, dict], None] | None = None,
+    journal_io_hook: Callable[[dict], None] | None = None,
     *,
     lock_held: bool,
     route_operation_authorized: bool,
@@ -4454,6 +4957,7 @@ def _recover_transaction(
     if action not in {"resume", "rollback"}:
         raise ApplyError("recovery action must be resume or rollback")
     with _transaction_lock_scope(target, lock_held=lock_held):
+        reject_unfinished_v4_transactions(target)
         root, plan, journal = load_transaction(target, transaction_id)
         if route_checkpoint_context(plan) is not None and not route_operation_authorized:
             raise ApplyError(
@@ -4533,11 +5037,13 @@ def _recover_transaction(
         cleanup_transaction_staging(target, root, plan, journal)
         verify_recovery_surface(target, plan, journal)
         if action == "rollback":
-            return rollback_loaded_transaction(root, plan, journal, boundary_hook)
+            return rollback_loaded_transaction(
+                root, plan, journal, boundary_hook, journal_io_hook
+            )
         if journal["state"] == "applying":
             journal["state"] = "interrupted"
             journal["last_error"] = "recovered an abandoned applying state"
-            persist_journal(root, plan, journal)
+            persist_journal(root, plan, journal, journal_io_hook)
         if journal["state"] in {
             "awaiting-target-validation",
             "validated",
@@ -4552,7 +5058,14 @@ def _recover_transaction(
         if incoming is None:
             raise ApplyError("resume package binding is unavailable")
         return run_transaction(
-            root, journal, plan, package_root, incoming, reconciles, boundary_hook
+            root,
+            journal,
+            plan,
+            package_root,
+            incoming,
+            reconciles,
+            boundary_hook,
+            journal_io_hook,
         )
 
 
@@ -4562,6 +5075,7 @@ def recover_transaction(
     action: str,
     package_root: Path | None = None,
     boundary_hook: Callable[[str, dict], None] | None = None,
+    journal_io_hook: Callable[[dict], None] | None = None,
 ) -> dict:
     return _recover_transaction(
         target,
@@ -4569,6 +5083,7 @@ def recover_transaction(
         action,
         package_root,
         boundary_hook,
+        journal_io_hook,
         lock_held=False,
         route_operation_authorized=False,
     )
@@ -4580,6 +5095,7 @@ def recover_transaction_locked(
     action: str,
     package_root: Path | None = None,
     boundary_hook: Callable[[str, dict], None] | None = None,
+    journal_io_hook: Callable[[dict], None] | None = None,
 ) -> dict:
     """Internal S2 primitive; caller already holds ``transaction_lock(target)``."""
     return _recover_transaction(
@@ -4588,6 +5104,7 @@ def recover_transaction_locked(
         action,
         package_root,
         boundary_hook,
+        journal_io_hook,
         lock_held=True,
         route_operation_authorized=True,
     )
@@ -4598,6 +5115,7 @@ def _apply_plan(
     acknowledgements: set[str] | None = None,
     boundary_hook: Callable[[str, dict], None] | None = None,
     remediation_decision: dict | None = None,
+    journal_io_hook: Callable[[dict], None] | None = None,
     *,
     lock_held: bool,
     route_operation_authorized: bool,
@@ -4606,6 +5124,7 @@ def _apply_plan(
     target = Path(plan["target_root"])
     package_root = Path(plan["package_root"])
     with _transaction_lock_scope(target, lock_held=lock_held):
+        reject_unfinished_v4_transactions(target)
         remediation: tuple[dict, dict] | None = None
         if is_upgrade_plan(plan):
             if remediation_decision is None:
@@ -4635,6 +5154,7 @@ def _apply_plan(
             acknowledgements,
             remediation=remediation,
             hook=boundary_hook,
+            journal_io_hook=journal_io_hook,
             route_operation_authorized=route_operation_authorized,
         )
         invoke_boundary(
@@ -4656,6 +5176,7 @@ def _apply_plan(
                 incoming,
                 reconciles,
                 boundary_hook,
+                journal_io_hook,
             )
         except Exception as exc:
             if journal["state"] == "planned":
@@ -4664,15 +5185,17 @@ def _apply_plan(
                 ) from exc
             journal["state"] = "interrupted"
             journal["last_error"] = str(exc)
-            persist_journal(root, plan, journal)
+            persist_journal(root, plan, journal, journal_io_hook)
             try:
-                rollback_loaded_transaction(root, plan, journal, boundary_hook)
+                rollback_loaded_transaction(
+                    root, plan, journal, boundary_hook, journal_io_hook
+                )
             except Exception as rollback_exc:
                 if journal["state"] == "rolling-back":
                     journal["last_error"] = (
                         f"{exc}; rollback failed: {rollback_exc}"
                     )
-                    persist_journal(root, plan, journal)
+                    persist_journal(root, plan, journal, journal_io_hook)
                 raise ApplyError(
                     f"package apply interrupted and rollback failed; recover transaction {journal['transaction_id']}: {rollback_exc}"
                 ) from exc
@@ -4686,12 +5209,14 @@ def apply_plan(
     acknowledgements: set[str] | None = None,
     boundary_hook: Callable[[str, dict], None] | None = None,
     remediation_decision: dict | None = None,
+    journal_io_hook: Callable[[dict], None] | None = None,
 ) -> dict:
     return _apply_plan(
         plan,
         acknowledgements,
         boundary_hook,
         remediation_decision,
+        journal_io_hook,
         lock_held=False,
         route_operation_authorized=False,
     )
@@ -4702,6 +5227,7 @@ def apply_plan_locked(
     acknowledgements: set[str] | None = None,
     boundary_hook: Callable[[str, dict], None] | None = None,
     remediation_decision: dict | None = None,
+    journal_io_hook: Callable[[dict], None] | None = None,
 ) -> dict:
     """Internal S2 primitive; caller already holds ``transaction_lock(target)``."""
     return _apply_plan(
@@ -4709,6 +5235,7 @@ def apply_plan_locked(
         acknowledgements,
         boundary_hook,
         remediation_decision,
+        journal_io_hook,
         lock_held=True,
         route_operation_authorized=True,
     )
