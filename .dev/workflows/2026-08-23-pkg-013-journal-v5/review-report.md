@@ -115,3 +115,18 @@
 - The authorization record now distinguishes authorized PR #240 push and merge-commit integration from still-prohibited Issue, Project, release, publication, and downstream mutations.
 - The plan, task results, remediation report, review report, and PR declaration retain the failed `6502c296` and `5b1060be` audits, the 90-test receipt, current remote PR state, exact next gate, and unassigned release impact.
 - This evidence-only repair requires a fresh exact-head full-suite receipt and independent review before integration.
+
+## Candidate `0bcb6e25d8a1490e0ecb33d3ab7d3cd3d6754eb5`
+
+- Subject and base matched; tracked worktree and index were clean at audit start and end.
+- Full suite result: 90 passed, 0 failed, 1 skipped in 504.673 seconds, with a schema-valid immutable-head completion envelope.
+- Independent result: `failed`; P1=0, P2=1, P3=0. Implementation and GWT blobs remained byte-identical to the P1-resolved `5b1060be` subject.
+- P2: current-state text still described the reconciliation as uncommitted at `5b1060be`, mixed pending and completed validation evidence, retained push/PR/merge in one exclusion line despite current authorization, and marked deferred workflow completion booleans true while the locator/task remained in progress.
+
+## SHA-Neutral Candidate Remediation
+
+- Current-state checkpoints now state that the reconciliation is committed in the candidate without naming a self-referential future SHA or claiming uncommitted changes.
+- Historical `5b1060be` and `0bcb6e25` full-suite and failed-audit evidence remains exact and explicitly historical.
+- The deferred declaration marks scope, tasks, and applicable verification incomplete while integration admission is pending, matching the in-progress locator and task.
+- Push, PR, and merge-commit integration are recorded as separately authorized; Issue, Project, release, publication, and downstream mutations remain prohibited.
+- The committed candidate must stay unchanged through fresh exact-head validation, audit, hosted checks, and live admission.

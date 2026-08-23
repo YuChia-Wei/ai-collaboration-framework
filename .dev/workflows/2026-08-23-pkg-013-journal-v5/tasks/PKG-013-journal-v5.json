@@ -76,8 +76,8 @@
       "repository workflow and AI-context validators"
     ],
     "role_execution_records": [],
-    "last_completed_step": "Repair head 5b1060be passed a schema-valid 90-test full suite and its audit confirmed both 6502c296 P1 findings resolved, but failed P2=1 because workflow lifecycle surfaces still claimed completed c3ffc2f4 truth.",
-    "next_action": "Commit reconciled workflow lifecycle evidence, rerun immutable-head full validation and independent review, require five hosted checks, capture live admission, and merge PR #240 with merge-commit topology only if every gate passes."
+    "last_completed_step": "Evidence head 0bcb6e25 passed a schema-valid 90-test full suite but failed P2=1 because it still described its own reconciliation as uncommitted and mixed pending/completed lifecycle evidence.",
+    "next_action": "Keep this committed SHA-neutral candidate unchanged, rerun immutable-head full validation and independent review, require five hosted checks, capture live admission, and merge PR #240 with merge-commit topology only if every gate passes."
   },
   "results": {
     "summary": "Journal v5 snapshots durable lifecycle state while newline-framed, fsynced, digest-chained progress records retain one durable boundary per completed apply or rollback operation with linear logical journal writes.",
@@ -126,7 +126,9 @@
       "fixed-head 6502c296 independent PR-head audit: failed with P1 transaction-lock leaf redirection and P1 unclassified legacy-journal leaf bypass",
       "post-PR-head-audit GWT-062, GWT-063, GWT-065, and GWT-069 through GWT-072: 7 passed on the normal Windows host ACL boundary",
       "fixed-head 5b1060be full suite: 90 passed, 0 failed, 1 skipped in 516.047 seconds; schema 1.1 completion validated",
-      "fixed-head 5b1060be independent audit: both prior P1 findings resolved; failed with P2 stale workflow lifecycle evidence"
+      "fixed-head 5b1060be independent audit: both prior P1 findings resolved; failed with P2 stale workflow lifecycle evidence",
+      "fixed-head 0bcb6e25 full suite: 90 passed, 0 failed, 1 skipped in 504.673 seconds; schema 1.1 completion validated",
+      "fixed-head 0bcb6e25 independent audit: implementation remained resolved; failed with P2 self-referential pending/current-state workflow evidence"
     ],
     "finding_status": "verification-pending",
     "residual_risk": "Native Windows junction coverage falls back to deterministic reparse classification when link creation is unavailable, and adversarial concurrent path replacement between validation and open is not covered by deterministic fixtures.",
