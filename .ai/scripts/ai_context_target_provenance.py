@@ -1932,6 +1932,7 @@ def validate_v5_progress_log(
 ) -> None:
     if journal.get("schema_version") != "ai-context-package-apply-journal/v5":
         return
+    initial_error_count = len(errors)
     path_value = journal.get("progress_log_path")
     count = journal.get("progress_record_count")
     tail = journal.get("progress_tail_sha256")
@@ -2049,6 +2050,51 @@ def validate_v5_progress_log(
         "finalized",
     } and count != len(records):
         errors.append(f"{progress_path}: terminal v5 progress is not fully compacted")
+    if len(errors) != initial_error_count:
+        return
+
+    # Reuse the recovery implementation's semantic replay so target admission
+    # cannot accept a digest-valid log that package recovery would reject.
+    plan_path = transaction / "plan.json"
+    if (
+        not plan_path.is_file()
+        or plan_path.is_symlink()
+        or is_reparse_point(plan_path)
+    ):
+        errors.append(
+            f"{progress_path}: v5 progress semantics cannot bind a safe sealed plan"
+        )
+        return
+    try:
+        plan = json.loads(plan_path.read_text(encoding="utf-8"))
+    except (OSError, UnicodeDecodeError, json.JSONDecodeError) as exc:
+        errors.append(
+            f"{progress_path}: v5 progress semantics cannot read sealed plan: {exc}"
+        )
+        return
+    if not isinstance(plan, dict):
+        errors.append(
+            f"{progress_path}: v5 progress semantics require a sealed plan mapping"
+        )
+        return
+    unsigned_plan = dict(plan)
+    declared_plan_sha = unsigned_plan.pop("plan_sha256", None)
+    if (
+        declared_plan_sha != transaction.name
+        or canonical_json_digest(unsigned_plan) != transaction.name
+    ):
+        errors.append(
+            f"{progress_path}: v5 progress semantics cannot bind the sealed plan identity"
+        )
+        return
+    try:
+        import ai_context_package_apply as package_apply
+
+        package_apply.replay_journal_progress(transaction, plan, journal)
+    except (ImportError, OSError, KeyError, TypeError, ValueError) as exc:
+        errors.append(
+            f"{progress_path}: v5 progress semantics differ from sealed plan: {exc}"
+        )
 
 
 def validate_apply_transaction_journals(

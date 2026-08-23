@@ -4726,6 +4726,112 @@ class AiContextPackageApplyGwtTests(unittest.TestCase):
         finally:
             fixture.close()
 
+    def test_gwt_065_given_unfinished_v4_when_v5_recovery_would_mutate_then_resume_and_rollback_are_blocked(self) -> None:
+        fixture = PackageApplyFixture()
+        try:
+            fixture.make_package(
+                {
+                    ".ai/one.md": (b"one\n", "framework-managed", "0644"),
+                    ".ai/two.md": (b"two\n", "framework-managed", "0644"),
+                },
+                [
+                    operation("001-add", "add", ".ai/one.md"),
+                    operation("002-add", "add", ".ai/two.md"),
+                ],
+            )
+            plan = fixture.plan()
+
+            def interrupt_after_first_durable_prefix(event: str, details: dict) -> None:
+                if event == "after_progress_journal" and details["next_apply_index"] == 1:
+                    raise APPLY.InjectedInterruption("fixture crash after durable append")
+
+            with self.assertRaises(APPLY.InjectedInterruption):
+                RAW_APPLY_PLAN(plan, boundary_hook=interrupt_after_first_durable_prefix)
+            legacy_id = "c" * 64
+            legacy_root = APPLY.transaction_root(fixture.target, legacy_id)
+            legacy_root.mkdir(parents=True)
+            (legacy_root / "journal.yaml").write_text(
+                yaml.safe_dump(
+                    {
+                        "schema_version": APPLY.LEGACY_JOURNAL_SCHEMA_VERSION,
+                        "transaction_id": legacy_id,
+                        "plan_sha256": legacy_id,
+                        "state": "applying",
+                    },
+                    sort_keys=False,
+                ),
+                encoding="utf-8",
+                newline="\n",
+            )
+
+            for action, package_root in (("resume", fixture.package), ("rollback", None)):
+                with self.assertRaisesRegex(
+                    APPLY.ApplyError,
+                    "unsupported-transaction-journal-version.*prior tooling.*owner-directed manual recovery",
+                ):
+                    APPLY.recover_transaction(
+                        fixture.target,
+                        plan["plan_sha256"],
+                        action,
+                        package_root,
+                    )
+
+            self.assertEqual(b"one\n", (fixture.target / ".ai/one.md").read_bytes())
+            self.assertFalse((fixture.target / ".ai/two.md").exists())
+        finally:
+            fixture.close()
+
+    def test_gwt_066_given_digest_valid_v5_progress_that_differs_from_sealed_plan_when_target_validates_then_it_fails_closed(self) -> None:
+        fixture = PackageApplyFixture()
+        try:
+            fixture.make_package(
+                {
+                    ".ai/one.md": (b"one\n", "framework-managed", "0644"),
+                    ".ai/two.md": (b"two\n", "framework-managed", "0644"),
+                },
+                [
+                    operation("001-add", "add", ".ai/one.md"),
+                    operation("002-add", "add", ".ai/two.md"),
+                ],
+            )
+            plan = fixture.plan()
+            RAW_APPLY_PLAN(plan)
+            transaction = APPLY.transaction_root(fixture.target, plan["plan_sha256"])
+            progress_path = transaction / APPLY.JOURNAL_PROGRESS_PATH
+            records = [
+                json.loads(line)
+                for line in progress_path.read_text(encoding="utf-8").splitlines()
+            ]
+            records[0]["operation_id"] = "digest-valid-but-not-in-sealed-plan"
+            previous = None
+            for record in records:
+                record["previous_record_sha256"] = previous
+                record.pop("record_sha256", None)
+                record["record_sha256"] = APPLY.canonical_digest(record)
+                previous = record["record_sha256"]
+            progress_path.write_bytes(b"".join(APPLY.canonical_json_bytes(item) for item in records))
+            journal_path = transaction / "journal.yaml"
+            journal = yaml.safe_load(journal_path.read_text(encoding="utf-8"))
+            journal["progress_tail_sha256"] = previous
+            journal_path.write_text(
+                yaml.safe_dump(journal, sort_keys=True),
+                encoding="utf-8",
+                newline="\n",
+            )
+
+            errors: list[str] = []
+            TARGET.validate_pending_apply_receipt(fixture.target, errors)
+            self.assertTrue(
+                any("v5 progress semantics differ from sealed plan" in item for item in errors),
+                errors,
+            )
+            with self.assertRaisesRegex(
+                APPLY.ApplyError, "transaction journal apply progress is invalid"
+            ):
+                APPLY.load_transaction(fixture.target, plan["plan_sha256"])
+        finally:
+            fixture.close()
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -20,7 +20,7 @@
 - `current_phase`: `remediation`
 - `artifact_root`: `.dev/workflows/2026-08-23-pkg-013-journal-v5`
 - `created_at`: `2026-08-23T18:53:54+08:00`
-- `updated_at`: `2026-08-23T19:18:44+08:00`
+- `updated_at`: `2026-08-23T19:35:43+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md`
 - `template_version`: `1.2.0`
 
@@ -49,7 +49,7 @@
 | GWT scenario design | `bdd-gwt-test-designer` | direct, pre-implementation | completed |
 | Bounded implementation and concrete tests | `slice-implementer` | generic execution mode | completed |
 | Test execution | target-owned Python unittest commands | explicit lifecycle validation | focused checks passed; fixed-head full suite pending |
-| Independent fixed-head review | read-only independent auditor | exact commit | pending |
+| Independent fixed-head review | read-only independent auditor | exact commit | first candidate rejected with two P1 findings; repaired candidate re-review pending |
 | .NET code-review route | `code-reviewer` | not applicable to the Python and YAML/Markdown subject | not-applicable |
 | Spec compliance | `spec-compliance-validator` | not selected by owner or target profile for this Issue | not-applicable |
 
@@ -76,11 +76,11 @@ The `bdd-gwt-test-designer` stage must cover at least:
 
 ## Resume Checkpoint
 
-- Last completed action: journal v5 implementation, GWT-061 through GWT-064, focused legacy recovery regressions, and repository governance validators completed locally.
-- Current task: `PKG-013-journal-v5` candidate checkpoint.
-- Exact next action: create the immutable implementation commit, dispatch one full package-apply validation, and bind independent read-only review to that exact commit.
-- Validation already completed: new v5 GWTs pass; selected v4/v5 crash, corruption, resume, rollback, and receipt regressions pass; `validate-ai-context.py`, `validate-source-governance.py`, `validate-workflow-artifacts.py`, Python compilation, and `git diff --check` pass. One sandbox Temp ACL run is retained as blocked-by-environment, and four pre-update snapshot-assumption assertions are retained as failed before the tests were corrected for v5 replay.
-- Git state: branch `codex/issue-239-journal-v5` at base `92270db07404602210d1c24594a669709dbd5b1f` with the uncommitted implementation candidate.
+- Last completed action: full package-apply suite passed at `c196c5589f228b791f46dace8c4e8e9dca5d8cce`, but the exact-head independent audit rejected that candidate with two P1 findings; both bounded repairs and their GWT-065/GWT-066 regressions now pass locally.
+- Current task: `PKG-013-journal-v5` fixed-head finding remediation.
+- Exact next action: commit the two P1 repairs, rerun full fixed-head validation, and obtain a fresh independent audit of the new SHA.
+- Validation already completed: first fixed-head full suite 82 passed, 0 failed, 1 skipped; P1 regressions GWT-065/GWT-066 pass; GWT-062/GWT-063 and target-provenance GWT-049/GWT-052/GWT-053/GWT-056 pass after repair. Earlier sandbox Temp ACL blocking and pre-correction snapshot-assumption failures remain retained evidence.
+- Git state: branch `codex/issue-239-journal-v5`; immutable failed-audit candidate `c196c5589f228b791f46dace8c4e8e9dca5d8cce` plus uncommitted bounded repairs.
 - Branch history and checkpoint handoffs: none.
 - Blockers or unresolved decisions: none; release allocation remains intentionally unassigned.
 

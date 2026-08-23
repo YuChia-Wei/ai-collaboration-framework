@@ -1,0 +1,31 @@
+# PKG-013 Journal v5 Independent Review
+
+## Review Scope
+
+- Workflow: `2026-08-23-pkg-013-journal-v5`
+- Owner skill: `ai-context-governance`
+- Role-binding owner: `ai-context-upgrader`
+- Canonical role: `.ai/assets/sub-agent-role-prompts/fixed-head-independent-auditor/sub-agent.yaml`
+- Gate selection: explicit high-risk fixed-head gate because journal recovery controls durable downstream target mutation after crashes.
+- Integration owner: source-task primary agent; the auditor cannot accept integration or close the workflow.
+
+## Candidate `c196c5589f228b791f46dace8c4e8e9dca5d8cce`
+
+- Subject and parent matched; tracked worktree and index were clean at audit start and end.
+- Result: `failed`; P1=2, P2=0, P3=0.
+- P1: unfinished v4 detection guarded new apply but not v5 resume or rollback, so recovery could still mutate a target while unsupported unfinished v4 evidence existed.
+- P1: target provenance validated v5 progress framing and digests without binding operation IDs, indexes, rollback paths, transitions, and snapshot prefixes to the sealed plan; a digest-resealed log could pass target validation while recovery rejected it.
+- The failed review remains retained evidence and cannot be replaced by the preceding 82-test pass.
+- Auditor residual coverage notes: rollback write-byte scaling and high-N replay/read cost were not independently concluded after the two P1 findings failed the gate.
+
+## Remediation
+
+- The recovery lock now runs the same unfinished-v4 mutation guard before loading or mutating a v5 transaction.
+- Target provenance now reuses the package recovery semantic replay against the identity-verified sealed plan, preventing the admission and recovery contracts from diverging.
+- GWT-065 covers both resume and rollback blocking with target bytes unchanged.
+- GWT-066 reseals a semantically false operation ID and digest chain and requires target validation and recovery to fail closed consistently.
+
+## Required Re-review
+
+- The repair requires a new immutable commit, full fixed-head validation, and a fresh independent audit of that new SHA.
+- No acceptance conclusion is recorded for the repaired working tree yet.

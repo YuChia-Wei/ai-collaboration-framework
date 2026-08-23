@@ -4859,6 +4859,7 @@ def _recover_transaction(
     if action not in {"resume", "rollback"}:
         raise ApplyError("recovery action must be resume or rollback")
     with _transaction_lock_scope(target, lock_held=lock_held):
+        reject_unfinished_v4_transactions(target)
         root, plan, journal = load_transaction(target, transaction_id)
         if route_checkpoint_context(plan) is not None and not route_operation_authorized:
             raise ApplyError(
