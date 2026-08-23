@@ -15,11 +15,11 @@
 - `branch`: `codex/2026-08-23-retained-origin-route-evidence`
 - `base_branch`: `main`
 - `branch_segment`: `1`
-- `status`: `in_progress`
-- `current_phase`: `verify`
+- `status`: `completed`
+- `current_phase`: `completed`
 - `artifact_root`: `.dev/workflows/2026-08-23-retained-origin-route-evidence`
 - `created_at`: `2026-08-23T16:21:28+08:00`
-- `updated_at`: `2026-08-23T17:20:27+08:00`
+- `updated_at`: `2026-08-23T17:33:48+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md`
 - `template_version`: `1.2.0`
 
@@ -56,13 +56,13 @@
 
 ## Resume Checkpoint
 
-- Last completed action: Reconciled the second exact-head audit's P1 production multi-hop fixture finding; the real schema-1.1/v2 two-hop admission/apply/validate/finalize/checkpoint test passed 1/1 in 56.025 seconds.
-- Current task: `UPG-005-S3`
-- Exact next action: Commit the production multi-hop integration correction and request a third exact-head read-only `ai-context-auditor` verification on the new clean head.
-- Validation already completed: route 30/30, packaging 1/1, package-apply 2/2, release-state 36/36, production-path multi-hop 1/1, workflow artifacts 91/91 before this refresh, AST syntax and diff checks.
-- Git state: Commits `6c3e1e2c` and `04fe7875` retain the first and second failed exact-head audits; the production multi-hop fixture correction is uncommitted.
+- Last completed action: Third exact-head audit accepted `bf9dbd11021846a88d421a96af89fa19ddf2b7d7` with P0=0/P1=0/P2=0/P3=0; owner selected historical recovery option A.
+- Current task: none; `UPG-005-S1`, `UPG-005-S2`, and `UPG-005-S3` are completed.
+- Exact next action: None in this workflow. Release management may later batch the prospective schema-1.1/v2 package into an owner-selected release without rewriting v0.14.0 history.
+- Validation already completed: route 30/30, packaging 1/1, package-apply 2/2, release-state 36/36, production-path multi-hop 1/1, workflow artifacts 91/91, three-commit policy validation 3/3, AST syntax and diff checks, and accepted third exact-head audit.
+- Git state: Durable implementation commits are `6c3e1e2c`, `04fe7875`, and accepted audited head `bf9dbd11`; this final workflow closeout metadata is pending one local commit.
 - Branch history and checkpoint handoffs: Segment 1 only; no push or merge.
-- Blockers or unresolved decisions: After fixed-head review, the owner must choose whether historical v0.14.0 source records remain untouched or receive a separately authorized repository-only failed-proof correction. Neither option changes published bytes or allocates a release.
+- Blockers or unresolved decisions: None in Issue #237. Owner selected option A: historical v0.14.0 source matrix and receipt bytes remain unchanged and non-passing; version allocation remains outside this workflow.
 
 ## Branch Lifecycle
 

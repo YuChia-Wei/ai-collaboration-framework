@@ -6,9 +6,9 @@
   "task_id": "UPG-005-S3",
   "workflow_id": "2026-08-23-retained-origin-route-evidence",
   "owner_skill": "ai-context-governance",
-  "status": "in_progress",
+  "status": "completed",
   "created_at": "2026-08-23T16:21:28+08:00",
-  "updated_at": "2026-08-23T17:20:27+08:00",
+  "updated_at": "2026-08-23T17:33:48+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-5.6-sol",
   "reasoning_effort": "high",
@@ -42,21 +42,22 @@
       "focused validation passed before immutable commit",
       "workflow artifact validation passed before final report/task refresh"
     ],
-    "last_completed_step": "Second exact-head review failed with P1=1 because the real multi-hop production admission fixture remained legacy; it now emits schema 1.1/v2 evidence and its full focused scenario passed.",
-    "next_action": "Commit the integration correction, run a third exact-head read-only review on the new clean head, then request the owner historical-recovery choice."
+    "last_completed_step": "Third exact-head review accepted bf9dbd11021846a88d421a96af89fa19ddf2b7d7 with no P0-P3 findings; owner selected historical recovery option A.",
+    "next_action": "Completed. Leave historical v0.14.0 source records unchanged and defer the first passing schema-1.1/v2 inventory to a separately selected future release."
   },
   "results": {
-    "summary": "Implementation and focused validation are ready for exact-head review; historical source-record recovery remains an explicit owner choice.",
+    "summary": "Implementation, focused validation, and exact-head review are complete. Owner selected option A, so historical v0.14.0 source records remain unchanged and legacy routes remain reconciliation-required.",
     "files_changed": [
       ".dev/workflows/2026-08-23-retained-origin-route-evidence/reports/remediation-report.md"
     ],
     "tests_run": [
       "exact-head 6c3e1e2c audit: failed, P0=0/P1=1/P2=1/P3=0",
       "exact-head 04fe7875 audit: failed, P0=0/P1=1/P2=0/P3=0",
-      "third fixed-head read-only ai-context-auditor verification pending"
+      "exact-head bf9dbd11 audit: accepted, P0=0/P1=0/P2=0/P3=0",
+      "owner historical recovery decision: option A"
     ],
-    "finding_status": "not-addressed",
-    "residual_risk": "Historical v0.14.0 route recovery may require an owner-selected non-mutating publication strategy.",
-    "follow_up_needed": true
+    "finding_status": "resolved-with-owner-deferred-historical-record",
+    "residual_risk": "Historical v0.14.0 legacy routes remain reconciliation-required by explicit owner choice; the first passing schema-1.1/v2 inventory belongs to a future separately allocated release.",
+    "follow_up_needed": false
   }
 }
