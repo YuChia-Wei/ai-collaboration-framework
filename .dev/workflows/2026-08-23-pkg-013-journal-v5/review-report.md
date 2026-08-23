@@ -69,7 +69,17 @@
 - Target admission records a SHA-named unsafe transaction child as an error rather than silently skipping it.
 - GWT-070 redirects or simulates redirecting the transaction root and proves recovery, append, and target admission fail before the next target operation or external progress bytes change.
 
-## Required Re-review
+## Accepted Candidate `c3ffc2f4d2b576943595f2b0b99692f39d7895e5`
 
-- The transaction-root repair requires a new immutable commit, full fixed-head validation, and a fresh independent audit of that new SHA.
-- No acceptance conclusion is recorded for the repaired working tree yet.
+- Subject and parent matched; tracked worktree and index were clean at audit start and end.
+- Full suite result: 88 passed, 0 failed, 1 skipped in 533.226 seconds; the schema 1.1 completion record validated against its exact dispatch.
+- Independent result: accepted for local implementation handoff with P1=0, P2=0, P3=0.
+- The audit confirmed Git-admin base/root and leaf link safety, v4 mutation blocking without v4 recovery, target/recovery semantic and state parity, per-operation durability, linear deterministic logical I/O, torn-tail recovery, idempotency, and stderr-only progress.
+- The prior failed audits of `c196c558`, `ed48ec99`, `34753883`, and `679bc0be` remain retained and are not replaced by the accepted result.
+- Residual coverage: native Windows junction creation was not independently exercised when the host required mocked reparse classification; concurrent path replacement between validation and open is outside deterministic fixture coverage.
+
+## Review Disposition
+
+- Accepted implementation subject: `c3ffc2f4d2b576943595f2b0b99692f39d7895e5`.
+- The later workflow closeout commit changes evidence only and does not alter the audited implementation subject.
+- Push, PR, merge, Issue closure, Project mutation, release allocation, tag, Release, and publication remain outside this review.

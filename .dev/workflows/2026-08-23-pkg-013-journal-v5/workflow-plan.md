@@ -16,11 +16,11 @@
 - `branch`: `codex/issue-239-journal-v5`
 - `base_branch`: `main`
 - `branch_segment`: `1`
-- `status`: `in_progress`
-- `current_phase`: `remediation`
+- `status`: `completed`
+- `current_phase`: `completed`
 - `artifact_root`: `.dev/workflows/2026-08-23-pkg-013-journal-v5`
 - `created_at`: `2026-08-23T18:53:54+08:00`
-- `updated_at`: `2026-08-23T20:15:38+08:00`
+- `updated_at`: `2026-08-23T20:27:05+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md`
 - `template_version`: `1.2.0`
 
@@ -48,8 +48,8 @@
 | AI-context package lifecycle governance | `ai-context-governance` | workflow owner | active |
 | GWT scenario design | `bdd-gwt-test-designer` | direct, pre-implementation | completed |
 | Bounded implementation and concrete tests | `slice-implementer` | generic execution mode | completed |
-| Test execution | target-owned Python unittest commands | explicit lifecycle validation | focused checks passed; fixed-head full suite pending |
-| Independent fixed-head review | read-only independent auditor | exact commit | four candidates rejected; transaction-root ancestor boundary remediation pending fresh review |
+| Test execution | target-owned Python unittest commands | explicit lifecycle validation | fixed-head full suite passed 88/88 with one capability skip |
+| Independent fixed-head review | read-only independent auditor | exact commit | accepted `c3ffc2f4d2b576943595f2b0b99692f39d7895e5`, P1/P2/P3=0/0/0 |
 | .NET code-review route | `code-reviewer` | not applicable to the Python and YAML/Markdown subject | not-applicable |
 | Spec compliance | `spec-compliance-validator` | not selected by owner or target profile for this Issue | not-applicable |
 
@@ -76,11 +76,11 @@ The `bdd-gwt-test-designer` stage must cover at least:
 
 ## Resume Checkpoint
 
-- Last completed action: full suite passed at `679bc0bea9c08176c3495946fb0c228ef4f4e6a2`, but its audit rejected a transaction-root ancestor symlink/junction that bypassed leaf-only checks; GWT-070 now covers recovery, append, and target admission without external or next-operation mutation.
-- Current task: `PKG-013-journal-v5` fourth fixed-head finding remediation.
-- Exact next action: commit transaction-root boundary hardening, rerun full fixed-head validation, and obtain a fresh independent audit of the new SHA.
-- Validation already completed: fixed-head suites at the first four candidates passed 82, 84, 86, and 87 tests but cannot override their failed audits; GWT-070 and focused normal resume, legacy, leaf-link, and safe-add tests pass after the current repair. A wrong normal-apply selector produced one retained unittest loader error before the corrected selector passed.
-- Git state: branch `codex/issue-239-journal-v5`; four failed-audit candidates retained plus uncommitted transaction-root hardening.
+- Last completed action: exact-head full suite and independent audit accepted `c3ffc2f4d2b576943595f2b0b99692f39d7895e5`; four earlier failed heads remain retained as remediation evidence.
+- Current task: completed local implementation and workflow closeout for `PKG-013-journal-v5`.
+- Exact next action: owner may separately authorize push and then pull-request creation; neither is implied by this closeout.
+- Validation completed: fixed-head full suite 88 passed, 0 failed, 1 skipped in 533.226 seconds with schema-valid dispatch/completion; exact-head independent audit P1/P2/P3=0/0/0; AI-context, source-governance, workflow, syntax, and diff checks passed before closeout and are rerun after it.
+- Git state: branch `codex/issue-239-journal-v5`; accepted implementation head `c3ffc2f4d2b576943595f2b0b99692f39d7895e5`, followed only by pending workflow closeout evidence.
 - Branch history and checkpoint handoffs: none.
 - Blockers or unresolved decisions: none; release allocation remains intentionally unassigned.
 
@@ -88,4 +88,4 @@ The `bdd-gwt-test-designer` stage must cover at least:
 
 | Segment | Branch | Base | Checkpoint Type | Commit | Remote / Target | Recorded At | Reason | Resume Branch / Action |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| 1 | `codex/issue-239-journal-v5` | `main` at `92270db07404602210d1c24594a669709dbd5b1f` | local implementation | pending | none | `2026-08-23T18:53:54+08:00` | Issue #239 authorized local workflow and commits | continue locally |
+| 1 | `codex/issue-239-journal-v5` | `main` at `92270db07404602210d1c24594a669709dbd5b1f` | local implementation | `c3ffc2f4d2b576943595f2b0b99692f39d7895e5` | none | `2026-08-23T20:27:05+08:00` | Issue #239 implementation, full validation, and accepted fixed-head audit complete | request separate push and PR authorization |
