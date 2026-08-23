@@ -7,17 +7,17 @@
   "workflow_id": "2026-08-23-pkg-013-journal-v5",
   "owner_skill": "ai-context-governance",
   "orchestrator_skill": "software-development-orchestrator",
-  "status": "completed",
+  "status": "in_progress",
   "created_at": "2026-08-23T18:53:54+08:00",
-  "updated_at": "2026-08-23T20:27:05+08:00",
+  "updated_at": "2026-08-23T21:10:52+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-5",
   "reasoning_effort": "high",
   "finding_ids": ["Issue-239", "PKG-013"],
   "authorization": {
-    "source": "https://github.com/YuChia-Wei/ai-collaboration-framework/issues/239",
-    "allowed": ["workflow-artifacts", "implementation", "focused-validation", "independent-read-only-review", "local-commits"],
-    "prohibited": ["push", "pull-request", "merge", "issue-mutation", "project-mutation", "release-allocation", "tag", "release", "publication", "downstream-mutation"]
+    "source": "Issue #239 and source-thread owner authorization, extended on 2026-08-23 to PR #240 push and merge-commit integration",
+    "allowed": ["workflow-artifacts", "implementation", "focused-validation", "independent-read-only-review", "local-commits", "push", "pull-request", "merge-commit-integration"],
+    "prohibited": ["issue-mutation", "project-mutation", "release-allocation", "tag", "release", "publication", "downstream-mutation"]
   },
   "scope": {
     "target": "Journal v5 for the Python AI context package-apply lifecycle",
@@ -76,8 +76,8 @@
       "repository workflow and AI-context validators"
     ],
     "role_execution_records": [],
-    "last_completed_step": "Accepted exact implementation head c3ffc2f4 after schema-valid 88-test full-suite completion and independent P1/P2/P3=0/0/0 audit.",
-    "next_action": "Completed locally; await separate owner authorization for push and pull-request creation."
+    "last_completed_step": "Repair head 5b1060be passed a schema-valid 90-test full suite and its audit confirmed both 6502c296 P1 findings resolved, but failed P2=1 because workflow lifecycle surfaces still claimed completed c3ffc2f4 truth.",
+    "next_action": "Commit reconciled workflow lifecycle evidence, rerun immutable-head full validation and independent review, require five hosted checks, capture live admission, and merge PR #240 with merge-commit topology only if every gate passes."
   },
   "results": {
     "summary": "Journal v5 snapshots durable lifecycle state while newline-framed, fsynced, digest-chained progress records retain one durable boundary per completed apply or rollback operation with linear logical journal writes.",
@@ -122,10 +122,14 @@
       "post-fourth-audit GWT-062, GWT-063, and GWT-069: 3 passed",
       "post-fourth-audit wrong safe-add selector: 1 unittest loader error; corrected GWT-002 selector passed",
       "fixed-head c3ffc2f4 full suite: 88 passed, 0 failed, 1 skipped in 533.226 seconds; schema 1.1 completion validated",
-      "fixed-head c3ffc2f4 independent audit: accepted with P1=0, P2=0, P3=0"
+      "fixed-head c3ffc2f4 independent audit: accepted with P1=0, P2=0, P3=0",
+      "fixed-head 6502c296 independent PR-head audit: failed with P1 transaction-lock leaf redirection and P1 unclassified legacy-journal leaf bypass",
+      "post-PR-head-audit GWT-062, GWT-063, GWT-065, and GWT-069 through GWT-072: 7 passed on the normal Windows host ACL boundary",
+      "fixed-head 5b1060be full suite: 90 passed, 0 failed, 1 skipped in 516.047 seconds; schema 1.1 completion validated",
+      "fixed-head 5b1060be independent audit: both prior P1 findings resolved; failed with P2 stale workflow lifecycle evidence"
     ],
-    "finding_status": "remediated-locally",
+    "finding_status": "verification-pending",
     "residual_risk": "Native Windows junction coverage falls back to deterministic reparse classification when link creation is unavailable, and adversarial concurrent path replacement between validation and open is not covered by deterministic fixtures.",
-    "follow_up_needed": false
+    "follow_up_needed": true
   }
 }

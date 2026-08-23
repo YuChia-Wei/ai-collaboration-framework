@@ -16,11 +16,11 @@
 - `branch`: `codex/issue-239-journal-v5`
 - `base_branch`: `main`
 - `branch_segment`: `1`
-- `status`: `completed`
-- `current_phase`: `completed`
+- `status`: `in_progress`
+- `current_phase`: `post-audit`
 - `artifact_root`: `.dev/workflows/2026-08-23-pkg-013-journal-v5`
 - `created_at`: `2026-08-23T18:53:54+08:00`
-- `updated_at`: `2026-08-23T20:27:05+08:00`
+- `updated_at`: `2026-08-23T21:10:52+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md`
 - `template_version`: `1.2.0`
 
@@ -29,7 +29,7 @@
 - Problem statement: Issue #239 records quadratic write amplification because journal v4 rewrites the full completed-operation prefix after every durable operation.
 - Authorization source: live GitHub Issue `YuChia-Wei/ai-collaboration-framework#239` and the owner delegation in the source Codex task.
 - Authorized remediation scope: journal v5 persistence and recovery only; minimal v4 terminal/non-terminal mutation-safety classification; deterministic write-call/byte instrumentation; opt-in stderr progress; owning tests, schemas, templates, and documentation.
-- Exclusions: v4 resume, rollback, migration, conversion, or dual recovery; Issues #149 and #168; CLI/runtime rewrite; downstream mutation; release notes; push, PR, merge, Issue/Project mutation, release allocation, tag, release, or publication.
+- Exclusions: v4 resume, rollback, migration, conversion, or dual recovery; Issues #149 and #168; CLI/runtime rewrite; downstream mutation; release notes; Issue/Project mutation, release allocation, tag, release, or publication. Push, PR #240, and merge-commit integration are now separately owner-authorized.
 - Completion criteria: v5 write work is linear or bounded; each completed operation is durable before the next starts; v5 resume/rollback/idempotency/crash boundaries remain exact; unfinished v4 blocks safely while terminal v4 does not; stdout remains unchanged without progress text; focused and proportionate validation pass on the exact reviewed commit.
 - Release impact: breaking journal contract, provisionally suitable for a future minor release such as v0.15.0; allocation remains owner-unassigned.
 
@@ -48,8 +48,8 @@
 | AI-context package lifecycle governance | `ai-context-governance` | workflow owner | active |
 | GWT scenario design | `bdd-gwt-test-designer` | direct, pre-implementation | completed |
 | Bounded implementation and concrete tests | `slice-implementer` | generic execution mode | completed |
-| Test execution | target-owned Python unittest commands | explicit lifecycle validation | fixed-head full suite passed 88/88 with one capability skip |
-| Independent fixed-head review | read-only independent auditor | exact commit | accepted `c3ffc2f4d2b576943595f2b0b99692f39d7895e5`, P1/P2/P3=0/0/0 |
+| Test execution | target-owned Python unittest commands | explicit lifecycle validation | fixed-head full suite passed 90/90 with one capability skip at `5b1060be`; final evidence-head rerun pending |
+| Independent fixed-head review | read-only independent auditor | exact commit | `5b1060be` confirmed both prior P1 repairs and failed on one P2 stale-lifecycle contradiction; fresh evidence-head review pending |
 | .NET code-review route | `code-reviewer` | not applicable to the Python and YAML/Markdown subject | not-applicable |
 | Spec compliance | `spec-compliance-validator` | not selected by owner or target profile for this Issue | not-applicable |
 
@@ -72,20 +72,21 @@ The `bdd-gwt-test-designer` stage must cover at least:
 4. Run focused validation, then broader repository-owned checks proportionate to risk.
 5. Commit a clean implementation candidate and bind an independent read-only review to that exact commit.
 6. Repair only within authorized scope; any repair invalidates the prior review and requires a new exact-head review.
-7. Finalize workflow evidence and local commits without any remote or release mutation.
+7. Reconcile PR-head review evidence, then admit and integrate only an exact clean head with successful full validation, hosted checks, independent audit, and live provider read-back; keep Issue/Project/release actions separate.
 
 ## Resume Checkpoint
 
-- Last completed action: exact-head full suite and independent audit accepted `c3ffc2f4d2b576943595f2b0b99692f39d7895e5`; four earlier failed heads remain retained as remediation evidence.
-- Current task: completed local implementation and workflow closeout for `PKG-013-journal-v5`.
-- Exact next action: owner may separately authorize push and then pull-request creation; neither is implied by this closeout.
-- Validation completed: fixed-head full suite 88 passed, 0 failed, 1 skipped in 533.226 seconds with schema-valid dispatch/completion; exact-head independent audit P1/P2/P3=0/0/0; AI-context, source-governance, workflow, syntax, and diff checks passed before closeout and are rerun after it.
-- Git state: branch `codex/issue-239-journal-v5`; accepted implementation head `c3ffc2f4d2b576943595f2b0b99692f39d7895e5`, followed only by pending workflow closeout evidence.
+- Last completed action: `5b1060bed0056271ba7406810e5e4c5f519ffffc` passed 90/90 full validation and resolved both `6502c296` P1 findings; its independent audit failed on one P2 stale workflow-lifecycle contradiction retained in the review report.
+- Current task: in-progress reconciliation of locator, plan, task, remediation, review, and PR declaration truth before a new exact-head gate.
+- Exact next action: commit the lifecycle-evidence reconciliation, rerun immutable-head full validation and independent review, require five successful hosted checks, capture live admission, then integrate PR #240 using merge-commit topology.
+- Validation completed: `5b1060be` full suite 90 passed, 0 failed, 1 skipped in 516.047 seconds with schema-valid dispatch/completion; the same-head audit confirmed both implementation P1 repairs but failed P2=1 on stale lifecycle evidence; earlier failures remain retained.
+- Git state: branch `codex/issue-239-journal-v5`; current remote PR #240 repair head `5b1060bed0056271ba7406810e5e4c5f519ffffc`, with uncommitted workflow-evidence reconciliation in progress.
 - Branch history and checkpoint handoffs: none.
-- Blockers or unresolved decisions: none; release allocation remains intentionally unassigned.
+- Blockers or unresolved decisions: merge is blocked until the reconciled exact head passes full validation, independent audit, hosted checks, and live admission; release allocation remains intentionally unassigned.
 
 ## Branch Lifecycle
 
 | Segment | Branch | Base | Checkpoint Type | Commit | Remote / Target | Recorded At | Reason | Resume Branch / Action |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| 1 | `codex/issue-239-journal-v5` | `main` at `92270db07404602210d1c24594a669709dbd5b1f` | local implementation | `c3ffc2f4d2b576943595f2b0b99692f39d7895e5` | none | `2026-08-23T20:27:05+08:00` | Issue #239 implementation, full validation, and accepted fixed-head audit complete | request separate push and PR authorization |
+| 1 | `codex/issue-239-journal-v5` | `main` at `92270db07404602210d1c24594a669709dbd5b1f` | local implementation | `c3ffc2f4d2b576943595f2b0b99692f39d7895e5` | none | `2026-08-23T20:27:05+08:00` | Issue #239 implementation, full validation, and accepted fixed-head audit complete | historical local-only checkpoint; superseded by segment 2 owner authorization |
+| 2 | `codex/issue-239-journal-v5` | `main` at `92270db07404602210d1c24594a669709dbd5b1f` | PR-head remediation | `5b1060bed0056271ba7406810e5e4c5f519ffffc` | PR #240 | `2026-08-23T21:10:52+08:00` | Full suite passed and implementation P1 findings resolved; audit retained one P2 stale-lifecycle contradiction | reconcile all workflow truth, commit, and rerun exact-head gates |

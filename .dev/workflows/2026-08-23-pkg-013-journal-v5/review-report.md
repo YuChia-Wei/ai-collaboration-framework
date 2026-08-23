@@ -100,3 +100,18 @@
 - GWT-071 proves a lock link cannot create or alter an external file or mutate the target.
 - GWT-072 covers missing, unsafe, unreadable, and malformed legacy journal leaves with stable unsupported-version guidance and no target mutation.
 - The repaired exact head requires a new full-suite receipt and independent audit; no prior pass is promoted to that future head.
+
+## Candidate `5b1060bed0056271ba7406810e5e4c5f519ffffc`
+
+- Subject and base matched; tracked worktree and index were clean at audit start and end.
+- Full suite result: 90 passed, 0 failed, 1 skipped in 516.047 seconds, with a schema-valid immutable-head completion envelope.
+- Independent result: `failed`; P1=0, P2=1, P3=0. The full-suite and hosted-check passes cannot override the failed review.
+- Both `6502c296` P1 findings were confirmed resolved: the transaction lock validates a no-follow regular descriptor before writing, and untrusted legacy journal leaves block unless terminal v4 is proven.
+- P2: the locator, workflow plan, and task still claimed completed `c3ffc2f4` truth, no follow-up, and future PR authorization while the remediation ledger truthfully recorded an open PR, failed audit, and pending exact-head verification.
+
+## Workflow-Truth Remediation
+
+- The locator and plan now select `in_progress` / `post-audit`; the task is the single `in_progress` task required by lifecycle contract 1.0.
+- The authorization record now distinguishes authorized PR #240 push and merge-commit integration from still-prohibited Issue, Project, release, publication, and downstream mutations.
+- The plan, task results, remediation report, review report, and PR declaration retain the failed `6502c296` and `5b1060be` audits, the 90-test receipt, current remote PR state, exact next gate, and unassigned release impact.
+- This evidence-only repair requires a fresh exact-head full-suite receipt and independent review before integration.
