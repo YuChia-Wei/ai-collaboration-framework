@@ -81,5 +81,22 @@
 ## Review Disposition
 
 - Accepted implementation subject: `c3ffc2f4d2b576943595f2b0b99692f39d7895e5`.
-- The later workflow closeout commit changes evidence only and does not alter the audited implementation subject.
-- Push, PR, merge, Issue closure, Project mutation, release allocation, tag, Release, and publication remain outside this review.
+- The later workflow closeout and PR declaration commits initially changed evidence only, but the required fresh PR-head audit exposed two additional P1 path-safety defects at `6502c29603cb46c52b200c20d00ff3098e71ca5a`.
+- PR #240 remains draft and blocked from merge until the repaired exact head passes full validation, hosted checks, and a fresh independent audit.
+- Issue closure, Project mutation, release allocation, tag, Release, and publication remain outside this review.
+
+## Candidate `6502c29603cb46c52b200c20d00ff3098e71ca5a`
+
+- Subject and base matched; tracked worktree and index were clean at audit start and end.
+- Independent result: `failed`; P1=2, P2=0, P3=0. The five passing hosted checks cannot override the failed review.
+- P1: `transaction.lock` opened an unchecked leaf with `Path.open("a+b")`, so a symlink or reparse point could redirect the initial durable lock byte outside Git-admin.
+- P1: missing, unsafe, unreadable, or malformed SHA-root `journal.yaml` evidence was skipped by the v4 mutation guard, so an unfinished legacy transaction hidden behind that leaf was not proven terminal before new mutation.
+- Prior semantic, write-amplification, durability, v5 replay, progress-log, and transaction-root findings remained resolved.
+
+## PR-Head Path-Safety Remediation
+
+- The lock leaf is rejected when it is a symlink, reparse point, or non-regular file; opening uses `O_NOFOLLOW` when available, validates the opened descriptor as regular before any write, and maps open failure to the stable apply safety boundary.
+- A SHA-root transaction with missing, unsafe, unreadable, malformed, or unsupported journal evidence now blocks mutation because it cannot be proven terminal; recognized v5 evidence is not reclassified as v4, and only proven terminal v4 remains nonblocking.
+- GWT-071 proves a lock link cannot create or alter an external file or mutate the target.
+- GWT-072 covers missing, unsafe, unreadable, and malformed legacy journal leaves with stable unsupported-version guidance and no target mutation.
+- The repaired exact head requires a new full-suite receipt and independent audit; no prior pass is promoted to that future head.

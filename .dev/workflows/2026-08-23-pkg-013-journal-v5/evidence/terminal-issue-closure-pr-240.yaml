@@ -32,7 +32,7 @@ pull_request:
     - Delivery grouping: single work item
     - Execution record: workflow
     - Selected topology: merge commit
-    - Topology reason: six durable implementation, remediation, and workflow commits form one review and rollback boundary; the owner explicitly requested `--no-ff`
+    - Topology reason: the durable implementation, remediation, workflow, and PR-admission commits form one review and rollback boundary; the owner explicitly requested `--no-ff`
 
     ## Validation
 
@@ -40,6 +40,8 @@ pull_request:
     - external immutable-head validation receipt: schema 1.1 dispatch and completion validated at the same implementation head
     - independent fixed-head audit: no actionable P1, P2, or P3 findings at the same implementation head
     - final workflow artifact, AI-context, source-governance, and six-commit policy validation: passed at `586d310df6318a8ec0f8db788836deaeb3465928`
+    - pre-repair PR-head audit: failed closed at `6502c29603cb46c52b200c20d00ff3098e71ca5a` with two retained P1 path-safety findings
+    - repair-focused validation: GWT-062, GWT-063, GWT-065, and GWT-069 through GWT-072 passed on the normal Windows host ACL boundary; final exact-head full validation and independent review remain required before merge
 
     ## Boundaries
 

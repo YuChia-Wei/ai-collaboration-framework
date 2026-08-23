@@ -11,6 +11,7 @@ import subprocess
 import sys
 import tempfile
 import unittest
+from contextlib import nullcontext
 from pathlib import Path
 from unittest import mock
 
@@ -5070,6 +5071,117 @@ class AiContextPackageApplyGwtTests(unittest.TestCase):
             self.assertFalse((fixture.target / ".ai/two.md").exists())
         finally:
             fixture.close()
+
+    def test_gwt_071_given_transaction_lock_link_when_apply_starts_then_no_external_or_target_mutation_occurs(self) -> None:
+        fixture = PackageApplyFixture()
+        try:
+            fixture.make_package(
+                {".ai/one.md": (b"one\n", "framework-managed", "0644")},
+                [operation("001-add", "add", ".ai/one.md")],
+            )
+            plan = fixture.plan()
+            base = APPLY.git_admin_transaction_base(fixture.target)
+            base.mkdir(parents=True)
+            lock_path = base / "transaction.lock"
+            outside = fixture.root / "outside-lock"
+            try:
+                lock_path.symlink_to(outside)
+            except OSError:
+                lock_path.write_bytes(b"sentinel")
+                link_context = mock.patch.object(
+                    APPLY,
+                    "is_reparse_point",
+                    side_effect=lambda path: Path(path) == lock_path,
+                )
+            else:
+                link_context = mock.patch.object(
+                    APPLY,
+                    "is_reparse_point",
+                    wraps=APPLY.is_reparse_point,
+                )
+
+            with link_context, self.assertRaisesRegex(
+                APPLY.ApplyError, "transaction lock is unsafe"
+            ):
+                RAW_APPLY_PLAN(plan)
+
+            self.assertFalse((fixture.target / ".ai/one.md").exists())
+            self.assertFalse(
+                APPLY.transaction_root(fixture.target, plan["plan_sha256"]).exists()
+            )
+            self.assertFalse(outside.exists())
+            if not lock_path.is_symlink():
+                self.assertEqual(b"sentinel", lock_path.read_bytes())
+        finally:
+            fixture.close()
+
+    def test_gwt_072_given_untrusted_legacy_journal_leaf_when_new_v5_apply_starts_then_mutation_fails_closed(self) -> None:
+        for variant in ("missing", "unsafe", "unreadable", "malformed"):
+            with self.subTest(variant=variant):
+                fixture = PackageApplyFixture()
+                try:
+                    fixture.make_package(
+                        {".ai/new.md": (b"new\n", "framework-managed", "0644")},
+                        [operation("001-add", "add", ".ai/new.md")],
+                    )
+                    plan = fixture.plan()
+                    legacy_id = "d" * 64
+                    legacy_root = APPLY.transaction_root(fixture.target, legacy_id)
+                    legacy_root.mkdir(parents=True)
+                    journal_path = legacy_root / "journal.yaml"
+                    legacy = {
+                        "schema_version": APPLY.LEGACY_JOURNAL_SCHEMA_VERSION,
+                        "transaction_id": legacy_id,
+                        "plan_sha256": legacy_id,
+                        "state": "applying",
+                    }
+                    leaf_context = nullcontext()
+                    read_context = nullcontext()
+                    if variant != "missing":
+                        journal_path.write_text(
+                            (
+                                "not: [valid"
+                                if variant == "malformed"
+                                else yaml.safe_dump(legacy, sort_keys=False)
+                            ),
+                            encoding="utf-8",
+                            newline="\n",
+                        )
+                    if variant == "unsafe":
+                        leaf_context = mock.patch.object(
+                            APPLY,
+                            "is_reparse_point",
+                            side_effect=lambda path: Path(path) == journal_path,
+                        )
+                    elif variant == "unreadable":
+                        original_read_text = Path.read_text
+
+                        def reject_legacy_read(path: Path, *args: object, **kwargs: object) -> str:
+                            if Path(path) == journal_path:
+                                raise PermissionError("fixture denies legacy journal read")
+                            return original_read_text(path, *args, **kwargs)
+
+                        read_context = mock.patch.object(
+                            Path,
+                            "read_text",
+                            autospec=True,
+                            side_effect=reject_legacy_read,
+                        )
+
+                    with leaf_context, read_context, self.assertRaisesRegex(
+                        APPLY.ApplyError,
+                        "unsupported-transaction-journal-version.*cannot be proven terminal.*prior tooling.*owner-directed manual recovery",
+                    ):
+                        RAW_APPLY_PLAN(plan)
+
+                    self.assertFalse((fixture.target / ".ai/new.md").exists())
+                    self.assertFalse(
+                        APPLY.transaction_root(
+                            fixture.target, plan["plan_sha256"]
+                        ).exists()
+                    )
+                finally:
+                    fixture.close()
 
 
 if __name__ == "__main__":

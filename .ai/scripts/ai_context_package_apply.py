@@ -2458,8 +2458,35 @@ def transaction_lock(target: Path) -> Iterator[None]:
     base.mkdir(parents=True, exist_ok=True)
     require_safe_transaction_directory(base, "transaction base")
     lock_path = base / "transaction.lock"
-    handle = lock_path.open("a+b")
+    if (
+        lock_path.is_symlink()
+        or is_reparse_point(lock_path)
+        or (lock_path.exists() and not lock_path.is_file())
+    ):
+        raise ApplyError("transaction lock is unsafe")
+    descriptor = -1
+    handle = None
     try:
+        try:
+            descriptor = os.open(
+                lock_path,
+                os.O_RDWR
+                | os.O_CREAT
+                | os.O_APPEND
+                | getattr(os, "O_BINARY", 0)
+                | getattr(os, "O_NOFOLLOW", 0),
+                0o600,
+            )
+        except OSError as exc:
+            raise ApplyError("cannot safely open transaction lock") from exc
+        if (
+            lock_path.is_symlink()
+            or is_reparse_point(lock_path)
+            or not stat.S_ISREG(os.fstat(descriptor).st_mode)
+        ):
+            raise ApplyError("transaction lock is unsafe")
+        handle = os.fdopen(descriptor, "a+b")
+        descriptor = -1
         handle.seek(0, os.SEEK_END)
         if handle.tell() == 0:
             handle.write(b"0")
@@ -2489,7 +2516,10 @@ def transaction_lock(target: Path) -> Iterator[None]:
             else:
                 fcntl.flock(handle.fileno(), fcntl.LOCK_UN)
     finally:
-        handle.close()
+        if handle is not None:
+            handle.close()
+        elif descriptor >= 0:
+            os.close(descriptor)
 
 
 @contextmanager
@@ -2529,6 +2559,14 @@ def require_safe_transaction_root(root: Path, *, allow_missing: bool = False) ->
 
 def reject_unfinished_v4_transactions(target: Path) -> None:
     """Block new mutation without offering v4 recovery or conversion."""
+
+    def block_unclassified_legacy_transaction(child: Path, reason: str) -> None:
+        raise ApplyError(
+            f"{UNSUPPORTED_JOURNAL_VERSION_CLASSIFICATION}: legacy transaction "
+            f"{child.name} {reason} and cannot be proven terminal; use prior tooling "
+            "that supports journal v4 or perform owner-directed manual recovery"
+        )
+
     base = git_admin_transaction_base(target)
     if not base.is_dir():
         return
@@ -2538,20 +2576,26 @@ def reject_unfinished_v4_transactions(target: Path) -> None:
         require_safe_transaction_root(child)
         journal_path = child / "journal.yaml"
         if (
-            not journal_path.is_file()
-            or journal_path.is_symlink()
+            journal_path.is_symlink()
             or is_reparse_point(journal_path)
+            or (journal_path.exists() and not journal_path.is_file())
         ):
-            continue
+            block_unclassified_legacy_transaction(child, "has unsafe journal evidence")
+        if not journal_path.exists():
+            block_unclassified_legacy_transaction(child, "has missing journal evidence")
         try:
             journal = yaml.safe_load(journal_path.read_text(encoding="utf-8"))
         except (OSError, UnicodeDecodeError, yaml.YAMLError):
+            block_unclassified_legacy_transaction(child, "has unreadable journal evidence")
+        if not isinstance(journal, dict):
+            block_unclassified_legacy_transaction(child, "has invalid journal evidence")
+        schema_version = journal.get("schema_version")
+        if schema_version == JOURNAL_SCHEMA_VERSION:
             continue
-        if (
-            not isinstance(journal, dict)
-            or journal.get("schema_version") != LEGACY_JOURNAL_SCHEMA_VERSION
-        ):
-            continue
+        if schema_version != LEGACY_JOURNAL_SCHEMA_VERSION:
+            block_unclassified_legacy_transaction(
+                child, "has an unsupported journal version"
+            )
         state = journal.get("state")
         if state in JOURNAL_TERMINAL_STATES:
             continue
