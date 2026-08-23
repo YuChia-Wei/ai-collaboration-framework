@@ -1,0 +1,89 @@
+schema_version: "1.0"
+contract_id: github-terminal-issue-closure
+repository: YuChia-Wei/ai-collaboration-framework
+validation_stage: declaration
+pull_request:
+  number: 240
+  head_sha: null
+  body: |-
+    ## Summary
+
+    - replace package-apply journal v4 rewrites with v5 append-only durable progress plus bounded snapshot compaction
+    - preserve a durability boundary after every completed operation while bounding deterministic write calls and bytes
+    - fail closed on unfinished v4 journals without adding v4 recovery, migration, rollback, conversion, or dual-version behavior
+
+    ## Changes
+
+    - write and recover journal v5 transactions only, including resume, rollback, idempotency, and exactly-once crash-boundary behavior
+    - add safe terminal-v4 classification, opt-in stderr progress reporting, path-boundary hardening, and deterministic write instrumentation
+    - update the owning schemas, templates, package-apply tests, workflow evidence, and human/agent documentation required by the v5 contract
+
+    ## Related Issues
+
+    - Issue #: 239
+    - Delivery disposition: `deferred`
+    - Reference: Refs #239
+    - `closure_deferred_reason` (required for deferred): this PR integrates the completed journal v5 implementation, while Issue and Project terminal closeout and release allocation remain separate owner-authorized lifecycle actions
+    - Next terminal gate or owner (required for deferred): the repository owner may separately authorize Issue #239 and Project closeout after merged-main read-back; release targeting remains unassigned pending a future v0.15.0 decision
+    - Owner authorization or approved no-Issue exception: Issue #239 supplied the implementation authorization, and the repository owner explicitly authorized PR creation and merge-commit integration on 2026-08-23
+
+    ## Delivery And Integration
+
+    - Delivery grouping: single work item
+    - Execution record: workflow
+    - Selected topology: merge commit
+    - Topology reason: six durable implementation, remediation, and workflow commits form one review and rollback boundary; the owner explicitly requested `--no-ff`
+
+    ## Validation
+
+    - exact-head full package-apply suite: 88 tests ran, 0 failures, 1 Windows symlink-capability skip, 533.226 seconds at `c3ffc2f4d2b576943595f2b0b99692f39d7895e5`
+    - external immutable-head validation receipt: schema 1.1 dispatch and completion validated at the same implementation head
+    - independent fixed-head audit: no actionable P1, P2, or P3 findings at the same implementation head
+    - final workflow artifact, AI-context, source-governance, and six-commit policy validation: passed at `586d310df6318a8ec0f8db788836deaeb3465928`
+
+    ## Boundaries
+
+    - no v4 recovery compatibility, migration, rollback, conversion, or dual-version recovery
+    - no Issue closure, Project-field mutation, release allocation, tag, Release, publication, or downstream migration
+    - current v0.14.0 tags, assets, and release records remain unchanged
+    - release impact is breaking and remains unassigned; the likely future target is v0.15.0 rather than a patch
+
+    ## Checklist
+
+    - [x] Selected repository-native focused and full package-apply validation passed
+    - [x] Target-owned .NET commands are not applicable to this Python/package lifecycle change
+    - [x] Required schemas, templates, tests, workflow evidence, and documentation are updated
+    - [x] No secrets committed
+    - [x] Every named Issue has exactly one delivery disposition
+    - [ ] The exact final PR head passes all required hosted checks
+    - [ ] The exact final PR head has the required single-maintainer audit receipt
+  integration:
+    status: pending
+    topology: null
+    admitted_head_sha: null
+    integration_commit_sha: null
+    provider_read_back: false
+  review:
+    status: pending
+  required_check_contexts: []
+  hosted_checks: []
+issues:
+  - number: 239
+    mode: deferred
+    work_authorization:
+      online_issue_bound: true
+      explicit_owner_approval: true
+    final_accepted_delivery: false
+    workflow:
+      scope_complete: true
+      tasks_complete: true
+      applicable_verification_complete: true
+    closing_keyword: null
+    closure_deferred_reason: this PR integrates the completed journal v5 implementation, while Issue and Project terminal closeout and release allocation remain separate owner-authorized lifecycle actions
+    next_terminal_gate_or_owner: the repository owner may separately authorize Issue #239 and Project closeout after merged-main read-back; release targeting remains unassigned pending a future v0.15.0 decision
+    read_back:
+      performed: false
+      integration_commit_sha: null
+      issue_state: null
+      issue_state_reason: null
+      project_status: null
