@@ -3909,10 +3909,10 @@ def validate_rejected_upgrade_transaction(
         errors.append("rejected upgrade transaction must not retain target validation receipt")
 
 
-def is_historical_v4_upgrade_transaction(
+def is_historical_upgrade_transaction(
     transaction: Path, journal: dict, errors: list[str]
 ) -> bool:
-    """Classify a retained v4 transaction without applying upgrade rules to clean installs."""
+    """Classify a retained transaction without applying upgrade rules to clean installs."""
     plan_loaded = read_transaction_json(
         transaction, "plan.json", "sealed transaction plan", errors
     )
@@ -3951,7 +3951,7 @@ def validate_historical_finalized_upgrade_transaction(
         errors.append("historical upgrade transaction directory is missing")
         return False
     transaction = transaction / transaction_id
-    if not is_historical_v4_upgrade_transaction(transaction, journal, errors):
+    if not is_historical_upgrade_transaction(transaction, journal, errors):
         return False
     evidence_errors: list[str] = []
     evidence = validate_upgrade_finalization_evidence(

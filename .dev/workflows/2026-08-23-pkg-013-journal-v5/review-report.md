@@ -169,3 +169,15 @@
 - Shared transition-sequence validation now uses version-neutral naming and documentation.
 - Target-validation binding and receipt docstrings now describe the current transaction behavior without claiming v4-only sealing or recovery.
 - The `fb3ea0c6` full-suite pass and failed audit remain exact historical evidence; the current candidate remains SHA-neutral and pending exact-head gates.
+
+## Candidate `79b9c56058900eaaa1dd32fd38f3cf08556a6686`
+
+- Subject and base matched; tracked worktree and index were clean at audit start and end.
+- Full suite result: 90 passed, 0 failed, 1 skipped in 556.907 seconds; the schema-valid receipt completed at `2026-08-23T22:21:55.4670373+08:00`.
+- Independent result: `failed`; P1=0, P2=0, P3=1. The three previously reported internal documentation mismatches were resolved.
+- P3: one historical upgrade-transaction classifier shared by finalized v4 and v5 validation retained a v4-only symbol and docstring.
+
+## Historical Classifier Documentation Remediation
+
+- The shared historical upgrade-transaction classifier now has a version-neutral symbol and docstring at every call site.
+- The `79b9c560` full-suite pass and failed audit remain exact historical evidence; the current candidate remains SHA-neutral and pending exact-head gates.

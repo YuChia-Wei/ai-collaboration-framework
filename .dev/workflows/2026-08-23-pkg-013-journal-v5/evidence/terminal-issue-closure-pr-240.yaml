@@ -48,7 +48,8 @@ pull_request:
     - second evidence-reconciliation head: 90 tests passed at `5b65ca6c266c637353393279ce2717bcac9143d4`, but its audit retained one P2 stale `updated_at` metadata finding
     - timestamp-repair head: 90 tests passed at `d2a471ec2210ffc429f81734853cea7223357747`, but its audit retained one P2 because the workflow timestamp preceded the recorded completion receipt
     - timestamp-chronology head: 90 tests passed at `fb3ea0c6fb5e02ce438e90fb2c5fdd4b1a1bd31a`, but its audit retained one P3 v4-only internal naming/docstring mismatch on shared validation paths
-    - final candidate state is SHA-neutral, contains the bounded internal-documentation repair, and remains unchanged while fresh exact-head full validation and independent review run
+    - internal-documentation head: 90 tests passed at `79b9c56058900eaaa1dd32fd38f3cf08556a6686`, but its audit retained one P3 v4-only historical classifier naming/docstring mismatch on a shared v4/v5 path
+    - final candidate state is SHA-neutral, contains the bounded version-neutral classifier repair, and remains unchanged while fresh exact-head full validation and independent review run
 
     ## Boundaries
 

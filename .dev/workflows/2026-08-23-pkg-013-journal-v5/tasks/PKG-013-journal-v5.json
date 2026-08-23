@@ -9,7 +9,7 @@
   "orchestrator_skill": "software-development-orchestrator",
   "status": "in_progress",
   "created_at": "2026-08-23T18:53:54+08:00",
-  "updated_at": "2026-08-23T22:10:06+08:00",
+  "updated_at": "2026-08-23T22:22:27+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-5",
   "reasoning_effort": "high",
@@ -76,8 +76,8 @@
       "repository workflow and AI-context validators"
     ],
     "role_execution_records": [],
-    "last_completed_step": "Evidence head fb3ea0c6 passed a schema-valid 90-test full suite but failed P3=1 because shared v4/v5 validation helpers retained v4-only internal naming and docstrings.",
-    "next_action": "Keep this committed SHA-neutral internal-documentation candidate unchanged, rerun immutable-head full validation and independent review, require five hosted checks, capture live admission, and merge PR #240 with merge-commit topology only if every gate passes."
+    "last_completed_step": "Evidence head 79b9c560 passed a schema-valid 90-test full suite but failed P3=1 because one historical transaction classifier shared by v4/v5 retained v4-only naming and documentation.",
+    "next_action": "Keep this committed SHA-neutral version-neutral classifier candidate unchanged, rerun immutable-head full validation and independent review, require five hosted checks, capture live admission, and merge PR #240 with merge-commit topology only if every gate passes."
   },
   "results": {
     "summary": "Journal v5 snapshots durable lifecycle state while newline-framed, fsynced, digest-chained progress records retain one durable boundary per completed apply or rollback operation with linear logical journal writes.",
@@ -137,7 +137,9 @@
       "fixed-head fb3ea0c6 independent audit: runtime behavior remained resolved; failed with P3 v4-only internal naming/docstrings on shared v4/v5 validation paths",
       "P3 repair wrong dotted unittest selector: loader error; corrected to the script-owned class selector",
       "P3 repair focused test sandbox attempt: blocked-by-environment by Windows Temp ACL",
-      "P3 repair focused GWT-033a and GWT-052 host rerun: 2 passed in 39.584 seconds"
+      "P3 repair focused GWT-033a and GWT-052 host rerun: 2 passed in 39.584 seconds",
+      "fixed-head 79b9c560 full suite: 90 passed, 0 failed, 1 skipped in 556.907 seconds; schema 1.1 completion validated at 2026-08-23T22:21:55.4670373+08:00",
+      "fixed-head 79b9c560 independent audit: runtime behavior remained resolved; failed with P3 v4-only historical classifier naming/docstring on a shared v4/v5 path"
     ],
     "finding_status": "verification-pending",
     "residual_risk": "Native Windows junction coverage falls back to deterministic reparse classification when link creation is unavailable, and adversarial concurrent path replacement between validation and open is not covered by deterministic fixtures.",
