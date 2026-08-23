@@ -8,7 +8,7 @@
   "owner_skill": "ai-context-governance",
   "status": "completed",
   "created_at": "2026-08-23T16:21:28+08:00",
-  "updated_at": "2026-08-23T16:45:57+08:00",
+  "updated_at": "2026-08-23T17:06:39+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-5.6-sol",
   "reasoning_effort": "high",
@@ -47,12 +47,12 @@
       "Run focused route, packaging, and upgrade validation."
     ],
     "validation": [
-      "route regression suite 29/29",
+      "route regression suite 30/30",
       "focused packaging projection 1/1",
       "focused package-apply 2/2",
       "release-state regression suite 36/36"
     ],
-    "last_completed_step": "Implemented portable incoming validation receipts, canonical target package identity, legacy fail-closed routing, and all requested regressions.",
+    "last_completed_step": "Implemented portable incoming validation receipts, per-edge package identity including distinct intermediate hops, exact integer exit handling, legacy fail-closed routing, and all requested regressions.",
     "next_action": "Completed; continue with UPG-005-S3 fixed-head review and historical recommendation."
   },
   "results": {
@@ -68,7 +68,7 @@
       ".ai/scripts/tests/test_ai_context_package_apply.py"
     ],
     "tests_run": [
-      "python -B .ai/scripts/tests/test_ai_context_upgrade_routes.py -v: 29 passed",
+      "python -B .ai/scripts/tests/test_ai_context_upgrade_routes.py -v: 30 passed",
       "focused packaging GWT-021: 1 passed",
       "focused package-apply GWT-049 and GWT-049a: 2 passed",
       "python -B .ai/scripts/tests/test_ai_context_release_state.py -v: 36 passed"

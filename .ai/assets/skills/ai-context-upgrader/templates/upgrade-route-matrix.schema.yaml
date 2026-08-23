@@ -77,6 +77,7 @@ properties:
           - order
           - from_version
           - to_version
+          - package_identity
           - artifacts
           - semantic_cutovers
           - validation
@@ -85,6 +86,7 @@ properties:
           order: one-based-contiguous-in-list-order
           from_version: semver-tag-with-v-prefix
           to_version: semver-tag-with-v-prefix
+          package_identity: package-identity
           artifacts:
             required: [archive, checksum, manifest, validator]
             exact_keys: [archive, checksum, manifest, validator]
@@ -123,7 +125,7 @@ properties:
                   - "validator_argv exactly equals validation.validator_argv"
                   - "semantic_cutovers exactly equals the ordered edge cutover claims after each declared cutover's matrix-level required value is bound as {cutover_id, required, state}"
                   - "portable_validation records incoming-package-validation/v1, exact incoming-candidate manifest and validator path/SHA-256/argv, passed exit 0, output SHA-256, and package identity"
-                  - "portable_validation.package_identity exactly equals target.package_identity"
+                  - "portable_validation.package_identity exactly equals edge.package_identity"
                   - "the same package_id and release_id with another payload_fingerprint is an identity conflict and cannot pass"
                   - "outcome is passed and equals validation.state"
                   - "exit_code is integer 0"
@@ -132,6 +134,8 @@ properties:
     invariants:
       - "route_id is unique"
       - "edges form the exact ordered origin-to-target chain"
+      - "each edge.package_identity.release_id equals REL-edge.to_version"
+      - "the final edge.package_identity equals target.package_identity"
       - "a route is direct only when it has exactly one edge; the resolver derives route kind"
       - "every required semantic cutover is passed by a selected route"
   deprecations:

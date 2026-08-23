@@ -14,16 +14,16 @@
 - `owner_skill`: `ai-context-governance`
 - `status`: `in_progress`
 - `created_at`: `2026-08-23T16:21:28+08:00`
-- `updated_at`: `2026-08-23T16:45:57+08:00`
+- `updated_at`: `2026-08-23T17:06:39+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-remediation-report-template.md`
 - `template_version`: `2.0.0`
 - `baseline_assessment`: `live GitHub Issue #237 and repository-owned reproduction`
-- `verification_assessment`: `pending exact-head read-only verification`
+- `verification_assessment`: `6c3e1e2c failed with P1=1/P2=1; corrected head pending repeat exact-head review`
 
 ## Remediation Summary
 
 - Authorized scope: make retained-origin edge proof cover the archive-declared incoming portable validation boundary, close ambiguous payload identity, protect the v0.6.0, v0.9.0, and v0.13.0 routes, and preserve package-apply validation before target mutation.
-- Completed implementation scope: route proof now executes and records the incoming-candidate manifest, validator identity and canonical argv, result, output digest, and package identity; route matrix schema `1.1` and edge receipt `v2` require that proof; matching package/release IDs with a different payload fingerprint fail closed.
+- Completed implementation scope: route proof now executes and records the incoming-candidate manifest, validator identity and canonical argv, result, output digest, and per-edge package identity; route matrix schema `1.1` and edge receipt `v2` require that proof; matching package/release IDs with a different payload fingerprint fail closed.
 - Confirmed impact: the v0.14.0 route evidence was a false positive and later incoming validation rejects the route archive. This evidence does not establish silent target corruption.
 - Immutable boundary: no tag, hosted Release identity, published asset, downstream target, Issue, Project, or release allocation was mutated.
 - Closure decision: `local-fix-focused-validation-passed-awaiting-fixed-head-review-and-owner-historical-recovery-choice`.
@@ -54,16 +54,17 @@
 
 ### Route Identity And Receipt Contract
 
-- Upgrade route matrix schema `1.1` requires target `{package_id, release_id, payload_fingerprint}`.
-- Edge receipt `upgrade-edge-validation/v2` requires `incoming-package-validation/v1` proof and exact equality with the target package identity.
+- Upgrade route matrix schema `1.1` requires target and per-edge `{package_id, release_id, payload_fingerprint}` identities. Every edge identity names its own `to_version`; only the final edge must equal the matrix target identity.
+- Edge receipt `upgrade-edge-validation/v2` requires `incoming-package-validation/v1` proof and exact equality with that edge's package identity.
+- Portable execution accepts only an exact integer exit code `0`; boolean `false` cannot be normalized into success.
 - Legacy matrix `1.0` remains parseable so current historical data can be diagnosed, but every legacy route is reconciliation-required because it lacks portable proof and canonical target package identity.
 
 ### Focused Validation
 
-- `python -B .ai/scripts/tests/test_ai_context_upgrade_routes.py -v`: 29/29 passed in 13.850 seconds.
-- Focused `UpgradeRoutePackageProjectionGwtTests.test_gwt_021...`: 1/1 passed in 3.109 seconds.
-- Focused package-apply GWT-049 and GWT-049a: 2/2 passed in 15.628 seconds.
-- `python -B .ai/scripts/tests/test_ai_context_release_state.py -v`: 36/36 passed in 0.799 seconds.
+- `python -B .ai/scripts/tests/test_ai_context_upgrade_routes.py -v`: 30/30 passed in 13.730 seconds after fixed-head finding remediation.
+- Focused `UpgradeRoutePackageProjectionGwtTests.test_gwt_021...`: 1/1 passed in 3.113 seconds after fixed-head finding remediation.
+- Focused package-apply GWT-049 and GWT-049a: 2/2 passed in 15.440 seconds after fixed-head finding remediation.
+- `python -B .ai/scripts/tests/test_ai_context_release_state.py -v`: 36/36 passed in 0.640 seconds after fixed-head finding remediation.
 - `python .ai/scripts/validate-workflow-artifacts.py`: passed for 91 post-adoption workflows, 111 indexed workflow directories, and 55 backlog items before the report/task closeout update; it must be rerun after those updates.
 - Read-only AST parsing passed for the four changed Python implementation/test entrypoints; `git diff --check` passed.
 - The first package-apply selector command used the wrong unittest class name and produced two loader errors without executing tests. The corrected selectors produced the passing evidence above.
@@ -85,6 +86,7 @@
 
 ## Verification And Next Action
 
-- The implementation must first be committed on a clean immutable local head, then a read-only `ai-context-auditor` verification must bind to that exact head.
+- The first exact-head audit bound to `6c3e1e2c75ad493268261c5c046b006bb3f22834` returned P0=0, P1=1, P2=1, P3=0. It correctly rejected final-target identity reuse for intermediate multi-hop edges and boolean portable exit-code acceptance. That commit is retained as failed review evidence and is not an acceptable handoff checkpoint.
+- The corrections bind each hop to its materialized package identity, require the final edge to equal the target identity, add a three-distinct-identity multi-hop assertion, and reject boolean exit code. A new immutable local commit and repeat read-only audit are required.
 - If review finds a defect, repair creates a new head and invalidates the earlier review.
 - After fixed-head review, stop for the owner to select historical recovery choice A or B. Do not infer release version, push, PR, merge, Issue closure, or publication authorization.

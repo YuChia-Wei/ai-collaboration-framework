@@ -29,9 +29,12 @@ The canonical contract is
   target. A route kind is deliberately not stored; one edge can become
   `direct`, while two or more can become `orchestrated-multi-hop` only after
   verification.
-- Every edge binds four identities: `archive`, `checksum`, `manifest`, and
-  `validator`, plus a non-empty `validator_argv`, canonical validation receipt,
-  and separate raw validation-output identity. The validator identity is the
+- Every edge binds the package identity materialized by its `to_version`, four
+  asset identities (`archive`, `checksum`, `manifest`, and `validator`), a
+  non-empty `validator_argv`, canonical validation receipt, and separate raw
+  validation-output identity. The final edge package identity equals the matrix
+  target identity; intermediate edges bind their own package rather than the
+  final target package. The validator identity is the
   exact executable asset and `validator_argv` must name its exact
   matrix-relative path exactly once, while preserving any interpreter and
   option tokens. An identity has `asset_id`, a safe matrix-relative POSIX
@@ -54,8 +57,9 @@ The canonical contract is
   records `incoming-package-validation/v1`: the exact archive-declared
   incoming-candidate manifest path and SHA-256, validator path/SHA-256/argv,
   passed exit code and output digest, and the archive's package ID, release ID,
-  and payload fingerprint. The package identity must equal the target's
-  canonical package identity. Reusing the same package/release identity for a
+  and payload fingerprint. The receipt package identity must equal the current
+  edge package identity, whose release ID names that edge's `to_version`.
+  Reusing the same package/release identity for a
   different payload fingerprint is a fail-closed identity conflict.
 - Semantic cutovers are declared once at matrix level. A required cutover must
   have a `passed` record in at least one ordered edge of a selected route.
@@ -115,8 +119,8 @@ A source-repository archive validator, release-phase command, or successful
 hosted publication is not automatically an upgrade-edge validator. An edge may
 name a validator only when the matrix binds the exact executable bytes and its
 edge proof executes the archive-declared incoming-candidate validator, records
-its exact authority and result, and binds its package identity to the matrix's
-canonical target package identity. The resolver verifies that immutable receipt
+its exact authority and result, and binds its package identity to the package
+materialized by that edge. The resolver verifies that immutable receipt
 without re-executing package code. A legacy `1.0` matrix remains parseable only
 to produce `reconciliation-required`; it cannot obtain a passing route without
 the new proof.

@@ -2171,6 +2171,7 @@ class UpgradeRoutePackageProjectionGwtTests(unittest.TestCase):
                                 "order": 1,
                                 "from_version": "v1.0.0",
                                 "to_version": "v1.2.0",
+                                "package_identity": target_package_identity,
                                 "artifacts": edge_artifacts,
                                 "semantic_cutovers": [
                                     {"cutover_id": "route-evidence", "state": "passed"}

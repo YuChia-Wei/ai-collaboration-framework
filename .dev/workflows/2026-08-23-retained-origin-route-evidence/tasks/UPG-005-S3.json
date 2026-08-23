@@ -8,7 +8,7 @@
   "owner_skill": "ai-context-governance",
   "status": "in_progress",
   "created_at": "2026-08-23T16:21:28+08:00",
-  "updated_at": "2026-08-23T16:45:57+08:00",
+  "updated_at": "2026-08-23T17:06:39+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-5.6-sol",
   "reasoning_effort": "high",
@@ -42,8 +42,8 @@
       "focused validation passed before immutable commit",
       "workflow artifact validation passed before final report/task refresh"
     ],
-    "last_completed_step": "Recorded release batching recommendation and two immutable-history recovery options without allocating a version.",
-    "next_action": "Create a durable clean commit, run exact-head read-only review, reconcile findings, then request the owner historical-recovery choice."
+    "last_completed_step": "First exact-head review failed with P1=1/P2=1; both findings were corrected and focused regressions passed without rewriting that reviewed commit.",
+    "next_action": "Commit the correction, repeat exact-head read-only review on the new clean head, then request the owner historical-recovery choice."
   },
   "results": {
     "summary": "Implementation and focused validation are ready for exact-head review; historical source-record recovery remains an explicit owner choice.",
@@ -51,7 +51,8 @@
       ".dev/workflows/2026-08-23-retained-origin-route-evidence/reports/remediation-report.md"
     ],
     "tests_run": [
-      "pending fixed-head read-only ai-context-auditor verification"
+      "exact-head 6c3e1e2c audit: failed, P0=0/P1=1/P2=1/P3=0",
+      "repeat fixed-head read-only ai-context-auditor verification pending"
     ],
     "finding_status": "not-addressed",
     "residual_risk": "Historical v0.14.0 route recovery may require an owner-selected non-mutating publication strategy.",

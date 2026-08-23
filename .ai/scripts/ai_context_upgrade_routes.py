@@ -428,19 +428,24 @@ def _validate_edge(
     label: str,
     expected_order: int,
     cutover_requirements: Mapping[str, bool],
+    *,
+    require_package_identity: bool,
 ) -> dict[str, Any]:
     data = _mapping(value, label)
+    expected_keys = {
+        "edge_id",
+        "order",
+        "from_version",
+        "to_version",
+        "artifacts",
+        "semantic_cutovers",
+        "validation",
+    }
+    if require_package_identity:
+        expected_keys.add("package_identity")
     _exact_keys(
         data,
-        {
-            "edge_id",
-            "order",
-            "from_version",
-            "to_version",
-            "artifacts",
-            "semantic_cutovers",
-            "validation",
-        },
+        expected_keys,
         label,
     )
     if data["order"] != expected_order:
@@ -482,11 +487,23 @@ def _validate_edge(
                 "state": state,
             }
         )
+    from_version = _version(data["from_version"], f"{label}.from_version")
+    to_version = _version(data["to_version"], f"{label}.to_version")
+    package_identity = (
+        _package_identity(data["package_identity"], f"{label}.package_identity")
+        if require_package_identity
+        else None
+    )
+    if package_identity is not None and package_identity["release_id"] != f"REL-{to_version}":
+        raise MatrixValidationError(
+            f"{label}.package_identity.release_id must equal REL-to_version"
+        )
     return {
         "edge_id": _string(data["edge_id"], f"{label}.edge_id"),
         "order": expected_order,
-        "from_version": _version(data["from_version"], f"{label}.from_version"),
-        "to_version": _version(data["to_version"], f"{label}.to_version"),
+        "from_version": from_version,
+        "to_version": to_version,
+        "package_identity": package_identity,
         "artifacts": normalized_artifacts,
         "semantic_cutovers": edge_cutovers,
         "validation": {
@@ -506,7 +523,10 @@ def _validate_routes(
     value: Any,
     retained_versions: set[str],
     target_version: str,
+    target_package_identity: Mapping[str, str] | None,
     cutover_requirements: Mapping[str, bool],
+    *,
+    require_package_identity: bool,
 ) -> list[dict[str, Any]]:
     routes = _list(value, "routes")
     route_ids: set[str] = set()
@@ -534,6 +554,7 @@ def _validate_routes(
                 f"{label}.edges[{edge_index}]",
                 edge_index + 1,
                 cutover_requirements,
+                require_package_identity=require_package_identity,
             )
             for edge_index, edge in enumerate(edge_values)
         ]
@@ -541,6 +562,13 @@ def _validate_routes(
             raise MatrixValidationError(f"{label}.edges[0].from_version must equal route origin")
         if edges[-1]["to_version"] != target:
             raise MatrixValidationError(f"{label}.edges[-1].to_version must equal route target")
+        if (
+            require_package_identity
+            and edges[-1]["package_identity"] != target_package_identity
+        ):
+            raise MatrixValidationError(
+                f"{label}.edges[-1].package_identity must equal target.package_identity"
+            )
         for previous, current in zip(edges, edges[1:]):
             if previous["to_version"] != current["from_version"]:
                 raise MatrixValidationError(f"{label}.edges are not an exact continuous chain")
@@ -657,7 +685,9 @@ def validate_matrix(matrix: Mapping[str, Any]) -> dict[str, Any]:
         data["routes"],
         retained_versions,
         target["version"],
+        target["package_identity"],
         {item["cutover_id"]: item["required"] for item in cutovers},
+        require_package_identity=schema_version == SCHEMA_VERSION,
     )
     retained_roles = {item["role"] for item in origins}
     deprecations = _validate_deprecations(
@@ -806,7 +836,11 @@ def _portable_validation_record(value: Any) -> dict[str, Any]:
         {"outcome", "exit_code", "output_sha256"},
         f"{label}.execution",
     )
-    if execution["outcome"] != "passed" or execution["exit_code"] != 0:
+    if (
+        execution["outcome"] != "passed"
+        or type(execution["exit_code"]) is not int
+        or execution["exit_code"] != 0
+    ):
         raise MatrixValidationError(
             f"{label}.execution must report passed with integer exit code zero"
         )
@@ -1260,7 +1294,6 @@ def _route_diagnostics(
     route: Mapping[str, Any],
     required_cutovers: set[str],
     asset_root: Path,
-    target_package_identity: Mapping[str, str] | None,
 ) -> list[dict[str, str]]:
     diagnostics: list[dict[str, str]] = []
     covered_cutovers: set[str] = set()
@@ -1306,7 +1339,7 @@ def _route_diagnostics(
                 report,
                 output,
                 edge_context,
-                target_package_identity,
+                edge["package_identity"],
             )
             if receipt_diagnostic is not None:
                 diagnostics.append(receipt_diagnostic)
@@ -1487,7 +1520,6 @@ def resolve_upgrade_route(
             route,
             required_cutovers,
             asset_root,
-            normalized["target"]["package_identity"],
         )
         for route in matching
     }

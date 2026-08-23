@@ -123,6 +123,17 @@ class RouteFixture:
             if covers_cutover
             else []
         )
+        edge_package_identity = (
+            deepcopy(self.package_identity)
+            if to_version == self.target
+            else {
+                "package_id": f"ai-context-dotnet-backend-{to_version}",
+                "release_id": f"REL-{to_version}",
+                "payload_fingerprint": hashlib.sha256(
+                    f"canonical-payload:{to_version}".encode()
+                ).hexdigest(),
+            }
+        )
         report = {
             "schema_version": ROUTES.EDGE_VALIDATION_RECEIPT_SCHEMA_VERSION,
             "edge_id": edge_id,
@@ -157,7 +168,7 @@ class RouteFixture:
                         ],
                     },
                 },
-                "package_identity": deepcopy(self.package_identity),
+                "package_identity": deepcopy(edge_package_identity),
                 "execution": {
                     "outcome": "passed",
                     "exit_code": 0,
@@ -173,6 +184,7 @@ class RouteFixture:
             "order": 1,
             "from_version": from_version,
             "to_version": to_version,
+            "package_identity": edge_package_identity,
             "artifacts": artifacts,
             "semantic_cutovers": semantic_cutovers,
             "validation": {
@@ -314,6 +326,13 @@ class UpgradeRouteTests(unittest.TestCase):
 
         self.assertEqual("orchestrated-multi-hop", result["route_kind"])
         self.assertEqual([1, 2, 3], [edge["order"] for edge in result["selected_route"]["edges"]])
+        self.assertEqual(
+            ["REL-v0.9.0", "REL-v0.13.0", "REL-v0.14.0"],
+            [
+                edge["package_identity"]["release_id"]
+                for edge in result["selected_route"]["edges"]
+            ],
+        )
 
     def test_gwt_003_given_deferred_edge_when_resolved_then_reconciliation_is_required(self) -> None:
         edges = [
@@ -491,6 +510,24 @@ class UpgradeRouteTests(unittest.TestCase):
             {item["code"] for item in result["diagnostics"]},
         )
 
+    def test_gwt_010m_given_boolean_portable_exit_code_when_resolved_then_it_fails_closed(self) -> None:
+        edge = self.fixture.edge("v0.13.0", self.fixture.target)
+        self.fixture.matrix["routes"] = [self.fixture.route("direct", "v0.13.0", [edge])]
+        report_path = self.fixture.root / edge["validation"]["report"]["path"]
+        report = json.loads(report_path.read_text(encoding="utf-8"))
+        report["portable_validation"]["execution"]["exit_code"] = False
+        self.fixture.rewrite_asset(
+            edge["validation"]["report"], ROUTES.canonical_json(report).encode("utf-8")
+        )
+
+        result = self.fixture.resolve("v0.13.0")
+
+        self.assertEqual("reconciliation-required", result["route_kind"])
+        self.assertIn(
+            "edge-validation-report-invalid-shape",
+            {item["code"] for item in result["diagnostics"]},
+        )
+
     def test_gwt_010c_given_missing_or_mismatched_validator_argv_when_checked_then_the_contract_fails_closed(self) -> None:
         missing = self.fixture.edge("v0.13.0", self.fixture.target)
         self.fixture.matrix["routes"] = [self.fixture.route("direct", "v0.13.0", [missing])]
@@ -620,6 +657,13 @@ class UpgradeRouteTests(unittest.TestCase):
     def test_gwt_010j_given_relabelled_edge_with_unchanged_receipt_when_resolved_then_reconciliation_is_required(self) -> None:
         relabelled = self.fixture.edge("v0.13.0", self.fixture.target)
         relabelled["to_version"] = "v0.9.0"
+        relabelled["package_identity"] = {
+            "package_id": "ai-context-dotnet-backend-v0.9.0",
+            "release_id": "REL-v0.9.0",
+            "payload_fingerprint": hashlib.sha256(
+                b"canonical-payload:v0.9.0"
+            ).hexdigest(),
+        }
         successor = self.fixture.edge("v0.9.0", self.fixture.target)
         self.fixture.matrix["routes"] = [
             self.fixture.route("relabelled-chain", "v0.13.0", [relabelled, successor])

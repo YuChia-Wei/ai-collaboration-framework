@@ -67,6 +67,13 @@ routes:
         order: 1
         from_version: "v0.0.0"
         to_version: "v0.0.0"
+        # Each hop binds the package materialized by this edge. A direct edge
+        # equals target.package_identity; an intermediate edge names its own
+        # to_version package instead of the final route target.
+        package_identity:
+          package_id: "ai-context-dotnet-backend-<edge-to-version>"
+          release_id: "REL-<edge-to-version>"
+          payload_fingerprint: "<lowercase-sha256-of-edge-package-payload>"
         artifacts:
           archive:
             asset_id: "<edge>-archive"
@@ -108,7 +115,8 @@ routes:
             # archive's manifest path/SHA-256, validator path/SHA-256/argv,
             # package_id/release_id/payload_fingerprint, passed exit 0, and
             # portable output SHA-256. That package identity must exactly equal
-            # target.package_identity.
+            # this edge's package_identity. The final edge identity must also
+            # equal target.package_identity.
             asset_id: "<edge>-validation-report"
             path: "artifacts/<edge>/validation-report.json"
             sha256: "<lowercase-sha256>"
