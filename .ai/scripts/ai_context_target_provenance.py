@@ -1952,17 +1952,16 @@ def validate_v5_progress_log(
         errors.append(f"{transaction / 'journal.yaml'}: v5 progress binding is invalid")
         return
     progress_path = transaction / "progress.jsonl"
+    if progress_path.is_symlink() or is_reparse_point(progress_path):
+        errors.append(f"{progress_path}: v5 progress log is unsafe")
+        return
     if not progress_path.exists():
         if count != 0:
             errors.append(f"{progress_path}: v5 progress log is missing")
             return
         raw = b""
     else:
-        if (
-            not progress_path.is_file()
-            or progress_path.is_symlink()
-            or is_reparse_point(progress_path)
-        ):
+        if not progress_path.is_file():
             errors.append(f"{progress_path}: v5 progress log is unsafe")
             return
         try:

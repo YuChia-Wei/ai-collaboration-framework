@@ -4919,6 +4919,74 @@ class AiContextPackageApplyGwtTests(unittest.TestCase):
         finally:
             fixture.close()
 
+    def test_gwt_069_given_broken_progress_link_when_v5_resumes_or_writes_then_no_target_or_external_mutation_occurs(self) -> None:
+        fixture = PackageApplyFixture()
+        try:
+            fixture.make_package(
+                {
+                    ".ai/one.md": (b"one\n", "framework-managed", "0644"),
+                    ".ai/two.md": (b"two\n", "framework-managed", "0644"),
+                },
+                [
+                    operation("001-add", "add", ".ai/one.md"),
+                    operation("002-add", "add", ".ai/two.md"),
+                ],
+            )
+            plan = fixture.plan()
+
+            def interrupt_after_first_durable_prefix(event: str, details: dict) -> None:
+                if event == "after_progress_journal" and details["next_apply_index"] == 1:
+                    raise APPLY.InjectedInterruption("fixture crash after durable append")
+
+            with self.assertRaises(APPLY.InjectedInterruption):
+                RAW_APPLY_PLAN(plan, boundary_hook=interrupt_after_first_durable_prefix)
+            transaction = APPLY.transaction_root(fixture.target, plan["plan_sha256"])
+            progress_path = transaction / APPLY.JOURNAL_PROGRESS_PATH
+            progress_path.unlink()
+            outside = fixture.root / "outside-progress.jsonl"
+            try:
+                progress_path.symlink_to(outside)
+            except OSError:
+                link_context = mock.patch.object(
+                    APPLY,
+                    "is_reparse_point",
+                    side_effect=lambda path: Path(path) == progress_path,
+                )
+            else:
+                link_context = mock.patch.object(
+                    APPLY,
+                    "is_reparse_point",
+                    wraps=APPLY.is_reparse_point,
+                )
+
+            with link_context:
+                with self.assertRaisesRegex(
+                    APPLY.ApplyError, "transaction journal progress log is unsafe"
+                ):
+                    APPLY.recover_transaction(
+                        fixture.target,
+                        plan["plan_sha256"],
+                        "resume",
+                        fixture.package,
+                    )
+                with self.assertRaisesRegex(
+                    APPLY.ApplyError, "transaction journal progress log is unsafe"
+                ):
+                    APPLY.durable_append_bytes(progress_path, b"{}\n")
+                journal = yaml.safe_load(
+                    (transaction / "journal.yaml").read_text(encoding="utf-8")
+                )
+                with self.assertRaisesRegex(
+                    APPLY.ApplyError, "transaction journal progress log is unsafe"
+                ):
+                    APPLY.truncate_incomplete_progress_tail(transaction, journal)
+
+            self.assertEqual(b"one\n", (fixture.target / ".ai/one.md").read_bytes())
+            self.assertFalse((fixture.target / ".ai/two.md").exists())
+            self.assertFalse(outside.exists())
+        finally:
+            fixture.close()
+
 
 if __name__ == "__main__":
     unittest.main()

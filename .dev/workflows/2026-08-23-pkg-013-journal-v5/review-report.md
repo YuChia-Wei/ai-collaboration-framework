@@ -41,7 +41,21 @@
 - GWT-067 covers the missing-log/snapshot-prefix bypass.
 - GWT-068 covers fully compacted rollback progress in a non-rollback terminal journal.
 
+## Candidate `34753883e38501175c0c7f0a91dd26894cab33bd`
+
+- Subject and parent matched; tracked worktree and index were clean at audit start and end.
+- Full suite result: 86 passed, 0 failed, 1 skipped in 496.087 seconds, with a schema-valid completion envelope.
+- Independent result: `failed`; P1=1, P2=0, P3=0. The test pass cannot override the failed review.
+- P1: a broken `progress.jsonl` symlink or reparse point reported `exists() == false`, so load treated it as missing and append/truncation could later follow it outside the transaction boundary.
+- Prior findings for v4 mutation safety and target/recovery semantic/state parity were confirmed resolved.
+
+## Broken-Link Boundary Remediation
+
+- Load, target admission, append, and torn-tail truncation reject symlink/reparse progress paths before testing existence.
+- Append and truncation also request `O_NOFOLLOW` on platforms that expose it and convert unsafe open failures to the stable apply safety boundary.
+- GWT-069 covers a broken-link resume, direct append, and torn-tail truncation while proving neither the next target operation nor the external link target is created.
+
 ## Required Re-review
 
-- The complete parity repair requires a new immutable commit, full fixed-head validation, and a fresh independent audit of that new SHA.
+- The broken-link repair requires a new immutable commit, full fixed-head validation, and a fresh independent audit of that new SHA.
 - No acceptance conclusion is recorded for the repaired working tree yet.

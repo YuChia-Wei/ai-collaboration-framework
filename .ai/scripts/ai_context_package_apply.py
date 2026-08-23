@@ -1945,15 +1945,21 @@ def durable_append_bytes(
     """Append one framed record and durably publish it before returning."""
     if not content or not content.endswith(b"\n"):
         raise ApplyError("durable journal append must be one newline-framed record")
+    if path.is_symlink() or is_reparse_point(path):
+        raise ApplyError("transaction journal progress log is unsafe")
     existed = path.exists()
-    descriptor = os.open(
-        path,
-        os.O_WRONLY
-        | os.O_CREAT
-        | os.O_APPEND
-        | getattr(os, "O_BINARY", 0),
-        0o600,
-    )
+    try:
+        descriptor = os.open(
+            path,
+            os.O_WRONLY
+            | os.O_CREAT
+            | os.O_APPEND
+            | getattr(os, "O_BINARY", 0)
+            | getattr(os, "O_NOFOLLOW", 0),
+            0o600,
+        )
+    except OSError as exc:
+        raise ApplyError(f"cannot safely append transaction journal progress: {path}") from exc
     try:
         offset = 0
         while offset < len(content):
@@ -3109,9 +3115,11 @@ def progress_log_path(root: Path, journal: dict) -> Path:
 
 def load_progress_records(root: Path, journal: dict) -> tuple[list[dict], bool]:
     path = progress_log_path(root, journal)
+    if path.is_symlink() or is_reparse_point(path):
+        raise ApplyError("transaction journal progress log is unsafe")
     if not path.exists():
         return [], False
-    if not path.is_file() or path.is_symlink() or is_reparse_point(path):
+    if not path.is_file():
         raise ApplyError("transaction journal progress log is unsafe")
     raw = path.read_bytes()
     trailing_partial = bool(raw) and not raw.endswith(b"\n")
@@ -3258,13 +3266,27 @@ def replay_journal_progress(root: Path, plan: dict, snapshot: dict) -> dict:
 
 def truncate_incomplete_progress_tail(root: Path, journal: dict) -> None:
     path = progress_log_path(root, journal)
+    if path.is_symlink() or is_reparse_point(path):
+        raise ApplyError("transaction journal progress log is unsafe")
     if not path.exists():
         return
+    if not path.is_file():
+        raise ApplyError("transaction journal progress log is unsafe")
     raw = path.read_bytes()
     if not raw or raw.endswith(b"\n"):
         return
     valid_length = raw.rfind(b"\n") + 1
-    descriptor = os.open(path, os.O_RDWR | getattr(os, "O_BINARY", 0))
+    try:
+        descriptor = os.open(
+            path,
+            os.O_RDWR
+            | getattr(os, "O_BINARY", 0)
+            | getattr(os, "O_NOFOLLOW", 0),
+        )
+    except OSError as exc:
+        raise ApplyError(
+            f"cannot safely truncate transaction journal progress: {path}"
+        ) from exc
     try:
         os.ftruncate(descriptor, valid_length)
         os.fsync(descriptor)
