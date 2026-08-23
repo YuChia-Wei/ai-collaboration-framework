@@ -1945,6 +1945,7 @@ def durable_append_bytes(
     """Append one framed record and durably publish it before returning."""
     if not content or not content.endswith(b"\n"):
         raise ApplyError("durable journal append must be one newline-framed record")
+    require_safe_transaction_root(path.parent)
     if path.is_symlink() or is_reparse_point(path):
         raise ApplyError("transaction journal progress log is unsafe")
     existed = path.exists()
@@ -2451,7 +2452,11 @@ def verify_multi_hop_checkpoint_for_active_child(
 @contextmanager
 def transaction_lock(target: Path) -> Iterator[None]:
     base = git_admin_transaction_base(target)
+    require_safe_transaction_directory(
+        base, "transaction base", allow_missing=True
+    )
     base.mkdir(parents=True, exist_ok=True)
+    require_safe_transaction_directory(base, "transaction base")
     lock_path = base / "transaction.lock"
     handle = lock_path.open("a+b")
     try:
@@ -2503,14 +2508,34 @@ def transaction_root(target: Path, transaction_id: str) -> Path:
     return git_admin_transaction_base(target) / transaction_id
 
 
+def require_safe_transaction_directory(
+    path: Path, label: str, *, allow_missing: bool = False
+) -> None:
+    if path.is_symlink() or is_reparse_point(path):
+        raise ApplyError(f"{label} is unsafe")
+    if path.exists():
+        if not path.is_dir():
+            raise ApplyError(f"{label} is unsafe")
+    elif not allow_missing:
+        raise ApplyError(f"{label} is missing")
+
+
+def require_safe_transaction_root(root: Path, *, allow_missing: bool = False) -> None:
+    require_safe_transaction_directory(root.parent, "transaction base")
+    require_safe_transaction_directory(
+        root, "transaction root", allow_missing=allow_missing
+    )
+
+
 def reject_unfinished_v4_transactions(target: Path) -> None:
     """Block new mutation without offering v4 recovery or conversion."""
     base = git_admin_transaction_base(target)
     if not base.is_dir():
         return
     for child in sorted(base.iterdir(), key=lambda item: item.name):
-        if not child.is_dir() or not re.fullmatch(r"[0-9a-f]{64}", child.name):
+        if not re.fullmatch(r"[0-9a-f]{64}", child.name):
             continue
+        require_safe_transaction_root(child)
         journal_path = child / "journal.yaml"
         if (
             not journal_path.is_file()
@@ -2880,6 +2905,7 @@ def prepare_transaction(
         target, plan, route_operation_authorized=route_operation_authorized
     )
     root = transaction_root(target, transaction_id)
+    require_safe_transaction_root(root, allow_missing=True)
     if root.exists():
         raise ApplyError(
             f"transaction evidence already exists; resume or roll back {transaction_id}"
@@ -3051,11 +3077,13 @@ def prepare_transaction(
         verify_preparation_admission(
             target, plan, route_operation_authorized=route_operation_authorized
         )
+        require_safe_transaction_root(root, allow_missing=True)
         if root.exists():
             raise ApplyError(
                 f"transaction evidence already exists; resume or roll back {transaction_id}"
             )
         atomic_replace(preparation, root)
+        require_safe_transaction_root(root)
         fsync_directory(base)
         return root, journal
     except Exception:
@@ -3091,6 +3119,7 @@ def persist_journal(
     journal: dict,
     journal_io_hook: Callable[[dict], None] | None = None,
 ) -> None:
+    require_safe_transaction_root(root)
     expected_sequence = expected_v5_transition_sequence(plan, journal)
     journal["transition_sequence"] = (
         expected_sequence
@@ -3114,6 +3143,7 @@ def progress_log_path(root: Path, journal: dict) -> Path:
 
 
 def load_progress_records(root: Path, journal: dict) -> tuple[list[dict], bool]:
+    require_safe_transaction_root(root)
     path = progress_log_path(root, journal)
     if path.is_symlink() or is_reparse_point(path):
         raise ApplyError("transaction journal progress log is unsafe")
@@ -3265,6 +3295,7 @@ def replay_journal_progress(root: Path, plan: dict, snapshot: dict) -> dict:
 
 
 def truncate_incomplete_progress_tail(root: Path, journal: dict) -> None:
+    require_safe_transaction_root(root)
     path = progress_log_path(root, journal)
     if path.is_symlink() or is_reparse_point(path):
         raise ApplyError("transaction journal progress log is unsafe")
@@ -4325,6 +4356,7 @@ def load_transaction(
     allow_cleared_multi_hop_pending_receipt: bool = False,
 ) -> tuple[Path, dict, dict]:
     root = transaction_root(target, transaction_id)
+    require_safe_transaction_root(root)
     plan_path = root / "plan.json"
     journal_path = root / "journal.yaml"
     if not plan_path.is_file() or plan_path.is_symlink() or not journal_path.is_file() or journal_path.is_symlink():

@@ -55,7 +55,21 @@
 - Append and truncation also request `O_NOFOLLOW` on platforms that expose it and convert unsafe open failures to the stable apply safety boundary.
 - GWT-069 covers a broken-link resume, direct append, and torn-tail truncation while proving neither the next target operation nor the external link target is created.
 
+## Candidate `679bc0bea9c08176c3495946fb0c228ef4f4e6a2`
+
+- Subject and parent matched; tracked worktree and index were clean at audit start and end.
+- Full suite result: 87 passed, 0 failed, 1 skipped in 503.146 seconds, with a schema-valid completion envelope.
+- Independent result: `failed`; P1=1, P2=0, P3=0. The test pass cannot override the failed review.
+- P1: replacing the complete `<transaction-id>/` directory with a symlink or junction left its plan, journal, and progress leaves looking regular and allowed recovery to follow the ancestor outside Git-admin.
+- Prior leaf-link and all earlier semantic, state, v4, and progress findings were confirmed resolved.
+
+## Transaction-Root Boundary Remediation
+
+- The resolved Git-admin transaction base and each transaction root must be real directories, not symlinks or reparse points, before locking, preparation, load, snapshot persistence, progress load/append/truncation, or legacy scanning.
+- Target admission records a SHA-named unsafe transaction child as an error rather than silently skipping it.
+- GWT-070 redirects or simulates redirecting the transaction root and proves recovery, append, and target admission fail before the next target operation or external progress bytes change.
+
 ## Required Re-review
 
-- The broken-link repair requires a new immutable commit, full fixed-head validation, and a fresh independent audit of that new SHA.
+- The transaction-root repair requires a new immutable commit, full fixed-head validation, and a fresh independent audit of that new SHA.
 - No acceptance conclusion is recorded for the repaired working tree yet.

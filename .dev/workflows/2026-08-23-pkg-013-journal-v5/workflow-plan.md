@@ -20,7 +20,7 @@
 - `current_phase`: `remediation`
 - `artifact_root`: `.dev/workflows/2026-08-23-pkg-013-journal-v5`
 - `created_at`: `2026-08-23T18:53:54+08:00`
-- `updated_at`: `2026-08-23T20:00:19+08:00`
+- `updated_at`: `2026-08-23T20:15:38+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md`
 - `template_version`: `1.2.0`
 
@@ -49,7 +49,7 @@
 | GWT scenario design | `bdd-gwt-test-designer` | direct, pre-implementation | completed |
 | Bounded implementation and concrete tests | `slice-implementer` | generic execution mode | completed |
 | Test execution | target-owned Python unittest commands | explicit lifecycle validation | focused checks passed; fixed-head full suite pending |
-| Independent fixed-head review | read-only independent auditor | exact commit | three candidates rejected; broken-link journal boundary remediation pending fresh review |
+| Independent fixed-head review | read-only independent auditor | exact commit | four candidates rejected; transaction-root ancestor boundary remediation pending fresh review |
 | .NET code-review route | `code-reviewer` | not applicable to the Python and YAML/Markdown subject | not-applicable |
 | Spec compliance | `spec-compliance-validator` | not selected by owner or target profile for this Issue | not-applicable |
 
@@ -76,11 +76,11 @@ The `bdd-gwt-test-designer` stage must cover at least:
 
 ## Resume Checkpoint
 
-- Last completed action: full suite passed at `34753883e38501175c0c7f0a91dd26894cab33bd`, but its audit rejected a broken `progress.jsonl` symlink/reparse boundary that could redirect an append outside the transaction; GWT-069 now covers recovery, append, and torn-tail truncation rejection before mutation.
-- Current task: `PKG-013-journal-v5` third fixed-head finding remediation.
-- Exact next action: commit broken-link boundary hardening, rerun full fixed-head validation, and obtain a fresh independent audit of the new SHA.
-- Validation already completed: fixed-head suites at `c196c558`, `ed48ec99`, and `34753883` passed 82, 84, and 86 tests respectively but cannot override their failed audits; GWT-069 plus focused normal resume and parity tests pass after the current repair. Earlier sandbox Temp ACL blocking and pre-correction snapshot-assumption failures remain retained evidence.
-- Git state: branch `codex/issue-239-journal-v5`; three failed-audit candidates retained plus uncommitted broken-link hardening.
+- Last completed action: full suite passed at `679bc0bea9c08176c3495946fb0c228ef4f4e6a2`, but its audit rejected a transaction-root ancestor symlink/junction that bypassed leaf-only checks; GWT-070 now covers recovery, append, and target admission without external or next-operation mutation.
+- Current task: `PKG-013-journal-v5` fourth fixed-head finding remediation.
+- Exact next action: commit transaction-root boundary hardening, rerun full fixed-head validation, and obtain a fresh independent audit of the new SHA.
+- Validation already completed: fixed-head suites at the first four candidates passed 82, 84, 86, and 87 tests but cannot override their failed audits; GWT-070 and focused normal resume, legacy, leaf-link, and safe-add tests pass after the current repair. A wrong normal-apply selector produced one retained unittest loader error before the corrected selector passed.
+- Git state: branch `codex/issue-239-journal-v5`; four failed-audit candidates retained plus uncommitted transaction-root hardening.
 - Branch history and checkpoint handoffs: none.
 - Blockers or unresolved decisions: none; release allocation remains intentionally unassigned.
 

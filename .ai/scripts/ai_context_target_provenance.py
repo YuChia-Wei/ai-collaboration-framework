@@ -2130,12 +2130,10 @@ def validate_apply_transaction_journals(
     receipt_transaction = receipt.get("transaction_id") if receipt is not None else None
     matched_receipt = False
     for child in sorted(transaction_directory.iterdir(), key=lambda path: path.name):
-        if (
-            child.is_symlink()
-            or is_reparse_point(child)
-            or not child.is_dir()
-            or not re.fullmatch(r"[0-9a-f]{64}", child.name)
-        ):
+        if not re.fullmatch(r"[0-9a-f]{64}", child.name):
+            continue
+        if child.is_symlink() or is_reparse_point(child) or not child.is_dir():
+            errors.append(f"{child}: transaction root is unsafe")
             continue
         journal_path = child / "journal.yaml"
         journal = (
