@@ -19,7 +19,7 @@
 - `current_phase`: `completed`
 - `artifact_root`: `.dev/workflows/2026-08-23-retained-origin-route-evidence`
 - `created_at`: `2026-08-23T16:21:28+08:00`
-- `updated_at`: `2026-08-23T17:33:48+08:00`
+- `updated_at`: `2026-08-23T17:38:13+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md`
 - `template_version`: `1.2.0`
 
@@ -60,7 +60,7 @@
 - Current task: none; `UPG-005-S1`, `UPG-005-S2`, and `UPG-005-S3` are completed.
 - Exact next action: None in this workflow. Release management may later batch the prospective schema-1.1/v2 package into an owner-selected release without rewriting v0.14.0 history.
 - Validation already completed: route 30/30, packaging 1/1, package-apply 2/2, release-state 36/36, production-path multi-hop 1/1, workflow artifacts 91/91, three-commit policy validation 3/3, AST syntax and diff checks, and accepted third exact-head audit.
-- Git state: Durable implementation commits are `6c3e1e2c`, `04fe7875`, and accepted audited head `bf9dbd11`; this final workflow closeout metadata is pending one local commit.
+- Git state: Durable implementation commits are `6c3e1e2c`, `04fe7875`, and accepted audited head `bf9dbd11`; the owner option-A workflow closeout is durably committed on this dedicated branch.
 - Branch history and checkpoint handoffs: Segment 1 only; no push or merge.
 - Blockers or unresolved decisions: None in Issue #237. Owner selected option A: historical v0.14.0 source matrix and receipt bytes remain unchanged and non-passing; version allocation remains outside this workflow.
 
