@@ -130,3 +130,16 @@
 - The deferred declaration marks scope, tasks, and applicable verification incomplete while integration admission is pending, matching the in-progress locator and task.
 - Push, PR, and merge-commit integration are recorded as separately authorized; Issue, Project, release, publication, and downstream mutations remain prohibited.
 - The committed candidate must stay unchanged through fresh exact-head validation, audit, hosted checks, and live admission.
+
+## Candidate `5b65ca6c266c637353393279ce2717bcac9143d4`
+
+- Subject and base matched; tracked worktree and index were clean at audit start and end.
+- Full suite result: 90 passed, 0 failed, 1 skipped in 503.441 seconds, with a schema-valid immutable-head completion envelope.
+- Independent result: `failed`; P1=0, P2=1, P3=0. Implementation, tests, contracts, and guides remained byte-identical to the P1-resolved `5b1060be` subject.
+- P2: material lifecycle updates retained stale `updated_at` metadata in the workflow locator, task record, and workflow index, contrary to the workflow artifact policy.
+
+## Lifecycle Timestamp Remediation
+
+- Every materially changed lifecycle surface with workflow-owned `updated_at` metadata now uses one consistent current timestamp.
+- The `5b65ca6c` full-suite pass and failed audit remain exact historical evidence.
+- The current candidate is SHA-neutral and requires a fresh exact-head full-suite receipt, independent audit, hosted checks, and live admission before integration.

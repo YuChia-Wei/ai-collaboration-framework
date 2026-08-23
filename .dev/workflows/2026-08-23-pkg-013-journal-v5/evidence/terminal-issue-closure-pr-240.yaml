@@ -45,7 +45,8 @@ pull_request:
     - repaired-head full suite: 90 tests ran, 0 failures, 1 Windows symlink-capability skip, 516.047 seconds at `5b1060bed0056271ba7406810e5e4c5f519ffffc`
     - repaired-head audit: both prior P1 findings were resolved, but the audit failed closed with one retained P2 stale workflow-lifecycle finding; the reconciled final head still requires a fresh full suite and independent review before merge
     - first evidence-reconciliation head: 90 tests passed at `0bcb6e25d8a1490e0ecb33d3ab7d3cd3d6754eb5`, but its audit retained one P2 self-referential pending/current-state contradiction
-    - final candidate state is SHA-neutral and remains unchanged while fresh exact-head full validation and independent review run
+    - second evidence-reconciliation head: 90 tests passed at `5b65ca6c266c637353393279ce2717bcac9143d4`, but its audit retained one P2 stale `updated_at` metadata finding
+    - final candidate state is SHA-neutral, contains the bounded lifecycle-timestamp repair, and remains unchanged while fresh exact-head full validation and independent review run
 
     ## Boundaries
 
