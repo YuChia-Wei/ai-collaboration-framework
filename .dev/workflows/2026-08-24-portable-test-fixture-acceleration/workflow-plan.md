@@ -152,7 +152,7 @@ Workflow mode preserves unique state not owned by the Issue or a single commit: 
 
 ## Progress And Handoff
 
-- Current stage: `validation`
+- Current stage: `audit-handoff`
 - Completed stages: `inventory-design`, `test-design`, `implementation`
 - Deferred stages and reasons: #245 integration/resync is deferred until #245 is merged to `main`; no polling or waiting is authorized.
 - Open decisions: Cold-cache benchmark evidence remains unavailable unless the owner supplies a safe deterministic cache-reset procedure; warm runs must not be relabeled as cold.
@@ -173,11 +173,11 @@ Workflow mode preserves unique state not owned by the Issue or a single commit: 
 - Changed artifacts: Workflow, classified fixture runtime and runner, three migrated test suites, validation profiles, deterministic tests, bilingual agent guidance, human guide, and manual opt-in CI workflow.
 - Approved requirement/specification evidence: Issue #246 plus explicit owner delegation.
 - Implementation completion evidence: 20 focused routing tests plus matching 86-test default and accelerated profile outcomes.
-- Required test outcomes: Focused contracts passed; exact-commit benchmark, aggregate, and delegated long-running validation remain pending.
+- Required test outcomes: Focused contracts, same-suite Windows and WSL warm benchmarks, source governance, and delegated `fast` validation passed at the recorded validation checkpoint; repeat affected exact-head gates after this handoff checkpoint commit.
 - Selected compliance evidence: not applicable.
 - Review disposition: pending exact-head independent audit.
 - Validation evidence: pending.
-- Workflow task state: inventory, test design, and implementation completed; `perf-001-validation` in progress; audit pending.
+- Workflow task state: inventory, test design, implementation, and validation completed; `perf-001-audit-handoff` in progress and blocked from main integration until #245 is merged and synchronized.
 - Commits: none yet.
 - Branch / checkpoint / handoff evidence: local dedicated branch; no push or merge.
 - Residual risks: #245 may overlap source/workflow validation and requires fresh post-merge synchronization and validation.

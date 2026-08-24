@@ -1,0 +1,42 @@
+schema_version: "1.0"
+checkpoint_id: "2026-08-24-portable-test-fixture-acceleration-PERF001-001-blocked-on-245"
+created_at: "2026-08-24T23:40:00+08:00"
+repository:
+  root: "."
+  branch: "codex/2026-08-24-portable-test-fixture-acceleration"
+  validated_commit: "8e8eed5987160c64cf11a68819a67f5ae35433d6"
+  checkpoint_commit_source: "containing-commit"
+  dirty_state: "clean"
+  status_porcelain_sha256: "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+workflow:
+  workflow_id: "2026-08-24-portable-test-fixture-acceleration"
+  task_id: "perf-001-audit-handoff"
+resume:
+  last_completed_action: "Focused contracts, four warm benchmark profiles, source governance, and the 416-second delegated fast gate passed at validation commit 8e8eed5987160c64cf11a68819a67f5ae35433d6."
+  exact_next_action: "Validate this containing checkpoint commit, obtain an exact-head read-only independent audit, then remain blocked until Issue #245 is merged into main; after that, synchronize without discarding #245 and repeat affected validation, benchmarks, and audit."
+  hidden_context_required: false
+integration_gate:
+  blocker: "GitHub Issue #245 / GOV-012 must be merged to main first"
+  permitted_now:
+    - "local validation"
+    - "read-only exact-head audit"
+    - "durable local commits"
+  prohibited_now:
+    - "push"
+    - "pull request creation"
+    - "merge into main"
+    - "Issue or Project mutation"
+    - "release or publication mutation"
+retained_validation:
+  passed_subject: "8e8eed5987160c64cf11a68819a67f5ae35433d6"
+  external_completion_ref: ".tmp/perf001-external-head/completion.yaml"
+  sealed_evidence_ref: "artifacts/validation/20260824T153051Z-377/sealed-manifest.json"
+  failed_attempt_ref: ".tmp/perf001-external/completion.yaml"
+  cold_profile: "deferred-with-owner"
+  cold_profile_reason: "No authorized deterministic cache-reset contract is available; warm observations must not be relabeled as cold."
+execution_provenance:
+  runtime: "OpenAI Codex"
+  model: "gpt-5.6-sol"
+  reasoning_effort: "high"
+  model_source: "runtime-reported"
+  evidence_ref: ".dev/workflows/2026-08-24-portable-test-fixture-acceleration/tasks/perf-001-validation.json"
