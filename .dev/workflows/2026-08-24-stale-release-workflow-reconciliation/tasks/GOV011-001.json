@@ -8,7 +8,7 @@
   "owner_skill": "ai-context-governance",
   "status": "in_progress",
   "created_at": "2026-08-24T10:28:32+08:00",
-  "updated_at": "2026-08-24T11:46:41+08:00",
+  "updated_at": "2026-08-24T12:00:20+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-5.6-sol",
   "reasoning_effort": "high",
@@ -45,7 +45,7 @@
     "validation": [
       "Focused terminal-anchor validator tests",
       "python .ai/scripts/validate-workflow-artifacts.py",
-      "python .ai/scripts/validate-ai-context.py --mode source",
+      "python .ai/scripts/validate-ai-context.py",
       "Applicable source-governance profile selected by repository routing",
       "python .ai/scripts/validate-git-commits.py --range main..HEAD --workflow-id 2026-08-24-stale-release-workflow-reconciliation",
       "Independent read-only exact-head governance audit"
@@ -86,6 +86,7 @@
       "registered blocked handoff checkpoint: contains the complete interrupted, blocked-by-environment, and failed attempt history without requiring ignored local receipts",
       "workflow handoff checkpoint and registry validators: passed for the new checkpoint and all 9 registered checkpoints",
       "workflow handoff tests: passed 22/22 on the host after the sandbox Temp ACL run was retained as blocked and its two exact Temp residues were removed",
+      "fixed-head audit at b385a69d8f2e1d8db5a98832de3d41a2f262243f: bounded implementation acceptable, P2 fixed, selected-gate P1 retained, and the unsupported AI-context command record identified for correction",
       "git diff --check: passed",
       "broad CheckAllRunnerGwtTests class: interrupted during unrelated cases and not counted as passed"
     ],

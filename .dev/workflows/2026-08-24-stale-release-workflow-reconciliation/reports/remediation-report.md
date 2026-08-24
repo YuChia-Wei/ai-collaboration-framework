@@ -85,6 +85,9 @@ validation platform or leaving #243 unfinished.
 - The new checkpoint and the 9-entry handoff registry validate. Handoff tests
   passed 22/22 on the host after the sandbox run hit Temp ACL errors; the two
   exact sandbox-created Temp directories were removed after path verification.
+- Final handoff review corrected the planned AI-context validation command to
+  the actually supported and passing `python .ai/scripts/validate-ai-context.py`
+  invocation; no unsupported `--mode` argument remains in this task.
 - The broad CheckAll runner class was interrupted during unrelated cases and is
   not represented as passed.
 

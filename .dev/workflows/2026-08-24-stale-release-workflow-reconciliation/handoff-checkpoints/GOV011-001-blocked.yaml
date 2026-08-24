@@ -1,10 +1,10 @@
 schema_version: "1.0"
 checkpoint_id: "2026-08-24-stale-release-workflow-reconciliation-GOV011-001-blocked"
-created_at: "2026-08-24T11:46:41+08:00"
+created_at: "2026-08-24T12:00:20+08:00"
 repository:
   root: "."
   branch: "codex/2026-08-24-stale-release-workflow-reconciliation"
-  validated_commit: "ceee8b30786c2e7a4587c75e534172c73e6edc21"
+  validated_commit: "b385a69d8f2e1d8db5a98832de3d41a2f262243f"
   checkpoint_commit_source: "containing-commit"
   dirty_state: "clean"
   status_porcelain_sha256: "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
@@ -12,7 +12,7 @@ workflow:
   workflow_id: "2026-08-24-stale-release-workflow-reconciliation"
   task_id: "GOV011-001"
 resume:
-  last_completed_action: "Completed the bounded #243 implementation and scoped validation, retained every non-passing aggregate attempt, exhausted Windows-native and WSL-native environment alternatives, received two fail-closed fixed-head audits, and ran the canonical critical gate for this blocked handoff."
+  last_completed_action: "Completed the bounded #243 implementation and scoped validation, retained every non-passing aggregate attempt, exhausted Windows-native and WSL-native environment alternatives, ran the canonical critical gate, fixed the durable handoff completeness finding, and corrected the unsupported AI-context command record identified by exact-head audit."
   exact_next_action: "Owner decides whether to authorize separately scoped validation-platform repair or leave #243 unfinished; do not reclassify the selected fast gate, mutate providers, or change release state."
   hidden_context_required: false
 critical_gate:
@@ -53,14 +53,14 @@ attribution:
   evidence_union_version: "1.0"
   selected_evidence:
     kind: "repository-created-local-ai-trailer"
-    commit: "ceee8b30786c2e7a4587c75e534172c73e6edc21"
+    commit: "b385a69d8f2e1d8db5a98832de3d41a2f262243f"
     author: "YuChia <h42279@gmail.com>"
     committer: "YuChia <h42279@gmail.com>"
     signature_status: "unsigned"
     session_ref: null
     observed_trailer: "Co-Authored-By: OpenAI Codex (gpt-5.6-sol, high) <noreply@openai.com>"
-    message_sha256: "908154e4fd6b44b9fb76a49b762975d10b5868cb15e7d15fb5ae4014e1deee40"
-    fixture_ref: "git:ceee8b30786c2e7a4587c75e534172c73e6edc21"
+    message_sha256: "4e2d0fea724d8925b0e5b9bc89ecfb6fcf18f30f9968b4abb5c411c1d406dd4f"
+    fixture_ref: "git:b385a69d8f2e1d8db5a98832de3d41a2f262243f"
   fixture_status:
     - path_id: "copilot-cli"
       status: "blocked"
@@ -79,8 +79,8 @@ attribution:
       reason: "No stable provider-generated Claude commit attribution fixture is available."
     - path_id: "codex-local"
       status: "captured"
-      commit: "ceee8b30786c2e7a4587c75e534172c73e6edc21"
-      evidence_ref: "git:ceee8b30786c2e7a4587c75e534172c73e6edc21"
+      commit: "b385a69d8f2e1d8db5a98832de3d41a2f262243f"
+      evidence_ref: "git:b385a69d8f2e1d8db5a98832de3d41a2f262243f"
       reason: null
 retained_validation_attempts:
   - attempt_id: "parent-fast-ea1852fd-interrupted"

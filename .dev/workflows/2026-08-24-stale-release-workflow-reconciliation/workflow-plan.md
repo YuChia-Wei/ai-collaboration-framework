@@ -19,7 +19,7 @@
 - `current_phase`: `verification`
 - `artifact_root`: `.dev/workflows/2026-08-24-stale-release-workflow-reconciliation`
 - `created_at`: `2026-08-24T10:28:32+08:00`
-- `updated_at`: `2026-08-24T11:46:41+08:00`
+- `updated_at`: `2026-08-24T12:00:20+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md`
 - `template_version`: `1.2.0`
 
