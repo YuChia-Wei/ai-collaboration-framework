@@ -194,6 +194,12 @@ register_check profile-registry-contract \
     "runner,registry,tests" "fast pr release nightly-full" \
     ".ai/scripts/validation-profile-registry.sh .ai/scripts/check-all.sh .ai/scripts/tests/test_validation_profile_registry.py" '' "python>=3.11 bash" 30 cpu reuse-by-input portable \
     "python .ai/scripts/tests/test_validation_profile_registry.py -v" always
+register_check test-fixture-routing-contract \
+    "Portable Test Fixture Routing Contract" required \
+    "runner,fixtures,tests" "fast pr release nightly-full" \
+    ".ai/scripts/test_fixture_runtime.py .ai/scripts/test-fixture-classifications.json .ai/scripts/run-test-fixture-profile.py .ai/scripts/tests/test_test_fixture_runtime.py .ai/scripts/tests/test_ai_context_release_state.py .ai/scripts/tests/test_ai_context_version_governance.py .ai/scripts/tests/test_release_notes_renderer.py" profile-registry-contract \
+    "python>=3.11 git" 60 io reuse-by-input source \
+    "python .ai/scripts/tests/test_test_fixture_runtime.py -v" always
 register_check validation-evidence-contract \
     "Validation Execution Evidence Contract" required \
     "runner,evidence,tests" "fast pr release nightly-full" \

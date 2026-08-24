@@ -1,0 +1,70 @@
+name: Portable Test Fixture Acceleration
+
+on:
+  workflow_dispatch:
+    inputs:
+      fixture_root:
+        description: Existing absolute disposable fixture root on the selected runner
+        required: true
+        type: string
+      storage_kind:
+        description: Generic storage classification for sanitized evidence
+        required: true
+        default: ram-backed
+        type: choice
+        options:
+          - ram-backed
+          - tmpfs
+          - wsl-native
+          - generic-fast-storage
+          - unspecified-explicit
+      condition:
+        description: Benchmark cache condition; caller owns any cold preparation
+        required: true
+        default: warm
+        type: choice
+        options:
+          - warm
+          - cold
+
+permissions: {}
+
+concurrency:
+  group: portable-test-fixture-${{ github.run_id }}
+  cancel-in-progress: false
+
+jobs:
+  benchmark:
+    name: Explicit fixture benchmark
+    runs-on: self-hosted
+    timeout-minutes: 30
+    permissions:
+      contents: read
+    env:
+      AI_CONTEXT_TEST_TMP_ROOT: ${{ inputs.fixture_root }}
+    steps:
+      - name: Check out the immutable workflow subject
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+
+      - name: Install pinned Python dependencies
+        run: python -m pip install --disable-pip-version-check -r requirements.txt
+
+      - name: Run the explicit accelerated benchmark
+        run: python .ai/scripts/run-test-fixture-profile.py benchmark --mode accelerated --storage-kind ${{ inputs.storage_kind }} --condition ${{ inputs.condition }} --runs 3 --output artifacts/fixture-benchmark.json
+
+      - name: Upload sanitized benchmark evidence
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: portable-test-fixture-benchmark-${{ github.run_id }}-${{ github.run_attempt }}
+          retention-days: 14
+          if-no-files-found: error
+          path: artifacts/fixture-benchmark.json

@@ -16,6 +16,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[3]
 REGISTRY_PATH = ROOT / ".ai/scripts/python-entrypoints.json"
 STDLIB_COMPARE = ".ai/assets/skills/ai-context-upgrader/scripts/compare-ai-context-versions.py"
+STDLIB_FIXTURE_PROFILE = ".ai/scripts/run-test-fixture-profile.py"
 MARKER = ROOT / ".ai/scripts/tests/.python-source-entrypoints-marker"
 RUNNER_LOG_DIRECTORY = os.environ.get("AI_CONTEXT_VALIDATION_RUN_LOG_DIR")
 ACTIVE_RUNNER_LOG_DIRECTORY = (
@@ -133,10 +134,11 @@ class PythonSourceEntrypointTests(unittest.TestCase):
                     self.assertFalse(diagnostic["mutation_started"])
         self.assertEqual(before, protected_snapshot())
 
-    def test_gwt_003_given_source_only_registry_when_stdlib_entry_is_selected_then_compare_has_an_empty_dependency_profile(self) -> None:
+    def test_gwt_003_given_source_only_registry_when_stdlib_entries_are_selected_then_they_have_empty_dependency_profiles(self) -> None:
         stdlib_entries = {item["path"]: item for item in self.stdlib_source_only}
-        self.assertEqual({STDLIB_COMPARE}, set(stdlib_entries))
-        self.assertEqual([], stdlib_entries[STDLIB_COMPARE]["dependency_profile"])
+        self.assertEqual({STDLIB_COMPARE, STDLIB_FIXTURE_PROFILE}, set(stdlib_entries))
+        for entrypoint in (STDLIB_COMPARE, STDLIB_FIXTURE_PROFILE):
+            self.assertEqual([], stdlib_entries[entrypoint]["dependency_profile"])
 
 
 if __name__ == "__main__":

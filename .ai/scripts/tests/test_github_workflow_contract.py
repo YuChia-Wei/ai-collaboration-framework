@@ -18,6 +18,7 @@ WORKFLOW_NAMES = {
     "portable-gates.yml",
     "package-candidate.yml",
     "publish-release.yml",
+    "test-fixture-acceleration.yml",
 }
 PR_CONCURRENCY = {
     "group": "${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}",
@@ -31,12 +32,17 @@ NIGHTLY_READINESS_CONCURRENCY = {
     "group": "ai-context-nightly-full-readiness",
     "cancel-in-progress": "false",
 }
+FIXTURE_ACCELERATION_CONCURRENCY = {
+    "group": "portable-test-fixture-${{ github.run_id }}",
+    "cancel-in-progress": "false",
+}
 EXPECTED_TRIGGERS = {
     "governance.yml": {"pull_request", "workflow_dispatch"},
     "nightly-full-readiness.yml": {"schedule", "workflow_dispatch"},
     "portable-gates.yml": {"pull_request", "workflow_dispatch"},
     "package-candidate.yml": {"pull_request", "workflow_dispatch"},
     "publish-release.yml": {"push"},
+    "test-fixture-acceleration.yml": {"workflow_dispatch"},
 }
 EXPECTED_PR_PATHS = {
     "portable-gates.yml": {
@@ -74,6 +80,7 @@ EXPECTED_ARTIFACT_ACTIONS = {
         "actions/download-artifact@v8",
         "actions/upload-artifact@v7",
     ],
+    "test-fixture-acceleration.yml": ["actions/upload-artifact@v7"],
 }
 MUTATING_COMMAND = re.compile(
     r"(?:\bgh\s+release\s+(?:create|delete(?:-asset)?|edit|upload)\b|"
@@ -161,6 +168,10 @@ class GitHubWorkflowContractTests(unittest.TestCase):
         self.assertEqual(
             NIGHTLY_READINESS_CONCURRENCY,
             self.workflows["nightly-full-readiness.yml"].get("concurrency"),
+        )
+        self.assertEqual(
+            FIXTURE_ACCELERATION_CONCURRENCY,
+            self.workflows["test-fixture-acceleration.yml"].get("concurrency"),
         )
 
     def test_gwt_002a_given_portable_gate_when_steps_are_read_then_no_dotnet_sdk_is_selected(self) -> None:
@@ -311,6 +322,9 @@ class GitHubWorkflowContractTests(unittest.TestCase):
                 "build": ("15", "ubuntu-latest"),
                 "publish": ("15", "ubuntu-latest"),
                 "reconcile-provider": ("15", "ubuntu-latest"),
+            },
+            "test-fixture-acceleration.yml": {
+                "benchmark": ("30", "self-hosted")
             },
         }
         for name, jobs in expected_jobs.items():

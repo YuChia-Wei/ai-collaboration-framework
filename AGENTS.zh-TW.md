@@ -77,6 +77,15 @@
 - 只接受一份 schema-valid terminal report，綁定 exact task、commit、command、duration、outcome 與 evidence。
 - Timeout、interruption、drift、缺少 evidence、cleanup failure 或 blocked execution 絕不會成為 `passed`。
 
+### 可攜式 Test Fixture 加速
+
+- Portable baseline 為零設定。只有在 `.ai/scripts/test-fixture-classifications.json` 中明確分類為 disposable fixture I/O 的測試，才可使用 `AI_CONTEXT_TEST_TMP_ROOT`。
+- 此設定只接受單一、明確 opt-in 的 fixture root。不得自動探索 storage、修改全域 `TEMP` 或 `TMP`，也不得將 durability-storage 或 platform-filesystem semantics 導向該 root。
+- 實際執行時重新 preflight、建立唯一且受 containment 驗證的 run directory，cleanup 只可刪除該 verified directory。Invalid、unsafe 或 unwritable root 必須在 material fixtures 前失敗。
+- Diagnostics 不得包含 path。WSL `/mnt/*` performance warning 只是 advisory；不得改變 test outcome，也不得靜默選擇其他 root。
+- Default 與 accelerated mode 必須在同一 commit、同一 host 使用相同 tracked test profile 比較。Median 至少使用三次執行，並明確標示 cold 或 warm condition。
+- Local 與 manual CI 用法請見 `.dev/guides/implementation-guides/PORTABLE-TEST-FIXTURE-ACCELERATION-GUIDE.md`。
+
 ## CLI 與 Runtime 邊界
 
 - Higher-priority policy 選定 cross-boundary CLI execution 後，載入 `.ai/assets/shared/CLI-EXECUTION-ROUTING-CONTRACT.md`。

@@ -77,6 +77,15 @@ Use `.ai/assets/skills/README.MD` as the canonical skill registry. Runtime wrapp
 - Require one schema-valid terminal report bound to the exact task, commit, command, duration, outcome, and evidence.
 - Timeout, interruption, drift, missing evidence, cleanup failure, or blocked execution never becomes `passed`.
 
+### Portable Test Fixture Acceleration
+
+- The portable baseline is zero configuration. Only tests explicitly classified in `.ai/scripts/test-fixture-classifications.json` as disposable fixture I/O may consume `AI_CONTEXT_TEST_TMP_ROOT`.
+- The setting is one explicit opt-in fixture root. Do not discover storage, change global `TEMP` or `TMP`, or route durability-storage or platform-filesystem semantics through it.
+- Re-run preflight at execution time, create one unique contained run directory, and clean up only that verified directory. Invalid, unsafe, or unwritable roots fail before material fixtures.
+- Keep diagnostics path-free. A WSL `/mnt/*` performance warning is advisory; it never changes test outcomes or silently selects another root.
+- Compare default and accelerated modes with the same tracked test profile on one commit and host. Use at least three runs for a median and label cold or warm conditions explicitly.
+- See `.dev/guides/implementation-guides/PORTABLE-TEST-FIXTURE-ACCELERATION-GUIDE.md` for local and manual CI usage.
+
 ## CLI And Runtime Boundaries
 
 - After higher-priority policy selects cross-boundary CLI execution, load `.ai/assets/shared/CLI-EXECUTION-ROUTING-CONTRACT.md`.

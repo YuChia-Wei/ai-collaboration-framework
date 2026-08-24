@@ -6,7 +6,7 @@ from __future__ import annotations
 import importlib.util
 import json
 import subprocess
-import tempfile
+import sys
 import unittest
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
@@ -16,6 +16,10 @@ import yaml
 
 
 ROOT = Path(__file__).resolve().parents[3]
+sys.path.insert(0, str(ROOT / ".ai/scripts"))
+# Tracked as ephemeral-fixture-io in test-fixture-classifications.json.
+import test_fixture_runtime as tempfile  # noqa: E402
+
 SCRIPT = ROOT / ".ai" / "scripts" / "validate-ai-context-release-state.py"
 SPEC = importlib.util.spec_from_file_location("release_state", SCRIPT)
 assert SPEC and SPEC.loader
