@@ -53,7 +53,9 @@ class TerminalIssueClosureGwtTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
         cls.config = yaml.safe_load(
-            (ROOT / ".dev/backlog/providers/github.yaml").read_text(encoding="utf-8")
+            (ROOT / ".dev/standards/GITHUB-WORK-MANAGEMENT-POLICY.yaml").read_text(
+                encoding="utf-8"
+            )
         )
         cls.commit_messages_patcher = mock.patch.object(VALIDATOR, "commit_messages", return_value="")
         cls.commit_messages_patcher.start()

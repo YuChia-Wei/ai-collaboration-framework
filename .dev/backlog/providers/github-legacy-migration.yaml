@@ -1,11 +1,13 @@
 schema_version: "1.0"
+status: "historical-only"
 provider: "github"
 repository: "YuChia-Wei/ai-collaboration-framework"
 owner: "YuChia-Wei"
 contract_role:
-  current_policy: "selected source-repository GitHub work-management provider; Issue binding and merge reference are required for material work, with separate explicit owner approval"
-  current_state_receipt: ".dev/backlog/provider-mappings/github-project-current.yaml"
-  local_projection_scope: "The 55 YAML records matched by source.backlog_glob are the durable local backlog subset. They are not a complete enumeration of the online Issue queue or Project #3."
+  historical_adapter: "frozen 2026-07 Stage A/B local-backlog-to-GitHub projection compatibility; not current work-management or provider policy"
+  active_policy: ".dev/standards/GITHUB-WORK-MANAGEMENT-POLICY.yaml"
+  historical_state_receipt: ".dev/backlog/provider-mappings/github-project-current.yaml"
+  local_projection_scope: "The 55 YAML records matched by source.backlog_glob are a frozen historical subset retained only for migration and release compatibility. They do not enumerate or authorize current GitHub Issues or Project #3 work."
   historical_adapter_scope: "The migration section and fields below preserve the 2026-07 Stage A/B projection contract for the 41-item migration cohort; they are not a claim that their option lists equal the current live Project schema."
 source:
   backlog_glob: ".dev/backlog/items/*.yaml"

@@ -27,7 +27,7 @@ guard_direct_entrypoint(".ai/scripts/validate-terminal-issue-closure.py")
 import yaml
 
 ROOT = Path(__file__).resolve().parents[2]
-CONFIG = ROOT / ".dev/backlog/providers/github.yaml"
+CONFIG = ROOT / ".dev/standards/GITHUB-WORK-MANAGEMENT-POLICY.yaml"
 SHA = re.compile(r"^[0-9a-f]{40}$")
 ISSUE_REFERENCE = re.compile(
     r"(?i)\b(refs?|close[sd]?|fix(?:e[sd])?|resolve[sd]?)\s*:?\s+"

@@ -6,9 +6,9 @@
   "task_id": "GOV012-001",
   "workflow_id": "2026-08-24-retire-repository-backlog-authority",
   "owner_skill": "ai-context-governance",
-  "status": "in_progress",
+  "status": "completed",
   "created_at": "2026-08-24T20:11:36+08:00",
-  "updated_at": "2026-08-24T20:11:36+08:00",
+  "updated_at": "2026-08-24T20:31:49+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-5.6-sol",
   "reasoning_effort": "high",
@@ -42,16 +42,34 @@
       "v0.10.0+ online-Issue release-scope compatibility",
       "AI-context, workflow, source-governance, terminal-closure, and packaging-boundary checks"
     ],
-    "last_completed_step": "Completed live/Git/policy preflight and workflow bootstrap on the dedicated branch.",
-    "next_action": "Inventory direct tracked authority and provider-policy consumers and select the canonical placement."
+    "last_completed_step": "Relocated the active provider policy, froze the repository backlog and roadmap, retired the mutable snapshot claim, and added prospective/legacy compatibility validation.",
+    "next_action": "Create the immutable implementation commit and continue with GOV012-VAL-001 exact-head validation."
   },
   "results": {
-    "summary": "",
-    "files_changed": [],
-    "tests_run": [],
-    "finding_status": "not-addressed",
-    "residual_risk": "Inventory and implementation have not yet completed.",
-    "follow_up_needed": true
+    "summary": "Issue #245 authority, placement, historical freeze, consumer routing, source disposition, validator, release compatibility, and portable-template boundaries are implemented.",
+    "files_changed": [
+      ".dev/standards/SOURCE-WORK-MANAGEMENT-AUTHORITY.md",
+      ".dev/standards/SOURCE-WORK-MANAGEMENT-AUTHORITY.yaml",
+      ".dev/standards/GITHUB-WORK-MANAGEMENT-POLICY.yaml",
+      ".dev/backlog/**",
+      ".ai/scripts/validate-source-work-management.py",
+      ".ai/scripts/tests/test_source_work_management.py",
+      ".ai/distribution/governance-checks.yaml",
+      ".ai/distribution/source-dispositions.yaml",
+      ".ai/distribution/profiles/dotnet-backend.yaml"
+    ],
+    "tests_run": [
+      "python .ai/scripts/validate-source-work-management.py",
+      "python .ai/scripts/tests/test_source_work_management.py -v",
+      "python .ai/scripts/tests/test_github_backlog_provider.py -v",
+      "python .ai/scripts/tests/test_workflow_backlog_provider.py -v",
+      "python .ai/scripts/tests/test_terminal_issue_closure.py -v",
+      "python .ai/scripts/tests/test_ai_context_release_state.py -v",
+      "python .ai/scripts/tests/test_ai_context_package_validation.py -v",
+      "python .ai/scripts/validate-ai-context.py"
+    ],
+    "finding_status": "addressed",
+    "residual_risk": "Exact committed-head source governance, delegated aggregate validation, and independent audit remain in GOV012-VAL-001.",
+    "follow_up_needed": false
   }
 }
-

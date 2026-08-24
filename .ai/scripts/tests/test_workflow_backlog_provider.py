@@ -58,14 +58,14 @@ class WorkflowBacklogProviderTests(unittest.TestCase):
             self.assertEqual(0, VALIDATOR.validate_backlog(root, errors))
             self.assertTrue(any(".dev/backlog" in error for error in errors))
 
-    def test_gwt_003_given_source_profile_when_resolved_then_backlog_remains_required(self) -> None:
+    def test_gwt_003_given_source_profile_when_resolved_then_historical_backlog_is_not_active(self) -> None:
         with tempfile.TemporaryDirectory(prefix="workflow-source-provider-") as value:
             root = Path(value)
             profile = root / ".ai/distribution/profiles/dotnet-backend.yaml"
             profile.parent.mkdir(parents=True)
             profile.write_text("schema_version: 2.0.0\n", encoding="utf-8")
             errors: list[str] = []
-            self.assertTrue(VALIDATOR.backlog_provider_enabled(root, errors))
+            self.assertFalse(VALIDATOR.backlog_provider_enabled(root, errors))
             self.assertEqual([], errors)
 
     def test_gwt_004_given_dual_provenance_when_resolved_then_it_fails_closed(self) -> None:

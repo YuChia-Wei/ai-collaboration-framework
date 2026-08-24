@@ -1,0 +1,102 @@
+schema_version: "1.0"
+policy_id: "source-github-work-management"
+status: "active"
+provider: "github"
+repository: "YuChia-Wei/ai-collaboration-framework"
+owner: "YuChia-Wei"
+contract_role:
+  active_policy: "the single source-repository GitHub work-management, binding, merge-gate, and terminal-closure configuration"
+  authority_policy: ".dev/standards/SOURCE-WORK-MANAGEMENT-AUTHORITY.md"
+  legacy_adapter: ".dev/backlog/providers/github-legacy-migration.yaml"
+  historical_project_receipt: ".dev/backlog/provider-mappings/github-project-current.yaml"
+authority:
+  work_items: "live GitHub Issues"
+  current_views: "live GitHub Project #3"
+  execution_evidence: ".dev/workflows/"
+  integrated_truth: "main"
+  provider_state_alone_authorizes: false
+current_provider_state:
+  mode: "explicit-live-read-back-required"
+  credentials_for_ordinary_validation: false
+  cached_snapshot_is_current_authority: false
+  unavailable_provider_fallback: "blocked; never use the frozen repository backlog or ROADMAP as current truth"
+project:
+  number: 3
+  title: "AI Collaboration Framework — Backlog & Roadmap"
+  url: "https://github.com/users/YuChia-Wei/projects/3"
+  live_fields:
+    - "Status"
+    - "Priority"
+    - "Owner review"
+    - "Target release"
+    - "Published in"
+issue:
+  canonical_language: "en"
+  comments_languages: ["en", "zh-TW"]
+  creation_attribution:
+    required_for_formal_issue: true
+    label: "created-by:codex"
+    marker_format: "<!-- created-by: {runtime} ({model}, {reasoning_effort}) <{email}> -->"
+    runtime_binding: "active Issue-creation execution"
+    refresh_policy: "resolve execution values from the active runtime before each creation"
+work_item_binding:
+  mode: "required"
+  purposes:
+    - "traceability"
+    - "work-authorization"
+  authorization:
+    requires_explicit_owner_approval: true
+    provider_state_alone_authorizes: false
+    missing_binding: "block material execution until an online GitHub Issue records the scope and explicit owner authorization"
+  merge_gate:
+    mode: "required"
+    disposition_required_per_issue: true
+    missing_binding_blocks_merge: true
+    review_gate:
+      mode: "single-maintainer-audit-receipt"
+      maintainer_login: "YuChia-Wei"
+      receipt_contract: "github-terminal-issue-closure-audit/v1"
+      downstream_policy: "target-owned"
+    required_check_contexts:
+      - "Read-only governance contract"
+      - "Build and validate candidate"
+      - "Ubuntu prerequisite contract"
+      - "Windows prerequisite contract"
+      - "Ubuntu PR profile gate"
+issue_closure:
+  policy: ".dev/standards/GITHUB-TERMINAL-ISSUE-CLOSURE-POLICY.md"
+  distribution: "source-repository-only"
+  modes: ["terminal-close", "deferred"]
+  approved_closing_keywords: ["Closes", "Fixes", "Resolves"]
+  deferred_reference_keyword: "Refs"
+  mixed_per_issue_dispositions: true
+  closing_keyword_authorizes_work: false
+  integration_topologies: ["fast-forward", "rebase", "squash", "merge-commit"]
+  post_merge_source_mutation_required: false
+  terminal_requires:
+    - "final-accepted-delivery"
+    - "complete-scope-tasks-and-applicable-verification"
+    - "source-review-gate-and-successful-hosted-checks"
+    - "admitted-head-and-provider-integration-read-back"
+    - "matching-approved-closing-keyword"
+    - "post-merge-issue-and-project-read-back"
+  deferred_requires:
+    - "Refs"
+    - "no-closing-keyword-for-that-issue"
+    - "closure_deferred_reason"
+    - "next-terminal-gate-or-owner"
+  nonterminal_on:
+    - "hosted-failed"
+    - "hosted-cancelled"
+    - "hosted-timed-out"
+    - "head-drift"
+    - "review-block"
+    - "missing-or-mismatched-read-back"
+proposal_intake:
+  form: ".github/ISSUE_TEMPLATE/proposal.yml"
+  blank_issues_enabled: false
+  initial_project_status: "Inbox"
+  initial_label: "kind:proposal"
+  promotion_creates_new_formal_issue: true
+  ai_may_triage: true
+  ai_may_accept_or_reject: false

@@ -16,10 +16,10 @@
 - `base_branch`: `main`
 - `branch_segment`: `1`
 - `status`: `in_progress`
-- `current_phase`: `audit`
+- `current_phase`: `verification`
 - `artifact_root`: `.dev/workflows/2026-08-24-retire-repository-backlog-authority`
 - `created_at`: `2026-08-24T20:11:36+08:00`
-- `updated_at`: `2026-08-24T20:11:36+08:00`
+- `updated_at`: `2026-08-24T20:31:49+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md`
 - `template_version`: `1.2.0`
 - `work_item`: `https://github.com/YuChia-Wei/ai-collaboration-framework/issues/245`
@@ -74,17 +74,16 @@ Two substantive tasks are retained because the implementation boundary and the i
 
 ## Resume Checkpoint
 
-- Last completed action: Verified live Issue #245, fetched and read back unchanged `origin/main`, loaded the owning skill and governing policies, created the dedicated branch, and bootstrapped this workflow.
-- Current task: `GOV012-001`
-- Exact next action: Inventory direct tracked consumers and select the canonical non-backlog source-governance owner before changing active provider policy.
-- Validation already completed: clean preflight; `main == origin/main == 4be33ff90de061dc1db221f60e57ff6130cab54a`; online Issue OPEN with no comments; branch created before this artifact.
-- Git state: workflow artifacts uncommitted on `codex/2026-08-24-retire-repository-backlog-authority`.
+- Last completed action: Implemented the single active policy owner, historical freeze, snapshot retirement, validator/test routing, legacy release compatibility, and portable target-template preservation; focused checks passed.
+- Current task: `GOV012-VAL-001`
+- Exact next action: Commit the immutable implementation head, run HEAD-bound source governance, then delegate the long-running read-only profile.
+- Validation already completed: authority and unit gates; 54 terminal-closure tests; 37 release-state tests; 19 package-validation tests with one Windows case-fold skip; focused profile and package projection tests; AI-context and workflow validation. Sandbox Temp ACL failures were preserved and then passed in host context where rerun.
+- Git state: implementation and checkpoint artifacts staged or pending staging on `codex/2026-08-24-retire-repository-backlog-authority`.
 - Branch history and checkpoint handoffs: segment 1 created from verified `origin/main`; no push, merge, or handoff performed.
-- Blockers or unresolved decisions: none; canonical provider-policy placement remains an implementation evidence decision under `AI-CONTEXT-BOUNDARY` and `AI-CONTEXT-OWNERSHIP`.
+- Blockers or unresolved decisions: none; `.dev/standards/` is the selected single active source policy owner and `.dev/backlog/` is frozen historical evidence.
 
 ## Branch Lifecycle
 
 | Segment | Branch | Base | Checkpoint Type | Commit | Remote / Target | Recorded At | Reason | Resume Branch / Action |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | 1 | `codex/2026-08-24-retire-repository-backlog-authority` | `main@4be33ff90de061dc1db221f60e57ff6130cab54a` | none | pending | local only | `2026-08-24T20:11:36+08:00` | Initial authorized workflow segment | Continue `GOV012-001` on this branch. |
-

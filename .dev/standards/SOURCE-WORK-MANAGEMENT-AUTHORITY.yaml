@@ -1,0 +1,33 @@
+schema_version: "1.0"
+contract_id: "source-work-management-authority"
+rule_id: "SOURCE-WORK-MANAGEMENT-001"
+issue: 245
+status: "active"
+authority:
+  work_items: "live-github-issues"
+  current_views: "live-github-project-3"
+  execution_evidence: ".dev/workflows/"
+  integrated_truth: "main"
+  provider_state_alone_authorizes: false
+  ordinary_validation_requires_github_credentials: false
+current_provider:
+  config: ".dev/standards/GITHUB-WORK-MANAGEMENT-POLICY.yaml"
+  retired_config: ".dev/backlog/providers/github.yaml"
+  current_state_mode: "explicit-live-read-back-required"
+historical_compatibility:
+  root: ".dev/backlog"
+  frozen_at: "2026-08-24T20:18:17+08:00"
+  tracked_file_count: 77
+  aggregate_algorithm: "sha256 over each sorted UTF-8 repository path, NUL, raw file bytes, NUL"
+  aggregate_sha256: "52a4b398385a81bb9d9a8203d1aa202809aa09268630d7bd4b59b1a6d1630e90"
+  legacy_provider_config: ".dev/backlog/providers/github-legacy-migration.yaml"
+  historical_project_receipt: ".dev/backlog/provider-mappings/github-project-current.yaml"
+  legacy_release_versions: ["v0.5.0", "v0.6.0", "v0.7.0", "v0.8.0", "v0.9.0"]
+  online_issue_release_scope_from: "v0.10.0"
+prospective_workflow:
+  effective_at: "2026-08-24T20:18:17+08:00"
+  remediation_workflow_exception: "2026-08-24-retire-repository-backlog-authority"
+  forbidden_structured_keys: ["backlog_refs"]
+  forbidden_current_planning_paths:
+    - ".dev/backlog/items/"
+    - ".dev/backlog/ROADMAP.md"

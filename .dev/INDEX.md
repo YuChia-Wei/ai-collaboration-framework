@@ -22,6 +22,9 @@ This index owns the file and directory catalog for `.dev/`. The `.dev/README.MD`
 | `standards/AI-CONTEXT-LANGUAGE-POLICY.md` | Agent-facing and human-facing language policy. |
 | `standards/AI-CONTEXT-VERSION-POLICY.md` | Stable compatibility route to the portable target version, provenance, and upgrade policy projection. |
 | `standards/AI-CONTEXT-SOURCE-RELEASE-POLICY.md` | Source-only framework version-candidate, release-source status, tag handoff, hosted publication, and finalization validation policy. |
+| `standards/SOURCE-WORK-MANAGEMENT-AUTHORITY.md` | Source-only GitHub Issue/Project authority, workflow/main separation, and frozen legacy-backlog boundary. |
+| `standards/SOURCE-WORK-MANAGEMENT-AUTHORITY.yaml` | Executable source work-management authority, freeze, and release-compatibility contract. |
+| `standards/GITHUB-WORK-MANAGEMENT-POLICY.yaml` | Single active source GitHub binding, merge-gate, and terminal-closure configuration. |
 | `standards/WORKFLOW-GATE-POLICY.md` | Conversation, candidate-work, assessment, and authorized-execution workflow gate. |
 | `standards/ASSESSMENT-ARTIFACT-POLICY.md` | Standalone assessment identity, storage, lifecycle, Git lookup, and workflow handoff contract. |
 | `standards/GIT-COMMIT-POLICY.md` | Agent-assisted commit format and timing policy. |
@@ -120,13 +123,13 @@ This index owns the file and directory catalog for `.dev/`. The `.dev/README.MD`
 | `assessments/INDEX.MD` | Draft, final, superseded, and withdrawn assessment catalog. |
 | `standards/ASSESSMENT-ARTIFACT-POLICY.md` | Assessment ID, locator, lifecycle, branch, commit, and handoff contract. |
 
-## Durable Backlog
+## Frozen Historical Backlog
 
 | Path | Description |
 | --- | --- |
-| `backlog/` | Cross-workflow durable work items that must remain discoverable outside execution records. |
-| `backlog/README.MD` | Backlog ownership, state, and workflow-handoff contract. |
-| `backlog/INDEX.MD` | Current durable backlog catalog. |
+| `backlog/` | Frozen pre-2026-08-24 backlog, ROADMAP, planning, provider-receipt, and legacy-release compatibility evidence. |
+| `backlog/README.MD` | Historical freeze, retained identity, and compatibility boundary. |
+| `backlog/INDEX.MD` | Frozen 55-item catalog snapshot; not current work-management truth. |
 
 ## AI Runtime And Canonical Assets
 

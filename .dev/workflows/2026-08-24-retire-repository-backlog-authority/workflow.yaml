@@ -5,13 +5,13 @@ workflow_kind: "ai-context-maintenance"
 title: "Retire repository backlog and roadmap as current authority"
 owner_skill: "ai-context-governance"
 status: "in_progress"
-current_phase: "audit"
+current_phase: "verification"
 branch: "codex/2026-08-24-retire-repository-backlog-authority"
 base_branch: "main"
 artifact_root: ".dev/workflows/2026-08-24-retire-repository-backlog-authority"
 entrypoint: "workflow-plan.md"
 created_at: "2026-08-24T20:11:36+08:00"
-updated_at: "2026-08-24T20:11:36+08:00"
+updated_at: "2026-08-24T20:31:49+08:00"
 template_source: ".ai/assets/skills/ai-context-governance/templates/workflow-locator-template.yaml"
 template_version: "1.2.0"
 work_item_binding:
@@ -20,4 +20,3 @@ work_item_binding:
   issue: 245
   url: "https://github.com/YuChia-Wei/ai-collaboration-framework/issues/245"
   authorization: "Issue delivery section plus delegated owner instruction authorizes local implementation, validation, independent audit, and durable commits."
-

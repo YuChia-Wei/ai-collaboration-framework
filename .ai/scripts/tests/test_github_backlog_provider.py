@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""GWT contract tests for the source-only GitHub backlog provider projection."""
+"""GWT compatibility tests for the frozen GitHub backlog migration adapter."""
 
 from __future__ import annotations
 
@@ -17,10 +17,10 @@ if SPEC is None or SPEC.loader is None:
     raise RuntimeError(f"Unable to load provider module: {MODULE_PATH}")
 PROVIDER = importlib.util.module_from_spec(SPEC)
 SPEC.loader.exec_module(PROVIDER)
-CONFIG = REPO_ROOT / ".dev/backlog/providers/github.yaml"
+CONFIG = REPO_ROOT / ".dev/backlog/providers/github-legacy-migration.yaml"
 
 
-class GitHubBacklogProviderTests(unittest.TestCase):
+class HistoricalGitHubBacklogProviderTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
         cls.config = PROVIDER.load_yaml_mapping(CONFIG)
