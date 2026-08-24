@@ -8,7 +8,7 @@
   "owner_skill": "ai-context-governance",
   "status": "completed",
   "created_at": "2026-08-24T14:50:38+08:00",
-  "updated_at": "2026-08-24T17:22:00+08:00",
+  "updated_at": "2026-08-24T17:31:00+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-5.6-sol",
   "reasoning_effort": "high",
@@ -62,7 +62,7 @@
       "Independent read-only exact-head governance audit"
     ],
     "last_completed_step": "Exact clean head c71f5532 passed the full 74-test aggregate-runner suite, fast attempt 2, and critical attempt 2; no third attempt was needed, and all retained non-passing attempts remain unchanged.",
-    "next_action": "Push the PR #244 terminal-close declaration head, obtain the fresh exact-head audit receipt, and run hosted merge admission before merge-commit integration."
+    "next_action": "Obtain the fresh exact-head audit receipt for the current PR #244 head and run hosted merge admission before merge-commit integration."
   },
   "results": {
     "summary": "The measured timeout and supervision defects are resolved without removing checks or changing profile membership. Exact clean head c71f5532 passed the full runner suite plus fast and critical aggregate gates within the authorized retry limit.",

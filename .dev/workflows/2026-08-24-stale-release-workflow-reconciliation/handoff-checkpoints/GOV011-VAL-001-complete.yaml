@@ -12,8 +12,8 @@ workflow:
   workflow_id: "2026-08-24-stale-release-workflow-reconciliation"
   task_id: "GOV011-VAL-001"
 resume:
-  last_completed_action: "The exact clean repair head passed all aggregate gates, and draft PR #244 now carries the tracked terminal-close declaration for Issue #243."
-  exact_next_action: "Commit and push the PR #244 declaration, obtain a fresh exact-head independent audit and audit receipt, then admit only after all required hosted checks pass."
+  last_completed_action: "The exact clean repair head passed all aggregate gates, and pushed draft PR #244 carries the tracked terminal-close declaration for Issue #243."
+  exact_next_action: "Obtain a fresh exact-head independent audit and provider audit receipt for the current PR #244 head, then capture merge admission only after all required hosted checks pass."
   hidden_context_required: false
 critical_gate:
   command: '"C:\Program Files\Git\bin\bash.exe" .ai/scripts/check-all.sh --critical'
