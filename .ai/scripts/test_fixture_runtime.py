@@ -11,8 +11,10 @@ import platform
 import re
 import shutil
 import stat
+import sys
 import tempfile as system_tempfile
 import time
+import unittest
 import uuid
 from dataclasses import dataclass
 from enum import Enum
@@ -241,7 +243,10 @@ def preflight_fixture_root(candidate: str | Path) -> RootPreflight:
         shutil.rmtree(probe, ignore_errors=True)
         raise FixtureRootError("configured fixture root is not writable") from exc
 
-    usage = shutil.disk_usage(root)
+    try:
+        usage = shutil.disk_usage(root)
+    except OSError as exc:
+        raise FixtureRootError("configured fixture root capacity cannot be inspected") from exc
     kind = platform_family()
     return RootPreflight(
         root=root,
@@ -385,6 +390,7 @@ _PROCESS_SESSION: FixtureRunSession | None = None
 _PROCESS_ROOT: Path | None = None
 _DEFAULT_FIXTURE_COUNT = 0
 _DEFAULT_FIXTURE_SECONDS = 0.0
+_BOUND_TEST_PATH: str | None = None
 
 
 def _process_session() -> FixtureRunSession | None:
@@ -421,6 +427,10 @@ def TemporaryDirectory(  # noqa: N802 - compatibility with tempfile call sites
         raise FixtureRootError(f"unknown fixture classification: {classification}") from exc
     if selected is not FixtureClassification.EPHEMERAL:
         return system_tempfile.TemporaryDirectory(*args, **kwargs)
+    if os.environ.get(ENVIRONMENT_VARIABLE, "").strip() and _BOUND_TEST_PATH is None:
+        raise FixtureRootError(
+            "accelerated fixture caller is not bound to the tracked classification manifest"
+        )
     session = _process_session()
     if session:
         return session.temporary_directory(*args, **kwargs)
@@ -466,9 +476,32 @@ def load_classification_manifest(repository_root: Path) -> dict[str, object]:
     return data
 
 
-def _emit_process_summary() -> None:
+def bind_classified_test(test_file: str | Path, repository_root: Path) -> None:
+    """Bind this process to one manifest-authorized ephemeral test module."""
+    global _BOUND_TEST_PATH
+    try:
+        relative = Path(test_file).resolve(strict=True).relative_to(
+            repository_root.resolve(strict=True)
+        ).as_posix()
+    except (OSError, ValueError) as exc:
+        raise FixtureRootError("classified test path is outside the repository") from exc
+    manifest = load_classification_manifest(repository_root)
+    authorized = {
+        str(entry["path"])
+        for entry in manifest["tests"]  # type: ignore[index]
+        if isinstance(entry, dict)
+        and entry.get("classification") == FixtureClassification.EPHEMERAL.value
+    }
+    if relative not in authorized:
+        raise FixtureRootError("test is not authorized by the tracked fixture classification manifest")
+    if _BOUND_TEST_PATH is not None and _BOUND_TEST_PATH != relative:
+        raise FixtureRootError("fixture process cannot bind more than one classified test")
+    _BOUND_TEST_PATH = relative
+
+
+def _process_summary_payload() -> dict[str, object] | None:
     if os.environ.get(DIAGNOSTICS_VARIABLE) != "1":
-        return
+        return None
     resolution = resolve_fixture_root()
     session = _PROCESS_SESSION
     payload = resolution.diagnostic(workspace=Path.cwd())
@@ -482,6 +515,13 @@ def _emit_process_summary() -> None:
             ),
         }
     )
+    return payload
+
+
+def _emit_process_summary(payload: dict[str, object] | None = None) -> None:
+    payload = payload if payload is not None else _process_summary_payload()
+    if payload is None:
+        return
     print(SUMMARY_PREFIX + json.dumps(payload, sort_keys=True, separators=(",", ":")))
 
 
@@ -495,5 +535,18 @@ def close_process_session() -> None:
     _DEFAULT_FIXTURE_SECONDS = 0.0
 
 
+def run_unittest_main() -> None:
+    """Run unittest with cleanup in the explicit, outcome-bearing exit path."""
+    program = unittest.main(exit=False)
+    summary = _process_summary_payload()
+    try:
+        close_process_session()
+    except (FixtureRootError, OSError):
+        print("Fixture process cleanup failed.", file=sys.stderr)
+        raise SystemExit(2) from None
+    _emit_process_summary(summary)
+    result = program.result
+    raise SystemExit(0 if result is not None and result.wasSuccessful() else 1)
+
+
 atexit.register(close_process_session)
-atexit.register(_emit_process_summary)

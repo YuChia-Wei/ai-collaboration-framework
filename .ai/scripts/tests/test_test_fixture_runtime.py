@@ -166,7 +166,14 @@ class TestFixtureRuntimeGwtTests(unittest.TestCase):
         with WorkspaceTemporaryDirectory() as parent:
             root = Path(parent) / "fixtures"
             root.mkdir()
-            with mock.patch.dict(os.environ, {FIXTURES.ENVIRONMENT_VARIABLE: str(root)}):
+            with (
+                mock.patch.dict(os.environ, {FIXTURES.ENVIRONMENT_VARIABLE: str(root)}),
+                mock.patch.object(
+                    FIXTURES,
+                    "_BOUND_TEST_PATH",
+                    ".ai/scripts/tests/test_ai_context_release_state.py",
+                ),
+            ):
                 with FIXTURES.TemporaryDirectory(prefix="ephemeral-") as temporary:
                     fixture = Path(temporary).resolve()
                     self.assertEqual(root.resolve(), fixture.parents[1])
@@ -343,6 +350,64 @@ class TestFixtureRuntimeGwtTests(unittest.TestCase):
                         Path(os.path.abspath(os.path.normpath(root))),
                         FIXTURES._canonical_existing_path(root),
                     )
+
+    def test_gwt_024_given_process_cleanup_failure_when_unittest_exits_then_exit_is_nonzero(self) -> None:
+        program = mock.Mock()
+        program.result.wasSuccessful.return_value = True
+        with (
+            mock.patch.object(FIXTURES.unittest, "main", return_value=program),
+            mock.patch.object(FIXTURES, "_process_summary_payload", return_value={"event": "fixture-summary"}),
+            mock.patch.object(
+                FIXTURES,
+                "close_process_session",
+                side_effect=FIXTURES.FixtureRootError("private-root-fragment"),
+            ),
+            mock.patch.object(FIXTURES, "_emit_process_summary") as emit,
+            mock.patch("sys.stderr"),
+            self.assertRaises(SystemExit) as captured,
+        ):
+            FIXTURES.run_unittest_main()
+        self.assertEqual(2, captured.exception.code)
+        emit.assert_not_called()
+
+    def test_gwt_025_given_unbound_caller_when_acceleration_is_configured_then_it_fails_closed(self) -> None:
+        with WorkspaceTemporaryDirectory() as parent:
+            root = Path(parent) / "fixtures"
+            root.mkdir()
+            with (
+                mock.patch.dict(os.environ, {FIXTURES.ENVIRONMENT_VARIABLE: str(root)}),
+                mock.patch.object(FIXTURES, "_BOUND_TEST_PATH", None),
+                self.assertRaisesRegex(FIXTURES.FixtureRootError, "not bound"),
+            ):
+                FIXTURES.TemporaryDirectory()
+
+    def test_gwt_026_given_manifest_binding_when_test_is_tracked_then_only_that_test_is_authorized(self) -> None:
+        tracked = ROOT / ".ai/scripts/tests/test_ai_context_release_state.py"
+        untracked = ROOT / ".ai/scripts/tests/test_test_fixture_runtime.py"
+        with mock.patch.object(FIXTURES, "_BOUND_TEST_PATH", None):
+            FIXTURES.bind_classified_test(tracked, ROOT)
+            self.assertEqual(
+                ".ai/scripts/tests/test_ai_context_release_state.py",
+                FIXTURES._BOUND_TEST_PATH,
+            )
+        with mock.patch.object(FIXTURES, "_BOUND_TEST_PATH", None):
+            with self.assertRaisesRegex(FIXTURES.FixtureRootError, "not authorized"):
+                FIXTURES.bind_classified_test(untracked, ROOT)
+
+    def test_gwt_027_given_capacity_probe_failure_when_reported_then_private_root_is_omitted(self) -> None:
+        with WorkspaceTemporaryDirectory() as parent:
+            root = Path(parent) / "private-capacity-fragment"
+            root.mkdir()
+            with mock.patch.object(
+                FIXTURES.shutil,
+                "disk_usage",
+                side_effect=OSError(str(root)),
+            ):
+                with self.assertRaises(FIXTURES.FixtureRootError) as captured:
+                    FIXTURES.preflight_fixture_root(root)
+            self.assertIn("capacity cannot be inspected", str(captured.exception))
+            self.assertNotIn(str(root), str(captured.exception))
+            self.assertNotIn("private-capacity-fragment", str(captured.exception))
 
 
 if __name__ == "__main__":
