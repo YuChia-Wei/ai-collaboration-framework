@@ -140,6 +140,13 @@ admission, integration, and post-merge provider read-back remain separate gates.
   runner now anchors one wall-clock epoch and advances it only by monotonic
   elapsed time. Shell syntax and two exact rollback/finalization regressions
   pass; the failed hosted result is not reclassified.
+- PR head `516b1d42` then passed all five required hosted contexts. Ubuntu PR
+  profile passed 50/47/0/0/3 and `document-projection` recorded 370ms. Its
+  independent audit nevertheless failed on P2 because an invalid epoch source
+  still fell back to process-relative `SECONDS`. That fallback now returns
+  failure, so initialization stops without a trustworthy epoch; the expanded
+  missing-epoch and finalization regressions pass 2/2. Neither the older hosted
+  failure nor this audit failure is reclassified.
 
 ## Residual Risk
 
@@ -155,6 +162,8 @@ admission, integration, and post-merge provider read-back remain separate gates.
   requires a new independent audit.
 - The logical-clock repair requires a new exact-head audit and a successful
   required hosted PR profile before merge admission.
+- The missing-epoch fail-closed repair is the final authorized retry subject;
+  any remaining audit or hosted failure blocks merge and Issue closure.
 
 ## Next Task
 

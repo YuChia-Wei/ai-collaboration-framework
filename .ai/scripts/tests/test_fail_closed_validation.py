@@ -2371,7 +2371,12 @@ class CheckAllRunnerGwtTests(unittest.TestCase):
     ) -> None:
         source = RUNNER_SOURCE.read_text(encoding="utf-8")
         function = re.search(r"(?ms)^now_millis\(\) \{\n.*?^\}\n", source)
+        wall_function = re.search(
+            r"(?ms)^wall_clock_millis\(\) \{\n.*?^\}\n",
+            source,
+        )
         self.assertIsNotNone(function)
+        self.assertIsNotNone(wall_function)
         self.assertIn("RUNNER_WALL_ORIGIN_MS=$(wall_clock_millis)", source)
         bash = bash_executable()
         if not bash:
@@ -2398,6 +2403,28 @@ printf '%s\\n' "$(now_millis)"
 
         self.assertEqual(0, result.returncode, result.stdout + result.stderr)
         self.assertEqual("1000425", result.stdout.strip())
+
+        missing_epoch = subprocess.run(
+            [
+                bash,
+                "-c",
+                f"""
+unset EPOCHREALTIME
+date() {{ printf 'unsupported-date-format\\n'; }}
+{wall_function.group(0)}
+wall_clock_millis
+""",
+            ],
+            cwd=REPO_ROOT,
+            check=False,
+            capture_output=True,
+            text=True,
+            encoding="utf-8",
+            errors="replace",
+            timeout=SUBPROCESS_TIMEOUT_SECONDS,
+        )
+        self.assertNotEqual(0, missing_epoch.returncode)
+        self.assertEqual("", missing_epoch.stdout)
 
 
 class ChangedPathDependencyClosureGwtTests(unittest.TestCase):

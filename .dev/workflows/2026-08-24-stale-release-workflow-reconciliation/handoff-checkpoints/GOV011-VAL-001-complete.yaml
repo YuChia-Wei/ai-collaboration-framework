@@ -12,7 +12,7 @@ workflow:
   workflow_id: "2026-08-24-stale-release-workflow-reconciliation"
   task_id: "GOV011-VAL-001"
 resume:
-  last_completed_action: "PR #244 hosted head e04826d9 failed the Ubuntu PR profile gate after a wall-clock rollback produced a negative evidence duration; the aggregate runner now derives logical epoch timestamps from one wall origin plus monotonic elapsed time, and focused timing/finalization regressions pass."
+  last_completed_action: "PR #244 hosted head 516b1d42 passed all five required checks, but its audit found that the missing wall-epoch fallback was not fail-closed; invalid epoch sources now stop initialization and the expanded timing/finalization regressions pass."
   exact_next_action: "Obtain a fresh exact-head independent audit and provider audit receipt for the current PR #244 repair head, then capture merge admission only after all required hosted checks pass."
   hidden_context_required: false
 critical_gate:
@@ -102,3 +102,12 @@ completion_validation:
   - validation_id: "logical-clock-focused-regressions"
     outcome: "passed"
     facts: "Shell syntax passed and two exact logical-clock/finalization runner tests passed in 10.376 seconds on the host boundary."
+  - validation_id: "ubuntu-pr-profile-516b1d42"
+    outcome: "passed"
+    facts: "50 selected, 47 executed, 0 failed, 0 blocked, 3 not applicable; document-projection recorded 370ms and all five required hosted contexts passed."
+  - validation_id: "fixed-head-audit-516b1d42"
+    outcome: "failed"
+    facts: "P2: the invalid wall-epoch fallback used process-relative SECONDS and contradicted the epoch-compatible timing contract; no P0, P1, or P3 findings."
+  - validation_id: "fail-closed-epoch-focused-regressions"
+    outcome: "passed"
+    facts: "Shell syntax and the expanded missing-epoch/logical-clock plus finalization cases passed 2/2 in 10.332 seconds on the host boundary."

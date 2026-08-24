@@ -954,7 +954,7 @@ wall_clock_millis() {
     fi
     value=$(date +%s%3N 2>/dev/null || true)
     case "$value" in
-        ''|*[!0-9]*) printf '%s\n' "$((SECONDS * 1000))" ;;
+        ''|*[!0-9]*) return 1 ;;
         *) printf '%s\n' "$value" ;;
     esac
 }
