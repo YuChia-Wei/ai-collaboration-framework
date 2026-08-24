@@ -7,6 +7,10 @@ authorized validation-platform repair are complete on the local dedicated
 branch. Provider integration and Issue/Project/release actions remain outside
 this repository completion state.
 
+Delivery is prepared in draft PR #244 with a tracked terminal-close declaration
+for Issue #243. Hosted checks, the fresh final-head audit receipt, merge
+admission, integration, and post-merge provider read-back remain separate gates.
+
 ## Docs Updated
 
 - `WORKFLOW-ARTIFACT-POLICY.md` owns the declared terminal-anchor schema,
@@ -143,7 +147,8 @@ this repository completion state.
 
 ## Next Task
 
-No repository implementation task remains. The management conversation owns
-independent local-branch verification and any separately authorized provider
-integration; push, pull request, merge, Issue/Project transitions, and release
-mutation have not been performed.
+No repository implementation task remains. Draft PR #244 is the selected
+terminal-close delivery. The management conversation owns its fresh exact-head
+audit receipt, hosted admission, merge-commit integration, and post-merge
+Issue/Project read-back. No merge, Issue/Project transition, or release mutation
+has yet been performed.

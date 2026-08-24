@@ -1,0 +1,94 @@
+schema_version: "1.0"
+contract_id: github-terminal-issue-closure
+repository: YuChia-Wei/ai-collaboration-framework
+validation_stage: declaration
+pull_request:
+  number: 244
+  head_sha: null
+  body: |-
+    ## Summary
+
+    - add an explicit, relationship-driven terminal-anchor contract for release workflows
+    - reconcile the known v0.13 workflow/task projection without rewriting retained intermediate evidence
+    - repair measured validation supervision and timeout defects without removing checks or changing profile membership
+
+    ## Changes
+
+    - validate tracked terminal-anchor evidence offline without ambient GitHub credentials
+    - add deterministic positive, stale-negative, continuation, missing-task, and no-inference fixtures
+    - authenticate wall-clock adjustment while keeping monotonic duration authoritative
+    - retain the complete blocked-attempt checkpoint and add a separately bound completion checkpoint
+
+    ## Related Issues
+
+    - Issue #: 243
+    - Delivery disposition: `terminal-close`
+    - Reference: Closes #243
+    - `closure_deferred_reason` (required for deferred): not applicable
+    - Next terminal gate or owner (required for deferred): not applicable
+    - Owner authorization or approved no-Issue exception: the repository owner explicitly authorized creating this PR, integrating it with `--no-ff`, and closing Issue #243 on 2026-08-24.
+
+    ## Delivery And Integration
+
+    - Delivery grouping: single work item
+    - Execution record: workflow
+    - Selected topology: merge commit
+    - Topology reason: the nine implementation, validation-repair, blocked-evidence, and completion-handoff commits form one durable governance review and rollback boundary; the owner explicitly requested `--no-ff`.
+
+    ## Validation
+
+    - workflow lifecycle contract: 16/16 passed
+    - validation supervisor: 12 passed / 8 platform skips / 0 failures
+    - validation evidence: 37 passed / 1 platform skip / 0 failures
+    - validation profile registry: 7/7 passed
+    - aggregate runner: 74/74 passed in 894.081 runner seconds
+    - fast attempt 2: 42 selected / 41 executed / 0 failed / 0 blocked / 1 not applicable
+    - critical attempt 2: 65 selected / 62 executed / 0 failed / 0 blocked / 3 not applicable, aggregate seal present
+    - workflow artifacts, AI-context, source governance, handoff registry, and 9-commit policy validation: passed
+    - independent exact-head audit at `fcd3562ef7dfa073af34cf326a0305ef1d50dc53`: P0=0, P1=0, P2=0, P3=0
+
+    ## Boundaries
+
+    - no ROADMAP authority, current target, release horizon, tag, Release, asset, package/archive, or publication change
+    - no historical workflow, assessment, failed, blocked, or intermediate evidence is deleted or rewritten as passed
+    - Issue/Project closure occurs only after hosted admission and merge read-back
+
+    ## Checklist
+
+    - [x] Selected repository-native focused and aggregate commands pass
+    - [x] Target-owned .NET commands are not applicable to this Python/governance change
+    - [x] Required workflow and evidence documentation is updated
+    - [x] No secrets committed
+    - [x] Every named Issue has exactly one delivery disposition
+    - [ ] The exact final PR head passes all required hosted checks
+    - [ ] The exact final PR head has the required single-maintainer audit receipt
+  integration:
+    status: pending
+    topology: null
+    admitted_head_sha: null
+    integration_commit_sha: null
+    provider_read_back: false
+  review:
+    status: pending
+  required_check_contexts: []
+  hosted_checks: []
+issues:
+  - number: 243
+    mode: terminal-close
+    work_authorization:
+      online_issue_bound: true
+      explicit_owner_approval: true
+    final_accepted_delivery: true
+    workflow:
+      scope_complete: true
+      tasks_complete: true
+      applicable_verification_complete: true
+    closing_keyword: Closes
+    closure_deferred_reason: null
+    next_terminal_gate_or_owner: null
+    read_back:
+      performed: false
+      integration_commit_sha: null
+      issue_state: null
+      issue_state_reason: null
+      project_status: null

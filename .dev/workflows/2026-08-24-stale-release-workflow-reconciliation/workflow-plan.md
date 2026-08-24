@@ -19,7 +19,7 @@
 - `current_phase`: `completed`
 - `artifact_root`: `.dev/workflows/2026-08-24-stale-release-workflow-reconciliation`
 - `created_at`: `2026-08-24T10:28:32+08:00`
-- `updated_at`: `2026-08-24T16:56:00+08:00`
+- `updated_at`: `2026-08-24T17:22:00+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md`
 - `template_version`: `1.2.0`
 
@@ -44,6 +44,7 @@ This single-task workflow is proportional because it retains unique external-lif
 - Independent verification: read-only audit bound to the final immutable commit; any repair invalidates the audit and requires a new audit.
 - Retained blocked handoff: `.dev/workflows/2026-08-24-stale-release-workflow-reconciliation/handoff-checkpoints/GOV011-001-blocked.yaml`; it remains the immutable record of earlier non-passing attempts.
 - Completion handoff: `.dev/workflows/2026-08-24-stale-release-workflow-reconciliation/handoff-checkpoints/GOV011-VAL-001-complete.yaml`, registered in `.dev/workflows/handoff-checkpoints.yaml`.
+- Terminal-close declaration: `.dev/workflows/2026-08-24-stale-release-workflow-reconciliation/evidence/terminal-issue-closure-pr-244.yaml`, bound to draft PR #244 and Issue #243.
 
 ## Stages And Checkpoints
 
@@ -60,7 +61,7 @@ This single-task workflow is proportional because it retains unique external-lif
 
 - Last completed action: Exact clean head `c71f5532c733d7e4b6c19bc802eda4cbef21f4e8` passed all 74 aggregate-runner tests, fast attempt 2, and critical attempt 2 with an aggregate seal. No third attempt was needed.
 - Current task: `GOV011-VAL-001`
-- Exact next action: The management conversation independently verifies the final local branch and decides whether to authorize push and pull-request integration.
+- Exact next action: Push the PR #244 declaration head, obtain a fresh exact-head independent audit and provider audit receipt, then run merge admission after every required hosted check succeeds.
 - Validation already completed: 16/16 workflow lifecycle tests; workflow artifact, handoff, AI-context, and source-governance validators; 7/7 validation-profile registry tests; focused supervisor/evidence tests; 74/74 aggregate-runner tests in 894.081 seconds; fast attempt 2 passed 42/41/0/0/1 in 341 runner seconds; critical attempt 2 passed 65/62/0/0/3 in 1891 runner seconds with an aggregate seal. Earlier interrupted, blocked, failed, and timed-out attempts remain registered in the blocked checkpoint.
 - Git state: Dedicated local branch with exact validated repair head `c71f5532c733d7e4b6c19bc802eda4cbef21f4e8`; the completion checkpoint resolves through its later containing commit. No provider mutation occurred.
 - Branch history and checkpoint handoffs: Segment 1 started from `main@f9052a820827a0285c03140bdd59129f1502986e`; no push or merge.
