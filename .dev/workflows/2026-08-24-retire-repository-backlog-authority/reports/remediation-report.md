@@ -72,6 +72,17 @@ digest, staged and unstaged drift rejection, release compatibility, provider-
 neutral packaging, and both retained aggregate receipts. It returned `PASS`
 with no severity finding and did not mutate the subject.
 
+## Hosted Delivery Handoff
+
+The owner authorized PR creation, merge, Issue closure, and terminal provider
+operations on 2026-08-25. Completed branch head
+`01f90ab4b75b19d95b234ef1d0a767dcf45f81e6` was pushed and draft PR #247 was
+created against unchanged `main@4be33ff90de061dc1db221f60e57ff6130cab54a`.
+The PR declares `terminal-close` with `Closes #245` and merge-commit topology.
+Its tracked declaration advances the branch, so prior audits cannot be used as
+the PR-head review receipt. Fresh exact-head audit, hosted checks, live merge
+admission, merge, and post-merge Issue/Project read-back remain mandatory.
+
 ## Excluded Actions
 
 No push, pull request, merge, Issue closure, Project mutation, target-release

@@ -1,0 +1,95 @@
+schema_version: "1.0"
+contract_id: github-terminal-issue-closure
+repository: YuChia-Wei/ai-collaboration-framework
+validation_stage: declaration
+pull_request:
+  number: 247
+  head_sha: null
+  body: |-
+    ## Summary
+
+    - retire the repository backlog, ROADMAP, and cached Project snapshot as current source-repository authority
+    - make live GitHub Issues and Project #3 the current work-management authority while preserving historical and legacy-release evidence
+    - enforce the authority, compatibility, placement, and prospective-workflow boundaries with deterministic validators and tests
+
+    ## Changes
+
+    - establish one canonical active GitHub work-management policy under `.dev/standards/`
+    - freeze 77 tracked backlog paths and 55 legacy items using raw `HEAD` Git-blob identity plus staged/unstaged drift rejection
+    - preserve v0.5.0-v0.9.0 `backlog_refs` and require online Issue scope from v0.10.0 onward
+    - retain the provider-neutral downstream work-item binding template while excluding source-only governance policy
+    - preserve failed, blocked, repaired-head, aggregate, and independent-audit evidence without rewriting historical outcomes
+
+    ## Related Issues
+
+    - Issue #: 245
+    - Delivery disposition: `terminal-close`
+    - Reference: Closes #245
+    - `closure_deferred_reason` (required for deferred): not applicable
+    - Next terminal gate or owner (required for deferred): not applicable
+    - Owner authorization or approved no-Issue exception: the repository owner explicitly authorized PR creation, merge, Issue closure, and related terminal provider operations on 2026-08-25.
+
+    ## Delivery And Integration
+
+    - Delivery grouping: single work item
+    - Execution record: workflow
+    - Selected topology: merge commit
+    - Topology reason: six meaningful implementation, audit-repair, retained-failure, validation, and evidence-closeout commits form one durable governance review and rollback boundary.
+
+    ## Validation
+
+    - source work-management focused suite: 12/12 passed
+    - terminal Issue closure suite: 54/54 passed
+    - assessment artifacts: 61 passed
+    - workflow artifacts: 95 post-adoption workflows / 115 indexed directories passed
+    - source dispositions: 1301 tracked `.dev` paths with zero implicit omissions
+    - commit policy: 6/6 passed
+    - host-context release profile at `ba7c159a2d8fd58291ddc1e92036cb82acd23fb6`: 65 selected / 62 executed / 0 failed / 0 blocked / 3 not applicable
+    - independent implementation-subject audit: PASS with zero findings and `GOV012-AUD-001` through `GOV012-AUD-003` closed
+    - final PR-head hosted checks and fresh exact-head audit receipt remain mandatory before merge admission
+
+    ## Boundaries
+
+    - no legacy backlog item, ROADMAP history, workflow, assessment, release record, or failed/blocked evidence is physically deleted or rewritten as passed
+    - no target release, tag, GitHub Release, asset, published package byte, package/archive rename, or downstream target mutation is included
+    - Issue and Project closure occur only after exact-head hosted admission, merge, and provider read-back
+
+    ## Checklist
+
+    - [x] Selected repository-native focused and aggregate commands pass
+    - [x] Target-owned .NET commands are not applicable to this governance-only change
+    - [x] Required authority, workflow, assessment, and handoff documentation is updated
+    - [x] No secrets committed
+    - [x] Every named Issue has exactly one delivery disposition
+    - [ ] The exact final PR head passes all required hosted checks
+    - [ ] The exact final PR head has the required single-maintainer audit receipt
+  integration:
+    status: pending
+    topology: null
+    admitted_head_sha: null
+    integration_commit_sha: null
+    provider_read_back: false
+  review:
+    status: pending
+  required_check_contexts: []
+  hosted_checks: []
+issues:
+  - number: 245
+    mode: terminal-close
+    work_authorization:
+      online_issue_bound: true
+      explicit_owner_approval: true
+    final_accepted_delivery: true
+    workflow:
+      scope_complete: true
+      tasks_complete: true
+      applicable_verification_complete: true
+    closing_keyword: Closes
+    closure_deferred_reason: null
+    next_terminal_gate_or_owner: null
+    read_back:
+      performed: false
+      integration_commit_sha: null
+      issue_state: null
+      issue_state_reason: null
+      project_status: null
