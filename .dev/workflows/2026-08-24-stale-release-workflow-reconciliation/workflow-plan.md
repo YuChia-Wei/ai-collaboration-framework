@@ -19,7 +19,7 @@
 - `current_phase`: `verification`
 - `artifact_root`: `.dev/workflows/2026-08-24-stale-release-workflow-reconciliation`
 - `created_at`: `2026-08-24T10:28:32+08:00`
-- `updated_at`: `2026-08-24T11:06:16+08:00`
+- `updated_at`: `2026-08-24T11:28:02+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md`
 - `template_version`: `1.2.0`
 
@@ -54,13 +54,13 @@ This single-task workflow is proportional because it retains unique external-lif
 
 ## Resume Checkpoint
 
-- Last completed action: Committed the declared terminal-anchor contract and known reconciliation at `ea1852fd8944cad29c2c6dfe31abbe1cc091d023`; focused workflow, AI-context, profile-routing, and source-governance checks passed. The attempted repository-wide fast profile was retained as failed after an unrelated unchanged multi-hop suite exceeded its 90-second timeout.
+- Last completed action: Committed validation reconciliation at `c5f99794947f53f13c5b789e14c0f83e15a5d34d`, then exhausted Windows-native and WSL-native fast-profile execution paths without a passing receipt. A second fixed-head audit retained the selected aggregate as a mandatory non-passing gate.
 - Current task: `GOV011-001`
-- Exact next action: Commit the validation reconciliation and request an independent read-only audit of the new exact head against the Issue-scoped acceptance gates.
-- Validation already completed: 16/16 workflow lifecycle tests; workflow artifact validator; AI-context validator; source-governance validator; 7/7 validation-profile registry tests; 2/2 directly applicable CheckAll routing tests; commit-policy validation; `git diff --check`. Repository-wide fast evidence remains failed (42 selected / 22 executed / 20 failed / 0 blocked) because `multi-hop-upgrade-transaction` timed out after 90 seconds; the exact GWT-023 timeout point passed alone in 13.228 seconds.
-- Git state: Dedicated local branch at implementation checkpoint `ea1852fd8944cad29c2c6dfe31abbe1cc091d023`, with only validation-reconciliation workflow edits pending; no provider mutation.
+- Exact next action: Owner decides whether to authorize separately scoped repair of the pre-existing fast-profile validation-platform failures or leave #243 unfinished. No provider or release action is required for this decision.
+- Validation already completed: 16/16 workflow lifecycle tests; workflow artifact validator; AI-context validator; source-governance validator; 7/7 validation-profile registry tests; 2/2 directly applicable CheckAll routing tests; commit-policy validation; `git diff --check`. Windows-native fast failed 42 selected / 22 executed / 20 failed / 0 blocked after the multi-hop 90-second timeout. The exact GWT-023 timeout point passed alone in 13.228 seconds. WSL-home ext4 fast failed 42 selected / 21 executed / 22 failed / 0 blocked on existing supervision-receipt consistency checks.
+- Git state: Dedicated local branch with implementation checkpoint `ea1852fd8944cad29c2c6dfe31abbe1cc091d023` and validation checkpoint `c5f99794947f53f13c5b789e14c0f83e15a5d34d`; no provider mutation. This blocked handoff intentionally keeps the workflow and task active.
 - Branch history and checkpoint handoffs: Segment 1 started from `main@f9052a820827a0285c03140bdd59129f1502986e`; no push or merge.
-- Blockers or unresolved decisions: The Issue-scoped implementation is not blocked. A repository-wide fast run failed closed because the unchanged multi-hop suite exceeded its existing 90-second registry timeout and prevented 19 later checks from launching. The timeout configuration and multi-hop suite are outside #243 and were not changed. This failure, the earlier interrupted aggregate, and the first sandbox-blocked aggregate remain non-passing evidence. The two selected #243 routing cases and every declared Issue-scoped validator passed exactly.
+- Blockers or unresolved decisions: The Issue-scoped implementation is not defective, but the selected aggregate gate is blocked. Windows-native execution times out in the unchanged multi-hop suite; WSL-native execution fails existing supervision-receipt consistency. Both are outside the #243 terminal-anchor change. Canonical audit requires owner authority before changing the selected gate or expanding scope to repair those validation-platform failures. All interrupted, blocked, and failed attempts remain non-passing evidence.
 
 ## Branch Lifecycle
 
@@ -68,3 +68,4 @@ This single-task workflow is proportional because it retains unique external-lif
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | 1 | `codex/2026-08-24-stale-release-workflow-reconciliation` | `main@f9052a820827a0285c03140bdd59129f1502986e` | local-start | pending | local only | `2026-08-24T10:28:32+08:00` | Authorized #243 governance remediation | Continue the current branch through validation and independent audit. |
 | 1 | `codex/2026-08-24-stale-release-workflow-reconciliation` | `main@f9052a820827a0285c03140bdd59129f1502986e` | implementation-checkpoint | `ea1852fd8944cad29c2c6dfe31abbe1cc091d023` | local only | `2026-08-24T10:47:42+08:00` | Contract, fixtures, routing, v0.13 reconciliation, and focused validation committed | Retain global fast failure; commit validation reconciliation and audit the exact head. |
+| 1 | `codex/2026-08-24-stale-release-workflow-reconciliation` | `ea1852fd8944cad29c2c6dfe31abbe1cc091d023` | validation-checkpoint | `c5f99794947f53f13c5b789e14c0f83e15a5d34d` | local only | `2026-08-24T11:10:09+08:00` | Retained Windows fast failure and Issue-scoped validation evidence | Fixed-head audit failed closed; exhaust non-mutating environment alternatives and hand off the owner decision. |

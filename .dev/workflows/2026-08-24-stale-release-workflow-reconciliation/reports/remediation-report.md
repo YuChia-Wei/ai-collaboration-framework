@@ -2,9 +2,10 @@
 
 ## Status
 
-`in_progress` — implementation and every Issue-scoped validation are complete
-at `ea1852fd8944cad29c2c6dfe31abbe1cc091d023`; independent audit of the
-validation-reconciled head remains.
+`in_progress` — implementation and every Issue-scoped validation are complete,
+but the previously selected repository-wide fast gate has no passing receipt.
+Owner authority is required before either expanding scope to repair the
+validation platform or leaving #243 unfinished.
 
 ## Docs Updated
 
@@ -36,7 +37,7 @@ validation-reconciled head remains.
 
 | Finding | Disposition | Evidence |
 | --- | --- | --- |
-| `GOV-011` / #243 | partially-resolved | Contract, validator, fixtures, routing, v0.13 tracked anchor, and every Issue-scoped validation pass; exact-head independent audit remains. |
+| `GOV-011` / #243 | partially-resolved | Contract, validator, fixtures, routing, v0.13 tracked anchor, and every Issue-scoped validation pass. Exact-head audits accept the bounded implementation but fail closed on the selected aggregate gate. |
 
 ## Validation
 
@@ -63,6 +64,17 @@ validation-reconciled head remains.
 - Fixed-head implementation audit found no P1-P3 contract defect; it failed
   closed overall only because the self-selected repository-wide fast aggregate
   was not green.
+- A WSL `/tmp` retry at `c5f99794947f53f13c5b789e14c0f83e15a5d34d`
+  was blocked before launch because that ephemeral path did not survive until
+  delegated preflight. It is not represented as executed or passed.
+- A persistent WSL-home ext4 retry at the same exact clean head completed in
+  44 runner-reported seconds but failed closed: 42 selected, 21 executed, 22
+  failed, 0 blocked. Linux supervision reported inconsistent raw duration and
+  an unreadable receipt. This is not represented as passed.
+- The second fixed-head audit accepted the bounded #243 implementation and all
+  scoped checks, but reported P1 because the failed selected aggregate cannot
+  be reclassified without owner authority. Its P3 administrative checkpoint
+  finding is corrected by this blocked handoff.
 - The broad CheckAll runner class was interrupted during unrelated cases and is
   not represented as passed.
 
@@ -74,12 +86,12 @@ validation-reconciled head remains.
   unchanged multi-hop timeout and the later not-launched checks remain a
   separate residual validation risk outside #243; no timeout or unrelated test
   code was changed to conceal it.
-- Independent read-only audit of the validation-reconciled exact head remains
-  required before repository workflow closeout.
+- No passing independent audit can be claimed while the selected aggregate is
+  non-passing. Any future tracked repair also requires a new exact-head audit.
 
 ## Next Task
 
-Commit this validation reconciliation and dispatch an independent read-only
-governance audit of the new exact head against the Issue-scoped workflow,
-AI-context, source-governance, and routing gates. Any repair creates a new
-subject and requires a new audit.
+Owner decides whether to authorize a separately scoped fix for the existing
+Windows timeout and/or cross-platform supervision-receipt failures, or to keep
+#243 unfinished. The current authorization does not permit either validation-
+platform repair or removal of the selected gate after failure.
