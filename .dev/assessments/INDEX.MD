@@ -12,6 +12,7 @@ owns its identity, current lifecycle state, subject revision, and relationships.
 
 | Assessment | Title | Type | Owner | Status | Subject Commit | Updated | Report |
 | --- | --- | --- | --- | --- | --- | --- | --- |
+| [`ASM-20260824-003`](ASM-20260824-003/assessment.yaml) | GOV-012 Frozen Blob Identity Verification | `ai-context-verification` | `ai-context-auditor` | `final` | `ba9b5277f98626b9ff6d07dc1062956a476eff2b` | `2026-08-24T23:25:07+08:00` | [report](ASM-20260824-003/report.md) |
 | [`ASM-20260824-002`](ASM-20260824-002/assessment.yaml) | GOV-012 Prospective Time Boundary Verification | `ai-context-verification` | `ai-context-auditor` | `final` | `801679ee0fc9a30d8d9af81f12bc941c8c2f0a1c` | `2026-08-24T22:19:27+08:00` | [report](ASM-20260824-002/report.md) |
 | [`ASM-20260824-001`](ASM-20260824-001/assessment.yaml) | GOV-012 Backlog Authority Retirement Verification | `ai-context-verification` | `ai-context-auditor` | `final` | `0c6c9c88a84ef358b52d732c66844b858d51e7c3` | `2026-08-24T21:25:36+08:00` | [report](ASM-20260824-001/report.md) |
 | [`ASM-20260815-001`](ASM-20260815-001/assessment.yaml) | PKG-011 Durable Package Apply Verification | `ai-context-verification` | `ai-context-auditor` | `final` | `52cb86533a23324e07a59c49ff44f59329c5760a` | `2026-08-15T11:18:26+08:00` | [report](ASM-20260815-001/report.md) |

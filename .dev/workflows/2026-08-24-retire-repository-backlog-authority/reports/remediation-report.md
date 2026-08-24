@@ -15,7 +15,9 @@
 - `.dev/standards/GITHUB-WORK-MANAGEMENT-POLICY.yaml` is the single active
   source GitHub policy. The old backlog-owned path is absent; its migration
   adapter is retained only as `github-legacy-migration.yaml` historical evidence.
-- The 77 tracked `.dev/backlog` paths are frozen by a path-and-byte SHA-256.
+- The 77 tracked `.dev/backlog` paths are frozen by a path-and-Git-blob-byte
+  SHA-256, independent of checkout line-ending materialization. Staged or
+  unstaged backlog drift is rejected separately.
   ROADMAP, local items, plans, provider mapping, and Project snapshot are not
   current planning inputs.
 - v0.5.0-v0.9.0 release `planning.backlog_refs` remain resolvable. v0.10.0 and
@@ -47,6 +49,14 @@ The next audit at `801679ee0fc9a30d8d9af81f12bc941c8c2f0a1c` is retained as
 were compared lexically. Governance replaced that gate with offset-aware
 chronological comparison, rejects naive or malformed timestamps, and tests
 later and equal instants expressed with different offsets.
+
+The first audit of `ba9b5277f98626b9ff6d07dc1062956a476eff2b` stopped fail-closed
+after a redundant packaging suite hit Windows ACL cleanup failure; that blocked
+attempt is retained and was not relabeled as passed. A fresh read-only audit of
+the same subject found `GOV012-AUD-003` (HIGH): the frozen aggregate read
+worktree bytes, so clean CRLF/LF materialization could vary by checkout while
+Git status remained clean. Governance now hashes raw `HEAD` blob bytes and
+separately rejects staged or unstaged backlog drift.
 
 ## Excluded Actions
 

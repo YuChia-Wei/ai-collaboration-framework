@@ -18,8 +18,8 @@ historical_compatibility:
   root: ".dev/backlog"
   frozen_at: "2026-08-24T20:18:17+08:00"
   tracked_file_count: 77
-  aggregate_algorithm: "sha256 over each sorted UTF-8 repository path, NUL, raw file bytes, NUL"
-  aggregate_sha256: "52a4b398385a81bb9d9a8203d1aa202809aa09268630d7bd4b59b1a6d1630e90"
+  aggregate_algorithm: "sha256 over each sorted UTF-8 repository path, NUL, raw HEAD Git blob bytes, NUL; staged or unstaged backlog drift is rejected separately"
+  aggregate_sha256: "8c088a9050ca78d1fdeaba0a8dd31c32d308a59fb9453889c2b4c46fd945dc99"
   legacy_provider_config: ".dev/backlog/providers/github-legacy-migration.yaml"
   historical_project_receipt: ".dev/backlog/provider-mappings/github-project-current.yaml"
   legacy_release_versions: ["v0.5.0", "v0.6.0", "v0.7.0", "v0.8.0", "v0.9.0"]

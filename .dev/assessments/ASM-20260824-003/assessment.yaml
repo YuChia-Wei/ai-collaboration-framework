@@ -1,0 +1,45 @@
+template_metadata:
+  template_id: "assessment-locator"
+  template_version: "1.0.0"
+  template_created_at: "2026-07-13T23:04:10+08:00"
+  template_updated_at: "2026-07-13T23:04:10+08:00"
+
+schema_version: "1.0"
+assessment_id: "ASM-20260824-003"
+commit_search_id: "ASM-20260824-003"
+assessment_type: "ai-context-verification"
+title: "GOV-012 Frozen Blob Identity Verification"
+owner_skill: "ai-context-auditor"
+status: "final"
+report: "report.md"
+artifact_branch: "codex/2026-08-24-retire-repository-backlog-authority"
+base_branch: "main"
+created_at: "2026-08-24T23:25:07+08:00"
+updated_at: "2026-08-24T23:25:07+08:00"
+template_source: ".dev/assessments/templates/assessment-locator-template.yaml"
+template_version: "1.0.0"
+report_template_source: ".ai/assets/skills/ai-context-auditor/templates/ai-context-audit-report-template.md"
+report_template_version: "2.1.0"
+subject_ref:
+  repository: "YuChia-Wei/ai-collaboration-framework"
+  branch: "codex/2026-08-24-retire-repository-backlog-authority"
+  commit: "ba9b5277f98626b9ff6d07dc1062956a476eff2b"
+scope:
+  included:
+    - "Issue #245 authority, frozen backlog identity, prospective enforcement, release compatibility, package routing, and sealed exact-subject evidence"
+  excluded:
+    - "Repair, provider mutation, release mutation, integration acceptance, and publication"
+relations:
+  supersedes: []
+  superseded_by: []
+  related_assessments:
+    - "ASM-20260824-001"
+    - "ASM-20260824-002"
+  workflow_refs:
+    - "2026-08-24-retire-repository-backlog-authority"
+  backlog_refs: []
+  adr_refs: []
+resume:
+  last_completed_action: "Retained one blocked audit invocation and one fresh failed exact-head audit that found checkout-dependent frozen backlog hashing at ba9b5277f98626b9ff6d07dc1062956a476eff2b."
+  next_action: "ai-context-governance must hash fixed Git blob bytes, reject staged and unstaged drift, validate a new immutable head, and obtain a fresh independent audit."
+  blockers: []

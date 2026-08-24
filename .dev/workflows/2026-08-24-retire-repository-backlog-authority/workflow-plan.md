@@ -74,11 +74,11 @@ Two substantive tasks are retained because the implementation boundary and the i
 
 ## Resume Checkpoint
 
-- Last completed action: Preserved `ASM-20260824-002#GOV012-AUD-002` and replaced lexical RFC 3339 ordering with offset-aware chronological comparison plus later/equal/malformed boundary tests.
+- Last completed action: Preserved `ASM-20260824-003#GOV012-AUD-003` and replaced checkout-dependent frozen worktree hashing with raw `HEAD` Git-blob hashing plus staged/unstaged drift rejection.
 - Current task: `GOV012-VAL-001`
-- Exact next action: Commit the time-boundary repair and failed audit receipt, then run fresh exact-head release validation and independent audit.
+- Exact next action: Commit the Git-blob freeze repair and failed audit receipt, then run fresh exact-head release validation and independent audit.
 - Validation already completed: authority and unit gates; 54 terminal-closure tests; 37 release-state tests; 19 package-validation tests with one Windows case-fold skip; focused profile and package projection tests; AI-context and workflow validation. Sandbox Temp ACL failures were preserved and then passed in host context where rerun.
-- Git state: audit receipt and bounded repair are uncommitted on `codex/2026-08-24-retire-repository-backlog-authority`.
+- Git state: third audit receipt and bounded Git-blob freeze repair are uncommitted on `codex/2026-08-24-retire-repository-backlog-authority`.
 - Branch history and checkpoint handoffs: segment 1 created from verified `origin/main`; no push, merge, or handoff performed.
 - Blockers or unresolved decisions: none; `.dev/standards/` is the selected single active source policy owner and `.dev/backlog/` is frozen historical evidence.
 

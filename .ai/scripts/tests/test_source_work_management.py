@@ -6,6 +6,7 @@ from __future__ import annotations
 import importlib.util
 import unittest
 from pathlib import Path
+from unittest import mock
 
 
 ROOT = Path(__file__).resolve().parents[3]
@@ -142,6 +143,30 @@ class SourceWorkManagementGwtTests(unittest.TestCase):
                 )
                 self.assertFalse(scan_tasks)
                 self.assertTrue(any("explicit offset" in error for error in errors))
+
+    def test_gwt_011_given_platform_line_ending_drift_when_read_then_head_blob_is_authoritative(self) -> None:
+        root = Path("repository")
+        with mock.patch.object(
+            VALIDATOR, "run_git_bytes", return_value=b"canonical LF\n"
+        ) as run_git_bytes:
+            self.assertEqual(
+                b"canonical LF\n",
+                VALIDATOR.head_blob_bytes(root, ".dev/backlog/items/ITEM.yaml"),
+            )
+        run_git_bytes.assert_called_once_with(
+            root,
+            "cat-file",
+            "blob",
+            "HEAD:.dev/backlog/items/ITEM.yaml",
+        )
+
+    def test_gwt_012_given_staged_or_unstaged_backlog_drift_when_checked_then_it_fails_closed(self) -> None:
+        root = Path("repository")
+        with mock.patch.object(VALIDATOR.subprocess, "run") as run:
+            run.return_value.returncode = 1
+            run.return_value.stderr = b""
+            self.assertFalse(VALIDATOR.git_diff_is_clean(root, "--", ".dev/backlog"))
+        run.assert_called_once()
 
 
 if __name__ == "__main__":

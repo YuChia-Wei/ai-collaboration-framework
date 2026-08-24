@@ -54,6 +54,36 @@ def run_git(root: Path, *args: str) -> str:
     return result.stdout
 
 
+def run_git_bytes(root: Path, *args: str) -> bytes:
+    result = subprocess.run(
+        ["git", *args],
+        cwd=root,
+        check=False,
+        capture_output=True,
+    )
+    if result.returncode != 0:
+        message = result.stderr.decode("utf-8", errors="replace").strip()
+        raise RuntimeError(message or f"git {' '.join(args)} failed")
+    return result.stdout
+
+
+def head_blob_bytes(root: Path, path: str) -> bytes:
+    return run_git_bytes(root, "cat-file", "blob", f"HEAD:{path}")
+
+
+def git_diff_is_clean(root: Path, *args: str) -> bool:
+    result = subprocess.run(
+        ["git", "diff", "--quiet", *args],
+        cwd=root,
+        check=False,
+        capture_output=True,
+    )
+    if result.returncode not in (0, 1):
+        message = result.stderr.decode("utf-8", errors="replace").strip()
+        raise RuntimeError(message or f"git diff --quiet {' '.join(args)} failed")
+    return result.returncode == 0
+
+
 def aggregate_digest(
     paths: Iterable[str], read_bytes: Callable[[str], bytes]
 ) -> str:
@@ -252,10 +282,16 @@ def validate_contract(data: dict[str, Any], root: Path = ROOT) -> list[str]:
     if not isinstance(expected_digest, str) or not SHA256.fullmatch(expected_digest):
         errors.append("historical_compatibility.aggregate_sha256 must be a lowercase SHA-256")
     else:
-        actual_digest = aggregate_digest(tracked, lambda path: (root / path).read_bytes())
+        if not git_diff_is_clean(root, "--", backlog_root):
+            errors.append("frozen backlog has unstaged worktree drift")
+        if not git_diff_is_clean(root, "--cached", "--", backlog_root):
+            errors.append("frozen backlog has staged index drift")
+        actual_digest = aggregate_digest(
+            tracked, lambda path: head_blob_bytes(root, path)
+        )
         if actual_digest != expected_digest:
             errors.append(
-                "frozen backlog path/byte digest differs: "
+                "frozen backlog HEAD path/blob-byte digest differs: "
                 f"expected={expected_digest} actual={actual_digest}"
             )
 
