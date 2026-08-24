@@ -8,3 +8,4 @@ checkpoints:
   - ".dev/workflows/2026-08-07-v0-10-validation-cost-and-release-flow/handoff-checkpoints/V010-RELEASE-candidate.yaml"
   - ".dev/workflows/2026-08-07-v0-10-validation-cost-and-release-flow/handoff-checkpoints/V010-RELEASE-candidate-ci-repair.yaml"
   - ".dev/workflows/2026-08-07-v0-10-validation-cost-and-release-flow/handoff-checkpoints/V010-RELEASE-finalization.yaml"
+  - ".dev/workflows/2026-08-24-stale-release-workflow-reconciliation/handoff-checkpoints/GOV011-001-blocked.yaml"

@@ -75,6 +75,16 @@ validation platform or leaving #243 unfinished.
   scoped checks, but reported P1 because the failed selected aggregate cannot
   be reclassified without owner authority. Its P3 administrative checkpoint
   finding is corrected by this blocked handoff.
+- The canonical critical gate at
+  `ceee8b30786c2e7a4587c75e534172c73e6edc21` also failed closed: 65 selected,
+  32 executed, 32 failed, 0 blocked. The unchanged `package-apply` check timed
+  out after 90 seconds and 31 later checks were not launched.
+- The registered `GOV011-001-blocked.yaml` checkpoint contains every aggregate
+  attempt and exact outcome, so a fresh receiver does not depend on ignored
+  `.codex` or `artifacts` bytes to learn that history.
+- The new checkpoint and the 9-entry handoff registry validate. Handoff tests
+  passed 22/22 on the host after the sandbox run hit Temp ACL errors; the two
+  exact sandbox-created Temp directories were removed after path verification.
 - The broad CheckAll runner class was interrupted during unrelated cases and is
   not represented as passed.
 

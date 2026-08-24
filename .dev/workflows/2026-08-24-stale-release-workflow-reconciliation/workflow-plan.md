@@ -19,7 +19,7 @@
 - `current_phase`: `verification`
 - `artifact_root`: `.dev/workflows/2026-08-24-stale-release-workflow-reconciliation`
 - `created_at`: `2026-08-24T10:28:32+08:00`
-- `updated_at`: `2026-08-24T11:28:02+08:00`
+- `updated_at`: `2026-08-24T11:46:41+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md`
 - `template_version`: `1.2.0`
 
@@ -42,6 +42,7 @@ This single-task workflow is proportional because it retains unique external-lif
 - Remediation report: `.dev/workflows/2026-08-24-stale-release-workflow-reconciliation/reports/remediation-report.md`
 - Task: `.dev/workflows/2026-08-24-stale-release-workflow-reconciliation/tasks/GOV011-001.json`
 - Independent verification: read-only audit bound to the final immutable commit; any repair invalidates the audit and requires a new audit.
+- Blocked handoff: `.dev/workflows/2026-08-24-stale-release-workflow-reconciliation/handoff-checkpoints/GOV011-001-blocked.yaml`, registered in `.dev/workflows/handoff-checkpoints.yaml`.
 
 ## Stages And Checkpoints
 
@@ -54,11 +55,11 @@ This single-task workflow is proportional because it retains unique external-lif
 
 ## Resume Checkpoint
 
-- Last completed action: Committed validation reconciliation at `c5f99794947f53f13c5b789e14c0f83e15a5d34d`, then exhausted Windows-native and WSL-native fast-profile execution paths without a passing receipt. A second fixed-head audit retained the selected aggregate as a mandatory non-passing gate.
+- Last completed action: Committed the blocked verification handoff at `ceee8b30786c2e7a4587c75e534172c73e6edc21`, ran the canonical critical gate to a retained failed result, and created a registered machine-readable checkpoint with the complete aggregate-attempt history.
 - Current task: `GOV011-001`
 - Exact next action: Owner decides whether to authorize separately scoped repair of the pre-existing fast-profile validation-platform failures or leave #243 unfinished. No provider or release action is required for this decision.
-- Validation already completed: 16/16 workflow lifecycle tests; workflow artifact validator; AI-context validator; source-governance validator; 7/7 validation-profile registry tests; 2/2 directly applicable CheckAll routing tests; commit-policy validation; `git diff --check`. Windows-native fast failed 42 selected / 22 executed / 20 failed / 0 blocked after the multi-hop 90-second timeout. The exact GWT-023 timeout point passed alone in 13.228 seconds. WSL-home ext4 fast failed 42 selected / 21 executed / 22 failed / 0 blocked on existing supervision-receipt consistency checks.
-- Git state: Dedicated local branch with implementation checkpoint `ea1852fd8944cad29c2c6dfe31abbe1cc091d023` and validation checkpoint `c5f99794947f53f13c5b789e14c0f83e15a5d34d`; no provider mutation. This blocked handoff intentionally keeps the workflow and task active.
+- Validation already completed: 16/16 workflow lifecycle tests; workflow artifact validator; AI-context validator; source-governance validator; 7/7 validation-profile registry tests; 2/2 directly applicable CheckAll routing tests; commit-policy validation; `git diff --check`. Windows-native fast failed 42/22/20/0 after the multi-hop timeout; WSL-home fast failed 42/21/22/0 on supervision consistency; canonical critical failed 65/32/32/0 after package-apply timed out. The registered checkpoint retains every attempt and blocks continuation.
+- Git state: Dedicated local branch with implementation checkpoint `ea1852fd8944cad29c2c6dfe31abbe1cc091d023`, validation checkpoint `c5f99794947f53f13c5b789e14c0f83e15a5d34d`, and blocked handoff parent `ceee8b30786c2e7a4587c75e534172c73e6edc21`; no provider mutation. This blocked handoff intentionally keeps the workflow and task active.
 - Branch history and checkpoint handoffs: Segment 1 started from `main@f9052a820827a0285c03140bdd59129f1502986e`; no push or merge.
 - Blockers or unresolved decisions: The Issue-scoped implementation is not defective, but the selected aggregate gate is blocked. Windows-native execution times out in the unchanged multi-hop suite; WSL-native execution fails existing supervision-receipt consistency. Both are outside the #243 terminal-anchor change. Canonical audit requires owner authority before changing the selected gate or expanding scope to repair those validation-platform failures. All interrupted, blocked, and failed attempts remain non-passing evidence.
 
