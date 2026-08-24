@@ -8,7 +8,7 @@
   "owner_skill": "ai-context-governance",
   "status": "in_progress",
   "created_at": "2026-08-24T10:28:32+08:00",
-  "updated_at": "2026-08-24T12:00:20+08:00",
+  "updated_at": "2026-08-24T12:04:59+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-5.6-sol",
   "reasoning_effort": "high",
@@ -50,7 +50,7 @@
       "python .ai/scripts/validate-git-commits.py --range main..HEAD --workflow-id 2026-08-24-stale-release-workflow-reconciliation",
       "Independent read-only exact-head governance audit"
     ],
-    "last_completed_step": "Committed the blocked verification handoff at ceee8b30786c2e7a4587c75e534172c73e6edc21, ran the canonical critical gate to a retained failed terminal result, and created a registered machine-readable checkpoint containing the complete aggregate-attempt history.",
+    "last_completed_step": "The registered blocked checkpoint pins audited clean parent b385a69d8f2e1d8db5a98832de3d41a2f262243f, retains the complete aggregate-attempt history and failed critical gate, and resolves its current containing commit through Git repository verification rather than hard-coded resume text.",
     "next_action": "Owner decision is required: either authorize a separately scoped repair of the pre-existing fast-profile validation platform failures, or retain #243 as unfinished. No additional #243 implementation mutation is authorized by the current scope."
   },
   "results": {
