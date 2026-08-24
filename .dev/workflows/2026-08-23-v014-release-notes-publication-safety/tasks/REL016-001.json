@@ -6,9 +6,9 @@
   "task_id": "REL016-001",
   "workflow_id": "2026-08-23-v014-release-notes-publication-safety",
   "owner_skill": "ai-context-governance",
-  "status": "in_progress",
+  "status": "completed",
   "created_at": "2026-08-23T23:09:27+08:00",
-  "updated_at": "2026-08-24T08:14:48+08:00",
+  "updated_at": "2026-08-24T08:20:53+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-5.6-sol",
   "reasoning_effort": "high",
@@ -57,8 +57,8 @@
       "python .ai/scripts/validate-ai-context.py",
       "git diff --check"
     ],
-    "last_completed_step": "Executed the only authorized body-only PATCH from clean reviewed commit 908eac7879ec7dcb1d9713f2ee5e5ec0e106c3ac; immediate read-back proved exact corrected-body bytes and complete bounded non-body parity, and publication plus finalization gates passed.",
-    "next_action": "Commit and validate the main-based squashed delivery continuation, prove bounded tree equivalence to d988359acd6a79fce71ee2949996828fa36e4768, and obtain fresh independent review before terminal-close PR admission."
+    "last_completed_step": "Delivered the source and provider receipts through compliant PR #242 history; source, route, receipt parity, publication/finalization, commit policy, workflow/AI-context validation, and independent delivery-head review passed, and terminal-close declaration is bound to the exact PR body.",
+    "next_action": "not applicable; the repository integration owner now owns final-head review, hosted checks, merge admission, merge, and Issue/Project read-back."
   },
   "role_execution_summary": {
     "stage_id": "REL016-001-source-remediation",
@@ -113,8 +113,8 @@
       "passed on delivery segment outside sandbox: renderer 25/25, route 31/31, and release-state 37/37",
       "passed on delivery segment: workflow artifacts, AI-context, bounded evidence-tree equivalence to d988359acd6a79fce71ee2949996828fa36e4768, hosted publication, and hosted finalization"
     ],
-    "finding_status": "provider-corrected-integration-pending",
-    "residual_risk": "The delivery continuation must prove bounded tree equivalence and pass fresh review, commit policy, hosted checks, and merge admission. Issue #241 remains Project status Inbox; terminal close requires Done, while direct Project mutation is not authorized.",
-    "follow_up_needed": true
+    "finding_status": "resolved",
+    "residual_risk": "PR #242 still requires exact-final-head review, all hosted checks, merge admission, and post-merge Issue/Project read-back. Project #3 has the enabled built-in Item closed workflow; no direct Project mutation is authorized.",
+    "follow_up_needed": false
   }
 }

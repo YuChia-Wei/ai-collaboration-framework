@@ -1,0 +1,105 @@
+schema_version: "1.0"
+contract_id: github-terminal-issue-closure
+repository: YuChia-Wei/ai-collaboration-framework
+validation_stage: declaration
+pull_request:
+  number: 242
+  head_sha: null
+  body: |-
+    ## Summary
+
+    - make the published v0.14.0 release notes concise, consumer-facing, and publication-phase safe
+    - enforce a structured v0.13.0+ publication-content contract with exact defect regressions and durable-status counterexamples
+    - repair the retained-origin route disposition without changing the accepted v0.13.0, v0.9.0, and v0.6.0 source set
+    - retain the exactly-once hosted body correction and complete provider before/after parity evidence
+
+    ## Changes
+
+    - replace transient candidate, pending-publication, PR, checkpoint, SHA, run/job, and failed-attempt narration
+    - validate release-note and migration content at the effective tag-triggered rendering boundary
+    - bind canonical schema-1.1/v2 route evidence to the unchanged hosted v0.14.0 package bytes
+    - retain the exact rendered body and bounded hosted Release/tag/asset receipts
+    - preserve failed, blocked, superseded, and independent-review evidence in the owning workflow
+
+    ## Related Issues
+
+    - Issue #: 241
+    - Delivery disposition: `terminal-close`
+    - Reference: Closes #241
+    - `closure_deferred_reason` (required for deferred): not applicable
+    - Next terminal gate or owner (required for deferred): not applicable
+    - Owner authorization or approved no-Issue exception: the repository owner authorized the exact v0.14.0 body-only update from commit 908eac7879ec7dcb1d9713f2ee5e5ec0e106c3ac and authorized push, PR, merge, and Issue close after the remaining gates pass on 2026-08-24.
+
+    ## Delivery And Integration
+
+    - Delivery grouping: single work item
+    - Execution record: workflow
+    - Selected topology: merge commit
+    - Topology reason: the publication-safety fix, retained-origin evidence repair, exactly-once provider receipt, and independent audits form one durable release-governance boundary while preserving the reviewed evidence branch without history rewrite.
+
+    ## Validation
+
+    - renderer regression suite: 25/25 passed
+    - retained-origin route suite: 31/31 passed
+    - release-state regression suite: 37/37 passed
+    - exact hosted publication and finalization phases: passed at tagged commit 412bb14a16fe75ee65a020b16680def0acc0ff1b
+    - delivery commit policy: 1/1 passed
+    - workflow artifact and AI-context validation: passed
+    - source, route, tests, and provider receipts: byte-equivalent to preserved evidence head d988359acd6a79fce71ee2949996828fa36e4768
+    - independent delivery-head audit: accepted with zero blocking findings at a4bc448d22af16d2d3ef1907084cefc60886489d
+    - sandbox Windows Temp ACL attempts: retained as blocked-by-environment; the same suites passed at the host boundary
+
+    ## Hosted Correction Receipt
+
+    - exactly one body-only PATCH was issued to Release ID 374204532 from reviewed commit 908eac7879ec7dcb1d9713f2ee5e5ec0e106c3ac
+    - hosted body SHA-256 is 07b17d1f47e5ee1489b2f4049da89f52e4acf50efedbf549e39a25582603737e (3785 bytes)
+    - bounded Release identity/state, annotated tag, peeled commit, publication timestamp, and all four asset tuples are unchanged
+    - GitHub server-managed updated_at advanced as the expected consequence of the body update
+    - no further Release mutation is authorized or performed
+
+    ## Boundaries
+
+    - package/archive identity remains `ai-context-dotnet-backend-*`
+    - the accepted retained-origin source set is unchanged
+    - no tag, Release identity, draft/prerelease state, publication timestamp, target commit, asset, checksum sidecar, other version, downstream repository, or direct Project field mutation
+    - Project #3 has its enabled built-in `Item closed` workflow; post-merge read-back must still prove Issue `CLOSED / COMPLETED` and Project `Done`
+
+    ## Checklist
+
+    - [x] Selected repository-native focused commands pass
+    - [x] Target-owned .NET commands are not applicable to this Python/governance change
+    - [x] Required workflow and evidence documentation is updated
+    - [x] No secrets committed
+    - [x] Every named Issue has exactly one delivery disposition
+    - [ ] The exact final PR head passes all required hosted checks
+    - [ ] The exact final PR head has the required single-maintainer audit receipt
+  integration:
+    status: pending
+    topology: null
+    admitted_head_sha: null
+    integration_commit_sha: null
+    provider_read_back: false
+  review:
+    status: pending
+  required_check_contexts: []
+  hosted_checks: []
+issues:
+  - number: 241
+    mode: terminal-close
+    work_authorization:
+      online_issue_bound: true
+      explicit_owner_approval: true
+    final_accepted_delivery: true
+    workflow:
+      scope_complete: true
+      tasks_complete: true
+      applicable_verification_complete: true
+    closing_keyword: Closes
+    closure_deferred_reason: null
+    next_terminal_gate_or_owner: null
+    read_back:
+      performed: false
+      integration_commit_sha: null
+      issue_state: null
+      issue_state_reason: null
+      project_status: null

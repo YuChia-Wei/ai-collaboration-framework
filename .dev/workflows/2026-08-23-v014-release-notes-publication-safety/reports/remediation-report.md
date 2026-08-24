@@ -12,9 +12,9 @@
 - `report_id`: `remediation-report-2026-08-23-v014-release-notes-publication-safety`
 - `workflow_id`: `2026-08-23-v014-release-notes-publication-safety`
 - `owner_skill`: `ai-context-governance`
-- `status`: `in_progress`
+- `status`: `completed`
 - `created_at`: `2026-08-23T23:09:27+08:00`
-- `updated_at`: `2026-08-24T08:14:48+08:00`
+- `updated_at`: `2026-08-24T08:20:53+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-remediation-report-template.md`
 - `template_version`: `2.0.0`
 - `baseline_assessment`: `not-applicable; live Issue #241 and provider baseline are authoritative`
@@ -25,7 +25,7 @@
 - Authorized scope: source notes, effective renderer/validator path, focused tests, deterministic body, bounded v0.14.0 retained-origin route-evidence remediation that preserves the existing source set, exact-head independent review, and exactly one hosted body-only correction from commit `908eac7879ec7dcb1d9713f2ee5e5ec0e106c3ac`. The latest owner authorization also permits push, PR, merge, and Issue #241 close when all remaining gates pass.
 - Completed scope: consumer-facing source notes, v0.13.0+ structured publication-content contract across release notes and migration guidance, exact-defect and valid-counterexample GWT coverage, deterministic corrected body, retained-origin route evidence, focused validation, exactly-once hosted body correction, and mechanical before/after parity evidence.
 - Validation summary: renderer 25/25, route 31/31, and release-state 37/37 passed; deterministic and hosted body SHA-256 is `07b17d1f47e5ee1489b2f4049da89f52e4acf50efedbf549e39a25582603737e`; post-mutation publication and finalization phases passed at tagged commit `412bb14a16fe75ee65a020b16680def0acc0ff1b`.
-- Closure decision: `provider-corrected-integration-pending`
+- Closure decision: `accepted-for-terminal-integration`
 
 ## Finding Resolution Matrix
 
@@ -45,7 +45,7 @@
 - Changes: corrected source notes and a structured publication-content validation boundary are implemented; exact-pattern GWT regressions and deterministic rendered body evidence are present.
 - Evidence: live Issue and live v0.14.0 Release were frozen immediately before the one PATCH. The immutable annotated tag object is `12f218ce...e7`, peeled commit is `412bb14a...ff1b`, Release is non-draft/non-prerelease, and the four `ai-context-dotnet-backend-v0.14.0*` asset tuples are unchanged.
 - Validation: focused renderer, route, and release-state suites pass. Exact before/after receipts prove the hosted body changed from SHA-256 `d1fa92cb...a14b` to the expected `07b17d1f...3737e`; post-mutation publication and finalization phases pass.
-- Remaining risk: workflow commit-range validation failed on four reviewed/provider-bound commit messages. Those SHAs remain preserved at pushed evidence head `d988359acd6a79fce71ee2949996828fa36e4768`; repository integration uses a main-based squashed delivery continuation with bounded tree-equivalence proof, fresh review, terminal-close admission, hosted checks, merge read-back, and Issue/Project terminal read-back. Issue #241 currently has Project status `Inbox`; direct Project mutation remains unauthorized. No further Release mutation is authorized.
+- Remaining risk: workflow commit-range validation failed on four reviewed/provider-bound commit messages. Those SHAs remain preserved at pushed evidence head `d988359acd6a79fce71ee2949996828fa36e4768`; repository integration uses compliant PR #242 history with bounded tree-equivalence proof. Issue #241 currently has Project status `Inbox`; live Project #3 metadata proves the built-in `Item closed` workflow is enabled and is expected to set `Done`, but post-merge read-back remains mandatory. Direct Project mutation and any further Release mutation remain unauthorized.
 
 ## Verification Assessment Reconciliation
 
@@ -73,5 +73,5 @@
 
 - Required validations: focused source validation, route/release-state suites, and final exact-head source/route/workflow review passed. Exactly-once provider read-back and post-mutation publication/finalization phases passed. Workflow commit-range validation failed on `6bbf536b`, `831b6390`, `92ca302f`, and `908eac78`; this failure is retained. Provider receipt head `d988359acd6a79fce71ee2949996828fa36e4768` then passed fresh independent review and was pushed before the non-rewriting squashed delivery continuation was created. On segment 2, the sandbox Temp ACL block recurred, then host renderer 25/25, route 31/31, release-state 37/37, workflow, AI-context, bounded evidence-tree equivalence, hosted publication, and hosted finalization all passed.
 - Commit status: workflow bootstrap `b12747531feb2249217935fbe8549e0a7671dc25`; implementation `d29d75e1f5bd7d22635dce3a95c6e730081264b5`; migration-input repair `b3a4d200706c099065274099685b1dcc2bd25acf`; heading-adjacent repair `855e101d61fdf38682a348400250b89e5dbe4dcf`; blocked receipt `d102fa534a86affe1ab7296219da295150854e0b`; migration-heading repair `915959a7f9f9aacac646276373e2764fc6016ed6`; final renderer receipt `a3a77a3a15156046e93acfe8e190aa4a884ccd08`; test-count receipt `4086a6d024f7c683ab493fdb33cdf1592abc9620`; route-evidence repair `6bbf536baaeb98c27e902ac3c745162703ac9f5c`.
-- Workflow/task status: in progress / REL016-002 is completed; REL016-001 provider correction is complete with delivery continuation preparation in progress.
-- Final next action: commit and validate the compliant delivery continuation, prove bounded tree equivalence to `d988359acd6a79fce71ee2949996828fa36e4768`, obtain fresh independent review, and resolve the `Inbox` versus terminal `Done` Project boundary before merge.
+- Workflow/task status: completed / REL016-001 and REL016-002 are completed; PR #242 repository integration remains a distinct provider lifecycle.
+- Final next action: validate and independently audit the exact final PR #242 head, satisfy hosted checks and merge admission, merge with merge-commit topology, then read back the PR integration commit, Issue `CLOSED / COMPLETED`, and Project `Done`.

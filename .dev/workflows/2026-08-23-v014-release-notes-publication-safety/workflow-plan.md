@@ -15,11 +15,11 @@
 - `branch`: `codex/2026-08-23-v014-release-notes-publication-safety-delivery`
 - `base_branch`: `main`
 - `branch_segment`: `2`
-- `status`: `in_progress`
-- `current_phase`: `delivery-continuation-preparation`
+- `status`: `completed`
+- `current_phase`: `completed`
 - `artifact_root`: `.dev/workflows/2026-08-23-v014-release-notes-publication-safety`
 - `created_at`: `2026-08-23T23:09:27+08:00`
-- `updated_at`: `2026-08-24T08:14:48+08:00`
+- `updated_at`: `2026-08-24T08:20:53+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md`
 - `template_version`: `1.2.0`
 
@@ -81,16 +81,16 @@
 
 - Last completed action: Provider receipts were committed at clean evidence head `d988359acd6a79fce71ee2949996828fa36e4768`, independently reviewed with no findings, and pushed without rewriting any reviewed or provider-bound SHA. Segment 2 now contains a squash of that exact evidence tree on `main@6f690440d59f5569e19c3e2ceb219f964c2fa6f6`.
 - Current task: `REL016-001`
-- Exact next action: commit the delivery continuation with compliant metadata, prove source and receipt byte equivalence to `d988359acd6a79fce71ee2949996828fa36e4768`, validate the exact head, and obtain fresh independent review. PR creation and merge remain gated by terminal-close handling for Issue #241, whose Project status is currently `Inbox`.
+- Exact next action: repository integration owner validates the final PR #242 head, submits the exact-head audit receipt, captures merge-admission evidence, merges with merge-commit topology, and reads back Issue `CLOSED / COMPLETED` plus Project `Done`.
 - Validation already completed: renderer GWT 25/25, route GWT 31/31, and release-state GWT 37/37 passed again on segment 2 outside the sandbox after the sandbox Temp ACL block was preserved; source and receipt paths are byte-equivalent to `d988359acd6a79fce71ee2949996828fa36e4768`; AI-context and workflow checks passed; deterministic hosted body SHA-256 remains `07b17d1f47e5ee1489b2f4049da89f52e4acf50efedbf549e39a25582603737e`; publication and finalization phases passed again at tagged commit `412bb14a16fe75ee65a020b16680def0acc0ff1b`.
 - Git state: bootstrap `b12747531feb2249217935fbe8549e0a7671dc25`, initial implementation `d29d75e1f5bd7d22635dce3a95c6e730081264b5`, migration-input repair `b3a4d200706c099065274099685b1dcc2bd25acf`, heading-adjacent repair `855e101d61fdf38682a348400250b89e5dbe4dcf`, blocked receipt `d102fa534a86affe1ab7296219da295150854e0b`, migration-heading repair `915959a7f9f9aacac646276373e2764fc6016ed6`, final renderer receipt `a3a77a3a15156046e93acfe8e190aa4a884ccd08`, and test-count receipt `4086a6d024f7c683ab493fdb33cdf1592abc9620` are committed locally; no unrelated tracked changes observed.
 - Provider correction completed exactly once under the owner's later 2026-08-24 authorization. No further Release mutation is authorized.
 - Branch history and checkpoint handoffs: segment 1 is preserved at pushed clean head `d988359acd6a79fce71ee2949996828fa36e4768`; segment 2 is the main-based compliant delivery continuation. The latest owner continuation authorizes push, PR, merge, and Issue close after the remaining gates pass.
-- Blockers or unresolved decisions: Issue #241 is currently open with Project #3 status `Inbox`, while terminal closeout requires post-integration `Done`. Direct Project mutation remains excluded and recent Issue #239 being `Done` does not prove automation for #241. Do not merge until automatic disposition is proven or the owner authorizes a bounded Project status correction. Package/archive naming remains explicitly deferred and excluded.
+- Blockers or unresolved decisions: none inside the accepted Issue #241 workflow. Live GraphQL read-back proves Project #3 built-in workflow `Item closed` is enabled; GitHub's built-in automation contract sets a closed Issue item to `Done`. Post-merge read-back remains mandatory, and no direct Project mutation is authorized. Package/archive naming remains explicitly deferred and excluded.
 
 ## Branch Lifecycle
 
 | Segment | Branch | Base | Checkpoint Type | Commit | Remote / Target | Recorded At | Reason | Resume Branch / Action |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | 1 | `codex/2026-08-23-v014-release-notes-publication-safety` | `main@6f690440d59f5569e19c3e2ceb219f964c2fa6f6` | provider/evidence checkpoint | `d988359acd6a79fce71ee2949996828fa36e4768` | `origin/codex/2026-08-23-v014-release-notes-publication-safety` | `2026-08-24T08:08:00+08:00` | Preserve reviewed and provider-bound SHAs without rewrite; commit receipts and the non-rewriting delivery decision. | Continue from current `main` on segment 2 and squash the final evidence tree into compliant PR history. |
-| 2 | `codex/2026-08-23-v014-release-notes-publication-safety-delivery` | `main@6f690440d59f5569e19c3e2ceb219f964c2fa6f6` | squashed delivery continuation | pending | local; target `origin` after exact-head validation | `2026-08-24T08:12:08+08:00` | Create policy-compliant PR history without invalidating exact-SHA reviews or the provider receipt. | Commit, prove bounded tree equivalence, validate, obtain fresh review, then resolve the Project terminal-close boundary before PR merge. |
+| 2 | `codex/2026-08-23-v014-release-notes-publication-safety-delivery` | `main@6f690440d59f5569e19c3e2ceb219f964c2fa6f6` | squashed delivery continuation | final declaration commit containing this record | PR #242 / `main` | `2026-08-24T08:20:53+08:00` | Create policy-compliant PR history without invalidating exact-SHA reviews or the provider receipt. | Source workflow complete; integration owner runs final-head audit, hosted checks, admission, merge, and provider read-back. |
