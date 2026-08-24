@@ -1,0 +1,101 @@
+{
+  "schema_version": "1.0",
+  "evidence_id": "REL016-001-hosted-after",
+  "observed_at": "2026-08-24T07:59:43.8213567+08:00",
+  "capture": {
+    "mode": "immediate-post-mutation-read-back",
+    "mutation_count": 1,
+    "mutation_payload_fields": [
+      "body"
+    ],
+    "release_endpoint": "GET repos/YuChia-Wei/ai-collaboration-framework/releases/tags/v0.14.0"
+  },
+  "release": {
+    "id": 374204532,
+    "node_id": "RE_kwDOSBe2Hc4WTeh0",
+    "html_url": "https://github.com/YuChia-Wei/ai-collaboration-framework/releases/tag/v0.14.0",
+    "tag_name": "v0.14.0",
+    "target_commitish": "main",
+    "name": "REL-v0.14.0",
+    "draft": false,
+    "immutable": false,
+    "prerelease": false,
+    "created_at": "2026-08-21T06:20:03Z",
+    "published_at": "2026-08-21T06:21:26Z",
+    "author_login": "github-actions[bot]"
+  },
+  "provider_updated_at": {
+    "before": "2026-08-21T06:21:26Z",
+    "after": "2026-08-23T23:59:16Z",
+    "server_managed": true
+  },
+  "annotated_tag": {
+    "ref": "refs/tags/v0.14.0",
+    "ref_object_type": "tag",
+    "object_sha": "12f218ce02acc855da53899c52b73eb6b9df75e7",
+    "tag": "v0.14.0",
+    "tagger": {
+      "name": "YuChia",
+      "email": "h42279@gmail.com",
+      "date": "2026-08-21T06:20:03Z"
+    },
+    "peeled_object_type": "commit",
+    "peeled_commit": "412bb14a16fe75ee65a020b16680def0acc0ff1b"
+  },
+  "body": {
+    "before_utf8_sha256": "d1fa92cb8fd3a289367fb81686916454873f71a634ce4917491a9ebe2077a14b",
+    "expected_utf8_sha256": "07b17d1f47e5ee1489b2f4049da89f52e4acf50efedbf549e39a25582603737e",
+    "hosted_utf8_sha256": "07b17d1f47e5ee1489b2f4049da89f52e4acf50efedbf549e39a25582603737e",
+    "expected_byte_count": 3785,
+    "hosted_byte_count": 3785,
+    "exact_bytes_equal": true,
+    "content": "<!-- ai-context-release-automation: REL-v0.14.0 -->\n\n# REL-v0.14.0 — Retained-Origin Upgrade Routing\n\nv0.14.0 delivers deterministic retained-origin upgrade routing for the\n`dotnet-backend` distribution while preserving exact package and migration\nidentity across each supported source.\n\n## Highlights\n\n- Records exact migration inputs for governed sources v0.13.0, v0.9.0, and\n  v0.6.0 under the v0.14.0 package identity.\n- Establishes the source-only support matrix and route-evidence locations for\n  the retained origins.\n- Adds canonical direct-route evidence for each retained source and keeps the\n  nine-item Included Work set bound to the release.\n\n## Compatibility\n\nv0.14.0 is a breaking migration checkpoint with a minimum governed source of\nv0.6.0. The package records v0.13.0, v0.9.0, and v0.6.0 as exact package\nmigration inputs. Their direct or orchestrated route classification must come\nonly from the completed support matrix and its receipt-bound evidence.\n\n## Release Validation\n\nZIP/TAR package parity, release-note rendering, package lifecycle validation,\nand the canonical retained-origin route proofs for v0.13.0, v0.9.0, and v0.6.0\npassed. The generated Release provenance below binds the public artifacts to\nthe immutable release tag and commit.\n\n## Known Limitations\n\n- Retained-origin routing is defined only for v0.13.0, v0.9.0, and v0.6.0;\n  other sources require a separately reviewed migration route.\n- Route resolution is read-only and does not authorize package apply or any\n  target-owned reconciliation decision.\n\n<!--\nThe renderer appends canonical Included Work and release provenance. Keep this\nauthored content phase-neutral and omit generated automation details.\n-->\n\n## Included Work\n\n- `#200`\n- `#201`\n- `#202`\n- `#203`\n- `#204`\n- `#205`\n- `#206`\n- `#207`\n- `#208`\n\n## Release provenance\n\n- Release ID: `REL-v0.14.0`\n- Tag: `v0.14.0`\n- Commit: `412bb14a16fe75ee65a020b16680def0acc0ff1b`\n- Distribution profile: `dotnet-backend`\n- Package: `ai-context-dotnet-backend-v0.14.0`\n- Archive integrity: verify each archive against its adjacent `.sha256` asset.\n\n## Migration guide\n\n# Migrate To v0.14.0\n\n## Supported Sources\n\nv0.14.0 is a breaking migration checkpoint. Its governed package records\nexact migration inputs for v0.13.0, v0.9.0, and v0.6.0. Before applying a\nretained-origin upgrade, resolve the source-only support matrix for the\ninstalled version; it is the authority for a direct versus an\norchestrated-multi-hop route. Do not infer a route from this guide.\n\n## Before You Start\n\n1. Start with a clean worktree, retain the installed release manifest, and\n   run the applicable route resolver with the exact installed source version.\n2. Review any reconciliation operations in the selected package migration\n   plan before an apply operation is authorized.\n\n## Migration Steps\n\n1. Use the v0.14.0 package in dry-run mode with the exact selected source\n   manifest; do not substitute a similarly named historical package.\n2. If the matrix resolves an orchestrated route, preserve each ordered edge,\n   its validator output, and its required cutovers before advancing.\n3. Apply only after required reconciliation is acknowledged, then run the\n   incoming and target-owned validation required by the selected route.\n\n## Clean Installation\n\nFor a clean installation, use the v0.14.0 governed package without an upgrade\nplan and retain the resulting package manifest as the installed baseline.\n\n## Scope Boundaries\n\n- This source release records framework-owned migration inputs and route\n  evidence only; target-owned customizations, approvals, and provider state\n  remain outside the package.\n- A route resolver is read-only. It does not authorize package apply, target\n  mutation, tag creation, GitHub Release creation, or publication.\n"
+  },
+  "assets": [
+    {
+      "id": 523331577,
+      "node_id": "RA_kwDOSBe2Hc4fMWf5",
+      "name": "ai-context-dotnet-backend-v0.14.0.tar.gz",
+      "state": "uploaded",
+      "size": 992255,
+      "digest": "sha256:7cfa186ae44caf091d8244f41abbbd2019164994815849068828be453c3bb91c",
+      "browser_download_url": "https://github.com/YuChia-Wei/ai-collaboration-framework/releases/download/v0.14.0/ai-context-dotnet-backend-v0.14.0.tar.gz"
+    },
+    {
+      "id": 523331578,
+      "node_id": "RA_kwDOSBe2Hc4fMWf6",
+      "name": "ai-context-dotnet-backend-v0.14.0.tar.gz.sha256",
+      "state": "uploaded",
+      "size": 107,
+      "digest": "sha256:4c4295c7b4a4a76c594525d1b712c7a92967294387e1002a041f0ee55ed7b83f",
+      "browser_download_url": "https://github.com/YuChia-Wei/ai-collaboration-framework/releases/download/v0.14.0/ai-context-dotnet-backend-v0.14.0.tar.gz.sha256"
+    },
+    {
+      "id": 523331576,
+      "node_id": "RA_kwDOSBe2Hc4fMWf4",
+      "name": "ai-context-dotnet-backend-v0.14.0.zip",
+      "state": "uploaded",
+      "size": 1404664,
+      "digest": "sha256:3577c01a3aff015794ea9593ce56daed1f02409dd6f0106d1d87e289190cde05",
+      "browser_download_url": "https://github.com/YuChia-Wei/ai-collaboration-framework/releases/download/v0.14.0/ai-context-dotnet-backend-v0.14.0.zip"
+    },
+    {
+      "id": 523331579,
+      "node_id": "RA_kwDOSBe2Hc4fMWf7",
+      "name": "ai-context-dotnet-backend-v0.14.0.zip.sha256",
+      "state": "uploaded",
+      "size": 104,
+      "digest": "sha256:044175a9201723c7dbf0a011cfbb0a669d013ed08cb725bf671a93cb44acf870",
+      "browser_download_url": "https://github.com/YuChia-Wei/ai-collaboration-framework/releases/download/v0.14.0/ai-context-dotnet-backend-v0.14.0.zip.sha256"
+    }
+  ],
+  "invariant_comparison": {
+    "release_stable_fields_unchanged": true,
+    "annotated_tag_and_peeled_commit_unchanged": true,
+    "asset_id_node_name_state_size_digest_download_url_set_unchanged": true,
+    "hosted_body_matches_exact_renderer": true,
+    "changed_user_mutable_release_fields": [
+      "body"
+    ]
+  }
+}

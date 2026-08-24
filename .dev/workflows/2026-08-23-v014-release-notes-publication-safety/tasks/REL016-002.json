@@ -1,0 +1,90 @@
+{
+  "template_id": "ai-context-governance-remediation-task",
+  "template_version": "1.1.0",
+  "template_created_at": "2026-07-10T18:22:49+08:00",
+  "template_updated_at": "2026-07-27T09:52:09+08:00",
+  "task_id": "REL016-002",
+  "workflow_id": "2026-08-23-v014-release-notes-publication-safety",
+  "owner_skill": "ai-context-governance",
+  "status": "completed",
+  "created_at": "2026-08-24T07:26:50+08:00",
+  "updated_at": "2026-08-24T08:01:16+08:00",
+  "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
+  "model": "gpt-5.6-sol",
+  "reasoning_effort": "high",
+  "finding_ids": [
+    "REL016-F006"
+  ],
+  "scope": {
+    "target": "Canonical schema-1.1/v2 route evidence for the existing published v0.14.0 package and the unchanged retained-origin set",
+    "files": [
+      ".dev/releases/v0.14.0/support-matrix.yaml",
+      ".dev/releases/v0.14.0/route-assets/validate-direct-edge.py",
+      ".dev/releases/v0.14.0/route-assets/published-v0.14.0/",
+      ".dev/releases/v0.14.0/route-evidence/",
+      ".ai/scripts/tests/test_ai_context_upgrade_routes.py",
+      ".ai/scripts/tests/test_ai_context_release_state.py",
+      ".dev/workflows/2026-08-23-v014-release-notes-publication-safety/"
+    ],
+    "constraints": [
+      "Preserve exactly the existing v0.13.0, v0.9.0, and v0.6.0 retained origins and automatic upgrade sources.",
+      "Bind evidence to the exact existing hosted v0.14.0 ZIP and sidecar bytes without mutating provider state.",
+      "Use schema 1.1 and upgrade-edge-validation/v2 portable proof from executed validation.",
+      "Keep route evidence separate from the owner's later body-only provider authorization.",
+      "Stop for owner direction if another version's published semantics or the source set must change."
+    ],
+    "non_goals": [
+      "Tag, Release, hosted asset, package identity, other-version semantic, Issue/Project, push, PR, merge, release allocation, or downstream mutation.",
+      "Package/archive rename or ID-002 creation."
+    ]
+  },
+  "execution": {
+    "steps": [
+      "Freeze the hosted ZIP, sidecar, package metadata, and unchanged origin identities.",
+      "Create release-local published-package route inputs without overwriting the historical route archive.",
+      "Upgrade the v0.14.0 support matrix and three edge receipts to schema 1.1/v2.",
+      "Regenerate canonical route evidence and add production-path regressions.",
+      "Run focused route/release-state and selected publication-phase validation.",
+      "Commit a clean immutable head and obtain independent read-only review."
+    ],
+    "validation": [
+      "python -B .ai/scripts/tests/test_ai_context_upgrade_routes.py -v",
+      "python -B .ai/scripts/tests/test_ai_context_release_state.py -v",
+      "python .ai/scripts/validate-ai-context-release-state.py --phase publication --version v0.14.0 --hosted --rendered-body <exact-body>",
+      "python .ai/scripts/validate-workflow-artifacts.py",
+      "python .ai/scripts/validate-ai-context.py",
+      "git diff --check"
+    ],
+    "last_completed_step": "Committed the route repair at 6bbf536baaeb98c27e902ac3c745162703ac9f5c; final exact-head ai-context-auditor review passed at 908eac7879ec7dcb1d9713f2ee5e5ec0e106c3ac with no source, route, or workflow-truth findings.",
+    "next_action": "not applicable; REL016-001 owns the separately authorized provider and integration continuation."
+  },
+  "results": {
+    "summary": "The authorized route-evidence implementation, hosted publication validation, and independent exact-head review are complete without changing the retained source set.",
+    "files_changed": [
+      ".dev/releases/v0.14.0/support-matrix.yaml",
+      ".dev/releases/v0.14.0/route-assets/validate-direct-edge.py",
+      ".dev/releases/v0.14.0/route-assets/published-v0.14.0/",
+      ".dev/releases/v0.14.0/route-assets/validation/published-v0.14.0/",
+      ".dev/releases/v0.14.0/route-evidence/",
+      ".ai/scripts/tests/test_ai_context_upgrade_routes.py",
+      ".ai/scripts/tests/test_ai_context_release_state.py"
+    ],
+    "tests_run": [
+      "passed diagnostic: hosted ZIP SHA-256 3577c01a3aff015794ea9593ce56daed1f02409dd6f0106d1d87e289190cde05",
+      "passed diagnostic: embedded incoming validator",
+      "passed diagnostic: hardened direct-edge validation for v0.13.0, v0.9.0, and v0.6.0",
+      "blocked-by-environment: first sandbox route suite run, 31 Temp ACL errors",
+      "failed: first host route suite run, 3 stale expected-message assertions",
+      "passed: 3 focused production route tests",
+      "passed: 31 full upgrade-route tests",
+      "passed: 37 full release-state tests",
+      "passed: hosted publication validation at tag commit 412bb14a16fe75ee65a020b16680def0acc0ff1b",
+      "expected non-pass: corrected rendered body differs from the existing hosted body",
+      "superseded independent review: route mechanics passed while workflow admission was withheld for stale receipt text",
+      "passed: final independent review at 908eac7879ec7dcb1d9713f2ee5e5ec0e106c3ac with no source/route or workflow-truth findings"
+    ],
+    "finding_status": "resolved",
+    "residual_risk": "The pre-existing three-source compatibility declaration remains unchanged by owner instruction; any future policy reconciliation is outside Issue #241.",
+    "follow_up_needed": false
+  }
+}
