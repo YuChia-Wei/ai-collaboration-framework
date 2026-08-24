@@ -131,6 +131,15 @@ admission, integration, and post-merge provider read-back remain separate gates.
 - The completion checkpoint cryptographically binds the 35-line critical
   terminal output and references the retained blocked checkpoint rather than
   rewriting any earlier non-passing outcome.
+- Required Ubuntu PR profile run `32712063438` at `e04826d9` remains failed:
+  50 selected, 47 executed, 2 failed, 0 blocked, and 3 not applicable.
+  `document-projection` recorded `-425ms`; the evidence finalizer then rejected
+  the negative timing and the invocation could not be sealed.
+- Root cause is the aggregate shell runner's repeated wall-clock subtraction,
+  unlike the already repaired Python supervisor's monotonic authority. The
+  runner now anchors one wall-clock epoch and advances it only by monotonic
+  elapsed time. Shell syntax and two exact rollback/finalization regressions
+  pass; the failed hosted result is not reclassified.
 
 ## Residual Risk
 
@@ -144,6 +153,8 @@ admission, integration, and post-merge provider read-back remain separate gates.
   release action.
 - Any tracked repair after the final fixed-head audit invalidates that audit and
   requires a new independent audit.
+- The logical-clock repair requires a new exact-head audit and a successful
+  required hosted PR profile before merge admission.
 
 ## Next Task
 

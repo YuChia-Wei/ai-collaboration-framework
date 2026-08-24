@@ -422,6 +422,12 @@ cleanup are never reusable passes. Selected checks that never launch are
 recorded explicitly as `not-executed` and cannot impersonate supervised
 execution.
 
+The aggregate shell runner also derives every evidence timestamp from one
+wall-clock origin plus monotonic elapsed time. A hosted NTP or VM clock
+adjustment therefore cannot create a negative per-check duration or invalidate
+otherwise authentic finalization evidence. The wall origin preserves an
+epoch-compatible `started_at`; subsequent timing never re-reads wall time.
+
 Per-check timeouts are execution ceilings, not profile budgets. The
 `multi-hop-upgrade-transaction`, `package-apply`, and
 `aggregate-runner-contract` ceilings include measured Windows full-suite

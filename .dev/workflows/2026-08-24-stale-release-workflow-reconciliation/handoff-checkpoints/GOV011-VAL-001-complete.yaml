@@ -12,8 +12,8 @@ workflow:
   workflow_id: "2026-08-24-stale-release-workflow-reconciliation"
   task_id: "GOV011-VAL-001"
 resume:
-  last_completed_action: "The exact clean repair head passed all aggregate gates, and pushed draft PR #244 carries the tracked terminal-close declaration for Issue #243."
-  exact_next_action: "Obtain a fresh exact-head independent audit and provider audit receipt for the current PR #244 head, then capture merge admission only after all required hosted checks pass."
+  last_completed_action: "PR #244 hosted head e04826d9 failed the Ubuntu PR profile gate after a wall-clock rollback produced a negative evidence duration; the aggregate runner now derives logical epoch timestamps from one wall origin plus monotonic elapsed time, and focused timing/finalization regressions pass."
+  exact_next_action: "Obtain a fresh exact-head independent audit and provider audit receipt for the current PR #244 repair head, then capture merge admission only after all required hosted checks pass."
   hidden_context_required: false
 critical_gate:
   command: '"C:\Program Files\Git\bin\bash.exe" .ai/scripts/check-all.sh --critical'
@@ -96,3 +96,9 @@ completion_validation:
   - validation_id: "critical-c71f5532-attempt-02"
     outcome: "passed"
     facts: "65 selected, 62 executed, 0 failed, 0 blocked, 3 not applicable; the runner reported 1891 seconds and produced the aggregate seal."
+  - validation_id: "ubuntu-pr-profile-e04826d9"
+    outcome: "failed"
+    facts: "50 selected, 47 executed, 2 failed, 0 blocked, 3 not applicable; document-projection recorded -425ms, then evidence finalization and invocation sealing failed."
+  - validation_id: "logical-clock-focused-regressions"
+    outcome: "passed"
+    facts: "Shell syntax passed and two exact logical-clock/finalization runner tests passed in 10.376 seconds on the host boundary."
