@@ -423,9 +423,10 @@ recorded explicitly as `not-executed` and cannot impersonate supervised
 execution.
 
 Per-check timeouts are execution ceilings, not profile budgets. The
-`multi-hop-upgrade-transaction` and `package-apply` ceilings include measured
-Windows full-suite duration plus bounded headroom; profile membership and
-required enforcement remain unchanged when those ceilings are calibrated.
+`multi-hop-upgrade-transaction`, `package-apply`, and
+`aggregate-runner-contract` ceilings include measured Windows full-suite
+duration plus bounded headroom; profile membership and required enforcement
+remain unchanged when those ceilings are calibrated.
 
 After every selected ID has exactly one event, the runner verifies the final
 repository snapshot, atomically writes summaries, and seals their canonical

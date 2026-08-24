@@ -98,15 +98,31 @@ non-passing.
   coverage passed, the Windows supervisor suite ran 20 tests with 12 passes and
   8 platform skips, and a repaired WSL diagnostic authenticated a 2.683342-second
   adjustment before returning `completed`, `true`, exit `0`.
-- Workflow artifact, AI-context, and source-governance validators passed after
-  the repair. No repaired aggregate attempt has run yet.
+- Workflow artifact, AI-context, and source-governance validators passed before
+  the repaired aggregate attempts.
+- Fast attempt 1 passed on `774ef5864dafd7e07fa6ceb63aa46c33cd99d158`:
+  42 selected, 41 executed, 0 failed, 0 blocked, and 1 not applicable. Its
+  338-second fast-budget excess was reported as an advisory warning.
+- Critical attempt 1 on the same head timed out at the delegated 900-second
+  boundary after 48 executed passes, 0 failures, 0 blocked, and 2 not
+  applicable. It emitted no aggregate seal and remains non-passing.
+- Direct diagnosis then ran all 74 aggregate-runner tests in 894.656 seconds.
+  The only failures were two stale fixture assertions: one conflated scoped
+  portable package projections with the source-only full package matrix; the
+  other conflated supervised snapshot admission with validator launch. Both
+  exact cases pass after correction, and the measured per-check ceiling is now
+  1200 seconds with unchanged release/nightly membership.
+- The full validation-evidence suite passed 37 tests with one platform skip in
+  161.591 seconds; its existing 180-second ceiling did not fail and was not
+  changed.
 
 ## Residual Risk
 
 - The point-in-time GitHub evidence is deterministic offline input, not a claim
   of continued provider parity.
-- The repaired repository-wide fast and critical profiles are not yet proven;
-  their retry count remains zero until a clean immutable repair commit exists.
+- Fast has a passing receipt on the first repair head. The second repair head
+  still requires exact-head fast validation because registry bytes changed;
+  critical attempt 1 remains timed-out and non-passing.
 - No passing independent audit can be claimed while the selected aggregate is
   non-passing. Any future tracked repair also requires a new exact-head audit.
 

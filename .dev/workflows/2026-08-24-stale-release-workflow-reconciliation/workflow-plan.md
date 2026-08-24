@@ -57,13 +57,13 @@ This single-task workflow is proportional because it retains unique external-lif
 
 ## Resume Checkpoint
 
-- Last completed action: Implemented the two measured timeout ceilings and authenticated wall-clock adjustment contract. Focused positive/negative tests, full supervisor and registry suites, workflow/AI-context/source-governance validation, and a WSL repaired-receipt read-back passed; aggregate retry count is still zero.
+- Last completed action: Fast attempt 1 passed on `774ef586`. Critical attempt 1 timed out at its 900-second delegated boundary after 48 passing checks and exposed a distinct 894.656-second aggregate-runner suite with two stale fixture assertions. Both assertions pass after repair, and the measured ceiling is now 1200 seconds.
 - Current task: `GOV011-VAL-001`
-- Exact next action: Commit a clean immutable repair head, then dispatch fast aggregate attempt 1 through the long-running validation gate.
+- Exact next action: Commit the second repair head, externally validate all 74 aggregate-runner tests, then run fast attempt 2 and critical attempt 2 only after that focused terminal pass.
 - Validation already completed: 16/16 workflow lifecycle tests; workflow artifact validator; AI-context validator; source-governance validator; 7/7 validation-profile registry tests; 2/2 directly applicable CheckAll routing tests; commit-policy validation; `git diff --check`. Windows-native fast failed 42/22/20/0 after the multi-hop timeout; WSL-home fast failed 42/21/22/0 on supervision consistency; canonical critical failed 65/32/32/0 after package-apply timed out. The registered checkpoint retains every attempt and blocks continuation.
 - Git state: Dedicated local branch with implementation checkpoint `ea1852fd8944cad29c2c6dfe31abbe1cc091d023`, validation checkpoint `c5f99794947f53f13c5b789e14c0f83e15a5d34d`, and registered blocked handoff validated parent `b385a69d8f2e1d8db5a98832de3d41a2f262243f`; its containing commit is the current result of repository verification. No provider mutation occurred, and the workflow/task intentionally remain active.
 - Branch history and checkpoint handoffs: Segment 1 started from `main@f9052a820827a0285c03140bdd59129f1502986e`; no push or merge.
-- Blockers or unresolved decisions: No owner decision remains. The repaired aggregate gates are not yet proven; removing checks, changing profile membership, or touching provider/release state remains prohibited. All earlier interrupted, blocked, and failed attempts remain non-passing evidence.
+- Blockers or unresolved decisions: No owner decision remains. Critical attempt 1 stays timed-out and non-passing; fast has one passing attempt on the prior repair head. Removing checks, changing profile membership, or touching provider/release state remains prohibited.
 
 ## Branch Lifecycle
 

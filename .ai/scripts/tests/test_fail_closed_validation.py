@@ -805,7 +805,7 @@ class CheckAllRunnerGwtTests(unittest.TestCase):
             self.assertFalse(
                 any(
                     "test_ai_context_version_governance.py" in line
-                    or "test_ai_context_packaging.py" in line
+                    or "test_ai_context_packaging.py -v" in line
                     or "validate-source-governance.py" in line
                     or "test_repository_identity.py" in line
                     or "test_governance_workflow_contract.py" in line
@@ -2699,12 +2699,14 @@ class ChangedPathDependencyClosureGwtTests(unittest.TestCase):
                 any(".ai/scripts/" in line for line in fixture.sentinel()),
                 fixture.sentinel(),
             )
-            self.assertFalse(
-                any(
-                    line.startswith("evidence supervise ")
-                    for line in fixture.evidence_sentinel()
-                )
-            )
+            supervision_calls = [
+                line
+                for line in fixture.evidence_sentinel()
+                if line.startswith("evidence supervise ")
+            ]
+            self.assertEqual(1, len(supervision_calls), supervision_calls)
+            self.assertIn("--bootstrap-snapshot-output", supervision_calls[0])
+            self.assertIn("validation-evidence.py verify-snapshot", supervision_calls[0])
         finally:
             fixture.close()
 

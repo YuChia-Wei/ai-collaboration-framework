@@ -170,6 +170,13 @@ class ValidationProfileRegistryGwtTests(unittest.TestCase):
                 memberships["multi-hop-upgrade-transaction"],
             ),
         )
+        self.assertEqual(
+            ("1200", {"release", "nightly-full"}),
+            (
+                checks["aggregate-runner-contract"][8],
+                memberships["aggregate-runner-contract"],
+            ),
+        )
         self.assertEqual({"closeout"}, memberships["source-release-closeout-contract"])
 
     def test_gwt_004_given_legacy_flags_when_help_is_requested_then_aliases_are_declared(self) -> None:
