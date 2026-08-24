@@ -1,5 +1,5 @@
 schema_version: "1.0"
-record_type: "provider-current-state-read-back"
+record_type: "historical-provider-state-read-back"
 provider: "github"
 repository: "YuChia-Wei/ai-collaboration-framework"
 read_back_at: "2026-08-10T00:41:55+08:00"
@@ -22,8 +22,8 @@ evidence:
       scope: "Current Issue lifecycle and explicit body-level scope"
       key_result: "Issue state and stated authorization boundaries were reconciled without changing any Issue."
 authority_boundary:
-  online_work_management: "GitHub Issues and Project #3 own the current online queue, card priority, and Project status."
-  local_durable_backlog: ".dev/backlog/items/*.yaml owns only the 55-record local canonical subset and its release metadata."
+  online_work_management: "Live GitHub Issues and Project #3 own the current online queue, card priority, and Project status."
+  local_durable_backlog: ".dev/backlog/items/*.yaml is a frozen 55-record historical and legacy-release subset."
   source_release_evidence: ".dev/releases/<version>/release.yaml owns local published-release identity and evidence."
   workflow_execution: ".dev/workflows/ owns authorized execution plans, task state, validation evidence, and checkpoints."
   provider_state_alone_authorizes: false
@@ -96,8 +96,9 @@ v0_12_planning_read_back:
       target_release: null
       note: "Phase A execution authorization does not select a release allocation."
 disposition:
-  status: "current-read-back"
-  refresh_trigger: "Refresh before any claim about current Project field options, online item count, selected release scope, or Issue/Project status."
+  status: "historical-point-in-time"
+  frozen_at: "2026-08-24T20:18:17+08:00"
+  refresh_trigger: "Never refresh this frozen receipt. Perform explicit live GitHub read-back for every current Project field, count, release-scope, Issue, or Project-state claim."
   non_goals:
     - "Does not replace historical provider mapping receipts."
     - "Does not create or mutate Issues, Project cards, Releases, tags, assets, or local backlog items."

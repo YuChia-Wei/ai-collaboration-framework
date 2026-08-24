@@ -1,55 +1,54 @@
-# Durable Backlog
+# Frozen Historical Backlog
 
-This directory stores durable work items that must remain discoverable outside
-any single workflow. It is not a second workflow engine.
+This directory preserves the repository backlog, ROADMAP, plans, provider
+receipts, and legacy migration adapter as historical or release-compatibility
+evidence. It stopped accepting current source-repository work-management and
+release-planning updates on 2026-08-24 under
+[`SOURCE-WORK-MANAGEMENT-001`](../standards/SOURCE-WORK-MANAGEMENT-AUTHORITY.md).
 
-## Ownership Boundary
+Current source-repository work lives in online GitHub Issues, with Project #3
+providing current priority, status, owner-review, target-release, and
+published-in views. Provider state alone does not authorize execution;
+workflows own execution evidence and integrated `main` owns repository truth.
 
-- `INDEX.MD` owns the backlog catalog and current item state.
-- `ROADMAP.md` owns the active cross-release horizon, release-level state,
-  activation gates, and workflow handoffs. It does not duplicate child workflow
-  tasks or validation evidence.
-- `plans/` preserves durable source plans that informed the roadmap. Those
-  sources are not assessment artifacts and do not own live release state.
-- `items/<item-id>.yaml` owns the problem, priority, origin, acceptance boundary,
-  and workflow handoff for one durable item.
+## Historical Ownership Boundary
+
+- `INDEX.MD` is the frozen catalog snapshot for the 55 retained item records.
+- `ROADMAP.md` is the frozen post-v0.4 release-planning record; its last
+  recorded target is not a current release allocation.
+- `plans/` preserves historical sources that informed that roadmap.
+- `items/<item-id>.yaml` preserves one historical problem, priority, origin,
+  acceptance boundary, lifecycle, and release record.
 - `.dev/assessments/<assessment-id>/` owns durable observations and finding
-  evidence that may be selected as backlog work.
+  evidence; current source follow-up is selected through an online Issue.
 - `.dev/workflows/<workflow-id>/` owns execution plans, tasks, evidence, and
-  commits after work is scheduled.
-- When the selected work-item binding mode requires or uses a backlog item, the
-  workflow must link it and the item must link the active or completed workflow.
-  The selected provider contract owns that mode and merge-reference rule. This
-  source repository records `required` in its source-only provider
-  configuration; downstream targets must select their own binding mode rather
-  than inheriting it from this portable guide. Provider state alone never
-  authorizes work.
+  commits after work is authorized.
+- `.dev/standards/GITHUB-WORK-MANAGEMENT-POLICY.yaml` owns the one active
+  source GitHub binding and merge-reference configuration.
 
-This directory catalogues the local durable backlog, not the complete online
-GitHub Issue queue or Project #3. Current provider counts, field options, and
-bounded read-back evidence belong in `providers/github.yaml` and
-`provider-mappings/`; do not infer online completeness from the number of local
-item YAML files.
+Do not create or update files here for new source work, refresh the frozen
+Project snapshot, or infer current provider state from retained bytes. The
+source-governance validator enforces the exact tracked path-and-byte freeze.
 
-## States
+## Historical Item States
 
 `open -> planned -> in_progress -> resolved`
 
-Use `declined` only with decision evidence. Do not duplicate task-level progress
-in backlog items.
+These literals remain accepted only to validate retained item records. They are
+not a current source work-management state machine.
 
-## Item Identity
+## Legacy Item Identity
 
 - Preserve an existing finding or decision ID when one already exists.
-- Otherwise use a stable uppercase path-safe ID such as `CTX-001`.
-- Store one machine-readable YAML item per file under `items/`.
+- Existing stable uppercase path-safe IDs such as `CTX-001` remain immutable.
+- Do not allocate new local item IDs or files.
 - Record full-date timestamps with an explicit UTC offset.
 - Preserve `origin_refs`, `workflow_refs`, and `task_refs` so deferred findings
   remain traceable without copying workflow progress.
 - Reference assessment findings as `<assessment-id>#<finding-id>` in
   `origin_refs`; do not copy the full assessment report into a backlog item.
 
-## Release Metadata
+## Legacy Release Metadata
 
 Every backlog item records:
 
@@ -60,8 +59,7 @@ release:
   published_in: null # set to the first release tag containing the resolution
 ```
 
-- `target` is the release expected to complete the item's declared scope. Use
-  `unassigned` instead of guessing.
+- `target` preserves the release expectation recorded before the freeze.
 - `completed_in` identifies the release train that accepted the completed work.
 - `published_in` identifies the first immutable published version containing the
   resolution. It may remain `null` between completion and publication.
@@ -73,5 +71,10 @@ release:
   completion is not included work.
 - When `published_in` is set, preserve Git ancestry evidence in the item when
   available.
-- Roadmap-level horizons remain in `ROADMAP.md`; do not create a synthetic
-  backlog item merely to represent the roadmap.
+- v0.5.0-v0.9.0 release validation continues to resolve these frozen records.
+- v0.10.0 and later release scope uses online Issue references instead of local
+  backlog refs.
+
+The downstream provider-neutral `repo-backlog` capability remains available
+through the public target template. This source-only freeze does not disable or
+redefine a target repository's selected backlog provider.

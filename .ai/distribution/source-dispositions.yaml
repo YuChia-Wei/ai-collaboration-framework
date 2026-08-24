@@ -16,13 +16,12 @@ dispositions:
   - id: "source-repository-current-operations"
     patterns:
       - ".dev/REPOSITORY-RENAME-COMPATIBILITY.md"
-      - ".dev/backlog/ROADMAP.md"
       - ".dev/operations/runbooks/AI-CONTEXT-RELEASE-PUBLICATION-RUNBOOK.MD"
     classification: "source-only"
     owner: "source-repository-governance"
     reason: >-
-      Current repository coordinates, release scheduling, and operator actions
-      govern this source repository and are not downstream target truth.
+      Current repository coordinates and operator actions govern this source
+      repository and are not downstream target truth.
     retention: "retain-active"
     package_behavior: "exclude"
   - id: "source-repository-architecture-history"
@@ -47,26 +46,29 @@ dispositions:
     package_behavior: "exclude"
   - id: "historical-backlog-planning-sources"
     patterns:
+      - ".dev/backlog/README.MD"
+      - ".dev/backlog/ROADMAP.md"
       - ".dev/backlog/plans/README.md"
       - ".dev/backlog/plans/post-v0.4.0-improvement-plan.md"
       - ".dev/backlog/plans/rel-004-ai-context-release-closeout-discussion-context.md"
     classification: "historical-evidence"
     owner: "source-work-management"
     reason: >-
-      These planning sources preserve decisions and discussion context but do
-      not own current target behavior or package content.
+      The retired backlog boundary, ROADMAP, and planning sources preserve
+      decisions and discussion context but do not own current source work,
+      release planning, target behavior, or package content.
     retention: "retain-immutable"
     package_behavior: "exclude"
   - id: "github-provider-mapping-guidance"
     patterns:
       - ".dev/backlog/provider-mappings/README.MD"
       - ".dev/backlog/provider-mappings/github-issues.schema.yaml"
-    classification: "source-only"
-    owner: "github-work-management-provider"
+    classification: "historical-evidence"
+    owner: "source-work-management-history"
     reason: >-
-      Mapping guidance and its receipt schema describe the selected source
-      provider and have no portable target authority.
-    retention: "retain-active"
+      Mapping guidance and its receipt schema preserve the retired local
+      backlog projection contract and have no current or portable authority.
+    retention: "retain-immutable"
     package_behavior: "exclude"
   - id: "github-provider-receipts"
     patterns:
@@ -81,33 +83,33 @@ dispositions:
       - ".dev/backlog/provider-mappings/github-issues-VAL-003.yaml"
       - ".dev/backlog/provider-mappings/github-issues-WIBIND-001.yaml"
       - ".dev/backlog/provider-mappings/github-issues.yaml"
-    classification: "generated-projection"
-    owner: "github-work-management-provider"
+    classification: "historical-evidence"
+    owner: "source-work-management-history"
     reason: >-
-      These provider identity and read-back receipts project repository work
-      records into GitHub and never become downstream package inputs.
-    retention: "retain-current-projection"
+      These point-in-time provider identity and read-back receipts preserve the
+      retired projection history and never become current or downstream truth.
+    retention: "retain-immutable"
     package_behavior: "exclude"
-  - id: "github-current-project-readback"
+  - id: "github-project-point-in-time-readback"
     patterns:
       - ".dev/backlog/provider-mappings/github-project-current.yaml"
-    classification: "generated-projection"
-    owner: "github-work-management-provider"
+    classification: "historical-evidence"
+    owner: "source-work-management-history"
     reason: >-
-      The mutable current-state receipt is a source provider projection whose
-      freshness is verified independently from package construction.
-    retention: "retain-current-projection"
+      The frozen 2026-08-10 receipt is point-in-time evidence only. Current
+      Issue and Project claims require explicit live provider read-back.
+    retention: "retain-immutable"
     package_behavior: "exclude"
-  - id: "github-provider-contract"
+  - id: "github-legacy-migration-adapter"
     patterns:
       - ".dev/backlog/providers/README.MD"
-      - ".dev/backlog/providers/github.yaml"
-    classification: "source-only"
-    owner: "github-work-management-provider"
+      - ".dev/backlog/providers/github-legacy-migration.yaml"
+    classification: "historical-evidence"
+    owner: "source-work-management-history"
     reason: >-
-      The selected GitHub Issue/Project policy is source-repository operation;
-      portable targets retain provider-neutral workflow semantics.
-    retention: "retain-active"
+      The renamed 2026-07 adapter preserves deterministic migration
+      compatibility but is not the active GitHub provider policy.
+    retention: "retain-immutable"
     package_behavior: "exclude"
   - id: "source-lessons-knowledge-base"
     patterns:

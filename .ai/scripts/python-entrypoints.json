@@ -41,6 +41,7 @@
     {"path": ".ai/scripts/validate-skill-transition.py", "portable": false, "dependency_profile": ["PyYAML"], "prerequisite_exit_code": 1},
     {"path": ".ai/scripts/validate-repository-identity.py", "portable": false, "dependency_profile": ["PyYAML"], "prerequisite_exit_code": 1},
     {"path": ".ai/scripts/validate-source-dispositions.py", "portable": false, "dependency_profile": ["PyYAML"], "prerequisite_exit_code": 1},
+    {"path": ".ai/scripts/validate-source-work-management.py", "portable": false, "dependency_profile": ["PyYAML"], "prerequisite_exit_code": 1},
     {"path": ".ai/scripts/validate-source-governance.py", "portable": false, "dependency_profile": ["PyYAML"], "prerequisite_exit_code": 1}
   ]
 }

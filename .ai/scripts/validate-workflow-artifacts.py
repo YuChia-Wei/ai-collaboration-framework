@@ -273,9 +273,13 @@ def validate_backlog(repo: Path, errors: list[str]) -> int:
 
 
 def backlog_provider_enabled(repo: Path, errors: list[str]) -> bool:
-    """Resolve backlog applicability from source identity or governed provenance."""
+    """Resolve target-selected repo-backlog applicability from provenance."""
     if (repo / ".ai/distribution/profiles/dotnet-backend.yaml").is_file():
-        return True
+        # The framework source froze its local backlog in GOV-012. Historical
+        # integrity is validated by source governance, not by active workflow
+        # applicability. Downstream targets still select repo-backlog through
+        # governed provenance below.
+        return False
 
     provenance_path = repo / ".dev/ai-context/provenance.yaml"
     legacy_path = repo / ".dev/AI-CONTEXT-SOURCE.yaml"

@@ -1,6 +1,8 @@
 # Project Knowledge And Governance
 
-This directory contains the repository's human-facing governance, standards, guides, evidence-backed lessons, requirements, specs, operations guidance, durable releases, assessments, backlog, and workflow records.
+This directory contains the repository's human-facing governance, standards,
+guides, evidence-backed lessons, requirements, specs, operations guidance,
+durable releases, assessments, frozen backlog history, and workflow records.
 
 ## Purpose
 
@@ -18,6 +20,9 @@ When this framework is copied into a target repository, run `ai-context-init` be
 - Keep evidence-backed reusable learnings under `.dev/lessons/`; lessons are non-normative and retain links to their durable origin evidence.
 - Keep reusable agent-facing canonical assets under `.ai/`.
 - Keep runtime-specific skill wrappers under `.agents/skills/` and `.claude/skills/`.
-- Keep durable release identity under `.dev/releases/`, observations under `.dev/assessments/`, cross-workflow work items under `.dev/backlog/`, and execution artifacts under `.dev/workflows/`.
+- Keep durable release identity under `.dev/releases/`, observations under
+  `.dev/assessments/`, current source work in live GitHub Issues/Project #3,
+  frozen pre-cutover backlog evidence under `.dev/backlog/`, and execution
+  artifacts under `.dev/workflows/`.
 
 Detailed file and directory descriptions belong in `.dev/INDEX.md`.

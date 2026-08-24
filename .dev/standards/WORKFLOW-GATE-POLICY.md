@@ -73,7 +73,8 @@ Targets select a provider-neutral binding mode:
 Targets separately select whether pull-request integration enforces the
 binding as `required`, treats it as `optional`, or leaves the merge gate
 `disabled`. This source repository selects `required` for both material
-work-item binding and the merge gate in `.dev/backlog/providers/github.yaml`.
+work-item binding and the merge gate in
+`.dev/standards/GITHUB-WORK-MANAGEMENT-POLICY.yaml`.
 An owner authorization remains necessary, but it never removes the requirement
 to create and bind an online Issue before material work begins.
 
