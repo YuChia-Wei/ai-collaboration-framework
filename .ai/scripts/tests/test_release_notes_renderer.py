@@ -21,6 +21,27 @@ if SPEC is None or SPEC.loader is None:
 RENDERER = importlib.util.module_from_spec(SPEC)
 SPEC.loader.exec_module(RENDERER)
 COMMIT = "a" * 40
+V014_DEFECT_PATTERNS = {
+    "release identity denial": (
+        "This governed source candidate is not a tag, GitHub Release, or "
+        "publication record."
+    ),
+    "temporary commit": (
+        "At pushed clean head b4b38b136d69a1d3e3938598edcb4c6d7285b795, "
+        "the exact local gate passed."
+    ),
+    "run and job": (
+        "The failed log was retained for run 32428716122 / job 96615867346."
+    ),
+    "open pull request state": "PR #232 remains draft/open/unmerged.",
+    "future publication": (
+        "The resulting clean evidence head requires candidate revalidation, "
+        "then publication."
+    ),
+    "failed attempt timeline": (
+        "The previous candidate gate failed, then a later retry passed."
+    ),
+}
 
 
 def git(root: Path, *args: str) -> str:
@@ -72,12 +93,15 @@ class ReleaseNotesRendererTests(unittest.TestCase):
         root: Path,
         data: dict,
         notes_text: str = "# Authored notes\n",
+        migration_text: str = "# Migration\n",
     ) -> None:
         release = root / ".dev/releases" / data["version"]
         release.mkdir(parents=True)
         (release / "release.yaml").write_text(yaml.safe_dump(data), encoding="utf-8")
         (release / "release-notes.md").write_text(notes_text, encoding="utf-8")
-        (release / "migration-guide.md").write_text("# Migration\n", encoding="utf-8")
+        (release / "migration-guide.md").write_text(
+            migration_text, encoding="utf-8"
+        )
 
     def write_discovery_release(
         self,
@@ -139,7 +163,7 @@ class ReleaseNotesRendererTests(unittest.TestCase):
             data = release_record("3.0.0", ["v0.6.0", "v0.9.0", "v0.13.0"])
             data.update({"release_id": "REL-v0.14.0", "version": "v0.14.0"})
             data["planning"] = {"github_issue_refs": ["#203"]}
-            self.write_release(root, data)
+            self.write_release(root, data, "# REL-v0.14.0\n")
             rendered, _, _ = RENDERER.validate_release(root, "v0.14.0", COMMIT, "candidate")
             self.assertEqual(
                 ["v0.6.0", "v0.9.0", "v0.13.0"],
@@ -152,7 +176,7 @@ class ReleaseNotesRendererTests(unittest.TestCase):
             data = release_record("1.0.0", ["v0.6.0", "v0.9.0", "v0.13.0"])
             data.update({"release_id": "REL-v0.14.0", "version": "v0.14.0"})
             data["planning"] = {"github_issue_refs": ["#203"]}
-            self.write_release(root, data)
+            self.write_release(root, data, "# REL-v0.14.0\n")
             with self.assertRaisesRegex(RENDERER.ReleaseNotesError, "schema 3.0.0"):
                 RENDERER.validate_release(root, "v0.14.0", COMMIT, "candidate")
 
@@ -265,7 +289,7 @@ class ReleaseNotesRendererTests(unittest.TestCase):
                 "# REL-v0.13.0\n\n## Status\n\nValidated candidate.\n",
             )
 
-            with self.assertRaisesRegex(RENDERER.ReleaseNotesError, "phase-neutral"):
+            with self.assertRaisesRegex(RENDERER.ReleaseNotesError, "allowlist"):
                 RENDERER.validate_release(root, "v0.13.0", COMMIT, "candidate")
 
     def test_gwt_008b_given_v013_publish_with_pending_claim_when_validated_then_it_fails_closed(self) -> None:
@@ -277,7 +301,9 @@ class ReleaseNotesRendererTests(unittest.TestCase):
                 "# REL-v0.13.0\n\nPublication 仍需 repository owner 推送 tag。\n",
             )
 
-            with self.assertRaisesRegex(RENDERER.ReleaseNotesError, "candidate-only"):
+            with self.assertRaisesRegex(
+                RENDERER.ReleaseNotesError, "publication-content contract"
+            ):
                 RENDERER.validate_release(root, "v0.13.0", COMMIT, "publish")
 
     def test_gwt_008c_given_v013_publish_with_durable_consumer_status_when_validated_then_it_is_allowed(self) -> None:
@@ -287,8 +313,12 @@ class ReleaseNotesRendererTests(unittest.TestCase):
                 root,
                 phase_neutral_release_record(),
                 "# REL-v0.13.0\n\n"
+                "Deprecated interfaces remain documented for migration.\n\n"
                 "## Support Status\n\n"
-                "Deprecated APIs remain documented for migration.\n",
+                "Withdrawn integrations remain unavailable, support is limited to "
+                "documented sources, and focused validation passed.\n",
+                "# Migration\n\nDeprecated inputs remain documented, and support is "
+                "limited to the listed source versions.\n",
             )
 
             data, notes, migration = RENDERER.validate_release(
@@ -297,7 +327,97 @@ class ReleaseNotesRendererTests(unittest.TestCase):
             rendered = RENDERER.render_body(data, notes, migration, COMMIT)
 
             self.assertIn("## Support Status", rendered)
-            self.assertIn("Deprecated APIs", rendered)
+            self.assertIn("Deprecated interfaces", rendered)
+            self.assertIn("Withdrawn integrations", rendered)
+            self.assertIn("focused validation passed", rendered)
+            self.assertIn("Deprecated inputs remain documented", rendered)
+
+    def test_gwt_008f_given_v014_defect_patterns_when_validated_then_each_fails_closed(self) -> None:
+        release = phase_neutral_release_record()
+        release.update({"release_id": "REL-v0.14.0", "version": "v0.14.0"})
+        for label, claim in V014_DEFECT_PATTERNS.items():
+            with self.subTest(label=label), tempfile.TemporaryDirectory() as temporary:
+                root = Path(temporary)
+                self.write_release(
+                    root,
+                    release,
+                    f"# REL-v0.14.0\n\n## Release Validation\n{claim}\n",
+                )
+
+                with self.assertRaisesRegex(
+                    RENDERER.ReleaseNotesError,
+                    "publication-content contract|candidate-only",
+                ):
+                    RENDERER.validate_release(root, "v0.14.0", COMMIT, "publish")
+
+    def test_gwt_008i_given_v014_migration_defect_patterns_when_validated_then_each_fails_closed(self) -> None:
+        release = phase_neutral_release_record()
+        release.update({"release_id": "REL-v0.14.0", "version": "v0.14.0"})
+        for label, claim in V014_DEFECT_PATTERNS.items():
+            with self.subTest(label=label), tempfile.TemporaryDirectory() as temporary:
+                root = Path(temporary)
+                self.write_release(
+                    root,
+                    release,
+                    "# REL-v0.14.0\n\n## Release Validation\n\nValidation passed.\n",
+                    f"# Migration\n{claim}\n",
+                )
+
+                with self.assertRaisesRegex(
+                    RENDERER.ReleaseNotesError,
+                    "publication-content contract|candidate-only",
+                ):
+                    RENDERER.validate_release(root, "v0.14.0", COMMIT, "publish")
+
+    def test_gwt_008j_given_v014_migration_heading_defect_patterns_when_validated_then_each_fails_closed(self) -> None:
+        release = phase_neutral_release_record()
+        release.update({"release_id": "REL-v0.14.0", "version": "v0.14.0"})
+        for label, claim in V014_DEFECT_PATTERNS.items():
+            with self.subTest(label=label), tempfile.TemporaryDirectory() as temporary:
+                root = Path(temporary)
+                self.write_release(
+                    root,
+                    release,
+                    "# REL-v0.14.0\n\n## Release Validation\n\nValidation passed.\n",
+                    f"# Migration\n\n## {claim}\n",
+                )
+
+                with self.assertRaisesRegex(
+                    RENDERER.ReleaseNotesError,
+                    "publication-content contract|candidate-only",
+                ):
+                    RENDERER.validate_release(root, "v0.14.0", COMMIT, "publish")
+
+    def test_gwt_008g_given_v013_out_of_order_sections_when_validated_then_it_fails_closed(self) -> None:
+        invalid_notes = (
+            "# REL-v0.13.0\n\n"
+            "## Release Validation\n\nValidation passed.\n\n"
+            "## Highlights\n\nDurable highlight.\n"
+        )
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            self.write_release(root, phase_neutral_release_record(), invalid_notes)
+
+            with self.assertRaisesRegex(RENDERER.ReleaseNotesError, "order"):
+                RENDERER.validate_release(root, "v0.13.0", COMMIT, "publish")
+
+    def test_gwt_008h_given_corrected_v014_sources_when_rendered_twice_then_exact_body_is_deterministic(self) -> None:
+        release_commit = "412bb14a16fe75ee65a020b16680def0acc0ff1b"
+        data, notes, migration = RENDERER.validate_release(
+            REPO_ROOT, "v0.14.0", release_commit, "publish"
+        )
+
+        first = RENDERER.render_body(data, notes, migration, release_commit)
+        second = RENDERER.render_body(data, notes, migration, release_commit)
+
+        self.assertEqual(first.encode("utf-8"), second.encode("utf-8"))
+        self.assertIn("## Included Work", first)
+        self.assertIn(f"- Commit: `{release_commit}`", first)
+        self.assertIn("Archive integrity", first)
+        self.assertIn("## Migration guide", first)
+        self.assertNotIn("not a tag, GitHub Release, or publication record", first)
+        self.assertNotIn("draft/open/unmerged", first)
+        self.assertNotRegex(first, r"\b(?:run|job)\s+`?\d{5,}`?")
 
     def test_gwt_008d_given_v013_publish_cli_with_pending_claim_when_run_then_it_fails_closed(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
@@ -329,7 +449,7 @@ class ReleaseNotesRendererTests(unittest.TestCase):
             )
 
             self.assertEqual(1, completed.returncode)
-            self.assertIn("candidate-only", completed.stderr)
+            self.assertIn("publication-content contract", completed.stderr)
             self.assertFalse((root / "release-body.md").exists())
 
     def test_gwt_008e_given_release_template_when_read_then_it_is_phase_neutral(self) -> None:

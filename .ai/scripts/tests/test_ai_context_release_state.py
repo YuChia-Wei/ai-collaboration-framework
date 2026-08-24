@@ -920,6 +920,16 @@ class AiContextReleaseStateGwtTests(unittest.TestCase):
                 with patch.object(STATE, "resolve_upgrade_route", side_effect=resolved):
                     STATE.validate_retained_origin_route_evidence(root, version, artifacts)
 
+    def test_gwt_031a_given_repository_v014_route_evidence_when_validated_then_published_routes_pass(self):
+        version = "v0.14.0"
+        release = yaml.safe_load(
+            (ROOT / ".dev" / "releases" / version / "release.yaml").read_text(
+                encoding="utf-8",
+            )
+        )
+
+        STATE.validate_retained_origin_route_evidence(ROOT, version, release["artifacts"])
+
     def test_gwt_032_given_v014_tampered_or_unproven_route_when_validated_then_it_fails_closed(self):
         version = "v0.14.0"
         origins = ("v0.13.0", "v0.9.0", "v0.6.0")

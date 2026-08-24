@@ -1,212 +1,228 @@
-schema_version: "1.0"
-matrix_id: "upgrade-route-matrix-v0.14.0"
+schema_version: '1.1'
+matrix_id: upgrade-route-matrix-v0.14.0
 target:
-  version: "v0.14.0"
-  release_id: "REL-v0.14.0"
-  commit: "60572c01e31abf58191d38adb5ca39e05338b08d"
+  version: v0.14.0
+  release_id: REL-v0.14.0
+  commit: 412bb14a16fe75ee65a020b16680def0acc0ff1b
   manifest:
-    asset_id: "v0.14.0-files-manifest"
-    path: "route-assets/v0.14.0/metadata/files.yaml"
-    sha256: "62fda3e975339446dc117b50461cc84120fd4b2593fc32dd872489283a8813b9"
+    asset_id: v0.14.0-published-files-manifest
+    path: route-assets/published-v0.14.0/metadata/files.yaml
+    sha256: ac1d4ca062d79e0bc3fbe40ff6762a5022969fe63dbdfa42c74fe3ce369fa1c4
+  package_identity:
+    package_id: ai-context-dotnet-backend-v0.14.0
+    release_id: REL-v0.14.0
+    payload_fingerprint: 4406b96fb3ea7c81d5341eee9af4572bc2c3f4f466e22a55cb8c0a7f49017913
 retained_origins:
-  - role: "immediate-predecessor"
-    version: "v0.13.0"
-    release_id: "REL-v0.13.0"
-    commit: "8584337b47295da1af914180baf2b3f815b9dcc7"
-    manifest:
-      asset_id: "v0.13.0-files-manifest"
-      path: "route-assets/origins/v0.13.0/metadata/files.yaml"
-      sha256: "850b74f5f23825f42912ac401a52692bc4cf02627fd9f8a452753f41611fbce4"
-  - role: "v0.9.0"
-    version: "v0.9.0"
-    release_id: "REL-v0.9.0"
-    commit: "c14a3260cba7d0a9e2b67b73df9e221280d2d2ef"
-    manifest:
-      asset_id: "v0.9.0-files-manifest"
-      path: "route-assets/origins/v0.9.0/metadata/files.yaml"
-      sha256: "c293247612eb2f01ef42e4d7c55be4ff36201cdf034157c518de871ec2acb5c7"
-  - role: "v0.6.0"
-    version: "v0.6.0"
-    release_id: "REL-v0.6.0"
-    commit: "8b98b5f917513f2d143f42a322050a1162bb63f9"
-    manifest:
-      asset_id: "v0.6.0-files-manifest"
-      path: "route-assets/origins/v0.6.0/metadata/files.yaml"
-      sha256: "20ca69ef4e1b4085476a2b15eeba93da7a75ea580fd2ab9f6c8815938b0af3be"
+- role: immediate-predecessor
+  version: v0.13.0
+  release_id: REL-v0.13.0
+  commit: 8584337b47295da1af914180baf2b3f815b9dcc7
+  manifest:
+    asset_id: v0.13.0-files-manifest
+    path: route-assets/origins/v0.13.0/metadata/files.yaml
+    sha256: 850b74f5f23825f42912ac401a52692bc4cf02627fd9f8a452753f41611fbce4
+- role: v0.9.0
+  version: v0.9.0
+  release_id: REL-v0.9.0
+  commit: c14a3260cba7d0a9e2b67b73df9e221280d2d2ef
+  manifest:
+    asset_id: v0.9.0-files-manifest
+    path: route-assets/origins/v0.9.0/metadata/files.yaml
+    sha256: c293247612eb2f01ef42e4d7c55be4ff36201cdf034157c518de871ec2acb5c7
+- role: v0.6.0
+  version: v0.6.0
+  release_id: REL-v0.6.0
+  commit: 8b98b5f917513f2d143f42a322050a1162bb63f9
+  manifest:
+    asset_id: v0.6.0-files-manifest
+    path: route-assets/origins/v0.6.0/metadata/files.yaml
+    sha256: 20ca69ef4e1b4085476a2b15eeba93da7a75ea580fd2ab9f6c8815938b0af3be
 semantic_cutovers:
-  - cutover_id: "remediation-packet-v1"
-    required: true
-    description: "v0.14 prospective remediation packet plus target-validation-before-provenance boundary."
+- cutover_id: remediation-packet-v1
+  required: true
+  description: v0.14 prospective remediation packet plus target-validation-before-provenance boundary.
 routes:
-  - route_id: "v0.13.0-to-v0.14.0-direct"
-    origin: "v0.13.0"
-    target: "v0.14.0"
-    edges:
-      - edge_id: "v0.13.0-to-v0.14.0"
-        order: 1
-        from_version: "v0.13.0"
-        to_version: "v0.14.0"
-        artifacts:
-          archive:
-            asset_id: "v0.14.0-direct-archive"
-            path: "route-assets/v0.14.0/ai-context-dotnet-backend-v0.14.0.zip"
-            sha256: "6f332f2a17549eb46109d1b2786cdefb32839eea18520cd65476c246d1337116"
-          checksum:
-            asset_id: "v0.14.0-direct-archive-checksum"
-            path: "route-assets/v0.14.0/ai-context-dotnet-backend-v0.14.0.zip.sha256"
-            sha256: "9799a94629d46e703132045104d6924b5b6f04b77b56be3a04de16b7dd176b61"
-          manifest:
-            asset_id: "v0.14.0-direct-migration"
-            path: "route-assets/v0.14.0/metadata/migration.yaml"
-            sha256: "760fb23dbbe41b8b7176f761fc069839fb355df06aeff89ae135d72913edf1c2"
-          validator:
-            asset_id: "v0.14.0-direct-edge-validator"
-            path: "route-assets/validate-direct-edge.py"
-            sha256: "beac0e76d64b0939d38e32cd2b740bf825463a86ac11b3076b33a4e7594b046c"
-        semantic_cutovers:
-          - cutover_id: "remediation-packet-v1"
-            state: "passed"
-        validation:
-          state: "passed"
-          validator_argv:
-            - "python"
-            - "route-assets/validate-direct-edge.py"
-            - "--edge-id"
-            - "v0.13.0-to-v0.14.0"
-            - "--origin-version"
-            - "v0.13.0"
-            - "--archive"
-            - "route-assets/v0.14.0/ai-context-dotnet-backend-v0.14.0.zip"
-            - "--checksum"
-            - "route-assets/v0.14.0/ai-context-dotnet-backend-v0.14.0.zip.sha256"
-            - "--target-manifest"
-            - "route-assets/v0.14.0/metadata/files.yaml"
-            - "--origin-manifest"
-            - "route-assets/origins/v0.13.0/metadata/files.yaml"
-            - "--migration"
-            - "route-assets/v0.14.0/metadata/migration.yaml"
-            - "--cutover-id"
-            - "remediation-packet-v1"
-          report:
-            asset_id: "v0.13.0-to-v0.14.0-validation-receipt"
-            path: "route-assets/validation/v0.13.0-to-v0.14.0/receipt.json"
-            sha256: "ff278808c9470ccb143cd9f7af8ec5ac1c797b720d1c744a4873ed2a34d48401"
-          output:
-            asset_id: "v0.13.0-to-v0.14.0-validation-output"
-            path: "route-assets/validation/v0.13.0-to-v0.14.0/output.json"
-            sha256: "1bc39f8c32f19acdee11ed9a720c2daa95f8cb657e82b3c50b2e177e2bc91eb6"
-  - route_id: "v0.9.0-to-v0.14.0-direct"
-    origin: "v0.9.0"
-    target: "v0.14.0"
-    edges:
-      - edge_id: "v0.9.0-to-v0.14.0"
-        order: 1
-        from_version: "v0.9.0"
-        to_version: "v0.14.0"
-        artifacts:
-          archive:
-            asset_id: "v0.14.0-direct-archive"
-            path: "route-assets/v0.14.0/ai-context-dotnet-backend-v0.14.0.zip"
-            sha256: "6f332f2a17549eb46109d1b2786cdefb32839eea18520cd65476c246d1337116"
-          checksum:
-            asset_id: "v0.14.0-direct-archive-checksum"
-            path: "route-assets/v0.14.0/ai-context-dotnet-backend-v0.14.0.zip.sha256"
-            sha256: "9799a94629d46e703132045104d6924b5b6f04b77b56be3a04de16b7dd176b61"
-          manifest:
-            asset_id: "v0.14.0-direct-migration"
-            path: "route-assets/v0.14.0/metadata/migration.yaml"
-            sha256: "760fb23dbbe41b8b7176f761fc069839fb355df06aeff89ae135d72913edf1c2"
-          validator:
-            asset_id: "v0.14.0-direct-edge-validator"
-            path: "route-assets/validate-direct-edge.py"
-            sha256: "beac0e76d64b0939d38e32cd2b740bf825463a86ac11b3076b33a4e7594b046c"
-        semantic_cutovers:
-          - cutover_id: "remediation-packet-v1"
-            state: "passed"
-        validation:
-          state: "passed"
-          validator_argv:
-            - "python"
-            - "route-assets/validate-direct-edge.py"
-            - "--edge-id"
-            - "v0.9.0-to-v0.14.0"
-            - "--origin-version"
-            - "v0.9.0"
-            - "--archive"
-            - "route-assets/v0.14.0/ai-context-dotnet-backend-v0.14.0.zip"
-            - "--checksum"
-            - "route-assets/v0.14.0/ai-context-dotnet-backend-v0.14.0.zip.sha256"
-            - "--target-manifest"
-            - "route-assets/v0.14.0/metadata/files.yaml"
-            - "--origin-manifest"
-            - "route-assets/origins/v0.9.0/metadata/files.yaml"
-            - "--migration"
-            - "route-assets/v0.14.0/metadata/migration.yaml"
-            - "--cutover-id"
-            - "remediation-packet-v1"
-          report:
-            asset_id: "v0.9.0-to-v0.14.0-validation-receipt"
-            path: "route-assets/validation/v0.9.0-to-v0.14.0/receipt.json"
-            sha256: "8a957f7e0163ed14b52c65a06abe7ac18a88b60c5b12d1868203050652539e24"
-          output:
-            asset_id: "v0.9.0-to-v0.14.0-validation-output"
-            path: "route-assets/validation/v0.9.0-to-v0.14.0/output.json"
-            sha256: "ec41f6576f528f87bfc93925884afbcbf8735a410c09cefa4549eb7e2879a798"
-  - route_id: "v0.6.0-to-v0.14.0-direct"
-    origin: "v0.6.0"
-    target: "v0.14.0"
-    edges:
-      - edge_id: "v0.6.0-to-v0.14.0"
-        order: 1
-        from_version: "v0.6.0"
-        to_version: "v0.14.0"
-        artifacts:
-          archive:
-            asset_id: "v0.14.0-direct-archive"
-            path: "route-assets/v0.14.0/ai-context-dotnet-backend-v0.14.0.zip"
-            sha256: "6f332f2a17549eb46109d1b2786cdefb32839eea18520cd65476c246d1337116"
-          checksum:
-            asset_id: "v0.14.0-direct-archive-checksum"
-            path: "route-assets/v0.14.0/ai-context-dotnet-backend-v0.14.0.zip.sha256"
-            sha256: "9799a94629d46e703132045104d6924b5b6f04b77b56be3a04de16b7dd176b61"
-          manifest:
-            asset_id: "v0.14.0-direct-migration"
-            path: "route-assets/v0.14.0/metadata/migration.yaml"
-            sha256: "760fb23dbbe41b8b7176f761fc069839fb355df06aeff89ae135d72913edf1c2"
-          validator:
-            asset_id: "v0.14.0-direct-edge-validator"
-            path: "route-assets/validate-direct-edge.py"
-            sha256: "beac0e76d64b0939d38e32cd2b740bf825463a86ac11b3076b33a4e7594b046c"
-        semantic_cutovers:
-          - cutover_id: "remediation-packet-v1"
-            state: "passed"
-        validation:
-          state: "passed"
-          validator_argv:
-            - "python"
-            - "route-assets/validate-direct-edge.py"
-            - "--edge-id"
-            - "v0.6.0-to-v0.14.0"
-            - "--origin-version"
-            - "v0.6.0"
-            - "--archive"
-            - "route-assets/v0.14.0/ai-context-dotnet-backend-v0.14.0.zip"
-            - "--checksum"
-            - "route-assets/v0.14.0/ai-context-dotnet-backend-v0.14.0.zip.sha256"
-            - "--target-manifest"
-            - "route-assets/v0.14.0/metadata/files.yaml"
-            - "--origin-manifest"
-            - "route-assets/origins/v0.6.0/metadata/files.yaml"
-            - "--migration"
-            - "route-assets/v0.14.0/metadata/migration.yaml"
-            - "--cutover-id"
-            - "remediation-packet-v1"
-          report:
-            asset_id: "v0.6.0-to-v0.14.0-validation-receipt"
-            path: "route-assets/validation/v0.6.0-to-v0.14.0/receipt.json"
-            sha256: "d6a078fb308730de12dd26695a1fea4f6602feb5bdbe1e1846960c090a446e41"
-          output:
-            asset_id: "v0.6.0-to-v0.14.0-validation-output"
-            path: "route-assets/validation/v0.6.0-to-v0.14.0/output.json"
-            sha256: "f5dca9c4f978f3d8f8387004b38a621eb22b7cab1d17ef6980323615f9e0a6a6"
+- route_id: v0.13.0-to-v0.14.0-direct
+  origin: v0.13.0
+  target: v0.14.0
+  edges:
+  - edge_id: v0.13.0-to-v0.14.0
+    order: 1
+    from_version: v0.13.0
+    to_version: v0.14.0
+    package_identity:
+      package_id: ai-context-dotnet-backend-v0.14.0
+      release_id: REL-v0.14.0
+      payload_fingerprint: 4406b96fb3ea7c81d5341eee9af4572bc2c3f4f466e22a55cb8c0a7f49017913
+    artifacts:
+      archive:
+        asset_id: v0.14.0-published-archive
+        path: route-assets/published-v0.14.0/ai-context-dotnet-backend-v0.14.0.zip
+        sha256: 3577c01a3aff015794ea9593ce56daed1f02409dd6f0106d1d87e289190cde05
+      checksum:
+        asset_id: v0.14.0-published-archive-checksum
+        path: route-assets/published-v0.14.0/ai-context-dotnet-backend-v0.14.0.zip.sha256
+        sha256: 044175a9201723c7dbf0a011cfbb0a669d013ed08cb725bf671a93cb44acf870
+      manifest:
+        asset_id: v0.14.0-published-migration
+        path: route-assets/published-v0.14.0/metadata/migration.yaml
+        sha256: 7b052d921f98d6c9cb2479a3965501305942941a4626858bb6e0d01c082bac02
+      validator:
+        asset_id: v0.14.0-published-direct-edge-validator
+        path: route-assets/validate-direct-edge.py
+        sha256: 966bfe31365cafebd65893899d9b484a6fa9eb7b40551e224511609951b6eb67
+    semantic_cutovers:
+    - cutover_id: remediation-packet-v1
+      state: passed
+    validation:
+      state: passed
+      validator_argv:
+      - python
+      - route-assets/validate-direct-edge.py
+      - --edge-id
+      - v0.13.0-to-v0.14.0
+      - --origin-version
+      - v0.13.0
+      - --archive
+      - route-assets/published-v0.14.0/ai-context-dotnet-backend-v0.14.0.zip
+      - --checksum
+      - route-assets/published-v0.14.0/ai-context-dotnet-backend-v0.14.0.zip.sha256
+      - --target-manifest
+      - route-assets/published-v0.14.0/metadata/files.yaml
+      - --origin-manifest
+      - route-assets/origins/v0.13.0/metadata/files.yaml
+      - --migration
+      - route-assets/published-v0.14.0/metadata/migration.yaml
+      - --cutover-id
+      - remediation-packet-v1
+      report:
+        asset_id: v0.13.0-to-v0.14.0-published-validation-receipt
+        path: route-assets/validation/published-v0.14.0/v0.13.0-to-v0.14.0/receipt.json
+        sha256: 8f61b27d261f511773c1282601098733563af09418e1d78d94d50c0ae5fb8808
+      output:
+        asset_id: v0.13.0-to-v0.14.0-published-validation-output
+        path: route-assets/validation/published-v0.14.0/v0.13.0-to-v0.14.0/output.json
+        sha256: 030751ca54861c88c505e5c6b6b550ed1866ac554a3807cc1ee83779ea3500b7
+- route_id: v0.9.0-to-v0.14.0-direct
+  origin: v0.9.0
+  target: v0.14.0
+  edges:
+  - edge_id: v0.9.0-to-v0.14.0
+    order: 1
+    from_version: v0.9.0
+    to_version: v0.14.0
+    package_identity:
+      package_id: ai-context-dotnet-backend-v0.14.0
+      release_id: REL-v0.14.0
+      payload_fingerprint: 4406b96fb3ea7c81d5341eee9af4572bc2c3f4f466e22a55cb8c0a7f49017913
+    artifacts:
+      archive:
+        asset_id: v0.14.0-published-archive
+        path: route-assets/published-v0.14.0/ai-context-dotnet-backend-v0.14.0.zip
+        sha256: 3577c01a3aff015794ea9593ce56daed1f02409dd6f0106d1d87e289190cde05
+      checksum:
+        asset_id: v0.14.0-published-archive-checksum
+        path: route-assets/published-v0.14.0/ai-context-dotnet-backend-v0.14.0.zip.sha256
+        sha256: 044175a9201723c7dbf0a011cfbb0a669d013ed08cb725bf671a93cb44acf870
+      manifest:
+        asset_id: v0.14.0-published-migration
+        path: route-assets/published-v0.14.0/metadata/migration.yaml
+        sha256: 7b052d921f98d6c9cb2479a3965501305942941a4626858bb6e0d01c082bac02
+      validator:
+        asset_id: v0.14.0-published-direct-edge-validator
+        path: route-assets/validate-direct-edge.py
+        sha256: 966bfe31365cafebd65893899d9b484a6fa9eb7b40551e224511609951b6eb67
+    semantic_cutovers:
+    - cutover_id: remediation-packet-v1
+      state: passed
+    validation:
+      state: passed
+      validator_argv:
+      - python
+      - route-assets/validate-direct-edge.py
+      - --edge-id
+      - v0.9.0-to-v0.14.0
+      - --origin-version
+      - v0.9.0
+      - --archive
+      - route-assets/published-v0.14.0/ai-context-dotnet-backend-v0.14.0.zip
+      - --checksum
+      - route-assets/published-v0.14.0/ai-context-dotnet-backend-v0.14.0.zip.sha256
+      - --target-manifest
+      - route-assets/published-v0.14.0/metadata/files.yaml
+      - --origin-manifest
+      - route-assets/origins/v0.9.0/metadata/files.yaml
+      - --migration
+      - route-assets/published-v0.14.0/metadata/migration.yaml
+      - --cutover-id
+      - remediation-packet-v1
+      report:
+        asset_id: v0.9.0-to-v0.14.0-published-validation-receipt
+        path: route-assets/validation/published-v0.14.0/v0.9.0-to-v0.14.0/receipt.json
+        sha256: 7753d76eb1ea60b56d8e24ac8028458791ab6953071cc25590375a23d6d9dae2
+      output:
+        asset_id: v0.9.0-to-v0.14.0-published-validation-output
+        path: route-assets/validation/published-v0.14.0/v0.9.0-to-v0.14.0/output.json
+        sha256: 66abed7034d58bb2102ce1a326a77b5ba9a14f26d6e40a0f0ae9db367db92227
+- route_id: v0.6.0-to-v0.14.0-direct
+  origin: v0.6.0
+  target: v0.14.0
+  edges:
+  - edge_id: v0.6.0-to-v0.14.0
+    order: 1
+    from_version: v0.6.0
+    to_version: v0.14.0
+    package_identity:
+      package_id: ai-context-dotnet-backend-v0.14.0
+      release_id: REL-v0.14.0
+      payload_fingerprint: 4406b96fb3ea7c81d5341eee9af4572bc2c3f4f466e22a55cb8c0a7f49017913
+    artifacts:
+      archive:
+        asset_id: v0.14.0-published-archive
+        path: route-assets/published-v0.14.0/ai-context-dotnet-backend-v0.14.0.zip
+        sha256: 3577c01a3aff015794ea9593ce56daed1f02409dd6f0106d1d87e289190cde05
+      checksum:
+        asset_id: v0.14.0-published-archive-checksum
+        path: route-assets/published-v0.14.0/ai-context-dotnet-backend-v0.14.0.zip.sha256
+        sha256: 044175a9201723c7dbf0a011cfbb0a669d013ed08cb725bf671a93cb44acf870
+      manifest:
+        asset_id: v0.14.0-published-migration
+        path: route-assets/published-v0.14.0/metadata/migration.yaml
+        sha256: 7b052d921f98d6c9cb2479a3965501305942941a4626858bb6e0d01c082bac02
+      validator:
+        asset_id: v0.14.0-published-direct-edge-validator
+        path: route-assets/validate-direct-edge.py
+        sha256: 966bfe31365cafebd65893899d9b484a6fa9eb7b40551e224511609951b6eb67
+    semantic_cutovers:
+    - cutover_id: remediation-packet-v1
+      state: passed
+    validation:
+      state: passed
+      validator_argv:
+      - python
+      - route-assets/validate-direct-edge.py
+      - --edge-id
+      - v0.6.0-to-v0.14.0
+      - --origin-version
+      - v0.6.0
+      - --archive
+      - route-assets/published-v0.14.0/ai-context-dotnet-backend-v0.14.0.zip
+      - --checksum
+      - route-assets/published-v0.14.0/ai-context-dotnet-backend-v0.14.0.zip.sha256
+      - --target-manifest
+      - route-assets/published-v0.14.0/metadata/files.yaml
+      - --origin-manifest
+      - route-assets/origins/v0.6.0/metadata/files.yaml
+      - --migration
+      - route-assets/published-v0.14.0/metadata/migration.yaml
+      - --cutover-id
+      - remediation-packet-v1
+      report:
+        asset_id: v0.6.0-to-v0.14.0-published-validation-receipt
+        path: route-assets/validation/published-v0.14.0/v0.6.0-to-v0.14.0/receipt.json
+        sha256: 307d906ccd597cdf7a25b053ee62910732dfec3f39e222b69c738414bf795521
+      output:
+        asset_id: v0.6.0-to-v0.14.0-published-validation-output
+        path: route-assets/validation/published-v0.14.0/v0.6.0-to-v0.14.0/output.json
+        sha256: f5bc7a5506fb7fe0ed718a5046f04e8e05f36cfde55a4e769f5236815d931175
 deprecations: []

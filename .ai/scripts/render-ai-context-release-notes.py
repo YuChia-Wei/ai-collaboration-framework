@@ -29,9 +29,61 @@ CANDIDATE_NOT_APPLICABLE_EXIT_CODE = 3
 BACKLOG_REF_RE = re.compile(r"^\.dev/backlog/items/([A-Z][A-Z0-9-]+)\.yaml$")
 ONLINE_ISSUE_REF_RE = re.compile(r"^#([1-9]\d*)$")
 PHASE_NEUTRAL_RELEASE_NOTES_FROM = (0, 13, 0)
-PHASE_OWNED_RELEASE_NOTE_SECTION_RE = re.compile(
-    r"^## (?:Status|Publication Completion)\s*$",
-    re.MULTILINE,
+PUBLICATION_SAFE_SECTION_ORDER = (
+    "Highlights",
+    "Practical Effect",
+    "Compatibility",
+    "Release Validation",
+    "Known Limitations",
+    "Support Status",
+)
+PUBLICATION_CONTENT_HEADING_RE = re.compile(r"^(#{1,6})\s+(.+?)\s*$", re.MULTILINE)
+PUBLICATION_TRANSIENT_CLAIM_RULES = (
+    (
+        "release identity denial",
+        re.compile(
+            r"\b(?:it|this\s+(?:governed\s+)?source\s+candidate|this\s+release)\s+"
+            r"is\s+not\s+(?:a\s+)?(?:tag|GitHub\s+Release|publication\s+record)\b|"
+            r"\bno\s+(?:hosted\s+)?(?:admission|merge|tag|GitHub\s+Release|publication)"
+            r".{0,160}\bis\s+claimed\b",
+            re.IGNORECASE | re.DOTALL,
+        ),
+    ),
+    (
+        "pending release lifecycle",
+        re.compile(
+            r"\b(?:admission|merge|tag|GitHub\s+Release|publication)\b.{0,160}"
+            r"\b(?:absent|pending|unperformed|not\s+published|requires?|still\s+needs?)\b|"
+            r"\b(?:pending|unperformed|requires?|still\s+needs?)\b.{0,160}"
+            r"\b(?:admission|merge|tag|GitHub\s+Release|publication)\b|"
+            r"\bPublication\s+仍需\b",
+            re.IGNORECASE | re.DOTALL,
+        ),
+    ),
+    (
+        "open pull request state",
+        re.compile(
+            r"\bPR\s+#\d+\b.{0,160}\b(?:draft|open|pending|unmerged)\b",
+            re.IGNORECASE | re.DOTALL,
+        ),
+    ),
+    (
+        "temporary execution identifier",
+        re.compile(
+            r"\b[0-9a-f]{40}\b|\b(?:run|job)\s+`?\d{5,}`?\b",
+            re.IGNORECASE,
+        ),
+    ),
+    (
+        "failed-attempt chronology",
+        re.compile(
+            r"\b(?:preceding|previous|earlier|later|then|retry|attempt)\b.{0,200}"
+            r"\b(?:failed|failure)\b|"
+            r"\b(?:failed|failure)\b.{0,200}"
+            r"\b(?:preceding|previous|earlier|later|then|retry|attempt)\b",
+            re.IGNORECASE | re.DOTALL,
+        ),
+    ),
 )
 TRANSIENT_PUBLICATION_CLAIM_RE = re.compile(
     r"\bnot tagged or published\b|"
@@ -282,6 +334,37 @@ def assert_published_body_source(
         )
 
 
+def assert_phase_neutral_publication_claims(
+    data: dict, artifact: Path, artifact_label: str
+) -> None:
+    version = data.get("version")
+    if (
+        not isinstance(version, str)
+        or version_tuple(version) < PHASE_NEUTRAL_RELEASE_NOTES_FROM
+    ):
+        return
+    text = artifact.read_text(encoding="utf-8").strip()
+    publication_blocks = []
+    for block in re.split(r"\n\s*\n", text):
+        content_lines = []
+        for line in block.splitlines():
+            heading = PUBLICATION_CONTENT_HEADING_RE.fullmatch(line.strip())
+            content_lines.append(heading.group(2) if heading is not None else line)
+        normalized = re.sub(r"\s+", " ", "\n".join(content_lines)).strip()
+        if normalized:
+            publication_blocks.append(normalized)
+    for rule_name, rule in PUBLICATION_TRANSIENT_CLAIM_RULES:
+        if any(rule.search(block) for block in publication_blocks):
+            raise ReleaseNotesError(
+                f"v0.13.0+ {artifact_label} violate the publication-content contract: "
+                f"{rule_name}"
+            )
+    if TRANSIENT_PUBLICATION_CLAIM_RE.search(text):
+        raise ReleaseNotesError(
+            f"v0.13.0+ {artifact_label} must not retain candidate-only publication claims"
+        )
+
+
 def assert_phase_neutral_release_notes(data: dict, notes: Path) -> None:
     version = data.get("version")
     if (
@@ -290,15 +373,37 @@ def assert_phase_neutral_release_notes(data: dict, notes: Path) -> None:
     ):
         return
     text = notes.read_text(encoding="utf-8").strip()
-    if PHASE_OWNED_RELEASE_NOTE_SECTION_RE.search(text):
+    headings = PUBLICATION_CONTENT_HEADING_RE.findall(text)
+    h1_headings = [title for marker, title in headings if marker == "#"]
+    if len(h1_headings) != 1 or not h1_headings[0].startswith(data["release_id"]):
         raise ReleaseNotesError(
-            "v0.13.0+ release notes must be phase-neutral and must not contain "
-            "Status or Publication Completion sections"
+            "v0.13.0+ release notes must contain exactly one release-ID H1 heading"
         )
-    if TRANSIENT_PUBLICATION_CLAIM_RE.search(text):
+    unsupported_heading = next(
+        (title for marker, title in headings if marker not in {"#", "##"}),
+        None,
+    )
+    if unsupported_heading is not None:
         raise ReleaseNotesError(
-            "v0.13.0+ release notes must not retain candidate-only publication claims"
+            "v0.13.0+ release notes may contain only the release H1 and allowlisted H2 sections"
         )
+    sections = [title for marker, title in headings if marker == "##"]
+    if len(sections) != len(set(sections)):
+        raise ReleaseNotesError("v0.13.0+ release-note sections must not be duplicated")
+    unknown_sections = [
+        section for section in sections if section not in PUBLICATION_SAFE_SECTION_ORDER
+    ]
+    if unknown_sections:
+        raise ReleaseNotesError(
+            "v0.13.0+ release-note sections must use the publication-content allowlist; "
+            f"unsupported: {', '.join(unknown_sections)}"
+        )
+    section_positions = [PUBLICATION_SAFE_SECTION_ORDER.index(section) for section in sections]
+    if section_positions != sorted(section_positions):
+        raise ReleaseNotesError(
+            "v0.13.0+ release-note sections must follow publication-content order"
+        )
+    assert_phase_neutral_publication_claims(data, notes, "release notes")
 
 
 def validate_release(root: Path, version: str, commit: str, mode: str) -> tuple[dict, Path, Path]:
@@ -371,6 +476,7 @@ def validate_release(root: Path, version: str, commit: str, mode: str) -> tuple[
         artifacts.get("migration_guide"), release_dir, "migration_guide"
     )
     assert_phase_neutral_release_notes(data, notes)
+    assert_phase_neutral_publication_claims(data, migration, "migration guide")
     if mode == "published":
         assert_published_body_source(data, notes, version, commit)
     return data, notes, migration

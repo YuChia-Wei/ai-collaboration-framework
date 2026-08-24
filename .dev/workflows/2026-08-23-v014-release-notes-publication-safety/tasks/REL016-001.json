@@ -1,0 +1,120 @@
+{
+  "template_id": "ai-context-governance-remediation-task",
+  "template_version": "1.1.0",
+  "template_created_at": "2026-07-10T18:22:49+08:00",
+  "template_updated_at": "2026-07-27T09:52:09+08:00",
+  "task_id": "REL016-001",
+  "workflow_id": "2026-08-23-v014-release-notes-publication-safety",
+  "owner_skill": "ai-context-governance",
+  "status": "in_progress",
+  "created_at": "2026-08-23T23:09:27+08:00",
+  "updated_at": "2026-08-24T08:14:48+08:00",
+  "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
+  "model": "gpt-5.6-sol",
+  "reasoning_effort": "high",
+  "finding_ids": [
+    "REL016-F001",
+    "REL016-F002",
+    "REL016-F003",
+    "REL016-F004",
+    "REL016-F005"
+  ],
+  "scope": {
+    "target": "v0.14.0 publication-safe release-note source, effective renderer boundary, focused tests, and one hosted body-only correction",
+    "files": [
+      ".dev/releases/v0.14.0/release-notes.md",
+      ".ai/scripts/render-ai-context-release-notes.py",
+      ".ai/scripts/tests/test_release_notes_renderer.py",
+      ".dev/workflows/2026-08-23-v014-release-notes-publication-safety/"
+    ],
+    "constraints": [
+      "Preserve consumer-facing compatibility, Included Work, immutable provenance, checksum, migration, and limitation content.",
+      "Use a bounded structured or allowlisted publication-content contract instead of an unbounded phrase blacklist.",
+      "Mutate the hosted v0.14.0 Release body exactly once only after clean immutable commit validation and review.",
+      "The owner's later 2026-08-24 authorization explicitly restores exactly one body-only correction from commit 908eac7879ec7dcb1d9713f2ee5e5ec0e106c3ac and separately authorizes push, PR, merge, and Issue close when no blocker remains.",
+      "Mechanically prove every non-body provider field is unchanged."
+    ],
+    "non_goals": [
+      "Direct Project mutation, release allocation, tag or asset mutation, another Release mutation, new publication, downstream mutation.",
+      "Rename ai-context-dotnet-backend-* or create ID-002."
+    ]
+  },
+  "execution": {
+    "steps": [
+      "Freeze live Issue and provider baseline.",
+      "Implement consumer-facing v0.14.0 notes and bounded publication-content validation.",
+      "Add exact-defect GWT regression cases and durable-status counterexamples.",
+      "Run focused and proportionate repository validation.",
+      "Commit a clean immutable head and obtain independent read-only exact-head review.",
+      "Perform one body-only hosted update and mechanically compare before/after evidence.",
+      "Finalize receipts and local commits."
+    ],
+    "validation": [
+      "python .ai/scripts/tests/test_release_notes_renderer.py",
+      "python .ai/scripts/render-ai-context-release-notes.py --version v0.14.0 --commit 412bb14a16fe75ee65a020b16680def0acc0ff1b --mode publish --output <evidence-path>",
+      "python .ai/scripts/validate-ai-context-release-state.py --phase publication --version v0.14.0 --hosted",
+      "python .ai/scripts/validate-workflow-artifacts.py",
+      "python .ai/scripts/validate-ai-context.py",
+      "git diff --check"
+    ],
+    "last_completed_step": "Executed the only authorized body-only PATCH from clean reviewed commit 908eac7879ec7dcb1d9713f2ee5e5ec0e106c3ac; immediate read-back proved exact corrected-body bytes and complete bounded non-body parity, and publication plus finalization gates passed.",
+    "next_action": "Commit and validate the main-based squashed delivery continuation, prove bounded tree equivalence to d988359acd6a79fce71ee2949996828fa36e4768, and obtain fresh independent review before terminal-close PR admission."
+  },
+  "role_execution_summary": {
+    "stage_id": "REL016-001-source-remediation",
+    "owning_skill": "slice-implementer",
+    "execution_mode": "generic",
+    "overlay": "remediation",
+    "effective_rule_packet": "996e4413f53a319e9210ea4200284aff1d0bff687d6dcf4ea0a6f80b6ba10a6f",
+    "bindings": {
+      "command-sub-agent": "not-applicable: generic mode selected",
+      "query-sub-agent": "not-applicable: generic mode selected",
+      "reactor-sub-agent": "not-applicable: generic mode selected",
+      "aggregate-sub-agent": "not-applicable: no aggregate behavior",
+      "controller-sub-agent": "not-applicable: no controller behavior",
+      "outbox-sub-agent": "not-applicable: no outbox behavior",
+      "profile-config-sub-agent": "not-applicable: no environment-profile configuration",
+      "usecase-test-sub-agent": "not-applicable: renderer tests are not use-case tests",
+      "aggregate-test-sub-agent": "not-applicable: renderer tests are not aggregate tests",
+      "controller-test-sub-agent": "not-applicable: renderer tests are not controller tests",
+      "reactor-test-sub-agent": "not-applicable: renderer tests are not reactor tests",
+      "mutation-testing-sub-agent": "not-applicable: mutation testing was not selected"
+    },
+    "final_integration_owner": "primary Issue #241 workflow owner"
+  },
+  "results": {
+    "summary": "Authorized source and retained-origin remediation are implemented, the exactly-once hosted body correction completed with exact before/after parity, and the provider receipt head d988359acd6a79fce71ee2949996828fa36e4768 passed independent review and was pushed; repository integration remains in progress.",
+    "files_changed": [
+      ".ai/scripts/render-ai-context-release-notes.py",
+      ".ai/scripts/tests/test_release_notes_renderer.py",
+      ".dev/releases/v0.14.0/release-notes.md",
+      ".dev/workflows/2026-08-23-v014-release-notes-publication-safety/evidence/REL016-001-final-rendered-body.md",
+      ".dev/workflows/2026-08-23-v014-release-notes-publication-safety/evidence/REL016-001-hosted-before.json",
+      ".dev/workflows/2026-08-23-v014-release-notes-publication-safety/evidence/REL016-001-hosted-after.json"
+    ],
+    "tests_run": [
+      "blocked-by-environment: two sandbox renderer-suite attempts hit Windows Temp ACL errors",
+      "passed: renderer GWT 25/25 outside sandbox after migration body, heading-adjacent, and heading-title review repairs",
+      "passed: release-state GWT 36/36 outside sandbox",
+      "passed: v0.13.0 compatibility render",
+      "passed: deterministic v0.14.0 double render, SHA-256 07b17d1f47e5ee1489b2f4049da89f52e4acf50efedbf549e39a25582603737e",
+      "passed: validate-ai-context.py",
+      "passed: validate-ai-context-versions.py",
+      "passed: validate-workflow-artifacts.py",
+      "passed: py_compile and git diff --check",
+      "superseded failed diagnostic: hosted publication phase stopped on pre-existing retained-origin route disposition before body comparison",
+      "passed after REL016-002: hosted publication phase at 6bbf536baaeb98c27e902ac3c745162703ac9f5c",
+      "superseded expected non-pass: corrected rendered body differed from the existing hosted body before the authorized PATCH",
+      "passed: exactly one body-only PATCH changed hosted body SHA-256 from d1fa92cb8fd3a289367fb81686916454873f71a634ce4917491a9ebe2077a14b to 07b17d1f47e5ee1489b2f4049da89f52e4acf50efedbf549e39a25582603737e",
+      "passed: immediate stable Release, annotated tag, peeled commit, and all four complete asset tuples remained unchanged",
+      "passed: post-mutation publication and finalization phases with exact rendered body",
+      "failed: workflow commit-range validation found missing workflow bodies and AI trailers on reviewed commits 6bbf536b, 831b6390, 92ca302f, and provider-subject commit 908eac78",
+      "blocked-by-environment on delivery segment: sandbox renderer, route, and release-state suites hit the known Windows Temp ACL boundary",
+      "passed on delivery segment outside sandbox: renderer 25/25, route 31/31, and release-state 37/37",
+      "passed on delivery segment: workflow artifacts, AI-context, bounded evidence-tree equivalence to d988359acd6a79fce71ee2949996828fa36e4768, hosted publication, and hosted finalization"
+    ],
+    "finding_status": "provider-corrected-integration-pending",
+    "residual_risk": "The delivery continuation must prove bounded tree equivalence and pass fresh review, commit policy, hosted checks, and merge admission. Issue #241 remains Project status Inbox; terminal close requires Done, while direct Project mutation is not authorized.",
+    "follow_up_needed": true
+  }
+}

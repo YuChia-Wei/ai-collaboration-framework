@@ -803,17 +803,58 @@ class UpgradeRouteTests(unittest.TestCase):
                     check=False,
                 )
                 self.assertEqual(1, result.returncode)
-                self.assertIn("incoming portable validation failed", result.stderr)
+                self.assertIn("archive does not match the exact validated v0.14 ZIP", result.stderr)
 
-    def test_gwt_014_given_legacy_v014_matrix_when_each_retained_origin_is_resolved_then_portable_proof_is_required(self) -> None:
+    def test_gwt_013a_given_published_v014_archive_when_each_retained_edge_runs_then_portable_identity_passes(self) -> None:
+        release_dir = ROOT / ".dev/releases/v0.14.0"
+        script = release_dir / "route-assets/validate-direct-edge.py"
+        expected_identity = {
+            "package_id": "ai-context-dotnet-backend-v0.14.0",
+            "release_id": "REL-v0.14.0",
+            "payload_fingerprint": "4406b96fb3ea7c81d5341eee9af4572bc2c3f4f466e22a55cb8c0a7f49017913",
+        }
+        for origin in ("v0.13.0", "v0.9.0", "v0.6.0"):
+            with self.subTest(origin=origin):
+                result = subprocess.run(
+                    [
+                        sys.executable,
+                        "-B",
+                        str(script),
+                        "--edge-id",
+                        f"{origin}-to-v0.14.0",
+                        "--origin-version",
+                        origin,
+                        "--archive",
+                        "route-assets/published-v0.14.0/ai-context-dotnet-backend-v0.14.0.zip",
+                        "--checksum",
+                        "route-assets/published-v0.14.0/ai-context-dotnet-backend-v0.14.0.zip.sha256",
+                        "--target-manifest",
+                        "route-assets/published-v0.14.0/metadata/files.yaml",
+                        "--origin-manifest",
+                        f"route-assets/origins/{origin}/metadata/files.yaml",
+                        "--migration",
+                        "route-assets/published-v0.14.0/metadata/migration.yaml",
+                        "--cutover-id",
+                        "remediation-packet-v1",
+                    ],
+                    cwd=release_dir,
+                    capture_output=True,
+                    text=True,
+                    encoding="utf-8",
+                    errors="replace",
+                    check=False,
+                )
+                self.assertEqual(0, result.returncode, result.stderr)
+                self.assertEqual("", result.stderr)
+                output = json.loads(result.stdout)
+                self.assertEqual("412bb14a16fe75ee65a020b16680def0acc0ff1b", output["source_commit"])
+                self.assertEqual(expected_identity, output["portable_validation"]["package_identity"])
+                self.assertEqual("passed", output["portable_validation"]["execution"]["outcome"])
+
+    def test_gwt_014_given_repaired_v014_matrix_when_each_retained_origin_is_resolved_then_published_route_is_direct(self) -> None:
         matrix_path = ROOT / ".dev/releases/v0.14.0/support-matrix.yaml"
         matrix, matrix_bytes = ROUTES.load_route_matrix(matrix_path)
-        current_validator_sha256 = hashlib.sha256(
-            (matrix_path.parent / "route-assets/validate-direct-edge.py").read_bytes()
-        ).hexdigest()
-        for route in matrix["routes"]:
-            for edge in route["edges"]:
-                edge["artifacts"]["validator"]["sha256"] = current_validator_sha256
+        self.assertEqual(ROUTES.SCHEMA_VERSION, matrix["schema_version"])
         for origin in ("v0.13.0", "v0.9.0", "v0.6.0"):
             with self.subTest(origin=origin):
                 result = ROUTES.resolve_upgrade_route(
@@ -824,10 +865,11 @@ class UpgradeRouteTests(unittest.TestCase):
                     asset_root=matrix_path.parent,
                     matrix_reference=matrix_path.as_posix(),
                 )
-                self.assertEqual("reconciliation-required", result["route_kind"])
-                self.assertIn(
-                    "edge-portable-validation-proof-missing",
-                    {diagnostic["code"] for diagnostic in result["diagnostics"]},
+                self.assertEqual("direct", result["route_kind"])
+                self.assertEqual([], result["diagnostics"])
+                self.assertEqual(
+                    "ai-context-dotnet-backend-v0.14.0",
+                    result["selected_route"]["edges"][0]["package_identity"]["package_id"],
                 )
 
 

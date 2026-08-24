@@ -1,0 +1,100 @@
+{
+  "schema_version": "1.0",
+  "evidence_id": "REL016-001-hosted-before",
+  "capture": {
+    "mode": "read-only-pre-mutation",
+    "authorized_subject_commit": "908eac7879ec7dcb1d9713f2ee5e5ec0e106c3ac",
+    "authorized_mutation": "exactly one GitHub Release body-only PATCH",
+    "release_endpoint": "GET repos/YuChia-Wei/ai-collaboration-framework/releases/tags/v0.14.0",
+    "tag_endpoints": [
+      "GET repos/YuChia-Wei/ai-collaboration-framework/git/ref/tags/v0.14.0",
+      "GET repos/YuChia-Wei/ai-collaboration-framework/git/tags/12f218ce02acc855da53899c52b73eb6b9df75e7"
+    ]
+  },
+  "observed_at": "2026-08-24T07:57:49.2480446+08:00",
+  "repository": "YuChia-Wei/ai-collaboration-framework",
+  "issue": {
+    "number": 241,
+    "title": "[REL-016] Make v0.14.0 release notes publication-safe and correct the hosted body",
+    "state": "open",
+    "state_reason": null,
+    "html_url": "https://github.com/YuChia-Wei/ai-collaboration-framework/issues/241",
+    "body": "## Problem\n\nThe published v0.14.0 GitHub Release body is not publication-safe. It currently describes the already-published release as a source candidate that is not a tag, GitHub Release, or publication record, and it retains transient PR, commit, workflow-run, failed-attempt, pending-admission, and unmerged-state narration.\n\nThe current source-authored v0.14.0 release notes contain the same transient narrative. The v0.13.0+ phase-neutral renderer guard is phrase-based and did not reject these variants, so a public non-draft Release was created with stale lifecycle claims.\n\nThis is a public documentation and release-rendering defect. It does not invalidate the immutable v0.14.0 tag, commit, archives, checksums, or completed route/package work.\n\n## Related work\n\n- Follows the historical v0.13.0 correction in #198.\n- Public Release body correction was explicitly excluded from #237 and #239.\n- The owner confirmed on 2026-08-23 that the online v0.14.0 Release body-only correction is included in this Issue.\n\n## Authorized outcome\n\nThe owner authorizes:\n\n- a dedicated branch/worktree and repository workflow artifacts required by policy;\n- source release-note and renderer/test remediation;\n- focused validation, independent read-only review, and durable local commits;\n- one bounded body-only update of the hosted v0.14.0 GitHub Release after the corrected body passes repository-owned validation;\n- exact before/after provider read-back proving that only the body changed.\n\nPush, pull-request creation, merge, Issue closure, Project mutation, release allocation, tag mutation, Release recreation, asset mutation, new-version publication, and downstream repository mutation remain separate actions unless later authorized.\n\n## Scope\n\n1. Replace `.dev/releases/v0.14.0/release-notes.md` transient candidate and execution-history narration with concise, consumer-facing, phase-neutral release content.\n2. Preserve durable highlights, compatibility, Included Work, immutable provenance, migration guidance, and consumer-relevant limitations.\n3. Strengthen the effective tag-triggered release-note rendering/validation path so v0.13.0+ publication rejects:\n   - claims that an existing publication is not a tag, Release, or publication record;\n   - candidate, pending tag/publication, open/unmerged PR, or future-admission state;\n   - temporary commit/checkpoint/run/job narration and failed-attempt timelines that belong in workflow evidence.\n4. Prefer a structured publication-content contract or allowlisted durable sections/claims over an ever-growing phrase blacklist. Any retained semantic guard must have bounded, testable behavior.\n5. Add focused regression tests using the exact v0.14.0 defect patterns plus valid durable consumer-facing validation summaries.\n6. Render and validate the exact corrected v0.14.0 hosted body.\n7. Perform the authorized GitHub Release body-only update and exact read-back.\n\n## Acceptance criteria\n\n- The public v0.14.0 Release body no longer claims that its tag, Release, merge, admission, or publication is pending or absent.\n- The public body contains no transient PR state, run/job IDs, checkpoint chronology, failed-attempt timeline, or instructions describing already-completed publication as future work.\n- Durable compatibility, Included Work, immutable release provenance, archive checksum guidance, and migration guidance remain present and accurate.\n- The source-authored v0.14.0 notes and effective publication renderer produce the validated corrected body deterministically.\n- Representative wording variants are rejected by tests without rejecting legitimate durable status such as deprecated, withdrawn, support limitations, or a concise validation outcome.\n- Provider before/after evidence proves the v0.14.0 tag, peeled commit, Release ID/name, draft/prerelease state, publication timestamp, asset IDs, names, sizes, bytes/digests, and download URLs are unchanged.\n- The only hosted mutation is the Release body.\n- The current package/archive identity remains unchanged.\n- The implementation reports release impact, but does not allocate or publish a new version.\n\n## Explicit exclusions\n\n- Renaming `ai-context-dotnet-backend-*`, selecting a future package/archive identity, or creating an identity migration Issue.\n- Rebuilding, replacing, deleting, renaming, or re-uploading v0.14.0 assets or checksum sidecars.\n- Moving, deleting, recreating, or force-updating the v0.14.0 tag.\n- Changing the Release name, identity, draft/prerelease state, publication timestamp, or target commit.\n- Rewriting historical workflow, assessment, PR, or Git evidence.\n- Creating v0.14.1 or v0.15.0, release allocation, or broader release publication.\n- Copying the external analysis report into the repository."
+  },
+  "release": {
+    "id": 374204532,
+    "node_id": "RE_kwDOSBe2Hc4WTeh0",
+    "html_url": "https://github.com/YuChia-Wei/ai-collaboration-framework/releases/tag/v0.14.0",
+    "tag_name": "v0.14.0",
+    "target_commitish": "main",
+    "name": "REL-v0.14.0",
+    "draft": false,
+    "immutable": false,
+    "prerelease": false,
+    "created_at": "2026-08-21T06:20:03Z",
+    "published_at": "2026-08-21T06:21:26Z",
+    "provider_updated_at": "2026-08-21T06:21:26Z",
+    "author_login": "github-actions[bot]"
+  },
+  "annotated_tag": {
+    "ref": "refs/tags/v0.14.0",
+    "ref_object_type": "tag",
+    "object_sha": "12f218ce02acc855da53899c52b73eb6b9df75e7",
+    "tag": "v0.14.0",
+    "tagger": {
+      "name": "YuChia",
+      "email": "h42279@gmail.com",
+      "date": "2026-08-21T06:20:03Z"
+    },
+    "peeled_object_type": "commit",
+    "peeled_commit": "412bb14a16fe75ee65a020b16680def0acc0ff1b"
+  },
+  "main": {
+    "name": "main",
+    "commit_sha": "6f690440d59f5569e19c3e2ceb219f964c2fa6f6",
+    "protected": false
+  },
+  "body": {
+    "utf8_sha256": "d1fa92cb8fd3a289367fb81686916454873f71a634ce4917491a9ebe2077a14b",
+    "byte_count": 7013,
+    "content": "<!-- ai-context-release-automation: REL-v0.14.0 -->\n\n# REL-v0.14.0 — Retained-Origin Upgrade Source Candidate\n\nThis governed source candidate defines the v0.14.0 package identity and\nretained-origin compatibility contract. It is not a tag, GitHub Release, or\npublication record.\n\n## Highlights\n\n- Records exact migration inputs for governed sources v0.13.0, v0.9.0, and\n  v0.6.0 under the v0.14.0 package identity.\n- Establishes the source-only support-matrix and route-evidence locations for\n  the retained origins.\n- Carries the UPG-003 compatibility work through the canonical nine-item\n  release scope.\n\n## Compatibility\n\nv0.14.0 is a breaking migration checkpoint with a minimum governed source of\nv0.6.0. The candidate records v0.13.0, v0.9.0, and v0.6.0 as exact package\nmigration inputs. Their direct or orchestrated route classification must come\nonly from the completed support matrix and its receipt-bound evidence.\n\n## Release Validation\n\nZIP/TAR package parity was validated at immutable package foundation\n`60572c01e31abf58191d38adb5ca39e05338b08d`. The planner-byte fix and three\nreceipt-bound canonical direct-route proofs for v0.13.0, v0.9.0, and v0.6.0\nare committed in distinct source candidate\n`ad1973304e7fd2f170434c1fb5c77ff20c229fae`. The suffixed-declaration validator\nfix is committed and pushed at `ea0414edf1260f0a317ee4b406b9eafb29d7f859`.\n\nAt pushed clean head `b4b38b136d69a1d3e3938598edcb4c6d7285b795`, the exact\nlocal candidate command failed before online admission because durable\n`release.yaml` evidence contained a literal GitHub expression, rejected as an\nunfilled template marker. The exact diagnostic is retained in the S3 task\nevidence. This is a narrative-encoding failure, not a workflow identity failure.\n\nThe preceding clean `66ec616b4d2c5e42129ae1a09557039d15ddb7df` candidate\nrelease-state gate pass remains retained evidence. Its fresh exact-head Sol audit\nthen failed with exactly one cross-artifact finding: active narratives still\ncalled the now-committed prior repair uncommitted and described commit/push as\nnext work. It otherwise passed renderer 20/20, payload 6/6, route 25/25,\nrelease-state 36/36, direct renderer, terminal/workflow/source/AI/version/\n12-commit checks, and package plus route cross-bindings; it made no repair and\nno receipt was submitted.\n\nSeparate live checks then terminally reached four PASS / one FAIL: Read-only\ngovernance contract, Ubuntu PR profile gate, Ubuntu prerequisite contract, and\nWindows prerequisite contract passed; Build and validate candidate failed. Its\nsole log fetch, run `32428716122` / job `96615867346`, showed the candidate\nvalidator received the pull-request merge-ref `GITHUB_SHA` rather than the exact\n#206 terminal-close head, while the local exact-head candidate gate had passed.\n\nAt pushed clean `fab9cf6787f0d4fad9384c29a6e0f514389667ba`, the exact local\ncandidate gate passed. A fresh exact-head Sol audit then failed with no receipt\nafter live candidate run `32431077702` / job `96622569129` failed. The audit\nidentified two blockers: an archived v0.13 schema 2.2 package without canonical\n`target_owned_reference_patterns`, and downstream renderer, builder, and\nsource-disposition behavior still binding merge-ref `GITHUB_SHA` instead of the\nselected candidate identity.\n\nClean evidence head `91040b463b1cf4f1575af9b2d2abb8a3993c0ee0` passed its\nexact 20-commit policy, candidate gate, fresh Sol audit with zero blockers,\ncanonical PR review receipt, and provider-live readback. Its single hosted\nwatch is historical 910 evidence: candidate, governance, and Ubuntu/Windows\nprerequisites passed; Ubuntu PR profile failed only because a shared schema-2.3\npackage-apply fixture still had two `reference_integrity` fields before\nlifecycle assertions. The failed log was fetched once; multi-hop passed in\n34.5 seconds, confirming fixture drift rather than a validator weakness.\n\nRepair checkpoint `d9995e5b0a7cfcc54a5037418a485408892a24d7` is committed and\npushed. One test fixture imports and reuses canonical\n`ai_context_package_validation.TARGET_OWNED_REFERENCE_PATTERNS`; there is no\nproduction, duplicate-allowlist, or historical change. Postfix GWT001 and real\nschema-2.3 GWT049, AST/diff, one-file review beginning `5fbf1da`, exact\n21-commit policy, and candidate gate passed; the sandbox Temp ACL block remains\nretained.\n\nThe 910 receipt and hosted results cannot be reused after later mutation. This\nevidence-only reconciliation advances the head; the resulting clean evidence\nhead requires candidate revalidation, fresh Sol audit/new receipt, then one\nhosted watch. PR #232 remains draft/open/unmerged; #206 open terminal-close;\n#222 open/deferred; no hosted admission, merge, Issue closure, provider closure,\ntag, GitHub Release, or publication is claimed.\n\n<!--\nThe renderer appends canonical Included Work and release provenance. Keep this\nauthored content phase-neutral and omit generated automation details.\n-->\n\n## Included Work\n\n- `#200`\n- `#201`\n- `#202`\n- `#203`\n- `#204`\n- `#205`\n- `#206`\n- `#207`\n- `#208`\n\n## Release provenance\n\n- Release ID: `REL-v0.14.0`\n- Tag: `v0.14.0`\n- Commit: `412bb14a16fe75ee65a020b16680def0acc0ff1b`\n- Distribution profile: `dotnet-backend`\n- Package: `ai-context-dotnet-backend-v0.14.0`\n- Archive integrity: verify each archive against its adjacent `.sha256` asset.\n\n## Migration guide\n\n# Migrate To v0.14.0\n\n## Supported Sources\n\nv0.14.0 is a breaking migration checkpoint. Its governed package records\nexact migration inputs for v0.13.0, v0.9.0, and v0.6.0. Before applying a\nretained-origin upgrade, resolve the source-only support matrix for the\ninstalled version; it is the authority for a direct versus an\norchestrated-multi-hop route. Do not infer a route from this guide.\n\n## Before You Start\n\n1. Start with a clean worktree, retain the installed release manifest, and\n   run the applicable route resolver with the exact installed source version.\n2. Review any reconciliation operations in the selected package migration\n   plan before an apply operation is authorized.\n\n## Migration Steps\n\n1. Use the v0.14.0 package in dry-run mode with the exact selected source\n   manifest; do not substitute a similarly named historical package.\n2. If the matrix resolves an orchestrated route, preserve each ordered edge,\n   its validator output, and its required cutovers before advancing.\n3. Apply only after required reconciliation is acknowledged, then run the\n   incoming and target-owned validation required by the selected route.\n\n## Clean Installation\n\nFor a clean installation, use the v0.14.0 governed package without an upgrade\nplan and retain the resulting package manifest as the installed baseline.\n\n## Scope Boundaries\n\n- This source release records framework-owned migration inputs and route\n  evidence only; target-owned customizations, approvals, and provider state\n  remain outside the package.\n- A route resolver is read-only. It does not authorize package apply, target\n  mutation, tag creation, GitHub Release creation, or publication.\n"
+  },
+  "assets": [
+    {
+      "id": 523331577,
+      "node_id": "RA_kwDOSBe2Hc4fMWf5",
+      "name": "ai-context-dotnet-backend-v0.14.0.tar.gz",
+      "state": "uploaded",
+      "size": 992255,
+      "digest": "sha256:7cfa186ae44caf091d8244f41abbbd2019164994815849068828be453c3bb91c",
+      "browser_download_url": "https://github.com/YuChia-Wei/ai-collaboration-framework/releases/download/v0.14.0/ai-context-dotnet-backend-v0.14.0.tar.gz"
+    },
+    {
+      "id": 523331578,
+      "node_id": "RA_kwDOSBe2Hc4fMWf6",
+      "name": "ai-context-dotnet-backend-v0.14.0.tar.gz.sha256",
+      "state": "uploaded",
+      "size": 107,
+      "digest": "sha256:4c4295c7b4a4a76c594525d1b712c7a92967294387e1002a041f0ee55ed7b83f",
+      "browser_download_url": "https://github.com/YuChia-Wei/ai-collaboration-framework/releases/download/v0.14.0/ai-context-dotnet-backend-v0.14.0.tar.gz.sha256"
+    },
+    {
+      "id": 523331576,
+      "node_id": "RA_kwDOSBe2Hc4fMWf4",
+      "name": "ai-context-dotnet-backend-v0.14.0.zip",
+      "state": "uploaded",
+      "size": 1404664,
+      "digest": "sha256:3577c01a3aff015794ea9593ce56daed1f02409dd6f0106d1d87e289190cde05",
+      "browser_download_url": "https://github.com/YuChia-Wei/ai-collaboration-framework/releases/download/v0.14.0/ai-context-dotnet-backend-v0.14.0.zip"
+    },
+    {
+      "id": 523331579,
+      "node_id": "RA_kwDOSBe2Hc4fMWf7",
+      "name": "ai-context-dotnet-backend-v0.14.0.zip.sha256",
+      "state": "uploaded",
+      "size": 104,
+      "digest": "sha256:044175a9201723c7dbf0a011cfbb0a669d013ed08cb725bf671a93cb44acf870",
+      "browser_download_url": "https://github.com/YuChia-Wei/ai-collaboration-framework/releases/download/v0.14.0/ai-context-dotnet-backend-v0.14.0.zip.sha256"
+    }
+  ]
+}
