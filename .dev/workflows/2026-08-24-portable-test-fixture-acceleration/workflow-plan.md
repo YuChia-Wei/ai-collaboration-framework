@@ -18,7 +18,7 @@
 - `branch_segment`: `1`
 - `status`: `active`
 - `created_at`: `2026-08-24T22:33:23+08:00`
-- `updated_at`: `2026-08-24T23:00:00+08:00`
+- `updated_at`: `2026-08-25T07:42:20+08:00`
 - `template_source`: `.ai/assets/skills/software-development-orchestrator/templates/development-workflow-plan-template.md`
 - `template_version`: `1.4.0`
 - `workflow_locator`: `.dev/workflows/2026-08-24-portable-test-fixture-acceleration/workflow.yaml`
@@ -95,7 +95,7 @@ Workflow mode preserves unique state not owned by the Issue or a single commit: 
 ### Stage 5 — Exact-head audit and integration handoff
 
 - `stage_id`: `audit-handoff`
-- Goal: Obtain read-only independent audit of the exact subject head and prepare a clean handoff that remains blocked from main integration until #245 is merged and freshly synchronized.
+- Goal: Revalidate the #245-synchronized subject, obtain a fresh read-only independent audit of the exact head, and prepare a clean PR/merge-decision handoff without performing provider or main integration.
 - Capability slot: `review`
 - Owner skill: `code-reviewer` plus the repository-required fixed-head independent auditor role where applicable.
 - Scope: Exact-head findings, workflow state, #245 overlap/resync instructions, and residual risks.
@@ -152,11 +152,11 @@ Workflow mode preserves unique state not owned by the Issue or a single commit: 
 
 ## Progress And Handoff
 
-- Current stage: `audit-handoff`
+- Current stage: `validation`
 - Completed stages: `inventory-design`, `test-design`, `implementation`
-- Deferred stages and reasons: #245 integration/resync is deferred until #245 is merged to `main`; no polling or waiting is authorized.
+- Deferred stages and reasons: Fresh aggregate validation, Windows/WSL benchmark, and exact-head audit remain pending after synchronizing merged #245.
 - Open decisions: Cold-cache benchmark evidence remains unavailable unless the owner supplies a safe deterministic cache-reset procedure; warm runs must not be relabeled as cold.
-- Continuation instructions: Complete local implementation, validation, and exact-head audit. If #245 remains unmerged, stop on clean durable commits with a blocked-on-#245 handoff. After #245 merges, fetch/read back `main`, integrate without discarding #245, rerun affected checks/benchmark, and redo exact-head audit.
+- Continuation instructions: #245 was merged by PR #247 at `476ddfb0c12f2cf4965ea123249bf7a62363b70e` and integrated into this branch by merge commit `7f8be0248948fc691c349f27efbc07d2efdef479`. Complete fresh aggregate validation, Windows/WSL benchmark, and exact-head audit before any PR/merge decision.
 - Target policy references: See workflow locator.
 - Registered handoff checkpoint: none yet.
 - Branch history and checkpoint handoffs: Segment 1 started from `main` at `4be33ff90de061dc1db221f60e57ff6130cab54a`.
@@ -165,7 +165,7 @@ Workflow mode preserves unique state not owned by the Issue or a single commit: 
 
 | Segment | Branch | Base | Checkpoint Type | Commit | Remote / Target | Recorded At | Reason | Resume Branch / Action |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| 1 | `codex/2026-08-24-portable-test-fixture-acceleration` | `main@4be33ff90de061dc1db221f60e57ff6130cab54a` | none | pending | local only | `2026-08-24T22:33:23+08:00` | Dedicated #246 implementation | Continue locally; do not integrate before #245 |
+| 1 | `codex/2026-08-24-portable-test-fixture-acceleration` | `main@4be33ff90de061dc1db221f60e57ff6130cab54a` | merge-from-main | `7f8be0248948fc691c349f27efbc07d2efdef479` | `origin/main@476ddfb0c12f2cf4965ea123249bf7a62363b70e` | `2026-08-25T07:41:12+08:00` | Preserve durable #246 checkpoints while consuming merged #245 | Run fresh aggregate, benchmark, and exact-head audit |
 
 ## Completion Summary
 
@@ -173,11 +173,11 @@ Workflow mode preserves unique state not owned by the Issue or a single commit: 
 - Changed artifacts: Workflow, classified fixture runtime and runner, three migrated test suites, validation profiles, deterministic tests, bilingual agent guidance, human guide, and manual opt-in CI workflow.
 - Approved requirement/specification evidence: Issue #246 plus explicit owner delegation.
 - Implementation completion evidence: 20 focused routing tests plus matching 86-test default and accelerated profile outcomes.
-- Required test outcomes: Focused contracts, same-suite Windows and WSL warm benchmarks, source governance, and delegated `fast` validation passed at the recorded validation checkpoint; repeat affected exact-head gates after this handoff checkpoint commit.
+- Required test outcomes: Post-integration fixture, source-work-management, source-governance, workflow, registry, entrypoint, shell-asset, and GitHub-workflow focused checks passed; fresh aggregate and benchmarks remain pending.
 - Selected compliance evidence: not applicable.
 - Review disposition: pending exact-head independent audit.
 - Validation evidence: pending.
 - Workflow task state: inventory, test design, implementation, and validation completed; `perf-001-audit-handoff` in progress and blocked from main integration until #245 is merged and synchronized.
-- Commits: none yet.
-- Branch / checkpoint / handoff evidence: local dedicated branch; no push or merge.
-- Residual risks: #245 may overlap source/workflow validation and requires fresh post-merge synchronization and validation.
+- Commits: Local implementation commits through `621765a18f664200b0c79e37e6fa943517281052`; #245 synchronization merge `7f8be0248948fc691c349f27efbc07d2efdef479`.
+- Branch / checkpoint / handoff evidence: local dedicated branch; #245 merged into the feature branch only; no push, PR, or merge into `main`.
+- Residual risks: Fresh aggregate/benchmark evidence and exact-head audit are mandatory because synchronization changed the subject head.
