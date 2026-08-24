@@ -33,6 +33,14 @@ preserved and the affected workflow-provider suite passed in host context.
 HEAD-bound source governance, delegated aggregate validation, and the independent
 exact-head audit remain assigned to `GOV012-VAL-001`.
 
+The first independent audit at
+`0c6c9c88a84ef358b52d732c66844b858d51e7c3` is retained as
+`ASM-20260824-001`. It found `GOV012-AUD-001` (HIGH): prospective task JSON was
+checked for retired local bindings, but the canonical workflow locator was not.
+Governance accepted that finding and applied the same recursive check to every
+prospective locator with a locator-specific regression test. The repaired head
+requires fresh release validation and a separate independent audit.
+
 ## Excluded Actions
 
 No push, pull request, merge, Issue closure, Project mutation, target-release

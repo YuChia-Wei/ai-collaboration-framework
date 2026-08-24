@@ -305,6 +305,14 @@ def validate_contract(data: dict[str, Any], root: Path = ROOT) -> list[str]:
             or created_at < effective_at
         ):
             continue
+        errors.extend(
+            f"{locator_path.relative_to(root)}: {error}"
+            for error in forbidden_structured_references(
+                locator,
+                forbidden_keys=set(forbidden_keys),
+                forbidden_paths=tuple(forbidden_paths),
+            )
+        )
         artifact_root = locator.get("artifact_root")
         if not isinstance(artifact_root, str):
             errors.append(f"{locator_path}: artifact_root must be a string")

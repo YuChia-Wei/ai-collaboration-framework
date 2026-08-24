@@ -102,6 +102,19 @@ class SourceWorkManagementGwtTests(unittest.TestCase):
             ),
         )
 
+    def test_gwt_008_given_prospective_locator_with_retired_binding_when_checked_then_it_fails_closed(self) -> None:
+        locator = {
+            "workflow_id": "future-workflow",
+            "backlog_refs": [".dev/backlog/items/NEW-001.yaml"],
+            "planning": ".dev/backlog/ROADMAP.md",
+        }
+        errors = VALIDATOR.forbidden_structured_references(
+            locator,
+            forbidden_keys={"backlog_refs"},
+            forbidden_paths=(".dev/backlog/items/", ".dev/backlog/ROADMAP.md"),
+        )
+        self.assertEqual(3, len(errors))
+
 
 if __name__ == "__main__":
     unittest.main()
