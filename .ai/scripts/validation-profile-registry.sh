@@ -33,7 +33,7 @@ register_check assessment-artifacts-tests \
 register_check workflow-artifacts \
     "Workflow Artifact Metadata" required \
     "governance,metadata" "fast pr release nightly-full" \
-    ".dev/workflows" '' "python>=3.11" 30 cpu reuse-by-input source \
+    ".dev/workflows .dev/standards/WORKFLOW-ARTIFACT-POLICY.md .ai/scripts/validate-workflow-artifacts.py" '' "python>=3.11" 30 cpu reuse-by-input source \
     "python .ai/scripts/validate-workflow-artifacts.py" always
 register_check workflow-implementation-contract \
     "Workflow Implementation Contract Fail-Closed Tests" required \
@@ -44,7 +44,7 @@ register_check workflow-implementation-contract \
 register_check workflow-lifecycle-contract \
     "Workflow Lifecycle Contract Fail-Closed Tests" required \
     "governance,tests" "fast pr release nightly-full" \
-    ".ai/scripts/tests/test_workflow_lifecycle_contract.py .dev/workflows" workflow-artifacts \
+    ".ai/scripts/tests/test_workflow_lifecycle_contract.py .ai/scripts/tests/fixtures/workflow-terminal-anchors .ai/scripts/validate-workflow-artifacts.py .dev/standards/WORKFLOW-ARTIFACT-POLICY.md .dev/workflows" workflow-artifacts \
     "python>=3.11" 30 cpu reuse-by-input source \
     "python .ai/scripts/tests/test_workflow_lifecycle_contract.py -v" always
 register_check git-commit-policy \

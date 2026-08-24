@@ -25,6 +25,12 @@ def task(status: str, summary: str = "done", finding_status: str = "resolved") -
     }
 
 
+def identified_task(task_id: str, status: str) -> dict:
+    value = task(status)
+    value["task_id"] = task_id
+    return value
+
+
 class WorkflowLifecycleContractTests(unittest.TestCase):
     def validate(self, status: str, phase: str, tasks: list[tuple[str, dict]]) -> list[str]:
         errors: list[str] = []
@@ -124,6 +130,116 @@ class WorkflowLifecycleContractTests(unittest.TestCase):
         self.assertEqual([], errors)
         self.assertIsInstance(locator, dict)
         self.assertEqual("<current-task-id>", locator["continuation"]["current_task_id"])
+
+    def validate_terminal_anchor(
+        self,
+        *,
+        workflow_status: str,
+        task_status: str,
+        on_satisfied: str,
+        continuation: dict | None = None,
+        observed_state: str = "satisfied",
+    ) -> list[str]:
+        if observed_state != "satisfied":
+            raise ValueError("The tracked fixture represents only the satisfied state.")
+        evidence_ref = (
+            ".ai/scripts/tests/fixtures/workflow-terminal-anchors/satisfied.yaml"
+        )
+        anchor = {
+            "anchor_id": "hosted-publication",
+            "anchor_kind": "external-lifecycle-evidence",
+            "evidence_ref": evidence_ref,
+            "on_satisfied": on_satisfied,
+        }
+        if continuation is not None:
+            anchor["continuation"] = continuation
+        locator = {
+            "workflow_id": "synthetic-release-workflow",
+            "status": workflow_status,
+            "terminal_anchor_contract": {
+                "schema_version": "1.0",
+                "anchors": [anchor],
+            },
+        }
+        errors: list[str] = []
+        VALIDATOR.validate_terminal_anchor_contract(
+            locator,
+            [("tasks/REL-001.json", identified_task("REL-001", task_status))],
+            "synthetic/workflow.yaml",
+            errors,
+            repo=REPO_ROOT,
+        )
+        return errors
+
+    def test_gwt_012_given_satisfied_terminal_anchor_when_workflow_and_task_active_then_names_conflicts(self) -> None:
+        errors = self.validate_terminal_anchor(
+            workflow_status="in_progress",
+            task_status="in_progress",
+            on_satisfied="complete",
+        )
+
+        self.assertTrue(
+            any(
+                "synthetic-release-workflow" in error
+                and "hosted-publication" in error
+                and "workflow state 'in_progress'" in error
+                for error in errors
+            )
+        )
+        self.assertTrue(
+            any(
+                "REL-001" in error and "task 'REL-001' state 'in_progress'" in error
+                for error in errors
+            )
+        )
+
+    def test_gwt_013_given_satisfied_terminal_anchor_when_workflow_and_task_completed_then_passes(self) -> None:
+        self.assertEqual(
+            [],
+            self.validate_terminal_anchor(
+                workflow_status="completed",
+                task_status="completed",
+                on_satisfied="complete",
+            ),
+        )
+
+    def test_gwt_014_given_active_postpublication_remediation_when_continuation_is_explicit_then_passes(self) -> None:
+        self.assertEqual(
+            [],
+            self.validate_terminal_anchor(
+                workflow_status="in_progress",
+                task_status="in_progress",
+                on_satisfied="continue",
+                continuation={
+                    "reason": "Publication starts a separately authorized remediation task.",
+                    "task_ids": ["REL-001"],
+                },
+            ),
+        )
+
+    def test_gwt_015_given_active_continuation_when_unfinished_task_is_not_declared_then_fails_closed(self) -> None:
+        errors = self.validate_terminal_anchor(
+            workflow_status="in_progress",
+            task_status="in_progress",
+            on_satisfied="continue",
+            continuation={
+                "reason": "Publication starts a separately authorized remediation task.",
+                "task_ids": ["REL-OTHER"],
+            },
+        )
+
+        self.assertTrue(any("reference missing tasks" in error for error in errors))
+
+    def test_gwt_016_given_no_declared_terminal_anchor_when_workflow_active_then_no_anchor_is_inferred(self) -> None:
+        errors: list[str] = []
+        VALIDATOR.validate_terminal_anchor_contract(
+            {"workflow_id": "unbound", "status": "in_progress"},
+            [("REL-001", identified_task("REL-001", "in_progress"))],
+            "unbound/workflow.yaml",
+            errors,
+            repo=REPO_ROOT,
+        )
+        self.assertEqual([], errors)
 
 
 if __name__ == "__main__":

@@ -1,0 +1,85 @@
+{
+  "template_id": "ai-context-governance-remediation-task",
+  "template_version": "1.1.0",
+  "template_created_at": "2026-07-10T18:22:49+08:00",
+  "template_updated_at": "2026-07-27T09:52:09+08:00",
+  "task_id": "GOV011-001",
+  "workflow_id": "2026-08-24-stale-release-workflow-reconciliation",
+  "owner_skill": "ai-context-governance",
+  "status": "in_progress",
+  "created_at": "2026-08-24T10:28:32+08:00",
+  "updated_at": "2026-08-24T10:43:01+08:00",
+  "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
+  "model": "gpt-5.6-sol",
+  "reasoning_effort": "high",
+  "finding_ids": ["GOV-011", "#243"],
+  "scope": {
+    "target": "Declared terminal-anchor lifecycle contract for release-bound workflows",
+    "files": [
+      ".dev/standards/**",
+      ".ai/scripts/**",
+      ".ai/validation/**",
+      ".dev/workflows/2026-08-12-v0-13-release-readiness/**",
+      ".dev/workflows/2026-08-24-stale-release-workflow-reconciliation/**"
+    ],
+    "constraints": [
+      "Use declared machine-readable relationships and retained evidence only",
+      "Keep ordinary validation deterministic and independent of ambient GitHub credentials",
+      "Preserve every retained failed, blocked, and intermediate observation",
+      "Require independent read-only audit of the exact immutable implementation head"
+    ],
+    "non_goals": [
+      "Change ROADMAP authority, current_target, or release horizons",
+      "Bulk rewrite or archive historical workflows or assessments",
+      "Mutate hosted tags, Releases, assets, packages, Issues, Projects, pull requests, or main"
+    ]
+  },
+  "execution": {
+    "steps": [
+      "Freeze current tracked and live terminal-anchor evidence",
+      "Implement the contract, validator, fixtures, routing, documentation, and known reconciliation",
+      "Run selected validation and repair in-scope failures",
+      "Commit the exact subject and obtain independent read-only audit",
+      "Record completion without claiming provider integration or release mutation"
+    ],
+    "validation": [
+      "Focused terminal-anchor validator tests",
+      "python .ai/scripts/validate-workflow-artifacts.py",
+      "python .ai/scripts/validate-ai-context.py --mode source",
+      "Applicable source-governance profile selected by repository routing",
+      "python .ai/scripts/validate-git-commits.py --range main..HEAD --workflow-id 2026-08-24-stale-release-workflow-reconciliation",
+      "Independent read-only exact-head governance audit"
+    ],
+    "last_completed_step": "Implemented and focused-validated the declared terminal-anchor contract, v0.13 reconciliation, tracked fixtures, validation routing, canonical skill guidance, and actionable failure output.",
+    "next_action": "Commit the implementation, run the fast aggregate profile on the immutable commit, then obtain an independent read-only exact-head audit."
+  },
+  "results": {
+    "summary": "Implementation is complete and focused validation passes; immutable-commit aggregate validation and independent audit remain before workflow completion.",
+    "files_changed": [
+      ".ai/assets/skills/ai-context-governance/skill.yaml",
+      ".ai/assets/skills/ai-context-governance/references/workflow-and-commit-playbook.md",
+      ".ai/scripts/README.md",
+      ".ai/scripts/validate-workflow-artifacts.py",
+      ".ai/scripts/tests/test_workflow_lifecycle_contract.py",
+      ".ai/scripts/tests/fixtures/workflow-terminal-anchors/satisfied.yaml",
+      ".ai/scripts/validation-profile-registry.sh",
+      ".dev/standards/WORKFLOW-ARTIFACT-POLICY.md",
+      ".dev/workflows/2026-08-12-v0-13-release-readiness/**",
+      ".dev/workflows/2026-08-24-stale-release-workflow-reconciliation/**",
+      ".dev/workflows/INDEX.MD"
+    ],
+    "tests_run": [
+      "python .ai/scripts/tests/test_workflow_lifecycle_contract.py -v: passed 16/16",
+      "python .ai/scripts/validate-workflow-artifacts.py: passed 94 locators / 114 indexed directories / 55 backlog items",
+      "python .ai/scripts/validate-ai-context.py: passed",
+      "python .ai/scripts/validate-source-governance.py: passed",
+      "python .ai/scripts/tests/test_validation_profile_registry.py -v: passed 7/7 on host after sandbox Git Bash signal-pipe block",
+      "two directly applicable CheckAll routing tests: passed 2/2 on host after sandbox Temp ACL block",
+      "git diff --check: passed",
+      "broad CheckAllRunnerGwtTests class: interrupted during unrelated cases and not counted as passed"
+    ],
+    "finding_status": "partially-resolved",
+    "residual_risk": "The implementation is not yet bound to an immutable aggregate-validated and independently audited commit.",
+    "follow_up_needed": true
+  }
+}

@@ -7,9 +7,9 @@
   "workflow_id": "2026-08-12-v0-13-release-readiness",
   "owner_skill": "ai-context-governance",
   "title": "Prepare REL-v0.13.0 terminal pre-tag readiness",
-  "status": "in_progress",
+  "status": "completed",
   "created_at": "2026-08-12T07:20:06+08:00",
-  "updated_at": "2026-08-12T17:48:18+08:00",
+  "updated_at": "2026-08-24T10:36:00+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/release-publication/release-publication-task.json",
   "model": "gpt-5.6-sol",
   "reasoning_effort": "max",
@@ -50,10 +50,30 @@
       "python .ai/scripts/reconcile-ai-context-release-provider.py --phase preflight --version v0.13.0",
       "python .ai/scripts/prepare-ai-context-release.py --version v0.13.0 via schema-valid frozen external task"
     ],
-    "last_completed_step": "Verified the owner's clean linear rewrite at ff70dc38ab97d287dde9b5a3fe9f364a26b4c947, preserved nine tree-equivalent historical execution mappings, focused-validated #197 changed-release candidate selection, and reconciled #197 to closed/completed provider state",
-    "next_action": "Commit the #197 batch, normal-push the exact head to PR #196, and require all hosted checks to pass before merge"
+    "last_completed_step": "Reconciled the satisfied v0.13 hosted-publication and #61 coordination anchors under #243 without changing retained failed, blocked, or intermediate evidence.",
+    "superseded_next_action": {
+      "value": "Commit the #197 batch, normal-push the exact head to PR #196, and require all hosted checks to pass before merge",
+      "superseded_at": "2026-08-24T10:36:00+08:00",
+      "anchor_id": "v0.13-hosted-publication-and-coordination-completion",
+      "reason": "Live GitHub read-back proves hosted publication and coordination completion occurred on 2026-08-12."
+    },
+    "next_action": "No remaining workflow-owned action. Repository integration of the #243 reconciliation is a separate provider-managed delivery state."
   },
   "results": {
+    "summary": "The v0.13 readiness workflow is reconciled to completed from declared tracked terminal-anchor evidence. Earlier failed candidate attempts, the blocked sandbox provider attempt, the failed callback transport, and every intermediate Git/evidence record remain retained with their original outcomes.",
+    "files_changed": [
+      ".dev/workflows/2026-08-12-v0-13-release-readiness/workflow.yaml",
+      ".dev/workflows/2026-08-12-v0-13-release-readiness/workflow-plan.md",
+      ".dev/workflows/2026-08-12-v0-13-release-readiness/tasks/REL013-001.json",
+      ".dev/workflows/2026-08-12-v0-13-release-readiness/evidence/REL013-001-terminal-anchor.yaml",
+      ".dev/workflows/2026-08-12-v0-13-release-readiness/reports/remediation-report.md"
+    ],
+    "tests_run": [
+      "python .ai/scripts/tests/test_workflow_lifecycle_contract.py -v: 16/16 passed"
+    ],
+    "finding_status": "resolved",
+    "residual_risk": "The tracked anchor is a point-in-time provider observation. Ordinary validation intentionally does not refresh GitHub; a later provider mutation would require a new authorized live reconciliation rather than silent local reinterpretation.",
+    "follow_up_needed": false,
     "candidate_build_attempts": [
       {
         "attempt": 1,

@@ -1,0 +1,11 @@
+schema_version: "1.0"
+evidence_id: "synthetic-terminal-anchor-evidence"
+anchor_id: "hosted-publication"
+observed_state: "satisfied"
+observed_at: "2026-08-24T10:00:00+08:00"
+source:
+  kind: "synthetic-fixture"
+  references:
+    - "fixture://hosted-publication"
+facts:
+  publication: "observed"
