@@ -23,7 +23,7 @@ continuation:
     - ".dev/standards/WORKFLOW-HANDOFF-POLICY.md"
     - ".dev/TEAM-GIT-FLOW-RULES.MD"
     - ".dev/standards/GIT-COMMIT-POLICY.md"
-  handoff_checkpoint: ".dev/workflows/2026-08-24-portable-test-fixture-acceleration/handoff-checkpoints/PERF001-001-blocked-on-245.yaml"
+  handoff_checkpoint: null
 created_at: "2026-08-24T22:33:23+08:00"
 updated_at: "2026-08-24T23:40:00+08:00"
 template_source: ".ai/assets/skills/software-development-orchestrator/templates/workflow-locator-template.yaml"
