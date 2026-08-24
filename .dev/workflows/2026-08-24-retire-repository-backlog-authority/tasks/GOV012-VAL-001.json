@@ -1,0 +1,59 @@
+{
+  "template_id": "ai-context-governance-remediation-task",
+  "template_version": "1.1.0",
+  "template_created_at": "2026-07-10T18:22:49+08:00",
+  "template_updated_at": "2026-07-27T09:52:09+08:00",
+  "task_id": "GOV012-VAL-001",
+  "workflow_id": "2026-08-24-retire-repository-backlog-authority",
+  "owner_skill": "ai-context-governance",
+  "status": "pending",
+  "created_at": "2026-08-24T20:11:36+08:00",
+  "updated_at": "2026-08-24T20:11:36+08:00",
+  "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
+  "model": "gpt-5.6-sol",
+  "reasoning_effort": "high",
+  "finding_ids": ["GOV012-F005"],
+  "scope": {
+    "target": "Immutable-head aggregate validation, independent governance audit, and durable closeout evidence",
+    "files": [
+      ".dev/workflows/2026-08-24-retire-repository-backlog-authority/",
+      ".dev/assessments/",
+      ".dev/assessments/INDEX.MD"
+    ],
+    "constraints": [
+      "Long-running validation executes only in an external read-only task at a clean immutable commit.",
+      "Use exactly one completion callback or one parent event wait; do not poll.",
+      "Independent audit is read-only for the implementation subject and bound to the exact head.",
+      "Any subject repair invalidates the audit and requires a new exact-head audit."
+    ],
+    "non_goals": [
+      "Repair by the validation runner or independent auditor.",
+      "Push, pull request, merge, Issue closure, Project mutation, release allocation, tag, Release, or publication."
+    ]
+  },
+  "execution": {
+    "steps": [
+      "Verify the focused checks and clean immutable implementation commit.",
+      "Dispatch and accept the schema-valid long-running validation report when the gate applies.",
+      "Obtain an independent exact-head verification assessment and reconcile all P1-P3 findings.",
+      "Complete workflow evidence, validate the workflow commit range, and create the final durable local commit."
+    ],
+    "validation": [
+      "External-task dispatch and completion envelope validation",
+      "Independent exact-head ai-context audit",
+      "Workflow artifact and commit-range validation",
+      "Final clean-worktree and branch/head read-back"
+    ],
+    "last_completed_step": "",
+    "next_action": "Begin only after GOV012-001 has a clean immutable implementation commit.",
+    "role_execution": []
+  },
+  "results": {
+    "summary": "",
+    "files_changed": [],
+    "tests_run": [],
+    "finding_status": "not-addressed",
+    "residual_risk": "Pending implementation head, delegated validation, and independent audit.",
+    "follow_up_needed": true
+  }
+}
