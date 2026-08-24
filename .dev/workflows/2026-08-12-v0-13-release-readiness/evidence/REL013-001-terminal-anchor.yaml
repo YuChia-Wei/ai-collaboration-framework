@@ -1,0 +1,32 @@
+schema_version: "1.0"
+evidence_id: "REL013-001-terminal-anchor"
+anchor_id: "v0.13-hosted-publication-and-coordination-completion"
+observed_state: "satisfied"
+observed_at: "2026-08-24T10:36:00+08:00"
+source:
+  kind: "live-github-readback"
+  references:
+    - "https://github.com/YuChia-Wei/ai-collaboration-framework/releases/tag/v0.13.0"
+    - "https://github.com/YuChia-Wei/ai-collaboration-framework/issues/61"
+facts:
+  hosted_release:
+    provider: "github"
+    repository: "YuChia-Wei/ai-collaboration-framework"
+    tag: "v0.13.0"
+    name: "REL-v0.13.0"
+    draft: false
+    prerelease: false
+    published_at: "2026-08-12T10:27:15Z"
+    target_commitish: "main"
+  coordination_issue:
+    provider: "github"
+    repository: "YuChia-Wei/ai-collaboration-framework"
+    number: 61
+    state: "closed"
+    state_reason: "completed"
+    closed_at: "2026-08-12T10:27:44Z"
+  reconciliation:
+    workflow_id: "2026-08-12-v0-13-release-readiness"
+    terminal_task_id: "REL013-001"
+    authority: "GitHub Issue #243"
+    note: "The live anchors prove the obsolete pre-merge resume projection is no longer current; retained intermediate outcomes remain unchanged."

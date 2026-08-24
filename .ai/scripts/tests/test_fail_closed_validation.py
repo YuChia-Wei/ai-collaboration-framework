@@ -805,7 +805,7 @@ class CheckAllRunnerGwtTests(unittest.TestCase):
             self.assertFalse(
                 any(
                     "test_ai_context_version_governance.py" in line
-                    or "test_ai_context_packaging.py" in line
+                    or "test_ai_context_packaging.py -v" in line
                     or "validate-source-governance.py" in line
                     or "test_repository_identity.py" in line
                     or "test_governance_workflow_contract.py" in line
@@ -2366,6 +2366,66 @@ class CheckAllRunnerGwtTests(unittest.TestCase):
                 finally:
                     fixture.close()
 
+    def test_gwt_039_given_wall_clock_rolls_back_when_runner_records_timing_then_logical_epoch_uses_monotonic_elapsed(
+        self,
+    ) -> None:
+        source = RUNNER_SOURCE.read_text(encoding="utf-8")
+        function = re.search(r"(?ms)^now_millis\(\) \{\n.*?^\}\n", source)
+        wall_function = re.search(
+            r"(?ms)^wall_clock_millis\(\) \{\n.*?^\}\n",
+            source,
+        )
+        self.assertIsNotNone(function)
+        self.assertIsNotNone(wall_function)
+        self.assertIn("RUNNER_WALL_ORIGIN_MS=$(wall_clock_millis)", source)
+        bash = bash_executable()
+        if not bash:
+            raise unittest.SkipTest("Bash is required for runner timing tests")
+
+        script = f"""
+RUNNER_WALL_ORIGIN_MS=1000000
+RUNNER_MONOTONIC_ORIGIN_MS=5000
+wall_clock_millis() {{ printf '999575\\n'; }}
+monotonic_millis() {{ printf '5425\\n'; }}
+{function.group(0)}
+printf '%s\\n' "$(now_millis)"
+"""
+        result = subprocess.run(
+            [bash, "-c", script],
+            cwd=REPO_ROOT,
+            check=False,
+            capture_output=True,
+            text=True,
+            encoding="utf-8",
+            errors="replace",
+            timeout=SUBPROCESS_TIMEOUT_SECONDS,
+        )
+
+        self.assertEqual(0, result.returncode, result.stdout + result.stderr)
+        self.assertEqual("1000425", result.stdout.strip())
+
+        missing_epoch = subprocess.run(
+            [
+                bash,
+                "-c",
+                f"""
+unset EPOCHREALTIME
+date() {{ printf 'unsupported-date-format\\n'; }}
+{wall_function.group(0)}
+wall_clock_millis
+""",
+            ],
+            cwd=REPO_ROOT,
+            check=False,
+            capture_output=True,
+            text=True,
+            encoding="utf-8",
+            errors="replace",
+            timeout=SUBPROCESS_TIMEOUT_SECONDS,
+        )
+        self.assertNotEqual(0, missing_epoch.returncode)
+        self.assertEqual("", missing_epoch.stdout)
+
 
 class ChangedPathDependencyClosureGwtTests(unittest.TestCase):
     @classmethod
@@ -2699,12 +2759,14 @@ class ChangedPathDependencyClosureGwtTests(unittest.TestCase):
                 any(".ai/scripts/" in line for line in fixture.sentinel()),
                 fixture.sentinel(),
             )
-            self.assertFalse(
-                any(
-                    line.startswith("evidence supervise ")
-                    for line in fixture.evidence_sentinel()
-                )
-            )
+            supervision_calls = [
+                line
+                for line in fixture.evidence_sentinel()
+                if line.startswith("evidence supervise ")
+            ]
+            self.assertEqual(1, len(supervision_calls), supervision_calls)
+            self.assertIn("--bootstrap-snapshot-output", supervision_calls[0])
+            self.assertIn("validation-evidence.py verify-snapshot", supervision_calls[0])
         finally:
             fixture.close()
 

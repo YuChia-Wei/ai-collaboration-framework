@@ -944,7 +944,7 @@ for id in "${SELECTED_CHECK_ORDER[@]}"; do
     printf '%s\t%s\n' "$id" "${SELECTION_REASON_BY_ID[$id]}" >> "$EVIDENCE_SELECTED_CHECKS"
 done
 
-now_millis() {
+wall_clock_millis() {
     local value seconds fraction
     if [ -n "${EPOCHREALTIME:-}" ]; then
         seconds=${EPOCHREALTIME%.*}
@@ -954,9 +954,43 @@ now_millis() {
     fi
     value=$(date +%s%3N 2>/dev/null || true)
     case "$value" in
-        ''|*[!0-9]*) printf '%s\n' "$((SECONDS * 1000))" ;;
+        ''|*[!0-9]*) return 1 ;;
         *) printf '%s\n' "$value" ;;
     esac
+}
+
+monotonic_millis() {
+    local uptime seconds fraction
+    if [ -r /proc/uptime ]; then
+        IFS=' ' read -r uptime _ < /proc/uptime || return 1
+        case "$uptime" in
+            ''|*[!0-9.]*) return 1 ;;
+        esac
+        seconds=${uptime%.*}
+        fraction=${uptime#*.}000
+        printf '%s%03d\n' "$seconds" "$((10#${fraction:0:3}))"
+        return 0
+    fi
+    "$PYTHON_EXECUTABLE" -c 'import time; print(time.monotonic_ns() // 1_000_000)'
+}
+
+if ! RUNNER_WALL_ORIGIN_MS=$(wall_clock_millis) ||
+    ! RUNNER_MONOTONIC_ORIGIN_MS=$(monotonic_millis); then
+    echo "Validation runner could not initialize its logical monotonic clock." >&2
+    exit 2
+fi
+
+now_millis() {
+    local monotonic_now delta
+    monotonic_now=$(monotonic_millis) || return 1
+    case "$monotonic_now" in
+        ''|*[!0-9]*) return 1 ;;
+    esac
+    if [ "$monotonic_now" -lt "$RUNNER_MONOTONIC_ORIGIN_MS" ]; then
+        return 1
+    fi
+    delta=$((monotonic_now - RUNNER_MONOTONIC_ORIGIN_MS))
+    printf '%s\n' "$((RUNNER_WALL_ORIGIN_MS + delta))"
 }
 
 EVIDENCE_PATH="$LOG_DIR/evidence.jsonl"

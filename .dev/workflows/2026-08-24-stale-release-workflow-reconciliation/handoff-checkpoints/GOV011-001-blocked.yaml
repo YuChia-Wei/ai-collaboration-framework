@@ -1,0 +1,161 @@
+schema_version: "1.0"
+checkpoint_id: "2026-08-24-stale-release-workflow-reconciliation-GOV011-001-blocked"
+created_at: "2026-08-24T14:50:38+08:00"
+repository:
+  root: "."
+  branch: "codex/2026-08-24-stale-release-workflow-reconciliation"
+  validated_commit: "225ac6d4e5b121ff34065a99a798755d9d953cbd"
+  checkpoint_commit_source: "containing-commit"
+  dirty_state: "clean"
+  status_porcelain_sha256: "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+workflow:
+  workflow_id: "2026-08-24-stale-release-workflow-reconciliation"
+  task_id: "GOV011-VAL-001"
+resume:
+  last_completed_action: "Fast attempt 1 passed on 774ef586; critical attempt 1 timed out at its delegated 900-second boundary and diagnostics proved a distinct aggregate-runner ceiling plus two stale fixture assertions, now repaired with focused passes."
+  exact_next_action: "Commit the second repair head, externally validate all 74 aggregate-runner tests, then run aggregate attempts 2 on the new exact head."
+  hidden_context_required: false
+critical_gate:
+  command: '"C:\Program Files\Git\bin\bash.exe" .ai/scripts/check-all.sh --critical'
+  observed_at: "2026-08-24T11:45:20+08:00"
+  exit_code: 1
+  outcome: "failed"
+  output:
+    normalization: "utf8-lf"
+    sha256: "a41a9b0067f8c68d1653ac5365338d5eec5df2871ab8f03e9b195a7d8655a3eb"
+    line_count: 36
+    tail:
+      - "Required Failed: 32"
+      - "Required Blocked: 0"
+      - "Required Deferred: 0"
+      - "Total wall time: 370s across 65 selected checks"
+      - "AI_CONTEXT_CHECK_TIMING total_seconds=370 profile=release checks=65 executed=32 reused=0 failed=32 blocked=0"
+      - "Completed at 2026-08-24 11:44:31"
+      - "32 Check(s) Failed!"
+continuation:
+  allowed: true
+  mode: "repair-only"
+  reason: "The owner explicitly authorized bounded repair of the measured timeout and cross-platform supervision failures; unrelated work remains prohibited."
+  repair_task_id: "GOV011-VAL-001"
+  failure_ids:
+    - "selected-fast-gate-nonpassing"
+    - "critical-package-apply-timeout"
+    - "wsl-supervisor-clock-adjustment"
+release_handoff: false
+release_phase_check: null
+execution_provenance:
+  runtime: "OpenAI Codex"
+  model: "gpt-5.6-sol"
+  reasoning_effort: "high"
+  model_source: "runtime-reported"
+  evidence_ref: ".dev/workflows/2026-08-24-stale-release-workflow-reconciliation/tasks/GOV011-001.json"
+attribution:
+  preservation_required: true
+  evidence_union_version: "1.0"
+  selected_evidence:
+    kind: "repository-created-local-ai-trailer"
+    commit: "225ac6d4e5b121ff34065a99a798755d9d953cbd"
+    author: "YuChia <h42279@gmail.com>"
+    committer: "YuChia <h42279@gmail.com>"
+    signature_status: "unsigned"
+    session_ref: null
+    observed_trailer: "Co-Authored-By: OpenAI Codex (gpt-5.6-sol, high) <noreply@openai.com>"
+    message_sha256: "7ebeabb5f062a19a70e76c7a1ee02c8808223f47223a1fd5075aa81778e0f45d"
+    fixture_ref: "git:225ac6d4e5b121ff34065a99a798755d9d953cbd"
+  fixture_status:
+    - path_id: "copilot-cli"
+      status: "blocked"
+      commit: null
+      evidence_ref: ".dev/workflows/2026-07-21-v0-5-0-development/evidence/v050-handoff-attribution-fixtures.md#github-copilot-cli"
+      reason: "No provider-generated Copilot CLI commit fixture is present in this repository."
+    - path_id: "copilot-cloud-agent"
+      status: "blocked"
+      commit: null
+      evidence_ref: ".dev/workflows/2026-07-21-v0-5-0-development/evidence/v050-handoff-attribution-fixtures.md#github-copilot-cloud-agent"
+      reason: "No provider-generated Copilot cloud-agent commit fixture is present in this repository."
+    - path_id: "claude"
+      status: "blocked"
+      commit: null
+      evidence_ref: ".dev/workflows/2026-07-21-v0-5-0-development/evidence/v050-handoff-attribution-fixtures.md#claude"
+      reason: "No stable provider-generated Claude commit attribution fixture is available."
+    - path_id: "codex-local"
+      status: "captured"
+      commit: "225ac6d4e5b121ff34065a99a798755d9d953cbd"
+      evidence_ref: "git:225ac6d4e5b121ff34065a99a798755d9d953cbd"
+      reason: null
+retained_root_cause_diagnostics:
+  - diagnostic_id: "wsl-supervision-clock-adjustment-01"
+    outcome: "reproduced"
+    facts: "A minimal WSL supervision raw receipt recorded 10.113380 seconds monotonic duration while its UTC timestamps spanned 10.969 seconds; the 0.856-second adjustment exceeded the validator's fixed 2ms tolerance."
+  - diagnostic_id: "windows-multi-hop-duration-01"
+    outcome: "passed"
+    facts: "31/31 tests passed in 241.016 seconds; the registered 90-second timeout is below measured terminal duration."
+  - diagnostic_id: "windows-package-apply-duration-01"
+    outcome: "passed-with-platform-skip"
+    facts: "90 tests ran in 429.674 seconds with 89 passed and one Windows symlink privilege skip; the registered 90-second timeout is below measured terminal duration."
+  - diagnostic_id: "wsl-supervision-clock-adjustment-02"
+    outcome: "passed"
+    facts: "After repair, WSL supervision completed with exit 0 and authenticated 28.531658 seconds monotonic duration plus a 2.683342-second wall-clock adjustment; wrapper verification returned completed, true, exit 0."
+  - diagnostic_id: "windows-aggregate-runner-duration-01"
+    outcome: "failed"
+    facts: "The complete suite ran 74 tests in 894.656 seconds with 72 passed and exactly two stale fixture assertion failures; its registered 300-second timeout is below measured terminal duration."
+  - diagnostic_id: "windows-validation-evidence-duration-01"
+    outcome: "passed-with-platform-skip"
+    facts: "The complete suite ran 38 tests in 161.591 seconds with 37 passed and one platform skip; the registered 180-second timeout did not fail and remains unchanged."
+retained_validation_attempts:
+  - attempt_id: "parent-fast-ea1852fd-interrupted"
+    subject_commit: "ea1852fd8944cad29c2c6dfe31abbe1cc091d023"
+    command: '"C:\Program Files\Git\bin\bash.exe" .ai/scripts/check-all.sh --profile fast'
+    outcome: "interrupted"
+    evidence_availability: "local-ignored-only"
+    evidence_ref: "artifacts/validation/20260824T024513Z-952"
+    facts: "The parent interrupted after the multi-hop timeout; no terminal summary or seal exists, so this attempt is not passed."
+  - attempt_id: "issue-243-fast-profile-ea1852fd"
+    subject_commit: "ea1852fd8944cad29c2c6dfe31abbe1cc091d023"
+    command: '"C:\Program Files\Git\bin\bash.exe" .ai/scripts/check-all.sh --profile fast'
+    outcome: "blocked-by-environment"
+    evidence_availability: "local-ignored-only"
+    evidence_ref: ".codex/validation/issue-243-fast-profile-ea1852fd/completion.yaml"
+    facts: "Git Bash could not create its signal pipe (Win32 error 5); the profile did not launch."
+  - attempt_id: "issue-243-fast-profile-ea1852fd-host-02"
+    subject_commit: "ea1852fd8944cad29c2c6dfe31abbe1cc091d023"
+    command: '"C:\Program Files\Git\bin\bash.exe" .ai/scripts/check-all.sh --profile fast'
+    outcome: "failed"
+    evidence_availability: "local-ignored-only"
+    evidence_ref: ".codex/validation/issue-243-fast-profile-ea1852fd-host-02/completion.yaml"
+    facts: "42 selected, 22 executed, 20 failed, 0 blocked; multi-hop-upgrade-transaction timed out after 90 seconds and 19 later checks were not launched."
+  - attempt_id: "issue-243-fast-c5f99794-wsl-ext4-03"
+    subject_commit: "c5f99794947f53f13c5b789e14c0f83e15a5d34d"
+    command: "wsl.exe Ubuntu-24.04 fast profile in an ephemeral ext4 clone"
+    outcome: "blocked-by-environment"
+    evidence_availability: "local-ignored-only"
+    evidence_ref: ".codex/validation/issue-243-fast-c5f99794-wsl-ext4-03/completion.yaml"
+    facts: "The ephemeral clone path did not survive until delegated preflight; the profile did not launch."
+  - attempt_id: "issue-243-fast-c5f99794-wsl-home-04"
+    subject_commit: "c5f99794947f53f13c5b789e14c0f83e15a5d34d"
+    command: "wsl.exe Ubuntu-24.04 fast profile in a persistent WSL-home ext4 clone"
+    outcome: "failed"
+    evidence_availability: "local-ignored-only"
+    evidence_ref: ".codex/validation/issue-243-fast-c5f99794-wsl-home-04/completion.yaml"
+    facts: "42 selected, 21 executed, 22 failed, 0 blocked; supervision reported inconsistent raw duration and an unreadable receipt."
+  - attempt_id: "issue-243-critical-ceee8b30-handoff-01"
+    subject_commit: "ceee8b30786c2e7a4587c75e534172c73e6edc21"
+    command: '"C:\Program Files\Git\bin\bash.exe" .ai/scripts/check-all.sh --critical'
+    outcome: "failed"
+    evidence_availability: "local-ignored-only"
+    evidence_ref: ".codex/validation/issue-243-critical-ceee8b30-handoff-01/completion.yaml"
+    facts: "65 selected, 32 executed, 32 failed, 0 blocked; package-apply timed out after 90 seconds and 31 later checks were not launched."
+  - attempt_id: "issue-243-fast-774ef586-attempt-01"
+    subject_commit: "774ef5864dafd7e07fa6ceb63aa46c33cd99d158"
+    command: '"C:\Program Files\Git\bin\bash.exe" .ai/scripts/check-all.sh --profile fast'
+    outcome: "passed"
+    evidence_availability: "local-ignored-only"
+    evidence_ref: ".codex/validation/issue-243-fast-774ef586-attempt-01/completion.yaml"
+    facts: "42 selected, 41 executed, 0 failed, 0 blocked, 1 not applicable; the 338-second profile-budget excess was an advisory warning."
+  - attempt_id: "issue-243-critical-774ef586-attempt-01"
+    subject_commit: "774ef5864dafd7e07fa6ceb63aa46c33cd99d158"
+    command: '"C:\Program Files\Git\bin\bash.exe" .ai/scripts/check-all.sh --critical'
+    outcome: "timed-out"
+    evidence_availability: "local-ignored-only"
+    evidence_ref: ".codex/validation/issue-243-critical-774ef586-attempt-01/completion.yaml"
+    facts: "The 900-second delegated boundary terminated the run after 48 executed passes, 0 failures, 0 blocked, and 2 not applicable; 15 selected checks were unfinished and no aggregate seal exists."

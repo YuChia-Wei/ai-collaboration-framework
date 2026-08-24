@@ -1049,6 +1049,40 @@ class ValidationEvidenceCoreGwtTests(ValidationEvidenceFixture):
         self.assertNotEqual(fingerprint, dirty_fingerprint)
         self.assertFalse(dirty_reusable)
 
+    def test_gwt_005b_given_authenticated_wall_clock_adjustment_when_timing_is_derived_then_monotonic_duration_is_authoritative(self) -> None:
+        module = self.load_helper_module("clock_adjustment")
+        raw = {
+            "started_at": "2026-08-24T06:33:15.440Z",
+            "finished_at": "2026-08-24T06:33:17.296Z",
+            "duration_seconds": 1.0,
+            "clock_adjustment_seconds": 0.856,
+        }
+
+        self.assertEqual(
+            {
+                "started_ms": 1787553195440,
+                "completed_ms": 1787553196440,
+                "duration_ms": 1000,
+            },
+            module.raw_supervisor_timing(raw),
+        )
+
+        raw["clock_adjustment_seconds"] = 0.1
+        with self.assertRaisesRegex(
+            module.EvidenceError, "raw supervisor clock adjustment is inconsistent"
+        ):
+            module.raw_supervisor_timing(raw)
+
+        legacy = {
+            "started_at": "1970-01-01T00:00:01.000Z",
+            "finished_at": "1970-01-01T00:00:01.010Z",
+            "duration_seconds": 0.01,
+        }
+        self.assertEqual(
+            {"started_ms": 1000, "completed_ms": 1010, "duration_ms": 10},
+            module.raw_supervisor_timing(legacy),
+        )
+
 class ValidationEvidenceReadinessGwtTests(ValidationEvidenceFixture):
     """Exhaustive durability, recovery, and tamper coverage for external readiness."""
 
@@ -1807,6 +1841,9 @@ class ValidationEvidenceReadinessGwtTests(ValidationEvidenceFixture):
             "timeout": lambda raw, wrapper: raw.__setitem__("timeout_seconds", 11.0),
             "grace": lambda raw, wrapper: raw.__setitem__("termination_grace_seconds", 2.0),
             "timing": raw_timing,
+            "clock-adjustment": lambda raw, wrapper: raw.__setitem__(
+                "clock_adjustment_seconds", 0.5
+            ),
             "exit": lambda raw, wrapper: raw.__setitem__("child_exit_code", 1),
             "log": lambda raw, wrapper: raw["log"].__setitem__("bytes", raw["log"]["bytes"] + 1),
             "status": lambda raw, wrapper: raw.__setitem__("status", "timed-out"),

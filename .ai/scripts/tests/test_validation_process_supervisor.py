@@ -666,6 +666,11 @@ while True:
         with self.assertRaisesRegex(ValueError, "absolute path"):
             supervisor._validate_receipt_invariants(privacy_leak)  # noqa: SLF001
 
+        forged_adjustment = json.loads(json.dumps(receipt))
+        forged_adjustment["clock_adjustment_seconds"] += 1.0
+        with self.assertRaisesRegex(ValueError, "inconsistent clock_adjustment"):
+            supervisor._validate_receipt_invariants(forged_adjustment)  # noqa: SLF001
+
     @unittest.skipUnless(UNSUPPORTED_POSIX, "non-Linux POSIX fail-closed contract")
     def test_gwt_009_given_nonlinux_posix_when_supervision_is_requested_then_command_does_not_start(self) -> None:
         mutation_path = self.work / "must-not-run"
@@ -1019,6 +1024,53 @@ while True:
         )
         self.assertTrue(outcome.termination["tree_empty"])
         self.assertFalse(target_marker.exists(), "target launched without parent ACK")
+
+    def test_gwt_020_given_wall_clock_adjusts_when_command_completes_then_monotonic_duration_and_adjustment_are_both_retained(self) -> None:
+        outcome = supervisor._RunOutcome(  # noqa: SLF001
+            status="completed",
+            child_exit_code=0,
+            mechanism="fixture-containment",
+            termination={
+                "soft_signal_sent": False,
+                "hard_kill_sent": False,
+                "root_reaped": True,
+                "tree_empty": True,
+                "trigger": None,
+                "active_processes": 0,
+                "verification": "fixture-empty",
+                "errors": [],
+            },
+        )
+        log_path = self.work / "clock-adjustment.log"
+        result_path = self.work / "clock-adjustment.json"
+
+        with (
+            mock.patch.object(
+                supervisor,
+                "_utc_now",
+                side_effect=(
+                    "2026-08-24T06:33:15.440Z",
+                    "2026-08-24T06:33:17.296Z",
+                ),
+            ),
+            mock.patch.object(supervisor.time, "monotonic", side_effect=(100.0, 101.0)),
+            mock.patch.object(supervisor, "_run_windows", return_value=outcome),
+            mock.patch.object(supervisor, "_run_posix", return_value=outcome),
+        ):
+            receipt = supervisor.supervise_command(
+                [sys.executable, "-c", "pass"],
+                cwd=self.work,
+                cwd_ref="fixture-repo",
+                log_path=log_path,
+                result_path=result_path,
+                timeout_seconds=3.0,
+                termination_grace_seconds=0.5,
+            )
+
+        self.assertEqual(1.0, receipt["duration_seconds"])
+        self.assertEqual(0.856, receipt["clock_adjustment_seconds"])
+        self.assertEqual("2026-08-24T06:33:15.440Z", receipt["started_at"])
+        self.assertEqual("2026-08-24T06:33:17.296Z", receipt["finished_at"])
 
 
 if __name__ == "__main__":

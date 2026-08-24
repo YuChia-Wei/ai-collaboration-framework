@@ -33,7 +33,7 @@ register_check assessment-artifacts-tests \
 register_check workflow-artifacts \
     "Workflow Artifact Metadata" required \
     "governance,metadata" "fast pr release nightly-full" \
-    ".dev/workflows" '' "python>=3.11" 30 cpu reuse-by-input source \
+    ".dev/workflows .dev/standards/WORKFLOW-ARTIFACT-POLICY.md .ai/scripts/validate-workflow-artifacts.py" '' "python>=3.11" 30 cpu reuse-by-input source \
     "python .ai/scripts/validate-workflow-artifacts.py" always
 register_check workflow-implementation-contract \
     "Workflow Implementation Contract Fail-Closed Tests" required \
@@ -44,7 +44,7 @@ register_check workflow-implementation-contract \
 register_check workflow-lifecycle-contract \
     "Workflow Lifecycle Contract Fail-Closed Tests" required \
     "governance,tests" "fast pr release nightly-full" \
-    ".ai/scripts/tests/test_workflow_lifecycle_contract.py .dev/workflows" workflow-artifacts \
+    ".ai/scripts/tests/test_workflow_lifecycle_contract.py .ai/scripts/tests/fixtures/workflow-terminal-anchors .ai/scripts/validate-workflow-artifacts.py .dev/standards/WORKFLOW-ARTIFACT-POLICY.md .dev/workflows" workflow-artifacts \
     "python>=3.11" 30 cpu reuse-by-input source \
     "python .ai/scripts/tests/test_workflow_lifecycle_contract.py -v" always
 register_check git-commit-policy \
@@ -132,7 +132,7 @@ register_check source-ai-context-version \
 register_check package-apply \
     "AI Context Safe Apply GWT Tests" required \
     "package,tests" "pr release nightly-full" \
-    ".ai/scripts/ai_context_package_apply.py .ai/scripts/tests/test_ai_context_package_apply.py" '' "python>=3.11 git" 90 io reuse-by-input portable \
+    ".ai/scripts/ai_context_package_apply.py .ai/scripts/tests/test_ai_context_package_apply.py" '' "python>=3.11 git" 600 io reuse-by-input portable \
     "python .ai/scripts/tests/test_ai_context_package_apply.py -v" always
 register_check payload-user-view \
     "Selected Payload User-View Fail-Closed Contract" required \
@@ -157,7 +157,7 @@ register_check provider-role-package-projection \
 register_check multi-hop-upgrade-transaction \
     "AI Context Multi-Hop Upgrade Transaction GWT Tests" required \
     "upgrade,transaction,tests" "fast pr release nightly-full" \
-    ".ai/assets/skills/ai-context-upgrader .ai/distribution/profiles/dotnet-backend.yaml .ai/scripts/ai_context_multi_hop_upgrade.py .ai/scripts/ai_context_package_apply.py .ai/scripts/ai_context_target_provenance.py .ai/scripts/ai_context_upgrade_routes.py .ai/scripts/tests/test_ai_context_multi_hop_upgrade.py" '' "python>=3.11 git" 90 io reuse-by-input portable \
+    ".ai/assets/skills/ai-context-upgrader .ai/distribution/profiles/dotnet-backend.yaml .ai/scripts/ai_context_multi_hop_upgrade.py .ai/scripts/ai_context_package_apply.py .ai/scripts/ai_context_target_provenance.py .ai/scripts/ai_context_upgrade_routes.py .ai/scripts/tests/test_ai_context_multi_hop_upgrade.py" '' "python>=3.11 git" 360 io reuse-by-input portable \
     "python .ai/scripts/tests/test_ai_context_multi_hop_upgrade.py -v" always
 register_check dependency-versions \
     "Offline Dependency And Version Consistency" required \
@@ -187,7 +187,7 @@ register_check file-disposition-manifest \
 register_check aggregate-runner-contract \
     "Aggregate Runner And Shell Registry Fail-Closed Tests" required \
     "runner,tests" "release nightly-full" \
-    ".ai/scripts/check-all.sh .ai/scripts/validation-profile-registry.sh .ai/scripts/tests/test_fail_closed_validation.py" shell-assets "python>=3.11 bash" 300 cpu no-reuse portable \
+    ".ai/scripts/check-all.sh .ai/scripts/validation-profile-registry.sh .ai/scripts/tests/test_fail_closed_validation.py" shell-assets "python>=3.11 bash" 1200 cpu no-reuse portable \
     "python .ai/scripts/tests/test_fail_closed_validation.py -v" always
 register_check profile-registry-contract \
     "Validation Profile Registry Contract" required \

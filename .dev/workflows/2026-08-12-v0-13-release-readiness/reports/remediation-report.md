@@ -2,7 +2,14 @@
 
 ## Status
 
-`in_progress`
+`completed`
+
+Issue #243 reconciled this historical workflow on 2026-08-24 from the declared
+tracked terminal anchor. Hosted Release `v0.13.0` and coordination Issue #61
+were read back live; the release was published and #61 was closed/completed on
+2026-08-12. This is workflow-state reconciliation, not a change to the terminal
+`release-source status: validated` record and not a tag, Release, asset, or
+package mutation.
 
 ## Reconciliation
 
@@ -12,7 +19,11 @@
 | #194 | resolved, validated, and closed | schema 1.1, focused tests, fixed commit `1491178`, retained dispatch/completion, independent cross-record validation, live Issue/Project read-back | no prepublication action |
 | #193 | addressed, owner-approved, and closed | `ASM-20260811-006`, real candidate report, comment `5260333539`, live Issue/Project read-back | no prepublication action |
 | #197 | addressed, focused-validated, and closed | PR base/head changed-release selection, 13/13 renderer tests, candidate workflow contract test, comment `5265085663`, live Issue/Project read-back | exact-head hosted checks remain the release integration gate |
-| #61 | release coordination | R2/R3/package implementation integrated | retain open through candidate and tag handoff; close after hosted publication |
+| #61 | release coordination completed | live Issue read-back: `closed/completed` at `2026-08-12T10:27:44Z`; hosted Release `v0.13.0` published at `2026-08-12T10:27:15Z` | no workflow-owned action |
+
+The former #61 row and `REL013-001.execution.next_action` described the
+2026-08-12 pre-merge checkpoint. The task retains that text under
+`superseded_next_action`; it is no longer current execution state.
 
 ## Validation
 
@@ -31,6 +42,15 @@
 - AI attribution reconciliation rebuilt all nine workflow commits with the primary `gpt-5.6-sol/max` identity and added `gpt-5.6-luna/high` Sub-Agent trailers only where delegated evidence was committed. The owner then rewrote the branch to the clean linear corrected chain at `ff70dc38ab97d287dde9b5a3fe9f364a26b4c947`; all nine old/new pairs remain tree-equivalent, while the old chain and abandoned preservation merge are no longer ancestors.
 - #197 binds PR candidate selection to governed release records changed between the PR base and head. Git-backed fixtures prove v0.12 historical validation plus one v0.13 change selects v0.13, no candidate returns the dedicated not-applicable status, multiple candidates fail closed, and deleting a release record fails closed.
 
-## Residual Risk
+## Historical Residual Risk At The 2026-08-12 Checkpoint (retained)
 
 The owner read back and accepted the real candidate, and #193 is closed with completed prepublication state. The external-task callback/dedup defect remains unresolved and must not be represented as passing; it is not used as the release-runner oracle. The owner's clean history rewrite is authoritative: the old evidence chain and preservation merge remain historical references only and must not be merged back. Any future force-push requires an explanation plus explicit owner authorization, or a prepared branch and exact owner commands. No tag is authorized until #197 provider closeout and exact-head hosted checks pass, the branch integrates through the selected merge-commit topology, and the final clean integrated `main` preparation command passes and prints the exact owner command.
+
+## Current Residual Risk
+
+The tracked terminal-anchor evidence is a point-in-time provider observation.
+Ordinary validation intentionally does not require GitHub credentials and does
+not claim continued live parity. A later provider mutation would need a new
+authorized live reconciliation. The retained failed candidate attempts,
+sandbox block, and callback transport failure remain non-passing historical
+evidence; workflow completion does not convert their outcomes.

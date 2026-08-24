@@ -7,17 +7,18 @@
 - `owner_skill`: `ai-context-governance`
 - `branch`: `codex/2026-08-12-v0-13-release-readiness`
 - `base_branch`: `main`
-- `status`: `in_progress`
-- `current_phase`: `integration-validation`
+- `status`: `completed`
+- `current_phase`: `completed`
 - `artifact_root`: `.dev/workflows/2026-08-12-v0-13-release-readiness`
 - `created_at`: `2026-08-12T07:20:06+08:00`
-- `updated_at`: `2026-08-12T17:48:18+08:00`
+- `updated_at`: `2026-08-24T10:36:00+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md`
 - `template_version`: `1.2.0`
 
 ## Objective And Scope
 
-- Problem statement: the v0.13 implementation and candidate are complete, but PR candidate packaging still scans the accumulated release registry and therefore treats terminal `v0.12.0: validated` plus `v0.13.0: validated` as an ambiguous pair. The owner's clean branch rewrite also removed the former preservation merge from ancestry while the workflow evidence still claimed it remained present.
+- Historical problem statement at the 2026-08-12 checkpoint: the v0.13 implementation and candidate were complete, but PR candidate packaging still scanned the accumulated release registry and therefore treated terminal `v0.12.0: validated` plus `v0.13.0: validated` as an ambiguous pair. The owner's clean branch rewrite also removed the former preservation merge from ancestry while the workflow evidence still claimed it remained present.
+- Terminal reconciliation: Issue #243 recorded a live 2026-08-24 read-back showing hosted Release `v0.13.0` published at `2026-08-12T10:27:15Z` and coordination Issue #61 closed/completed at `2026-08-12T10:27:44Z`. The declared terminal anchor therefore supersedes the obsolete resume projection without changing the terminal source record or rewriting intermediate evidence.
 - Authorized outcome: complete all repository and provider work through an exact clean-main pre-tag preparation for `v0.13.0`, leaving only the repository owner's creation and push of the printed annotated tag command.
 - Included work: reconcile the already integrated and independently verified #187 SDK-free baseline; harden #194 with mandatory pre-send completion validation and a real schema-valid callback; author and validate the v0.13 release record, notes, migration guide, and phase contract; perform #193 archive/payload review; bind PR candidate selection to changed governed release records under #197; reconcile the owner's clean corrected branch topology; reconcile #61 and included Issues; pass focused, hosted, candidate, provider-preflight, and merged-main pre-tag gates.
 - Exclusions: creating, moving, deleting, recreating, or pushing `v0.13.0`; creating a GitHub Release or publishing assets; changing `EngineeringGuardrails.Contracts.*` under #179; rewriting historical release or assessment evidence.
@@ -46,7 +47,11 @@
 | External completion envelope | #194 | `ai-context-governance` | `VAL005-002` | pre-send schema validator plus real source-task callback |
 | v0.13 candidate and tag handoff | #187, #193, #197, #61 | `ai-context-governance` | `REL013-001` | changed-release binding, candidate archive review, hosted PR checks, provider preflight, clean-main preparation |
 
-## Stages And Checkpoints
+## Historical Stages And Checkpoints (retained)
+
+The stage states below are the last durable 2026-08-12 intermediate snapshot.
+They remain evidence and are not the current resume projection after the
+declared terminal-anchor reconciliation.
 
 1. Freeze `main@afd54f63db51d88bb573e758535ae9692f8aa61a`, live Issue/Project state, and the completed #187/#191/#192/#193 implementation evidence. `completed`
 2. Require delegated tasks to validate the complete terminal envelope before source-task delivery, then prove it with a real callback. `completed`
@@ -55,7 +60,15 @@
 5. Close #193/#197, retain #61 as release coordination, reconcile the owner-rewritten clean branch, push without history rewriting, pass hosted checks, and merge with the selected topology. `in_progress`
 6. On the final clean integrated `main`, pass provider preflight and pre-tag preparation, then hand the printed annotated-tag command to the owner without executing it. `pending`
 
-## Resume Checkpoint
+## Current Reconciliation Checkpoint
+
+- Last completed action: reconciled the v0.13 workflow and `REL013-001` to `completed` from the declared tracked terminal anchor under Issue #243.
+- Current task: none; all workflow-owned tasks are terminal.
+- Exact next action: none inside this historical workflow. Integration of the #243 governance change remains a separate pull-request/provider action.
+- Validation already available: tracked terminal-anchor evidence, focused positive/negative fixture coverage, and repository workflow validation recorded by the #243 workflow.
+- Blockers: none for workflow completion. Provider refresh is intentionally outside ordinary offline validation.
+
+## Superseded Resume Checkpoint (retained 2026-08-12)
 
 - Last completed action: the owner rewrote the remote branch to clean corrected head `ff70dc38ab97d287dde9b5a3fe9f364a26b4c947`; local and remote matched, the old evidence chain and preservation merge were no longer ancestors, and all nine original/corrected pairs remained tree-equivalent. #197 then added PR base/head changed-release binding, passed focused Git-backed regression coverage, and reached closed/completed provider state with `Done / Approved / P1 High / v0.13.0 / Not yet published`.
 - Current task: `REL013-001`.
