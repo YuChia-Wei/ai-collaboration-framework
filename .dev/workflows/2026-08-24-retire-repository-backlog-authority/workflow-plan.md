@@ -74,16 +74,16 @@ Two substantive tasks are retained because the implementation boundary and the i
 
 ## Resume Checkpoint
 
-- Last completed action: Preserved `ASM-20260824-003#GOV012-AUD-003` and replaced checkout-dependent frozen worktree hashing with raw `HEAD` Git-blob hashing plus staged/unstaged drift rejection.
-- Current task: `GOV012-VAL-001`
-- Exact next action: Commit the Git-blob freeze repair and failed audit receipt, then run fresh exact-head release validation and independent audit.
-- Validation already completed: authority and unit gates; 54 terminal-closure tests; 37 release-state tests; 19 package-validation tests with one Windows case-fold skip; focused profile and package projection tests; AI-context and workflow validation. Sandbox Temp ACL failures were preserved and then passed in host context where rerun.
-- Git state: third audit receipt and bounded Git-blob freeze repair are uncommitted on `codex/2026-08-24-retire-repository-backlog-authority`.
-- Branch history and checkpoint handoffs: segment 1 created from verified `origin/main`; no push, merge, or handoff performed.
+- Last completed action: Accepted `ASM-20260825-001`, which passed the exact-head audit of `ba7c159a2d8fd58291ddc1e92036cb82acd23fb6` with zero findings after a 2012-second passing host-context aggregate reroute.
+- Current task: complete
+- Exact next action: Owner review and any separately authorized push, pull request, merge, Issue, or Project action.
+- Validation already completed: focused authority/legacy/prospective gates, source/workflow/assessment governance, terminal closure, release compatibility, packaging boundary, a retained failed sandbox aggregate, the passing host-context aggregate, and a passing independent exact-head audit.
+- Git state: evidence-only terminal closeout is uncommitted on `codex/2026-08-24-retire-repository-backlog-authority`; the audited implementation subject remains `ba7c159a2d8fd58291ddc1e92036cb82acd23fb6`.
+- Branch history and checkpoint handoffs: segment 1 created from verified `origin/main`; no push, merge, provider mutation, or release action performed.
 - Blockers or unresolved decisions: none; `.dev/standards/` is the selected single active source policy owner and `.dev/backlog/` is frozen historical evidence.
 
 ## Branch Lifecycle
 
 | Segment | Branch | Base | Checkpoint Type | Commit | Remote / Target | Recorded At | Reason | Resume Branch / Action |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| 1 | `codex/2026-08-24-retire-repository-backlog-authority` | `main@4be33ff90de061dc1db221f60e57ff6130cab54a` | none | pending | local only | `2026-08-24T20:11:36+08:00` | Initial authorized workflow segment | Continue `GOV012-001` on this branch. |
+| 1 | `codex/2026-08-24-retire-repository-backlog-authority` | `main@4be33ff90de061dc1db221f60e57ff6130cab54a` | audited implementation | `ba7c159a2d8fd58291ddc1e92036cb82acd23fb6` | local only | `2026-08-25T00:35:25+08:00` | Exact-head aggregate and independent audit passed; terminal evidence-only closeout follows. | Hand the local branch to the owner; do not infer push, PR, merge, Issue, Project, or release action. |

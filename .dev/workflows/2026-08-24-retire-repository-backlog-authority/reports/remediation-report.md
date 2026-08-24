@@ -33,7 +33,7 @@ profile projection, packaging boundary, source entrypoint, shell asset, and AI
 context checks were run. Windows Temp ACL blocks observed in the sandbox were
 preserved and the affected workflow-provider suite passed in host context.
 HEAD-bound source governance, delegated aggregate validation, and the independent
-exact-head audit remain assigned to `GOV012-VAL-001`.
+exact-head audit completed under `GOV012-VAL-001`.
 
 The first independent audit at
 `0c6c9c88a84ef358b52d732c66844b858d51e7c3` is retained as
@@ -57,6 +57,20 @@ the same subject found `GOV012-AUD-003` (HIGH): the frozen aggregate read
 worktree bytes, so clean CRLF/LF materialization could vary by checkout while
 Git status remained clean. Governance now hashes raw `HEAD` blob bytes and
 separately rejects staged or unstaged backlog drift.
+
+The first aggregate run for the repaired subject
+`ba7c159a2d8fd58291ddc1e92036cb82acd23fb6` retained a failed 824-second
+receipt after sandbox Temp ACL behavior caused `python-source-entrypoints` to
+time out. A focused host-context run passed in 21.194 seconds. The separately
+dispatched host-context aggregate reroute then passed in 2012 seconds with 65
+selected, 62 executed, zero failed, blocked, warning, or deferred checks, and
+three not-applicable checks. The failed receipt remains failed.
+
+`ASM-20260825-001` is the terminal independent assessment for the same exact
+subject. It verified all three prior findings closed, the 77-path Git-blob
+digest, staged and unstaged drift rejection, release compatibility, provider-
+neutral packaging, and both retained aggregate receipts. It returned `PASS`
+with no severity finding and did not mutate the subject.
 
 ## Excluded Actions
 

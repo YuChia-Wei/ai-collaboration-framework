@@ -6,9 +6,9 @@
   "task_id": "GOV012-VAL-001",
   "workflow_id": "2026-08-24-retire-repository-backlog-authority",
   "owner_skill": "ai-context-governance",
-  "status": "in_progress",
+  "status": "completed",
   "created_at": "2026-08-24T20:11:36+08:00",
-  "updated_at": "2026-08-24T23:25:07+08:00",
+  "updated_at": "2026-08-25T00:35:25+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-5.6-sol",
   "reasoning_effort": "high",
@@ -44,8 +44,8 @@
       "Workflow artifact and commit-range validation",
       "Final clean-worktree and branch/head read-back"
     ],
-    "last_completed_step": "The release profile passed at ba9b5277; audit invocation 03 stopped on Windows ACL cleanup, and fresh invocation 04 retained ASM-20260824-003#GOV012-AUD-003 for checkout-dependent backlog hashing; governance applied HEAD-blob hashing and staged/unstaged drift rejection.",
-    "next_action": "Commit the Git-blob freeze repair, run focused exact-head validation, and dispatch a fresh release profile and independent audit for that head.",
+    "last_completed_step": "The retained sandbox aggregate failed truthfully; its host-context reroute passed at ba7c159a in 2012 seconds, and ASM-20260825-001 passed the exact-head independent audit with zero findings and no mutation.",
+    "next_action": "Persist this evidence-only closeout and hand the local branch to the owner for separately authorized lifecycle actions.",
     "role_execution": [
       {
         "role_execution_id": "GOV012-VAL-001-fixed-head-independent-auditor-01",
@@ -337,15 +337,48 @@
         "attempts": [{"number": 1, "disposition": "delegated", "executor": {"kind": "runtime-worker", "identity": "/root/gov012_final_head_audit_reroute", "runtime_support_verified": true}, "invocation_evidence": {"invocation_id": "/root/gov012_final_head_audit_reroute#attempt-1", "started_at": "2026-08-24T15:15:13.509Z", "completed_at": "2026-08-24T23:25:07.7442420+08:00", "outcome": "completed-with-failed-audit", "evidence_refs": ["ASM-20260824-003"]}, "outcome": "completed", "correctable_failure": false, "material_state_change": "", "authorization_source": ["Issue #245", "GOV012-VAL-001 reroute packet"], "evidence_refs": ["ASM-20260824-003"]}],
         "fallback": {"considered": false, "reason": "No fallback or repair is permitted for the auditor.", "resulting_disposition": null, "inline_contract_evidence": {"same_role_path_and_mandatory_references": false, "bounded_input_output_permissions_stop": false, "approval_security_credential_boundaries_satisfied": false, "disjoint_mutation_scope": false, "named_parent_and_final_integration_owner": false, "current_inline_support_verified": false, "evidence_refs": []}},
         "final_integration_owner": {"owner": "ai-context-governance/source-task:01a02d8e-8fb8-7771-beac-b3520923e6d7", "decision": "accepted", "evidence_refs": ["ASM-20260824-003", "GOV012-AUD-003 repair in current working tree"]}
+      },
+      {
+        "role_execution_id": "GOV012-VAL-001-fixed-head-independent-auditor-05",
+        "role_asset_id": "fixed-head-independent-auditor",
+        "role_path": ".ai/assets/sub-agent-role-prompts/fixed-head-independent-auditor/sub-agent.yaml",
+        "owning_skill": "ai-context-upgrader",
+        "stage_id": "terminal-fixed-head-independent-audit",
+        "applicability": {"result": "applies", "reason": "Issue #245 explicitly selected a terminal audit after GOV012-AUD-003 repair."},
+        "selection": {
+          "disposition": "delegated",
+          "reason": "Fresh read-only isolation from implementation and integration ownership was required.",
+          "delegation_evaluation": {
+            "safety_gates": {"applicable_role": true, "current_session_runtime_support_verified": true, "bounded_input_output_permissions_stop": true, "approval_security_credential_boundaries_satisfied": true, "disjoint_mutation_scope": true, "named_parent_and_final_integration_owner": true},
+            "material_value_triggers": ["meaningful_isolation", "specialist_context_benefit"],
+            "cost_failure_retry_risk": {"result": "supports-delegation", "reason": "The repaired high-risk subject required independent fail-closed verification."}
+          }
+        },
+        "input_envelope": {
+          "goal": "Audit Issue #245 at exact clean subject ba7c159a2d8fd58291ddc1e92036cb82acd23fb6.",
+          "scope": ["authority and policy ownership", "raw Git-blob freeze and drift gates", "prospective enforcement", "release compatibility", "provider-neutral packaging", "retained failed and passing aggregate evidence"],
+          "non_goals": ["repair or persistence", "provider, release, publication, or integration mutation", "full release rerun"],
+          "source_refs": ["Issue #245", "ASM-20260824-001", "ASM-20260824-002", "ASM-20260824-003", "artifacts/validation/gov012-release-ba7c159a/external-task-completion.yaml", "artifacts/validation/gov012-release-ba7c159a-host/external-task-completion.yaml"],
+          "mandatory_references": [".ai/assets/sub-agent-role-prompts/fixed-head-independent-auditor/sub-agent.yaml", ".ai/assets/sub-agent-role-prompts/fixed-head-independent-auditor/references/fixed-head-independent-audit-playbook.md", ".ai/assets/shared/ROLE-EXECUTION-CONTRACT.md", ".ai/assets/skills/ai-context-upgrader/references/role-execution-bindings.yaml"],
+          "constraints": ["read-only", "exact fixed clean commit", "retain prior failed evidence", "no temp-producing or long-running suite"],
+          "stop_conditions": ["subject drift or dirty tracked state", "missing evidence or cleanup failure", "repair or write request"]
+        },
+        "permissions": {"read_scope": ["repository", "ignored sealed validation receipts"], "write_scope": [], "external_actions": [], "secret_handling": "no-secret-values"},
+        "executor": {"kind": "runtime-worker", "identity": "/root/gov012_blob_fixed_head_audit", "runtime_support_verified": true},
+        "invocation_evidence": {"invocation_id": "/root/gov012_blob_fixed_head_audit#attempt-1", "started_at": "2026-08-24T16:26:26.157Z", "completed_at": "2026-08-25T00:35:25.1220002+08:00", "outcome": "completed", "evidence_refs": ["ASM-20260825-001"]},
+        "output": {"expected": ["PASS, FAIL, or BLOCKED exact-subject result", "severity findings and retained evidence"], "returned": ["PASS", "GOV012-AUD-001, GOV012-AUD-002, and GOV012-AUD-003 closed", "zero findings", "subject mutation false"], "evidence_refs": [".dev/assessments/ASM-20260825-001/report.md"], "bounded": true},
+        "attempts": [{"number": 1, "disposition": "delegated", "executor": {"kind": "runtime-worker", "identity": "/root/gov012_blob_fixed_head_audit", "runtime_support_verified": true}, "invocation_evidence": {"invocation_id": "/root/gov012_blob_fixed_head_audit#attempt-1", "started_at": "2026-08-24T16:26:26.157Z", "completed_at": "2026-08-25T00:35:25.1220002+08:00", "outcome": "completed", "evidence_refs": ["ASM-20260825-001"]}, "outcome": "completed", "correctable_failure": false, "material_state_change": "", "authorization_source": ["Issue #245 owner delegation", "GOV012-VAL-001 final audit packet"], "evidence_refs": ["ASM-20260825-001"]}],
+        "fallback": {"considered": false, "reason": "Delegated audit completed; no fallback or repair was needed.", "resulting_disposition": null, "inline_contract_evidence": {"same_role_path_and_mandatory_references": false, "bounded_input_output_permissions_stop": false, "approval_security_credential_boundaries_satisfied": false, "disjoint_mutation_scope": false, "named_parent_and_final_integration_owner": false, "current_inline_support_verified": false, "evidence_refs": []}},
+        "final_integration_owner": {"owner": "ai-context-governance/source-task:01a02d8e-8fb8-7771-beac-b3520923e6d7", "decision": "accepted", "evidence_refs": ["ASM-20260825-001", "evidence-only workflow closeout"]}
       }
     ]
   },
   "results": {
-    "summary": "",
-    "files_changed": [],
-    "tests_run": [],
-    "finding_status": "not-addressed",
-    "residual_risk": "Pending implementation head, delegated validation, and independent audit.",
-    "follow_up_needed": true
+    "summary": "Issue #245 passed focused governance, exact-subject aggregate validation, and the independent fixed-head audit; all three audit findings are closed while failed and blocked evidence remains retained.",
+    "files_changed": [".dev/assessments/ASM-20260825-001/", ".dev/workflows/2026-08-24-retire-repository-backlog-authority/"],
+    "tests_run": ["python -B .ai/scripts/tests/test_source_work_management.py -v", "python -B .ai/scripts/validate-source-work-management.py", "python -B .ai/scripts/validate-source-governance.py", "python -B .ai/scripts/validate-assessment-artifacts.py", "python -B .ai/scripts/validate-workflow-artifacts.py", "C:/Program Files/Git/bin/bash.exe .ai/scripts/check-all.sh --profile release --base 4be33ff90de061dc1db221f60e57ff6130cab54a --head ba7c159a2d8fd58291ddc1e92036cb82acd23fb6", "fixed-head-independent-auditor at ba7c159a2d8fd58291ddc1e92036cb82acd23fb6"],
+    "finding_status": "addressed",
+    "residual_risk": "Live provider values were not re-declared by the terminal auditor; all remote lifecycle and release actions remain separate owner decisions.",
+    "follow_up_needed": false
   }
 }

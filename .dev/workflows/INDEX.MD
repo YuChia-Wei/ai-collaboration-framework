@@ -8,7 +8,7 @@ task-level progress.
 
 | Workflow | Title | Owner | Status | Updated | Entry Point |
 | --- | --- | --- | --- | --- | --- |
-| [`2026-08-24-retire-repository-backlog-authority`](2026-08-24-retire-repository-backlog-authority/workflow.yaml) | Retire repository backlog and roadmap as current authority | `ai-context-governance` | `in_progress` | `2026-08-24T23:25:07+08:00` | [plan](2026-08-24-retire-repository-backlog-authority/workflow-plan.md) |
+| [`2026-08-24-retire-repository-backlog-authority`](2026-08-24-retire-repository-backlog-authority/workflow.yaml) | Retire repository backlog and roadmap as current authority | `ai-context-governance` | `completed` | `2026-08-25T00:35:25+08:00` | [plan](2026-08-24-retire-repository-backlog-authority/workflow-plan.md) |
 | [`2026-08-24-stale-release-workflow-reconciliation`](2026-08-24-stale-release-workflow-reconciliation/workflow.yaml) | Detect and reconcile release workflows left stale after terminal anchors | `ai-context-governance` | `completed` | `2026-08-24T17:55:00+08:00` | [plan](2026-08-24-stale-release-workflow-reconciliation/workflow-plan.md) |
 | [`2026-08-23-v014-release-notes-publication-safety`](2026-08-23-v014-release-notes-publication-safety/workflow.yaml) | Make v0.14.0 release notes publication-safe and correct the hosted body | `ai-context-governance` | `completed` | `2026-08-24T08:20:53+08:00` | [plan](2026-08-23-v014-release-notes-publication-safety/workflow-plan.md) |
 | [`2026-08-23-pkg-013-journal-v5`](2026-08-23-pkg-013-journal-v5/workflow.yaml) | PKG-013 bounded package-apply journal v5 | `ai-context-governance` | `in_progress` | `2026-08-23T22:22:27+08:00` | [plan](2026-08-23-pkg-013-journal-v5/workflow-plan.md) |
