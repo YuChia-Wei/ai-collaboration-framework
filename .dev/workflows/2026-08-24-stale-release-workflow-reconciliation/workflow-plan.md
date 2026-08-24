@@ -16,10 +16,10 @@
 - `base_branch`: `main`
 - `branch_segment`: `1`
 - `status`: `in_progress`
-- `current_phase`: `remediation`
+- `current_phase`: `verification`
 - `artifact_root`: `.dev/workflows/2026-08-24-stale-release-workflow-reconciliation`
 - `created_at`: `2026-08-24T10:28:32+08:00`
-- `updated_at`: `2026-08-24T10:43:01+08:00`
+- `updated_at`: `2026-08-24T11:06:16+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md`
 - `template_version`: `1.2.0`
 
@@ -49,21 +49,22 @@ This single-task workflow is proportional because it retains unique external-lif
 2. Define and implement the declared terminal-anchor contract and offline validator coverage.
 3. Reconcile the known v0.13 workflow/task without rewriting retained intermediate outcomes.
 4. Run focused, AI-context, workflow, and source-governance validation.
-5. Commit an immutable subject and obtain independent read-only exact-head audit.
+5. Commit immutable subjects and obtain independent read-only exact-head audit.
 6. Record final evidence and close the repository workflow separately from provider integration.
 
 ## Resume Checkpoint
 
-- Last completed action: Implemented the declared terminal-anchor contract, deterministic positive/negative fixtures, validation routing, and the known v0.13 reconciliation; focused workflow, AI-context, profile-routing, and source-governance checks passed.
+- Last completed action: Committed the declared terminal-anchor contract and known reconciliation at `ea1852fd8944cad29c2c6dfe31abbe1cc091d023`; focused workflow, AI-context, profile-routing, and source-governance checks passed. The attempted repository-wide fast profile was retained as failed after an unrelated unchanged multi-hop suite exceeded its 90-second timeout.
 - Current task: `GOV011-001`
-- Exact next action: Review the full diff, create the durable implementation commit, run the `fast` aggregate profile on that immutable commit, and request an independent read-only exact-head governance audit.
-- Validation already completed: 16/16 workflow lifecycle tests; workflow artifact validator; AI-context validator; source-governance validator; 7/7 validation-profile registry tests; 2/2 directly applicable CheckAll routing tests; `git diff --check`.
-- Git state: Dedicated local branch with intended tracked changes not yet committed; no provider mutation.
+- Exact next action: Commit the validation reconciliation and request an independent read-only audit of the new exact head against the Issue-scoped acceptance gates.
+- Validation already completed: 16/16 workflow lifecycle tests; workflow artifact validator; AI-context validator; source-governance validator; 7/7 validation-profile registry tests; 2/2 directly applicable CheckAll routing tests; commit-policy validation; `git diff --check`. Repository-wide fast evidence remains failed (42 selected / 22 executed / 20 failed / 0 blocked) because `multi-hop-upgrade-transaction` timed out after 90 seconds; the exact GWT-023 timeout point passed alone in 13.228 seconds.
+- Git state: Dedicated local branch at implementation checkpoint `ea1852fd8944cad29c2c6dfe31abbe1cc091d023`, with only validation-reconciliation workflow edits pending; no provider mutation.
 - Branch history and checkpoint handoffs: Segment 1 started from `main@f9052a820827a0285c03140bdd59129f1502986e`; no push or merge.
-- Blockers or unresolved decisions: None. The broad CheckAll runner class was intentionally interrupted after unrelated cases because it was not the selected focused test; its partial run is not counted as validation. The two selected routing cases subsequently passed exactly.
+- Blockers or unresolved decisions: The Issue-scoped implementation is not blocked. A repository-wide fast run failed closed because the unchanged multi-hop suite exceeded its existing 90-second registry timeout and prevented 19 later checks from launching. The timeout configuration and multi-hop suite are outside #243 and were not changed. This failure, the earlier interrupted aggregate, and the first sandbox-blocked aggregate remain non-passing evidence. The two selected #243 routing cases and every declared Issue-scoped validator passed exactly.
 
 ## Branch Lifecycle
 
 | Segment | Branch | Base | Checkpoint Type | Commit | Remote / Target | Recorded At | Reason | Resume Branch / Action |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | 1 | `codex/2026-08-24-stale-release-workflow-reconciliation` | `main@f9052a820827a0285c03140bdd59129f1502986e` | local-start | pending | local only | `2026-08-24T10:28:32+08:00` | Authorized #243 governance remediation | Continue the current branch through validation and independent audit. |
+| 1 | `codex/2026-08-24-stale-release-workflow-reconciliation` | `main@f9052a820827a0285c03140bdd59129f1502986e` | implementation-checkpoint | `ea1852fd8944cad29c2c6dfe31abbe1cc091d023` | local only | `2026-08-24T10:47:42+08:00` | Contract, fixtures, routing, v0.13 reconciliation, and focused validation committed | Retain global fast failure; commit validation reconciliation and audit the exact head. |

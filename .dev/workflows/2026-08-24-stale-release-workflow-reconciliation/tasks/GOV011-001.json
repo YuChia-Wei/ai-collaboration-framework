@@ -8,7 +8,7 @@
   "owner_skill": "ai-context-governance",
   "status": "in_progress",
   "created_at": "2026-08-24T10:28:32+08:00",
-  "updated_at": "2026-08-24T10:43:01+08:00",
+  "updated_at": "2026-08-24T11:06:16+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-5.6-sol",
   "reasoning_effort": "high",
@@ -50,11 +50,11 @@
       "python .ai/scripts/validate-git-commits.py --range main..HEAD --workflow-id 2026-08-24-stale-release-workflow-reconciliation",
       "Independent read-only exact-head governance audit"
     ],
-    "last_completed_step": "Implemented and focused-validated the declared terminal-anchor contract, v0.13 reconciliation, tracked fixtures, validation routing, canonical skill guidance, and actionable failure output.",
-    "next_action": "Commit the implementation, run the fast aggregate profile on the immutable commit, then obtain an independent read-only exact-head audit."
+    "last_completed_step": "Committed and focused-validated the declared terminal-anchor contract, v0.13 reconciliation, tracked fixtures, validation routing, canonical skill guidance, and actionable failure output at ea1852fd8944cad29c2c6dfe31abbe1cc091d023. Retained the non-passing global fast evidence without treating it as an Issue-scoped failure.",
+    "next_action": "Commit this validation reconciliation, then obtain an independent read-only audit of the new exact head against the Issue-scoped workflow, AI-context, source-governance, and routing gates."
   },
   "results": {
-    "summary": "Implementation is complete and focused validation passes; immutable-commit aggregate validation and independent audit remain before workflow completion.",
+    "summary": "Implementation is complete at ea1852fd8944cad29c2c6dfe31abbe1cc091d023 and every Issue-scoped validation passes. The attempted global fast profile remains failed because the unrelated multi-hop-upgrade-transaction suite exceeded its pre-existing 90-second registry timeout; its exact timed-out GWT-023 case subsequently passed alone in 13.228 seconds. Independent audit of the reconciled validation head remains before workflow completion.",
     "files_changed": [
       ".ai/assets/skills/ai-context-governance/skill.yaml",
       ".ai/assets/skills/ai-context-governance/references/workflow-and-commit-playbook.md",
@@ -75,11 +75,14 @@
       "python .ai/scripts/validate-source-governance.py: passed",
       "python .ai/scripts/tests/test_validation_profile_registry.py -v: passed 7/7 on host after sandbox Git Bash signal-pipe block",
       "two directly applicable CheckAll routing tests: passed 2/2 on host after sandbox Temp ACL block",
+      "check-all.sh --profile fast at ea1852fd8944cad29c2c6dfe31abbe1cc091d023: failed, selected 42 / executed 22 / failed 20 / blocked 0 because multi-hop-upgrade-transaction timed out after 90 seconds and 19 later checks were not launched",
+      "exact multi-hop GWT-023 timeout point: passed 1/1 alone on the host in 13.228 seconds",
+      "fixed-head implementation audit at ea1852fd8944cad29c2c6dfe31abbe1cc091d023: no P1-P3 implementation-contract findings; overall failed closed only because the self-selected global fast aggregate had not passed",
       "git diff --check: passed",
       "broad CheckAllRunnerGwtTests class: interrupted during unrelated cases and not counted as passed"
     ],
     "finding_status": "partially-resolved",
-    "residual_risk": "The implementation is not yet bound to an immutable aggregate-validated and independently audited commit.",
+    "residual_risk": "The repository-wide fast profile is not green at this point-in-time because an unchanged multi-hop suite exceeds its 90-second timeout; this is retained as non-passing evidence and is not repaired under #243. Final independent audit of the validation-reconciled head remains required.",
     "follow_up_needed": true
   }
 }

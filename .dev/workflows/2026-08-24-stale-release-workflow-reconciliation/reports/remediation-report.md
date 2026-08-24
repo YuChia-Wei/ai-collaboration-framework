@@ -2,8 +2,9 @@
 
 ## Status
 
-`in_progress` — implementation and focused validation are complete; immutable
-aggregate validation and independent exact-head audit remain.
+`in_progress` — implementation and every Issue-scoped validation are complete
+at `ea1852fd8944cad29c2c6dfe31abbe1cc091d023`; independent audit of the
+validation-reconciled head remains.
 
 ## Docs Updated
 
@@ -35,7 +36,7 @@ aggregate validation and independent exact-head audit remain.
 
 | Finding | Disposition | Evidence |
 | --- | --- | --- |
-| `GOV-011` / #243 | partially-resolved | Contract, validator, fixtures, routing, v0.13 tracked anchor, and focused validation pass; exact-head aggregate/audit pending. |
+| `GOV-011` / #243 | partially-resolved | Contract, validator, fixtures, routing, v0.13 tracked anchor, and every Issue-scoped validation pass; exact-head independent audit remains. |
 
 ## Validation
 
@@ -50,6 +51,18 @@ aggregate validation and independent exact-head audit remain.
   Git Bash signal-pipe block.
 - Applicable CheckAll routing cases: 2/2 passed on the host boundary after a
   sandbox Temp ACL block.
+- Git commit policy: 1/1 commit passed for `main..ea1852fd8944cad29c2c6dfe31abbe1cc091d023`.
+- Repository-wide `check-all.sh --profile fast` at that exact clean head failed
+  closed: 42 selected, 22 executed, 20 failed, 0 blocked. The unchanged
+  `multi-hop-upgrade-transaction` suite exceeded its registry-owned 90-second
+  timeout; the remaining 19 required checks were not launched after that
+  timeout. This result is not represented as passed.
+- The exact GWT-023 case at the timeout boundary passed 1/1 when run alone on
+  the host in 13.228 seconds. That diagnostic does not convert the aggregate
+  failure into a pass.
+- Fixed-head implementation audit found no P1-P3 contract defect; it failed
+  closed overall only because the self-selected repository-wide fast aggregate
+  was not green.
 - The broad CheckAll runner class was interrupted during unrelated cases and is
   not represented as passed.
 
@@ -57,11 +70,16 @@ aggregate validation and independent exact-head audit remain.
 
 - The point-in-time GitHub evidence is deterministic offline input, not a claim
   of continued provider parity.
-- The implementation is not complete until the immutable commit passes the
-  selected aggregate profile and independent read-only exact-head audit.
+- The repository-wide fast profile is not green at this point-in-time. Its
+  unchanged multi-hop timeout and the later not-launched checks remain a
+  separate residual validation risk outside #243; no timeout or unrelated test
+  code was changed to conceal it.
+- Independent read-only audit of the validation-reconciled exact head remains
+  required before repository workflow closeout.
 
 ## Next Task
 
-Create the durable implementation commit, run `check-all.sh --profile fast` on
-that exact clean commit, and dispatch the independent read-only governance
-audit. Any repair creates a new subject and requires a new audit.
+Commit this validation reconciliation and dispatch an independent read-only
+governance audit of the new exact head against the Issue-scoped workflow,
+AI-context, source-governance, and routing gates. Any repair creates a new
+subject and requires a new audit.
