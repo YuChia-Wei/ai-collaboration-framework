@@ -159,6 +159,17 @@ class ValidationProfileRegistryGwtTests(unittest.TestCase):
             "python .ai/scripts/tests/test_validation_process_supervisor.py -v",
             checks["validation-process-supervisor-contract"][12],
         )
+        self.assertEqual(
+            ("600", {"pr", "release", "nightly-full"}),
+            (checks["package-apply"][8], memberships["package-apply"]),
+        )
+        self.assertEqual(
+            ("360", {"fast", "pr", "release", "nightly-full"}),
+            (
+                checks["multi-hop-upgrade-transaction"][8],
+                memberships["multi-hop-upgrade-transaction"],
+            ),
+        )
         self.assertEqual({"closeout"}, memberships["source-release-closeout-contract"])
 
     def test_gwt_004_given_legacy_flags_when_help_is_requested_then_aliases_are_declared(self) -> None:

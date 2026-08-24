@@ -2,10 +2,10 @@
 
 ## Status
 
-`in_progress` — implementation and every Issue-scoped validation are complete,
-but the previously selected repository-wide fast gate has no passing receipt.
-Owner authority is required before either expanding scope to repair the
-validation platform or leaving #243 unfinished.
+`in_progress` — the bounded terminal-anchor implementation is complete and
+independently acceptable. The owner has now authorized repair-only continuation
+for the proven validation-platform failures that keep fast and critical gates
+non-passing.
 
 ## Docs Updated
 
@@ -90,21 +90,29 @@ validation platform or leaving #243 unfinished.
   invocation; no unsupported `--mode` argument remains in this task.
 - The broad CheckAll runner class was interrupted during unrelated cases and is
   not represented as passed.
+- Under the owner's repair authorization, the multi-hop and package-apply
+  ceilings are now 360 and 600 seconds respectively, with unchanged required
+  enforcement and memberships. Focused registry coverage passed 7/7.
+- The supervisor now retains monotonic duration as authoritative and explicitly
+  authenticates UTC wall-clock adjustment. Focused positive/tamper-negative
+  coverage passed, the Windows supervisor suite ran 20 tests with 12 passes and
+  8 platform skips, and a repaired WSL diagnostic authenticated a 2.683342-second
+  adjustment before returning `completed`, `true`, exit `0`.
+- Workflow artifact, AI-context, and source-governance validators passed after
+  the repair. No repaired aggregate attempt has run yet.
 
 ## Residual Risk
 
 - The point-in-time GitHub evidence is deterministic offline input, not a claim
   of continued provider parity.
-- The repository-wide fast profile is not green at this point-in-time. Its
-  unchanged multi-hop timeout and the later not-launched checks remain a
-  separate residual validation risk outside #243; no timeout or unrelated test
-  code was changed to conceal it.
+- The repaired repository-wide fast and critical profiles are not yet proven;
+  their retry count remains zero until a clean immutable repair commit exists.
 - No passing independent audit can be claimed while the selected aggregate is
   non-passing. Any future tracked repair also requires a new exact-head audit.
 
 ## Next Task
 
-Owner decides whether to authorize a separately scoped fix for the existing
-Windows timeout and/or cross-platform supervision-receipt failures, or to keep
-#243 unfinished. The current authorization does not permit either validation-
-platform repair or removal of the selected gate after failure.
+`GOV011-VAL-001`: add focused timing/timeout tests, repair only the measured
+registry floors and authenticated wall-clock adjustment contract, then run no
+more than three evidence-driven attempts per aggregate gate. Check removal,
+profile reclassification, and provider/release mutation remain prohibited.

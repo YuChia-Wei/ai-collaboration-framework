@@ -1,19 +1,19 @@
 schema_version: "1.0"
 checkpoint_id: "2026-08-24-stale-release-workflow-reconciliation-GOV011-001-blocked"
-created_at: "2026-08-24T12:04:59+08:00"
+created_at: "2026-08-24T14:50:38+08:00"
 repository:
   root: "."
   branch: "codex/2026-08-24-stale-release-workflow-reconciliation"
-  validated_commit: "b385a69d8f2e1d8db5a98832de3d41a2f262243f"
+  validated_commit: "225ac6d4e5b121ff34065a99a798755d9d953cbd"
   checkpoint_commit_source: "containing-commit"
   dirty_state: "clean"
   status_porcelain_sha256: "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
 workflow:
   workflow_id: "2026-08-24-stale-release-workflow-reconciliation"
-  task_id: "GOV011-001"
+  task_id: "GOV011-VAL-001"
 resume:
-  last_completed_action: "Completed the bounded #243 implementation and scoped validation, retained every non-passing aggregate attempt, exhausted Windows-native and WSL-native environment alternatives, ran the canonical critical gate, fixed the durable handoff completeness finding, and corrected the unsupported AI-context command record identified by exact-head audit."
-  exact_next_action: "Owner decides whether to authorize separately scoped validation-platform repair or leave #243 unfinished; do not reclassify the selected fast gate, mutate providers, or change release state."
+  last_completed_action: "The bounded timeout and receipt repairs are implemented and focused validation, including a repaired WSL receipt read-back, passed; no repaired aggregate attempt has run yet."
+  exact_next_action: "Commit the clean repair head and dispatch fast aggregate attempt 1 under the long-running validation gate."
   hidden_context_required: false
 critical_gate:
   command: '"C:\Program Files\Git\bin\bash.exe" .ai/scripts/check-all.sh --critical'
@@ -33,13 +33,14 @@ critical_gate:
       - "Completed at 2026-08-24 11:44:31"
       - "32 Check(s) Failed!"
 continuation:
-  allowed: false
-  mode: "blocked"
-  reason: "The selected fast gate and canonical critical gate have no passing receipt. Repairs to the pre-existing validation timeout or cross-platform supervision contract require separate owner authority."
-  repair_task_id: null
+  allowed: true
+  mode: "repair-only"
+  reason: "The owner explicitly authorized bounded repair of the measured timeout and cross-platform supervision failures; unrelated work remains prohibited."
+  repair_task_id: "GOV011-VAL-001"
   failure_ids:
     - "selected-fast-gate-nonpassing"
     - "critical-package-apply-timeout"
+    - "wsl-supervisor-clock-adjustment"
 release_handoff: false
 release_phase_check: null
 execution_provenance:
@@ -53,14 +54,14 @@ attribution:
   evidence_union_version: "1.0"
   selected_evidence:
     kind: "repository-created-local-ai-trailer"
-    commit: "b385a69d8f2e1d8db5a98832de3d41a2f262243f"
+    commit: "225ac6d4e5b121ff34065a99a798755d9d953cbd"
     author: "YuChia <h42279@gmail.com>"
     committer: "YuChia <h42279@gmail.com>"
     signature_status: "unsigned"
     session_ref: null
     observed_trailer: "Co-Authored-By: OpenAI Codex (gpt-5.6-sol, high) <noreply@openai.com>"
-    message_sha256: "4e2d0fea724d8925b0e5b9bc89ecfb6fcf18f30f9968b4abb5c411c1d406dd4f"
-    fixture_ref: "git:b385a69d8f2e1d8db5a98832de3d41a2f262243f"
+    message_sha256: "7ebeabb5f062a19a70e76c7a1ee02c8808223f47223a1fd5075aa81778e0f45d"
+    fixture_ref: "git:225ac6d4e5b121ff34065a99a798755d9d953cbd"
   fixture_status:
     - path_id: "copilot-cli"
       status: "blocked"
@@ -79,9 +80,22 @@ attribution:
       reason: "No stable provider-generated Claude commit attribution fixture is available."
     - path_id: "codex-local"
       status: "captured"
-      commit: "b385a69d8f2e1d8db5a98832de3d41a2f262243f"
-      evidence_ref: "git:b385a69d8f2e1d8db5a98832de3d41a2f262243f"
+      commit: "225ac6d4e5b121ff34065a99a798755d9d953cbd"
+      evidence_ref: "git:225ac6d4e5b121ff34065a99a798755d9d953cbd"
       reason: null
+retained_root_cause_diagnostics:
+  - diagnostic_id: "wsl-supervision-clock-adjustment-01"
+    outcome: "reproduced"
+    facts: "A minimal WSL supervision raw receipt recorded 10.113380 seconds monotonic duration while its UTC timestamps spanned 10.969 seconds; the 0.856-second adjustment exceeded the validator's fixed 2ms tolerance."
+  - diagnostic_id: "windows-multi-hop-duration-01"
+    outcome: "passed"
+    facts: "31/31 tests passed in 241.016 seconds; the registered 90-second timeout is below measured terminal duration."
+  - diagnostic_id: "windows-package-apply-duration-01"
+    outcome: "passed-with-platform-skip"
+    facts: "90 tests ran in 429.674 seconds with 89 passed and one Windows symlink privilege skip; the registered 90-second timeout is below measured terminal duration."
+  - diagnostic_id: "wsl-supervision-clock-adjustment-02"
+    outcome: "passed"
+    facts: "After repair, WSL supervision completed with exit 0 and authenticated 28.531658 seconds monotonic duration plus a 2.683342-second wall-clock adjustment; wrapper verification returned completed, true, exit 0."
 retained_validation_attempts:
   - attempt_id: "parent-fast-ea1852fd-interrupted"
     subject_commit: "ea1852fd8944cad29c2c6dfe31abbe1cc091d023"

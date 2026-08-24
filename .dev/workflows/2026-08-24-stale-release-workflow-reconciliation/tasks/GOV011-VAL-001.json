@@ -1,0 +1,93 @@
+{
+  "template_id": "ai-context-governance-remediation-task",
+  "template_version": "1.1.0",
+  "template_created_at": "2026-07-10T18:22:49+08:00",
+  "template_updated_at": "2026-07-27T09:52:09+08:00",
+  "task_id": "GOV011-VAL-001",
+  "workflow_id": "2026-08-24-stale-release-workflow-reconciliation",
+  "owner_skill": "ai-context-governance",
+  "status": "in_progress",
+  "created_at": "2026-08-24T14:50:38+08:00",
+  "updated_at": "2026-08-24T15:01:56+08:00",
+  "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
+  "model": "gpt-5.6-sol",
+  "reasoning_effort": "high",
+  "finding_ids": ["GOV-011-VALIDATION-PLATFORM", "#243"],
+  "authorization": "The owner selected option 1 in the source conversation on 2026-08-24: analyze and repair validation-platform root causes, with at most three retries and no unchanged retry after an error.",
+  "scope": {
+    "target": "Pre-existing per-check timeout and cross-platform supervision-receipt failures that block the selected fast and critical gates",
+    "files": [
+      ".ai/scripts/validation-profile-registry.sh",
+      ".ai/scripts/validation_process_supervisor.py",
+      ".ai/scripts/validation-evidence.py",
+      ".ai/scripts/tests/test_validation_process_supervisor.py",
+      ".ai/scripts/tests/test_validation_evidence.py",
+      ".ai/scripts/tests/test_validation_profile_registry.py",
+      ".ai/scripts/README.md",
+      ".dev/workflows/2026-08-24-stale-release-workflow-reconciliation/**"
+    ],
+    "constraints": [
+      "Preserve the selected aggregate checks, profile membership, and every earlier interrupted, blocked, or failed result",
+      "Derive timeout repair from measured terminal suite duration rather than repeated aggregate execution",
+      "Keep monotonic duration authoritative while explicitly authenticating legitimate wall-clock adjustment",
+      "Run each repaired aggregate gate at most three times and never repeat the same method without a new diagnosed cause or material state change",
+      "Require a new exact-head independent read-only audit after repair"
+    ],
+    "non_goals": [
+      "Remove or reclassify multi-hop or package-apply checks to make a profile pass",
+      "Change terminal-anchor behavior accepted in GOV011-001",
+      "Mutate ROADMAP, release records, tags, Releases, assets, packages, Issues, Projects, pull requests, main, or publication state"
+    ]
+  },
+  "execution": {
+    "steps": [
+      "Reproduce each distinct failure and bind it to exact code and receipt fields",
+      "Add positive and negative timing-adjustment tests and timeout-registry contract coverage",
+      "Implement only the proven receipt and timeout repairs",
+      "Run focused validation and commit a clean immutable repair head",
+      "Run fast and critical gates with a maximum of three evidence-driven attempts per gate",
+      "Obtain independent read-only exact-head audit and reconcile workflow state"
+    ],
+    "validation": [
+      "python .ai/scripts/tests/test_validation_process_supervisor.py -v",
+      "python .ai/scripts/tests/test_validation_evidence.py -v",
+      "python .ai/scripts/tests/test_validation_profile_registry.py -v",
+      "python .ai/scripts/validate-workflow-artifacts.py",
+      "python .ai/scripts/validate-ai-context.py",
+      "python .ai/scripts/validate-source-governance.py",
+      "bash .ai/scripts/check-all.sh --profile fast",
+      "bash .ai/scripts/check-all.sh --critical",
+      "python .ai/scripts/validate-git-commits.py --range main..HEAD --workflow-id 2026-08-24-stale-release-workflow-reconciliation",
+      "Independent read-only exact-head governance audit"
+    ],
+    "last_completed_step": "Implemented measured 360-second multi-hop and 600-second package-apply ceilings without changing membership or enforcement; added authenticated clock-adjustment timing with legacy strict compatibility; focused positive, tamper-negative, registry, AI-context, workflow, source-governance, and WSL read-back checks passed.",
+    "next_action": "Commit a clean immutable repair head, then dispatch fast aggregate attempt 1 through the long-running validation gate."
+  },
+  "results": {
+    "summary": "The proven timeout and cross-platform receipt causes are repaired with focused validation; aggregate retry count remains zero until the repair is committed.",
+    "files_changed": [
+      ".ai/scripts/validation-profile-registry.sh",
+      ".ai/scripts/validation_process_supervisor.py",
+      ".ai/scripts/validation-evidence.py",
+      ".ai/scripts/tests/test_validation_process_supervisor.py",
+      ".ai/scripts/tests/test_validation_evidence.py",
+      ".ai/scripts/tests/test_validation_profile_registry.py",
+      ".ai/scripts/README.md"
+    ],
+    "tests_run": [
+      "WSL minimal supervision diagnostic: failed closed with raw supervisor duration inconsistent; raw receipt proves approximately 0.856-second wall/monotonic divergence",
+      "python .ai/scripts/tests/test_ai_context_multi_hop_upgrade.py -v: passed 31/31 in 241.016 seconds on exact clean 225ac6d4e5b121ff34065a99a798755d9d953cbd",
+      "python .ai/scripts/tests/test_ai_context_package_apply.py -v: ran 90 tests in 429.674 seconds, 89 passed / 1 Windows symlink privilege skip / 0 failures on exact clean 225ac6d4e5b121ff34065a99a798755d9d953cbd",
+      "validation_process_supervisor.py focused positive and tamper-negative checks: 2/2 passed on the Windows host",
+      "test_validation_process_supervisor.py: 20 tests, 12 passed / 8 platform skips / 0 failures on the Windows host",
+      "validation-evidence clock-adjustment positive and forged-dimension negative checks: 2/2 passed on the Windows host",
+      "ValidationEvidenceRoutineContractGwtTests: three cases passed in the retained suite output and the single case whose aggregate output lacked a terminal line passed when isolated",
+      "test_validation_profile_registry.py: 7/7 passed; exact 360/600 ceilings and unchanged memberships are asserted",
+      "WSL repaired supervision diagnostic: completed with exit 0; raw receipt authenticated 28.531658 seconds monotonic duration plus 2.683342 seconds wall-clock adjustment; wrapper verification returned completed/true/0",
+      "workflow artifact, AI-context, and source-governance validators: passed"
+    ],
+    "finding_status": "partially-resolved",
+    "residual_risk": "No aggregate attempt has run on the repaired exact commit yet; fast and critical therefore remain unproven rather than passed.",
+    "follow_up_needed": true
+  }
+}

@@ -132,7 +132,7 @@ register_check source-ai-context-version \
 register_check package-apply \
     "AI Context Safe Apply GWT Tests" required \
     "package,tests" "pr release nightly-full" \
-    ".ai/scripts/ai_context_package_apply.py .ai/scripts/tests/test_ai_context_package_apply.py" '' "python>=3.11 git" 90 io reuse-by-input portable \
+    ".ai/scripts/ai_context_package_apply.py .ai/scripts/tests/test_ai_context_package_apply.py" '' "python>=3.11 git" 600 io reuse-by-input portable \
     "python .ai/scripts/tests/test_ai_context_package_apply.py -v" always
 register_check payload-user-view \
     "Selected Payload User-View Fail-Closed Contract" required \
@@ -157,7 +157,7 @@ register_check provider-role-package-projection \
 register_check multi-hop-upgrade-transaction \
     "AI Context Multi-Hop Upgrade Transaction GWT Tests" required \
     "upgrade,transaction,tests" "fast pr release nightly-full" \
-    ".ai/assets/skills/ai-context-upgrader .ai/distribution/profiles/dotnet-backend.yaml .ai/scripts/ai_context_multi_hop_upgrade.py .ai/scripts/ai_context_package_apply.py .ai/scripts/ai_context_target_provenance.py .ai/scripts/ai_context_upgrade_routes.py .ai/scripts/tests/test_ai_context_multi_hop_upgrade.py" '' "python>=3.11 git" 90 io reuse-by-input portable \
+    ".ai/assets/skills/ai-context-upgrader .ai/distribution/profiles/dotnet-backend.yaml .ai/scripts/ai_context_multi_hop_upgrade.py .ai/scripts/ai_context_package_apply.py .ai/scripts/ai_context_target_provenance.py .ai/scripts/ai_context_upgrade_routes.py .ai/scripts/tests/test_ai_context_multi_hop_upgrade.py" '' "python>=3.11 git" 360 io reuse-by-input portable \
     "python .ai/scripts/tests/test_ai_context_multi_hop_upgrade.py -v" always
 register_check dependency-versions \
     "Offline Dependency And Version Consistency" required \

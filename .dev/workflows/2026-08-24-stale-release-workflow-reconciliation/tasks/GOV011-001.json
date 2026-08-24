@@ -6,9 +6,9 @@
   "task_id": "GOV011-001",
   "workflow_id": "2026-08-24-stale-release-workflow-reconciliation",
   "owner_skill": "ai-context-governance",
-  "status": "in_progress",
+  "status": "completed",
   "created_at": "2026-08-24T10:28:32+08:00",
-  "updated_at": "2026-08-24T12:04:59+08:00",
+  "updated_at": "2026-08-24T14:50:38+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-5.6-sol",
   "reasoning_effort": "high",
@@ -51,10 +51,10 @@
       "Independent read-only exact-head governance audit"
     ],
     "last_completed_step": "The registered blocked checkpoint pins audited clean parent b385a69d8f2e1d8db5a98832de3d41a2f262243f, retains the complete aggregate-attempt history and failed critical gate, and resolves its current containing commit through Git repository verification rather than hard-coded resume text.",
-    "next_action": "Owner decision is required: either authorize a separately scoped repair of the pre-existing fast-profile validation platform failures, or retain #243 as unfinished. No additional #243 implementation mutation is authorized by the current scope."
+    "next_action": "Continue only in separately authorized repair task GOV011-VAL-001; do not reopen the accepted bounded terminal-anchor implementation."
   },
   "results": {
-    "summary": "The bounded #243 implementation is complete and every Issue-scoped validation passes, but the workflow cannot close. The durable workflow selected the repository-wide fast profile before execution; Windows-native execution failed on the unchanged multi-hop suite's 90-second timeout, WSL-native execution failed on existing supervision-receipt consistency, and independent audit correctly refused to remove the selected gate after failure without owner authority.",
+    "summary": "The bounded #243 terminal-anchor implementation is complete and independently acceptable. The owner separately authorized validation-platform repair in GOV011-VAL-001 so the selected aggregate gates can be repaired without reopening or weakening this implementation.",
     "files_changed": [
       ".ai/assets/skills/ai-context-governance/skill.yaml",
       ".ai/assets/skills/ai-context-governance/references/workflow-and-commit-playbook.md",
@@ -90,8 +90,8 @@
       "git diff --check: passed",
       "broad CheckAllRunnerGwtTests class: interrupted during unrelated cases and not counted as passed"
     ],
-    "finding_status": "partially-resolved",
-    "residual_risk": "The selected repository-wide fast gate has no passing receipt. Windows-native and WSL-native failures are outside the bounded terminal-anchor implementation, but policy forbids reclassifying the selected gate after failure without owner authority. The workflow therefore remains in progress and #243 is not claimed complete.",
+    "finding_status": "resolved",
+    "residual_risk": "Selected aggregate gates remain non-passing and are owned by separately authorized GOV011-VAL-001; this task does not claim workflow or Issue completion.",
     "follow_up_needed": true
   }
 }

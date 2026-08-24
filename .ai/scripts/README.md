@@ -413,10 +413,19 @@ Job Object and supported Linux hosts use subreaper-aware descendant tracking;
 unsupported POSIX containment is rejected before launch. A passing execution
 requires a sealed log, complete descendant cleanup, exact effective-argv and
 duration binding, a privacy-safe persisted argv, and matching raw plus adapter
-receipts. Timeout, cancellation, snapshot drift, launch failure, and unproven
+receipts. The raw receipt treats monotonic elapsed time as the authoritative
+duration and records any UTC wall-clock adjustment explicitly; the adapter
+authenticates that adjustment before deriving internally consistent timing.
+Legacy receipts without an adjustment retain the strict wall-clock equality
+contract. Timeout, cancellation, snapshot drift, launch failure, and unproven
 cleanup are never reusable passes. Selected checks that never launch are
 recorded explicitly as `not-executed` and cannot impersonate supervised
 execution.
+
+Per-check timeouts are execution ceilings, not profile budgets. The
+`multi-hop-upgrade-transaction` and `package-apply` ceilings include measured
+Windows full-suite duration plus bounded headroom; profile membership and
+required enforcement remain unchanged when those ceilings are calibrated.
 
 After every selected ID has exactly one event, the runner verifies the final
 repository snapshot, atomically writes summaries, and seals their canonical
