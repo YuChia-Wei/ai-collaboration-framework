@@ -50,7 +50,9 @@ must prove the deferred Issue remains open and is not projected as `Done`.
 
 ## Enforcement And Distribution
 
-`.dev/backlog/providers/github.yaml` owns the selected provider configuration.
+`.dev/standards/GITHUB-WORK-MANAGEMENT-POLICY.yaml` owns the single active
+selected provider configuration. The legacy adapter under `.dev/backlog/` is
+historical compatibility evidence and cannot configure this gate.
 `.ai/scripts/validate-terminal-issue-closure.py` validates durable disposition
 records deterministically through three fail-closed validation stages without
 adding another closure mode:

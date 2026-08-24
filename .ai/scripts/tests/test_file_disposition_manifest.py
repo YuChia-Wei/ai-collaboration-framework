@@ -536,7 +536,7 @@ class CurrentByteAuthorizationTests(unittest.TestCase):
 
     def test_gwt_030_given_manifest_without_current_byte_authorizations_when_registry_loads_then_it_is_valid(self) -> None:
         registry = {
-            "schema_version": "1.3",
+            "schema_version": "1.4",
             "manifests": [
                 {
                     "id": "future-no-drift",
@@ -555,9 +555,15 @@ class CurrentByteAuthorizationTests(unittest.TestCase):
                     "path": ".ai/distribution/source-dispositions.yaml",
                 }
             ],
+            "source_work_management_contracts": [
+                {
+                    "id": "source-work-management-authority",
+                    "path": ".dev/standards/SOURCE-WORK-MANAGEMENT-AUTHORITY.yaml",
+                }
+            ],
         }
         with mock.patch.object(SOURCE_GOVERNANCE.yaml, "safe_load", return_value=registry):
-            manifests, _, _ = SOURCE_GOVERNANCE.load_registry_paths()
+            manifests, _, _, _ = SOURCE_GOVERNANCE.load_registry_paths()
         self.assertEqual(
             [
                 (
@@ -571,7 +577,7 @@ class CurrentByteAuthorizationTests(unittest.TestCase):
 
     def test_gwt_031_given_empty_current_byte_authorizations_when_registry_loads_then_it_fails(self) -> None:
         registry = {
-            "schema_version": "1.3",
+            "schema_version": "1.4",
             "manifests": [
                 {
                     "id": "empty-authorizations",
@@ -589,6 +595,12 @@ class CurrentByteAuthorizationTests(unittest.TestCase):
                 {
                     "id": "dotnet-backend-source-dispositions",
                     "path": ".ai/distribution/source-dispositions.yaml",
+                }
+            ],
+            "source_work_management_contracts": [
+                {
+                    "id": "source-work-management-authority",
+                    "path": ".dev/standards/SOURCE-WORK-MANAGEMENT-AUTHORITY.yaml",
                 }
             ],
         }

@@ -1,21 +1,19 @@
-# Backlog Index
+# Frozen Historical Backlog Index
 
-This index catalogs durable work that must remain visible outside workflow
-artifact directories. See [README.MD](README.MD) for ownership and lifecycle.
-It lists the local canonical backlog subset, not the complete GitHub Issue
-queue or Project #3. The current online provider-state receipt is
-[`provider-mappings/github-project-current.yaml`](provider-mappings/github-project-current.yaml).
+This index preserves the 55 local item records as they stood when repository
+backlog authority retired on 2026-08-24. See [README.MD](README.MD) for the
+freeze and compatibility boundary. It is neither a current work queue nor a
+Project #3 snapshot; current source work and views require live GitHub read-back.
 
-## Active Release Roadmap
+## Historical Roadmap Snapshot
 
-| Roadmap | Current Target | Status | Next Gate | Updated |
+| Roadmap | Last Recorded Target | Historical Status | Last Recorded Gate | Updated |
 | --- | --- | --- | --- | --- |
-| [ROADMAP.md](ROADMAP.md) | `v0.12.0` | `planned` | Owner must select the exact included-work set and a release workflow; Project card status or priority does not create release scope. | 2026-08-10 |
+| [ROADMAP.md](ROADMAP.md) | `v0.12.0` | `frozen-historical` | This record selected no release scope; use live Issues/Project #3 and a separately authorized release workflow for current decisions. | 2026-08-24 |
 
-Source planning records are retained under [`plans/`](plans/); they inform the
-roadmap but do not replace it or a governed assessment.
+Source planning records under [`plans/`](plans/) are frozen historical evidence.
 
-## Planned / Open
+## Historical Planned / Open At Freeze
 
 | Item | Priority | Target Release | Gate | Summary | Decision / Handoff | Updated |
 | --- | --- | --- | --- | --- | --- | --- |
@@ -28,13 +26,13 @@ roadmap but do not replace it or a governed assessment.
 | [STD-001](items/STD-001.yaml) | HIGH | `unassigned` | planned; related to `GOV-004` and `OBS-001` | Round one is selected for implementation through `GOV-004`; code-review progressive disclosure and terminology discovery remain bounded deliberation rounds. | Complete remaining applicable standards-format decisions before `OBS-001` publishes a canonical standard; do not treat `GOV-004` as authorization for rounds two or three. | 2026-08-03 |
 | [OBS-001](items/OBS-001.yaml) | MEDIUM | `unassigned` | related to `STD-001` | Design the reusable CrossCutting Observability and attribute/AOP boundary. | Read-only architecture evidence may proceed; standards structure, placement, and publication wait for applicable `STD-001` decisions unless the owner grants an exception. | 2026-07-30 |
 
-## Declined
+## Historical Declined
 
 | Item | Priority | Target Release | Decision | Resolution | Updated |
 | --- | --- | --- | --- | --- | --- |
 | [UPG-001](items/UPG-001.yaml) | HIGH | `unassigned` | Owner cancelled the real legacy-target intake because no target or feedback capacity is expected to be available. | Historical evidence is retained; `INIT-001` tracks a distinct existing-AI-agent initialization question without claiming to complete the legacy upgrade acceptance. | 2026-07-27 |
 
-## Recently Published
+## Historical Recently Published
 
 | Item | Priority | Completed In | Published In | Resolution | Workflow | Updated |
 | --- | --- | --- | --- | --- | --- | --- |
@@ -47,7 +45,7 @@ roadmap but do not replace it or a governed assessment.
 | [PKG-005](items/PKG-005.yaml) | HIGH | `v0.9.0` | `v0.9.0` | Fail-closed ignored framework-managed-path detection is merged through PR #103; the owner closed the workflow with independent audit and aggregate-rerun debt deferred to separately arranged future work. | [`2026-08-04-framework-managed-ignore-detection`](../workflows/2026-08-04-framework-managed-ignore-detection/workflow.yaml) | 2026-08-10 |
 | [GOV-004](items/GOV-004.yaml) | HIGH | `v0.9.0` | `v0.9.0` | Workflow-value, multi-Issue delivery-cohesion, and positive linear-topology rules passed independent verification and were integrated linearly through PR #88. | [`2026-08-03-workflow-delivery-cohesion`](../workflows/2026-08-03-workflow-delivery-cohesion/workflow.yaml) | 2026-08-10 |
 
-## Resolved
+## Historical Resolved
 
 | Item | Priority | Completed In | Published In | Resolution | Workflow | Updated |
 | --- | --- | --- | --- | --- | --- | --- |

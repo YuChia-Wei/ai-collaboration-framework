@@ -1,13 +1,15 @@
-# Backlog Planning Sources
+# Frozen Historical Backlog Planning Sources
 
-This directory preserves durable source plans that informed the active release
-roadmap but are not themselves the canonical roadmap or workflow execution
-records.
+This directory preserves source plans that informed the retired repository
+ROADMAP before 2026-08-24. They are historical evidence, not current planning,
+authorization, or work-management records.
 
-- `.dev/backlog/ROADMAP.md` owns the compact current release horizon and gates.
+- `.dev/backlog/ROADMAP.md` preserves the last recorded local release horizon
+  and gates as frozen history.
 - Files in this directory preserve their authoring context and planning
   rationale.
-- `.dev/workflows/**` owns executable tasks, validation evidence, and progress.
+- Live GitHub Issues and Project #3 own current work and roadmap views;
+  `.dev/workflows/**` owns executable tasks, validation evidence, and progress.
 - `.dev/assessments/**` owns governed read-only assessments and their evidence.
 
 Moving a source plan here does not convert it into an assessment. A plan may

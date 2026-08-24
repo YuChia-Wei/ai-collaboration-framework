@@ -1,0 +1,75 @@
+{
+  "template_id": "ai-context-governance-remediation-task",
+  "template_version": "1.1.0",
+  "template_created_at": "2026-07-10T18:22:49+08:00",
+  "template_updated_at": "2026-07-27T09:52:09+08:00",
+  "task_id": "GOV012-001",
+  "workflow_id": "2026-08-24-retire-repository-backlog-authority",
+  "owner_skill": "ai-context-governance",
+  "status": "completed",
+  "created_at": "2026-08-24T20:11:36+08:00",
+  "updated_at": "2026-08-25T00:35:25+08:00",
+  "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
+  "model": "gpt-5.6-sol",
+  "reasoning_effort": "high",
+  "finding_ids": ["GOV012-F001", "GOV012-F002", "GOV012-F003", "GOV012-F004"],
+  "scope": {
+    "target": "Source-repository work-management authority, historical backlog freeze, active GitHub policy ownership, and release compatibility",
+    "files": [".ai/", ".dev/", ".github/", "AGENTS.md", "AGENTS.zh-TW.md", "README.md", "README.en.md"],
+    "constraints": [
+      "Use direct tracked files, Git, repository validators, and explicit live provider read-back for material conclusions.",
+      "Retain legacy paths needed by v0.5.0-v0.9.0 release evidence.",
+      "Keep ordinary deterministic validation credential-free.",
+      "Keep portable downstream provider-neutral work-item binding capability and its public template intact."
+    ],
+    "non_goals": [
+      "Physical deletion or bulk move of legacy backlog, roadmap, workflow, assessment, or release history.",
+      "Provider, PR, merge, Issue, Project, release, tag, asset, package-byte, or publication mutations.",
+      "Package or archive renaming and target-release assignment."
+    ]
+  },
+  "execution": {
+    "steps": [
+      "Inventory and reopen every material active authority claim and provider-policy consumer.",
+      "Select one canonical non-backlog source-governance owner and define the retired-path compatibility behavior.",
+      "Implement the authority freeze, snapshot retirement, consumer routing, validators, tests, documentation, and source-disposition updates.",
+      "Run focused prospective and legacy compatibility validation separately.",
+      "Create a clean immutable implementation commit for exact-head validation."
+    ],
+    "validation": [
+      "Focused provider-policy and authority-freeze tests",
+      "Legacy v0.5.0-v0.9.0 planning.backlog_refs compatibility",
+      "v0.10.0+ online-Issue release-scope compatibility",
+      "AI-context, workflow, source-governance, terminal-closure, and packaging-boundary checks"
+    ],
+    "last_completed_step": "Relocated the active provider policy, froze the repository backlog and roadmap, retired the mutable snapshot claim, and added prospective/legacy compatibility validation.",
+    "next_action": "Completed through GOV012-VAL-001; hand the local branch to the owner for any separately authorized lifecycle action."
+  },
+  "results": {
+    "summary": "Issue #245 authority, placement, historical freeze, consumer routing, source disposition, validator, release compatibility, and portable-template boundaries are implemented.",
+    "files_changed": [
+      ".dev/standards/SOURCE-WORK-MANAGEMENT-AUTHORITY.md",
+      ".dev/standards/SOURCE-WORK-MANAGEMENT-AUTHORITY.yaml",
+      ".dev/standards/GITHUB-WORK-MANAGEMENT-POLICY.yaml",
+      ".dev/backlog/**",
+      ".ai/scripts/validate-source-work-management.py",
+      ".ai/scripts/tests/test_source_work_management.py",
+      ".ai/distribution/governance-checks.yaml",
+      ".ai/distribution/source-dispositions.yaml",
+      ".ai/distribution/profiles/dotnet-backend.yaml"
+    ],
+    "tests_run": [
+      "python .ai/scripts/validate-source-work-management.py",
+      "python .ai/scripts/tests/test_source_work_management.py -v",
+      "python .ai/scripts/tests/test_github_backlog_provider.py -v",
+      "python .ai/scripts/tests/test_workflow_backlog_provider.py -v",
+      "python .ai/scripts/tests/test_terminal_issue_closure.py -v",
+      "python .ai/scripts/tests/test_ai_context_release_state.py -v",
+      "python .ai/scripts/tests/test_ai_context_package_validation.py -v",
+      "python .ai/scripts/validate-ai-context.py"
+    ],
+    "finding_status": "addressed",
+    "residual_risk": "No unresolved repository finding; live provider values and remote lifecycle actions remain separate owner decisions.",
+    "follow_up_needed": false
+  }
+}

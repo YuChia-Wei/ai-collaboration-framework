@@ -130,12 +130,19 @@ Shell or PowerShell scripts should be retired or replaced when they:
 - `validate-ai-context-target.py`
 - `resolve-effective-rule-packet.py`
 - `validate-source-dispositions.py`
+- `validate-source-work-management.py`
 - `validate-file-disposition-manifest.py`
 - `validate-git-commits.py`
 - `validate-workflow-handoff.py`
 - `plan-ai-context-package-apply.py`
 
 These scripts inspect AI context, markdown, prompt portability, or repository hygiene. They are not substitutes for dotnet C# validation.
+
+`validate-source-work-management.py` checks the source repository's live GitHub
+authority boundary, the frozen `.dev/backlog` path-and-byte identity, historical
+v0.5.0-v0.9.0 `backlog_refs`, v0.10.0+ online Issue scope, and prospective
+workflow rejection of retired local planning bindings. It is deterministic and
+does not use GitHub credentials or network access.
 
 Source-maintainer release validation, tag handoff, hosted publication,
 provider reconciliation, release rendering, package building, immutable source

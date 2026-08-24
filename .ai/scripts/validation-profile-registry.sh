@@ -328,12 +328,12 @@ register_check effective-rule-action-skill \
 register_check source-governance-manifest \
     "Source Governance Manifest Registry" required \
     "governance,source" "fast pr release nightly-full" \
-    ".ai/distribution/governance-checks.yaml .ai/distribution/repository-identity-policy.yaml .ai/scripts/validate-source-governance.py .ai/scripts/validate-repository-identity.py" '' "python>=3.11 git" 60 cpu reuse-by-input source \
+    ".ai/distribution/governance-checks.yaml .ai/distribution/repository-identity-policy.yaml .dev/standards/SOURCE-WORK-MANAGEMENT-AUTHORITY.yaml .ai/scripts/validate-source-governance.py .ai/scripts/validate-repository-identity.py .ai/scripts/validate-source-work-management.py" '' "python>=3.11 git" 60 cpu reuse-by-input source \
     "python .ai/scripts/validate-source-governance.py" source-governance
 register_check terminal-issue-closure \
     "Terminal Issue Closure Contract" required \
     "governance,source,closeout" "fast pr release nightly-full" \
-    ".dev/backlog/providers/github.yaml .dev/standards/GITHUB-TERMINAL-ISSUE-CLOSURE-POLICY.md .dev/workflows/*/evidence/terminal-issue-closure*.yaml .ai/scripts/validate-terminal-issue-closure.py" source-governance-manifest "python>=3.11" 60 cpu reuse-by-input source \
+    ".dev/standards/GITHUB-WORK-MANAGEMENT-POLICY.yaml .dev/standards/GITHUB-TERMINAL-ISSUE-CLOSURE-POLICY.md .dev/workflows/*/evidence/terminal-issue-closure*.yaml .ai/scripts/validate-terminal-issue-closure.py" source-governance-manifest "python>=3.11" 60 cpu reuse-by-input source \
     "python .ai/scripts/validate-terminal-issue-closure.py" source-governance
 register_check terminal-issue-closure-tests \
     "Terminal Issue Closure Fail-Closed Tests" required \

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Generate a deterministic, read-only GitHub backlog migration preview."""
+"""Generate the frozen 2026-07 GitHub backlog migration compatibility preview."""
 
 from __future__ import annotations
 
@@ -22,7 +22,7 @@ from github_backlog_provider import (
 )
 
 
-DEFAULT_CONFIG = Path(".dev/backlog/providers/github.yaml")
+DEFAULT_CONFIG = Path(".dev/backlog/providers/github-legacy-migration.yaml")
 
 
 def parse_args() -> argparse.Namespace:

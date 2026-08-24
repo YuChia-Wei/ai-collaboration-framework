@@ -3,32 +3,29 @@
 ## Roadmap Metadata
 
 - `roadmap_id`: `post-v0.4.0`
-- `status`: `active`
-- `current_target`: `v0.12.0`
+- `status`: `frozen-historical`
+- `last_recorded_target`: `v0.12.0`
 - `created_at`: `2026-07-18T14:19:06+08:00`
-- `updated_at`: `2026-08-10T00:41:55+08:00`
+- `updated_at`: `2026-08-24T20:18:17+08:00`
+- `frozen_by`: `.dev/standards/SOURCE-WORK-MANAGEMENT-AUTHORITY.md`
 - `source_assessment`: `.dev/assessments/ASM-20260717-004/assessment.yaml`
 - `source_plan`: `.dev/backlog/plans/post-v0.4.0-improvement-plan.md`
 - `planning_workflow`: `.dev/workflows/2026-07-18-post-v0-4-roadmap-planning/workflow.yaml`
 - `gate_revision_workflow`: `.dev/workflows/2026-07-19-roadmap-gate-revision/workflow.yaml`
 - `product_contract_workflow`: `.dev/workflows/2026-07-23-v0-6-product-contract-planning/workflow.yaml`
 
-## Usage Contract
+## Historical Usage Contract
 
-Read this file before planning or resuming a post-v0.4.0 release.
+Do not use this file to plan or resume current work or a release. It preserves
+the post-v0.4 planning state recorded before 2026-08-24 for link and release
+compatibility only.
 
-- This roadmap owns release horizons, release-level state, activation gates, and workflow handoffs.
-- Individual backlog items own candidate work and their target/completed/published release metadata.
+- Live GitHub Issues and Project #3 own current source work and release views.
+- The horizons, gates, local item metadata, and handoffs below are historical
+  records, not current authorization or planning evidence.
 - Execution workflows own task progress, validation evidence, commits, and publication checkpoints.
-- This source repository uses GitHub Issues for candidate work and unapproved
-  plans; GitHub Projects provide its priority and status views. The durable
-  repository backlog retains framework and release-governance decisions rather
-  than replacing that day-to-day tracker.
-- This roadmap is a local release-governance view, not a complete online Issue
-  queue or Project #3 export. The current online provider snapshot is
-  [`github-project-current.yaml`](provider-mappings/github-project-current.yaml);
-  do not infer current Project scope from local backlog-item count or from a
-  Project card alone.
+- The retained [`github-project-current.yaml`](provider-mappings/github-project-current.yaml)
+  is a frozen 2026-08-10 point-in-time receipt, not current provider authority.
 - Open an execution workflow only after execution is authorized or durable
   cross-session execution tracking is required. A candidate issue or planning
   discussion alone is not a workflow trigger.
@@ -168,7 +165,7 @@ release-engineering workstream by owner decision. It must reuse the short-term
 regression boundary, avoid duplicating the Node.js 24 action migration, and
 enforce the `DIST-001` component and release lifecycle matrix.
 
-## Current Release Evidence
+## Historical Release Evidence At Freeze
 
 The first governed downstream v0.4.0 upgrade supplied newer and more direct
 release evidence than the earlier planning source:
@@ -227,7 +224,7 @@ release evidence than the earlier planning source:
    receiving host must not recast the attributed run as a universal platform
    or provider-runtime guarantee.
 
-## Backlog Release Targets
+## Historical Backlog Release Targets
 
 The backlog index is the quick catalog for target, completion, and publication
 versions. Current assignments:
@@ -362,7 +359,7 @@ exception. Only after each round's accepted doctrine, validator impact,
 examples, compatibility, and migration boundaries are understood may the owner
 assign that round's implementation to an existing or dedicated release.
 
-## Next Action
+## Historical Last Recorded Next Action
 
 The owner allocated `v0.9.0` on 2026-08-04 with `GOV-004` and `PKG-005`, then
 on 2026-08-05 added the completed #92 umbrella outcomes as `GOV-006`, `CTX-005`,
