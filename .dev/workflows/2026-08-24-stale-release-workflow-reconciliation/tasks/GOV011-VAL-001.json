@@ -6,9 +6,9 @@
   "task_id": "GOV011-VAL-001",
   "workflow_id": "2026-08-24-stale-release-workflow-reconciliation",
   "owner_skill": "ai-context-governance",
-  "status": "in_progress",
+  "status": "completed",
   "created_at": "2026-08-24T14:50:38+08:00",
-  "updated_at": "2026-08-24T15:56:13+08:00",
+  "updated_at": "2026-08-24T16:56:00+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-5.6-sol",
   "reasoning_effort": "high",
@@ -61,11 +61,11 @@
       "python .ai/scripts/validate-git-commits.py --range main..HEAD --workflow-id 2026-08-24-stale-release-workflow-reconciliation",
       "Independent read-only exact-head governance audit"
     ],
-    "last_completed_step": "Fast attempt 1 passed on 774ef586. Critical attempt 1 reached 48 passed checks with zero failures before its 900-second outer task timeout; direct diagnostics then proved aggregate-runner-contract takes 894.656 seconds versus a 300-second ceiling and has exactly two stale fixture assertions. Both assertions now pass when isolated, and the ceiling is calibrated to 1200 seconds without membership changes.",
-    "next_action": "Commit the second repair head, externally validate the full aggregate-runner suite, then rerun fast and critical on the new exact head within the remaining retry limits."
+    "last_completed_step": "Exact clean head c71f5532 passed the full 74-test aggregate-runner suite, fast attempt 2, and critical attempt 2; no third attempt was needed, and all retained non-passing attempts remain unchanged.",
+    "next_action": "The management conversation independently verifies the final local commit and decides whether to authorize provider-side push and pull-request integration."
   },
   "results": {
-    "summary": "Fast attempt 1 passed. Critical attempt 1 exposed and retained a distinct outer-timeout/aggregate-runner issue; its two stale assertions and measured 300-second ceiling are repaired, pending exact-head full-suite and aggregate validation.",
+    "summary": "The measured timeout and supervision defects are resolved without removing checks or changing profile membership. Exact clean head c71f5532 passed the full runner suite plus fast and critical aggregate gates within the authorized retry limit.",
     "files_changed": [
       ".ai/scripts/validation-profile-registry.sh",
       ".ai/scripts/validation_process_supervisor.py",
@@ -92,10 +92,13 @@
       "test_fail_closed_validation.py at 774ef586: 74 tests in 894.656 seconds, 72 passed / 2 stale assertion failures / 0 errors",
       "the two diagnosed test_fail_closed_validation.py cases after repair: 2/2 passed in 18.127 seconds",
       "test_validation_evidence.py at 774ef586: 38 tests in 161.591 seconds, 37 passed / 1 platform skip / 0 failures; its existing 180-second per-check ceiling did not fail",
-      "profile-registry focused ceiling/membership assertion after aggregate-runner calibration: passed"
+      "profile-registry focused ceiling/membership assertion after aggregate-runner calibration: passed",
+      "test_fail_closed_validation.py at c71f5532: passed 74/74 in 894.081 runner seconds; exact external boundary 928.756689 seconds",
+      "fast aggregate attempt 2 at c71f5532: passed, 42 selected / 41 executed / 0 failed / 0 blocked / 1 not applicable; 341 runner seconds; advisory budget warning only",
+      "critical aggregate attempt 2 at c71f5532: passed, 65 selected / 62 executed / 0 failed / 0 blocked / 3 not applicable; 1891 runner seconds; aggregate seal present"
     ],
-    "finding_status": "partially-resolved",
-    "residual_risk": "The second repair is not committed and its full 74-test runner suite has not run; fast has one passing attempt on the prior repair head, while critical used one of three attempts and remains non-passing.",
-    "follow_up_needed": true
+    "finding_status": "resolved",
+    "residual_risk": "The passing receipts are local and ignored; the registered completion checkpoint preserves their terminal facts and cryptographic critical-output binding. Provider state may drift after the point-in-time evidence and requires management read-back before integration.",
+    "follow_up_needed": false
   }
 }

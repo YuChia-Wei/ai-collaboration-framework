@@ -15,11 +15,11 @@
 - `branch`: `codex/2026-08-24-stale-release-workflow-reconciliation`
 - `base_branch`: `main`
 - `branch_segment`: `1`
-- `status`: `in_progress`
-- `current_phase`: `remediation`
+- `status`: `completed`
+- `current_phase`: `completed`
 - `artifact_root`: `.dev/workflows/2026-08-24-stale-release-workflow-reconciliation`
 - `created_at`: `2026-08-24T10:28:32+08:00`
-- `updated_at`: `2026-08-24T14:50:38+08:00`
+- `updated_at`: `2026-08-24T16:56:00+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md`
 - `template_version`: `1.2.0`
 
@@ -42,7 +42,8 @@ This single-task workflow is proportional because it retains unique external-lif
 - Remediation report: `.dev/workflows/2026-08-24-stale-release-workflow-reconciliation/reports/remediation-report.md`
 - Task: `.dev/workflows/2026-08-24-stale-release-workflow-reconciliation/tasks/GOV011-001.json`
 - Independent verification: read-only audit bound to the final immutable commit; any repair invalidates the audit and requires a new audit.
-- Blocked handoff: `.dev/workflows/2026-08-24-stale-release-workflow-reconciliation/handoff-checkpoints/GOV011-001-blocked.yaml`, registered in `.dev/workflows/handoff-checkpoints.yaml`.
+- Retained blocked handoff: `.dev/workflows/2026-08-24-stale-release-workflow-reconciliation/handoff-checkpoints/GOV011-001-blocked.yaml`; it remains the immutable record of earlier non-passing attempts.
+- Completion handoff: `.dev/workflows/2026-08-24-stale-release-workflow-reconciliation/handoff-checkpoints/GOV011-VAL-001-complete.yaml`, registered in `.dev/workflows/handoff-checkpoints.yaml`.
 
 ## Stages And Checkpoints
 
@@ -57,13 +58,13 @@ This single-task workflow is proportional because it retains unique external-lif
 
 ## Resume Checkpoint
 
-- Last completed action: Fast attempt 1 passed on `774ef586`. Critical attempt 1 timed out at its 900-second delegated boundary after 48 passing checks and exposed a distinct 894.656-second aggregate-runner suite with two stale fixture assertions. Both assertions pass after repair, and the measured ceiling is now 1200 seconds.
+- Last completed action: Exact clean head `c71f5532c733d7e4b6c19bc802eda4cbef21f4e8` passed all 74 aggregate-runner tests, fast attempt 2, and critical attempt 2 with an aggregate seal. No third attempt was needed.
 - Current task: `GOV011-VAL-001`
-- Exact next action: Commit the second repair head, externally validate all 74 aggregate-runner tests, then run fast attempt 2 and critical attempt 2 only after that focused terminal pass.
-- Validation already completed: 16/16 workflow lifecycle tests; workflow artifact validator; AI-context validator; source-governance validator; 7/7 validation-profile registry tests; 2/2 directly applicable CheckAll routing tests; commit-policy validation; `git diff --check`. Windows-native fast failed 42/22/20/0 after the multi-hop timeout; WSL-home fast failed 42/21/22/0 on supervision consistency; canonical critical failed 65/32/32/0 after package-apply timed out. The registered checkpoint retains every attempt and blocks continuation.
-- Git state: Dedicated local branch with implementation checkpoint `ea1852fd8944cad29c2c6dfe31abbe1cc091d023`, validation checkpoint `c5f99794947f53f13c5b789e14c0f83e15a5d34d`, and registered blocked handoff validated parent `b385a69d8f2e1d8db5a98832de3d41a2f262243f`; its containing commit is the current result of repository verification. No provider mutation occurred, and the workflow/task intentionally remain active.
+- Exact next action: The management conversation independently verifies the final local branch and decides whether to authorize push and pull-request integration.
+- Validation already completed: 16/16 workflow lifecycle tests; workflow artifact, handoff, AI-context, and source-governance validators; 7/7 validation-profile registry tests; focused supervisor/evidence tests; 74/74 aggregate-runner tests in 894.081 seconds; fast attempt 2 passed 42/41/0/0/1 in 341 runner seconds; critical attempt 2 passed 65/62/0/0/3 in 1891 runner seconds with an aggregate seal. Earlier interrupted, blocked, failed, and timed-out attempts remain registered in the blocked checkpoint.
+- Git state: Dedicated local branch with exact validated repair head `c71f5532c733d7e4b6c19bc802eda4cbef21f4e8`; the completion checkpoint resolves through its later containing commit. No provider mutation occurred.
 - Branch history and checkpoint handoffs: Segment 1 started from `main@f9052a820827a0285c03140bdd59129f1502986e`; no push or merge.
-- Blockers or unresolved decisions: No owner decision remains. Critical attempt 1 stays timed-out and non-passing; fast has one passing attempt on the prior repair head. Removing checks, changing profile membership, or touching provider/release state remains prohibited.
+- Blockers or unresolved decisions: No implementation blocker remains. Provider integration, Issue/Project state, and release actions remain separate owner/management decisions. Removing checks, changing profile membership, or touching provider/release state remains prohibited.
 
 ## Branch Lifecycle
 
@@ -73,3 +74,5 @@ This single-task workflow is proportional because it retains unique external-lif
 | 1 | `codex/2026-08-24-stale-release-workflow-reconciliation` | `main@f9052a820827a0285c03140bdd59129f1502986e` | implementation-checkpoint | `ea1852fd8944cad29c2c6dfe31abbe1cc091d023` | local only | `2026-08-24T10:47:42+08:00` | Contract, fixtures, routing, v0.13 reconciliation, and focused validation committed | Retain global fast failure; commit validation reconciliation and audit the exact head. |
 | 1 | `codex/2026-08-24-stale-release-workflow-reconciliation` | `ea1852fd8944cad29c2c6dfe31abbe1cc091d023` | validation-checkpoint | `c5f99794947f53f13c5b789e14c0f83e15a5d34d` | local only | `2026-08-24T11:10:09+08:00` | Retained Windows fast failure and Issue-scoped validation evidence | Fixed-head audit failed closed; exhaust non-mutating environment alternatives and hand off the owner decision. |
 | 1 | `codex/2026-08-24-stale-release-workflow-reconciliation` | `ceee8b30786c2e7a4587c75e534172c73e6edc21` | blocked-handoff-checkpoint | `b385a69d8f2e1d8db5a98832de3d41a2f262243f` | local only | `2026-08-24T11:55:24+08:00` | Registered machine-readable checkpoint with complete non-passing attempt history | Await the owner decision; repository verification resolves later containing-commit refreshes. |
+| 1 | `codex/2026-08-24-stale-release-workflow-reconciliation` | `774ef5864dafd7e07fa6ceb63aa46c33cd99d158` | validation-repair-checkpoint | `c71f5532c733d7e4b6c19bc802eda4cbef21f4e8` | local only | `2026-08-24T15:56:13+08:00` | Corrected two diagnosed fixture assertions and calibrated the measured aggregate-runner ceiling | Run exact-head focused and aggregate validation. |
+| 1 | `codex/2026-08-24-stale-release-workflow-reconciliation` | `c71f5532c733d7e4b6c19bc802eda4cbef21f4e8` | completion-handoff | containing commit | local only | `2026-08-24T16:56:00+08:00` | Full runner, fast, and critical validation passed within retry limits | Management verifies the local branch and decides provider integration. |

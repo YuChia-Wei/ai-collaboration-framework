@@ -2,10 +2,10 @@
 
 ## Status
 
-`in_progress` — the bounded terminal-anchor implementation is complete and
-independently acceptable. The owner has now authorized repair-only continuation
-for the proven validation-platform failures that keep fast and critical gates
-non-passing.
+`completed` — the bounded terminal-anchor implementation and the separately
+authorized validation-platform repair are complete on the local dedicated
+branch. Provider integration and Issue/Project/release actions remain outside
+this repository completion state.
 
 ## Docs Updated
 
@@ -37,7 +37,7 @@ non-passing.
 
 | Finding | Disposition | Evidence |
 | --- | --- | --- |
-| `GOV-011` / #243 | partially-resolved | Contract, validator, fixtures, routing, v0.13 tracked anchor, and every Issue-scoped validation pass. Exact-head audits accept the bounded implementation but fail closed on the selected aggregate gate. |
+| `GOV-011` / #243 | resolved | Contract, validator, fixtures, routing, v0.13 tracked anchor, full runner suite, and selected fast/critical aggregate gates pass on the exact clean repair head. |
 
 ## Validation
 
@@ -115,20 +115,35 @@ non-passing.
 - The full validation-evidence suite passed 37 tests with one platform skip in
   161.591 seconds; its existing 180-second ceiling did not fail and was not
   changed.
+- The repaired full aggregate-runner suite passed 74/74 on exact clean head
+  `c71f5532c733d7e4b6c19bc802eda4cbef21f4e8` in 894.081 runner seconds
+  (928.756689-second external boundary).
+- Fast attempt 2 on that head passed: 42 selected, 41 executed, 0 failed,
+  0 blocked, and 1 not applicable in 341 runner seconds. The fast budget
+  warning remained advisory.
+- Critical attempt 2 on that head passed: 65 selected, 62 executed, 0 failed,
+  0 blocked, and 3 not applicable in 1891 runner seconds, with a valid
+  aggregate seal. No third aggregate attempt was needed.
+- The completion checkpoint cryptographically binds the 35-line critical
+  terminal output and references the retained blocked checkpoint rather than
+  rewriting any earlier non-passing outcome.
 
 ## Residual Risk
 
 - The point-in-time GitHub evidence is deterministic offline input, not a claim
   of continued provider parity.
-- Fast has a passing receipt on the first repair head. The second repair head
-  still requires exact-head fast validation because registry bytes changed;
-  critical attempt 1 remains timed-out and non-passing.
-- No passing independent audit can be claimed while the selected aggregate is
-  non-passing. Any future tracked repair also requires a new exact-head audit.
+- Aggregate receipts are ignored local artifacts, so durable workflow evidence
+  records their exact subjects, counts, durations, outcomes, and critical-log
+  digest. Their earlier failed and timed-out predecessors remain non-passing.
+- Provider observations are point-in-time evidence. Management must read back
+  live state before any later push, pull request, Issue/Project transition, or
+  release action.
+- Any tracked repair after the final fixed-head audit invalidates that audit and
+  requires a new independent audit.
 
 ## Next Task
 
-`GOV011-VAL-001`: add focused timing/timeout tests, repair only the measured
-registry floors and authenticated wall-clock adjustment contract, then run no
-more than three evidence-driven attempts per aggregate gate. Check removal,
-profile reclassification, and provider/release mutation remain prohibited.
+No repository implementation task remains. The management conversation owns
+independent local-branch verification and any separately authorized provider
+integration; push, pull request, merge, Issue/Project transitions, and release
+mutation have not been performed.

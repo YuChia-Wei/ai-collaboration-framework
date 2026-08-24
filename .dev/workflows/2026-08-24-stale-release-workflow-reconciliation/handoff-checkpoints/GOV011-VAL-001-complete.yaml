@@ -1,0 +1,98 @@
+schema_version: "1.0"
+checkpoint_id: "2026-08-24-stale-release-workflow-reconciliation-GOV011-VAL-001-complete"
+created_at: "2026-08-24T16:56:00+08:00"
+repository:
+  root: "."
+  branch: "codex/2026-08-24-stale-release-workflow-reconciliation"
+  validated_commit: "c71f5532c733d7e4b6c19bc802eda4cbef21f4e8"
+  checkpoint_commit_source: "containing-commit"
+  dirty_state: "clean"
+  status_porcelain_sha256: "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+workflow:
+  workflow_id: "2026-08-24-stale-release-workflow-reconciliation"
+  task_id: "GOV011-VAL-001"
+resume:
+  last_completed_action: "The exact clean repair head passed all 74 aggregate-runner tests, fast attempt 2, and critical attempt 2 with an aggregate seal; no third attempt was needed."
+  exact_next_action: "The management conversation must independently verify this local branch and decide whether to authorize push and pull-request integration."
+  hidden_context_required: false
+critical_gate:
+  command: '"C:\Program Files\Git\bin\bash.exe" .ai/scripts/check-all.sh --critical'
+  observed_at: "2026-08-24T16:54:37+08:00"
+  exit_code: 0
+  outcome: "passed"
+  output:
+    normalization: "utf8-lf"
+    sha256: "c3a508928b561766fb8c2fa3445a272fbd19752856bc2f01e98f059a86385fa9"
+    line_count: 35
+    tail:
+      - "summary: profile=release selected=65 executed=62 reused=0 failed=0 blocked=0 warnings=0 deferred=0 not-applicable=3"
+      - "Required Selected: 65"
+      - "Required Executed: 62"
+      - "Required Failed: 0"
+      - "Required Blocked: 0"
+      - "Required Deferred: 0"
+      - "Total wall time: 1891s across 65 selected checks"
+      - "AI_CONTEXT_CHECK_TIMING total_seconds=1891 profile=release checks=65 executed=62 reused=0 failed=0 blocked=0"
+      - "Completed at 2026-08-24 16:54:37"
+      - "All Checks Passed Successfully!"
+continuation:
+  allowed: true
+  mode: "normal"
+  reason: "Critical gate passed on the exact clean repair head."
+  repair_task_id: null
+  failure_ids: []
+release_handoff: false
+release_phase_check: null
+execution_provenance:
+  runtime: "OpenAI Codex"
+  model: "gpt-5.6-sol"
+  reasoning_effort: "high"
+  model_source: "runtime-reported"
+  evidence_ref: ".dev/workflows/2026-08-24-stale-release-workflow-reconciliation/tasks/GOV011-VAL-001.json"
+attribution:
+  preservation_required: true
+  evidence_union_version: "1.0"
+  selected_evidence:
+    kind: "repository-created-local-ai-trailer"
+    commit: "c71f5532c733d7e4b6c19bc802eda4cbef21f4e8"
+    author: "YuChia <h42279@gmail.com>"
+    committer: "YuChia <h42279@gmail.com>"
+    signature_status: "unsigned"
+    session_ref: null
+    observed_trailer: "Co-Authored-By: OpenAI Codex (gpt-5.6-sol, high) <noreply@openai.com>"
+    message_sha256: "7656bc1da17fccd4cbda4acd8023253488854971e13ae4bd0e55b5e3bd051de0"
+    fixture_ref: "git:c71f5532c733d7e4b6c19bc802eda4cbef21f4e8"
+  fixture_status:
+    - path_id: "copilot-cli"
+      status: "blocked"
+      commit: null
+      evidence_ref: ".dev/workflows/2026-07-21-v0-5-0-development/evidence/v050-handoff-attribution-fixtures.md#github-copilot-cli"
+      reason: "No provider-generated Copilot CLI commit fixture is present in this repository."
+    - path_id: "copilot-cloud-agent"
+      status: "blocked"
+      commit: null
+      evidence_ref: ".dev/workflows/2026-07-21-v0-5-0-development/evidence/v050-handoff-attribution-fixtures.md#github-copilot-cloud-agent"
+      reason: "No provider-generated Copilot cloud-agent commit fixture is present in this repository."
+    - path_id: "claude"
+      status: "blocked"
+      commit: null
+      evidence_ref: ".dev/workflows/2026-07-21-v0-5-0-development/evidence/v050-handoff-attribution-fixtures.md#claude"
+      reason: "No stable provider-generated Claude commit attribution fixture is available."
+    - path_id: "codex-local"
+      status: "captured"
+      commit: "c71f5532c733d7e4b6c19bc802eda4cbef21f4e8"
+      evidence_ref: "git:c71f5532c733d7e4b6c19bc802eda4cbef21f4e8"
+      reason: null
+retained_nonpassing_checkpoint:
+  path: ".dev/workflows/2026-08-24-stale-release-workflow-reconciliation/handoff-checkpoints/GOV011-001-blocked.yaml"
+  reason: "Preserves the original interrupted, blocked, failed, and timed-out evidence without reclassification."
+completion_validation:
+  - validation_id: "aggregate-runner-contract-c71f5532-01"
+    outcome: "passed"
+    facts: "74/74 tests passed in 894.081 runner seconds; the exact preflight-to-postflight boundary was 928.756689 seconds."
+  - validation_id: "fast-c71f5532-attempt-02"
+    outcome: "passed"
+    facts: "42 selected, 41 executed, 0 failed, 0 blocked, 1 not applicable; the 341-second budget excess remained an advisory warning."
+  - validation_id: "critical-c71f5532-attempt-02"
+    outcome: "passed"
+    facts: "65 selected, 62 executed, 0 failed, 0 blocked, 3 not applicable; the runner reported 1891 seconds and produced the aggregate seal."
