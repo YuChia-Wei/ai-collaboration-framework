@@ -83,8 +83,17 @@ Its tracked declaration advances the branch, so prior audits cannot be used as
 the PR-head review receipt. Fresh exact-head audit, hosted checks, live merge
 admission, merge, and post-merge Issue/Project read-back remain mandatory.
 
+The first PR-head audit of
+`0e4e0c0859f639c4c10cf28bcd218f43625cb833` returned `FAIL` with
+`GOV012-PR247-AUD-001` (HIGH): the declaration and PR body retained the prior
+commit and source-disposition counts, and this report retained a superseded
+pre-hosted-delivery exclusion. The implementation boundary remained unchanged.
+Governance corrected only the terminal evidence; the resulting head requires a
+new exact-head audit and cannot reuse the failed audit as admission evidence.
+
 ## Excluded Actions
 
-No push, pull request, merge, Issue closure, Project mutation, target-release
-assignment, tag, Release, asset, published package byte, bulk backlog mutation,
-or physical historical-record deletion was performed.
+No merge, Issue closure, Project mutation, target-release assignment, tag,
+Release, asset, published package byte, bulk backlog mutation, or physical
+historical-record deletion was performed. The authorized branch push and draft
+PR #247 creation are recorded in Hosted Delivery Handoff above.

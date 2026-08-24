@@ -74,12 +74,12 @@ Two substantive tasks are retained because the implementation boundary and the i
 
 ## Resume Checkpoint
 
-- Last completed action: Pushed completed branch head `01f90ab4b75b19d95b234ef1d0a767dcf45f81e6`, created draft PR #247 with terminal-close intent, and added its exact tracked declaration.
+- Last completed action: The fresh audit of pushed PR head `0e4e0c0859f639c4c10cf28bcd218f43625cb833` failed on stale terminal-evidence counts and a superseded handoff exclusion; implementation and authority surfaces were unchanged.
 - Current task: complete
-- Exact next action: Commit and push the PR #247 declaration, then obtain fresh exact-head independent audit, required hosted checks, source audit receipt, and live merge admission before integration.
+- Exact next action: Commit and push the terminal-evidence-only correction, update the live PR body to exact declaration parity, then obtain a new exact-head independent audit, required hosted checks, source audit receipt, and live merge admission before integration.
 - Validation already completed: focused authority/legacy/prospective gates, source/workflow/assessment governance, terminal closure, release compatibility, packaging boundary, a retained failed sandbox aggregate, the passing host-context aggregate, and a passing independent exact-head audit.
-- Git state: the PR #247 terminal declaration and hosted handoff record are uncommitted on `codex/2026-08-24-retire-repository-backlog-authority`; prior audits do not cover the resulting declaration head.
-- Branch history and checkpoint handoffs: segment 1 was pushed at `01f90ab4b75b19d95b234ef1d0a767dcf45f81e6`; draft PR #247 targets unchanged `main@4be33ff90de061dc1db221f60e57ff6130cab54a`.
+- Git state: the terminal-evidence correction is uncommitted on `codex/2026-08-24-retire-repository-backlog-authority`; the failed audit of `0e4e0c0859f639c4c10cf28bcd218f43625cb833` cannot admit the corrected head.
+- Branch history and checkpoint handoffs: segment 1 is pushed through `0e4e0c0859f639c4c10cf28bcd218f43625cb833`; draft PR #247 targets unchanged `main@4be33ff90de061dc1db221f60e57ff6130cab54a`.
 - Blockers or unresolved decisions: none; `.dev/standards/` is the selected single active source policy owner and `.dev/backlog/` is frozen historical evidence.
 
 ## Branch Lifecycle
@@ -88,3 +88,4 @@ Two substantive tasks are retained because the implementation boundary and the i
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | 1 | `codex/2026-08-24-retire-repository-backlog-authority` | `main@4be33ff90de061dc1db221f60e57ff6130cab54a` | audited implementation | `ba7c159a2d8fd58291ddc1e92036cb82acd23fb6` | local only | `2026-08-25T00:35:25+08:00` | Exact-head aggregate and independent audit passed; terminal evidence-only closeout follows. | Hand the local branch to the owner; do not infer push, PR, merge, Issue, Project, or release action. |
 | 1 | `codex/2026-08-24-retire-repository-backlog-authority` | `main@4be33ff90de061dc1db221f60e57ff6130cab54a` | push and PR declaration | `01f90ab4b75b19d95b234ef1d0a767dcf45f81e6` | `origin/codex/2026-08-24-retire-repository-backlog-authority`, PR #247 | `2026-08-25T07:09:47+08:00` | Owner authorized terminal delivery; the declaration intentionally advances the head after initial push. | Push the declaration commit, audit that exact head, pass hosted checks, capture admission, then merge with merge-commit topology. |
+| 1 | `codex/2026-08-24-retire-repository-backlog-authority` | `main@4be33ff90de061dc1db221f60e57ff6130cab54a` | terminal evidence audit reroute | `0e4e0c0859f639c4c10cf28bcd218f43625cb833` | PR #247 | `2026-08-25T07:18:10+08:00` | Fresh audit found stale counts and a superseded handoff exclusion; implementation surfaces were unchanged. | Commit and push the terminal-evidence-only correction, update the live PR body, then audit the new exact head. |
