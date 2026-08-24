@@ -333,6 +333,17 @@ class TestFixtureRuntimeGwtTests(unittest.TestCase):
         self.assertEqual(2, completed.returncode)
         self.assertIn("requires --fixture-root or AI_CONTEXT_TEST_TMP_ROOT", completed.stderr)
 
+    def test_gwt_023_given_windows_filesystem_without_final_path_when_canonicalized_then_safe_fallback_is_used(self) -> None:
+        with WorkspaceTemporaryDirectory() as parent:
+            root = Path(parent) / "fixtures"
+            root.mkdir()
+            with mock.patch.object(Path, "resolve", side_effect=OSError("unsupported")):
+                with mock.patch.object(FIXTURES, "platform_family", return_value="windows"):
+                    self.assertEqual(
+                        Path(os.path.abspath(os.path.normpath(root))),
+                        FIXTURES._canonical_existing_path(root),
+                    )
+
 
 if __name__ == "__main__":
     unittest.main()

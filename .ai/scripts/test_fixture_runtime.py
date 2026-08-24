@@ -185,6 +185,21 @@ def filesystem_type(path: Path, *, platform_kind: str | None = None) -> str:
     return "unavailable"
 
 
+def _canonical_existing_path(path: Path) -> Path:
+    try:
+        return path.resolve(strict=True)
+    except OSError:
+        if platform_family() != "windows":
+            raise
+        # Some Windows filesystems support normal directory I/O but not the
+        # final-path handle operation used by pathlib.resolve(). Preflight has
+        # already rejected every symlink/reparse component before this fallback.
+        fallback = Path(os.path.abspath(os.path.normpath(path)))
+        if not fallback.exists() or not fallback.is_dir():
+            raise
+        return fallback
+
+
 def preflight_fixture_root(candidate: str | Path) -> RootPreflight:
     raw = Path(candidate)
     if not raw.is_absolute():
@@ -203,7 +218,7 @@ def preflight_fixture_root(candidate: str | Path) -> RootPreflight:
     if raw.is_symlink() or _is_reparse_point(raw):
         raise FixtureRootError("configured fixture root must not be a symlink or reparse point")
     try:
-        root = raw.resolve(strict=True)
+        root = _canonical_existing_path(raw)
     except OSError as exc:
         raise FixtureRootError("configured fixture root cannot be resolved") from exc
     if root.parent == root:
@@ -253,8 +268,8 @@ def resolve_fixture_root(
 
 def is_contained_run_directory(root: Path, run_directory: Path) -> bool:
     try:
-        resolved_root = root.resolve(strict=True)
-        resolved_run = run_directory.resolve(strict=True)
+        resolved_root = _canonical_existing_path(root)
+        resolved_run = _canonical_existing_path(run_directory)
     except OSError:
         return False
     return (
@@ -351,7 +366,10 @@ class FixtureRunSession:
         )
         self.fixture_creation_seconds += time.perf_counter() - started
         self.fixture_count += 1
-        if Path(temporary.name).resolve().parent != self.run_directory.resolve():
+        if (
+            _canonical_existing_path(Path(temporary.name)).parent
+            != _canonical_existing_path(self.run_directory)
+        ):
             temporary.cleanup()
             raise FixtureRootError("fixture directory escaped the verified run directory")
         return temporary
@@ -374,7 +392,7 @@ def _process_session() -> FixtureRunSession | None:
     configured = os.environ.get(ENVIRONMENT_VARIABLE, "").strip()
     if _PROCESS_SESSION is not None and configured:
         try:
-            if Path(configured).resolve(strict=True) == _PROCESS_ROOT:
+            if _canonical_existing_path(Path(configured)) == _PROCESS_ROOT:
                 return _PROCESS_SESSION
         except OSError as exc:
             raise FixtureRootError("configured fixture root cannot be resolved") from exc
