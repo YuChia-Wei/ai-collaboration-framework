@@ -105,15 +105,43 @@ class SourceWorkManagementGwtTests(unittest.TestCase):
     def test_gwt_008_given_prospective_locator_with_retired_binding_when_checked_then_it_fails_closed(self) -> None:
         locator = {
             "workflow_id": "future-workflow",
+            "created_at": "2026-08-24T12:30:00Z",
             "backlog_refs": [".dev/backlog/items/NEW-001.yaml"],
             "planning": ".dev/backlog/ROADMAP.md",
         }
-        errors = VALIDATOR.forbidden_structured_references(
+        scan_tasks, errors = VALIDATOR.prospective_locator_errors(
             locator,
+            effective_at="2026-08-24T20:18:17+08:00",
+            exception="current-remediation",
             forbidden_keys={"backlog_refs"},
             forbidden_paths=(".dev/backlog/items/", ".dev/backlog/ROADMAP.md"),
         )
+        self.assertTrue(scan_tasks)
         self.assertEqual(3, len(errors))
+
+    def test_gwt_009_given_equal_instant_with_different_offsets_when_checked_then_it_is_prospective(self) -> None:
+        scan_tasks, errors = VALIDATOR.prospective_locator_errors(
+            {"workflow_id": "future-workflow", "created_at": "2026-08-24T12:18:17Z"},
+            effective_at="2026-08-24T20:18:17+08:00",
+            exception="current-remediation",
+            forbidden_keys={"backlog_refs"},
+            forbidden_paths=(".dev/backlog/items/", ".dev/backlog/ROADMAP.md"),
+        )
+        self.assertTrue(scan_tasks)
+        self.assertEqual([], errors)
+
+    def test_gwt_010_given_naive_or_malformed_timestamp_when_checked_then_it_fails_closed(self) -> None:
+        for created_at in ("2026-08-24T20:30:00", "not-a-timestamp"):
+            with self.subTest(created_at=created_at):
+                scan_tasks, errors = VALIDATOR.prospective_locator_errors(
+                    {"workflow_id": "future-workflow", "created_at": created_at},
+                    effective_at="2026-08-24T20:18:17+08:00",
+                    exception="current-remediation",
+                    forbidden_keys={"backlog_refs"},
+                    forbidden_paths=(".dev/backlog/items/", ".dev/backlog/ROADMAP.md"),
+                )
+                self.assertFalse(scan_tasks)
+                self.assertTrue(any("explicit offset" in error for error in errors))
 
 
 if __name__ == "__main__":

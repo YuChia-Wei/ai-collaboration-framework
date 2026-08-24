@@ -19,7 +19,7 @@
 - `current_phase`: `verification`
 - `artifact_root`: `.dev/workflows/2026-08-24-retire-repository-backlog-authority`
 - `created_at`: `2026-08-24T20:11:36+08:00`
-- `updated_at`: `2026-08-24T21:29:01+08:00`
+- `updated_at`: `2026-08-24T22:22:35+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md`
 - `template_version`: `1.2.0`
 - `work_item`: `https://github.com/YuChia-Wei/ai-collaboration-framework/issues/245`
@@ -74,9 +74,9 @@ Two substantive tasks are retained because the implementation boundary and the i
 
 ## Resume Checkpoint
 
-- Last completed action: Preserved failed exact-head assessment `ASM-20260824-001#GOV012-AUD-001` and repaired its prospective locator coverage finding without altering the historical audit subject.
+- Last completed action: Preserved `ASM-20260824-002#GOV012-AUD-002` and replaced lexical RFC 3339 ordering with offset-aware chronological comparison plus later/equal/malformed boundary tests.
 - Current task: `GOV012-VAL-001`
-- Exact next action: Commit the locator-gate repair and failed audit receipt, run the affected exact-head gates, then obtain a new independent audit of the repaired head.
+- Exact next action: Commit the time-boundary repair and failed audit receipt, then run fresh exact-head release validation and independent audit.
 - Validation already completed: authority and unit gates; 54 terminal-closure tests; 37 release-state tests; 19 package-validation tests with one Windows case-fold skip; focused profile and package projection tests; AI-context and workflow validation. Sandbox Temp ACL failures were preserved and then passed in host context where rerun.
 - Git state: audit receipt and bounded repair are uncommitted on `codex/2026-08-24-retire-repository-backlog-authority`.
 - Branch history and checkpoint handoffs: segment 1 created from verified `origin/main`; no push, merge, or handoff performed.

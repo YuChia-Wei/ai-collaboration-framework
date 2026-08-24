@@ -12,6 +12,7 @@ owns its identity, current lifecycle state, subject revision, and relationships.
 
 | Assessment | Title | Type | Owner | Status | Subject Commit | Updated | Report |
 | --- | --- | --- | --- | --- | --- | --- | --- |
+| [`ASM-20260824-002`](ASM-20260824-002/assessment.yaml) | GOV-012 Prospective Time Boundary Verification | `ai-context-verification` | `ai-context-auditor` | `final` | `801679ee0fc9a30d8d9af81f12bc941c8c2f0a1c` | `2026-08-24T22:19:27+08:00` | [report](ASM-20260824-002/report.md) |
 | [`ASM-20260824-001`](ASM-20260824-001/assessment.yaml) | GOV-012 Backlog Authority Retirement Verification | `ai-context-verification` | `ai-context-auditor` | `final` | `0c6c9c88a84ef358b52d732c66844b858d51e7c3` | `2026-08-24T21:25:36+08:00` | [report](ASM-20260824-001/report.md) |
 | [`ASM-20260815-001`](ASM-20260815-001/assessment.yaml) | PKG-011 Durable Package Apply Verification | `ai-context-verification` | `ai-context-auditor` | `final` | `52cb86533a23324e07a59c49ff44f59329c5760a` | `2026-08-15T11:18:26+08:00` | [report](ASM-20260815-001/report.md) |
 | [`ASM-20260814-003`](ASM-20260814-003/assessment.yaml) | VAL-006 Changed-Path Dependency Closure Verification | `ai-context-verification` | `ai-context-auditor` | `final` | `4ecaa5cf5c079011f765542253f2faafb2b814ca` | `2026-08-14T00:36:35+08:00` | [report](ASM-20260814-003/report.md) |

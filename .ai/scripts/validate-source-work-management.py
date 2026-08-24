@@ -10,6 +10,7 @@ import subprocess
 import sys
 from argparse import ArgumentParser
 from collections.abc import Callable, Iterable
+from datetime import datetime
 from pathlib import Path
 from typing import Any
 
@@ -70,6 +71,45 @@ def version_tuple(value: str) -> tuple[int, int, int] | None:
     if match is None:
         return None
     return tuple(int(part) for part in match.groups())
+
+
+def offset_datetime(value: object, label: str) -> datetime:
+    if not isinstance(value, str) or not value:
+        raise ValueError(f"{label} must be an ISO 8601 timestamp with an explicit offset")
+    normalized = value[:-1] + "+00:00" if value.endswith("Z") else value
+    try:
+        parsed = datetime.fromisoformat(normalized)
+    except ValueError as exc:
+        raise ValueError(
+            f"{label} must be an ISO 8601 timestamp with an explicit offset"
+        ) from exc
+    if parsed.tzinfo is None or parsed.utcoffset() is None:
+        raise ValueError(f"{label} must be an ISO 8601 timestamp with an explicit offset")
+    return parsed
+
+
+def prospective_locator_errors(
+    locator: dict[str, Any],
+    *,
+    effective_at: object,
+    exception: str,
+    forbidden_keys: set[str],
+    forbidden_paths: tuple[str, ...],
+) -> tuple[bool, list[str]]:
+    if locator.get("workflow_id") == exception:
+        return False, []
+    try:
+        effective_time = offset_datetime(effective_at, "prospective_workflow.effective_at")
+        created_time = offset_datetime(locator.get("created_at"), "workflow.created_at")
+    except ValueError as exc:
+        return False, [str(exc)]
+    if created_time < effective_time:
+        return False, []
+    return True, forbidden_structured_references(
+        locator,
+        forbidden_keys=forbidden_keys,
+        forbidden_paths=forbidden_paths,
+    )
 
 
 def forbidden_structured_references(
@@ -297,22 +337,18 @@ def validate_contract(data: dict[str, Any], root: Path = ROOT) -> list[str]:
         except ValueError as exc:
             errors.append(str(exc))
             continue
-        workflow_id = locator.get("workflow_id")
-        created_at = locator.get("created_at")
-        if (
-            workflow_id == exception
-            or not isinstance(created_at, str)
-            or created_at < effective_at
-        ):
-            continue
-        errors.extend(
-            f"{locator_path.relative_to(root)}: {error}"
-            for error in forbidden_structured_references(
-                locator,
-                forbidden_keys=set(forbidden_keys),
-                forbidden_paths=tuple(forbidden_paths),
-            )
+        scan_tasks, locator_errors = prospective_locator_errors(
+            locator,
+            effective_at=effective_at,
+            exception=exception,
+            forbidden_keys=set(forbidden_keys),
+            forbidden_paths=tuple(forbidden_paths),
         )
+        errors.extend(
+            f"{locator_path.relative_to(root)}: {error}" for error in locator_errors
+        )
+        if not scan_tasks:
+            continue
         artifact_root = locator.get("artifact_root")
         if not isinstance(artifact_root, str):
             errors.append(f"{locator_path}: artifact_root must be a string")

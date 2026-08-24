@@ -41,6 +41,13 @@ Governance accepted that finding and applied the same recursive check to every
 prospective locator with a locator-specific regression test. The repaired head
 requires fresh release validation and a separate independent audit.
 
+The next audit at `801679ee0fc9a30d8d9af81f12bc941c8c2f0a1c` is retained as
+`ASM-20260824-002`. It confirmed locator scanning but found
+`GOV012-AUD-002` (HIGH): serialized timestamps with different explicit offsets
+were compared lexically. Governance replaced that gate with offset-aware
+chronological comparison, rejects naive or malformed timestamps, and tests
+later and equal instants expressed with different offsets.
+
 ## Excluded Actions
 
 No push, pull request, merge, Issue closure, Project mutation, target-release

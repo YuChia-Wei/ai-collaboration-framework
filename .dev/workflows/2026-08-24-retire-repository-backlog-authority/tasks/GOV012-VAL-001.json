@@ -8,7 +8,7 @@
   "owner_skill": "ai-context-governance",
   "status": "in_progress",
   "created_at": "2026-08-24T20:11:36+08:00",
-  "updated_at": "2026-08-24T21:29:01+08:00",
+  "updated_at": "2026-08-24T22:22:35+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-5.6-sol",
   "reasoning_effort": "high",
@@ -44,8 +44,8 @@
       "Workflow artifact and commit-range validation",
       "Final clean-worktree and branch/head read-back"
     ],
-    "last_completed_step": "The release profile passed at 0c6c9c88; the independent audit retained one HIGH locator-coverage finding as ASM-20260824-001; governance applied the bounded repair and regression test.",
-    "next_action": "Commit the repaired candidate, run fresh exact-head validation, and dispatch a new independent audit for that head.",
+    "last_completed_step": "The release profile passed at 801679ee; ASM-20260824-002 confirmed locator scanning but retained GOV012-AUD-002 HIGH for lexical offset ordering; governance applied offset-aware fail-closed comparison and boundary regressions.",
+    "next_action": "Commit the repaired candidate, run fresh exact-head validation, and dispatch a new release profile and independent audit for that head.",
     "role_execution": [
       {
         "role_execution_id": "GOV012-VAL-001-fixed-head-independent-auditor-01",
@@ -168,6 +168,108 @@
           "owner": "ai-context-governance/source-task:01a02d8e-8fb8-7771-beac-b3520923e6d7",
           "decision": "accepted",
           "evidence_refs": [".dev/assessments/ASM-20260824-001/report.md", "GOV012-AUD-001 repair in current working tree"]
+        }
+      },
+      {
+        "role_execution_id": "GOV012-VAL-001-fixed-head-independent-auditor-02",
+        "role_asset_id": "fixed-head-independent-auditor",
+        "role_path": ".ai/assets/sub-agent-role-prompts/fixed-head-independent-auditor/sub-agent.yaml",
+        "owning_skill": "ai-context-upgrader",
+        "stage_id": "terminal-fixed-head-independent-audit",
+        "applicability": {
+          "result": "applies",
+          "reason": "Issue #245 required a fresh terminal audit after repairing ASM-20260824-001#GOV012-AUD-001."
+        },
+        "selection": {
+          "disposition": "delegated",
+          "reason": "Independent read-only isolation from implementation and integration ownership was required.",
+          "delegation_evaluation": {
+            "safety_gates": {
+              "applicable_role": true,
+              "current_session_runtime_support_verified": true,
+              "bounded_input_output_permissions_stop": true,
+              "approval_security_credential_boundaries_satisfied": true,
+              "disjoint_mutation_scope": true,
+              "named_parent_and_final_integration_owner": true
+            },
+            "material_value_triggers": ["meaningful_isolation", "specialist_context_benefit"],
+            "cost_failure_retry_risk": {
+              "result": "supports-delegation",
+              "reason": "The terminal result must remain independent of implementation and repair."
+            }
+          }
+        },
+        "input_envelope": {
+          "goal": "Fail-closed terminal audit of repaired Issue #245 head 801679ee0fc9a30d8d9af81f12bc941c8c2f0a1c.",
+          "scope": ["authority, historical freeze, release compatibility, routing, packaging, and retained release evidence"],
+          "non_goals": ["repair", "provider or release mutation", "integration acceptance", "assessment persistence"],
+          "source_refs": ["Issue #245", ".dev/assessments/ASM-20260824-001/report.md", "artifacts/validation/gov012-release-801679ee/external-task-completion.yaml"],
+          "mandatory_references": [
+            ".ai/assets/sub-agent-role-prompts/fixed-head-independent-auditor/sub-agent.yaml",
+            ".ai/assets/sub-agent-role-prompts/fixed-head-independent-auditor/references/fixed-head-independent-audit-playbook.md",
+            ".ai/assets/shared/ROLE-EXECUTION-CONTRACT.md",
+            ".ai/assets/skills/ai-context-upgrader/references/role-execution-bindings.yaml"
+          ],
+          "constraints": ["read-only", "exact fixed clean commit", "retain prior failures", "do not rerun the release profile"],
+          "stop_conditions": ["subject drift or dirty tracked state", "missing evidence", "cleanup failure", "repair or write request"]
+        },
+        "permissions": {
+          "read_scope": ["repository", "ignored validation receipts"],
+          "write_scope": [],
+          "external_actions": [],
+          "secret_handling": "no-secret-values"
+        },
+        "executor": {"kind": "runtime-worker", "identity": "/root/gov012_repaired_head_audit", "runtime_support_verified": true},
+        "invocation_evidence": {
+          "invocation_id": "/root/gov012_repaired_head_audit#attempt-1",
+          "started_at": "2026-08-24T14:11:58.607Z",
+          "completed_at": "2026-08-24T14:19:27.2763501Z",
+          "outcome": "completed-with-failed-audit",
+          "evidence_refs": ["ASM-20260824-002"]
+        },
+        "output": {
+          "expected": ["exact-subject fail-closed result", "severity-ranked findings", "validation and retained-evidence cross-check"],
+          "returned": ["failed audit with GOV012-AUD-002 HIGH", "all other bounded criteria passed", "subject mutation false"],
+          "evidence_refs": [".dev/assessments/ASM-20260824-002/report.md"],
+          "bounded": true
+        },
+        "attempts": [
+          {
+            "number": 1,
+            "disposition": "delegated",
+            "executor": {"kind": "runtime-worker", "identity": "/root/gov012_repaired_head_audit", "runtime_support_verified": true},
+            "invocation_evidence": {
+              "invocation_id": "/root/gov012_repaired_head_audit#attempt-1",
+              "started_at": "2026-08-24T14:11:58.607Z",
+              "completed_at": "2026-08-24T14:19:27.2763501Z",
+              "outcome": "completed-with-failed-audit",
+              "evidence_refs": ["ASM-20260824-002"]
+            },
+            "outcome": "completed",
+            "correctable_failure": false,
+            "material_state_change": "",
+            "authorization_source": ["Issue #245", ".dev/workflows/2026-08-24-retire-repository-backlog-authority/tasks/GOV012-VAL-001.json"],
+            "evidence_refs": [".dev/assessments/ASM-20260824-002/report.md"]
+          }
+        ],
+        "fallback": {
+          "considered": false,
+          "reason": "No fallback or repair is permitted for this role.",
+          "resulting_disposition": null,
+          "inline_contract_evidence": {
+            "same_role_path_and_mandatory_references": false,
+            "bounded_input_output_permissions_stop": false,
+            "approval_security_credential_boundaries_satisfied": false,
+            "disjoint_mutation_scope": false,
+            "named_parent_and_final_integration_owner": false,
+            "current_inline_support_verified": false,
+            "evidence_refs": []
+          }
+        },
+        "final_integration_owner": {
+          "owner": "ai-context-governance/source-task:01a02d8e-8fb8-7771-beac-b3520923e6d7",
+          "decision": "accepted",
+          "evidence_refs": [".dev/assessments/ASM-20260824-002/report.md", "GOV012-AUD-002 repair in current working tree"]
         }
       }
     ]
