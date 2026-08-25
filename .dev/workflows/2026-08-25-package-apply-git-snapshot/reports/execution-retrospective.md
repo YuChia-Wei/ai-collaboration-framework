@@ -10,7 +10,7 @@
 - `implementation_route`: `slice-implementer`
 - `status`: `active-until-final-exact-head-audit`
 - `created_at`: `2026-08-25T22:04:41+08:00`
-- `updated_at`: `2026-08-25T22:04:41+08:00`
+- `updated_at`: `2026-08-25T22:14:14+08:00`
 - `template_source`: `owner-requested workflow-local retrospective; no repository template`
 - `template_version`: `1.0.0`
 
@@ -53,6 +53,7 @@ the ADR decision test.
 | `13a33cc4` | terminal aggregate passed | `4865.614824s` | Retain the expensive same-host cold/three-warm baseline as reusable evidence. |
 | `7a6f20a0` | exact-head audit failed | read-only | `.git/info/exclude` was missing from snapshot identity. |
 | `ee55880b` | exact-head audit failed | read-only | Filtering config origins by already-effective core keys missed introduction of a new policy key/path. |
+| `ad0b38a0` | exact-head audit failed | read-only | A comment-only file referenced by `include.path` had no returned value origin and was not bound. |
 
 All ignored dispatch/completion receipts remain local evidence. Failed,
 blocked, interrupted, superseded, and passed outcomes are not rewritten.
@@ -87,7 +88,8 @@ This is a workflow recommendation, not yet a repository-wide policy.
 Snapshotting the current `core.excludesFile` value and file is insufficient.
 The config files that can introduce a different value are part of the identity.
 The same rule applies to attributes. A fail-closed snapshot binds the selectors,
-their file-backed origins, the selected policy paths, and absence/presence state.
+their file-backed origins, dormant `include.path` and `includeIf.*.path` targets,
+the selected policy paths, and absence/presence state.
 
 ### 4. Run adversarial drift probes before expensive validation
 

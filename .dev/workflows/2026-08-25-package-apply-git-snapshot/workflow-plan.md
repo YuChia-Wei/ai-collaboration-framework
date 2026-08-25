@@ -10,7 +10,7 @@
 - `branch_segment`: `1`
 - `status`: `active`
 - `created_at`: `2026-08-25T14:52:56+08:00`
-- `updated_at`: `2026-08-25T22:04:41+08:00`
+- `updated_at`: `2026-08-25T22:14:14+08:00`
 - `template_source`: `.ai/assets/skills/software-development-orchestrator/templates/development-workflow-plan-template.md`
 - `template_version`: `1.4.0`
 - `workflow_locator`: `.dev/workflows/2026-08-25-package-apply-git-snapshot/workflow.yaml`
@@ -65,7 +65,7 @@
 
 ## Progress And Handoff
 
-- Current stage: implementation and same-commit aggregate validation are complete. Exact-head audits correctly rejected repository-local policy drift at `7a6f20a0` and later config-selection drift at `ee55880b`. The current repair binds every file-backed effective config origin plus selected/default ignore and attribute files; focused GWT-070..089 and real two-hop validation pass, and a fresh exact-head audit remains.
+- Current stage: implementation and same-commit aggregate validation are complete. Exact-head audits correctly rejected repository-local policy drift at `7a6f20a0`, config-selection drift at `ee55880b`, and dormant include-target drift at `ad0b38a0`. The current repair binds every file-backed effective config origin, dormant include target, and selected/default ignore and attribute file; focused process/config-drift tests and real two-hop validation pass, and a fresh exact-head audit remains.
 - Current bounded counts: direct and real later-hop plan `22` Git subprocesses (early admission plus full path snapshot), apply `11`; both are payload-independent. Successful apply performs `4` full worktree inventory scans independent of operation count, while per-operation checks inspect only snapshotted candidate paths.
 - Long-running gate: the terminal task bound to `13a33cc44825f8da10674e0294b38edbf7159053` passed package-apply 104 tests (1 Windows symlink-privilege skip), multi-hop 31 tests, and the retained 631-record cold-first plus three-warm-run benchmark in 4865.614824 seconds. Later repairs change only the constant-size Git policy identity set, reuse the existing config/admin subprocesses, and are covered by the deterministic 22/11 process-count matrix plus focused semantic tests; the expensive legacy baseline is retained rather than repeated. Earlier blocked, failed, passed-on-superseded-head, and interrupted receipts remain retained without rewriting.
 - Durable lessons: [`reports/execution-retrospective.md`](reports/execution-retrospective.md) preserves the execution history, audit failures, benchmark-reuse recommendation, and the explicit reason this local validation record is not an ADR.

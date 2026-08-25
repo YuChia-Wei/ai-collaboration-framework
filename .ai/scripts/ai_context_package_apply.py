@@ -628,7 +628,7 @@ def _parse_ignore_rules(
 
 def _parse_core_snapshot_config(
     content: bytes,
-) -> tuple[bool, str | None, str | None, set[Path]]:
+) -> tuple[bool, str | None, str | None, set[Path], set[Path]]:
     """Parse one effective config batch and retain its file-backed origins."""
     values = content.split(b"\0")
     if values and values[-1] == b"":
@@ -637,6 +637,7 @@ def _parse_core_snapshot_config(
         raise ApplyError("cannot parse target Git core configuration")
     effective: dict[str, str] = {}
     origins: set[Path] = set()
+    include_paths: set[Path] = set()
     for index in range(0, len(values), 2):
         origin = values[index].decode("utf-8", errors="surrogateescape")
         try:
@@ -648,7 +649,12 @@ def _parse_core_snapshot_config(
         if key in {"core.filemode", "core.excludesfile", "core.attributesfile"}:
             effective[key] = value
         if origin.startswith("file:"):
-            origins.add(Path(origin.removeprefix("file:")))
+            origin_path = Path(origin.removeprefix("file:"))
+            origins.add(origin_path)
+            if key == "include.path" or (
+                key.startswith("includeif.") and key.endswith(".path")
+            ):
+                include_paths.add(_resolved_git_include_path(origin_path, value))
     filemode = effective.get("core.filemode", "").lower()
     if filemode not in {"true", "false"}:
         raise ApplyError("cannot determine target Git core.filemode")
@@ -657,7 +663,16 @@ def _parse_core_snapshot_config(
         effective.get("core.excludesfile"),
         effective.get("core.attributesfile"),
         origins,
+        include_paths,
     )
+
+
+def _resolved_git_include_path(origin: Path, value: str) -> Path:
+    if not value or value.startswith("%(prefix)/"):
+        raise ApplyError("cannot resolve target Git include policy path")
+    expanded = Path(os.path.expanduser(value))
+    candidate = expanded if expanded.is_absolute() else origin.parent / expanded
+    return Path(os.path.abspath(candidate))
 
 
 def _resolved_git_policy_path(root: Path, value: str | None, name: str) -> Path:
@@ -754,7 +769,13 @@ def capture_target_git_snapshot(
     )
     if config_result.returncode != 0:
         raise ApplyError("cannot inspect target Git core configuration")
-    core_filemode, excludes_value, attributes_value, config_origins = (
+    (
+        core_filemode,
+        excludes_value,
+        attributes_value,
+        config_origins,
+        config_include_paths,
+    ) = (
         _parse_core_snapshot_config(config_result.stdout)
     )
     ignore_input = b"".join(
@@ -807,6 +828,7 @@ def capture_target_git_snapshot(
         raise ApplyError("cannot resolve target Git administrative directories")
     identity_paths = admin_paths[2:]
     identity_paths.extend(sorted(config_origins, key=str))
+    identity_paths.extend(sorted(config_include_paths, key=str))
     identity_paths.extend(
         [
             _resolved_git_policy_path(root, excludes_value, "ignore"),
