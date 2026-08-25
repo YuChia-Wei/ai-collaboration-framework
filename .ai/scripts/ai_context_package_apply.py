@@ -157,7 +157,7 @@ class WorktreeInventoryEntry:
 
 @dataclass
 class TargetGitSnapshot:
-    """One immutable Git/index view plus a local worktree drift baseline."""
+    """One Git/index view plus an explicitly advanced worktree drift baseline."""
 
     root: Path
     phase: str
@@ -260,6 +260,19 @@ class TargetGitSnapshot:
         self.stats.bytes_read += earlier.stats.bytes_read
         self.stats.blob_read_count += earlier.stats.blob_read_count
         self.stats.snapshot_duration_ns += earlier.stats.snapshot_duration_ns
+
+    def accept_verified_absence(self, paths: Iterable[str]) -> None:
+        """Advance only after a journal-bound durable cleanup proved absence."""
+        remaining_dirty = set(self.dirty_paths)
+        for relative in paths:
+            path = self.root / Path(*PurePosixPath(relative).parts)
+            if worktree_inventory_entry(path) is not None:
+                raise ApplyError(
+                    f"verified cleanup path is still present: {relative}"
+                )
+            remaining_dirty.discard(relative)
+            self.worktree_inventory.pop(relative, None)
+        self.dirty_paths = frozenset(remaining_dirty)
 
 
 _ACTIVE_TARGET_GIT_SNAPSHOT: ContextVar[TargetGitSnapshot | None] = ContextVar(
@@ -5237,7 +5250,7 @@ def load_supplied_target_validation_receipt(path: Path) -> tuple[dict, bytes]:
     return value, content
 
 
-def _record_target_validation_receipt(
+def _record_target_validation_receipt_core(
     target: Path,
     transaction_id: str,
     supplied_receipt_path: Path,
@@ -5275,7 +5288,9 @@ def _record_target_validation_receipt(
             raise ApplyError(
                 "multi-hop child target validation may be recorded only by the sealed route orchestrator"
             )
-        verify_recovery_surface(target, plan, journal)
+        verify_recovery_surface(
+            target, plan, journal, full_worktree_scan=True
+        )
         supplied, supplied_bytes = load_supplied_target_validation_receipt(
             supplied_receipt_path
         )
@@ -5342,6 +5357,46 @@ def _record_target_validation_receipt(
             decision,
         )
         return supplied
+
+
+def _record_target_validation_receipt(
+    target: Path,
+    transaction_id: str,
+    supplied_receipt_path: Path,
+    boundary_hook: Callable[[str, dict], None] | None = None,
+    *,
+    lock_held: bool,
+    route_operation_authorized: bool,
+) -> dict:
+    """Capture one bounded target Git view before receipt admission."""
+    _root, plan, _journal = load_transaction(
+        target,
+        transaction_id,
+        allow_unbound_target_validation_receipt=True,
+    )
+    snapshot_paths = (
+        set(plan.get("observed", {}))
+        | {item["path"] for item in plan.get("required_framework_paths", [])}
+        | set(touched_paths(plan))
+        | set(protected_target_paths(target))
+        | {PENDING_RECEIPT_PATH}
+        | {item["path"] for item in target_staging_records(plan)}
+    )
+    snapshot = capture_target_git_snapshot(
+        target,
+        snapshot_paths,
+        phase="target-validation-receipt",
+        require_clean=False,
+    )
+    with target_git_snapshot_scope(snapshot):
+        return _record_target_validation_receipt_core(
+            target,
+            transaction_id,
+            supplied_receipt_path,
+            boundary_hook,
+            lock_held=lock_held,
+            route_operation_authorized=route_operation_authorized,
+        )
 
 
 def record_target_validation_receipt(
@@ -5803,10 +5858,25 @@ def _recover_transaction_core(
                 ):
                     raise ApplyError("applied transaction receipt identity differs")
         verify_recovery_surface(
-            target, plan, journal, allow_target_staging=True
+            target,
+            plan,
+            journal,
+            allow_target_staging=True,
+            full_worktree_scan=True,
         )
         cleanup_transaction_staging(target, root, plan, journal)
-        verify_recovery_surface(target, plan, journal)
+        snapshot = active_target_git_snapshot(target)
+        if snapshot is None:
+            raise ApplyError("transaction staging cleanup requires one active snapshot")
+        snapshot.accept_verified_absence(
+            item["path"] for item in target_staging_records(plan)
+        )
+        verify_recovery_surface(
+            target,
+            plan,
+            journal,
+            full_worktree_scan=True,
+        )
         if action == "rollback":
             return rollback_loaded_transaction(
                 root, plan, journal, boundary_hook, journal_io_hook

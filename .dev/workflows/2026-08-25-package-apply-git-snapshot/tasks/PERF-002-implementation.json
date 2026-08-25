@@ -65,7 +65,7 @@
     "deferred_items": ["Linux reference execution is reported truthfully if not available in this Windows task; parent decides later integration/reference lane"]
   },
   "results": {
-    "summary": "Implemented bounded plan/apply target Git snapshots, including multi-hop checkpoint surfaces, local drift admission, batch blob/attribute/ignore parsing, recovery ignore-semantic binding, stderr-only phase metrics, scale/process fixtures, and exact-head benchmark/long-validation runners. Focused validation passes. The first exact-commit long-validation delegation is blocked by delegated Windows TEMP access, so full-suite and three-run benchmark evidence remain unresolved.",
+    "summary": "Implemented bounded plan/apply target Git snapshots, including multi-hop checkpoint surfaces, local drift admission, batch blob/attribute/ignore parsing, recovery ignore-semantic binding, stderr-only phase metrics, scale/process fixtures, and exact-head benchmark/long-validation runners. Focused validation passes. The first exact-commit delegation was blocked by Windows TEMP access; the repaired-head native delegation exposed receipt/recovery lifecycle regressions which are now repaired and focused-tested. A fresh exact-head aggregate and three-run benchmark remain required.",
     "files_changed": [
       ".ai/scripts/ai_context_package_apply.py",
       ".ai/scripts/plan-ai-context-package-apply.py",
@@ -113,6 +113,11 @@
         "command": "python .ai/scripts/tests/run_perf002_long_validation.py --expected-commit 333fafb2eacaeaee9750aa99a1856a7bccb36c21 --base-ref 1326f827f61de8eebeef30748dcc82ffa7dd3764 --output-dir .tmp/issue-251/external/333fafb2 --scale-count 631 --warm-runs 3",
         "outcome": "blocked-by-environment",
         "evidence": "Schema-valid delegation issue-251-long-validation-333fafb2 ran once. Pinned clean preflight passed; package-apply stopped after 0.784052s because the delegated runtime was denied access to Windows TEMP fixture directories (WinError 5). Multi-hop and benchmark did not run. summary canonical-content sha256=26bda236e1996bebc9a442a24da2e3716d31b0a6e13b1449ac0ac78a34bcc206; summary.json file-byte sha256=a3c0394aec0e845691072763df65f6424f97640649641df8afae96121c545cc4; stderr file-byte sha256=0d597213c8a594aca6d51496729a55ab8bea588dd37c880e8d91bb85d2a6c031."
+      },
+      {
+        "command": "python .ai/scripts/tests/run_perf002_long_validation.py --expected-commit c5aca00668c94a40c74f9e3118065a100d3d3cd2 --base-ref 1326f827f61de8eebeef30748dcc82ffa7dd3764 --output-dir .tmp/issue-251/external/c5aca006 --scale-count 631 --warm-runs 3",
+        "outcome": "failed",
+        "evidence": "Schema-valid native-Windows delegation issue-251-long-validation-c5aca006 ran once for 480.283356s. Package-apply ran 104 tests with 1 failure, 11 errors, and 1 skip; multi-hop and benchmark did not run. The receipt exposed missing active-snapshot admission for target-validation binding and stale journal staging paths after durable cleanup. summary canonical-content sha256=a8e41e5dc4ad31b0b29863ccabd8a482c98fc29715073fd44a777efc7568af42; stderr file-byte sha256=4e40896a21a498d52ab261c10159f33778918d2e9d9a12cb431f59715874dcd3."
       }
     ],
     "role_execution_aggregation": [{"stage_id": "implementation", "owning_skill": "slice-implementer", "disposition": "not-applicable", "reason": "The generic Python repository-tooling slice matches none of the command/query/reactor or concrete domain/use-case role bindings; no child invocation is invented."}],
@@ -125,9 +130,13 @@
       "Workflow artifact validation passed for 97 workflows and 117 indexed workflow directories.",
       "Sandboxed temp-path PermissionError attempts remain blocked-by-environment evidence; equivalent focused native Windows reruns passed.",
       "One focused selector command contained a non-existent GWT-015 name; GWT-073 and GWT-074 passed in that command, and the corrected exact GWT-015 selector passed separately in 5.143s.",
-      "Ignored schema-1.1 long-validation receipt: .tmp/issue-251/external/333fafb2/completion.yaml; dispatch/completion validator passed. Its declared 26bda236e1996bebc9a442a24da2e3716d31b0a6e13b1449ac0ac78a34bcc206 is the canonical-content digest, not the summary.json file-byte digest; the runner field and tracked wording are corrected prospectively."
+      "Ignored schema-1.1 long-validation receipt: .tmp/issue-251/external/333fafb2/completion.yaml; dispatch/completion validator passed. Its declared 26bda236e1996bebc9a442a24da2e3716d31b0a6e13b1449ac0ac78a34bcc206 is the canonical-content digest, not the summary.json file-byte digest; the runner field and tracked wording are corrected prospectively.",
+      "Ignored schema-1.1 failed receipt: .tmp/issue-251/external/c5aca006/completion.yaml; dispatch/completion validator passed. The 12 exact failed cases were rerun after repair: 9 receipt/terminal cases passed in the first 87.920s run while 3 staging cases still failed; those 3 passed after explicit verified-cleanup baseline advancement in 12.655s. GWT-080..086 then passed in 28.164s."
     ],
-    "commits": ["333fafb2eacaeaee9750aa99a1856a7bccb36c21"],
+    "commits": [
+      "333fafb2eacaeaee9750aa99a1856a7bccb36c21",
+      "c5aca00668c94a40c74f9e3118065a100d3d3cd2"
+    ],
     "follow_up_needed": true
   }
 }
