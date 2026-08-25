@@ -65,9 +65,9 @@
 
 ## Progress And Handoff
 
-- Current stage: implementation and focused validation complete; clean immutable commit, exact-head delegated long validation, final evidence checkpoint, and exact-head audit remain.
-- Current bounded counts: plan `22` Git subprocesses (early admission plus full path snapshot), apply `11`; both are payload-independent. Successful apply performs `4` full worktree inventory scans independent of operation count, while per-operation checks inspect only snapshotted candidate paths.
-- Long-running gate: an aggregate multi-hop run was interrupted when observed duration crossed 120 seconds. Its exact-head rerun is bundled with the full package-apply suite and the base/current 631-record benchmark in one external task.
+- Current stage: implementation, focused validation, exact-head aggregate validation, and terminal evidence checkpoint are complete. The first two exact-head audits found repairable multi-hop/semantic/evidence gaps; the final audit is required after the real target-provenance snapshot adapter repair.
+- Current bounded counts: direct and real later-hop plan `22` Git subprocesses (early admission plus full path snapshot), apply `11`; both are payload-independent. Successful apply performs `4` full worktree inventory scans independent of operation count, while per-operation checks inspect only snapshotted candidate paths.
+- Long-running gate: the terminal task bound to `68204f58e6ebfe1e099ac6e9b0db95712f3d6085` passed package-apply 104 tests (1 Windows symlink-privilege skip), multi-hop 31 tests, and the retained 631-record cold-first plus three-warm-run benchmark in 4827.644808 seconds. Because the second audit required a production target-provenance adapter repair, a fresh same-commit delegated aggregate run and subsequent exact-head audit remain; the prior receipt stays retained as historical evidence.
 - Parent integration owner: source orchestration thread `01a036af-3b1f-7283-97ab-eb6b7caabf93`.
 - Required final handoff: worktree/branch/base/final SHA, clean state, changed files, process counts/timings/benchmarks, test commands/durations/digests, delegated receipt if applicable, exact-head audit, compatibility evidence, residual risks, and excluded provider/release actions.
 - Completion claim boundary: report only ready for parent integration decision; do not claim merged or release-ready.

@@ -5797,6 +5797,7 @@ class AiContextPackageApplyGwtTests(unittest.TestCase):
                         target: Path, context: object
                     ) -> dict:
                         self.assertIsNotNone(APPLY.active_target_git_snapshot(target))
+                        APPLY._require_complete_multi_hop_checkpoint_evidence(target)
                         self.assertEqual(
                             changed_count,
                             len(APPLY.route_checkpoint_surface(target)),

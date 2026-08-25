@@ -2946,8 +2946,23 @@ def _require_complete_multi_hop_checkpoint_evidence(target: Path) -> None:
         import ai_context_target_provenance as target_provenance
     except ImportError as exc:
         raise ApplyError("multi-hop checkpoint validator is unavailable") from exc
+    snapshot = active_target_git_snapshot(target)
+    if snapshot is None:
+        raise ApplyError(
+            "multi-hop checkpoint validation requires one active target Git snapshot"
+        )
+    current_surface = route_checkpoint_surface(target)
     errors: list[str] = []
-    target_provenance.validate_multi_hop_route_transactions(target, errors)
+    target_provenance.validate_multi_hop_route_transactions(
+        target,
+        errors,
+        git_snapshot={
+            "head": snapshot.head,
+            "apply_transaction_directory": snapshot.transaction_base,
+            "multi_hop_route_directory": snapshot.multi_hop_route_base,
+            "target_surface": current_surface,
+        },
+    )
     if errors:
         raise ApplyError(
             "multi-hop finalized checkpoint evidence is invalid: "

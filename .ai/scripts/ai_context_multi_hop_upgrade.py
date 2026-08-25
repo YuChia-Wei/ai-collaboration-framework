@@ -716,19 +716,17 @@ def _previous_files_for_hop(
         if initial_previous_files_path.is_symlink() or not initial_previous_files_path.is_file():
             raise _route_error("first route hop previous files must be a regular file")
         return initial_previous_files_path.resolve(), initial_previous_version
-    # The predecessor package manifest is usable only after the exact retained
-    # checkpoint has passed the shared complete child/receipt/authority gate.
-    # This happens before reading any predecessor package bytes.
-    APPLY.verify_multi_hop_checkpoint_for_planning(target, context)
+    # Resolve only the retained predecessor manifest path here.  build_plan
+    # admits the route through the shared complete child/receipt/authority gate
+    # inside its plan-admission Git snapshot before migration_selection reads
+    # any bytes from this path.  Calling the gate here would create a second
+    # plan-phase snapshot (or fall back to per-path Git inspection).
     checkpoint, _ = _read_checkpoint(route_root, index - 1)
     package = checkpoint.get("package")
     if not isinstance(package, dict):
         raise _route_error("preceding route checkpoint package identity is invalid")
     package_root = _package_root(route_root, package)
     files = package_root / "metadata/files.yaml"
-    expected = package.get("files_manifest_sha256")
-    if APPLY.sha256_bytes(_read_regular(files, "preceding route package files manifest")) != expected:
-        raise _route_error("preceding route package files manifest differs")
     edge = checkpoint.get("edge")
     if not isinstance(edge, dict) or not isinstance(edge.get("to_version"), str):
         raise _route_error("preceding route checkpoint edge is invalid")

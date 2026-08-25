@@ -9,7 +9,7 @@
   "related_plan_id": "development-plan-2026-08-25-package-apply-git-snapshot",
   "status": "in_progress",
   "created_at": "2026-08-25T14:52:56+08:00",
-  "updated_at": "2026-08-25T17:56:16+08:00",
+  "updated_at": "2026-08-25T18:18:42+08:00",
   "template_source": ".ai/assets/skills/software-development-orchestrator/templates/development-workflow-task-template.json",
   "model": "gpt-5.6-sol",
   "reasoning_effort": "high",
@@ -19,8 +19,11 @@
     "target": ".ai/scripts/ai_context_package_apply.py and owning tests",
     "files": [
       ".ai/scripts/ai_context_package_apply.py",
+      ".ai/scripts/ai_context_target_provenance.py",
+      ".ai/scripts/ai_context_multi_hop_upgrade.py",
       ".ai/scripts/plan-ai-context-package-apply.py",
       ".ai/scripts/tests/test_ai_context_package_apply.py",
+      ".ai/scripts/tests/test_ai_context_multi_hop_upgrade.py",
       ".ai/scripts/tests/benchmark_ai_context_package_git_inspection.py",
       ".ai/scripts/tests/run_perf002_long_validation.py"
     ],
@@ -68,8 +71,11 @@
     "summary": "Implemented bounded plan/apply target Git snapshots, including multi-hop checkpoint surfaces, local drift admission, batch blob/attribute/ignore parsing, recovery ignore-semantic binding, stderr-only phase metrics, scale/process fixtures, and exact-head benchmark/long-validation runners. Focused and exact-head aggregate validation pass. The retained 631-record three-warm-run benchmark reduces plan Git processes from 3153 to 22 and apply Git processes from 13272 to 11.",
     "files_changed": [
       ".ai/scripts/ai_context_package_apply.py",
+      ".ai/scripts/ai_context_target_provenance.py",
+      ".ai/scripts/ai_context_multi_hop_upgrade.py",
       ".ai/scripts/plan-ai-context-package-apply.py",
       ".ai/scripts/tests/test_ai_context_package_apply.py",
+      ".ai/scripts/tests/test_ai_context_multi_hop_upgrade.py",
       ".ai/scripts/tests/benchmark_ai_context_package_git_inspection.py",
       ".ai/scripts/tests/run_perf002_long_validation.py",
       ".dev/workflows/INDEX.MD",
@@ -79,6 +85,11 @@
     ],
     "approval_evidence": ["parent delegation from owner-authorized source thread", "GitHub Issue #251 live read-back"],
     "test_execution": [
+      {
+        "command": "python .ai/scripts/tests/test_ai_context_package_apply.py -k gwt_07; python .ai/scripts/tests/test_ai_context_package_apply.py -k gwt_08; python .ai/scripts/tests/test_ai_context_multi_hop_upgrade.py MultiHopUpgradeGwtTests.test_gwt_010_given_two_exact_packages_when_each_child_is_applied_validated_finalized_and_checkpointed_then_route_completes",
+        "outcome": "passed",
+        "evidence": "Post-audit repair: package-apply GWT-070..079 ran 10 tests in 55.112s; GWT-080..086 ran 7 tests in 37.273s; the real two-hop retained-route path ran in 31.425s. GWT-010 makes per-path target-surface, standalone HEAD, and both Git admin-path fallbacks raise, proving the real validator consumes the plan-admission snapshot. An earlier 11.135s run failed closed because validation preceded snapshot admission, and two subsequent 12.073s/11.197s runs exposed nested admin-path fallback; those repairable failures are retained evidence."
+      },
       {
         "command": "python .ai/scripts/tests/test_ai_context_package_apply.py <PERF-002 GWT-073..086 selections> -v",
         "outcome": "passed",
@@ -132,6 +143,7 @@
       "Read-only #250 selected-input evidence confirms the retained v0.14 profile has 631 payload records.",
       "Pre-commit independent advisory review findings on plan TOCTOU, O(operations*files), Git identity window, benchmark binding, semantic recovery, rollback admission, and recovery snapshot/lock admission were repaired and regression-tested.",
       "The first exact-head audit rejected 2dc2e2547726ba55dc591dd60dfd958a2b2da2cc for multi-hop per-path Git fallback, missing recovery ignore binding, and ambiguous canonical-content digest labeling; all three findings were repaired and focused-regression tested, with a fresh audit required after the repair commit.",
+      "The second exact-head audit rejected 544ba8719a08b28f7f53b4ecff47b94cdd54f80b because the real retained-route target-provenance verifier still resolved Git state outside the active snapshot while GWT-086 mocked that outer verifier. The adapter now injects snapshot HEAD, admin paths, and the batch target surface through nested historical-finalization validation; GWT-086 invokes the real verifier at 3 and 631 paths, and real two-hop GWT-010 forbids every legacy fallback.",
       "Workflow artifact validation passed for 97 workflows and 117 indexed workflow directories.",
       "Sandboxed temp-path PermissionError attempts remain blocked-by-environment evidence; equivalent focused native Windows reruns passed.",
       "One focused selector command contained a non-existent GWT-015 name; GWT-073 and GWT-074 passed in that command, and the corrected exact GWT-015 selector passed separately in 5.143s.",
@@ -143,8 +155,10 @@
     ],
     "commits": [
       "333fafb2eacaeaee9750aa99a1856a7bccb36c21",
+      "2dc2e2547726ba55dc591dd60dfd958a2b2da2cc",
       "c5aca00668c94a40c74f9e3118065a100d3d3cd2",
-      "68204f58e6ebfe1e099ac6e9b0db95712f3d6085"
+      "68204f58e6ebfe1e099ac6e9b0db95712f3d6085",
+      "544ba8719a08b28f7f53b4ecff47b94cdd54f80b"
     ],
     "follow_up_needed": true
   }
