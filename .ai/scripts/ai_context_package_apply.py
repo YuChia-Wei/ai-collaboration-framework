@@ -1896,12 +1896,16 @@ def build_plan(
 ) -> dict:
     phase_started = time.perf_counter_ns()
     target = target_root.resolve()
-    admission_snapshot = capture_target_git_snapshot(
-        target,
-        [],
-        phase="plan-admission",
-        require_clean=multi_hop_checkpoint_context is None,
-    )
+    admission_snapshot = active_target_git_snapshot(target)
+    if admission_snapshot is None:
+        admission_snapshot = capture_target_git_snapshot(
+            target,
+            [],
+            phase="plan-admission",
+            require_clean=multi_hop_checkpoint_context is None,
+        )
+    elif admission_snapshot.phase != "plan-admission":
+        raise ApplyError("active target Git snapshot phase is not plan admission")
     with target_git_snapshot_scope(admission_snapshot):
         route_context = (
             verify_multi_hop_checkpoint_for_planning(
@@ -3173,6 +3177,15 @@ def _load_route_checkpoint_context(
 
 
 def verify_multi_hop_checkpoint_for_planning(target: Path, context_value: object) -> dict:
+    if active_target_git_snapshot(target) is None:
+        snapshot = capture_target_git_snapshot(
+            target,
+            [],
+            phase="plan-admission",
+            require_clean=False,
+        )
+        with target_git_snapshot_scope(snapshot):
+            return verify_multi_hop_checkpoint_for_planning(target, context_value)
     context = _route_context(context_value)
     context, _checkpoint, _journal = _load_route_checkpoint_context(
         target,
