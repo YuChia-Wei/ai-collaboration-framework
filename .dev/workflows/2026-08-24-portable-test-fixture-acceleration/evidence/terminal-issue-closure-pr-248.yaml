@@ -1,0 +1,91 @@
+schema_version: "1.0"
+contract_id: github-terminal-issue-closure
+repository: YuChia-Wei/ai-collaboration-framework
+validation_stage: declaration
+pull_request:
+  number: 248
+  head_sha: null
+  body: |-
+    ## Summary
+
+    - add zero-configuration portable acceleration for high-I/O disposable test fixtures
+    - preserve durability-storage and platform-filesystem semantics on their existing real storage routes
+    - provide privacy-safe diagnostics, reproducible Windows/WSL benchmarks, and an explicit opt-in CI profile
+
+    ## Changes
+
+    - add the tracked `ephemeral-fixture-io` classification and `AI_CONTEXT_TEST_TMP_ROOT` resolver/preflight/containment lifecycle
+    - route only proven disposable fixtures through unique contained run directories and fail closed on unsafe cleanup or unknown classifications
+    - isolate fixture subprocesses from inherited Git repository/config routing variables
+    - add deterministic GWT coverage, bilingual agent guidance, a human implementation guide, profile registry integration, and manual CI workflow
+
+    ## Related Issues
+
+    - Issue #: 246
+    - Delivery disposition: `terminal-close`
+    - Reference: Closes #246
+    - `closure_deferred_reason` (required for deferred): not applicable
+    - Next terminal gate or owner (required for deferred): not applicable
+    - Owner authorization or approved no-Issue exception: the repository owner explicitly authorized implementation and subsequently authorized push, pull-request, and merge operations in the source task.
+
+    ## Delivery And Integration
+
+    - Delivery grouping: single work item
+    - Execution record: workflow
+    - Selected topology: merge commit
+    - Topology reason: the branch contains multiple meaningful implementation, post-#245 integration, cross-host validation, retained-failure, audit-remediation, and workflow-closeout checkpoints that form one durable review and rollback boundary.
+
+    ## Validation
+
+    - fixture runtime GWT: 28/28 passed
+    - source governance, workflow, handoff, entrypoint, profile-registry, shell, and GitHub workflow focused checks passed
+    - final exact-head fast aggregate: 43 selected, 8 executed, 34 reused, 0 failed, 0 blocked, 0 deferred, 1 not applicable, exit 0
+    - final aggregate advisory: the configured 30-second `report-and-warn` budget was exceeded; this remains an operational signal, not a correctness pass/fail gate
+    - Windows and WSL warm default/accelerated benchmarks used the same tracked suites, three runs, and 84 fixtures per run with all exits zero
+    - fresh exact-head independent audit: passed with P0=0, P1=0, and P2=0
+
+    ## Boundaries
+
+    - no global `TEMP`/`TMP` change, storage discovery, privilege elevation, RAM-disk/tmpfs installation, or durability/platform-semantic acceleration
+    - no target release, tag, GitHub Release, publication, package byte, or archive naming change
+    - Issue and Project terminal reconciliation occur only after exact-head hosted admission, merge, and provider read-back
+
+    ## Checklist
+
+    - [x] Selected repository-native build and test commands pass, or `not-applicable` is explained
+    - [x] Target-owned .NET commands are not applicable to this Python/repository-tooling change
+    - [x] Docs and agent guidance are updated
+    - [x] No secrets committed; configuration is explicit and environment-based
+    - [x] Every named Issue has exactly one delivery disposition
+    - [ ] The exact final PR head passes all required hosted checks
+    - [ ] The exact final PR head has the required single-maintainer audit receipt
+  integration:
+    status: pending
+    topology: null
+    admitted_head_sha: null
+    integration_commit_sha: null
+    provider_read_back: false
+  review:
+    status: pending
+  required_check_contexts: []
+  hosted_checks: []
+issues:
+  - number: 246
+    mode: terminal-close
+    work_authorization:
+      online_issue_bound: true
+      explicit_owner_approval: true
+    final_accepted_delivery: true
+    workflow:
+      scope_complete: true
+      tasks_complete: true
+      applicable_verification_complete: true
+    closing_keyword: Closes
+    closure_deferred_reason: null
+    next_terminal_gate_or_owner: null
+    read_back:
+      performed: false
+      integration_commit_sha: null
+      issue_state: null
+      issue_state_reason: null
+      project_status: null
