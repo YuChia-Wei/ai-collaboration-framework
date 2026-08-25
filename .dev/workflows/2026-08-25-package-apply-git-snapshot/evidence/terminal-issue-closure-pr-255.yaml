@@ -5,7 +5,7 @@ validation_stage: declaration
 pull_request:
   number: 255
   head_sha: null
-  body: |-
+  body: |+
     ## Summary
 
     - delivers bounded package-apply target Git inspection for Issue #251
@@ -52,6 +52,7 @@ pull_request:
     - [x] No secrets or publication artifacts are included
     - [x] Issue #251 has exactly one terminal-close disposition
     - [x] The source review and hosted admission gates remain mandatory and are not claimed by this declaration
+
   integration: {status: pending, topology: null, admitted_head_sha: null, integration_commit_sha: null, provider_read_back: false}
   review: {status: pending}
   required_check_contexts: []

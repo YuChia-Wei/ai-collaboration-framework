@@ -167,6 +167,26 @@ administrative-directory bypass because normal worktree inventory excludes
 `.git`. Candidate binding must preserve raw selector syntax and normalize it
 against the exact Git subprocess cwd; content values use Git-home expansion.
 
+### 11. Classify filesystem escape boundaries before Git pathspecs
+
+The first hosted Ubuntu PR profile for PR #255 failed only GWT-008. The batched
+snapshot sent `linked/rule.md` to `git check-ignore` before package-apply ran
+its own boundary classifier. Git correctly refused to traverse the symlink but
+returned a lower-level `pathspec ... is beyond a symbolic link` diagnostic,
+which obscured the framework's stable `symlink boundary` contract. Snapshot
+admission now performs the existing O(paths) symlink/reparse classification
+before any Git pathspec command. This adds no subprocess and preserves the
+fail-closed outcome while making the semantic classification deterministic on
+Windows and POSIX.
+
+### 12. Exact provider declarations include trailing bytes
+
+The first PR-bound exact-head audit rejected `edb50e36154ac53391ff0d7a773126a2d8b56a53`
+because the live PR body ended in two LF bytes while the YAML `|-` declaration
+stripped them. Human-visible text parity is insufficient when admission binds
+an exact provider body. The declaration now uses a keep chomping indicator and
+an explicit final blank line so its parsed value hashes to the provider bytes.
+
 ## AI Usage And Wall-Time Interpretation
 
 Most of the multi-hour wall time came from local Git process startup, filesystem
@@ -177,9 +197,15 @@ not require the model to reason for every elapsed second.
 
 ## Residual And Follow-Up
 
-- The raw-selector/content-path separation repair passed fresh exact-head audit at `8a24041d43e3ee0fcb30f9bb9dae2a7d6e55f3de`. The PR-bound source-closeout metadata commit requires one final delta audit before admission; it does not invalidate the historical benchmark's exact-subject evidence or require a multi-hour rerun.
-- The Windows symlink-privilege and case-fold fixtures remain truthful skips;
-  no Linux reference execution was performed in this workflow.
+- The raw-selector/content-path separation repair passed fresh exact-head audit at `8a24041d43e3ee0fcb30f9bb9dae2a7d6e55f3de`. The later PR-bound source-closeout head failed hosted Linux validation and exact body parity; this repair changes production admission ordering plus workflow evidence and therefore requires a fresh full exact-head audit. It does not invalidate the historical benchmark's exact-subject evidence or require a multi-hour rerun because it adds no Git subprocess and leaves the measured legacy/snapshot process paths unchanged.
+- The Windows symlink-privilege and case-fold fixtures remain truthful skips.
+  Hosted Ubuntu exposed the GWT-008 ordering regression; a local Ubuntu 24.04
+  WSL reproduction failed with the same lower-level Git diagnostic, and the
+  exact focused case passed in 0.077 seconds after repair. The local full WSL
+  suite also reported unrelated dependency-contract failures because that
+  distro has PyYAML 6.0.1 while the repository requires 6.0.3; those are local
+  environment evidence, not a passing Linux aggregate claim. The fresh hosted
+  profile remains the authoritative aggregate rerun.
 - The benchmark-reuse recommendation should remain local until an owner chooses
   whether to promote it into the Long-Running Validation Gate or another
   repository-wide standard.

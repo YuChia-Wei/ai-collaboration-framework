@@ -765,6 +765,12 @@ def capture_target_git_snapshot(
     if not (root / ".git").exists():
         raise ApplyError("target must be a Git repository")
     requested_paths = sorted(set(paths), key=lambda item: item.encode("utf-8"))
+    # Reject filesystem escape boundaries before asking Git to interpret the
+    # pathspecs. On POSIX, check-ignore/check-attr reject a path below a
+    # symlink themselves, but their lower-level error would otherwise obscure
+    # the package-apply safety contract and make the result platform-specific.
+    for relative in requested_paths:
+        reject_symlink_boundary(root, relative)
     stats = GitInspectionStats()
     head_result = _snapshot_git(root, stats, "rev-parse", "--verify", "HEAD^{commit}")
     head = head_result.stdout.decode("ascii", errors="replace").strip()
