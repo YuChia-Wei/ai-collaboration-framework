@@ -5322,7 +5322,7 @@ class AiContextPackageApplyGwtTests(unittest.TestCase):
         for payload_count, _processes, _snapshot_processes, _scans, reads in observations:
             self.assertLessEqual(
                 reads,
-                48 * payload_count + 220,
+                54 * payload_count + 220,
                 "apply filesystem entry reads must remain O(payload paths)",
             )
 
@@ -6084,6 +6084,53 @@ class AiContextPackageApplyGwtTests(unittest.TestCase):
                         self.assertFalse((fixture.target / relative).exists())
                 finally:
                     fixture.close()
+
+    def test_gwt_091_given_absent_global_config_appears_after_snapshot_when_admitted_then_target_is_not_mutated(self) -> None:
+        fixture = PackageApplyFixture()
+        try:
+            relative = ".ai/absent-global-after-snapshot.md"
+            fixture.make_package(
+                {
+                    relative: (
+                        b"must remain absent\n",
+                        "framework-managed",
+                        "0644",
+                    )
+                },
+                [operation("001-add", "add", relative)],
+            )
+            global_config = fixture.root / "absent-at-snapshot.gitconfig"
+            policy_path = fixture.root / "late-global-ignore"
+            with mock.patch.dict(
+                os.environ,
+                {"GIT_CONFIG_GLOBAL": str(global_config)},
+            ):
+                plan = fixture.plan()
+                original_capture = APPLY.capture_target_git_snapshot
+
+                def drift_after_snapshot(*args: object, **kwargs: object):
+                    snapshot = original_capture(*args, **kwargs)
+                    global_config.write_text(
+                        f"[core]\n\texcludesFile = {policy_path.as_posix()}\n",
+                        encoding="utf-8",
+                        newline="\n",
+                    )
+                    policy_path.write_text(
+                        f"{relative}\n", encoding="utf-8", newline="\n"
+                    )
+                    return snapshot
+
+                with mock.patch.object(
+                    APPLY,
+                    "capture_target_git_snapshot",
+                    side_effect=drift_after_snapshot,
+                ), self.assertRaisesRegex(
+                    APPLY.ApplyError, "administrative identity changed"
+                ):
+                    RAW_APPLY_PLAN(plan)
+                self.assertFalse((fixture.target / relative).exists())
+        finally:
+            fixture.close()
 
 
 if __name__ == "__main__":

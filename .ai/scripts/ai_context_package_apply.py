@@ -687,6 +687,39 @@ def _resolved_git_policy_path(root: Path, value: str | None, name: str) -> Path:
     return Path(os.path.abspath(candidate))
 
 
+def _candidate_git_config_paths(root: Path) -> set[Path]:
+    """Bind absent/present config selectors whose paths are process-stable."""
+    candidates: set[Path] = set()
+
+    def add(value: str) -> None:
+        if not value or value == os.devnull:
+            return
+        expanded = Path(os.path.expanduser(value))
+        if value.startswith("~") and str(expanded) == value:
+            raise ApplyError("cannot resolve target Git configuration path")
+        candidate = expanded if expanded.is_absolute() else root / expanded
+        candidates.add(Path(os.path.abspath(candidate)))
+
+    global_override = os.environ.get("GIT_CONFIG_GLOBAL")
+    if global_override is not None:
+        add(global_override)
+    else:
+        add(str(Path.home() / ".gitconfig"))
+        xdg_root = os.environ.get("XDG_CONFIG_HOME")
+        if xdg_root:
+            add(str(Path(xdg_root) / "git" / "config"))
+        else:
+            add(str(Path.home() / ".config" / "git" / "config"))
+
+    if not os.environ.get("GIT_CONFIG_NOSYSTEM"):
+        system_override = os.environ.get("GIT_CONFIG_SYSTEM")
+        if system_override is not None:
+            add(system_override)
+        elif os.name != "nt":
+            add("/etc/gitconfig")
+    return candidates
+
+
 def capture_target_git_snapshot(
     root: Path,
     paths: Iterable[str],
@@ -829,6 +862,7 @@ def capture_target_git_snapshot(
     identity_paths = admin_paths[2:]
     identity_paths.extend(sorted(config_origins, key=str))
     identity_paths.extend(sorted(config_include_paths, key=str))
+    identity_paths.extend(sorted(_candidate_git_config_paths(root), key=str))
     identity_paths.extend(
         [
             _resolved_git_policy_path(root, excludes_value, "ignore"),

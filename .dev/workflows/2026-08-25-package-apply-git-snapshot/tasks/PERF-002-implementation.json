@@ -9,7 +9,7 @@
   "related_plan_id": "development-plan-2026-08-25-package-apply-git-snapshot",
   "status": "in_progress",
   "created_at": "2026-08-25T14:52:56+08:00",
-  "updated_at": "2026-08-25T22:14:14+08:00",
+  "updated_at": "2026-08-25T22:17:48+08:00",
   "template_source": ".ai/assets/skills/software-development-orchestrator/templates/development-workflow-task-template.json",
   "model": "gpt-5.6-sol",
   "reasoning_effort": "high",
@@ -165,6 +165,11 @@
         "command": "python .ai/scripts/tests/test_ai_context_package_apply.py <GWT-073,074,086,089,090>; python .ai/scripts/tests/test_ai_context_multi_hop_upgrade.py MultiHopUpgradeGwtTests.test_gwt_010_given_two_exact_packages_when_each_child_is_applied_validated_finalized_and_checkpointed_then_route_completes",
         "outcome": "passed",
         "evidence": "Post-ad0b38 exact-head audit repair: include.path and includeIf.*.path targets are resolved relative to their file-backed origin and bound even when the included file has no effective entries. GWT-090 rejects both ignore and attribute policy introduction through a comment-only include before mutation. The five focused package process/config-drift tests passed in 39.248s; real two-hop GWT-010 passed in 34.625s. Plan/apply/later-hop Git process counts remain 22/11/22 with no new subprocess."
+      },
+      {
+        "command": "python .ai/scripts/tests/test_ai_context_package_apply.py AiContextPackageApplyGwtTests.test_gwt_074_given_growing_apply_operation_counts_when_applied_then_git_process_count_is_constant AiContextPackageApplyGwtTests.test_gwt_091_given_absent_global_config_appears_after_snapshot_when_admitted_then_target_is_not_mutated",
+        "outcome": "passed",
+        "evidence": "Proactive adjacent-boundary repair: process-stable GIT_CONFIG_GLOBAL/GIT_CONFIG_SYSTEM overrides and default global config candidates are bound even when absent at capture. GWT-091 rejected creation of an absent global config plus new ignore policy before mutation. GWT-074 passed in 7.984s after its O(payload) filesystem-entry coefficient was recalibrated for the fixed per-operation identity set; the preceding two-test run passed GWT-091 but failed only the prior metadata-read bound (1822 observed versus 1756), with Git process count still 11."
       }
     ],
     "role_execution_aggregation": [{"stage_id": "implementation", "owning_skill": "slice-implementer", "disposition": "not-applicable", "reason": "The generic Python repository-tooling slice matches none of the command/query/reactor or concrete domain/use-case role bindings; no child invocation is invented."}],
@@ -181,6 +186,7 @@
       "The exact-head audit of evidence head 7a6f20a069f9b4e46f474f5671c639931dd19f04 rejected integration because info/exclude and resolved external ignore-policy files were not in snapshot identity. The repair batches core.filemode, core.excludesFile, and core.attributesFile in the existing config subprocess, binds file-backed config origins plus default/configured ignore and attribute policy files, adds info/exclude to the existing admin-path batch, preserves lexical paths for symlink/reparse rejection, and adds GWT-087/GWT-088 post-snapshot pre-mutation regressions. No Git subprocess was added; fresh exact-head audit remains required.",
       "The exact-head audit of ee55880b316bd0664fd65989b95245446cf3ad58 rejected integration because filtering config origins by already-effective core keys could not detect introduction of a new policy key/path through a pre-existing global/system/include config. The repair lists all effective config origins in the existing config batch, binds file-backed origins by inventory and SHA-256 rather than retaining raw config bytes, and adds GWT-089. GWT-070..089 and real two-hop GWT-010 pass; no Git subprocess was added, and a fresh exact-head audit remains required.",
       "The exact-head audit of ad0b38a000b97fb7f824ef68524b75784503a6d4 rejected integration because an existing comment-only include target had no returned value origin. The repair resolves include.path and includeIf.*.path values relative to each file-backed origin, binds their absence/presence and digest identity, and adds GWT-090 for both ignore and attribute introduction. Focused process/config-drift and real two-hop tests pass; no Git subprocess was added, and a fresh exact-head audit remains required.",
+      "The current candidate also binds absent/present process-stable global/system config selectors and adds GWT-091, preventing creation of a previously absent override config from changing policy selection after snapshot. The additional filesystem metadata work remains O(payload)+constant and adds no Git subprocess.",
       "Owner-requested durable execution lessons are tracked at .dev/workflows/2026-08-25-package-apply-git-snapshot/reports/execution-retrospective.md. The record is deliberately not an ADR because it documents one workflow's implementation/validation experience and does not establish a repository-wide architecture boundary or canonical policy.",
       "Workflow artifact validation passed for 97 workflows and 117 indexed workflow directories.",
       "Sandboxed temp-path PermissionError attempts remain blocked-by-environment evidence; equivalent focused native Windows reruns passed.",
@@ -202,7 +208,8 @@
       "13a33cc44825f8da10674e0294b38edbf7159053",
       "7a6f20a069f9b4e46f474f5671c639931dd19f04",
       "ee55880b316bd0664fd65989b95245446cf3ad58",
-      "ad0b38a000b97fb7f824ef68524b75784503a6d4"
+      "ad0b38a000b97fb7f824ef68524b75784503a6d4",
+      "41613199b537babc291e594d13e620cd785e5491"
     ],
     "follow_up_needed": true
   }

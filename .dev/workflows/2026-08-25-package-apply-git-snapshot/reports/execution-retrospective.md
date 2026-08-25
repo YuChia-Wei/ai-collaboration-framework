@@ -10,7 +10,7 @@
 - `implementation_route`: `slice-implementer`
 - `status`: `active-until-final-exact-head-audit`
 - `created_at`: `2026-08-25T22:04:41+08:00`
-- `updated_at`: `2026-08-25T22:14:14+08:00`
+- `updated_at`: `2026-08-25T22:17:48+08:00`
 - `template_source`: `owner-requested workflow-local retrospective; no repository template`
 - `template_version`: `1.0.0`
 
@@ -89,7 +89,8 @@ Snapshotting the current `core.excludesFile` value and file is insufficient.
 The config files that can introduce a different value are part of the identity.
 The same rule applies to attributes. A fail-closed snapshot binds the selectors,
 their file-backed origins, dormant `include.path` and `includeIf.*.path` targets,
-the selected policy paths, and absence/presence state.
+the process-stable global/system config candidate paths, the selected policy
+paths, and absence/presence state.
 
 ### 4. Run adversarial drift probes before expensive validation
 
@@ -101,6 +102,8 @@ aggregate benchmark. The minimum pre-long-run probe set should cover:
 - `.git/info/exclude` and `.git/info/attributes` drift;
 - existing configured external policy-file drift;
 - introduction of a new policy key/path through a pre-existing config origin;
+- creation of an absent `GIT_CONFIG_GLOBAL` or `GIT_CONFIG_SYSTEM` selector;
+- policy introduction through a dormant include target;
 - real multi-hop and standalone routes with legacy fallbacks forced to raise.
 
 ### 5. Bounded Git processes and filesystem work are separate invariants
