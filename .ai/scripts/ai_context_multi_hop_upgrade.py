@@ -1434,7 +1434,14 @@ def prepare_next_hop(
     """Seal exact package and route-validator evidence before owner decision."""
     target = target_root.resolve()
     matrix_root = matrix_root.resolve()
-    with APPLY.transaction_lock(target):
+    admission_snapshot = APPLY.capture_target_git_snapshot(
+        target,
+        [],
+        phase="plan-admission",
+        require_clean=False,
+    )
+    with APPLY.target_git_snapshot_scope(admission_snapshot), APPLY.transaction_lock(target):
+        admission_snapshot.changed_paths(full_worktree_scan=True)
         route_root, intent, journal = _load_route(target, route_transaction_id)
         if journal["state"] not in {"planned", "checkpointed", "rolled-back"} or journal["active_hop"] is not None:
             raise _route_error("multi-hop route is not ready to prepare its next hop")
@@ -1446,32 +1453,25 @@ def prepare_next_hop(
         context = _next_context(route_root, intent, journal)
         if context is None:
             raise _route_error("multi-hop route has no sealed context for its next hop")
-        admission_snapshot = APPLY.capture_target_git_snapshot(
+        previous_files, previous_version = _previous_files_for_hop(
             target,
-            [],
-            phase="plan-admission",
-            require_clean=False,
+            route_root,
+            journal,
+            initial_previous_files_path=initial_previous_files_path,
+            initial_previous_version=initial_previous_version,
+            context=context,
         )
-        with APPLY.target_git_snapshot_scope(admission_snapshot):
-            previous_files, previous_version = _previous_files_for_hop(
-                target,
-                route_root,
-                journal,
-                initial_previous_files_path=initial_previous_files_path,
-                initial_previous_version=initial_previous_version,
-                context=context,
-            )
-            package, execution, plan, proposal_sha = _prepare_or_reuse_hop(
-                target,
-                route_root,
-                intent,
-                journal,
-                resolved_edges[index],
-                matrix_root=matrix_root,
-                previous_files=previous_files,
-                previous_version=previous_version,
-                context=context,
-            )
+        package, execution, plan, proposal_sha = _prepare_or_reuse_hop(
+            target,
+            route_root,
+            intent,
+            journal,
+            resolved_edges[index],
+            matrix_root=matrix_root,
+            previous_files=previous_files,
+            previous_version=previous_version,
+            context=context,
+        )
         plan_sha = APPLY.plan_digest(plan)
         active = {
             "hop_index": index,

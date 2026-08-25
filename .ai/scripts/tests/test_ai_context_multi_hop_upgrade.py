@@ -1376,6 +1376,12 @@ class MultiHopUpgradeGwtTests(unittest.TestCase):
                 APPLY,
                 "_snapshot_git",
                 side_effect=counted_snapshot_git,
+            ), mock.patch.object(
+                APPLY,
+                "run_git",
+                side_effect=AssertionError(
+                    "later-hop preparation launched uninstrumented Git"
+                ),
             ):
                 second = MULTI.prepare_next_hop(
                     self.fixture.target,

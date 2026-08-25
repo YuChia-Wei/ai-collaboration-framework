@@ -9,7 +9,7 @@
   "related_plan_id": "development-plan-2026-08-25-package-apply-git-snapshot",
   "status": "in_progress",
   "created_at": "2026-08-25T14:52:56+08:00",
-  "updated_at": "2026-08-25T18:40:32+08:00",
+  "updated_at": "2026-08-25T20:00:15+08:00",
   "template_source": ".ai/assets/skills/software-development-orchestrator/templates/development-workflow-task-template.json",
   "model": "gpt-5.6-sol",
   "reasoning_effort": "high",
@@ -139,6 +139,11 @@
         "command": "python .ai/scripts/tests/run_perf002_long_validation.py --expected-commit fc691245451b87db461d751f33b2f9f7ae801a46 --base-ref 1326f827f61de8eebeef30748dcc82ffa7dd3764 --output-dir .tmp/issue-251/external/fc691245 --scale-count 631 --warm-runs 3",
         "outcome": "failed",
         "evidence": "Schema-valid native-Windows delegation issue-251-long-validation-fc691245 ran once for 756.404709s on the pinned clean head. Package-apply passed 104 tests in 577.531061s with 1 Windows symlink-privilege skip. Multi-hop ran 31 tests in 178.793173s with 1 failure: direct GWT-002 observed the new missing-active-snapshot error before its historical incomplete-checkpoint error; benchmark did not run. summary canonical-content sha256=226587c44278a011060a3194302bf22f2d3644efd89b84d6e8909bb2bd1cf97f; summary file-byte sha256=5675cc70c595bf94f58349e3cb4ab850df1532e99760b61654fe0850d386b729; completion file-byte sha256=76dbf5a535587cf07c2373e22ad33a9f55d87fdecf6680fdf55f2cf8d2c2fed2."
+      },
+      {
+        "command": "python .ai/scripts/tests/run_perf002_long_validation.py --expected-commit 116893c8460451ee5fae93cf9fda13041a48a3eb --base-ref 1326f827f61de8eebeef30748dcc82ffa7dd3764 --output-dir .tmp/issue-251/external/116893c8 --scale-count 631 --warm-runs 3",
+        "outcome": "interrupted",
+        "evidence": "Schema-valid native-Windows delegation issue-251-long-validation-116893c8 was interrupted after 4594.953609s when the pre-terminal audit found two uninstrumented real prepare_next_hop Git admin-resolution processes. Package-apply passed 104 tests in 603.529s with 1 Windows symlink-privilege skip; multi-hop passed 31 tests in 188.657s. Benchmark was terminated before any cold/warm result was emitted. The receipt truthfully records tracked repair drift at termination. completion file-byte sha256=4195c3e30a3e48efb0206ee62a768c6efec88d9d2a4c9582b0ab0b8143c2287c; package log sha256=ac3171433866e3b0de5a8da5c5ad13c102dd3ab9dd95cc57a8589f20e5fa6661; multi-hop log sha256=467158f3b4fce9d86afce3d629b6edad1559e059ae0ea1b35d4a3ee2c583b9b0."
       }
     ],
     "role_execution_aggregation": [{"stage_id": "implementation", "owning_skill": "slice-implementer", "disposition": "not-applicable", "reason": "The generic Python repository-tooling slice matches none of the command/query/reactor or concrete domain/use-case role bindings; no child invocation is invented."}],
@@ -150,6 +155,7 @@
       "The first exact-head audit rejected 2dc2e2547726ba55dc591dd60dfd958a2b2da2cc for multi-hop per-path Git fallback, missing recovery ignore binding, and ambiguous canonical-content digest labeling; all three findings were repaired and focused-regression tested, with a fresh audit required after the repair commit.",
       "The second exact-head audit rejected 544ba8719a08b28f7f53b4ecff47b94cdd54f80b because the real retained-route target-provenance verifier still resolved Git state outside the active snapshot while GWT-086 mocked that outer verifier. The adapter now injects snapshot HEAD, admin paths, and the batch target surface through nested historical-finalization validation; GWT-086 invokes the real verifier at 3 and 631 paths, and real two-hop GWT-010 forbids every legacy fallback.",
       "The first post-second-audit aggregate receipt at fc691245 failed only direct multi-hop GWT-002 compatibility after package-apply passed. The repair gives standalone verifier calls one bounded admission snapshot while prepare_next_hop and build_plan reuse the same admission snapshot; exact GWT-002 passed in 2.942s, GWT-073 plus GWT-086 passed in 19.591s, and real two-hop GWT-010 passed in 31.980s while asserting exactly 22 actual _snapshot_git calls and forbidding every legacy fallback. An initial instrumentation probe failed in 14.418s because its wrapper omitted the input_bytes keyword; the corrected probe passed without production relaxation.",
+      "The pre-terminal audit of 116893c8 found that transaction_lock and route-root resolution still launched two uninstrumented Git processes before the 22 counted snapshot processes. prepare_next_hop now captures and activates admission before the lock, performs a full drift/identity check after lock acquisition, and reuses that snapshot throughout the route and build_plan path. Corrected real two-hop GWT-010 passed with exactly 22 _snapshot_git calls and run_git forbidden; direct GWT-002 plus real GWT-010 passed in 37.069s and the 3/631-path GWT-086 passed in 4.902s.",
       "Workflow artifact validation passed for 97 workflows and 117 indexed workflow directories.",
       "Sandboxed temp-path PermissionError attempts remain blocked-by-environment evidence; equivalent focused native Windows reruns passed.",
       "One focused selector command contained a non-existent GWT-015 name; GWT-073 and GWT-074 passed in that command, and the corrected exact GWT-015 selector passed separately in 5.143s.",
@@ -165,7 +171,8 @@
       "c5aca00668c94a40c74f9e3118065a100d3d3cd2",
       "68204f58e6ebfe1e099ac6e9b0db95712f3d6085",
       "544ba8719a08b28f7f53b4ecff47b94cdd54f80b",
-      "fc691245451b87db461d751f33b2f9f7ae801a46"
+      "fc691245451b87db461d751f33b2f9f7ae801a46",
+      "116893c8460451ee5fae93cf9fda13041a48a3eb"
     ],
     "follow_up_needed": true
   }
