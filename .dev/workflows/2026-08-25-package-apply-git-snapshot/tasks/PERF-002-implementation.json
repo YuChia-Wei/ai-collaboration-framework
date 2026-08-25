@@ -9,7 +9,7 @@
   "related_plan_id": "development-plan-2026-08-25-package-apply-git-snapshot",
   "status": "completed",
   "created_at": "2026-08-25T14:52:56+08:00",
-  "updated_at": "2026-08-26T00:10:35+08:00",
+  "updated_at": "2026-08-26T00:27:15+08:00",
   "template_source": ".ai/assets/skills/software-development-orchestrator/templates/development-workflow-task-template.json",
   "model": "gpt-5.6-sol",
   "reasoning_effort": "high",
@@ -69,7 +69,7 @@
   },
   "results": {
     "finding_status": "addressed",
-    "summary": "Implemented and source-closed bounded plan/apply target Git snapshots, including real multi-hop checkpoint surfaces, pre-lock drift admission, batch blob/attribute/ignore/config-origin parsing, recovery ignore-semantic binding, pre-Git symlink/reparse boundary classification, stderr-only phase metrics, scale/process fixtures, exact-head benchmark/long-validation runners, and PR #255 terminal-close declaration. Payload-independent final implementation counts are plan 24, apply 12, and real later-hop 24. The retained 631-record benchmark head reduced plan Git processes from 3153 to 22 and apply Git processes from 13272 to 11. Fresh final source-closeout audit, hosted Linux/Windows checks, admission, integration, and provider read-back remain external gates rather than unfinished source tasks.",
+    "summary": "Implemented and source-closed bounded plan/apply target Git snapshots, including real multi-hop checkpoint surfaces, pre-lock drift admission, batch blob/attribute/ignore/config-origin parsing, recovery ignore-semantic binding, pre-Git symlink/reparse boundary classification, platform-exact raw config-selector identity, stderr-only phase metrics, scale/process fixtures, exact-head benchmark/long-validation runners, and PR #255 terminal-close declaration. Payload-independent final implementation counts are plan 24, apply 12, and real later-hop 24. The retained 631-record benchmark head reduced plan Git processes from 3153 to 22 and apply Git processes from 13272 to 11. Fresh final source-closeout audit, hosted Linux/Windows checks, admission, integration, and provider read-back remain external gates rather than unfinished source tasks.",
     "files_changed": [
       ".ai/scripts/ai_context_package_apply.py",
       ".ai/scripts/ai_context_target_provenance.py",
@@ -201,7 +201,7 @@
       {
         "command": "python .ai/scripts/validate-workflow-artifacts.py; python .ai/scripts/validate-terminal-issue-closure.py --record .dev/workflows/2026-08-25-package-apply-git-snapshot/evidence/terminal-issue-closure-pr-255.yaml; python .ai/scripts/validate-ai-context.py; PR body/declaration parity; git diff --check",
         "outcome": "passed",
-        "evidence": "PR #255 source closeout passed workflow lifecycle validation for 97 workflows/117 directories, terminal Issue closure static validation for one declaration, full source AI-context validation, exact final-body/declaration parity, JSON parsing, and diff checks. During the hosted-repair metadata update, the first workflow-validator rerun failed only because .dev/workflows/INDEX.MD still carried the prior updated_at value; the index was synchronized before the final passing rerun. These source checks do not claim external exact-head review, hosted admission, integration, or provider reconciliation."
+        "evidence": "PR #255 source closeout passed workflow lifecycle validation for 97 workflows/117 directories, terminal Issue closure static validation for one declaration, full source AI-context validation, exact final-body/declaration parity, JSON parsing, and diff checks. During hosted-repair metadata updates, the first workflow-validator rerun failed only because .dev/workflows/INDEX.MD still carried the prior updated_at value; the index was synchronized before the final passing rerun. A later AI-context validator invocation was interrupted by Windows WinError 1920 while traversing the ignored Ubuntu WSL venv lib64 symlink; the disposable ignored venv was removed after its 113-test result completed, and the unchanged source validator then passed. These source checks do not claim external exact-head review, hosted admission, integration, or provider reconciliation."
       },
       {
         "command": "gh pr checks 255 --watch --interval 10",
@@ -217,6 +217,21 @@
         "command": "fresh read-only exact-head independent audit of edb50e36154ac53391ff0d7a773126a2d8b56a53",
         "outcome": "failed",
         "evidence": "Audit found one blocking exact-parity mismatch: tracked declaration SHA-256 0d9087030df705fc0ab3c7a8a09f188b8783a2172053f43b82db23ee038a9993 versus live body SHA-256 037676b80ad55fbd4134f513ad6256c2ed763c05471aeb4f3cd4b6bf5aa8bd8c, solely because live ended with two LF bytes. The declaration now preserves those bytes; a fresh audit is mandatory after the repair commit."
+      },
+      {
+        "command": "fresh independent general exact-head audit of 533cf41a6dae9bbb74cac57a46482bd6c0845667",
+        "outcome": "passed",
+        "evidence": "The canonical fixed-head-independent-auditor role was not invoked because software-development-orchestrator has no applicable role binding; inventing ai-context-upgrader ownership was rejected fail closed. An independent read-only bounded general audit instead passed 533cf41a with zero blockers, clean start/end head, exact PR body hash 037676b80ad55fbd4134f513ad6256c2ed763c05471aeb4f3cd4b6bf5aa8bd8c, 19 policy-valid commits, workflow/static closure/AI-context/diff passes, and unchanged benchmark/durability evidence. The later hosted failure invalidated admission but not the truth of this source audit; the subsequent repair requires a fresh audit."
+      },
+      {
+        "command": "gh pr checks 255 --watch --interval 10",
+        "outcome": "failed",
+        "evidence": "The second hosted run on 533cf41a6dae9bbb74cac57a46482bd6c0845667 passed Ubuntu prerequisite (11s), Windows prerequisite (31s), read-only governance (1m13s), and candidate build (13s). Ubuntu PR profile failed after 2m46s in package-apply GWT-095 for both ignore and attributes cases. Matching PyYAML 6.0.3 local reproduction proved Python abspath had collapsed a missing raw POSIX literal-tilde parent that Git could not traverse. Run 32870870750/job 97877274496 is retained as non-passing evidence."
+      },
+      {
+        "command": "Ubuntu 24.04 WSL PyYAML 6.0.3 full package-apply suite; native Windows GWT-073,074,086,089..095",
+        "outcome": "passed",
+        "evidence": "After preserving the raw POSIX lexical selector boundary, Ubuntu passed 113 package-apply tests in 81.500s with no skips or failures. Native Windows passed 10 process-count and selector/config-drift tests in 59.855s. Plan/apply/later-hop counts remain 24/12/24; no Git subprocess or benchmark path changed. The exact first selector repair attempt incorrectly assumed POSIX tilde expansion and failed GWT-095 in 0.236s; the retained failure led to the lexical-parent model."
       }
     ],
     "role_execution_aggregation": [{"stage_id": "implementation", "owning_skill": "slice-implementer", "disposition": "not-applicable", "reason": "The generic Python repository-tooling slice matches none of the command/query/reactor or concrete domain/use-case role bindings; no child invocation is invented."}],
@@ -249,7 +264,8 @@
       "Ignored schema-1.1 passed receipt: .tmp/issue-251/external/68204f58/completion.yaml; dispatch/completion validator passed. Native Windows default TEMP profile on one host/commit; cold-first means fresh disposable repository without OS cache reset, followed by three warm host-cache fresh-fixture runs.",
       "Retained 631-record warm medians: legacy plan 192.5413706s / 3153 Git processes and apply 798.4825737s / 13272; snapshot plan 4.9723998s / 22 and apply 4.4274619s / 11. Cold-first: legacy plan 188.8431246s, apply 782.7629673s; snapshot plan 4.4429962s, apply 4.2334253s.",
       "The first hosted Ubuntu PR profile on edb50e36154ac53391ff0d7a773126a2d8b56a53 exposed a Linux-only diagnostic ordering regression in GWT-008. Snapshot admission now rejects requested symlink/reparse boundaries before Git pathspec interpretation, preserving the canonical fail-closed classification without adding a subprocess.",
-      "The first PR-bound exact-head audit rejected edb50e36154ac53391ff0d7a773126a2d8b56a53 because the live body retained two trailing LF bytes that YAML `|-` removed. The terminal declaration now preserves the exact provider bytes; the prior parity claim is superseded by this retained failed-audit evidence."
+      "The first PR-bound exact-head audit rejected edb50e36154ac53391ff0d7a773126a2d8b56a53 because the live body retained two trailing LF bytes that YAML `|-` removed. The terminal declaration now preserves the exact provider bytes; the prior parity claim is superseded by this retained failed-audit evidence.",
+      "The second hosted Ubuntu profile on 533cf41a6dae9bbb74cac57a46482bd6c0845667 exposed a POSIX raw-selector lexical-parent gap in GWT-095 after GWT-008 passed. The current binder keeps literal POSIX parent segments uncollapsed while retaining Windows normalization; matching Ubuntu 113-test and Windows 10-test profiles pass with counts unchanged."
     ],
     "commits": [
       "333fafb2eacaeaee9750aa99a1856a7bccb36c21",
@@ -268,7 +284,9 @@
       "7a1a457ad0e1f867c936c25f0ab4d4affec1ac82",
       "7ffea63382b91f45f0ec4dd31e71cc1d5a4a3759",
       "0eebee85c105015632d3e558519cfde05cc7af21",
-      "8a24041d43e3ee0fcb30f9bb9dae2a7d6e55f3de"
+      "8a24041d43e3ee0fcb30f9bb9dae2a7d6e55f3de",
+      "edb50e36154ac53391ff0d7a773126a2d8b56a53",
+      "533cf41a6dae9bbb74cac57a46482bd6c0845667"
     ],
     "follow_up_needed": false
   }

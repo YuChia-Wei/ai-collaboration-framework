@@ -6370,7 +6370,7 @@ class AiContextPackageApplyGwtTests(unittest.TestCase):
                     finally:
                         fixture.close()
 
-    def test_gwt_095_given_raw_global_selector_uses_literal_tilde_when_git_admin_config_changes_then_apply_fails_closed(self) -> None:
+    def test_gwt_095_given_raw_global_selector_uses_platform_path_resolution_when_git_admin_config_changes_then_apply_fails_closed(self) -> None:
         for policy in ("ignore", "attributes"):
             with self.subTest(policy=policy):
                 fixture = PackageApplyFixture()
@@ -6403,6 +6403,12 @@ class AiContextPackageApplyGwtTests(unittest.TestCase):
 
                         def drift_after_snapshot(*args: object, **kwargs: object):
                             snapshot = original_capture(*args, **kwargs)
+                            if os.name != "nt":
+                                # POSIX must traverse the literal '~' component
+                                # before '..'; creating it makes the raw selector
+                                # resolve to the same config Windows can reach
+                                # through lexical normalization.
+                                (fixture.target / "~").mkdir()
                             key = (
                                 "excludesFile"
                                 if policy == "ignore"

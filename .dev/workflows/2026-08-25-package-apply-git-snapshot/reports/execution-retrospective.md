@@ -187,6 +187,19 @@ stripped them. Human-visible text parity is insufficient when admission binds
 an exact provider body. The declaration now uses a keep chomping indicator and
 an explicit final blank line so its parsed value hashes to the provider bytes.
 
+### 13. Preserve raw POSIX lexical parents until the OS resolves them
+
+The second hosted Ubuntu profile passed GWT-008 but exposed GWT-095. A raw
+`GIT_CONFIG_GLOBAL=~/../.git/audit-global` remains literal on both tested Git
+platforms. Windows normalizes the parent segment before file access; POSIX must
+first traverse a literal `~` directory, so the selector remains inaccessible
+while that directory is absent. Python `abspath` collapsed the missing POSIX
+parent and bound a different identity. The snapshot now preserves the raw
+absolute POSIX path including `~` and `..`, so creation of the lexical parent
+changes the selector from inaccessible to readable and is rejected before
+mutation. Windows retains its prior normalized identity. Matching Ubuntu and
+Windows regression tests pass without adding a Git subprocess.
+
 ## AI Usage And Wall-Time Interpretation
 
 Most of the multi-hour wall time came from local Git process startup, filesystem
@@ -197,15 +210,16 @@ not require the model to reason for every elapsed second.
 
 ## Residual And Follow-Up
 
-- The raw-selector/content-path separation repair passed fresh exact-head audit at `8a24041d43e3ee0fcb30f9bb9dae2a7d6e55f3de`. The later PR-bound source-closeout head failed hosted Linux validation and exact body parity; this repair changes production admission ordering plus workflow evidence and therefore requires a fresh full exact-head audit. It does not invalidate the historical benchmark's exact-subject evidence or require a multi-hour rerun because it adds no Git subprocess and leaves the measured legacy/snapshot process paths unchanged.
+- The raw-selector/content-path separation repair passed fresh exact-head audit at `8a24041d43e3ee0fcb30f9bb9dae2a7d6e55f3de`. The later PR-bound heads exposed body-byte, symlink-diagnostic, and POSIX raw-selector lexical-boundary gaps; the current repair changes production admission ordering/identity plus workflow evidence and therefore requires a fresh full exact-head audit. It does not invalidate the historical benchmark's exact-subject evidence or require a multi-hour rerun because it adds no Git subprocess and leaves the measured legacy/snapshot process paths unchanged.
 - The Windows symlink-privilege and case-fold fixtures remain truthful skips.
   Hosted Ubuntu exposed the GWT-008 ordering regression; a local Ubuntu 24.04
   WSL reproduction failed with the same lower-level Git diagnostic, and the
-  exact focused case passed in 0.077 seconds after repair. The local full WSL
-  suite also reported unrelated dependency-contract failures because that
-  distro has PyYAML 6.0.1 while the repository requires 6.0.3; those are local
-  environment evidence, not a passing Linux aggregate claim. The fresh hosted
-  profile remains the authoritative aggregate rerun.
+  exact focused case passed in 0.077 seconds after repair. The first local full
+  WSL probe used ambient PyYAML 6.0.1 and therefore failed the repository's
+  6.0.3 dependency contract; an ignored virtual environment matching PyYAML
+  6.0.3 then reproduced the second hosted GWT-095 failure and, after repair,
+  passed all 113 package-apply tests in 81.500 seconds. The fresh hosted profile
+  remains the authoritative aggregate rerun.
 - The benchmark-reuse recommendation should remain local until an owner chooses
   whether to promote it into the Long-Running Validation Gate or another
   repository-wide standard.

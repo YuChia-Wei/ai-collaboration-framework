@@ -726,11 +726,16 @@ def _candidate_git_config_paths(root: Path) -> set[Path]:
     def add(value: str) -> None:
         if not value or value == os.devnull:
             return
-        # Git treats raw config-selector environment variables as literal paths;
-        # unlike path values read from config, a leading '~' is not HOME-expanded.
+        # Raw selector values remain literal on both platforms. Windows path
+        # handling normalizes embedded parent segments before access; POSIX
+        # access preserves them and can remain blocked by a missing lexical
+        # parent. Keep that POSIX boundary so its later creation changes the
+        # selector identity instead of silently rebinding another path.
         selected = Path(value)
         candidate = selected if selected.is_absolute() else root / selected
-        candidates.add(Path(os.path.abspath(candidate)))
+        candidates.add(
+            Path(os.path.abspath(candidate)) if os.name == "nt" else candidate
+        )
 
     global_override = os.environ.get("GIT_CONFIG_GLOBAL")
     if global_override is not None:

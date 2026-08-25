@@ -8,7 +8,7 @@ task-level progress.
 
 | Workflow | Title | Owner | Status | Updated | Entry Point |
 | --- | --- | --- | --- | --- | --- |
-| [`2026-08-25-package-apply-git-snapshot`](2026-08-25-package-apply-git-snapshot/workflow.yaml) | PERF-002 bounded package-apply Git snapshot | `software-development-orchestrator` | `completed` | `2026-08-26T00:10:35+08:00` | [plan](2026-08-25-package-apply-git-snapshot/workflow-plan.md) |
+| [`2026-08-25-package-apply-git-snapshot`](2026-08-25-package-apply-git-snapshot/workflow.yaml) | PERF-002 bounded package-apply Git snapshot | `software-development-orchestrator` | `completed` | `2026-08-26T00:27:15+08:00` | [plan](2026-08-25-package-apply-git-snapshot/workflow-plan.md) |
 | [`2026-08-24-portable-test-fixture-acceleration`](2026-08-24-portable-test-fixture-acceleration/workflow.yaml) | PERF-001 portable acceleration for high-I/O test fixtures | `software-development-orchestrator` | `completed` | `2026-08-25T08:59:56+08:00` | [plan](2026-08-24-portable-test-fixture-acceleration/workflow-plan.md) |
 | [`2026-08-24-retire-repository-backlog-authority`](2026-08-24-retire-repository-backlog-authority/workflow.yaml) | Retire repository backlog and roadmap as current authority | `ai-context-governance` | `completed` | `2026-08-25T07:09:47+08:00` | [plan](2026-08-24-retire-repository-backlog-authority/workflow-plan.md) |
 | [`2026-08-24-stale-release-workflow-reconciliation`](2026-08-24-stale-release-workflow-reconciliation/workflow.yaml) | Detect and reconcile release workflows left stale after terminal anchors | `ai-context-governance` | `completed` | `2026-08-24T17:55:00+08:00` | [plan](2026-08-24-stale-release-workflow-reconciliation/workflow-plan.md) |
