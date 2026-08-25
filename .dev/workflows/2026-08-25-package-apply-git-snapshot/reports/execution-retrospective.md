@@ -10,7 +10,7 @@
 - `implementation_route`: `slice-implementer`
 - `status`: `active-until-final-exact-head-audit`
 - `created_at`: `2026-08-25T22:04:41+08:00`
-- `updated_at`: `2026-08-25T22:17:48+08:00`
+- `updated_at`: `2026-08-25T22:22:25+08:00`
 - `template_source`: `owner-requested workflow-local retrospective; no repository template`
 - `template_version`: `1.0.0`
 
@@ -54,6 +54,7 @@ the ADR decision test.
 | `7a6f20a0` | exact-head audit failed | read-only | `.git/info/exclude` was missing from snapshot identity. |
 | `ee55880b` | exact-head audit failed | read-only | Filtering config origins by already-effective core keys missed introduction of a new policy key/path. |
 | `ad0b38a0` | exact-head audit failed | read-only | A comment-only file referenced by `include.path` had no returned value origin and was not bound. |
+| `01f73f25` | exact-head audit failed | read-only | Git returned `file:.git/config`; the relative origin was resolved against process cwd instead of target root. |
 
 All ignored dispatch/completion receipts remain local evidence. Failed,
 blocked, interrupted, superseded, and passed outcomes are not rewritten.
@@ -91,6 +92,11 @@ The same rule applies to attributes. A fail-closed snapshot binds the selectors,
 their file-backed origins, dormant `include.path` and `includeIf.*.path` targets,
 the process-stable global/system config candidate paths, the selected policy
 paths, and absence/presence state.
+
+Git may report a repository-local origin as a relative `file:.git/config` value.
+Normalize that origin against the target repository root before resolving a
+relative include against the origin's directory; never use the orchestrator's
+process working directory as repository truth.
 
 ### 4. Run adversarial drift probes before expensive validation
 

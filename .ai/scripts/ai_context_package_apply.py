@@ -627,7 +627,7 @@ def _parse_ignore_rules(
 
 
 def _parse_core_snapshot_config(
-    content: bytes,
+    content: bytes, root: Path,
 ) -> tuple[bool, str | None, str | None, set[Path], set[Path]]:
     """Parse one effective config batch and retain its file-backed origins."""
     values = content.split(b"\0")
@@ -649,7 +649,14 @@ def _parse_core_snapshot_config(
         if key in {"core.filemode", "core.excludesfile", "core.attributesfile"}:
             effective[key] = value
         if origin.startswith("file:"):
-            origin_path = Path(origin.removeprefix("file:"))
+            raw_origin_path = Path(origin.removeprefix("file:"))
+            origin_path = Path(
+                os.path.abspath(
+                    raw_origin_path
+                    if raw_origin_path.is_absolute()
+                    else root / raw_origin_path
+                )
+            )
             origins.add(origin_path)
             if key == "include.path" or (
                 key.startswith("includeif.") and key.endswith(".path")
@@ -809,7 +816,7 @@ def capture_target_git_snapshot(
         config_origins,
         config_include_paths,
     ) = (
-        _parse_core_snapshot_config(config_result.stdout)
+        _parse_core_snapshot_config(config_result.stdout, root)
     )
     ignore_input = b"".join(
         path.encode("utf-8", errors="surrogateescape") + b"\0"
