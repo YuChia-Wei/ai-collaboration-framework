@@ -156,6 +156,12 @@ class AgentExecutionGuardrailsGwtTests(unittest.TestCase):
     def test_gwt_005_given_released_lease_when_ignored_output_is_sealed_then_it_passes(self) -> None:
         VALIDATOR.validate_lease(lease("released"), SCHEMA, verify_live=False)
 
+    def test_gwt_005b_given_invalidated_historical_lease_after_head_moves_when_validated_then_live_head_is_not_rebound(self) -> None:
+        value = lease("invalidated")
+        value["terminal_release"] = {"released": False, "reason": "retained historical failure"}
+        seal(value, "lease_sha256")
+        VALIDATOR.validate_lease(value, SCHEMA)
+
     def test_gwt_006_given_actual_acceptance_and_human_projection_when_bound_then_they_pass(self) -> None:
         VALIDATOR.validate_evidence(ledger(), SCHEMA)
 

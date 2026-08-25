@@ -260,7 +260,7 @@ def validate_lease(record: dict[str, Any], schema: dict[str, Any], *, verify_liv
         raise GuardrailError("released lease requires clean tracked state and terminal artifact release")
     if record["state"] == "invalidated" and terminal_release["released"]:
         raise GuardrailError("invalidated lease cannot claim terminal release")
-    if verify_live:
+    if verify_live and record["state"] == "active":
         head = subprocess.run(["git", "-C", str(worktree), "rev-parse", "HEAD"], check=True, capture_output=True, text=True, encoding="utf-8").stdout.strip()
         status = subprocess.run(["git", "-C", str(worktree), "status", "--porcelain=v1", "--untracked-files=no"], check=True, capture_output=True, text=True, encoding="utf-8").stdout.splitlines()
         if {"head_sha": head, "tracked_status": status} != observed:
