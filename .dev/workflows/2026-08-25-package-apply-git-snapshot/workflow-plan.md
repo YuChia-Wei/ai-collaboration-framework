@@ -10,7 +10,7 @@
 - `branch_segment`: `1`
 - `status`: `active`
 - `created_at`: `2026-08-25T14:52:56+08:00`
-- `updated_at`: `2026-08-25T15:36:20+08:00`
+- `updated_at`: `2026-08-25T22:04:41+08:00`
 - `template_source`: `.ai/assets/skills/software-development-orchestrator/templates/development-workflow-plan-template.md`
 - `template_version`: `1.4.0`
 - `workflow_locator`: `.dev/workflows/2026-08-25-package-apply-git-snapshot/workflow.yaml`
@@ -65,9 +65,10 @@
 
 ## Progress And Handoff
 
-- Current stage: implementation, same-commit aggregate validation, and the post-`7a6f20a0` ignore/attribute policy-identity repair are complete. The latest exact-head audit correctly rejected post-snapshot `info/exclude` drift; focused GWT-070..088 and real two-hop validation now pass, and a fresh exact-head audit remains.
+- Current stage: implementation and same-commit aggregate validation are complete. Exact-head audits correctly rejected repository-local policy drift at `7a6f20a0` and later config-selection drift at `ee55880b`. The current repair binds every file-backed effective config origin plus selected/default ignore and attribute files; focused GWT-070..089 and real two-hop validation pass, and a fresh exact-head audit remains.
 - Current bounded counts: direct and real later-hop plan `22` Git subprocesses (early admission plus full path snapshot), apply `11`; both are payload-independent. Successful apply performs `4` full worktree inventory scans independent of operation count, while per-operation checks inspect only snapshotted candidate paths.
-- Long-running gate: the terminal task bound to `13a33cc44825f8da10674e0294b38edbf7159053` passed package-apply 104 tests (1 Windows symlink-privilege skip), multi-hop 31 tests, and the retained 631-record cold-first plus three-warm-run benchmark in 4865.614824 seconds. The later repair changes only the constant-size Git policy identity set, reuses the existing config/admin subprocesses, and is covered by the deterministic 22/11 process-count matrix plus focused semantic tests; the expensive legacy baseline is retained rather than repeated. Earlier blocked, failed, passed-on-superseded-head, and interrupted receipts remain retained without rewriting.
+- Long-running gate: the terminal task bound to `13a33cc44825f8da10674e0294b38edbf7159053` passed package-apply 104 tests (1 Windows symlink-privilege skip), multi-hop 31 tests, and the retained 631-record cold-first plus three-warm-run benchmark in 4865.614824 seconds. Later repairs change only the constant-size Git policy identity set, reuse the existing config/admin subprocesses, and are covered by the deterministic 22/11 process-count matrix plus focused semantic tests; the expensive legacy baseline is retained rather than repeated. Earlier blocked, failed, passed-on-superseded-head, and interrupted receipts remain retained without rewriting.
+- Durable lessons: [`reports/execution-retrospective.md`](reports/execution-retrospective.md) preserves the execution history, audit failures, benchmark-reuse recommendation, and the explicit reason this local validation record is not an ADR.
 - Parent integration owner: source orchestration thread `01a036af-3b1f-7283-97ab-eb6b7caabf93`.
 - Required final handoff: worktree/branch/base/final SHA, clean state, changed files, process counts/timings/benchmarks, test commands/durations/digests, delegated receipt if applicable, exact-head audit, compatibility evidence, residual risks, and excluded provider/release actions.
 - Completion claim boundary: report only ready for parent integration decision; do not claim merged or release-ready.

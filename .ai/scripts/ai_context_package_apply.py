@@ -171,7 +171,7 @@ class TargetGitSnapshot:
     core_filemode: bool
     transaction_base: Path
     multi_hop_route_base: Path
-    git_identity_files: dict[Path, bytes | None]
+    git_identity_digests: dict[Path, str | None]
     git_identity_inventory: dict[Path, WorktreeInventoryEntry | None]
     worktree_inventory: dict[str, WorktreeInventoryEntry]
     stats: GitInspectionStats
@@ -230,7 +230,7 @@ class TargetGitSnapshot:
         return changed
 
     def assert_identity(self, *, full: bool = False) -> None:
-        for path, expected in self.git_identity_files.items():
+        for path, expected in self.git_identity_digests.items():
             if path.is_symlink() or is_reparse_point(path):
                 raise ApplyError("target Git administrative identity became unsafe")
             if worktree_inventory_entry(path) != self.git_identity_inventory[path]:
@@ -238,7 +238,7 @@ class TargetGitSnapshot:
                     "target Git administrative identity changed after snapshot capture"
                 )
             if full:
-                current = path.read_bytes() if path.is_file() else None
+                current = sha256_bytes(path.read_bytes()) if path.is_file() else None
                 if current != expected:
                     raise ApplyError(
                         "target Git administrative identity changed after snapshot capture"
@@ -253,7 +253,7 @@ class TargetGitSnapshot:
             and self.core_filemode == other.core_filemode
             and self.transaction_base == other.transaction_base
             and self.multi_hop_route_base == other.multi_hop_route_base
-            and self.git_identity_files == other.git_identity_files
+            and self.git_identity_digests == other.git_identity_digests
             and self.worktree_inventory == other.worktree_inventory
         )
 
@@ -750,8 +750,7 @@ def capture_target_git_snapshot(
         "config",
         "--null",
         "--show-origin",
-        "--get-regexp",
-        r"^(core\.filemode|core\.excludesfile|core\.attributesfile)$",
+        "--list",
     )
     if config_result.returncode != 0:
         raise ApplyError("cannot inspect target Git core configuration")
@@ -837,12 +836,14 @@ def capture_target_git_snapshot(
             reference_result.stdout.decode("utf-8", errors="surrogateescape").strip()
         )
         identity_paths.append(reference_path)
-    git_identity_files: dict[Path, bytes | None] = {}
+    git_identity_digests: dict[Path, str | None] = {}
     git_identity_inventory: dict[Path, WorktreeInventoryEntry | None] = {}
     for path in identity_paths:
         if path.is_symlink() or is_reparse_point(path):
             raise ApplyError("target Git administrative identity is unsafe")
-        git_identity_files[path] = path.read_bytes() if path.is_file() else None
+        git_identity_digests[path] = (
+            sha256_bytes(path.read_bytes()) if path.is_file() else None
+        )
         git_identity_inventory[path] = worktree_inventory_entry(path)
     inventory = worktree_inventory(root)
     final_head_result = _snapshot_git(root, stats, "rev-parse", "--verify", "HEAD^{commit}")
@@ -859,8 +860,8 @@ def capture_target_git_snapshot(
     for path in identity_paths:
         if path.is_symlink() or is_reparse_point(path):
             raise ApplyError("target Git administrative identity is unsafe")
-        current_bytes = path.read_bytes() if path.is_file() else None
-        if current_bytes != git_identity_files[path]:
+        current_digest = sha256_bytes(path.read_bytes()) if path.is_file() else None
+        if current_digest != git_identity_digests[path]:
             raise ApplyError("target Git identity changed while snapshot was captured")
         # Read-only Git commands may refresh index metadata without changing
         # its bytes. Bind the final metadata only after exact bytes survived
@@ -880,7 +881,7 @@ def capture_target_git_snapshot(
         core_filemode=core_filemode,
         transaction_base=admin_paths[0],
         multi_hop_route_base=admin_paths[1],
-        git_identity_files=git_identity_files,
+        git_identity_digests=git_identity_digests,
         git_identity_inventory=git_identity_inventory,
         worktree_inventory=inventory,
         stats=stats,
