@@ -5322,7 +5322,7 @@ class AiContextPackageApplyGwtTests(unittest.TestCase):
         for payload_count, _processes, _snapshot_processes, _scans, reads in observations:
             self.assertLessEqual(
                 reads,
-                48 * payload_count + 120,
+                48 * payload_count + 160,
                 "apply filesystem entry reads must remain O(payload paths)",
             )
 
@@ -5409,7 +5409,7 @@ class AiContextPackageApplyGwtTests(unittest.TestCase):
             git(fixture.target, "add", "unrelated.txt")
             git(fixture.target, "commit", "-qm", "external drift")
             with APPLY.target_git_snapshot_scope(snapshot), self.assertRaisesRegex(
-                APPLY.ApplyError, "HEAD or index changed"
+                APPLY.ApplyError, "administrative identity changed"
             ):
                 APPLY.target_git_head(fixture.target)
         finally:
@@ -5839,6 +5839,118 @@ class AiContextPackageApplyGwtTests(unittest.TestCase):
             [item[0] + 1 for item in observations],
             [item[1] for item in observations],
         )
+
+    def test_gwt_087_given_ignore_policy_changes_after_apply_snapshot_when_admitted_then_target_is_not_mutated(self) -> None:
+        for source in ("info-exclude", "core-excludes-file"):
+            with self.subTest(source=source):
+                fixture = PackageApplyFixture()
+                try:
+                    relative = ".ai/ignored-after-snapshot.md"
+                    fixture.make_package(
+                        {
+                            relative: (
+                                b"must remain absent\n",
+                                "framework-managed",
+                                "0644",
+                            )
+                        },
+                        [operation("001-add", "add", relative)],
+                    )
+                    policy_path = fixture.target / ".git/info/exclude"
+                    if source == "core-excludes-file":
+                        policy_path = fixture.target / ".git/custom-ignore"
+                        git(
+                            fixture.target,
+                            "config",
+                            "core.excludesFile",
+                            str(policy_path),
+                        )
+                    plan = fixture.plan()
+                    original_capture = APPLY.capture_target_git_snapshot
+
+                    def drift_after_snapshot(*args: object, **kwargs: object):
+                        snapshot = original_capture(*args, **kwargs)
+                        policy_path.write_text(
+                            f"{relative}\n", encoding="utf-8", newline="\n"
+                        )
+                        return snapshot
+
+                    with mock.patch.object(
+                        APPLY,
+                        "capture_target_git_snapshot",
+                        side_effect=drift_after_snapshot,
+                    ), self.assertRaisesRegex(
+                        APPLY.ApplyError, "administrative identity changed"
+                    ):
+                        RAW_APPLY_PLAN(plan)
+                    self.assertFalse((fixture.target / relative).exists())
+                    ignored = subprocess.run(
+                        ["git", "check-ignore", "--quiet", relative],
+                        cwd=fixture.target,
+                        check=False,
+                        capture_output=True,
+                        text=True,
+                    )
+                    self.assertEqual(0, ignored.returncode)
+                finally:
+                    fixture.close()
+
+    def test_gwt_088_given_attribute_policy_changes_after_apply_snapshot_when_admitted_then_target_is_not_mutated(self) -> None:
+        for source in ("info-attributes", "core-attributes-file"):
+            with self.subTest(source=source):
+                fixture = PackageApplyFixture()
+                try:
+                    relative = ".ai/attributed-after-snapshot.md"
+                    fixture.make_package(
+                        {
+                            relative: (
+                                b"must remain absent\n",
+                                "framework-managed",
+                                "0644",
+                            )
+                        },
+                        [operation("001-add", "add", relative)],
+                    )
+                    policy_path = fixture.target / ".git/info/attributes"
+                    if source == "core-attributes-file":
+                        policy_path = fixture.target / ".git/custom-attributes"
+                        git(
+                            fixture.target,
+                            "config",
+                            "core.attributesFile",
+                            str(policy_path),
+                        )
+                    plan = fixture.plan()
+                    original_capture = APPLY.capture_target_git_snapshot
+
+                    def drift_after_snapshot(*args: object, **kwargs: object):
+                        snapshot = original_capture(*args, **kwargs)
+                        policy_path.write_text(
+                            f"{relative} filter=lfs\n",
+                            encoding="utf-8",
+                            newline="\n",
+                        )
+                        return snapshot
+
+                    with mock.patch.object(
+                        APPLY,
+                        "capture_target_git_snapshot",
+                        side_effect=drift_after_snapshot,
+                    ), self.assertRaisesRegex(
+                        APPLY.ApplyError, "administrative identity changed"
+                    ):
+                        RAW_APPLY_PLAN(plan)
+                    self.assertFalse((fixture.target / relative).exists())
+                    observed = git(
+                        fixture.target,
+                        "check-attr",
+                        "filter",
+                        "--",
+                        relative,
+                    )
+                    self.assertIn("filter: lfs", observed.stdout)
+                finally:
+                    fixture.close()
 
 
 if __name__ == "__main__":

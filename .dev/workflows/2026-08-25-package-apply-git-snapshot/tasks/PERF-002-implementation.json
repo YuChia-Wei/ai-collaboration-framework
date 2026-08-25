@@ -9,7 +9,7 @@
   "related_plan_id": "development-plan-2026-08-25-package-apply-git-snapshot",
   "status": "in_progress",
   "created_at": "2026-08-25T14:52:56+08:00",
-  "updated_at": "2026-08-25T21:25:03+08:00",
+  "updated_at": "2026-08-25T21:49:42+08:00",
   "template_source": ".ai/assets/skills/software-development-orchestrator/templates/development-workflow-task-template.json",
   "model": "gpt-5.6-sol",
   "reasoning_effort": "high",
@@ -149,6 +149,11 @@
         "command": "python .ai/scripts/tests/run_perf002_long_validation.py --expected-commit 13a33cc44825f8da10674e0294b38edbf7159053 --base-ref 1326f827f61de8eebeef30748dcc82ffa7dd3764 --output-dir .tmp/issue-251/external/13a33cc4 --scale-count 631 --warm-runs 3",
         "outcome": "passed",
         "evidence": "Schema-valid native-Windows delegation issue-251-long-validation-13a33cc4 passed in 4865.614824s on the pinned clean head. Package-apply: 104 tests in 635.080490s with 1 Windows symlink-privilege skip. Multi-hop: 31 tests in 195.522248s. Benchmark: 4034.924657s, retained payload=631, one cold-first plus 3 warm fresh-fixture runs per profile. Warm medians: legacy plan 169.2441546s / 3153, legacy apply 702.1749036s / 13272, snapshot plan 3.7895519s / 22, snapshot apply 3.7676249s / 11. summary canonical-content sha256=eab959ab235114bdaee3f36c6e0acf244994f88bba8b509b2f49802017d33ade; summary file-byte sha256=a3f0b7f02fcc3c63c54e2563b9d328a193d4efc4a13acffdccdb5c9a5676ffbe; benchmark canonical-content sha256=79df8f25189e0468eccb2fc358c336ec0dcfd08a66ac255cd993da9935743ca0; benchmark file-byte sha256=e0bab4bbe9fd22f4aaa1636f34038be89e2706898ac33360fcfdd1d9dfd20d8c; completion file-byte sha256=2f36d26bedb8bb8ab0592bbecba82768f3a1320b186d29ad05897ca50dbbe023."
+      },
+      {
+        "command": "python .ai/scripts/tests/test_ai_context_package_apply.py -k gwt_07 -k gwt_08; python .ai/scripts/tests/test_ai_context_multi_hop_upgrade.py MultiHopUpgradeGwtTests.test_gwt_010_given_two_exact_packages_when_each_child_is_applied_validated_finalized_and_checkpointed_then_route_completes",
+        "outcome": "passed",
+        "evidence": "Post-7a6f20 exact-head audit repair: package-apply GWT-070..088 passed 19 tests in 75.577s; both info/exclude and configured core.excludesFile post-snapshot drift, plus info/attributes and configured core.attributesFile drift, fail before target mutation. Plan remains 22 and apply 11 Git subprocesses, including 3/631/947 plan fixtures, 1/8/32 apply fixtures, and 3/631 later-hop fixtures. Real two-hop GWT-010 passed in 26.167s with exactly 22 _snapshot_git calls and all legacy fallbacks forbidden. The initial default-TEMP attempts were blocked by sandbox WinError 5, one selector typo was non-execution, and the first repair probe exposed a test-helper keyword error plus case-sensitive config-regex gap; all are retained as non-passing repair evidence."
       }
     ],
     "role_execution_aggregation": [{"stage_id": "implementation", "owning_skill": "slice-implementer", "disposition": "not-applicable", "reason": "The generic Python repository-tooling slice matches none of the command/query/reactor or concrete domain/use-case role bindings; no child invocation is invented."}],
@@ -162,6 +167,7 @@
       "The first post-second-audit aggregate receipt at fc691245 failed only direct multi-hop GWT-002 compatibility after package-apply passed. The repair gives standalone verifier calls one bounded admission snapshot while prepare_next_hop and build_plan reuse the same admission snapshot; exact GWT-002 passed in 2.942s, GWT-073 plus GWT-086 passed in 19.591s, and real two-hop GWT-010 passed in 31.980s while asserting exactly 22 actual _snapshot_git calls and forbidding every legacy fallback. An initial instrumentation probe failed in 14.418s because its wrapper omitted the input_bytes keyword; the corrected probe passed without production relaxation.",
       "The pre-terminal audit of 116893c8 found that transaction_lock and route-root resolution still launched two uninstrumented Git processes before the 22 counted snapshot processes. prepare_next_hop now captures and activates admission before the lock, performs a full drift/identity check after lock acquisition, and reuses that snapshot throughout the route and build_plan path. Corrected real two-hop GWT-010 passed with exactly 22 _snapshot_git calls and run_git forbidden; direct GWT-002 plus real GWT-010 passed in 37.069s and the 3/631-path GWT-086 passed in 4.902s.",
       "The terminal exact-head run at 13a33cc4 passed package-apply, multi-hop, and the full 631-record cold plus three-warm benchmark. Warm timing speedups are 44.66x for plan and 186.37x for apply; process reductions are 99.3023% and 99.9171%. No concurrent helper tests or audits ran during this benchmark profile.",
+      "The exact-head audit of evidence head 7a6f20a069f9b4e46f474f5671c639931dd19f04 rejected integration because info/exclude and resolved external ignore-policy files were not in snapshot identity. The repair batches core.filemode, core.excludesFile, and core.attributesFile in the existing config subprocess, binds file-backed config origins plus default/configured ignore and attribute policy files, adds info/exclude to the existing admin-path batch, preserves lexical paths for symlink/reparse rejection, and adds GWT-087/GWT-088 post-snapshot pre-mutation regressions. No Git subprocess was added; fresh exact-head audit remains required.",
       "Workflow artifact validation passed for 97 workflows and 117 indexed workflow directories.",
       "Sandboxed temp-path PermissionError attempts remain blocked-by-environment evidence; equivalent focused native Windows reruns passed.",
       "One focused selector command contained a non-existent GWT-015 name; GWT-073 and GWT-074 passed in that command, and the corrected exact GWT-015 selector passed separately in 5.143s.",
@@ -179,7 +185,8 @@
       "544ba8719a08b28f7f53b4ecff47b94cdd54f80b",
       "fc691245451b87db461d751f33b2f9f7ae801a46",
       "116893c8460451ee5fae93cf9fda13041a48a3eb",
-      "13a33cc44825f8da10674e0294b38edbf7159053"
+      "13a33cc44825f8da10674e0294b38edbf7159053",
+      "7a6f20a069f9b4e46f474f5671c639931dd19f04"
     ],
     "follow_up_needed": true
   }

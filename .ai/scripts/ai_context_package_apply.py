@@ -234,12 +234,14 @@ class TargetGitSnapshot:
             if path.is_symlink() or is_reparse_point(path):
                 raise ApplyError("target Git administrative identity became unsafe")
             if worktree_inventory_entry(path) != self.git_identity_inventory[path]:
-                raise ApplyError("target Git HEAD or index changed after snapshot capture")
+                raise ApplyError(
+                    "target Git administrative identity changed after snapshot capture"
+                )
             if full:
                 current = path.read_bytes() if path.is_file() else None
                 if current != expected:
                     raise ApplyError(
-                        "target Git HEAD or index changed after snapshot capture"
+                        "target Git administrative identity changed after snapshot capture"
                     )
 
     def same_admission_identity(self, other: "TargetGitSnapshot") -> bool:
@@ -624,6 +626,52 @@ def _parse_ignore_rules(
     return result
 
 
+def _parse_core_snapshot_config(
+    content: bytes,
+) -> tuple[bool, str | None, str | None, set[Path]]:
+    """Parse one effective config batch and retain its file-backed origins."""
+    values = content.split(b"\0")
+    if values and values[-1] == b"":
+        values.pop()
+    if len(values) % 2 != 0:
+        raise ApplyError("cannot parse target Git core configuration")
+    effective: dict[str, str] = {}
+    origins: set[Path] = set()
+    for index in range(0, len(values), 2):
+        origin = values[index].decode("utf-8", errors="surrogateescape")
+        try:
+            raw_key, raw_value = values[index + 1].split(b"\n", 1)
+        except ValueError as exc:
+            raise ApplyError("cannot parse target Git core configuration") from exc
+        key = raw_key.decode("ascii", errors="strict").lower()
+        value = raw_value.decode("utf-8", errors="surrogateescape")
+        if key in {"core.filemode", "core.excludesfile", "core.attributesfile"}:
+            effective[key] = value
+        if origin.startswith("file:"):
+            origins.add(Path(origin.removeprefix("file:")))
+    filemode = effective.get("core.filemode", "").lower()
+    if filemode not in {"true", "false"}:
+        raise ApplyError("cannot determine target Git core.filemode")
+    return (
+        filemode == "true",
+        effective.get("core.excludesfile"),
+        effective.get("core.attributesfile"),
+        origins,
+    )
+
+
+def _resolved_git_policy_path(root: Path, value: str | None, name: str) -> Path:
+    if value is None:
+        xdg_root = os.environ.get("XDG_CONFIG_HOME")
+        base = Path(xdg_root) if xdg_root else Path.home() / ".config"
+        return Path(os.path.abspath(base / "git" / name))
+    if not value or value.startswith("%(prefix)/"):
+        raise ApplyError(f"cannot resolve target Git {name} policy path")
+    expanded = Path(os.path.expanduser(value))
+    candidate = expanded if expanded.is_absolute() else root / expanded
+    return Path(os.path.abspath(candidate))
+
+
 def capture_target_git_snapshot(
     root: Path,
     paths: Iterable[str],
@@ -696,10 +744,20 @@ def capture_target_git_snapshot(
     if attr_result.returncode != 0:
         raise ApplyError("cannot inspect target Git attributes")
     attributes = _parse_attributes(attr_result.stdout, attribute_paths)
-    filemode_result = _snapshot_git(root, stats, "config", "--bool", "core.filemode")
-    filemode_value = filemode_result.stdout.decode("ascii", errors="replace").strip()
-    if filemode_result.returncode != 0 or filemode_value not in {"true", "false"}:
-        raise ApplyError("cannot determine target Git core.filemode")
+    config_result = _snapshot_git(
+        root,
+        stats,
+        "config",
+        "--null",
+        "--show-origin",
+        "--get-regexp",
+        r"^(core\.filemode|core\.excludesfile|core\.attributesfile)$",
+    )
+    if config_result.returncode != 0:
+        raise ApplyError("cannot inspect target Git core configuration")
+    core_filemode, excludes_value, attributes_value, config_origins = (
+        _parse_core_snapshot_config(config_result.stdout)
+    )
     ignore_input = b"".join(
         path.encode("utf-8", errors="surrogateescape") + b"\0"
         for path in requested_paths
@@ -738,15 +796,25 @@ def capture_target_git_snapshot(
         "config.worktree",
         "--git-path",
         "info/attributes",
+        "--git-path",
+        "info/exclude",
     )
     admin_paths = [
         Path(line.decode("utf-8", errors="surrogateescape"))
         for line in admin_result.stdout.splitlines()
         if line
     ]
-    if admin_result.returncode != 0 or len(admin_paths) != 8:
+    if admin_result.returncode != 0 or len(admin_paths) != 9:
         raise ApplyError("cannot resolve target Git administrative directories")
     identity_paths = admin_paths[2:]
+    identity_paths.extend(sorted(config_origins, key=str))
+    identity_paths.extend(
+        [
+            _resolved_git_policy_path(root, excludes_value, "ignore"),
+            _resolved_git_policy_path(root, attributes_value, "attributes"),
+        ]
+    )
+    identity_paths = list(dict.fromkeys(identity_paths))
     head_file = identity_paths[0]
     if head_file.is_symlink() or is_reparse_point(head_file) or not head_file.is_file():
         raise ApplyError("target Git HEAD identity is unsafe")
@@ -809,7 +877,7 @@ def capture_target_git_snapshot(
         attributes=attributes,
         ignore_rules=ignore_rules,
         ignore_paths=frozenset(requested_paths),
-        core_filemode=filemode_value == "true",
+        core_filemode=core_filemode,
         transaction_base=admin_paths[0],
         multi_hop_route_base=admin_paths[1],
         git_identity_files=git_identity_files,
