@@ -5,7 +5,7 @@ from __future__ import annotations
 
 import importlib.util
 import subprocess
-import tempfile
+import sys
 import unittest
 from pathlib import Path
 
@@ -13,6 +13,10 @@ import yaml
 
 
 ROOT = Path(__file__).resolve().parents[3]
+sys.path.insert(0, str(ROOT / ".ai/scripts"))
+# Tracked as ephemeral-fixture-io in test-fixture-classifications.json.
+import test_fixture_runtime as tempfile  # noqa: E402
+tempfile.bind_classified_test(__file__, ROOT)
 
 
 def load_script(relative_path: str):
@@ -562,4 +566,4 @@ class AiContextVersionGovernanceGwtTests(unittest.TestCase):
 
 
 if __name__ == "__main__":
-    unittest.main()
+    tempfile.run_unittest_main()

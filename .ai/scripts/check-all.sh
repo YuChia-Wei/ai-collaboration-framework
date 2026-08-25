@@ -2287,6 +2287,10 @@ run_command_check "python .ai/scripts/tests/test_validation_profile_registry.py 
     "Validation Profile Registry Contract" \
     "required" "true" "true"
 
+run_command_check "python .ai/scripts/tests/test_test_fixture_runtime.py -v" \
+    "Portable Test Fixture Routing Contract" \
+    "required" "true" "true"
+
 run_command_check "python .ai/scripts/tests/test_validation_process_supervisor.py -v" \
     "Validation Process Supervisor Contract" \
     "required" "true" "true"

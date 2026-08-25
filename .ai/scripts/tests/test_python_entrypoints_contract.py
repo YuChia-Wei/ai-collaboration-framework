@@ -45,6 +45,7 @@ EXPECTED_PORTABLE_PATHS = {
 
 EXPECTED_STDLIB_ONLY_PATHS = {
     ".ai/assets/skills/ai-context-upgrader/scripts/compare-ai-context-versions.py",
+    ".ai/scripts/run-test-fixture-profile.py",
     ".ai/scripts/validate-dependency-versions.py",
 }
 

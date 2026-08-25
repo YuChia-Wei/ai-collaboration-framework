@@ -1,0 +1,34 @@
+{
+  "schema_version": "1.0",
+  "environment_variable": "AI_CONTEXT_TEST_TMP_ROOT",
+  "profile": "ephemeral-fixture-io",
+  "tests": [
+    {
+      "path": ".ai/scripts/tests/test_ai_context_release_state.py",
+      "classification": "ephemeral-fixture-io"
+    },
+    {
+      "path": ".ai/scripts/tests/test_ai_context_version_governance.py",
+      "classification": "ephemeral-fixture-io"
+    },
+    {
+      "path": ".ai/scripts/tests/test_release_notes_renderer.py",
+      "classification": "ephemeral-fixture-io"
+    }
+  ],
+  "excluded_semantic_suites": [
+    {
+      "path": ".ai/scripts/tests/test_ai_context_package_apply.py",
+      "classifications": [
+        "durability-storage-semantics",
+        "platform-filesystem-semantics"
+      ],
+      "route": "existing-default"
+    },
+    {
+      "path": ".ai/scripts/tests/test_ai_context_packaging.py",
+      "classifications": ["unclassified"],
+      "route": "existing-default"
+    }
+  ]
+}

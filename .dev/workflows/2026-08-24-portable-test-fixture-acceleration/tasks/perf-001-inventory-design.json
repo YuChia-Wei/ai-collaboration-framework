@@ -1,0 +1,43 @@
+{
+  "template_id": "software-development-orchestrator/development-workflow-task",
+  "template_version": "1.5.0",
+  "template_created_at": "2026-07-10T18:25:11+08:00",
+  "template_updated_at": "2026-08-05T02:12:00+08:00",
+  "workflow_id": "2026-08-24-portable-test-fixture-acceleration",
+  "task_id": "perf-001-inventory-design",
+  "owner_skill": "ddd-ca-hex-architect",
+  "related_plan_id": "development-plan-2026-08-24-portable-test-fixture-acceleration",
+  "status": "completed",
+  "created_at": "2026-08-24T22:33:23+08:00",
+  "updated_at": "2026-08-24T22:40:04+08:00",
+  "template_source": ".ai/assets/skills/software-development-orchestrator/templates/development-workflow-task-template.json",
+  "model": "gpt-5.6-sol",
+  "reasoning_effort": "high",
+  "workflow_locator": ".dev/workflows/2026-08-24-portable-test-fixture-acceleration/workflow.yaml",
+  "scope": {
+    "goal": "Inventory high-I/O fixtures and define the smallest portable acceleration and tracked routing architecture.",
+    "target": "Repository-owned test fixture and validation runner boundaries",
+    "files": [],
+    "constraints": ["Issue #246 solution contract", "Unclassified fixtures retain current behavior", "Durability and platform semantics never consume accelerated roots"],
+    "non_goals": ["Implementation", "Provider mutation", "Moving fixtures without direct disposability evidence"]
+  },
+  "inputs": {
+    "requirements": ["GitHub Issue #246 body and comments"],
+    "specifications": ["Issue #246 solution contract and acceptance criteria"],
+    "architecture_decisions": ["Tracked metadata owns classification and routing"],
+    "user_constraints": ["Independent worktree", "No #245 checkout or branch changes", "Code graph is discovery-only"]
+  },
+  "execution": {
+    "capability_slot": "architecture",
+    "approval_contract": {"status": "approved", "required_before": "inventory and architecture", "authorization_source": ["source task delegation for Issue #246"], "pending_decision": ""},
+    "implementation_contract": null,
+    "test_execution_contract": null,
+    "role_execution_records": [],
+    "spec_compliance": {"selected": false, "activation_source": [], "expected_outcome": "not-applicable"},
+    "steps": ["Resolve applicable framework-source rules", "Inventory benchmark and fixture routing surfaces", "Classify only directly evidenced disposable fixtures", "Define architecture and test-design handoff"],
+    "validation": ["Verify graph candidates against tracked files", "Validate workflow artifacts"],
+    "commit_checkpoint": "Workflow bootstrap plus validated inventory/design",
+    "deferred_items": ["#245 integration overlap inventory after #245 merges"]
+  },
+  "results": {"summary": "Inventoried 79 tracked Python tests and classified three directly evidenced disposable suites; retained package-apply and packaging/platform-sensitive surfaces on their existing roots.", "finding_status": "addressed", "files_changed": [".dev/workflows/2026-08-24-portable-test-fixture-acceleration/fixture-inventory.md"], "approval_evidence": ["Issue #246 explicit implementation delegation"], "test_execution": [], "role_execution_aggregation": [{"stage": "inventory-design", "owner_skill": "ddd-ca-hex-architect", "disposition": "not-applicable", "evidence": "Canonical scope is DDD, Clean Architecture, and Hexagonal product architecture; Issue #246 already fixes the repository test-tooling contract."}], "spec_compliance": {"outcome": "not-applicable", "coverage_percent": null, "evidence": []}, "validation_evidence": ["python .ai/scripts/validate-workflow-artifacts.py passed"], "commits": ["containing-commit"], "follow_up_needed": true}
+}

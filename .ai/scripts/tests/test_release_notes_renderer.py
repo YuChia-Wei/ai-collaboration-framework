@@ -6,7 +6,6 @@ from __future__ import annotations
 import importlib.util
 import subprocess
 import sys
-import tempfile
 import unittest
 from pathlib import Path
 
@@ -14,6 +13,11 @@ import yaml
 
 
 REPO_ROOT = Path(__file__).resolve().parents[3]
+sys.path.insert(0, str(REPO_ROOT / ".ai/scripts"))
+# Tracked as ephemeral-fixture-io in test-fixture-classifications.json.
+import test_fixture_runtime as tempfile  # noqa: E402
+tempfile.bind_classified_test(__file__, REPO_ROOT)
+
 RENDERER_PATH = REPO_ROOT / ".ai/scripts/render-ai-context-release-notes.py"
 SPEC = importlib.util.spec_from_file_location("release_notes_renderer", RENDERER_PATH)
 if SPEC is None or SPEC.loader is None:
@@ -550,4 +554,4 @@ class ReleaseNotesRendererTests(unittest.TestCase):
 
 
 if __name__ == "__main__":
-    unittest.main()
+    tempfile.run_unittest_main()
