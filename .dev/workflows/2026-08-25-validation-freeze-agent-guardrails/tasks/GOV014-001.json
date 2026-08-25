@@ -1,0 +1,29 @@
+{
+  "template_id": "ai-context-governance-remediation-task",
+  "template_version": "1.1.0",
+  "template_created_at": "2026-07-10T18:22:49+08:00",
+  "template_updated_at": "2026-07-27T09:52:09+08:00",
+  "task_id": "GOV014-001",
+  "workflow_id": "2026-08-25-validation-freeze-agent-guardrails",
+  "owner_skill": "ai-context-governance",
+  "status": "pending",
+  "created_at": "2026-08-25T14:55:24+08:00",
+  "updated_at": "2026-08-25T14:55:24+08:00",
+  "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
+  "model": "gpt-5.6-sol",
+  "reasoning_effort": "xhigh",
+  "finding_ids": ["GOV-014", "#253"],
+  "scope": {
+    "target": "Deterministic agent execution packets, leases, evidence binding, report parity, retry, host-command, and discovery freshness enforcement",
+    "files": [],
+    "constraints": ["Compose with #118/#119, #194, #204, and #249 without transferring domain ownership", "Reject incomplete or inapplicable dispatch before invocation", "Prevent tracked writers during an active exact-head lease while distinguishing allowed ignored artifacts", "Synthetic/mock/unit evidence cannot satisfy actual execution acceptance"],
+    "non_goals": ["Automatic commit, push, PR, or provider permission", "Vendor/model behavior claims", "Private paths, usernames, hostnames, or secrets in fixtures", "#250, #251, or #252 implementation"]
+  },
+  "execution": {
+    "steps": ["Inventory current commit, delegation, terminal runner, and role-execution validators", "Define and implement execution packet and worktree lease contracts", "Implement acceptance ledger/report parity and retry/freshness controls", "Add PowerShell and discovery fallback regressions", "Record separate #253 acceptance evidence"],
+    "validation": ["Focused #253 contract tests", "External task/terminal runner/role execution compatibility", "Repository-owned schema/validator checks"],
+    "last_completed_step": "Not started.",
+    "next_action": "Begin after GOV013-001 establishes the shared validation lifecycle owner surface."
+  },
+  "results": {"summary": "", "files_changed": [], "tests_run": [], "finding_status": "not-addressed", "residual_risk": "", "follow_up_needed": true}
+}

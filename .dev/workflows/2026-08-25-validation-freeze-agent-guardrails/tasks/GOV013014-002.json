@@ -1,0 +1,29 @@
+{
+  "template_id": "ai-context-governance-remediation-task",
+  "template_version": "1.1.0",
+  "template_created_at": "2026-07-10T18:22:49+08:00",
+  "template_updated_at": "2026-07-27T09:52:09+08:00",
+  "task_id": "GOV013014-002",
+  "workflow_id": "2026-08-25-validation-freeze-agent-guardrails",
+  "owner_skill": "ai-context-governance",
+  "status": "pending",
+  "created_at": "2026-08-25T14:55:24+08:00",
+  "updated_at": "2026-08-25T14:55:24+08:00",
+  "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
+  "model": "gpt-5.6-sol",
+  "reasoning_effort": "xhigh",
+  "finding_ids": ["GOV-013-GUIDANCE", "GOV-014-GUIDANCE", "#249", "#253"],
+  "scope": {
+    "target": "Canonical agent guidance and derived software-development-orchestrator/runtime projections",
+    "files": [],
+    "constraints": ["English is canonical agent guidance", "Traditional Chinese remains structurally and normatively aligned", "Software-development-orchestrator consumes and coordinates but does not own governance semantics", "Runtime wrappers remain thin"],
+    "non_goals": ["Broad translation migration", "New capability ownership", "Release or provider truth changes"]
+  },
+  "execution": {
+    "steps": ["Update canonical governance and future-agent guidance", "Update only applicable orchestrator/projection consumers", "Verify English/Traditional Chinese structural and normative parity"],
+    "validation": ["Agent-guidance parity checks", "Skill/orchestrator acceptance checks", "Source-governance validation"],
+    "last_completed_step": "Not started.",
+    "next_action": "Begin after both machine-readable owner contracts stabilize."
+  },
+  "results": {"summary": "", "files_changed": [], "tests_run": [], "finding_status": "not-addressed", "residual_risk": "", "follow_up_needed": true}
+}
