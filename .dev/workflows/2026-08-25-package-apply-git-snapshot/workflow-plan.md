@@ -8,9 +8,9 @@
 - `branch`: `codex/2026-08-25-package-apply-git-snapshot`
 - `base_branch`: `main@1326f827f61de8eebeef30748dcc82ffa7dd3764`
 - `branch_segment`: `1`
-- `status`: `active`
+- `status`: `completed`
 - `created_at`: `2026-08-25T14:52:56+08:00`
-- `updated_at`: `2026-08-25T23:03:30+08:00`
+- `updated_at`: `2026-08-25T23:54:05+08:00`
 - `template_source`: `.ai/assets/skills/software-development-orchestrator/templates/development-workflow-plan-template.md`
 - `template_version`: `1.4.0`
 - `workflow_locator`: `.dev/workflows/2026-08-25-package-apply-git-snapshot/workflow.yaml`
@@ -20,8 +20,8 @@
 
 - Outcome: satisfy GitHub Issue #251 by replacing per-path target Git subprocess inspection with phase-bounded snapshots while preserving fail-closed package-apply and journal-v5 semantics.
 - Lifecycle entry: approved implementation, focused validation, immutable local commit, long-running delegation when applicable, exact-head independent audit, and parent integration-decision handoff.
-- Authorization: owner instruction relayed by parent orchestration thread on 2026-08-25 authorizes local implementation, workflow artifacts, focused validation, long-running delegation, exact-head audit, and durable local commits.
-- Provider boundary: push, PR, merge, Issue/Project mutation, release allocation, tag, Release, and publication are not authorized.
+- Authorization: owner instruction relayed by parent orchestration thread on 2026-08-25 authorized local implementation, workflow artifacts, focused validation, long-running delegation, exact-head audit, and durable local commits. On 2026-08-25 the owner separately authorized push, PR, merge, and Issue #251 closure.
+- Provider boundary: manual Project-field mutation, release allocation, tag, Release, and publication remain unauthorized. Terminal-close relies on provider automation plus read-back for Project `Done`; stop if reconciliation does not prove it.
 - Non-goals: #250 identity migration, #252 lane split, #249 evidence reuse policy, #253 agent guardrails, CLI/registry/installer work, and any v0.14.0-or-earlier published mutation.
 
 ## Authority And Preflight
@@ -65,10 +65,10 @@
 
 ## Progress And Handoff
 
-- Current stage: implementation and same-commit aggregate validation are complete. Exact-head audits correctly rejected repository-local policy drift at `7a6f20a0`, config-selection drift at `ee55880b`, dormant include-target drift at `ad0b38a0`, relative local-origin resolution at `01f73f25`, an in-capture config TOCTOU at `7a1a457a`, Windows `HOME`/`USERPROFILE` selection drift at `7ffea633`, and raw tilde selector drift at `0eebee85`. The current repair preserves literal raw `GIT_CONFIG_GLOBAL`/system/XDG selector paths relative to the target, while reserving HOME expansion for config content paths. GWT-095 reproduces a `~/../.git/` selector bypass for ignore and attributes and rejects it before mutation. A fresh exact-head audit remains.
+- Current stage: source implementation, workflow task, retained validation, retrospective, and PR #255 terminal-close declaration are complete. The last implementation head `8a24041d43e3ee0fcb30f9bb9dae2a7d6e55f3de` passed a fresh independent exact-head audit with zero findings; this PR-bound source-closeout commit deliberately invalidates that audit and requires one final metadata-delta exact-head audit before hosted admission. No long benchmark rerun is required because this commit changes only workflow/declaration bytes and makes no new wall-time claim.
 - Current bounded counts: direct and real later-hop plan `24` Git subprocesses (two complete 12-process admissions), apply `12`; both are payload-independent. The increase from the retained benchmark's `22/11/22` is one closing config read-back per snapshot, a constant safety cost. Successful apply performs `4` full worktree inventory scans independent of operation count, while per-operation checks inspect only snapshotted candidate paths.
 - Long-running gate: the terminal task bound to `13a33cc44825f8da10674e0294b38edbf7159053` passed package-apply 104 tests (1 Windows symlink-privilege skip), multi-hop 31 tests, and the retained 631-record cold-first plus three-warm-run benchmark in 4865.614824 seconds. The historical benchmark remains valid evidence for eliminating per-path amplification (`22/11` at that exact head). Later safety repairs are covered by deterministic current-head `24/12/24` process-count and focused semantic tests; the expensive legacy baseline is retained rather than repeated because neither the legacy emulation, fixture/profile, host/storage, payload, nor claimed performance path changed. Earlier blocked, failed, passed-on-superseded-head, and interrupted receipts remain retained without rewriting.
 - Durable lessons: [`reports/execution-retrospective.md`](reports/execution-retrospective.md) preserves the execution history, audit failures, benchmark-reuse recommendation, and the explicit reason this local validation record is not an ADR.
-- Parent integration owner: source orchestration thread `01a036af-3b1f-7283-97ab-eb6b7caabf93`.
-- Required final handoff: worktree/branch/base/final SHA, clean state, changed files, process counts/timings/benchmarks, test commands/durations/digests, delegated receipt if applicable, exact-head audit, compatibility evidence, residual risks, and excluded provider/release actions.
-- Completion claim boundary: report only ready for parent integration decision; do not claim merged or release-ready.
+- Delivery PR: draft PR #255, with exact body declared by `evidence/terminal-issue-closure-pr-255.yaml`; selected topology is merge commit because the branch is a durable multi-commit validation/audit/repair unit.
+- External terminal gates: final exact-head audit of the immutable source-closeout head, hosted Ubuntu/Windows checks including Linux package-apply and multi-hop execution, strict source audit receipt, live merge admission, integration, and post-merge Issue/Project read-back.
+- Completion claim boundary: `completed` means source workflow completion only. PR #255 remains unmerged and Issue #251 remains open until the external terminal gates pass.

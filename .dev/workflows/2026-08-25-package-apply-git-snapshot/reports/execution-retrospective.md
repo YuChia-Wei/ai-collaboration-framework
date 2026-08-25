@@ -8,9 +8,9 @@
 - `issue`: `#251`
 - `owner_skill`: `ai-context-governance`
 - `implementation_route`: `slice-implementer`
-- `status`: `active-until-final-exact-head-audit`
+- `status`: `completed-source-retrospective`
 - `created_at`: `2026-08-25T22:04:41+08:00`
-- `updated_at`: `2026-08-25T23:03:30+08:00`
+- `updated_at`: `2026-08-25T23:54:05+08:00`
 - `template_source`: `owner-requested workflow-local retrospective; no repository template`
 - `template_version`: `1.0.0`
 
@@ -177,14 +177,16 @@ not require the model to reason for every elapsed second.
 
 ## Residual And Follow-Up
 
-- The raw-selector/content-path separation repair must receive a fresh independent exact-head audit.
+- The raw-selector/content-path separation repair passed fresh exact-head audit at `8a24041d43e3ee0fcb30f9bb9dae2a7d6e55f3de`. The PR-bound source-closeout metadata commit requires one final delta audit before admission; it does not invalidate the historical benchmark's exact-subject evidence or require a multi-hour rerun.
 - The Windows symlink-privilege and case-fold fixtures remain truthful skips;
   no Linux reference execution was performed in this workflow.
 - The benchmark-reuse recommendation should remain local until an owner chooses
   whether to promote it into the Long-Running Validation Gate or another
   repository-wide standard.
 - No push, pull request, merge, Issue/Project mutation, tag, Release, or
-  publication action is authorized by this record.
+  publication action is authorized by this record alone. The owner separately
+  authorized push, PR, merge, and Issue #251 closure on 2026-08-25; manual
+  Project mutation, tag, Release, and publication remain outside that authority.
 
 ## Evidence References
 

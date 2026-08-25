@@ -1,0 +1,68 @@
+schema_version: "1.0"
+contract_id: github-terminal-issue-closure
+repository: YuChia-Wei/ai-collaboration-framework
+validation_stage: declaration
+pull_request:
+  number: 255
+  head_sha: null
+  body: |-
+    ## Summary
+
+    - delivers bounded package-apply target Git inspection for Issue #251
+    - reduces target Git inspection from per-path process spawning to payload-independent phase batches
+    - preserves journal-v5 durability, target freshness, ignore/attribute, mode, reparse, and fail-closed behavior
+    - retains the exact Windows benchmark and audit history without rerunning or relabeling historical evidence
+
+    ## Changes
+
+    - adds one explicit target Git snapshot lifecycle shared by planner, apply, recovery, and real multi-hop consumers
+    - adds deterministic process, byte, scan, and phase-duration instrumentation
+    - adds scale, drift, Git configuration selector, HOME/XDG, retained-origin, and crash/recovery fixtures
+    - records the full execution retrospective and benchmark-reuse lesson in the completed Issue #251 workflow
+
+    ## Related Issues
+
+    - Issue #: 251
+    - Delivery disposition: `terminal-close`
+    - Reference: Closes #251
+    - `closure_deferred_reason`: not applicable
+    - Next terminal gate or owner: fresh exact-head audit, required hosted checks, live merge admission, integration, and post-merge Issue/Project read-back
+    - Owner authorization: repository owner explicitly authorized merge and Issue closure on 2026-08-25
+
+    ## Delivery And Integration
+
+    - Delivery grouping: single work item
+    - Execution record: workflow `2026-08-25-package-apply-git-snapshot`
+    - Selected topology: merge commit
+    - Topology reason: the branch contains durable long-validation, independent-audit, and repair boundaries that should remain one visible rollback and evidence unit
+
+    ## Evidence
+
+    - deterministic final candidate counts: plan `24`, apply `12`, real later-hop `24`
+    - retained 631-record benchmark head: `13a33cc44825f8da10674e0294b38edbf7159053`
+    - Windows long validation: package-apply 104 tests, multi-hop 31 tests, one cold plus three warm benchmark runs
+    - historical blocked, failed, interrupted, superseded, and passing receipts remain truthful and digest-bound
+    - fresh final-head audit, Linux/hosted checks, source review receipt, and live merge admission remain mandatory external gates before integration
+
+    ## Checklist
+
+    - [x] Selected repository-native focused and long-running validation passed with truthful retained failures
+    - [x] Target-owned .NET commands were not selected because this is portable Python repository tooling
+    - [x] Workflow, task, retrospective, and validation evidence are complete
+    - [x] No secrets or publication artifacts are included
+    - [x] Issue #251 has exactly one terminal-close disposition
+    - [x] The source review and hosted admission gates remain mandatory and are not claimed by this declaration
+  integration: {status: pending, topology: null, admitted_head_sha: null, integration_commit_sha: null, provider_read_back: false}
+  review: {status: pending}
+  required_check_contexts: []
+  hosted_checks: []
+issues:
+  - number: 251
+    mode: terminal-close
+    work_authorization: {online_issue_bound: true, explicit_owner_approval: true}
+    final_accepted_delivery: true
+    workflow: {scope_complete: true, tasks_complete: true, applicable_verification_complete: true}
+    closing_keyword: Closes
+    closure_deferred_reason: null
+    next_terminal_gate_or_owner: null
+    read_back: {performed: false, integration_commit_sha: null, issue_state: null, issue_state_reason: null, project_status: null}
