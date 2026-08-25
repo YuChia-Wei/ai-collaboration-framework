@@ -27,6 +27,7 @@ from test_fixture_runtime import (
     load_classification_manifest,
     platform_family,
     resolve_fixture_root,
+    sanitized_fixture_child_environment,
 )
 
 
@@ -63,7 +64,7 @@ def _parse_summary(output: str) -> list[dict[str, object]]:
 
 
 def _sanitized_preflight(args: argparse.Namespace) -> tuple[dict[str, object], dict[str, str]]:
-    child_environment = dict(os.environ)
+    child_environment = sanitized_fixture_child_environment()
     child_environment[DIAGNOSTICS_VARIABLE] = "1"
     if args.mode == "default":
         if args.fixture_root:
@@ -116,6 +117,7 @@ def run(args: argparse.Namespace) -> int:
     subject = subprocess.run(
         ["git", "rev-parse", "HEAD"],
         cwd=ROOT,
+        env=child_environment,
         check=True,
         capture_output=True,
         text=True,

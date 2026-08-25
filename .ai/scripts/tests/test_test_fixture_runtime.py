@@ -409,6 +409,93 @@ class TestFixtureRuntimeGwtTests(unittest.TestCase):
             self.assertNotIn(str(root), str(captured.exception))
             self.assertNotIn("private-capacity-fragment", str(captured.exception))
 
+    def test_gwt_028_given_hostile_git_routing_when_child_environment_is_built_then_shared_config_is_unchanged(
+        self,
+    ) -> None:
+        with WorkspaceTemporaryDirectory() as parent:
+            shared = Path(parent) / "shared"
+            fixture = Path(parent) / "fixture"
+            for repository in (shared, fixture):
+                subprocess.run(
+                    ["git", "init", "-q", str(repository)],
+                    check=True,
+                    capture_output=True,
+                    text=True,
+                )
+            subprocess.run(
+                ["git", "-C", str(shared), "config", "user.name", "shared-owner"],
+                check=True,
+                capture_output=True,
+                text=True,
+            )
+            shared_config = shared / ".git/config"
+            before = shared_config.read_bytes()
+            hostile = dict(os.environ)
+            hostile.update(
+                {
+                    "GIT_DIR": str(shared / ".git"),
+                    "GIT_WORK_TREE": str(shared),
+                    "GIT_COMMON_DIR": str(shared / ".git"),
+                    "GIT_INDEX_FILE": str(shared / ".git/index"),
+                    "GIT_OBJECT_DIRECTORY": str(shared / ".git/objects"),
+                    "GIT_CONFIG_GLOBAL": str(shared_config),
+                    "GIT_CONFIG_COUNT": "1",
+                    "GIT_CONFIG_KEY_0": "user.email",
+                    "GIT_CONFIG_VALUE_0": "fixture-injection@example.invalid",
+                    "GIT_HTTP_PROXY": "http://127.0.0.1:9",
+                }
+            )
+
+            child_environment = FIXTURES.sanitized_fixture_child_environment(hostile)
+            subprocess.run(
+                ["git", "config", "user.name", "fixture-owner"],
+                cwd=fixture,
+                env=child_environment,
+                check=True,
+                capture_output=True,
+                text=True,
+            )
+            self.assertEqual(before, shared_config.read_bytes())
+            self.assertEqual("http://127.0.0.1:9", child_environment["GIT_HTTP_PROXY"])
+            self.assertFalse(
+                {
+                    "GIT_DIR",
+                    "GIT_WORK_TREE",
+                    "GIT_COMMON_DIR",
+                    "GIT_INDEX_FILE",
+                    "GIT_OBJECT_DIRECTORY",
+                    "GIT_CONFIG_GLOBAL",
+                    "GIT_CONFIG_COUNT",
+                    "GIT_CONFIG_KEY_0",
+                    "GIT_CONFIG_VALUE_0",
+                }
+                & {name.upper() for name in child_environment}
+            )
+            configured = subprocess.run(
+                ["git", "config", "--local", "user.name"],
+                cwd=fixture,
+                check=True,
+                capture_output=True,
+                text=True,
+            ).stdout.strip()
+            self.assertEqual("fixture-owner", configured)
+            expected_head = subprocess.run(
+                ["git", "rev-parse", "HEAD"],
+                cwd=ROOT,
+                env=child_environment,
+                check=True,
+                capture_output=True,
+                text=True,
+            ).stdout.strip()
+            actual_head = subprocess.run(
+                ["git", "rev-parse", "HEAD"],
+                cwd=ROOT,
+                check=True,
+                capture_output=True,
+                text=True,
+            ).stdout.strip()
+            self.assertEqual(actual_head, expected_head)
+
 
 if __name__ == "__main__":
     unittest.main()

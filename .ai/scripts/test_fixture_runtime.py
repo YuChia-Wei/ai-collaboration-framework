@@ -27,6 +27,30 @@ DIAGNOSTICS_VARIABLE = "AI_CONTEXT_TEST_FIXTURE_DIAGNOSTICS"
 RUN_PREFIX = "ai-context-tests-run-"
 MANIFEST_RELATIVE_PATH = Path(".ai/scripts/test-fixture-classifications.json")
 SUMMARY_PREFIX = "AI_CONTEXT_TEST_FIXTURE_SUMMARY "
+GIT_ROUTING_ENVIRONMENT_VARIABLES = frozenset(
+    {
+        "GIT_ALTERNATE_OBJECT_DIRECTORIES",
+        "GIT_CEILING_DIRECTORIES",
+        "GIT_COMMON_DIR",
+        "GIT_CONFIG",
+        "GIT_CONFIG_COUNT",
+        "GIT_CONFIG_GLOBAL",
+        "GIT_CONFIG_NOSYSTEM",
+        "GIT_CONFIG_PARAMETERS",
+        "GIT_CONFIG_SYSTEM",
+        "GIT_DIR",
+        "GIT_DISCOVERY_ACROSS_FILESYSTEM",
+        "GIT_GRAFT_FILE",
+        "GIT_INDEX_FILE",
+        "GIT_NAMESPACE",
+        "GIT_OBJECT_DIRECTORY",
+        "GIT_QUARANTINE_PATH",
+        "GIT_REPLACE_REF_BASE",
+        "GIT_SHALLOW_FILE",
+        "GIT_WORK_TREE",
+    }
+)
+GIT_ROUTING_ENVIRONMENT_PREFIXES = ("GIT_CONFIG_KEY_", "GIT_CONFIG_VALUE_")
 
 
 class FixtureRootError(RuntimeError):
@@ -38,6 +62,22 @@ class FixtureClassification(str, Enum):
     DURABILITY = "durability-storage-semantics"
     PLATFORM = "platform-filesystem-semantics"
     UNCLASSIFIED = "unclassified"
+
+
+def sanitized_fixture_child_environment(
+    environ: Mapping[str, str] | None = None,
+) -> dict[str, str]:
+    """Copy the host environment without Git repository or config routing."""
+    source = os.environ if environ is None else environ
+    child_environment: dict[str, str] = {}
+    for name, value in source.items():
+        normalized = name.upper()
+        if normalized in GIT_ROUTING_ENVIRONMENT_VARIABLES:
+            continue
+        if normalized.startswith(GIT_ROUTING_ENVIRONMENT_PREFIXES):
+            continue
+        child_environment[name] = value
+    return child_environment
 
 
 @dataclass(frozen=True)
