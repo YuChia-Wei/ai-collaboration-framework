@@ -6370,6 +6370,94 @@ class AiContextPackageApplyGwtTests(unittest.TestCase):
                     finally:
                         fixture.close()
 
+    def test_gwt_095_given_raw_global_selector_uses_literal_tilde_when_git_admin_config_changes_then_apply_fails_closed(self) -> None:
+        for policy in ("ignore", "attributes"):
+            with self.subTest(policy=policy):
+                fixture = PackageApplyFixture()
+                try:
+                    relative = f".ai/literal-selector-{policy}.md"
+                    fixture.make_package(
+                        {
+                            relative: (
+                                b"must remain absent\n",
+                                "framework-managed",
+                                "0644",
+                            )
+                        },
+                        [operation("001-add", "add", relative)],
+                    )
+                    git_home = fixture.root / "git-home"
+                    git_home.mkdir()
+                    selector = "~/../.git/audit-global"
+                    actual_config = fixture.target / ".git" / "audit-global"
+                    policy_path = fixture.target / ".git" / f"audit-{policy}"
+                    with mock.patch.dict(
+                        os.environ,
+                        {
+                            "HOME": str(git_home),
+                            "GIT_CONFIG_GLOBAL": selector,
+                        },
+                    ):
+                        plan = fixture.plan()
+                        original_capture = APPLY.capture_target_git_snapshot
+
+                        def drift_after_snapshot(*args: object, **kwargs: object):
+                            snapshot = original_capture(*args, **kwargs)
+                            key = (
+                                "excludesFile"
+                                if policy == "ignore"
+                                else "attributesFile"
+                            )
+                            actual_config.write_text(
+                                f"[core]\n\t{key} = {policy_path.as_posix()}\n",
+                                encoding="utf-8",
+                                newline="\n",
+                            )
+                            policy_line = (
+                                f"{relative}\n"
+                                if policy == "ignore"
+                                else f"{relative} filter=lfs\n"
+                            )
+                            policy_path.write_text(
+                                policy_line,
+                                encoding="utf-8",
+                                newline="\n",
+                            )
+                            return snapshot
+
+                        with mock.patch.object(
+                            APPLY,
+                            "capture_target_git_snapshot",
+                            side_effect=drift_after_snapshot,
+                        ), self.assertRaisesRegex(
+                            APPLY.ApplyError,
+                            "administrative identity changed",
+                        ):
+                            RAW_APPLY_PLAN(plan)
+                        self.assertFalse((fixture.target / relative).exists())
+                        if policy == "ignore":
+                            self.assertEqual(
+                                0,
+                                subprocess.run(
+                                    ["git", "check-ignore", "--quiet", relative],
+                                    cwd=fixture.target,
+                                    check=False,
+                                ).returncode,
+                            )
+                        else:
+                            self.assertIn(
+                                "filter: lfs",
+                                git(
+                                    fixture.target,
+                                    "check-attr",
+                                    "filter",
+                                    "--",
+                                    relative,
+                                ).stdout,
+                            )
+                finally:
+                    fixture.close()
+
 
 if __name__ == "__main__":
     unittest.main()

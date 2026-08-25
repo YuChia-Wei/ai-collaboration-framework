@@ -10,7 +10,7 @@
 - `branch_segment`: `1`
 - `status`: `active`
 - `created_at`: `2026-08-25T14:52:56+08:00`
-- `updated_at`: `2026-08-25T22:49:10+08:00`
+- `updated_at`: `2026-08-25T23:03:30+08:00`
 - `template_source`: `.ai/assets/skills/software-development-orchestrator/templates/development-workflow-plan-template.md`
 - `template_version`: `1.4.0`
 - `workflow_locator`: `.dev/workflows/2026-08-25-package-apply-git-snapshot/workflow.yaml`
@@ -65,7 +65,7 @@
 
 ## Progress And Handoff
 
-- Current stage: implementation and same-commit aggregate validation are complete. Exact-head audits correctly rejected repository-local policy drift at `7a6f20a0`, config-selection drift at `ee55880b`, dormant include-target drift at `ad0b38a0`, relative local-origin resolution at `01f73f25`, an in-capture config TOCTOU at `7a1a457a`, and Windows `HOME`/`USERPROFILE` selection drift at `7ffea633`. The current repair resolves Git home, default global config, default ignore/attributes policy, and `~/` values from Git's explicit `HOME` before Python's platform home. GWT-094 covers both default-global and default-policy drift for ignore and attributes. A fresh exact-head audit remains.
+- Current stage: implementation and same-commit aggregate validation are complete. Exact-head audits correctly rejected repository-local policy drift at `7a6f20a0`, config-selection drift at `ee55880b`, dormant include-target drift at `ad0b38a0`, relative local-origin resolution at `01f73f25`, an in-capture config TOCTOU at `7a1a457a`, Windows `HOME`/`USERPROFILE` selection drift at `7ffea633`, and raw tilde selector drift at `0eebee85`. The current repair preserves literal raw `GIT_CONFIG_GLOBAL`/system/XDG selector paths relative to the target, while reserving HOME expansion for config content paths. GWT-095 reproduces a `~/../.git/` selector bypass for ignore and attributes and rejects it before mutation. A fresh exact-head audit remains.
 - Current bounded counts: direct and real later-hop plan `24` Git subprocesses (two complete 12-process admissions), apply `12`; both are payload-independent. The increase from the retained benchmark's `22/11/22` is one closing config read-back per snapshot, a constant safety cost. Successful apply performs `4` full worktree inventory scans independent of operation count, while per-operation checks inspect only snapshotted candidate paths.
 - Long-running gate: the terminal task bound to `13a33cc44825f8da10674e0294b38edbf7159053` passed package-apply 104 tests (1 Windows symlink-privilege skip), multi-hop 31 tests, and the retained 631-record cold-first plus three-warm-run benchmark in 4865.614824 seconds. The historical benchmark remains valid evidence for eliminating per-path amplification (`22/11` at that exact head). Later safety repairs are covered by deterministic current-head `24/12/24` process-count and focused semantic tests; the expensive legacy baseline is retained rather than repeated because neither the legacy emulation, fixture/profile, host/storage, payload, nor claimed performance path changed. Earlier blocked, failed, passed-on-superseded-head, and interrupted receipts remain retained without rewriting.
 - Durable lessons: [`reports/execution-retrospective.md`](reports/execution-retrospective.md) preserves the execution history, audit failures, benchmark-reuse recommendation, and the explicit reason this local validation record is not an ADR.

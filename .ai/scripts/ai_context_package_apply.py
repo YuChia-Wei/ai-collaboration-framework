@@ -726,8 +726,10 @@ def _candidate_git_config_paths(root: Path) -> set[Path]:
     def add(value: str) -> None:
         if not value or value == os.devnull:
             return
-        expanded = _expand_git_user_path(value)
-        candidate = expanded if expanded.is_absolute() else root / expanded
+        # Git treats raw config-selector environment variables as literal paths;
+        # unlike path values read from config, a leading '~' is not HOME-expanded.
+        selected = Path(value)
+        candidate = selected if selected.is_absolute() else root / selected
         candidates.add(Path(os.path.abspath(candidate)))
 
     global_override = os.environ.get("GIT_CONFIG_GLOBAL")

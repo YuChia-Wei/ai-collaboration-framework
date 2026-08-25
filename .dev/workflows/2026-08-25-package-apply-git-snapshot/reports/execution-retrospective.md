@@ -10,7 +10,7 @@
 - `implementation_route`: `slice-implementer`
 - `status`: `active-until-final-exact-head-audit`
 - `created_at`: `2026-08-25T22:04:41+08:00`
-- `updated_at`: `2026-08-25T22:49:10+08:00`
+- `updated_at`: `2026-08-25T23:03:30+08:00`
 - `template_source`: `owner-requested workflow-local retrospective; no repository template`
 - `template_version`: `1.0.0`
 
@@ -60,6 +60,7 @@ the ADR decision test.
 | `01f73f25` | exact-head audit failed | read-only | Git returned `file:.git/config`; the relative origin was resolved against process cwd instead of target root. |
 | `7a1a457a` | exact-head audit failed | read-only | Config/attribute/ignore semantics could be captured before the identity baseline while a config change moved that baseline forward. |
 | `7ffea633` | exact-head audit failed | read-only | Git for Windows honored explicit `HOME`, while Python `Path.home()` still selected `USERPROFILE`, leaving the real absent global config and default policy paths unbound. |
+| `0eebee85` | exact-head audit failed | read-only | A raw `GIT_CONFIG_GLOBAL=~/../.git/...` selector kept literal tilde/cwd semantics in Git but was incorrectly HOME-expanded by the candidate binder. |
 
 All ignored dispatch/completion receipts remain local evidence. Failed,
 blocked, interrupted, superseded, and passed outcomes are not rewritten.
@@ -156,6 +157,16 @@ resolve the same process-stable environment inputs as the Git subprocess. A
 runtime convenience API is not evidence of another executable's path semantics.
 Adversarial fixtures should intentionally make `HOME` and `USERPROFILE` differ.
 
+### 10. Separate raw selectors from config path values
+
+Git path syntax is context-sensitive. Git for Windows treats a raw
+`GIT_CONFIG_GLOBAL` selector as a literal path relative to the target process
+cwd, even when it begins with `~`, while `~/` inside config content is
+HOME-relative. Reusing one expansion helper for both contexts created an
+administrative-directory bypass because normal worktree inventory excludes
+`.git`. Candidate binding must preserve raw selector syntax and normalize it
+against the exact Git subprocess cwd; content values use Git-home expansion.
+
 ## AI Usage And Wall-Time Interpretation
 
 Most of the multi-hour wall time came from local Git process startup, filesystem
@@ -166,7 +177,7 @@ not require the model to reason for every elapsed second.
 
 ## Residual And Follow-Up
 
-- The Windows Git-home selection repair must receive a fresh independent exact-head audit.
+- The raw-selector/content-path separation repair must receive a fresh independent exact-head audit.
 - The Windows symlink-privilege and case-fold fixtures remain truthful skips;
   no Linux reference execution was performed in this workflow.
 - The benchmark-reuse recommendation should remain local until an owner chooses

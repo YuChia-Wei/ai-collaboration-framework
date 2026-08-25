@@ -9,7 +9,7 @@
   "related_plan_id": "development-plan-2026-08-25-package-apply-git-snapshot",
   "status": "in_progress",
   "created_at": "2026-08-25T14:52:56+08:00",
-  "updated_at": "2026-08-25T22:49:10+08:00",
+  "updated_at": "2026-08-25T23:03:30+08:00",
   "template_source": ".ai/assets/skills/software-development-orchestrator/templates/development-workflow-task-template.json",
   "model": "gpt-5.6-sol",
   "reasoning_effort": "high",
@@ -68,7 +68,7 @@
     "deferred_items": ["Linux reference execution is reported truthfully if not available in this Windows task; parent decides later integration/reference lane"]
   },
   "results": {
-    "summary": "Implemented bounded plan/apply target Git snapshots, including real multi-hop checkpoint surfaces, pre-lock drift admission, batch blob/attribute/ignore/config-origin parsing, recovery ignore-semantic binding, stderr-only phase metrics, scale/process fixtures, and exact-head benchmark/long-validation runners. The terminal aggregate validation passes; independent audit findings remain preserved. The current Windows Git-home repair aligns absent default global config, default ignore/attributes policy, and user-relative path selection with explicit HOME rather than Python USERPROFILE semantics. Payload-independent current counts remain plan 24, apply 12, and real later-hop 24. The retained 631-record benchmark head reduced plan Git processes from 3153 to 22 and apply Git processes from 13272 to 11.",
+    "summary": "Implemented bounded plan/apply target Git snapshots, including real multi-hop checkpoint surfaces, pre-lock drift admission, batch blob/attribute/ignore/config-origin parsing, recovery ignore-semantic binding, stderr-only phase metrics, scale/process fixtures, and exact-head benchmark/long-validation runners. The terminal aggregate validation passes; independent audit findings remain preserved. The current repair separates literal raw environment selectors from HOME-expanded config content paths, binding selectors relative to the exact Git subprocess target cwd. Payload-independent current counts remain plan 24, apply 12, and real later-hop 24. The retained 631-record benchmark head reduced plan Git processes from 3153 to 22 and apply Git processes from 13272 to 11.",
     "files_changed": [
       ".ai/scripts/ai_context_package_apply.py",
       ".ai/scripts/ai_context_target_provenance.py",
@@ -185,6 +185,11 @@
         "command": "python .ai/scripts/tests/test_ai_context_package_apply.py <GWT-073,074,086,089..094>; python .ai/scripts/tests/test_ai_context_multi_hop_upgrade.py MultiHopUpgradeGwtTests.test_gwt_010_given_two_exact_packages_when_each_child_is_applied_validated_finalized_and_checkpointed_then_route_completes",
         "outcome": "passed",
         "evidence": "Post-7ffea633 exact-head audit repair: GWT-094 passed its four Windows HOME/default-global/default-policy ignore and attributes subcases in 8.738s. The nine-test count and adjacent config-drift set passed in 52.991s; real two-hop GWT-010 passed in 27.224s. Source AI-context governance passed in 3.541s. Explicit HOME now controls Git-home config/policy candidates and ~/ expansion when it differs from USERPROFILE. Counts remain plan=24, apply=12, later-hop=24; no benchmark was repeated."
+      },
+      {
+        "command": "python .ai/scripts/tests/test_ai_context_package_apply.py <GWT-073,074,086,093..095>; python .ai/scripts/tests/test_ai_context_multi_hop_upgrade.py MultiHopUpgradeGwtTests.test_gwt_010_given_two_exact_packages_when_each_child_is_applied_validated_finalized_and_checkpointed_then_route_completes",
+        "outcome": "passed",
+        "evidence": "Post-0eebee85 exact-head audit repair: exact literal-tilde GIT_CONFIG_GLOBAL GWT-095 passed both ignore and attributes cases in 5.120s. The six-test count/selector set passed in 43.898s; real two-hop GWT-010 passed in 28.581s. Raw environment selector paths now retain literal syntax relative to the target cwd, while config content paths retain Git HOME expansion. Counts remain 24/12/24; no benchmark was repeated."
       }
     ],
     "role_execution_aggregation": [{"stage_id": "implementation", "owning_skill": "slice-implementer", "disposition": "not-applicable", "reason": "The generic Python repository-tooling slice matches none of the command/query/reactor or concrete domain/use-case role bindings; no child invocation is invented."}],
@@ -205,6 +210,7 @@
       "The exact-head audit of 01f73f25d0d48a0c116e9626efd62a0e6472832f rejected integration because Git's relative file:.git/config origin was resolved against process cwd. The repair normalizes relative origins against the target root before resolving relative include values and adds GWT-092 for both ignore and attribute introduction. Global GWT-090 and local GWT-092 pass; a fresh exact-head audit remains required.",
       "The exact-head audit of 7a1a457ad0e1f867c936c25f0ab4d4affec1ac82 rejected integration because config/attribute/ignore semantics could be returned before the matching identity baseline was fixed. The repair establishes identity first and requires a byte-identical closing config read-back. GWT-093 reproduces the in-capture timing and rejects both ignore and attribute selector drift before mutation. Current deterministic counts are plan 24, apply 12, and real later-hop 24; the extra process per snapshot is a bounded safety cost.",
       "The exact-head audit of 7ffea63382b91f45f0ec4dd31e71cc1d5a4a3759 rejected integration because Git for Windows honored explicit HOME while Python Path.home() remained USERPROFILE, leaving the actual absent default global config and default policy candidates unbound. The repair uses Git HOME semantics for default config, ignore/attributes, includes, and ~/ values. GWT-094 covers default-global and direct default-policy drift for both semantics; fixed process counts are unchanged.",
+      "The exact-head audit of 0eebee85c105015632d3e558519cfde05cc7af21 rejected integration because raw GIT_CONFIG_GLOBAL beginning with tilde was HOME-expanded by the candidate binder while Git for Windows kept it literal and cwd-relative. The exact ~/../.git selector bypass applied both ignore and attributes changes. The repair binds raw environment selectors relative to target cwd and reserves HOME expansion for config content; GWT-095 rejects both cases before mutation.",
       "Owner-requested durable execution lessons are tracked at .dev/workflows/2026-08-25-package-apply-git-snapshot/reports/execution-retrospective.md. The record is deliberately not an ADR because it documents one workflow's implementation/validation experience and does not establish a repository-wide architecture boundary or canonical policy.",
       "Workflow artifact validation passed for 97 workflows and 117 indexed workflow directories.",
       "Sandboxed temp-path PermissionError attempts remain blocked-by-environment evidence; equivalent focused native Windows reruns passed.",
@@ -230,7 +236,8 @@
       "41613199b537babc291e594d13e620cd785e5491",
       "01f73f25d0d48a0c116e9626efd62a0e6472832f",
       "7a1a457ad0e1f867c936c25f0ab4d4affec1ac82",
-      "7ffea63382b91f45f0ec4dd31e71cc1d5a4a3759"
+      "7ffea63382b91f45f0ec4dd31e71cc1d5a4a3759",
+      "0eebee85c105015632d3e558519cfde05cc7af21"
     ],
     "follow_up_needed": true
   }
