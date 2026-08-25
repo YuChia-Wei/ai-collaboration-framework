@@ -5183,6 +5183,1287 @@ class AiContextPackageApplyGwtTests(unittest.TestCase):
                 finally:
                     fixture.close()
 
+    def test_gwt_073_given_small_v014_scale_and_expanded_payloads_when_planned_then_git_process_count_is_constant(self) -> None:
+        observations: list[tuple[int, int, dict]] = []
+        for payload_count in (3, 631, 947):
+            with self.subTest(payload_count=payload_count):
+                fixture = PackageApplyFixture()
+                try:
+                    incoming = {
+                        f".ai/generated/item-{index:04d}.txt": (
+                            f"payload-{index}\n".encode("utf-8"),
+                            "framework-managed",
+                            "0644",
+                        )
+                        for index in range(payload_count)
+                    }
+                    operations = [
+                        operation(
+                            f"{index:04d}-add",
+                            "add",
+                            f".ai/generated/item-{index:04d}.txt",
+                        )
+                        for index in range(payload_count)
+                    ]
+                    fixture.make_package(incoming, operations)
+                    events: list[dict] = []
+                    git_processes = 0
+                    original_run = subprocess.run
+
+                    def counted_run(*args: object, **kwargs: object):
+                        nonlocal git_processes
+                        argv = args[0] if args else kwargs.get("args")
+                        if isinstance(argv, (list, tuple)) and argv and argv[0] == "git":
+                            git_processes += 1
+                        return original_run(*args, **kwargs)
+
+                    with mock.patch.object(
+                        APPLY.subprocess, "run", side_effect=counted_run
+                    ):
+                        plan = APPLY.build_plan(
+                            fixture.package,
+                            fixture.target,
+                            git_inspection_hook=events.append,
+                        )
+                    self.assertEqual(payload_count, len(plan["required_framework_paths"]))
+                    self.assertEqual(1, len(events))
+                    self.assertEqual("plan", events[0]["phase"])
+                    self.assertEqual("passed", events[0]["outcome"])
+                    self.assertEqual(payload_count, events[0]["path_count"])
+                    self.assertGreater(events[0]["git_bytes_read"], 0)
+                    self.assertGreater(events[0]["phase_duration_ns"], 0)
+                    observations.append(
+                        (git_processes, events[0]["git_process_count"], events[0])
+                    )
+                finally:
+                    fixture.close()
+
+        self.assertEqual({item[0] for item in observations}, {24})
+        self.assertEqual({item[1] for item in observations}, {24})
+
+    def test_gwt_074_given_growing_apply_operation_counts_when_applied_then_git_process_count_is_constant(self) -> None:
+        observations: list[tuple[int, int, int, int, int]] = []
+        for payload_count in (1, 8, 32):
+            with self.subTest(payload_count=payload_count):
+                fixture = PackageApplyFixture()
+                try:
+                    incoming = {
+                        f".ai/apply/item-{index:03d}.txt": (
+                            f"apply-{index}\n".encode("utf-8"),
+                            "framework-managed",
+                            "0644",
+                        )
+                        for index in range(payload_count)
+                    }
+                    operations = [
+                        operation(
+                            f"{index:03d}-add",
+                            "add",
+                            f".ai/apply/item-{index:03d}.txt",
+                        )
+                        for index in range(payload_count)
+                    ]
+                    fixture.make_package(incoming, operations)
+                    plan = fixture.plan()
+                    events: list[dict] = []
+                    git_processes = 0
+                    full_worktree_scans = 0
+                    entry_reads = 0
+                    original_run = subprocess.run
+                    original_inventory = APPLY.worktree_inventory
+                    original_entry = APPLY.worktree_inventory_entry
+
+                    def counted_run(*args: object, **kwargs: object):
+                        nonlocal git_processes
+                        argv = args[0] if args else kwargs.get("args")
+                        if isinstance(argv, (list, tuple)) and argv and argv[0] == "git":
+                            git_processes += 1
+                        return original_run(*args, **kwargs)
+
+                    def counted_inventory(*args: object, **kwargs: object):
+                        nonlocal full_worktree_scans
+                        full_worktree_scans += 1
+                        return original_inventory(*args, **kwargs)
+
+                    def counted_entry(*args: object, **kwargs: object):
+                        nonlocal entry_reads
+                        entry_reads += 1
+                        return original_entry(*args, **kwargs)
+
+                    with mock.patch.object(
+                        APPLY.subprocess, "run", side_effect=counted_run
+                    ), mock.patch.object(
+                        APPLY, "worktree_inventory", side_effect=counted_inventory
+                    ), mock.patch.object(
+                        APPLY, "worktree_inventory_entry", side_effect=counted_entry
+                    ):
+                        receipt = RAW_APPLY_PLAN(
+                            plan, git_inspection_hook=events.append
+                        )
+                    self.assertEqual(payload_count, len(receipt["applied_operation_ids"]))
+                    self.assertEqual(1, len(events))
+                    self.assertEqual("apply", events[0]["phase"])
+                    self.assertEqual("passed", events[0]["outcome"])
+                    observations.append(
+                        (
+                            payload_count,
+                            git_processes,
+                            events[0]["git_process_count"],
+                            full_worktree_scans,
+                            entry_reads,
+                        )
+                    )
+                finally:
+                    fixture.close()
+
+        self.assertEqual({item[1] for item in observations}, {12})
+        self.assertEqual({item[2] for item in observations}, {12})
+        self.assertEqual({item[3] for item in observations}, {4})
+        for payload_count, _processes, _snapshot_processes, _scans, reads in observations:
+            self.assertLessEqual(
+                reads,
+                54 * payload_count + 220,
+                "apply filesystem entry reads must remain O(payload paths)",
+            )
+
+    def test_gwt_075_given_ignored_lfs_attributes_and_unknown_index_state_when_snapshotted_then_semantics_fail_closed(self) -> None:
+        fixture = PackageApplyFixture()
+        try:
+            fixture.add_target(
+                ".gitattributes",
+                b".ai/lfs.bin filter=lfs\n.ai/ident.txt ident\n",
+            )
+            fixture.add_target(".gitignore", b".ai/ignored.txt\n")
+            fixture.commit_target("attribute and ignore policy")
+            snapshot = APPLY.capture_target_git_snapshot(
+                fixture.target,
+                [".ai/lfs.bin", ".ai/ident.txt", ".ai/ignored.txt"],
+                phase="negative-fixture",
+                require_clean=True,
+            )
+            self.assertFalse(snapshot.no_content_transform(".ai/lfs.bin"))
+            self.assertFalse(snapshot.no_content_transform(".ai/ident.txt"))
+            self.assertIsNotNone(snapshot.ignore_rule(".ai/ignored.txt"))
+            self.assertIsNone(snapshot.ignore_rule(".ai/lfs.bin"))
+            with self.assertRaisesRegex(
+                APPLY.ApplyError, "unresolved stages"
+            ):
+                APPLY._parse_index_entries(
+                    b"100644 " + b"a" * 40 + b" 1\t.ai/conflict.txt\0"
+                )
+        finally:
+            fixture.close()
+
+    def test_gwt_076_given_metrics_opt_in_when_cli_plans_and_applies_then_machine_records_are_stderr_only(self) -> None:
+        fixture = PackageApplyFixture()
+        try:
+            fixture.make_package(
+                {".ai/metrics.md": (b"metrics\n", "framework-managed", "0644")},
+                [operation("001-add", "add", ".ai/metrics.md")],
+            )
+            result = subprocess.run(
+                [
+                    sys.executable,
+                    str(ROOT / ".ai/scripts/plan-ai-context-package-apply.py"),
+                    "--package-root",
+                    str(fixture.package),
+                    "--target-root",
+                    str(fixture.target),
+                    "--apply",
+                    "--git-inspection-metrics",
+                ],
+                capture_output=True,
+                text=True,
+            )
+            self.assertEqual(0, result.returncode, result.stderr)
+            prefix = "AI context package Git inspection: "
+            records = [
+                json.loads(line.removeprefix(prefix))
+                for line in result.stderr.splitlines()
+                if line.startswith(prefix)
+            ]
+            self.assertEqual(["plan", "apply"], [item["phase"] for item in records])
+            self.assertEqual(
+                {"plan": 24, "apply": 12},
+                {item["phase"]: item["git_process_count"] for item in records},
+            )
+            self.assertTrue(all(item["outcome"] == "passed" for item in records))
+            self.assertNotIn(prefix, result.stdout)
+            self.assertIn("apply_receipt:", result.stdout)
+        finally:
+            fixture.close()
+
+    def test_gwt_077_given_head_or_unrelated_worktree_drift_after_snapshot_when_verified_then_it_fails_closed(self) -> None:
+        fixture = PackageApplyFixture()
+        try:
+            snapshot = APPLY.capture_target_git_snapshot(
+                fixture.target,
+                ["README.md"],
+                phase="drift-fixture",
+                require_clean=True,
+            )
+            (fixture.target / "unrelated.txt").write_text(
+                "drift\n", encoding="utf-8", newline="\n"
+            )
+            self.assertIn("unrelated.txt", snapshot.changed_paths())
+            git(fixture.target, "add", "unrelated.txt")
+            git(fixture.target, "commit", "-qm", "external drift")
+            with APPLY.target_git_snapshot_scope(snapshot), self.assertRaisesRegex(
+                APPLY.ApplyError, "administrative identity changed"
+            ):
+                APPLY.target_git_head(fixture.target)
+        finally:
+            fixture.close()
+
+    def test_gwt_078_given_tracked_replace_paths_when_planned_then_index_blobs_are_read_by_one_batch_process(self) -> None:
+        fixture = PackageApplyFixture()
+        try:
+            previous = {
+                f".ai/tracked/item-{index}.txt": (
+                    f"old-{index}\n".encode("utf-8"),
+                    "framework-managed",
+                    "0644",
+                )
+                for index in range(3)
+            }
+            incoming = {
+                path: (
+                    content.replace(b"old-", b"new-"),
+                    ownership,
+                    mode,
+                )
+                for path, (content, ownership, mode) in previous.items()
+            }
+            for path, (content, _ownership, _mode) in previous.items():
+                fixture.add_target(path, content)
+            fixture.commit_target("tracked replacement baseline")
+            fixture.make_package(
+                incoming,
+                [
+                    operation(
+                        f"{index:03d}-replace",
+                        "replace",
+                        f".ai/tracked/item-{index}.txt",
+                    )
+                    for index in range(3)
+                ],
+                previous,
+            )
+            events: list[dict] = []
+            git_processes = 0
+            original_run = subprocess.run
+
+            def counted_run(*args: object, **kwargs: object):
+                nonlocal git_processes
+                argv = args[0] if args else kwargs.get("args")
+                if isinstance(argv, (list, tuple)) and argv and argv[0] == "git":
+                    git_processes += 1
+                return original_run(*args, **kwargs)
+
+            with mock.patch.object(
+                APPLY.subprocess, "run", side_effect=counted_run
+            ):
+                plan = APPLY.build_plan(
+                    fixture.package,
+                    fixture.target,
+                    fixture.previous_path,
+                    "0.9.0",
+                    git_inspection_hook=events.append,
+                )
+            self.assertEqual({"replace"}, {item["action"] for item in plan["operations"]})
+            self.assertEqual(24, git_processes)
+            self.assertEqual(24, events[0]["git_process_count"])
+            self.assertEqual(3, events[0]["git_blob_read_count"])
+        finally:
+            fixture.close()
+
+    def test_gwt_079_given_modified_or_deleted_tracked_path_when_snapshotted_then_clean_gate_fails_closed(self) -> None:
+        for mutation in ("modified", "deleted"):
+            with self.subTest(mutation=mutation):
+                fixture = PackageApplyFixture()
+                try:
+                    fixture.make_package({}, [])
+                    readme = fixture.target / "README.md"
+                    if mutation == "modified":
+                        readme.write_text("modified\n", encoding="utf-8", newline="\n")
+                    else:
+                        readme.unlink()
+                    with self.assertRaisesRegex(
+                        APPLY.ApplyError, "worktree must be clean"
+                    ):
+                        APPLY.capture_target_git_snapshot(
+                            fixture.target,
+                            ["README.md"],
+                            phase="dirty-fixture",
+                            require_clean=True,
+                        )
+                finally:
+                    fixture.close()
+
+    def test_gwt_080_given_target_commit_between_plan_admission_and_full_snapshot_when_compared_then_mixed_head_facts_fail_closed(self) -> None:
+        fixture = PackageApplyFixture()
+        try:
+            fixture.make_package(
+                {".ai/race.txt": (b"race\n", "framework-managed", "0644")},
+                [operation("001-add", "add", ".ai/race.txt")],
+            )
+            original_capture = APPLY.capture_target_git_snapshot
+            captures = 0
+
+            def raced_capture(*args: object, **kwargs: object):
+                nonlocal captures
+                snapshot = original_capture(*args, **kwargs)
+                captures += 1
+                if captures == 1:
+                    fixture.add_target("concurrent.txt", b"concurrent\n")
+                    fixture.commit_target("concurrent target commit")
+                return snapshot
+
+            with mock.patch.object(
+                APPLY,
+                "capture_target_git_snapshot",
+                side_effect=raced_capture,
+            ), self.assertRaisesRegex(
+                APPLY.ApplyError, "identity changed during planning"
+            ):
+                fixture.plan()
+            self.assertEqual(2, captures)
+            self.assertFalse((fixture.target / ".ai/race.txt").exists())
+        finally:
+            fixture.close()
+
+    def test_gwt_081_given_git_attributes_or_filemode_change_after_plan_when_apply_admits_then_semantic_drift_fails_closed(self) -> None:
+        for mutation in ("attributes", "filemode"):
+            with self.subTest(mutation=mutation):
+                fixture = PackageApplyFixture()
+                try:
+                    relative = ".ai/semantic.txt"
+                    fixture.make_package(
+                        {relative: (b"semantic\n", "framework-managed", "0644")},
+                        [operation("001-add", "add", relative)],
+                    )
+                    plan = fixture.plan()
+                    if mutation == "attributes":
+                        info_attributes = fixture.target / ".git/info/attributes"
+                        info_attributes.write_text(
+                            f"{relative} ident\n",
+                            encoding="utf-8",
+                            newline="\n",
+                        )
+                    else:
+                        current = git(
+                            fixture.target, "config", "--bool", "core.filemode"
+                        ).stdout.strip()
+                        git(
+                            fixture.target,
+                            "config",
+                            "core.filemode",
+                            "false" if current == "true" else "true",
+                        )
+                    with self.assertRaisesRegex(
+                        APPLY.ApplyError,
+                        "attributes, ignore rules, or core.filemode changed",
+                    ):
+                        RAW_APPLY_PLAN(plan)
+                    self.assertFalse((fixture.target / relative).exists())
+                finally:
+                    fixture.close()
+
+    def test_gwt_082_given_git_semantics_change_after_crash_when_resume_or_rollback_admits_then_recovery_does_not_mutate(self) -> None:
+        for action in ("resume", "rollback"):
+            with self.subTest(action=action):
+                fixture = PackageApplyFixture()
+                try:
+                    fixture.make_package(
+                        {
+                            ".ai/first.md": (b"first\n", "framework-managed", "0644"),
+                            ".ai/second.md": (b"second\n", "framework-managed", "0644"),
+                        },
+                        [
+                            operation("001-first", "add", ".ai/first.md"),
+                            operation("002-second", "add", ".ai/second.md"),
+                        ],
+                    )
+                    plan = fixture.plan()
+
+                    def crash(boundary: str, details: dict) -> None:
+                        if boundary == "after_operation" and details.get("index") == 0:
+                            raise APPLY.InjectedInterruption("recovery semantic fixture")
+
+                    with self.assertRaises(APPLY.InjectedInterruption):
+                        RAW_APPLY_PLAN(plan, boundary_hook=crash)
+                    current = git(
+                        fixture.target, "config", "--bool", "core.filemode"
+                    ).stdout.strip()
+                    git(
+                        fixture.target,
+                        "config",
+                        "core.filemode",
+                        "false" if current == "true" else "true",
+                    )
+                    with self.assertRaisesRegex(
+                        APPLY.ApplyError,
+                        "attributes, ignore rules, or core.filemode changed",
+                    ):
+                        APPLY.recover_transaction(
+                            fixture.target,
+                            plan["plan_sha256"],
+                            action,
+                            fixture.package if action == "resume" else None,
+                        )
+                    self.assertEqual(
+                        b"first\n", (fixture.target / ".ai/first.md").read_bytes()
+                    )
+                    self.assertFalse((fixture.target / ".ai/second.md").exists())
+                finally:
+                    fixture.close()
+
+    def test_gwt_083_given_unrelated_drift_is_found_at_terminal_scan_when_automatic_rollback_admits_then_no_rollback_mutation_starts(self) -> None:
+        fixture = PackageApplyFixture()
+        try:
+            fixture.make_package(
+                {
+                    ".ai/first.md": (b"first\n", "framework-managed", "0644"),
+                    ".ai/second.md": (b"second\n", "framework-managed", "0644"),
+                },
+                [
+                    operation("001-first", "add", ".ai/first.md"),
+                    operation("002-second", "add", ".ai/second.md"),
+                ],
+            )
+            plan = fixture.plan()
+
+            def drift(boundary: str, details: dict) -> None:
+                if boundary == "after_progress_journal" and details.get("index") == 0:
+                    (fixture.target / "unrelated.txt").write_text(
+                        "external\n", encoding="utf-8", newline="\n"
+                    )
+
+            with self.assertRaisesRegex(
+                APPLY.ApplyError, "rollback failed"
+            ):
+                RAW_APPLY_PLAN(plan, boundary_hook=drift)
+            self.assertEqual(
+                b"first\n", (fixture.target / ".ai/first.md").read_bytes()
+            )
+            self.assertEqual(
+                b"second\n", (fixture.target / ".ai/second.md").read_bytes()
+            )
+            self.assertEqual(
+                "external\n",
+                (fixture.target / "unrelated.txt").read_text(encoding="utf-8"),
+            )
+            _root, _saved, journal = APPLY.load_transaction(
+                fixture.target, plan["plan_sha256"]
+            )
+            self.assertEqual("interrupted", journal["state"])
+            self.assertEqual([], journal["rollback_completed_paths"])
+        finally:
+            fixture.close()
+
+    def test_gwt_084_given_unrelated_drift_after_recovery_snapshot_before_lock_admission_when_resume_starts_then_no_recovery_mutation_occurs(self) -> None:
+        fixture = PackageApplyFixture()
+        try:
+            fixture.make_package(
+                {
+                    ".ai/first.md": (b"first\n", "framework-managed", "0644"),
+                    ".ai/second.md": (b"second\n", "framework-managed", "0644"),
+                },
+                [
+                    operation("001-first", "add", ".ai/first.md"),
+                    operation("002-second", "add", ".ai/second.md"),
+                ],
+            )
+            plan = fixture.plan()
+
+            def crash(boundary: str, details: dict) -> None:
+                if boundary == "after_operation" and details.get("index") == 0:
+                    raise APPLY.InjectedInterruption("recovery lock-race fixture")
+
+            with self.assertRaises(APPLY.InjectedInterruption):
+                RAW_APPLY_PLAN(plan, boundary_hook=crash)
+            original_capture = APPLY.capture_target_git_snapshot
+
+            def drift_after_snapshot(*args: object, **kwargs: object):
+                snapshot = original_capture(*args, **kwargs)
+                (fixture.target / "lock-wait-drift.txt").write_text(
+                    "external\n", encoding="utf-8", newline="\n"
+                )
+                return snapshot
+
+            with mock.patch.object(
+                APPLY,
+                "capture_target_git_snapshot",
+                side_effect=drift_after_snapshot,
+            ), self.assertRaisesRegex(
+                APPLY.ApplyError, "unrelated target changes block recovery"
+            ):
+                APPLY.recover_transaction(
+                    fixture.target,
+                    plan["plan_sha256"],
+                    "resume",
+                    fixture.package,
+                )
+            self.assertEqual(
+                b"first\n", (fixture.target / ".ai/first.md").read_bytes()
+            )
+            self.assertFalse((fixture.target / ".ai/second.md").exists())
+        finally:
+            fixture.close()
+
+    def test_gwt_085_given_ignore_rule_changes_after_crash_when_resume_or_rollback_admits_then_recovery_does_not_mutate(self) -> None:
+        for action in ("resume", "rollback"):
+            with self.subTest(action=action):
+                fixture = PackageApplyFixture()
+                try:
+                    fixture.make_package(
+                        {
+                            ".ai/first.md": (
+                                b"first\n",
+                                "framework-managed",
+                                "0644",
+                            ),
+                            ".ai/second.md": (
+                                b"second\n",
+                                "framework-managed",
+                                "0644",
+                            ),
+                        },
+                        [
+                            operation("001-first", "add", ".ai/first.md"),
+                            operation("002-second", "add", ".ai/second.md"),
+                        ],
+                    )
+                    plan = fixture.plan()
+
+                    def crash(boundary: str, details: dict) -> None:
+                        if boundary == "after_operation" and details.get("index") == 0:
+                            raise APPLY.InjectedInterruption(
+                                "recovery ignore-semantic fixture"
+                            )
+
+                    with self.assertRaises(APPLY.InjectedInterruption):
+                        RAW_APPLY_PLAN(plan, boundary_hook=crash)
+                    (fixture.target / ".git/info/exclude").write_text(
+                        ".ai/second.md\n", encoding="utf-8", newline="\n"
+                    )
+                    with self.assertRaisesRegex(
+                        APPLY.ApplyError,
+                        "attributes, ignore rules, or core.filemode changed",
+                    ):
+                        APPLY.recover_transaction(
+                            fixture.target,
+                            plan["plan_sha256"],
+                            action,
+                            fixture.package if action == "resume" else None,
+                        )
+                    self.assertEqual(
+                        b"first\n", (fixture.target / ".ai/first.md").read_bytes()
+                    )
+                    self.assertFalse((fixture.target / ".ai/second.md").exists())
+                finally:
+                    fixture.close()
+
+    def test_gwt_086_given_growing_multi_hop_checkpoint_surfaces_when_planned_then_git_process_count_remains_constant(self) -> None:
+        observations: list[tuple[int, int, int]] = []
+        for changed_count in (3, 631):
+            with self.subTest(changed_count=changed_count):
+                fixture = PackageApplyFixture()
+                try:
+                    relative = ".ai/next-hop.txt"
+                    fixture.make_package(
+                        {
+                            relative: (
+                                b"next\n",
+                                "framework-managed",
+                                "0644",
+                            )
+                        },
+                        [operation("001-next", "add", relative)],
+                    )
+                    for index in range(changed_count):
+                        path = (
+                            fixture.target
+                            / "checkpoint-surface"
+                            / f"path-{index:04d}.txt"
+                        )
+                        path.parent.mkdir(parents=True, exist_ok=True)
+                        path.write_text(
+                            f"{index}\n", encoding="utf-8", newline="\n"
+                        )
+                    metrics: list[dict] = []
+
+                    def verify_from_active_snapshot(
+                        target: Path, context: object
+                    ) -> dict:
+                        self.assertIsNotNone(APPLY.active_target_git_snapshot(target))
+                        APPLY._require_complete_multi_hop_checkpoint_evidence(target)
+                        self.assertEqual(
+                            changed_count,
+                            len(APPLY.route_checkpoint_surface(target)),
+                        )
+                        return {"fixture": context}
+
+                    with mock.patch.object(
+                        APPLY,
+                        "verify_multi_hop_checkpoint_for_planning",
+                        side_effect=verify_from_active_snapshot,
+                    ), mock.patch.object(
+                        APPLY,
+                        "run_git",
+                        side_effect=AssertionError(
+                            "multi-hop planning fell back to per-path Git"
+                        ),
+                    ):
+                        plan = APPLY.build_plan(
+                            fixture.package,
+                            fixture.target,
+                            multi_hop_checkpoint_context={
+                                "changed_count": changed_count
+                            },
+                            git_inspection_hook=metrics.append,
+                        )
+                    self.assertEqual("fixture-v1.0.0", plan["package_id"])
+                    self.assertEqual(1, len(metrics))
+                    observations.append(
+                        (
+                            changed_count,
+                            metrics[0]["path_count"],
+                            metrics[0]["git_process_count"],
+                        )
+                    )
+                finally:
+                    fixture.close()
+        self.assertEqual({item[2] for item in observations}, {24})
+        self.assertEqual(
+            [item[0] + 1 for item in observations],
+            [item[1] for item in observations],
+        )
+
+    def test_gwt_087_given_ignore_policy_changes_after_apply_snapshot_when_admitted_then_target_is_not_mutated(self) -> None:
+        for source in ("info-exclude", "core-excludes-file"):
+            with self.subTest(source=source):
+                fixture = PackageApplyFixture()
+                try:
+                    relative = ".ai/ignored-after-snapshot.md"
+                    fixture.make_package(
+                        {
+                            relative: (
+                                b"must remain absent\n",
+                                "framework-managed",
+                                "0644",
+                            )
+                        },
+                        [operation("001-add", "add", relative)],
+                    )
+                    policy_path = fixture.target / ".git/info/exclude"
+                    if source == "core-excludes-file":
+                        policy_path = fixture.target / ".git/custom-ignore"
+                        git(
+                            fixture.target,
+                            "config",
+                            "core.excludesFile",
+                            str(policy_path),
+                        )
+                    plan = fixture.plan()
+                    original_capture = APPLY.capture_target_git_snapshot
+
+                    def drift_after_snapshot(*args: object, **kwargs: object):
+                        snapshot = original_capture(*args, **kwargs)
+                        policy_path.write_text(
+                            f"{relative}\n", encoding="utf-8", newline="\n"
+                        )
+                        return snapshot
+
+                    with mock.patch.object(
+                        APPLY,
+                        "capture_target_git_snapshot",
+                        side_effect=drift_after_snapshot,
+                    ), self.assertRaisesRegex(
+                        APPLY.ApplyError, "administrative identity changed"
+                    ):
+                        RAW_APPLY_PLAN(plan)
+                    self.assertFalse((fixture.target / relative).exists())
+                    ignored = subprocess.run(
+                        ["git", "check-ignore", "--quiet", relative],
+                        cwd=fixture.target,
+                        check=False,
+                        capture_output=True,
+                        text=True,
+                    )
+                    self.assertEqual(0, ignored.returncode)
+                finally:
+                    fixture.close()
+
+    def test_gwt_088_given_attribute_policy_changes_after_apply_snapshot_when_admitted_then_target_is_not_mutated(self) -> None:
+        for source in ("info-attributes", "core-attributes-file"):
+            with self.subTest(source=source):
+                fixture = PackageApplyFixture()
+                try:
+                    relative = ".ai/attributed-after-snapshot.md"
+                    fixture.make_package(
+                        {
+                            relative: (
+                                b"must remain absent\n",
+                                "framework-managed",
+                                "0644",
+                            )
+                        },
+                        [operation("001-add", "add", relative)],
+                    )
+                    policy_path = fixture.target / ".git/info/attributes"
+                    if source == "core-attributes-file":
+                        policy_path = fixture.target / ".git/custom-attributes"
+                        git(
+                            fixture.target,
+                            "config",
+                            "core.attributesFile",
+                            str(policy_path),
+                        )
+                    plan = fixture.plan()
+                    original_capture = APPLY.capture_target_git_snapshot
+
+                    def drift_after_snapshot(*args: object, **kwargs: object):
+                        snapshot = original_capture(*args, **kwargs)
+                        policy_path.write_text(
+                            f"{relative} filter=lfs\n",
+                            encoding="utf-8",
+                            newline="\n",
+                        )
+                        return snapshot
+
+                    with mock.patch.object(
+                        APPLY,
+                        "capture_target_git_snapshot",
+                        side_effect=drift_after_snapshot,
+                    ), self.assertRaisesRegex(
+                        APPLY.ApplyError, "administrative identity changed"
+                    ):
+                        RAW_APPLY_PLAN(plan)
+                    self.assertFalse((fixture.target / relative).exists())
+                    observed = git(
+                        fixture.target,
+                        "check-attr",
+                        "filter",
+                        "--",
+                        relative,
+                    )
+                    self.assertIn("filter: lfs", observed.stdout)
+                finally:
+                    fixture.close()
+
+    def test_gwt_089_given_preexisting_global_config_adds_ignore_policy_after_snapshot_when_admitted_then_target_is_not_mutated(self) -> None:
+        fixture = PackageApplyFixture()
+        try:
+            relative = ".ai/global-ignore-after-snapshot.md"
+            fixture.make_package(
+                {
+                    relative: (
+                        b"must remain absent\n",
+                        "framework-managed",
+                        "0644",
+                    )
+                },
+                [operation("001-add", "add", relative)],
+            )
+            global_config = fixture.root / "global.gitconfig"
+            global_config.write_text(
+                "[user]\n\tname = Existing Global Fixture\n",
+                encoding="utf-8",
+                newline="\n",
+            )
+            policy_path = fixture.root / "late-global-ignore"
+            with mock.patch.dict(
+                os.environ,
+                {"GIT_CONFIG_GLOBAL": str(global_config)},
+            ):
+                plan = fixture.plan()
+                original_capture = APPLY.capture_target_git_snapshot
+
+                def drift_after_snapshot(*args: object, **kwargs: object):
+                    snapshot = original_capture(*args, **kwargs)
+                    global_config.write_text(
+                        "[user]\n"
+                        "\tname = Existing Global Fixture\n"
+                        "[core]\n"
+                        f"\texcludesFile = {policy_path.as_posix()}\n",
+                        encoding="utf-8",
+                        newline="\n",
+                    )
+                    policy_path.write_text(
+                        f"{relative}\n", encoding="utf-8", newline="\n"
+                    )
+                    return snapshot
+
+                with mock.patch.object(
+                    APPLY,
+                    "capture_target_git_snapshot",
+                    side_effect=drift_after_snapshot,
+                ), self.assertRaisesRegex(
+                    APPLY.ApplyError, "administrative identity changed"
+                ):
+                    RAW_APPLY_PLAN(plan)
+                self.assertFalse((fixture.target / relative).exists())
+                ignored = subprocess.run(
+                    ["git", "check-ignore", "--quiet", relative],
+                    cwd=fixture.target,
+                    check=False,
+                    capture_output=True,
+                    text=True,
+                )
+                self.assertEqual(0, ignored.returncode)
+        finally:
+            fixture.close()
+
+    def test_gwt_090_given_preexisting_empty_include_adds_policy_after_snapshot_when_admitted_then_target_is_not_mutated(self) -> None:
+        for policy in ("ignore", "attributes"):
+            with self.subTest(policy=policy):
+                fixture = PackageApplyFixture()
+                try:
+                    relative = f".ai/include-{policy}-after-snapshot.md"
+                    fixture.make_package(
+                        {
+                            relative: (
+                                b"must remain absent\n",
+                                "framework-managed",
+                                "0644",
+                            )
+                        },
+                        [operation("001-add", "add", relative)],
+                    )
+                    global_config = fixture.root / "global.gitconfig"
+                    included_config = fixture.root / "included.gitconfig"
+                    global_config.write_text(
+                        "[include]\n\tpath = included.gitconfig\n",
+                        encoding="utf-8",
+                        newline="\n",
+                    )
+                    included_config.write_text(
+                        "# intentionally empty at snapshot\n",
+                        encoding="utf-8",
+                        newline="\n",
+                    )
+                    policy_path = fixture.root / f"late-include-{policy}"
+                    with mock.patch.dict(
+                        os.environ,
+                        {"GIT_CONFIG_GLOBAL": str(global_config)},
+                    ):
+                        plan = fixture.plan()
+                        original_capture = APPLY.capture_target_git_snapshot
+
+                        def drift_after_snapshot(*args: object, **kwargs: object):
+                            snapshot = original_capture(*args, **kwargs)
+                            key = (
+                                "excludesFile"
+                                if policy == "ignore"
+                                else "attributesFile"
+                            )
+                            included_config.write_text(
+                                f"[core]\n\t{key} = {policy_path.as_posix()}\n",
+                                encoding="utf-8",
+                                newline="\n",
+                            )
+                            policy_line = (
+                                f"{relative}\n"
+                                if policy == "ignore"
+                                else f"{relative} filter=lfs\n"
+                            )
+                            policy_path.write_text(
+                                policy_line, encoding="utf-8", newline="\n"
+                            )
+                            return snapshot
+
+                        with mock.patch.object(
+                            APPLY,
+                            "capture_target_git_snapshot",
+                            side_effect=drift_after_snapshot,
+                        ), self.assertRaisesRegex(
+                            APPLY.ApplyError, "administrative identity changed"
+                        ):
+                            RAW_APPLY_PLAN(plan)
+                        self.assertFalse((fixture.target / relative).exists())
+                finally:
+                    fixture.close()
+
+    def test_gwt_091_given_absent_global_config_appears_after_snapshot_when_admitted_then_target_is_not_mutated(self) -> None:
+        fixture = PackageApplyFixture()
+        try:
+            relative = ".ai/absent-global-after-snapshot.md"
+            fixture.make_package(
+                {
+                    relative: (
+                        b"must remain absent\n",
+                        "framework-managed",
+                        "0644",
+                    )
+                },
+                [operation("001-add", "add", relative)],
+            )
+            global_config = fixture.root / "absent-at-snapshot.gitconfig"
+            policy_path = fixture.root / "late-global-ignore"
+            with mock.patch.dict(
+                os.environ,
+                {"GIT_CONFIG_GLOBAL": str(global_config)},
+            ):
+                plan = fixture.plan()
+                original_capture = APPLY.capture_target_git_snapshot
+
+                def drift_after_snapshot(*args: object, **kwargs: object):
+                    snapshot = original_capture(*args, **kwargs)
+                    global_config.write_text(
+                        f"[core]\n\texcludesFile = {policy_path.as_posix()}\n",
+                        encoding="utf-8",
+                        newline="\n",
+                    )
+                    policy_path.write_text(
+                        f"{relative}\n", encoding="utf-8", newline="\n"
+                    )
+                    return snapshot
+
+                with mock.patch.object(
+                    APPLY,
+                    "capture_target_git_snapshot",
+                    side_effect=drift_after_snapshot,
+                ), self.assertRaisesRegex(
+                    APPLY.ApplyError, "administrative identity changed"
+                ):
+                    RAW_APPLY_PLAN(plan)
+                self.assertFalse((fixture.target / relative).exists())
+        finally:
+            fixture.close()
+
+    def test_gwt_092_given_local_config_has_relative_dormant_include_when_policy_appears_after_snapshot_then_target_is_not_mutated(self) -> None:
+        for policy in ("ignore", "attributes"):
+            with self.subTest(policy=policy):
+                fixture = PackageApplyFixture()
+                try:
+                    relative = f".ai/local-include-{policy}-after-snapshot.md"
+                    fixture.make_package(
+                        {
+                            relative: (
+                                b"must remain absent\n",
+                                "framework-managed",
+                                "0644",
+                            )
+                        },
+                        [operation("001-add", "add", relative)],
+                    )
+                    included_config = fixture.target / ".git" / f"dormant-{policy}.gitconfig"
+                    git(
+                        fixture.target,
+                        "config",
+                        "include.path",
+                        included_config.name,
+                    )
+                    policy_path = fixture.root / f"late-local-{policy}"
+                    plan = fixture.plan()
+                    original_capture = APPLY.capture_target_git_snapshot
+
+                    def drift_after_snapshot(*args: object, **kwargs: object):
+                        snapshot = original_capture(*args, **kwargs)
+                        key = (
+                            "excludesFile"
+                            if policy == "ignore"
+                            else "attributesFile"
+                        )
+                        included_config.write_text(
+                            f"[core]\n\t{key} = {policy_path.as_posix()}\n",
+                            encoding="utf-8",
+                            newline="\n",
+                        )
+                        policy_line = (
+                            f"{relative}\n"
+                            if policy == "ignore"
+                            else f"{relative} filter=lfs\n"
+                        )
+                        policy_path.write_text(
+                            policy_line, encoding="utf-8", newline="\n"
+                        )
+                        return snapshot
+
+                    with mock.patch.object(
+                        APPLY,
+                        "capture_target_git_snapshot",
+                        side_effect=drift_after_snapshot,
+                    ), self.assertRaisesRegex(
+                        APPLY.ApplyError, "administrative identity changed"
+                    ):
+                        RAW_APPLY_PLAN(plan)
+                    self.assertFalse((fixture.target / relative).exists())
+                finally:
+                    fixture.close()
+
+    def test_gwt_093_given_config_changes_during_snapshot_when_semantics_were_already_read_then_capture_fails_closed(self) -> None:
+        for policy in ("ignore", "attributes"):
+            with self.subTest(policy=policy):
+                fixture = PackageApplyFixture()
+                try:
+                    relative = f".ai/in-capture-{policy}.md"
+                    fixture.make_package(
+                        {
+                            relative: (
+                                b"must remain absent\n",
+                                "framework-managed",
+                                "0644",
+                            )
+                        },
+                        [operation("001-add", "add", relative)],
+                    )
+                    global_config = fixture.root / "global.gitconfig"
+                    global_config.write_text(
+                        "[user]\n\tname = Existing Global Fixture\n",
+                        encoding="utf-8",
+                        newline="\n",
+                    )
+                    policy_path = fixture.root / f"in-capture-{policy}"
+                    with mock.patch.dict(
+                        os.environ,
+                        {"GIT_CONFIG_GLOBAL": str(global_config)},
+                    ):
+                        plan = fixture.plan()
+                        original_snapshot_git = APPLY._snapshot_git
+                        changed = False
+
+                        def drift_during_snapshot(
+                            root: Path,
+                            stats: object,
+                            *args: str,
+                            **kwargs: object,
+                        ):
+                            nonlocal changed
+                            result = original_snapshot_git(
+                                root,
+                                stats,
+                                *args,
+                                **kwargs,
+                            )
+                            if args and args[0] == "check-ignore" and not changed:
+                                changed = True
+                                key = (
+                                    "excludesFile"
+                                    if policy == "ignore"
+                                    else "attributesFile"
+                                )
+                                global_config.write_text(
+                                    "[user]\n"
+                                    "\tname = Existing Global Fixture\n"
+                                    "[core]\n"
+                                    f"\t{key} = {policy_path.as_posix()}\n",
+                                    encoding="utf-8",
+                                    newline="\n",
+                                )
+                                policy_line = (
+                                    f"{relative}\n"
+                                    if policy == "ignore"
+                                    else f"{relative} filter=lfs\n"
+                                )
+                                policy_path.write_text(
+                                    policy_line,
+                                    encoding="utf-8",
+                                    newline="\n",
+                                )
+                            return result
+
+                        with mock.patch.object(
+                            APPLY,
+                            "_snapshot_git",
+                            side_effect=drift_during_snapshot,
+                        ), self.assertRaisesRegex(
+                            APPLY.ApplyError,
+                            "configuration changed while snapshot was captured",
+                        ):
+                            RAW_APPLY_PLAN(plan)
+                    self.assertTrue(changed)
+                    self.assertFalse((fixture.target / relative).exists())
+                finally:
+                    fixture.close()
+
+    def test_gwt_094_given_windows_git_home_differs_from_userprofile_when_default_policy_changes_then_apply_fails_closed(self) -> None:
+        for policy in ("ignore", "attributes"):
+            for source in ("default-global", "default-policy"):
+                with self.subTest(policy=policy, source=source):
+                    fixture = PackageApplyFixture()
+                    try:
+                        relative = f".ai/home-{source}-{policy}.md"
+                        fixture.make_package(
+                            {
+                                relative: (
+                                    b"must remain absent\n",
+                                    "framework-managed",
+                                    "0644",
+                                )
+                            },
+                            [operation("001-add", "add", relative)],
+                        )
+                        git_home = fixture.root / "git-home"
+                        git_home.mkdir()
+                        global_config = git_home / ".gitconfig"
+                        if source == "default-global":
+                            policy_path = git_home / f"late-{policy}"
+                        else:
+                            policy_path = git_home / ".config" / "git" / policy
+                        with mock.patch.dict(
+                            os.environ,
+                            {"HOME": str(git_home)},
+                        ):
+                            os.environ.pop("GIT_CONFIG_GLOBAL", None)
+                            os.environ.pop("XDG_CONFIG_HOME", None)
+                            plan = fixture.plan()
+                            original_capture = APPLY.capture_target_git_snapshot
+
+                            def drift_after_snapshot(*args: object, **kwargs: object):
+                                snapshot = original_capture(*args, **kwargs)
+                                policy_path.parent.mkdir(parents=True, exist_ok=True)
+                                if source == "default-global":
+                                    key = (
+                                        "excludesFile"
+                                        if policy == "ignore"
+                                        else "attributesFile"
+                                    )
+                                    global_config.write_text(
+                                        f"[core]\n\t{key} = ~/{policy_path.name}\n",
+                                        encoding="utf-8",
+                                        newline="\n",
+                                    )
+                                policy_line = (
+                                    f"{relative}\n"
+                                    if policy == "ignore"
+                                    else f"{relative} filter=lfs\n"
+                                )
+                                policy_path.write_text(
+                                    policy_line,
+                                    encoding="utf-8",
+                                    newline="\n",
+                                )
+                                return snapshot
+
+                            with mock.patch.object(
+                                APPLY,
+                                "capture_target_git_snapshot",
+                                side_effect=drift_after_snapshot,
+                            ), self.assertRaisesRegex(
+                                APPLY.ApplyError,
+                                "administrative identity changed",
+                            ):
+                                RAW_APPLY_PLAN(plan)
+                            self.assertFalse((fixture.target / relative).exists())
+                            if policy == "ignore":
+                                self.assertEqual(
+                                    0,
+                                    subprocess.run(
+                                        ["git", "check-ignore", "--quiet", relative],
+                                        cwd=fixture.target,
+                                        check=False,
+                                    ).returncode,
+                                )
+                            else:
+                                self.assertIn(
+                                    "filter: lfs",
+                                    git(
+                                        fixture.target,
+                                        "check-attr",
+                                        "filter",
+                                        "--",
+                                        relative,
+                                    ).stdout,
+                                )
+                    finally:
+                        fixture.close()
+
+    def test_gwt_095_given_raw_global_selector_uses_platform_path_resolution_when_git_admin_config_changes_then_apply_fails_closed(self) -> None:
+        for policy in ("ignore", "attributes"):
+            with self.subTest(policy=policy):
+                fixture = PackageApplyFixture()
+                try:
+                    relative = f".ai/literal-selector-{policy}.md"
+                    fixture.make_package(
+                        {
+                            relative: (
+                                b"must remain absent\n",
+                                "framework-managed",
+                                "0644",
+                            )
+                        },
+                        [operation("001-add", "add", relative)],
+                    )
+                    git_home = fixture.root / "git-home"
+                    git_home.mkdir()
+                    selector = "~/../.git/audit-global"
+                    actual_config = fixture.target / ".git" / "audit-global"
+                    policy_path = fixture.target / ".git" / f"audit-{policy}"
+                    with mock.patch.dict(
+                        os.environ,
+                        {
+                            "HOME": str(git_home),
+                            "GIT_CONFIG_GLOBAL": selector,
+                        },
+                    ):
+                        plan = fixture.plan()
+                        original_capture = APPLY.capture_target_git_snapshot
+
+                        def drift_after_snapshot(*args: object, **kwargs: object):
+                            snapshot = original_capture(*args, **kwargs)
+                            if os.name != "nt":
+                                # POSIX must traverse the literal '~' component
+                                # before '..'; creating it makes the raw selector
+                                # resolve to the same config Windows can reach
+                                # through lexical normalization.
+                                (fixture.target / "~").mkdir()
+                            key = (
+                                "excludesFile"
+                                if policy == "ignore"
+                                else "attributesFile"
+                            )
+                            actual_config.write_text(
+                                f"[core]\n\t{key} = {policy_path.as_posix()}\n",
+                                encoding="utf-8",
+                                newline="\n",
+                            )
+                            policy_line = (
+                                f"{relative}\n"
+                                if policy == "ignore"
+                                else f"{relative} filter=lfs\n"
+                            )
+                            policy_path.write_text(
+                                policy_line,
+                                encoding="utf-8",
+                                newline="\n",
+                            )
+                            return snapshot
+
+                        with mock.patch.object(
+                            APPLY,
+                            "capture_target_git_snapshot",
+                            side_effect=drift_after_snapshot,
+                        ), self.assertRaisesRegex(
+                            APPLY.ApplyError,
+                            "administrative identity changed",
+                        ):
+                            RAW_APPLY_PLAN(plan)
+                        self.assertFalse((fixture.target / relative).exists())
+                        if policy == "ignore":
+                            self.assertEqual(
+                                0,
+                                subprocess.run(
+                                    ["git", "check-ignore", "--quiet", relative],
+                                    cwd=fixture.target,
+                                    check=False,
+                                ).returncode,
+                            )
+                        else:
+                            self.assertIn(
+                                "filter: lfs",
+                                git(
+                                    fixture.target,
+                                    "check-attr",
+                                    "filter",
+                                    "--",
+                                    relative,
+                                ).stdout,
+                            )
+                finally:
+                    fixture.close()
+
 
 if __name__ == "__main__":
     unittest.main()

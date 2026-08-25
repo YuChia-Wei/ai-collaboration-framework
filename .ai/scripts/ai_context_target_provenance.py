@@ -1424,21 +1424,63 @@ def validate_transient_bound_multi_hop_proposal(
         errors.append(f"{route_root}: bound multi-hop proposal differs from child evidence")
 
 
-def validate_multi_hop_route_transactions(root: Path, errors: list[str]) -> None:
+def validate_multi_hop_route_transactions(
+    root: Path,
+    errors: list[str],
+    *,
+    git_snapshot: dict[str, object] | None = None,
+) -> None:
     """Validate retained S2 checkpoints without treating them as target authority.
 
     The only copied byte is the pending receipt archived before its global
     clearance.  All package/remediation/validation/terminal records remain
     referenced at the existing child package-apply transaction path.
     """
-    try:
-        route_directory = multi_hop_route_directory(root)
-        child_directory = apply_transaction_directory(root)
-    except TargetValidationError as exc:
-        errors.append(str(exc))
-        return
+    snapshot_surface: dict[str, dict] | None = None
+    if git_snapshot is None:
+        try:
+            route_directory = multi_hop_route_directory(root)
+            child_directory = apply_transaction_directory(root)
+        except TargetValidationError as exc:
+            errors.append(str(exc))
+            return
+        target_head: str | None = None
+    else:
+        if set(git_snapshot) != {
+            "head",
+            "apply_transaction_directory",
+            "multi_hop_route_directory",
+            "target_surface",
+        }:
+            errors.append("multi-hop route Git snapshot fields are invalid")
+            return
+        route_directory = git_snapshot.get("multi_hop_route_directory")
+        child_directory = git_snapshot.get("apply_transaction_directory")
+        target_head = git_snapshot.get("head")
+        surface_value = git_snapshot.get("target_surface")
+        if (
+            not isinstance(route_directory, Path)
+            or not route_directory.is_absolute()
+            or not isinstance(child_directory, Path)
+            or not child_directory.is_absolute()
+            or not isinstance(target_head, str)
+            or not SHA_RE.fullmatch(target_head)
+            or not route_target_surface_valid(surface_value)
+        ):
+            errors.append("multi-hop route Git snapshot identity is invalid")
+            return
+        snapshot_surface = {
+            relative: dict(state)
+            for relative, state in surface_value.items()
+        }
     if route_directory is None or not route_directory.exists():
         return
+    if target_head is None:
+        try:
+            target_head = current_target_head(root)
+        except TargetValidationError as exc:
+            errors.append(str(exc))
+            return
     if route_directory.is_symlink() or is_reparse_point(route_directory) or not route_directory.is_dir():
         errors.append(f"{route_directory}: multi-hop route directory is unsafe")
         return
@@ -1493,7 +1535,10 @@ def validate_multi_hop_route_transactions(root: Path, errors: list[str]) -> None
         if transaction_id != route_root.name or canonical_json_digest(seed) != route_root.name:
             errors.append(f"{route_root}: multi-hop route transaction identity differs")
             continue
-        if intent.get("target_root") != str(root.resolve()) or intent.get("target_starting_commit") != current_target_head(root):
+        if (
+            intent.get("target_root") != str(root.resolve())
+            or intent.get("target_starting_commit") != target_head
+        ):
             errors.append(f"{route_root}: multi-hop route target identity differs")
         matrix = intent.get("matrix")
         if (
@@ -1715,7 +1760,11 @@ def validate_multi_hop_route_transactions(root: Path, errors: list[str]) -> None
                     )
             historical_error_start = len(errors)
             validate_historical_finalized_upgrade_transaction(
-                root, child["transaction_id"], child_journal, errors
+                root,
+                child["transaction_id"],
+                child_journal,
+                errors,
+                transaction_base=child_directory,
             )
             if len(errors) != historical_error_start:
                 errors.append(
@@ -1901,7 +1950,14 @@ def validate_multi_hop_route_transactions(root: Path, errors: list[str]) -> None
         elif active is not None:
             errors.append(f"{route_root}: inactive multi-hop route retains active-hop evidence")
         if journal["state"] in {"checkpointed", "completed"} and last_checkpoint is not None:
-            current_surface = route_target_surface(root, errors)
+            current_surface = (
+                route_target_surface(root, errors)
+                if snapshot_surface is None
+                else {
+                    relative: dict(state)
+                    for relative, state in snapshot_surface.items()
+                }
+            )
             authority = last_checkpoint.get("authority")
             target_surface = last_checkpoint.get("target_surface")
             provenance = route_regular_bytes(
@@ -3433,6 +3489,7 @@ def validate_upgrade_finalization_evidence(
     expected_status: str = "approved",
     transaction_id: str | None = None,
     historical: bool = False,
+    transaction_base: Path | None = None,
 ) -> dict[str, object] | None:
     """Validate the package-owned upgrade proof before provenance can advance.
 
@@ -3480,11 +3537,13 @@ def validate_upgrade_finalization_evidence(
                     )
                     return None
                 receipt_path = None
-    try:
-        transactions = apply_transaction_directory(root)
-    except TargetValidationError as exc:
-        errors.append(str(exc))
-        return None
+    transactions = transaction_base
+    if transactions is None:
+        try:
+            transactions = apply_transaction_directory(root)
+        except TargetValidationError as exc:
+            errors.append(str(exc))
+            return None
     if (
         transactions is None
         or transactions.is_symlink()
@@ -3939,14 +3998,21 @@ def is_historical_upgrade_transaction(
 
 
 def validate_historical_finalized_upgrade_transaction(
-    root: Path, transaction_id: str, journal: dict, errors: list[str]
+    root: Path,
+    transaction_id: str,
+    journal: dict,
+    errors: list[str],
+    *,
+    transaction_base: Path | None = None,
 ) -> bool:
     """Validate a retained completed upgrade without treating later authority as drift."""
-    try:
-        transaction = apply_transaction_directory(root)
-    except TargetValidationError as exc:
-        errors.append(str(exc))
-        return False
+    transaction = transaction_base
+    if transaction is None:
+        try:
+            transaction = apply_transaction_directory(root)
+        except TargetValidationError as exc:
+            errors.append(str(exc))
+            return False
     if transaction is None:
         errors.append("historical upgrade transaction directory is missing")
         return False
@@ -3961,6 +4027,7 @@ def validate_historical_finalized_upgrade_transaction(
         evidence_errors,
         transaction_id=transaction_id,
         historical=True,
+        transaction_base=transaction_base,
     )
     errors.extend(evidence_errors)
     if evidence is not None:
