@@ -8,7 +8,7 @@
   "owner_skill": "ai-context-governance",
   "status": "in_progress",
   "created_at": "2026-08-25T14:55:24+08:00",
-  "updated_at": "2026-08-25T17:04:25+08:00",
+  "updated_at": "2026-08-26T07:53:30+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-5.6-sol",
   "reasoning_effort": "xhigh",
@@ -22,8 +22,24 @@
   "execution": {
     "steps": ["Validate workflow and focused contracts", "Create durable commits only after planned-message preflight", "Dispatch applicable long-running validation from a clean immutable head", "Obtain independent read-only exact-head audit", "Reconcile #249 and #253 acceptance evidence separately"],
     "validation": ["Focused validator tests", "AI-context/source-governance selected profiles", "Commit range validator", "Independent exact-head governance audit"],
-    "last_completed_step": "The third exact-head audit was preserved as blocked; its remaining retry consumer mismatch was reproduced and repaired, while its Git Bash signal-pipe failure was retained as environment evidence.",
-    "next_action": "Commit the verified retry repair, recreate exact-head ledger and canonical resolver receipts, and obtain a fourth independent read-only audit under audit-v4."
+    "last_completed_step": "Audit-v4 passed all implementation acceptance at 519343023c1a347f4b8898d42cb887859abe9c0a while preserving the blocked aggregate; completed #251 was then merged as ffa1d5d8ac69f25940def9aa2ffedb06000e3258 without rewriting audited history.",
+    "next_action": "Commit the post-#251 reconciliation, recreate exact-subject evidence, execute only affected focused gates, and dispatch one owner-authorized fast aggregate before the final exact-head audit."
   },
-  "results": {"summary": "", "files_changed": [], "tests_run": [], "finding_status": "not-addressed", "residual_risk": "", "follow_up_needed": true}
+  "results": {
+    "summary": "Implementation acceptance remains satisfied after the #251 baseline merge; final validation is in progress on the new subject.",
+    "files_changed": [
+      ".dev/workflows/2026-08-25-validation-freeze-agent-guardrails/workflow.yaml",
+      ".dev/workflows/2026-08-25-validation-freeze-agent-guardrails/workflow-plan.md",
+      ".dev/workflows/2026-08-25-validation-freeze-agent-guardrails/tasks/GOV013014-VAL-001.json",
+      ".dev/workflows/2026-08-25-validation-freeze-agent-guardrails/acceptance-map.yaml",
+      ".dev/workflows/INDEX.MD"
+    ],
+    "tests_run": [
+      "python .ai/scripts/validate-workflow-artifacts.py (passed before merge commit)",
+      "python .ai/scripts/validate-git-commits.py --message-file .dev/ai-context/local/commit-messages/issue-249-253-merge-main.txt --workflow-id 2026-08-25-validation-freeze-agent-guardrails (passed)"
+    ],
+    "finding_status": "partially-resolved",
+    "residual_risk": "Fast aggregate actual execution and a fresh exact-head audit remain required for the post-#251 subject.",
+    "follow_up_needed": true
+  }
 }

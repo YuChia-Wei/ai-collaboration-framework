@@ -16,10 +16,10 @@
 - `base_branch`: `main`
 - `branch_segment`: `1`
 - `status`: `in_progress`
-- `current_phase`: `audit`
+- `current_phase`: `validation`
 - `artifact_root`: `.dev/workflows/2026-08-25-validation-freeze-agent-guardrails`
 - `created_at`: `2026-08-25T14:55:24+08:00`
-- `updated_at`: `2026-08-25T17:04:25+08:00`
+- `updated_at`: `2026-08-26T07:53:30+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md`
 - `template_version`: `1.2.0`
 
@@ -39,8 +39,9 @@
 - Live GitHub read-back on 2026-08-25: #249 and #253 are open, Project status `Inbox`, with no comments; their bodies are the scope contracts and the parent orchestration prompt records owner execution authorization.
 - Completed authority/baseline read-back: #118/#119 role reachability and provider-neutral execution, #194 long-running delegation, #204 terminal runner, #212 terminal Issue closure, #243 terminal-anchor reconciliation, and #246 portable fixture acceleration.
 - Base: clean `origin/main@1326f827f61de8eebeef30748dcc82ffa7dd3764` after a fresh fetch.
+- Post-#251 baseline: owner-authorized merge of `origin/main@a6efd162e6cbbb2c7aae61710b121a727844c48e` produced `ffa1d5d8ac69f25940def9aa2ffedb06000e3258`; PR #255 is merged, Issue #251 is closed, and its Project item is Done.
 - Isolation: `.dev/ai-context/local/worktrees/issue-249-253` on the dedicated branch. Main, #250, #251, and all other worktrees remain read-only.
-- Code graph: the original project index was stale at `599136547bd30c9bcff288a51d7dc30a4b73950c`; a full worktree index was rebuilt and verified at the exact base SHA. Graph results remain discovery only.
+- Code graph: the original project index was stale at `599136547bd30c9bcff288a51d7dc30a4b73950c`; after the #251 merge, a full worktree index was rebuilt as `issue-249-253-post-251`. Graph results remain discovery only and material absence claims still require tracked fallback.
 
 ## Tasks And Acceptance Ownership
 
@@ -63,13 +64,13 @@
 
 ## Resume Checkpoint
 
-- Last completed action: Preserved the third exact-head audit at `4ccca9c17228ed05d0eaa0d1b8d169f37c6c8f61` as blocked; its actual-execution finding was resolved, while the remaining retry consumer mismatch was reproduced and repaired with a dedicated wrong-consumer regression. The auditor's Git Bash signal-pipe failure remains environment evidence, not a product pass or failure.
+- Last completed action: Preserved audit-v4 at `519343023c1a347f4b8898d42cb887859abe9c0a` as an implementation-acceptance pass with the fast aggregate still blocked, then merged the completed #251 baseline without rewriting any audited governance commit.
 - Current task: `GOV013014-VAL-001`
-- Exact next action: Validate and commit the retry consumer repair, recreate exact-head execution and canonical resolver receipts, and obtain a fourth independent read-only audit under `audit-v4` without requiring Git Bash inside the auditor sandbox.
-- Validation already completed: lifecycle 13 GWTs, agent guardrail 23 GWTs including wrong-consumer rejection, validation profile registry 9 GWTs, external delegation 18 GWTs, commit policy 25 GWTs, AI-context/workflow/source/shell validators, exact-head ledger/report byte binding, and aggregate attempt-three packet/retry receipts; three earlier blocked audits remain retained.
-- Git state: dedicated local branch at `4ccca9c17228ed05d0eaa0d1b8d169f37c6c8f61` with the tracked third-audit retry repair pending one durable commit; no work occurred in main or another worktree.
-- Branch history and checkpoint handoffs: segment 1 remains local from `origin/main@1326f827f61de8eebeef30748dcc82ffa7dd3764`; no push, PR, merge, or provider mutation.
-- Blockers or unresolved decisions: the fast aggregate remains truthfully blocked before execution after three authorized attempts, and attempt four is not authorized. This residual gate is retained rather than retried; any canonical semantic, hosted required-check, release, provider, or integration topology change still requires owner direction.
+- Exact next action: Commit this post-#251 reconciliation, rebuild exact-subject packet/lease/ledger/freshness evidence, run only affected focused gates, and dispatch one owner-authorized long-running fast profile from the clean immutable head.
+- Validation already completed: historical lifecycle 13 GWTs, agent guardrail 23 GWTs, validation profile registry 9 GWTs, external delegation 18 GWTs, commit policy 25 GWTs, workflow/source/AI-context validators, and four retained exact-head audits. Their old-subject facts remain historical; only content-compatible behavioral evidence may be reused with proof.
+- Git state: dedicated local branch at merge commit `ffa1d5d8ac69f25940def9aa2ffedb06000e3258`, incorporating `origin/main@a6efd162e6cbbb2c7aae61710b121a727844c48e`; the main checkout remains untouched and behind its remote-tracking ref.
+- Branch history and checkpoint handoffs: segment 1 remains local; the owner selected a merge to preserve exact-head history. No push, pull request, Issue/Project mutation, release, tag, or publication was performed by this workflow.
+- Blockers or unresolved decisions: the fast aggregate has no passing actual-execution receipt. The completed #251 snapshot is a material state change and the owner's instruction to merge and continue authorizes one new post-#251 attempt; any further retry without another material change requires fresh authorization.
 
 ## Branch Lifecycle
 
@@ -79,3 +80,4 @@
 | 1 | `codex/2026-08-25-validation-freeze-agent-guardrails` | `origin/main@1326f827f61de8eebeef30748dcc82ffa7dd3764` | implementation | `5c1657d3084c9e6843705a3b0355a2c6ddb76270` | local only | `2026-08-25T15:17:17+08:00` | First exact-head audit blocked on seven binding gaps | Repair validators and retain the blocked audit. |
 | 1 | `codex/2026-08-25-validation-freeze-agent-guardrails` | `origin/main@1326f827f61de8eebeef30748dcc82ffa7dd3764` | audit-repair | `71f47831bf1b510b3e25cc98392c488a22debe4d` | local only | `2026-08-25T16:34:06+08:00` | Second exact-head audit blocked on three remaining evidence-authority gaps | Repair validators, retain the blocked audit, and obtain a fresh third audit. |
 | 1 | `codex/2026-08-25-validation-freeze-agent-guardrails` | `origin/main@1326f827f61de8eebeef30748dcc82ffa7dd3764` | audit-repair | `4ccca9c17228ed05d0eaa0d1b8d169f37c6c8f61` | local only | `2026-08-25T17:04:25+08:00` | Third exact-head audit found one retry consumer mismatch; canonical resolver re-execution was blocked only in the auditor sandbox | Repair the retry binding and provide a native exact-head resolver receipt to a fresh audit. |
+| 1 | `codex/2026-08-25-validation-freeze-agent-guardrails` | `origin/main@a6efd162e6cbbb2c7aae61710b121a727844c48e` | baseline-merge | `ffa1d5d8ac69f25940def9aa2ffedb06000e3258` | local only | `2026-08-26T07:49:00+08:00` | Preserve seven audited governance commits while incorporating completed #251 Git snapshot performance work | Reconcile exact-subject evidence and run one post-#251 fast profile before final audit. |

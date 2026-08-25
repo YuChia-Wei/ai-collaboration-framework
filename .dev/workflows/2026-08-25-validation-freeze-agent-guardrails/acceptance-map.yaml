@@ -1,6 +1,6 @@
 schema_version: "1.0"
 workflow_id: 2026-08-25-validation-freeze-agent-guardrails
-status: third-audit-repair-pending-final-exact-head-verification
+status: post-issue-251-validation-in-progress
 issues:
   "249":
     task_id: GOV013-001
@@ -82,6 +82,9 @@ terminal_evidence:
       disposition: blocked
       subject_sha: 4ccca9c17228ed05d0eaa0d1b8d169f37c6c8f61
     - path: .dev/ai-context/local/validation/issue-249-253/audit-v4/exact-head-audit.yaml
+      disposition: blocked
+      subject_sha: 519343023c1a347f4b8898d42cb887859abe9c0a
+    - path: .dev/ai-context/local/validation/issue-249-253/audit-v5/exact-head-audit.yaml
       disposition: pending
-      subject_sha: pending-final-repair-commit
+      subject_sha: pending-post-issue-251-closeout-commit
   code_graph_freshness: .dev/ai-context/local/validation/issue-249-253/code-graph-freshness.yaml
