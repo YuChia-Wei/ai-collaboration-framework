@@ -674,10 +674,34 @@ def _parse_core_snapshot_config(
     )
 
 
+def _git_home_path() -> Path:
+    """Resolve the home directory Git uses for config and policy paths."""
+    home_override = os.environ.get("HOME")
+    if home_override is None:
+        candidate = Path.home()
+    else:
+        if not home_override:
+            raise ApplyError("cannot resolve target Git home directory")
+        candidate = Path(home_override)
+    if not candidate.is_absolute():
+        raise ApplyError("cannot resolve target Git home directory")
+    return Path(os.path.abspath(candidate))
+
+
+def _expand_git_user_path(value: str) -> Path:
+    if value == "~":
+        return _git_home_path()
+    if value.startswith("~/") or value.startswith("~\\"):
+        return _git_home_path() / value[2:]
+    if value.startswith("~"):
+        raise ApplyError("cannot resolve target Git user-relative path")
+    return Path(value)
+
+
 def _resolved_git_include_path(origin: Path, value: str) -> Path:
     if not value or value.startswith("%(prefix)/"):
         raise ApplyError("cannot resolve target Git include policy path")
-    expanded = Path(os.path.expanduser(value))
+    expanded = _expand_git_user_path(value)
     candidate = expanded if expanded.is_absolute() else origin.parent / expanded
     return Path(os.path.abspath(candidate))
 
@@ -685,11 +709,12 @@ def _resolved_git_include_path(origin: Path, value: str) -> Path:
 def _resolved_git_policy_path(root: Path, value: str | None, name: str) -> Path:
     if value is None:
         xdg_root = os.environ.get("XDG_CONFIG_HOME")
-        base = Path(xdg_root) if xdg_root else Path.home() / ".config"
-        return Path(os.path.abspath(base / "git" / name))
+        base = Path(xdg_root) if xdg_root else _git_home_path() / ".config"
+        candidate = base if base.is_absolute() else root / base
+        return Path(os.path.abspath(candidate / "git" / name))
     if not value or value.startswith("%(prefix)/"):
         raise ApplyError(f"cannot resolve target Git {name} policy path")
-    expanded = Path(os.path.expanduser(value))
+    expanded = _expand_git_user_path(value)
     candidate = expanded if expanded.is_absolute() else root / expanded
     return Path(os.path.abspath(candidate))
 
@@ -701,9 +726,7 @@ def _candidate_git_config_paths(root: Path) -> set[Path]:
     def add(value: str) -> None:
         if not value or value == os.devnull:
             return
-        expanded = Path(os.path.expanduser(value))
-        if value.startswith("~") and str(expanded) == value:
-            raise ApplyError("cannot resolve target Git configuration path")
+        expanded = _expand_git_user_path(value)
         candidate = expanded if expanded.is_absolute() else root / expanded
         candidates.add(Path(os.path.abspath(candidate)))
 
@@ -711,12 +734,13 @@ def _candidate_git_config_paths(root: Path) -> set[Path]:
     if global_override is not None:
         add(global_override)
     else:
-        add(str(Path.home() / ".gitconfig"))
+        git_home = _git_home_path()
+        add(str(git_home / ".gitconfig"))
         xdg_root = os.environ.get("XDG_CONFIG_HOME")
         if xdg_root:
             add(str(Path(xdg_root) / "git" / "config"))
         else:
-            add(str(Path.home() / ".config" / "git" / "config"))
+            add(str(git_home / ".config" / "git" / "config"))
 
     if not os.environ.get("GIT_CONFIG_NOSYSTEM"):
         system_override = os.environ.get("GIT_CONFIG_SYSTEM")

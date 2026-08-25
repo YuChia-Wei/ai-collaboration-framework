@@ -6278,6 +6278,98 @@ class AiContextPackageApplyGwtTests(unittest.TestCase):
                 finally:
                     fixture.close()
 
+    def test_gwt_094_given_windows_git_home_differs_from_userprofile_when_default_policy_changes_then_apply_fails_closed(self) -> None:
+        for policy in ("ignore", "attributes"):
+            for source in ("default-global", "default-policy"):
+                with self.subTest(policy=policy, source=source):
+                    fixture = PackageApplyFixture()
+                    try:
+                        relative = f".ai/home-{source}-{policy}.md"
+                        fixture.make_package(
+                            {
+                                relative: (
+                                    b"must remain absent\n",
+                                    "framework-managed",
+                                    "0644",
+                                )
+                            },
+                            [operation("001-add", "add", relative)],
+                        )
+                        git_home = fixture.root / "git-home"
+                        git_home.mkdir()
+                        global_config = git_home / ".gitconfig"
+                        if source == "default-global":
+                            policy_path = git_home / f"late-{policy}"
+                        else:
+                            policy_path = git_home / ".config" / "git" / policy
+                        with mock.patch.dict(
+                            os.environ,
+                            {"HOME": str(git_home)},
+                        ):
+                            os.environ.pop("GIT_CONFIG_GLOBAL", None)
+                            os.environ.pop("XDG_CONFIG_HOME", None)
+                            plan = fixture.plan()
+                            original_capture = APPLY.capture_target_git_snapshot
+
+                            def drift_after_snapshot(*args: object, **kwargs: object):
+                                snapshot = original_capture(*args, **kwargs)
+                                policy_path.parent.mkdir(parents=True, exist_ok=True)
+                                if source == "default-global":
+                                    key = (
+                                        "excludesFile"
+                                        if policy == "ignore"
+                                        else "attributesFile"
+                                    )
+                                    global_config.write_text(
+                                        f"[core]\n\t{key} = ~/{policy_path.name}\n",
+                                        encoding="utf-8",
+                                        newline="\n",
+                                    )
+                                policy_line = (
+                                    f"{relative}\n"
+                                    if policy == "ignore"
+                                    else f"{relative} filter=lfs\n"
+                                )
+                                policy_path.write_text(
+                                    policy_line,
+                                    encoding="utf-8",
+                                    newline="\n",
+                                )
+                                return snapshot
+
+                            with mock.patch.object(
+                                APPLY,
+                                "capture_target_git_snapshot",
+                                side_effect=drift_after_snapshot,
+                            ), self.assertRaisesRegex(
+                                APPLY.ApplyError,
+                                "administrative identity changed",
+                            ):
+                                RAW_APPLY_PLAN(plan)
+                            self.assertFalse((fixture.target / relative).exists())
+                            if policy == "ignore":
+                                self.assertEqual(
+                                    0,
+                                    subprocess.run(
+                                        ["git", "check-ignore", "--quiet", relative],
+                                        cwd=fixture.target,
+                                        check=False,
+                                    ).returncode,
+                                )
+                            else:
+                                self.assertIn(
+                                    "filter: lfs",
+                                    git(
+                                        fixture.target,
+                                        "check-attr",
+                                        "filter",
+                                        "--",
+                                        relative,
+                                    ).stdout,
+                                )
+                    finally:
+                        fixture.close()
+
 
 if __name__ == "__main__":
     unittest.main()
