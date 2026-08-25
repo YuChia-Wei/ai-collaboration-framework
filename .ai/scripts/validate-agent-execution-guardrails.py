@@ -98,6 +98,12 @@ def tracked_path(value: Any, name: str) -> Path:
 def iso_with_offset(value: Any, name: str) -> None:
     if not isinstance(value, str):
         raise GuardrailError(f"{name} must be ISO 8601 with an offset")
+    try:
+        parsed = datetime.fromisoformat(value.replace("Z", "+00:00"))
+    except ValueError as exc:
+        raise GuardrailError(f"{name} must be ISO 8601 with an offset") from exc
+    if parsed.tzinfo is None or parsed.utcoffset() is None:
+        raise GuardrailError(f"{name} must be ISO 8601 with an offset")
 
 
 def lease_lock_bytes(record: dict[str, Any]) -> bytes:
@@ -121,12 +127,6 @@ def acquire_lease_lock(record: dict[str, Any]) -> None:
             stream.write(lease_lock_bytes(record))
     except FileExistsError as exc:
         raise GuardrailError("worktree lease lock already exists; another compliant holder may be active") from exc
-    try:
-        parsed = datetime.fromisoformat(value.replace("Z", "+00:00"))
-    except ValueError as exc:
-        raise GuardrailError(f"{name} must be ISO 8601 with an offset") from exc
-    if parsed.tzinfo is None or parsed.utcoffset() is None:
-        raise GuardrailError(f"{name} must be ISO 8601 with an offset")
 
 
 def reject_private(value: Any, schema: dict[str, Any], path: str = "record") -> None:

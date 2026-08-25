@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import copy
 import importlib.util
+import tempfile
 import unittest
 from pathlib import Path
 
@@ -161,6 +162,17 @@ class AgentExecutionGuardrailsGwtTests(unittest.TestCase):
         value["terminal_release"] = {"released": False, "reason": "retained historical failure"}
         seal(value, "lease_sha256")
         VALIDATOR.validate_lease(value, SCHEMA)
+
+    def test_gwt_005c_given_active_lease_when_lock_is_acquired_twice_then_second_holder_is_rejected(self) -> None:
+        value = lease()
+        with tempfile.TemporaryDirectory(dir=ROOT / ".dev/ai-context/local", prefix="lease-lock-") as temporary:
+            lock_path = Path(temporary) / "lease.lock"
+            value["holder"]["lock_ref"] = lock_path.relative_to(ROOT).as_posix()
+            value["holder"]["lock_sha256"] = __import__("hashlib").sha256(VALIDATOR.lease_lock_bytes(value)).hexdigest()
+            seal(value, "lease_sha256")
+            VALIDATOR.acquire_lease_lock(value)
+            with self.assertRaisesRegex(VALIDATOR.GuardrailError, "already exists"):
+                VALIDATOR.acquire_lease_lock(value)
 
     def test_gwt_006_given_actual_acceptance_and_human_projection_when_bound_then_they_pass(self) -> None:
         VALIDATOR.validate_evidence(ledger(), SCHEMA)
