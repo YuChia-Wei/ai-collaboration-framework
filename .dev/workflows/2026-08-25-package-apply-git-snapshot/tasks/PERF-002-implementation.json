@@ -9,7 +9,7 @@
   "related_plan_id": "development-plan-2026-08-25-package-apply-git-snapshot",
   "status": "in_progress",
   "created_at": "2026-08-25T14:52:56+08:00",
-  "updated_at": "2026-08-25T15:36:20+08:00",
+  "updated_at": "2026-08-25T17:56:16+08:00",
   "template_source": ".ai/assets/skills/software-development-orchestrator/templates/development-workflow-task-template.json",
   "model": "gpt-5.6-sol",
   "reasoning_effort": "high",
@@ -65,7 +65,7 @@
     "deferred_items": ["Linux reference execution is reported truthfully if not available in this Windows task; parent decides later integration/reference lane"]
   },
   "results": {
-    "summary": "Implemented bounded plan/apply target Git snapshots, including multi-hop checkpoint surfaces, local drift admission, batch blob/attribute/ignore parsing, recovery ignore-semantic binding, stderr-only phase metrics, scale/process fixtures, and exact-head benchmark/long-validation runners. Focused validation passes. The first exact-commit delegation was blocked by Windows TEMP access; the repaired-head native delegation exposed receipt/recovery lifecycle regressions which are now repaired and focused-tested. A fresh exact-head aggregate and three-run benchmark remain required.",
+    "summary": "Implemented bounded plan/apply target Git snapshots, including multi-hop checkpoint surfaces, local drift admission, batch blob/attribute/ignore parsing, recovery ignore-semantic binding, stderr-only phase metrics, scale/process fixtures, and exact-head benchmark/long-validation runners. Focused and exact-head aggregate validation pass. The retained 631-record three-warm-run benchmark reduces plan Git processes from 3153 to 22 and apply Git processes from 13272 to 11.",
     "files_changed": [
       ".ai/scripts/ai_context_package_apply.py",
       ".ai/scripts/plan-ai-context-package-apply.py",
@@ -118,6 +118,11 @@
         "command": "python .ai/scripts/tests/run_perf002_long_validation.py --expected-commit c5aca00668c94a40c74f9e3118065a100d3d3cd2 --base-ref 1326f827f61de8eebeef30748dcc82ffa7dd3764 --output-dir .tmp/issue-251/external/c5aca006 --scale-count 631 --warm-runs 3",
         "outcome": "failed",
         "evidence": "Schema-valid native-Windows delegation issue-251-long-validation-c5aca006 ran once for 480.283356s. Package-apply ran 104 tests with 1 failure, 11 errors, and 1 skip; multi-hop and benchmark did not run. The receipt exposed missing active-snapshot admission for target-validation binding and stale journal staging paths after durable cleanup. summary canonical-content sha256=a8e41e5dc4ad31b0b29863ccabd8a482c98fc29715073fd44a777efc7568af42; stderr file-byte sha256=4e40896a21a498d52ab261c10159f33778918d2e9d9a12cb431f59715874dcd3."
+      },
+      {
+        "command": "python .ai/scripts/tests/run_perf002_long_validation.py --expected-commit 68204f58e6ebfe1e099ac6e9b0db95712f3d6085 --base-ref 1326f827f61de8eebeef30748dcc82ffa7dd3764 --output-dir .tmp/issue-251/external/68204f58 --scale-count 631 --warm-runs 3",
+        "outcome": "passed",
+        "evidence": "Schema-valid native-Windows delegation issue-251-long-validation-68204f58 passed in 4827.644808s on the pinned clean head. Package-apply: 104 tests in 558.147754s with 1 Windows symlink-privilege skip. Multi-hop: 31 tests in 179.879532s. Benchmark: 4089.536736s, retained payload=631, one cold-first plus 3 warm fresh-fixture runs per profile. summary canonical-content sha256=ad1c321d81a557832eccdfedb76713108081663fd0d660abfdff28bb4aa2424d; summary file-byte sha256=4c8640badaa8ebd94ec7993ff3e3ad6030d2359b3832f31d7f1b2441b5cb8a1a; benchmark canonical-content sha256=2466a75e3ece2c5e492e5a55e3299add7ff819a4c56958400c51aafc8236d85a; benchmark file-byte sha256=4e177adbd66caaad25af706ceccc072d30152310bbf33ec858c6a00d5378824b."
       }
     ],
     "role_execution_aggregation": [{"stage_id": "implementation", "owning_skill": "slice-implementer", "disposition": "not-applicable", "reason": "The generic Python repository-tooling slice matches none of the command/query/reactor or concrete domain/use-case role bindings; no child invocation is invented."}],
@@ -132,10 +137,14 @@
       "One focused selector command contained a non-existent GWT-015 name; GWT-073 and GWT-074 passed in that command, and the corrected exact GWT-015 selector passed separately in 5.143s.",
       "Ignored schema-1.1 long-validation receipt: .tmp/issue-251/external/333fafb2/completion.yaml; dispatch/completion validator passed. Its declared 26bda236e1996bebc9a442a24da2e3716d31b0a6e13b1449ac0ac78a34bcc206 is the canonical-content digest, not the summary.json file-byte digest; the runner field and tracked wording are corrected prospectively.",
       "Ignored schema-1.1 failed receipt: .tmp/issue-251/external/c5aca006/completion.yaml; dispatch/completion validator passed. The 12 exact failed cases were rerun after repair: 9 receipt/terminal cases passed in the first 87.920s run while 3 staging cases still failed; those 3 passed after explicit verified-cleanup baseline advancement in 12.655s. GWT-080..086 then passed in 28.164s."
+      ,
+      "Ignored schema-1.1 passed receipt: .tmp/issue-251/external/68204f58/completion.yaml; dispatch/completion validator passed. Native Windows default TEMP profile on one host/commit; cold-first means fresh disposable repository without OS cache reset, followed by three warm host-cache fresh-fixture runs.",
+      "Retained 631-record warm medians: legacy plan 192.5413706s / 3153 Git processes and apply 798.4825737s / 13272; snapshot plan 4.9723998s / 22 and apply 4.4274619s / 11. Cold-first: legacy plan 188.8431246s, apply 782.7629673s; snapshot plan 4.4429962s, apply 4.2334253s."
     ],
     "commits": [
       "333fafb2eacaeaee9750aa99a1856a7bccb36c21",
-      "c5aca00668c94a40c74f9e3118065a100d3d3cd2"
+      "c5aca00668c94a40c74f9e3118065a100d3d3cd2",
+      "68204f58e6ebfe1e099ac6e9b0db95712f3d6085"
     ],
     "follow_up_needed": true
   }
