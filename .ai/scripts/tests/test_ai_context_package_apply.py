@@ -5562,7 +5562,7 @@ class AiContextPackageApplyGwtTests(unittest.TestCase):
                         )
                     with self.assertRaisesRegex(
                         APPLY.ApplyError,
-                        "attributes or core.filemode changed",
+                        "attributes, ignore rules, or core.filemode changed",
                     ):
                         RAW_APPLY_PLAN(plan)
                     self.assertFalse((fixture.target / relative).exists())
@@ -5603,7 +5603,7 @@ class AiContextPackageApplyGwtTests(unittest.TestCase):
                     )
                     with self.assertRaisesRegex(
                         APPLY.ApplyError,
-                        "attributes or core.filemode changed",
+                        "attributes, ignore rules, or core.filemode changed",
                     ):
                         APPLY.recover_transaction(
                             fixture.target,
@@ -5710,6 +5710,134 @@ class AiContextPackageApplyGwtTests(unittest.TestCase):
             self.assertFalse((fixture.target / ".ai/second.md").exists())
         finally:
             fixture.close()
+
+    def test_gwt_085_given_ignore_rule_changes_after_crash_when_resume_or_rollback_admits_then_recovery_does_not_mutate(self) -> None:
+        for action in ("resume", "rollback"):
+            with self.subTest(action=action):
+                fixture = PackageApplyFixture()
+                try:
+                    fixture.make_package(
+                        {
+                            ".ai/first.md": (
+                                b"first\n",
+                                "framework-managed",
+                                "0644",
+                            ),
+                            ".ai/second.md": (
+                                b"second\n",
+                                "framework-managed",
+                                "0644",
+                            ),
+                        },
+                        [
+                            operation("001-first", "add", ".ai/first.md"),
+                            operation("002-second", "add", ".ai/second.md"),
+                        ],
+                    )
+                    plan = fixture.plan()
+
+                    def crash(boundary: str, details: dict) -> None:
+                        if boundary == "after_operation" and details.get("index") == 0:
+                            raise APPLY.InjectedInterruption(
+                                "recovery ignore-semantic fixture"
+                            )
+
+                    with self.assertRaises(APPLY.InjectedInterruption):
+                        RAW_APPLY_PLAN(plan, boundary_hook=crash)
+                    (fixture.target / ".git/info/exclude").write_text(
+                        ".ai/second.md\n", encoding="utf-8", newline="\n"
+                    )
+                    with self.assertRaisesRegex(
+                        APPLY.ApplyError,
+                        "attributes, ignore rules, or core.filemode changed",
+                    ):
+                        APPLY.recover_transaction(
+                            fixture.target,
+                            plan["plan_sha256"],
+                            action,
+                            fixture.package if action == "resume" else None,
+                        )
+                    self.assertEqual(
+                        b"first\n", (fixture.target / ".ai/first.md").read_bytes()
+                    )
+                    self.assertFalse((fixture.target / ".ai/second.md").exists())
+                finally:
+                    fixture.close()
+
+    def test_gwt_086_given_growing_multi_hop_checkpoint_surfaces_when_planned_then_git_process_count_remains_constant(self) -> None:
+        observations: list[tuple[int, int, int]] = []
+        for changed_count in (3, 631):
+            with self.subTest(changed_count=changed_count):
+                fixture = PackageApplyFixture()
+                try:
+                    relative = ".ai/next-hop.txt"
+                    fixture.make_package(
+                        {
+                            relative: (
+                                b"next\n",
+                                "framework-managed",
+                                "0644",
+                            )
+                        },
+                        [operation("001-next", "add", relative)],
+                    )
+                    for index in range(changed_count):
+                        path = (
+                            fixture.target
+                            / "checkpoint-surface"
+                            / f"path-{index:04d}.txt"
+                        )
+                        path.parent.mkdir(parents=True, exist_ok=True)
+                        path.write_text(
+                            f"{index}\n", encoding="utf-8", newline="\n"
+                        )
+                    metrics: list[dict] = []
+
+                    def verify_from_active_snapshot(
+                        target: Path, context: object
+                    ) -> dict:
+                        self.assertIsNotNone(APPLY.active_target_git_snapshot(target))
+                        self.assertEqual(
+                            changed_count,
+                            len(APPLY.route_checkpoint_surface(target)),
+                        )
+                        return {"fixture": context}
+
+                    with mock.patch.object(
+                        APPLY,
+                        "verify_multi_hop_checkpoint_for_planning",
+                        side_effect=verify_from_active_snapshot,
+                    ), mock.patch.object(
+                        APPLY,
+                        "run_git",
+                        side_effect=AssertionError(
+                            "multi-hop planning fell back to per-path Git"
+                        ),
+                    ):
+                        plan = APPLY.build_plan(
+                            fixture.package,
+                            fixture.target,
+                            multi_hop_checkpoint_context={
+                                "changed_count": changed_count
+                            },
+                            git_inspection_hook=metrics.append,
+                        )
+                    self.assertEqual("fixture-v1.0.0", plan["package_id"])
+                    self.assertEqual(1, len(metrics))
+                    observations.append(
+                        (
+                            changed_count,
+                            metrics[0]["path_count"],
+                            metrics[0]["git_process_count"],
+                        )
+                    )
+                finally:
+                    fixture.close()
+        self.assertEqual({item[2] for item in observations}, {22})
+        self.assertEqual(
+            [item[0] + 1 for item in observations],
+            [item[1] for item in observations],
+        )
 
 
 if __name__ == "__main__":

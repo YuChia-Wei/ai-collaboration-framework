@@ -309,7 +309,9 @@ def main() -> int:
         ),
     }
     encoded = json.dumps(document, sort_keys=True, separators=(",", ":"))
-    document["content_sha256"] = hashlib.sha256(encoded.encode("utf-8")).hexdigest()
+    document["canonical_content_sha256"] = hashlib.sha256(
+        encoded.encode("utf-8")
+    ).hexdigest()
     rendered = json.dumps(document, sort_keys=True, indent=2) + "\n"
     if args.output is not None:
         args.output.parent.mkdir(parents=True, exist_ok=True)

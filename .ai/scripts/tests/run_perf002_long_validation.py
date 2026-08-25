@@ -183,7 +183,7 @@ def main() -> int:
     encoded = json.dumps(summary, sort_keys=True, separators=(",", ":")).encode(
         "utf-8"
     )
-    summary["content_sha256"] = digest(encoded)
+    summary["canonical_content_sha256"] = digest(encoded)
     (output_dir / "summary.json").write_text(
         json.dumps(summary, sort_keys=True, indent=2) + "\n",
         encoding="utf-8",

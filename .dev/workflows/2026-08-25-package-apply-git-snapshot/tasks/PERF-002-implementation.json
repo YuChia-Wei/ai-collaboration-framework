@@ -65,7 +65,7 @@
     "deferred_items": ["Linux reference execution is reported truthfully if not available in this Windows task; parent decides later integration/reference lane"]
   },
   "results": {
-    "summary": "Implemented bounded plan/apply target Git snapshots, local drift admission, batch blob/attribute/ignore parsing, stderr-only phase metrics, scale/process fixtures, and exact-head benchmark/long-validation runners. Focused validation passes. The single exact-commit long-validation delegation is blocked by delegated Windows TEMP access, so full-suite and three-run benchmark evidence remain unresolved.",
+    "summary": "Implemented bounded plan/apply target Git snapshots, including multi-hop checkpoint surfaces, local drift admission, batch blob/attribute/ignore parsing, recovery ignore-semantic binding, stderr-only phase metrics, scale/process fixtures, and exact-head benchmark/long-validation runners. Focused validation passes. The first exact-commit long-validation delegation is blocked by delegated Windows TEMP access, so full-suite and three-run benchmark evidence remain unresolved.",
     "files_changed": [
       ".ai/scripts/ai_context_package_apply.py",
       ".ai/scripts/plan-ai-context-package-apply.py",
@@ -80,9 +80,9 @@
     "approval_evidence": ["parent delegation from owner-authorized source thread", "GitHub Issue #251 live read-back"],
     "test_execution": [
       {
-        "command": "python .ai/scripts/tests/test_ai_context_package_apply.py <PERF-002 GWT-073..084 selections> -v",
+        "command": "python .ai/scripts/tests/test_ai_context_package_apply.py <PERF-002 GWT-073..086 selections> -v",
         "outcome": "passed",
-        "evidence": "GWT-073..083: 11 tests in 43.483s; GWT-084: 1 test in 2.977s. Small, 631-record, 947-record, apply-count, attrs/ignore, CLI, drift, batch-blob, dirty/deleted, TOCTOU, semantic recovery, rollback-drift, and post-snapshot/pre-lock recovery-drift cases passed; plan=22 and apply=11 Git subprocesses independent of payload/operation count; apply full-worktree scans=4 independent of operation count and entry reads remain linear."
+        "evidence": "GWT-073..083: 11 tests in 43.483s; GWT-084: 1 test in 2.977s; GWT-080..086 exact repair rerun: 7 tests in 28.594s. Small, 631-record, 947-record, apply-count, attrs/ignore, CLI, drift, batch-blob, dirty/deleted, TOCTOU, semantic recovery, rollback-drift, post-snapshot/pre-lock recovery-drift, crash-time ignore drift, and 631-path multi-hop checkpoint cases passed; plan=22 and apply=11 Git subprocesses independent of payload/operation/checkpoint path count; apply full-worktree scans=4 independent of operation count and entry reads remain linear."
       },
       {
         "command": "python .ai/scripts/tests/test_ai_context_package_apply.py <ignored/mode/symlink/reparse/autocrlf selections> -v",
@@ -112,7 +112,7 @@
       {
         "command": "python .ai/scripts/tests/run_perf002_long_validation.py --expected-commit 333fafb2eacaeaee9750aa99a1856a7bccb36c21 --base-ref 1326f827f61de8eebeef30748dcc82ffa7dd3764 --output-dir .tmp/issue-251/external/333fafb2 --scale-count 631 --warm-runs 3",
         "outcome": "blocked-by-environment",
-        "evidence": "Schema-valid delegation issue-251-long-validation-333fafb2 ran once. Pinned clean preflight passed; package-apply stopped after 0.784052s because the delegated runtime was denied access to Windows TEMP fixture directories (WinError 5). Multi-hop and benchmark did not run. summary.json sha256=26bda236e1996bebc9a442a24da2e3716d31b0a6e13b1449ac0ac78a34bcc206; stderr sha256=0d597213c8a594aca6d51496729a55ab8bea588dd37c880e8d91bb85d2a6c031."
+        "evidence": "Schema-valid delegation issue-251-long-validation-333fafb2 ran once. Pinned clean preflight passed; package-apply stopped after 0.784052s because the delegated runtime was denied access to Windows TEMP fixture directories (WinError 5). Multi-hop and benchmark did not run. summary canonical-content sha256=26bda236e1996bebc9a442a24da2e3716d31b0a6e13b1449ac0ac78a34bcc206; summary.json file-byte sha256=a3c0394aec0e845691072763df65f6424f97640649641df8afae96121c545cc4; stderr file-byte sha256=0d597213c8a594aca6d51496729a55ab8bea588dd37c880e8d91bb85d2a6c031."
       }
     ],
     "role_execution_aggregation": [{"stage_id": "implementation", "owning_skill": "slice-implementer", "disposition": "not-applicable", "reason": "The generic Python repository-tooling slice matches none of the command/query/reactor or concrete domain/use-case role bindings; no child invocation is invented."}],
@@ -121,9 +121,11 @@
       "Framework-source effective-rule packet digest 46b000d161c18ee99c76047cc7c8304d5d46bcd4b291840904733fcaae991722.",
       "Read-only #250 selected-input evidence confirms the retained v0.14 profile has 631 payload records.",
       "Pre-commit independent advisory review findings on plan TOCTOU, O(operations*files), Git identity window, benchmark binding, semantic recovery, rollback admission, and recovery snapshot/lock admission were repaired and regression-tested.",
+      "The first exact-head audit rejected 2dc2e2547726ba55dc591dd60dfd958a2b2da2cc for multi-hop per-path Git fallback, missing recovery ignore binding, and ambiguous canonical-content digest labeling; all three findings were repaired and focused-regression tested, with a fresh audit required after the repair commit.",
       "Workflow artifact validation passed for 97 workflows and 117 indexed workflow directories.",
       "Sandboxed temp-path PermissionError attempts remain blocked-by-environment evidence; equivalent focused native Windows reruns passed.",
-      "Ignored schema-1.1 long-validation receipt: .tmp/issue-251/external/333fafb2/completion.yaml; dispatch/completion validator passed."
+      "One focused selector command contained a non-existent GWT-015 name; GWT-073 and GWT-074 passed in that command, and the corrected exact GWT-015 selector passed separately in 5.143s.",
+      "Ignored schema-1.1 long-validation receipt: .tmp/issue-251/external/333fafb2/completion.yaml; dispatch/completion validator passed. Its declared 26bda236e1996bebc9a442a24da2e3716d31b0a6e13b1449ac0ac78a34bcc206 is the canonical-content digest, not the summary.json file-byte digest; the runner field and tracked wording are corrected prospectively."
     ],
     "commits": ["333fafb2eacaeaee9750aa99a1856a7bccb36c21"],
     "follow_up_needed": true

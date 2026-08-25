@@ -640,6 +640,13 @@ def capture_target_git_snapshot(
     dirty_paths = _parse_status_paths(status_result.stdout)
     if require_clean and dirty_paths:
         raise ApplyError("target Git worktree must be clean before planning or apply")
+    # A multi-hop checkpoint surface is defined by every changed path from the
+    # status snapshot. Include those paths in the same batch so its verifier
+    # never falls back to one Git process group per checkpoint path.
+    requested_paths = sorted(
+        set(requested_paths) | set(dirty_paths),
+        key=lambda item: item.encode("utf-8"),
+    )
     selected_object_ids = {
         path: object_ids[path] for path in requested_paths if path in object_ids
     }
@@ -828,6 +835,7 @@ def target_git_semantic_identity(
     snapshot: TargetGitSnapshot, paths: Iterable[str]
 ) -> dict:
     attributes: dict[str, list[str]] = {}
+    ignore_rules: dict[str, dict[str, object] | None] = {}
     for relative in sorted(set(paths), key=lambda item: item.encode("utf-8")):
         values = snapshot.attributes.get(relative)
         if values is None:
@@ -835,9 +843,11 @@ def target_git_semantic_identity(
                 f"target Git attributes were not snapshotted for {relative}"
             )
         attributes[relative] = list(values)
+        ignore_rules[relative] = deepcopy(snapshot.ignore_rule(relative))
     return {
         "core_filemode": snapshot.core_filemode,
         "attributes": attributes,
+        "ignore_rules": ignore_rules,
     }
 
 
@@ -854,7 +864,9 @@ def verify_planned_target_git_semantics(target: Path, plan: dict) -> None:
     if not isinstance(planned, dict) or not isinstance(observed, dict):
         raise ApplyError("planned target Git semantic identity is invalid")
     if target_git_semantic_identity(snapshot, observed.keys()) != planned:
-        raise ApplyError("target Git attributes or core.filemode changed after planning")
+        raise ApplyError(
+            "target Git attributes, ignore rules, or core.filemode changed after planning"
+        )
 
 
 def clean_target_head(root: Path) -> str:
@@ -1877,11 +1889,14 @@ def build_plan(
         phase="plan-admission",
         require_clean=multi_hop_checkpoint_context is None,
     )
-    route_context = (
-        verify_multi_hop_checkpoint_for_planning(target, multi_hop_checkpoint_context)
-        if multi_hop_checkpoint_context is not None
-        else None
-    )
+    with target_git_snapshot_scope(admission_snapshot):
+        route_context = (
+            verify_multi_hop_checkpoint_for_planning(
+                target, multi_hop_checkpoint_context
+            )
+            if multi_hop_checkpoint_context is not None
+            else None
+        )
     package, incoming, migration, manifest_sha = validate_package_root(package_root)
     previous, operations, selected_version = migration_selection(
         previous_files_path,
