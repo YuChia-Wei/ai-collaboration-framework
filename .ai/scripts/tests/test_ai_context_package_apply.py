@@ -5238,8 +5238,8 @@ class AiContextPackageApplyGwtTests(unittest.TestCase):
                 finally:
                     fixture.close()
 
-        self.assertEqual({item[0] for item in observations}, {22})
-        self.assertEqual({item[1] for item in observations}, {22})
+        self.assertEqual({item[0] for item in observations}, {24})
+        self.assertEqual({item[1] for item in observations}, {24})
 
     def test_gwt_074_given_growing_apply_operation_counts_when_applied_then_git_process_count_is_constant(self) -> None:
         observations: list[tuple[int, int, int, int, int]] = []
@@ -5316,8 +5316,8 @@ class AiContextPackageApplyGwtTests(unittest.TestCase):
                 finally:
                     fixture.close()
 
-        self.assertEqual({item[1] for item in observations}, {11})
-        self.assertEqual({item[2] for item in observations}, {11})
+        self.assertEqual({item[1] for item in observations}, {12})
+        self.assertEqual({item[2] for item in observations}, {12})
         self.assertEqual({item[3] for item in observations}, {4})
         for payload_count, _processes, _snapshot_processes, _scans, reads in observations:
             self.assertLessEqual(
@@ -5384,7 +5384,7 @@ class AiContextPackageApplyGwtTests(unittest.TestCase):
             ]
             self.assertEqual(["plan", "apply"], [item["phase"] for item in records])
             self.assertEqual(
-                {"plan": 22, "apply": 11},
+                {"plan": 24, "apply": 12},
                 {item["phase"]: item["git_process_count"] for item in records},
             )
             self.assertTrue(all(item["outcome"] == "passed" for item in records))
@@ -5471,8 +5471,8 @@ class AiContextPackageApplyGwtTests(unittest.TestCase):
                     git_inspection_hook=events.append,
                 )
             self.assertEqual({"replace"}, {item["action"] for item in plan["operations"]})
-            self.assertEqual(22, git_processes)
-            self.assertEqual(22, events[0]["git_process_count"])
+            self.assertEqual(24, git_processes)
+            self.assertEqual(24, events[0]["git_process_count"])
             self.assertEqual(3, events[0]["git_blob_read_count"])
         finally:
             fixture.close()
@@ -5834,7 +5834,7 @@ class AiContextPackageApplyGwtTests(unittest.TestCase):
                     )
                 finally:
                     fixture.close()
-        self.assertEqual({item[2] for item in observations}, {22})
+        self.assertEqual({item[2] for item in observations}, {24})
         self.assertEqual(
             [item[0] + 1 for item in observations],
             [item[1] for item in observations],
@@ -6189,6 +6189,91 @@ class AiContextPackageApplyGwtTests(unittest.TestCase):
                         APPLY.ApplyError, "administrative identity changed"
                     ):
                         RAW_APPLY_PLAN(plan)
+                    self.assertFalse((fixture.target / relative).exists())
+                finally:
+                    fixture.close()
+
+    def test_gwt_093_given_config_changes_during_snapshot_when_semantics_were_already_read_then_capture_fails_closed(self) -> None:
+        for policy in ("ignore", "attributes"):
+            with self.subTest(policy=policy):
+                fixture = PackageApplyFixture()
+                try:
+                    relative = f".ai/in-capture-{policy}.md"
+                    fixture.make_package(
+                        {
+                            relative: (
+                                b"must remain absent\n",
+                                "framework-managed",
+                                "0644",
+                            )
+                        },
+                        [operation("001-add", "add", relative)],
+                    )
+                    global_config = fixture.root / "global.gitconfig"
+                    global_config.write_text(
+                        "[user]\n\tname = Existing Global Fixture\n",
+                        encoding="utf-8",
+                        newline="\n",
+                    )
+                    policy_path = fixture.root / f"in-capture-{policy}"
+                    with mock.patch.dict(
+                        os.environ,
+                        {"GIT_CONFIG_GLOBAL": str(global_config)},
+                    ):
+                        plan = fixture.plan()
+                        original_snapshot_git = APPLY._snapshot_git
+                        changed = False
+
+                        def drift_during_snapshot(
+                            root: Path,
+                            stats: object,
+                            *args: str,
+                            **kwargs: object,
+                        ):
+                            nonlocal changed
+                            result = original_snapshot_git(
+                                root,
+                                stats,
+                                *args,
+                                **kwargs,
+                            )
+                            if args and args[0] == "check-ignore" and not changed:
+                                changed = True
+                                key = (
+                                    "excludesFile"
+                                    if policy == "ignore"
+                                    else "attributesFile"
+                                )
+                                global_config.write_text(
+                                    "[user]\n"
+                                    "\tname = Existing Global Fixture\n"
+                                    "[core]\n"
+                                    f"\t{key} = {policy_path.as_posix()}\n",
+                                    encoding="utf-8",
+                                    newline="\n",
+                                )
+                                policy_line = (
+                                    f"{relative}\n"
+                                    if policy == "ignore"
+                                    else f"{relative} filter=lfs\n"
+                                )
+                                policy_path.write_text(
+                                    policy_line,
+                                    encoding="utf-8",
+                                    newline="\n",
+                                )
+                            return result
+
+                        with mock.patch.object(
+                            APPLY,
+                            "_snapshot_git",
+                            side_effect=drift_during_snapshot,
+                        ), self.assertRaisesRegex(
+                            APPLY.ApplyError,
+                            "configuration changed while snapshot was captured",
+                        ):
+                            RAW_APPLY_PLAN(plan)
+                    self.assertTrue(changed)
                     self.assertFalse((fixture.target / relative).exists())
                 finally:
                     fixture.close()

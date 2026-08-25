@@ -10,7 +10,7 @@
 - `implementation_route`: `slice-implementer`
 - `status`: `active-until-final-exact-head-audit`
 - `created_at`: `2026-08-25T22:04:41+08:00`
-- `updated_at`: `2026-08-25T22:22:25+08:00`
+- `updated_at`: `2026-08-25T22:32:26+08:00`
 - `template_source`: `owner-requested workflow-local retrospective; no repository template`
 - `template_version`: `1.0.0`
 
@@ -30,8 +30,11 @@ the ADR decision test.
 - The legacy implementation launched Git once or several times per target path.
   At the retained 631-record scale, plan used `3153` Git processes and apply used
   `13272`.
-- The snapshot implementation uses payload-independent batches: plan `22`, apply
-  `11`, and the real later-hop admission path `22`.
+- The retained benchmark head used payload-independent batches: plan `22`, apply
+  `11`, and the real later-hop admission path `22`. The safety-hardened candidate
+  adds one closing config read-back per snapshot, so its deterministic counts are
+  plan `24`, apply `12`, and real later-hop `24`; they remain independent of
+  payload count.
 - On the terminal `13a33cc4` benchmark, warm medians were `169.2441546s` legacy
   versus `3.7895519s` snapshot for plan, and `702.1749036s` legacy versus
   `3.7676249s` snapshot for apply.
@@ -55,6 +58,7 @@ the ADR decision test.
 | `ee55880b` | exact-head audit failed | read-only | Filtering config origins by already-effective core keys missed introduction of a new policy key/path. |
 | `ad0b38a0` | exact-head audit failed | read-only | A comment-only file referenced by `include.path` had no returned value origin and was not bound. |
 | `01f73f25` | exact-head audit failed | read-only | Git returned `file:.git/config`; the relative origin was resolved against process cwd instead of target root. |
+| `7a1a457a` | exact-head audit failed | read-only | Config/attribute/ignore semantics could be captured before the identity baseline while a config change moved that baseline forward. |
 
 All ignored dispatch/completion receipts remain local evidence. Failed,
 blocked, interrupted, superseded, and passed outcomes are not rewritten.
@@ -132,6 +136,16 @@ Blocked, failed, interrupted, and superseded receipts explain why elapsed time
 was high and prevent later readers from interpreting one terminal pass as the
 only execution. The evidence chain is part of the engineering result.
 
+### 8. Close the snapshot around semantic reads
+
+Capturing identity after a semantic Git command is not sufficient: a config
+change between those events can make the returned semantics old while the
+recorded baseline is new. Establish config-file identity before `check-attr`
+and `check-ignore`, then repeat the batched config read at the end and require
+byte-identical output. The added process is a bounded safety cost, not per-path
+work. For plan, which performs two complete admissions, the total change is
+`22 -> 24`; apply changes `11 -> 12`.
+
 ## AI Usage And Wall-Time Interpretation
 
 Most of the multi-hour wall time came from local Git process startup, filesystem
@@ -142,7 +156,7 @@ not require the model to reason for every elapsed second.
 
 ## Residual And Follow-Up
 
-- The current repair must receive a fresh independent exact-head audit.
+- The in-capture TOCTOU repair must receive a fresh independent exact-head audit.
 - The Windows symlink-privilege and case-fold fixtures remain truthful skips;
   no Linux reference execution was performed in this workflow.
 - The benchmark-reuse recommendation should remain local until an owner chooses

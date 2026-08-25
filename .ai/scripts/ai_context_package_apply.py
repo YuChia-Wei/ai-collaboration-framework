@@ -781,24 +781,6 @@ def capture_target_git_snapshot(
     index_bytes = {
         path: blobs[object_id] for path, object_id in selected_object_ids.items()
     }
-    attribute_paths = set(requested_paths)
-    attr_result = _snapshot_git(
-        root,
-        stats,
-        "check-attr",
-        "-z",
-        "--stdin",
-        "filter",
-        "ident",
-        "working-tree-encoding",
-        input_bytes=b"".join(
-            path.encode("utf-8", errors="surrogateescape") + b"\0"
-            for path in sorted(attribute_paths, key=lambda item: item.encode("utf-8", errors="surrogateescape"))
-        ),
-    )
-    if attr_result.returncode != 0:
-        raise ApplyError("cannot inspect target Git attributes")
-    attributes = _parse_attributes(attr_result.stdout, attribute_paths)
     config_result = _snapshot_git(
         root,
         stats,
@@ -818,23 +800,6 @@ def capture_target_git_snapshot(
     ) = (
         _parse_core_snapshot_config(config_result.stdout, root)
     )
-    ignore_input = b"".join(
-        path.encode("utf-8", errors="surrogateescape") + b"\0"
-        for path in requested_paths
-    )
-    ignore_result = _snapshot_git(
-        root,
-        stats,
-        "check-ignore",
-        "-z",
-        "-v",
-        "--stdin",
-        input_bytes=ignore_input,
-    )
-    if ignore_result.returncode not in {0, 1}:
-        detail = ignore_result.stderr.decode("utf-8", errors="replace").strip()
-        raise ApplyError(f"cannot inspect target Git ignore rules: {detail or ignore_result.returncode}")
-    ignore_rules = _parse_ignore_rules(ignore_result.stdout, set(requested_paths))
     admin_result = _snapshot_git(
         root,
         stats,
@@ -908,7 +873,60 @@ def capture_target_git_snapshot(
             sha256_bytes(path.read_bytes()) if path.is_file() else None
         )
         git_identity_inventory[path] = worktree_inventory_entry(path)
+    attribute_paths = set(requested_paths)
+    attr_result = _snapshot_git(
+        root,
+        stats,
+        "check-attr",
+        "-z",
+        "--stdin",
+        "filter",
+        "ident",
+        "working-tree-encoding",
+        input_bytes=b"".join(
+            path.encode("utf-8", errors="surrogateescape") + b"\0"
+            for path in sorted(
+                attribute_paths,
+                key=lambda item: item.encode("utf-8", errors="surrogateescape"),
+            )
+        ),
+    )
+    if attr_result.returncode != 0:
+        raise ApplyError("cannot inspect target Git attributes")
+    attributes = _parse_attributes(attr_result.stdout, attribute_paths)
+    ignore_input = b"".join(
+        path.encode("utf-8", errors="surrogateescape") + b"\0"
+        for path in requested_paths
+    )
+    ignore_result = _snapshot_git(
+        root,
+        stats,
+        "check-ignore",
+        "-z",
+        "-v",
+        "--stdin",
+        input_bytes=ignore_input,
+    )
+    if ignore_result.returncode not in {0, 1}:
+        detail = ignore_result.stderr.decode("utf-8", errors="replace").strip()
+        raise ApplyError(
+            f"cannot inspect target Git ignore rules: {detail or ignore_result.returncode}"
+        )
+    ignore_rules = _parse_ignore_rules(ignore_result.stdout, set(requested_paths))
     inventory = worktree_inventory(root)
+    final_config_result = _snapshot_git(
+        root,
+        stats,
+        "config",
+        "--null",
+        "--show-origin",
+        "--list",
+    )
+    if (
+        final_config_result.returncode != 0
+        or final_config_result.stdout != config_result.stdout
+    ):
+        raise ApplyError("target Git configuration changed while snapshot was captured")
     final_head_result = _snapshot_git(root, stats, "rev-parse", "--verify", "HEAD^{commit}")
     final_status_result = _snapshot_git(
         root, stats, "status", "--porcelain=v1", "-z", "--untracked-files=all"

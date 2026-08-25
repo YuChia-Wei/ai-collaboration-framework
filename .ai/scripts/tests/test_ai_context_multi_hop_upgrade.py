@@ -1388,7 +1388,7 @@ class MultiHopUpgradeGwtTests(unittest.TestCase):
                     begun["route_transaction_id"],
                     matrix_root=self.fixture.matrix_root,
                 )
-            self.assertEqual(22, len(git_processes))
+            self.assertEqual(24, len(git_processes))
             second_provenance, second_ledger = self.fixture.candidate_authorities(
                 e2e["sources"][1], e2e["sources"][0], e2e["selection"], "0.10.0", "0.11.0"
             )
