@@ -37,6 +37,7 @@ declare -A CHECK_ENFORCEMENT=()
 declare -A CHECK_TAGS=()
 declare -A CHECK_PROFILES=()
 declare -A CHECK_INPUT_PATHS=()
+declare -A CHECK_RESOLVED_INPUT_PATHS=()
 declare -A CHECK_DEPENDS=()
 declare -A CHECK_ENVIRONMENT=()
 declare -A CHECK_TIMEOUT=()
@@ -308,6 +309,12 @@ is_global_invalidator() {
     case "$1" in
         .ai/scripts/validation-profile-registry.sh|.ai/scripts/check-all.sh|.ai/scripts/validation-evidence.py|\
         .ai/scripts/validation_process_supervisor.py|\
+        .ai/scripts/validate-validation-lifecycle.py|.ai/scripts/tests/test_validation_lifecycle.py|\
+        .ai/assets/shared/VALIDATION-EVIDENCE-LIFECYCLE-CONTRACT.md|\
+        .ai/assets/shared/validation-evidence-lifecycle.schema.yaml|\
+        .ai/scripts/validate-agent-execution-guardrails.py|.ai/scripts/tests/test_agent_execution_guardrails.py|\
+        .ai/assets/shared/AGENT-EXECUTION-GUARDRAILS-CONTRACT.md|\
+        .ai/assets/shared/agent-execution-guardrails.schema.yaml|\
         .ai/scripts/validate-immutable-history.py|.ai/distribution/validation/immutable-history-validation.yaml|\
         .ai/scripts/validate-workflow-artifacts.py|.ai/scripts/validate-assessment-artifacts.py|\
         .ai/scripts/validate-ai-context-versions.py|.dev/standards/WORKFLOW-ARTIFACT-POLICY.md|\
@@ -316,6 +323,39 @@ is_global_invalidator() {
             return 0 ;;
     esac
     return 1
+}
+
+resolve_check_input_closure() {
+    local root=$1 current dependency token cursor=0
+    local -a queue=("$root")
+    local -A seen_checks=() seen_paths=()
+    while [ "$cursor" -lt "${#queue[@]}" ]; do
+        current=${queue[$cursor]}
+        cursor=$((cursor + 1))
+        [ -z "${seen_checks[$current]:-}" ] || continue
+        seen_checks["$current"]=true
+        for token in ${CHECK_INPUT_PATHS[$current]}; do
+            seen_paths["$token"]=true
+        done
+        for dependency in ${CHECK_DEPENDS[$current]}; do
+            queue+=("$dependency")
+        done
+    done
+    for token in \
+        .ai/scripts/check-all.sh \
+        .ai/scripts/validation-profile-registry.sh \
+        .ai/scripts/validation-evidence.py \
+        .ai/scripts/python-entrypoints.json \
+        .ai/scripts/python_prerequisites.py \
+        .ai/scripts/validate-validation-lifecycle.py \
+        .ai/assets/shared/VALIDATION-EVIDENCE-LIFECYCLE-CONTRACT.md \
+        .ai/assets/shared/validation-evidence-lifecycle.schema.yaml \
+        .ai/scripts/validate-agent-execution-guardrails.py \
+        .ai/assets/shared/AGENT-EXECUTION-GUARDRAILS-CONTRACT.md \
+        .ai/assets/shared/agent-execution-guardrails.schema.yaml; do
+        seen_paths["$token"]=true
+    done
+    printf '%s\n' "${!seen_paths[@]}" | LC_ALL=C sort | paste -sd ' ' -
 }
 
 collect_changed_paths() {
@@ -1027,6 +1067,12 @@ EVIDENCE_POLICY_FINGERPRINT=$(sha256sum \
     "$SCRIPT_DIR/check-all.sh" \
     "$EVIDENCE_HELPER" \
     "$SCRIPT_DIR/validation_process_supervisor.py" \
+    "$SCRIPT_DIR/python-entrypoints.json" \
+    "$SCRIPT_DIR/python_prerequisites.py" \
+    "$SCRIPT_DIR/validate-validation-lifecycle.py" \
+    "$PROJECT_ROOT/.ai/assets/shared/validation-evidence-lifecycle.schema.yaml" \
+    "$SCRIPT_DIR/validate-agent-execution-guardrails.py" \
+    "$PROJECT_ROOT/.ai/assets/shared/agent-execution-guardrails.schema.yaml" \
     2>/dev/null | sha256sum 2>/dev/null | awk '{print $1}')
 EVIDENCE_POLICY_FINGERPRINT=${EVIDENCE_POLICY_FINGERPRINT:-unavailable}
 EVIDENCE_INPUT_FINGERPRINT=
@@ -1070,8 +1116,9 @@ prepare_all_validation_evidence() {
         expected_ids["$id"]=true
         version=$(validator_version "$id")
         VALIDATOR_VERSION_BY_ID["$id"]=$version
+        CHECK_RESOLVED_INPUT_PATHS["$id"]=$(resolve_check_input_closure "$id")
         printf '%s\t%s\t%s\t%s\n' \
-            "$id" "$version" "${CHECK_INPUT_PATHS[$id]}" "${CHECK_CACHE_POLICY[$id]}" \
+            "$id" "$version" "${CHECK_RESOLVED_INPUT_PATHS[$id]}" "${CHECK_CACHE_POLICY[$id]}" \
             >> "$EVIDENCE_PREPARATION_SELECTION"
     done
     EVIDENCE_PREPARATION_SELECTION_REF=$(repo_relative_artifact "$EVIDENCE_PREPARATION_SELECTION") || return 1
@@ -1193,7 +1240,7 @@ write_final_fingerprint_selection() {
         [ -z "${omit_immutable_reuse[$id]:-}" ] || continue
         printf '%s\t%s\t%s\t%s\n' \
             "$id" "${VALIDATOR_VERSION_BY_ID[$id]}" \
-            "${CHECK_INPUT_PATHS[$id]}" "${CHECK_CACHE_POLICY[$id]}" \
+            "${CHECK_RESOLVED_INPUT_PATHS[$id]}" "${CHECK_CACHE_POLICY[$id]}" \
             >> "$EVIDENCE_SELECTION"
     done
 }
@@ -2065,6 +2112,10 @@ run_source_repository_governance_checks() {
     if ! source_governance_context_available; then
         for description in \
             "Source Governance Manifest Registry" \
+            "Validation Freeze And Evidence Reuse Contract" \
+            "Validation Lifecycle Fail-Closed Tests" \
+            "Agent Execution Guardrails Contract" \
+            "Agent Execution Guardrails Fail-Closed Tests" \
             "Terminal Issue Closure Contract" \
             "Terminal Issue Closure Fail-Closed Tests" \
             "Repository Identity Drift Fail-Closed Tests"; do
@@ -2086,6 +2137,22 @@ run_source_repository_governance_checks() {
 
     run_command_check "python .ai/scripts/validate-source-governance.py" \
         "Source Governance Manifest Registry" \
+        "required" "true" "true"
+
+    run_command_check "python .ai/scripts/validate-validation-lifecycle.py" \
+        "Validation Freeze And Evidence Reuse Contract" \
+        "required" "true" "true"
+
+    run_command_check "python .ai/scripts/tests/test_validation_lifecycle.py -v" \
+        "Validation Lifecycle Fail-Closed Tests" \
+        "required" "true" "true"
+
+    run_command_check "python .ai/scripts/validate-agent-execution-guardrails.py" \
+        "Agent Execution Guardrails Contract" \
+        "required" "true" "true"
+
+    run_command_check "python .ai/scripts/tests/test_agent_execution_guardrails.py -v" \
+        "Agent Execution Guardrails Fail-Closed Tests" \
         "required" "true" "true"
 
     run_command_check "python .ai/scripts/validate-terminal-issue-closure.py" \

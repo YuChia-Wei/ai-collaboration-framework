@@ -6,9 +6,9 @@
   "task_id": "GOV013014-002",
   "workflow_id": "2026-08-25-validation-freeze-agent-guardrails",
   "owner_skill": "ai-context-governance",
-  "status": "pending",
+  "status": "completed",
   "created_at": "2026-08-25T14:55:24+08:00",
-  "updated_at": "2026-08-25T14:55:24+08:00",
+  "updated_at": "2026-08-25T15:17:17+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-5.6-sol",
   "reasoning_effort": "xhigh",
@@ -22,8 +22,8 @@
   "execution": {
     "steps": ["Update canonical governance and future-agent guidance", "Update only applicable orchestrator/projection consumers", "Verify English/Traditional Chinese structural and normative parity"],
     "validation": ["Agent-guidance parity checks", "Skill/orchestrator acceptance checks", "Source-governance validation"],
-    "last_completed_step": "Not started.",
-    "next_action": "Begin after both machine-readable owner contracts stabilize."
+    "last_completed_step": "Updated canonical English and aligned Traditional Chinese guidance, workflow/commit policy, and orchestrator consumer contracts without transferring governance ownership.",
+    "next_action": "Run final language, skill, source-governance, and aggregate projection gates in GOV013014-VAL-001."
   },
-  "results": {"summary": "", "files_changed": [], "tests_run": [], "finding_status": "not-addressed", "residual_risk": "", "follow_up_needed": true}
+  "results": {"summary": "Future-agent guidance and software-development-orchestrator consumer projections now enforce the two owner contracts while preserving ai-context-governance ownership.", "files_changed": ["AGENTS.md", "AGENTS.zh-TW.md", ".dev/standards/WORKFLOW-GATE-POLICY.md", ".dev/standards/WORKFLOW-ARTIFACT-POLICY.md", ".dev/standards/GIT-COMMIT-POLICY.md", ".ai/assets/skills/software-development-orchestrator/skill.yaml"], "tests_run": ["python .ai/assets/skills/software-development-orchestrator/scripts/tests/test_software_development_orchestrator_capability_contract.py DevWorkflowCapabilityContractGwtTests.test_gwt_004a_given_long_running_validation_when_routed_then_it_is_external_and_non_polling -v"], "finding_status": "addressed", "residual_risk": "Full language-policy suite requires the final permitted native temporary-directory run.", "follow_up_needed": false}
 }

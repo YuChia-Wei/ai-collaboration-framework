@@ -61,6 +61,19 @@ def valid_dispatch() -> dict:
             "argv": ["python", "focused-test.py", "-v"],
             "timeout_seconds": 300,
         },
+        "execution_packet": {
+            "schema_ref": ".ai/assets/shared/agent-execution-guardrails.schema.yaml",
+            "packet_ref": ".external-task/pr-195-hosted-gate-01-packet.yaml",
+            "packet_sha256": "a" * 64,
+            "subject_sha": SHA,
+            "validator_argv": [
+                "python",
+                ".ai/scripts/validate-agent-execution-guardrails.py",
+                "--packet",
+                ".external-task/pr-195-hosted-gate-01-packet.yaml",
+            ],
+            "validation_outcome": "passed",
+        },
         "permissions": {
             "read_scope": ["repository"],
             "write_scope": ["ignored-validation-artifacts"],
@@ -321,6 +334,18 @@ class ExternalTaskDelegationContractTests(unittest.TestCase):
                 for error in errors
             )
         )
+
+    def test_gwt_015_given_external_dispatch_without_validated_execution_packet_when_checked_then_it_is_rejected(self) -> None:
+        dispatch = valid_dispatch()
+        del dispatch["execution_packet"]
+        errors = DELEGATION.validate_dispatch(dispatch, SCHEMA)
+        self.assertTrue(any("execution_packet is required" in error for error in errors))
+
+    def test_gwt_016_given_execution_packet_subject_drift_when_dispatch_is_checked_then_it_is_rejected(self) -> None:
+        dispatch = valid_dispatch()
+        dispatch["execution_packet"]["subject_sha"] = "2" * 40
+        errors = DELEGATION.validate_dispatch(dispatch, SCHEMA)
+        self.assertTrue(any("must match dispatch subject" in error for error in errors))
 
 
 if __name__ == "__main__":

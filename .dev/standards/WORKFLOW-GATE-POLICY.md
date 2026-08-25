@@ -293,6 +293,13 @@ narrow focused checks, obtain a clean worktree, and bind the exact command to a
 full immutable commit SHA. Pending design decisions, mutable source state, and
 unbounded credentials are dispatch blockers.
 
+That clean immutable point is the validation freeze. Record its exact tracked
+snapshot and keep terminal metadata beneath declared ignored artifact roots.
+Any later tracked drift invalidates the freeze. Reuse from an earlier subject
+is admissible only with the content-addressed proof required by
+`.ai/assets/shared/VALIDATION-EVIDENCE-LIFECYCLE-CONTRACT.md`; exact-head audit,
+required hosted contexts, and live admission remain fresh gates.
+
 Run the command in a separate external runtime task using the least expensive
 execution profile that can faithfully execute and report the bounded command.
 Its scope is read-only except for ignored validation logs or artifacts. It must
@@ -306,6 +313,13 @@ subject, exact argument vector, permission boundary, stop conditions, and one
 completion-delivery route. The source identity may be explicit or supplied by
 the runtime's delegation wrapper; do not assume a separate task's final output
 is automatically routed to its source.
+
+Before dispatch, validate the agent execution packet and acquire the worktree
+snapshot lease defined by
+`.ai/assets/shared/AGENT-EXECUTION-GUARDRAILS-CONTRACT.md`. The external envelope
+must bind the packet reference, digest, exact subject SHA, validator argv, and
+passing outcome. A conflicting tracked writer, stale lease, unvalidated packet,
+or attempt three without new owner/workflow authorization blocks dispatch.
 
 Select either a source-task callback or one parent event wait as the primary
 completion path. The callback must target the source task. The event wait
@@ -341,6 +355,11 @@ report. This bounded recovery is not permission to poll. When the runtime has
 neither callback, event wait, nor terminal read-back support, record
 `blocked-by-environment` or create a fresh-session handoff rather than running a
 primary-conversation polling loop.
+
+Before integration, validate the acceptance-to-evidence ledger against its
+human report projection. Preserve each work item's acceptance IDs separately;
+never collapse multiple Issues into one success flag, and never relabel mock,
+fixture, synthetic, or unit evidence as actual execution.
 
 Keep canonical aggregate runners because they own profile selection,
 dependency ordering, unified evidence, and fail-closed classification. A future

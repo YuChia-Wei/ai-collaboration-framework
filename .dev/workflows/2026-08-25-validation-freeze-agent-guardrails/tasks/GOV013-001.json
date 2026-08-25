@@ -6,9 +6,9 @@
   "task_id": "GOV013-001",
   "workflow_id": "2026-08-25-validation-freeze-agent-guardrails",
   "owner_skill": "ai-context-governance",
-  "status": "in_progress",
+  "status": "completed",
   "created_at": "2026-08-25T14:55:24+08:00",
-  "updated_at": "2026-08-25T14:55:24+08:00",
+  "updated_at": "2026-08-25T15:17:17+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-5.6-sol",
   "reasoning_effort": "xhigh",
@@ -27,8 +27,8 @@
   "execution": {
     "steps": ["Inventory current validation and terminal lifecycle owners", "Define machine-readable taxonomy/fingerprint/reuse/freeze contracts", "Implement deterministic validator and positive/negative/unknown fixtures", "Record separate #249 acceptance evidence"],
     "validation": ["Focused #249 contract tests", "Repository-owned schema/validator checks", "Selected source-governance and aggregate profile"],
-    "last_completed_step": "Loaded live #249 scope, completed authorities, governance policy, and exact-base code graph.",
-    "next_action": "Inventory current validation runner, evidence receipt, required-context, and workflow terminal sequencing surfaces."
+    "last_completed_step": "Implemented taxonomy, complete dependency/authority fingerprint closure, reuse receipt, freeze, hosted-context, and exact-head disposition validation with positive, negative, unknown, and #246 metadata-only regressions.",
+    "next_action": "Consume the completed #249 mapping in GOV013014-VAL-001 final immutable-head verification."
   },
-  "results": {"summary": "", "files_changed": [], "tests_run": [], "finding_status": "not-addressed", "residual_risk": "", "follow_up_needed": true}
+  "results": {"summary": "Validation freeze and content-addressed reuse contracts are implemented and mapped independently for #249.", "files_changed": [".ai/assets/shared/VALIDATION-EVIDENCE-LIFECYCLE-CONTRACT.md", ".ai/assets/shared/validation-evidence-lifecycle.schema.yaml", ".ai/scripts/validate-validation-lifecycle.py", ".ai/scripts/tests/test_validation_lifecycle.py", ".ai/scripts/check-all.sh"], "tests_run": ["python .ai/scripts/tests/test_validation_lifecycle.py -v", "python .ai/scripts/validate-validation-lifecycle.py"], "finding_status": "addressed", "residual_risk": "Final aggregate validation and exact-head audit remain owned by GOV013014-VAL-001.", "follow_up_needed": false}
 }

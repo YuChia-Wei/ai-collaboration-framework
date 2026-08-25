@@ -196,6 +196,39 @@ def validate_dispatch(record: dict[str, Any], schema: dict[str, Any]) -> list[st
         if not isinstance(timeout, int) or isinstance(timeout, bool) or timeout <= 0:
             errors.append("dispatch.execution.timeout_seconds must be a positive integer")
 
+    packet = record.get("execution_packet")
+    errors.extend(
+        missing_fields(
+            packet,
+            schema["dispatch"]["execution_packet"]["required"],
+            "dispatch.execution_packet",
+        )
+    )
+    if isinstance(packet, dict):
+        if packet.get("schema_ref") != ".ai/assets/shared/agent-execution-guardrails.schema.yaml":
+            errors.append("dispatch.execution_packet.schema_ref is invalid")
+        if not non_empty_string(packet.get("packet_ref")):
+            errors.append("dispatch.execution_packet.packet_ref must be non-empty")
+        if not re.fullmatch(r"[0-9a-f]{64}", str(packet.get("packet_sha256", ""))):
+            errors.append("dispatch.execution_packet.packet_sha256 must be lowercase SHA-256")
+        if not SHA_RE.fullmatch(str(packet.get("subject_sha", ""))):
+            errors.append("dispatch.execution_packet.subject_sha must be a full Git SHA")
+        elif isinstance(subject, dict) and packet.get("subject_sha") != subject.get("commit_sha"):
+            errors.append("dispatch.execution_packet.subject_sha must match dispatch subject")
+        packet_validator = packet.get("validator_argv")
+        if (
+            not string_list(packet_validator, allow_empty=False)
+            or not any(
+                str(item).replace("\\", "/").endswith("/validate-agent-execution-guardrails.py")
+                for item in packet_validator
+            )
+            or "--packet" not in packet_validator
+            or packet.get("packet_ref") not in packet_validator
+        ):
+            errors.append("dispatch.execution_packet.validator_argv must validate the bound packet ref")
+        if packet.get("validation_outcome") != "passed":
+            errors.append("dispatch.execution_packet.validation_outcome must be passed")
+
     permissions = record.get("permissions")
     errors.extend(missing_fields(permissions, schema["dispatch"]["permissions"]["required"], "dispatch.permissions"))
     if isinstance(permissions, dict):

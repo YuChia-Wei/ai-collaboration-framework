@@ -6,9 +6,9 @@
   "task_id": "GOV013014-VAL-001",
   "workflow_id": "2026-08-25-validation-freeze-agent-guardrails",
   "owner_skill": "ai-context-governance",
-  "status": "pending",
+  "status": "in_progress",
   "created_at": "2026-08-25T14:55:24+08:00",
-  "updated_at": "2026-08-25T14:55:24+08:00",
+  "updated_at": "2026-08-25T15:17:17+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-5.6-sol",
   "reasoning_effort": "xhigh",
@@ -22,8 +22,8 @@
   "execution": {
     "steps": ["Validate workflow and focused contracts", "Create durable commits only after planned-message preflight", "Dispatch applicable long-running validation from a clean immutable head", "Obtain independent read-only exact-head audit", "Reconcile #249 and #253 acceptance evidence separately"],
     "validation": ["Focused validator tests", "AI-context/source-governance selected profiles", "Commit range validator", "Independent exact-head governance audit"],
-    "last_completed_step": "Not started.",
-    "next_action": "Begin after GOV013-001, GOV014-001, and GOV013014-002 are complete and committed."
+    "last_completed_step": "Focused owner validators and external packet compatibility cases passed; sandbox-only Temp and Git Bash failures were preserved as blocked evidence.",
+    "next_action": "Run the final focused and projection gates with permitted host temporary access, commit after planned-message preflight, then delegate aggregate validation and obtain exact-head independent audit."
   },
   "results": {"summary": "", "files_changed": [], "tests_run": [], "finding_status": "not-addressed", "residual_risk": "", "follow_up_needed": true}
 }

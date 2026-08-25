@@ -139,6 +139,26 @@ class ValidationProfileRegistryGwtTests(unittest.TestCase):
             memberships["validation-process-supervisor-contract"],
         )
         self.assertEqual(
+            {"fast", "pr", "release", "nightly-full"},
+            memberships["validation-lifecycle-contract"],
+        )
+        self.assertEqual(
+            "source-governance-manifest",
+            checks["validation-lifecycle-contract"][6],
+        )
+        self.assertEqual(
+            "validation-lifecycle-contract",
+            checks["validation-lifecycle-tests"][6],
+        )
+        self.assertEqual(
+            "validation-lifecycle-contract",
+            checks["agent-execution-guardrails-contract"][6],
+        )
+        self.assertEqual(
+            "agent-execution-guardrails-contract",
+            checks["agent-execution-guardrails-tests"][6],
+        )
+        self.assertEqual(
             "validation-process-supervisor-contract",
             checks["validation-evidence-contract"][6],
         )
@@ -251,6 +271,17 @@ class ValidationProfileRegistryGwtTests(unittest.TestCase):
                     runner,
                     f"{check_id} has no evidence-producing description binding",
                 )
+
+    def test_gwt_008_given_reusable_check_when_runner_resolves_inputs_then_transitive_dependencies_and_authority_are_fingerprinted(self) -> None:
+        runner = RUNNER.read_text(encoding="utf-8")
+
+        self.assertIn("resolve_check_input_closure", runner)
+        self.assertIn('for dependency in ${CHECK_DEPENDS[$current]}', runner)
+        self.assertIn('CHECK_RESOLVED_INPUT_PATHS["$id"]', runner)
+        self.assertIn(".ai/scripts/validation-profile-registry.sh", runner)
+        self.assertIn(".ai/scripts/python-entrypoints.json", runner)
+        self.assertIn(".ai/assets/shared/validation-evidence-lifecycle.schema.yaml", runner)
+        self.assertIn(".ai/assets/shared/agent-execution-guardrails.schema.yaml", runner)
 
 
 if __name__ == "__main__":

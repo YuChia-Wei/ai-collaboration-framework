@@ -57,7 +57,7 @@
 - Workflow mode 時，遵循 `.dev/standards/WORKFLOW-ARTIFACT-POLICY.md` 與 `.dev/TEAM-GIT-FLOW-RULES.MD`；material edits 前切換 dedicated branch。
 - 唯讀報告使用 `.dev/standards/ASSESSMENT-ARTIFACT-POLICY.md`；報告本身不必然需要 workflow。
 - Cross-session transfer 遵循 `.dev/standards/WORKFLOW-HANDOFF-POLICY.md`；checkpoint 不得依賴 hidden conversation state。
-- Commit 前遵循 `.dev/standards/GIT-COMMIT-POLICY.md`。
+- Commit 前遵循 `.dev/standards/GIT-COMMIT-POLICY.md`，並在執行 `git commit` 前以 message file 驗證完整 planned message。
 - Merge、workflow completion、Issue closure、Project status、release allocation、publication 與 target upgrade 是不同 state。
 
 ## 驗證與檢閱
@@ -67,6 +67,23 @@
 - Independent review 綁定 exact subject、維持 read-only，且不能把自己的 repair 當成 verification。
 - Fixed-head audit 後的 mutation 會使該 audit 對新 head 失效。
 - 保留 failure、timeout、interruption 與 blocked evidence；後來的 pass 不會抹除它們。
+
+### Validation Freeze 與 Evidence Reuse
+
+- Reuse 前將 validation evidence 分類為 identity-sensitive、input-sensitive、environment-sensitive 或 provider-sensitive。只有 tracked bytes、transitive dependencies、command、profile、environment、runner、manifest、resolver、policy 與 configuration authority 全部相容時才可 reuse。
+- 只有完成 tracked mutation 與 focused validation 後才可 freeze。Freeze 後的 tracked drift 會使 subject 失效；terminal metadata 只能寫入已宣告的 ignored artifacts，且不會使 frozen snapshot 失效。
+- Unknown dependency 或 authority state 必須 fail closed。Exact-head audit、required hosted contexts 與 live admission gates 一律 fresh，不能由 cache reuse 取代。
+- 每個 admitted head 都必須保留 required hosted contexts。內部可以 execution 或 proven reuse，但 path filtering 不得讓 required context 消失。
+- Exact-head audit 對每個 gate 回報 `re-executed`、`reused-with-proof`、`blocked`、`deferred` 或 `not-applicable`。
+
+### Agent Execution Guardrails
+
+- Delegated、external 或 fixed-head execution 前，驗證 agent execution packet；其中包含 owning skill、canonical role path 與 applicability、exact SHA/argv/cwd、permissions、ignored artifact roots、terminal schema 與 callback、integration owner、stop conditions 與 retry budget。
+- 持有 machine-readable worktree snapshot lease。一個 active tracked-writer holder 排除其他所有 tracked writer；read-only work 與已宣告的 ignored validation output 仍可進行，terminal release 必須明確記錄。
+- 維護 acceptance-to-evidence ledger 並驗證其 human-report projection。Synthetic、mock、fixture 與 unit evidence 不得滿足要求 actual execution 的 acceptance。
+- 只有具備 privacy-safe failure fingerprint 與 material state change 才可 retry。Attempt 三次以上需要新的 owner 或 workflow authorization。
+- Discovery conclusion 前驗證 code-graph index SHA 與 coverage。Stale 或 missing graph 必須 reindex 或使用明確 tracked-file fallback；search absence 本身不是 proof。
+- PowerShell automatic 或 reserved variables 一律不得被賦值，且不分大小寫；使用用途明確的 variable names。
 
 ### 長時間驗證 Gate
 

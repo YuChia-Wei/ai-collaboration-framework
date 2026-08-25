@@ -19,6 +19,8 @@
     {"path": ".ai/scripts/validate-dependency-versions.py", "portable": true, "dependency_profile": [], "prerequisite_exit_code": 1},
     {"path": ".ai/scripts/validate-file-disposition-manifest.py", "portable": true, "dependency_profile": ["PyYAML"], "prerequisite_exit_code": 1},
     {"path": ".ai/scripts/validate-git-commits.py", "portable": true, "dependency_profile": ["PyYAML"], "prerequisite_exit_code": 1},
+    {"path": ".ai/scripts/validate-agent-execution-guardrails.py", "portable": true, "dependency_profile": ["PyYAML"], "prerequisite_exit_code": 1},
+    {"path": ".ai/scripts/validate-validation-lifecycle.py", "portable": true, "dependency_profile": ["PyYAML"], "prerequisite_exit_code": 1},
     {"path": ".ai/scripts/validate-shell-assets.py", "portable": true, "dependency_profile": ["PyYAML"], "prerequisite_exit_code": 1},
     {"path": ".ai/scripts/validate-software-development-orchestrator-acceptance.py", "portable": true, "dependency_profile": ["PyYAML"], "prerequisite_exit_code": 1},
     {"path": ".ai/scripts/validate-workflow-artifacts.py", "portable": true, "dependency_profile": ["PyYAML"], "prerequisite_exit_code": 1},
