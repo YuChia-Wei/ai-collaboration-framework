@@ -1,0 +1,293 @@
+{
+  "template_id": "software-development-orchestrator/development-workflow-task",
+  "template_version": "1.5.0",
+  "template_created_at": "2026-07-10T18:25:11+08:00",
+  "template_updated_at": "2026-08-05T02:12:00+08:00",
+  "workflow_id": "2026-08-25-package-apply-git-snapshot",
+  "task_id": "PERF-002-implementation",
+  "owner_skill": "slice-implementer",
+  "related_plan_id": "development-plan-2026-08-25-package-apply-git-snapshot",
+  "status": "completed",
+  "created_at": "2026-08-25T14:52:56+08:00",
+  "updated_at": "2026-08-26T00:27:15+08:00",
+  "template_source": ".ai/assets/skills/software-development-orchestrator/templates/development-workflow-task-template.json",
+  "model": "gpt-5.6-sol",
+  "reasoning_effort": "high",
+  "workflow_locator": ".dev/workflows/2026-08-25-package-apply-git-snapshot/workflow.yaml",
+  "scope": {
+    "goal": "Batch package-apply target Git inspection into bounded per-phase snapshots with deterministic instrumentation.",
+    "target": ".ai/scripts/ai_context_package_apply.py and owning tests",
+    "files": [
+      ".ai/scripts/ai_context_package_apply.py",
+      ".ai/scripts/ai_context_target_provenance.py",
+      ".ai/scripts/ai_context_multi_hop_upgrade.py",
+      ".ai/scripts/plan-ai-context-package-apply.py",
+      ".ai/scripts/tests/test_ai_context_package_apply.py",
+      ".ai/scripts/tests/test_ai_context_multi_hop_upgrade.py",
+      ".ai/scripts/tests/benchmark_ai_context_package_git_inspection.py",
+      ".ai/scripts/tests/run_perf002_long_validation.py"
+    ],
+    "constraints": [
+      "Git subprocess count is a payload-count-independent bounded constant per plan/apply phase",
+      "Preserve dirty, untracked, deleted, mode, symlink/reparse, ignored, LFS/attributes, unknown-state fail-closed semantics",
+      "Preserve journal v5 durability, resume, rollback, crash, stdout/stderr, and transaction boundaries",
+      "Durability and platform semantics do not consume AI_CONTEXT_TEST_TMP_ROOT"
+    ],
+    "non_goals": ["#250 identity", "#252 lane split", "#249 reuse policy", "#253 agent guardrails", "provider/release mutations"]
+  },
+  "inputs": {
+    "requirements": ["GitHub Issue #251 live body"],
+    "specifications": ["Issue #251 solution and acceptance contracts"],
+    "architecture_decisions": ["Use one explicit target Git snapshot lifecycle per phase; fail closed on drift"],
+    "user_constraints": ["Parent delegation from owner-authorized orchestration thread on 2026-08-25"]
+  },
+  "execution": {
+    "capability_slot": "implementation",
+    "approval_contract": {
+      "status": "approved",
+      "required_before": "implementation",
+      "authorization_source": ["parent delegation from owner-authorized source thread", "GitHub Issue #251 scope contract"],
+      "pending_decision": ""
+    },
+    "implementation_contract": {
+      "intent": "refactor",
+      "execution_mode": "generic",
+      "overlays": [],
+      "authorization_source": ["parent delegation from owner-authorized source thread"],
+      "normative_truth": ["GitHub Issue #251", "AICTX-EVIDENCE-001 packet 46b000d161c18ee99c76047cc7c8304d5d46bcd4b291840904733fcaae991722"],
+      "finding_evidence": [],
+      "subject_revision": "1326f827f61de8eebeef30748dcc82ffa7dd3764",
+      "acceptance_criteria": ["bounded Git process count", "explicit snapshot freshness", "fail-closed compatibility", "journal-v5 compatibility", "deterministic instrumentation and fixtures"]
+    },
+    "test_execution_contract": null,
+    "role_execution_records": [],
+    "spec_compliance": {"selected": false, "activation_source": [], "expected_outcome": "not-applicable"},
+    "steps": ["Measure existing per-path process amplification", "Implement target Git snapshot and lifecycle", "Add process/byte/duration instrumentation and fixtures", "Run focused validation and benchmark", "Commit and obtain exact-head independent audit"],
+    "validation": ["focused package-apply suites", "journal/resume/rollback/crash coverage", "retained-origin coverage", "three-run same-commit benchmark", "workflow/source validators", "exact-head audit"],
+    "commit_checkpoint": "coherent validated local implementation commit",
+    "deferred_items": []
+  },
+  "results": {
+    "finding_status": "addressed",
+    "summary": "Implemented and source-closed bounded plan/apply target Git snapshots, including real multi-hop checkpoint surfaces, pre-lock drift admission, batch blob/attribute/ignore/config-origin parsing, recovery ignore-semantic binding, pre-Git symlink/reparse boundary classification, platform-exact raw config-selector identity, stderr-only phase metrics, scale/process fixtures, exact-head benchmark/long-validation runners, and PR #255 terminal-close declaration. Payload-independent final implementation counts are plan 24, apply 12, and real later-hop 24. The retained 631-record benchmark head reduced plan Git processes from 3153 to 22 and apply Git processes from 13272 to 11. Fresh final source-closeout audit, hosted Linux/Windows checks, admission, integration, and provider read-back remain external gates rather than unfinished source tasks.",
+    "files_changed": [
+      ".ai/scripts/ai_context_package_apply.py",
+      ".ai/scripts/ai_context_target_provenance.py",
+      ".ai/scripts/ai_context_multi_hop_upgrade.py",
+      ".ai/scripts/plan-ai-context-package-apply.py",
+      ".ai/scripts/tests/test_ai_context_package_apply.py",
+      ".ai/scripts/tests/test_ai_context_multi_hop_upgrade.py",
+      ".ai/scripts/tests/benchmark_ai_context_package_git_inspection.py",
+      ".ai/scripts/tests/run_perf002_long_validation.py",
+      ".dev/workflows/INDEX.MD",
+      ".dev/workflows/2026-08-25-package-apply-git-snapshot/workflow.yaml",
+      ".dev/workflows/2026-08-25-package-apply-git-snapshot/workflow-plan.md",
+      ".dev/workflows/2026-08-25-package-apply-git-snapshot/tasks/PERF-002-implementation.json",
+      ".dev/workflows/2026-08-25-package-apply-git-snapshot/reports/execution-retrospective.md",
+      ".dev/workflows/2026-08-25-package-apply-git-snapshot/evidence/terminal-issue-closure-pr-255.yaml"
+    ],
+    "approval_evidence": ["parent delegation from owner-authorized source thread", "GitHub Issue #251 live read-back"],
+    "test_execution": [
+      {
+        "command": "python .ai/scripts/tests/test_ai_context_package_apply.py -k gwt_07; python .ai/scripts/tests/test_ai_context_package_apply.py -k gwt_08; python .ai/scripts/tests/test_ai_context_multi_hop_upgrade.py MultiHopUpgradeGwtTests.test_gwt_010_given_two_exact_packages_when_each_child_is_applied_validated_finalized_and_checkpointed_then_route_completes",
+        "outcome": "passed",
+        "evidence": "Post-audit repair: package-apply GWT-070..079 ran 10 tests in 55.112s; GWT-080..086 ran 7 tests in 37.273s; the real two-hop retained-route path ran in 31.425s. GWT-010 makes per-path target-surface, standalone HEAD, and both Git admin-path fallbacks raise, proving the real validator consumes the plan-admission snapshot. An earlier 11.135s run failed closed because validation preceded snapshot admission, and two subsequent 12.073s/11.197s runs exposed nested admin-path fallback; those repairable failures are retained evidence."
+      },
+      {
+        "command": "python .ai/scripts/tests/test_ai_context_package_apply.py <PERF-002 GWT-073..086 selections> -v",
+        "outcome": "passed",
+        "evidence": "GWT-073..083: 11 tests in 43.483s; GWT-084: 1 test in 2.977s; GWT-080..086 exact repair rerun: 7 tests in 28.594s. Small, 631-record, 947-record, apply-count, attrs/ignore, CLI, drift, batch-blob, dirty/deleted, TOCTOU, semantic recovery, rollback-drift, post-snapshot/pre-lock recovery-drift, crash-time ignore drift, and 631-path multi-hop checkpoint cases passed; plan=22 and apply=11 Git subprocesses independent of payload/operation/checkpoint path count; apply full-worktree scans=4 independent of operation count and entry reads remain linear."
+      },
+      {
+        "command": "python .ai/scripts/tests/test_ai_context_package_apply.py <ignored/mode/symlink/reparse/autocrlf selections> -v",
+        "outcome": "passed",
+        "evidence": "7 tests in 12.629s; 1 Windows symlink-privilege skip."
+      },
+      {
+        "command": "python .ai/scripts/tests/test_ai_context_package_apply.py <journal-v5 crash/resume/rollback selections> -v",
+        "outcome": "passed",
+        "evidence": "4 tests in 89.526s; focused GWT-015 rerun after the final recovery-lock admission change passed in 4.566s."
+      },
+      {
+        "command": "python .ai/scripts/tests/test_ai_context_upgrade_routes.py -v",
+        "outcome": "passed",
+        "evidence": "31 tests in 28.038s."
+      },
+      {
+        "command": "python .ai/scripts/tests/test_ai_context_package_validation.py -v",
+        "outcome": "passed",
+        "evidence": "19 tests in 2.541s; 1 Windows case-fold skip."
+      },
+      {
+        "command": "python .ai/scripts/tests/test_ai_context_multi_hop_upgrade.py -v",
+        "outcome": "interrupted",
+        "evidence": "Stopped during test 20 when observed duration crossed the 120-second long-running gate; no pass/fail claim. The delegated exact-head aggregate attempt was later blocked by Windows TEMP access before reaching multi-hop."
+      },
+      {
+        "command": "python .ai/scripts/tests/run_perf002_long_validation.py --expected-commit 333fafb2eacaeaee9750aa99a1856a7bccb36c21 --base-ref 1326f827f61de8eebeef30748dcc82ffa7dd3764 --output-dir .tmp/issue-251/external/333fafb2 --scale-count 631 --warm-runs 3",
+        "outcome": "blocked-by-environment",
+        "evidence": "Schema-valid delegation issue-251-long-validation-333fafb2 ran once. Pinned clean preflight passed; package-apply stopped after 0.784052s because the delegated runtime was denied access to Windows TEMP fixture directories (WinError 5). Multi-hop and benchmark did not run. summary canonical-content sha256=26bda236e1996bebc9a442a24da2e3716d31b0a6e13b1449ac0ac78a34bcc206; summary.json file-byte sha256=a3c0394aec0e845691072763df65f6424f97640649641df8afae96121c545cc4; stderr file-byte sha256=0d597213c8a594aca6d51496729a55ab8bea588dd37c880e8d91bb85d2a6c031."
+      },
+      {
+        "command": "python .ai/scripts/tests/run_perf002_long_validation.py --expected-commit c5aca00668c94a40c74f9e3118065a100d3d3cd2 --base-ref 1326f827f61de8eebeef30748dcc82ffa7dd3764 --output-dir .tmp/issue-251/external/c5aca006 --scale-count 631 --warm-runs 3",
+        "outcome": "failed",
+        "evidence": "Schema-valid native-Windows delegation issue-251-long-validation-c5aca006 ran once for 480.283356s. Package-apply ran 104 tests with 1 failure, 11 errors, and 1 skip; multi-hop and benchmark did not run. The receipt exposed missing active-snapshot admission for target-validation binding and stale journal staging paths after durable cleanup. summary canonical-content sha256=a8e41e5dc4ad31b0b29863ccabd8a482c98fc29715073fd44a777efc7568af42; stderr file-byte sha256=4e40896a21a498d52ab261c10159f33778918d2e9d9a12cb431f59715874dcd3."
+      },
+      {
+        "command": "python .ai/scripts/tests/run_perf002_long_validation.py --expected-commit 68204f58e6ebfe1e099ac6e9b0db95712f3d6085 --base-ref 1326f827f61de8eebeef30748dcc82ffa7dd3764 --output-dir .tmp/issue-251/external/68204f58 --scale-count 631 --warm-runs 3",
+        "outcome": "passed",
+        "evidence": "Schema-valid native-Windows delegation issue-251-long-validation-68204f58 passed in 4827.644808s on the pinned clean head. Package-apply: 104 tests in 558.147754s with 1 Windows symlink-privilege skip. Multi-hop: 31 tests in 179.879532s. Benchmark: 4089.536736s, retained payload=631, one cold-first plus 3 warm fresh-fixture runs per profile. summary canonical-content sha256=ad1c321d81a557832eccdfedb76713108081663fd0d660abfdff28bb4aa2424d; summary file-byte sha256=4c8640badaa8ebd94ec7993ff3e3ad6030d2359b3832f31d7f1b2441b5cb8a1a; benchmark canonical-content sha256=2466a75e3ece2c5e492e5a55e3299add7ff819a4c56958400c51aafc8236d85a; benchmark file-byte sha256=4e177adbd66caaad25af706ceccc072d30152310bbf33ec858c6a00d5378824b."
+      },
+      {
+        "command": "python .ai/scripts/tests/run_perf002_long_validation.py --expected-commit fc691245451b87db461d751f33b2f9f7ae801a46 --base-ref 1326f827f61de8eebeef30748dcc82ffa7dd3764 --output-dir .tmp/issue-251/external/fc691245 --scale-count 631 --warm-runs 3",
+        "outcome": "failed",
+        "evidence": "Schema-valid native-Windows delegation issue-251-long-validation-fc691245 ran once for 756.404709s on the pinned clean head. Package-apply passed 104 tests in 577.531061s with 1 Windows symlink-privilege skip. Multi-hop ran 31 tests in 178.793173s with 1 failure: direct GWT-002 observed the new missing-active-snapshot error before its historical incomplete-checkpoint error; benchmark did not run. summary canonical-content sha256=226587c44278a011060a3194302bf22f2d3644efd89b84d6e8909bb2bd1cf97f; summary file-byte sha256=5675cc70c595bf94f58349e3cb4ab850df1532e99760b61654fe0850d386b729; completion file-byte sha256=76dbf5a535587cf07c2373e22ad33a9f55d87fdecf6680fdf55f2cf8d2c2fed2."
+      },
+      {
+        "command": "python .ai/scripts/tests/run_perf002_long_validation.py --expected-commit 116893c8460451ee5fae93cf9fda13041a48a3eb --base-ref 1326f827f61de8eebeef30748dcc82ffa7dd3764 --output-dir .tmp/issue-251/external/116893c8 --scale-count 631 --warm-runs 3",
+        "outcome": "interrupted",
+        "evidence": "Schema-valid native-Windows delegation issue-251-long-validation-116893c8 was interrupted after 4594.953609s when the pre-terminal audit found two uninstrumented real prepare_next_hop Git admin-resolution processes. Package-apply passed 104 tests in 603.529s with 1 Windows symlink-privilege skip; multi-hop passed 31 tests in 188.657s. Benchmark was terminated before any cold/warm result was emitted. The receipt truthfully records tracked repair drift at termination. completion file-byte sha256=4195c3e30a3e48efb0206ee62a768c6efec88d9d2a4c9582b0ab0b8143c2287c; package log sha256=ac3171433866e3b0de5a8da5c5ad13c102dd3ab9dd95cc57a8589f20e5fa6661; multi-hop log sha256=467158f3b4fce9d86afce3d629b6edad1559e059ae0ea1b35d4a3ee2c583b9b0."
+      },
+      {
+        "command": "python .ai/scripts/tests/run_perf002_long_validation.py --expected-commit 13a33cc44825f8da10674e0294b38edbf7159053 --base-ref 1326f827f61de8eebeef30748dcc82ffa7dd3764 --output-dir .tmp/issue-251/external/13a33cc4 --scale-count 631 --warm-runs 3",
+        "outcome": "passed",
+        "evidence": "Schema-valid native-Windows delegation issue-251-long-validation-13a33cc4 passed in 4865.614824s on the pinned clean head. Package-apply: 104 tests in 635.080490s with 1 Windows symlink-privilege skip. Multi-hop: 31 tests in 195.522248s. Benchmark: 4034.924657s, retained payload=631, one cold-first plus 3 warm fresh-fixture runs per profile. Warm medians: legacy plan 169.2441546s / 3153, legacy apply 702.1749036s / 13272, snapshot plan 3.7895519s / 22, snapshot apply 3.7676249s / 11. summary canonical-content sha256=eab959ab235114bdaee3f36c6e0acf244994f88bba8b509b2f49802017d33ade; summary file-byte sha256=a3f0b7f02fcc3c63c54e2563b9d328a193d4efc4a13acffdccdb5c9a5676ffbe; benchmark canonical-content sha256=79df8f25189e0468eccb2fc358c336ec0dcfd08a66ac255cd993da9935743ca0; benchmark file-byte sha256=e0bab4bbe9fd22f4aaa1636f34038be89e2706898ac33360fcfdd1d9dfd20d8c; completion file-byte sha256=2f36d26bedb8bb8ab0592bbecba82768f3a1320b186d29ad05897ca50dbbe023."
+      },
+      {
+        "command": "python .ai/scripts/tests/test_ai_context_package_apply.py -k gwt_07 -k gwt_08; python .ai/scripts/tests/test_ai_context_multi_hop_upgrade.py MultiHopUpgradeGwtTests.test_gwt_010_given_two_exact_packages_when_each_child_is_applied_validated_finalized_and_checkpointed_then_route_completes",
+        "outcome": "passed",
+        "evidence": "Post-7a6f20 exact-head audit repair: package-apply GWT-070..088 passed 19 tests in 75.577s; both info/exclude and configured core.excludesFile post-snapshot drift, plus info/attributes and configured core.attributesFile drift, fail before target mutation. Plan remains 22 and apply 11 Git subprocesses, including 3/631/947 plan fixtures, 1/8/32 apply fixtures, and 3/631 later-hop fixtures. Real two-hop GWT-010 passed in 26.167s with exactly 22 _snapshot_git calls and all legacy fallbacks forbidden. The initial default-TEMP attempts were blocked by sandbox WinError 5, one selector typo was non-execution, and the first repair probe exposed a test-helper keyword error plus case-sensitive config-regex gap; all are retained as non-passing repair evidence."
+      },
+      {
+        "command": "python .ai/scripts/tests/test_ai_context_package_apply.py -k gwt_07 -k gwt_08; python .ai/scripts/tests/test_ai_context_multi_hop_upgrade.py MultiHopUpgradeGwtTests.test_gwt_010_given_two_exact_packages_when_each_child_is_applied_validated_finalized_and_checkpointed_then_route_completes",
+        "outcome": "passed",
+        "evidence": "Post-ee55880 exact-head audit repair: config inspection now lists all effective file-backed config origins in the existing batch while retaining only SHA-256 identity digests, so a pre-existing global/system/include config cannot introduce a new core.excludesFile or core.attributesFile after snapshot without detection. GWT-070..089 passed 20 tests in 78.824s; real two-hop GWT-010 passed in 30.548s and retains exactly 22 snapshot Git processes with legacy fallbacks forbidden. The first six-test repair run failed only the filesystem-entry fixed-overhead assertion by 8 reads after adding config origins; process counts remained bounded. The final O(payload)+constant assertion passed after calibrating the documented constant identity overhead."
+      },
+      {
+        "command": "python .ai/scripts/tests/test_ai_context_package_apply.py <GWT-073,074,086,089,090>; python .ai/scripts/tests/test_ai_context_multi_hop_upgrade.py MultiHopUpgradeGwtTests.test_gwt_010_given_two_exact_packages_when_each_child_is_applied_validated_finalized_and_checkpointed_then_route_completes",
+        "outcome": "passed",
+        "evidence": "Post-ad0b38 exact-head audit repair: include.path and includeIf.*.path targets are resolved relative to their file-backed origin and bound even when the included file has no effective entries. GWT-090 rejects both ignore and attribute policy introduction through a comment-only include before mutation. The five focused package process/config-drift tests passed in 39.248s; real two-hop GWT-010 passed in 34.625s. Plan/apply/later-hop Git process counts remain 22/11/22 with no new subprocess."
+      },
+      {
+        "command": "python .ai/scripts/tests/test_ai_context_package_apply.py AiContextPackageApplyGwtTests.test_gwt_074_given_growing_apply_operation_counts_when_applied_then_git_process_count_is_constant AiContextPackageApplyGwtTests.test_gwt_091_given_absent_global_config_appears_after_snapshot_when_admitted_then_target_is_not_mutated",
+        "outcome": "passed",
+        "evidence": "Proactive adjacent-boundary repair: process-stable GIT_CONFIG_GLOBAL/GIT_CONFIG_SYSTEM overrides and default global config candidates are bound even when absent at capture. GWT-091 rejected creation of an absent global config plus new ignore policy before mutation. GWT-074 passed in 7.984s after its O(payload) filesystem-entry coefficient was recalibrated for the fixed per-operation identity set; the preceding two-test run passed GWT-091 but failed only the prior metadata-read bound (1822 observed versus 1756), with Git process count still 11."
+      },
+      {
+        "command": "python .ai/scripts/tests/test_ai_context_package_apply.py AiContextPackageApplyGwtTests.test_gwt_090_given_preexisting_empty_include_adds_policy_after_snapshot_when_admitted_then_target_is_not_mutated AiContextPackageApplyGwtTests.test_gwt_092_given_local_config_has_relative_dormant_include_when_policy_appears_after_snapshot_then_target_is_not_mutated",
+        "outcome": "passed",
+        "evidence": "Post-01f73f exact-head audit repair: file-backed config origins are normalized against the target root before relative include resolution. Global absolute-origin GWT-090 and repository-local file:.git/config GWT-092 both reject ignore and attribute policy introduction before mutation; 2 tests passed in 9.232s. No Git subprocess was added."
+      },
+      {
+        "command": "python .ai/scripts/tests/test_ai_context_package_apply.py <GWT-073,074,076,078,086..093>; python .ai/scripts/tests/test_ai_context_multi_hop_upgrade.py MultiHopUpgradeGwtTests.test_gwt_010_given_two_exact_packages_when_each_child_is_applied_validated_finalized_and_checkpointed_then_route_completes",
+        "outcome": "passed",
+        "evidence": "Post-7a1a457 exact-head audit repair: config identity is established before semantic attribute/ignore reads and an exact closing config read-back rejects in-capture selector drift. GWT-093 passed alone in 4.227s; the 12-test focused package set ran in 55.860s with 8 semantic passes and 4 expectation-only failures that correctly observed plan=24 rather than the initially estimated 23; the four corrected deterministic count tests then passed in 20.525s. Real two-hop GWT-010 passed in 27.326s with exactly 24 snapshot Git processes. Current bounded counts are plan=24, apply=12, later-hop=24. No legacy benchmark was repeated."
+      },
+      {
+        "command": "python .ai/scripts/tests/test_ai_context_package_apply.py <GWT-073,074,086,089..094>; python .ai/scripts/tests/test_ai_context_multi_hop_upgrade.py MultiHopUpgradeGwtTests.test_gwt_010_given_two_exact_packages_when_each_child_is_applied_validated_finalized_and_checkpointed_then_route_completes",
+        "outcome": "passed",
+        "evidence": "Post-7ffea633 exact-head audit repair: GWT-094 passed its four Windows HOME/default-global/default-policy ignore and attributes subcases in 8.738s. The nine-test count and adjacent config-drift set passed in 52.991s; real two-hop GWT-010 passed in 27.224s. Source AI-context governance passed in 3.541s. Explicit HOME now controls Git-home config/policy candidates and ~/ expansion when it differs from USERPROFILE. Counts remain plan=24, apply=12, later-hop=24; no benchmark was repeated."
+      },
+      {
+        "command": "python .ai/scripts/tests/test_ai_context_package_apply.py <GWT-073,074,086,093..095>; python .ai/scripts/tests/test_ai_context_multi_hop_upgrade.py MultiHopUpgradeGwtTests.test_gwt_010_given_two_exact_packages_when_each_child_is_applied_validated_finalized_and_checkpointed_then_route_completes",
+        "outcome": "passed",
+        "evidence": "Post-0eebee85 exact-head audit repair: exact literal-tilde GIT_CONFIG_GLOBAL GWT-095 passed both ignore and attributes cases in 5.120s. The six-test count/selector set passed in 43.898s; real two-hop GWT-010 passed in 28.581s. Raw environment selector paths now retain literal syntax relative to the target cwd, while config content paths retain Git HOME expansion. Counts remain 24/12/24; no benchmark was repeated."
+      },
+      {
+        "command": "fresh read-only exact-head independent audit of 8a24041d43e3ee0fcb30f9bb9dae2a7d6e55f3de",
+        "outcome": "passed",
+        "evidence": "Independent audit passed with zero blocking and zero nonblocking findings. GWT-093..095 passed 3/3 in 17.326s; process-count GWT-073/074/086 passed 3/3 in 26.864s at 24/12/24; real two-hop GWT-010 passed in 27.497s; journal-v5 crash/resume/rollback selection passed 13/13 in 90.913s; dirty/mode/reparse/ignore/LFS/attributes selection passed 11 with one Windows symlink privilege skip in 30.104s. Raw global/system/XDG selector and config-content HOME probes all rejected before mutation. Workflow, commit, source-governance, six receipt pairs, and terminal digests passed. This PR-bound closeout commit changes only workflow/declaration bytes and therefore requires a final fresh audit without repeating the multi-hour benchmark."
+      },
+      {
+        "command": "python .ai/scripts/validate-workflow-artifacts.py; python .ai/scripts/validate-terminal-issue-closure.py --record .dev/workflows/2026-08-25-package-apply-git-snapshot/evidence/terminal-issue-closure-pr-255.yaml; python .ai/scripts/validate-ai-context.py; PR body/declaration parity; git diff --check",
+        "outcome": "passed",
+        "evidence": "PR #255 source closeout passed workflow lifecycle validation for 97 workflows/117 directories, terminal Issue closure static validation for one declaration, full source AI-context validation, exact final-body/declaration parity, JSON parsing, and diff checks. During hosted-repair metadata updates, the first workflow-validator rerun failed only because .dev/workflows/INDEX.MD still carried the prior updated_at value; the index was synchronized before the final passing rerun. A later AI-context validator invocation was interrupted by Windows WinError 1920 while traversing the ignored Ubuntu WSL venv lib64 symlink; the disposable ignored venv was removed after its 113-test result completed, and the unchanged source validator then passed. These source checks do not claim external exact-head review, hosted admission, integration, or provider reconciliation."
+      },
+      {
+        "command": "gh pr checks 255 --watch --interval 10",
+        "outcome": "failed",
+        "evidence": "The first PR-bound hosted run on edb50e36154ac53391ff0d7a773126a2d8b56a53 passed Ubuntu prerequisite, Windows prerequisite, read-only governance, and candidate build. Ubuntu PR profile failed after 2m14s because package-apply GWT-008 returned Git's pathspec-beyond-symlink diagnostic instead of the framework symlink-boundary classification. The profile's 120-second budget result was advisory, not the cause. Run 32869121021/job 97871955261 is retained as non-passing evidence."
+      },
+      {
+        "command": "wsl.exe -d Ubuntu-24.04 --cd <issue-251-worktree> python3 .ai/scripts/tests/test_ai_context_package_apply.py AiContextPackageApplyGwtTests.test_gwt_008_given_symlink_parent_when_planning_then_escape_is_rejected -v; python .ai/scripts/tests/test_ai_context_package_apply.py <8 focused snapshot/safety tests> -v",
+        "outcome": "passed",
+        "evidence": "Local Ubuntu 24.04 reproduced GWT-008 before repair and passed the exact case after pre-Git symlink/reparse classification in 0.077s. Eight focused native-Windows tests covering ignore, clean gate, symlink privilege, 3/631/947 process counts, 1/8/32 apply counts, LFS/attributes/unknown state, drift, and batch blobs passed in 31.211s with one truthful Windows symlink-privilege skip. Two preceding sandboxed Windows attempts failed before fixtures with WinError 5 and are not pass evidence."
+      },
+      {
+        "command": "fresh read-only exact-head independent audit of edb50e36154ac53391ff0d7a773126a2d8b56a53",
+        "outcome": "failed",
+        "evidence": "Audit found one blocking exact-parity mismatch: tracked declaration SHA-256 0d9087030df705fc0ab3c7a8a09f188b8783a2172053f43b82db23ee038a9993 versus live body SHA-256 037676b80ad55fbd4134f513ad6256c2ed763c05471aeb4f3cd4b6bf5aa8bd8c, solely because live ended with two LF bytes. The declaration now preserves those bytes; a fresh audit is mandatory after the repair commit."
+      },
+      {
+        "command": "fresh independent general exact-head audit of 533cf41a6dae9bbb74cac57a46482bd6c0845667",
+        "outcome": "passed",
+        "evidence": "The canonical fixed-head-independent-auditor role was not invoked because software-development-orchestrator has no applicable role binding; inventing ai-context-upgrader ownership was rejected fail closed. An independent read-only bounded general audit instead passed 533cf41a with zero blockers, clean start/end head, exact PR body hash 037676b80ad55fbd4134f513ad6256c2ed763c05471aeb4f3cd4b6bf5aa8bd8c, 19 policy-valid commits, workflow/static closure/AI-context/diff passes, and unchanged benchmark/durability evidence. The later hosted failure invalidated admission but not the truth of this source audit; the subsequent repair requires a fresh audit."
+      },
+      {
+        "command": "gh pr checks 255 --watch --interval 10",
+        "outcome": "failed",
+        "evidence": "The second hosted run on 533cf41a6dae9bbb74cac57a46482bd6c0845667 passed Ubuntu prerequisite (11s), Windows prerequisite (31s), read-only governance (1m13s), and candidate build (13s). Ubuntu PR profile failed after 2m46s in package-apply GWT-095 for both ignore and attributes cases. Matching PyYAML 6.0.3 local reproduction proved Python abspath had collapsed a missing raw POSIX literal-tilde parent that Git could not traverse. Run 32870870750/job 97877274496 is retained as non-passing evidence."
+      },
+      {
+        "command": "Ubuntu 24.04 WSL PyYAML 6.0.3 full package-apply suite; native Windows GWT-073,074,086,089..095",
+        "outcome": "passed",
+        "evidence": "After preserving the raw POSIX lexical selector boundary, Ubuntu passed 113 package-apply tests in 81.500s with no skips or failures. Native Windows passed 10 process-count and selector/config-drift tests in 59.855s. Plan/apply/later-hop counts remain 24/12/24; no Git subprocess or benchmark path changed. The exact first selector repair attempt incorrectly assumed POSIX tilde expansion and failed GWT-095 in 0.236s; the retained failure led to the lexical-parent model."
+      }
+    ],
+    "role_execution_aggregation": [{"stage_id": "implementation", "owning_skill": "slice-implementer", "disposition": "not-applicable", "reason": "The generic Python repository-tooling slice matches none of the command/query/reactor or concrete domain/use-case role bindings; no child invocation is invented."}],
+    "spec_compliance": {"outcome": "not-applicable", "coverage_percent": null, "evidence": []},
+    "validation_evidence": [
+      "Framework-source effective-rule packet digest 46b000d161c18ee99c76047cc7c8304d5d46bcd4b291840904733fcaae991722.",
+      "Read-only #250 selected-input evidence confirms the retained v0.14 profile has 631 payload records.",
+      "Pre-commit independent advisory review findings on plan TOCTOU, O(operations*files), Git identity window, benchmark binding, semantic recovery, rollback admission, and recovery snapshot/lock admission were repaired and regression-tested.",
+      "The first exact-head audit rejected 2dc2e2547726ba55dc591dd60dfd958a2b2da2cc for multi-hop per-path Git fallback, missing recovery ignore binding, and ambiguous canonical-content digest labeling; all three findings were repaired and focused-regression tested, with a fresh audit required after the repair commit.",
+      "The second exact-head audit rejected 544ba8719a08b28f7f53b4ecff47b94cdd54f80b because the real retained-route target-provenance verifier still resolved Git state outside the active snapshot while GWT-086 mocked that outer verifier. The adapter now injects snapshot HEAD, admin paths, and the batch target surface through nested historical-finalization validation; GWT-086 invokes the real verifier at 3 and 631 paths, and real two-hop GWT-010 forbids every legacy fallback.",
+      "The first post-second-audit aggregate receipt at fc691245 failed only direct multi-hop GWT-002 compatibility after package-apply passed. The repair gives standalone verifier calls one bounded admission snapshot while prepare_next_hop and build_plan reuse the same admission snapshot; exact GWT-002 passed in 2.942s, GWT-073 plus GWT-086 passed in 19.591s, and real two-hop GWT-010 passed in 31.980s while asserting exactly 22 actual _snapshot_git calls and forbidding every legacy fallback. An initial instrumentation probe failed in 14.418s because its wrapper omitted the input_bytes keyword; the corrected probe passed without production relaxation.",
+      "The pre-terminal audit of 116893c8 found that transaction_lock and route-root resolution still launched two uninstrumented Git processes before the 22 counted snapshot processes. prepare_next_hop now captures and activates admission before the lock, performs a full drift/identity check after lock acquisition, and reuses that snapshot throughout the route and build_plan path. Corrected real two-hop GWT-010 passed with exactly 22 _snapshot_git calls and run_git forbidden; direct GWT-002 plus real GWT-010 passed in 37.069s and the 3/631-path GWT-086 passed in 4.902s.",
+      "The terminal exact-head run at 13a33cc4 passed package-apply, multi-hop, and the full 631-record cold plus three-warm benchmark. Warm timing speedups are 44.66x for plan and 186.37x for apply; process reductions are 99.3023% and 99.9171%. No concurrent helper tests or audits ran during this benchmark profile.",
+      "The exact-head audit of evidence head 7a6f20a069f9b4e46f474f5671c639931dd19f04 rejected integration because info/exclude and resolved external ignore-policy files were not in snapshot identity. The repair batches core.filemode, core.excludesFile, and core.attributesFile in the existing config subprocess, binds file-backed config origins plus default/configured ignore and attribute policy files, adds info/exclude to the existing admin-path batch, preserves lexical paths for symlink/reparse rejection, and adds GWT-087/GWT-088 post-snapshot pre-mutation regressions. No Git subprocess was added; fresh exact-head audit remains required.",
+      "The exact-head audit of ee55880b316bd0664fd65989b95245446cf3ad58 rejected integration because filtering config origins by already-effective core keys could not detect introduction of a new policy key/path through a pre-existing global/system/include config. The repair lists all effective config origins in the existing config batch, binds file-backed origins by inventory and SHA-256 rather than retaining raw config bytes, and adds GWT-089. GWT-070..089 and real two-hop GWT-010 pass; no Git subprocess was added, and a fresh exact-head audit remains required.",
+      "The exact-head audit of ad0b38a000b97fb7f824ef68524b75784503a6d4 rejected integration because an existing comment-only include target had no returned value origin. The repair resolves include.path and includeIf.*.path values relative to each file-backed origin, binds their absence/presence and digest identity, and adds GWT-090 for both ignore and attribute introduction. Focused process/config-drift and real two-hop tests pass; no Git subprocess was added, and a fresh exact-head audit remains required.",
+      "The current candidate also binds absent/present process-stable global/system config selectors and adds GWT-091, preventing creation of a previously absent override config from changing policy selection after snapshot. The additional filesystem metadata work remains O(payload)+constant and adds no Git subprocess.",
+      "The exact-head audit of 01f73f25d0d48a0c116e9626efd62a0e6472832f rejected integration because Git's relative file:.git/config origin was resolved against process cwd. The repair normalizes relative origins against the target root before resolving relative include values and adds GWT-092 for both ignore and attribute introduction. Global GWT-090 and local GWT-092 pass; a fresh exact-head audit remains required.",
+      "The exact-head audit of 7a1a457ad0e1f867c936c25f0ab4d4affec1ac82 rejected integration because config/attribute/ignore semantics could be returned before the matching identity baseline was fixed. The repair establishes identity first and requires a byte-identical closing config read-back. GWT-093 reproduces the in-capture timing and rejects both ignore and attribute selector drift before mutation. Current deterministic counts are plan 24, apply 12, and real later-hop 24; the extra process per snapshot is a bounded safety cost.",
+      "The exact-head audit of 7ffea63382b91f45f0ec4dd31e71cc1d5a4a3759 rejected integration because Git for Windows honored explicit HOME while Python Path.home() remained USERPROFILE, leaving the actual absent default global config and default policy candidates unbound. The repair uses Git HOME semantics for default config, ignore/attributes, includes, and ~/ values. GWT-094 covers default-global and direct default-policy drift for both semantics; fixed process counts are unchanged.",
+      "The exact-head audit of 0eebee85c105015632d3e558519cfde05cc7af21 rejected integration because raw GIT_CONFIG_GLOBAL beginning with tilde was HOME-expanded by the candidate binder while Git for Windows kept it literal and cwd-relative. The exact ~/../.git selector bypass applied both ignore and attributes changes. The repair binds raw environment selectors relative to target cwd and reserves HOME expansion for config content; GWT-095 rejects both cases before mutation.",
+      "The fresh independent audit of 8a24041d43e3ee0fcb30f9bb9dae2a7d6e55f3de passed with no findings and revalidated selectors, counts, real multi-hop, journal-v5, compatibility, workflow, commit, source-governance, receipts, and digests. Draft PR #255 was then created to obtain the required PR identity. This one source-closeout commit binds the terminal declaration and completed workflow truth; its metadata-only delta requires a fresh exact-head audit but does not justify a long benchmark rerun.",
+      "Owner-requested durable execution lessons are tracked at .dev/workflows/2026-08-25-package-apply-git-snapshot/reports/execution-retrospective.md. The record is deliberately not an ADR because it documents one workflow's implementation/validation experience and does not establish a repository-wide architecture boundary or canonical policy.",
+      "Workflow artifact validation passed for 97 workflows and 117 indexed workflow directories.",
+      "Sandboxed temp-path PermissionError attempts remain blocked-by-environment evidence; equivalent focused native Windows reruns passed.",
+      "One focused selector command contained a non-existent GWT-015 name; GWT-073 and GWT-074 passed in that command, and the corrected exact GWT-015 selector passed separately in 5.143s.",
+      "Ignored schema-1.1 long-validation receipt: .tmp/issue-251/external/333fafb2/completion.yaml; dispatch/completion validator passed. Its declared 26bda236e1996bebc9a442a24da2e3716d31b0a6e13b1449ac0ac78a34bcc206 is the canonical-content digest, not the summary.json file-byte digest; the runner field and tracked wording are corrected prospectively.",
+      "Ignored schema-1.1 failed receipt: .tmp/issue-251/external/c5aca006/completion.yaml; dispatch/completion validator passed. The 12 exact failed cases were rerun after repair: 9 receipt/terminal cases passed in the first 87.920s run while 3 staging cases still failed; those 3 passed after explicit verified-cleanup baseline advancement in 12.655s. GWT-080..086 then passed in 28.164s."
+      ,
+      "Ignored schema-1.1 passed receipt: .tmp/issue-251/external/68204f58/completion.yaml; dispatch/completion validator passed. Native Windows default TEMP profile on one host/commit; cold-first means fresh disposable repository without OS cache reset, followed by three warm host-cache fresh-fixture runs.",
+      "Retained 631-record warm medians: legacy plan 192.5413706s / 3153 Git processes and apply 798.4825737s / 13272; snapshot plan 4.9723998s / 22 and apply 4.4274619s / 11. Cold-first: legacy plan 188.8431246s, apply 782.7629673s; snapshot plan 4.4429962s, apply 4.2334253s.",
+      "The first hosted Ubuntu PR profile on edb50e36154ac53391ff0d7a773126a2d8b56a53 exposed a Linux-only diagnostic ordering regression in GWT-008. Snapshot admission now rejects requested symlink/reparse boundaries before Git pathspec interpretation, preserving the canonical fail-closed classification without adding a subprocess.",
+      "The first PR-bound exact-head audit rejected edb50e36154ac53391ff0d7a773126a2d8b56a53 because the live body retained two trailing LF bytes that YAML `|-` removed. The terminal declaration now preserves the exact provider bytes; the prior parity claim is superseded by this retained failed-audit evidence.",
+      "The second hosted Ubuntu profile on 533cf41a6dae9bbb74cac57a46482bd6c0845667 exposed a POSIX raw-selector lexical-parent gap in GWT-095 after GWT-008 passed. The current binder keeps literal POSIX parent segments uncollapsed while retaining Windows normalization; matching Ubuntu 113-test and Windows 10-test profiles pass with counts unchanged."
+    ],
+    "commits": [
+      "333fafb2eacaeaee9750aa99a1856a7bccb36c21",
+      "2dc2e2547726ba55dc591dd60dfd958a2b2da2cc",
+      "c5aca00668c94a40c74f9e3118065a100d3d3cd2",
+      "68204f58e6ebfe1e099ac6e9b0db95712f3d6085",
+      "544ba8719a08b28f7f53b4ecff47b94cdd54f80b",
+      "fc691245451b87db461d751f33b2f9f7ae801a46",
+      "116893c8460451ee5fae93cf9fda13041a48a3eb",
+      "13a33cc44825f8da10674e0294b38edbf7159053",
+      "7a6f20a069f9b4e46f474f5671c639931dd19f04",
+      "ee55880b316bd0664fd65989b95245446cf3ad58",
+      "ad0b38a000b97fb7f824ef68524b75784503a6d4",
+      "41613199b537babc291e594d13e620cd785e5491",
+      "01f73f25d0d48a0c116e9626efd62a0e6472832f",
+      "7a1a457ad0e1f867c936c25f0ab4d4affec1ac82",
+      "7ffea63382b91f45f0ec4dd31e71cc1d5a4a3759",
+      "0eebee85c105015632d3e558519cfde05cc7af21",
+      "8a24041d43e3ee0fcb30f9bb9dae2a7d6e55f3de",
+      "edb50e36154ac53391ff0d7a773126a2d8b56a53",
+      "533cf41a6dae9bbb74cac57a46482bd6c0845667"
+    ],
+    "follow_up_needed": false
+  }
+}

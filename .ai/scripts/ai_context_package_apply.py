@@ -12,7 +12,9 @@ import stat
 import subprocess
 import sys
 import tempfile
+import time
 from contextlib import contextmanager
+from contextvars import ContextVar
 from copy import deepcopy
 from datetime import datetime
 from dataclasses import dataclass
@@ -134,6 +136,152 @@ class JournalWriteStats:
             self.append_write_calls += int(event["write_calls"])
 
 
+@dataclass
+class GitInspectionStats:
+    """Deterministic counters for one target Git snapshot phase."""
+
+    process_count: int = 0
+    bytes_read: int = 0
+    blob_read_count: int = 0
+    snapshot_duration_ns: int = 0
+
+
+@dataclass(frozen=True)
+class WorktreeInventoryEntry:
+    kind: str
+    mode: int
+    size: int
+    modified_ns: int
+    changed_ns: int
+
+
+@dataclass
+class TargetGitSnapshot:
+    """One Git/index view plus an explicitly advanced worktree drift baseline."""
+
+    root: Path
+    phase: str
+    head: str
+    index_modes: dict[str, str]
+    index_bytes: dict[str, bytes]
+    dirty_paths: frozenset[str]
+    attributes: dict[str, tuple[str, str, str]]
+    ignore_rules: dict[str, dict[str, object]]
+    ignore_paths: frozenset[str]
+    core_filemode: bool
+    transaction_base: Path
+    multi_hop_route_base: Path
+    git_identity_digests: dict[Path, str | None]
+    git_identity_inventory: dict[Path, WorktreeInventoryEntry | None]
+    worktree_inventory: dict[str, WorktreeInventoryEntry]
+    stats: GitInspectionStats
+
+    def tracked_mode(self, relative: str) -> str | None:
+        raw_mode = self.index_modes.get(relative)
+        if raw_mode is None:
+            return None
+        if raw_mode == "100644":
+            return "0644"
+        if raw_mode == "100755":
+            return "0755"
+        raise ApplyError(f"unsupported target Git mode {raw_mode} for {relative}")
+
+    def tracked_bytes(self, relative: str) -> bytes | None:
+        if relative not in self.index_modes:
+            return None
+        content = self.index_bytes.get(relative)
+        if content is None:
+            raise ApplyError(f"cannot read tracked Git bytes for {relative}")
+        return content
+
+    def path_is_dirty(self, relative: str, path: Path) -> bool:
+        baseline = self.worktree_inventory.get(relative)
+        current = worktree_inventory_entry(path)
+        return relative in self.dirty_paths or current != baseline
+
+    def no_content_transform(self, relative: str) -> bool:
+        values = self.attributes.get(relative)
+        if values is None:
+            raise ApplyError(f"target Git attributes were not snapshotted for {relative}")
+        return all(value == "unspecified" for value in values)
+
+    def ignore_rule(self, relative: str) -> dict[str, object] | None:
+        if relative not in self.ignore_paths:
+            raise ApplyError(f"target Git ignore rule was not snapshotted for {relative}")
+        return self.ignore_rules.get(relative)
+
+    def changed_paths(self, *, full_worktree_scan: bool = True) -> set[str]:
+        self.assert_identity(full=full_worktree_scan)
+        changed = set(self.dirty_paths)
+        if full_worktree_scan:
+            current = worktree_inventory(self.root)
+            candidates = set(self.worktree_inventory) | set(current)
+        else:
+            # Per-operation durability checks validate the exact operation and
+            # journal states directly. Unrelated-path discovery belongs to the
+            # bounded full scans at apply admission and terminal receipt
+            # boundaries; rescanning every snapshotted path here would turn N
+            # operations over N paths back into O(N^2) filesystem work.
+            current = {}
+            candidates = set()
+        for relative in candidates:
+            if self.worktree_inventory.get(relative) != current.get(relative):
+                changed.add(relative)
+        return changed
+
+    def assert_identity(self, *, full: bool = False) -> None:
+        for path, expected in self.git_identity_digests.items():
+            if path.is_symlink() or is_reparse_point(path):
+                raise ApplyError("target Git administrative identity became unsafe")
+            if worktree_inventory_entry(path) != self.git_identity_inventory[path]:
+                raise ApplyError(
+                    "target Git administrative identity changed after snapshot capture"
+                )
+            if full:
+                current = sha256_bytes(path.read_bytes()) if path.is_file() else None
+                if current != expected:
+                    raise ApplyError(
+                        "target Git administrative identity changed after snapshot capture"
+                    )
+
+    def same_admission_identity(self, other: "TargetGitSnapshot") -> bool:
+        return (
+            self.root == other.root
+            and self.head == other.head
+            and self.index_modes == other.index_modes
+            and self.dirty_paths == other.dirty_paths
+            and self.core_filemode == other.core_filemode
+            and self.transaction_base == other.transaction_base
+            and self.multi_hop_route_base == other.multi_hop_route_base
+            and self.git_identity_digests == other.git_identity_digests
+            and self.worktree_inventory == other.worktree_inventory
+        )
+
+    def absorb_stats(self, earlier: "TargetGitSnapshot") -> None:
+        self.stats.process_count += earlier.stats.process_count
+        self.stats.bytes_read += earlier.stats.bytes_read
+        self.stats.blob_read_count += earlier.stats.blob_read_count
+        self.stats.snapshot_duration_ns += earlier.stats.snapshot_duration_ns
+
+    def accept_verified_absence(self, paths: Iterable[str]) -> None:
+        """Advance only after a journal-bound durable cleanup proved absence."""
+        remaining_dirty = set(self.dirty_paths)
+        for relative in paths:
+            path = self.root / Path(*PurePosixPath(relative).parts)
+            if worktree_inventory_entry(path) is not None:
+                raise ApplyError(
+                    f"verified cleanup path is still present: {relative}"
+                )
+            remaining_dirty.discard(relative)
+            self.worktree_inventory.pop(relative, None)
+        self.dirty_paths = frozenset(remaining_dirty)
+
+
+_ACTIVE_TARGET_GIT_SNAPSHOT: ContextVar[TargetGitSnapshot | None] = ContextVar(
+    "active_target_git_snapshot", default=None
+)
+
+
 class InjectedInterruption(BaseException):
     """Deterministic test-only process interruption that bypasses rollback."""
 
@@ -253,7 +401,680 @@ def run_git_bytes(root: Path, *args: str) -> subprocess.CompletedProcess[bytes]:
     )
 
 
+def active_target_git_snapshot(root: Path) -> TargetGitSnapshot | None:
+    snapshot = _ACTIVE_TARGET_GIT_SNAPSHOT.get()
+    if snapshot is None:
+        return None
+    if snapshot.root != root.resolve():
+        raise ApplyError("active target Git snapshot repository identity differs")
+    return snapshot
+
+
+@contextmanager
+def target_git_snapshot_scope(snapshot: TargetGitSnapshot) -> Iterator[None]:
+    token = _ACTIVE_TARGET_GIT_SNAPSHOT.set(snapshot)
+    try:
+        yield
+    finally:
+        _ACTIVE_TARGET_GIT_SNAPSHOT.reset(token)
+
+
+def worktree_inventory_entry(path: Path) -> WorktreeInventoryEntry | None:
+    try:
+        info = path.lstat()
+    except FileNotFoundError:
+        return None
+    kind = (
+        "symlink"
+        if path.is_symlink()
+        else "reparse"
+        if is_reparse_point(path)
+        else "directory"
+        if stat.S_ISDIR(info.st_mode)
+        else "file"
+        if stat.S_ISREG(info.st_mode)
+        else "other"
+    )
+    return WorktreeInventoryEntry(
+        kind=kind,
+        mode=stat.S_IMODE(info.st_mode),
+        size=info.st_size,
+        modified_ns=info.st_mtime_ns,
+        changed_ns=info.st_ctime_ns,
+    )
+
+
+def worktree_inventory(root: Path) -> dict[str, WorktreeInventoryEntry]:
+    result: dict[str, WorktreeInventoryEntry] = {}
+    for directory, names, files in os.walk(root, followlinks=False):
+        directory_path = Path(directory)
+        if directory_path == root:
+            names[:] = [name for name in names if name != ".git"]
+            files = [name for name in files if name != ".git"]
+        retained_names: list[str] = []
+        for name in names:
+            path = directory_path / name
+            relative = path.relative_to(root).as_posix()
+            entry = worktree_inventory_entry(path)
+            if entry is None:
+                continue
+            if entry.kind in {"symlink", "reparse"}:
+                result[relative] = entry
+            else:
+                retained_names.append(name)
+        names[:] = retained_names
+        for name in files:
+            path = directory_path / name
+            entry = worktree_inventory_entry(path)
+            if entry is not None:
+                result[path.relative_to(root).as_posix()] = entry
+    return result
+
+
+def _snapshot_git(
+    root: Path,
+    stats: GitInspectionStats,
+    *args: str,
+    input_bytes: bytes | None = None,
+) -> subprocess.CompletedProcess[bytes]:
+    try:
+        result = subprocess.run(
+            ["git", *args],
+            cwd=root,
+            check=False,
+            capture_output=True,
+            input=input_bytes,
+        )
+    except OSError as exc:
+        raise ApplyError(f"cannot capture target Git snapshot: {exc}") from exc
+    stats.process_count += 1
+    stats.bytes_read += len(result.stdout) + len(result.stderr)
+    return result
+
+
+def _decode_git_path(value: bytes) -> str:
+    return value.decode("utf-8", errors="surrogateescape")
+
+
+def _parse_index_entries(content: bytes) -> tuple[dict[str, str], dict[str, str]]:
+    modes: dict[str, str] = {}
+    object_ids: dict[str, str] = {}
+    for record in content.split(b"\0"):
+        if not record:
+            continue
+        header, separator, raw_path = record.partition(b"\t")
+        parts = header.split(b" ")
+        if not separator or len(parts) != 3:
+            raise ApplyError("cannot parse target Git index snapshot")
+        mode, object_id, stage = (
+            part.decode("ascii", errors="strict") for part in parts
+        )
+        relative = _decode_git_path(raw_path)
+        if stage != "0" or relative in modes:
+            raise ApplyError(f"target Git index has unresolved stages for {relative}")
+        if not re.fullmatch(r"[0-9a-f]{40,64}", object_id):
+            raise ApplyError(f"target Git index object identity is invalid for {relative}")
+        modes[relative] = mode
+        object_ids[relative] = object_id
+    return modes, object_ids
+
+
+def _parse_status_paths(content: bytes) -> frozenset[str]:
+    records = content.split(b"\0")
+    if records and records[-1] == b"":
+        records.pop()
+    changed: set[str] = set()
+    index = 0
+    while index < len(records):
+        record = records[index]
+        if len(record) < 4 or record[2:3] != b" ":
+            raise ApplyError("cannot parse target Git status snapshot")
+        status = record[:2]
+        changed.add(_decode_git_path(record[3:]))
+        if b"R" in status or b"C" in status:
+            index += 1
+            if index >= len(records) or not records[index]:
+                raise ApplyError("cannot parse target Git rename status snapshot")
+            changed.add(_decode_git_path(records[index]))
+        index += 1
+    return frozenset(changed)
+
+
+def _parse_batch_blobs(
+    content: bytes, object_ids: Iterable[str]
+) -> dict[str, bytes]:
+    result: dict[str, bytes] = {}
+    offset = 0
+    for expected in object_ids:
+        newline = content.find(b"\n", offset)
+        if newline < 0:
+            raise ApplyError("cannot parse target Git blob snapshot")
+        header = content[offset:newline].split(b" ")
+        if len(header) != 3:
+            raise ApplyError("cannot parse target Git blob snapshot")
+        object_id = header[0].decode("ascii", errors="strict")
+        object_type = header[1].decode("ascii", errors="strict")
+        try:
+            size = int(header[2])
+        except ValueError as exc:
+            raise ApplyError("cannot parse target Git blob size") from exc
+        if object_id != expected or object_type != "blob" or size < 0:
+            raise ApplyError(f"target Git object is not one blob: {expected}")
+        start = newline + 1
+        end = start + size
+        if end >= len(content) or content[end : end + 1] != b"\n":
+            raise ApplyError("cannot parse target Git blob bytes")
+        result[object_id] = content[start:end]
+        offset = end + 1
+    if content[offset:]:
+        raise ApplyError("target Git blob snapshot has trailing bytes")
+    return result
+
+
+def _parse_attributes(
+    content: bytes, expected_paths: set[str]
+) -> dict[str, tuple[str, str, str]]:
+    values = content.split(b"\0")
+    if values and values[-1] == b"":
+        values.pop()
+    if len(values) != len(expected_paths) * 9:
+        raise ApplyError("cannot parse target Git attributes snapshot")
+    by_path: dict[str, dict[str, str]] = {}
+    for index in range(0, len(values), 3):
+        relative = _decode_git_path(values[index])
+        attribute = values[index + 1].decode("utf-8", errors="strict")
+        value = values[index + 2].decode("utf-8", errors="surrogateescape")
+        if relative not in expected_paths or attribute in by_path.setdefault(relative, {}):
+            raise ApplyError("cannot parse target Git attributes snapshot")
+        by_path[relative][attribute] = value
+    expected_attributes = ("filter", "ident", "working-tree-encoding")
+    result: dict[str, tuple[str, str, str]] = {}
+    for relative in expected_paths:
+        attributes = by_path.get(relative)
+        if attributes is None or set(attributes) != set(expected_attributes):
+            raise ApplyError(f"cannot parse target Git attributes for {relative}")
+        result[relative] = tuple(attributes[name] for name in expected_attributes)
+    return result
+
+
+def _parse_ignore_rules(
+    content: bytes, expected_paths: set[str]
+) -> dict[str, dict[str, object]]:
+    values = content.split(b"\0")
+    if values and values[-1] == b"":
+        values.pop()
+    if len(values) % 4 != 0:
+        raise ApplyError("cannot parse target Git ignore snapshot")
+    result: dict[str, dict[str, object]] = {}
+    for index in range(0, len(values), 4):
+        source, line, pattern, matched_path = (
+            _decode_git_path(value) for value in values[index : index + 4]
+        )
+        if (
+            matched_path not in expected_paths
+            or matched_path in result
+            or not line.isdecimal()
+            or not source
+            or not pattern
+        ):
+            raise ApplyError("cannot parse target Git ignore snapshot")
+        result[matched_path] = {
+            "source": source,
+            "line": int(line),
+            "pattern": pattern,
+        }
+    return result
+
+
+def _parse_core_snapshot_config(
+    content: bytes, root: Path,
+) -> tuple[bool, str | None, str | None, set[Path], set[Path]]:
+    """Parse one effective config batch and retain its file-backed origins."""
+    values = content.split(b"\0")
+    if values and values[-1] == b"":
+        values.pop()
+    if len(values) % 2 != 0:
+        raise ApplyError("cannot parse target Git core configuration")
+    effective: dict[str, str] = {}
+    origins: set[Path] = set()
+    include_paths: set[Path] = set()
+    for index in range(0, len(values), 2):
+        origin = values[index].decode("utf-8", errors="surrogateescape")
+        try:
+            raw_key, raw_value = values[index + 1].split(b"\n", 1)
+        except ValueError as exc:
+            raise ApplyError("cannot parse target Git core configuration") from exc
+        key = raw_key.decode("ascii", errors="strict").lower()
+        value = raw_value.decode("utf-8", errors="surrogateescape")
+        if key in {"core.filemode", "core.excludesfile", "core.attributesfile"}:
+            effective[key] = value
+        if origin.startswith("file:"):
+            raw_origin_path = Path(origin.removeprefix("file:"))
+            origin_path = Path(
+                os.path.abspath(
+                    raw_origin_path
+                    if raw_origin_path.is_absolute()
+                    else root / raw_origin_path
+                )
+            )
+            origins.add(origin_path)
+            if key == "include.path" or (
+                key.startswith("includeif.") and key.endswith(".path")
+            ):
+                include_paths.add(_resolved_git_include_path(origin_path, value))
+    filemode = effective.get("core.filemode", "").lower()
+    if filemode not in {"true", "false"}:
+        raise ApplyError("cannot determine target Git core.filemode")
+    return (
+        filemode == "true",
+        effective.get("core.excludesfile"),
+        effective.get("core.attributesfile"),
+        origins,
+        include_paths,
+    )
+
+
+def _git_home_path() -> Path:
+    """Resolve the home directory Git uses for config and policy paths."""
+    home_override = os.environ.get("HOME")
+    if home_override is None:
+        candidate = Path.home()
+    else:
+        if not home_override:
+            raise ApplyError("cannot resolve target Git home directory")
+        candidate = Path(home_override)
+    if not candidate.is_absolute():
+        raise ApplyError("cannot resolve target Git home directory")
+    return Path(os.path.abspath(candidate))
+
+
+def _expand_git_user_path(value: str) -> Path:
+    if value == "~":
+        return _git_home_path()
+    if value.startswith("~/") or value.startswith("~\\"):
+        return _git_home_path() / value[2:]
+    if value.startswith("~"):
+        raise ApplyError("cannot resolve target Git user-relative path")
+    return Path(value)
+
+
+def _resolved_git_include_path(origin: Path, value: str) -> Path:
+    if not value or value.startswith("%(prefix)/"):
+        raise ApplyError("cannot resolve target Git include policy path")
+    expanded = _expand_git_user_path(value)
+    candidate = expanded if expanded.is_absolute() else origin.parent / expanded
+    return Path(os.path.abspath(candidate))
+
+
+def _resolved_git_policy_path(root: Path, value: str | None, name: str) -> Path:
+    if value is None:
+        xdg_root = os.environ.get("XDG_CONFIG_HOME")
+        base = Path(xdg_root) if xdg_root else _git_home_path() / ".config"
+        candidate = base if base.is_absolute() else root / base
+        return Path(os.path.abspath(candidate / "git" / name))
+    if not value or value.startswith("%(prefix)/"):
+        raise ApplyError(f"cannot resolve target Git {name} policy path")
+    expanded = _expand_git_user_path(value)
+    candidate = expanded if expanded.is_absolute() else root / expanded
+    return Path(os.path.abspath(candidate))
+
+
+def _candidate_git_config_paths(root: Path) -> set[Path]:
+    """Bind absent/present config selectors whose paths are process-stable."""
+    candidates: set[Path] = set()
+
+    def add(value: str) -> None:
+        if not value or value == os.devnull:
+            return
+        # Raw selector values remain literal on both platforms. Windows path
+        # handling normalizes embedded parent segments before access; POSIX
+        # access preserves them and can remain blocked by a missing lexical
+        # parent. Keep that POSIX boundary so its later creation changes the
+        # selector identity instead of silently rebinding another path.
+        selected = Path(value)
+        candidate = selected if selected.is_absolute() else root / selected
+        candidates.add(
+            Path(os.path.abspath(candidate)) if os.name == "nt" else candidate
+        )
+
+    global_override = os.environ.get("GIT_CONFIG_GLOBAL")
+    if global_override is not None:
+        add(global_override)
+    else:
+        git_home = _git_home_path()
+        add(str(git_home / ".gitconfig"))
+        xdg_root = os.environ.get("XDG_CONFIG_HOME")
+        if xdg_root:
+            add(str(Path(xdg_root) / "git" / "config"))
+        else:
+            add(str(git_home / ".config" / "git" / "config"))
+
+    if not os.environ.get("GIT_CONFIG_NOSYSTEM"):
+        system_override = os.environ.get("GIT_CONFIG_SYSTEM")
+        if system_override is not None:
+            add(system_override)
+        elif os.name != "nt":
+            add("/etc/gitconfig")
+    return candidates
+
+
+def capture_target_git_snapshot(
+    root: Path,
+    paths: Iterable[str],
+    *,
+    phase: str,
+    require_clean: bool,
+) -> TargetGitSnapshot:
+    started = time.perf_counter_ns()
+    root = root.resolve()
+    if not (root / ".git").exists():
+        raise ApplyError("target must be a Git repository")
+    requested_paths = sorted(set(paths), key=lambda item: item.encode("utf-8"))
+    # Reject filesystem escape boundaries before asking Git to interpret the
+    # pathspecs. On POSIX, check-ignore/check-attr reject a path below a
+    # symlink themselves, but their lower-level error would otherwise obscure
+    # the package-apply safety contract and make the result platform-specific.
+    for relative in requested_paths:
+        reject_symlink_boundary(root, relative)
+    stats = GitInspectionStats()
+    head_result = _snapshot_git(root, stats, "rev-parse", "--verify", "HEAD^{commit}")
+    head = head_result.stdout.decode("ascii", errors="replace").strip()
+    if head_result.returncode != 0 or not re.fullmatch(r"[0-9a-f]{40,64}", head):
+        raise ApplyError("target must have a committed HEAD before planning or apply")
+    index_result = _snapshot_git(root, stats, "ls-files", "--stage", "-z")
+    if index_result.returncode != 0:
+        raise ApplyError("cannot inspect target Git index")
+    index_modes, object_ids = _parse_index_entries(index_result.stdout)
+    status_result = _snapshot_git(
+        root, stats, "status", "--porcelain=v1", "-z", "--untracked-files=all"
+    )
+    if status_result.returncode != 0:
+        raise ApplyError("cannot inspect target Git status")
+    dirty_paths = _parse_status_paths(status_result.stdout)
+    if require_clean and dirty_paths:
+        raise ApplyError("target Git worktree must be clean before planning or apply")
+    # A multi-hop checkpoint surface is defined by every changed path from the
+    # status snapshot. Include those paths in the same batch so its verifier
+    # never falls back to one Git process group per checkpoint path.
+    requested_paths = sorted(
+        set(requested_paths) | set(dirty_paths),
+        key=lambda item: item.encode("utf-8"),
+    )
+    selected_object_ids = {
+        path: object_ids[path] for path in requested_paths if path in object_ids
+    }
+    unique_object_ids = list(dict.fromkeys(selected_object_ids.values()))
+    blob_result = _snapshot_git(
+        root,
+        stats,
+        "cat-file",
+        "--batch",
+        input_bytes=("".join(f"{value}\n" for value in unique_object_ids)).encode("ascii"),
+    )
+    if blob_result.returncode != 0:
+        raise ApplyError("cannot read target Git index blobs")
+    blobs = _parse_batch_blobs(blob_result.stdout, unique_object_ids)
+    stats.blob_read_count = len(unique_object_ids)
+    index_bytes = {
+        path: blobs[object_id] for path, object_id in selected_object_ids.items()
+    }
+    config_result = _snapshot_git(
+        root,
+        stats,
+        "config",
+        "--null",
+        "--show-origin",
+        "--list",
+    )
+    if config_result.returncode != 0:
+        raise ApplyError("cannot inspect target Git core configuration")
+    (
+        core_filemode,
+        excludes_value,
+        attributes_value,
+        config_origins,
+        config_include_paths,
+    ) = (
+        _parse_core_snapshot_config(config_result.stdout, root)
+    )
+    admin_result = _snapshot_git(
+        root,
+        stats,
+        "rev-parse",
+        "--path-format=absolute",
+        "--git-path",
+        "ai-context-package-apply",
+        "--git-path",
+        MULTI_HOP_ROUTE_DIRECTORY,
+        "--git-path",
+        "HEAD",
+        "--git-path",
+        "index",
+        "--git-path",
+        "packed-refs",
+        "--git-path",
+        "config",
+        "--git-path",
+        "config.worktree",
+        "--git-path",
+        "info/attributes",
+        "--git-path",
+        "info/exclude",
+    )
+    admin_paths = [
+        Path(line.decode("utf-8", errors="surrogateescape"))
+        for line in admin_result.stdout.splitlines()
+        if line
+    ]
+    if admin_result.returncode != 0 or len(admin_paths) != 9:
+        raise ApplyError("cannot resolve target Git administrative directories")
+    identity_paths = admin_paths[2:]
+    identity_paths.extend(sorted(config_origins, key=str))
+    identity_paths.extend(sorted(config_include_paths, key=str))
+    identity_paths.extend(sorted(_candidate_git_config_paths(root), key=str))
+    identity_paths.extend(
+        [
+            _resolved_git_policy_path(root, excludes_value, "ignore"),
+            _resolved_git_policy_path(root, attributes_value, "attributes"),
+        ]
+    )
+    identity_paths = list(dict.fromkeys(identity_paths))
+    head_file = identity_paths[0]
+    if head_file.is_symlink() or is_reparse_point(head_file) or not head_file.is_file():
+        raise ApplyError("target Git HEAD identity is unsafe")
+    head_file_bytes = head_file.read_bytes()
+    if head_file_bytes.startswith(b"ref: "):
+        reference = head_file_bytes[5:].strip().decode("utf-8", errors="strict")
+        if not reference.startswith("refs/") or ".." in PurePosixPath(reference).parts:
+            raise ApplyError("target Git HEAD reference is invalid")
+        reference_result = _snapshot_git(
+            root,
+            stats,
+            "rev-parse",
+            "--path-format=absolute",
+            "--git-path",
+            reference,
+        )
+        if reference_result.returncode != 0:
+            raise ApplyError("cannot resolve target Git HEAD reference")
+        reference_path = Path(
+            reference_result.stdout.decode("utf-8", errors="surrogateescape").strip()
+        )
+        identity_paths.append(reference_path)
+    git_identity_digests: dict[Path, str | None] = {}
+    git_identity_inventory: dict[Path, WorktreeInventoryEntry | None] = {}
+    for path in identity_paths:
+        if path.is_symlink() or is_reparse_point(path):
+            raise ApplyError("target Git administrative identity is unsafe")
+        git_identity_digests[path] = (
+            sha256_bytes(path.read_bytes()) if path.is_file() else None
+        )
+        git_identity_inventory[path] = worktree_inventory_entry(path)
+    attribute_paths = set(requested_paths)
+    attr_result = _snapshot_git(
+        root,
+        stats,
+        "check-attr",
+        "-z",
+        "--stdin",
+        "filter",
+        "ident",
+        "working-tree-encoding",
+        input_bytes=b"".join(
+            path.encode("utf-8", errors="surrogateescape") + b"\0"
+            for path in sorted(
+                attribute_paths,
+                key=lambda item: item.encode("utf-8", errors="surrogateescape"),
+            )
+        ),
+    )
+    if attr_result.returncode != 0:
+        raise ApplyError("cannot inspect target Git attributes")
+    attributes = _parse_attributes(attr_result.stdout, attribute_paths)
+    ignore_input = b"".join(
+        path.encode("utf-8", errors="surrogateescape") + b"\0"
+        for path in requested_paths
+    )
+    ignore_result = _snapshot_git(
+        root,
+        stats,
+        "check-ignore",
+        "-z",
+        "-v",
+        "--stdin",
+        input_bytes=ignore_input,
+    )
+    if ignore_result.returncode not in {0, 1}:
+        detail = ignore_result.stderr.decode("utf-8", errors="replace").strip()
+        raise ApplyError(
+            f"cannot inspect target Git ignore rules: {detail or ignore_result.returncode}"
+        )
+    ignore_rules = _parse_ignore_rules(ignore_result.stdout, set(requested_paths))
+    inventory = worktree_inventory(root)
+    final_config_result = _snapshot_git(
+        root,
+        stats,
+        "config",
+        "--null",
+        "--show-origin",
+        "--list",
+    )
+    if (
+        final_config_result.returncode != 0
+        or final_config_result.stdout != config_result.stdout
+    ):
+        raise ApplyError("target Git configuration changed while snapshot was captured")
+    final_head_result = _snapshot_git(root, stats, "rev-parse", "--verify", "HEAD^{commit}")
+    final_status_result = _snapshot_git(
+        root, stats, "status", "--porcelain=v1", "-z", "--untracked-files=all"
+    )
+    if (
+        final_head_result.returncode != 0
+        or final_head_result.stdout != head_result.stdout
+        or final_status_result.returncode != 0
+        or final_status_result.stdout != status_result.stdout
+    ):
+        raise ApplyError("target Git state changed while snapshot was captured")
+    for path in identity_paths:
+        if path.is_symlink() or is_reparse_point(path):
+            raise ApplyError("target Git administrative identity is unsafe")
+        current_digest = sha256_bytes(path.read_bytes()) if path.is_file() else None
+        if current_digest != git_identity_digests[path]:
+            raise ApplyError("target Git identity changed while snapshot was captured")
+        # Read-only Git commands may refresh index metadata without changing
+        # its bytes. Bind the final metadata only after exact bytes survived
+        # the closing HEAD/status check.
+        git_identity_inventory[path] = worktree_inventory_entry(path)
+    stats.snapshot_duration_ns = time.perf_counter_ns() - started
+    return TargetGitSnapshot(
+        root=root,
+        phase=phase,
+        head=head,
+        index_modes=index_modes,
+        index_bytes=index_bytes,
+        dirty_paths=dirty_paths,
+        attributes=attributes,
+        ignore_rules=ignore_rules,
+        ignore_paths=frozenset(requested_paths),
+        core_filemode=core_filemode,
+        transaction_base=admin_paths[0],
+        multi_hop_route_base=admin_paths[1],
+        git_identity_digests=git_identity_digests,
+        git_identity_inventory=git_identity_inventory,
+        worktree_inventory=inventory,
+        stats=stats,
+    )
+
+
+def emit_git_inspection_metrics(
+    snapshot: TargetGitSnapshot,
+    hook: Callable[[dict], None] | None,
+    *,
+    phase_duration_ns: int,
+    outcome: str,
+) -> None:
+    if hook is None:
+        return
+    hook(
+        {
+            "schema_version": "target-git-inspection/v1",
+            "phase": snapshot.phase,
+            "outcome": outcome,
+            "path_count": len(snapshot.ignore_paths),
+            "tracked_path_count": len(snapshot.index_modes),
+            "git_process_count": snapshot.stats.process_count,
+            "git_bytes_read": snapshot.stats.bytes_read,
+            "git_blob_read_count": snapshot.stats.blob_read_count,
+            "snapshot_duration_ns": snapshot.stats.snapshot_duration_ns,
+            "phase_duration_ns": phase_duration_ns,
+        }
+    )
+
+
+def target_git_semantic_identity(
+    snapshot: TargetGitSnapshot, paths: Iterable[str]
+) -> dict:
+    attributes: dict[str, list[str]] = {}
+    ignore_rules: dict[str, dict[str, object] | None] = {}
+    for relative in sorted(set(paths), key=lambda item: item.encode("utf-8")):
+        values = snapshot.attributes.get(relative)
+        if values is None:
+            raise ApplyError(
+                f"target Git attributes were not snapshotted for {relative}"
+            )
+        attributes[relative] = list(values)
+        ignore_rules[relative] = deepcopy(snapshot.ignore_rule(relative))
+    return {
+        "core_filemode": snapshot.core_filemode,
+        "attributes": attributes,
+        "ignore_rules": ignore_rules,
+    }
+
+
+def verify_planned_target_git_semantics(target: Path, plan: dict) -> None:
+    planned = plan.get("target_git_semantics")
+    if planned is None:
+        # Journal-v5 transactions created before target Git semantic binding
+        # retain their historical recovery contract.
+        return
+    snapshot = active_target_git_snapshot(target)
+    if snapshot is None:
+        raise ApplyError("target Git semantic verification requires one active snapshot")
+    observed = plan.get("observed")
+    if not isinstance(planned, dict) or not isinstance(observed, dict):
+        raise ApplyError("planned target Git semantic identity is invalid")
+    if target_git_semantic_identity(snapshot, observed.keys()) != planned:
+        raise ApplyError(
+            "target Git attributes, ignore rules, or core.filemode changed after planning"
+        )
+
+
 def clean_target_head(root: Path) -> str:
+    snapshot = active_target_git_snapshot(root)
+    if snapshot is not None:
+        if snapshot.dirty_paths:
+            raise ApplyError("target Git worktree must be clean before planning or apply")
+        return snapshot.head
     if not (root / ".git").exists():
         raise ApplyError("target must be a Git repository")
     head_result = run_git(root, "rev-parse", "--verify", "HEAD^{commit}")
@@ -268,7 +1089,22 @@ def clean_target_head(root: Path) -> str:
     return head
 
 
+def target_git_head(root: Path) -> str:
+    snapshot = active_target_git_snapshot(root)
+    if snapshot is not None:
+        snapshot.assert_identity()
+        return snapshot.head
+    result = run_git(root, "rev-parse", "--verify", "HEAD^{commit}")
+    head = result.stdout.strip() if result.returncode == 0 else ""
+    if not re.fullmatch(r"[0-9a-f]{40,64}", head):
+        raise ApplyError("cannot determine target Git HEAD")
+    return head
+
+
 def tracked_mode(root: Path, relative: str) -> str | None:
+    snapshot = active_target_git_snapshot(root)
+    if snapshot is not None:
+        return snapshot.tracked_mode(relative)
     result = run_git(root, "ls-files", "--stage", "--", relative)
     if result.returncode != 0 or not result.stdout.strip():
         return None
@@ -284,6 +1120,9 @@ def tracked_mode(root: Path, relative: str) -> str | None:
 
 
 def tracked_bytes(root: Path, relative: str) -> bytes | None:
+    snapshot = active_target_git_snapshot(root)
+    if snapshot is not None:
+        return snapshot.tracked_bytes(relative)
     if tracked_mode(root, relative) is None:
         return None
     result = run_git_bytes(root, "show", f":{relative}")
@@ -293,6 +1132,10 @@ def tracked_bytes(root: Path, relative: str) -> bytes | None:
 
 
 def path_is_dirty(root: Path, relative: str) -> bool:
+    snapshot = active_target_git_snapshot(root)
+    if snapshot is not None:
+        path = root / Path(*PurePosixPath(relative).parts)
+        return snapshot.path_is_dirty(relative, path)
     result = run_git(root, "status", "--porcelain", "--untracked-files=all", "--", relative)
     if result.returncode != 0:
         raise ApplyError(f"cannot inspect target Git state for {relative}")
@@ -300,6 +1143,9 @@ def path_is_dirty(root: Path, relative: str) -> bool:
 
 
 def has_no_git_content_transform(root: Path, relative: str) -> bool:
+    snapshot = active_target_git_snapshot(root)
+    if snapshot is not None:
+        return snapshot.no_content_transform(relative)
     result = run_git(
         root,
         "check-attr",
@@ -332,17 +1178,36 @@ def is_reparse_point(path: Path) -> bool:
     return bool(attributes & getattr(stat, "FILE_ATTRIBUTE_REPARSE_POINT", 0))
 
 
-def file_state(root: Path, relative: str) -> FileState:
+def file_state(
+    root: Path,
+    relative: str,
+    snapshot: TargetGitSnapshot | None = None,
+) -> FileState:
     path = root / Path(*PurePosixPath(relative).parts)
     if not path.exists():
         return FileState(False, None, None)
     if path.is_symlink() or is_reparse_point(path) or not path.is_file():
         raise ApplyError(f"target path must be a regular file: {relative}")
     content = path.read_bytes()
-    tracked_git_mode = tracked_mode(root, relative)
+    snapshot = snapshot or active_target_git_snapshot(root)
+    tracked_git_mode = (
+        snapshot.tracked_mode(relative)
+        if snapshot is not None
+        else tracked_mode(root, relative)
+    )
     tracked = tracked_git_mode is not None
-    dirty = path_is_dirty(root, relative)
-    index_content = tracked_bytes(root, relative) if tracked else None
+    dirty = (
+        snapshot.path_is_dirty(relative, path)
+        if snapshot is not None
+        else path_is_dirty(root, relative)
+    )
+    index_content = (
+        snapshot.tracked_bytes(relative)
+        if snapshot is not None and tracked
+        else tracked_bytes(root, relative)
+        if tracked
+        else None
+    )
     return FileState(
         True,
         sha256_bytes(content),
@@ -1046,7 +1911,12 @@ def migration_selection(
     raise ApplyError(f"unsupported migration schema version: {schema_version!r}")
 
 
-def state_matches(root: Path, state: FileState, record: dict) -> bool:
+def state_matches(
+    root: Path,
+    state: FileState,
+    record: dict,
+    snapshot: TargetGitSnapshot | None = None,
+) -> bool:
     if not state.exists:
         return False
     raw_match = state.sha256 == record.get("sha256")
@@ -1057,12 +1927,24 @@ def state_matches(root: Path, state: FileState, record: dict) -> bool:
         and state.git_sha256 == record.get("sha256")
         and state.normalized_text_sha256 == record.get("sha256")
         and isinstance(record.get("path"), str)
-        and has_no_git_content_transform(root, record["path"])
+        and (
+            snapshot.no_content_transform(record["path"])
+            if snapshot is not None
+            else has_no_git_content_transform(root, record["path"])
+        )
     )
     if not raw_match and not canonical_match:
         return False
     if state.mode == record.get("mode"):
         return True
+    snapshot = snapshot or active_target_git_snapshot(root)
+    if snapshot is not None:
+        filemode_value = snapshot.core_filemode
+        return (
+            not filemode_value
+            and state.mode == "0644"
+            and record.get("mode") == "0755"
+        )
     filemode = run_git(root, "config", "--bool", "core.filemode")
     if filemode.returncode != 0 or filemode.stdout.strip() not in {"true", "false"}:
         raise ApplyError("cannot determine target Git core.filemode")
@@ -1073,11 +1955,15 @@ def state_matches(root: Path, state: FileState, record: dict) -> bool:
     )
 
 
-def observation(paths: Iterable[str], target: Path) -> dict[str, dict]:
+def observation(
+    paths: Iterable[str],
+    target: Path,
+    snapshot: TargetGitSnapshot | None = None,
+) -> dict[str, dict]:
     result: dict[str, dict] = {}
     for path in sorted(set(paths), key=lambda item: item.encode("utf-8")):
         reject_symlink_boundary(target, path)
-        state = file_state(target, path)
+        state = file_state(target, path, snapshot)
         result[path] = state_record(state)
     return result
 
@@ -1148,17 +2034,25 @@ def selected_input_proof_identity(package: dict) -> dict | None:
     return {"path": path, "sha256": digest}
 
 
-def ignored_framework_paths(target: Path, required: list[dict]) -> list[dict]:
+def ignored_framework_paths(
+    target: Path,
+    required: list[dict],
+    snapshot: TargetGitSnapshot | None = None,
+) -> list[dict]:
     """Expose target-owned Git ignores without choosing an owner disposition."""
     unresolved: list[dict] = []
+    snapshot = snapshot or active_target_git_snapshot(target)
     for item in required:
         path = item["path"]
         component_id = item["component_id"]
         reject_symlink_boundary(target, path)
-        try:
-            rule = git_ignore_rule(target, path)
-        except TargetValidationError as exc:
-            raise ApplyError(str(exc)) from exc
+        if snapshot is not None:
+            rule = snapshot.ignore_rule(path)
+        else:
+            try:
+                rule = git_ignore_rule(target, path)
+            except TargetValidationError as exc:
+                raise ApplyError(str(exc)) from exc
         if rule is None:
             continue
         unresolved.append(
@@ -1185,18 +2079,28 @@ def build_plan(
     previous_version_value: str | None = None,
     enable_providers: Iterable[str] | None = None,
     multi_hop_checkpoint_context: dict | None = None,
+    git_inspection_hook: Callable[[dict], None] | None = None,
 ) -> dict:
+    phase_started = time.perf_counter_ns()
     target = target_root.resolve()
-    route_context = (
-        verify_multi_hop_checkpoint_for_planning(target, multi_hop_checkpoint_context)
-        if multi_hop_checkpoint_context is not None
-        else None
-    )
-    head = (
-        run_git(target, "rev-parse", "HEAD").stdout.strip()
-        if route_context is not None
-        else clean_target_head(target)
-    )
+    admission_snapshot = active_target_git_snapshot(target)
+    if admission_snapshot is None:
+        admission_snapshot = capture_target_git_snapshot(
+            target,
+            [],
+            phase="plan-admission",
+            require_clean=multi_hop_checkpoint_context is None,
+        )
+    elif admission_snapshot.phase != "plan-admission":
+        raise ApplyError("active target Git snapshot phase is not plan admission")
+    with target_git_snapshot_scope(admission_snapshot):
+        route_context = (
+            verify_multi_hop_checkpoint_for_planning(
+                target, multi_hop_checkpoint_context
+            )
+            if multi_hop_checkpoint_context is not None
+            else None
+        )
     package, incoming, migration, manifest_sha = validate_package_root(package_root)
     previous, operations, selected_version = migration_selection(
         previous_files_path,
@@ -1235,8 +2139,6 @@ def build_plan(
     incoming = filter_component_records(incoming, selected_components)
     previous = filter_component_records(previous, selected_components)
     required_paths = required_framework_paths(incoming)
-    ignored_paths = ignored_framework_paths(target, required_paths)
-    ignored_by_path = {item["path"]: item for item in ignored_paths}
     skipped_by_selection = [
         raw
         for raw in operations
@@ -1341,7 +2243,19 @@ def build_plan(
         if path not in removal_paths and path not in source_paths:
             raise ApplyError(f"removed previous path has no migration operation: {path}")
     observed_paths = [*operation_paths, *(item["path"] for item in required_paths)]
-    observed = observation(observed_paths, target)
+    snapshot = capture_target_git_snapshot(
+        target,
+        observed_paths,
+        phase="plan",
+        require_clean=route_context is None,
+    )
+    if not admission_snapshot.same_admission_identity(snapshot):
+        raise ApplyError("target Git or worktree identity changed during planning")
+    snapshot.absorb_stats(admission_snapshot)
+    head = snapshot.head
+    ignored_paths = ignored_framework_paths(target, required_paths, snapshot)
+    ignored_by_path = {item["path"]: item for item in ignored_paths}
+    observed = observation(observed_paths, target, snapshot)
     managed_state_conflicts: list[dict] = []
     for path in sorted(incoming, key=lambda item: item.encode("utf-8")):
         record = incoming[path]
@@ -1352,7 +2266,9 @@ def build_plan(
             previous_record.get(key) == record.get(key)
             for key in ("sha256", "mode", "ownership")
         )
-        if unchanged and not state_matches(target, FileState(**observed[path]), previous_record):
+        if unchanged and not state_matches(
+            target, FileState(**observed[path]), previous_record, snapshot
+        ):
             managed_state_conflicts.append(
                 {
                     "path": path,
@@ -1383,7 +2299,7 @@ def build_plan(
                 raise ApplyError(f"replace requires managed incoming and previous records: {path}")
             if incoming[path].get("ownership") != "framework-managed" or previous[path].get("ownership") != "framework-managed":
                 raise ApplyError(f"replace inventory ownership must be framework-managed: {path}")
-            if not state_matches(target, current, previous[path]):
+            if not state_matches(target, current, previous[path], snapshot):
                 action, reason = "reconcile", "current hash or mode differs from previous release"
         elif kind == "remove":
             if item["ownership"] != "framework-managed" or path not in previous:
@@ -1392,7 +2308,7 @@ def build_plan(
                 raise ApplyError(f"remove previous ownership must be framework-managed: {path}")
             if not current.exists:
                 action, reason = "noop", "path is already absent"
-            elif not state_matches(target, current, previous[path]):
+            elif not state_matches(target, current, previous[path], snapshot):
                 action, reason = "reconcile", "current hash or mode differs from previous release"
         elif kind == "rename":
             if item["ownership"] != "framework-managed" or source not in previous or path not in incoming:
@@ -1400,7 +2316,7 @@ def build_plan(
             if previous[source].get("ownership") != "framework-managed" or incoming[path].get("ownership") != "framework-managed":
                 raise ApplyError(f"rename inventory ownership must be framework-managed: {operation_id}")
             source_state = FileState(**observed[source])
-            if not state_matches(target, source_state, previous[source]):
+            if not state_matches(target, source_state, previous[source], snapshot):
                 action, reason = "reconcile", "rename source hash or mode differs from previous release"
             elif current.exists:
                 action, reason = "reconcile", "rename destination already exists"
@@ -1464,6 +2380,9 @@ def build_plan(
         "managed_state_conflicts": managed_state_conflicts,
         "observed": observed,
         "target_observed_prestate_sha256": canonical_digest(observed),
+        "target_git_semantics": target_git_semantic_identity(
+            snapshot, observed.keys()
+        ),
         "target_validation_profile": target_validation_profile(target),
         "target_provenance": target_file_identity(
             target, ".dev/ai-context/provenance.yaml"
@@ -1479,7 +2398,15 @@ def build_plan(
         # Keep #203's plan schema.  The sealed optional context is a strictly
         # dispatched S2 admission record, never a generic dirty-worktree mode.
         plan[MULTI_HOP_ROUTE_CONTEXT_KEY] = route_context
+    if snapshot.changed_paths(full_worktree_scan=True) != set(snapshot.dirty_paths):
+        raise ApplyError("target worktree changed after planning snapshot capture")
     plan["plan_sha256"] = canonical_digest(plan)
+    emit_git_inspection_metrics(
+        snapshot,
+        git_inspection_hook,
+        phase_duration_ns=time.perf_counter_ns() - phase_started,
+        outcome="passed",
+    )
     return plan
 
 
@@ -2048,6 +2975,9 @@ def transaction_id_for_plan(plan: dict) -> str:
 
 
 def git_admin_transaction_base(target: Path) -> Path:
+    snapshot = active_target_git_snapshot(target)
+    if snapshot is not None:
+        return snapshot.transaction_base
     result = run_git(target, "rev-parse", "--path-format=absolute", "--git-path", "ai-context-package-apply")
     if result.returncode != 0:
         result = run_git(target, "rev-parse", "--git-path", "ai-context-package-apply")
@@ -2059,6 +2989,9 @@ def git_admin_transaction_base(target: Path) -> Path:
 
 def git_admin_multi_hop_route_base(target: Path) -> Path:
     """Return the one Git-admin root for sealed multi-hop route evidence."""
+    snapshot = active_target_git_snapshot(target)
+    if snapshot is not None:
+        return snapshot.multi_hop_route_base
     result = run_git(
         target,
         "rev-parse",
@@ -2204,8 +3137,23 @@ def _require_complete_multi_hop_checkpoint_evidence(target: Path) -> None:
         import ai_context_target_provenance as target_provenance
     except ImportError as exc:
         raise ApplyError("multi-hop checkpoint validator is unavailable") from exc
+    snapshot = active_target_git_snapshot(target)
+    if snapshot is None:
+        raise ApplyError(
+            "multi-hop checkpoint validation requires one active target Git snapshot"
+        )
+    current_surface = route_checkpoint_surface(target)
     errors: list[str] = []
-    target_provenance.validate_multi_hop_route_transactions(target, errors)
+    target_provenance.validate_multi_hop_route_transactions(
+        target,
+        errors,
+        git_snapshot={
+            "head": snapshot.head,
+            "apply_transaction_directory": snapshot.transaction_base,
+            "multi_hop_route_directory": snapshot.multi_hop_route_base,
+            "target_surface": current_surface,
+        },
+    )
     if errors:
         raise ApplyError(
             "multi-hop finalized checkpoint evidence is invalid: "
@@ -2276,7 +3224,7 @@ def _load_route_checkpoint_context(
     sealed_head = intent.get("target_starting_commit")
     if not isinstance(sealed_head, str) or not re.fullmatch(r"[0-9a-f]{40}", sealed_head):
         raise ApplyError("multi-hop route intent target HEAD is invalid")
-    current_head = run_git(target, "rev-parse", "HEAD").stdout.strip()
+    current_head = target_git_head(target)
     if current_head != sealed_head:
         raise ApplyError("target HEAD changed after multi-hop route planning")
     matrix = intent.get("matrix")
@@ -2416,6 +3364,15 @@ def _load_route_checkpoint_context(
 
 
 def verify_multi_hop_checkpoint_for_planning(target: Path, context_value: object) -> dict:
+    if active_target_git_snapshot(target) is None:
+        snapshot = capture_target_git_snapshot(
+            target,
+            [],
+            phase="plan-admission",
+            require_clean=False,
+        )
+        with target_git_snapshot_scope(snapshot):
+            return verify_multi_hop_checkpoint_for_planning(target, context_value)
     context = _route_context(context_value)
     context, _checkpoint, _journal = _load_route_checkpoint_context(
         target,
@@ -2805,7 +3762,7 @@ def verify_preparation_admission(
     verify_route_child_admission(
         target, plan, route_operation_authorized=route_operation_authorized
     )
-    if run_git(target, "rev-parse", "HEAD").stdout.strip() != plan.get("target_starting_commit"):
+    if target_git_head(target) != plan.get("target_starting_commit"):
         raise ApplyError("target HEAD changed during transaction preparation")
     current_observed = observation(plan.get("observed", {}).keys(), target)
     if current_observed != plan.get("observed"):
@@ -2861,8 +3818,9 @@ def verify_plan_for_apply(
     verify_route_child_admission(
         target, plan, route_operation_authorized=route_operation_authorized
     )
-    if run_git(target, "rev-parse", "HEAD").stdout.strip() != plan.get("target_starting_commit"):
+    if target_git_head(target) != plan.get("target_starting_commit"):
         raise ApplyError("target HEAD changed after planning")
+    verify_planned_target_git_semantics(target, plan)
     previous_files_value = plan.get("previous_files")
     previous_files = Path(previous_files_value) if previous_files_value else None
     resolved_selection, selection_resolution = resolve_effective_selection(
@@ -3918,6 +4876,13 @@ def transaction_state_matches(
         return False
     if current.mode == expected.get("mode"):
         return True
+    snapshot = active_target_git_snapshot(target)
+    if snapshot is not None:
+        return (
+            not snapshot.core_filemode
+            and current.mode == "0644"
+            and expected.get("mode") == "0755"
+        )
     filemode = run_git(target, "config", "--bool", "core.filemode")
     if filemode.returncode != 0 or filemode.stdout.strip() not in {"true", "false"}:
         raise ApplyError("cannot determine target Git core.filemode")
@@ -3944,6 +4909,13 @@ def recorded_transaction_state_matches(
         return False
     if current.get("mode") == expected.get("mode"):
         return True
+    snapshot = active_target_git_snapshot(target)
+    if snapshot is not None:
+        return (
+            not snapshot.core_filemode
+            and current.get("mode") == "0644"
+            and expected.get("mode") == "0755"
+        )
     filemode = run_git(target, "config", "--bool", "core.filemode")
     if filemode.returncode != 0 or filemode.stdout.strip() not in {"true", "false"}:
         raise ApplyError("cannot determine target Git core.filemode")
@@ -4333,7 +5305,9 @@ def run_transaction(
                 "next_apply_index": index + 1,
             },
         )
-    verify_recovery_surface(target, plan, journal)
+    verify_recovery_surface(
+        target, plan, journal, full_worktree_scan=True
+    )
     verify_protected_state(target, journal)
     receipt = build_final_receipt(plan, journal, incoming, reconciles)
     receipt_path = target / PENDING_RECEIPT_PATH
@@ -4382,7 +5356,9 @@ def run_transaction(
             },
         )
     invoke_boundary(hook, "after_receipt", {"transaction_id": journal["transaction_id"]})
-    verify_recovery_surface(target, plan, journal)
+    verify_recovery_surface(
+        target, plan, journal, full_worktree_scan=True
+    )
     journal["final_receipt_sha256"] = sha256_bytes(expected_bytes)
     journal["state"] = (
         "awaiting-target-validation" if is_upgrade_plan(plan) else "finalized"
@@ -4489,7 +5465,7 @@ def load_supplied_target_validation_receipt(path: Path) -> tuple[dict, bytes]:
     return value, content
 
 
-def _record_target_validation_receipt(
+def _record_target_validation_receipt_core(
     target: Path,
     transaction_id: str,
     supplied_receipt_path: Path,
@@ -4527,7 +5503,9 @@ def _record_target_validation_receipt(
             raise ApplyError(
                 "multi-hop child target validation may be recorded only by the sealed route orchestrator"
             )
-        verify_recovery_surface(target, plan, journal)
+        verify_recovery_surface(
+            target, plan, journal, full_worktree_scan=True
+        )
         supplied, supplied_bytes = load_supplied_target_validation_receipt(
             supplied_receipt_path
         )
@@ -4594,6 +5572,46 @@ def _record_target_validation_receipt(
             decision,
         )
         return supplied
+
+
+def _record_target_validation_receipt(
+    target: Path,
+    transaction_id: str,
+    supplied_receipt_path: Path,
+    boundary_hook: Callable[[str, dict], None] | None = None,
+    *,
+    lock_held: bool,
+    route_operation_authorized: bool,
+) -> dict:
+    """Capture one bounded target Git view before receipt admission."""
+    _root, plan, _journal = load_transaction(
+        target,
+        transaction_id,
+        allow_unbound_target_validation_receipt=True,
+    )
+    snapshot_paths = (
+        set(plan.get("observed", {}))
+        | {item["path"] for item in plan.get("required_framework_paths", [])}
+        | set(touched_paths(plan))
+        | set(protected_target_paths(target))
+        | {PENDING_RECEIPT_PATH}
+        | {item["path"] for item in target_staging_records(plan)}
+    )
+    snapshot = capture_target_git_snapshot(
+        target,
+        snapshot_paths,
+        phase="target-validation-receipt",
+        require_clean=False,
+    )
+    with target_git_snapshot_scope(snapshot):
+        return _record_target_validation_receipt_core(
+            target,
+            transaction_id,
+            supplied_receipt_path,
+            boundary_hook,
+            lock_held=lock_held,
+            route_operation_authorized=route_operation_authorized,
+        )
 
 
 def record_target_validation_receipt(
@@ -4767,7 +5785,12 @@ def clear_checkpointed_pending_receipt_locked(
         raise ApplyError("checkpointed pending receipt was not durably cleared")
 
 
-def changed_target_paths(target: Path) -> set[str]:
+def changed_target_paths(
+    target: Path, *, full_worktree_scan: bool = False
+) -> set[str]:
+    snapshot = active_target_git_snapshot(target)
+    if snapshot is not None:
+        return snapshot.changed_paths(full_worktree_scan=full_worktree_scan)
     changed: set[str] = set()
     for arguments in (
         ("diff", "--name-only", "-z"),
@@ -4810,9 +5833,11 @@ def verify_recovery_surface(
     journal: dict,
     *,
     allow_target_staging: bool = False,
+    full_worktree_scan: bool = False,
 ) -> None:
-    if run_git(target, "rev-parse", "HEAD").stdout.strip() != plan.get("target_starting_commit"):
+    if target_git_head(target) != plan.get("target_starting_commit"):
         raise ApplyError("target HEAD changed after transaction planning")
+    verify_planned_target_git_semantics(target, plan)
     if is_upgrade_plan(plan):
         if target_validation_profile(target) != plan.get("target_validation_profile"):
             raise ApplyError("target validation profile changed after transaction planning")
@@ -4841,7 +5866,9 @@ def verify_recovery_surface(
             allowed_mutations=allowed,
         )
     else:
-        unrelated = changed_target_paths(target) - allowed
+        unrelated = changed_target_paths(
+            target, full_worktree_scan=full_worktree_scan
+        ) - allowed
         if unrelated:
             raise ApplyError(f"unrelated target changes block recovery: {sorted(unrelated)}")
     verify_protected_state(target, journal)
@@ -4857,6 +5884,13 @@ def rollback_loaded_transaction(
 ) -> dict:
     target = Path(plan["target_root"])
     receipt_path = recovery_receipt_path(target)
+    verify_recovery_surface(
+        target,
+        plan,
+        journal,
+        allow_target_staging=True,
+        full_worktree_scan=True,
+    )
     if journal["state"] == "rolled-back":
         if not all(exact_state_matches(target, item["path"], item["state"]) for item in journal["pre_state"]):
             raise ApplyError("rolled-back transaction no longer matches its exact pre-state")
@@ -4926,6 +5960,9 @@ def rollback_loaded_transaction(
             "after_rollback_progress_journal",
             {"index": index, "path": relative},
         )
+    verify_recovery_surface(
+        target, plan, journal, full_worktree_scan=True
+    )
     for relative in reversed(journal.get("planned_created_parents", [])):
         directory = target / Path(*PurePosixPath(relative).parts)
         if directory.exists() and directory.is_dir() and not any(directory.iterdir()):
@@ -4943,7 +5980,7 @@ def rollback_loaded_transaction(
     return journal
 
 
-def _recover_transaction(
+def _recover_transaction_core(
     target: Path,
     transaction_id: str,
     action: str,
@@ -4964,7 +6001,11 @@ def _recover_transaction(
                 "multi-hop child recovery may be performed only by the sealed route orchestrator"
             )
         verify_recovery_surface(
-            target, plan, journal, allow_target_staging=True
+            target,
+            plan,
+            journal,
+            allow_target_staging=True,
+            full_worktree_scan=True,
         )
         receipt_path = recovery_receipt_path(target)
         reconciles = {
@@ -5032,10 +6073,25 @@ def _recover_transaction(
                 ):
                     raise ApplyError("applied transaction receipt identity differs")
         verify_recovery_surface(
-            target, plan, journal, allow_target_staging=True
+            target,
+            plan,
+            journal,
+            allow_target_staging=True,
+            full_worktree_scan=True,
         )
         cleanup_transaction_staging(target, root, plan, journal)
-        verify_recovery_surface(target, plan, journal)
+        snapshot = active_target_git_snapshot(target)
+        if snapshot is None:
+            raise ApplyError("transaction staging cleanup requires one active snapshot")
+        snapshot.accept_verified_absence(
+            item["path"] for item in target_staging_records(plan)
+        )
+        verify_recovery_surface(
+            target,
+            plan,
+            journal,
+            full_worktree_scan=True,
+        )
         if action == "rollback":
             return rollback_loaded_transaction(
                 root, plan, journal, boundary_hook, journal_io_hook
@@ -5066,6 +6122,48 @@ def _recover_transaction(
             reconciles,
             boundary_hook,
             journal_io_hook,
+        )
+
+
+def _recover_transaction(
+    target: Path,
+    transaction_id: str,
+    action: str,
+    package_root: Path | None = None,
+    boundary_hook: Callable[[str, dict], None] | None = None,
+    journal_io_hook: Callable[[dict], None] | None = None,
+    *,
+    lock_held: bool,
+    route_operation_authorized: bool,
+) -> dict:
+    if action not in {"resume", "rollback"}:
+        raise ApplyError("recovery action must be resume or rollback")
+    _root, plan, _journal = load_transaction(target, transaction_id)
+    snapshot_paths = (
+        set(plan.get("observed", {}))
+        | {item["path"] for item in plan.get("required_framework_paths", [])}
+        | set(touched_paths(plan))
+        | set(protected_target_paths(target))
+        | {PENDING_RECEIPT_PATH}
+        | {item["path"] for item in target_staging_records(plan)}
+    )
+    snapshot = capture_target_git_snapshot(
+        target,
+        snapshot_paths,
+        phase=f"recovery-{action}",
+        require_clean=False,
+    )
+    with target_git_snapshot_scope(snapshot):
+        verify_planned_target_git_semantics(target, plan)
+        return _recover_transaction_core(
+            target,
+            transaction_id,
+            action,
+            package_root,
+            boundary_hook,
+            journal_io_hook,
+            lock_held=lock_held,
+            route_operation_authorized=route_operation_authorized,
         )
 
 
@@ -5110,7 +6208,7 @@ def recover_transaction_locked(
     )
 
 
-def _apply_plan(
+def _apply_plan_core(
     plan: dict,
     acknowledgements: set[str] | None = None,
     boundary_hook: Callable[[str, dict], None] | None = None,
@@ -5204,12 +6302,79 @@ def _apply_plan(
             ) from exc
 
 
+def _apply_plan(
+    plan: dict,
+    acknowledgements: set[str] | None = None,
+    boundary_hook: Callable[[str, dict], None] | None = None,
+    remediation_decision: dict | None = None,
+    journal_io_hook: Callable[[dict], None] | None = None,
+    git_inspection_hook: Callable[[dict], None] | None = None,
+    *,
+    lock_held: bool,
+    route_operation_authorized: bool,
+) -> dict:
+    phase_started = time.perf_counter_ns()
+    target = Path(plan["target_root"])
+    snapshot_paths = (
+        set(plan.get("observed", {}))
+        | {item["path"] for item in plan.get("required_framework_paths", [])}
+        | set(touched_paths(plan))
+        | set(protected_target_paths(target))
+        | {PENDING_RECEIPT_PATH}
+    )
+    snapshot = capture_target_git_snapshot(
+        target,
+        snapshot_paths,
+        phase="apply",
+        require_clean=route_checkpoint_context(plan) is None,
+    )
+    with target_git_snapshot_scope(snapshot):
+        # The captured Git-admin path resolves the transaction lock without a
+        # pre-snapshot subprocess.  Recheck the local identity after acquiring
+        # the lock so a concurrent package apply cannot turn the snapshot into
+        # stale authority during that interval.
+        with _transaction_lock_scope(target, lock_held=lock_held):
+            if snapshot.changed_paths(
+                full_worktree_scan=True
+            ) != set(snapshot.dirty_paths):
+                raise ApplyError(
+                    "target worktree changed before apply snapshot admission"
+                )
+            snapshot.assert_identity(full=True)
+            try:
+                result = _apply_plan_core(
+                    plan,
+                    acknowledgements,
+                    boundary_hook,
+                    remediation_decision,
+                    journal_io_hook,
+                    lock_held=True,
+                    route_operation_authorized=route_operation_authorized,
+                )
+            except Exception:
+                emit_git_inspection_metrics(
+                    snapshot,
+                    git_inspection_hook,
+                    phase_duration_ns=time.perf_counter_ns() - phase_started,
+                    outcome="failed",
+                )
+                raise
+            emit_git_inspection_metrics(
+                snapshot,
+                git_inspection_hook,
+                phase_duration_ns=time.perf_counter_ns() - phase_started,
+                outcome="passed",
+            )
+            return result
+
+
 def apply_plan(
     plan: dict,
     acknowledgements: set[str] | None = None,
     boundary_hook: Callable[[str, dict], None] | None = None,
     remediation_decision: dict | None = None,
     journal_io_hook: Callable[[dict], None] | None = None,
+    git_inspection_hook: Callable[[dict], None] | None = None,
 ) -> dict:
     return _apply_plan(
         plan,
@@ -5217,6 +6382,7 @@ def apply_plan(
         boundary_hook,
         remediation_decision,
         journal_io_hook,
+        git_inspection_hook,
         lock_held=False,
         route_operation_authorized=False,
     )
@@ -5228,6 +6394,7 @@ def apply_plan_locked(
     boundary_hook: Callable[[str, dict], None] | None = None,
     remediation_decision: dict | None = None,
     journal_io_hook: Callable[[dict], None] | None = None,
+    git_inspection_hook: Callable[[dict], None] | None = None,
 ) -> dict:
     """Internal S2 primitive; caller already holds ``transaction_lock(target)``."""
     return _apply_plan(
@@ -5236,6 +6403,7 @@ def apply_plan_locked(
         boundary_hook,
         remediation_decision,
         journal_io_hook,
+        git_inspection_hook,
         lock_held=True,
         route_operation_authorized=True,
     )

@@ -1334,11 +1334,61 @@ class MultiHopUpgradeGwtTests(unittest.TestCase):
             self.assertFalse(first_final["completed"])
             self.assertFalse((self.fixture.target / APPLY.PENDING_RECEIPT_PATH).exists())
 
-            second = MULTI.prepare_next_hop(
-                self.fixture.target,
-                begun["route_transaction_id"],
-                matrix_root=self.fixture.matrix_root,
-            )
+            git_processes: list[tuple[str, ...]] = []
+            original_snapshot_git = APPLY._snapshot_git
+
+            def counted_snapshot_git(
+                root: Path,
+                stats: APPLY.GitInspectionStats,
+                *args: str,
+                input_bytes: bytes | None = None,
+            ) -> object:
+                git_processes.append(args)
+                return original_snapshot_git(
+                    root, stats, *args, input_bytes=input_bytes
+                )
+
+            with mock.patch.object(
+                TARGET,
+                "route_target_surface",
+                side_effect=AssertionError(
+                    "later-hop validation fell back to per-path Git surface"
+                ),
+            ), mock.patch.object(
+                TARGET,
+                "current_target_head",
+                side_effect=AssertionError(
+                    "later-hop validation fell back to a standalone HEAD process"
+                ),
+            ), mock.patch.object(
+                TARGET,
+                "apply_transaction_directory",
+                side_effect=AssertionError(
+                    "later-hop validation re-resolved the package transaction path"
+                ),
+            ), mock.patch.object(
+                TARGET,
+                "multi_hop_route_directory",
+                side_effect=AssertionError(
+                    "later-hop validation re-resolved the route transaction path"
+                ),
+            ), mock.patch.object(
+                APPLY,
+                "_snapshot_git",
+                side_effect=counted_snapshot_git,
+            ), mock.patch.object(
+                APPLY,
+                "run_git",
+                side_effect=AssertionError(
+                    "later-hop preparation launched uninstrumented Git"
+                ),
+            ):
+                second = MULTI.prepare_next_hop(
+                    self.fixture.target,
+                    begun["route_transaction_id"],
+                    matrix_root=self.fixture.matrix_root,
+                )
+            self.assertEqual(24, len(git_processes))
             second_provenance, second_ledger = self.fixture.candidate_authorities(
                 e2e["sources"][1], e2e["sources"][0], e2e["selection"], "0.10.0", "0.11.0"
             )
