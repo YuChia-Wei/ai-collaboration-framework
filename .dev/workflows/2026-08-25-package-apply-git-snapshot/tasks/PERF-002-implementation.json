@@ -1,0 +1,125 @@
+{
+  "template_id": "software-development-orchestrator/development-workflow-task",
+  "template_version": "1.5.0",
+  "template_created_at": "2026-07-10T18:25:11+08:00",
+  "template_updated_at": "2026-08-05T02:12:00+08:00",
+  "workflow_id": "2026-08-25-package-apply-git-snapshot",
+  "task_id": "PERF-002-implementation",
+  "owner_skill": "slice-implementer",
+  "related_plan_id": "development-plan-2026-08-25-package-apply-git-snapshot",
+  "status": "in_progress",
+  "created_at": "2026-08-25T14:52:56+08:00",
+  "updated_at": "2026-08-25T15:36:20+08:00",
+  "template_source": ".ai/assets/skills/software-development-orchestrator/templates/development-workflow-task-template.json",
+  "model": "gpt-5.6-sol",
+  "reasoning_effort": "high",
+  "workflow_locator": ".dev/workflows/2026-08-25-package-apply-git-snapshot/workflow.yaml",
+  "scope": {
+    "goal": "Batch package-apply target Git inspection into bounded per-phase snapshots with deterministic instrumentation.",
+    "target": ".ai/scripts/ai_context_package_apply.py and owning tests",
+    "files": [
+      ".ai/scripts/ai_context_package_apply.py",
+      ".ai/scripts/plan-ai-context-package-apply.py",
+      ".ai/scripts/tests/test_ai_context_package_apply.py",
+      ".ai/scripts/tests/benchmark_ai_context_package_git_inspection.py",
+      ".ai/scripts/tests/run_perf002_long_validation.py"
+    ],
+    "constraints": [
+      "Git subprocess count is a payload-count-independent bounded constant per plan/apply phase",
+      "Preserve dirty, untracked, deleted, mode, symlink/reparse, ignored, LFS/attributes, unknown-state fail-closed semantics",
+      "Preserve journal v5 durability, resume, rollback, crash, stdout/stderr, and transaction boundaries",
+      "Durability and platform semantics do not consume AI_CONTEXT_TEST_TMP_ROOT"
+    ],
+    "non_goals": ["#250 identity", "#252 lane split", "#249 reuse policy", "#253 agent guardrails", "provider/release mutations"]
+  },
+  "inputs": {
+    "requirements": ["GitHub Issue #251 live body"],
+    "specifications": ["Issue #251 solution and acceptance contracts"],
+    "architecture_decisions": ["Use one explicit target Git snapshot lifecycle per phase; fail closed on drift"],
+    "user_constraints": ["Parent delegation from owner-authorized orchestration thread on 2026-08-25"]
+  },
+  "execution": {
+    "capability_slot": "implementation",
+    "approval_contract": {
+      "status": "approved",
+      "required_before": "implementation",
+      "authorization_source": ["parent delegation from owner-authorized source thread", "GitHub Issue #251 scope contract"],
+      "pending_decision": ""
+    },
+    "implementation_contract": {
+      "intent": "refactor",
+      "execution_mode": "generic",
+      "overlays": [],
+      "authorization_source": ["parent delegation from owner-authorized source thread"],
+      "normative_truth": ["GitHub Issue #251", "AICTX-EVIDENCE-001 packet 46b000d161c18ee99c76047cc7c8304d5d46bcd4b291840904733fcaae991722"],
+      "finding_evidence": [],
+      "subject_revision": "1326f827f61de8eebeef30748dcc82ffa7dd3764",
+      "acceptance_criteria": ["bounded Git process count", "explicit snapshot freshness", "fail-closed compatibility", "journal-v5 compatibility", "deterministic instrumentation and fixtures"]
+    },
+    "test_execution_contract": null,
+    "role_execution_records": [],
+    "spec_compliance": {"selected": false, "activation_source": [], "expected_outcome": "not-applicable"},
+    "steps": ["Measure existing per-path process amplification", "Implement target Git snapshot and lifecycle", "Add process/byte/duration instrumentation and fixtures", "Run focused validation and benchmark", "Commit and obtain exact-head independent audit"],
+    "validation": ["focused package-apply suites", "journal/resume/rollback/crash coverage", "retained-origin coverage", "three-run same-commit benchmark", "workflow/source validators", "exact-head audit"],
+    "commit_checkpoint": "coherent validated local implementation commit",
+    "deferred_items": ["Linux reference execution is reported truthfully if not available in this Windows task; parent decides later integration/reference lane"]
+  },
+  "results": {
+    "summary": "Implemented bounded plan/apply target Git snapshots, local drift admission, batch blob/attribute/ignore parsing, stderr-only phase metrics, scale/process fixtures, and exact-head benchmark/long-validation runners. Focused validation passes; exact-commit long validation remains pending.",
+    "files_changed": [
+      ".ai/scripts/ai_context_package_apply.py",
+      ".ai/scripts/plan-ai-context-package-apply.py",
+      ".ai/scripts/tests/test_ai_context_package_apply.py",
+      ".ai/scripts/tests/benchmark_ai_context_package_git_inspection.py",
+      ".ai/scripts/tests/run_perf002_long_validation.py",
+      ".dev/workflows/INDEX.MD",
+      ".dev/workflows/2026-08-25-package-apply-git-snapshot/workflow.yaml",
+      ".dev/workflows/2026-08-25-package-apply-git-snapshot/workflow-plan.md",
+      ".dev/workflows/2026-08-25-package-apply-git-snapshot/tasks/PERF-002-implementation.json"
+    ],
+    "approval_evidence": ["parent delegation from owner-authorized source thread", "GitHub Issue #251 live read-back"],
+    "test_execution": [
+      {
+        "command": "python .ai/scripts/tests/test_ai_context_package_apply.py <PERF-002 GWT-073..084 selections> -v",
+        "outcome": "passed",
+        "evidence": "GWT-073..083: 11 tests in 43.483s; GWT-084: 1 test in 2.977s. Small, 631-record, 947-record, apply-count, attrs/ignore, CLI, drift, batch-blob, dirty/deleted, TOCTOU, semantic recovery, rollback-drift, and post-snapshot/pre-lock recovery-drift cases passed; plan=22 and apply=11 Git subprocesses independent of payload/operation count; apply full-worktree scans=4 independent of operation count and entry reads remain linear."
+      },
+      {
+        "command": "python .ai/scripts/tests/test_ai_context_package_apply.py <ignored/mode/symlink/reparse/autocrlf selections> -v",
+        "outcome": "passed",
+        "evidence": "7 tests in 12.629s; 1 Windows symlink-privilege skip."
+      },
+      {
+        "command": "python .ai/scripts/tests/test_ai_context_package_apply.py <journal-v5 crash/resume/rollback selections> -v",
+        "outcome": "passed",
+        "evidence": "4 tests in 89.526s; focused GWT-015 rerun after the final recovery-lock admission change passed in 4.566s."
+      },
+      {
+        "command": "python .ai/scripts/tests/test_ai_context_upgrade_routes.py -v",
+        "outcome": "passed",
+        "evidence": "31 tests in 28.038s."
+      },
+      {
+        "command": "python .ai/scripts/tests/test_ai_context_package_validation.py -v",
+        "outcome": "passed",
+        "evidence": "19 tests in 2.541s; 1 Windows case-fold skip."
+      },
+      {
+        "command": "python .ai/scripts/tests/test_ai_context_multi_hop_upgrade.py -v",
+        "outcome": "interrupted",
+        "evidence": "Stopped during test 20 when observed duration crossed the 120-second long-running gate; no pass/fail claim, delegated exact-head rerun pending."
+      }
+    ],
+    "role_execution_aggregation": [{"stage_id": "implementation", "owning_skill": "slice-implementer", "disposition": "not-applicable", "reason": "The generic Python repository-tooling slice matches none of the command/query/reactor or concrete domain/use-case role bindings; no child invocation is invented."}],
+    "spec_compliance": {"outcome": "not-applicable", "coverage_percent": null, "evidence": []},
+    "validation_evidence": [
+      "Framework-source effective-rule packet digest 46b000d161c18ee99c76047cc7c8304d5d46bcd4b291840904733fcaae991722.",
+      "Read-only #250 selected-input evidence confirms the retained v0.14 profile has 631 payload records.",
+      "Pre-commit independent advisory review findings on plan TOCTOU, O(operations*files), Git identity window, benchmark binding, semantic recovery, rollback admission, and recovery snapshot/lock admission were repaired and regression-tested.",
+      "Workflow artifact validation passed for 97 workflows and 117 indexed workflow directories.",
+      "Sandboxed temp-path PermissionError attempts remain blocked-by-environment evidence; equivalent native Windows reruns passed."
+    ],
+    "commits": [],
+    "follow_up_needed": true
+  }
+}

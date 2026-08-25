@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import argparse
+import json
 import sys
 from pathlib import Path
 
@@ -56,6 +57,14 @@ def progress_reporter(event: str, details: dict) -> None:
     )
 
 
+def git_inspection_reporter(event: dict) -> None:
+    print(
+        "AI context package Git inspection: "
+        + json.dumps(event, sort_keys=True, separators=(",", ":")),
+        file=sys.stderr,
+    )
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--package-root", type=Path)
@@ -73,6 +82,14 @@ def main() -> int:
         "--progress",
         action="store_true",
         help="Report lifecycle progress to stderr without changing stdout.",
+    )
+    parser.add_argument(
+        "--git-inspection-metrics",
+        action="store_true",
+        help=(
+            "Report machine-readable plan/apply Git process, byte, blob, and "
+            "duration metrics to stderr without changing stdout."
+        ),
     )
     parser.add_argument(
         "--enable-provider",
@@ -119,6 +136,9 @@ def main() -> int:
     )
     args = parser.parse_args()
     boundary_hook = progress_reporter if args.progress else None
+    git_inspection_hook = (
+        git_inspection_reporter if args.git_inspection_metrics else None
+    )
     try:
         if (
             args.resume
@@ -202,6 +222,7 @@ def main() -> int:
             args.previous_files,
             args.previous_version,
             args.enable_provider,
+            git_inspection_hook=git_inspection_hook,
         )
         content = yaml.safe_dump(plan, sort_keys=False, allow_unicode=True)
         if args.plan_output:
@@ -247,6 +268,7 @@ def main() -> int:
             set(args.acknowledge),
             boundary_hook,
             remediation_decision=decision,
+            git_inspection_hook=git_inspection_hook,
         )
         print(yaml.safe_dump({"apply_receipt": receipt}, sort_keys=False), end="")
         return 0
