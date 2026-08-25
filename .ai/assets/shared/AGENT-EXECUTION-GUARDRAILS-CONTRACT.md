@@ -17,6 +17,14 @@ argv and working directory, permissions, ignored artifact roots, terminal
 schema and one-shot callback/event-wait transport, integration owner, stop
 conditions, retry budget, and current attempt authorization.
 
+The validator resolves the owning skill's tracked canonical `skill.yaml`,
+requires the named role to be an active tracked canonical role asset, and
+requires that exact role path to appear in the skill's `role_bindings`.
+External dispatch additionally loads the contained packet, validates its
+internal canonical seal, binds the exact packet file-byte digest, and compares
+subject, argv, cwd, and integration owner. A path-shaped assertion is not a
+packet binding.
+
 Static role availability is not invocation evidence. Fixed-head auditors and
 external validators are read-only. Attempt three or later requires a new owner
 or workflow authorization reference that was not consumed by an earlier
@@ -29,6 +37,10 @@ active tracked-writer lease rejects any other observed tracked writer. Read-only
 agents may coexist, and validation may write only beneath declared ignored
 artifact roots. A terminal lease is `released` only after ignored output is
 sealed or released and no tracked drift exists; otherwise it is `invalidated`.
+The snapshot digest is derived from the observed HEAD and tracked status and is
+checked against live Git state. An active holder uses a digest-bound ignored
+lock whose canonical validator acquisition uses create-new semantics; an
+existing lock fails before execution.
 
 ## Acceptance and report parity
 
@@ -38,6 +50,10 @@ and digest. The human report projection must contain the same identifiers,
 outcomes, and digests. An acceptance marked `requires_actual_execution` may be
 satisfied only by `actual-execution`; mock, fixture, synthetic, or unit evidence
 remains supporting evidence and cannot be relabeled.
+Every `actual-execution` entry carries a separately sealed terminal command
+receipt with matching subject, command, profile, timing, outcome, exit code,
+and evidence digest. It must state `executed: true` and `synthetic: false`;
+fixture-only references are rejected as actual execution.
 
 ## Retry and failure identity
 
@@ -46,6 +62,9 @@ digest, subject SHA, environment class, and bounded diagnostic codes. A retry
 requires a material state-change digest. Attempt three or later additionally
 requires fresh owner or workflow authorization. Repeating an unchanged failure
 is a stopped attempt, not new validation.
+Fresh authorizations are individually sealed and bind the exact attempt,
+subject, prior failure, and authorize-retry decision; their digests must differ
+from prior authorization.
 
 ## Code graph freshness
 
@@ -54,6 +73,8 @@ partial, or unknown graph must be reindexed or replaced by a tracked-file
 fallback over explicit paths. Search absence is evidence only from an exact-head
 complete index or such a tracked fallback; graph search alone is never proof of
 absence.
+Fallback paths must be contained repository-relative paths with tracked content;
+an absolute or untracked search root is rejected.
 
 ## PowerShell safety
 

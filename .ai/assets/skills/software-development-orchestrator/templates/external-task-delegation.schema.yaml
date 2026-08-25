@@ -46,6 +46,8 @@ dispatch:
     required: [schema_ref, packet_ref, packet_sha256, subject_sha, validator_argv, validation_outcome]
     schema_ref: ".ai/assets/shared/agent-execution-guardrails.schema.yaml"
     validator: ".ai/scripts/validate-agent-execution-guardrails.py --packet <packet-ref>"
+    packet_sha256: "SHA-256 of the exact packet file bytes; the packet's internal packet_sha256 independently seals canonical content"
+    binding: "load the contained packet, run the canonical packet validator, and match subject, argv, cwd, and integration owner"
     validation_outcome: passed
   permissions:
     required: [read_scope, write_scope, repair_allowed, external_mutations, secret_values]

@@ -22,8 +22,8 @@
   "execution": {
     "steps": ["Validate workflow and focused contracts", "Create durable commits only after planned-message preflight", "Dispatch applicable long-running validation from a clean immutable head", "Obtain independent read-only exact-head audit", "Reconcile #249 and #253 acceptance evidence separately"],
     "validation": ["Focused validator tests", "AI-context/source-governance selected profiles", "Commit range validator", "Independent exact-head governance audit"],
-    "last_completed_step": "Focused owner validators and external packet compatibility cases passed; sandbox-only Temp and Git Bash failures were preserved as blocked evidence.",
-    "next_action": "Run the final focused and projection gates with permitted host temporary access, commit after planned-message preflight, then delegate aggregate validation and obtain exact-head independent audit."
+    "last_completed_step": "The first exact-head audit was preserved as blocked; its packet, receipt, closure, lease, retry, graph, PowerShell, and closeout findings were repaired with new focused regressions.",
+    "next_action": "Commit the verified repairs, create the separate #249/#253 ledger and report on that exact head, and obtain a second independent read-only audit."
   },
   "results": {"summary": "", "files_changed": [], "tests_run": [], "finding_status": "not-addressed", "residual_risk": "", "follow_up_needed": true}
 }

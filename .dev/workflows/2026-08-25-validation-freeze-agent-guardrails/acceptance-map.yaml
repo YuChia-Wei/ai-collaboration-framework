@@ -1,6 +1,6 @@
 schema_version: "1.0"
 workflow_id: 2026-08-25-validation-freeze-agent-guardrails
-status: implementation-complete-pending-final-verification
+status: repair-complete-pending-new-exact-head-verification
 issues:
   "249":
     task_id: GOV013-001
@@ -71,5 +71,11 @@ issues:
 terminal_evidence:
   ledger: .dev/ai-context/local/validation/issue-249-253/acceptance-ledger.yaml
   human_report: .dev/ai-context/local/validation/issue-249-253/acceptance-report.yaml
-  exact_head_audit: .dev/ai-context/local/validation/issue-249-253/exact-head-audit.yaml
+  exact_head_audits:
+    - path: .dev/ai-context/local/validation/issue-249-253/audit/exact-head-audit.yaml
+      disposition: blocked
+      subject_sha: 5c1657d3084c9e6843705a3b0355a2c6ddb76270
+    - path: .dev/ai-context/local/validation/issue-249-253/audit-v2/exact-head-audit.yaml
+      disposition: pending
+      subject_sha: pending-final-repair-commit
   code_graph_freshness: .dev/ai-context/local/validation/issue-249-253/code-graph-freshness.yaml

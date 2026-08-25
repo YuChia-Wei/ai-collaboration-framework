@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import importlib.util
+import hashlib
 import tempfile
 import unittest
 from pathlib import Path
@@ -19,6 +20,8 @@ DELEGATION_VALIDATOR_PATH = (
 )
 CONTEXT_VALIDATOR_PATH = ROOT / ".ai/scripts/validate-ai-context.py"
 PROFILE = ROOT / ".ai/assets/skills/software-development-orchestrator/references/capability-profile.yaml"
+PACKET_FIXTURE = ROOT / ".ai/assets/skills/software-development-orchestrator/scripts/tests/fixtures/external-task-packet.yaml"
+PACKET_REF = ".ai/assets/skills/software-development-orchestrator/scripts/tests/fixtures/external-task-packet.yaml"
 
 
 def load_module(name: str, path: Path):
@@ -63,14 +66,14 @@ def valid_dispatch() -> dict:
         },
         "execution_packet": {
             "schema_ref": ".ai/assets/shared/agent-execution-guardrails.schema.yaml",
-            "packet_ref": ".external-task/pr-195-hosted-gate-01-packet.yaml",
-            "packet_sha256": "a" * 64,
+            "packet_ref": PACKET_REF,
+            "packet_sha256": hashlib.sha256(PACKET_FIXTURE.read_bytes()).hexdigest(),
             "subject_sha": SHA,
             "validator_argv": [
                 "python",
                 ".ai/scripts/validate-agent-execution-guardrails.py",
                 "--packet",
-                ".external-task/pr-195-hosted-gate-01-packet.yaml",
+                PACKET_REF,
             ],
             "validation_outcome": "passed",
         },
@@ -346,6 +349,20 @@ class ExternalTaskDelegationContractTests(unittest.TestCase):
         dispatch["execution_packet"]["subject_sha"] = "2" * 40
         errors = DELEGATION.validate_dispatch(dispatch, SCHEMA)
         self.assertTrue(any("must match dispatch subject" in error for error in errors))
+
+    def test_gwt_017_given_nonexistent_packet_reference_when_dispatch_is_checked_then_it_is_rejected(self) -> None:
+        dispatch = valid_dispatch()
+        missing = ".external-task/missing-packet.yaml"
+        dispatch["execution_packet"]["packet_ref"] = missing
+        dispatch["execution_packet"]["validator_argv"][-1] = missing
+        errors = DELEGATION.validate_dispatch(dispatch, SCHEMA)
+        self.assertTrue(any("packet_ref does not exist" in error for error in errors))
+
+    def test_gwt_018_given_packet_file_bytes_drift_when_dispatch_is_checked_then_it_is_rejected(self) -> None:
+        dispatch = valid_dispatch()
+        dispatch["execution_packet"]["packet_sha256"] = "f" * 64
+        errors = DELEGATION.validate_dispatch(dispatch, SCHEMA)
+        self.assertTrue(any("packet_sha256 does not match" in error for error in errors))
 
 
 if __name__ == "__main__":

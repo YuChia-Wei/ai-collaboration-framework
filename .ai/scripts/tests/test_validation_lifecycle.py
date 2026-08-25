@@ -29,6 +29,7 @@ def pair(value: str = D) -> dict[str, str]:
 
 
 def receipt(evidence_class: str = "input-sensitive", profile: str = "fast") -> dict[str, object]:
+    dependency_paths = [".ai/scripts/tests/test_example.py"]
     value: dict[str, object] = {
         "schema_version": "1.0",
         "record_type": "validation-reuse-receipt",
@@ -37,6 +38,15 @@ def receipt(evidence_class: str = "input-sensitive", profile: str = "fast") -> d
         "invocation": {"argv": ["python", "tests.py", "-v"], "working_directory": ".", "profile": profile},
         "original_result": {"outcome": "passed", "duration_seconds": 12.5, "evidence_refs": ["ignored:sealed/result.json"], "evidence_sha256": D},
         "dependencies": [{"path": ".ai/scripts/tests/test_example.py", "original_blob": D, "current_blob": D}],
+        "dependency_closure": {
+            "resolver_argv": ["bash", ".ai/scripts/check-all.sh", "--resolve-input-closure", "focused"],
+            "complete": True,
+            "unknown_paths": [],
+            "path_count": len(dependency_paths),
+            "original_paths_sha256": VALIDATOR.canonical_digest(dependency_paths),
+            "current_paths_sha256": VALIDATOR.canonical_digest(dependency_paths),
+        },
+        "terminal_metadata": {"original_sha256": D, "current_sha256": D, "excluded_from_dependency_fingerprint": True},
         "authority": {name: pair() for name in SCHEMA["reuse_receipt"]["authority_dimensions"]},
         "command_fingerprint": pair(),
         "profile_fingerprint": pair(),
@@ -58,7 +68,8 @@ class ValidationLifecycleGwtTests(unittest.TestCase):
 
     def test_gwt_002_given_terminal_metadata_only_scenario_when_inputs_match_then_behavioral_reuse_remains_proven(self) -> None:
         value = receipt()
-        value["subject"] = {"original_sha": SHA1, "current_sha": SHA2}
+        value["terminal_metadata"]["current_sha256"] = "b" * 64
+        self.assertNotIn(".dev/workflows/2026-08-24-perf-001/terminal-summary.yaml", [item["path"] for item in value["dependencies"]])
         seal(value, "receipt_sha256")
         VALIDATOR.validate_reuse_receipt(value, SCHEMA)
 
@@ -74,6 +85,8 @@ class ValidationLifecycleGwtTests(unittest.TestCase):
     def test_gwt_004_given_unknown_dependency_when_checked_then_it_is_blocked_fail_closed(self) -> None:
         value = receipt()
         value["dependencies"] = []
+        value["dependency_closure"]["complete"] = False
+        value["dependency_closure"]["unknown_paths"] = ["unresolved-import"]
         value["decision"] = {"outcome": "blocked", "reason": "dependency-closure-unknown"}
         seal(value, "receipt_sha256")
         VALIDATOR.validate_reuse_receipt(value, SCHEMA)
@@ -81,6 +94,8 @@ class ValidationLifecycleGwtTests(unittest.TestCase):
     def test_gwt_005_given_unknown_dependency_claims_reuse_when_checked_then_it_fails(self) -> None:
         value = receipt()
         value["dependencies"] = []
+        value["dependency_closure"]["complete"] = False
+        value["dependency_closure"]["unknown_paths"] = ["unresolved-import"]
         seal(value, "receipt_sha256")
         with self.assertRaisesRegex(VALIDATOR.LifecycleError, "fail closed as blocked"):
             VALIDATOR.validate_reuse_receipt(value, SCHEMA)
@@ -89,6 +104,20 @@ class ValidationLifecycleGwtTests(unittest.TestCase):
         value = receipt("environment-sensitive")
         value["environment"]["current"] = {"class": "linux-hosted", "condition": "cold"}
         value["decision"] = {"outcome": "re-executed", "reason": "environment-drift"}
+        seal(value, "receipt_sha256")
+        VALIDATOR.validate_reuse_receipt(value, SCHEMA)
+
+    def test_gwt_006b_given_input_sensitive_evidence_when_environment_drifts_then_reexecution_is_required(self) -> None:
+        value = receipt("input-sensitive")
+        value["environment"]["current"] = {"class": "linux-hosted", "condition": "cold"}
+        value["decision"] = {"outcome": "re-executed", "reason": "environment-drift"}
+        seal(value, "receipt_sha256")
+        VALIDATOR.validate_reuse_receipt(value, SCHEMA)
+
+    def test_gwt_006c_given_partial_dependency_subset_when_claimed_complete_then_it_fails_closed(self) -> None:
+        value = receipt()
+        value["dependency_closure"]["path_count"] = 2
+        value["decision"] = {"outcome": "blocked", "reason": "dependency-closure-unknown"}
         seal(value, "receipt_sha256")
         VALIDATOR.validate_reuse_receipt(value, SCHEMA)
 

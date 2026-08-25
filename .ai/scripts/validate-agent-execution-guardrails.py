@@ -7,7 +7,9 @@ import argparse
 import hashlib
 import json
 import re
+import subprocess
 import sys
+from datetime import datetime
 from pathlib import Path
 from typing import Any
 
@@ -23,6 +25,7 @@ SCHEMA_PATH = ROOT / ".ai/assets/shared/agent-execution-guardrails.schema.yaml"
 SHA40 = re.compile(r"^[0-9a-f]{40}$")
 SHA256 = re.compile(r"^[0-9a-f]{64}$")
 SAFE_REF = re.compile(r"^(?:ignored|workflow|issue|commit|run|job|fixture|tracked):[^\s]+$")
+ACTUAL_REF = re.compile(r"^(?:ignored|run|job):[^\s]+$")
 
 
 class GuardrailError(ValueError):
@@ -64,6 +67,68 @@ def sealed(record: dict[str, Any], field: str) -> None:
         raise GuardrailError(f"{field} does not match canonical content")
 
 
+def repo_relative_path(value: Any, name: str, *, must_exist: bool = True) -> Path:
+    text = string(value, name)
+    candidate = Path(text)
+    if candidate.is_absolute() or ".." in candidate.parts:
+        raise GuardrailError(f"{name} must be a contained repository-relative path")
+    resolved = (ROOT / candidate).resolve()
+    if resolved != ROOT and ROOT not in resolved.parents:
+        raise GuardrailError(f"{name} escapes the repository")
+    if must_exist and not resolved.exists():
+        raise GuardrailError(f"{name} does not exist")
+    return resolved
+
+
+def tracked_path(value: Any, name: str) -> Path:
+    resolved = repo_relative_path(value, name)
+    relative = resolved.relative_to(ROOT).as_posix()
+    result = subprocess.run(
+        ["git", "-C", str(ROOT), "ls-files", "--", relative],
+        check=False,
+        capture_output=True,
+        text=True,
+        encoding="utf-8",
+    )
+    if result.returncode != 0 or not result.stdout.strip():
+        raise GuardrailError(f"{name} is not Git-tracked")
+    return resolved
+
+
+def iso_with_offset(value: Any, name: str) -> None:
+    if not isinstance(value, str):
+        raise GuardrailError(f"{name} must be ISO 8601 with an offset")
+
+
+def lease_lock_bytes(record: dict[str, Any]) -> bytes:
+    holder = mapping(record.get("holder"), "holder")
+    payload = {
+        "lease_id": record.get("lease_id"),
+        "packet_id": holder.get("packet_id"),
+        "subject_sha": record.get("subject_sha"),
+    }
+    return (json.dumps(payload, sort_keys=True, separators=(",", ":")) + "\n").encode("utf-8")
+
+
+def acquire_lease_lock(record: dict[str, Any]) -> None:
+    if record.get("state") != "active":
+        raise GuardrailError("only an active lease can acquire a lock")
+    holder = mapping(record.get("holder"), "holder")
+    lock_path = repo_relative_path(holder.get("lock_ref"), "holder.lock_ref", must_exist=False)
+    lock_path.parent.mkdir(parents=True, exist_ok=True)
+    try:
+        with lock_path.open("xb") as stream:
+            stream.write(lease_lock_bytes(record))
+    except FileExistsError as exc:
+        raise GuardrailError("worktree lease lock already exists; another compliant holder may be active") from exc
+    try:
+        parsed = datetime.fromisoformat(value.replace("Z", "+00:00"))
+    except ValueError as exc:
+        raise GuardrailError(f"{name} must be ISO 8601 with an offset") from exc
+    if parsed.tzinfo is None or parsed.utcoffset() is None:
+        raise GuardrailError(f"{name} must be ISO 8601 with an offset")
+
+
 def reject_private(value: Any, schema: dict[str, Any], path: str = "record") -> None:
     if isinstance(value, dict):
         forbidden = set(schema["privacy_forbidden_keys"])
@@ -81,13 +146,22 @@ def validate_packet(record: dict[str, Any], schema: dict[str, Any]) -> None:
     if record["schema_version"] != schema["schema_version"] or record["record_type"] != schema["record_types"]["packet"]:
         raise GuardrailError("packet schema identity is invalid")
     string(record["packet_id"], "packet_id")
-    string(record["owning_skill"], "owning_skill")
+    owning_skill = string(record["owning_skill"], "owning_skill")
     if record["execution_kind"] not in schema["execution_kinds"]:
         raise GuardrailError("execution_kind is invalid")
     role = mapping(record["role"], "role")
     exact_keys(role, {"path", "applicability", "reason"}, "role")
-    if not string(role["path"], "role.path").startswith(".ai/assets/sub-agent-role-prompts/"):
+    if not string(role["path"], "role.path").startswith(".ai/assets/sub-agent-role-prompts/") or not role["path"].endswith("/sub-agent.yaml"):
         raise GuardrailError("role.path must be canonical")
+    role_path = tracked_path(role["path"], "role.path")
+    role_asset = mapping(yaml.safe_load(role_path.read_text(encoding="utf-8")), "role asset")
+    if role_asset.get("asset_type") != "sub-agent-role-prompt" or role_asset.get("source_of_truth") != "canonical" or role_asset.get("status") != "active":
+        raise GuardrailError("role.path must resolve to an active canonical role asset")
+    skill_path = tracked_path(f".ai/assets/skills/{owning_skill}/skill.yaml", "owning_skill canonical spec")
+    skill = mapping(yaml.safe_load(skill_path.read_text(encoding="utf-8")), "owning skill")
+    bindings = skill.get("role_bindings")
+    if not isinstance(bindings, list) or not any(isinstance(item, dict) and item.get("role_path") == role["path"] for item in bindings):
+        raise GuardrailError("role.path is not canonically bound by owning_skill")
     if role["applicability"] not in schema["role_applicability"]:
         raise GuardrailError("role.applicability is invalid")
     string(role["reason"], "role.reason")
@@ -120,7 +194,7 @@ def validate_packet(record: dict[str, Any], schema: dict[str, Any]) -> None:
     if not isinstance(retry["attempt"], int) or retry["attempt"] < 1 or not isinstance(retry["budget"], int) or retry["budget"] < retry["attempt"]:
         raise GuardrailError("retry attempt and budget are invalid")
     authorizations = strings(retry["authorization_refs"], "retry.authorization_refs", empty=True)
-    if retry["attempt"] >= 3 and not authorizations:
+    if retry["attempt"] >= 3 and (not authorizations or any(not ref.startswith(("workflow:", "issue:")) for ref in authorizations)):
         raise GuardrailError("attempt 3+ requires new owner or workflow authorization")
     if record["execution_kind"] in {"external", "fixed-head-audit"} and (permissions["tracked_write"] != "deny" or permissions["provider_mutation"] != "deny"):
         raise GuardrailError("external and fixed-head execution must be read-only")
@@ -128,23 +202,36 @@ def validate_packet(record: dict[str, Any], schema: dict[str, Any]) -> None:
     sealed(record, "packet_sha256")
 
 
-def validate_lease(record: dict[str, Any], schema: dict[str, Any]) -> None:
-    exact_keys(record, {"schema_version", "record_type", "lease_id", "worktree", "subject_sha", "snapshot_sha256", "state", "holder", "observed_other_tracked_writers", "ignored_artifacts", "tracked_mutations", "terminal_release", "lease_sha256"}, "lease")
+def validate_lease(record: dict[str, Any], schema: dict[str, Any], *, verify_live: bool = True) -> None:
+    exact_keys(record, {"schema_version", "record_type", "lease_id", "worktree", "subject_sha", "observed_snapshot", "snapshot_sha256", "state", "holder", "observed_other_tracked_writers", "ignored_artifacts", "tracked_mutations", "terminal_release", "lease_sha256"}, "lease")
     if record["schema_version"] != schema["schema_version"] or record["record_type"] != schema["record_types"]["lease"]:
         raise GuardrailError("lease schema identity is invalid")
     string(record["lease_id"], "lease_id")
-    string(record["worktree"], "worktree")
+    worktree = repo_relative_path(record["worktree"], "worktree")
     if not isinstance(record["subject_sha"], str) or not SHA40.fullmatch(record["subject_sha"]):
         raise GuardrailError("lease subject_sha is invalid")
     if not isinstance(record["snapshot_sha256"], str) or not SHA256.fullmatch(record["snapshot_sha256"]):
         raise GuardrailError("snapshot_sha256 is invalid")
     if record["state"] not in schema["lease_states"]:
         raise GuardrailError("lease state is invalid")
+    observed = mapping(record["observed_snapshot"], "observed_snapshot")
+    exact_keys(observed, {"head_sha", "tracked_status"}, "observed_snapshot")
+    if observed["head_sha"] != record["subject_sha"] or not isinstance(observed["tracked_status"], list) or any(not isinstance(item, str) for item in observed["tracked_status"]):
+        raise GuardrailError("observed snapshot identity is invalid")
+    if record["snapshot_sha256"] != digest(observed):
+        raise GuardrailError("snapshot_sha256 does not bind observed snapshot")
     holder = mapping(record["holder"], "holder")
-    exact_keys(holder, {"packet_id", "access"}, "holder")
+    exact_keys(holder, {"packet_id", "access", "lock_ref", "lock_sha256"}, "holder")
     string(holder["packet_id"], "holder.packet_id")
     if holder["access"] not in schema["lease_access"]:
         raise GuardrailError("holder access is invalid")
+    lock_path = repo_relative_path(holder["lock_ref"], "holder.lock_ref", must_exist=record["state"] == "active" and verify_live)
+    if not str(Path(holder["lock_ref"]).as_posix()).startswith(".dev/ai-context/local/") or not SHA256.fullmatch(str(holder["lock_sha256"])):
+        raise GuardrailError("holder lock must be a digest-bound ignored local artifact")
+    if holder["lock_sha256"] != hashlib.sha256(lease_lock_bytes(record)).hexdigest():
+        raise GuardrailError("holder.lock_sha256 does not bind lease identity")
+    if record["state"] == "active" and verify_live and hashlib.sha256(lock_path.read_bytes()).hexdigest() != holder["lock_sha256"]:
+        raise GuardrailError("active lease lock digest is invalid")
     other_writers = strings(record["observed_other_tracked_writers"], "observed_other_tracked_writers", empty=True)
     mutations = strings(record["tracked_mutations"], "tracked_mutations", empty=True)
     artifacts = record["ignored_artifacts"]
@@ -167,10 +254,17 @@ def validate_lease(record: dict[str, Any], schema: dict[str, Any]) -> None:
         raise GuardrailError("active lease rejects another tracked writer")
     if record["state"] == "active" and mutations:
         raise GuardrailError("active lease snapshot drifted")
+    if record["state"] == "active" and observed["tracked_status"]:
+        raise GuardrailError("active lease observed tracked drift")
     if record["state"] == "released" and (mutations or not terminal_release["released"] or any(item["state"] == "open" for item in artifacts)):
         raise GuardrailError("released lease requires clean tracked state and terminal artifact release")
     if record["state"] == "invalidated" and terminal_release["released"]:
         raise GuardrailError("invalidated lease cannot claim terminal release")
+    if verify_live:
+        head = subprocess.run(["git", "-C", str(worktree), "rev-parse", "HEAD"], check=True, capture_output=True, text=True, encoding="utf-8").stdout.strip()
+        status = subprocess.run(["git", "-C", str(worktree), "status", "--porcelain=v1", "--untracked-files=no"], check=True, capture_output=True, text=True, encoding="utf-8").stdout.splitlines()
+        if {"head_sha": head, "tracked_status": status} != observed:
+            raise GuardrailError("lease snapshot does not match live worktree state")
     reject_private(record, schema)
     sealed(record, "lease_sha256")
 
@@ -187,7 +281,7 @@ def validate_evidence(record: dict[str, Any], schema: dict[str, Any]) -> None:
     expected: dict[str, tuple[str, str]] = {}
     for entry in entries:
         entry = mapping(entry, "entry")
-        exact_keys(entry, {"acceptance_id", "issue", "requires_actual_execution", "evidence_kind", "command", "profile", "subject_sha", "outcome", "evidence_refs", "evidence_sha256"}, "entry")
+        exact_keys(entry, {"acceptance_id", "issue", "requires_actual_execution", "evidence_kind", "command", "profile", "subject_sha", "outcome", "evidence_refs", "evidence_sha256", "execution_receipt"}, "entry")
         acceptance = string(entry["acceptance_id"], "acceptance_id")
         if acceptance in expected:
             raise GuardrailError("acceptance identifiers must be unique")
@@ -206,6 +300,28 @@ def validate_evidence(record: dict[str, Any], schema: dict[str, Any]) -> None:
             raise GuardrailError("entry evidence_sha256 is invalid")
         if entry["requires_actual_execution"] and entry["evidence_kind"] != "actual-execution":
             raise GuardrailError("synthetic, mock, unit, or document evidence cannot satisfy actual execution")
+        receipt = entry["execution_receipt"]
+        if entry["evidence_kind"] == "actual-execution":
+            receipt = mapping(receipt, "entry.execution_receipt")
+            exact_keys(receipt, {"schema_version", "record_type", "producer", "subject_sha", "command", "profile", "started_at", "completed_at", "duration_seconds", "executed", "synthetic", "outcome", "exit_code", "evidence_refs", "evidence_sha256", "receipt_sha256"}, "entry.execution_receipt")
+            if receipt["schema_version"] != schema["schema_version"] or receipt["record_type"] != "terminal-command-execution" or receipt["producer"] not in schema["execution_receipt_producers"]:
+                raise GuardrailError("actual execution receipt identity is invalid")
+            if receipt["subject_sha"] != entry["subject_sha"] or receipt["command"] != entry["command"] or receipt["profile"] != entry["profile"] or receipt["outcome"] != entry["outcome"]:
+                raise GuardrailError("actual execution receipt does not bind the ledger entry")
+            iso_with_offset(receipt["started_at"], "execution_receipt.started_at")
+            iso_with_offset(receipt["completed_at"], "execution_receipt.completed_at")
+            if not isinstance(receipt["duration_seconds"], (int, float)) or isinstance(receipt["duration_seconds"], bool) or receipt["duration_seconds"] < 0 or receipt["executed"] is not True or receipt["synthetic"] is not False:
+                raise GuardrailError("actual execution receipt must prove a measured non-synthetic execution")
+            receipt_refs = strings(receipt["evidence_refs"], "execution_receipt.evidence_refs")
+            if any(not ACTUAL_REF.fullmatch(ref) for ref in receipt_refs) or receipt_refs != refs or receipt["evidence_sha256"] != entry["evidence_sha256"]:
+                raise GuardrailError("actual execution receipt evidence binding is invalid")
+            if receipt["outcome"] == "passed" and receipt["exit_code"] != 0:
+                raise GuardrailError("passed actual execution requires exit_code zero")
+            if receipt["exit_code"] is not None and (not isinstance(receipt["exit_code"], int) or isinstance(receipt["exit_code"], bool)):
+                raise GuardrailError("execution receipt exit_code is invalid")
+            sealed(receipt, "receipt_sha256")
+        elif receipt is not None:
+            raise GuardrailError("non-actual evidence cannot carry an execution receipt")
         expected[acceptance] = (entry["outcome"], entry["evidence_sha256"])
     report = mapping(record["human_report"], "human_report")
     exact_keys(report, {"entries", "report_sha256"}, "human_report")
@@ -215,7 +331,10 @@ def validate_evidence(record: dict[str, Any], schema: dict[str, Any]) -> None:
     for item in report["entries"]:
         item = mapping(item, "human_report entry")
         exact_keys(item, {"acceptance_id", "outcome", "evidence_sha256"}, "human_report entry")
-        projected[string(item["acceptance_id"], "human acceptance_id")] = (item["outcome"], item["evidence_sha256"])
+        report_id = string(item["acceptance_id"], "human acceptance_id")
+        if report_id in projected or item["outcome"] not in schema["outcomes"] or not SHA256.fullmatch(str(item["evidence_sha256"])):
+            raise GuardrailError("human report entry is duplicated or invalid")
+        projected[report_id] = (item["outcome"], item["evidence_sha256"])
     if projected != expected:
         raise GuardrailError("human report does not match acceptance evidence ledger")
     if report["report_sha256"] != digest(report["entries"]):
@@ -225,7 +344,7 @@ def validate_evidence(record: dict[str, Any], schema: dict[str, Any]) -> None:
 
 
 def validate_retry(record: dict[str, Any], schema: dict[str, Any]) -> None:
-    exact_keys(record, {"schema_version", "record_type", "attempt", "failure", "prior_failure_sha256", "material_state_change_sha256", "new_authorization_refs", "decision", "retry_sha256"}, "retry")
+    exact_keys(record, {"schema_version", "record_type", "attempt", "failure", "prior_failure_sha256", "material_state_change_sha256", "prior_authorization_sha256", "new_authorizations", "decision", "retry_sha256"}, "retry")
     if record["schema_version"] != schema["schema_version"] or record["record_type"] != schema["record_types"]["retry"]:
         raise GuardrailError("retry schema identity is invalid")
     if not isinstance(record["attempt"], int) or record["attempt"] < 1 or record["decision"] not in schema["retry_decisions"]:
@@ -240,7 +359,21 @@ def validate_retry(record: dict[str, Any], schema: dict[str, Any]) -> None:
     for field in ("prior_failure_sha256", "material_state_change_sha256"):
         if record[field] is not None and (not isinstance(record[field], str) or not SHA256.fullmatch(record[field])):
             raise GuardrailError(f"{field} is invalid")
-    authorizations = strings(record["new_authorization_refs"], "new_authorization_refs", empty=True)
+    if record["prior_authorization_sha256"] is not None and not SHA256.fullmatch(str(record["prior_authorization_sha256"])):
+        raise GuardrailError("prior_authorization_sha256 is invalid")
+    authorizations = record["new_authorizations"]
+    if not isinstance(authorizations, list):
+        raise GuardrailError("new_authorizations must be a list")
+    authorization_digests: set[str] = set()
+    for authorization_value in authorizations:
+        authorization = mapping(authorization_value, "new_authorization")
+        exact_keys(authorization, {"ref", "attempt", "subject_sha", "prior_failure_sha256", "decision", "authorization_sha256"}, "new_authorization")
+        if not string(authorization["ref"], "new_authorization.ref").startswith(("workflow:", "issue:")) or authorization["attempt"] != record["attempt"] or authorization["subject_sha"] != failure["subject_sha"] or authorization["prior_failure_sha256"] != record["prior_failure_sha256"] or authorization["decision"] != "authorize-retry":
+            raise GuardrailError("new authorization is not bound to this retry")
+        sealed(authorization, "authorization_sha256")
+        if authorization["authorization_sha256"] == record["prior_authorization_sha256"] or authorization["authorization_sha256"] in authorization_digests:
+            raise GuardrailError("retry authorization must be new")
+        authorization_digests.add(authorization["authorization_sha256"])
     if record["decision"] == "retry" and record["attempt"] >= 2 and record["material_state_change_sha256"] is None:
         raise GuardrailError("retry without material state change is forbidden")
     if record["decision"] == "retry" and record["attempt"] >= 3 and not authorizations:
@@ -263,8 +396,11 @@ def validate_graph(record: dict[str, Any], schema: dict[str, Any]) -> None:
     if not isinstance(record["reindex_attempted"], bool) or not isinstance(record["absence_claim"], bool):
         raise GuardrailError("graph booleans are invalid")
     paths = strings(record["fallback_paths"], "fallback_paths", empty=True)
+    if paths:
+        for index, path in enumerate(paths):
+            tracked_path(path, f"fallback_paths[{index}]")
     exact_complete = record["index_state"] == "fresh" and record["coverage"] == "complete" and record["indexed_sha"] == record["head_sha"]
-    tracked_fallback = record["fallback"] == "tracked-search" and bool(paths)
+    tracked_fallback = record["fallback"] == "tracked-search" and bool(paths) and record["coverage"] == "complete"
     if record["index_state"] in {"stale", "missing"} and not record["reindex_attempted"] and not tracked_fallback:
         raise GuardrailError("stale or missing graph requires reindex or tracked fallback")
     if record["absence_claim"] and not (exact_complete or tracked_fallback):
@@ -275,7 +411,7 @@ def validate_graph(record: dict[str, Any], schema: dict[str, Any]) -> None:
 
 def validate_powershell_source(source: str, schema: dict[str, Any]) -> None:
     reserved = set(schema["reserved_powershell_variables"])
-    assignment = re.compile(r"(?im)^\s*\$(?:global:|script:|local:)?([a-z_][a-z0-9_]*)\s*(?:=|\+=|-=|\+\+|--)")
+    assignment = re.compile(r"(?i)(?<![A-Za-z0-9_$])\$(?:global:|script:|local:)?([a-z_][a-z0-9_]*)\s*(?:=|\+=|-=|\+\+|--)")
     violations = sorted({match.group(1) for match in assignment.finditer(source) if match.group(1).lower() in reserved}, key=str.lower)
     if violations:
         raise GuardrailError(f"PowerShell reserved automatic variable assignment: {', '.join(violations)}")
@@ -295,6 +431,7 @@ def parse_args() -> argparse.Namespace:
     group.add_argument("--retry", type=Path)
     group.add_argument("--graph-freshness", type=Path)
     group.add_argument("--powershell-source", type=Path)
+    parser.add_argument("--acquire-lock", action="store_true", help="atomically create the active lease lock before live validation")
     return parser.parse_args()
 
 
@@ -305,7 +442,11 @@ def main() -> int:
         if args.packet:
             validate_packet(load(args.packet), schema)
         elif args.lease:
-            validate_lease(load(args.lease), schema)
+            lease_record = load(args.lease)
+            if args.acquire_lock:
+                validate_lease(lease_record, schema, verify_live=False)
+                acquire_lease_lock(lease_record)
+            validate_lease(lease_record, schema)
         elif args.evidence_ledger:
             validate_evidence(load(args.evidence_ledger), schema)
         elif args.retry:
@@ -315,7 +456,7 @@ def main() -> int:
         elif args.powershell_source:
             validate_powershell_source(args.powershell_source.read_text(encoding="utf-8"), schema)
         else:
-            required = {"schema_version", "contract_id", "record_types", "execution_kinds", "role_applicability", "permission_modes", "lease_states", "lease_access", "artifact_states", "evidence_kinds", "outcomes", "retry_decisions", "graph_states", "graph_coverage", "graph_fallbacks", "terminal_modes", "reserved_powershell_variables", "privacy_forbidden_keys"}
+            required = {"schema_version", "contract_id", "record_types", "execution_kinds", "role_applicability", "permission_modes", "lease_states", "lease_access", "artifact_states", "evidence_kinds", "execution_receipt_producers", "outcomes", "retry_decisions", "graph_states", "graph_coverage", "graph_fallbacks", "terminal_modes", "reserved_powershell_variables", "privacy_forbidden_keys"}
             exact_keys(schema, required, "schema")
         print("Agent execution guardrails passed.")
         return 0

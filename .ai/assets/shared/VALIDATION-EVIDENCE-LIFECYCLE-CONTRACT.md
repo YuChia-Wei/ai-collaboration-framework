@@ -27,7 +27,10 @@ repository validator is `.ai/scripts/validate-validation-lifecycle.py`.
 Every reusable receipt binds original and current commit SHAs, exact argv and
 working-directory contract, profile, original outcome and immutable evidence,
 the canonical dependency set with original/current Git blob identities, and
-all authority digests. The receipt's own digest covers canonical JSON bytes.
+all authority digests. The resolver must also seal a complete sorted path-set
+digest, exact count, resolver argv, and an empty unknown-path set; a non-empty
+subset cannot declare itself complete. The receipt's own digest covers
+canonical JSON bytes.
 
 Unknown dependencies, missing blobs, duplicate paths, unrecognized fields, or
 runner, manifest, resolver, policy, configuration, command, profile, or
@@ -35,6 +38,14 @@ environment drift fail closed. A cache hit, filename, extension, path filter,
 or small diff is not proof. Release and `nightly-full` profiles, fresh
 exact-head audit, hosted required contexts, review, and live admission cannot
 be replaced by a behavioral receipt.
+
+Environment equality applies to every reusable class because environment is
+part of reuse authority, not only to tests labelled environment-sensitive.
+Terminal workflow metadata has its own original/current digest and an explicit
+`excluded_from_dependency_fingerprint` marker: its bytes may change without
+self-invalidating behavioral evidence only when the complete resolver closure
+proves that metadata path is outside the governed inputs. This models the #246
+regression without changing any #246 historical receipt.
 
 ## Validation Freeze
 

@@ -113,6 +113,14 @@ def expected_reuse_decision(record: dict[str, Any], schema: dict[str, Any]) -> t
     dependencies = record.get("dependencies")
     if not isinstance(dependencies, list) or not dependencies:
         return "blocked", "dependency-closure-unknown"
+    closure = record.get("dependency_closure")
+    if not isinstance(closure, dict) or set(closure) != set(schema["reuse_receipt"]["dependency_closure"]["required"]):
+        return "blocked", "dependency-closure-unknown"
+    resolver_argv = closure.get("resolver_argv")
+    if not isinstance(resolver_argv, list) or not resolver_argv or not all(isinstance(item, str) and item for item in resolver_argv):
+        return "blocked", "dependency-closure-unknown"
+    if closure.get("complete") is not True or closure.get("unknown_paths") != []:
+        return "blocked", "dependency-closure-unknown"
     seen: set[str] = set()
     for item_value in dependencies:
         item = mapping(item_value, "receipt.dependencies[]")
@@ -126,6 +134,12 @@ def expected_reuse_decision(record: dict[str, Any], schema: dict[str, Any]) -> t
             return "blocked", "dependency-closure-unknown"
         if item["original_blob"] != item["current_blob"]:
             return "re-executed", "tracked-input-drift"
+    ordered_paths = sorted(seen)
+    paths_digest = canonical_digest(ordered_paths)
+    if closure.get("path_count") != len(ordered_paths):
+        return "blocked", "dependency-closure-unknown"
+    if closure.get("original_paths_sha256") != paths_digest or closure.get("current_paths_sha256") != paths_digest:
+        return "blocked", "dependency-closure-unknown"
     authority = mapping(record.get("authority"), "receipt.authority")
     if set(authority) != set(schema["reuse_receipt"]["authority_dimensions"]):
         return "blocked", "authority-unknown"
@@ -142,7 +156,7 @@ def expected_reuse_decision(record: dict[str, Any], schema: dict[str, Any]) -> t
             return "re-executed", f"{name}-drift"
     environment = mapping(record.get("environment"), "receipt.environment")
     exact_keys(environment, {"original", "current"}, "receipt.environment")
-    if evidence_class == "environment-sensitive" and environment["original"] != environment["current"]:
+    if environment["original"] != environment["current"]:
         return "re-executed", "environment-drift"
     if evidence_class not in schema["reuse_receipt"]["reusable_classes"]:
         return "blocked", "evidence-class-unknown"
@@ -150,7 +164,7 @@ def expected_reuse_decision(record: dict[str, Any], schema: dict[str, Any]) -> t
 
 
 def validate_reuse_receipt(record: dict[str, Any], schema: dict[str, Any]) -> None:
-    required = {"schema_version", "record_type", "evidence_class", "subject", "invocation", "original_result", "dependencies", "authority", "command_fingerprint", "profile_fingerprint", "environment", "fresh_gates", "decision", "receipt_sha256"}
+    required = {"schema_version", "record_type", "evidence_class", "subject", "invocation", "original_result", "dependencies", "dependency_closure", "terminal_metadata", "authority", "command_fingerprint", "profile_fingerprint", "environment", "fresh_gates", "decision", "receipt_sha256"}
     exact_keys(record, required, "receipt")
     if record["schema_version"] != "1.0" or record["record_type"] != "validation-reuse-receipt":
         raise LifecycleError("reuse receipt identity is invalid")
@@ -169,6 +183,12 @@ def validate_reuse_receipt(record: dict[str, Any], schema: dict[str, Any]) -> No
         raise LifecycleError("reuse source must be a passing measured result")
     string_list(original["evidence_refs"], "receipt.original_result.evidence_refs")
     digest(original["evidence_sha256"], "receipt.original_result.evidence_sha256")
+    terminal_metadata = mapping(record["terminal_metadata"], "receipt.terminal_metadata")
+    exact_keys(terminal_metadata, {"original_sha256", "current_sha256", "excluded_from_dependency_fingerprint"}, "receipt.terminal_metadata")
+    digest(terminal_metadata["original_sha256"], "receipt.terminal_metadata.original_sha256")
+    digest(terminal_metadata["current_sha256"], "receipt.terminal_metadata.current_sha256")
+    if terminal_metadata["excluded_from_dependency_fingerprint"] is not True:
+        raise LifecycleError("terminal metadata must be excluded from dependency fingerprints")
     fresh = record["fresh_gates"]
     if not isinstance(fresh, list) or [item.get("gate") for item in fresh if isinstance(item, dict)] != schema["reuse_receipt"]["required_fresh_gates"] or not all(
         isinstance(item, dict) and item.get("required") is True and item.get("replaceable_by_reuse") is False for item in fresh

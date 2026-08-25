@@ -63,16 +63,17 @@
 
 ## Resume Checkpoint
 
-- Last completed action: Implemented #249 and #253 owner contracts, validators, runner/profile enforcement, external packet binding, canonical guidance, and separate acceptance maps; focused owner scenarios pass.
+- Last completed action: Preserved the first exact-head audit at `5c1657d3084c9e6843705a3b0355a2c6ddb76270` as blocked, then repaired its seven findings with live and content-bound validation controls.
 - Current task: `GOV013014-VAL-001`
-- Exact next action: Finish host-permitted projection checks, validate the planned commit message, create the immutable local commit, dispatch the selected long-running aggregate gate once, and obtain the exact-head independent audit.
-- Validation already completed: lifecycle validator and 10 GWTs; agent guardrail validator and 14 GWTs; external task schema plus focused packet-binding/terminal compatibility cases; source dispositions; workflow bootstrap commit `5139d30edc860c7a6ea4b52b3153bc9a28736399`.
-- Git state: dedicated local branch with tracked implementation pending the next durable commit; no work occurred in main or another worktree.
+- Exact next action: Re-run focused and projection checks, validate the repair commit message, create the new immutable local head, seal the acceptance ledger/report, and obtain a second independent exact-head audit.
+- Validation already completed: repaired lifecycle 12 GWTs; repaired agent guardrail 18 GWTs; external task schema and 18 packet/terminal cases on the native host; first blocked audit retained; commits `5139d30edc860c7a6ea4b52b3153bc9a28736399` and `5c1657d3084c9e6843705a3b0355a2c6ddb76270`.
+- Git state: dedicated local branch with tracked audit repairs pending one durable commit; no work occurred in main or another worktree.
 - Branch history and checkpoint handoffs: segment 1 remains local from `origin/main@1326f827f61de8eebeef30748dcc82ffa7dd3764`; no push, PR, merge, or provider mutation.
-- Blockers or unresolved decisions: none. Windows sandbox Temp and Git Bash signal-pipe failures require the already-authorized host execution boundary; any canonical semantic, hosted required-check, release, provider, or integration topology change still requires owner direction.
+- Blockers or unresolved decisions: the fast aggregate remains truthfully blocked before execution after three authorized attempts, and attempt four is not authorized. This residual gate is retained rather than retried; any canonical semantic, hosted required-check, release, provider, or integration topology change still requires owner direction.
 
 ## Branch Lifecycle
 
 | Segment | Branch | Base | Checkpoint Type | Commit | Remote / Target | Recorded At | Reason | Resume Branch / Action |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| 1 | `codex/2026-08-25-validation-freeze-agent-guardrails` | `origin/main@1326f827f61de8eebeef30748dcc82ffa7dd3764` | local-start | pending | local only | `2026-08-25T14:55:24+08:00` | Owner-authorized cohesive #249/#253 governance delivery | Continue inventory and implementation in the isolated worktree. |
+| 1 | `codex/2026-08-25-validation-freeze-agent-guardrails` | `origin/main@1326f827f61de8eebeef30748dcc82ffa7dd3764` | workflow-bootstrap | `5139d30edc860c7a6ea4b52b3153bc9a28736399` | local only | `2026-08-25T14:55:24+08:00` | Owner-authorized cohesive #249/#253 governance delivery | Continue isolated implementation. |
+| 1 | `codex/2026-08-25-validation-freeze-agent-guardrails` | `origin/main@1326f827f61de8eebeef30748dcc82ffa7dd3764` | implementation | `5c1657d3084c9e6843705a3b0355a2c6ddb76270` | local only | `2026-08-25T15:17:17+08:00` | First exact-head audit blocked on seven binding gaps | Repair validators and retain the blocked audit. |

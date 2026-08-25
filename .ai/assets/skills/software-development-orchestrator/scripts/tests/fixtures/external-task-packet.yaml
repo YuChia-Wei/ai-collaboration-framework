@@ -1,0 +1,32 @@
+schema_version: "1.0"
+record_type: agent-execution-packet
+packet_id: pr-195-hosted-gate-01
+execution_kind: external
+owning_skill: ai-context-upgrader
+role:
+  path: .ai/assets/sub-agent-role-prompts/mechanical-evidence-worker/sub-agent.yaml
+  applicability: applies
+  reason: Bounded read-only long-running validation evidence collection.
+subject:
+  repository: ai-collaboration-framework
+  exact_sha: "5555555555555555555555555555555555555555"
+invocation:
+  argv: [python, focused-test.py, -v]
+  cwd: "C:/repo"
+permissions:
+  network: deny
+  tracked_write: deny
+  provider_mutation: deny
+ignored_artifact_roots: [.external-task/pr-195-hosted-gate-01]
+terminal:
+  schema_ref: .ai/assets/skills/software-development-orchestrator/templates/external-task-delegation.schema.yaml
+  mode: callback
+  destination: source-task
+  max_terminal_messages: 1
+integration_owner: source-task
+stop_conditions: [preflight mismatch, command terminal outcome]
+retry:
+  attempt: 1
+  budget: 2
+  authorization_refs: []
+packet_sha256: 92c24fa9af5ecefbc573dd794e6373f8fdf0d38bbd2d2c55d6f0706d9c9eb7c2
