@@ -5,6 +5,7 @@
 # 
 # Purpose: Execute one declared validation profile and retain complete logs.
 # Usage: ./check-all.sh [--profile <name> | --quick | --full | --critical] [--verbose]
+#        ./check-all.sh --resolve-input-closure <check-id> [--subject <sha>]
 # ====================================================================
 
 set -e
@@ -486,6 +487,7 @@ check_is_selected() {
 show_usage() {
     cat <<'EOF'
 Usage: ./check-all.sh [--profile <fast|pr|release|closeout|nightly-full>] [--base <sha> --head <sha>] [--verbose]
+       ./check-all.sh --resolve-input-closure <check-id> [--subject <sha>]
 
 Profiles:
   fast          Local development feedback (30 seconds, report-and-warn)
@@ -507,6 +509,8 @@ VERBOSE=false
 PROFILE_EXPLICIT=false
 BASE_SHA=
 HEAD_SHA=
+RESOLVE_INPUT_CLOSURE_ID=
+RESOLVE_INPUT_CLOSURE_SUBJECT=
 while [ "$#" -gt 0 ]; do
     case "$1" in
         --profile)
@@ -548,6 +552,16 @@ while [ "$#" -gt 0 ]; do
             HEAD_SHA=$2
             shift 2
             ;;
+        --resolve-input-closure)
+            [ "$#" -ge 2 ] && [ -z "$RESOLVE_INPUT_CLOSURE_ID" ] || { show_usage >&2; exit 2; }
+            RESOLVE_INPUT_CLOSURE_ID=$2
+            shift 2
+            ;;
+        --subject)
+            [ "$#" -ge 2 ] && [ -z "$RESOLVE_INPUT_CLOSURE_SUBJECT" ] || { show_usage >&2; exit 2; }
+            RESOLVE_INPUT_CLOSURE_SUBJECT=$2
+            shift 2
+            ;;
         --help|-h)
             [ "$#" -eq 1 ] || { show_usage >&2; exit 2; }
             show_usage
@@ -560,6 +574,26 @@ while [ "$#" -gt 0 ]; do
             ;;
     esac
 done
+
+if [ -n "$RESOLVE_INPUT_CLOSURE_ID" ]; then
+    [ "$PROFILE_EXPLICIT" = false ] && [ "$VERBOSE" = false ] && [ -z "$BASE_SHA" ] && [ -z "$HEAD_SHA" ] || { show_usage >&2; exit 2; }
+    [ -n "${CHECK_DESCRIPTION[$RESOLVE_INPUT_CLOSURE_ID]:-}" ] || { echo "Unknown check id: $RESOLVE_INPUT_CLOSURE_ID" >&2; exit 2; }
+    RESOLVE_INPUT_CLOSURE_SUBJECT=${RESOLVE_INPUT_CLOSURE_SUBJECT:-HEAD}
+    git rev-parse --verify "$RESOLVE_INPUT_CLOSURE_SUBJECT^{commit}" >/dev/null 2>&1 || { echo "Unknown closure subject: $RESOLVE_INPUT_CLOSURE_SUBJECT" >&2; exit 2; }
+    closure_tokens=$(resolve_check_input_closure "$RESOLVE_INPUT_CLOSURE_ID")
+    closure_paths=
+    for closure_token in $closure_tokens; do
+        matched_paths=$(git ls-tree -r --name-only "$RESOLVE_INPUT_CLOSURE_SUBJECT" -- "$closure_token") || exit 2
+        [ -n "$matched_paths" ] || { echo "Unresolved closure token: $closure_token" >&2; exit 2; }
+        closure_paths="$closure_paths
+$matched_paths"
+    done
+    printf '%s\n' "$closure_paths" | sed '/^$/d' | LC_ALL=C sort -u
+    exit 0
+elif [ -n "$RESOLVE_INPUT_CLOSURE_SUBJECT" ]; then
+    show_usage >&2
+    exit 2
+fi
 
 if ! registry_has_profile "$PROFILE" || ! validate_profile_registry || ! prepare_profile_selection; then
     exit 2

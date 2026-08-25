@@ -8,7 +8,7 @@
   "owner_skill": "ai-context-governance",
   "status": "in_progress",
   "created_at": "2026-08-25T14:55:24+08:00",
-  "updated_at": "2026-08-25T15:17:17+08:00",
+  "updated_at": "2026-08-25T16:34:06+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-5.6-sol",
   "reasoning_effort": "xhigh",
@@ -22,8 +22,8 @@
   "execution": {
     "steps": ["Validate workflow and focused contracts", "Create durable commits only after planned-message preflight", "Dispatch applicable long-running validation from a clean immutable head", "Obtain independent read-only exact-head audit", "Reconcile #249 and #253 acceptance evidence separately"],
     "validation": ["Focused validator tests", "AI-context/source-governance selected profiles", "Commit range validator", "Independent exact-head governance audit"],
-    "last_completed_step": "The first exact-head audit was preserved as blocked; its packet, receipt, closure, lease, retry, graph, PowerShell, and closeout findings were repaired with new focused regressions.",
-    "next_action": "Commit the verified repairs, create the separate #249/#253 ledger and report on that exact head, and obtain a second independent read-only audit."
+    "last_completed_step": "The second exact-head audit was preserved as blocked; its actual-execution file binding, authoritative dependency closure, and persisted attempt-three authorization findings were repaired with focused regressions.",
+    "next_action": "Commit the verified repairs, create the separate #249/#253 ledger and report on that exact head, and obtain a third independent read-only audit under audit-v3."
   },
   "results": {"summary": "", "files_changed": [], "tests_run": [], "finding_status": "not-addressed", "residual_risk": "", "follow_up_needed": true}
 }

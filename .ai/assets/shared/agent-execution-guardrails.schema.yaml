@@ -14,6 +14,7 @@ lease_access: [tracked-writer, read-only]
 artifact_states: [open, sealed, released]
 evidence_kinds: [actual-execution, synthetic-test, mock, unit, document]
 execution_receipt_producers: [local-command-runner, external-task-completion]
+actual_execution_binding: existing-contained-receipt-and-output-files-with-byte-digests
 outcomes: [passed, failed, blocked, deferred, not-applicable]
 retry_decisions: [retry, stop]
 graph_states: [fresh, stale, missing]

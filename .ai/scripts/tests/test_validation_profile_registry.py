@@ -283,6 +283,19 @@ class ValidationProfileRegistryGwtTests(unittest.TestCase):
         self.assertIn(".ai/assets/shared/validation-evidence-lifecycle.schema.yaml", runner)
         self.assertIn(".ai/assets/shared/agent-execution-guardrails.schema.yaml", runner)
 
+    def test_gwt_009_given_check_id_and_subject_when_closure_cli_runs_then_it_returns_existing_tracked_paths_and_rejects_unknown_ids(self) -> None:
+        bash = bash_executable()
+        if not bash:
+            raise unittest.SkipTest("Bash is required for closure resolver tests")
+        result = subprocess.run([bash, str(RUNNER), "--resolve-input-closure", "validation-lifecycle-tests", "--subject", "HEAD"], cwd=ROOT, check=False, capture_output=True, text=True)
+        self.assertEqual(0, result.returncode, result.stderr)
+        paths = [line for line in result.stdout.splitlines() if line]
+        self.assertEqual(sorted(set(paths)), paths)
+        self.assertIn(".ai/scripts/tests/test_validation_lifecycle.py", paths)
+        self.assertTrue(all((ROOT / path).exists() for path in paths))
+        unknown = subprocess.run([bash, str(RUNNER), "--resolve-input-closure", "missing-check", "--subject", "HEAD"], cwd=ROOT, check=False, capture_output=True, text=True)
+        self.assertEqual(2, unknown.returncode)
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -54,6 +54,11 @@ Every `actual-execution` entry carries a separately sealed terminal command
 receipt with matching subject, command, profile, timing, outcome, exit code,
 and evidence digest. It must state `executed: true` and `synthetic: false`;
 fixture-only references are rejected as actual execution.
+The entry must also name contained ignored receipt and output files. The
+validator loads both files, verifies their exact byte digests, compares the
+persisted receipt with the ledger copy, and rejects a missing or path-shaped
+reference. A self-sealed mapping without those repository artifacts is not
+actual execution evidence.
 
 ## Retry and failure identity
 
@@ -65,6 +70,10 @@ is a stopped attempt, not new validation.
 Fresh authorizations are individually sealed and bind the exact attempt,
 subject, prior failure, and authorize-retry decision; their digests must differ
 from prior authorization.
+Attempt-three packets and retry records load the referenced workflow-local
+authorization, validate its canonical seal, and require its attempt, subject,
+prior failure, and single consuming packet identity to match. A prefix or an
+unresolved reference is not authorization.
 
 ## Code graph freshness
 

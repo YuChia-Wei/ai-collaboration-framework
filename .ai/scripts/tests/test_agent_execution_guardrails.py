@@ -4,7 +4,10 @@
 from __future__ import annotations
 
 import copy
+import atexit
+import hashlib
 import importlib.util
+import shutil
 import tempfile
 import unittest
 from pathlib import Path
@@ -21,6 +24,8 @@ SPEC.loader.exec_module(VALIDATOR)
 SCHEMA = yaml.safe_load((ROOT / ".ai/assets/shared/agent-execution-guardrails.schema.yaml").read_text(encoding="utf-8"))
 SHA = "1" * 40
 D = "a" * 64
+EVIDENCE_DIR = Path(tempfile.mkdtemp(dir=ROOT / ".dev/ai-context/local", prefix="agent-evidence-"))
+atexit.register(shutil.rmtree, EVIDENCE_DIR, True)
 
 
 def seal(value: dict[str, object], field: str) -> dict[str, object]:
@@ -70,17 +75,25 @@ def lease(state: str = "active") -> dict[str, object]:
 
 
 def ledger() -> dict[str, object]:
+    output_path = EVIDENCE_DIR / "actual-output.log"
+    output_path.write_text("25 passed\n", encoding="utf-8")
+    output_ref = "ignored:" + output_path.relative_to(ROOT).as_posix()
+    output_sha = hashlib.sha256(output_path.read_bytes()).hexdigest()
     execution_receipt: dict[str, object] = {
         "schema_version": "1.0", "record_type": "terminal-command-execution", "producer": "local-command-runner",
         "subject_sha": SHA, "command": "python test.py -v", "profile": "focused",
         "started_at": "2026-08-25T01:00:00+08:00", "completed_at": "2026-08-25T01:00:01+08:00", "duration_seconds": 1.0,
         "executed": True, "synthetic": False, "outcome": "passed", "exit_code": 0,
-        "evidence_refs": ["ignored:validation/result.json"], "evidence_sha256": D,
+        "evidence_refs": [output_ref], "evidence_sha256": output_sha,
     }
     seal(execution_receipt, "receipt_sha256")
+    receipt_path = EVIDENCE_DIR / "actual-receipt.yaml"
+    receipt_path.write_text(yaml.safe_dump(execution_receipt, sort_keys=False), encoding="utf-8")
+    receipt_ref = "ignored:" + receipt_path.relative_to(ROOT).as_posix()
+    receipt_file_sha = hashlib.sha256(receipt_path.read_bytes()).hexdigest()
     entries = [
-        {"acceptance_id": "GOV014-AC-01", "issue": 253, "requires_actual_execution": True, "evidence_kind": "actual-execution", "command": "python test.py -v", "profile": "focused", "subject_sha": SHA, "outcome": "passed", "evidence_refs": ["ignored:validation/result.json"], "evidence_sha256": D, "execution_receipt": execution_receipt},
-        {"acceptance_id": "GOV013-AC-02", "issue": 249, "requires_actual_execution": False, "evidence_kind": "unit", "command": "python unit.py -v", "profile": "focused", "subject_sha": SHA, "outcome": "passed", "evidence_refs": ["fixture:unit-negative"], "evidence_sha256": "b" * 64, "execution_receipt": None},
+        {"acceptance_id": "GOV014-AC-01", "issue": 253, "requires_actual_execution": True, "evidence_kind": "actual-execution", "command": "python test.py -v", "profile": "focused", "subject_sha": SHA, "outcome": "passed", "evidence_refs": [output_ref], "evidence_sha256": output_sha, "execution_receipt_ref": receipt_ref, "execution_receipt_file_sha256": receipt_file_sha, "execution_receipt": execution_receipt},
+        {"acceptance_id": "GOV013-AC-02", "issue": 249, "requires_actual_execution": False, "evidence_kind": "unit", "command": "python unit.py -v", "profile": "focused", "subject_sha": SHA, "outcome": "passed", "evidence_refs": ["fixture:unit-negative"], "evidence_sha256": "b" * 64, "execution_receipt_ref": None, "execution_receipt_file_sha256": None, "execution_receipt": None},
     ]
     report_entries = [{"acceptance_id": item["acceptance_id"], "outcome": item["outcome"], "evidence_sha256": item["evidence_sha256"]} for item in entries]
     value: dict[str, object] = {
@@ -106,8 +119,15 @@ def retry(attempt: int = 2, decision: str = "retry") -> dict[str, object]:
         "decision": decision,
     }
     if attempt >= 3:
-        authorization: dict[str, object] = {"ref": "workflow:fresh-retry-authorization", "attempt": attempt, "subject_sha": SHA, "prior_failure_sha256": D, "decision": "authorize-retry"}
-        seal(authorization, "authorization_sha256")
+        authorization_path = EVIDENCE_DIR / f"retry-authorization-{attempt}.yaml"
+        authorization_record: dict[str, object] = {
+            "schema_version": "1.0", "record_type": "workflow-retry-authorization", "workflow_id": "test-workflow", "task_id": "TEST-VAL-001",
+            "attempt": attempt, "authorized_at": "2026-08-25T01:00:00+08:00", "subject_sha": SHA, "prior_failure_sha256": D,
+            "decision": "authorize-retry", "consumed_by_packet_id": "TEST-PACKET-003", "scope": ["retry once"], "non_goals": ["provider mutation"], "terminal_condition": "no further retry",
+        }
+        seal(authorization_record, "authorization_sha256")
+        authorization_path.write_text(yaml.safe_dump(authorization_record, sort_keys=False), encoding="utf-8")
+        authorization: dict[str, object] = {"ref": "workflow:" + authorization_path.relative_to(ROOT).as_posix(), "attempt": attempt, "subject_sha": SHA, "prior_failure_sha256": D, "decision": "authorize-retry", "authorization_sha256": authorization_record["authorization_sha256"]}
         value["new_authorizations"] = [authorization]
     return seal(value, "retry_sha256")
 
@@ -145,6 +165,13 @@ class AgentExecutionGuardrailsGwtTests(unittest.TestCase):
         value["retry"] = {"attempt": 3, "budget": 3, "authorization_refs": []}
         seal(value, "packet_sha256")
         with self.assertRaisesRegex(VALIDATOR.GuardrailError, "attempt 3"):
+            VALIDATOR.validate_packet(value, SCHEMA)
+
+    def test_gwt_003b_given_attempt_three_with_nonexistent_authorization_ref_when_packet_is_validated_then_it_fails(self) -> None:
+        value = packet()
+        value["retry"] = {"attempt": 3, "budget": 3, "authorization_refs": ["workflow:.dev/ai-context/local/missing-authorization.yaml"]}
+        seal(value, "packet_sha256")
+        with self.assertRaisesRegex(VALIDATOR.GuardrailError, "does not exist"):
             VALIDATOR.validate_packet(value, SCHEMA)
 
     def test_gwt_004_given_active_writer_lease_when_another_writer_appears_then_it_fails(self) -> None:
@@ -190,7 +217,16 @@ class AgentExecutionGuardrailsGwtTests(unittest.TestCase):
         value["entries"][0]["execution_receipt"]["evidence_refs"] = ["fixture:synthetic-only"]
         seal(value["entries"][0]["execution_receipt"], "receipt_sha256")
         seal(value, "ledger_sha256")
-        with self.assertRaisesRegex(VALIDATOR.GuardrailError, "evidence binding"):
+        with self.assertRaisesRegex(VALIDATOR.GuardrailError, "repository-local"):
+            VALIDATOR.validate_evidence(value, SCHEMA)
+
+    def test_gwt_007c_given_nonexistent_actual_output_reference_when_validated_then_it_fails(self) -> None:
+        value = ledger()
+        value["entries"][0]["evidence_refs"] = ["ignored:.dev/ai-context/local/does-not-exist.log"]
+        value["entries"][0]["execution_receipt"]["evidence_refs"] = value["entries"][0]["evidence_refs"]
+        seal(value["entries"][0]["execution_receipt"], "receipt_sha256")
+        seal(value, "ledger_sha256")
+        with self.assertRaisesRegex(VALIDATOR.GuardrailError, "does not exist"):
             VALIDATOR.validate_evidence(value, SCHEMA)
 
     def test_gwt_008_given_human_report_digest_drifts_when_compared_then_it_fails(self) -> None:

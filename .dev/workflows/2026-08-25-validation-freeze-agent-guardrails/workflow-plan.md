@@ -19,7 +19,7 @@
 - `current_phase`: `audit`
 - `artifact_root`: `.dev/workflows/2026-08-25-validation-freeze-agent-guardrails`
 - `created_at`: `2026-08-25T14:55:24+08:00`
-- `updated_at`: `2026-08-25T15:17:17+08:00`
+- `updated_at`: `2026-08-25T16:34:06+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md`
 - `template_version`: `1.2.0`
 
@@ -63,11 +63,11 @@
 
 ## Resume Checkpoint
 
-- Last completed action: Preserved the first exact-head audit at `5c1657d3084c9e6843705a3b0355a2c6ddb76270` as blocked, then repaired its seven findings with live and content-bound validation controls.
+- Last completed action: Preserved the second exact-head audit at `71f47831bf1b510b3e25cc98392c488a22debe4d` as blocked and repaired its three findings: actual-execution receipt/output byte binding, authoritative Git-backed dependency closure, and persisted attempt-three workflow authorization.
 - Current task: `GOV013014-VAL-001`
-- Exact next action: Re-run focused and projection checks, validate the repair commit message, create the new immutable local head, seal the acceptance ledger/report, and obtain a second independent exact-head audit.
-- Validation already completed: repaired lifecycle 12 GWTs; repaired agent guardrail 18 GWTs; external task schema and 18 packet/terminal cases on the native host; first blocked audit retained; commits `5139d30edc860c7a6ea4b52b3153bc9a28736399` and `5c1657d3084c9e6843705a3b0355a2c6ddb76270`.
-- Git state: dedicated local branch with tracked audit repairs pending one durable commit; no work occurred in main or another worktree.
+- Exact next action: Complete focused and projection checks, validate the repair commit message, create the final immutable local head, seal the separate #249/#253 acceptance ledger/report, and obtain a third independent exact-head audit under `audit-v3`.
+- Validation already completed: lifecycle 13 GWTs, agent guardrail 22 GWTs, validation profile registry 9 GWTs, AI-context validation, aggregate attempt-three packet and retry receipts; both earlier blocked audits remain retained.
+- Git state: dedicated local branch at `71f47831bf1b510b3e25cc98392c488a22debe4d` with tracked second-audit repairs pending one durable commit; no work occurred in main or another worktree.
 - Branch history and checkpoint handoffs: segment 1 remains local from `origin/main@1326f827f61de8eebeef30748dcc82ffa7dd3764`; no push, PR, merge, or provider mutation.
 - Blockers or unresolved decisions: the fast aggregate remains truthfully blocked before execution after three authorized attempts, and attempt four is not authorized. This residual gate is retained rather than retried; any canonical semantic, hosted required-check, release, provider, or integration topology change still requires owner direction.
 
@@ -77,3 +77,4 @@
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | 1 | `codex/2026-08-25-validation-freeze-agent-guardrails` | `origin/main@1326f827f61de8eebeef30748dcc82ffa7dd3764` | workflow-bootstrap | `5139d30edc860c7a6ea4b52b3153bc9a28736399` | local only | `2026-08-25T14:55:24+08:00` | Owner-authorized cohesive #249/#253 governance delivery | Continue isolated implementation. |
 | 1 | `codex/2026-08-25-validation-freeze-agent-guardrails` | `origin/main@1326f827f61de8eebeef30748dcc82ffa7dd3764` | implementation | `5c1657d3084c9e6843705a3b0355a2c6ddb76270` | local only | `2026-08-25T15:17:17+08:00` | First exact-head audit blocked on seven binding gaps | Repair validators and retain the blocked audit. |
+| 1 | `codex/2026-08-25-validation-freeze-agent-guardrails` | `origin/main@1326f827f61de8eebeef30748dcc82ffa7dd3764` | audit-repair | `71f47831bf1b510b3e25cc98392c488a22debe4d` | local only | `2026-08-25T16:34:06+08:00` | Second exact-head audit blocked on three remaining evidence-authority gaps | Repair validators, retain the blocked audit, and obtain a fresh third audit. |

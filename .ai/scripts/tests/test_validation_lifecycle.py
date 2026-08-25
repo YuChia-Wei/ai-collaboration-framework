@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import copy
 import importlib.util
+import subprocess
 import unittest
 from pathlib import Path
 
@@ -20,8 +21,11 @@ SPEC.loader.exec_module(VALIDATOR)
 SCHEMA = yaml.safe_load((ROOT / ".ai/assets/shared/validation-evidence-lifecycle.schema.yaml").read_text(encoding="utf-8"))
 PROVIDER = yaml.safe_load((ROOT / ".dev/standards/GITHUB-WORK-MANAGEMENT-POLICY.yaml").read_text(encoding="utf-8"))
 D = "a" * 64
-SHA1 = "1" * 40
-SHA2 = "2" * 40
+SHA1 = subprocess.run(["git", "-C", str(ROOT), "rev-parse", "HEAD"], check=True, capture_output=True, text=True, encoding="utf-8").stdout.strip()
+SHA2 = SHA1
+CHECK_ID = "validation-lifecycle-tests"
+CLOSURE_PATHS = VALIDATOR.authoritative_closure(CHECK_ID, SHA1)
+CLOSURE_DEPENDENCIES = [{"path": path, "original_blob": VALIDATOR.git_object(SHA1, path), "current_blob": VALIDATOR.git_object(SHA2, path)} for path in CLOSURE_PATHS]
 
 
 def pair(value: str = D) -> dict[str, str]:
@@ -29,7 +33,20 @@ def pair(value: str = D) -> dict[str, str]:
 
 
 def receipt(evidence_class: str = "input-sensitive", profile: str = "fast") -> dict[str, object]:
-    dependency_paths = [".ai/scripts/tests/test_example.py"]
+    dependencies = copy.deepcopy(CLOSURE_DEPENDENCIES)
+    dependency_paths = [item["path"] for item in dependencies]
+    resolver_argv = ["bash", ".ai/scripts/check-all.sh", "--resolve-input-closure", CHECK_ID]
+    closure_core = {
+        "check_id": CHECK_ID,
+        "resolver_argv": resolver_argv,
+        "subject": {"original_sha": SHA1, "current_sha": SHA2},
+        "dependencies": dependencies,
+        "complete": True,
+        "unknown_paths": [],
+        "path_count": len(dependency_paths),
+        "original_paths_sha256": VALIDATOR.canonical_digest(dependency_paths),
+        "current_paths_sha256": VALIDATOR.canonical_digest(dependency_paths),
+    }
     value: dict[str, object] = {
         "schema_version": "1.0",
         "record_type": "validation-reuse-receipt",
@@ -37,14 +54,10 @@ def receipt(evidence_class: str = "input-sensitive", profile: str = "fast") -> d
         "subject": {"original_sha": SHA1, "current_sha": SHA2},
         "invocation": {"argv": ["python", "tests.py", "-v"], "working_directory": ".", "profile": profile},
         "original_result": {"outcome": "passed", "duration_seconds": 12.5, "evidence_refs": ["ignored:sealed/result.json"], "evidence_sha256": D},
-        "dependencies": [{"path": ".ai/scripts/tests/test_example.py", "original_blob": D, "current_blob": D}],
+        "dependencies": dependencies,
         "dependency_closure": {
-            "resolver_argv": ["bash", ".ai/scripts/check-all.sh", "--resolve-input-closure", "focused"],
-            "complete": True,
-            "unknown_paths": [],
-            "path_count": len(dependency_paths),
-            "original_paths_sha256": VALIDATOR.canonical_digest(dependency_paths),
-            "current_paths_sha256": VALIDATOR.canonical_digest(dependency_paths),
+            **{key: value for key, value in closure_core.items() if key not in {"subject", "dependencies"}},
+            "resolver_receipt_sha256": VALIDATOR.canonical_digest(closure_core),
         },
         "terminal_metadata": {"original_sha256": D, "current_sha256": D, "excluded_from_dependency_fingerprint": True},
         "authority": {name: pair() for name in SCHEMA["reuse_receipt"]["authority_dimensions"]},
@@ -117,6 +130,19 @@ class ValidationLifecycleGwtTests(unittest.TestCase):
     def test_gwt_006c_given_partial_dependency_subset_when_claimed_complete_then_it_fails_closed(self) -> None:
         value = receipt()
         value["dependency_closure"]["path_count"] = 2
+        value["decision"] = {"outcome": "blocked", "reason": "dependency-closure-unknown"}
+        seal(value, "receipt_sha256")
+        VALIDATOR.validate_reuse_receipt(value, SCHEMA)
+
+    def test_gwt_006d_given_arbitrary_nonexistent_dependency_with_self_computed_seal_when_validated_then_it_fails_closed(self) -> None:
+        value = receipt()
+        value["dependencies"] = [{"path": ".ai/scripts/does-not-exist.py", "original_blob": "1" * 40, "current_blob": "1" * 40}]
+        paths = [".ai/scripts/does-not-exist.py"]
+        value["dependency_closure"]["path_count"] = 1
+        value["dependency_closure"]["original_paths_sha256"] = VALIDATOR.canonical_digest(paths)
+        value["dependency_closure"]["current_paths_sha256"] = VALIDATOR.canonical_digest(paths)
+        core = {"check_id": CHECK_ID, "resolver_argv": value["dependency_closure"]["resolver_argv"], "subject": value["subject"], "dependencies": value["dependencies"], "complete": True, "unknown_paths": [], "path_count": 1, "original_paths_sha256": value["dependency_closure"]["original_paths_sha256"], "current_paths_sha256": value["dependency_closure"]["current_paths_sha256"]}
+        value["dependency_closure"]["resolver_receipt_sha256"] = VALIDATOR.canonical_digest(core)
         value["decision"] = {"outcome": "blocked", "reason": "dependency-closure-unknown"}
         seal(value, "receipt_sha256")
         VALIDATOR.validate_reuse_receipt(value, SCHEMA)

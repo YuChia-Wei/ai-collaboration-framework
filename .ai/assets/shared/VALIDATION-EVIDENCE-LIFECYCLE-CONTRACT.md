@@ -31,6 +31,12 @@ all authority digests. The resolver must also seal a complete sorted path-set
 digest, exact count, resolver argv, and an empty unknown-path set; a non-empty
 subset cannot declare itself complete. The receipt's own digest covers
 canonical JSON bytes.
+The resolver argv names the supported
+`check-all.sh --resolve-input-closure <check-id> --subject <sha>` surface. The
+validator executes that resolver for both subjects, requires the exact sorted
+path set, and reads every claimed object identity back from Git as
+`<sha>:<path>`. A nonexistent path, arbitrary subset, unsupported resolver
+flag, or self-computed path-set digest fails closed.
 
 Unknown dependencies, missing blobs, duplicate paths, unrecognized fields, or
 runner, manifest, resolver, policy, configuration, command, profile, or

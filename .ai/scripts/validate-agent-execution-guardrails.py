@@ -80,6 +80,36 @@ def repo_relative_path(value: Any, name: str, *, must_exist: bool = True) -> Pat
     return resolved
 
 
+def local_evidence_ref(value: Any, name: str) -> Path:
+    ref = string(value, name)
+    if not ref.startswith("ignored:"):
+        raise GuardrailError(f"{name} must use an ignored repository-local evidence reference")
+    return repo_relative_path(ref.split(":", 1)[1], name)
+
+
+def load_workflow_authorization(value: Any, name: str) -> dict[str, Any]:
+    ref = string(value, name)
+    if not ref.startswith("workflow:"):
+        raise GuardrailError(f"{name} must use a workflow-local authorization record")
+    path = repo_relative_path(ref.split(":", 1)[1], name)
+    authorization = mapping(yaml.safe_load(path.read_text(encoding="utf-8")), name)
+    required = {"schema_version", "record_type", "workflow_id", "task_id", "attempt", "authorized_at", "subject_sha", "prior_failure_sha256", "decision", "consumed_by_packet_id", "scope", "non_goals", "terminal_condition", "authorization_sha256"}
+    exact_keys(authorization, required, name)
+    if authorization["schema_version"] != "1.0" or authorization["record_type"] != "workflow-retry-authorization" or authorization["decision"] != "authorize-retry":
+        raise GuardrailError(f"{name} identity is invalid")
+    if not isinstance(authorization["attempt"], int) or authorization["attempt"] < 3 or not SHA40.fullmatch(str(authorization["subject_sha"])) or not SHA256.fullmatch(str(authorization["prior_failure_sha256"])):
+        raise GuardrailError(f"{name} binding is invalid")
+    strings(authorization["scope"], f"{name}.scope")
+    strings(authorization["non_goals"], f"{name}.non_goals")
+    string(authorization["workflow_id"], f"{name}.workflow_id")
+    string(authorization["task_id"], f"{name}.task_id")
+    string(authorization["authorized_at"], f"{name}.authorized_at")
+    string(authorization["consumed_by_packet_id"], f"{name}.consumed_by_packet_id")
+    string(authorization["terminal_condition"], f"{name}.terminal_condition")
+    sealed(authorization, "authorization_sha256")
+    return authorization
+
+
 def tracked_path(value: Any, name: str) -> Path:
     resolved = repo_relative_path(value, name)
     relative = resolved.relative_to(ROOT).as_posix()
@@ -194,8 +224,13 @@ def validate_packet(record: dict[str, Any], schema: dict[str, Any]) -> None:
     if not isinstance(retry["attempt"], int) or retry["attempt"] < 1 or not isinstance(retry["budget"], int) or retry["budget"] < retry["attempt"]:
         raise GuardrailError("retry attempt and budget are invalid")
     authorizations = strings(retry["authorization_refs"], "retry.authorization_refs", empty=True)
-    if retry["attempt"] >= 3 and (not authorizations or any(not ref.startswith(("workflow:", "issue:")) for ref in authorizations)):
-        raise GuardrailError("attempt 3+ requires new owner or workflow authorization")
+    if retry["attempt"] >= 3:
+        if not authorizations or len(authorizations) != len(set(authorizations)):
+            raise GuardrailError("attempt 3+ requires new owner or workflow authorization")
+        for index, ref in enumerate(authorizations):
+            authorization = load_workflow_authorization(ref, f"retry.authorization_refs[{index}]")
+            if authorization["attempt"] != retry["attempt"] or authorization["subject_sha"] != subject["exact_sha"] or authorization["consumed_by_packet_id"] != record["packet_id"]:
+                raise GuardrailError("retry authorization is not bound to this packet and attempt")
     if record["execution_kind"] in {"external", "fixed-head-audit"} and (permissions["tracked_write"] != "deny" or permissions["provider_mutation"] != "deny"):
         raise GuardrailError("external and fixed-head execution must be read-only")
     reject_private(record, schema)
@@ -281,7 +316,7 @@ def validate_evidence(record: dict[str, Any], schema: dict[str, Any]) -> None:
     expected: dict[str, tuple[str, str]] = {}
     for entry in entries:
         entry = mapping(entry, "entry")
-        exact_keys(entry, {"acceptance_id", "issue", "requires_actual_execution", "evidence_kind", "command", "profile", "subject_sha", "outcome", "evidence_refs", "evidence_sha256", "execution_receipt"}, "entry")
+        exact_keys(entry, {"acceptance_id", "issue", "requires_actual_execution", "evidence_kind", "command", "profile", "subject_sha", "outcome", "evidence_refs", "evidence_sha256", "execution_receipt_ref", "execution_receipt_file_sha256", "execution_receipt"}, "entry")
         acceptance = string(entry["acceptance_id"], "acceptance_id")
         if acceptance in expected:
             raise GuardrailError("acceptance identifiers must be unique")
@@ -302,6 +337,14 @@ def validate_evidence(record: dict[str, Any], schema: dict[str, Any]) -> None:
             raise GuardrailError("synthetic, mock, unit, or document evidence cannot satisfy actual execution")
         receipt = entry["execution_receipt"]
         if entry["evidence_kind"] == "actual-execution":
+            if len(refs) != 1:
+                raise GuardrailError("actual execution requires exactly one repository-local output reference")
+            output_path = local_evidence_ref(refs[0], "entry.evidence_refs[0]")
+            if hashlib.sha256(output_path.read_bytes()).hexdigest() != entry["evidence_sha256"]:
+                raise GuardrailError("actual execution output file digest is invalid")
+            receipt_path = local_evidence_ref(entry["execution_receipt_ref"], "entry.execution_receipt_ref")
+            if not SHA256.fullmatch(str(entry["execution_receipt_file_sha256"])) or hashlib.sha256(receipt_path.read_bytes()).hexdigest() != entry["execution_receipt_file_sha256"]:
+                raise GuardrailError("actual execution receipt file digest is invalid")
             receipt = mapping(receipt, "entry.execution_receipt")
             exact_keys(receipt, {"schema_version", "record_type", "producer", "subject_sha", "command", "profile", "started_at", "completed_at", "duration_seconds", "executed", "synthetic", "outcome", "exit_code", "evidence_refs", "evidence_sha256", "receipt_sha256"}, "entry.execution_receipt")
             if receipt["schema_version"] != schema["schema_version"] or receipt["record_type"] != "terminal-command-execution" or receipt["producer"] not in schema["execution_receipt_producers"]:
@@ -320,8 +363,13 @@ def validate_evidence(record: dict[str, Any], schema: dict[str, Any]) -> None:
             if receipt["exit_code"] is not None and (not isinstance(receipt["exit_code"], int) or isinstance(receipt["exit_code"], bool)):
                 raise GuardrailError("execution receipt exit_code is invalid")
             sealed(receipt, "receipt_sha256")
+            persisted_receipt = mapping(yaml.safe_load(receipt_path.read_text(encoding="utf-8")), "persisted execution receipt")
+            if persisted_receipt != receipt:
+                raise GuardrailError("persisted execution receipt does not match ledger receipt")
         elif receipt is not None:
             raise GuardrailError("non-actual evidence cannot carry an execution receipt")
+        elif entry["execution_receipt_ref"] is not None or entry["execution_receipt_file_sha256"] is not None:
+            raise GuardrailError("non-actual evidence cannot carry execution receipt file binding")
         expected[acceptance] = (entry["outcome"], entry["evidence_sha256"])
     report = mapping(record["human_report"], "human_report")
     exact_keys(report, {"entries", "report_sha256"}, "human_report")
@@ -370,7 +418,9 @@ def validate_retry(record: dict[str, Any], schema: dict[str, Any]) -> None:
         exact_keys(authorization, {"ref", "attempt", "subject_sha", "prior_failure_sha256", "decision", "authorization_sha256"}, "new_authorization")
         if not string(authorization["ref"], "new_authorization.ref").startswith(("workflow:", "issue:")) or authorization["attempt"] != record["attempt"] or authorization["subject_sha"] != failure["subject_sha"] or authorization["prior_failure_sha256"] != record["prior_failure_sha256"] or authorization["decision"] != "authorize-retry":
             raise GuardrailError("new authorization is not bound to this retry")
-        sealed(authorization, "authorization_sha256")
+        persisted = load_workflow_authorization(authorization["ref"], "new_authorization.ref")
+        if persisted["attempt"] != authorization["attempt"] or persisted["subject_sha"] != authorization["subject_sha"] or persisted["prior_failure_sha256"] != authorization["prior_failure_sha256"] or persisted["decision"] != authorization["decision"] or persisted["authorization_sha256"] != authorization["authorization_sha256"]:
+            raise GuardrailError("new authorization does not match its persisted workflow record")
         if authorization["authorization_sha256"] == record["prior_authorization_sha256"] or authorization["authorization_sha256"] in authorization_digests:
             raise GuardrailError("retry authorization must be new")
         authorization_digests.add(authorization["authorization_sha256"])
@@ -456,7 +506,7 @@ def main() -> int:
         elif args.powershell_source:
             validate_powershell_source(args.powershell_source.read_text(encoding="utf-8"), schema)
         else:
-            required = {"schema_version", "contract_id", "record_types", "execution_kinds", "role_applicability", "permission_modes", "lease_states", "lease_access", "artifact_states", "evidence_kinds", "execution_receipt_producers", "outcomes", "retry_decisions", "graph_states", "graph_coverage", "graph_fallbacks", "terminal_modes", "reserved_powershell_variables", "privacy_forbidden_keys"}
+            required = {"schema_version", "contract_id", "record_types", "execution_kinds", "role_applicability", "permission_modes", "lease_states", "lease_access", "artifact_states", "evidence_kinds", "execution_receipt_producers", "actual_execution_binding", "outcomes", "retry_decisions", "graph_states", "graph_coverage", "graph_fallbacks", "terminal_modes", "reserved_powershell_variables", "privacy_forbidden_keys"}
             exact_keys(schema, required, "schema")
         print("Agent execution guardrails passed.")
         return 0

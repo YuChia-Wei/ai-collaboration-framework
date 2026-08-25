@@ -7,6 +7,8 @@ import argparse
 import hashlib
 import json
 import re
+import shutil
+import subprocess
 import sys
 from pathlib import Path
 from typing import Any
@@ -105,6 +107,54 @@ def comparison_pair(value: object, label: str) -> tuple[str, str]:
     return digest(item["original"], f"{label}.original"), digest(item["current"], f"{label}.current")
 
 
+def resolve_bash() -> str:
+    candidates = [
+        Path("C:/Program Files/Git/bin/bash.exe"),
+        Path("C:/Program Files/Git/usr/bin/bash.exe"),
+    ]
+    for candidate in candidates:
+        if candidate.is_file():
+            return str(candidate)
+    discovered = shutil.which("bash")
+    if discovered:
+        return discovered
+    raise LifecycleError("canonical closure resolver requires bash")
+
+
+def authoritative_closure(check_id: str, subject_sha: str) -> list[str]:
+    result = subprocess.run(
+        [resolve_bash(), ".ai/scripts/check-all.sh", "--resolve-input-closure", check_id, "--subject", subject_sha],
+        cwd=ROOT,
+        check=False,
+        capture_output=True,
+        text=True,
+        encoding="utf-8",
+    )
+    if result.returncode != 0:
+        raise LifecycleError("canonical dependency closure resolver failed")
+    paths = [line.strip().replace("\\", "/") for line in result.stdout.splitlines() if line.strip()]
+    if not paths or paths != sorted(set(paths)):
+        raise LifecycleError("canonical dependency closure resolver returned invalid paths")
+    for path in paths:
+        if Path(path).is_absolute() or ".." in Path(path).parts:
+            raise LifecycleError("canonical dependency closure escaped the repository")
+    return paths
+
+
+def git_object(subject_sha: str, path: str) -> str:
+    result = subprocess.run(
+        ["git", "-C", str(ROOT), "rev-parse", f"{subject_sha}:{path}"],
+        check=False,
+        capture_output=True,
+        text=True,
+        encoding="utf-8",
+    )
+    value = result.stdout.strip().lower()
+    if result.returncode != 0 or not SHA_RE.fullmatch(value):
+        raise LifecycleError("dependency path is not present at the bound subject")
+    return value
+
+
 def expected_reuse_decision(record: dict[str, Any], schema: dict[str, Any]) -> tuple[str, str]:
     evidence_class = record.get("evidence_class")
     profile = mapping(record.get("invocation"), "receipt.invocation").get("profile")
@@ -121,6 +171,18 @@ def expected_reuse_decision(record: dict[str, Any], schema: dict[str, Any]) -> t
         return "blocked", "dependency-closure-unknown"
     if closure.get("complete") is not True or closure.get("unknown_paths") != []:
         return "blocked", "dependency-closure-unknown"
+    check_id = closure.get("check_id")
+    resolver_argv = closure.get("resolver_argv")
+    if not isinstance(check_id, str) or not TOKEN_RE.fullmatch(check_id) or resolver_argv != ["bash", ".ai/scripts/check-all.sh", "--resolve-input-closure", check_id]:
+        return "blocked", "dependency-closure-unknown"
+    subject = mapping(record.get("subject"), "receipt.subject")
+    try:
+        original_paths = authoritative_closure(check_id, str(subject.get("original_sha", "")))
+        current_paths = authoritative_closure(check_id, str(subject.get("current_sha", "")))
+    except LifecycleError:
+        return "blocked", "dependency-closure-unknown"
+    if original_paths != current_paths:
+        return "re-executed", "dependency-closure-drift"
     seen: set[str] = set()
     for item_value in dependencies:
         item = mapping(item_value, "receipt.dependencies[]")
@@ -130,15 +192,35 @@ def expected_reuse_decision(record: dict[str, Any], schema: dict[str, Any]) -> t
         if not isinstance(path, str) or not path or path in seen or path.startswith(("/", "\\")) or ".." in Path(path).parts:
             return "blocked", "dependency-closure-unknown"
         seen.add(path)
-        if not DIGEST_RE.fullmatch(str(item.get("original_blob", ""))) or not DIGEST_RE.fullmatch(str(item.get("current_blob", ""))):
+        if not SHA_RE.fullmatch(str(item.get("original_blob", ""))) or not SHA_RE.fullmatch(str(item.get("current_blob", ""))):
+            return "blocked", "dependency-closure-unknown"
+        try:
+            if item["original_blob"] != git_object(str(subject["original_sha"]), path) or item["current_blob"] != git_object(str(subject["current_sha"]), path):
+                return "blocked", "dependency-closure-unknown"
+        except LifecycleError:
             return "blocked", "dependency-closure-unknown"
         if item["original_blob"] != item["current_blob"]:
             return "re-executed", "tracked-input-drift"
     ordered_paths = sorted(seen)
+    if ordered_paths != original_paths:
+        return "blocked", "dependency-closure-unknown"
     paths_digest = canonical_digest(ordered_paths)
     if closure.get("path_count") != len(ordered_paths):
         return "blocked", "dependency-closure-unknown"
     if closure.get("original_paths_sha256") != paths_digest or closure.get("current_paths_sha256") != paths_digest:
+        return "blocked", "dependency-closure-unknown"
+    closure_core = {
+        "check_id": check_id,
+        "resolver_argv": resolver_argv,
+        "subject": subject,
+        "dependencies": dependencies,
+        "complete": True,
+        "unknown_paths": [],
+        "path_count": len(ordered_paths),
+        "original_paths_sha256": paths_digest,
+        "current_paths_sha256": paths_digest,
+    }
+    if closure.get("resolver_receipt_sha256") != canonical_digest(closure_core):
         return "blocked", "dependency-closure-unknown"
     authority = mapping(record.get("authority"), "receipt.authority")
     if set(authority) != set(schema["reuse_receipt"]["authority_dimensions"]):
