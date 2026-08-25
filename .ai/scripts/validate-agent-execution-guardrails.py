@@ -415,11 +415,11 @@ def validate_retry(record: dict[str, Any], schema: dict[str, Any]) -> None:
     authorization_digests: set[str] = set()
     for authorization_value in authorizations:
         authorization = mapping(authorization_value, "new_authorization")
-        exact_keys(authorization, {"ref", "attempt", "subject_sha", "prior_failure_sha256", "decision", "authorization_sha256"}, "new_authorization")
-        if not string(authorization["ref"], "new_authorization.ref").startswith(("workflow:", "issue:")) or authorization["attempt"] != record["attempt"] or authorization["subject_sha"] != failure["subject_sha"] or authorization["prior_failure_sha256"] != record["prior_failure_sha256"] or authorization["decision"] != "authorize-retry":
+        exact_keys(authorization, {"ref", "attempt", "subject_sha", "prior_failure_sha256", "decision", "consumed_by_packet_id", "authorization_sha256"}, "new_authorization")
+        if not string(authorization["ref"], "new_authorization.ref").startswith(("workflow:", "issue:")) or authorization["attempt"] != record["attempt"] or authorization["subject_sha"] != failure["subject_sha"] or authorization["prior_failure_sha256"] != record["prior_failure_sha256"] or authorization["decision"] != "authorize-retry" or not string(authorization["consumed_by_packet_id"], "new_authorization.consumed_by_packet_id"):
             raise GuardrailError("new authorization is not bound to this retry")
         persisted = load_workflow_authorization(authorization["ref"], "new_authorization.ref")
-        if persisted["attempt"] != authorization["attempt"] or persisted["subject_sha"] != authorization["subject_sha"] or persisted["prior_failure_sha256"] != authorization["prior_failure_sha256"] or persisted["decision"] != authorization["decision"] or persisted["authorization_sha256"] != authorization["authorization_sha256"]:
+        if persisted["attempt"] != authorization["attempt"] or persisted["subject_sha"] != authorization["subject_sha"] or persisted["prior_failure_sha256"] != authorization["prior_failure_sha256"] or persisted["decision"] != authorization["decision"] or persisted["consumed_by_packet_id"] != authorization["consumed_by_packet_id"] or persisted["authorization_sha256"] != authorization["authorization_sha256"]:
             raise GuardrailError("new authorization does not match its persisted workflow record")
         if authorization["authorization_sha256"] == record["prior_authorization_sha256"] or authorization["authorization_sha256"] in authorization_digests:
             raise GuardrailError("retry authorization must be new")

@@ -127,7 +127,7 @@ def retry(attempt: int = 2, decision: str = "retry") -> dict[str, object]:
         }
         seal(authorization_record, "authorization_sha256")
         authorization_path.write_text(yaml.safe_dump(authorization_record, sort_keys=False), encoding="utf-8")
-        authorization: dict[str, object] = {"ref": "workflow:" + authorization_path.relative_to(ROOT).as_posix(), "attempt": attempt, "subject_sha": SHA, "prior_failure_sha256": D, "decision": "authorize-retry", "authorization_sha256": authorization_record["authorization_sha256"]}
+        authorization: dict[str, object] = {"ref": "workflow:" + authorization_path.relative_to(ROOT).as_posix(), "attempt": attempt, "subject_sha": SHA, "prior_failure_sha256": D, "decision": "authorize-retry", "consumed_by_packet_id": "TEST-PACKET-003", "authorization_sha256": authorization_record["authorization_sha256"]}
         value["new_authorizations"] = [authorization]
     return seal(value, "retry_sha256")
 
@@ -246,6 +246,19 @@ class AgentExecutionGuardrailsGwtTests(unittest.TestCase):
 
     def test_gwt_010_given_attempt_three_with_fresh_authorization_when_retry_is_validated_then_it_passes(self) -> None:
         VALIDATOR.validate_retry(retry(3), SCHEMA)
+
+    def test_gwt_010b_given_attempt_three_authorization_for_another_packet_when_retry_is_validated_then_it_fails(self) -> None:
+        value = retry(3)
+        authorization = value["new_authorizations"][0]
+        authorization_path = ROOT / authorization["ref"].removeprefix("workflow:")
+        persisted = yaml.safe_load(authorization_path.read_text(encoding="utf-8"))
+        persisted["consumed_by_packet_id"] = "TEST-PACKET-OTHER"
+        seal(persisted, "authorization_sha256")
+        authorization_path.write_text(yaml.safe_dump(persisted, sort_keys=False), encoding="utf-8")
+        authorization["authorization_sha256"] = persisted["authorization_sha256"]
+        seal(value, "retry_sha256")
+        with self.assertRaisesRegex(VALIDATOR.GuardrailError, "persisted workflow record"):
+            VALIDATOR.validate_retry(value, SCHEMA)
 
     def test_gwt_011_given_stale_graph_without_tracked_fallback_when_absence_is_claimed_then_it_fails(self) -> None:
         value = graph("stale", "partial")
