@@ -48,9 +48,11 @@ def result_payload(
     if terminal:
         files["output/terminal.json"] = b"{}\n"
     with tarfile.open(fileobj=buffer, mode="w") as archive:
-        output_directory = tarfile.TarInfo("output")
-        output_directory.type = tarfile.DIRTYPE
-        archive.addfile(output_directory)
+        for directory_name in ("output", "output/artifacts"):
+            output_directory = tarfile.TarInfo(directory_name)
+            output_directory.type = tarfile.DIRTYPE
+            archive.addfile(output_directory)
+        files["output/artifacts/receipt.json"] = b"{}\n"
         for name, content in files.items():
             info = tarfile.TarInfo(name)
             info.size = len(content)
@@ -87,6 +89,7 @@ class V015WslNativeLauncherGwtTests(unittest.TestCase):
             self.assertIn('"outcome":"passed"', stdout)
             self.assertEqual("", stderr)
             self.assertTrue((destination / "terminal.json").is_file())
+            self.assertTrue((destination / "artifacts/receipt.json").is_file())
             receipt = json.loads((destination / "wsl-native-launcher.json").read_text())
             self.assertEqual("linux-native-temp", receipt["workspace"])
 

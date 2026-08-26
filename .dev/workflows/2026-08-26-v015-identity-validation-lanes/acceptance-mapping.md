@@ -1,18 +1,18 @@
 # Acceptance Evidence Mapping
 
-This human projection preserves separate #250 and #252 acceptance identities while they share one cohesive delivery, validation freeze, and review boundary. The canonical tracked mapping is `acceptance-map.yaml`; actual terminal receipts remain beneath the declared ignored validation root.
+This human projection preserves separate #250 and #252 acceptance identities while they share one cohesive delivery, validation freeze, and review boundary. The canonical tracked mapping is `acceptance-map.yaml`; actual terminal receipts remain beneath the declared ignored validation root. This tracked plan deliberately does not embed a final commit SHA or terminal outcome because doing so would mutate and invalidate that subject; the final handoff selects the ignored evidence directory bound to the clean immutable HEAD.
 
 ## Issue #250 / ID-002
 
 | Acceptance | Evidence boundary | Current outcome |
 | --- | --- | --- |
-| `ID002-AC-01` four public forms | fast build/archive parity | passed at `78862fde`; freeze-head rerun pending |
-| `ID002-AC-02` unique v0.15 public identity | fast metadata/envelope checks | passed at `78862fde`; freeze-head rerun pending |
+| `ID002-AC-01` four public forms | fast build/archive parity | passed in tracked tests; final terminal externalized |
+| `ID002-AC-02` unique v0.15 public identity | fast metadata/envelope checks | passed in tracked tests; final terminal externalized |
 | `ID002-AC-03` technology profile stability | registry/profile consumer tests | passed |
 | `ID002-AC-04` legacy immutability | actual long upgrade receipt | pending |
 | `ID002-AC-05` explicit legacy-to-current route | actual long upgrade receipt | pending |
 | `ID002-AC-06` fail-closed ambiguity | fast negative fixtures | passed |
-| `ID002-AC-07` consumer parity | fast archive/workflow/release-note checks | passed at `78862fde`; freeze-head rerun pending |
+| `ID002-AC-07` consumer parity | fast archive/workflow/release-note checks | passed in tracked tests; final terminal externalized |
 | `ID002-AC-08` credential-free deterministic validation | focused local commands | passed |
 | `ID002-AC-09` Windows/Linux truthfulness | separate trusted platform receipts | pending |
 | `ID002-AC-10` final gates | focused validators and fresh exact-head audit | pending |

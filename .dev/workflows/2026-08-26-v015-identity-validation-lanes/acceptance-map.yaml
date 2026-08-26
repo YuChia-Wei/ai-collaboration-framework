@@ -1,6 +1,6 @@
 schema_version: "1.0"
 workflow_id: "2026-08-26-v015-identity-validation-lanes"
-status: "frozen-validation-in-progress"
+status: "frozen-plan-final-evidence-externalized"
 issues:
   "250":
     task_id: "ID002-001"
@@ -30,15 +30,16 @@ issues:
       - {id: "VAL009-AC-10", requirement: "focused lanes platform evidence and fresh exact-head audit", required_evidence_kind: "actual-execution", outcome: "pending"}
       - {id: "VAL009-AC-11", requirement: "Windows-to-WSL execution uses a repository-owned exact-head stdin transport and a Linux-native temporary workspace without shared mount I/O", required_evidence_kind: "actual-execution", outcome: "pending"}
 graph_freshness:
-  project: "ai-collaboration-prompts-dotnet-backend-issue-250-252"
-  head_sha: "ae55350a7704fafb289722afe24472bf5506db41"
-  coverage: "stale-after-tracked-mutation-pending-final-reindex"
-  expected_nodes: 38375
-  indexed_nodes: 38375
+  project: null
+  head_sha: null
+  coverage: "exact final values are recorded after freeze beneath the ignored terminal-evidence root; a tracked commit cannot self-bind its own SHA"
+  expected_nodes: null
+  indexed_nodes: null
 terminal_evidence:
   root: ".dev/ai-context/local/validation/issue-250-252"
-  fast: null
-  medium: null
-  long_windows: null
-  long_linux: null
-  exact_head_audit: null
+  binding: "select the directory whose full subject SHA matches the clean immutable final HEAD"
+  fast: "required ignored terminal"
+  medium: "required ignored terminal or truthful missing-terminal record"
+  long_windows: "required ignored trusted-reference terminal"
+  long_linux: "required ignored trusted-reference terminal and native-workspace receipt"
+  exact_head_audit: "required fresh callback after all tracked mutation"

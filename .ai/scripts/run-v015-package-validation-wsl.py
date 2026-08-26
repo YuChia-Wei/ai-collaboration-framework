@@ -191,7 +191,7 @@ def extract_result(payload: bytes, destination: Path, expected_commit: str, lane
             for member in members:
                 name = normalized_member_name(member)
                 if member.isdir():
-                    if name != "output":
+                    if name != "output" and not name.startswith("output/"):
                         raise LauncherError("unsafe-result-member")
                     target = staging / PurePosixPath(name)
                     if not target.resolve().is_relative_to(staging.resolve()):
