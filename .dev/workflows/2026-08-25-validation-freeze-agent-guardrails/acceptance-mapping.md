@@ -37,3 +37,11 @@ does not mutate the frozen subject.
 
 No entry claims provider admission, Issue closure, release readiness, merge, or
 publication. Those remain separately authorized actions.
+
+## Post-#251 Validation Freeze
+
+- Focused reconciliation passed on `352f7446726b0fa7990ea5a55685e2dd854e17f0`; its summary digest is `89f19d233263b3d8f7c6c9250d73d34a6bffaee9fa5cd52bd94864e3d6013ff5`.
+- The 19-path `validation-lifecycle-tests` closure was reused from `519343023c1a347f4b8898d42cb887859abe9c0a` only after original/current Git blobs, path-set digest, command, profile, environment, and authority matched; receipt digest `76570f5e2667efeacd977892f2fcc33d3a03f49dff5c24ed38433bc9d3ff7e53`.
+- Unknown closure remained fail closed with expected exit 2; no absence-only graph conclusion was used.
+- The post-#251 fast profile executed once outside the sandbox on `352f7446726b0fa7990ea5a55685e2dd854e17f0` for 494.287 seconds: 47 selected, 46 executed, zero failed or blocked, one warning, and one not-applicable. Completion digest: `9836cbf1e4d372f7efb23bacfac24e6463293204cbdd5e9671af1fe11ff3c9c7`.
+- The tracked closeout is frozen before the final audit. Post-closeout behavioral evidence may be reused only through canonical dependency proof; any affected short check is re-executed. The exact-head audit is always fresh and read-only.

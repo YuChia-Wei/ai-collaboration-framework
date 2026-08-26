@@ -6,9 +6,9 @@
   "task_id": "GOV013014-VAL-001",
   "workflow_id": "2026-08-25-validation-freeze-agent-guardrails",
   "owner_skill": "ai-context-governance",
-  "status": "in_progress",
+  "status": "completed",
   "created_at": "2026-08-25T14:55:24+08:00",
-  "updated_at": "2026-08-26T07:53:30+08:00",
+  "updated_at": "2026-08-26T08:14:15+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-5.6-sol",
   "reasoning_effort": "xhigh",
@@ -22,24 +22,26 @@
   "execution": {
     "steps": ["Validate workflow and focused contracts", "Create durable commits only after planned-message preflight", "Dispatch applicable long-running validation from a clean immutable head", "Obtain independent read-only exact-head audit", "Reconcile #249 and #253 acceptance evidence separately"],
     "validation": ["Focused validator tests", "AI-context/source-governance selected profiles", "Commit range validator", "Independent exact-head governance audit"],
-    "last_completed_step": "Audit-v4 passed all implementation acceptance at 519343023c1a347f4b8898d42cb887859abe9c0a while preserving the blocked aggregate; completed #251 was then merged as ffa1d5d8ac69f25940def9aa2ffedb06000e3258 without rewriting audited history.",
-    "next_action": "Commit the post-#251 reconciliation, recreate exact-subject evidence, execute only affected focused gates, and dispatch one owner-authorized fast aggregate before the final exact-head audit."
+    "last_completed_step": "The post-#251 fast profile passed once outside the sandbox at 352f7446726b0fa7990ea5a55685e2dd854e17f0 with 47 selected, 46 executed, zero failed or blocked, and one not-applicable; focused post-merge gates and acceptance parity also passed.",
+    "next_action": "Freeze this tracked source closeout, prove content compatibility or re-execute only affected short checks, and obtain one fresh independent read-only exact-head audit before parent integration handoff."
   },
   "results": {
-    "summary": "Implementation acceptance remains satisfied after the #251 baseline merge; final validation is in progress on the new subject.",
+    "summary": "#249 and #253 source implementation, separate acceptance mapping, focused validation, and one post-#251 fast aggregate are complete; terminal exact-head audit evidence remains an ignored non-mutating overlay on this frozen closeout.",
     "files_changed": [
       ".dev/workflows/2026-08-25-validation-freeze-agent-guardrails/workflow.yaml",
       ".dev/workflows/2026-08-25-validation-freeze-agent-guardrails/workflow-plan.md",
       ".dev/workflows/2026-08-25-validation-freeze-agent-guardrails/tasks/GOV013014-VAL-001.json",
       ".dev/workflows/2026-08-25-validation-freeze-agent-guardrails/acceptance-map.yaml",
+      ".dev/workflows/2026-08-25-validation-freeze-agent-guardrails/acceptance-mapping.md",
       ".dev/workflows/INDEX.MD"
     ],
     "tests_run": [
-      "python .ai/scripts/validate-workflow-artifacts.py (passed before merge commit)",
-      "python .ai/scripts/validate-git-commits.py --message-file .dev/ai-context/local/commit-messages/issue-249-253-merge-main.txt --workflow-id 2026-08-25-validation-freeze-agent-guardrails (passed)"
+      "Post-#251 focused suite: lifecycle reuse validator, graph freshness, guardrails, profile registry, external delegation, commit policy/range, workflow, source governance, AI context, and unknown-closure fail-closed checks (all passed; summary sha256 89f19d233263b3d8f7c6c9250d73d34a6bffaee9fa5cd52bd94864e3d6013ff5)",
+      "C:/Program Files/Git/bin/bash.exe .ai/scripts/check-all.sh --profile fast (passed outside sandbox in 494.287 seconds; selected=47 executed=46 reused=0 failed=0 blocked=0 warnings=1 deferred=0 not-applicable=1; completion sha256 9836cbf1e4d372f7efb23bacfac24e6463293204cbdd5e9671af1fe11ff3c9c7)",
+      "python .ai/scripts/validate-agent-execution-guardrails.py --evidence-ledger .dev/ai-context/local/validation/issue-249-253/post-251/acceptance-ledger.yaml (passed with 20 distinct #249/#253 entries)"
     ],
-    "finding_status": "partially-resolved",
-    "residual_risk": "Fast aggregate actual execution and a fresh exact-head audit remain required for the post-#251 subject.",
-    "follow_up_needed": true
+    "finding_status": "addressed",
+    "residual_risk": "A fresh identity-sensitive exact-head audit is still required on the frozen closeout; provider checks and admission remain unexecuted and unauthorized.",
+    "follow_up_needed": false
   }
 }
