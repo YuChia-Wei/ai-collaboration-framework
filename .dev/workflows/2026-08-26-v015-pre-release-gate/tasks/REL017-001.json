@@ -1,0 +1,77 @@
+{
+  "template_id": "software-development-orchestrator/development-workflow-task",
+  "template_version": "1.5.0",
+  "workflow_id": "2026-08-26-v015-pre-release-gate",
+  "task_id": "REL017-001",
+  "owner_skill": "ai-context-governance",
+  "related_plan_id": "development-plan-2026-08-26-v015-pre-release-gate",
+  "status": "in_progress",
+  "created_at": "2026-08-26T22:57:15+08:00",
+  "updated_at": "2026-08-27T07:33:23+08:00",
+  "template_source": ".ai/assets/skills/software-development-orchestrator/templates/development-workflow-task-template.json",
+  "model": "gpt-5.6-sol",
+  "reasoning_effort": "xhigh",
+  "workflow_locator": ".dev/workflows/2026-08-26-v015-pre-release-gate/workflow.yaml",
+  "scope": {
+    "goal": "Prove integrated-main v0.15 pre-release readiness and close Issues 250 252 and 254 after admission.",
+    "target": "current integrated main and synthetic ignored v0.15 candidate evidence",
+    "files": [".dev/workflows/2026-08-26-v015-pre-release-gate"],
+    "constraints": ["no v0.15 release record", "no legacy provider mutation", "no Project mutation", "fresh exact-head audit and provider admission"],
+    "non_goals": ["tag", "Release", "asset upload", "publication", "Project release allocation", "external repository or toolchain mutation"]
+  },
+  "inputs": {
+    "requirements": ["GitHub Issues #250 #252 #254", "owner delegation"],
+    "specifications": ["source release policy", "validation evidence lifecycle", "agent execution guardrails", "terminal issue closure policy"],
+    "architecture_decisions": ["synthetic candidate remains ignored", "metadata-only head does not rerun package lanes", "Project fields remain unchanged"],
+    "user_constraints": ["prior Windows and Linux actual upgrade evidence remains historical rather than current-head reuse", "final status is READY_FOR_OWNER_V0_15_RELEASE_WORKFLOW_DECISION"]
+  },
+  "execution": {
+    "capability_slot": "test-execution",
+    "approval_contract": {
+      "status": "approved",
+      "required_before": "tracked workflow work, validation, push, PR, admission, merge, and terminal Issue closure",
+      "authorization_source": ["owner delegation in source task 01a036af-3b1f-7283-97ab-eb6b7caabf93"],
+      "pending_decision": ""
+    },
+    "implementation_contract": null,
+    "test_execution_contract": {
+      "provider": "target-profile-commands",
+      "target_owned": {
+        "working_directory": ".",
+        "commands": [
+          {"level": "unit", "command": "python .ai/scripts/tests/test_v015_package_validation_lanes.py"},
+          {"level": "integration", "command": "python .ai/scripts/run-v015-package-validation.py medium --expected-commit <frozen-subject> --output-dir <ignored-output>"},
+          {"level": "environment-dependent", "command": "trusted Windows and Linux v0.14-to-v0.15 long package lanes plus PERF-002 comparison"}
+        ],
+        "prerequisites": ["clean immutable commit", "validated packet", "exclusive lease", "acceptance ledger", "fresh graph record"],
+        "environment_boundary": ["real storage", "trusted Windows and Linux remain separate", "ignored terminal output only"],
+        "policy": ["Issues #250/#252/#254", "Long-Running Validation Gate"]
+      },
+      "selected_levels": ["unit", "integration", "environment-dependent"],
+      "required_for_closeout": ["unit", "integration", "environment-dependent"],
+      "conditional_selection_sources": ["Issue #254 requires both trusted platforms"],
+      "outcomes": [
+        {"level": "unit", "outcome": "deferred-with-owner", "evidence": ["2026-08-27 metadata-only owner decision; prior package results remain historical"], "deferral_owner": "repository owner", "follow_up": "select and rerun in the separate v0.15 release workflow if required"},
+        {"level": "integration", "outcome": "deferred-with-owner", "evidence": ["2026-08-27 metadata-only owner decision; no current-head canonical reuse claim"], "deferral_owner": "repository owner", "follow_up": "select and rerun in the separate v0.15 release workflow if required"},
+        {"level": "environment-dependent", "outcome": "deferred-with-owner", "evidence": ["2026-08-27 owner decision; Windows Linux and performance records are historical integrated evidence only"], "deferral_owner": "repository owner", "follow_up": "run trusted platform and performance admission in the separate release workflow if selected"}
+      ]
+    },
+    "role_execution_records": [],
+    "spec_compliance": {"selected": false, "activation_source": [], "expected_outcome": "not-applicable"},
+    "steps": ["audit integrated scope and immutability", "run focused governance checks and freeze", "record owner-deferred package and performance gates", "obtain independent exact-head audit", "obtain hosted admission and merge", "audit integrated main and close Issues"],
+    "validation": ["acceptance ledger parity", "workflow and commit validators", "exact-head audit", "provider admission", "clean status"],
+    "commit_checkpoint": "final tracked freeze before delegated validation and exact-head audit",
+    "deferred_items": ["v0.15 release workflow and every release or publication mutation"]
+  },
+  "results": {
+    "summary": "",
+    "files_changed": [],
+    "approval_evidence": [],
+    "test_execution": [],
+    "role_execution_aggregation": [],
+    "spec_compliance": {"outcome": "not-applicable", "coverage_percent": null, "evidence": []},
+    "validation_evidence": [],
+    "commits": [],
+    "follow_up_needed": true
+  }
+}

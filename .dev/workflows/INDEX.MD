@@ -8,6 +8,7 @@ task-level progress.
 
 | Workflow | Title | Owner | Status | Updated | Entry Point |
 | --- | --- | --- | --- | --- | --- |
+| [`2026-08-26-v015-pre-release-gate`](2026-08-26-v015-pre-release-gate/workflow.yaml) | v0.15 pre-release gate and closeout | `ai-context-governance` | `in_progress` | `2026-08-27T07:33:23+08:00` | [plan](2026-08-26-v015-pre-release-gate/workflow-plan.md) |
 | [`2026-08-26-v015-identity-validation-lanes`](2026-08-26-v015-identity-validation-lanes/workflow.yaml) | v0.15 public identity and validation lanes | `software-development-orchestrator` | `in_progress` | `2026-08-26T12:50:38+08:00` | [plan](2026-08-26-v015-identity-validation-lanes/workflow-plan.md) |
 | [`2026-08-25-validation-freeze-agent-guardrails`](2026-08-25-validation-freeze-agent-guardrails/workflow.yaml) | Validation freeze, evidence reuse, and agent execution guardrails | `ai-context-governance` | `completed` | `2026-08-26T08:14:15+08:00` | [plan](2026-08-25-validation-freeze-agent-guardrails/workflow-plan.md) |
 | [`2026-08-25-package-apply-git-snapshot`](2026-08-25-package-apply-git-snapshot/workflow.yaml) | PERF-002 bounded package-apply Git snapshot | `software-development-orchestrator` | `completed` | `2026-08-26T00:27:15+08:00` | [plan](2026-08-25-package-apply-git-snapshot/workflow-plan.md) |

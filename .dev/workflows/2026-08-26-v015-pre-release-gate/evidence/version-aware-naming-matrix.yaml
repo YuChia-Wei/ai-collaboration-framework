@@ -1,0 +1,24 @@
+schema_version: "1.0"
+workflow_id: "2026-08-26-v015-pre-release-gate"
+candidate_version: "0.15.0"
+candidate_kind: "synthetic-validation-only"
+public_forms:
+  - "ai-collaboration-framework-v0.15.0.zip"
+  - "ai-collaboration-framework-v0.15.0.zip.sha256"
+  - "ai-collaboration-framework-v0.15.0.tar.gz"
+  - "ai-collaboration-framework-v0.15.0.tar.gz.sha256"
+canonical_product_identity: "ai-collaboration-framework"
+technology_profile_identity: "dotnet-backend"
+identity_surfaces:
+  - package
+  - envelope
+  - archive
+  - manifest
+  - receipt
+  - payload_fingerprint
+legacy_boundary:
+  versions: "v0.14.0 and earlier"
+  required_disposition: "immutable-parity"
+  provider_mutation_authorized: false
+publication_record_created: false
+terminal_outcome: "pending"
