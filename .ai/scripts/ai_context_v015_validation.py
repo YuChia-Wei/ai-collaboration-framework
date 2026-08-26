@@ -9,6 +9,7 @@ import os
 import platform
 import re
 import shutil
+import stat
 import subprocess
 import sys
 import tarfile
@@ -368,6 +369,14 @@ def tree_digest(root: Path) -> str:
     return sha256_bytes(canonical_json_bytes(records))
 
 
+def remove_tree(root: Path) -> None:
+    def clear_readonly_and_retry(function: Callable[[str], object], path: str, _: object) -> None:
+        os.chmod(path, stat.S_IWRITE)
+        function(path)
+
+    shutil.rmtree(root, onerror=clear_readonly_and_retry)
+
+
 def seed_upgrade_target_provenance(target: Path, previous_root: Path) -> None:
     package = yaml.safe_load((previous_root / "metadata/package.yaml").read_text(encoding="utf-8"))
     source = package["source"]
@@ -683,6 +692,10 @@ def failure_details(lane: str, subject_commit: str, error: Exception) -> tuple[s
         outcome = "failed"
         reason = error.reason_code
         failure_class = "contract"
+    elif isinstance(error, PACKAGE.PackageError):
+        outcome = "failed"
+        reason = "package-build-contract-failed"
+        failure_class = "contract"
     elif isinstance(error, (PermissionError, OSError)):
         outcome = "blocked-by-environment"
         code = getattr(error, "winerror", None) or getattr(error, "errno", None) or "unknown"
@@ -797,7 +810,7 @@ def execute_lane(
         try:
             work = output / "work"
             if work.exists():
-                shutil.rmtree(work)
+                remove_tree(work)
             cleanup["work_root_removed"] = not work.exists()
             if not cleanup["work_root_removed"]:
                 raise OSError("cleanup did not remove work root")

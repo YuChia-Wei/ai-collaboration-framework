@@ -222,6 +222,32 @@ class V015PackageValidationLaneGwtTests(unittest.TestCase):
             self.assertFalse(record["evidence"]["consumed_ai_context_test_tmp_root"])
             self.assertTrue(record["cleanup"]["work_root_removed"])
 
+    def test_gwt_007_given_source_only_lane_runner_when_profile_is_projected_then_it_is_excluded_from_payload(self) -> None:
+        profile = yaml.safe_load(
+            (ROOT / ".ai/distribution/profiles/dotnet-backend.yaml").read_text(encoding="utf-8")
+        )
+        source_only = next(
+            item
+            for item in profile["exclusions"]
+            if item["id"] == "repository-and-local-runtime-state"
+        )
+
+        self.assertIn(".ai/scripts/ai_context_v015_validation.py", source_only["patterns"])
+        self.assertIn(".ai/scripts/run-v015-package-validation.py", source_only["patterns"])
+
+    @unittest.skipUnless(os.name == "nt", "Windows read-only cleanup semantics")
+    def test_gwt_008_given_readonly_git_fixture_bytes_when_cleaned_then_no_work_root_remains(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            work = Path(temporary) / "work"
+            work.mkdir()
+            readonly = work / "readonly.fixture"
+            readonly.write_text("fixture\n", encoding="utf-8")
+            readonly.chmod(0o444)
+
+            VALIDATION.remove_tree(work)
+
+            self.assertFalse(work.exists())
+
 
 if __name__ == "__main__":
     unittest.main()

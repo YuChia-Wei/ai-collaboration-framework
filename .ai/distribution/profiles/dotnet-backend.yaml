@@ -460,12 +460,14 @@ exclusions:
       - .dev/validation.local.conf
       - .dev/ai-context/local/**
       - .ai/scripts/ai_context_package.py
+      - .ai/scripts/ai_context_v015_validation.py
       - .ai/scripts/build-ai-context-package.py
       - .ai/assets/skills/ai-context-upgrader/scripts/compare-ai-context-versions.py
       - .ai/scripts/prepare-ai-context-release.py
       - .ai/scripts/reconcile-ai-context-release-provider.py
       - .ai/scripts/render-ai-context-release-notes.py
       - .ai/scripts/validate-ai-context-package.py
+      - .ai/scripts/run-v015-package-validation.py
       - .ai/scripts/validate-ai-context-release-state.py
       - .ai/scripts/validate-immutable-history.py
       - .ai/scripts/ai_context_release_closeout.py
