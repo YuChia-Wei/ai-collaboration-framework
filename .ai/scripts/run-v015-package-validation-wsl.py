@@ -60,7 +60,7 @@ observed_sha="$(git -C "$run_root/repo" rev-parse HEAD)"
 test "$observed_sha" = "$subject_sha"
 test -z "$(git -C "$run_root/repo" status --porcelain=v1 --untracked-files=no)"
 test "$(stat -f -c %T "$run_root/repo")" = "$filesystem_type"
-lane_output="$run_root/output"
+lane_output="$run_root/repo/.dev/ai-context/local/validation/wsl-native-output"
 mkdir -p "$lane_output"
 if test "$has_prior" = "1"; then
   set -- "$@" --prior-terminal "$run_root/prior-terminal.json"

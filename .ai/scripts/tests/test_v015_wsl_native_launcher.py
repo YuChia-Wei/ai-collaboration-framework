@@ -71,6 +71,7 @@ class V015WslNativeLauncherGwtTests(unittest.TestCase):
             LAUNCHER.WSL_BOOTSTRAP.index("tar -xf -"),
         )
         self.assertIn("git clone --no-checkout", LAUNCHER.WSL_BOOTSTRAP)
+        self.assertIn("repo/.dev/ai-context/local/validation/wsl-native-output", LAUNCHER.WSL_BOOTSTRAP)
         self.assertIn("9p|drvfs", LAUNCHER.WSL_BOOTSTRAP)
         self.assertIn("env -u AI_CONTEXT_TEST_TMP_ROOT", LAUNCHER.WSL_BOOTSTRAP)
 
