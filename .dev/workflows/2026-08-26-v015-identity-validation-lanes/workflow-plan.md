@@ -16,9 +16,9 @@
 - `base_branch`: `main`
 - `base_sha`: `a1ca1d178fa193b0dc5ed3edc4c1775db45f001d`
 - `branch_segment`: `1`
-- `status`: `active`
+- `status`: `validation-in-progress`
 - `created_at`: `2026-08-26T12:01:52+08:00`
-- `updated_at`: `2026-08-26T12:01:52+08:00`
+- `updated_at`: `2026-08-26T12:50:38+08:00`
 - `template_source`: `.ai/assets/skills/software-development-orchestrator/templates/development-workflow-plan-template.md`
 - `template_version`: `1.4.0`
 - `workflow_locator`: `.dev/workflows/2026-08-26-v015-identity-validation-lanes/workflow.yaml`
@@ -102,9 +102,9 @@
 
 | Level | Outcome | Evidence | Deferral Owner / Follow-up |
 | --- | --- | --- | --- |
-| unit | `not-applicable` | pending implementation and selection | none |
-| integration | `not-applicable` | pending implementation and selection | none |
-| environment-dependent | `not-applicable` | pending trusted Windows/Linux run | owner if a platform remains unavailable |
+| unit | `passed` | identity, route, governance, entrypoint, lane, and negative-projection suites | none |
+| integration | `passed` | focused package build/archive parity at `78862fde`; exact freeze-head rerun remains required | none |
+| environment-dependent | `deferred-with-owner` | medium crossed 120 seconds and was interrupted with an inadmissible receipt; trusted platform delegation remains pending | owner if a required platform remains unavailable |
 
 ## Spec Compliance Selection
 
@@ -115,32 +115,32 @@
 
 ## Progress And Handoff
 
-- Current stage: `ID002-001`
-- Completed stages: isolated worktree and live provider/base read-back.
+- Current stage: `ID002VAL009-VAL-001`
+- Completed stages: isolated worktree and live provider/base read-back; `ID002-001` semantic identity integration; `VAL009-001` validation-lane implementation and focused deterministic checks.
 - Deferred stages and reasons: #254 integrated-main release-readiness remains outside this local delivery.
 - Open decisions: none for authorized implementation; push/PR/merge/release actions remain owner-controlled.
 - Continuation instructions: resume from this branch, locator, current task, acceptance mapping, and Git evidence; do not depend on hidden chat state.
 - Target policy references: root `AGENTS.md`, workflow policies, agent execution guardrails, and live Issues #250/#252/#254.
-- Registered handoff checkpoint: none yet.
-- Branch history and checkpoint handoffs: segment 1 started from verified `origin/main@a1ca1d178fa193b0dc5ed3edc4c1775db45f001d`.
+- Registered handoff checkpoint: tracked freeze checkpoint precedes ignored terminal receipts and exact-head audit.
+- Branch history and checkpoint handoffs: segment 1 started from verified `origin/main@a1ca1d178fa193b0dc5ed3edc4c1775db45f001d`; semantic integration used 26 exact historical blobs plus manual reconciliation of the three current-main overlaps, without cherry-pick or rebase.
 
 ## Branch Lifecycle
 
 | Segment | Branch | Base | Checkpoint Type | Commit | Remote / Target | Recorded At | Reason | Resume Branch / Action |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| 1 | `codex/2026-08-26-v015-identity-validation-lanes` | `main@a1ca1d178fa193b0dc5ed3edc4c1775db45f001d` | local isolated start | pending | local only | `2026-08-26T12:01:52+08:00` | cohesive #250/#252 delivery | continue this branch |
+| 1 | `codex/2026-08-26-v015-identity-validation-lanes` | `main@a1ca1d178fa193b0dc5ed3edc4c1775db45f001d` | local freeze candidate | `ae55350a7704fafb289722afe24472bf5506db41` plus this tracked checkpoint | local only | `2026-08-26T12:50:38+08:00` | cohesive #250/#252 delivery | run exact-head lanes and audit; no tracked mutation after audit |
 
 ## Completion Summary
 
-- Outcome: pending.
-- Changed artifacts: workflow bootstrap only.
+- Outcome: implementation complete; frozen validation and independent audit pending.
+- Changed artifacts: version-aware identity registry/schema/consumers/package/upgrade/workflow/docs/tests plus independently executable validation lanes and tracked workflow records.
 - Approved requirement/specification evidence: owner delegation plus live Issues #250/#252.
-- Implementation completion evidence: pending.
-- Required test outcomes: pending.
+- Implementation completion evidence: local commits `a83bc8aa`, `143a9e02`, `c39e708a`, `b42064b0`, `78862fde`, and `ae55350a`; 26 historical blobs matched exactly and three overlaps were semantically reconciled against current main.
+- Required test outcomes: focused deterministic suites passed; fast lane passed at `78862fde`; exact freeze-head fast, delegated medium/long platform lanes, and audit remain pending.
 - Selected compliance evidence: not applicable.
 - Review disposition: pending exact-head independent audit.
 - Validation evidence: pending.
-- Workflow task state: one in progress, two pending.
-- Commits: pending.
+- Workflow task state: two implementation stages completed; frozen validation/audit stage in progress.
+- Commits: bootstrap plus six cohesive implementation/fix checkpoints before this freeze checkpoint.
 - Branch / checkpoint / handoff evidence: isolated local branch; no push or PR.
-- Residual risks: trusted Windows and Linux actual-upgrade evidence may remain blocked/deferred; any such state prevents #254 readiness.
+- Residual risks: the initial parent medium attempt crossed 120 seconds and was interrupted, so its receipt is expressly inadmissible; trusted Windows and Linux actual-upgrade evidence may remain blocked/deferred, and any such state prevents #254 readiness.
