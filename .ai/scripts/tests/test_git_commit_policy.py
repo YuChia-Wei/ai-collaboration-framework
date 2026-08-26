@@ -4,6 +4,8 @@
 from __future__ import annotations
 
 import importlib.util
+import io
+import sys
 import unittest
 from datetime import datetime
 from pathlib import Path
@@ -75,6 +77,25 @@ class GitCommitPolicyTests(unittest.TestCase):
             committed_at=datetime.fromisoformat(committed_at),
         )
         return errors
+
+    def run_planned_message(
+        self,
+        message: str,
+        *,
+        workflow_id: str | None = WORKFLOW_ID,
+    ) -> tuple[int, str]:
+        path = Path("planned-COMMIT_EDITMSG")
+        argv = [str(VALIDATOR_PATH), "--message-file", str(path)]
+        if workflow_id is not None:
+            argv.extend(["--workflow-id", workflow_id])
+        output = io.StringIO()
+        with (
+            mock.patch.object(sys, "argv", argv),
+            mock.patch.object(Path, "read_text", return_value=message),
+            mock.patch("sys.stdout", output),
+        ):
+            result = VALIDATOR.main()
+        return result, output.getvalue()
 
     def test_gwt_001_given_valid_workflow_commit_when_validated_then_passes(self) -> None:
         self.assertEqual([], self.validate(workflow_message()))
@@ -297,6 +318,25 @@ Co-Authored-By: OpenAI Codex (gpt-5.6-sol, high) <noreply@openai.com>
         )
 
         self.assertEqual(POLICY["subject_pattern"], pattern)
+
+    def test_gwt_024_given_valid_direct_planned_message_when_preflight_runs_then_it_passes_before_commit(self) -> None:
+        message = """docs(governance): clarify direct guidance
+
+Co-Authored-By: OpenAI Codex (gpt-5.6-sol, xhigh) <noreply@openai.com>
+"""
+
+        result, output = self.run_planned_message(message, workflow_id=None)
+
+        self.assertEqual(0, result, output)
+        self.assertIn("planned message", output)
+
+    def test_gwt_025_given_workflow_planned_message_without_required_section_when_preflight_runs_then_it_fails_before_commit(self) -> None:
+        message = workflow_message().replace("\nValidation\n", "\nChecks\n")
+
+        result, output = self.run_planned_message(message)
+
+        self.assertEqual(1, result)
+        self.assertIn("missing workflow body sections: Validation", output)
 
 
 if __name__ == "__main__":

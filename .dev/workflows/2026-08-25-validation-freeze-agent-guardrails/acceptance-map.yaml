@@ -1,0 +1,100 @@
+schema_version: "1.0"
+workflow_id: 2026-08-25-validation-freeze-agent-guardrails
+status: source-closeout-complete-exact-head-audit-pending
+issues:
+  "249":
+    task_id: GOV013-001
+    acceptance:
+      - id: GOV013-AC-01
+        requirement: machine-readable identity/input/environment/provider-sensitive taxonomy
+        evidence: [.ai/assets/shared/validation-evidence-lifecycle.schema.yaml, .ai/assets/shared/VALIDATION-EVIDENCE-LIFECYCLE-CONTRACT.md]
+      - id: GOV013-AC-02
+        requirement: deterministic dependency/content fingerprint and complete transitive input closure
+        evidence: [.ai/scripts/check-all.sh, .ai/scripts/tests/test_validation_profile_registry.py]
+      - id: GOV013-AC-03
+        requirement: content-addressed reuse receipt schema and validator
+        evidence: [.ai/scripts/validate-validation-lifecycle.py, .ai/scripts/tests/test_validation_lifecycle.py]
+      - id: GOV013-AC-04
+        requirement: validation freeze sequencing removes terminal metadata self-invalidation
+        evidence: [.ai/assets/shared/VALIDATION-EVIDENCE-LIFECYCLE-CONTRACT.md, .ai/scripts/tests/test_validation_lifecycle.py]
+      - id: GOV013-AC-05
+        requirement: required hosted contexts exist even when internal work is executed or reused
+        evidence: [.ai/scripts/validate-validation-lifecycle.py, .ai/scripts/tests/test_validation_lifecycle.py, .dev/standards/GITHUB-WORK-MANAGEMENT-POLICY.yaml]
+      - id: GOV013-AC-06
+        requirement: exact-head audit reports re-executed/reused-with-proof/blocked/deferred/not-applicable
+        evidence: [.ai/assets/shared/validation-evidence-lifecycle.schema.yaml, .ai/scripts/tests/test_validation_lifecycle.py]
+      - id: GOV013-AC-07
+        requirement: unknown dependency and runner/manifest/resolver/policy/configuration drift fail closed
+        evidence: [.ai/scripts/tests/test_validation_lifecycle.py]
+      - id: GOV013-AC-08
+        requirement: privacy-safe #246 terminal-metadata regression without historical rewrite
+        evidence: [.ai/scripts/tests/test_validation_lifecycle.py]
+      - id: GOV013-AC-09
+        requirement: reuse requires matching tracked bytes, dependency, command, profile, environment, and authority
+        evidence: [.ai/scripts/validate-validation-lifecycle.py, .ai/scripts/check-all.sh]
+      - id: GOV013-AC-10
+        requirement: exact-head/provider/live admission gates remain fresh and non-cacheable
+        evidence: [.ai/assets/shared/VALIDATION-EVIDENCE-LIFECYCLE-CONTRACT.md, AGENTS.md]
+  "253":
+    task_id: GOV014-001
+    acceptance:
+      - id: GOV014-AC-01
+        requirement: planned commit message preflight before git commit
+        evidence: [.ai/scripts/validate-git-commits.py, .ai/scripts/tests/test_git_commit_policy.py, .dev/standards/GIT-COMMIT-POLICY.md]
+      - id: GOV014-AC-02
+        requirement: delegated/external/fixed-head packet binds skill, role, SHA/argv/cwd, permissions, terminal, owner, and retry
+        evidence: [.ai/assets/shared/agent-execution-guardrails.schema.yaml, .ai/scripts/validate-agent-execution-guardrails.py]
+      - id: GOV014-AC-03
+        requirement: worktree snapshot lease excludes another tracked writer and releases ignored artifacts explicitly
+        evidence: [.ai/scripts/validate-agent-execution-guardrails.py, .ai/scripts/tests/test_agent_execution_guardrails.py]
+      - id: GOV014-AC-04
+        requirement: acceptance ledger and human report parity reject synthetic evidence as actual execution
+        evidence: [.ai/scripts/validate-agent-execution-guardrails.py, .ai/scripts/tests/test_agent_execution_guardrails.py]
+      - id: GOV014-AC-05
+        requirement: privacy-safe failure identity and retry budget require material change and attempt-three authorization
+        evidence: [.ai/scripts/validate-agent-execution-guardrails.py, .ai/scripts/tests/test_agent_execution_guardrails.py]
+      - id: GOV014-AC-06
+        requirement: PowerShell reserved automatic-variable assignment regression
+        evidence: [.ai/scripts/tests/test_agent_execution_guardrails.py]
+      - id: GOV014-AC-07
+        requirement: graph freshness/coverage reindex or tracked fallback; absence alone is not proof
+        evidence: [.ai/scripts/validate-agent-execution-guardrails.py, .ai/scripts/tests/test_agent_execution_guardrails.py]
+      - id: GOV014-AC-08
+        requirement: compatibility with role execution, long-running delegation, terminal runner, and #249 lifecycle
+        evidence: [.ai/assets/skills/software-development-orchestrator/skill.yaml, .ai/assets/skills/software-development-orchestrator/templates/external-task-delegation.schema.yaml]
+      - id: GOV014-AC-09
+        requirement: external dispatch rejects missing packet or packet/subject drift
+        evidence: [.ai/assets/skills/software-development-orchestrator/scripts/validate-external-task-delegation.py, .ai/assets/skills/software-development-orchestrator/scripts/tests/test_external_task_delegation_contract.py]
+      - id: GOV014-AC-10
+        requirement: canonical guidance and consumer projections preserve governance ownership
+        evidence: [AGENTS.md, AGENTS.zh-TW.md, .dev/standards/WORKFLOW-GATE-POLICY.md, .ai/assets/skills/software-development-orchestrator/references/runtime-coordination.md]
+terminal_evidence:
+  ledger: .dev/ai-context/local/validation/issue-249-253/post-251/acceptance-ledger.yaml
+  human_report: .dev/ai-context/local/validation/issue-249-253/post-251/acceptance-report.yaml
+  focused_summary:
+    path: .dev/ai-context/local/validation/issue-249-253/post-251/focused/summary.yaml
+    sha256: 89f19d233263b3d8f7c6c9250d73d34a6bffaee9fa5cd52bd94864e3d6013ff5
+    subject_sha: 352f7446726b0fa7990ea5a55685e2dd854e17f0
+  post_issue_251_fast_aggregate:
+    path: .dev/ai-context/local/validation/issue-249-253/aggregate-post-251-attempt-6/completion.yaml
+    sha256: 9836cbf1e4d372f7efb23bacfac24e6463293204cbdd5e9671af1fe11ff3c9c7
+    subject_sha: 352f7446726b0fa7990ea5a55685e2dd854e17f0
+    outcome: passed
+    counts: {selected: 47, executed: 46, reused: 0, failed: 0, blocked: 0, warnings: 1, deferred: 0, not_applicable: 1}
+  exact_head_audits:
+    - path: .dev/ai-context/local/validation/issue-249-253/audit/exact-head-audit.yaml
+      disposition: blocked
+      subject_sha: 5c1657d3084c9e6843705a3b0355a2c6ddb76270
+    - path: .dev/ai-context/local/validation/issue-249-253/audit-v2/exact-head-audit.yaml
+      disposition: blocked
+      subject_sha: 71f47831bf1b510b3e25cc98392c488a22debe4d
+    - path: .dev/ai-context/local/validation/issue-249-253/audit-v3/exact-head-audit.yaml
+      disposition: blocked
+      subject_sha: 4ccca9c17228ed05d0eaa0d1b8d169f37c6c8f61
+    - path: .dev/ai-context/local/validation/issue-249-253/audit-v4/exact-head-audit.yaml
+      disposition: blocked
+      subject_sha: 519343023c1a347f4b8898d42cb887859abe9c0a
+    - path: .dev/ai-context/local/validation/issue-249-253/audit-v5/exact-head-audit.yaml
+      disposition: pending
+      subject_sha: pending-post-issue-251-closeout-commit
+  code_graph_freshness: .dev/ai-context/local/validation/issue-249-253/post-251/code-graph-freshness.yaml

@@ -264,6 +264,19 @@ Before commit, run the narrowest meaningful validation:
 The commit body must mention skipped validation when the skipped check would normally apply.
 AI-assisted commits must also satisfy the AI model signature trailer contract above.
 
+Write the complete planned commit message to a contained ignored message file
+and validate those exact bytes before invoking `git commit`:
+
+```bash
+python .ai/scripts/validate-git-commits.py \
+  --message-file .dev/ai-context/local/commit-messages/<message-file>.txt \
+  --workflow-id <workflow-id>
+git commit -F .dev/ai-context/local/commit-messages/<message-file>.txt
+```
+
+Do not validate a reconstructed message after the commit or use separate
+command-line fragments that can drift from the committed body.
+
 For workflow closeout, validate the workflow branch range explicitly:
 
 ```bash

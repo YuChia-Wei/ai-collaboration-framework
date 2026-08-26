@@ -330,6 +330,26 @@ register_check source-governance-manifest \
     "governance,source" "fast pr release nightly-full" \
     ".ai/distribution/governance-checks.yaml .ai/distribution/repository-identity-policy.yaml .dev/standards/SOURCE-WORK-MANAGEMENT-AUTHORITY.yaml .ai/scripts/validate-source-governance.py .ai/scripts/validate-repository-identity.py .ai/scripts/validate-source-work-management.py" '' "python>=3.11 git" 60 cpu reuse-by-input source \
     "python .ai/scripts/validate-source-governance.py" source-governance
+register_check validation-lifecycle-contract \
+    "Validation Freeze And Evidence Reuse Contract" required \
+    "governance,validation,evidence" "fast pr release nightly-full" \
+    ".ai/assets/shared/VALIDATION-EVIDENCE-LIFECYCLE-CONTRACT.md .ai/assets/shared/validation-evidence-lifecycle.schema.yaml .ai/scripts/validate-validation-lifecycle.py .dev/standards/GITHUB-WORK-MANAGEMENT-POLICY.yaml" source-governance-manifest "python>=3.11" 60 cpu reuse-by-input source \
+    "python .ai/scripts/validate-validation-lifecycle.py" source-governance
+register_check validation-lifecycle-tests \
+    "Validation Lifecycle Fail-Closed Tests" required \
+    "governance,validation,evidence,tests" "fast pr release nightly-full" \
+    ".ai/scripts/tests/test_validation_lifecycle.py .ai/assets/shared/validation-evidence-lifecycle.schema.yaml .dev/standards/GITHUB-WORK-MANAGEMENT-POLICY.yaml" validation-lifecycle-contract "python>=3.11" 60 cpu reuse-by-input source \
+    "python .ai/scripts/tests/test_validation_lifecycle.py -v" source-governance
+register_check agent-execution-guardrails-contract \
+    "Agent Execution Guardrails Contract" required \
+    "governance,agents,evidence" "fast pr release nightly-full" \
+    ".ai/assets/shared/AGENT-EXECUTION-GUARDRAILS-CONTRACT.md .ai/assets/shared/agent-execution-guardrails.schema.yaml .ai/assets/shared/ROLE-EXECUTION-CONTRACT.md .ai/scripts/validate-agent-execution-guardrails.py .ai/assets/skills/software-development-orchestrator" validation-lifecycle-contract "python>=3.11" 60 cpu reuse-by-input source \
+    "python .ai/scripts/validate-agent-execution-guardrails.py" source-governance
+register_check agent-execution-guardrails-tests \
+    "Agent Execution Guardrails Fail-Closed Tests" required \
+    "governance,agents,evidence,tests" "fast pr release nightly-full" \
+    ".ai/scripts/tests/test_agent_execution_guardrails.py .ai/assets/shared/agent-execution-guardrails.schema.yaml" agent-execution-guardrails-contract "python>=3.11" 60 cpu reuse-by-input source \
+    "python .ai/scripts/tests/test_agent_execution_guardrails.py -v" source-governance
 register_check terminal-issue-closure \
     "Terminal Issue Closure Contract" required \
     "governance,source,closeout" "fast pr release nightly-full" \

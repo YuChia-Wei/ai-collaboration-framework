@@ -234,6 +234,14 @@ class DevWorkflowCapabilityContractGwtTests(unittest.TestCase):
                 "parent_wait_timeout_state": "pending-awaiting-completion",
                 "pre_send_completion_validation": "required",
                 "callback_payload": "exact-validated-completion-record",
+                "execution_guardrails": {
+                    "contract": ".ai/assets/shared/AGENT-EXECUTION-GUARDRAILS-CONTRACT.md",
+                    "schema": ".ai/assets/shared/agent-execution-guardrails.schema.yaml",
+                    "validator": ".ai/scripts/validate-agent-execution-guardrails.py",
+                    "packet_validation": "required-before-dispatch",
+                    "worktree_snapshot_lease": "required",
+                    "acceptance_report_parity": "required-before-integration",
+                },
             },
             contract["delegation_contract"],
         )

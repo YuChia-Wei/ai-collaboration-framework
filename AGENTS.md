@@ -57,7 +57,7 @@ Use `.ai/assets/skills/README.MD` as the canonical skill registry. Runtime wrapp
 - In workflow mode, follow `.dev/standards/WORKFLOW-ARTIFACT-POLICY.md` and `.dev/TEAM-GIT-FLOW-RULES.MD`; switch to the dedicated branch before material edits.
 - A retained read-only report uses `.dev/standards/ASSESSMENT-ARTIFACT-POLICY.md`; it does not require a workflow by itself.
 - For cross-session transfer, follow `.dev/standards/WORKFLOW-HANDOFF-POLICY.md`; the checkpoint must not depend on hidden conversation state.
-- Before committing, follow `.dev/standards/GIT-COMMIT-POLICY.md`.
+- Before committing, follow `.dev/standards/GIT-COMMIT-POLICY.md` and validate the complete planned message from a message file before invoking `git commit`.
 - Merge, workflow completion, Issue closure, Project status, release allocation, publication, and target upgrade are distinct states.
 
 ## Validation And Review
@@ -67,6 +67,23 @@ Use `.ai/assets/skills/README.MD` as the canonical skill registry. Runtime wrapp
 - Independent review binds to an exact subject, stays read-only, and cannot count its own repair as verification.
 - Mutation after a fixed-head audit invalidates that audit for the new head.
 - Preserve failure, timeout, interruption, and blocked evidence; a later pass does not erase it.
+
+### Validation Freeze And Evidence Reuse
+
+- Classify validation evidence as identity-, input-, environment-, or provider-sensitive before reuse. Reuse requires matching tracked bytes, transitive dependencies, command, profile, environment, runner, manifest, resolver, policy, and configuration authority.
+- Freeze only after tracked mutation and focused validation are complete. After freeze, tracked drift invalidates the subject; terminal metadata writes only to declared ignored artifacts and does not invalidate the frozen snapshot.
+- Unknown dependency or authority state fails closed. Exact-head audit, required hosted contexts, and live admission gates are always fresh and cannot be replaced by cache reuse.
+- Required hosted contexts remain present for every admitted head. Internal execution or proven reuse may vary, but path filtering must not make a required context disappear.
+- Exact-head audit reports each gate as `re-executed`, `reused-with-proof`, `blocked`, `deferred`, or `not-applicable`.
+
+### Agent Execution Guardrails
+
+- Before delegated, external, or fixed-head execution, validate an agent execution packet with owning skill, canonical role path and applicability, exact SHA/argv/cwd, permissions, ignored artifact roots, terminal schema and callback, integration owner, stop conditions, and retry budget.
+- Hold a machine-readable worktree snapshot lease. One active tracked-writer holder excludes every other tracked writer; read-only work and declared ignored validation output remain permitted, and terminal release must be explicit.
+- Keep an acceptance-to-evidence ledger and validate its human-report projection. Synthetic, mock, fixture, and unit evidence cannot satisfy an acceptance that requires actual execution.
+- Retry only after a privacy-safe failure fingerprint and material state change. Attempt three or later requires new owner or workflow authorization.
+- Verify code-graph index SHA and coverage before discovery claims. Reindex stale or missing graphs or use an explicit tracked-file fallback; search absence alone is not proof.
+- Never assign to PowerShell automatic or reserved variables, case-insensitively; use purpose-specific variable names.
 
 ### Long-Running Validation Gate
 

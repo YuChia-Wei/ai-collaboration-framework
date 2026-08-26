@@ -210,6 +210,12 @@ separate events remains with its own owner.
 - Correct a final artifact through an explicit reopen, corrigendum, addendum, or successor report.
 - Record canonical-versus-derived relationships for translations and generated views.
 - Preserve finding and decision IDs across remediation and verification artifacts.
+- For a workflow binding multiple work items, preserve separate acceptance IDs,
+  outcomes, and evidence digests in a machine-readable ledger and its matching
+  human report projection; one aggregate success flag is insufficient.
+- Record validation freeze, reuse receipt, agent execution packet, worktree
+  lease, graph freshness or tracked fallback, retry decision, and terminal
+  release as separate artifacts when those lifecycle states apply.
 
 ## Validation and Legacy Boundary
 

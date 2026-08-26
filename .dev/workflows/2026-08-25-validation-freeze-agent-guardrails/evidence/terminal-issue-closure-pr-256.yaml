@@ -1,0 +1,116 @@
+schema_version: "1.0"
+contract_id: github-terminal-issue-closure
+repository: YuChia-Wei/ai-collaboration-framework
+validation_stage: declaration
+pull_request:
+  number: 256
+  head_sha: null
+  body: |+
+    ## Summary
+
+    - introduces a validation freeze lifecycle and content-addressed evidence reuse for Issue #249
+    - enforces agent execution packets, worktree leases, evidence binding, retry authority, and discovery freshness for Issue #253
+    - keeps the two Issues' acceptance ledgers separate while delivering their shared governance and validation boundary coherently
+    - incorporates the completed #251 Git snapshot baseline without modifying its implementation or historical evidence
+
+    ## Changes
+
+    - adds machine-readable validation taxonomy, dependency closure, reuse receipt, freeze, hosted-context, and exact-head disposition contracts
+    - adds canonical packet, lease, acceptance-report parity, retry, PowerShell safety, and code-graph freshness validation
+    - aligns root guidance, workflow policies, Git commit preflight, software-development-orchestrator consumers, and runtime projections without transferring governance ownership
+    - records retained blocked evidence, focused regressions, post-#251 aggregate execution, closeout impact reuse, and exact-head independent audits
+
+    ## Related Issues
+
+    - Issue #: 249
+    - Delivery disposition: `terminal-close`
+    - Reference: Closes #249
+    - `closure_deferred_reason`: not applicable
+    - Next terminal gate or owner: fresh PR-head independent audit, required hosted checks, live merge admission, integration, and post-merge Issue/Project read-back
+    - Owner authorization: repository owner explicitly authorized push, PR creation, merge, and Issue closure on 2026-08-26
+
+    - Issue #: 253
+    - Delivery disposition: `terminal-close`
+    - Reference: Closes #253
+    - `closure_deferred_reason`: not applicable
+    - Next terminal gate or owner: fresh PR-head independent audit, required hosted checks, live merge admission, integration, and post-merge Issue/Project read-back
+    - Owner authorization: repository owner explicitly authorized push, PR creation, merge, and Issue closure on 2026-08-26
+
+    ## Delivery And Integration
+
+    - Delivery grouping: cohesive multi-Issue delivery with distinct acceptance evidence
+    - Execution record: workflow `2026-08-25-validation-freeze-agent-guardrails`
+    - Selected topology: merge commit
+    - Topology reason: the branch contains durable baseline-merge, long-validation, blocked-audit, native-reroute, and source-closeout boundaries that form one visible review and rollback unit
+
+    ## Evidence
+
+    - #249 and #253 each retain ten distinct acceptance entries
+    - post-#251 fast profile: 47 selected, 46 executed, 0 failed, 0 blocked, 1 not applicable, 494.287 seconds
+    - final closeout impact: 42 checks reused with proof, 5 affected workflow checks re-executed, unknown dependency count 0
+    - final code graph: 38,365 nodes and 81,100 edges at complete exact-head coverage
+    - exact-head audit-v6 passed after retaining the sandbox cleanup failure and rerouting only the blocked 22-case probe outside the sandbox
+
+    ## Boundaries
+
+    - no #250 identity, #252 route split, aggregate-runner parallelization, v0.14/#246 historical evidence rewrite, release allocation, tag, GitHub Release, or publication
+    - provider admission, integration, Issue closure, and Project reconciliation remain external gates until their live read-back succeeds
+
+    ## Checklist
+
+    - [x] Focused and selected aggregate validation passed with retained failure evidence
+    - [x] Workflow, tasks, separate acceptance mapping, commit range, and source closeout are complete
+    - [x] No secrets or publication artifacts are included
+    - [x] Issue #249 has exactly one terminal-close disposition
+    - [x] Issue #253 has exactly one terminal-close disposition
+    - [ ] The exact final PR head passes all required hosted checks
+    - [ ] The exact final PR head has the required single-maintainer audit receipt
+  integration:
+    status: pending
+    topology: null
+    admitted_head_sha: null
+    integration_commit_sha: null
+    provider_read_back: false
+  review:
+    status: pending
+  required_check_contexts: []
+  hosted_checks: []
+issues:
+  - number: 249
+    mode: terminal-close
+    work_authorization:
+      online_issue_bound: true
+      explicit_owner_approval: true
+    final_accepted_delivery: true
+    workflow:
+      scope_complete: true
+      tasks_complete: true
+      applicable_verification_complete: true
+    closing_keyword: Closes
+    closure_deferred_reason: null
+    next_terminal_gate_or_owner: null
+    read_back:
+      performed: false
+      integration_commit_sha: null
+      issue_state: null
+      issue_state_reason: null
+      project_status: null
+  - number: 253
+    mode: terminal-close
+    work_authorization:
+      online_issue_bound: true
+      explicit_owner_approval: true
+    final_accepted_delivery: true
+    workflow:
+      scope_complete: true
+      tasks_complete: true
+      applicable_verification_complete: true
+    closing_keyword: Closes
+    closure_deferred_reason: null
+    next_terminal_gate_or_owner: null
+    read_back:
+      performed: false
+      integration_commit_sha: null
+      issue_state: null
+      issue_state_reason: null
+      project_status: null
