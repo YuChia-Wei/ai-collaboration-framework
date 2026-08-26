@@ -24,7 +24,9 @@ SPEC.loader.exec_module(VALIDATOR)
 SCHEMA = yaml.safe_load((ROOT / ".ai/assets/shared/agent-execution-guardrails.schema.yaml").read_text(encoding="utf-8"))
 SHA = "1" * 40
 D = "a" * 64
-EVIDENCE_DIR = Path(tempfile.mkdtemp(dir=ROOT / ".dev/ai-context/local", prefix="agent-evidence-"))
+EVIDENCE_PARENT = ROOT / ".dev/ai-context/local"
+EVIDENCE_PARENT.mkdir(parents=True, exist_ok=True)
+EVIDENCE_DIR = Path(tempfile.mkdtemp(dir=EVIDENCE_PARENT, prefix="agent-evidence-"))
 atexit.register(shutil.rmtree, EVIDENCE_DIR, True)
 
 
