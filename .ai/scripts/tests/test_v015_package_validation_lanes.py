@@ -408,6 +408,13 @@ class V015PackageValidationLaneGwtTests(unittest.TestCase):
                 text=True,
             ).stdout.strip()
             self.assertEqual(expected_commit, parent)
+            longpaths = subprocess.run(
+                ["git", "-C", str(synthetic), "config", "--bool", "core.longpaths"],
+                check=True,
+                capture_output=True,
+                text=True,
+            ).stdout.strip()
+            self.assertEqual("true", longpaths)
 
     def test_gwt_015_given_runtime_pin_mismatch_when_lane_starts_then_it_is_environment_blocked(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:

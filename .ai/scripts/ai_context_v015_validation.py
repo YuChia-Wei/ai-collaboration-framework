@@ -280,7 +280,18 @@ def legacy_snapshot(root: Path) -> dict[str, str]:
 def create_synthetic_source(root: Path, expected_commit: str, work: Path) -> tuple[Path, str]:
     source = work / "synthetic-source"
     run(
-        ("git", "clone", "--no-local", "--no-checkout", str(root), str(source)),
+        (
+            "git",
+            "-c",
+            "core.longpaths=true",
+            "clone",
+            "--config",
+            "core.longpaths=true",
+            "--no-local",
+            "--no-checkout",
+            str(root),
+            str(source),
+        ),
         cwd=root,
         reason_code="synthetic-source-clone-failed",
     )
