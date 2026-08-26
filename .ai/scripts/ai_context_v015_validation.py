@@ -328,11 +328,17 @@ def candidate_evidence(candidate: Candidate, output: Path) -> dict[str, object]:
     require(candidate.migration["package_id"] == EXPECTED_BASE, "candidate-migration-identity-mismatch")
     require(candidate.migration["sources"][0]["version"] == SOURCE_VERSION, "candidate-upgrade-source-mismatch")
     require(candidate.result["payload_fingerprint"] == identity["payload_fingerprint"], "candidate-payload-fingerprint-mismatch")
+    member_map = [
+        {"path": path, "sha256": sha256_bytes(content), "mode": mode}
+        for path, (content, mode) in sorted(
+            zip_members.items(), key=lambda item: item[0].encode("utf-8")
+        )
+    ]
     return {
         "public_forms": names,
         "zip_sha256": sha256_file(Path(candidate.result["zip"])),
         "tar_gz_sha256": sha256_file(Path(candidate.result["tar_gz"])),
-        "archive_member_map_sha256": sha256_bytes(canonical_json_bytes(zip_members)),
+        "archive_member_map_sha256": sha256_bytes(canonical_json_bytes(member_map)),
         "archive_member_count": len(zip_members),
         "package_manifest_sha256": identity["files_manifest_digest"],
         "migration_sha256": identity["migration_digest"],

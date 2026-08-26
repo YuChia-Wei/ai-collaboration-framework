@@ -248,6 +248,23 @@ class V015PackageValidationLaneGwtTests(unittest.TestCase):
 
             self.assertFalse(work.exists())
 
+    def test_gwt_009_given_archive_member_bytes_when_evidence_is_canonicalized_then_only_digests_are_serialized(self) -> None:
+        members = {
+            "z.txt": (b"z\n", 0o644),
+            "a.sh": (b"#!/bin/sh\n", 0o755),
+        }
+        canonical = [
+            {"path": path, "sha256": VALIDATION.sha256_bytes(content), "mode": mode}
+            for path, (content, mode) in sorted(
+                members.items(), key=lambda item: item[0].encode("utf-8")
+            )
+        ]
+
+        encoded = VALIDATION.canonical_json_bytes(canonical)
+
+        self.assertNotIn(b"#!/bin/sh", encoded)
+        self.assertEqual(["a.sh", "z.txt"], [item["path"] for item in canonical])
+
 
 if __name__ == "__main__":
     unittest.main()
