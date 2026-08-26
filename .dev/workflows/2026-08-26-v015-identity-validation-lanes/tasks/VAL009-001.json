@@ -1,0 +1,43 @@
+{
+  "template_id": "software-development-orchestrator/development-workflow-task",
+  "template_version": "1.5.0",
+  "template_created_at": "2026-07-10T18:25:11+08:00",
+  "template_updated_at": "2026-08-05T02:12:00+08:00",
+  "workflow_id": "2026-08-26-v015-identity-validation-lanes",
+  "task_id": "VAL009-001",
+  "owner_skill": "software-development-orchestrator",
+  "related_plan_id": "development-plan-2026-08-26-v015-identity-validation-lanes",
+  "status": "pending",
+  "created_at": "2026-08-26T12:01:52+08:00",
+  "updated_at": "2026-08-26T12:01:52+08:00",
+  "template_source": ".ai/assets/skills/software-development-orchestrator/templates/development-workflow-task-template.json",
+  "model": "gpt-5.6-sol",
+  "reasoning_effort": "high",
+  "workflow_locator": ".dev/workflows/2026-08-26-v015-identity-validation-lanes/workflow.yaml",
+  "scope": {
+    "goal": "Implement independently executable fast, medium, and long v0.15 package validation lanes with truthful terminal records.",
+    "target": "package validation entrypoints, lane runners, schemas/contracts, aggregate projection, and deterministic tests",
+    "files": [],
+    "constraints": ["fast performs no material target mutation", "medium synthetic clean install cannot satisfy actual upgrade", "long uses real storage and integrated #251 metrics", "outcomes are mutually exclusive", "retry requires material state change"],
+    "non_goals": ["remove aggregate validation", "substitute synthetic or one-platform evidence", "increase timeout as a repair", "publish or mutate v0.14"]
+  },
+  "inputs": {
+    "requirements": ["GitHub Issue #252 live body"],
+    "specifications": ["#194 one-wait contract", "#204 process-tree/snapshot contract", "#249 validation lifecycle", "#253 agent execution guardrails"],
+    "architecture_decisions": ["three commands and three terminal records", "aggregate never projects synthetic pass to actual-upgrade pass"],
+    "user_constraints": ["synthetic v0.15 only under ignored output", "real storage for durability"]
+  },
+  "execution": {
+    "capability_slot": "implementation",
+    "approval_contract": {"status": "approved", "required_before": "implementation", "authorization_source": ["owner delegation in source thread", "GitHub Issue #252 scope contract"], "pending_decision": ""},
+    "implementation_contract": {"intent": "feature", "execution_mode": "generic", "overlays": [], "authorization_source": ["owner delegation in source thread"], "normative_truth": ["GitHub Issue #252", "agent execution and validation lifecycle contracts"], "finding_evidence": [], "subject_revision": "a1ca1d178fa193b0dc5ed3edc4c1775db45f001d", "acceptance_criteria": ["independent commands and budgets", "phase timing and process metrics", "actual receipt/digest/snapshot/cleanup proof", "retry fingerprint contract", "Windows/Linux truthful classification"]},
+    "test_execution_contract": null,
+    "role_execution_records": [],
+    "spec_compliance": {"selected": false, "activation_source": [], "expected_outcome": "not-applicable"},
+    "steps": ["design lane command/record contract", "implement fast and medium runners", "implement long actual-upgrade runner on real storage", "add aggregate and retry regressions", "run focused validation and commit"],
+    "validation": ["lane contract tests", "fast no-mutation checks", "medium/actual non-substitution checks", "long receipt schema checks", "retry budget tests"],
+    "commit_checkpoint": "validated #252 lane implementation",
+    "deferred_items": []
+  },
+  "results": {"summary": "", "files_changed": [], "approval_evidence": [], "test_execution": [], "role_execution_aggregation": [], "spec_compliance": {"outcome": "not-applicable", "coverage_percent": null, "evidence": []}, "validation_evidence": [], "commits": [], "follow_up_needed": true}
+}

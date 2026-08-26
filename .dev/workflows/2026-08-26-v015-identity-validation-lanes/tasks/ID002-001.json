@@ -1,0 +1,43 @@
+{
+  "template_id": "software-development-orchestrator/development-workflow-task",
+  "template_version": "1.5.0",
+  "template_created_at": "2026-07-10T18:25:11+08:00",
+  "template_updated_at": "2026-08-05T02:12:00+08:00",
+  "workflow_id": "2026-08-26-v015-identity-validation-lanes",
+  "task_id": "ID002-001",
+  "owner_skill": "ai-context-governance",
+  "related_plan_id": "development-plan-2026-08-26-v015-identity-validation-lanes",
+  "status": "in_progress",
+  "created_at": "2026-08-26T12:01:52+08:00",
+  "updated_at": "2026-08-26T12:01:52+08:00",
+  "template_source": ".ai/assets/skills/software-development-orchestrator/templates/development-workflow-task-template.json",
+  "model": "gpt-5.6-sol",
+  "reasoning_effort": "high",
+  "workflow_locator": ".dev/workflows/2026-08-26-v015-identity-validation-lanes/workflow.yaml",
+  "scope": {
+    "goal": "Semantically integrate the #250 version-aware public identity migration onto current main.",
+    "target": "distribution identity registry, package/archive consumers, v0.14-to-v0.15 route, workflows, docs, and focused tests",
+    "files": [],
+    "constraints": ["v0.14-and-earlier identity and bytes remain immutable", "v0.15 has one current public canonical identity", "dotnet-backend remains the technology profile", "consume rather than regress integrated #251/#249/#253 contracts"],
+    "non_goals": ["publication", "provider mutation", "CLI/registry/installer identity", "#213 allocator"]
+  },
+  "inputs": {
+    "requirements": ["GitHub Issue #250 live body", "owner naming contract"],
+    "specifications": ["historical #250 commits e9c4f9a1, 8f97ee59, c10105e4, 2497597b as non-authoritative source evidence"],
+    "architecture_decisions": ["explicit version-aware identity registry selection", "fail closed on unknown, mixed, ambiguous, or dual current canonical identity"],
+    "user_constraints": ["local delivery only", "semantic reconciliation against current main"]
+  },
+  "execution": {
+    "capability_slot": "implementation",
+    "approval_contract": {"status": "approved", "required_before": "implementation", "authorization_source": ["owner delegation in source thread", "GitHub Issue #250 delivery contract"], "pending_decision": ""},
+    "implementation_contract": {"intent": "feature", "execution_mode": "generic", "overlays": [], "authorization_source": ["owner delegation in source thread"], "normative_truth": ["GitHub Issue #250", "owner naming contract"], "finding_evidence": [], "subject_revision": "a1ca1d178fa193b0dc5ed3edc4c1775db45f001d", "acceptance_criteria": ["four v0.15 archive/sidecar forms", "legacy immutability", "identity parity", "fail-closed ambiguity", "v0.14-to-v0.15 route"]},
+    "test_execution_contract": null,
+    "role_execution_records": [],
+    "spec_compliance": {"selected": false, "activation_source": [], "expected_outcome": "not-applicable"},
+    "steps": ["resolve framework-source effective rules", "compare old branch semantics and dependencies with current main", "integrate non-overlap and manually reconcile overlap", "run focused identity/package/route validation", "record a durable commit"],
+    "validation": ["focused identity/package/upgrade tests", "workflow and source-governance validators", "git diff --check"],
+    "commit_checkpoint": "validated #250 semantic integration",
+    "deferred_items": []
+  },
+  "results": {"summary": "", "files_changed": [], "approval_evidence": [], "test_execution": [], "role_execution_aggregation": [], "spec_compliance": {"outcome": "not-applicable", "coverage_percent": null, "evidence": []}, "validation_evidence": [], "commits": [], "follow_up_needed": true}
+}

@@ -1,0 +1,43 @@
+schema_version: "1.0"
+workflow_id: "2026-08-26-v015-identity-validation-lanes"
+status: "implementation-in-progress"
+issues:
+  "250":
+    task_id: "ID002-001"
+    acceptance:
+      - {id: "ID002-AC-01", requirement: "v0.15 emits exactly four ai-collaboration-framework archive and sidecar names", required_evidence_kind: "synthetic-test", outcome: "pending"}
+      - {id: "ID002-AC-02", requirement: "v0.15 metadata and envelope contain no unintended legacy current canonical identity", required_evidence_kind: "synthetic-test", outcome: "pending"}
+      - {id: "ID002-AC-03", requirement: "dotnet-backend remains technology profile identity", required_evidence_kind: "unit", outcome: "pending"}
+      - {id: "ID002-AC-04", requirement: "v0.14 and earlier published names and bytes remain immutable", required_evidence_kind: "actual-execution", outcome: "pending"}
+      - {id: "ID002-AC-05", requirement: "explicit legacy source rule upgrades v0.14 to the new v0.15 identity", required_evidence_kind: "actual-execution", outcome: "pending"}
+      - {id: "ID002-AC-06", requirement: "unknown mixed ambiguous or dual current identities fail before publication or target mutation", required_evidence_kind: "synthetic-test", outcome: "pending"}
+      - {id: "ID002-AC-07", requirement: "archives sidecars metadata manifests workflows and release notes agree", required_evidence_kind: "synthetic-test", outcome: "pending"}
+      - {id: "ID002-AC-08", requirement: "deterministic validation needs no ambient GitHub credentials", required_evidence_kind: "unit", outcome: "pending"}
+      - {id: "ID002-AC-09", requirement: "Windows and Linux package route evidence is truthfully classified", required_evidence_kind: "actual-execution", outcome: "pending"}
+      - {id: "ID002-AC-10", requirement: "focused governance package and exact-head audit gates", required_evidence_kind: "actual-execution", outcome: "pending"}
+  "252":
+    task_id: "VAL009-001"
+    acceptance:
+      - {id: "VAL009-AC-01", requirement: "fast medium and long profiles are independently executable and independently fail", required_evidence_kind: "unit", outcome: "pending"}
+      - {id: "VAL009-AC-02", requirement: "fast identity failure performs no material target mutation", required_evidence_kind: "synthetic-test", outcome: "pending"}
+      - {id: "VAL009-AC-03", requirement: "medium clean install cannot satisfy actual published archive upgrade", required_evidence_kind: "synthetic-test", outcome: "pending"}
+      - {id: "VAL009-AC-04", requirement: "long terminal record binds source and candidate digests snapshot decision receipt payload fingerprint and legacy immutability", required_evidence_kind: "actual-execution", outcome: "pending"}
+      - {id: "VAL009-AC-05", requirement: "trusted Windows and Linux actual upgrade outcomes remain independent", required_evidence_kind: "actual-execution", outcome: "pending"}
+      - {id: "VAL009-AC-06", requirement: "retry budget requires a material state change and fresh authorization for attempt three", required_evidence_kind: "unit", outcome: "pending"}
+      - {id: "VAL009-AC-07", requirement: "durability lane uses real storage and never consumes AI_CONTEXT_TEST_TMP_ROOT", required_evidence_kind: "actual-execution", outcome: "pending"}
+      - {id: "VAL009-AC-08", requirement: "each phase records duration process count outcome digests and cleanup", required_evidence_kind: "actual-execution", outcome: "pending"}
+      - {id: "VAL009-AC-09", requirement: "one-wait snapshot process and freeze contracts remain compatible", required_evidence_kind: "actual-execution", outcome: "pending"}
+      - {id: "VAL009-AC-10", requirement: "focused lanes platform evidence and fresh exact-head audit", required_evidence_kind: "actual-execution", outcome: "pending"}
+graph_freshness:
+  project: "ai-collaboration-prompts-dotnet-backend-issue-250-252"
+  head_sha: "a1ca1d178fa193b0dc5ed3edc4c1775db45f001d"
+  coverage: "complete"
+  expected_nodes: 38375
+  indexed_nodes: 38375
+terminal_evidence:
+  root: ".dev/ai-context/local/validation/issue-250-252"
+  fast: null
+  medium: null
+  long_windows: null
+  long_linux: null
+  exact_head_audit: null
