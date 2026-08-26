@@ -649,12 +649,17 @@ class DeterministicPackageGwtTests(unittest.TestCase):
             ".dev/standards/SOURCE-WORK-MANAGEMENT-AUTHORITY.md",
             ".dev/standards/SOURCE-WORK-MANAGEMENT-AUTHORITY.yaml",
             ".dev/standards/GITHUB-WORK-MANAGEMENT-POLICY.yaml",
+            ".dev/guides/implementation-guides/PORTABLE-TEST-FIXTURE-ACCELERATION-GUIDE.md",
+            ".ai/scripts/run-test-fixture-profile.py",
+            ".ai/scripts/test_fixture_runtime.py",
+            ".ai/scripts/test-fixture-classifications.json",
         ):
             self.assertTrue(PACKAGE.is_excluded(source_only, exclusions))
-            self.assertNotIn(
-                f"]({Path(source_only).name})",
-                index,
-            )
+            if source_only.startswith(".dev/standards/"):
+                self.assertNotIn(
+                    f"]({Path(source_only).name})",
+                    index,
+                )
 
     def test_gwt_000b_given_source_effective_rule_policy_schema_and_evidence_when_built_then_downstream_excludes_them_and_retains_resolver(self) -> None:
         canonical_profile = yaml.safe_load(
