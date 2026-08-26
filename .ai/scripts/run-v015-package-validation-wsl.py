@@ -190,6 +190,10 @@ def extract_result(payload: bytes, destination: Path, expected_commit: str, lane
                 raise LauncherError("duplicate-result-member")
             for member in members:
                 name = normalized_member_name(member)
+                if member.isdir():
+                    if name != "output":
+                        raise LauncherError("unsafe-result-member")
+                    continue
                 if not member.isfile() or not (name in RESULT_MEMBERS or name.startswith("output/")):
                     raise LauncherError("unsafe-result-member")
                 source = archive.extractfile(member)

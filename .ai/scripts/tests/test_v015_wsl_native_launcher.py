@@ -41,6 +41,9 @@ def result_payload(*, subject: str = "a" * 40, lane: str = "long", filesystem: s
         ).encode(),
     }
     with tarfile.open(fileobj=buffer, mode="w") as archive:
+        output_directory = tarfile.TarInfo("output")
+        output_directory.type = tarfile.DIRTYPE
+        archive.addfile(output_directory)
         for name, content in files.items():
             info = tarfile.TarInfo(name)
             info.size = len(content)
