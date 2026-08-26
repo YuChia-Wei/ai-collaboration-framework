@@ -209,6 +209,8 @@ class V015PackageValidationLaneGwtTests(unittest.TestCase):
                 VALIDATION,
                 "validate_subject",
                 return_value={"commit": "e" * 40, "tree": "f" * 40, "status_sha256": "0" * 64},
+            ), mock.patch.object(
+                VALIDATION, "validate_lane_runtime"
             ), mock.patch.object(VALIDATION, "long_lane", side_effect=fake_long), mock.patch.dict(
                 os.environ, {"AI_CONTEXT_TEST_TMP_ROOT": str(Path(temporary) / "ram-root")}
             ):
@@ -281,6 +283,8 @@ class V015PackageValidationLaneGwtTests(unittest.TestCase):
                 VALIDATION,
                 "validate_subject",
                 return_value={"commit": "1" * 40, "tree": "2" * 40, "status_sha256": "3" * 64},
+            ), mock.patch.object(
+                VALIDATION, "validate_lane_runtime"
             ), mock.patch.object(VALIDATION, "medium_lane", side_effect=interrupted):
                 return_code, record = VALIDATION.execute_lane(
                     root=ROOT,
@@ -404,6 +408,34 @@ class V015PackageValidationLaneGwtTests(unittest.TestCase):
                 text=True,
             ).stdout.strip()
             self.assertEqual(expected_commit, parent)
+
+    def test_gwt_015_given_runtime_pin_mismatch_when_lane_starts_then_it_is_environment_blocked(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            output = Path(temporary) / "lane"
+            output.mkdir()
+            with mock.patch.object(VALIDATION, "validate_output_root", return_value=output), mock.patch.object(
+                VALIDATION,
+                "validate_subject",
+                return_value={"commit": "4" * 40, "tree": "5" * 40, "status_sha256": "6" * 64},
+            ), mock.patch.object(
+                VALIDATION.importlib_metadata, "version", return_value="6.0.1"
+            ):
+                return_code, record = VALIDATION.execute_lane(
+                    root=ROOT,
+                    lane="fast",
+                    expected_commit="4" * 40,
+                    output_dir=output,
+                )
+
+            self.assertEqual(1, return_code)
+            self.assertEqual("blocked-by-environment", record["outcome"])
+            self.assertEqual(
+                "runtime-dependency-version-mismatch",
+                record["evidence"]["reason_code"],
+            )
+            self.assertEqual("6.0.3", record["evidence"]["environment"]["expected_version"])
+            self.assertEqual("6.0.1", record["evidence"]["environment"]["observed_version"])
+            self.assertTrue((output / "terminal.json").is_file())
 
 
 if __name__ == "__main__":

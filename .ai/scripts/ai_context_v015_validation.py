@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import hashlib
+import importlib.metadata as importlib_metadata
 import json
 import os
 import platform
@@ -53,6 +54,15 @@ class ValidationError(RuntimeError):
         super().__init__(reason_code)
         self.reason_code = reason_code
         self.process_diagnostic = process_diagnostic
+
+
+class ValidationEnvironmentError(RuntimeError):
+    """A deterministic environment block with privacy-safe diagnostic fields."""
+
+    def __init__(self, reason_code: str, diagnostic: dict[str, object]) -> None:
+        super().__init__(reason_code)
+        self.reason_code = reason_code
+        self.diagnostic = diagnostic
 
 
 @dataclass(frozen=True)
@@ -175,6 +185,31 @@ def validate_subject(root: Path, expected_commit: str) -> dict[str, str]:
     require(snapshot["commit"] == expected_commit, "subject-commit-drift")
     require(snapshot["status"] == "", "subject-not-clean")
     return {key: value for key, value in snapshot.items() if key != "status"}
+
+
+def validate_lane_runtime(root: Path) -> None:
+    requirements = root / ".ai/distribution/templates/requirements.txt"
+    pins = [
+        line.strip()
+        for line in requirements.read_text(encoding="utf-8").splitlines()
+        if line.strip() and not line.lstrip().startswith("#")
+    ]
+    matches = [re.fullmatch(r"PyYAML==([^\s]+)", line) for line in pins]
+    expected = [match.group(1) for match in matches if match is not None]
+    require(len(expected) == 1, "runtime-pyyaml-pin-invalid")
+    try:
+        observed = importlib_metadata.version("PyYAML")
+    except importlib_metadata.PackageNotFoundError:
+        observed = "absent"
+    if observed != expected[0]:
+        raise ValidationEnvironmentError(
+            "runtime-dependency-version-mismatch",
+            {
+                "dependency": "PyYAML",
+                "expected_version": expected[0],
+                "observed_version": observed,
+            },
+        )
 
 
 def validate_output_root(root: Path, output: Path) -> Path:
@@ -771,6 +806,10 @@ def failure_details(lane: str, subject_commit: str, error: BaseException) -> tup
         outcome = "failed"
         reason = "execution-interrupted"
         failure_class = "interruption"
+    elif isinstance(error, ValidationEnvironmentError):
+        outcome = "blocked-by-environment"
+        reason = error.reason_code
+        failure_class = "environment"
     elif isinstance(error, ValidationError):
         outcome = "failed"
         reason = error.reason_code
@@ -797,6 +836,11 @@ def failure_details(lane: str, subject_commit: str, error: BaseException) -> tup
                 "subject_commit": subject_commit,
                 "platform": host_platform(),
                 "process": process_diagnostic_identity(error),
+                "environment": (
+                    error.diagnostic
+                    if isinstance(error, ValidationEnvironmentError)
+                    else None
+                ),
             }
         )
     )
@@ -886,6 +930,7 @@ def execute_lane(
     evidence: dict[str, object] = {}
     cleanup = {"outcome": "passed", "work_root_removed": False, "duration_ms": 0.0}
     try:
+        validate_lane_runtime(root)
         implementations = {"fast": fast_lane, "medium": medium_lane, "long": long_lane}
         evidence = implementations[lane](root, expected_commit, output, phases)
     except KeyboardInterrupt as error:
@@ -965,6 +1010,11 @@ def execute_lane(
         terminal["evidence"] = {
             **evidence,
             "reason_code": reason_code,
+            **(
+                {"environment": failure_error.diagnostic}
+                if isinstance(failure_error, ValidationEnvironmentError)
+                else {}
+            ),
             **({"diagnostic": diagnostic} if diagnostic is not None else {}),
         }
     validate_terminal_record(terminal)
