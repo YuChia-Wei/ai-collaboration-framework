@@ -12,7 +12,6 @@ import shutil
 import stat
 import subprocess
 import sys
-import tarfile
 import time
 import zipfile
 from dataclasses import dataclass
@@ -45,9 +44,15 @@ METRICS_PREFIX = "AI context package Git inspection: "
 class ValidationError(RuntimeError):
     """A deterministic contract failure with a path-free reason code."""
 
-    def __init__(self, reason_code: str) -> None:
+    def __init__(
+        self,
+        reason_code: str,
+        *,
+        process_diagnostic: dict[str, object] | None = None,
+    ) -> None:
         super().__init__(reason_code)
         self.reason_code = reason_code
+        self.process_diagnostic = process_diagnostic
 
 
 @dataclass(frozen=True)
@@ -105,7 +110,20 @@ def run(
         errors="replace",
     )
     if result.returncode != 0:
-        raise ValidationError(reason_code)
+        stdout_bytes = result.stdout.encode("utf-8")
+        stderr_bytes = result.stderr.encode("utf-8")
+        raise ValidationError(
+            reason_code,
+            process_diagnostic={
+                "exit_code": result.returncode,
+                "stdout_sha256": sha256_bytes(stdout_bytes),
+                "stdout_bytes": len(stdout_bytes),
+                "stderr_sha256": sha256_bytes(stderr_bytes),
+                "stderr_bytes": len(stderr_bytes),
+                "stdout": result.stdout,
+                "stderr": result.stderr,
+            },
+        )
     return result
 
 
@@ -224,30 +242,23 @@ def legacy_snapshot(root: Path) -> dict[str, str]:
     }
 
 
-def safe_extract_tar(archive: Path, destination: Path) -> None:
-    destination.mkdir(parents=True, exist_ok=True)
-    with tarfile.open(archive) as opened:
-        for member in opened.getmembers():
-            target = (destination / member.name).resolve()
-            require(target.is_relative_to(destination.resolve()), "source-archive-path-escape")
-        opened.extractall(destination)
-
-
 def create_synthetic_source(root: Path, expected_commit: str, work: Path) -> tuple[Path, str]:
-    archive = work / "source.tar"
     source = work / "synthetic-source"
     run(
-        ("git", "archive", "--format=tar", "--output", str(archive), expected_commit),
+        ("git", "clone", "--no-local", "--no-checkout", str(root), str(source)),
         cwd=root,
-        reason_code="synthetic-source-archive-failed",
+        reason_code="synthetic-source-clone-failed",
     )
-    safe_extract_tar(archive, source)
-    git(source, "init", "-q", reason_code="synthetic-source-git-init-failed")
+    git(source, "checkout", "--detach", expected_commit, reason_code="synthetic-source-checkout-failed")
+    require(
+        git(source, "rev-parse", "HEAD^{tree}").stdout.strip()
+        == git(root, "rev-parse", f"{expected_commit}^{{tree}}").stdout.strip(),
+        "synthetic-source-tree-mismatch",
+    )
+    require(not git(source, "status", "--porcelain").stdout, "synthetic-source-status-dirty")
     git(source, "config", "user.name", "Validation Fixture")
     git(source, "config", "user.email", "validation-fixture@example.invalid")
     git(source, "config", "core.longpaths", "true")
-    git(source, "add", ".", reason_code="synthetic-source-git-add-failed")
-    git(source, "commit", "-qm", "exact subject snapshot", reason_code="synthetic-source-baseline-commit-failed")
     release_path = source / ".dev/releases/v0.15.0/release.yaml"
     release_path.parent.mkdir(parents=True, exist_ok=True)
     release_document = {
@@ -265,7 +276,7 @@ def create_synthetic_source(root: Path, expected_commit: str, work: Path) -> tup
     }
     release_bytes = yaml.safe_dump(release_document, sort_keys=False).encode("utf-8")
     release_path.write_bytes(release_bytes)
-    git(source, "add", "--", ".dev/releases/v0.15.0/release.yaml")
+    git(source, "add", "-f", "--", ".dev/releases/v0.15.0/release.yaml")
     git(source, "commit", "-qm", "synthetic v0.15 validation candidate")
     return source, sha256_bytes(release_bytes)
 
@@ -277,6 +288,12 @@ def extract_zip(archive: Path, destination: Path) -> None:
             target = (destination / member.filename).resolve()
             require(target.is_relative_to(destination.resolve()), "package-archive-path-escape")
         opened.extractall(destination)
+        for member in opened.infolist():
+            if member.is_dir():
+                continue
+            mode = (member.external_attr >> 16) & 0o777
+            require(mode in {0o644, 0o755}, "package-archive-mode-invalid")
+            (destination / member.filename).chmod(mode)
 
 
 def build_candidate(root: Path, expected_commit: str, output: Path) -> Candidate:
@@ -693,6 +710,62 @@ def long_lane(root: Path, expected_commit: str, output: Path, phases: dict[str, 
     return evidence
 
 
+def process_diagnostic_identity(error: BaseException) -> dict[str, object] | None:
+    if not isinstance(error, ValidationError) or error.process_diagnostic is None:
+        return None
+    return {
+        key: error.process_diagnostic[key]
+        for key in (
+            "exit_code",
+            "stdout_sha256",
+            "stdout_bytes",
+            "stderr_sha256",
+            "stderr_bytes",
+        )
+    }
+
+
+def privacy_safe_tail(value: object, root: Path) -> str:
+    text = value if isinstance(value, str) else ""
+    for candidate in {str(root.resolve()), root.resolve().as_posix()}:
+        text = text.replace(candidate, "<repository>")
+    text = re.sub(
+        r"(?i)(?<![\w.-])(?:[a-z]:[\\/]|/(?:home|tmp|mnt|users)/)[^\s'\";]+",
+        "<absolute-path>",
+        text,
+    )
+    return text[-4096:]
+
+
+def persist_failure_diagnostic(
+    error: BaseException,
+    *,
+    root: Path,
+    output: Path,
+    reason_code: str,
+) -> dict[str, object] | None:
+    identity = process_diagnostic_identity(error)
+    if identity is None or not isinstance(error, ValidationError):
+        return None
+    assert error.process_diagnostic is not None
+    artifact = output / "artifacts/failure-diagnostic.json"
+    atomic_json(
+        artifact,
+        {
+            "schema_version": "v015-package-validation-failure-diagnostic/v1",
+            "reason_code": reason_code,
+            "process": identity,
+            "stdout_tail": privacy_safe_tail(error.process_diagnostic.get("stdout"), root),
+            "stderr_tail": privacy_safe_tail(error.process_diagnostic.get("stderr"), root),
+        },
+    )
+    return {
+        "artifact": "artifacts/failure-diagnostic.json",
+        "sha256": sha256_file(artifact),
+        "process": identity,
+    }
+
+
 def failure_details(lane: str, subject_commit: str, error: BaseException) -> tuple[str, str, str]:
     if isinstance(error, KeyboardInterrupt):
         outcome = "failed"
@@ -723,6 +796,7 @@ def failure_details(lane: str, subject_commit: str, error: BaseException) -> tup
                 "reason_code": reason,
                 "subject_commit": subject_commit,
                 "platform": host_platform(),
+                "process": process_diagnostic_identity(error),
             }
         )
     )
@@ -808,14 +882,17 @@ def execute_lane(
     outcome = "passed"
     reason_code: str | None = None
     fingerprint: str | None = None
+    failure_error: BaseException | None = None
     evidence: dict[str, object] = {}
     cleanup = {"outcome": "passed", "work_root_removed": False, "duration_ms": 0.0}
     try:
         implementations = {"fast": fast_lane, "medium": medium_lane, "long": long_lane}
         evidence = implementations[lane](root, expected_commit, output, phases)
     except KeyboardInterrupt as error:
+        failure_error = error
         outcome, reason_code, fingerprint = failure_details(lane, expected_commit, error)
     except Exception as error:  # terminal reporting must cover every admitted execution
+        failure_error = error
         outcome, reason_code, fingerprint = failure_details(lane, expected_commit, error)
     finally:
         cleanup_started = time.perf_counter_ns()
@@ -830,8 +907,9 @@ def execute_lane(
             cleanup["outcome"] = "failed"
             cleanup["work_root_removed"] = False
             if outcome == "passed":
+                failure_error = ValidationError("cleanup-failed")
                 outcome, reason_code, fingerprint = failure_details(
-                    lane, expected_commit, ValidationError("cleanup-failed")
+                    lane, expected_commit, failure_error
                 )
         cleanup["duration_ms"] = round((time.perf_counter_ns() - cleanup_started) / 1_000_000, 3)
         phases["cleanup"] = {
@@ -874,7 +952,21 @@ def execute_lane(
         "failure_fingerprint": fingerprint,
     }
     if reason_code is not None:
-        terminal["evidence"] = {**evidence, "reason_code": reason_code}
+        diagnostic = (
+            persist_failure_diagnostic(
+                failure_error,
+                root=root,
+                output=output,
+                reason_code=reason_code,
+            )
+            if failure_error is not None
+            else None
+        )
+        terminal["evidence"] = {
+            **evidence,
+            "reason_code": reason_code,
+            **({"diagnostic": diagnostic} if diagnostic is not None else {}),
+        }
     validate_terminal_record(terminal)
     atomic_json(output / "terminal.json", terminal)
     return (0 if outcome == "passed" else 1), terminal

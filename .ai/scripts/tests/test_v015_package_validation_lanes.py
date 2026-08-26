@@ -5,9 +5,12 @@ from __future__ import annotations
 
 import json
 import os
+import stat
+import subprocess
 import sys
 import tempfile
 import unittest
+import zipfile
 from pathlib import Path
 from unittest import mock
 
@@ -291,6 +294,116 @@ class V015PackageValidationLaneGwtTests(unittest.TestCase):
             self.assertEqual("execution-interrupted", record["evidence"]["reason_code"])
             self.assertTrue(record["cleanup"]["work_root_removed"])
             self.assertTrue((output / "terminal.json").is_file())
+
+    def test_gwt_011_given_distinct_process_failures_when_fingerprinted_then_they_do_not_collapse(self) -> None:
+        def diagnostic(stderr: str) -> dict[str, object]:
+            encoded = stderr.encode("utf-8")
+            return {
+                "exit_code": 1,
+                "stdout_sha256": VALIDATION.sha256_bytes(b""),
+                "stdout_bytes": 0,
+                "stderr_sha256": VALIDATION.sha256_bytes(encoded),
+                "stderr_bytes": len(encoded),
+                "stdout": "",
+                "stderr": stderr,
+            }
+
+        first = VALIDATION.ValidationError(
+            "long-upgrade-plan-failed",
+            process_diagnostic=diagnostic("first planner failure"),
+        )
+        second = VALIDATION.ValidationError(
+            "long-upgrade-plan-failed",
+            process_diagnostic=diagnostic("second planner failure"),
+        )
+
+        self.assertNotEqual(
+            VALIDATION.failure_details("long", "a" * 40, first)[2],
+            VALIDATION.failure_details("long", "a" * 40, second)[2],
+        )
+
+    def test_gwt_012_given_process_failure_when_persisted_then_paths_are_redacted_and_bytes_are_digest_bound(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            output = root / "lane"
+            private = f"{root.as_posix()}/private-input"
+            stderr = f"AI context package apply failed: {private}; /home/operator/private\n"
+            encoded = stderr.encode("utf-8")
+            error = VALIDATION.ValidationError(
+                "long-upgrade-plan-failed",
+                process_diagnostic={
+                    "exit_code": 1,
+                    "stdout_sha256": VALIDATION.sha256_bytes(b""),
+                    "stdout_bytes": 0,
+                    "stderr_sha256": VALIDATION.sha256_bytes(encoded),
+                    "stderr_bytes": len(encoded),
+                    "stdout": "",
+                    "stderr": stderr,
+                },
+            )
+
+            evidence = VALIDATION.persist_failure_diagnostic(
+                error,
+                root=root,
+                output=output,
+                reason_code="long-upgrade-plan-failed",
+            )
+
+            self.assertIsNotNone(evidence)
+            artifact = output / "artifacts/failure-diagnostic.json"
+            content = artifact.read_text(encoding="utf-8")
+            self.assertNotIn(str(root), content)
+            self.assertNotIn("/home/operator", content)
+            self.assertEqual(VALIDATION.sha256_file(artifact), evidence["sha256"])
+
+    @unittest.skipIf(os.name == "nt", "POSIX archive mode semantics")
+    def test_gwt_013_given_zip_executable_mode_when_extracted_then_mode_is_restored(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            archive = root / "candidate.zip"
+            info = zipfile.ZipInfo("payload/tool.sh")
+            info.external_attr = 0o755 << 16
+            with zipfile.ZipFile(archive, "w") as opened:
+                opened.writestr(info, "#!/bin/sh\n")
+
+            destination = root / "extracted"
+            VALIDATION.extract_zip(archive, destination)
+
+            self.assertEqual(0o755, stat.S_IMODE((destination / "payload/tool.sh").stat().st_mode))
+
+    def test_gwt_014_given_exact_subject_when_synthetic_release_is_added_then_parent_tree_is_unchanged(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary) / "source"
+            root.mkdir()
+            subprocess.run(["git", "init", "-q", str(root)], check=True)
+            subprocess.run(["git", "-C", str(root), "config", "user.name", "Fixture"], check=True)
+            subprocess.run(["git", "-C", str(root), "config", "user.email", "fixture@example.invalid"], check=True)
+            (root / ".gitignore").write_text("ignored.txt\n", encoding="utf-8")
+            (root / "ignored.txt").write_text("tracked despite ignore\n", encoding="utf-8")
+            subprocess.run(["git", "-C", str(root), "add", "-f", ".gitignore", "ignored.txt"], check=True)
+            subprocess.run(["git", "-C", str(root), "commit", "-qm", "subject"], check=True)
+            expected_commit = subprocess.run(
+                ["git", "-C", str(root), "rev-parse", "HEAD"],
+                check=True,
+                capture_output=True,
+                text=True,
+            ).stdout.strip()
+
+            work = Path(temporary) / "work"
+            work.mkdir()
+            synthetic, _ = VALIDATION.create_synthetic_source(
+                root,
+                expected_commit,
+                work,
+            )
+
+            parent = subprocess.run(
+                ["git", "-C", str(synthetic), "rev-parse", "HEAD^"],
+                check=True,
+                capture_output=True,
+                text=True,
+            ).stdout.strip()
+            self.assertEqual(expected_commit, parent)
 
 
 if __name__ == "__main__":
