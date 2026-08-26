@@ -594,10 +594,14 @@ class PackageValidationTests(unittest.TestCase):
 
     def test_given_cli_when_complete_envelope_is_given_then_summary_excludes_source_only_tests(self) -> None:
         package_root = build_fixture(self.root)
-        cli = package_root / "payload" / ".ai/scripts/validate-ai-context-payload.py"
 
         result = subprocess.run(
-            [sys.executable, str(cli), "--package-root", "."],
+            [
+                sys.executable,
+                "payload/.ai/scripts/validate-ai-context-payload.py",
+                "--package-root",
+                ".",
+            ],
             cwd=package_root,
             capture_output=True,
             text=True,
