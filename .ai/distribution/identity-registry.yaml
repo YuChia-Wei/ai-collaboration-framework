@@ -1,9 +1,29 @@
-schema_version: "1.0"
+schema_version: "1.1"
 schema: ".ai/distribution/schemas/identity-registry.schema.yaml"
 registry_id: "ai-collaboration-framework-product-identities"
 issue: 166
 status: "active"
 owner_skill: "ai-context-governance"
+
+package_identity_policy:
+  schema_version: "1.0"
+  policy_id: "public-package-identity-v1"
+  issue: 250
+  resolution: "explicit-version-range"
+  ambiguity: "fail-closed"
+  filename_inference: "forbidden"
+  public_canonical_identity_id: "package.ai-collaboration-framework"
+  rules:
+    - rule_id: "through-v0.14"
+      identity_id: "package.ai-context-dotnet-backend-legacy"
+      status: "legacy-published-compatible"
+      minimum_version: null
+      maximum_version_exclusive: "v0.15.0"
+    - rule_id: "from-v0.15"
+      identity_id: "package.ai-collaboration-framework"
+      status: "current-public-canonical"
+      minimum_version: "v0.15.0"
+      maximum_version_exclusive: null
 
 identity_records:
   - id: "repository.framework-source"
@@ -113,14 +133,14 @@ identity_records:
       historical_rewrite: false
       notes: "Retain because this value describes technology capability, not the repository name."
 
-  - id: "package.dotnet-backend-context"
+  - id: "package.ai-context-dotnet-backend-legacy"
     kind: "archive-package"
     canonical_value: "ai-context-dotnet-backend-v{version}"
-    display_name: ".NET backend AI context package"
+    display_name: "Legacy .NET backend AI context package"
     owner: "release-owner"
-    scope: "Package ID, envelope root, and public archive base name for the dotnet-backend profile."
-    version_authority: ".ai/distribution/profiles/dotnet-backend.yaml#package.name_template"
-    status: "active"
+    scope: "Legacy-compatible package ID, envelope root, and public archive base for versions before v0.15.0."
+    version_authority: ".ai/distribution/identity-registry.yaml#package_identity_policy"
+    status: "legacy-compatible"
     forms:
       package_id_template: "ai-context-dotnet-backend-v{version}"
       zip_template: "ai-context-dotnet-backend-v{version}.zip"
@@ -179,11 +199,33 @@ identity_records:
           historical_rewrite: false
           notes: "Preserve exact published checksum sidecar identity."
     deprecation_policy:
+      mode: "compatibility"
+      replacement: "package.ai-collaboration-framework"
+      removal_target: null
+      historical_rewrite: false
+      notes: "Resolve only versions before v0.15.0; preserve every published instance and never rewrite source evidence."
+
+  - id: "package.ai-collaboration-framework"
+    kind: "archive-package"
+    canonical_value: "ai-collaboration-framework-v{version}"
+    display_name: "AI Collaboration Framework package"
+    owner: "release-owner"
+    scope: "Package ID, envelope root, and public archive base for v0.15.0 and later."
+    version_authority: ".ai/distribution/identity-registry.yaml#package_identity_policy"
+    status: "active"
+    forms:
+      package_id_template: "ai-collaboration-framework-v{version}"
+      zip_template: "ai-collaboration-framework-v{version}.zip"
+      zip_checksum_template: "ai-collaboration-framework-v{version}.zip.sha256"
+      tar_gz_template: "ai-collaboration-framework-v{version}.tar.gz"
+      tar_gz_checksum_template: "ai-collaboration-framework-v{version}.tar.gz.sha256"
+    aliases: []
+    deprecation_policy:
       mode: "none"
       replacement: null
       removal_target: null
       historical_rewrite: false
-      notes: "No renamed archive alias currently exists. A future rename requires a separate compatibility migration and cannot rewrite published instances."
+      notes: "This is the single current public package and archive identity beginning with v0.15.0."
 
   - id: "skill.software-development-orchestrator"
     kind: "canonical-skill"
@@ -247,16 +289,21 @@ bindings:
     target: "product.ai-collaboration-framework"
     relationship: "must-remain-distinct"
     rationale: "Repository rename does not authorize or imply a product rename, and product identity does not define Git coordinates."
-  - id: "profile-qualified-package"
+  - id: "profile-package-separation"
     source: "technology-profile.dotnet-backend"
-    target: "package.dotnet-backend-context"
-    relationship: "derives-name-from"
-    rationale: "The archive remains technology-profile-qualified even though the repository has a broader product name."
+    target: "package.ai-collaboration-framework"
+    relationship: "must-remain-distinct"
+    rationale: "The dotnet-backend technology component remains stable and is not inferred from the public archive name."
   - id: "release-package-version"
     source: "release.framework"
-    target: "package.dotnet-backend-context"
+    target: "package.ai-collaboration-framework"
     relationship: "shares-version-with"
     rationale: "Release and package instances share a version without sharing one semantic identity."
+  - id: "release-legacy-package-version"
+    source: "release.framework"
+    target: "package.ai-context-dotnet-backend-legacy"
+    relationship: "shares-version-with"
+    rationale: "Historical release and package instances retain their shared immutable version identity through v0.14.0."
 
 future_namespaces:
   - id: "toolchain-repository"
@@ -289,12 +336,11 @@ consumer_contracts:
     selector: "profile.id"
     identity_id: "technology-profile.dotnet-backend"
     identity_field: "forms.profile_id"
-  - id: "distribution-package-template"
-    kind: "yaml-value"
+  - id: "distribution-package-policy"
+    kind: "package-policy"
     path: ".ai/distribution/profiles/dotnet-backend.yaml"
-    selector: "package.name_template"
-    identity_id: "package.dotnet-backend-context"
-    identity_field: "canonical_value"
+    registry_selector: "package.identity_registry"
+    policy_selector: "package.identity_policy"
   - id: "distribution-release-model"
     kind: "yaml-value"
     path: ".ai/distribution/profiles/dotnet-backend.yaml"
@@ -315,7 +361,7 @@ consumer_contracts:
     kind: "release-family"
     path_glob: ".dev/releases/v*/release.yaml"
     release_identity_id: "release.framework"
-    package_identity_id: "package.dotnet-backend-context"
+    package_identity_policy_id: "public-package-identity-v1"
   - id: "v0.6.0-skill-transition"
     kind: "skill-transition"
     path: ".ai/assets/skills/transitions/v0.6.0.yaml"

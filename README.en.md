@@ -93,6 +93,14 @@ The target owns its SDK, target framework, Roslyn and test-package versions, pro
 
 Obtain the appropriate portable AI context package from a published release instead of copying this entire source repository. A package is a versioned framework payload, not an overwrite snapshot of the whole repository.
 
+Public package/archive naming is version-aware. v0.14.x and earlier releases
+retain `ai-context-dotnet-backend-v{version}`; v0.15.0 and later releases use
+`ai-collaboration-framework-v{version}`. Each version exposes exactly the
+resolved base's `.zip`, `.zip.sha256`, `.tar.gz`, and `.tar.gz.sha256` assets.
+`dotnet-backend` remains the technology-profile identity, not the v0.15+
+product archive base. The v0.7.0 examples below therefore keep their
+historically correct legacy name.
+
 | Target state | Correct flow |
 | --- | --- |
 | First framework adoption in an empty or existing repository | Use the package planner described in **Clean installation**, then run `ai-context-init`. |

@@ -1,4 +1,4 @@
-schema_version: 2.3.0
+schema_version: 2.4.0
 document: package.yaml
 required:
   - schema_version
@@ -17,7 +17,13 @@ required:
   - validation
 properties:
   schema_version: semver
-  package_id: non-empty-string
+  package_id:
+    type: non-empty-string
+    version_aware_identity:
+      policy: public-package-identity-v1
+      before_v0_15: ai-context-dotnet-backend-v{version}
+      from_v0_15: ai-collaboration-framework-v{version}
+      unknown_mixed_or_ambiguous: fail-closed
   profile_id: non-empty-string
   version: semver-without-v-prefix
   release_id: REL-vMAJOR.MINOR.PATCH
@@ -91,10 +97,21 @@ properties:
   identity:
     required:
       - schema_version
+      - package_identity_policy
+      - identity_rule
+      - public_artifact_base
       - selected_input_fingerprint
       - payload_fingerprint
       - files_manifest_digest
       - migration_digest
+    properties:
+      schema_version:
+        const: 1.1.0
+      package_identity_policy:
+        enum: [public-package-identity-v1, profile-local-template]
+      identity_rule: non-empty-string
+      public_artifact_base:
+        equals: package_id-and-envelope-root
   validation:
     required:
       - schema_version
@@ -118,3 +135,4 @@ read_compatibility:
   - "2.0.0"
   - "2.1.0"
   - "2.2.0"
+  - "2.3.0"

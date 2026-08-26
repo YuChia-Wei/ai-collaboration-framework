@@ -20,16 +20,25 @@ GitHub 在 2026-08-09 對舊 repository URL 回傳 HTTP 301 並導向新座標�
 | Security report URL | 舊 advisory URL 目前導向新路徑，但未登入的 HTTP probe只能確認 routing，不能證明已登入表單可提交。 | 使用 `https://github.com/YuChia-Wei/ai-collaboration-framework/security/advisories/new`，並由 repository owner 在登入狀態完成 read-back。 |
 | Release download URL | 已發布 asset 與檔名不可重建或改寫；舊 repository URL 的 redirect 不是未來 automation contract。 | 新文件與 automation 使用 `https://github.com/YuChia-Wei/ai-collaboration-framework/releases/download/<tag>/<asset>`；保留既有 tag、Release、asset bytes 與 checksum。 |
 
-## 不隨 Repository Rename 自動變更的 Identity
+## Package Identity 的後續獨立決策
 
 Repository identity 與 public product、framework release、archive／package base
-name、technology profile、namespace 及 CLI identity 是不同決策面。這次 rename
-不會自動更名 `dotnet-backend`、`ai-context-dotnet-backend-v<version>` 或其他
-產品與執行介面；相關盤點與決策由 GitHub Issue #166 管理。
+name、technology profile、namespace 及 CLI identity 是不同決策面。Repository
+rename 本身未自動變更任何 package bytes；GitHub Issue #250 後續另行定義下列
+version-aware contract：
+
+| Framework version | Canonical public package/archive base |
+| --- | --- |
+| `<= v0.14.x` | `ai-context-dotnet-backend-v{version}` |
+| `>= v0.15.0` | `ai-collaboration-framework-v{version}` |
+
+`dotnet-backend` 仍是 technology profile/component identity。CLI、binary、
+registry、installer 與 toolchain identity 不屬於這個 package rename。
 
 ## 歷史與相容性邊界
 
 - 不重寫 Git history、既有 tag、Release、asset、final assessment 或 completed workflow。
+- v0.14.0 與更早版本的 package IDs、archive names、route assets、checksums、receipts 與 published bytes 保持原樣；新版 reader 只提供讀取相容性，不重新命名舊證據。
 - Time-pinned provider mapping receipt 保留建立／read-back 當時的 repository URL。
 - 新增 current operational surface 時不得再引入 retired repository name；source-only validator 會 fail closed。
 - 若第三方仍依賴舊 URL，先記錄 owner、用途、預期 redirect behavior 與移除條件，再新增明確的 compatibility classification。

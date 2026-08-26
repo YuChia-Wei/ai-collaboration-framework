@@ -305,6 +305,63 @@ class AiContextVersionGovernanceGwtTests(unittest.TestCase):
             VALIDATE.expected_publication("v0.11.0"),
         )
 
+    def test_gwt_011c_given_v015_release_metadata_when_validated_then_new_public_identity_is_required(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            release = root / ".dev/releases/v0.15.0/release.yaml"
+            release.parent.mkdir(parents=True)
+            for artifact in ("release-notes.md", "migration-guide.md"):
+                (release.parent / artifact).write_text("synthetic candidate\n", encoding="utf-8")
+            base = "ai-collaboration-framework-v0.15.0"
+            data = {
+                "release_id": "REL-v0.15.0",
+                "version": "v0.15.0",
+                "status": "planned",
+                "record_origin": "governed",
+                "distribution_kind": "governed-package",
+                "installable": True,
+                "tag": None,
+                "commit": None,
+                "compatibility": {
+                    "breaking_changes": False,
+                    "minimum_source_version": "v0.14.0",
+                    "reconciliation_sources": ["v0.14.0"],
+                    "automatic_upgrade_sources": ["v0.14.0"],
+                },
+                "distribution": {
+                    "profile_id": "dotnet-backend",
+                    "package_id": base,
+                    "schema_versions": {"package": "2.4.0", "files": "2.0.0", "migration": "3.0.0"},
+                    "artifacts": {
+                        "zip": f"{base}.zip",
+                        "zip_checksum": f"{base}.zip.sha256",
+                        "tar_gz": f"{base}.tar.gz",
+                        "tar_gz_checksum": f"{base}.tar.gz.sha256",
+                    },
+                    "migration": {
+                        "default_mode": "dry-run",
+                        "apply_requires_clean_worktree": True,
+                        "apply_requires_acknowledged_reconciliation": True,
+                    },
+                    "publication": {
+                        "tag_owner": "user",
+                        "trigger": "user-created-tag",
+                        "automation": "github-actions",
+                        "creates_or_moves_tag": False,
+                    },
+                },
+            }
+            release.write_text(yaml.safe_dump(data, sort_keys=False), encoding="utf-8")
+            errors: list[str] = []
+            VALIDATE.validate_release(release, root, errors, verify_git=False)
+            self.assertEqual([], errors)
+
+            data["distribution"]["package_id"] = "ai-context-dotnet-backend-v0.15.0"
+            release.write_text(yaml.safe_dump(data, sort_keys=False), encoding="utf-8")
+            errors = []
+            VALIDATE.validate_release(release, root, errors, verify_git=False)
+            self.assertTrue(any("ai-collaboration-framework-v0.15.0" in error for error in errors))
+
     def test_gwt_012_given_governed_candidate_with_drift_when_validated_then_it_fails_closed(
         self,
     ):

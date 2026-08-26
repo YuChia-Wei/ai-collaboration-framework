@@ -95,6 +95,9 @@ def build_fixture(
         ".ai/scripts/ai_context_package_validation.py": (
             SCRIPTS / "ai_context_package_validation.py"
         ).read_bytes(),
+        ".ai/scripts/ai_context_package_identity.py": (
+            SCRIPTS / "ai_context_package_identity.py"
+        ).read_bytes(),
         ".ai/scripts/python-entrypoints.json": json.dumps(
             {
                 "schema_version": "1.0",
@@ -144,6 +147,7 @@ def build_fixture(
     component_by_path = {
         VALIDATOR_PATH: "ai-context-lifecycle-core",
         ".ai/scripts/ai_context_package_validation.py": "ai-context-lifecycle-core",
+        ".ai/scripts/ai_context_package_identity.py": "ai-context-lifecycle-core",
         ".ai/assets/shared/example.md": "demo",
     }
     records = [

@@ -61,7 +61,8 @@ component_identity:
 
 package:
   source_repository: https://github.com/YuChia-Wei/ai-collaboration-framework
-  name_template: ai-context-dotnet-backend-v{version}
+  identity_registry: .ai/distribution/identity-registry.yaml
+  identity_policy: public-package-identity-v1
   formats:
     - zip
     - tar.gz
@@ -143,6 +144,7 @@ entries:
         patterns:
           - .ai/scripts/README.md
           - .ai/scripts/ai_context_package_apply.py
+          - .ai/scripts/ai_context_package_identity.py
           - .ai/scripts/ai_context_cli_routing.py
           - .ai/scripts/ai_context_effective_rules.py
           - .ai/scripts/ai_context_multi_hop_upgrade.py
@@ -468,6 +470,7 @@ exclusions:
       - .ai/scripts/validate-immutable-history.py
       - .ai/scripts/ai_context_release_closeout.py
       - .ai/scripts/validate-ai-context-versions.py
+      - .ai/scripts/resolve-ai-context-package-identity.py
       - .ai/scripts/validate-source-governance.py
       - .ai/scripts/validate-source-dispositions.py
       - .ai/scripts/validate-source-work-management.py

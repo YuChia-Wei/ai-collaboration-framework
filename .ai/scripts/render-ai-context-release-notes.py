@@ -16,6 +16,7 @@ from python_prerequisites import guard_direct_entrypoint
 
 guard_direct_entrypoint(".ai/scripts/render-ai-context-release-notes.py")
 
+from ai_context_package_identity import expected_package_id
 import yaml
 
 
@@ -490,7 +491,7 @@ def render_body_text(
 ) -> str:
     version = data["version"]
     release_id = data["release_id"]
-    package_id = f"ai-context-dotnet-backend-{version}"
+    package_id = expected_package_id(version)
     body = [
             f"<!-- ai-context-release-automation: {release_id} -->",
             "",
@@ -583,7 +584,7 @@ def main() -> int:
             "release_id": data["release_id"],
             "title": data["release_id"],
             "commit": commit,
-            "package_id": f"ai-context-dotnet-backend-{version}",
+            "package_id": expected_package_id(version),
             "migration_source": next(
                 iter(data["compatibility"].get("automatic_upgrade_sources", [])),
                 "",

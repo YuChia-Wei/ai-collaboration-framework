@@ -241,6 +241,16 @@ class ReleaseNotesRendererTests(unittest.TestCase):
         rendered = RENDERER.render_body_text(data, "# Notes", "# Migration", COMMIT)
         self.assertNotIn("## Included Work", rendered)
 
+    def test_gwt_006a_given_v015_release_when_rendered_then_public_package_identity_uses_framework_base(self) -> None:
+        data = release_record("3.0.0", ["v0.14.0"])
+        data.update({"release_id": "REL-v0.15.0", "version": "v0.15.0"})
+        data["planning"] = {"github_issue_refs": ["#250"]}
+
+        rendered = RENDERER.render_body_text(data, "# Notes", "# Migration", COMMIT)
+
+        self.assertIn("Package: `ai-collaboration-framework-v0.15.0`", rendered)
+        self.assertNotIn("Package: `ai-context-dotnet-backend-v0.15.0`", rendered)
+
     def test_gwt_007_given_published_record_when_rendered_then_phase_truth_is_preserved(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)

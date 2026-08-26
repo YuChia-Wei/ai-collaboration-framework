@@ -21,6 +21,13 @@ from typing import Iterable
 
 import yaml
 
+from ai_context_package_identity import (
+    POLICY_ID as PUBLIC_PACKAGE_IDENTITY_POLICY,
+    PackageIdentityError,
+    expected_rule,
+    resolve_registry_identity,
+)
+
 
 VERSION_RE = re.compile(r"^v?(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)$")
 SHA256_RE = re.compile(r"^[0-9a-f]{64}$")
@@ -53,9 +60,9 @@ TARGET_OWNED_REFERENCE_PATTERNS = (
     ".dev/ai-context/local/**",
     ".dev/validation.local.conf",
 )
-COMPONENT_PACKAGE_SCHEMAS = {"2.0.0", "2.1.0", "2.2.0", "2.3.0"}
-IDENTITY_PACKAGE_SCHEMAS = {"1.1.0", "2.1.0", "2.2.0", "2.3.0"}
-PORTABLE_VALIDATION_PACKAGE_SCHEMAS = {"2.3.0"}
+COMPONENT_PACKAGE_SCHEMAS = {"2.0.0", "2.1.0", "2.2.0", "2.3.0", "2.4.0"}
+IDENTITY_PACKAGE_SCHEMAS = {"1.1.0", "2.1.0", "2.2.0", "2.3.0", "2.4.0"}
+PORTABLE_VALIDATION_PACKAGE_SCHEMAS = {"2.3.0", "2.4.0"}
 PAYLOAD_USER_VIEW_CLASSIFICATIONS = {
     "markdown_local_links": "required-local-navigation",
     "markdown_anchors": "required-local-anchor",
@@ -1822,11 +1829,48 @@ def build_package(
     profile = load_yaml_blob(repo, tree, profile_path, snapshot.blob_reader)
     version = normalize_version(version_value)
     profile_id = profile.get("profile", {}).get("id")
-    name_template = profile.get("package", {}).get("name_template")
-    source_repository = profile.get("package", {}).get("source_repository")
-    if not all(isinstance(item, str) and item for item in (profile_id, name_template, source_repository)):
+    package_contract = profile.get("package")
+    if not isinstance(package_contract, dict):
         raise PackageError("profile package identity is incomplete")
-    package_id = name_template.format(version=version)
+    source_repository = package_contract.get("source_repository")
+    if not all(isinstance(item, str) and item for item in (profile_id, source_repository)):
+        raise PackageError("profile package identity is incomplete")
+    registry_path = package_contract.get("identity_registry")
+    policy_id = package_contract.get("identity_policy")
+    name_template = package_contract.get("name_template")
+    identity_registry: dict | None = None
+    if registry_path is not None or policy_id is not None:
+        if not all(isinstance(item, str) and item for item in (registry_path, policy_id)):
+            raise PackageError("profile package identity registry and policy must be complete")
+        registry_entry = tree.get(str(registry_path))
+        if registry_entry is None:
+            raise PackageError("profile package identity registry is absent from the source tree")
+        try:
+            loaded_registry = yaml.safe_load(
+                git_blob(repo, registry_entry, snapshot.blob_reader)
+            )
+        except yaml.YAMLError as exc:
+            raise PackageError(f"cannot parse package identity registry: {exc}") from exc
+        if not isinstance(loaded_registry, dict):
+            raise PackageError("package identity registry root must be a mapping")
+        identity_registry = loaded_registry
+        try:
+            resolved_identity = resolve_registry_identity(identity_registry, version)
+        except PackageIdentityError as exc:
+            raise PackageError(f"package identity cannot be resolved: {exc}") from exc
+        if policy_id != resolved_identity["policy_id"]:
+            raise PackageError("profile package identity policy does not match the registry")
+        package_id = str(resolved_identity["package_id"])
+        package_identity_policy = str(resolved_identity["policy_id"])
+        package_identity_rule = str(resolved_identity["rule_id"])
+    elif isinstance(name_template, str) and name_template and profile_id != "dotnet-backend":
+        package_id = name_template.format(version=version)
+        package_identity_policy = "profile-local-template"
+        package_identity_rule = "profile.name_template"
+    else:
+        raise PackageError(
+            "canonical dotnet-backend packages require the governed identity registry policy"
+        )
     source_inputs = migration_source_inputs(
         previous_files_path,
         previous_version_value,
@@ -1915,7 +1959,18 @@ def build_package(
         clean_install_operations.append(operation)
     migration_sources: list[dict] = []
     for previous_version, source_path in source_inputs:
-        previous_package_id = name_template.format(version=previous_version)
+        if identity_registry is not None:
+            try:
+                previous_package_id = str(
+                    resolve_registry_identity(identity_registry, previous_version)["package_id"]
+                )
+            except PackageIdentityError as exc:
+                raise PackageError(
+                    f"previous package identity cannot be resolved: {exc}"
+                ) from exc
+        else:
+            assert isinstance(name_template, str)
+            previous_package_id = name_template.format(version=previous_version)
         previous, previous_sha = load_previous_inventory(
             source_path, previous_package_id
         )
@@ -1962,6 +2017,13 @@ def build_package(
             repo, requirements_entry, snapshot.blob_reader
         ),
     }
+    if identity_registry is not None:
+        assert isinstance(registry_path, str)
+        registry_entry = tree.get(registry_path)
+        assert registry_entry is not None
+        source_input_bytes[registry_path] = git_blob(
+            repo, registry_entry, snapshot.blob_reader
+        )
     payload_sha = payload_digest(payload_files)
     selected_inputs_document = selected_input_document(
         source_input_bytes,
@@ -1982,7 +2044,7 @@ def build_package(
         validation_content = canonical_json_bytes(validation_document)
     package_document = {
         "schema_version": (
-            "2.3.0"
+            "2.4.0"
             if component_aware and user_view_contract is not None
             else "2.1.0" if component_aware else "1.1.0"
         ),
@@ -1999,7 +2061,10 @@ def build_package(
         "created_at": created_at,
         "source_date_epoch": epoch,
         "identity": {
-            "schema_version": "1.0.0",
+            "schema_version": "1.1.0",
+            "package_identity_policy": package_identity_policy,
+            "identity_rule": package_identity_rule,
+            "public_artifact_base": package_id,
             "selected_input_fingerprint": selected_inputs_sha,
             "payload_fingerprint": payload_sha,
             "files_manifest_digest": files_sha,
@@ -2068,6 +2133,8 @@ def build_package(
         )
     return {
         "package_id": package_id,
+        "package_identity_policy": package_identity_policy,
+        "package_identity_rule": package_identity_rule,
         "commit": commit,
         "tree": snapshot.tree_sha,
         "selected_input_fingerprint": selected_inputs_sha,
@@ -2273,8 +2340,33 @@ def validate_archive(path: Path) -> dict[str, tuple[bytes, int]]:
             for key in ("commit", "tree")
         ):
             raise PackageError("package source identity requires commit and tree SHA")
-        if not isinstance(identity, dict) or identity.get("schema_version") != "1.0.0":
+        expected_identity_schema = "1.1.0" if package_schema == "2.4.0" else "1.0.0"
+        if not isinstance(identity, dict) or identity.get("schema_version") != expected_identity_schema:
             raise PackageError("package identity schema is missing or unsupported")
+        if package_schema == "2.4.0":
+            expected_fields = {
+                "schema_version",
+                "package_identity_policy",
+                "identity_rule",
+                "public_artifact_base",
+                "selected_input_fingerprint",
+                "payload_fingerprint",
+                "files_manifest_digest",
+                "migration_digest",
+            }
+            if set(identity) != expected_fields or identity.get("public_artifact_base") != root:
+                raise PackageError("package public artifact identity is incomplete or mixed")
+            if package.get("profile_id") == "dotnet-backend":
+                try:
+                    resolved = expected_rule(package.get("version"))
+                except PackageIdentityError as exc:
+                    raise PackageError(f"package public identity version is invalid: {exc}") from exc
+                if (
+                    root != resolved["package_id"]
+                    or identity.get("package_identity_policy") != PUBLIC_PACKAGE_IDENTITY_POLICY
+                    or identity.get("identity_rule") != resolved["rule_id"]
+                ):
+                    raise PackageError("package public identity does not match its version")
         for key in (
             "selected_input_fingerprint",
             "payload_fingerprint",
@@ -2344,7 +2436,7 @@ def validate_archive(path: Path) -> dict[str, tuple[bytes, int]]:
             package.get("user_view"),
             archive_package_schema=package_schema,
         )
-    if package_schema == "2.3.0":
+    if package_schema in PORTABLE_VALIDATION_PACKAGE_SCHEMAS:
         validate_payload_user_view(
             payload_items,
             package.get("user_view"),

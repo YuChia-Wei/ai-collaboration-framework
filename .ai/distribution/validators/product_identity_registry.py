@@ -8,8 +8,15 @@ from typing import Any
 
 import yaml
 
+from ai_context_package_identity import (
+    POLICY_ID as PACKAGE_POLICY_ID,
+    PackageIdentityError,
+    resolve_registry_identity,
+    validate_registry_policy,
+)
 
-SCHEMA_VERSION = "1.0"
+
+SCHEMA_VERSION = "1.1"
 REGISTRY_KEYS = {
     "schema_version",
     "schema",
@@ -17,6 +24,7 @@ REGISTRY_KEYS = {
     "issue",
     "status",
     "owner_skill",
+    "package_identity_policy",
     "identity_records",
     "bindings",
     "future_namespaces",
@@ -58,8 +66,10 @@ CONSUMER_KEYS = {
     | {"path", "selector", "identity_id", "identity_field"},
     "text-contains": COMMON_CONSUMER_KEYS
     | {"path", "identity_id", "identity_field"},
+    "package-policy": COMMON_CONSUMER_KEYS
+    | {"path", "registry_selector", "policy_selector"},
     "release-family": COMMON_CONSUMER_KEYS
-    | {"path_glob", "release_identity_id", "package_identity_id"},
+    | {"path_glob", "release_identity_id", "package_identity_policy_id"},
     "skill-transition": COMMON_CONSUMER_KEYS
     | {"path", "canonical_skill_ids"},
 }
@@ -78,7 +88,7 @@ REQUIRED_KINDS = {
     "technology-profile",
     "archive-package",
 }
-RECORD_STATUSES = {"active"}
+RECORD_STATUSES = {"active", "legacy-compatible"}
 ALIAS_STATUSES = {
     "redirect-compatible",
     "immutable-published-instance",
@@ -245,6 +255,7 @@ def _validate_consumers(
     root: Path,
     consumers: list[dict[str, Any]],
     records: dict[str, dict[str, Any]],
+    registry: dict[str, Any],
 ) -> None:
     consumer_ids: set[str] = set()
     covered_records: set[str] = set()
@@ -304,14 +315,47 @@ def _validate_consumers(
                     )
             continue
 
+        if kind == "package-policy":
+            profile_path = _repo_file(root, consumer["path"], f"{location}.path")
+            profile = _load_yaml(profile_path, str(consumer["path"]))
+            registry_selector = _non_empty_string(
+                consumer["registry_selector"], f"{location}.registry_selector"
+            )
+            policy_selector = _non_empty_string(
+                consumer["policy_selector"], f"{location}.policy_selector"
+            )
+            registry_value = _yaml_selector(profile, registry_selector, location)
+            policy_value = _yaml_selector(profile, policy_selector, location)
+            if registry_value != ".ai/distribution/identity-registry.yaml":
+                raise IdentityRegistryError(
+                    f"{consumer_id} registry selector must reference the canonical registry"
+                )
+            if policy_value != PACKAGE_POLICY_ID:
+                raise IdentityRegistryError(
+                    f"{consumer_id} policy selector must reference {PACKAGE_POLICY_ID}"
+                )
+            covered_records.update(
+                {
+                    "package.ai-context-dotnet-backend-legacy",
+                    "package.ai-collaboration-framework",
+                }
+            )
+            continue
+
         if kind == "release-family":
             release_id = consumer["release_identity_id"]
-            package_id = consumer["package_identity_id"]
-            if release_id not in records or package_id not in records:
+            policy_id = consumer["package_identity_policy_id"]
+            if release_id not in records or policy_id != PACKAGE_POLICY_ID:
                 raise IdentityRegistryError(
-                    f"{location} references an unknown release or package identity"
+                    f"{location} references an unknown release or package identity policy"
                 )
-            covered_records.update({release_id, package_id})
+            covered_records.update(
+                {
+                    release_id,
+                    "package.ai-context-dotnet-backend-legacy",
+                    "package.ai-collaboration-framework",
+                }
+            )
             pattern = _non_empty_string(
                 consumer["path_glob"], f"{location}.path_glob"
             )
@@ -327,7 +371,6 @@ def _validate_consumers(
             if not paths:
                 raise IdentityRegistryError(f"{consumer_id} matched no release records")
             release_template = records[release_id]["canonical_value"]
-            package_template = records[package_id]["canonical_value"]
             for path in paths:
                 data = _load_yaml(path, path.relative_to(root).as_posix())
                 version_value = data.get("version")
@@ -345,7 +388,14 @@ def _validate_consumers(
                     )
                 distribution = data.get("distribution")
                 if isinstance(distribution, dict) and distribution.get("package_id") is not None:
-                    expected_package = package_template.format(version=version)
+                    try:
+                        expected_package = str(
+                            resolve_registry_identity(registry, version)["package_id"]
+                        )
+                    except PackageIdentityError as exc:
+                        raise IdentityRegistryError(
+                            f"{path.relative_to(root).as_posix()}: package identity cannot be resolved: {exc}"
+                        ) from exc
                     if distribution.get("package_id") != expected_package:
                         raise IdentityRegistryError(
                             f"{path.relative_to(root).as_posix()}: package identity drift"
@@ -536,6 +586,10 @@ def load_identity_registry(
         )
 
     records = {record["id"]: record for record in normalized_records}
+    try:
+        validate_registry_policy(registry, records)
+    except PackageIdentityError as exc:
+        raise IdentityRegistryError(f"package identity policy is invalid: {exc}") from exc
     for index, record in enumerate(normalized_records):
         _deprecation_policy(
             record["deprecation_policy"],
@@ -613,5 +667,5 @@ def load_identity_registry(
             "registry.consumer_contracts must be a non-empty list"
         )
     if validate_consumers:
-        _validate_consumers(root.resolve(), consumers, records)
+        _validate_consumers(root.resolve(), consumers, records, registry)
     return registry
