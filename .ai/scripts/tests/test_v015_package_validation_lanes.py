@@ -89,6 +89,9 @@ class V015PackageValidationLaneGwtTests(unittest.TestCase):
         self.assertFalse(contract["lanes"]["fast"]["proves_actual_upgrade"])
         self.assertFalse(contract["lanes"]["medium"]["proves_actual_upgrade"])
         self.assertTrue(contract["lanes"]["long"]["proves_actual_upgrade"])
+        self.assertIn("run-v015-package-validation-wsl.py", contract["lanes"]["long"]["windows_to_linux_command"])
+        self.assertEqual("exact-head-git-bundle-over-stdin", contract["lanes"]["long"]["wsl_execution"]["transport"])
+        self.assertEqual("forbidden", contract["lanes"]["long"]["wsl_execution"]["shared_windows_mount"])
         self.assertEqual(contract["outcomes"], schema["properties"]["outcome"]["enum"])
 
     def test_gwt_002_given_fast_and_medium_pass_when_aggregated_without_long_then_actual_upgrade_stays_blocked(self) -> None:
@@ -239,6 +242,7 @@ class V015PackageValidationLaneGwtTests(unittest.TestCase):
 
         self.assertIn(".ai/scripts/ai_context_v015_validation.py", source_only["patterns"])
         self.assertIn(".ai/scripts/run-v015-package-validation.py", source_only["patterns"])
+        self.assertIn(".ai/scripts/run-v015-package-validation-wsl.py", source_only["patterns"])
 
     @unittest.skipUnless(os.name == "nt", "Windows read-only cleanup semantics")
     def test_gwt_008_given_readonly_git_fixture_bytes_when_cleaned_then_no_work_root_remains(self) -> None:

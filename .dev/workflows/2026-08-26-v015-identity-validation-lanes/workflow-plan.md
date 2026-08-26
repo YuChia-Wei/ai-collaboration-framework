@@ -30,7 +30,7 @@
 
 - Product or software outcome: deliver one cohesive local implementation of the v0.15 public identity migration and its fast, medium, and long validation lanes, ready for an owner pull-request decision.
 - Current lifecycle entry point: authorized implementation from current `origin/main`, consuming integrated #251 process instrumentation and #249/#253 validation guardrails.
-- User constraints: preserve all v0.14-and-earlier public bytes and names; use only a synthetic v0.15 candidate in ignored output; keep platform and actual-execution outcomes truthful; stop before every provider, release, publication, allocation, CLI, registry, installer, or external-repository mutation.
+- User constraints: preserve all v0.14-and-earlier public bytes and names; use only a synthetic v0.15 candidate in ignored output; keep platform and actual-execution outcomes truthful; route Windows-to-WSL validation through a repository-owned exact-head stdin transport and Linux-native temporary workspace rather than `/mnt/*`; stop before every provider, release, publication, allocation, CLI, registry, installer, or external-repository mutation.
 - Non-goals: complete #254, implement #213, publish v0.15, push, create a pull request, merge, close Issues, mutate Project fields, tags, Releases, assets, or external toolchains.
 
 ## Delivery Cohesion Decision
@@ -88,6 +88,7 @@
 - Preserve separate #250 and #252 acceptance IDs in `acceptance-map.yaml` and `acceptance-mapping.md`; terminal receipts live only in declared ignored validation roots.
 - Run the narrowest focused identity and lane checks first. A fast or medium pass never satisfies actual-upgrade acceptance.
 - Treat `passed`, `failed`, `blocked-by-environment`, `not-applicable`, and `deferred-with-owner` as mutually exclusive. A required missing Windows or Linux trusted run keeps #254 unsatisfied.
+- Invoke WSL validation only through `.ai/scripts/run-v015-package-validation-wsl.py`; it must stream an exact-head Git bundle over stdin, reject shared filesystems, execute in one unique native `/tmp` clone, return evidence over stdout, and clean the native workspace in the same session.
 - Freeze only after tracked mutation and focused validation, then use a validated packet, exclusive tracked-writer lease, read-only delegated task, one parent event wait, and one schema-valid terminal report.
 - Exact-head audit is always fresh; any later tracked mutation invalidates it.
 

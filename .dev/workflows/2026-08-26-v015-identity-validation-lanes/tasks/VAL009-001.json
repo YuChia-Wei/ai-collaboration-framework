@@ -18,14 +18,14 @@
     "goal": "Implement independently executable fast, medium, and long v0.15 package validation lanes with truthful terminal records.",
     "target": "package validation entrypoints, lane runners, schemas/contracts, aggregate projection, and deterministic tests",
     "files": [],
-    "constraints": ["fast performs no material target mutation", "medium synthetic clean install cannot satisfy actual upgrade", "long uses real storage and integrated #251 metrics", "outcomes are mutually exclusive", "retry requires material state change"],
+    "constraints": ["fast performs no material target mutation", "medium synthetic clean install cannot satisfy actual upgrade", "long uses real storage and integrated #251 metrics", "Windows-to-WSL validation uses the repository-owned exact-head stdin launcher and Linux-native temporary storage without shared mount I/O", "outcomes are mutually exclusive", "retry requires material state change"],
     "non_goals": ["remove aggregate validation", "substitute synthetic or one-platform evidence", "increase timeout as a repair", "publish or mutate v0.14"]
   },
   "inputs": {
     "requirements": ["GitHub Issue #252 live body"],
     "specifications": ["#194 one-wait contract", "#204 process-tree/snapshot contract", "#249 validation lifecycle", "#253 agent execution guardrails"],
     "architecture_decisions": ["three commands and three terminal records", "aggregate never projects synthetic pass to actual-upgrade pass"],
-    "user_constraints": ["synthetic v0.15 only under ignored output", "real storage for durability"]
+    "user_constraints": ["synthetic v0.15 only under ignored output", "real storage for durability", "persist the WSL native-temp command instead of requiring agent inference"]
   },
   "execution": {
     "capability_slot": "implementation",
@@ -42,7 +42,7 @@
   "results": {
     "finding_status": "verified",
     "summary": "Implemented independently executable fast, medium, long, and aggregate commands with budgets, mutually exclusive outcomes, terminal schema, retry controls, real-storage durability evidence, and synthetic-to-actual non-projection.",
-    "files_changed": [".ai/distribution/validation/v015-package-validation-lanes.yaml", ".ai/distribution/schemas/v015-package-validation-terminal.schema.yaml", ".ai/distribution/V015-PACKAGE-VALIDATION-LANES.md", ".ai/scripts/ai_context_v015_validation.py", ".ai/scripts/run-v015-package-validation.py", ".ai/scripts/tests/test_v015_package_validation_lanes.py"],
+    "files_changed": [".ai/distribution/validation/v015-package-validation-lanes.yaml", ".ai/distribution/schemas/v015-package-validation-terminal.schema.yaml", ".ai/distribution/V015-PACKAGE-VALIDATION-LANES.md", ".ai/scripts/ai_context_v015_validation.py", ".ai/scripts/run-v015-package-validation.py", ".ai/scripts/run-v015-package-validation-wsl.py", ".ai/scripts/tests/test_v015_package_validation_lanes.py", ".ai/scripts/tests/test_v015_wsl_native_launcher.py"],
     "approval_evidence": ["owner delegation in source thread", "GitHub Issue #252 live contract"],
     "test_execution": [{"level": "unit", "outcome": "passed", "evidence": ["10 deterministic lane contract tests"]}, {"level": "integration", "outcome": "passed", "evidence": ["fast terminal at 78862fde"]}],
     "role_execution_aggregation": [],

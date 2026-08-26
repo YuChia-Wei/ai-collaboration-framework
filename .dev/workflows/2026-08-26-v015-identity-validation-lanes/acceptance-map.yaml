@@ -28,6 +28,7 @@ issues:
       - {id: "VAL009-AC-08", requirement: "each phase records duration process count outcome digests and cleanup", required_evidence_kind: "actual-execution", outcome: "pending"}
       - {id: "VAL009-AC-09", requirement: "one-wait snapshot process and freeze contracts remain compatible", required_evidence_kind: "actual-execution", outcome: "pending"}
       - {id: "VAL009-AC-10", requirement: "focused lanes platform evidence and fresh exact-head audit", required_evidence_kind: "actual-execution", outcome: "pending"}
+      - {id: "VAL009-AC-11", requirement: "Windows-to-WSL execution uses a repository-owned exact-head stdin transport and a Linux-native temporary workspace without shared mount I/O", required_evidence_kind: "actual-execution", outcome: "pending"}
 graph_freshness:
   project: "ai-collaboration-prompts-dotnet-backend-issue-250-252"
   head_sha: "ae55350a7704fafb289722afe24472bf5506db41"

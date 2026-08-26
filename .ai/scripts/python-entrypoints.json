@@ -35,6 +35,7 @@
     {"path": ".ai/scripts/render-ai-context-release-notes.py", "portable": false, "dependency_profile": ["PyYAML"], "prerequisite_exit_code": 1},
     {"path": ".ai/scripts/run-test-fixture-profile.py", "portable": false, "dependency_profile": [], "prerequisite_exit_code": 1},
     {"path": ".ai/scripts/run-v015-package-validation.py", "portable": false, "dependency_profile": ["PyYAML"], "prerequisite_exit_code": 1},
+    {"path": ".ai/scripts/run-v015-package-validation-wsl.py", "portable": false, "dependency_profile": [], "prerequisite_exit_code": 1},
     {"path": ".ai/scripts/validate-ai-behavior-evaluation.py", "portable": false, "dependency_profile": ["PyYAML"], "prerequisite_exit_code": 1},
     {"path": ".ai/scripts/validate-ai-context-package.py", "portable": false, "dependency_profile": ["PyYAML"], "prerequisite_exit_code": 1},
     {"path": ".ai/scripts/ai_context_release_closeout.py", "portable": false, "dependency_profile": ["PyYAML"], "prerequisite_exit_code": 3},

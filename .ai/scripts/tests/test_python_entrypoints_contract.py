@@ -49,6 +49,7 @@ EXPECTED_STDLIB_ONLY_PATHS = {
     ".ai/scripts/resolve-ai-context-package-identity.py",
     ".ai/assets/skills/ai-context-upgrader/scripts/compare-ai-context-versions.py",
     ".ai/scripts/run-test-fixture-profile.py",
+    ".ai/scripts/run-v015-package-validation-wsl.py",
     ".ai/scripts/validate-dependency-versions.py",
 }
 

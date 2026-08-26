@@ -31,5 +31,6 @@ This human projection preserves separate #250 and #252 acceptance identities whi
 | `VAL009-AC-08` phase metrics | machine-readable terminal record | pending |
 | `VAL009-AC-09` upstream contract compatibility | packet/lease/freeze/process evidence | pending |
 | `VAL009-AC-10` final gates | focused lanes and fresh exact-head audit | pending |
+| `VAL009-AC-11` WSL native execution | repository-owned Git-bundle stdin launcher, native-temp receipt, and shared-filesystem rejection tests | pending actual execution |
 
 No entry claims #254 completion, integrated-main release readiness, provider admission, push, pull request, merge, Issue closure, Project mutation, tag, Release, asset upload, or publication.

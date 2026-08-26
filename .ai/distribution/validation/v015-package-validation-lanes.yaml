@@ -29,11 +29,19 @@ lanes:
     execution_boundary: validated-packet-exclusive-lease-read-only-delegation-one-wait
   long:
     command: python .ai/scripts/run-v015-package-validation.py long --expected-commit SHA --output-dir .dev/ai-context/local/validation/issue-250-252/long-PLATFORM --trusted-reference
+    windows_to_linux_command: python .ai/scripts/run-v015-package-validation-wsl.py long --distribution Ubuntu-24.04 --expected-commit SHA --output-dir .dev/ai-context/local/validation/issue-250-252/long-linux --trusted-reference
     budget_seconds: 1200
     target_kind: actual-published-v0.14-durability-upgrade
     fixture_storage: real-storage-only
     consumes_ai_context_test_tmp_root: false
     proves_actual_upgrade: true
+    wsl_execution:
+      transport: exact-head-git-bundle-over-stdin
+      workspace: unique-linux-native-temp
+      shared_windows_mount: forbidden
+      rejected_filesystems: [9p, drvfs]
+      result_transport: tar-over-stdout
+      cleanup: same-session-required
 aggregation:
   required_trusted_reference_platforms: [windows, linux]
   missing_platform_outcome: blocked-by-environment
