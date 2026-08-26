@@ -1,0 +1,32 @@
+{
+  "template_id": "software-development-orchestrator/development-workflow-task",
+  "template_version": "1.5.0",
+  "template_created_at": "2026-07-10T18:25:11+08:00",
+  "template_updated_at": "2026-08-05T02:12:00+08:00",
+  "workflow_id": "2026-08-26-v015-identity-validation-lanes",
+  "task_id": "ID002VAL009-VAL-001",
+  "owner_skill": "software-development-orchestrator",
+  "related_plan_id": "development-plan-2026-08-26-v015-identity-validation-lanes",
+  "status": "in_progress",
+  "created_at": "2026-08-26T12:01:52+08:00",
+  "updated_at": "2026-08-26T12:50:38+08:00",
+  "template_source": ".ai/assets/skills/software-development-orchestrator/templates/development-workflow-task-template.json",
+  "model": "gpt-5.6-sol",
+  "reasoning_effort": "high",
+  "workflow_locator": ".dev/workflows/2026-08-26-v015-identity-validation-lanes/workflow.yaml",
+  "scope": {"goal": "Freeze and validate the exact local delivery, including long actual-upgrade evidence and an independent exact-head audit.", "target": "clean immutable branch head and ignored terminal evidence", "files": [], "constraints": ["packet and lease before delegated or fixed-head work", "one event wait and no polling", "no repair by delegated validator or auditor", "audit invalidated by later tracked mutation"], "non_goals": ["push", "PR", "merge", "Issue/Project mutation", "release readiness or publication"]},
+  "inputs": {"requirements": ["Issues #250/#252 acceptance maps"], "specifications": ["long-running validation gate", "agent execution guardrails", "workflow handoff policy"], "architecture_decisions": ["ignored terminal records after tracked freeze"], "user_constraints": ["trusted Windows and Linux remain independently required by #254"]},
+  "execution": {
+    "capability_slot": "test-execution",
+    "approval_contract": {"status": "approved", "required_before": "validation delegation and exact-head audit", "authorization_source": ["owner delegation in source thread"], "pending_decision": ""},
+    "implementation_contract": null,
+    "test_execution_contract": {"provider": "target-profile-commands", "target_owned": {"working_directory": ".", "commands": [], "prerequisites": ["clean immutable commit", "validated packet", "exclusive lease"], "environment_boundary": ["real storage", "trusted Windows and Linux classified separately"], "policy": ["Issues #250/#252", "Long-Running Validation Gate"]}, "selected_levels": ["unit", "integration", "environment-dependent"], "required_for_closeout": ["unit", "integration"], "conditional_selection_sources": ["#254 separately requires both trusted platforms after integrated main"], "outcomes": [{"level": "unit", "outcome": "not-applicable", "evidence": ["pending command selection"], "deferral_owner": "", "follow_up": ""}, {"level": "integration", "outcome": "not-applicable", "evidence": ["pending command selection"], "deferral_owner": "", "follow_up": ""}, {"level": "environment-dependent", "outcome": "not-applicable", "evidence": ["pending trusted platform command selection"], "deferral_owner": "", "follow_up": ""}]},
+    "role_execution_records": [],
+    "spec_compliance": {"selected": false, "activation_source": [], "expected_outcome": "not-applicable"},
+    "steps": ["complete focused validation and tracked commits", "validate packets and acquire exclusive leases", "dispatch read-only medium and trusted platform long tasks with one event wait per packet", "release or invalidate every lease explicitly", "dispatch fresh exact-head read-only audit", "finalize truthful owner handoff"],
+    "validation": ["acceptance-ledger/report parity", "workflow/commit/source validators", "clean exact-head status"],
+    "commit_checkpoint": "final tracked evidence commit before exact-head audit",
+    "deferred_items": ["#254 integrated-main release-readiness run"]
+  },
+  "results": {"summary": "", "files_changed": [], "approval_evidence": [], "test_execution": [], "role_execution_aggregation": [], "spec_compliance": {"outcome": "not-applicable", "coverage_percent": null, "evidence": []}, "validation_evidence": [], "commits": [], "follow_up_needed": true}
+}

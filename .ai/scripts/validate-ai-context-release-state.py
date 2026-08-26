@@ -30,6 +30,8 @@ from typing import Any, Callable
 
 import yaml
 
+from ai_context_package_identity import expected_artifacts, expected_package_id
+
 from ai_context_upgrade_routes import (
     MatrixValidationError,
     canonical_json as canonical_route_json,
@@ -612,7 +614,7 @@ def validate_candidate_record(
     data: dict[str, Any],
     runner=subprocess.run,
 ) -> None:
-    expected_package = f"ai-context-dotnet-backend-{version}"
+    expected_package = expected_package_id(version)
     required_identity = {
         "schema_version": "1.0",
         "release_id": f"REL-{version}",
@@ -666,21 +668,17 @@ def validate_candidate_record(
         raise ReleaseStateError(
             "multiple automatic sources require migration schema 2.0.0"
         )
+    expected_package_schema = "2.4.0" if version_key(version) >= (0, 15, 0) else "2.3.0"
     if version_key(version) >= (0, 14, 0) and schema_versions != {
-        "package": "2.3.0",
+        "package": expected_package_schema,
         "files": "2.0.0",
         "migration": "3.0.0",
     }:
         raise ReleaseStateError(
             "v0.14+ release candidates require package/files/migration schemas "
-            "2.3.0/2.0.0/3.0.0"
+            f"{expected_package_schema}/2.0.0/3.0.0"
         )
-    expected_asset_names = {
-        "zip": f"{expected_package}.zip",
-        "zip_checksum": f"{expected_package}.zip.sha256",
-        "tar_gz": f"{expected_package}.tar.gz",
-        "tar_gz_checksum": f"{expected_package}.tar.gz.sha256",
-    }
+    expected_asset_names = expected_artifacts(version)
     if nested_mapping(distribution.get("artifacts"), "distribution.artifacts") != expected_asset_names:
         raise ReleaseStateError(
             "distribution.artifacts must exactly match the candidate package identity"

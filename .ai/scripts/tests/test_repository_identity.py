@@ -53,7 +53,7 @@ class SyntheticIdentityRepository:
         )
         if mutate is not None:
             mutate(registry)
-        self.write(REGISTRY_SCHEMA_PATH, 'schema_version: "1.0"\n')
+        self.write(REGISTRY_SCHEMA_PATH, 'schema_version: "1.1"\n')
         self.write(
             ".ai/distribution/profiles/dotnet-backend.yaml",
             yaml.safe_dump(
@@ -62,7 +62,8 @@ class SyntheticIdentityRepository:
                     "release_model": "single-versioned-componentized-release",
                     "package": {
                         "source_repository": "https://github.com/YuChia-Wei/ai-collaboration-framework",
-                        "name_template": "ai-context-dotnet-backend-v{version}",
+                        "identity_registry": REGISTRY_PATH,
+                        "identity_policy": "public-package-identity-v1",
                     },
                 },
                 sort_keys=False,
@@ -369,7 +370,8 @@ class RepositoryIdentityGwtTests(unittest.TestCase):
                         "release_model": "single-versioned-componentized-release",
                         "package": {
                             "source_repository": "https://example.invalid/wrong",
-                            "name_template": "ai-context-dotnet-backend-v{version}",
+                            "identity_registry": REGISTRY_PATH,
+                            "identity_policy": "public-package-identity-v1",
                         },
                     },
                     sort_keys=False,
@@ -380,6 +382,38 @@ class RepositoryIdentityGwtTests(unittest.TestCase):
 
             self.assertEqual(1, result.returncode)
             self.assertIn("distribution-profile-repository consumer drift", result.stderr)
+        finally:
+            fixture.close()
+
+    def test_gwt_012_given_v015_current_identity_is_duplicated_when_loaded_then_it_fails_closed(self) -> None:
+        fixture = SyntheticIdentityRepository()
+        try:
+            def activate_legacy(registry: dict[str, object]) -> None:
+                records = registry["identity_records"]
+                legacy = next(item for item in records if item["id"] == "package.ai-context-dotnet-backend-legacy")
+                legacy["status"] = "active"
+
+            fixture.write_policy([], registry_mutator=activate_legacy)
+            result = fixture.validate()
+            self.assertEqual(1, result.returncode)
+            self.assertIn("must be legacy-compatible", result.stderr)
+        finally:
+            fixture.close()
+
+    def test_gwt_013_given_identity_policy_range_drifts_when_loaded_then_it_fails_closed(self) -> None:
+        fixture = SyntheticIdentityRepository()
+        try:
+            def overlap_ranges(registry: dict[str, object]) -> None:
+                registry["package_identity_policy"]["rules"][0][
+                    "maximum_version_exclusive"
+                ] = "v0.16.0"
+
+            fixture.write_policy([], registry_mutator=overlap_ranges)
+            result = fixture.validate()
+            self.assertEqual(1, result.returncode)
+            self.assertIn(
+                "maximum_version_exclusive must be 'v0.15.0'", result.stderr
+            )
         finally:
             fixture.close()
 

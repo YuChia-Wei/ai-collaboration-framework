@@ -93,6 +93,13 @@ AI 協作知識庫與 .NET Backend Context Framework
 
 請從已發佈版本取得對應的可攜式 AI context 封包，而非直接複製此來源庫。封包是 versioned framework payload，不是整個 repository 的覆蓋式快照。
 
+公開 package/archive 名稱依版本切換：v0.14.x 與更早版本保留
+`ai-context-dotnet-backend-v{version}`；從 v0.15.0 起使用
+`ai-collaboration-framework-v{version}`。每個版本的公開 asset set 都是該 base
+的 `.zip`、`.zip.sha256`、`.tar.gz` 與 `.tar.gz.sha256`。`dotnet-backend`
+仍代表 technology profile，不是 v0.15 起的產品 archive base。下方 v0.7.0
+範例因此刻意保留歷史正確的舊名稱。
+
 | 目標狀態 | 正確流程 |
 | --- | --- |
 | 第一次在空白或既有專案導入 framework | 依下方「乾淨安裝」用 package planner 套用，再使用 `ai-context-init`。 |

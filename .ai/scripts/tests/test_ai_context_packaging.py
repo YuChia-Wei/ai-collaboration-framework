@@ -23,6 +23,7 @@ ROOT = Path(__file__).resolve().parents[3]
 SCRIPTS = ROOT / ".ai/scripts"
 sys.path.insert(0, str(SCRIPTS))
 import ai_context_package as PACKAGE  # noqa: E402
+import ai_context_package_identity as PACKAGE_IDENTITY  # noqa: E402
 import ai_context_target_provenance as TARGET  # noqa: E402
 
 
@@ -106,6 +107,7 @@ class SyntheticPackageRepo:
             "portable project guidance\n", encoding="utf-8", newline="\n"
         )
         for script in (
+            "ai_context_package_identity.py",
             "ai_context_package_validation.py",
             "ai_context_package_apply.py",
             "ai_context_cli_routing.py",
@@ -315,6 +317,28 @@ class SyntheticPackageRepo:
     def output(self, name: str) -> Path:
         return Path(self._temporary.name) / name
 
+    def adopt_public_identity_policy(self) -> None:
+        profile_path = self.root / self.profile
+        profile = yaml.safe_load(profile_path.read_text(encoding="utf-8"))
+        profile["profile"]["id"] = "dotnet-backend"
+        profile["package"] = {
+            "source_repository": "https://github.com/YuChia-Wei/ai-collaboration-framework",
+            "identity_registry": ".ai/distribution/identity-registry.yaml",
+            "identity_policy": PACKAGE_IDENTITY.POLICY_ID,
+        }
+        canonical_profile_path = self.root / ".ai/distribution/profiles/dotnet-backend.yaml"
+        canonical_profile_path.write_text(
+            yaml.safe_dump(profile, sort_keys=False), encoding="utf-8", newline="\n"
+        )
+        profile_path.unlink()
+        self.profile = ".ai/distribution/profiles/dotnet-backend.yaml"
+        registry_path = self.root / ".ai/distribution/identity-registry.yaml"
+        registry_path.write_bytes(
+            (ROOT / ".ai/distribution/identity-registry.yaml").read_bytes()
+        )
+        git(self.root, "add", ".")
+        git(self.root, "commit", "-qm", "adopt public identity policy fixture")
+
 
     def ensure_release(
         self,
@@ -323,6 +347,13 @@ class SyntheticPackageRepo:
     ) -> None:
         normalized = PACKAGE.normalize_version(version)
         sources = automatic_sources or []
+        profile = yaml.safe_load((self.root / self.profile).read_text(encoding="utf-8"))
+        profile_id = profile["profile"]["id"]
+        package_id = (
+            PACKAGE_IDENTITY.expected_package_id(normalized)
+            if profile_id == "dotnet-backend"
+            else f"fixture-v{normalized}"
+        )
         release_path = self.root / f".dev/releases/v{normalized}/release.yaml"
         release_path.parent.mkdir(parents=True, exist_ok=True)
         document = {
@@ -334,8 +365,8 @@ class SyntheticPackageRepo:
                 "automatic_upgrade_sources": sources,
             },
             "distribution": {
-                "profile_id": "fixture",
-                "package_id": f"fixture-v{normalized}",
+                "profile_id": profile_id,
+                "package_id": package_id,
             },
         }
         content = yaml.safe_dump(document, sort_keys=False)
@@ -605,6 +636,30 @@ class DeterministicPackageGwtTests(unittest.TestCase):
             )
         finally:
             fixture.close()
+
+    def test_gwt_000d_given_source_work_management_is_excluded_when_current_payload_is_projected_then_navigation_remains_closed(self) -> None:
+        profile = yaml.safe_load(
+            (ROOT / ".ai/distribution/profiles/dotnet-backend.yaml").read_text(
+                encoding="utf-8"
+            )
+        )
+        exclusions = profile["exclusions"]
+        index = (ROOT / ".dev/standards/INDEX.MD").read_text(encoding="utf-8")
+        for source_only in (
+            ".dev/standards/SOURCE-WORK-MANAGEMENT-AUTHORITY.md",
+            ".dev/standards/SOURCE-WORK-MANAGEMENT-AUTHORITY.yaml",
+            ".dev/standards/GITHUB-WORK-MANAGEMENT-POLICY.yaml",
+            ".dev/guides/implementation-guides/PORTABLE-TEST-FIXTURE-ACCELERATION-GUIDE.md",
+            ".ai/scripts/run-test-fixture-profile.py",
+            ".ai/scripts/test_fixture_runtime.py",
+            ".ai/scripts/test-fixture-classifications.json",
+        ):
+            self.assertTrue(PACKAGE.is_excluded(source_only, exclusions))
+            if source_only.startswith(".dev/standards/"):
+                self.assertNotIn(
+                    f"]({Path(source_only).name})",
+                    index,
+                )
 
     def test_gwt_000b_given_source_effective_rule_policy_schema_and_evidence_when_built_then_downstream_excludes_them_and_retains_resolver(self) -> None:
         canonical_profile = yaml.safe_load(
@@ -1351,7 +1406,9 @@ class DeterministicPackageGwtTests(unittest.TestCase):
                 (root / "metadata/migration.yaml").read_text(encoding="utf-8")
             )
 
-            self.assertEqual("2.3.0", package["schema_version"])
+            self.assertEqual("2.4.0", package["schema_version"])
+            self.assertEqual("1.1.0", package["identity"]["schema_version"])
+            self.assertEqual(package["package_id"], package["identity"]["public_artifact_base"])
             self.assertEqual("2.0.0", inventory["schema_version"])
             self.assertEqual("3.0.0", migration["schema_version"])
             self.assertEqual(package["selection"], migration["selection"])
@@ -1525,7 +1582,8 @@ class ReleaseWorkflowContractGwtTests(unittest.TestCase):
         self.assertIn("${{ runner.temp }}/release-body.md", text)
         self.assertNotIn("--output dist/release-body.md", text)
         self.assertIn('gh release download "${migration_source}"', text)
-        self.assertIn('ai-context-dotnet-backend-v${previous_version}.zip.sha256', text)
+        self.assertIn("resolve-ai-context-package-identity.py", text)
+        self.assertIn('--pattern "${previous_package_id}.zip.sha256"', text)
         self.assertIn("Validate freshly extracted incoming candidate", text)
         self.assertIn("validate-ai-context-payload.py", text)
         self.assertIn("--package-root .", text)
@@ -1553,7 +1611,8 @@ class ReleaseWorkflowContractGwtTests(unittest.TestCase):
         self.assertIn("--migration-source", text)
         self.assertIn("steps.release.outputs.migration_sources", text)
         self.assertIn('gh release download "${migration_source}"', text)
-        self.assertIn('ai-context-dotnet-backend-v${previous_version}.zip.sha256', text)
+        self.assertIn("resolve-ai-context-package-identity.py", text)
+        self.assertIn('--pattern "${previous_package_id}.zip.sha256"', text)
         self.assertNotIn('--ref "refs/tags/${migration_source}"', text)
         self.assertIn("validate-ai-context-release-state.py", text)
         self.assertIn("--phase tag", text)
@@ -2729,6 +2788,178 @@ class VersionedMigrationPackagingGwtTests(unittest.TestCase):
                 fixture.build("missing-version", previous_files=previous_files)
             with self.assertRaisesRegex(PACKAGE.PackageError, "supplied together"):
                 fixture.build("missing-manifest", previous_version="0.9.0")
+        finally:
+            fixture.close()
+
+    def test_gwt_015a_given_v014_origin_when_v015_candidate_is_built_then_public_identity_changes_without_rewriting_origin(self) -> None:
+        fixture = SyntheticPackageRepo()
+        try:
+            # Given the canonical profile and the tracked immutable published v0.14 package.
+            fixture.adopt_public_identity_policy()
+            published_v014 = (
+                ROOT
+                / ".dev/releases/v0.14.0/route-assets/published-v0.14.0"
+            )
+            previous_archive = (
+                published_v014 / "ai-context-dotnet-backend-v0.14.0.zip"
+            )
+            previous_extract = fixture.output("v014-origin-extracted")
+            previous_extract.mkdir(parents=True)
+            with zipfile.ZipFile(previous_archive) as archive:
+                archive.extractall(previous_extract)
+            previous_root = (
+                previous_extract / "ai-context-dotnet-backend-v0.14.0"
+            )
+            previous_files = published_v014 / "metadata/files.yaml"
+            previous_manifest_bytes = previous_files.read_bytes()
+            previous_zip_digest = PACKAGE.sha256_bytes(previous_archive.read_bytes())
+
+            # When the exact v0.14 inventory is used to build the synthetic v0.15 candidate.
+            candidate_result = fixture.build(
+                "v015-candidate",
+                "0.15.0",
+                previous_files,
+                "0.14.0",
+            )
+            candidate_root = fixture.extract(candidate_result, "v015-candidate-extracted")
+            package = yaml.safe_load(
+                (candidate_root / "metadata/package.yaml").read_text(encoding="utf-8")
+            )
+            migration = yaml.safe_load(
+                (candidate_root / "metadata/migration.yaml").read_text(encoding="utf-8")
+            )
+
+            # Then archives, envelope, metadata, migration, sidecars, and fingerprints agree.
+            expected_base = "ai-collaboration-framework-v0.15.0"
+            self.assertEqual(expected_base, candidate_result["package_id"])
+            self.assertEqual(
+                {
+                    f"{expected_base}.zip",
+                    f"{expected_base}.zip.sha256",
+                    f"{expected_base}.tar.gz",
+                    f"{expected_base}.tar.gz.sha256",
+                },
+                {path.name for path in fixture.output("v015-candidate").iterdir()},
+            )
+            self.assertEqual("2.4.0", package["schema_version"])
+            self.assertEqual(expected_base, package["package_id"])
+            self.assertEqual(expected_base, package["identity"]["public_artifact_base"])
+            self.assertEqual(PACKAGE_IDENTITY.POLICY_ID, package["identity"]["package_identity_policy"])
+            self.assertEqual(PACKAGE_IDENTITY.CURRENT_RULE_ID, package["identity"]["identity_rule"])
+            self.assertEqual(expected_base, migration["package_id"])
+            self.assertEqual("0.14.0", migration["sources"][0]["version"])
+            for archive_key in ("zip", "tar_gz"):
+                PACKAGE.validate_sidecar(Path(candidate_result[archive_key]))
+            self.assertEqual(
+                PACKAGE.validate_archive(Path(candidate_result["zip"])),
+                PACKAGE.validate_archive(Path(candidate_result["tar_gz"])),
+            )
+
+            # And the v0.15 envelope performs a clean install under the same identity.
+            planner = candidate_root / "payload/.ai/scripts/plan-ai-context-package-apply.py"
+            clean_target = fixture.output("v015-clean-install-target")
+            clean_target.mkdir(parents=True)
+            (clean_target / "target-owned.txt").write_text(
+                "target truth\n", encoding="utf-8", newline="\n"
+            )
+            git(clean_target, "init", "-q")
+            git(clean_target, "config", "core.longpaths", "true")
+            git(clean_target, "config", "user.name", "Fixture")
+            git(clean_target, "config", "user.email", "fixture@example.invalid")
+            git(clean_target, "add", ".")
+            git(clean_target, "commit", "-qm", "empty target baseline")
+            clean_install = subprocess.run(
+                [
+                    sys.executable,
+                    str(planner),
+                    "--package-root",
+                    str(candidate_root),
+                    "--target-root",
+                    str(clean_target),
+                    "--apply",
+                ],
+                check=False,
+                capture_output=True,
+                text=True,
+            )
+            self.assertEqual(
+                0, clean_install.returncode, clean_install.stdout + clean_install.stderr
+            )
+            clean_receipt = yaml.safe_load(
+                (clean_target / ".dev/AI-CONTEXT-APPLY-PENDING.yaml").read_text(
+                    encoding="utf-8"
+                )
+            )
+            self.assertEqual(expected_base, clean_receipt["package_id"])
+            self.assertEqual("0.15.0", clean_receipt["package_version"])
+
+            # And an explicit v0.14 upgrade applies while the legacy source bytes stay unchanged.
+            target = fixture.output("v014-upgrade-target")
+            shutil.copytree(previous_root / "payload", target)
+            seed_upgrade_target_provenance(
+                target,
+                previous_root,
+                {
+                    "release_model": "single-versioned-componentized-release",
+                    "mandatory_components": [
+                        "software-development-core",
+                        "ai-context-lifecycle-core",
+                    ],
+                    "profiles": ["dotnet-backend"],
+                    "providers": {
+                        "repo-backlog": {
+                            "enabled": False,
+                            "preservation": "preserve-existing-if-recorded",
+                        }
+                    },
+                },
+            )
+            git(target, "init", "-q")
+            git(target, "config", "core.longpaths", "true")
+            git(target, "config", "user.name", "Fixture")
+            git(target, "config", "user.email", "fixture@example.invalid")
+            git(target, "add", ".")
+            git(target, "commit", "-qm", "v0.14 target")
+            applied = apply_extracted_upgrade_with_explicit_decision(
+                planner=planner,
+                package_root=candidate_root,
+                target_root=target,
+                previous_files=previous_files,
+                previous_version="0.14.0",
+                evidence_root=fixture.output("v014-to-v015-evidence"),
+            )
+            self.assertEqual(0, applied.returncode, applied.stdout + applied.stderr)
+            receipt = yaml.safe_load(
+                (target / ".dev/AI-CONTEXT-APPLY-PENDING.yaml").read_text(
+                    encoding="utf-8"
+                )
+            )
+            self.assertEqual(expected_base, receipt["package_id"])
+            self.assertEqual("0.15.0", receipt["package_version"])
+            self.assertEqual(
+                package["identity"]["files_manifest_digest"],
+                receipt["package_manifest_sha256"],
+            )
+            self.assertEqual(
+                package["identity"]["migration_digest"],
+                receipt["migration_sha256"],
+            )
+            self.assertEqual(
+                {
+                    "path": "metadata/selected-inputs.json",
+                    "sha256": package["validation"]["selected_inputs_sha256"],
+                },
+                receipt["selected_input_proof"],
+            )
+            self.assertEqual(
+                candidate_result["payload_fingerprint"],
+                package["identity"]["payload_fingerprint"],
+            )
+            self.assertEqual(previous_manifest_bytes, previous_files.read_bytes())
+            self.assertEqual(
+                previous_zip_digest,
+                PACKAGE.sha256_bytes(previous_archive.read_bytes()),
+            )
         finally:
             fixture.close()
 

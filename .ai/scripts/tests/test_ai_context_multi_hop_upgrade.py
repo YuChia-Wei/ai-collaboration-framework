@@ -174,6 +174,9 @@ class MultiHopFixture:
             ".ai/scripts/ai_context_package_validation.py": (
                 ROOT / ".ai/scripts/ai_context_package_validation.py"
             ).read_bytes(),
+            ".ai/scripts/ai_context_package_identity.py": (
+                ROOT / ".ai/scripts/ai_context_package_identity.py"
+            ).read_bytes(),
             ".ai/scripts/python-entrypoints.json": (
                 json.dumps(
                     {
@@ -213,6 +216,7 @@ class MultiHopFixture:
         component_ids = {
             validator_path: "ai-context-lifecycle-core",
             ".ai/scripts/ai_context_package_validation.py": "ai-context-lifecycle-core",
+            ".ai/scripts/ai_context_package_identity.py": "ai-context-lifecycle-core",
             ".ai/scripts/python-entrypoints.json": "ai-context-lifecycle-core",
             ".ai/scripts/portable.py": "ai-context-lifecycle-core",
             ".ai/assets/shared/example.md": "dotnet-backend",

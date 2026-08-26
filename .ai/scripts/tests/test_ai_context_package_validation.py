@@ -95,6 +95,9 @@ def build_fixture(
         ".ai/scripts/ai_context_package_validation.py": (
             SCRIPTS / "ai_context_package_validation.py"
         ).read_bytes(),
+        ".ai/scripts/ai_context_package_identity.py": (
+            SCRIPTS / "ai_context_package_identity.py"
+        ).read_bytes(),
         ".ai/scripts/python-entrypoints.json": json.dumps(
             {
                 "schema_version": "1.0",
@@ -144,6 +147,7 @@ def build_fixture(
     component_by_path = {
         VALIDATOR_PATH: "ai-context-lifecycle-core",
         ".ai/scripts/ai_context_package_validation.py": "ai-context-lifecycle-core",
+        ".ai/scripts/ai_context_package_identity.py": "ai-context-lifecycle-core",
         ".ai/assets/shared/example.md": "demo",
     }
     records = [
@@ -590,10 +594,14 @@ class PackageValidationTests(unittest.TestCase):
 
     def test_given_cli_when_complete_envelope_is_given_then_summary_excludes_source_only_tests(self) -> None:
         package_root = build_fixture(self.root)
-        cli = package_root / "payload" / ".ai/scripts/validate-ai-context-payload.py"
 
         result = subprocess.run(
-            [sys.executable, str(cli), "--package-root", "."],
+            [
+                sys.executable,
+                "payload/.ai/scripts/validate-ai-context-payload.py",
+                "--package-root",
+                ".",
+            ],
             cwd=package_root,
             capture_output=True,
             text=True,

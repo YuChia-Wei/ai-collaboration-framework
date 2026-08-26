@@ -20,17 +20,18 @@ ROOT = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(ROOT / ".ai/scripts"))
 
 import ai_context_upgrade_routes as ROUTES  # noqa: E402
+import ai_context_package_identity as PACKAGE_IDENTITY  # noqa: E402
 
 
 class RouteFixture:
-    def __init__(self) -> None:
+    def __init__(self, target: str = "v0.14.0") -> None:
         self._temporary = tempfile.TemporaryDirectory(prefix="upgrade-routes-")
         self.root = Path(self._temporary.name)
         self.serial = 0
-        self.target = "v0.14.0"
+        self.target = target
         self.package_identity = {
-            "package_id": "ai-context-dotnet-backend-v0.14.0",
-            "release_id": "REL-v0.14.0",
+            "package_id": PACKAGE_IDENTITY.expected_package_id(target),
+            "release_id": f"REL-{target}",
             "payload_fingerprint": hashlib.sha256(b"canonical-target-payload").hexdigest(),
         }
         self.matrix = {
@@ -41,16 +42,20 @@ class RouteFixture:
                 "updated_at": "2026-08-20T00:00:00+08:00",
             },
             "schema_version": ROUTES.SCHEMA_VERSION,
-            "matrix_id": "v0.14.0-supported-upgrades",
+            "matrix_id": f"{target}-supported-upgrades",
             "target": {
                 "version": self.target,
-                "release_id": "REL-v0.14.0",
+                "release_id": f"REL-{target}",
                 "commit": "e" * 40,
                 "manifest": self.asset("target/manifest.yaml", b"target-manifest"),
                 "package_identity": self.package_identity,
             },
             "retained_origins": [
-                self.origin("immediate-predecessor", "v0.13.0", "a"),
+                self.origin(
+                    "immediate-predecessor",
+                    "v0.14.0" if target == "v0.15.0" else "v0.13.0",
+                    "a",
+                ),
                 self.origin("v0.9.0", "v0.9.0", "b"),
                 self.origin("v0.6.0", "v0.6.0", "c"),
             ],
@@ -127,7 +132,7 @@ class RouteFixture:
             deepcopy(self.package_identity)
             if to_version == self.target
             else {
-                "package_id": f"ai-context-dotnet-backend-{to_version}",
+                "package_id": PACKAGE_IDENTITY.expected_package_id(to_version),
                 "release_id": f"REL-{to_version}",
                 "payload_fingerprint": hashlib.sha256(
                     f"canonical-payload:{to_version}".encode()
@@ -296,6 +301,29 @@ class UpgradeRouteTests(unittest.TestCase):
         self.assertEqual("direct", result["route_kind"])
         self.assertEqual(edge["artifacts"], result["selected_route"]["edges"][0]["artifacts"])
         self.assertRegex(result["matrix"]["sha256"], r"^[0-9a-f]{64}$")
+
+    def test_gwt_001b_given_v014_origin_when_v015_route_resolves_then_edge_receipt_uses_new_identity(self) -> None:
+        fixture = RouteFixture("v0.15.0")
+        try:
+            edge = fixture.edge("v0.14.0", "v0.15.0")
+            fixture.matrix["routes"] = [
+                fixture.route("v014-to-v015-direct", "v0.14.0", [edge])
+            ]
+
+            result = fixture.resolve("v0.14.0")
+
+            expected = {
+                "package_id": "ai-collaboration-framework-v0.15.0",
+                "release_id": "REL-v0.15.0",
+                "payload_fingerprint": fixture.package_identity["payload_fingerprint"],
+            }
+            self.assertEqual("v0.15.0", result["target"])
+            self.assertEqual(
+                expected,
+                result["selected_route"]["edges"][0]["package_identity"],
+            )
+        finally:
+            fixture.close()
 
     def test_gwt_001a_given_all_retained_origins_when_portable_proof_matches_then_each_route_is_direct(self) -> None:
         origins = ("v0.13.0", "v0.9.0", "v0.6.0")

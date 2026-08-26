@@ -1,0 +1,45 @@
+schema_version: "1.0"
+workflow_id: "2026-08-26-v015-identity-validation-lanes"
+status: "frozen-plan-final-evidence-externalized"
+issues:
+  "250":
+    task_id: "ID002-001"
+    acceptance:
+      - {id: "ID002-AC-01", requirement: "v0.15 emits exactly four ai-collaboration-framework archive and sidecar names", required_evidence_kind: "synthetic-test", outcome: "passed"}
+      - {id: "ID002-AC-02", requirement: "v0.15 metadata and envelope contain no unintended legacy current canonical identity", required_evidence_kind: "synthetic-test", outcome: "passed"}
+      - {id: "ID002-AC-03", requirement: "dotnet-backend remains technology profile identity", required_evidence_kind: "unit", outcome: "passed"}
+      - {id: "ID002-AC-04", requirement: "v0.14 and earlier published names and bytes remain immutable", required_evidence_kind: "actual-execution", outcome: "pending"}
+      - {id: "ID002-AC-05", requirement: "explicit legacy source rule upgrades v0.14 to the new v0.15 identity", required_evidence_kind: "actual-execution", outcome: "pending"}
+      - {id: "ID002-AC-06", requirement: "unknown mixed ambiguous or dual current identities fail before publication or target mutation", required_evidence_kind: "synthetic-test", outcome: "passed"}
+      - {id: "ID002-AC-07", requirement: "archives sidecars metadata manifests workflows and release notes agree", required_evidence_kind: "synthetic-test", outcome: "passed"}
+      - {id: "ID002-AC-08", requirement: "deterministic validation needs no ambient GitHub credentials", required_evidence_kind: "unit", outcome: "passed"}
+      - {id: "ID002-AC-09", requirement: "Windows and Linux package route evidence is truthfully classified", required_evidence_kind: "actual-execution", outcome: "pending"}
+      - {id: "ID002-AC-10", requirement: "focused governance package and exact-head audit gates", required_evidence_kind: "actual-execution", outcome: "pending"}
+  "252":
+    task_id: "VAL009-001"
+    acceptance:
+      - {id: "VAL009-AC-01", requirement: "fast medium and long profiles are independently executable and independently fail", required_evidence_kind: "unit", outcome: "passed"}
+      - {id: "VAL009-AC-02", requirement: "fast identity failure performs no material target mutation", required_evidence_kind: "synthetic-test", outcome: "passed"}
+      - {id: "VAL009-AC-03", requirement: "medium clean install cannot satisfy actual published archive upgrade", required_evidence_kind: "synthetic-test", outcome: "passed"}
+      - {id: "VAL009-AC-04", requirement: "long terminal record binds source and candidate digests snapshot decision receipt payload fingerprint and legacy immutability", required_evidence_kind: "actual-execution", outcome: "pending"}
+      - {id: "VAL009-AC-05", requirement: "trusted Windows and Linux actual upgrade outcomes remain independent", required_evidence_kind: "actual-execution", outcome: "pending"}
+      - {id: "VAL009-AC-06", requirement: "retry budget requires a material state change and fresh authorization for attempt three", required_evidence_kind: "unit", outcome: "passed"}
+      - {id: "VAL009-AC-07", requirement: "durability lane uses real storage and never consumes AI_CONTEXT_TEST_TMP_ROOT", required_evidence_kind: "actual-execution", outcome: "pending"}
+      - {id: "VAL009-AC-08", requirement: "each phase records duration process count outcome digests and cleanup", required_evidence_kind: "actual-execution", outcome: "pending"}
+      - {id: "VAL009-AC-09", requirement: "one-wait snapshot process and freeze contracts remain compatible", required_evidence_kind: "actual-execution", outcome: "pending"}
+      - {id: "VAL009-AC-10", requirement: "focused lanes platform evidence and fresh exact-head audit", required_evidence_kind: "actual-execution", outcome: "pending"}
+      - {id: "VAL009-AC-11", requirement: "Windows-to-WSL execution uses a repository-owned exact-head stdin transport and a Linux-native temporary workspace without shared mount I/O", required_evidence_kind: "actual-execution", outcome: "pending"}
+graph_freshness:
+  project: null
+  head_sha: null
+  coverage: "exact final values are recorded after freeze beneath the ignored terminal-evidence root; a tracked commit cannot self-bind its own SHA"
+  expected_nodes: null
+  indexed_nodes: null
+terminal_evidence:
+  root: ".dev/ai-context/local/validation/issue-250-252"
+  binding: "select the directory whose full subject SHA matches the clean immutable final HEAD"
+  fast: "required ignored terminal"
+  medium: "required ignored terminal or truthful missing-terminal record"
+  long_windows: "required ignored trusted-reference terminal"
+  long_linux: "required ignored trusted-reference terminal and native-workspace receipt"
+  exact_head_audit: "required fresh callback after all tracked mutation"

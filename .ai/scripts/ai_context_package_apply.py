@@ -23,6 +23,12 @@ from typing import Callable, Iterable, Iterator
 
 import yaml
 
+from ai_context_package_identity import (
+    POLICY_ID as PUBLIC_PACKAGE_IDENTITY_POLICY,
+    PackageIdentityError,
+    expected_package_id,
+    expected_rule,
+)
 from ai_context_package_validation import (
     PackageValidationError,
     validate_extracted_package,
@@ -35,8 +41,9 @@ from ai_context_target_provenance import (
 
 
 VERSION_RE = re.compile(r"^v?(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)$")
-COMPONENT_PACKAGE_SCHEMAS = {"2.0.0", "2.1.0", "2.2.0", "2.3.0"}
-IDENTITY_PACKAGE_SCHEMAS = {"1.1.0", "2.1.0", "2.2.0", "2.3.0"}
+COMPONENT_PACKAGE_SCHEMAS = {"2.0.0", "2.1.0", "2.2.0", "2.3.0", "2.4.0"}
+IDENTITY_PACKAGE_SCHEMAS = {"1.1.0", "2.1.0", "2.2.0", "2.3.0", "2.4.0"}
+PORTABLE_VALIDATION_PACKAGE_SCHEMAS = {"2.3.0", "2.4.0"}
 
 
 class ApplyError(ValueError):
@@ -1325,8 +1332,8 @@ def target_validation_profile(target: Path) -> dict:
 
 
 def incoming_package_validation(package_root: Path, package: dict) -> dict:
-    """Execute only the validator embedded in a schema-2.3 incoming package."""
-    if package.get("schema_version") != "2.3.0":
+    """Execute only the validator embedded in a portable incoming package."""
+    if package.get("schema_version") not in PORTABLE_VALIDATION_PACKAGE_SCHEMAS:
         return {
             "applicable": False,
             "schema_version": None,
@@ -1749,8 +1756,33 @@ def validate_package_root(package_root: Path) -> tuple[dict, dict[str, dict], di
             for key in ("commit", "tree")
         ):
             raise ApplyError("package source identity requires commit and tree SHA")
-        if not isinstance(identity, dict) or identity.get("schema_version") != "1.0.0":
+        expected_identity_schema = "1.1.0" if package_schema == "2.4.0" else "1.0.0"
+        if (
+            not isinstance(identity, dict)
+            or identity.get("schema_version") != expected_identity_schema
+        ):
             raise ApplyError("package identity schema is missing or unsupported")
+        if package_schema == "2.4.0":
+            if identity.get("public_artifact_base") != package_id:
+                raise ApplyError(
+                    "package public artifact base differs from package identity"
+                )
+            if package.get("profile_id") == "dotnet-backend":
+                try:
+                    resolved = expected_rule(package.get("version"))
+                except PackageIdentityError as exc:
+                    raise ApplyError(
+                        f"package public identity version is invalid: {exc}"
+                    ) from exc
+                if (
+                    package_id != expected_package_id(package.get("version"))
+                    or identity.get("package_identity_policy")
+                    != PUBLIC_PACKAGE_IDENTITY_POLICY
+                    or identity.get("identity_rule") != resolved["rule_id"]
+                ):
+                    raise ApplyError(
+                        "package public identity does not match its version"
+                    )
         payload_fingerprint = sha256_bytes(
             "".join(
                 f"{record['sha256']}  {relative}\n"
@@ -1772,7 +1804,7 @@ def validate_package_root(package_root: Path) -> tuple[dict, dict[str, dict], di
             char not in "0123456789abcdef" for char in selected
         ):
             raise ApplyError("package identity selected_input_fingerprint is invalid")
-    if package_schema == "2.3.0":
+    if package_schema in PORTABLE_VALIDATION_PACKAGE_SCHEMAS:
         try:
             validate_extracted_package(
                 package_root,
@@ -2020,7 +2052,7 @@ def expected_operation_post_states(
 
 
 def selected_input_proof_identity(package: dict) -> dict | None:
-    if package.get("schema_version") != "2.3.0":
+    if package.get("schema_version") not in PORTABLE_VALIDATION_PACKAGE_SCHEMAS:
         return None
     validation = package.get("validation")
     if not isinstance(validation, dict):

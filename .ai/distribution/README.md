@@ -5,7 +5,7 @@ This directory owns source-side, machine-readable contracts for building portabl
 ## Entry Points
 
 - `profiles/dotnet-backend.yaml` defines the initial complete distribution profile, source allowlist, ownership classes, and exclusions.
-- `identity-registry.yaml` defines repository, public product, framework release, technology profile, package/archive, and governed legacy alias identities without selecting a CLI identity.
+- `identity-registry.yaml` defines repository, public product, framework release, technology profile, and version-aware package/archive identities without selecting a CLI identity.
 - `schemas/identity-registry.schema.yaml` defines the source-only identity registry contract; `validate-repository-identity.py` validates its uniqueness, separation, aliases, and declared consumers.
 - `source-dispositions.yaml` explains every tracked `.dev/**` source path that is neither selected by the `dotnet-backend` payload nor covered by a profile exclusion. `schemas/source-dispositions.schema.yaml` defines its taxonomy; `validate-source-dispositions.py` recomputes the Git-tree partition and fails on implicit omissions, stale or overlapping patterns, and payload/exclusion conflicts.
 - `../assets/shared/PRODUCT-SOURCE-PROJECTION-CONTRACT.md` defines the single canonical product-source and derived-projection boundary.
@@ -13,6 +13,10 @@ This directory owns source-side, machine-readable contracts for building portabl
 - `schemas/package.schema.yaml` defines package-envelope metadata.
 - `schemas/files.schema.yaml` defines the generated per-file inventory.
 - `schemas/migration.schema.yaml` defines version-to-version migration operations.
+- `V015-PACKAGE-VALIDATION-LANES.md` defines the source-only fast identity/archive,
+  medium synthetic clean-install, and long actual published-v0.14 durability
+  upgrade evidence split. Its machine contract and terminal schema live under
+  `validation/` and `schemas/`.
 
 ## Boundary
 
@@ -26,7 +30,9 @@ This directory owns source-side, machine-readable contracts for building portabl
 - Root entries and empty target catalogs come from public templates owned by `ai-context-init`; active source-repository root documents and catalogs are not templates.
 - External indexes or knowledge graphs may accelerate discovery but cannot prove package completeness.
 - Repository, public product, release, technology profile, archive/package, skill alias, and future CLI/toolchain namespaces are separate identity classes. The registry may bind relationships between them, but a repository rename never authorizes another identity change.
-- Distribution profile and release records remain stable compiled consumers. The source validator cross-checks their literals against the registry so #166 adds no package payload, archive-name, schema, or migration behavior change.
+- Distribution profiles consume the registry policy instead of compiling one current archive name. Release records remain immutable versioned consumers.
+- Package versions through v0.14 use `ai-context-dotnet-backend-v{version}`. Package versions from v0.15 use `ai-collaboration-framework-v{version}`. For either resolved base, the public asset set is exactly `.zip`, `.zip.sha256`, `.tar.gz`, and `.tar.gz.sha256`.
+- `dotnet-backend` remains the technology-profile component. It is deliberately distinct from the v0.15+ public package/archive identity.
 - A profile entry marked `allow_empty_until` is a workflow bootstrap exception. A release candidate validator must reject every remaining empty entry.
 - Template-manifest `source` paths are resolved relative to the manifest directory. Targets are repository-relative payload paths; reject absolute paths, `..`, backslashes, duplicates, and collisions. A template may exist once at its canonical managed path and once at its mapped target seed path.
 - `metadata/SHA256SUMS.txt` covers every other envelope member and excludes itself. Archive digests are external `.sha256` sidecars because an archive cannot contain its own final digest.
@@ -58,6 +64,14 @@ upgrade `automatic-candidate`, a published Release, or publication authority.
 Archive parity validates the envelope and inventory only; selected-payload
 navigation, component-reference closure, release-source gates, and hosted
 state retain their separate owners.
+
+The builder resolves the package base from the version and the tracked identity
+registry. Package schema `2.4.0` carries the selected policy, rule, and public
+artifact base in `metadata/identity.yaml`. The archive root, package envelope,
+manifest, portable-validation result, application receipt, and payload
+fingerprint must agree with that resolved identity. Readers retain schema
+`2.3.0` support for v0.14 and earlier packages; they do not reinterpret or
+rename those published bytes.
 
 ## Ownership Classes
 

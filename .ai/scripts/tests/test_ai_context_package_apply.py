@@ -408,6 +408,9 @@ def make_schema_23_upgrade_package(
         ".ai/scripts/ai_context_package_validation.py": (
             ROOT / ".ai/scripts/ai_context_package_validation.py"
         ).read_bytes(),
+        ".ai/scripts/ai_context_package_identity.py": (
+            ROOT / ".ai/scripts/ai_context_package_identity.py"
+        ).read_bytes(),
         ".ai/scripts/python-entrypoints.json": (
             json.dumps(
                 {
@@ -447,6 +450,7 @@ def make_schema_23_upgrade_package(
     component_by_path = {
         validator_path: "ai-context-lifecycle-core",
         ".ai/scripts/ai_context_package_validation.py": "ai-context-lifecycle-core",
+        ".ai/scripts/ai_context_package_identity.py": "ai-context-lifecycle-core",
         ".ai/assets/shared/example.md": "dotnet-backend",
     }
     records: list[dict] = []

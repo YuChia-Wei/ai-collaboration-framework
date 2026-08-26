@@ -22,6 +22,7 @@ from datetime import datetime
 import yaml
 
 import ai_context_target_provenance as target_provenance
+from ai_context_package_identity import expected_artifacts, expected_package_id
 
 
 VERSION_RE = re.compile(r"^v(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)$")
@@ -170,13 +171,12 @@ def validate_distribution(
         errors.append(f"{path}: governed release distribution must be a mapping")
         return
 
-    bare_version = version.removeprefix("v")
-    expected_package_id = f"ai-context-dotnet-backend-v{bare_version}"
+    expected_package = expected_package_id(version)
     if distribution.get("profile_id") != "dotnet-backend":
         errors.append(f"{path}: distribution.profile_id must be dotnet-backend")
-    if distribution.get("package_id") != expected_package_id:
+    if distribution.get("package_id") != expected_package:
         errors.append(
-            f"{path}: distribution.package_id must be {expected_package_id}"
+            f"{path}: distribution.package_id must be {expected_package}"
         )
 
     schemas = distribution.get("schema_versions")
@@ -190,17 +190,12 @@ def validate_distribution(
                     f"{path}: distribution.schema_versions.{name} must be MAJOR.MINOR.PATCH"
                 )
 
-    expected_artifacts = {
-        "zip": f"{expected_package_id}.zip",
-        "zip_checksum": f"{expected_package_id}.zip.sha256",
-        "tar_gz": f"{expected_package_id}.tar.gz",
-        "tar_gz_checksum": f"{expected_package_id}.tar.gz.sha256",
-    }
+    expected_asset_names = expected_artifacts(version)
     artifacts = distribution.get("artifacts")
     if not isinstance(artifacts, dict):
         errors.append(f"{path}: distribution.artifacts must be a mapping")
     else:
-        for name, expected in expected_artifacts.items():
+        for name, expected in expected_asset_names.items():
             if artifacts.get(name) != expected:
                 errors.append(
                     f"{path}: distribution.artifacts.{name} must be {expected}"

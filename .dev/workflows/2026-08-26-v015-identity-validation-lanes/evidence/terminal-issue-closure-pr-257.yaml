@@ -1,0 +1,120 @@
+schema_version: "1.0"
+contract_id: github-terminal-issue-closure
+repository: YuChia-Wei/ai-collaboration-framework
+validation_stage: declaration
+pull_request:
+  number: 257
+  head_sha: null
+  body: |
+    ## Summary
+
+    - integrates the v0.15 public package and archive identity migration for Issue #250
+    - adds independently executable fast, medium, and long package-validation lanes for Issue #252
+    - preserves every v0.14-and-earlier public name, byte, checksum, receipt, and publication record
+    - retains Issue 254 / REL-017 as the separate integrated-main release-readiness owner
+
+    ## Changes
+
+    - selects `ai-context-dotnet-backend-v{version}` through v0.14 and exactly one `ai-collaboration-framework-v{version}` identity from v0.15 onward
+    - aligns registry, schemas, package/apply consumers, upgrade routes, candidate and publication workflows, documentation, and tests
+    - records fast identity/archive parity, medium synthetic clean install, and trusted Windows/Linux actual v0.14-to-synthetic-v0.15 durability evidence without cross-projecting outcomes
+    - adds the repository-owned WSL launcher that transports an exact Git head over stdin, executes in Linux-native `/tmp`, rejects shared filesystems, and preserves bounded terminal evidence
+
+    ## Related Issues
+
+    - Issue #: 250
+    - Delivery disposition: `deferred`
+    - Reference: Refs #250
+    - `closure_deferred_reason`: this PR integrates the v0.15 identity implementation and trusted platform upgrade evidence, while integrated-main release readiness, Issue closure, Project completion, release allocation, tagging, and publication remain separate owner-controlled gates
+    - Next terminal gate or owner: REL-017 must evaluate the merged integrated-main subject with fresh required Windows/Linux and provider evidence before the repository owner decides Issue or release terminal state
+    - Owner authorization or approved no-Issue exception: the repository owner authorized PR creation and merge-commit integration on 2026-08-26
+
+    - Issue #: 252
+    - Delivery disposition: `deferred`
+    - Reference: Refs #252
+    - `closure_deferred_reason`: this PR integrates the three validation lanes and their exact-head evidence, while integrated-main reuse or re-execution and release-readiness projection remain owned by REL-017
+    - Next terminal gate or owner: REL-017 must consume or freshly re-execute admissible integrated-main lane evidence and make the separate release-readiness decision
+    - Owner authorization or approved no-Issue exception: the repository owner authorized PR creation and merge-commit integration on 2026-08-26
+
+    ## Delivery And Integration
+
+    - Delivery grouping: cohesive multi-Issue delivery with separate acceptance evidence
+    - Execution record: workflow `2026-08-26-v015-identity-validation-lanes`
+    - Selected topology: merge commit
+    - Topology reason: the 17-commit branch contains durable semantic-integration, cross-platform validation, retry, long-running lease, WSL transport, and exact-head audit boundaries that should remain one visible review and rollback unit; the owner explicitly requested PR integration with `--no-ff`
+
+    ## Evidence
+
+    - final local candidate before PR declaration: `0a39b3205a9596c3b9eb39b9827bffb570eb5575`
+    - fast Windows identity/archive parity: passed in 13.163 seconds without material target mutation
+    - medium Windows synthetic clean install: passed in 299.278 seconds under owner-authorized workflow attempt 3
+    - trusted Windows actual upgrade: passed in 93.181 seconds
+    - trusted Linux actual upgrade: passed in 42.821 seconds under owner-authorized attempt 3 using Linux-native storage
+    - aggregate truth: `actual_upgrade_outcome=passed`, while fast or medium evidence cannot prove actual upgrade
+    - exact-head independent audit: passed with zero blocking findings; a fresh audit remains mandatory after the tracked PR declaration commit
+
+    ## Boundaries
+
+    - no Issue closure or Project terminal mutation
+    - no v0.15 option allocation, tag, GitHub Release, asset upload, publication, CLI/registry/installer, or external-repository work
+    - no formal `.dev/releases/v0.15.0` publication record; all v0.15 candidates remain ignored synthetic validation output
+
+    ## Checklist
+
+    - [x] Selected focused and actual-upgrade validation passed with retained failure and retry evidence
+    - [x] Target-owned .NET commands were not selected because this delivery changes portable Python/package lifecycle tooling
+    - [x] Identity, upgrade, validation-lane, workflow, documentation, and tests are updated
+    - [x] No secrets or formal publication artifacts are included
+    - [x] Issues #250 and #252 each have exactly one deferred disposition
+    - [ ] The exact final PR head passes all required hosted checks
+    - [ ] The exact final PR head has the required fresh single-maintainer audit receipt
+
+  integration:
+    status: pending
+    topology: null
+    admitted_head_sha: null
+    integration_commit_sha: null
+    provider_read_back: false
+  review:
+    status: pending
+  required_check_contexts: []
+  hosted_checks: []
+issues:
+  - number: 250
+    mode: deferred
+    work_authorization:
+      online_issue_bound: true
+      explicit_owner_approval: true
+    final_accepted_delivery: false
+    workflow:
+      scope_complete: false
+      tasks_complete: false
+      applicable_verification_complete: false
+    closing_keyword: null
+    closure_deferred_reason: this PR integrates the v0.15 identity implementation and trusted platform upgrade evidence, while integrated-main release readiness, Issue closure, Project completion, release allocation, tagging, and publication remain separate owner-controlled gates
+    next_terminal_gate_or_owner: REL-017 must evaluate the merged integrated-main subject with fresh required Windows/Linux and provider evidence before the repository owner decides Issue or release terminal state
+    read_back:
+      performed: false
+      integration_commit_sha: null
+      issue_state: null
+      issue_state_reason: null
+      project_status: null
+  - number: 252
+    mode: deferred
+    work_authorization:
+      online_issue_bound: true
+      explicit_owner_approval: true
+    final_accepted_delivery: false
+    workflow:
+      scope_complete: false
+      tasks_complete: false
+      applicable_verification_complete: false
+    closing_keyword: null
+    closure_deferred_reason: this PR integrates the three validation lanes and their exact-head evidence, while integrated-main reuse or re-execution and release-readiness projection remain owned by REL-017
+    next_terminal_gate_or_owner: REL-017 must consume or freshly re-execute admissible integrated-main lane evidence and make the separate release-readiness decision
+    read_back:
+      performed: false
+      integration_commit_sha: null
+      issue_state: null
+      issue_state_reason: null
+      project_status: null

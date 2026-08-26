@@ -1,0 +1,95 @@
+$schema: https://json-schema.org/draft/2020-12/schema
+$id: https://github.com/YuChia-Wei/ai-collaboration-framework/.ai/distribution/schemas/v015-package-validation-terminal.schema.yaml
+title: v0.15 package validation lane terminal record
+type: object
+required:
+  - schema_version
+  - lane
+  - outcome
+  - subject
+  - command
+  - execution
+  - evidence
+  - phases
+  - cleanup
+  - failure_fingerprint
+properties:
+  schema_version:
+    const: v015-package-validation-terminal/v1
+  lane:
+    enum: [fast, medium, long]
+  outcome:
+    enum: [passed, failed, blocked-by-environment, not-applicable, deferred-with-owner]
+  subject:
+    type: object
+    required: [commit, source_version, candidate_version]
+  command:
+    type: object
+    required: [id, digest, budget_seconds]
+  execution:
+    type: object
+    required: [platform, attempt, trusted_reference, duration_ms]
+  evidence:
+    type: object
+  phases:
+    type: object
+  cleanup:
+    type: object
+    required: [outcome, work_root_removed]
+  failure_fingerprint:
+    type: [string, 'null']
+allOf:
+  - if:
+      properties:
+        outcome: {const: passed}
+    then:
+      properties:
+        failure_fingerprint: {type: 'null'}
+  - if:
+      properties:
+        lane: {const: fast}
+        outcome: {const: passed}
+    then:
+      properties:
+        evidence:
+          required: [material_target_mutation, actual_upgrade, legacy_immutable]
+          properties:
+            material_target_mutation: {const: false}
+            actual_upgrade: {const: false}
+            legacy_immutable: {const: true}
+  - if:
+      properties:
+        lane: {const: medium}
+        outcome: {const: passed}
+    then:
+      properties:
+        evidence:
+          required: [synthetic_clean_install, actual_upgrade, legacy_immutable]
+          properties:
+            synthetic_clean_install: {const: true}
+            actual_upgrade: {const: false}
+            legacy_immutable: {const: true}
+  - if:
+      properties:
+        lane: {const: long}
+        outcome: {const: passed}
+    then:
+      properties:
+        evidence:
+          required:
+            - source
+            - candidate
+            - target_snapshot_before
+            - target_snapshot_after
+            - git_inspection
+            - receipt
+            - legacy_immutable
+            - actual_upgrade
+            - consumed_ai_context_test_tmp_root
+          properties:
+            legacy_immutable: {const: true}
+            actual_upgrade: {const: true}
+            consumed_ai_context_test_tmp_root: {const: false}
+        phases:
+          required: [build, extract, snapshot, plan, decision, apply, receipt, cleanup]
+additionalProperties: false
