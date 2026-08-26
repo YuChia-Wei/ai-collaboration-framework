@@ -21,3 +21,8 @@ exists only in the ignored synthetic source used to build a candidate.
 independent trusted Windows and Linux `long` terminals and keeps missing,
 failed, blocked, not-applicable, and owner-deferred results non-passing.
 Issue #254 remains the owner of later integrated-main release readiness.
+
+If `medium` or any other lane is expected or observed to reach 120 seconds, it
+uses the same clean immutable commit, validated packet, exclusive writer lease,
+read-only delegation, ignored output, and one-wait boundary as `long`. An
+interrupted parent execution is retained as non-passing evidence.

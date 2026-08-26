@@ -265,6 +265,33 @@ class V015PackageValidationLaneGwtTests(unittest.TestCase):
         self.assertNotIn(b"#!/bin/sh", encoded)
         self.assertEqual(["a.sh", "z.txt"], [item["path"] for item in canonical])
 
+    def test_gwt_010_given_admitted_lane_when_interrupted_then_cleanup_and_nonpassing_terminal_are_retained(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            output = Path(temporary) / "lane"
+            output.mkdir()
+
+            def interrupted(root: Path, commit: str, lane_output: Path, phases: dict) -> dict[str, object]:
+                (lane_output / "work").mkdir()
+                raise KeyboardInterrupt()
+
+            with mock.patch.object(VALIDATION, "validate_output_root", return_value=output), mock.patch.object(
+                VALIDATION,
+                "validate_subject",
+                return_value={"commit": "1" * 40, "tree": "2" * 40, "status_sha256": "3" * 64},
+            ), mock.patch.object(VALIDATION, "medium_lane", side_effect=interrupted):
+                return_code, record = VALIDATION.execute_lane(
+                    root=ROOT,
+                    lane="medium",
+                    expected_commit="1" * 40,
+                    output_dir=output,
+                )
+
+            self.assertEqual(1, return_code)
+            self.assertEqual("failed", record["outcome"])
+            self.assertEqual("execution-interrupted", record["evidence"]["reason_code"])
+            self.assertTrue(record["cleanup"]["work_root_removed"])
+            self.assertTrue((output / "terminal.json").is_file())
+
 
 if __name__ == "__main__":
     unittest.main()

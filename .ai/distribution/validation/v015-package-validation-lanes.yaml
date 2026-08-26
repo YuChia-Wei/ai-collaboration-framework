@@ -25,6 +25,8 @@ lanes:
     budget_seconds: 240
     target_kind: synthetic-clean-install
     proves_actual_upgrade: false
+    long_running_gate_when_expected_or_observed_seconds_at_least: 120
+    execution_boundary: validated-packet-exclusive-lease-read-only-delegation-one-wait
   long:
     command: python .ai/scripts/run-v015-package-validation.py long --expected-commit SHA --output-dir .dev/ai-context/local/validation/issue-250-252/long-PLATFORM --trusted-reference
     budget_seconds: 1200

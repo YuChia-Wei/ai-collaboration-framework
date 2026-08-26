@@ -693,8 +693,12 @@ def long_lane(root: Path, expected_commit: str, output: Path, phases: dict[str, 
     return evidence
 
 
-def failure_details(lane: str, subject_commit: str, error: Exception) -> tuple[str, str, str]:
-    if isinstance(error, ValidationError):
+def failure_details(lane: str, subject_commit: str, error: BaseException) -> tuple[str, str, str]:
+    if isinstance(error, KeyboardInterrupt):
+        outcome = "failed"
+        reason = "execution-interrupted"
+        failure_class = "interruption"
+    elif isinstance(error, ValidationError):
         outcome = "failed"
         reason = error.reason_code
         failure_class = "contract"
@@ -809,6 +813,8 @@ def execute_lane(
     try:
         implementations = {"fast": fast_lane, "medium": medium_lane, "long": long_lane}
         evidence = implementations[lane](root, expected_commit, output, phases)
+    except KeyboardInterrupt as error:
+        outcome, reason_code, fingerprint = failure_details(lane, expected_commit, error)
     except Exception as error:  # terminal reporting must cover every admitted execution
         outcome, reason_code, fingerprint = failure_details(lane, expected_commit, error)
     finally:
