@@ -637,6 +637,25 @@ class DeterministicPackageGwtTests(unittest.TestCase):
         finally:
             fixture.close()
 
+    def test_gwt_000d_given_source_work_management_is_excluded_when_current_payload_is_projected_then_navigation_remains_closed(self) -> None:
+        profile = yaml.safe_load(
+            (ROOT / ".ai/distribution/profiles/dotnet-backend.yaml").read_text(
+                encoding="utf-8"
+            )
+        )
+        exclusions = profile["exclusions"]
+        index = (ROOT / ".dev/standards/INDEX.MD").read_text(encoding="utf-8")
+        for source_only in (
+            ".dev/standards/SOURCE-WORK-MANAGEMENT-AUTHORITY.md",
+            ".dev/standards/SOURCE-WORK-MANAGEMENT-AUTHORITY.yaml",
+            ".dev/standards/GITHUB-WORK-MANAGEMENT-POLICY.yaml",
+        ):
+            self.assertTrue(PACKAGE.is_excluded(source_only, exclusions))
+            self.assertNotIn(
+                f"]({Path(source_only).name})",
+                index,
+            )
+
     def test_gwt_000b_given_source_effective_rule_policy_schema_and_evidence_when_built_then_downstream_excludes_them_and_retains_resolver(self) -> None:
         canonical_profile = yaml.safe_load(
             (ROOT / ".ai/distribution/profiles/dotnet-backend.yaml").read_text(
