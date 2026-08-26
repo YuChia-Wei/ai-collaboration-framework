@@ -23,10 +23,15 @@ LAUNCHER = importlib.util.module_from_spec(SPEC)
 SPEC.loader.exec_module(LAUNCHER)
 
 
-def result_payload(*, subject: str = "a" * 40, lane: str = "long", filesystem: str = "ext2/ext3") -> bytes:
+def result_payload(
+    *,
+    subject: str = "a" * 40,
+    lane: str = "long",
+    filesystem: str = "ext2/ext3",
+    terminal: bool = True,
+) -> bytes:
     buffer = io.BytesIO()
     files = {
-        "output/terminal.json": b"{}\n",
         "lane.stdout": b'{"outcome":"passed"}\n',
         "lane.stderr": b"",
         "launcher.json": json.dumps(
@@ -40,6 +45,8 @@ def result_payload(*, subject: str = "a" * 40, lane: str = "long", filesystem: s
             }
         ).encode(),
     }
+    if terminal:
+        files["output/terminal.json"] = b"{}\n"
     with tarfile.open(fileobj=buffer, mode="w") as archive:
         output_directory = tarfile.TarInfo("output")
         output_directory.type = tarfile.DIRTYPE
@@ -112,6 +119,21 @@ class V015WslNativeLauncherGwtTests(unittest.TestCase):
                 with mock.patch.object(LAUNCHER, "run_git") as run_git:
                     run_git.return_value.returncode = 0
                     LAUNCHER.validate_output(root, output)
+
+    def test_gwt_006_given_lane_exits_before_terminal_when_result_returns_then_diagnostics_are_retained(self) -> None:
+        with tempfile.TemporaryDirectory(dir=TEST_TEMP_ROOT) as temporary:
+            destination = Path(temporary) / "evidence"
+
+            exit_code, stdout, _ = LAUNCHER.extract_result(
+                result_payload(terminal=False), destination, "a" * 40, "long"
+            )
+
+            self.assertEqual(0, exit_code)
+            self.assertIn('"outcome":"passed"', stdout)
+            self.assertTrue(destination.is_dir())
+            self.assertFalse((destination / "terminal.json").exists())
+            self.assertTrue((destination / "wsl-native-launcher.json").is_file())
+            self.assertTrue((destination / "lane.stderr").is_file())
 
 
 if __name__ == "__main__":

@@ -193,6 +193,10 @@ def extract_result(payload: bytes, destination: Path, expected_commit: str, lane
                 if member.isdir():
                     if name != "output":
                         raise LauncherError("unsafe-result-member")
+                    target = staging / PurePosixPath(name)
+                    if not target.resolve().is_relative_to(staging.resolve()):
+                        raise LauncherError("unsafe-result-member")
+                    target.mkdir(parents=True, exist_ok=True)
                     continue
                 if not member.isfile() or not (name in RESULT_MEMBERS or name.startswith("output/")):
                     raise LauncherError("unsafe-result-member")
@@ -221,6 +225,8 @@ def extract_result(payload: bytes, destination: Path, expected_commit: str, lane
         destination.parent.mkdir(parents=True, exist_ok=True)
         shutil.copytree(output, destination)
         shutil.copy2(staging / "launcher.json", destination / "wsl-native-launcher.json")
+        shutil.copy2(staging / "lane.stdout", destination / "lane.stdout")
+        shutil.copy2(staging / "lane.stderr", destination / "lane.stderr")
         stdout = (staging / "lane.stdout").read_text(encoding="utf-8", errors="replace")
         stderr = (staging / "lane.stderr").read_text(encoding="utf-8", errors="replace")
         return lane_exit, stdout, stderr
