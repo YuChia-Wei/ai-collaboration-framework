@@ -9,7 +9,7 @@
   "title": "Prepare REL-v0.15.0 publication",
   "status": "completed",
   "created_at": "2026-08-27T09:02:50+08:00",
-  "updated_at": "2026-08-27T09:32:09+08:00",
+  "updated_at": "2026-08-27T09:34:34+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/release-publication/release-publication-task.json",
   "model": "gpt-5.6-sol",
   "reasoning_effort": "high",
@@ -31,6 +31,7 @@
   ],
   "results": {
     "summary": "Prepared the governed v0.15.0 source candidate, public identity metadata, direct immediate-predecessor v0.14.0-to-v0.15.0 evidence, and orchestrated v0.9.0 and v0.6.0 routes. Provider publication remains an external immutable-tag action.",
+    "finding_status": "resolved",
     "files_changed": [
       ".dev/releases/INDEX.MD",
       ".dev/releases/v0.15.0",
@@ -54,6 +55,8 @@
       "The support matrix and release-state evidence selector were reconciled to derive the immediate-predecessor route from compatibility.automatic_upgrade_sources: v0.14.0 resolves directly, while v0.9.0 and v0.6.0 resolve through immutable v0.14.0 with no diagnostics.",
       "PR #260 provider observation: GitHub Actions run 33030166194, job 98380608063 (https://github.com/YuChia-Wei/ai-collaboration-framework/actions/runs/33030166194/job/98380608063) failed the read-only governance contract in 32 seconds because the new workflow locator omitted canonical discovery metadata and its index row retained an earlier timestamp; candidate run 33030166113 and the Ubuntu/Windows prerequisite jobs in run 33030166128 passed for the same dcd68ecf953277cb4902daa126ddee1b47803ef4 head.",
       "The workflow locator was reconciled to the canonical ai-context-governance template and the index projection was refreshed without weakening the provider admission gate.",
+      "PR #260 provider observation at c1bb0015f1055c91d89be0c0956107297aecc11f: governance run 33030460226/job 98381536967 and portable-gates run 33030460388/job 98381537724 failed only because the completed task omitted results.finding_status; candidate run 33030460183 and both prerequisite jobs in run 33030460388 passed.",
+      "The completed task now records finding_status as resolved; no release source, package, migration, archive, route, receipt, or checksum bytes changed.",
       "The first release-body render rejected the non-allowlisted Upgrade Summary heading; the authored content was retained under the allowlisted Practical Effect heading and requires one fresh render.",
       "The second release-body render rejected the otherwise allowlisted sections because Practical Effect followed Compatibility; the sections were reordered to the canonical publication sequence and require one fresh render.",
       "The repaired publish-mode release body rendered successfully in 0.164 seconds at 11dfb68f15ed2b6d9de1ec10cbf62ca24b434244.",
