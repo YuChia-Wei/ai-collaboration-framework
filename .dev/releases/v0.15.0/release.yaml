@@ -1,0 +1,107 @@
+schema_version: "1.0"
+release_id: "REL-v0.15.0"
+version: "v0.15.0"
+status: "validated"
+record_origin: "governed"
+distribution_kind: "governed-package"
+installable: true
+tag: null
+commit: null
+tagged_at: null
+recorded_at: null
+created_at: "2026-08-27T09:02:50+08:00"
+updated_at: "2026-08-27T09:02:50+08:00"
+planning:
+  github_issue_refs:
+    - "#249"
+    - "#250"
+    - "#251"
+    - "#252"
+    - "#253"
+provider_reconciliation:
+  schema_version: "1.1"
+  provider: "github"
+  repository: "YuChia-Wei/ai-collaboration-framework"
+  project_owner: "YuChia-Wei"
+  project_number: 3
+  included_issue_refs_source: "planning.github_issue_refs"
+  included_work:
+    prepublication:
+      issue_state: "closed"
+      state_reason: "completed"
+      project:
+        Status: "Done"
+    postpublication:
+      issue_state: "closed"
+      state_reason: "completed"
+      project:
+        Status: "Done"
+  coordination:
+    issue_refs:
+      - "#254"
+    prepublication:
+      issue_state: "closed"
+      state_reason: "completed"
+      project:
+        Status: "Done"
+    postpublication:
+      issue_state: "closed"
+      state_reason: "completed"
+      project:
+        Status: "Done"
+compatibility:
+  breaking_changes: true
+  minimum_source_version: "v0.14.0"
+  reconciliation_sources:
+    - "v0.14.0"
+  automatic_upgrade_sources:
+    - "v0.14.0"
+  affected_contracts:
+    - "public package and archive identity"
+    - "v0.14.0 to v0.15.0 upgrade routing"
+    - "package apply process inspection"
+    - "validation execution and evidence classification"
+    - "agent execution packet and worktree lease enforcement"
+artifacts:
+  release_notes: "release-notes.md"
+  migration_guide: "migration-guide.md"
+  support_matrix: "support-matrix.yaml"
+  route_evidence:
+    - "route-evidence/v0.14.0-to-v0.15.0.json"
+    - "route-evidence/v0.9.0-to-v0.15.0.json"
+    - "route-evidence/v0.6.0-to-v0.15.0.json"
+distribution:
+  profile_id: "dotnet-backend"
+  package_id: "ai-collaboration-framework-v0.15.0"
+  schema_versions:
+    package: "2.4.0"
+    files: "2.0.0"
+    migration: "3.0.0"
+  artifacts:
+    zip: "ai-collaboration-framework-v0.15.0.zip"
+    zip_checksum: "ai-collaboration-framework-v0.15.0.zip.sha256"
+    tar_gz: "ai-collaboration-framework-v0.15.0.tar.gz"
+    tar_gz_checksum: "ai-collaboration-framework-v0.15.0.tar.gz.sha256"
+  migration:
+    default_mode: "dry-run"
+    apply_requires_clean_worktree: true
+    apply_requires_acknowledged_reconciliation: true
+  publication:
+    tag_owner: "user"
+    trigger: "user-created-tag"
+    automation: "github-actions"
+    creates_or_moves_tag: false
+validation:
+  evidence: "Issues #249 through #254 are integrated, closed as completed, and read back with Project Status Done. The owner explicitly directed this publication task not to rerun local syntax checks, focused tests, package lanes, full matrices, or performance suites because those behaviors were exercised during the integrated pre-release work. Those omitted checks are not represented as newly passed or reused-with-proof evidence. Publication safety remains limited to authored release-content review, deterministic release-asset construction, identity/checksum parity, immutable annotated-tag binding, the repository tag-triggered publication workflow, and live GitHub Release/provider read-back. Historical integrated evidence remains attached to its original subjects, including the completed Windows and Linux v0.14-to-v0.15 upgrade runs and bounded package-apply process-count work. No v0.14.0-or-earlier public name, tag, Release, asset, checksum, route, receipt, package metadata, or published byte is rewritten."
+  workflow_id: "2026-08-27-v015-release-publication"
+  related_workflows:
+    - "2026-08-26-v015-pre-release-gate"
+    - "2026-08-26-v015-identity-validation-lanes"
+    - "2026-08-25-package-apply-git-snapshot"
+    - "2026-08-25-validation-freeze-agent-guardrails"
+  related_assessments: []
+  package_status: "validated"
+  post_merge_status: "pending"
+  failed_publication_run: null
+  published_run: null
+  public_release_url: null
