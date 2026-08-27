@@ -32,7 +32,7 @@ v0.14.0 release.
 The default technology profile remains `dotnet-backend`. No CLI, binary,
 registry, installer, or toolchain identity is renamed by this release.
 
-## Upgrade Summary
+## Practical Effect
 
 Start from a clean target worktree, retain the v0.14.0 files manifest, and run
 the extracted v0.15.0 package planner in dry-run mode with
