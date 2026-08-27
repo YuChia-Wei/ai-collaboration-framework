@@ -50,7 +50,8 @@ SHA-256 under the new base. Historical public objects are read-only.
 
 ## Completion Meaning
 
-The tracked source workflow completes when the exact release source commit is
-merged and ready for the owner-authorized tag. Publication completion itself is
+The tracked source workflow completes when the exact release source candidate
+and its route metadata are committed and ready for merge and the
+owner-authorized tag. Publication completion itself is
 proved only by live provider read-back after the immutable tag workflow; the
 terminal source release record intentionally remains `validated`.
