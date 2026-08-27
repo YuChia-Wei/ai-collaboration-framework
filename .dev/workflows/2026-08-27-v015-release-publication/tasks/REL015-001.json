@@ -52,6 +52,7 @@
       "v0.13.0, v0.9.0, and v0.6.0 each resolve through immutable v0.14.0 to v0.15.0 as orchestrated multi-hop routes with no diagnostics.",
       "The first release-body render rejected the non-allowlisted Upgrade Summary heading; the authored content was retained under the allowlisted Practical Effect heading and requires one fresh render.",
       "The second release-body render rejected the otherwise allowlisted sections because Practical Effect followed Compatibility; the sections were reordered to the canonical publication sequence and require one fresh render.",
+      "The repaired publish-mode release body rendered successfully in 0.164 seconds at 11dfb68f15ed2b6d9de1ec10cbf62ca24b434244.",
       "Authored release notes and migration guidance were reviewed against the version-aware public identity contract."
     ],
     "commits": [
