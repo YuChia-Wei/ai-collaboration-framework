@@ -67,7 +67,7 @@ artifacts:
   migration_guide: "migration-guide.md"
   support_matrix: "support-matrix.yaml"
   route_evidence:
-    - "route-evidence/v0.13.0-to-v0.15.0.json"
+    - "route-evidence/v0.14.0-to-v0.15.0.json"
     - "route-evidence/v0.9.0-to-v0.15.0.json"
     - "route-evidence/v0.6.0-to-v0.15.0.json"
 distribution:

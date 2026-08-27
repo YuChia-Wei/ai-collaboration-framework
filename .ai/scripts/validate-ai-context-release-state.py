@@ -518,6 +518,7 @@ def validate_retained_origin_route_evidence(
     root: Path,
     version: str,
     artifacts: dict[str, Any],
+    automatic_upgrade_sources: list[str],
 ) -> None:
     """Validate the v0.14+ source-only support matrix and canonical route receipts."""
 
@@ -529,7 +530,12 @@ def validate_retained_origin_route_evidence(
         if artifacts != expected:
             raise ReleaseStateError("artifacts must name the two canonical authored files")
         return
-    origins = ("v0.13.0", "v0.9.0", "v0.6.0")
+    if len(automatic_upgrade_sources) != 1:
+        raise ReleaseStateError(
+            "compatibility.automatic_upgrade_sources must contain exactly "
+            "the immediate previous governed package version"
+        )
+    origins = (automatic_upgrade_sources[0], "v0.9.0", "v0.6.0")
     expected_evidence = [
         f"route-evidence/{origin}-to-{version}.json" for origin in origins
     ]
@@ -648,7 +654,7 @@ def validate_candidate_record(
             "compatibility.automatic_upgrade_sources must be non-empty stable versions"
         )
     artifacts = nested_mapping(data.get("artifacts"), "artifacts")
-    validate_retained_origin_route_evidence(root, version, artifacts)
+    validate_retained_origin_route_evidence(root, version, artifacts, sources)
     distribution = nested_mapping(data.get("distribution"), "distribution")
     if distribution.get("profile_id") != "dotnet-backend":
         raise ReleaseStateError("distribution.profile_id must be dotnet-backend")
