@@ -15,6 +15,7 @@ Historical `v*` directories below are records, never templates.
 
 | Release ID | Version | Status | Compatibility | Notes | Migration | Phase Contract |
 | --- | --- | --- | --- | --- | --- | --- |
+| [`REL-v0.15.0`](v0.15.0/release.yaml) | `v0.15.0` | `validated` | breaking public package identity; schema 2.4 package; automatic source v0.14.0 | [notes](v0.15.0/release-notes.md) | [guide](v0.15.0/migration-guide.md) | [checks](v0.15.0/release-phase-checks.yaml) |
 | [`REL-v0.14.0`](v0.14.0/release.yaml) | `v0.14.0` | `validated` | breaking; schemas 2.3 package / 2.0 files / 3.0 migration; retained-origin route proof pending immutable foundation commit | [notes](v0.14.0/release-notes.md) | [guide](v0.14.0/migration-guide.md) | [checks](v0.14.0/release-phase-checks.yaml) |
 | [`REL-v0.13.0`](v0.13.0/release.yaml) | `v0.13.0` | `validated` | breaking; schema 2.2 package; automatic source v0.12.0 | [notes](v0.13.0/release-notes.md) | [guide](v0.13.0/migration-guide.md) | [checks](v0.13.0/release-phase-checks.yaml) |
 | [`REL-v0.12.0`](v0.12.0/release.yaml) | `v0.12.0` | `validated` | breaking; schema 2.1 package; automatic source v0.11.0 | [notes](v0.12.0/release-notes.md) | [guide](v0.12.0/migration-guide.md) | [checks](v0.12.0/release-phase-checks.yaml) |

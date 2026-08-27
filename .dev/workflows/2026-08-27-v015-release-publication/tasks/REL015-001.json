@@ -1,0 +1,33 @@
+{
+  "template_id": "ai-context-governance-release-publication-task",
+  "template_version": "1.1.0",
+  "template_created_at": "2026-07-24T13:35:00+08:00",
+  "template_updated_at": "2026-07-27T09:52:09+08:00",
+  "task_id": "REL015-001",
+  "workflow_id": "2026-08-27-v015-release-publication",
+  "owner_skill": "ai-context-governance",
+  "title": "Prepare REL-v0.15.0 publication",
+  "status": "in_progress",
+  "created_at": "2026-08-27T09:02:50+08:00",
+  "updated_at": "2026-08-27T09:02:50+08:00",
+  "template_source": ".ai/assets/skills/ai-context-governance/templates/release-publication/release-publication-task.json",
+  "model": "gpt-5.6-sol",
+  "reasoning_effort": "high",
+  "scope": {
+    "release_id": "REL-v0.15.0",
+    "release_record": ".dev/releases/v0.15.0/release.yaml",
+    "out_of_scope": [
+      "rewriting any v0.14.0-or-earlier tag, Release, asset, checksum, route, receipt, metadata, or published byte",
+      "renaming CLI, binary, registry, installer, or toolchain identity",
+      "creating or replacing Project single-select options"
+    ]
+  },
+  "steps": [
+    "Instantiate the canonical release templates without copying a previous release instance.",
+    "Record the owner-authorized validation exception without projecting skipped checks as passed.",
+    "Review authored release notes and migration guidance.",
+    "Construct the exact release artifacts and retained upgrade route metadata.",
+    "Merge the source candidate, create and push the annotated tag, wait once for publication, and read back the public release."
+  ],
+  "results": null
+}
