@@ -10,6 +10,7 @@ on:
       - ".claude/**"
       - ".dev/guides/**"
       - ".dev/releases/**"
+      - ".dev/workflows/**"
       - ".github/workflows/package-candidate.yml"
       - ".github/workflows/publish-release.yml"
   workflow_dispatch:

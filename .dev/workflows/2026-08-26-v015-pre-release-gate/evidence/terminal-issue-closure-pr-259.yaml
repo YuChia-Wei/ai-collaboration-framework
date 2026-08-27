@@ -1,0 +1,43 @@
+schema_version: "1.0"
+contract_id: github-terminal-issue-closure
+repository: YuChia-Wei/ai-collaboration-framework
+validation_stage: declaration
+pull_request:
+  number: 259
+  head_sha: null
+  body: |+
+    ## Summary
+
+    - restore the provider-required `Build and validate candidate` context for `.dev/workflows/**` pull requests
+    - keep metadata-only pull requests on the existing no-eligible-release fast-success route, before archive construction
+    - remediate the single P1 found by the integrated-main audit of PR #258
+
+    ## Validation
+
+    - `git diff --check`
+    - planned commit message validated before commit
+    - pre-provider fixed-head audit of the initial routing-only head passed with P0/P1 = 0 and no tests; the contract-sync amendment requires a fresh exact-head audit
+    - hosted required contexts are the admission proof for this follow-up PR
+
+    ## Boundaries
+
+    - no local long tests
+    - no runtime, package payload, release record, legacy artifact, or published byte changes
+    - no tag, Release, asset upload, publication, or Project-field mutation
+
+    Refs #254
+
+  integration: {status: pending, topology: null, admitted_head_sha: null, integration_commit_sha: null, provider_read_back: false}
+  review: {status: pending}
+  required_check_contexts: []
+  hosted_checks: []
+issues:
+  - number: 254
+    mode: deferred
+    work_authorization: {online_issue_bound: true, explicit_owner_approval: true}
+    final_accepted_delivery: false
+    workflow: {scope_complete: false, tasks_complete: false, applicable_verification_complete: false}
+    closing_keyword: null
+    closure_deferred_reason: this follow-up PR repairs required-context presence after PR 258; Issue closeout remains pending fresh admission, merge, and integrated-main read-back
+    next_terminal_gate_or_owner: obtain all five hosted contexts and a fresh exact-head audit receipt, merge without bypass, audit integrated main, then perform the owner-authorized Issue closeout without Project mutation
+    read_back: {performed: false, integration_commit_sha: null, issue_state: null, issue_state_reason: null, project_status: null}

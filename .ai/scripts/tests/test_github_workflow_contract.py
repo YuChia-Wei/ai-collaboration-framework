@@ -66,6 +66,7 @@ EXPECTED_PR_PATHS = {
         ".claude/**",
         ".dev/guides/**",
         ".dev/releases/**",
+        ".dev/workflows/**",
         ".github/workflows/package-candidate.yml",
         ".github/workflows/publish-release.yml",
     },
