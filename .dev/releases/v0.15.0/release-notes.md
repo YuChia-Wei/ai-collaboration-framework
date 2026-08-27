@@ -21,6 +21,13 @@ agent-execution reliability work required before this identity cutover.
 - Adds deterministic execution packets, worktree leases, evidence binding,
   retry controls, and graph-freshness checks for delegated agent work.
 
+## Practical Effect
+
+Start from a clean target worktree, retain the v0.14.0 files manifest, and run
+the extracted v0.15.0 package planner in dry-run mode with
+`--previous-version v0.14.0`. Review every reconciliation item before an apply
+operation and preserve the resulting receipt and provenance records.
+
 ## Compatibility
 
 This is a breaking pre-1.0 package-identity release. Automatic upgrade input is
@@ -31,13 +38,6 @@ v0.14.0 release.
 
 The default technology profile remains `dotnet-backend`. No CLI, binary,
 registry, installer, or toolchain identity is renamed by this release.
-
-## Practical Effect
-
-Start from a clean target worktree, retain the v0.14.0 files manifest, and run
-the extracted v0.15.0 package planner in dry-run mode with
-`--previous-version v0.14.0`. Review every reconciliation item before an apply
-operation and preserve the resulting receipt and provenance records.
 
 ## Known Limitations
 

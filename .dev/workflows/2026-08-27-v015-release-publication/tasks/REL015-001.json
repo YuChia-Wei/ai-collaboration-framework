@@ -51,6 +51,7 @@
       "The first route-integrity execution was blocked by the restricted Windows TEMP ACL; the unchanged command passed in 9.087 seconds under the normal authorized Windows boundary.",
       "v0.13.0, v0.9.0, and v0.6.0 each resolve through immutable v0.14.0 to v0.15.0 as orchestrated multi-hop routes with no diagnostics.",
       "The first release-body render rejected the non-allowlisted Upgrade Summary heading; the authored content was retained under the allowlisted Practical Effect heading and requires one fresh render.",
+      "The second release-body render rejected the otherwise allowlisted sections because Practical Effect followed Compatibility; the sections were reordered to the canonical publication sequence and require one fresh render.",
       "Authored release notes and migration guidance were reviewed against the version-aware public identity contract."
     ],
     "commits": [
