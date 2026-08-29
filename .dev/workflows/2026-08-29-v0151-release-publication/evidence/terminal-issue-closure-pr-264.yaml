@@ -1,0 +1,99 @@
+schema_version: "1.0"
+contract_id: github-terminal-issue-closure
+repository: YuChia-Wei/ai-collaboration-framework
+validation_stage: declaration
+pull_request:
+  number: 264
+  head_sha: null
+  body: |
+    ## Summary
+
+    - restore fail-closed validation policy and runtime reuse identity for v0.15.1
+    - require positive runtime registry timeouts and retain cache-schema isolation
+    - restore the auditor-owned fixed-head verification route without changing governance ownership
+    - add a v0.15.1-only hosted clean-install and v0.15.0 upgrade admission gate
+    - clarify unresolved post-install readiness guidance
+
+    ## Included work
+
+    Closes #261
+
+    Closes #263
+
+    Release coordination remains tracked by #262 and stays open through the
+    prepublication phase. Merging this pull request closes only the two Included
+    Work Issues above; it does not publish a release or create or move a tag.
+
+    ## Local evidence
+
+    - validation evidence core: 10/10 passed
+    - validation profile registry: 10/10 passed, including injected zero-timeout runtime rejection
+    - agent execution guardrails: 26/26 passed
+    - sub-agent role and adapter contracts: 31/31 passed
+    - GitHub workflow contracts: 11/11 passed, including retained-terminal collision protection
+    - shell asset, workflow artifact, AI-context, source-disposition, commit-policy, JSON, and whitespace validation passed
+    - exact-head diagnostic ZIP/tar archive validation passed at `57c7250b4fdc56fd258ea9dc2539c261ad431be1`
+    - fixed-head independent reaudit passed at the same exact clean commit; the earlier failed audit of `56bcc49a46c6f21df97a474cb32a3479a477cdae` remains retained evidence
+    - retained-route validation passed for v0.15.0, v0.9.0, and v0.6.0
+    - actual local clean install and v0.15.0-to-v0.15.1 package apply passed; the earlier sandbox-ACL failure remains retained as non-passing evidence
+
+    ## Required hosted evidence
+
+    The package-candidate workflow must still execute the v0.15.1 actual clean install and v0.15.0-to-v0.15.1 package apply against the PR head. A missing, failed, interrupted, timed-out, or drifted hosted result is non-passing.
+
+    ## Boundaries
+
+    - no public CLI, package identity, or schema-name expansion
+    - no v0.15.0 asset or history mutation
+    - no coordination-Issue closure, Project mutation, tag, GitHub Release, or publication is authorized by this PR
+
+    Generated with Codex from Issues #261 and #263, repository-native validation, and exact-head audit evidence.
+  integration:
+    status: pending
+    topology: null
+    admitted_head_sha: null
+    integration_commit_sha: null
+    provider_read_back: false
+  review:
+    status: pending
+  required_check_contexts: []
+  hosted_checks: []
+issues:
+  - number: 261
+    mode: terminal-close
+    work_authorization:
+      online_issue_bound: true
+      explicit_owner_approval: true
+    final_accepted_delivery: true
+    workflow:
+      scope_complete: true
+      tasks_complete: true
+      applicable_verification_complete: true
+    closing_keyword: Closes
+    closure_deferred_reason: null
+    next_terminal_gate_or_owner: null
+    read_back:
+      performed: false
+      integration_commit_sha: null
+      issue_state: null
+      issue_state_reason: null
+      project_status: null
+  - number: 263
+    mode: terminal-close
+    work_authorization:
+      online_issue_bound: true
+      explicit_owner_approval: true
+    final_accepted_delivery: true
+    workflow:
+      scope_complete: true
+      tasks_complete: true
+      applicable_verification_complete: true
+    closing_keyword: Closes
+    closure_deferred_reason: null
+    next_terminal_gate_or_owner: null
+    read_back:
+      performed: false
+      integration_commit_sha: null
+      issue_state: null
+      issue_state_reason: null
+      project_status: null
