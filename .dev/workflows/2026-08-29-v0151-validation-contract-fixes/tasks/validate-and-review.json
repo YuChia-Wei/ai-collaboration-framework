@@ -9,7 +9,7 @@
   "related_plan_id": "development-plan-2026-08-29-v0151-validation-contract-fixes",
   "status": "in_progress",
   "created_at": "2026-08-29T10:39:30+08:00",
-  "updated_at": "2026-08-29T11:04:34+08:00",
+  "updated_at": "2026-08-29T12:05:34+08:00",
   "template_source": ".ai/assets/skills/software-development-orchestrator/templates/development-workflow-task-template.json",
   "model": "gpt-5.6-sol",
   "reasoning_effort": "high",
@@ -91,7 +91,7 @@
     "deferred_items": ["push, pull request, merge, hosted checks, release, publication"]
   },
   "results": {
-    "summary": "The implementation checkpoint and exact-head focused validation passed; workflow ownership is corrected to ai-context-governance and fresh ai-context-auditor verification remains pending.",
+    "summary": "The first auditor-owned fixed-head audit failed on missing runtime timeout rejection. The finding is under remediation; a new immutable subject and fresh audit remain required.",
     "files_changed": [
       ".dev/workflows/2026-08-29-v0151-validation-contract-fixes/workflow.yaml",
       ".dev/workflows/2026-08-29-v0151-validation-contract-fixes/workflow-plan.md",
@@ -102,6 +102,7 @@
     "test_execution": [
       {"command": "python .ai/scripts/tests/test_validation_evidence.py ValidationEvidenceCoreGwtTests -v", "outcome": "passed", "summary": "10 passed at 3ec2f6c063feed22996489acee6ace2fd5fe6065."},
       {"command": "python .ai/scripts/tests/test_validation_profile_registry.py -v", "outcome": "passed", "summary": "9 passed at 3ec2f6c063feed22996489acee6ace2fd5fe6065."},
+      {"command": "python .ai/scripts/tests/test_validation_profile_registry.py -v", "outcome": "passed", "summary": "10 passed after adding runtime zero-timeout rejection coverage."},
       {"command": "python .ai/scripts/validate-shell-assets.py && python .ai/scripts/validate-workflow-artifacts.py && git diff --check HEAD^ HEAD", "outcome": "passed", "summary": "All short exact-head structural checks passed."},
       {"command": "build-ai-context-package.py comparison of v0.15.0 and candidate HEAD", "outcome": "passed", "summary": "Both deterministic diagnostic packages built with 647 members; four direct consumer files and six derived metadata files changed."},
       {"command": "python .ai/scripts/validate-ai-context-package.py <zip> <tar.gz>", "outcome": "passed", "summary": "Archive validation passed independently for both the deterministic v0.15.0 baseline pair and candidate pair."}
@@ -117,7 +118,8 @@
       "The code graph was rebuilt in full against the committed tree before direct impact review.",
       "Package payload fingerprint changed from 6c2bd24ef993c4ac122bce0c6bdd528c39e559fd47b0ec8b76ead80e4d8dc0e3 to 34242a7f7cbf9a7d7ff3cacae38bd55db1e28a742bb1acd10ee9d852699b9d71.",
       "The prior fixed-head-independent-auditor blocker was a routing error; the canonical post-remediation verifier is ai-context-auditor under ai-context-governance.",
-      "Source governance, AI context, workflow artifact, JSON, and whitespace validation passed after the routing correction."
+      "Source governance, AI context, workflow artifact, JSON, and whitespace validation passed after the routing correction.",
+      "The auditor-owned fixed-head audit of 56bcc49a46c6f21df97a474cb32a3479a477cdae failed VAL010-A3 and returned the subject for remediation; this failure is not superseded by later focused tests."
     ],
     "commits": ["3ec2f6c063feed22996489acee6ace2fd5fe6065"],
     "follow_up_needed": true

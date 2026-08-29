@@ -7,6 +7,7 @@ from collections import Counter
 import os
 import shutil
 import subprocess
+import tempfile
 import unittest
 from pathlib import Path
 
@@ -116,6 +117,42 @@ class ValidationProfileRegistryGwtTests(unittest.TestCase):
                 self.assertTrue(all(dependency in checks for dependency in dependencies.split()))
                 self.assertRegex(timeout, r"^[1-9][0-9]*$")
                 self.assertGreater(int(timeout), 0)
+
+    def test_gwt_002b_given_non_positive_timeout_when_runner_validates_registry_then_it_fails_before_execution(self) -> None:
+        bash = bash_executable()
+        if not bash:
+            self.skipTest("Bash is required for validation profile registry tests")
+        local_root = ROOT / ".dev/ai-context/local"
+        local_root.mkdir(parents=True, exist_ok=True)
+        with tempfile.TemporaryDirectory(
+            dir=local_root, prefix="profile-timeout-regression-"
+        ) as temporary:
+            scripts = Path(temporary) / ".ai/scripts"
+            scripts.mkdir(parents=True)
+            runner = scripts / "check-all.sh"
+            registry = scripts / "validation-profile-registry.sh"
+            shutil.copy2(RUNNER, runner)
+            registry.write_text(
+                REGISTRY.read_text(encoding="utf-8")
+                + '\nCHECK_TIMEOUT["ai-context-navigation"]=0\n',
+                encoding="utf-8",
+                newline="\n",
+            )
+            result = subprocess.run(
+                [bash, str(runner), "--profile", "fast"],
+                check=False,
+                capture_output=True,
+                text=True,
+                encoding="utf-8",
+                errors="replace",
+            )
+
+        self.assertEqual(2, result.returncode)
+        self.assertIn(
+            "Invalid validation check timeout '0' for 'ai-context-navigation'",
+            result.stderr,
+        )
+        self.assertNotIn("AI Context Validation", result.stdout)
 
     def test_gwt_003_given_membership_when_compared_then_fast_and_pr_avoid_the_full_package_matrix(self) -> None:
         _, checks, _ = registry_snapshot()

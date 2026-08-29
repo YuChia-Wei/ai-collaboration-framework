@@ -82,3 +82,11 @@ validation path and restoration of the auditor-owned fixed-head verification
 binding. Neither route is passing evidence until its exact-subject execution
 and terminal output exist. No remote branch, pull request, tag, or hosted
 Release exists for v0.15.1 at this checkpoint.
+
+The first auditor-owned fixed-head audit of
+`56bcc49a46c6f21df97a474cb32a3479a477cdae` failed rather than admitting the
+candidate. It found that the positive-timeout test covered the current
+registry snapshot but the runner did not itself reject an injected non-positive
+timeout, and that the hosted helper could overwrite retained terminal evidence
+after an output-root collision. Both findings are under in-scope remediation;
+the failed audit remains evidence and a new exact-head audit is required.

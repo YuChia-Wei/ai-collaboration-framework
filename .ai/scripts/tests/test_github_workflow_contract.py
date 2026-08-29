@@ -4,6 +4,9 @@
 from __future__ import annotations
 
 import re
+import subprocess
+import sys
+import tempfile
 import unittest
 from pathlib import Path
 
@@ -508,6 +511,39 @@ class GitHubWorkflowContractTests(unittest.TestCase):
             },
             evidence_upload.get("with"),
         )
+
+    def test_gwt_009_given_existing_admission_output_when_helper_runs_then_terminal_evidence_is_not_overwritten(self) -> None:
+        helper = REPO_ROOT / ".github/scripts/validate-v0151-actual-upgrade.py"
+        with tempfile.TemporaryDirectory() as temporary:
+            output = Path(temporary) / "existing-output"
+            output.mkdir()
+            terminal = output / "terminal.json"
+            original = b'{"outcome":"retained"}\n'
+            terminal.write_bytes(original)
+            result = subprocess.run(
+                [
+                    sys.executable,
+                    str(helper),
+                    "--candidate-archive",
+                    str(Path(temporary) / "missing-candidate.zip"),
+                    "--previous-archive",
+                    str(Path(temporary) / "missing-previous.zip"),
+                    "--subject-sha",
+                    "1" * 40,
+                    "--output",
+                    str(output),
+                ],
+                cwd=REPO_ROOT,
+                check=False,
+                capture_output=True,
+                text=True,
+                encoding="utf-8",
+                errors="replace",
+            )
+
+            self.assertEqual(1, result.returncode)
+            self.assertEqual(original, terminal.read_bytes())
+            self.assertIn("output-already-exists", result.stderr)
 
 
 if __name__ == "__main__":

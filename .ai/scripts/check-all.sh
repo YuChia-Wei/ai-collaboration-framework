@@ -162,7 +162,7 @@ validate_dependency_graph_node() {
 }
 
 validate_profile_registry() {
-    local profile id dependency
+    local profile id dependency timeout_seconds
     for profile in fast pr release closeout nightly-full; do
         if ! registry_has_profile "$profile" || [ -z "${PROFILE_PURPOSE[$profile]:-}" ] ||
             { [ "${PROFILE_ENFORCEMENT[$profile]:-}" != report-and-warn ] &&
@@ -179,6 +179,11 @@ validate_profile_registry() {
             [ -z "${CHECK_DISPOSITION[$id]:-}" ] || [ -z "${CHECK_COMMAND[$id]:-}" ] ||
             [ -z "${CHECK_APPLICABILITY[$id]:-}" ]; then
             echo "Incomplete validation check registry entry: $id" >&2
+            return 1
+        fi
+        timeout_seconds=${CHECK_TIMEOUT[$id]:-}
+        if [[ ! "$timeout_seconds" =~ ^[1-9][0-9]*$ ]]; then
+            echo "Invalid validation check timeout '$timeout_seconds' for '$id'" >&2
             return 1
         fi
         for profile in ${CHECK_PROFILES[$id]}; do

@@ -418,6 +418,13 @@ def main() -> int:
     started_at = utc_now()
     started = time.monotonic()
     evidence_root = args.output.resolve()
+    if evidence_root.exists():
+        print(
+            "v0.15.1 actual-upgrade admission failed: output-already-exists",
+            file=sys.stderr,
+        )
+        return 1
+    evidence_root.mkdir(parents=True)
     terminal_path = evidence_root / "terminal.json"
     terminal: dict[str, object] = {
         "schema_version": SCHEMA_VERSION,
@@ -434,8 +441,6 @@ def main() -> int:
         require(len(args.subject_sha) == 40, "subject-sha-invalid")
         require(args.candidate_archive.is_file(), "candidate-archive-missing")
         require(args.previous_archive.is_file(), "previous-archive-missing")
-        require(not evidence_root.exists(), "output-already-exists")
-        evidence_root.mkdir(parents=True)
         terminal["evidence"] = execute(args, evidence_root)
         terminal["outcome"] = "passed"
         return_code = 0
