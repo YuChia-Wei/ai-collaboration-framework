@@ -87,6 +87,13 @@ This package is a versioned framework payload, not a whole-repository overwrite.
    for a versioned upgrade. The package tool does not update validated
    `.dev/ai-context/provenance.yaml` provenance. Legacy
    `.dev/AI-CONTEXT-SOURCE.yaml` remains read-compatible only.
+
+   If target validation reports `effective_rule_readiness.action_ready: false`
+   with reason `effective-rule-state-missing`, structural installation may be
+   valid but rule-governed actions are not yet authorized. Continue with the
+   owning `ai-context-init` or `ai-context-upgrader` governance step to resolve
+   and validate the effective-rule state, then rerun target validation. Do not
+   hand-author readiness state or treat this unresolved result as `ready`.
 7. Commit target-specific synchronization separately from the framework application when practical.
 
 Target-local validation selection, when a target policy enables it, uses the

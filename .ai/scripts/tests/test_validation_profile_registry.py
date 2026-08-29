@@ -114,7 +114,8 @@ class ValidationProfileRegistryGwtTests(unittest.TestCase):
                 self.assertIn(enforcement, {"required", "advisory"})
                 self.assertTrue(set(memberships.split()).issubset(profile_ids))
                 self.assertTrue(all(dependency in checks for dependency in dependencies.split()))
-                self.assertTrue(timeout.isdigit() or timeout == "")
+                self.assertRegex(timeout, r"^[1-9][0-9]*$")
+                self.assertGreater(int(timeout), 0)
 
     def test_gwt_003_given_membership_when_compared_then_fast_and_pr_avoid_the_full_package_matrix(self) -> None:
         _, checks, _ = registry_snapshot()
@@ -198,6 +199,21 @@ class ValidationProfileRegistryGwtTests(unittest.TestCase):
             ),
         )
         self.assertEqual({"closeout"}, memberships["source-release-closeout-contract"])
+        self.assertEqual(
+            {
+                "test-di-compliance": "60",
+                "template-synchronization": "60",
+                "adr-index-update": "60",
+            },
+            {
+                check_id: checks[check_id][8]
+                for check_id in (
+                    "test-di-compliance",
+                    "template-synchronization",
+                    "adr-index-update",
+                )
+            },
+        )
 
     def test_gwt_004_given_legacy_flags_when_help_is_requested_then_aliases_are_declared(self) -> None:
         bash = bash_executable()

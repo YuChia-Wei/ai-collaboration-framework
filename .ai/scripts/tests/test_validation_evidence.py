@@ -528,7 +528,7 @@ class ValidationEvidenceFixture(unittest.TestCase):
         cache_value = (
             json.loads(self.cache.read_text(encoding="utf-8"))
             if self.cache.is_file()
-            else {"schema_version": "1.0.0", "entries": {}}
+            else {"schema_version": "2.0.0", "entries": {}}
         )
         key = f"{validator_id}|{version}|{profile}|{fingerprint}|windows-native"
         cache_value["entries"][key] = {
@@ -1081,6 +1081,98 @@ class ValidationEvidenceCoreGwtTests(ValidationEvidenceFixture):
         self.assertEqual(
             {"started_ms": 1000, "completed_ms": 1010, "duration_ms": 10},
             module.raw_supervisor_timing(legacy),
+        )
+
+    def test_gwt_005c_given_policy_inputs_when_fingerprinted_then_every_file_is_authenticated_or_the_command_fails_closed(self) -> None:
+        first = self.repo / "first.policy"
+        second = self.repo / "second.policy"
+        first.write_text("first\n", encoding="utf-8")
+        second.write_text("second\n", encoding="utf-8")
+
+        forward = self.helper(
+            "fingerprint-files",
+            "--repo", str(self.repo),
+            "--path", str(first),
+            "--path", str(second),
+        )
+        reverse = self.helper(
+            "fingerprint-files",
+            "--repo", str(self.repo),
+            "--path", str(second),
+            "--path", str(first),
+        )
+        self.assertEqual(0, forward.returncode, forward.stderr)
+        self.assertEqual(forward.stdout, reverse.stdout)
+        self.assertRegex(forward.stdout.strip(), r"^[0-9a-f]{64}$")
+
+        second.write_text("changed\n", encoding="utf-8")
+        changed = self.helper(
+            "fingerprint-files",
+            "--repo", str(self.repo),
+            "--path", str(first),
+            "--path", str(second),
+        )
+        missing = self.helper(
+            "fingerprint-files",
+            "--repo", str(self.repo),
+            "--path", str(first),
+            "--path", str(self.repo / "missing.policy"),
+        )
+        self.assertEqual(0, changed.returncode, changed.stderr)
+        self.assertNotEqual(forward.stdout, changed.stdout)
+        self.assertNotEqual(0, missing.returncode)
+        self.assertEqual("", missing.stdout)
+        self.assertIn("failed closed", missing.stderr)
+
+    def test_gwt_005d_given_validation_runtime_when_fingerprinted_then_python_abi_and_pyyaml_are_bound(self) -> None:
+        module = self.load_helper_module("runtime_fingerprint")
+        identity = module.validation_runtime_identity()
+        result = self.helper("runtime-fingerprint")
+
+        self.assertEqual(0, result.returncode, result.stderr)
+        self.assertRegex(result.stdout.strip(), r"^[0-9a-f]{64}$")
+        self.assertEqual(module.canonical_sha256(identity), result.stdout.strip())
+        self.assertTrue(identity["python"]["implementation"])
+        self.assertEqual(3, len(identity["python"]["version"]))
+        self.assertTrue(identity["python"]["cache_tag"])
+        self.assertTrue(identity["python"]["soabi"])
+        self.assertTrue(identity["dependencies"]["PyYAML"])
+
+    def test_gwt_005e_given_legacy_cache_or_unavailable_reuse_identity_when_loaded_then_no_entry_can_be_reused_or_promoted(self) -> None:
+        module = self.load_helper_module("cache_v2")
+        self.cache.write_bytes(
+            self.json_bytes({"schema_version": "1.0.0", "entries": {"legacy": {}}})
+        )
+
+        self.assertEqual(
+            {"schema_version": "2.0.0", "entries": {}},
+            module.load_cache(self.cache),
+        )
+        for version in (
+            "unavailable:runtime-digest:fixture-check",
+            "policy-digest:unavailable:fixture-check",
+        ):
+            with self.subTest(version=version):
+                self.assertFalse(module.reuse_identity_available(version))
+                self.assertFalse(
+                    module.cache_promotable({
+                        "execution_disposition": "executed",
+                        "outcome": "passed",
+                        "profile": "fast",
+                        "validator_version": version,
+                    })
+                )
+
+    def test_gwt_005f_given_aggregate_runner_when_reuse_identity_is_formed_then_policy_and_runtime_fingerprints_are_both_required(self) -> None:
+        runner = (ROOT / ".ai/scripts/check-all.sh").read_text(encoding="utf-8")
+
+        self.assertIn("fingerprint-files", runner)
+        self.assertIn("runtime-fingerprint", runner)
+        self.assertIn('EVIDENCE_POLICY_FINGERPRINT=unavailable', runner)
+        self.assertIn('EVIDENCE_RUNTIME_FINGERPRINT=unavailable', runner)
+        self.assertIn(
+            '"$EVIDENCE_POLICY_FINGERPRINT" "$EVIDENCE_RUNTIME_FINGERPRINT" "$id"',
+            runner,
         )
 
 class ValidationEvidenceReadinessGwtTests(ValidationEvidenceFixture):
