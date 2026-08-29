@@ -5,7 +5,7 @@ work_items:
   - "https://github.com/YuChia-Wei/ai-collaboration-framework/issues/261"
 human_projection: ".dev/workflows/2026-08-29-v0151-validation-contract-fixes/workflow-plan.md#acceptance-to-evidence-human-projection"
 created_at: "2026-08-29T10:20:34+08:00"
-updated_at: "2026-08-29T10:39:30+08:00"
+updated_at: "2026-08-29T10:50:38+08:00"
 acceptances:
   - acceptance_id: "VAL010-A1"
     status: "passed"
@@ -41,4 +41,6 @@ acceptances:
     evidence:
       - "Focused evidence core, registry, shell-asset, workflow-artifact, direct policy fingerprint, runtime fingerprint, and Python compile checks passed."
       - "Five synthetic cache-admission tests passed in 125.113 seconds on mutable state; retained as diagnostic-only because observed duration made the command long-running."
-      - "Clean immutable commit and exact-head independent review remain pending."
+      - "Implementation checkpoint 3ec2f6c063feed22996489acee6ace2fd5fe6065 was created locally and read back with a clean tracked worktree."
+      - "At exact head 3ec2f6c063feed22996489acee6ace2fd5fe6065, ValidationEvidenceCoreGwtTests passed 10/10, ValidationProfileRegistryGwtTests passed 9/9, shell-asset and workflow validators passed, git diff --check passed, and the runtime fingerprint remained available."
+      - "Independent review remains pending: the agent-execution packet validator requires a canonical auditor binding, but software-development-orchestrator has no fixed-head-independent-auditor role binding; no invalid packet or external dispatch was attempted."

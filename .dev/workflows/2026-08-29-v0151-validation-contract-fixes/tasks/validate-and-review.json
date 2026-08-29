@@ -9,7 +9,7 @@
   "related_plan_id": "development-plan-2026-08-29-v0151-validation-contract-fixes",
   "status": "in_progress",
   "created_at": "2026-08-29T10:39:30+08:00",
-  "updated_at": "2026-08-29T10:39:30+08:00",
+  "updated_at": "2026-08-29T10:50:38+08:00",
   "template_source": ".ai/assets/skills/software-development-orchestrator/templates/development-workflow-task-template.json",
   "model": "gpt-5.6-sol",
   "reasoning_effort": "high",
@@ -84,18 +84,26 @@
     "deferred_items": ["push, pull request, merge, hosted checks, release, publication"]
   },
   "results": {
-    "summary": "Focused validation is complete; commit and exact-head review remain pending.",
+    "summary": "The implementation checkpoint and exact-head focused validation passed; independent review is blocked before dispatch because the owning skill has no canonical fixed-head auditor binding.",
     "files_changed": [],
     "approval_evidence": ["Issue #261", "dedicated user authorization"],
-    "test_execution": [],
+    "test_execution": [
+      {"command": "python .ai/scripts/tests/test_validation_evidence.py ValidationEvidenceCoreGwtTests -v", "outcome": "passed", "summary": "10 passed at 3ec2f6c063feed22996489acee6ace2fd5fe6065."},
+      {"command": "python .ai/scripts/tests/test_validation_profile_registry.py -v", "outcome": "passed", "summary": "9 passed at 3ec2f6c063feed22996489acee6ace2fd5fe6065."},
+      {"command": "python .ai/scripts/validate-shell-assets.py && python .ai/scripts/validate-workflow-artifacts.py && git diff --check HEAD^ HEAD", "outcome": "passed", "summary": "All short exact-head structural checks passed."}
+    ],
     "role_execution_aggregation": [],
     "spec_compliance": {
       "outcome": "not-applicable",
       "coverage_percent": null,
       "evidence": []
     },
-    "validation_evidence": [],
-    "commits": [],
-    "follow_up_needed": false
+    "validation_evidence": [
+      "3ec2f6c063feed22996489acee6ace2fd5fe6065 was read back as the clean local implementation checkpoint.",
+      "The code graph was rebuilt in full against the committed tree before direct impact review.",
+      "No independent review dispatch occurred because validate-agent-execution-guardrails.py requires the role to be canonically bound by the owning skill, and software-development-orchestrator has no fixed-head-independent-auditor binding."
+    ],
+    "commits": ["3ec2f6c063feed22996489acee6ace2fd5fe6065"],
+    "follow_up_needed": true
   }
 }

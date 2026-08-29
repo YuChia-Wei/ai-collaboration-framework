@@ -102,7 +102,7 @@ The machine-readable authority is `acceptance-ledger.yaml`.
 | --- | --- | --- | --- | --- | --- | --- |
 | validation-fingerprint | no applicable command/query/reactor/domain-test role | slice-implementer | direct | parent-inline generic slice; no child invocation | software-development-orchestrator / pending | `tasks/implement-validation-fingerprint.json` |
 | registry-install-contracts | no applicable command/query/reactor/domain-test role | slice-implementer | direct | parent-inline generic slice; no child invocation | software-development-orchestrator / accepted | `tasks/repair-registry-and-install.json` |
-| validation-review-checkpoint | independent read-only Codex review after commit | software-development-orchestrator | pending | exact-head subject does not exist until the local commit | software-development-orchestrator / pending | `tasks/validate-and-review.json` |
+| validation-review-checkpoint | independent read-only Codex review after commit | software-development-orchestrator | blocked-before-dispatch | exact head `3ec2f6c063feed22996489acee6ace2fd5fe6065` exists and focused checks pass, but no canonical fixed-head auditor binding exists for the owning skill | software-development-orchestrator / pending | `tasks/validate-and-review.json` |
 
 ## Approval Gates
 
@@ -143,9 +143,9 @@ The machine-readable authority is `acceptance-ledger.yaml`.
 
 - Current stage: `validation-review-checkpoint`.
 - Completed stages: Issue creation/read-back, dedicated branch creation, validation fingerprint repair, registry timeout repair, INSTALL guidance, and short focused validation.
-- Deferred stages and reasons: clean commit and fresh exact-head review await final tracked artifact validation.
-- Open decisions: none inside accepted scope.
-- Continuation instructions: rerun short focused checks, validate the complete commit message, create one local commit, verify a clean worktree, then run one independent read-only review against that exact commit.
+- Deferred stages and reasons: independent exact-head review is blocked before dispatch because the required execution packet cannot bind `fixed-head-independent-auditor` to `software-development-orchestrator` under the current canonical skill metadata.
+- Open decisions: an owner must either authorize a governance change that adds an applicable review binding or accept a different explicitly governed review route; neither is inferred in this patch.
+- Continuation instructions: preserve the current local commits and pending A5 state; do not dispatch an unvalidated reviewer packet. Resume only after the independent-review route is resolved.
 - Target policy references: workflow, Git, work-management, validation-evidence lifecycle, and Issue #261.
 - Registered handoff checkpoint: none; this conversation owns the active branch.
 - Branch history and checkpoint handoffs: branch created from clean `main@5fedaceef7e18b4cdcde3cb665adcc97070db2df`; no push or merge.
@@ -154,7 +154,7 @@ The machine-readable authority is `acceptance-ledger.yaml`.
 
 | Segment | Branch | Base | Checkpoint Type | Commit | Remote / Target | Recorded At | Reason | Resume Branch / Action |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| 1 | `codex/2026-08-29-v0151-validation-contract-fixes` | `main@5fedaceef7e18b4cdcde3cb665adcc97070db2df` | local workflow start | pending | local only | `2026-08-29T10:20:34+08:00` | owner-authorized v0.15.1 work | remain on current branch |
+| 1 | `codex/2026-08-29-v0151-validation-contract-fixes` | `main@5fedaceef7e18b4cdcde3cb665adcc97070db2df` | local implementation checkpoint | `3ec2f6c063feed22996489acee6ace2fd5fe6065` | local only | `2026-08-29T10:45:04+08:00` | owner-authorized v0.15.1 patch with focused validation | remain on current branch; A5 review pending |
 
 ## Completion Summary
 
@@ -164,9 +164,9 @@ The machine-readable authority is `acceptance-ledger.yaml`.
 - Implementation completion evidence: VAL010-A1 through VAL010-A4 are passed in `acceptance-ledger.yaml`.
 - Required test outcomes: short focused checks passed; the observed-long synthetic runner check is diagnostic-only.
 - Selected compliance evidence: not applicable.
-- Review disposition: pending.
-- Validation evidence: pending.
+- Review disposition: blocked-before-dispatch; no canonical owning-skill binding exists for the required independent auditor.
+- Validation evidence: exact-head focused checks passed; the observed 125.113-second mutable-state diagnostic remains non-admissible.
 - Workflow task state: two implementation tasks completed; exact-head validation/review task in progress.
-- Commits: pending.
+- Commits: local implementation checkpoint `3ec2f6c063feed22996489acee6ace2fd5fe6065`; a final evidence-only checkpoint follows this update.
 - Branch / checkpoint / handoff evidence: local branch only; no external transport authorized.
-- Residual risks: exact-head review remains pending; no push, PR, hosted check, release, or publication is authorized.
+- Residual risks: independent exact-head review remains pending and blocks VAL010-A5; no push, PR, hosted check, release, or publication is authorized.
