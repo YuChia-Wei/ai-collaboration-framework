@@ -1,7 +1,7 @@
 schema_version: "1.0"
 release_id: "REL-v0.15.1"
 version: "v0.15.1"
-status: "planned"
+status: "validated"
 record_origin: "governed"
 distribution_kind: "governed-package"
 installable: true
@@ -10,7 +10,7 @@ commit: null
 tagged_at: null
 recorded_at: null
 created_at: "2026-08-29T11:17:30+08:00"
-updated_at: "2026-08-29T11:17:30+08:00"
+updated_at: "2026-08-29T12:54:53+08:00"
 planning:
   github_issue_refs:
     - "#261"
@@ -89,12 +89,12 @@ distribution:
     automation: "github-actions"
     creates_or_moves_tag: false
 validation:
-  evidence: "Issue #261 implementation and focused validation are committed locally. Release package construction, actual clean-install and v0.15.0 upgrade execution, retained-origin route evidence, fresh AI-context audit, exact-head candidate validation, and every remote publication boundary remain pending and must not be represented as passed."
+  evidence: "Issues #261 and #263 are implemented on the dedicated patch branch. Focused validation, a fresh independent fixed-head audit at source commit 57c7250b4fdc56fd258ea9dc2539c261ad431be1, deterministic package construction, archive parity, incoming-candidate validation, the evidence-bound v0.15.0-to-v0.15.1 direct route, actual clean install, and actual v0.15.0-to-v0.15.1 package apply passed. The first local actual-install attempt remains recorded as failed because the sandbox denied transaction writes inside the isolated target Git repository; the unchanged second attempt passed after that permission boundary materially changed. The v0.9.0 and v0.6.0 retained origins resolve through the preserved v0.14.0 and v0.15.0 edges. Release metadata and route artifacts are source-only and excluded from the public payload. The PR candidate workflow must freshly rebuild and repeat actual admission against the exact final head before merge; merge, provider terminal transitions, tag creation, and publication are not represented as complete."
   workflow_id: "2026-08-29-v0151-release-publication"
   related_workflows:
     - "2026-08-29-v0151-validation-contract-fixes"
   related_assessments: []
-  package_status: "planned"
+  package_status: "validated"
   post_merge_status: "pending"
   failed_publication_run: null
   published_run: null

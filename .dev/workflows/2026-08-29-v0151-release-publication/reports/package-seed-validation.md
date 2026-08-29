@@ -1,29 +1,35 @@
-# v0.15.1 Package Seed Validation
+# v0.15.1 Package Candidate Validation
 
 ## Subject
 
-- Source commit: `f741765e457a3dcd7f65175db9f3f9d1bf9586ae`.
-- Release record state: `planned`.
+- Package source commit: `57c7250b4fdc56fd258ea9dc2539c261ad431be1`.
+- Release record state: `validated`.
 - Automatic migration input: v0.15.0 governed `metadata/files.yaml`.
-- Output class: ignored local diagnostic package; not a publication asset.
+- Output class: source-retained route candidate plus ignored tar diagnostic;
+  not a public Release asset.
 
 ## Observed Result
 
 - The deterministic builder produced the v0.15.1 ZIP and tar.gz archives.
 - Independent archive validation passed for both archives, including sidecars
   and ZIP/tar payload parity.
-- The first build invocation did not execute because its asserted full commit
-  was typed incorrectly; the unchanged build command passed after binding the
-  exact `git rev-parse HEAD` value shown above.
+- The ZIP SHA-256 is
+  `7b65a15c13c6788ae0a6f2b18971bc0650568466afc21a576a846c5e0bda52a3`.
+- The payload fingerprint is
+  `6ae565641f33a758846adcb32ee0d6bdee95e3d78db24a78382339e3b38b673c`.
+- Incoming-candidate validation passed from the retained release-local ZIP.
+- The evidence-bound v0.15.0-to-v0.15.1 direct route passed, and v0.9.0 plus
+  v0.6.0 resolve canonically through the retained v0.14.0 and v0.15.0 edges.
 
 ## Evidence Boundary
 
-This proves that the planned immutable Git tree is package-buildable and that
-the resulting diagnostic archives are structurally valid. It does not prove
-the final release package because `release.yaml` is still planned, and it does
-not satisfy actual clean-install, v0.15.0 upgrade, retained-route, fresh audit,
-candidate, hosted, tag, or publication acceptance.
+This proves that the package-source Git tree is package-buildable, that the
+archives are structurally valid, and that retained upgrade routing resolves.
+Release metadata and route artifacts are source-only, so their later commit
+does not change the selected public payload. It does not replace a fresh build
+or hosted actual admission for the final PR head, and it does not authorize
+merge, tag, or publication.
 
-The ignored raw archives remain under
-`.dev/ai-context/local/release/v0.15.1/seed-build/` and are not Git history or
-public release artifacts.
+The route ZIP and canonical receipts are under
+`.dev/releases/v0.15.1/route-assets/`; the ignored tar diagnostic remains under
+`.dev/ai-context/local/release/v0.15.1/57c7250b-package/`.

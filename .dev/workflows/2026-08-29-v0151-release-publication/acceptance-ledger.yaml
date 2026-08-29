@@ -1,7 +1,7 @@
 schema_version: "1.0"
 ledger_id: "v0151-release-acceptance"
 workflow_id: "2026-08-29-v0151-release-publication"
-updated_at: "2026-08-29T12:05:34+08:00"
+updated_at: "2026-08-29T13:00:18+08:00"
 acceptances:
   - acceptance_id: "REL0151-A1"
     work_item: "#262"
@@ -9,6 +9,8 @@ acceptances:
     disposition: "pending"
     evidence:
       - "Fixed-head audit of 56bcc49a46c6f21df97a474cb32a3479a477cdae failed and returned two remediation findings; fresh audit remains required."
+      - "Fresh independent fixed-head audit of 57c7250b4fdc56fd258ea9dc2539c261ad431be1 passed; ignored terminal: .dev/ai-context/local/validation/GOV015-fixed-head-57c7250b/result.json"
+      - "Release-source artifacts added after 57c7250b require a fresh exact-head audit before merge."
   - acceptance_id: "REL0151-A2"
     work_item: "#262"
     requirement: "Governed release records are version-correct, phase-neutral, and provider-reconciled."
@@ -17,22 +19,28 @@ acceptances:
       - ".dev/releases/v0.15.1/release-phase-checks.yaml"
       - ".dev/releases/v0.15.1/release-notes.md"
       - ".dev/releases/v0.15.1/migration-guide.md"
+      - ".dev/releases/v0.15.1/release.yaml is terminal validated; live candidate read-back remains pending the PR-bound closure declaration."
   - acceptance_id: "REL0151-A3"
     work_item: "#262"
     requirement: "Deterministic v0.15.1 ZIP and tar packages pass independent archive validation."
-    disposition: "pending"
+    disposition: "passed"
     evidence:
       - ".dev/workflows/2026-08-29-v0151-release-publication/reports/package-seed-validation.md"
+      - ".dev/releases/v0.15.1/route-assets/v0.15.1/ai-collaboration-framework-v0.15.1.zip"
   - acceptance_id: "REL0151-A4"
     work_item: "#262"
     requirement: "Actual clean install and v0.15.0 automatic upgrade pass, and every retained origin resolves canonically."
-    disposition: "pending"
-    evidence: []
+    disposition: "passed"
+    evidence:
+      - ".dev/workflows/2026-08-29-v0151-release-publication/reports/actual-upgrade-validation.md"
+      - ".dev/releases/v0.15.1/support-matrix.yaml"
+      - ".dev/releases/v0.15.1/route-evidence/"
   - acceptance_id: "REL0151-A5"
     work_item: "#262"
     requirement: "The sanctioned candidate command passes on one clean exact commit."
     disposition: "pending"
-    evidence: []
+    evidence:
+      - "Local candidate validation reached the live Included Work gate; the PR-bound terminal-close declaration does not exist yet."
   - acceptance_id: "REL0151-A6"
     work_item: "#262"
     requirement: "Remote transport, integration, tag, publication, and terminal provider changes occur only at separately authorized gates."
@@ -49,8 +57,9 @@ acceptances:
   - acceptance_id: "VAL010-A5"
     work_item: "#261"
     requirement: "Fresh post-remediation AI-context verification accepts the immutable implementation subject."
-    disposition: "pending"
-    evidence: []
+    disposition: "passed"
+    evidence:
+      - "Fresh independent fixed-head audit of 57c7250b4fdc56fd258ea9dc2539c261ad431be1 passed."
   - acceptance_id: "GOV015-A1"
     work_item: "#263"
     requirement: "ai-context-auditor conditionally binds the canonical fixed-head-independent-auditor role for one exact clean fixed commit."
@@ -86,5 +95,7 @@ acceptances:
   - acceptance_id: "GOV015-A5"
     work_item: "#263"
     requirement: "The v0.15.1 package contains the corrected binding without a public CLI or schema-name expansion, and release admission remains separate."
-    disposition: "pending"
-    evidence: []
+    disposition: "passed"
+    evidence:
+      - ".dev/releases/v0.15.1/route-assets/v0.15.1/ai-collaboration-framework-v0.15.1.zip"
+      - ".dev/workflows/2026-08-29-v0151-release-publication/reports/package-seed-validation.md"
