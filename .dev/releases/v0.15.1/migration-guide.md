@@ -18,7 +18,7 @@ SHA-256 sidecar before extraction.
 
 1. From the extracted v0.15.1 envelope, run
    `payload/.ai/scripts/plan-ai-context-package-apply.py` with the package root,
-   target root, `--previous-version v0.15.0`, the retained v0.15.0 files
+   target root, `--previous-version 0.15.0`, the retained v0.15.0 files
    manifest, and an external plan-output path. Omit `--apply` first.
 2. Review every add, replace, remove, rename, and reconcile result. Acknowledge
    only operation IDs whose target-owner disposition has been decided.
@@ -43,6 +43,11 @@ If initialization reports `action_ready: false` with
 actions. Complete `ai-context-init` for first adoption or
 `ai-context-upgrader` for an initialized target, produce the effective-rule
 state, and rerun the target validation before continuing.
+
+When a workflow explicitly selects a terminal or high-risk post-remediation
+AI-context audit, route the fixed-head execution through
+`ai-context-auditor`. `ai-context-governance` remains the remediation and
+integration owner and must not be recorded as the independent auditor.
 
 ## Scope Boundaries
 

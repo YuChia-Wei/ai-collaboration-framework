@@ -18,13 +18,18 @@ validation check.
   enforcement class.
 - Explains why initialization may report `action_ready: false` with
   `effective-rule-state-missing` and identifies the required governance step.
+- Restores the canonical, conditional fixed-head auditor route for terminal or
+  high-risk post-remediation AI-context verification while preserving its
+  independent read-only boundary.
 
 ## Practical Effect
 
 Consumers receive safer validation reuse decisions. A missing or unreadable
 policy input, unavailable runtime identity, Python runtime change, or managed
 PyYAML change now disables reuse and requires fresh execution. Existing valid
-workflows and public commands remain unchanged.
+workflows and public commands remain unchanged. Governed AI-context maintenance
+can again produce a schema-valid auditor-owned fixed-head execution packet
+without assigning the verification conclusion to the remediation owner.
 
 ## Compatibility
 

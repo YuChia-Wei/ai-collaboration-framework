@@ -14,6 +14,7 @@ updated_at: "2026-08-29T11:17:30+08:00"
 planning:
   github_issue_refs:
     - "#261"
+    - "#263"
 provider_reconciliation:
   schema_version: "1.1"
   provider: "github"
@@ -57,6 +58,7 @@ compatibility:
     - "validation evidence cache schema"
     - "validation registry timeout budgets"
     - "post-initialization readiness guidance"
+    - "fixed-head AI-context audit role reachability"
 artifacts:
   release_notes: "release-notes.md"
   migration_guide: "migration-guide.md"

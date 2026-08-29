@@ -9,7 +9,7 @@ provider mutation to its separately authorized gate.
 
 ## Scope And Authority
 
-- Included implementation: Issue #261.
+- Included implementation: Issues #261 and #263.
 - Release coordination and acceptance: Issue #262.
 - Owner skill: `ai-context-governance`.
 - Current branch: `codex/2026-08-29-v0151-validation-contract-fixes`.
@@ -18,6 +18,9 @@ provider mutation to its separately authorized gate.
   and local commits.
 - Separate gates: push, pull request, merge, Issue or Project terminal mutation,
   annotated tag creation or push, GitHub Release creation, and publication.
+- Issue #263 authorizes the local auditor-binding remediation and the
+  release-specific hosted actual-install/upgrade gate. Adding that gate is not
+  evidence that a hosted run has executed or passed.
 
 ## Acceptance-To-Evidence Projection
 
@@ -31,6 +34,9 @@ The machine-readable authority is `acceptance-ledger.yaml`.
 | REL0151-A4 | Actual clean install and v0.15.0-to-v0.15.1 upgrade, plus retained-origin route resolution | pending |
 | REL0151-A5 | Candidate release-state validation on one clean exact commit | pending |
 | REL0151-A6 | Push, PR, merge, tag, hosted publication, and terminal provider changes only after their explicit gates | deferred to owner gates |
+| GOV015-A1-A3 | Canonical auditor reachability and fail-closed role boundaries | passed focused validation |
+| GOV015-A4 | Hosted actual clean-install and v0.15.0-to-v0.15.1 execution | pending |
+| GOV015-A5 | Package inclusion without public contract expansion | pending |
 
 ## Execution Order
 
@@ -71,9 +77,8 @@ actual clean install and v0.15.0 upgrade, retained-route evidence, and fresh
 audit are not yet complete.
 
 The actual package execution is expected to exceed the repository's
-long-running threshold. The current owning skill has no canonical delegated
-validator role binding, so an agent execution packet cannot pass the mandatory
-pre-dispatch guardrail. Do not bypass that boundary. Continue through an
-authorized hosted validation path or a separately governed fresh execution
-surface. No remote branch, pull request, tag, or hosted Release exists for
-v0.15.1 at this checkpoint.
+long-running threshold. Issue #263 now authorizes a release-specific hosted
+validation path and restoration of the auditor-owned fixed-head verification
+binding. Neither route is passing evidence until its exact-subject execution
+and terminal output exist. No remote branch, pull request, tag, or hosted
+Release exists for v0.15.1 at this checkpoint.

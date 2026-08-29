@@ -11,6 +11,7 @@ on:
       - ".dev/guides/**"
       - ".dev/releases/**"
       - ".dev/workflows/**"
+      - ".github/scripts/**"
       - ".github/workflows/package-candidate.yml"
       - ".github/workflows/publish-release.yml"
   workflow_dispatch:
@@ -30,7 +31,7 @@ jobs:
   package:
     name: Build and validate candidate
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 30
     env:
       CANDIDATE_COMMIT: ${{ github.event.pull_request.head.sha || github.sha }}
     permissions:
@@ -166,6 +167,15 @@ jobs:
             payload/.ai/scripts/validate-ai-context-payload.py \
             --package-root .
 
+      - name: Validate v0.15.1 actual clean install and v0.15.0 upgrade
+        if: steps.release.outputs.available == 'true' && steps.release.outputs.version == 'v0.15.1'
+        run: |
+          python .github/scripts/validate-v0151-actual-upgrade.py \
+            --candidate-archive "dist/${{ steps.release.outputs.package_id }}.zip" \
+            --previous-archive "${RUNNER_TEMP}/previous-package-0.15.0/ai-collaboration-framework-v0.15.0.zip" \
+            --subject-sha "${CANDIDATE_COMMIT}" \
+            --output "${RUNNER_TEMP}/v0151-actual-admission"
+
       - name: Render source disposition read-back
         if: steps.release.outputs.available == 'true'
         run: |
@@ -179,7 +189,7 @@ jobs:
             --output "${RUNNER_TEMP}/source-dispositions.md"
 
       - name: Upload candidate artifact
-        if: steps.release.outputs.available == 'true'
+        if: always() && steps.release.outputs.available == 'true'
         uses: actions/upload-artifact@v7
         with:
           name: ${{ steps.release.outputs.package_id }}-${{ env.CANDIDATE_COMMIT }}
@@ -194,3 +204,4 @@ jobs:
             ${{ runner.temp }}/release-body.md
             ${{ runner.temp }}/source-dispositions.json
             ${{ runner.temp }}/source-dispositions.md
+            ${{ runner.temp }}/v0151-actual-admission/**
