@@ -5,7 +5,7 @@ work_items:
   - "https://github.com/YuChia-Wei/ai-collaboration-framework/issues/261"
 human_projection: ".dev/workflows/2026-08-29-v0151-validation-contract-fixes/workflow-plan.md#acceptance-to-evidence-human-projection"
 created_at: "2026-08-29T10:20:34+08:00"
-updated_at: "2026-08-29T10:50:38+08:00"
+updated_at: "2026-08-29T11:04:34+08:00"
 acceptances:
   - acceptance_id: "VAL010-A1"
     status: "passed"
@@ -43,4 +43,9 @@ acceptances:
       - "Five synthetic cache-admission tests passed in 125.113 seconds on mutable state; retained as diagnostic-only because observed duration made the command long-running."
       - "Implementation checkpoint 3ec2f6c063feed22996489acee6ace2fd5fe6065 was created locally and read back with a clean tracked worktree."
       - "At exact head 3ec2f6c063feed22996489acee6ace2fd5fe6065, ValidationEvidenceCoreGwtTests passed 10/10, ValidationProfileRegistryGwtTests passed 9/9, shell-asset and workflow validators passed, git diff --check passed, and the runtime fingerprint remained available."
-      - "Independent review remains pending: the agent-execution packet validator requires a canonical auditor binding, but software-development-orchestrator has no fixed-head-independent-auditor role binding; no invalid packet or external dispatch was attempted."
+      - "The owning route is corrected to ai-context-governance; fresh read-only post-remediation verification is assigned to ai-context-auditor under the canonical audit-remediation lifecycle."
+      - "Post-remediation verification remains pending until all governance and release-impact evidence is committed to one clean subject."
+release_package_impact:
+  status: "confirmed-material"
+  report: ".dev/workflows/2026-08-29-v0151-validation-contract-fixes/reports/release-package-impact.md"
+  decision: "A new package version is required if these fixes are to reach package consumers; the published v0.15.0 artifacts remain immutable."

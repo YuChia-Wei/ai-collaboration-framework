@@ -5,17 +5,23 @@
   "template_updated_at": "2026-08-05T02:12:00+08:00",
   "workflow_id": "2026-08-29-v0151-validation-contract-fixes",
   "task_id": "validate-and-review",
-  "owner_skill": "software-development-orchestrator",
+  "owner_skill": "ai-context-governance",
   "related_plan_id": "development-plan-2026-08-29-v0151-validation-contract-fixes",
   "status": "in_progress",
   "created_at": "2026-08-29T10:39:30+08:00",
-  "updated_at": "2026-08-29T10:50:38+08:00",
+  "updated_at": "2026-08-29T11:04:34+08:00",
   "template_source": ".ai/assets/skills/software-development-orchestrator/templates/development-workflow-task-template.json",
   "model": "gpt-5.6-sol",
   "reasoning_effort": "high",
   "workflow_locator": ".dev/workflows/2026-08-29-v0151-validation-contract-fixes/workflow.yaml",
+  "routing_correction": {
+    "corrected_from": "software-development-orchestrator",
+    "corrected_to": "ai-context-governance",
+    "verification_skill": "ai-context-auditor",
+    "template_provenance": "The original development task template metadata is retained as creation history."
+  },
   "scope": {
-    "goal": "Create a clean immutable local checkpoint and obtain fresh read-only review bound to that exact commit.",
+    "goal": "Create a clean immutable local checkpoint and obtain fresh read-only AI-context post-remediation verification bound to that exact commit.",
     "target": "VAL010-A5",
     "files": [
       "the complete Issue #261 patch and workflow artifacts",
@@ -33,7 +39,8 @@
     "requirements": ["Issue #261 VAL010-A5"],
     "specifications": [
       ".dev/standards/WORKFLOW-GATE-POLICY.md",
-      ".ai/assets/shared/CLI-EXECUTION-ROUTING-CONTRACT.md"
+      ".ai/assets/skills/ai-context-governance/references/audit-remediation-lifecycle.md",
+      ".ai/assets/skills/ai-context-auditor/skill.yaml"
     ],
     "architecture_decisions": ["exact-head review binds to a clean immutable commit and remains read-only"],
     "user_constraints": ["local commit and required workflow artifacts authorized; external publication actions prohibited"]
@@ -77,20 +84,27 @@
       "rerun short focused validation after final tracked edits",
       "validate the exact commit message and create one local commit",
       "verify the worktree is clean and the commit is the reviewed subject",
-      "run one independent read-only Codex review and retain its output under the ignored local validation root"
+      "request one fresh read-only ai-context-auditor post-remediation verification against the clean committed subject"
     ],
     "validation": ["clean immutable commit", "fresh exact-head read-only review"],
     "commit_checkpoint": "one local commit before exact-head review",
     "deferred_items": ["push, pull request, merge, hosted checks, release, publication"]
   },
   "results": {
-    "summary": "The implementation checkpoint and exact-head focused validation passed; independent review is blocked before dispatch because the owning skill has no canonical fixed-head auditor binding.",
-    "files_changed": [],
+    "summary": "The implementation checkpoint and exact-head focused validation passed; workflow ownership is corrected to ai-context-governance and fresh ai-context-auditor verification remains pending.",
+    "files_changed": [
+      ".dev/workflows/2026-08-29-v0151-validation-contract-fixes/workflow.yaml",
+      ".dev/workflows/2026-08-29-v0151-validation-contract-fixes/workflow-plan.md",
+      ".dev/workflows/2026-08-29-v0151-validation-contract-fixes/acceptance-ledger.yaml",
+      ".dev/workflows/2026-08-29-v0151-validation-contract-fixes/reports/release-package-impact.md"
+    ],
     "approval_evidence": ["Issue #261", "dedicated user authorization"],
     "test_execution": [
       {"command": "python .ai/scripts/tests/test_validation_evidence.py ValidationEvidenceCoreGwtTests -v", "outcome": "passed", "summary": "10 passed at 3ec2f6c063feed22996489acee6ace2fd5fe6065."},
       {"command": "python .ai/scripts/tests/test_validation_profile_registry.py -v", "outcome": "passed", "summary": "9 passed at 3ec2f6c063feed22996489acee6ace2fd5fe6065."},
-      {"command": "python .ai/scripts/validate-shell-assets.py && python .ai/scripts/validate-workflow-artifacts.py && git diff --check HEAD^ HEAD", "outcome": "passed", "summary": "All short exact-head structural checks passed."}
+      {"command": "python .ai/scripts/validate-shell-assets.py && python .ai/scripts/validate-workflow-artifacts.py && git diff --check HEAD^ HEAD", "outcome": "passed", "summary": "All short exact-head structural checks passed."},
+      {"command": "build-ai-context-package.py comparison of v0.15.0 and candidate HEAD", "outcome": "passed", "summary": "Both deterministic diagnostic packages built with 647 members; four direct consumer files and six derived metadata files changed."},
+      {"command": "python .ai/scripts/validate-ai-context-package.py <zip> <tar.gz>", "outcome": "passed", "summary": "Archive validation passed independently for both the deterministic v0.15.0 baseline pair and candidate pair."}
     ],
     "role_execution_aggregation": [],
     "spec_compliance": {
@@ -101,7 +115,9 @@
     "validation_evidence": [
       "3ec2f6c063feed22996489acee6ace2fd5fe6065 was read back as the clean local implementation checkpoint.",
       "The code graph was rebuilt in full against the committed tree before direct impact review.",
-      "No independent review dispatch occurred because validate-agent-execution-guardrails.py requires the role to be canonically bound by the owning skill, and software-development-orchestrator has no fixed-head-independent-auditor binding."
+      "Package payload fingerprint changed from 6c2bd24ef993c4ac122bce0c6bdd528c39e559fd47b0ec8b76ead80e4d8dc0e3 to 34242a7f7cbf9a7d7ff3cacae38bd55db1e28a742bb1acd10ee9d852699b9d71.",
+      "The prior fixed-head-independent-auditor blocker was a routing error; the canonical post-remediation verifier is ai-context-auditor under ai-context-governance.",
+      "Source governance, AI context, workflow artifact, JSON, and whitespace validation passed after the routing correction."
     ],
     "commits": ["3ec2f6c063feed22996489acee6ace2fd5fe6065"],
     "follow_up_needed": true
