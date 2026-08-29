@@ -1,7 +1,7 @@
 schema_version: "1.0"
 ledger_id: "v0151-release-acceptance"
 workflow_id: "2026-08-29-v0151-release-publication"
-updated_at: "2026-08-29T11:17:30+08:00"
+updated_at: "2026-08-29T11:24:30+08:00"
 acceptances:
   - acceptance_id: "REL0151-A1"
     work_item: "#262"
@@ -20,7 +20,8 @@ acceptances:
     work_item: "#262"
     requirement: "Deterministic v0.15.1 ZIP and tar packages pass independent archive validation."
     disposition: "pending"
-    evidence: []
+    evidence:
+      - ".dev/workflows/2026-08-29-v0151-release-publication/reports/package-seed-validation.md"
   - acceptance_id: "REL0151-A4"
     work_item: "#262"
     requirement: "Actual clean install and v0.15.0 automatic upgrade pass, and every retained origin resolves canonically."

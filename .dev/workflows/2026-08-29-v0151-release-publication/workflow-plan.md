@@ -63,5 +63,17 @@ been obtained.
 
 ## Continuation
 
-Current work is package and release-record preparation. No remote branch, pull
-request, tag, or hosted Release exists for v0.15.1 at this checkpoint.
+The planned seed tree at
+`f741765e457a3dcd7f65175db9f3f9d1bf9586ae` produced deterministic diagnostic
+ZIP and tar.gz archives, and independent archive validation passed. Final
+package acceptance remains pending because the terminal release record,
+actual clean install and v0.15.0 upgrade, retained-route evidence, and fresh
+audit are not yet complete.
+
+The actual package execution is expected to exceed the repository's
+long-running threshold. The current owning skill has no canonical delegated
+validator role binding, so an agent execution packet cannot pass the mandatory
+pre-dispatch guardrail. Do not bypass that boundary. Continue through an
+authorized hosted validation path or a separately governed fresh execution
+surface. No remote branch, pull request, tag, or hosted Release exists for
+v0.15.1 at this checkpoint.
