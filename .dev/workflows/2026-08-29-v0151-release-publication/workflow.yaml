@@ -1,0 +1,38 @@
+template_metadata:
+  template_id: "ai-context-governance-workflow-locator"
+  template_version: "1.2.0"
+  created_at: "2026-07-10T18:22:49+08:00"
+  updated_at: "2026-07-15T08:36:00+08:00"
+
+schema_version: "1.0"
+lifecycle_contract: "1.0"
+workflow_id: "2026-08-29-v0151-release-publication"
+workflow_kind: "ai-context-maintenance"
+title: "Prepare v0.15.1 release publication"
+owner_skill: "ai-context-governance"
+status: "in_progress"
+current_phase: "candidate-preparation"
+branch: "codex/2026-08-29-v0151-validation-contract-fixes"
+base_branch: "main"
+artifact_root: ".dev/workflows/2026-08-29-v0151-release-publication"
+entrypoint: "workflow-plan.md"
+created_at: "2026-08-29T11:17:30+08:00"
+updated_at: "2026-08-29T11:17:30+08:00"
+template_source: ".ai/assets/skills/ai-context-governance/templates/workflow-locator-template.yaml"
+template_version: "1.2.0"
+release:
+  release_id: "REL-v0.15.1"
+  version: "v0.15.1"
+  record: ".dev/releases/v0.15.1/release.yaml"
+  phase_contract: ".dev/releases/v0.15.1/release-phase-checks.yaml"
+work_items:
+  - provider: "github"
+    repository: "YuChia-Wei/ai-collaboration-framework"
+    issue: 261
+    url: "https://github.com/YuChia-Wei/ai-collaboration-framework/issues/261"
+  - provider: "github"
+    repository: "YuChia-Wei/ai-collaboration-framework"
+    issue: 262
+    url: "https://github.com/YuChia-Wei/ai-collaboration-framework/issues/262"
+tasks:
+  - "REL0151-001"

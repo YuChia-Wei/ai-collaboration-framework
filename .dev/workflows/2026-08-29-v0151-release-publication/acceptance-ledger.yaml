@@ -1,0 +1,51 @@
+schema_version: "1.0"
+ledger_id: "v0151-release-acceptance"
+workflow_id: "2026-08-29-v0151-release-publication"
+updated_at: "2026-08-29T11:17:30+08:00"
+acceptances:
+  - acceptance_id: "REL0151-A1"
+    work_item: "#262"
+    requirement: "A fresh read-only AI-context audit accepts the immutable v0.15.1 candidate."
+    disposition: "pending"
+    evidence: []
+  - acceptance_id: "REL0151-A2"
+    work_item: "#262"
+    requirement: "Governed release records are version-correct, phase-neutral, and provider-reconciled."
+    disposition: "in_progress"
+    evidence:
+      - ".dev/releases/v0.15.1/release-phase-checks.yaml"
+      - ".dev/releases/v0.15.1/release-notes.md"
+      - ".dev/releases/v0.15.1/migration-guide.md"
+  - acceptance_id: "REL0151-A3"
+    work_item: "#262"
+    requirement: "Deterministic v0.15.1 ZIP and tar packages pass independent archive validation."
+    disposition: "pending"
+    evidence: []
+  - acceptance_id: "REL0151-A4"
+    work_item: "#262"
+    requirement: "Actual clean install and v0.15.0 automatic upgrade pass, and every retained origin resolves canonically."
+    disposition: "pending"
+    evidence: []
+  - acceptance_id: "REL0151-A5"
+    work_item: "#262"
+    requirement: "The sanctioned candidate command passes on one clean exact commit."
+    disposition: "pending"
+    evidence: []
+  - acceptance_id: "REL0151-A6"
+    work_item: "#262"
+    requirement: "Remote transport, integration, tag, publication, and terminal provider changes occur only at separately authorized gates."
+    disposition: "deferred-with-owner"
+    evidence:
+      - "Issue #262 authorization boundary"
+  - acceptance_id: "VAL010-A1-A4"
+    work_item: "#261"
+    requirement: "The accepted v0.15.1 implementation fixes remain represented in the package candidate."
+    disposition: "passed"
+    evidence:
+      - "3ec2f6c063feed22996489acee6ace2fd5fe6065"
+      - ".dev/workflows/2026-08-29-v0151-validation-contract-fixes/acceptance-ledger.yaml"
+  - acceptance_id: "VAL010-A5"
+    work_item: "#261"
+    requirement: "Fresh post-remediation AI-context verification accepts the immutable implementation subject."
+    disposition: "pending"
+    evidence: []

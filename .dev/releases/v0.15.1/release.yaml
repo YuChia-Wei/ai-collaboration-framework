@@ -1,0 +1,99 @@
+schema_version: "1.0"
+release_id: "REL-v0.15.1"
+version: "v0.15.1"
+status: "planned"
+record_origin: "governed"
+distribution_kind: "governed-package"
+installable: true
+tag: null
+commit: null
+tagged_at: null
+recorded_at: null
+created_at: "2026-08-29T11:17:30+08:00"
+updated_at: "2026-08-29T11:17:30+08:00"
+planning:
+  github_issue_refs:
+    - "#261"
+provider_reconciliation:
+  schema_version: "1.1"
+  provider: "github"
+  repository: "YuChia-Wei/ai-collaboration-framework"
+  project_owner: "YuChia-Wei"
+  project_number: 3
+  included_issue_refs_source: "planning.github_issue_refs"
+  included_work:
+    prepublication:
+      issue_state: "closed"
+      state_reason: "completed"
+      project:
+        Status: "Done"
+    postpublication:
+      issue_state: "closed"
+      state_reason: "completed"
+      project:
+        Status: "Done"
+  coordination:
+    issue_refs:
+      - "#262"
+    prepublication:
+      issue_state: "open"
+      state_reason: null
+      project:
+        Status: "Planned"
+    postpublication:
+      issue_state: "closed"
+      state_reason: "completed"
+      project:
+        Status: "Done"
+compatibility:
+  breaking_changes: false
+  minimum_source_version: "v0.15.0"
+  reconciliation_sources:
+    - "v0.15.0"
+  automatic_upgrade_sources:
+    - "v0.15.0"
+  affected_contracts:
+    - "validation evidence policy and runtime reuse identity"
+    - "validation evidence cache schema"
+    - "validation registry timeout budgets"
+    - "post-initialization readiness guidance"
+artifacts:
+  release_notes: "release-notes.md"
+  migration_guide: "migration-guide.md"
+  support_matrix: "support-matrix.yaml"
+  route_evidence:
+    - "route-evidence/v0.15.0-to-v0.15.1.json"
+    - "route-evidence/v0.9.0-to-v0.15.1.json"
+    - "route-evidence/v0.6.0-to-v0.15.1.json"
+distribution:
+  profile_id: "dotnet-backend"
+  package_id: "ai-collaboration-framework-v0.15.1"
+  schema_versions:
+    package: "2.4.0"
+    files: "2.0.0"
+    migration: "3.0.0"
+  artifacts:
+    zip: "ai-collaboration-framework-v0.15.1.zip"
+    zip_checksum: "ai-collaboration-framework-v0.15.1.zip.sha256"
+    tar_gz: "ai-collaboration-framework-v0.15.1.tar.gz"
+    tar_gz_checksum: "ai-collaboration-framework-v0.15.1.tar.gz.sha256"
+  migration:
+    default_mode: "dry-run"
+    apply_requires_clean_worktree: true
+    apply_requires_acknowledged_reconciliation: true
+  publication:
+    tag_owner: "user"
+    trigger: "user-created-tag"
+    automation: "github-actions"
+    creates_or_moves_tag: false
+validation:
+  evidence: "Issue #261 implementation and focused validation are committed locally. Release package construction, actual clean-install and v0.15.0 upgrade execution, retained-origin route evidence, fresh AI-context audit, exact-head candidate validation, and every remote publication boundary remain pending and must not be represented as passed."
+  workflow_id: "2026-08-29-v0151-release-publication"
+  related_workflows:
+    - "2026-08-29-v0151-validation-contract-fixes"
+  related_assessments: []
+  package_status: "planned"
+  post_merge_status: "pending"
+  failed_publication_run: null
+  published_run: null
+  public_release_url: null
