@@ -23,9 +23,9 @@ from pathlib import Path, PurePosixPath
 from typing import Any
 
 
-EXPECTED_ARCHIVE_SHA256 = "7b65a15c13c6788ae0a6f2b18971bc0650568466afc21a576a846c5e0bda52a3"
+EXPECTED_ARCHIVE_SHA256 = "3b5c0483cbf7d8076d3bf9cdd2cfd6f1bac290726e5904a7fa3b29bbc4424c3e"
 EXPECTED_PACKAGE_ID = "ai-collaboration-framework-v0.15.1"
-EXPECTED_SOURCE_COMMIT = "57c7250b4fdc56fd258ea9dc2539c261ad431be1"
+EXPECTED_SOURCE_COMMIT = "cbd36d41be44e12fbc6031ec5c87b23ee5fccbc3"
 EXPECTED_TARGET_VERSION = "v0.15.1"
 EXPECTED_CUTOVER_ID = "remediation-packet-v1"
 SHA256_RE = re.compile(r"^[0-9a-f]{64}$")

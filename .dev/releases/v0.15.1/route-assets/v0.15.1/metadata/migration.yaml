@@ -2,7 +2,7 @@ schema_version: 3.0.0
 package_id: ai-collaboration-framework-v0.15.1
 to:
   version: 0.15.1
-  manifest_sha256: 806066007f1dd1e8d9f9d9b48556528bfc37ff0f6fac9f97703586ea76a8805a
+  manifest_sha256: 8edcb120fe00b16e803f161ec31861ff45a30d8697a5a3e5c58931f7f2b5d1ad
 clean_install:
   operations:
   - id: clean-install-0001
@@ -4505,12 +4505,19 @@ sources:
     - current_sha256_equals_previous_release
   - id: migration-0004
     kind: replace
-    path: .ai/scripts/validation-evidence.py
+    path: .ai/scripts/validate-agent-execution-guardrails.py
     ownership: framework-managed
     component_id: software-development-core
     preconditions:
     - current_sha256_equals_previous_release
   - id: migration-0005
+    kind: replace
+    path: .ai/scripts/validation-evidence.py
+    ownership: framework-managed
+    component_id: software-development-core
+    preconditions:
+    - current_sha256_equals_previous_release
+  - id: migration-0006
     kind: replace
     path: .ai/scripts/validation-profile-registry.sh
     ownership: framework-managed

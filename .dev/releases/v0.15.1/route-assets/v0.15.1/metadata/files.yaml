@@ -4170,8 +4170,8 @@ files:
   component_id: software-development-core
 - path: .ai/scripts/validate-agent-execution-guardrails.py
   source_path: .ai/scripts/validate-agent-execution-guardrails.py
-  sha256: 69115c26ea72d7dfa3d359650a18eef69b1908a23bbb2a363b87ea6b16a11c7f
-  size: 34634
+  sha256: b41470615296da75a7cfeef51854ebe6b2490d4d64a36f456cf9fb1f9c1a3863
+  size: 35733
   mode: '0644'
   ownership: framework-managed
   install_behavior: managed

@@ -36,3 +36,8 @@ This is actual local package execution against the exact package-source
 commit. It is not hosted PR evidence and does not authorize merge, tag, or
 publication. The PR candidate workflow must rebuild the final PR head and
 repeat the same actual clean-install and v0.15.0 upgrade gate before merge.
+
+The later terminal-schema remediation changes the package payload at
+`cbd36d41be44e12fbc6031ec5c87b23ee5fccbc3`; therefore this earlier local pass
+is retained evidence and is not reused for the rebuilt candidate. Fresh hosted
+actual execution remains required for the final PR head.

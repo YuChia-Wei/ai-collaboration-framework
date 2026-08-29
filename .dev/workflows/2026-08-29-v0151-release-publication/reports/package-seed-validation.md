@@ -2,7 +2,7 @@
 
 ## Subject
 
-- Package source commit: `57c7250b4fdc56fd258ea9dc2539c261ad431be1`.
+- Package source commit: `cbd36d41be44e12fbc6031ec5c87b23ee5fccbc3`.
 - Release record state: `validated`.
 - Automatic migration input: v0.15.0 governed `metadata/files.yaml`.
 - Output class: source-retained route candidate plus ignored tar diagnostic;
@@ -14,9 +14,9 @@
 - Independent archive validation passed for both archives, including sidecars
   and ZIP/tar payload parity.
 - The ZIP SHA-256 is
-  `7b65a15c13c6788ae0a6f2b18971bc0650568466afc21a576a846c5e0bda52a3`.
+  `3b5c0483cbf7d8076d3bf9cdd2cfd6f1bac290726e5904a7fa3b29bbc4424c3e`.
 - The payload fingerprint is
-  `6ae565641f33a758846adcb32ee0d6bdee95e3d78db24a78382339e3b38b673c`.
+  `ef8f900a840e8869189b50b28a7735dcf279046665ebed3f89b18637f43b8017`.
 - Incoming-candidate validation passed from the retained release-local ZIP.
 - The evidence-bound v0.15.0-to-v0.15.1 direct route passed, and v0.9.0 plus
   v0.6.0 resolve canonically through the retained v0.14.0 and v0.15.0 edges.
@@ -32,4 +32,4 @@ merge, tag, or publication.
 
 The route ZIP and canonical receipts are under
 `.dev/releases/v0.15.1/route-assets/`; the ignored tar diagnostic remains under
-`.dev/ai-context/local/release/v0.15.1/57c7250b-package/`.
+`.dev/ai-context/local/release/v0.15.1/cbd36d41-package/`.

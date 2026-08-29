@@ -10,7 +10,7 @@ commit: null
 tagged_at: null
 recorded_at: null
 created_at: "2026-08-29T11:17:30+08:00"
-updated_at: "2026-08-29T12:54:53+08:00"
+updated_at: "2026-08-29T16:32:01+08:00"
 planning:
   github_issue_refs:
     - "#261"
@@ -89,7 +89,7 @@ distribution:
     automation: "github-actions"
     creates_or_moves_tag: false
 validation:
-  evidence: "Issues #261 and #263 are implemented on the dedicated patch branch. Focused validation, a fresh independent fixed-head audit at source commit 57c7250b4fdc56fd258ea9dc2539c261ad431be1, deterministic package construction, archive parity, incoming-candidate validation, the evidence-bound v0.15.0-to-v0.15.1 direct route, actual clean install, and actual v0.15.0-to-v0.15.1 package apply passed. The first local actual-install attempt remains recorded as failed because the sandbox denied transaction writes inside the isolated target Git repository; the unchanged second attempt passed after that permission boundary materially changed. The v0.9.0 and v0.6.0 retained origins resolve through the preserved v0.14.0 and v0.15.0 edges. Release metadata and route artifacts are source-only and excluded from the public payload. The PR candidate workflow must freshly rebuild and repeat actual admission against the exact final head before merge; merge, provider terminal transitions, tag creation, and publication are not represented as complete."
+  evidence: "Issues #261 and #263 are implemented on the dedicated patch branch. Focused validation, deterministic package construction at cbd36d41be44e12fbc6031ec5c87b23ee5fccbc3, archive parity, incoming-candidate validation, and the evidence-bound v0.15.0-to-v0.15.1 direct route passed. The fixed-head audit of 4f2af1e89b98a53884d65f531f558e3a76bb43a3 blocked on a missing terminal schema reference; that finding was remediated without adding a public schema name or CLI. The earlier local actual-install failure and later 57c7250b pass remain retained, but the pass is not reused because the rebuilt candidate changes payload bytes. The v0.9.0 and v0.6.0 retained origins resolve through the preserved v0.14.0 and v0.15.0 edges. Release metadata and route artifacts are source-only and excluded from the public payload. A fresh final-head audit and hosted actual clean-install plus v0.15.0 upgrade remain required before merge; merge, provider terminal transitions, tag creation, and publication are not represented as complete."
   workflow_id: "2026-08-29-v0151-release-publication"
   related_workflows:
     - "2026-08-29-v0151-validation-contract-fixes"
