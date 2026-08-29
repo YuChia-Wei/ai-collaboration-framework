@@ -4,6 +4,9 @@
 from __future__ import annotations
 
 import re
+import subprocess
+import sys
+import tempfile
 import unittest
 from pathlib import Path
 
@@ -67,6 +70,7 @@ EXPECTED_PR_PATHS = {
         ".dev/guides/**",
         ".dev/releases/**",
         ".dev/workflows/**",
+        ".github/scripts/**",
         ".github/workflows/package-candidate.yml",
         ".github/workflows/publish-release.yml",
     },
@@ -255,6 +259,7 @@ class GitHubWorkflowContractTests(unittest.TestCase):
                     "${{ runner.temp }}/release-body.md\n"
                     "${{ runner.temp }}/source-dispositions.json\n"
                     "${{ runner.temp }}/source-dispositions.md\n"
+                    "${{ runner.temp }}/v0151-actual-admission/**\n"
                 ),
             },
             candidate_upload["with"],
@@ -318,7 +323,7 @@ class GitHubWorkflowContractTests(unittest.TestCase):
                 "prerequisite-windows": ("15", "windows-latest"),
                 "quick": ("30", "ubuntu-latest"),
             },
-            "package-candidate.yml": {"package": ("15", "ubuntu-latest")},
+            "package-candidate.yml": {"package": ("30", "ubuntu-latest")},
             "publish-release.yml": {
                 "build": ("15", "ubuntu-latest"),
                 "publish": ("15", "ubuntu-latest"),
@@ -363,6 +368,10 @@ class GitHubWorkflowContractTests(unittest.TestCase):
             "Resolve candidate and render release body": ('--commit "${CANDIDATE_COMMIT}"', 1),
             "Validate exact candidate state": ('--commit "${CANDIDATE_COMMIT}"', 1),
             "Build deterministic archives": ('--ref "${CANDIDATE_COMMIT}"', 1),
+            "Validate v0.15.1 actual clean install and v0.15.0 upgrade": (
+                '--subject-sha "${CANDIDATE_COMMIT}"',
+                1,
+            ),
             "Render source disposition read-back": ('--ref "${CANDIDATE_COMMIT}"', 2),
         }
         candidate_steps = {step["name"]: step for step in steps(candidate_workflow)}
@@ -377,6 +386,24 @@ class GitHubWorkflowContractTests(unittest.TestCase):
 
         candidate_state_step = candidate_steps["Validate exact candidate state"]
         self.assertEqual({"GH_TOKEN": "${{ github.token }}"}, candidate_state_step.get("env"))
+
+        actual_upgrade_step = candidate_steps[
+            "Validate v0.15.1 actual clean install and v0.15.0 upgrade"
+        ]
+        self.assertEqual(
+            "steps.release.outputs.available == 'true' && "
+            "steps.release.outputs.version == 'v0.15.1'",
+            actual_upgrade_step["if"],
+        )
+        self.assertIn(
+            '--candidate-archive "dist/${{ steps.release.outputs.package_id }}.zip"',
+            actual_upgrade_step["run"],
+        )
+        self.assertIn(
+            '--previous-archive "${RUNNER_TEMP}/previous-package-0.15.0/'
+            'ai-collaboration-framework-v0.15.0.zip"',
+            actual_upgrade_step["run"],
+        )
 
     def test_gwt_007_given_project_write_token_when_workflows_checked_then_only_tag_jobs_receive_it(self) -> None:
         for name in WORKFLOW_NAMES - {"publish-release.yml"}:
@@ -484,6 +511,39 @@ class GitHubWorkflowContractTests(unittest.TestCase):
             },
             evidence_upload.get("with"),
         )
+
+    def test_gwt_009_given_existing_admission_output_when_helper_runs_then_terminal_evidence_is_not_overwritten(self) -> None:
+        helper = REPO_ROOT / ".github/scripts/validate-v0151-actual-upgrade.py"
+        with tempfile.TemporaryDirectory() as temporary:
+            output = Path(temporary) / "existing-output"
+            output.mkdir()
+            terminal = output / "terminal.json"
+            original = b'{"outcome":"retained"}\n'
+            terminal.write_bytes(original)
+            result = subprocess.run(
+                [
+                    sys.executable,
+                    str(helper),
+                    "--candidate-archive",
+                    str(Path(temporary) / "missing-candidate.zip"),
+                    "--previous-archive",
+                    str(Path(temporary) / "missing-previous.zip"),
+                    "--subject-sha",
+                    "1" * 40,
+                    "--output",
+                    str(output),
+                ],
+                cwd=REPO_ROOT,
+                check=False,
+                capture_output=True,
+                text=True,
+                encoding="utf-8",
+                errors="replace",
+            )
+
+            self.assertEqual(1, result.returncode)
+            self.assertEqual(original, terminal.read_bytes())
+            self.assertIn("output-already-exists", result.stderr)
 
 
 if __name__ == "__main__":

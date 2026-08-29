@@ -35,19 +35,21 @@ def seal(value: dict[str, object], field: str) -> dict[str, object]:
     return value
 
 
-def packet(kind: str = "delegated") -> dict[str, object]:
+def packet(
+    kind: str = "delegated", *, owning_skill: str = "ai-context-upgrader"
+) -> dict[str, object]:
     value: dict[str, object] = {
         "schema_version": "1.0",
         "record_type": "agent-execution-packet",
         "packet_id": "GOV014-PACKET-001",
         "execution_kind": kind,
-        "owning_skill": "ai-context-upgrader",
+        "owning_skill": owning_skill,
         "role": {"path": ".ai/assets/sub-agent-role-prompts/fixed-head-independent-auditor/sub-agent.yaml", "applicability": "applies", "reason": "Exact-head governance audit applies."},
         "subject": {"repository": "ai-collaboration-framework", "exact_sha": SHA},
         "invocation": {"argv": ["python", ".ai/scripts/check.py", "-v"], "cwd": "."},
         "permissions": {"network": "deny", "tracked_write": "deny", "provider_mutation": "deny"},
         "ignored_artifact_roots": [".dev/ai-context/local/validation/GOV014-PACKET-001"],
-        "terminal": {"schema_ref": ".ai/assets/shared/external-terminal.schema.yaml", "mode": "event-wait", "destination": "parent-thread", "max_terminal_messages": 1},
+        "terminal": {"schema_ref": ".ai/assets/shared/agent-execution-guardrails.schema.yaml", "mode": "event-wait", "destination": "parent-thread", "max_terminal_messages": 1},
         "integration_owner": "parent-orchestrator",
         "stop_conditions": ["subject drift", "permission expansion", "missing evidence"],
         "retry": {"attempt": 1, "budget": 2, "authorization_refs": []},
@@ -154,6 +156,32 @@ def graph(state: str = "fresh", coverage: str = "complete") -> dict[str, object]
 class AgentExecutionGuardrailsGwtTests(unittest.TestCase):
     def test_gwt_001_given_complete_fixed_head_packet_when_validated_then_it_passes(self) -> None:
         VALIDATOR.validate_packet(packet("fixed-head-audit"), SCHEMA)
+
+    def test_gwt_001b_given_auditor_owned_fixed_head_packet_when_validated_then_it_passes(self) -> None:
+        VALIDATOR.validate_packet(
+            packet("fixed-head-audit", owning_skill="ai-context-auditor"), SCHEMA
+        )
+
+    def test_gwt_001bb_given_missing_terminal_schema_when_validated_then_it_fails(self) -> None:
+        value = packet("fixed-head-audit", owning_skill="ai-context-auditor")
+        value["terminal"]["schema_ref"] = ".ai/assets/shared/missing.schema.yaml"
+        seal(value, "packet_sha256")
+        with self.assertRaisesRegex(VALIDATOR.GuardrailError, "does not exist"):
+            VALIDATOR.validate_packet(value, SCHEMA)
+
+    def test_gwt_001c_given_governance_claims_unbound_auditor_role_when_validated_then_it_fails(self) -> None:
+        value = packet("fixed-head-audit", owning_skill="ai-context-governance")
+        with self.assertRaisesRegex(
+            VALIDATOR.GuardrailError, "not canonically bound by owning_skill"
+        ):
+            VALIDATOR.validate_packet(value, SCHEMA)
+
+    def test_gwt_001d_given_invalid_role_applicability_when_validated_then_it_fails(self) -> None:
+        value = packet("fixed-head-audit", owning_skill="ai-context-auditor")
+        value["role"]["applicability"] = "assumed"
+        seal(value, "packet_sha256")
+        with self.assertRaisesRegex(VALIDATOR.GuardrailError, "applicability is invalid"):
+            VALIDATOR.validate_packet(value, SCHEMA)
 
     def test_gwt_002_given_external_packet_with_tracked_write_when_validated_then_it_fails(self) -> None:
         value = packet("external")

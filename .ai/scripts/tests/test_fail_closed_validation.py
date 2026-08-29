@@ -271,11 +271,13 @@ class SyntheticRunnerRepo:
     @staticmethod
     def _python_stub_body(name: str, exit_variable: str) -> str:
         return (
-            'if [ "$1" = ".ai/scripts/validation-evidence.py" ]; then\n'
+            'case "$1" in .ai/scripts/validation-evidence.py|*/.ai/scripts/validation-evidence.py)\n'
             '  evidence_command=$2\n'
             '  shift 2\n'
             '  printf "evidence %s %s\\n" "$evidence_command" "$*" >> .aic-evidence-sentinel\n'
             '  case "$evidence_command" in\n'
+            '    fingerprint-files) printf "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb\\n"; exit 0 ;;\n'
+            '    runtime-fingerprint) printf "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc\\n"; exit 0 ;;\n'
             '    snapshot)\n'
             '      while [ "$#" -gt 0 ]; do\n'
             '        if [ "$1" = "--output" ]; then output=$2; break; fi\n'
@@ -444,7 +446,8 @@ class SyntheticRunnerRepo:
             '      ;;\n'
             '    finalize) exit "${EVIDENCE_STUB_FINALIZE_EXIT:-0}" ;;\n'
             '  esac\n'
-            'fi\n'
+            '  ;;\n'
+            'esac\n'
             'if [ "$1" = ".ai/scripts/validate-immutable-history.py" ] && [ "$2" = "verify" ]; then\n'
             f'  printf "{name} %s\\n" "$*" >> .aic-sentinel\n'
             '  if [ ! -f .ai/distribution/validation/immutable-history-receipt.yaml ]; then printf "full-required\\tmissing-receipt\\t1111111111111111111111111111111111111111\\t2222222222222222222222222222222222222222\\t3333333333333333333333333333333333333333\\t\\n"; exit 10; fi\n'

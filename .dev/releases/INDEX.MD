@@ -24,7 +24,7 @@ Historical `v*` directories below are records, never templates.
 
 | Release ID | Version | Status | Compatibility | Phase Contract |
 | --- | --- | --- | --- | --- |
-_None._
+| [`REL-v0.15.1`](v0.15.1/release.yaml) | `v0.15.1` | `planned` | non-breaking patch; automatic source v0.15.0 | [checks](v0.15.1/release-phase-checks.yaml) |
 
 ## Published Releases
 

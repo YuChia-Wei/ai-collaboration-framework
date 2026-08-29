@@ -1,0 +1,127 @@
+{
+  "template_id": "software-development-orchestrator/development-workflow-task",
+  "template_version": "1.5.0",
+  "template_created_at": "2026-07-10T18:25:11+08:00",
+  "template_updated_at": "2026-08-05T02:12:00+08:00",
+  "workflow_id": "2026-08-29-v0151-validation-contract-fixes",
+  "task_id": "validate-and-review",
+  "owner_skill": "ai-context-governance",
+  "related_plan_id": "development-plan-2026-08-29-v0151-validation-contract-fixes",
+  "status": "in_progress",
+  "created_at": "2026-08-29T10:39:30+08:00",
+  "updated_at": "2026-08-29T12:05:34+08:00",
+  "template_source": ".ai/assets/skills/software-development-orchestrator/templates/development-workflow-task-template.json",
+  "model": "gpt-5.6-sol",
+  "reasoning_effort": "high",
+  "workflow_locator": ".dev/workflows/2026-08-29-v0151-validation-contract-fixes/workflow.yaml",
+  "routing_correction": {
+    "corrected_from": "software-development-orchestrator",
+    "corrected_to": "ai-context-governance",
+    "verification_skill": "ai-context-auditor",
+    "template_provenance": "The original development task template metadata is retained as creation history."
+  },
+  "scope": {
+    "goal": "Create a clean immutable local checkpoint and obtain fresh read-only AI-context post-remediation verification bound to that exact commit.",
+    "target": "VAL010-A5",
+    "files": [
+      "the complete Issue #261 patch and workflow artifacts",
+      ".dev/ai-context/local/validation/2026-08-29-v0151-validation-contract-fixes/"
+    ],
+    "constraints": [
+      "do not use mutable or dirty-worktree long-running evidence as an exact-head gate",
+      "do not mutate tracked files after exact-head review",
+      "review output may be retained only under the ignored local validation root",
+      "do not push, create a pull request, merge, mutate Issue or Project terminal state, tag, release, or publish"
+    ],
+    "non_goals": ["release or nightly-full execution", "hosted checks", "publication"]
+  },
+  "inputs": {
+    "requirements": ["Issue #261 VAL010-A5"],
+    "specifications": [
+      ".dev/standards/WORKFLOW-GATE-POLICY.md",
+      ".ai/assets/skills/ai-context-governance/references/audit-remediation-lifecycle.md",
+      ".ai/assets/skills/ai-context-auditor/skill.yaml"
+    ],
+    "architecture_decisions": ["exact-head review binds to a clean immutable commit and remains read-only"],
+    "user_constraints": ["local commit and required workflow artifacts authorized; external publication actions prohibited"]
+  },
+  "execution": {
+    "capability_slot": "test-execution",
+    "approval_contract": {
+      "status": "approved",
+      "required_before": "local commit and read-only exact-head review",
+      "authorization_source": ["User instruction in the dedicated 0.15.1 conversation", "Issue #261 VAL010-A5"],
+      "pending_decision": ""
+    },
+    "implementation_contract": null,
+    "test_execution_contract": {
+      "provider": "target-profile-commands",
+      "target_owned": {
+        "working_directory": ".",
+        "commands": [
+          {"level": "unit", "command": "python .ai/scripts/tests/test_validation_evidence.py ValidationEvidenceCoreGwtTests -v"},
+          {"level": "integration", "command": "python .ai/scripts/validate-workflow-artifacts.py"}
+        ],
+        "prerequisites": ["repository Python and Git Bash", "Issue #261 scope", "final tracked diff"],
+        "environment_boundary": ["sandbox-external tempfile and Git Bash only after WinError 5/signal-pipe failures", "no network for deterministic tests"],
+        "policy": ["Issue #261", ".dev/standards/WORKFLOW-GATE-POLICY.md"]
+      },
+      "selected_levels": ["unit", "integration"],
+      "required_for_closeout": ["unit", "integration"],
+      "conditional_selection_sources": [],
+      "outcomes": [
+        {"level": "unit", "outcome": "passed", "evidence": ["validation evidence core 10/10", "validation profile registry 9/9", "Python compile passed"], "deferral_owner": "", "follow_up": ""},
+        {"level": "integration", "outcome": "passed", "evidence": ["shell asset validation passed", "workflow validation will be rerun after artifact repair", "git diff --check passed"], "deferral_owner": "", "follow_up": ""}
+      ]
+    },
+    "role_execution_records": [],
+    "spec_compliance": {
+      "selected": false,
+      "activation_source": [],
+      "expected_outcome": "not-applicable"
+    },
+    "steps": [
+      "rerun short focused validation after final tracked edits",
+      "validate the exact commit message and create one local commit",
+      "verify the worktree is clean and the commit is the reviewed subject",
+      "request one fresh read-only ai-context-auditor post-remediation verification against the clean committed subject"
+    ],
+    "validation": ["clean immutable commit", "fresh exact-head read-only review"],
+    "commit_checkpoint": "one local commit before exact-head review",
+    "deferred_items": ["push, pull request, merge, hosted checks, release, publication"]
+  },
+  "results": {
+    "summary": "The first auditor-owned fixed-head audit failed on missing runtime timeout rejection. The finding is under remediation; a new immutable subject and fresh audit remain required.",
+    "files_changed": [
+      ".dev/workflows/2026-08-29-v0151-validation-contract-fixes/workflow.yaml",
+      ".dev/workflows/2026-08-29-v0151-validation-contract-fixes/workflow-plan.md",
+      ".dev/workflows/2026-08-29-v0151-validation-contract-fixes/acceptance-ledger.yaml",
+      ".dev/workflows/2026-08-29-v0151-validation-contract-fixes/reports/release-package-impact.md"
+    ],
+    "approval_evidence": ["Issue #261", "dedicated user authorization"],
+    "test_execution": [
+      {"command": "python .ai/scripts/tests/test_validation_evidence.py ValidationEvidenceCoreGwtTests -v", "outcome": "passed", "summary": "10 passed at 3ec2f6c063feed22996489acee6ace2fd5fe6065."},
+      {"command": "python .ai/scripts/tests/test_validation_profile_registry.py -v", "outcome": "passed", "summary": "9 passed at 3ec2f6c063feed22996489acee6ace2fd5fe6065."},
+      {"command": "python .ai/scripts/tests/test_validation_profile_registry.py -v", "outcome": "passed", "summary": "10 passed after adding runtime zero-timeout rejection coverage."},
+      {"command": "python .ai/scripts/validate-shell-assets.py && python .ai/scripts/validate-workflow-artifacts.py && git diff --check HEAD^ HEAD", "outcome": "passed", "summary": "All short exact-head structural checks passed."},
+      {"command": "build-ai-context-package.py comparison of v0.15.0 and candidate HEAD", "outcome": "passed", "summary": "Both deterministic diagnostic packages built with 647 members; four direct consumer files and six derived metadata files changed."},
+      {"command": "python .ai/scripts/validate-ai-context-package.py <zip> <tar.gz>", "outcome": "passed", "summary": "Archive validation passed independently for both the deterministic v0.15.0 baseline pair and candidate pair."}
+    ],
+    "role_execution_aggregation": [],
+    "spec_compliance": {
+      "outcome": "not-applicable",
+      "coverage_percent": null,
+      "evidence": []
+    },
+    "validation_evidence": [
+      "3ec2f6c063feed22996489acee6ace2fd5fe6065 was read back as the clean local implementation checkpoint.",
+      "The code graph was rebuilt in full against the committed tree before direct impact review.",
+      "Package payload fingerprint changed from 6c2bd24ef993c4ac122bce0c6bdd528c39e559fd47b0ec8b76ead80e4d8dc0e3 to 34242a7f7cbf9a7d7ff3cacae38bd55db1e28a742bb1acd10ee9d852699b9d71.",
+      "The prior fixed-head-independent-auditor blocker was a routing error; the canonical post-remediation verifier is ai-context-auditor under ai-context-governance.",
+      "Source governance, AI context, workflow artifact, JSON, and whitespace validation passed after the routing correction.",
+      "The auditor-owned fixed-head audit of 56bcc49a46c6f21df97a474cb32a3479a477cdae failed VAL010-A3 and returned the subject for remediation; this failure is not superseded by later focused tests."
+    ],
+    "commits": ["3ec2f6c063feed22996489acee6ace2fd5fe6065"],
+    "follow_up_needed": true
+  }
+}

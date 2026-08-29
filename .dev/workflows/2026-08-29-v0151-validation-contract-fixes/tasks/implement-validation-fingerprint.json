@@ -1,0 +1,132 @@
+{
+  "template_id": "software-development-orchestrator/development-workflow-task",
+  "template_version": "1.5.0",
+  "template_created_at": "2026-07-10T18:25:11+08:00",
+  "template_updated_at": "2026-08-05T02:12:00+08:00",
+  "workflow_id": "2026-08-29-v0151-validation-contract-fixes",
+  "task_id": "implement-validation-fingerprint",
+  "owner_skill": "slice-implementer",
+  "related_plan_id": "development-plan-2026-08-29-v0151-validation-contract-fixes",
+  "status": "completed",
+  "created_at": "2026-08-29T10:20:34+08:00",
+  "updated_at": "2026-08-29T10:50:38+08:00",
+  "template_source": ".ai/assets/skills/software-development-orchestrator/templates/development-workflow-task-template.json",
+  "model": "gpt-5.6-sol",
+  "reasoning_effort": "high",
+  "workflow_locator": ".dev/workflows/2026-08-29-v0151-validation-contract-fixes/workflow.yaml",
+  "scope": {
+    "goal": "Repair policy and runtime fingerprints so incomplete identity disables validation evidence reuse.",
+    "target": "VAL010-A1 and VAL010-A2",
+    "files": [
+      ".ai/scripts/check-all.sh",
+      ".ai/scripts/validation-evidence.py",
+      "focused adjacent tests resolved by graph and tracked-file inventory"
+    ],
+    "constraints": [
+      "preserve exact-head versus input-sensitive evidence boundaries",
+      "keep diagnostics privacy-safe",
+      "migrate or invalidate old cache identity deterministically",
+      "use framework-source effective rules"
+    ],
+    "non_goals": [
+      "subject-digest replacement for exact-head identity",
+      "validator mutation-testing platform",
+      "observed dependency-closure feature",
+      "v0.16.0 scope"
+    ]
+  },
+  "inputs": {
+    "requirements": ["Issue #261 VAL010-A1", "Issue #261 VAL010-A2"],
+    "specifications": [".ai/assets/shared/VALIDATION-EVIDENCE-LIFECYCLE-CONTRACT.md"],
+    "architecture_decisions": ["identity-sensitive exact-head gates remain fresh; behavioral reuse remains content/runtime sensitive"],
+    "user_constraints": ["local implementation and tests authorized; no push, PR, merge, terminal provider mutation, tag, Release, or publication"]
+  },
+  "execution": {
+    "capability_slot": "implementation",
+    "approval_contract": {
+      "status": "approved",
+      "required_before": "material implementation",
+      "authorization_source": ["User instruction in the dedicated 0.15.1 conversation", "GitHub Issue #261 owner-authorized outcome"],
+      "pending_decision": ""
+    },
+    "implementation_contract": {
+      "intent": "validation-failure-remediation",
+      "execution_mode": "generic",
+      "overlays": ["remediation"],
+      "authorization_source": ["GitHub Issue #261", "workflow task implement-validation-fingerprint"],
+      "normative_truth": [".ai/assets/shared/VALIDATION-EVIDENCE-LIFECYCLE-CONTRACT.md", ".dev/standards/WORKFLOW-GATE-POLICY.md"],
+      "finding_evidence": ["Issue #261#VAL010-A1", "Issue #261#VAL010-A2"],
+      "subject_revision": "5fedaceef7e18b4cdcde3cb665adcc97070db2df",
+      "acceptance_criteria": [
+        "failed or incomplete policy fingerprint computation disables reuse",
+        "runtime/dependency identity changes invalidate reuse",
+        "same complete runtime identity remains reusable",
+        "old cache identity cannot be silently accepted"
+      ]
+    },
+    "test_execution_contract": null,
+    "role_execution_records": [],
+    "spec_compliance": {
+      "selected": false,
+      "activation_source": [],
+      "expected_outcome": "not-applicable"
+    },
+    "steps": [
+      "resolve framework-source effective rules and verify graph/index freshness",
+      "inventory cache-key and fingerprint dependency closure plus focused tests",
+      "implement the smallest fail-closed change and migration",
+      "run focused tests and record evidence"
+    ],
+    "validation": ["focused policy/runtime fingerprint tests", "focused evidence-cache tests", "shell contract tests", "git diff --check"],
+    "commit_checkpoint": "combine with registry/install repair after both stages and focused validation pass",
+    "deferred_items": []
+  },
+  "results": {
+    "summary": "Replaced the fail-open shell hash pipeline with a complete-set Python fingerprint, added deterministic Python ABI and PyYAML runtime identity, disabled reuse for incomplete identity, and advanced the cache schema with safe legacy invalidation.",
+    "files_changed": [
+      ".ai/scripts/check-all.sh",
+      ".ai/scripts/validation-evidence.py",
+      ".ai/scripts/tests/test_validation_evidence.py",
+      ".ai/scripts/tests/test_fail_closed_validation.py"
+    ],
+    "approval_evidence": ["Issue #261 read back open with created-by:codex label and owner-authorized scope"],
+    "test_execution": [
+      {
+        "command": "python .ai/scripts/tests/test_validation_evidence.py ValidationEvidenceCoreGwtTests -v",
+        "outcome": "passed",
+        "summary": "10 passed in 18.951s outside the sandbox after the initial sandbox attempt failed in fixture setup with WinError 5."
+      },
+      {
+        "command": "python .ai/scripts/validation-evidence.py runtime-fingerprint",
+        "outcome": "passed",
+        "summary": "Produced one 64-hex runtime fingerprint."
+      },
+      {
+        "command": "python .ai/scripts/validation-evidence.py fingerprint-files <declared policy inputs>",
+        "outcome": "passed",
+        "summary": "Produced one 64-hex complete-set policy fingerprint."
+      },
+      {
+        "command": "five selected CheckAllRunnerGwtTests cache-admission cases",
+        "outcome": "diagnostic-only",
+        "summary": "5 passed in 125.113s, but the dirty-worktree run is not admissible as long-running exact-head evidence."
+      }
+    ],
+    "role_execution_aggregation": [],
+    "spec_compliance": {
+      "outcome": "not-applicable",
+      "coverage_percent": null,
+      "evidence": []
+    },
+    "validation_evidence": [
+      "effective-rule packet a28c8f4a62a270a9f7b74e3f0e1ef0313e55773f28aee070f29e22cb57cdf2f2",
+      "full code graph rebuilt during inventory; material conclusions verified against current tracked files",
+      "python -m py_compile passed outside sandbox after ignored bytecode write was denied inside sandbox",
+      "python .ai/scripts/validate-shell-assets.py passed for 16 tracked shell assets",
+      "git diff --check passed"
+    ],
+    "commits": ["3ec2f6c063feed22996489acee6ace2fd5fe6065"],
+    "finding_status": "addressed",
+    "follow_up_needed": false
+  }
+}

@@ -558,6 +558,9 @@ class SubAgentAdapterMetadataValidationTests(unittest.TestCase):
                 },
                 "problem-frame-author": {"problem-frame-sub-agent": "primary"},
                 "ai-context-init": {"context-translator": "conditional"},
+                "ai-context-auditor": {
+                    "fixed-head-independent-auditor": "conditional"
+                },
                 "ai-context-upgrader": {
                     "mechanical-evidence-worker": "conditional",
                     "reconciliation-worker": "conditional",
