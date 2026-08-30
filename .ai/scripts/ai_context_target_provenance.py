@@ -21,6 +21,7 @@ from ai_context_effective_rules import (
     EFFECTIVE_STATE_PATH,
     PROVENANCE_EFFECTIVE_RULES_LINKAGE,
     build_effective_state_and_packets,
+    compact_packet_path_for_route,
     is_profile_slug,
     validate_effective_rule_state,
     write_effective_state_and_packets,
@@ -5184,7 +5185,7 @@ def initialize_context(
         written.append(EFFECTIVE_STATE_PATH)
         written.extend(
             sorted(
-                f".dev/ai-context/effective-rule-packets/{route['route_id']}.yaml"
+                compact_packet_path_for_route(route["route_id"])
                 for route in state["routing"]
             )
         )

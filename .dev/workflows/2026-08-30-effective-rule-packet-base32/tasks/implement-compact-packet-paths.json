@@ -1,0 +1,36 @@
+{
+  "template_id": "ai-context-governance-remediation-task",
+  "template_version": "1.1.0",
+  "template_created_at": "2026-07-10T18:22:49+08:00",
+  "template_updated_at": "2026-07-27T09:52:09+08:00",
+  "task_id": "implement-compact-packet-paths",
+  "workflow_id": "2026-08-30-effective-rule-packet-base32",
+  "owner_skill": "ai-context-governance",
+  "status": "in_progress",
+  "created_at": "2026-08-30T18:35:25+08:00",
+  "updated_at": "2026-08-30T18:54:46+08:00",
+  "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
+  "model": "gpt-5.6-sol",
+  "reasoning_effort": "high",
+  "finding_ids": ["GOV016-A1", "GOV016-A2", "GOV016-A3", "GOV016-A4", "GOV016-A5", "GOV016-A6", "GOV016-A7", "GOV016-A8"],
+  "scope": {
+    "target": "route-base32-60-v1 effective-rule packet storage contract",
+    "files": [".ai/scripts/ai_context_effective_rules.py", ".ai/scripts/tests/test_ai_context_effective_rules.py", ".ai/assets/skills/ai-context-governance/", "affected target/package/upgrade validators and tests"],
+    "constraints": ["retain full semantic identities", "effective-rules.yaml remains the sole mapping authority", "fail before writes", "legacy reads remain valid", "package apply must not silently migrate target-owned state"],
+    "non_goals": ["numeric allocator", "authoritative index.yaml", "push", "pull request", "merge", "release or publication"]
+  },
+  "execution": {
+    "steps": ["inventory exact call graph and path contracts", "implement compact derivation and compatibility", "implement preflight and migration safety", "add focused tests and documentation", "validate and commit", "request exact-head independent audit"],
+    "validation": ["focused effective-rule tests", "target provenance and package/upgrade tests", "workflow and AI-context validators", "git diff --check", "fresh exact-head audit"],
+    "last_completed_step": "Implemented route-base32-60-v1, legacy compatibility, collision and Windows path preflight, exact inventory validation, rollback-safe migration, schemas, and focused regression tests; applicable pre-commit validation passed.",
+    "next_action": "Create a policy-valid local commit, bind long-running validation to the immutable head, and request fresh independent exact-head audit."
+  },
+  "results": {
+    "summary": "Compact deterministic packet storage is implemented while retaining full route identity, legacy reads, sole-index authority, and fail-closed migration behavior.",
+    "files_changed": [".ai/scripts/ai_context_effective_rules.py", ".ai/scripts/ai_context_target_provenance.py", ".ai/scripts/tests/test_ai_context_effective_rules.py", ".ai/assets/skills/ai-context-governance/templates/effective-rule-state.schema.yaml", ".ai/assets/skills/ai-context-governance/templates/effective-rule-packet.schema.yaml", ".ai/assets/skills/ai-context-governance/references/semantic-customization-lifecycle.md", ".ai/assets/skills/ai-context-upgrader/references/provenance-contract.md"],
+    "tests_run": ["31 effective-rule tests passed; 2 skipped", "10 semantic lifecycle tests passed", "113 package-apply tests passed; 1 skipped", "validate-ai-context.py passed", "validate-workflow-artifacts.py passed", "git diff --check passed"],
+    "finding_status": "remediated-pending-exact-head-audit",
+    "residual_risk": "The 60-bit compact namespace intentionally has a finite collision risk; complete-set collision detection fails closed. Immutable-head long-running validation and independent audit remain pending.",
+    "follow_up_needed": true
+  }
+}

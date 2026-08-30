@@ -15,6 +15,15 @@ reason `effective-rule-state-missing`; create no empty state or packet, and
 keep routine action work fail-closed until owner reconciliation. The readiness
 result is derived output, not a provenance authority field.
 
+Current effective-state publication uses `route-base32-60-v1` packet names:
+`r-` plus the first 12 lowercase RFC 4648 Base32 characters derived from the
+full route SHA-256, followed by `.yaml`. The full `ROUTE-<SHA256>` remains the
+semantic identity and `effective-rules.yaml` remains the sole index. Complete
+legacy full-route-id layouts remain readable. Ordinary package apply preserves
+them; only explicitly authorized effective-state regeneration or finalization
+may migrate them, with staged rollback and fail-closed recovery. Mixed layouts,
+collisions, path mismatches, and orphan packet files are invalid.
+
 `.dev/AI-CONTEXT-SOURCE.yaml` remains a schema-1 read-compatibility input for
 older targets. Migrate it to the grouped path before writing schema 2. Never
 retain both files as active authorities.
