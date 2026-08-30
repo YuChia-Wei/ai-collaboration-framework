@@ -1,0 +1,34 @@
+template_metadata:
+  template_id: "ai-context-governance-workflow-locator"
+  template_version: "1.2.0"
+  created_at: "2026-07-10T18:22:49+08:00"
+  updated_at: "2026-07-15T08:36:00+08:00"
+
+workflow_id: "2026-08-30-effective-rule-packet-base32"
+schema_version: "1.0"
+lifecycle_contract: "1.0"
+workflow_kind: "ai-context-maintenance"
+title: "Compact effective-rule packet filenames with deterministic Base32 keys"
+owner_skill: "ai-context-governance"
+status: "completed"
+current_phase: "completed"
+branch: "codex/2026-08-30-effective-rule-packet-base32"
+base_branch: "main"
+artifact_root: ".dev/workflows/2026-08-30-effective-rule-packet-base32"
+entrypoint: "workflow-plan.md"
+continuation:
+  current_task_id: null
+  target_policy_refs:
+    - ".dev/standards/WORKFLOW-GATE-POLICY.md"
+    - ".dev/standards/GITHUB-WORK-MANAGEMENT-POLICY.yaml"
+    - ".ai/assets/skills/ai-context-governance/references/semantic-customization-lifecycle.md"
+  handoff_checkpoint: null
+work_items:
+  - provider: "github"
+    repository: "YuChia-Wei/ai-collaboration-framework"
+    issue: 265
+    url: "https://github.com/YuChia-Wei/ai-collaboration-framework/issues/265"
+created_at: "2026-08-30T18:35:25+08:00"
+updated_at: "2026-08-30T19:58:16+08:00"
+template_source: ".ai/assets/skills/ai-context-governance/templates/workflow-locator-template.yaml"
+template_version: "1.2.0"

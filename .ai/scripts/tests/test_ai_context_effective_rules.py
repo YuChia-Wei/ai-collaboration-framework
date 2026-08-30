@@ -982,12 +982,34 @@ class EffectiveRuleResolverTests(unittest.TestCase):
             state, packets = RULES.build_effective_state_and_packets(
                 fixture.root, candidate, resolver_evidence=[EVIDENCE]
             )
+            mismatched_state = copy.deepcopy(state)
+            mismatched_state["routing"][0]["packet"]["path"] = (
+                RULES.legacy_packet_path_for_route(
+                    mismatched_state["routing"][0]["route_id"]
+                )
+            )
+            mismatched_state["target_state_digest"] = RULES.target_state_digest(
+                mismatched_state
+            )
+            with self.assertRaisesRegex(RULES.EffectiveRuleError, "route-base32-60-v1"):
+                RULES.write_effective_state_and_packets(
+                    fixture.root, mismatched_state, packets
+                )
+            self.assertFalse((fixture.root / RULES.EFFECTIVE_STATE_PATH).exists())
+
             publication = RULES.write_effective_state_and_packets(
                 fixture.root, state, packets
             )
 
             self.assertEqual(state["target_state_digest"], publication["target_state_digest"])
             self.assertEqual(1, len(publication["packet_paths"]))
+            packet_path = publication["packet_paths"][0]
+            self.assertRegex(packet_path, r"/r-[a-z2-7]{12}\.yaml$")
+            self.assertEqual(58, len(packet_path))
+            self.assertEqual(
+                RULES.route_id_for_selector(REQUEST),
+                state["routing"][0]["route_id"],
+            )
             self.assertEqual([], RULES.validate_effective_rule_state(fixture.root))
             self.assertEqual(
                 ["AICTX-EVIDENCE-001", "TEST-GWT-001"],
@@ -1008,21 +1030,181 @@ class EffectiveRuleResolverTests(unittest.TestCase):
     def test_gwt_008a_given_non_directory_packet_parent_when_published_then_parent_chain_fails_before_state_replacement(self) -> None:
         fixture = EffectiveRuleFixture()
         try:
-            state = fixture.write_ready_state()
-            packet_path = fixture.root / state["routing"][0]["packet"]["path"]
-            packet = yaml.safe_load(packet_path.read_text(encoding="utf-8"))
-            packet_path.unlink()
-            packet_path.parent.rmdir()
-            packet_path.parent.write_text("not a directory\n", encoding="utf-8")
-            state_before = (fixture.root / RULES.EFFECTIVE_STATE_PATH).read_bytes()
+            legacy_state = fixture.write_ready_state()
+            candidate = {
+                "schema_version": "1.0",
+                "framework": legacy_state["framework"],
+                "rule_dispositions": legacy_state["rule_dispositions"],
+                "routing": [
+                    {
+                        "selector": route["selector"],
+                        "required_rule_ids": route["required_rule_ids"],
+                        "reported_not_applicable_rule_ids": route[
+                            "reported_not_applicable_rule_ids"
+                        ],
+                    }
+                    for route in legacy_state["routing"]
+                ],
+            }
+            state, packets = RULES.build_effective_state_and_packets(
+                fixture.root, candidate, resolver_evidence=[EVIDENCE]
+            )
+            legacy_packet = fixture.root / legacy_state["routing"][0]["packet"]["path"]
+            legacy_packet.unlink()
+            legacy_packet.parent.rmdir()
+            legacy_packet.parent.write_text("not a directory\n", encoding="utf-8")
+            (fixture.root / RULES.EFFECTIVE_STATE_PATH).unlink()
 
             with self.assertRaisesRegex(RULES.EffectiveRuleError, "regular directory"):
                 RULES.write_effective_state_and_packets(
-                    fixture.root,
-                    state,
-                    {state["routing"][0]["packet"]["path"]: packet},
+                    fixture.root, state, packets
                 )
-            self.assertEqual(state_before, (fixture.root / RULES.EFFECTIVE_STATE_PATH).read_bytes())
+            self.assertFalse((fixture.root / RULES.EFFECTIVE_STATE_PATH).exists())
+        finally:
+            fixture.close()
+
+    def test_gwt_008d_given_route_digest_when_compact_key_is_derived_then_exact_rfc4648_60_bit_contract_is_used(self) -> None:
+        self.assertEqual(
+            "aaaaaaaaaaaa",
+            RULES.compact_packet_key_for_route(f"ROUTE-{'0' * 64}"),
+        )
+        self.assertEqual(
+            "777777777777",
+            RULES.compact_packet_key_for_route(f"ROUTE-{'F' * 64}"),
+        )
+        with self.assertRaisesRegex(RULES.EffectiveRuleError, "exact ROUTE-SHA256"):
+            RULES.compact_packet_key_for_route("ROUTE-ABC")
+
+    def test_gwt_008e_given_legacy_packet_layout_when_loaded_then_it_remains_readable_until_explicit_regeneration(self) -> None:
+        fixture = EffectiveRuleFixture()
+        try:
+            legacy_state = fixture.write_ready_state()
+            legacy_path = legacy_state["routing"][0]["packet"]["path"]
+            self.assertIn("/ROUTE-", legacy_path)
+            self.assertEqual([], RULES.validate_effective_rule_state(fixture.root))
+
+            candidate = {
+                "schema_version": "1.0",
+                "framework": legacy_state["framework"],
+                "rule_dispositions": legacy_state["rule_dispositions"],
+                "routing": [
+                    {
+                        "selector": route["selector"],
+                        "required_rule_ids": route["required_rule_ids"],
+                        "reported_not_applicable_rule_ids": route[
+                            "reported_not_applicable_rule_ids"
+                        ],
+                    }
+                    for route in legacy_state["routing"]
+                ],
+            }
+            state, packets = RULES.build_effective_state_and_packets(
+                fixture.root, candidate, resolver_evidence=[EVIDENCE]
+            )
+            RULES.write_effective_state_and_packets(fixture.root, state, packets)
+
+            self.assertFalse((fixture.root / legacy_path).exists())
+            self.assertTrue((fixture.root / next(iter(packets))).is_file())
+            self.assertEqual([], RULES.validate_effective_rule_state(fixture.root))
+        finally:
+            fixture.close()
+
+    def test_gwt_008f_given_mixed_or_orphan_packet_layout_when_loaded_then_authority_fails_closed(self) -> None:
+        fixture = EffectiveRuleFixture()
+        try:
+            state = fixture.write_ready_state(CONSUMER_ROUTES)
+            state["routing"][0]["packet"]["path"] = RULES.compact_packet_path_for_route(
+                state["routing"][0]["route_id"]
+            )
+            state["target_state_digest"] = RULES.target_state_digest(state)
+            (fixture.root / RULES.EFFECTIVE_STATE_PATH).write_text(
+                yaml.safe_dump(state, sort_keys=False, allow_unicode=True),
+                encoding="utf-8",
+            )
+            self.assertRegex(
+                RULES.validate_effective_rule_state(fixture.root)[0],
+                "must not mix compact and legacy",
+            )
+
+            for packet_file in (fixture.root / RULES.PACKET_DIRECTORY).iterdir():
+                packet_file.unlink()
+            state = fixture.write_ready_state()
+            orphan = fixture.root / RULES.PACKET_DIRECTORY / "r-aaaaaaaaaaaa.yaml"
+            orphan.write_text("orphan: true\n", encoding="utf-8")
+            self.assertRegex(
+                RULES.validate_effective_rule_state(fixture.root)[0],
+                "inventory does not exactly match",
+            )
+        finally:
+            fixture.close()
+
+    def test_gwt_008g_given_compact_collision_or_unsafe_windows_budget_when_preflight_runs_then_it_fails_before_write(self) -> None:
+        with self.assertRaisesRegex(RULES.EffectiveRuleError, "collision"):
+            RULES._assert_unique_compact_packet_paths(
+                [
+                    f"ROUTE-{'0' * 64}",
+                    f"ROUTE-{'0' * 15}{'1' * 49}",
+                ]
+            )
+
+        compact_path = RULES.compact_packet_path_for_route(f"ROUTE-{'0' * 64}")
+        legacy_path = RULES.legacy_packet_path_for_route(f"ROUTE-{'0' * 64}")
+        root = Path("C:/") / ("x" * 150)
+        RULES._preflight_packet_path_budget(
+            root, {compact_path}, platform_name="nt"
+        )
+        with self.assertRaisesRegex(RULES.EffectiveRuleError, "absolute_length=") as error:
+            RULES._preflight_packet_path_budget(
+                root, {legacy_path}, platform_name="nt"
+            )
+        self.assertNotIn(str(root), str(error.exception))
+
+    def test_gwt_008h_given_initialization_or_finalization_storage_preflight_failure_when_called_then_authority_destinations_are_untouched(self) -> None:
+        with tempfile.TemporaryDirectory(prefix="effective-preflight-init-") as value:
+            root = Path(value)
+            with mock.patch.object(
+                TARGET,
+                "preflight_effective_packet_storage",
+                side_effect=RULES.EffectiveRuleError("storage preflight failed"),
+            ):
+                with self.assertRaisesRegex(
+                    RULES.EffectiveRuleError, "storage preflight failed"
+                ):
+                    TARGET.initialize_context(
+                        root,
+                        SOURCE,
+                        SELECTION,
+                        "2026-08-30T19:20:00+08:00",
+                        effective_state_candidate={},
+                        effective_resolver_evidence=[EVIDENCE],
+                    )
+            self.assertFalse((root / ".dev").exists())
+
+        fixture = EffectiveRuleFixture()
+        try:
+            provenance_before = fixture.provenance_path.read_bytes()
+            ledger_before = fixture.ledger_path.read_bytes()
+            provenance = TARGET.load_mapping(fixture.provenance_path, [])
+            ledger = TARGET.load_mapping(fixture.ledger_path, [])
+            assert provenance is not None and ledger is not None
+            with mock.patch.object(
+                TARGET,
+                "preflight_effective_packet_storage",
+                side_effect=RULES.EffectiveRuleError("storage preflight failed"),
+            ):
+                with self.assertRaisesRegex(
+                    RULES.EffectiveRuleError, "storage preflight failed"
+                ):
+                    TARGET.finalize_context(
+                        fixture.root,
+                        provenance,
+                        ledger,
+                        effective_state_candidate={},
+                        effective_resolver_evidence=[EVIDENCE],
+                    )
+            self.assertEqual(provenance_before, fixture.provenance_path.read_bytes())
+            self.assertEqual(ledger_before, fixture.ledger_path.read_bytes())
+            self.assertFalse((fixture.root / RULES.EFFECTIVE_STATE_PATH).exists())
         finally:
             fixture.close()
 
