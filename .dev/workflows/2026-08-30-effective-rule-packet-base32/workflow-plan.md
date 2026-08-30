@@ -19,7 +19,7 @@
 - `current_phase`: `completed`
 - `artifact_root`: `.dev/workflows/2026-08-30-effective-rule-packet-base32`
 - `created_at`: `2026-08-30T18:35:25+08:00`
-- `updated_at`: `2026-08-30T19:44:00+08:00`
+- `updated_at`: `2026-08-30T19:58:16+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md`
 - `template_version`: `1.2.0`
 - `work_item`: `https://github.com/YuChia-Wei/ai-collaboration-framework/issues/265`
@@ -91,3 +91,10 @@ The machine-readable authority is `acceptance-ledger.yaml`.
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | 1 | `codex/2026-08-30-effective-rule-packet-base32` | `main@f2b5fa7c13550efaeb65ab9fcaeb0403baa2a5af` | implementation checkpoint rejected by fixed-head audit | `5a885cb748f8c1c96afd67e66fa85a4c4f698e39` | local only | `2026-08-30T19:18:25+08:00` | audit found preflight occurred after authority mutation | commit audit remediation, then re-freeze and re-audit |
 | 1 | `codex/2026-08-30-effective-rule-packet-base32` | `main@f2b5fa7c13550efaeb65ab9fcaeb0403baa2a5af` | replacement implementation checkpoint verified | `3c5af01ecb2e541953eb44b18476f7403894fb6b` | local only | `2026-08-30T19:44:00+08:00` | package validation and independent audit passed | no local implementation action remains |
+
+## Provider Delivery
+
+- Pull request: `https://github.com/YuChia-Wei/ai-collaboration-framework/pull/266`.
+- Disposition: `terminal-close` for Issue #265 using `Closes #265`.
+- Selected topology: merge commit, preserving the implementation, audit-remediation, and verified-closeout commits as one traceable unit.
+- Current gate: commit the PR-bound declaration, obtain a fresh exact-head audit receipt and all required hosted checks, then capture merge admission and reconcile PR, Issue, and Project state after merge.

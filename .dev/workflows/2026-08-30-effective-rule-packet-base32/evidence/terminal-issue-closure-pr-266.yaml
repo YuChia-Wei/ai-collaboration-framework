@@ -1,0 +1,86 @@
+schema_version: "1.0"
+contract_id: github-terminal-issue-closure
+repository: YuChia-Wei/ai-collaboration-framework
+validation_stage: declaration
+pull_request:
+  number: 266
+  head_sha: null
+  body: |
+    ## Summary
+
+    - replace long effective-rule packet filenames with deterministic 60-bit lowercase Base32 filesystem keys
+    - retain complete route and packet identities as semantic authority
+    - fail closed on collisions, mixed layouts, invalid path budgets, and preflight errors before destination mutation
+    - preserve legacy reads and restrict migration to explicit regeneration/finalization
+
+    ## Changes
+
+    - add the `route-base32-60-v1` storage contract and schema guidance
+    - update packet building, resolution, initialization, finalization, migration, and recovery behavior
+    - add compact-path, legacy, collision, rollback, and Windows path-budget regression coverage
+    - retain the rejected first audit and passing replacement-head evidence in the workflow record
+
+    ## Related Issues
+
+    - Issue #: #265
+    - Delivery disposition: `terminal-close`
+    - Reference: Closes #265
+    - `closure_deferred_reason` (required for deferred): not applicable
+    - Next terminal gate or owner (required for deferred): not applicable
+    - Owner authorization or approved no-Issue exception: owner authorized push, PR creation, merge, and Issue closure in the source task after accepting the completed design and implementation
+
+    ## Delivery And Integration
+
+    - Delivery grouping: single work item
+    - Execution record: workflow `2026-08-30-effective-rule-packet-base32`
+    - Selected topology: merge commit
+    - Topology reason: preserve the distinct implementation, audit-remediation, and verified-closeout commits as one traceable integration unit
+
+    ## Evidence
+
+    - 32 focused effective-rule tests passed; 2 skipped
+    - 10 semantic lifecycle tests passed
+    - 113 package-apply tests passed; 1 skipped
+    - workflow, AI-context, commit-policy, syntax, and whitespace validation passed
+    - fixed-head implementation audit and final metadata-only exact-head audit passed with zero blocking findings
+
+    ## Checklist
+
+    - [x] Selected repository-native build and test commands pass
+    - [x] Target-owned .NET commands were not applicable
+    - [x] Schemas and lifecycle documentation updated
+    - [x] No secrets committed
+    - [x] Issue #265 has exactly one terminal-close disposition
+    - [x] Local exact-head independent audit passed; the provider-bound audit receipt and hosted checks remain merge-admission gates
+
+    Generated with Codex from Issue #265, repository-native validation, and exact-head independent audit evidence.
+  integration:
+    status: pending
+    topology: null
+    admitted_head_sha: null
+    integration_commit_sha: null
+    provider_read_back: false
+  review:
+    status: pending
+  required_check_contexts: []
+  hosted_checks: []
+issues:
+  - number: 265
+    mode: terminal-close
+    work_authorization:
+      online_issue_bound: true
+      explicit_owner_approval: true
+    final_accepted_delivery: true
+    workflow:
+      scope_complete: true
+      tasks_complete: true
+      applicable_verification_complete: true
+    closing_keyword: Closes
+    closure_deferred_reason: null
+    next_terminal_gate_or_owner: null
+    read_back:
+      performed: false
+      integration_commit_sha: null
+      issue_state: null
+      issue_state_reason: null
+      project_status: null
