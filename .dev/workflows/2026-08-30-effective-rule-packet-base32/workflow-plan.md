@@ -15,11 +15,11 @@
 - `branch`: `codex/2026-08-30-effective-rule-packet-base32`
 - `base_branch`: `main@f2b5fa7c13550efaeb65ab9fcaeb0403baa2a5af`
 - `branch_segment`: `1`
-- `status`: `in_progress`
-- `current_phase`: `validation`
+- `status`: `completed`
+- `current_phase`: `completed`
 - `artifact_root`: `.dev/workflows/2026-08-30-effective-rule-packet-base32`
 - `created_at`: `2026-08-30T18:35:25+08:00`
-- `updated_at`: `2026-08-30T19:27:39+08:00`
+- `updated_at`: `2026-08-30T19:44:00+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md`
 - `template_version`: `1.2.0`
 - `work_item`: `https://github.com/YuChia-Wei/ai-collaboration-framework/issues/265`
@@ -52,7 +52,7 @@ The machine-readable authority is `acceptance-ledger.yaml`.
 | GOV016-A5 | verified | legacy reads plus explicit, rollback-safe compact regeneration without silent package apply |
 | GOV016-A6 | verified | mixed/orphan/malformed final layouts fail closed |
 | GOV016-A7 | verified | focused effective-rule, provenance, package, upgrade, workflow, and AI-context validation |
-| GOV016-A8 | pending | clean immutable commit and fresh independent exact-head audit |
+| GOV016-A8 | verified | clean immutable commit and fresh independent exact-head audit |
 
 ## Stages And Checkpoints
 
@@ -77,12 +77,12 @@ The machine-readable authority is `acceptance-ledger.yaml`.
 
 ## Resume Checkpoint
 
-- Last completed action: fixed-head audit attempt 1 was blocked by sandbox temp access; attempt 2 passed 113 package-apply tests but found that init/finalize preflight occurred after authority mutation. Governance added a pure preflight before any destination mutation, and 32 effective-rule plus 10 lifecycle tests now pass.
-- Current task: `implement-compact-packet-paths`.
-- Exact next action: run fresh local validators, commit the audit remediation, then repeat immutable-head package validation and independent audit without reusing the superseded result.
-- Validation already completed: post-remediation 32 effective-rule tests (2 skipped) and 10 semantic lifecycle tests passed. The earlier 113-test package result and audit remain evidence for superseded commit `5a885cb7`, not the new subject.
-- Git state: dedicated local branch with authorized post-audit remediation pending commit.
-- Branch history and checkpoint handoffs: implementation checkpoint `5a885cb748f8c1c96afd67e66fa85a4c4f698e39`; fixed-head audit rejected it for preflight ordering.
+- Last completed action: replacement implementation commit `3c5af01ecb2e541953eb44b18476f7403894fb6b` passed 113 package-apply tests with 1 skipped and a fresh independent exact-head audit with zero blocking findings.
+- Current task: none; local workflow is complete.
+- Exact next action: none within authorized local scope; push, pull request, merge, Issue closure, and publication remain separate owner decisions.
+- Validation already completed: post-remediation 32 effective-rule tests (2 skipped), 10 semantic lifecycle tests, repository validators, 113 package-apply tests (1 skipped), and independent exact-head audit all passed for the replacement implementation.
+- Git state: dedicated local branch with validated implementation commits and terminal workflow metadata only.
+- Branch history and checkpoint handoffs: `5a885cb748f8c1c96afd67e66fa85a4c4f698e39` was rejected for preflight ordering; `3c5af01ecb2e541953eb44b18476f7403894fb6b` contains the remediation and passed replacement-head validation.
 - Blockers or unresolved decisions: none.
 
 ## Branch Lifecycle
@@ -90,3 +90,4 @@ The machine-readable authority is `acceptance-ledger.yaml`.
 | Segment | Branch | Base | Checkpoint Type | Commit | Remote / Target | Recorded At | Reason | Resume Branch / Action |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | 1 | `codex/2026-08-30-effective-rule-packet-base32` | `main@f2b5fa7c13550efaeb65ab9fcaeb0403baa2a5af` | implementation checkpoint rejected by fixed-head audit | `5a885cb748f8c1c96afd67e66fa85a4c4f698e39` | local only | `2026-08-30T19:18:25+08:00` | audit found preflight occurred after authority mutation | commit audit remediation, then re-freeze and re-audit |
+| 1 | `codex/2026-08-30-effective-rule-packet-base32` | `main@f2b5fa7c13550efaeb65ab9fcaeb0403baa2a5af` | replacement implementation checkpoint verified | `3c5af01ecb2e541953eb44b18476f7403894fb6b` | local only | `2026-08-30T19:44:00+08:00` | package validation and independent audit passed | no local implementation action remains |

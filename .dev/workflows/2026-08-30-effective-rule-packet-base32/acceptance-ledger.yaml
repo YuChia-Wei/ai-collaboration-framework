@@ -5,7 +5,7 @@ work_items:
   - "https://github.com/YuChia-Wei/ai-collaboration-framework/issues/265"
 human_projection: ".dev/workflows/2026-08-30-effective-rule-packet-base32/workflow-plan.md#acceptance-to-evidence-human-projection"
 created_at: "2026-08-30T18:35:25+08:00"
-updated_at: "2026-08-30T19:27:39+08:00"
+updated_at: "2026-08-30T19:44:00+08:00"
 acceptances:
   - acceptance_id: "GOV016-A1"
     status: "verified"
@@ -34,8 +34,8 @@ acceptances:
   - acceptance_id: "GOV016-A7"
     status: "verified"
     required_outcome: "Focused and applicable repository validation passes without weakening target ownership."
-    evidence: ["32 focused effective-rule tests passed with 2 skipped after audit remediation", "10 semantic lifecycle tests passed after audit remediation", "113 package-apply tests passed with 1 skipped on superseded commit 5a885cb7; fresh exact-head run pending", "validate-ai-context.py passed after audit remediation", "validate-workflow-artifacts.py passed after audit remediation", "syntax and git diff checks passed after audit remediation"]
+    evidence: ["32 focused effective-rule tests passed with 2 skipped after audit remediation", "10 semantic lifecycle tests passed after audit remediation", "113 package-apply tests passed with 1 skipped on exact implementation commit 3c5af01ecb2e541953eb44b18476f7403894fb6b in 438.694 seconds", "validate-ai-context.py passed after audit remediation", "validate-workflow-artifacts.py passed after audit remediation", "syntax and git diff checks passed after audit remediation"]
   - acceptance_id: "GOV016-A8"
-    status: "pending"
+    status: "verified"
     required_outcome: "A clean immutable implementation commit receives fresh independent exact-head verification."
-    evidence: []
+    evidence: ["Exact-head independent audit passed with zero blocking findings for 3c5af01ecb2e541953eb44b18476f7403894fb6b", "ignored:.dev/ai-context/local/validation/GOV016-PACKET-003/external-task-completion.yaml"]
