@@ -84,6 +84,8 @@ customization, effective-state, or packet truth.
 7. **Finalize**: after the approved reconciliation and both audit records satisfy
    the finalization gate, publish the finalized target authorities, regenerate
    affected packets, and publish the completed target-effective state last.
+   Validate the complete compact-key namespace, collisions, and Windows path
+   budget before initialization or finalization mutates any destination.
    Validate the resulting provenance, ledger, state, and packets. In-process
    failure restores the prior authority/state bytes and leaves the candidate
    migration unresolved; crash-mixed state remains fail-closed. This explicit

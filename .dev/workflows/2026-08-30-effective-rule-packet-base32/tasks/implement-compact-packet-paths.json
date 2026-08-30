@@ -8,7 +8,7 @@
   "owner_skill": "ai-context-governance",
   "status": "in_progress",
   "created_at": "2026-08-30T18:35:25+08:00",
-  "updated_at": "2026-08-30T18:54:46+08:00",
+  "updated_at": "2026-08-30T19:27:39+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-5.6-sol",
   "reasoning_effort": "high",
@@ -22,15 +22,15 @@
   "execution": {
     "steps": ["inventory exact call graph and path contracts", "implement compact derivation and compatibility", "implement preflight and migration safety", "add focused tests and documentation", "validate and commit", "request exact-head independent audit"],
     "validation": ["focused effective-rule tests", "target provenance and package/upgrade tests", "workflow and AI-context validators", "git diff --check", "fresh exact-head audit"],
-    "last_completed_step": "Implemented route-base32-60-v1, legacy compatibility, collision and Windows path preflight, exact inventory validation, rollback-safe migration, schemas, and focused regression tests; applicable pre-commit validation passed.",
-    "next_action": "Create a policy-valid local commit, bind long-running validation to the immutable head, and request fresh independent exact-head audit."
+    "last_completed_step": "Remediated fixed-head audit finding by moving complete-set compact collision and Windows path-budget preflight before initialization or finalization mutates any destination; post-remediation focused tests pass.",
+    "next_action": "Run fresh local validators, commit the audit remediation, then bind long-running validation and a new independent audit to the replacement immutable head."
   },
   "results": {
-    "summary": "Compact deterministic packet storage is implemented while retaining full route identity, legacy reads, sole-index authority, and fail-closed migration behavior.",
+    "summary": "Compact deterministic packet storage is implemented, and audit remediation now preflights complete candidate storage before any initialization or finalization destination mutation.",
     "files_changed": [".ai/scripts/ai_context_effective_rules.py", ".ai/scripts/ai_context_target_provenance.py", ".ai/scripts/tests/test_ai_context_effective_rules.py", ".ai/assets/skills/ai-context-governance/templates/effective-rule-state.schema.yaml", ".ai/assets/skills/ai-context-governance/templates/effective-rule-packet.schema.yaml", ".ai/assets/skills/ai-context-governance/references/semantic-customization-lifecycle.md", ".ai/assets/skills/ai-context-upgrader/references/provenance-contract.md"],
-    "tests_run": ["31 effective-rule tests passed; 2 skipped", "10 semantic lifecycle tests passed", "113 package-apply tests passed; 1 skipped", "validate-ai-context.py passed", "validate-workflow-artifacts.py passed", "git diff --check passed"],
-    "finding_status": "remediated-pending-exact-head-audit",
-    "residual_risk": "The 60-bit compact namespace intentionally has a finite collision risk; complete-set collision detection fails closed. Immutable-head long-running validation and independent audit remain pending.",
+    "tests_run": ["32 post-remediation effective-rule tests passed; 2 skipped", "10 post-remediation semantic lifecycle tests passed", "post-remediation AI-context, workflow, syntax, and git diff checks passed", "superseded commit 5a885cb7: 113 package-apply tests passed; 1 skipped; fixed-head audit failed on preflight ordering"],
+    "finding_status": "audit-remediated-pending-new-exact-head-audit",
+    "residual_risk": "The 60-bit compact namespace intentionally has a finite collision risk; complete-set collision detection fails closed. Fresh validators, replacement immutable commit, long-running validation, and independent audit remain pending.",
     "follow_up_needed": true
   }
 }

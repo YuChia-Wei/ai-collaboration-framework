@@ -1533,6 +1533,77 @@ def build_packet_candidate(
     return _build_packet_from_inputs(state, catalogs, dispositions, route, resolver_evidence)
 
 
+def preflight_effective_packet_storage(
+    root: Path,
+    state_candidate: dict[str, Any],
+) -> set[str]:
+    """Validate the complete storage namespace and path budget without writes."""
+    if not isinstance(state_candidate, dict):
+        raise EffectiveRuleError("effective-state candidate must be a mapping")
+    allowed = {
+        "schema_version",
+        "framework",
+        "rule_dispositions",
+        "routing",
+        "generated_at",
+    }
+    unknown = set(state_candidate) - allowed
+    if unknown:
+        raise EffectiveRuleError(
+            f"effective-state candidate has unsupported fields: {sorted(unknown)}"
+        )
+    if state_candidate.get("schema_version") != "1.0":
+        raise EffectiveRuleError("effective-state candidate has unsupported schema_version")
+    framework = state_candidate.get("framework")
+    if not isinstance(framework, dict) or set(framework) != {
+        "version",
+        "commit",
+        "selected_technology_profile",
+    }:
+        raise EffectiveRuleError(
+            "effective-state candidate framework must be complete and explicit"
+        )
+    profile = framework.get("selected_technology_profile")
+    if not is_profile_slug(profile):
+        raise EffectiveRuleError("effective-state candidate framework identity is invalid")
+    raw_routes = state_candidate.get("routing")
+    if not isinstance(raw_routes, list) or not raw_routes:
+        raise EffectiveRuleError("effective-state candidate requires explicit routing")
+    route_ids: list[str] = []
+    seen_selectors: set[bytes] = set()
+    for index, raw in enumerate(raw_routes):
+        label = f"effective-state candidate routing[{index}]"
+        if not isinstance(raw, dict) or not {
+            "selector",
+            "required_rule_ids",
+            "reported_not_applicable_rule_ids",
+        }.issubset(raw):
+            raise EffectiveRuleError(
+                f"{label} must declare selector, required_rule_ids, and reported_not_applicable_rule_ids"
+            )
+        if set(raw) - {
+            "route_id",
+            "selector",
+            "required_rule_ids",
+            "reported_not_applicable_rule_ids",
+        }:
+            raise EffectiveRuleError(f"{label} contains generated or unsupported fields")
+        selector = _validate_selector(raw["selector"], profile, label)
+        selector_key = _selector_key(selector)
+        if selector_key in seen_selectors:
+            raise EffectiveRuleError(f"{label} duplicates an exact selector tuple")
+        seen_selectors.add(selector_key)
+        route_id = route_id_for_selector(selector)
+        supplied_route_id = raw.get("route_id")
+        if supplied_route_id is not None and supplied_route_id != route_id:
+            raise EffectiveRuleError(f"{label}.route_id does not match its selector digest")
+        route_ids.append(route_id)
+    _assert_unique_compact_packet_paths(route_ids)
+    packet_paths = {compact_packet_path_for_route(route_id) for route_id in route_ids}
+    _preflight_packet_path_budget(root.resolve(), packet_paths)
+    return packet_paths
+
+
 def build_effective_state_and_packets(
     root: Path,
     state_candidate: dict[str, Any],
@@ -1546,6 +1617,7 @@ def build_effective_state_and_packets(
     disposition, route, applicability predicate, or baseline acceptance.
     """
     root = root.resolve()
+    preflight_effective_packet_storage(root, state_candidate)
     provenance, ledger, provenance_path, ledger_path = _validated_target_authorities(root)
     if not isinstance(state_candidate, dict):
         raise EffectiveRuleError("effective-state candidate must be a mapping")

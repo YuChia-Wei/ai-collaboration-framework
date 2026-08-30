@@ -5,7 +5,7 @@ work_items:
   - "https://github.com/YuChia-Wei/ai-collaboration-framework/issues/265"
 human_projection: ".dev/workflows/2026-08-30-effective-rule-packet-base32/workflow-plan.md#acceptance-to-evidence-human-projection"
 created_at: "2026-08-30T18:35:25+08:00"
-updated_at: "2026-08-30T18:54:46+08:00"
+updated_at: "2026-08-30T19:27:39+08:00"
 acceptances:
   - acceptance_id: "GOV016-A1"
     status: "verified"
@@ -18,11 +18,11 @@ acceptances:
   - acceptance_id: "GOV016-A3"
     status: "verified"
     required_outcome: "Complete-set compact-key and case-fold collisions plus declared-path mismatches fail before writes."
-    evidence: [".ai/scripts/ai_context_effective_rules.py::_assert_unique_compact_packet_paths", ".ai/scripts/tests/test_ai_context_effective_rules.py::test_gwt_008g"]
+    evidence: [".ai/scripts/ai_context_effective_rules.py::preflight_effective_packet_storage", ".ai/scripts/tests/test_ai_context_effective_rules.py::test_gwt_008g", ".ai/scripts/tests/test_ai_context_effective_rules.py::test_gwt_008h"]
   - acceptance_id: "GOV016-A4"
     status: "verified"
     required_outcome: "Unsafe legacy path budgets fail before mutation with privacy-safe length evidence."
-    evidence: [".ai/scripts/ai_context_effective_rules.py::_preflight_packet_path_budget", ".ai/scripts/tests/test_ai_context_effective_rules.py::test_gwt_008g"]
+    evidence: [".ai/scripts/ai_context_effective_rules.py::_preflight_packet_path_budget", ".ai/scripts/ai_context_target_provenance.py::initialize_context", ".ai/scripts/ai_context_target_provenance.py::finalize_context", ".ai/scripts/tests/test_ai_context_effective_rules.py::test_gwt_008h"]
   - acceptance_id: "GOV016-A5"
     status: "verified"
     required_outcome: "Legacy layouts remain readable and compact migration occurs only through authorized state regeneration with rollback."
@@ -34,7 +34,7 @@ acceptances:
   - acceptance_id: "GOV016-A7"
     status: "verified"
     required_outcome: "Focused and applicable repository validation passes without weakening target ownership."
-    evidence: ["31 focused effective-rule tests passed with 2 skipped", "10 semantic lifecycle tests passed", "113 package-apply tests passed with 1 skipped", "validate-ai-context.py passed", "validate-workflow-artifacts.py passed", "git diff --check passed"]
+    evidence: ["32 focused effective-rule tests passed with 2 skipped after audit remediation", "10 semantic lifecycle tests passed after audit remediation", "113 package-apply tests passed with 1 skipped on superseded commit 5a885cb7; fresh exact-head run pending", "validate-ai-context.py passed after audit remediation", "validate-workflow-artifacts.py passed after audit remediation", "syntax and git diff checks passed after audit remediation"]
   - acceptance_id: "GOV016-A8"
     status: "pending"
     required_outcome: "A clean immutable implementation commit receives fresh independent exact-head verification."

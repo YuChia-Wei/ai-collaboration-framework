@@ -19,7 +19,7 @@
 - `current_phase`: `validation`
 - `artifact_root`: `.dev/workflows/2026-08-30-effective-rule-packet-base32`
 - `created_at`: `2026-08-30T18:35:25+08:00`
-- `updated_at`: `2026-08-30T18:54:46+08:00`
+- `updated_at`: `2026-08-30T19:27:39+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md`
 - `template_version`: `1.2.0`
 - `work_item`: `https://github.com/YuChia-Wei/ai-collaboration-framework/issues/265`
@@ -77,16 +77,16 @@ The machine-readable authority is `acceptance-ledger.yaml`.
 
 ## Resume Checkpoint
 
-- Last completed action: implementation, focused tests, lifecycle tests, package-apply tests, and repository validators passed; the long package-apply run remains exploratory until rebound to an immutable commit.
+- Last completed action: fixed-head audit attempt 1 was blocked by sandbox temp access; attempt 2 passed 113 package-apply tests but found that init/finalize preflight occurred after authority mutation. Governance added a pure preflight before any destination mutation, and 32 effective-rule plus 10 lifecycle tests now pass.
 - Current task: `implement-compact-packet-paths`.
-- Exact next action: complete pre-commit review, create a policy-valid local commit, then run immutable-head validation and independent audit.
-- Validation already completed: 31 effective-rule tests (2 skipped), 10 semantic lifecycle tests, 113 package-apply tests (1 skipped), AI-context validation, workflow validation, and `git diff --check` passed.
-- Git state: dedicated local branch with implementation, tests, schemas, and workflow evidence pending commit.
-- Branch history and checkpoint handoffs: none.
+- Exact next action: run fresh local validators, commit the audit remediation, then repeat immutable-head package validation and independent audit without reusing the superseded result.
+- Validation already completed: post-remediation 32 effective-rule tests (2 skipped) and 10 semantic lifecycle tests passed. The earlier 113-test package result and audit remain evidence for superseded commit `5a885cb7`, not the new subject.
+- Git state: dedicated local branch with authorized post-audit remediation pending commit.
+- Branch history and checkpoint handoffs: implementation checkpoint `5a885cb748f8c1c96afd67e66fa85a4c4f698e39`; fixed-head audit rejected it for preflight ordering.
 - Blockers or unresolved decisions: none.
 
 ## Branch Lifecycle
 
 | Segment | Branch | Base | Checkpoint Type | Commit | Remote / Target | Recorded At | Reason | Resume Branch / Action |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| 1 | `codex/2026-08-30-effective-rule-packet-base32` | `main@f2b5fa7c13550efaeb65ab9fcaeb0403baa2a5af` | local branch | pending | local only | `2026-08-30T18:35:25+08:00` | owner-authorized Issue #265 implementation | remain on current branch |
+| 1 | `codex/2026-08-30-effective-rule-packet-base32` | `main@f2b5fa7c13550efaeb65ab9fcaeb0403baa2a5af` | implementation checkpoint rejected by fixed-head audit | `5a885cb748f8c1c96afd67e66fa85a4c4f698e39` | local only | `2026-08-30T19:18:25+08:00` | audit found preflight occurred after authority mutation | commit audit remediation, then re-freeze and re-audit |

@@ -97,7 +97,7 @@ filesystem_safety:
     ancestors: "every existing ancestor must be a regular non-symlink directory"
     traversal: "resolve only fixed repository-relative paths and the effective state's strict single-segment technology-profile slug matching ^[a-z0-9]+(?:[._-][a-z0-9]+)*$; never accept Windows trailing-dot/segment ambiguity or follow a symlink or traversal segment"
     inventory: "the regular files directly under the packet root must exactly equal the paths declared by effective-rules.yaml; missing, orphan, nested, directory, or symlink entries fail closed"
-    windows_path_budget: "before publication on Windows, every compact packet destination must fit the 259-character legacy absolute-path budget; diagnostics disclose lengths and remaining root budget, not the target path"
+    windows_path_budget: "before initialization or finalization mutates any destination on Windows, the complete candidate packet set must fit the 259-character legacy absolute-path budget; diagnostics disclose lengths and remaining root budget, not the target path"
 fail_closed:
   conditions:
     - "missing packet, route, catalog, evidence, or required full normative statement"

@@ -1159,6 +1159,55 @@ class EffectiveRuleResolverTests(unittest.TestCase):
             )
         self.assertNotIn(str(root), str(error.exception))
 
+    def test_gwt_008h_given_initialization_or_finalization_storage_preflight_failure_when_called_then_authority_destinations_are_untouched(self) -> None:
+        with tempfile.TemporaryDirectory(prefix="effective-preflight-init-") as value:
+            root = Path(value)
+            with mock.patch.object(
+                TARGET,
+                "preflight_effective_packet_storage",
+                side_effect=RULES.EffectiveRuleError("storage preflight failed"),
+            ):
+                with self.assertRaisesRegex(
+                    RULES.EffectiveRuleError, "storage preflight failed"
+                ):
+                    TARGET.initialize_context(
+                        root,
+                        SOURCE,
+                        SELECTION,
+                        "2026-08-30T19:20:00+08:00",
+                        effective_state_candidate={},
+                        effective_resolver_evidence=[EVIDENCE],
+                    )
+            self.assertFalse((root / ".dev").exists())
+
+        fixture = EffectiveRuleFixture()
+        try:
+            provenance_before = fixture.provenance_path.read_bytes()
+            ledger_before = fixture.ledger_path.read_bytes()
+            provenance = TARGET.load_mapping(fixture.provenance_path, [])
+            ledger = TARGET.load_mapping(fixture.ledger_path, [])
+            assert provenance is not None and ledger is not None
+            with mock.patch.object(
+                TARGET,
+                "preflight_effective_packet_storage",
+                side_effect=RULES.EffectiveRuleError("storage preflight failed"),
+            ):
+                with self.assertRaisesRegex(
+                    RULES.EffectiveRuleError, "storage preflight failed"
+                ):
+                    TARGET.finalize_context(
+                        fixture.root,
+                        provenance,
+                        ledger,
+                        effective_state_candidate={},
+                        effective_resolver_evidence=[EVIDENCE],
+                    )
+            self.assertEqual(provenance_before, fixture.provenance_path.read_bytes())
+            self.assertEqual(ledger_before, fixture.ledger_path.read_bytes())
+            self.assertFalse((fixture.root / RULES.EFFECTIVE_STATE_PATH).exists())
+        finally:
+            fixture.close()
+
     def test_gwt_008b_given_finalized_same_rule_delta_when_resolved_then_packet_is_self_contained_and_binds_catalog_baseline(self) -> None:
         fixture = EffectiveRuleFixture()
         try:
