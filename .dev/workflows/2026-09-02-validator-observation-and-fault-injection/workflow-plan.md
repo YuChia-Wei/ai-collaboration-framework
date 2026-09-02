@@ -18,7 +18,7 @@
 - `branch_segment`: `1`
 - `status`: `completed`
 - `created_at`: `2026-09-02T22:43:57+08:00`
-- `updated_at`: `2026-09-03T00:08:37+08:00`
+- `updated_at`: `2026-09-03T07:15:55+08:00`
 - `template_source`: `.ai/assets/skills/software-development-orchestrator/templates/development-workflow-plan-template.md`
 - `template_version`: `1.4.0`
 - `workflow_locator`: `.dev/workflows/2026-09-02-validator-observation-and-fault-injection/workflow.yaml`
@@ -27,14 +27,15 @@
 ## Development Objective
 
 - Product or software outcome: Deliver Issues [#268](https://github.com/YuChia-Wei/ai-collaboration-framework/issues/268) and [#267](https://github.com/YuChia-Wei/ai-collaboration-framework/issues/267) as one v0.16.0 safety-precondition delivery while preserving their independent acceptance outcomes.
-- Current lifecycle entry point: Owner-authorized implementation from a clean worktree at the verified `main` head.
-- User constraints: Complete #268 first, then use #267 to falsify the validation chain; create local durable commits only.
-- Non-goals: #270 production manifest/rebind implementation, reuse pilot enablement, push, pull request, merge, release/publication, Issue closure, or terminal Project mutation.
+- Current lifecycle entry point: Completed implementation delivered to GitHub PR [#281](https://github.com/YuChia-Wei/ai-collaboration-framework/pull/281) for owner review.
+- User constraints: Complete #268 first, then use #267 to falsify the validation chain; the owner subsequently authorized branch push and PR creation on 2026-09-03.
+- Non-goals: #270 production manifest/rebind implementation, reuse pilot enablement, merge, release/publication, Issue closure, or terminal Project mutation.
 
 ## Authority And Preflight
 
 - Live GitHub read-back on 2026-09-02 found #267 and #268 open, Project status `Inbox`, and target release `v0.16.0`; their Issue bodies are the acceptance authority.
 - Live `origin/main` and the new worktree both resolved to `c7f348694421048245da824dd79742372179f730`; the worktree was clean before branch creation.
+- On 2026-09-03, live remote read-back still resolved `origin/main` to `c7f348694421048245da824dd79742372179f730`; the owner then explicitly authorized push and PR creation, and PR #281 was opened from the clean workflow branch.
 - The owner authorization is the source-task delegation from thread `01a05526-95b8-7723-b23f-50bba311ce06`, which expressly authorizes branch/workflow creation, accepted-scope repository mutation, validation, and local commits.
 - Issue #270 owner decision [comment 5478024060](https://github.com/YuChia-Wei/ai-collaboration-framework/issues/270#issuecomment-5478024060) and read-only design checkpoint `3df455bd0ae6502b863990fd6aa104239d6f86ed` establish dependency-first sequencing and the no-pilot boundary. The commit is not cherry-picked.
 - Effective-rule attempt 1 used an unsupported `source` technology profile and failed with `source-rule-selection`; after correcting the request to the repository's exact `dotnet-backend` source catalog route, the framework-source packet resolved with `loaded_rule_ids=[AICTX-EVIDENCE-001]` and packet digest `7d3cdae66882a5669daf7813f17353292137abcc77b126a8ca329ac1a8d328da`.
@@ -90,6 +91,8 @@ One workflow and branch are used because #267 and #268 share the same safety out
 | Transition | Status | Authorization Source | Pending Decision |
 | --- | --- | --- | --- |
 | requirement/design/specification -> implementation | `approved` | 2026-09-02 source-task owner delegation | none within #267/#268 accepted scope |
+| completed local delivery -> branch push and PR creation | `approved` | 2026-09-03 owner message: "是否可以發 PR 並結束作業?" | none; PR #281 opened with deferred Issue dispositions |
+| PR #281 -> merge, Issue closure, or Project terminal mutation | `awaiting-approval` | explicitly not inferred from push/PR authorization | owner review, fresh exact-head audit, hosted checks, and separate merge/closure authorization |
 | #267/#268 completion -> #270 production implementation or pilot | `awaiting-approval` | explicit user exclusion and #270 owner comment | separate future authorization required |
 
 ## Validation Strategy
@@ -147,14 +150,14 @@ One workflow and branch are used because #267 and #268 share the same safety out
 
 ## Progress And Handoff
 
-- Current stage: completed; no active task remains.
+- Current stage: completed and handed off through open PR #281; no active implementation task remains.
 - Completed stages: provider/baseline/policy preflight, workflow bootstrap, VAL012 bounded dependency observation at `d8105e3dc038880d70803383a8928fc017a9f2f1`, and VAL011 incident-derived fault injection at `f7e1d7537226ff773dbb57508f98d3527fd88d3f`.
 - Deferred stages and reasons: #270 production and pilot are outside authorization.
-- Open decisions: none within the accepted #267/#268 scope.
+- Open decisions: PR review/merge and terminal Issue/Project disposition remain owner-controlled; #270 remains separately unauthorized.
 - Continuation instructions: any #270 subject manifest, rebind validator, one-pilot observation, or reuse enablement requires a separate owner-authorized workflow; retain both closed ledgers as independent evidence.
 - Target policy references: workflow gate, workflow artifact, handoff, Git commit, and branch policies named in the locator.
 - Registered handoff checkpoint: none; this task remains in the same session/runtime.
-- Branch history and checkpoint handoffs: branch created directly from verified `main@c7f348694421048245da824dd79742372179f730`; no push or merge authorized.
+- Branch history and checkpoint handoffs: branch created directly from verified `main@c7f348694421048245da824dd79742372179f730`, pushed after explicit authorization, and handed off in PR #281; merge is not authorized.
 
 ## Branch Lifecycle
 
@@ -163,18 +166,19 @@ One workflow and branch are used because #267 and #268 share the same safety out
 | 1 | `codex/2026-09-02-validator-observation-and-fault-injection` | `main@c7f348694421048245da824dd79742372179f730` | local workflow bootstrap | `d66eec5915584a7e6df48ac6ab61a7261f1f134c` | local only | `2026-09-02T22:43:57+08:00` | cohesive #267/#268 delivery | continue VAL012 locally |
 | 1 | `codex/2026-09-02-validator-observation-and-fault-injection` | `d66eec5915584a7e6df48ac6ab61a7261f1f134c` | local validated stage | `d8105e3dc038880d70803383a8928fc017a9f2f1` | local only | `2026-09-02T23:21:04+08:00` | VAL012 acceptance passed independently | continue VAL011 locally |
 | 1 | `codex/2026-09-02-validator-observation-and-fault-injection` | `d8105e3dc038880d70803383a8928fc017a9f2f1` | local validated stage | `f7e1d7537226ff773dbb57508f98d3527fd88d3f` | local only | `2026-09-03T00:08:37+08:00` | VAL011 acceptance passed independently after exact-head falsification checks | close the local workflow; no remote action |
+| 1 | `codex/2026-09-02-validator-observation-and-fault-injection` | `main@c7f348694421048245da824dd79742372179f730` | provider PR bootstrap | `995e90af44cde8f35709d9e6964372b670c50854` | PR #281 | `2026-09-03T07:15:55+08:00` | owner authorized push and PR creation after local completion | commit the PR-bound deferred declaration, push the new head, and leave merge/closure to the owner |
 
 ## Completion Summary
 
-- Outcome: completed locally; VAL012 and VAL011 each passed all six independently recorded acceptance outcomes.
+- Outcome: completed locally and delivered for review in PR #281; VAL012 and VAL011 each passed all six independently recorded acceptance outcomes.
 - Changed artifacts: workflow records; the bounded observation contract/schema/CLI/fixtures; and the digest-bound incident mutant corpus, normalized result schema, deterministic adapters, tests, and release/nightly registration.
 - Approved requirement/specification evidence: live Issues #267/#268, owner instruction, #270 owner decision and read-only design checkpoint.
 - Implementation completion evidence: VAL012 is complete at `d8105e3dc038880d70803383a8928fc017a9f2f1`; VAL011 is complete at `f7e1d7537226ff773dbb57508f98d3527fd88d3f` with normalized report digest `b8ac291525e8cebe1eb7b6ec982266bdcbb1ac2d36b91b0f2c15fd48ad87232f`.
 - Required test outcomes: VAL012 9/9 focused tests passed; VAL011 18/18 exact-head tests passed with 5/5 critical mutants detected and the critical-survivor negative control passing.
 - Selected compliance evidence: not applicable.
-- Review disposition: parent self-review completed against both ledgers; no independent fixed-head audit is claimed.
+- Review disposition: parent self-review completed against both ledgers; the fresh exact-head independent audit and hosted merge-admission gates remain pending and are not claimed.
 - Validation evidence: focused and affected integration gates passed; exact-head VAL011 observation is explicitly partial/lower-bound-only; the initial undeclared-runtime observation, initial UPG detector mismatch, and wrong-Bash closure invocation remain preserved as failures in the task.
 - Workflow task state: VAL012 completed; VAL011 completed.
-- Commits: `d66eec5915584a7e6df48ac6ab61a7261f1f134c`, `d8105e3dc038880d70803383a8928fc017a9f2f1`, `fade069607baf22655d0b084477edf66bc555e38`, `f7e1d7537226ff773dbb57508f98d3527fd88d3f`.
-- Branch / checkpoint / handoff evidence: local branch only; no remote transport.
+- Commits before the PR-bound declaration: `d66eec5915584a7e6df48ac6ab61a7261f1f134c`, `d8105e3dc038880d70803383a8928fc017a9f2f1`, `fade069607baf22655d0b084477edf66bc555e38`, `f7e1d7537226ff773dbb57508f98d3527fd88d3f`, `995e90af44cde8f35709d9e6964372b670c50854`.
+- Branch / checkpoint / handoff evidence: pushed branch and open PR #281; `.dev/workflows/2026-09-02-validator-observation-and-fault-injection/evidence/terminal-issue-closure-pr-281.yaml` binds both Issues as deferred, so no merge or Issue closure is implied.
 - Residual risks: runtime observation remains a lower bound, the exploratory unknown-field mutant remains an explicit follow-up candidate, and all #270 reuse/pilot work remains separately unauthorized.

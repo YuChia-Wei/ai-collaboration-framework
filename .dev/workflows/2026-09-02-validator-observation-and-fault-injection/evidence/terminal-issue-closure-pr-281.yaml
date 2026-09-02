@@ -1,0 +1,112 @@
+schema_version: "1.0"
+contract_id: github-terminal-issue-closure
+repository: YuChia-Wei/ai-collaboration-framework
+validation_stage: declaration
+pull_request:
+  number: 281
+  head_sha: null
+  body: |
+    ## Summary
+
+    - add bounded lower-bound observation for validator file, subprocess, Git, environment, and runtime dependencies
+    - add an incident-derived deterministic fault-injection corpus covering CTX-010, REL-016, UPG-005, identity substitution, and evidence omission
+    - fail on any critical survivor while retaining exploratory survivors as explicit follow-up candidates
+    - preserve separate VAL-012 and VAL-011 acceptance ledgers without enabling subject-digest reuse or a pilot
+
+    ## Changes
+
+    - add the observation contract, schema, CLI, representative fixtures, and focused tests
+    - add a digest-bound six-mutant manifest, normalized result contract, and adapters over existing validators
+    - register the new gates in source entrypoints, shell assets, and release/nightly validation profiles
+    - retain truthful failed-attempt evidence and complete the cohesive workflow locally
+
+    ## Related Issues
+
+    - Issue #: #267
+    - Delivery disposition: `deferred`
+    - Reference: Refs #267
+    - `closure_deferred_reason` (required for deferred): This PR is the review handoff; the current authorization excludes merge and terminal Issue closure.
+    - Next terminal gate or owner (required for deferred): The repository owner decides merge and terminal closure after hosted checks and a fresh exact-head independent audit.
+    - Owner authorization or approved no-Issue exception: The owner authorized implementation on 2026-09-02 and explicitly authorized branch push and PR creation on 2026-09-03.
+
+    - Issue #: #268
+    - Delivery disposition: `deferred`
+    - Reference: Refs #268
+    - `closure_deferred_reason` (required for deferred): This PR is the review handoff; the current authorization excludes merge and terminal Issue closure.
+    - Next terminal gate or owner (required for deferred): The repository owner decides merge and terminal closure after hosted checks and a fresh exact-head independent audit.
+    - Owner authorization or approved no-Issue exception: The owner authorized implementation on 2026-09-02 and explicitly authorized branch push and PR creation on 2026-09-03.
+
+    ## Delivery And Integration
+
+    - Delivery grouping: cohesive multi-Issue delivery
+    - Execution record: workflow `2026-09-02-validator-observation-and-fault-injection`
+    - Selected topology: merge commit
+    - Topology reason: preserve the dependency-first VAL-012 and VAL-011 implementation, their separate acceptance closeouts, and the provider-bound declaration as one review and rollback unit
+
+    ## Evidence
+
+    - VAL-012: 9 of 9 focused tests passed; every acceptance outcome is independently recorded
+    - VAL-011: 18 of 18 behavior and fault-injection tests passed; 5 of 5 critical mutants were detected and one exploratory survivor remains follow-up-required
+    - validation registry: 10 of 10 tests passed; source entrypoints: 3 of 3 tests passed
+    - workflow artifacts, AI context, source governance, commit-range policy, shell assets, and whitespace validation passed
+    - exact implementation evidence is bound to commit `f7e1d7537226ff773dbb57508f98d3527fd88d3f`; the later workflow-only commit does not alter its declared candidate inputs
+
+    ## Checklist
+
+    - [x] Selected repository-native build and test commands pass
+    - [x] Target-owned .NET commands are not applicable to this framework-source Python/YAML change
+    - [x] Contracts, schemas, evaluation documentation, and workflow evidence are updated
+    - [x] No secrets committed; optional runtime evidence stays under ignored validation paths
+    - [x] Every named Issue has exactly one deferred delivery disposition
+    - [ ] The repository's exact-head single-maintainer audit receipt and hosted merge-admission gates remain pending for the owner
+
+    Generated with Codex from Issues #267 and #268, repository-native validation, and the completed workflow evidence.
+  integration:
+    status: pending
+    topology: null
+    admitted_head_sha: null
+    integration_commit_sha: null
+    provider_read_back: false
+  review:
+    status: pending
+  required_check_contexts: []
+  hosted_checks: []
+issues:
+  - number: 267
+    mode: deferred
+    work_authorization:
+      online_issue_bound: true
+      explicit_owner_approval: true
+    final_accepted_delivery: false
+    workflow:
+      scope_complete: true
+      tasks_complete: true
+      applicable_verification_complete: true
+    closing_keyword: null
+    closure_deferred_reason: "PR review handoff only; merge and terminal Issue closure are not authorized."
+    next_terminal_gate_or_owner: "Repository owner after hosted checks and a fresh exact-head independent audit."
+    read_back:
+      performed: false
+      integration_commit_sha: null
+      issue_state: null
+      issue_state_reason: null
+      project_status: null
+  - number: 268
+    mode: deferred
+    work_authorization:
+      online_issue_bound: true
+      explicit_owner_approval: true
+    final_accepted_delivery: false
+    workflow:
+      scope_complete: true
+      tasks_complete: true
+      applicable_verification_complete: true
+    closing_keyword: null
+    closure_deferred_reason: "PR review handoff only; merge and terminal Issue closure are not authorized."
+    next_terminal_gate_or_owner: "Repository owner after hosted checks and a fresh exact-head independent audit."
+    read_back:
+      performed: false
+      integration_commit_sha: null
+      issue_state: null
+      issue_state_reason: null
+      project_status: null

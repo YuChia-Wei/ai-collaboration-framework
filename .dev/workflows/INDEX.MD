@@ -8,7 +8,7 @@ task-level progress.
 
 | Workflow | Title | Owner | Status | Updated | Entry Point |
 | --- | --- | --- | --- | --- | --- |
-| [`2026-09-02-validator-observation-and-fault-injection`](2026-09-02-validator-observation-and-fault-injection/workflow.yaml) | Deliver bounded dependency observation and incident-derived fault injection | `software-development-orchestrator` | `completed` | `2026-09-03T00:08:37+08:00` | [plan](2026-09-02-validator-observation-and-fault-injection/workflow-plan.md) |
+| [`2026-09-02-validator-observation-and-fault-injection`](2026-09-02-validator-observation-and-fault-injection/workflow.yaml) | Deliver bounded dependency observation and incident-derived fault injection | `software-development-orchestrator` | `completed` | `2026-09-03T07:15:55+08:00` | [plan](2026-09-02-validator-observation-and-fault-injection/workflow-plan.md) |
 | [`2026-08-30-effective-rule-packet-base32`](2026-08-30-effective-rule-packet-base32/workflow.yaml) | Compact effective-rule packet filenames with deterministic Base32 keys | `ai-context-governance` | `completed` | `2026-08-30T19:58:16+08:00` | [plan](2026-08-30-effective-rule-packet-base32/workflow-plan.md) |
 | [`2026-08-29-v0151-release-publication`](2026-08-29-v0151-release-publication/workflow.yaml) | Prepare v0.15.1 release publication | `ai-context-governance` | `in_progress` | `2026-08-29T13:00:18+08:00` | [plan](2026-08-29-v0151-release-publication/workflow-plan.md) |
 | [`2026-08-29-v0151-validation-contract-fixes`](2026-08-29-v0151-validation-contract-fixes/workflow.yaml) | Restore v0.15.1 validation fingerprint and registry contracts | `ai-context-governance` | `in_progress` | `2026-08-29T12:05:34+08:00` | [plan](2026-08-29-v0151-validation-contract-fixes/workflow-plan.md) |
