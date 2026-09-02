@@ -16,9 +16,9 @@
 - `base_branch`: `main`
 - `base_commit`: `c7f348694421048245da824dd79742372179f730`
 - `branch_segment`: `1`
-- `status`: `active`
+- `status`: `completed`
 - `created_at`: `2026-09-02T22:43:57+08:00`
-- `updated_at`: `2026-09-02T23:21:04+08:00`
+- `updated_at`: `2026-09-03T00:08:37+08:00`
 - `template_source`: `.ai/assets/skills/software-development-orchestrator/templates/development-workflow-plan-template.md`
 - `template_version`: `1.4.0`
 - `workflow_locator`: `.dev/workflows/2026-09-02-validator-observation-and-fault-injection/workflow.yaml`
@@ -83,7 +83,7 @@ One workflow and branch are used because #267 and #268 share the same safety out
 | Stage | Role / Canonical Path | Owning Skill | Final/Current Disposition | Attempt Summary | Final Integration Owner / Decision | Record or Task Reference |
 | --- | --- | --- | --- | --- | --- | --- |
 | VAL012-implementation | all slice role bindings | slice-implementer | `not-applicable` | Generic Python validation-tooling slice; no domain/use-case role applies. | primary Codex / accepted after 9 focused and 10 registry tests passed | `tasks/VAL012-implementation.json` |
-| VAL011-implementation | mutation-testing-sub-agent / `.ai/assets/sub-agent-role-prompts/mutation-testing-sub-agent/sub-agent.yaml` | slice-implementer | `in-progress` | Owner-authorized mutation-test implementation; direct inline execution is selected because no child delegation was requested. | primary Codex / pending | `tasks/VAL011-implementation.json` |
+| VAL011-implementation | mutation-testing-sub-agent / `.ai/assets/sub-agent-role-prompts/mutation-testing-sub-agent/sub-agent.yaml` | slice-implementer | `completed-direct` | The parent loaded the complete role and mandatory references, produced the bounded six-mutant corpus, and retained no fabricated child invocation evidence. | primary Codex / accepted after 5/5 critical detection, the negative survivor proof, and exact-head observation | `tasks/VAL011-implementation.json` |
 
 ## Approval Gates
 
@@ -111,8 +111,8 @@ One workflow and branch are used because #267 and #268 share the same safety out
 
 | Level | Outcome | Evidence | Deferral Owner / Follow-up |
 | --- | --- | --- | --- |
-| unit | `passed-for-VAL012` | 9 of 9 bounded dependency observation tests passed at `d8105e3dc038880d70803383a8928fc017a9f2f1`; VAL011 remains pending | none |
-| integration | `passed-for-VAL012` | 10 of 10 registry tests, 3 of 3 source-entrypoint tests, shell-asset validation, and clean exact-head status passed; VAL011 remains pending | none |
+| unit | `passed` | VAL012 passed 9 of 9 bounded observation tests; VAL011 passed 18 of 18 exact-head behavior/fault-injection tests including the disabled-critical-detector failure proof | none |
+| integration | `passed` | Registry 10 of 10, source entrypoints 3 of 3, shell assets, deterministic corpus, exact-head fault injection, exact-head bounded observation, and tracked-status checks passed | full release/nightly profile execution remains outside this focused local workflow |
 
 ## Spec Compliance Selection
 
@@ -138,20 +138,20 @@ One workflow and branch are used because #267 and #268 share the same safety out
 
 | Acceptance ID | Outcome | Evidence digest |
 | --- | --- | --- |
-| VAL011-A1 | pending | pending |
-| VAL011-A2 | pending | pending |
-| VAL011-A3 | pending | pending |
-| VAL011-A4 | pending | pending |
-| VAL011-A5 | pending | pending |
-| VAL011-A6 | pending | pending |
+| VAL011-A1 | passed | `ed35a8ee571c33f267ef7047555b586d8667d21d444ffd3475e90705a3f494be` |
+| VAL011-A2 | passed | `54dd26b3afdf847aebeb085f1bd79692c838356ae8c81428f67f06baa058bda0` |
+| VAL011-A3 | passed | `ce505ea9a6584041409d0e74f393f18bd22ef88d3e777ba986770a176090a8ef` |
+| VAL011-A4 | passed | `10f150459846f47adf3cbf71e604c25a1bd096dd1730c425b104b0ff4f094d6c` |
+| VAL011-A5 | passed | `55cc201d77081d19db14613a64133a5c40ada7d6b0928cd3e6ebc21466728023` |
+| VAL011-A6 | passed | `8f39fddedc476795f2847b4faefa34c410db7abfb3130d8c6847396a57ea88d8` |
 
 ## Progress And Handoff
 
-- Current stage: VAL011-implementation.
-- Completed stages: provider/baseline/policy preflight, workflow bootstrap, and VAL012 bounded dependency observation at local commit `d8105e3dc038880d70803383a8928fc017a9f2f1`.
+- Current stage: completed; no active task remains.
+- Completed stages: provider/baseline/policy preflight, workflow bootstrap, VAL012 bounded dependency observation at `d8105e3dc038880d70803383a8928fc017a9f2f1`, and VAL011 incident-derived fault injection at `f7e1d7537226ff773dbb57508f98d3527fd88d3f`.
 - Deferred stages and reasons: #270 production and pilot are outside authorization.
 - Open decisions: none within the accepted #267/#268 scope.
-- Continuation instructions: load and follow the canonical mutation-testing role, complete VAL011 against the closed VAL012 ledger, retain separate ledgers, and do not enable reuse.
+- Continuation instructions: any #270 subject manifest, rebind validator, one-pilot observation, or reuse enablement requires a separate owner-authorized workflow; retain both closed ledgers as independent evidence.
 - Target policy references: workflow gate, workflow artifact, handoff, Git commit, and branch policies named in the locator.
 - Registered handoff checkpoint: none; this task remains in the same session/runtime.
 - Branch history and checkpoint handoffs: branch created directly from verified `main@c7f348694421048245da824dd79742372179f730`; no push or merge authorized.
@@ -162,18 +162,19 @@ One workflow and branch are used because #267 and #268 share the same safety out
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | 1 | `codex/2026-09-02-validator-observation-and-fault-injection` | `main@c7f348694421048245da824dd79742372179f730` | local workflow bootstrap | `d66eec5915584a7e6df48ac6ab61a7261f1f134c` | local only | `2026-09-02T22:43:57+08:00` | cohesive #267/#268 delivery | continue VAL012 locally |
 | 1 | `codex/2026-09-02-validator-observation-and-fault-injection` | `d66eec5915584a7e6df48ac6ab61a7261f1f134c` | local validated stage | `d8105e3dc038880d70803383a8928fc017a9f2f1` | local only | `2026-09-02T23:21:04+08:00` | VAL012 acceptance passed independently | continue VAL011 locally |
+| 1 | `codex/2026-09-02-validator-observation-and-fault-injection` | `d8105e3dc038880d70803383a8928fc017a9f2f1` | local validated stage | `f7e1d7537226ff773dbb57508f98d3527fd88d3f` | local only | `2026-09-03T00:08:37+08:00` | VAL011 acceptance passed independently after exact-head falsification checks | close the local workflow; no remote action |
 
 ## Completion Summary
 
-- Outcome: in progress; VAL012 passed and VAL011 is active.
-- Changed artifacts: workflow bootstrap plus the bounded observation contract, schema, CLI, fixtures, tests, and validation registration.
+- Outcome: completed locally; VAL012 and VAL011 each passed all six independently recorded acceptance outcomes.
+- Changed artifacts: workflow records; the bounded observation contract/schema/CLI/fixtures; and the digest-bound incident mutant corpus, normalized result schema, deterministic adapters, tests, and release/nightly registration.
 - Approved requirement/specification evidence: live Issues #267/#268, owner instruction, #270 owner decision and read-only design checkpoint.
-- Implementation completion evidence: VAL012 is complete at `d8105e3dc038880d70803383a8928fc017a9f2f1`; VAL011 is pending.
-- Required test outcomes: VAL012 focused and affected integration validation passed; VAL011 remains pending.
+- Implementation completion evidence: VAL012 is complete at `d8105e3dc038880d70803383a8928fc017a9f2f1`; VAL011 is complete at `f7e1d7537226ff773dbb57508f98d3527fd88d3f` with normalized report digest `b8ac291525e8cebe1eb7b6ec982266bdcbb1ac2d36b91b0f2c15fd48ad87232f`.
+- Required test outcomes: VAL012 9/9 focused tests passed; VAL011 18/18 exact-head tests passed with 5/5 critical mutants detected and the critical-survivor negative control passing.
 - Selected compliance evidence: not applicable.
-- Review disposition: pending; no independent fixed-head audit claimed.
-- Validation evidence: VAL012 9/9 focused, 10/10 registry, 3/3 source-entrypoint, shell-asset, commit-message, diff, and clean-status checks passed; failed and sandbox-blocked earlier attempts remain recorded in the task.
-- Workflow task state: VAL012 completed; VAL011 in progress.
-- Commits: `d66eec5915584a7e6df48ac6ab61a7261f1f134c`, `d8105e3dc038880d70803383a8928fc017a9f2f1`.
+- Review disposition: parent self-review completed against both ledgers; no independent fixed-head audit is claimed.
+- Validation evidence: focused and affected integration gates passed; exact-head VAL011 observation is explicitly partial/lower-bound-only; the initial undeclared-runtime observation, initial UPG detector mismatch, and wrong-Bash closure invocation remain preserved as failures in the task.
+- Workflow task state: VAL012 completed; VAL011 completed.
+- Commits: `d66eec5915584a7e6df48ac6ab61a7261f1f134c`, `d8105e3dc038880d70803383a8928fc017a9f2f1`, `fade069607baf22655d0b084477edf66bc555e38`, `f7e1d7537226ff773dbb57508f98d3527fd88d3f`.
 - Branch / checkpoint / handoff evidence: local branch only; no remote transport.
-- Residual risks: runtime observation remains a lower bound; VAL011 critical mutants must all be detected before closeout.
+- Residual risks: runtime observation remains a lower bound, the exploratory unknown-field mutant remains an explicit follow-up candidate, and all #270 reuse/pilot work remains separately unauthorized.

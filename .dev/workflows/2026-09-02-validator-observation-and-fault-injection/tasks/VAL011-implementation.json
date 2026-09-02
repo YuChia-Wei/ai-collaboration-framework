@@ -7,9 +7,9 @@
   "task_id": "VAL011-implementation",
   "owner_skill": "slice-implementer",
   "related_plan_id": "development-plan-2026-09-02-validator-observation-and-fault-injection",
-  "status": "in_progress",
+  "status": "completed",
   "created_at": "2026-09-02T22:43:57+08:00",
-  "updated_at": "2026-09-02T23:21:04+08:00",
+  "updated_at": "2026-09-03T00:08:37+08:00",
   "template_source": ".ai/assets/skills/software-development-orchestrator/templates/development-workflow-task-template.json",
   "model": "gpt-5.6-sol",
   "reasoning_effort": "max",
@@ -46,7 +46,162 @@
       "acceptance_criteria": ["VAL011-A1", "VAL011-A2", "VAL011-A3", "VAL011-A4", "VAL011-A5", "VAL011-A6"]
     },
     "test_execution_contract": null,
-    "role_execution_records": [],
+    "role_execution_records": [
+      {
+        "role_execution_id": "VAL011-MUTATION-001",
+        "role_asset_id": "mutation-testing-sub-agent",
+        "role_path": ".ai/assets/sub-agent-role-prompts/mutation-testing-sub-agent/sub-agent.yaml",
+        "owning_skill": "slice-implementer",
+        "stage_id": "VAL011-implementation",
+        "applicability": {
+          "result": "applies",
+          "reason": "Issue #267 requires one bounded mutation-testing corpus and critical-survivor gate."
+        },
+        "selection": {
+          "disposition": "direct",
+          "reason": "The current parent can preserve the complete bounded role contract inline; no delegated child execution was requested or needed.",
+          "delegation_evaluation": {
+            "safety_gates": {
+              "applicable_role": true,
+              "current_session_runtime_support_verified": false,
+              "bounded_input_output_permissions_stop": true,
+              "approval_security_credential_boundaries_satisfied": true,
+              "disjoint_mutation_scope": true,
+              "named_parent_and_final_integration_owner": true
+            },
+            "material_value_triggers": [],
+            "cost_failure_retry_risk": {
+              "result": "favors-direct",
+              "reason": "One cohesive validator and corpus change is already owned by the parent; child setup would add coordination without independent execution value."
+            }
+          }
+        },
+        "input_envelope": {
+          "goal": "Implement and validate one incident-derived deterministic mutant corpus for Issue #267.",
+          "scope": [
+            ".ai/evaluation/incident-mutants.yaml",
+            ".ai/evaluation/mutants/rel016-semantic-publication-bypass.md",
+            ".ai/evaluation/schemas/incident-*.schema.yaml",
+            ".ai/scripts/validate-ai-behavior-evaluation.py",
+            ".ai/scripts/tests/test_ai_behavior_evaluation.py",
+            ".ai/scripts/check-all.sh",
+            ".ai/scripts/shell-assets.yaml",
+            ".ai/scripts/validation-profile-registry.sh",
+            ".ai/scripts/tests/test_validation_profile_registry.py"
+          ],
+          "non_goals": [
+            "Do not mutate business or target truth to make a mutant pass.",
+            "Do not implement the Issue #270 subject manifest, rebind validator, or pilot.",
+            "Do not push, merge, publish, or mutate provider state."
+          ],
+          "source_refs": [
+            "GitHub Issue #267",
+            "completed VAL012 acceptance ledger",
+            "AICTX-EVIDENCE-001 packet 7d3cdae66882a5669daf7813f17353292137abcc77b126a8ca329ac1a8d328da",
+            "Issue #270 comment 5478024060 and read-only commit 3df455bd0ae6502b863990fd6aa104239d6f86ed"
+          ],
+          "mandatory_references": [
+            ".ai/assets/sub-agent-role-prompts/mutation-testing-sub-agent/references/implementation-playbook.md",
+            ".ai/assets/tech-stacks/dotnet-backend/shared/common-rules.md",
+            ".ai/assets/tech-stacks/dotnet-backend/shared/testing-strategy.md"
+          ],
+          "constraints": [
+            "Start from a passing baseline, add the smallest incident-derived corpus, and reverify baseline behavior.",
+            "All critical survivors fail; exploratory survivors remain truthful follow-up candidates.",
+            "Execution writes only optional create-only ignored evidence and preserves tracked files."
+          ],
+          "stop_conditions": [
+            "Stop if a critical mutant survives, candidate identity drifts, tracked files change during execution, or #270 production scope becomes necessary."
+          ]
+        },
+        "permissions": {
+          "read_scope": [
+            ".ai",
+            ".dev/releases/v0.14.0",
+            ".dev/workflows/2026-09-02-validator-observation-and-fault-injection"
+          ],
+          "write_scope": [
+            ".ai/evaluation",
+            ".ai/scripts",
+            ".dev/ai-context/local/validation"
+          ],
+          "external_actions": [],
+          "secret_handling": "no-secret-values"
+        },
+        "executor": {
+          "kind": "parent-inline",
+          "identity": "current-session-primary",
+          "runtime_support_verified": true
+        },
+        "invocation_evidence": null,
+        "output": {
+          "expected": [
+            "digest-bound incident mutant corpus",
+            "critical-survivor failure gate",
+            "privacy-safe normalized result evidence",
+            "focused positive and negative tests"
+          ],
+          "returned": [
+            "six-mutant digest-bound corpus with five critical categories",
+            "5 of 5 critical mutants detected and one exploratory survivor retained",
+            "exact-head normalized fault-injection and bounded observation reports",
+            "18 passing focused tests including a disabled-detector failure proof"
+          ],
+          "evidence_refs": [
+            "commit:f7e1d7537226ff773dbb57508f98d3527fd88d3f",
+            "report:b8ac291525e8cebe1eb7b6ec982266bdcbb1ac2d36b91b0f2c15fd48ad87232f",
+            "observation:7289d234965474df5bec543126f86bdfab795f566ee3a5b0f57735568d1b7577",
+            "acceptance-ledger.val-011.yaml"
+          ],
+          "bounded": true
+        },
+        "attempts": [
+          {
+            "number": 1,
+            "disposition": "direct",
+            "executor": {
+              "kind": "parent-inline",
+              "identity": "current-session-primary",
+              "runtime_support_verified": true
+            },
+            "invocation_evidence": null,
+            "outcome": "completed",
+            "correctable_failure": false,
+            "material_state_change": "",
+            "authorization_source": [
+              "2026-09-02 source-task owner delegation"
+            ],
+            "evidence_refs": [
+              "commit:f7e1d7537226ff773dbb57508f98d3527fd88d3f",
+              "exact-head focused tests:18/18",
+              "critical mutant detection:5/5"
+            ]
+          }
+        ],
+        "fallback": {
+          "considered": false,
+          "reason": "The selected direct role path completed within its bounded scope.",
+          "resulting_disposition": null,
+          "inline_contract_evidence": {
+            "same_role_path_and_mandatory_references": false,
+            "bounded_input_output_permissions_stop": false,
+            "approval_security_credential_boundaries_satisfied": false,
+            "disjoint_mutation_scope": false,
+            "named_parent_and_final_integration_owner": false,
+            "current_inline_support_verified": false,
+            "evidence_refs": []
+          }
+        },
+        "final_integration_owner": {
+          "owner": "software-development-orchestrator/current-session-primary",
+          "decision": "accepted",
+          "evidence_refs": [
+            "VAL011 acceptance ledger:6/6 passed",
+            "commit:f7e1d7537226ff773dbb57508f98d3527fd88d3f"
+          ]
+        }
+      }
+    ],
     "spec_compliance": {"selected": false, "activation_source": [], "expected_outcome": "not-applicable"},
     "steps": ["load the mandatory mutation-testing role contract", "define the incident mutant corpus and result schema", "integrate deterministic detectors and critical-survivor gate", "add focused negative and worktree-stability tests", "register release/nightly validation", "reconcile the VAL011 ledger"],
     "validation": ["focused incident fault-injection tests", "critical-survivor negative test", "AI behavior deterministic evaluation", "validation profile registry tests", "workflow artifact validation", "git diff --check"],
@@ -54,14 +209,102 @@
     "deferred_items": ["Issue #270 subject manifest, rebind validator, and pilot enablement"]
   },
   "results": {
-    "summary": "",
-    "files_changed": [],
+    "summary": "Added a digest-bound six-mutant corpus over existing CTX-010, REL-016, UPG-005, identity, and evidence validators; all five critical categories are detected, one exploratory survivor remains explicit follow-up, and any critical survivor fails the release/nightly gate without tracked mutation or Issue #270 reuse behavior.",
+    "files_changed": [
+      ".ai/evaluation/README.md",
+      ".ai/evaluation/incident-mutants.yaml",
+      ".ai/evaluation/mutants/rel016-semantic-publication-bypass.md",
+      ".ai/evaluation/schemas/incident-fault-injection-result.schema.yaml",
+      ".ai/evaluation/schemas/incident-mutant-manifest.schema.yaml",
+      ".ai/scripts/check-all.sh",
+      ".ai/scripts/shell-assets.yaml",
+      ".ai/scripts/tests/test_ai_behavior_evaluation.py",
+      ".ai/scripts/tests/test_validation_profile_registry.py",
+      ".ai/scripts/validate-ai-behavior-evaluation.py",
+      ".ai/scripts/validation-profile-registry.sh"
+    ],
     "approval_evidence": ["2026-09-02 source-task owner delegation"],
-    "test_execution": [],
-    "role_execution_aggregation": [],
+    "test_execution": [
+      {
+        "command": "python .ai/scripts/tests/test_ai_behavior_evaluation.py -v",
+        "outcome": "passed",
+        "summary": "The unchanged pre-mutation baseline passed 10 of 10 tests before the incident corpus was added."
+      },
+      {
+        "command": "python .ai/scripts/tests/test_ai_behavior_evaluation.py -v",
+        "outcome": "failed",
+        "summary": "The first expanded attempt exposed a UPG-005 detector-identity mismatch; the adapter was corrected to consume the current route validator's canonical diagnostic before acceptance."
+      },
+      {
+        "command": "python .ai/scripts/tests/test_ai_behavior_evaluation.py -v",
+        "outcome": "passed",
+        "summary": "18 of 18 passed in 2.355s at exact HEAD f7e1d7537226ff773dbb57508f98d3527fd88d3f, including 8 incident fault-injection tests."
+      },
+      {
+        "command": "python .ai/scripts/validate-ai-behavior-evaluation.py fault-injection --output .dev/ai-context/local/validation/val011-fault-injection-exact-head.yaml",
+        "outcome": "passed",
+        "summary": "5 of 5 critical mutants were detected; one exploratory survivor remained follow-up-required; normalized report digest b8ac291525e8cebe1eb7b6ec982266bdcbb1ac2d36b91b0f2c15fd48ad87232f binds exact HEAD."
+      },
+      {
+        "command": "python .ai/scripts/observe-validation-dependencies.py --request .dev/ai-context/local/validation/val011-observation-request.yaml --output .dev/ai-context/local/validation/val011-dependency-observation.yaml",
+        "outcome": "failed",
+        "summary": "The first VAL-012 observation truthfully failed observed-but-undeclared for 16 runtime modules; report digest b98c99cc2d345a6aa3ec80f670f09409008b37b65a8ab7f87e3d4651c260d95a was preserved."
+      },
+      {
+        "command": "python .ai/scripts/observe-validation-dependencies.py --request .dev/ai-context/local/validation/val011-observation-request-passed.yaml --output .dev/ai-context/local/validation/val011-dependency-observation-exact-head.yaml",
+        "outcome": "passed",
+        "summary": "Partial lower-bound observation passed at exact HEAD with all five dimensions explicit, 25 of 25 manifest candidate files observed, and report digest 7289d234965474df5bec543126f86bdfab795f566ee3a5b0f57735568d1b7577."
+      },
+      {
+        "command": "python .ai/scripts/tests/test_validation_profile_registry.py -v",
+        "outcome": "passed",
+        "summary": "10 of 10 passed in 2.066s with full local permissions."
+      },
+      {
+        "command": "python .ai/scripts/tests/test_python_source_entrypoints.py -v",
+        "outcome": "passed",
+        "summary": "3 of 3 passed in 23.691s with full local permissions."
+      },
+      {
+        "command": "python .ai/scripts/validate-shell-assets.py",
+        "outcome": "passed",
+        "summary": "All 16 tracked shell assets and the required command inventory passed."
+      },
+      {
+        "command": "bash .ai/scripts/check-all.sh --resolve-input-closure incident-fault-injection --subject HEAD",
+        "outcome": "failed",
+        "summary": "The PATH-selected Windows WSL Bash could not resolve the Git closure subject; this invocation error was retained and did not count as gate evidence."
+      },
+      {
+        "command": "C:/Program Files/Git/bin/bash.exe .ai/scripts/check-all.sh --resolve-input-closure incident-fault-injection --subject f7e1d7537226ff773dbb57508f98d3527fd88d3f",
+        "outcome": "passed",
+        "summary": "The repository-tested Git Bash resolved the declared recursive tracked input closure at the exact commit."
+      }
+    ],
+    "role_execution_aggregation": [
+      {
+        "role_execution_id": "VAL011-MUTATION-001",
+        "role_asset_id": "mutation-testing-sub-agent",
+        "disposition": "direct",
+        "outcome": "completed",
+        "final_integration_decision": "accepted",
+        "evidence_refs": [
+          "commit:f7e1d7537226ff773dbb57508f98d3527fd88d3f",
+          "VAL011 acceptance ledger:6/6 passed"
+        ]
+      }
+    ],
     "spec_compliance": {"outcome": "not-applicable", "coverage_percent": null, "evidence": []},
-    "validation_evidence": ["Framework-source effective-rule packet 7d3cdae66882a5669daf7813f17353292137abcc77b126a8ca329ac1a8d328da"],
-    "commits": [],
+    "validation_evidence": [
+      "Framework-source effective-rule packet 7d3cdae66882a5669daf7813f17353292137abcc77b126a8ca329ac1a8d328da",
+      "VAL011 acceptance ledger records six passed acceptance outcomes with canonical evidence digests.",
+      "Exact-head fault-injection report b8ac291525e8cebe1eb7b6ec982266bdcbb1ac2d36b91b0f2c15fd48ad87232f preserves the exploratory survivor and reports tracked_state_unchanged=true.",
+      "Exact-head bounded observation report 7289d234965474df5bec543126f86bdfab795f566ee3a5b0f57735568d1b7577 remains partial/lower-bound-only and observed all 25 manifest-bound candidate paths.",
+      "git status --short was empty after exact-head focused execution.",
+      "Issue #270 production manifest, rebind validator, pilot, and historical backfill remain unimplemented."
+    ],
+    "commits": ["f7e1d7537226ff773dbb57508f98d3527fd88d3f"],
+    "finding_status": "addressed",
     "follow_up_needed": true
   }
 }
