@@ -208,11 +208,23 @@ def _inside(root: Path, candidate: Path) -> bool:
 @dataclass
 class Recorder:
     root: Path
+    root_identity: str = field(init=False, repr=False)
     observed: dict[str, set[str]] = field(
         default_factory=lambda: {dimension: set() for dimension in DIMENSIONS}
     )
     unsupported_events: set[str] = field(default_factory=set)
     outside_repository_file_reads: int = 0
+    environment_suppression_depth: int = field(default=0, repr=False)
+
+    def __post_init__(self) -> None:
+        self.root_identity = os.path.normcase(os.path.realpath(self.root))
+
+    def _caller_is_inside_repository(self, caller_file: str) -> bool:
+        candidate = os.path.normcase(os.path.realpath(caller_file))
+        try:
+            return os.path.commonpath((self.root_identity, candidate)) == self.root_identity
+        except ValueError:
+            return False
 
     def record_file(self, value: object) -> None:
         if isinstance(value, int):
@@ -266,6 +278,8 @@ class Recorder:
         self.observed["git"].add(f"git:{subcommand}")
 
     def record_environment(self, name: object) -> None:
+        if self.environment_suppression_depth:
+            return
         if isinstance(name, str) and ENVIRONMENT_NAME.fullmatch(name):
             self.observed["environment"].add(name)
         else:
@@ -275,7 +289,10 @@ class Recorder:
         if not isinstance(name, str) or not name:
             return
         caller_file = globals_value.get("__file__") if isinstance(globals_value, dict) else None
-        if not isinstance(caller_file, str) or not _inside(self.root, Path(caller_file)):
+        if (
+            not isinstance(caller_file, str)
+            or not self._caller_is_inside_repository(caller_file)
+        ):
             return
         top_level = name.split(".", 1)[0].casefold()
         identity = f"module:{top_level}"
@@ -310,7 +327,14 @@ def observation_hooks(recorder: Recorder) -> Iterator[None]:
     def observed_popen(*popenargs: object, **kwargs: object):
         command = popenargs[0] if popenargs else kwargs.get("args")
         recorder.record_command(command, shell=bool(kwargs.get("shell", False)))
-        return original_popen(*popenargs, **kwargs)
+        # POSIX executable resolution reads PATH internally, sometimes with a bytes
+        # key. That is subprocess implementation detail rather than a direct target
+        # dependency; target-owned environment reads outside Popen remain observed.
+        recorder.environment_suppression_depth += 1
+        try:
+            return original_popen(*popenargs, **kwargs)
+        finally:
+            recorder.environment_suppression_depth -= 1
 
     def observed_getenv(name: str, default: str | None = None):
         recorder.record_environment(name)
