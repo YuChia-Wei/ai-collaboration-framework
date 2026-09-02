@@ -5,35 +5,50 @@ work_items:
   - "https://github.com/YuChia-Wei/ai-collaboration-framework/issues/268"
 human_projection: ".dev/workflows/2026-09-02-validator-observation-and-fault-injection/workflow-plan.md#issue-268--val-012"
 created_at: "2026-09-02T22:43:57+08:00"
-updated_at: "2026-09-02T22:43:57+08:00"
+updated_at: "2026-09-02T23:21:04+08:00"
+evidence_digest_algorithm: "sha256(canonical-json(evidence))"
 acceptances:
   - acceptance_id: "VAL012-A1"
-    status: "pending"
+    status: "passed"
     required_outcome: "Observed-but-undeclared dependencies fail within the declared representative harness boundary."
-    evidence: []
-    evidence_digest: null
+    evidence:
+      - ".ai/scripts/observe-validation-dependencies.py::observe_request maps any observed-but-undeclared dependency to decision.outcome=failed."
+      - ".ai/scripts/tests/test_validation_dependency_observation.py::test_given_undeclared_file_when_observed_then_boundary_fails passed at d8105e3dc038880d70803383a8928fc017a9f2f1."
+      - ".ai/scripts/tests/test_validation_dependency_observation.py::test_given_undeclared_tool_when_observed_then_boundary_fails passed at d8105e3dc038880d70803383a8928fc017a9f2f1."
+    evidence_digest: "24d0bb6cc1ee86a6131bc23ee5d451000a178ea90f97c32852924cbae4f1ac28"
   - acceptance_id: "VAL012-A2"
-    status: "pending"
+    status: "passed"
     required_outcome: "Declared-but-unobserved dependencies remain advisory and are never removed automatically."
-    evidence: []
-    evidence_digest: null
+    evidence:
+      - ".ai/scripts/observe-validation-dependencies.py reports declared_but_unobserved_disposition=advisory-retain with automatic_registry_edits=false and declarations_removed=false."
+      - ".ai/scripts/tests/test_validation_dependency_observation.py::test_given_untaken_branch_and_broad_input_when_observed_then_both_stay_advisory passed at d8105e3dc038880d70803383a8928fc017a9f2f1."
+    evidence_digest: "546934cddc9f418bc5e693400202d789b07f859ac87bf7678aed50b3b163f7fe"
   - acceptance_id: "VAL012-A3"
-    status: "pending"
+    status: "passed"
     required_outcome: "Unsupported or incomplete observation reports blocked or partial coverage, never complete closure."
-    evidence: []
-    evidence_digest: null
+    evidence:
+      - ".ai/assets/shared/validation-dependency-observation.schema.yaml permits only partial or unsupported coverage and fixes complete_transitive_closure=false."
+      - ".ai/scripts/tests/test_validation_dependency_observation.py::test_given_unsupported_harness_when_reported_then_it_is_blocked_not_complete passed at d8105e3dc038880d70803383a8928fc017a9f2f1."
+    evidence_digest: "a18734f11acc76c4a34eef1fa3d275bb908b6785984ddf1401dfe948049f24a1"
   - acceptance_id: "VAL012-A4"
-    status: "pending"
+    status: "passed"
     required_outcome: "File, subprocess, Git, environment, and runtime observation coverage is explicit per validator."
-    evidence: []
-    evidence_digest: null
+    evidence:
+      - ".ai/assets/shared/VALIDATION-DEPENDENCY-OBSERVATION-CONTRACT.md defines all five normalized lower-bound dimensions and their blind spots."
+      - ".ai/scripts/tests/test_validation_dependency_observation.py::test_given_representative_harness_when_observed_then_all_dimensions_are_explicit_and_lower_bound passed at d8105e3dc038880d70803383a8928fc017a9f2f1."
+    evidence_digest: "4c5252c8f2f17e83a4f9cb1912b690abc35ab21568860972567e25c980dcd2b5"
   - acceptance_id: "VAL012-A5"
-    status: "pending"
+    status: "passed"
     required_outcome: "Fixtures cover an undeclared file read, an undeclared subprocess/tool dependency, an untaken branch, and an intentionally broad declaration."
-    evidence: []
-    evidence_digest: null
+    evidence:
+      - ".ai/scripts/tests/fixtures/validation-dependency-observation contains representative, undeclared-file, undeclared-subprocess, untaken-branch, and broad-declaration fixtures."
+      - "ValidationDependencyObservationTests passed 9 of 9 at d8105e3dc038880d70803383a8928fc017a9f2f1."
+    evidence_digest: "184abdda3bd2f9c098ed57fcfd89971c706319ae1d1fc247ae48abd4215a5c5c"
   - acceptance_id: "VAL012-A6"
-    status: "pending"
+    status: "passed"
     required_outcome: "Existing identity-sensitive and provider-sensitive fresh gates remain unchanged."
-    evidence: []
-    evidence_digest: null
+    evidence:
+      - ".ai/scripts/observe-validation-dependencies.py emits the unchanged fresh-gate boundary: exact-head independent audit, hosted required contexts, live provider admission, and tag or Release binding."
+      - ".ai/scripts/tests/test_validation_dependency_observation.py asserts that exact fresh-gate list and automatic_registry_edits=false."
+      - "Commit d8105e3dc038880d70803383a8928fc017a9f2f1 adds a diagnostic gate without modifying the existing validation-evidence lifecycle or provider admission contracts."
+    evidence_digest: "6461fbd488becf5777d1c1ed3974eeae63bac4ebf018cdd5b808102411bd614f"
