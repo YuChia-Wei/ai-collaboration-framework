@@ -18,7 +18,7 @@
 - `branch_segment`: `1`
 - `status`: `completed`
 - `created_at`: `2026-09-02T22:43:57+08:00`
-- `updated_at`: `2026-09-03T07:15:55+08:00`
+- `updated_at`: `2026-09-03T07:33:30+08:00`
 - `template_source`: `.ai/assets/skills/software-development-orchestrator/templates/development-workflow-plan-template.md`
 - `template_version`: `1.4.0`
 - `workflow_locator`: `.dev/workflows/2026-09-02-validator-observation-and-fault-injection/workflow.yaml`
@@ -114,8 +114,8 @@ One workflow and branch are used because #267 and #268 share the same safety out
 
 | Level | Outcome | Evidence | Deferral Owner / Follow-up |
 | --- | --- | --- | --- |
-| unit | `passed` | VAL012 passed 9 of 9 bounded observation tests; VAL011 passed 18 of 18 exact-head behavior/fault-injection tests including the disabled-critical-detector failure proof | none |
-| integration | `passed` | Registry 10 of 10, source entrypoints 3 of 3, shell assets, deterministic corpus, exact-head fault injection, exact-head bounded observation, and tracked-status checks passed | full release/nightly profile execution remains outside this focused local workflow |
+| unit | `passed` | VAL012 passed 9 of 9 bounded observation tests on Windows at `f7463efa`; its representative and create-only CLI paths also passed on WSL. VAL011 passed 18 of 18 exact-head behavior/fault-injection tests including the disabled-critical-detector failure proof. | none |
+| integration | `passed` | Dependency consistency 19 of 19, portable entrypoint contract 7 of 7, Windows launcher 4 of 4, POSIX launcher 5 of 5, affected package projection, shell assets, deterministic corpus, exact-head fault injection, exact-head bounded observation, and tracked-status checks passed. | full release/nightly profile execution remains outside this focused local workflow |
 
 ## Spec Compliance Selection
 
@@ -130,12 +130,12 @@ One workflow and branch are used because #267 and #268 share the same safety out
 
 | Acceptance ID | Outcome | Evidence digest |
 | --- | --- | --- |
-| VAL012-A1 | passed | `24d0bb6cc1ee86a6131bc23ee5d451000a178ea90f97c32852924cbae4f1ac28` |
-| VAL012-A2 | passed | `546934cddc9f418bc5e693400202d789b07f859ac87bf7678aed50b3b163f7fe` |
-| VAL012-A3 | passed | `a18734f11acc76c4a34eef1fa3d275bb908b6785984ddf1401dfe948049f24a1` |
-| VAL012-A4 | passed | `4c5252c8f2f17e83a4f9cb1912b690abc35ab21568860972567e25c980dcd2b5` |
-| VAL012-A5 | passed | `184abdda3bd2f9c098ed57fcfd89971c706319ae1d1fc247ae48abd4215a5c5c` |
-| VAL012-A6 | passed | `6461fbd488becf5777d1c1ed3974eeae63bac4ebf018cdd5b808102411bd614f` |
+| VAL012-A1 | passed | `cdad04701077f5748385c07161f257d5e0c518a7f5ec8f6bcc6d2c491ba6f9af` |
+| VAL012-A2 | passed | `ee034347380186f286d8a14c08a16e903100d1fb215a9de73e57d9e8fabc703a` |
+| VAL012-A3 | passed | `1232f5719b8f502a94e6a0cbf8e8f894033daba9c99e50906486254fc11bac64` |
+| VAL012-A4 | passed | `a9c70a2fe56ef37fa9dd48683736f0fa5812dc6c56f4fd796d28a6d382128610` |
+| VAL012-A5 | passed | `c39ef1fd5b2ff7205cb86319f8f819a5934fbd40950a153e180e05013c81c922` |
+| VAL012-A6 | passed | `60be660d318975acd6628b83ef639d89c055b8735cffed25886c2f1ed039afb0` |
 
 ### Issue #267 / VAL-011
 
@@ -150,8 +150,8 @@ One workflow and branch are used because #267 and #268 share the same safety out
 
 ## Progress And Handoff
 
-- Current stage: completed and handed off through open PR #281; no active implementation task remains.
-- Completed stages: provider/baseline/policy preflight, workflow bootstrap, VAL012 bounded dependency observation at `d8105e3dc038880d70803383a8928fc017a9f2f1`, and VAL011 incident-derived fault injection at `f7e1d7537226ff773dbb57508f98d3527fd88d3f`.
+- Current stage: completed and handed off through open PR #281; the first hosted head failed and the in-scope portable remediation is committed at `f7463efa440d3bbfe1001f5e93727eb87a7ec2e3`, pending final evidence push and restarted hosted checks.
+- Completed stages: provider/baseline/policy preflight, workflow bootstrap, VAL012 bounded dependency observation at `d8105e3dc038880d70803383a8928fc017a9f2f1`, VAL011 incident-derived fault injection at `f7e1d7537226ff773dbb57508f98d3527fd88d3f`, and VAL012 hosted portability remediation at `f7463efa440d3bbfe1001f5e93727eb87a7ec2e3`.
 - Deferred stages and reasons: #270 production and pilot are outside authorization.
 - Open decisions: PR review/merge and terminal Issue/Project disposition remain owner-controlled; #270 remains separately unauthorized.
 - Continuation instructions: any #270 subject manifest, rebind validator, one-pilot observation, or reuse enablement requires a separate owner-authorized workflow; retain both closed ledgers as independent evidence.
@@ -167,18 +167,19 @@ One workflow and branch are used because #267 and #268 share the same safety out
 | 1 | `codex/2026-09-02-validator-observation-and-fault-injection` | `d66eec5915584a7e6df48ac6ab61a7261f1f134c` | local validated stage | `d8105e3dc038880d70803383a8928fc017a9f2f1` | local only | `2026-09-02T23:21:04+08:00` | VAL012 acceptance passed independently | continue VAL011 locally |
 | 1 | `codex/2026-09-02-validator-observation-and-fault-injection` | `d8105e3dc038880d70803383a8928fc017a9f2f1` | local validated stage | `f7e1d7537226ff773dbb57508f98d3527fd88d3f` | local only | `2026-09-03T00:08:37+08:00` | VAL011 acceptance passed independently after exact-head falsification checks | close the local workflow; no remote action |
 | 1 | `codex/2026-09-02-validator-observation-and-fault-injection` | `main@c7f348694421048245da824dd79742372179f730` | provider PR bootstrap | `995e90af44cde8f35709d9e6964372b670c50854` | PR #281 | `2026-09-03T07:15:55+08:00` | owner authorized push and PR creation after local completion | commit the PR-bound deferred declaration, push the new head, and leave merge/closure to the owner |
+| 1 | `codex/2026-09-02-validator-observation-and-fault-injection` | `b733ff15f34a6cf39563e7a17b7bb92201b8b9b6` | hosted-failure remediation | `f7463efa440d3bbfe1001f5e93727eb87a7ec2e3` | PR #281 | `2026-09-03T07:33:30+08:00` | repair Python 3.12 POSIX observation recursion, subprocess PATH noise, and portable registry/projection omissions exposed by runs 33694513510 and 33694513532 | bind remediation evidence and restart exact-head hosted checks |
 
 ## Completion Summary
 
-- Outcome: completed locally and delivered for review in PR #281; VAL012 and VAL011 each passed all six independently recorded acceptance outcomes.
+- Outcome: completed locally and delivered for review in PR #281; VAL012 and VAL011 each passed all six independently recorded acceptance outcomes, including the VAL012 portable remediation at `f7463efa`.
 - Changed artifacts: workflow records; the bounded observation contract/schema/CLI/fixtures; and the digest-bound incident mutant corpus, normalized result schema, deterministic adapters, tests, and release/nightly registration.
 - Approved requirement/specification evidence: live Issues #267/#268, owner instruction, #270 owner decision and read-only design checkpoint.
-- Implementation completion evidence: VAL012 is complete at `d8105e3dc038880d70803383a8928fc017a9f2f1`; VAL011 is complete at `f7e1d7537226ff773dbb57508f98d3527fd88d3f` with normalized report digest `b8ac291525e8cebe1eb7b6ec982266bdcbb1ac2d36b91b0f2c15fd48ad87232f`.
-- Required test outcomes: VAL012 9/9 focused tests passed; VAL011 18/18 exact-head tests passed with 5/5 critical mutants detected and the critical-survivor negative control passing.
+- Implementation completion evidence: VAL012 was introduced at `d8105e3dc038880d70803383a8928fc017a9f2f1` and its portable state is bound to `f7463efa440d3bbfe1001f5e93727eb87a7ec2e3`; VAL011 is complete at `f7e1d7537226ff773dbb57508f98d3527fd88d3f` with normalized report digest `b8ac291525e8cebe1eb7b6ec982266bdcbb1ac2d36b91b0f2c15fd48ad87232f`.
+- Required test outcomes: VAL012 9/9 focused tests passed on Windows plus WSL representative/CLI regressions; dependency consistency 19/19, portable entrypoint 7/7, Windows launcher 4/4, POSIX launcher 5/5, and affected package projection passed. VAL011 18/18 exact-head tests passed with 5/5 critical mutants detected and the critical-survivor negative control passing.
 - Selected compliance evidence: not applicable.
 - Review disposition: parent self-review completed against both ledgers; the fresh exact-head independent audit and hosted merge-admission gates remain pending and are not claimed.
-- Validation evidence: focused and affected integration gates passed; exact-head VAL011 observation is explicitly partial/lower-bound-only; the initial undeclared-runtime observation, initial UPG detector mismatch, and wrong-Bash closure invocation remain preserved as failures in the task.
+- Validation evidence: focused and affected integration gates passed; exact-head VAL011 observation is explicitly partial/lower-bound-only. GitHub Actions runs 33694513510 and 33694513532 preserve the first PR head's registry/projection and POSIX observation failures; the initial undeclared-runtime observation, initial UPG detector mismatch, and wrong-Bash closure invocation also remain preserved as failures in the task.
 - Workflow task state: VAL012 completed; VAL011 completed.
-- Commits before the PR-bound declaration: `d66eec5915584a7e6df48ac6ab61a7261f1f134c`, `d8105e3dc038880d70803383a8928fc017a9f2f1`, `fade069607baf22655d0b084477edf66bc555e38`, `f7e1d7537226ff773dbb57508f98d3527fd88d3f`, `995e90af44cde8f35709d9e6964372b670c50854`.
+- Delivery commits through hosted remediation: `d66eec5915584a7e6df48ac6ab61a7261f1f134c`, `d8105e3dc038880d70803383a8928fc017a9f2f1`, `fade069607baf22655d0b084477edf66bc555e38`, `f7e1d7537226ff773dbb57508f98d3527fd88d3f`, `995e90af44cde8f35709d9e6964372b670c50854`, `b733ff15f34a6cf39563e7a17b7bb92201b8b9b6`, and `f7463efa440d3bbfe1001f5e93727eb87a7ec2e3`.
 - Branch / checkpoint / handoff evidence: pushed branch and open PR #281; `.dev/workflows/2026-09-02-validator-observation-and-fault-injection/evidence/terminal-issue-closure-pr-281.yaml` binds both Issues as deferred, so no merge or Issue closure is implied.
 - Residual risks: runtime observation remains a lower bound, the exploratory unknown-field mutant remains an explicit follow-up candidate, and all #270 reuse/pilot work remains separately unauthorized.
