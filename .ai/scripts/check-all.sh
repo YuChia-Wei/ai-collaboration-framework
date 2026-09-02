@@ -2100,6 +2100,10 @@ run_source_repository_release_checks() {
         "AI Behavior Deterministic Evaluation" \
         "required" "true" "true"
 
+    run_command_check "python .ai/scripts/validate-ai-behavior-evaluation.py fault-injection" \
+        "Incident-Derived Validator Fault Injection" \
+        "required" "true" "true"
+
     run_command_check "python .ai/scripts/tests/test_ai_context_load_measurement.py -v" \
         "AI Context Load Measurement Contract" \
         "required" "true" "true"

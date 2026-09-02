@@ -144,6 +144,7 @@ check_all_required_commands:
   - python .ai/scripts/tests/test_prepare_ai_context_release.py -v
   - python .ai/scripts/tests/test_release_notes_renderer.py -v
   - python .ai/scripts/tests/test_ai_behavior_evaluation.py -v
+  - python .ai/scripts/validate-ai-behavior-evaluation.py fault-injection
   - python .ai/scripts/tests/test_ai_context_load_measurement.py -v
   - python .ai/scripts/tests/test_ai_context_package_apply.py -v
   - python .ai/scripts/tests/test_ai_context_package_smoke.py -v

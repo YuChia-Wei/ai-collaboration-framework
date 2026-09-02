@@ -193,6 +193,18 @@ class ValidationProfileRegistryGwtTests(unittest.TestCase):
             checks["validation-dependency-observation-contract"][12],
         )
         self.assertEqual(
+            {"release", "nightly-full"},
+            memberships["incident-fault-injection"],
+        )
+        self.assertEqual(
+            "ai-behavior-evaluation",
+            checks["incident-fault-injection"][6],
+        )
+        self.assertEqual(
+            "python .ai/scripts/validate-ai-behavior-evaluation.py fault-injection",
+            checks["incident-fault-injection"][12],
+        )
+        self.assertEqual(
             "source-governance-manifest",
             checks["validation-lifecycle-contract"][6],
         )

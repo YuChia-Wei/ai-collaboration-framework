@@ -288,8 +288,13 @@ register_check release-notes-renderer \
 register_check ai-behavior-evaluation \
     "AI Behavior Deterministic Evaluation" required \
     "evaluation,release" "release nightly-full" \
-    ".ai/scripts/tests/test_ai_behavior_evaluation.py .ai" source-ai-context-version "python>=3.11" 90 cpu reuse-by-input source \
+    ".ai/scripts/tests/test_ai_behavior_evaluation.py .ai .dev/releases/v0.14.0/support-matrix.yaml .dev/releases/v0.14.0/route-assets/validation/published-v0.14.0/v0.13.0-to-v0.14.0/receipt.json .dev/releases/v0.14.0/route-assets/validation/published-v0.14.0/v0.13.0-to-v0.14.0/output.json" source-ai-context-version "python>=3.11" 90 cpu reuse-by-input source \
     "python .ai/scripts/tests/test_ai_behavior_evaluation.py -v" source-release
+register_check incident-fault-injection \
+    "Incident-Derived Validator Fault Injection" required \
+    "evaluation,release,validation" "release nightly-full" \
+    ".ai .dev/releases/v0.14.0/support-matrix.yaml .dev/releases/v0.14.0/route-assets/validation/published-v0.14.0/v0.13.0-to-v0.14.0/receipt.json .dev/releases/v0.14.0/route-assets/validation/published-v0.14.0/v0.13.0-to-v0.14.0/output.json" ai-behavior-evaluation "python>=3.11 git" 90 cpu reuse-by-input source \
+    "python .ai/scripts/validate-ai-behavior-evaluation.py fault-injection" source-release
 register_check ai-context-load-measurement \
     "AI Context Load Measurement Contract" required \
     "evaluation,release" "release nightly-full" \

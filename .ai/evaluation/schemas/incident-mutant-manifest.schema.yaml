@@ -1,0 +1,32 @@
+schema_version: "1.0"
+schema_id: "incident-mutant-manifest"
+type: "mapping"
+required:
+  - "schema_version"
+  - "corpus_id"
+  - "corpus_version"
+  - "manifest_schema"
+  - "result_schema"
+  - "boundaries"
+  - "required_incidents"
+  - "required_critical_categories"
+  - "candidate_inputs"
+  - "mutants"
+candidate_input_required: ["input_id", "path", "sha256"]
+mutant_required:
+  - "mutant_id"
+  - "incident_reference"
+  - "category"
+  - "criticality"
+  - "adapter"
+  - "expected_detector"
+  - "input_refs"
+  - "follow_up"
+criticalities: ["critical", "exploratory"]
+invariants:
+  - "candidate input and mutant identifiers are sorted and unique"
+  - "every candidate input is an exact repository-relative file with matching raw SHA-256"
+  - "every adapter has exactly one mutant and its complete declared input closure"
+  - "critical mutants cover CTX-010, REL-016, UPG-005 and all required categories"
+  - "critical mutants cannot carry advisory follow-up disposition"
+  - "exploratory mutants retain non-empty follow-up text"
