@@ -69,7 +69,7 @@ candidate_inputs:
     sha256: "06ae8f9e5f23e15b9c5ff6d2bdeaccd1bdc2d000cfdd83182aa5a2ed58be4d80"
   - input_id: "python-entrypoints"
     path: ".ai/scripts/python-entrypoints.json"
-    sha256: "fb330624c70a3f14d1e2717f2dd4fc6a1fab1a87d8be34a960cd1fb8344db082"
+    sha256: "7f3e75e054383ea00d8f8060a61b3c483fac640856cf9c8fa2eb1752c067a746"
   - input_id: "python-prerequisites"
     path: ".ai/scripts/python_prerequisites.py"
     sha256: "2a7d270d84f46ea8d4b3343f1e79e48d85fc76deb0572b893c529ad1e24f3499"
