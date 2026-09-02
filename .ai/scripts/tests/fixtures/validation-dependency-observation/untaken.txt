@@ -1,0 +1,1 @@
+This file is read only when the representative branch is selected.

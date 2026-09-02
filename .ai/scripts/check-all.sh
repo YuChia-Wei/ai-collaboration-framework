@@ -318,6 +318,9 @@ is_global_invalidator() {
         .ai/scripts/validate-validation-lifecycle.py|.ai/scripts/tests/test_validation_lifecycle.py|\
         .ai/assets/shared/VALIDATION-EVIDENCE-LIFECYCLE-CONTRACT.md|\
         .ai/assets/shared/validation-evidence-lifecycle.schema.yaml|\
+        .ai/scripts/observe-validation-dependencies.py|.ai/scripts/tests/test_validation_dependency_observation.py|\
+        .ai/assets/shared/VALIDATION-DEPENDENCY-OBSERVATION-CONTRACT.md|\
+        .ai/assets/shared/validation-dependency-observation.schema.yaml|\
         .ai/scripts/validate-agent-execution-guardrails.py|.ai/scripts/tests/test_agent_execution_guardrails.py|\
         .ai/assets/shared/AGENT-EXECUTION-GUARDRAILS-CONTRACT.md|\
         .ai/assets/shared/agent-execution-guardrails.schema.yaml|\
@@ -356,6 +359,9 @@ resolve_check_input_closure() {
         .ai/scripts/validate-validation-lifecycle.py \
         .ai/assets/shared/VALIDATION-EVIDENCE-LIFECYCLE-CONTRACT.md \
         .ai/assets/shared/validation-evidence-lifecycle.schema.yaml \
+        .ai/scripts/observe-validation-dependencies.py \
+        .ai/assets/shared/VALIDATION-DEPENDENCY-OBSERVATION-CONTRACT.md \
+        .ai/assets/shared/validation-dependency-observation.schema.yaml \
         .ai/scripts/validate-agent-execution-guardrails.py \
         .ai/assets/shared/AGENT-EXECUTION-GUARDRAILS-CONTRACT.md \
         .ai/assets/shared/agent-execution-guardrails.schema.yaml; do
@@ -1113,6 +1119,8 @@ if policy_fingerprint=$(
         --path "$SCRIPT_DIR/python_prerequisites.py" \
         --path "$SCRIPT_DIR/validate-validation-lifecycle.py" \
         --path "$PROJECT_ROOT/.ai/assets/shared/validation-evidence-lifecycle.schema.yaml" \
+        --path "$SCRIPT_DIR/observe-validation-dependencies.py" \
+        --path "$PROJECT_ROOT/.ai/assets/shared/validation-dependency-observation.schema.yaml" \
         --path "$SCRIPT_DIR/validate-agent-execution-guardrails.py" \
         --path "$PROJECT_ROOT/.ai/assets/shared/agent-execution-guardrails.schema.yaml" \
         2>/dev/null
@@ -2196,6 +2204,10 @@ run_source_repository_governance_checks() {
 
     run_command_check "python .ai/scripts/tests/test_validation_lifecycle.py -v" \
         "Validation Lifecycle Fail-Closed Tests" \
+        "required" "true" "true"
+
+    run_command_check "python .ai/scripts/tests/test_validation_dependency_observation.py -v" \
+        "Bounded Validation Dependency Observation" \
         "required" "true" "true"
 
     run_command_check "python .ai/scripts/validate-agent-execution-guardrails.py" \

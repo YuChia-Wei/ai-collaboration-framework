@@ -1,0 +1,15 @@
+schema_version: validation-dependency-observation-request/v1
+validator_id: unsupported-harness-validator
+subject: HEAD
+harness: external-command/v1
+entrypoint: .ai/scripts/tests/fixtures/validation-dependency-observation/representative-validator.py
+callable: main
+argv: []
+declared_dependencies:
+  file:
+    - .ai/scripts/tests/fixtures/validation-dependency-observation/representative-validator.py
+  subprocess: []
+  git: []
+  environment: []
+  runtime:
+    - python

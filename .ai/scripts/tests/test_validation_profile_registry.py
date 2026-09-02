@@ -181,6 +181,18 @@ class ValidationProfileRegistryGwtTests(unittest.TestCase):
             memberships["validation-lifecycle-contract"],
         )
         self.assertEqual(
+            {"fast", "pr", "release", "nightly-full"},
+            memberships["validation-dependency-observation-contract"],
+        )
+        self.assertEqual(
+            "validation-lifecycle-contract",
+            checks["validation-dependency-observation-contract"][6],
+        )
+        self.assertEqual(
+            "python .ai/scripts/tests/test_validation_dependency_observation.py -v",
+            checks["validation-dependency-observation-contract"][12],
+        )
+        self.assertEqual(
             "source-governance-manifest",
             checks["validation-lifecycle-contract"][6],
         )

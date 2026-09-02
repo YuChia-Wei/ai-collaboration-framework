@@ -340,6 +340,12 @@ register_check validation-lifecycle-tests \
     "governance,validation,evidence,tests" "fast pr release nightly-full" \
     ".ai/scripts/tests/test_validation_lifecycle.py .ai/assets/shared/validation-evidence-lifecycle.schema.yaml .dev/standards/GITHUB-WORK-MANAGEMENT-POLICY.yaml" validation-lifecycle-contract "python>=3.11" 60 cpu reuse-by-input source \
     "python .ai/scripts/tests/test_validation_lifecycle.py -v" source-governance
+register_check validation-dependency-observation-contract \
+    "Bounded Validation Dependency Observation" required \
+    "governance,validation,dependencies,tests" "fast pr release nightly-full" \
+    ".ai/assets/shared/VALIDATION-DEPENDENCY-OBSERVATION-CONTRACT.md .ai/assets/shared/validation-dependency-observation.schema.yaml .ai/scripts/observe-validation-dependencies.py .ai/scripts/tests/test_validation_dependency_observation.py .ai/scripts/tests/fixtures/validation-dependency-observation" validation-lifecycle-contract \
+    "python>=3.11 git" 60 cpu reuse-by-input source \
+    "python .ai/scripts/tests/test_validation_dependency_observation.py -v" source-governance
 register_check agent-execution-guardrails-contract \
     "Agent Execution Guardrails Contract" required \
     "governance,agents,evidence" "fast pr release nightly-full" \
