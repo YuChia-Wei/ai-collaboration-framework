@@ -1,0 +1,54 @@
+schema_version: subject-rebind-scenarios/v1
+example_only: true
+gate_id: multi-hop-upgrade-transaction
+scenarios:
+  - id: commit-message-only
+    change: commit message changed; applicable bytes unchanged
+    subject_digest_equal: true
+    expected: reused-with-proof
+    fresh: [selected-git-commits, exact-head-independent-audit, hosted-required-contexts]
+  - id: squash-equivalent
+    change: commits squashed; sealed original and current manifests equivalent
+    subject_digest_equal: true
+    expected: reused-with-proof
+    fresh: [selected-git-commits, exact-head-independent-audit, hosted-required-contexts]
+  - id: rebase-outside-closure
+    change: base changed only outside the complete applicable closure
+    subject_digest_equal: true
+    expected: reused-with-proof
+    fresh: [exact-head-independent-audit, hosted-required-contexts, live-merge-admission]
+  - id: tracked-byte-drift
+    change: one tracked blob inside the closure changed
+    subject_digest_equal: false
+    expected: re-executed
+    fresh: [exact-head-independent-audit, hosted-required-contexts]
+  - id: dependency-drift
+    change: declared or transitive dependency changed
+    subject_digest_equal: false
+    expected: re-executed
+    fresh: [exact-head-independent-audit, hosted-required-contexts]
+  - id: runtime-drift
+    change: actual Python, ABI, package, or applicable tool identity changed
+    subject_digest_equal: false
+    expected: re-executed
+    fresh: [exact-head-independent-audit, hosted-required-contexts]
+  - id: environment-unknown
+    change: applicable filesystem or storage semantic dimension is unknown
+    subject_digest_equal: unknown
+    expected: blocked
+    fresh: [exact-head-independent-audit, hosted-required-contexts]
+  - id: provider-drift
+    change: PR body, review, hosted context, Issue, Project, tag, or Release state changed
+    subject_digest_equal: true
+    expected: reused-with-proof-for-local-behavior-only
+    fresh: [hosted-required-contexts, live-merge-admission, provider-read-back]
+  - id: old-evidence-without-manifest
+    change: original evidence predates subject-manifest/v1
+    subject_digest_equal: unavailable
+    expected: not-eligible
+    fresh: [gate-execution, exact-head-independent-audit, hosted-required-contexts]
+  - id: original-unavailable-and-unsealed
+    change: original commit object unavailable and no trusted sealed manifest exists
+    subject_digest_equal: unprovable
+    expected: blocked
+    fresh: [gate-execution, exact-head-independent-audit, hosted-required-contexts]

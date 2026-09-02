@@ -1,0 +1,77 @@
+schema_version: subject-manifest/v1
+example_only: true
+gate_id: multi-hop-upgrade-transaction
+classification:
+  schema_version: gate-sensitivity/v1
+  sensitivities: [input, environment]
+  reuse_eligibility: pilot-approved
+  classification_digest: aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+
+identity_projection:
+  schema_version: subject-identity/v1
+  gate_id: multi-hop-upgrade-transaction
+  classification_digest: aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+  tracked_closure_digest: bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
+  invocation_digest: cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
+  authority_digest: dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
+  runtime_digest: eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
+  environment_digest: ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
+subject_digest: 1111111111111111111111111111111111111111111111111111111111111111
+
+components:
+  tracked_closure:
+    resolver_argv:
+      - bash
+      - .ai/scripts/check-all.sh
+      - --resolve-input-closure
+      - multi-hop-upgrade-transaction
+    complete: true
+    unknown_paths: []
+    path_count: 37
+    entries_digest: bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
+    receipt:
+      ref: ignored:validation/closure.json
+      sha256: 2222222222222222222222222222222222222222222222222222222222222222
+  invocation:
+    argv:
+      - python
+      - .ai/scripts/tests/test_ai_context_multi_hop_upgrade.py
+      - -v
+    working_directory: .
+    profile: pr
+    digest: cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
+  authority:
+    dimensions:
+      runner: 3333333333333333333333333333333333333333333333333333333333333333
+      registry: 4444444444444444444444444444444444444444444444444444444444444444
+      resolver: 5555555555555555555555555555555555555555555555555555555555555555
+      policy: 6666666666666666666666666666666666666666666666666666666666666666
+      configuration: 7777777777777777777777777777777777777777777777777777777777777777
+    digest: dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
+  runtime:
+    schema_version: validation-runtime-identity/v1
+    identity_ref: ignored:validation/runtime.json
+    digest: eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
+  environment:
+    contract_id: multi-hop-upgrade-environment/v1
+    dimensions:
+      os_family: windows
+      filesystem_semantics: windows-ntfs
+      python_runtime_digest: eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
+      git_version: 2.x-example
+    digest: ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
+
+provenance:
+  repository: YuChia-Wei/ai-collaboration-framework
+  commit: 8888888888888888888888888888888888888888
+  tree: 9999999999999999999999999999999999999999
+  generated_at: 2026-08-31T20:02:51+08:00
+  original_evidence:
+    ref: ignored:validation/multi-hop.result.json
+    sha256: abababababababababababababababababababababababababababababababab
+
+digest_rule:
+  algorithm: sha256
+  canonicalization: utf8-json-sorted-keys-no-insignificant-whitespace-v1
+  included: identity_projection
+  excluded: [provenance, components.*.ref, generated_at]
