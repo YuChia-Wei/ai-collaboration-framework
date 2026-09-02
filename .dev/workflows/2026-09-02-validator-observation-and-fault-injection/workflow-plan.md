@@ -27,15 +27,16 @@
 ## Development Objective
 
 - Product or software outcome: Deliver Issues [#268](https://github.com/YuChia-Wei/ai-collaboration-framework/issues/268) and [#267](https://github.com/YuChia-Wei/ai-collaboration-framework/issues/267) as one v0.16.0 safety-precondition delivery while preserving their independent acceptance outcomes.
-- Current lifecycle entry point: Completed implementation delivered to GitHub PR [#281](https://github.com/YuChia-Wei/ai-collaboration-framework/pull/281) for owner review.
-- User constraints: Complete #268 first, then use #267 to falsify the validation chain; the owner subsequently authorized branch push and PR creation on 2026-09-03.
-- Non-goals: #270 production manifest/rebind implementation, reuse pilot enablement, merge, release/publication, Issue closure, or terminal Project mutation.
+- Current lifecycle entry point: Completed implementation in GitHub PR [#281](https://github.com/YuChia-Wei/ai-collaboration-framework/pull/281) is authorized for terminal delivery, pending fresh exact-head audit, hosted checks, and live merge admission.
+- User constraints: Complete #268 first, then use #267 to falsify the validation chain; the owner subsequently authorized branch push, PR creation, merge, and #267/#268 Issue closure on 2026-09-03.
+- Non-goals: #270 production manifest/rebind implementation, reuse pilot enablement, manual Project mutation, tag, GitHub Release, or publication.
 
 ## Authority And Preflight
 
 - Live GitHub read-back on 2026-09-02 found #267 and #268 open, Project status `Inbox`, and target release `v0.16.0`; their Issue bodies are the acceptance authority.
 - Live `origin/main` and the new worktree both resolved to `c7f348694421048245da824dd79742372179f730`; the worktree was clean before branch creation.
 - On 2026-09-03, live remote read-back still resolved `origin/main` to `c7f348694421048245da824dd79742372179f730`; the owner then explicitly authorized push and PR creation, and PR #281 was opened from the clean workflow branch.
+- A second live read-back on 2026-09-03 found PR #281 open, clean, mergeable, and still based on `c7f348694421048245da824dd79742372179f730` at head `c4757da18f8f7e15b1bda19fee64d112d56c8000`; #267 and #268 remained open with Project status `Inbox`. The owner then explicitly authorized merge and Issue closure, subject to the repository's fresh terminal gates.
 - The owner authorization is the source-task delegation from thread `01a05526-95b8-7723-b23f-50bba311ce06`, which expressly authorizes branch/workflow creation, accepted-scope repository mutation, validation, and local commits.
 - Issue #270 owner decision [comment 5478024060](https://github.com/YuChia-Wei/ai-collaboration-framework/issues/270#issuecomment-5478024060) and read-only design checkpoint `3df455bd0ae6502b863990fd6aa104239d6f86ed` establish dependency-first sequencing and the no-pilot boundary. The commit is not cherry-picked.
 - Effective-rule attempt 1 used an unsupported `source` technology profile and failed with `source-rule-selection`; after correcting the request to the repository's exact `dotnet-backend` source catalog route, the framework-source packet resolved with `loaded_rule_ids=[AICTX-EVIDENCE-001]` and packet digest `7d3cdae66882a5669daf7813f17353292137abcc77b126a8ca329ac1a8d328da`.
@@ -92,7 +93,8 @@ One workflow and branch are used because #267 and #268 share the same safety out
 | --- | --- | --- | --- |
 | requirement/design/specification -> implementation | `approved` | 2026-09-02 source-task owner delegation | none within #267/#268 accepted scope |
 | completed local delivery -> branch push and PR creation | `approved` | 2026-09-03 owner message: "是否可以發 PR 並結束作業?" | none; PR #281 opened with deferred Issue dispositions |
-| PR #281 -> merge, Issue closure, or Project terminal mutation | `awaiting-approval` | explicitly not inferred from push/PR authorization | owner review, fresh exact-head audit, hosted checks, and separate merge/closure authorization |
+| PR #281 -> merge and #267/#268 Issue closure | `approved` | 2026-09-03 owner message: "沒問題的話，可以完成合併並關閉 issue" | fresh exact-head independent audit, required hosted checks, and live merge admission |
+| post-merge read-back -> manual Project terminal mutation | `awaiting-approval` | not inferred from merge and Issue-closure authorization | observe provider automation first; request separate authorization only if Project status does not reconcile automatically |
 | #267/#268 completion -> #270 production implementation or pilot | `awaiting-approval` | explicit user exclusion and #270 owner comment | separate future authorization required |
 
 ## Validation Strategy
@@ -100,7 +102,7 @@ One workflow and branch are used because #267 and #268 share the same safety out
 - Requirement/spec traceability: maintain `acceptance-ledger.val-012.yaml` and `acceptance-ledger.val-011.yaml` independently.
 - Architecture validation: confirm lower-bound observation semantics and unchanged always-fresh admission boundaries.
 - Test and implementation validation: run the new focused test modules first, then existing AI-behavior/registry/lifecycle validators affected by the changed paths.
-- Review/compliance gates: self-review against both ledgers and repository policies; spec compliance remains unselected and `not-applicable`; no independent fixed-head audit is claimed.
+- Review/compliance gates: self-review against both ledgers and repository policies; spec compliance remains unselected and `not-applicable`; a fresh exact-head independent audit, required hosted checks, and live merge admission are mandatory before integration.
 
 ## Test Execution Contract
 
@@ -150,14 +152,14 @@ One workflow and branch are used because #267 and #268 share the same safety out
 
 ## Progress And Handoff
 
-- Current stage: completed and handed off through open PR #281; the first hosted head failed and the in-scope portable remediation is committed at `f7463efa440d3bbfe1001f5e93727eb87a7ec2e3`, pending final evidence push and restarted hosted checks.
-- Completed stages: provider/baseline/policy preflight, workflow bootstrap, VAL012 bounded dependency observation at `d8105e3dc038880d70803383a8928fc017a9f2f1`, VAL011 incident-derived fault injection at `f7e1d7537226ff773dbb57508f98d3527fd88d3f`, and VAL012 hosted portability remediation at `f7463efa440d3bbfe1001f5e93727eb87a7ec2e3`.
+- Current stage: terminal delivery is authorized for open PR #281; the terminal-close declaration is committed as the current PR head, pending a fresh exact-head audit, restarted hosted checks, and live admission.
+- Completed stages: provider/baseline/policy preflight, workflow bootstrap, VAL012 bounded dependency observation at `d8105e3dc038880d70803383a8928fc017a9f2f1`, VAL011 incident-derived fault injection at `f7e1d7537226ff773dbb57508f98d3527fd88d3f`, VAL012 hosted portability remediation at `f7463efa440d3bbfe1001f5e93727eb87a7ec2e3`, and hosted remediation evidence closeout at `c4757da18f8f7e15b1bda19fee64d112d56c8000`.
 - Deferred stages and reasons: #270 production and pilot are outside authorization.
-- Open decisions: PR review/merge and terminal Issue/Project disposition remain owner-controlled; #270 remains separately unauthorized.
+- Open decisions: #270 remains separately unauthorized; manual Project mutation remains owner-controlled if provider automation does not reconcile it after merge.
 - Continuation instructions: any #270 subject manifest, rebind validator, one-pilot observation, or reuse enablement requires a separate owner-authorized workflow; retain both closed ledgers as independent evidence.
 - Target policy references: workflow gate, workflow artifact, handoff, Git commit, and branch policies named in the locator.
 - Registered handoff checkpoint: none; this task remains in the same session/runtime.
-- Branch history and checkpoint handoffs: branch created directly from verified `main@c7f348694421048245da824dd79742372179f730`, pushed after explicit authorization, and handed off in PR #281; merge is not authorized.
+- Branch history and checkpoint handoffs: branch created directly from verified `main@c7f348694421048245da824dd79742372179f730`, pushed after explicit authorization, and handed off in PR #281; merge and #267/#268 closure are now authorized but remain gated by fresh exact-head evidence.
 
 ## Branch Lifecycle
 
@@ -171,15 +173,15 @@ One workflow and branch are used because #267 and #268 share the same safety out
 
 ## Completion Summary
 
-- Outcome: completed locally and delivered for review in PR #281; VAL012 and VAL011 each passed all six independently recorded acceptance outcomes, including the VAL012 portable remediation at `f7463efa`.
+- Outcome: implementation and focused verification are complete in PR #281; terminal delivery is owner-authorized and remains pending fresh exact-head audit, hosted checks, live admission, integration, and post-merge read-back.
 - Changed artifacts: workflow records; the bounded observation contract/schema/CLI/fixtures; and the digest-bound incident mutant corpus, normalized result schema, deterministic adapters, tests, and release/nightly registration.
 - Approved requirement/specification evidence: live Issues #267/#268, owner instruction, #270 owner decision and read-only design checkpoint.
 - Implementation completion evidence: VAL012 was introduced at `d8105e3dc038880d70803383a8928fc017a9f2f1` and its portable state is bound to `f7463efa440d3bbfe1001f5e93727eb87a7ec2e3`; VAL011 is complete at `f7e1d7537226ff773dbb57508f98d3527fd88d3f` with normalized report digest `b8ac291525e8cebe1eb7b6ec982266bdcbb1ac2d36b91b0f2c15fd48ad87232f`.
 - Required test outcomes: VAL012 9/9 focused tests passed on Windows plus WSL representative/CLI regressions; dependency consistency 19/19, portable entrypoint 7/7, Windows launcher 4/4, POSIX launcher 5/5, and affected package projection passed. VAL011 18/18 exact-head tests passed with 5/5 critical mutants detected and the critical-survivor negative control passing.
 - Selected compliance evidence: not applicable.
-- Review disposition: parent self-review completed against both ledgers; the fresh exact-head independent audit and hosted merge-admission gates remain pending and are not claimed.
+- Review disposition: parent self-review completed against both ledgers; the fresh exact-head independent audit, hosted checks, and live merge-admission gates remain pending and are not claimed.
 - Validation evidence: focused and affected integration gates passed; exact-head VAL011 observation is explicitly partial/lower-bound-only. GitHub Actions runs 33694513510 and 33694513532 preserve the first PR head's registry/projection and POSIX observation failures; the initial undeclared-runtime observation, initial UPG detector mismatch, and wrong-Bash closure invocation also remain preserved as failures in the task.
 - Workflow task state: VAL012 completed; VAL011 completed.
-- Delivery commits through hosted remediation: `d66eec5915584a7e6df48ac6ab61a7261f1f134c`, `d8105e3dc038880d70803383a8928fc017a9f2f1`, `fade069607baf22655d0b084477edf66bc555e38`, `f7e1d7537226ff773dbb57508f98d3527fd88d3f`, `995e90af44cde8f35709d9e6964372b670c50854`, `b733ff15f34a6cf39563e7a17b7bb92201b8b9b6`, and `f7463efa440d3bbfe1001f5e93727eb87a7ec2e3`.
-- Branch / checkpoint / handoff evidence: pushed branch and open PR #281; `.dev/workflows/2026-09-02-validator-observation-and-fault-injection/evidence/terminal-issue-closure-pr-281.yaml` binds both Issues as deferred, so no merge or Issue closure is implied.
+- Delivery commits through hosted remediation and evidence closeout: `d66eec5915584a7e6df48ac6ab61a7261f1f134c`, `d8105e3dc038880d70803383a8928fc017a9f2f1`, `fade069607baf22655d0b084477edf66bc555e38`, `f7e1d7537226ff773dbb57508f98d3527fd88d3f`, `995e90af44cde8f35709d9e6964372b670c50854`, `b733ff15f34a6cf39563e7a17b7bb92201b8b9b6`, `f7463efa440d3bbfe1001f5e93727eb87a7ec2e3`, and `c4757da18f8f7e15b1bda19fee64d112d56c8000`.
+- Branch / checkpoint / handoff evidence: pushed branch and open PR #281; `.dev/workflows/2026-09-02-validator-observation-and-fault-injection/evidence/terminal-issue-closure-pr-281.yaml` binds both Issues as terminal-close while integration remains pending mandatory terminal gates.
 - Residual risks: runtime observation remains a lower bound, the exploratory unknown-field mutant remains an explicit follow-up candidate, and all #270 reuse/pilot work remains separately unauthorized.

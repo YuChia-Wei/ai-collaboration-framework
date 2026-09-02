@@ -23,18 +23,18 @@ pull_request:
     ## Related Issues
 
     - Issue #: #267
-    - Delivery disposition: `deferred`
-    - Reference: Refs #267
-    - `closure_deferred_reason` (required for deferred): This PR is the review handoff; the current authorization excludes merge and terminal Issue closure.
-    - Next terminal gate or owner (required for deferred): The repository owner decides merge and terminal closure after hosted checks and a fresh exact-head independent audit.
-    - Owner authorization or approved no-Issue exception: The owner authorized implementation on 2026-09-02 and explicitly authorized branch push and PR creation on 2026-09-03.
+    - Delivery disposition: `terminal-close`
+    - Reference: Closes #267
+    - `closure_deferred_reason` (required for deferred): not applicable
+    - Next terminal gate or owner (required for deferred): not applicable
+    - Owner authorization or approved no-Issue exception: The repository owner explicitly authorized merge and Issue closure on 2026-09-03 after the implementation, branch push, and PR creation were complete.
 
     - Issue #: #268
-    - Delivery disposition: `deferred`
-    - Reference: Refs #268
-    - `closure_deferred_reason` (required for deferred): This PR is the review handoff; the current authorization excludes merge and terminal Issue closure.
-    - Next terminal gate or owner (required for deferred): The repository owner decides merge and terminal closure after hosted checks and a fresh exact-head independent audit.
-    - Owner authorization or approved no-Issue exception: The owner authorized implementation on 2026-09-02 and explicitly authorized branch push and PR creation on 2026-09-03.
+    - Delivery disposition: `terminal-close`
+    - Reference: Closes #268
+    - `closure_deferred_reason` (required for deferred): not applicable
+    - Next terminal gate or owner (required for deferred): not applicable
+    - Owner authorization or approved no-Issue exception: The repository owner explicitly authorized merge and Issue closure on 2026-09-03 after the implementation, branch push, and PR creation were complete.
 
     ## Delivery And Integration
 
@@ -57,8 +57,10 @@ pull_request:
     - [x] Target-owned .NET commands are not applicable to this framework-source Python/YAML change
     - [x] Contracts, schemas, evaluation documentation, and workflow evidence are updated
     - [x] No secrets committed; optional runtime evidence stays under ignored validation paths
-    - [x] Every named Issue has exactly one deferred delivery disposition
-    - [ ] The repository's exact-head single-maintainer audit receipt and hosted merge-admission gates remain pending for the owner
+    - [x] Issue #267 has exactly one terminal-close disposition
+    - [x] Issue #268 has exactly one terminal-close disposition
+    - [ ] The exact final PR head has the required single-maintainer audit receipt
+    - [ ] The exact final PR head passes all required hosted checks and live merge admission
 
     Generated with Codex from Issues #267 and #268, repository-native validation, and the completed workflow evidence.
   integration:
@@ -73,18 +75,18 @@ pull_request:
   hosted_checks: []
 issues:
   - number: 267
-    mode: deferred
+    mode: terminal-close
     work_authorization:
       online_issue_bound: true
       explicit_owner_approval: true
-    final_accepted_delivery: false
+    final_accepted_delivery: true
     workflow:
       scope_complete: true
       tasks_complete: true
       applicable_verification_complete: true
-    closing_keyword: null
-    closure_deferred_reason: "PR review handoff only; merge and terminal Issue closure are not authorized."
-    next_terminal_gate_or_owner: "Repository owner after hosted checks and a fresh exact-head independent audit."
+    closing_keyword: Closes
+    closure_deferred_reason: null
+    next_terminal_gate_or_owner: null
     read_back:
       performed: false
       integration_commit_sha: null
@@ -92,18 +94,18 @@ issues:
       issue_state_reason: null
       project_status: null
   - number: 268
-    mode: deferred
+    mode: terminal-close
     work_authorization:
       online_issue_bound: true
       explicit_owner_approval: true
-    final_accepted_delivery: false
+    final_accepted_delivery: true
     workflow:
       scope_complete: true
       tasks_complete: true
       applicable_verification_complete: true
-    closing_keyword: null
-    closure_deferred_reason: "PR review handoff only; merge and terminal Issue closure are not authorized."
-    next_terminal_gate_or_owner: "Repository owner after hosted checks and a fresh exact-head independent audit."
+    closing_keyword: Closes
+    closure_deferred_reason: null
+    next_terminal_gate_or_owner: null
     read_back:
       performed: false
       integration_commit_sha: null
