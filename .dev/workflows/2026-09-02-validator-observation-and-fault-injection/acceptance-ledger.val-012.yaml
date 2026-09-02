@@ -1,0 +1,39 @@
+schema_version: "1.0"
+ledger_id: "2026-09-02-validator-observation-and-fault-injection-val-012"
+workflow_id: "2026-09-02-validator-observation-and-fault-injection"
+work_items:
+  - "https://github.com/YuChia-Wei/ai-collaboration-framework/issues/268"
+human_projection: ".dev/workflows/2026-09-02-validator-observation-and-fault-injection/workflow-plan.md#issue-268--val-012"
+created_at: "2026-09-02T22:43:57+08:00"
+updated_at: "2026-09-02T22:43:57+08:00"
+acceptances:
+  - acceptance_id: "VAL012-A1"
+    status: "pending"
+    required_outcome: "Observed-but-undeclared dependencies fail within the declared representative harness boundary."
+    evidence: []
+    evidence_digest: null
+  - acceptance_id: "VAL012-A2"
+    status: "pending"
+    required_outcome: "Declared-but-unobserved dependencies remain advisory and are never removed automatically."
+    evidence: []
+    evidence_digest: null
+  - acceptance_id: "VAL012-A3"
+    status: "pending"
+    required_outcome: "Unsupported or incomplete observation reports blocked or partial coverage, never complete closure."
+    evidence: []
+    evidence_digest: null
+  - acceptance_id: "VAL012-A4"
+    status: "pending"
+    required_outcome: "File, subprocess, Git, environment, and runtime observation coverage is explicit per validator."
+    evidence: []
+    evidence_digest: null
+  - acceptance_id: "VAL012-A5"
+    status: "pending"
+    required_outcome: "Fixtures cover an undeclared file read, an undeclared subprocess/tool dependency, an untaken branch, and an intentionally broad declaration."
+    evidence: []
+    evidence_digest: null
+  - acceptance_id: "VAL012-A6"
+    status: "pending"
+    required_outcome: "Existing identity-sensitive and provider-sensitive fresh gates remain unchanged."
+    evidence: []
+    evidence_digest: null

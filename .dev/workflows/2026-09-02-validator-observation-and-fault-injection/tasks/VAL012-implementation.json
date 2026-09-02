@@ -1,0 +1,67 @@
+{
+  "template_id": "software-development-orchestrator/development-workflow-task",
+  "template_version": "1.5.0",
+  "template_created_at": "2026-07-10T18:25:11+08:00",
+  "template_updated_at": "2026-08-05T02:12:00+08:00",
+  "workflow_id": "2026-09-02-validator-observation-and-fault-injection",
+  "task_id": "VAL012-implementation",
+  "owner_skill": "slice-implementer",
+  "related_plan_id": "development-plan-2026-09-02-validator-observation-and-fault-injection",
+  "status": "in_progress",
+  "created_at": "2026-09-02T22:43:57+08:00",
+  "updated_at": "2026-09-02T22:43:57+08:00",
+  "template_source": ".ai/assets/skills/software-development-orchestrator/templates/development-workflow-task-template.json",
+  "model": "gpt-5.6-sol",
+  "reasoning_effort": "max",
+  "workflow_locator": ".dev/workflows/2026-09-02-validator-observation-and-fault-injection/workflow.yaml",
+  "scope": {
+    "goal": "Implement Issue #268 bounded runtime dependency observation and privacy-safe drift reporting.",
+    "target": ".ai validation tooling and registered validation surfaces",
+    "files": [".ai/scripts", ".ai/scripts/tests", ".ai/evaluation", ".ai/assets/shared", ".ai/distribution"],
+    "constraints": ["observation is lower-bound evidence", "observed undeclared dependencies fail", "declared unobserved dependencies are advisory", "no automatic declaration edits", "always-fresh gates remain unchanged"],
+    "non_goals": ["complete transitive closure proof", "subject-digest implementation", "reuse pilot enablement", "provider mutation"]
+  },
+  "inputs": {
+    "requirements": ["GitHub Issue #268"],
+    "specifications": ["Issue #270 owner comment 5478024060", "read-only design commit 3df455bd0ae6502b863990fd6aa104239d6f86ed"],
+    "architecture_decisions": ["extend existing validation surfaces", "privacy-safe normalized lower-bound reports"],
+    "user_constraints": ["complete #268 before #267", "local commits only", "do not enable #270 pilot"]
+  },
+  "execution": {
+    "capability_slot": "implementation",
+    "approval_contract": {
+      "status": "approved",
+      "required_before": "implementation",
+      "authorization_source": ["2026-09-02 source-task owner delegation from thread 01a05526-95b8-7723-b23f-50bba311ce06"],
+      "pending_decision": ""
+    },
+    "implementation_contract": {
+      "intent": "feature",
+      "execution_mode": "generic",
+      "overlays": [],
+      "authorization_source": ["2026-09-02 source-task owner delegation"],
+      "normative_truth": ["GitHub Issue #268", "AICTX-EVIDENCE-001 packet 7d3cdae66882a5669daf7813f17353292137abcc77b126a8ca329ac1a8d328da", "Issue #270 owner decision and design checkpoint"],
+      "finding_evidence": [],
+      "subject_revision": "c7f348694421048245da824dd79742372179f730",
+      "acceptance_criteria": ["VAL012-A1", "VAL012-A2", "VAL012-A3", "VAL012-A4", "VAL012-A5", "VAL012-A6"]
+    },
+    "test_execution_contract": null,
+    "role_execution_records": [],
+    "spec_compliance": {"selected": false, "activation_source": [], "expected_outcome": "not-applicable"},
+    "steps": ["design the bounded observation contract", "implement the harness and drift report", "add representative fixtures and focused tests", "register the affected validation surface", "reconcile the VAL012 ledger"],
+    "validation": ["focused observation tests", "representative harness executions", "validation profile registry tests", "workflow artifact validation", "git diff --check"],
+    "commit_checkpoint": "validated local VAL012 implementation commit",
+    "deferred_items": ["Issue #270 subject manifest and reuse pilot"]
+  },
+  "results": {
+    "summary": "",
+    "files_changed": [],
+    "approval_evidence": ["2026-09-02 source-task owner delegation"],
+    "test_execution": [],
+    "role_execution_aggregation": [],
+    "spec_compliance": {"outcome": "not-applicable", "coverage_percent": null, "evidence": []},
+    "validation_evidence": ["Framework-source effective-rule packet 7d3cdae66882a5669daf7813f17353292137abcc77b126a8ca329ac1a8d328da"],
+    "commits": [],
+    "follow_up_needed": true
+  }
+}

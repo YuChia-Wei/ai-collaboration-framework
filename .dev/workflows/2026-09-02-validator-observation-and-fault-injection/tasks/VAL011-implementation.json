@@ -1,0 +1,67 @@
+{
+  "template_id": "software-development-orchestrator/development-workflow-task",
+  "template_version": "1.5.0",
+  "template_created_at": "2026-07-10T18:25:11+08:00",
+  "template_updated_at": "2026-08-05T02:12:00+08:00",
+  "workflow_id": "2026-09-02-validator-observation-and-fault-injection",
+  "task_id": "VAL011-implementation",
+  "owner_skill": "slice-implementer",
+  "related_plan_id": "development-plan-2026-09-02-validator-observation-and-fault-injection",
+  "status": "pending",
+  "created_at": "2026-09-02T22:43:57+08:00",
+  "updated_at": "2026-09-02T22:43:57+08:00",
+  "template_source": ".ai/assets/skills/software-development-orchestrator/templates/development-workflow-task-template.json",
+  "model": "gpt-5.6-sol",
+  "reasoning_effort": "max",
+  "workflow_locator": ".dev/workflows/2026-09-02-validator-observation-and-fault-injection/workflow.yaml",
+  "scope": {
+    "goal": "Implement Issue #267 incident-derived fault injection and a critical-survivor failure gate.",
+    "target": ".ai deterministic evaluation and registered validation surfaces",
+    "files": [".ai/evaluation", ".ai/scripts", ".ai/scripts/tests", ".ai/assets/shared", ".ai/distribution"],
+    "constraints": ["critical known-incident mutants all detected", "exploratory survivors remain truthful", "tracked repository files are not mutated by execution", "release/nightly lifecycle binding", "privacy-safe normalized evidence"],
+    "non_goals": ["stochastic model/judge evaluation", "subject-digest implementation", "reuse pilot enablement", "provider mutation"]
+  },
+  "inputs": {
+    "requirements": ["GitHub Issue #267"],
+    "specifications": ["completed VAL012 output", "Issue #270 owner comment 5478024060", "read-only design commit 3df455bd0ae6502b863990fd6aa104239d6f86ed"],
+    "architecture_decisions": ["extend .ai/evaluation and registered validation surfaces", "critical survivors fail closed"],
+    "user_constraints": ["start after #268", "local commits only", "do not enable #270 pilot"]
+  },
+  "execution": {
+    "capability_slot": "implementation",
+    "approval_contract": {
+      "status": "approved",
+      "required_before": "implementation",
+      "authorization_source": ["2026-09-02 source-task owner delegation from thread 01a05526-95b8-7723-b23f-50bba311ce06"],
+      "pending_decision": ""
+    },
+    "implementation_contract": {
+      "intent": "feature",
+      "execution_mode": "generic",
+      "overlays": [],
+      "authorization_source": ["2026-09-02 source-task owner delegation"],
+      "normative_truth": ["GitHub Issue #267", "AICTX-EVIDENCE-001 packet 7d3cdae66882a5669daf7813f17353292137abcc77b126a8ca329ac1a8d328da", "completed VAL012 acceptance ledger", "Issue #270 owner decision and design checkpoint"],
+      "finding_evidence": [],
+      "subject_revision": "c7f348694421048245da824dd79742372179f730",
+      "acceptance_criteria": ["VAL011-A1", "VAL011-A2", "VAL011-A3", "VAL011-A4", "VAL011-A5", "VAL011-A6"]
+    },
+    "test_execution_contract": null,
+    "role_execution_records": [],
+    "spec_compliance": {"selected": false, "activation_source": [], "expected_outcome": "not-applicable"},
+    "steps": ["load the mandatory mutation-testing role contract", "define the incident mutant corpus and result schema", "integrate deterministic detectors and critical-survivor gate", "add focused negative and worktree-stability tests", "register release/nightly validation", "reconcile the VAL011 ledger"],
+    "validation": ["focused incident fault-injection tests", "critical-survivor negative test", "AI behavior deterministic evaluation", "validation profile registry tests", "workflow artifact validation", "git diff --check"],
+    "commit_checkpoint": "validated local VAL011 implementation commit",
+    "deferred_items": ["Issue #270 subject manifest, rebind validator, and pilot enablement"]
+  },
+  "results": {
+    "summary": "",
+    "files_changed": [],
+    "approval_evidence": ["2026-09-02 source-task owner delegation"],
+    "test_execution": [],
+    "role_execution_aggregation": [],
+    "spec_compliance": {"outcome": "not-applicable", "coverage_percent": null, "evidence": []},
+    "validation_evidence": ["Framework-source effective-rule packet 7d3cdae66882a5669daf7813f17353292137abcc77b126a8ca329ac1a8d328da"],
+    "commits": [],
+    "follow_up_needed": true
+  }
+}

@@ -1,0 +1,39 @@
+schema_version: "1.0"
+ledger_id: "2026-09-02-validator-observation-and-fault-injection-val-011"
+workflow_id: "2026-09-02-validator-observation-and-fault-injection"
+work_items:
+  - "https://github.com/YuChia-Wei/ai-collaboration-framework/issues/267"
+human_projection: ".dev/workflows/2026-09-02-validator-observation-and-fault-injection/workflow-plan.md#issue-267--val-011"
+created_at: "2026-09-02T22:43:57+08:00"
+updated_at: "2026-09-02T22:43:57+08:00"
+acceptances:
+  - acceptance_id: "VAL011-A1"
+    status: "pending"
+    required_outcome: "Every critical known-incident mutant is detected; a surviving critical mutant fails the gate."
+    evidence: []
+    evidence_digest: null
+  - acceptance_id: "VAL011-A2"
+    status: "pending"
+    required_outcome: "Each mutant records its category, expected detector, actual detector, and outcome."
+    evidence: []
+    evidence_digest: null
+  - acceptance_id: "VAL011-A3"
+    status: "pending"
+    required_outcome: "Exploratory survivors are reported truthfully and can become follow-up work without being represented as passed."
+    evidence: []
+    evidence_digest: null
+  - acceptance_id: "VAL011-A4"
+    status: "pending"
+    required_outcome: "The corpus reuses existing deterministic evaluation and validator infrastructure where applicable."
+    evidence: []
+    evidence_digest: null
+  - acceptance_id: "VAL011-A5"
+    status: "pending"
+    required_outcome: "Execution leaves the tracked worktree unchanged."
+    evidence: []
+    evidence_digest: null
+  - acceptance_id: "VAL011-A6"
+    status: "pending"
+    required_outcome: "Focused tests prove the gate itself fails when a critical mutant survives."
+    evidence: []
+    evidence_digest: null
