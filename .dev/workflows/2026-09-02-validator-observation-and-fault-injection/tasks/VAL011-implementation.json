@@ -9,7 +9,7 @@
   "related_plan_id": "development-plan-2026-09-02-validator-observation-and-fault-injection",
   "status": "completed",
   "created_at": "2026-09-02T22:43:57+08:00",
-  "updated_at": "2026-09-03T08:00:32+08:00",
+  "updated_at": "2026-09-03T08:11:36+08:00",
   "template_source": ".ai/assets/skills/software-development-orchestrator/templates/development-workflow-task-template.json",
   "model": "gpt-5.6-sol",
   "reasoning_effort": "max",
@@ -304,6 +304,11 @@
         "command": "python .ai/scripts/tests/test_validation_dependency_observation.py -v",
         "outcome": "passed",
         "summary": "9 of 9 bounded dependency-observation tests passed at exact head b53d077f3730a5c50d19ada2b6b7d14afca63cd6."
+      },
+      {
+        "command": "fixed-head-independent-auditor --pull-request 281 --base-sha c7f348694421048245da824dd79742372179f730 --head-sha 76b748f0b24295b821846c83863d4e45b11474a8",
+        "outcome": "failed",
+        "summary": "The second fresh terminal audit independently confirmed 25 of 25 candidate digests and the repaired fault gate, then found one blocking P1 because all six updated VAL011 ledger digests still had their pre-remediation values in the workflow-plan human projection. No integration occurred on that head."
       }
     ],
     "role_execution_aggregation": [
@@ -324,6 +329,7 @@
       "Framework-source effective-rule packet 7d3cdae66882a5669daf7813f17353292137abcc77b126a8ca329ac1a8d328da",
       "VAL011 acceptance ledger records six passed acceptance outcomes with canonical evidence digests.",
       "The first terminal audit at e88204d8923eae86ff348cef277aa40aac39598a failed with one blocking P1 because the python-entrypoints candidate digest was stale; that failure remains retained and did not authorize integration.",
+      "The second terminal audit at 76b748f0b24295b821846c83863d4e45b11474a8 failed with one blocking P1 because six updated VAL011 ledger digests were not synchronized to the workflow-plan human projection; that failure also remains retained and did not authorize integration.",
       "Repaired exact-head fault-injection report 42cb132cf3bd4e1f4338e58c8d03b3ea897ffed95df0a36ed59611b7104332ee at b53d077f3730a5c50d19ada2b6b7d14afca63cd6 preserves the exploratory survivor, binds all 25 candidate inputs, and reports tracked_state_unchanged=true.",
       "Affected exact-head suites passed 18 of 18 AI behavior and incident tests, 7 of 7 Python-entrypoint contract tests, 10 of 10 registry tests, and 9 of 9 dependency-observation tests after the digest repair.",
       "Exact-head bounded observation report 7289d234965474df5bec543126f86bdfab795f566ee3a5b0f57735568d1b7577 remains partial/lower-bound-only and observed all 25 manifest-bound candidate paths.",
