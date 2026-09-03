@@ -349,6 +349,27 @@ class ValidationSubjectDigestGwtTests(SubjectRepositoryFixture):
             self._manifest("blocked", evidence=evidence)
         self.assertFalse((self.repo / "artifacts/blocked/subject-manifest.json").exists())
 
+    def test_gwt_005b_given_invalid_external_fresh_sensitivities_when_authority_is_loaded_then_it_fails_closed(self) -> None:
+        invalid_values = [
+            [],
+            ["not-a-valid-sensitivity"],
+            ["identity", "identity"],
+            ["provider", "identity"],
+        ]
+        for invalid in invalid_values:
+            with self.subTest(sensitivities=invalid):
+                authority = self._classification()
+                authority["external_fresh_gates"][0]["sensitivities"] = invalid
+                self._write(
+                    SUBJECT.CLASSIFICATION_REF,
+                    yaml.safe_dump(authority, sort_keys=False, allow_unicode=True),
+                )
+                with self.assertRaisesRegex(
+                    SUBJECT.SubjectError,
+                    "external fresh gate sensitivities are invalid",
+                ):
+                    SUBJECT.load_classification_authority(self.repo)
+
 
 class ValidationSubjectClassificationGwtTests(unittest.TestCase):
     def test_gwt_006_given_current_registry_when_classified_then_every_gate_occurs_once_and_only_one_is_enabled(self) -> None:
@@ -365,6 +386,14 @@ class ValidationSubjectClassificationGwtTests(unittest.TestCase):
     def test_gwt_007_given_change_fixture_matrix_when_decided_then_history_and_provider_only_changes_do_not_mask_subject_drift(self) -> None:
         fixture = yaml.safe_load(FIXTURES.read_text(encoding="utf-8"))
         self.assertEqual("subject-rebind-fixtures/v1", fixture["schema_version"])
+        self.assertEqual(
+            ["provider-drift"],
+            [scenario["id"] for scenario in fixture["scenarios"] if "fresh_gate" in scenario],
+        )
+        _classifications, authority = SUBJECT.load_classification_authority(ROOT)
+        external_fresh = {
+            item["gate_id"]: item for item in authority["external_fresh_gates"]
+        }
         base_projection = {
             "schema_version": SUBJECT.IDENTITY_SCHEMA,
             "gate_id": "multi-hop-upgrade-transaction",
@@ -393,6 +422,24 @@ class ValidationSubjectClassificationGwtTests(unittest.TestCase):
                     current_unknown_paths=[],
                 )
                 self.assertEqual(scenario["expected_outcome"], outcome)
+                fresh_gate = scenario.get("fresh_gate")
+                if fresh_gate is not None:
+                    self.assertIn(fresh_gate, external_fresh)
+                    self.assertIn("provider", external_fresh[fresh_gate]["sensitivities"])
+                    requirement = next(
+                        item
+                        for item in [
+                            {
+                                "gate": gate,
+                                "required": True,
+                                "replaceable_by_reuse": False,
+                            }
+                            for gate in SUBJECT.REQUIRED_FRESH_GATES
+                        ]
+                        if item["gate"] == fresh_gate
+                    )
+                    self.assertTrue(requirement["required"])
+                    self.assertFalse(requirement["replaceable_by_reuse"])
 
 
 if __name__ == "__main__":

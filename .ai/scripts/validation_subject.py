@@ -362,6 +362,14 @@ def load_classification_authority(repo: Path) -> tuple[dict[str, dict[str, Any]]
     for item_value in external:
         item = _mapping(item_value, "external fresh gate")
         _exact_keys(item, {"gate_id", "sensitivities", "reason"}, "external fresh gate")
+        sensitivities = item["sensitivities"]
+        if (
+            not isinstance(sensitivities, list)
+            or not sensitivities
+            or sensitivities != [value for value in SENSITIVITIES if value in sensitivities]
+            or len(set(sensitivities)) != len(sensitivities)
+        ):
+            raise SubjectError("external fresh gate sensitivities are invalid")
         if not isinstance(item["reason"], str) or not item["reason"]:
             raise SubjectError("external fresh gate reason is missing")
     return classifications, authority

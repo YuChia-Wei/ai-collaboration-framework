@@ -8,7 +8,7 @@
   "owner_skill": "slice-implementer",
   "status": "in_progress",
   "created_at": "2026-09-03T09:19:06+08:00",
-  "updated_at": "2026-09-03T10:38:50+08:00",
+  "updated_at": "2026-09-03T11:09:09+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-5.6-sol",
   "reasoning_effort": "max",
@@ -22,15 +22,15 @@
   "execution": {
     "steps": ["enable only the approved pilot", "validate declared-versus-observed dependencies", "run immutable-commit pilot execution", "perform equivalent final-head rebind", "record transition metrics and stop-condition status"],
     "validation": ["actual clean-commit multi-hop execution", "deterministic rebind", "fresh-gate presence", "observation and critical-mutant checks"],
-    "last_completed_step": "consumed the first actual equivalent-head rebind at 9dfdb72d19c106a66123fd2eb2259210724d5a35; the multi-hop gate passed as reused in 60ms and its 31 tests were not re-executed",
-    "next_action": "commit transition 1/3, authenticate the resulting final local head without double-counting the observation-only commit, and await separate remote admission authority"
+    "last_completed_step": "remediated both medium fixed-head audit findings and passed 8/8 focused subject tests plus 10/10 validation registry tests",
+    "next_action": "commit the audit remediation, execute a fresh clean-head pilot because the subject changed, and obtain a fresh independent fixed-head audit"
   },
   "results": {
-    "summary": "the original clean-commit pilot and first actual runner-consumed rebind both passed; subject digest remained equal and the allowlisted multi-hop gate reused sealed evidence without re-execution",
+    "summary": "the original pilot and first rebind remain valid observations; the fixed-head audit found two medium validation gaps, and both are repaired in the pending working tree",
     "files_changed": [".ai/scripts/check-all.sh", ".ai/scripts/validation-profile-registry.sh", ".ai/assets/shared/validation-gate-classification.yaml", ".dev/workflows/2026-09-03-subject-digest-evidence-reuse-implementation/pilot-observation.yaml"],
-    "tests_run": ["exact-HEAD validation registry passed 10/10", "subject digest/rebind tests passed 7/7", "first external attempt retained blocked-by-environment on Git Bash Win32 signal-pipe error 5", "second external fast-profile attempt passed in 486 seconds", "multi-hop-upgrade-transaction originally executed 31 tests in 107.280 seconds", "changed-path rebind fast run passed in 95 seconds with 10 selected, 8 executed, and 2 reused checks", "multi-hop-upgrade-transaction reused its sealed evidence in 60ms"],
+    "tests_run": ["original external fast-profile pilot passed in 486 seconds", "first changed-path rebind run passed in 95 seconds and reused the multi-hop evidence in 60ms", "first independent audit retained blocked-by-environment", "second independent audit ran 7/7 tests but failed with two medium findings", "post-remediation subject digest tests passed 8/8 in 35.968 seconds", "post-remediation validation registry tests passed 10/10 in 2.858 seconds"],
     "finding_status": "partially-addressed",
-    "residual_risk": "one of three qualifying head transitions is observed; allowlist expansion remains unauthorized and admitted-head exact-head/hosted/provider evidence is not yet available",
+    "residual_risk": "the remediation changes the reusable subject and therefore requires a fresh full pilot plus fresh independent audit; observation remains one of three and remote admission evidence is unavailable",
     "follow_up_needed": true
   }
 }

@@ -63,7 +63,27 @@ transitions:
       false_negative: false
       blocked: false
     observed_at: "2026-09-03T10:38:50+08:00"
+post_transition_audits:
+  - audit_id: "GOV017-AUDIT-002"
+    subject_commit: "4ad2f436883a4d7dd1d1d066458f95f9c97a5ed9"
+    outcome: "failed"
+    focused_tests: "7/7 passed"
+    findings:
+      - finding_id: "GOV017-AUDIT-F1"
+        severity: "medium"
+        summary: "External fresh-gate sensitivity values were not validated fail closed."
+      - finding_id: "GOV017-AUDIT-F2"
+        severity: "medium"
+        summary: "The provider-drift fixture declared fresh_gate without requiring or asserting it."
+    remediation:
+      status: "implemented-pending-exact-head-pilot-and-audit"
+      summary: "Validate external sensitivities for allowed order, membership, non-empty uniqueness; require the provider-drift fresh_gate and bind it to provider-sensitive authority."
+    preserved_prior_attempt:
+      audit_id: "GOV017-AUDIT-001"
+      outcome: "blocked-by-environment"
+      reason: "Windows temp and Git Bash sandbox permissions blocked six of seven tests."
 notes:
   - "The implementation and deterministic history-only fixture do not count as an observed production pilot transition."
   - "Transition 001 is the first actual runner-consumed subject rebind; it counts for pilot observation but does not satisfy final admitted-head hosted/provider acceptance."
+  - "The post-transition audit findings change the pilot subject, so the old sealed evidence must not be rebound across the remediation commit; a fresh original pilot is required."
   - "Expansion requires three qualifying transitions, zero stop-condition events, and a separate owner decision."
