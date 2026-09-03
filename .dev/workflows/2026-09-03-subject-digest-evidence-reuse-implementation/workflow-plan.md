@@ -21,7 +21,7 @@
 - `current_phase`: `remediation`
 - `artifact_root`: `.dev/workflows/2026-09-03-subject-digest-evidence-reuse-implementation`
 - `created_at`: `2026-09-03T09:19:06+08:00`
-- `updated_at`: `2026-09-03T09:55:12+08:00`
+- `updated_at`: `2026-09-03T10:31:06+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md`
 - `template_version`: `1.2.0`
 
@@ -97,16 +97,17 @@ These three tasks retain distinct state: manifest identity can complete before r
 
 ## Resume Checkpoint
 
-- Last completed action: implemented and focused-tested the canonical subject manifest, rebind authentication, runner consumption, and single-gate allowlist.
+- Last completed action: executed the exact clean-commit `fast` pilot at `a77e30102cb996a01e54ad3b57c68caefd53f442`; 48 checks were selected, 47 executed, none reused, failed, or blocked, and `multi-hop-upgrade-transaction` passed 31 tests in 107.280s with subject digest `f883f841ab3d968803209b948f0dc854b2b4420bac7dd4cbcdc0b10d95b8a51a`.
 - Current task: `GOV017-multi-hop-pilot`.
-- Exact next action: create a policy-valid clean implementation commit, rerun the HEAD-bound closure/registry test, then dispatch the 360-second pilot under the long-running validation contract.
-- Validation already completed: subject tests 7/7 passed in 30.672s; routine evidence tests 4/4 passed in 55.848s; lifecycle validation and shell syntax passed. The pre-commit registry run passed 9/10; its sole closure test correctly rejected the new untracked authority because it is not yet in `HEAD` and must be rerun after commit.
-- Git state: local implementation changes are uncommitted on `codex/2026-09-03-subject-digest-evidence-reuse-implementation`; no push or remote mutation occurred.
-- Branch history and checkpoint handoffs: one local branch from `main@34893ab7`; no push, PR, or external handoff.
-- Blockers or unresolved decisions: the local actual pilot requires a clean immutable commit; admitted-head hosted/provider proof requires separate push/PR authority. Allowlist expansion and every remote or terminal action remain owner-controlled.
+- Exact next action: commit this workflow-only pilot checkpoint, generate a current manifest at the new clean SHA, authenticate a rebind from the sealed `a77e3010` execution, and run the explicit-receipt `fast` path without executing the pilot gate again.
+- Validation already completed: exact-HEAD registry 10/10, subject digest/rebind 7/7, package projection 1/1, workflow/lifecycle/syntax checks, and the external `fast` pilot passed. Its first sandboxed attempt was retained as `blocked-by-environment` due to Git Bash Win32 signal-pipe error 5; the policy-valid second attempt used system-process access and passed in 486s. The pilot invocation is `20260903T021942Z-1486`, and its passing sealed-manifest SHA-256 is `76b4a0c7bb0b1d0c43c1bb98a9acde18de8024ac3ead67b674adb6aa88b0164a`.
+- Git state: implementation checkpoint `a77e30102cb996a01e54ad3b57c68caefd53f442` is clean; only this workflow metadata checkpoint is pending locally. No push or remote mutation occurred.
+- Branch history and checkpoint handoffs: one local branch from `main@34893ab7`, design checkpoint `4e0e677a`, implementation checkpoint `a77e3010`, and schema-valid ignored external pilot receipts; no push or PR.
+- Blockers or unresolved decisions: the first qualifying rebind transition is not yet recorded; admitted-head hosted/provider proof requires separate push/PR authority. Allowlist expansion and every remote or terminal action remain owner-controlled.
 
 ## Branch Lifecycle
 
 | Segment | Branch | Base | Checkpoint Type | Commit | Remote / Target | Recorded At | Reason | Resume Branch / Action |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | 1 | `codex/2026-09-03-subject-digest-evidence-reuse-implementation` | `main@34893ab7021d2119200a3b9ca153325a4d9dcbb8` | local implementation bootstrap | `4e0e677a08b0bdc819460a1afe6ec185e7440fff` | local only | `2026-09-03T09:19:06+08:00` | preserve approved design after dependency integration | implement `GOV017-subject-manifest` |
+| 1 | `codex/2026-09-03-subject-digest-evidence-reuse-implementation` | `4e0e677a08b0bdc819460a1afe6ec185e7440fff` | implementation and original pilot subject | `a77e30102cb996a01e54ad3b57c68caefd53f442` | local only | `2026-09-03T10:31:06+08:00` | seal the one approved pilot's first actual execution before a history-only transition | create and authenticate the first final-head rebind |

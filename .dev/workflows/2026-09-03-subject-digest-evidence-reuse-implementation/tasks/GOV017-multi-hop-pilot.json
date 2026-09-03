@@ -8,7 +8,7 @@
   "owner_skill": "slice-implementer",
   "status": "in_progress",
   "created_at": "2026-09-03T09:19:06+08:00",
-  "updated_at": "2026-09-03T09:55:12+08:00",
+  "updated_at": "2026-09-03T10:31:06+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-5.6-sol",
   "reasoning_effort": "max",
@@ -22,15 +22,15 @@
   "execution": {
     "steps": ["enable only the approved pilot", "validate declared-versus-observed dependencies", "run immutable-commit pilot execution", "perform equivalent final-head rebind", "record transition metrics and stop-condition status"],
     "validation": ["actual clean-commit multi-hop execution", "deterministic rebind", "fresh-gate presence", "observation and critical-mutant checks"],
-    "last_completed_step": "enabled only multi-hop-upgrade-transaction and replaced its legacy cache path with authenticated subject-rebind consumption",
-    "next_action": "commit the clean implementation subject, run the actual 360-second gate, and record the first qualifying transition"
+    "last_completed_step": "ran the exact fast profile at clean implementation commit a77e30102cb996a01e54ad3b57c68caefd53f442; the multi-hop pilot executed 31 tests and sealed subject digest f883f841ab3d968803209b948f0dc854b2b4420bac7dd4cbcdc0b10d95b8a51a",
+    "next_action": "commit this workflow-only pilot checkpoint and authenticate the first equivalent-head rebind without re-executing the multi-hop gate"
   },
   "results": {
-    "summary": "the runner accepts one explicit ignored rebind receipt only for fast/pr, forces selection of the pilot, and seals every original/current proof artifact",
+    "summary": "the runner accepts one explicit ignored rebind receipt only for fast/pr; the original clean-commit fast pilot passed with 48 selected, 47 executed, zero reused, zero failed, and zero blocked checks",
     "files_changed": [".ai/scripts/check-all.sh", ".ai/scripts/validation-profile-registry.sh", ".ai/assets/shared/validation-gate-classification.yaml", ".dev/workflows/2026-09-03-subject-digest-evidence-reuse-implementation/pilot-observation.yaml"],
-    "tests_run": ["Bash syntax passed", "registry metadata passed except the expected pre-commit HEAD closure rejection", "actual long-running pilot not yet executed"],
+    "tests_run": ["exact-HEAD validation registry passed 10/10", "subject digest/rebind tests passed 7/7", "first external attempt retained blocked-by-environment on Git Bash Win32 signal-pipe error 5", "second external fast-profile attempt passed in 486 seconds", "multi-hop-upgrade-transaction executed 31 tests in 107.280 seconds"],
     "finding_status": "partially-addressed",
-    "residual_risk": "zero of three qualifying head transitions have been observed; admitted-head hosted/provider evidence is not yet available",
+    "residual_risk": "the original pilot is sealed but zero of three qualifying head transitions have been observed; admitted-head hosted/provider evidence is not yet available",
     "follow_up_needed": true
   }
 }
