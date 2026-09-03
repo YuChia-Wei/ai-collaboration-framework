@@ -49,7 +49,8 @@ pull_request:
     - VAL-011: 18 of 18 behavior and fault-injection tests passed; 5 of 5 critical mutants were detected and one exploratory survivor remains follow-up-required
     - validation registry: 10 of 10 tests passed; source entrypoints: 3 of 3 tests passed
     - workflow artifacts, AI context, source governance, commit-range policy, shell assets, and whitespace validation passed
-    - exact implementation evidence is bound to commit `f7e1d7537226ff773dbb57508f98d3527fd88d3f`; the later workflow-only commit does not alter its declared candidate inputs
+    - the first terminal audit at `e88204d8923eae86ff348cef277aa40aac39598a` failed on a stale `python-entrypoints` candidate digest; no integration occurred on that head
+    - repair commit `b53d077f3730a5c50d19ada2b6b7d14afca63cd6` rebinds the exact tracked bytes and passed 18/18 AI behavior and incident tests, 7/7 entrypoint tests, 10/10 registry tests, 9/9 observation tests, and the 5/5 critical-mutant gate
 
     ## Checklist
 

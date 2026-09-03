@@ -9,7 +9,7 @@
   "related_plan_id": "development-plan-2026-09-02-validator-observation-and-fault-injection",
   "status": "completed",
   "created_at": "2026-09-02T22:43:57+08:00",
-  "updated_at": "2026-09-03T00:08:37+08:00",
+  "updated_at": "2026-09-03T08:00:32+08:00",
   "template_source": ".ai/assets/skills/software-development-orchestrator/templates/development-workflow-task-template.json",
   "model": "gpt-5.6-sol",
   "reasoning_effort": "max",
@@ -279,6 +279,31 @@
         "command": "C:/Program Files/Git/bin/bash.exe .ai/scripts/check-all.sh --resolve-input-closure incident-fault-injection --subject f7e1d7537226ff773dbb57508f98d3527fd88d3f",
         "outcome": "passed",
         "summary": "The repository-tested Git Bash resolved the declared recursive tracked input closure at the exact commit."
+      },
+      {
+        "command": "fixed-head-independent-auditor --pull-request 281 --base-sha c7f348694421048245da824dd79742372179f730 --head-sha e88204d8923eae86ff348cef277aa40aac39598a",
+        "outcome": "failed",
+        "summary": "The first fresh terminal audit found one blocking P1: incident-mutants.yaml retained the pre-portability python-entrypoints SHA-256, so the fault-injection gate failed before mutant execution. No merge or Issue finalization occurred on that head."
+      },
+      {
+        "command": "python .ai/scripts/tests/test_ai_behavior_evaluation.py -v",
+        "outcome": "blocked-by-environment",
+        "summary": "The sandbox remediation run passed 17 executable cases but could not write or clean one system-Temp fixture; it was retained as blocked and not counted as a pass."
+      },
+      {
+        "command": "python .ai/scripts/tests/test_ai_behavior_evaluation.py -v; python .ai/scripts/tests/test_python_entrypoints_contract.py -v; python .ai/scripts/tests/test_validation_profile_registry.py -v",
+        "outcome": "passed",
+        "summary": "At exact head b53d077f3730a5c50d19ada2b6b7d14afca63cd6 with full local permissions, 18 of 18 AI behavior and incident tests, 7 of 7 Python-entrypoint contract tests, and 10 of 10 registry tests passed."
+      },
+      {
+        "command": "python .ai/scripts/validate-ai-behavior-evaluation.py fault-injection --output .dev/ai-context/local/validation/pr281-fault-injection-b53d077f.yaml",
+        "outcome": "passed",
+        "summary": "The repaired exact-head gate detected 5 of 5 critical mutants, retained one exploratory survivor, bound all 25 current candidate digests, and produced report digest 42cb132cf3bd4e1f4338e58c8d03b3ea897ffed95df0a36ed59611b7104332ee."
+      },
+      {
+        "command": "python .ai/scripts/tests/test_validation_dependency_observation.py -v",
+        "outcome": "passed",
+        "summary": "9 of 9 bounded dependency-observation tests passed at exact head b53d077f3730a5c50d19ada2b6b7d14afca63cd6."
       }
     ],
     "role_execution_aggregation": [
@@ -298,12 +323,14 @@
     "validation_evidence": [
       "Framework-source effective-rule packet 7d3cdae66882a5669daf7813f17353292137abcc77b126a8ca329ac1a8d328da",
       "VAL011 acceptance ledger records six passed acceptance outcomes with canonical evidence digests.",
-      "Exact-head fault-injection report b8ac291525e8cebe1eb7b6ec982266bdcbb1ac2d36b91b0f2c15fd48ad87232f preserves the exploratory survivor and reports tracked_state_unchanged=true.",
+      "The first terminal audit at e88204d8923eae86ff348cef277aa40aac39598a failed with one blocking P1 because the python-entrypoints candidate digest was stale; that failure remains retained and did not authorize integration.",
+      "Repaired exact-head fault-injection report 42cb132cf3bd4e1f4338e58c8d03b3ea897ffed95df0a36ed59611b7104332ee at b53d077f3730a5c50d19ada2b6b7d14afca63cd6 preserves the exploratory survivor, binds all 25 candidate inputs, and reports tracked_state_unchanged=true.",
+      "Affected exact-head suites passed 18 of 18 AI behavior and incident tests, 7 of 7 Python-entrypoint contract tests, 10 of 10 registry tests, and 9 of 9 dependency-observation tests after the digest repair.",
       "Exact-head bounded observation report 7289d234965474df5bec543126f86bdfab795f566ee3a5b0f57735568d1b7577 remains partial/lower-bound-only and observed all 25 manifest-bound candidate paths.",
       "git status --short was empty after exact-head focused execution.",
       "Issue #270 production manifest, rebind validator, pilot, and historical backfill remain unimplemented."
     ],
-    "commits": ["f7e1d7537226ff773dbb57508f98d3527fd88d3f"],
+    "commits": ["f7e1d7537226ff773dbb57508f98d3527fd88d3f", "b53d077f3730a5c50d19ada2b6b7d14afca63cd6"],
     "finding_status": "addressed",
     "follow_up_needed": true
   }
