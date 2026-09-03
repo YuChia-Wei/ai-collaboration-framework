@@ -8,7 +8,7 @@
   "owner_skill": "slice-implementer",
   "status": "in_progress",
   "created_at": "2026-09-03T09:19:06+08:00",
-  "updated_at": "2026-09-03T11:09:09+08:00",
+  "updated_at": "2026-09-04T21:55:46+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-5.6-sol",
   "reasoning_effort": "max",
@@ -22,15 +22,15 @@
   "execution": {
     "steps": ["enable only the approved pilot", "validate declared-versus-observed dependencies", "run immutable-commit pilot execution", "perform equivalent final-head rebind", "record transition metrics and stop-condition status"],
     "validation": ["actual clean-commit multi-hop execution", "deterministic rebind", "fresh-gate presence", "observation and critical-mutant checks"],
-    "last_completed_step": "remediated both medium fixed-head audit findings and passed 8/8 focused subject tests plus 10/10 validation registry tests",
-    "next_action": "commit the audit remediation, execute a fresh clean-head pilot because the subject changed, and obtain a fresh independent fixed-head audit"
+    "last_completed_step": "reconciled the final metadata and authenticated the clean current local head with ignored reused-with-proof evidence without rerunning the pilot gate",
+    "next_action": "hold tracked mutation pending the owner decision on exact-head-only versus content-addressed independent review; if exact-head remains, audit once after final history shaping"
   },
   "results": {
-    "summary": "the original pilot and first rebind remain valid observations; the fixed-head audit found two medium validation gaps, and both are repaired in the pending working tree",
+    "summary": "both medium audit findings are repaired and the changed subject passed a new full fast baseline with zero reuse, failures, or blocks",
     "files_changed": [".ai/scripts/check-all.sh", ".ai/scripts/validation-profile-registry.sh", ".ai/assets/shared/validation-gate-classification.yaml", ".dev/workflows/2026-09-03-subject-digest-evidence-reuse-implementation/pilot-observation.yaml"],
-    "tests_run": ["original external fast-profile pilot passed in 486 seconds", "first changed-path rebind run passed in 95 seconds and reused the multi-hop evidence in 60ms", "first independent audit retained blocked-by-environment", "second independent audit ran 7/7 tests but failed with two medium findings", "post-remediation subject digest tests passed 8/8 in 35.968 seconds", "post-remediation validation registry tests passed 10/10 in 2.858 seconds"],
+    "tests_run": ["original external fast-profile pilot passed in 486 seconds", "first changed-path rebind run passed in 95 seconds and reused the multi-hop evidence in 60ms", "first independent audit retained blocked-by-environment", "second independent audit ran 7/7 tests but failed with two medium findings", "post-remediation subject digest tests passed 8/8 in 35.968 seconds", "post-remediation validation registry tests passed 10/10 in 2.858 seconds", "post-remediation external fast profile passed in 487 seconds with 48 selected, 47 executed, zero reused, failed, or blocked checks", "post-remediation multi-hop-upgrade-transaction executed 31 tests in 117.450 seconds"],
     "finding_status": "partially-addressed",
-    "residual_risk": "the remediation changes the reusable subject and therefore requires a fresh full pilot plus fresh independent audit; observation remains one of three and remote admission evidence is unavailable",
+    "residual_risk": "the current policy still requires a fresh independent audit for the final admitted head; the owner is reconsidering that identity boundary, observation remains one of three, and remote admission evidence is unavailable",
     "follow_up_needed": true
   }
 }

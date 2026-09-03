@@ -76,14 +76,36 @@ post_transition_audits:
         severity: "medium"
         summary: "The provider-drift fixture declared fresh_gate without requiring or asserting it."
     remediation:
-      status: "implemented-pending-exact-head-pilot-and-audit"
+      status: "implemented-and-fresh-pilot-passed; final-exact-head-audit-pending"
       summary: "Validate external sensitivities for allowed order, membership, non-empty uniqueness; require the provider-drift fresh_gate and bind it to provider-sensitive authority."
     preserved_prior_attempt:
       audit_id: "GOV017-AUDIT-001"
       outcome: "blocked-by-environment"
       reason: "Windows temp and Git Bash sandbox permissions blocked six of seven tests."
+post_remediation_baseline:
+  commit: "f6c7a38288bcac38f1b48987666f89fb2599916c"
+  invocation_id: "20260903T031341Z-829"
+  subject_digest: "aeeeba52f1504dff9fdb430fc8a631c3a045a4dca939803b0623b83ca8f2a69e"
+  prior_subject_digest: "f883f841ab3d968803209b948f0dc854b2b4420bac7dd4cbcdc0b10d95b8a51a"
+  prior_evidence_reused: false
+  profile_result:
+    selected: 48
+    executed: 47
+    reused: 0
+    failed: 0
+    blocked: 0
+    not_applicable: 1
+    duration_seconds: 487
+  pilot_gate:
+    outcome: "passed"
+    disposition: "executed"
+    tests: 31
+    duration_ms: 117450
+  sealed_manifest_sha256: "a4afc342c32576f1797564d253a29d85e2becadf3470d4aa2f88d1f846f92b57"
+  note: "The audit remediation changed the complete subject, so re-execution rather than reuse was required and observed."
 notes:
   - "The implementation and deterministic history-only fixture do not count as an observed production pilot transition."
   - "Transition 001 is the first actual runner-consumed subject rebind; it counts for pilot observation but does not satisfy final admitted-head hosted/provider acceptance."
   - "The post-transition audit findings change the pilot subject, so the old sealed evidence must not be rebound across the remediation commit; a fresh original pilot is required."
+  - "The post-remediation baseline executed fresh and does not increment qualifying history-only transitions."
   - "Expansion requires three qualifying transitions, zero stop-condition events, and a separate owner decision."

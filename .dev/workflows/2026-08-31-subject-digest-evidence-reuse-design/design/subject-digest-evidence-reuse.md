@@ -537,4 +537,3 @@ Separate future approvals are required for:
 8. release/publication.
 
 No approval implies the next one.
-

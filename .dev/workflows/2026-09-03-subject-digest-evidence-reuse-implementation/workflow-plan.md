@@ -21,7 +21,7 @@
 - `current_phase`: `remediation`
 - `artifact_root`: `.dev/workflows/2026-09-03-subject-digest-evidence-reuse-implementation`
 - `created_at`: `2026-09-03T09:19:06+08:00`
-- `updated_at`: `2026-09-03T11:09:09+08:00`
+- `updated_at`: `2026-09-03T11:25:09+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md`
 - `template_version`: `1.2.0`
 
@@ -97,13 +97,13 @@ These three tasks retain distinct state: manifest identity can complete before r
 
 ## Resume Checkpoint
 
-- Last completed action: remediated fixed-head audit findings `GOV017-AUDIT-F1` and `GOV017-AUDIT-F2` by failing closed on invalid external fresh-gate sensitivities and making the provider-drift fixture mandatory and provider-sensitive; focused tests passed 8/8 and registry tests passed 10/10.
+- Last completed action: reconciled the local history and acceptance ledger, then generated an ignored current-head rebind whose `aeee…` subject remained equivalent and produced `reused-with-proof` without re-executing the 117.450-second pilot gate.
 - Current task: `GOV017-multi-hop-pilot`.
-- Exact next action: commit the audit remediation, run a fresh full pilot at that clean immutable head because the subject changed, then obtain a fresh independent exact-head audit before considering local implementation complete.
-- Validation already completed: the prior original pilot and transition 001 remain valid historical observations; final local head `4ad2f436` had a schema-valid independent audit with 7/7 tests passing but two medium findings. The repaired working tree now passes 8/8 subject tests in 35.968s and 10/10 registry tests in 2.858s. Because `validation_subject.py` and its test are in the subject closure, the old `f883…` evidence is intentionally ineligible across this repair.
-- Git state: audit subject `4ad2f436883a4d7dd1d1d066458f95f9c97a5ed9` is clean; two implementation files plus workflow evidence are pending locally. No push or remote mutation occurred.
-- Branch history and checkpoint handoffs: one local branch from `main@34893ab7`, design `4e0e677a`, implementation/original evidence `a77e3010`, first rebind subject `9dfdb72d`, observation commit `4ad2f436`, and preserved blocked/failed/passing ignored evidence; no push or PR.
-- Blockers or unresolved decisions: exact-head pilot and independent audit must be repeated after the remediation commit. Observation remains 1/3, expansion is unauthorized, and final admitted-head hosted/provider proof requires separate push/PR authority.
+- Exact next action: hold further tracked mutation pending the owner's decision on whether independent review remains exact-head-only or becomes content-addressed with a cheap current-head admission binding. If the existing policy is retained, perform exactly one fresh fixed-head audit only after final history shaping.
+- Validation already completed: subject tests passed 8/8, registry tests passed 10/10, and external invocation `20260903T031341Z-829` passed in 487s with 48 selected, 47 executed, zero reused, failed, or blocked checks. The new subject digest is `aeeeba52f1504dff9fdb430fc8a631c3a045a4dca939803b0623b83ca8f2a69e`; passing sealed-manifest SHA-256 is `a4afc342c32576f1797564d253a29d85e2becadf3470d4aa2f88d1f846f92b57`.
+- Git state: the branch is local-only and clean after its metadata checkpoint; current-head rebind evidence is retained only under ignored validation artifacts so it cannot create a self-referential evidence-sync commit. No push or remote mutation occurred.
+- Branch history and checkpoint handoffs: one local branch from `main@34893ab7`, design `4e0e677a`, initial implementation/evidence `a77e3010`, first rebind `9dfdb72d`, observation `4ad2f436`, remediation/new baseline `f6c7a382`, and a locally history-shaped metadata checkpoint with preserved ignored terminal evidence; no push or PR.
+- Blockers or unresolved decisions: the owner must select the independent-review identity boundary before the remaining audit proceeds. Observation remains 1/3, expansion is unauthorized, and final admitted-head hosted/provider proof requires separate push/PR authority.
 
 ## Branch Lifecycle
 
@@ -112,3 +112,4 @@ These three tasks retain distinct state: manifest identity can complete before r
 | 1 | `codex/2026-09-03-subject-digest-evidence-reuse-implementation` | `main@34893ab7021d2119200a3b9ca153325a4d9dcbb8` | local implementation bootstrap | `4e0e677a08b0bdc819460a1afe6ec185e7440fff` | local only | `2026-09-03T09:19:06+08:00` | preserve approved design after dependency integration | implement `GOV017-subject-manifest` |
 | 1 | `codex/2026-09-03-subject-digest-evidence-reuse-implementation` | `4e0e677a08b0bdc819460a1afe6ec185e7440fff` | implementation and original pilot subject | `a77e30102cb996a01e54ad3b57c68caefd53f442` | local only | `2026-09-03T10:31:06+08:00` | seal the one approved pilot's first actual execution before a history-only transition | create and authenticate the first final-head rebind |
 | 1 | `codex/2026-09-03-subject-digest-evidence-reuse-implementation` | `a77e30102cb996a01e54ad3b57c68caefd53f442` | first observed subject-rebind transition | `9dfdb72d19c106a66123fd2eb2259210724d5a35` | local only | `2026-09-03T10:38:50+08:00` | prove workflow-only history can reuse the one allowlisted gate without false fresh-head claims | record transition 1/3 and hold expansion |
+| 1 | `codex/2026-09-03-subject-digest-evidence-reuse-implementation` | `4ad2f436883a4d7dd1d1d066458f95f9c97a5ed9` | audit remediation and new subject baseline | `f6c7a38288bcac38f1b48987666f89fb2599916c` | local only | `2026-09-03T11:25:09+08:00` | close two fixed-head audit findings and prove changed subject evidence re-executes | commit final metadata and run fresh fixed-head audit |
