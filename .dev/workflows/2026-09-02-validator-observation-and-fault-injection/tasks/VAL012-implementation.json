@@ -1,0 +1,138 @@
+{
+  "template_id": "software-development-orchestrator/development-workflow-task",
+  "template_version": "1.5.0",
+  "template_created_at": "2026-07-10T18:25:11+08:00",
+  "template_updated_at": "2026-08-05T02:12:00+08:00",
+  "workflow_id": "2026-09-02-validator-observation-and-fault-injection",
+  "task_id": "VAL012-implementation",
+  "owner_skill": "slice-implementer",
+  "related_plan_id": "development-plan-2026-09-02-validator-observation-and-fault-injection",
+  "status": "completed",
+  "created_at": "2026-09-02T22:43:57+08:00",
+  "updated_at": "2026-09-03T07:33:30+08:00",
+  "template_source": ".ai/assets/skills/software-development-orchestrator/templates/development-workflow-task-template.json",
+  "model": "gpt-5.6-sol",
+  "reasoning_effort": "max",
+  "workflow_locator": ".dev/workflows/2026-09-02-validator-observation-and-fault-injection/workflow.yaml",
+  "scope": {
+    "goal": "Implement Issue #268 bounded runtime dependency observation and privacy-safe drift reporting.",
+    "target": ".ai validation tooling and registered validation surfaces",
+    "files": [".ai/scripts", ".ai/scripts/tests", ".ai/evaluation", ".ai/assets/shared", ".ai/distribution"],
+    "constraints": ["observation is lower-bound evidence", "observed undeclared dependencies fail", "declared unobserved dependencies are advisory", "no automatic declaration edits", "always-fresh gates remain unchanged"],
+    "non_goals": ["complete transitive closure proof", "subject-digest implementation", "reuse pilot enablement", "provider mutation"]
+  },
+  "inputs": {
+    "requirements": ["GitHub Issue #268"],
+    "specifications": ["Issue #270 owner comment 5478024060", "read-only design commit 3df455bd0ae6502b863990fd6aa104239d6f86ed"],
+    "architecture_decisions": ["extend existing validation surfaces", "privacy-safe normalized lower-bound reports"],
+    "user_constraints": ["complete #268 before #267", "local commits only", "do not enable #270 pilot"]
+  },
+  "execution": {
+    "capability_slot": "implementation",
+    "approval_contract": {
+      "status": "approved",
+      "required_before": "implementation",
+      "authorization_source": ["2026-09-02 source-task owner delegation from thread 01a05526-95b8-7723-b23f-50bba311ce06"],
+      "pending_decision": ""
+    },
+    "implementation_contract": {
+      "intent": "feature",
+      "execution_mode": "generic",
+      "overlays": [],
+      "authorization_source": ["2026-09-02 source-task owner delegation"],
+      "normative_truth": ["GitHub Issue #268", "AICTX-EVIDENCE-001 packet 7d3cdae66882a5669daf7813f17353292137abcc77b126a8ca329ac1a8d328da", "Issue #270 owner decision and design checkpoint"],
+      "finding_evidence": [],
+      "subject_revision": "c7f348694421048245da824dd79742372179f730",
+      "acceptance_criteria": ["VAL012-A1", "VAL012-A2", "VAL012-A3", "VAL012-A4", "VAL012-A5", "VAL012-A6"]
+    },
+    "test_execution_contract": null,
+    "role_execution_records": [],
+    "spec_compliance": {"selected": false, "activation_source": [], "expected_outcome": "not-applicable"},
+    "steps": ["design the bounded observation contract", "implement the harness and drift report", "add representative fixtures and focused tests", "register the affected validation surface", "reconcile the VAL012 ledger"],
+    "validation": ["focused observation tests", "representative harness executions", "validation profile registry tests", "workflow artifact validation", "git diff --check"],
+    "commit_checkpoint": "validated local VAL012 implementation commit",
+    "deferred_items": ["Issue #270 subject manifest and reuse pilot"]
+  },
+  "results": {
+    "summary": "Added a privacy-safe lower-bound dependency observer for one explicitly supported in-process Python harness, fail-closed undeclared-input comparison, advisory retention of unobserved declarations, representative fixtures, portable Windows/POSIX observation behavior, and registered validation coverage without enabling evidence reuse.",
+    "files_changed": [
+      ".ai/assets/shared/VALIDATION-DEPENDENCY-OBSERVATION-CONTRACT.md",
+      ".ai/assets/shared/validation-dependency-observation.schema.yaml",
+      ".ai/scripts/observe-validation-dependencies.py",
+      ".ai/scripts/tests/test_validation_dependency_observation.py",
+      ".ai/scripts/tests/fixtures/validation-dependency-observation",
+      ".ai/scripts/check-all.sh",
+      ".ai/scripts/validation-profile-registry.sh",
+      ".ai/scripts/python-entrypoints.json",
+      ".ai/scripts/shell-assets.yaml",
+      ".ai/assets/shared/README.MD",
+      ".ai/scripts/tests/test_validation_profile_registry.py",
+      ".ai/scripts/tests/test_python_entrypoints_contract.py",
+      ".ai/scripts/tests/test_ai_context_package_apply.py"
+    ],
+    "approval_evidence": ["2026-09-02 source-task owner delegation"],
+    "test_execution": [
+      {
+        "command": "python .ai/scripts/tests/test_validation_dependency_observation.py -v",
+        "outcome": "failed",
+        "summary": "Initial attempt ran 9 tests with 3 passing and 6 errors; identifier validation rejected normalized Git identities and a sandbox-denied temporary-directory cleanup raised WinError 5. Both causes were corrected without reclassifying this attempt."
+      },
+      {
+        "command": "python .ai/scripts/tests/test_validation_dependency_observation.py -v",
+        "outcome": "passed",
+        "summary": "9 of 9 passed in 2.912s at d8105e3dc038880d70803383a8928fc017a9f2f1."
+      },
+      {
+        "command": "python .ai/scripts/tests/test_validation_profile_registry.py -v",
+        "outcome": "passed",
+        "summary": "10 of 10 passed in 2.986s with full local permissions at d8105e3dc038880d70803383a8928fc017a9f2f1; the pre-commit run passed 9 of 10 and truthfully deferred the Git-tree closure assertion until the new files existed in committed HEAD."
+      },
+      {
+        "command": "python .ai/scripts/tests/test_python_source_entrypoints.py -v",
+        "outcome": "passed",
+        "summary": "3 of 3 passed in 27.401s with full local permissions after the sandbox attempt was blocked by WinError 5 in an existing tempfile fixture."
+      },
+      {
+        "command": "python .ai/scripts/validate-shell-assets.py",
+        "outcome": "passed",
+        "summary": "Passed after the initial failure identified and the implementation added the required check-all command inventory entry."
+      },
+      {
+        "command": "GitHub Actions runs 33694513510 and 33694513532 for PR #281 at b733ff15f34a6cf39563e7a17b7bb92201b8b9b6",
+        "outcome": "failed",
+        "summary": "Preserved hosted evidence: Python 3.12 POSIX import observation recursed through pathlib's lazy ntpath import; POSIX Popen surfaced implementation-internal PATH access; the portable approval set, package projection count, and default prerequisite exit contract were incomplete."
+      },
+      {
+        "command": "python .ai/scripts/tests/test_validation_dependency_observation.py -v",
+        "outcome": "passed",
+        "summary": "9 of 9 passed on Windows at f7463efa440d3bbfe1001f5e93727eb87a7ec2e3; WSL separately passed the representative harness and create-only CLI regressions."
+      },
+      {
+        "command": "python .ai/scripts/tests/test_dependency_version_consistency.py -v; python .ai/scripts/tests/test_python_entrypoints_contract.py -v",
+        "outcome": "passed",
+        "summary": "19 of 19 dependency consistency tests and 7 of 7 portable entrypoint contract tests passed at f7463efa440d3bbfe1001f5e93727eb87a7ec2e3."
+      },
+      {
+        "command": "Windows and POSIX prerequisite launcher focused tests",
+        "outcome": "passed",
+        "summary": "Windows launcher passed 4 of 4 and WSL POSIX launcher passed 5 of 5 at f7463efa440d3bbfe1001f5e93727eb87a7ec2e3; the affected package projection case also passed."
+      }
+    ],
+    "role_execution_aggregation": [],
+    "spec_compliance": {"outcome": "not-applicable", "coverage_percent": null, "evidence": []},
+    "validation_evidence": [
+      "Framework-source effective-rule packet 7d3cdae66882a5669daf7813f17353292137abcc77b126a8ca329ac1a8d328da",
+      "VAL012 acceptance ledger records six passed acceptance outcomes with canonical evidence digests.",
+      "git diff --check passed for d66eec5915584a7e6df48ac6ab61a7261f1f134c..d8105e3dc038880d70803383a8928fc017a9f2f1.",
+      "Tracked and untracked Git status was empty immediately after exact-head focused validation.",
+      "PR #281 hosted failures at b733ff15f34a6cf39563e7a17b7bb92201b8b9b6 remain preserved in GitHub Actions runs 33694513510 and 33694513532.",
+      "Commit f7463efa440d3bbfe1001f5e93727eb87a7ec2e3 binds the portable remediation to passing Windows and WSL focused evidence."
+    ],
+    "commits": [
+      "d8105e3dc038880d70803383a8928fc017a9f2f1",
+      "f7463efa440d3bbfe1001f5e93727eb87a7ec2e3"
+    ],
+    "finding_status": "addressed",
+    "follow_up_needed": false
+  }
+}

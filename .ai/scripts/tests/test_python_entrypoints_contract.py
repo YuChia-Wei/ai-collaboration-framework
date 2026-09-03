@@ -28,6 +28,7 @@ SHARED_RUNTIME_ASSETS = {
 
 EXPECTED_PORTABLE_PATHS = {
     ".ai/assets/skills/software-development-orchestrator/scripts/validate-software-development-orchestrator-acceptance.py",
+    ".ai/scripts/observe-validation-dependencies.py",
     ".ai/scripts/plan-ai-context-package-apply.py",
     ".ai/scripts/resolve-effective-rule-packet.py",
     ".ai/scripts/validate-ai-context-payload.py",

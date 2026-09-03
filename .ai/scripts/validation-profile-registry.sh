@@ -288,8 +288,13 @@ register_check release-notes-renderer \
 register_check ai-behavior-evaluation \
     "AI Behavior Deterministic Evaluation" required \
     "evaluation,release" "release nightly-full" \
-    ".ai/scripts/tests/test_ai_behavior_evaluation.py .ai" source-ai-context-version "python>=3.11" 90 cpu reuse-by-input source \
+    ".ai/scripts/tests/test_ai_behavior_evaluation.py .ai .dev/releases/v0.14.0/support-matrix.yaml .dev/releases/v0.14.0/route-assets/validation/published-v0.14.0/v0.13.0-to-v0.14.0/receipt.json .dev/releases/v0.14.0/route-assets/validation/published-v0.14.0/v0.13.0-to-v0.14.0/output.json" source-ai-context-version "python>=3.11" 90 cpu reuse-by-input source \
     "python .ai/scripts/tests/test_ai_behavior_evaluation.py -v" source-release
+register_check incident-fault-injection \
+    "Incident-Derived Validator Fault Injection" required \
+    "evaluation,release,validation" "release nightly-full" \
+    ".ai .dev/releases/v0.14.0/support-matrix.yaml .dev/releases/v0.14.0/route-assets/validation/published-v0.14.0/v0.13.0-to-v0.14.0/receipt.json .dev/releases/v0.14.0/route-assets/validation/published-v0.14.0/v0.13.0-to-v0.14.0/output.json" ai-behavior-evaluation "python>=3.11 git" 90 cpu reuse-by-input source \
+    "python .ai/scripts/validate-ai-behavior-evaluation.py fault-injection" source-release
 register_check ai-context-load-measurement \
     "AI Context Load Measurement Contract" required \
     "evaluation,release" "release nightly-full" \
@@ -340,6 +345,12 @@ register_check validation-lifecycle-tests \
     "governance,validation,evidence,tests" "fast pr release nightly-full" \
     ".ai/scripts/tests/test_validation_lifecycle.py .ai/assets/shared/validation-evidence-lifecycle.schema.yaml .dev/standards/GITHUB-WORK-MANAGEMENT-POLICY.yaml" validation-lifecycle-contract "python>=3.11" 60 cpu reuse-by-input source \
     "python .ai/scripts/tests/test_validation_lifecycle.py -v" source-governance
+register_check validation-dependency-observation-contract \
+    "Bounded Validation Dependency Observation" required \
+    "governance,validation,dependencies,tests" "fast pr release nightly-full" \
+    ".ai/assets/shared/VALIDATION-DEPENDENCY-OBSERVATION-CONTRACT.md .ai/assets/shared/validation-dependency-observation.schema.yaml .ai/scripts/observe-validation-dependencies.py .ai/scripts/tests/test_validation_dependency_observation.py .ai/scripts/tests/fixtures/validation-dependency-observation" validation-lifecycle-contract \
+    "python>=3.11 git" 60 cpu reuse-by-input source \
+    "python .ai/scripts/tests/test_validation_dependency_observation.py -v" source-governance
 register_check agent-execution-guardrails-contract \
     "Agent Execution Guardrails Contract" required \
     "governance,agents,evidence" "fast pr release nightly-full" \

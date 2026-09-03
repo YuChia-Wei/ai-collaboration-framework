@@ -1,0 +1,23 @@
+schema_version: validation-dependency-observation-request/v1
+validator_id: representative-validator
+subject: HEAD
+harness: in-process-python-callable/v1
+entrypoint: .ai/scripts/tests/fixtures/validation-dependency-observation/representative-validator.py
+callable: main
+argv: []
+declared_dependencies:
+  file:
+    - .ai/scripts/tests/fixtures/validation-dependency-observation/broad.txt
+    - .ai/scripts/tests/fixtures/validation-dependency-observation/declared.txt
+    - .ai/scripts/tests/fixtures/validation-dependency-observation/representative-validator.py
+    - .ai/scripts/tests/fixtures/validation-dependency-observation/untaken.txt
+  subprocess:
+    - git
+    - python
+  git:
+    - git:rev-parse
+  environment:
+    - VAL012_MODE
+  runtime:
+    - module:decimal
+    - python

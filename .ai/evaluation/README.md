@@ -28,6 +28,28 @@ upgrades; and identifier compatibility. Exact outputs are checked in under
 unauthorized implementation, false test success, source-truth leakage, dual
 provenance, and silent compatibility removal fail closed.
 
+## Incident-Derived Fault Injection
+
+`incident-mutants.yaml` composes the existing deterministic validators into one
+measurable effectiveness gate. Its critical corpus covers the CTX-010
+coordinated weakening, REL-016 semantic publication bypass, UPG-005 incoming
+validator-chain break, identity substitution, and required-evidence omission.
+Every mutant binds an exact candidate-input file set and raw SHA-256 before it
+runs.
+
+Run the release/nightly-bound fault-injection gate with:
+
+```text
+python .ai/scripts/validate-ai-behavior-evaluation.py fault-injection
+```
+
+An optional normalized report may be written create-only beneath the ignored
+`.dev/ai-context/local/validation/` directory. Any surviving critical mutant,
+unexpected critical detector, candidate-input drift, or tracked-worktree drift
+fails the command. Exploratory survivors remain `survived`, carry explicit
+follow-up text, and produce `passed-with-exploratory-survivors`; they are never
+relabeled as detected or passed mutants.
+
 Package-facing references use placeholders such as
 `.dev/workflows/<workflow-id>/workflow.yaml`. Source workflow, assessment,
 release, and backlog instances are not evaluation inputs and must not be
