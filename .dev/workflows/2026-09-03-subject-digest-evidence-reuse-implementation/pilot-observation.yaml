@@ -1,0 +1,15 @@
+schema_version: "subject-digest-pilot-observation/v1"
+workflow_id: "2026-09-03-subject-digest-evidence-reuse-implementation"
+gate_id: "multi-hop-upgrade-transaction"
+required_qualifying_transitions: 3
+observed_qualifying_transitions: 0
+expansion_status: "not-authorized"
+stop_conditions:
+  false_reuse_count: 0
+  missing_fresh_gate_count: 0
+  undeclared_observed_dependency_count: 0
+  surviving_critical_mutant_count: 0
+transitions: []
+notes:
+  - "The implementation and deterministic history-only fixture do not count as an observed production pilot transition."
+  - "Expansion requires three qualifying transitions, zero stop-condition events, and a separate owner decision."

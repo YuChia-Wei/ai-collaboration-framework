@@ -13,6 +13,32 @@ evidence_classes:
   provider-sensitive:
     reusable: false
     freshness: live-provider-read-back
+gate_classification:
+  schema_version: "validation-gate-classification/v1"
+  authority_path: ".ai/assets/shared/validation-gate-classification.yaml"
+  sensitivities: [identity, input, environment, provider]
+  reuse_eligibility_values: [pilot-approved, candidate-disabled, not-reusable]
+  registry_coverage: exact
+subject_manifest:
+  schema_version: "subject-manifest/v1"
+  identity_schema_version: "subject-identity/v1"
+  digest_algorithm: sha256
+  canonicalization: utf8-json-sorted-keys-no-insignificant-whitespace-v1
+  required_components: [classification, tracked_closure, invocation, authority, runtime, environment]
+  provenance_excluded_from_subject_digest: true
+subject_rebind:
+  schema_version: "subject-evidence-rebind/v1"
+  record_type: subject-evidence-rebind
+  decisions: [reused-with-proof, re-executed, blocked]
+  required_fresh_gates:
+    - actual-upgrade-evidence
+    - exact-head-independent-audit
+    - hosted-required-contexts
+    - live-merge-admission
+    - mutable-provider-state
+    - tag-release-binding
+  original_authentication_modes: [sealed-at-original-execution]
+  append_only: true
 audit_dispositions:
   - re-executed
   - reused-with-proof

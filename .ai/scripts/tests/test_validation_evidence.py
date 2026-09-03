@@ -19,6 +19,7 @@ from typing import Any, Callable
 
 ROOT = Path(__file__).resolve().parents[3]
 HELPER = ROOT / ".ai/scripts/validation-evidence.py"
+SUBJECT_HELPER = ROOT / ".ai/scripts/validation_subject.py"
 INVOCATION_ID = "fixture-invocation"
 
 
@@ -88,7 +89,13 @@ class ValidationEvidenceFixture(unittest.TestCase):
         fixture_helper = self.repo / ".ai/scripts/validation-evidence.py"
         fixture_helper.parent.mkdir(parents=True, exist_ok=True)
         fixture_helper.write_bytes(HELPER.read_bytes())
-        self.git("add", fixture_helper.relative_to(self.repo).as_posix())
+        fixture_subject_helper = self.repo / ".ai/scripts/validation_subject.py"
+        fixture_subject_helper.write_bytes(SUBJECT_HELPER.read_bytes())
+        self.git(
+            "add",
+            fixture_helper.relative_to(self.repo).as_posix(),
+            fixture_subject_helper.relative_to(self.repo).as_posix(),
+        )
         self.git("commit", "-m", message)
 
     def supervise(
@@ -2168,6 +2175,9 @@ class ValidationEvidenceBootstrapReadinessGwtTests(ValidationEvidenceFixture):
         fixture_helper = self.repo / ".ai/scripts/validation-evidence.py"
         fixture_helper.parent.mkdir(parents=True)
         fixture_helper.write_bytes(HELPER.read_bytes())
+        (self.repo / ".ai/scripts/validation_subject.py").write_bytes(
+            SUBJECT_HELPER.read_bytes()
+        )
         snapshot = self.logs / "uncapturable-bootstrap-snapshot.json"
         marker = self.repo / "artifacts/validation/uncapturable-target.txt"
         target = [

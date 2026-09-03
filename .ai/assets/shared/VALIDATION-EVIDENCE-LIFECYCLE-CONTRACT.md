@@ -20,6 +20,48 @@ selected closure and that runner, manifest, resolver, policy authority,
 configuration, command, profile, and applicable environment authority are
 unchanged.
 
+The authoritative multi-axis decision table is
+`.ai/assets/shared/validation-gate-classification.yaml`. Every local
+registry gate occurs exactly once. Sensitivities are independent axes;
+`reuse_eligibility` is a separate owner-controlled decision. A missing,
+duplicated, or unknown gate blocks classification. The only current
+`pilot-approved` gate is `multi-hop-upgrade-transaction`; every other candidate
+remains disabled even when its legacy cache policy permits narrower reuse.
+
+## Canonical Subject Manifest And Rebind
+
+`subject-manifest/v1` binds one gate to a `subject-identity/v1` projection made
+from authenticated classification, tracked-closure, invocation, authority,
+runtime, and applicable-environment digests. Its `subject_digest` is the
+SHA-256 of canonical UTF-8 JSON for that projection. Commit, tree, timestamp,
+artifact references, and provider identifiers remain provenance and are not
+part of the subject digest.
+
+The tracked-closure receipt names the authoritative
+`check-all.sh --resolve-input-closure` invocation and seals the complete sorted
+Git path, mode, type, and object identities. The invocation component comes
+from the current validation registry. Authority includes the runner, registry,
+resolver, lifecycle policy/schema, implementation, and gate-classification
+bytes. Runtime identity includes the actual Python implementation, version,
+ABI, and PyYAML identity. The pilot environment contract adds OS family, Git
+version, and a repository-filesystem case-semantic probe without recording an
+absolute path, host name, user name, or machine identity.
+
+`subject-evidence-rebind/v1` is append-only. It accepts an original manifest
+only when an immutable passing invocation seal contains that exact manifest,
+its component receipts, and an executed passing evidence record for the same
+gate and original commit. It then builds and validates the current manifest
+freshly, requires the same approved classification and equal subject digest,
+and records both commit SHAs. The truthful outcome is `reused-with-proof`: the
+old evidence applies to the current subject but was not executed or audited at
+the current SHA. A known component difference requires `re-executed`; unknown
+closure, authentication, runtime, environment, authority, or classification
+fails closed as `blocked`.
+
+Rebind never replaces actual-upgrade evidence, exact-head independent audit,
+required hosted contexts, live merge admission, mutable provider state, or tag
+and Release binding. Those gates stay fresh for every admitted head.
+
 ## Deterministic Reuse
 
 The machine contract is `validation-evidence-lifecycle.schema.yaml`; the

@@ -157,7 +157,7 @@ register_check provider-role-package-projection \
 register_check multi-hop-upgrade-transaction \
     "AI Context Multi-Hop Upgrade Transaction GWT Tests" required \
     "upgrade,transaction,tests" "fast pr release nightly-full" \
-    ".ai/assets/skills/ai-context-upgrader .ai/distribution/profiles/dotnet-backend.yaml .ai/scripts/ai_context_multi_hop_upgrade.py .ai/scripts/ai_context_package_apply.py .ai/scripts/ai_context_target_provenance.py .ai/scripts/ai_context_upgrade_routes.py .ai/scripts/tests/test_ai_context_multi_hop_upgrade.py" '' "python>=3.11 git" 360 io reuse-by-input portable \
+    ".ai/assets/skills/ai-context-upgrader .ai/distribution/profiles/dotnet-backend.yaml .ai/scripts/ai_context_multi_hop_upgrade.py .ai/scripts/ai_context_package_apply.py .ai/scripts/ai_context_target_provenance.py .ai/scripts/ai_context_upgrade_routes.py .ai/scripts/tests/test_ai_context_multi_hop_upgrade.py" '' "python>=3.11 git" 360 io no-reuse portable \
     "python .ai/scripts/tests/test_ai_context_multi_hop_upgrade.py -v" always
 register_check dependency-versions \
     "Offline Dependency And Version Consistency" required \
@@ -203,12 +203,12 @@ register_check test-fixture-routing-contract \
 register_check validation-evidence-contract \
     "Validation Execution Evidence Contract" required \
     "runner,evidence,tests" "fast pr release nightly-full" \
-    ".ai/scripts/validation-evidence.py .ai/scripts/tests/test_validation_evidence.py .ai/scripts/check-all.sh" validation-process-supervisor-contract "python>=3.11" 60 cpu reuse-by-input source \
+    ".ai/scripts/validation-evidence.py .ai/scripts/validation_subject.py .ai/scripts/tests/test_validation_evidence.py .ai/scripts/check-all.sh .ai/assets/shared/validation-gate-classification.yaml" validation-process-supervisor-contract "python>=3.11" 60 cpu reuse-by-input source \
     "python .ai/scripts/tests/test_validation_evidence.py ValidationEvidenceRoutineContractGwtTests -v" always
 register_check validation-evidence-exhaustive-contract \
     "Validation Execution Evidence Exhaustive Contract" required \
     "runner,evidence,tests" "release nightly-full" \
-    ".ai/scripts/validation-evidence.py .ai/scripts/tests/test_validation_evidence.py .ai/scripts/check-all.sh" validation-evidence-contract "python>=3.11" 180 cpu no-reuse source \
+    ".ai/scripts/validation-evidence.py .ai/scripts/validation_subject.py .ai/scripts/tests/test_validation_evidence.py .ai/scripts/check-all.sh .ai/assets/shared/validation-gate-classification.yaml" validation-evidence-contract "python>=3.11" 180 cpu no-reuse source \
     "python .ai/scripts/tests/test_validation_evidence.py -v" always
 register_check validation-process-supervisor-contract \
     "Validation Process Supervisor Contract" required \
@@ -338,12 +338,12 @@ register_check source-governance-manifest \
 register_check validation-lifecycle-contract \
     "Validation Freeze And Evidence Reuse Contract" required \
     "governance,validation,evidence" "fast pr release nightly-full" \
-    ".ai/assets/shared/VALIDATION-EVIDENCE-LIFECYCLE-CONTRACT.md .ai/assets/shared/validation-evidence-lifecycle.schema.yaml .ai/scripts/validate-validation-lifecycle.py .dev/standards/GITHUB-WORK-MANAGEMENT-POLICY.yaml" source-governance-manifest "python>=3.11" 60 cpu reuse-by-input source \
+    ".ai/assets/shared/VALIDATION-EVIDENCE-LIFECYCLE-CONTRACT.md .ai/assets/shared/validation-evidence-lifecycle.schema.yaml .ai/assets/shared/validation-gate-classification.yaml .ai/scripts/validation_subject.py .ai/scripts/validate-validation-lifecycle.py .dev/standards/GITHUB-WORK-MANAGEMENT-POLICY.yaml" source-governance-manifest "python>=3.11" 60 cpu reuse-by-input source \
     "python .ai/scripts/validate-validation-lifecycle.py" source-governance
 register_check validation-lifecycle-tests \
     "Validation Lifecycle Fail-Closed Tests" required \
     "governance,validation,evidence,tests" "fast pr release nightly-full" \
-    ".ai/scripts/tests/test_validation_lifecycle.py .ai/assets/shared/validation-evidence-lifecycle.schema.yaml .dev/standards/GITHUB-WORK-MANAGEMENT-POLICY.yaml" validation-lifecycle-contract "python>=3.11" 60 cpu reuse-by-input source \
+    ".ai/scripts/tests/test_validation_lifecycle.py .ai/scripts/tests/test_validation_subject_digest.py .ai/assets/shared/validation-evidence-lifecycle.schema.yaml .ai/assets/shared/validation-gate-classification.yaml .dev/standards/GITHUB-WORK-MANAGEMENT-POLICY.yaml" validation-lifecycle-contract "python>=3.11" 60 cpu reuse-by-input source \
     "python .ai/scripts/tests/test_validation_lifecycle.py -v" source-governance
 register_check validation-dependency-observation-contract \
     "Bounded Validation Dependency Observation" required \

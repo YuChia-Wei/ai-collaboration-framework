@@ -1,0 +1,38 @@
+schema_version: "subject-rebind-fixtures/v1"
+scenarios:
+  - id: "commit-message-only"
+    changed_component: null
+    expected_outcome: "reused-with-proof"
+  - id: "squash-equivalent"
+    changed_component: null
+    expected_outcome: "reused-with-proof"
+  - id: "rebase-outside-closure"
+    changed_component: null
+    expected_outcome: "reused-with-proof"
+  - id: "tracked-byte-drift"
+    changed_component: "tracked_closure_digest"
+    expected_outcome: "re-executed"
+  - id: "dependency-drift"
+    changed_component: "tracked_closure_digest"
+    expected_outcome: "re-executed"
+  - id: "runtime-drift"
+    changed_component: "runtime_digest"
+    expected_outcome: "re-executed"
+  - id: "policy-drift"
+    changed_component: "authority_digest"
+    expected_outcome: "re-executed"
+  - id: "environment-drift"
+    changed_component: "environment_digest"
+    expected_outcome: "re-executed"
+  - id: "provider-drift"
+    changed_component: null
+    expected_outcome: "reused-with-proof"
+    fresh_gate: "live-merge-admission"
+  - id: "closure-unknown"
+    changed_component: null
+    current_closure_complete: false
+    expected_outcome: "blocked"
+  - id: "original-authentication-unknown"
+    changed_component: null
+    original_authentication_valid: false
+    expected_outcome: "blocked"
