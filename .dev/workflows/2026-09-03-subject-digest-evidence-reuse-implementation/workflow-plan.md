@@ -21,7 +21,7 @@
 - `current_phase`: `remediation`
 - `artifact_root`: `.dev/workflows/2026-09-03-subject-digest-evidence-reuse-implementation`
 - `created_at`: `2026-09-03T09:19:06+08:00`
-- `updated_at`: `2026-09-03T10:31:06+08:00`
+- `updated_at`: `2026-09-03T10:38:50+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md`
 - `template_version`: `1.2.0`
 
@@ -97,13 +97,13 @@ These three tasks retain distinct state: manifest identity can complete before r
 
 ## Resume Checkpoint
 
-- Last completed action: executed the exact clean-commit `fast` pilot at `a77e30102cb996a01e54ad3b57c68caefd53f442`; 48 checks were selected, 47 executed, none reused, failed, or blocked, and `multi-hop-upgrade-transaction` passed 31 tests in 107.280s with subject digest `f883f841ab3d968803209b948f0dc854b2b4420bac7dd4cbcdc0b10d95b8a51a`.
+- Last completed action: authenticated and consumed the first actual subject rebind from `a77e30102cb996a01e54ad3b57c68caefd53f442` to workflow-only commit `9dfdb72d19c106a66123fd2eb2259210724d5a35`; the runner passed with 10 selected, 8 executed, and 2 reused checks, while `multi-hop-upgrade-transaction` reused its sealed evidence in 60ms instead of re-executing 31 tests.
 - Current task: `GOV017-multi-hop-pilot`.
-- Exact next action: commit this workflow-only pilot checkpoint, generate a current manifest at the new clean SHA, authenticate a rebind from the sealed `a77e3010` execution, and run the explicit-receipt `fast` path without executing the pilot gate again.
-- Validation already completed: exact-HEAD registry 10/10, subject digest/rebind 7/7, package projection 1/1, workflow/lifecycle/syntax checks, and the external `fast` pilot passed. Its first sandboxed attempt was retained as `blocked-by-environment` due to Git Bash Win32 signal-pipe error 5; the policy-valid second attempt used system-process access and passed in 486s. The pilot invocation is `20260903T021942Z-1486`, and its passing sealed-manifest SHA-256 is `76b4a0c7bb0b1d0c43c1bb98a9acde18de8024ac3ead67b674adb6aa88b0164a`.
-- Git state: implementation checkpoint `a77e30102cb996a01e54ad3b57c68caefd53f442` is clean; only this workflow metadata checkpoint is pending locally. No push or remote mutation occurred.
-- Branch history and checkpoint handoffs: one local branch from `main@34893ab7`, design checkpoint `4e0e677a`, implementation checkpoint `a77e3010`, and schema-valid ignored external pilot receipts; no push or PR.
-- Blockers or unresolved decisions: the first qualifying rebind transition is not yet recorded; admitted-head hosted/provider proof requires separate push/PR authority. Allowlist expansion and every remote or terminal action remain owner-controlled.
+- Exact next action: commit the first observation record, produce one final local-head rebind without counting the self-referential observation commit as another transition, then obtain separate authority before push/PR or final admitted-head hosted/provider validation.
+- Validation already completed: exact-HEAD registry 10/10, subject digest/rebind 7/7, package projection 1/1, workflow/lifecycle/syntax checks, the 486s original external `fast` pilot, and the 95s changed-path rebind runner all passed. Transition 001 preserved subject digest `f883f841ab3d968803209b948f0dc854b2b4420bac7dd4cbcdc0b10d95b8a51a`; its receipt SHA-256 is `6eff4fadba173035b626220aaedc1531c04273af9a48a9d6b98d00ffe846e52f`, and the consuming invocation is `20260903T023547Z-1688`.
+- Git state: first rebind subject `9dfdb72d19c106a66123fd2eb2259210724d5a35` is clean; only the tracked observation update is pending locally. No push or remote mutation occurred.
+- Branch history and checkpoint handoffs: one local branch from `main@34893ab7`, design checkpoint `4e0e677a`, implementation/original-evidence checkpoint `a77e3010`, first rebind subject `9dfdb72d`, and sealed ignored execution/rebind receipts; no push or PR.
+- Blockers or unresolved decisions: observation is 1/3 and expansion remains unauthorized. Final admitted-head exact-head/hosted/provider proof requires separate push/PR authority; every remote or terminal action remains owner-controlled.
 
 ## Branch Lifecycle
 
@@ -111,3 +111,4 @@ These three tasks retain distinct state: manifest identity can complete before r
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | 1 | `codex/2026-09-03-subject-digest-evidence-reuse-implementation` | `main@34893ab7021d2119200a3b9ca153325a4d9dcbb8` | local implementation bootstrap | `4e0e677a08b0bdc819460a1afe6ec185e7440fff` | local only | `2026-09-03T09:19:06+08:00` | preserve approved design after dependency integration | implement `GOV017-subject-manifest` |
 | 1 | `codex/2026-09-03-subject-digest-evidence-reuse-implementation` | `4e0e677a08b0bdc819460a1afe6ec185e7440fff` | implementation and original pilot subject | `a77e30102cb996a01e54ad3b57c68caefd53f442` | local only | `2026-09-03T10:31:06+08:00` | seal the one approved pilot's first actual execution before a history-only transition | create and authenticate the first final-head rebind |
+| 1 | `codex/2026-09-03-subject-digest-evidence-reuse-implementation` | `a77e30102cb996a01e54ad3b57c68caefd53f442` | first observed subject-rebind transition | `9dfdb72d19c106a66123fd2eb2259210724d5a35` | local only | `2026-09-03T10:38:50+08:00` | prove workflow-only history can reuse the one allowlisted gate without false fresh-head claims | record transition 1/3 and hold expansion |
