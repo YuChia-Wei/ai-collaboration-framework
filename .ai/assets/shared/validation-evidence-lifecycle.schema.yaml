@@ -13,6 +13,14 @@ evidence_classes:
   provider-sensitive:
     reusable: false
     freshness: live-provider-read-back
+commit_identity:
+  permitted_roles:
+    - immutable-execution-locator
+    - git-range-selector
+    - provider-association
+    - provenance
+  forbidden_validity_key: commit-sha
+  history_only_change: content-subject-rebind
 gate_classification:
   schema_version: "validation-gate-classification/v1"
   authority_path: ".ai/assets/shared/validation-gate-classification.yaml"

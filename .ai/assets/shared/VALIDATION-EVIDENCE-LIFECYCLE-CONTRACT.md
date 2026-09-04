@@ -20,6 +20,20 @@ selected closure and that runner, manifest, resolver, policy authority,
 configuration, command, profile, and applicable environment authority are
 unchanged.
 
+## Commit Identity Boundary
+
+A full commit SHA may be required as an immutable execution locator, Git-range
+selector, provider association, or provenance fact. Those uses identify where
+an operation ran or which Git/provider event is current; they do not make the
+SHA the validity key for separately content-addressed evidence.
+
+No portable rule may invalidate behavioral, independent-review, or derived
+content evidence solely because two commit SHAs differ. It must instead prove
+the applicable content subject equal, re-resolve an inherently identity-bound
+operation, or report the subject as unknown. A history-only rewrite with equal
+content uses deterministic rebinding and preserves both commit identities as
+provenance.
+
 The authoritative multi-axis decision table is
 `.ai/assets/shared/validation-gate-classification.yaml`. Every local
 registry gate occurs exactly once. Sensitivities are independent axes;
@@ -34,8 +48,8 @@ remains disabled even when its legacy cache policy permits narrower reuse.
 from authenticated classification, tracked-closure, invocation, authority,
 runtime, and applicable-environment digests. Its `subject_digest` is the
 SHA-256 of canonical UTF-8 JSON for that projection. Commit, tree, timestamp,
-artifact references, and provider identifiers remain provenance and are not
-part of the subject digest.
+artifact references, runtime repository-scope identity, and provider
+identifiers remain provenance and are not part of the subject digest.
 
 The tracked-closure receipt names the authoritative
 `check-all.sh --resolve-input-closure` invocation and seals the complete sorted

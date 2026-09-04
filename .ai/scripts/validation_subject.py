@@ -36,6 +36,7 @@ CLOSURE_SCHEMA = "validation-tracked-closure/v1"
 RUNTIME_RECEIPT_SCHEMA = "validation-runtime-receipt/v1"
 REBIND_SCHEMA = "subject-evidence-rebind/v1"
 CLASSIFICATION_SCHEMA = "validation-gate-classification/v1"
+REPOSITORY_IDENTITY = "runtime-worktree-digest/v1"
 SENSITIVITIES = ["identity", "input", "environment", "provider"]
 ELIGIBILITY = ["pilot-approved", "candidate-disabled", "not-reusable"]
 REUSABLE_PROFILES = {"fast", "pr"}
@@ -139,6 +140,11 @@ def repository_root(value: Path) -> Path:
     if not root.is_dir():
         raise SubjectError("repository root is invalid")
     return root
+
+
+def runtime_repository_identity(repo: Path) -> str:
+    normalized = os.path.normcase(str(repo.resolve()))
+    return f"{REPOSITORY_IDENTITY}:{sha256_bytes(os.fsencode(normalized))}"
 
 
 def _safe_ref(value: object, label: str) -> str:
@@ -277,7 +283,7 @@ def load_classification_authority(repo: Path) -> tuple[dict[str, dict[str, Any]]
         {
             "schema_version",
             "authority_id",
-            "repository_id",
+            "repository_identity",
             "sensitivities",
             "reuse_eligibility_values",
             "groups",
@@ -287,6 +293,7 @@ def load_classification_authority(repo: Path) -> tuple[dict[str, dict[str, Any]]
     )
     if (
         authority["schema_version"] != CLASSIFICATION_SCHEMA
+        or authority["repository_identity"] != REPOSITORY_IDENTITY
         or authority["sensitivities"] != SENSITIVITIES
         or authority["reuse_eligibility_values"] != ELIGIBILITY
     ):
@@ -664,7 +671,7 @@ def build_subject_manifest(
             "environment": {**environment, "digest": identity_projection["environment_digest"]},
         },
         "provenance": {
-            "repository": load_classification_authority(repo)[1]["repository_id"],
+            "repository": runtime_repository_identity(repo),
             "commit": identity["commit"],
             "tree": identity["tree"],
             "generated_at": utc_now(),

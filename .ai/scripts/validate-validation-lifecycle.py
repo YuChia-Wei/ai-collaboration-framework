@@ -103,6 +103,18 @@ def validate_schema(schema: dict[str, Any]) -> None:
     classes = mapping(schema.get("evidence_classes"), "schema.evidence_classes")
     if list(classes) != ["identity-sensitive", "input-sensitive", "environment-sensitive", "provider-sensitive"]:
         raise LifecycleError("validation evidence taxonomy is invalid")
+    commit_identity = mapping(schema.get("commit_identity"), "schema.commit_identity")
+    if commit_identity != {
+        "permitted_roles": [
+            "immutable-execution-locator",
+            "git-range-selector",
+            "provider-association",
+            "provenance",
+        ],
+        "forbidden_validity_key": "commit-sha",
+        "history_only_change": "content-subject-rebind",
+    }:
+        raise LifecycleError("commit identity boundary is invalid")
     if schema.get("audit_dispositions") != ["re-executed", "reused-with-proof", "blocked", "deferred", "not-applicable"]:
         raise LifecycleError("audit dispositions are invalid")
     classification = mapping(schema.get("gate_classification"), "schema.gate_classification")

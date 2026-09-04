@@ -1,6 +1,6 @@
 schema_version: "validation-gate-classification/v1"
 authority_id: "validation-gate-classification"
-repository_id: "YuChia-Wei/ai-collaboration-framework"
+repository_identity: "runtime-worktree-digest/v1"
 sensitivities: [identity, input, environment, provider]
 reuse_eligibility_values: [pilot-approved, candidate-disabled, not-reusable]
 groups:

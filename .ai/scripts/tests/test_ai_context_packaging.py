@@ -892,6 +892,86 @@ class DeterministicPackageGwtTests(unittest.TestCase):
             exclusions["source-effective-rule-execution"]["classification"],
         )
 
+    def test_gwt_000e_given_commit_identity_boundary_when_current_payload_is_projected_then_sha_only_invalidation_is_not_distributed(self) -> None:
+        profile = yaml.safe_load(
+            (ROOT / ".ai/distribution/profiles/dotnet-backend.yaml").read_text(
+                encoding="utf-8"
+            )
+        )
+        exclusions = profile["exclusions"]
+
+        def selected(source_path: str) -> bool:
+            return not PACKAGE.is_excluded(source_path, exclusions) and any(
+                PACKAGE.matches(source_path, source_pattern)
+                for entry in profile["entries"]
+                for source_pattern in PACKAGE.patterns(entry.get("source"))
+            )
+
+        portable_paths = (
+            ".ai/assets/shared/VALIDATION-EVIDENCE-LIFECYCLE-CONTRACT.md",
+            ".ai/assets/shared/validation-evidence-lifecycle.schema.yaml",
+            ".ai/assets/shared/VALIDATION-DEPENDENCY-OBSERVATION-CONTRACT.md",
+            ".ai/assets/shared/AGENT-EXECUTION-GUARDRAILS-CONTRACT.md",
+            ".ai/assets/shared/validation-gate-classification.yaml",
+            ".ai/assets/sub-agent-role-prompts/fixed-head-independent-auditor/sub-agent.yaml",
+            ".codex/agents/fixed-head-independent-auditor.toml",
+            ".ai/scripts/validation_subject.py",
+            ".ai/scripts/validate-agent-execution-guardrails.py",
+        )
+        self.assertTrue(all(selected(path) for path in portable_paths))
+        self.assertTrue(
+            PACKAGE.is_excluded(
+                ".dev/standards/GITHUB-TERMINAL-ISSUE-CLOSURE-POLICY.md",
+                exclusions,
+            )
+        )
+        self.assertTrue(
+            PACKAGE.is_excluded(
+                ".ai/scripts/validate-terminal-issue-closure.py",
+                exclusions,
+            )
+        )
+
+        lifecycle = (
+            ROOT / portable_paths[0]
+        ).read_text(encoding="utf-8")
+        lifecycle_schema = yaml.safe_load(
+            (ROOT / portable_paths[1]).read_text(encoding="utf-8")
+        )
+        dependency_observation = (ROOT / portable_paths[2]).read_text(
+            encoding="utf-8"
+        )
+        graph_contract = (ROOT / portable_paths[3]).read_text(encoding="utf-8")
+        classification = yaml.safe_load(
+            (ROOT / portable_paths[4]).read_text(encoding="utf-8")
+        )
+        auditor = (ROOT / portable_paths[5]).read_text(encoding="utf-8")
+
+        self.assertIn("No portable rule may invalidate", lifecycle)
+        self.assertEqual(
+            "commit-sha",
+            lifecycle_schema["commit_identity"]["forbidden_validity_key"],
+        )
+        self.assertEqual(
+            "content-subject-rebind",
+            lifecycle_schema["commit_identity"]["history_only_change"],
+        )
+        self.assertNotIn("Exact-head independent audit", dependency_observation)
+        self.assertIn(
+            "Commit-SHA inequality by itself does not make\n"
+            "the graph stale.",
+            graph_contract,
+        )
+        self.assertEqual(
+            "runtime-worktree-digest/v1",
+            classification["repository_identity"],
+        )
+        self.assertNotIn("repository_id", classification)
+        self.assertIn(
+            "Do not treat a later commit-SHA-only change as content invalidation",
+            auditor,
+        )
+
     def test_gwt_0000_given_source_local_policy_and_portable_mapping_when_projected_then_target_gets_only_portable_bytes(self) -> None:
         fixture = SyntheticPackageRepo()
         try:

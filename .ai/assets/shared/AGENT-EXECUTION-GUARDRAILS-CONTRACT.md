@@ -83,11 +83,18 @@ unresolved reference is not authorization.
 
 ## Code graph freshness
 
-Graph discovery records the index SHA, head SHA, and coverage. A stale, missing,
-partial, or unknown graph must be reindexed or replaced by a tracked-file
-fallback over explicit paths. Search absence is evidence only from an exact-head
-complete index or such a tracked fallback; graph search alone is never proof of
-absence.
+Graph discovery records the indexed and current commit SHAs as provenance plus
+coverage. Freshness is content-addressed: a complete index remains applicable
+after a history-only commit change when Git proves that the indexed and current
+commits have the same full tree. Commit-SHA inequality by itself does not make
+the graph stale.
+
+A content-stale, missing, partial, or unknown graph must be reindexed or
+replaced by a tracked-file fallback over explicit paths. Search absence is
+evidence only from a complete index for the current content tree or such a
+tracked fallback; graph search alone is never proof of absence. If either
+commit tree cannot be resolved, content equivalence is unknown and fails
+closed to reindex or fallback.
 Fallback paths must be contained repository-relative paths with tracked content;
 an absolute or untracked search root is rejected.
 

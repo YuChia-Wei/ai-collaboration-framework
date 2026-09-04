@@ -94,7 +94,7 @@ class SubjectRepositoryFixture(unittest.TestCase):
         return {
             "schema_version": SUBJECT.CLASSIFICATION_SCHEMA,
             "authority_id": "fixture-validation-gates",
-            "repository_id": "fixture/repository",
+            "repository_identity": SUBJECT.REPOSITORY_IDENTITY,
             "sensitivities": SUBJECT.SENSITIVITIES,
             "reuse_eligibility_values": SUBJECT.ELIGIBILITY,
             "groups": [
@@ -223,6 +223,12 @@ class ValidationSubjectDigestGwtTests(SubjectRepositoryFixture):
         )
         seal_path, seal_digest = self._seal("original", original, original_paths)
         original_commit = original["provenance"]["commit"]
+        self.assertTrue(
+            original["provenance"]["repository"].startswith(
+                f"{SUBJECT.REPOSITORY_IDENTITY}:"
+            )
+        )
+        self.assertNotIn("YuChia-Wei", original["provenance"]["repository"])
 
         self._git("commit", "--amend", "-q", "-m", "history-only identity change")
         current, _current_paths = self._manifest("current", evidence=None)

@@ -11,6 +11,7 @@ import shutil
 import tempfile
 import unittest
 from pathlib import Path
+from unittest import mock
 
 import yaml
 
@@ -294,6 +295,25 @@ class AgentExecutionGuardrailsGwtTests(unittest.TestCase):
         value = graph("stale", "partial")
         with self.assertRaisesRegex(VALIDATOR.GuardrailError, "search absence"):
             VALIDATOR.validate_graph(value, SCHEMA)
+
+    def test_gwt_011a_given_different_commit_with_same_tree_when_absence_is_claimed_then_graph_is_reused(self) -> None:
+        value = graph()
+        value["indexed_sha"] = "2" * 40
+        seal(value, "freshness_sha256")
+        with mock.patch.object(VALIDATOR, "git_tree_identity", return_value="3" * 40):
+            VALIDATOR.validate_graph(value, SCHEMA)
+
+    def test_gwt_011b_given_different_commit_and_tree_when_graph_is_called_fresh_then_it_fails(self) -> None:
+        value = graph()
+        value["indexed_sha"] = "2" * 40
+        seal(value, "freshness_sha256")
+        with mock.patch.object(
+            VALIDATOR,
+            "git_tree_identity",
+            side_effect=["3" * 40, "4" * 40],
+        ):
+            with self.assertRaisesRegex(VALIDATOR.GuardrailError, "content tree"):
+                VALIDATOR.validate_graph(value, SCHEMA)
 
     def test_gwt_012_given_stale_graph_with_tracked_fallback_when_absence_is_claimed_then_it_passes(self) -> None:
         value = graph("stale", "complete")
