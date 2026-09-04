@@ -125,20 +125,22 @@ fresh provider read-back and run
 and `--capture-admission-evidence`. The validator emits the verified snapshot
 to stdout and writes no repository path; trusted orchestration may retain it
 under ignored validation artifacts. A replay instead uses the untracked
-`--admission-evidence` snapshot plus `--verify-provider-live`. The
-provider configuration owns the required-check
+`--admission-evidence` snapshot plus `--verify-provider-live`. The provider
+configuration owns the required-check
 set, and the live GitHub response must exactly match the snapshot's PR number,
 repository, base, head, body, review/check-run identities, and timestamps. Those live PR
 facts must also equal the current event snapshot; PR-body edits rerun the
-declaration workflows. That merge-admission run must bind
-the configured source review gate and the complete successful required-check set to the same
-immutable head. Do not commit the volatile snapshot; any head drift
-invalidates it and requires a fresh independent audit, hosted read-back, and
-admission run.
+declaration workflows. That merge-admission run must bind the configured source
+review gate and the complete successful required-check set to the same provider
+head. Do not commit the volatile snapshot; any head drift invalidates that
+snapshot and requires fresh hosted read-back, current-head review-subject
+binding, and an admission run. Repeat the independent review only when the
+canonical content subject, criteria, or authority differs.
 
-The admitted PR head identifies the exact reviewed content; it does not select
-or constrain integration topology. Fast-forward, rebase, squash, and merge
-commit remain valid. Post-merge reconciliation records the provider's actual
+The admitted PR head identifies the current provider event and locates the
+content-addressed review binding; commit SHA is not the review-validity key. It
+does not select or constrain integration topology. Fast-forward, rebase, squash,
+and merge commit remain valid. Post-merge reconciliation records the provider's actual
 integration commit separately and must not require a source repair commit merely
 to make the integration SHA equal the admitted head.
 

@@ -3,7 +3,7 @@ contract_id: "validation-evidence-lifecycle"
 evidence_classes:
   identity-sensitive:
     reusable: false
-    freshness: every-tracked-head
+    freshness: identity-dependent-operation-only
   input-sensitive:
     reusable: content-addressed-proof-only
     freshness: dependency-closure
@@ -32,13 +32,19 @@ subject_rebind:
   decisions: [reused-with-proof, re-executed, blocked]
   required_fresh_gates:
     - actual-upgrade-evidence
-    - exact-head-independent-audit
+    - current-head-review-binding
     - hosted-required-contexts
     - live-merge-admission
     - mutable-provider-state
     - tag-release-binding
   original_authentication_modes: [sealed-at-original-execution]
   append_only: true
+independent_review:
+  schema_version: "2.0"
+  record_type: content-addressed-validation-audit
+  subject_schema_version: independent-review-subject/v1
+  validity_key: subject-digest
+  provenance_excluded_from_subject_digest: true
 audit_dispositions:
   - re-executed
   - reused-with-proof
@@ -51,7 +57,7 @@ reuse_receipt:
   reusable_classes: [input-sensitive, environment-sensitive]
   terminal_profiles: [release, nightly-full]
   required_fresh_gates:
-    - exact-head-independent-audit
+    - current-head-review-binding
     - hosted-required-contexts
     - live-merge-admission
   authority_dimensions: [runner, manifest, resolver, policy, configuration]

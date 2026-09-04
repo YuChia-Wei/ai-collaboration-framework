@@ -41,7 +41,7 @@ ELIGIBILITY = ["pilot-approved", "candidate-disabled", "not-reusable"]
 REUSABLE_PROFILES = {"fast", "pr"}
 REQUIRED_FRESH_GATES = [
     "actual-upgrade-evidence",
-    "exact-head-independent-audit",
+    "current-head-review-binding",
     "hosted-required-contexts",
     "live-merge-admission",
     "mutable-provider-state",

@@ -171,12 +171,21 @@ class ValidationLifecycleGwtTests(unittest.TestCase):
         with self.assertRaisesRegex(VALIDATOR.LifecycleError, "tracked drift"):
             VALIDATOR.validate_freeze(drift)
 
-    def test_gwt_009_given_exact_head_audit_when_reuse_is_reported_then_proof_is_mandatory(self) -> None:
-        audit = {"schema_version": "1.0", "record_type": "exact-head-validation-audit", "subject_sha": SHA2, "gates": [
+    def test_gwt_009_given_content_addressed_audit_when_reuse_is_reported_then_proof_is_mandatory(self) -> None:
+        subject = {
+            "schema_version": "independent-review-subject/v1",
+            "repository_id": "YuChia-Wei/ai-collaboration-framework",
+            "base_tree": "b" * 40,
+            "head_tree": "c" * 40,
+        }
+        subject["subject_digest"] = VALIDATOR.canonical_digest(subject)
+        audit = {"schema_version": "2.0", "record_type": "content-addressed-validation-audit", "provenance": {"base_sha": SHA1, "head_sha": SHA2}, "subject": subject, "gates": [
             {"gate_id": "focused-tests", "disposition": "re-executed", "evidence_refs": ["ignored:focused.log"], "reuse_receipt_sha256": None},
             {"gate_id": "benchmark", "disposition": "reused-with-proof", "evidence_refs": ["ignored:reuse.json"], "reuse_receipt_sha256": D},
             {"gate_id": "linux-only", "disposition": "not-applicable", "evidence_refs": [], "reuse_receipt_sha256": None},
         ]}
+        VALIDATOR.validate_audit(audit, SCHEMA)
+        audit["provenance"] = {"base_sha": "d" * 40, "head_sha": "e" * 40}
         VALIDATOR.validate_audit(audit, SCHEMA)
         audit["gates"][1]["reuse_receipt_sha256"] = None
         with self.assertRaisesRegex(VALIDATOR.LifecycleError, "SHA-256"):

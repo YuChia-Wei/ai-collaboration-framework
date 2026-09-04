@@ -128,10 +128,19 @@ def validate_schema(schema: dict[str, Any]) -> None:
         or rebind.get("append_only") is not True
     ):
         raise LifecycleError("subject rebind schema is invalid")
+    review = mapping(schema.get("independent_review"), "schema.independent_review")
+    if review != {
+        "schema_version": "2.0",
+        "record_type": "content-addressed-validation-audit",
+        "subject_schema_version": "independent-review-subject/v1",
+        "validity_key": "subject-digest",
+        "provenance_excluded_from_subject_digest": True,
+    }:
+        raise LifecycleError("independent review schema is invalid")
     receipt = mapping(schema.get("reuse_receipt"), "schema.reuse_receipt")
     if receipt.get("authority_dimensions") != ["runner", "manifest", "resolver", "policy", "configuration"]:
         raise LifecycleError("reuse authority dimensions are invalid")
-    if receipt.get("required_fresh_gates") != ["exact-head-independent-audit", "hosted-required-contexts", "live-merge-admission"]:
+    if receipt.get("required_fresh_gates") != ["current-head-review-binding", "hosted-required-contexts", "live-merge-admission"]:
         raise LifecycleError("fresh non-reusable gates are invalid")
 
 
@@ -340,9 +349,33 @@ def validate_freeze(record: dict[str, Any]) -> None:
 
 
 def validate_audit(record: dict[str, Any], schema: dict[str, Any]) -> None:
-    exact_keys(record, {"schema_version", "record_type", "subject_sha", "gates"}, "audit")
-    if record["schema_version"] != "1.0" or record["record_type"] != "exact-head-validation-audit" or not SHA_RE.fullmatch(str(record["subject_sha"])):
+    exact_keys(record, {"schema_version", "record_type", "provenance", "subject", "gates"}, "audit")
+    review_schema = schema["independent_review"]
+    if (
+        record["schema_version"] != review_schema["schema_version"]
+        or record["record_type"] != review_schema["record_type"]
+    ):
         raise LifecycleError("audit identity is invalid")
+    provenance = mapping(record["provenance"], "audit.provenance")
+    exact_keys(provenance, {"base_sha", "head_sha"}, "audit.provenance")
+    if not all(SHA_RE.fullmatch(str(provenance.get(field, ""))) for field in provenance):
+        raise LifecycleError("audit provenance commit SHAs are invalid")
+    subject = mapping(record["subject"], "audit.subject")
+    exact_keys(
+        subject,
+        {"schema_version", "repository_id", "base_tree", "head_tree", "subject_digest"},
+        "audit.subject",
+    )
+    subject_core = {key: value for key, value in subject.items() if key != "subject_digest"}
+    if (
+        subject.get("schema_version") != review_schema["subject_schema_version"]
+        or not isinstance(subject.get("repository_id"), str)
+        or not subject["repository_id"]
+        or not all(SHA_RE.fullmatch(str(subject.get(field, ""))) for field in ("base_tree", "head_tree"))
+        or digest(subject.get("subject_digest"), "audit.subject.subject_digest")
+        != canonical_digest(subject_core)
+    ):
+        raise LifecycleError("audit content subject is invalid")
     gates = record["gates"]
     if not isinstance(gates, list) or not gates:
         raise LifecycleError("audit gates must be non-empty")

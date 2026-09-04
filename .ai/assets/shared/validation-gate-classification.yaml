@@ -133,9 +133,9 @@ external_fresh_gates:
   - gate_id: "actual-upgrade-evidence"
     sensitivities: [identity, input, environment]
     reason: "Actual Windows and Linux upgrade execution remains fresh until separately classified and approved."
-  - gate_id: "exact-head-independent-audit"
-    sensitivities: [identity, input]
-    reason: "Independent review is bound to the exact admitted head."
+  - gate_id: "current-head-review-binding"
+    sensitivities: [input, provider]
+    reason: "Admission recomputes the current base/head content subject and binds an authenticated independent review without requiring commit-SHA equality."
   - gate_id: "hosted-required-contexts"
     sensitivities: [identity, environment, provider]
     reason: "Every required hosted context must be present and terminal on the admitted head."

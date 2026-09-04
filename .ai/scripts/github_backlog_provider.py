@@ -296,6 +296,20 @@ def validate_config(config: dict[str, Any], backlog_ids: set[str]) -> None:
                     "<!-- created-by: OpenAI Codex (gpt-5.6-sol, max) <noreply@openai.com> -->"
                 ):
                     errors.append("Issue creation attribution does not render the approved hidden marker")
+    current_review_gate = {
+        "mode": "single-maintainer-audit-receipt",
+        "maintainer_login": "YuChia-Wei",
+        "receipt_contract": "github-terminal-issue-closure-audit/v2",
+        "legacy_receipt_contracts": ["github-terminal-issue-closure-audit/v1"],
+        "binding_mode": "content-addressed-current-head",
+        "downstream_policy": "target-owned",
+    }
+    historical_review_gate = {
+        "mode": "single-maintainer-audit-receipt",
+        "maintainer_login": "YuChia-Wei",
+        "receipt_contract": "github-terminal-issue-closure-audit/v1",
+        "downstream_policy": "target-owned",
+    }
     expected_binding = {
         "mode": "required",
         "purposes": ["traceability", "work-authorization"],
@@ -308,12 +322,11 @@ def validate_config(config: dict[str, Any], backlog_ids: set[str]) -> None:
             "mode": "required",
             "disposition_required_per_issue": True,
             "missing_binding_blocks_merge": True,
-            "review_gate": {
-                "mode": "single-maintainer-audit-receipt",
-                "maintainer_login": "YuChia-Wei",
-                "receipt_contract": "github-terminal-issue-closure-audit/v1",
-                "downstream_policy": "target-owned",
-            },
+            "review_gate": (
+                historical_review_gate
+                if config.get("status") == "historical-only"
+                else current_review_gate
+            ),
             "required_check_contexts": [
                 "Read-only governance contract",
                 "Build and validate candidate",

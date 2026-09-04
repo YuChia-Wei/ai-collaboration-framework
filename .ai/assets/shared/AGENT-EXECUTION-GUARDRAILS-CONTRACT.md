@@ -17,6 +17,12 @@ argv and working directory, permissions, ignored artifact roots, terminal
 schema and one-shot callback/event-wait transport, integration owner, stop
 conditions, retry budget, and current attempt authorization.
 
+The exact repository SHA pins a stable execution checkout and records where the
+work ran. It is a locator and provenance fact, not by itself the validity key
+for the resulting evidence. After history-only identity changes, eligible
+evidence or independent review may be rebound only through the content-addressed
+proof defined by `VALIDATION-EVIDENCE-LIFECYCLE-CONTRACT.md`.
+
 The validator resolves the owning skill's tracked canonical `skill.yaml`,
 requires the named role to be an active tracked canonical role asset, and
 requires that exact role path to appear in the skill's `role_bindings`.

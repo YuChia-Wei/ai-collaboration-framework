@@ -36,7 +36,7 @@ REPORT_SCHEMA = "validation-dependency-observation-report/v1"
 DIMENSIONS = ("file", "subprocess", "git", "environment", "runtime")
 OUTPUT_ROOT = Path(".dev/ai-context/local/validation")
 FRESH_GATES = (
-    "exact-head-independent-audit",
+    "current-head-review-binding",
     "hosted-required-contexts",
     "live-provider-admission",
     "tag-release-binding",

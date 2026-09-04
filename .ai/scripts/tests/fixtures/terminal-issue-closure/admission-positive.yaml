@@ -8,7 +8,7 @@ pull_request:
   base_sha: bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
   head_sha: aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
   body: "Refs #212"
-  review: {status: single-maintainer-audit-passed, head_sha: aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa, reviewer_login: YuChia-Wei, receipt_contract: github-terminal-issue-closure-audit/v1, provider_review_id: 7001, submitted_at: "2026-08-19T15:45:00Z"}
+  review: {status: single-maintainer-audit-passed, head_sha: aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa, reviewed_base_sha: bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb, reviewed_head_sha: aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa, base_tree: dddddddddddddddddddddddddddddddddddddddd, head_tree: eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee, subject_digest: d3af179b956e3a390dad4ca1b04cafa07340ad409a7a1c937461d5eeb9543271, binding_disposition: reviewed-current-content, reviewer_login: YuChia-Wei, receipt_contract: github-terminal-issue-closure-audit/v2, provider_review_id: 7001, submitted_at: "2026-08-19T15:45:00Z"}
   required_check_contexts:
     - Read-only governance contract
     - Build and validate candidate

@@ -51,7 +51,7 @@ transitions:
       disposition: "pending-separate-admission"
       required_non_replaceable_gates:
         - "actual-upgrade-evidence"
-        - "exact-head-independent-audit"
+        - "current-head-review-binding"
         - "hosted-required-contexts"
         - "live-merge-admission"
         - "mutable-provider-state"
@@ -76,7 +76,7 @@ post_transition_audits:
         severity: "medium"
         summary: "The provider-drift fixture declared fresh_gate without requiring or asserting it."
     remediation:
-      status: "implemented-and-fresh-pilot-passed; final-exact-head-audit-pending"
+      status: "implemented-and-fresh-pilot-passed; content-review-validated-locally; provider-admission-pending"
       summary: "Validate external sensitivities for allowed order, membership, non-empty uniqueness; require the provider-drift fresh_gate and bind it to provider-sensitive authority."
     preserved_prior_attempt:
       audit_id: "GOV017-AUDIT-001"

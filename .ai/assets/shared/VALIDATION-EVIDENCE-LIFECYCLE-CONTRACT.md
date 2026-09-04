@@ -1,15 +1,15 @@
 # Validation Evidence Lifecycle Contract
 
-This portable contract separates exact-head identity freshness from behavioral
-evidence applicability. It preserves fail-closed review and provider admission
-while allowing content-addressed reuse only when the complete governed input
-closure is proven byte-equivalent.
+This portable contract separates commit provenance and immutable execution
+pinning from evidence validity. It preserves fail-closed review and provider
+admission while allowing content-addressed reuse only when the complete
+governed subject is proven equivalent.
 
 ## Evidence Taxonomy
 
 | Class | Meaning | Reuse rule |
 | --- | --- | --- |
-| `identity-sensitive` | Exact-head audit, review, and admission identity. | Re-execute after every tracked head change. |
+| `identity-sensitive` | Commit-range selection, immutable execution locator, or integration identity whose behavior depends on the selected Git relationship. | Re-resolve the identity-dependent operation; a SHA change alone does not invalidate separately content-addressed evidence. |
 | `input-sensitive` | Unit, integration, workflow, packaging, and source-governance behavior determined by tracked inputs. | Reuse only with an authenticated dependency/content receipt. |
 | `environment-sensitive` | Benchmark, durability, platform-filesystem, or reference-host behavior. | Input proof plus exact compatible environment dimensions is required. |
 | `provider-sensitive` | Hosted checks, review, PR/base/head/body, and Issue/Project state. | Live provider read-back is required; local receipts never replace it. |
@@ -53,14 +53,16 @@ its component receipts, and an executed passing evidence record for the same
 gate and original commit. It then builds and validates the current manifest
 freshly, requires the same approved classification and equal subject digest,
 and records both commit SHAs. The truthful outcome is `reused-with-proof`: the
-old evidence applies to the current subject but was not executed or audited at
-the current SHA. A known component difference requires `re-executed`; unknown
+old evidence applies to the current subject but was not executed at the current
+SHA. A known component difference requires `re-executed`; unknown
 closure, authentication, runtime, environment, authority, or classification
 fails closed as `blocked`.
 
-Rebind never replaces actual-upgrade evidence, exact-head independent audit,
-required hosted contexts, live merge admission, mutable provider state, or tag
-and Release binding. Those gates stay fresh for every admitted head.
+Rebind never replaces actual-upgrade evidence, current-head review-subject
+binding, required hosted contexts, live merge admission, mutable provider
+state, or tag and Release binding. The current-head review binding is a cheap
+digest comparison; it does not repeat an independent review when the reviewed
+content subject is unchanged.
 
 ## Deterministic Reuse
 
@@ -83,9 +85,9 @@ flag, or self-computed path-set digest fails closed.
 Unknown dependencies, missing blobs, duplicate paths, unrecognized fields, or
 runner, manifest, resolver, policy, configuration, command, profile, or
 environment drift fail closed. A cache hit, filename, extension, path filter,
-or small diff is not proof. Release and `nightly-full` profiles, fresh
-exact-head audit, hosted required contexts, review, and live admission cannot
-be replaced by a behavioral receipt.
+or small diff is not proof. Release and `nightly-full` profiles, current-head
+review binding, hosted required contexts, and live admission cannot be replaced
+by a behavioral receipt.
 
 Environment equality applies to every reusable class because environment is
 part of reuse authority, not only to tests labelled environment-sensitive.
@@ -97,23 +99,36 @@ regression without changing any #246 historical receipt.
 
 ## Validation Freeze
 
-Complete anticipated tracked implementation, workflow closeout, terminal
-declarations, indexes, and governance metadata before the final aggregate.
-An active freeze binds one clean immutable subject and permits only declared
-ignored validation artifacts or provider overlays. A required tracked repair
-invalidates the freeze and every identity-sensitive receipt for that subject;
-the workflow reclassifies impact before validation resumes.
+Complete anticipated tracked implementation and governing authority before the
+final aggregate. An active freeze pins execution to one clean immutable commit
+and permits only declared ignored validation artifacts or provider overlays.
+Tracked content or governing-authority drift invalidates the frozen subject;
+commit-message or history-only identity drift instead requires deterministic
+current-subject rebinding. Terminal binding receipts remain ignored or
+provider-owned and never require an evidence-sync commit.
 
 Provider admission and post-merge reconciliation remain live, non-mutating
 overlays. They do not require a source repair commit. Historical evidence,
 including #246 receipts, retains its original subject and environment and is
 never relabeled as current-head execution.
 
-## Audit And Hosted Contexts
+## Independent Review And Hosted Contexts
 
-A fresh exact-head independent auditor reports each gate as exactly one of
+An independent auditor still executes against one clean immutable commit so
+its observation cannot move during the review. Its durable result is
+`content-addressed-validation-audit` v2: base/head commit SHAs are provenance,
+while repository identity plus base/head tree identities form the canonical
+`independent-review-subject/v1` digest. Every reviewed gate is exactly one of
 `re-executed`, `reused-with-proof`, `blocked`, `deferred`, or
-`not-applicable`. Reuse names its receipt; it is never described as execution.
-Every provider-required context appears on each admitted head and reaches a
-truthful terminal outcome. A context may internally execute or reuse eligible
-behavioral evidence, but path filtering cannot make the context disappear.
+`not-applicable`.
+
+Admission recomputes the current review subject. Equal content yields
+`reviewed-current-content` or `reused-with-proof`; unequal or unknown content
+requires a new independent review. Historical exact-head v1 receipts retain
+their original meaning and are accepted only under their original exact-head
+rule; new receipts use v2.
+
+Every provider-required context still appears on each admitted head and reaches
+a truthful terminal outcome because the provider attaches check runs to a
+commit. A context may internally execute or reuse eligible behavioral evidence,
+but path filtering cannot make the context disappear.
