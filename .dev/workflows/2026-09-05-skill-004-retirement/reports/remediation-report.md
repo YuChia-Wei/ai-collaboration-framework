@@ -22,12 +22,16 @@
 - Workflow validator initially rejected two active tasks; metadata was corrected to one active task.
 - Repository identity suite initially lacked the retirement manifest in its synthetic repository (six failures); supplying the current manifest made all 13 pass.
 
-## Pending gates
+## Local completion
 
-Freeze the coherent commit, inspect the portable payload, and perform an independent read-only post-remediation audit. No push, PR, merge, Issue/Project mutation, tag, release, or publication has occurred.
+The implementation, bounded payload membership inspection, and independent post-remediation audit are complete. The separate full release-packaging gate remains blocked by the baseline issue described below. No push, PR, merge, Issue/Project mutation, tag, release, or publication has occurred.
 
 ## Independent review and bounded package inspection
 
-- Review 1 on `63b3b51ee5d53f97ae73f09e4f43f870feda17fe` / tree `f681290df086cfc025601bc8b8128d5992333924`: failed with MEDIUM SKILL004-R1, stale active guidance in two upgrader references and two compatibility guides. No actionable code defect found; all 12 fixture byte/hash records independently matched the recorded release commits. The four current guides were corrected; verification of that correction is pending.
+- Review 1 on `63b3b51ee5d53f97ae73f09e4f43f870feda17fe` / tree `f681290df086cfc025601bc8b8128d5992333924`: failed with MEDIUM SKILL004-R1, stale active guidance in two upgrader references and two compatibility guides. No actionable code defect found; all 12 fixture byte/hash records independently matched the recorded release commits. The four current guides were corrected; follow-up review passed on `a6563a23b0beb4b2e6ee34de14ede5380f0921ad` (tree `046a656b13d57de493d6553ab1251687b49d924e`), resolving SKILL004-R1 with no new actionable findings.
 - Portable payload inventory: 640 entries, new resolver and tombstone present, all six retired entries absent. Historical and active-replacement Git bytes unchanged.
 - Full payload reference integrity is blocked by the same preexisting error on baseline `f06e8e3a882e375e31e315569741541ac6e1659d` and the reviewed commit: validation-profile-registry.sh references excluded v0.14.0 output.json, receipt.json, and support-matrix.yaml. This is not a full package pass and is outside this Issue's retirement scope. Release packaging remains a separate gate.
+
+- Final affected AI context validation passed after the four guidance corrections. Tests were not repeated for the documentation-only change.
+- AC1–AC6 are satisfied for local source implementation and isolated fixtures. Publication, hosted checks, and real downstream application are outside this result.
+- Terminal workflow validation rejected current_phase closure for a completed workflow; changed it to completed and the validator passed.

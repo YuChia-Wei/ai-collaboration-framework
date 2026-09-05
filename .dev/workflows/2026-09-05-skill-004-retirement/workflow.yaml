@@ -4,14 +4,14 @@ workflow_id: 2026-09-05-skill-004-retirement
 workflow_kind: ai-context-maintenance
 title: Retire deprecated skill entries for Issue 271
 owner_skill: ai-context-governance
-status: in_progress
-current_phase: remediation
+status: completed
+current_phase: completed
 branch: codex/2026-09-05-skill-004-retirement
 base_branch: main
 artifact_root: .dev/workflows/2026-09-05-skill-004-retirement
 entrypoint: workflow-plan.md
 created_at: '2026-09-05T14:29:47+08:00'
-updated_at: '2026-09-05T14:29:47+08:00'
+updated_at: '2026-09-05T14:43:44+08:00'
 template_source: .ai/assets/skills/ai-context-governance/templates/workflow-locator-template.yaml
 template_version: 1.2.0
 work_items:
