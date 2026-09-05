@@ -28,3 +28,7 @@ Independent review of `7e45d7b90d6848d7f75aac6b0d7789be9d720f41` passed with zer
 ## Validation Retry Authorization
 
 `SKILL003-context-retry-03`: the workflow owner authorizes the third context validation after adding the exact runtime-use line identified by the second failure. The first attempt found wrapper references/identity, routing-table and index drift; the second corrected all except the use-line. This retry is bounded to the same validator after that material contract repair, with no scope expansion. Further unchanged retries are prohibited.
+
+## Provider Delivery Authorization
+
+On 2026-09-05 the owner explicitly approved pushing both Issue 269 and 280 branches, creating pull requests, and merging after all required checks pass. Issue 269 closes after verified integration; Issue 280 remains open until actual v0.16.0 publication acceptance. Publication and Issue 272 implementation are separate.

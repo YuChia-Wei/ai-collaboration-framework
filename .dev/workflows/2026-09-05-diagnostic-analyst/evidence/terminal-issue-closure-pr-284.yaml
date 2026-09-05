@@ -1,0 +1,64 @@
+schema_version: '1.0'
+contract_id: github-terminal-issue-closure
+repository: YuChia-Wei/ai-collaboration-framework
+validation_stage: declaration
+pull_request:
+  number: 284
+  head_sha: null
+  body: 'Adds a falsification-first diagnostic capability that records reproducible
+    observations, competing hypotheses, exclusion strength and coverage limits before
+    handing an authorized repair to an implementation skill. The validator rejects
+    unsupported root-cause claims and sampling evidence presented as deterministic
+    exclusion; runtime wrappers and orchestrator diagnosis routing share the canonical
+    contract.
+
+
+    Validation: 14 diagnostic tests plus prerequisite, orchestrator, skill colocation,
+    registry, context, workflow and source-disposition checks passed. Independent
+    implementation and final metadata reviews passed with no blockers. Worked incident
+    examples are documentation; no historical diagnosis was rewritten as a newly observed
+    execution.
+
+
+    Workflow: `2026-09-05-diagnostic-analyst`.
+
+    Local branch: `codex/2026-09-05-diagnostic-analyst`.
+
+    Reviewed local head: `54c919ae36b49c60d797754d198f78307edda10f`.
+
+    Fresh hosted contexts and current-subject admission remain required after push.
+
+
+    Closes #269
+
+    '
+  integration:
+    status: pending
+    topology: null
+    admitted_head_sha: null
+    integration_commit_sha: null
+    provider_read_back: false
+  review:
+    status: pending
+  required_check_contexts: []
+  hosted_checks: []
+issues:
+- number: 269
+  mode: terminal-close
+  work_authorization:
+    online_issue_bound: true
+    explicit_owner_approval: true
+  final_accepted_delivery: true
+  workflow:
+    scope_complete: true
+    tasks_complete: true
+    applicable_verification_complete: true
+  closing_keyword: Closes
+  closure_deferred_reason: null
+  next_terminal_gate_or_owner: null
+  read_back:
+    performed: false
+    integration_commit_sha: null
+    issue_state: null
+    issue_state_reason: null
+    project_status: null
