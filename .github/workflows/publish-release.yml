@@ -278,7 +278,8 @@ jobs:
           if [[ "$(python .ai/scripts/manage-release-asset-identity.py required --version "${TAG}")" == "true" ]]; then
             python .ai/scripts/manage-release-asset-identity.py provider \
               --version "${TAG}" --ref "refs/tags/${TAG}" --repository "${GITHUB_REPOSITORY}" \
-              --assets-dir "${verify_dir}" --allow-draft --output "${RUNNER_TEMP}/uploaded-assets.json"
+              --assets-dir "${verify_dir}" --allow-draft --output "${RUNNER_TEMP}/uploaded-assets.json" \
+              --raw-provider-output "${RUNNER_TEMP}/uploaded-provider.json"
           fi
 
           gh release view "${TAG}" --json body --jq '.body' > "${verify_dir}/release-body.md"
@@ -301,20 +302,23 @@ jobs:
           if [[ "$(python .ai/scripts/manage-release-asset-identity.py required --version "${TAG}")" == "true" ]]; then
             python .ai/scripts/manage-release-asset-identity.py provider \
               --version "${TAG}" --ref "refs/tags/${TAG}" --repository "${GITHUB_REPOSITORY}" \
-              --assets-dir "${RUNNER_TEMP}/release-assets" --output "${RUNNER_TEMP}/published-assets.json"
+              --assets-dir "${RUNNER_TEMP}/release-assets" --output "${RUNNER_TEMP}/published-assets.json" \
+              --raw-provider-output "${RUNNER_TEMP}/published-provider.json"
           fi
 
       - name: Retain asset publication read-back
         if: always()
         uses: actions/upload-artifact@v7
         with:
-          name: asset-publication-${{ needs.build.outputs.version }}-${{ needs.build.outputs.commit }}
+          name: asset-publication-${{ needs.build.outputs.version }}-${{ needs.build.outputs.commit }}-attempt-${{ github.run_attempt }}
           retention-days: 30
           compression-level: 0
           if-no-files-found: ignore
           path: |
             ${{ runner.temp }}/uploaded-assets.json
             ${{ runner.temp }}/published-assets.json
+            ${{ runner.temp }}/uploaded-provider.json
+            ${{ runner.temp }}/published-provider.json
 
   reconcile-provider:
     name: Reconcile release tracking
@@ -367,7 +371,7 @@ jobs:
       - name: Retain provider reconciliation receipt
         uses: actions/upload-artifact@v7
         with:
-          name: provider-reconciliation-${{ needs.build.outputs.version }}-${{ needs.build.outputs.commit }}
+          name: provider-reconciliation-${{ needs.build.outputs.version }}-${{ needs.build.outputs.commit }}-attempt-${{ github.run_attempt }}
           retention-days: 30
           compression-level: 0
           if-no-files-found: error

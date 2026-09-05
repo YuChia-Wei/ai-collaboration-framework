@@ -240,11 +240,24 @@ def verify_provider(admission: dict, release: dict, repository: str, *, allow_dr
     for expected in admission["assets"]:
         actual = by_name[expected["name"]]
         url = f"https://github.com/{repository}/releases/download/{version}/{expected['name']}"
-        if (type(actual.get("id")) is not int or actual["id"] <= 0 or actual["id"] in ids
-                or actual.get("state") != "uploaded" or actual.get("browser_download_url") != url
-                or type(actual.get("size")) is not int or actual["size"] != expected["size"]
-                or actual.get("digest") != "sha256:" + expected["sha256"]):
-            raise PackageError("provider asset name/size/digest/identity disagrees with admitted bytes")
+        allowed_urls = {url}
+        if draft_page:
+            # GitHub may use the owned draft page's temporary locator for downloads.
+            # Never accept another draft token or retain this exception after publication.
+            draft_locator = page.rsplit("/", 1)[1]
+            allowed_urls.add(f"https://github.com/{repository}/releases/download/{draft_locator}/{expected['name']}")
+        checks = {
+            "id": type(actual.get("id")) is int and actual["id"] > 0 and actual["id"] not in ids,
+            "state": actual.get("state") == "uploaded",
+            "browser_download_url": isinstance(actual.get("browser_download_url"), str)
+                and actual["browser_download_url"] in allowed_urls,
+            "size": type(actual.get("size")) is int and actual["size"] == expected["size"],
+            "digest": actual.get("digest") == "sha256:" + expected["sha256"],
+        }
+        mismatches = [field for field, matches in checks.items() if not matches]
+        if mismatches:
+            raise PackageError(f"provider asset {expected['name']} disagrees with admitted bytes or release locator: "
+                               + ", ".join(mismatches))
         ids.add(actual["id"])
         observed.append({k: actual[k] for k in ("id", "name", "size", "digest", "browser_download_url")})
     return {"schema_version": PROVIDER_SCHEMA, "state": "uploaded-draft" if release["draft"] else "published",

@@ -134,6 +134,16 @@ class GitHubWorkflowContractTests(unittest.TestCase):
         self.assertLess(names.index("Publish verified draft"), names.index("Read back published asset identity"))
         self.assertIn("manage-release-asset-identity.py provider", observed["run"])
         self.assertNotIn("--allow-draft", observed["run"])
+        self.assertIn('--raw-provider-output "${RUNNER_TEMP}/uploaded-provider.json"', uploaded["run"])
+        self.assertIn('--raw-provider-output "${RUNNER_TEMP}/published-provider.json"', observed["run"])
+        retained = next(step for step in publish if step["name"] == "Retain asset publication read-back")
+        self.assertEqual("always()", retained["if"])
+        self.assertIn("uploaded-provider.json", retained["with"]["path"])
+        self.assertIn("published-provider.json", retained["with"]["path"])
+        for job in ("publish", "reconcile-provider"):
+            for step in publication["jobs"][job]["steps"]:
+                if step.get("uses") == "actions/upload-artifact@v7":
+                    self.assertIn("${{ github.run_attempt }}", step["with"]["name"])
 
     def setUp(self) -> None:
         actual_names = {path.name for path in WORKFLOW_DIR.glob("*.yml")}
@@ -325,7 +335,7 @@ class GitHubWorkflowContractTests(unittest.TestCase):
             {
                 "name": (
                     "provider-reconciliation-${{ needs.build.outputs.version }}-"
-                    "${{ needs.build.outputs.commit }}"
+                    "${{ needs.build.outputs.commit }}-attempt-${{ github.run_attempt }}"
                 ),
                 "retention-days": "30",
                 "compression-level": "0",
