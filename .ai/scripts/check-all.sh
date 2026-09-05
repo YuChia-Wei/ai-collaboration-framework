@@ -2390,6 +2390,10 @@ run_command_check "python .ai/scripts/tests/test_skill_script_colocation.py -v" 
     "Canonical Skill Script Colocation Contract" \
     "required" "true" "true"
 
+run_command_check "python .ai/assets/skills/diagnostic-analyst/scripts/tests/test_diagnostic_contract.py -v" \
+    "Diagnostic Analyst Falsification Contract" \
+    "required" "true" "true"
+
 run_command_check "python .ai/scripts/tests/test_skill_retirement.py -v" \
     "Skill Retirement Routing and Upgrade Tests" \
     "required" "true" "true"
