@@ -25,3 +25,9 @@
 ## Pending gates
 
 Freeze the coherent commit, inspect the portable payload, and perform an independent read-only post-remediation audit. No push, PR, merge, Issue/Project mutation, tag, release, or publication has occurred.
+
+## Independent review and bounded package inspection
+
+- Review 1 on `63b3b51ee5d53f97ae73f09e4f43f870feda17fe` / tree `f681290df086cfc025601bc8b8128d5992333924`: failed with MEDIUM SKILL004-R1, stale active guidance in two upgrader references and two compatibility guides. No actionable code defect found; all 12 fixture byte/hash records independently matched the recorded release commits. The four current guides were corrected; verification of that correction is pending.
+- Portable payload inventory: 640 entries, new resolver and tombstone present, all six retired entries absent. Historical and active-replacement Git bytes unchanged.
+- Full payload reference integrity is blocked by the same preexisting error on baseline `f06e8e3a882e375e31e315569741541ac6e1659d` and the reviewed commit: validation-profile-registry.sh references excluded v0.14.0 output.json, receipt.json, and support-matrix.yaml. This is not a full package pass and is outside this Issue's retirement scope. Release packaging remains a separate gate.
