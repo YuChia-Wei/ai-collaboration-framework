@@ -351,3 +351,6 @@ healthchecksdb
 .dotnet
 /.dev/validation.local.conf
 /.dev/ai-context/local/
+
+# obsidian vaults
+.obsidian/
