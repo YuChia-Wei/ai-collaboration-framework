@@ -369,10 +369,12 @@ def capture_authority(target, logs, phase):
 
 def execute_case(origin, previous, incoming, output, customized, recovery, apply, provenance, rules):
     label = origin + ("-customized" if customized else "-pristine") + "-" + recovery
+    print(json.dumps({"event": "case-started", "case": label}), flush=True)
     logs = output / "evidence" / label
     logs.mkdir(parents=True)
     target = output / "work" / label
     initial, ledger, preserved = seed_target(previous, incoming, target, customized, apply, provenance, rules, logs)
+    print(json.dumps({"event": "target-seeded", "case": label}), flush=True)
     negative = negative_preflight(origin, previous, incoming, target, initial, ledger, logs, apply, provenance) if not customized else []
     before = snapshot(target)
     write_json(logs / "prestate.json", before)
@@ -399,6 +401,7 @@ def execute_case(origin, previous, incoming, output, customized, recovery, apply
     }}
     decision = approved_decision(packet, candidate, candidate_ledger, provenance)
     write_json(logs / "decision.json", decision)
+    print(json.dumps({"event": "plan-and-decision-ready", "case": label}), flush=True)
     # An unresolved owner decision must not create a transaction or change bytes.
     negative.append(reject_unchanged("missing-owner-decision", lambda: apply.apply_plan(plan), apply.ApplyError, "explicit approved remediation decision", target))
     invalid_decision = deepcopy(decision)
@@ -428,6 +431,7 @@ def execute_case(origin, previous, incoming, output, customized, recovery, apply
             return {"origin": origin, "case": label, "outcome": "passed", "transaction_id": plan["plan_sha256"], "recovery": "rolled-back", "prestate_sha256": sha(canonical(before)), "poststate_sha256": sha(canonical(snapshot(target))), "negative_evidence": negative, "artifacts": case_artifacts(logs, output)}
     else:
         apply.apply_plan(plan, remediation_decision=decision)
+    print(json.dumps({"event": "target-validation-required", "case": label}), flush=True)
     negative.append(reject_unchanged("missing-target-validation", lambda: provenance.finalize_context(
         target, candidate, candidate_ledger, effective_state_candidate=state_candidate(candidate["source"]), effective_resolver_evidence=[EVIDENCE]),
         provenance.TargetValidationError, "target validation|target-validation", target))
@@ -522,6 +526,7 @@ def main():
                     break
                 terminal["cases"].append(execute_case(origin, origins[origin], incoming, output, customized, recovery, apply, provenance, rules))
                 write_json(output / "progress.json", terminal)
+                print(json.dumps({"event": "case-passed", "case": terminal["cases"][-1]["case"], "completed_cases": len(terminal["cases"])}), flush=True)
         terminal["outcome"] = "planned-only" if args.preflight_only else "passed"
     except Exception as exc:
         message = str(exc)

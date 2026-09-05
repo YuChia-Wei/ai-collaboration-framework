@@ -1,0 +1,25 @@
+{
+  "schema_version": "focused-repair-evidence/v1",
+  "evidence_kind": "parent-observed-unit-tests",
+  "base_commit": "4d1a5c7d039618f007784679d9968c357347272b",
+  "subject": "working changes committed with this evidence",
+  "checks": [
+    {
+      "command": "python -m unittest test_ai_context_packaging.DeterministicPackageGwtTests.test_gwt_006_given_extracted_envelope_when_packaged_planner_runs_then_bytecode_does_not_break_checksums test_ai_context_packaging.VersionedMigrationPackagingGwtTests.test_gwt_014_given_governed_previous_inventory_when_built_then_versioned_operations_apply -v",
+      "cwd": ".ai/scripts/tests",
+      "execution_boundary": "require_escalated",
+      "tests": 2,
+      "duration_seconds": 43.641,
+      "outcome": "passed"
+    },
+    {
+      "command": "python -m unittest discover -s .ai/scripts/tests -p test_ai_context_release_state.py -k test_gwt_031 -v",
+      "cwd": ".",
+      "attempts": [
+        {"execution_boundary": "default-sandbox", "outcome": "blocked-by-environment", "tests": 5, "errors": 4, "duration_seconds": 0.063, "failure": "WinError 5 creating or cleaning temporary fixture directories"},
+        {"execution_boundary": "require_escalated", "outcome": "passed", "tests": 5, "duration_seconds": 0.316, "material_change": "Previously established local fixture permission boundary"}
+      ]
+    }
+  ],
+  "acceptance_boundary": "Unit regression evidence only; full immutable suites, correction review and actual matrix remain pending."
+}

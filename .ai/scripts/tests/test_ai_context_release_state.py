@@ -984,7 +984,7 @@ class AiContextReleaseStateGwtTests(unittest.TestCase):
                         "semantic_cutovers": {"provider_component_selection": "preserved", "source_specific_managed_removals": "verified",
                             "commit_grammar_adoption": "verified", "effective_rule_regeneration": "verified", "skill_retirement": "verified",
                             "target_customization_ids": ["fixture-contract"]},
-                        "negative_evidence": [{"case": name, "outcome": "passed"} for name in negatives]})
+                        "negative_evidence": [{"case": name, "outcome": "passed", "protected_state_sha256": "f" * 64, "observed_rejection": "ApplyError"} for name in negatives]})
             with self.assertRaisesRegex(STATE.ReleaseStateError, "missing or invalid"):
                 STATE.validate_direct_upgrade_execution(root, version, sources, matrix)
             path.write_text(json.dumps(evidence), encoding="utf-8")
@@ -1058,7 +1058,28 @@ class AiContextReleaseStateGwtTests(unittest.TestCase):
             bind('finalization.json', case['finalization'])
             receipt = {'schema_version': 'target-validation-receipt/v1', 'transaction_id': transaction, 'plan_sha256': transaction, 'packet_sha256': packet['canonical_digest'], 'decision_sha256': decision_digest, 'target_validation_profile': profile, 'target_validation_profile_digest': digest(profile), 'execution': execution}
             bind('supplied-target-validation.json', receipt)
+            failed_execution = dict(execution, outcome='failed', exit_code=17,
+                output_sha256=bind('target-validation-rejected.log', b'exit17 fixture output\n', binary=True))
+            case['failed_target_validation'] = failed_execution
+            bind('failed-target-validation.json', dict(receipt, execution=failed_execution))
+            case['negative_evidence'] = [{'case': name, 'outcome': 'passed',
+                'protected_state_sha256': 'f' * 64, 'observed_rejection': 'ApplyError'}
+                for name in ('failed-target-validation-receipt', 'target-validator-disagreement')]
             verify(case)
+            for name in ('failed-target-validation.json', 'target-validation-rejected.log'):
+                negative_path = actual / 'evidence' / label / name
+                negative_original = negative_path.read_bytes()
+                negative_path.unlink()
+                with self.subTest(missing_negative=name), self.assertRaisesRegex(STATE.ReleaseStateError, 'unavailable'):
+                    verify(case)
+                negative_path.write_bytes(negative_original + b'tampered')
+                with self.subTest(tampered_negative=name), self.assertRaisesRegex(STATE.ReleaseStateError, 'digest'):
+                    verify(case)
+                negative_path.write_bytes(negative_original)
+            incomplete_negative = json.loads(json.dumps(case))
+            incomplete_negative['negative_evidence'][0].pop('protected_state_sha256')
+            with self.assertRaisesRegex(STATE.ReleaseStateError, 'protected-state'):
+                verify(incomplete_negative)
             path = actual / 'evidence' / label / 'target-validation.log'
             original = path.read_bytes()
             path.unlink()

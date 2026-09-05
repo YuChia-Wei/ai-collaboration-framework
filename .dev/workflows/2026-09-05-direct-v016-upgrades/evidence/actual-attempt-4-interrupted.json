@@ -1,0 +1,35 @@
+{
+  "schema_version": "execution-interruption-observation/v1",
+  "evidence_kind": "parent-observation-of-runtime-callback",
+  "subject_sha": "21b6b513ffe31b59bf6462a1e449766d9537145e",
+  "archive_sha256": "fbfe02345ae2e9d2377f5bacce9fc763d99c3b48864010c458eee504cc4a515d",
+  "outcome": "interrupted",
+  "runner_terminal_present": false,
+  "started_at": "2026-09-05T10:44:29+00:00",
+  "completed_at": null,
+  "duration_seconds": null,
+  "partial_progress_sha256": "d789b404767acd399f57dd10c3037b0cf402a519968346b3bf99a7517bf82faa",
+  "completed_case_labels": [
+    "v0.6.0-pristine-resume",
+    "v0.6.0-customized-none",
+    "v0.6.0-customized-rollback",
+    "v0.9.0-pristine-resume",
+    "v0.9.0-customized-none"
+  ],
+  "expected_case_count": 9,
+  "acceptance": "not-established",
+  "failure": {
+    "kind": "executor-interruption",
+    "action": "Ctrl-C",
+    "terminal": "missing",
+    "command_timeout_observed": false
+  },
+  "failure_fingerprint": "63939bfc7d884ade1d395775f96de169fb2b4b5ac6888ec3b34ef95f90404472",
+  "observations": [
+    "Executor reported sending Ctrl-C to still-running session 53954 after quiet output.",
+    "Interruption returned exit 1; no prior command timeout was reported.",
+    "Process observation occurred after interruption and does not prove an earlier hang.",
+    "Five completed case rows survive in progress.json; no terminal or exact duration survives."
+  ],
+  "source": "direct_execution callback retained by parent; partial progress bytes inspected directly"
+}

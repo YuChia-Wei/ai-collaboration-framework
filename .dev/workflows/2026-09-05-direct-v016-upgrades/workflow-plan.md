@@ -77,3 +77,32 @@ attempt 4 retains its original immutable checkout. The new selected input
 contract requires a fresh preparation archive and actual execution; the prior
 archive cannot satisfy this changed subject. No new execution retry is implied
 before focused validation, a clean commit and its bounded authorization.
+
+## Bounded Actual Execution Retry 5
+
+Attempt 4 was interrupted by the executor sending Ctrl-C during quiet output.
+Five completed cases remain in partial progress; no runner terminal or exact
+duration exists. No timeout or pre-interruption hang was established. The
+parent observation and its fingerprint are retained in
+evidence/actual-attempt-4-interrupted.json; this is not completed acceptance.
+
+The workflow authorizes one fifth immutable matrix on the new projection
+archive after focused validation and a clean commit. The runner now emits
+case and stage progress. The external executor must not interrupt for quiet
+output and must allow up to 120 minutes for all nine cases, based on five
+completed cases taking approximately 39 minutes in the prior attempt. Actual
+subject drift, permission expansion, an explicit owner stop, or that deadline
+must return truthful interruption or timeout evidence. Use require_escalated
+only for the previously established local fixture boundary; do not repair or
+retry within the executor. Retain the exact package bytes through source-only
+repairs by current selected-input admission proof.
+
+The projection correction audit left one P2 requiring failed target receipt
+and output hashes, execution identity and protected-state evidence. Those
+checks and focused missing/tampered evidence regressions are now implemented.
+The original audit remains in evidence/projection-audit.json. The first
+projection suite stopped at 47 tests with four fixture dependency failures;
+evidence/projection-suites-1.json preserves that failure. Adding the existing
+validation_subject.py helper to the synthetic package fixture authorizes one
+second immutable run of the same three suites. No production dependency or
+acceptance rule is weakened and the prior unexecuted suites remain unexecuted.

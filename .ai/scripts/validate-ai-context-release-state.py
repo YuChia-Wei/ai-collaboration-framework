@@ -610,6 +610,27 @@ def validate_direct_case_artifacts(actual_root, case, origin_identity, target_id
         raise ReleaseStateError("actual upgrade target command or output evidence differs")
     if iso_timestamp(execution.get("completed_at"), "target validation completed_at") < iso_timestamp(execution.get("started_at"), "target validation started_at"):
         raise ReleaseStateError("actual upgrade target validation timing is invalid")
+    failed_receipt = retained("failed-target-validation.json")
+    failed_output = retained("target-validation-rejected.log", document=False)
+    failed_execution = case.get("failed_target_validation", {})
+    if (any(failed_receipt.get(key) != receipt.get(key) for key in (
+            "schema_version", "transaction_id", "plan_sha256", "packet_sha256",
+            "decision_sha256", "target_validation_profile", "target_validation_profile_digest"))
+            or failed_receipt.get("execution") != failed_execution
+            or failed_execution.get("argv") != profile["argv"]
+            or failed_execution.get("outcome") != "failed"
+            or type(failed_execution.get("exit_code")) is not int or failed_execution["exit_code"] != 17
+            or hashlib.sha256(failed_output).hexdigest() != failed_execution.get("output_sha256")
+            or not isinstance(failed_execution.get("evidence"), str) or transaction not in failed_execution["evidence"]):
+        raise ReleaseStateError("actual upgrade failed target execution evidence differs")
+    if iso_timestamp(failed_execution.get("completed_at"), "failed target completed_at") < iso_timestamp(failed_execution.get("started_at"), "failed target started_at"):
+        raise ReleaseStateError("actual upgrade failed target validation timing is invalid")
+    for label in ("failed-target-validation-receipt", "target-validator-disagreement"):
+        rejected = [item for item in case.get("negative_evidence", []) if item.get("case") == label]
+        if (len(rejected) != 1 or rejected[0].get("outcome") != "passed"
+                or not re.fullmatch(r"[0-9a-f]{64}", str(rejected[0].get("protected_state_sha256")))
+                or not rejected[0].get("observed_rejection")):
+            raise ReleaseStateError("actual upgrade failed validation lacks protected-state rejection evidence")
 
 
 def validate_direct_upgrade_execution(root, version, sources, matrix):
@@ -682,7 +703,9 @@ def validate_direct_upgrade_execution(root, version, sources, matrix):
         if not selected[origin + "-customized-none"]["semantic_cutovers"].get("target_customization_ids"):
             raise ReleaseStateError("actual customized upgrade lacks retained semantic customization")
         negative = selected[origin + "-pristine-resume"].get("negative_evidence", [])
-        if not required_negatives.issubset({item.get("case") for item in negative if item.get("outcome") == "passed"}):
+        if not required_negatives.issubset({item.get("case") for item in negative
+                if item.get("outcome") == "passed" and item.get("observed_rejection")
+                and re.fullmatch(r"[0-9a-f]{64}", str(item.get("protected_state_sha256")))}):
             raise ReleaseStateError("actual upgrade fail-closed boundary evidence is incomplete")
 
 

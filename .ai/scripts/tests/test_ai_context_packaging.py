@@ -109,6 +109,7 @@ class SyntheticPackageRepo:
         for script in (
             "ai_context_package_identity.py",
             "ai_context_release_projection.py",
+            "validation_subject.py",
             "ai_context_package_validation.py",
             "ai_context_package_apply.py",
             "ai_context_cli_routing.py",
