@@ -325,6 +325,11 @@ register_check skill-transition-tests \
     "skill,release" "release nightly-full" \
     ".ai/scripts/tests/test_skill_transition_contract.py .ai/assets/skills" skill-transition "python>=3.11" 60 cpu reuse-by-input source \
     "python .ai/scripts/tests/test_skill_transition_contract.py -v" source-release
+register_check diagnostic-contract \
+    "Diagnostic Analyst Falsification Contract" required \
+    "skill,tests" "fast pr release nightly-full" \
+    ".ai/assets/skills/diagnostic-analyst .ai/assets/skills/software-development-orchestrator .ai/scripts/python_prerequisites.py .ai/scripts/python-entrypoints.json .ai/scripts/skill_identifier_lifecycle.py .ai/assets/skills/transitions .agents/skills/diagnostic-analyst .claude/skills/diagnostic-analyst" '' "python>=3.11" 60 cpu no-reuse source \
+    "python .ai/assets/skills/diagnostic-analyst/scripts/tests/test_diagnostic_contract.py -v" always
 register_check skill-retirement-tests \
     "Skill Retirement Routing and Upgrade Tests" required \
     "skill,tests" "fast pr release nightly-full" \

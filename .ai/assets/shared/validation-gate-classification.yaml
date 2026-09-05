@@ -33,6 +33,7 @@ groups:
       - "coding-standards-structural"
       - "dependency-versions"
       - "dependency-versions-tests"
+      - "diagnostic-contract"
       - "document-projection"
       - "effective-rule-action-skill"
       - "effective-rules"

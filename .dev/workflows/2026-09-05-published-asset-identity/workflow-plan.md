@@ -54,3 +54,7 @@ No historical release record or production gate is weakened.
 ## Local Completion
 
 Both local tasks are complete after independent review and correction verification. The owner selected Issue 280 publication coordination; online delivery and Issue 272 execution remain separate gates.
+
+## Provider Delivery Authorization
+
+On 2026-09-05 the owner explicitly approved pushing both Issue 269 and 280 branches, creating pull requests, and merging after all required checks pass. Issue 269 closes after verified integration; Issue 280 remains open until actual v0.16.0 publication acceptance. Publication and Issue 272 implementation are separate.

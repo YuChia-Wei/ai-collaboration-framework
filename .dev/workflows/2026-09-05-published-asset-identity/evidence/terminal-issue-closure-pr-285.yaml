@@ -1,0 +1,76 @@
+schema_version: '1.0'
+contract_id: github-terminal-issue-closure
+repository: YuChia-Wei/ai-collaboration-framework
+validation_stage: declaration
+pull_request:
+  number: 285
+  head_sha: null
+  body: 'Release route archives previously differed from the public assets under the
+    same logical package/release identity. From v0.16.0, candidate CI and tag publication
+    stage the tracked admitted ZIP/tar/checksum bytes, bind them to current source
+    and incoming route identities, and compare downloaded bytes with provider name/size/digest
+    read-back before and after publishing. Publication receipts stay separate from
+    candidate provenance.
+
+
+    Backfills the exact public v0.15.0/v0.15.1 ZIPs into new route evidence. Both
+    rebound archives executed their own portable and edge validators; all three retained-origin
+    routes resolve. Historical tags, release records and public assets remain unchanged.
+
+
+    Validation: 14 identity, 12 workflow, 37 release-state, 14 prerequisite and 10
+    registry tests passed, along with context/shell/workflow/source-disposition gates.
+    Real v0.15.1 four-asset staging/source/provider comparison passed. Independent
+    implementation and correction reviews passed; the low duplication finding is resolved.
+    No new-release publication or full matrix is claimed.
+
+
+    The owner chose to keep Issue 280 open as v0.16.0 publication coordination until
+    actual public archive acceptance. Issue 272 still supplies the actual direct v0.15.1/v0.9.0/v0.6.0-to-v0.16.0
+    execution and recovery evidence.
+
+
+    Workflow: `2026-09-05-published-asset-identity`.
+
+    Local branch: `codex/2026-09-05-published-asset-identity`.
+
+    Fresh hosted contexts and current-subject admission remain required after push.
+
+
+    Refs #280
+
+    '
+  integration:
+    status: pending
+    topology: null
+    admitted_head_sha: null
+    integration_commit_sha: null
+    provider_read_back: false
+  review:
+    status: pending
+  required_check_contexts: []
+  hosted_checks: []
+issues:
+- number: 280
+  mode: deferred
+  work_authorization:
+    online_issue_bound: true
+    explicit_owner_approval: true
+  final_accepted_delivery: false
+  workflow:
+    scope_complete: true
+    tasks_complete: true
+    applicable_verification_complete: true
+  closing_keyword: null
+  closure_deferred_reason: The implementation is locally complete; first v0.16.0 public
+    asset acceptance must occur after publication. The owner explicitly chose to retain
+    Issue 280 as publication coordination.
+  next_terminal_gate_or_owner: 'Release owner: after authorized v0.16.0 publication,
+    verify all four public asset bytes, provider identity and incoming upgrade route
+    bindings; close only after successful acceptance.'
+  read_back:
+    performed: false
+    integration_commit_sha: null
+    issue_state: null
+    issue_state_reason: null
+    project_status: null

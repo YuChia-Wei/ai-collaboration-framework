@@ -120,6 +120,7 @@ check_all_required_commands:
   - python .ai/assets/skills/software-development-orchestrator/scripts/tests/test_software_development_orchestrator_capability_contract.py -v
   - python .ai/assets/skills/software-development-orchestrator/scripts/tests/test_software_development_orchestrator_acceptance.py -v
   - python .ai/scripts/tests/test_skill_script_colocation.py -v
+  - python .ai/assets/skills/diagnostic-analyst/scripts/tests/test_diagnostic_contract.py -v
   - python .ai/scripts/tests/test_skill_retirement.py -v
   - python .ai/scripts/tests/test_semantic_customization_lifecycle.py -v
   - python .ai/scripts/tests/test_semantic_customization_skill_contract.py -v

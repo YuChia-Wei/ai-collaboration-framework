@@ -1,5 +1,22 @@
 # Issue 280 Local Remediation
 
+## PR 285 Integration Verification
+
+The delivery branch incorporates `origin/main` at
+`2957ab39f8c3bc8dd27cdd12d792091db42d7c0e`. Both completed workflow index rows
+are retained; the shared entrypoint registry, required-command wiring and
+validation gate lists preserve the diagnostic and release-identity additions.
+No historical archive, public asset, route receipt or release implementation
+was changed by this integration.
+
+Focused integrated validation passed: seven entrypoint tests (3.390 seconds),
+ten profile-registry tests (2.782 seconds), fourteen asset-identity tests
+(2.218 seconds), twelve GitHub workflow tests (0.719 seconds), terminal
+declaration, AI context, shell assets, workflow artifacts and whitespace checks.
+The initial workflow-test attempt hit the sandbox TEMP permission boundary;
+its verified empty failed directory was removed and a normal-permission rerun
+passed. Independent integration review and fresh hosted admission remain required.
+
 The local implementation binds one admitted artifact set to candidate CI,
 tag staging, draft upload verification and published provider read-back. From
 v0.16.0 onward a missing tracked admission or a route/source/provider identity
