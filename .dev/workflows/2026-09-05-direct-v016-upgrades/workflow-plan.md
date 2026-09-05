@@ -9,10 +9,10 @@
 - `base_branch`: `main`
 - `branch_segment`: `1`
 - `status`: `in_progress`
-- `current_phase`: `remediation`
+- `current_phase`: `verification`
 - `artifact_root`: `.dev/workflows/2026-09-05-direct-v016-upgrades`
 - `created_at`: `2026-09-05T18:00:49+08:00`
-- `updated_at`: `2026-09-05T18:00:49+08:00`
+- `updated_at`: `2026-09-05T20:37:35+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md`
 - `template_version`: `1.2.0`
 
@@ -20,7 +20,7 @@
 
 Issue [272](https://github.com/YuChia-Wei/ai-collaboration-framework/issues/272) requires actual v0.6.0, v0.9.0 and v0.15.1 direct upgrades to one v0.16.0 archive. The owner authorized continuation on 2026-09-05 after Issues 269 and 280 implementation was integrated. Source-specific semantic cutovers, target-owned reconciliation and recovery are in scope. The owner explicitly retained Issue 280 open in Verification until public v0.16.0 archive acceptance. Publication, tags and target-specific production customization decisions remain separate.
 
-Baseline: clean main and origin/main at `013f39116962611c3dbd2825fecd9efca3ec8e3a`. The dedicated branch was created before material edits. Root holds the sole tracked-writer lease. The current code graph excludes the relevant script trees; bounded tracked-file discovery is recorded under the ignored Issue 272 validation root.
+Baseline: clean main and origin/main at `013f39116962611c3dbd2825fecd9efca3ec8e3a`. The dedicated branch was created before material edits. Root owns integration, with a sole tracked-writer lease for each mutation phase. The code graph excludes the relevant script trees; bounded tracked-file discovery is recorded under the ignored Issue 272 validation root.
 
 ## Acceptance And Evidence
 
@@ -46,7 +46,7 @@ Focused checks precede immutable long-running execution. Long-running validation
 
 ## Branch Lifecycle And Resume
 
-Use merge-commit topology for the coupled migration contracts, exact archive admission and retained execution evidence, preserving preparation commits as provenance. The current checkpoint is UPG006-direct-evidence. The first actual attempt failed before target execution because source-only release identity tools were included in the payload. The archive is not admitted. Independent runner review found three blocking gaps; repair 1 addresses each and retains the original findings and failure. Focused regression checks passed; the repaired actual matrix remains pending. Attempt 2 is authorized after the recorded material repairs, on a new immutable commit and fresh candidate archive. No implementation acceptance is established yet.
+Use merge-commit topology for the coupled migration contracts, exact archive admission and retained execution evidence, preserving preparation commits as provenance. The current checkpoint is UPG006-release-readiness: final immutable integration review. The first actual attempt failed before target execution because source-only release identity tools were included in the payload; that archive was not admitted. Independent runner review found three blocking gaps. Repair 1 addressed them and retained the original findings and failure. Attempt 2 was authorized after focused validation of those material repairs, on a new immutable commit and fresh candidate archive. Later attempts and their outcomes are retained below.
 
 ## Bounded Actual Execution Retry 3
 
@@ -106,3 +106,15 @@ evidence/projection-suites-1.json preserves that failure. Adding the existing
 validation_subject.py helper to the synthetic package fixture authorizes one
 second immutable run of the same three suites. No production dependency or
 acceptance rule is weakened and the prior unexecuted suites remain unexecuted.
+
+## Accepted Actual Execution And Local Readiness
+
+Attempt 5 passed all nine cases on immutable source 5ca4fcfe9d00d556dab21db9a90bd575cc01c25a in 3277.546 seconds. The exact admitted ZIP remains d136b69e4153e7c85f892871fb0d3e6c5d8f88c7fd89d43fdb1b03ca88c5c85d, built at 4d1a5c7d039618f007784679d9968c357347272b. No intermediate package was applied. All target records are retained beneath `.dev/releases/v0.16.0/route-assets/actual/`.
+
+The three standalone edge validators and nine ambiguity/missing/tampered route probes passed in 57.757 seconds. Canonical resolver receipts and the complete retained actual-artifact source gate passed before tracked integration. `evidence/runtime-acceptance-ledger.yaml` preserves the validated runtime ledger as historical evidence; its original ignored references identify the execution locations. The retained source copies and their hashes are projected in `evidence/acceptance-evidence.json` for portable inspection.
+
+The release's route-assets directory retains captured logs in Git and disables text normalization for those logs only. Their raw Windows line endings remain part of the recorded output hashes. The ordinary source text policy is unchanged.
+
+Regression retry 2 passed 179 tests with two platform skips out of 181 total. The skips cover Windows casefold-fixture construction and symlink privilege; neither counts as passed. A raw-log recount corrected the executor's initial package-validation overcount. All earlier failed, blocked and interrupted attempts remain retained. The owner supplied an explicit faster fixture root; the classified release-state suite passed 40 tests there in 1.144 seconds. No speedup comparison or redirection of storage-semantic tests is claimed.
+
+Local direct-upgrade implementation acceptance is established. Final fixed-subject integration review remains the current task. Release source status stays planned, Issue 272 remains open, and Issue 280 remains open in Verification pending public archive acceptance. No tag, publication or provider terminal mutation is claimed.

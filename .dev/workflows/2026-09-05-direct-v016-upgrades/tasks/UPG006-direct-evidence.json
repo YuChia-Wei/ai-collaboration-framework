@@ -6,9 +6,9 @@
   "task_id": "UPG006-direct-evidence",
   "workflow_id": "2026-09-05-direct-v016-upgrades",
   "owner_skill": "ai-context-governance",
-  "status": "in_progress",
+  "status": "completed",
   "created_at": "2026-09-05T18:00:49+08:00",
-  "updated_at": "2026-09-05T18:06:35+08:00",
+  "updated_at": "2026-09-05T20:37:35+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-6-astra",
   "reasoning_effort": "xhigh",
@@ -32,15 +32,23 @@
     "validation": [
       "Focused repository-owned tests; immutable actual execution where required."
     ],
-    "last_completed_step": "",
-    "next_action": "Execute each retained origin directly against the same v0.16 archive, including customization, finalization and recovery."
+    "last_completed_step": "All nine actual isolated targets and three one-edge routes passed with retained artifacts.",
+    "next_action": "Final integration review and release-readiness evaluation belong to UPG006-release-readiness."
   },
   "results": {
-    "summary": "",
-    "files_changed": [],
-    "tests_run": [],
-    "finding_status": "not-addressed",
-    "residual_risk": "",
-    "follow_up_needed": true
+    "summary": "Each exact public origin upgrades directly to the same v0.16.0 archive. Customized ownership, required validation, provenance finalization, durable resume, rollback and rejection boundaries are retained and verified.",
+    "files_changed": [
+      ".dev/releases/v0.16.0/support-matrix.yaml",
+      ".dev/releases/v0.16.0/route-assets",
+      ".dev/releases/v0.16.0/route-evidence"
+    ],
+    "tests_run": [
+      "Actual direct upgrades: 9/9 passed, 3277.546 seconds.",
+      "Direct-edge execution: 3/3 passed; route rejection probes: 9/9 passed, 57.757 seconds.",
+      "Canonical retained-origin route evidence gate: passed."
+    ],
+    "finding_status": "addressed",
+    "residual_risk": "Isolated representative targets do not establish compatibility for arbitrary production customizations.",
+    "follow_up_needed": false
   }
 }

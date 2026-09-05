@@ -10,7 +10,7 @@ commit: null
 tagged_at: null
 recorded_at: null
 created_at: '2026-09-05T18:06:35+08:00'
-updated_at: '2026-09-05T18:06:35+08:00'
+updated_at: '2026-09-05T20:37:35+08:00'
 planning:
   github_issue_refs:
   - '#267'
@@ -96,8 +96,12 @@ distribution:
     automation: github-actions
     creates_or_moves_tag: false
 validation:
-  evidence: Preparation in progress under Issue 272; actual direct upgrade and admitted
-    archive evidence not yet established.
+  evidence: 'Nine actual isolated target cases passed on one admitted archive; three
+    direct edges and nine route rejection probes passed. Packaging/apply/portable
+    regression: 179 passed and two platform skips. Release-state: 40 passed with explicit
+    ephemeral fixture acceleration. Current retained artifact source gate passed;
+    final fixed-subject integration review and provider admission remain pending.
+    No public acceptance is claimed.'
   workflow_id: 2026-09-05-direct-v016-upgrades
   related_workflows:
   - 2026-09-05-diagnostic-analyst

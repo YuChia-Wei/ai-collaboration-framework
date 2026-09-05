@@ -1,0 +1,48 @@
+{
+  "schema_version": "1.0",
+  "packet_id": "UPG006-PROJECTION-CORRECTION-AUDIT",
+  "head_sha": "5ca4fcfe9d00d556dab21db9a90bd575cc01c25a",
+  "base_sha": "4d1a5c7d039618f007784679d9968c357347272b",
+  "tree_sha": "cbdba7b862bc85df029e8cc21d99f0c499af3eeb",
+  "outcome": "passed",
+  "blocking_findings": 0,
+  "findings": [],
+  "resolved_findings": [
+    "UPG006-PROJECTION-R1",
+    "remaining UPG006-GATE-R3"
+  ],
+  "evidence": {
+    ".ai/scripts/validate-ai-context-release-state.py": "7cf51ba8364c8b0b6c9440631d23b29584cdcdc7eb976807861e3fe7c1da2f7d",
+    ".github/scripts/validate-v016-direct-upgrades.py": "ca77618d571ffde0d358bcaea7a1b66f1ca6336639e198a1c07f3f599aafd466",
+    ".ai/scripts/tests/test_ai_context_release_state.py": "15960d50eab0eb32826f1a7d63dc1bc583b07bc62818e541d9c84487f698486f"
+  },
+  "reused_with_proof": {
+    ".ai/scripts/ai_context_release_projection.py": "b3ea5ce0aba7766e5b434915325d0925d2dd602eec98241966454600c9b9d0f1",
+    ".ai/scripts/ai_context_package.py": "75e638cb6eeb81413c0ca80469f8c962b7298862740ec4e71fd61f885b90c250",
+    ".ai/scripts/ai_context_package_validation.py": "3d5bfd076c96e1df5d99430c74027b0059f8fab61490433d56788f442428bf9d",
+    ".ai/scripts/release_asset_identity.py": "056b8e2554104cc214767f2ef95c3b0d8da9dd3384bca871a5c8004b4a908cb7",
+    ".ai/distribution/schemas/selected-inputs.schema.yaml": "917bc25fb4225ff01692d3c2ea68cedf9440e094cdceb07ca7425cabb805e122",
+    ".dev/standards/AI-CONTEXT-SOURCE-RELEASE-POLICY.md": "59a0a8438d1ac19e61caf57d348c01c5391590ef8993743b5e65360d8e9f1683"
+  },
+  "review_observations": [
+    "release-state lines613-633 now read and verify retained failed receipt and rejected output through the existing exact path/raw SHA256 loader, compare successful receipt transaction/packet/decision/profile authority, require the failed execution copy and argv/outcome=failed/exit17, output digest, transaction evidence path and ordered timestamps.",
+    "Both failed-target-validation-receipt and target-validator-disagreement require a unique passed rejection record, valid protected-state SHA256 and observed rejection. Required pristine negatives also require protected-state/rejection evidence.",
+    "Focused GWT031d adds missing and tampered failed-receipt/rejected-output cases plus missing protected-state rejection. Existing positive/output/receipt boundary tests remain. Tests inspected, not rerun.",
+    "Runner changes since prior review emit source-side progress only. They do not alter target command, transaction operations, comparison assertions or acceptance decisions.",
+    "Prior projection, builder/portable reader, selected schema, source policy and admission source projection bytes match the reviewed commit exactly."
+  ],
+  "gate_states": {
+    "immutable_checkout": "re-executed",
+    "correction_source_review": "re-executed",
+    "focused_test_adequacy_review": "re-executed",
+    "projection_and_cycle_review": "reused-with-proof",
+    "actual_upgrade_matrix": "deferred",
+    "test_execution": "not-applicable"
+  },
+  "limitations": [
+    "Bounded static correction review only; no matrix, test suite, provider access or actual acceptance claim.",
+    "No tracked edits or repair. Parent owns execution evidence, integration and final release acceptance.",
+    "Retained failure evidence remains intact.",
+    "Original checkout used throughout this audit; isolated worktree was not modified."
+  ]
+}

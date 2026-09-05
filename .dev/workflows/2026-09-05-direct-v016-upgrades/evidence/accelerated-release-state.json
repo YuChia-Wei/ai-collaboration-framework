@@ -1,0 +1,23 @@
+{
+  "schema_version": "focused-test-observation/v1",
+  "evidence_kind": "unit",
+  "subject_sha": "5ca4fcfe9d00d556dab21db9a90bd575cc01c25a",
+  "command": [
+    "python",
+    ".ai/scripts/tests/test_ai_context_release_state.py",
+    "-v"
+  ],
+  "classification": "ephemeral-fixture-io",
+  "fixture_route": "accelerated",
+  "root_source": "explicit-owner-setting",
+  "filesystem_type": "NTFS",
+  "preflight": "passed",
+  "started_at": "2026-09-05T12:33:40.034444+00:00",
+  "completed_at": "2026-09-05T12:33:41.531299+00:00",
+  "duration_seconds": 1.497,
+  "exit_code": 0,
+  "outcome": "passed",
+  "output": ".dev/ai-context/local/validation/issue-272/accelerated-release-state.log",
+  "output_sha256": "3bb96f6662769a7c6473f3f957692b36166333db7ab8bc07c8dd83edb35038c7",
+  "performance_comparison": "not-performed"
+}

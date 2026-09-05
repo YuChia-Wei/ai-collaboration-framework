@@ -8,7 +8,7 @@ task-level progress.
 
 | Workflow | Title | Owner | Status | Updated | Entry Point |
 | --- | --- | --- | --- | --- | --- |
-| [`2026-09-05-direct-v016-upgrades`](2026-09-05-direct-v016-upgrades/workflow.yaml) | Execute three retained direct upgrades to v0.16.0 for Issue 272 | `ai-context-governance` | `in_progress` | `2026-09-05T18:00:49+08:00` | [plan](2026-09-05-direct-v016-upgrades/workflow-plan.md) |
+| [`2026-09-05-direct-v016-upgrades`](2026-09-05-direct-v016-upgrades/workflow.yaml) | Execute three retained direct upgrades to v0.16.0 for Issue 272 | `ai-context-governance` | `in_progress` | `2026-09-05T20:37:35+08:00` | [plan](2026-09-05-direct-v016-upgrades/workflow-plan.md) |
 | [`2026-09-05-published-asset-identity`](2026-09-05-published-asset-identity/workflow.yaml) | Bind admitted and published release asset bytes for Issue 280 | `ai-context-governance` | `completed` | `2026-09-05T15:57:45+08:00` | [plan](2026-09-05-published-asset-identity/workflow-plan.md) |
 | [`2026-09-05-diagnostic-analyst`](2026-09-05-diagnostic-analyst/workflow.yaml) | Add falsification-first diagnostic capability for Issue 269 | `ai-context-governance` | `completed` | `2026-09-05T15:21:56+08:00` | [plan](2026-09-05-diagnostic-analyst/workflow-plan.md) |
 | [`2026-09-05-skill-004-retirement`](2026-09-05-skill-004-retirement/workflow.yaml) | Retire deprecated skill entries for Issue 271 | `ai-context-governance` | `completed` | `2026-09-05T14:43:44+08:00` | [plan](2026-09-05-skill-004-retirement/workflow-plan.md) |

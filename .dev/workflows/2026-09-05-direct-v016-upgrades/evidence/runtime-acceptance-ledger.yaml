@@ -1,0 +1,212 @@
+schema_version: '1.0'
+record_type: acceptance-evidence-ledger
+subject_sha: 5ca4fcfe9d00d556dab21db9a90bd575cc01c25a
+entries:
+- acceptance_id: UPG006-AC2
+  issue: 272
+  requires_actual_execution: true
+  evidence_kind: actual-execution
+  command: '["C:\\Users\\h4227\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+    ".github/scripts/validate-v016-direct-upgrades.py", "--candidate-archive", ".dev/ai-context/local/validation/issue-272/preparation-package-4/ai-collaboration-framework-v0.16.0.zip",
+    "--origin-archive", ".dev/ai-context/local/validation/issue-272/origins/v0.6.0/ai-context-dotnet-backend-v0.6.0.zip",
+    "--origin-archive", ".dev/ai-context/local/validation/issue-272/origins/v0.9.0/ai-context-dotnet-backend-v0.9.0.zip",
+    "--origin-archive", ".dev/workflows/2026-09-05-published-asset-identity/evidence/published-routes/route-assets/v0.15.1/ai-collaboration-framework-v0.15.1.zip",
+    "--subject-sha", "5ca4fcfe9d00d556dab21db9a90bd575cc01c25a", "--output", ".dev/ai-context/local/validation/issue-272/actual-attempt-5"]'
+  profile: retained-direct-upgrades
+  subject_sha: 5ca4fcfe9d00d556dab21db9a90bd575cc01c25a
+  outcome: passed
+  evidence_refs:
+  - ignored:.dev/ai-context/local/validation/issue-272/actual-attempt-5/terminal.json
+  evidence_sha256: 14a981794188b728c5b659050cf9f2a950cfcb113b5fe97ad0aff9ad1823619f
+  execution_receipt_ref: ignored:.dev/ai-context/local/validation/issue-272/retained-direct-upgrades-execution-receipt.yaml
+  execution_receipt_file_sha256: 58e30de8ca4d60514226b6b968d1befc4887529044c7c1e3d36c4ef576776962
+  execution_receipt: &id001
+    schema_version: '1.0'
+    record_type: terminal-command-execution
+    producer: external-task-completion
+    subject_sha: 5ca4fcfe9d00d556dab21db9a90bd575cc01c25a
+    command: '["C:\\Users\\h4227\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+      ".github/scripts/validate-v016-direct-upgrades.py", "--candidate-archive", ".dev/ai-context/local/validation/issue-272/preparation-package-4/ai-collaboration-framework-v0.16.0.zip",
+      "--origin-archive", ".dev/ai-context/local/validation/issue-272/origins/v0.6.0/ai-context-dotnet-backend-v0.6.0.zip",
+      "--origin-archive", ".dev/ai-context/local/validation/issue-272/origins/v0.9.0/ai-context-dotnet-backend-v0.9.0.zip",
+      "--origin-archive", ".dev/workflows/2026-09-05-published-asset-identity/evidence/published-routes/route-assets/v0.15.1/ai-collaboration-framework-v0.15.1.zip",
+      "--subject-sha", "5ca4fcfe9d00d556dab21db9a90bd575cc01c25a", "--output", ".dev/ai-context/local/validation/issue-272/actual-attempt-5"]'
+    profile: retained-direct-upgrades
+    started_at: '2026-09-05T11:35:45+00:00'
+    completed_at: '2026-09-05T12:30:23+00:00'
+    duration_seconds: 3277.546
+    executed: true
+    synthetic: false
+    outcome: passed
+    exit_code: 0
+    evidence_refs:
+    - ignored:.dev/ai-context/local/validation/issue-272/actual-attempt-5/terminal.json
+    evidence_sha256: 14a981794188b728c5b659050cf9f2a950cfcb113b5fe97ad0aff9ad1823619f
+    receipt_sha256: cbbf51f88373c1c2e697a73de33899ec16af261115bbd66a4cba52ca4bc3a8f8
+- acceptance_id: UPG006-AC3
+  issue: 272
+  requires_actual_execution: true
+  evidence_kind: actual-execution
+  command: '["C:\\Users\\h4227\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+    ".github/scripts/validate-v016-direct-upgrades.py", "--candidate-archive", ".dev/ai-context/local/validation/issue-272/preparation-package-4/ai-collaboration-framework-v0.16.0.zip",
+    "--origin-archive", ".dev/ai-context/local/validation/issue-272/origins/v0.6.0/ai-context-dotnet-backend-v0.6.0.zip",
+    "--origin-archive", ".dev/ai-context/local/validation/issue-272/origins/v0.9.0/ai-context-dotnet-backend-v0.9.0.zip",
+    "--origin-archive", ".dev/workflows/2026-09-05-published-asset-identity/evidence/published-routes/route-assets/v0.15.1/ai-collaboration-framework-v0.15.1.zip",
+    "--subject-sha", "5ca4fcfe9d00d556dab21db9a90bd575cc01c25a", "--output", ".dev/ai-context/local/validation/issue-272/actual-attempt-5"]'
+  profile: retained-direct-upgrades
+  subject_sha: 5ca4fcfe9d00d556dab21db9a90bd575cc01c25a
+  outcome: passed
+  evidence_refs:
+  - ignored:.dev/ai-context/local/validation/issue-272/actual-attempt-5/terminal.json
+  evidence_sha256: 14a981794188b728c5b659050cf9f2a950cfcb113b5fe97ad0aff9ad1823619f
+  execution_receipt_ref: ignored:.dev/ai-context/local/validation/issue-272/retained-direct-upgrades-execution-receipt.yaml
+  execution_receipt_file_sha256: 58e30de8ca4d60514226b6b968d1befc4887529044c7c1e3d36c4ef576776962
+  execution_receipt: *id001
+- acceptance_id: UPG006-AC4-target
+  issue: 272
+  requires_actual_execution: true
+  evidence_kind: actual-execution
+  command: '["C:\\Users\\h4227\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+    ".github/scripts/validate-v016-direct-upgrades.py", "--candidate-archive", ".dev/ai-context/local/validation/issue-272/preparation-package-4/ai-collaboration-framework-v0.16.0.zip",
+    "--origin-archive", ".dev/ai-context/local/validation/issue-272/origins/v0.6.0/ai-context-dotnet-backend-v0.6.0.zip",
+    "--origin-archive", ".dev/ai-context/local/validation/issue-272/origins/v0.9.0/ai-context-dotnet-backend-v0.9.0.zip",
+    "--origin-archive", ".dev/workflows/2026-09-05-published-asset-identity/evidence/published-routes/route-assets/v0.15.1/ai-collaboration-framework-v0.15.1.zip",
+    "--subject-sha", "5ca4fcfe9d00d556dab21db9a90bd575cc01c25a", "--output", ".dev/ai-context/local/validation/issue-272/actual-attempt-5"]'
+  profile: retained-direct-upgrades
+  subject_sha: 5ca4fcfe9d00d556dab21db9a90bd575cc01c25a
+  outcome: passed
+  evidence_refs:
+  - ignored:.dev/ai-context/local/validation/issue-272/actual-attempt-5/terminal.json
+  evidence_sha256: 14a981794188b728c5b659050cf9f2a950cfcb113b5fe97ad0aff9ad1823619f
+  execution_receipt_ref: ignored:.dev/ai-context/local/validation/issue-272/retained-direct-upgrades-execution-receipt.yaml
+  execution_receipt_file_sha256: 58e30de8ca4d60514226b6b968d1befc4887529044c7c1e3d36c4ef576776962
+  execution_receipt: *id001
+- acceptance_id: UPG006-AC5
+  issue: 272
+  requires_actual_execution: true
+  evidence_kind: actual-execution
+  command: '["C:\\Users\\h4227\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+    ".github/scripts/validate-v016-direct-upgrades.py", "--candidate-archive", ".dev/ai-context/local/validation/issue-272/preparation-package-4/ai-collaboration-framework-v0.16.0.zip",
+    "--origin-archive", ".dev/ai-context/local/validation/issue-272/origins/v0.6.0/ai-context-dotnet-backend-v0.6.0.zip",
+    "--origin-archive", ".dev/ai-context/local/validation/issue-272/origins/v0.9.0/ai-context-dotnet-backend-v0.9.0.zip",
+    "--origin-archive", ".dev/workflows/2026-09-05-published-asset-identity/evidence/published-routes/route-assets/v0.15.1/ai-collaboration-framework-v0.15.1.zip",
+    "--subject-sha", "5ca4fcfe9d00d556dab21db9a90bd575cc01c25a", "--output", ".dev/ai-context/local/validation/issue-272/actual-attempt-5"]'
+  profile: retained-direct-upgrades
+  subject_sha: 5ca4fcfe9d00d556dab21db9a90bd575cc01c25a
+  outcome: passed
+  evidence_refs:
+  - ignored:.dev/ai-context/local/validation/issue-272/actual-attempt-5/terminal.json
+  evidence_sha256: 14a981794188b728c5b659050cf9f2a950cfcb113b5fe97ad0aff9ad1823619f
+  execution_receipt_ref: ignored:.dev/ai-context/local/validation/issue-272/retained-direct-upgrades-execution-receipt.yaml
+  execution_receipt_file_sha256: 58e30de8ca4d60514226b6b968d1befc4887529044c7c1e3d36c4ef576776962
+  execution_receipt: *id001
+- acceptance_id: UPG006-AC1
+  issue: 272
+  requires_actual_execution: true
+  evidence_kind: actual-execution
+  command: '["python", ".dev/ai-context/local/validation/issue-272/execute-staged-edges.py",
+    "--staging", ".dev/ai-context/local/validation/issue-272/route-staging-1", "--subject-sha",
+    "5ca4fcfe9d00d556dab21db9a90bd575cc01c25a", "--actual-dir", ".dev/ai-context/local/validation/issue-272/actual-attempt-5"]'
+  profile: retained-direct-edges
+  subject_sha: 5ca4fcfe9d00d556dab21db9a90bd575cc01c25a
+  outcome: passed
+  evidence_refs:
+  - ignored:.dev/ai-context/local/validation/issue-272/route-staging-1/edge-execution-terminal.json
+  evidence_sha256: e721ae67458a2b0d772792ba9a3e96829055ea2fd61981c600989dab32e93b8b
+  execution_receipt_ref: ignored:.dev/ai-context/local/validation/issue-272/retained-direct-edges-execution-receipt.yaml
+  execution_receipt_file_sha256: a138f6c41322c883d041d3cb0bd9c66f40cb5e673faf1e69dfa5e07a2ebae2b9
+  execution_receipt: &id002
+    schema_version: '1.0'
+    record_type: terminal-command-execution
+    producer: external-task-completion
+    subject_sha: 5ca4fcfe9d00d556dab21db9a90bd575cc01c25a
+    command: '["python", ".dev/ai-context/local/validation/issue-272/execute-staged-edges.py",
+      "--staging", ".dev/ai-context/local/validation/issue-272/route-staging-1", "--subject-sha",
+      "5ca4fcfe9d00d556dab21db9a90bd575cc01c25a", "--actual-dir", ".dev/ai-context/local/validation/issue-272/actual-attempt-5"]'
+    profile: retained-direct-edges
+    started_at: '2026-09-05T12:32:47.970807+00:00'
+    completed_at: '2026-09-05T12:33:45.727620+00:00'
+    duration_seconds: 57.757
+    executed: true
+    synthetic: false
+    outcome: passed
+    exit_code: 0
+    evidence_refs:
+    - ignored:.dev/ai-context/local/validation/issue-272/route-staging-1/edge-execution-terminal.json
+    evidence_sha256: e721ae67458a2b0d772792ba9a3e96829055ea2fd61981c600989dab32e93b8b
+    receipt_sha256: 116abebf94949ac8a17becd3db709ab6614c62954ca9a2bdb63756ecaea3b0d7
+- acceptance_id: UPG006-AC4-route
+  issue: 272
+  requires_actual_execution: true
+  evidence_kind: actual-execution
+  command: '["python", ".dev/ai-context/local/validation/issue-272/execute-staged-edges.py",
+    "--staging", ".dev/ai-context/local/validation/issue-272/route-staging-1", "--subject-sha",
+    "5ca4fcfe9d00d556dab21db9a90bd575cc01c25a", "--actual-dir", ".dev/ai-context/local/validation/issue-272/actual-attempt-5"]'
+  profile: retained-direct-edges
+  subject_sha: 5ca4fcfe9d00d556dab21db9a90bd575cc01c25a
+  outcome: passed
+  evidence_refs:
+  - ignored:.dev/ai-context/local/validation/issue-272/route-staging-1/edge-execution-terminal.json
+  evidence_sha256: e721ae67458a2b0d772792ba9a3e96829055ea2fd61981c600989dab32e93b8b
+  execution_receipt_ref: ignored:.dev/ai-context/local/validation/issue-272/retained-direct-edges-execution-receipt.yaml
+  execution_receipt_file_sha256: a138f6c41322c883d041d3cb0bd9c66f40cb5e673faf1e69dfa5e07a2ebae2b9
+  execution_receipt: *id002
+- acceptance_id: UPG006-AC6
+  issue: 272
+  requires_actual_execution: false
+  evidence_kind: document
+  command: Read source-specific migration entrypoint and prospective retained-support
+    policy
+  profile: source-evidence-review
+  subject_sha: 5ca4fcfe9d00d556dab21db9a90bd575cc01c25a
+  outcome: passed
+  evidence_refs:
+  - tracked:.dev/releases/v0.16.0/migration-guide.md
+  - tracked:.dev/standards/AI-CONTEXT-SOURCE-RELEASE-POLICY.md
+  evidence_sha256: aad49d592ab7306641566f47259c6003014e4f7b285c8c4202874f49ffc16fc2
+  execution_receipt_ref: null
+  execution_receipt_file_sha256: null
+  execution_receipt: null
+- acceptance_id: UPG006-AC7
+  issue: 272
+  requires_actual_execution: false
+  evidence_kind: document
+  command: Evaluate exact local asset admission; final current-source/provider admission
+    and public acceptance remain pending
+  profile: release-readiness
+  subject_sha: 5ca4fcfe9d00d556dab21db9a90bd575cc01c25a
+  outcome: deferred
+  evidence_refs:
+  - ignored:.dev/ai-context/local/validation/issue-272/preparation-package-4-admission.json
+  evidence_sha256: b0fa37085191311b17eaf3f6cf7100f77496b748f5ca6b54bb201ae7100384e2
+  execution_receipt_ref: null
+  execution_receipt_file_sha256: null
+  execution_receipt: null
+human_report:
+  entries:
+  - acceptance_id: UPG006-AC2
+    outcome: passed
+    evidence_sha256: 14a981794188b728c5b659050cf9f2a950cfcb113b5fe97ad0aff9ad1823619f
+  - acceptance_id: UPG006-AC3
+    outcome: passed
+    evidence_sha256: 14a981794188b728c5b659050cf9f2a950cfcb113b5fe97ad0aff9ad1823619f
+  - acceptance_id: UPG006-AC4-target
+    outcome: passed
+    evidence_sha256: 14a981794188b728c5b659050cf9f2a950cfcb113b5fe97ad0aff9ad1823619f
+  - acceptance_id: UPG006-AC5
+    outcome: passed
+    evidence_sha256: 14a981794188b728c5b659050cf9f2a950cfcb113b5fe97ad0aff9ad1823619f
+  - acceptance_id: UPG006-AC1
+    outcome: passed
+    evidence_sha256: e721ae67458a2b0d772792ba9a3e96829055ea2fd61981c600989dab32e93b8b
+  - acceptance_id: UPG006-AC4-route
+    outcome: passed
+    evidence_sha256: e721ae67458a2b0d772792ba9a3e96829055ea2fd61981c600989dab32e93b8b
+  - acceptance_id: UPG006-AC6
+    outcome: passed
+    evidence_sha256: aad49d592ab7306641566f47259c6003014e4f7b285c8c4202874f49ffc16fc2
+  - acceptance_id: UPG006-AC7
+    outcome: deferred
+    evidence_sha256: b0fa37085191311b17eaf3f6cf7100f77496b748f5ca6b54bb201ae7100384e2
+  report_sha256: 96e240a0c30cba8504b24e8cccfe22fc84a58d52a7231c54abddc258d3717060
+ledger_sha256: 270a378563c3c0a8fd83ce1656e165f2c0a59d0a1017253ebb483be2186635c2

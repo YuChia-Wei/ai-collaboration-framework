@@ -1,0 +1,22 @@
+schema_version: '1.0'
+record_type: terminal-command-execution
+producer: external-task-completion
+subject_sha: 5ca4fcfe9d00d556dab21db9a90bd575cc01c25a
+command: '["C:\\Users\\h4227\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+  ".github/scripts/validate-v016-direct-upgrades.py", "--candidate-archive", ".dev/ai-context/local/validation/issue-272/preparation-package-4/ai-collaboration-framework-v0.16.0.zip",
+  "--origin-archive", ".dev/ai-context/local/validation/issue-272/origins/v0.6.0/ai-context-dotnet-backend-v0.6.0.zip",
+  "--origin-archive", ".dev/ai-context/local/validation/issue-272/origins/v0.9.0/ai-context-dotnet-backend-v0.9.0.zip",
+  "--origin-archive", ".dev/workflows/2026-09-05-published-asset-identity/evidence/published-routes/route-assets/v0.15.1/ai-collaboration-framework-v0.15.1.zip",
+  "--subject-sha", "5ca4fcfe9d00d556dab21db9a90bd575cc01c25a", "--output", ".dev/ai-context/local/validation/issue-272/actual-attempt-5"]'
+profile: retained-direct-upgrades
+started_at: '2026-09-05T11:35:45+00:00'
+completed_at: '2026-09-05T12:30:23+00:00'
+duration_seconds: 3277.546
+executed: true
+synthetic: false
+outcome: passed
+exit_code: 0
+evidence_refs:
+- ignored:.dev/ai-context/local/validation/issue-272/actual-attempt-5/terminal.json
+evidence_sha256: 14a981794188b728c5b659050cf9f2a950cfcb113b5fe97ad0aff9ad1823619f
+receipt_sha256: cbbf51f88373c1c2e697a73de33899ec16af261115bbd66a4cba52ca4bc3a8f8

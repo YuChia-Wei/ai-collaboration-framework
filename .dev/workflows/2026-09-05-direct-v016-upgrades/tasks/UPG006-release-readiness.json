@@ -6,9 +6,9 @@
   "task_id": "UPG006-release-readiness",
   "workflow_id": "2026-09-05-direct-v016-upgrades",
   "owner_skill": "ai-context-governance",
-  "status": "pending",
+  "status": "in_progress",
   "created_at": "2026-09-05T18:00:49+08:00",
-  "updated_at": "2026-09-05T18:00:49+08:00",
+  "updated_at": "2026-09-05T20:37:35+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-6-astra",
   "reasoning_effort": "xhigh",
@@ -33,15 +33,19 @@
     "validation": [
       "Focused repository-owned tests; immutable actual execution where required."
     ],
-    "last_completed_step": "",
-    "next_action": "Bind admitted assets and direct route evidence; perform independent verification and report publication readiness."
+    "last_completed_step": "Exact admitted assets, actual execution and direct routes integrated; source gate and acceptance ledger passed.",
+    "next_action": "Obtain the final immutable integration review, complete local readiness evaluation, and present delivery prerequisites."
   },
   "results": {
-    "summary": "",
+    "summary": "Release remains planned until final review and provider prerequisites are satisfied.",
     "files_changed": [],
-    "tests_run": [],
-    "finding_status": "not-addressed",
-    "residual_risk": "",
+    "tests_run": [
+      "Packaging, portable validation and apply: 179 passed, 2 skipped.",
+      "Release-state ephemeral accelerated suite: 40 passed.",
+      "Source correction review and staging correction review: passed, zero blocking findings."
+    ],
+    "finding_status": "addressed",
+    "residual_risk": "Public archive acceptance remains pending under Issue 280.",
     "follow_up_needed": true
   }
 }

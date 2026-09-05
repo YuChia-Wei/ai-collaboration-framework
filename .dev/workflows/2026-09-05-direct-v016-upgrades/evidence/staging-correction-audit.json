@@ -1,0 +1,44 @@
+{
+  "schema_version": "1.0",
+  "packet_id": "UPG006-STAGING-CORRECTION-AUDIT",
+  "source_sha": "5ca4fcfe9d00d556dab21db9a90bd575cc01c25a",
+  "draft_subject_sha256": "0d339d3fe9faf0b8e0a96ac96762131eb8c0273be0372cd3788852ddeefb37b9",
+  "draft_content_hashes": {
+    ".dev/ai-context/local/validation/issue-272/draft-assemble-routes.py": "daec08db37c7e90ad343b50065da5aac65559e381e364fe865b17397016961f0",
+    ".dev/ai-context/local/validation/issue-272/draft-direct-edge.py": "10777815ce65028f555eb9f692e479a099b9d129ca47bbc8699002112ee333ed",
+    ".dev/ai-context/local/validation/issue-272/execute-staged-edges.py": "3df315f39df137a6798db363765afe01e2921761bd9e48e8c6d3fef1fae93c9a",
+    ".dev/ai-context/local/validation/issue-272/validate-staged-admission.py": "1a8d4b140440dfa99fa32f734027a351f792139d8f8389a3c103af8fb15c7766",
+    ".dev/ai-context/local/validation/issue-272/prepare-acceptance-ledger.py": "0b1b3c2a8b1c1ebb85ce1a1ec341a305fccb604d141ce5352e056311a9619dac"
+  },
+  "outcome": "passed",
+  "blocking_findings": 0,
+  "findings": [],
+  "closed_findings": [
+    "UPG006-STAGING-R1",
+    "UPG006-STAGING-R2"
+  ],
+  "reuse_proof": {
+    ".dev/ai-context/local/validation/issue-272/draft-assemble-routes.py": "daec08db37c7e90ad343b50065da5aac65559e381e364fe865b17397016961f0",
+    ".dev/ai-context/local/validation/issue-272/draft-direct-edge.py": "10777815ce65028f555eb9f692e479a099b9d129ca47bbc8699002112ee333ed",
+    ".dev/ai-context/local/validation/issue-272/validate-staged-admission.py": "1a8d4b140440dfa99fa32f734027a351f792139d8f8389a3c103af8fb15c7766"
+  },
+  "observations": [
+    "TimeoutExpired now retains available stdout/stderr, writes the edge log and appends command/timestamps/duration/output hash with exit_code null and outcome timeout before exiting; overall terminal remains timeout through the generic failure handler. No timeout pass is produced.",
+    "Acceptance ledger now uses edges_terminal.invocation verbatim. Before ledger/receipt writes it verifies invocation list length, runner path, each staging/actual/subject argument, current runner hash, actual/edge schema authority and admitted archive digest.",
+    "The three unchanged drafts match the prior sealed hashes exactly; their earlier bounded schema/API review is reused.",
+    "AC7 remains deferred and no provider/source-validation acceptance is introduced."
+  ],
+  "gate_states": {
+    "fixed_source_and_draft_identity": "re-executed",
+    "timeout_correction_static": "re-executed",
+    "invocation_binding_correction_static": "re-executed",
+    "unchanged_three_drafts": "reused-with-proof",
+    "focused_unit_execution": "deferred",
+    "actual_execution": "not-applicable"
+  },
+  "limitations": [
+    "No draft/test/matrix execution or active actual-output inspection. Parent supplied focused test results remain parent-owned evidence.",
+    "Review covers only the two corrections and unchanged-draft reuse; final produced artifacts require later admission.",
+    "No tracked changes or repair; root owns integration."
+  ]
+}
