@@ -1,0 +1,101 @@
+schema_version: '1.0'
+contract_id: github-terminal-issue-closure
+repository: YuChia-Wei/ai-collaboration-framework
+validation_stage: declaration
+pull_request:
+  number: 283
+  head_sha: null
+  body: '## Summary
+
+
+    Retire `dev-workflow` and `repo-structure-sync` in v0.16.0. New requests receive
+    an explicit retired/replacement diagnostic; historical identifiers remain unchanged.
+
+
+    ## Changes
+
+
+    - Remove six deprecated canonical specs and runtime wrappers, and reconcile the
+    current registries and guides.
+
+    - Add a retirement manifest and deterministic runtime-versus-history identifier
+    resolution.
+
+    - Cover v0.6.0 and v0.9.0 alias removal with self-contained fixtures: unchanged
+    framework files are removed; customized and target-owned files require reconciliation.
+
+
+    ## Related Issues
+
+
+    - Issue #: #271
+
+    - Delivery disposition: `terminal-close`
+
+    - Reference: Closes #271
+
+    - Owner authorization: The repository owner authorized PR creation, merge, and
+    Issue closure on 2026-09-05, conditional on no remaining delivery blockers.
+
+
+    ## Delivery And Integration
+
+
+    - Delivery grouping: single work item
+
+    - Execution record: workflow `2026-09-05-skill-004-retirement`
+
+    - Selected topology: linear (rebase)
+
+    - Topology reason: one cohesive source change; no separate publication or migration
+    execution lifecycle needs a merge node.
+
+
+    ## Validation
+
+
+    - Retirement tests: 14 passed. Repository identity tests: 13 passed.
+
+    - AI context, workflow, transition, repository identity, source disposition, and
+    commit checks passed locally.
+
+    - Independent review passed after correcting stale retirement guidance.
+
+    - Bounded portable payload membership passed. A broader direct payload navigation
+    probe failed identically on the baseline due to existing v0.14 source references;
+    full release packaging is not claimed. Required hosted package checks remain mandatory
+    before merge.
+
+    - No release publication or actual downstream deployment is included.
+
+    '
+  integration:
+    status: pending
+    topology: null
+    admitted_head_sha: null
+    integration_commit_sha: null
+    provider_read_back: false
+  review:
+    status: pending
+  required_check_contexts: []
+  hosted_checks: []
+issues:
+- number: 271
+  mode: terminal-close
+  work_authorization:
+    online_issue_bound: true
+    explicit_owner_approval: true
+  final_accepted_delivery: true
+  workflow:
+    scope_complete: true
+    tasks_complete: true
+    applicable_verification_complete: true
+  closing_keyword: Closes
+  closure_deferred_reason: null
+  next_terminal_gate_or_owner: null
+  read_back:
+    performed: false
+    integration_commit_sha: null
+    issue_state: null
+    issue_state_reason: null
+    project_status: null
