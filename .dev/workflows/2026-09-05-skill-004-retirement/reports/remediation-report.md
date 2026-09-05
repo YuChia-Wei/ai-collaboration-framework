@@ -35,3 +35,10 @@ The implementation, bounded payload membership inspection, and independent post-
 - Final affected AI context validation passed after the four guidance corrections. Tests were not repeated for the documentation-only change.
 - AC1–AC6 are satisfied for local source implementation and isolated fixtures. Publication, hosted checks, and real downstream application are outside this result.
 - Terminal workflow validation rejected current_phase closure for a completed workflow; changed it to completed and the validator passed.
+
+
+## PR integration preparation
+
+The owner authorized PR creation, merge, and Issue closure on 2026-09-05. PR 283 has a tracked terminal-close declaration; provider admission remains a fresh external gate.
+
+Before merge, an inspection found the retirement tests were not registered with the aggregate runner. Added a direct unittest entrypoint, a required fast/PR/release/nightly check, its runner wiring and shell manifest entry, and input/environment classification with reuse disabled. The direct suite passed 14 tests in 16.840 seconds. Profile contract tests passed 10 tests in 2.811 seconds; shell validation passed. Intermediate profile-wiring and shell-command coverage failures were corrected without weakening either validator. The prior head's five hosted checks passed, but those checks do not admit this new content; current-head review and hosted checks must run again.

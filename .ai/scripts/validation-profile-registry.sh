@@ -320,6 +320,11 @@ register_check skill-transition-tests \
     "skill,release" "release nightly-full" \
     ".ai/scripts/tests/test_skill_transition_contract.py .ai/assets/skills" skill-transition "python>=3.11" 60 cpu reuse-by-input source \
     "python .ai/scripts/tests/test_skill_transition_contract.py -v" source-release
+register_check skill-retirement-tests \
+    "Skill Retirement Routing and Upgrade Tests" required \
+    "skill,tests" "fast pr release nightly-full" \
+    ".ai/scripts .ai/assets/skills .ai/distribution .ai/evaluation .agents/skills .claude/skills .dev/workflows/2026-07-24-v0-6-model-evaluation" '' "python>=3.11 git" 60 io no-reuse source \
+    "python .ai/scripts/tests/test_skill_retirement.py -v" always
 register_check effective-rules \
     "Effective Rule Packet Resolution and Consumer Parity Tests" required \
     "rules,release" "release nightly-full" \
