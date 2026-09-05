@@ -18,12 +18,12 @@
 
 ## Validation And State
 
-Implementation in progress. Run focused diagnostic tests first, then affected routing/context/prerequisite/CI contracts. Independent post-remediation review runs read-only on an immutable commit; preserve failed attempts and required follow-up.
+Local implementation and focused validation are complete. Independent post-remediation review runs read-only on an immutable commit; preserve failed attempts and required follow-up.
 The graph was indexed on the baseline but excludes `.ai/assets`, `.ai/scripts` and `.claude`; use Git-tracked files for those scopes.
 
 ## Next Work
 
-Finish implementation and validation, record independent review. Then start Issue 280 on its own main-based branch. Issue 272 depends on the new publication identity contract and final v0.16.0 payload. Actual publication/read-back acceptance remains at the separately authorized release gate.
+Independent review of `7e45d7b90d6848d7f75aac6b0d7789be9d720f41` passed with zero blocking findings. Start Issue 280 on its own main-based branch; this branch remains a complete local delivery pending separately authorized transport/integration. Issue 272 depends on the new publication identity contract and final v0.16.0 payload. Actual publication/read-back acceptance remains at the separately authorized release gate.
 
 ## Validation Retry Authorization
 
