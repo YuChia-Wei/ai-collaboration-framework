@@ -30,13 +30,22 @@ def main() -> int:
     parser.add_argument("--output", type=Path)
     parser.add_argument("--repository")
     parser.add_argument("--allow-draft", action="store_true")
+    parser.add_argument("--raw-provider-output", type=Path,
+                        help="Retain the exact provider response before comparison, including on rejection; never overwrite.")
     args = parser.parse_args()
     try:
+        if args.raw_provider_output is not None and args.action != "provider":
+            raise PackageError("--raw-provider-output requires provider action")
         required = governed(args.version)
         if args.action == "required":
             print("true" if required else "false")
             return 0
         root = args.root.resolve()
+        if args.raw_provider_output is not None:
+            if args.raw_provider_output.exists():
+                raise PackageError("refusing to overwrite raw provider evidence")
+            if args.output is not None and args.raw_provider_output.resolve() == args.output.resolve():
+                raise PackageError("raw provider evidence and receipt require distinct paths")
         if args.action == "admit":
             if args.assets_dir is None or args.output is None:
                 raise PackageError("admit requires --assets-dir and --output")
@@ -67,6 +76,10 @@ def main() -> int:
                     "gh", "api", "--method", "GET",
                     f"repos/{args.repository}/releases/{identity['databaseId']}",
                 ], cwd=root, capture_output=True, check=True)
+                if args.raw_provider_output is not None:
+                    args.raw_provider_output.parent.mkdir(parents=True, exist_ok=True)
+                    with args.raw_provider_output.open("xb") as stream:
+                        stream.write(response.stdout)
                 provider = strict_json(response.stdout)
                 result = verify_provider(result, provider, args.repository, allow_draft=args.allow_draft)
                 result["raw_provider_sha256"] = hashlib.sha256(response.stdout).hexdigest()

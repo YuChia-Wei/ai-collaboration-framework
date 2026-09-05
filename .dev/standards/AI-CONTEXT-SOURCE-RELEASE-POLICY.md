@@ -252,6 +252,53 @@ The annotated tag object and its resolved full commit are the publication
 identity. Hosted Release state, provider receipts, and retrospective registry
 records are supplemental evidence and never authorize tag movement.
 
+## Failed Publication Recovery
+
+An owned draft may expose download URLs under the same `untagged-*` locator
+as its page. Explicit draft verification may accept that exact repository and
+page locator, as well as the expected versioned URL. It must retain all tag,
+release, asset ID, name, uploaded-state, size and digest checks. Public
+verification accepts only the versioned public locator and requires the
+publication timestamp. Regression fixtures must cover both page and download
+URLs together, the draft-to-public transition and mismatched locators; fixtures
+never attest actual publication.
+
+Retain the raw provider response before identity comparison, including when
+comparison fails. Use `--raw-provider-output` with a fresh output path; a failed
+comparison must not emit a successful receipt. Hosted read-back artifacts use
+the run attempt in their names so retry does not replace a failed attempt.
+Diagnostics identify the disagreeing field without echoing arbitrary provider
+values.
+
+A rerun uses its original workflow revision. Fixing `main` alone does not repair
+a workflow pinned to an existing tag. For an automation-only defect with
+unchanged admitted bytes, prefer preserving the annotated tag and assets.
+Moving or recreating a tag requires a separate owner decision and invalidates
+the previous tag identity; do not use it merely to pick up a workflow fix.
+
+When the owner authorizes recovery outside the configured tag workflow:
+
+1. Bind the original annotated tag object and commit, draft Release ID, failed
+   run/attempt, reviewed repair commit and exact commands. Do not rebuild the
+   package or reinterpret a fixture as hosted evidence.
+2. Refresh provider preflight, release title/body, asset IDs and actual downloaded
+   bytes. Verify the original build artifact is available and contains the same
+   admission-bound assets and rendered body. Check the configured environment
+   and credential boundary without exposing secrets; metadata presence does not
+   prove a future hosted execution will succeed.
+3. Execute the reviewed provider verifier from its clean repair checkout while
+   selecting the original tag with `--ref`. Require the actual owned draft to
+   pass with `--allow-draft`, preserving raw response and receipt. Any other
+   gate failure stops publication.
+4. Publish that same draft only under the recorded owner authorization. Read
+   back the public Release and download its public assets, retaining the same
+   tag, asset IDs, bytes, title and body. Repeat provider verification without
+   `--allow-draft` against the actual public state.
+5. Retry the original failed hosted jobs only after the public comparison
+   passes. Require workflow success and publication/finalization read-back
+   before closing publication coordination work. Preserve failures and stop
+   on drift or another failed gate; no post-tag source status rewrite is needed.
+
 ## Historical And Exception Release Closeout
 
 The source-only `ai-context-release-closeout` capability verifies historical

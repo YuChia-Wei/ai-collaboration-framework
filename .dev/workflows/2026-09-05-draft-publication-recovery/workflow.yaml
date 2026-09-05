@@ -1,0 +1,19 @@
+schema_version: '1.0'
+lifecycle_contract: '1.0'
+workflow_id: 2026-09-05-draft-publication-recovery
+workflow_kind: ai-context-maintenance
+title: Repair draft asset identity and preserve publication recovery evidence
+owner_skill: ai-context-governance
+status: completed
+current_phase: completed
+artifact_root: .dev/workflows/2026-09-05-draft-publication-recovery
+entrypoint: workflow-plan.md
+created_at: '2026-09-05T22:58:09+08:00'
+updated_at: '2026-09-05T23:01:27+08:00'
+template_source: .ai/assets/skills/ai-context-governance/templates/workflow-locator-template.yaml
+template_version: 1.2.0
+branch: codex/2026-09-05-draft-publication-recovery
+base_branch: main
+work_items:
+- https://github.com/YuChia-Wei/ai-collaboration-framework/issues/287
+- https://github.com/YuChia-Wei/ai-collaboration-framework/issues/280

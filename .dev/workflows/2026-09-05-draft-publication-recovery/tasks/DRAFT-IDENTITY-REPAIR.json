@@ -1,0 +1,58 @@
+{
+  "task_id": "DRAFT-IDENTITY-REPAIR",
+  "workflow_id": "2026-09-05-draft-publication-recovery",
+  "owner_skill": "ai-context-governance",
+  "status": "completed",
+  "created_at": "2026-09-05T22:58:09+08:00",
+  "updated_at": "2026-09-05T23:01:27+08:00",
+  "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
+  "template_version": "1.1.0",
+  "model": "gpt-6-astra",
+  "reasoning_effort": "xhigh",
+  "finding_ids": [
+    "DRAFT-LOCATOR",
+    "FAILURE-EVIDENCE",
+    "PINNED-RECOVERY"
+  ],
+  "scope": {
+    "target": "Source publication validation and recovery process",
+    "constraints": [
+      "Preserve v0.16.0 tag and admitted bytes",
+      "Actual public acceptance belongs to Issue 280"
+    ]
+  },
+  "execution": {
+    "steps": [
+      "Repair owned draft locator comparison",
+      "Retain raw provider diagnostics and per-attempt artifacts",
+      "Test regression boundaries",
+      "Document authorized pinned-tag recovery"
+    ],
+    "validation": [
+      "test_release_asset_identity.py",
+      "test_github_workflow_contract.py",
+      "validate-workflow-artifacts.py"
+    ],
+    "last_completed_step": "32 focused regression tests passed; implementation and policy complete",
+    "next_action": "Independent audit, hosted admission/integration and separately tracked Issue280 publication recovery"
+  },
+  "results": {
+    "summary": "Draft locator repair, raw provider evidence, per-attempt artifacts and pinned-tag recovery policy implemented; 20 asset/CLI and 12 workflow tests passed.",
+    "files_changed": [],
+    "tests_run": [
+      {
+        "command": "python .ai/scripts/tests/test_release_asset_identity.py -v",
+        "outcome": "passed",
+        "tests": 20
+      },
+      {
+        "command": "python .ai/scripts/tests/test_github_workflow_contract.py -v",
+        "outcome": "passed",
+        "tests": 12
+      }
+    ],
+    "finding_status": "addressed",
+    "residual_risk": "Original pinned workflow requires separately recorded publication recovery.",
+    "follow_up_needed": false
+  }
+}

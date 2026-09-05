@@ -2,6 +2,8 @@
 from __future__ import annotations
 
 import copy
+import importlib.util
+import io
 import json
 import sys
 import tempfile
@@ -9,6 +11,7 @@ import unittest
 from pathlib import Path
 from types import SimpleNamespace
 from unittest.mock import patch
+from contextlib import redirect_stderr, redirect_stdout
 import yaml
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
@@ -41,6 +44,59 @@ def fixture():
 
 
 class ReleaseAssetIdentityTests(unittest.TestCase):
+    def test_realistic_draft_downloads_bind_to_the_owned_page_then_public_tag(self):
+        admission, provider, repository = fixture()
+        provider.update(draft=True, published_at=None,
+                        html_url=f"https://github.com/{repository}/releases/tag/untagged-167422cded865a8923c2")
+        for asset in provider["assets"]:
+            asset["browser_download_url"] = f"https://github.com/{repository}/releases/download/untagged-167422cded865a8923c2/{asset['name']}"
+        with self.assertRaises(PackageError):
+            verify_provider(admission, provider, repository)
+        draft = verify_provider(admission, provider, repository, allow_draft=True)
+        self.assertEqual("uploaded-draft", draft["state"])
+        self.assertIsNone(draft["published_at"])
+        provider.update(draft=False, published_at="2026-09-05T00:00:00Z",
+                        html_url=f"https://github.com/{repository}/releases/tag/v0.16.0")
+        with self.assertRaisesRegex(PackageError, "browser_download_url"):
+            verify_provider(admission, provider, repository, allow_draft=True)
+        for asset in provider["assets"]:
+            asset["browser_download_url"] = f"https://github.com/{repository}/releases/download/v0.16.0/{asset['name']}"
+        published = verify_provider(admission, provider, repository)
+        self.assertEqual("published", published["state"])
+        self.assertEqual(draft["artifact_set_id"], published["artifact_set_id"])
+        self.assertEqual([a["id"] for a in draft["assets"]], [a["id"] for a in published["assets"]])
+
+    def test_draft_url_exception_rejects_other_tokens_hosts_repositories_and_malformed_values(self):
+        admission, provider, repository = fixture()
+        provider.update(draft=True, published_at=None,
+                        html_url=f"https://github.com/{repository}/releases/tag/untagged-abc123")
+        valid = f"https://github.com/{repository}/releases/download/untagged-abc123/{provider['assets'][0]['name']}"
+        invalid = [valid.replace("abc123", "def456"), valid.replace("github.com", "example.invalid"),
+                   valid.replace(repository, "other/framework"), valid + "?download=1", valid + "/suffix",
+                   valid.replace("untagged-abc123", "v0.15.1"), valid.replace("untagged-abc123", "%75ntagged-abc123"),
+                   valid.replace("untagged-abc123", "untagged-abc123/.."), None, [valid]]
+        for value in invalid:
+            with self.subTest(value=value):
+                provider["assets"][0]["browser_download_url"] = value
+                with self.assertRaisesRegex(PackageError, "browser_download_url"):
+                    verify_provider(admission, provider, repository, allow_draft=True)
+        provider["assets"][0]["browser_download_url"] = valid
+        provider["html_url"] = f"https://github.com/{repository}/releases/tag/v0.16.0"
+        with self.assertRaisesRegex(PackageError, "browser_download_url"):
+            verify_provider(admission, provider, repository, allow_draft=True)
+
+    def test_valid_draft_url_does_not_weaken_asset_identity_checks(self):
+        for field, value in (("id", True), ("size", 1), ("state", "new"), ("digest", "sha256:" + "0" * 64)):
+            with self.subTest(field=field):
+                admission, provider, repository = fixture()
+                provider.update(draft=True, published_at=None,
+                                html_url=f"https://github.com/{repository}/releases/tag/untagged-abc123")
+                for asset in provider["assets"]:
+                    asset["browser_download_url"] = f"https://github.com/{repository}/releases/download/untagged-abc123/{asset['name']}"
+                provider["assets"][0][field] = value
+                with self.assertRaisesRegex(PackageError, field):
+                    verify_provider(admission, provider, repository, allow_draft=True)
+
     def test_v016_mismatched_upload_and_provider_digest_fails(self):
         admission, provider, repository = fixture()
         provider["assets"][0]["digest"] = "sha256:" + "f" * 64
@@ -202,6 +258,64 @@ class ReleaseAssetIdentityTests(unittest.TestCase):
             self.assertTrue(edges)
             for edge in edges:
                 self.assertEqual(digest, edge["artifacts"]["archive"]["sha256"])
+
+
+class ProviderEvidenceCliTests(unittest.TestCase):
+    """Synthetic CLI responses test evidence retention, never actual publication."""
+
+    def setUp(self):
+        path = Path(__file__).resolve().parents[1] / "manage-release-asset-identity.py"
+        spec = importlib.util.spec_from_file_location("release_asset_cli_under_test", path)
+        self.cli = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(self.cli)
+
+    def invoke(self, admission, provider, repository, directory, extra=None):
+        raw = (json.dumps(provider, indent=2) + "\n").encode()
+        responses = [SimpleNamespace(stdout=json.dumps({"databaseId": provider["id"], "tagName": admission["version"]}).encode()),
+                     SimpleNamespace(stdout=raw)]
+        argv = ["manage-release-asset-identity.py", "provider", "--version", admission["version"],
+                "--repository", repository, "--assets-dir", str(directory),
+                "--output", str(directory / "receipt.json"), "--raw-provider-output", str(directory / "provider.json")]
+        with patch.object(sys, "argv", argv + (extra or [])), \
+             patch.object(self.cli, "load_admission", return_value=admission), \
+             patch.object(self.cli, "verify_transported"), \
+             patch.object(self.cli.subprocess, "run", side_effect=responses) as provider_call, \
+             redirect_stdout(io.StringIO()), redirect_stderr(io.StringIO()) as errors:
+            result = self.cli.main()
+        return result, raw, errors.getvalue(), provider_call.call_count
+
+    def test_rejected_provider_retains_exact_response_without_success_receipt(self):
+        admission, provider, repository = fixture()
+        provider["assets"][0]["digest"] = "sha256:" + "f" * 64
+        with tempfile.TemporaryDirectory() as temporary:
+            directory = Path(temporary)
+            result, raw, error, calls = self.invoke(admission, provider, repository, directory)
+            self.assertEqual(1, result)
+            self.assertEqual(2, calls)
+            self.assertIn("digest", error)
+            self.assertEqual(raw, (directory / "provider.json").read_bytes())
+            self.assertFalse((directory / "receipt.json").exists())
+
+    def test_success_receipt_binds_the_preserved_response(self):
+        admission, provider, repository = fixture()
+        with tempfile.TemporaryDirectory() as temporary:
+            directory = Path(temporary)
+            result, raw, _, _ = self.invoke(admission, provider, repository, directory)
+            self.assertEqual(0, result)
+            self.assertEqual(raw, (directory / "provider.json").read_bytes())
+            receipt = json.loads((directory / "receipt.json").read_bytes())
+            self.assertEqual(sha256_bytes(raw), receipt["raw_provider_sha256"])
+
+    def test_existing_raw_evidence_fails_before_provider_access_and_is_not_overwritten(self):
+        admission, provider, repository = fixture()
+        with tempfile.TemporaryDirectory() as temporary:
+            directory = Path(temporary)
+            (directory / "provider.json").write_bytes(b"prior-failure")
+            result, _, error, calls = self.invoke(admission, provider, repository, directory)
+            self.assertEqual(1, result)
+            self.assertEqual(0, calls)
+            self.assertIn("refusing to overwrite", error)
+            self.assertEqual(b"prior-failure", (directory / "provider.json").read_bytes())
 
 
 if __name__ == "__main__":
