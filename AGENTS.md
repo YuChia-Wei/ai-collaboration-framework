@@ -43,6 +43,7 @@ Use `.ai/assets/skills/README.MD` as the canonical skill registry. Runtime wrapp
 | Historical or exceptional release verification | `ai-context-release-closeout` |
 | Multi-stage software development | `software-development-orchestrator` |
 | Architecture, GWT design, review, or implementation | `ddd-ca-hex-architect` / `bdd-gwt-test-designer` / `code-reviewer` / `slice-implementer` / `local-change-implementer` |
+| Observed failure, performance symptom, or root-cause diagnosis | `diagnostic-analyst` |
 | Requirements, specifications, problem frames, or selected compliance | `requirement-author` / `spec-author` / `problem-frame-author` / `spec-compliance-validator` |
 
 - For AI-context placement or language changes, load `.dev/standards/AI-CONTEXT-BOUNDARY.md` and `.dev/standards/AI-CONTEXT-LANGUAGE-POLICY.md` only when applicable.

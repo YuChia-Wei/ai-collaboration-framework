@@ -26,6 +26,7 @@ This directory contains the current repo-local skill wrappers for Codex and comp
 - `ai-context-upgrader`
 - `bdd-gwt-test-designer`
 - `code-reviewer` (`dotnet-backend` selected; unavailable in the core-only view)
+- `diagnostic-analyst`
 - `ddd-ca-hex-architect`
 - `local-change-implementer`
 - `problem-frame-author`

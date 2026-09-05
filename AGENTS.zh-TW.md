@@ -43,6 +43,7 @@
 | Historical 或 exceptional release verification | `ai-context-release-closeout` |
 | 多階段 software development | `software-development-orchestrator` |
 | Architecture、GWT design、review 或 implementation | `ddd-ca-hex-architect` / `bdd-gwt-test-designer` / `code-reviewer` / `slice-implementer` / `local-change-implementer` |
+| 已觀察的故障、效能症狀或根因診斷 | `diagnostic-analyst` |
 | Requirements、specifications、problem frames 或 selected compliance | `requirement-author` / `spec-author` / `problem-frame-author` / `spec-compliance-validator` |
 
 - AI-context placement 或 language changes 只有適用時才載入 `.dev/standards/AI-CONTEXT-BOUNDARY.md` 與 `.dev/standards/AI-CONTEXT-LANGUAGE-POLICY.md`。
