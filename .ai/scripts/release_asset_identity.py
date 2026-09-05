@@ -164,27 +164,6 @@ def verify_route_binding(matrix: dict, admission: dict) -> None:
         raise PackageError("admission has no bound incoming route")
 
 
-def verify_route_binding(matrix: dict, admission: dict) -> None:
-    """The matrix and the publication transport must select one archive subject."""
-    version = admission["version"]
-    identity = {k: admission[k] for k in ("package_id", "release_id", "payload_fingerprint")}
-    if not isinstance(matrix, dict) or matrix.get("target", {}).get("package_identity") != identity:
-        raise PackageError("route target differs from admitted package identity")
-    zip_digest = admission["assets"][0]["sha256"]
-    matching = 0
-    for route in matrix.get("routes", []):
-        if route.get("target") != version:
-            raise PackageError("route target version differs from admission")
-        for edge in route.get("edges", []):
-            if edge.get("to_version") == version:
-                matching += 1
-                if (edge.get("package_identity") != identity
-                        or edge.get("artifacts", {}).get("archive", {}).get("sha256") != zip_digest):
-                    raise PackageError("route archive differs from admitted publication bytes")
-    if matching == 0:
-        raise PackageError("admission has no bound incoming route")
-
-
 def load_admission(root: Path, version: str, ref: str = "HEAD", *, verify_projection: bool = True) -> dict:
     governed(version)
     path = f".dev/releases/{version}/artifact-admission.json"
@@ -197,11 +176,6 @@ def load_admission(root: Path, version: str, ref: str = "HEAD", *, verify_projec
         entry = snapshot.tree.get(asset["path"])
         if entry is None or sha256_bytes(git_blob(root, entry, snapshot.blob_reader)) != asset["sha256"]:
             raise PackageError("admitted asset is absent or different in the source ref")
-    if governed(version):
-        matrix_path = f".dev/releases/{version}/support-matrix.yaml"
-        if matrix_path not in snapshot.tree:
-            raise PackageError("admitted route matrix is missing")
-        verify_route_binding(yaml.safe_load(git_blob(root, snapshot.tree[matrix_path], snapshot.blob_reader)), admission)
     if governed(version):
         matrix_path = f".dev/releases/{version}/support-matrix.yaml"
         if matrix_path not in snapshot.tree:

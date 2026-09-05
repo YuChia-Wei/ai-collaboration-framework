@@ -5,7 +5,10 @@ tag staging, draft upload verification and published provider read-back. From
 v0.16.0 onward a missing tracked admission or a route/source/provider identity
 disagreement blocks. Historical v0.15.0/v0.15.1 assets were downloaded and rebound
 in new workflow evidence; no historical release directory, tag or public asset
-was modified. Independent review is pending on the first immutable commit.
+was modified. Independent review of `9437c2e1afd0e9bc54f0d78923f1bed1c84520f1`
+passed with zero blocking findings. Its LOW finding REL018-R1 identified duplicate
+route-binding definitions/checks; these were removed and all 14 focused identity
+tests passed again. A fresh review of that bounded correction remains pending.
 
 ## Acceptance And Evidence
 
@@ -80,5 +83,13 @@ three actual direct edges against the same admitted archive. Complete release
 scope, compatibility, aggregate validation, exact-subject review and provider
 preflight before requesting tag/publication authorization. Issue 280 must retain
 its deferred publication acceptance until the actual new-release read-back.
+
+The owner explicitly selected on 2026-09-05: keep Issue 280 open and close it
+only after publication acceptance. For v0.16.0 provider reconciliation, bind
+Issue 280 as a coordination issue rather than a prepublication-closed Included
+Work item. Keep its delivered product changes visible in authored release
+scope and related workflow evidence; this classification does not erase the
+implementation or claim publication. Included-work and coordination lists
+remain disjoint. Issue 269 can follow its ordinary implementation closure gate.
 
 The historical catalog additionally binds Git-normalized provider JSON bytes to their retained digests. A regression check validates both public archives, provider read-backs, payload fingerprints and all rebound edge hashes.

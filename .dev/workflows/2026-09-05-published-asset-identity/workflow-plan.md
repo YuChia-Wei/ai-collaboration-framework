@@ -28,6 +28,14 @@ Both public ZIPs match the live provider digest and size, and each passes standa
 
 ## Sequence And Gate
 
+### Owner decision: publication acceptance
+
+On 2026-09-05 the owner selected "keep Issue 280 open; close after publication
+acceptance." Preserve that deferred acceptance in Issue 280. Its v0.16.0
+provider binding belongs to coordination (open before publication, closed only
+after successful public-byte read-back), disjoint from prepublication-closed
+Included Work. This tracking decision does not authorize publication.
+
 ### Bounded validation retry 03
 
 The workflow authorizes one third release-state test attempt after correcting
