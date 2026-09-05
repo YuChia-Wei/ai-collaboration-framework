@@ -65,6 +65,7 @@ groups:
       - "skill-script-colocation"
       - "skill-transition"
       - "skill-transition-tests"
+      - "skill-retirement-tests"
       - "source-ai-context-version"
       - "source-governance-manifest"
       - "source-version-governance-tests"

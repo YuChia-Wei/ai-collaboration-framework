@@ -132,3 +132,7 @@ class RetirementUpgradeTests(unittest.TestCase):
                         self.assertEqual(history, (fixture.target / history_path).read_bytes())
                     finally:
                         fixture.close()
+
+
+if __name__ == "__main__":
+    unittest.main()
