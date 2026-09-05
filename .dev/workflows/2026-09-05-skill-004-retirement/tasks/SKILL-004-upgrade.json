@@ -6,9 +6,9 @@
   "task_id": "SKILL-004-upgrade",
   "workflow_id": "2026-09-05-skill-004-retirement",
   "owner_skill": "ai-context-governance",
-  "status": "in_progress",
+  "status": "completed",
   "created_at": "2026-09-05T14:29:47+08:00",
-  "updated_at": "2026-09-05T14:38:13+08:00",
+  "updated_at": "2026-09-05T14:43:44+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-6",
   "reasoning_effort": "medium",
@@ -31,16 +31,16 @@
       "python -m unittest discover -s .ai/scripts/tests -p test_skill_retirement.py -q",
       "python -m unittest discover -s .ai/scripts/tests -p test_repository_identity.py -q"
     ],
-    "last_completed_step": "Focused tests passed",
-    "next_action": "Freeze and obtain independent review"
+    "last_completed_step": "Independent post-remediation review passed",
+    "next_action": "No remaining local retirement implementation. Transport and publication require separate authorization."
   },
   "results": {
-    "summary": "Implemented retirement lifecycle and verified focused behavior; immutable independent review pending.",
+    "summary": "Issue 271 local implementation and focused validation complete; independent post-remediation review passed on a6563a23b0beb4b2e6ee34de14ede5380f0921ad.",
     "files_changed": [],
     "tests_run": [],
-    "finding_status": "partially-resolved",
-    "residual_risk": "Independent review and portable payload inspection pending.",
-    "follow_up_needed": true
+    "finding_status": "resolved",
+    "residual_risk": "Release packaging has a preexisting baseline navigation blocker; no published upgrade route or deployment is claimed.",
+    "follow_up_needed": false
   },
   "acceptance_ids": [
     "AC5"

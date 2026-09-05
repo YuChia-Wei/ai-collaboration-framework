@@ -8,7 +8,7 @@ task-level progress.
 
 | Workflow | Title | Owner | Status | Updated | Entry Point |
 | --- | --- | --- | --- | --- | --- |
-| [`2026-09-05-skill-004-retirement`](2026-09-05-skill-004-retirement/workflow.yaml) | Retire deprecated skill entries for Issue 271 | `ai-context-governance` | `in_progress` | `2026-09-05T14:29:47+08:00` | [plan](2026-09-05-skill-004-retirement/workflow-plan.md) |
+| [`2026-09-05-skill-004-retirement`](2026-09-05-skill-004-retirement/workflow.yaml) | Retire deprecated skill entries for Issue 271 | `ai-context-governance` | `completed` | `2026-09-05T14:43:44+08:00` | [plan](2026-09-05-skill-004-retirement/workflow-plan.md) |
 | [`2026-09-03-subject-digest-evidence-reuse-implementation`](2026-09-03-subject-digest-evidence-reuse-implementation/workflow.yaml) | Implement content-equivalent evidence reuse for Issue 270 | `ai-context-governance` | `completed` | `2026-09-05T09:35:34+08:00` | [plan](2026-09-03-subject-digest-evidence-reuse-implementation/workflow-plan.md) |
 | [`2026-09-02-validator-observation-and-fault-injection`](2026-09-02-validator-observation-and-fault-injection/workflow.yaml) | Deliver bounded dependency observation and incident-derived fault injection | `software-development-orchestrator` | `completed` | `2026-09-03T08:11:36+08:00` | [plan](2026-09-02-validator-observation-and-fault-injection/workflow-plan.md) |
 | [`2026-08-31-subject-digest-evidence-reuse-design`](2026-08-31-subject-digest-evidence-reuse-design/workflow.yaml) | Design content-equivalent evidence reuse for Issue 270 | `ai-context-governance` | `completed` | `2026-09-02T22:36:24+08:00` | [plan](2026-08-31-subject-digest-evidence-reuse-design/workflow-plan.md) |

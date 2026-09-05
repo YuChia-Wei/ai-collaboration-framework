@@ -2,7 +2,7 @@
 
 ## Workflow metadata
 
-- Workflow: `2026-09-05-skill-004-retirement`; owner: `ai-context-governance`; status: `in_progress`.
+- Workflow: `2026-09-05-skill-004-retirement`; owner: `ai-context-governance`; status: `completed`.
 - Branch: `codex/2026-09-05-skill-004-retirement`; base: `main` at `f06e8e3a882e375e31e315569741541ac6e1659d` (live GitHub read-back matched).
 - Created / updated: `2026-09-05T14:29:47+08:00`.
 - Template: `.ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md`, version `1.2.0`.
@@ -26,9 +26,10 @@ Graph discovery returned stale source ranges and no verifiable index SHA; use ex
 
 Acceptance IDs AC1 through AC6 follow the Issue's six criteria, respectively. Focused tests and validators precede an immutable review. Existing historical evaluation is retained, not rerun as evidence of current model behavior.
 
-## Resume checkpoint
+## Completion and handoff
 
-- Current task: SKILL-004-lifecycle.
-- Next: implement retirement manifest and validator; exercise focused upgrade fixtures; record evidence and commit; perform read-only post-remediation review.
-- Validation: pending.
-- Source release/publication and real downstream deployment: not executed.
+- Both tasks completed locally. Retirement suite: 14 passed; identity suite: 13 passed. AI context, skill transition, workflow, source disposition, repository identity and planned commit validators passed.
+- Independent review on `63b3b51ee5d53f97ae73f09e4f43f870feda17fe` found SKILL004-R1. Four active guides were corrected and follow-up review on `a6563a23b0beb4b2e6ee34de14ede5380f0921ad` passed. The failed first review remains in the remediation report.
+- Bounded portable payload membership passed; full navigation has an identical preexisting failure on the clean baseline and this branch. Owner for the release packaging follow-up: repository maintainer, before v0.16.0 package publication. No full-package pass claimed.
+- Main and Issue/Project state unchanged. No push, PR, merge, tag, release or publication performed. Future transport needs separate authorization and current hosted gates.
+- Final terminal metadata is checked separately; no implementation/test bytes changed after passing review.
