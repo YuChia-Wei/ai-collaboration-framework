@@ -84,6 +84,7 @@ EXPECTED_ARTIFACT_ACTIONS = {
         "actions/upload-artifact@v7",
         "actions/download-artifact@v8",
         "actions/upload-artifact@v7",
+        "actions/upload-artifact@v7",
     ],
     "test-fixture-acceleration.yml": ["actions/upload-artifact@v7"],
 }
@@ -113,6 +114,27 @@ def steps(workflow: dict) -> list[dict]:
 
 
 class GitHubWorkflowContractTests(unittest.TestCase):
+    def test_rel018_promotion_and_provider_comparison_gate_publication(self):
+        candidate = {s["name"]: s for s in steps(load_workflow("package-candidate.yml"))}
+        self.assertIn("steps.promotion.outputs.required == 'false'", candidate["Build deterministic archives"]["if"])
+        self.assertIn('"true"', candidate["Stage admitted candidate archives"]["run"])
+        self.assertIn("manage-release-asset-identity.py stage", candidate["Stage admitted candidate archives"]["run"])
+        publication = load_workflow("publish-release.yml")
+        build = {s["name"]: s for s in publication["jobs"]["build"]["steps"]}
+        self.assertEqual("steps.promotion.outputs.required == 'false'", build["Build deterministic archives from legacy tag"]["if"])
+        self.assertEqual("steps.promotion.outputs.required == 'true'", build["Stage admitted archives without rebuilding"]["if"])
+        self.assertNotIn("build-ai-context-package", build["Stage admitted archives without rebuilding"]["run"])
+        publish = publication["jobs"]["publish"]["steps"]
+        names = [step["name"] for step in publish]
+        uploaded = next(step for step in publish if step["name"] == "Upload or verify release assets")
+        observed = next(step for step in publish if step["name"] == "Read back published asset identity")
+        self.assertIn("manage-release-asset-identity.py provider", uploaded["run"])
+        self.assertIn("--allow-draft", uploaded["run"])
+        self.assertLess(names.index("Upload or verify release assets"), names.index("Publish verified draft"))
+        self.assertLess(names.index("Publish verified draft"), names.index("Read back published asset identity"))
+        self.assertIn("manage-release-asset-identity.py provider", observed["run"])
+        self.assertNotIn("--allow-draft", observed["run"])
+
     def setUp(self) -> None:
         actual_names = {path.name for path in WORKFLOW_DIR.glob("*.yml")}
         missing_contract_workflows = WORKFLOW_NAMES - actual_names
@@ -297,7 +319,7 @@ class GitHubWorkflowContractTests(unittest.TestCase):
             step
             for step in publish_steps
             if step.get("uses") == "actions/upload-artifact@v7"
-        ][1]
+        ][2]
         self.assertEqual(
             {
                 "name": (

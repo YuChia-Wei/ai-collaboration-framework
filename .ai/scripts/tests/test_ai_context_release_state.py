@@ -923,7 +923,7 @@ class AiContextReleaseStateGwtTests(unittest.TestCase):
                 )
             with patch.object(STATE, "load_route_matrix", return_value=(matrix, b"matrix")):
                 with patch.object(STATE, "resolve_upgrade_route", side_effect=resolved):
-                    STATE.validate_retained_origin_route_evidence(root, version, artifacts)
+                    STATE.validate_retained_origin_route_evidence(root, version, artifacts, ["v0.13.0"])
 
     def test_gwt_031a_given_repository_v014_route_evidence_when_validated_then_published_routes_pass(self):
         version = "v0.14.0"
@@ -933,7 +933,15 @@ class AiContextReleaseStateGwtTests(unittest.TestCase):
             )
         )
 
-        STATE.validate_retained_origin_route_evidence(ROOT, version, release["artifacts"])
+        STATE.validate_retained_origin_route_evidence(
+            ROOT, version, release["artifacts"], ["v0.13.0"]
+        )
+        # Retained historical evidence remains readable. The historical broader
+        # declaration is not silently admitted as a new source candidate.
+        with self.assertRaisesRegex(STATE.ReleaseStateError, "exactly"):
+            STATE.validate_retained_origin_route_evidence(
+                ROOT, version, release["artifacts"], release["compatibility"]["automatic_upgrade_sources"]
+            )
 
     def test_gwt_032_given_v014_tampered_or_unproven_route_when_validated_then_it_fails_closed(self):
         version = "v0.14.0"
@@ -981,7 +989,7 @@ class AiContextReleaseStateGwtTests(unittest.TestCase):
                         STATE.ReleaseStateError,
                         "differs from canonical resolver output",
                     ):
-                        STATE.validate_retained_origin_route_evidence(root, version, artifacts)
+                        STATE.validate_retained_origin_route_evidence(root, version, artifacts, ["v0.13.0"])
 
             def unresolved(_matrix, *, origin, target, **_kwargs):
                 result = resolved(_matrix, origin=origin, target=target)
@@ -994,7 +1002,7 @@ class AiContextReleaseStateGwtTests(unittest.TestCase):
                         STATE.ReleaseStateError,
                         "must resolve direct or orchestrated-multi-hop",
                     ):
-                        STATE.validate_retained_origin_route_evidence(root, version, artifacts)
+                        STATE.validate_retained_origin_route_evidence(root, version, artifacts, ["v0.13.0"])
 
     def test_gwt_033_given_open_terminal_issue_bound_to_current_pr_when_candidate_checked_then_only_exact_head_passes(self):
         issue_number = 206

@@ -1,0 +1,86 @@
+{
+  "schema_version": "issue-280-actual-transport-check/v1",
+  "executed": true,
+  "synthetic": false,
+  "publication_performed": false,
+  "duration_seconds": 8.14311330000055,
+  "admission": {
+    "schema_version": "release-asset-admission/v1",
+    "state": "admitted-candidate",
+    "version": "v0.15.1",
+    "package_id": "ai-collaboration-framework-v0.15.1",
+    "release_id": "REL-v0.15.1",
+    "build_commit": "f2b5fa7c13550efaeb65ab9fcaeb0403baa2a5af",
+    "payload_fingerprint": "ef8f900a840e8869189b50b28a7735dcf279046665ebed3f89b18637f43b8017",
+    "selected_input_fingerprint": "772d0c97d3c9ce70ef21d6cd559bbe5e17ef20b4ee31460f569d4ce4b4ae91bc",
+    "artifact_set_id": "sha256:e3f69e094663764de9b2e83caa65d2f4a2203a0fd6430e56fc435062480e58a0",
+    "assets": [
+      {
+        "name": "ai-collaboration-framework-v0.15.1.zip",
+        "path": ".dev/ai-context/local/validation/issue-280/v0.15.1/ai-collaboration-framework-v0.15.1.zip",
+        "size": 1442933,
+        "sha256": "cbabde70a921eba8c59255fc2f414961c9aaab0151b08d27956071f8f1c066ca"
+      },
+      {
+        "name": "ai-collaboration-framework-v0.15.1.zip.sha256",
+        "path": ".dev/ai-context/local/validation/issue-280/v0.15.1/ai-collaboration-framework-v0.15.1.zip.sha256",
+        "size": 105,
+        "sha256": "464b4b4cd4e73416ce330a0cfcd58af1d06ca2a2f6d8131d91513523a764b985"
+      },
+      {
+        "name": "ai-collaboration-framework-v0.15.1.tar.gz",
+        "path": ".dev/ai-context/local/validation/issue-280/v0.15.1/ai-collaboration-framework-v0.15.1.tar.gz",
+        "size": 1024508,
+        "sha256": "27b3c907f8783358b3cb9f98b0cb9b7f691effc20f020c274a2d3afc5c9bd145"
+      },
+      {
+        "name": "ai-collaboration-framework-v0.15.1.tar.gz.sha256",
+        "path": ".dev/ai-context/local/validation/issue-280/v0.15.1/ai-collaboration-framework-v0.15.1.tar.gz.sha256",
+        "size": 108,
+        "sha256": "63c5689f7a7b6068026326197cd84ed279e22b38c2fce479bd0e6d68edbacf4b"
+      }
+    ]
+  },
+  "publication_readback": {
+    "schema_version": "release-asset-publication/v1",
+    "state": "published",
+    "version": "v0.15.1",
+    "package_id": "ai-collaboration-framework-v0.15.1",
+    "release_id": "REL-v0.15.1",
+    "artifact_set_id": "sha256:e3f69e094663764de9b2e83caa65d2f4a2203a0fd6430e56fc435062480e58a0",
+    "payload_fingerprint": "ef8f900a840e8869189b50b28a7735dcf279046665ebed3f89b18637f43b8017",
+    "provider_release_id": 378949833,
+    "published_at": "2026-08-29T10:35:49Z",
+    "assets": [
+      {
+        "id": 535086830,
+        "name": "ai-collaboration-framework-v0.15.1.zip",
+        "size": 1442933,
+        "digest": "sha256:cbabde70a921eba8c59255fc2f414961c9aaab0151b08d27956071f8f1c066ca",
+        "browser_download_url": "https://github.com/YuChia-Wei/ai-collaboration-framework/releases/download/v0.15.1/ai-collaboration-framework-v0.15.1.zip"
+      },
+      {
+        "id": 535086831,
+        "name": "ai-collaboration-framework-v0.15.1.zip.sha256",
+        "size": 105,
+        "digest": "sha256:464b4b4cd4e73416ce330a0cfcd58af1d06ca2a2f6d8131d91513523a764b985",
+        "browser_download_url": "https://github.com/YuChia-Wei/ai-collaboration-framework/releases/download/v0.15.1/ai-collaboration-framework-v0.15.1.zip.sha256"
+      },
+      {
+        "id": 535086832,
+        "name": "ai-collaboration-framework-v0.15.1.tar.gz",
+        "size": 1024508,
+        "digest": "sha256:27b3c907f8783358b3cb9f98b0cb9b7f691effc20f020c274a2d3afc5c9bd145",
+        "browser_download_url": "https://github.com/YuChia-Wei/ai-collaboration-framework/releases/download/v0.15.1/ai-collaboration-framework-v0.15.1.tar.gz"
+      },
+      {
+        "id": 535086833,
+        "name": "ai-collaboration-framework-v0.15.1.tar.gz.sha256",
+        "size": 108,
+        "digest": "sha256:63c5689f7a7b6068026326197cd84ed279e22b38c2fce479bd0e6d68edbacf4b",
+        "browser_download_url": "https://github.com/YuChia-Wei/ai-collaboration-framework/releases/download/v0.15.1/ai-collaboration-framework-v0.15.1.tar.gz.sha256"
+      }
+    ]
+  },
+  "outcome": "passed"
+}

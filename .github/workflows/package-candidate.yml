@@ -112,8 +112,23 @@ jobs:
             --phase contract \
             --version "${{ steps.release.outputs.version }}"
 
-      - name: Build deterministic archives
+      - name: Resolve exact-byte promotion requirement
         if: steps.release.outputs.available == 'true'
+        id: promotion
+        run: |
+          required="$(python .ai/scripts/manage-release-asset-identity.py required --version "${{ steps.release.outputs.version }}")"
+          echo "required=${required}" >> "${GITHUB_OUTPUT}"
+
+      - name: Stage admitted candidate archives
+        if: steps.release.outputs.available == 'true'
+        run: |
+          if [[ "${{ steps.promotion.outputs.required }}" == "true" ]]; then
+            python .ai/scripts/manage-release-asset-identity.py stage \
+              --version "${{ steps.release.outputs.version }}" --ref "${CANDIDATE_COMMIT}" --assets-dir dist
+          fi
+
+      - name: Build deterministic archives
+        if: steps.release.outputs.available == 'true' && steps.promotion.outputs.required == 'false'
         env:
           GH_TOKEN: ${{ github.token }}
           MIGRATION_SOURCES: ${{ steps.release.outputs.migration_sources }}

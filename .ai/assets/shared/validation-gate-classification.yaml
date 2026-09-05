@@ -53,6 +53,7 @@ groups:
       - "profile-registry-contract"
       - "provider-role-package-projection"
       - "python-source-entrypoints"
+      - "release-asset-identity"
       - "release-notes-renderer"
       - "release-preparation-tests"
       - "release-state-tests"
