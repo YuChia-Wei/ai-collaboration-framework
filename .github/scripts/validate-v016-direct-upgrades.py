@@ -271,7 +271,7 @@ def failing_validator_fixture(incoming):
 def negative_preflight(origin, previous, incoming, target, initial, ledger, logs, apply, provenance):
     results = []
     files = previous / "metadata/files.yaml"
-    results.append(reject_unchanged("missing-origin-manifest", lambda: apply.build_plan(incoming, target, logs / "absent-files.yaml", origin), apply.ApplyError, "previous|cannot read", target))
+    results.append(reject_unchanged("missing-origin-manifest", lambda: apply.build_plan(incoming, target, logs / "absent-files.yaml", origin), (apply.ApplyError, FileNotFoundError), "previous|cannot read|absent-files", target))
     tampered = logs / "tampered-files.yaml"
     tampered.write_bytes(files.read_bytes() + b"\n")
     results.append(reject_unchanged("tampered-origin-manifest", lambda: apply.build_plan(incoming, target, tampered, origin), apply.ApplyError, "source|manifest|previous", target))
@@ -315,22 +315,28 @@ def record_validation(target, plan, apply, logs, provenance, candidate, ledger):
     transaction = apply.transaction_root(target, plan["plan_sha256"])
     packet = json.loads((transaction / apply.REMEDIATION_PACKET_PATH).read_bytes())
     journal = yaml.safe_load((transaction / "journal.yaml").read_bytes())
+    output_path = transaction / apply.TARGET_VALIDATION_OUTPUT_PATH
+    def make_receipt(execution, output):
+        output_path.write_bytes(output)
+        execution["evidence"] = output_path.relative_to(target).as_posix()
+        return {"schema_version": "target-validation-receipt/v1", "transaction_id": plan["plan_sha256"], "plan_sha256": plan["plan_sha256"],
+                "packet_sha256": packet["canonical_digest"], "decision_sha256": journal["remediation_decision_sha256"],
+                "target": {key: packet["target"][key] for key in ("root", "starting_commit", "observed_prestate_sha256")},
+                "target_validation_profile": packet["target_validation_profile"], "target_validation_profile_digest": packet["target_validation_profile_digest"],
+                "pending_receipt": {"path": apply.PENDING_RECEIPT_PATH, "sha256": sha((target / apply.PENDING_RECEIPT_PATH).read_bytes())}, "execution": execution}
     fault = target / ".git/fail-target-validation"
     fault.write_bytes(b"bounded fault injection\n")
-    failed_execution, _ = run(packet["target_validation_profile"]["argv"], target, logs, "target-validation-rejected", expected=17)
-    rejected = reject_unchanged("target-validator-disagreement", lambda: provenance.finalize_context(
+    failed_execution, failed_output = run(packet["target_validation_profile"]["argv"], target, logs, "target-validation-rejected", expected=17)
+    failed_receipt = logs / "failed-target-validation.json"
+    write_json(failed_receipt, make_receipt(failed_execution, failed_output))
+    rejected = reject_unchanged("failed-target-validation-receipt", lambda: apply.record_target_validation_receipt(
+        target, plan["plan_sha256"], failed_receipt), apply.ApplyError, "execution evidence|execution.*passed", target)
+    blocked_finalization = reject_unchanged("target-validator-disagreement", lambda: provenance.finalize_context(
         target, candidate, ledger, effective_state_candidate=state_candidate(candidate["source"]), effective_resolver_evidence=[EVIDENCE]),
         provenance.TargetValidationError, "target validation|target-validation", target)
     fault.unlink()
     execution, output = run(packet["target_validation_profile"]["argv"], target, logs, "target-validation")
-    output_path = transaction / apply.TARGET_VALIDATION_OUTPUT_PATH
-    output_path.write_bytes(output)
-    execution["evidence"] = output_path.relative_to(target).as_posix()
-    receipt = {"schema_version": "target-validation-receipt/v1", "transaction_id": plan["plan_sha256"], "plan_sha256": plan["plan_sha256"],
-               "packet_sha256": packet["canonical_digest"], "decision_sha256": journal["remediation_decision_sha256"],
-               "target": {key: packet["target"][key] for key in ("root", "starting_commit", "observed_prestate_sha256")},
-               "target_validation_profile": packet["target_validation_profile"], "target_validation_profile_digest": packet["target_validation_profile_digest"],
-               "pending_receipt": {"path": apply.PENDING_RECEIPT_PATH, "sha256": sha((target / apply.PENDING_RECEIPT_PATH).read_bytes())}, "execution": execution}
+    receipt = make_receipt(execution, output)
     supplied = logs / "supplied-target-validation.json"
     write_json(supplied, receipt)
     invalid = logs / "tampered-target-validation.json"
@@ -340,7 +346,7 @@ def record_validation(target, plan, apply, logs, provenance, candidate, ledger):
     rejected_receipt = reject_unchanged("tampered-target-validation-receipt", lambda: apply.record_target_validation_receipt(
         target, plan["plan_sha256"], invalid), apply.ApplyError, "output|execution|digest|bytes", target)
     apply.record_target_validation_receipt(target, plan["plan_sha256"], supplied)
-    return receipt, [rejected, rejected_receipt], failed_execution
+    return receipt, [rejected, blocked_finalization, rejected_receipt], failed_execution
 
 
 def execute_case(origin, previous, incoming, output, customized, recovery, apply, provenance, rules):
@@ -489,7 +495,10 @@ def main():
                 write_json(output / "progress.json", terminal)
         terminal["outcome"] = "planned-only" if args.preflight_only else "passed"
     except Exception as exc:
-        terminal["failure"] = {"type": type(exc).__name__, "message": str(exc).replace(str(output), "VALIDATION_OUTPUT").replace(str(ROOT), "SOURCE_ROOT")}
+        message = str(exc)
+        for path, label in ((output, "VALIDATION_OUTPUT"), (ROOT, "SOURCE_ROOT")):
+            message = message.replace(str(path).replace("\\", "\\\\"), label).replace(str(path), label)
+        terminal["failure"] = {"type": type(exc).__name__, "message": message}
         terminal["failure_fingerprint"] = sha(canonical(terminal["failure"]))
         raise
     finally:
