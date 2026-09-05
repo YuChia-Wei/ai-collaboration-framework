@@ -1,0 +1,8 @@
+{
+  "subject_sha": "ff582e6956fe0adea4924dbe33cdb3413cdcb5f1",
+  "outcome": "failed",
+  "failure_fingerprint": "portable-registry-references-source-lifecycle-files",
+  "reason": "Three source-only registry checks declared exact historical release/workflow files inside a portable registry; payload reference integrity rejected those source-only paths.",
+  "remediation": "Use conservative .dev/releases and .dev/workflows dependency roots, matching other source-only registry rows. This includes every original input and broadens invalidation; no declared dependency is removed from coverage.",
+  "retry": "New preparation commit and empty output directory required."
+}
