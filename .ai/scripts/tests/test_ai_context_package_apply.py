@@ -925,7 +925,7 @@ class AiContextPackageApplyGwtTests(unittest.TestCase):
             )
             plan = fixture.plan()
             self.assertEqual(sorted(paths), [item["path"] for item in plan["operations"]])
-            self.assertEqual({"software-development-core": 21}, plan["component_operation_counts"]["would_apply"])
+            self.assertEqual({"software-development-core": 22}, plan["component_operation_counts"]["would_apply"])
         finally:
             fixture.close()
     def test_gwt_000a_given_component_archive_when_clean_installed_then_default_skips_backlog_and_cli_can_enable_it(self) -> None:
