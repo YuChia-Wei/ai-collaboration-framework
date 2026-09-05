@@ -13,7 +13,7 @@ concurrency:
 
 jobs:
   build:
-    name: Validate tag and build release
+    name: Validate tag and stage admitted release
     runs-on: ubuntu-latest
     timeout-minutes: 15
     permissions:
@@ -78,7 +78,20 @@ jobs:
             --output dist/release-body.md \
             --github-output "${GITHUB_OUTPUT}"
 
-      - name: Build deterministic archives from tag
+      - name: Resolve exact-byte promotion requirement
+        id: promotion
+        run: |
+          required="$(python .ai/scripts/manage-release-asset-identity.py required --version "${GITHUB_REF_NAME}")"
+          echo "required=${required}" >> "${GITHUB_OUTPUT}"
+
+      - name: Stage admitted archives without rebuilding
+        if: steps.promotion.outputs.required == 'true'
+        run: |
+          python .ai/scripts/manage-release-asset-identity.py stage \
+            --version "${GITHUB_REF_NAME}" --ref "refs/tags/${GITHUB_REF_NAME}" --assets-dir dist
+
+      - name: Build deterministic archives from legacy tag
+        if: steps.promotion.outputs.required == 'false'
         env:
           GH_TOKEN: ${{ github.token }}
           MIGRATION_SOURCES: ${{ steps.release.outputs.migration_sources }}
@@ -189,6 +202,10 @@ jobs:
           python .ai/scripts/validate-ai-context-package.py \
             "dist/${PACKAGE_ID}.zip" \
             "dist/${PACKAGE_ID}.tar.gz"
+          if [[ "$(python .ai/scripts/manage-release-asset-identity.py required --version "${TAG}")" == "true" ]]; then
+            python .ai/scripts/manage-release-asset-identity.py verify \
+              --version "${TAG}" --ref "refs/tags/${TAG}" --assets-dir dist
+          fi
 
       - name: Create or resume owned draft
         id: draft
@@ -258,6 +275,11 @@ jobs:
           python .ai/scripts/validate-ai-context-package.py \
             "${verify_dir}/${PACKAGE_ID}.zip" \
             "${verify_dir}/${PACKAGE_ID}.tar.gz"
+          if [[ "$(python .ai/scripts/manage-release-asset-identity.py required --version "${TAG}")" == "true" ]]; then
+            python .ai/scripts/manage-release-asset-identity.py provider \
+              --version "${TAG}" --ref "refs/tags/${TAG}" --repository "${GITHUB_REPOSITORY}" \
+              --assets-dir "${verify_dir}" --allow-draft --output "${RUNNER_TEMP}/uploaded-assets.json"
+          fi
 
           gh release view "${TAG}" --json body --jq '.body' > "${verify_dir}/release-body.md"
           python - "dist/release-body.md" "${verify_dir}/release-body.md" <<'PY'
@@ -273,6 +295,26 @@ jobs:
       - name: Publish verified draft
         if: steps.draft.outputs.published == 'false'
         run: gh release edit "${TAG}" --verify-tag --draft=false --latest
+
+      - name: Read back published asset identity
+        run: |
+          if [[ "$(python .ai/scripts/manage-release-asset-identity.py required --version "${TAG}")" == "true" ]]; then
+            python .ai/scripts/manage-release-asset-identity.py provider \
+              --version "${TAG}" --ref "refs/tags/${TAG}" --repository "${GITHUB_REPOSITORY}" \
+              --assets-dir "${RUNNER_TEMP}/release-assets" --output "${RUNNER_TEMP}/published-assets.json"
+          fi
+
+      - name: Retain asset publication read-back
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: asset-publication-${{ needs.build.outputs.version }}-${{ needs.build.outputs.commit }}
+          retention-days: 30
+          compression-level: 0
+          if-no-files-found: ignore
+          path: |
+            ${{ runner.temp }}/uploaded-assets.json
+            ${{ runner.temp }}/published-assets.json
 
   reconcile-provider:
     name: Reconcile release tracking

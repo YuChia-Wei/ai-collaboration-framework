@@ -1,0 +1,48 @@
+{
+  "template_id": "ai-context-governance-remediation-task",
+  "template_version": "1.1.0",
+  "template_created_at": "2026-07-10T18:22:49+08:00",
+  "template_updated_at": "2026-07-27T09:52:09+08:00",
+  "task_id": "REL018-historical-routes",
+  "workflow_id": "2026-09-05-published-asset-identity",
+  "owner_skill": "ai-context-governance",
+  "status": "completed",
+  "created_at": "2026-09-05T15:26:11+08:00",
+  "updated_at": "2026-09-05T15:45:38+08:00",
+  "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
+  "model": "gpt-6-astra",
+  "reasoning_effort": "xhigh",
+  "finding_ids": [
+    "REL-018"
+  ],
+  "scope": {
+    "target": "Published historical asset backfill and route evidence",
+    "files": [],
+    "constraints": [
+      "Historical tags, archives, and original route evidence remain immutable",
+      "No automatic publication or downstream mutation"
+    ],
+    "non_goals": [
+      "Issue 272 actual v0.16.0 edges",
+      "Release publication"
+    ]
+  },
+  "execution": {
+    "steps": [],
+    "validation": [],
+    "last_completed_step": "Local implementation and focused validation",
+    "next_action": "No remaining local backfill execution"
+  },
+  "results": {
+    "summary": "Two published archives passed their own portable and edge validators; three retained origins resolve using the rebound public bytes.",
+    "files_changed": [
+      ".dev/workflows/2026-09-05-published-asset-identity/evidence/published-routes"
+    ],
+    "tests_run": [
+      "13 identity tests; 12 workflow tests; 37 release-state tests; actual historical portable and edge executions"
+    ],
+    "finding_status": "addressed",
+    "residual_risk": "No historical release or tag was changed; future release execution remains a separate task.",
+    "follow_up_needed": false
+  }
+}

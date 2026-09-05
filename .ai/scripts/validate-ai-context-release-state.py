@@ -31,6 +31,8 @@ from typing import Any, Callable
 import yaml
 
 from ai_context_package_identity import expected_artifacts, expected_package_id
+from release_asset_identity import governed as asset_identity_required, load_admission, verify_provider
+from ai_context_package import PackageError
 
 from ai_context_upgrade_routes import (
     MatrixValidationError,
@@ -927,6 +929,11 @@ def assert_hosted_release(root: Path, repository: str, version: str, commit: str
     actual_assets = sorted(item.get("name") for item in release.get("assets", []) if isinstance(item, dict))
     if actual_assets != sorted(expected_assets(data, version)):
         raise ReleaseStateError("hosted release asset set differs from governed package assets")
+    if asset_identity_required(version):
+        try:
+            verify_provider(load_admission(root, version, commit), release, repository)
+        except (OSError, ValueError, KeyError, TypeError, PackageError) as exc:
+            raise ReleaseStateError(f"hosted asset identity blocked: {exc}") from exc
 
 
 def assert_hosted_workflow(
@@ -1102,8 +1109,18 @@ def validate(
         if not SHA_RE.fullmatch(exact_commit):
             raise ReleaseStateError("candidate commit must be a full lowercase SHA")
         assert_candidate(root, version, data, exact_commit, exact_branch, runner)
+        if asset_identity_required(version):
+            try:
+                load_admission(root, version, exact_commit)
+            except (OSError, ValueError, KeyError, TypeError, PackageError) as exc:
+                raise ReleaseStateError(f"candidate asset admission blocked: {exc}") from exc
         return {"commit": exact_commit, "branch": exact_branch}
     tagged_commit = assert_tag(root, version, data, runner)
+    if asset_identity_required(version):
+        try:
+            load_admission(root, version, tagged_commit)
+        except (OSError, ValueError, KeyError, TypeError, PackageError) as exc:
+            raise ReleaseStateError(f"tagged asset admission blocked: {exc}") from exc
     if phase in {"publication", "finalization"}:
         source_is_terminal_candidate = data.get("status") == "validated"
         if source_is_terminal_candidate:

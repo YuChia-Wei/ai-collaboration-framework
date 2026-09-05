@@ -28,6 +28,7 @@
     {"path": ".ai/scripts/validate-workflow-handoff.py", "portable": true, "dependency_profile": ["PyYAML"], "prerequisite_exit_code": 1},
     {"path": ".ai/assets/skills/ai-context-upgrader/scripts/compare-ai-context-versions.py", "portable": false, "dependency_profile": [], "prerequisite_exit_code": 1},
     {"path": ".ai/scripts/build-ai-context-package.py", "portable": false, "dependency_profile": ["PyYAML"], "prerequisite_exit_code": 1},
+    {"path": ".ai/scripts/manage-release-asset-identity.py", "portable": false, "dependency_profile": ["PyYAML"], "prerequisite_exit_code": 1},
     {"path": ".ai/scripts/measure-ai-context-load.py", "portable": false, "dependency_profile": ["PyYAML"], "prerequisite_exit_code": 1},
     {"path": ".ai/scripts/plan-github-backlog-migration.py", "portable": false, "dependency_profile": ["PyYAML"], "prerequisite_exit_code": 1},
     {"path": ".ai/scripts/prepare-ai-context-release.py", "portable": false, "dependency_profile": ["PyYAML"], "prerequisite_exit_code": 1},

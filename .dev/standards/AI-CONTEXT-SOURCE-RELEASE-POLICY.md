@@ -73,6 +73,62 @@ prepublication and postpublication provider reconciliation. Required included
 work, compatibility declarations, migration guidance, and source gates must be
 complete before the source record reaches `status: validated`.
 
+## Exact Release Asset Promotion (From v0.16.0)
+
+Logical `package_id` and `release_id` are labels. They never establish archive
+byte identity. A `release-asset-admission/v1` record at
+`.dev/releases/<version>/artifact-admission.json` binds the payload fingerprint,
+selected-input fingerprint, original build commit, and the exact name, size,
+SHA-256 and tracked path of all four ZIP/tar/checksum assets. Its
+`artifact_set_id` is the SHA-256 of the canonical ordered name/size/digest list.
+Each individual archive also has identity `sha256:<archive digest>`.
+
+The asset lifecycle is `admitted-candidate` → `uploaded-draft` → `published`.
+The admission stays immutable provenance. The latter states are separate
+`release-asset-publication/v1` provider receipts, not edits to the admission or
+release-source status. An owned draft may be retried with the same admitted
+bytes. Different bytes require a newly reviewed candidate before publication;
+an already published identity cannot be silently replaced. Historical candidate
+archives with the same logical labels remain explicitly historical candidates.
+
+Finalize package-selected source inputs before building once from a clean
+immutable preparation commit. Retain its four exact assets under the version's
+route-assets directory, then run:
+
+```powershell
+python .ai/scripts/manage-release-asset-identity.py admit --version v0.16.0 --ref <preparation-commit> --assets-dir .dev/releases/v0.16.0/route-assets/admitted --output .dev/releases/v0.16.0/artifact-admission.json
+```
+
+This creates an identity record, not proof of execution or approval. Execute the
+incoming portable validator and each required direct origin edge against that
+same archive, bind their matrix archive hashes, commit the evidence, and obtain
+the applicable independent review. Candidate/tag gates compare the complete
+selected source inputs and projected payload with the archive; history-only
+commit changes retain build provenance without rebuilding. Any selected-input
+drift blocks promotion and requires a newly validated candidate. All incoming
+matrix edges targeting the release must bind the admitted ZIP digest and payload
+fingerprint. Issue 272 supplies the actual v0.16.0 direct edge evidence.
+
+Candidate CI and tag publication stage the tracked admitted assets unchanged.
+Before publishing a draft, and again afterward, the hosted workflow downloads
+the assets, compares exact bytes, and reads back provider name, size, SHA-256,
+asset ID, release ID, tag, URL and state. Missing provider digest, unavailable
+bytes, wrong identity or disagreement blocks. The publication receipt is a
+retained hosted artifact; finalization repeats the fresh provider comparison.
+
+Once published, governed route admission requires a fresh `provider` check with
+the downloaded public assets and the same tracked admission. Candidate evidence
+alone cannot attest publication. No later source closeout or archive rebuild is
+needed. Public-body rendering may bind the final tag commit while the unchanged
+archive keeps its original preparation-commit provenance.
+
+Historical v0.15.0/v0.15.1 recovery is retained in the Issue 280 workflow's
+`evidence/published-routes/` catalog and rebound matrix. Future routes select
+those exact public ZIPs and origin manifests, preserving the old tagged matrix
+and candidate archives as historical evidence. Both rebound archives must execute
+their own portable validator and edge validator. Reused unchanged v0.14.0
+segments retain their original receipt bytes and are not reported as re-executed.
+
 ## Bounded Upgrade-Test Horizon
 
 `v0.6.0` is the retained baseline for active framework upgrade testing.

@@ -2159,6 +2159,10 @@ run_source_repository_release_checks() {
         "AI Context Release State Fail-Closed Tests" \
         "required" "true" "true"
 
+    run_command_check "python .ai/scripts/tests/test_release_asset_identity.py -v" \
+        "Release Asset Identity Contract Tests" \
+        "required" "true" "true"
+
     run_command_check "python .ai/scripts/tests/test_prepare_ai_context_release.py -v" \
         "AI Context Release Preparation Fail-Closed Tests" \
         "required" "true" "true"

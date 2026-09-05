@@ -1,0 +1,4542 @@
+schema_version: 3.0.0
+package_id: ai-collaboration-framework-v0.15.1
+to:
+  version: 0.15.1
+  manifest_sha256: 8edcb120fe00b16e803f161ec31861ff45a30d8697a5a3e5c58931f7f2b5d1ad
+clean_install:
+  operations:
+  - id: clean-install-0001
+    kind: add
+    path: .agents/skills/README.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: ai-context-lifecycle-core
+  - id: clean-install-0002
+    kind: add
+    path: .agents/skills/ai-context-auditor/SKILL.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: ai-context-lifecycle-core
+  - id: clean-install-0003
+    kind: add
+    path: .agents/skills/ai-context-auditor/agents/openai.yaml
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: ai-context-lifecycle-core
+  - id: clean-install-0004
+    kind: add
+    path: .agents/skills/ai-context-governance/SKILL.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: ai-context-lifecycle-core
+  - id: clean-install-0005
+    kind: add
+    path: .agents/skills/ai-context-init/SKILL.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: ai-context-lifecycle-core
+  - id: clean-install-0006
+    kind: add
+    path: .agents/skills/ai-context-upgrader/SKILL.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: ai-context-lifecycle-core
+  - id: clean-install-0007
+    kind: add
+    path: .agents/skills/bdd-gwt-test-designer/SKILL.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0008
+    kind: add
+    path: .agents/skills/code-reviewer/SKILL.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: dotnet-backend
+  - id: clean-install-0009
+    kind: add
+    path: .agents/skills/ddd-ca-hex-architect/SKILL.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0010
+    kind: add
+    path: .agents/skills/ddd-ca-hex-architect/agents/openai.yaml
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0011
+    kind: add
+    path: .agents/skills/dev-workflow/SKILL.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0012
+    kind: add
+    path: .agents/skills/local-change-implementer/SKILL.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0013
+    kind: add
+    path: .agents/skills/problem-frame-author/SKILL.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0014
+    kind: add
+    path: .agents/skills/repo-structure-sync/SKILL.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: ai-context-lifecycle-core
+  - id: clean-install-0015
+    kind: add
+    path: .agents/skills/requirement-author/SKILL.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0016
+    kind: add
+    path: .agents/skills/slice-implementer/SKILL.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0017
+    kind: add
+    path: .agents/skills/software-development-orchestrator/SKILL.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0018
+    kind: add
+    path: .agents/skills/spec-author/SKILL.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0019
+    kind: add
+    path: .agents/skills/spec-compliance-validator/SKILL.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0020
+    kind: add
+    path: .ai/DIRECTORY-RULES.MD
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: ai-context-lifecycle-core
+  - id: clean-install-0021
+    kind: add
+    path: .ai/INDEX.MD
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: ai-context-lifecycle-core
+  - id: clean-install-0022
+    kind: add
+    path: .ai/README.MD
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: ai-context-lifecycle-core
+  - id: clean-install-0023
+    kind: add
+    path: .ai/SUB-AGENT-SYSTEM.MD
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: ai-context-lifecycle-core
+  - id: clean-install-0024
+    kind: add
+    path: .ai/assets/CANONICAL-SCHEMA.MD
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0025
+    kind: add
+    path: .ai/assets/README.MD
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0026
+    kind: add
+    path: .ai/assets/shared/AGENT-EXECUTION-GUARDRAILS-CONTRACT.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0027
+    kind: add
+    path: .ai/assets/shared/CLI-EXECUTION-ROUTING-CONTRACT.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0028
+    kind: add
+    path: .ai/assets/shared/PRODUCT-SOURCE-PROJECTION-CONTRACT.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0029
+    kind: add
+    path: .ai/assets/shared/PROMPT-PORTABILITY-RULES.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0030
+    kind: add
+    path: .ai/assets/shared/README.MD
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0031
+    kind: add
+    path: .ai/assets/shared/ROLE-EXECUTION-CONTRACT.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0032
+    kind: add
+    path: .ai/assets/shared/VALIDATION-EVIDENCE-LIFECYCLE-CONTRACT.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0033
+    kind: add
+    path: .ai/assets/shared/agent-execution-guardrails.schema.yaml
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0034
+    kind: add
+    path: .ai/assets/shared/cli-execution-routing.schema.yaml
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0035
+    kind: add
+    path: .ai/assets/shared/governance/AI-CONTEXT-VERSION-POLICY.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0036
+    kind: add
+    path: .ai/assets/shared/governance/ENGINEERING-IDENTITY-CONTRACT.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0037
+    kind: add
+    path: .ai/assets/shared/governance/GIT-COMMIT-POLICY.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0038
+    kind: add
+    path: .ai/assets/shared/governance/TEAM-GIT-FLOW-RULES.MD
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0039
+    kind: add
+    path: .ai/assets/shared/governance/WORKFLOW-GATE-POLICY.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0040
+    kind: add
+    path: .ai/assets/shared/governance/engineering-rule-catalog.yaml
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0041
+    kind: add
+    path: .ai/assets/shared/governance/portable-policy-manifest.yaml
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0042
+    kind: add
+    path: .ai/assets/shared/provider-neutral-capability-registry.schema.yaml
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0043
+    kind: add
+    path: .ai/assets/shared/provider-neutral-capability-registry.yaml
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0044
+    kind: add
+    path: .ai/assets/shared/provider-projection-registry.schema.yaml
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0045
+    kind: add
+    path: .ai/assets/shared/provider-projection-registry.yaml
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0046
+    kind: add
+    path: .ai/assets/shared/validation-evidence-lifecycle.schema.yaml
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0047
+    kind: add
+    path: .ai/assets/skills/README.MD
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: ai-context-lifecycle-core
+  - id: clean-install-0048
+    kind: add
+    path: .ai/assets/skills/ai-context-auditor/references/audit-playbook.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: ai-context-lifecycle-core
+  - id: clean-install-0049
+    kind: add
+    path: .ai/assets/skills/ai-context-auditor/references/output-contract.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: ai-context-lifecycle-core
+  - id: clean-install-0050
+    kind: add
+    path: .ai/assets/skills/ai-context-auditor/references/scope-and-routing.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: ai-context-lifecycle-core
+  - id: clean-install-0051
+    kind: add
+    path: .ai/assets/skills/ai-context-auditor/skill.yaml
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: ai-context-lifecycle-core
+  - id: clean-install-0052
+    kind: add
+    path: .ai/assets/skills/ai-context-auditor/templates/ai-context-audit-report-template.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: ai-context-lifecycle-core
+  - id: clean-install-0053
+    kind: add
+    path: .ai/assets/skills/ai-context-auditor/templates/ai-context-audit-task-template.json
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: ai-context-lifecycle-core
+  - id: clean-install-0054
+    kind: add
+    path: .ai/assets/skills/ai-context-auditor/templates/ai-context-audit-workflow-plan-template.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: ai-context-lifecycle-core
+  - id: clean-install-0055
+    kind: add
+    path: .ai/assets/skills/ai-context-auditor/templates/workflow-locator-template.yaml
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: ai-context-lifecycle-core
+  - id: clean-install-0056
+    kind: add
+    path: .ai/assets/skills/ai-context-governance/references/audit-remediation-lifecycle.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: ai-context-lifecycle-core
+  - id: clean-install-0057
+    kind: add
+    path: .ai/assets/skills/ai-context-governance/references/context-boundary-playbook.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: ai-context-lifecycle-core
+  - id: clean-install-0058
+    kind: add
+    path: .ai/assets/skills/ai-context-governance/references/language-policy-playbook.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: ai-context-lifecycle-core
+  - id: clean-install-0059
+    kind: add
+    path: .ai/assets/skills/ai-context-governance/references/output-contract.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: ai-context-lifecycle-core
+  - id: clean-install-0060
+    kind: add
+    path: .ai/assets/skills/ai-context-governance/references/semantic-customization-lifecycle.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: ai-context-lifecycle-core
+  - id: clean-install-0061
+    kind: add
+    path: .ai/assets/skills/ai-context-governance/references/workflow-and-commit-playbook.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: ai-context-lifecycle-core
+  - id: clean-install-0062
+    kind: add
+    path: .ai/assets/skills/ai-context-governance/skill.yaml
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: ai-context-lifecycle-core
+  - id: clean-install-0063
+    kind: add
+    path: .ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: ai-context-lifecycle-core
+  - id: clean-install-0064
+    kind: add
+    path: .ai/assets/skills/ai-context-governance/templates/ai-context-remediation-report-template.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: ai-context-lifecycle-core
+  - id: clean-install-0065
+    kind: add
+    path: .ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: ai-context-lifecycle-core
+  - id: clean-install-0066
+    kind: add
+    path: .ai/assets/skills/ai-context-governance/templates/customizations.schema.yaml
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: ai-context-lifecycle-core
+  - id: clean-install-0067
+    kind: add
+    path: .ai/assets/skills/ai-context-governance/templates/effective-rule-packet.schema.yaml
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: ai-context-lifecycle-core
+  - id: clean-install-0068
+    kind: add
+    path: .ai/assets/skills/ai-context-governance/templates/effective-rule-state.schema.yaml
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: ai-context-lifecycle-core
+  - id: clean-install-0069
+    kind: add
+    path: .ai/assets/skills/ai-context-governance/templates/effective-rule-state.template.yaml
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: ai-context-lifecycle-core
+  - id: clean-install-0070
+    kind: add
+    path: .ai/assets/skills/ai-context-governance/templates/workflow-handoff-checkpoint-template.yaml
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: ai-context-lifecycle-core
+  - id: clean-install-0071
+    kind: add
+    path: .ai/assets/skills/ai-context-governance/templates/workflow-locator-template.yaml
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: ai-context-lifecycle-core
+  - id: clean-install-0072
+    kind: add
+    path: .ai/assets/skills/ai-context-init/references/delegation-rules.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: ai-context-lifecycle-core
+  - id: clean-install-0073
+    kind: add
+    path: .ai/assets/skills/ai-context-init/references/document-targets.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: ai-context-lifecycle-core
+  - id: clean-install-0074
+    kind: add
+    path: .ai/assets/skills/ai-context-init/references/escalation-checklist.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: ai-context-lifecycle-core
+  - id: clean-install-0075
+    kind: add
+    path: .ai/assets/skills/ai-context-init/references/migration-boundaries.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: ai-context-lifecycle-core
+  - id: clean-install-0076
+    kind: add
+    path: .ai/assets/skills/ai-context-init/references/output-contract.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: ai-context-lifecycle-core
+  - id: clean-install-0077
+    kind: add
+    path: .ai/assets/skills/ai-context-init/references/role-execution.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: ai-context-lifecycle-core
+  - id: clean-install-0078
+    kind: add
+    path: .ai/assets/skills/ai-context-init/references/scan-playbook.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: ai-context-lifecycle-core
+  - id: clean-install-0079
+    kind: add
+    path: .ai/assets/skills/ai-context-init/skill.yaml
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: ai-context-lifecycle-core
+  - id: clean-install-0080
+    kind: add
+    path: .ai/assets/skills/ai-context-init/templates/project-config.template.yaml
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: ai-context-lifecycle-core
+  - id: clean-install-0081
+    kind: add
+    path: .ai/assets/skills/ai-context-init/templates/public-catalogs/dev/INDEX.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: ai-context-lifecycle-core
+  - id: clean-install-0082
+    kind: add
+    path: .ai/assets/skills/ai-context-init/templates/public-catalogs/dev/README.MD
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: ai-context-lifecycle-core
+  - id: clean-install-0083
+    kind: add
+    path: .ai/assets/skills/ai-context-init/templates/public-catalogs/dev/adr/INDEX.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: ai-context-lifecycle-core
+  - id: clean-install-0084
+    kind: add
+    path: .ai/assets/skills/ai-context-init/templates/public-catalogs/dev/assessments/INDEX.MD
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: ai-context-lifecycle-core
+  - id: clean-install-0085
+    kind: add
+    path: .ai/assets/skills/ai-context-init/templates/public-catalogs/dev/backlog/INDEX.MD
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: ai-context-lifecycle-core
+  - id: clean-install-0086
+    kind: add
+    path: .ai/assets/skills/ai-context-init/templates/public-catalogs/dev/backlog/README.MD
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: ai-context-lifecycle-core
+  - id: clean-install-0087
+    kind: add
+    path: .ai/assets/skills/ai-context-init/templates/public-catalogs/dev/problem-frames/INDEX.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: ai-context-lifecycle-core
+  - id: clean-install-0088
+    kind: add
+    path: .ai/assets/skills/ai-context-init/templates/public-catalogs/dev/specs/INDEX.MD
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: ai-context-lifecycle-core
+  - id: clean-install-0089
+    kind: add
+    path: .ai/assets/skills/ai-context-init/templates/public-catalogs/dev/workflows/INDEX.MD
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: ai-context-lifecycle-core
+  - id: clean-install-0090
+    kind: add
+    path: .ai/assets/skills/ai-context-init/templates/public-root/.editorconfig
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: ai-context-lifecycle-core
+  - id: clean-install-0091
+    kind: add
+    path: .ai/assets/skills/ai-context-init/templates/public-root/.gitattributes
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: ai-context-lifecycle-core
+  - id: clean-install-0092
+    kind: add
+    path: .ai/assets/skills/ai-context-init/templates/public-root/AGENTS.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: ai-context-lifecycle-core
+  - id: clean-install-0093
+    kind: add
+    path: .ai/assets/skills/ai-context-init/templates/public-root/CLAUDE.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: ai-context-lifecycle-core
+  - id: clean-install-0094
+    kind: add
+    path: .ai/assets/skills/ai-context-init/templates/public-root/README.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: ai-context-lifecycle-core
+  - id: clean-install-0095
+    kind: add
+    path: .ai/assets/skills/ai-context-init/templates/public-template-manifest.yaml
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: ai-context-lifecycle-core
+  - id: clean-install-0096
+    kind: add
+    path: .ai/assets/skills/ai-context-init/templates/technology-selection.schema.yaml
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: ai-context-lifecycle-core
+  - id: clean-install-0097
+    kind: add
+    path: .ai/assets/skills/ai-context-init/templates/work-item-binding.schema.yaml
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: ai-context-lifecycle-core
+  - id: clean-install-0098
+    kind: add
+    path: .ai/assets/skills/ai-context-upgrader/references/delegation-run-contract.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: ai-context-lifecycle-core
+  - id: clean-install-0099
+    kind: add
+    path: .ai/assets/skills/ai-context-upgrader/references/delegation-run-contract.schema.yaml
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: ai-context-lifecycle-core
+  - id: clean-install-0100
+    kind: add
+    path: .ai/assets/skills/ai-context-upgrader/references/multi-hop-upgrade-transaction-contract.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: ai-context-lifecycle-core
+  - id: clean-install-0101
+    kind: add
+    path: .ai/assets/skills/ai-context-upgrader/references/output-contract.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: ai-context-lifecycle-core
+  - id: clean-install-0102
+    kind: add
+    path: .ai/assets/skills/ai-context-upgrader/references/provenance-contract.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: ai-context-lifecycle-core
+  - id: clean-install-0103
+    kind: add
+    path: .ai/assets/skills/ai-context-upgrader/references/role-execution-bindings.schema.yaml
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: ai-context-lifecycle-core
+  - id: clean-install-0104
+    kind: add
+    path: .ai/assets/skills/ai-context-upgrader/references/role-execution-bindings.yaml
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: ai-context-lifecycle-core
+  - id: clean-install-0105
+    kind: add
+    path: .ai/assets/skills/ai-context-upgrader/references/three-way-merge-boundaries.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: ai-context-lifecycle-core
+  - id: clean-install-0106
+    kind: add
+    path: .ai/assets/skills/ai-context-upgrader/references/upgrade-playbook.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: ai-context-lifecycle-core
+  - id: clean-install-0107
+    kind: add
+    path: .ai/assets/skills/ai-context-upgrader/references/upgrade-support-policy.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: ai-context-lifecycle-core
+  - id: clean-install-0108
+    kind: add
+    path: .ai/assets/skills/ai-context-upgrader/skill.yaml
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: ai-context-lifecycle-core
+  - id: clean-install-0109
+    kind: add
+    path: .ai/assets/skills/ai-context-upgrader/templates/ai-context-source-template.yaml
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: ai-context-lifecycle-core
+  - id: clean-install-0110
+    kind: add
+    path: .ai/assets/skills/ai-context-upgrader/templates/customizations-template.yaml
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: ai-context-lifecycle-core
+  - id: clean-install-0111
+    kind: add
+    path: .ai/assets/skills/ai-context-upgrader/templates/delegation-run-record.template.yaml
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: ai-context-lifecycle-core
+  - id: clean-install-0112
+    kind: add
+    path: .ai/assets/skills/ai-context-upgrader/templates/multi-hop-upgrade-transaction.schema.yaml
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: ai-context-lifecycle-core
+  - id: clean-install-0113
+    kind: add
+    path: .ai/assets/skills/ai-context-upgrader/templates/multi-hop-upgrade-transaction.template.yaml
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: ai-context-lifecycle-core
+  - id: clean-install-0114
+    kind: add
+    path: .ai/assets/skills/ai-context-upgrader/templates/provenance-template.yaml
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: ai-context-lifecycle-core
+  - id: clean-install-0115
+    kind: add
+    path: .ai/assets/skills/ai-context-upgrader/templates/upgrade-remediation-decision.schema.yaml
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: ai-context-lifecycle-core
+  - id: clean-install-0116
+    kind: add
+    path: .ai/assets/skills/ai-context-upgrader/templates/upgrade-remediation-packet.schema.yaml
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: ai-context-lifecycle-core
+  - id: clean-install-0117
+    kind: add
+    path: .ai/assets/skills/ai-context-upgrader/templates/upgrade-route-matrix.schema.yaml
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: ai-context-lifecycle-core
+  - id: clean-install-0118
+    kind: add
+    path: .ai/assets/skills/ai-context-upgrader/templates/upgrade-route-matrix.template.yaml
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: ai-context-lifecycle-core
+  - id: clean-install-0119
+    kind: add
+    path: .ai/assets/skills/bdd-gwt-test-designer/references/output-contract.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0120
+    kind: add
+    path: .ai/assets/skills/bdd-gwt-test-designer/references/scenario-design-playbook.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0121
+    kind: add
+    path: .ai/assets/skills/bdd-gwt-test-designer/references/scope-rules.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0122
+    kind: add
+    path: .ai/assets/skills/bdd-gwt-test-designer/skill.yaml
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0123
+    kind: add
+    path: .ai/assets/skills/code-reviewer/fixtures/review-routing-fixtures.yaml
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: dotnet-backend
+  - id: clean-install-0124
+    kind: add
+    path: .ai/assets/skills/code-reviewer/references/checklist-reference.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: dotnet-backend
+  - id: clean-install-0125
+    kind: add
+    path: .ai/assets/skills/code-reviewer/references/output-contract.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: dotnet-backend
+  - id: clean-install-0126
+    kind: add
+    path: .ai/assets/skills/code-reviewer/references/review-routing.yaml
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: dotnet-backend
+  - id: clean-install-0127
+    kind: add
+    path: .ai/assets/skills/code-reviewer/references/role-execution.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: dotnet-backend
+  - id: clean-install-0128
+    kind: add
+    path: .ai/assets/skills/code-reviewer/skill.yaml
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: dotnet-backend
+  - id: clean-install-0129
+    kind: add
+    path: .ai/assets/skills/code-reviewer/templates/code-review-assessment-report-template.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: dotnet-backend
+  - id: clean-install-0130
+    kind: add
+    path: .ai/assets/skills/ddd-ca-hex-architect/references/architecture-playbook.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0131
+    kind: add
+    path: .ai/assets/skills/ddd-ca-hex-architect/references/design-deliverables.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0132
+    kind: add
+    path: .ai/assets/skills/ddd-ca-hex-architect/references/prompt-templates.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0133
+    kind: add
+    path: .ai/assets/skills/ddd-ca-hex-architect/references/source-map.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0134
+    kind: add
+    path: .ai/assets/skills/ddd-ca-hex-architect/skill.yaml
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0135
+    kind: add
+    path: .ai/assets/skills/dev-workflow/skill.yaml
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0136
+    kind: add
+    path: .ai/assets/skills/local-change-implementer/references/allowed-operations.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0137
+    kind: add
+    path: .ai/assets/skills/local-change-implementer/references/execution-rules.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0138
+    kind: add
+    path: .ai/assets/skills/local-change-implementer/references/skill-boundaries.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0139
+    kind: add
+    path: .ai/assets/skills/local-change-implementer/skill.yaml
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0140
+    kind: add
+    path: .ai/assets/skills/problem-frame-author/references/authoring-playbook.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0141
+    kind: add
+    path: .ai/assets/skills/problem-frame-author/references/output-contract.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0142
+    kind: add
+    path: .ai/assets/skills/problem-frame-author/references/role-execution.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0143
+    kind: add
+    path: .ai/assets/skills/problem-frame-author/references/source-mapping.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0144
+    kind: add
+    path: .ai/assets/skills/problem-frame-author/skill.yaml
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0145
+    kind: add
+    path: .ai/assets/skills/repo-structure-sync/skill.yaml
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: ai-context-lifecycle-core
+  - id: clean-install-0146
+    kind: add
+    path: .ai/assets/skills/requirement-author/references/authoring-playbook.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0147
+    kind: add
+    path: .ai/assets/skills/requirement-author/references/output-contract.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0148
+    kind: add
+    path: .ai/assets/skills/requirement-author/references/source-truth-rules.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0149
+    kind: add
+    path: .ai/assets/skills/requirement-author/skill.yaml
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0150
+    kind: add
+    path: .ai/assets/skills/slice-implementer/references/execution-playbook.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0151
+    kind: add
+    path: .ai/assets/skills/slice-implementer/references/handoff-rules.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0152
+    kind: add
+    path: .ai/assets/skills/slice-implementer/references/input-contract.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0153
+    kind: add
+    path: .ai/assets/skills/slice-implementer/references/modes/command-use-case.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0154
+    kind: add
+    path: .ai/assets/skills/slice-implementer/references/modes/generic-slice.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0155
+    kind: add
+    path: .ai/assets/skills/slice-implementer/references/modes/query-use-case.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0156
+    kind: add
+    path: .ai/assets/skills/slice-implementer/references/modes/reactor.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0157
+    kind: add
+    path: .ai/assets/skills/slice-implementer/references/overlays/remediation.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0158
+    kind: add
+    path: .ai/assets/skills/slice-implementer/references/role-execution.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0159
+    kind: add
+    path: .ai/assets/skills/slice-implementer/skill.yaml
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0160
+    kind: add
+    path: .ai/assets/skills/software-development-orchestrator/fixtures/acceptance/activation-high-level-pending-approval.expected.yaml
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0161
+    kind: add
+    path: .ai/assets/skills/software-development-orchestrator/fixtures/acceptance/activation-high-level-pending-approval.yaml
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0162
+    kind: add
+    path: .ai/assets/skills/software-development-orchestrator/fixtures/acceptance/fresh-session-checkpoint-blueprint.yaml
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0163
+    kind: add
+    path: .ai/assets/skills/software-development-orchestrator/fixtures/acceptance/role-execution-provider-neutral.yaml
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0164
+    kind: add
+    path: .ai/assets/skills/software-development-orchestrator/references/acceptance-oracle.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0165
+    kind: add
+    path: .ai/assets/skills/software-development-orchestrator/references/capability-profile.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0166
+    kind: add
+    path: .ai/assets/skills/software-development-orchestrator/references/capability-profile.yaml
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0167
+    kind: add
+    path: .ai/assets/skills/software-development-orchestrator/references/fallback-playbooks.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0168
+    kind: add
+    path: .ai/assets/skills/software-development-orchestrator/references/output-contract.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0169
+    kind: add
+    path: .ai/assets/skills/software-development-orchestrator/references/role-execution-playbook.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0170
+    kind: add
+    path: .ai/assets/skills/software-development-orchestrator/references/routing-playbook.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0171
+    kind: add
+    path: .ai/assets/skills/software-development-orchestrator/references/runtime-coordination.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0172
+    kind: add
+    path: .ai/assets/skills/software-development-orchestrator/references/skill-discovery-playbook.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0173
+    kind: add
+    path: .ai/assets/skills/software-development-orchestrator/references/validation-activation-policy.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0174
+    kind: add
+    path: .ai/assets/skills/software-development-orchestrator/references/workflow-artifact-playbook.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0175
+    kind: add
+    path: .ai/assets/skills/software-development-orchestrator/scripts/validate-external-task-delegation.py
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0176
+    kind: add
+    path: .ai/assets/skills/software-development-orchestrator/scripts/validate-software-development-orchestrator-acceptance.py
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0177
+    kind: add
+    path: .ai/assets/skills/software-development-orchestrator/skill.yaml
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0178
+    kind: add
+    path: .ai/assets/skills/software-development-orchestrator/templates/development-review-report-template.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0179
+    kind: add
+    path: .ai/assets/skills/software-development-orchestrator/templates/development-workflow-plan-template.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0180
+    kind: add
+    path: .ai/assets/skills/software-development-orchestrator/templates/development-workflow-task-template.json
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0181
+    kind: add
+    path: .ai/assets/skills/software-development-orchestrator/templates/external-task-completion.template.yaml
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0182
+    kind: add
+    path: .ai/assets/skills/software-development-orchestrator/templates/external-task-delegation.schema.yaml
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0183
+    kind: add
+    path: .ai/assets/skills/software-development-orchestrator/templates/external-task-dispatch.template.yaml
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0184
+    kind: add
+    path: .ai/assets/skills/software-development-orchestrator/templates/workflow-locator-template.yaml
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0185
+    kind: add
+    path: .ai/assets/skills/spec-author/references/authoring-playbook.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0186
+    kind: add
+    path: .ai/assets/skills/spec-author/references/output-contract.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0187
+    kind: add
+    path: .ai/assets/skills/spec-author/references/type-selection.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0188
+    kind: add
+    path: .ai/assets/skills/spec-author/skill.yaml
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0189
+    kind: add
+    path: .ai/assets/skills/spec-compliance-validator/references/spec-compliance-rules.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0190
+    kind: add
+    path: .ai/assets/skills/spec-compliance-validator/references/test-validation-steps.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0191
+    kind: add
+    path: .ai/assets/skills/spec-compliance-validator/references/validation-command-templates.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0192
+    kind: add
+    path: .ai/assets/skills/spec-compliance-validator/skill.yaml
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0193
+    kind: add
+    path: .ai/assets/skills/transitions/v0.6.0.yaml
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: ai-context-lifecycle-core
+  - id: clean-install-0194
+    kind: add
+    path: .ai/assets/sub-agent-role-prompts/README.MD
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0195
+    kind: add
+    path: .ai/assets/sub-agent-role-prompts/aggregate-code-review-sub-agent/references/review-playbook.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: dotnet-backend
+  - id: clean-install-0196
+    kind: add
+    path: .ai/assets/sub-agent-role-prompts/aggregate-code-review-sub-agent/references/review-prompt.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: dotnet-backend
+  - id: clean-install-0197
+    kind: add
+    path: .ai/assets/sub-agent-role-prompts/aggregate-code-review-sub-agent/sub-agent.yaml
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: dotnet-backend
+  - id: clean-install-0198
+    kind: add
+    path: .ai/assets/sub-agent-role-prompts/aggregate-sub-agent/references/implementation-playbook.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0199
+    kind: add
+    path: .ai/assets/sub-agent-role-prompts/aggregate-sub-agent/sub-agent.yaml
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0200
+    kind: add
+    path: .ai/assets/sub-agent-role-prompts/aggregate-test-sub-agent/references/test-generation-guidance.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0201
+    kind: add
+    path: .ai/assets/sub-agent-role-prompts/aggregate-test-sub-agent/references/test-playbook.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0202
+    kind: add
+    path: .ai/assets/sub-agent-role-prompts/aggregate-test-sub-agent/sub-agent.yaml
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0203
+    kind: add
+    path: .ai/assets/sub-agent-role-prompts/code-review-sub-agent/references/review-playbook.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: dotnet-backend
+  - id: clean-install-0204
+    kind: add
+    path: .ai/assets/sub-agent-role-prompts/code-review-sub-agent/references/review-prompt.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: dotnet-backend
+  - id: clean-install-0205
+    kind: add
+    path: .ai/assets/sub-agent-role-prompts/code-review-sub-agent/sub-agent.yaml
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: dotnet-backend
+  - id: clean-install-0206
+    kind: add
+    path: .ai/assets/sub-agent-role-prompts/command-sub-agent/references/implementation-playbook.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0207
+    kind: add
+    path: .ai/assets/sub-agent-role-prompts/command-sub-agent/sub-agent.yaml
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0208
+    kind: add
+    path: .ai/assets/sub-agent-role-prompts/context-translator/references/translation-playbook.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: ai-context-lifecycle-core
+  - id: clean-install-0209
+    kind: add
+    path: .ai/assets/sub-agent-role-prompts/context-translator/sub-agent.yaml
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: ai-context-lifecycle-core
+  - id: clean-install-0210
+    kind: add
+    path: .ai/assets/sub-agent-role-prompts/controller-code-review-sub-agent/references/review-playbook.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: dotnet-backend
+  - id: clean-install-0211
+    kind: add
+    path: .ai/assets/sub-agent-role-prompts/controller-code-review-sub-agent/references/review-prompt.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: dotnet-backend
+  - id: clean-install-0212
+    kind: add
+    path: .ai/assets/sub-agent-role-prompts/controller-code-review-sub-agent/sub-agent.yaml
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: dotnet-backend
+  - id: clean-install-0213
+    kind: add
+    path: .ai/assets/sub-agent-role-prompts/controller-sub-agent/references/implementation-guidance.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0214
+    kind: add
+    path: .ai/assets/sub-agent-role-prompts/controller-sub-agent/sub-agent.yaml
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0215
+    kind: add
+    path: .ai/assets/sub-agent-role-prompts/controller-test-sub-agent/references/test-generation-guidance.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0216
+    kind: add
+    path: .ai/assets/sub-agent-role-prompts/controller-test-sub-agent/references/test-playbook.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0217
+    kind: add
+    path: .ai/assets/sub-agent-role-prompts/controller-test-sub-agent/sub-agent.yaml
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0218
+    kind: add
+    path: .ai/assets/sub-agent-role-prompts/evidence-report-synthesizer/references/evidence-report-synthesis-playbook.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0219
+    kind: add
+    path: .ai/assets/sub-agent-role-prompts/evidence-report-synthesizer/sub-agent.yaml
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0220
+    kind: add
+    path: .ai/assets/sub-agent-role-prompts/fixed-head-independent-auditor/references/fixed-head-independent-audit-playbook.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0221
+    kind: add
+    path: .ai/assets/sub-agent-role-prompts/fixed-head-independent-auditor/sub-agent.yaml
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0222
+    kind: add
+    path: .ai/assets/sub-agent-role-prompts/mechanical-evidence-worker/references/mechanical-evidence-playbook.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0223
+    kind: add
+    path: .ai/assets/sub-agent-role-prompts/mechanical-evidence-worker/sub-agent.yaml
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0224
+    kind: add
+    path: .ai/assets/sub-agent-role-prompts/mutation-testing-sub-agent/references/implementation-playbook.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0225
+    kind: add
+    path: .ai/assets/sub-agent-role-prompts/mutation-testing-sub-agent/sub-agent.yaml
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0226
+    kind: add
+    path: .ai/assets/sub-agent-role-prompts/outbox-sub-agent/references/implementation-playbook.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0227
+    kind: add
+    path: .ai/assets/sub-agent-role-prompts/outbox-sub-agent/sub-agent.yaml
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0228
+    kind: add
+    path: .ai/assets/sub-agent-role-prompts/problem-frame-sub-agent/references/authoring-playbook.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0229
+    kind: add
+    path: .ai/assets/sub-agent-role-prompts/problem-frame-sub-agent/sub-agent.yaml
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0230
+    kind: add
+    path: .ai/assets/sub-agent-role-prompts/profile-config-sub-agent/references/implementation-playbook.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0231
+    kind: add
+    path: .ai/assets/sub-agent-role-prompts/profile-config-sub-agent/sub-agent.yaml
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0232
+    kind: add
+    path: .ai/assets/sub-agent-role-prompts/query-sub-agent/references/implementation-playbook.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0233
+    kind: add
+    path: .ai/assets/sub-agent-role-prompts/query-sub-agent/sub-agent.yaml
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0234
+    kind: add
+    path: .ai/assets/sub-agent-role-prompts/reactor-code-review-sub-agent/references/review-playbook.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: dotnet-backend
+  - id: clean-install-0235
+    kind: add
+    path: .ai/assets/sub-agent-role-prompts/reactor-code-review-sub-agent/references/review-prompt.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: dotnet-backend
+  - id: clean-install-0236
+    kind: add
+    path: .ai/assets/sub-agent-role-prompts/reactor-code-review-sub-agent/sub-agent.yaml
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: dotnet-backend
+  - id: clean-install-0237
+    kind: add
+    path: .ai/assets/sub-agent-role-prompts/reactor-sub-agent/references/implementation-playbook.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0238
+    kind: add
+    path: .ai/assets/sub-agent-role-prompts/reactor-sub-agent/sub-agent.yaml
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0239
+    kind: add
+    path: .ai/assets/sub-agent-role-prompts/reactor-test-sub-agent/references/test-generation-guidance.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0240
+    kind: add
+    path: .ai/assets/sub-agent-role-prompts/reactor-test-sub-agent/references/test-playbook.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0241
+    kind: add
+    path: .ai/assets/sub-agent-role-prompts/reactor-test-sub-agent/sub-agent.yaml
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0242
+    kind: add
+    path: .ai/assets/sub-agent-role-prompts/reconciliation-worker/references/reconciliation-playbook.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0243
+    kind: add
+    path: .ai/assets/sub-agent-role-prompts/reconciliation-worker/sub-agent.yaml
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0244
+    kind: add
+    path: .ai/assets/sub-agent-role-prompts/semantic-governance-analyst/references/semantic-governance-analysis-playbook.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0245
+    kind: add
+    path: .ai/assets/sub-agent-role-prompts/semantic-governance-analyst/sub-agent.yaml
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0246
+    kind: add
+    path: .ai/assets/sub-agent-role-prompts/usecase-test-sub-agent/references/test-generation-guidance.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0247
+    kind: add
+    path: .ai/assets/sub-agent-role-prompts/usecase-test-sub-agent/references/test-playbook.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0248
+    kind: add
+    path: .ai/assets/sub-agent-role-prompts/usecase-test-sub-agent/sub-agent.yaml
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0249
+    kind: add
+    path: .ai/assets/tech-stacks/README.MD
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0250
+    kind: add
+    path: .ai/assets/tech-stacks/dotnet-backend/README.MD
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: dotnet-backend
+  - id: clean-install-0251
+    kind: add
+    path: .ai/assets/tech-stacks/dotnet-backend/engineering-rule-catalog.yaml
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: dotnet-backend
+  - id: clean-install-0252
+    kind: add
+    path: .ai/assets/tech-stacks/dotnet-backend/examples/aggregate/Plan.cs
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: dotnet-backend
+  - id: clean-install-0253
+    kind: add
+    path: .ai/assets/tech-stacks/dotnet-backend/examples/aggregate/PlanEvents.cs
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: dotnet-backend
+  - id: clean-install-0254
+    kind: add
+    path: .ai/assets/tech-stacks/dotnet-backend/examples/aggregate/PlanId.cs
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: dotnet-backend
+  - id: clean-install-0255
+    kind: add
+    path: .ai/assets/tech-stacks/dotnet-backend/examples/aggregate/Project.cs
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: dotnet-backend
+  - id: clean-install-0256
+    kind: add
+    path: .ai/assets/tech-stacks/dotnet-backend/examples/aggregate/ProjectId.cs
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: dotnet-backend
+  - id: clean-install-0257
+    kind: add
+    path: .ai/assets/tech-stacks/dotnet-backend/examples/aggregate/ProjectName.cs
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: dotnet-backend
+  - id: clean-install-0258
+    kind: add
+    path: .ai/assets/tech-stacks/dotnet-backend/examples/aggregate/README.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: dotnet-backend
+  - id: clean-install-0259
+    kind: add
+    path: .ai/assets/tech-stacks/dotnet-backend/examples/aggregate/TagEvents.cs
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: dotnet-backend
+  - id: clean-install-0260
+    kind: add
+    path: .ai/assets/tech-stacks/dotnet-backend/examples/aggregate/TagId.cs
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: dotnet-backend
+  - id: clean-install-0261
+    kind: add
+    path: .ai/assets/tech-stacks/dotnet-backend/examples/aggregate/TaskId.cs
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: dotnet-backend
+  - id: clean-install-0262
+    kind: add
+    path: .ai/assets/tech-stacks/dotnet-backend/examples/aspnet-core/InMemoryRepositoryConfig.cs
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: dotnet-backend
+  - id: clean-install-0263
+    kind: add
+    path: .ai/assets/tech-stacks/dotnet-backend/examples/aspnet-core/OutboxRepositoryConfig.cs
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: dotnet-backend
+  - id: clean-install-0264
+    kind: add
+    path: .ai/assets/tech-stacks/dotnet-backend/examples/aspnet-core/Program.cs
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: dotnet-backend
+  - id: clean-install-0265
+    kind: add
+    path: .ai/assets/tech-stacks/dotnet-backend/examples/aspnet-core/README.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: dotnet-backend
+  - id: clean-install-0266
+    kind: add
+    path: .ai/assets/tech-stacks/dotnet-backend/examples/aspnet-core/UseCaseConfiguration.cs
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: dotnet-backend
+  - id: clean-install-0267
+    kind: add
+    path: .ai/assets/tech-stacks/dotnet-backend/examples/aspnet-core/appsettings.InMemory.json
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: dotnet-backend
+  - id: clean-install-0268
+    kind: add
+    path: .ai/assets/tech-stacks/dotnet-backend/examples/aspnet-core/appsettings.Outbox.json
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: dotnet-backend
+  - id: clean-install-0269
+    kind: add
+    path: .ai/assets/tech-stacks/dotnet-backend/examples/aspnet-core/appsettings.TestInMemory.json
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: dotnet-backend
+  - id: clean-install-0270
+    kind: add
+    path: .ai/assets/tech-stacks/dotnet-backend/examples/aspnet-core/appsettings.TestOutbox.json
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: dotnet-backend
+  - id: clean-install-0271
+    kind: add
+    path: .ai/assets/tech-stacks/dotnet-backend/examples/aspnet-core/appsettings.json
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: dotnet-backend
+  - id: clean-install-0272
+    kind: add
+    path: .ai/assets/tech-stacks/dotnet-backend/examples/bdd-gherkin-example/README.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: dotnet-backend
+  - id: clean-install-0273
+    kind: add
+    path: .ai/assets/tech-stacks/dotnet-backend/examples/bdd-gherkin-example/aggregate-outbox-repository.feature
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: dotnet-backend
+  - id: clean-install-0274
+    kind: add
+    path: .ai/assets/tech-stacks/dotnet-backend/examples/bdd-gherkin-example/complete-usecase-with-rules.feature
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: dotnet-backend
+  - id: clean-install-0275
+    kind: add
+    path: .ai/assets/tech-stacks/dotnet-backend/examples/bdd-gherkin-example/create-task-usecase.feature
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: dotnet-backend
+  - id: clean-install-0276
+    kind: add
+    path: .ai/assets/tech-stacks/dotnet-backend/examples/bdd-gherkin-example/rule-design-before-after.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: dotnet-backend
+  - id: clean-install-0277
+    kind: add
+    path: .ai/assets/tech-stacks/dotnet-backend/examples/bdd-gherkin-example/rule-migration-guide.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: dotnet-backend
+  - id: clean-install-0278
+    kind: add
+    path: .ai/assets/tech-stacks/dotnet-backend/examples/bdd-given-when-then-example/AggregateOutboxRepositoryTests.cs
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: dotnet-backend
+  - id: clean-install-0279
+    kind: add
+    path: .ai/assets/tech-stacks/dotnet-backend/examples/bdd-given-when-then-example/CompleteUseCaseRuleTests.cs
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: dotnet-backend
+  - id: clean-install-0280
+    kind: add
+    path: .ai/assets/tech-stacks/dotnet-backend/examples/bdd-given-when-then-example/README.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: dotnet-backend
+  - id: clean-install-0281
+    kind: add
+    path: .ai/assets/tech-stacks/dotnet-backend/examples/bdd-given-when-then-example/rule-design-before-after.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: dotnet-backend
+  - id: clean-install-0282
+    kind: add
+    path: .ai/assets/tech-stacks/dotnet-backend/examples/bdd-given-when-then-example/rule-migration-guide.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: dotnet-backend
+  - id: clean-install-0283
+    kind: add
+    path: .ai/assets/tech-stacks/dotnet-backend/examples/contract/CONTRACT-GUIDE.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: dotnet-backend
+  - id: clean-install-0284
+    kind: add
+    path: .ai/assets/tech-stacks/dotnet-backend/examples/contract/README.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: dotnet-backend
+  - id: clean-install-0285
+    kind: add
+    path: .ai/assets/tech-stacks/dotnet-backend/examples/contract/aggregate-contract-example.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: dotnet-backend
+  - id: clean-install-0286
+    kind: add
+    path: .ai/assets/tech-stacks/dotnet-backend/examples/contract/usecase-contract-example.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: dotnet-backend
+  - id: clean-install-0287
+    kind: add
+    path: .ai/assets/tech-stacks/dotnet-backend/examples/contract/value-object-contract-example.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: dotnet-backend
+  - id: clean-install-0288
+    kind: add
+    path: .ai/assets/tech-stacks/dotnet-backend/examples/controller/CreateTaskController.cs
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: dotnet-backend
+  - id: clean-install-0289
+    kind: add
+    path: .ai/assets/tech-stacks/dotnet-backend/examples/controller/CreateTaskRequest.cs
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: dotnet-backend
+  - id: clean-install-0290
+    kind: add
+    path: .ai/assets/tech-stacks/dotnet-backend/examples/controller/CreateTaskResponse.cs
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: dotnet-backend
+  - id: clean-install-0291
+    kind: add
+    path: .ai/assets/tech-stacks/dotnet-backend/examples/controller/README.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: dotnet-backend
+  - id: clean-install-0292
+    kind: add
+    path: .ai/assets/tech-stacks/dotnet-backend/examples/dto/PlanDto.cs
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: dotnet-backend
+  - id: clean-install-0293
+    kind: add
+    path: .ai/assets/tech-stacks/dotnet-backend/examples/dto/ProjectDto.cs
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: dotnet-backend
+  - id: clean-install-0294
+    kind: add
+    path: .ai/assets/tech-stacks/dotnet-backend/examples/dto/README.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: dotnet-backend
+  - id: clean-install-0295
+    kind: add
+    path: .ai/assets/tech-stacks/dotnet-backend/examples/dto/TaskDto.cs
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: dotnet-backend
+  - id: clean-install-0296
+    kind: add
+    path: .ai/assets/tech-stacks/dotnet-backend/examples/evidence-manifest.yaml
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: dotnet-backend
+  - id: clean-install-0297
+    kind: add
+    path: .ai/assets/tech-stacks/dotnet-backend/examples/evidence-schema.yaml
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: dotnet-backend
+  - id: clean-install-0298
+    kind: add
+    path: .ai/assets/tech-stacks/dotnet-backend/examples/generation-templates/README.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: dotnet-backend
+  - id: clean-install-0299
+    kind: add
+    path: .ai/assets/tech-stacks/dotnet-backend/examples/generation-templates/base-test-classes.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: dotnet-backend
+  - id: clean-install-0300
+    kind: add
+    path: .ai/assets/tech-stacks/dotnet-backend/examples/generation-templates/complex-aggregate-spec.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: dotnet-backend
+  - id: clean-install-0301
+    kind: add
+    path: .ai/assets/tech-stacks/dotnet-backend/examples/generation-templates/local-utils.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: dotnet-backend
+  - id: clean-install-0302
+    kind: add
+    path: .ai/assets/tech-stacks/dotnet-backend/examples/generation-templates/reactor-full.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: dotnet-backend
+  - id: clean-install-0303
+    kind: add
+    path: .ai/assets/tech-stacks/dotnet-backend/examples/generation-templates/test-case-full.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: dotnet-backend
+  - id: clean-install-0304
+    kind: add
+    path: .ai/assets/tech-stacks/dotnet-backend/examples/generation-templates/test-suites.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: dotnet-backend
+  - id: clean-install-0305
+    kind: add
+    path: .ai/assets/tech-stacks/dotnet-backend/examples/inquiry-archive/EfFindCardsByTagIdInquiry.cs
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: dotnet-backend
+  - id: clean-install-0306
+    kind: add
+    path: .ai/assets/tech-stacks/dotnet-backend/examples/inquiry-archive/EfUserArchive.cs
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: dotnet-backend
+  - id: clean-install-0307
+    kind: add
+    path: .ai/assets/tech-stacks/dotnet-backend/examples/inquiry-archive/EsFindCardsByTagIdInquiry.cs
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: dotnet-backend
+  - id: clean-install-0308
+    kind: add
+    path: .ai/assets/tech-stacks/dotnet-backend/examples/inquiry-archive/FindCardsByTagIdInquiry.cs
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: dotnet-backend
+  - id: clean-install-0309
+    kind: add
+    path: .ai/assets/tech-stacks/dotnet-backend/examples/inquiry-archive/InquiryContracts.cs
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: dotnet-backend
+  - id: clean-install-0310
+    kind: add
+    path: .ai/assets/tech-stacks/dotnet-backend/examples/inquiry-archive/README.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: dotnet-backend
+  - id: clean-install-0311
+    kind: add
+    path: .ai/assets/tech-stacks/dotnet-backend/examples/inquiry-archive/USAGE-GUIDE.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: dotnet-backend
+  - id: clean-install-0312
+    kind: add
+    path: .ai/assets/tech-stacks/dotnet-backend/examples/inquiry-archive/UserArchive.cs
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: dotnet-backend
+  - id: clean-install-0313
+    kind: add
+    path: .ai/assets/tech-stacks/dotnet-backend/examples/inquiry-archive/UserDbContext.cs
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: dotnet-backend
+  - id: clean-install-0314
+    kind: add
+    path: .ai/assets/tech-stacks/dotnet-backend/examples/mapper/PlanMapper.cs
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: dotnet-backend
+  - id: clean-install-0315
+    kind: add
+    path: .ai/assets/tech-stacks/dotnet-backend/examples/mapper/README.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: dotnet-backend
+  - id: clean-install-0316
+    kind: add
+    path: .ai/assets/tech-stacks/dotnet-backend/examples/mapper/TaskMapper.cs
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: dotnet-backend
+  - id: clean-install-0317
+    kind: add
+    path: .ai/assets/tech-stacks/dotnet-backend/examples/nuget/Directory.Packages.props
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: dotnet-backend
+  - id: clean-install-0318
+    kind: add
+    path: .ai/assets/tech-stacks/dotnet-backend/examples/outbox/BootstrapConfig.cs
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: dotnet-backend
+  - id: clean-install-0319
+    kind: add
+    path: .ai/assets/tech-stacks/dotnet-backend/examples/outbox/DataSourceConfig.cs
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: dotnet-backend
+  - id: clean-install-0320
+    kind: add
+    path: .ai/assets/tech-stacks/dotnet-backend/examples/outbox/OUTBOX-TEST-CONFIGURATION.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: dotnet-backend
+  - id: clean-install-0321
+    kind: add
+    path: .ai/assets/tech-stacks/dotnet-backend/examples/outbox/OutboxContracts.cs
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: dotnet-backend
+  - id: clean-install-0322
+    kind: add
+    path: .ai/assets/tech-stacks/dotnet-backend/examples/outbox/PlanData.cs
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: dotnet-backend
+  - id: clean-install-0323
+    kind: add
+    path: .ai/assets/tech-stacks/dotnet-backend/examples/outbox/PlanDbContext.cs
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: dotnet-backend
+  - id: clean-install-0324
+    kind: add
+    path: .ai/assets/tech-stacks/dotnet-backend/examples/outbox/PlanOutboxMapper.cs
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: dotnet-backend
+  - id: clean-install-0325
+    kind: add
+    path: .ai/assets/tech-stacks/dotnet-backend/examples/outbox/ProjectData.cs
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: dotnet-backend
+  - id: clean-install-0326
+    kind: add
+    path: .ai/assets/tech-stacks/dotnet-backend/examples/outbox/ProjectOutboxMapper.cs
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: dotnet-backend
+  - id: clean-install-0327
+    kind: add
+    path: .ai/assets/tech-stacks/dotnet-backend/examples/outbox/README.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: dotnet-backend
+  - id: clean-install-0328
+    kind: add
+    path: .ai/assets/tech-stacks/dotnet-backend/examples/outbox/RepositoryConfig.cs
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: dotnet-backend
+  - id: clean-install-0329
+    kind: add
+    path: .ai/assets/tech-stacks/dotnet-backend/examples/outbox/TaskData.cs
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: dotnet-backend
+  - id: clean-install-0330
+    kind: add
+    path: .ai/assets/tech-stacks/dotnet-backend/examples/outbox/TaskOutboxMapper.cs
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: dotnet-backend
+  - id: clean-install-0331
+    kind: add
+    path: .ai/assets/tech-stacks/dotnet-backend/examples/placeholder-disposition.yaml
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: dotnet-backend
+  - id: clean-install-0332
+    kind: add
+    path: .ai/assets/tech-stacks/dotnet-backend/examples/profile-configs/event-architecture-reference.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: dotnet-backend
+  - id: clean-install-0333
+    kind: add
+    path: .ai/assets/tech-stacks/dotnet-backend/examples/profile-configs/inmemory-profile-config.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: dotnet-backend
+  - id: clean-install-0334
+    kind: add
+    path: .ai/assets/tech-stacks/dotnet-backend/examples/profile-configs/outbox-profile-config.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: dotnet-backend
+  - id: clean-install-0335
+    kind: add
+    path: .ai/assets/tech-stacks/dotnet-backend/examples/projection/AllTagsProjection.cs
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: dotnet-backend
+  - id: clean-install-0336
+    kind: add
+    path: .ai/assets/tech-stacks/dotnet-backend/examples/projection/EfAllTagsProjection.cs
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: dotnet-backend
+  - id: clean-install-0337
+    kind: add
+    path: .ai/assets/tech-stacks/dotnet-backend/examples/projection/EfPlanDtosProjection.cs
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: dotnet-backend
+  - id: clean-install-0338
+    kind: add
+    path: .ai/assets/tech-stacks/dotnet-backend/examples/projection/EfTasksByDateProjection.cs
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: dotnet-backend
+  - id: clean-install-0339
+    kind: add
+    path: .ai/assets/tech-stacks/dotnet-backend/examples/projection/EfTasksDueTodayProjection.cs
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: dotnet-backend
+  - id: clean-install-0340
+    kind: add
+    path: .ai/assets/tech-stacks/dotnet-backend/examples/projection/PlanDtosProjection.cs
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: dotnet-backend
+  - id: clean-install-0341
+    kind: add
+    path: .ai/assets/tech-stacks/dotnet-backend/examples/projection/ProjectionDtos.cs
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: dotnet-backend
+  - id: clean-install-0342
+    kind: add
+    path: .ai/assets/tech-stacks/dotnet-backend/examples/projection/ProjectionModels.cs
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: dotnet-backend
+  - id: clean-install-0343
+    kind: add
+    path: .ai/assets/tech-stacks/dotnet-backend/examples/projection/README.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: dotnet-backend
+  - id: clean-install-0344
+    kind: add
+    path: .ai/assets/tech-stacks/dotnet-backend/examples/projection/ReadModelDbContext.cs
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: dotnet-backend
+  - id: clean-install-0345
+    kind: add
+    path: .ai/assets/tech-stacks/dotnet-backend/examples/projection/TasksByDateProjection.cs
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: dotnet-backend
+  - id: clean-install-0346
+    kind: add
+    path: .ai/assets/tech-stacks/dotnet-backend/examples/projection/TasksDueTodayProjection.cs
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: dotnet-backend
+  - id: clean-install-0347
+    kind: add
+    path: .ai/assets/tech-stacks/dotnet-backend/examples/projection/TasksSortedByDeadlineProjection.cs
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: dotnet-backend
+  - id: clean-install-0348
+    kind: add
+    path: .ai/assets/tech-stacks/dotnet-backend/examples/reference/README.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: dotnet-backend
+  - id: clean-install-0349
+    kind: add
+    path: .ai/assets/tech-stacks/dotnet-backend/examples/reference/bdd-gwt-test-template.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: dotnet-backend
+  - id: clean-install-0350
+    kind: add
+    path: .ai/assets/tech-stacks/dotnet-backend/examples/reference/nuget-dependencies.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: dotnet-backend
+  - id: clean-install-0351
+    kind: add
+    path: .ai/assets/tech-stacks/dotnet-backend/examples/reference/reactor-pattern-guide.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: dotnet-backend
+  - id: clean-install-0352
+    kind: add
+    path: .ai/assets/tech-stacks/dotnet-backend/examples/use-case-injection/README.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: dotnet-backend
+  - id: clean-install-0353
+    kind: add
+    path: .ai/assets/tech-stacks/dotnet-backend/examples/usecase/AssignTagUseCase.cs
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: dotnet-backend
+  - id: clean-install-0354
+    kind: add
+    path: .ai/assets/tech-stacks/dotnet-backend/examples/usecase/AssignTagUseCaseContract.cs
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: dotnet-backend
+  - id: clean-install-0355
+    kind: add
+    path: .ai/assets/tech-stacks/dotnet-backend/examples/usecase/CreatePlanUseCase.cs
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: dotnet-backend
+  - id: clean-install-0356
+    kind: add
+    path: .ai/assets/tech-stacks/dotnet-backend/examples/usecase/CreatePlanUseCaseContract.cs
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: dotnet-backend
+  - id: clean-install-0357
+    kind: add
+    path: .ai/assets/tech-stacks/dotnet-backend/examples/usecase/CreateTaskUseCase.cs
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: dotnet-backend
+  - id: clean-install-0358
+    kind: add
+    path: .ai/assets/tech-stacks/dotnet-backend/examples/usecase/CreateTaskUseCaseContract.cs
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: dotnet-backend
+  - id: clean-install-0359
+    kind: add
+    path: .ai/assets/tech-stacks/dotnet-backend/examples/usecase/DeleteTaskUseCase.cs
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: dotnet-backend
+  - id: clean-install-0360
+    kind: add
+    path: .ai/assets/tech-stacks/dotnet-backend/examples/usecase/DeleteTaskUseCaseContract.cs
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: dotnet-backend
+  - id: clean-install-0361
+    kind: add
+    path: .ai/assets/tech-stacks/dotnet-backend/examples/usecase/GetPlanUseCase.cs
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: dotnet-backend
+  - id: clean-install-0362
+    kind: add
+    path: .ai/assets/tech-stacks/dotnet-backend/examples/usecase/GetPlanUseCaseContract.cs
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: dotnet-backend
+  - id: clean-install-0363
+    kind: add
+    path: .ai/assets/tech-stacks/dotnet-backend/examples/usecase/GetPlansUseCase.cs
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: dotnet-backend
+  - id: clean-install-0364
+    kind: add
+    path: .ai/assets/tech-stacks/dotnet-backend/examples/usecase/GetPlansUseCaseContract.cs
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: dotnet-backend
+  - id: clean-install-0365
+    kind: add
+    path: .ai/assets/tech-stacks/dotnet-backend/examples/usecase/GetTasksByDateUseCase.cs
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: dotnet-backend
+  - id: clean-install-0366
+    kind: add
+    path: .ai/assets/tech-stacks/dotnet-backend/examples/usecase/GetTasksByDateUseCaseContract.cs
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: dotnet-backend
+  - id: clean-install-0367
+    kind: add
+    path: .ai/assets/tech-stacks/dotnet-backend/examples/usecase/README.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: dotnet-backend
+  - id: clean-install-0368
+    kind: add
+    path: .ai/assets/tech-stacks/dotnet-backend/examples/usecase/RenameTaskUseCase.cs
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: dotnet-backend
+  - id: clean-install-0369
+    kind: add
+    path: .ai/assets/tech-stacks/dotnet-backend/examples/usecase/RenameTaskUseCaseContract.cs
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: dotnet-backend
+  - id: clean-install-0370
+    kind: add
+    path: .ai/assets/tech-stacks/dotnet-backend/examples/usecase/UseCaseContracts.cs
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: dotnet-backend
+  - id: clean-install-0371
+    kind: add
+    path: .ai/assets/tech-stacks/dotnet-backend/references/BUILDING-BLOCKS-CLASS-INDEX.MD
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: dotnet-backend
+  - id: clean-install-0372
+    kind: add
+    path: .ai/assets/tech-stacks/dotnet-backend/references/CODE-REVIEW-INDEX.MD
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: dotnet-backend
+  - id: clean-install-0373
+    kind: add
+    path: .ai/assets/tech-stacks/dotnet-backend/references/CODE-TEMPLATES.MD
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: dotnet-backend
+  - id: clean-install-0374
+    kind: add
+    path: .ai/assets/tech-stacks/dotnet-backend/references/COMMON-PITFALLS.MD
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: dotnet-backend
+  - id: clean-install-0375
+    kind: add
+    path: .ai/assets/tech-stacks/dotnet-backend/references/ENGINEERING-IDENTITY-BINDINGS.MD
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: dotnet-backend
+  - id: clean-install-0376
+    kind: add
+    path: .ai/assets/tech-stacks/dotnet-backend/references/FAILURE-CASES.MD
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: dotnet-backend
+  - id: clean-install-0377
+    kind: add
+    path: .ai/assets/tech-stacks/dotnet-backend/references/rationale/generic-repository-only-rationale.MD
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: dotnet-backend
+  - id: clean-install-0378
+    kind: add
+    path: .ai/assets/tech-stacks/dotnet-backend/references/rationale/profile-based-testing-rationale.MD
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: dotnet-backend
+  - id: clean-install-0379
+    kind: add
+    path: .ai/assets/tech-stacks/dotnet-backend/references/rationale/query-side-layering-rationale.MD
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: dotnet-backend
+  - id: clean-install-0380
+    kind: add
+    path: .ai/assets/tech-stacks/dotnet-backend/references/rationale/rest-api-resource-path-rationale.MD
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: dotnet-backend
+  - id: clean-install-0381
+    kind: add
+    path: .ai/assets/tech-stacks/dotnet-backend/shared/architecture-config.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: dotnet-backend
+  - id: clean-install-0382
+    kind: add
+    path: .ai/assets/tech-stacks/dotnet-backend/shared/code-review-checklist.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: dotnet-backend
+  - id: clean-install-0383
+    kind: add
+    path: .ai/assets/tech-stacks/dotnet-backend/shared/common-rules.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: dotnet-backend
+  - id: clean-install-0384
+    kind: add
+    path: .ai/assets/tech-stacks/dotnet-backend/shared/domain-rules.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: dotnet-backend
+  - id: clean-install-0385
+    kind: add
+    path: .ai/assets/tech-stacks/dotnet-backend/shared/dto-conventions.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: dotnet-backend
+  - id: clean-install-0386
+    kind: add
+    path: .ai/assets/tech-stacks/dotnet-backend/shared/testing-standards.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: dotnet-backend
+  - id: clean-install-0387
+    kind: add
+    path: .ai/assets/tech-stacks/dotnet-backend/shared/testing-strategy.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: dotnet-backend
+  - id: clean-install-0388
+    kind: add
+    path: .ai/assets/tech-stacks/dotnet-backend/source-includes/domain/EsAggregateRoot.cs
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: dotnet-backend
+  - id: clean-install-0389
+    kind: add
+    path: .ai/assets/tech-stacks/dotnet-backend/source-includes/domain/IAggregateRoot.cs
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: dotnet-backend
+  - id: clean-install-0390
+    kind: add
+    path: .ai/assets/tech-stacks/dotnet-backend/source-includes/domain/IDomainEntity.cs
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: dotnet-backend
+  - id: clean-install-0391
+    kind: add
+    path: .ai/assets/tech-stacks/dotnet-backend/source-includes/domain/IDomainEvent.cs
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: dotnet-backend
+  - id: clean-install-0392
+    kind: add
+    path: .ai/assets/tech-stacks/dotnet-backend/source-includes/domain/README.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: dotnet-backend
+  - id: clean-install-0393
+    kind: add
+    path: .ai/assets/tech-stacks/dotnet-backend/source-includes/evidence-manifest.yaml
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: dotnet-backend
+  - id: clean-install-0394
+    kind: add
+    path: .ai/assets/tech-stacks/dotnet-backend/standards/ASPNET-CORE-CONFIGURATION-CHECKLIST.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: dotnet-backend
+  - id: clean-install-0395
+    kind: add
+    path: .ai/assets/tech-stacks/dotnet-backend/standards/BUILDING-BLOCKS-RECONSTRUCTION-CONTRACT.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: dotnet-backend
+  - id: clean-install-0396
+    kind: add
+    path: .ai/assets/tech-stacks/dotnet-backend/standards/CODE-REVIEW-CHECKLIST.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: dotnet-backend
+  - id: clean-install-0397
+    kind: add
+    path: .ai/assets/tech-stacks/dotnet-backend/standards/DESIGN-BY-CONTRACT.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: dotnet-backend
+  - id: clean-install-0398
+    kind: add
+    path: .ai/assets/tech-stacks/dotnet-backend/standards/USECASE-COMMAND-HANDLER-RELATIONSHIP.MD
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: dotnet-backend
+  - id: clean-install-0399
+    kind: add
+    path: .ai/assets/tech-stacks/dotnet-backend/standards/anti-patterns.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: dotnet-backend
+  - id: clean-install-0400
+    kind: add
+    path: .ai/assets/tech-stacks/dotnet-backend/standards/best-practices.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: dotnet-backend
+  - id: clean-install-0401
+    kind: add
+    path: .ai/assets/tech-stacks/dotnet-backend/standards/coding-guide.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: dotnet-backend
+  - id: clean-install-0402
+    kind: add
+    path: .ai/assets/tech-stacks/dotnet-backend/standards/coding-standards.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: dotnet-backend
+  - id: clean-install-0403
+    kind: add
+    path: .ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/aggregate-standards.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: dotnet-backend
+  - id: clean-install-0404
+    kind: add
+    path: .ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/archive-standards.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: dotnet-backend
+  - id: clean-install-0405
+    kind: add
+    path: .ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/controller-standards.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: dotnet-backend
+  - id: clean-install-0406
+    kind: add
+    path: .ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/mapper-standards.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: dotnet-backend
+  - id: clean-install-0407
+    kind: add
+    path: .ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/profile-configuration-standards.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: dotnet-backend
+  - id: clean-install-0408
+    kind: add
+    path: .ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/projection-standards.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: dotnet-backend
+  - id: clean-install-0409
+    kind: add
+    path: .ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/reactor-standards.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: dotnet-backend
+  - id: clean-install-0410
+    kind: add
+    path: .ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/repository-standards.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: dotnet-backend
+  - id: clean-install-0411
+    kind: add
+    path: .ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/test-standards.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: dotnet-backend
+  - id: clean-install-0412
+    kind: add
+    path: .ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/usecase-standards.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: dotnet-backend
+  - id: clean-install-0413
+    kind: add
+    path: .ai/assets/tech-stacks/dotnet-backend/standards/project-structure.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: dotnet-backend
+  - id: clean-install-0414
+    kind: add
+    path: .ai/assets/tech-stacks/dotnet-backend/templates/application-properties-templates.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: dotnet-backend
+  - id: clean-install-0415
+    kind: add
+    path: .ai/assets/tech-stacks/dotnet-backend/templates/profile-isolated-configurations.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: dotnet-backend
+  - id: clean-install-0416
+    kind: add
+    path: .ai/assets/tech-stacks/dotnet-backend/tooling/on-demand-mechanical-validation/README.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: dotnet-backend
+  - id: clean-install-0417
+    kind: add
+    path: .ai/assets/tech-stacks/dotnet-backend/tooling/on-demand-mechanical-validation/diagnostic-mapping.yaml
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: dotnet-backend
+  - id: clean-install-0418
+    kind: add
+    path: .ai/assets/tech-stacks/dotnet-backend/tooling/on-demand-mechanical-validation/provider-contract.schema.yaml
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: dotnet-backend
+  - id: clean-install-0419
+    kind: add
+    path: .ai/assets/tech-stacks/dotnet-backend/tooling/on-demand-mechanical-validation/provider-contract.yaml
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: dotnet-backend
+  - id: clean-install-0420
+    kind: add
+    path: .ai/assets/tech-stacks/dotnet-backend/tooling/on-demand-mechanical-validation/recipe-manifest.yaml
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: dotnet-backend
+  - id: clean-install-0421
+    kind: add
+    path: .ai/assets/tech-stacks/dotnet-backend/tooling/on-demand-mechanical-validation/recipes/analyzer-project.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: dotnet-backend
+  - id: clean-install-0422
+    kind: add
+    path: .ai/assets/tech-stacks/dotnet-backend/tooling/on-demand-mechanical-validation/recipes/analyzer-severity.editorconfig.snippet
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: dotnet-backend
+  - id: clean-install-0423
+    kind: add
+    path: .ai/assets/tech-stacks/dotnet-backend/tooling/on-demand-mechanical-validation/recipes/projection-registration-test.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: dotnet-backend
+  - id: clean-install-0424
+    kind: add
+    path: .ai/assets/tech-stacks/dotnet-backend/tooling/on-demand-mechanical-validation/templates/code-fix-decision.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: dotnet-backend
+  - id: clean-install-0425
+    kind: add
+    path: .ai/assets/tech-stacks/dotnet-backend/tooling/on-demand-mechanical-validation/templates/minimal-diagnostic-analyzer-test.cs.template
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: dotnet-backend
+  - id: clean-install-0426
+    kind: add
+    path: .ai/assets/tech-stacks/dotnet-backend/tooling/on-demand-mechanical-validation/templates/minimal-diagnostic-analyzer.cs.template
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: dotnet-backend
+  - id: clean-install-0427
+    kind: add
+    path: .ai/assets/tech-stacks/dotnet-backend/tooling/on-demand-mechanical-validation/templates/provider-selection.template.yaml
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: dotnet-backend
+  - id: clean-install-0428
+    kind: add
+    path: .ai/assets/templates/README.MD
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0429
+    kind: add
+    path: .ai/assets/templates/command-template.yaml
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0430
+    kind: add
+    path: .ai/assets/templates/prompt-package-template.yaml
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0431
+    kind: add
+    path: .ai/assets/templates/skill-template.yaml
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0432
+    kind: add
+    path: .ai/assets/templates/sub-agent-role-prompt-template.yaml
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0433
+    kind: add
+    path: .ai/scripts/README.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: ai-context-lifecycle-core
+  - id: clean-install-0434
+    kind: add
+    path: .ai/scripts/ai_context_cli_routing.py
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: ai-context-lifecycle-core
+  - id: clean-install-0435
+    kind: add
+    path: .ai/scripts/ai_context_effective_rules.py
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: ai-context-lifecycle-core
+  - id: clean-install-0436
+    kind: add
+    path: .ai/scripts/ai_context_multi_hop_upgrade.py
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: ai-context-lifecycle-core
+  - id: clean-install-0437
+    kind: add
+    path: .ai/scripts/ai_context_package_apply.py
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: ai-context-lifecycle-core
+  - id: clean-install-0438
+    kind: add
+    path: .ai/scripts/ai_context_package_identity.py
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: ai-context-lifecycle-core
+  - id: clean-install-0439
+    kind: add
+    path: .ai/scripts/ai_context_package_validation.py
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0440
+    kind: add
+    path: .ai/scripts/ai_context_target_provenance.py
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: ai-context-lifecycle-core
+  - id: clean-install-0441
+    kind: add
+    path: .ai/scripts/ai_context_upgrade_routes.py
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: ai-context-lifecycle-core
+  - id: clean-install-0442
+    kind: add
+    path: .ai/scripts/check-all.sh
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0443
+    kind: add
+    path: .ai/scripts/check-coding-standards.sh
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0444
+    kind: add
+    path: .ai/scripts/check-data-class-annotations.sh
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0445
+    kind: add
+    path: .ai/scripts/check-dockerfile-csproj-copy-sync.ps1
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0446
+    kind: add
+    path: .ai/scripts/check-domain-events-compliance.sh
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0447
+    kind: add
+    path: .ai/scripts/check-dotnet-config.sh
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0448
+    kind: add
+    path: .ai/scripts/check-framework-api-compliance.sh
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0449
+    kind: add
+    path: .ai/scripts/check-mutation-coverage.sh
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0450
+    kind: add
+    path: .ai/scripts/check-prompt-portability.sh
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0451
+    kind: add
+    path: .ai/scripts/check-spec-compliance.sh
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0452
+    kind: add
+    path: .ai/scripts/check-test-compliance.sh
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0453
+    kind: add
+    path: .ai/scripts/check-test-di-compliance.sh
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0454
+    kind: add
+    path: .ai/scripts/code-review.sh
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: dotnet-backend
+  - id: clean-install-0455
+    kind: add
+    path: .ai/scripts/plan-ai-context-package-apply.py
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: ai-context-lifecycle-core
+  - id: clean-install-0456
+    kind: add
+    path: .ai/scripts/plan-ai-context-upgrade.py
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: ai-context-lifecycle-core
+  - id: clean-install-0457
+    kind: add
+    path: .ai/scripts/python-entrypoints.json
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0458
+    kind: add
+    path: .ai/scripts/python_prerequisites.py
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0459
+    kind: add
+    path: .ai/scripts/resolve-effective-rule-packet.py
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: ai-context-lifecycle-core
+  - id: clean-install-0460
+    kind: add
+    path: .ai/scripts/run-python-entrypoint.ps1
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0461
+    kind: add
+    path: .ai/scripts/run-python-entrypoint.sh
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0462
+    kind: add
+    path: .ai/scripts/shell-assets.yaml
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0463
+    kind: add
+    path: .ai/scripts/test-profile-startup.sh
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0464
+    kind: add
+    path: .ai/scripts/validate-agent-execution-guardrails.py
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0465
+    kind: add
+    path: .ai/scripts/validate-ai-context-payload.py
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0466
+    kind: add
+    path: .ai/scripts/validate-ai-context-target.py
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: ai-context-lifecycle-core
+  - id: clean-install-0467
+    kind: add
+    path: .ai/scripts/validate-ai-context.py
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: ai-context-lifecycle-core
+  - id: clean-install-0468
+    kind: add
+    path: .ai/scripts/validate-assessment-artifacts.py
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0469
+    kind: add
+    path: .ai/scripts/validate-dependency-versions.py
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0470
+    kind: add
+    path: .ai/scripts/validate-dual-profile-config.sh
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0471
+    kind: add
+    path: .ai/scripts/validate-file-disposition-manifest.py
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0472
+    kind: add
+    path: .ai/scripts/validate-git-commits.py
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0473
+    kind: add
+    path: .ai/scripts/validate-shell-assets.py
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0474
+    kind: add
+    path: .ai/scripts/validate-software-development-orchestrator-acceptance.py
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0475
+    kind: add
+    path: .ai/scripts/validate-validation-lifecycle.py
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0476
+    kind: add
+    path: .ai/scripts/validate-workflow-artifacts.py
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0477
+    kind: add
+    path: .ai/scripts/validate-workflow-handoff.py
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0478
+    kind: add
+    path: .ai/scripts/validation-evidence.py
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0479
+    kind: add
+    path: .ai/scripts/validation-profile-registry.sh
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0480
+    kind: add
+    path: .ai/scripts/validation_process_supervisor.py
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0481
+    kind: add
+    path: .claude/agents/context-translator.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0482
+    kind: add
+    path: .claude/skills/README.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: ai-context-lifecycle-core
+  - id: clean-install-0483
+    kind: add
+    path: .claude/skills/ai-context-auditor/SKILL.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: ai-context-lifecycle-core
+  - id: clean-install-0484
+    kind: add
+    path: .claude/skills/ai-context-governance/SKILL.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: ai-context-lifecycle-core
+  - id: clean-install-0485
+    kind: add
+    path: .claude/skills/ai-context-init/SKILL.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: ai-context-lifecycle-core
+  - id: clean-install-0486
+    kind: add
+    path: .claude/skills/ai-context-upgrader/SKILL.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: ai-context-lifecycle-core
+  - id: clean-install-0487
+    kind: add
+    path: .claude/skills/bdd-gwt-test-designer/SKILL.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0488
+    kind: add
+    path: .claude/skills/code-reviewer/SKILL.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: dotnet-backend
+  - id: clean-install-0489
+    kind: add
+    path: .claude/skills/ddd-ca-hex-architect/SKILL.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0490
+    kind: add
+    path: .claude/skills/ddd-ca-hex-architect/agents/openai.yaml
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0491
+    kind: add
+    path: .claude/skills/dev-workflow/SKILL.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0492
+    kind: add
+    path: .claude/skills/local-change-implementer/SKILL.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0493
+    kind: add
+    path: .claude/skills/problem-frame-author/SKILL.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0494
+    kind: add
+    path: .claude/skills/repo-structure-sync/SKILL.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: ai-context-lifecycle-core
+  - id: clean-install-0495
+    kind: add
+    path: .claude/skills/requirement-author/SKILL.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0496
+    kind: add
+    path: .claude/skills/slice-implementer/SKILL.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0497
+    kind: add
+    path: .claude/skills/software-development-orchestrator/SKILL.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0498
+    kind: add
+    path: .claude/skills/spec-author/SKILL.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0499
+    kind: add
+    path: .claude/skills/spec-compliance-validator/SKILL.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0500
+    kind: add
+    path: .codex/agents/bounded-routine-worker.toml
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0501
+    kind: add
+    path: .codex/agents/context-translator.toml
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0502
+    kind: add
+    path: .codex/agents/evidence-report-synthesizer.toml
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0503
+    kind: add
+    path: .codex/agents/fixed-head-independent-auditor.toml
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0504
+    kind: add
+    path: .codex/agents/reconciliation-worker.toml
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0505
+    kind: add
+    path: .codex/agents/semantic-governance-analyst.toml
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0506
+    kind: add
+    path: .dev/INDEX.md
+    ownership: target-template
+    preconditions:
+    - destination_absent
+    component_id: ai-context-lifecycle-core
+  - id: clean-install-0507
+    kind: add
+    path: .dev/README.MD
+    ownership: target-template
+    preconditions:
+    - destination_absent
+    component_id: ai-context-lifecycle-core
+  - id: clean-install-0508
+    kind: add
+    path: .dev/TEAM-GIT-FLOW-RULES.MD
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0509
+    kind: add
+    path: .dev/adr/ADR-TEMPLATE.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0510
+    kind: add
+    path: .dev/adr/INDEX.md
+    ownership: target-template
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0511
+    kind: add
+    path: .dev/adr/README.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0512
+    kind: add
+    path: .dev/adr/WHEN-TO-CREATE-ADR.MD
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0513
+    kind: add
+    path: .dev/assessments/INDEX.MD
+    ownership: target-template
+    preconditions:
+    - destination_absent
+    component_id: ai-context-lifecycle-core
+  - id: clean-install-0514
+    kind: add
+    path: .dev/assessments/README.MD
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: ai-context-lifecycle-core
+  - id: clean-install-0515
+    kind: add
+    path: .dev/assessments/templates/assessment-locator-template.yaml
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: ai-context-lifecycle-core
+  - id: clean-install-0516
+    kind: add
+    path: .dev/backlog/INDEX.MD
+    ownership: target-template
+    preconditions:
+    - destination_absent
+    component_id: repo-backlog
+  - id: clean-install-0517
+    kind: add
+    path: .dev/backlog/README.MD
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: repo-backlog
+  - id: clean-install-0518
+    kind: add
+    path: .dev/domain-language/README.MD
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0519
+    kind: add
+    path: .dev/domain-language/templates/aggregate-vocabulary-template.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0520
+    kind: add
+    path: .dev/domain-language/templates/bounded-context-language-template.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0521
+    kind: add
+    path: .dev/domain-language/templates/domain-event-language-template.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0522
+    kind: add
+    path: .dev/guides/INDEX.MD
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0523
+    kind: add
+    path: .dev/guides/README.MD
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0524
+    kind: add
+    path: .dev/guides/ai-collaboration-guides/AI-ASSET-LOCATION-STRATEGY.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0525
+    kind: add
+    path: .dev/guides/ai-collaboration-guides/AI-COLLABORATION-WORKFLOW-GUIDE.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0526
+    kind: add
+    path: .dev/guides/ai-collaboration-guides/AI-CONTEXT-AUDITOR-SKILL-GUIDE.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: ai-context-lifecycle-core
+  - id: clean-install-0527
+    kind: add
+    path: .dev/guides/ai-collaboration-guides/AI-CONTEXT-GOVERNANCE-SKILL-GUIDE.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: ai-context-lifecycle-core
+  - id: clean-install-0528
+    kind: add
+    path: .dev/guides/ai-collaboration-guides/AI-CONTEXT-INIT-SKILL-GUIDE.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: ai-context-lifecycle-core
+  - id: clean-install-0529
+    kind: add
+    path: .dev/guides/ai-collaboration-guides/AI-CONTEXT-UPGRADER-SKILL-GUIDE.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: ai-context-lifecycle-core
+  - id: clean-install-0530
+    kind: add
+    path: .dev/guides/ai-collaboration-guides/AI-EXECUTION-PROVENANCE-AND-ATTRIBUTION-GUIDE.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0531
+    kind: add
+    path: .dev/guides/ai-collaboration-guides/AI-REFACTORING-SKILL-BOUNDARY-GUIDE.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0532
+    kind: add
+    path: .dev/guides/ai-collaboration-guides/AI-REFACTORING-SKILL-CONTRACTS.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0533
+    kind: add
+    path: .dev/guides/ai-collaboration-guides/AI-SKILL-GUIDE-STANDARDS.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0534
+    kind: add
+    path: .dev/guides/ai-collaboration-guides/BDD-GWT-TEST-DESIGNER-PAIR-GUIDE.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0535
+    kind: add
+    path: .dev/guides/ai-collaboration-guides/BDD-GWT-TEST-DESIGNER-SKILL-GUIDE.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0536
+    kind: add
+    path: .dev/guides/ai-collaboration-guides/DDD-CA-HEX-ARCHITECT-SKILL-GUIDE.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0537
+    kind: add
+    path: .dev/guides/ai-collaboration-guides/DEV-WORKFLOW-SKILL-GUIDE.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0538
+    kind: add
+    path: .dev/guides/ai-collaboration-guides/EXTERNAL-AI-DISCUSSION-ROUNDTRIP-GUIDE.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0539
+    kind: add
+    path: .dev/guides/ai-collaboration-guides/INDEX.MD
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0540
+    kind: add
+    path: .dev/guides/ai-collaboration-guides/LOCAL-CHANGE-IMPLEMENTER-SKILL-GUIDE.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0541
+    kind: add
+    path: .dev/guides/ai-collaboration-guides/LOCAL-RUNTIME-WRAPPER-GUIDE.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0542
+    kind: add
+    path: .dev/guides/ai-collaboration-guides/OPTIONAL-MINIMAL-WORKFLOW-MODE.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0543
+    kind: add
+    path: .dev/guides/ai-collaboration-guides/PROBLEM-FRAME-AUTHORING-GUIDE.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0544
+    kind: add
+    path: .dev/guides/ai-collaboration-guides/PYTHON-PREREQUISITE-DIAGNOSTICS-GUIDE.zh-TW.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0545
+    kind: add
+    path: .dev/guides/ai-collaboration-guides/README.MD
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0546
+    kind: add
+    path: .dev/guides/ai-collaboration-guides/REPO-STRUCTURE-SYNC-SKILL-GUIDE.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0547
+    kind: add
+    path: .dev/guides/ai-collaboration-guides/REQUIREMENT-AND-SPEC-DESIGNER-STRATEGY.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0548
+    kind: add
+    path: .dev/guides/ai-collaboration-guides/REQUIREMENT-DESIGNER-PROMPT-GUIDE.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0549
+    kind: add
+    path: .dev/guides/ai-collaboration-guides/SKILL-AND-SUB-AGENT-TAXONOMY-GUIDE.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0550
+    kind: add
+    path: .dev/guides/ai-collaboration-guides/SLICE-IMPLEMENTER-SKILL-GUIDE.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0551
+    kind: add
+    path: .dev/guides/ai-collaboration-guides/SOFTWARE-DEVELOPMENT-ORCHESTRATOR-SKILL-GUIDE.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0552
+    kind: add
+    path: .dev/guides/ai-collaboration-guides/SPEC-DESIGNER-PROMPT-GUIDE.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0553
+    kind: add
+    path: .dev/guides/design-guides/DATA-CLASS-STANDARDS.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0554
+    kind: add
+    path: .dev/guides/design-guides/FRAMEWORK-API-INTEGRATION-GUIDE.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0555
+    kind: add
+    path: .dev/guides/design-guides/INDEX.MD
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0556
+    kind: add
+    path: .dev/guides/design-guides/MULTI-STACK-CONTEXT-PLACEMENT-NOTES.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0557
+    kind: add
+    path: .dev/guides/design-guides/PROFILE-BASED-TESTING-GUIDE.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0558
+    kind: add
+    path: .dev/guides/design-guides/README.MD
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0559
+    kind: add
+    path: .dev/guides/design-guides/TEST-DATA-PREPARATION-GUIDE.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0560
+    kind: add
+    path: .dev/guides/implementation-guides/COMMON-MISTAKES-GUIDE.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0561
+    kind: add
+    path: .dev/guides/implementation-guides/COMPLETE-ASPNET-CORE-SETUP-GUIDE.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0562
+    kind: add
+    path: .dev/guides/implementation-guides/CORS-SETUP.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0563
+    kind: add
+    path: .dev/guides/implementation-guides/DATABASE-MIGRATION-GUIDE.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0564
+    kind: add
+    path: .dev/guides/implementation-guides/DEVELOPMENT-TOOLS-GUIDE.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0565
+    kind: add
+    path: .dev/guides/implementation-guides/DOCKER-RESTORE-CACHE-GUIDE.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0566
+    kind: add
+    path: .dev/guides/implementation-guides/DOTNET-DI-TEST-GUIDE.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0567
+    kind: add
+    path: .dev/guides/implementation-guides/DUAL-PROFILE-CONFIGURATION-GUIDE.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0568
+    kind: add
+    path: .dev/guides/implementation-guides/FAQ.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0569
+    kind: add
+    path: .dev/guides/implementation-guides/INDEX.MD
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0570
+    kind: add
+    path: .dev/guides/implementation-guides/NEW-PROJECT-TEST-SETUP-GUIDE.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0571
+    kind: add
+    path: .dev/guides/implementation-guides/PERSISTENCE-CONFIGURATION-GUIDE.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0572
+    kind: add
+    path: .dev/guides/implementation-guides/PREVENT-SERVICE-REGISTRATION-MISSING.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0573
+    kind: add
+    path: .dev/guides/implementation-guides/PROFILE-CONFIGURATION-COMPLEXITY-SOLUTION.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0574
+    kind: add
+    path: .dev/guides/implementation-guides/README.MD
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0575
+    kind: add
+    path: .dev/guides/implementation-guides/TEMPLATE-SYNC-GUIDE.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0576
+    kind: add
+    path: .dev/guides/implementation-guides/TEMPLATE-USAGE-GUIDE.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0577
+    kind: add
+    path: .dev/guides/implementation-guides/VERSION-PLACEHOLDER-GUIDE.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0578
+    kind: add
+    path: .dev/guides/implementation-guides/quick-setup.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0579
+    kind: add
+    path: .dev/guides/learning-guides/INDEX.MD
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0580
+    kind: add
+    path: .dev/guides/learning-guides/LEARNING-PATH.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0581
+    kind: add
+    path: .dev/guides/learning-guides/NEW-PROJECT-GUIDE.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0582
+    kind: add
+    path: .dev/guides/learning-guides/README.MD
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0583
+    kind: add
+    path: .dev/operations/CONTEXT-MAP-GUIDE.MD
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0584
+    kind: add
+    path: .dev/operations/EVENT-CATALOG-GUIDE.MD
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0585
+    kind: add
+    path: .dev/operations/MQ-TOPOLOGY-GUIDE.MD
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0586
+    kind: add
+    path: .dev/operations/README.MD
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0587
+    kind: add
+    path: .dev/operations/RUNBOOK-GUIDE.MD
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0588
+    kind: add
+    path: .dev/operations/runbooks/README.MD
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0589
+    kind: add
+    path: .dev/problem-frames/INDEX.md
+    ownership: target-template
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0590
+    kind: add
+    path: .dev/problem-frames/README.MD
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0591
+    kind: add
+    path: .dev/problem-frames/SEMANTICS.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0592
+    kind: add
+    path: .dev/problem-frames/templates/cbf-external-system/acceptance.yaml
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0593
+    kind: add
+    path: .dev/problem-frames/templates/cbf-external-system/controlled-domain/aggregate.yaml
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0594
+    kind: add
+    path: .dev/problem-frames/templates/cbf-external-system/frame.yaml
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0595
+    kind: add
+    path: .dev/problem-frames/templates/cbf-external-system/machine/machine.yaml
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0596
+    kind: add
+    path: .dev/problem-frames/templates/cbf-external-system/machine/use-case.yaml
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0597
+    kind: add
+    path: .dev/requirement/REQUIREMENT-GUIDE.MD
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0598
+    kind: add
+    path: .dev/specs/INDEX.MD
+    ownership: target-template
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0599
+    kind: add
+    path: .dev/specs/README.MD
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0600
+    kind: add
+    path: .dev/specs/SPEC-GUIDE.MD
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0601
+    kind: add
+    path: .dev/specs/SPEC-ORGANIZATION-GUIDE.MD
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0602
+    kind: add
+    path: .dev/specs/tests/GHERKIN-FEATURE-STORAGE-GUIDE.MD
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0603
+    kind: add
+    path: .dev/specs/tests/README.MD
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0604
+    kind: add
+    path: .dev/specs/tests/TEST-SPEC-GUIDE.MD
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0605
+    kind: add
+    path: .dev/specs/tests/cross-domain/README.MD
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0606
+    kind: add
+    path: .dev/specs/tests/e2e/README.MD
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0607
+    kind: add
+    path: .dev/standards/AI-CONTEXT-BOUNDARY.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: ai-context-lifecycle-core
+  - id: clean-install-0608
+    kind: add
+    path: .dev/standards/AI-CONTEXT-LANGUAGE-POLICY.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: ai-context-lifecycle-core
+  - id: clean-install-0609
+    kind: add
+    path: .dev/standards/AI-CONTEXT-OWNERSHIP.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: ai-context-lifecycle-core
+  - id: clean-install-0610
+    kind: add
+    path: .dev/standards/AI-CONTEXT-OWNERSHIP.yaml
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0611
+    kind: add
+    path: .dev/standards/AI-CONTEXT-VERSION-POLICY.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: ai-context-lifecycle-core
+  - id: clean-install-0612
+    kind: add
+    path: .dev/standards/ASSESSMENT-ARTIFACT-POLICY.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: ai-context-lifecycle-core
+  - id: clean-install-0613
+    kind: add
+    path: .dev/standards/DEPENDENCY-VERSION-CONSISTENCY-POLICY.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0614
+    kind: add
+    path: .dev/standards/GIT-COMMIT-POLICY.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0615
+    kind: add
+    path: .dev/standards/GIT-COMMIT-POLICY.yaml
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0616
+    kind: add
+    path: .dev/standards/INDEX.MD
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0617
+    kind: add
+    path: .dev/standards/README.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0618
+    kind: add
+    path: .dev/standards/TECHNOLOGY-SELECTION-POLICY.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0619
+    kind: add
+    path: .dev/standards/WORKFLOW-ARTIFACT-POLICY.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0620
+    kind: add
+    path: .dev/standards/WORKFLOW-GATE-POLICY.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0621
+    kind: add
+    path: .dev/standards/WORKFLOW-HANDOFF-POLICY.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0622
+    kind: add
+    path: .dev/standards/WORKFLOW-HANDOFF-POLICY.yaml
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0623
+    kind: add
+    path: .dev/standards/coding-standards/INDEX.MD
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0624
+    kind: add
+    path: .dev/standards/coding-standards/README.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0625
+    kind: add
+    path: .dev/standards/examples/INDEX.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0626
+    kind: add
+    path: .dev/standards/examples/README.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0627
+    kind: add
+    path: .dev/standards/rationale/INDEX.MD
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0628
+    kind: add
+    path: .dev/standards/rationale/README.MD
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0629
+    kind: add
+    path: .dev/standards/rationale/skill-sub-agent-boundary-rationale.MD
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0630
+    kind: add
+    path: .dev/standards/templates/INDEX.MD
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0631
+    kind: add
+    path: .dev/standards/templates/README.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0632
+    kind: add
+    path: .dev/workflows/INDEX.MD
+    ownership: target-template
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0633
+    kind: add
+    path: .dev/workflows/README.MD
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0634
+    kind: add
+    path: .editorconfig
+    ownership: target-template
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0635
+    kind: add
+    path: .gitattributes
+    ownership: target-template
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0636
+    kind: add
+    path: .github/agents/context-translator.agent.md
+    ownership: framework-managed
+    preconditions:
+    - destination_absent
+    component_id: software-development-core
+  - id: clean-install-0637
+    kind: add
+    path: AGENTS.md
+    ownership: target-template
+    preconditions:
+    - destination_absent
+    component_id: ai-context-lifecycle-core
+  - id: clean-install-0638
+    kind: add
+    path: CLAUDE.md
+    ownership: target-template
+    preconditions:
+    - destination_absent
+    component_id: ai-context-lifecycle-core
+  - id: clean-install-0639
+    kind: add
+    path: README.md
+    ownership: target-template
+    preconditions:
+    - destination_absent
+    component_id: ai-context-lifecycle-core
+sources:
+- version: 0.15.0
+  manifest_sha256: 516601a76f8d4100f8e26703288e8aba45dbea5f9b065d8d9ac3a5342586a0fc
+  operations:
+  - id: migration-0001
+    kind: replace
+    path: .ai/SUB-AGENT-SYSTEM.MD
+    ownership: framework-managed
+    component_id: ai-context-lifecycle-core
+    preconditions:
+    - current_sha256_equals_previous_release
+  - id: migration-0002
+    kind: replace
+    path: .ai/assets/skills/ai-context-auditor/skill.yaml
+    ownership: framework-managed
+    component_id: ai-context-lifecycle-core
+    preconditions:
+    - current_sha256_equals_previous_release
+  - id: migration-0003
+    kind: replace
+    path: .ai/scripts/check-all.sh
+    ownership: framework-managed
+    component_id: software-development-core
+    preconditions:
+    - current_sha256_equals_previous_release
+  - id: migration-0004
+    kind: replace
+    path: .ai/scripts/validate-agent-execution-guardrails.py
+    ownership: framework-managed
+    component_id: software-development-core
+    preconditions:
+    - current_sha256_equals_previous_release
+  - id: migration-0005
+    kind: replace
+    path: .ai/scripts/validation-evidence.py
+    ownership: framework-managed
+    component_id: software-development-core
+    preconditions:
+    - current_sha256_equals_previous_release
+  - id: migration-0006
+    kind: replace
+    path: .ai/scripts/validation-profile-registry.sh
+    ownership: framework-managed
+    component_id: software-development-core
+    preconditions:
+    - current_sha256_equals_previous_release
+safety:
+  dry_run_default: true
+  clean_worktree_required: true
+  starting_commit_required: true
+  abort_on_unacknowledged_reconciliation: true
+selection:
+  release_model: single-versioned-componentized-release
+  mandatory_components:
+  - software-development-core
+  - ai-context-lifecycle-core
+  profiles:
+  - dotnet-backend
+  providers:
+    repo-backlog:
+      enabled: false
+      preservation: preserve-existing-if-recorded

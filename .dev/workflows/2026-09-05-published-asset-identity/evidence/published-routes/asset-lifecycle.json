@@ -1,0 +1,66 @@
+{
+  "schema_version": "historical-published-asset-backfill/v1",
+  "source_matrix": ".dev/releases/v0.15.1/support-matrix.yaml",
+  "source_matrix_sha256": "83f984b38036975664ba85cce30524f829a597f3fbb4d009cc73049bc80a1fc4",
+  "historical_mutation": false,
+  "assets": [
+    {
+      "version": "v0.15.0",
+      "package_id": "ai-collaboration-framework-v0.15.0",
+      "release_id": "REL-v0.15.0",
+      "payload_fingerprint": "6c2bd24ef993c4ac122bce0c6bdd528c39e559fd47b0ec8b76ead80e4d8dc0e3",
+      "candidate": {
+        "state": "historical-candidate",
+        "archive_id": "sha256:d3d6e27154df567fef025990ef4c367a1cc98ec1316980a76eed6e2d1005fe11",
+        "build_commit": "8a03b4eda3a7697751bb3b8eac0ae3cd51f84e94",
+        "evidence_source": ".dev/releases/v0.15.1/route-assets/v0.15.0/ai-collaboration-framework-v0.15.0.zip"
+      },
+      "published": {
+        "state": "published",
+        "archive_id": "sha256:efd2509f6c869dcadfea7f58fcb942efa9f2c46ab7ae181f4160d47fd4112a92",
+        "build_commit": "5fedaceef7e18b4cdcde3cb665adcc97070db2df",
+        "provider_release_id": 377516146,
+        "provider_asset_id": 531585837,
+        "name": "ai-collaboration-framework-v0.15.0.zip",
+        "size": 1442078,
+        "digest": "sha256:efd2509f6c869dcadfea7f58fcb942efa9f2c46ab7ae181f4160d47fd4112a92",
+        "url": "https://github.com/YuChia-Wei/ai-collaboration-framework/releases/download/v0.15.0/ai-collaboration-framework-v0.15.0.zip",
+        "published_at": "2026-08-27T01:38:37Z",
+        "path": "route-assets/v0.15.0/ai-collaboration-framework-v0.15.0.zip",
+        "provider_readback": {
+          "path": "provider-readback/v0.15.0/release.json",
+          "sha256": "2e8bdc8a1a57c5144c786ff72b9eb748a625b49a0b397d0f8fc87b430621ae97"
+        }
+      }
+    },
+    {
+      "version": "v0.15.1",
+      "package_id": "ai-collaboration-framework-v0.15.1",
+      "release_id": "REL-v0.15.1",
+      "payload_fingerprint": "ef8f900a840e8869189b50b28a7735dcf279046665ebed3f89b18637f43b8017",
+      "candidate": {
+        "state": "historical-candidate",
+        "archive_id": "sha256:3b5c0483cbf7d8076d3bf9cdd2cfd6f1bac290726e5904a7fa3b29bbc4424c3e",
+        "build_commit": "cbd36d41be44e12fbc6031ec5c87b23ee5fccbc3",
+        "evidence_source": ".dev/releases/v0.15.1/route-assets/v0.15.1/ai-collaboration-framework-v0.15.1.zip"
+      },
+      "published": {
+        "state": "published",
+        "archive_id": "sha256:cbabde70a921eba8c59255fc2f414961c9aaab0151b08d27956071f8f1c066ca",
+        "build_commit": "f2b5fa7c13550efaeb65ab9fcaeb0403baa2a5af",
+        "provider_release_id": 378949833,
+        "provider_asset_id": 535086830,
+        "name": "ai-collaboration-framework-v0.15.1.zip",
+        "size": 1442933,
+        "digest": "sha256:cbabde70a921eba8c59255fc2f414961c9aaab0151b08d27956071f8f1c066ca",
+        "url": "https://github.com/YuChia-Wei/ai-collaboration-framework/releases/download/v0.15.1/ai-collaboration-framework-v0.15.1.zip",
+        "published_at": "2026-08-29T10:35:49Z",
+        "path": "route-assets/v0.15.1/ai-collaboration-framework-v0.15.1.zip",
+        "provider_readback": {
+          "path": "provider-readback/v0.15.1/release.json",
+          "sha256": "6287f0054014a4a1d184ad37a4f5ce8582c54170850e2d83db492f9d66891a68"
+        }
+      }
+    }
+  ]
+}

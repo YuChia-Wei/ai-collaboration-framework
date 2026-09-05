@@ -275,6 +275,11 @@ register_check release-state-tests \
     "release,tests" "release nightly-full" \
     ".ai/scripts/tests/test_ai_context_release_state.py .dev/releases" source-ai-context-version "python>=3.11 git" 90 cpu reuse-by-input source \
     "python .ai/scripts/tests/test_ai_context_release_state.py -v" source-release
+register_check release-asset-identity \
+    "Release Asset Identity Contract Tests" required \
+    "release,tests" "fast pr release nightly-full" \
+    ".ai/scripts/release_asset_identity.py .ai/scripts/manage-release-asset-identity.py .ai/scripts/ai_context_package.py .ai/scripts/ai_context_package_identity.py .ai/scripts/tests/test_release_asset_identity.py .github/workflows/package-candidate.yml .github/workflows/publish-release.yml" source-ai-context-version "python>=3.11 git" 60 cpu no-reuse source \
+    "python .ai/scripts/tests/test_release_asset_identity.py -v" source-release
 register_check release-preparation-tests \
     "AI Context Release Preparation Fail-Closed Tests" required \
     "release,tests" "release nightly-full" \
