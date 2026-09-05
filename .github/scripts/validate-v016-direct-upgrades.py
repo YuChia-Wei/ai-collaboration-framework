@@ -209,11 +209,17 @@ def approved_decision(packet, candidate, ledger, provenance):
 
 def reject_unchanged(label, operation, exception, pattern, target):
     before = snapshot(target)
+    transactions = target / ".git/ai-context-package-apply"
+    def transaction_evidence():
+        return {key: value for key, value in snapshot(transactions).items() if key != "transaction.lock"} if transactions.exists() else {}
+    before_transactions = transaction_evidence()
     try:
         operation()
     except exception as exc:
         require(re.search(pattern, str(exc), re.IGNORECASE), label + ": unexpected rejection reason: " + str(exc))
         require(snapshot(target) == before, label + ": protected target bytes changed")
+        require(transaction_evidence() == before_transactions,
+                label + ": transaction authority or evidence changed")
         return {"case": label, "outcome": "passed", "observed_rejection": type(exc).__name__,
                 "reason_pattern": pattern, "protected_state_sha256": sha(canonical(before))}
     raise RuntimeError(label + ": invalid state was accepted")
@@ -330,7 +336,7 @@ def record_validation(target, plan, apply, logs, provenance, candidate, ledger):
     failed_receipt = logs / "failed-target-validation.json"
     write_json(failed_receipt, make_receipt(failed_execution, failed_output))
     rejected = reject_unchanged("failed-target-validation-receipt", lambda: apply.record_target_validation_receipt(
-        target, plan["plan_sha256"], failed_receipt), apply.ApplyError, "execution evidence|execution.*passed", target)
+        target, plan["plan_sha256"], failed_receipt), apply.ApplyError, "does not record a passed profile execution", target)
     blocked_finalization = reject_unchanged("target-validator-disagreement", lambda: provenance.finalize_context(
         target, candidate, ledger, effective_state_candidate=state_candidate(candidate["source"]), effective_resolver_evidence=[EVIDENCE]),
         provenance.TargetValidationError, "target validation|target-validation", target)
@@ -400,7 +406,7 @@ def execute_case(origin, previous, incoming, output, customized, recovery, apply
         if recovery == "rollback":
             require(snapshot(target) == before, "rollback did not restore exact prestate")
             write_json(logs / "rollback.json", result)
-            return {"origin": origin, "case": label, "outcome": "passed", "transaction_id": plan["plan_sha256"], "recovery": "rolled-back", "prestate_sha256": sha(canonical(before)), "negative_evidence": negative}
+            return {"origin": origin, "case": label, "outcome": "passed", "transaction_id": plan["plan_sha256"], "recovery": "rolled-back", "prestate_sha256": sha(canonical(before)), "poststate_sha256": sha(canonical(snapshot(target))), "negative_evidence": negative}
     else:
         apply.apply_plan(plan, remediation_decision=decision)
     negative.append(reject_unchanged("missing-target-validation", lambda: provenance.finalize_context(
@@ -454,7 +460,8 @@ def main():
     require(output.is_relative_to(ROOT / ".dev/ai-context/local/validation") or os.environ.get("RUNNER_TEMP") and output.is_relative_to(Path(os.environ["RUNNER_TEMP"]).resolve()), "output must be declared ignored validation storage")
     require(not output.exists(), "fresh output directory required")
     output.mkdir(parents=True)
-    terminal = {"schema_version": "direct-upgrade-execution/v1", "subject_sha": args.subject_sha, "started_at": stamp(), "evidence_kind": "actual-isolated-target-execution", "cases": [], "outcome": "failed"}
+    terminal = {"schema_version": "direct-upgrade-execution/v1", "subject_sha": args.subject_sha, "started_at": stamp(), "evidence_kind": "actual-isolated-target-execution", "cases": [], "outcome": "failed",
+                "runner": {"path": Path(__file__).relative_to(ROOT).as_posix(), "sha256": sha(Path(__file__).read_bytes())}}
     started = time.monotonic()
     try:
         require(subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT, text=True).strip() == args.subject_sha, "source commit drift")

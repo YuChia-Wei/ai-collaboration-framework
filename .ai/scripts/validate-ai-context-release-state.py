@@ -21,6 +21,7 @@ guard_direct_entrypoint(".ai/scripts/validate-ai-context-release-state.py")
 
 import argparse
 import importlib.util
+import hashlib
 import json
 import os
 import re
@@ -516,6 +517,58 @@ def pending_terminal_issue_delivery(
     )
 
 
+def validate_direct_upgrade_execution(root, version, sources, matrix):
+    """Require actual isolated target evidence for every prospective direct origin."""
+    release_dir = root / ".dev/releases" / version
+    evidence_path = release_dir / "route-assets/actual/terminal.json"
+    try:
+        evidence = json.loads(evidence_path.read_bytes())
+    except (OSError, ValueError) as exc:
+        raise ReleaseStateError("actual direct upgrade terminal is missing or invalid") from exc
+    if (evidence.get("schema_version") != "direct-upgrade-execution/v1"
+            or evidence.get("evidence_kind") != "actual-isolated-target-execution"
+            or evidence.get("outcome") != "passed"):
+        raise ReleaseStateError("actual direct upgrade evidence must report passed execution")
+    archives = {edge["artifacts"]["archive"]["sha256"] for route in matrix["routes"] for edge in route["edges"] if edge["to_version"] == version}
+    if archives != {evidence.get("archive_sha256")}:
+        raise ReleaseStateError("actual upgrade archive differs from the direct route subject")
+    if evidence.get("package_source", {}).get("commit") != matrix["target"]["commit"]:
+        raise ReleaseStateError("actual upgrade package source differs from the matrix")
+    runner = evidence.get("runner", {})
+    path = runner.get("path")
+    if not isinstance(path, str) or not re.fullmatch(r"[.]github/scripts/[a-zA-Z0-9_-]+[.]py", path):
+        raise ReleaseStateError("actual upgrade runner path is invalid")
+    if hashlib.sha256((root / path).read_bytes()).hexdigest() != runner.get("sha256"):
+        raise ReleaseStateError("actual upgrade runner content differs from execution")
+    required_negatives = {"missing-origin-manifest", "tampered-origin-manifest", "origin-version-disagreement", "tampered-incoming-validator", "fault-injected-incoming-validator-disagreement", "ambiguous-provenance-authority", "unresolved-customization", "missing-owner-decision", "tampered-owner-decision", "missing-target-validation", "failed-target-validation-receipt", "target-validator-disagreement", "tampered-target-validation-receipt", "candidate-authority-disagreement"}
+    cases = evidence.get("cases")
+    if not isinstance(cases, list) or len(cases) != 3 * len(sources):
+        raise ReleaseStateError("actual upgrade matrix must contain three cases per origin")
+    for origin in sources:
+        selected = {case.get("case"): case for case in cases if case.get("origin") == origin}
+        labels = {origin + suffix for suffix in ("-pristine-resume", "-customized-none", "-customized-rollback")}
+        if set(selected) != labels or any(case.get("outcome") != "passed" for case in selected.values()):
+            raise ReleaseStateError("actual upgrade origin cases are incomplete or failed")
+        rollback = selected[origin + "-customized-rollback"]
+        if rollback.get("recovery") != "rolled-back" or rollback.get("prestate_sha256") != rollback.get("poststate_sha256"):
+            raise ReleaseStateError("actual upgrade rollback lacks exact restored prestate")
+        for suffix in ("-pristine-resume", "-customized-none"):
+            case = selected[origin + suffix]
+            final = case.get("finalization", {})
+            validation = case.get("target_validation", {})
+            if (final.get("status") != "finalized" or final.get("effective_rule_readiness", {}).get("action_ready") is not True
+                    or validation.get("outcome") != "passed" or validation.get("exit_code") != 0):
+                raise ReleaseStateError("actual upgrade requires passed target validation and finalized action readiness")
+            cutovers = case.get("semantic_cutovers", {})
+            if any(cutovers.get(key) != expected for key, expected in {"provider_component_selection": "preserved", "source_specific_managed_removals": "verified", "commit_grammar_adoption": "verified", "effective_rule_regeneration": "verified", "skill_retirement": "verified"}.items()):
+                raise ReleaseStateError("actual upgrade semantic cutover evidence is incomplete")
+        if not selected[origin + "-customized-none"]["semantic_cutovers"].get("target_customization_ids"):
+            raise ReleaseStateError("actual customized upgrade lacks retained semantic customization")
+        negative = selected[origin + "-pristine-resume"].get("negative_evidence", [])
+        if not required_negatives.issubset({item.get("case") for item in negative if item.get("outcome") == "passed"}):
+            raise ReleaseStateError("actual upgrade fail-closed boundary evidence is incomplete")
+
+
 def validate_retained_origin_route_evidence(
     root: Path,
     version: str,
@@ -625,6 +678,9 @@ def validate_retained_origin_route_evidence(
             raise ReleaseStateError(
                 f"{evidence_path}: route evidence differs from canonical resolver output"
             )
+
+    if direct_required:
+        validate_direct_upgrade_execution(root, version, automatic_upgrade_sources, matrix)
 
 
 def validate_publication_authority(version: str, distribution: dict[str, Any]) -> None:

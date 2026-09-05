@@ -109,6 +109,13 @@ drift blocks promotion and requires a newly validated candidate. All incoming
 matrix edges targeting the release must bind the admitted ZIP digest and payload
 fingerprint. Issue 272 supplies the actual v0.16.0 direct edge evidence.
 
+Retain its actual terminal at `route-assets/actual/terminal.json`. The source
+gate binds the admitted route archive and package source to that terminal and
+checks the executing runner digest, all three origin case sets, finalized target
+readiness, semantic reconciliation, negative boundaries and exact rollback
+prestate. A changed runner requires fresh actual evidence. Candidate CI repeats
+the actual v0.16.0 matrix against the unchanged staged archive.
+
 Candidate CI and tag publication stage the tracked admitted assets unchanged.
 Before publishing a draft, and again afterward, the hosted workflow downloads
 the assets, compares exact bytes, and reads back provider name, size, SHA-256,

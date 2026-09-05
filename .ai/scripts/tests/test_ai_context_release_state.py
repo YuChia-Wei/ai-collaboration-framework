@@ -942,13 +942,70 @@ class AiContextReleaseStateGwtTests(unittest.TestCase):
             for origin in origins:
                 (evidence / f"{origin}-to-{version}.json").write_bytes(STATE.canonical_route_json({"route_kind": "direct"}).encode("utf-8"))
             sources = ["v0.6.0", "v0.9.0", "v0.15.1"]
-            with patch.object(STATE, "load_route_matrix", return_value=(matrix, b"matrix")), patch.object(STATE, "resolve_upgrade_route", return_value={"route_kind": "direct"}):
+            with patch.object(STATE, "load_route_matrix", return_value=(matrix, b"matrix")), patch.object(STATE, "resolve_upgrade_route", return_value={"route_kind": "direct"}), patch.object(STATE, "validate_direct_upgrade_execution") as actual_gate:
                 STATE.validate_retained_origin_route_evidence(root, version, artifacts, sources)
+                actual_gate.assert_called_once_with(root, version, sources, matrix)
                 with self.assertRaisesRegex(STATE.ReleaseStateError, "automatic sources"):
                     STATE.validate_retained_origin_route_evidence(root, version, artifacts, ["v0.6.0", "v0.9.0", "v0.15.0"])
             with patch.object(STATE, "load_route_matrix", return_value=(matrix, b"matrix")), patch.object(STATE, "resolve_upgrade_route", return_value={"route_kind": "orchestrated-multi-hop"}):
                 with self.assertRaisesRegex(STATE.ReleaseStateError, "one direct edge"):
                     STATE.validate_retained_origin_route_evidence(root, version, artifacts, sources)
+
+    def test_gwt_031c_given_direct_execution_claims_when_identity_or_completion_disagrees_then_rejected(self):
+        sources = ["v0.6.0", "v0.9.0", "v0.15.1"]
+        version = "v0.16.0"
+        digest = "b" * 64
+        matrix = {"target": {"commit": SHA}, "routes": [{"edges": [{"to_version": version,
+            "artifacts": {"archive": {"sha256": digest}}}]}]}
+        negatives = ["missing-origin-manifest", "tampered-origin-manifest", "origin-version-disagreement",
+            "tampered-incoming-validator", "fault-injected-incoming-validator-disagreement", "ambiguous-provenance-authority",
+            "unresolved-customization", "missing-owner-decision", "tampered-owner-decision", "missing-target-validation",
+            "failed-target-validation-receipt", "target-validator-disagreement", "tampered-target-validation-receipt", "candidate-authority-disagreement"]
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            runner = root / ".github/scripts/fixture.py"
+            runner.parent.mkdir(parents=True)
+            runner.write_bytes(b"# source-gate unit fixture only\n")
+            path = root / ".dev/releases/v0.16.0/route-assets/actual/terminal.json"
+            path.parent.mkdir(parents=True)
+            evidence = {"schema_version": "direct-upgrade-execution/v1", "evidence_kind": "actual-isolated-target-execution",
+                "outcome": "passed", "archive_sha256": digest, "package_source": {"commit": SHA},
+                "runner": {"path": runner.relative_to(root).as_posix(), "sha256": STATE.hashlib.sha256(runner.read_bytes()).hexdigest()}, "cases": []}
+            for origin in sources:
+                for suffix in ("-pristine-resume", "-customized-none", "-customized-rollback"):
+                    evidence["cases"].append({"origin": origin, "case": origin + suffix, "outcome": "passed",
+                        "recovery": "rolled-back" if suffix.endswith("rollback") else "resume" if suffix.endswith("resume") else "none",
+                        "prestate_sha256": digest, "poststate_sha256": digest,
+                        "finalization": {"status": "finalized", "effective_rule_readiness": {"action_ready": True}},
+                        "target_validation": {"outcome": "passed", "exit_code": 0},
+                        "semantic_cutovers": {"provider_component_selection": "preserved", "source_specific_managed_removals": "verified",
+                            "commit_grammar_adoption": "verified", "effective_rule_regeneration": "verified", "skill_retirement": "verified",
+                            "target_customization_ids": ["fixture-contract"]},
+                        "negative_evidence": [{"case": name, "outcome": "passed"} for name in negatives]})
+            with self.assertRaisesRegex(STATE.ReleaseStateError, "missing or invalid"):
+                STATE.validate_direct_upgrade_execution(root, version, sources, matrix)
+            path.write_text(json.dumps(evidence), encoding="utf-8")
+            STATE.validate_direct_upgrade_execution(root, version, sources, matrix)
+            changes = [
+                ("synthetic", lambda item: item.update(evidence_kind="synthetic-test")),
+                ("failed", lambda item: item.update(outcome="failed")),
+                ("archive", lambda item: item.update(archive_sha256="c" * 64)),
+                ("source", lambda item: item["package_source"].update(commit="c" * 40)),
+                ("runner", lambda item: item["runner"].update(sha256="c" * 64)),
+                ("missing case", lambda item: item["cases"].pop()),
+                ("rollback", lambda item: item["cases"][2].update(poststate_sha256="c" * 64)),
+                ("target failed", lambda item: item["cases"][0]["target_validation"].update(exit_code=17)),
+                ("not ready", lambda item: item["cases"][0]["finalization"]["effective_rule_readiness"].update(action_ready=False)),
+                ("no customization", lambda item: item["cases"][1]["semantic_cutovers"].update(target_customization_ids=[])),
+                ("missing negative", lambda item: item["cases"][0].update(negative_evidence=[])),
+            ]
+            for label, change in changes:
+                with self.subTest(label=label):
+                    altered = json.loads(json.dumps(evidence))
+                    change(altered)
+                    path.write_text(json.dumps(altered), encoding="utf-8")
+                    with self.assertRaises(STATE.ReleaseStateError):
+                        STATE.validate_direct_upgrade_execution(root, version, sources, matrix)
 
     def test_gwt_031a_given_repository_v014_route_evidence_when_validated_then_published_routes_pass(self):
         version = "v0.14.0"

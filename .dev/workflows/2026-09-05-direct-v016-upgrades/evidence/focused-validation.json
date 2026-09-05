@@ -43,5 +43,13 @@
       "outcome": "passed",
       "duration_seconds": 60.855
     }
+  },
+  "repair_3": {
+    "retained_route_and_actual_gate": {
+      "tests": 4,
+      "outcome": "passed"
+    },
+    "runner_and_workflow_syntax": "passed",
+    "actual_execution": "attempt-4-pending"
   }
 }
