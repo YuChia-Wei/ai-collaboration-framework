@@ -211,8 +211,14 @@
     "report_sha256": "125e609e2e6ba98d8732330f20532cce764f60e044471bcc85a17913e57ae078"
   },
   "limits": [
-    "Final immutable integration review and provider admission remain pending.",
+    "Independent integration review passed; current provider delivery and source-candidate admission remain pending.",
     "Actual execution used isolated representative targets.",
     "Issue 280 public archive acceptance is deferred until publication."
-  ]
+  ],
+  "integration_review": {
+    "path": ".dev/workflows/2026-09-05-direct-v016-upgrades/evidence/integration-audit-1.json",
+    "sha256": "3b4e29725dbdc05731683af1861cb18c09611302503d3ef8229ad9564e7466e0",
+    "head_sha": "940afee97cc318af15f698b0321011aadc49c7ef",
+    "outcome": "passed"
+  }
 }

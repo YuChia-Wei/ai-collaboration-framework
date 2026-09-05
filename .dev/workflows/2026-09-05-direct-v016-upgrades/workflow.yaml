@@ -4,13 +4,13 @@ lifecycle_contract: '1.0'
 workflow_kind: ai-context-maintenance
 title: Execute three retained direct upgrades to v0.16.0 for Issue 272
 owner_skill: ai-context-governance
-status: in_progress
-current_phase: verification
+status: completed
+current_phase: completed
 branch: codex/2026-09-05-direct-v016-upgrades
 base_branch: main
 artifact_root: .dev/workflows/2026-09-05-direct-v016-upgrades
 entrypoint: workflow-plan.md
 created_at: '2026-09-05T18:00:49+08:00'
-updated_at: '2026-09-05T20:37:35+08:00'
+updated_at: '2026-09-05T20:47:33+08:00'
 template_source: .ai/assets/skills/ai-context-governance/templates/workflow-locator-template.yaml
 template_version: 1.2.0

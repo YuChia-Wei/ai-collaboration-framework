@@ -15,4 +15,4 @@ Historical execution source: `5ca4fcfe9d00d556dab21db9a90bd575cc01c25a`.
 
 Machine projection SHA-256: `125e609e2e6ba98d8732330f20532cce764f60e044471bcc85a17913e57ae078`.
 
-AC7 is deferred: local admission is available; final integration review and provider admission remain pending. Public archive acceptance belongs to Issue 280.
+AC7 is deferred: local admission is available; independent integration review passed, while current provider delivery and source-candidate admission remain pending. Public archive acceptance belongs to Issue 280.

@@ -8,11 +8,11 @@
 - `branch`: `codex/2026-09-05-direct-v016-upgrades`
 - `base_branch`: `main`
 - `branch_segment`: `1`
-- `status`: `in_progress`
-- `current_phase`: `verification`
+- `status`: `completed`
+- `current_phase`: `completed`
 - `artifact_root`: `.dev/workflows/2026-09-05-direct-v016-upgrades`
 - `created_at`: `2026-09-05T18:00:49+08:00`
-- `updated_at`: `2026-09-05T20:37:35+08:00`
+- `updated_at`: `2026-09-05T20:47:33+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md`
 - `template_version`: `1.2.0`
 
@@ -46,7 +46,7 @@ Focused checks precede immutable long-running execution. Long-running validation
 
 ## Branch Lifecycle And Resume
 
-Use merge-commit topology for the coupled migration contracts, exact archive admission and retained execution evidence, preserving preparation commits as provenance. The current checkpoint is UPG006-release-readiness: final immutable integration review. The first actual attempt failed before target execution because source-only release identity tools were included in the payload; that archive was not admitted. Independent runner review found three blocking gaps. Repair 1 addressed them and retained the original findings and failure. Attempt 2 was authorized after focused validation of those material repairs, on a new immutable commit and fresh candidate archive. Later attempts and their outcomes are retained below.
+Use merge-commit topology for the coupled migration contracts, exact archive admission and retained execution evidence, preserving preparation commits as provenance. The local workflow is completed. Provider delivery and current source-candidate admission are the next external gates. The first actual attempt failed before target execution because source-only release identity tools were included in the payload; that archive was not admitted. Independent runner review found three blocking gaps. Repair 1 addressed them and retained the original findings and failure. Attempt 2 was authorized after focused validation of those material repairs, on a new immutable commit and fresh candidate archive. Later attempts and their outcomes are retained below.
 
 ## Bounded Actual Execution Retry 3
 
@@ -117,4 +117,12 @@ The release's route-assets directory retains captured logs in Git and disables t
 
 Regression retry 2 passed 179 tests with two platform skips out of 181 total. The skips cover Windows casefold-fixture construction and symlink privilege; neither counts as passed. A raw-log recount corrected the executor's initial package-validation overcount. All earlier failed, blocked and interrupted attempts remain retained. The owner supplied an explicit faster fixture root; the classified release-state suite passed 40 tests there in 1.144 seconds. No speedup comparison or redirection of storage-semantic tests is claimed.
 
-Local direct-upgrade implementation acceptance is established. Final fixed-subject integration review remains the current task. Release source status stays planned, Issue 272 remains open, and Issue 280 remains open in Verification pending public archive acceptance. No tag, publication or provider terminal mutation is claimed.
+Local direct-upgrade implementation acceptance is established. Independent integration review at `940afee97cc318af15f698b0321011aadc49c7ef` passed with zero blocking findings. Release source status stays planned, Issue 272 remains open, and Issue 280 remains open in Verification pending public archive acceptance. No tag, publication or provider terminal mutation is claimed.
+
+## Local Workflow Completion And Provider Handoff
+
+All three workflow-owned tasks are completed. Independent integration review passed at `940afee97cc318af15f698b0321011aadc49c7ef`; its report is retained in `evidence/integration-audit-1.json`. The content subject is `e254c2c1023fa2879dc01efac288e763c45507f0ed74caa7ddbe82330398094e`. Earlier expensive execution is reused only with identical runner, archive and retained evidence bytes. The final metadata commit requires a fresh review-subject binding; it does not claim that the earlier audit ran on a later commit.
+
+AC7 remains deferred at the provider boundary. A PR must declare its Issue disposition and obtain fresh required hosted contexts, review binding and terminal admission. The current release remains planned. Candidate validation may accept the final Included Work issue through an exact live open-PR terminal declaration; after merge it requires the Issue to be closed/completed. Evaluate and set validated source state only after the applicable acceptance and live provider prerequisites are satisfied. Issue 280 remains open in Verification until the exact public archive is accepted. User-owned tag creation and publication remain separate decisions.
+
+This completion records local implementation and readiness evaluation. It does not claim push, PR creation, merge, Issue closure, validated source phase, tag creation or publication. No post-merge source evidence-sync commit is required merely to record later provider state.
