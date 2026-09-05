@@ -1,0 +1,92 @@
+schema_version: '1.0'
+contract_id: github-terminal-issue-closure
+repository: YuChia-Wei/ai-collaboration-framework
+validation_stage: declaration
+pull_request:
+  number: 288
+  head_sha: null
+  body: 'GitHub draft assets can use the same temporary `untagged-*` locator as their draft page. Publication
+    now accepts that exact owned locator with explicit draft permission while preserving tag, asset identity,
+    byte and public URL checks. Rejections identify the disagreeing field and retain the original provider
+    response; hosted evidence is retained separately for each run attempt.
+
+
+    The recovery policy binds the reviewed repair checkout separately from the original release tag, requires
+    actual draft and public byte verification, and checks retained build artifacts before an authorized
+    retry. The existing v0.16.0 tag and admitted archives remain unchanged. Actual publication acceptance
+    remains coordinated separately.
+
+
+    Validation: 20 asset/CLI regression tests and 12 workflow contract tests passed. Workflow artifact
+    validation passed. Synthetic tests verify failure boundaries and are not public release evidence.
+
+
+    Workflow: `2026-09-05-draft-publication-recovery`.
+
+
+    Execution record: workflow. Delivery grouping: one source automation repair. Selected topology: merge
+    commit, preserving the publication recovery decision boundary. Current-content independent review,
+    fresh hosted checks and live admission are required before merge.
+
+
+    Closes #287
+
+
+    Refs #280
+
+
+    Closure deferred for #280: the next terminal gate is actual v0.16.0 public-byte verification, successful
+    publication/finalization, and Issue/Project read-back, owned by this recovery task.
+
+    '
+  integration:
+    status: pending
+    topology: null
+    admitted_head_sha: null
+    integration_commit_sha: null
+    provider_read_back: false
+  review:
+    status: pending
+  required_check_contexts: []
+  hosted_checks: []
+issues:
+- number: 287
+  mode: terminal-close
+  work_authorization:
+    online_issue_bound: true
+    explicit_owner_approval: true
+  final_accepted_delivery: true
+  workflow:
+    scope_complete: true
+    tasks_complete: true
+    applicable_verification_complete: true
+  closing_keyword: Closes
+  closure_deferred_reason: null
+  next_terminal_gate_or_owner: null
+  read_back:
+    performed: false
+    integration_commit_sha: null
+    issue_state: null
+    issue_state_reason: null
+    project_status: null
+- number: 280
+  mode: deferred
+  work_authorization:
+    online_issue_bound: true
+    explicit_owner_approval: true
+  final_accepted_delivery: false
+  workflow:
+    scope_complete: false
+    tasks_complete: false
+    applicable_verification_complete: false
+  closing_keyword: null
+  closure_deferred_reason: Source implementation is integrated separately; public v0.16.0 acceptance remains
+    pending.
+  next_terminal_gate_or_owner: Owner-authorized recovery followed by actual public-byte comparison, successful
+    publication/finalization and Issue/Project read-back.
+  read_back:
+    performed: false
+    integration_commit_sha: null
+    issue_state: null
+    issue_state_reason: null
+    project_status: null
