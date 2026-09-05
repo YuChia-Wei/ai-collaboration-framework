@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Validate the activated v0.6 skill taxonomy and atomic compatibility transition."""
+"""Validate historical v0.6 activation and the current v0.16 retirement lifecycle."""
 
 from __future__ import annotations
 
@@ -18,6 +18,8 @@ guard_direct_entrypoint(".ai/scripts/validate-skill-transition.py")
 import argparse
 import hashlib
 import yaml
+
+from skill_identifier_lifecycle import RETIREMENT, load_retirement, resolve_identifier
 
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -250,35 +252,15 @@ def validate(root: Path) -> list[str]:
 
     current = set(EXPECTED_TRANSITIONS)
     candidates = {candidate for candidate, _ in EXPECTED_TRANSITIONS.values()}
-    for identifier, (candidate, _) in EXPECTED_TRANSITIONS.items():
-        compatibility_spec = root / ".ai/assets/skills" / identifier / "skill.yaml"
-        if not compatibility_spec.is_file():
-            errors.append(f"deprecated canonical compatibility entry is missing: {identifier}")
-        else:
-            compatibility = load_yaml(
-                root,
-                Path(".ai/assets/skills") / identifier / "skill.yaml",
-                errors,
-            )
-            if compatibility.get("status") != "deprecated":
-                errors.append(f"deprecated canonical entry has wrong status: {identifier}")
-            if compatibility.get("replacement") != candidate:
-                errors.append(f"deprecated canonical entry has wrong replacement: {identifier}")
-            if compatibility.get("removal_target") is not None:
-                errors.append(f"deprecated canonical entry scheduled removal: {identifier}")
-        for runtime_root in RUNTIME_ROOTS:
-            wrapper = root / runtime_root / identifier / "SKILL.md"
-            if not wrapper.is_file():
-                errors.append(
-                    f"deprecated runtime wrapper is missing: {runtime_root}/{identifier}"
-                )
-            elif "deprecated compatibility" not in wrapper.read_text(
-                encoding="utf-8"
-            ):
-                errors.append(
-                    f"deprecated runtime wrapper lacks compatibility marker: "
-                    f"{runtime_root}/{identifier}"
-                )
+    try:
+        load_retirement(root)
+    except (OSError, ValueError, yaml.YAMLError) as exc:
+        errors.append(f"{RETIREMENT}: {exc}")
+    for identifier in EXPECTED_TRANSITIONS:
+        for entry_root in (".ai/assets/skills", *RUNTIME_ROOTS):
+            directory = root / entry_root / identifier
+            if directory.exists() and any(path.is_file() for path in directory.rglob("*")):
+                errors.append(f"retired skill entry must be absent: {entry_root}/{identifier}")
     for identifier in candidates:
         active_spec = root / ".ai/assets/skills" / identifier / "skill.yaml"
         if not active_spec.is_file():
@@ -318,6 +300,8 @@ def validate(root: Path) -> list[str]:
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--root", type=Path, default=ROOT)
+    parser.add_argument("--identifier", help="Validate one explicit skill request")
+    parser.add_argument("--context", choices=("runtime", "historical"), default="runtime")
     args = parser.parse_args()
     errors = validate(args.root.resolve())
     if errors:
@@ -325,9 +309,17 @@ def main() -> int:
         for error in errors:
             print(f"- {error}")
         return 1
+    if args.identifier:
+        try:
+            result = resolve_identifier(args.root.resolve(), args.identifier, args.context)
+        except (OSError, ValueError, yaml.YAMLError) as exc:
+            print(f"Skill identifier validation failed: {exc}")
+            return 1
+        print(result["message"])
+        return 0 if result["accepted"] else 1
     print(
         "Skill transition validation passed: two active identifiers, two "
-        "deprecated compatibility entries, atomic activation, and retained "
+        "retired tombstones, historical atomic activation, and retained "
         "Terra model evidence."
     )
     return 0

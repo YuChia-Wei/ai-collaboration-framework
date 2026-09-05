@@ -59,6 +59,8 @@ properties:
       - forms-and-alias-values-do-not-overlap-another-record
       - alias-id-and-value-are-globally-unique
       - every-alias-has-an-explicit-deprecation-policy
+      - retired-aliases-require-replacement-and-removal-release
+      - retired-skill-aliases-match-the-retirement-transition
       - repository-and-public-product-remain-distinct-records
       - legacy-archive-records-are-not-active-current-identities
   bindings:

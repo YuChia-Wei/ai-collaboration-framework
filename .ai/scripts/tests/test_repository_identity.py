@@ -102,6 +102,10 @@ class SyntheticIdentityRepository:
                 sort_keys=False,
             ),
         )
+        self.write(
+            ".ai/assets/skills/transitions/v0.16.0.yaml",
+            (REPO_ROOT / ".ai/assets/skills/transitions/v0.16.0.yaml").read_text(encoding="utf-8"),
+        )
         self.write(REGISTRY_PATH, yaml.safe_dump(registry, sort_keys=False))
 
     def write_policy(

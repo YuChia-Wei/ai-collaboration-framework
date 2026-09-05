@@ -240,14 +240,14 @@ identity_records:
     aliases:
       - id: "dev-workflow"
         value: "dev-workflow"
-        status: "deprecated-compatible"
-        scope: "Thin compatibility skill alias."
+        status: "retired"
+        scope: "Retired skill identifier retained as historical evidence only."
         deprecation_policy:
-          mode: "compatibility"
+          mode: "retired"
           replacement: "skill.software-development-orchestrator"
-          removal_target: null
+          removal_target: "v0.16.0"
           historical_rewrite: false
-          notes: "Retain for existing callers and historical ownership; route new work to the canonical skill."
+          notes: "Preserve historical ownership; reject new alias requests with the canonical replacement."
     deprecation_policy:
       mode: "none"
       replacement: null
@@ -268,14 +268,14 @@ identity_records:
     aliases:
       - id: "repo-structure-sync"
         value: "repo-structure-sync"
-        status: "deprecated-compatible"
-        scope: "Thin compatibility skill alias."
+        status: "retired"
+        scope: "Retired skill identifier retained as historical evidence only."
         deprecation_policy:
-          mode: "compatibility"
+          mode: "retired"
           replacement: "skill.ai-context-init"
-          removal_target: null
+          removal_target: "v0.16.0"
           historical_rewrite: false
-          notes: "Retain for existing callers and historical ownership; route new initialization to the canonical skill."
+          notes: "Preserve historical ownership; reject new alias requests with the canonical replacement."
     deprecation_policy:
       mode: "none"
       replacement: null
@@ -362,9 +362,9 @@ consumer_contracts:
     path_glob: ".dev/releases/v*/release.yaml"
     release_identity_id: "release.framework"
     package_identity_policy_id: "public-package-identity-v1"
-  - id: "v0.6.0-skill-transition"
+  - id: "v0.16.0-skill-retirement"
     kind: "skill-transition"
-    path: ".ai/assets/skills/transitions/v0.6.0.yaml"
+    path: ".ai/assets/skills/transitions/v0.16.0.yaml"
     canonical_skill_ids:
       - "skill.software-development-orchestrator"
       - "skill.ai-context-init"
