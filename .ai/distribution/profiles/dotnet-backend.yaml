@@ -462,6 +462,8 @@ exclusions:
       - .ai/scripts/ai_context_package.py
       - .ai/scripts/ai_context_v015_validation.py
       - .ai/scripts/build-ai-context-package.py
+      - .ai/scripts/manage-release-asset-identity.py
+      - .ai/scripts/release_asset_identity.py
       - .ai/scripts/run-test-fixture-profile.py
       - .ai/scripts/test_fixture_runtime.py
       - .ai/scripts/test-fixture-classifications.json

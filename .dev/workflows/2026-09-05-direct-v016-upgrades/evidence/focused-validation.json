@@ -18,5 +18,30 @@
       }
     ]
   },
-  "actual_execution": "not-yet-run"
+  "actual_execution": "attempt-1-failed-before-target-execution; retained in actual-attempt-1.json",
+  "repair_1": {
+    "package_exclusion_regression": {
+      "tests": 1,
+      "outcome": "passed"
+    },
+    "git_sha_and_semantic_prestate": {
+      "tests": 2,
+      "outcome": "passed"
+    },
+    "incoming_validator_and_finalization": {
+      "tests": 2,
+      "outcome": "passed"
+    },
+    "runner_syntax": "passed",
+    "independent_findings": [
+      "R1 repaired: distinguish Git SHA-1 from SHA-256 digest",
+      "R2 repaired in runner: nonempty retained customization, explicit Git grammar, selection and managed-removal assertions",
+      "R3 repaired in runner: actual identity, semantic, validator and receipt negative boundaries; execution pending"
+    ],
+    "decision_receipt_finalization_regression": {
+      "tests": 10,
+      "outcome": "passed",
+      "duration_seconds": 60.855
+    }
+  }
 }

@@ -1,0 +1,55 @@
+{
+  "packet_id": "UPG006-RUNNER-AUDIT",
+  "head_sha": "b8cfb7d5219a0a4278e8e5de7c7dddca8907122a",
+  "tree_sha": "6e04deb2836682507f622bc4760b026f3cd2202b",
+  "outcome": "failed",
+  "blocking_findings": 3,
+  "findings": [
+    {
+      "id": "UPG006-R1",
+      "severity": "P1",
+      "file": ".ai/scripts/ai_context_package_apply.py",
+      "line": 2718,
+      "finding": "Valid legacy Git history adoption is rejected: require_sha256 requires 64 lowercase hex characters but provenance SHA_RE requires exactly 40 for legacy_history_tip (target_provenance.py:33,4427). No tip satisfies both contracts. Real approved commit-subject/v2 adoption cannot pass apply and finalization.",
+      "remediation": "Validate the Git commit identifier with the canonical Git SHA contract; retain SHA-256 for incoming_policy_sha256. Exercise an approved reachable legacy tip through the runner."
+    },
+    {
+      "id": "UPG006-R2",
+      "severity": "P1",
+      "file": ".github/scripts/validate-v016-direct-upgrades.py",
+      "line": 137,
+      "finding": "AC3 lacks origin-specific semantic evidence. All origins are initialized by the incoming initializer with an empty ledger; customized mode changes only a retired alias (lines151-156). Candidate ledger remains empty and effective state is freshly reduced to one evidence rule/review route (lines106-111,221-226,260). Hash checks do not establish preservation/reconciliation of an existing customized capability/rule/contract, provider/component cutovers, or Git grammar adoption. The runner therefore bypasses the very adoption path affected by R1.",
+      "remediation": "Add bounded origin-specific fixtures and assertions for the required semantic cutovers, including a nonempty target-owned semantic customization disposition and explicit legacy grammar adoption. Keep decisions fixture-owned and record preserved/replaced/retired outcomes."
+    },
+    {
+      "id": "UPG006-R3",
+      "severity": "P1",
+      "file": ".github/scripts/validate-v016-direct-upgrades.py",
+      "line": 228,
+      "finding": "AC4 negative evidence is incomplete. The target cases reject only missing approval and missing validation receipt. No case attempts tampered identity/candidate/receipt, ambiguous authority, actual failing target-validator disagreement, or unresolved customization, although AC4 explicitly requires those failures plus unchanged mutation/provenance boundaries. Archive identity checks on valid inputs do not execute these negative cases.",
+      "remediation": "Add bounded negative cases for the explicit AC4 conditions, assert the intended error reason and exact protected prestate/provenance boundaries; retain failures distinctly."
+    }
+  ],
+  "dispositions": {
+    "fixed_checkout": "re-executed",
+    "runner_contract_static_audit": "re-executed",
+    "actual_direct_matrix": "blocked",
+    "AC3_semantic_cutovers": "blocked",
+    "AC4_negative_boundaries": "blocked",
+    "AC5_recovery": "deferred",
+    "public_v016_acceptance": "deferred"
+  },
+  "evidence": {
+    ".github/scripts/validate-v016-direct-upgrades.py": "37b52965dee55880da35a12c55d006d899539c70493a89ce7c3e041b7fdf345c",
+    ".ai/scripts/ai_context_package_apply.py": "c8b663d0d26bac73fa9cbc1f304a32ea913ba40ae0ea77f96003921410ad7d80",
+    ".ai/scripts/ai_context_target_provenance.py": "2d76483164f65dff88070cb62cac5cc671d2e6b747656e45d55f64382a5fd5c1",
+    ".ai/assets/skills/ai-context-upgrader/references/provenance-contract.md": "97f69a92609d572be798072696ebdf9fa077ca7971901680799da83c930b1a54",
+    ".dev/workflows/2026-09-05-direct-v016-upgrades/workflow-plan.md": "4a258536761423cce1f3315558ddd24ba14d668f2d45a96b7825fde3a9bdd429"
+  },
+  "limitations": [
+    "No matrix, tests, transport or provider execution performed. Recovery structure inspected only; no dynamic pass claimed.",
+    "Source-only package inclusion is an independently identified parent finding and reported first execution failure; this audit does not duplicate it or claim a package pass.",
+    "Current-schema fixture seeding is not intrinsically prohibited; its limited semantics cannot by itself satisfy the broader AC3.",
+    "No tracked files changed; root owns repairs and integration."
+  ]
+}

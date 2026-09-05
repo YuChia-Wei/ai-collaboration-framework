@@ -13,6 +13,7 @@ import hashlib
 import importlib
 import json
 import os
+import re
 from pathlib import Path, PurePosixPath
 import shutil
 import subprocess
@@ -66,7 +67,7 @@ def run(argv, cwd, logs, label, expected=0):
     output = result.stdout + result.stderr
     (logs / (label + ".log")).write_bytes(output)
     require(result.returncode == expected, f"{label}: exit {result.returncode}; see retained log")
-    return {"argv": [str(value) for value in argv], "outcome": "passed", "exit_code": result.returncode,
+    return {"argv": [str(value) for value in argv], "outcome": "passed" if result.returncode == 0 else "failed", "exit_code": result.returncode,
             "started_at": started, "completed_at": stamp(), "output_sha256": sha(output)}, output
 
 
@@ -112,9 +113,24 @@ def state_candidate(identity):
                          "required_rule_ids": ["AICTX-EVIDENCE-001"], "reported_not_applicable_rule_ids": []}]}
 
 
+def fixture_customization(identity):
+    return {"id": "CUST-UPGRADE-PRESERVATION", "subject": {"kind": "contract", "id": "target-upgrade-preservation"},
+            "relationship": "target-only", "reason": "The target owns an additional migration acceptance contract.",
+            "paths": ["owner.txt"], "base_framework": {"version": identity["version"], "commit": identity["commit"], "evidence": [EVIDENCE]},
+            "dependencies": {"customization_ids": [], "subject_refs": []},
+            "owner_reconciliation": {"status": "approved", "owner": "bounded-fixture-owner", "decided_at": stamp(), "evidence": EVIDENCE},
+            "decision_evidence": {"requirements": [EVIDENCE], "adrs": [], "workflows": []},
+            "active_context_audit": {"assessment_id": "ASM-20260905-271", "status": "verified", "evidence": EVIDENCE},
+            "incoming": {"version": identity["version"], "status": "absent", "evidence": EVIDENCE}, "disposition": "retain",
+            "post_upgrade_audit": {"assessment_id": "ASM-20260905-271", "status": "verified", "evidence": EVIDENCE},
+            "validation": ["python .dev/validation/direct-upgrade-target.py"]}
+
+
 TARGET_CHECK = '''import hashlib,json
 from pathlib import Path
 root=Path.cwd()
+if (root/'.git/fail-target-validation').exists():
+    raise SystemExit(17)
 expected=json.loads((root/'.dev/validation/expected-v016.json').read_bytes())
 for path,digest in expected['managed'].items():
     assert hashlib.sha256((root/path).read_bytes()).hexdigest()==digest,path
@@ -134,11 +150,13 @@ def seed_target(previous, incoming, target, customized, apply, provenance, rules
     old_inventory = yaml.safe_load((previous / "metadata/files.yaml").read_bytes())["files"]
     selection = deepcopy(old["selection"])
     initial, ledger = provenance.build_initialization_documents(source(old), selection, stamp())
+    if customized:
+        ledger["customizations"] = [fixture_customization(source(old))]
     write_yaml(target / ".dev/ai-context/provenance.yaml", initial)
     write_yaml(target / ".dev/ai-context/customizations.yaml", ledger)
     decision = target / EVIDENCE
     decision.parent.mkdir(parents=True, exist_ok=True)
-    decision.write_text("# Bounded fixture owner decision\n\nThis source-owned test fixture accepts unchanged framework replacements and removals, preserves all target-template paths and explicit local content, adopts the incoming component and evidence catalog only for the declared review route, and requires actual target validation before provenance advancement. No production target decision is inferred. Missing baseline effective state is explicitly reconciled to the incoming catalog at finalization.\n", encoding="utf-8")
+    decision.write_text("# Bounded fixture owner decision\n\nThis source-owned test fixture accepts unchanged framework replacements and removals, preserves all target-template paths and explicit local content, retains the target-only customization contract, adopts git-commit-subject/v2 at its reachable starting commit without rewriting history, accepts the incoming component and evidence catalog only for the declared review route, and requires actual target validation before provenance advancement. The baseline fixture audit verifies the owner.txt contract and its absence from the incoming manifest. Candidate post-upgrade audit status is an expected terminal state; the runner must execute the target check before publishing that candidate. No production target decision is inferred. Missing baseline effective state is explicitly reconciled to the incoming catalog at finalization.\n", encoding="utf-8")
     owner = target / "owner.txt"
     owner.write_bytes(b"target-owned content must survive\n")
     preserved = {"owner.txt": sha(owner.read_bytes()), EVIDENCE: sha(decision.read_bytes())}
@@ -153,6 +171,9 @@ def seed_target(previous, incoming, target, customized, apply, provenance, rules
         preserved[path] = sha(local.read_bytes())
         retired.remove(path)
     selected = apply.enabled_components(selection)
+    incoming_paths = {item["path"] for item in inventory}
+    removed = [item["path"] for item in old_inventory if item["ownership"] == "framework-managed"
+               and item["component_id"] in selected and item["path"] not in incoming_paths and item["path"] not in preserved]
     managed = {item["path"]: item["sha256"] for item in inventory if item["ownership"] == "framework-managed" and item["component_id"] in selected}
     config_path = target / ".dev/project-config.yaml"
     config = yaml.safe_load(config_path.read_bytes()) if config_path.exists() else {}
@@ -162,7 +183,7 @@ def seed_target(previous, incoming, target, customized, apply, provenance, rules
     check = target / ".dev/validation/direct-upgrade-target.py"
     check.parent.mkdir(parents=True, exist_ok=True)
     check.write_text(TARGET_CHECK, encoding="utf-8", newline="\n")
-    write_json(target / ".dev/validation/expected-v016.json", {"managed": managed, "preserved": preserved, "removed": retired})
+    write_json(target / ".dev/validation/expected-v016.json", {"managed": managed, "preserved": preserved, "removed": removed})
     # Older sources predate effective catalogs. Their absence remains visible;
     # the explicit fixture decision above supplies incoming adoption at finalization.
     catalog = target / rules.SHARED_CATALOG_PATH
@@ -176,20 +197,131 @@ def seed_target(previous, incoming, target, customized, apply, provenance, rules
     return initial, ledger, preserved
 
 
-def approved_decision(packet, candidate, ledger):
+def approved_decision(packet, candidate, ledger, provenance):
     proposal = packet["automatic_proposal"]
     return {"schema_version": "upgrade-remediation-decision/v1", "packet_sha256": packet["canonical_digest"],
             "plan_sha256": packet["plan_sha256"], "transaction_id": packet["transaction_id"], "status": "approved",
             "owner": "bounded-direct-upgrade-fixture-owner", "decided_at": stamp(), "evidence": EVIDENCE,
             "reason": "Apply exact direct origin migration; preserve every reconciled target-owned path.",
             "accepted_operation_ids": proposal["apply_operation_ids"], "reconciliation_ids": proposal["reconciliation_ids"],
-            "policy_adoptions": candidate.get("policy_adoptions"), "candidate_authority": {"provenance_sha256": sha(canonical(candidate)), "customizations_sha256": sha(canonical(ledger))}}
+            "policy_adoptions": candidate.get("policy_adoptions"), "candidate_authority": {"provenance_sha256": provenance.canonical_json_digest(candidate), "customizations_sha256": provenance.canonical_json_digest(ledger)}}
 
 
-def record_validation(target, plan, apply, logs):
+def reject_unchanged(label, operation, exception, pattern, target):
+    before = snapshot(target)
+    try:
+        operation()
+    except exception as exc:
+        require(re.search(pattern, str(exc), re.IGNORECASE), label + ": unexpected rejection reason: " + str(exc))
+        require(snapshot(target) == before, label + ": protected target bytes changed")
+        return {"case": label, "outcome": "passed", "observed_rejection": type(exc).__name__,
+                "reason_pattern": pattern, "protected_state_sha256": sha(canonical(before))}
+    raise RuntimeError(label + ": invalid state was accepted")
+
+
+def commit_fixture(target, logs, label):
+    run(["git", "add", "--all"], target, logs, label + "-stage")
+    run(["git", "commit", "-qm", "test(fixture): " + label], target, logs, label + "-commit")
+
+
+def failing_validator_fixture(incoming):
+    """Reseal an explicitly fault-injected envelope, never an admitted artifact."""
+    package_root = incoming.parent.parent / "fault-injected-validator"
+    if package_root.exists():
+        return package_root
+    shutil.copytree(incoming, package_root)
+    relative = ".ai/scripts/validate-ai-context-payload.py"
+    content = b"#!/usr/bin/env python3\nimport sys\nraise SystemExit(0 if '--help' in sys.argv else 17)\n"
+    (package_root / "payload" / relative).write_bytes(content)
+    metadata = package_root / "metadata"
+    inventory = yaml.safe_load((metadata / "files.yaml").read_bytes())
+    for record in inventory["files"]:
+        if record["path"] == relative:
+            record.update(sha256=sha(content), size=len(content))
+    write_yaml(metadata / "files.yaml", inventory)
+    files_digest = sha((metadata / "files.yaml").read_bytes())
+    migration = yaml.safe_load((metadata / "migration.yaml").read_bytes())
+    migration["to"]["manifest_sha256"] = files_digest
+    write_yaml(metadata / "migration.yaml", migration)
+    proof = json.loads((metadata / "selected-inputs.json").read_bytes())
+    for record in proof["payload"]:
+        if record["path"] == relative:
+            record["sha256"] = sha(content)
+    (metadata / "selected-inputs.json").write_bytes(canonical(proof).rstrip(b"\n"))
+    proof_digest = sha((metadata / "selected-inputs.json").read_bytes())
+    validation = json.loads((metadata / "validation.json").read_bytes())
+    validation["authority"]["validator"]["sha256"] = sha(content)
+    validation["selected_input_proof"]["sha256"] = proof_digest
+    (metadata / "validation.json").write_bytes(canonical(validation).rstrip(b"\n"))
+    payload_digest = sha("".join(f"{record['sha256']}  {record['path']}\n" for record in sorted(
+        inventory["files"], key=lambda record: record["path"].encode())).encode())
+    package = yaml.safe_load((metadata / "package.yaml").read_bytes())
+    package["identity"].update(selected_input_fingerprint=proof_digest, payload_fingerprint=payload_digest,
+                               files_manifest_digest=files_digest, migration_digest=sha((metadata / "migration.yaml").read_bytes()))
+    package["payload"]["sha256"] = payload_digest
+    package["validation"].update(selected_inputs_sha256=proof_digest, manifest_sha256=sha((metadata / "validation.json").read_bytes()))
+    write_yaml(metadata / "package.yaml", package)
+    checksums = metadata / "SHA256SUMS.txt"
+    entries = sorted((path for path in package_root.rglob("*") if path.is_file() and path != checksums),
+                     key=lambda path: path.relative_to(package_root).as_posix().encode())
+    checksums.write_bytes("".join(f"{sha(path.read_bytes())}  {path.relative_to(package_root).as_posix()}\n" for path in entries).encode())
+    return package_root
+
+
+def negative_preflight(origin, previous, incoming, target, initial, ledger, logs, apply, provenance):
+    results = []
+    files = previous / "metadata/files.yaml"
+    results.append(reject_unchanged("missing-origin-manifest", lambda: apply.build_plan(incoming, target, logs / "absent-files.yaml", origin), apply.ApplyError, "previous|cannot read", target))
+    tampered = logs / "tampered-files.yaml"
+    tampered.write_bytes(files.read_bytes() + b"\n")
+    results.append(reject_unchanged("tampered-origin-manifest", lambda: apply.build_plan(incoming, target, tampered, origin), apply.ApplyError, "source|manifest|previous", target))
+    wrong = "v0.9.0" if origin != "v0.9.0" else "v0.6.0"
+    results.append(reject_unchanged("origin-version-disagreement", lambda: apply.build_plan(incoming, target, files, wrong), apply.ApplyError, "source|manifest|previous", target))
+    invalid_package = incoming.parent.parent / ("tampered-incoming-" + origin)
+    shutil.copytree(incoming, invalid_package)
+    validator = invalid_package / "payload/.ai/scripts/validate-ai-context-payload.py"
+    validator.write_bytes(validator.read_bytes() + b"# unauthorized bytes\n")
+    results.append(reject_unchanged("tampered-incoming-validator", lambda: apply.build_plan(invalid_package, target, files, origin), apply.ApplyError, "checksum|hash|digest|SHA", target))
+    fault_package = failing_validator_fixture(incoming)
+    apply.validate_package_root(fault_package)
+    results.append(reject_unchanged("fault-injected-incoming-validator-disagreement", lambda: apply.build_plan(
+        fault_package, target, files, origin), apply.ApplyError, "incoming package validator failed: exit=17", target))
+    legacy = target / ".dev/AI-CONTEXT-SOURCE.yaml"
+    write_yaml(legacy, {"schema_version": "1.0", "source": initial["source"], "local_overrides": []})
+    commit_fixture(target, logs, "duplicate-authority")
+    results.append(reject_unchanged("ambiguous-provenance-authority", lambda: apply.build_plan(incoming, target, files, origin), apply.ApplyError, "cannot coexist", target))
+    legacy.unlink()
+    commit_fixture(target, logs, "restore-one-authority")
+    ledger_path = target / ".dev/ai-context/customizations.yaml"
+    raw_ledger = ledger_path.read_bytes()
+    pending = deepcopy(ledger)
+    if not pending["customizations"]:
+        pending["customizations"] = [fixture_customization(initial["source"])]
+    pending["customizations"][0]["disposition"] = "unresolved"
+    pending["customizations"][0]["owner_reconciliation"]["status"] = "pending"
+    write_yaml(ledger_path, pending)
+    commit_fixture(target, logs, "unresolved-customization")
+    plan = apply.build_plan(incoming, target, files, origin)
+    packet = apply.build_upgrade_remediation_packet(plan)
+    decision = approved_decision(packet, initial, pending, provenance)
+    results.append(reject_unchanged("unresolved-customization", lambda: apply.apply_plan(plan, remediation_decision=decision), apply.ApplyError, "unresolved target semantic customizations", target))
+    require(not apply.transaction_root(target, plan["plan_sha256"]).exists(), "unresolved customization prepared a write transaction")
+    ledger_path.write_bytes(raw_ledger)
+    commit_fixture(target, logs, "restore-resolved-customization")
+    return results
+
+
+def record_validation(target, plan, apply, logs, provenance, candidate, ledger):
     transaction = apply.transaction_root(target, plan["plan_sha256"])
     packet = json.loads((transaction / apply.REMEDIATION_PACKET_PATH).read_bytes())
     journal = yaml.safe_load((transaction / "journal.yaml").read_bytes())
+    fault = target / ".git/fail-target-validation"
+    fault.write_bytes(b"bounded fault injection\n")
+    failed_execution, _ = run(packet["target_validation_profile"]["argv"], target, logs, "target-validation-rejected", expected=17)
+    rejected = reject_unchanged("target-validator-disagreement", lambda: provenance.finalize_context(
+        target, candidate, ledger, effective_state_candidate=state_candidate(candidate["source"]), effective_resolver_evidence=[EVIDENCE]),
+        provenance.TargetValidationError, "target validation|target-validation", target)
+    fault.unlink()
     execution, output = run(packet["target_validation_profile"]["argv"], target, logs, "target-validation")
     output_path = transaction / apply.TARGET_VALIDATION_OUTPUT_PATH
     output_path.write_bytes(output)
@@ -201,8 +333,14 @@ def record_validation(target, plan, apply, logs):
                "pending_receipt": {"path": apply.PENDING_RECEIPT_PATH, "sha256": sha((target / apply.PENDING_RECEIPT_PATH).read_bytes())}, "execution": execution}
     supplied = logs / "supplied-target-validation.json"
     write_json(supplied, receipt)
+    invalid = logs / "tampered-target-validation.json"
+    wrong = deepcopy(receipt)
+    wrong["execution"]["output_sha256"] = "0" * 64
+    write_json(invalid, wrong)
+    rejected_receipt = reject_unchanged("tampered-target-validation-receipt", lambda: apply.record_target_validation_receipt(
+        target, plan["plan_sha256"], invalid), apply.ApplyError, "output|execution|digest|bytes", target)
     apply.record_target_validation_receipt(target, plan["plan_sha256"], supplied)
-    return receipt
+    return receipt, [rejected, rejected_receipt], failed_execution
 
 
 def execute_case(origin, previous, incoming, output, customized, recovery, apply, provenance, rules):
@@ -211,6 +349,7 @@ def execute_case(origin, previous, incoming, output, customized, recovery, apply
     logs.mkdir(parents=True)
     target = output / "work" / label
     initial, ledger, preserved = seed_target(previous, incoming, target, customized, apply, provenance, rules, logs)
+    negative = negative_preflight(origin, previous, incoming, target, initial, ledger, logs, apply, provenance) if not customized else []
     before = snapshot(target)
     plan = apply.build_plan(incoming, target, previous / "metadata/files.yaml", origin)
     require(plan["previous_version"].lstrip("v") == origin.lstrip("v"), "wrong selected origin")
@@ -222,15 +361,23 @@ def execute_case(origin, previous, incoming, output, customized, recovery, apply
     candidate["previous_source"] = initial["source"]
     candidate["installation"]["last_upgraded_at"] = stamp()
     candidate["last_migration"] = {"status": "completed", "from_version": origin, "to_version": "v0.16.0", "completed_at": stamp(), "evidence": EVIDENCE}
-    decision = approved_decision(packet, candidate, ledger)
+    candidate_ledger = deepcopy(ledger)
+    for entry in candidate_ledger["customizations"]:
+        entry["incoming"] = {"version": "v0.16.0", "status": "absent", "evidence": EVIDENCE}
+        entry["post_upgrade_audit"] = {"assessment_id": "ASM-20260905-272", "status": "verified",
+            "evidence": f".git/ai-context-package-apply/{plan['plan_sha256']}/{apply.TARGET_VALIDATION_OUTPUT_PATH}"}
+    candidate["policy_adoptions"] = {"commit_subject_grammar": {
+        "policy_id": "git-commit-subject/v2", "legacy_history_tip": packet["target"]["starting_commit"],
+        "adopted_at": stamp(), "incoming_policy_sha256": sha((incoming / "payload/.dev/standards/GIT-COMMIT-POLICY.yaml").read_bytes()),
+        "decision_evidence": EVIDENCE,
+    }}
+    decision = approved_decision(packet, candidate, candidate_ledger, provenance)
     write_json(logs / "decision.json", decision)
     # An unresolved owner decision must not create a transaction or change bytes.
-    try:
-        apply.apply_plan(plan)
-    except apply.ApplyError:
-        require(snapshot(target) == before, "missing decision changed target")
-    else:
-        raise RuntimeError("missing owner decision accepted")
+    negative.append(reject_unchanged("missing-owner-decision", lambda: apply.apply_plan(plan), apply.ApplyError, "explicit approved remediation decision", target))
+    invalid_decision = deepcopy(decision)
+    invalid_decision["packet_sha256"] = "0" * 64
+    negative.append(reject_unchanged("tampered-owner-decision", lambda: apply.apply_plan(plan, remediation_decision=invalid_decision), apply.ApplyError, "packet binding differs", target))
     if recovery in {"resume", "rollback"}:
         def crash(event, details):
             if event == "after_progress_journal":
@@ -247,20 +394,28 @@ def execute_case(origin, previous, incoming, output, customized, recovery, apply
         if recovery == "rollback":
             require(snapshot(target) == before, "rollback did not restore exact prestate")
             write_json(logs / "rollback.json", result)
-            return {"origin": origin, "case": label, "outcome": "passed", "transaction_id": plan["plan_sha256"], "recovery": "rolled-back", "prestate_sha256": sha(canonical(before))}
+            return {"origin": origin, "case": label, "outcome": "passed", "transaction_id": plan["plan_sha256"], "recovery": "rolled-back", "prestate_sha256": sha(canonical(before)), "negative_evidence": negative}
     else:
         apply.apply_plan(plan, remediation_decision=decision)
-    try:
-        provenance.finalize_context(target, candidate, ledger)
-    except provenance.TargetValidationError:
-        require(yaml.safe_load((target / ".dev/ai-context/provenance.yaml").read_bytes())["source"] == initial["source"], "premature finalization advanced provenance")
-    else:
-        raise RuntimeError("finalization accepted missing target validation")
-    receipt = record_validation(target, plan, apply, logs)
-    finalized = provenance.finalize_context(target, candidate, ledger, effective_state_candidate=state_candidate(candidate["source"]), effective_resolver_evidence=[EVIDENCE])
+    negative.append(reject_unchanged("missing-target-validation", lambda: provenance.finalize_context(
+        target, candidate, candidate_ledger, effective_state_candidate=state_candidate(candidate["source"]), effective_resolver_evidence=[EVIDENCE]),
+        provenance.TargetValidationError, "target validation|target-validation", target))
+    receipt, validation_negatives, failed_validation = record_validation(target, plan, apply, logs, provenance, candidate, candidate_ledger)
+    negative.extend(validation_negatives)
+    wrong_candidate = deepcopy(candidate)
+    wrong_candidate["source"]["commit"] = "f" * 40
+    negative.append(reject_unchanged("candidate-authority-disagreement", lambda: provenance.finalize_context(
+        target, wrong_candidate, candidate_ledger, effective_state_candidate=state_candidate(wrong_candidate["source"]), effective_resolver_evidence=[EVIDENCE]),
+        provenance.TargetValidationError, "candidate|source|authority", target))
+    finalized = provenance.finalize_context(target, candidate, candidate_ledger, effective_state_candidate=state_candidate(candidate["source"]), effective_resolver_evidence=[EVIDENCE])
     require(finalized["status"] == "finalized" and finalized["effective_rule_readiness"]["action_ready"], "finalization or readiness failed")
     errors = provenance.validate_target(target, require_effective_rules=True)
     require(not errors, "target validation failed: " + "; ".join(errors))
+    installed = yaml.safe_load((target / ".dev/ai-context/provenance.yaml").read_bytes())
+    installed_ledger = yaml.safe_load((target / ".dev/ai-context/customizations.yaml").read_bytes())
+    require(installed["selection"] == initial["selection"], "provider/component selection changed")
+    require(installed_ledger == candidate_ledger, "semantic customization reconciliation differs")
+    require(installed["policy_adoptions"] == candidate["policy_adoptions"], "Git grammar adoption differs")
     for path, digest in preserved.items():
         require(sha((target / path).read_bytes()) == digest, "target-owned content changed")
     terminal_before = snapshot(target)
@@ -274,6 +429,10 @@ def execute_case(origin, previous, incoming, output, customized, recovery, apply
     return {"origin": origin, "case": label, "outcome": "passed", "transaction_id": plan["plan_sha256"], "recovery": recovery,
             "incoming_validation": packet["package"]["validation"], "target_validation": receipt["execution"], "finalization": finalized,
             "reconciliation_count": len(packet["automatic_proposal"]["reconciliation_ids"]), "preserved_paths": sorted(preserved),
+            "negative_evidence": negative, "failed_target_validation": failed_validation,
+            "semantic_cutovers": {"provider_component_selection": "preserved", "source_specific_managed_removals": "verified",
+                "target_customization_ids": [entry["id"] for entry in installed_ledger["customizations"]],
+                "commit_grammar_adoption": "verified", "effective_rule_regeneration": "verified", "skill_retirement": "verified"},
             "prestate_sha256": sha(canonical(before)), "poststate_sha256": sha(canonical(terminal_before))}
 
 
