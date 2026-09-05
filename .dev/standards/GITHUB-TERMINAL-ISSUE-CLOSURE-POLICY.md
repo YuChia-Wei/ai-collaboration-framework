@@ -42,6 +42,14 @@ A failed, cancelled, or timed-out hosted check, review block, unbound head or
 review-subject drift, missing read-back, or mismatched Issue or Project state is
 nonterminal.
 
+Workflow completion and provider terminal admission remain separate states.
+Once every workflow-owned implementation task and locally applicable
+verification is complete, the workflow may be `completed` while review,
+hosted checks, live admission, integration, and post-merge read-back are still
+pending under this policy. That workflow status does not satisfy or bypass any
+terminal-close gate, and those later provider facts must not be copied back by
+a tracked evidence-sync commit.
+
 ## Deferred Gate
 
 `deferred` requires `Refs #<issue-number>`, forbids `Closes`, `Fixes`, and

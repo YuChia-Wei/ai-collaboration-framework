@@ -195,6 +195,11 @@ the pull request or workflow when workflow mode applies.
 
 ## Checkpoint Handoff And Cross-Machine Continuation
 
+An `in_progress` status does not by itself block push, pull-request creation,
+or integration. Such a workflow may be integrated when separately authorized
+and all repository integration gates pass. Integration does not imply workflow
+completion; preserve the required checkpoint and continuation state.
+
 When work must move to another machine or session before all workflow tasks are complete:
 
 1. Commit a coherent validated checkpoint and keep the workflow `active`.
@@ -208,7 +213,8 @@ When work must move to another machine or session before all workflow tasks are 
 6. Record the checkpoint type (`push` or `merge`), commit, remote or target, timestamp, reason, last completed task, and exact resume branch/action in the workflow plan.
 7. Update locator `branch`, `base_branch`, `updated_at`, and branch history only when the active branch segment changes.
 
-A checkpoint push or merge is a transport and handoff boundary. Neither is a workflow completion signal.
+A checkpoint push or merge is a transport and handoff boundary. Neither is a
+workflow completion signal.
 
 ## Commit Rule
 

@@ -243,7 +243,14 @@ History compression is limited to unshared, unpushed commits under the active
 repository policy and must preserve approval, review, evidence, checkpoint,
 handoff, and shared-history boundaries.
 
-Merging or pushing an incomplete workflow is a checkpoint handoff, not workflow completion. Keep the workflow and unfinished tasks active. Resume a push-only handoff from the pushed branch; after a checkpoint merge, create the next continuation branch from the updated target as defined by `.dev/TEAM-GIT-FLOW-RULES.MD`.
+Merging or pushing an incomplete workflow is a checkpoint handoff, not workflow
+completion. This classification is not an integration prohibition: an
+`in_progress` workflow may be pushed, reviewed, or merged when those actions
+are separately authorized, the checkpoint is valid, and the repository
+integration gates pass. Keep the workflow and unfinished tasks active. Resume
+a push-only handoff from the pushed branch; after a checkpoint merge, create
+the next continuation branch from the updated target as defined by
+`.dev/TEAM-GIT-FLOW-RULES.MD`.
 
 When continuation also crosses a model, runtime, host, machine, or fresh
 session, follow `.dev/standards/WORKFLOW-HANDOFF-POLICY.md` and create its

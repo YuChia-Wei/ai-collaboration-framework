@@ -5,7 +5,7 @@ work_items:
   - "https://github.com/YuChia-Wei/ai-collaboration-framework/issues/270"
 human_projection: ".dev/workflows/2026-09-03-subject-digest-evidence-reuse-implementation/workflow-plan.md#issue-270-acceptance-projection"
 created_at: "2026-09-03T09:19:06+08:00"
-updated_at: "2026-09-05T00:12:11+08:00"
+updated_at: "2026-09-05T09:35:34+08:00"
 evidence_digest_algorithm: "sha256(canonical-json(evidence))"
 acceptances:
   - acceptance_id: "GOV017-A1"
@@ -82,3 +82,11 @@ acceptances:
       - "The v0.16 candidate portable lifecycle schema forbids commit-sha as a validity key, graph freshness accepts equal Git trees across different commit SHAs, and repository provenance uses a runtime worktree digest rather than the source repository identity."
       - "The focused package projection regression test passed and proves source-only GitHub closure policy and validator exclusion plus portable content-addressed contracts and adapters."
     evidence_digest: "a80577b6e0d0aba9c3ec164a276ee41adf18dcfade932af125f1254f89a2e397"
+  - acceptance_id: "GOV017-A11"
+    status: "passed"
+    required_outcome: "Workflow status remains independent from transport and integration eligibility, so in_progress alone never blocks an otherwise authorized merge."
+    evidence:
+      - "WORKFLOW-GATE-POLICY, TEAM-GIT-FLOW-RULES, and WORKFLOW-HANDOFF-POLICY explicitly state that in_progress alone is not an integration blocker while preserving required checkpoint and repository gates."
+      - "Portable workflow and branch policies plus the three active skill specs carry the same non-blocking status rule."
+      - "The focused package-projection regression test proves the current downstream payload retains this boundary."
+    evidence_digest: "8b426c5072bced0952c3dcb4182c642ce33197321d429dd17b1cfae4f461ad67"

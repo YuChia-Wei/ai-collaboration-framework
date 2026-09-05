@@ -972,6 +972,59 @@ class DeterministicPackageGwtTests(unittest.TestCase):
             auditor,
         )
 
+    def test_gwt_000f_given_in_progress_workflow_when_current_payload_is_projected_then_status_alone_does_not_block_integration(self) -> None:
+        profile = yaml.safe_load(
+            (ROOT / ".ai/distribution/profiles/dotnet-backend.yaml").read_text(
+                encoding="utf-8"
+            )
+        )
+        exclusions = profile["exclusions"]
+
+        def selected(source_path: str) -> bool:
+            return not PACKAGE.is_excluded(source_path, exclusions) and any(
+                PACKAGE.matches(source_path, source_pattern)
+                for entry in profile["entries"]
+                for source_pattern in PACKAGE.patterns(entry.get("source"))
+            )
+
+        portable_paths = (
+            ".ai/assets/shared/governance/WORKFLOW-GATE-POLICY.md",
+            ".ai/assets/shared/governance/TEAM-GIT-FLOW-RULES.MD",
+            ".dev/standards/WORKFLOW-HANDOFF-POLICY.md",
+            ".dev/standards/WORKFLOW-ARTIFACT-POLICY.md",
+            ".ai/assets/skills/ai-context-governance/skill.yaml",
+            ".ai/assets/skills/software-development-orchestrator/skill.yaml",
+            ".ai/assets/skills/ai-context-auditor/skill.yaml",
+        )
+        self.assertTrue(all(selected(path) for path in portable_paths))
+
+        workflow_gate = (ROOT / portable_paths[0]).read_text(encoding="utf-8")
+        branch_policy = (ROOT / portable_paths[1]).read_text(encoding="utf-8")
+        handoff_policy = (ROOT / portable_paths[2]).read_text(encoding="utf-8")
+        artifact_policy = (ROOT / portable_paths[3]).read_text(encoding="utf-8")
+        skill_specs = "\n".join(
+            (ROOT / path).read_text(encoding="utf-8")
+            for path in portable_paths[4:]
+        )
+
+        self.assertIn(
+            "An `in_progress` status is not by itself an integration blocker",
+            workflow_gate,
+        )
+        self.assertIn(
+            "`in_progress` is not\n  by itself an integration blocker",
+            branch_policy,
+        )
+        self.assertIn(
+            "does not prohibit integration of an `in_progress`\nworkflow",
+            handoff_policy,
+        )
+        self.assertIn(
+            "`status: in_progress` does not block an otherwise authorized push",
+            artifact_policy,
+        )
+        self.assertEqual(3, skill_specs.count("without treating in_progress as an integration blocker"))
+
     def test_gwt_0000_given_source_local_policy_and_portable_mapping_when_projected_then_target_gets_only_portable_bytes(self) -> None:
         fixture = SyntheticPackageRepo()
         try:
