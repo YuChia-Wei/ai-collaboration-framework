@@ -11,6 +11,7 @@ This directory owns source-side, machine-readable contracts for building portabl
 - `../assets/shared/PRODUCT-SOURCE-PROJECTION-CONTRACT.md` defines the single canonical product-source and derived-projection boundary.
 - `CLI-TOOLING-CONTRACT.md` defines the contract-only Distribution CLI, Portable Validator Engine, and source-only Source Maintainer CLI boundaries.
 - `schemas/package.schema.yaml` defines package-envelope metadata.
+- `schemas/selected-inputs.schema.yaml` defines raw historical input identity and the v0.16+ release input projection.
 - `schemas/files.schema.yaml` defines the generated per-file inventory.
 - `schemas/migration.schema.yaml` defines version-to-version migration operations.
 - `V015-PACKAGE-VALIDATION-LANES.md` defines the source-only fast identity/archive,
@@ -72,6 +73,17 @@ manifest, portable-validation result, application receipt, and payload
 fingerprint must agree with that resolved identity. Readers retain schema
 `2.3.0` support for v0.14 and earlier packages; they do not reinterpret or
 rename those published bytes.
+
+## Selected Input Identity
+
+From v0.16.0, `metadata/selected-inputs.json` uses `package-selected-input/v2`.
+It embeds one `release-package-input/v1` document and hashes that document for
+the release source-input entry. The projection preserves every release field
+except the explicitly versioned source progress and validation fields. Unknown
+future fields remain identity-bound. Other source inputs retain raw Git blob
+hashes. Earlier releases retain `package-selected-input/v1` without rewriting
+their historical proofs. Current source phase, workflow and provider gates
+still validate the complete release record before promotion.
 
 ## Ownership Classes
 

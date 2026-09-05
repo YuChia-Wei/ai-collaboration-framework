@@ -1,0 +1,23 @@
+{
+  "schema_version": "candidate-source-failure/v1",
+  "subject_sha": "5d3ea28388a30d23fe7b2ad3a91325a4bd237188",
+  "outcome": "failed",
+  "hosted_evidence": [
+    "https://github.com/YuChia-Wei/ai-collaboration-framework/actions/runs/33967834594/job/101310973162",
+    "https://github.com/YuChia-Wei/ai-collaboration-framework/actions/runs/33967834446/job/101310972560"
+  ],
+  "reason": "The synthetic multi-hop package omitted ai_context_release_projection.py, which the copied current package validator imports. The portable dependency guard correctly rejected the incomplete fixture.",
+  "observed_failure": {"tests_run": 31, "failures": 2, "errors": 18},
+  "material_correction": "Include the projection module in the synthetic payload and assign its existing lifecycle component ownership. Preserve the portable import guard and all runtime package bytes.",
+  "focused_validation": {"case": "test_gwt_006", "passed": 1, "duration_seconds": 4.914},
+  "retry_authorization": {
+    "owner": "2026-09-05-direct-v016-upgrades workflow integration owner",
+    "decision": "authorize-retry",
+    "scope": [
+      "One new immutable hosted CI run after the material fixture correction.",
+      "One complete multi-hop fixture suite on the corrected immutable commit.",
+      "Independent correction audit attempt 3, including the previous runner-temp storage fix and this fixture correction, with exact-byte evidence reuse for unchanged source and actual archives."
+    ],
+    "stop": "Retain any failure, drift, interruption or missing evidence. Do not retry an unchanged failure, rebuild the admitted archive, or rerun the local actual matrix."
+  }
+}

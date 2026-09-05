@@ -1,0 +1,25 @@
+{
+  "evidence_kind": "focused-source-tests",
+  "subject_kind": "working-tree-before-preparation-commit",
+  "base_commit": "21b6b513ffe31b59bf6462a1e449766d9537145e",
+  "scope": "Owner-approved versioned release input projection and actual-evidence gate correction",
+  "results": [
+    {"command": "python -m unittest discover -s .ai/scripts/tests -p test_release_input_projection.py -v", "outcome": "passed", "tests": 5, "duration_seconds": 2.752},
+    {"command": "python -m unittest discover -s .ai/scripts/tests -p test_release_asset_identity.py -v", "outcome": "passed", "tests": 14, "duration_seconds": 2.319},
+    {"command": "python -m unittest discover -s .ai/scripts/tests -p test_ai_context_release_state.py -k gwt_031 -v", "outcome": "passed", "tests": 5, "duration_seconds": 0.430},
+    {"command": "python -m unittest discover -s .ai/scripts/tests -p test_ai_context_packaging.py -k gwt_001b -v", "outcome": "passed", "tests": 1, "duration_seconds": 2.155},
+    {"command": "python -m unittest discover -s .ai/scripts/tests -p test_ai_context_package_validation.py -k complete_synthetic_envelope -v", "outcome": "passed", "tests": 1, "duration_seconds": 0.466},
+    {"command": "python -m unittest discover -s .ai/scripts/tests -p test_ai_context_package_apply.py -k gwt_049 -v", "outcome": "passed", "tests": 2, "duration_seconds": 10.686},
+    {"command": "python -m unittest discover -s .ai/scripts/tests -p test_python_entrypoints_contract.py -v", "outcome": "passed", "tests": 7, "duration_seconds": 3.712},
+    {"command": "python .ai/scripts/validate-workflow-artifacts.py", "outcome": "passed", "post_adoption_workflows": 111, "indexed_workflows": 131}
+  ],
+  "retained_failures": [
+    {"kind": "test-fixture-boundary", "test": "test_built_archive_rebinds_after_source_acceptance_without_rebuilding", "outcome": "failed", "reason": "Synthetic profile packaged release.yaml as payload; changed bytes correctly invalidated identity.", "diagnosis": "Only differing payload path was .dev/releases/v0.16.0/release.yaml.", "material_correction": "This test now uses the governed source-only release exclusion before the initial build; no production exclusion was loosened."},
+    {"kind": "environment", "scope": "two ignored draft gate tests in original workspace", "outcome": "blocked-by-environment", "reason": "Default sandbox denied temporary fixture creation and cleanup.", "followup": "Same bounded tests passed under require_escalated; the two exact leftover temporary directories were verified and cleaned."}
+  ],
+  "limitations": [
+    "Synthetic archive and unit evidence does not satisfy actual direct target acceptance.",
+    "Preparation-package-3 predates this selected-input contract and is not reusable for the changed subject.",
+    "Independent correction review, new immutable archive validation and actual matrix remain required."
+  ]
+}

@@ -108,6 +108,8 @@ class SyntheticPackageRepo:
         )
         for script in (
             "ai_context_package_identity.py",
+            "ai_context_release_projection.py",
+            "validation_subject.py",
             "ai_context_package_validation.py",
             "ai_context_package_apply.py",
             "ai_context_cli_routing.py",
@@ -357,6 +359,8 @@ class SyntheticPackageRepo:
         release_path = self.root / f".dev/releases/v{normalized}/release.yaml"
         release_path.parent.mkdir(parents=True, exist_ok=True)
         document = {
+            "schema_version": "1.0",
+            "release_id": f"REL-v{normalized}",
             "version": f"v{normalized}",
             "compatibility": {
                 "breaking_changes": True,
@@ -593,6 +597,15 @@ def rewrite_zip_member(source: Path, target: Path, suffix: str, replacement: byt
 
 
 class DeterministicPackageGwtTests(unittest.TestCase):
+    def test_gwt_000e_given_nonportable_entrypoints_when_profile_selects_scripts_then_all_are_excluded(self) -> None:
+        profile = yaml.safe_load((ROOT / ".ai/distribution/profiles/dotnet-backend.yaml").read_bytes())
+        registry = json.loads((ROOT / ".ai/scripts/python-entrypoints.json").read_bytes())
+        for entry in registry["entrypoints"]:
+            if entry["portable"] is False:
+                with self.subTest(path=entry["path"]):
+                    self.assertTrue(PACKAGE.is_excluded(entry["path"], profile["exclusions"]))
+        self.assertTrue(PACKAGE.is_excluded(".ai/scripts/release_asset_identity.py", profile["exclusions"]))
+
     def test_gwt_000a_given_tracked_local_validation_opt_in_when_payload_is_projected_then_it_is_excluded(self) -> None:
         fixture = SyntheticPackageRepo()
         try:

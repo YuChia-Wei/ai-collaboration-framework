@@ -91,8 +91,28 @@ bytes. Different bytes require a newly reviewed candidate before publication;
 an already published identity cannot be silently replaced. Historical candidate
 archives with the same logical labels remain explicitly historical candidates.
 
-Finalize package-selected source inputs before building once from a clean
-immutable preparation commit. Retain its four exact assets under the version's
+From v0.16.0, `package-selected-input/v2` embeds one `release-package-input/v1`
+projection. It preserves every top-level release field except `status`, `tag`,
+`commit`, `tagged_at`, `recorded_at`, `created_at`, `updated_at`, and `validation`.
+The release source-input entry hashes canonical compact sorted UTF-8 JSON of
+that projection. Other source entries continue to hash raw Git blob bytes.
+Planning allocation, provider requirements, compatibility, distribution and
+unknown future fields remain identity-bound. An unknown projection version,
+duplicate key, missing projection or package-contract disagreement fails closed.
+Changing this boundary requires a new projection version. Releases before
+v0.16.0 retain their original raw release-file identity and published proofs.
+
+The complete current release record remains authoritative for phase, workflow
+and provider gates. Identity admission never marks a planned record validated.
+Freeze package-selected inputs while source acceptance is pending, build once
+from a clean immutable preparation commit, and execute required archive and
+target gates against those exact assets. Only after acceptance may source
+status and validation evidence become validated. Fresh candidate gates still
+check those complete current records and rebind the admitted source projection.
+Lifecycle-only updates preserve asset identity; selected contract or payload
+drift requires a new archive and affected execution evidence.
+
+Retain the preparation commit's four exact assets under the version's
 route-assets directory, then run:
 
 ```powershell
@@ -108,6 +128,16 @@ commit changes retain build provenance without rebuilding. Any selected-input
 drift blocks promotion and requires a newly validated candidate. All incoming
 matrix edges targeting the release must bind the admitted ZIP digest and payload
 fingerprint. Issue 272 supplies the actual v0.16.0 direct edge evidence.
+
+Retain its actual terminal at `route-assets/actual/terminal.json`. The source
+gate binds the admitted route archive and package source to that terminal and
+checks the canonical executing runner digest, invocation and timing, all three
+origin case sets, retained packet and decision identities, target command output
+and receipts, before/after provenance and customization records, recovery state,
+finalized readiness, semantic reconciliation, negative boundaries and exact
+rollback snapshots. Missing or changed retained artifacts fail closed. A changed
+runner requires fresh actual evidence. Candidate CI repeats
+the actual v0.16.0 matrix against the unchanged staged archive.
 
 Candidate CI and tag publication stage the tracked admitted assets unchanged.
 Before publishing a draft, and again afterward, the hosted workflow downloads
@@ -136,7 +166,9 @@ Published package and migration contracts before that baseline remain immutable
 historical evidence, but routine source gates do not rebuild every older
 archive or replay a Cartesian cross-version matrix.
 
-For every governed package after `v0.6.0`:
+For governed packages after `v0.6.0` and before `v0.16.0`, retain the historical
+immediate-predecessor policy below, including the explicitly recorded
+`v0.14.0` three-source exception:
 
 - `compatibility.automatic_upgrade_sources` contains exactly the immediate
   previous governed package version, so the required automatic-upgrade gate has
@@ -150,7 +182,21 @@ For every governed package after `v0.6.0`:
   target-owned reconciliation remain distinct evidence. Passing one never
   substitutes for another.
 
-Supporting another automatic source is a new compatibility decision. It needs
+From `v0.16.0`, owner-approved Issue 272 establishes three required direct
+sources: `v0.6.0`, `v0.9.0`, and the immediate previous governed package. Declare
+them in numeric order in `compatibility.automatic_upgrade_sources`; a breaking
+release uses `v0.6.0` as `minimum_source_version`. Each origin must select exactly
+one source-specific edge to the incoming version and execute its own migration,
+semantic cutover, target validation, finalization and interruption recovery
+against the same admitted incoming archive. Applying intermediate releases,
+route-selection fixtures, or archive identity checks alone cannot satisfy this
+acceptance. The migration guide exposes one direct entry point per origin and
+preserves target-owned reconciliation decisions. Retained origins remain required
+in later releases until an explicit owner-approved, versioned deprecation changes
+this policy and its executable gates. Historical records and assets are immutable.
+
+Supporting another automatic source or retiring a retained origin is a new
+compatibility decision. It needs
 explicit owner approval, its own bounded work item, and versioned policy change;
 it is not inferred from a retrospective baseline or historical test.
 

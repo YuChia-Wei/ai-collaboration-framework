@@ -21,6 +21,10 @@ from typing import Iterable
 
 import yaml
 
+from ai_context_release_projection import (
+    project_release_input, canonical_projection_bytes, validate_selected_release_projection,
+)
+
 from ai_context_package_identity import (
     POLICY_ID as PUBLIC_PACKAGE_IDENTITY_POLICY,
     PackageIdentityError,
@@ -1333,12 +1337,24 @@ def selected_input_document(
     migration_sources: Iterable[dict],
 ) -> dict:
     """Return the portable proof whose exact bytes own selected-input identity."""
-    return {
-        "schema_version": "package-selected-input/v1",
+    projections = {}
+    projected_inputs = dict(source_inputs)
+    try:
+        for path, content in source_inputs.items():
+            projection = project_release_input(path, content)
+            if projection is not None:
+                projections[path] = projection
+                projected_inputs[path] = canonical_projection_bytes(projection)
+    except (ValueError, yaml.YAMLError) as exc:
+        raise PackageError(str(exc)) from exc
+    if len(projections) > 1:
+        raise PackageError("selected inputs have ambiguous release projection authority")
+    document = {
+        "schema_version": "package-selected-input/v2" if projections else "package-selected-input/v1",
         "source_inputs": [
             {"path": path, "sha256": sha256_bytes(content)}
             for path, content in sorted(
-                source_inputs.items(), key=lambda item: item[0].encode("utf-8")
+                projected_inputs.items(), key=lambda item: item[0].encode("utf-8")
             )
         ],
         "payload": [
@@ -1365,6 +1381,9 @@ def selected_input_document(
             )
         ],
     }
+    if projections:
+        document["release_projection"] = next(iter(projections.values()))
+    return document
 
 
 def selected_input_fingerprint(
@@ -2447,8 +2466,10 @@ def validate_archive(path: Path) -> dict[str, tuple[bytes, int]]:
         selected_input_sha = sha256_bytes(
             members[f"{prefix}metadata/selected-inputs.json"][0]
         )
-        if selected_input_proof.get("schema_version") != "package-selected-input/v1":
-            raise PackageError("selected-inputs.json schema is missing or unsupported")
+        try:
+            validate_selected_release_projection(selected_input_proof, package["version"], package)
+        except ValueError as exc:
+            raise PackageError(str(exc)) from exc
         source_inputs = selected_input_proof.get("source_inputs")
         if not isinstance(source_inputs, list) or any(
             not isinstance(item, dict)

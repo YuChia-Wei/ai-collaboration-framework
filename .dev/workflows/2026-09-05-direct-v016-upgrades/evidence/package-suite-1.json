@@ -1,0 +1,18 @@
+{
+  "subject_sha": "21b6b513ffe31b59bf6462a1e449766d9537145e",
+  "evidence_kind": "unit-suite",
+  "command": "python -m unittest discover -s .ai/scripts/tests -p test_ai_context_package_apply.py -v",
+  "outcome": "passed",
+  "tests": 115,
+  "passed": 114,
+  "skipped": 1,
+  "failures": 0,
+  "duration_seconds": 552.202,
+  "output_sha256": "62e7a1d0b8248747c1db05c8ae8d200a86c0e6c68f0888213f3441bf21cb6a71",
+  "skipped_reason": "GWT008 symlink-parent fixture requires Windows symlink creation privilege; WinError 1314 made it unavailable.",
+  "limitations": [
+    "The skipped case is not passed.",
+    "This earlier suite does not establish acceptance of the subsequently changed release projection and fixture dependencies.",
+    "Actual direct upgrade and public publication acceptance are separate."
+  ]
+}

@@ -145,6 +145,7 @@ entries:
           - .ai/scripts/README.md
           - .ai/scripts/ai_context_package_apply.py
           - .ai/scripts/ai_context_package_identity.py
+          - .ai/scripts/ai_context_release_projection.py
           - .ai/scripts/ai_context_cli_routing.py
           - .ai/scripts/ai_context_effective_rules.py
           - .ai/scripts/ai_context_multi_hop_upgrade.py
@@ -462,6 +463,8 @@ exclusions:
       - .ai/scripts/ai_context_package.py
       - .ai/scripts/ai_context_v015_validation.py
       - .ai/scripts/build-ai-context-package.py
+      - .ai/scripts/manage-release-asset-identity.py
+      - .ai/scripts/release_asset_identity.py
       - .ai/scripts/run-test-fixture-profile.py
       - .ai/scripts/test_fixture_runtime.py
       - .ai/scripts/test-fixture-classifications.json

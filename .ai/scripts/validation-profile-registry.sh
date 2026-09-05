@@ -278,7 +278,7 @@ register_check release-state-tests \
 register_check release-asset-identity \
     "Release Asset Identity Contract Tests" required \
     "release,tests" "fast pr release nightly-full" \
-    ".ai/scripts/release_asset_identity.py .ai/scripts/manage-release-asset-identity.py .ai/scripts/ai_context_package.py .ai/scripts/ai_context_package_identity.py .ai/scripts/tests/test_release_asset_identity.py .dev/workflows/2026-09-05-published-asset-identity/evidence/published-routes .github/workflows/package-candidate.yml .github/workflows/publish-release.yml" source-ai-context-version "python>=3.11 git" 60 cpu no-reuse source \
+    ".ai/scripts/release_asset_identity.py .ai/scripts/manage-release-asset-identity.py .ai/scripts/ai_context_package.py .ai/scripts/ai_context_package_identity.py .ai/scripts/tests/test_release_asset_identity.py .dev/workflows .github/workflows/package-candidate.yml .github/workflows/publish-release.yml" source-ai-context-version "python>=3.11 git" 60 cpu no-reuse source \
     "python .ai/scripts/tests/test_release_asset_identity.py -v" source-release
 register_check release-preparation-tests \
     "AI Context Release Preparation Fail-Closed Tests" required \
@@ -293,12 +293,12 @@ register_check release-notes-renderer \
 register_check ai-behavior-evaluation \
     "AI Behavior Deterministic Evaluation" required \
     "evaluation,release" "release nightly-full" \
-    ".ai/scripts/tests/test_ai_behavior_evaluation.py .ai .dev/releases/v0.14.0/support-matrix.yaml .dev/releases/v0.14.0/route-assets/validation/published-v0.14.0/v0.13.0-to-v0.14.0/receipt.json .dev/releases/v0.14.0/route-assets/validation/published-v0.14.0/v0.13.0-to-v0.14.0/output.json" source-ai-context-version "python>=3.11" 90 cpu reuse-by-input source \
+    ".ai/scripts/tests/test_ai_behavior_evaluation.py .ai .dev/releases" source-ai-context-version "python>=3.11" 90 cpu reuse-by-input source \
     "python .ai/scripts/tests/test_ai_behavior_evaluation.py -v" source-release
 register_check incident-fault-injection \
     "Incident-Derived Validator Fault Injection" required \
     "evaluation,release,validation" "release nightly-full" \
-    ".ai .dev/releases/v0.14.0/support-matrix.yaml .dev/releases/v0.14.0/route-assets/validation/published-v0.14.0/v0.13.0-to-v0.14.0/receipt.json .dev/releases/v0.14.0/route-assets/validation/published-v0.14.0/v0.13.0-to-v0.14.0/output.json" ai-behavior-evaluation "python>=3.11 git" 90 cpu reuse-by-input source \
+    ".ai .dev/releases" ai-behavior-evaluation "python>=3.11 git" 90 cpu reuse-by-input source \
     "python .ai/scripts/validate-ai-behavior-evaluation.py fault-injection" source-release
 register_check ai-context-load-measurement \
     "AI Context Load Measurement Contract" required \

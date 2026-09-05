@@ -1,0 +1,116 @@
+schema_version: '1.0'
+release_id: REL-v0.16.0
+version: v0.16.0
+status: validated
+record_origin: governed
+distribution_kind: governed-package
+installable: true
+tag: null
+commit: null
+tagged_at: null
+recorded_at: null
+created_at: '2026-09-05T18:06:35+08:00'
+updated_at: '2026-09-05T20:52:57+08:00'
+planning:
+  github_issue_refs:
+  - '#267'
+  - '#268'
+  - '#269'
+  - '#270'
+  - '#271'
+  - '#272'
+provider_reconciliation:
+  schema_version: '1.1'
+  provider: github
+  repository: YuChia-Wei/ai-collaboration-framework
+  project_owner: YuChia-Wei
+  project_number: 3
+  included_issue_refs_source: planning.github_issue_refs
+  included_work:
+    prepublication:
+      issue_state: closed
+      state_reason: completed
+      project:
+        Status: Done
+    postpublication:
+      issue_state: closed
+      state_reason: completed
+      project:
+        Status: Done
+  coordination:
+    issue_refs:
+    - '#280'
+    prepublication:
+      issue_state: open
+      state_reason: null
+      project:
+        Status: Verification
+    postpublication:
+      issue_state: closed
+      state_reason: completed
+      project:
+        Status: Done
+compatibility:
+  breaking_changes: true
+  minimum_source_version: v0.6.0
+  reconciliation_sources:
+  - v0.6.0
+  - v0.9.0
+  - v0.15.1
+  automatic_upgrade_sources:
+  - v0.6.0
+  - v0.9.0
+  - v0.15.1
+  affected_contracts:
+  - Three retained direct upgrade sources and origin-specific semantic reconciliation
+  - Content-addressed validation evidence and dependency observation
+  - Diagnostic analyst routing and retirement of dev-workflow and repo-structure-sync
+  - Exact admitted archive promotion and public asset acceptance
+artifacts:
+  release_notes: release-notes.md
+  migration_guide: migration-guide.md
+  support_matrix: support-matrix.yaml
+  route_evidence:
+  - route-evidence/v0.15.1-to-v0.16.0.json
+  - route-evidence/v0.9.0-to-v0.16.0.json
+  - route-evidence/v0.6.0-to-v0.16.0.json
+distribution:
+  profile_id: dotnet-backend
+  package_id: ai-collaboration-framework-v0.16.0
+  schema_versions:
+    package: 2.4.0
+    files: 2.0.0
+    migration: 3.0.0
+  artifacts:
+    zip: ai-collaboration-framework-v0.16.0.zip
+    zip_checksum: ai-collaboration-framework-v0.16.0.zip.sha256
+    tar_gz: ai-collaboration-framework-v0.16.0.tar.gz
+    tar_gz_checksum: ai-collaboration-framework-v0.16.0.tar.gz.sha256
+  migration:
+    default_mode: dry-run
+    apply_requires_clean_worktree: true
+    apply_requires_acknowledged_reconciliation: true
+  publication:
+    tag_owner: user
+    trigger: user-created-tag
+    automation: github-actions
+    creates_or_moves_tag: false
+validation:
+  evidence: 'Nine actual isolated target cases, three direct edges and nine rejection
+    probes passed on the admitted archive. Packaging/portable/apply regression: 179
+    passed, two platform skips; classified accelerated release-state: 40 passed. Independent
+    source, integration and completion reviews passed with zero blocking findings.
+    Included Work closure is declared by PR 286; fresh candidate, hosted and terminal
+    admission gates remain mandatory. Public archive acceptance is pending under the
+    separate publication coordination item.'
+  workflow_id: 2026-09-05-direct-v016-upgrades
+  related_workflows:
+  - 2026-09-05-diagnostic-analyst
+  - 2026-09-05-published-asset-identity
+  - 2026-09-05-skill-004-retirement
+  related_assessments: []
+  package_status: validated
+  post_merge_status: pending
+  failed_publication_run: null
+  published_run: null
+  public_release_url: null

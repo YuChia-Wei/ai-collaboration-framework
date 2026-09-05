@@ -1,0 +1,50 @@
+schema_version: '2.0'
+source:
+  repository: https://github.com/YuChia-Wei/ai-collaboration-framework
+  release_id: REL-v0.16.0
+  version: v0.16.0
+  tag: v0.16.0
+  commit: 4d1a5c7d039618f007784679d9968c357347272b
+installation:
+  initialized_by: ai-context-init
+  imported_at: '2026-09-05T12:05:53+00:00'
+  last_upgraded_at: '2026-09-05T12:05:53+00:00'
+selection:
+  release_model: single-versioned-componentized-release
+  mandatory_components:
+  - software-development-core
+  - ai-context-lifecycle-core
+  profiles:
+  - dotnet-backend
+  providers:
+    repo-backlog:
+      enabled: false
+      preservation: preserve-existing-if-recorded
+customizations:
+  ledger: .dev/ai-context/customizations.yaml
+  schema_version: '1.0'
+effective_rules:
+  state: .dev/ai-context/effective-rules.yaml
+  packets_root: .dev/ai-context/effective-rule-packets/
+  schema_version: '1.0'
+previous_source:
+  repository: https://github.com/YuChia-Wei/ai-collaboration-prompts-dotnet-backend
+  release_id: REL-v0.9.0
+  version: v0.9.0
+  tag: v0.9.0
+  commit: c14a3260cba7d0a9e2b67b73df9e221280d2d2ef
+reconciliation:
+  unresolved: []
+last_migration:
+  status: completed
+  from_version: v0.9.0
+  to_version: v0.16.0
+  completed_at: '2026-09-05T12:05:53+00:00'
+  evidence: .dev/decisions/direct-v016-fixture.md
+policy_adoptions:
+  commit_subject_grammar:
+    policy_id: git-commit-subject/v2
+    legacy_history_tip: 40aea45eb21dad53d2e0291a382864fb4bb1bd3e
+    adopted_at: '2026-09-05T12:05:53+00:00'
+    incoming_policy_sha256: f1cb257fefdaff2699b6c87022aa6ed08061979ba86003f07a32c4522e1b6783
+    decision_evidence: .dev/decisions/direct-v016-fixture.md

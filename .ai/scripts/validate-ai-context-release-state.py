@@ -21,7 +21,9 @@ guard_direct_entrypoint(".ai/scripts/validate-ai-context-release-state.py")
 
 import argparse
 import importlib.util
+import hashlib
 import json
+import math
 import os
 import re
 import subprocess
@@ -31,7 +33,7 @@ from typing import Any, Callable
 import yaml
 
 from ai_context_package_identity import expected_artifacts, expected_package_id
-from release_asset_identity import governed as asset_identity_required, load_admission, verify_provider
+from release_asset_identity import governed as asset_identity_required, load_admission, verify_provider, contained as contained_release_asset
 from ai_context_package import PackageError
 
 from ai_context_upgrade_routes import (
@@ -516,6 +518,197 @@ def pending_terminal_issue_delivery(
     )
 
 
+def validate_direct_case_artifacts(actual_root, case, origin_identity, target_identity):
+    """Bind completion to retained target output, receipts and transaction states."""
+    def digest(document):
+        return hashlib.sha256(json.dumps(document, sort_keys=True, separators=(",", ":"), ensure_ascii=False, allow_nan=False).encode()).hexdigest()
+
+    def retained(name, *, document=True):
+        expected = f"evidence/{case['case']}/{name}"
+        record = case.get("artifacts", {}).get(name)
+        if not isinstance(record, dict) or record.get("path") != expected or not re.fullmatch(r"[0-9a-f]{64}", str(record.get("sha256"))):
+            raise ReleaseStateError("actual upgrade retained artifact binding is missing")
+        try:
+            raw = contained_release_asset(actual_root, expected).read_bytes()
+            if hashlib.sha256(raw).hexdigest() != record["sha256"]:
+                raise ReleaseStateError("actual upgrade retained artifact digest differs")
+            return json.loads(raw) if document else raw
+        except ReleaseStateError:
+            raise
+        except (OSError, ValueError, PackageError) as exc:
+            raise ReleaseStateError("actual upgrade retained artifact is unavailable or invalid") from exc
+
+    transaction = case.get("transaction_id")
+    if not re.fullmatch(r"[0-9a-f]{64}", str(transaction)):
+        raise ReleaseStateError("actual upgrade transaction identity is missing")
+    before = retained("prestate.json", document=False)
+    after = retained("poststate.json", document=False)
+    if hashlib.sha256(before).hexdigest() != case.get("prestate_sha256") or hashlib.sha256(after).hexdigest() != case.get("poststate_sha256"):
+        raise ReleaseStateError("actual upgrade state snapshot digest differs")
+    packet = retained("packet.json")
+    decision = retained("decision.json")
+    origin = packet.get("provenance", {}).get("source", {})
+    selected = packet.get("migration", {}).get("selected_input", {})
+    incoming = packet.get("package", {})
+    if (packet.get("schema_version") != "upgrade-remediation-packet/v1"
+            or origin.get("version") != case.get("origin") or origin.get("commit") != origin_identity["commit"]
+            or selected.get("previous_version") != case["origin"].lstrip("v")
+            or selected.get("previous_files_sha256") != origin_identity["manifest"]["sha256"]
+            or incoming.get("source", {}).get("commit") != target_identity["commit"]
+            or incoming.get("manifest_sha256") != target_identity["manifest"]["sha256"]):
+        raise ReleaseStateError("actual upgrade origin or incoming packet identity differs")
+    packet_unsigned = {key: value for key, value in packet.items() if key != "canonical_digest"}
+    if (packet.get("transaction_id") != transaction or packet.get("plan_sha256") != transaction
+            or digest(packet_unsigned) != packet.get("canonical_digest")
+            or decision.get("packet_sha256") != packet.get("canonical_digest")
+            or decision.get("transaction_id") != transaction or decision.get("status") != "approved"):
+        raise ReleaseStateError("actual upgrade packet or decision binding differs")
+    before_authority = retained("provenance-before.yaml", document=False)
+    after_authority = retained("provenance-after.yaml", document=False)
+    before_provenance = yaml.safe_load(before_authority)
+    after_provenance = yaml.safe_load(after_authority)
+    if (before_provenance.get("source") != packet["provenance"]["source"]
+            or hashlib.sha256(before_authority).hexdigest() != packet["provenance"].get("sha256")):
+        raise ReleaseStateError("actual upgrade prior provenance differs from its packet")
+    if case["recovery"] != "none":
+        interrupted = retained("interrupted.json", document=False)
+        recovery = retained("recovery.json")
+        if interrupted == before or recovery.get("transaction_id") != transaction:
+            raise ReleaseStateError("actual upgrade interruption or recovery evidence is incomplete")
+        expected_state = "rolled-back" if case["recovery"] == "rolled-back" else "awaiting-target-validation"
+        if recovery.get("state", recovery.get("transaction_state")) != expected_state:
+            raise ReleaseStateError("actual upgrade recovery did not reach the expected state")
+    if case["recovery"] == "rolled-back":
+        if before != after or before_authority != after_authority:
+            raise ReleaseStateError("actual upgrade rollback snapshots differ")
+        return
+    if (after_provenance.get("source", {}).get("commit") != target_identity["commit"]
+            or after_provenance.get("previous_source", {}).get("commit") != origin_identity["commit"]):
+        raise ReleaseStateError("actual upgrade finalized provenance source differs")
+    before_ledger = yaml.safe_load(retained("customizations-before.yaml", document=False))
+    after_ledger = yaml.safe_load(retained("customizations-after.yaml", document=False))
+    if {item["id"] for item in before_ledger["customizations"]} != {item["id"] for item in after_ledger["customizations"]}:
+        raise ReleaseStateError("actual upgrade customization identities were not preserved")
+    receipt = retained("supplied-target-validation.json")
+    execution = case.get("target_validation", {})
+    output = retained("target-validation.log", document=False)
+    finalization = retained("finalization.json")
+    if (receipt.get("schema_version") != "target-validation-receipt/v1"
+            or receipt.get("transaction_id") != transaction or receipt.get("plan_sha256") != transaction
+            or receipt.get("packet_sha256") != packet["canonical_digest"]
+            or receipt.get("decision_sha256") != case["artifacts"]["decision.json"]["sha256"]
+            or receipt.get("execution") != execution or finalization != case.get("finalization")):
+        raise ReleaseStateError("actual upgrade validation receipt or finalization binding differs")
+    profile = packet.get("target_validation_profile", {})
+    if (not isinstance(execution.get("argv"), list) or not execution["argv"]
+            or execution["argv"] != profile.get("argv") or receipt.get("target_validation_profile") != profile
+            or receipt.get("target_validation_profile_digest") != packet.get("target_validation_profile_digest")
+            or execution.get("outcome") != "passed" or type(execution.get("exit_code")) is not int or execution["exit_code"] != 0
+            or not re.fullmatch(r"[0-9a-f]{64}", str(execution.get("output_sha256")))
+            or hashlib.sha256(output).hexdigest() != execution["output_sha256"]
+            or not isinstance(execution.get("evidence"), str) or transaction not in execution["evidence"]):
+        raise ReleaseStateError("actual upgrade target command or output evidence differs")
+    if iso_timestamp(execution.get("completed_at"), "target validation completed_at") < iso_timestamp(execution.get("started_at"), "target validation started_at"):
+        raise ReleaseStateError("actual upgrade target validation timing is invalid")
+    failed_receipt = retained("failed-target-validation.json")
+    failed_output = retained("target-validation-rejected.log", document=False)
+    failed_execution = case.get("failed_target_validation", {})
+    if (any(failed_receipt.get(key) != receipt.get(key) for key in (
+            "schema_version", "transaction_id", "plan_sha256", "packet_sha256",
+            "decision_sha256", "target_validation_profile", "target_validation_profile_digest"))
+            or failed_receipt.get("execution") != failed_execution
+            or failed_execution.get("argv") != profile["argv"]
+            or failed_execution.get("outcome") != "failed"
+            or type(failed_execution.get("exit_code")) is not int or failed_execution["exit_code"] != 17
+            or hashlib.sha256(failed_output).hexdigest() != failed_execution.get("output_sha256")
+            or not isinstance(failed_execution.get("evidence"), str) or transaction not in failed_execution["evidence"]):
+        raise ReleaseStateError("actual upgrade failed target execution evidence differs")
+    if iso_timestamp(failed_execution.get("completed_at"), "failed target completed_at") < iso_timestamp(failed_execution.get("started_at"), "failed target started_at"):
+        raise ReleaseStateError("actual upgrade failed target validation timing is invalid")
+    for label in ("failed-target-validation-receipt", "target-validator-disagreement"):
+        rejected = [item for item in case.get("negative_evidence", []) if item.get("case") == label]
+        if (len(rejected) != 1 or rejected[0].get("outcome") != "passed"
+                or not re.fullmatch(r"[0-9a-f]{64}", str(rejected[0].get("protected_state_sha256")))
+                or not rejected[0].get("observed_rejection")):
+            raise ReleaseStateError("actual upgrade failed validation lacks protected-state rejection evidence")
+
+
+def validate_direct_upgrade_execution(root, version, sources, matrix):
+    """Require actual isolated target evidence for every prospective direct origin."""
+    release_dir = root / ".dev/releases" / version
+    evidence_path = release_dir / "route-assets/actual/terminal.json"
+    try:
+        evidence = json.loads(evidence_path.read_bytes())
+    except (OSError, ValueError) as exc:
+        raise ReleaseStateError("actual direct upgrade terminal is missing or invalid") from exc
+    if (evidence.get("schema_version") != "direct-upgrade-execution/v1"
+            or evidence.get("evidence_kind") != "actual-isolated-target-execution"
+            or evidence.get("outcome") != "passed"):
+        raise ReleaseStateError("actual direct upgrade evidence must report passed execution")
+    archives = {edge["artifacts"]["archive"]["sha256"] for route in matrix["routes"] for edge in route["edges"] if edge["to_version"] == version}
+    if archives != {evidence.get("archive_sha256")}:
+        raise ReleaseStateError("actual upgrade archive differs from the direct route subject")
+    if evidence.get("package_source", {}).get("commit") != matrix["target"]["commit"]:
+        raise ReleaseStateError("actual upgrade package source differs from the matrix")
+    runner = evidence.get("runner", {})
+    path = ".github/scripts/validate-v016-direct-upgrades.py"
+    if runner.get("path") != path:
+        raise ReleaseStateError("actual upgrade runner is not the canonical execution authority")
+    if not SHA_RE.fullmatch(str(evidence.get("subject_sha"))):
+        raise ReleaseStateError("actual upgrade subject SHA is invalid")
+    start = iso_timestamp(evidence.get("started_at"), "actual execution started_at")
+    end = iso_timestamp(evidence.get("completed_at"), "actual execution completed_at")
+    duration = evidence.get("duration_seconds")
+    invocation = evidence.get("invocation")
+    if (end < start or type(duration) not in (int, float) or not math.isfinite(duration) or duration <= 0
+            or not isinstance(invocation, list) or len(invocation) < 4
+            or invocation[1] != path or not all(isinstance(arg, str) and arg for arg in invocation)
+            or invocation.count("--subject-sha") != 1 or invocation[-1] == "--subject-sha"
+            or invocation[invocation.index("--subject-sha") + 1] != evidence["subject_sha"]):
+        raise ReleaseStateError("actual upgrade execution command or timing is incomplete")
+    if hashlib.sha256((root / path).read_bytes()).hexdigest() != runner.get("sha256"):
+        raise ReleaseStateError("actual upgrade runner content differs from execution")
+    required_negatives = {"missing-origin-manifest", "tampered-origin-manifest", "origin-version-disagreement", "tampered-incoming-validator", "fault-injected-incoming-validator-disagreement", "ambiguous-provenance-authority", "unresolved-customization", "missing-owner-decision", "tampered-owner-decision", "missing-target-validation", "failed-target-validation-receipt", "target-validator-disagreement", "tampered-target-validation-receipt", "candidate-authority-disagreement"}
+    cases = evidence.get("cases")
+    if not isinstance(cases, list) or len(cases) != 3 * len(sources):
+        raise ReleaseStateError("actual upgrade matrix must contain three cases per origin")
+    for origin in sources:
+        selected = {case.get("case"): case for case in cases if case.get("origin") == origin}
+        labels = {origin + suffix for suffix in ("-pristine-resume", "-customized-none", "-customized-rollback")}
+        if set(selected) != labels or any(case.get("outcome") != "passed" for case in selected.values()):
+            raise ReleaseStateError("actual upgrade origin cases are incomplete or failed")
+        rollback = selected[origin + "-customized-rollback"]
+        if (rollback.get("recovery") != "rolled-back"
+                or not re.fullmatch(r"[0-9a-f]{64}", str(rollback.get("prestate_sha256")))
+                or rollback.get("prestate_sha256") != rollback.get("poststate_sha256")):
+            raise ReleaseStateError("actual upgrade rollback lacks exact restored prestate")
+        origin_identity = next((item for item in matrix["retained_origins"] if item["version"] == origin), None)
+        if origin_identity is None:
+            raise ReleaseStateError("actual upgrade origin identity is missing from matrix")
+        for suffix, recovery in (("-pristine-resume", "resume"), ("-customized-none", "none"), ("-customized-rollback", "rolled-back")):
+            case = selected[origin + suffix]
+            if case.get("recovery") != recovery:
+                raise ReleaseStateError("actual upgrade recovery mode differs from its case")
+            validate_direct_case_artifacts(release_dir / "route-assets/actual", case, origin_identity, matrix["target"])
+        for suffix in ("-pristine-resume", "-customized-none"):
+            case = selected[origin + suffix]
+            final = case.get("finalization", {})
+            validation = case.get("target_validation", {})
+            if (final.get("status") != "finalized" or final.get("effective_rule_readiness", {}).get("action_ready") is not True
+                    or validation.get("outcome") != "passed" or validation.get("exit_code") != 0):
+                raise ReleaseStateError("actual upgrade requires passed target validation and finalized action readiness")
+            cutovers = case.get("semantic_cutovers", {})
+            if any(cutovers.get(key) != expected for key, expected in {"provider_component_selection": "preserved", "source_specific_managed_removals": "verified", "commit_grammar_adoption": "verified", "effective_rule_regeneration": "verified", "skill_retirement": "verified"}.items()):
+                raise ReleaseStateError("actual upgrade semantic cutover evidence is incomplete")
+        if not selected[origin + "-customized-none"]["semantic_cutovers"].get("target_customization_ids"):
+            raise ReleaseStateError("actual customized upgrade lacks retained semantic customization")
+        negative = selected[origin + "-pristine-resume"].get("negative_evidence", [])
+        if not required_negatives.issubset({item.get("case") for item in negative
+                if item.get("outcome") == "passed" and item.get("observed_rejection")
+                and re.fullmatch(r"[0-9a-f]{64}", str(item.get("protected_state_sha256")))}):
+            raise ReleaseStateError("actual upgrade fail-closed boundary evidence is incomplete")
+
+
 def validate_retained_origin_route_evidence(
     root: Path,
     version: str,
@@ -532,12 +725,38 @@ def validate_retained_origin_route_evidence(
         if artifacts != expected:
             raise ReleaseStateError("artifacts must name the two canonical authored files")
         return
-    if len(automatic_upgrade_sources) != 1:
+    direct_required = version_key(version) >= (0, 16, 0)
+    if direct_required:
+        predecessors = []
+        for path in (root / ".dev/releases").glob("v*/release.yaml"):
+            try:
+                record = yaml.safe_load(path.read_bytes())
+            except (OSError, yaml.YAMLError) as exc:
+                raise ReleaseStateError(f"cannot read governed predecessor: {path}") from exc
+            if not isinstance(record, dict):
+                raise ReleaseStateError(f"invalid governed predecessor: {path}")
+            candidate = record.get("version")
+            if record.get("distribution_kind") == "governed-package":
+                if not isinstance(candidate, str):
+                    raise ReleaseStateError(f"missing governed predecessor version: {path}")
+                if version_key(candidate) < version_key(version):
+                    predecessors.append(candidate)
+        if not predecessors:
+            raise ReleaseStateError("cannot establish the immediate previous governed package")
+        previous = max(predecessors, key=version_key)
+        expected_sources = ["v0.6.0", "v0.9.0", previous]
+        if automatic_upgrade_sources != expected_sources:
+            raise ReleaseStateError(
+                f"v0.16+ automatic sources must exactly equal {expected_sources}"
+            )
+        origins = (previous, "v0.9.0", "v0.6.0")
+    elif len(automatic_upgrade_sources) != 1:
         raise ReleaseStateError(
             "compatibility.automatic_upgrade_sources must contain exactly "
             "the immediate previous governed package version"
         )
-    origins = (automatic_upgrade_sources[0], "v0.9.0", "v0.6.0")
+    else:
+        origins = (automatic_upgrade_sources[0], "v0.9.0", "v0.6.0")
     expected_evidence = [
         f"route-evidence/{origin}-to-{version}.json" for origin in origins
     ]
@@ -581,6 +800,10 @@ def validate_retained_origin_route_evidence(
             raise ReleaseStateError(
                 f"{matrix_path}: cannot prove {origin} to {version}: {exc}"
             ) from exc
+        if direct_required and result.get("route_kind") != "direct":
+            raise ReleaseStateError(
+                f"{origin} to {version} requires one direct edge; intermediate upgrades cannot satisfy retained support"
+            )
         if result.get("route_kind") not in {"direct", "orchestrated-multi-hop"}:
             raise ReleaseStateError(
                 f"{origin} to {version} must resolve direct or orchestrated-multi-hop"
@@ -595,6 +818,9 @@ def validate_retained_origin_route_evidence(
             raise ReleaseStateError(
                 f"{evidence_path}: route evidence differs from canonical resolver output"
             )
+
+    if direct_required:
+        validate_direct_upgrade_execution(root, version, automatic_upgrade_sources, matrix)
 
 
 def validate_publication_authority(version: str, distribution: dict[str, Any]) -> None:

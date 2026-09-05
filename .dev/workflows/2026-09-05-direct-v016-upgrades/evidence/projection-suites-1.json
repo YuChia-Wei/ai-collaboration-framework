@@ -1,0 +1,45 @@
+{
+  "schema_version": "bounded-unit-suites/v1",
+  "subject_sha": "4d1a5c7d039618f007784679d9968c357347272b",
+  "started_at": "2026-09-05T11:24:02.188993+00:00",
+  "command": [
+    "python",
+    ".dev\\ai-context\\local\\validation\\issue-272\\run-projection-suites.py",
+    "--subject-sha",
+    "4d1a5c7d039618f007784679d9968c357347272b"
+  ],
+  "outcome": "failed",
+  "suites": [
+    {
+      "command": [
+        "python",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        ".ai/scripts/tests",
+        "-p",
+        "test_ai_context_packaging.py",
+        "-v"
+      ],
+      "started_at": "2026-09-05T11:24:02.189103+00:00",
+      "completed_at": "2026-09-05T11:27:07.290576+00:00",
+      "duration_seconds": 183.91,
+      "outcome": "failed",
+      "exit_code": 1,
+      "output": ".dev/ai-context/local/validation/issue-272/projection-suites-1/test_ai_context_packaging.py.log",
+      "output_sha256": "673f5fc70015a2fad7c35d9f899fdb77f1b73b846d2144fbf71b58e55bad7d75"
+    }
+  ],
+  "completed_at": "2026-09-05T11:27:07.415610+00:00",
+  "duration_seconds": 184.035,
+  "original_receipt_sha256": "1ca5f4ee08bb7251ebcfa55b60514bb74c2962a530edb1638971d9d97556b185",
+  "summary": {
+    "tests": 47,
+    "failures": 4,
+    "skips": 0,
+    "unexecuted_suites": 2,
+    "cause": "SyntheticPackageRepo omitted validation_subject.py, a dependency of the copied portable validation-lifecycle entrypoint.",
+    "repair": "Copy the existing governed helper into the synthetic fixture; production package selection unchanged."
+  }
+}

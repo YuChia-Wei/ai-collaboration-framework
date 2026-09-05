@@ -1,0 +1,63 @@
+{
+  "packet_id": "UPG006-BASELINE-AUDIT",
+  "head_sha": "013f39116962611c3dbd2825fecd9efca3ec8e3a",
+  "outcome": "completed-baseline-analysis",
+  "route_acceptance": "not-established",
+  "findings": [
+    {
+      "id": "UPG006-B1",
+      "kind": "evidence-gap",
+      "summary": "v0.14 edge proves exact archive, sidecar, embedded metadata/payload, selected-input identity, executed incoming portable validator and exact origin manifest/migration source entry. Its cutover_id is a fixed marker; it does not execute a target planner/apply/finalization or behavioral remediation cutover."
+    },
+    {
+      "id": "UPG006-B2",
+      "kind": "required-evidence",
+      "summary": "Each authorized origin needs one actual direct v0.16 edge, same admitted target archive, pristine and customized target apply plus accepted reconciliation, target validation and finalization; prior multi-hop outputs do not satisfy direct target behavior."
+    }
+  ],
+  "cutovers": [
+    "v0.7-v0.9: target-owned work-management, provider/component/validation selections remain explicit; previous pending apply evidence must be reconciled; ignored required paths block before writes; effective-rule readiness cannot be synthesized.",
+    "v0.12: neutral naming/template replacements and removed EZDDD/UContract references require owner reconciliation for target custom references, not historical rewrite.",
+    "v0.13: remove framework-owned bundled analyzer/runtime provider artifacts only with base ownership proof; preserve copied or customized target code/SDK/analyzer policy; Code Reviewer needs selected dotnet-backend while core-only may remain unavailable.",
+    "v0.14: fresh pre-write remediation packet and separate owner decision bind all mutations and exact candidate authority; incoming portable validation and target validation precede provenance advancement.",
+    "Current journal v5 only: unfinished v4 blocks and requires prior-tooling/owner recovery, no implicit conversion; interruption/resume/rollback preserve exact sealed identity and prior authority.",
+    "v0.15: version-aware archive names change to ai-collaboration-framework; retain exact old origin bytes and candidate/published provenance distinctions.",
+    "v0.15.1/current: effective-state/catalog/packet freshness and explicit target semantics; Git grammar adoption binds owner decision, raw policy digest and reachable legacy_history_tip.",
+    "v0.16: retired dev-workflow/repo-structure-sync unchanged framework files removed; modified/target-owned aliases reconciled; historical identifiers preserved; exact admitted ZIP/tar/checksum publication identity stays distinct from route/target success."
+  ],
+  "required_scenarios": [
+    "Pristine direct plan/apply/finalize for v0.6,v0.9,v0.15.1 with original manifests and one v0.16 archive.",
+    "Customized target preserves target-owned files and requires decided collision/removal/ignore/component/effective-rule dispositions.",
+    "Reject invalid source/digest/owner packet/incoming-validator/target-validation evidence before mutation or provenance advancement as applicable.",
+    "Interrupt after real writes, resume exact transaction with raw byte/mode proof; rollback before finalization restores prestate; finalized rollback rejected.",
+    "Missing effective state, unresolved customization, ignored required path and unfinished legacy journal remain explicit blocked outcomes."
+  ],
+  "owner_sensitive": [
+    "User already selected all three direct origins; no new origin-selection approval is needed.",
+    "Real target-specific customization/provider/component/ignore-rule/grammar-adoption dispositions cannot be inferred from source authorization; isolated fixtures need explicit bounded recorded decisions.",
+    "An unfinished legacy transaction requires target-owner/prior-tooling recovery; do not add v4 conversion."
+  ],
+  "evidence_paths": [
+    ".ai/assets/skills/ai-context-upgrader/references/upgrade-support-policy.md",
+    ".ai/assets/skills/ai-context-upgrader/references/upgrade-playbook.md",
+    ".ai/assets/skills/ai-context-upgrader/references/provenance-contract.md",
+    ".dev/releases/v0.14.0/support-matrix.yaml",
+    ".dev/releases/v0.14.0/route-assets/validate-direct-edge.py:677",
+    ".dev/releases/v0.7.0/migration-guide.md",
+    ".dev/releases/v0.8.0/migration-guide.md",
+    ".dev/releases/v0.9.0/migration-guide.md",
+    ".dev/releases/v0.10.0/migration-guide.md",
+    ".dev/releases/v0.11.0/migration-guide.md",
+    ".dev/releases/v0.12.0/migration-guide.md",
+    ".dev/releases/v0.13.0/migration-guide.md",
+    ".dev/releases/v0.14.0/migration-guide.md",
+    ".dev/releases/v0.15.0/migration-guide.md",
+    ".dev/releases/v0.15.1/migration-guide.md",
+    ".ai/assets/skills/transitions/v0.16.0.yaml"
+  ],
+  "limitations": [
+    "No new route test executed; baseline analysis is not upgrade acceptance.",
+    "Issue280 evidence previously audited; current bounded contract analysis does not claim live provider freshness.",
+    "Builder and source release gate reconciliation remain parent-owned."
+  ]
+}

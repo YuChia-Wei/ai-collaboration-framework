@@ -403,6 +403,7 @@ def make_schema_23_upgrade_package(
         b"python payload/.ai/scripts/validate-ai-context-payload.py --package-root .\n"
     )
     payload = {
+        ".ai/scripts/ai_context_release_projection.py": (ROOT / ".ai/scripts/ai_context_release_projection.py").read_bytes(),
         validator_path: validator_content
         or (ROOT / ".ai/scripts/validate-ai-context-payload.py").read_bytes(),
         ".ai/scripts/ai_context_package_validation.py": (
@@ -575,6 +576,18 @@ def make_schema_23_upgrade_package(
     package_canonical_json = lambda document: json.dumps(
         document, ensure_ascii=False, sort_keys=True, separators=(",", ":")
     ).encode("utf-8")
+    proof["schema_version"] = "package-selected-input/v2"
+    proof["release_projection"] = {
+        "schema_version": "release-package-input/v1",
+        "source_path": ".dev/releases/v1.0.0/release.yaml",
+        "fields": {"schema_version": "1.0", "version": "v1.0.0", "release_id": "REL-v1.0.0",
+            "distribution": {"profile_id": "dotnet-backend", "package_id": package_id},
+            "compatibility": {"minimum_source_version": "0.1.0", "breaking_changes": False,
+                "automatic_upgrade_sources": ["0.9.0"]}},
+    }
+    for item in proof["source_inputs"]:
+        if item["path"] == proof["release_projection"]["source_path"]:
+            item["sha256"] = APPLY.sha256_bytes(package_canonical_json(proof["release_projection"]))
     proof_content = package_canonical_json(proof)
     validation = {
         "schema_version": "package-validation/v1",
@@ -899,6 +912,52 @@ def reseal_applied_transaction(
 
 
 class AiContextPackageApplyGwtTests(unittest.TestCase):
+    def test_gwt_272a_given_commit_grammar_adoption_when_decision_validated_then_git_sha_and_digest_widths_are_distinct(self):
+        packet = {"plan_sha256": "a" * 64, "transaction_id": "a" * 64,
+                  "automatic_proposal": {"apply_operation_ids": [], "reconciliation_ids": [],
+                      "unresolved_operation_ids": [], "ignored_framework_paths": [], "managed_state_conflicts": []}}
+        packet["canonical_digest"] = APPLY.canonical_digest(packet)
+        adoption = {"policy_id": "git-commit-subject/v2", "legacy_history_tip": "b" * 40,
+                    "adopted_at": "2026-09-05T10:00:00+00:00", "incoming_policy_sha256": "c" * 64,
+                    "decision_evidence": ".dev/decisions/adoption.md"}
+        decision = {"schema_version": "upgrade-remediation-decision/v1", "packet_sha256": packet["canonical_digest"],
+                    "plan_sha256": packet["plan_sha256"], "transaction_id": packet["transaction_id"], "status": "approved",
+                    "owner": "fixture-owner", "decided_at": adoption["adopted_at"], "evidence": adoption["decision_evidence"],
+                    "reason": "explicit grammar adoption", "accepted_operation_ids": [], "reconciliation_ids": [],
+                    "policy_adoptions": {"commit_subject_grammar": adoption},
+                    "candidate_authority": {"provenance_sha256": "d" * 64, "customizations_sha256": "e" * 64}}
+        self.assertEqual(decision, APPLY.validate_upgrade_remediation_decision(decision, packet))
+        for invalid in ("b" * 64, "b" * 39, "B" * 40, None):
+            with self.subTest(tip=invalid):
+                adoption["legacy_history_tip"] = invalid
+                with self.assertRaisesRegex(APPLY.ApplyError, "40-character Git SHA"):
+                    APPLY.validate_upgrade_remediation_decision(decision, packet)
+        adoption["legacy_history_tip"] = "b" * 40
+        adoption["incoming_policy_sha256"] = "c" * 40
+        with self.assertRaisesRegex(APPLY.ApplyError, "incoming policy SHA-256"):
+            APPLY.validate_upgrade_remediation_decision(decision, packet)
+
+    def test_gwt_272b_given_unresolved_semantic_ledger_when_approved_apply_runs_then_target_bytes_are_unchanged(self):
+        fixture = PackageApplyFixture()
+        try:
+            package = make_schema_23_upgrade_package(fixture)
+            fixture_upgrade_authorities(fixture, package["selection"], package["previous_content"])
+            fixture.add_target(".dev/ai-context/customizations.yaml", yaml.safe_dump({
+                "schema_version": "1.0", "customizations": [{"id": "CUST-PENDING", "disposition": "unresolved"}]
+            }).encode())
+            fixture.commit_target("fixture unresolved semantic authority")
+            plan = fixture.plan("0.9.0")
+            before = {path.relative_to(fixture.target).as_posix(): path.read_bytes()
+                      for path in fixture.target.rglob("*") if path.is_file() and ".git" not in path.relative_to(fixture.target).parts}
+            with self.assertRaisesRegex(APPLY.ApplyError, "unresolved target semantic customizations"):
+                RAW_APPLY_PLAN(plan, remediation_decision=fixture_remediation_decision(plan))
+            after = {path.relative_to(fixture.target).as_posix(): path.read_bytes()
+                     for path in fixture.target.rglob("*") if path.is_file() and ".git" not in path.relative_to(fixture.target).parts}
+            self.assertEqual(before, after)
+            self.assertFalse(APPLY.transaction_root(fixture.target, plan["plan_sha256"]).exists())
+        finally:
+            fixture.close()
+
     def setUp(self) -> None:
         self._prior_apply_plan = APPLY.apply_plan
         APPLY.apply_plan = apply_fixture_plan

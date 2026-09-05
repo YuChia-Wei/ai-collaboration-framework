@@ -1,0 +1,22 @@
+{
+  "archive_sha256": "fbfe02345ae2e9d2377f5bacce9fc763d99c3b48864010c458eee504cc4a515d",
+  "cases": [],
+  "completed_at": "2026-09-05T10:31:34+00:00",
+  "duration_seconds": 25.544,
+  "evidence_kind": "actual-isolated-target-execution",
+  "failure": {
+    "message": "Missing required origin manifest absent-files.yaml during negative preflight; target unchanged.",
+    "type": "FileNotFoundError"
+  },
+  "failure_fingerprint": "aaf116ec05bab58faa05fef4b3a6f04a832657a9ff163a75d56e602df5b0372c",
+  "outcome": "failed",
+  "package_source": {
+    "commit": "23c2719000c8dca3058449c2f1bbfa93c3e1bbed",
+    "ref": "23c2719000c8dca3058449c2f1bbfa93c3e1bbed",
+    "repository": "https://github.com/YuChia-Wei/ai-collaboration-framework",
+    "tree": "0338748dd953fdc6598a0c05ce2fbebe15fc0231"
+  },
+  "schema_version": "direct-upgrade-execution/v1",
+  "started_at": "2026-09-05T10:31:08+00:00",
+  "subject_sha": "23c2719000c8dca3058449c2f1bbfa93c3e1bbed"
+}

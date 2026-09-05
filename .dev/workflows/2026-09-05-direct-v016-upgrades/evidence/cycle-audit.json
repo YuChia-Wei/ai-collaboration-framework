@@ -1,0 +1,72 @@
+{
+  "packet_id": "UPG006-RELEASE-PREPARATION-CYCLE-AUDIT",
+  "head_sha": "21b6b513ffe31b59bf6462a1e449766d9537145e",
+  "outcome": "blocked-policy-ordering-gap",
+  "finding_id": "UPG006-CYCLE-R1",
+  "finding": "No fully supported honest final-asset preparation sequence is defined by the reviewed current policy and gates. Source status validated requires completed source gates; candidate gate requires validated status plus actual direct archive evidence; exact selected inputs hash the entire release.yaml. Updating planned to validated after execution invalidates the admitted source projection. Marking validated before execution conflicts with its defined meaning. Rebuilding alone moves the same unresolved ordering boundary to a new archive.",
+  "evidence": [
+    {
+      "path": ".dev/standards/AI-CONTEXT-SOURCE-RELEASE-POLICY.md",
+      "lines": [
+        26,
+        69,
+        74,
+        94,
+        110,
+        210,
+        214
+      ],
+      "detail": "Validated is terminal after required source gates; finalize selected inputs before clean preparation build; source drift requires new candidate. Automation may build/retain evidence, but no explicit provisional status or prerequisite/admission split is defined."
+    },
+    {
+      "path": ".ai/scripts/ai_context_package.py",
+      "lines": [
+        2008,
+        2012
+      ],
+      "detail": "source_input_bytes includes raw release.yaml bytes."
+    },
+    {
+      "path": ".ai/scripts/release_asset_identity.py",
+      "lines": [
+        132,
+        143
+      ],
+      "detail": "verify_source rereads release.yaml and compares full selected-input document/fingerprint."
+    },
+    {
+      "path": ".ai/scripts/validate-ai-context-release-state.py",
+      "lines": [
+        716,
+        745,
+        683,
+        1195
+      ],
+      "detail": "Candidate requires validated status, retained direct route and actual terminal evidence, then current-ref asset admission."
+    },
+    {
+      "path": ".dev/releases/v0.16.0/release.yaml",
+      "lines": [
+        4
+      ],
+      "detail": "Current status is planned."
+    }
+  ],
+  "owner_decision_choices": [
+    {
+      "choice": "Explicitly separate preparation and admission gates",
+      "detail": "Define which completed prerequisite evidence authorizes freezing the final source record, and state that archive-specific execution/admission remains pending until independently proven. Preserve candidate/tag fail-closed gates. This changes or clarifies validated semantics and requires owner approval; do not silently apply."
+    },
+    {
+      "choice": "Version the selected-input identity boundary",
+      "detail": "Keep validated meaning completed acceptance, but define a canonical package-relevant release projection or separate stable package input record so post-execution source status/evidence can change without changing asset identity. Specify exact excluded mutable fields and guard their semantics independently; do not blanket-ignore release.yaml drift."
+    }
+  ],
+  "limitations": [
+    "Read-only policy/executable analysis only; no actual matrix or provider calls.",
+    "No owner decision, exception, provisional authorization, or publication authority inferred.",
+    "No broad historical scan; prior releases cannot silently authorize an exception to the new v0.16 exact-byte policy.",
+    "Parent owns resolution and implementation."
+  ],
+  "prior_counterexample_path": ".dev/ai-context/local/validation/issue-272/actual-gate-counterexample/result.json"
+}

@@ -100,8 +100,10 @@ def validate_upgrade_test_horizon(
         compatibility = data.get("compatibility")
         if not isinstance(compatibility, dict):
             continue
-        expected_sources = RETAINED_UPGRADE_TEST_SOURCES.get(
-            version, [previous_version]
+        expected_sources = (
+            ["v0.6.0", "v0.9.0", previous_version]
+            if current_key >= (0, 16, 0)
+            else RETAINED_UPGRADE_TEST_SOURCES.get(version, [previous_version])
         )
         if compatibility.get("automatic_upgrade_sources") != expected_sources:
             errors.append(
@@ -112,7 +114,7 @@ def validate_upgrade_test_horizon(
             )
         expected_minimum = (
             expected_sources[0]
-            if version in RETAINED_UPGRADE_TEST_SOURCES
+            if current_key >= (0, 16, 0) or version in RETAINED_UPGRADE_TEST_SOURCES
             else previous_version
         )
         if (

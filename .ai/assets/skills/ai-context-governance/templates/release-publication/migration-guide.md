@@ -4,10 +4,12 @@
 
 <state-the-supported-automatic-and-reviewed-manual-sources>
 
-State exactly one automatic source for candidates after the retained v0.6.0
-baseline: the immediate previous governed package. If this release is breaking,
-identify it as a migration checkpoint. Keep older reviewed reconciliation paths
-separate from the required automatic-upgrade test route.
+For v0.16.0 and later, name the three required direct sources: v0.6.0, v0.9.0,
+and the immediate previous governed package. Expose one entry point per source,
+with no intermediate package application. State the required owner reconciliation,
+target validation, finalization and recovery steps. Retained sources continue
+until an explicit owner-approved versioned deprecation. Earlier release records
+retain their historical source policy.
 
 ## Before You Start
 

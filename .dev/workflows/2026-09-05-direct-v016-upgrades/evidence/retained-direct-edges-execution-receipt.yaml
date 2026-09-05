@@ -1,0 +1,19 @@
+schema_version: '1.0'
+record_type: terminal-command-execution
+producer: external-task-completion
+subject_sha: 5ca4fcfe9d00d556dab21db9a90bd575cc01c25a
+command: '["python", ".dev/ai-context/local/validation/issue-272/execute-staged-edges.py",
+  "--staging", ".dev/ai-context/local/validation/issue-272/route-staging-1", "--subject-sha",
+  "5ca4fcfe9d00d556dab21db9a90bd575cc01c25a", "--actual-dir", ".dev/ai-context/local/validation/issue-272/actual-attempt-5"]'
+profile: retained-direct-edges
+started_at: '2026-09-05T12:32:47.970807+00:00'
+completed_at: '2026-09-05T12:33:45.727620+00:00'
+duration_seconds: 57.757
+executed: true
+synthetic: false
+outcome: passed
+exit_code: 0
+evidence_refs:
+- ignored:.dev/ai-context/local/validation/issue-272/route-staging-1/edge-execution-terminal.json
+evidence_sha256: e721ae67458a2b0d772792ba9a3e96829055ea2fd61981c600989dab32e93b8b
+receipt_sha256: 116abebf94949ac8a17becd3db709ab6614c62954ca9a2bdb63756ecaea3b0d7

@@ -1,0 +1,224 @@
+{
+  "schema_version": "retained-acceptance-projection/v1",
+  "issue": 272,
+  "runtime_ledger_sha256": "c6f9693d5b7c997d896790c507c21421e80e4c62a3e7dfc7bbf1d611b865e7d3",
+  "purpose": "Portable location projection of a validated historical runtime ledger; not a new execution receipt.",
+  "entries": [
+    {
+      "acceptance_id": "UPG006-AC2",
+      "outcome": "passed",
+      "requires_actual_execution": true,
+      "evidence_kind": "actual-execution",
+      "execution_subject_sha": "5ca4fcfe9d00d556dab21db9a90bd575cc01c25a",
+      "runtime_evidence_sha256": "14a981794188b728c5b659050cf9f2a950cfcb113b5fe97ad0aff9ad1823619f",
+      "retained_evidence": [
+        {
+          "path": ".dev/releases/v0.16.0/route-assets/actual/terminal.json",
+          "sha256": "14a981794188b728c5b659050cf9f2a950cfcb113b5fe97ad0aff9ad1823619f"
+        }
+      ]
+    },
+    {
+      "acceptance_id": "UPG006-AC3",
+      "outcome": "passed",
+      "requires_actual_execution": true,
+      "evidence_kind": "actual-execution",
+      "execution_subject_sha": "5ca4fcfe9d00d556dab21db9a90bd575cc01c25a",
+      "runtime_evidence_sha256": "14a981794188b728c5b659050cf9f2a950cfcb113b5fe97ad0aff9ad1823619f",
+      "retained_evidence": [
+        {
+          "path": ".dev/releases/v0.16.0/route-assets/actual/terminal.json",
+          "sha256": "14a981794188b728c5b659050cf9f2a950cfcb113b5fe97ad0aff9ad1823619f"
+        }
+      ]
+    },
+    {
+      "acceptance_id": "UPG006-AC4-target",
+      "outcome": "passed",
+      "requires_actual_execution": true,
+      "evidence_kind": "actual-execution",
+      "execution_subject_sha": "5ca4fcfe9d00d556dab21db9a90bd575cc01c25a",
+      "runtime_evidence_sha256": "14a981794188b728c5b659050cf9f2a950cfcb113b5fe97ad0aff9ad1823619f",
+      "retained_evidence": [
+        {
+          "path": ".dev/releases/v0.16.0/route-assets/actual/terminal.json",
+          "sha256": "14a981794188b728c5b659050cf9f2a950cfcb113b5fe97ad0aff9ad1823619f"
+        }
+      ]
+    },
+    {
+      "acceptance_id": "UPG006-AC5",
+      "outcome": "passed",
+      "requires_actual_execution": true,
+      "evidence_kind": "actual-execution",
+      "execution_subject_sha": "5ca4fcfe9d00d556dab21db9a90bd575cc01c25a",
+      "runtime_evidence_sha256": "14a981794188b728c5b659050cf9f2a950cfcb113b5fe97ad0aff9ad1823619f",
+      "retained_evidence": [
+        {
+          "path": ".dev/releases/v0.16.0/route-assets/actual/terminal.json",
+          "sha256": "14a981794188b728c5b659050cf9f2a950cfcb113b5fe97ad0aff9ad1823619f"
+        }
+      ]
+    },
+    {
+      "acceptance_id": "UPG006-AC1",
+      "outcome": "passed",
+      "requires_actual_execution": true,
+      "evidence_kind": "actual-execution",
+      "execution_subject_sha": "5ca4fcfe9d00d556dab21db9a90bd575cc01c25a",
+      "runtime_evidence_sha256": "e721ae67458a2b0d772792ba9a3e96829055ea2fd61981c600989dab32e93b8b",
+      "retained_evidence": [
+        {
+          "path": ".dev/workflows/2026-09-05-direct-v016-upgrades/evidence/edge-execution-terminal.json",
+          "sha256": "e721ae67458a2b0d772792ba9a3e96829055ea2fd61981c600989dab32e93b8b"
+        }
+      ]
+    },
+    {
+      "acceptance_id": "UPG006-AC4-route",
+      "outcome": "passed",
+      "requires_actual_execution": true,
+      "evidence_kind": "actual-execution",
+      "execution_subject_sha": "5ca4fcfe9d00d556dab21db9a90bd575cc01c25a",
+      "runtime_evidence_sha256": "e721ae67458a2b0d772792ba9a3e96829055ea2fd61981c600989dab32e93b8b",
+      "retained_evidence": [
+        {
+          "path": ".dev/workflows/2026-09-05-direct-v016-upgrades/evidence/edge-execution-terminal.json",
+          "sha256": "e721ae67458a2b0d772792ba9a3e96829055ea2fd61981c600989dab32e93b8b"
+        }
+      ]
+    },
+    {
+      "acceptance_id": "UPG006-AC6",
+      "outcome": "passed",
+      "requires_actual_execution": false,
+      "evidence_kind": "document",
+      "execution_subject_sha": "5ca4fcfe9d00d556dab21db9a90bd575cc01c25a",
+      "runtime_evidence_sha256": "aad49d592ab7306641566f47259c6003014e4f7b285c8c4202874f49ffc16fc2",
+      "retained_evidence": [
+        {
+          "path": ".dev/releases/v0.16.0/migration-guide.md",
+          "sha256": "f585c456ca867b01a7e35b10e7ff4aa256d7eb1e193c829227890858cd856ca2"
+        },
+        {
+          "path": ".dev/standards/AI-CONTEXT-SOURCE-RELEASE-POLICY.md",
+          "sha256": "59a0a8438d1ac19e61caf57d348c01c5391590ef8993743b5e65360d8e9f1683"
+        }
+      ]
+    },
+    {
+      "acceptance_id": "UPG006-AC7",
+      "outcome": "deferred",
+      "requires_actual_execution": false,
+      "evidence_kind": "document",
+      "execution_subject_sha": "5ca4fcfe9d00d556dab21db9a90bd575cc01c25a",
+      "runtime_evidence_sha256": "b0fa37085191311b17eaf3f6cf7100f77496b748f5ca6b54bb201ae7100384e2",
+      "retained_evidence": [
+        {
+          "path": ".dev/releases/v0.16.0/artifact-admission.json",
+          "sha256": "65681161934de0c235c936c0e596f6c7fa609e10c53de6bfceacdd5e277bb81a"
+        }
+      ]
+    }
+  ],
+  "human_report": {
+    "entries": [
+      {
+        "acceptance_id": "UPG006-AC2",
+        "outcome": "passed",
+        "retained_evidence": [
+          {
+            "path": ".dev/releases/v0.16.0/route-assets/actual/terminal.json",
+            "sha256": "14a981794188b728c5b659050cf9f2a950cfcb113b5fe97ad0aff9ad1823619f"
+          }
+        ]
+      },
+      {
+        "acceptance_id": "UPG006-AC3",
+        "outcome": "passed",
+        "retained_evidence": [
+          {
+            "path": ".dev/releases/v0.16.0/route-assets/actual/terminal.json",
+            "sha256": "14a981794188b728c5b659050cf9f2a950cfcb113b5fe97ad0aff9ad1823619f"
+          }
+        ]
+      },
+      {
+        "acceptance_id": "UPG006-AC4-target",
+        "outcome": "passed",
+        "retained_evidence": [
+          {
+            "path": ".dev/releases/v0.16.0/route-assets/actual/terminal.json",
+            "sha256": "14a981794188b728c5b659050cf9f2a950cfcb113b5fe97ad0aff9ad1823619f"
+          }
+        ]
+      },
+      {
+        "acceptance_id": "UPG006-AC5",
+        "outcome": "passed",
+        "retained_evidence": [
+          {
+            "path": ".dev/releases/v0.16.0/route-assets/actual/terminal.json",
+            "sha256": "14a981794188b728c5b659050cf9f2a950cfcb113b5fe97ad0aff9ad1823619f"
+          }
+        ]
+      },
+      {
+        "acceptance_id": "UPG006-AC1",
+        "outcome": "passed",
+        "retained_evidence": [
+          {
+            "path": ".dev/workflows/2026-09-05-direct-v016-upgrades/evidence/edge-execution-terminal.json",
+            "sha256": "e721ae67458a2b0d772792ba9a3e96829055ea2fd61981c600989dab32e93b8b"
+          }
+        ]
+      },
+      {
+        "acceptance_id": "UPG006-AC4-route",
+        "outcome": "passed",
+        "retained_evidence": [
+          {
+            "path": ".dev/workflows/2026-09-05-direct-v016-upgrades/evidence/edge-execution-terminal.json",
+            "sha256": "e721ae67458a2b0d772792ba9a3e96829055ea2fd61981c600989dab32e93b8b"
+          }
+        ]
+      },
+      {
+        "acceptance_id": "UPG006-AC6",
+        "outcome": "passed",
+        "retained_evidence": [
+          {
+            "path": ".dev/releases/v0.16.0/migration-guide.md",
+            "sha256": "f585c456ca867b01a7e35b10e7ff4aa256d7eb1e193c829227890858cd856ca2"
+          },
+          {
+            "path": ".dev/standards/AI-CONTEXT-SOURCE-RELEASE-POLICY.md",
+            "sha256": "59a0a8438d1ac19e61caf57d348c01c5391590ef8993743b5e65360d8e9f1683"
+          }
+        ]
+      },
+      {
+        "acceptance_id": "UPG006-AC7",
+        "outcome": "deferred",
+        "retained_evidence": [
+          {
+            "path": ".dev/releases/v0.16.0/artifact-admission.json",
+            "sha256": "65681161934de0c235c936c0e596f6c7fa609e10c53de6bfceacdd5e277bb81a"
+          }
+        ]
+      }
+    ],
+    "report_sha256": "125e609e2e6ba98d8732330f20532cce764f60e044471bcc85a17913e57ae078"
+  },
+  "limits": [
+    "Independent integration review passed; current provider delivery and source-candidate admission remain pending.",
+    "Actual execution used isolated representative targets.",
+    "Issue 280 public archive acceptance is deferred until publication."
+  ],
+  "integration_review": {
+    "path": ".dev/workflows/2026-09-05-direct-v016-upgrades/evidence/integration-audit-1.json",
+    "sha256": "3b4e29725dbdc05731683af1861cb18c09611302503d3ef8229ad9564e7466e0",
+    "head_sha": "940afee97cc318af15f698b0321011aadc49c7ef",
+    "outcome": "passed"
+  }
+}

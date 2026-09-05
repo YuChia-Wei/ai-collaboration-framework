@@ -1,0 +1,54 @@
+{
+  "schema_version": "1.0",
+  "packet_id": "UPG006-STAGING-PREINTEGRATION-AUDIT",
+  "source_sha": "5ca4fcfe9d00d556dab21db9a90bd575cc01c25a",
+  "draft_subject_sha256": "3f424eea39fec0748e41b49abad7b3f5fe48b61d63e493177e88ac3c0c55d9fa",
+  "draft_content_hashes": {
+    ".dev/ai-context/local/validation/issue-272/draft-assemble-routes.py": "daec08db37c7e90ad343b50065da5aac65559e381e364fe865b17397016961f0",
+    ".dev/ai-context/local/validation/issue-272/draft-direct-edge.py": "10777815ce65028f555eb9f692e479a099b9d129ca47bbc8699002112ee333ed",
+    ".dev/ai-context/local/validation/issue-272/execute-staged-edges.py": "d12b3be86fcc6201f080990cf1f18b461d88284a71dc3fcee323c5a318581edb",
+    ".dev/ai-context/local/validation/issue-272/validate-staged-admission.py": "1a8d4b140440dfa99fa32f734027a351f792139d8f8389a3c103af8fb15c7766",
+    ".dev/ai-context/local/validation/issue-272/prepare-acceptance-ledger.py": "5641b53665972835d6d47fc5acfbe95096186238e8f708cdb0a7eda810b10270"
+  },
+  "outcome": "failed",
+  "blocking_findings": 2,
+  "findings": [
+    {
+      "id": "UPG006-STAGING-R1",
+      "severity": "P2",
+      "file": ".dev\\ai-context\\local\\validation\\issue-272\\execute-staged-edges.py",
+      "line": 33,
+      "finding": "TimeoutExpired bypasses output writing and edge observation append. The generic handler records only a generic failure; captured partial stdout/stderr and the timed-out edge command/duration are lost. A zero-entry terminal can therefore omit an edge that actually executed.",
+      "impact": "Failure evidence and bounded execution bookkeeping are incomplete for the explicit 240-second timeout path."
+    },
+    {
+      "id": "UPG006-STAGING-R2",
+      "severity": "P2",
+      "file": ".dev\\ai-context\\local\\validation\\issue-272\\prepare-acceptance-ledger.py",
+      "line": 29,
+      "finding": "The edge receipt reconstructs command from current CLI arguments instead of using or comparing edges_terminal.invocation. Alternate equivalent invocation spelling, argument ordering or different actual-dir argument is silently replaced in a receipt marked executed. Unlike the actual matrix entry, the resulting execution identity is not bound to what the terminal reports.",
+      "impact": "The acceptance ledger can misstate the exact executed edge command and targets."
+    }
+  ],
+  "observations": [
+    "All five draft hashes and canonical subject digest verified before and after review.",
+    "Prospective matrix retained roles, ordered one-edge routes, schema1.1 package identity, upgrade-edge-validation/v2 receipt and incoming-package-validation/v1 field mapping match current resolver contracts.",
+    "Per-origin reason is emitted in validator JSON output; the edge report hashes the retained output and canonical resolver evidence binds report/output descriptors.",
+    "Assembler copies actual terminal and every advertised case artifact as raw bytes after checking source hashes. Staged admission invokes current retained route plus actual evidence gates without claiming candidate/provider phase success.",
+    "AC7 is deferred; no actual execution, publication or final source acceptance inferred by this review."
+  ],
+  "gate_states": {
+    "fixed_source_and_draft_hashes": "re-executed",
+    "schema_api_review": "re-executed",
+    "actual_copy_and_reason_binding_review": "re-executed",
+    "execution_failure_and_ledger_provenance": "blocked",
+    "actual_execution": "not-applicable",
+    "final_acceptance": "deferred"
+  },
+  "limitations": [
+    "No preparer, edge validator, matrix or tests executed.",
+    "Active actual outputs were not read.",
+    "This is prospective draft consistency review, not final review of produced artifacts.",
+    "No tracked edits or repairs; root owns integration."
+  ]
+}

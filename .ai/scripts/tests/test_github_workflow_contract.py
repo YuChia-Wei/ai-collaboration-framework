@@ -274,14 +274,15 @@ class GitHubWorkflowContractTests(unittest.TestCase):
                 "compression-level": "0",
                 "if-no-files-found": "error",
                 "path": (
-                    "dist/${{ steps.release.outputs.package_id }}.zip\n"
-                    "dist/${{ steps.release.outputs.package_id }}.zip.sha256\n"
-                    "dist/${{ steps.release.outputs.package_id }}.tar.gz\n"
-                    "dist/${{ steps.release.outputs.package_id }}.tar.gz.sha256\n"
+                    "${{ runner.temp }}/candidate-assets/${{ steps.release.outputs.package_id }}.zip\n"
+                    "${{ runner.temp }}/candidate-assets/${{ steps.release.outputs.package_id }}.zip.sha256\n"
+                    "${{ runner.temp }}/candidate-assets/${{ steps.release.outputs.package_id }}.tar.gz\n"
+                    "${{ runner.temp }}/candidate-assets/${{ steps.release.outputs.package_id }}.tar.gz.sha256\n"
                     "${{ runner.temp }}/release-body.md\n"
                     "${{ runner.temp }}/source-dispositions.json\n"
                     "${{ runner.temp }}/source-dispositions.md\n"
                     "${{ runner.temp }}/v0151-actual-admission/**\n"
+                    "${{ runner.temp }}/v016-actual-admission/**\n"
                 ),
             },
             candidate_upload["with"],
@@ -418,7 +419,7 @@ class GitHubWorkflowContractTests(unittest.TestCase):
             actual_upgrade_step["if"],
         )
         self.assertIn(
-            '--candidate-archive "dist/${{ steps.release.outputs.package_id }}.zip"',
+            '--candidate-archive "${RUNNER_TEMP}/candidate-assets/${{ steps.release.outputs.package_id }}.zip"',
             actual_upgrade_step["run"],
         )
         self.assertIn(

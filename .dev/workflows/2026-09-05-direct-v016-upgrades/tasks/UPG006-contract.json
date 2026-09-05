@@ -1,0 +1,49 @@
+{
+  "template_id": "ai-context-governance-remediation-task",
+  "template_version": "1.1.0",
+  "template_created_at": "2026-07-10T18:22:49+08:00",
+  "template_updated_at": "2026-07-27T09:52:09+08:00",
+  "task_id": "UPG006-contract",
+  "workflow_id": "2026-09-05-direct-v016-upgrades",
+  "owner_skill": "ai-context-governance",
+  "status": "completed",
+  "created_at": "2026-09-05T18:00:49+08:00",
+  "updated_at": "2026-09-05T18:06:35+08:00",
+  "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
+  "model": "gpt-6-astra",
+  "reasoning_effort": "xhigh",
+  "finding_ids": [
+    "UPG006-B1"
+  ],
+  "scope": {
+    "target": "Version the retained automatic-source horizon and require direct release routes.",
+    "files": [],
+    "constraints": [
+      "Preserve historical release bytes.",
+      "One direct edge per authorized origin; no intermediate package application.",
+      "No publication authority is inferred."
+    ],
+    "non_goals": []
+  },
+  "execution": {
+    "steps": [
+      "Version the retained automatic-source horizon and require direct release routes."
+    ],
+    "validation": [
+      "Focused repository-owned tests; immutable actual execution where required."
+    ],
+    "last_completed_step": "Prospective horizon and direct-only source gate validated.",
+    "next_action": "Actual execution belongs to UPG006-direct-evidence."
+  },
+  "results": {
+    "summary": "Versioned v0.16+ three-origin horizon and direct-only release gate; historical contracts unchanged.",
+    "files_changed": [],
+    "tests_run": [
+      "26 version-governance tests passed",
+      "38 release-state tests passed after canonical JSON fixture newline repair"
+    ],
+    "finding_status": "addressed",
+    "residual_risk": "Actual target behavior remains to be proven by the next task.",
+    "follow_up_needed": false
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "schema_version": "candidate-source-failure/v1",
+  "subject_sha": "ae69886e57b315ae47d4c55ee0e7a30e4aab9a39",
+  "outcome": "failed",
+  "hosted_evidence": "https://github.com/YuChia-Wei/ai-collaboration-framework/actions/runs/33967520629/job/101310137963",
+  "reason": "Actual upgrade execution rejected an unclean source checkout after candidate assets were staged in unignored dist/.",
+  "reproduction": "candidate-worktree-reproduction.json",
+  "material_correction": "Stage or build candidate assets under RUNNER_TEMP/candidate-assets and consistently use that location for validation and upload. Preserve the source clean-worktree guard.",
+  "retry_authorization": {
+    "owner": "2026-09-05-direct-v016-upgrades workflow integration owner",
+    "attempt": 3,
+    "decision": "authorize-retry",
+    "scope": "One fresh immutable hosted candidate run and independent correction review after the confirmed storage-path repair and focused workflow validation.",
+    "stop": "Retain any failure, drift, timeout or missing evidence; no retry of an unchanged failure and no local actual-matrix rerun is authorized."
+  }
+}

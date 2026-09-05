@@ -1,0 +1,48 @@
+{
+  "packet_id": "UPG006-RUNNER-AUDIT-2",
+  "head_sha": "23c2719000c8dca3058449c2f1bbfa93c3e1bbed",
+  "tree_sha": "0338748dd953fdc6598a0c05ce2fbebe15fc0231",
+  "outcome": "failed",
+  "blocking_findings": 1,
+  "prior_findings": {
+    "UPG006-R1": {
+      "disposition": "closed-by-static-inspection",
+      "evidence": "apply.py:2719 now requires 40 lowercase hex; policy SHA remains SHA256. New width tests cover malformed values, runner uses reachable starting_commit adoption."
+    },
+    "UPG006-R2": {
+      "disposition": "closed-for-bounded-fixture-contract",
+      "evidence": "Runner adds nonempty retained target-only customization, candidate ledger equality, policy adoption equality, selection equality, all origin-specific managed removal checks and effective regeneration. This remains bounded synthetic target semantics, not universal customized-target compatibility."
+    },
+    "UPG006-R3": {
+      "disposition": "partially-corrected",
+      "evidence": "Missing/tampered origin, version disagreement, tampered validator, actual incoming validator exit17, duplicate provenance, unresolved customizations, candidate/decision/receipt tampering now have reason and protected state assertions. Failed target receipt remains unexercised."
+    }
+  },
+  "findings": [
+    {
+      "id": "UPG006-R3a",
+      "severity": "P2",
+      "file": ".github/scripts/validate-v016-direct-upgrades.py",
+      "line": 320,
+      "finding": "The target-validator-disagreement case executes exit17 but never submits that failed execution to record_target_validation_receipt. finalize_context sees the same absent receipt as missing-target-validation; it does not inspect the fault marker or failed_execution. This negative therefore still passes if rejection of outcome=failed/exit_code=17 is broken. It cannot prove the claimed failed target-execution boundary.",
+      "remediation": "Construct an otherwise correctly bound receipt for the retained failing output and submit it to record_target_validation_receipt; require the passed-profile rejection and unchanged authority/receipt/journal state before recording the later successful execution."
+    }
+  ],
+  "evidence": {
+    ".github/scripts/validate-v016-direct-upgrades.py": "02ff43de541cc52472387333d38f4d75aea1f737fbd04b576d601619115dba88",
+    ".ai/scripts/ai_context_package_apply.py": "134d2e96acad7e5e465c12e10d7674f140c539542daa1aeed9bc26b1c72d16f5",
+    ".ai/scripts/ai_context_target_provenance.py": "2d76483164f65dff88070cb62cac5cc671d2e6b747656e45d55f64382a5fd5c1",
+    ".ai/scripts/tests/test_ai_context_package_apply.py": "0e1ad9f9f3ea561987708956660cd20aff8c4acdb654d8ed7f760fe1bbdbdf60"
+  },
+  "gates": {
+    "fixed_clean_subject": "re-executed",
+    "static_correction_audit": "re-executed",
+    "actual_matrix": "deferred",
+    "actual_run_status": "unknown-parent-integrates"
+  },
+  "limitations": [
+    "No matrix or tests executed, no provider access, no tracked writes.",
+    "No assertion of actual target upgrade acceptance.",
+    "Previous audit artifact retained unchanged; root owns integration and remaining correction."
+  ]
+}

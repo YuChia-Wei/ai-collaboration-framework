@@ -1,0 +1,57 @@
+{
+  "template_id": "ai-context-governance-remediation-task",
+  "template_version": "1.1.0",
+  "template_created_at": "2026-07-10T18:22:49+08:00",
+  "template_updated_at": "2026-07-27T09:52:09+08:00",
+  "task_id": "UPG006-release-readiness",
+  "workflow_id": "2026-09-05-direct-v016-upgrades",
+  "owner_skill": "ai-context-governance",
+  "status": "completed",
+  "created_at": "2026-09-05T18:00:49+08:00",
+  "updated_at": "2026-09-05T20:47:33+08:00",
+  "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
+  "model": "gpt-6-astra",
+  "reasoning_effort": "xhigh",
+  "finding_ids": [
+    "UPG006-B1",
+    "UPG006-B2"
+  ],
+  "scope": {
+    "target": "Bind admitted assets and direct route evidence; perform independent verification and report publication readiness.",
+    "files": [],
+    "constraints": [
+      "Preserve historical release bytes.",
+      "One direct edge per authorized origin; no intermediate package application.",
+      "No publication authority is inferred."
+    ],
+    "non_goals": []
+  },
+  "execution": {
+    "steps": [
+      "Bind admitted assets and direct route evidence; perform independent verification and report publication readiness."
+    ],
+    "validation": [
+      "Focused repository-owned tests; immutable actual execution where required."
+    ],
+    "last_completed_step": "Immutable integration audit passed with zero blocking findings; exact archive admission and retained source gates passed.",
+    "next_action": "Provider delivery and candidate admission remain external gates; public archive acceptance stays with Issue 280."
+  },
+  "results": {
+    "summary": "Local release-readiness evaluation is complete. The exact admitted archive, all retained direct target and route evidence, byte preservation and acceptance projection passed independent integration review. Release remains planned pending provider delivery and source-candidate admission.",
+    "files_changed": [
+      ".dev/releases/v0.16.0/artifact-admission.json",
+      ".dev/releases/v0.16.0/support-matrix.yaml",
+      ".dev/workflows/2026-09-05-direct-v016-upgrades/evidence/acceptance-evidence.json",
+      ".dev/workflows/2026-09-05-direct-v016-upgrades/evidence/integration-audit-1.json"
+    ],
+    "tests_run": [
+      "Packaging, portable validation and apply: 179 passed, 2 skipped.",
+      "Release-state ephemeral accelerated suite: 40 passed.",
+      "Source correction review and staging correction review: passed, zero blocking findings.",
+      "Independent integration audit at 940afee97cc318af15f698b0321011aadc49c7ef: passed, zero blocking findings; retained artifact gate and current-head admission re-executed; no expensive matrix rerun."
+    ],
+    "finding_status": "addressed",
+    "residual_risk": "Current PR/Issue/provider prerequisites and public archive acceptance are not completed by this local workflow.",
+    "follow_up_needed": false
+  }
+}

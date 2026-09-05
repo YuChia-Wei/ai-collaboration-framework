@@ -1,0 +1,4 @@
+# Captured command outputs are SHA-256-bound byte evidence.
+*.log -text whitespace=cr-at-eol
+# These negative-case inputs intentionally append a blank line to the manifest.
+tampered-files.yaml whitespace=-blank-at-eof

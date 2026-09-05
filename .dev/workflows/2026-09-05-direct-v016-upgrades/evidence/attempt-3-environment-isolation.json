@@ -1,0 +1,15 @@
+{
+  "classification": "blocked-by-environment",
+  "primary_failure": "sandbox denied preparation/prestate mkdir",
+  "secondary_failure": "sandbox denied cleanup of preparation directory",
+  "path_length": 269,
+  "default_probe": {
+    "outcome": "failed",
+    "winerror": 5
+  },
+  "escalated_probe": {
+    "outcome": "passed",
+    "created_and_removed_empty_directory": true
+  },
+  "material_change": "Run exact isolated-target matrix with require_escalated; no operating-system or repository permission changes."
+}

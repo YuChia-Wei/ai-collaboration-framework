@@ -1,0 +1,57 @@
+{
+  "packet_id": "UPG006-PROJECTION-AND-GATE-AUDIT",
+  "worktree": "isolated-projection-checkout",
+  "head_sha": "4d1a5c7d039618f007784679d9968c357347272b",
+  "tree_sha": "2913d022ea31c81c07702d536e8adfafe0f89c73",
+  "outcome": "failed",
+  "blocking_findings": 1,
+  "prior_findings": {
+    "UPG006-GATE-R1": "closed: canonical runner path and exact content SHA required",
+    "UPG006-GATE-R2": "closed: required restoration SHA256, exact recovery modes and retained interrupted/recovery snapshots",
+    "UPG006-GATE-R3": "partially closed: positive output, receipts, packet/decision/provenance/transaction/timing bindings added; required negative artifact validation remains missing",
+    "UPG006-CYCLE-R1": "closed: owner-approved versioned projection explicitly permits pending source acceptance at immutable preparation, then lifecycle-only validated transition with complete source/provider gates"
+  },
+  "findings": [
+    {
+      "id": "UPG006-PROJECTION-R1",
+      "severity": "P2",
+      "file": ".ai/scripts/validate-ai-context-release-state.py",
+      "line": 684,
+      "finding": "Required negative boundaries still pass solely from case/outcome labels. validate_direct_case_artifacts never loads or hashes failed-target-validation.json or target-validation-rejected.log, even though the runner retains them in artifacts. Removing these files leaves all inspected positive artifacts intact and is accepted. This contradicts the new policy that missing or changed retained evidence fails closed and leaves the failed-execution portion of GATE-R3 unresolved.",
+      "remediation": "Validate the retained artifacts supporting required negative cases, at minimum the failed target receipt/output and their exit17/outcome/timing/transaction binding plus protected-state evidence. Reject missing or altered files; add a focused missing-negative-artifact test without mocking case validation."
+    }
+  ],
+  "evidence": {
+    ".ai/scripts/ai_context_release_projection.py": "b3ea5ce0aba7766e5b434915325d0925d2dd602eec98241966454600c9b9d0f1",
+    ".ai/scripts/ai_context_package.py": "75e638cb6eeb81413c0ca80469f8c962b7298862740ec4e71fd61f885b90c250",
+    ".ai/scripts/ai_context_package_validation.py": "3d5bfd076c96e1df5d99430c74027b0059f8fab61490433d56788f442428bf9d",
+    ".ai/scripts/validate-ai-context-release-state.py": "04bbf1153708722664fc1fdf04508253f13abea5e42d447a57a7ff5aad018643",
+    ".github/scripts/validate-v016-direct-upgrades.py": "ee4c355e925e1c9a9034ae5caf4f1ce281e996014fe0c3094955cd9bc650ee20",
+    ".ai/distribution/schemas/selected-inputs.schema.yaml": "917bc25fb4225ff01692d3c2ea68cedf9440e094cdceb07ca7425cabb805e122",
+    ".dev/standards/AI-CONTEXT-SOURCE-RELEASE-POLICY.md": "59a0a8438d1ac19e61caf57d348c01c5391590ef8993743b5e65360d8e9f1683",
+    ".ai/scripts/release_asset_identity.py": "056b8e2554104cc214767f2ef95c3b0d8da9dd3384bca871a5c8004b4a908cb7"
+  },
+  "gate_states": {
+    "fixed_clean_isolated_worktree": "re-executed",
+    "projection_policy_schema_parity": "re-executed",
+    "historical_v1_read_compatibility_static": "re-executed",
+    "builder_portable_integration_static": "re-executed",
+    "full_current_source_provider_gates_preserved": "reused-with-proof: unchanged implementations and caller ordering inspected",
+    "actual_matrix": "deferred",
+    "unit_suites": "deferred: separate executor owns results",
+    "required_negative_artifact_binding": "blocked"
+  },
+  "supported_sequence": [
+    "Freeze selected package contract while release source remains planned.",
+    "Build and admit exact immutable assets using selected-input/v2 projection.",
+    "Execute required archive/target gates on those bytes and retain evidence.",
+    "After acceptance update only source progress fields and run fresh complete candidate/provider gates with source projection rebind."
+  ],
+  "limitations": [
+    "No matrix, broad suites, provider calls, tracked mutation, or repair.",
+    "Unit suite and actual execution outcomes belong to parent integration; no runtime pass claimed.",
+    "Historical v1 compatibility inspected at the version-dispatch and unchanged raw source hashing boundaries; published archives were not rerun.",
+    "All operations and outputs used the new isolated worktree, not the original checkout."
+  ],
+  "original_receipt_sha256": "e38e122526d7e113369e2c8f0a6622ae58f0033bae5e0d335952227cc6918d23"
+}

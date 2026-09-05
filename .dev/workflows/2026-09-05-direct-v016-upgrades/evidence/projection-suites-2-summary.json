@@ -1,0 +1,86 @@
+{
+  "schema_version": "unit-suite-summary/v1",
+  "subject_sha": "5ca4fcfe9d00d556dab21db9a90bd575cc01c25a",
+  "evidence_kind": "unit-suite",
+  "outcome": "passed",
+  "duration_seconds": 1186.857,
+  "original_terminal_sha256": "ce2d6f37471d76fa5477e3f631a96498748470e497981e927194e5dc03d597c8",
+  "suites": [
+    {
+      "command": [
+        "python",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        ".ai/scripts/tests",
+        "-p",
+        "test_ai_context_packaging.py",
+        "-v"
+      ],
+      "tests": 47,
+      "passed": 47,
+      "skipped": 0,
+      "skip_evidence": [],
+      "duration_seconds": 615.807,
+      "outcome": "passed",
+      "output_sha256": "51d9bfaee6d092a1067a93bebbc5b1514833cb4f9b2050c19e41b2447d475363"
+    },
+    {
+      "command": [
+        "python",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        ".ai/scripts/tests",
+        "-p",
+        "test_ai_context_package_validation.py",
+        "-v"
+      ],
+      "tests": 19,
+      "passed": 18,
+      "skipped": 1,
+      "skip_evidence": [
+        {
+          "test": "test_given_casefold_collision_when_validated_then_it_fails_closed",
+          "reason": "'Windows filesystems cannot construct case-fold collisions'"
+        }
+      ],
+      "duration_seconds": 3.508,
+      "outcome": "passed",
+      "output_sha256": "9ef71ee3ade26a1a0b986d2bff9b8126915b4ed8c73d41a87658ccb206127964"
+    },
+    {
+      "command": [
+        "python",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        ".ai/scripts/tests",
+        "-p",
+        "test_ai_context_package_apply.py",
+        "-v"
+      ],
+      "tests": 115,
+      "passed": 114,
+      "skipped": 1,
+      "skip_evidence": [
+        {
+          "test": "test_gwt_008_given_symlink_parent_when_planning_then_escape_is_rejected",
+          "reason": "Windows symlink creation unavailable (WinError 1314)"
+        }
+      ],
+      "duration_seconds": 567.415,
+      "outcome": "passed",
+      "output_sha256": "2e35fe27126d3d5279fa303649fca1ca8c49ecf1b3eaba08c9f40550d6933c95"
+    }
+  ],
+  "count_correction": "Parent read-back corrected the executor summary: package validation has 19 total, 18 passed and 1 skipped; aggregate 181 total, 179 passed and 2 skipped.",
+  "limitations": [
+    "Skipped cases are not passed. Windows cannot create case-fold collisions and lacks symlink privilege for the selected fixture.",
+    "Unit evidence does not satisfy actual isolated-target execution or public archive acceptance.",
+    "Earlier failed execution remains preserved in projection-suites-1.json."
+  ]
+}

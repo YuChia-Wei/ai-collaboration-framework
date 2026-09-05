@@ -1,0 +1,73 @@
+schema_version: '1.0'
+contract_id: github-terminal-issue-closure
+repository: YuChia-Wei/ai-collaboration-framework
+validation_stage: declaration
+pull_request:
+  number: 286
+  head_sha: null
+  body: 'Adds one direct upgrade from each retained origin (v0.6.0, v0.9.0 and v0.15.1)
+    to the same admitted v0.16.0 archive. The retained executions cover customized
+    ownership, required target validation, provenance finalization, durable resume
+    and exact rollback. Canonical routes reject missing, tampered or ambiguous evidence
+    before target mutation.
+
+
+    The versioned package-input projection keeps substantive release fields and package
+    bytes bound while allowing source acceptance records to progress without invalidating
+    an accepted archive. Captured command outputs retain their original bytes across
+    Git checkouts.
+
+
+    Validation: nine actual isolated-target cases, three standalone direct edges and
+    nine route rejection probes passed. Packaging, portable validation and apply regression
+    passed 179 tests with two Windows platform skips; the classified release-state
+    suite passed 40 tests using an explicit accelerated fixture root. Independent
+    source, integration and completion reviews passed with zero blocking findings.
+    These results describe representative isolated targets; publication acceptance
+    remains separate.
+
+
+    Workflow: `2026-09-05-direct-v016-upgrades`.
+
+    Delivery grouping: one work item. Execution record: workflow.
+
+    Selected topology: merge commit, preserving coupled migration contracts, archive
+    provenance and retained execution evidence.
+
+    Fresh required hosted checks, current-content review binding and live admission
+    are required before merge. This PR does not create a tag or publish a release.
+
+
+    Closes #272
+
+    '
+  integration:
+    status: pending
+    topology: null
+    admitted_head_sha: null
+    integration_commit_sha: null
+    provider_read_back: false
+  review:
+    status: pending
+  required_check_contexts: []
+  hosted_checks: []
+issues:
+- number: 272
+  mode: terminal-close
+  work_authorization:
+    online_issue_bound: true
+    explicit_owner_approval: true
+  final_accepted_delivery: true
+  workflow:
+    scope_complete: true
+    tasks_complete: true
+    applicable_verification_complete: true
+  closing_keyword: Closes
+  closure_deferred_reason: null
+  next_terminal_gate_or_owner: null
+  read_back:
+    performed: false
+    integration_commit_sha: null
+    issue_state: null
+    issue_state_reason: null
+    project_status: null

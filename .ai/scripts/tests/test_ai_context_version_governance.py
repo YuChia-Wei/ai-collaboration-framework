@@ -496,8 +496,10 @@ class AiContextVersionGovernanceGwtTests(unittest.TestCase):
             _, version, data = records[index]
             previous_version = records[index - 1][1]
             compatibility = data["compatibility"]
-            expected_sources = VALIDATE.RETAINED_UPGRADE_TEST_SOURCES.get(
-                version, [previous_version]
+            expected_sources = (
+                ["v0.6.0", "v0.9.0", previous_version]
+                if VALIDATE.version_key(version) >= (0, 16, 0)
+                else VALIDATE.RETAINED_UPGRADE_TEST_SOURCES.get(version, [previous_version])
             )
             self.assertEqual(
                 expected_sources,
@@ -507,7 +509,7 @@ class AiContextVersionGovernanceGwtTests(unittest.TestCase):
             if compatibility["breaking_changes"]:
                 self.assertEqual(
                     expected_sources[0]
-                    if version in VALIDATE.RETAINED_UPGRADE_TEST_SOURCES
+                    if VALIDATE.version_key(version) >= (0, 16, 0) or version in VALIDATE.RETAINED_UPGRADE_TEST_SOURCES
                     else previous_version,
                     compatibility["minimum_source_version"],
                     version,
@@ -620,6 +622,26 @@ class AiContextVersionGovernanceGwtTests(unittest.TestCase):
             VALIDATE.validate_upgrade_test_horizon(release_files, errors)
             self.assertEqual(1, len(errors))
             self.assertIn("numeric order", errors[0])
+
+
+    def test_gwt_019_given_v016_and_future_release_when_retained_origin_removed_then_horizon_fails(self):
+        for previous, current in (("v0.15.1", "v0.16.0"), ("v0.16.0", "v0.17.0")):
+            with self.subTest(current=current), tempfile.TemporaryDirectory() as temp:
+                paths = [Path(temp) / "previous.yaml", Path(temp) / "incoming.yaml"]
+                paths[0].write_text(yaml.safe_dump({"version": previous, "distribution_kind": "governed-package"}), encoding="utf-8")
+                record = {"version": current, "distribution_kind": "governed-package", "compatibility": {
+                    "breaking_changes": True, "minimum_source_version": "v0.6.0",
+                    "automatic_upgrade_sources": ["v0.6.0", "v0.9.0", previous],
+                }}
+                paths[1].write_text(yaml.safe_dump(record), encoding="utf-8")
+                errors = []
+                VALIDATE.validate_upgrade_test_horizon(paths, errors)
+                self.assertEqual([], errors)
+                record["compatibility"]["automatic_upgrade_sources"] = [previous]
+                record["compatibility"]["minimum_source_version"] = previous
+                paths[1].write_text(yaml.safe_dump(record), encoding="utf-8")
+                VALIDATE.validate_upgrade_test_horizon(paths, errors)
+                self.assertEqual(2, len(errors))
 
 
 if __name__ == "__main__":
