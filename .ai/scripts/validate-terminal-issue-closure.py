@@ -42,12 +42,12 @@ AUDIT_RECEIPT = re.compile(
 )
 REVIEW_SUBJECT_SCHEMA = "independent-review-subject/v1"
 CURRENT_AUDIT_RECEIPT = "github-terminal-issue-closure-audit/v2"
-LEGACY_AUDIT_RECEIPT = "github-terminal-issue-closure-audit/v1"
+HISTORICAL_AUDIT_RECEIPT = "github-terminal-issue-closure-audit/v1"
 SOURCE_REVIEW_GATE = {
     "mode": "single-maintainer-audit-receipt",
     "maintainer_login": "YuChia-Wei",
     "receipt_contract": CURRENT_AUDIT_RECEIPT,
-    "legacy_receipt_contracts": [LEGACY_AUDIT_RECEIPT],
+    "historical_receipt_contracts": [HISTORICAL_AUDIT_RECEIPT],
     "binding_mode": "content-addressed-current-head",
     "downstream_policy": "target-owned",
 }
@@ -419,40 +419,28 @@ def read_live_provider_facts(
                 or any(receipt.get(key) != value for key, value in expected_common.items())
             ):
                 continue
-            if receipt_contract == LEGACY_AUDIT_RECEIPT:
-                if receipt != {
-                    **expected_common,
-                    "base_sha": live_base_sha,
-                    "head_sha": live_head_sha,
-                    "audit_scope": "fresh-exact-head-independent",
-                }:
-                    continue
-                binding = {
-                    "head_sha": live_head_sha,
-                    "reviewed_base_sha": receipt["base_sha"],
-                    "reviewed_head_sha": receipt["head_sha"],
-                    "binding_disposition": "reviewed-current-content",
-                }
-            else:
-                current_subject = current_review_subject(repository, live_base_sha, live_head_sha)
-                if (
-                    receipt.get("audit_scope") != "content-addressed-independent"
-                    or any(receipt.get(key) != current_subject[key] for key in ("base_tree", "head_tree", "subject_digest"))
-                ):
-                    continue
-                binding = {
-                    "head_sha": live_head_sha,
-                    "reviewed_base_sha": receipt["base_sha"],
-                    "reviewed_head_sha": receipt["head_sha"],
-                    "base_tree": current_subject["base_tree"],
-                    "head_tree": current_subject["head_tree"],
-                    "subject_digest": current_subject["subject_digest"],
-                    "binding_disposition": (
-                        "reviewed-current-content"
-                        if receipt["base_sha"] == live_base_sha and receipt["head_sha"] == live_head_sha
-                        else "reused-with-proof"
-                    ),
-                }
+            current_subject = current_review_subject(repository, live_base_sha, live_head_sha)
+            if (
+                receipt.get("audit_scope") != "content-addressed-independent"
+                or any(
+                    receipt.get(key) != current_subject[key]
+                    for key in ("base_tree", "head_tree", "subject_digest")
+                )
+            ):
+                continue
+            binding = {
+                "head_sha": live_head_sha,
+                "reviewed_base_sha": receipt["base_sha"],
+                "reviewed_head_sha": receipt["head_sha"],
+                "base_tree": current_subject["base_tree"],
+                "head_tree": current_subject["head_tree"],
+                "subject_digest": current_subject["subject_digest"],
+                "binding_disposition": (
+                    "reviewed-current-content"
+                    if receipt["base_sha"] == live_base_sha and receipt["head_sha"] == live_head_sha
+                    else "reused-with-proof"
+                ),
+            }
             item = {
                 **item,
                 "audit_receipt": receipt,
@@ -597,16 +585,26 @@ def validate_provider_evidence(
         errors.append("merge admission requires a passing single-maintainer audit receipt")
     else:
         receipt_contract = review.get("receipt_contract")
-        accepted_contracts = [review_gate.get("receipt_contract"), *review_gate.get("legacy_receipt_contracts", [])]
+        current_contract = review_gate.get("receipt_contract")
+        historical_contracts = review_gate.get("historical_receipt_contracts", [])
+        accepted_contracts = (
+            [current_contract]
+            if runtime is not None
+            else [current_contract, *historical_contracts]
+        )
         if review.get("head_sha") != head_sha:
             errors.append("single-maintainer audit binding must identify pull_request.head_sha")
         if review.get("reviewer_login") != review_gate.get("maintainer_login"):
             errors.append("single-maintainer audit receipt must come from the configured maintainer")
         if receipt_contract not in accepted_contracts:
-            errors.append("single-maintainer audit receipt must use a configured current or legacy contract")
-        elif receipt_contract == LEGACY_AUDIT_RECEIPT:
+            errors.append(
+                "live merge admission requires the configured current audit receipt contract"
+                if runtime is not None
+                else "historical record validation requires a configured current or historical audit receipt contract"
+            )
+        elif receipt_contract == HISTORICAL_AUDIT_RECEIPT:
             if review.get("head_sha") != head_sha:
-                errors.append("legacy single-maintainer audit receipt must remain exact-head bound")
+                errors.append("historical single-maintainer audit receipt must remain exact-head bound")
         else:
             reviewed_base_sha = review.get("reviewed_base_sha")
             reviewed_head_sha = review.get("reviewed_head_sha")

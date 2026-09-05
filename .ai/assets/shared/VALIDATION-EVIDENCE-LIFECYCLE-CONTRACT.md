@@ -139,8 +139,9 @@ while repository identity plus base/head tree identities form the canonical
 Admission recomputes the current review subject. Equal content yields
 `reviewed-current-content` or `reused-with-proof`; unequal or unknown content
 requires a new independent review. Historical exact-head v1 receipts retain
-their original meaning and are accepted only under their original exact-head
-rule; new receipts use v2.
+their original meaning only when validating already-retained historical records
+under their original exact-head rule. They are not eligible for current or new
+live admission; live admission accepts v2 only.
 
 Every provider-required context still appears on each admitted head and reaches
 a truthful terminal outcome because the provider attaches check runs to a

@@ -948,6 +948,7 @@ class DeterministicPackageGwtTests(unittest.TestCase):
         auditor = (ROOT / portable_paths[5]).read_text(encoding="utf-8")
 
         self.assertIn("No portable rule may invalidate", lifecycle)
+        self.assertIn("live admission accepts v2 only", lifecycle)
         self.assertEqual(
             "commit-sha",
             lifecycle_schema["commit_identity"]["forbidden_validity_key"],

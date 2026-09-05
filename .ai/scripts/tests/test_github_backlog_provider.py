@@ -330,7 +330,7 @@ class HistoricalGitHubBacklogProviderTests(unittest.TestCase):
                 "mode": "single-maintainer-audit-receipt",
                 "maintainer_login": "YuChia-Wei",
                 "receipt_contract": "github-terminal-issue-closure-audit/v2",
-                "legacy_receipt_contracts": ["github-terminal-issue-closure-audit/v1"],
+                "historical_receipt_contracts": ["github-terminal-issue-closure-audit/v1"],
                 "binding_mode": "content-addressed-current-head",
                 "downstream_policy": "target-owned",
             },

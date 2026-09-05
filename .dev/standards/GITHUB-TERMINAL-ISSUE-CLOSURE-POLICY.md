@@ -133,9 +133,11 @@ findings, and the `content-addressed-independent` audit scope.
 Admission recomputes the current base/head tree subject. Equal content is bound
 as `reviewed-current-content` or `reused-with-proof`; commit-SHA inequality by
 itself does not require re-review. Tree, criteria, authority, malformed receipt,
-or unknown-subject drift fails closed. Historical v1 receipts remain valid only
-for the exact base/head SHAs they originally named, and no new v1 receipt is
-issued. Any effective `CHANGES_REQUESTED` review remains blocking. This review
+or unknown-subject drift fails closed. Historical v1 receipts are interpreted
+only while validating already-retained historical records under their original
+exact-head rule. They are never eligible for current or new live admission;
+live admission accepts v2 only. Any effective `CHANGES_REQUESTED` review remains
+blocking. This review
 mode is source-only; downstream repositories select their own target-owned
 review policy from their actual maintainer and provider requirements.
 The review body is exactly one receipt with no surrounding prose:

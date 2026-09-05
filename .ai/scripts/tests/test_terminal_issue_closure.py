@@ -59,6 +59,23 @@ def audit_review_body(**overrides: object) -> str:
     )
 
 
+def historical_audit_review_body() -> str:
+    payload = {
+        "repository": "YuChia-Wei/ai-collaboration-framework",
+        "pull_request": 300,
+        "base_sha": "b" * 40,
+        "head_sha": "a" * 40,
+        "outcome": "passed",
+        "blocking_findings": 0,
+        "audit_scope": "fresh-exact-head-independent",
+    }
+    return (
+        "<!-- github-terminal-issue-closure-audit/v1\n"
+        f"{json.dumps(payload, separators=(',', ':'))}\n"
+        "-->"
+    )
+
+
 class TerminalIssueClosureGwtTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
@@ -651,6 +668,53 @@ class TerminalIssueClosureGwtTests(unittest.TestCase):
         self.assertEqual("YuChia-Wei", facts["review"]["reviewer_login"])
         self.assertEqual("reviewed-current-content", facts["review"]["binding_disposition"])
         self.assertEqual("a" * 40, facts["review"]["reviewed_head_sha"])
+
+    def test_gwt_050a_given_historical_v1_receipt_when_read_live_then_review_remains_pending(self) -> None:
+        metadata = {
+            "number": 300,
+            "body": "Refs #212",
+            "head": {"sha": "a" * 40},
+            "base": {
+                "sha": "b" * 40,
+                "repo": {"full_name": "YuChia-Wei/ai-collaboration-framework"},
+            },
+        }
+        reviews = [{
+            "id": 7001,
+            "state": "COMMENTED",
+            "body": historical_audit_review_body(),
+            "commit_id": "a" * 40,
+            "submitted_at": "2026-08-20T01:00:00Z",
+            "user": {"login": "YuChia-Wei"},
+        }]
+        gate = self.config["work_item_binding"]["merge_gate"]
+        with (
+            mock.patch.object(VALIDATOR, "github_api_json", return_value=(metadata, None)),
+            mock.patch.object(VALIDATOR, "github_api_paginated", side_effect=[reviews, []]),
+        ):
+            facts = VALIDATOR.read_live_provider_facts(
+                "YuChia-Wei/ai-collaboration-framework",
+                300,
+                "a" * 40,
+                gate["required_check_contexts"],
+                gate["review_gate"],
+                "test-token",
+            )
+        self.assertEqual({"status": "pending"}, facts["review"])
+
+    def test_gwt_050b_given_historical_v1_record_when_live_admission_validates_then_it_is_rejected(self) -> None:
+        data = fixture("terminal-positive.yaml")
+        errors: list[str] = []
+        VALIDATOR.validate_provider_evidence(
+            data["pull_request"],
+            {"pr_number": 300, "head_sha": "a" * 40},
+            self.config,
+            errors,
+        )
+        self.assertTrue(
+            any("live merge admission requires the configured current" in error for error in errors),
+            errors,
+        )
 
     def test_gwt_051_given_non_receipt_or_wrong_identity_when_read_then_review_remains_pending(self) -> None:
         metadata = {

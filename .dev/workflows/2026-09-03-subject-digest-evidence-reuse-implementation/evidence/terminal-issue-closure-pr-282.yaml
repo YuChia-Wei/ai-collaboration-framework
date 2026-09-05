@@ -16,7 +16,7 @@ pull_request:
     ## Changes
 
     - add canonical subject manifests, deterministic rebind receipts, dependency observation, and the single approved `multi-hop-upgrade-transaction` pilot
-    - add content-addressed v2 independent-review receipts while retaining historical v1 exact-head compatibility
+    - add content-addressed v2 independent-review receipts while retaining v1 only for already-retained historical record validation, never live admission
     - make code-graph freshness content-tree-aware and derive repository provenance from each target worktree at runtime
     - preserve required current-head hosted contexts and mutable provider admission as fresh gates
     - clarify source policy, portable governance, and active skills so `in_progress` alone cannot prohibit an otherwise authorized integration
@@ -42,7 +42,7 @@ pull_request:
 
     - the actual governed fast-profile pilot passed in 487 seconds with 48 selected gates, 47 executed, and zero failed or blocked checks
     - the changed-history rebind reused the allowlisted multi-hop evidence only after deterministic subject and seal authentication
-    - focused validation passed for subject digest 8/8, dependency observation 9/9, lifecycle 13/13, agent guardrails 29/29, and terminal Issue closure 57/57
+    - focused validation passed for subject digest 8/8, dependency observation 9/9, lifecycle 13/13, agent guardrails 29/29, and terminal Issue closure 59/59
     - downstream projection tests prove the v0.16 candidate excludes source-only closure machinery and carries content-addressed lifecycle, graph, review, and target-provenance rules
     - workflow-status regression passed together with 16/16 lifecycle, 22/22 handoff, 6/6 delivery-policy, 10/10 language-policy, 16/16 wrapper-metadata, and 7/7 governance-workflow tests
     - AI-context validation, 107-workflow artifact validation, planned and committed message validation, and whitespace checks passed
