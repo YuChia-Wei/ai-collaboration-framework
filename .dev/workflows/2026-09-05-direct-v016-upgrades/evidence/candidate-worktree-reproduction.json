@@ -1,0 +1,23 @@
+{
+  "schema_version": "candidate-staging-reproduction/v1",
+  "evidence_kind": "minimal-reproduction",
+  "subject_sha": "ae69886e57b315ae47d4c55ee0e7a30e4aab9a39",
+  "outcome": "passed",
+  "duration_seconds": 0.673,
+  "cases": [
+    {
+      "mode": "checkout-output",
+      "before_status": "",
+      "after_status": "?? dist/",
+      "same_admitted_assets": true
+    },
+    {
+      "mode": "runner-temp-output",
+      "before_status": "",
+      "after_status": "",
+      "same_admitted_assets": true
+    }
+  ],
+  "conclusion": "Staging admitted assets in unignored checkout dist dirties the source; runner temporary output preserves the clean checkout gate.",
+  "scope_limit": "Local equivalent using the actual staging function and repository ignore rules; hosted correction still requires a fresh run."
+}
