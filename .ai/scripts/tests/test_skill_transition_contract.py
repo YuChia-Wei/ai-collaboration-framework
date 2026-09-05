@@ -27,6 +27,7 @@ class SkillTransitionContractTests(unittest.TestCase):
         self.root = Path(self.temporary.name)
         paths = [
             VALIDATOR.MANIFEST,
+            VALIDATOR.RETIREMENT,
             VALIDATOR.FIXTURE,
             VALIDATOR.CANONICAL_REGISTRY,
             VALIDATOR.AGENTS_REGISTRY,
@@ -54,26 +55,6 @@ class SkillTransitionContractTests(unittest.TestCase):
         }
         self.write_manifest(manifest)
         for current, (candidate, _) in VALIDATOR.EXPECTED_TRANSITIONS.items():
-            canonical = self.root / ".ai/assets/skills" / current / "skill.yaml"
-            canonical.parent.mkdir(parents=True, exist_ok=True)
-            canonical.write_text(
-                yaml.safe_dump(
-                    {
-                        "asset_id": current,
-                        "status": "deprecated",
-                        "replacement": candidate,
-                        "removal_target": None,
-                    },
-                    sort_keys=False,
-                ),
-                encoding="utf-8",
-            )
-            for runtime in VALIDATOR.RUNTIME_ROOTS:
-                wrapper = self.root / runtime / current / "SKILL.md"
-                wrapper.parent.mkdir(parents=True, exist_ok=True)
-                wrapper.write_text(
-                    "# deprecated compatibility fixture\n", encoding="utf-8"
-                )
             active = self.root / ".ai/assets/skills" / candidate / "skill.yaml"
             active.parent.mkdir(parents=True, exist_ok=True)
             active.write_text(

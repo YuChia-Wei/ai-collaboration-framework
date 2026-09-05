@@ -1,0 +1,351 @@
+schema_version: '1.0'
+source_repository: https://github.com/YuChia-Wei/ai-collaboration-framework
+versions:
+  0.6.0:
+    commit: 8b98b5f917513f2d143f42a322050a1162bb63f9
+    files:
+      .ai/assets/skills/repo-structure-sync/skill.yaml:
+        sha256: 656e7d1cad49de91099d2deee8f0d6349dcc2aa0005d02c13916963d2efd8805
+        content: "asset_id: \"repo-structure-sync\"\nschema_version: \"1.0\"\nasset_type:\
+          \ \"skill-spec\"\ntitle: \"Repo Structure Sync (Deprecated Compatibility\
+          \ Entry)\"\npurpose: \"Preserve the historical repo-structure-sync identifier\
+          \ while routing new initialization work to ai-context-init.\"\nportability:\
+          \ \"portable\"\naudience: \"agent-facing\"\nsource_of_truth: \"canonical\"\
+          \nstatus: \"deprecated\"\nreplacement: \"ai-context-init\"\nreplacement_spec:\
+          \ \".ai/assets/skills/ai-context-init/skill.yaml\"\nremoval_target: null\n\
+          historical_identifier_rewrite: false\ntriggers:\n  - \"an existing request\
+          \ explicitly names repo-structure-sync\"\ninputs:\n  - \"a legacy repo-structure-sync\
+          \ invocation\"\noutputs:\n  - \"a compatibility route to ai-context-init\"\
+          \nconstraints:\n  - \"Route new invocations to ai-context-init.\"\n  - \"\
+          Do not rewrite historical initialized_by, workflow, task, assessment, release,\
+          \ or provenance values.\"\n  - \"Do not infer a removal release without\
+          \ downstream migration evidence and an explicit owner decision.\"\nworkflow:\n\
+          \  - step: 1\n    description: \"Preserve the legacy identifier as input\
+          \ and route new initialization behavior to ai-context-init.\"\nreferences:\n\
+          \  - \".ai/assets/skills/ai-context-init/skill.yaml\"\nexamples:\n  - \"\
+          .dev/guides/ai-collaboration-guides/REPO-STRUCTURE-SYNC-SKILL-GUIDE.md\"\
+          \nwrapper_targets:\n  - \"claude\"\n  - \"codex\"\nwrapper_metadata:\n \
+          \ claude:\n    wrapper_path: \".claude/skills/repo-structure-sync/\"\n \
+          \ codex:\n    wrapper_path: \".agents/skills/repo-structure-sync/\"\n"
+      .agents/skills/repo-structure-sync/SKILL.md:
+        sha256: cea4cb39d9ef188c55128afa9856812e47dde9ae8581d95405b6af072e976297
+        content: '---
+
+          name: repo-structure-sync
+
+          description: Deprecated compatibility alias for ai-context-init. Use only
+          when an existing request or downstream repository still names repo-structure-sync;
+          route new target-repository initialization work to ai-context-init without
+          rewriting historical provenance.
+
+          ---
+
+
+          # Repo Structure Sync Compatibility Entry
+
+
+          This identifier is deprecated but has no scheduled removal release.
+
+          This identifier is a deprecated compatibility wrapper.
+
+
+          - Registry: `.ai/assets/skills/README.MD`
+
+          - Active skill: `ai-context-init`
+
+          - Canonical spec: `.ai/assets/skills/ai-context-init/skill.yaml`
+
+          - Compatibility contract: `.ai/assets/skills/repo-structure-sync/skill.yaml`
+
+          - Human guide: `.dev/guides/ai-collaboration-guides/REPO-STRUCTURE-SYNC-SKILL-GUIDE.md`
+
+
+          Route new work to `ai-context-init`. Preserve historical identifiers in
+
+          existing workflows, tasks, assessments, releases, `initialized_by`, and
+
+          provenance records.
+
+
+          Use this wrapper only as a deprecated compatibility entry.
+
+          If wrapper text and canonical spec differ, follow `.ai/assets/skills/repo-structure-sync/skill.yaml`.
+
+          '
+      .claude/skills/repo-structure-sync/SKILL.md:
+        sha256: cea4cb39d9ef188c55128afa9856812e47dde9ae8581d95405b6af072e976297
+        content: '---
+
+          name: repo-structure-sync
+
+          description: Deprecated compatibility alias for ai-context-init. Use only
+          when an existing request or downstream repository still names repo-structure-sync;
+          route new target-repository initialization work to ai-context-init without
+          rewriting historical provenance.
+
+          ---
+
+
+          # Repo Structure Sync Compatibility Entry
+
+
+          This identifier is deprecated but has no scheduled removal release.
+
+          This identifier is a deprecated compatibility wrapper.
+
+
+          - Registry: `.ai/assets/skills/README.MD`
+
+          - Active skill: `ai-context-init`
+
+          - Canonical spec: `.ai/assets/skills/ai-context-init/skill.yaml`
+
+          - Compatibility contract: `.ai/assets/skills/repo-structure-sync/skill.yaml`
+
+          - Human guide: `.dev/guides/ai-collaboration-guides/REPO-STRUCTURE-SYNC-SKILL-GUIDE.md`
+
+
+          Route new work to `ai-context-init`. Preserve historical identifiers in
+
+          existing workflows, tasks, assessments, releases, `initialized_by`, and
+
+          provenance records.
+
+
+          Use this wrapper only as a deprecated compatibility entry.
+
+          If wrapper text and canonical spec differ, follow `.ai/assets/skills/repo-structure-sync/skill.yaml`.
+
+          '
+      .ai/assets/skills/dev-workflow/skill.yaml:
+        sha256: a8118922b49755f6eaa130902207a71c884fbdab715ae28fbdcca84bdc9ba473
+        content: "asset_id: \"dev-workflow\"\nschema_version: \"1.0\"\nasset_type:\
+          \ \"skill-spec\"\ntitle: \"Dev Workflow (Deprecated Compatibility Entry)\"\
+          \npurpose: \"Preserve the historical dev-workflow identifier while routing\
+          \ new software-development orchestration to software-development-orchestrator.\"\
+          \nportability: \"repo-portable\"\naudience: \"agent-facing\"\nsource_of_truth:\
+          \ \"canonical\"\nstatus: \"deprecated\"\nreplacement: \"software-development-orchestrator\"\
+          \nreplacement_spec: \".ai/assets/skills/software-development-orchestrator/skill.yaml\"\
+          \nremoval_target: null\nhistorical_identifier_rewrite: false\ntriggers:\n\
+          \  - \"an existing request explicitly names dev-workflow\"\ninputs:\n  -\
+          \ \"a legacy dev-workflow invocation\"\noutputs:\n  - \"a compatibility\
+          \ route to software-development-orchestrator\"\nconstraints:\n  - \"Route\
+          \ new invocations to software-development-orchestrator.\"\n  - \"Do not\
+          \ rewrite historical owner_skill, workflow, task, assessment, release, or\
+          \ provenance values.\"\n  - \"Do not infer a removal release without downstream\
+          \ migration evidence and an explicit owner decision.\"\nworkflow:\n  - step:\
+          \ 1\n    description: \"Preserve the legacy identifier as input and route\
+          \ new orchestration behavior to software-development-orchestrator.\"\nreferences:\n\
+          \  - \".ai/assets/skills/software-development-orchestrator/skill.yaml\"\n\
+          examples:\n  - \".dev/guides/ai-collaboration-guides/DEV-WORKFLOW-SKILL-GUIDE.md\"\
+          \nwrapper_targets:\n  - \"claude\"\n  - \"codex\"\nwrapper_metadata:\n \
+          \ claude:\n    wrapper_path: \".claude/skills/dev-workflow/\"\n  codex:\n\
+          \    wrapper_path: \".agents/skills/dev-workflow/\"\n"
+      .agents/skills/dev-workflow/SKILL.md:
+        sha256: e1dcb087d33ecd33e95cf39923da00d61a5e4266b9eb8b2ee122e0b3c7ab9500
+        content: "---\nname: dev-workflow\ndescription: Deprecated compatibility alias\
+          \ for software-development-orchestrator. Use only when an existing request\
+          \ or downstream repository still names dev-workflow; route new multi-stage\
+          \ software-development orchestration to software-development-orchestrator\
+          \ without rewriting historical workflow ownership.\n---\n\n# Dev Workflow\
+          \ Compatibility Entry\n\nThis identifier is deprecated but has no scheduled\
+          \ removal release.\nThis identifier is a deprecated compatibility wrapper.\n\
+          \n- Registry: `.ai/assets/skills/README.MD`\n- Active skill: `software-development-orchestrator`\n\
+          - Canonical spec:\n  `.ai/assets/skills/software-development-orchestrator/skill.yaml`\n\
+          - Compatibility contract: `.ai/assets/skills/dev-workflow/skill.yaml`\n\
+          - Human guide: `.dev/guides/ai-collaboration-guides/DEV-WORKFLOW-SKILL-GUIDE.md`\n\
+          \nRoute new work to `software-development-orchestrator`. Preserve historical\n\
+          identifiers in existing workflows, tasks, assessments, releases, and\nprovenance\
+          \ records.\n\nUse this wrapper only as a deprecated compatibility entry.\n\
+          If wrapper text and canonical spec differ, follow `.ai/assets/skills/dev-workflow/skill.yaml`.\n"
+      .claude/skills/dev-workflow/SKILL.md:
+        sha256: e1dcb087d33ecd33e95cf39923da00d61a5e4266b9eb8b2ee122e0b3c7ab9500
+        content: "---\nname: dev-workflow\ndescription: Deprecated compatibility alias\
+          \ for software-development-orchestrator. Use only when an existing request\
+          \ or downstream repository still names dev-workflow; route new multi-stage\
+          \ software-development orchestration to software-development-orchestrator\
+          \ without rewriting historical workflow ownership.\n---\n\n# Dev Workflow\
+          \ Compatibility Entry\n\nThis identifier is deprecated but has no scheduled\
+          \ removal release.\nThis identifier is a deprecated compatibility wrapper.\n\
+          \n- Registry: `.ai/assets/skills/README.MD`\n- Active skill: `software-development-orchestrator`\n\
+          - Canonical spec:\n  `.ai/assets/skills/software-development-orchestrator/skill.yaml`\n\
+          - Compatibility contract: `.ai/assets/skills/dev-workflow/skill.yaml`\n\
+          - Human guide: `.dev/guides/ai-collaboration-guides/DEV-WORKFLOW-SKILL-GUIDE.md`\n\
+          \nRoute new work to `software-development-orchestrator`. Preserve historical\n\
+          identifiers in existing workflows, tasks, assessments, releases, and\nprovenance\
+          \ records.\n\nUse this wrapper only as a deprecated compatibility entry.\n\
+          If wrapper text and canonical spec differ, follow `.ai/assets/skills/dev-workflow/skill.yaml`.\n"
+  0.9.0:
+    commit: c14a3260cba7d0a9e2b67b73df9e221280d2d2ef
+    files:
+      .ai/assets/skills/repo-structure-sync/skill.yaml:
+        sha256: 656e7d1cad49de91099d2deee8f0d6349dcc2aa0005d02c13916963d2efd8805
+        content: "asset_id: \"repo-structure-sync\"\nschema_version: \"1.0\"\nasset_type:\
+          \ \"skill-spec\"\ntitle: \"Repo Structure Sync (Deprecated Compatibility\
+          \ Entry)\"\npurpose: \"Preserve the historical repo-structure-sync identifier\
+          \ while routing new initialization work to ai-context-init.\"\nportability:\
+          \ \"portable\"\naudience: \"agent-facing\"\nsource_of_truth: \"canonical\"\
+          \nstatus: \"deprecated\"\nreplacement: \"ai-context-init\"\nreplacement_spec:\
+          \ \".ai/assets/skills/ai-context-init/skill.yaml\"\nremoval_target: null\n\
+          historical_identifier_rewrite: false\ntriggers:\n  - \"an existing request\
+          \ explicitly names repo-structure-sync\"\ninputs:\n  - \"a legacy repo-structure-sync\
+          \ invocation\"\noutputs:\n  - \"a compatibility route to ai-context-init\"\
+          \nconstraints:\n  - \"Route new invocations to ai-context-init.\"\n  - \"\
+          Do not rewrite historical initialized_by, workflow, task, assessment, release,\
+          \ or provenance values.\"\n  - \"Do not infer a removal release without\
+          \ downstream migration evidence and an explicit owner decision.\"\nworkflow:\n\
+          \  - step: 1\n    description: \"Preserve the legacy identifier as input\
+          \ and route new initialization behavior to ai-context-init.\"\nreferences:\n\
+          \  - \".ai/assets/skills/ai-context-init/skill.yaml\"\nexamples:\n  - \"\
+          .dev/guides/ai-collaboration-guides/REPO-STRUCTURE-SYNC-SKILL-GUIDE.md\"\
+          \nwrapper_targets:\n  - \"claude\"\n  - \"codex\"\nwrapper_metadata:\n \
+          \ claude:\n    wrapper_path: \".claude/skills/repo-structure-sync/\"\n \
+          \ codex:\n    wrapper_path: \".agents/skills/repo-structure-sync/\"\n"
+      .agents/skills/repo-structure-sync/SKILL.md:
+        sha256: cea4cb39d9ef188c55128afa9856812e47dde9ae8581d95405b6af072e976297
+        content: '---
+
+          name: repo-structure-sync
+
+          description: Deprecated compatibility alias for ai-context-init. Use only
+          when an existing request or downstream repository still names repo-structure-sync;
+          route new target-repository initialization work to ai-context-init without
+          rewriting historical provenance.
+
+          ---
+
+
+          # Repo Structure Sync Compatibility Entry
+
+
+          This identifier is deprecated but has no scheduled removal release.
+
+          This identifier is a deprecated compatibility wrapper.
+
+
+          - Registry: `.ai/assets/skills/README.MD`
+
+          - Active skill: `ai-context-init`
+
+          - Canonical spec: `.ai/assets/skills/ai-context-init/skill.yaml`
+
+          - Compatibility contract: `.ai/assets/skills/repo-structure-sync/skill.yaml`
+
+          - Human guide: `.dev/guides/ai-collaboration-guides/REPO-STRUCTURE-SYNC-SKILL-GUIDE.md`
+
+
+          Route new work to `ai-context-init`. Preserve historical identifiers in
+
+          existing workflows, tasks, assessments, releases, `initialized_by`, and
+
+          provenance records.
+
+
+          Use this wrapper only as a deprecated compatibility entry.
+
+          If wrapper text and canonical spec differ, follow `.ai/assets/skills/repo-structure-sync/skill.yaml`.
+
+          '
+      .claude/skills/repo-structure-sync/SKILL.md:
+        sha256: cea4cb39d9ef188c55128afa9856812e47dde9ae8581d95405b6af072e976297
+        content: '---
+
+          name: repo-structure-sync
+
+          description: Deprecated compatibility alias for ai-context-init. Use only
+          when an existing request or downstream repository still names repo-structure-sync;
+          route new target-repository initialization work to ai-context-init without
+          rewriting historical provenance.
+
+          ---
+
+
+          # Repo Structure Sync Compatibility Entry
+
+
+          This identifier is deprecated but has no scheduled removal release.
+
+          This identifier is a deprecated compatibility wrapper.
+
+
+          - Registry: `.ai/assets/skills/README.MD`
+
+          - Active skill: `ai-context-init`
+
+          - Canonical spec: `.ai/assets/skills/ai-context-init/skill.yaml`
+
+          - Compatibility contract: `.ai/assets/skills/repo-structure-sync/skill.yaml`
+
+          - Human guide: `.dev/guides/ai-collaboration-guides/REPO-STRUCTURE-SYNC-SKILL-GUIDE.md`
+
+
+          Route new work to `ai-context-init`. Preserve historical identifiers in
+
+          existing workflows, tasks, assessments, releases, `initialized_by`, and
+
+          provenance records.
+
+
+          Use this wrapper only as a deprecated compatibility entry.
+
+          If wrapper text and canonical spec differ, follow `.ai/assets/skills/repo-structure-sync/skill.yaml`.
+
+          '
+      .ai/assets/skills/dev-workflow/skill.yaml:
+        sha256: a8118922b49755f6eaa130902207a71c884fbdab715ae28fbdcca84bdc9ba473
+        content: "asset_id: \"dev-workflow\"\nschema_version: \"1.0\"\nasset_type:\
+          \ \"skill-spec\"\ntitle: \"Dev Workflow (Deprecated Compatibility Entry)\"\
+          \npurpose: \"Preserve the historical dev-workflow identifier while routing\
+          \ new software-development orchestration to software-development-orchestrator.\"\
+          \nportability: \"repo-portable\"\naudience: \"agent-facing\"\nsource_of_truth:\
+          \ \"canonical\"\nstatus: \"deprecated\"\nreplacement: \"software-development-orchestrator\"\
+          \nreplacement_spec: \".ai/assets/skills/software-development-orchestrator/skill.yaml\"\
+          \nremoval_target: null\nhistorical_identifier_rewrite: false\ntriggers:\n\
+          \  - \"an existing request explicitly names dev-workflow\"\ninputs:\n  -\
+          \ \"a legacy dev-workflow invocation\"\noutputs:\n  - \"a compatibility\
+          \ route to software-development-orchestrator\"\nconstraints:\n  - \"Route\
+          \ new invocations to software-development-orchestrator.\"\n  - \"Do not\
+          \ rewrite historical owner_skill, workflow, task, assessment, release, or\
+          \ provenance values.\"\n  - \"Do not infer a removal release without downstream\
+          \ migration evidence and an explicit owner decision.\"\nworkflow:\n  - step:\
+          \ 1\n    description: \"Preserve the legacy identifier as input and route\
+          \ new orchestration behavior to software-development-orchestrator.\"\nreferences:\n\
+          \  - \".ai/assets/skills/software-development-orchestrator/skill.yaml\"\n\
+          examples:\n  - \".dev/guides/ai-collaboration-guides/DEV-WORKFLOW-SKILL-GUIDE.md\"\
+          \nwrapper_targets:\n  - \"claude\"\n  - \"codex\"\nwrapper_metadata:\n \
+          \ claude:\n    wrapper_path: \".claude/skills/dev-workflow/\"\n  codex:\n\
+          \    wrapper_path: \".agents/skills/dev-workflow/\"\n"
+      .agents/skills/dev-workflow/SKILL.md:
+        sha256: e1dcb087d33ecd33e95cf39923da00d61a5e4266b9eb8b2ee122e0b3c7ab9500
+        content: "---\nname: dev-workflow\ndescription: Deprecated compatibility alias\
+          \ for software-development-orchestrator. Use only when an existing request\
+          \ or downstream repository still names dev-workflow; route new multi-stage\
+          \ software-development orchestration to software-development-orchestrator\
+          \ without rewriting historical workflow ownership.\n---\n\n# Dev Workflow\
+          \ Compatibility Entry\n\nThis identifier is deprecated but has no scheduled\
+          \ removal release.\nThis identifier is a deprecated compatibility wrapper.\n\
+          \n- Registry: `.ai/assets/skills/README.MD`\n- Active skill: `software-development-orchestrator`\n\
+          - Canonical spec:\n  `.ai/assets/skills/software-development-orchestrator/skill.yaml`\n\
+          - Compatibility contract: `.ai/assets/skills/dev-workflow/skill.yaml`\n\
+          - Human guide: `.dev/guides/ai-collaboration-guides/DEV-WORKFLOW-SKILL-GUIDE.md`\n\
+          \nRoute new work to `software-development-orchestrator`. Preserve historical\n\
+          identifiers in existing workflows, tasks, assessments, releases, and\nprovenance\
+          \ records.\n\nUse this wrapper only as a deprecated compatibility entry.\n\
+          If wrapper text and canonical spec differ, follow `.ai/assets/skills/dev-workflow/skill.yaml`.\n"
+      .claude/skills/dev-workflow/SKILL.md:
+        sha256: e1dcb087d33ecd33e95cf39923da00d61a5e4266b9eb8b2ee122e0b3c7ab9500
+        content: "---\nname: dev-workflow\ndescription: Deprecated compatibility alias\
+          \ for software-development-orchestrator. Use only when an existing request\
+          \ or downstream repository still names dev-workflow; route new multi-stage\
+          \ software-development orchestration to software-development-orchestrator\
+          \ without rewriting historical workflow ownership.\n---\n\n# Dev Workflow\
+          \ Compatibility Entry\n\nThis identifier is deprecated but has no scheduled\
+          \ removal release.\nThis identifier is a deprecated compatibility wrapper.\n\
+          \n- Registry: `.ai/assets/skills/README.MD`\n- Active skill: `software-development-orchestrator`\n\
+          - Canonical spec:\n  `.ai/assets/skills/software-development-orchestrator/skill.yaml`\n\
+          - Compatibility contract: `.ai/assets/skills/dev-workflow/skill.yaml`\n\
+          - Human guide: `.dev/guides/ai-collaboration-guides/DEV-WORKFLOW-SKILL-GUIDE.md`\n\
+          \nRoute new work to `software-development-orchestrator`. Preserve historical\n\
+          identifiers in existing workflows, tasks, assessments, releases, and\nprovenance\
+          \ records.\n\nUse this wrapper only as a deprecated compatibility entry.\n\
+          If wrapper text and canonical spec differ, follow `.ai/assets/skills/dev-workflow/skill.yaml`.\n"

@@ -93,8 +93,9 @@ ALIAS_STATUSES = {
     "redirect-compatible",
     "immutable-published-instance",
     "deprecated-compatible",
+    "retired",
 }
-DEPRECATION_MODES = {"none", "compatibility", "immutable"}
+DEPRECATION_MODES = {"none", "compatibility", "immutable", "retired"}
 RELATIONSHIPS = {
     "must-remain-distinct",
     "derives-name-from",
@@ -214,6 +215,8 @@ def _deprecation_policy(
         raise IdentityRegistryError(
             f"{location}.replacement must be null when mode is none"
         )
+    if mode == "retired" and (not replacement or not removal_target):
+        raise IdentityRegistryError(f"{location}: retired identity requires replacement and removal_target")
     return policy
 
 
@@ -420,8 +423,10 @@ def _validate_consumers(
             raise IdentityRegistryError(
                 f"{consumer_id} transitions must be a list"
             )
+        retired = transition.get("state") == "retired"
         actual = {
-            (item.get("current_identifier"), item.get("candidate_identifier"))
+            (item.get("identifier" if retired else "current_identifier"),
+             item.get("replacement" if retired else "candidate_identifier"))
             for item in transitions
             if isinstance(item, dict)
         }
@@ -429,8 +434,16 @@ def _validate_consumers(
         for identity_id in canonical_ids:
             record = records[identity_id]
             for alias in record["aliases"]:
-                if alias["status"] == "deprecated-compatible":
+                if alias["status"] == ("retired" if retired else "deprecated-compatible"):
                     expected_pairs.add((alias["value"], record["canonical_value"]))
+                    if retired:
+                        matching = [item for item in transitions if isinstance(item, dict)
+                                    and item.get("identifier") == alias["value"]]
+                        if (len(matching) != 1 or matching[0].get("lifecycle") != "retired"
+                                or alias["deprecation_policy"]["mode"] != "retired"
+                                or matching[0].get("removal_target") != alias["deprecation_policy"]["removal_target"]
+                                or matching[0].get("removal_target") != transition.get("release_target")):
+                            raise IdentityRegistryError(f"{consumer_id}: retired alias lifecycle drift")
         if actual != expected_pairs:
             raise IdentityRegistryError(
                 f"{consumer_id} skill transition drift: "
