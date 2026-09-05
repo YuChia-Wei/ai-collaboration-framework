@@ -27,6 +27,7 @@ SHARED_RUNTIME_ASSETS = {
 }
 
 EXPECTED_PORTABLE_PATHS = {
+    ".ai/assets/skills/diagnostic-analyst/scripts/validate-diagnostic-record.py",
     ".ai/assets/skills/software-development-orchestrator/scripts/validate-software-development-orchestrator-acceptance.py",
     ".ai/scripts/observe-validation-dependencies.py",
     ".ai/scripts/plan-ai-context-package-apply.py",
@@ -47,6 +48,7 @@ EXPECTED_PORTABLE_PATHS = {
 }
 
 EXPECTED_STDLIB_ONLY_PATHS = {
+    ".ai/assets/skills/diagnostic-analyst/scripts/validate-diagnostic-record.py",
     ".ai/scripts/resolve-ai-context-package-identity.py",
     ".ai/assets/skills/ai-context-upgrader/scripts/compare-ai-context-versions.py",
     ".ai/scripts/run-test-fixture-profile.py",

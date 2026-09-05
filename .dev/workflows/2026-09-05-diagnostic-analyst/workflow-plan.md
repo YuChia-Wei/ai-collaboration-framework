@@ -32,3 +32,19 @@ Independent review of `7e45d7b90d6848d7f75aac6b0d7789be9d720f41` passed with zer
 ## Provider Delivery Authorization
 
 On 2026-09-05 the owner explicitly approved pushing both Issue 269 and 280 branches, creating pull requests, and merging after all required checks pass. Issue 269 closes after verified integration; Issue 280 remains open until actual v0.16.0 publication acceptance. Publication and Issue 272 implementation are separate.
+
+### Bounded entrypoint-contract retry 03
+
+The workflow authorizes one third entrypoint-contract attempt after the exact
+diagnostic CLI is added to both approved portable and standard-library-only
+expectations. Hosted attempt 1 exposed the portable omission; local attempt 2
+then exposed the standard-library expectation hidden by that first assertion.
+The CLI is already an authorized portable, standard-library-only entry in the
+registry. Keep both exact-set assertions and preserve both failures; no broad
+entrypoint approval or assertion relaxation is authorized.
+
+The same hosted run also failed the portable package selection fixture. A
+single-test local reproduction proved that the expected operation count was
+still 21 while the added diagnostic CLI correctly produces 22 operations. The
+workflow authorizes one third attempt of that selected test after updating the
+exact count to 22; retain its exact selected-path assertion and both failures.

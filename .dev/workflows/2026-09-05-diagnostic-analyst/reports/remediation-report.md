@@ -29,6 +29,23 @@ Issue: #269. Status: locally complete and independently reviewed; provider deliv
 - First context validation found missing exact wrapper identity/reference lines and an incorrectly inserted routing-table row. Workflow validation found a title projection mismatch.
 - Second context validation found the remaining required runtime-use line. The workflow records a bounded third-attempt authorization after that actual content repair; no unchanged retry was used.
 
-## Boundaries
+## PR 284 Entrypoint Contract Correction
+
+Hosted Ubuntu prerequisite validation on `9759ef0b` failed because the new
+diagnostic CLI was absent from the explicit portable expectation. The first
+local correction then exposed the corresponding standard-library-only
+expectation omission. Both exact approved sets now include that existing
+registered CLI; unknown portable entries and all other strict checks remain
+rejected. The bounded third contract attempt passed all seven tests in 3.454
+seconds. Hosted failure output and the independent audit remain retained under
+ignored Issue 269 validation artifacts; fresh hosted checks are still required.
+
+The same hosted PR profile exposed the package projection fixture's old count
+of 21. A focused local reproduction observed the exact 21-versus-22 mismatch;
+the approved diagnostic CLI is the additional selected operation. The corrected
+exact-count assertion and unchanged exact-path assertion passed the one selected
+test in 1.606 seconds. The remaining package-apply matrix will run in hosted CI.
+
+## Diagnostic Boundaries
 
 Diagnosis validators check declared inference prerequisites and evidence digests, not causal truth. Human/independent review still judges whether execution and complete observation are credible. No incident is rerun by writing a worked example. No actual repair, provider action or publication is authorized by a diagnostic record. Issue 280 and direct upgrade Issue 272 remain separate deliveries.
