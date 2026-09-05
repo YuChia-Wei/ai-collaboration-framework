@@ -1,7 +1,7 @@
 schema_version: '1.0'
 release_id: REL-v0.16.0
 version: v0.16.0
-status: planned
+status: validated
 record_origin: governed
 distribution_kind: governed-package
 installable: true
@@ -10,7 +10,7 @@ commit: null
 tagged_at: null
 recorded_at: null
 created_at: '2026-09-05T18:06:35+08:00'
-updated_at: '2026-09-05T20:47:33+08:00'
+updated_at: '2026-09-05T20:52:57+08:00'
 planning:
   github_issue_refs:
   - '#267'
@@ -96,19 +96,20 @@ distribution:
     automation: github-actions
     creates_or_moves_tag: false
 validation:
-  evidence: 'Nine actual isolated targets, three direct routes and nine route rejection
-    probes passed on one exact admitted archive. Regression: 179 passed with two platform
-    skips; classified accelerated release-state: 40 passed. Independent integration
-    review at 940afee97cc318af15f698b0321011aadc49c7ef passed with zero blocking findings.
-    Local workflow completed; current provider delivery, source-candidate admission
-    and public acceptance remain pending.'
+  evidence: 'Nine actual isolated target cases, three direct edges and nine rejection
+    probes passed on the admitted archive. Packaging/portable/apply regression: 179
+    passed, two platform skips; classified accelerated release-state: 40 passed. Independent
+    source, integration and completion reviews passed with zero blocking findings.
+    Included Work closure is declared by PR 286; fresh candidate, hosted and terminal
+    admission gates remain mandatory. Public archive acceptance is pending under the
+    separate publication coordination item.'
   workflow_id: 2026-09-05-direct-v016-upgrades
   related_workflows:
   - 2026-09-05-diagnostic-analyst
   - 2026-09-05-published-asset-identity
   - 2026-09-05-skill-004-retirement
   related_assessments: []
-  package_status: planned
+  package_status: validated
   post_merge_status: pending
   failed_publication_run: null
   published_run: null
