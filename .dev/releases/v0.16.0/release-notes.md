@@ -1,4 +1,4 @@
-# v0.16.0
+# REL-v0.16.0
 
 ## Highlights
 
@@ -10,7 +10,5 @@
 ## Compatibility
 
 The legacy `dev-workflow` and `repo-structure-sync` entry points are retired. Use `software-development-orchestrator` and `ai-context-init` respectively. Existing historical records remain valid; target customizations require explicit reconciliation.
-
-## Upgrade
 
 Use the migration guide and exact source manifest for your installed version. Local customization, target validation and provenance finalization remain required.

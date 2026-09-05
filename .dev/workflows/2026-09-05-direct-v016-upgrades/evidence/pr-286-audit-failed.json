@@ -1,0 +1,61 @@
+{
+  "schema_version": "independent-review-subject/v1",
+  "packet_id": "UPG006-PR-286-TERMINAL-AUDIT",
+  "repository": "YuChia-Wei/ai-collaboration-framework",
+  "pull_request": 286,
+  "base_sha": "013f39116962611c3dbd2825fecd9efca3ec8e3a",
+  "head_sha": "5be64ebb5bf3e7cd8e1ae28a3d2e118088061095",
+  "repository_id": "YuChia-Wei/ai-collaboration-framework",
+  "base_tree": "5423a93942e881d44e181c8a23309b66b205d763",
+  "head_tree": "25ed8de88f0874b0056030a175511d1362563e7f",
+  "subject_digest": "d67b124ceaef123174e260f4e217fc0e214bec495e44cafc4c418ad7e9245c9d",
+  "outcome": "failed",
+  "blocking_findings": 1,
+  "findings": [
+    {
+      "id": "UPG006-PR286-R1",
+      "severity": "P1",
+      "file": ".dev/releases/v0.16.0/release-notes.md",
+      "line": 1,
+      "finding": "Authored release first heading is # v0.16.0; assert_authored_sources requires # REL-v0.16.0. The current candidate therefore fails before admission. Independently reproduced through the read-only authored-source function.",
+      "observed_error": ".dev\\releases\\v0.16.0\\release-notes.md: first heading must identify # REL-v0.16.0; previous versions remain allowed only as compatibility or migration sources"
+    }
+  ],
+  "gates": {
+    "canonical_full_branch_subject": "re-executed",
+    "new_source_status_and_declaration_review": "re-executed",
+    "declaration_local_body_parity": "re-executed",
+    "prior_implementation_and_asset_reviews": "reused-with-proof",
+    "additional_support_templates_version_horizon_registry_authored_guides": "re-executed",
+    "authored_source_candidate_prerequisite": "blocked",
+    "fresh_candidate_hosted_provider_admission": "deferred: parent owns; parent reported failures",
+    "actual_matrix_full_suites": "deferred: not rerun"
+  },
+  "reuse_proof": {
+    ".ai": "4528830e7893988ccf712b43048c4ec4ba5ad18c",
+    ".github": "95d41dbc455c4345fa24b83d2539fa208a463969",
+    ".dev/releases/v0.16.0/route-assets": "2e4a8d2d9a819ae906df7983b1dc59863d026f42",
+    ".dev/releases/v0.16.0/route-evidence": "efdf5bd1617411fae9d8ac60b746dc49518ba565",
+    ".dev/releases/v0.16.0/artifact-admission.json": "7066789dc3ef4b5961aea820d9fdb4f3aca3923d",
+    ".dev/releases/v0.16.0/support-matrix.yaml": "8ad0b8a100aab374ce0e457129a7c9ba3dddf92d"
+  },
+  "audit_chain": [
+    "runner-audit-1/2 and corrected source review",
+    "projection-correction-audit.json at5ca4fcfe",
+    "staging-correction-audit.json sealed drafts",
+    "integration-audit-1.json at940afee",
+    "integration-audit-2.json atda6b91c"
+  ],
+  "notes": [
+    "Only release.yaml lifecycle fields, PR286 declaration and workflow handoff changed since the last review. Release projection is unchanged; earlier execution/audits did not run at this later head.",
+    "Additional previously unproven horizon/template/registry and authored-guide surfaces were inspected now. Retained support remains prospective, historical behavior remains version-gated, registry dependencies broaden rather than shrink.",
+    "Declaration correctly leaves integration/review/check/readback pending and binds local exact body to terminal-close272. No live provider/body verification performed.",
+    "Source validated transition records completed local archive/target acceptance; it does not satisfy or claim fresh provider/hosted admission. Current candidate remains blocked by R1.",
+    "No passing v2 review receipt issued."
+  ],
+  "limitations": [
+    "No network/provider mutations, tracked repair, actual matrix or full-suite rerun.",
+    "Parent-reported hosted failure was not independently polled; local authored-source failure was independently reproduced.",
+    "Root owns all fixes and merge admission."
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "schema_version": "candidate-source-failure/v1",
+  "subject_sha": "5be64ebb5bf3e7cd8e1ae28a3d2e118088061095",
+  "outcome": "failed",
+  "local_command": ["python", ".ai/scripts/validate-ai-context-release-state.py", "--phase", "candidate", "--version", "v0.16.0"],
+  "source": ".dev/releases/v0.16.0/release-notes.md",
+  "reason": "The first heading used the version without the required REL- release identity prefix.",
+  "hosted_evidence": "https://github.com/YuChia-Wei/ai-collaboration-framework/actions/runs/33967332004/job/101309640455",
+  "hosted_outcome": "failure",
+  "additional_bounded_check": "The Upgrade section is outside the publication-content heading allowlist; retain its guidance under Compatibility.",
+  "material_correction": "Correct the release-ID H1 and use only allowed publication-content sections.",
+  "archive_impact": "Authored release notes are absent from this archive's selected source inputs. Fresh current-head admission must still prove unchanged archive identity.",
+  "retry_authorization": "One new immutable provider attempt after the documented source correction and focused content validation; no rerun of unchanged actual target execution is inferred."
+}
