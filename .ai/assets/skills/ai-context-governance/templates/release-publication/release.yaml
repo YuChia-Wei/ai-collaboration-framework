@@ -69,11 +69,11 @@ provider_reconciliation:
 compatibility:
   breaking_changes: <true-or-false>
   # v0.14.0 and later retain v0.6.0, v0.9.0, and the immediate predecessor in
-  # the source-only support matrix until an explicit owner deprecation. Keep
+  # the source-only support matrix until an explicit owner deprecation.
   # automatic_upgrade_sources must equal the exact package migration inputs in
   # canonical numeric ascending order.
-  # Remove a retained origin here only when the support matrix proves its
-  # orchestrated route rather than a direct source-specific migration.
+  # From v0.16.0 all three origins require actual direct edges; an intermediate
+  # upgrade chain cannot substitute for one retained migration source.
   minimum_source_version: "v0.6.0"
   reconciliation_sources:
     - "<immediate-predecessor>"

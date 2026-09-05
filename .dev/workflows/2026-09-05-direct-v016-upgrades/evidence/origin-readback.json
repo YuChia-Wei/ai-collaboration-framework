@@ -1,0 +1,24 @@
+[
+  {
+    "version": "v0.6.0",
+    "archive_sha256": "46f906ed67b04dc35b4d28475e092cf336f230660f6f1180f10082fbdf9e8371",
+    "files_sha256": "20ca69ef4e1b4085476a2b15eeba93da7a75ea580fd2ab9f6c8815938b0af3be",
+    "source": {
+      "repository": "https://github.com/YuChia-Wei/ai-collaboration-prompts-dotnet-backend",
+      "ref": "8b98b5f917513f2d143f42a322050a1162bb63f9",
+      "commit": "8b98b5f917513f2d143f42a322050a1162bb63f9"
+    },
+    "files_schema": "2.0.0"
+  },
+  {
+    "version": "v0.9.0",
+    "archive_sha256": "2c98ac02eabd24ca881798caf83657adc2062ababe42fdb09fe26ce499cc98f2",
+    "files_sha256": "c293247612eb2f01ef42e4d7c55be4ff36201cdf034157c518de871ec2acb5c7",
+    "source": {
+      "repository": "https://github.com/YuChia-Wei/ai-collaboration-prompts-dotnet-backend",
+      "ref": "c14a3260cba7d0a9e2b67b73df9e221280d2d2ef",
+      "commit": "c14a3260cba7d0a9e2b67b73df9e221280d2d2ef"
+    },
+    "files_schema": "2.0.0"
+  }
+]

@@ -1,0 +1,22 @@
+{
+  "version_governance": {
+    "tests": 26,
+    "outcome": "passed"
+  },
+  "release_state": {
+    "attempts": [
+      {
+        "outcome": "failed",
+        "tests": 38,
+        "failure": "new fixture emitted CRLF instead of canonical JSON bytes",
+        "fingerprint": "canonical-route-fixture-newline-mismatch"
+      },
+      {
+        "outcome": "passed",
+        "tests": 38,
+        "material_change": "write_bytes preserves exact canonical JSON"
+      }
+    ]
+  },
+  "actual_execution": "not-yet-run"
+}

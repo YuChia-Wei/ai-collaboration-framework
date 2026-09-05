@@ -136,7 +136,9 @@ Published package and migration contracts before that baseline remain immutable
 historical evidence, but routine source gates do not rebuild every older
 archive or replay a Cartesian cross-version matrix.
 
-For every governed package after `v0.6.0`:
+For governed packages after `v0.6.0` and before `v0.16.0`, retain the historical
+immediate-predecessor policy below, including the explicitly recorded
+`v0.14.0` three-source exception:
 
 - `compatibility.automatic_upgrade_sources` contains exactly the immediate
   previous governed package version, so the required automatic-upgrade gate has
@@ -150,7 +152,21 @@ For every governed package after `v0.6.0`:
   target-owned reconciliation remain distinct evidence. Passing one never
   substitutes for another.
 
-Supporting another automatic source is a new compatibility decision. It needs
+From `v0.16.0`, owner-approved Issue 272 establishes three required direct
+sources: `v0.6.0`, `v0.9.0`, and the immediate previous governed package. Declare
+them in numeric order in `compatibility.automatic_upgrade_sources`; a breaking
+release uses `v0.6.0` as `minimum_source_version`. Each origin must select exactly
+one source-specific edge to the incoming version and execute its own migration,
+semantic cutover, target validation, finalization and interruption recovery
+against the same admitted incoming archive. Applying intermediate releases,
+route-selection fixtures, or archive identity checks alone cannot satisfy this
+acceptance. The migration guide exposes one direct entry point per origin and
+preserves target-owned reconciliation decisions. Retained origins remain required
+in later releases until an explicit owner-approved, versioned deprecation changes
+this policy and its executable gates. Historical records and assets are immutable.
+
+Supporting another automatic source or retiring a retained origin is a new
+compatibility decision. It needs
 explicit owner approval, its own bounded work item, and versioned policy change;
 it is not inferred from a retrospective baseline or historical test.
 

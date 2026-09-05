@@ -925,6 +925,31 @@ class AiContextReleaseStateGwtTests(unittest.TestCase):
                 with patch.object(STATE, "resolve_upgrade_route", side_effect=resolved):
                     STATE.validate_retained_origin_route_evidence(root, version, artifacts, ["v0.13.0"])
 
+    def test_gwt_031b_given_v016_retained_routes_when_multihop_or_wrong_predecessor_then_rejected(self):
+        version = "v0.16.0"
+        origins = ("v0.15.1", "v0.9.0", "v0.6.0")
+        artifacts = {"release_notes": "release-notes.md", "migration_guide": "migration-guide.md",
+                     "support_matrix": "support-matrix.yaml", "route_evidence": [
+                         f"route-evidence/{origin}-to-{version}.json" for origin in origins]}
+        matrix = {"matrix_id": "upgrade-route-matrix-v0.16.0", "target": {"version": version, "release_id": "REL-v0.16.0"}}
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            previous = root / ".dev/releases/v0.15.1/release.yaml"
+            previous.parent.mkdir(parents=True)
+            previous.write_text(yaml.safe_dump({"version": "v0.15.1", "distribution_kind": "governed-package"}), encoding="utf-8")
+            evidence = root / ".dev/releases/v0.16.0/route-evidence"
+            evidence.mkdir(parents=True)
+            for origin in origins:
+                (evidence / f"{origin}-to-{version}.json").write_bytes(STATE.canonical_route_json({"route_kind": "direct"}).encode("utf-8"))
+            sources = ["v0.6.0", "v0.9.0", "v0.15.1"]
+            with patch.object(STATE, "load_route_matrix", return_value=(matrix, b"matrix")), patch.object(STATE, "resolve_upgrade_route", return_value={"route_kind": "direct"}):
+                STATE.validate_retained_origin_route_evidence(root, version, artifacts, sources)
+                with self.assertRaisesRegex(STATE.ReleaseStateError, "automatic sources"):
+                    STATE.validate_retained_origin_route_evidence(root, version, artifacts, ["v0.6.0", "v0.9.0", "v0.15.0"])
+            with patch.object(STATE, "load_route_matrix", return_value=(matrix, b"matrix")), patch.object(STATE, "resolve_upgrade_route", return_value={"route_kind": "orchestrated-multi-hop"}):
+                with self.assertRaisesRegex(STATE.ReleaseStateError, "one direct edge"):
+                    STATE.validate_retained_origin_route_evidence(root, version, artifacts, sources)
+
     def test_gwt_031a_given_repository_v014_route_evidence_when_validated_then_published_routes_pass(self):
         version = "v0.14.0"
         release = yaml.safe_load(

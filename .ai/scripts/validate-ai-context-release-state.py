@@ -532,12 +532,38 @@ def validate_retained_origin_route_evidence(
         if artifacts != expected:
             raise ReleaseStateError("artifacts must name the two canonical authored files")
         return
-    if len(automatic_upgrade_sources) != 1:
+    direct_required = version_key(version) >= (0, 16, 0)
+    if direct_required:
+        predecessors = []
+        for path in (root / ".dev/releases").glob("v*/release.yaml"):
+            try:
+                record = yaml.safe_load(path.read_bytes())
+            except (OSError, yaml.YAMLError) as exc:
+                raise ReleaseStateError(f"cannot read governed predecessor: {path}") from exc
+            if not isinstance(record, dict):
+                raise ReleaseStateError(f"invalid governed predecessor: {path}")
+            candidate = record.get("version")
+            if record.get("distribution_kind") == "governed-package":
+                if not isinstance(candidate, str):
+                    raise ReleaseStateError(f"missing governed predecessor version: {path}")
+                if version_key(candidate) < version_key(version):
+                    predecessors.append(candidate)
+        if not predecessors:
+            raise ReleaseStateError("cannot establish the immediate previous governed package")
+        previous = max(predecessors, key=version_key)
+        expected_sources = ["v0.6.0", "v0.9.0", previous]
+        if automatic_upgrade_sources != expected_sources:
+            raise ReleaseStateError(
+                f"v0.16+ automatic sources must exactly equal {expected_sources}"
+            )
+        origins = (previous, "v0.9.0", "v0.6.0")
+    elif len(automatic_upgrade_sources) != 1:
         raise ReleaseStateError(
             "compatibility.automatic_upgrade_sources must contain exactly "
             "the immediate previous governed package version"
         )
-    origins = (automatic_upgrade_sources[0], "v0.9.0", "v0.6.0")
+    else:
+        origins = (automatic_upgrade_sources[0], "v0.9.0", "v0.6.0")
     expected_evidence = [
         f"route-evidence/{origin}-to-{version}.json" for origin in origins
     ]
@@ -581,6 +607,10 @@ def validate_retained_origin_route_evidence(
             raise ReleaseStateError(
                 f"{matrix_path}: cannot prove {origin} to {version}: {exc}"
             ) from exc
+        if direct_required and result.get("route_kind") != "direct":
+            raise ReleaseStateError(
+                f"{origin} to {version} requires one direct edge; intermediate upgrades cannot satisfy retained support"
+            )
         if result.get("route_kind") not in {"direct", "orchestrated-multi-hop"}:
             raise ReleaseStateError(
                 f"{origin} to {version} must resolve direct or orchestrated-multi-hop"
