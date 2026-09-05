@@ -6,9 +6,9 @@
   "task_id": "REL018-promotion",
   "workflow_id": "2026-09-05-published-asset-identity",
   "owner_skill": "ai-context-governance",
-  "status": "in_progress",
+  "status": "completed",
   "created_at": "2026-09-05T15:26:11+08:00",
-  "updated_at": "2026-09-05T15:45:38+08:00",
+  "updated_at": "2026-09-05T15:57:45+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-6-astra",
   "reasoning_effort": "xhigh",
@@ -30,11 +30,11 @@
   "execution": {
     "steps": [],
     "validation": [],
-    "last_completed_step": "Local implementation and focused validation",
-    "next_action": "Independent immutable-commit review"
+    "last_completed_step": "Local verification and independent correction audit passed",
+    "next_action": "Issue 272 and authorized provider delivery; Issue 280 remains open for publication acceptance"
   },
   "results": {
-    "summary": "Local implementation and historical actual-byte evidence prepared; independent review pending.",
+    "summary": "Local scope completed; independent audit and correction audit passed. Issue 280 first-publication acceptance remains deferred under the owner decision.",
     "files_changed": [
       ".ai/scripts/release_asset_identity.py",
       ".ai/scripts/manage-release-asset-identity.py",
@@ -42,7 +42,14 @@
       ".github/workflows/publish-release.yml"
     ],
     "tests_run": [
-      "13 identity tests; 12 workflow tests; 37 release-state tests; actual historical portable and edge executions"
+      "14 release identity tests",
+      "12 workflow tests",
+      "37 release-state tests",
+      "14 prerequisite tests",
+      "10 registry tests",
+      "actual portable and edge validation of both public archives",
+      "real v0.15.1 four-asset staging and provider read-back",
+      "context, shell, workflow and source disposition gates"
     ],
     "finding_status": "partially-addressed",
     "residual_risk": "First new-release publication and Issue 272 actual direct routes remain deferred.",

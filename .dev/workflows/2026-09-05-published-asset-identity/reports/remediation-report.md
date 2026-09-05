@@ -8,7 +8,7 @@ in new workflow evidence; no historical release directory, tag or public asset
 was modified. Independent review of `9437c2e1afd0e9bc54f0d78923f1bed1c84520f1`
 passed with zero blocking findings. Its LOW finding REL018-R1 identified duplicate
 route-binding definitions/checks; these were removed and all 14 focused identity
-tests passed again. A fresh review of that bounded correction remains pending.
+tests passed again. The correction audit of `a37df391c4369fd2d0a6728c91f649925a3e072d` also passed with zero blockers.
 
 ## Acceptance And Evidence
 
@@ -93,3 +93,31 @@ implementation or claim publication. Included-work and coordination lists
 remain disjoint. Issue 269 can follow its ordinary implementation closure gate.
 
 The historical catalog additionally binds Git-normalized provider JSON bytes to their retained digests. A regression check validates both public archives, provider read-backs, payload fingerprints and all rebound edge hashes.
+
+
+## Local Completion And Current Admission
+
+The local workflow is complete. Issue 280 remains open under the owner-selected
+publication coordination gate. The two real edges were re-executed on immutable
+`a37df391c4369fd2d0a6728c91f649925a3e072d` to produce a schema-valid measured command
+receipt; both outputs exactly matched the retained byte-bound outputs. Combined
+duration was 17.930s. The local acceptance ledger and human projection passed
+`.ai/scripts/validate-agent-execution-guardrails.py --evidence-ledger`.
+
+Ignored Issue 280 artifacts retain `review-result-01.json`,
+`correction-review.json`, `actual-edges-receipt.json`, `actual-edges-output.json`,
+and `acceptance-ledger.yaml`. The ledger describes completed local scope:
+AC2 implementation and AC3 route binding do not discharge future actual
+publication. Fresh terminal metadata admission is recorded separately in
+`terminal-review.json`; no expensive aggregate results are claimed or regenerated
+for metadata-only completion.
+
+Live Project read-back still allocates 267, 268, 269, 270, 271, 272 and 280 to
+v0.16.0. Issues 267, 268, 270 and 271 are Done; 269, 272 and 280 remain Inbox
+online. Local completion is not an online state update. No v0.16.0 release
+directory exists yet. The next implementation gate is Issue 272's real direct
+edges from v0.15.1, v0.9.0 and v0.6.0, including pristine/customized targets,
+semantic cutovers, fail-before-mutation, resume and rollback. Its accepted
+three-origin scope must reconcile the current one-origin source gate explicitly.
+
+Completion metadata initially retained the prior index timestamp; synchronizing it with the locator resolved that metadata gate without changing implementation evidence.
