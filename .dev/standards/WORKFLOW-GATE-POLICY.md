@@ -243,7 +243,14 @@ History compression is limited to unshared, unpushed commits under the active
 repository policy and must preserve approval, review, evidence, checkpoint,
 handoff, and shared-history boundaries.
 
-Merging or pushing an incomplete workflow is a checkpoint handoff, not workflow completion. Keep the workflow and unfinished tasks active. Resume a push-only handoff from the pushed branch; after a checkpoint merge, create the next continuation branch from the updated target as defined by `.dev/TEAM-GIT-FLOW-RULES.MD`.
+Merging or pushing an incomplete workflow is a checkpoint handoff, not workflow
+completion. This classification is not an integration prohibition: an
+`in_progress` workflow may be pushed, reviewed, or merged when those actions
+are separately authorized, the checkpoint is valid, and the repository
+integration gates pass. Keep the workflow and unfinished tasks active. Resume
+a push-only handoff from the pushed branch; after a checkpoint merge, create
+the next continuation branch from the updated target as defined by
+`.dev/TEAM-GIT-FLOW-RULES.MD`.
 
 When continuation also crosses a model, runtime, host, machine, or fresh
 session, follow `.dev/standards/WORKFLOW-HANDOFF-POLICY.md` and create its
@@ -290,15 +297,19 @@ A command is long-running when any condition is true:
 
 Before dispatch, the owning conversation must finish tracked mutations, run the
 narrow focused checks, obtain a clean worktree, and bind the exact command to a
-full immutable commit SHA. Pending design decisions, mutable source state, and
+full immutable commit SHA as its execution locator. Pending design decisions, mutable source state, and
 unbounded credentials are dispatch blockers.
 
 That clean immutable point is the validation freeze. Record its exact tracked
-snapshot and keep terminal metadata beneath declared ignored artifact roots.
-Any later tracked drift invalidates the freeze. Reuse from an earlier subject
+content subject and commit provenance, and keep terminal metadata beneath
+declared ignored artifact roots. Later content or governing-authority drift
+invalidates the freeze; commit-message or history-only identity drift requires
+a deterministic subject rebind. Reuse from an earlier subject
 is admissible only with the content-addressed proof required by
-`.ai/assets/shared/VALIDATION-EVIDENCE-LIFECYCLE-CONTRACT.md`; exact-head audit,
-required hosted contexts, and live admission remain fresh gates.
+`.ai/assets/shared/VALIDATION-EVIDENCE-LIFECYCLE-CONTRACT.md`; current-head
+review-subject binding, required hosted contexts, and live admission remain
+fresh gates. Independent review itself is content-addressed and is repeated
+only when that reviewed subject, criteria, or authority changes.
 
 Run the command in a separate external runtime task using the least expensive
 execution profile that can faithfully execute and report the bounded command.

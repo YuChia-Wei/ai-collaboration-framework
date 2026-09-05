@@ -252,6 +252,7 @@ class ValidationProfileRegistryGwtTests(unittest.TestCase):
                 memberships["multi-hop-upgrade-transaction"],
             ),
         )
+        self.assertEqual("no-reuse", checks["multi-hop-upgrade-transaction"][10])
         self.assertEqual(
             ("1200", {"release", "nightly-full"}),
             (
@@ -285,6 +286,23 @@ class ValidationProfileRegistryGwtTests(unittest.TestCase):
         self.assertIn("--quick       --profile pr", result.stdout)
         self.assertIn("--critical    --profile release", result.stdout)
         self.assertIn("--full        --profile nightly-full", result.stdout)
+        self.assertIn("--subject-rebind-receipt <path>", result.stdout)
+        rejected = subprocess.run(
+            [
+                bash,
+                str(RUNNER),
+                "--profile",
+                "release",
+                "--subject-rebind-receipt",
+                "artifacts/missing-rebind.json",
+            ],
+            cwd=ROOT,
+            check=False,
+            capture_output=True,
+            text=True,
+        )
+        self.assertEqual(2, rejected.returncode)
+        self.assertIn("allowed only in fast or pr profiles", rejected.stderr)
 
     def test_gwt_005_given_source_history_contract_when_profiles_are_read_then_routine_and_full_boundaries_are_explicit(self) -> None:
         _, checks, _ = registry_snapshot()
@@ -356,6 +374,8 @@ class ValidationProfileRegistryGwtTests(unittest.TestCase):
         self.assertIn('for dependency in ${CHECK_DEPENDS[$current]}', runner)
         self.assertIn('CHECK_RESOLVED_INPUT_PATHS["$id"]', runner)
         self.assertIn(".ai/scripts/validation-profile-registry.sh", runner)
+        self.assertIn(".ai/scripts/validation_subject.py", runner)
+        self.assertIn(".ai/assets/shared/validation-gate-classification.yaml", runner)
         self.assertIn(".ai/scripts/python-entrypoints.json", runner)
         self.assertIn(".ai/assets/shared/validation-evidence-lifecycle.schema.yaml", runner)
         self.assertIn(".ai/assets/shared/agent-execution-guardrails.schema.yaml", runner)

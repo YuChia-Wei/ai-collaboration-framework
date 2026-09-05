@@ -1,0 +1,54 @@
+schema_version: subject-evidence-rebind/v1
+record_type: subject-evidence-rebind
+example_only: true
+gate_id: multi-hop-upgrade-transaction
+
+original:
+  commit: 8888888888888888888888888888888888888888
+  tree: 9999999999999999999999999999999999999999
+  subject_manifest:
+    ref: ignored:validation/original-subject-manifest.yaml
+    sha256: cdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcd
+    subject_digest: 1111111111111111111111111111111111111111111111111111111111111111
+  evidence:
+    outcome: passed
+    execution_disposition: executed
+    ref: ignored:validation/multi-hop.result.json
+    sha256: abababababababababababababababababababababababababababababababab
+  authentication:
+    mode: sealed-at-original-execution
+    verified: true
+
+current:
+  commit: 1212121212121212121212121212121212121212
+  tree: 1313131313131313131313131313131313131313
+  subject_manifest:
+    ref: ignored:validation/current-subject-manifest.yaml
+    sha256: efefefefefefefefefefefefefefefefefefefefefefefefefefefefefef
+    subject_digest: 1111111111111111111111111111111111111111111111111111111111111111
+    generated_fresh: true
+
+verification:
+  classification_approved: true
+  allowlisted: true
+  original_authentication_valid: true
+  current_closure_complete: true
+  current_unknown_paths: []
+  subject_digest_equal: true
+  provenance_preserved: true
+  required_fresh_gates:
+    - gate: exact-head-independent-audit
+      replaceable_by_reuse: false
+    - gate: hosted-required-contexts
+      replaceable_by_reuse: false
+    - gate: live-merge-admission
+      replaceable_by_reuse: false
+
+decision:
+  outcome: reused-with-proof
+  reason: approved-subject-manifests-equivalent
+  truthful_statement: >-
+    Evidence executed at the original commit is applicable to the current
+    subject. It was not executed or audited at the current commit.
+
+receipt_sha256: 1414141414141414141414141414141414141414141414141414141414141414

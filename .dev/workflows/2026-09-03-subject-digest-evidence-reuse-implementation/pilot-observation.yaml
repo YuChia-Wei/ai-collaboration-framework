@@ -1,0 +1,111 @@
+schema_version: "subject-digest-pilot-observation/v1"
+workflow_id: "2026-09-03-subject-digest-evidence-reuse-implementation"
+gate_id: "multi-hop-upgrade-transaction"
+required_qualifying_transitions: 3
+observed_qualifying_transitions: 1
+expansion_status: "not-authorized"
+stop_conditions:
+  false_reuse_count: 0
+  missing_fresh_gate_count: 0
+  undeclared_observed_dependency_count: 0
+  surviving_critical_mutant_count: 0
+transitions:
+  - transition_id: "GOV017-TRANSITION-001"
+    source_commit: "a77e30102cb996a01e54ad3b57c68caefd53f442"
+    current_commit: "9dfdb72d19c106a66123fd2eb2259210724d5a35"
+    sha_change_reason: "Workflow-only checkpoint of the original pilot execution and retained environment-blocked attempt."
+    changed_paths:
+      - ".dev/workflows/INDEX.MD"
+      - ".dev/workflows/2026-09-03-subject-digest-evidence-reuse-implementation/workflow.yaml"
+      - ".dev/workflows/2026-09-03-subject-digest-evidence-reuse-implementation/workflow-plan.md"
+      - ".dev/workflows/2026-09-03-subject-digest-evidence-reuse-implementation/tasks/GOV017-multi-hop-pilot.json"
+    tracked_subject_equivalent: true
+    full_eligibility_proven: true
+    subject_digest: "f883f841ab3d968803209b948f0dc854b2b4420bac7dd4cbcdc0b10d95b8a51a"
+    receipt_sha256: "6eff4fadba173035b626220aaedc1531c04273af9a48a9d6b98d00ffe846e52f"
+    original_gate_execution:
+      outcome: "passed"
+      disposition: "executed"
+      duration_ms: 107280
+      tests: 31
+    current_gate_result:
+      outcome: "passed"
+      disposition: "reused"
+      evidence_event_duration_ms: 60
+    rebind_cost:
+      current_manifest_wall_seconds: 15.1
+      receipt_generation_wall_seconds: 12.3
+      full_changed-path_runner_wall_seconds: 95
+    avoided_work:
+      known_gate_execution_ms: 107280
+      same_selection_counterfactual_seconds: 202.22
+      inferred_wall_reduction_percent: 53.0
+      confidence: "bounded-inference"
+      note: "The counterfactual substitutes the original 107.280s gate execution for the 60ms reuse event in the same 95s selected-check run; it is not a second observed rerun."
+    manual_review:
+      required: true
+      performed: true
+      scope: "Receipt authentication, truthful provenance wording, evidence event, and sealed-manifest inclusion."
+    fresh_gate_status:
+      final_admitted_head: false
+      disposition: "pending-separate-admission"
+      required_non_replaceable_gates:
+        - "actual-upgrade-evidence"
+        - "current-head-review-binding"
+        - "hosted-required-contexts"
+        - "live-merge-admission"
+        - "mutable-provider-state"
+        - "tag-release-binding"
+      missing_required_gate_count: 0
+      note: "No remote head was admitted in local scope; these gates remain required and were not represented as satisfied by reuse."
+    decision_errors:
+      false_positive: false
+      false_negative: false
+      blocked: false
+    observed_at: "2026-09-03T10:38:50+08:00"
+post_transition_audits:
+  - audit_id: "GOV017-AUDIT-002"
+    subject_commit: "4ad2f436883a4d7dd1d1d066458f95f9c97a5ed9"
+    outcome: "failed"
+    focused_tests: "7/7 passed"
+    findings:
+      - finding_id: "GOV017-AUDIT-F1"
+        severity: "medium"
+        summary: "External fresh-gate sensitivity values were not validated fail closed."
+      - finding_id: "GOV017-AUDIT-F2"
+        severity: "medium"
+        summary: "The provider-drift fixture declared fresh_gate without requiring or asserting it."
+    remediation:
+      status: "implemented-and-fresh-pilot-passed; content-review-validated-locally; provider-admission-pending"
+      summary: "Validate external sensitivities for allowed order, membership, non-empty uniqueness; require the provider-drift fresh_gate and bind it to provider-sensitive authority."
+    preserved_prior_attempt:
+      audit_id: "GOV017-AUDIT-001"
+      outcome: "blocked-by-environment"
+      reason: "Windows temp and Git Bash sandbox permissions blocked six of seven tests."
+post_remediation_baseline:
+  commit: "f6c7a38288bcac38f1b48987666f89fb2599916c"
+  invocation_id: "20260903T031341Z-829"
+  subject_digest: "aeeeba52f1504dff9fdb430fc8a631c3a045a4dca939803b0623b83ca8f2a69e"
+  prior_subject_digest: "f883f841ab3d968803209b948f0dc854b2b4420bac7dd4cbcdc0b10d95b8a51a"
+  prior_evidence_reused: false
+  profile_result:
+    selected: 48
+    executed: 47
+    reused: 0
+    failed: 0
+    blocked: 0
+    not_applicable: 1
+    duration_seconds: 487
+  pilot_gate:
+    outcome: "passed"
+    disposition: "executed"
+    tests: 31
+    duration_ms: 117450
+  sealed_manifest_sha256: "a4afc342c32576f1797564d253a29d85e2becadf3470d4aa2f88d1f846f92b57"
+  note: "The audit remediation changed the complete subject, so re-execution rather than reuse was required and observed."
+notes:
+  - "The implementation and deterministic history-only fixture do not count as an observed production pilot transition."
+  - "Transition 001 is the first actual runner-consumed subject rebind; it counts for pilot observation but does not satisfy final admitted-head hosted/provider acceptance."
+  - "The post-transition audit findings change the pilot subject, so the old sealed evidence must not be rebound across the remediation commit; a fresh original pilot is required."
+  - "The post-remediation baseline executed fresh and does not increment qualifying history-only transitions."
+  - "Expansion requires three qualifying transitions, zero stop-condition events, and a separate owner decision."

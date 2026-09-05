@@ -41,7 +41,7 @@ drift:
   observed_but_undeclared: "failed"
   declared_but_unobserved: "advisory-retain"
 fresh_gates:
-  - "exact-head-independent-audit"
+  - "current-head-review-binding"
   - "hosted-required-contexts"
   - "live-provider-admission"
   - "tag-release-binding"

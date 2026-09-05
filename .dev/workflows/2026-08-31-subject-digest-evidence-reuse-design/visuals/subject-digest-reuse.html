@@ -1,0 +1,401 @@
+<!doctype html>
+<html lang="zh-Hant-TW">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>GOV-017 Subject Digest Rebind Explorer</title>
+  <style>
+    :root {
+      color-scheme: light dark;
+      --page: light-dark(#f6f7fb, #101217);
+      --surface: light-dark(#ffffff, #191c23);
+      --surface-2: light-dark(#eef1f7, #242833);
+      --text: light-dark(#182033, #eef2ff);
+      --muted: light-dark(#5d687d, #aeb8cb);
+      --border: light-dark(#d8deea, #363c49);
+      --accent: light-dark(#3157c8, #8da7ff);
+      --accent-soft: light-dark(#e7edff, #253258);
+      --good: light-dark(#157347, #65d6a0);
+      --good-soft: light-dark(#e3f6ed, #173d30);
+      --warn: light-dark(#9a6700, #f4c95d);
+      --warn-soft: light-dark(#fff4cf, #403514);
+      --bad: light-dark(#b42318, #ff8c83);
+      --bad-soft: light-dark(#fde8e6, #48201f);
+      --shadow: 0 12px 35px light-dark(rgba(31, 42, 68, .08), rgba(0, 0, 0, .24));
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: var(--page);
+      color: var(--text);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.5;
+    }
+
+    main {
+      width: min(1180px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 28px 0 44px;
+    }
+
+    h1, h2, h3, p { margin-top: 0; }
+    h1 { margin-bottom: 8px; font-size: clamp(1.55rem, 2vw, 2.15rem); }
+    h2 { font-size: 1.1rem; margin-bottom: 14px; }
+    h3 { font-size: .96rem; margin-bottom: 8px; }
+    p { color: var(--muted); }
+    code { font-family: ui-monospace, SFMono-Regular, Consolas, monospace; }
+
+    .intro {
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+      align-items: end;
+      margin-bottom: 22px;
+    }
+
+    .intro p { max-width: 780px; margin-bottom: 0; }
+
+    .status {
+      flex: 0 0 auto;
+      padding: 7px 11px;
+      border-radius: 999px;
+      background: var(--warn-soft);
+      color: var(--warn);
+      font-weight: 650;
+      font-size: .82rem;
+    }
+
+    .panel {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      box-shadow: var(--shadow);
+      padding: 18px;
+      margin-bottom: 18px;
+    }
+
+    .controls {
+      display: grid;
+      grid-template-columns: minmax(0, 1.25fr) minmax(260px, .75fr);
+      gap: 18px;
+    }
+
+    .scenario-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    button {
+      appearance: none;
+      border: 1px solid var(--border);
+      border-radius: 9px;
+      background: var(--surface-2);
+      color: var(--text);
+      padding: 8px 11px;
+      font: inherit;
+      font-size: .86rem;
+      cursor: pointer;
+    }
+
+    button:hover { border-color: var(--accent); }
+    button:focus-visible { outline: 3px solid var(--accent-soft); outline-offset: 2px; }
+    button[aria-pressed="true"] { background: var(--accent); color: light-dark(#fff, #10152a); border-color: var(--accent); }
+
+    label { display: block; font-weight: 650; margin-bottom: 7px; }
+    select {
+      width: 100%;
+      min-height: 42px;
+      border: 1px solid var(--border);
+      border-radius: 9px;
+      background: var(--surface-2);
+      color: var(--text);
+      padding: 8px 10px;
+      font: inherit;
+    }
+
+    .strategy-note {
+      margin: 10px 0 0;
+      padding: 10px 12px;
+      border-left: 4px solid var(--accent);
+      background: var(--accent-soft);
+      color: var(--text);
+      border-radius: 6px;
+      min-height: 68px;
+    }
+
+    .flow {
+      display: grid;
+      grid-template-columns: 1fr 34px 1fr 34px 1fr 34px 1fr;
+      align-items: stretch;
+      gap: 8px;
+    }
+
+    .node {
+      min-width: 0;
+      border: 1px solid var(--border);
+      background: var(--surface-2);
+      border-radius: 12px;
+      padding: 14px;
+    }
+
+    .node strong { display: block; margin-bottom: 6px; }
+    .node small { display: block; color: var(--muted); }
+    .node .value { margin-top: 12px; font-weight: 700; overflow-wrap: anywhere; }
+
+    .arrow {
+      display: grid;
+      place-items: center;
+      color: var(--muted);
+      font-size: 1.5rem;
+    }
+
+    .tone-good { border-color: color-mix(in srgb, var(--good) 45%, var(--border)); background: var(--good-soft); }
+    .tone-warn { border-color: color-mix(in srgb, var(--warn) 45%, var(--border)); background: var(--warn-soft); }
+    .tone-bad { border-color: color-mix(in srgb, var(--bad) 45%, var(--border)); background: var(--bad-soft); }
+
+    .outcome-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 14px;
+    }
+
+    .result {
+      border-radius: 12px;
+      padding: 13px;
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+    }
+
+    .result .label { color: var(--muted); font-size: .78rem; text-transform: uppercase; letter-spacing: .04em; }
+    .result .answer { font-weight: 750; margin: 4px 0 5px; }
+    .result p { margin-bottom: 0; font-size: .86rem; }
+
+    .history {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .metric {
+      padding: 14px;
+      background: var(--surface-2);
+      border-radius: 12px;
+      border: 1px solid var(--border);
+    }
+
+    .metric .number { display: block; font-size: 1.65rem; font-weight: 760; color: var(--accent); }
+    .metric .caption { color: var(--muted); font-size: .85rem; }
+
+    .legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      margin-top: 12px;
+      color: var(--muted);
+      font-size: .82rem;
+    }
+
+    .legend span::before {
+      content: "";
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      display: inline-block;
+      margin-right: 6px;
+      background: var(--accent);
+    }
+
+    .legend .good::before { background: var(--good); }
+    .legend .warn::before { background: var(--warn); }
+    .legend .bad::before { background: var(--bad); }
+
+    .footnote { font-size: .82rem; color: var(--muted); margin: 12px 0 0; }
+
+    @media (max-width: 900px) {
+      .controls { grid-template-columns: 1fr; }
+      .flow { grid-template-columns: 1fr; }
+      .arrow { transform: rotate(90deg); min-height: 24px; }
+    }
+
+    @media (max-width: 640px) {
+      main { width: min(100% - 20px, 1180px); padding-top: 18px; }
+      .intro { display: block; }
+      .status { display: inline-block; margin-top: 12px; }
+      .outcome-grid, .history { grid-template-columns: 1fr; }
+      .panel { padding: 14px; border-radius: 13px; }
+      button { min-height: 42px; }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <header class="intro">
+      <div>
+        <h1>GOV-017：內容等價證據如何重新綁定</h1>
+        <p>選擇一次變更，查看昂貴 behavioral evidence、final-head rebind，以及必須保持 fresh 的 exact-head／hosted／provider gate 各自會發生什麼事。</p>
+      </div>
+      <span class="status">Owner-review proposal</span>
+    </header>
+
+    <section class="panel controls" aria-labelledby="controls-title">
+      <div>
+        <h2 id="controls-title">變更情境</h2>
+        <div class="scenario-buttons" id="scenario-buttons" aria-label="選擇變更情境"></div>
+      </div>
+      <div>
+        <label for="strategy">啟用策略</label>
+        <select id="strategy">
+          <option value="dependency-first">先完成 #267/#268，再啟用單一 pilot</option>
+          <option value="immediate-all">立即全面啟用</option>
+          <option value="design-only">只完成設計，暫不啟用</option>
+        </select>
+        <p class="strategy-note" id="strategy-note" aria-live="polite"></p>
+      </div>
+    </section>
+
+    <section class="panel" aria-labelledby="flow-title">
+      <h2 id="flow-title">判定流程</h2>
+      <div class="flow" role="img" aria-label="原始證據經過歷史變更、manifest 比對、rebind，最後仍執行 fresh gates">
+        <article class="node">
+          <strong>1. 原始證據</strong>
+          <small>保留原始 commit、tree、passed result 與封存 manifest。</small>
+          <div class="value"><code>executed @ old SHA</code></div>
+        </article>
+        <div class="arrow" aria-hidden="true">→</div>
+        <article class="node" id="change-node">
+          <strong>2. 新的 commit</strong>
+          <small id="change-description"></small>
+          <div class="value" id="change-value"></div>
+        </article>
+        <div class="arrow" aria-hidden="true">→</div>
+        <article class="node" id="compare-node">
+          <strong>3. Manifest 比對</strong>
+          <small>重新解析 current closure、runtime、environment 與 authority。</small>
+          <div class="value" id="compare-value"></div>
+        </article>
+        <div class="arrow" aria-hidden="true">→</div>
+        <article class="node" id="decision-node">
+          <strong>4. Behavioral gate</strong>
+          <small>只決定昂貴行為證據是否需重新執行。</small>
+          <div class="value" id="decision-value"></div>
+        </article>
+      </div>
+
+      <div class="outcome-grid">
+        <article class="result" id="behavior-result">
+          <div class="label">昂貴驗證</div>
+          <div class="answer" id="behavior-answer"></div>
+          <p id="behavior-detail"></p>
+        </article>
+        <article class="result tone-warn">
+          <div class="label">Exact-head review</div>
+          <div class="answer">永遠 fresh</div>
+          <p>新 SHA 仍需獨立 audit；舊 reviewer 不會被宣稱審過新 commit。</p>
+        </article>
+        <article class="result tone-warn">
+          <div class="label">Hosted / provider</div>
+          <div class="answer" id="provider-answer">永遠 live read-back</div>
+          <p id="provider-detail">Required contexts、PR admission、tag、Release、Issue 與 Project 狀態不由本機 digest 取代。</p>
+        </article>
+      </div>
+
+      <div class="legend" aria-label="顏色圖例">
+        <span class="good">可重用</span>
+        <span class="warn">仍需 fresh</span>
+        <span class="bad">重跑或阻擋</span>
+      </div>
+    </section>
+
+    <section class="panel" aria-labelledby="history-title">
+      <h2 id="history-title">過往工作透露的改善空間</h2>
+      <div class="history">
+        <article class="metric">
+          <span class="number">8</span>
+          <span class="caption">v0.14 候選序列中，每個被分析的昂貴 gate 都有 8 次群組內 SHA 轉換未改變其 tracked subject。</span>
+        </article>
+        <article class="metric">
+          <span class="number">3</span>
+          <span class="caption">近期 source-head → merge-head 配對具有完全相同的 tree 與被分析 gate subject。</span>
+        </article>
+        <article class="metric">
+          <span class="number">7m 28s</span>
+          <span class="caption">#250/#252 記錄的四條 validation lane 工作量；這是觀察到的 envelope，不是已宣稱可全數節省。</span>
+        </article>
+      </div>
+      <p class="footnote">目前歷史資料缺少完整 runtime／environment／original-manifest authentication，因此只能證明 tracked-subject equivalence 與改善上限。正式 pilot 只計入 full-eligibility-proven 的 avoided execution。</p>
+    </section>
+  </main>
+
+  <script>
+    const scenarios = [
+      { id: "message", label: "只改 commit message", change: "SHA 改變；適用內容未變。", digest: "subject_digest 相同", decision: "reused-with-proof", behavior: "不重跑", detail: "沿用原始 passed evidence，新增 append-only rebind receipt。", tone: "good" },
+      { id: "squash", label: "等價 squash", change: "多個 commits 壓成一個；封存與 current manifest 等價。", digest: "subject_digest 相同", decision: "reused-with-proof", behavior: "不重跑", detail: "commit-range／message policy 仍重跑；behavioral gate 可重用。", tone: "good" },
+      { id: "rebase", label: "closure 外 rebase", change: "base 改變，但完整 closure 內的 blob、mode 與 authority 未變。", digest: "subject_digest 相同", decision: "reused-with-proof", behavior: "不重跑", detail: "fresh current resolver 必須證明 closure 等價。", tone: "good" },
+      { id: "merge", label: "同 tree merge commit", change: "merge SHA 不同，但 tree 與 applicable subject 相同。", digest: "subject_digest 相同", decision: "reused-with-proof", behavior: "不重跑", detail: "適合 source-head → final merge-head rebind。", tone: "good" },
+      { id: "bytes", label: "closure 內 bytes 漂移", change: "適用路徑中的 blob 或 mode 改變。", digest: "subject_digest 不同", decision: "re-executed", behavior: "重新執行", detail: "這是真正的行為輸入變更，不能沿用。", tone: "bad" },
+      { id: "runtime", label: "runtime 漂移", change: "Python、ABI、PyYAML、Git 或適用工具身分改變。", digest: "subject_digest 不同", decision: "re-executed", behavior: "重新執行", detail: "即使 tracked bytes 相同，runtime 仍是 subject 的一部分。", tone: "bad" },
+      { id: "unknown", label: "closure／環境未知", change: "resolver、依賴或 filesystem semantics 無法完整判定。", digest: "無法證明", decision: "blocked", behavior: "阻擋重用", detail: "Fail closed；需補足證據或直接重新執行。", tone: "bad" },
+      { id: "provider", label: "provider 狀態漂移", change: "PR body、review、check、Issue、Project、tag 或 Release 改變。", digest: "本機 subject 可相同", decision: "local evidence unchanged", behavior: "只重用本機行為證據", detail: "Provider acceptance 仍需 live read-back，不能由 digest 回答。", tone: "warn", provider: "必須重新讀取" },
+      { id: "legacy", label: "舊 evidence 無 manifest", change: "歷史結果沒有 subject-manifest/v1。", digest: "subject_digest 不存在", decision: "not eligible", behavior: "不套用新重用", detail: "不回填、不猜測；沿用舊規則或重新執行。", tone: "bad" }
+    ];
+
+    const strategyText = {
+      "dependency-first": "建議：先讓 #268 驗證 pilot 的觀測 closure，再由 #267 falsify identity substitution／evidence omission；接著只開一個 pilot，安全成本可被後續 gate 重用。",
+      "immediate-all": "不建議：程式差異可能小，但 closure 漏報會造成 false reuse；人工覆核、後續 schema 重寫與錯誤 admission 的成本高於短期節省。",
+      "design-only": "安全但改善延後：不會新增風險，也不會減少下一次 SHA-only invalidation。適合 owner 尚未接受 dependency delivery 時。"
+    };
+
+    const buttons = document.getElementById("scenario-buttons");
+    const strategy = document.getElementById("strategy");
+    const strategyNote = document.getElementById("strategy-note");
+    const changeNode = document.getElementById("change-node");
+    const compareNode = document.getElementById("compare-node");
+    const decisionNode = document.getElementById("decision-node");
+    const behaviorResult = document.getElementById("behavior-result");
+
+    function setTone(element, tone) {
+      element.classList.remove("tone-good", "tone-warn", "tone-bad");
+      element.classList.add(`tone-${tone}`);
+    }
+
+    function selectScenario(id) {
+      const item = scenarios.find(scenario => scenario.id === id) || scenarios[0];
+      document.querySelectorAll("#scenario-buttons button").forEach(button => {
+        button.setAttribute("aria-pressed", String(button.dataset.id === item.id));
+      });
+      document.getElementById("change-description").textContent = item.change;
+      document.getElementById("change-value").textContent = item.label;
+      document.getElementById("compare-value").textContent = item.digest;
+      document.getElementById("decision-value").textContent = item.decision;
+      document.getElementById("behavior-answer").textContent = item.behavior;
+      document.getElementById("behavior-detail").textContent = item.detail;
+      document.getElementById("provider-answer").textContent = item.provider || "永遠 live read-back";
+      setTone(changeNode, item.tone === "good" ? "warn" : item.tone);
+      setTone(compareNode, item.tone);
+      setTone(decisionNode, item.tone);
+      setTone(behaviorResult, item.tone);
+    }
+
+    scenarios.forEach((item, index) => {
+      const button = document.createElement("button");
+      button.type = "button";
+      button.dataset.id = item.id;
+      button.textContent = item.label;
+      button.setAttribute("aria-pressed", String(index === 0));
+      button.addEventListener("click", () => selectScenario(item.id));
+      buttons.appendChild(button);
+    });
+
+    strategy.addEventListener("change", () => {
+      strategyNote.textContent = strategyText[strategy.value];
+    });
+
+    strategyNote.textContent = strategyText[strategy.value];
+    selectScenario(scenarios[0].id);
+  </script>
+</body>
+</html>

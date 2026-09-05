@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import argparse
 import copy
+import hashlib
 import json
 import os
 import re
@@ -36,13 +37,18 @@ ISSUE_REFERENCE = re.compile(
 STAGES = {"declaration", "merge-admission", "reconciliation"}
 INTEGRATION_TOPOLOGIES = {"fast-forward", "rebase", "squash", "merge-commit"}
 AUDIT_RECEIPT = re.compile(
-    r"^<!-- github-terminal-issue-closure-audit/v1\n(?P<payload>\{.*\})\n-->$",
+    r"^<!-- (?P<contract>github-terminal-issue-closure-audit/v[12])\n(?P<payload>\{.*\})\n-->$",
     re.DOTALL,
 )
+REVIEW_SUBJECT_SCHEMA = "independent-review-subject/v1"
+CURRENT_AUDIT_RECEIPT = "github-terminal-issue-closure-audit/v2"
+HISTORICAL_AUDIT_RECEIPT = "github-terminal-issue-closure-audit/v1"
 SOURCE_REVIEW_GATE = {
     "mode": "single-maintainer-audit-receipt",
     "maintainer_login": "YuChia-Wei",
-    "receipt_contract": "github-terminal-issue-closure-audit/v1",
+    "receipt_contract": CURRENT_AUDIT_RECEIPT,
+    "historical_receipt_contracts": [HISTORICAL_AUDIT_RECEIPT],
+    "binding_mode": "content-addressed-current-head",
     "downstream_policy": "target-owned",
 }
 
@@ -61,6 +67,45 @@ def non_empty(value: object) -> bool:
     return isinstance(value, str) and bool(value.strip())
 
 
+def canonical_digest(value: object) -> str:
+    payload = json.dumps(value, sort_keys=True, separators=(",", ":"), ensure_ascii=False)
+    return hashlib.sha256(payload.encode("utf-8")).hexdigest()
+
+
+def review_subject(repository: str, base_tree: str, head_tree: str) -> dict[str, str]:
+    subject = {
+        "schema_version": REVIEW_SUBJECT_SCHEMA,
+        "repository_id": repository,
+        "base_tree": base_tree,
+        "head_tree": head_tree,
+    }
+    return {**subject, "subject_digest": canonical_digest(subject)}
+
+
+def git_tree_identity(commit_sha: str) -> str:
+    if not SHA.fullmatch(commit_sha):
+        raise ValueError("review subject requires an exact commit SHA locator")
+    result = subprocess.run(
+        ["git", "rev-parse", f"{commit_sha}^{{tree}}"],
+        cwd=ROOT,
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    tree_sha = result.stdout.strip()
+    if result.returncode != 0 or not SHA.fullmatch(tree_sha):
+        raise ValueError("unable to resolve review subject tree identity")
+    return tree_sha
+
+
+def current_review_subject(repository: str, base_sha: str, head_sha: str) -> dict[str, str]:
+    return review_subject(
+        repository,
+        git_tree_identity(base_sha),
+        git_tree_identity(head_sha),
+    )
+
+
 def audit_receipt(body: object) -> dict[str, Any] | None:
     if not isinstance(body, str):
         return None
@@ -71,6 +116,7 @@ def audit_receipt(body: object) -> dict[str, Any] | None:
         value = json.loads(match.group("payload"))
     except json.JSONDecodeError:
         return None
+    contract = match.group("contract")
     expected_fields = {
         "repository",
         "pull_request",
@@ -80,6 +126,8 @@ def audit_receipt(body: object) -> dict[str, Any] | None:
         "blocking_findings",
         "audit_scope",
     }
+    if contract == CURRENT_AUDIT_RECEIPT:
+        expected_fields |= {"base_tree", "head_tree", "subject_digest"}
     if not isinstance(value, dict) or set(value) != expected_fields:
         return None
     if (
@@ -95,7 +143,17 @@ def audit_receipt(body: object) -> dict[str, Any] | None:
         or isinstance(value.get("blocking_findings"), bool)
     ):
         return None
-    return value
+    if contract == CURRENT_AUDIT_RECEIPT:
+        if (
+            not isinstance(value.get("base_tree"), str)
+            or not SHA.fullmatch(value["base_tree"])
+            or not isinstance(value.get("head_tree"), str)
+            or not SHA.fullmatch(value["head_tree"])
+            or value.get("subject_digest")
+            != review_subject(value["repository"], value["base_tree"], value["head_tree"])["subject_digest"]
+        ):
+            return None
+    return {"receipt_contract": contract, "payload": value}
 
 
 def normalized_keyword(value: str) -> str:
@@ -332,29 +390,63 @@ def read_live_provider_facts(
     maintainer_login = review_gate["maintainer_login"]
     latest_by_reviewer: dict[str, dict[str, Any]] = {}
     for item in reviews:
-        if not isinstance(item, dict) or item.get("commit_id") != live_head_sha:
+        if not isinstance(item, dict):
             continue
         user = item.get("user")
         login = user.get("login") if isinstance(user, dict) else None
         if not non_empty(login):
             continue
         state = item.get("state")
-        receipt = audit_receipt(item.get("body")) if state == "COMMENTED" else None
-        if state not in {"APPROVED", "CHANGES_REQUESTED"} and receipt is None:
+        parsed_receipt = audit_receipt(item.get("body")) if state == "COMMENTED" else None
+        if parsed_receipt is None and (
+            state not in {"APPROVED", "CHANGES_REQUESTED"}
+            or item.get("commit_id") != live_head_sha
+        ):
             continue
-        if receipt is not None:
-            expected_receipt = {
+        if parsed_receipt is not None:
+            receipt_contract = parsed_receipt["receipt_contract"]
+            receipt = parsed_receipt["payload"]
+            expected_common = {
                 "repository": repository,
                 "pull_request": pr_number,
-                "base_sha": live_base_sha,
-                "head_sha": live_head_sha,
                 "outcome": "passed",
                 "blocking_findings": 0,
-                "audit_scope": "fresh-exact-head-independent",
             }
-            if login.casefold() != maintainer_login.casefold() or receipt != expected_receipt:
+            if (
+                login.casefold() != maintainer_login.casefold()
+                or receipt_contract != review_gate["receipt_contract"]
+                or item.get("commit_id") != receipt.get("head_sha")
+                or any(receipt.get(key) != value for key, value in expected_common.items())
+            ):
                 continue
-            item = {**item, "audit_receipt": receipt}
+            current_subject = current_review_subject(repository, live_base_sha, live_head_sha)
+            if (
+                receipt.get("audit_scope") != "content-addressed-independent"
+                or any(
+                    receipt.get(key) != current_subject[key]
+                    for key in ("base_tree", "head_tree", "subject_digest")
+                )
+            ):
+                continue
+            binding = {
+                "head_sha": live_head_sha,
+                "reviewed_base_sha": receipt["base_sha"],
+                "reviewed_head_sha": receipt["head_sha"],
+                "base_tree": current_subject["base_tree"],
+                "head_tree": current_subject["head_tree"],
+                "subject_digest": current_subject["subject_digest"],
+                "binding_disposition": (
+                    "reviewed-current-content"
+                    if receipt["base_sha"] == live_base_sha and receipt["head_sha"] == live_head_sha
+                    else "reused-with-proof"
+                ),
+            }
+            item = {
+                **item,
+                "audit_receipt": receipt,
+                "audit_receipt_contract": receipt_contract,
+                "review_binding": binding,
+            }
         current = latest_by_reviewer.get(login)
         if current is None or int(item.get("id", 0)) > int(current.get("id", 0)):
             latest_by_reviewer[login] = item
@@ -373,11 +465,12 @@ def read_live_provider_facts(
         }
     elif accepted:
         latest = accepted[-1]
+        binding = latest["review_binding"]
         review = {
             "status": "single-maintainer-audit-passed",
-            "head_sha": live_head_sha,
+            **binding,
             "reviewer_login": maintainer_login,
-            "receipt_contract": review_gate["receipt_contract"],
+            "receipt_contract": latest["audit_receipt_contract"],
             "provider_review_id": latest.get("id"),
             "submitted_at": latest.get("submitted_at"),
         }
@@ -490,12 +583,52 @@ def validate_provider_evidence(
     review_gate = config.get("work_item_binding", {}).get("merge_gate", {}).get("review_gate", {})
     if not isinstance(review, dict) or review.get("status") != "single-maintainer-audit-passed":
         errors.append("merge admission requires a passing single-maintainer audit receipt")
-    elif review.get("head_sha") != head_sha:
-        errors.append("single-maintainer audit receipt must be bound to pull_request.head_sha")
-    elif review.get("reviewer_login") != review_gate.get("maintainer_login"):
-        errors.append("single-maintainer audit receipt must come from the configured maintainer")
-    elif review.get("receipt_contract") != review_gate.get("receipt_contract"):
-        errors.append("single-maintainer audit receipt must use the configured receipt contract")
+    else:
+        receipt_contract = review.get("receipt_contract")
+        current_contract = review_gate.get("receipt_contract")
+        historical_contracts = review_gate.get("historical_receipt_contracts", [])
+        accepted_contracts = (
+            [current_contract]
+            if runtime is not None
+            else [current_contract, *historical_contracts]
+        )
+        if review.get("head_sha") != head_sha:
+            errors.append("single-maintainer audit binding must identify pull_request.head_sha")
+        if review.get("reviewer_login") != review_gate.get("maintainer_login"):
+            errors.append("single-maintainer audit receipt must come from the configured maintainer")
+        if receipt_contract not in accepted_contracts:
+            errors.append(
+                "live merge admission requires the configured current audit receipt contract"
+                if runtime is not None
+                else "historical record validation requires a configured current or historical audit receipt contract"
+            )
+        elif receipt_contract == HISTORICAL_AUDIT_RECEIPT:
+            if review.get("head_sha") != head_sha:
+                errors.append("historical single-maintainer audit receipt must remain exact-head bound")
+        else:
+            reviewed_base_sha = review.get("reviewed_base_sha")
+            reviewed_head_sha = review.get("reviewed_head_sha")
+            base_tree = review.get("base_tree")
+            head_tree = review.get("head_tree")
+            subject_digest = review.get("subject_digest")
+            if not all(
+                isinstance(value, str) and SHA.fullmatch(value)
+                for value in (reviewed_base_sha, reviewed_head_sha, base_tree, head_tree)
+            ):
+                errors.append("content-addressed audit review requires valid provenance and tree identities")
+            elif (
+                not isinstance(subject_digest, str)
+                or subject_digest
+                != review_subject(config.get("repository"), base_tree, head_tree)["subject_digest"]
+            ):
+                errors.append("content-addressed audit review subject digest is invalid")
+            expected_disposition = (
+                "reviewed-current-content"
+                if reviewed_base_sha == pull_request.get("base_sha") and reviewed_head_sha == head_sha
+                else "reused-with-proof"
+            )
+            if review.get("binding_disposition") != expected_disposition:
+                errors.append("content-addressed audit review binding disposition is not truthful")
     required = pull_request.get("required_check_contexts")
     checks = pull_request.get("hosted_checks")
     if not isinstance(required, list) or not required or any(not non_empty(item) for item in required):

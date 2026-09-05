@@ -64,21 +64,21 @@ Use `.ai/assets/skills/README.MD` as the canonical skill registry. Runtime wrapp
 
 - Define observable acceptance criteria and run the narrowest meaningful validation first.
 - Do not weaken fail-closed behavior merely to pass a test.
-- Independent review binds to an exact subject, stays read-only, and cannot count its own repair as verification.
-- Mutation after a fixed-head audit invalidates that audit for the new head.
+- Independent review runs against one immutable commit, binds to an exact content subject, stays read-only, and cannot count its own repair as verification.
+- Content, criteria, or authority drift after review invalidates that review. Commit-SHA drift alone requires a deterministic current-subject rebind, not repeated independent review.
 - Preserve failure, timeout, interruption, and blocked evidence; a later pass does not erase it.
 
 ### Validation Freeze And Evidence Reuse
 
 - Classify validation evidence as identity-, input-, environment-, or provider-sensitive before reuse. Reuse requires matching tracked bytes, transitive dependencies, command, profile, environment, runner, manifest, resolver, policy, and configuration authority.
-- Freeze only after tracked mutation and focused validation are complete. After freeze, tracked drift invalidates the subject; terminal metadata writes only to declared ignored artifacts and does not invalidate the frozen snapshot.
-- Unknown dependency or authority state fails closed. Exact-head audit, required hosted contexts, and live admission gates are always fresh and cannot be replaced by cache reuse.
+- Freeze only after tracked mutation and focused validation are complete. After freeze, tracked content or governing-authority drift invalidates the subject; history-only identity drift requires rebind. Terminal metadata writes only to declared ignored artifacts and does not invalidate the frozen snapshot.
+- Unknown dependency or authority state fails closed. Current-head review-subject binding, required hosted contexts, and live admission gates are always fresh; an equal content digest may reuse the independent review without repeating it.
 - Required hosted contexts remain present for every admitted head. Internal execution or proven reuse may vary, but path filtering must not make a required context disappear.
-- Exact-head audit reports each gate as `re-executed`, `reused-with-proof`, `blocked`, `deferred`, or `not-applicable`.
+- A content-addressed independent audit reports each gate as `re-executed`, `reused-with-proof`, `blocked`, `deferred`, or `not-applicable`; commit SHAs remain provenance rather than the validity key.
 
 ### Agent Execution Guardrails
 
-- Before delegated, external, or fixed-head execution, validate an agent execution packet with owning skill, canonical role path and applicability, exact SHA/argv/cwd, permissions, ignored artifact roots, terminal schema and callback, integration owner, stop conditions, and retry budget.
+- Before delegated, external, or fixed-head execution, validate an agent execution packet with owning skill, canonical role path and applicability, exact SHA/argv/cwd, permissions, ignored artifact roots, terminal schema and callback, integration owner, stop conditions, and retry budget. The SHA pins the execution checkout; evidence validity follows the applicable content-subject contract.
 - Hold a machine-readable worktree snapshot lease. One active tracked-writer holder excludes every other tracked writer; read-only work and declared ignored validation output remain permitted, and terminal release must be explicit.
 - Keep an acceptance-to-evidence ledger and validate its human-report projection. Synthetic, mock, fixture, and unit evidence cannot satisfy an acceptance that requires actual execution.
 - Retry only after a privacy-safe failure fingerprint and material state change. Attempt three or later requires new owner or workflow authorization.
@@ -91,7 +91,7 @@ Use `.ai/assets/skills/README.MD` as the canonical skill registry. Runtime wrapp
 - Finish tracked mutations and focused validation, then bind the exact command to a clean immutable commit.
 - Dispatch one read-only external task using the least expensive capable profile; write only ignored validation artifacts and do not repair the subject.
 - Use a callback or one parent event wait. Do not poll.
-- Require one schema-valid terminal report bound to the exact task, commit, command, duration, outcome, and evidence.
+- Require one schema-valid terminal report bound to the exact task, commit provenance, content subject, command, duration, outcome, and evidence.
 - Timeout, interruption, drift, missing evidence, cleanup failure, or blocked execution never becomes `passed`.
 
 ### Portable Test Fixture Acceleration

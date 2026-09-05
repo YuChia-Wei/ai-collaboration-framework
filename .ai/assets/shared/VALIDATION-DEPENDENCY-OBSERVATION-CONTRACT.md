@@ -66,10 +66,12 @@ These blind spots cannot be converted to `complete` by a successful run.
 
 ## Fresh-Gate Boundary
 
-Bounded observation is diagnostic input only. Exact-head independent audit,
-required hosted contexts, live provider admission, tag or Release binding, and
-other identity- or provider-sensitive decisions stay fresh. Path filtering or
-future evidence reuse must not make those gates disappear.
+Bounded observation is diagnostic input only. Current-head review-subject
+binding, required hosted contexts, live provider admission, tag or Release
+binding, and other inherently identity- or provider-sensitive operations stay
+fresh. Independent-review validity remains content-addressed and is repeated
+only when its content subject, criteria, or authority changes. Path filtering
+or future evidence reuse must not make the fresh gates disappear.
 
 ## Privacy
 

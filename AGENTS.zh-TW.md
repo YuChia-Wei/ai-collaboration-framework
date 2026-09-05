@@ -64,21 +64,21 @@
 
 - 定義 observable acceptance criteria，並先執行最小但有意義的 validation。
 - 不得只為了讓 test 通過而弱化 fail-closed behavior。
-- Independent review 綁定 exact subject、維持 read-only，且不能把自己的 repair 當成 verification。
-- Fixed-head audit 後的 mutation 會使該 audit 對新 head 失效。
+- Independent review 在一個 immutable commit 上執行、綁定 exact content subject、維持 read-only，且不能把自己的 repair 當成 verification。
+- Review 後若 content、criteria 或 authority drift，該 review 即失效。只有 commit SHA drift 時只需執行 deterministic current-subject rebind，不必重做 independent review。
 - 保留 failure、timeout、interruption 與 blocked evidence；後來的 pass 不會抹除它們。
 
 ### Validation Freeze 與 Evidence Reuse
 
 - Reuse 前將 validation evidence 分類為 identity-sensitive、input-sensitive、environment-sensitive 或 provider-sensitive。只有 tracked bytes、transitive dependencies、command、profile、environment、runner、manifest、resolver、policy 與 configuration authority 全部相容時才可 reuse。
-- 只有完成 tracked mutation 與 focused validation 後才可 freeze。Freeze 後的 tracked drift 會使 subject 失效；terminal metadata 只能寫入已宣告的 ignored artifacts，且不會使 frozen snapshot 失效。
-- Unknown dependency 或 authority state 必須 fail closed。Exact-head audit、required hosted contexts 與 live admission gates 一律 fresh，不能由 cache reuse 取代。
+- 只有完成 tracked mutation 與 focused validation 後才可 freeze。Freeze 後若 tracked content 或 governing authority drift，subject 即失效；只有 history-only identity drift 時則執行 rebind。Terminal metadata 只能寫入已宣告的 ignored artifacts，且不會使 frozen snapshot 失效。
+- Unknown dependency 或 authority state 必須 fail closed。Current-head review-subject binding、required hosted contexts 與 live admission gates 一律 fresh；content digest 相等時可 reuse independent review，無須重做。
 - 每個 admitted head 都必須保留 required hosted contexts。內部可以 execution 或 proven reuse，但 path filtering 不得讓 required context 消失。
-- Exact-head audit 對每個 gate 回報 `re-executed`、`reused-with-proof`、`blocked`、`deferred` 或 `not-applicable`。
+- Content-addressed independent audit 對每個 gate 回報 `re-executed`、`reused-with-proof`、`blocked`、`deferred` 或 `not-applicable`；commit SHA 只保留為 provenance，不作為 validity key。
 
 ### Agent Execution Guardrails
 
-- Delegated、external 或 fixed-head execution 前，驗證 agent execution packet；其中包含 owning skill、canonical role path 與 applicability、exact SHA/argv/cwd、permissions、ignored artifact roots、terminal schema 與 callback、integration owner、stop conditions 與 retry budget。
+- Delegated、external 或 fixed-head execution 前，驗證 agent execution packet；其中包含 owning skill、canonical role path 與 applicability、exact SHA/argv/cwd、permissions、ignored artifact roots、terminal schema 與 callback、integration owner、stop conditions 與 retry budget。SHA 用來固定 execution checkout；evidence validity 依適用的 content-subject contract 判定。
 - 持有 machine-readable worktree snapshot lease。一個 active tracked-writer holder 排除其他所有 tracked writer；read-only work 與已宣告的 ignored validation output 仍可進行，terminal release 必須明確記錄。
 - 維護 acceptance-to-evidence ledger 並驗證其 human-report projection。Synthetic、mock、fixture 與 unit evidence 不得滿足要求 actual execution 的 acceptance。
 - 只有具備 privacy-safe failure fingerprint 與 material state change 才可 retry。Attempt 三次以上需要新的 owner 或 workflow authorization。
@@ -91,7 +91,7 @@
 - 先完成 tracked mutations 與 focused validation，再把 exact command 綁定到 clean immutable commit。
 - 派送一個 read-only external task，使用足以完成工作的最低成本 profile；只寫入 ignored validation artifacts，且不得修復 subject。
 - 使用 callback 或一次 event wait。不得輪詢。
-- 只接受一份 schema-valid terminal report，綁定 exact task、commit、command、duration、outcome 與 evidence。
+- 只接受一份 schema-valid terminal report，綁定 exact task、commit provenance、content subject、command、duration、outcome 與 evidence。
 - Timeout、interruption、drift、缺少 evidence、cleanup failure 或 blocked execution 絕不會成為 `passed`。
 
 ### 可攜式 Test Fixture 加速

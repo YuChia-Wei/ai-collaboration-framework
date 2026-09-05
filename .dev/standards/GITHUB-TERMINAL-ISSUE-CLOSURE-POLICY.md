@@ -32,14 +32,23 @@ named Issue:
 - the delivery is final and accepted for that Issue;
 - workflow scope, tasks, and every applicable verification are complete;
 - the source repository's review gate passed and every hosted check succeeded;
-- the admitted PR head remains the exact audited subject and fresh provider
-  read-back identifies the actual integration commit;
+- the admitted PR head is freshly bound to the authenticated content-addressed
+  review subject and provider read-back identifies the actual integration commit;
 - the pull-request body contains the matching approved closing keyword; and
 - post-merge read-back proves the integration commit, the Issue is closed as
   completed, and its Project status is `Done`.
 
-A failed, cancelled, or timed-out hosted check, review block, head drift,
-missing read-back, or mismatched Issue or Project state is nonterminal.
+A failed, cancelled, or timed-out hosted check, review block, unbound head or
+review-subject drift, missing read-back, or mismatched Issue or Project state is
+nonterminal.
+
+Workflow completion and provider terminal admission remain separate states.
+Once every workflow-owned implementation task and locally applicable
+verification is complete, the workflow may be `completed` while review,
+hosted checks, live admission, integration, and post-merge read-back are still
+pending under this policy. That workflow status does not satisfy or bypass any
+terminal-close gate, and those later provider facts must not be copied back by
+a tracked evidence-sync commit.
 
 ## Deferred Gate
 
@@ -58,9 +67,9 @@ records deterministically through three fail-closed validation stages without
 adding another closure mode:
 
 - `declaration` validates the per-Issue PR intent and reference syntax;
-- `merge-admission` binds the current PR number and head, the source review gate,
-  exact required-check context set, and every successful required check to the
-  same head; and
+- `merge-admission` binds the current PR number and head, the source review
+  subject, exact required-check context set, and every successful required check
+  to the same provider head; and
 - `reconciliation` separately binds the admitted PR head, actual provider
   integration commit, selected topology, and post-merge Issue/Project read-back.
 
@@ -90,36 +99,52 @@ eliminating repository symlink/reparse and overwrite races. It overlays those ve
 only onto a tracked declaration in memory and requires every fact to match the
 same event and checkout head. A later lifecycle stage cannot be downgraded by
 an admission overlay. The snapshot must remain untracked, must not be reused after head drift, and must
-not be committed to the candidate it validates. Missing admission evidence is
+not be committed to the candidate it validates. A new head may reuse the
+independent review only after its review-subject digest is rebound; the admission
+snapshot and hosted check records themselves remain current-head-specific.
+Missing admission evidence is
 a merge blocker, even when the declaration check passes. This live-verified non-mutating
 overlay avoids a self-referential commit whose evidence changes its own head.
 
-Commit identity is evidence scope, not delivery identity. Rebase, squash, amend,
-or any other history rewrite before admission is allowed; it changes the PR
-head and therefore requires a fresh audit receipt, hosted checks, and admission.
-After admission, the same operations invalidate that admission rather than
-becoming forbidden. Integration may use `fast-forward`, `rebase`, `squash`, or
-`merge-commit`. Reconciliation retains `admitted_head_sha` separately from the
-provider-reported `integration_commit_sha`. Equality is required only for a
-true fast-forward; rebase, squash, and merge-commit may change commit identity.
-Provider and Issue/Project read-back complete the terminal operation without a
-post-merge source repair commit.
+Commit identity is an execution locator, provenance fact, and provider
+association; it is not the validity key for reviewed or validated content.
+Rebase, squash, amend, or any other history rewrite before admission is allowed.
+A new provider head requires fresh hosted checks, review-subject binding, and
+admission, but not a repeated independent review when the base/head content
+subject, criteria, and authority remain equal. After admission, the same
+operations invalidate that admission rather than becoming forbidden.
+Integration may use `fast-forward`, `rebase`, `squash`, or `merge-commit`.
+Reconciliation retains `admitted_head_sha` separately from the provider-reported
+`integration_commit_sha`. Equality is required only for a true fast-forward;
+rebase, squash, and merge-commit may change commit identity. Provider and
+Issue/Project read-back complete the terminal operation without a post-merge
+source repair commit or tracked evidence-sync commit.
 
 This repository is governed as a single-maintainer source repository. GitHub
 does not allow an author to approve their own pull request, so source admission
-uses a strict `github-terminal-issue-closure-audit/v1` review receipt submitted
-by the configured maintainer after a fresh exact-head independent audit. An
-ordinary `COMMENTED` review is never sufficient. The receipt must bind the
-repository, pull-request number, base and head SHAs, a passing outcome, zero
-blocking findings, and the `fresh-exact-head-independent` audit scope. Any
-effective `CHANGES_REQUESTED` review remains blocking. This identity and review
-mode are source-only; downstream repositories select their own target-owned
+uses a strict `github-terminal-issue-closure-audit/v2` review receipt submitted
+by the configured maintainer after an independent audit of one immutable
+checkout. An ordinary `COMMENTED` review is never sufficient. The receipt
+records repository and pull-request identity, original base/head commit SHAs as
+provenance, base/head tree identities, the canonical
+`independent-review-subject/v1` digest, a passing outcome, zero blocking
+findings, and the `content-addressed-independent` audit scope.
+
+Admission recomputes the current base/head tree subject. Equal content is bound
+as `reviewed-current-content` or `reused-with-proof`; commit-SHA inequality by
+itself does not require re-review. Tree, criteria, authority, malformed receipt,
+or unknown-subject drift fails closed. Historical v1 receipts are interpreted
+only while validating already-retained historical records under their original
+exact-head rule. They are never eligible for current or new live admission;
+live admission accepts v2 only. Any effective `CHANGES_REQUESTED` review remains
+blocking. This review
+mode is source-only; downstream repositories select their own target-owned
 review policy from their actual maintainer and provider requirements.
 The review body is exactly one receipt with no surrounding prose:
 
 ```text
-<!-- github-terminal-issue-closure-audit/v1
-{"repository":"OWNER/REPOSITORY","pull_request":123,"base_sha":"<40-char SHA>","head_sha":"<40-char SHA>","outcome":"passed","blocking_findings":0,"audit_scope":"fresh-exact-head-independent"}
+<!-- github-terminal-issue-closure-audit/v2
+{"repository":"OWNER/REPOSITORY","pull_request":123,"base_sha":"<reviewed base commit SHA>","head_sha":"<reviewed head commit SHA>","base_tree":"<reviewed base tree SHA>","head_tree":"<reviewed head tree SHA>","subject_digest":"<SHA-256 of canonical independent-review-subject/v1>","outcome":"passed","blocking_findings":0,"audit_scope":"content-addressed-independent"}
 -->
 ```
 Without an event the validator is only a static contract check. The aggregate

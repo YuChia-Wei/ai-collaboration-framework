@@ -1,0 +1,79 @@
+{
+  "template_id": "ai-context-governance-remediation-task",
+  "template_version": "1.1.0",
+  "template_created_at": "2026-07-10T18:22:49+08:00",
+  "template_updated_at": "2026-07-27T09:52:09+08:00",
+  "task_id": "GOV-017-design-subject-digest-reuse",
+  "workflow_id": "2026-08-31-subject-digest-evidence-reuse-design",
+  "owner_skill": "ai-context-governance",
+  "status": "completed",
+  "created_at": "2026-08-31T20:02:51+08:00",
+  "updated_at": "2026-09-02T22:36:24+08:00",
+  "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
+  "model": "gpt-5.6-sol",
+  "reasoning_effort": "medium",
+  "finding_ids": [
+    "GOV-017"
+  ],
+  "scope": {
+    "target": "Issue #270 owner-review design for content-equivalent evidence reuse",
+    "files": [
+      ".dev/workflows/2026-08-31-subject-digest-evidence-reuse-design/"
+    ],
+    "constraints": [
+      "Preserve commit SHA as provenance and exact-head admission identity.",
+      "Use multi-axis sensitivity and fail closed on unknown closure or authority.",
+      "Do not enable an existing gate or change production validators and policies.",
+      "Do not treat observed dependencies from Issue #268 as proof of complete closure.",
+      "Do not treat Issue #267 fixtures as sufficient without manifest and eligibility proof."
+    ],
+    "non_goals": [
+      "Historical evidence migration or backfill",
+      "Provider, hosted, release, or exact-head reuse",
+      "Push, pull request, merge, release, or publication"
+    ]
+  },
+  "execution": {
+    "steps": [
+      "Inventory current identity, reuse, and fresh-gate contracts.",
+      "Analyze repository and prior-work evidence for avoidable rerun and rework candidates.",
+      "Design the minimal canonical manifest, digest, sensitivity, eligibility, and rebind contracts.",
+      "Evaluate dependency-first, immediate-enable, and staged-pilot strategies.",
+      "Create owner-review examples and an HTML behavior visualization.",
+      "Validate artifacts and record the next approval gates."
+    ],
+    "validation": [
+      "python .ai/scripts/validate-workflow-artifacts.py",
+      "Parse JSON and YAML examples with repository-supported tooling.",
+      "Check HTML structure, interaction, responsive layout, and visual output.",
+      "Confirm git diff contains design/workflow artifacts only."
+    ],
+    "last_completed_step": "Validated the complete design, examples, historical analysis, and responsive HTML visualization.",
+    "next_action": "Await owner acceptance or requested revisions; keep implementation and pilot enablement behind separate authorization."
+  },
+  "results": {
+    "summary": "Designed a versioned subject manifest and append-only rebind receipt that preserve commit provenance while allowing proof-bound behavioral evidence reuse across content-equivalent heads. Recommended completing Issues #267 and #268 prerequisites before a single multi-hop-upgrade-transaction pilot.",
+    "files_changed": [
+      ".dev/workflows/INDEX.MD",
+      ".dev/workflows/2026-08-31-subject-digest-evidence-reuse-design/workflow.yaml",
+      ".dev/workflows/2026-08-31-subject-digest-evidence-reuse-design/workflow-plan.md",
+      ".dev/workflows/2026-08-31-subject-digest-evidence-reuse-design/design/subject-digest-evidence-reuse.md",
+      ".dev/workflows/2026-08-31-subject-digest-evidence-reuse-design/examples/subject-manifest.multi-hop.example.yaml",
+      ".dev/workflows/2026-08-31-subject-digest-evidence-reuse-design/examples/rebind-receipt.history-only.example.yaml",
+      ".dev/workflows/2026-08-31-subject-digest-evidence-reuse-design/examples/rebind-scenarios.example.yaml",
+      ".dev/workflows/2026-08-31-subject-digest-evidence-reuse-design/evidence/historical-equivalence-analysis.yaml",
+      ".dev/workflows/2026-08-31-subject-digest-evidence-reuse-design/visuals/subject-digest-reuse.html"
+    ],
+    "tests_run": [
+      "python .ai/scripts/validate-workflow-artifacts.py",
+      "Parse five workflow YAML files with PyYAML",
+      "Parse the remediation task with ConvertFrom-Json",
+      "Compare all 74 registry gate IDs with the design decision table",
+      "Browser QA at default desktop viewport and 390 by 844 pixels",
+      "git diff --check"
+    ],
+    "finding_status": "partially-resolved",
+    "residual_risk": "No reuse is enabled; design conclusions and the pilot remain subject to owner approval.",
+    "follow_up_needed": true
+  }
+}

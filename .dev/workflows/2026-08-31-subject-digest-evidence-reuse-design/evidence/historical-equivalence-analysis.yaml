@@ -1,0 +1,92 @@
+schema_version: historical-subject-equivalence-analysis/v1
+analysis_id: GOV-017-historical-equivalence-2026-08-31
+generated_at: 2026-08-31T20:02:51+08:00
+repository: YuChia-Wei/ai-collaboration-framework
+method:
+  classification: tracked-subject-confirmed
+  authority: Git-tracked files and current validation registry closure model
+  digest_algorithm: sha256
+  canonical_records: sorted UTF-8 lines of mode, blob, and path
+  included:
+    - gate direct input tokens
+    - recursively expanded tracked files under those tokens
+    - current shared resolver, runner, policy, runtime-entry, lifecycle, and agent-guardrail paths
+  excluded:
+    - historical runtime identity
+    - historical environment identity
+    - historical original-evidence authentication
+  warning: These digests are analysis evidence, not production subject_digest values and not proof of full reuse eligibility.
+
+v014_candidate_sequence:
+  heads:
+    - b4b38b136d69a1d3e3938598edcb4c6d7285b795
+    - 66ec616b4d2c5e42129ae1a09557039d15ddb7df
+    - fab9cf6787f0d4fad9384c29a6e0f514389667ba
+    - 3a466b2133e8ef20d752f08d2e1b4b9df8869eed
+    - d31b4be659ea7f7e5eff96087e61e69a23388366
+    - 4a1217160bf272420bb673445dfe34336f383291
+    - 792849c7933e0e03fab3733b7138e151058d8daa
+    - c7fc49a5dbfc5753172a5b32f5e1d36175f9f930
+    - 91040b463b1cf4f1575af9b2d2abb8a3993c0ee0
+    - d9995e5b0a7cfcc54a5037418a485408892a24d7
+  gates:
+    package-apply:
+      groups:
+        - digest: 2d2b85852687e49c8fe31e65c1dcb7afa0abe07e49a89d128d5bd55b0c658a6b
+          heads: [b4b38b13, 66ec616b, fab9cf67, 3a466b21, d31b4be6, 4a121716, 792849c7, c7fc49a5, 91040b46]
+        - digest: 5f4fc4091c8951ba234c32ffeef83c4eb3afac766027ecc1488fdd730c6123ff
+          heads: [d9995e5b]
+      same-subject-sha-transitions: 8
+    multi-hop-upgrade-transaction:
+      groups:
+        - digest: 9197821333d2f26206bb4c0b1f1800417e93fbb003555be4cb49a5f42e2aedeb
+          heads: [b4b38b13, 66ec616b, fab9cf67, 3a466b21, d31b4be6, 4a121716, 792849c7]
+        - digest: 313ed5a921100127242600adbd0853be95009129d7c9832a6acfd4eedd3e1e66
+          heads: [c7fc49a5, 91040b46, d9995e5b]
+      same-subject-sha-transitions: 8
+    package-full-matrix:
+      groups:
+        - digest: a3bd99cda3ff445a080e422266ec5ea7eb8253a397ed47d3c94c928486ef9e4f
+          heads: [b4b38b13, 66ec616b, fab9cf67]
+        - digest: 487725410eda772d87c57a4c672e5b0b0f86bd4338ff0d9d454e7b4fd83f04be
+          heads: [3a466b21, d31b4be6, 4a121716, 792849c7, c7fc49a5, 91040b46, d9995e5b]
+      same-subject-sha-transitions: 8
+
+v015_preparation_sequence:
+  heads: [e9c4f9a1, dcd68ecf, f833b23c, c1bb0015, 1745a11b]
+  finding: After dcd68ecf, the final four heads share the same analyzed subject for package-apply, multi-hop-upgrade-transaction, and package-full-matrix.
+  same-subject-sha-transitions-after-substantive-fix: 3
+
+source_to_merge_pairs:
+  - source: 1745a11b546afad6c0bc200e82018fa5847eaf6e
+    merge: 5fedaceef7e18b4cdcde3cb665adcc97070db2df
+    tree: ee7b11c7379ab87b70f4d8cea9a612f9ec9b2bf4
+    analyzed_subjects_equal: [package-apply, multi-hop-upgrade-transaction, package-full-matrix]
+  - source: 1dfef09e71ed69b757fdb9b3abd60d974ed95413
+    merge: 78bfde42066e5a2d78a91969e299965f296fab17
+    tree: 776e5b58051c985406e78f0e68a6183554ce6738
+    analyzed_subjects_equal: [package-apply, multi-hop-upgrade-transaction, package-full-matrix]
+  - source: 6dbe01fa87e2f05cfe68e6ae5b262d3063eb53f8
+    merge: a6efd162e6cbbb2c7aae61710b121a727844c48e
+    tree: c42349be0cb26279ccc7744f3335bfe7c363b8c1
+    analyzed_subjects_equal: [package-apply, multi-hop-upgrade-transaction, package-full-matrix]
+
+observed_work_envelopes:
+  issue_250_252_seconds:
+    fast_windows: 13.163
+    medium_synthetic: 299.278
+    trusted_windows_actual_upgrade: 93.181
+    trusted_linux_actual_upgrade: 42.821
+    total: 448.443
+    claim: observed-envelope-not-claimed-saving
+  issue_251_seconds:
+    ubuntu_package_apply: 81.500
+    windows_focused: 59.855
+    total: 141.355
+    claim: observed-envelope-not-claimed-saving
+
+confidence:
+  full_eligibility_proven_count: 0
+  tracked_subject_confirmed: true
+  avoided_execution_claimed: false
+  reason: Historical runtime, environment, and authenticated original subject manifests are incomplete.

@@ -18,6 +18,7 @@ if SPEC is None or SPEC.loader is None:
 PROVIDER = importlib.util.module_from_spec(SPEC)
 SPEC.loader.exec_module(PROVIDER)
 CONFIG = REPO_ROOT / ".dev/backlog/providers/github-legacy-migration.yaml"
+ACTIVE_CONFIG = REPO_ROOT / ".dev/standards/GITHUB-WORK-MANAGEMENT-POLICY.yaml"
 
 
 class HistoricalGitHubBacklogProviderTests(unittest.TestCase):
@@ -279,7 +280,7 @@ class HistoricalGitHubBacklogProviderTests(unittest.TestCase):
             proposal_policy["human_submitted"],
         )
 
-    def test_gwt_018_given_source_repository_then_material_work_item_binding_and_merge_gate_are_required(self) -> None:
+    def test_gwt_018_given_historical_adapter_then_original_exact_head_review_contract_is_preserved(self) -> None:
         config = PROVIDER.load_yaml_mapping(CONFIG)
 
         self.assertEqual(
@@ -319,6 +320,21 @@ class HistoricalGitHubBacklogProviderTests(unittest.TestCase):
         self.assertEqual(
             "source-repository-only",
             config["issue_closure"]["distribution"],
+        )
+
+    def test_gwt_019_given_active_source_policy_then_v2_content_review_gate_is_required(self) -> None:
+        config = PROVIDER.load_yaml_mapping(ACTIVE_CONFIG)
+
+        self.assertEqual(
+            {
+                "mode": "single-maintainer-audit-receipt",
+                "maintainer_login": "YuChia-Wei",
+                "receipt_contract": "github-terminal-issue-closure-audit/v2",
+                "historical_receipt_contracts": ["github-terminal-issue-closure-audit/v1"],
+                "binding_mode": "content-addressed-current-head",
+                "downstream_policy": "target-owned",
+            },
+            config["work_item_binding"]["merge_gate"]["review_gate"],
         )
 
 
