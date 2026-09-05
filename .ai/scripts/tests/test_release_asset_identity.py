@@ -2,18 +2,20 @@
 from __future__ import annotations
 
 import copy
+import json
 import sys
 import tempfile
 import unittest
 from pathlib import Path
 from types import SimpleNamespace
 from unittest.mock import patch
+import yaml
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from release_asset_identity import (
     PackageError, SCHEMA, asset_names, canonical_json_bytes, check_admission, contained,
     governed, sha256_bytes, stage, strict_json, verify_provider, verify_route_binding,
-    verify_transported, verify_source, selected_input_document, load_admission, PROFILE,
+    verify_transported, verify_source, selected_input_document, load_admission, PROFILE, validate_archive,
 )
 
 
@@ -168,6 +170,34 @@ class ReleaseAssetIdentityTests(unittest.TestCase):
         with patch("release_asset_identity.PackageRepositorySnapshot.from_ref", return_value=SimpleNamespace(tree={})):
             with self.assertRaisesRegex(PackageError, "admission is missing"):
                 load_admission(Path("."), "v0.16.0")
+
+    def test_retained_backfill_binds_provider_archive_payload_and_route_bytes(self):
+        base = Path(__file__).resolve().parents[3] / ".dev/workflows/2026-09-05-published-asset-identity/evidence/published-routes"
+        catalog = json.loads((base / "asset-lifecycle.json").read_bytes())
+        matrix = yaml.safe_load((base / "support-matrix.yaml").read_bytes())
+        for entry in catalog["assets"]:
+            published = entry["published"]
+            raw = (base / published["provider_readback"]["path"]).read_bytes()
+            self.assertEqual(published["provider_readback"]["sha256"], sha256_bytes(raw))
+            provider = json.loads(raw)
+            self.assertFalse(provider["draft"])
+            self.assertEqual(entry["version"], provider["tag_name"])
+            archive = base / published["path"]
+            digest = sha256_bytes(archive.read_bytes())
+            self.assertEqual("sha256:" + digest, published["archive_id"])
+            self.assertNotEqual(entry["candidate"]["archive_id"], published["archive_id"])
+            asset = next(a for a in provider["assets"] if a["id"] == published["provider_asset_id"])
+            self.assertEqual("sha256:" + digest, asset["digest"])
+            self.assertEqual(archive.stat().st_size, asset["size"])
+            self.assertEqual(archive.name, asset["name"])
+            members = validate_archive(archive)
+            metadata = yaml.safe_load(members[entry["package_id"] + "/metadata/package.yaml"][0])
+            self.assertEqual(entry["payload_fingerprint"], metadata["identity"]["payload_fingerprint"])
+            self.assertEqual(published["build_commit"], metadata["source"]["commit"])
+            edges = [edge for route in matrix["routes"] for edge in route["edges"] if edge["to_version"] == entry["version"]]
+            self.assertTrue(edges)
+            for edge in edges:
+                self.assertEqual(digest, edge["artifacts"]["archive"]["sha256"])
 
 
 if __name__ == "__main__":

@@ -30,7 +30,7 @@ match their old candidate fingerprints while their archive hashes differ.
 
 ## Focused Verification
 
-- Release asset identity: 13 tests passed, including source-input omission/drift,
+- Release asset identity: 14 tests passed, including source-input omission/drift,
   history-only rebind and exact-byte staging.
 - GitHub workflow contract: 12 tests passed, including conditional legacy build,
   unchanged candidate staging and provider comparison before/after publication.
@@ -80,3 +80,5 @@ three actual direct edges against the same admitted archive. Complete release
 scope, compatibility, aggregate validation, exact-subject review and provider
 preflight before requesting tag/publication authorization. Issue 280 must retain
 its deferred publication acceptance until the actual new-release read-back.
+
+The historical catalog additionally binds Git-normalized provider JSON bytes to their retained digests. A regression check validates both public archives, provider read-backs, payload fingerprints and all rebound edge hashes.

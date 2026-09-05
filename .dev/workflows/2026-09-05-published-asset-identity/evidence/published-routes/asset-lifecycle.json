@@ -29,7 +29,7 @@
         "path": "route-assets/v0.15.0/ai-collaboration-framework-v0.15.0.zip",
         "provider_readback": {
           "path": "provider-readback/v0.15.0/release.json",
-          "sha256": "2e8bdc8a1a57c5144c786ff72b9eb748a625b49a0b397d0f8fc87b430621ae97"
+          "sha256": "8e1e6fd78eaf3258efef3aad8e8a1c256038ad3c4da9c44200bd85dbb6e6143c"
         }
       }
     },
@@ -58,7 +58,7 @@
         "path": "route-assets/v0.15.1/ai-collaboration-framework-v0.15.1.zip",
         "provider_readback": {
           "path": "provider-readback/v0.15.1/release.json",
-          "sha256": "6287f0054014a4a1d184ad37a4f5ce8582c54170850e2d83db492f9d66891a68"
+          "sha256": "3ec7bf0ca753a3140a03ccb2746d6952f6209cfe3922a901b78dbdd2f0ca3ffa"
         }
       }
     }
