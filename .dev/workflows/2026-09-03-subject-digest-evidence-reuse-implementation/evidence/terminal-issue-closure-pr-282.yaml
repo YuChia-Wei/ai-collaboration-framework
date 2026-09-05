@@ -1,0 +1,90 @@
+schema_version: "1.0"
+contract_id: github-terminal-issue-closure
+repository: YuChia-Wei/ai-collaboration-framework
+validation_stage: declaration
+pull_request:
+  number: 282
+  head_sha: null
+  body: |
+    ## Summary
+
+    - replace SHA-only validation and independent-review invalidation with authenticated content-subject identity plus cheap current-head binding
+    - preserve commit SHA only as locator, Git range, provider association, and execution or review provenance
+    - correct the v0.16 portable payload so downstream upgrades do not inherit the v0.15.1 exact-head collaboration failure
+    - separate completed implementation workflow state from provider terminal admission and make `in_progress` non-blocking by itself
+
+    ## Changes
+
+    - add canonical subject manifests, deterministic rebind receipts, dependency observation, and the single approved `multi-hop-upgrade-transaction` pilot
+    - add content-addressed v2 independent-review receipts while retaining historical v1 exact-head compatibility
+    - make code-graph freshness content-tree-aware and derive repository provenance from each target worktree at runtime
+    - preserve required current-head hosted contexts and mutable provider admission as fresh gates
+    - clarify source policy, portable governance, and active skills so `in_progress` alone cannot prohibit an otherwise authorized integration
+    - close the GOV-017 implementation workflow while retaining provider acceptance A5 as a separate terminal gate
+
+    ## Related Issues
+
+    - Issue #: #270
+    - Delivery disposition: `terminal-close`
+    - Reference: Closes #270
+    - `closure_deferred_reason` (required for deferred): not applicable
+    - Next terminal gate or owner (required for deferred): not applicable
+    - Owner authorization or approved no-Issue exception: The repository owner explicitly authorized PR creation, merge, and Issue closure on 2026-09-05 after successful current-head review, hosted checks, and live admission.
+
+    ## Delivery And Integration
+
+    - Delivery grouping: single work item
+    - Execution record: workflow `2026-09-03-subject-digest-evidence-reuse-implementation`
+    - Selected topology: merge commit
+    - Topology reason: preserve the design, pilot, audit remediation, downstream-boundary correction, workflow-state correction, and provider declaration as one reviewable and reversible delivery unit
+
+    ## Evidence
+
+    - the actual governed fast-profile pilot passed in 487 seconds with 48 selected gates, 47 executed, and zero failed or blocked checks
+    - the changed-history rebind reused the allowlisted multi-hop evidence only after deterministic subject and seal authentication
+    - focused validation passed for subject digest 8/8, dependency observation 9/9, lifecycle 13/13, agent guardrails 29/29, and terminal Issue closure 57/57
+    - downstream projection tests prove the v0.16 candidate excludes source-only closure machinery and carries content-addressed lifecycle, graph, review, and target-provenance rules
+    - workflow-status regression passed together with 16/16 lifecycle, 22/22 handoff, 6/6 delivery-policy, 10/10 language-policy, 16/16 wrapper-metadata, and 7/7 governance-workflow tests
+    - AI-context validation, 107-workflow artifact validation, planned and committed message validation, and whitespace checks passed
+
+    ## Checklist
+
+    - [x] Selected repository-native build and test commands pass
+    - [x] Target-owned .NET commands are not applicable to this framework-source Python/YAML/documentation change
+    - [x] Contracts, policies, skills, tests, downstream projection, and workflow records are updated
+    - [x] No secrets committed; volatile current-head receipts remain ignored or provider-owned
+    - [x] Issue #270 has exactly one terminal-close disposition
+    - [ ] The final PR content subject has the required independent single-maintainer audit receipt and current-head binding
+    - [ ] The final PR head passes all required hosted checks and live merge admission
+
+    Generated with Codex from Issue #270, the completed GOV-017 workflow, repository-native validation, and live provider read-back.
+  integration:
+    status: pending
+    topology: null
+    admitted_head_sha: null
+    integration_commit_sha: null
+    provider_read_back: false
+  review:
+    status: pending
+  required_check_contexts: []
+  hosted_checks: []
+issues:
+  - number: 270
+    mode: terminal-close
+    work_authorization:
+      online_issue_bound: true
+      explicit_owner_approval: true
+    final_accepted_delivery: true
+    workflow:
+      scope_complete: true
+      tasks_complete: true
+      applicable_verification_complete: true
+    closing_keyword: Closes
+    closure_deferred_reason: null
+    next_terminal_gate_or_owner: null
+    read_back:
+      performed: false
+      integration_commit_sha: null
+      issue_state: null
+      issue_state_reason: null
+      project_status: null
