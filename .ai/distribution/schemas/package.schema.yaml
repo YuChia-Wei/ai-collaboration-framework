@@ -127,6 +127,7 @@ properties:
       manifest_sha256: lowercase-sha256
       selected_inputs:
         const: metadata/selected-inputs.json
+        proof_contract: selected-inputs.schema.yaml
       selected_inputs_sha256: lowercase-sha256
 additional_properties: false
 read_compatibility:

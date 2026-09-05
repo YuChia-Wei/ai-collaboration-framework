@@ -1,0 +1,51 @@
+{
+  "packet_id": "UPG006-ACTUAL-RELEASE-GATE-AUDIT",
+  "head_sha": "21b6b513ffe31b59bf6462a1e449766d9537145e",
+  "tree_sha": "6419c528295dd2d181d5acc3494e8927afd346aa",
+  "outcome": "failed",
+  "blocking_findings": 3,
+  "findings": [
+    {
+      "id": "UPG006-GATE-R1",
+      "severity": "P1",
+      "file": ".ai/scripts/validate-ai-context-release-state.py",
+      "line": 539,
+      "finding": "Runner identity is selected by the terminal itself. Any matching .github/scripts/*.py file and its own digest are accepted, including an unrelated no-op. The gate therefore does not bind execution to validate-v016-direct-upgrades.py or its pinned public-origin validation.",
+      "remediation": "Resolve the required canonical runner from trusted policy and compare the evidence path and digest to that runner; test an alternate existing script."
+    },
+    {
+      "id": "UPG006-GATE-R2",
+      "severity": "P1",
+      "file": ".ai/scripts/validate-ai-context-release-state.py",
+      "line": 554,
+      "finding": "Rollback prestate and poststate may both be absent: None == None passes. The pristine-resume case never checks recovery at all, so never-resumed is accepted. Thus missing restoration and resume evidence passes the claimed exact recovery gate.",
+      "remediation": "Require nonempty valid SHA256 identities before comparing restoration; bind resume to its actual recovery result and transaction evidence. Add missing-both and wrong-resume tests."
+    },
+    {
+      "id": "UPG006-GATE-R3",
+      "severity": "P1",
+      "file": ".ai/scripts/validate-ai-context-release-state.py",
+      "line": 559,
+      "finding": "Actual completion is accepted using only outcome/status flags. Target validation argv, timing, output digest/evidence, transaction identity and terminal duration/timestamps can all be missing. No retained execution evidence file is loaded or hashed. A hand-authored summary with no executed validation records passes, as does the current positive GWT031c fixture.",
+      "remediation": "Require a bounded actual-execution terminal schema and retained command/transaction evidence bindings, verify referenced evidence hashes and origin identities rather than accepting labels alone; test removed/corrupted retained evidence."
+    }
+  ],
+  "gates": {
+    "fixed_clean_checkout": "re-executed",
+    "bounded_static_review": "re-executed",
+    "small_counterexample": "re-executed",
+    "candidate_ci_same_archive": "re-executed",
+    "actual_matrix": "deferred"
+  },
+  "ci_findings": "No separate wiring defect found: v0.16 step takes the same dist ZIP staged and validated above, supplies exact CANDIDATE_COMMIT, downloads three pinned-origin inputs for runner verification, and uploads execution output. This is source inspection, not hosted execution.",
+  "counterexample": {
+    "path": ".dev/ai-context/local/validation/issue-272/actual-gate-counterexample/result.json",
+    "sha256": "964e144afc5f12d164e632f5fc66c7915e85278fc134dbdd60796cd2287babff",
+    "result": "Exact gate function accepted alternate no-op runner, missing rollback digests, wrong resume value and absent execution receipt/timing evidence."
+  },
+  "limitations": [
+    "No matrix, provider access or tracked changes. Another executor owns actual attempt4; its outcome is unknown to this review.",
+    "Counterexample executes only the exact extracted gate function against ignored local fixtures, not the full source-release pipeline.",
+    "Root owns repairs and integration."
+  ]
+}

@@ -961,16 +961,19 @@ class AiContextReleaseStateGwtTests(unittest.TestCase):
             "tampered-incoming-validator", "fault-injected-incoming-validator-disagreement", "ambiguous-provenance-authority",
             "unresolved-customization", "missing-owner-decision", "tampered-owner-decision", "missing-target-validation",
             "failed-target-validation-receipt", "target-validator-disagreement", "tampered-target-validation-receipt", "candidate-authority-disagreement"]
-        with tempfile.TemporaryDirectory() as temp:
+        matrix["retained_origins"] = [{"version": origin, "commit": SHA, "manifest": {"sha256": digest}} for origin in sources]
+        with tempfile.TemporaryDirectory() as temp, patch.object(STATE, "validate_direct_case_artifacts"):
             root = Path(temp)
-            runner = root / ".github/scripts/fixture.py"
+            runner = root / ".github/scripts/validate-v016-direct-upgrades.py"
             runner.parent.mkdir(parents=True)
             runner.write_bytes(b"# source-gate unit fixture only\n")
+            runner.with_name("alternate.py").write_bytes(runner.read_bytes())
             path = root / ".dev/releases/v0.16.0/route-assets/actual/terminal.json"
             path.parent.mkdir(parents=True)
             evidence = {"schema_version": "direct-upgrade-execution/v1", "evidence_kind": "actual-isolated-target-execution",
                 "outcome": "passed", "archive_sha256": digest, "package_source": {"commit": SHA},
                 "runner": {"path": runner.relative_to(root).as_posix(), "sha256": STATE.hashlib.sha256(runner.read_bytes()).hexdigest()}, "cases": []}
+            evidence.update(subject_sha=SHA, started_at="2026-09-05T10:00:00+00:00", completed_at="2026-09-05T10:00:01+00:00", duration_seconds=1.0, invocation=["python", ".github/scripts/validate-v016-direct-upgrades.py", "--subject-sha", SHA])
             for origin in sources:
                 for suffix in ("-pristine-resume", "-customized-none", "-customized-rollback"):
                     evidence["cases"].append({"origin": origin, "case": origin + suffix, "outcome": "passed",
@@ -992,6 +995,11 @@ class AiContextReleaseStateGwtTests(unittest.TestCase):
                 ("archive", lambda item: item.update(archive_sha256="c" * 64)),
                 ("source", lambda item: item["package_source"].update(commit="c" * 40)),
                 ("runner", lambda item: item["runner"].update(sha256="c" * 64)),
+                ("alternate runner", lambda item: item["runner"].update(path=".github/scripts/alternate.py")),
+                ("missing rollback hashes", lambda item: (item["cases"][2].pop("prestate_sha256"), item["cases"][2].pop("poststate_sha256"))),
+                ("wrong resume", lambda item: item["cases"][0].update(recovery="never-resumed")),
+                ("missing invocation", lambda item: item.pop("invocation")),
+                ("missing time", lambda item: item.pop("started_at")),
                 ("missing case", lambda item: item["cases"].pop()),
                 ("rollback", lambda item: item["cases"][2].update(poststate_sha256="c" * 64)),
                 ("target failed", lambda item: item["cases"][0]["target_validation"].update(exit_code=17)),
@@ -1006,6 +1014,70 @@ class AiContextReleaseStateGwtTests(unittest.TestCase):
                     path.write_text(json.dumps(altered), encoding="utf-8")
                     with self.assertRaises(STATE.ReleaseStateError):
                         STATE.validate_direct_upgrade_execution(root, version, sources, matrix)
+
+    def test_gwt_031d_given_retained_case_files_when_receipt_output_or_recovery_is_missing_then_rejected(self):
+        with tempfile.TemporaryDirectory() as temp:
+            actual = Path(temp)
+            label = 'v0.6.0-customized-none'
+            transaction = 'b' * 64
+            case = {'origin': 'v0.6.0', 'case': label, 'transaction_id': transaction, 'recovery': 'none', 'artifacts': {}}
+            origin_identity = {'commit': SHA, 'manifest': {'sha256': 'c' * 64}}
+            target_identity = {'commit': 'd' * 40, 'manifest': {'sha256': 'e' * 64}}
+            def verify(value):
+                STATE.validate_direct_case_artifacts(actual, value, origin_identity, target_identity)
+            def raw(value):
+                return (json.dumps(value, sort_keys=True, separators=(',', ':'), ensure_ascii=False) + '\n').encode()
+            def bind(name, value, *, binary=False):
+                data = value if binary else raw(value)
+                path = actual / 'evidence' / label / name
+                path.parent.mkdir(parents=True, exist_ok=True)
+                path.write_bytes(data)
+                case['artifacts'][name] = {'path': path.relative_to(actual).as_posix(), 'sha256': STATE.hashlib.sha256(data).hexdigest()}
+                return case['artifacts'][name]['sha256']
+            def digest(value):
+                return STATE.hashlib.sha256(raw(value).rstrip(b'\n')).hexdigest()
+            case['prestate_sha256'] = bind('prestate.json', {'old': 'bytes'})
+            case['poststate_sha256'] = bind('poststate.json', {'new': 'bytes'})
+            before_authority = {'source': {'version': 'v0.6.0', 'commit': SHA}}
+            before_authority_digest = bind('provenance-before.yaml', before_authority)
+            bind('provenance-after.yaml', {'source': {'commit': 'd' * 40}, 'previous_source': {'commit': SHA}})
+            bind('customizations-before.yaml', {'customizations': [{'id': 'fixture-contract'}]})
+            bind('customizations-after.yaml', {'customizations': [{'id': 'fixture-contract'}]})
+            profile = {'argv': ['python', '.dev/validation/direct-upgrade-target.py']}
+            packet = {'transaction_id': transaction, 'plan_sha256': transaction, 'target_validation_profile': profile, 'target_validation_profile_digest': digest(profile)}
+            packet.update(schema_version='upgrade-remediation-packet/v1', provenance={'source': {'version': 'v0.6.0', 'commit': SHA}}, migration={'selected_input': {'previous_version': '0.6.0', 'previous_files_sha256': 'c' * 64}}, package={'source': {'commit': 'd' * 40}, 'manifest_sha256': 'e' * 64})
+            packet['provenance']['sha256'] = before_authority_digest
+            packet['canonical_digest'] = digest(packet)
+            bind('packet.json', packet)
+            decision = {'transaction_id': transaction, 'status': 'approved', 'packet_sha256': packet['canonical_digest']}
+            decision_digest = bind('decision.json', decision)
+            output_digest = bind('target-validation.log', b'actual test fixture output\n', binary=True)
+            execution = {'argv': profile['argv'], 'outcome': 'passed', 'exit_code': 0, 'started_at': '2026-09-05T10:00:00+00:00', 'completed_at': '2026-09-05T10:00:01+00:00', 'output_sha256': output_digest, 'evidence': f'.git/ai-context-package-apply/{transaction}/target-validation-output.txt'}
+            case['target_validation'] = execution
+            case['finalization'] = {'status': 'finalized'}
+            bind('finalization.json', case['finalization'])
+            receipt = {'schema_version': 'target-validation-receipt/v1', 'transaction_id': transaction, 'plan_sha256': transaction, 'packet_sha256': packet['canonical_digest'], 'decision_sha256': decision_digest, 'target_validation_profile': profile, 'target_validation_profile_digest': digest(profile), 'execution': execution}
+            bind('supplied-target-validation.json', receipt)
+            verify(case)
+            path = actual / 'evidence' / label / 'target-validation.log'
+            original = path.read_bytes()
+            path.unlink()
+            with self.assertRaisesRegex(STATE.ReleaseStateError, 'unavailable'):
+                verify(case)
+            path.write_bytes(original + b'tampered')
+            with self.assertRaisesRegex(STATE.ReleaseStateError, 'digest'):
+                verify(case)
+            path.write_bytes(original)
+            for key in ('argv', 'output_sha256', 'started_at', 'completed_at', 'evidence'):
+                with self.subTest(missing=key):
+                    incomplete = json.loads(json.dumps(case))
+                    incomplete['target_validation'].pop(key)
+                    with self.assertRaises(STATE.ReleaseStateError):
+                        verify(incomplete)
+            resumed = json.loads(json.dumps(case))
+            resumed['recovery'] = 'resume'
+            with self.assertRaisesRegex(STATE.ReleaseStateError, 'artifact binding'):
+                verify(resumed)
 
     def test_gwt_031a_given_repository_v014_route_evidence_when_validated_then_published_routes_pass(self):
         version = "v0.14.0"

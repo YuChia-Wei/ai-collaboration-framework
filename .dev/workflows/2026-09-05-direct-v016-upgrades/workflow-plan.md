@@ -55,3 +55,25 @@ Attempt 2 rejected a missing source manifest via FileNotFoundError; the runner e
 ## Bounded Actual Execution Retry 4
 
 Attempt 3 was blocked by the execution sandbox while creating transaction prestate and cleaning its preparation directory. A same-path empty-directory differential probe failed under the default sandbox and passed under require_escalated. The OS attributes were normal; no global setting or permission was changed. The workflow authorizes one fourth isolated matrix attempt with the exact command under require_escalated and the same declared ignored output boundary. Additional harness corrections match the actual failed-receipt rejection, compare transaction evidence as well as target files, and record the runner digest plus restored rollback digest. Required actual release evidence and the candidate CI hook now enforce all three origins. No actual upgrade acceptance is claimed until the matrix passes.
+
+## Owner Decision: Versioned Release Input Projection
+
+Independent audit UPG006-CYCLE-R1 established that hashing all release.yaml bytes
+creates a cycle between completed validation and the validated source status.
+On 2026-09-05 the owner explicitly chose the versioned package input projection.
+The implementation preserves validated as completed acceptance and introduces
+package-selected-input/v2 with release-package-input/v1 from v0.16.0. It excludes
+only the eight documented top-level source lifecycle and validation fields;
+every other field and payload byte remains bound. Full current source and
+provider gates still own phase acceptance and publication authority. Historical
+proofs remain unchanged. Evidence is retained in evidence/cycle-audit.json.
+
+The actual release gate audit found three missing evidence bindings. Its
+correction fixes the runner authority and requires retained command, packet,
+decision, output, provenance, customization and recovery artifacts. Original
+findings remain in evidence/actual-gate-audit.json. Root integrates these changes
+in temporary branch codex/2026-09-05-v016-projection at an isolated worktree while
+attempt 4 retains its original immutable checkout. The new selected input
+contract requires a fresh preparation archive and actual execution; the prior
+archive cannot satisfy this changed subject. No new execution retry is implied
+before focused validation, a clean commit and its bounded authorization.

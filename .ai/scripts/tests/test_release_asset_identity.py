@@ -150,6 +150,10 @@ class ReleaseAssetIdentityTests(unittest.TestCase):
         paths = {PROFILE, ".dev/releases/v0.16.0/release.yaml", ".ai/distribution/templates/INSTALL.md",
                  ".ai/distribution/templates/requirements.txt", ".ai/distribution/identity-registry.yaml"}
         source = {path: path.encode() for path in paths}
+        source[".dev/releases/v0.16.0/release.yaml"] = yaml.safe_dump({
+            "schema_version": "1.0", "version": "v0.16.0", "release_id": "REL-v0.16.0",
+            "compatibility": {}, "distribution": {}, "status": "planned",
+        }).encode()
         selected = selected_input_document(source, [], [])
         admission["selected_input_fingerprint"] = sha256_bytes(canonical_json_bytes(selected))
         snapshot = SimpleNamespace(tree={path: path for path in paths}, blob_reader=None, commit="b" * 40)

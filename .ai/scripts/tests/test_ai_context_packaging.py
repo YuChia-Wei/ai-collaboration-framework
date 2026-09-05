@@ -108,6 +108,7 @@ class SyntheticPackageRepo:
         )
         for script in (
             "ai_context_package_identity.py",
+            "ai_context_release_projection.py",
             "ai_context_package_validation.py",
             "ai_context_package_apply.py",
             "ai_context_cli_routing.py",
@@ -357,6 +358,8 @@ class SyntheticPackageRepo:
         release_path = self.root / f".dev/releases/v{normalized}/release.yaml"
         release_path.parent.mkdir(parents=True, exist_ok=True)
         document = {
+            "schema_version": "1.0",
+            "release_id": f"REL-v{normalized}",
             "version": f"v{normalized}",
             "compatibility": {
                 "breaking_changes": True,

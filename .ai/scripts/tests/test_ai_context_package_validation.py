@@ -91,6 +91,7 @@ def build_fixture(
         b"python payload/.ai/scripts/validate-ai-context-payload.py --package-root .\n"
     )
     payload: dict[str, bytes] = {
+        ".ai/scripts/ai_context_release_projection.py": (SCRIPTS / "ai_context_release_projection.py").read_bytes(),
         VALIDATOR_PATH: (SCRIPTS / "validate-ai-context-payload.py").read_bytes(),
         ".ai/scripts/ai_context_package_validation.py": (
             SCRIPTS / "ai_context_package_validation.py"

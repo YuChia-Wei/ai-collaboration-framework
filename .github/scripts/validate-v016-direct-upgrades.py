@@ -355,6 +355,18 @@ def record_validation(target, plan, apply, logs, provenance, candidate, ledger):
     return receipt, [rejected, blocked_finalization, rejected_receipt], failed_execution
 
 
+def case_artifacts(logs, output):
+    return {path.name: {"path": path.relative_to(output).as_posix(), "sha256": sha(path.read_bytes())}
+            for path in sorted(logs.iterdir()) if path.is_file()}
+
+
+def capture_authority(target, logs, phase):
+    for name in ("provenance", "customizations", "effective-rules"):
+        path = target / f".dev/ai-context/{name}.yaml"
+        if path.is_file():
+            (logs / f"{name}-{phase}.yaml").write_bytes(path.read_bytes())
+
+
 def execute_case(origin, previous, incoming, output, customized, recovery, apply, provenance, rules):
     label = origin + ("-customized" if customized else "-pristine") + "-" + recovery
     logs = output / "evidence" / label
@@ -363,6 +375,8 @@ def execute_case(origin, previous, incoming, output, customized, recovery, apply
     initial, ledger, preserved = seed_target(previous, incoming, target, customized, apply, provenance, rules, logs)
     negative = negative_preflight(origin, previous, incoming, target, initial, ledger, logs, apply, provenance) if not customized else []
     before = snapshot(target)
+    write_json(logs / "prestate.json", before)
+    capture_authority(target, logs, "before")
     plan = apply.build_plan(incoming, target, previous / "metadata/files.yaml", origin)
     require(plan["previous_version"].lstrip("v") == origin.lstrip("v"), "wrong selected origin")
     require(not plan.get("multi_hop_route_context"), "intermediate route context forbidden")
@@ -400,13 +414,18 @@ def execute_case(origin, previous, incoming, output, customized, recovery, apply
             pass
         else:
             raise RuntimeError("interruption boundary was not executed")
-        require(snapshot(target) != before, "interruption did not follow real writes")
+        interrupted = snapshot(target)
+        write_json(logs / "interrupted.json", interrupted)
+        require(interrupted != before, "interruption did not follow real writes")
         require((target / ".dev/ai-context/provenance.yaml").read_bytes() == yaml.safe_dump(initial, sort_keys=False).encode(), "interruption advanced provenance")
         result = apply.recover_transaction(target, plan["plan_sha256"], recovery, incoming if recovery == "resume" else None)
+        write_json(logs / "recovery.json", result)
         if recovery == "rollback":
+            write_json(logs / "poststate.json", snapshot(target))
+            capture_authority(target, logs, "after")
             require(snapshot(target) == before, "rollback did not restore exact prestate")
             write_json(logs / "rollback.json", result)
-            return {"origin": origin, "case": label, "outcome": "passed", "transaction_id": plan["plan_sha256"], "recovery": "rolled-back", "prestate_sha256": sha(canonical(before)), "poststate_sha256": sha(canonical(snapshot(target))), "negative_evidence": negative}
+            return {"origin": origin, "case": label, "outcome": "passed", "transaction_id": plan["plan_sha256"], "recovery": "rolled-back", "prestate_sha256": sha(canonical(before)), "poststate_sha256": sha(canonical(snapshot(target))), "negative_evidence": negative, "artifacts": case_artifacts(logs, output)}
     else:
         apply.apply_plan(plan, remediation_decision=decision)
     negative.append(reject_unchanged("missing-target-validation", lambda: provenance.finalize_context(
@@ -431,6 +450,8 @@ def execute_case(origin, previous, incoming, output, customized, recovery, apply
     for path, digest in preserved.items():
         require(sha((target / path).read_bytes()) == digest, "target-owned content changed")
     terminal_before = snapshot(target)
+    write_json(logs / "poststate.json", terminal_before)
+    capture_authority(target, logs, "after")
     try:
         apply.recover_transaction(target, plan["plan_sha256"], "rollback")
     except apply.ApplyError:
@@ -445,7 +466,7 @@ def execute_case(origin, previous, incoming, output, customized, recovery, apply
             "semantic_cutovers": {"provider_component_selection": "preserved", "source_specific_managed_removals": "verified",
                 "target_customization_ids": [entry["id"] for entry in installed_ledger["customizations"]],
                 "commit_grammar_adoption": "verified", "effective_rule_regeneration": "verified", "skill_retirement": "verified"},
-            "prestate_sha256": sha(canonical(before)), "poststate_sha256": sha(canonical(terminal_before))}
+            "prestate_sha256": sha(canonical(before)), "poststate_sha256": sha(canonical(terminal_before)), "artifacts": case_artifacts(logs, output)}
 
 
 def main():
@@ -461,7 +482,8 @@ def main():
     require(not output.exists(), "fresh output directory required")
     output.mkdir(parents=True)
     terminal = {"schema_version": "direct-upgrade-execution/v1", "subject_sha": args.subject_sha, "started_at": stamp(), "evidence_kind": "actual-isolated-target-execution", "cases": [], "outcome": "failed",
-                "runner": {"path": Path(__file__).relative_to(ROOT).as_posix(), "sha256": sha(Path(__file__).read_bytes())}}
+                "runner": {"path": Path(__file__).relative_to(ROOT).as_posix(), "sha256": sha(Path(__file__).read_bytes())},
+                "invocation": [sys.executable, Path(__file__).relative_to(ROOT).as_posix(), *sys.argv[1:]]}
     started = time.monotonic()
     try:
         require(subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT, text=True).strip() == args.subject_sha, "source commit drift")

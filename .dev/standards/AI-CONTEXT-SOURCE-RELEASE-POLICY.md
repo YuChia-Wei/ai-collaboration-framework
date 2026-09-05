@@ -91,8 +91,28 @@ bytes. Different bytes require a newly reviewed candidate before publication;
 an already published identity cannot be silently replaced. Historical candidate
 archives with the same logical labels remain explicitly historical candidates.
 
-Finalize package-selected source inputs before building once from a clean
-immutable preparation commit. Retain its four exact assets under the version's
+From v0.16.0, `package-selected-input/v2` embeds one `release-package-input/v1`
+projection. It preserves every top-level release field except `status`, `tag`,
+`commit`, `tagged_at`, `recorded_at`, `created_at`, `updated_at`, and `validation`.
+The release source-input entry hashes canonical compact sorted UTF-8 JSON of
+that projection. Other source entries continue to hash raw Git blob bytes.
+Planning allocation, provider requirements, compatibility, distribution and
+unknown future fields remain identity-bound. An unknown projection version,
+duplicate key, missing projection or package-contract disagreement fails closed.
+Changing this boundary requires a new projection version. Releases before
+v0.16.0 retain their original raw release-file identity and published proofs.
+
+The complete current release record remains authoritative for phase, workflow
+and provider gates. Identity admission never marks a planned record validated.
+Freeze package-selected inputs while source acceptance is pending, build once
+from a clean immutable preparation commit, and execute required archive and
+target gates against those exact assets. Only after acceptance may source
+status and validation evidence become validated. Fresh candidate gates still
+check those complete current records and rebind the admitted source projection.
+Lifecycle-only updates preserve asset identity; selected contract or payload
+drift requires a new archive and affected execution evidence.
+
+Retain the preparation commit's four exact assets under the version's
 route-assets directory, then run:
 
 ```powershell
@@ -111,9 +131,12 @@ fingerprint. Issue 272 supplies the actual v0.16.0 direct edge evidence.
 
 Retain its actual terminal at `route-assets/actual/terminal.json`. The source
 gate binds the admitted route archive and package source to that terminal and
-checks the executing runner digest, all three origin case sets, finalized target
-readiness, semantic reconciliation, negative boundaries and exact rollback
-prestate. A changed runner requires fresh actual evidence. Candidate CI repeats
+checks the canonical executing runner digest, invocation and timing, all three
+origin case sets, retained packet and decision identities, target command output
+and receipts, before/after provenance and customization records, recovery state,
+finalized readiness, semantic reconciliation, negative boundaries and exact
+rollback snapshots. Missing or changed retained artifacts fail closed. A changed
+runner requires fresh actual evidence. Candidate CI repeats
 the actual v0.16.0 matrix against the unchanged staged archive.
 
 Candidate CI and tag publication stage the tracked admitted assets unchanged.

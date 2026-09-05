@@ -403,6 +403,7 @@ def make_schema_23_upgrade_package(
         b"python payload/.ai/scripts/validate-ai-context-payload.py --package-root .\n"
     )
     payload = {
+        ".ai/scripts/ai_context_release_projection.py": (ROOT / ".ai/scripts/ai_context_release_projection.py").read_bytes(),
         validator_path: validator_content
         or (ROOT / ".ai/scripts/validate-ai-context-payload.py").read_bytes(),
         ".ai/scripts/ai_context_package_validation.py": (
@@ -575,6 +576,18 @@ def make_schema_23_upgrade_package(
     package_canonical_json = lambda document: json.dumps(
         document, ensure_ascii=False, sort_keys=True, separators=(",", ":")
     ).encode("utf-8")
+    proof["schema_version"] = "package-selected-input/v2"
+    proof["release_projection"] = {
+        "schema_version": "release-package-input/v1",
+        "source_path": ".dev/releases/v1.0.0/release.yaml",
+        "fields": {"schema_version": "1.0", "version": "v1.0.0", "release_id": "REL-v1.0.0",
+            "distribution": {"profile_id": "dotnet-backend", "package_id": package_id},
+            "compatibility": {"minimum_source_version": "0.1.0", "breaking_changes": False,
+                "automatic_upgrade_sources": ["0.9.0"]}},
+    }
+    for item in proof["source_inputs"]:
+        if item["path"] == proof["release_projection"]["source_path"]:
+            item["sha256"] = APPLY.sha256_bytes(package_canonical_json(proof["release_projection"]))
     proof_content = package_canonical_json(proof)
     validation = {
         "schema_version": "package-validation/v1",

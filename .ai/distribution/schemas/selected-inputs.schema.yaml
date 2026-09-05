@@ -1,0 +1,34 @@
+schema_version: '1.0'
+contract: package-selected-input
+serialization: compact-sorted-utf8-json-without-trailing-newline
+versions:
+  package-selected-input/v1:
+    releases: before-v0.16.0
+    fields: [schema_version, source_inputs, payload, migration_sources]
+    source_digest: raw-git-blob-sha256
+  package-selected-input/v2:
+    releases: from-v0.16.0
+    fields: [schema_version, source_inputs, payload, migration_sources, release_projection]
+    source_digest: raw-git-blob-sha256-except-release-projection
+release_projection:
+  schema_version: release-package-input/v1
+  fields: [schema_version, source_path, fields]
+  source_path: .dev/releases/<version>/release.yaml
+  preserved: every-top-level-release-field-except-listed-source-progress-fields
+  excluded_top_level_fields:
+    - status
+    - tag
+    - commit
+    - tagged_at
+    - recorded_at
+    - created_at
+    - updated_at
+    - validation
+  unknown_fields: preserved-and-identity-bound
+  digest: sha256-of-canonical-complete-projection-document
+  required_bindings: [source-path-version, release-id, package-id, profile-id, compatibility]
+  invalid: [unknown-schema, missing-projection, duplicate-key, non-string-key, digest-disagreement, package-contract-disagreement]
+source_admission:
+  complete_release_record: always-validated-by-current-source-phase-and-provider-gates
+  equal_projection: identity-only-never-phase-success-or-publication-authority
+  boundary_change: requires-new-projection-schema-version
