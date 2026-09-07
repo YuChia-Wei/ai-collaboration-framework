@@ -26,12 +26,15 @@ Turn existing requirement/spec truth into a first validator-ready problem-frame 
    - authority boundaries
    - timeout / retry / duplicate rules
    - acceptance scenarios
-4. Draft files in this order:
-   - `machine/use-case.yaml`
-   - `controlled-domain/aggregate.yaml`
-   - `frame.yaml`
-   - `machine/machine.yaml`
-   - `acceptance.yaml`
+4. Draft `machine/use-case.yaml`, the selected domain file, `frame.yaml`, `machine/machine.yaml`, then the selected acceptance or requirement files. Use only the branch selected in step 2:
+
+   | Frame type | Domain file | Acceptance or requirement files |
+   | --- | --- | --- |
+   | `CBF` | `controlled-domain/aggregate.yaml` | `acceptance.yaml` |
+   | `SWF` | `workpiece/aggregate.yaml` | `requirements/*.yaml` |
+
+   Do not create the other frame type's files unless a separate frame has been explicitly selected.
+
 5. Mark every inferred item as inferred.
 6. End with open questions and the next handoff.
 

@@ -88,7 +88,7 @@ Use `.ai/assets/skills/README.MD` as the canonical skill registry. Runtime wrapp
 
 ### Long-Running Validation Gate
 
-- Treat `release`, `nightly-full`, a full matrix, or at least 120 seconds expected or observed wall time as long-running.
+- Before dispatch, classify a command as long-running when its profile is `release` or `nightly-full`, it selects a full package, compatibility, or history matrix, repository evidence predicts at least 120 seconds, or a prior comparable execution took at least 120 seconds. Use `.dev/standards/WORKFLOW-GATE-POLICY.md` for the execution contract.
 - Finish tracked mutations and focused validation, then bind the exact command to a clean immutable commit.
 - Dispatch one read-only external task using the least expensive capable profile; write only ignored validation artifacts and do not repair the subject.
 - Use a callback or one parent event wait. Do not poll.

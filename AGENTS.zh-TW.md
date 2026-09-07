@@ -9,7 +9,7 @@
 - 這是可重用 AI collaboration framework 的 source repository，並非 product application。
 - 較深層的 `AGENTS.*` 檔案，在其 subtree 內優先於本文件。
 - 優先順序為：使用者與核准、較深層的 `AGENTS.*`、本文件、其他一般文件。
-- 使用 Git-tracked files、validated records 與 provider read-back。Historical records 是 evidence，不是 current state。
+- 使用目前的 Git-tracked files、validated records 與即時 provider read-back。Historical workflows、assessments、releases、examples 與 migrated records 是 evidence，不是 current state。
 - Source-framework、target、provider 與 runtime truth 必須分開。
 - 不得捏造 facts、authorization、availability、execution、validation、Issue state 或 release state。遇到未決 owner-sensitive decisions 時停止。
 
@@ -56,7 +56,7 @@
 - 小型、局部、單次可完成的工作可以維持 direct mode。
 - Source-of-truth、AI-context、routing、wrapper、multi-stage 或 durable cross-session work，載入 `.dev/standards/WORKFLOW-GATE-POLICY.md`。
 - Workflow mode 時，遵循 `.dev/standards/WORKFLOW-ARTIFACT-POLICY.md` 與 `.dev/TEAM-GIT-FLOW-RULES.MD`；material edits 前切換 dedicated branch。
-- 唯讀報告使用 `.dev/standards/ASSESSMENT-ARTIFACT-POLICY.md`；報告本身不必然需要 workflow。
+- 需留存的唯讀報告使用 `.dev/standards/ASSESSMENT-ARTIFACT-POLICY.md`；報告本身不必然需要 workflow。
 - Cross-session transfer 遵循 `.dev/standards/WORKFLOW-HANDOFF-POLICY.md`；checkpoint 不得依賴 hidden conversation state。
 - Commit 前遵循 `.dev/standards/GIT-COMMIT-POLICY.md`，並在執行 `git commit` 前以 message file 驗證完整 planned message。
 - Merge、workflow completion、Issue closure、Project status、release allocation、publication 與 target upgrade 是不同 state。
@@ -71,7 +71,7 @@
 
 ### Validation Freeze 與 Evidence Reuse
 
-- Reuse 前將 validation evidence 分類為 identity-sensitive、input-sensitive、environment-sensitive 或 provider-sensitive。只有 tracked bytes、transitive dependencies、command、profile、environment、runner、manifest、resolver、policy 與 configuration authority 全部相容時才可 reuse。
+- Reuse 前將 validation evidence 分類為 identity-sensitive、input-sensitive、environment-sensitive 或 provider-sensitive。只有 tracked bytes、transitive dependencies、command、profile、environment、runner、manifest、resolver、policy 與 configuration authority 各項均符合規定的比對一致性條件（matching）時才可 reuse。
 - 只有完成 tracked mutation 與 focused validation 後才可 freeze。Freeze 後若 tracked content 或 governing authority drift，subject 即失效；只有 history-only identity drift 時則執行 rebind。Terminal metadata 只能寫入已宣告的 ignored artifacts，且不會使 frozen snapshot 失效。
 - Unknown dependency 或 authority state 必須 fail closed。Current-head review-subject binding、required hosted contexts 與 live admission gates 一律 fresh；content digest 相等時可 reuse independent review，無須重做。
 - 每個 admitted head 都必須保留 required hosted contexts。內部可以 execution 或 proven reuse，但 path filtering 不得讓 required context 消失。
@@ -88,7 +88,7 @@
 
 ### 長時間驗證 Gate
 
-- `release`、`nightly-full`、full matrix，或預期／已觀測 wall time 至少 120 秒時，視為 long-running。
+- Dispatch 前，若 command 的 profile 為 `release` 或 `nightly-full`、選擇 full package／compatibility／history matrix、repository evidence 預估至少 120 秒，或先前可比較的 execution 耗時至少 120 秒，則分類為 long-running。Execution contract 見 `.dev/standards/WORKFLOW-GATE-POLICY.md`。
 - 先完成 tracked mutations 與 focused validation，再把 exact command 綁定到 clean immutable commit。
 - 派送一個 read-only external task，使用足以完成工作的最低成本 profile；只寫入 ignored validation artifacts，且不得修復 subject。
 - 使用 callback 或一次 event wait。不得輪詢。

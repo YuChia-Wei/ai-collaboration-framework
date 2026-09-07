@@ -35,11 +35,11 @@ role_bindings:
     load_obligation: "mandatory-when-applicable"
 workflow:
   - step: 1
-    description: "Identify the highest-priority source of truth and target use case, then evaluate the problem-frame role binding"
+    description: "Identify the highest-priority source of truth and target use case, select CBF or SWF, then evaluate the problem-frame role binding"
   - step: 2
     description: "Load the matching role manifest and all mandatory references, then extract inputs, preconditions, outcomes, external constraints, and scenarios"
   - step: 3
-    description: "Draft frame.yaml, machine/machine.yaml, machine/use-case.yaml, aggregate.yaml, and acceptance.yaml"
+    description: "Draft the file set for the selected CBF or SWF frame type, following references/authoring-playbook.md and references/output-contract.md."
   - step: 4
     description: "List open questions, inferred items, next skill handoff, and the skill-owned role_execution record for orchestrator aggregation"
 references:

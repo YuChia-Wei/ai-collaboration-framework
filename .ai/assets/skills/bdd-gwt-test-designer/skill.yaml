@@ -24,7 +24,7 @@ outputs:
   - "a .feature artifact design when the user provides or explicitly requests one, or when the target profile selects a feature runner"
   - "an explicit test-implementation handoff that preserves the separate authorization and test-execution boundary"
 constraints:
-  - "Do not implement final test code unless explicitly requested"
+  - "Do not implement final test code in this skill. If existing user authorization includes concrete test implementation, hand the bounded design and that authorization to slice-implementer without requesting duplicate approval."
   - "Do not change production code"
   - "Default to scenario notes, not .feature files"
   - "Treat BDDfy as the default profile, while preserving mandatory GWT structure when a target team explicitly opts out"
