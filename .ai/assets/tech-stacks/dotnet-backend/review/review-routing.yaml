@@ -194,6 +194,7 @@ routes:
       type_signals: ["FactAttribute", "TheoryAttribute"]
     canonical_references:
       - ".ai/assets/tech-stacks/dotnet-backend/standards/coding-standards/test-standards.md"
+      - ".ai/assets/tech-stacks/dotnet-backend/review/test-scenario-review.md"
     finding_rules:
       - finding_tag: "test-structure"
         applies_when: "Test scenario structure or naming is under review."

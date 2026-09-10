@@ -6,6 +6,7 @@ route defects in executable test or production code to `code-reviewer`.
 | Criterion | Evidence to inspect |
 | --- | --- |
 | Acceptance traceability | Map every AC to scenarios and every claimed scenario to a requirement or explicitly labeled assumption. Report missing/contradictory coverage. |
+| Implementation handoff | Preserve scenario/data-row IDs, source revision/status, concrete inputs and expected-value sources under the shared GWT handoff contract. Future code or execution locations remain unknown until the receiving owner supplies them. |
 | Observable outcomes | Each important Then names an observable result and an assertable value, relation or state. "Works correctly" is insufficient. |
 | Controlled preconditions | Given supplies data, state, permissions, time and dependency outcomes required for reproducibility. Identify nondeterminism and unknown setup. |
 | Behavior isolation | One primary When and behavior; split unrelated outcomes when their triggers differ. Assertions test contracts rather than copying private algorithm steps. |
