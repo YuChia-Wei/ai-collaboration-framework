@@ -11,7 +11,7 @@ ordering:
   array_contents: "retain declared source order"
 catalog_digest:
   algorithm: "sha256"
-  value: "2e131f5921e87eec50493112ab2cc3ae2bfc0c6d8061f2b8da512fffdd417001"
+  value: "586701351c97fffa2ece421c4eabd4acbdce315b34e5845b497f968967f7c3d4"
   canonicalization: "UTF-8 encoding of compact JSON with Unicode preserved, object keys sorted by Unicode code point, array order preserved, and exactly one terminal LF; the complete catalog_digest field is excluded from the input."
 selector_contract:
   capability_execution_mode_file_type: "unconstrained-by-source with an empty values list means no narrower source-backed predicate is declared; a resolver must not invent one or use it as a default fallback."

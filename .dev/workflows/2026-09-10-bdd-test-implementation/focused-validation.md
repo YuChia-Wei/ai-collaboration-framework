@@ -32,3 +32,11 @@ Passing the examples is executable fixture evidence. It does not establish
 model compliance. A small controlled generation exercise and ten curated review
 cases cannot prove universal reliability, statistical improvement, downstream
 adoption or cost savings. Existing external MSTest examples remain unchanged.
+
+## Fresh Preflight Correction
+
+The first source effective-rule preflight on the committed payload rejected a
+stale whole-catalog digest before any model invocation. Per-rule projections
+were correct; the derived catalog digest was recomputed using the canonical
+resolver function. Preserve this failed preflight in
+`catalog-preflight-failure.json`; the next clean commit requires fresh resolution.
