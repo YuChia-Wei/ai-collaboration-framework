@@ -4,8 +4,8 @@
 
 - workflow_id: `2026-09-10-authoring-implementation-boundaries`; owner_skill: `ai-context-governance`
 - branch: `codex/2026-09-10-authoring-implementation-boundaries`; base_branch: `main`
-- status: `in_progress`; current_phase: `remediation`
-- created_at: `2026-09-10T19:49:58+08:00`; updated_at: `2026-09-10T19:49:58+08:00`
+- status: `completed`; current_phase: `completed`
+- created_at: `2026-09-10T19:49:58+08:00`; updated_at: `2026-09-10T20:15:21+08:00`
 - template_source: `.ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md`
 - template_version: `1.2.0`
 - Clean integrated baseline: `7ad859fd3724cfd7d9a3f8165c003fb812c5c2e9` (PR 291 merged; prior Issues 289/290 read back closed/completed and Project Done).
@@ -44,8 +44,8 @@ remain owner decisions. The earlier merge/closure authorization covered
 | R01 | Baseline source comparison and bounded evaluation | completed |
 | R02 | Authoring boundary and source handoff | completed |
 | R03 | Local/slice routing and necessary escalation | completed |
-| V01 | Controlled routing and focused compatibility checks | in_progress |
-| A01 | Independent review, root acceptance and report | pending |
+| V01 | Controlled routing and focused compatibility checks | completed |
+| A01 | Independent review, root acceptance and report | completed |
 
 ## Evidence And Validation
 
@@ -69,10 +69,9 @@ are not evidence that arbitrary language was understood. No full release/history
 matrix or product test implementation is selected. Historical identifiers and
 prior workflow/assessment records remain untouched.
 
-## Resume
+## Closure
 
-Current task V01. Next: actual paired routing, package reference closure and
-independent source verification on the immutable implementation checkpoint. Local evidence
-root: `.dev/ai-context/local/2026-09-10-authoring-implementation-boundaries/`. This scope uses explicit tracked-file
-discovery because the available graph excluded `.ai/assets` and `.ai/scripts`;
-graph absence is never an absence claim.
+See [remediation report](remediation-report.md) for the eleven local acceptance
+criteria, original failed facets, limited rechecks and evidence boundaries.
+Final clean-commit independent admission writes only the declared ignored
+`final_admission` leaf. This tracked record does not assert its future result.

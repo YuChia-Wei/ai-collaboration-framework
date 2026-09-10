@@ -37,3 +37,11 @@ The source-backed repair targets are:
   design; local substeps can create unnecessary owner round trips.
 - A279-03: the slice handoff guide still describes the code reviewer as .NET-only
   after the integrated common reviewer change.
+
+## Final Disposition
+
+Retain the five identities and the two shared boundary contracts. See
+[delivery report](remediation-report.md) for the complete trigger/input/schema
+comparison, observed failures and six-case remediation, increased context-byte
+envelope and unchanged required contract duplication. No routing, maintenance
+or production-cost saving justifies consolidation in this evidence.

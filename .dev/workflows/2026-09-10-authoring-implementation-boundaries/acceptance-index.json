@@ -1,0 +1,185 @@
+{
+  "schema_version": "1.0",
+  "record_type": "local-acceptance-index",
+  "workflow_id": "2026-09-10-authoring-implementation-boundaries",
+  "source_subject_sha": "80311afd2672ff8bea7858a144248257aa00c561",
+  "decision_scope": "Local source and controlled routing only; no online Issue closure or provider admission.",
+  "issues": [
+    {
+      "issue": 276,
+      "local_outcome": "passed",
+      "entries": [
+        {
+          "acceptance_id": "276-AC1",
+          "criterion": "Capability matrix distinguishes unique and overlapping responsibilities",
+          "outcome": "passed",
+          "tracked_evidence": [
+            "capability-matrix.md",
+            "remediation-report.md",
+            "observed-results.json",
+            "routing-findings.md"
+          ],
+          "local_ledgers": [
+            "ignored:.dev/ai-context/local/2026-09-10-authoring-implementation-boundaries/acceptance-276-source.json"
+          ]
+        },
+        {
+          "acceptance_id": "276-AC2",
+          "criterion": "Representative and ambiguous routing cases evaluated",
+          "outcome": "passed",
+          "tracked_evidence": [
+            "capability-matrix.md",
+            "remediation-report.md",
+            "observed-results.json",
+            "routing-findings.md"
+          ],
+          "local_ledgers": [
+            "ignored:.dev/ai-context/local/2026-09-10-authoring-implementation-boundaries/acceptance-276-source.json",
+            "ignored:.dev/ai-context/local/2026-09-10-authoring-implementation-boundaries/acceptance-276-runtime-initial.json",
+            "ignored:.dev/ai-context/local/2026-09-10-authoring-implementation-boundaries/acceptance-276-runtime-recheck.json"
+          ]
+        },
+        {
+          "acceptance_id": "276-AC3",
+          "criterion": "Document-type contracts and source binding preserved",
+          "outcome": "passed",
+          "tracked_evidence": [
+            "capability-matrix.md",
+            "remediation-report.md",
+            "observed-results.json",
+            "routing-findings.md"
+          ],
+          "local_ledgers": [
+            "ignored:.dev/ai-context/local/2026-09-10-authoring-implementation-boundaries/acceptance-276-source.json"
+          ]
+        },
+        {
+          "acceptance_id": "276-AC4",
+          "criterion": "No consolidation without demonstrated benefit",
+          "outcome": "passed",
+          "tracked_evidence": [
+            "capability-matrix.md",
+            "remediation-report.md",
+            "observed-results.json",
+            "routing-findings.md"
+          ],
+          "local_ledgers": [
+            "ignored:.dev/ai-context/local/2026-09-10-authoring-implementation-boundaries/acceptance-276-source.json"
+          ]
+        },
+        {
+          "acceptance_id": "276-AC5",
+          "criterion": "Retained skills have clearer boundaries and handoff rules",
+          "outcome": "passed",
+          "tracked_evidence": [
+            "capability-matrix.md",
+            "remediation-report.md",
+            "observed-results.json",
+            "routing-findings.md"
+          ],
+          "local_ledgers": [
+            "ignored:.dev/ai-context/local/2026-09-10-authoring-implementation-boundaries/acceptance-276-source.json",
+            "ignored:.dev/ai-context/local/2026-09-10-authoring-implementation-boundaries/acceptance-276-runtime-initial.json",
+            "ignored:.dev/ai-context/local/2026-09-10-authoring-implementation-boundaries/acceptance-276-runtime-recheck.json"
+          ]
+        }
+      ]
+    },
+    {
+      "issue": 279,
+      "local_outcome": "passed",
+      "entries": [
+        {
+          "acceptance_id": "279-AC1",
+          "criterion": "Matrix maps responsibility, input, output and stop conditions",
+          "outcome": "passed",
+          "tracked_evidence": [
+            "capability-matrix.md",
+            "remediation-report.md",
+            "observed-results.json",
+            "routing-findings.md"
+          ],
+          "local_ledgers": [
+            "ignored:.dev/ai-context/local/2026-09-10-authoring-implementation-boundaries/acceptance-279-source.json"
+          ]
+        },
+        {
+          "acceptance_id": "279-AC2",
+          "criterion": "Fixed corpus covers local, slice and ambiguous requests",
+          "outcome": "passed",
+          "tracked_evidence": [
+            "capability-matrix.md",
+            "remediation-report.md",
+            "observed-results.json",
+            "routing-findings.md"
+          ],
+          "local_ledgers": [
+            "ignored:.dev/ai-context/local/2026-09-10-authoring-implementation-boundaries/acceptance-279-source.json",
+            "ignored:.dev/ai-context/local/2026-09-10-authoring-implementation-boundaries/acceptance-279-runtime-initial.json",
+            "ignored:.dev/ai-context/local/2026-09-10-authoring-implementation-boundaries/acceptance-279-runtime-recheck.json"
+          ]
+        },
+        {
+          "acceptance_id": "279-AC3",
+          "criterion": "Misroutes, handoffs, scope, context and maintenance metrics reported",
+          "outcome": "passed",
+          "tracked_evidence": [
+            "capability-matrix.md",
+            "remediation-report.md",
+            "observed-results.json",
+            "routing-findings.md"
+          ],
+          "local_ledgers": [
+            "ignored:.dev/ai-context/local/2026-09-10-authoring-implementation-boundaries/acceptance-279-source.json",
+            "ignored:.dev/ai-context/local/2026-09-10-authoring-implementation-boundaries/acceptance-279-runtime-initial.json",
+            "ignored:.dev/ai-context/local/2026-09-10-authoring-implementation-boundaries/acceptance-279-runtime-recheck.json"
+          ]
+        },
+        {
+          "acceptance_id": "279-AC4",
+          "criterion": "No consolidation without benefit and a safe migration plan",
+          "outcome": "passed",
+          "tracked_evidence": [
+            "capability-matrix.md",
+            "remediation-report.md",
+            "observed-results.json",
+            "routing-findings.md"
+          ],
+          "local_ledgers": [
+            "ignored:.dev/ai-context/local/2026-09-10-authoring-implementation-boundaries/acceptance-279-source.json"
+          ]
+        },
+        {
+          "acceptance_id": "279-AC5",
+          "criterion": "Retention includes necessary wording/routing/shared-reference improvements",
+          "outcome": "passed",
+          "tracked_evidence": [
+            "capability-matrix.md",
+            "remediation-report.md",
+            "observed-results.json",
+            "routing-findings.md"
+          ],
+          "local_ledgers": [
+            "ignored:.dev/ai-context/local/2026-09-10-authoring-implementation-boundaries/acceptance-279-source.json",
+            "ignored:.dev/ai-context/local/2026-09-10-authoring-implementation-boundaries/acceptance-279-runtime-initial.json",
+            "ignored:.dev/ai-context/local/2026-09-10-authoring-implementation-boundaries/acceptance-279-runtime-recheck.json"
+          ]
+        },
+        {
+          "acceptance_id": "279-AC6",
+          "criterion": "Historical skill references and evidence remain unchanged",
+          "outcome": "passed",
+          "tracked_evidence": [
+            "capability-matrix.md",
+            "remediation-report.md",
+            "observed-results.json",
+            "routing-findings.md"
+          ],
+          "local_ledgers": [
+            "ignored:.dev/ai-context/local/2026-09-10-authoring-implementation-boundaries/acceptance-279-source.json"
+          ]
+        }
+      ]
+    }
+  ]
+}

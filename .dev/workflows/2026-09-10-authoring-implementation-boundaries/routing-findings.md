@@ -29,8 +29,10 @@ risk strings are not counted as performed expansion. I05's architecture-first
 route with conditionally gated implementation remains valid for the requested
 interface-extraction goal.
 
-Only the two shared contracts change for this remediation. A bounded recheck
-will cover A01/A06 and I05/I06/I09/I10 with explicit immediate-owner, required
+Only the two shared contracts change for this remediation. The bounded recheck
+covered A01/A06 and I05/I06/I09/I10 with explicit immediate-owner, required
 handoff, optional-future-work, actual-expansion and prevented-risk fields.
 It is feedback-informed verification, not a new blind or full-corpus trial.
-Original outputs and metrics remain unchanged. Final acceptance is pending.
+Original outputs and metrics remain unchanged. All six selected recheck cases passed parent semantic acceptance at
+`80311afd2672ff8bea7858a144248257aa00c561`; see observed-results.json.
+The original first-pass metrics remain unchanged.
