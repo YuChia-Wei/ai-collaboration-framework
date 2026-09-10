@@ -62,3 +62,17 @@ fixed-subject evidence and the applicable independence contract before claiming
 When independence is unproven, label it `review; independence not established`.
 Required independent acceptance still follows the owning workflow's evidence
 contract. Findings and design completion do not establish spec compliance.
+
+Before returning a review, select exactly one `review_classification` from this
+table. Record the author relationship and evidence that supports the selection.
+
+| Established evidence | Required review_classification |
+| --- | --- |
+| The reviewer authored or repaired the submitted artifact | `self-check` |
+| Author relationship is unknown, or any required independence evidence is missing | `review; independence not established` |
+| A different author is verified, the fixed subject and read-only reviewer are evidenced, and the applicable independence contract is satisfied | `independent-review` |
+
+A subject hash proves identity, not authorship or independence. The label
+`independent-review` with an "author unknown" caveat is invalid; select the
+unproven classification instead. Review classification is distinct from whether
+the artifact has defects and from whether a required acceptance gate passes.
