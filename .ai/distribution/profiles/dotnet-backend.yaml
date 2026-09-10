@@ -593,6 +593,26 @@ payload_user_view:
         - ai-context-lifecycle-core
         - dotnet-backend
   capabilities:
+    - capability_id: ddd-ca-hex-architect
+      owner_component: software-development-core
+      path_patterns:
+        - .ai/assets/skills/ddd-ca-hex-architect/**
+        - .ai/assets/shared/ARTIFACT-DESIGN-REVIEW-CONTRACT.md
+        - .agents/skills/ddd-ca-hex-architect/**
+        - .claude/skills/ddd-ca-hex-architect/**
+      availability:
+        core-only: available
+        dotnet-selected: available
+    - capability_id: bdd-gwt-test-designer
+      owner_component: software-development-core
+      path_patterns:
+        - .ai/assets/skills/bdd-gwt-test-designer/**
+        - .ai/assets/shared/ARTIFACT-DESIGN-REVIEW-CONTRACT.md
+        - .agents/skills/bdd-gwt-test-designer/**
+        - .claude/skills/bdd-gwt-test-designer/**
+      availability:
+        core-only: available
+        dotnet-selected: available
     - capability_id: code-reviewer
       owner_component: software-development-core
       path_patterns:

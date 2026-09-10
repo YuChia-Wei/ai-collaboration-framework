@@ -22,10 +22,10 @@ The canonical skill registry currently includes:
 - `ai-context-auditor`
 - `ai-context-init`
 - `ai-context-upgrader`
-- `bdd-gwt-test-designer`
+- `bdd-gwt-test-designer` (design and read-only artifact review; concrete tooling follows target selection)
 - `code-reviewer` (common core in every selection; .NET review extends it when `dotnet-backend` is selected)
 - `diagnostic-analyst`
-- `ddd-ca-hex-architect`
+- `ddd-ca-hex-architect` (design and read-only artifact review; concrete tooling follows target selection)
 - `local-change-implementer`
 - `problem-frame-author`
 - `requirement-author`

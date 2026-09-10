@@ -5,8 +5,8 @@
 - workflow_id: `2026-09-10-review-skill-capabilities`
 - owner_skill: `ai-context-governance`
 - branch: `codex/2026-09-10-review-skill-capabilities`; base_branch: `main`
-- status: `in_progress`; current_phase: `remediation`
-- created_at: `2026-09-10T09:32:33+08:00`; updated_at: `2026-09-10T09:32:33+08:00`
+- status: `in_progress`; current_phase: `verification`
+- created_at: `2026-09-10T09:32:33+08:00`; updated_at: `2026-09-10T09:56:51+08:00`
 - template_source: `.ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md`
 - template_version: `1.2.0`
 - Source baseline: `a6110a34d17d15a200aa2f7ebca0415ad8a37c22`; clean local main matched the live remote main before branch creation.
@@ -61,9 +61,9 @@ failed attempts; retry only after a material change.
 
 | Task | Scope | Status |
 | --- | --- | --- |
-| R01 | #289 common core, .NET extension, ownership and routing | in_progress |
-| R02 | #290 design quality, review modes and handoffs | pending |
-| V01 | Focused deterministic checks and actual skill exercises | pending |
+| R01 | #289 common core, .NET extension, ownership and routing | completed |
+| R02 | #290 design quality, review modes and handoffs | completed |
+| V01 | Focused deterministic checks and actual skill exercises | in_progress |
 | A01 | Independent review, parent reconciliation and report | pending |
 
 Record every acceptance checkbox from each live Issue independently. A fixture
@@ -88,6 +88,8 @@ clean commit; no release/nightly/full history matrix is selected by default.
 - Graph reindex was attempted; it excludes `.ai/assets` and `.ai/scripts` and
   does not report a commit SHA. Explicit tracked-file discovery is used for this
   scope; graph absence is not evidence.
-- Current task: R01; next action: implement common reviewer and selected extension.
-- Remaining: R02, focused checks, observed behavior, independent review and final report.
+- Current task: V01; next action: fixed-commit package, behavior and compatibility verification.
+- #289 implementation: `6de81489bfbf6c844292f6f442c3e80b658a0166`; 9 routing/package checks passed.
+- #289 Terra xhigh audit and Luna max six-case exercise returned; parent review supports the reported findings. These do not establish a real downstream upgrade.
+- #290 implementation and focused schema/reference/effective-rule checks are complete. Remaining: committed package checks, eight design/review exercises, compatibility evidence, final independent review and parent acceptance.
 - Local branch only; no push or PR.

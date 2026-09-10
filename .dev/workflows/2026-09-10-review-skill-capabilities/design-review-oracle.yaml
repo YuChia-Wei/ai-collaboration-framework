@@ -1,0 +1,13 @@
+schema_version: "1.0"
+issue: 290
+purpose: "Parent-only qualitative oracle; do not give to the exercise reviewer."
+cases:
+  architecture-defect: "review; R1 success-before-durable-write crash loss; R2 duplicate request side effects; no imposed broker/vendor"
+  architecture-valid-alternative: "review; no substantiated violation; retain constructor wiring and read-only synchronous design; real storage test remains future evidence"
+  architecture-incomplete: "review; availability/staleness authority missing; cannot affirm blanket compliance or invent targets"
+  bdd-defect: "review; missing quantities and storage-failure coverage; vague Given/Then; mocked unit cannot prove real integration"
+  bdd-valid-alternative: "review; acceptance mapped with observable Then; do not require BDDfy, feature runner or code generation"
+  bdd-incomplete: "review; unresolved threshold/inclusivity; scenario provisional, do not invent approval semantics"
+  architecture-design: "design; ports/adapters, found/missing/unavailable contracts, no writes, explicit limits and testability"
+  bdd-design: "design; true/false/absent GWT plus unchanged input, AC mapping and unauthorized implementation handoff kept separate"
+all_cases: "No artifact changes; no executable tests; role/author identity and independence accurately stated; no specification compliance claim."
