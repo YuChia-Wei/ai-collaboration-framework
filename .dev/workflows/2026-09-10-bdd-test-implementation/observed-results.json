@@ -1,0 +1,488 @@
+{
+  "schema_version": "1.0",
+  "issue": 293,
+  "execution_subject_sha": "ef8b63d7650e640feb8de7730b0f88e557f5dc88",
+  "source_review": {
+    "outcome": "passed",
+    "findings": [],
+    "report_sha256": "6b00d4ae0b340b9c2a6e5a9b4fceb64445cc98fd503598d4fb8f92af588cc81c"
+  },
+  "original_examples": [
+    {
+      "profile": "DefaultBddfy",
+      "outcome": "passed",
+      "total": 5,
+      "passed": 5,
+      "skipped": 0,
+      "test_names": [
+        "GwtStepMethods.DefaultBddfy.BudgetQueryTests.Should_prorate_the_inclusive_range(scenarioRow: \"BUDGET-02/fractional\", monthlyAmount: 45, lastDay: 3, expected: 4.5)",
+        "GwtStepMethods.DefaultBddfy.BudgetQueryTests.Should_return_zero_when_query_month_has_no_budget",
+        "GwtStepMethods.DefaultBddfy.BudgetQueryTests.Should_reject_an_inverted_range_before_reading_budgets",
+        "GwtStepMethods.DefaultBddfy.BudgetQueryTests.Should_sum_both_months_when_the_range_crosses_a_month_boundary",
+        "GwtStepMethods.DefaultBddfy.BudgetQueryTests.Should_prorate_the_inclusive_range(scenarioRow: \"BUDGET-02/integer\", monthlyAmount: 300, lastDay: 2, expected: 20)"
+      ],
+      "trx_sha256": "e0791b2f88438741d599fe995b043c886b4f86a56c0d0bf0666c3bc958579b31",
+      "result_ref": "ignored:.dev/ai-context/local/2026-09-10-bdd-test-implementation/examples-permitted/DefaultBddfy/DefaultBddfy.trx",
+      "source_hashes": {
+        ".ai/assets/tech-stacks/dotnet-backend/examples/bdd-step-methods/Directory.Build.props": "94dd99e37b6d6d66fb4bbc35cec6dedd563d18388ff7626dc78ad0aeca1e0cce",
+        ".ai/assets/tech-stacks/dotnet-backend/examples/bdd-step-methods/BudgetQuery.cs": "a25b4746585d9a2fdfd8295ad04d62fc48e303f4de169e399d4eb6428c70aaea",
+        ".ai/assets/tech-stacks/dotnet-backend/examples/bdd-step-methods/DefaultBddfy/DefaultBddfy.csproj": "4ce195e23fd752c0c5e0542d4010cc9d99153018e21dd196f52cb2fd2717fbf8",
+        ".ai/assets/tech-stacks/dotnet-backend/examples/bdd-step-methods/DefaultBddfy/BudgetQueryTests.cs": "80cb56ce50c933992fde03fe13f46abfa143b242968b7ccdd3f9540778201acd",
+        ".ai/assets/tech-stacks/dotnet-backend/examples/bdd-step-methods/NuGet.Config": "aec93b5637ab6d62470979a008990a4a336a287ab83a3f2541849ae735674055"
+      }
+    },
+    {
+      "profile": "PlainXunit",
+      "outcome": "passed",
+      "total": 5,
+      "passed": 5,
+      "skipped": 0,
+      "test_names": [
+        "GwtStepMethods.PlainXunit.BudgetQueryTests.Should_sum_both_months_when_the_range_crosses_a_month_boundary",
+        "GwtStepMethods.PlainXunit.BudgetQueryTests.Should_prorate_the_inclusive_range(scenarioRow: \"BUDGET-02/fractional\", monthlyAmount: 45, lastDay: 3, expected: 4.5)",
+        "GwtStepMethods.PlainXunit.BudgetQueryTests.Should_return_zero_when_query_month_has_no_budget",
+        "GwtStepMethods.PlainXunit.BudgetQueryTests.Should_reject_an_inverted_range_before_reading_budgets",
+        "GwtStepMethods.PlainXunit.BudgetQueryTests.Should_prorate_the_inclusive_range(scenarioRow: \"BUDGET-02/integer\", monthlyAmount: 300, lastDay: 2, expected: 20)"
+      ],
+      "trx_sha256": "66f2e60ed7916a12ac8d1b40d0b4b8054a614c769690f149f1a9daf5a56b634b",
+      "result_ref": "ignored:.dev/ai-context/local/2026-09-10-bdd-test-implementation/examples-permitted/PlainXunit/PlainXunit.trx",
+      "source_hashes": {
+        ".ai/assets/tech-stacks/dotnet-backend/examples/bdd-step-methods/Directory.Build.props": "94dd99e37b6d6d66fb4bbc35cec6dedd563d18388ff7626dc78ad0aeca1e0cce",
+        ".ai/assets/tech-stacks/dotnet-backend/examples/bdd-step-methods/BudgetQuery.cs": "a25b4746585d9a2fdfd8295ad04d62fc48e303f4de169e399d4eb6428c70aaea",
+        ".ai/assets/tech-stacks/dotnet-backend/examples/bdd-step-methods/PlainXunit/PlainXunit.csproj": "c145a98638224354a344543697ec1a508a23a96a1a08bbf8bb2a4bddc28002e6",
+        ".ai/assets/tech-stacks/dotnet-backend/examples/bdd-step-methods/PlainXunit/BudgetQueryTests.cs": "37ea6c47634bdf622e9028e5a762a6f2b848091181e3c86d54a42264f24af74d",
+        ".ai/assets/tech-stacks/dotnet-backend/examples/bdd-step-methods/NuGet.Config": "aec93b5637ab6d62470979a008990a4a336a287ab83a3f2541849ae735674055"
+      }
+    }
+  ],
+  "generated": {
+    "subject_sha": "ef8b63d7650e640feb8de7730b0f88e557f5dc88",
+    "first_generated_candidate": true,
+    "source_repair_before_execution": false,
+    "results": [
+      {
+        "profile": "DefaultBddfy",
+        "outcome": "passed",
+        "total": 5,
+        "passed": 5,
+        "skipped": 0,
+        "cases": [
+          {
+            "scenario_id": "GENERATED-01",
+            "test_name": "GwtStepMethods.DefaultBddfy.GeneratedBudgetQueryTests.GENERATED_01_Should_return_zero_for_a_missing_query_month",
+            "outcome": "passed"
+          },
+          {
+            "scenario_id": "GENERATED-02",
+            "test_name": "GwtStepMethods.DefaultBddfy.GeneratedBudgetQueryTests.GENERATED_02_Should_prorate_the_selected_days",
+            "outcome": "passed"
+          },
+          {
+            "scenario_id": "GENERATED-03",
+            "test_name": "GwtStepMethods.DefaultBddfy.GeneratedBudgetQueryTests.GENERATED_03_Should_sum_budgets_across_a_month_boundary",
+            "outcome": "passed"
+          },
+          {
+            "scenario_id": "GENERATED-04",
+            "test_name": "GwtStepMethods.DefaultBddfy.GeneratedBudgetQueryTests.GENERATED_04_Should_reject_an_inverted_range_before_reading_budgets",
+            "outcome": "passed"
+          },
+          {
+            "scenario_id": "GENERATED-05",
+            "test_name": "GwtStepMethods.DefaultBddfy.GeneratedBudgetQueryTests.GENERATED_05_Should_prorate_a_fractional_total",
+            "outcome": "passed"
+          }
+        ],
+        "source_sha256": "75ea7c955e1c84233864fabfc51ca36762706d2b5528d92314a3d497bbe9784b",
+        "trx_sha256": "5481ec295398d54baddab53fefe44ddb915587b5e131f9425420d18002aeafea",
+        "trx_ref": ".dev/ai-context/local/2026-09-10-bdd-test-implementation/generated-execution/DefaultBddfy/DefaultBddfy.trx"
+      },
+      {
+        "profile": "PlainXunit",
+        "outcome": "passed",
+        "total": 5,
+        "passed": 5,
+        "skipped": 0,
+        "cases": [
+          {
+            "scenario_id": "GENERATED-01",
+            "test_name": "GwtStepMethods.PlainXunit.GeneratedBudgetQueryTests.GENERATED_01_Should_return_zero_for_a_missing_query_month",
+            "outcome": "passed"
+          },
+          {
+            "scenario_id": "GENERATED-02",
+            "test_name": "GwtStepMethods.PlainXunit.GeneratedBudgetQueryTests.GENERATED_02_Should_prorate_the_selected_days",
+            "outcome": "passed"
+          },
+          {
+            "scenario_id": "GENERATED-03",
+            "test_name": "GwtStepMethods.PlainXunit.GeneratedBudgetQueryTests.GENERATED_03_Should_sum_budgets_across_a_month_boundary",
+            "outcome": "passed"
+          },
+          {
+            "scenario_id": "GENERATED-04",
+            "test_name": "GwtStepMethods.PlainXunit.GeneratedBudgetQueryTests.GENERATED_04_Should_reject_an_inverted_range_before_reading_budgets",
+            "outcome": "passed"
+          },
+          {
+            "scenario_id": "GENERATED-05",
+            "test_name": "GwtStepMethods.PlainXunit.GeneratedBudgetQueryTests.GENERATED_05_Should_prorate_a_fractional_total",
+            "outcome": "passed"
+          }
+        ],
+        "source_sha256": "46b57b8572c8c1ead6b2e3f2acc3305e9233fa6b3c17220080ff2cdb2c1c15e6",
+        "trx_sha256": "412c6794296e146e06a60693551807118446d6699327ccd0fab3eea58f52a14c",
+        "trx_ref": ".dev/ai-context/local/2026-09-10-bdd-test-implementation/generated-execution/PlainXunit/PlainXunit.trx"
+      }
+    ],
+    "semantic_review": "separate independent generated_review output required",
+    "limit": "Actual generated and executed bounded unit fixture; no downstream execution or statistical reliability claim."
+  },
+  "generated_commands": [
+    {
+      "command": [
+        "dotnet",
+        "build",
+        "DefaultBddfy/DefaultBddfy.csproj",
+        "--nologo"
+      ],
+      "cwd": "C:/Github/YuChia/ai-collaboration-prompts-dotnet-backend/.dev/ai-context/local/2026-09-10-bdd-test-implementation/generation/project",
+      "profile": "DefaultBddfy",
+      "phase": "build",
+      "started_at": "2026-09-10T13:50:49.781110+00:00",
+      "duration_seconds": 2.27,
+      "exit_code": 0,
+      "outcome": "passed"
+    },
+    {
+      "command": [
+        "dotnet",
+        "test",
+        "DefaultBddfy/DefaultBddfy.csproj",
+        "--nologo",
+        "--no-build",
+        "--logger",
+        "trx;LogFileName=DefaultBddfy.trx",
+        "--results-directory",
+        "C:\\Github\\YuChia\\ai-collaboration-prompts-dotnet-backend\\.dev\\ai-context\\local\\2026-09-10-bdd-test-implementation\\generated-execution\\DefaultBddfy"
+      ],
+      "cwd": "C:/Github/YuChia/ai-collaboration-prompts-dotnet-backend/.dev/ai-context/local/2026-09-10-bdd-test-implementation/generation/project",
+      "profile": "DefaultBddfy",
+      "phase": "test",
+      "started_at": "2026-09-10T13:50:52.051953+00:00",
+      "duration_seconds": 2.654,
+      "exit_code": 0,
+      "outcome": "passed"
+    },
+    {
+      "command": [
+        "dotnet",
+        "build",
+        "PlainXunit/PlainXunit.csproj",
+        "--nologo"
+      ],
+      "cwd": "C:/Github/YuChia/ai-collaboration-prompts-dotnet-backend/.dev/ai-context/local/2026-09-10-bdd-test-implementation/generation/project",
+      "profile": "PlainXunit",
+      "phase": "build",
+      "started_at": "2026-09-10T13:50:54.706944+00:00",
+      "duration_seconds": 2.2,
+      "exit_code": 0,
+      "outcome": "passed"
+    },
+    {
+      "command": [
+        "dotnet",
+        "test",
+        "PlainXunit/PlainXunit.csproj",
+        "--nologo",
+        "--no-build",
+        "--logger",
+        "trx;LogFileName=PlainXunit.trx",
+        "--results-directory",
+        "C:\\Github\\YuChia\\ai-collaboration-prompts-dotnet-backend\\.dev\\ai-context\\local\\2026-09-10-bdd-test-implementation\\generated-execution\\PlainXunit"
+      ],
+      "cwd": "C:/Github/YuChia/ai-collaboration-prompts-dotnet-backend/.dev/ai-context/local/2026-09-10-bdd-test-implementation/generation/project",
+      "profile": "PlainXunit",
+      "phase": "test",
+      "started_at": "2026-09-10T13:50:56.907563+00:00",
+      "duration_seconds": 2.543,
+      "exit_code": 0,
+      "outcome": "passed"
+    }
+  ],
+  "generated_semantic_review": {
+    "outcome": "passed",
+    "findings": [],
+    "report_sha256": "77621275515a0cbc2fa5080d81e1d8fc4fb218f830429ebf1bb4557dac56604e"
+  },
+  "review_corpus": {
+    "subject_sha": "ef8b63d7650e640feb8de7730b0f88e557f5dc88",
+    "oracle_sha256": "7780c9b296b902167f6f5075a5150aee826182b7048f3ffd4455d2b67493a272",
+    "observations_sha256": "ad79978923f590e89242277f00644f47f538d04c15bdc06c4fda9764b8581815",
+    "case_count": 10,
+    "matched": 10,
+    "defective_cases_detected": 7,
+    "acceptable_cases_preserved": 3,
+    "cases": [
+      {
+        "id": "REVIEW-01",
+        "expected": "acceptable",
+        "observed": "acceptable",
+        "matched": true,
+        "expected_reason": "Real awaited primary action and independent exact amount assertion; no hidden mutable result.",
+        "observed_reason": "The explicit PlainXunit BDDfy opt-out preserves recognizable Given/When/Then steps, invokes the real subject once, keeps the January inputs and expected zero visible, and asserts the captured actual value."
+      },
+      {
+        "id": "REVIEW-02",
+        "expected": "finding",
+        "observed": "finding",
+        "matched": true,
+        "expected_reason": "When fabricates zero and never invokes the real subject, even though the test can pass.",
+        "observed_reason": "The When returns a fabricated zero and never invokes BudgetQuery."
+      },
+      {
+        "id": "REVIEW-03",
+        "expected": "finding",
+        "observed": "finding",
+        "matched": true,
+        "expected_reason": "Then repeats the primary query and ignores the captured When result.",
+        "observed_reason": "Then repeats QueryAsync rather than asserting the captured When result."
+      },
+      {
+        "id": "REVIEW-04",
+        "expected": "finding",
+        "observed": "finding",
+        "matched": true,
+        "expected_reason": "The exact amount outcome is weakened to a non-negative check.",
+        "observed_reason": "Then ignores expected 20m and checks only that actual is non-negative."
+      },
+      {
+        "id": "REVIEW-05",
+        "expected": "finding",
+        "observed": "finding",
+        "matched": true,
+        "expected_reason": "The action is fire-and-forget and zero may be observed before actual execution completes.",
+        "observed_reason": "The async query is fire-and-forget and the immediate assertion can observe an unexecuted default field."
+      },
+      {
+        "id": "REVIEW-06",
+        "expected": "finding",
+        "observed": "finding",
+        "matched": true,
+        "expected_reason": "The parameter-name and zero-repository-read outcomes are both missing.",
+        "observed_reason": "Exception capture is valid, but the exact end parameter and zero repository read outcomes are not asserted."
+      },
+      {
+        "id": "REVIEW-07",
+        "expected": "acceptable",
+        "observed": "acceptable",
+        "matched": true,
+        "expected_reason": "Explicit permitted compact contract-test form with exact exception and parameter assertions; not an arbitrary scenario-style opt-out.",
+        "observed_reason": "The permitted compact exception-contract form uses a real AmountGuard and asserts both exact exception type and ParamName amount."
+      },
+      {
+        "id": "REVIEW-08",
+        "expected": "acceptable",
+        "observed": "acceptable",
+        "matched": true,
+        "expected_reason": "Valid traceable theory rows; no requirement for separate methods or different helper spellings.",
+        "observed_reason": "Both stable theory rows share valid Given/When/Then responsibilities, invoke the real subject and assert each row's exact expected result."
+      },
+      {
+        "id": "REVIEW-09",
+        "expected": "finding",
+        "observed": "finding",
+        "matched": true,
+        "expected_reason": "Plain helper calls bypass the explicitly selected BDDfy profile; no target opt-out exists.",
+        "observed_reason": "The default BDDfy profile has no BDDfy orchestration and does not declare the permitted opt-out."
+      },
+      {
+        "id": "REVIEW-10",
+        "expected": "finding",
+        "observed": "finding",
+        "matched": true,
+        "expected_reason": "Zero discovery cannot support the claimed actual execution of selected cases.",
+        "observed_reason": "Zero-discovery TRX evidence cannot support the report's claim that five scenarios passed."
+      }
+    ],
+    "limit": "One fixed ten-card exercise; no baseline comparison or population-level reliability estimate."
+  },
+  "negative_control": {
+    "subject_sha": "ef8b63d7650e640feb8de7730b0f88e557f5dc88",
+    "argv": [
+      "dotnet",
+      "test",
+      "PlainXunit/PlainXunit.csproj",
+      "--nologo",
+      "--filter",
+      "FullyQualifiedName~Should_return_zero_when_query_month_has_no_budget",
+      "--logger",
+      "trx;LogFileName=negative-control.trx",
+      "--results-directory",
+      "C:\\Github\\YuChia\\ai-collaboration-prompts-dotnet-backend\\.dev\\ai-context\\local\\2026-09-10-bdd-test-implementation\\negative-control-permitted\\results"
+    ],
+    "cwd": "C:\\Github\\YuChia\\ai-collaboration-prompts-dotnet-backend\\.dev\\ai-context\\local\\2026-09-10-bdd-test-implementation\\negative-control-permitted\\project",
+    "started_at": "2026-09-10T13:47:47.249292+00:00",
+    "duration_seconds": 4.251,
+    "exit_code": 0,
+    "intentional_mutation": "WhenQueryingBudget fabricates zero instead of invoking BudgetQuery.",
+    "test_source_sha256": "fda2a90cf31a288c371b3ba0e1b1d5fd46baa6d25c8b264a99c46a5789c2a670",
+    "meaning": "A passing zero-result test alone is insufficient: the controlled test is semantically invalid. This is expected deceptive-pass evidence, not valid behavior coverage.",
+    "observed_test_outcome": "1 passed",
+    "control_outcome": "expected-deceptive-pass-demonstrated"
+  },
+  "focused_source_checks": [
+    {
+      "name": "package-closure",
+      "subject_sha": "ef8b63d7650e640feb8de7730b0f88e557f5dc88",
+      "argv": [
+        "python",
+        "-B",
+        "-m",
+        "unittest",
+        "test_code_reviewer_routing_contract.CodeReviewerRoutingContractTests.test_gwt_009_given_core_only_selection_when_projected_then_review_and_role_dependencies_are_closed"
+      ],
+      "cwd": "C:\\Github\\YuChia\\ai-collaboration-prompts-dotnet-backend\\.ai\\scripts\\tests",
+      "started_at": "2026-09-10T13:45:46.059465+00:00",
+      "duration_seconds": 43.996,
+      "exit_code": 0,
+      "outcome": "passed",
+      "log": ".dev/ai-context/local/2026-09-10-bdd-test-implementation/committed-checks/package-closure.log",
+      "log_sha256": "87e82db16b90200a2ddd496889e5a8d402dfd751e64f41e4f8460f6874033a71"
+    },
+    {
+      "name": "ai-context",
+      "subject_sha": "ef8b63d7650e640feb8de7730b0f88e557f5dc88",
+      "argv": [
+        "python",
+        "-B",
+        ".ai/scripts/validate-ai-context.py"
+      ],
+      "cwd": "C:\\Github\\YuChia\\ai-collaboration-prompts-dotnet-backend",
+      "started_at": "2026-09-10T13:46:30.056303+00:00",
+      "duration_seconds": 24.84,
+      "exit_code": 0,
+      "outcome": "passed",
+      "log": ".dev/ai-context/local/2026-09-10-bdd-test-implementation/committed-checks/ai-context.log",
+      "log_sha256": "76dd1006085e22d060c88e2466588a93d931c3158c6564a2d9b5be1bd2f4e7b0"
+    },
+    {
+      "name": "workflow",
+      "subject_sha": "ef8b63d7650e640feb8de7730b0f88e557f5dc88",
+      "argv": [
+        "python",
+        "-B",
+        ".ai/scripts/validate-workflow-artifacts.py"
+      ],
+      "cwd": "C:\\Github\\YuChia\\ai-collaboration-prompts-dotnet-backend",
+      "started_at": "2026-09-10T13:46:54.896928+00:00",
+      "duration_seconds": 7.728,
+      "exit_code": 0,
+      "outcome": "passed",
+      "log": ".dev/ai-context/local/2026-09-10-bdd-test-implementation/committed-checks/workflow.log",
+      "log_sha256": "6fc85a83046638ac71792ebdf6243631113dd873da6f3b0505b64b0790f77329"
+    },
+    {
+      "name": "diff-check",
+      "subject_sha": "ef8b63d7650e640feb8de7730b0f88e557f5dc88",
+      "argv": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "cwd": "C:\\Github\\YuChia\\ai-collaboration-prompts-dotnet-backend",
+      "started_at": "2026-09-10T13:47:02.625191+00:00",
+      "duration_seconds": 0.066,
+      "exit_code": 0,
+      "outcome": "passed",
+      "log": ".dev/ai-context/local/2026-09-10-bdd-test-implementation/committed-checks/diff-check.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "failures_and_limits": {
+    "preserved": [
+      "examples-initial/commands.json",
+      "catalog-preflight-failure.json",
+      "examples-committed/commands.json",
+      "negative-control/control.json",
+      "environment-retry.json"
+    ],
+    "scope": "Original example first compile and derived catalog errors corrected; sandbox lock access denied and permitted retries succeeded. No model-generated source repair or model retry.",
+    "limits": [
+      "One controlled generation exercise; no blind baseline comparison or statistical reliability claim.",
+      "Ten curated review cards are static semantic review, not ten executed mutants.",
+      "One actual deceptive-pass control is intentionally invalid and does not count as correct test coverage.",
+      "Fixture unit execution is not downstream product integration.",
+      "Source/workflow completion does not imply push, PR, merge, Issue closure or publication."
+    ]
+  },
+  "role_executions": [
+    {
+      "stage": "source_review",
+      "role": "code-review-sub-agent",
+      "owning_skill": "code-reviewer",
+      "runtime": {
+        "identity": "/root/review290_audit",
+        "model": "gpt-5.6-terra",
+        "reasoning_effort": "xhigh"
+      },
+      "outcome": "passed",
+      "role_execution_ref": ".dev/ai-context/local/2026-09-10-bdd-test-implementation/source_review/role-execution.json",
+      "role_execution_sha256": "18364fb8e73da8f04210e4b15ba5dc2cbdb126f30d2c7adf4afda49327e7ebfb",
+      "terminal_ref": ".dev/ai-context/local/2026-09-10-bdd-test-implementation/source_review/terminal.json",
+      "terminal_sha256": "9e4861b9803729054e654c59df7e03cfb8329b86be537f6c54e63436a8cab2c9"
+    },
+    {
+      "stage": "generation",
+      "role": "usecase-test-sub-agent",
+      "owning_skill": "slice-implementer",
+      "runtime": {
+        "identity": "/root/review290_behavior",
+        "model": "gpt-5.6-luna",
+        "reasoning_effort": "max"
+      },
+      "outcome": "passed",
+      "role_execution_ref": ".dev/ai-context/local/2026-09-10-bdd-test-implementation/generation/role-execution.json",
+      "role_execution_sha256": "229bb75e2b0a33eaa7b873bc4de9cb9eb6de494783fc1406cfbaf5868961ad3f",
+      "terminal_ref": ".dev/ai-context/local/2026-09-10-bdd-test-implementation/generation/terminal.json",
+      "terminal_sha256": "409185ba5cc1a8cb0370f095b43cc35841c809f541a48363439df36da3014655"
+    },
+    {
+      "stage": "review_cases",
+      "role": "code-review-sub-agent",
+      "owning_skill": "code-reviewer",
+      "runtime": {
+        "identity": "/root/reviewer289_behavior",
+        "model": "gpt-5.6-luna",
+        "reasoning_effort": "max"
+      },
+      "outcome": "passed",
+      "role_execution_ref": ".dev/ai-context/local/2026-09-10-bdd-test-implementation/review_cases/role-execution.json",
+      "role_execution_sha256": "ccc55f8624ce5ce47caf89692ec60e731526f40d67e615cba52529cbbffc2497",
+      "terminal_ref": ".dev/ai-context/local/2026-09-10-bdd-test-implementation/review_cases/terminal.json",
+      "terminal_sha256": "81db5e99414f08e327fe8dfb426521cac3f73c7675ac40dd7800bee62c723862"
+    },
+    {
+      "stage": "generated_review",
+      "role": "code-review-sub-agent",
+      "owning_skill": "code-reviewer",
+      "runtime": {
+        "identity": "/root/review290_audit",
+        "model": "gpt-5.6-terra",
+        "reasoning_effort": "xhigh"
+      },
+      "outcome": "passed",
+      "role_execution_ref": ".dev/ai-context/local/2026-09-10-bdd-test-implementation/generated_review/role-execution.json",
+      "role_execution_sha256": "530fadf974608644aefa150b05c9eba962a4513ac20b378f63e4562f0eefdc1b",
+      "terminal_ref": ".dev/ai-context/local/2026-09-10-bdd-test-implementation/generated_review/terminal.json",
+      "terminal_sha256": "a653f6cc2131c867f75b00e65fc53683a4528187da28859c8852d38c72795a6d"
+    }
+  ],
+  "closeout_metadata_correction": {
+    "stage": "workflow closeout metadata validation",
+    "outcome": "failed",
+    "fingerprint": "workflow index timestamp differs from workflow locator updated_at",
+    "material_change": "Updated the derived index timestamp to the current locator value; no source/test/guidance bytes changed.",
+    "retry": "Focused workflow validator only."
+  }
+}

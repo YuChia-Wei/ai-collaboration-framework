@@ -3,9 +3,9 @@
   "task_id": "V01",
   "workflow_id": "2026-09-10-bdd-test-implementation",
   "owner_skill": "ai-context-governance",
-  "status": "in_progress",
+  "status": "completed",
   "created_at": "2026-09-10T21:27:10+08:00",
-  "updated_at": "2026-09-10T13:41:44.891938+00:00",
+  "updated_at": "2026-09-10T13:56:20.341752+00:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-6-astra",
   "reasoning_effort": "ultra",
@@ -32,15 +32,21 @@
     "validation": [
       "Applicable Issue 293 acceptance criteria with separate source and actual-execution evidence"
     ],
-    "last_completed_step": "",
-    "next_action": "Execute bounded generated-test and negative-case evaluations"
+    "last_completed_step": "Local implementation and eight-criterion acceptance complete; see remediation-report.md.",
+    "next_action": "Declared ignored final clean-commit admission; no tracked implementation remains."
   },
   "results": {
-    "summary": "",
-    "files_changed": [],
+    "summary": "Accepted local result with separate source, actual model/unit execution, negative-control and independent review evidence.",
+    "files_changed": [
+      ".dev/workflows/2026-09-10-bdd-test-implementation/remediation-report.md",
+      ".dev/workflows/2026-09-10-bdd-test-implementation/observed-results.json"
+    ],
     "tests_run": [],
-    "finding_status": "not-addressed",
-    "residual_risk": "",
-    "follow_up_needed": true
-  }
+    "finding_status": "addressed",
+    "residual_risk": "One controlled fixture exercise; no statistical reliability, downstream adoption or publication claim.",
+    "follow_up_needed": false
+  },
+  "work_items": [
+    293
+  ]
 }

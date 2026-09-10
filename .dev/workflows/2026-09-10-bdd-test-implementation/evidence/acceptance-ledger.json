@@ -1,0 +1,659 @@
+{
+  "schema_version": "1.0",
+  "record_type": "acceptance-evidence-ledger",
+  "subject_sha": "ef8b63d7650e640feb8de7730b0f88e557f5dc88",
+  "entries": [
+    {
+      "acceptance_id": "293-AC1-source",
+      "issue": 293,
+      "requires_actual_execution": false,
+      "evidence_kind": "document",
+      "command": "parent-source-and-evidence-review",
+      "profile": "bounded-framework-governance",
+      "subject_sha": "ef8b63d7650e640feb8de7730b0f88e557f5dc88",
+      "outcome": "passed",
+      "evidence_refs": [
+        "ignored:.dev/ai-context/local/2026-09-10-bdd-test-implementation/source_review/output.json"
+      ],
+      "evidence_sha256": "c8048838786d2feba6ecff4de275d74a1432980c814133fd48237833baa28958",
+      "execution_receipt_ref": null,
+      "execution_receipt_file_sha256": null,
+      "execution_receipt": null
+    },
+    {
+      "acceptance_id": "293-AC2-source",
+      "issue": 293,
+      "requires_actual_execution": false,
+      "evidence_kind": "document",
+      "command": "parent-source-and-evidence-review",
+      "profile": "bounded-framework-governance",
+      "subject_sha": "ef8b63d7650e640feb8de7730b0f88e557f5dc88",
+      "outcome": "passed",
+      "evidence_refs": [
+        "ignored:.dev/ai-context/local/2026-09-10-bdd-test-implementation/source_review/output.json"
+      ],
+      "evidence_sha256": "c8048838786d2feba6ecff4de275d74a1432980c814133fd48237833baa28958",
+      "execution_receipt_ref": null,
+      "execution_receipt_file_sha256": null,
+      "execution_receipt": null
+    },
+    {
+      "acceptance_id": "293-AC4-source",
+      "issue": 293,
+      "requires_actual_execution": false,
+      "evidence_kind": "document",
+      "command": "parent-source-and-evidence-review",
+      "profile": "bounded-framework-governance",
+      "subject_sha": "ef8b63d7650e640feb8de7730b0f88e557f5dc88",
+      "outcome": "passed",
+      "evidence_refs": [
+        "ignored:.dev/ai-context/local/2026-09-10-bdd-test-implementation/source_review/output.json"
+      ],
+      "evidence_sha256": "c8048838786d2feba6ecff4de275d74a1432980c814133fd48237833baa28958",
+      "execution_receipt_ref": null,
+      "execution_receipt_file_sha256": null,
+      "execution_receipt": null
+    },
+    {
+      "acceptance_id": "293-AC3-example-DefaultBddfy",
+      "issue": 293,
+      "requires_actual_execution": true,
+      "evidence_kind": "actual-execution",
+      "command": "[\"dotnet\",\"test\",\"DefaultBddfy/DefaultBddfy.csproj\",\"--nologo\",\"--no-build\",\"--logger\",\"trx;LogFileName=DefaultBddfy.trx\",\"--results-directory\",\"C:\\\\Github\\\\YuChia\\\\ai-collaboration-prompts-dotnet-backend\\\\.dev\\\\ai-context\\\\local\\\\2026-09-10-bdd-test-implementation\\\\examples-permitted\\\\DefaultBddfy\"]",
+      "profile": "unit-example-DefaultBddfy",
+      "subject_sha": "ef8b63d7650e640feb8de7730b0f88e557f5dc88",
+      "outcome": "passed",
+      "evidence_refs": [
+        "ignored:.dev/ai-context/local/2026-09-10-bdd-test-implementation/examples-permitted/DefaultBddfy/DefaultBddfy.trx"
+      ],
+      "evidence_sha256": "e0791b2f88438741d599fe995b043c886b4f86a56c0d0bf0666c3bc958579b31",
+      "execution_receipt_ref": "ignored:.dev/ai-context/local/2026-09-10-bdd-test-implementation/acceptance/example-DefaultBddfy-receipt.json",
+      "execution_receipt_file_sha256": "0787d11dc0c6af306ef9306e24c1e8e9ee368344e5d756b410553b753955b0a8",
+      "execution_receipt": {
+        "schema_version": "1.0",
+        "record_type": "terminal-command-execution",
+        "producer": "local-command-runner",
+        "subject_sha": "ef8b63d7650e640feb8de7730b0f88e557f5dc88",
+        "command": "[\"dotnet\",\"test\",\"DefaultBddfy/DefaultBddfy.csproj\",\"--nologo\",\"--no-build\",\"--logger\",\"trx;LogFileName=DefaultBddfy.trx\",\"--results-directory\",\"C:\\\\Github\\\\YuChia\\\\ai-collaboration-prompts-dotnet-backend\\\\.dev\\\\ai-context\\\\local\\\\2026-09-10-bdd-test-implementation\\\\examples-permitted\\\\DefaultBddfy\"]",
+        "profile": "unit-example-DefaultBddfy",
+        "started_at": "2026-09-10T13:47:17.436434+00:00",
+        "completed_at": "2026-09-10T13:47:19.931434+00:00",
+        "duration_seconds": 2.495,
+        "executed": true,
+        "synthetic": false,
+        "outcome": "passed",
+        "exit_code": 0,
+        "evidence_refs": [
+          "ignored:.dev/ai-context/local/2026-09-10-bdd-test-implementation/examples-permitted/DefaultBddfy/DefaultBddfy.trx"
+        ],
+        "evidence_sha256": "e0791b2f88438741d599fe995b043c886b4f86a56c0d0bf0666c3bc958579b31",
+        "receipt_sha256": "f69d4da864b5917e98509fd6a5f3a7d2bdfdf4613c48e88e281c065830d9886e"
+      }
+    },
+    {
+      "acceptance_id": "293-AC3-example-PlainXunit",
+      "issue": 293,
+      "requires_actual_execution": true,
+      "evidence_kind": "actual-execution",
+      "command": "[\"dotnet\",\"test\",\"PlainXunit/PlainXunit.csproj\",\"--nologo\",\"--no-build\",\"--logger\",\"trx;LogFileName=PlainXunit.trx\",\"--results-directory\",\"C:\\\\Github\\\\YuChia\\\\ai-collaboration-prompts-dotnet-backend\\\\.dev\\\\ai-context\\\\local\\\\2026-09-10-bdd-test-implementation\\\\examples-permitted\\\\PlainXunit\"]",
+      "profile": "unit-example-PlainXunit",
+      "subject_sha": "ef8b63d7650e640feb8de7730b0f88e557f5dc88",
+      "outcome": "passed",
+      "evidence_refs": [
+        "ignored:.dev/ai-context/local/2026-09-10-bdd-test-implementation/examples-permitted/PlainXunit/PlainXunit.trx"
+      ],
+      "evidence_sha256": "66f2e60ed7916a12ac8d1b40d0b4b8054a614c769690f149f1a9daf5a56b634b",
+      "execution_receipt_ref": "ignored:.dev/ai-context/local/2026-09-10-bdd-test-implementation/acceptance/example-PlainXunit-receipt.json",
+      "execution_receipt_file_sha256": "456e01330cb84b7d11bcb4ad0357c3fe612f36ec632428ed13f7adc401204ca0",
+      "execution_receipt": {
+        "schema_version": "1.0",
+        "record_type": "terminal-command-execution",
+        "producer": "local-command-runner",
+        "subject_sha": "ef8b63d7650e640feb8de7730b0f88e557f5dc88",
+        "command": "[\"dotnet\",\"test\",\"PlainXunit/PlainXunit.csproj\",\"--nologo\",\"--no-build\",\"--logger\",\"trx;LogFileName=PlainXunit.trx\",\"--results-directory\",\"C:\\\\Github\\\\YuChia\\\\ai-collaboration-prompts-dotnet-backend\\\\.dev\\\\ai-context\\\\local\\\\2026-09-10-bdd-test-implementation\\\\examples-permitted\\\\PlainXunit\"]",
+        "profile": "unit-example-PlainXunit",
+        "started_at": "2026-09-10T13:47:21.676751+00:00",
+        "completed_at": "2026-09-10T13:47:23.933751+00:00",
+        "duration_seconds": 2.257,
+        "executed": true,
+        "synthetic": false,
+        "outcome": "passed",
+        "exit_code": 0,
+        "evidence_refs": [
+          "ignored:.dev/ai-context/local/2026-09-10-bdd-test-implementation/examples-permitted/PlainXunit/PlainXunit.trx"
+        ],
+        "evidence_sha256": "66f2e60ed7916a12ac8d1b40d0b4b8054a614c769690f149f1a9daf5a56b634b",
+        "receipt_sha256": "b0a8bf6d40fd9a94ebe735031fecc6039f671887522a06e55d58b92eea473047"
+      }
+    },
+    {
+      "acceptance_id": "293-AC5-review_cases",
+      "issue": 293,
+      "requires_actual_execution": true,
+      "evidence_kind": "actual-execution",
+      "command": "collaboration.followup_task:2026-09-10-bdd-test-implementation-review_cases",
+      "profile": "bounded-model-role",
+      "subject_sha": "ef8b63d7650e640feb8de7730b0f88e557f5dc88",
+      "outcome": "passed",
+      "evidence_refs": [
+        "ignored:.dev/ai-context/local/2026-09-10-bdd-test-implementation/review_cases/output.json"
+      ],
+      "evidence_sha256": "7e082434d7eb25c65f491f423f7c40505dd8441743bcd5f3133fa382385f9242",
+      "execution_receipt_ref": "ignored:.dev/ai-context/local/2026-09-10-bdd-test-implementation/review_cases/receipt.json",
+      "execution_receipt_file_sha256": "4aa225ac38b40a2c0925eb96a62c785e8c7858f8c0eeb1d9ac2b0d1e17639792",
+      "execution_receipt": {
+        "schema_version": "1.0",
+        "record_type": "terminal-command-execution",
+        "producer": "external-task-completion",
+        "subject_sha": "ef8b63d7650e640feb8de7730b0f88e557f5dc88",
+        "command": "collaboration.followup_task:2026-09-10-bdd-test-implementation-review_cases",
+        "profile": "bounded-model-role",
+        "started_at": "2026-09-10T13:45:11.643962+00:00",
+        "completed_at": "2026-09-10T13:50:21.243040+00:00",
+        "duration_seconds": 309.599078,
+        "executed": true,
+        "synthetic": false,
+        "outcome": "passed",
+        "exit_code": 0,
+        "evidence_refs": [
+          "ignored:.dev/ai-context/local/2026-09-10-bdd-test-implementation/review_cases/output.json"
+        ],
+        "evidence_sha256": "7e082434d7eb25c65f491f423f7c40505dd8441743bcd5f3133fa382385f9242",
+        "receipt_sha256": "24d74e10db003017edf073c0a29130c4f02f34ace43a1decc46b2c3d043b0cd8"
+      }
+    },
+    {
+      "acceptance_id": "293-AC5-oracle-grade",
+      "issue": 293,
+      "requires_actual_execution": false,
+      "evidence_kind": "document",
+      "command": "parent-source-and-evidence-review",
+      "profile": "bounded-framework-governance",
+      "subject_sha": "ef8b63d7650e640feb8de7730b0f88e557f5dc88",
+      "outcome": "passed",
+      "evidence_refs": [
+        "ignored:.dev/ai-context/local/2026-09-10-bdd-test-implementation/review-parent-grade.json"
+      ],
+      "evidence_sha256": "ba1fcf796bf6ccb205580c24c6a4a5fba16a374cb4d8054753e04380d43b2805",
+      "execution_receipt_ref": null,
+      "execution_receipt_file_sha256": null,
+      "execution_receipt": null
+    },
+    {
+      "acceptance_id": "293-AC5-negative-control",
+      "issue": 293,
+      "requires_actual_execution": true,
+      "evidence_kind": "actual-execution",
+      "command": "[\"dotnet\",\"test\",\"PlainXunit/PlainXunit.csproj\",\"--nologo\",\"--filter\",\"FullyQualifiedName~Should_return_zero_when_query_month_has_no_budget\",\"--logger\",\"trx;LogFileName=negative-control.trx\",\"--results-directory\",\"C:\\\\Github\\\\YuChia\\\\ai-collaboration-prompts-dotnet-backend\\\\.dev\\\\ai-context\\\\local\\\\2026-09-10-bdd-test-implementation\\\\negative-control-permitted\\\\results\"]",
+      "profile": "unit-deliberately-invalid-test-control",
+      "subject_sha": "ef8b63d7650e640feb8de7730b0f88e557f5dc88",
+      "outcome": "passed",
+      "evidence_refs": [
+        "ignored:.dev/ai-context/local/2026-09-10-bdd-test-implementation/negative-control-permitted/control.json"
+      ],
+      "evidence_sha256": "94c29ba7218d4e4f8087a5a85614d6eb932ddbe1faab3c1e953e2969a8b01d89",
+      "execution_receipt_ref": "ignored:.dev/ai-context/local/2026-09-10-bdd-test-implementation/acceptance/negative-control-receipt.json",
+      "execution_receipt_file_sha256": "9e48bfe5dd232aa590baf873290303a86e6d00fa04139e2972e9e0ae866621fb",
+      "execution_receipt": {
+        "schema_version": "1.0",
+        "record_type": "terminal-command-execution",
+        "producer": "local-command-runner",
+        "subject_sha": "ef8b63d7650e640feb8de7730b0f88e557f5dc88",
+        "command": "[\"dotnet\",\"test\",\"PlainXunit/PlainXunit.csproj\",\"--nologo\",\"--filter\",\"FullyQualifiedName~Should_return_zero_when_query_month_has_no_budget\",\"--logger\",\"trx;LogFileName=negative-control.trx\",\"--results-directory\",\"C:\\\\Github\\\\YuChia\\\\ai-collaboration-prompts-dotnet-backend\\\\.dev\\\\ai-context\\\\local\\\\2026-09-10-bdd-test-implementation\\\\negative-control-permitted\\\\results\"]",
+        "profile": "unit-deliberately-invalid-test-control",
+        "started_at": "2026-09-10T13:47:47.249292+00:00",
+        "completed_at": "2026-09-10T13:47:51.500292+00:00",
+        "duration_seconds": 4.251,
+        "executed": true,
+        "synthetic": false,
+        "outcome": "passed",
+        "exit_code": 0,
+        "evidence_refs": [
+          "ignored:.dev/ai-context/local/2026-09-10-bdd-test-implementation/negative-control-permitted/control.json"
+        ],
+        "evidence_sha256": "94c29ba7218d4e4f8087a5a85614d6eb932ddbe1faab3c1e953e2969a8b01d89",
+        "receipt_sha256": "539b14eddddbbdf4b175b3ea94be8d44056c9f125a3cc668efd808509818b96b"
+      }
+    },
+    {
+      "acceptance_id": "293-AC6-generation",
+      "issue": 293,
+      "requires_actual_execution": true,
+      "evidence_kind": "actual-execution",
+      "command": "collaboration.followup_task:2026-09-10-bdd-test-implementation-generation",
+      "profile": "bounded-model-role",
+      "subject_sha": "ef8b63d7650e640feb8de7730b0f88e557f5dc88",
+      "outcome": "passed",
+      "evidence_refs": [
+        "ignored:.dev/ai-context/local/2026-09-10-bdd-test-implementation/generation/output.json"
+      ],
+      "evidence_sha256": "81233d602bc03e3d6802f94ce3f64ca9ed38f8588ef14e7ced06fa1c24a6eac4",
+      "execution_receipt_ref": "ignored:.dev/ai-context/local/2026-09-10-bdd-test-implementation/generation/receipt.json",
+      "execution_receipt_file_sha256": "86a06957f38499810cb7be9d931ddb40e35a684dfd142b70461f22e6c2516245",
+      "execution_receipt": {
+        "schema_version": "1.0",
+        "record_type": "terminal-command-execution",
+        "producer": "external-task-completion",
+        "subject_sha": "ef8b63d7650e640feb8de7730b0f88e557f5dc88",
+        "command": "collaboration.followup_task:2026-09-10-bdd-test-implementation-generation",
+        "profile": "bounded-model-role",
+        "started_at": "2026-09-10T13:45:08.946778+00:00",
+        "completed_at": "2026-09-10T13:50:29.407332+00:00",
+        "duration_seconds": 320.460554,
+        "executed": true,
+        "synthetic": false,
+        "outcome": "passed",
+        "exit_code": 0,
+        "evidence_refs": [
+          "ignored:.dev/ai-context/local/2026-09-10-bdd-test-implementation/generation/output.json"
+        ],
+        "evidence_sha256": "81233d602bc03e3d6802f94ce3f64ca9ed38f8588ef14e7ced06fa1c24a6eac4",
+        "receipt_sha256": "35b63956fed710a89806ebc1f949b2392883013c69f9b06d031b255cace8d80a"
+      }
+    },
+    {
+      "acceptance_id": "293-AC6-generated-DefaultBddfy",
+      "issue": 293,
+      "requires_actual_execution": true,
+      "evidence_kind": "actual-execution",
+      "command": "[\"dotnet\",\"test\",\"DefaultBddfy/DefaultBddfy.csproj\",\"--nologo\",\"--no-build\",\"--logger\",\"trx;LogFileName=DefaultBddfy.trx\",\"--results-directory\",\"C:\\\\Github\\\\YuChia\\\\ai-collaboration-prompts-dotnet-backend\\\\.dev\\\\ai-context\\\\local\\\\2026-09-10-bdd-test-implementation\\\\generated-execution\\\\DefaultBddfy\"]",
+      "profile": "unit-generated-DefaultBddfy",
+      "subject_sha": "ef8b63d7650e640feb8de7730b0f88e557f5dc88",
+      "outcome": "passed",
+      "evidence_refs": [
+        "ignored:.dev/ai-context/local/2026-09-10-bdd-test-implementation/generated-execution/DefaultBddfy/DefaultBddfy.trx"
+      ],
+      "evidence_sha256": "5481ec295398d54baddab53fefe44ddb915587b5e131f9425420d18002aeafea",
+      "execution_receipt_ref": "ignored:.dev/ai-context/local/2026-09-10-bdd-test-implementation/acceptance/generated-DefaultBddfy-receipt.json",
+      "execution_receipt_file_sha256": "079137f09dc293f71c00b902a5ddd4fa3589fa858576306a0e3836921142d4b6",
+      "execution_receipt": {
+        "schema_version": "1.0",
+        "record_type": "terminal-command-execution",
+        "producer": "local-command-runner",
+        "subject_sha": "ef8b63d7650e640feb8de7730b0f88e557f5dc88",
+        "command": "[\"dotnet\",\"test\",\"DefaultBddfy/DefaultBddfy.csproj\",\"--nologo\",\"--no-build\",\"--logger\",\"trx;LogFileName=DefaultBddfy.trx\",\"--results-directory\",\"C:\\\\Github\\\\YuChia\\\\ai-collaboration-prompts-dotnet-backend\\\\.dev\\\\ai-context\\\\local\\\\2026-09-10-bdd-test-implementation\\\\generated-execution\\\\DefaultBddfy\"]",
+        "profile": "unit-generated-DefaultBddfy",
+        "started_at": "2026-09-10T13:50:52.051953+00:00",
+        "completed_at": "2026-09-10T13:50:54.705953+00:00",
+        "duration_seconds": 2.654,
+        "executed": true,
+        "synthetic": false,
+        "outcome": "passed",
+        "exit_code": 0,
+        "evidence_refs": [
+          "ignored:.dev/ai-context/local/2026-09-10-bdd-test-implementation/generated-execution/DefaultBddfy/DefaultBddfy.trx"
+        ],
+        "evidence_sha256": "5481ec295398d54baddab53fefe44ddb915587b5e131f9425420d18002aeafea",
+        "receipt_sha256": "f9b7ee229a17738791cb14ed742b9bfde7df5763f735daaa1d5bff5f3a0ee6bb"
+      }
+    },
+    {
+      "acceptance_id": "293-AC6-generated-PlainXunit",
+      "issue": 293,
+      "requires_actual_execution": true,
+      "evidence_kind": "actual-execution",
+      "command": "[\"dotnet\",\"test\",\"PlainXunit/PlainXunit.csproj\",\"--nologo\",\"--no-build\",\"--logger\",\"trx;LogFileName=PlainXunit.trx\",\"--results-directory\",\"C:\\\\Github\\\\YuChia\\\\ai-collaboration-prompts-dotnet-backend\\\\.dev\\\\ai-context\\\\local\\\\2026-09-10-bdd-test-implementation\\\\generated-execution\\\\PlainXunit\"]",
+      "profile": "unit-generated-PlainXunit",
+      "subject_sha": "ef8b63d7650e640feb8de7730b0f88e557f5dc88",
+      "outcome": "passed",
+      "evidence_refs": [
+        "ignored:.dev/ai-context/local/2026-09-10-bdd-test-implementation/generated-execution/PlainXunit/PlainXunit.trx"
+      ],
+      "evidence_sha256": "412c6794296e146e06a60693551807118446d6699327ccd0fab3eea58f52a14c",
+      "execution_receipt_ref": "ignored:.dev/ai-context/local/2026-09-10-bdd-test-implementation/acceptance/generated-PlainXunit-receipt.json",
+      "execution_receipt_file_sha256": "52ea8c0a08d73800af5d9c266c195d8afed0a1469d1997dc789dbe6c34bd59af",
+      "execution_receipt": {
+        "schema_version": "1.0",
+        "record_type": "terminal-command-execution",
+        "producer": "local-command-runner",
+        "subject_sha": "ef8b63d7650e640feb8de7730b0f88e557f5dc88",
+        "command": "[\"dotnet\",\"test\",\"PlainXunit/PlainXunit.csproj\",\"--nologo\",\"--no-build\",\"--logger\",\"trx;LogFileName=PlainXunit.trx\",\"--results-directory\",\"C:\\\\Github\\\\YuChia\\\\ai-collaboration-prompts-dotnet-backend\\\\.dev\\\\ai-context\\\\local\\\\2026-09-10-bdd-test-implementation\\\\generated-execution\\\\PlainXunit\"]",
+        "profile": "unit-generated-PlainXunit",
+        "started_at": "2026-09-10T13:50:56.907563+00:00",
+        "completed_at": "2026-09-10T13:50:59.450563+00:00",
+        "duration_seconds": 2.543,
+        "executed": true,
+        "synthetic": false,
+        "outcome": "passed",
+        "exit_code": 0,
+        "evidence_refs": [
+          "ignored:.dev/ai-context/local/2026-09-10-bdd-test-implementation/generated-execution/PlainXunit/PlainXunit.trx"
+        ],
+        "evidence_sha256": "412c6794296e146e06a60693551807118446d6699327ccd0fab3eea58f52a14c",
+        "receipt_sha256": "053667cb8647c36a1449205df2f981a97e761583dca2fea52ca86a3b9610665d"
+      }
+    },
+    {
+      "acceptance_id": "293-AC6-generated_review",
+      "issue": 293,
+      "requires_actual_execution": true,
+      "evidence_kind": "actual-execution",
+      "command": "collaboration.followup_task:2026-09-10-bdd-test-implementation-generated_review",
+      "profile": "bounded-model-role",
+      "subject_sha": "ef8b63d7650e640feb8de7730b0f88e557f5dc88",
+      "outcome": "passed",
+      "evidence_refs": [
+        "ignored:.dev/ai-context/local/2026-09-10-bdd-test-implementation/generated_review/output.json"
+      ],
+      "evidence_sha256": "09f3183cd096ba753d500d06ec6599c3485f46258e495ed7ffb7f793fefded92",
+      "execution_receipt_ref": "ignored:.dev/ai-context/local/2026-09-10-bdd-test-implementation/generated_review/receipt.json",
+      "execution_receipt_file_sha256": "3fe1498dc50b4beda23de28aef6ea99ddf24f5011dd8321559456d96581d0151",
+      "execution_receipt": {
+        "schema_version": "1.0",
+        "record_type": "terminal-command-execution",
+        "producer": "external-task-completion",
+        "subject_sha": "ef8b63d7650e640feb8de7730b0f88e557f5dc88",
+        "command": "collaboration.followup_task:2026-09-10-bdd-test-implementation-generated_review",
+        "profile": "bounded-model-role",
+        "started_at": "2026-09-10T13:51:29.346026+00:00",
+        "completed_at": "2026-09-10T13:54:43.078468+00:00",
+        "duration_seconds": 193.732442,
+        "executed": true,
+        "synthetic": false,
+        "outcome": "passed",
+        "exit_code": 0,
+        "evidence_refs": [
+          "ignored:.dev/ai-context/local/2026-09-10-bdd-test-implementation/generated_review/output.json"
+        ],
+        "evidence_sha256": "09f3183cd096ba753d500d06ec6599c3485f46258e495ed7ffb7f793fefded92",
+        "receipt_sha256": "6fd48e6d47e6749f87cfa6c3797b104eb9995e02e2274e721fff46b45be87d2c"
+      }
+    },
+    {
+      "acceptance_id": "293-AC6-result-grade",
+      "issue": 293,
+      "requires_actual_execution": false,
+      "evidence_kind": "document",
+      "command": "parent-source-and-evidence-review",
+      "profile": "bounded-framework-governance",
+      "subject_sha": "ef8b63d7650e640feb8de7730b0f88e557f5dc88",
+      "outcome": "passed",
+      "evidence_refs": [
+        "ignored:.dev/ai-context/local/2026-09-10-bdd-test-implementation/generated-parent-grade.json"
+      ],
+      "evidence_sha256": "9310da50b57983706aa4eb20279046d00150668fea33594dad569508adbcc2de",
+      "execution_receipt_ref": null,
+      "execution_receipt_file_sha256": null,
+      "execution_receipt": null
+    },
+    {
+      "acceptance_id": "293-AC7-package-closure",
+      "issue": 293,
+      "requires_actual_execution": true,
+      "evidence_kind": "actual-execution",
+      "command": "[\"python\",\"-B\",\"-m\",\"unittest\",\"test_code_reviewer_routing_contract.CodeReviewerRoutingContractTests.test_gwt_009_given_core_only_selection_when_projected_then_review_and_role_dependencies_are_closed\"]",
+      "profile": "focused-source-check",
+      "subject_sha": "ef8b63d7650e640feb8de7730b0f88e557f5dc88",
+      "outcome": "passed",
+      "evidence_refs": [
+        "ignored:.dev/ai-context/local/2026-09-10-bdd-test-implementation/committed-checks/package-closure.log"
+      ],
+      "evidence_sha256": "87e82db16b90200a2ddd496889e5a8d402dfd751e64f41e4f8460f6874033a71",
+      "execution_receipt_ref": "ignored:.dev/ai-context/local/2026-09-10-bdd-test-implementation/acceptance/package-closure-receipt.json",
+      "execution_receipt_file_sha256": "6e8dbb35197a66e73ba3f291ebbdfad999693c694b51cf1927007d32b964e553",
+      "execution_receipt": {
+        "schema_version": "1.0",
+        "record_type": "terminal-command-execution",
+        "producer": "local-command-runner",
+        "subject_sha": "ef8b63d7650e640feb8de7730b0f88e557f5dc88",
+        "command": "[\"python\",\"-B\",\"-m\",\"unittest\",\"test_code_reviewer_routing_contract.CodeReviewerRoutingContractTests.test_gwt_009_given_core_only_selection_when_projected_then_review_and_role_dependencies_are_closed\"]",
+        "profile": "focused-source-check",
+        "started_at": "2026-09-10T13:45:46.059465+00:00",
+        "completed_at": "2026-09-10T13:46:30.055465+00:00",
+        "duration_seconds": 43.996,
+        "executed": true,
+        "synthetic": false,
+        "outcome": "passed",
+        "exit_code": 0,
+        "evidence_refs": [
+          "ignored:.dev/ai-context/local/2026-09-10-bdd-test-implementation/committed-checks/package-closure.log"
+        ],
+        "evidence_sha256": "87e82db16b90200a2ddd496889e5a8d402dfd751e64f41e4f8460f6874033a71",
+        "receipt_sha256": "bb33ea14c112d192acbd87d4171b684c036446645d558c1b1998be804057f96f"
+      }
+    },
+    {
+      "acceptance_id": "293-AC7-ai-context",
+      "issue": 293,
+      "requires_actual_execution": true,
+      "evidence_kind": "actual-execution",
+      "command": "[\"python\",\"-B\",\".ai/scripts/validate-ai-context.py\"]",
+      "profile": "focused-source-check",
+      "subject_sha": "ef8b63d7650e640feb8de7730b0f88e557f5dc88",
+      "outcome": "passed",
+      "evidence_refs": [
+        "ignored:.dev/ai-context/local/2026-09-10-bdd-test-implementation/committed-checks/ai-context.log"
+      ],
+      "evidence_sha256": "76dd1006085e22d060c88e2466588a93d931c3158c6564a2d9b5be1bd2f4e7b0",
+      "execution_receipt_ref": "ignored:.dev/ai-context/local/2026-09-10-bdd-test-implementation/acceptance/ai-context-receipt.json",
+      "execution_receipt_file_sha256": "24423d09fe8a2e5fd8a40ea14f093dc749820deff1c1cab9d07ca7d077f6a357",
+      "execution_receipt": {
+        "schema_version": "1.0",
+        "record_type": "terminal-command-execution",
+        "producer": "local-command-runner",
+        "subject_sha": "ef8b63d7650e640feb8de7730b0f88e557f5dc88",
+        "command": "[\"python\",\"-B\",\".ai/scripts/validate-ai-context.py\"]",
+        "profile": "focused-source-check",
+        "started_at": "2026-09-10T13:46:30.056303+00:00",
+        "completed_at": "2026-09-10T13:46:54.896303+00:00",
+        "duration_seconds": 24.84,
+        "executed": true,
+        "synthetic": false,
+        "outcome": "passed",
+        "exit_code": 0,
+        "evidence_refs": [
+          "ignored:.dev/ai-context/local/2026-09-10-bdd-test-implementation/committed-checks/ai-context.log"
+        ],
+        "evidence_sha256": "76dd1006085e22d060c88e2466588a93d931c3158c6564a2d9b5be1bd2f4e7b0",
+        "receipt_sha256": "cba4f676bce4abf7f076195d63cadd798a20c18c302f4192765d814394b40ccf"
+      }
+    },
+    {
+      "acceptance_id": "293-AC7-workflow",
+      "issue": 293,
+      "requires_actual_execution": true,
+      "evidence_kind": "actual-execution",
+      "command": "[\"python\",\"-B\",\".ai/scripts/validate-workflow-artifacts.py\"]",
+      "profile": "focused-source-check",
+      "subject_sha": "ef8b63d7650e640feb8de7730b0f88e557f5dc88",
+      "outcome": "passed",
+      "evidence_refs": [
+        "ignored:.dev/ai-context/local/2026-09-10-bdd-test-implementation/committed-checks/workflow.log"
+      ],
+      "evidence_sha256": "6fc85a83046638ac71792ebdf6243631113dd873da6f3b0505b64b0790f77329",
+      "execution_receipt_ref": "ignored:.dev/ai-context/local/2026-09-10-bdd-test-implementation/acceptance/workflow-receipt.json",
+      "execution_receipt_file_sha256": "30d2636f1ab32cd422c5f391dd9024e342bc7b5cbd2ef924a219747e4aae6b7a",
+      "execution_receipt": {
+        "schema_version": "1.0",
+        "record_type": "terminal-command-execution",
+        "producer": "local-command-runner",
+        "subject_sha": "ef8b63d7650e640feb8de7730b0f88e557f5dc88",
+        "command": "[\"python\",\"-B\",\".ai/scripts/validate-workflow-artifacts.py\"]",
+        "profile": "focused-source-check",
+        "started_at": "2026-09-10T13:46:54.896928+00:00",
+        "completed_at": "2026-09-10T13:47:02.624928+00:00",
+        "duration_seconds": 7.728,
+        "executed": true,
+        "synthetic": false,
+        "outcome": "passed",
+        "exit_code": 0,
+        "evidence_refs": [
+          "ignored:.dev/ai-context/local/2026-09-10-bdd-test-implementation/committed-checks/workflow.log"
+        ],
+        "evidence_sha256": "6fc85a83046638ac71792ebdf6243631113dd873da6f3b0505b64b0790f77329",
+        "receipt_sha256": "7046b29f77d4b8a6244242d540d09592ec3c7bc7cd8f2d4fc9d7402e9efaa04e"
+      }
+    },
+    {
+      "acceptance_id": "293-AC7-diff-check",
+      "issue": 293,
+      "requires_actual_execution": true,
+      "evidence_kind": "actual-execution",
+      "command": "[\"git\",\"diff\",\"--check\"]",
+      "profile": "focused-source-check",
+      "subject_sha": "ef8b63d7650e640feb8de7730b0f88e557f5dc88",
+      "outcome": "passed",
+      "evidence_refs": [
+        "ignored:.dev/ai-context/local/2026-09-10-bdd-test-implementation/committed-checks/diff-check.log"
+      ],
+      "evidence_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "execution_receipt_ref": "ignored:.dev/ai-context/local/2026-09-10-bdd-test-implementation/acceptance/diff-check-receipt.json",
+      "execution_receipt_file_sha256": "d08b593db153d93a35175bc452f3f2565f21fa76490820d20dfcc904e873b831",
+      "execution_receipt": {
+        "schema_version": "1.0",
+        "record_type": "terminal-command-execution",
+        "producer": "local-command-runner",
+        "subject_sha": "ef8b63d7650e640feb8de7730b0f88e557f5dc88",
+        "command": "[\"git\",\"diff\",\"--check\"]",
+        "profile": "focused-source-check",
+        "started_at": "2026-09-10T13:47:02.625191+00:00",
+        "completed_at": "2026-09-10T13:47:02.691191+00:00",
+        "duration_seconds": 0.066,
+        "executed": true,
+        "synthetic": false,
+        "outcome": "passed",
+        "exit_code": 0,
+        "evidence_refs": [
+          "ignored:.dev/ai-context/local/2026-09-10-bdd-test-implementation/committed-checks/diff-check.log"
+        ],
+        "evidence_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "receipt_sha256": "4326185f96f2058b2f66e684a9532dae9a188b78bc2a7ec70d85c9d88e2de2f4"
+      }
+    },
+    {
+      "acceptance_id": "293-AC7-exact-catalog-projection",
+      "issue": 293,
+      "requires_actual_execution": false,
+      "evidence_kind": "document",
+      "command": "parent-source-and-evidence-review",
+      "profile": "bounded-framework-governance",
+      "subject_sha": "ef8b63d7650e640feb8de7730b0f88e557f5dc88",
+      "outcome": "passed",
+      "evidence_refs": [
+        "ignored:.dev/ai-context/local/2026-09-10-bdd-test-implementation/committed-example-evidence.json"
+      ],
+      "evidence_sha256": "6ff38c589a0bc4dd6f8670749e7b44a255a4075d3c3875ec2bee54381fead455",
+      "execution_receipt_ref": null,
+      "execution_receipt_file_sha256": null,
+      "execution_receipt": null
+    },
+    {
+      "acceptance_id": "293-AC8-limits",
+      "issue": 293,
+      "requires_actual_execution": false,
+      "evidence_kind": "document",
+      "command": "parent-source-and-evidence-review",
+      "profile": "bounded-framework-governance",
+      "subject_sha": "ef8b63d7650e640feb8de7730b0f88e557f5dc88",
+      "outcome": "passed",
+      "evidence_refs": [
+        "ignored:.dev/ai-context/local/2026-09-10-bdd-test-implementation/acceptance/limits-and-failures.json"
+      ],
+      "evidence_sha256": "6061393ed544c77ca7deccaaab01e5f16358cae0b977240fddcfa907914e535e",
+      "execution_receipt_ref": null,
+      "execution_receipt_file_sha256": null,
+      "execution_receipt": null
+    }
+  ],
+  "human_report": {
+    "entries": [
+      {
+        "acceptance_id": "293-AC1-source",
+        "outcome": "passed",
+        "evidence_sha256": "c8048838786d2feba6ecff4de275d74a1432980c814133fd48237833baa28958"
+      },
+      {
+        "acceptance_id": "293-AC2-source",
+        "outcome": "passed",
+        "evidence_sha256": "c8048838786d2feba6ecff4de275d74a1432980c814133fd48237833baa28958"
+      },
+      {
+        "acceptance_id": "293-AC4-source",
+        "outcome": "passed",
+        "evidence_sha256": "c8048838786d2feba6ecff4de275d74a1432980c814133fd48237833baa28958"
+      },
+      {
+        "acceptance_id": "293-AC3-example-DefaultBddfy",
+        "outcome": "passed",
+        "evidence_sha256": "e0791b2f88438741d599fe995b043c886b4f86a56c0d0bf0666c3bc958579b31"
+      },
+      {
+        "acceptance_id": "293-AC3-example-PlainXunit",
+        "outcome": "passed",
+        "evidence_sha256": "66f2e60ed7916a12ac8d1b40d0b4b8054a614c769690f149f1a9daf5a56b634b"
+      },
+      {
+        "acceptance_id": "293-AC5-review_cases",
+        "outcome": "passed",
+        "evidence_sha256": "7e082434d7eb25c65f491f423f7c40505dd8441743bcd5f3133fa382385f9242"
+      },
+      {
+        "acceptance_id": "293-AC5-oracle-grade",
+        "outcome": "passed",
+        "evidence_sha256": "ba1fcf796bf6ccb205580c24c6a4a5fba16a374cb4d8054753e04380d43b2805"
+      },
+      {
+        "acceptance_id": "293-AC5-negative-control",
+        "outcome": "passed",
+        "evidence_sha256": "94c29ba7218d4e4f8087a5a85614d6eb932ddbe1faab3c1e953e2969a8b01d89"
+      },
+      {
+        "acceptance_id": "293-AC6-generation",
+        "outcome": "passed",
+        "evidence_sha256": "81233d602bc03e3d6802f94ce3f64ca9ed38f8588ef14e7ced06fa1c24a6eac4"
+      },
+      {
+        "acceptance_id": "293-AC6-generated-DefaultBddfy",
+        "outcome": "passed",
+        "evidence_sha256": "5481ec295398d54baddab53fefe44ddb915587b5e131f9425420d18002aeafea"
+      },
+      {
+        "acceptance_id": "293-AC6-generated-PlainXunit",
+        "outcome": "passed",
+        "evidence_sha256": "412c6794296e146e06a60693551807118446d6699327ccd0fab3eea58f52a14c"
+      },
+      {
+        "acceptance_id": "293-AC6-generated_review",
+        "outcome": "passed",
+        "evidence_sha256": "09f3183cd096ba753d500d06ec6599c3485f46258e495ed7ffb7f793fefded92"
+      },
+      {
+        "acceptance_id": "293-AC6-result-grade",
+        "outcome": "passed",
+        "evidence_sha256": "9310da50b57983706aa4eb20279046d00150668fea33594dad569508adbcc2de"
+      },
+      {
+        "acceptance_id": "293-AC7-package-closure",
+        "outcome": "passed",
+        "evidence_sha256": "87e82db16b90200a2ddd496889e5a8d402dfd751e64f41e4f8460f6874033a71"
+      },
+      {
+        "acceptance_id": "293-AC7-ai-context",
+        "outcome": "passed",
+        "evidence_sha256": "76dd1006085e22d060c88e2466588a93d931c3158c6564a2d9b5be1bd2f4e7b0"
+      },
+      {
+        "acceptance_id": "293-AC7-workflow",
+        "outcome": "passed",
+        "evidence_sha256": "6fc85a83046638ac71792ebdf6243631113dd873da6f3b0505b64b0790f77329"
+      },
+      {
+        "acceptance_id": "293-AC7-diff-check",
+        "outcome": "passed",
+        "evidence_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "acceptance_id": "293-AC7-exact-catalog-projection",
+        "outcome": "passed",
+        "evidence_sha256": "6ff38c589a0bc4dd6f8670749e7b44a255a4075d3c3875ec2bee54381fead455"
+      },
+      {
+        "acceptance_id": "293-AC8-limits",
+        "outcome": "passed",
+        "evidence_sha256": "6061393ed544c77ca7deccaaab01e5f16358cae0b977240fddcfa907914e535e"
+      }
+    ],
+    "report_sha256": "2999561883eeef03ac072b34f1911c385b142d84613ccf6d2db4f9d20841b8c5"
+  },
+  "ledger_sha256": "ff66555bda05483e76ebb9e7235c297d5b7ef4a46b49f208432e48b2f297ff0e"
+}

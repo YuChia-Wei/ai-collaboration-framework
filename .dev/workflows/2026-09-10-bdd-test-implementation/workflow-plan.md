@@ -4,8 +4,8 @@
 
 - workflow_id: `2026-09-10-bdd-test-implementation`; owner_skill: `ai-context-governance`
 - branch: `codex/2026-09-10-bdd-test-implementation`; base_branch: `main`
-- status: `in_progress`; current_phase: `remediation`
-- created_at: `2026-09-10T21:27:10+08:00`; updated_at: `2026-09-10T21:27:10+08:00`
+- status: `completed`; current_phase: `completed`
+- created_at: `2026-09-10T21:27:10+08:00`; updated_at: `2026-09-10T13:56:20.341752+00:00`
 - template_source: `.ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md`
 - template_version: `1.2.0`
 - Clean live-verified baseline: `f3127a733b5644902e76b74b3b621cc9f920cd01`.
@@ -47,8 +47,8 @@ for material conclusions; graph search absence proves nothing.
 | --- | --- | --- |
 | R01 | Clarify the design handoff, .NET step-method contract and receiving review routes | completed |
 | R02 | Provide runnable paired BDDfy and plain-xUnit examples with traceable assertions | completed |
-| V01 | Execute bounded generated-test and negative-case evaluations | in_progress |
-| A01 | Independently review final source and reconcile all eight acceptance criteria | pending |
+| V01 | Execute bounded generated-test and negative-case evaluations | completed |
+| A01 | Independently review final source and reconcile all eight acceptance criteria | completed |
 
 ## Validation And Independent Work
 
@@ -72,10 +72,11 @@ One small model exercise does not prove universal generation reliability,
 statistical improvement, downstream adoption or savings. Each of the eight
 Issue acceptance criteria receives its own evidence disposition.
 
-## Resume Checkpoint
+## Local Completion Checkpoint
 
-- Current task: V01.
-- Next action: evaluate actual model-generated tests and ten review cases against
-  a clean committed source; see focused-validation.md for initial checks.
-- Git state: dedicated branch from the clean integrated baseline above.
-- No unresolved owner decision; provider transport remains a later decision.
+- All four tasks and all eight acceptance criteria are complete; see
+  [local delivery report](remediation-report.md) and [observed results](observed-results.json).
+- Tested/reviewed source: `ef8b63d7650e640feb8de7730b0f88e557f5dc88`. Retained evidence and metadata are committed
+  before the declared ignored final admission; its result is not preclaimed here.
+- No tracked implementation remains. Push, PR, merge, Issue closure and
+  publication remain separate unauthorized actions.

@@ -1,0 +1,75 @@
+{
+  "subject_sha": "ef8b63d7650e640feb8de7730b0f88e557f5dc88",
+  "ledger_sha256": "7e8a6b481d072efe6c538861b71ad11075975ee79a98f61a37458f2eec248504",
+  "accepted_by": "/root",
+  "criteria": [
+    {
+      "acceptance_id": "293-AC1",
+      "outcome": "passed",
+      "evidence_entries": [
+        "293-AC1-source"
+      ]
+    },
+    {
+      "acceptance_id": "293-AC2",
+      "outcome": "passed",
+      "evidence_entries": [
+        "293-AC2-source"
+      ]
+    },
+    {
+      "acceptance_id": "293-AC3",
+      "outcome": "passed",
+      "evidence_entries": [
+        "293-AC3-example-DefaultBddfy",
+        "293-AC3-example-PlainXunit"
+      ]
+    },
+    {
+      "acceptance_id": "293-AC4",
+      "outcome": "passed",
+      "evidence_entries": [
+        "293-AC4-source"
+      ]
+    },
+    {
+      "acceptance_id": "293-AC5",
+      "outcome": "passed",
+      "evidence_entries": [
+        "293-AC5-review_cases",
+        "293-AC5-oracle-grade",
+        "293-AC5-negative-control"
+      ]
+    },
+    {
+      "acceptance_id": "293-AC6",
+      "outcome": "passed",
+      "evidence_entries": [
+        "293-AC6-generation",
+        "293-AC6-generated-DefaultBddfy",
+        "293-AC6-generated-PlainXunit",
+        "293-AC6-generated_review",
+        "293-AC6-result-grade"
+      ]
+    },
+    {
+      "acceptance_id": "293-AC7",
+      "outcome": "passed",
+      "evidence_entries": [
+        "293-AC7-package-closure",
+        "293-AC7-ai-context",
+        "293-AC7-workflow",
+        "293-AC7-diff-check",
+        "293-AC7-exact-catalog-projection"
+      ]
+    },
+    {
+      "acceptance_id": "293-AC8",
+      "outcome": "passed",
+      "evidence_entries": [
+        "293-AC8-limits"
+      ]
+    }
+  ],
+  "scope": "Completed local Issue 293 acceptance; final clean-commit admission is a separate ignored terminal gate."
+}

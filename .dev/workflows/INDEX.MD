@@ -8,7 +8,7 @@ task-level progress.
 
 | Workflow | Title | Owner | Status | Updated | Entry Point |
 | --- | --- | --- | --- | --- | --- |
-| [`2026-09-10-bdd-test-implementation`](2026-09-10-bdd-test-implementation/workflow.yaml) | BDD scenario-to-test implementation | `ai-context-governance` | `in_progress` | `2026-09-10T21:27:10+08:00` | [plan](2026-09-10-bdd-test-implementation/workflow-plan.md) |
+| [`2026-09-10-bdd-test-implementation`](2026-09-10-bdd-test-implementation/workflow.yaml) | BDD scenario-to-test implementation | `ai-context-governance` | `completed` | `2026-09-10T13:56:20.341752+00:00` | [plan](2026-09-10-bdd-test-implementation/workflow-plan.md) |
 | [`2026-09-10-authoring-implementation-boundaries`](2026-09-10-authoring-implementation-boundaries/workflow.yaml) | Authoring and implementation skill boundaries | `ai-context-governance` | `completed` | `2026-09-10T20:15:21+08:00` | [plan](2026-09-10-authoring-implementation-boundaries/workflow-plan.md) |
 | [`2026-09-10-review-skill-capabilities`](2026-09-10-review-skill-capabilities/workflow.yaml) | Portable review and design skill capabilities | `ai-context-governance` | `completed` | `2026-09-10T10:19:31+08:00` | [plan](2026-09-10-review-skill-capabilities/workflow-plan.md) |
 | [`2026-09-05-draft-publication-recovery`](2026-09-05-draft-publication-recovery/workflow.yaml) | Repair draft asset identity and preserve publication recovery evidence | `ai-context-governance` | `completed` | `2026-09-05T23:01:27+08:00` | [plan](2026-09-05-draft-publication-recovery/workflow-plan.md) |
