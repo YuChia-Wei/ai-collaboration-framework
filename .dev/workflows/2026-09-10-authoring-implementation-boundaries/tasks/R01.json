@@ -1,0 +1,52 @@
+{
+  "template_id": "ai-context-governance-remediation-task",
+  "template_version": "1.1.0",
+  "template_created_at": "2026-07-10T18:22:49+08:00",
+  "template_updated_at": "2026-07-27T09:52:09+08:00",
+  "task_id": "R01",
+  "workflow_id": "2026-09-10-authoring-implementation-boundaries",
+  "owner_skill": "ai-context-governance",
+  "status": "completed",
+  "created_at": "2026-09-10T19:49:58+08:00",
+  "updated_at": "2026-09-10T20:15:21+08:00",
+  "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
+  "model": "gpt-6-astra",
+  "reasoning_effort": "ultra",
+  "finding_ids": [],
+  "scope": {
+    "target": "Record capability matrices, a bounded corpus and source-backed boundary findings.",
+    "files": [],
+    "constraints": [
+      "Root owns integration and acceptance.",
+      "Terra xhigh or Luna max; completed callback instead of polling.",
+      "Keep five skill identities, document schemas, exact effective-rule semantics and historical records."
+    ],
+    "non_goals": [
+      "Skill consolidation or new mandatory stage without a demonstrated benefit and owner decision.",
+      "Product implementation or production adoption.",
+      "Push, PR, merge, Issue closure or publication for this new work."
+    ]
+  },
+  "execution": {
+    "steps": [],
+    "validation": [],
+    "last_completed_step": "Local implementation, controlled routing and parent semantic acceptance complete.",
+    "next_action": "Fresh final clean-commit admission uses declared ignored terminal artifacts; no tracked implementation remains."
+  },
+  "results": {
+    "summary": "Local acceptance recorded in remediation-report.md and acceptance-index.json; initial routing findings preserved and six bounded rechecks accepted.",
+    "files_changed": [
+      ".dev/workflows/2026-09-10-authoring-implementation-boundaries/remediation-report.md",
+      ".dev/workflows/2026-09-10-authoring-implementation-boundaries/acceptance-index.json",
+      ".dev/workflows/2026-09-10-authoring-implementation-boundaries/observed-results.json"
+    ],
+    "tests_run": [],
+    "finding_status": "addressed",
+    "residual_risk": "Controlled routing and source/package checks only; no production or user-telemetry claim.",
+    "follow_up_needed": false
+  },
+  "work_items": [
+    276,
+    279
+  ]
+}

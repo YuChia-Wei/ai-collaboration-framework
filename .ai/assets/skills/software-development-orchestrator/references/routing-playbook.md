@@ -36,6 +36,21 @@ If the active profile has no matching downstream skill, use `skill-discovery-pla
 | Executable code or implementation-guidance review | `review` | Findings, severity, evidence, residual risk and declared technology coverage. |
 | Compliance or coverage gate | `compliance-validation` | Coverage result, missing evidence, pass/fail gate. |
 
+## Artifact And Implementation Boundaries
+
+For requirement/spec/problem-frame requests, use
+`../../../shared/AUTHORING-BOUNDARY-CONTRACT.md`: choose the requested artifact,
+preserve explicit skill selections and source authority, and resolve ambiguity
+before creating an assumed document type. Do not insert a mandatory authoring
+pipeline or redirect a formal test spec because it contains GWT wording.
+
+For local/slice requests, use
+`../../../shared/IMPLEMENTATION-SCOPE-ROUTING-CONTRACT.md`: choose by the primary
+target, operation, dependency radius and accepted semantic decisions. Several
+direct call-site files can remain local; a selected slice owns its local edits.
+A settled new-type design can enter a generic slice without another architecture
+pass. Missing scope or authority must not become assumed implementation approval.
+
 ## Local Profile Resolution
 
 Select the artifact owner before applying a generic review signal. Reviewing an

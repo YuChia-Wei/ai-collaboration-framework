@@ -1,0 +1,115 @@
+schema_version: '1.0'
+contract_id: github-terminal-issue-closure
+repository: YuChia-Wei/ai-collaboration-framework
+validation_stage: declaration
+pull_request:
+  number: 292
+  head_sha: null
+  body: '## Summary
+
+
+    Authoring requests now select the required document contract and preserve source
+    authority. Local and slice implementation requests retain their accepted scope,
+    and concrete unresolved architecture decisions route to their owner before implementation.
+
+
+    The five existing skills remain distinct. Two shared references clarify necessary
+    handoffs, optional future work and scope boundaries without changing document
+    schemas, capability slots or effective-rule consumption.
+
+
+    ## Validation
+
+
+    - Focused effective-consumer checks, actual package reference closure and AI-context
+    validation passed.
+
+    - Twenty paired routing cases preserved an initial 19/20 owner result and four
+    unnecessary-handoff cases for both versions. Six feedback-informed corrective
+    rechecks passed; the remaining fourteen were not rerun.
+
+    - Eleven per-Issue acceptance criteria were verified, with independent Terra review
+    and parent acceptance. No token, maintenance, production or downstream-execution
+    savings are claimed.
+
+    - Workflow report: `.dev/workflows/2026-09-10-authoring-implementation-boundaries/remediation-report.md`.
+
+
+    ## Related Issues
+
+
+    Closes #276
+
+    Closes #279
+
+
+    Both dispositions are `terminal-close`. The owner authorized merge and completion
+    after accepting the local delivery. Current-content review binding, hosted checks,
+    live admission and post-merge Issue/Project read-back remain required.
+
+
+    ## Delivery And Integration
+
+
+    - Grouping: one cohesive delivery with separate acceptance ledgers for each Issue.
+
+    - Execution: AI context governance workflow.
+
+    - Topology: merge commit, retaining the shared boundary change and its evaluation/remediation
+    evidence as one rollback unit.
+
+    - No tag, release publication or target installation is part of this pull request.
+
+    '
+  integration:
+    status: pending
+    topology: null
+    admitted_head_sha: null
+    integration_commit_sha: null
+    provider_read_back: false
+  review:
+    status: pending
+  required_check_contexts: []
+  hosted_checks: []
+issues:
+- number: 276
+  mode: terminal-close
+  work_authorization:
+    online_issue_bound: true
+    explicit_owner_approval: true
+  final_accepted_delivery: true
+  workflow:
+    scope_complete: true
+    tasks_complete: true
+    applicable_verification_complete: true
+  closing_keyword: Closes
+  closure_deferred_reason: null
+  next_terminal_gate_or_owner: null
+  read_back:
+    performed: false
+    integration_commit_sha: null
+    issue_state: null
+    issue_state_reason: null
+    project_status: null
+- number: 279
+  mode: terminal-close
+  work_authorization:
+    online_issue_bound: true
+    explicit_owner_approval: true
+  final_accepted_delivery: true
+  workflow:
+    scope_complete: true
+    tasks_complete: true
+    applicable_verification_complete: true
+  closing_keyword: Closes
+  closure_deferred_reason: null
+  next_terminal_gate_or_owner: null
+  read_back:
+    performed: false
+    integration_commit_sha: null
+    issue_state: null
+    issue_state_reason: null
+    project_status: null
+authorization_note: 'The owner authorized merging the completed #276/#279 delivery
+  and closing both Issues on 2026-09-10. Required PR, checks, review receipt and provider
+  read-back are necessary delivery steps; no tag or publication is authorized.'

@@ -1,0 +1,686 @@
+{
+  "schema_version": "1.0",
+  "record_type": "controlled-routing-acceptance",
+  "integration_owner": "/root",
+  "source_subject_sha": "80311afd2672ff8bea7858a144248257aa00c561",
+  "initial_evidence": "initial-observed-results.json",
+  "initial_parent_grade": {
+    "schema_version": "1.0",
+    "execution_sha": "6655b3510e0e536e5e5216b4989ff282241e0a57",
+    "grader": "/root",
+    "phase": "initial-paired-comparison",
+    "source_audit": "passed; static consistency is not behavioral acceptance",
+    "findings": [
+      {
+        "id": "R276-001",
+        "cases": [
+          "A01",
+          "A06"
+        ],
+        "status": "open",
+        "detail": "Both baseline and first current choices put conditional future policy/requirement formalization under necessary_handoffs even though the requested draft can end with unresolved facts. Ownership/output and absence of actual scope expansion still pass. Root rejects the necessary-handoff facet, not the entire produced artifact."
+      },
+      {
+        "id": "R279-001",
+        "cases": [
+          "I06"
+        ],
+        "status": "open",
+        "detail": "Baseline starts with an unrequested requirement-author stage; current prioritizes orchestration solely from cross-service scope even though the immediate missing semantic/compatibility decision has an architecture owner. Both correctly block implementation. Root grades the immediate owner as a misroute in both versions and the requirement-artifact handoff as unnecessary."
+      },
+      {
+        "id": "R279-002",
+        "cases": [
+          "I10"
+        ],
+        "status": "open",
+        "detail": "Both versions declare a future slice-implementer handoff as necessary for a diagnosis-only request, before the causal finding identifies the repair unit. That conditional future choice is premature; diagnosis remains the correct immediate owner."
+      }
+    ],
+    "metrics": {
+      "baseline": {
+        "immediate_owner_matches": 19,
+        "cases": 20,
+        "misroutes": 1,
+        "cases_with_unnecessary_handoff_declarations": 4,
+        "actual_scope_expansion": 0,
+        "authority_bypass": 0
+      },
+      "current": {
+        "immediate_owner_matches": 19,
+        "cases": 20,
+        "misroutes": 1,
+        "cases_with_unnecessary_handoff_declarations": 4,
+        "actual_scope_expansion": 0,
+        "authority_bypass": 0
+      }
+    },
+    "classification_notes": [
+      "A01/A06/I10 future-only suggestions count as unnecessary in the required-handoff field but did not expand the current output or bypass authority.",
+      "I05 architecture-first and conditional later slice preserves the requested interface-extraction goal; accepted as an ordered route with implementation blocked.",
+      "I06 required requirement-document stage is unrequested; both versions preserve the architecture/implementation gate but miss the immediate artifact/decision owner.",
+      "The implementation worker used scope_expansion for detected risks, not performed expansion; root checked requested_output, rationale and gates rather than counting those strings as scope additions.",
+      "Source guidance fixes are evaluated by a bounded feedback-informed recheck, not an independent new blind trial."
+    ]
+  },
+  "recheck_parent_grade": {
+    "schema_version": "1.0",
+    "grader": "/root",
+    "subject_sha": "80311afd2672ff8bea7858a144248257aa00c561",
+    "outcome": "passed",
+    "trial_kind": "Feedback-informed six-case recheck after source and response-field clarification; not a new blind or full-corpus trial.",
+    "resolved_findings": [
+      "R276-001",
+      "R279-001",
+      "R279-002"
+    ],
+    "cases": [
+      {
+        "case_id": "A01",
+        "outcome": "passed",
+        "immediate_owner": "requirement-author",
+        "required_handoffs": [],
+        "actual_scope_expansion": false,
+        "authority_preserved": true,
+        "evidence": "authoring_recheck"
+      },
+      {
+        "case_id": "A06",
+        "outcome": "passed",
+        "immediate_owner": "problem-frame-author",
+        "required_handoffs": [],
+        "actual_scope_expansion": false,
+        "authority_preserved": true,
+        "evidence": "authoring_recheck"
+      },
+      {
+        "case_id": "I05",
+        "outcome": "passed",
+        "immediate_owner": "ddd-ca-hex-architect",
+        "required_handoffs": [],
+        "actual_scope_expansion": false,
+        "authority_preserved": true,
+        "evidence": "implementation_recheck"
+      },
+      {
+        "case_id": "I06",
+        "outcome": "passed",
+        "immediate_owner": "ddd-ca-hex-architect",
+        "required_handoffs": [],
+        "actual_scope_expansion": false,
+        "authority_preserved": true,
+        "evidence": "implementation_recheck"
+      },
+      {
+        "case_id": "I09",
+        "outcome": "passed",
+        "immediate_owner": "clarify",
+        "required_handoffs": [],
+        "actual_scope_expansion": false,
+        "authority_preserved": true,
+        "evidence": "implementation_recheck"
+      },
+      {
+        "case_id": "I10",
+        "outcome": "passed",
+        "immediate_owner": "diagnostic-analyst",
+        "required_handoffs": [],
+        "actual_scope_expansion": false,
+        "authority_preserved": true,
+        "evidence": "implementation_recheck"
+      }
+    ],
+    "metrics": {
+      "case_count": 6,
+      "immediate_owner_matches": 6,
+      "cases_with_unnecessary_required_handoffs": 0,
+      "actual_scope_expansion": 0,
+      "authority_bypass": 0
+    },
+    "coverage_limit": "The other fourteen cases were not rerun after the narrow correction. Initial twenty-case evidence retains its original subject and original parent findings."
+  },
+  "rechecks": [
+    {
+      "name": "authoring_recheck",
+      "receipt": {
+        "schema_version": "1.0",
+        "record_type": "terminal-command-execution",
+        "producer": "external-task-completion",
+        "subject_sha": "80311afd2672ff8bea7858a144248257aa00c561",
+        "command": "collaboration.followup_task:2026-09-10-authoring-implementation-boundaries-authoring_recheck",
+        "profile": "bounded-model-role",
+        "started_at": "2026-09-10T12:07:58.524302+00:00",
+        "completed_at": "2026-09-10T12:09:29.363334+00:00",
+        "duration_seconds": 90.839032,
+        "executed": true,
+        "synthetic": false,
+        "outcome": "passed",
+        "exit_code": 0,
+        "evidence_refs": [
+          "ignored:.dev/ai-context/local/2026-09-10-authoring-implementation-boundaries/authoring_recheck/output.json"
+        ],
+        "evidence_sha256": "216f6e608adf725aca4c1d949f67887d445dde13b4570f1ebb26b2b35854c421",
+        "receipt_sha256": "b59fb4fd75855b0aadfad7498abe80582a4d1f9c5e5d49e2da35b43dc1fdfd03"
+      },
+      "observations": {
+        "outcome": "passed",
+        "summary": "Completed the bounded feedback-informed routing recheck for A01 and A06 at subject 80311afd2672ff8bea7858a144248257aa00c561. Required handoffs now contain only dependencies needed to finish the requested artifact; future policy approval or later formalization is recorded separately as optional work. A06 records the concrete missing business authority for ReserveStock semantics rather than a service-count proxy.",
+        "findings": [],
+        "limitations": [
+          "This is a single feedback-informed recheck of two requests, not a blind or fresh independent trial and not a full-corpus rerun.",
+          "No authoring, implementation, test, compliance, provider or downstream skill execution was performed.",
+          "The supplied A06 request does not contain handler/test contents; the decision identifies the missing authority boundary without asserting unobserved implementation details.",
+          "The original trial and its failure evidence were not modified or relabeled.",
+          "No production improvement, historical telemetry or acceptance verdict is claimed."
+        ],
+        "context_reads": {
+          "actual_files_read": [
+            {
+              "path": ".dev/ai-context/local/2026-09-10-authoring-implementation-boundaries/authoring_recheck/instructions.md",
+              "bytes": 2486,
+              "role": "bounded execution instructions"
+            },
+            {
+              "path": ".dev/ai-context/local/2026-09-10-authoring-implementation-boundaries/authoring_recheck/cases.json",
+              "bytes": 564,
+              "role": "raw requests A01 and A06"
+            },
+            {
+              "path": ".dev/ai-context/local/2026-09-10-authoring-implementation-boundaries/authoring_recheck/current-context.json",
+              "bytes": 51157,
+              "role": "current source bundle container"
+            }
+          ],
+          "source_bundle_byte_counts": {
+            "current": {
+              "path": ".dev/ai-context/local/2026-09-10-authoring-implementation-boundaries/authoring_recheck/current-context.json",
+              "subject_sha": "80311afd2672ff8bea7858a144248257aa00c561",
+              "declared_entry_count": 12,
+              "declared_entry_bytes_sum": 47177
+            }
+          }
+        },
+        "cases": [
+          {
+            "case_id": "A01",
+            "immediate_owner": "requirement-author",
+            "mode": "draft",
+            "requested_output": "A requirement document only for cancellation of unpaid orders, preserving the undecided paid-order cancellation policy.",
+            "required_handoffs_for_requested_output": [],
+            "optional_future_work": [
+              "Obtain an owner decision on paid-order cancellation only if a later specification or artifact needs that policy."
+            ],
+            "scope_added_by_decision": [],
+            "prevented_scope_risks": [
+              "Do not turn the undecided paid-order policy into invented requirement truth.",
+              "Do not add a downstream specification or implementation to a requirement-only request."
+            ],
+            "unresolved_authority": [
+              "Paid-order cancellation policy is intentionally undecided."
+            ],
+            "rationale": "The requested artifact is a requirement document. It can be completed with the paid-order policy preserved as an open question, so no future owner decision is a required handoff for this output.",
+            "source_citations": [
+              ".ai/assets/shared/AUTHORING-BOUNDARY-CONTRACT.md#Select The Artifact",
+              ".ai/assets/shared/AUTHORING-BOUNDARY-CONTRACT.md#Handoff",
+              ".ai/assets/skills/requirement-author/references/source-truth-rules.md#Do not"
+            ]
+          },
+          {
+            "case_id": "A06",
+            "immediate_owner": "problem-frame-author",
+            "mode": "reverse-engineer",
+            "requested_output": "An explicitly observed CBF draft for ReserveStock from the supplied handler and tests, with code-derived facts and missing business authority labeled.",
+            "required_handoffs_for_requested_output": [],
+            "optional_future_work": [
+              "If normative requirements or specifications are later requested, resolve the concrete business authority for available stock, reservation outcomes and accepted preconditions first, then hand off to the relevant author.",
+              "If a compliance result is later requested, perform the separately selected compliance validation only after normative authority is available."
+            ],
+            "scope_added_by_decision": [],
+            "prevented_scope_risks": [
+              "Do not fabricate requirement/spec documents from code and tests.",
+              "Do not promote observed handler/test behavior to approved business intent.",
+              "Do not claim specification compliance from an observed draft.",
+              "Do not add an automatic problem-frame to requirement to specification pipeline."
+            ],
+            "unresolved_authority": [
+              "The business authority defining ReserveStock's accepted preconditions and success/failure outcomes is not supplied.",
+              "The source of truth for available-stock and reservation-outcome semantics is not supplied.",
+              "It is unresolved whether the observed handler/test behavior is approved business intent."
+            ],
+            "rationale": "The requested artifact is explicitly an observed/inferred CBF and the current playbook permits bounded code/test recovery without normative documents. Missing authority limits only normative claims; it does not require a future-only handoff before the observed draft can be produced.",
+            "source_citations": [
+              ".ai/assets/shared/AUTHORING-BOUNDARY-CONTRACT.md#Source Binding",
+              ".ai/assets/shared/AUTHORING-BOUNDARY-CONTRACT.md#Handoff",
+              ".ai/assets/skills/problem-frame-author/references/authoring-playbook.md#Required Inputs",
+              ".ai/assets/skills/problem-frame-author/references/output-contract.md#Return"
+            ]
+          }
+        ]
+      },
+      "output_sha256": "216f6e608adf725aca4c1d949f67887d445dde13b4570f1ebb26b2b35854c421",
+      "report_sha256": "46418ac6a135dc01589560ccb9f384ec7a1bb02fe808e5da2e2d5d774a09ee5f",
+      "local_root": "ignored:.dev/ai-context/local/2026-09-10-authoring-implementation-boundaries/authoring_recheck"
+    },
+    {
+      "name": "implementation_recheck",
+      "receipt": {
+        "schema_version": "1.0",
+        "record_type": "terminal-command-execution",
+        "producer": "external-task-completion",
+        "subject_sha": "80311afd2672ff8bea7858a144248257aa00c561",
+        "command": "collaboration.followup_task:2026-09-10-authoring-implementation-boundaries-implementation_recheck",
+        "profile": "bounded-model-role",
+        "started_at": "2026-09-10T12:08:46.662882+00:00",
+        "completed_at": "2026-09-10T12:14:30.191875+00:00",
+        "duration_seconds": 343.528993,
+        "executed": true,
+        "synthetic": false,
+        "outcome": "passed",
+        "exit_code": 0,
+        "evidence_refs": [
+          "ignored:.dev/ai-context/local/2026-09-10-authoring-implementation-boundaries/implementation_recheck/output.json"
+        ],
+        "evidence_sha256": "b07723f1d684dab7f49149d196a47b730baf440a7a994ac02ee473a9157d68f9",
+        "receipt_sha256": "62adf36c57e5324060bde1ae6ee78be65f2cf1608d0f0e7bc267273d266957d7"
+      },
+      "observations": {
+        "outcome": "passed",
+        "summary": "Feedback-informed routing recheck passed for the four raw implementation requests. The immediate owner is selected from the concrete missing decision or observable symptom; required handoffs contain only work needed for the current requested output, and later implementation or repair work is recorded separately as conditional.",
+        "findings": [],
+        "limitations": [
+          "The judgment covers only cases I05, I06, I09 and I10 supplied in cases.json.",
+          "This is a routing recheck at the immutable subject; it does not implement any example, resolve an owner decision, run tests, or claim a production outcome.",
+          "No parent oracle, sibling output, tracked report or tracked finding was read."
+        ],
+        "context_reads": [
+          ".dev/ai-context/local/2026-09-10-authoring-implementation-boundaries/implementation_recheck/cases.json",
+          ".dev/ai-context/local/2026-09-10-authoring-implementation-boundaries/implementation_recheck/current-context.json",
+          ".ai/assets/shared/IMPLEMENTATION-SCOPE-ROUTING-CONTRACT.md",
+          ".ai/assets/skills/local-change-implementer/skill.yaml",
+          ".ai/assets/skills/local-change-implementer/references/allowed-operations.md",
+          ".ai/assets/skills/local-change-implementer/references/skill-boundaries.md",
+          ".ai/assets/skills/slice-implementer/skill.yaml",
+          ".ai/assets/skills/slice-implementer/references/handoff-rules.md",
+          ".ai/assets/skills/slice-implementer/references/input-contract.md",
+          ".ai/assets/skills/software-development-orchestrator/references/capability-profile.md",
+          ".ai/assets/skills/software-development-orchestrator/references/routing-playbook.md"
+        ],
+        "cases": [
+          {
+            "case_id": "I05",
+            "immediate_owner": "ddd-ca-hex-architect",
+            "mode": "architecture-decision",
+            "requested_output": "Resolve whether the persistence abstraction is domain-owned or infrastructure-owned, establish the dependency direction, and return the accepted bounded implementation boundary. The raw request does not authorize interface extraction yet.",
+            "required_handoffs_for_requested_output": [],
+            "optional_future_work": [
+              "After the architecture decision is accepted and implementation scope is authorized, use slice-implementer in a bounded generic slice for the interface extraction and its accepted direct consumers/tests. local-change-implementer remains optional only for a separable local subtask and cannot own the new interface."
+            ],
+            "scope_added_by_decision": false,
+            "prevented_scope_risks": [
+              "Prevents placing persistence responsibility in the wrong layer or inverting dependencies without an accepted architecture decision.",
+              "Prevents treating class/interface extraction or a new abstraction boundary as a local symbol change."
+            ],
+            "unresolved_authority": "The request leaves the abstraction responsibility and dependency direction undecided; no accepted architecture or domain boundary is supplied.",
+            "rationale": "The request explicitly identifies a missing responsibility and dependency-direction decision. The routing contract sends that decision to ddd-ca-hex-architect first, and says interface extraction is outside local-change-implementer. A later bounded slice is conditional on the accepted design.",
+            "source_citations": [
+              "cases.json:I05 (request; lines 3-6)",
+              "IMPLEMENTATION-SCOPE-ROUTING-CONTRACT.md:12,16-18,28-31,51-55",
+              "local-change-implementer/references/allowed-operations.md:12-18",
+              "slice-implementer/references/handoff-rules.md:7-15"
+            ]
+          },
+          {
+            "case_id": "I06",
+            "immediate_owner": "ddd-ca-hex-architect",
+            "mode": "architecture-decision",
+            "requested_output": "Resolve the intended business meaning of the public PaymentAuthorized event and DTO field, then establish the consumer compatibility policy for the rename. The raw request does not authorize the public-contract change yet.",
+            "required_handoffs_for_requested_output": [],
+            "optional_future_work": [
+              "After the business-language and compatibility decisions are accepted and the affected contract radius is bounded, use slice-implementer for the coordinated public-contract change and selected compatibility validation."
+            ],
+            "scope_added_by_decision": false,
+            "prevented_scope_risks": [
+              "Prevents a public event or DTO rename from being treated as a local symbol rename.",
+              "Prevents changing business language or breaking consumers before the compatibility policy is authoritative."
+            ],
+            "unresolved_authority": "The intended business meaning and the consumer compatibility decision are unresolved. Those are the missing decisions; the stated service topology is not a substitute for them.",
+            "rationale": "The request names a concrete missing semantic and compatibility decision for a public event/DTO rename. The contract routes one such decision to ddd-ca-hex-architect first, including across services, and explicitly excludes public DTO/API/event renames from local implementation. Any implementation handoff is later and conditional.",
+            "source_citations": [
+              "cases.json:I06 (request; lines 8-11)",
+              "IMPLEMENTATION-SCOPE-ROUTING-CONTRACT.md:16-20,25-26,51-55",
+              "local-change-implementer/references/skill-boundaries.md:11-19,26-29",
+              "slice-implementer/references/handoff-rules.md:7-15"
+            ]
+          },
+          {
+            "case_id": "I09",
+            "immediate_owner": "clarify",
+            "mode": "scope-clarification",
+            "requested_output": "Obtain a bounded scope answer identifying the authentication target, exact operation, allowed dependency radius, affected contracts, and behavioral contract before selecting an implementation owner.",
+            "required_handoffs_for_requested_output": [],
+            "optional_future_work": [
+              "After the requester or owner supplies the bounded scope and acceptance criteria, select local-change-implementer for one local target/operation or slice-implementer for a coordinated bounded goal under settled design."
+            ],
+            "scope_added_by_decision": false,
+            "prevented_scope_risks": [
+              "Prevents inferring a safe local cleanup from the word small.",
+              "Prevents silent expansion into authentication architecture, public contracts, cross-cutting behavior or an unbounded refactor."
+            ],
+            "unresolved_authority": "The request supplies no primary target, operation, allowed radius or behavioral contract, so implementation ownership and acceptance cannot be selected yet.",
+            "rationale": "The supplied context makes all implementation inputs needed to bound the change unknown. The routing contract requires a bounded scope question before choosing an implementation owner; the orchestrator can own that scope-bounding step, while the eventual implementation route remains unresolved until the answer exists.",
+            "source_citations": [
+              "cases.json:I09 (request and context; lines 13-17)",
+              "IMPLEMENTATION-SCOPE-ROUTING-CONTRACT.md:14,22-24,35-41,51-55",
+              "software-development-orchestrator/references/routing-playbook.md:1-5,20-24"
+            ]
+          },
+          {
+            "case_id": "I10",
+            "immediate_owner": "diagnostic-analyst",
+            "mode": "diagnosis",
+            "requested_output": "Produce a bounded diagnosis of the intermittent checkout timeouts through hypotheses, falsification or reproduction evidence, and a causal conclusion or explicit inability to establish one. Diagnosis does not authorize a repair.",
+            "required_handoffs_for_requested_output": [],
+            "optional_future_work": [
+              "Only after a causal finding and repair authorization identify a concrete technical unit and radius, select the appropriate local-change-implementer or slice-implementer repair route."
+            ],
+            "scope_added_by_decision": false,
+            "prevented_scope_risks": [
+              "Prevents speculative timeout fixes without a causal finding.",
+              "Prevents treating diagnosis evidence as implementation authorization or selecting a repair owner before its unit and radius are known."
+            ],
+            "unresolved_authority": "No causal finding or accepted repair authorization exists; the symptom is sufficient for diagnosis but not for implementation.",
+            "rationale": "The request is an unexplained observed failure with no bounded causal finding. The routing contract selects diagnostic-analyst, and explicitly keeps any later repair conditional on both the causal finding and authorization.",
+            "source_citations": [
+              "cases.json:I10 (request; lines 19-22)",
+              "IMPLEMENTATION-SCOPE-ROUTING-CONTRACT.md:13,51-55",
+              "local-change-implementer/references/skill-boundaries.md:29"
+            ]
+          }
+        ]
+      },
+      "output_sha256": "b07723f1d684dab7f49149d196a47b730baf440a7a994ac02ee473a9157d68f9",
+      "report_sha256": "ae860169b5cf2d144a7d1064abb174d1942e3d846ecda32a5f077fae4096f86e",
+      "local_root": "ignored:.dev/ai-context/local/2026-09-10-authoring-implementation-boundaries/implementation_recheck"
+    }
+  ],
+  "focused_checks": [
+    {
+      "name": "package-closure",
+      "subject_sha": "6655b3510e0e536e5e5216b4989ff282241e0a57",
+      "argv": [
+        "python",
+        "-B",
+        "-m",
+        "unittest",
+        "test_code_reviewer_routing_contract.CodeReviewerRoutingContractTests.test_gwt_009_given_core_only_selection_when_projected_then_review_and_role_dependencies_are_closed"
+      ],
+      "cwd": "C:\\Github\\YuChia\\ai-collaboration-prompts-dotnet-backend\\.ai\\scripts\\tests",
+      "started_at": "2026-09-10T11:58:26.638800+00:00",
+      "duration_seconds": 36.12041550001595,
+      "exit_code": 0,
+      "outcome": "passed",
+      "log": ".dev/ai-context/local/2026-09-10-authoring-implementation-boundaries/parent_checks/package-closure.log",
+      "log_sha256": "1109ca157767a62606e8141ab3b5170738d853a91a11aa8ed808787729596572"
+    },
+    {
+      "name": "ai-context",
+      "subject_sha": "6655b3510e0e536e5e5216b4989ff282241e0a57",
+      "argv": [
+        "python",
+        "-B",
+        ".ai/scripts/validate-ai-context.py"
+      ],
+      "cwd": "C:\\Github\\YuChia\\ai-collaboration-prompts-dotnet-backend",
+      "started_at": "2026-09-10T11:59:02.760463+00:00",
+      "duration_seconds": 20.834111600008328,
+      "exit_code": 0,
+      "outcome": "passed",
+      "log": ".dev/ai-context/local/2026-09-10-authoring-implementation-boundaries/parent_checks/ai-context.log",
+      "log_sha256": "9b096aa99c80f7b7d1c171eb7af7f41dc1eac5d5381e2f8cda48d455b2358fe2"
+    },
+    {
+      "name": "package-closure",
+      "subject_sha": "80311afd2672ff8bea7858a144248257aa00c561",
+      "argv": [
+        "python",
+        "-B",
+        "-m",
+        "unittest",
+        "test_code_reviewer_routing_contract.CodeReviewerRoutingContractTests.test_gwt_009_given_core_only_selection_when_projected_then_review_and_role_dependencies_are_closed"
+      ],
+      "cwd": "C:\\Github\\YuChia\\ai-collaboration-prompts-dotnet-backend\\.ai\\scripts\\tests",
+      "started_at": "2026-09-10T12:08:03.471818+00:00",
+      "duration_seconds": 41.86618870001985,
+      "exit_code": 0,
+      "outcome": "passed",
+      "log": ".dev/ai-context/local/2026-09-10-authoring-implementation-boundaries/parent_checks_remediation/package-closure.log",
+      "log_sha256": "8661bcccf5b4af77aa74dedcd62cb0792fc0b87430bd1bba8bea7562a268398b"
+    },
+    {
+      "name": "ai-context",
+      "subject_sha": "80311afd2672ff8bea7858a144248257aa00c561",
+      "argv": [
+        "python",
+        "-B",
+        ".ai/scripts/validate-ai-context.py"
+      ],
+      "cwd": "C:\\Github\\YuChia\\ai-collaboration-prompts-dotnet-backend",
+      "started_at": "2026-09-10T12:08:45.339299+00:00",
+      "duration_seconds": 22.978581100003794,
+      "exit_code": 0,
+      "outcome": "passed",
+      "log": ".dev/ai-context/local/2026-09-10-authoring-implementation-boundaries/parent_checks_remediation/ai-context.log",
+      "log_sha256": "9b096aa99c80f7b7d1c171eb7af7f41dc1eac5d5381e2f8cda48d455b2358fe2"
+    }
+  ],
+  "context_proxy": {
+    "schema_version": "1.0",
+    "subject_base_sha": "7ad859fd3724cfd7d9a3f8165c003fb812c5c2e9",
+    "outcome": "passed",
+    "skill_contracts_preserved": 5,
+    "controlled_case_count": 20,
+    "metrics": [
+      {
+        "skill": "requirement-author",
+        "baseline_bytes": 7599,
+        "current_bytes": 12217,
+        "new_direct_reference_count": 1,
+        "interpretation": "Declared entry plus direct-reference envelope; upper-bound byte proxy, not actual model tokens, transitive closure, latency or savings."
+      },
+      {
+        "skill": "spec-author",
+        "baseline_bytes": 7270,
+        "current_bytes": 12361,
+        "new_direct_reference_count": 1,
+        "interpretation": "Declared entry plus direct-reference envelope; upper-bound byte proxy, not actual model tokens, transitive closure, latency or savings."
+      },
+      {
+        "skill": "problem-frame-author",
+        "baseline_bytes": 13773,
+        "current_bytes": 18782,
+        "new_direct_reference_count": 1,
+        "interpretation": "Declared entry plus direct-reference envelope; upper-bound byte proxy, not actual model tokens, transitive closure, latency or savings."
+      },
+      {
+        "skill": "local-change-implementer",
+        "baseline_bytes": 9149,
+        "current_bytes": 14229,
+        "new_direct_reference_count": 1,
+        "interpretation": "Declared entry plus direct-reference envelope; upper-bound byte proxy, not actual model tokens, transitive closure, latency or savings."
+      },
+      {
+        "skill": "slice-implementer",
+        "baseline_bytes": 31872,
+        "current_bytes": 36863,
+        "new_direct_reference_count": 1,
+        "interpretation": "Declared entry plus direct-reference envelope; upper-bound byte proxy, not actual model tokens, transitive closure, latency or savings."
+      }
+    ],
+    "duplicate_contract_disposition": "The identical effective-rule consumer objects remain unchanged intentionally; consolidation is not justified by deleting required declarations."
+  },
+  "maintenance_proxy": {
+    "schema_version": "1.0",
+    "subject_sha": "80311afd2672ff8bea7858a144248257aa00c561",
+    "metric_definition": "Exactly equal trimmed non-heading prose lines, minimum 45 characters, repeated across selected per-skill reference Markdown files. Excludes wrappers, manifests, orchestrator and shared files. This narrow lexical proxy neither measures semantic duplication nor proves maintenance savings.",
+    "baseline": {
+      "selected_reference_file_count": 22,
+      "unique_duplicate_lines": 8,
+      "duplicate_occurrences_beyond_first": 11,
+      "duplicates": [
+        {
+          "line_sha256": "3f3a838510039a75b10f3897eb0f5ddea5eae821176c153ea14b552aab44c001",
+          "file_count": 2,
+          "paths": [
+            ".ai/assets/skills/problem-frame-author/references/role-execution.md",
+            ".ai/assets/skills/slice-implementer/references/role-execution.md"
+          ]
+        },
+        {
+          "line_sha256": "15d75a4878ef06a14ab621c4896e361ecc52c8b0396fef7fededd8b25777a57a",
+          "file_count": 2,
+          "paths": [
+            ".ai/assets/skills/problem-frame-author/references/role-execution.md",
+            ".ai/assets/skills/slice-implementer/references/role-execution.md"
+          ]
+        },
+        {
+          "line_sha256": "8dbbf70e643ad82a74bafcc6c8fde836c7a2c4206447dc6d26ab99736a35eff0",
+          "file_count": 2,
+          "paths": [
+            ".ai/assets/skills/problem-frame-author/references/role-execution.md",
+            ".ai/assets/skills/slice-implementer/references/role-execution.md"
+          ]
+        },
+        {
+          "line_sha256": "c4d43ab7e0417c37d717a73f5389488378e035f0943d8580dc32cf7226c744a6",
+          "file_count": 2,
+          "paths": [
+            ".ai/assets/skills/problem-frame-author/references/role-execution.md",
+            ".ai/assets/skills/slice-implementer/references/role-execution.md"
+          ]
+        },
+        {
+          "line_sha256": "2b47b67257ea95dd8b89b4355bed0c2ea728d0a5d91063fcfd9ab7f69d3be26d",
+          "file_count": 3,
+          "paths": [
+            ".ai/assets/skills/slice-implementer/references/modes/command-use-case.md",
+            ".ai/assets/skills/slice-implementer/references/modes/query-use-case.md",
+            ".ai/assets/skills/slice-implementer/references/modes/reactor.md"
+          ]
+        },
+        {
+          "line_sha256": "6f7c6b4fd6b0d0c1627cad2b25a8bef88df2f0ebb6e1191c993afc66e4e54067",
+          "file_count": 3,
+          "paths": [
+            ".ai/assets/skills/slice-implementer/references/modes/command-use-case.md",
+            ".ai/assets/skills/slice-implementer/references/modes/query-use-case.md",
+            ".ai/assets/skills/slice-implementer/references/modes/reactor.md"
+          ]
+        },
+        {
+          "line_sha256": "b1eb8771ab0501d15a5e251366a84d7919d8be358e6680a038effcc934de70c7",
+          "file_count": 2,
+          "paths": [
+            ".ai/assets/skills/slice-implementer/references/modes/command-use-case.md",
+            ".ai/assets/skills/slice-implementer/references/modes/reactor.md"
+          ]
+        },
+        {
+          "line_sha256": "d8cc50cdf6b3c389e3e1819bc13c15640e4d70cc255ecb0b7f590ad36b5d0920",
+          "file_count": 3,
+          "paths": [
+            ".ai/assets/skills/slice-implementer/references/modes/command-use-case.md",
+            ".ai/assets/skills/slice-implementer/references/modes/query-use-case.md",
+            ".ai/assets/skills/slice-implementer/references/modes/reactor.md"
+          ]
+        }
+      ]
+    },
+    "current": {
+      "selected_reference_file_count": 22,
+      "unique_duplicate_lines": 9,
+      "duplicate_occurrences_beyond_first": 12,
+      "duplicates": [
+        {
+          "line_sha256": "3f3a838510039a75b10f3897eb0f5ddea5eae821176c153ea14b552aab44c001",
+          "file_count": 2,
+          "paths": [
+            ".ai/assets/skills/problem-frame-author/references/role-execution.md",
+            ".ai/assets/skills/slice-implementer/references/role-execution.md"
+          ]
+        },
+        {
+          "line_sha256": "15d75a4878ef06a14ab621c4896e361ecc52c8b0396fef7fededd8b25777a57a",
+          "file_count": 2,
+          "paths": [
+            ".ai/assets/skills/problem-frame-author/references/role-execution.md",
+            ".ai/assets/skills/slice-implementer/references/role-execution.md"
+          ]
+        },
+        {
+          "line_sha256": "8dbbf70e643ad82a74bafcc6c8fde836c7a2c4206447dc6d26ab99736a35eff0",
+          "file_count": 2,
+          "paths": [
+            ".ai/assets/skills/problem-frame-author/references/role-execution.md",
+            ".ai/assets/skills/slice-implementer/references/role-execution.md"
+          ]
+        },
+        {
+          "line_sha256": "c4d43ab7e0417c37d717a73f5389488378e035f0943d8580dc32cf7226c744a6",
+          "file_count": 2,
+          "paths": [
+            ".ai/assets/skills/problem-frame-author/references/role-execution.md",
+            ".ai/assets/skills/slice-implementer/references/role-execution.md"
+          ]
+        },
+        {
+          "line_sha256": "2b47b67257ea95dd8b89b4355bed0c2ea728d0a5d91063fcfd9ab7f69d3be26d",
+          "file_count": 3,
+          "paths": [
+            ".ai/assets/skills/slice-implementer/references/modes/command-use-case.md",
+            ".ai/assets/skills/slice-implementer/references/modes/query-use-case.md",
+            ".ai/assets/skills/slice-implementer/references/modes/reactor.md"
+          ]
+        },
+        {
+          "line_sha256": "6f7c6b4fd6b0d0c1627cad2b25a8bef88df2f0ebb6e1191c993afc66e4e54067",
+          "file_count": 3,
+          "paths": [
+            ".ai/assets/skills/slice-implementer/references/modes/command-use-case.md",
+            ".ai/assets/skills/slice-implementer/references/modes/query-use-case.md",
+            ".ai/assets/skills/slice-implementer/references/modes/reactor.md"
+          ]
+        },
+        {
+          "line_sha256": "b1eb8771ab0501d15a5e251366a84d7919d8be358e6680a038effcc934de70c7",
+          "file_count": 2,
+          "paths": [
+            ".ai/assets/skills/slice-implementer/references/modes/command-use-case.md",
+            ".ai/assets/skills/slice-implementer/references/modes/reactor.md"
+          ]
+        },
+        {
+          "line_sha256": "d8cc50cdf6b3c389e3e1819bc13c15640e4d70cc255ecb0b7f590ad36b5d0920",
+          "file_count": 3,
+          "paths": [
+            ".ai/assets/skills/slice-implementer/references/modes/command-use-case.md",
+            ".ai/assets/skills/slice-implementer/references/modes/query-use-case.md",
+            ".ai/assets/skills/slice-implementer/references/modes/reactor.md"
+          ]
+        },
+        {
+          "line_sha256": "5e035cfded4b4639a595118864a2303bf3385aed66e5f1dc15e5dcda1061faf7",
+          "file_count": 2,
+          "paths": [
+            ".ai/assets/skills/requirement-author/references/output-contract.md",
+            ".ai/assets/skills/spec-author/references/output-contract.md"
+          ]
+        }
+      ]
+    },
+    "shared_selection_handoff_owners": 2,
+    "identity_and_consumer_declarations_preserved": 5,
+    "decision": "Two shared contracts give explicit selection/handoff ownership. Per-document schemas, effective-rule consumers and execution modes remain independent; no broad deduplication or token saving is claimed."
+  },
+  "boundary": "Controlled route selection and static/source/package validation only. No product artifact implementation, real user telemetry or universal routing accuracy."
+}

@@ -7,9 +7,14 @@ Turn existing requirement/spec truth into a first validator-ready problem-frame 
 ## Required Inputs
 
 - target use case name
-- requirement files
-- spec files
+- available requirement/spec sources and their authority status, or an explicitly
+  requested observed/inferred recovery from bounded code and tests
 - optional code/tests for gap filling
+
+Use `../../../shared/AUTHORING-BOUNDARY-CONTRACT.md` to confirm the requested
+CBF/SWF artifact. Code-only recovery does not require fabricating requirement
+or spec documents; missing normative intent remains an open question and
+cannot support a compliance claim.
 
 ## Workflow
 
