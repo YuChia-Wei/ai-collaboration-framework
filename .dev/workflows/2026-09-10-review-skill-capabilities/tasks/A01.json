@@ -1,0 +1,48 @@
+{
+  "template_id": "ai-context-governance-remediation-task",
+  "template_version": "1.1.0",
+  "template_created_at": "2026-07-10T18:22:49+08:00",
+  "template_updated_at": "2026-07-27T09:52:09+08:00",
+  "task_id": "A01",
+  "workflow_id": "2026-09-10-review-skill-capabilities",
+  "owner_skill": "ai-context-governance",
+  "status": "pending",
+  "created_at": "2026-09-10T09:32:33+08:00",
+  "updated_at": "2026-09-10T09:32:33+08:00",
+  "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
+  "model": "gpt-6-astra",
+  "reasoning_effort": "ultra",
+  "finding_ids": [],
+  "scope": {
+    "target": "Receive an independent immutable-subject review, reconcile findings, and retain a truthful delivery report.",
+    "files": [],
+    "constraints": [
+      "Preserve the selected scope and existing entry names.",
+      "Parent owns integration and acceptance.",
+      "Terra xhigh or Luna max for delegated work; use completion callbacks, not polling."
+    ],
+    "non_goals": [
+      "Push, PR, merge, Issue closure, release or publication.",
+      "Company repository access.",
+      "New governance worker roles or unrelated workflow policy changes."
+    ]
+  },
+  "execution": {
+    "steps": [],
+    "validation": [],
+    "last_completed_step": "",
+    "next_action": "Receive an independent immutable-subject review, reconcile findings, and retain a truthful delivery report."
+  },
+  "results": {
+    "summary": "",
+    "files_changed": [],
+    "tests_run": [],
+    "finding_status": "not-addressed",
+    "residual_risk": "",
+    "follow_up_needed": true
+  },
+  "work_items": [
+    289,
+    290
+  ]
+}

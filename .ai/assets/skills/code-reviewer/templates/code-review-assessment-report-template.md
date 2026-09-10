@@ -25,7 +25,7 @@
 
 ## Executive Summary
 
-- Overall score: `/10` or `N/A`
+- Optional score and target-requested rubric: `/10` or `N/A`
 - Decision: `pass | pass-with-followups | remediation-recommended | blocking-findings`
 - Highest severity:
 - Primary strengths:
@@ -49,6 +49,9 @@
 
 ## Methodology And Evidence
 
+- Common route and extensions selected:
+- Target technology/architecture selection evidence:
+- Unavailable specialist coverage and required gates:
 - File types and checklists selected:
 - Repository standards loaded:
 - Analyzer, architecture-test, or test evidence:
@@ -59,8 +62,8 @@
 
 | Area | Score | Evidence / Notes |
 | --- | ---: | --- |
-| Domain and architecture boundaries |  |  |
-| CQRS and dependency direction |  |  |
+| Behavior and contract compatibility |  |  |
+| Adopted architecture and dependency boundaries |  |  |
 | Implementation correctness |  |  |
 | Test design and coverage |  |  |
 | Maintainability |  |  |

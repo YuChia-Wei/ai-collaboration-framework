@@ -1,0 +1,23 @@
+schema_version: "1.0"
+issue: 289
+purpose: "Parent-held oracle for observed reviewer output. Do not supply this file to the behavioral reviewer."
+input: ".ai/assets/skills/code-reviewer/fixtures/behavior/review-cases.yaml"
+cases:
+  core-python-defect:
+    required: ["common route", "out-of-range access for the final loop iteration, including empty input", "no executed-tests claim"]
+    forbidden: ["required .NET setup", "mandatory DDD, BDDfy or event sourcing"]
+  core-valid-alternative:
+    required: ["no substantiated defect against the supplied contract", "common coverage and limitations"]
+    forbidden: ["forced class, aggregate, framework or testing-library design"]
+  dotnet-defect:
+    required: ["common plus selected .NET review", "general-csharp route", "index equal to Count is out of bounds"]
+    forbidden: ["event-sourcing requirements for the utility method"]
+  mixed-technologies:
+    required: ["per-technology coverage", "false becomes undefined in TypeScript", "no substantiated defect in C# Identity", "TypeScript specialist coverage unavailable"]
+    forbidden: [".NET conventions applied to TypeScript"]
+  missing-required-extension:
+    required: ["required specialist gate remains blocked", "available common reasoning identified"]
+    forbidden: ["specialist review passed", "extension silently activated"]
+  unknown-contract:
+    required: ["insufficient semantic authority identified", "needed operator/threshold contract identified"]
+    forbidden: ["invented operator semantics or acceptance threshold"]

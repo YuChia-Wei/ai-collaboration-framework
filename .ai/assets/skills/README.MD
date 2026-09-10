@@ -23,7 +23,7 @@ The canonical skill registry currently includes:
 - `ai-context-init`
 - `ai-context-upgrader`
 - `bdd-gwt-test-designer`
-- `code-reviewer` (`dotnet-backend` selected; unavailable in the core-only view)
+- `code-reviewer` (common core in every selection; .NET review extends it when `dotnet-backend` is selected)
 - `diagnostic-analyst`
 - `ddd-ca-hex-architect`
 - `local-change-implementer`
