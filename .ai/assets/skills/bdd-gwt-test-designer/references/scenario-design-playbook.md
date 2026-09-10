@@ -7,6 +7,8 @@
 - each important Then should correspond to an explicit assertion
 - use And only when it keeps the flow readable
 - keep setup facts in Given, not in Then
+- use the shared GWT handoff contract to preserve scenario/data-row identity,
+  concrete inputs, expected-value sources and explicit unknowns for implementation
 
 ## Repository Alignment
 

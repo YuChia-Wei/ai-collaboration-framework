@@ -67,6 +67,33 @@ AC，說明缺漏、有效替代方案與待釐清資訊，不修改原文、不
 - 你要把既有需求整理成 GWT scenarios 給其他 agent 接手
 - 你要補測試，但先想知道應該有哪些情境
 
+## 從情境穩定交接到 GWT 方法
+
+設計輸出保留 scenario ID、來源／AC、具體 Given 資料、主要 When 與每個 Then
+的預期值。實作後由接收者補上測試檔、方法、step 與斷言位置，依
+[GWT 交接契約](../../../.ai/assets/shared/GWT-TEST-HANDOFF-CONTRACT.md) 逐項核對。
+參數化測試可以共用方法，但每筆資料仍要有可辨識的 ID 與結果。
+
+測試本文應讀得出行為：`GivenMonthlyBudget(...)` 建立資料，
+`WhenQueryingBudget(...)` 執行真實待測物件，`ThenAmountShouldBe(...)` 驗證結果。
+重要數值留在本文或 theory 資料列，mock 與建構細節放入 helper。
+Then 不重跑待測操作、不抄演算法重算預期值；只寫 GWT 註解或名稱還不夠。
+
+採用 .NET profile 時可參考
+[可執行範例](../../../.ai/assets/tech-stacks/dotnet-backend/examples/bdd-step-methods/README.md)：
+BDDfy 預設與明確 opt-out 的 plain xUnit 使用相同情境與預期結果。具體實作仍交給
+`slice-implementer` 及適用的 test role；已有實作授權就一起交接，毋須再確認一次。
+review 檢查 scenario 與實際斷言的對應，test command 提供執行結果；兩者都要保留。
+
+```text
+Use slice-implementer in generic test-only mode to implement these approved GWT scenarios.
+Preserve scenario/data-row IDs and every observable Then outcome.
+Follow the target's selected test framework and BDDfy/default or explicit opt-out.
+Express each test body with behavior-named Given/When/Then methods.
+Return the scenario-to-test/step/assertion mapping and actual execution evidence;
+mark any missing or unexecuted case explicitly.
+```
+
 ## 怎麼下 Prompt
 
 好的 prompt 至少應包含：

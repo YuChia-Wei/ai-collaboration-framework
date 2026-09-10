@@ -46,6 +46,7 @@ workflow:
   - step: 4
     description: "Recommend the correct test spec category and output path, then hand implementation to slice-implementer only when separately authorized"
 references:
+  - ".ai/assets/shared/GWT-TEST-HANDOFF-CONTRACT.md"
   - ".ai/assets/shared/ARTIFACT-DESIGN-REVIEW-CONTRACT.md"
   - ".ai/assets/skills/bdd-gwt-test-designer/references/review-criteria.md"
   - ".ai/assets/skills/bdd-gwt-test-designer/references/scope-rules.md"

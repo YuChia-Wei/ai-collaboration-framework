@@ -26,6 +26,9 @@ Use this mode when the slice is bounded but does not fit command, query, or reac
 - A test-only slice uses this mode and loads each applicable concrete-test role
   binding. BDD/GWT design is an input to the slice, not implementation
   authority; target-owned test execution remains a distinct stage.
+- When the slice implements GWT scenarios, consume
+  `.ai/assets/shared/GWT-TEST-HANDOFF-CONTRACT.md` and return the concrete
+  scenario-to-test/step/assertion mapping with truthful execution status.
 
 ## Expected Output
 

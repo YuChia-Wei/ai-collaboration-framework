@@ -16,12 +16,17 @@ The default artifact is scenario notes. If the user provides or explicitly reque
 
 For each scenario provide:
 
-- scenario name and traced requirement/AC IDs
+- stable scenario ID and name, source binding and traced requirement/AC IDs
 - test level
 - Given
 - When
 - Then
 - optional And
+
+Use the [GWT handoff contract](../../../shared/GWT-TEST-HANDOFF-CONTRACT.md)
+for concrete data, parameterized-row identities, observable outcomes and
+explicit unknowns. Preserve the user's artifact format; this does not require
+another specification or executable test code from the designer.
 
 ## 3. Assertion Notes
 
@@ -61,3 +66,8 @@ scenario set, assertion notes, selected test level, and open questions to
 `slice-implementer`; do not claim that this design authorizes a code change.
 Keep the later implementation result separate from target-owned test-execution
 commands and outcomes.
+
+Carry the scenario identities and outcome assertions into the receiving
+implementation. The receiver completes the scenario-to-test/step/assertion
+mapping defined by the shared contract; the designer does not invent future
+test locations, review results or execution evidence.

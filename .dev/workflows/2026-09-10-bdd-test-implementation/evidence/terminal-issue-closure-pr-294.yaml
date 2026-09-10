@@ -1,0 +1,126 @@
+schema_version: '1.0'
+contract_id: github-terminal-issue-closure
+repository: YuChia-Wei/ai-collaboration-framework
+validation_stage: declaration
+pull_request:
+  number: 294
+  head_sha: null
+  body: '## Summary
+
+
+    BDD scenarios need to become readable executable tests without losing their source
+    identity or required assertions. This change connects the existing design, implementation
+    and review routes through a shared GWT handoff and explicit .NET step-method responsibilities.
+
+
+    ## Changes
+
+
+    - Define scenario-to-test/assertion mapping, real When execution, observable Then
+    checks, per-test isolation, and async/exception responsibilities.
+
+    - Add runnable BDDfy and explicit plain-xUnit examples while preserving existing
+    defaults and ownership boundaries.
+
+    - Retain first-candidate generated tests, independent reviews, negative controls
+    and separate acceptance evidence.
+
+
+    ## Validation
+
+
+    - Original examples: 10/10 passed; model-generated tests: 10/10 passed without
+    source repair.
+
+    - Ten review cards matched the fixed oracle: seven defects detected, three valid
+    alternatives accepted.
+
+    - Independent source, generated-code and local terminal reviews passed; all eight
+    acceptance criteria have separate evidence.
+
+    - Committed package-reference, catalog, AI-context and workflow checks passed.
+    Initial failures and corrections remain recorded.
+
+    - This is a bounded fixture exercise; it does not establish general generation
+    reliability, delayed external-I/O behavior or downstream adoption.
+
+
+    ## Related Issues
+
+
+    - Issue: #293
+
+    - Delivery disposition: `terminal-close`
+
+    - Closes #293
+
+    - Owner authorization: On 2026-09-11 the owner requested merging this completed
+    delivery and closing the Issue. Required push, PR, review/check admission, merge
+    and Issue/Project reconciliation are part of this delivery.
+
+
+    ## Delivery And Integration
+
+
+    - Delivery grouping: single work item.
+
+    - Execution record: `.dev/workflows/2026-09-10-bdd-test-implementation/`.
+
+    - Selected topology: merge commit.
+
+    - Topology reason: preserve the locally accepted implementation, actual cross-agent
+    evaluation and subsequent owner-authorized provider delivery as one auditable
+    integration and rollback unit.
+
+    - Provider review receipt, all required hosted checks and live merge admission
+    must pass on the current PR head before integration. Post-merge read-back must
+    confirm Issue completed and Project Done.
+
+
+    ## Checklist
+
+
+    - [x] Selected repository-native and explicit fixture validation completed.
+
+    - [x] Applicable guidance, examples and review references updated.
+
+    - [x] No credentials or secret values included.
+
+    - [x] One terminal-close disposition declared for the named Issue.
+
+    - [ ] Current PR review binding, hosted checks and live merge admission satisfied.
+
+    '
+  integration:
+    status: pending
+    topology: null
+    admitted_head_sha: null
+    integration_commit_sha: null
+    provider_read_back: false
+  review:
+    status: pending
+  required_check_contexts: []
+  hosted_checks: []
+issues:
+- number: 293
+  mode: terminal-close
+  work_authorization:
+    online_issue_bound: true
+    explicit_owner_approval: true
+  final_accepted_delivery: true
+  workflow:
+    scope_complete: true
+    tasks_complete: true
+    applicable_verification_complete: true
+  closing_keyword: Closes
+  closure_deferred_reason: null
+  next_terminal_gate_or_owner: null
+  read_back:
+    performed: false
+    integration_commit_sha: null
+    issue_state: null
+    issue_state_reason: null
+    project_status: null
+authorization_note: 'The owner authorized merging the completed #293 delivery and
+  closing the Issue on 2026-09-11. Required PR, checks, review receipt and provider
+  read-back are necessary delivery steps; no tag or publication is authorized.'

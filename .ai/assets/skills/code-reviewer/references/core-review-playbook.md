@@ -31,6 +31,11 @@ Report unavailable coverage and any resulting acceptance blocker explicitly.
 - Compare tests with observable behavior: useful assertions, meaningful failure
   cases, affected contracts and gaps. Existing test output is evidence with a
   subject and environment, not proof that every changed behavior is correct.
+- When tests implement selected GWT scenarios, consume
+  `.ai/assets/shared/GWT-TEST-HANDOFF-CONTRACT.md`. Follow step methods into
+  actual setup, action and assertions; check every designed outcome and data-row
+  mapping. Names, comments, compilation or green results alone do not prove
+  that the scenario was faithfully implemented.
 - Apply adopted architecture and target rules within their scope. A different
   valid design or unfamiliar library is not itself a defect. Do not impose DDD,
   CQRS, Event Sourcing, a broker, DI helper or testing library without authority.

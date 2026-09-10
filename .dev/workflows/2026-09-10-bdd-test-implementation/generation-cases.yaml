@@ -1,0 +1,40 @@
+schema_version: "1.0"
+corpus_id: bdd-293-generation
+source: ".ai/assets/tech-stacks/dotnet-backend/examples/bdd-step-methods/scenarios.md#GWT-BUDGET-EXAMPLE/v1"
+status: approved-example-exercise
+purpose: "Actual bounded implementation from new data; not a blind comparison or production reliability estimate."
+test_level: isolated-use-case-unit
+subject: "GwtStepMethods.BudgetQuery.QueryAsync"
+controlled_dependency: "GwtStepMethods.IBudgetRepository.GetAllAsync"
+profiles:
+  - id: DefaultBddfy
+    selection: "xUnit + BDDfy default; NSubstitute"
+  - id: PlainXunit
+    selection: "Explicit exercise-owned BDDfy opt-out; xUnit GWT methods and NSubstitute"
+cases:
+  - id: GENERATED-01
+    given_budgets: [{month: "202205", amount: 62}]
+    when: {start: "2022-04-01", end: "2022-04-02"}
+    then: {amount: 0}
+  - id: GENERATED-02
+    given_budgets: [{month: "202209", amount: 90}]
+    when: {start: "2022-09-03", end: "2022-09-05"}
+    then: {amount: 9}
+  - id: GENERATED-03
+    given_budgets: [{month: "202112", amount: 310}, {month: "202201", amount: 620}]
+    when: {start: "2021-12-31", end: "2022-01-02"}
+    then: {amount: 50}
+  - id: GENERATED-04
+    given_budgets: [{month: "202209", amount: 90}]
+    when: {start: "2022-09-05", end: "2022-09-04"}
+    then: {exception_type: ArgumentException, parameter_name: end, repository_reads: 0}
+  - id: GENERATED-05
+    given_budgets: [{month: "202206", amount: 15}]
+    when: {start: "2022-06-01", end: "2022-06-03"}
+    then: {amount: 1.5}
+constraints:
+  - "Write one GeneratedBudgetQueryTests.cs for each profile and one mapping report; do not edit the supplied subject or project configuration."
+  - "Preserve scenario IDs in test traits or named theory rows; all five cases must be discoverable independently in each profile."
+  - "Keep important data and expected values visible; use actual Given/When/Then methods and all required assertions."
+  - "Any unresolved compile/API question must remain visible rather than being replaced by invented execution claims."
+  - "Code generation and actual execution are separate outputs; root runs the generated tests and independent review follows."

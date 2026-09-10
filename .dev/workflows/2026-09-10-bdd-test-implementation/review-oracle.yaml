@@ -1,0 +1,36 @@
+schema_version: '1.0'
+corpus_id: bdd-293-review
+owner: /root
+created_before_dispatch: true
+cases:
+- id: REVIEW-01
+  expected: acceptable
+  reason: Real awaited primary action and independent exact amount assertion; no hidden mutable result.
+- id: REVIEW-02
+  expected: finding
+  reason: When fabricates zero and never invokes the real subject, even though the test can pass.
+- id: REVIEW-03
+  expected: finding
+  reason: Then repeats the primary query and ignores the captured When result.
+- id: REVIEW-04
+  expected: finding
+  reason: The exact amount outcome is weakened to a non-negative check.
+- id: REVIEW-05
+  expected: finding
+  reason: The action is fire-and-forget and zero may be observed before actual execution completes.
+- id: REVIEW-06
+  expected: finding
+  reason: The parameter-name and zero-repository-read outcomes are both missing.
+- id: REVIEW-07
+  expected: acceptable
+  reason: Explicit permitted compact contract-test form with exact exception and parameter assertions; not an arbitrary
+    scenario-style opt-out.
+- id: REVIEW-08
+  expected: acceptable
+  reason: Valid traceable theory rows; no requirement for separate methods or different helper spellings.
+- id: REVIEW-09
+  expected: finding
+  reason: Plain helper calls bypass the explicitly selected BDDfy profile; no target opt-out exists.
+- id: REVIEW-10
+  expected: finding
+  reason: Zero discovery cannot support the claimed actual execution of selected cases.

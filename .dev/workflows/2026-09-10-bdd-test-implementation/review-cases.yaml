@@ -1,0 +1,110 @@
+schema_version: '1.0'
+corpus_id: bdd-293-review
+purpose: Bounded implementation-guidance review exercise; snippets are reviewed, not claimed executed unless separate
+  runtime evidence is supplied.
+context: C# xUnit v3, NSubstitute, the example BudgetQuery API; omitted using directives and constructors are supplied
+  by the stated context. Judge actual semantic defects, not snippet completeness or arbitrary naming preferences.
+cases:
+- id: REVIEW-01
+  profile: Explicit PlainXunit BDDfy opt-out
+  contract: Only February 2021 has budget 28. Query January 1 through January 2. Amount must equal 0. Fixture constructor
+    creates a new real BudgetQuery and a new NSubstitute repository per test.
+  code: "[Fact]\npublic async Task Should_return_zero_when_no_budget_matches()\n{\n    GivenMonthlyBudget(\"202102\"\
+    , 28m);\n    var actual = await WhenQueryingBudget(new DateOnly(2021, 1, 1), new DateOnly(2021, 1, 2));\n    ThenAmountShouldBe(actual,\
+    \ 0m);\n}\nprivate void GivenMonthlyBudget(string month, decimal amount) =>\n    _repository.GetAllAsync(Arg.Any<CancellationToken>())\n\
+    \        .Returns(Task.FromResult<IReadOnlyList<MonthlyBudget>>(new[] { new MonthlyBudget(month, amount) }));\nprivate\
+    \ Task<decimal> WhenQueryingBudget(DateOnly start, DateOnly end) => _subject.QueryAsync(start, end);\nprivate static\
+    \ void ThenAmountShouldBe(decimal actual, decimal expected) => Assert.Equal(expected, actual);\n"
+- id: REVIEW-02
+  profile: Explicit PlainXunit BDDfy opt-out
+  contract: Only February 2021 has budget 28. Query January 1 through January 2. Amount must equal 0. Fixture constructor
+    creates a new real BudgetQuery and a new NSubstitute repository per test.
+  code: "[Fact]\npublic async Task Should_return_zero_when_no_budget_matches()\n{\n    GivenMonthlyBudget(\"202102\"\
+    , 28m);\n    var actual = await WhenQueryingBudget(new DateOnly(2021, 1, 1), new DateOnly(2021, 1, 2));\n    ThenAmountShouldBe(actual,\
+    \ 0m);\n}\nprivate void GivenMonthlyBudget(string month, decimal amount) =>\n    _repository.GetAllAsync(Arg.Any<CancellationToken>())\n\
+    \        .Returns(Task.FromResult<IReadOnlyList<MonthlyBudget>>(new[] { new MonthlyBudget(month, amount) }));\nprivate\
+    \ Task<decimal> WhenQueryingBudget(DateOnly start, DateOnly end) => Task.FromResult(0m);\nprivate static void ThenAmountShouldBe(decimal\
+    \ actual, decimal expected) => Assert.Equal(expected, actual);\n"
+- id: REVIEW-03
+  profile: Explicit PlainXunit BDDfy opt-out
+  contract: Only February 2021 has budget 28. Query January 1 through January 2. Amount must equal 0. Fixture constructor
+    creates a new real BudgetQuery and a new NSubstitute repository per test.
+  code: "[Fact]\npublic async Task Should_return_zero_when_no_budget_matches()\n{\n    GivenMonthlyBudget(\"202102\"\
+    , 28m);\n    var actual = await WhenQueryingBudget(new DateOnly(2021, 1, 1), new DateOnly(2021, 1, 2));\n    await\
+    \ ThenAmountShouldBe(0m);\n}\nprivate void GivenMonthlyBudget(string month, decimal amount) =>\n    _repository.GetAllAsync(Arg.Any<CancellationToken>())\n\
+    \        .Returns(Task.FromResult<IReadOnlyList<MonthlyBudget>>(new[] { new MonthlyBudget(month, amount) }));\nprivate\
+    \ Task<decimal> WhenQueryingBudget(DateOnly start, DateOnly end) => _subject.QueryAsync(start, end);\nprivate async\
+    \ Task ThenAmountShouldBe(decimal expected) => Assert.Equal(expected, await _subject.QueryAsync(new DateOnly(2021,\
+    \ 1, 1), new DateOnly(2021, 1, 2)));\n"
+- id: REVIEW-04
+  profile: Explicit PlainXunit BDDfy opt-out
+  contract: April budget is 300. Query April 1 through April 2. Amount must equal 20. Per-test real subject and substitute
+    are freshly created.
+  code: "[Fact]\npublic async Task Should_return_zero_when_no_budget_matches()\n{\n    GivenMonthlyBudget(\"202104\"\
+    , 300m);\n    var actual = await WhenQueryingBudget(new DateOnly(2021, 4, 1), new DateOnly(2021, 4, 2));\n    ThenAmountShouldBe(actual,\
+    \ 20m);\n}\nprivate void GivenMonthlyBudget(string month, decimal amount) =>\n    _repository.GetAllAsync(Arg.Any<CancellationToken>())\n\
+    \        .Returns(Task.FromResult<IReadOnlyList<MonthlyBudget>>(new[] { new MonthlyBudget(month, amount) }));\nprivate\
+    \ Task<decimal> WhenQueryingBudget(DateOnly start, DateOnly end) => _subject.QueryAsync(start, end);\nprivate static\
+    \ void ThenAmountShouldBe(decimal actual, decimal expected) => Assert.True(actual >= 0);\n"
+- id: REVIEW-05
+  profile: Explicit PlainXunit BDDfy opt-out
+  contract: Only February 2021 has budget 28. Query January 1 through January 2. Amount must equal 0. Fixture constructor
+    creates a new real BudgetQuery and a new NSubstitute repository per test.
+  code: "private decimal _actual;\n[Fact]\npublic void Should_return_zero_when_no_budget_matches()\n{\n    GivenMonthlyBudget(\"\
+    202102\", 28m);\n    WhenQueryingBudget();\n    ThenAmountShouldBe(0m);\n}\nprivate void GivenMonthlyBudget(string\
+    \ month, decimal amount) =>\n    _repository.GetAllAsync(Arg.Any<CancellationToken>()).Returns(Task.FromResult<IReadOnlyList<MonthlyBudget>>(new[]\
+    \ {new MonthlyBudget(month, amount)}));\nprivate void WhenQueryingBudget() { _ = QueryLater(); }\nprivate async Task\
+    \ QueryLater() => _actual = await _subject.QueryAsync(new DateOnly(2021, 1, 1), new DateOnly(2021, 1, 2));\nprivate\
+    \ void ThenAmountShouldBe(decimal expected) => Assert.Equal(expected, _actual);\n"
+- id: REVIEW-06
+  profile: Explicit PlainXunit BDDfy opt-out
+  contract: Inverted range must throw exact ArgumentException with ParamName=end, before any repository read. The real
+    subject and substitute are fresh.
+  code: "[Fact]\npublic async Task Should_reject_an_inverted_range()\n{\n    GivenMonthlyBudget(\"202104\", 300m);\n\
+    \    var error = await WhenQueryingAnInvalidRange();\n    ThenTheRangeShouldBeRejected(error);\n}\nprivate void GivenMonthlyBudget(string\
+    \ month, decimal amount) => _repository.GetAllAsync(Arg.Any<CancellationToken>()).Returns(Task.FromResult<IReadOnlyList<MonthlyBudget>>(new[]\
+    \ {new MonthlyBudget(month, amount)}));\nprivate async Task<Exception?> WhenQueryingAnInvalidRange() => await Record.ExceptionAsync(()\
+    \ => _subject.QueryAsync(new DateOnly(2021, 4, 2), new DateOnly(2021, 4, 1)));\nprivate static void ThenTheRangeShouldBeRejected(Exception?\
+    \ error) => Assert.IsType<ArgumentException>(error);\n"
+- id: REVIEW-07
+  profile: Explicit PlainXunit BDDfy opt-out
+  contract: A new test instance uses a real AmountGuard. Its contract rejects negative amounts with exact ArgumentOutOfRangeException
+    and ParamName=amount. This is the canonical compact exception-contract form permitted by section 5.
+  code: "[Fact]\npublic void Should_reject_negative_amount()\n{\n    // Given\n    var subject = new AmountGuard();\n\
+    \    // When / Then\n    var error = Assert.Throws<ArgumentOutOfRangeException>(() => subject.Accept(-1m));\n   \
+    \ Assert.Equal(\"amount\", error.ParamName);\n}\n"
+- id: REVIEW-08
+  profile: Explicit PlainXunit BDDfy opt-out
+  contract: April budget 300, query April 1-2 =>20; April budget45, query April1-3=>4.5. Each row shares setup/action/assertion
+    responsibilities and has a stable ID. Fresh real subject/repository per test.
+  code: "[Theory]\n[InlineData(\"row-integer\", 300, 2, 20)]\n[InlineData(\"row-fractional\", 45, 3, 4.5)]\npublic async\
+    \ Task Should_prorate(string row, decimal monthly, int lastDay, decimal expected)\n{\n    GivenMonthlyBudget(\"202104\"\
+    , monthly);\n    var actual = await WhenQueryingBudget(new DateOnly(2021,4,1), new DateOnly(2021,4,lastDay));\n \
+    \   ThenAmountShouldBe(actual, expected, row);\n}\nprivate void GivenMonthlyBudget(string month, decimal amount)\
+    \ => _repository.GetAllAsync(Arg.Any<CancellationToken>()).Returns(Task.FromResult<IReadOnlyList<MonthlyBudget>>(new[]\
+    \ {new MonthlyBudget(month, amount)}));\nprivate Task<decimal> WhenQueryingBudget(DateOnly start, DateOnly end) =>\
+    \ _subject.QueryAsync(start,end);\nprivate static void ThenAmountShouldBe(decimal actual, decimal expected, string\
+    \ row) => Assert.True(actual == expected, row);\n"
+- id: REVIEW-09
+  profile: Default xUnit + BDDfy; no target opt-out
+  contract: Only February 2021 has budget 28. Query January 1 through January 2. Amount must equal 0. Fixture constructor
+    creates a new real BudgetQuery and a new NSubstitute repository per test.
+  code: "[Fact]\npublic async Task Should_return_zero_when_no_budget_matches()\n{\n    GivenMonthlyBudget(\"202102\"\
+    , 28m);\n    var actual = await WhenQueryingBudget(new DateOnly(2021, 1, 1), new DateOnly(2021, 1, 2));\n    ThenAmountShouldBe(actual,\
+    \ 0m);\n}\nprivate void GivenMonthlyBudget(string month, decimal amount) =>\n    _repository.GetAllAsync(Arg.Any<CancellationToken>())\n\
+    \        .Returns(Task.FromResult<IReadOnlyList<MonthlyBudget>>(new[] { new MonthlyBudget(month, amount) }));\nprivate\
+    \ Task<decimal> WhenQueryingBudget(DateOnly start, DateOnly end) => _subject.QueryAsync(start, end);\nprivate static\
+    \ void ThenAmountShouldBe(decimal actual, decimal expected) => Assert.Equal(expected, actual);\n"
+- id: REVIEW-10
+  profile: Explicit PlainXunit BDDfy opt-out
+  contract: Selected BUDGET-01..04 comprise five executable cases, including both BUDGET-02 rows. The report claims all
+    cases executed successfully.
+  code: 'Execution report: all five selected scenarios passed.
+
+    Command: dotnet test PlainXunit.csproj --filter FullyQualifiedName~NoSuchTest
+
+    TRX summary: total=0, executed=0, passed=0, failed=0, skipped=0.
+
+    There are no UnitTestResult entries.
+
+    '
