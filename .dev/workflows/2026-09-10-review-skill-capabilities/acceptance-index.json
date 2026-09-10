@@ -1,0 +1,179 @@
+{
+  "schema_version": "1.0",
+  "record_type": "local-acceptance-index",
+  "workflow_id": "2026-09-10-review-skill-capabilities",
+  "source_subject_sha": "deb969de2a8e71f7b6ef218c35d0b060d9b49142",
+  "decision_scope": "Local source and controlled examples only; does not close online Issues or admit a release.",
+  "issues": [
+    {
+      "issue": 289,
+      "local_outcome": "passed",
+      "entries": [
+        {
+          "acceptance_id": "289-AC1",
+          "criterion": "Responsibility/applicability matrix",
+          "outcome": "passed",
+          "evidence_kind": "document",
+          "tracked_evidence": [
+            "reviewer-capability-matrix.md"
+          ],
+          "local_ledgers": [
+            "ignored:.dev/ai-context/local/review-skill-capabilities/acceptance-289-source.json"
+          ]
+        },
+        {
+          "acceptance_id": "289-AC2",
+          "criterion": "Usable core-only and preserved selected .NET capability",
+          "outcome": "passed",
+          "evidence_kind": "document",
+          "tracked_evidence": [
+            "reviewer-capability-matrix.md",
+            "observed-results.json"
+          ],
+          "local_ledgers": [
+            "ignored:.dev/ai-context/local/review-skill-capabilities/acceptance-289-source.json"
+          ]
+        },
+        {
+          "acceptance_id": "289-AC3",
+          "criterion": "Actual core, .NET, mixed and missing/unknown review exercises",
+          "outcome": "passed",
+          "evidence_kind": "actual-execution",
+          "tracked_evidence": [
+            "observed-results.json"
+          ],
+          "local_ledgers": [
+            "ignored:.dev/ai-context/local/review-skill-capabilities/acceptance-289-runtime.json"
+          ]
+        },
+        {
+          "acceptance_id": "289-AC4",
+          "criterion": "Known defects and acceptable alternatives without unselected rules",
+          "outcome": "passed",
+          "evidence_kind": "actual-execution",
+          "tracked_evidence": [
+            "observed-results.json"
+          ],
+          "local_ledgers": [
+            "ignored:.dev/ai-context/local/review-skill-capabilities/acceptance-289-runtime.json"
+          ]
+        },
+        {
+          "acceptance_id": "289-AC5",
+          "criterion": "Package, wrappers, routing and bounded upgrade/customization checks",
+          "outcome": "passed",
+          "evidence_kind": "document",
+          "tracked_evidence": [
+            "observed-results.json"
+          ],
+          "local_ledgers": [
+            "ignored:.dev/ai-context/local/review-skill-capabilities/acceptance-289-source.json"
+          ]
+        },
+        {
+          "acceptance_id": "289-AC6",
+          "criterion": "Parent evaluation of behavior and evidence quality",
+          "outcome": "passed",
+          "evidence_kind": "actual-execution",
+          "tracked_evidence": [
+            "observed-results.json"
+          ],
+          "local_ledgers": [
+            "ignored:.dev/ai-context/local/review-skill-capabilities/acceptance-289-runtime.json"
+          ]
+        }
+      ]
+    },
+    {
+      "issue": 290,
+      "local_outcome": "passed",
+      "entries": [
+        {
+          "acceptance_id": "290-AC1",
+          "criterion": "Capability and handoff matrix",
+          "outcome": "passed",
+          "evidence_kind": "document",
+          "tracked_evidence": [
+            "design-review-decision.md"
+          ],
+          "local_ledgers": [
+            "ignored:.dev/ai-context/local/review-skill-capabilities/acceptance-290-source.json"
+          ]
+        },
+        {
+          "acceptance_id": "290-AC2",
+          "criterion": "Existing mode decision and cost/benefit",
+          "outcome": "passed",
+          "evidence_kind": "document",
+          "tracked_evidence": [
+            "design-review-decision.md"
+          ],
+          "local_ledgers": [
+            "ignored:.dev/ai-context/local/review-skill-capabilities/acceptance-290-source.json"
+          ]
+        },
+        {
+          "acceptance_id": "290-AC3",
+          "criterion": "Known defects, valid alternatives and incomplete architecture/BDD inputs",
+          "outcome": "passed",
+          "evidence_kind": "actual-execution",
+          "tracked_evidence": [
+            "observed-results.json"
+          ],
+          "local_ledgers": [
+            "ignored:.dev/ai-context/local/review-skill-capabilities/acceptance-290-runtime-content.json"
+          ]
+        },
+        {
+          "acceptance_id": "290-AC4",
+          "criterion": "Correct mode, useful findings, limits and unchanged review artifact",
+          "outcome": "passed",
+          "evidence_kind": "actual-execution",
+          "tracked_evidence": [
+            "observed-results.json"
+          ],
+          "local_ledgers": [
+            "ignored:.dev/ai-context/local/review-skill-capabilities/acceptance-290-runtime-content.json"
+          ]
+        },
+        {
+          "acceptance_id": "290-AC5",
+          "criterion": "Controlled .NET/non-.NET examples avoid unselected conventions",
+          "outcome": "passed",
+          "evidence_kind": "actual-execution",
+          "tracked_evidence": [
+            "observed-results.json"
+          ],
+          "local_ledgers": [
+            "ignored:.dev/ai-context/local/review-skill-capabilities/acceptance-290-runtime-content.json"
+          ]
+        },
+        {
+          "acceptance_id": "290-AC6",
+          "criterion": "Self-check, independence and handoff boundaries",
+          "outcome": "passed",
+          "evidence_kind": "actual-execution",
+          "tracked_evidence": [
+            "observed-results.json"
+          ],
+          "local_ledgers": [
+            "ignored:.dev/ai-context/local/review-skill-capabilities/acceptance-290-classification.json"
+          ]
+        },
+        {
+          "acceptance_id": "290-AC7",
+          "criterion": "Authoring, schema, references, package, wrappers and routing coherent",
+          "outcome": "passed",
+          "evidence_kind": "actual-execution",
+          "tracked_evidence": [
+            "observed-results.json"
+          ],
+          "local_ledgers": [
+            "ignored:.dev/ai-context/local/review-skill-capabilities/acceptance-290-runtime-content.json",
+            "ignored:.dev/ai-context/local/review-skill-capabilities/acceptance-290-source.json"
+          ]
+        }
+      ]
+    }
+  ]
+}

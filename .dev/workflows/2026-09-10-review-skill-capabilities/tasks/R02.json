@@ -8,7 +8,7 @@
   "owner_skill": "ai-context-governance",
   "status": "completed",
   "created_at": "2026-09-10T09:32:33+08:00",
-  "updated_at": "2026-09-10T09:56:51+08:00",
+  "updated_at": "2026-09-10T10:19:31+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-6-astra",
   "reasoning_effort": "ultra",
@@ -30,8 +30,8 @@
   "execution": {
     "steps": [],
     "validation": [],
-    "last_completed_step": "Implemented design/review modes, selected technology sources, criteria, handoff matrix, controlled inputs and wrappers.",
-    "next_action": "Fixed-commit package, behavior and independent verification belong to V01/A01."
+    "last_completed_step": "Local implementation and parent acceptance completed; see remediation-report.md and acceptance-index.json.",
+    "next_action": "No tracked implementation work remains; final clean-commit admission writes only the declared ignored terminal artifacts."
   },
   "results": {
     "summary": "Existing architecture/BDD identities now support explicit design and read-only artifact review with shared evidence rules. Concrete .NET guidance remains selected and profile-owned.",
@@ -82,8 +82,8 @@
       }
     ],
     "finding_status": "addressed",
-    "residual_risk": "Controlled actual skill exercises and committed package closure remain pending; no downstream upgrade or production adoption claim.",
-    "follow_up_needed": true
+    "residual_risk": "Controlled examples and bounded source/package checks; no production adoption or real released-target upgrade claim.",
+    "follow_up_needed": false
   },
   "work_items": [
     290
