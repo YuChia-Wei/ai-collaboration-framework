@@ -120,8 +120,6 @@ entries:
           - .ai/assets/sub-agent-role-prompts/context-translator/**
       - component_id: dotnet-backend
         patterns:
-          - .ai/assets/skills/code-reviewer/**
-          - .ai/assets/sub-agent-role-prompts/*code-review-sub-agent/**
           - .ai/assets/tech-stacks/dotnet-backend/**
     target: .ai/assets/
     ownership: framework-managed
@@ -180,9 +178,6 @@ entries:
           - .agents/skills/ai-context-upgrader/**
           - .agents/skills/ai-context-init/**
           - .agents/skills/repo-structure-sync/**
-      - component_id: dotnet-backend
-        patterns:
-          - .agents/skills/code-reviewer/**
     target: .agents/skills/
     ownership: framework-managed
     install_behavior: managed
@@ -198,9 +193,6 @@ entries:
           - .claude/skills/ai-context-upgrader/**
           - .claude/skills/ai-context-init/**
           - .claude/skills/repo-structure-sync/**
-      - component_id: dotnet-backend
-        patterns:
-          - .claude/skills/code-reviewer/**
     target: .claude/skills/
     ownership: framework-managed
     install_behavior: managed
@@ -601,13 +593,40 @@ payload_user_view:
         - ai-context-lifecycle-core
         - dotnet-backend
   capabilities:
+    - capability_id: ddd-ca-hex-architect
+      owner_component: software-development-core
+      path_patterns:
+        - .ai/assets/skills/ddd-ca-hex-architect/**
+        - .ai/assets/shared/ARTIFACT-DESIGN-REVIEW-CONTRACT.md
+        - .agents/skills/ddd-ca-hex-architect/**
+        - .claude/skills/ddd-ca-hex-architect/**
+      availability:
+        core-only: available
+        dotnet-selected: available
+    - capability_id: bdd-gwt-test-designer
+      owner_component: software-development-core
+      path_patterns:
+        - .ai/assets/skills/bdd-gwt-test-designer/**
+        - .ai/assets/shared/ARTIFACT-DESIGN-REVIEW-CONTRACT.md
+        - .agents/skills/bdd-gwt-test-designer/**
+        - .claude/skills/bdd-gwt-test-designer/**
+      availability:
+        core-only: available
+        dotnet-selected: available
     - capability_id: code-reviewer
-      owner_component: dotnet-backend
+      owner_component: software-development-core
       path_patterns:
         - .ai/assets/skills/code-reviewer/**
         - .ai/assets/sub-agent-role-prompts/*code-review-sub-agent/**
         - .agents/skills/code-reviewer/**
         - .claude/skills/code-reviewer/**
+      availability:
+        core-only: available
+        dotnet-selected: available
+    - capability_id: code-reviewer-dotnet
+      owner_component: dotnet-backend
+      path_patterns:
+        - .ai/assets/tech-stacks/dotnet-backend/review/**
         - .ai/scripts/code-review.sh
       availability:
         core-only: unavailable-not-selected

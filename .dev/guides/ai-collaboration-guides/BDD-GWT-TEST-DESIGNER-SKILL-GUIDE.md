@@ -2,6 +2,17 @@
 
 本文件說明如何從使用者角度呼叫 `bdd-gwt-test-designer` skill。
 
+## Design 與 Review
+
+要求新增或修訂情境時使用 `design`；要求檢查既有情境時使用 `review`。
+Review 固定輸入版本，回傳 AC 覆蓋、Then 可觀察性、前置條件、邊界／失敗案例
+與測試層級的 findings、依據、影響及不確定性，保留原 artifact。修訂是另一個
+已授權的 design 動作。作者自檢須標示 self-check；使用相同 skill 的其他 reviewer
+仍需證明作者關係與受審版本，才能主張獨立審查。這些結果不代表 spec compliance。
+
+例如：「用 `bdd-gwt-test-designer` review 這份固定版本 scenario notes，逐項對照
+AC，說明缺漏、有效替代方案與待釐清資訊，不修改原文、不實作測試。」
+
 ## 這個 Skill 可以做什麼
 
 適合用在下列工作：
@@ -14,8 +25,8 @@
 
 ## 測試風格底線
 
-- 所有測試都必須採 Given-When-Then，不得以 Arrange-Act-Assert（3A）取代。
-- BDDfy 是預設實作工具；target team 可決議不引入套件，但 downstream C# 測試仍須保留 GWT 結構。
+- 本 skill 的情境設計採 Given-When-Then，不以 Arrange-Act-Assert（3A）取代。
+- 實作工具依 target 選擇。採用 .NET profile 時，依其規則使用 xUnit／BDDfy 預設及明確 opt-out；不把這些工具要求套用到其他 target。
 - `.feature` 是選配。未直接提供、未被明確要求且 target profile 未採用 runner 時，不主動建立 `.feature` 或相關配套。
 
 ## 這個 Skill 不應該做什麼
@@ -31,8 +42,8 @@
 
 - `bdd-gwt-test-designer`:
   - 先做測試情境設計
-- 現有 test generation prompts / subagents:
-  - 預設把設計轉成 xUnit + BDDfy 測試；若 target team 停用 BDDfy，則轉成維持 GWT 結構的純 xUnit 測試
+- `slice-implementer` 與其適用 test prompts / subagents:
+  - 在具備實作授權後，依 target 選定工具承接情境；本 skill 不建立 `role_execution`，也不宣稱已執行測試
 - `code-reviewer`:
   - 檢查測試是否符合規範、是否缺 coverage
 - `ddd-ca-hex-architect`:

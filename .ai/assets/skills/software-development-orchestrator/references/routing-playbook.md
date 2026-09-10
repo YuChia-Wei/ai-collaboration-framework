@@ -27,16 +27,23 @@ If the active profile has no matching downstream skill, use `skill-discovery-pla
 | Requirement drafting or normalization | `requirements` | Requirement draft, assumptions, gaps, source-truth notes. |
 | Spec drafting or normalization | `specification` | Behavior or component spec, source references, handoff notes. |
 | First problem-frame extraction | `problem-framing` | Validator-ready problem frame draft and source evidence. |
-| Architecture design or architecture refactoring direction | `architecture` | Bounded design decision, tradeoffs, target structure, non-goals. |
-| GWT scenario and assertion design | `test-design` | Scenarios, assertion points, test level recommendation. |
+| Architecture design, refactoring direction or review of an architecture artifact | `architecture` | Design decisions and tradeoffs, or findings against a fixed architecture artifact in review mode. |
+| GWT scenario/assertion design or review of a scenario artifact | `test-design` | Scenario/assertion design, or acceptance-coverage and test-design findings in review mode. |
 | Bounded slice implementation | `implementation` | Code or document changes for a bounded slice, narrow validation. |
 | Local technical change | `local-change` | Local class, object, method, symbol, SQL/ORM, or direct-call-site changes and narrow validation. |
 | Execute target-selected tests | `test-execution` | Target-owned commands, exact outcomes, and environment or deferral evidence. |
 | Diagnose an observed failure or performance symptom | `diagnosis` | Hypotheses, falsification evidence, reproduction, causal conclusion and repair handoff. |
-| Code or artifact review | `review` | Findings, severity, evidence, residual risk. |
+| Executable code or implementation-guidance review | `review` | Findings, severity, evidence, residual risk and declared technology coverage. |
 | Compliance or coverage gate | `compliance-validation` | Coverage result, missing evidence, pass/fail gate. |
 
 ## Local Profile Resolution
+
+Select the artifact owner before applying a generic review signal. Reviewing an
+architecture proposal stays in `architecture`; reviewing GWT scenario notes stays
+in `test-design`. Pass the requested `review` mode and fixed subject to that skill.
+Reviewing executable production or test code uses `review`. Keep the existing
+capability slots and machine intent tokens; mode selection does not create a new
+slot, mandatory stage, implementation authorization or compliance verdict.
 
 For this repository, resolve slots through the machine-readable
 `capability-profile.yaml`; use `capability-profile.md` for rationale and human review.

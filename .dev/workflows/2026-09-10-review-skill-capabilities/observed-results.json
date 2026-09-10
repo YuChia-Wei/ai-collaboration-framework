@@ -1,0 +1,631 @@
+{
+  "schema_version": "1.0",
+  "record_type": "controlled-review-observations",
+  "integration_owner": "/root",
+  "source_subject_sha": "deb969de2a8e71f7b6ef218c35d0b060d9b49142",
+  "scope": "Real model operations on controlled examples; no production adoption, application test execution or provider acceptance.",
+  "executions": [
+    {
+      "execution": "reviewer289_audit",
+      "subject_sha": "6de81489bfbf6c844292f6f442c3e80b658a0166",
+      "command": "collaboration.spawn_agent:reviewer289_audit-01",
+      "started_at": "2026-09-10T01:48:04.740872+00:00",
+      "completed_at": "2026-09-10T01:52:12.602034+00:00",
+      "duration_seconds": 247.861162,
+      "operation_outcome": "passed",
+      "integration_decision": "accepted",
+      "report_sha256": "4bac5bd26ae7d8608a798aa0fabf273aac0a0d16512ae2f31b9d07744e2b4abb",
+      "output_sha256": "699aef9c770cdaf0150c2f5e483461717fc9498b0fb19e67f9a5c2d73b048caa",
+      "receipt_file_sha256": "068e9bb4773e638f4616a82d41cf59edab2a4bd2c511526d766696cf356da3f5",
+      "local_evidence_root": "ignored:.dev/ai-context/local/review-skill-capabilities/reviewer289_audit",
+      "findings": [],
+      "limitations": [
+        "Parent-reported focused tests and validators were treated as parent evidence and were not rerun by this audit.",
+        "No initialized downstream target upgrade or customization reconciliation was executed; downstream upgrade compatibility remains an admission gate owned by the parent.",
+        "Behavior-case results are bounded static review reasoning over the committed fixtures, not a replacement for target-specific specialist execution."
+      ]
+    },
+    {
+      "execution": "reviewer289_behavior",
+      "subject_sha": "6de81489bfbf6c844292f6f442c3e80b658a0166",
+      "command": "collaboration.spawn_agent:reviewer289_behavior-01",
+      "started_at": "2026-09-10T01:47:53.351793+00:00",
+      "completed_at": "2026-09-10T01:52:21.464327+00:00",
+      "duration_seconds": 268.112534,
+      "operation_outcome": "passed",
+      "integration_decision": "accepted",
+      "report_sha256": "23aa7cf533fd05b2bc0a066e2147561d29b94c4492d061cc542e25ca7bdb9038",
+      "output_sha256": "84c6065a3614c5447819eefddaebd91ca4f73a1459a466fac21e780facf0e2e8",
+      "receipt_file_sha256": "d37f2a65d41c263284978bc194c9bdbee81206d005eb6e0b1915baffa0883456",
+      "local_evidence_root": "ignored:.dev/ai-context/local/review-skill-capabilities/reviewer289_behavior",
+      "findings": [
+        {
+          "id": "CR-001",
+          "case_id": "core-python-defect",
+          "severity": "MUST FIX",
+          "level": "code",
+          "location": "pagination.py:3-4",
+          "trigger": "Any input, including empty input",
+          "impact": "The helper reads index len(items) and raises IndexError before returning a list.",
+          "contract": "Return an empty list for empty input and preserve all input elements in order.",
+          "evidence": "range(len(items) + 1) includes an out-of-range index.",
+          "confidence": "high",
+          "recommendation": "Iterate only over valid input indexes.",
+          "next_skill": "local-change-implementer"
+        },
+        {
+          "id": "CR-002",
+          "case_id": "dotnet-defect",
+          "severity": "MUST FIX",
+          "level": "code",
+          "location": "src/Utilities/CopyValues.cs:4-5",
+          "trigger": "Any input, including empty input",
+          "impact": "The method reads values[values.Count] and raises an index failure instead of returning the copy.",
+          "contract": "Copy every integer in order, return an empty list for empty input, and reject null input.",
+          "evidence": "The null guard is present, but the loop uses index <= values.Count.",
+          "confidence": "high",
+          "recommendation": "Use an exclusive upper bound for the loop.",
+          "next_skill": "local-change-implementer"
+        },
+        {
+          "id": "CR-003",
+          "case_id": "mixed-technologies",
+          "severity": "MUST FIX",
+          "level": "code",
+          "location": "client/flagValue.ts:2",
+          "trigger": "value is false",
+          "impact": "false is returned as undefined, collapsing two required states.",
+          "contract": "false, true, and absence must remain distinct.",
+          "evidence": "Logical OR treats false as falsy and selects undefined.",
+          "confidence": "high",
+          "recommendation": "Return the value directly or use nullish handling that preserves false.",
+          "next_skill": "local-change-implementer"
+        },
+        {
+          "id": "CR-004",
+          "case_id": "missing-required-extension",
+          "severity": "MUST FIX",
+          "level": "gate",
+          "location": "review gate for src/Utilities/IsPositive.cs",
+          "trigger": "The target requires dotnet-backend specialist coverage.",
+          "impact": "The required specialist review cannot pass with the stated installation.",
+          "contract": "The case requires dotnet-backend and states that it is currently not installed.",
+          "evidence": "The specialist requirement is explicit; a source profile or .cs suffix does not establish installation.",
+          "confidence": "high",
+          "recommendation": "Make the selected dotnet-backend extension available and rerun the specialist review.",
+          "next_skill": "code-reviewer"
+        },
+        {
+          "id": "CR-005",
+          "case_id": "unknown-contract",
+          "severity": "MUST FIX",
+          "level": "contract",
+          "location": "policy.dsl:1",
+          "trigger": "The allowed threshold and ~= semantics are undocumented.",
+          "impact": "A semantic correctness judgment cannot be made without inventing intent.",
+          "contract": "The request explicitly says the threshold and operator meaning are not documented.",
+          "evidence": "No target-owned contract defines the permitted threshold or the operator.",
+          "confidence": "high",
+          "recommendation": "Document the threshold and ~= semantics in a requirement or specification before acceptance.",
+          "next_skill": "requirement-author"
+        }
+      ],
+      "limitations": [
+        "Only the six supplied synthetic snippets and their selected canonical routing references were used.",
+        "No code execution, tests, analyzers, dependencies, network, provider calls or external systems were used.",
+        "No caller, diff, production-runtime or application-test evidence was available.",
+        "TypeScript specialist coverage was unavailable in mixed-technologies; the required dotnet-backend specialist was unavailable in missing-required-extension.",
+        "The unknown-contract case remains blocked pending target-owned semantics."
+      ]
+    },
+    {
+      "execution": "review290_audit",
+      "subject_sha": "e07daa788ce31445db226b055bd9bdb32d3629e8",
+      "command": "collaboration.spawn_agent:review290_audit-01",
+      "started_at": "2026-09-10T02:00:24.044204+00:00",
+      "completed_at": "2026-09-10T02:07:17.383625+00:00",
+      "duration_seconds": 413.339421,
+      "operation_outcome": "passed",
+      "integration_decision": "reconciled",
+      "report_sha256": "d4d420ce26b97ddbd690ad919e6e7695faa823e1dc9df8b17f59e15be2d80474",
+      "output_sha256": "60f447a20bbe1841af4a64d2416ee79ef33d47a47d9bc682c4c5e5f9ffade08a",
+      "receipt_file_sha256": "3dc28e973f21f1fbbfe31ef66bdf8630ac70830638da2023e13c9f8433ac8104",
+      "local_evidence_root": "ignored:.dev/ai-context/local/review-skill-capabilities/review290_audit",
+      "findings": [
+        {
+          "finding_id": "R290-001",
+          "severity": "MUST FIX",
+          "title": "DDD runtime metadata omits review and retains MQ-first design-only prompting",
+          "evidence": [
+            ".ai/assets/skills/ddd-ca-hex-architect/skill.yaml:5,55-68",
+            ".agents/skills/ddd-ca-hex-architect/SKILL.md:3,17",
+            ".claude/skills/ddd-ca-hex-architect/SKILL.md:3,17",
+            ".agents/skills/ddd-ca-hex-architect/agents/openai.yaml:1,4-5",
+            ".claude/skills/ddd-ca-hex-architect/agents/openai.yaml:1,4-5",
+            ".ai/distribution/profiles/dotnet-backend.yaml:596-602",
+            "Parent-reported focused package validation: gwt009 failed in 66.346 seconds; this audit did not rerun it."
+          ],
+          "impact": "Runtime discovery can omit review and preselect MQ; the Codex package-reference admission gate is parent-reported failing.",
+          "suggested_correction": "Point both runtime metadata files at the exact canonical DDD skill capability, advertise target-authority design or review, remove MQ-first selection, and rerun the focused package validation on a new immutable subject.",
+          "owner": "/root",
+          "independence": "Direct reads corroborated stale metadata; the package-check result is parent evidence, not an audit execution."
+        }
+      ],
+      "limitations": [
+        "The design-review oracle and other reviewers' outputs were excluded and not read.",
+        "Fixtures lack author/reviewer relationships, so no behavior case establishes independent acceptance.",
+        "No supplied fixture includes a freshness-verified effective-rule packet for technology-specific catalog judgment.",
+        "No application code or test was executed; no network, provider, credential, installation, tracked write, repair, commit, push, PR, merge, Issue mutation, or release occurred.",
+        "The parent-reported package failure needs a fresh validation after repair."
+      ]
+    },
+    {
+      "execution": "review290_behavior",
+      "subject_sha": "e07daa788ce31445db226b055bd9bdb32d3629e8",
+      "command": "collaboration.spawn_agent:review290_behavior-01",
+      "started_at": "2026-09-10T01:59:52.058439+00:00",
+      "completed_at": "2026-09-10T02:09:04.654430+00:00",
+      "duration_seconds": 552.595991,
+      "operation_outcome": "passed",
+      "integration_decision": "reconciled",
+      "report_sha256": "f56ad946cc233aa818ee4f448a99f01760b1f59cce8e817c06f9fe03bb99c5e5",
+      "output_sha256": "843cd9aa5cce98364fe6f17e50a68b79b8222f6fe6b60e89290d35fd883b737c",
+      "receipt_file_sha256": "12aac6421cc7bf3482a7123c5f7dd11520ca25e03af10f56072825e4738f810a",
+      "local_evidence_root": "ignored:.dev/ai-context/local/review-skill-capabilities/review290_behavior",
+      "findings": [
+        {
+          "case_id": "architecture-defect",
+          "severity": "HIGH",
+          "summary": "The in-memory post-ack write cannot satisfy crash durability, and logging request IDs cannot prevent duplicate reservations on retry."
+        },
+        {
+          "case_id": "architecture-valid-alternative",
+          "severity": "none",
+          "summary": "No defect observed against supplied requirements and common architecture criteria."
+        },
+        {
+          "case_id": "architecture-incomplete",
+          "severity": "HIGH",
+          "summary": "Availability and stale-read authority is unresolved, so the five-minute no-invalidation claim cannot be judged as satisfying R1."
+        },
+        {
+          "case_id": "bdd-defect",
+          "severity": "HIGH",
+          "summary": "The scenario lacks AC traceability, observable and controlled assertions, boundary/failure coverage, and incorrectly claims that a mocked unit test proves database integration."
+        },
+        {
+          "case_id": "bdd-valid-alternative",
+          "severity": "none",
+          "summary": "Both supplied scenarios trace to their ACs and assert result identity and input preservation at a credible unit boundary."
+        },
+        {
+          "case_id": "bdd-incomplete",
+          "severity": "HIGH",
+          "summary": "The approval threshold and inclusivity are unresolved, so score 70 has no verifiable expected outcome."
+        },
+        {
+          "case_id": "architecture-design",
+          "severity": "none",
+          "summary": "A transport-neutral read-only lookup design was returned from R1 and R2."
+        },
+        {
+          "case_id": "bdd-design",
+          "severity": "none",
+          "summary": "Three provisional GWT scenarios cover true, false and absent values plus input immutability."
+        }
+      ],
+      "limitations": [
+        "No case selected the shipped dotnet-backend profile or a broker; catalog and profile-specific rules were not inferred.",
+        "No freshness-verified technology effective-rule packet was applicable to the common-method-only judgments. Runner, provider, ORM, DI, concurrency and transport checks remain unavailable where not explicitly selected.",
+        "No product source, test implementation, test runner, database, broker, package or feature file was executed or created.",
+        "The inline case artifacts do not identify their authors. The reviewer did not author or repair them, but author relationship is recorded as unknown.",
+        "The parent owns acceptance, grading, integration and any subsequent repair or provider action."
+      ]
+    },
+    {
+      "execution": "postrepair_audit",
+      "subject_sha": "deb969de2a8e71f7b6ef218c35d0b060d9b49142",
+      "command": "collaboration.followup_task:postrepair_audit-01",
+      "started_at": "2026-09-10T02:13:08.266641+00:00",
+      "completed_at": "2026-09-10T02:15:46.565388+00:00",
+      "duration_seconds": 158.298747,
+      "operation_outcome": "passed",
+      "integration_decision": "accepted",
+      "report_sha256": "391ad0150a6d62979a6f0eeb4cd6b3bfb5cca11de31aa83c531ed7883b9a1f0a",
+      "output_sha256": "7f47d6f28a2fa68470b1600e375f80397f228cba2d34c3c002894325c46c869f",
+      "receipt_file_sha256": "f55328483ebb88a64ce173788d142f079ef0a0511e704b049ac55f88a2718069",
+      "local_evidence_root": "ignored:.dev/ai-context/local/review-skill-capabilities/postrepair_audit",
+      "findings": [],
+      "limitations": [
+        "prior-* files are labelled prior execution evidence at e07daa78, not current-head execution evidence.",
+        "The parent-reported package closure and selected upgrade fixtures were not rerun; current focused tests are parent-owned.",
+        "The prior output stores response designs at observations.cases[].output rather than a literal output.design property. Self-check hashes canonically serialize those exact scalar values without inventing a new artifact field.",
+        "No workflow oracle, product code, application test, package test, external operation, provider action, network access, credential, installation, tracked-file mutation, or remediation was performed."
+      ]
+    },
+    {
+      "execution": "classification_recheck",
+      "subject_sha": "deb969de2a8e71f7b6ef218c35d0b060d9b49142",
+      "command": "collaboration.followup_task:classification_recheck-01",
+      "started_at": "2026-09-10T02:13:16.625522+00:00",
+      "completed_at": "2026-09-10T02:16:45.039651+00:00",
+      "duration_seconds": 208.414129,
+      "operation_outcome": "passed",
+      "integration_decision": "accepted",
+      "report_sha256": "d6104cac00aab9b35851aec9f4885203ccb34896a84150cbe6aa2292f92fc70f",
+      "output_sha256": "01f1b251e9e74e463d7ec2d364ef1f6428975a98cf7fcd13132b12c7a499c3ef",
+      "receipt_file_sha256": "a71a01528df43912ad3cd20dd860fb714c2bd99038de03c130c1b167e48e5e7e",
+      "local_evidence_root": "ignored:.dev/ai-context/local/review-skill-capabilities/classification_recheck",
+      "findings": [
+        {
+          "type": "classification-correction",
+          "cases": [
+            "architecture-defect",
+            "architecture-valid-alternative",
+            "architecture-incomplete",
+            "bdd-defect",
+            "bdd-valid-alternative",
+            "bdd-incomplete"
+          ],
+          "prior_classification": "independent-review",
+          "current_classification": "review; independence not established",
+          "summary": "Unknown author relationship is insufficient for independent-review even though fixed-subject and read-only evidence exist. The current shared contract explicitly requires the unproven classification."
+        },
+        {
+          "type": "classification-confirmation",
+          "cases": [
+            "architecture-design",
+            "bdd-design"
+          ],
+          "prior_classification": "not-applicable for response-only design",
+          "current_classification": "self-check",
+          "summary": "Both response-only designs were authored by the prior execution, so the current table classifies their follow-up as self-check."
+        }
+      ],
+      "limitations": [
+        "The six inline review artifacts do not identify their authors; no independent-review classification can be established from subject hashes alone.",
+        "The two design self-checks are not independent acceptance and do not establish implementation or specification compliance.",
+        "This recheck did not rerun the original design/review operations, application code, tests, packages, runners or providers.",
+        "Prior outputs and prior failure evidence remain preserved and were used only as explicitly labeled prior execution evidence.",
+        "Parent /root owns integration, grading, acceptance and any later repair or provider action."
+      ]
+    }
+  ],
+  "issue_289_parent_grade": {
+    "schema_version": "1.0",
+    "issue": 289,
+    "reviewed_execution_sha": "6de81489bfbf6c844292f6f442c3e80b658a0166",
+    "reviewer": "/root",
+    "oracle": ".dev/workflows/2026-09-10-review-skill-capabilities/reviewer-behavior-oracle.yaml",
+    "cases": [
+      {
+        "case_id": "core-python-defect",
+        "outcome": "passed",
+        "evidence": "CR-001 identifies the inclusive index and empty-input failure; common route only; no executed tests or .NET assumptions."
+      },
+      {
+        "case_id": "core-valid-alternative",
+        "outcome": "passed",
+        "evidence": "No findings; the reverse-copy contract and unchanged input are respected without imposing classes, aggregates or frameworks."
+      },
+      {
+        "case_id": "dotnet-defect",
+        "outcome": "passed",
+        "evidence": "CR-002 identifies index equal to Count; common and selected general-csharp routes are recorded. No event-sourcing requirement is imposed."
+      },
+      {
+        "case_id": "mixed-technologies",
+        "outcome": "passed",
+        "evidence": "CR-003 identifies false becoming undefined in TypeScript; C# Identity is not falsely rejected; per-partition coverage and missing TypeScript specialization are explicit."
+      },
+      {
+        "case_id": "missing-required-extension",
+        "outcome": "passed",
+        "evidence": "CR-004 is a gate finding, not a method defect; required specialist acceptance remains blocked while common observations are retained."
+      },
+      {
+        "case_id": "unknown-contract",
+        "outcome": "passed",
+        "evidence": "CR-005 is an authority blocker; the missing operator/threshold semantics are named without inventing their meaning."
+      }
+    ],
+    "outcome": "passed",
+    "evidence_quality": "All six requested outputs match the qualitative oracle. The child ledger proves the real model operation and unchanged controlled subject; parent verification checked receipt, output, report digests and lease release.",
+    "limits": [
+      "Specialist satisfied labels apply only to the stated selected routes and bounded snippet coverage, not broad catalog compliance, analyzer execution or a production acceptance gate.",
+      "No application tests or downstream upgrade were executed by the model reviewer.",
+      "This preserves the actual execution SHA; it is not relabeled as a later-head execution."
+    ]
+  },
+  "issue_290_initial_parent_grade": {
+    "schema_version": "1.0",
+    "issue": 290,
+    "reviewer": "/root",
+    "execution_sha": "e07daa788ce31445db226b055bd9bdb32d3629e8",
+    "outcome": "failed",
+    "cases": [
+      {
+        "case_id": "architecture-defect",
+        "mode_selection": "passed",
+        "artifact_preservation": "passed",
+        "core_findings_or_design": "passed",
+        "unselected_tooling_boundary": "passed",
+        "review_classification": "failed",
+        "qualification": ""
+      },
+      {
+        "case_id": "architecture-valid-alternative",
+        "mode_selection": "passed",
+        "artifact_preservation": "passed",
+        "core_findings_or_design": "passed",
+        "unselected_tooling_boundary": "passed",
+        "review_classification": "failed",
+        "qualification": ""
+      },
+      {
+        "case_id": "architecture-incomplete",
+        "mode_selection": "passed",
+        "artifact_preservation": "passed",
+        "core_findings_or_design": "passed",
+        "unselected_tooling_boundary": "passed",
+        "review_classification": "failed",
+        "qualification": "The incomplete-input findings are authority questions, not proof of a code defect; no exact result representation is imposed."
+      },
+      {
+        "case_id": "bdd-defect",
+        "mode_selection": "passed",
+        "artifact_preservation": "passed",
+        "core_findings_or_design": "passed",
+        "unselected_tooling_boundary": "passed",
+        "review_classification": "failed",
+        "qualification": ""
+      },
+      {
+        "case_id": "bdd-valid-alternative",
+        "mode_selection": "passed",
+        "artifact_preservation": "passed",
+        "core_findings_or_design": "passed",
+        "unselected_tooling_boundary": "passed",
+        "review_classification": "failed",
+        "qualification": ""
+      },
+      {
+        "case_id": "bdd-incomplete",
+        "mode_selection": "passed",
+        "artifact_preservation": "passed",
+        "core_findings_or_design": "passed",
+        "unselected_tooling_boundary": "passed",
+        "review_classification": "failed",
+        "qualification": "The incomplete-input findings are authority questions, not proof of a code defect; no exact result representation is imposed."
+      },
+      {
+        "case_id": "architecture-design",
+        "mode_selection": "passed",
+        "artifact_preservation": "passed",
+        "core_findings_or_design": "passed",
+        "unselected_tooling_boundary": "passed",
+        "review_classification": "not-applicable",
+        "qualification": ""
+      },
+      {
+        "case_id": "bdd-design",
+        "mode_selection": "passed",
+        "artifact_preservation": "passed",
+        "core_findings_or_design": "passed",
+        "unselected_tooling_boundary": "passed",
+        "review_classification": "not-applicable",
+        "qualification": ""
+      }
+    ],
+    "failure_id": "R290-003",
+    "failure_fingerprint": "unproven-author-relationship-labeled-independent-review",
+    "failure_detail": "All six Luna review outputs assert independent-review while stating author identity unavailable. Parent rejects that facet; source/design content and read-only evidence pass the qualitative oracle. Two response-only designs were authored outputs even though their loose report wording said no artifact authored.",
+    "remediation": "Shared ARTIFACT-DESIGN-REVIEW-CONTRACT.md now has an explicit classification decision table in deb969de; a separate feedback-informed classification recheck is pending. Preserve this failed result.",
+    "not_claimed": [
+      "A new blind trial",
+      "Universal model reliability",
+      "Production adoption",
+      "Executed application tests",
+      "Final Issue acceptance"
+    ]
+  },
+  "issue_290_classification_recheck": {
+    "schema_version": "1.0",
+    "issue": 290,
+    "reviewer": "/root",
+    "execution_sha": "deb969de2a8e71f7b6ef218c35d0b060d9b49142",
+    "outcome": "passed",
+    "failure_reconciled": "R290-003",
+    "trial_kind": "feedback-informed classification recheck and author self-check; not a new blind trial",
+    "cases": [
+      {
+        "case_id": "architecture-defect",
+        "outcome": "passed",
+        "classification": "review; independence not established",
+        "unchanged_subject_sha256": "896b5541dd319927a07796673ac3fb7e04285a8a2b74a5c172aba847ccb05803",
+        "interpretation": "Unknown authorship remains unproven; original content findings retained."
+      },
+      {
+        "case_id": "architecture-valid-alternative",
+        "outcome": "passed",
+        "classification": "review; independence not established",
+        "unchanged_subject_sha256": "284865e73215c2cd55de7bd7facb33b2e977f031ebee3a77af6da236e6533b80",
+        "interpretation": "Unknown authorship remains unproven; original content findings retained."
+      },
+      {
+        "case_id": "architecture-incomplete",
+        "outcome": "passed",
+        "classification": "review; independence not established",
+        "unchanged_subject_sha256": "2578ef3c9ba5a50bdc9d50ceb342a2fc9dc0a69bf171f832affaba1f79244e41",
+        "interpretation": "Unknown authorship remains unproven; original content findings retained."
+      },
+      {
+        "case_id": "bdd-defect",
+        "outcome": "passed",
+        "classification": "review; independence not established",
+        "unchanged_subject_sha256": "8e9f0b5f3d0e4dce409b9de7b625deb0c25a03d170731f0d583e8913557e108c",
+        "interpretation": "Unknown authorship remains unproven; original content findings retained."
+      },
+      {
+        "case_id": "bdd-valid-alternative",
+        "outcome": "passed",
+        "classification": "review; independence not established",
+        "unchanged_subject_sha256": "12250440bcdd69fea3df68ddea11ccb8bb9bed29055e2bdb82afa09e175bba2a",
+        "interpretation": "Unknown authorship remains unproven; original content findings retained."
+      },
+      {
+        "case_id": "bdd-incomplete",
+        "outcome": "passed",
+        "classification": "review; independence not established",
+        "unchanged_subject_sha256": "bf0c55f77ca255af39a44fbab150a1ba1f1f83cd5f837e9dadc73de63dab07c2",
+        "interpretation": "Unknown authorship remains unproven; original content findings retained."
+      },
+      {
+        "case_id": "architecture-design",
+        "outcome": "passed",
+        "classification": "self-check",
+        "unchanged_subject_sha256": "df819ea68e1caae423b063a7fd017438923c0564810ea16f05852c5bc1c226cd",
+        "interpretation": "Author self-check; no independent acceptance."
+      },
+      {
+        "case_id": "bdd-design",
+        "outcome": "passed",
+        "classification": "self-check",
+        "unchanged_subject_sha256": "3691c3716c1f5edb7e3dddf82617e1611fed32e034251d3014f45ec8d729f736",
+        "interpretation": "Author self-check; no independent acceptance."
+      }
+    ],
+    "initial_failure_ref": "ignored:.dev/ai-context/local/review-skill-capabilities/parent-290-case-checks-initial.json"
+  },
+  "postrepair_parent_grade": {
+    "schema_version": "1.0",
+    "reviewer": "/root",
+    "execution_sha": "deb969de2a8e71f7b6ef218c35d0b060d9b49142",
+    "outcome": "passed",
+    "resolved_findings": [
+      "R290-001",
+      "R290-002",
+      "R290-003"
+    ],
+    "routing": [
+      {
+        "request": "Review a fixed architecture proposal against its supplied requirements without revising it.",
+        "capability": "architecture",
+        "selected_skill": "ddd-ca-hex-architect",
+        "selected_mode": "review",
+        "supporting_source": [
+          ".ai/assets/skills/software-development-orchestrator/references/routing-playbook.md:30,41-44",
+          ".ai/assets/skills/software-development-orchestrator/references/capability-profile.md capability mapping",
+          ".ai/assets/skills/ddd-ca-hex-architect/skill.yaml modes.review"
+        ]
+      },
+      {
+        "request": "Review fixed Given-When-Then scenario notes against acceptance criteria without implementing tests.",
+        "capability": "test-design",
+        "selected_skill": "bdd-gwt-test-designer",
+        "selected_mode": "review",
+        "supporting_source": [
+          ".ai/assets/skills/software-development-orchestrator/references/routing-playbook.md:31,41-44",
+          ".ai/assets/skills/software-development-orchestrator/references/capability-profile.md capability mapping",
+          ".ai/assets/skills/bdd-gwt-test-designer/skill.yaml modes.review"
+        ]
+      },
+      {
+        "request": "Review a Python implementation against its supplied behavior contract without applying a repair.",
+        "capability": "review",
+        "selected_skill": "code-reviewer",
+        "selected_mode": "review",
+        "supporting_source": [
+          ".ai/assets/skills/software-development-orchestrator/references/routing-playbook.md:36,44",
+          ".ai/assets/skills/software-development-orchestrator/references/capability-profile.md capability mapping",
+          ".ai/assets/skills/code-reviewer/skill.yaml capability_slots and constraints"
+        ]
+      }
+    ],
+    "limits": "Source and controlled behavior acceptance only; no provider admission or production adoption."
+  },
+  "upgrade_path_experiment": {
+    "schema_version": "1.0",
+    "kind": "controlled-file-upgrade-experiment",
+    "source_base_sha": "a6110a34d17d15a200aa2f7ebca0415ad8a37c22",
+    "source_head_sha": "a335da330ab42ef985e96ae88a3aafaa64a9e93a",
+    "started_at": "2026-09-10T02:02:50.856221+00:00",
+    "completed_at": "2026-09-10T02:02:57.164434+00:00",
+    "duration_seconds": 6.308213200012688,
+    "outcome": "passed",
+    "cases": [
+      {
+        "case": "unchanged-managed-files",
+        "outcome": "passed",
+        "actions": {
+          ".ai/assets/tech-stacks/dotnet-backend/review/review-routing.yaml": "add",
+          ".ai/assets/tech-stacks/dotnet-backend/review/review-routing-fixtures.yaml": "add",
+          ".ai/assets/tech-stacks/dotnet-backend/design/design-routing.yaml": "add",
+          ".ai/assets/tech-stacks/dotnet-backend/design/architecture-playbook.md": "add",
+          ".ai/assets/skills/code-reviewer/fixtures/review-routing-fixtures.yaml": "remove",
+          ".ai/assets/skills/code-reviewer/skill.yaml": "replace",
+          ".ai/assets/skills/code-reviewer/references/review-routing.yaml": "replace",
+          ".agents/skills/code-reviewer/SKILL.md": "replace",
+          ".ai/assets/skills/bdd-gwt-test-designer/skill.yaml": "replace",
+          ".ai/assets/skills/ddd-ca-hex-architect/skill.yaml": "replace",
+          ".ai/assets/skills/ddd-ca-hex-architect/references/architecture-playbook.md": "replace",
+          ".agents/skills/ddd-ca-hex-architect/agents/openai.yaml": "replace"
+        },
+        "retained_existing_bytes": false,
+        "incoming_additions_verified": 4,
+        "fixture_approval": "explicit synthetic fixture decision only"
+      },
+      {
+        "case": "customized-managed-files",
+        "outcome": "passed",
+        "actions": {
+          ".ai/assets/tech-stacks/dotnet-backend/review/review-routing.yaml": "add",
+          ".ai/assets/tech-stacks/dotnet-backend/review/review-routing-fixtures.yaml": "add",
+          ".ai/assets/tech-stacks/dotnet-backend/design/design-routing.yaml": "add",
+          ".ai/assets/tech-stacks/dotnet-backend/design/architecture-playbook.md": "add",
+          ".ai/assets/skills/code-reviewer/fixtures/review-routing-fixtures.yaml": "reconcile",
+          ".ai/assets/skills/code-reviewer/skill.yaml": "reconcile",
+          ".ai/assets/skills/code-reviewer/references/review-routing.yaml": "reconcile",
+          ".agents/skills/code-reviewer/SKILL.md": "reconcile",
+          ".ai/assets/skills/bdd-gwt-test-designer/skill.yaml": "reconcile",
+          ".ai/assets/skills/ddd-ca-hex-architect/skill.yaml": "reconcile",
+          ".ai/assets/skills/ddd-ca-hex-architect/references/architecture-playbook.md": "reconcile",
+          ".agents/skills/ddd-ca-hex-architect/agents/openai.yaml": "reconcile"
+        },
+        "retained_existing_bytes": true,
+        "incoming_additions_verified": 4,
+        "fixture_approval": "explicit synthetic fixture decision only"
+      }
+    ],
+    "input_digests": {
+      "previous": {
+        ".ai/assets/skills/code-reviewer/skill.yaml": "59994d60300b0fe8108686c54feda3334892bdbf593a4d60ef91ccccd748bd8e",
+        ".ai/assets/skills/code-reviewer/references/review-routing.yaml": "837d3d89f59be6679929c2fba24e435202a76587578521d6dfcb9e6863866e5d",
+        ".agents/skills/code-reviewer/SKILL.md": "6de58909ffbf1c7c08a7ad9a4da49cd230abe2a3328809a1916235c290590714",
+        ".ai/assets/skills/bdd-gwt-test-designer/skill.yaml": "f2fd6839890e6ecbc4b31bcd5f6b71f8f74ccc6743b44940db11399eaddb4105",
+        ".ai/assets/skills/ddd-ca-hex-architect/skill.yaml": "e9b2acfe49f5d5df32f692e3e51875dbfc51a9b23dfb407cfd03ec13dd85deab",
+        ".ai/assets/skills/ddd-ca-hex-architect/references/architecture-playbook.md": "933dbfbbd0a93f23febc03b57a30e25cb7a1878bcfaf524a6dda75a45afd2aab",
+        ".agents/skills/ddd-ca-hex-architect/agents/openai.yaml": "a4c2f0066bc100eb461ed3b35fa9d8205b975ee7ece4e67770059cd324262e20",
+        ".ai/assets/skills/code-reviewer/fixtures/review-routing-fixtures.yaml": "9ca77d8cbfb04520919cce20dfda96bf560689e8982121216973e7e5b4d3064a"
+      },
+      "incoming": {
+        ".ai/assets/skills/code-reviewer/skill.yaml": "1a3fda37d156697a8713ab4dba8a360cbf1a63381565018998cc31ceafaba98c",
+        ".ai/assets/skills/code-reviewer/references/review-routing.yaml": "8c089f30e6142e088f66de3475c36b35eeb9951ac55502e9420c71929a60a974",
+        ".agents/skills/code-reviewer/SKILL.md": "22a7f9c43fc8b1d8af0f3de15d0e0d626e181cfe7479791f91df9e81ba254f8f",
+        ".ai/assets/skills/bdd-gwt-test-designer/skill.yaml": "7012ad70d75a5d3f9b44a4c3622f0253c5cd7560cf77758da2fa2b4b5b1f2fad",
+        ".ai/assets/skills/ddd-ca-hex-architect/skill.yaml": "5f421f5658fed7c3d172ba3a76a9a653564255546c9c325fc6de1a2bd77c1e0e",
+        ".ai/assets/skills/ddd-ca-hex-architect/references/architecture-playbook.md": "c147c7a1e587d021954ac873cc67fe3b1d345dea05ffe9cf32d1f3c0b39d3bfd",
+        ".agents/skills/ddd-ca-hex-architect/agents/openai.yaml": "61b62dbafee522d3daa81f45ee9152587e01a9e87439b1e5e7043ddb177923dd",
+        ".ai/assets/tech-stacks/dotnet-backend/review/review-routing.yaml": "7c86e84d95aba87f6c9f7cb26677329e1157e9778f5319e2aacc06543837ca91",
+        ".ai/assets/tech-stacks/dotnet-backend/review/review-routing-fixtures.yaml": "9ca77d8cbfb04520919cce20dfda96bf560689e8982121216973e7e5b4d3064a",
+        ".ai/assets/tech-stacks/dotnet-backend/design/design-routing.yaml": "565f9585cec36a79b0e81c0caf38c031c36f6aa07012b6dc4098f1e86f65a881",
+        ".ai/assets/tech-stacks/dotnet-backend/design/architecture-playbook.md": "789f7a337009411400c941c63224d0db817f2e1f84414e446bf024844f7123ed"
+      }
+    },
+    "limits": [
+      "Uses actual affected source bytes in synthetic v0.9.0/v1.0.0 package envelopes and disposable Git targets.",
+      "Proves selected path replacement/removal/addition and customization preservation through current planner/apply code.",
+      "Does not establish real v0.16.1-to-v0.17.0 release availability, provenance finalization, semantic-ledger reconciliation or production target upgrade."
+    ]
+  }
+}

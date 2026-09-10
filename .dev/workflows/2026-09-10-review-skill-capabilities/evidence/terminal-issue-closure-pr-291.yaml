@@ -1,0 +1,116 @@
+schema_version: '1.0'
+contract_id: github-terminal-issue-closure
+repository: YuChia-Wei/ai-collaboration-framework
+validation_stage: declaration
+pull_request:
+  number: 291
+  head_sha: null
+  body: '## Summary
+
+
+    Core-only installations can use `code-reviewer` without installing .NET rules.
+    Selected .NET installations retain the existing scoped review routes, while missing
+    specialist coverage remains explicit.
+
+
+    The existing architecture and BDD skills now support design and read-only artifact
+    review with target-selected tooling. Review classification distinguishes author
+    self-check, unknown independence, and evidenced independent review; artifact requests
+    route to their owning skill.
+
+
+    ## Validation
+
+
+    - Focused routing, actual payload reference closure, adapter and effective-rule
+    checks passed after repairs.
+
+    - Fourteen controlled model exercises, a feedback-informed classification correction,
+    and independent Terra review were verified by the parent. Initial failures and
+    coverage limits are retained in the workflow report.
+
+    - Bounded upgrade/customization experiments preserve modified target files; no
+    real released-target upgrade or production adoption is claimed.
+
+    - Workflow: `.dev/workflows/2026-09-10-review-skill-capabilities/remediation-report.md`.
+
+
+    ## Related Issues
+
+
+    Closes #289
+
+    Closes #290
+
+
+    Both dispositions are `terminal-close`. The owner explicitly authorized local
+    implementation and subsequently authorized merge and Issue closure. Hosted checks,
+    current-content audit binding, live admission, and post-merge read-back remain
+    required.
+
+
+    ## Delivery And Integration
+
+
+    - Grouping: one cohesive multi-Issue delivery with separate acceptance ledgers.
+
+    - Execution: AI context governance workflow.
+
+    - Topology: merge commit, retaining the core/extension and artifact-mode transition
+    as one reviewed rollback unit with its independent-review and remediation evidence.
+
+    - No tag, release publication, or target installation is part of this pull request.
+
+    '
+  integration:
+    status: pending
+    topology: null
+    admitted_head_sha: null
+    integration_commit_sha: null
+    provider_read_back: false
+  review:
+    status: pending
+  required_check_contexts: []
+  hosted_checks: []
+issues:
+- number: 289
+  mode: terminal-close
+  work_authorization:
+    online_issue_bound: true
+    explicit_owner_approval: true
+  final_accepted_delivery: true
+  workflow:
+    scope_complete: true
+    tasks_complete: true
+    applicable_verification_complete: true
+  closing_keyword: Closes
+  closure_deferred_reason: null
+  next_terminal_gate_or_owner: null
+  read_back:
+    performed: false
+    integration_commit_sha: null
+    issue_state: null
+    issue_state_reason: null
+    project_status: null
+- number: 290
+  mode: terminal-close
+  work_authorization:
+    online_issue_bound: true
+    explicit_owner_approval: true
+  final_accepted_delivery: true
+  workflow:
+    scope_complete: true
+    tasks_complete: true
+    applicable_verification_complete: true
+  closing_keyword: Closes
+  closure_deferred_reason: null
+  next_terminal_gate_or_owner: null
+  read_back:
+    performed: false
+    integration_commit_sha: null
+    issue_state: null
+    issue_state_reason: null
+    project_status: null
+authorization_note: 'The owner authorized merging the completed #289/#290 delivery
+  and closing both Issues on 2026-09-10. Required PR, checks, review receipt and provider
+  read-back are necessary delivery steps; no tag or publication is authorized.'

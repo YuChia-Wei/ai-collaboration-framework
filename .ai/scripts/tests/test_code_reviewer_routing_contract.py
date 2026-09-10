@@ -16,11 +16,14 @@ SCRIPTS = ROOT / ".ai/scripts"
 sys.path.insert(0, str(SCRIPTS))
 import ai_context_package as PACKAGE  # noqa: E402
 
-ROUTING_PATH = Path(
+CORE_ROUTING_PATH = Path(
     ".ai/assets/skills/code-reviewer/references/review-routing.yaml"
 )
+ROUTING_PATH = Path(
+    ".ai/assets/tech-stacks/dotnet-backend/review/review-routing.yaml"
+)
 FIXTURE_PATH = Path(
-    ".ai/assets/skills/code-reviewer/fixtures/review-routing-fixtures.yaml"
+    ".ai/assets/tech-stacks/dotnet-backend/review/review-routing-fixtures.yaml"
 )
 SKILL_PATH = Path(".ai/assets/skills/code-reviewer/skill.yaml")
 CATALOG_PATH = Path(
@@ -187,12 +190,12 @@ class CodeReviewerRoutingContractTests(unittest.TestCase):
     def test_gwt_004_given_skill_and_wrappers_when_read_then_only_compact_entry_references_are_eager(self) -> None:
         skill = load_yaml(SKILL_PATH)
         expected = {
-            str(ROUTING_PATH).replace("\\", "/"),
+            CORE_ROUTING_PATH.as_posix(),
         }
         self.assertEqual(expected, set(skill["references"]))
         self.assertTrue(FORBIDDEN_STATIC_REFERENCES.isdisjoint(skill["references"]))
 
-        phase_references = load_yaml(ROUTING_PATH)["phase_references"]
+        phase_references = load_yaml(CORE_ROUTING_PATH)["phase_references"]
         self.assertEqual(
             {
                 ".ai/assets/skills/code-reviewer/references/role-execution.md",
@@ -214,27 +217,27 @@ class CodeReviewerRoutingContractTests(unittest.TestCase):
         ):
             text = (ROOT / wrapper).read_text(encoding="utf-8")
             with self.subTest(wrapper=str(wrapper)):
-                self.assertIn(str(ROUTING_PATH).replace("\\", "/"), text)
+                self.assertIn(CORE_ROUTING_PATH.as_posix(), text)
                 for forbidden in FORBIDDEN_STATIC_REFERENCES:
                     self.assertNotIn(forbidden, text)
 
         for root_guide in (Path("AGENTS.md"), Path("AGENTS.zh-TW.md")):
             text = (ROOT / root_guide).read_text(encoding="utf-8")
             with self.subTest(root_guide=str(root_guide)):
-                self.assertIn(str(ROUTING_PATH).replace("\\", "/"), text)
+                self.assertIn(CORE_ROUTING_PATH.as_posix(), text)
                 self.assertNotIn(
                     ".ai/assets/tech-stacks/dotnet-backend/references/CODE-REVIEW-INDEX.MD",
                     text,
                 )
 
     def test_gwt_005_given_review_roles_when_loaded_then_shared_rule_bundles_are_not_mandatory(self) -> None:
-        route_ids = set(route_map())
+        route_ids = set(route_map()) | {"common"}
         for role_name, role_path in ROLE_PATHS.items():
             manifest = load_yaml(role_path)
             references = set(manifest["references"])
             with self.subTest(role=role_name):
                 self.assertTrue(FORBIDDEN_STATIC_REFERENCES.isdisjoint(references))
-                self.assertIn(str(ROUTING_PATH).replace("\\", "/"), references)
+                self.assertIn(CORE_ROUTING_PATH.as_posix(), references)
                 self.assertEqual("selected-route-only", manifest["routing"]["reference_loading"])
                 self.assertTrue(
                     set(manifest["routing"]["supported_route_ids"]).issubset(
@@ -259,17 +262,23 @@ class CodeReviewerRoutingContractTests(unittest.TestCase):
         top_level = {wrapper, SKILL_PATH, *(Path(path) for path in skill["references"])}
         routes = route_map()
         general_role = expand_manifest_references(ROLE_PATHS["general"])
+        selected_references = {
+            ROUTING_PATH,
+            Path(".ai/assets/skills/code-reviewer/references/core-review-playbook.md"),
+        }
 
         measured: dict[str, int] = {"top-level": total_bytes(top_level)}
         measured["general"] = total_bytes(
             top_level
             | general_role
+            | selected_references
             | {Path(path) for path in routes["general-csharp"]["canonical_references"]}
         )
         for role_name in ("aggregate", "controller", "reactor"):
             measured[role_name] = total_bytes(
                 top_level
                 | general_role
+                | selected_references
                 | expand_manifest_references(ROLE_PATHS[role_name])
                 | {
                     Path(path)
@@ -294,6 +303,7 @@ class CodeReviewerRoutingContractTests(unittest.TestCase):
         }
         required = {
             str(ROUTING_PATH).replace("\\", "/"),
+            CORE_ROUTING_PATH.as_posix(),
             str(FIXTURE_PATH).replace("\\", "/"),
             ".ai/assets/skills/code-reviewer/skill.yaml",
             *(str(path).replace("\\", "/") for path in ROLE_PATHS.values()),
@@ -304,6 +314,37 @@ class CodeReviewerRoutingContractTests(unittest.TestCase):
             with self.subTest(entry=entry):
                 self.assertIn(b"review-routing.yaml", payload[entry].content)
                 self.assertLess(len(payload[entry].content), 1_500)
+
+    def test_gwt_009_given_core_only_selection_when_projected_then_review_and_role_dependencies_are_closed(self) -> None:
+        tree = PACKAGE.git_tree(ROOT, "HEAD")
+        profile = load_yaml(Path(".ai/distribution/profiles/dotnet-backend.yaml"))
+        files = PACKAGE.collect_payload(ROOT, tree, profile)
+        payload = {item.path: item for item in files}
+        common = load_yaml(CORE_ROUTING_PATH)
+        extension = common["extensions"][0]
+        self.assertEqual(
+            ROUTING_PATH.as_posix(),
+            extension["contract_path_template"].replace("<profile>", extension["component_id"]),
+        )
+        self.assertEqual("dotnet-backend", load_yaml(ROUTING_PATH)["component_id"])
+        core_paths = {
+            SKILL_PATH.as_posix(), CORE_ROUTING_PATH.as_posix(),
+            ".ai/assets/skills/code-reviewer/references/core-review-playbook.md",
+            ".agents/skills/code-reviewer/SKILL.md", ".claude/skills/code-reviewer/SKILL.md",
+            *(path.as_posix() for path in ROLE_PATHS.values()),
+        }
+        for path in core_paths:
+            with self.subTest(path=path):
+                self.assertEqual("software-development-core", payload[path].component_id)
+        self.assertEqual("dotnet-backend", payload[ROUTING_PATH.as_posix()].component_id)
+        self.assertEqual("dotnet-backend", payload[FIXTURE_PATH.as_posix()].component_id)
+        self.assertEqual("dotnet-backend", payload[".ai/scripts/code-review.sh"].component_id)
+        capabilities = {item["capability_id"]: item for item in profile["payload_user_view"]["capabilities"]}
+        self.assertEqual("available", capabilities["code-reviewer"]["availability"]["core-only"])
+        self.assertEqual("unavailable-not-selected", capabilities["code-reviewer-dotnet"]["availability"]["core-only"])
+        # Exercise the real package validator, including selected capability
+        # references, rather than assuming ownership labels alone imply closure.
+        PACKAGE.validate_payload_reference_integrity(files, profile)
 
 
 if __name__ == "__main__":

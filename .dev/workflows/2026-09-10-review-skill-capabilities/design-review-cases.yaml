@@ -1,0 +1,98 @@
+schema_version: "1.0"
+fixture_kind: controlled-skill-inputs
+purpose: "Inputs to observed architecture/BDD skill execution, not production adoption."
+execution_contract:
+  writes: "No artifact revision or executable code; return requested output in reviewer evidence only."
+  catalog_authority: "Cases explicitly select only common method criteria and supplied requirement/target decisions; no engineering catalog compliance is requested or established. Missing required authority must be reported."
+cases:
+  - case_id: architecture-defect
+    skill: ddd-ca-hex-architect
+    request: "Review this proposal against R1 and R2; preserve it."
+    target: "Python service, DDD/CA/HEX lenses requested; no dotnet-backend profile or broker selected."
+    requirements:
+      R1: "A returned successful reservation survives a process crash."
+      R2: "Retrying the same request ID must not create a second reservation."
+    artifact: |
+      # Reservation proposal
+      1. HTTP inbound adapter calls a reservation application port.
+      2. Domain validates capacity; storage is an outbound adapter.
+      3. Return success, then enqueue an in-memory background write.
+      4. Every call creates a new reservation; request IDs are logged only.
+  - case_id: architecture-valid-alternative
+    skill: ddd-ca-hex-architect
+    request: "Review the bounded directory lookup design; preserve the artifact."
+    target: "C# application; no dotnet-backend profile adopted. DDD language and CA/HEX dependency reasoning are requested; target accepts constructor wiring and synchronous reads."
+    requirements:
+      R1: "Return a directory entry by key or an explicit not-found result."
+      R2: "Storage failures return a distinct unavailable result; no data changes occur."
+    artifact: |
+      # Directory lookup
+      A thin HTTP adapter maps input to the application lookup port.
+      The application calls a read-only storage port, returns the entry or
+      not-found, and maps storage failures to unavailable. Constructor wiring
+      supplies the storage adapter. Fake adapters cover results and failures;
+      a real storage integration test remains required. No events or write model.
+  - case_id: architecture-incomplete
+    skill: ddd-ca-hex-architect
+    request: "Review whether this design meets the required availability and consistency."
+    target: "Go; no technology profile selected."
+    requirements:
+      R1: "Availability target and acceptable stale-read duration are undecided."
+    artifact: |
+      # Cache proposal
+      Use an in-process cache with a five-minute TTL and no invalidation.
+      This meets all availability and consistency requirements.
+  - case_id: bdd-defect
+    skill: bdd-gwt-test-designer
+    request: "Review the scenario set against AC1 and AC2; leave it unchanged."
+    target: "TypeScript module; target uses its existing test runner, no .NET conventions selected."
+    requirements:
+      AC1: "Quantity 1 through 10 inclusive is accepted; 0 and 11 are rejected without storing an order."
+      AC2: "A storage failure returns unavailable and no success acknowledgment."
+    artifact: |
+      Scenario: order is correct
+      Given the system is ready
+      When I submit an order
+      Then it works correctly
+      Test level: unit, mocking storage; this proves real database integration.
+  - case_id: bdd-valid-alternative
+    skill: bdd-gwt-test-designer
+    request: "Review these scenario notes; do not generate test code or .feature files."
+    target: "C# with target-approved plain xUnit tests, no BDDfy and no dotnet-backend component adoption. Keep GWT scenario design."
+    requirements:
+      AC1: "An empty input returns an empty new list without modifying the input."
+      AC2: "Input [1,2] returns a new [2,1] list and leaves input [1,2]."
+    artifact: |
+      Scenario empty (AC1), unit level
+      Given an empty input list
+      When reversed_copy is called
+      Then the result equals [] and is a different list instance; input equals []
+      Scenario values (AC2), unit level
+      Given input [1,2]
+      When reversed_copy is called
+      Then result equals [2,1] and is a different instance; input still equals [1,2]
+  - case_id: bdd-incomplete
+    skill: bdd-gwt-test-designer
+    request: "Review the approval scenario against the allowed threshold."
+    target: "Python, no selected profile."
+    requirements:
+      AC1: "Owner has not decided the approval threshold or inclusivity."
+    artifact: |
+      Scenario approval
+      Given a score of 70
+      When approval is requested
+      Then approval is returned
+  - case_id: architecture-design
+    skill: ddd-ca-hex-architect
+    request: "Design a small lookup service in the response; do not implement it."
+    target: "Python; CA/HEX boundaries requested; no .NET profile or broker."
+    requirements:
+      R1: "Fetch a document by ID from read-only storage; distinguish found, missing and temporarily unavailable."
+      R2: "Do not change data, and retain the existing document schema."
+  - case_id: bdd-design
+    skill: bdd-gwt-test-designer
+    request: "Design scenario notes in the response, then hand off; test implementation is not authorized."
+    target: "TypeScript; no profile selected; do not select a runner."
+    requirements:
+      AC1: "Normalize a supplied boolean by preserving true, false and absent as distinct results."
+      AC2: "Do not mutate input state."

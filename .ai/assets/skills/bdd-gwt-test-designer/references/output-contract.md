@@ -1,6 +1,8 @@
 # Output Contract
 
-Use this structure unless the user asks for another format.
+Use this structure for `design` unless the user asks for another format.
+For `review`, use the shared artifact design/review contract and `review-criteria.md`;
+do not replace the submitted artifact with an authored scenario set.
 
 The default artifact is scenario notes. If the user provides or explicitly requests a `.feature` file, or the target profile selects a feature runner, render the same scenario set as valid Gherkin feature/scenario design and record the selected runner only when project evidence names it.
 
@@ -14,7 +16,7 @@ The default artifact is scenario notes. If the user provides or explicitly reque
 
 For each scenario provide:
 
-- scenario name
+- scenario name and traced requirement/AC IDs
 - test level
 - Given
 - When
@@ -25,7 +27,7 @@ For each scenario provide:
 
 - which Then items need explicit assertions
 - special event/message/state verification points
-- setup or fixture notes
+- setup or fixture notes, controllable dependency/time/data inputs and evidence limitations
 
 ## 4. Coverage Gaps
 
