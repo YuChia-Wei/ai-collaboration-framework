@@ -32,6 +32,13 @@ The core `software-development-orchestrator` skill should stay publishable. Repo
 | `review` | `code-reviewer` | Executable code or implementation guidance needs common review plus applicable target-selected technology checks. |
 | `compliance-validation` | `spec-compliance-validator` | Problem-frame workflows need a 100% coverage gate. |
 
+The requested output artifact resolves overlapping authoring inputs; the
+primary target, dependency radius and accepted semantic decisions resolve local
+versus slice implementation. See [authoring boundaries](../../../shared/AUTHORING-BOUNDARY-CONTRACT.md)
+and [implementation scope](../../../shared/IMPLEMENTATION-SCOPE-ROUTING-CONTRACT.md).
+The machine slot mappings remain unchanged; these rules guide language-level
+selection and do not claim a new deterministic natural-language router.
+
 ## Test Execution Capability Contract
 
 `test-execution` is an allowed optional capability, not a required slot or a

@@ -26,12 +26,12 @@ The canonical skill registry currently includes:
 - `code-reviewer` (common core in every selection; .NET review extends it when `dotnet-backend` is selected)
 - `diagnostic-analyst`
 - `ddd-ca-hex-architect` (design and read-only artifact review; concrete tooling follows target selection)
-- `local-change-implementer`
-- `problem-frame-author`
-- `requirement-author`
-- `slice-implementer`
+- `local-change-implementer` (one technical target and its bounded direct usage, independent of file count)
+- `problem-frame-author` (selected CBF/SWF file set with source bindings)
+- `requirement-author` (requirement markdown and explicit stakeholder authority)
+- `slice-implementer` (one coordinated implementation goal under accepted architecture)
 - `software-development-orchestrator`
-- `spec-author`
+- `spec-author` (selected production/entity/adapter/formal test spec; preserve the requested document type)
 - `spec-compliance-validator`
 
 ## Retired Identifiers

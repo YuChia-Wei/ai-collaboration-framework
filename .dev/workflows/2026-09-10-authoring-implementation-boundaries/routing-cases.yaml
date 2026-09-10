@@ -1,0 +1,68 @@
+schema_version: '1.0'
+corpus_id: authoring-implementation-boundaries-20
+kind: controlled-routing-cases
+description: Fixed representative requests, not production usage telemetry. Evaluate selected owner, output, scope, missing authority and necessary handoffs without changing product artifacts.
+cases:
+  - case_id: A01
+    issue: 276
+    request: "Turn these stakeholder notes into a requirement document only: users need to cancel an unpaid order; paid-order cancellation policy is undecided. Keep that decision open."
+  - case_id: A02
+    issue: 276
+    request: "Normalize requirement R-4 without changing its accepted rule: refunds take at most 3 business days. Existing code takes 5 days; record that mismatch as observed behavior, not as replacement business truth."
+  - case_id: A03
+    issue: 276
+    request: "Draft a production use-case JSON spec from accepted R-7. Aggregate and output contracts are already specified in ADR-2; keep their identifiers and source links. No implementation."
+  - case_id: A04
+    issue: 276
+    request: "Write the formal test specification under .dev/specs for accepted R-8, using the repository's test-spec contract. Include the supplied Given-When-Then cases within that spec. The scenarios and ownership are already complete; do not create a separate scenario-design artifact."
+  - case_id: A05
+    issue: 276
+    request: "Design only a Given-When-Then scenario matrix and assertion notes for accepted AC1/AC2. A formal specification file and test implementation are not requested."
+  - case_id: A06
+    issue: 276
+    request: "Reverse-engineer an explicitly observed CBF draft for ReserveStock from the supplied handler and tests. No requirement/spec documents exist. Label code-derived facts and missing business authority; do not invent approved requirements or a compliance result."
+  - case_id: A07
+    issue: 276
+    request: "Draft the selected SWF file set for a configuration-file transformation from accepted R-10 and SPEC-10. It is a workpiece problem, not a command/aggregate frame. Preserve both source IDs."
+  - case_id: A08
+    issue: 276
+    request: "幫我整理付款規格。"
+    context: "No existing artifact, output format, stakeholder requirements or approval is supplied."
+  - case_id: A09
+    issue: 276
+    request: "Use spec-author to create only a CBF frame.yaml and its required problem-frame file set."
+    context: "The explicit skill name conflicts with the explicitly requested artifact."
+  - case_id: A10
+    issue: 276
+    request: "Draft a requirement document from these notes and then a provisional spec using those same IDs and unresolved questions. I authorize both drafts, not implementation; do not insert an extra problem-frame stage."
+  - case_id: I01
+    issue: 279
+    request: "Fix the proven off-by-one in Buffer.ReadAt and its immediate unit test. The accepted bounds contract is supplied. One existing class, no public signature or module change."
+  - case_id: I02
+    issue: 279
+    request: "Rename the private parseRow helper and update its three direct call sites in separate files of the same module. Preserve behavior, public names and dependencies; no new type."
+  - case_id: I03
+    issue: 279
+    request: "Correct one existing SQL query's join predicate to match the supplied accepted filtering rule; update its direct mapping assertion. Do not change schema, transaction boundaries or public contracts."
+  - case_id: I04
+    issue: 279
+    request: "Implement the already approved ADR-8 extraction of a pure parser helper class inside the existing module. Responsibilities, constructor wiring and compatibility are fully decided; no new port or dependency direction. I authorize this bounded refactor."
+  - case_id: I05
+    issue: 279
+    request: "Extract an interface around persistence, but whether it is domain-owned or infrastructure-owned and the dependency direction have not been decided."
+  - case_id: I06
+    issue: 279
+    request: "Rename the public PaymentAuthorized event and published DTO field across two services. The intended business meaning and consumer compatibility decision are still unresolved."
+  - case_id: I07
+    issue: 279
+    request: "Implement the accepted ReserveStock command slice: update the existing handler, aggregate call, outbox mapping and tests. ADR and transaction boundary are settled. Keep one slice owner; individual local edits do not need separate handoffs."
+  - case_id: I08
+    issue: 279
+    request: "Implement concrete use-case tests from the complete accepted GWT scenarios. Test implementation is explicitly authorized. Add the necessary test class under the existing test layout; do not redesign the scenarios. This is test-only work."
+  - case_id: I09
+    issue: 279
+    request: "Refactor authentication; it should be a small cleanup."
+    context: "No exact target, operation, allowed radius or behavioral contract is supplied."
+  - case_id: I10
+    issue: 279
+    request: "Investigate unexplained intermittent checkout timeouts. There is no causal finding or accepted repair yet."

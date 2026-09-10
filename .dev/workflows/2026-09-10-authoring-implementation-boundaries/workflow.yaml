@@ -1,0 +1,19 @@
+schema_version: '1.0'
+lifecycle_contract: '1.0'
+workflow_id: 2026-09-10-authoring-implementation-boundaries
+workflow_kind: ai-context-maintenance
+title: Authoring and implementation skill boundaries
+owner_skill: ai-context-governance
+status: in_progress
+current_phase: remediation
+artifact_root: .dev/workflows/2026-09-10-authoring-implementation-boundaries
+entrypoint: workflow-plan.md
+created_at: '2026-09-10T19:49:58+08:00'
+updated_at: '2026-09-10T19:49:58+08:00'
+branch: codex/2026-09-10-authoring-implementation-boundaries
+base_branch: main
+template_source: .ai/assets/skills/ai-context-governance/templates/workflow-locator-template.yaml
+template_version: 1.2.0
+work_items:
+- 276
+- 279

@@ -1,0 +1,24 @@
+schema_version: '1.0'
+kind: parent-only-routing-oracle
+grading: "Require the requested artifact and authority boundary, not exact phrasing. A retrospective baseline result may already be correct; do not invent improvements."
+cases:
+  A01: {owner: requirement-author, output: requirement-markdown, constraint: paid-order-policy-unresolved}
+  A02: {owner: requirement-author, output: requirement-markdown, constraint: approved-three-days-preserved}
+  A03: {owner: spec-author, output: production-spec-json, constraint: existing-source-and-ownership-ids-preserved}
+  A04: {owner: spec-author, output: formal-test-spec, constraint: no-unnecessary-bdd-handoff}
+  A05: {owner: bdd-gwt-test-designer, output: scenario-matrix, constraint: no-spec-or-implementation-expansion}
+  A06: {owner: problem-frame-author, output: observed-cbf-draft, constraint: no-invented-normative-requirements-or-compliance}
+  A07: {owner: problem-frame-author, output: swf-file-set, constraint: no-cbf-controlled-domain-files}
+  A08: {owner: clarification, output: one-output-and-authority-question, constraint: no-unrequested-document-pipeline}
+  A09: {owner: clarification, output: resolve-explicit-skill-artifact-conflict, constraint: no-silent-skill-substitution}
+  A10: {owner: requirement-author, sequence: [requirement-author, spec-author], output: two-linked-provisional-drafts, constraint: no-extra-frame-stage-or-implementation}
+  I01: {owner: local-change-implementer, output: bounded-local-fix, constraint: no-new-type-or-scope-expansion}
+  I02: {owner: local-change-implementer, output: one-symbol-and-direct-sites, constraint: file-count-alone-does-not-force-slice}
+  I03: {owner: local-change-implementer, output: one-query-and-direct-test, constraint: no-schema-or-transaction-expansion}
+  I04: {owner: slice-implementer, mode: generic, output: accepted-extraction-slice, constraint: no-repeated-architecture-decision}
+  I05: {owner: ddd-ca-hex-architect, output: unresolved-boundary-decision, constraint: stop-dependent-implementation}
+  I06: {owner: ddd-ca-hex-architect, output: semantic-and-compatibility-decision, constraint: not-local-symbol-rename}
+  I07: {owner: slice-implementer, mode: command, output: one-command-slice, constraint: no-mandatory-local-owner-bounces}
+  I08: {owner: slice-implementer, mode: generic, output: concrete-test-implementation, constraint: applicable-test-binding-and-no-bdd-redesign}
+  I09: {owner: clarification, output: one-bounded-scope-question, constraint: no-assumed-local-radius}
+  I10: {owner: diagnostic-analyst, output: causal-diagnosis, constraint: no-invented-repair-authority}
