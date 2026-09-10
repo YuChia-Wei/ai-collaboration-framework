@@ -11,7 +11,13 @@ semantic authority. File count alone does not decide local versus slice scope.
 | One accepted behavior/refactoring goal that needs coordinated implementation steps or a new type within a settled design | `slice-implementer` | Select one command/query/reactor/generic mode; do not reopen an already settled architecture decision merely because a type is added. |
 | Missing or changed responsibility, module/aggregate boundary, dependency direction or business-language decision | `ddd-ca-hex-architect` | Stop the dependent implementation and resolve that decision; a prior unrelated approval is insufficient. |
 | Unexplained failure or performance symptom without a bounded causal finding | `diagnostic-analyst` | Diagnosis does not grant repair authority. |
-| Several independent behavior goals or an unbounded cross-module request | `software-development-orchestrator` | Bound and sequence the work before implementing it as if it were one slice. |
+| Several independent behavior goals or work whose needed tasks cannot yet be bounded | `software-development-orchestrator` | Bound and sequence the work before implementing it as if it were one slice. |
+
+When one concrete missing semantic, compatibility or architecture decision is
+already identified, route that decision to `ddd-ca-hex-architect` first, even
+across services. Module count alone does not require orchestration or a new
+requirement document. Add an authoring stage only when its artifact is requested
+or is a demonstrated missing input to the current decision.
 
 When the primary target, operation, affected contracts or allowed radius is
 unknown, ask a bounded scope question before choosing an implementation owner.
@@ -41,3 +47,9 @@ receiving work remains valid; a handoff itself cannot add scope or approval.
 Expand to a different owner only for a concrete missing decision or out-of-scope
 operation. Preserve target-selected tests, current effective-rule gates and
 independent review requirements; implementation does not declare compliance.
+
+List a handoff as required only when needed for the current requested output.
+For diagnosis-only work, any later repair remains conditional on the causal
+finding and authorization; do not preselect a local/slice repair owner before
+its technical unit and radius are known. Keep optional future work separate
+from required handoffs and distinguish prevented scope risks from actual expansion.

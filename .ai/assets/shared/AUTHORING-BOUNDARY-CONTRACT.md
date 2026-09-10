@@ -41,6 +41,13 @@ decisions, open questions, requested next output, authorization state and any
 needed validation. Reuse those artifacts instead of asking the next skill to
 re-extract or regenerate unchanged source documents.
 
+Required handoffs are only those needed to finish the currently requested
+artifact. A draft that explicitly retains unresolved facts can finish with open
+questions; future policy approval or requirement formalization is not a required
+handoff for that draft. If useful, label a future option separately as optional.
+Another authoring skill cannot supply missing stakeholder authority merely by
+writing a document. Block only the claim or action that depends on that authority.
+
 There is no mandatory problem-frame -> requirement -> spec pipeline. Choose the
 next owner only when its distinct output or decision is needed. A complete
 requested artifact can end with no next skill. Explicit multi-artifact requests
