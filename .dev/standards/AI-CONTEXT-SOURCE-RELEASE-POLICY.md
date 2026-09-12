@@ -152,7 +152,30 @@ native commits and runner bytes, the exact candidate, selected dispatcher and
 nine case identities. It applies the existing per-case acceptance checks to
 separate retained artifact roots. Candidate CI revalidates this execution set
 and the unchanged staged assets; it does not claim another actual matrix run.
-Another runner, archive, case set or release cannot inherit this exception.
+Another runner, case set or release cannot inherit this exception.
+
+The owner's later v0.17.0 instruction accepts affected-only validation for a
+small, independently assessed repair. The one replacement ZIP
+`66a731f04695386416d7eb92b8a4d49ea8daaf4b118d8c93825764315c982b1a`, built at
+`8eed3960f19c57050c8e8a8e1ecedbc3004aabc2`, adds exactly two source-only
+not-applicable descriptions in `check-all.sh`. The source gate checks both
+original and replacement archive hashes, every payload byte and mode, the
+exact two-line delta, the current runner and unchanged origin identities.
+Native seven-plus-two cases continue to validate against their preserved
+original matrix; they are not relabeled as execution of the replacement ZIP.
+Focused tests cover the changed runner branches, fixture isolation, optional
+BDD project expectation and rebound incident inputs. Passing those affected
+tests and fresh candidate, required hosted and provider gates satisfies this
+owner-selected release acceptance; it does not require replaying the full
+critical profile or the actual nine-case matrix before or after integration.
+The owner subsequently explicitly authorizes direct publication of this current
+candidate after release-note review, without further test execution. That
+version-specific decision waives additional local and hosted test gates; it
+does not claim they passed or waive archive identity, publication text, or
+actual asset transfer checks.
+Retain the failed critical invocation and every later outcome. Any further
+payload or execution-mechanism change needs its own impact assessment and
+applicable tests; unknown or mismatched identity fails closed.
 
 Candidate CI and tag publication stage the tracked admitted assets unchanged.
 Before publishing a draft, and again afterward, the hosted workflow downloads

@@ -43,7 +43,7 @@ Complete selected source, package, actual upgrade/recovery, candidate and critic
 - Accepted source: the evidence set, three direct routes, focused checks and immutable preparation review passed at `3a4cbb6f233436039e875da841db31659db10ed8`; source and package status are validated.
 - Frozen terminal work: candidate and critical outcomes, current-content review, live PR admission, integration, integrated gates and hosted publication are retained only in declared ignored evidence and provider records. These outcomes are not predeclared passed. No later source status rewrite is required for a successful publication.
 
-## Bounded Evidence Decision
+## Historical Bounded Evidence Decision
 
 The owner's instructions "OK，復驗這兩案就好" and "那就完成 0.17.0 的發布吧" authorize carrying forward exactly the seven individually passed cases from dispatch07 together with the two passed cases from dispatch09, for this admitted archive only. The compatibility analysis proves the affected fixture selection produces unchanged inputs for those seven cases. This is a v0.17-specific exception to changed-runner re-execution, with no general reuse effect. The original failed terminal remains failed; no synthetic nine-case terminal is created. Any other runner, candidate, case set or release requires a new decision and applicable evidence.
 
@@ -58,3 +58,19 @@ PR #299 uses the exact deferred declaration in `evidence/terminal-issue-closure-
 ## Critical Gate Repair Checkpoint
 
 Critical invocation01 at `3248941005b42c407d2060c677f04155e44dd2d8` failed: 68 passed checks, four failed checks, three selected not-applicable checks. Native terminal and full logs remain under the ignored `critical-linux-01` evidence directory. Packaging still rejected the two owner-approved optional BDD projects; incident-mutant input hashes lagged the reviewed current files; synthetic runners inherited outer invocation state; and the downstream runner omitted two selected source-only not-applicable events. The first three repairs affect source-only validation. The two missing runner events change the distributed package, so the previously admitted archive and seven-plus-two actual evidence remain historical for that archive and cannot establish acceptance of replacement bytes. Repair validation and independent review precede a replacement-candidate execution decision. Publication remains pending; no tag or Release has been created.
+
+## Current Owner-Selected Affected-Only Acceptance
+
+The owner subsequently instructed: "你先檢查到底改了什麼東西，如果只是很小的改動，影響的測試也不多，只需要重跑受影響的測試，然後只要通過就可以視為完成了。" Independent archive comparison proves the replacement ZIP `66a731f04695386416d7eb92b8a4d49ea8daaf4b118d8c93825764315c982b1a` differs only by two source-only not-applicable descriptions in `check-all.sh`; every other payload byte and mode is unchanged. Independent impact analysis confirms the actual upgrade runner never invokes `check-all.sh`, so migration, semantic reconciliation, target validation, transaction finalization and recovery mechanisms are unchanged.
+
+This latest decision supersedes the earlier requirement to run a new nine-case matrix or full critical profile for the replacement archive or a history-only integration commit. Revalidate affected behavior and source contracts, then retain applicable prior evidence with exact native identities. Fresh candidate, required hosted contexts, independent content review and provider publication gates remain required. Do not rewrite an old terminal, claim new actual cases, or call the failed full invocation passed.
+
+Affected execution consists of one optional-BDD packaging assertion, eight incident-fault-injection tests, the selected synthetic runner regressions, and focused negative checks for the exact archive rebind. Eight runner cases passed at `8eed396`; the offline-uv fixture required missing Git/shell tools and valid date formatting. Strengthened GWT-022 asserts both exact new check IDs, descriptions, not-applicable/not-executed states and reasons. Only changed test cases are repeated after those fixture/assertion corrections. Full native logs and each failure remain in the declared ignored acceptance root.
+
+The version-specific source check preserves the baseline archive and matrix, validates all nine native cases against that original identity, and proves the replacement archive's exact two-line delta. The reviewed original and replacement archives are distinct; current route receipts report owner-approved affected-only reuse and zero actual cases reexecuted.
+
+The owner then expressly permitted continuation after inspection: "我允許在你檢查過內容後繼續相關工作，或直接停下跟我說明狀況後跟我確認是否繼續。" All 18 distinct affected behavior tests have passed. The remaining source acceptance work binds this exact candidate to preserved native evidence, validates the affected binding and candidate receipts, and completes the already-authorized publication.
+
+## Direct Publication Decision
+
+The owner now explicitly directs: "現行版本可直接發布，不用執行測試，確認 release note 內容無誤後直接發布。" Publish the currently prepared exact replacement archive after checking the release notes, without further test execution or a fresh test/critical/matrix gate. Preserve all existing native outcomes. Source artifact consistency, Release text, exact asset transfer and provider read-back remain publication operations, not new test claims. This explicit decision supersedes earlier requirements to replay test gates before integration or tagging.

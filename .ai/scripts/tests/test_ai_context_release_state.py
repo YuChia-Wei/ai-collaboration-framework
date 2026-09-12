@@ -1390,6 +1390,29 @@ class V017RetainedExecutionSetTests(unittest.TestCase):
 
     actual = ROOT / ".dev/releases/v0.17.0/route-assets/actual"
 
+    def test_given_exact_two_line_repair_when_rebound_then_native_case_identity_is_preserved(self):
+        matrix = yaml.safe_load((self.actual.parents[1] / "support-matrix.yaml").read_bytes())
+        original = STATE.v017_affected_only_case_matrix(ROOT, matrix)
+        self.assertEqual("34aa44049545d3188ae5ab6cccef39e710421341", original["target"]["commit"])
+        self.assertEqual(matrix["retained_origins"], original["retained_origins"])
+        STATE.validate_direct_upgrade_execution(ROOT, "v0.17.0", ["v0.6.0", "v0.9.0", "v0.16.0"], matrix)
+
+    def test_given_affected_only_subject_drift_when_rebound_then_rejected(self):
+        matrix = yaml.safe_load((self.actual.parents[1] / "support-matrix.yaml").read_bytes())
+        paths = [self.actual / "baseline-support-matrix.yaml", self.actual / "baseline.zip",
+                 self.actual.parent / "admitted/ai-collaboration-framework-v0.17.0.zip",
+                 ROOT / ".ai/scripts/check-all.sh"]
+        for path in paths:
+            with self.subTest(path=path.name), self.altered_bytes(path, lambda raw: raw + b"changed"):
+                with self.assertRaises(STATE.ReleaseStateError):
+                    STATE.v017_affected_only_case_matrix(ROOT, matrix)
+        for field in ("target", "retained_origins"):
+            changed = json.loads(json.dumps(matrix))
+            item = changed[field] if field == "target" else changed[field][0]
+            item["commit"] = "0" * 40
+            with self.subTest(field=field), self.assertRaises(STATE.ReleaseStateError):
+                STATE.v017_affected_only_case_matrix(ROOT, changed)
+
     def altered_bytes(self, path, mutate):
         original_read = Path.read_bytes
 

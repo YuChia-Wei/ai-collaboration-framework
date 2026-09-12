@@ -713,6 +713,67 @@ def load_v017_execution_set(root, actual_root):
         raise ReleaseStateError("v0.17 execution set is missing or invalid") from exc
 
 
+def v017_affected_only_case_matrix(root, matrix):
+    """Keep native case identity while admitting the owner's exact two-line repair.
+
+    This does not assert execution against replacement bytes. The owner's
+    affected-only decision combines native cases with focused runner tests.
+    No other archive, payload delta, origin or execution mechanism is covered.
+    """
+    import io
+    import zipfile
+
+    release = root / ".dev/releases/v0.17.0"
+    actual = release / "route-assets/actual"
+    old_hash = "b9e6b38515e8ac82731734b99bacb97b40ca0c7ad543d2b6f84390b4cdb94a22"
+    new_hash = "66a731f04695386416d7eb92b8a4d49ea8daaf4b118d8c93825764315c982b1a"
+    try:
+        archives = {edge["artifacts"]["archive"]["sha256"] for route in matrix["routes"]
+                    for edge in route["edges"] if edge["to_version"] == "v0.17.0"}
+        baseline_raw = contained_release_asset(actual, "baseline-support-matrix.yaml").read_bytes()
+        if hashlib.sha256(baseline_raw).hexdigest() != "3396cadfcddbc9d34bfcc513b927f53fc433e6b61e18ae028370cc56c090d06c":
+            raise ReleaseStateError("v0.17 affected-only baseline matrix bytes differ")
+        baseline = yaml.safe_load(baseline_raw)
+        if (archives != {new_hash}
+                or matrix["target"]["commit"] != "8eed3960f19c57050c8e8a8e1ecedbc3004aabc2"
+                or matrix["retained_origins"] != baseline["retained_origins"]):
+            raise ReleaseStateError("v0.17 affected-only archive or origin binding differs")
+
+        payloads = []
+        for path, expected in [(actual / "baseline.zip", old_hash),
+                               (release / "route-assets/admitted/ai-collaboration-framework-v0.17.0.zip", new_hash)]:
+            raw = contained_release_asset(release, path.relative_to(release).as_posix()).read_bytes()
+            if hashlib.sha256(raw).hexdigest() != expected:
+                raise ReleaseStateError("v0.17 affected-only archive bytes differ")
+            with zipfile.ZipFile(io.BytesIO(raw)) as archive:
+                payloads.append({item.filename.split("/payload/", 1)[1]:
+                                 (item.external_attr, archive.read(item))
+                                 for item in archive.infolist()
+                                 if "/payload/" in item.filename and not item.is_dir()})
+        before, after = payloads
+        path = ".ai/scripts/check-all.sh"
+        changed = {name for name in before.keys() | after.keys() if before.get(name) != after.get(name)}
+        if changed != {path} or before[path][0] != after[path][0]:
+            raise ReleaseStateError("v0.17 affected-only payload delta differs")
+        expected = before[path][1]
+        for anchor, addition in [
+            (b'            "AI Context Release State Fail-Closed Tests" \\\n',
+             b'            "Release Asset Identity Contract Tests" \\\n'),
+            (b'            "Validation Lifecycle Fail-Closed Tests" \\\n',
+             b'            "Bounded Validation Dependency Observation" \\\n'),
+        ]:
+            if expected.count(anchor) != 1:
+                raise ReleaseStateError("v0.17 affected-only repair anchor differs")
+            expected = expected.replace(anchor, anchor + addition)
+        if after[path][1] != expected or (root / path).read_bytes() != expected:
+            raise ReleaseStateError("v0.17 affected-only runner differs from the reviewed repair")
+        return baseline
+    except ReleaseStateError:
+        raise
+    except (OSError, ValueError, KeyError, TypeError, PackageError, zipfile.BadZipFile) as exc:
+        raise ReleaseStateError("v0.17 affected-only evidence is missing or invalid") from exc
+
+
 def validate_direct_upgrade_execution(root, version, sources, matrix):
     """Require actual isolated target evidence for every prospective direct origin."""
     release_dir = root / ".dev/releases" / version
@@ -721,9 +782,12 @@ def validate_direct_upgrade_execution(root, version, sources, matrix):
         cases, case_roots, package_source, archive = load_v017_execution_set(root, actual_root)
         archives = {edge["artifacts"]["archive"]["sha256"] for route in matrix["routes"]
                     for edge in route["edges"] if edge["to_version"] == version}
+        case_matrix = matrix
         if archives != {archive} or package_source.get("commit") != matrix["target"]["commit"]:
-            raise ReleaseStateError("v0.17 execution set differs from the direct route subject")
-        validate_direct_upgrade_cases(cases, case_roots, sources, matrix)
+            case_matrix = v017_affected_only_case_matrix(root, matrix)
+        if package_source.get("commit") != case_matrix["target"]["commit"]:
+            raise ReleaseStateError("v0.17 native execution set differs from its original route subject")
+        validate_direct_upgrade_cases(cases, case_roots, sources, case_matrix)
         return
     evidence_path = release_dir / "route-assets/actual/terminal.json"
     try:

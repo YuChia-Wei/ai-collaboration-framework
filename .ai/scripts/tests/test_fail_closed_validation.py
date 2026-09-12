@@ -1591,8 +1591,11 @@ class CheckAllRunnerGwtTests(unittest.TestCase):
             }
             for check_id, (description, reason) in expected_source_skips.items():
                 self.assertEqual(["not-applicable", "not-executed"], by_id[check_id][3:5])
-                self.assertIn(description, result.stdout)
-                self.assertIn(reason, (invocation / f"{check_id}.log").read_text())
+                self.assertIn(f"NOT APPLICABLE: {description} ({reason})", result.stdout)
+                self.assertEqual(
+                    f"Selected check was not launched; outcome=not-applicable; reason={reason}\n",
+                    (invocation / f"{check_id}.log").read_text(),
+                )
             self.assertTrue(
                 all(by_id[check_id][4] != "not-selected" for check_id in selected_ids)
             )

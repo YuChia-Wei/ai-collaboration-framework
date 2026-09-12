@@ -4251,8 +4251,8 @@ files:
   component_id: ai-context-lifecycle-core
 - path: .ai/scripts/check-all.sh
   source_path: .ai/scripts/check-all.sh
-  sha256: 5856c0e0ee1eec62bb6c810c416b2819179754863ab63f9b010f446f8791cb35
-  size: 125819
+  sha256: e450486466e3dcb70507b797c6186db448ab1ffe9c908f6df609f018c3b49ed6
+  size: 125931
   mode: '0755'
   ownership: framework-managed
   install_behavior: managed

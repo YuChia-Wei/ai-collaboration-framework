@@ -1,7 +1,7 @@
 schema_version: '1.0'
 release_id: REL-v0.17.0
 version: v0.17.0
-status: validated
+status: planned
 record_origin: governed
 distribution_kind: governed-package
 installable: true
@@ -97,21 +97,19 @@ distribution:
     automation: github-actions
     creates_or_moves_tag: false
 validation:
-  evidence: The admitted assets built at 34aa44049545d3188ae5ab6cccef39e710421341
-    passed archive/checksum/parity and current-source identity rebinding. The owner-selected
-    seven-plus-two evidence set retains dispatch07 as failed with seven individually
-    passed cases and dispatch09 as a passed two-case retest. All retained case artifacts
-    and three direct routes passed source validation; WSL RAM incoming validation
-    passed. The Windows RAM relative-path failure is retained and reproduced independently
-    of package code. Focused source checks and independent preparation review passed
-    at 3a4cbb6f233436039e875da841db31659db10ed8. Candidate and critical handoff gates
-    execute on the frozen source commit; their terminal outcomes are retained under
-    the declared ignored acceptance root. PR integration, integrated gates and authorized
-    hosted publication remain pending.
+  evidence: Original critical01 remains failed with 68 passed checks and four failed
+    checks. The replacement archive built at 8eed396 changes only two check-all.sh
+    not-applicable descriptions; all other payload bytes and modes are identical.
+    The latest owner instruction accepts affected-only validation after independent
+    impact analysis. Original native seven-plus-two execution evidence remains bound
+    to the baseline archive and matrix. The new exact-archive rebind, selected source
+    tests and fresh candidate/provider gates remain pending; no actual matrix or full
+    critical replay is required for this assessed repair. No tag or Release has been
+    created.
   workflow_id: 2026-09-12-v017-release
   related_workflows: []
   related_assessments: []
-  package_status: validated
+  package_status: pending
   post_merge_status: pending
   failed_publication_run: null
   published_run: null

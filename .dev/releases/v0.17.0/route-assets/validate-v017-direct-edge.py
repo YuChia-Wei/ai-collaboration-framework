@@ -12,7 +12,7 @@ import zipfile
 from pathlib import Path, PurePosixPath
 
 sys.dont_write_bytecode = True
-EXPECTED_ARCHIVE = 'b9e6b38515e8ac82731734b99bacb97b40ca0c7ad543d2b6f84390b4cdb94a22'
+EXPECTED_ARCHIVE = '66a731f04695386416d7eb92b8a4d49ea8daaf4b118d8c93825764315c982b1a'
 EXPECTED_ACTUAL = '21fa2f3d67f194994fc8ee1fcb314bd59727e4fc775ef1a88057f68155738e62'
 ORIGINS = {'v0.16.0': '41fc410bde7a2745bed1663eb28d89ce5a5e6672b15fa95db82e7089c2972ab4', 'v0.9.0': 'c293247612eb2f01ef42e4d7c55be4ff36201cdf034157c518de871ec2acb5c7', 'v0.6.0': '20ca69ef4e1b4085476a2b15eeba93da7a75ea580fd2ab9f6c8815938b0af3be'}
 
@@ -52,7 +52,8 @@ def main():
     matrix = yaml.safe_load(asset('support-matrix.yaml').read_bytes())
     gate.validate_direct_upgrade_execution(source_root, 'v0.17.0', list(ORIGINS), matrix)
     all_cases, _, package_source, archive_digest = gate.load_v017_execution_set(source_root, actual.parent)
-    require(archive_digest == EXPECTED_ARCHIVE, 'execution-set archive differs')
+    gate.v017_affected_only_case_matrix(source_root, matrix)
+    require(archive_digest == 'b9e6b38515e8ac82731734b99bacb97b40ca0c7ad543d2b6f84390b4cdb94a22', 'native execution-set archive differs')
     cases = [case for case in all_cases if case['origin'] == args.origin_version]
     cache = preflight_fixture_root(os.environ.get('AI_CONTEXT_TEST_TMP_ROOT')).root
     require(sha(asset(args.origin_manifest).read_bytes()) == ORIGINS[args.origin_version], 'original public manifest differs')
@@ -78,13 +79,13 @@ def main():
         sys.path.insert(0, str(incoming / 'payload/.ai/scripts'))
         apply = importlib.import_module('ai_context_package_apply')
         package, _, migration, manifest_sha = apply.validate_package_root(incoming)
-        require(package['version'] == '0.17.0' and package['source'] == package_source, 'incoming source identity differs')
+        require(package['version'] == '0.17.0' and package['source']['commit'] == matrix['target']['commit'], 'incoming source identity differs')
         require(asset(args.target_manifest).read_bytes() == (incoming / 'metadata/files.yaml').read_bytes(), 'target manifest differs')
         require(asset(args.migration).read_bytes() == (incoming / 'metadata/migration.yaml').read_bytes(), 'migration metadata differs')
         require([item['manifest_sha256'] for item in migration['sources'] if item['version'] == args.origin_version[1:]] == [ORIGINS[args.origin_version]], 'direct migration is missing')
         observed = apply.incoming_package_validation(incoming, package)
     portable = {'schema_version': 'incoming-package-validation/v1', 'authority': {'kind': observed['authority'], 'manifest': {'path': observed['manifest_path'], 'sha256': observed['manifest_sha256']}, 'validator': {'path': observed['path'], 'sha256': observed['sha256'], 'argv': observed['argv']}}, 'package_identity': {'package_id': package['package_id'], 'release_id': package['release_id'], 'payload_fingerprint': package['identity']['payload_fingerprint']}, 'execution': observed['execution']}
-    print(json.dumps({'edge_id': args.edge_id, 'from_version': args.origin_version, 'to_version': 'v0.17.0', 'portable_validation': portable, 'actual_upgrade': {'kind': 'retained-execution-set-validation', 'evidence_path': args.actual_evidence, 'sha256': EXPECTED_ACTUAL, 'cases': [case['case'] for case in cases], 'outcome': 'passed'}}, sort_keys=True, separators=(',', ':')))
+    print(json.dumps({'edge_id': args.edge_id, 'from_version': args.origin_version, 'to_version': 'v0.17.0', 'portable_validation': portable, 'actual_upgrade': {'kind': 'owner-approved-affected-only-reuse', 'native_archive_sha256': archive_digest, 'actual_cases_reexecuted': 0, 'evidence_path': args.actual_evidence, 'sha256': EXPECTED_ACTUAL, 'cases': [case['case'] for case in cases], 'outcome': 'passed'}}, sort_keys=True, separators=(',', ':')))
 
 if __name__ == '__main__':
     try:
