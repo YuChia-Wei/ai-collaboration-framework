@@ -8,7 +8,7 @@ The retained direct sources are **v0.6.0**, **v0.9.0** and **v0.16.0**. Every ro
 
 1. Preserve a clean target commit, installed-version provenance, semantic customization ledger, effective-rule state and any unfinished transaction evidence. Resolve missing or conflicting authority before applying files.
 2. Verify the incoming public archive and checksum against its immutable release identity. Obtain the original installed package's `metadata/files.yaml` from its published envelope; do not reconstruct that manifest from a current checkout.
-3. Extract the incoming package outside the target and install its declared Python requirements. Select optional components and providers from target-owned evidence. Resolve the source-only support matrix with `plan-ai-context-upgrade.py --matrix SUPPORT_MATRIX --origin INSTALLED_VERSION --target v0.17.0` and require a direct route.
+3. Extract the incoming package outside the target and install its declared Python requirements. Select optional components and providers from target-owned evidence. From the extracted envelope, resolve the source-only support matrix with `python payload/.ai/scripts/plan-ai-context-upgrade.py --matrix SUPPORT_MATRIX --origin INSTALLED_VERSION --target v0.17.0` and require a direct route.
 
 ## Migration Steps
 

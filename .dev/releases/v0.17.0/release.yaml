@@ -72,9 +72,9 @@ artifacts:
   migration_guide: migration-guide.md
   support_matrix: support-matrix.yaml
   route_evidence:
-  - route-evidence/v0.6.0-to-v0.17.0.json
-  - route-evidence/v0.9.0-to-v0.17.0.json
   - route-evidence/v0.16.0-to-v0.17.0.json
+  - route-evidence/v0.9.0-to-v0.17.0.json
+  - route-evidence/v0.6.0-to-v0.17.0.json
 distribution:
   profile_id: dotnet-backend
   package_id: ai-collaboration-framework-v0.17.0

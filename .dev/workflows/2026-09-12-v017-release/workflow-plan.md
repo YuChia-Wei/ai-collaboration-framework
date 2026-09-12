@@ -35,8 +35,12 @@ Complete selected source, package, actual upgrade/recovery, candidate and critic
 ## Resume Checkpoint
 
 - Current task: REL017-001, preparation in progress.
-- Completed: current main and Issue #298 read-back; source templates instantiated; cache locations discovered.
-- Next: finalize authored compatibility/migration content, inspect release executor coverage, then create the clean preparation commit and execute admitted candidate gates.
-- Validation: no v0.17.0 candidate acceptance has passed. The earlier read-only preflight failed because the phase contract did not exist.
-- Outstanding: candidate assets, direct-origin evidence, source gates and independent review.
+- Completed: templates, fresh public origin metadata, release-specific executor and CI selection; static executor review and 40 release-state tests passed. Notes review found one incomplete envelope command, now corrected.
+- Next: build a new candidate after correcting identity-bound route-evidence ordering, then bind actual execution, source gates and final review to those assets.
+- Validation: the first archive pair and checksums passed structural validation, but that candidate is superseded by selected-input correction. Its Windows actual execution failed because the cache runtime resolved a relative package root incorrectly; failure and diagnostic evidence remain retained. No v0.17.0 candidate acceptance has passed.
+- Outstanding: final candidate assets, three direct-origin evidence sets, source gates and final independent review.
 - Provider lifecycle: Issue #298 remains open; no tag or Release exists.
+
+## Bounded Execution Reauthorization
+
+The integration owner authorizes one fresh actual-upgrade command after the corrected selected inputs are committed and independently reviewed. This is necessary release preparation within Issue #298. Retain earlier failed, interrupted or superseded attempts; bind the new attempt to the new candidate digest, exact source commit and verified Linux-native RAM cache. The selected-input correction and runtime change are material state changes, not unchanged retries. If this fresh attempt fails, diagnose and record the new failure before any further dispatch; no automatic retry is authorized. The authorization changes neither publication authority nor test acceptance criteria.
