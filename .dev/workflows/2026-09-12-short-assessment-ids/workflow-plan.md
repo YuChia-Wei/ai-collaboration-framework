@@ -7,11 +7,11 @@
 - `owner_skill`: `ai-context-governance`
 - `branch`: `codex/2026-09-12-short-assessment-ids`
 - `base_branch`: `main`
-- `status`: `in_progress`
-- `current_phase`: `post-audit`
+- `status`: `completed`
+- `current_phase`: `completed`
 - `artifact_root`: `.dev/workflows/2026-09-12-short-assessment-ids`
 - `created_at`: `2026-09-12T11:55:26+08:00`
-- `updated_at`: `2026-09-12T12:01:33+08:00`
+- `updated_at`: `2026-09-12T12:19:45+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md`
 - `template_version`: `1.2.0`
 
@@ -35,9 +35,10 @@ Update the assessment policy, existing identity parser/index matcher and commit 
 
 No allocation service, remote reservation, graph-wide scanner, generator CLI, migration framework, source release or publication is part of this delivery.
 
-## Resume Checkpoint
+## Local Completion
 
-- Current task: `ASM213-001`.
-- Last completed: current Issue read-back, refreshed clean main `92c1c6908593a85bc1b28256a8f6e7a316d9c756`, dedicated branch and writer lease.
-- Next action: commit the validated source and obtain independent review.
-- Blockers: none.
+- `ASM213-001` is complete on repaired source `33c624f23ee9b74b4c39587185b780fb7c039ffa`. All five acceptance criteria pass.
+- Native Windows and POSIX each have 15 passing assessment tests and 30 passing commit-policy tests. Unchanged assessment inputs retain proved reuse; the changed commit policy and tests were re-executed.
+- Two failed independent reviews identified CR-001. The positive delimiter repair passed the third read-only source review; all earlier results remain evidence.
+- Root will validate the completed workflow records, commit them and request one bounded final AI-context admission. No implementation remains pending.
+- No push, PR, merge, Issue closure, Project change or release action is included. Issue 21 remains a conversation-only reassessment.
