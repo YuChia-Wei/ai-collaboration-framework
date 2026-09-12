@@ -6,9 +6,9 @@
   "task_id": "INIT296-001",
   "workflow_id": "2026-09-12-init-agents-guidance",
   "owner_skill": "ai-context-governance",
-  "status": "in_progress",
+  "status": "completed",
   "created_at": "2026-09-12T13:17:49+08:00",
-  "updated_at": "2026-09-12T13:20:12+08:00",
+  "updated_at": "2026-09-12T13:24:39+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-6-astra",
   "reasoning_effort": "ultra",
@@ -104,11 +104,11 @@
         "output_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
       }
     ],
-    "last_completed_step": "Focused implementation and validation complete.",
-    "next_action": "Independent verification and final finding reconciliation."
+    "last_completed_step": "Independent source verification passed; all seven accepted criteria reconciled.",
+    "next_action": "No local implementation remains. Public delivery requires separate authorization."
   },
   "results": {
-    "summary": "Four bounded files updated; all nine CLI routing tests and context/workflow validators passed. Independent verification is pending.",
+    "summary": "All seven accepted source-guidance criteria resolved with nine passing CLI tests, AI-context/workflow checks and independent review.",
     "files_changed": [
       ".ai/assets/skills/ai-context-init/templates/public-root/AGENTS.md",
       ".ai/assets/skills/ai-context-init/references/document-targets.md",
@@ -174,8 +174,15 @@
         "output_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
       }
     ],
-    "finding_status": "partially-resolved",
+    "finding_status": "resolved",
     "residual_risk": "Text and static contracts are validated; downstream behavior and comparative model performance are not measured.",
-    "follow_up_needed": true
+    "follow_up_needed": false,
+    "independent_verification": {
+      "subject_sha": "9d9dc1b5bfc0cbbceb0780946032231b8cadd896",
+      "outcome": "passed",
+      "report_ref": ".dev/ai-context/local/2026-09-12-init-agents-guidance/review-2/report.md",
+      "report_sha256": "442da0f98df68dbc007e07445ee6b8d2239c0b5902aa3b2f2e90c6e2ad510371",
+      "parent_verification_ref": ".dev/ai-context/local/2026-09-12-init-agents-guidance/review-2/parent-verification.json"
+    }
   }
 }
