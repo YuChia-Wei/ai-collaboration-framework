@@ -1579,6 +1579,20 @@ class CheckAllRunnerGwtTests(unittest.TestCase):
             self.assertEqual(len(event_ids), len(set(event_ids)))
             by_id = {row[0]: row for row in event_rows}
             self.assertEqual(selected_ids, selected_ids & set(by_id))
+            expected_source_skips = {
+                "release-asset-identity": (
+                    "Release Asset Identity Contract Tests",
+                    "source release context not packaged",
+                ),
+                "validation-dependency-observation-contract": (
+                    "Bounded Validation Dependency Observation",
+                    "source governance registry not packaged",
+                ),
+            }
+            for check_id, (description, reason) in expected_source_skips.items():
+                self.assertEqual(["not-applicable", "not-executed"], by_id[check_id][3:5])
+                self.assertIn(description, result.stdout)
+                self.assertIn(reason, (invocation / f"{check_id}.log").read_text())
             self.assertTrue(
                 all(by_id[check_id][4] != "not-selected" for check_id in selected_ids)
             )
