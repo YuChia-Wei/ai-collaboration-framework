@@ -19,6 +19,10 @@ pull_request:
     - Update existing assessment and commit-reference validation, current templates,
     guidance and wrappers.
 
+    - Exclude the optional BDD step-method example subtree from SDK-free core project
+    discovery, and select the contract for example and project-file changes. Framework
+    setup and required validation remain SDK-free.
+
     - Bind the date/hour to the locator''s recorded creation offset; prefer an independent
     random suffix per assessment.
 
@@ -34,8 +38,13 @@ pull_request:
 
     - Assessment, workflow, AI-context and commit-policy checks passed.
 
-    - Independent source review and final local context audit passed. Two earlier
-    CR-001 findings and their delimiter-boundary repairs remain recorded.
+    - SDK-free and registry regression suites: 6 + 11 tests passed on both Windows
+    and POSIX using a clean checkout. The original hosted failures, sandbox restrictions,
+    local historical fixture interference and corrected POSIX worktree route remain
+    recorded.
+
+    - The assessment-ID independent source review and final local context audit passed.
+    Two earlier CR-001 findings and their delimiter-boundary repairs remain recorded.
 
     - The evidence covers actual bounded fixture executions; it does not establish
     distributed uniqueness or downstream adoption.
@@ -101,3 +110,5 @@ authorization_note: On 2026-09-12 the owner explicitly authorized pushing review
   repository on codex/2026-09-12-short-assessment-ids, then merging after checks and
   closing Issue 213. This declaration records that authorization; provider review,
   checks, admission and reconciliation remain pending. No tag or publication is authorized.
+  The owner subsequently authorized the pre-existing SDK-free example exclusion and
+  check-selection correction, followed by the same checked merge and Issue closure.

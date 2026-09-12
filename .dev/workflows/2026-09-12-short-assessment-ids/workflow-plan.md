@@ -7,11 +7,11 @@
 - `owner_skill`: `ai-context-governance`
 - `branch`: `codex/2026-09-12-short-assessment-ids`
 - `base_branch`: `main`
-- `status`: `in_progress`
-- `current_phase`: `implementation`
+- `status`: `completed`
+- `current_phase`: `completed`
 - `artifact_root`: `.dev/workflows/2026-09-12-short-assessment-ids`
 - `created_at`: `2026-09-12T11:55:26+08:00`
-- `updated_at`: `2026-09-12T12:57:16+08:00`
+- `updated_at`: `2026-09-12T13:04:55+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md`
 - `template_version`: `1.2.0`
 
@@ -48,3 +48,9 @@ No allocation service, remote reservation, graph-wide scanner, generator CLI, mi
 On 2026-09-12 the owner resumed PR 295 and authorized the SDK-free contract correction. Task ASM213-001 and its acceptance remain complete; task ASM213-002 repairs the newly observed pre-existing blocker. The prior local-only authorization statements above describe the earlier stage. Public push, PR updates, checked merge and Issue 213 closure are now authorized.
 
 The existing bdd-step-methods subtree is optional example material. Exclude that exact subtree from core project discovery, preserve core and unclassified-project rejection, and select the SDK-free check for relevant example/project changes. Do not install an SDK or execute the examples as part of required framework checks. Preserve the failed hosted runs and require fresh independent review, hosted checks, live admission and provider read-back after repair.
+
+## SDK-Free Repair Completion
+
+Task ASM213-002 is complete. At clean source 8878e734, Windows and POSIX each passed all six SDK-free and eleven registry tests. The first POSIX attempt could not resolve a Windows worktree pointer; the second used explicit POSIX Git paths and passed. The sandbox failures and original local inventory of historical ignored validation projects remain non-passing evidence; a clean checkout supplied the full inventory result. Core and unclassified projects remain detectable. The optional example source is unchanged apart from its execution-boundary explanation.
+
+Independent current-content review and all current-head hosted checks, admission and reconciliation remain separate provider gates. No source implementation remains.

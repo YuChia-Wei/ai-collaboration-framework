@@ -59,3 +59,9 @@ The eight-entry `acceptance-ledger.json` and `acceptance-projection.md` under `.
 The single implementation task is complete. Formal product/spec compliance, downstream adoption, statistical collision measurement, hosted checks, release matrices and provider closure are not applicable to this bounded local delivery. Source review and local validation do not imply any of those outcomes.
 
 The completed records receive a final read-only AI-context audit after the metadata commit; its terminal evidence remains under the declared ignored local root. Root must verify that result before the final delivery response. Push, PR, merge, Issue closure, Project state and publication remain separate. Issue 21 is a later conversation-only reassessment.
+
+## Addendum: Authorized SDK-Free Example Correction
+
+The owner authorized the SDK-free blocker repair after the preceding local assessment-ID completion. The exact bdd-step-methods subtree is optional example material, excluded from core project inventory. Core, untracked and unclassified project paths remain detectable; project and example changes select the SDK-free contract. Windows and POSIX each passed all six SDK-free and eleven registry tests on clean source 8878e734.
+
+Actual execution receipts and AC6/AC7 projection: `.dev/ai-context/local/2026-09-12-short-assessment-ids/sdk-acceptance-ledger.json` and `sdk-acceptance-projection.md`. Earlier hosted, sandbox and POSIX worktree-path failures are preserved. Current-content independent review, hosted checks and provider integration remain separate pending gates.

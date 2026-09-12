@@ -2,9 +2,9 @@
   "task_id": "ASM213-002",
   "workflow_id": "2026-09-12-short-assessment-ids",
   "owner_skill": "ai-context-governance",
-  "status": "in_progress",
+  "status": "completed",
   "created_at": "2026-09-12T12:57:16+08:00",
-  "updated_at": "2026-09-12T12:57:16+08:00",
+  "updated_at": "2026-09-12T13:04:55+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "template_version": "1.1.0",
   "model": "gpt-6-astra",
@@ -16,7 +16,119 @@
     "AC7: Project and example changes select the SDK-free contract, and default framework validation remains SDK-free."
   ],
   "results": {
-    "summary": "Implemented exact BDD example subtree exclusion and project-change selection. Host focused exclusion and all 11 registry tests pass; clean-checkout SDK inventory and independent review remain pending.",
-    "finding_status": "unresolved"
+    "summary": "Optional BDD example subtree excluded from core SDK inventory, with core/unclassified rejection and relevant change selection preserved. All 17 focused tests pass per host on clean source 8878e734.",
+    "finding_status": "resolved",
+    "tests_run": [
+      {
+        "argv": [
+          "py",
+          "-3",
+          "-B",
+          "-m",
+          "unittest",
+          "discover",
+          "-s",
+          ".ai/scripts/tests",
+          "-p",
+          "test_sdk_free_framework_contract.py",
+          "-v"
+        ],
+        "cwd": ".tmp/sd",
+        "subject_sha": "8878e734ffbd6ac4727c97b248a136aaf899b37a",
+        "started_at": "2026-09-12T13:02:23.316325+08:00",
+        "duration_seconds": 0.681,
+        "outcome": "passed",
+        "exit_code": 0,
+        "output_ref": ".dev/ai-context/local/2026-09-12-short-assessment-ids/sdk-clean-checks/windows-0.log",
+        "output_sha256": "1b4d834aeceaa9c7d593fb23a3d71956f91cce050cc55b648fd9cf3d925f9290"
+      },
+      {
+        "argv": [
+          "py",
+          "-3",
+          "-B",
+          "-m",
+          "unittest",
+          "discover",
+          "-s",
+          ".ai/scripts/tests",
+          "-p",
+          "test_validation_profile_registry.py",
+          "-v"
+        ],
+        "cwd": ".tmp/sd",
+        "subject_sha": "8878e734ffbd6ac4727c97b248a136aaf899b37a",
+        "started_at": "2026-09-12T13:02:24.005170+08:00",
+        "duration_seconds": 3.5,
+        "outcome": "passed",
+        "exit_code": 0,
+        "output_ref": ".dev/ai-context/local/2026-09-12-short-assessment-ids/sdk-clean-checks/windows-1.log",
+        "output_sha256": "a39466f4121b616a56ad2e1db55701cde2b0382254a357c57f4c24f6b93df0ec"
+      },
+      {
+        "argv": [
+          "wsl.exe",
+          "-d",
+          "Ubuntu-24.04",
+          "--cd",
+          "/mnt/c/Github/YuChia/ai-collaboration-prompts-dotnet-backend/.tmp/sd",
+          "--",
+          "env",
+          "GIT_DIR=/mnt/c/Github/YuChia/ai-collaboration-prompts-dotnet-backend/.git/worktrees/sd",
+          "GIT_WORK_TREE=/mnt/c/Github/YuChia/ai-collaboration-prompts-dotnet-backend/.tmp/sd",
+          "python3",
+          "-B",
+          "-m",
+          "unittest",
+          "discover",
+          "-s",
+          ".ai/scripts/tests",
+          "-p",
+          "test_sdk_free_framework_contract.py",
+          "-v"
+        ],
+        "cwd": ".tmp/sd",
+        "subject_sha": "8878e734ffbd6ac4727c97b248a136aaf899b37a",
+        "started_at": "2026-09-12T13:02:54.434080+08:00",
+        "duration_seconds": 8.598,
+        "outcome": "passed",
+        "exit_code": 0,
+        "output_ref": ".dev/ai-context/local/2026-09-12-short-assessment-ids/sdk-clean-checks-posix2/posix-0.log",
+        "output_sha256": "7d3674db62cbe7ac6a85746e914eb97cba948bab81c60150b109aba42bfb0120"
+      },
+      {
+        "argv": [
+          "wsl.exe",
+          "-d",
+          "Ubuntu-24.04",
+          "--cd",
+          "/mnt/c/Github/YuChia/ai-collaboration-prompts-dotnet-backend/.tmp/sd",
+          "--",
+          "env",
+          "GIT_DIR=/mnt/c/Github/YuChia/ai-collaboration-prompts-dotnet-backend/.git/worktrees/sd",
+          "GIT_WORK_TREE=/mnt/c/Github/YuChia/ai-collaboration-prompts-dotnet-backend/.tmp/sd",
+          "python3",
+          "-B",
+          "-m",
+          "unittest",
+          "discover",
+          "-s",
+          ".ai/scripts/tests",
+          "-p",
+          "test_validation_profile_registry.py",
+          "-v"
+        ],
+        "cwd": ".tmp/sd",
+        "subject_sha": "8878e734ffbd6ac4727c97b248a136aaf899b37a",
+        "started_at": "2026-09-12T13:03:03.039146+08:00",
+        "duration_seconds": 4.649,
+        "outcome": "passed",
+        "exit_code": 0,
+        "output_ref": ".dev/ai-context/local/2026-09-12-short-assessment-ids/sdk-clean-checks-posix2/posix-1.log",
+        "output_sha256": "32d2900a2fcb66db72ee37d06d8e1b591ccb83f09f388e2fd624f6a829fa6a9e"
+      }
+    ],
+    "follow_up_needed": false,
+    "residual_risk": "Examples remain optional executable teaching material; no SDK installation or execution was added to required framework validation."
   }
 }
