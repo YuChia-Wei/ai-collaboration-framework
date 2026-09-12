@@ -1428,14 +1428,20 @@ class CheckAllRunnerGwtTests(unittest.TestCase):
             )
             fixture._write_stub(
                 fixture.bin / "date",
-                'printf "2026-01-01 00:00:00\\n"',
+                'PATH=/usr/bin:/bin exec date "$@"',
             )
             for command in (
                 "awk",
+                "basename",
                 "cat",
+                "cp",
+                "git",
                 "grep",
                 "head",
+                "ln",
                 "mkdir",
+                "realpath",
+                "rm",
                 "sed",
                 "sha256sum",
                 "sort",
