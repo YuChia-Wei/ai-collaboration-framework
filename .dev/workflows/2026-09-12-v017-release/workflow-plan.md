@@ -1,4 +1,4 @@
-# REL-v0.17.0 Preparation
+# REL-v0.17.0 Publication
 
 ## Workflow Metadata
 
@@ -16,15 +16,15 @@
 
 ## Objective And Authority
 
-Issue #298 binds the owner's 2026-09-12 instruction to start v0.17.0 preparation. Included Work is #213, #276, #279, #289, #290, #293 and #296. Issue #21 is canceled and excluded. The base is `001268abce0ac6a88d733df4e242fd623a8b4682`. Preparation includes local artifacts, necessary candidate/migration execution, independent review and local commits. Push, integration and owner tag/publication gates remain separate later actions.
+Issue #298 binds the owner's preparation instructions and subsequent explicit request to complete v0.17.0 publication. Included Work is #213, #276, #279, #289, #290, #293 and #296. Issue #21 is canceled and excluded. The base is `001268abce0ac6a88d733df4e242fd623a8b4682`. The current authorization includes required source preparation, RAM-cache validation, independent review, push, pull request, merge, a new annotated v0.17.0 tag, hosted publication and provider reconciliation. Existing tags and published assets remain immutable.
 
-One task owns one release outcome. A workflow is warranted by immutable archive admission, cross-host execution, resumable evidence and the later provider lifecycle. One reviewed release boundary should be integrated through a pull request and merge commit when separately authorized.
+One task owns the release outcome. Use a merge commit to preserve the native build and execution commits. Keep the owner's later instruction to revalidate only the two remaining cases; their successful dispatch09 evidence completes the selected cases.
 
 The provider contract retains the latest released schema-1.1 Status-only requirements: completed Included Work stays Done; coordination moves through Verification before publication and Done afterward. Omitted Priority, Owner review, Target release and Published in fields remain advisory and are not implicitly mutated.
 
 ## Acceptance And Artifacts
 
-The five REL017-AC identifiers in Issue #298 remain individually tracked in `tasks/REL017-001.json`. Source record, authored notes, migration guide and phase contract live under `.dev/releases/v0.17.0`. Incoming archive admission and three direct-origin routes must bind fresh v0.17.0 bytes. Historical releases provide immutable origin evidence only.
+The six REL017-AC identifiers in Issue #298 remain individually tracked in `tasks/REL017-001.json`. Source record, authored notes, migration guide and phase contract live under `.dev/releases/v0.17.0`. Incoming archive admission and three direct-origin routes must bind fresh v0.17.0 bytes. Historical releases provide immutable origin evidence only.
 
 ## Validation Plan
 
@@ -32,25 +32,20 @@ Use the owner-selected RAM-backed locations through explicit local execution set
 
 Complete selected source, package, actual upgrade/recovery, candidate and critical checks. Run Windows and Linux paths where applicable, retain failures, and never equate synthetic checks with actual target execution. Freeze payload and selected inputs before archive admission. Review content and evidence independently.
 
-## Resume Checkpoint
+## Current Checkpoint
 
-- Current task: REL017-001, preparation in progress.
-- Completed: six templates, seven completed Included Work items, exact public origin metadata, the v0.17 executor and CI dispatch, corrected migration command and route-evidence ordering, and four replacement candidate assets built from `34aa44049545d3188ae5ab6cccef39e710421341` after the independently reviewed short-ID compatibility repair.
-- Passed: archive/checksum/ZIP-tar parity; 40 release-state tests, 13 workflow contracts and 11 profile contracts; source version, workflow and AI-context structure checks; independent runner and corrected notes/migration reviews.
-- Runtime evidence: first Windows execution failed at package-root resolution. Second dispatch was interrupted before execution after selected-input correction. The owner explicitly authorized dispatch three; it stopped at input preflight because the local transport omitted the checksum, before any of the nine cases ran. Each outcome remains non-passing.
-- Fourth dispatch: failed after the v0.6.0 pristine-resume case passed. The next customized case exposed the current package's legacy-only assessment-ID expression in semantic customization audit validation. The failed terminal and partial case evidence remain non-passing; the nine-case acceptance is not satisfied.
-- Repair: align the semantic customization audit consumer with the accepted hour-scoped three-character ID grammar while retaining legacy IDs. The focused regression failed for three valid short IDs before repair; all 12 semantic-customization lifecycle tests pass afterward, including rejection checks on both audit fields. The actual runner retains its new-format fixture, so the regression remains observable.
-- Candidate: the admitted assets built at `346bbc14e16d7219012de846267febd3a22cf1b6` are superseded for preparation because this repair changes payload bytes. Those exact assets are preserved in ignored historical evidence. The replacement candidate was built and admitted at `34aa44049545d3188ae5ab6cccef39e710421341`, passed archive/checksum/parity checks, and has all eight Linux-cache inputs verified. Independent repair review passed; no new actual outcome is claimed.
-- Next: validate the applicable retry authority for the reviewed replacement candidate, verify all nine actual cases, assemble fresh direct routes, and run candidate/critical gates and final independent review.
-- Continued execution: the owner authorized dispatch five and at most two further same-scope retries after repair, focused validation and independent review. Dispatch five was blocked before the command because the WSL instance ended and cleared its temporary checkout. Dispatch six uses restored identical bytes with an explicit task-local lifetime keeper; its terminal failed after six cases passed, at the v0.16 fixture setup. The full failed evidence is retained.
-- Superseded fixture repair: the first v0.16 setup repair selected the old review fixture because it was absent from the incoming inventory. Dispatch seven exposed that inventory absence represented a rename, not retirement. That earlier seed-only result does not prove the complete migration or justify preserving the rename source as a retired path.
-- Seventh dispatch: seven cases passed, including v0.16 pristine-resume; v0.16 customized-none failed target validation because the new managed review fixture was absent. The modified old path was preserved by the declared reconciliation. Full execution artifacts, callback and released lease are retained as non-passing evidence.
-- Controlled diagnosis: on the same admitted package and planner, restoring only the original rename-source bytes changed the selected operation from reconcile to rename. Both classification observations completed; no upgrade was executed by that focused experiment. The exact v0.16 source migration declares zero removes and one rename.
-- Current fixture repair: select legacy retirement fixtures only from source-declared managed remove operations. v0.6 and v0.9 retain six such paths; v0.16 records zero applicable retirement paths and leaves its rename source pristine. Every selected incoming managed byte, preserved target content, renamed-source absence and rollback snapshot remains required by the unchanged target check. All 41 release-state tests and both corrected v0.16 seed probes pass; fresh actual execution is not yet available.
-- Authorization boundary: the owner-authorized dispatch-five-plus-two-retries budget is exhausted. Complete independent review and exact asset rebinding before requesting one new bounded full matrix dispatch. Do not infer a passing route, validated source status or publication readiness from the focused results.
-- Outstanding: three direct-origin evidence sets, full release acceptance and final review. The release record stays planned.
-- Provider lifecycle: seven included issues remain CLOSED/COMPLETED and Done. Issue #298 remains open with Project Status Verification. No v0.17 tag or Release exists.
+- The four admitted assets retain their exact build provenance at `34aa44049545d3188ae5ab6cccef39e710421341`.
+- Dispatch07 at `9b6780514fb3cd299cf831b7be20931d2c157dde` remains failed after seven individual cases passed. Its v0.16 customized fixture incorrectly altered a declared rename source. The source migration has zero removes and one rename.
+- The reviewed repair at `a7b171df383ba416815275e81ed06f13e77b13ca` selects only source-declared managed removals. The v0.6/v0.9 selections remain the same six paths. The v0.16 pristine case never enters the customized fixture branch. The target validation command and candidate bytes are unchanged.
+- Owner-selected dispatch08 failed before execution because of a wrapper import-order error; zero cases executed. The reviewed wrapper correction preceded dispatch09.
+- Dispatch09 at the repaired commit passed exactly the v0.16 customized-none and customized-rollback cases. It is a two-case execution, not a new full matrix. Original failures, interruption/setup records, native terminals, complete evidence and released leases remain retained under the ignored local evidence root.
+- The version-specific evidence set retains the two native terminals, runner bytes, separate artifact roots and all nine accepted case identities. The same existing artifact, finalization, negative-boundary and rollback checks apply to every case.
+- Remaining: source evidence integration validation, fixed-subject independent review, candidate and critical gates, PR integration, fresh integrated gates, annotated tag publication and public asset/provider read-back. No remaining gate is predeclared passed.
+
+## Bounded Evidence Decision
+
+The owner's instructions "OK，復驗這兩案就好" and "那就完成 0.17.0 的發布吧" authorize carrying forward exactly the seven individually passed cases from dispatch07 together with the two passed cases from dispatch09, for this admitted archive only. The compatibility analysis proves the affected fixture selection produces unchanged inputs for those seven cases. This is a v0.17-specific exception to changed-runner re-execution, with no general reuse effect. The original failed terminal remains failed; no synthetic nine-case terminal is created. Any other runner, candidate, case set or release requires a new decision and applicable evidence.
 
 ## Execution Authority And Evidence
 
-The owner authorized local release preparation, explicitly approved dispatch four, and later replied "OK，繼續處理" to the bounded request for dispatch five plus at most two repair-and-review retries. Each packet must bind its exact reviewed subject, admitted archive, all eight verified ZIP/checksum inputs and prior failure digest. The executor never repairs or retries; the root integrates each terminal and applies the remaining conditional budget. Preserve failures, pre-start interruption and setup corrections separately from actual-case evidence. These execution grants do not authorize publication.
+The root owns integration and provider actions. Independent work uses immutable read-only checkouts and sealed callbacks. All tests use explicit owner-selected RAM cache preflight. Dispatch failures and earlier candidate evidence remain separate historical records. Release source status remains planned until the applicable preparation gates and independent review pass. Terminal validation writes only declared ignored evidence; hosted publication completes Issue #298 after the public assets are verified.

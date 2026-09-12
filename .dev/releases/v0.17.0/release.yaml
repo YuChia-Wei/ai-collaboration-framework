@@ -10,7 +10,7 @@ commit: null
 tagged_at: null
 recorded_at: null
 created_at: '2026-09-12T13:59:25+08:00'
-updated_at: '2026-09-12T16:30:59+08:00'
+updated_at: '2026-09-12T17:11:44+08:00'
 planning:
   github_issue_refs:
   - '#213'
@@ -97,14 +97,13 @@ distribution:
     automation: github-actions
     creates_or_moves_tag: false
 validation:
-  evidence: 'The unchanged admitted assets built at 34aa44049545d3188ae5ab6cccef39e710421341
-    passed archive/checksum/parity validation. Actual dispatch seven at 9b6780514fb3cd299cf831b7be20931d2c157dde
-    failed after seven cases passed: its v0.16 customized fixture altered a declared
-    rename source as though it were a retirement. Controlled planner isolation confirmed
-    the fixture precondition conflict. The runner now selects only source-declared
-    removals; 41 release-state tests and both focused v0.16 seed probes pass. Fresh
-    independent repair review and newly authorized nine-case execution remain required;
-    partial and prior failures are retained and non-passing.'
+  evidence: The admitted assets remain unchanged. Dispatch07 retains seven individually
+    passed cases and an overall failed outcome. The reviewed source-declared-removal
+    correction leaves those seven cases input-compatible. Owner-selected dispatch09
+    passed the two v0.16 customized cases, including actual finalized target validation
+    and exact rollback. The version-specific execution set retains both native terminals
+    and separate artifacts. Source integration, final review and terminal publication
+    gates remain pending.
   workflow_id: 2026-09-12-v017-release
   related_workflows: []
   related_assessments: []

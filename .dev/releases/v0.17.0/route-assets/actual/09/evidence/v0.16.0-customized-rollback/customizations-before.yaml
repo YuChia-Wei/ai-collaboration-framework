@@ -1,0 +1,43 @@
+schema_version: '1.0'
+customizations:
+- id: CUST-UPGRADE-PRESERVATION
+  subject:
+    kind: contract
+    id: target-upgrade-preservation
+  relationship: target-only
+  reason: The target owns an additional migration acceptance contract.
+  paths:
+  - owner.txt
+  base_framework:
+    version: v0.16.0
+    commit: 4d1a5c7d039618f007784679d9968c357347272b
+    evidence:
+    - .dev/decisions/direct-v017-fixture.md
+  dependencies:
+    customization_ids: []
+    subject_refs: []
+  owner_reconciliation:
+    status: approved
+    owner: bounded-fixture-owner
+    decided_at: '2026-09-12T08:59:09+00:00'
+    evidence: .dev/decisions/direct-v017-fixture.md
+  decision_evidence:
+    requirements:
+    - .dev/decisions/direct-v017-fixture.md
+    adrs: []
+    workflows: []
+  active_context_audit:
+    assessment_id: ASM-20260912-14-a7c
+    status: verified
+    evidence: .dev/decisions/direct-v017-fixture.md
+  incoming:
+    version: v0.16.0
+    status: absent
+    evidence: .dev/decisions/direct-v017-fixture.md
+  disposition: retain
+  post_upgrade_audit:
+    assessment_id: ASM-20260912-14-a7c
+    status: verified
+    evidence: .dev/decisions/direct-v017-fixture.md
+  validation:
+  - python .dev/validation/direct-upgrade-target.py

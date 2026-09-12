@@ -633,9 +633,98 @@ def validate_direct_case_artifacts(actual_root, case, origin_identity, target_id
             raise ReleaseStateError("actual upgrade failed validation lacks protected-state rejection evidence")
 
 
+def load_v017_execution_set(root, actual_root):
+    """Read the owner-selected, immutable seven-plus-two v0.17 evidence set.
+
+    This is a release-specific exception, not a general runner-drift reuse rule.
+    Original terminals remain native execution records, including the failure.
+    """
+    expected = (
+        ("07", "327b4ca40a21cdbe06f3b6b6c36f30d3d1645c6cd2c71ca55b3ec9ec97babdfd",
+         "9b6780514fb3cd299cf831b7be20931d2c157dde", "failed",
+         "6e267374c93de67a70386475fb6dd88ed815efe2997dc44398ab84ba15ba85da"),
+        ("09", "c75438f361a3ebd797cb0109dece3694a756099f83b91d7ea83da2c9122974a9",
+         "a7b171df383ba416815275e81ed06f13e77b13ca", "passed",
+         "7b83294b491465486070dcf0796e7485e229b37bfc417772b4d4f7f39590feba"),
+    )
+    archive = "b9e6b38515e8ac82731734b99bacb97b40ca0c7ad543d2b6f84390b4cdb94a22"
+    runner_path = ".github/scripts/validate-v017-direct-upgrades.py"
+    labels = [origin + suffix for origin in ("v0.6.0", "v0.9.0", "v0.16.0")
+              for suffix in ("-pristine-resume", "-customized-none", "-customized-rollback")]
+    try:
+        record = json.loads(contained_release_asset(actual_root, "execution-set.json").read_bytes())
+        if (record.get("schema_version") != "v017-direct-upgrade-evidence-set/v1"
+                or record.get("release") != "v0.17.0"
+                or record.get("authority") != "owner-selected-two-case-retest-and-publication"
+                or record.get("archive_sha256") != archive
+                or record.get("attempts") != [
+                    {"id": item[0], "terminal": f"{item[0]}/terminal.json", "sha256": item[1],
+                     "accepted_cases": labels[:7] if item[0] == "07" else labels[7:]}
+                    for item in expected]):
+            raise ReleaseStateError("v0.17 execution set differs from the bounded owner decision")
+        if hashlib.sha256((root / runner_path).read_bytes()).hexdigest() != expected[1][4]:
+            raise ReleaseStateError("v0.17 execution set cannot cover another runner change")
+        cases, case_roots, terminals = [], {}, []
+        for attempt, terminal_sha, subject, outcome, runner_sha in expected:
+            attempt_root = actual_root / attempt
+            raw = contained_release_asset(actual_root, f"{attempt}/terminal.json").read_bytes()
+            if hashlib.sha256(raw).hexdigest() != terminal_sha:
+                raise ReleaseStateError("v0.17 original execution terminal changed")
+            terminal = json.loads(raw)
+            native = subprocess.run(["git", "show", f"{subject}:{runner_path}"],
+                                    cwd=root, capture_output=True, check=False)
+            retained_runner = contained_release_asset(actual_root, f"{attempt}/runner.py").read_bytes()
+            if (native.returncode != 0 or native.stdout != retained_runner
+                    or hashlib.sha256(retained_runner).hexdigest() != runner_sha
+                    or terminal.get("subject_sha") != subject or terminal.get("outcome") != outcome
+                    or terminal.get("runner") != {"path": runner_path, "sha256": runner_sha}
+                    or terminal.get("archive_sha256") != archive
+                    or terminal.get("schema_version") != "direct-upgrade-execution/v1"
+                    or terminal.get("evidence_kind") != "actual-isolated-target-execution"):
+                raise ReleaseStateError("v0.17 native execution provenance differs")
+            accepted = labels[:7] if attempt == "07" else labels[7:]
+            if ([case.get("case") for case in terminal.get("cases", [])] != accepted
+                    or any(case.get("outcome") != "passed" for case in terminal["cases"])):
+                raise ReleaseStateError("v0.17 selected execution cases differ")
+            if attempt == "09":
+                selector = contained_release_asset(actual_root, "09/selected-cases.py").read_bytes()
+                if (hashlib.sha256(selector).hexdigest() != terminal["selection_runner"]["sha256"]
+                        or terminal["invocation"][1] != terminal["selection_runner"]["path"]
+                        or terminal["selection"] != {"full_matrix": False,
+                            "mode": "owner-selected-two-case-retest", "required_cases": labels[7:]}):
+                    raise ReleaseStateError("v0.17 selected dispatcher identity differs")
+            elif not terminal.get("failure") or terminal["invocation"][1] != runner_path:
+                raise ReleaseStateError("v0.17 original failed outcome was not preserved")
+            # Verify every declared retained artifact, including ancillary logs.
+            for case in terminal["cases"]:
+                for artifact in case.get("artifacts", {}).values():
+                    data = contained_release_asset(attempt_root, artifact["path"]).read_bytes()
+                    if hashlib.sha256(data).hexdigest() != artifact["sha256"]:
+                        raise ReleaseStateError("v0.17 retained execution artifact changed")
+                cases.append(case)
+                case_roots[case["case"]] = attempt_root
+            terminals.append(terminal)
+        if terminals[0]["package_source"] != terminals[1]["package_source"]:
+            raise ReleaseStateError("v0.17 executions used different package sources")
+        return cases, case_roots, terminals[0]["package_source"], archive
+    except ReleaseStateError:
+        raise
+    except (OSError, ValueError, KeyError, TypeError, PackageError) as exc:
+        raise ReleaseStateError("v0.17 execution set is missing or invalid") from exc
+
+
 def validate_direct_upgrade_execution(root, version, sources, matrix):
     """Require actual isolated target evidence for every prospective direct origin."""
     release_dir = root / ".dev/releases" / version
+    actual_root = release_dir / "route-assets/actual"
+    if version == "v0.17.0" and (actual_root / "execution-set.json").exists():
+        cases, case_roots, package_source, archive = load_v017_execution_set(root, actual_root)
+        archives = {edge["artifacts"]["archive"]["sha256"] for route in matrix["routes"]
+                    for edge in route["edges"] if edge["to_version"] == version}
+        if archives != {archive} or package_source.get("commit") != matrix["target"]["commit"]:
+            raise ReleaseStateError("v0.17 execution set differs from the direct route subject")
+        validate_direct_upgrade_cases(cases, case_roots, sources, matrix)
+        return
     evidence_path = release_dir / "route-assets/actual/terminal.json"
     try:
         evidence = json.loads(evidence_path.read_bytes())
@@ -669,8 +758,14 @@ def validate_direct_upgrade_execution(root, version, sources, matrix):
         raise ReleaseStateError("actual upgrade execution command or timing is incomplete")
     if hashlib.sha256((root / path).read_bytes()).hexdigest() != runner.get("sha256"):
         raise ReleaseStateError("actual upgrade runner content differs from execution")
-    required_negatives = {"missing-origin-manifest", "tampered-origin-manifest", "origin-version-disagreement", "tampered-incoming-validator", "fault-injected-incoming-validator-disagreement", "ambiguous-provenance-authority", "unresolved-customization", "missing-owner-decision", "tampered-owner-decision", "missing-target-validation", "failed-target-validation-receipt", "target-validator-disagreement", "tampered-target-validation-receipt", "candidate-authority-disagreement"}
     cases = evidence.get("cases")
+    case_roots = {case.get("case"): actual_root for case in cases} if isinstance(cases, list) else {}
+    validate_direct_upgrade_cases(cases, case_roots, sources, matrix)
+
+
+def validate_direct_upgrade_cases(cases, case_roots, sources, matrix):
+    """Apply the same acceptance checks to each native execution's artifact root."""
+    required_negatives = {"missing-origin-manifest", "tampered-origin-manifest", "origin-version-disagreement", "tampered-incoming-validator", "fault-injected-incoming-validator-disagreement", "ambiguous-provenance-authority", "unresolved-customization", "missing-owner-decision", "tampered-owner-decision", "missing-target-validation", "failed-target-validation-receipt", "target-validator-disagreement", "tampered-target-validation-receipt", "candidate-authority-disagreement"}
     if not isinstance(cases, list) or len(cases) != 3 * len(sources):
         raise ReleaseStateError("actual upgrade matrix must contain three cases per origin")
     for origin in sources:
@@ -690,7 +785,7 @@ def validate_direct_upgrade_execution(root, version, sources, matrix):
             case = selected[origin + suffix]
             if case.get("recovery") != recovery:
                 raise ReleaseStateError("actual upgrade recovery mode differs from its case")
-            validate_direct_case_artifacts(release_dir / "route-assets/actual", case, origin_identity, matrix["target"])
+            validate_direct_case_artifacts(case_roots[case["case"]], case, origin_identity, matrix["target"])
         for suffix in ("-pristine-resume", "-customized-none"):
             case = selected[origin + suffix]
             final = case.get("finalization", {})

@@ -1385,5 +1385,61 @@ class AiContextReleaseStateGwtTests(unittest.TestCase):
             )
 
 
+class V017RetainedExecutionSetTests(unittest.TestCase):
+    """Preserve native failures and reject drift in the selected evidence set."""
+
+    actual = ROOT / ".dev/releases/v0.17.0/route-assets/actual"
+
+    def altered_bytes(self, path, mutate):
+        original_read = Path.read_bytes
+
+        def read(selected):
+            raw = original_read(selected)
+            return mutate(raw) if selected == path else raw
+
+        return patch.object(Path, "read_bytes", read)
+
+    def test_given_native_attempts_when_integrated_then_preserve_seven_plus_two(self):
+        cases, roots, source, archive = STATE.load_v017_execution_set(ROOT, self.actual)
+        self.assertEqual(len(cases), 9)
+        self.assertEqual(sum(path.name == "07" for path in roots.values()), 7)
+        self.assertEqual(sum(path.name == "09" for path in roots.values()), 2)
+        self.assertEqual(json.loads((self.actual / "07/terminal.json").read_bytes())["outcome"], "failed")
+        self.assertEqual(source["commit"], "34aa44049545d3188ae5ab6cccef39e710421341")
+        self.assertEqual(archive, "b9e6b38515e8ac82731734b99bacb97b40ca0c7ad543d2b6f84390b4cdb94a22")
+
+    def test_given_duplicate_or_missing_selection_when_loaded_then_rejected(self):
+        def duplicate(raw):
+            value = json.loads(raw)
+            value["attempts"][1]["accepted_cases"][1] = value["attempts"][0]["accepted_cases"][0]
+            return json.dumps(value).encode()
+        with self.altered_bytes(self.actual / "execution-set.json", duplicate):
+            with self.assertRaisesRegex(STATE.ReleaseStateError, "bounded owner decision"):
+                STATE.load_v017_execution_set(ROOT, self.actual)
+
+    def test_given_rewritten_failed_terminal_when_loaded_then_rejected(self):
+        def changed(raw):
+            value = json.loads(raw)
+            value["outcome"] = "passed"
+            return json.dumps(value).encode()
+        with self.altered_bytes(self.actual / "07/terminal.json", changed):
+            with self.assertRaisesRegex(STATE.ReleaseStateError, "original execution terminal changed"):
+                STATE.load_v017_execution_set(ROOT, self.actual)
+
+    def test_given_runner_selector_or_artifact_drift_when_loaded_then_rejected(self):
+        paths = [ROOT / ".github/scripts/validate-v017-direct-upgrades.py",
+                 self.actual / "09/selected-cases.py",
+                 self.actual / "07/evidence/v0.6.0-pristine-resume/target-validation.log"]
+        for path in paths:
+            with self.subTest(path=path.name), self.altered_bytes(path, lambda raw: raw + b"changed"):
+                with self.assertRaises(STATE.ReleaseStateError):
+                    STATE.load_v017_execution_set(ROOT, self.actual)
+
+    def test_given_unavailable_native_commit_when_loaded_then_rejected(self):
+        with patch.object(STATE.subprocess, "run", return_value=subprocess.CompletedProcess([], 128, b"", b"missing")):
+            with self.assertRaisesRegex(STATE.ReleaseStateError, "native execution provenance"):
+                STATE.load_v017_execution_set(ROOT, self.actual)
+
+
 if __name__ == "__main__":
     tempfile.run_unittest_main()

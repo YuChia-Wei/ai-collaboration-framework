@@ -139,6 +139,21 @@ rollback snapshots. Missing or changed retained artifacts fail closed. A changed
 runner requires fresh actual evidence. Candidate CI repeats
 the actual v0.16.0 matrix against the unchanged staged archive.
 
+For v0.17.0 only, the owner's two-case retest restriction and subsequent
+publication authorization select the immutable seven-plus-two execution set
+at `route-assets/actual/execution-set.json`. Dispatch07 remains failed with
+seven individually passed cases; dispatch09 passed exactly the two remaining
+v0.16 customized cases. The corrected retirement fixture has unchanged inputs
+for the seven carried-forward cases: v0.6/v0.9 use the same six source-declared
+removals and v0.16 pristine never enters the customized fixture branch. The
+workflow records this bounded exception. It does not authorize general reuse
+across runner drift. The source gate pins both original terminal hashes,
+native commits and runner bytes, the exact candidate, selected dispatcher and
+nine case identities. It applies the existing per-case acceptance checks to
+separate retained artifact roots. Candidate CI revalidates this execution set
+and the unchanged staged assets; it does not claim another actual matrix run.
+Another runner, archive, case set or release cannot inherit this exception.
+
 Candidate CI and tag publication stage the tracked admitted assets unchanged.
 Before publishing a draft, and again afterward, the hosted workflow downloads
 the assets, compares exact bytes, and reads back provider name, size, SHA-256,
