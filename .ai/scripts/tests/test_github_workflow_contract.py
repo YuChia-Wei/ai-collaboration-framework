@@ -114,6 +114,18 @@ def steps(workflow: dict) -> list[dict]:
 
 
 class GitHubWorkflowContractTests(unittest.TestCase):
+    def test_gwt_010_given_v017_candidate_when_workflow_runs_then_three_direct_sources_execute(self):
+        candidate_steps = steps(self.workflows["package-candidate.yml"])
+        actual = [item for item in candidate_steps if item.get("name") == "Validate v0.17.0 actual retained direct upgrades"]
+        self.assertEqual(len(actual), 1)
+        self.assertEqual(actual[0]["if"], "steps.release.outputs.available == 'true' && steps.release.outputs.version == 'v0.17.0'")
+        command = actual[0]["run"]
+        self.assertIn("for origin in v0.6.0 v0.9.0 v0.16.0; do", command)
+        self.assertIn("python .github/scripts/validate-v017-direct-upgrades.py", command)
+        self.assertIn('--subject-sha "${CANDIDATE_COMMIT}"', command)
+        self.assertIn('--output "${RUNNER_TEMP}/v017-actual-admission"', command)
+        self.assertNotIn("--preflight-only", command)
+
     def test_rel018_promotion_and_provider_comparison_gate_publication(self):
         candidate = {s["name"]: s for s in steps(load_workflow("package-candidate.yml"))}
         self.assertIn("steps.promotion.outputs.required == 'false'", candidate["Build deterministic archives"]["if"])
@@ -293,6 +305,7 @@ class GitHubWorkflowContractTests(unittest.TestCase):
                     "${{ runner.temp }}/source-dispositions.md\n"
                     "${{ runner.temp }}/v0151-actual-admission/**\n"
                     "${{ runner.temp }}/v016-actual-admission/**\n"
+                    "${{ runner.temp }}/v017-actual-admission/**\n"
                 ),
             },
             candidate_upload["with"],

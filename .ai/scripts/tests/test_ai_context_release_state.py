@@ -952,8 +952,12 @@ class AiContextReleaseStateGwtTests(unittest.TestCase):
                     STATE.validate_retained_origin_route_evidence(root, version, artifacts, sources)
 
     def test_gwt_031c_given_direct_execution_claims_when_identity_or_completion_disagrees_then_rejected(self):
-        sources = ["v0.6.0", "v0.9.0", "v0.15.1"]
-        version = "v0.16.0"
+        for version, predecessor, runner_name in [("v0.16.0", "v0.15.1", "validate-v016-direct-upgrades.py"), ("v0.17.0", "v0.16.0", "validate-v017-direct-upgrades.py")]:
+            with self.subTest(version=version):
+                self.assert_direct_execution_rejects_drift(version, predecessor, runner_name)
+
+    def assert_direct_execution_rejects_drift(self, version, predecessor, runner_name):
+        sources = ["v0.6.0", "v0.9.0", predecessor]
         digest = "b" * 64
         matrix = {"target": {"commit": SHA}, "routes": [{"edges": [{"to_version": version,
             "artifacts": {"archive": {"sha256": digest}}}]}]}
@@ -964,16 +968,16 @@ class AiContextReleaseStateGwtTests(unittest.TestCase):
         matrix["retained_origins"] = [{"version": origin, "commit": SHA, "manifest": {"sha256": digest}} for origin in sources]
         with tempfile.TemporaryDirectory() as temp, patch.object(STATE, "validate_direct_case_artifacts"):
             root = Path(temp)
-            runner = root / ".github/scripts/validate-v016-direct-upgrades.py"
+            runner = root / ".github/scripts" / runner_name
             runner.parent.mkdir(parents=True)
             runner.write_bytes(b"# source-gate unit fixture only\n")
             runner.with_name("alternate.py").write_bytes(runner.read_bytes())
-            path = root / ".dev/releases/v0.16.0/route-assets/actual/terminal.json"
+            path = root / ".dev/releases" / version / "route-assets/actual/terminal.json"
             path.parent.mkdir(parents=True)
             evidence = {"schema_version": "direct-upgrade-execution/v1", "evidence_kind": "actual-isolated-target-execution",
                 "outcome": "passed", "archive_sha256": digest, "package_source": {"commit": SHA},
                 "runner": {"path": runner.relative_to(root).as_posix(), "sha256": STATE.hashlib.sha256(runner.read_bytes()).hexdigest()}, "cases": []}
-            evidence.update(subject_sha=SHA, started_at="2026-09-05T10:00:00+00:00", completed_at="2026-09-05T10:00:01+00:00", duration_seconds=1.0, invocation=["python", ".github/scripts/validate-v016-direct-upgrades.py", "--subject-sha", SHA])
+            evidence.update(subject_sha=SHA, started_at="2026-09-05T10:00:00+00:00", completed_at="2026-09-05T10:00:01+00:00", duration_seconds=1.0, invocation=["python", ".github/scripts/" + runner_name, "--subject-sha", SHA])
             for origin in sources:
                 for suffix in ("-pristine-resume", "-customized-none", "-customized-rollback"):
                     evidence["cases"].append({"origin": origin, "case": origin + suffix, "outcome": "passed",

@@ -210,6 +210,25 @@ jobs:
           done
           python .github/scripts/validate-v016-direct-upgrades.py "${args[@]}"
 
+      - name: Validate v0.17.0 actual retained direct upgrades
+        if: steps.release.outputs.available == 'true' && steps.release.outputs.version == 'v0.17.0'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          args=(
+            --candidate-archive "${RUNNER_TEMP}/candidate-assets/${{ steps.release.outputs.package_id }}.zip"
+            --subject-sha "${CANDIDATE_COMMIT}"
+            --output "${RUNNER_TEMP}/v017-actual-admission"
+          )
+          for origin in v0.6.0 v0.9.0 v0.16.0; do
+            package_id="$(python .ai/scripts/resolve-ai-context-package-identity.py --version "${origin}")"
+            origin_dir="${RUNNER_TEMP}/v017-origin-${origin}"
+            mkdir -p "${origin_dir}"
+            gh release download "${origin}" --pattern "${package_id}.zip" --pattern "${package_id}.zip.sha256" --dir "${origin_dir}"
+            args+=(--origin-archive "${origin_dir}/${package_id}.zip")
+          done
+          python .github/scripts/validate-v017-direct-upgrades.py "${args[@]}"
+
       - name: Render source disposition read-back
         if: steps.release.outputs.available == 'true'
         run: |
@@ -240,3 +259,4 @@ jobs:
             ${{ runner.temp }}/source-dispositions.md
             ${{ runner.temp }}/v0151-actual-admission/**
             ${{ runner.temp }}/v016-actual-admission/**
+            ${{ runner.temp }}/v017-actual-admission/**

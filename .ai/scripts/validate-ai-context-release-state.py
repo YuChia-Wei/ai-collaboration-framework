@@ -651,7 +651,8 @@ def validate_direct_upgrade_execution(root, version, sources, matrix):
     if evidence.get("package_source", {}).get("commit") != matrix["target"]["commit"]:
         raise ReleaseStateError("actual upgrade package source differs from the matrix")
     runner = evidence.get("runner", {})
-    path = ".github/scripts/validate-v016-direct-upgrades.py"
+    path = (".github/scripts/validate-v017-direct-upgrades.py" if version == "v0.17.0"
+            else ".github/scripts/validate-v016-direct-upgrades.py")
     if runner.get("path") != path:
         raise ReleaseStateError("actual upgrade runner is not the canonical execution authority")
     if not SHA_RE.fullmatch(str(evidence.get("subject_sha"))):

@@ -273,7 +273,7 @@ register_check package-full-matrix \
 register_check release-state-tests \
     "AI Context Release State Fail-Closed Tests" required \
     "release,tests" "release nightly-full" \
-    ".ai/scripts/tests/test_ai_context_release_state.py .dev/releases" source-ai-context-version "python>=3.11 git" 90 cpu reuse-by-input source \
+    ".ai/scripts/tests/test_ai_context_release_state.py .ai/scripts/validate-ai-context-release-state.py .github/scripts/validate-v016-direct-upgrades.py .github/scripts/validate-v017-direct-upgrades.py .dev/releases" source-ai-context-version "python>=3.11 git" 90 cpu reuse-by-input source \
     "python .ai/scripts/tests/test_ai_context_release_state.py -v" source-release
 register_check release-asset-identity \
     "Release Asset Identity Contract Tests" required \
