@@ -54,3 +54,7 @@ The root owns integration and provider actions. Independent work uses immutable 
 ## PR Integration Boundary
 
 PR #299 uses the exact deferred declaration in `evidence/terminal-issue-closure-pr-299.yaml`. Refs #298 remains open through integration. The public Release and four exact asset comparisons precede coordination closure and Project Done. Use a merge commit to preserve all native provenance commits.
+
+## Critical Gate Repair Checkpoint
+
+Critical invocation01 at `3248941005b42c407d2060c677f04155e44dd2d8` failed: 68 passed checks, four failed checks, three selected not-applicable checks. Native terminal and full logs remain under the ignored `critical-linux-01` evidence directory. Packaging still rejected the two owner-approved optional BDD projects; incident-mutant input hashes lagged the reviewed current files; synthetic runners inherited outer invocation state; and the downstream runner omitted two selected source-only not-applicable events. The first three repairs affect source-only validation. The two missing runner events change the distributed package, so the previously admitted archive and seven-plus-two actual evidence remain historical for that archive and cannot establish acceptance of replacement bytes. Repair validation and independent review precede a replacement-candidate execution decision. Publication remains pending; no tag or Release has been created.
