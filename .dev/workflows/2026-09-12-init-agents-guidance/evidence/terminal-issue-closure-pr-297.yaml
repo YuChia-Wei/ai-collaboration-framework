@@ -1,0 +1,101 @@
+schema_version: '1.0'
+contract_id: github-terminal-issue-closure
+repository: YuChia-Wei/ai-collaboration-framework
+validation_stage: declaration
+pull_request:
+  number: 297
+  head_sha: null
+  body: '## Summary
+
+
+    Make the initialization AGENTS seed load context by task, preserve scoped authorization,
+    and use clear target-specific rewrite boundaries.
+
+
+    ## Changes
+
+
+    - Replace unconditional document preloading with progressive context loading and
+    target-owned commands.
+
+    - Preserve existing approvals for the same scope and distinguish local work from
+    provider and publication actions.
+
+    - Keep CLI consent rules with the existing canonical contract and update its direct
+    regression test.
+
+    - Keep English canonical for consistent maintenance without universal token or
+    model-performance claims.
+
+
+    ## Validation
+
+
+    - Nine CLI routing tests passed; AI-context and workflow validation passed.
+
+    - Independent source review accepted all seven criteria. Final workflow, whitespace
+    and commit-range checks passed on c11c01ca, followed by a passing independent
+    metadata audit.
+
+    - Earlier task-state and metadata audit failures remain preserved with their repairs.
+
+    - No downstream initialization or model benchmark is claimed. Current-head provider
+    checks and admission remain mandatory before merge.
+
+
+    ## Related Issue And Authorization
+
+
+    - Delivery disposition: `terminal-close`.
+
+    - Closes #296
+
+    - On 2026-09-12 the owner authorized public push, PR creation, checked merge and
+    Issue closure, including required review and provider read-back.
+
+    - Workflow: `.dev/workflows/2026-09-12-init-agents-guidance/`.
+
+
+    ## Integration
+
+
+    Use a merge commit to preserve the reviewed source change and its corrective evidence
+    checkpoints as one delivery. Reconcile the admitted head, actual integration commit,
+    Issue completed state and Project Done after merge.
+
+    '
+  integration:
+    status: pending
+    topology: null
+    admitted_head_sha: null
+    integration_commit_sha: null
+    provider_read_back: false
+  review:
+    status: pending
+  required_check_contexts: []
+  hosted_checks: []
+issues:
+- number: 296
+  mode: terminal-close
+  work_authorization:
+    online_issue_bound: true
+    explicit_owner_approval: true
+  final_accepted_delivery: true
+  workflow:
+    scope_complete: true
+    tasks_complete: true
+    applicable_verification_complete: true
+  closing_keyword: Closes
+  closure_deferred_reason: null
+  next_terminal_gate_or_owner: null
+  read_back:
+    performed: false
+    integration_commit_sha: null
+    issue_state: null
+    issue_state_reason: null
+    project_status: null
+authorization_note: On 2026-09-12 the owner explicitly authorized public push of reviewed
+  commit c11c01ca and required PR records to codex/2026-09-12-init-agents-guidance,
+  PR creation, checked merge, Issue 296 closure and Project read-back. Provider admission
+  remains pending. Release readiness analysis is separate and does not authorize tag
+  creation or publication.

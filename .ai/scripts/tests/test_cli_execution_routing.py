@@ -255,13 +255,27 @@ class CliExecutionRoutingGwtTests(unittest.TestCase):
         for path in (
             ROOT / "AGENTS.md",
             ROOT / "AGENTS.zh-TW.md",
-            ROOT / ".ai/assets/skills/ai-context-init/templates/public-root/AGENTS.md",
         ):
             with self.subTest(path=path):
                 text = path.read_text(encoding="utf-8")
                 self.assertIn("cli-execution-routing.yaml", text)
                 self.assertIn("create/merge/replace", text)
                 self.assertTrue("decline or no answer" in text or "拒絕或未回覆" in text)
+
+        seed = (
+            ROOT / ".ai/assets/skills/ai-context-init/templates/public-root/AGENTS.md"
+        ).read_text(encoding="utf-8")
+        self.assertIn(ROUTING.CONTRACT_PATH.as_posix(), seed)
+        contract = (ROOT / ROUTING.CONTRACT_PATH).read_text(encoding="utf-8")
+        for requirement in (
+            ROUTING.LOCAL_PATH.as_posix(),
+            "ask the user whether to preserve",
+            "whether the write creates, merges, or replaces a binding",
+            "secret and credential values are excluded",
+            "write nothing when the user declines or does not answer",
+        ):
+            with self.subTest(canonical_consent=requirement):
+                self.assertIn(requirement, contract)
 
     def test_gwt_009_given_non_cli_surface_and_selector_when_validated_then_both_are_rejected(self) -> None:
         fixture = RoutingFixture()

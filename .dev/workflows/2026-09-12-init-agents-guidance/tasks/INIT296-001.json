@@ -1,0 +1,203 @@
+{
+  "template_id": "ai-context-governance-remediation-task",
+  "template_version": "1.1.0",
+  "template_created_at": "2026-07-10T18:22:49+08:00",
+  "template_updated_at": "2026-07-27T09:52:09+08:00",
+  "task_id": "INIT296-001",
+  "workflow_id": "2026-09-12-init-agents-guidance",
+  "owner_skill": "ai-context-governance",
+  "status": "completed",
+  "created_at": "2026-09-12T13:17:49+08:00",
+  "updated_at": "2026-09-12T13:42:33+08:00",
+  "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
+  "model": "gpt-6-astra",
+  "reasoning_effort": "ultra",
+  "finding_ids": [
+    "INIT-AGENTS-001",
+    "INIT-AGENTS-002",
+    "INIT-AGENTS-003",
+    "INIT-COMPAT-001",
+    "INIT-COMPAT-002",
+    "INIT-COMPAT-003",
+    "INIT-COMPAT-004"
+  ],
+  "scope": {
+    "target": "Public init AGENTS seed, direct rewrite authority, language rationale and immediate consent-test consumer",
+    "files": [
+      ".ai/assets/skills/ai-context-init/templates/public-root/AGENTS.md",
+      ".ai/assets/skills/ai-context-init/references/document-targets.md",
+      ".dev/standards/AI-CONTEXT-LANGUAGE-POLICY.md",
+      ".ai/scripts/tests/test_cli_execution_routing.py"
+    ],
+    "constraints": [
+      "Local implementation, validation, independent review and commit authorized by the user and Issue 296.",
+      "Preserve portable safeguards, target truth, English/zh-TW ownership and thin CLAUDE adapter."
+    ],
+    "non_goals": [
+      "Source root AGENTS rewrite",
+      "Issue 43 existing-target intake",
+      "New model or runtime mechanism",
+      "Tag creation, Release or publication"
+    ]
+  },
+  "execution": {
+    "steps": [
+      "Updated the public seed, init rewrite authority, language rationale and direct CLI consent-test consumer.",
+      "Corrected premature completed task state: independent verification remains active."
+    ],
+    "validation": [
+      {
+        "argv": [
+          "python",
+          "-B",
+          ".ai/scripts/tests/test_cli_execution_routing.py",
+          "-q"
+        ],
+        "cwd": ".",
+        "started_at": "2026-09-12T13:18:17.711833+08:00",
+        "duration_seconds": 5.937,
+        "outcome": "passed",
+        "exit_code": 0,
+        "output_ref": ".dev/ai-context/local/2026-09-12-init-agents-guidance/checks/check-0.log",
+        "output_sha256": "3cd858c7ccc66784368d2d2f0064418386793cb00ff862699c33453c97b6378d"
+      },
+      {
+        "argv": [
+          "python",
+          "-B",
+          ".ai/scripts/validate-ai-context.py"
+        ],
+        "cwd": ".",
+        "started_at": "2026-09-12T13:18:23.657471+08:00",
+        "duration_seconds": 29.152,
+        "outcome": "passed",
+        "exit_code": 0,
+        "output_ref": ".dev/ai-context/local/2026-09-12-init-agents-guidance/checks/check-1.log",
+        "output_sha256": "de0a8361a8356a141da2bc05bc86731ef4395b4cba7fcc882a5506620bd6fcf7"
+      },
+      {
+        "argv": [
+          "python",
+          "-B",
+          ".ai/scripts/validate-workflow-artifacts.py"
+        ],
+        "cwd": ".",
+        "started_at": "2026-09-12T13:18:52.817069+08:00",
+        "duration_seconds": 8.962,
+        "outcome": "passed",
+        "exit_code": 0,
+        "output_ref": ".dev/ai-context/local/2026-09-12-init-agents-guidance/checks/check-2.log",
+        "output_sha256": "579c617f811743b2d5c370141328594339fe2ebf44ba2a0c0ce09c2ccf867a70"
+      },
+      {
+        "argv": [
+          "git",
+          "diff",
+          "--check"
+        ],
+        "cwd": ".",
+        "started_at": "2026-09-12T13:19:01.786012+08:00",
+        "duration_seconds": 0.087,
+        "outcome": "passed",
+        "exit_code": 0,
+        "output_ref": ".dev/ai-context/local/2026-09-12-init-agents-guidance/checks/check-3.log",
+        "output_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    ],
+    "last_completed_step": "Independent source verification passed; all seven accepted criteria reconciled.",
+    "next_action": "Continue authorized PR 297 current-head review/check admission, merge, and Issue 296/Project read-back under the terminal closure policy."
+  },
+  "results": {
+    "summary": "All seven accepted source-guidance criteria resolved with nine passing CLI tests, AI-context/workflow checks and independent review.",
+    "files_changed": [
+      ".ai/assets/skills/ai-context-init/templates/public-root/AGENTS.md",
+      ".ai/assets/skills/ai-context-init/references/document-targets.md",
+      ".dev/standards/AI-CONTEXT-LANGUAGE-POLICY.md",
+      ".ai/scripts/tests/test_cli_execution_routing.py"
+    ],
+    "tests_run": [
+      {
+        "argv": [
+          "python",
+          "-B",
+          ".ai/scripts/tests/test_cli_execution_routing.py",
+          "-q"
+        ],
+        "cwd": ".",
+        "started_at": "2026-09-12T13:18:17.711833+08:00",
+        "duration_seconds": 5.937,
+        "outcome": "passed",
+        "exit_code": 0,
+        "output_ref": ".dev/ai-context/local/2026-09-12-init-agents-guidance/checks/check-0.log",
+        "output_sha256": "3cd858c7ccc66784368d2d2f0064418386793cb00ff862699c33453c97b6378d"
+      },
+      {
+        "argv": [
+          "python",
+          "-B",
+          ".ai/scripts/validate-ai-context.py"
+        ],
+        "cwd": ".",
+        "started_at": "2026-09-12T13:18:23.657471+08:00",
+        "duration_seconds": 29.152,
+        "outcome": "passed",
+        "exit_code": 0,
+        "output_ref": ".dev/ai-context/local/2026-09-12-init-agents-guidance/checks/check-1.log",
+        "output_sha256": "de0a8361a8356a141da2bc05bc86731ef4395b4cba7fcc882a5506620bd6fcf7"
+      },
+      {
+        "argv": [
+          "python",
+          "-B",
+          ".ai/scripts/validate-workflow-artifacts.py"
+        ],
+        "cwd": ".",
+        "started_at": "2026-09-12T13:18:52.817069+08:00",
+        "duration_seconds": 8.962,
+        "outcome": "passed",
+        "exit_code": 0,
+        "output_ref": ".dev/ai-context/local/2026-09-12-init-agents-guidance/checks/check-2.log",
+        "output_sha256": "579c617f811743b2d5c370141328594339fe2ebf44ba2a0c0ce09c2ccf867a70"
+      },
+      {
+        "argv": [
+          "git",
+          "diff",
+          "--check"
+        ],
+        "cwd": ".",
+        "started_at": "2026-09-12T13:19:01.786012+08:00",
+        "duration_seconds": 0.087,
+        "outcome": "passed",
+        "exit_code": 0,
+        "output_ref": ".dev/ai-context/local/2026-09-12-init-agents-guidance/checks/check-3.log",
+        "output_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    ],
+    "finding_status": "resolved",
+    "residual_risk": "Text and static contracts are validated; downstream behavior and comparative model performance are not measured.",
+    "follow_up_needed": false,
+    "independent_verification": {
+      "subject_sha": "9d9dc1b5bfc0cbbceb0780946032231b8cadd896",
+      "outcome": "passed",
+      "report_ref": ".dev/ai-context/local/2026-09-12-init-agents-guidance/review-2/report.md",
+      "report_sha256": "442da0f98df68dbc007e07445ee6b8d2239c0b5902aa3b2f2e90c6e2ad510371",
+      "parent_verification_ref": ".dev/ai-context/local/2026-09-12-init-agents-guidance/review-2/parent-verification.json"
+    },
+    "final_record_audit": {
+      "prior_outcome": "failed",
+      "findings": [
+        "INIT296-FINAL-001",
+        "INIT296-FINAL-002"
+      ],
+      "repair": "Reconciled current plan wording; fresh affected checks and second metadata audit required on repaired commit.",
+      "terminal_evidence_root": ".dev/ai-context/local/2026-09-12-init-agents-guidance/final-audit-2"
+    },
+    "provider_delivery": {
+      "authorization": "Owner approved public push, PR creation, checked merge and Issue closure on 2026-09-12.",
+      "pull_request": 297,
+      "declaration": "evidence/terminal-issue-closure-pr-297.yaml",
+      "live_evidence_root": ".dev/ai-context/local/2026-09-12-init-agents-guidance/provider"
+    }
+  }
+}
