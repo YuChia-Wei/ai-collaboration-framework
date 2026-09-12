@@ -5,32 +5,29 @@ validation_stage: declaration
 pull_request:
   number: 299
   head_sha: null
-  body: 'Prepare v0.17.0 with precise skill responsibilities, task-led context loading,
-    traceable BDD delivery, and compact assessment identifiers. Preserve the four
-    admitted assets throughout source integration and publication.
+  body: 'Release v0.17.0 with precise skill responsibilities, progressive context
+    loading, traceable Given-When-Then handoffs, and compact assessment identifiers.
 
 
-    - Retain direct upgrade coverage from v0.6.0, v0.9.0 and v0.16.0, including target-owned
-    customization, finalized validation, interrupted resume and exact rollback.
-
-    - Keep the failed seven-case batch and the later two-case retest as distinct native
-    executions. The owner-selected evidence set validates all nine individual passes
-    without inventing another matrix run.
-
-    - Fix the short-ID audit consumer and source-specific retirement fixtures while
-    preserving the v0.16 rename precondition.
-
-    - Keep source acceptance, PR integration, annotated tag publication and provider
-    reconciliation separate.
+    The four admitted assets were built at `8eed3960f19c57050c8e8a8e1ecedbc3004aabc2`.
+    The replacement payload differs from the original candidate only by two downstream
+    `not-applicable` descriptions. Preserve the original nine individually passed
+    upgrade cases and their native archive identity; the release-specific acceptance
+    combines that unaffected evidence with the previously completed impact assessment
+    and focused tests.
 
 
-    Validation: the admitted archives passed identity and parity checks; three direct
-    routes and incoming validators passed on WSL RAM storage. The 46 release-state
-    tests, 13 workflow contract tests and source structure checks passed. The Windows
-    RAM-disk relative-path failure is retained and was reproduced with the Python
-    standard library alone. Independent review, current-head hosted checks and live
-    merge admission are required before integration; candidate and critical gates
-    are repeated on the integrated commit before tagging.
+    The owner explicitly instructed: “現行版本可直接發布，不用執行測試，確認 release note 內容無誤後直接發布。”
+    The release notes were independently checked and have no findings. The previously
+    completed 18 affected behavior tests and seven evidence-binding cases remain recorded.
+    No further tests or actual upgrade matrix are run; fresh test gates are waived
+    for this publication, not reported as passed. The failed full critical invocation
+    and all earlier failures remain retained.
+
+
+    Publication operations check exact archive/metadata identity, preserve the four
+    admitted bytes, publish through the annotated tag workflow, and read back the
+    public Release and provider state.
 
 
     Refs #298
@@ -47,9 +44,8 @@ pull_request:
     bytes, and reconcile the coordination issue and Project status.
 
 
-    The owner explicitly authorized completion of v0.17.0 publication on 2026-09-12.
-    Use a merge commit to preserve immutable candidate-build and native-execution
-    provenance. Workflow: `.dev/workflows/2026-09-12-v017-release/`.
+    Use a merge commit to preserve immutable build and native-execution provenance.
+    Workflow: `.dev/workflows/2026-09-12-v017-release/`.
 
     '
   integration:
@@ -84,7 +80,8 @@ issues:
     issue_state: null
     issue_state_reason: null
     project_status: null
-authorization_note: 'On 2026-09-12 the owner explicitly requested completion of v0.17.0
-  publication, including required source preparation, PR integration, new annotated
-  tag, configured hosted publication and provider read-back. Issue #298 remains open
-  through prepublication integration and closes only after public Release verification.'
+authorization_note: 'The owner expressly authorizes current v0.17.0 publication after
+  release-note review without further tests. Existing failures are preserved; waived
+  tests are not reported passed. This supersedes earlier additional test-gate requirements.
+  Retain PR integration, immutable annotated tag, exact admitted assets, hosted publication
+  and provider read-back; close #298 after publication.'

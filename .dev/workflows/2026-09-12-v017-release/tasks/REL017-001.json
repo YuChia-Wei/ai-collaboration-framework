@@ -9,7 +9,7 @@
   "title": "Publish v0.17.0 with admitted assets and retained actual upgrade evidence",
   "status": "in_progress",
   "created_at": "2026-09-12T13:59:25+08:00",
-  "updated_at": "2026-09-12T18:28:23+08:00",
+  "updated_at": "2026-09-12T18:34:26+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/release-publication/release-publication-task.json",
   "model": "gpt-6-astra",
   "reasoning_effort": "ultra",
@@ -27,7 +27,7 @@
     "Execute applicable cache-backed validation on fixed clean subjects and preserve failures.",
     "Obtain independent review and commit reviewable preparation results.",
     "Integrate the reviewed seven-plus-two native execution set under the owner-selected two-case restriction.",
-    "Complete source and integrated candidate/critical gates, then publish the new annotated tag and reconcile provider state."
+    "Publish the owner-accepted current candidate after release-note review without further tests; integrate, create the annotated tag and read back hosted assets and provider state."
   ],
   "results": {
     "preparation_commit": "8eed3960f19c57050c8e8a8e1ecedbc3004aabc2",
@@ -35,7 +35,7 @@
     "package_archives": "passed",
     "actual_direct_origin_cases": "Nine native passed cases on original archive remain intact; exact replacement archive is covered by owner-selected impact proof and affected tests, not new actual execution.",
     "full_release_gate": "failed critical01: 68 passed, four failed, three selected not-applicable; retained native receipt and complete logs",
-    "final_review": "Preparation accepted; final lifecycle/PR declaration audit and live admission remain required.",
+    "final_review": "Release notes independently reviewed with no findings; exact asset identities and route metadata checked",
     "provider_state": "Live prepublication read-back: seven Included Work issues completed and Done; #298 open and Verification; no v0.17.0 tag or Release.",
     "short_id_compatibility": "12 lifecycle tests passed; independent review passed",
     "candidate_input_preflight": "Replacement build 8eed396 has exactly two check-all.sh payload insertions; subsequent edits are source-only. Native actual execution identities remain unchanged.",
@@ -44,11 +44,12 @@
     "actual_retry_authority": "Latest owner instruction selects affected-only acceptance; do not rerun the actual nine-case matrix for this exact repair.",
     "acceptance_ledger_root": "ignored:.dev/ai-context/local/2026-09-12-v017-release/acceptance",
     "actual_evidence_set": ".dev/releases/v0.17.0/route-assets/actual/execution-set.json",
-    "source_acceptance": "pending completion of affected-only checks and current independent review",
+    "source_acceptance": "accepted under explicit current-candidate direct-publication authority; additional tests waived, native failures preserved",
     "source_preparation_review": "accepted at 3a4cbb6f233436039e875da841db31659db10ed8",
     "terminal_candidate_receipt": "ignored:.dev/ai-context/local/2026-09-12-v017-release/candidate-phase.json",
     "terminal_critical_receipt": "ignored:.dev/ai-context/local/2026-09-12-v017-release/critical-linux-01/parent-acceptance.json; remains failed, superseded for acceptance by owner-selected affected tests",
-    "publication": "authorized; pending terminal source gates, PR integration, integrated gates and hosted verification"
+    "publication": "authorized; ready for PR integration, annotated tag and hosted publication; public outcome not yet claimed",
+    "publication_artifact_receipt": "ignored:.dev/ai-context/local/2026-09-12-v017-release/publication-assets/completion.json"
   },
   "issue_refs": [
     "#298"

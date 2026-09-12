@@ -100,11 +100,11 @@ routes:
       report:
         asset_id: v0.16.0-to-v0.17.0-receipt
         path: route-assets/validation/v0.16.0-to-v0.17.0.json
-        sha256: '0000000000000000000000000000000000000000000000000000000000000000'
+        sha256: ae764e88ad9a977fe087b4eb69cd99b89a17de182d0bd6bf68be485248356f2c
       output:
         asset_id: v0.16.0-to-v0.17.0-output
         path: route-assets/validation/v0.16.0-to-v0.17.0.log
-        sha256: '0000000000000000000000000000000000000000000000000000000000000000'
+        sha256: 56b31c6a5568f516cee962d8f8ffb7e1af3072b0552d537207842817536f2656
 - route_id: v0.9.0-to-v0.17.0-direct
   origin: v0.9.0
   target: v0.17.0
@@ -160,11 +160,11 @@ routes:
       report:
         asset_id: v0.9.0-to-v0.17.0-receipt
         path: route-assets/validation/v0.9.0-to-v0.17.0.json
-        sha256: '0000000000000000000000000000000000000000000000000000000000000000'
+        sha256: ebe2bb9ebaf9f844669325eccefeccc9b9cdcd98d6b3cd30076dae5833ad007c
       output:
         asset_id: v0.9.0-to-v0.17.0-output
         path: route-assets/validation/v0.9.0-to-v0.17.0.log
-        sha256: '0000000000000000000000000000000000000000000000000000000000000000'
+        sha256: 748cce324676ab1d6c1771a34b77b59d339ee27d7088de2e025d819fe69e5680
 - route_id: v0.6.0-to-v0.17.0-direct
   origin: v0.6.0
   target: v0.17.0
@@ -220,9 +220,9 @@ routes:
       report:
         asset_id: v0.6.0-to-v0.17.0-receipt
         path: route-assets/validation/v0.6.0-to-v0.17.0.json
-        sha256: '0000000000000000000000000000000000000000000000000000000000000000'
+        sha256: 1491725613fd4ebd7b1914e984a7758607964b3e36742753069cbdce74050ba3
       output:
         asset_id: v0.6.0-to-v0.17.0-output
         path: route-assets/validation/v0.6.0-to-v0.17.0.log
-        sha256: '0000000000000000000000000000000000000000000000000000000000000000'
+        sha256: 2826e4fd79f1755e9ecf0c025ce76ea4a7891edb0356e2ed434e282db68b7163
 deprecations: []

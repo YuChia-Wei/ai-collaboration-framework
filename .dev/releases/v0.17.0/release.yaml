@@ -1,7 +1,7 @@
 schema_version: '1.0'
 release_id: REL-v0.17.0
 version: v0.17.0
-status: planned
+status: validated
 record_origin: governed
 distribution_kind: governed-package
 installable: true
@@ -10,7 +10,7 @@ commit: null
 tagged_at: null
 recorded_at: null
 created_at: '2026-09-12T13:59:25+08:00'
-updated_at: '2026-09-12T17:31:45+08:00'
+updated_at: '2026-09-12T18:34:26+08:00'
 planning:
   github_issue_refs:
   - '#213'
@@ -97,19 +97,20 @@ distribution:
     automation: github-actions
     creates_or_moves_tag: false
 validation:
-  evidence: Original critical01 remains failed with 68 passed checks and four failed
-    checks. The replacement archive built at 8eed396 changes only two check-all.sh
-    not-applicable descriptions; all other payload bytes and modes are identical.
-    The latest owner instruction accepts affected-only validation after independent
-    impact analysis. Original native seven-plus-two execution evidence remains bound
-    to the baseline archive and matrix. The new exact-archive rebind, selected source
-    tests and fresh candidate/provider gates remain pending; no actual matrix or full
-    critical replay is required for this assessed repair. No tag or Release has been
-    created.
+  evidence: The owner explicitly accepted the current candidate for direct publication
+    after release-note review and waived further tests. Independent note review found
+    no inaccuracies. The four exact admitted assets built at 8eed396 and their publication
+    metadata were checked; all three route receipts bind the replacement archive while
+    preserving the original native seven-plus-two case identities. Previously completed
+    18 affected behavior tests and seven binding cases remain retained, with the exact
+    GWT-022 assertion passed. No new tests, actual upgrade cases or full critical
+    replay ran under this publication decision. Original critical01 remains failed;
+    waived tests are not reported passed. Source acceptance is owner-directed; public
+    Release and provider results are recorded separately after publication.
   workflow_id: 2026-09-12-v017-release
   related_workflows: []
   related_assessments: []
-  package_status: pending
+  package_status: validated
   post_merge_status: pending
   failed_publication_run: null
   published_run: null

@@ -74,3 +74,5 @@ The owner then expressly permitted continuation after inspection: "我允許在�
 ## Direct Publication Decision
 
 The owner now explicitly directs: "現行版本可直接發布，不用執行測試，確認 release note 內容無誤後直接發布。" Publish the currently prepared exact replacement archive after checking the release notes, without further test execution or a fresh test/critical/matrix gate. Preserve all existing native outcomes. Source artifact consistency, Release text, exact asset transfer and provider read-back remain publication operations, not new test claims. This explicit decision supersedes earlier requirements to replay test gates before integration or tagging.
+
+The current candidate is accepted under the explicit direct-publication decision. Independent release-note review has no findings; exact admitted asset bytes and three route metadata receipts are consistent. No new test or actual upgrade execution was performed for this publication decision. The original failed critical result is retained. Remaining work is PR integration, annotated tag publication and public/provider read-back.
