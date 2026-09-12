@@ -1,0 +1,92 @@
+{
+  "schema_version": "1.0",
+  "origins": [
+    {
+      "version": "v0.6.0",
+      "release_id": 359136612,
+      "tag_name": "v0.6.0",
+      "published_at": "2026-07-24T07:10:30Z",
+      "observed_at": "2026-09-12T14:02:12.196634+08:00",
+      "assets": [
+        {
+          "id": 488128637,
+          "name": "ai-context-dotnet-backend-v0.6.0.zip",
+          "size": 1021187,
+          "digest": "sha256:46f906ed67b04dc35b4d28475e092cf336f230660f6f1180f10082fbdf9e8371",
+          "browser_download_url": "https://github.com/YuChia-Wei/ai-collaboration-framework/releases/download/v0.6.0/ai-context-dotnet-backend-v0.6.0.zip"
+        },
+        {
+          "id": 488128636,
+          "name": "ai-context-dotnet-backend-v0.6.0.zip.sha256",
+          "size": 103,
+          "digest": "sha256:4feb459911e39378e7260551f1fe5274544029a63bb6259998c6c90ee6126434",
+          "browser_download_url": "https://github.com/YuChia-Wei/ai-collaboration-framework/releases/download/v0.6.0/ai-context-dotnet-backend-v0.6.0.zip.sha256"
+        }
+      ],
+      "metadata_sha256": {
+        "package.yaml": "9acac95380801cd139617fa272f3d2d4f7541cb3c34631acf396174c8dab35ce",
+        "files.yaml": "20ca69ef4e1b4085476a2b15eeba93da7a75ea580fd2ab9f6c8815938b0af3be",
+        "migration.yaml": "47a74bd4ca58958e443a7b415b548985c31e127382be20d840251e93c131b127"
+      },
+      "verification": "Downloaded public ZIP and sidecar match current provider size/digest and checksum; metadata extracted from those exact bytes."
+    },
+    {
+      "version": "v0.9.0",
+      "release_id": 365679091,
+      "tag_name": "v0.9.0",
+      "published_at": "2026-08-05T16:52:44Z",
+      "observed_at": "2026-09-12T14:02:14.515889+08:00",
+      "assets": [
+        {
+          "id": 502866843,
+          "name": "ai-context-dotnet-backend-v0.9.0.zip",
+          "size": 1234026,
+          "digest": "sha256:2c98ac02eabd24ca881798caf83657adc2062ababe42fdb09fe26ce499cc98f2",
+          "browser_download_url": "https://github.com/YuChia-Wei/ai-collaboration-framework/releases/download/v0.9.0/ai-context-dotnet-backend-v0.9.0.zip"
+        },
+        {
+          "id": 502866840,
+          "name": "ai-context-dotnet-backend-v0.9.0.zip.sha256",
+          "size": 103,
+          "digest": "sha256:76cabc5743e3a1706f51198928433f204199bfc35e31b4f61a990113db35bf73",
+          "browser_download_url": "https://github.com/YuChia-Wei/ai-collaboration-framework/releases/download/v0.9.0/ai-context-dotnet-backend-v0.9.0.zip.sha256"
+        }
+      ],
+      "metadata_sha256": {
+        "package.yaml": "7279faa5da0718b667103b46eb419054151dd67120ad41ff7d030fe4ffed75d2",
+        "files.yaml": "c293247612eb2f01ef42e4d7c55be4ff36201cdf034157c518de871ec2acb5c7",
+        "migration.yaml": "ca0ec6f7d8694549a3cf6cfa6ef22bcfe7da88f7d7900b2c24e9f58c8f00d27a"
+      },
+      "verification": "Downloaded public ZIP and sidecar match current provider size/digest and checksum; metadata extracted from those exact bytes."
+    },
+    {
+      "version": "v0.16.0",
+      "release_id": 383271701,
+      "tag_name": "v0.16.0",
+      "published_at": "2026-09-05T15:28:23Z",
+      "observed_at": "2026-09-12T14:02:16.841567+08:00",
+      "assets": [
+        {
+          "id": 545921742,
+          "name": "ai-collaboration-framework-v0.16.0.zip",
+          "size": 1514924,
+          "digest": "sha256:d136b69e4153e7c85f892871fb0d3e6c5d8f88c7fd89d43fdb1b03ca88c5c85d",
+          "browser_download_url": "https://github.com/YuChia-Wei/ai-collaboration-framework/releases/download/v0.16.0/ai-collaboration-framework-v0.16.0.zip"
+        },
+        {
+          "id": 545921739,
+          "name": "ai-collaboration-framework-v0.16.0.zip.sha256",
+          "size": 105,
+          "digest": "sha256:1003157a4a7db7fe647b8e9647cea9b76100a2572e554859b08953abee257931",
+          "browser_download_url": "https://github.com/YuChia-Wei/ai-collaboration-framework/releases/download/v0.16.0/ai-collaboration-framework-v0.16.0.zip.sha256"
+        }
+      ],
+      "metadata_sha256": {
+        "package.yaml": "47687f3046dcd37b9546f85e80e6d8c2719ece9dfd6806f415572756780b3d05",
+        "files.yaml": "41fc410bde7a2745bed1663eb28d89ce5a5e6672b15fa95db82e7089c2972ab4",
+        "migration.yaml": "1d43249495023590eec82c337519ea276778a247e781690921c220963a76d939"
+      },
+      "verification": "Downloaded public ZIP and sidecar match current provider size/digest and checksum; metadata extracted from those exact bytes."
+    }
+  ]
+}

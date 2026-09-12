@@ -1,0 +1,124 @@
+schema_version: 2.4.0
+package_id: ai-collaboration-framework-v0.16.0
+profile_id: dotnet-backend
+version: 0.16.0
+release_id: REL-v0.16.0
+source:
+  repository: https://github.com/YuChia-Wei/ai-collaboration-framework
+  ref: 4d1a5c7d039618f007784679d9968c357347272b
+  commit: 4d1a5c7d039618f007784679d9968c357347272b
+  tree: 2913d022ea31c81c07702d536e8adfafe0f89c73
+created_at: '2026-09-05T11:22:07Z'
+source_date_epoch: 1788607327
+identity:
+  schema_version: 1.1.0
+  package_identity_policy: public-package-identity-v1
+  identity_rule: from-v0.15
+  public_artifact_base: ai-collaboration-framework-v0.16.0
+  selected_input_fingerprint: 63352246dce9f8235541a03901c32db9008ee425364625e662ff957be6168cd4
+  payload_fingerprint: 702838f88d99e1fc48deae6bd8d442cf8f76341ed2ce01e1d00fc3b6399e2c75
+  files_manifest_digest: 41fc410bde7a2745bed1663eb28d89ce5a5e6672b15fa95db82e7089c2972ab4
+  migration_digest: 1d43249495023590eec82c337519ea276778a247e781690921c220963a76d939
+payload:
+  root: payload
+  file_count: 650
+  sha256: 702838f88d99e1fc48deae6bd8d442cf8f76341ed2ce01e1d00fc3b6399e2c75
+compatibility:
+  minimum_governed_source: v0.6.0
+  breaking_changes: true
+  automatic_upgrade_sources:
+  - v0.6.0
+  - v0.9.0
+  - v0.15.1
+selection:
+  release_model: single-versioned-componentized-release
+  mandatory_components:
+  - software-development-core
+  - ai-context-lifecycle-core
+  profiles:
+  - dotnet-backend
+  providers:
+    repo-backlog:
+      enabled: false
+      preservation: preserve-existing-if-recorded
+user_view:
+  schema_version: 1.0.0
+  classifications:
+    markdown_local_links: required-local-navigation
+    markdown_anchors: required-local-anchor
+    component_cross_links: navigation-only-not-activation
+    fenced_code: non-actionable-example-unless-command
+    inline_code: non-actionable-reference-unless-command
+    templates_and_placeholders: non-actionable-template
+    external_urls: external-not-validated
+    actionable_local_commands: required-local-target
+  reference_integrity:
+    text_extensions:
+    - .md
+    - .yaml
+    - .yml
+    - .json
+    - .toml
+    - .txt
+    - .sh
+    - .ps1
+    forbidden_source_lifecycle_patterns:
+    - .dev/workflows/20*/**
+    - .dev/assessments/ASM-*/**
+    - .dev/releases/v*/**
+    - .dev/backlog/items/**
+    target_owned_reference_patterns:
+    - .dev/AI-CONTEXT-SOURCE.yaml
+    - .dev/ai-context/provenance.yaml
+    - .dev/ai-context/customizations.yaml
+    - .dev/ai-context/effective-rules.yaml
+    - .dev/ai-context/effective-rule-packets/**
+    - .dev/ai-context/local/**
+    - .dev/validation.local.conf
+  components:
+  - component_id: software-development-core
+    classification: mandatory-core
+    required: true
+    requires: []
+  - component_id: ai-context-lifecycle-core
+    classification: mandatory-core
+    required: true
+    requires: []
+  - component_id: dotnet-backend
+    classification: technology-profile
+    required: false
+    requires:
+    - software-development-core
+  - component_id: repo-backlog
+    classification: optional-provider
+    required: false
+    requires:
+    - software-development-core
+  supported_selections:
+  - selection_id: core-only
+    components:
+    - software-development-core
+    - ai-context-lifecycle-core
+  - selection_id: dotnet-selected
+    components:
+    - software-development-core
+    - ai-context-lifecycle-core
+    - dotnet-backend
+  capabilities:
+  - capability_id: code-reviewer
+    owner_component: dotnet-backend
+    path_patterns:
+    - .ai/assets/skills/code-reviewer/**
+    - .ai/assets/sub-agent-role-prompts/*code-review-sub-agent/**
+    - .agents/skills/code-reviewer/**
+    - .claude/skills/code-reviewer/**
+    - .ai/scripts/code-review.sh
+    availability:
+      core-only: unavailable-not-selected
+      dotnet-selected: available
+validation:
+  schema_version: package-validation/v1
+  manifest: metadata/validation.json
+  manifest_sha256: 61f9c858ab4ac5454c78325cafaf6fb0e8f21d82347385e180c16b898c554800
+  selected_inputs: metadata/selected-inputs.json
+  selected_inputs_sha256: 63352246dce9f8235541a03901c32db9008ee425364625e662ff957be6168cd4
