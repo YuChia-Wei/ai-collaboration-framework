@@ -1236,12 +1236,18 @@ class DeterministicPackageGwtTests(unittest.TestCase):
         self.assertTrue(
             all(payload[path] == "dotnet-backend" for path in provider_contract_assets)
         )
-        self.assertFalse(
-            any(
-                path.lower().endswith((".csproj", ".sln", ".slnx"))
-                for path in payload
-            ),
-            "the default framework payload must not contain compilable .NET projects",
+        self.assertEqual(
+            {
+                ".ai/assets/tech-stacks/dotnet-backend/examples/"
+                "bdd-step-methods/DefaultBddfy/DefaultBddfy.csproj",
+                ".ai/assets/tech-stacks/dotnet-backend/examples/"
+                "bdd-step-methods/PlainXunit/PlainXunit.csproj",
+            },
+            {
+                path for path in payload
+                if path.lower().endswith((".csproj", ".sln", ".slnx"))
+            },
+            "only the two optional BDD teaching projects belong in the payload",
         )
         self.assertNotIn("global.json", payload)
         self.assertFalse(

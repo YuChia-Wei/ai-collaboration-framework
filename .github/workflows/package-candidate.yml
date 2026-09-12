@@ -210,6 +210,19 @@ jobs:
           done
           python .github/scripts/validate-v016-direct-upgrades.py "${args[@]}"
 
+      - name: Validate v0.17.0 retained seven-plus-two execution set
+        if: steps.release.outputs.available == 'true' && steps.release.outputs.version == 'v0.17.0'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p "${RUNNER_TEMP}/v017-actual-admission"
+          python .ai/scripts/validate-ai-context-release-state.py \
+            --phase candidate --version v0.17.0 \
+            --commit "${CANDIDATE_COMMIT}" \
+            --branch "${GITHUB_HEAD_REF:-${GITHUB_REF_NAME}}" \
+            > "${RUNNER_TEMP}/v017-actual-admission/retained-evidence-validation.log"
+          cat "${RUNNER_TEMP}/v017-actual-admission/retained-evidence-validation.log"
+
       - name: Render source disposition read-back
         if: steps.release.outputs.available == 'true'
         run: |
@@ -240,3 +253,4 @@ jobs:
             ${{ runner.temp }}/source-dispositions.md
             ${{ runner.temp }}/v0151-actual-admission/**
             ${{ runner.temp }}/v016-actual-admission/**
+            ${{ runner.temp }}/v017-actual-admission/**

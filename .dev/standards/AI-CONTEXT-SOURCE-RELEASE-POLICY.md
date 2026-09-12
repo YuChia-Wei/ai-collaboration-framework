@@ -139,6 +139,44 @@ rollback snapshots. Missing or changed retained artifacts fail closed. A changed
 runner requires fresh actual evidence. Candidate CI repeats
 the actual v0.16.0 matrix against the unchanged staged archive.
 
+For v0.17.0 only, the owner's two-case retest restriction and subsequent
+publication authorization select the immutable seven-plus-two execution set
+at `route-assets/actual/execution-set.json`. Dispatch07 remains failed with
+seven individually passed cases; dispatch09 passed exactly the two remaining
+v0.16 customized cases. The corrected retirement fixture has unchanged inputs
+for the seven carried-forward cases: v0.6/v0.9 use the same six source-declared
+removals and v0.16 pristine never enters the customized fixture branch. The
+workflow records this bounded exception. It does not authorize general reuse
+across runner drift. The source gate pins both original terminal hashes,
+native commits and runner bytes, the exact candidate, selected dispatcher and
+nine case identities. It applies the existing per-case acceptance checks to
+separate retained artifact roots. Candidate CI revalidates this execution set
+and the unchanged staged assets; it does not claim another actual matrix run.
+Another runner, case set or release cannot inherit this exception.
+
+The owner's later v0.17.0 instruction accepts affected-only validation for a
+small, independently assessed repair. The one replacement ZIP
+`66a731f04695386416d7eb92b8a4d49ea8daaf4b118d8c93825764315c982b1a`, built at
+`8eed3960f19c57050c8e8a8e1ecedbc3004aabc2`, adds exactly two source-only
+not-applicable descriptions in `check-all.sh`. The source gate checks both
+original and replacement archive hashes, every payload byte and mode, the
+exact two-line delta, the current runner and unchanged origin identities.
+Native seven-plus-two cases continue to validate against their preserved
+original matrix; they are not relabeled as execution of the replacement ZIP.
+Focused tests cover the changed runner branches, fixture isolation, optional
+BDD project expectation and rebound incident inputs. Passing those affected
+tests and fresh candidate, required hosted and provider gates satisfies this
+owner-selected release acceptance; it does not require replaying the full
+critical profile or the actual nine-case matrix before or after integration.
+The owner subsequently explicitly authorizes direct publication of this current
+candidate after release-note review, without further test execution. That
+version-specific decision waives additional local and hosted test gates; it
+does not claim they passed or waive archive identity, publication text, or
+actual asset transfer checks.
+Retain the failed critical invocation and every later outcome. Any further
+payload or execution-mechanism change needs its own impact assessment and
+applicable tests; unknown or mismatched identity fails closed.
+
 Candidate CI and tag publication stage the tracked admitted assets unchanged.
 Before publishing a draft, and again afterward, the hosted workflow downloads
 the assets, compares exact bytes, and reads back provider name, size, SHA-256,

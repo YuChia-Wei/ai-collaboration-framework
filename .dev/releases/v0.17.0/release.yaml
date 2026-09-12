@@ -1,0 +1,117 @@
+schema_version: '1.0'
+release_id: REL-v0.17.0
+version: v0.17.0
+status: validated
+record_origin: governed
+distribution_kind: governed-package
+installable: true
+tag: null
+commit: null
+tagged_at: null
+recorded_at: null
+created_at: '2026-09-12T13:59:25+08:00'
+updated_at: '2026-09-12T18:34:26+08:00'
+planning:
+  github_issue_refs:
+  - '#213'
+  - '#276'
+  - '#279'
+  - '#289'
+  - '#290'
+  - '#293'
+  - '#296'
+provider_reconciliation:
+  schema_version: '1.1'
+  provider: github
+  repository: YuChia-Wei/ai-collaboration-framework
+  project_owner: YuChia-Wei
+  project_number: 3
+  included_issue_refs_source: planning.github_issue_refs
+  included_work:
+    prepublication:
+      issue_state: closed
+      state_reason: completed
+      project:
+        Status: Done
+    postpublication:
+      issue_state: closed
+      state_reason: completed
+      project:
+        Status: Done
+  coordination:
+    issue_refs:
+    - '#298'
+    prepublication:
+      issue_state: open
+      state_reason: null
+      project:
+        Status: Verification
+    postpublication:
+      issue_state: closed
+      state_reason: completed
+      project:
+        Status: Done
+compatibility:
+  breaking_changes: true
+  minimum_source_version: v0.6.0
+  reconciliation_sources:
+  - v0.6.0
+  - v0.9.0
+  - v0.16.0
+  automatic_upgrade_sources:
+  - v0.6.0
+  - v0.9.0
+  - v0.16.0
+  affected_contracts:
+  - Technology-neutral review and design routing with relocated .NET extension consumers
+  - Artifact-first authoring and operation-bound implementation handoffs
+  - BDD scenario-to-test traceability and target-owned testing rules
+  - Hour-scoped three-character assessment IDs and progressive initialization guidance
+artifacts:
+  release_notes: release-notes.md
+  migration_guide: migration-guide.md
+  support_matrix: support-matrix.yaml
+  route_evidence:
+  - route-evidence/v0.16.0-to-v0.17.0.json
+  - route-evidence/v0.9.0-to-v0.17.0.json
+  - route-evidence/v0.6.0-to-v0.17.0.json
+distribution:
+  profile_id: dotnet-backend
+  package_id: ai-collaboration-framework-v0.17.0
+  schema_versions:
+    package: 2.4.0
+    files: 2.0.0
+    migration: 3.0.0
+  artifacts:
+    zip: ai-collaboration-framework-v0.17.0.zip
+    zip_checksum: ai-collaboration-framework-v0.17.0.zip.sha256
+    tar_gz: ai-collaboration-framework-v0.17.0.tar.gz
+    tar_gz_checksum: ai-collaboration-framework-v0.17.0.tar.gz.sha256
+  migration:
+    default_mode: dry-run
+    apply_requires_clean_worktree: true
+    apply_requires_acknowledged_reconciliation: true
+  publication:
+    tag_owner: user
+    trigger: user-created-tag
+    automation: github-actions
+    creates_or_moves_tag: false
+validation:
+  evidence: The owner explicitly accepted the current candidate for direct publication
+    after release-note review and waived further tests. Independent note review found
+    no inaccuracies. The four exact admitted assets built at 8eed396 and their publication
+    metadata were checked; all three route receipts bind the replacement archive while
+    preserving the original native seven-plus-two case identities. Previously completed
+    18 affected behavior tests and seven binding cases remain retained, with the exact
+    GWT-022 assertion passed. No new tests, actual upgrade cases or full critical
+    replay ran under this publication decision. Original critical01 remains failed;
+    waived tests are not reported passed. Source acceptance is owner-directed; public
+    Release and provider results are recorded separately after publication.
+  workflow_id: 2026-09-12-v017-release
+  related_workflows: []
+  related_assessments: []
+  package_status: validated
+  post_merge_status: pending
+  failed_publication_run: null
+  published_run: null
+  public_release_url: null

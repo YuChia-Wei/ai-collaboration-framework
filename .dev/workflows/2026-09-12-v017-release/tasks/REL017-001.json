@@ -1,0 +1,96 @@
+{
+  "template_id": "ai-context-governance-release-publication-task",
+  "template_version": "1.1.0",
+  "template_created_at": "2026-07-24T13:35:00+08:00",
+  "template_updated_at": "2026-07-27T09:52:09+08:00",
+  "task_id": "REL017-001",
+  "workflow_id": "2026-09-12-v017-release",
+  "owner_skill": "ai-context-governance",
+  "title": "Publish v0.17.0 with admitted assets and retained actual upgrade evidence",
+  "status": "in_progress",
+  "created_at": "2026-09-12T13:59:25+08:00",
+  "updated_at": "2026-09-12T18:34:26+08:00",
+  "template_source": ".ai/assets/skills/ai-context-governance/templates/release-publication/release-publication-task.json",
+  "model": "gpt-6-astra",
+  "reasoning_effort": "ultra",
+  "scope": {
+    "release_id": "REL-v0.17.0",
+    "release_record": ".dev/releases/v0.17.0/release.yaml",
+    "out_of_scope": [
+      "moving or replacing existing tags or published releases",
+      "rerunning the seven unaffected actual cases"
+    ]
+  },
+  "steps": [
+    "Instantiate canonical release templates and bind seven completed Included Work items.",
+    "Complete source-aware migration contracts and immutable archive admission.",
+    "Execute applicable cache-backed validation on fixed clean subjects and preserve failures.",
+    "Obtain independent review and commit reviewable preparation results.",
+    "Integrate the reviewed seven-plus-two native execution set under the owner-selected two-case restriction.",
+    "Publish the owner-accepted current candidate after release-note review without further tests; integrate, create the annotated tag and read back hosted assets and provider state."
+  ],
+  "results": {
+    "preparation_commit": "8eed3960f19c57050c8e8a8e1ecedbc3004aabc2",
+    "artifact_admission": ".dev/releases/v0.17.0/artifact-admission.json",
+    "package_archives": "passed",
+    "actual_direct_origin_cases": "Nine native passed cases on original archive remain intact; exact replacement archive is covered by owner-selected impact proof and affected tests, not new actual execution.",
+    "full_release_gate": "failed critical01: 68 passed, four failed, three selected not-applicable; retained native receipt and complete logs",
+    "final_review": "Release notes independently reviewed with no findings; exact asset identities and route metadata checked",
+    "provider_state": "Live prepublication read-back: seven Included Work issues completed and Done; #298 open and Verification; no v0.17.0 tag or Release.",
+    "short_id_compatibility": "12 lifecycle tests passed; independent review passed",
+    "candidate_input_preflight": "Replacement build 8eed396 has exactly two check-all.sh payload insertions; subsequent edits are source-only. Native actual execution identities remain unchanged.",
+    "current_repair": "Two downstream not-applicable records plus source-only fixture, BDD assertion and incident-hash corrections.",
+    "focused_repair_validation": "Previously completed: all 18 distinct affected behavior tests and all seven evidence-binding cases passed; exact GWT-022 assertion rerun passed on native RAM. No further tests per latest owner instruction.",
+    "actual_retry_authority": "Latest owner instruction selects affected-only acceptance; do not rerun the actual nine-case matrix for this exact repair.",
+    "acceptance_ledger_root": "ignored:.dev/ai-context/local/2026-09-12-v017-release/acceptance",
+    "actual_evidence_set": ".dev/releases/v0.17.0/route-assets/actual/execution-set.json",
+    "source_acceptance": "accepted under explicit current-candidate direct-publication authority; additional tests waived, native failures preserved",
+    "source_preparation_review": "accepted at 3a4cbb6f233436039e875da841db31659db10ed8",
+    "terminal_candidate_receipt": "ignored:.dev/ai-context/local/2026-09-12-v017-release/candidate-phase.json",
+    "terminal_critical_receipt": "ignored:.dev/ai-context/local/2026-09-12-v017-release/critical-linux-01/parent-acceptance.json; remains failed, superseded for acceptance by owner-selected affected tests",
+    "publication": "authorized; ready for PR integration, annotated tag and hosted publication; public outcome not yet claimed",
+    "publication_artifact_receipt": "ignored:.dev/ai-context/local/2026-09-12-v017-release/publication-assets/completion.json"
+  },
+  "issue_refs": [
+    "#298"
+  ],
+  "authorization": {
+    "source": "Owner message on 2026-09-12 and Issue #298",
+    "scope": "Complete v0.17.0 publication: source preparation, required RAM-cache validation, independent review, push, PR, merge, new annotated version tag, hosted Release and provider reconciliation.",
+    "latest_owner_message": "現行版本可直接發布，不用執行測試，確認 release note 內容無誤後直接發布。",
+    "affected_only_scope": "After independent impact assessment, passing affected tests completes source and integrated validation acceptance; no full critical or actual matrix rerun for this exact two-line repair.",
+    "continuation_after_inspection": "我允許在你檢查過內容後繼續相關工作，或直接停下跟我說明狀況後跟我確認是否繼續。",
+    "direct_publication": "Owner explicitly accepts the currently prepared replacement archive after release-note review and waives further test execution. Preserve existing native evidence and failures; do not claim new tests or actual upgrades. Publication identity and transfer read-back remain required."
+  },
+  "acceptance_criteria": [
+    {
+      "id": "REL017-AC1",
+      "status": "passed",
+      "evidence_scope": "Accepted source preparation; subsequent integration and publication gates are REL017-AC6."
+    },
+    {
+      "id": "REL017-AC2",
+      "status": "passed",
+      "evidence_scope": "Accepted source preparation; subsequent integration and publication gates are REL017-AC6."
+    },
+    {
+      "id": "REL017-AC3",
+      "status": "passed",
+      "evidence_scope": "Accepted source preparation; subsequent integration and publication gates are REL017-AC6."
+    },
+    {
+      "id": "REL017-AC4",
+      "status": "passed",
+      "evidence_scope": "Accepted source preparation; subsequent integration and publication gates are REL017-AC6."
+    },
+    {
+      "id": "REL017-AC5",
+      "status": "passed",
+      "evidence_scope": "Accepted source preparation; subsequent integration and publication gates are REL017-AC6."
+    },
+    {
+      "id": "REL017-AC6",
+      "status": "pending"
+    }
+  ]
+}

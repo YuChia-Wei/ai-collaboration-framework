@@ -515,6 +515,8 @@ class SyntheticRunnerRepo:
         merged_environment.pop("TASK_NAME", None)
         merged_environment.pop("COMMIT_RANGE", None)
         merged_environment.pop("WORKFLOW_ID", None)
+        merged_environment.pop("AI_CONTEXT_VALIDATION_INVOCATION_ID", None)
+        merged_environment.pop("AI_CONTEXT_VALIDATION_LOG_DIR", None)
         merged_environment.pop("AI_CONTEXT_PYTHON", None)
         merged_environment.pop("VIRTUAL_ENV", None)
         if environment:
@@ -1426,14 +1428,22 @@ class CheckAllRunnerGwtTests(unittest.TestCase):
             )
             fixture._write_stub(
                 fixture.bin / "date",
-                'printf "2026-01-01 00:00:00\\n"',
+                'PATH=/usr/bin:/bin exec date "$@"',
             )
             for command in (
                 "awk",
+                "basename",
+                "bash",
                 "cat",
+                "cp",
+                "git",
                 "grep",
                 "head",
+                "ln",
                 "mkdir",
+                "paste",
+                "realpath",
+                "rm",
                 "sed",
                 "sha256sum",
                 "sort",
@@ -1569,6 +1579,23 @@ class CheckAllRunnerGwtTests(unittest.TestCase):
             self.assertEqual(len(event_ids), len(set(event_ids)))
             by_id = {row[0]: row for row in event_rows}
             self.assertEqual(selected_ids, selected_ids & set(by_id))
+            expected_source_skips = {
+                "release-asset-identity": (
+                    "Release Asset Identity Contract Tests",
+                    "source release context not packaged",
+                ),
+                "validation-dependency-observation-contract": (
+                    "Bounded Validation Dependency Observation",
+                    "source governance registry not packaged",
+                ),
+            }
+            for check_id, (description, reason) in expected_source_skips.items():
+                self.assertEqual(["not-applicable", "not-executed"], by_id[check_id][3:5])
+                self.assertIn(f"NOT APPLICABLE: {description} ({reason})", result.stdout)
+                self.assertEqual(
+                    f"Selected check was not launched; outcome=not-applicable; reason={reason}\n",
+                    (invocation / f"{check_id}.log").read_text(),
+                )
             self.assertTrue(
                 all(by_id[check_id][4] != "not-selected" for check_id in selected_ids)
             )

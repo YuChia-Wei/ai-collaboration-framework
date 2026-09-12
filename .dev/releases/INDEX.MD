@@ -20,6 +20,10 @@ Historical `v*` directories below are records, never templates.
 | [`REL-v0.13.0`](v0.13.0/release.yaml) | `v0.13.0` | `validated` | breaking; schema 2.2 package; automatic source v0.12.0 | [notes](v0.13.0/release-notes.md) | [guide](v0.13.0/migration-guide.md) | [checks](v0.13.0/release-phase-checks.yaml) |
 | [`REL-v0.12.0`](v0.12.0/release.yaml) | `v0.12.0` | `validated` | breaking; schema 2.1 package; automatic source v0.11.0 | [notes](v0.12.0/release-notes.md) | [guide](v0.12.0/migration-guide.md) | [checks](v0.12.0/release-phase-checks.yaml) |
 
+## Current Preparation
+
+- [REL-v0.17.0](v0.17.0/release.yaml): planned; [notes](v0.17.0/release-notes.md), [migration](v0.17.0/migration-guide.md), [phase checks](v0.17.0/release-phase-checks.yaml).
+
 ## Planned Phase Contracts
 
 | Release ID | Version | Status | Compatibility | Phase Contract |

@@ -1,0 +1,87 @@
+schema_version: '1.0'
+contract_id: github-terminal-issue-closure
+repository: YuChia-Wei/ai-collaboration-framework
+validation_stage: declaration
+pull_request:
+  number: 299
+  head_sha: null
+  body: 'Release v0.17.0 with precise skill responsibilities, progressive context
+    loading, traceable Given-When-Then handoffs, and compact assessment identifiers.
+
+
+    The four admitted assets were built at `8eed3960f19c57050c8e8a8e1ecedbc3004aabc2`.
+    The replacement payload differs from the original candidate only by two downstream
+    `not-applicable` descriptions. Preserve the original nine individually passed
+    upgrade cases and their native archive identity; the release-specific acceptance
+    combines that unaffected evidence with the previously completed impact assessment
+    and focused tests.
+
+
+    The owner explicitly instructed: “現行版本可直接發布，不用執行測試，確認 release note 內容無誤後直接發布。”
+    The release notes were independently checked and have no findings. The previously
+    completed 18 affected behavior tests and seven evidence-binding cases remain recorded.
+    No further tests or actual upgrade matrix are run; fresh test gates are waived
+    for this publication, not reported as passed. The failed full critical invocation
+    and all earlier failures remain retained.
+
+
+    Publication operations check exact archive/metadata identity, preserve the four
+    admitted bytes, publish through the annotated tag workflow, and read back the
+    public Release and provider state.
+
+
+    Refs #298
+
+
+    Delivery disposition: `deferred`.
+
+
+    Closure deferred reason for #298: source integration precedes public Release verification.
+
+
+    Next terminal gate for #298: publish the new annotated v0.17.0 tag through the
+    configured release workflow, verify all four public assets against the admitted
+    bytes, and reconcile the coordination issue and Project status.
+
+
+    Use a merge commit to preserve immutable build and native-execution provenance.
+    Workflow: `.dev/workflows/2026-09-12-v017-release/`.
+
+    '
+  integration:
+    status: pending
+    topology: null
+    admitted_head_sha: null
+    integration_commit_sha: null
+    provider_read_back: false
+  review:
+    status: pending
+  required_check_contexts: []
+  hosted_checks: []
+issues:
+- number: 298
+  mode: deferred
+  work_authorization:
+    online_issue_bound: true
+    explicit_owner_approval: true
+  final_accepted_delivery: false
+  workflow:
+    scope_complete: false
+    tasks_complete: false
+    applicable_verification_complete: false
+  closing_keyword: null
+  closure_deferred_reason: source integration precedes public Release verification
+  next_terminal_gate_or_owner: publish the new annotated v0.17.0 tag through the configured
+    release workflow, verify all four public assets against the admitted bytes, and
+    reconcile the coordination issue and Project status
+  read_back:
+    performed: false
+    integration_commit_sha: null
+    issue_state: null
+    issue_state_reason: null
+    project_status: null
+authorization_note: 'The owner expressly authorizes current v0.17.0 publication after
+  release-note review without further tests. Existing failures are preserved; waived
+  tests are not reported passed. This supersedes earlier additional test-gate requirements.
+  Retain PR integration, immutable annotated tag, exact admitted assets, hosted publication
+  and provider read-back; close #298 after publication.'

@@ -114,6 +114,20 @@ def steps(workflow: dict) -> list[dict]:
 
 
 class GitHubWorkflowContractTests(unittest.TestCase):
+    def test_gwt_010_given_v017_candidate_when_workflow_runs_then_retained_execution_set_is_checked(self):
+        candidate_steps = steps(self.workflows["package-candidate.yml"])
+        actual = [item for item in candidate_steps if item.get("name") == "Validate v0.17.0 retained seven-plus-two execution set"]
+        self.assertEqual(len(actual), 1)
+        self.assertEqual(actual[0]["if"], "steps.release.outputs.available == 'true' && steps.release.outputs.version == 'v0.17.0'")
+        command = actual[0]["run"]
+        self.assertIn("python .ai/scripts/validate-ai-context-release-state.py", command)
+        self.assertIn("--phase candidate --version v0.17.0", command)
+        self.assertIn('--commit "${CANDIDATE_COMMIT}"', command)
+        self.assertIn('--branch "${GITHUB_HEAD_REF:-${GITHUB_REF_NAME}}"', command)
+        self.assertEqual(actual[0]["env"], {"GH_TOKEN": "${{ github.token }}"})
+        self.assertIn('"${RUNNER_TEMP}/v017-actual-admission/retained-evidence-validation.log"', command)
+        self.assertNotIn("validate-v017-direct-upgrades.py", command)
+
     def test_rel018_promotion_and_provider_comparison_gate_publication(self):
         candidate = {s["name"]: s for s in steps(load_workflow("package-candidate.yml"))}
         self.assertIn("steps.promotion.outputs.required == 'false'", candidate["Build deterministic archives"]["if"])
@@ -293,6 +307,7 @@ class GitHubWorkflowContractTests(unittest.TestCase):
                     "${{ runner.temp }}/source-dispositions.md\n"
                     "${{ runner.temp }}/v0151-actual-admission/**\n"
                     "${{ runner.temp }}/v016-actual-admission/**\n"
+                    "${{ runner.temp }}/v017-actual-admission/**\n"
                 ),
             },
             candidate_upload["with"],
