@@ -8,7 +8,7 @@
   "owner_skill": "ai-context-governance",
   "status": "completed",
   "created_at": "2026-09-12T13:17:49+08:00",
-  "updated_at": "2026-09-12T13:30:42+08:00",
+  "updated_at": "2026-09-12T13:42:33+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-6-astra",
   "reasoning_effort": "ultra",
@@ -37,7 +37,7 @@
       "Source root AGENTS rewrite",
       "Issue 43 existing-target intake",
       "New model or runtime mechanism",
-      "Public push, PR, merge, Issue closure or release"
+      "Tag creation, Release or publication"
     ]
   },
   "execution": {
@@ -105,7 +105,7 @@
       }
     ],
     "last_completed_step": "Independent source verification passed; all seven accepted criteria reconciled.",
-    "next_action": "No source implementation remains. Final record acceptance uses fresh clean-subject checks and ignored final-audit-2 receipts; provider delivery requires separate authorization."
+    "next_action": "Continue authorized PR 297 current-head review/check admission, merge, and Issue 296/Project read-back under the terminal closure policy."
   },
   "results": {
     "summary": "All seven accepted source-guidance criteria resolved with nine passing CLI tests, AI-context/workflow checks and independent review.",
@@ -192,6 +192,12 @@
       ],
       "repair": "Reconciled current plan wording; fresh affected checks and second metadata audit required on repaired commit.",
       "terminal_evidence_root": ".dev/ai-context/local/2026-09-12-init-agents-guidance/final-audit-2"
+    },
+    "provider_delivery": {
+      "authorization": "Owner approved public push, PR creation, checked merge and Issue closure on 2026-09-12.",
+      "pull_request": 297,
+      "declaration": "evidence/terminal-issue-closure-pr-297.yaml",
+      "live_evidence_root": ".dev/ai-context/local/2026-09-12-init-agents-guidance/provider"
     }
   }
 }
