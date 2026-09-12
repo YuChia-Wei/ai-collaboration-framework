@@ -1433,6 +1433,7 @@ class CheckAllRunnerGwtTests(unittest.TestCase):
             for command in (
                 "awk",
                 "basename",
+                "bash",
                 "cat",
                 "cp",
                 "git",
@@ -1440,6 +1441,7 @@ class CheckAllRunnerGwtTests(unittest.TestCase):
                 "head",
                 "ln",
                 "mkdir",
+                "paste",
                 "realpath",
                 "rm",
                 "sed",
