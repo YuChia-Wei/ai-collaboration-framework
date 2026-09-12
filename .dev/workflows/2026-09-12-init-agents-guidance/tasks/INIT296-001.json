@@ -6,9 +6,9 @@
   "task_id": "INIT296-001",
   "workflow_id": "2026-09-12-init-agents-guidance",
   "owner_skill": "ai-context-governance",
-  "status": "completed",
+  "status": "in_progress",
   "created_at": "2026-09-12T13:17:49+08:00",
-  "updated_at": "2026-09-12T13:19:19+08:00",
+  "updated_at": "2026-09-12T13:20:12+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-6-astra",
   "reasoning_effort": "ultra",
@@ -42,7 +42,8 @@
   },
   "execution": {
     "steps": [
-      "Updated the public seed, init rewrite authority, language rationale and direct CLI consent-test consumer."
+      "Updated the public seed, init rewrite authority, language rationale and direct CLI consent-test consumer.",
+      "Corrected premature completed task state: independent verification remains active."
     ],
     "validation": [
       {
