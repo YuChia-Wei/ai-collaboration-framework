@@ -3,20 +3,20 @@
 ## Template Metadata
 
 - `template_id`: `code-review-assessment-report`
-- `template_version`: `1.0.0`
+- `template_version`: `1.1.0`
 - `created_at`: `2026-07-13T23:22:03+08:00`
-- `updated_at`: `2026-07-13T23:22:03+08:00`
+- `updated_at`: `2026-09-12T11:58:27+08:00`
 
 ## Metadata
 
-- `assessment_id`: `<ASM-YYYYMMDD-NNN>`
+- `assessment_id`: `<ASM-YYYYMMDD-HH-xxx>`
 - `assessment_type`: `code-review | code-review-verification`
 - `owner_skill`: `code-reviewer`
 - `status`: `draft | final`
 - `created_at`: `<ISO-8601-with-offset>`
 - `updated_at`: `<ISO-8601-with-offset>`
 - `template_source`: `.ai/assets/skills/code-reviewer/templates/code-review-assessment-report-template.md`
-- `template_version`: `1.0.0`
+- `template_version`: `1.1.0`
 - `repository`:
 - `subject_branch`:
 - `subject_commit`: `<40-character-Git-SHA>`

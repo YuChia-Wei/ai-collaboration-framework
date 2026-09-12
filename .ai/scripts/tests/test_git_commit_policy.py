@@ -339,5 +339,25 @@ Co-Authored-By: OpenAI Codex (gpt-5.6-sol, xhigh) <noreply@openai.com>
         self.assertIn("missing workflow body sections: Validation", output)
 
 
+    def test_gwt_026_given_short_assessment_subject_when_trailer_missing_then_fails(self) -> None:
+        # Given a new short-hour assessment subject without its identity trailer.
+        message = "docs(assessment): [ASM-20260715-12-a7c] add report\n\nCo-Authored-By: OpenAI Codex (gpt-5.6-sol, high) <noreply@openai.com>\n"
+        # When validated, then the complete new ID must have a matching trailer.
+        self.assertTrue(any("lacks matching Assessment-Id trailer: ASM-20260715-12-a7c" in error
+                            for error in self.validate(message, workflow_id=None)))
+
+    def test_gwt_027_given_short_assessment_and_trailer_when_in_workflow_range_then_passes(self) -> None:
+        # Given a standalone new-format assessment with its exact trailer.
+        message = "docs(assessment): [ASM-20260715-12-a7c] add report\n\nAssessment-Id: ASM-20260715-12-a7c\nCo-Authored-By: OpenAI Codex (gpt-5.6-sol, high) <noreply@openai.com>\n"
+        # When a workflow range contains it, then its standalone assessment contract applies.
+        self.assertEqual([], self.validate(message))
+
+    def test_gwt_028_given_mixed_assessment_subjects_when_one_trailer_missing_then_fails(self) -> None:
+        # Given legacy and new assessment references with only the legacy trailer.
+        message = "docs(assessment): [ASM-20260715-001] [ASM-20260715-12-0z9] relate reports\n\nAssessment-Id: ASM-20260715-001\nCo-Authored-By: OpenAI Codex (gpt-5.6-sol, high) <noreply@openai.com>\n"
+        # When validated, then the missing new identity is detected independently.
+        self.assertTrue(any("lacks matching Assessment-Id trailer: ASM-20260715-12-0z9" in error
+                            for error in self.validate(message, workflow_id=None)))
+
 if __name__ == "__main__":
     unittest.main()

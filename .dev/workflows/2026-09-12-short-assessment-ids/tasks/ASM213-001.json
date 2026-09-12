@@ -1,0 +1,173 @@
+{
+  "template_id": "ai-context-governance-remediation-task",
+  "template_version": "1.1.0",
+  "template_created_at": "2026-07-10T18:22:49+08:00",
+  "template_updated_at": "2026-07-27T09:52:09+08:00",
+  "task_id": "ASM213-001",
+  "workflow_id": "2026-09-12-short-assessment-ids",
+  "owner_skill": "ai-context-governance",
+  "status": "in_progress",
+  "created_at": "2026-09-12T11:55:26+08:00",
+  "updated_at": "2026-09-12T12:01:33+08:00",
+  "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
+  "model": "gpt-6-astra",
+  "reasoning_effort": "ultra",
+  "finding_ids": [
+    "ASM-ALLOC-001"
+  ],
+  "scope": {
+    "target": "Issue 213 short assessment identity compatibility",
+    "files": [
+      ".agents/skills/code-reviewer/SKILL.md",
+      ".ai/assets/skills/ai-context-auditor/references/audit-playbook.md",
+      ".ai/assets/skills/ai-context-auditor/references/output-contract.md",
+      ".ai/assets/skills/ai-context-auditor/skill.yaml",
+      ".ai/assets/skills/ai-context-auditor/templates/ai-context-audit-report-template.md",
+      ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-report-template.md",
+      ".ai/assets/skills/ai-context-upgrader/templates/customizations-template.yaml",
+      ".ai/assets/skills/code-reviewer/references/output-contract.md",
+      ".ai/assets/skills/code-reviewer/skill.yaml",
+      ".ai/assets/skills/code-reviewer/templates/code-review-assessment-report-template.md",
+      ".ai/scripts/tests/test_assessment_artifacts.py",
+      ".ai/scripts/tests/test_git_commit_policy.py",
+      ".ai/scripts/validate-assessment-artifacts.py",
+      ".claude/skills/code-reviewer/SKILL.md",
+      ".dev/assessments/templates/assessment-locator-template.yaml",
+      ".dev/guides/ai-collaboration-guides/AI-CONTEXT-AUDITOR-SKILL-GUIDE.md",
+      ".dev/guides/ai-collaboration-guides/AI-REFACTORING-SKILL-BOUNDARY-GUIDE.md",
+      ".dev/standards/ASSESSMENT-ARTIFACT-POLICY.md",
+      ".dev/standards/GIT-COMMIT-POLICY.md",
+      ".dev/standards/GIT-COMMIT-POLICY.yaml"
+    ],
+    "constraints": [
+      "New IDs use local date/hour plus exactly three lowercase ASCII alphanumeric characters.",
+      "Preserve historical IDs and existing validation; do not add allocation or recovery infrastructure."
+    ],
+    "non_goals": [
+      "Issue 21 implementation or closure",
+      "push, PR, merge, publication",
+      "reservation services, remote locks, active-graph scanners, atomic reallocation tools"
+    ]
+  },
+  "execution": {
+    "steps": [
+      "Owner authorized local implementation on 2026-09-12; Issue 213 updated and read back before edits.",
+      "Implement bounded format and consumer changes, then run focused tests and validators.",
+      "Commit the source; obtain independent read-only review before local completion."
+    ],
+    "validation": [
+      {
+        "command": "py -3 -B -m unittest discover -s .ai/scripts/tests -p test_assessment_artifacts.py -v",
+        "outcome": "passed",
+        "evidence": ".dev/ai-context/local/2026-09-12-short-assessment-ids/checks/windows-0.log"
+      },
+      {
+        "command": "py -3 -B -m unittest discover -s .ai/scripts/tests -p test_git_commit_policy.py -v",
+        "outcome": "passed",
+        "evidence": ".dev/ai-context/local/2026-09-12-short-assessment-ids/checks/windows-1.log"
+      },
+      {
+        "command": "wsl.exe -d Ubuntu-24.04 --cd /mnt/c/Github/YuChia/ai-collaboration-prompts-dotnet-backend -- python3 -B -m unittest discover -s .ai/scripts/tests -p test_assessment_artifacts.py -v",
+        "outcome": "passed",
+        "evidence": ".dev/ai-context/local/2026-09-12-short-assessment-ids/checks/posix-0.log"
+      },
+      {
+        "command": "wsl.exe -d Ubuntu-24.04 --cd /mnt/c/Github/YuChia/ai-collaboration-prompts-dotnet-backend -- python3 -B -m unittest discover -s .ai/scripts/tests -p test_git_commit_policy.py -v",
+        "outcome": "passed",
+        "evidence": ".dev/ai-context/local/2026-09-12-short-assessment-ids/checks/posix-1.log"
+      },
+      {
+        "command": "py -3 -B .ai/scripts/validate-assessment-artifacts.py",
+        "outcome": "passed",
+        "evidence": ".dev/ai-context/local/2026-09-12-short-assessment-ids/checks/gates-0.log"
+      },
+      {
+        "command": "py -3 -B .ai/scripts/validate-workflow-artifacts.py",
+        "outcome": "passed",
+        "evidence": ".dev/ai-context/local/2026-09-12-short-assessment-ids/checks/gates-1.log"
+      },
+      {
+        "command": "py -3 -B .ai/scripts/validate-ai-context.py",
+        "outcome": "passed",
+        "evidence": ".dev/ai-context/local/2026-09-12-short-assessment-ids/checks/gates-2.log"
+      },
+      {
+        "command": "git diff --check",
+        "outcome": "passed",
+        "evidence": ".dev/ai-context/local/2026-09-12-short-assessment-ids/checks/gates-3.log"
+      }
+    ],
+    "last_completed_step": "bounded implementation and focused Windows/POSIX plus repository checks",
+    "next_action": "independent source review on a clean commit"
+  },
+  "results": {
+    "summary": "Short-hour IDs and historical compatibility implemented; focused validation passed; independent review pending.",
+    "files_changed": [
+      ".agents/skills/code-reviewer/SKILL.md",
+      ".ai/assets/skills/ai-context-auditor/references/audit-playbook.md",
+      ".ai/assets/skills/ai-context-auditor/references/output-contract.md",
+      ".ai/assets/skills/ai-context-auditor/skill.yaml",
+      ".ai/assets/skills/ai-context-auditor/templates/ai-context-audit-report-template.md",
+      ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-report-template.md",
+      ".ai/assets/skills/ai-context-upgrader/templates/customizations-template.yaml",
+      ".ai/assets/skills/code-reviewer/references/output-contract.md",
+      ".ai/assets/skills/code-reviewer/skill.yaml",
+      ".ai/assets/skills/code-reviewer/templates/code-review-assessment-report-template.md",
+      ".ai/scripts/tests/test_assessment_artifacts.py",
+      ".ai/scripts/tests/test_git_commit_policy.py",
+      ".ai/scripts/validate-assessment-artifacts.py",
+      ".claude/skills/code-reviewer/SKILL.md",
+      ".dev/assessments/templates/assessment-locator-template.yaml",
+      ".dev/guides/ai-collaboration-guides/AI-CONTEXT-AUDITOR-SKILL-GUIDE.md",
+      ".dev/guides/ai-collaboration-guides/AI-REFACTORING-SKILL-BOUNDARY-GUIDE.md",
+      ".dev/standards/ASSESSMENT-ARTIFACT-POLICY.md",
+      ".dev/standards/GIT-COMMIT-POLICY.md",
+      ".dev/standards/GIT-COMMIT-POLICY.yaml"
+    ],
+    "tests_run": [
+      {
+        "command": "py -3 -B -m unittest discover -s .ai/scripts/tests -p test_assessment_artifacts.py -v",
+        "outcome": "passed",
+        "evidence": ".dev/ai-context/local/2026-09-12-short-assessment-ids/checks/windows-0.log"
+      },
+      {
+        "command": "py -3 -B -m unittest discover -s .ai/scripts/tests -p test_git_commit_policy.py -v",
+        "outcome": "passed",
+        "evidence": ".dev/ai-context/local/2026-09-12-short-assessment-ids/checks/windows-1.log"
+      },
+      {
+        "command": "wsl.exe -d Ubuntu-24.04 --cd /mnt/c/Github/YuChia/ai-collaboration-prompts-dotnet-backend -- python3 -B -m unittest discover -s .ai/scripts/tests -p test_assessment_artifacts.py -v",
+        "outcome": "passed",
+        "evidence": ".dev/ai-context/local/2026-09-12-short-assessment-ids/checks/posix-0.log"
+      },
+      {
+        "command": "wsl.exe -d Ubuntu-24.04 --cd /mnt/c/Github/YuChia/ai-collaboration-prompts-dotnet-backend -- python3 -B -m unittest discover -s .ai/scripts/tests -p test_git_commit_policy.py -v",
+        "outcome": "passed",
+        "evidence": ".dev/ai-context/local/2026-09-12-short-assessment-ids/checks/posix-1.log"
+      },
+      {
+        "command": "py -3 -B .ai/scripts/validate-assessment-artifacts.py",
+        "outcome": "passed",
+        "evidence": ".dev/ai-context/local/2026-09-12-short-assessment-ids/checks/gates-0.log"
+      },
+      {
+        "command": "py -3 -B .ai/scripts/validate-workflow-artifacts.py",
+        "outcome": "passed",
+        "evidence": ".dev/ai-context/local/2026-09-12-short-assessment-ids/checks/gates-1.log"
+      },
+      {
+        "command": "py -3 -B .ai/scripts/validate-ai-context.py",
+        "outcome": "passed",
+        "evidence": ".dev/ai-context/local/2026-09-12-short-assessment-ids/checks/gates-2.log"
+      },
+      {
+        "command": "git diff --check",
+        "outcome": "passed",
+        "evidence": ".dev/ai-context/local/2026-09-12-short-assessment-ids/checks/gates-3.log"
+      }
+    ],
+    "finding_status": "addressed-pending-verification",
+    "residual_risk": "Three-character suffixes reduce collisions but do not guarantee distributed uniqueness; locally visible duplicates are rejected.",
+    "follow_up_needed": true
+  }
+}
