@@ -249,6 +249,24 @@ def hosted_workflow() -> dict:
 
 
 class AiContextReleaseStateGwtTests(unittest.TestCase):
+    def test_given_each_retained_origin_when_v017_retirement_fixture_is_selected_then_it_uses_actual_managed_removals(self):
+        spec = importlib.util.spec_from_file_location("v017_actual_runner", ROOT / ".github/scripts/validate-v017-direct-upgrades.py")
+        module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(module)
+        release = ROOT / ".dev/releases/v0.17.0"
+        incoming = yaml.safe_load((release / "route-assets/incoming/metadata/files.yaml").read_bytes())["files"]
+        for origin, expected_count in (("v0.6.0", 6), ("v0.9.0", 6), ("v0.16.0", 1)):
+            with self.subTest(origin=origin):
+                old = yaml.safe_load((release / f"route-assets/origins/{origin}/metadata/files.yaml").read_bytes())["files"]
+                paths = module.fixture_retirement_paths(old, incoming)
+                self.assertEqual(expected_count, len(paths))
+                if origin == "v0.16.0":
+                    self.assertEqual([".ai/assets/skills/code-reviewer/fixtures/review-routing-fixtures.yaml"], paths)
+                self.assertTrue(set(paths).isdisjoint(item["path"] for item in incoming))
+                # Reintroduced and target-owned files are not valid retirement fixtures.
+                self.assertEqual([], module.fixture_retirement_paths(old, incoming + [{"path": path} for path in paths]))
+                self.assertEqual([], module.fixture_retirement_paths([dict(item, ownership="target-template") for item in old], incoming))
+
     def test_gwt_001_given_validated_clean_candidate_when_checked_then_prior_source_versions_are_allowed(self):
         with tempfile.TemporaryDirectory() as temp:
             root = Path(temp)

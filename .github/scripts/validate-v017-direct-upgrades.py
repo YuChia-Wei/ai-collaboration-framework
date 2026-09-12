@@ -144,6 +144,14 @@ print('All selected incoming managed bytes, target-owned content and retired rem
 '''
 
 
+def fixture_retirement_paths(old_inventory, incoming_inventory):
+    incoming_paths = {item["path"] for item in incoming_inventory}
+    return [record["path"] for record in old_inventory if record["ownership"] == "framework-managed" and
+            record["path"] not in incoming_paths and
+            ("/dev-workflow/" in record["path"] or "/repo-structure-sync/" in record["path"] or
+             record["path"] == ".ai/assets/skills/code-reviewer/fixtures/review-routing-fixtures.yaml")]
+
+
 def seed_target(previous, incoming, target, customized, apply, provenance, rules, logs):
     shutil.copytree(previous / "payload", target)
     old = yaml.safe_load((previous / "metadata/package.yaml").read_bytes())
@@ -162,10 +170,8 @@ def seed_target(previous, incoming, target, customized, apply, provenance, rules
     owner = target / "owner.txt"
     owner.write_bytes(b"target-owned content must survive\n")
     preserved = {"owner.txt": sha(owner.read_bytes()), EVIDENCE: sha(decision.read_bytes())}
-    retired = [record["path"] for record in old_inventory if record["ownership"] == "framework-managed" and
-               record["path"] not in {item["path"] for item in inventory} and
-               ("/dev-workflow/" in record["path"] or "/repo-structure-sync/" in record["path"])]
-    require(retired, "origin lacks expected retained skill retirement paths")
+    retired = fixture_retirement_paths(old_inventory, inventory)
+    require(retired, "origin lacks expected managed-file retirement paths")
     if customized:
         path = retired[0]
         local = target / path
