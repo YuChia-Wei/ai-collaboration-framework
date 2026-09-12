@@ -122,6 +122,9 @@ class GitHubWorkflowContractTests(unittest.TestCase):
         command = actual[0]["run"]
         self.assertIn("python .ai/scripts/validate-ai-context-release-state.py", command)
         self.assertIn("--phase candidate --version v0.17.0", command)
+        self.assertIn('--commit "${CANDIDATE_COMMIT}"', command)
+        self.assertIn('--branch "${GITHUB_HEAD_REF:-${GITHUB_REF_NAME}}"', command)
+        self.assertEqual(actual[0]["env"], {"GH_TOKEN": "${{ github.token }}"})
         self.assertIn('"${RUNNER_TEMP}/v017-actual-admission/retained-evidence-validation.log"', command)
         self.assertNotIn("validate-v017-direct-upgrades.py", command)
 
