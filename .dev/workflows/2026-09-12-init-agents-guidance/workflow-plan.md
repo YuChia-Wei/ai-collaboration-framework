@@ -10,7 +10,7 @@
 - `status`: `completed`
 - `current_phase`: `completed`
 - `created_at`: `2026-09-12T13:17:49+08:00`
-- `updated_at`: `2026-09-12T13:24:39+08:00`
+- `updated_at`: `2026-09-12T13:30:42+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md`
 - `template_version`: `1.2.0`
 
@@ -36,14 +36,18 @@ The baseline was transient read-only analysis, not a retained assessment instanc
 - Remediation report: `reports/remediation-report.md`
 - Local command evidence and bounded independent audit: ignored `.dev/ai-context/local/2026-09-12-init-agents-guidance/`
 
-## Stages And Resume Checkpoint
+## Current Resume State
 
-Implement the four bounded files, run targeted consent and context/workflow validation, commit the clean review subject, obtain independent read-only verification, then reconcile actual results and commit local completion. The current next action is bounded implementation. Root owns integration and all tracked writing.
+All planned implementation and independent source verification are complete. No additional source edits are planned. Root owns final record validation and acceptance; their latest actual outcomes belong to the ignored `final-checks/` and `final-audit-2/` receipts. Those read-only gates do not authorize public delivery.
 
-## Implementation Checkpoint
+## Historical Implementation Checkpoint
 
-INIT296-001 implementation is complete. All nine CLI routing tests passed, including canonical consent authority after root guidance compaction. AI-context validation, workflow validation and whitespace checks passed. The next action is independent fixed-head verification, then finding reconciliation and local completion. Provider delivery remains unauthorized.
+At the implementation checkpoint, all nine CLI routing tests, AI-context validation, workflow validation and whitespace checks passed. Independent fixed-head verification was then the next action; it subsequently passed on `9d9dc1b5bfc0cbbceb0780946032231b8cadd896`. This paragraph records history, not an outstanding action.
 
 ## Local Completion
 
 Independent verification of `9d9dc1b5bfc0cbbceb0780946032231b8cadd896` passed with no actionable findings. All seven accepted criteria are resolved in INIT296-001 and the remediation report. The reviewed four source files match the actual tested Git blobs. The earlier task-state checkpoint failed workflow validation; its non-passing evidence and pre-dispatch cancellation remain retained, and the corrected state passed before actual review. Final record validation and immutable-subject reconciliation complete this local delivery. No push, PR, merge, Issue closure, release or publication is included.
+
+## Final Record Repair
+
+The first metadata audit failed on stale current-action wording and missing final-subject workflow receipts. Its failed terminal is preserved. INIT296-FINAL-001 is repaired by the current/historical separation above. INIT296-FINAL-002 requires fresh workflow and whitespace receipts on the repaired clean commit, followed by one second metadata audit. The actual terminal outcomes remain in the declared ignored evidence roots; no passing outcome is presumed. The four source files and their accepted semantic review remain unchanged.

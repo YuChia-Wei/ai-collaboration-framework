@@ -8,7 +8,7 @@
   "owner_skill": "ai-context-governance",
   "status": "completed",
   "created_at": "2026-09-12T13:17:49+08:00",
-  "updated_at": "2026-09-12T13:24:39+08:00",
+  "updated_at": "2026-09-12T13:30:42+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-6-astra",
   "reasoning_effort": "ultra",
@@ -105,7 +105,7 @@
       }
     ],
     "last_completed_step": "Independent source verification passed; all seven accepted criteria reconciled.",
-    "next_action": "No local implementation remains. Public delivery requires separate authorization."
+    "next_action": "No source implementation remains. Final record acceptance uses fresh clean-subject checks and ignored final-audit-2 receipts; provider delivery requires separate authorization."
   },
   "results": {
     "summary": "All seven accepted source-guidance criteria resolved with nine passing CLI tests, AI-context/workflow checks and independent review.",
@@ -183,6 +183,15 @@
       "report_ref": ".dev/ai-context/local/2026-09-12-init-agents-guidance/review-2/report.md",
       "report_sha256": "442da0f98df68dbc007e07445ee6b8d2239c0b5902aa3b2f2e90c6e2ad510371",
       "parent_verification_ref": ".dev/ai-context/local/2026-09-12-init-agents-guidance/review-2/parent-verification.json"
+    },
+    "final_record_audit": {
+      "prior_outcome": "failed",
+      "findings": [
+        "INIT296-FINAL-001",
+        "INIT296-FINAL-002"
+      ],
+      "repair": "Reconciled current plan wording; fresh affected checks and second metadata audit required on repaired commit.",
+      "terminal_evidence_root": ".dev/ai-context/local/2026-09-12-init-agents-guidance/final-audit-2"
     }
   }
 }
