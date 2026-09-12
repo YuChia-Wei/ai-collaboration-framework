@@ -28,7 +28,7 @@ workflow:
     - Workflow
   require_identity_match: true
 assessment:
-  subject_id_pattern: '\bASM-[0-9]{8}-(?:(?:[01][0-9]|2[0-3])-[a-z0-9]{3}|[0-9]{3})(?![A-Za-z0-9-])'
+  subject_id_pattern: '\bASM-[0-9]{8}-(?:(?:[01][0-9]|2[0-3])-[a-z0-9]{3}|[0-9]{3})(?![\w-])'
   trailer: Assessment-Id
 ai_signature:
   trailer: Co-Authored-By

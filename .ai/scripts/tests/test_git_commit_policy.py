@@ -359,5 +359,19 @@ Co-Authored-By: OpenAI Codex (gpt-5.6-sol, xhigh) <noreply@openai.com>
         self.assertTrue(any("lacks matching Assessment-Id trailer: ASM-20260715-12-0z9" in error
                             for error in self.validate(message, workflow_id=None)))
 
+    def test_gwt_029_given_extended_assessment_token_when_partial_trailer_matches_then_workflow_sections_remain_required(self) -> None:
+        # Given a malformed identifier and a trailer matching only its valid prefix.
+        for assessment_id in ("ASM-20260715-12-a7c", "ASM-20260715-001"):
+            for continuation in ("_extra", "é", "中", "0", "-extra"):
+                with self.subTest(assessment_id=assessment_id, continuation=continuation):
+                    message = (
+                        f"docs(assessment): [{assessment_id}{continuation}] add report\n\n"
+                        f"Assessment-Id: {assessment_id}\n"
+                        "Co-Authored-By: OpenAI Codex (gpt-5.6-sol, high) <noreply@openai.com>\n"
+                    )
+                    # When validated in a workflow, then a partial ID cannot bypass its contract.
+                    self.assertTrue(any("missing workflow body sections" in error
+                                        for error in self.validate(message)))
+
 if __name__ == "__main__":
     unittest.main()
