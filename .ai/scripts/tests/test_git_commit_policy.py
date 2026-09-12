@@ -362,7 +362,7 @@ Co-Authored-By: OpenAI Codex (gpt-5.6-sol, xhigh) <noreply@openai.com>
     def test_gwt_029_given_extended_assessment_token_when_partial_trailer_matches_then_workflow_sections_remain_required(self) -> None:
         # Given a malformed identifier and a trailer matching only its valid prefix.
         for assessment_id in ("ASM-20260715-12-a7c", "ASM-20260715-001"):
-            for continuation in ("_extra", "é", "中", "0", "-extra"):
+            for continuation in ("_extra", "é", "中", "0", "-extra", "\u0301", "\u200d", "\ufe0f"):
                 with self.subTest(assessment_id=assessment_id, continuation=continuation):
                     message = (
                         f"docs(assessment): [{assessment_id}{continuation}] add report\n\n"
@@ -372,6 +372,19 @@ Co-Authored-By: OpenAI Codex (gpt-5.6-sol, xhigh) <noreply@openai.com>
                     # When validated in a workflow, then a partial ID cannot bypass its contract.
                     self.assertTrue(any("missing workflow body sections" in error
                                         for error in self.validate(message)))
+
+    def test_gwt_030_given_complete_assessment_token_when_terminated_by_document_punctuation_then_passes(self) -> None:
+        # Given a full ID followed by a supported prose or reference delimiter.
+        for assessment_id in ("ASM-20260715-12-a7c", "ASM-20260715-001"):
+            for ending in ("", " ", "]", "`", ".", ":", "#CR-001", "/report.md", "。", "）"):
+                with self.subTest(assessment_id=assessment_id, ending=ending):
+                    message = (
+                        f"docs(assessment): {assessment_id}{ending}\n\n"
+                        f"Assessment-Id: {assessment_id}\n"
+                        "Co-Authored-By: OpenAI Codex (gpt-5.6-sol, high) <noreply@openai.com>\n"
+                    )
+                    # When validated, then the complete ID still selects its standalone contract.
+                    self.assertEqual([], self.validate(message))
 
 if __name__ == "__main__":
     unittest.main()
