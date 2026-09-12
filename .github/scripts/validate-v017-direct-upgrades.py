@@ -144,12 +144,13 @@ print('All selected incoming managed bytes, target-owned content and retired rem
 '''
 
 
-def fixture_retirement_paths(old_inventory, incoming_inventory):
+def fixture_retirement_paths(old_inventory, incoming_inventory, migration_operations):
     incoming_paths = {item["path"] for item in incoming_inventory}
+    removal_paths = {item["path"] for item in migration_operations
+                     if item["kind"] == "remove" and item["ownership"] == "framework-managed"}
     return [record["path"] for record in old_inventory if record["ownership"] == "framework-managed" and
-            record["path"] not in incoming_paths and
-            ("/dev-workflow/" in record["path"] or "/repo-structure-sync/" in record["path"] or
-             record["path"] == ".ai/assets/skills/code-reviewer/fixtures/review-routing-fixtures.yaml")]
+            record["path"] in removal_paths and record["path"] not in incoming_paths and
+            ("/dev-workflow/" in record["path"] or "/repo-structure-sync/" in record["path"])]
 
 
 def seed_target(previous, incoming, target, customized, apply, provenance, rules, logs):
@@ -170,14 +171,24 @@ def seed_target(previous, incoming, target, customized, apply, provenance, rules
     owner = target / "owner.txt"
     owner.write_bytes(b"target-owned content must survive\n")
     preserved = {"owner.txt": sha(owner.read_bytes()), EVIDENCE: sha(decision.read_bytes())}
-    retired = fixture_retirement_paths(old_inventory, inventory)
-    require(retired, "origin lacks expected managed-file retirement paths")
-    if customized:
+    migration = yaml.safe_load((incoming / "metadata/migration.yaml").read_bytes())
+    selected_sources = [item for item in migration["sources"] if item["version"].lstrip("v") == old["version"].lstrip("v")]
+    require(len(selected_sources) == 1, "origin lacks one exact source migration")
+    operations = selected_sources[0]["operations"]
+    managed_removals = [item for item in operations if item["kind"] == "remove" and item["ownership"] == "framework-managed"]
+    retired = fixture_retirement_paths(old_inventory, inventory, operations)
+    require(retired or not managed_removals, "origin has removals but lacks expected skill retirement fixtures")
+    write_json(logs / "retirement-fixture.json", {
+        "origin": old["version"], "source_remove_count": len(managed_removals), "fixture_paths": retired,
+        "applicability": "selected" if retired else "not-applicable-no-source-removals",
+        "rename_source_count": sum(item["kind"] == "rename" for item in operations),
+        "customized_retirement": customized and bool(retired),
+    })
+    if customized and retired:
         path = retired[0]
         local = target / path
         local.write_bytes(local.read_bytes() + b"\nFixture target-owned historical customization.\n")
         preserved[path] = sha(local.read_bytes())
-        retired.remove(path)
     selected = apply.enabled_components(selection)
     incoming_paths = {item["path"] for item in inventory}
     removed = [item["path"] for item in old_inventory if item["ownership"] == "framework-managed"

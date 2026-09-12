@@ -9,7 +9,7 @@
   "title": "Prepare the v0.17.0 candidate and actual upgrade evidence",
   "status": "in_progress",
   "created_at": "2026-09-12T13:59:25+08:00",
-  "updated_at": "2026-09-12T15:16:43+08:00",
+  "updated_at": "2026-09-12T16:30:59+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/release-publication/release-publication-task.json",
   "model": "gpt-6-astra",
   "reasoning_effort": "ultra",
@@ -31,12 +31,16 @@
     "preparation_commit": "34aa44049545d3188ae5ab6cccef39e710421341",
     "artifact_admission": ".dev/releases/v0.17.0/artifact-admission.json",
     "package_archives": "passed",
-    "actual_direct_origin_cases": "failed-fourth-dispatch; one of nine cases passed on superseded candidate",
+    "actual_direct_origin_cases": "failed-seventh-dispatch; seven of nine cases passed",
     "full_release_gate": "not-run",
-    "final_review": "pending",
-    "provider_state": "prepublication; coordination issue open",
+    "final_review": "Independent fixed-commit repair review pending; no final release acceptance.",
+    "provider_state": "prepublication; coordination issue open with Project Status Verification",
     "short_id_compatibility": "12 lifecycle tests passed; independent review passed",
-    "candidate_input_preflight": "passed; eight ZIP/checksum inputs; not dispatched"
+    "candidate_input_preflight": "The admitted package remains unchanged; only source runner, tests and workflow evidence changed.",
+    "current_repair": "Select source-declared remove operations; preserve the v0.16 rename precondition and unchanged full target-byte checks.",
+    "focused_repair_validation": "41 release-state tests and two v0.16 seed probes passed; controlled planner isolation passed.",
+    "actual_retry_authority": "Dispatches 5 through 7 consumed; a new full matrix dispatch requires owner authorization.",
+    "acceptance_ledger_root": "ignored:.dev/ai-context/local/2026-09-12-v017-release/acceptance"
   },
   "issue_refs": [
     "#298"

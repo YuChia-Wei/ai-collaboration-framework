@@ -255,17 +255,23 @@ class AiContextReleaseStateGwtTests(unittest.TestCase):
         spec.loader.exec_module(module)
         release = ROOT / ".dev/releases/v0.17.0"
         incoming = yaml.safe_load((release / "route-assets/incoming/metadata/files.yaml").read_bytes())["files"]
-        for origin, expected_count in (("v0.6.0", 6), ("v0.9.0", 6), ("v0.16.0", 1)):
+        migration = yaml.safe_load((release / "route-assets/incoming/metadata/migration.yaml").read_bytes())
+        for origin, expected_count in (("v0.6.0", 6), ("v0.9.0", 6), ("v0.16.0", 0)):
             with self.subTest(origin=origin):
                 old = yaml.safe_load((release / f"route-assets/origins/{origin}/metadata/files.yaml").read_bytes())["files"]
-                paths = module.fixture_retirement_paths(old, incoming)
+                operations = next(item["operations"] for item in migration["sources"] if item["version"] == origin.lstrip("v"))
+                paths = module.fixture_retirement_paths(old, incoming, operations)
                 self.assertEqual(expected_count, len(paths))
                 if origin == "v0.16.0":
-                    self.assertEqual([".ai/assets/skills/code-reviewer/fixtures/review-routing-fixtures.yaml"], paths)
+                    self.assertEqual([], paths)
+                    self.assertFalse(any(item["kind"] == "remove" for item in operations))
+                    self.assertEqual(1, sum(item["kind"] == "rename" for item in operations))
                 self.assertTrue(set(paths).isdisjoint(item["path"] for item in incoming))
+                self.assertTrue(set(paths).issubset(item["path"] for item in operations if item["kind"] == "remove"))
                 # Reintroduced and target-owned files are not valid retirement fixtures.
-                self.assertEqual([], module.fixture_retirement_paths(old, incoming + [{"path": path} for path in paths]))
-                self.assertEqual([], module.fixture_retirement_paths([dict(item, ownership="target-template") for item in old], incoming))
+                self.assertEqual([], module.fixture_retirement_paths(old, incoming + [{"path": path} for path in paths], operations))
+                self.assertEqual([], module.fixture_retirement_paths([dict(item, ownership="target-template") for item in old], incoming, operations))
+                self.assertEqual([], module.fixture_retirement_paths(old, incoming, [dict(item, kind="rename") for item in operations]))
 
     def test_gwt_001_given_validated_clean_candidate_when_checked_then_prior_source_versions_are_allowed(self):
         with tempfile.TemporaryDirectory() as temp:
