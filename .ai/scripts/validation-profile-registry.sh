@@ -253,7 +253,7 @@ register_check spec-implementation \
 register_check sdk-free-framework-contract \
     "SDK-Free Framework Contract" required \
     "portability,release" "fast pr release nightly-full" \
-    ".ai/scripts/tests/test_sdk_free_framework_contract.py .ai/assets/tech-stacks/dotnet-backend/tooling/on-demand-mechanical-validation .github/workflows/portable-gates.yml" '' "python>=3.11 git" 30 cpu reuse-by-input source \
+    ".ai/scripts/tests/test_sdk_free_framework_contract.py .ai/assets/tech-stacks/dotnet-backend/tooling/on-demand-mechanical-validation .ai/assets/tech-stacks/dotnet-backend/examples/bdd-step-methods **.[cC][sS][pP][rR][oO][jJ] **.[sS][lL][nN] **.[sS][lL][nN][xX] global.json .github/workflows/portable-gates.yml" '' "python>=3.11 git" 30 cpu reuse-by-input source \
     "python .ai/scripts/tests/test_sdk_free_framework_contract.py -v" source-release
 register_check engineering-guardrails-provider-contract \
     "Engineering Guardrails Provider Contract" required \

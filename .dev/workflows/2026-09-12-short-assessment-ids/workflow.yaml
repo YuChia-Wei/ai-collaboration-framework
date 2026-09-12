@@ -4,14 +4,14 @@ lifecycle_contract: '1.0'
 workflow_kind: ai-context-maintenance
 title: Short assessment identities
 owner_skill: ai-context-governance
-status: completed
-current_phase: completed
+status: in_progress
+current_phase: implementation
 branch: codex/2026-09-12-short-assessment-ids
 base_branch: main
 artifact_root: .dev/workflows/2026-09-12-short-assessment-ids
 entrypoint: workflow-plan.md
 created_at: '2026-09-12T11:55:26+08:00'
-updated_at: '2026-09-12T12:19:45+08:00'
+updated_at: '2026-09-12T12:57:16+08:00'
 template_source: .ai/assets/skills/ai-context-governance/templates/workflow-locator-template.yaml
 template_version: 1.2.0
 work_items:

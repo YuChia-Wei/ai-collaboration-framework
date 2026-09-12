@@ -1,0 +1,22 @@
+{
+  "task_id": "ASM213-002",
+  "workflow_id": "2026-09-12-short-assessment-ids",
+  "owner_skill": "ai-context-governance",
+  "status": "in_progress",
+  "created_at": "2026-09-12T12:57:16+08:00",
+  "updated_at": "2026-09-12T12:57:16+08:00",
+  "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
+  "template_version": "1.1.0",
+  "model": "gpt-6-astra",
+  "reasoning_effort": "ultra",
+  "title": "Exclude optional BDD examples from SDK-free core discovery",
+  "work_item": 213,
+  "acceptance_criteria": [
+    "AC6: Only the explicitly classified BDD example subtree is excluded from SDK-free project discovery; core and unclassified projects still fail.",
+    "AC7: Project and example changes select the SDK-free contract, and default framework validation remains SDK-free."
+  ],
+  "results": {
+    "summary": "Implemented exact BDD example subtree exclusion and project-change selection. Host focused exclusion and all 11 registry tests pass; clean-checkout SDK inventory and independent review remain pending.",
+    "finding_status": "unresolved"
+  }
+}

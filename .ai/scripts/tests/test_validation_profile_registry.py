@@ -397,6 +397,35 @@ class ValidationProfileRegistryGwtTests(unittest.TestCase):
         unknown = subprocess.run([bash, str(RUNNER), "--resolve-input-closure", "missing-check", "--subject", "HEAD"], cwd=ROOT, check=False, capture_output=True, text=True)
         self.assertEqual(2, unknown.returncode)
 
+    def test_gwt_010_given_project_or_example_changes_when_matching_inputs_then_sdk_free_check_is_selected(self) -> None:
+        bash = bash_executable()
+        if not bash:
+            self.skipTest("Bash is required for path selection tests")
+        _, checks, _ = registry_snapshot()
+        inputs = checks["sdk-free-framework-contract"][5]
+        # Execute the runner's actual matcher without dispatching any checks.
+        runner = RUNNER.read_text(encoding="utf-8")
+        start = runner.index("input_owns_path() {")
+        matcher = runner[start:runner.index("\n}", start) + 2]
+        cases = {
+            "Core.csproj": "selected",
+            "src/Core/Core.CSPROJ": "selected",
+            "Framework.sln": "selected",
+            "src/Core/Core.slnx": "selected",
+            "global.json": "selected",
+            ".ai/assets/tech-stacks/dotnet-backend/examples/bdd-step-methods/README.md": "selected",
+            ".ai/assets/tech-stacks/dotnet-backend/examples/bdd-step-methods/DefaultBddfy/DefaultBddfy.csproj": "selected",
+            ".ai/assets/tech-stacks/dotnet-backend/examples/other/Other.csproj": "selected",
+            "src/Ordinary.cs": "not-selected",
+        }
+        script = matcher + '\nfor candidate in "${@:2}"; do if input_owns_path "$candidate" "$1"; then echo selected; else echo not-selected; fi; done\n'
+        result = subprocess.run(
+            [bash, "-c", script, "sdk-free-selection", inputs, *cases],
+            check=False, capture_output=True, text=True,
+        )
+        self.assertEqual(0, result.returncode, result.stderr)
+        self.assertEqual(list(cases.values()), result.stdout.splitlines())
+
 
 if __name__ == "__main__":
     unittest.main()

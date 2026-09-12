@@ -7,11 +7,11 @@
 - `owner_skill`: `ai-context-governance`
 - `branch`: `codex/2026-09-12-short-assessment-ids`
 - `base_branch`: `main`
-- `status`: `completed`
-- `current_phase`: `completed`
+- `status`: `in_progress`
+- `current_phase`: `implementation`
 - `artifact_root`: `.dev/workflows/2026-09-12-short-assessment-ids`
 - `created_at`: `2026-09-12T11:55:26+08:00`
-- `updated_at`: `2026-09-12T12:19:45+08:00`
+- `updated_at`: `2026-09-12T12:57:16+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md`
 - `template_version`: `1.2.0`
 
@@ -42,3 +42,9 @@ No allocation service, remote reservation, graph-wide scanner, generator CLI, mi
 - Two failed independent reviews identified CR-001. The positive delimiter repair passed the third read-only source review; all earlier results remain evidence.
 - Root will validate the completed workflow records, commit them and request one bounded final AI-context admission. No implementation remains pending.
 - No push, PR, merge, Issue closure, Project change or release action is included. Issue 21 remains a conversation-only reassessment.
+
+## Authorized SDK-Free Repair Addendum
+
+On 2026-09-12 the owner resumed PR 295 and authorized the SDK-free contract correction. Task ASM213-001 and its acceptance remain complete; task ASM213-002 repairs the newly observed pre-existing blocker. The prior local-only authorization statements above describe the earlier stage. Public push, PR updates, checked merge and Issue 213 closure are now authorized.
+
+The existing bdd-step-methods subtree is optional example material. Exclude that exact subtree from core project discovery, preserve core and unclassified-project rejection, and select the SDK-free check for relevant example/project changes. Do not install an SDK or execute the examples as part of required framework checks. Preserve the failed hosted runs and require fresh independent review, hosted checks, live admission and provider read-back after repair.
