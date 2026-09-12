@@ -35,12 +35,14 @@ Complete selected source, package, actual upgrade/recovery, candidate and critic
 ## Resume Checkpoint
 
 - Current task: REL017-001, preparation in progress.
-- Completed: templates, fresh public origin metadata, release-specific executor and CI selection; static executor review and 40 release-state tests passed. Notes review found one incomplete envelope command, now corrected.
-- Next: build a new candidate after correcting identity-bound route-evidence ordering, then bind actual execution, source gates and final review to those assets.
-- Validation: the first archive pair and checksums passed structural validation, but that candidate is superseded by selected-input correction. Its Windows actual execution failed because the cache runtime resolved a relative package root incorrectly; failure and diagnostic evidence remain retained. No v0.17.0 candidate acceptance has passed.
-- Outstanding: final candidate assets, three direct-origin evidence sets, source gates and final independent review.
-- Provider lifecycle: Issue #298 remains open; no tag or Release exists.
+- Completed: six templates, seven completed Included Work items, exact public origin metadata, the v0.17 executor and CI dispatch, corrected migration command and route-evidence ordering, and four admitted candidate assets built from `346bbc14e16d7219012de846267febd3a22cf1b6`.
+- Passed: archive/checksum/ZIP-tar parity; 40 release-state tests, 13 workflow contracts and 11 profile contracts; source version, workflow and AI-context structure checks; independent runner and corrected notes/migration reviews.
+- Runtime evidence: first Windows execution failed at package-root resolution. Second dispatch was interrupted before execution after selected-input correction. The owner explicitly authorized dispatch three; it stopped at input preflight because the local transport omitted the checksum, before any of the nine cases ran. Each outcome remains non-passing.
+- Input repair: all four ZIP archives and exact checksum sidecars are now present and verified in the Linux-native RAM cache. Source commit, candidate bytes and acceptance criteria are unchanged.
+- Next: obtain the separately requested fourth-dispatch authorization, execute actual upgrades, assemble fresh direct-route evidence, then run candidate/critical gates and final independent review.
+- Outstanding: three direct-origin evidence sets, full release acceptance and final review. The release record stays planned.
+- Provider lifecycle: seven included issues remain CLOSED/COMPLETED and Done. Issue #298 remains open. No v0.17 tag or Release exists.
 
-## Bounded Execution Reauthorization
+## Execution Authority And Evidence
 
-The integration owner authorizes one fresh actual-upgrade command after the corrected selected inputs are committed and independently reviewed. This is necessary release preparation within Issue #298. Retain earlier failed, interrupted or superseded attempts; bind the new attempt to the new candidate digest, exact source commit and verified Linux-native RAM cache. The selected-input correction and runtime change are material state changes, not unchanged retries. If this fresh attempt fails, diagnose and record the new failure before any further dispatch; no automatic retry is authorized. The authorization changes neither publication authority nor test acceptance criteria.
+The owner authorized local release preparation and explicitly approved the third validation dispatch on the exact corrected commit and candidate. Automatic approval review requires a fresh decision for dispatch four; that question remains pending. Do not treat the preparation instruction or a parent-created retry record as authority to bypass that checkpoint. After authorization, bind the next packet to the same reviewed subject, verified checksum inputs and prior failure digest. Preserve failures, pre-start interruption and setup corrections separately from actual-case evidence. No further automatic retry or publication action is authorized by this checkpoint.

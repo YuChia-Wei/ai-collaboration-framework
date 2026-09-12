@@ -1,0 +1,37 @@
+{
+  "schema_version": "release-asset-admission/v1",
+  "state": "admitted-candidate",
+  "version": "v0.17.0",
+  "package_id": "ai-collaboration-framework-v0.17.0",
+  "release_id": "REL-v0.17.0",
+  "build_commit": "346bbc14e16d7219012de846267febd3a22cf1b6",
+  "payload_fingerprint": "26b857c5094ac9fe06c286de0f5525d2066028f4cd78df8cccf9378784a1513d",
+  "selected_input_fingerprint": "7c574808436dd29e9cedecc34017d88c8736594137274b4270c77437b52a14af",
+  "artifact_set_id": "sha256:c03daa1941faae603d22d3b2846e8d466542f9f772f7898190a4652c723d3f6e",
+  "assets": [
+    {
+      "name": "ai-collaboration-framework-v0.17.0.zip",
+      "path": ".dev/releases/v0.17.0/route-assets/admitted/ai-collaboration-framework-v0.17.0.zip",
+      "size": 1573002,
+      "sha256": "394a42f7152eae7b7078e0ffd312449250eb8c45e6de04534e77816d694a8c97"
+    },
+    {
+      "name": "ai-collaboration-framework-v0.17.0.zip.sha256",
+      "path": ".dev/releases/v0.17.0/route-assets/admitted/ai-collaboration-framework-v0.17.0.zip.sha256",
+      "size": 105,
+      "sha256": "6f9a14cbc549c3871eadbeb5508095cc50a0beb0b19b76c8a7b70bd17cbbdd29"
+    },
+    {
+      "name": "ai-collaboration-framework-v0.17.0.tar.gz",
+      "path": ".dev/releases/v0.17.0/route-assets/admitted/ai-collaboration-framework-v0.17.0.tar.gz",
+      "size": 1128409,
+      "sha256": "745f65301d87319d0f31fd30095beb25592b193364aa573be4028db91b671bc5"
+    },
+    {
+      "name": "ai-collaboration-framework-v0.17.0.tar.gz.sha256",
+      "path": ".dev/releases/v0.17.0/route-assets/admitted/ai-collaboration-framework-v0.17.0.tar.gz.sha256",
+      "size": 108,
+      "sha256": "543902f71b8b9d0b94a6b06b33e613ba0df90ce79ab49ddba514059ff6d9a3bc"
+    }
+  ]
+}

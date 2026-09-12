@@ -9,7 +9,7 @@
   "title": "Prepare the v0.17.0 candidate and actual upgrade evidence",
   "status": "in_progress",
   "created_at": "2026-09-12T13:59:25+08:00",
-  "updated_at": "2026-09-12T13:59:25+08:00",
+  "updated_at": "2026-09-12T14:43:07+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/release-publication/release-publication-task.json",
   "model": "gpt-6-astra",
   "reasoning_effort": "ultra",
@@ -27,7 +27,15 @@
     "Execute applicable cache-backed validation on fixed clean subjects and preserve failures.",
     "Obtain independent review and commit reviewable preparation results."
   ],
-  "results": null,
+  "results": {
+    "preparation_commit": "346bbc14e16d7219012de846267febd3a22cf1b6",
+    "artifact_admission": ".dev/releases/v0.17.0/artifact-admission.json",
+    "package_archives": "passed",
+    "actual_direct_origin_cases": "not-completed",
+    "full_release_gate": "not-run",
+    "final_review": "pending",
+    "provider_state": "prepublication; coordination issue open"
+  },
   "issue_refs": [
     "#298"
   ],

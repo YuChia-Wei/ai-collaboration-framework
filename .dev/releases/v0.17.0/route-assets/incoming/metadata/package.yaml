@@ -1,0 +1,151 @@
+schema_version: 2.4.0
+package_id: ai-collaboration-framework-v0.17.0
+profile_id: dotnet-backend
+version: 0.17.0
+release_id: REL-v0.17.0
+source:
+  repository: https://github.com/YuChia-Wei/ai-collaboration-framework
+  ref: 346bbc14e16d7219012de846267febd3a22cf1b6
+  commit: 346bbc14e16d7219012de846267febd3a22cf1b6
+  tree: 8adbbb0e2f01cd46afdf483592a072f34cd5357d
+created_at: '2026-09-12T06:30:35Z'
+source_date_epoch: 1789194635
+identity:
+  schema_version: 1.1.0
+  package_identity_policy: public-package-identity-v1
+  identity_rule: from-v0.15
+  public_artifact_base: ai-collaboration-framework-v0.17.0
+  selected_input_fingerprint: 7c574808436dd29e9cedecc34017d88c8736594137274b4270c77437b52a14af
+  payload_fingerprint: 26b857c5094ac9fe06c286de0f5525d2066028f4cd78df8cccf9378784a1513d
+  files_manifest_digest: 6ad40029de8602f8393adafb16eba27a93e9d8fd975b520e9cc8cbbb264682cd
+  migration_digest: 0c03c6ef388e01a0527342b6aa6a612da7437a40c6066c04722e10b517936442
+payload:
+  root: payload
+  file_count: 673
+  sha256: 26b857c5094ac9fe06c286de0f5525d2066028f4cd78df8cccf9378784a1513d
+compatibility:
+  minimum_governed_source: v0.6.0
+  breaking_changes: true
+  automatic_upgrade_sources:
+  - v0.6.0
+  - v0.9.0
+  - v0.16.0
+selection:
+  release_model: single-versioned-componentized-release
+  mandatory_components:
+  - software-development-core
+  - ai-context-lifecycle-core
+  profiles:
+  - dotnet-backend
+  providers:
+    repo-backlog:
+      enabled: false
+      preservation: preserve-existing-if-recorded
+user_view:
+  schema_version: 1.0.0
+  classifications:
+    markdown_local_links: required-local-navigation
+    markdown_anchors: required-local-anchor
+    component_cross_links: navigation-only-not-activation
+    fenced_code: non-actionable-example-unless-command
+    inline_code: non-actionable-reference-unless-command
+    templates_and_placeholders: non-actionable-template
+    external_urls: external-not-validated
+    actionable_local_commands: required-local-target
+  reference_integrity:
+    text_extensions:
+    - .md
+    - .yaml
+    - .yml
+    - .json
+    - .toml
+    - .txt
+    - .sh
+    - .ps1
+    forbidden_source_lifecycle_patterns:
+    - .dev/workflows/20*/**
+    - .dev/assessments/ASM-*/**
+    - .dev/releases/v*/**
+    - .dev/backlog/items/**
+    target_owned_reference_patterns:
+    - .dev/AI-CONTEXT-SOURCE.yaml
+    - .dev/ai-context/provenance.yaml
+    - .dev/ai-context/customizations.yaml
+    - .dev/ai-context/effective-rules.yaml
+    - .dev/ai-context/effective-rule-packets/**
+    - .dev/ai-context/local/**
+    - .dev/validation.local.conf
+  components:
+  - component_id: software-development-core
+    classification: mandatory-core
+    required: true
+    requires: []
+  - component_id: ai-context-lifecycle-core
+    classification: mandatory-core
+    required: true
+    requires: []
+  - component_id: dotnet-backend
+    classification: technology-profile
+    required: false
+    requires:
+    - software-development-core
+  - component_id: repo-backlog
+    classification: optional-provider
+    required: false
+    requires:
+    - software-development-core
+  supported_selections:
+  - selection_id: core-only
+    components:
+    - software-development-core
+    - ai-context-lifecycle-core
+  - selection_id: dotnet-selected
+    components:
+    - software-development-core
+    - ai-context-lifecycle-core
+    - dotnet-backend
+  capabilities:
+  - capability_id: ddd-ca-hex-architect
+    owner_component: software-development-core
+    path_patterns:
+    - .ai/assets/skills/ddd-ca-hex-architect/**
+    - .ai/assets/shared/ARTIFACT-DESIGN-REVIEW-CONTRACT.md
+    - .agents/skills/ddd-ca-hex-architect/**
+    - .claude/skills/ddd-ca-hex-architect/**
+    availability:
+      core-only: available
+      dotnet-selected: available
+  - capability_id: bdd-gwt-test-designer
+    owner_component: software-development-core
+    path_patterns:
+    - .ai/assets/skills/bdd-gwt-test-designer/**
+    - .ai/assets/shared/ARTIFACT-DESIGN-REVIEW-CONTRACT.md
+    - .agents/skills/bdd-gwt-test-designer/**
+    - .claude/skills/bdd-gwt-test-designer/**
+    availability:
+      core-only: available
+      dotnet-selected: available
+  - capability_id: code-reviewer
+    owner_component: software-development-core
+    path_patterns:
+    - .ai/assets/skills/code-reviewer/**
+    - .ai/assets/sub-agent-role-prompts/*code-review-sub-agent/**
+    - .agents/skills/code-reviewer/**
+    - .claude/skills/code-reviewer/**
+    availability:
+      core-only: available
+      dotnet-selected: available
+  - capability_id: code-reviewer-dotnet
+    owner_component: dotnet-backend
+    path_patterns:
+    - .ai/assets/tech-stacks/dotnet-backend/review/**
+    - .ai/scripts/code-review.sh
+    availability:
+      core-only: unavailable-not-selected
+      dotnet-selected: available
+validation:
+  schema_version: package-validation/v1
+  manifest: metadata/validation.json
+  manifest_sha256: d62053737843c522f39e05c692e5405188fa81b0390bbd67af45aa6dd4461539
+  selected_inputs: metadata/selected-inputs.json
+  selected_inputs_sha256: 7c574808436dd29e9cedecc34017d88c8736594137274b4270c77437b52a14af

@@ -10,7 +10,7 @@ commit: null
 tagged_at: null
 recorded_at: null
 created_at: '2026-09-12T13:59:25+08:00'
-updated_at: '2026-09-12T13:59:25+08:00'
+updated_at: '2026-09-12T14:43:07+08:00'
 planning:
   github_issue_refs:
   - '#213'
@@ -97,8 +97,10 @@ distribution:
     automation: github-actions
     creates_or_moves_tag: false
 validation:
-  evidence: Release preparation is in progress. No v0.17.0 package, direct-origin
-    or release acceptance result is claimed.
+  evidence: The four admitted candidate assets were built at 346bbc14e16d7219012de846267febd3a22cf1b6
+    and passed archive/checksum/parity validation. Static runner and corrected migration-content
+    reviews passed. Actual direct-origin execution and the complete release gate remain
+    pending; earlier failures are retained.
   workflow_id: 2026-09-12-v017-release
   related_workflows: []
   related_assessments: []
