@@ -4233,8 +4233,8 @@ files:
   component_id: ai-context-lifecycle-core
 - path: .ai/scripts/ai_context_target_provenance.py
   source_path: .ai/scripts/ai_context_target_provenance.py
-  sha256: 2d76483164f65dff88070cb62cac5cc671d2e6b747656e45d55f64382a5fd5c1
-  size: 219120
+  sha256: 77c10f736b969fdb8ffb51aad3d9e048e429b3c66eb0e9d5b89f14d6af3ff44e
+  size: 219163
   mode: '0644'
   ownership: framework-managed
   install_behavior: managed

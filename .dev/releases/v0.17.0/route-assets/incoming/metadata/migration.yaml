@@ -2,7 +2,7 @@ schema_version: 3.0.0
 package_id: ai-collaboration-framework-v0.17.0
 to:
   version: 0.17.0
-  manifest_sha256: 6ad40029de8602f8393adafb16eba27a93e9d8fd975b520e9cc8cbbb264682cd
+  manifest_sha256: 63c9201849cfede101a57e001da4616d2749ae1bba19d8376dd14a8c4d124e97
 clean_install:
   operations:
   - id: clean-install-0001
@@ -13415,187 +13415,194 @@ sources:
     - current_sha256_equals_previous_release
   - id: migration-0098
     kind: replace
-    path: .ai/scripts/validate-assessment-artifacts.py
+    path: .ai/scripts/ai_context_target_provenance.py
     ownership: framework-managed
-    component_id: software-development-core
+    component_id: ai-context-lifecycle-core
     preconditions:
     - current_sha256_equals_previous_release
   - id: migration-0099
     kind: replace
-    path: .ai/scripts/validation-profile-registry.sh
+    path: .ai/scripts/validate-assessment-artifacts.py
     ownership: framework-managed
     component_id: software-development-core
     preconditions:
     - current_sha256_equals_previous_release
   - id: migration-0100
     kind: replace
+    path: .ai/scripts/validation-profile-registry.sh
+    ownership: framework-managed
+    component_id: software-development-core
+    preconditions:
+    - current_sha256_equals_previous_release
+  - id: migration-0101
+    kind: replace
     path: .claude/skills/README.md
     ownership: framework-managed
     component_id: ai-context-lifecycle-core
     preconditions:
     - current_sha256_equals_previous_release
-  - id: migration-0101
+  - id: migration-0102
     kind: replace
     path: .claude/skills/bdd-gwt-test-designer/SKILL.md
     ownership: framework-managed
     component_id: software-development-core
     preconditions:
     - current_sha256_equals_previous_release
-  - id: migration-0102
+  - id: migration-0103
     kind: replace
     path: .claude/skills/code-reviewer/SKILL.md
     ownership: framework-managed
     component_id: software-development-core
     preconditions:
     - current_sha256_equals_previous_release
-  - id: migration-0103
+  - id: migration-0104
     kind: replace
     path: .claude/skills/ddd-ca-hex-architect/SKILL.md
     ownership: framework-managed
     component_id: software-development-core
     preconditions:
     - current_sha256_equals_previous_release
-  - id: migration-0104
+  - id: migration-0105
     kind: replace
     path: .claude/skills/ddd-ca-hex-architect/agents/openai.yaml
     ownership: framework-managed
     component_id: software-development-core
     preconditions:
     - current_sha256_equals_previous_release
-  - id: migration-0105
+  - id: migration-0106
     kind: replace
     path: .claude/skills/local-change-implementer/SKILL.md
     ownership: framework-managed
     component_id: software-development-core
     preconditions:
     - current_sha256_equals_previous_release
-  - id: migration-0106
+  - id: migration-0107
     kind: replace
     path: .claude/skills/problem-frame-author/SKILL.md
     ownership: framework-managed
     component_id: software-development-core
     preconditions:
     - current_sha256_equals_previous_release
-  - id: migration-0107
+  - id: migration-0108
     kind: replace
     path: .claude/skills/requirement-author/SKILL.md
     ownership: framework-managed
     component_id: software-development-core
     preconditions:
     - current_sha256_equals_previous_release
-  - id: migration-0108
+  - id: migration-0109
     kind: replace
     path: .claude/skills/slice-implementer/SKILL.md
     ownership: framework-managed
     component_id: software-development-core
     preconditions:
     - current_sha256_equals_previous_release
-  - id: migration-0109
+  - id: migration-0110
     kind: replace
     path: .claude/skills/spec-author/SKILL.md
     ownership: framework-managed
     component_id: software-development-core
     preconditions:
     - current_sha256_equals_previous_release
-  - id: migration-0110
+  - id: migration-0111
     kind: replace
     path: .dev/assessments/templates/assessment-locator-template.yaml
     ownership: framework-managed
     component_id: ai-context-lifecycle-core
     preconditions:
     - current_sha256_equals_previous_release
-  - id: migration-0111
+  - id: migration-0112
     kind: replace
     path: .dev/guides/ai-collaboration-guides/AI-CONTEXT-AUDITOR-SKILL-GUIDE.md
     ownership: framework-managed
     component_id: ai-context-lifecycle-core
     preconditions:
     - current_sha256_equals_previous_release
-  - id: migration-0112
+  - id: migration-0113
     kind: replace
     path: .dev/guides/ai-collaboration-guides/AI-REFACTORING-SKILL-BOUNDARY-GUIDE.md
     ownership: framework-managed
     component_id: software-development-core
     preconditions:
     - current_sha256_equals_previous_release
-  - id: migration-0113
+  - id: migration-0114
     kind: replace
     path: .dev/guides/ai-collaboration-guides/BDD-GWT-TEST-DESIGNER-SKILL-GUIDE.md
     ownership: framework-managed
     component_id: software-development-core
     preconditions:
     - current_sha256_equals_previous_release
-  - id: migration-0114
+  - id: migration-0115
     kind: replace
     path: .dev/guides/ai-collaboration-guides/DDD-CA-HEX-ARCHITECT-SKILL-GUIDE.md
     ownership: framework-managed
     component_id: software-development-core
     preconditions:
     - current_sha256_equals_previous_release
-  - id: migration-0115
+  - id: migration-0116
     kind: replace
     path: .dev/guides/ai-collaboration-guides/LOCAL-CHANGE-IMPLEMENTER-SKILL-GUIDE.md
     ownership: framework-managed
     component_id: software-development-core
     preconditions:
     - current_sha256_equals_previous_release
-  - id: migration-0116
+  - id: migration-0117
     kind: replace
     path: .dev/guides/ai-collaboration-guides/PROBLEM-FRAME-AUTHORING-GUIDE.md
     ownership: framework-managed
     component_id: software-development-core
     preconditions:
     - current_sha256_equals_previous_release
-  - id: migration-0117
+  - id: migration-0118
     kind: replace
     path: .dev/guides/ai-collaboration-guides/REQUIREMENT-DESIGNER-PROMPT-GUIDE.md
     ownership: framework-managed
     component_id: software-development-core
     preconditions:
     - current_sha256_equals_previous_release
-  - id: migration-0118
+  - id: migration-0119
     kind: replace
     path: .dev/guides/ai-collaboration-guides/SLICE-IMPLEMENTER-SKILL-GUIDE.md
     ownership: framework-managed
     component_id: software-development-core
     preconditions:
     - current_sha256_equals_previous_release
-  - id: migration-0119
+  - id: migration-0120
     kind: replace
     path: .dev/guides/ai-collaboration-guides/SPEC-DESIGNER-PROMPT-GUIDE.md
     ownership: framework-managed
     component_id: software-development-core
     preconditions:
     - current_sha256_equals_previous_release
-  - id: migration-0120
+  - id: migration-0121
     kind: replace
     path: .dev/standards/AI-CONTEXT-LANGUAGE-POLICY.md
     ownership: framework-managed
     component_id: ai-context-lifecycle-core
     preconditions:
     - current_sha256_equals_previous_release
-  - id: migration-0121
+  - id: migration-0122
     kind: replace
     path: .dev/standards/AI-CONTEXT-OWNERSHIP.yaml
     ownership: framework-managed
     component_id: software-development-core
     preconditions:
     - current_sha256_equals_previous_release
-  - id: migration-0122
+  - id: migration-0123
     kind: replace
     path: .dev/standards/ASSESSMENT-ARTIFACT-POLICY.md
     ownership: framework-managed
     component_id: ai-context-lifecycle-core
     preconditions:
     - current_sha256_equals_previous_release
-  - id: migration-0123
+  - id: migration-0124
     kind: replace
     path: .dev/standards/GIT-COMMIT-POLICY.yaml
     ownership: framework-managed
     component_id: software-development-core
     preconditions:
     - current_sha256_equals_previous_release
-  - id: migration-0124
+  - id: migration-0125
     kind: reconcile
     path: AGENTS.md
     ownership: target-template
