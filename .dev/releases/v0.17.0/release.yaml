@@ -1,7 +1,7 @@
 schema_version: '1.0'
 release_id: REL-v0.17.0
 version: v0.17.0
-status: planned
+status: validated
 record_origin: governed
 distribution_kind: governed-package
 installable: true
@@ -10,7 +10,7 @@ commit: null
 tagged_at: null
 recorded_at: null
 created_at: '2026-09-12T13:59:25+08:00'
-updated_at: '2026-09-12T17:11:44+08:00'
+updated_at: '2026-09-12T17:31:45+08:00'
 planning:
   github_issue_refs:
   - '#213'
@@ -97,17 +97,21 @@ distribution:
     automation: github-actions
     creates_or_moves_tag: false
 validation:
-  evidence: The admitted assets remain unchanged. Dispatch07 retains seven individually
-    passed cases and an overall failed outcome. The reviewed source-declared-removal
-    correction leaves those seven cases input-compatible. Owner-selected dispatch09
-    passed the two v0.16 customized cases, including actual finalized target validation
-    and exact rollback. The version-specific execution set retains both native terminals
-    and separate artifacts. Source integration, final review and terminal publication
-    gates remain pending.
+  evidence: The admitted assets built at 34aa44049545d3188ae5ab6cccef39e710421341
+    passed archive/checksum/parity and current-source identity rebinding. The owner-selected
+    seven-plus-two evidence set retains dispatch07 as failed with seven individually
+    passed cases and dispatch09 as a passed two-case retest. All retained case artifacts
+    and three direct routes passed source validation; WSL RAM incoming validation
+    passed. The Windows RAM relative-path failure is retained and reproduced independently
+    of package code. Focused source checks and independent preparation review passed
+    at 3a4cbb6f233436039e875da841db31659db10ed8. Candidate and critical handoff gates
+    execute on the frozen source commit; their terminal outcomes are retained under
+    the declared ignored acceptance root. PR integration, integrated gates and authorized
+    hosted publication remain pending.
   workflow_id: 2026-09-12-v017-release
   related_workflows: []
   related_assessments: []
-  package_status: planned
+  package_status: validated
   post_merge_status: pending
   failed_publication_run: null
   published_run: null

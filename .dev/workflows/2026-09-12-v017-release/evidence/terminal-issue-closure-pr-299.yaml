@@ -1,0 +1,90 @@
+schema_version: '1.0'
+contract_id: github-terminal-issue-closure
+repository: YuChia-Wei/ai-collaboration-framework
+validation_stage: declaration
+pull_request:
+  number: 299
+  head_sha: null
+  body: 'Prepare v0.17.0 with precise skill responsibilities, task-led context loading,
+    traceable BDD delivery, and compact assessment identifiers. Preserve the four
+    admitted assets throughout source integration and publication.
+
+
+    - Retain direct upgrade coverage from v0.6.0, v0.9.0 and v0.16.0, including target-owned
+    customization, finalized validation, interrupted resume and exact rollback.
+
+    - Keep the failed seven-case batch and the later two-case retest as distinct native
+    executions. The owner-selected evidence set validates all nine individual passes
+    without inventing another matrix run.
+
+    - Fix the short-ID audit consumer and source-specific retirement fixtures while
+    preserving the v0.16 rename precondition.
+
+    - Keep source acceptance, PR integration, annotated tag publication and provider
+    reconciliation separate.
+
+
+    Validation: the admitted archives passed identity and parity checks; three direct
+    routes and incoming validators passed on WSL RAM storage. The 46 release-state
+    tests, 13 workflow contract tests and source structure checks passed. The Windows
+    RAM-disk relative-path failure is retained and was reproduced with the Python
+    standard library alone. Independent review, current-head hosted checks and live
+    merge admission are required before integration; candidate and critical gates
+    are repeated on the integrated commit before tagging.
+
+
+    Refs #298
+
+
+    Delivery disposition: `deferred`.
+
+
+    Closure deferred reason for #298: source integration precedes public Release verification.
+
+
+    Next terminal gate for #298: publish the new annotated v0.17.0 tag through the
+    configured release workflow, verify all four public assets against the admitted
+    bytes, and reconcile the coordination issue and Project status.
+
+
+    The owner explicitly authorized completion of v0.17.0 publication on 2026-09-12.
+    Use a merge commit to preserve immutable candidate-build and native-execution
+    provenance. Workflow: `.dev/workflows/2026-09-12-v017-release/`.
+
+    '
+  integration:
+    status: pending
+    topology: null
+    admitted_head_sha: null
+    integration_commit_sha: null
+    provider_read_back: false
+  review:
+    status: pending
+  required_check_contexts: []
+  hosted_checks: []
+issues:
+- number: 298
+  mode: deferred
+  work_authorization:
+    online_issue_bound: true
+    explicit_owner_approval: true
+  final_accepted_delivery: false
+  workflow:
+    scope_complete: false
+    tasks_complete: false
+    applicable_verification_complete: false
+  closing_keyword: null
+  closure_deferred_reason: source integration precedes public Release verification
+  next_terminal_gate_or_owner: publish the new annotated v0.17.0 tag through the configured
+    release workflow, verify all four public assets against the admitted bytes, and
+    reconcile the coordination issue and Project status
+  read_back:
+    performed: false
+    integration_commit_sha: null
+    issue_state: null
+    issue_state_reason: null
+    project_status: null
+authorization_note: 'On 2026-09-12 the owner explicitly requested completion of v0.17.0
+  publication, including required source preparation, PR integration, new annotated
+  tag, configured hosted publication and provider read-back. Issue #298 remains open
+  through prepublication integration and closes only after public Release verification.'

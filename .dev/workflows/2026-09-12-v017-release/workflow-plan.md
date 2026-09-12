@@ -8,7 +8,7 @@
 - `branch`: `codex/2026-09-12-v017-release`
 - `base_branch`: `main`
 - `status`: `in_progress`
-- `current_phase`: `preparation`
+- `current_phase`: `source-validated`
 - `created_at`: `2026-09-12T13:59:25+08:00`
 - `updated_at`: `2026-09-12T13:59:25+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md`
@@ -40,7 +40,8 @@ Complete selected source, package, actual upgrade/recovery, candidate and critic
 - Owner-selected dispatch08 failed before execution because of a wrapper import-order error; zero cases executed. The reviewed wrapper correction preceded dispatch09.
 - Dispatch09 at the repaired commit passed exactly the v0.16 customized-none and customized-rollback cases. It is a two-case execution, not a new full matrix. Original failures, interruption/setup records, native terminals, complete evidence and released leases remain retained under the ignored local evidence root.
 - The version-specific evidence set retains the two native terminals, runner bytes, separate artifact roots and all nine accepted case identities. The same existing artifact, finalization, negative-boundary and rollback checks apply to every case.
-- Remaining: source evidence integration validation, fixed-subject independent review, candidate and critical gates, PR integration, fresh integrated gates, annotated tag publication and public asset/provider read-back. No remaining gate is predeclared passed.
+- Accepted source: the evidence set, three direct routes, focused checks and immutable preparation review passed at `3a4cbb6f233436039e875da841db31659db10ed8`; source and package status are validated.
+- Frozen terminal work: candidate and critical outcomes, current-content review, live PR admission, integration, integrated gates and hosted publication are retained only in declared ignored evidence and provider records. These outcomes are not predeclared passed. No later source status rewrite is required for a successful publication.
 
 ## Bounded Evidence Decision
 
@@ -48,4 +49,8 @@ The owner's instructions "OK，復驗這兩案就好" and "那就完成 0.17.0 �
 
 ## Execution Authority And Evidence
 
-The root owns integration and provider actions. Independent work uses immutable read-only checkouts and sealed callbacks. All tests use explicit owner-selected RAM cache preflight. Dispatch failures and earlier candidate evidence remain separate historical records. Release source status remains planned until the applicable preparation gates and independent review pass. Terminal validation writes only declared ignored evidence; hosted publication completes Issue #298 after the public assets are verified.
+The root owns integration and provider actions. Independent work uses immutable read-only checkouts and sealed callbacks. All tests use explicit owner-selected RAM cache preflight. Dispatch failures and earlier candidate evidence remain separate historical records. Source preparation is accepted; the release source record is validated and the publication workflow remains in progress until hosted verification. Terminal validation writes only declared ignored evidence; hosted publication completes Issue #298 after the public assets are verified.
+
+## PR Integration Boundary
+
+PR #299 uses the exact deferred declaration in `evidence/terminal-issue-closure-pr-299.yaml`. Refs #298 remains open through integration. The public Release and four exact asset comparisons precede coordination closure and Project Done. Use a merge commit to preserve all native provenance commits.

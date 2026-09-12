@@ -9,7 +9,7 @@
   "title": "Publish v0.17.0 with admitted assets and retained actual upgrade evidence",
   "status": "in_progress",
   "created_at": "2026-09-12T13:59:25+08:00",
-  "updated_at": "2026-09-12T17:11:44+08:00",
+  "updated_at": "2026-09-12T17:31:45+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/release-publication/release-publication-task.json",
   "model": "gpt-6-astra",
   "reasoning_effort": "ultra",
@@ -34,8 +34,8 @@
     "artifact_admission": ".dev/releases/v0.17.0/artifact-admission.json",
     "package_archives": "passed",
     "actual_direct_origin_cases": "Nine individually passed cases in two native executions: dispatch07 remains failed with seven passes; dispatch09 passed the two selected v0.16 customized cases.",
-    "full_release_gate": "not-run",
-    "final_review": "Fixture repair and two-case dispatcher reviews accepted; publication subject review remains pending.",
+    "full_release_gate": "Terminal candidate and critical outcomes are recorded after the immutable source checkpoint in the declared ignored receipt roots.",
+    "final_review": "Preparation accepted; final lifecycle/PR declaration audit and live admission remain required.",
     "provider_state": "Live prepublication read-back: seven Included Work issues completed and Done; #298 open and Verification; no v0.17.0 tag or Release.",
     "short_id_compatibility": "12 lifecycle tests passed; independent review passed",
     "candidate_input_preflight": "The admitted package remains unchanged; only source runner, tests and workflow evidence changed.",
@@ -43,7 +43,12 @@
     "focused_repair_validation": "41 release-state tests and two v0.16 seed probes passed; controlled planner isolation passed.",
     "actual_retry_authority": "The owner requested only two-case revalidation; both passed. No further actual case execution is authorized by this plan.",
     "acceptance_ledger_root": "ignored:.dev/ai-context/local/2026-09-12-v017-release/acceptance",
-    "actual_evidence_set": ".dev/releases/v0.17.0/route-assets/actual/execution-set.json"
+    "actual_evidence_set": ".dev/releases/v0.17.0/route-assets/actual/execution-set.json",
+    "source_acceptance": "passed",
+    "source_preparation_review": "accepted at 3a4cbb6f233436039e875da841db31659db10ed8",
+    "terminal_candidate_receipt": "ignored:.dev/ai-context/local/2026-09-12-v017-release/candidate-phase.json",
+    "terminal_critical_receipt": "ignored:.dev/ai-context/local/2026-09-12-v017-release/critical-linux-01/parent-acceptance.json",
+    "publication": "authorized; pending terminal source gates, PR integration, integrated gates and hosted verification"
   },
   "issue_refs": [
     "#298"
@@ -56,23 +61,28 @@
   "acceptance_criteria": [
     {
       "id": "REL017-AC1",
-      "status": "pending"
+      "status": "passed",
+      "evidence_scope": "Accepted source preparation; subsequent integration and publication gates are REL017-AC6."
     },
     {
       "id": "REL017-AC2",
-      "status": "pending"
+      "status": "passed",
+      "evidence_scope": "Accepted source preparation; subsequent integration and publication gates are REL017-AC6."
     },
     {
       "id": "REL017-AC3",
-      "status": "pending"
+      "status": "passed",
+      "evidence_scope": "Accepted source preparation; subsequent integration and publication gates are REL017-AC6."
     },
     {
       "id": "REL017-AC4",
-      "status": "pending"
+      "status": "passed",
+      "evidence_scope": "Accepted source preparation; subsequent integration and publication gates are REL017-AC6."
     },
     {
       "id": "REL017-AC5",
-      "status": "pending"
+      "status": "passed",
+      "evidence_scope": "Accepted source preparation; subsequent integration and publication gates are REL017-AC6."
     },
     {
       "id": "REL017-AC6",
