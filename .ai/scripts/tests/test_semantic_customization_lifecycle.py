@@ -95,6 +95,31 @@ def valid_customization() -> dict:
 
 
 class SemanticCustomizationLifecycleTests(unittest.TestCase):
+    def test_given_short_or_legacy_assessment_ids_when_customization_is_validated_then_both_audits_accept_them(self) -> None:
+        for assessment_id in ("ASM-20260912-14-a7c", "ASM-20260912-00-000", "ASM-20260912-23-zzz", "ASM-20260724-001"):
+            with self.subTest(assessment_id=assessment_id), tempfile.TemporaryDirectory(prefix="customization-audit-id-") as value:
+                customization = valid_customization()
+                for field in ("active_context_audit", "post_upgrade_audit"):
+                    customization[field]["assessment_id"] = assessment_id
+                ledger = Path(value) / "customizations.yaml"
+                ledger.write_text(yaml.safe_dump({"schema_version": "1.0", "customizations": [customization]}, sort_keys=False), encoding="utf-8")
+                errors: list[str] = []
+                TARGET.validate_customizations(ledger, errors)
+                self.assertEqual([], errors)
+
+    def test_given_malformed_assessment_id_when_either_customization_audit_is_validated_then_it_fails_closed(self) -> None:
+        invalid_ids = ("ASM-20260912-24-a7c", "ASM-20260912-1-a7c", "ASM-20260912-14-A7C", "ASM-20260912-14-a7", "ASM-20260912-14-a7cd", "ASM-20260912-14-a_c", "ASM-20260912-a7c", "ASM-20260912-001\n")
+        for field in ("active_context_audit", "post_upgrade_audit"):
+            for assessment_id in invalid_ids:
+                with self.subTest(field=field, assessment_id=assessment_id), tempfile.TemporaryDirectory(prefix="customization-audit-id-") as value:
+                    customization = valid_customization()
+                    customization[field]["assessment_id"] = assessment_id
+                    ledger = Path(value) / "customizations.yaml"
+                    ledger.write_text(yaml.safe_dump({"schema_version": "1.0", "customizations": [customization]}, sort_keys=False), encoding="utf-8")
+                    errors: list[str] = []
+                    TARGET.validate_customizations(ledger, errors)
+                    self.assertEqual([f"{ledger}: customizations[0].{field}.assessment_id is invalid"], errors)
+
     def test_gwt_001_given_credible_init_and_verified_reconciliation_when_finalized_then_target_validates(self) -> None:
         with tempfile.TemporaryDirectory(prefix="customization-lifecycle-") as value:
             root = Path(value)
