@@ -34,4 +34,4 @@ rules. Use behavior, contracts and evidence for review reasoning; report missing
 specialist coverage. Applicable effective-rule preflight remains fail-closed.
 Tests and analyzers support the review only when actually available and authorized.
 Return ordinary reviews in conversation. Persist a review only when requested,
-using `.dev/assessments/<ASM-YYYYMMDD-NNN>/`, and keep remediation outside this skill.
+using `.dev/assessments/<ASM-YYYYMMDD-HH-xxx>/`, and keep remediation outside this skill.

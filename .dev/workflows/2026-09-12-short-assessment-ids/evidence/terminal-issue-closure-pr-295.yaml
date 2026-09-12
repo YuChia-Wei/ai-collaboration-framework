@@ -1,0 +1,114 @@
+schema_version: '1.0'
+contract_id: github-terminal-issue-closure
+repository: YuChia-Wei/ai-collaboration-framework
+validation_stage: declaration
+pull_request:
+  number: 295
+  head_sha: null
+  body: '## Summary
+
+
+    Use `ASM-YYYYMMDD-HH-xxx` for new assessments, with exactly three lowercase ASCII
+    letters or digits. This keeps IDs short while reducing collisions between independent
+    assessments. Preserve all legacy identities and references.
+
+
+    ## Changes
+
+
+    - Update existing assessment and commit-reference validation, current templates,
+    guidance and wrappers.
+
+    - Exclude the optional BDD step-method example subtree from SDK-free core project
+    discovery, and select the contract for example and project-file changes. Framework
+    setup and required validation remain SDK-free.
+
+    - Bind the date/hour to the locator''s recorded creation offset; prefer an independent
+    random suffix per assessment.
+
+    - Preserve ordinary local duplicate checks and all 61 historical assessment instances.
+    No allocation service or new generator CLI is introduced.
+
+
+    ## Validation
+
+
+    - Windows and POSIX: 15 assessment tests and 30 commit-policy tests passed per
+    platform.
+
+    - Assessment, workflow, AI-context and commit-policy checks passed.
+
+    - SDK-free and registry regression suites: 6 + 11 tests passed on both Windows
+    and POSIX using a clean checkout. The original hosted failures, sandbox restrictions,
+    local historical fixture interference and corrected POSIX worktree route remain
+    recorded.
+
+    - The assessment-ID independent source review and final local context audit passed.
+    Two earlier CR-001 findings and their delimiter-boundary repairs remain recorded.
+
+    - The evidence covers actual bounded fixture executions; it does not establish
+    distributed uniqueness or downstream adoption.
+
+
+    ## Related Issue And Authorization
+
+
+    - Delivery disposition: `terminal-close`.
+
+    - Closes #213
+
+    - On 2026-09-12 the owner authorized merging this completed delivery and closing
+    the Issue. Required push, PR, review/check admission, merge and Issue/Project
+    read-back are included.
+
+
+    ## Integration
+
+
+    - Workflow: `.dev/workflows/2026-09-12-short-assessment-ids/`.
+
+    - Selected topology: merge commit, preserving the reviewed implementation, repair
+    checkpoints and accepted compatibility change as one review and rollback unit.
+
+    - Current-head source review binding, all required hosted checks and live merge
+    admission must pass before integration. Post-merge reconciliation must confirm
+    Issue completed and Project Done.
+
+    '
+  integration:
+    status: pending
+    topology: null
+    admitted_head_sha: null
+    integration_commit_sha: null
+    provider_read_back: false
+  review:
+    status: pending
+  required_check_contexts: []
+  hosted_checks: []
+issues:
+- number: 213
+  mode: terminal-close
+  work_authorization:
+    online_issue_bound: true
+    explicit_owner_approval: true
+  final_accepted_delivery: true
+  workflow:
+    scope_complete: true
+    tasks_complete: true
+    applicable_verification_complete: true
+  closing_keyword: Closes
+  closure_deferred_reason: null
+  next_terminal_gate_or_owner: null
+  read_back:
+    performed: false
+    integration_commit_sha: null
+    issue_state: null
+    issue_state_reason: null
+    project_status: null
+authorization_note: On 2026-09-12 the owner explicitly authorized pushing reviewed
+  commit 1f9ca463 and necessary PR closeout and validation records to the public YuChia-Wei/ai-collaboration-framework
+  repository on codex/2026-09-12-short-assessment-ids, then merging after checks and
+  closing Issue 213. This declaration records that authorization; provider review,
+  checks, admission and reconciliation remain pending. No tag or publication is authorized.
+  The owner subsequently authorized the pre-existing SDK-free example exclusion and
+  check-selection correction, followed by the same checked merge and Issue closure.

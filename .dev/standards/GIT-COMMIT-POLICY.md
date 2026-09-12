@@ -142,13 +142,13 @@ and lifecycle. Assessment creation and material assessment-update subjects must
 include the stable ID:
 
 ```text
-docs(assessment): [ASM-20260713-001] add AI context health assessment
+docs(assessment): [ASM-20260912-14-a7c] add AI context health assessment
 ```
 
 Add an `Assessment-Id` trailer before the AI signature trailer:
 
 ```text
-Assessment-Id: ASM-20260713-001
+Assessment-Id: ASM-20260912-14-a7c
 Co-Authored-By: OpenAI Codex (gpt-5.6-sol, high) <noreply@openai.com>
 ```
 

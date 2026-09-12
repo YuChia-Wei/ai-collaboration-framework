@@ -22,6 +22,11 @@ contracts; it does not override them or select packages for other targets.
 
 ## Build And Run
 
+These are optional teaching projects, excluded from the framework core's
+SDK-free project inventory. Framework setup and required validation do not
+build or run them; use the commands below only when choosing to execute this
+example. The exception is scoped to this directory.
+
 Prerequisite: a .NET SDK capable of targeting .NET 8, the .NET 8 runtime, and
 access to the explicitly configured public NuGet feed on the first restore.
 Run from this directory:

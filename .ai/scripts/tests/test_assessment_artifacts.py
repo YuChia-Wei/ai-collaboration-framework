@@ -245,5 +245,87 @@ class AssessmentArtifactValidationTests(unittest.TestCase):
             fixture.close()
 
 
+    def test_gwt_010_given_same_hour_and_subject_when_suffixes_differ_then_both_and_legacy_pass(self) -> None:
+        fixture = AssessmentFixture()
+        try:
+            # Given two independent reviews of one HEAD in the same hour and a legacy assessment.
+            manifests = [fixture.add(value) for value in (
+                "ASM-20260713-12-a7c", "ASM-20260713-12-0z9", "ASM-20260713-001"
+            )]
+            fixture.write_index(manifests)
+            # When all locators and their index are validated together.
+            errors, count = VALIDATOR.validate_assessments(fixture.root)
+            # Then identities remain distinct without requiring another subject commit.
+            self.assertEqual([], errors)
+            self.assertEqual(3, count)
+        finally:
+            fixture.close()
+
+    def test_gwt_011_given_duplicate_short_id_rows_when_validated_then_fails(self) -> None:
+        fixture = AssessmentFixture()
+        try:
+            # Given the same short assessment ID appears twice in the index.
+            manifest = fixture.add("ASM-20260713-12-a7c")
+            fixture.write_index([manifest, manifest])
+            # When validation runs, then the existing duplicate guard rejects it.
+            self.assertTrue(any("duplicate row" in error for error in fixture.validate()))
+        finally:
+            fixture.close()
+
+    def test_gwt_012_given_invalid_hour_or_suffix_when_validated_then_fails(self) -> None:
+        for value in (
+            "ASM-20260713-24-a7c", "ASM-20260713-1-a7c", "ASM-20260713-12-a7",
+            "ASM-20260713-12-a7c0", "ASM-20260713-12-A7c", "ASM-20260713-12-a_7",
+            "ASM-20260713-12-é7c",
+        ):
+            with self.subTest(assessment_id=value):
+                fixture = AssessmentFixture()
+                try:
+                    # Given a locator whose directory uses a malformed short identity.
+                    fixture.add(value)
+                    # When validation runs, then the directory format fails closed.
+                    self.assertTrue(any("directory must match" in error for error in fixture.validate()))
+                finally:
+                    fixture.close()
+
+    def test_gwt_013_given_different_creation_hour_when_validated_then_fails(self) -> None:
+        fixture = AssessmentFixture()
+        try:
+            # Given an ID says 13:00 while created_at records 12:00 in its local offset.
+            fixture.add("ASM-20260713-13-a7c")
+            # When validation runs, then the inconsistent hour is rejected.
+            self.assertTrue(any("hour must match" in error for error in fixture.validate()))
+        finally:
+            fixture.close()
+
+    def test_gwt_014_given_local_offset_crosses_utc_day_when_validated_then_local_hour_passes(self) -> None:
+        fixture = AssessmentFixture()
+        try:
+            # Given creation is late on July 13 locally but July 14 in UTC.
+            manifest = fixture.add("ASM-20260713-23-a7c")
+            manifest["created_at"] = manifest["updated_at"] = "2026-07-13T23:10:00-07:00"
+            fixture.save(manifest)
+            fixture.write_index([manifest])
+            # When validated, then date/hour follow the recorded local offset, not UTC.
+            self.assertEqual([], fixture.validate())
+        finally:
+            fixture.close()
+
+    def test_gwt_015_given_short_successor_of_legacy_when_validated_then_relations_pass(self) -> None:
+        fixture = AssessmentFixture()
+        try:
+            # Given a legacy assessment is superseded by a new-format assessment.
+            old = fixture.add("ASM-20260713-001", "superseded")
+            new = fixture.add("ASM-20260713-12-a7c")
+            old["relations"]["superseded_by"] = [new["assessment_id"]]
+            new["relations"]["supersedes"] = [old["assessment_id"]]
+            fixture.save(old)
+            fixture.save(new)
+            fixture.write_index([old, new])
+            # When validated, then cross-format references resolve without renaming history.
+            self.assertEqual([], fixture.validate())
+        finally:
+            fixture.close()
+
 if __name__ == "__main__":
     unittest.main()

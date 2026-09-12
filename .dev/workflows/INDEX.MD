@@ -8,6 +8,7 @@ task-level progress.
 
 | Workflow | Title | Owner | Status | Updated | Entry Point |
 | --- | --- | --- | --- | --- | --- |
+| [`2026-09-12-short-assessment-ids`](2026-09-12-short-assessment-ids/workflow.yaml) | Short assessment identities | `ai-context-governance` | `completed` | `2026-09-12T13:04:55+08:00` | [plan](2026-09-12-short-assessment-ids/workflow-plan.md) |
 | [`2026-09-10-bdd-test-implementation`](2026-09-10-bdd-test-implementation/workflow.yaml) | BDD scenario-to-test implementation | `ai-context-governance` | `completed` | `2026-09-10T13:56:20.341752+00:00` | [plan](2026-09-10-bdd-test-implementation/workflow-plan.md) |
 | [`2026-09-10-authoring-implementation-boundaries`](2026-09-10-authoring-implementation-boundaries/workflow.yaml) | Authoring and implementation skill boundaries | `ai-context-governance` | `completed` | `2026-09-10T20:15:21+08:00` | [plan](2026-09-10-authoring-implementation-boundaries/workflow-plan.md) |
 | [`2026-09-10-review-skill-capabilities`](2026-09-10-review-skill-capabilities/workflow.yaml) | Portable review and design skill capabilities | `ai-context-governance` | `completed` | `2026-09-10T10:19:31+08:00` | [plan](2026-09-10-review-skill-capabilities/workflow-plan.md) |

@@ -34,7 +34,7 @@ constraints:
   - "Do not apply unselected architecture methods or technology conventions"
   - "Report missing specialist coverage and preserve target-required review gates"
   - "Keep review read-only; route remediation to software-development-orchestrator or the appropriate implementer"
-  - "Pin durable assessments to the reviewed Git revision and use ASM-YYYYMMDD-NNN#CR-NNN finding references"
+  - "Pin durable assessments to the reviewed Git revision and use ASM-YYYYMMDD-HH-xxx#CR-NNN finding references"
   - "Load only the canonical standards selected by the file-type and finding route"
   - "Do not treat compatibility indexes, shared summaries, or role prompts as semantic owners"
 role_bindings:

@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import os
 import subprocess
+import tempfile
 import unittest
 from pathlib import Path
 
@@ -21,6 +22,34 @@ RECIPE_ROOT = Path(
 PROJECT_SUFFIXES = {".csproj", ".sln", ".slnx"}
 DISCOVERY_SKIP_PARTS = {".git", ".tmp", "artifacts", "bin", "obj", "__pycache__"}
 LOCAL_RELEASE_EXTRACT_ROOTS = {(".codex", "release")}
+# Optional teaching projects are not framework SDK prerequisites. Keep this
+# exception scoped to the owner-classified example, not every examples folder.
+OPTIONAL_EXAMPLE_ROOT = Path(
+    ".ai/assets/tech-stacks/dotnet-backend/examples/bdd-step-methods"
+)
+
+
+def supplied_core_projects(root: Path, tracked: set[str]) -> tuple[list[str], list[str]]:
+    physical: list[str] = []
+    for directory, child_directories, filenames in os.walk(root, topdown=True):
+        relative = Path(directory).relative_to(root)
+        child_directories[:] = [
+            name for name in child_directories
+            if name not in DISCOVERY_SKIP_PARTS
+            and (*relative.parts, name) not in LOCAL_RELEASE_EXTRACT_ROOTS
+            and not (relative / name).is_relative_to(OPTIONAL_EXAMPLE_ROOT)
+        ]
+        for filename in filenames:
+            path = Path(directory, filename)
+            if path.suffix.lower() in PROJECT_SUFFIXES:
+                physical.append(path.relative_to(root).as_posix())
+    candidate_tracked = [
+        path for path in tracked
+        if Path(path).suffix.lower() in PROJECT_SUFFIXES
+        and not Path(path).is_relative_to(OPTIONAL_EXAMPLE_ROOT)
+        and (root / path).is_file()
+    ]
+    return sorted(physical), sorted(candidate_tracked)
 
 
 def tracked_paths() -> set[str]:
@@ -40,31 +69,34 @@ def tracked_paths() -> set[str]:
 
 
 class SdkFreeFrameworkContractTests(unittest.TestCase):
-    def test_gwt_001_given_framework_tree_when_projects_are_discovered_then_none_are_supplied(self) -> None:
-        physical_projects: list[str] = []
-        for directory, child_directories, filenames in os.walk(REPO_ROOT, topdown=True):
-            relative_parts = Path(directory).relative_to(REPO_ROOT).parts
-            child_directories[:] = [
-                name
-                for name in child_directories
-                if name not in DISCOVERY_SKIP_PARTS
-                and (*relative_parts, name) not in LOCAL_RELEASE_EXTRACT_ROOTS
-            ]
-            for filename in filenames:
-                path = Path(directory, filename)
-                if path.suffix.lower() in PROJECT_SUFFIXES:
-                    physical_projects.append(path.relative_to(REPO_ROOT).as_posix())
-        physical_projects.sort()
-        candidate_tracked_projects = sorted(
-            path
-            for path in tracked_paths()
-            if Path(path).suffix.lower() in PROJECT_SUFFIXES
-            and (REPO_ROOT / path).is_file()
+    def test_gwt_001_given_framework_tree_when_projects_are_discovered_then_no_core_projects_are_supplied(self) -> None:
+        physical_projects, candidate_tracked_projects = supplied_core_projects(
+            REPO_ROOT, tracked_paths()
         )
 
         self.assertEqual([], physical_projects)
         self.assertEqual([], candidate_tracked_projects)
         self.assertFalse((REPO_ROOT / "global.json").exists())
+
+    def test_gwt_006_given_optional_examples_and_core_projects_when_discovered_then_only_examples_are_excluded(self) -> None:
+        examples = {
+            (OPTIONAL_EXAMPLE_ROOT / "DefaultBddfy/DefaultBddfy.csproj").as_posix(),
+            (OPTIONAL_EXAMPLE_ROOT / "PlainXunit/PlainXunit.csproj").as_posix(),
+        }
+        core = {
+            "Core.csproj", "Framework.sln", "src/Core/Core.slnx",
+            ".ai/assets/tech-stacks/dotnet-backend/examples/other/Other.csproj",
+            OPTIONAL_EXAMPLE_ROOT.as_posix() + "-extra/Unexpected.csproj",
+        }
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            for name in examples | core | {"src/Untracked.csproj"}:
+                path = root / name
+                path.parent.mkdir(parents=True, exist_ok=True)
+                path.write_text("<Project />", encoding="utf-8")
+            physical, tracked = supplied_core_projects(root, examples | core)
+            self.assertEqual(sorted(core | {"src/Untracked.csproj"}), physical)
+            self.assertEqual(sorted(core), tracked)
 
     def test_gwt_002_given_mechanical_guidance_when_inspected_then_it_is_recipe_only(self) -> None:
         paths = tracked_paths()

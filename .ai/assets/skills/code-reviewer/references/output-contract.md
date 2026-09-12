@@ -13,7 +13,7 @@ The review remains read-only even when it uses tests or analyzers as evidence.
 ## Standalone Durable Assessment Mode
 
 When the user asks to save a large or formal code review without authorizing
-remediation, allocate an `ASM-YYYYMMDD-NNN` assessment ID and create the locator
+remediation, allocate an `ASM-YYYYMMDD-HH-xxx` assessment ID and create the locator
 from `.dev/assessments/templates/assessment-locator-template.yaml`.
 
 Create the report from:
