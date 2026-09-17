@@ -46,6 +46,10 @@ from ai_context_upgrade_routes import (
 
 VERSION_RE = re.compile(r"^v(?:0|[1-9]\d*)\.(?:0|[1-9]\d*)\.(?:0|[1-9]\d*)$")
 SHA_RE = re.compile(r"^[0-9a-f]{40}$")
+DIRECT_UPGRADE_RUNNERS = {
+    "v0.17.0": ".github/scripts/validate-v017-direct-upgrades.py",
+    "v0.18.0": ".github/scripts/validate-v018-direct-upgrades.py",
+}
 ONLINE_ISSUE_REF_RE = re.compile(r"^#([1-9]\d*)$")
 PHASES = ("candidate", "tag", "publication", "finalization")
 V010_AGENT_PUBLICATION_AUTHORITY = {
@@ -804,8 +808,7 @@ def validate_direct_upgrade_execution(root, version, sources, matrix):
     if evidence.get("package_source", {}).get("commit") != matrix["target"]["commit"]:
         raise ReleaseStateError("actual upgrade package source differs from the matrix")
     runner = evidence.get("runner", {})
-    path = (".github/scripts/validate-v017-direct-upgrades.py" if version == "v0.17.0"
-            else ".github/scripts/validate-v016-direct-upgrades.py")
+    path = DIRECT_UPGRADE_RUNNERS.get(version, ".github/scripts/validate-v016-direct-upgrades.py")
     if runner.get("path") != path:
         raise ReleaseStateError("actual upgrade runner is not the canonical execution authority")
     if not SHA_RE.fullmatch(str(evidence.get("subject_sha"))):

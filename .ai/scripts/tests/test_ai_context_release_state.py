@@ -976,7 +976,7 @@ class AiContextReleaseStateGwtTests(unittest.TestCase):
                     STATE.validate_retained_origin_route_evidence(root, version, artifacts, sources)
 
     def test_gwt_031c_given_direct_execution_claims_when_identity_or_completion_disagrees_then_rejected(self):
-        for version, predecessor, runner_name in [("v0.16.0", "v0.15.1", "validate-v016-direct-upgrades.py"), ("v0.17.0", "v0.16.0", "validate-v017-direct-upgrades.py")]:
+        for version, predecessor, runner_name in [("v0.16.0", "v0.15.1", "validate-v016-direct-upgrades.py"), ("v0.17.0", "v0.16.0", "validate-v017-direct-upgrades.py"), ("v0.18.0", "v0.17.0", "validate-v018-direct-upgrades.py")]:
             with self.subTest(version=version):
                 self.assert_direct_execution_rejects_drift(version, predecessor, runner_name)
 
