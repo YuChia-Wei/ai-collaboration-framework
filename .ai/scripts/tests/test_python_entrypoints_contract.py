@@ -27,9 +27,11 @@ SHARED_RUNTIME_ASSETS = {
 }
 
 EXPECTED_PORTABLE_PATHS = {
+    ".ai/assets/skills/ai-context-upgrader/scripts/run-target-validation.py",
     ".ai/assets/skills/diagnostic-analyst/scripts/validate-diagnostic-record.py",
     ".ai/assets/skills/software-development-orchestrator/scripts/validate-software-development-orchestrator-acceptance.py",
     ".ai/scripts/observe-validation-dependencies.py",
+    ".ai/scripts/generate-runtime-skill-entries.py",
     ".ai/scripts/plan-ai-context-package-apply.py",
     ".ai/scripts/resolve-effective-rule-packet.py",
     ".ai/scripts/validate-ai-context-payload.py",
@@ -63,6 +65,7 @@ ENTRYPOINT_FIELDS = {
     "prerequisite_exit_code",
 }
 EXPECTED_EXIT_CODE_TWO_PATHS = {
+    ".ai/assets/skills/ai-context-upgrader/scripts/run-target-validation.py",
     ".ai/scripts/plan-ai-context-package-apply.py",
     ".ai/scripts/validate-immutable-history.py",
 }

@@ -180,6 +180,19 @@ identity, passed exit status, timestamps, and retained output bytes whose raw
 digest equals the receipt output digest. A missing, stale,
 failed, or tampered receipt blocks finalization.
 
+For a direct upgrade at `awaiting-target-validation`, run the sealed profile
+once from the target root with
+`python .ai/assets/skills/ai-context-upgrader/scripts/run-target-validation.py --target-root . --transaction-id <transaction-id>`.
+The runner accepts no command override, streams combined raw output to the
+canonical Git-admin evidence path, and writes an unbound receipt only after a
+zero-exit profile passes the canonical receipt validator. It retains partial
+output and non-authoritative attempt metadata for nonzero exits, launch errors,
+or interruption. It never records that receipt,
+changes the journal, or finalizes target authority. If a retained output or
+receipt already exists, it fails before execution; preserve that unbound failed
+attempt through an explicitly authorized recovery before retrying. The runner
+prints the exact receipt-recording command after a pass.
+
 Package writes enter `awaiting-target-validation`; a bound passing receipt
 enters `validated`. Either state remains rollback-capable while provenance is
 unchanged. Only successful provenance publication plus the immutable terminal

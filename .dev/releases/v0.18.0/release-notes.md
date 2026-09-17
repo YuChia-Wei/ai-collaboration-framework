@@ -22,6 +22,9 @@ review and test selection.
 - Transactional messaging guidance distinguishes business orchestration,
   physical completion, durable inbox receipt, successful handling and outgoing
   intent. Framework-native facilities remain conditional on target selection.
+- A skill-owned direct-upgrade runner executes the sealed target validation
+  command and retains its output and an unbound canonical receipt, including
+  truthful failure and interruption evidence.
 
 ## Compatibility
 
