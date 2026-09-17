@@ -8,7 +8,7 @@
   "owner_skill": "ai-context-governance",
   "status": "in_progress",
   "created_at": "2026-09-17T23:54:11+08:00",
-  "updated_at": "2026-09-17T23:54:11+08:00",
+  "updated_at": "2026-09-18T00:10:30+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-6-astra",
   "reasoning_effort": "ultra",
@@ -31,15 +31,28 @@
   "execution": {
     "steps": [],
     "validation": [],
-    "last_completed_step": "",
-    "next_action": "Implement the bounded change and focused checks."
+    "last_completed_step": "17 private roles colocated with owning skills; active references and canonical discovery updated.",
+    "next_action": "Validate and commit role ownership checkpoint; integrate generated entry and local-scope pilot from isolated worker."
   },
   "results": {
-    "summary": "",
-    "files_changed": [],
-    "tests_run": [],
-    "finding_status": "not-addressed",
-    "residual_risk": "",
+    "summary": "Structural portion implemented by Terra xhigh; runtime entry and local scope work remains active.",
+    "files_changed": [
+      ".ai/assets/skills/code-reviewer/roles/",
+      ".ai/assets/skills/slice-implementer/roles/",
+      ".ai/assets/skills/problem-frame-author/roles/",
+      ".ai/scripts/validate-ai-context.py",
+      ".ai/scripts/validate-agent-execution-guardrails.py"
+    ],
+    "tests_run": [
+      "PASS validate-ai-context: 39 canonical manifests",
+      "PASS role_execution_acceptance: 6 tests",
+      "PASS payload_user_view_contract: 7 tests",
+      "PASS 42 relocated-file content comparisons (path substitutions only)",
+      "BLOCKED guardrails suite: 8 environment PermissionErrors, not passed",
+      "FAILED reviewer package case: committed HEAD lacks uncommitted relocation; verify after checkpoint"
+    ],
+    "finding_status": "partially-addressed",
+    "residual_risk": "HEAD-bound package case and focused private-role ownership checks remain; no runtime cost or downstream acceptance claim.",
     "follow_up_needed": true
   },
   "github_issue_refs": [

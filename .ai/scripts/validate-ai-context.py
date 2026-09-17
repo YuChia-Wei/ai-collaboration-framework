@@ -130,7 +130,8 @@ SUB_AGENT_ADAPTER_CONTRACTS = {
         "suffixes": (".md", ".agent.md"),
     },
 }
-ROLE_BINDING_ROOT = PurePosixPath(".ai/assets/sub-agent-role-prompts")
+SHARED_ROLE_BINDING_ROOT = PurePosixPath(".ai/assets/sub-agent-role-prompts")
+SKILL_ROLE_BINDING_ROOT = PurePosixPath(".ai/assets/skills")
 ROLE_BINDING_REQUIRED_FIELDS = {
     "role_path",
     "role_asset_id",
@@ -2273,9 +2274,30 @@ def validate_sub_agent_adapter_metadata(
         errors.append(f"{path}: adapter paths must be unique across runtime targets")
 
 
-def expected_role_binding_path(role_asset_id: str) -> str:
-    """Return the one canonical role-manifest path for a role asset ID."""
-    return (ROLE_BINDING_ROOT / role_asset_id / "sub-agent.yaml").as_posix()
+def expected_shared_role_binding_path(role_asset_id: str) -> str:
+    """Return the canonical shared role-manifest path for a role asset ID."""
+    return (SHARED_ROLE_BINDING_ROOT / role_asset_id / "sub-agent.yaml").as_posix()
+
+
+def expected_skill_role_binding_path(skill_asset_id: str, role_asset_id: str) -> str:
+    """Return the canonical private role-manifest path for one owning skill."""
+    return (
+        SKILL_ROLE_BINDING_ROOT
+        / skill_asset_id
+        / "roles"
+        / role_asset_id
+        / "sub-agent.yaml"
+    ).as_posix()
+
+
+def expected_role_binding_paths(
+    skill_asset_id: str, role_asset_id: str
+) -> tuple[str, str]:
+    """Return the only shared or owning-skill-private canonical role locations."""
+    return (
+        expected_shared_role_binding_path(role_asset_id),
+        expected_skill_role_binding_path(skill_asset_id, role_asset_id),
+    )
 
 
 def validate_skill_role_bindings(
@@ -2334,11 +2356,16 @@ def validate_skill_role_bindings(
             errors.append(f"{label}.role_path must be a non-empty string")
             valid = False
         elif isinstance(role_asset_id, str) and role_asset_id:
-            expected_path = expected_role_binding_path(role_asset_id)
-            if role_path != expected_path:
+            owning_skill_id = data.get("asset_id")
+            expected_paths = (
+                expected_role_binding_paths(owning_skill_id, role_asset_id)
+                if isinstance(owning_skill_id, str) and owning_skill_id
+                else ()
+            )
+            if expected_paths and role_path not in expected_paths:
                 errors.append(
-                    f"{label}.role_path must be the exact canonical role path "
-                    f"{expected_path}"
+                    f"{label}.role_path must be an exact canonical shared or "
+                    f"owning-skill role path {list(expected_paths)}"
                 )
                 valid = False
             if (
@@ -2588,8 +2615,10 @@ def validate_derived_role_binding_projection(
 
 def validate_canonical_assets(errors: list[str]) -> tuple[int, dict[str, dict]]:
     """Validate versioned skill and sub-agent manifests against the canonical contract."""
-    manifests = sorted(Path(".ai/assets/skills").glob("*/skill.yaml")) + sorted(
-        Path(".ai/assets/sub-agent-role-prompts").glob("*/sub-agent.yaml")
+    manifests = (
+        sorted(Path(".ai/assets/skills").glob("*/skill.yaml"))
+        + sorted(Path(".ai/assets/sub-agent-role-prompts").glob("*/sub-agent.yaml"))
+        + sorted(Path(".ai/assets/skills").glob("*/roles/*/sub-agent.yaml"))
     )
     required = {
         "schema_version", "asset_id", "asset_type", "title", "purpose",
@@ -3972,7 +4001,7 @@ def sag003_active_role_binding_owners(
             if role_id not in SAG003_ROLE_IDS:
                 continue
             label = f"{relative_skill_path}: role_bindings[{index}]"
-            expected_path = expected_role_binding_path(role_id)
+            expected_path = expected_shared_role_binding_path(role_id)
             valid = True
             if set(binding) != ROLE_BINDING_REQUIRED_FIELDS:
                 errors.append(
@@ -4076,7 +4105,7 @@ def validate_sag003_capability_registry(
             continue
         capability_by_role[role_id] = mapping
 
-        expected_path = expected_role_binding_path(role_id)
+        expected_path = expected_shared_role_binding_path(role_id)
         role_path = mapping.get("role_path")
         if role_path != expected_path:
             errors.append(f"{label}.role_path must be the exact canonical role path {expected_path}")
@@ -4230,7 +4259,9 @@ def validate_sag003_codex_profile(
     for field in ("model", "model_reasoning_effort", "sandbox_mode"):
         if toml.get(field) != profile.get(field):
             errors.append(f"{label}: TOML {field} must match the static projection registry")
-    canonical_role_path = expected_role_binding_path(role_id) if isinstance(role_id, str) else ""
+    canonical_role_path = (
+        expected_shared_role_binding_path(role_id) if isinstance(role_id, str) else ""
+    )
     if canonical_role_path and canonical_role_path not in str(toml.get("developer_instructions", "")):
         errors.append(f"{label}.profile_path must cite canonical role {canonical_role_path}")
     instructions = str(toml.get("developer_instructions", "")).casefold()
@@ -4505,7 +4536,7 @@ def validate_sag003_upgrader_role_bindings(
         if role_id in seen_roles:
             errors.append(f"{label}.role_asset_id duplicates {role_id!r}")
         seen_roles.add(role_id)
-        expected_path = expected_role_binding_path(role_id)
+        expected_path = expected_shared_role_binding_path(role_id)
         if mapping.get("role_path") != expected_path:
             errors.append(f"{label}.role_path must be the exact canonical role path {expected_path}")
         if mapping.get("recommendation") not in {"recommended", "optional"}:

@@ -10,7 +10,7 @@ import re
 import subprocess
 import sys
 from datetime import datetime
-from pathlib import Path
+from pathlib import Path, PurePosixPath
 from typing import Any
 
 import yaml
@@ -129,6 +129,34 @@ def tracked_path(value: Any, name: str) -> Path:
     return resolved
 
 
+def canonical_role_path(value: str) -> bool:
+    """Accept only a shared role or a role private to its owning skill."""
+    candidate = PurePosixPath(value)
+    parts = candidate.parts
+    forbidden = "\\\\<>*?[]{}"
+    if value != candidate.as_posix() or any(part in {".", ".."} for part in parts):
+        return False
+    if value != candidate.as_posix() or any(part in {".", ".."} for part in parts):
+        return False
+    if value != candidate.as_posix() or any(part in {".", ".."} for part in parts):
+        return False
+    if any(any(character in part for character in forbidden) for part in parts):
+        return False
+    return (
+        len(parts) == 5
+        and parts[:3] == (".ai", "assets", "sub-agent-role-prompts")
+        and bool(parts[3])
+        and parts[4] == "sub-agent.yaml"
+    ) or (
+        len(parts) == 7
+        and parts[:3] == (".ai", "assets", "skills")
+        and bool(parts[3])
+        and parts[4] == "roles"
+        and bool(parts[5])
+        and parts[6] == "sub-agent.yaml"
+    )
+
+
 def iso_with_offset(value: Any, name: str) -> None:
     if not isinstance(value, str):
         raise GuardrailError(f"{name} must be ISO 8601 with an offset")
@@ -185,8 +213,18 @@ def validate_packet(record: dict[str, Any], schema: dict[str, Any]) -> None:
         raise GuardrailError("execution_kind is invalid")
     role = mapping(record["role"], "role")
     exact_keys(role, {"path", "applicability", "reason"}, "role")
-    if not string(role["path"], "role.path").startswith(".ai/assets/sub-agent-role-prompts/") or not role["path"].endswith("/sub-agent.yaml"):
+    role_reference = string(role["path"], "role.path")
+    if not canonical_role_path(role_reference):
         raise GuardrailError("role.path must be canonical")
+    role_parts = PurePosixPath(role_reference).parts
+    if role_parts[:3] == (".ai", "assets", "skills") and role_parts[3] != owning_skill:
+        raise GuardrailError("private role.path must belong to owning_skill")
+    role_parts = PurePosixPath(role_reference).parts
+    if role_parts[:3] == (".ai", "assets", "skills") and role_parts[3] != owning_skill:
+        raise GuardrailError("private role.path must belong to owning_skill")
+    role_parts = PurePosixPath(role_reference).parts
+    if role_parts[:3] == (".ai", "assets", "skills") and role_parts[3] != owning_skill:
+        raise GuardrailError("private role.path must belong to owning_skill")
     role_path = tracked_path(role["path"], "role.path")
     role_asset = mapping(yaml.safe_load(role_path.read_text(encoding="utf-8")), "role asset")
     if role_asset.get("asset_type") != "sub-agent-role-prompt" or role_asset.get("source_of_truth") != "canonical" or role_asset.get("status") != "active":

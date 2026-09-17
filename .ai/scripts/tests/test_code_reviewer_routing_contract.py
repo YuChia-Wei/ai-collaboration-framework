@@ -32,16 +32,16 @@ CATALOG_PATH = Path(
 
 ROLE_PATHS = {
     "general": Path(
-        ".ai/assets/sub-agent-role-prompts/code-review-sub-agent/sub-agent.yaml"
+        ".ai/assets/skills/code-reviewer/roles/code-review-sub-agent/sub-agent.yaml"
     ),
     "aggregate": Path(
-        ".ai/assets/sub-agent-role-prompts/aggregate-code-review-sub-agent/sub-agent.yaml"
+        ".ai/assets/skills/code-reviewer/roles/aggregate-code-review-sub-agent/sub-agent.yaml"
     ),
     "controller": Path(
-        ".ai/assets/sub-agent-role-prompts/controller-code-review-sub-agent/sub-agent.yaml"
+        ".ai/assets/skills/code-reviewer/roles/controller-code-review-sub-agent/sub-agent.yaml"
     ),
     "reactor": Path(
-        ".ai/assets/sub-agent-role-prompts/reactor-code-review-sub-agent/sub-agent.yaml"
+        ".ai/assets/skills/code-reviewer/roles/reactor-code-review-sub-agent/sub-agent.yaml"
     ),
 }
 

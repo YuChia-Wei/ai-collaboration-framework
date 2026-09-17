@@ -155,6 +155,29 @@ def graph(state: str = "fresh", coverage: str = "complete") -> dict[str, object]
 
 
 class AgentExecutionGuardrailsGwtTests(unittest.TestCase):
+    def test_private_role_packet_accepts_only_its_owning_skill(self) -> None:
+        value = packet(owning_skill="code-reviewer")
+        value["role"]["path"] = ".ai/assets/skills/code-reviewer/roles/code-review-sub-agent/sub-agent.yaml"
+        seal(value, "packet_sha256")
+        VALIDATOR.validate_packet(value, SCHEMA)
+        value["owning_skill"] = "slice-implementer"
+        seal(value, "packet_sha256")
+        with self.assertRaisesRegex(VALIDATOR.GuardrailError, "must belong to owning_skill"):
+            VALIDATOR.validate_packet(value, SCHEMA)
+
+    def test_private_role_packet_rejects_noncanonical_path_aliases(self) -> None:
+        value = packet(owning_skill="code-reviewer")
+        for path in (
+            ".ai/assets/skills/./code-reviewer/roles/code-review-sub-agent/sub-agent.yaml",
+            ".ai/assets/skills//code-reviewer/roles/code-review-sub-agent/sub-agent.yaml",
+            ".ai/assets/skills/code-reviewer/roles/../code-review-sub-agent/sub-agent.yaml",
+        ):
+            with self.subTest(path=path):
+                value["role"]["path"] = path
+                seal(value, "packet_sha256")
+                with self.assertRaisesRegex(VALIDATOR.GuardrailError, "must be canonical"):
+                    VALIDATOR.validate_packet(value, SCHEMA)
+
     def test_gwt_001_given_complete_fixed_head_packet_when_validated_then_it_passes(self) -> None:
         VALIDATOR.validate_packet(packet("fixed-head-audit"), SCHEMA)
 

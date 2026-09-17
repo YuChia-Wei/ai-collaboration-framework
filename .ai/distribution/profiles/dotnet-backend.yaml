@@ -617,7 +617,7 @@ payload_user_view:
       owner_component: software-development-core
       path_patterns:
         - .ai/assets/skills/code-reviewer/**
-        - .ai/assets/sub-agent-role-prompts/*code-review-sub-agent/**
+        - .ai/assets/skills/code-reviewer/roles/**
         - .agents/skills/code-reviewer/**
         - .claude/skills/code-reviewer/**
       availability:

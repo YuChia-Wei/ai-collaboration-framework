@@ -30,7 +30,7 @@ constraints:
   - "Mark inferred items explicitly when the source documents do not state them"
   - "Do not claim 100% validator compliance from drafting alone"
 role_bindings:
-  - role_path: ".ai/assets/sub-agent-role-prompts/problem-frame-sub-agent/sub-agent.yaml"
+  - role_path: ".ai/assets/skills/problem-frame-author/roles/problem-frame-sub-agent/sub-agent.yaml"
     role_asset_id: "problem-frame-sub-agent"
     expected_role_status: "active"
     binding_kind: "primary"

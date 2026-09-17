@@ -99,6 +99,13 @@ Each `role_bindings` entry is an object with these required fields:
 | `applicability` | `string` | A non-empty declarative condition that states when the binding applies; it is not a runtime disposition and is not claimed to be fully machine-evaluable |
 | `load_obligation` | `enum` | `mandatory-when-applicable` |
 
+Shared role contracts live at
+`.ai/assets/sub-agent-role-prompts/<role-id>/sub-agent.yaml`. A role private to
+one skill lives at
+`.ai/assets/skills/<skill-id>/roles/<role-id>/sub-agent.yaml` and may be bound
+only by that skill. The named `role_path` must use one of these exact canonical
+locations.
+
 When a binding's applicability matches, the owning skill must read the exact
 role manifest and its mandatory references before using that role, then record
 the applicable runtime outcome as `direct`, `delegated`, or `unavailable` in
