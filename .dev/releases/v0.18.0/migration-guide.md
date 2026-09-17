@@ -16,6 +16,22 @@ direct-origin acceptance case.
    messaging rules and target validation commands. Do not overwrite them with
    source-repository facts.
 
+### Windows Path Budget
+
+Prefer a short checkout root for installation and upgrade trials. The measured
+v0.18.0 payload has a maximum relative path of 132 characters; its current
+destination-adjacent apply staging names reach 178 characters. A root of at
+most 80 characters keeps those measured paths below the traditional 260-character
+limit. This is a budget for these package paths, not a guarantee for arbitrary
+target files, outer worktrees or other tools' temporary files.
+
+Do not nest checkouts beneath long report, workflow and candidate directory
+names. Keep reports separate from a short trial checkout. Git for Windows
+`core.longpaths=true` helps supported Git operations, but does not establish
+long-path support for every later tool; Windows and applications have separate
+opt-in requirements. See the [Microsoft path-limit documentation](https://learn.microsoft.com/en-us/windows/win32/fileio/maximum-file-path-limitation)
+and [Git for Windows guidance](https://gitforwindows.org/git-cannot-create-a-file-or-directory-with-a-long-path.html).
+
 ## Migration Steps
 
 1. For each supported origin, invoke the incoming

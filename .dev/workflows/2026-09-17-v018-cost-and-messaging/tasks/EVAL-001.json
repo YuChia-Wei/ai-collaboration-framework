@@ -8,7 +8,7 @@
   "owner_skill": "ai-context-governance",
   "status": "pending",
   "created_at": "2026-09-17T23:54:11+08:00",
-  "updated_at": "2026-09-18T02:02:00+08:00",
+  "updated_at": "2026-09-18T06:27:17+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-6-astra",
   "reasoning_effort": "ultra",
@@ -29,7 +29,7 @@
     "steps": [],
     "validation": [],
     "last_completed_step": "Actual Terra/Luna v0.16 baselines and quality scoring retained. Fresh clone03 is clean at 8e913853c0d7b56f872f8c2b173f80907cac9580; its 660-path v0.17 plan and three authority drafts are prepared, explicitly not finalizable.",
-    "next_action": "Await the explicit user answer for the automatic-review-blocked receipt/schema retry; then complete correct candidate authority, actual adoption and identical candidate model tasks."
+    "next_action": "Execute the one explicitly approved receipt/schema retry, then complete correct candidate authority and actual adoption in the 63-character trial root before identical candidate model tasks. Lab draft PR #13 is open and does not claim finalized adoption."
   },
   "results": {
     "summary": "Both baseline answers scored six met, one partially met and one not demonstrated. Raw usage/output/receipts are retained. A disposable v0.17 application passed 52 target tests, but its decision bound old provenance; no finalized upgrade or candidate comparison is claimed. Audit format and environment failures remain non-passing.",

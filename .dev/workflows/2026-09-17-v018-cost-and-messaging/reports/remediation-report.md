@@ -127,3 +127,23 @@ No usability improvement, release readiness, independent audit success or public
 - The pending approval remains the sole prerequisite for the specifically
   rejected read-only receipt/schema retry. Candidate model trials, complete
   matrix, required release checks and final independent review remain unrun.
+
+## Owner Continuation And Path Exposure
+
+- On 2026-09-18 the owner explicitly approved one further read-only receipt and
+  audit-format verification and requested a lab upgrade PR. This resolves the
+  earlier approval pause without changing the retained failure outcomes.
+- Lab Issue #12 and draft PR #13 were created and read back OPEN. The draft base
+  is the unchanged `codex/2026-09-17-efcore-wolverine-sample` at `ed27f6b...`;
+  its initial head `369708a6cb7bd4e44cf8d6633bef2dbd0415444c` retains the v0.17
+  prerequisite projection as explicitly unfinalized preparation for v0.18.
+  No product source, tests or sample bytes differ from that base.
+- Package path inventories measured the same maximum relative path, 132
+  characters, in v0.17 and Candidate 04. The normal lab root yields 168-character
+  payload and 214-character staging maxima; the 128-character nested trial root
+  yields 261 and 307 respectively. Private-role colocation did not increase the
+  package maximum. Counts are deterministic exposure, not incident probability.
+- The migration guide now documents a measured 80-character checkout-root budget
+  for the current package/staging paths, recommends separating reports from
+  short trial checkouts, and distinguishes Git configuration from application
+  long-path support. The guide change requires a refreshed candidate identity.
