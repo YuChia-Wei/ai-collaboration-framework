@@ -91,3 +91,17 @@ No usability improvement, release readiness, independent audit success or public
   for the newline-safe read-only receipt check and correctly routed schema check.
   Do not bypass this block, relabel existing evidence, or rerun product tests.
   Independent adapter and final-runner preparation may continue.
+
+## Retry Subject Correction
+
+- A retry authorization previously had to bind both the historical failure SHA
+  and the corrected packet SHA. Add optional `retry_subject_sha` to retain the
+  original failure while binding fresh authorization to the next execution.
+  Legacy records retain their existing behavior; changed subjects still require
+  material-change evidence, and attempt-three authorization remains mandatory.
+- All 36 guardrail tests passed, including new-subject packet acceptance and
+  rejection of stale authorization, malformed subjects and absent change proof.
+  The first sandboxed patch application failed during file replacement; its
+  partial edit was repaired through the approved surface before testing.
+- This packaged correction supersedes Candidate 03 for future release admission.
+  It does not authorize the blocked downstream receipt/audit retry.

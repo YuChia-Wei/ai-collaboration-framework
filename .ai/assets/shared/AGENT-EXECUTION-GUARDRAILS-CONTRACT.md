@@ -105,8 +105,12 @@ requires a material state-change digest. Attempt three or later additionally
 requires fresh owner or workflow authorization. Repeating an unchanged failure
 is a stopped attempt, not new validation.
 Fresh authorizations are individually sealed and bind the exact attempt,
-subject, prior failure, and authorize-retry decision; their digests must differ
-from prior authorization.
+intended retry subject, prior failure, and authorize-retry decision; their
+digests must differ from prior authorization. A retry record may carry an
+optional `retry_subject_sha` when a new immutable execution subject differs
+from the historical failure subject. It must be a full Git SHA and requires a
+material state-change digest. Without that field, the failure subject remains
+the intended retry subject for legacy records.
 Attempt-three packets and retry records load the referenced workflow-local
 authorization, validate its canonical seal, and require its attempt, subject,
 prior failure, and single consuming packet identity to match. A prefix or an

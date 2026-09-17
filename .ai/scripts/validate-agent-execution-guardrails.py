@@ -454,7 +454,10 @@ def validate_evidence(record: dict[str, Any], schema: dict[str, Any]) -> None:
 
 
 def validate_retry(record: dict[str, Any], schema: dict[str, Any]) -> None:
-    exact_keys(record, {"schema_version", "record_type", "attempt", "failure", "prior_failure_sha256", "material_state_change_sha256", "prior_authorization_sha256", "new_authorizations", "decision", "retry_sha256"}, "retry")
+    required = {"schema_version", "record_type", "attempt", "failure", "prior_failure_sha256", "material_state_change_sha256", "prior_authorization_sha256", "new_authorizations", "decision", "retry_sha256"}
+    optional = {"retry_subject_sha"}
+    if set(record) not in {frozenset(required), frozenset(required | optional)}:
+        raise GuardrailError(f"retry keys must be exactly {sorted(required)} or {sorted(required | optional)}")
     if record["schema_version"] != schema["schema_version"] or record["record_type"] != schema["record_types"]["retry"]:
         raise GuardrailError("retry schema identity is invalid")
     if not isinstance(record["attempt"], int) or record["attempt"] < 1 or record["decision"] not in schema["retry_decisions"]:
@@ -466,6 +469,9 @@ def validate_retry(record: dict[str, Any], schema: dict[str, Any]) -> None:
     strings(failure["diagnostic_codes"], "diagnostic_codes", empty=True)
     if not isinstance(failure["command_sha256"], str) or not SHA256.fullmatch(failure["command_sha256"]) or not isinstance(failure["subject_sha"], str) or not SHA40.fullmatch(failure["subject_sha"]):
         raise GuardrailError("failure identity is invalid")
+    retry_subject = record.get("retry_subject_sha", failure["subject_sha"])
+    if not isinstance(retry_subject, str) or not SHA40.fullmatch(retry_subject):
+        raise GuardrailError("retry_subject_sha is invalid")
     for field in ("prior_failure_sha256", "material_state_change_sha256"):
         if record[field] is not None and (not isinstance(record[field], str) or not SHA256.fullmatch(record[field])):
             raise GuardrailError(f"{field} is invalid")
@@ -478,7 +484,7 @@ def validate_retry(record: dict[str, Any], schema: dict[str, Any]) -> None:
     for authorization_value in authorizations:
         authorization = mapping(authorization_value, "new_authorization")
         exact_keys(authorization, {"ref", "attempt", "subject_sha", "prior_failure_sha256", "decision", "consumed_by_packet_id", "authorization_sha256"}, "new_authorization")
-        if not string(authorization["ref"], "new_authorization.ref").startswith(("workflow:", "issue:")) or authorization["attempt"] != record["attempt"] or authorization["subject_sha"] != failure["subject_sha"] or authorization["prior_failure_sha256"] != record["prior_failure_sha256"] or authorization["decision"] != "authorize-retry" or not string(authorization["consumed_by_packet_id"], "new_authorization.consumed_by_packet_id"):
+        if not string(authorization["ref"], "new_authorization.ref").startswith(("workflow:", "issue:")) or authorization["attempt"] != record["attempt"] or authorization["subject_sha"] != retry_subject or authorization["prior_failure_sha256"] != record["prior_failure_sha256"] or authorization["decision"] != "authorize-retry" or not string(authorization["consumed_by_packet_id"], "new_authorization.consumed_by_packet_id"):
             raise GuardrailError("new authorization is not bound to this retry")
         persisted = load_workflow_authorization(authorization["ref"], "new_authorization.ref")
         if persisted["attempt"] != authorization["attempt"] or persisted["subject_sha"] != authorization["subject_sha"] or persisted["prior_failure_sha256"] != authorization["prior_failure_sha256"] or persisted["decision"] != authorization["decision"] or persisted["consumed_by_packet_id"] != authorization["consumed_by_packet_id"] or persisted["authorization_sha256"] != authorization["authorization_sha256"]:
@@ -486,6 +492,8 @@ def validate_retry(record: dict[str, Any], schema: dict[str, Any]) -> None:
         if authorization["authorization_sha256"] == record["prior_authorization_sha256"] or authorization["authorization_sha256"] in authorization_digests:
             raise GuardrailError("retry authorization must be new")
         authorization_digests.add(authorization["authorization_sha256"])
+    if retry_subject != failure["subject_sha"] and record["material_state_change_sha256"] is None:
+        raise GuardrailError("retry subject change requires material state change")
     if record["decision"] == "retry" and record["attempt"] >= 2 and record["material_state_change_sha256"] is None:
         raise GuardrailError("retry without material state change is forbidden")
     if record["decision"] == "retry" and record["attempt"] >= 3 and not authorizations:
