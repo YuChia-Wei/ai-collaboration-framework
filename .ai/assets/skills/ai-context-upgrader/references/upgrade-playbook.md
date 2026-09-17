@@ -193,6 +193,18 @@ receipt already exists, it fails before execution; preserve that unbound failed
 attempt through an explicitly authorized recovery before retrying. The runner
 prints the exact receipt-recording command after a pass.
 
+After direct-upgrade finalization has produced a valid terminal receipt,
+including after that finalization has been committed, an explicit cleanup may
+archive the exact root pending receipt under that transaction's Git-admin
+directory and clear only the root copy:
+`python .ai/scripts/plan-ai-context-package-apply.py --target-root . --archive-finalized-receipt <transaction-id>`.
+This does not run during finalization. It refuses awaiting, validated,
+multi-hop, incomplete, tampered, or authority-drifted transactions. A retry
+accepts an already-cleared receipt only when the private
+`finalized-pending-receipt.yaml` archive matches the terminal and journal
+receipt digest. Commit the resulting root pending-receipt deletion before
+cloning; do not use this operation to remove an orphaned receipt in a clone.
+
 Package writes enter `awaiting-target-validation`; a bound passing receipt
 enters `validated`. Either state remains rollback-capable while provenance is
 unchanged. Only successful provenance publication plus the immutable terminal

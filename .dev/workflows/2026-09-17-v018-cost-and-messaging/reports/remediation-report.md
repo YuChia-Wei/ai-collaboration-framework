@@ -147,3 +147,21 @@ No usability improvement, release readiness, independent audit success or public
   for the current package/staging paths, recommends separating reports from
   short trial checkouts, and distinguishes Git configuration from application
   long-path support. The guide change requires a refreshed candidate identity.
+
+## Direct Upgrade Portability Correction
+
+- Issue #303 records an actual finalized target whose tracked pending receipt
+  failed after clone because Git-admin transaction evidence was absent.
+- An explicit terminal cleanup now verifies the historical sealed transaction,
+  current authority and pending bytes, archives the receipt privately, and
+  clears only the root copy. No journal or terminal schema changed.
+- Four focused cleanup tests and four receipt-runner tests passed. The initial
+  real cleanup refused a committed target because of the apply-time HEAD gate;
+  that failure is retained. The corrected historical verification passed on
+  the original transaction. Its deletion-only commit was transported to the
+  successor; current effective-state validation passed without copying private
+  transaction data. This establishes the isolated prerequisite, not public PR
+  adoption or v0.18 release readiness.
+- Final validation is one frozen release profile plus the nine retained-origin
+  cases. No nightly-full or unrelated OS suite is added. Existing non-passing
+  matrices and the unpublished candidate cannot supply passing evidence.

@@ -15,6 +15,7 @@ planning:
   github_issue_refs:
   - '#300'
   - '#301'
+  - '#303'
 provider_reconciliation:
   schema_version: '1.0'
   provider: github

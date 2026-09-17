@@ -25,6 +25,9 @@ review and test selection.
 - A skill-owned direct-upgrade runner executes the sealed target validation
   command and retains its output and an unbound canonical receipt, including
   truthful failure and interruption evidence.
+- An explicit terminal cleanup archives a finalized direct-upgrade pending
+  receipt before clearing its root copy, so a subsequent clone does not depend
+  on transaction records stored only in the original checkout's Git directory.
 
 ## Compatibility
 
