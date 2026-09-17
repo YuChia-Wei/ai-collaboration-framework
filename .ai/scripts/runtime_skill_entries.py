@@ -110,6 +110,31 @@ def allowed_applicability_modes(data: dict[str, Any], skill_id: str) -> list[str
     return [require_string(mode, f"{label}.applicability.modes key") for mode in modes]
 
 
+def projected_role_bindings(data: dict[str, Any], skill_id: str) -> list[dict[str, str]]:
+    """Project declared role-selection metadata without creating role authority."""
+    bindings = data.get("role_bindings")
+    label = f"{source_path(skill_id).as_posix()}: role_bindings"
+    if bindings is None:
+        return []
+    if not isinstance(bindings, list):
+        raise ValueError(f"{label} must be a list when declared")
+    projection: list[dict[str, str]] = []
+    for index, binding in enumerate(bindings, start=1):
+        binding_label = f"{label}[{index}]"
+        if not isinstance(binding, dict):
+            raise ValueError(f"{binding_label} must be a mapping")
+        projection.append(
+            {
+                "role_asset_id": require_string(binding.get("role_asset_id"), f"{binding_label}.role_asset_id"),
+                "role_path": require_string(binding.get("role_path"), f"{binding_label}.role_path"),
+                "binding_kind": require_string(binding.get("binding_kind"), f"{binding_label}.binding_kind"),
+                "applicability": require_string(binding.get("applicability"), f"{binding_label}.applicability"),
+                "load_obligation": require_string(binding.get("load_obligation"), f"{binding_label}.load_obligation"),
+            }
+        )
+    return projection
+
+
 def source_digest(raw: bytes) -> str:
     return hashlib.sha256(normalize_git_text_bytes(raw)).hexdigest()
 
@@ -132,6 +157,7 @@ def render_entry(data: dict[str, Any], raw: bytes) -> str:
     skill_id = require_string(data.get("asset_id"), "asset_id")
     entry = load_runtime_entry(data, skill_id)
     modes = allowed_applicability_modes(data, skill_id)
+    role_bindings = projected_role_bindings(data, skill_id)
     source = source_path(skill_id).as_posix()
     mode_list = ", ".join(f"`{mode}`" for mode in modes)
     output = [frontmatter(data), f"# {require_string(data.get('title'), 'title')}", ""]
@@ -164,10 +190,27 @@ def render_entry(data: dict[str, Any], raw: bytes) -> str:
             f"- Select only an applicability mode declared by this canonical payload: {mode_list}.",
             "- Use the request-authorized effective-rule resolver invocation. Run `.ai/scripts/resolve-effective-rule-packet.py --help` only when its supported interface is needed.",
             "",
-            "## Conditional expansion",
-            "",
         ]
     )
+    if role_bindings:
+        output.extend(
+            [
+                "## Canonical role bindings",
+                "",
+                f"- Generated from `{source}` `role_bindings`; this selection metadata does not execute, delegate, or replace a canonical role contract.",
+            ]
+        )
+        for binding in role_bindings:
+            output.extend(
+                [
+                    f"- `{binding['role_asset_id']}` — `{binding['role_path']}`",
+                    f"  - Binding kind: `{binding['binding_kind']}`",
+                    f"  - Applies when: {binding['applicability']}",
+                    f"  - Load obligation: `{binding['load_obligation']}`",
+                ]
+            )
+        output.append("")
+    output.extend(["## Conditional expansion", ""])
     for expansion in entry["conditional_expansion"]:
         output.append(f"- When: {require_string(expansion.get('when'), 'conditional expansion when')}")
         if "use" in expansion:

@@ -137,6 +137,43 @@ class RuntimeSkillEntryTests(unittest.TestCase):
                     payload[path].content,
                 )
 
+    def test_gwt_008_given_final_projected_role_subset_when_rendered_then_only_projected_binding_metadata_is_emitted(self) -> None:
+        # Given final package skill bytes with a modified and reduced role-binding set.
+        profile = yaml.safe_load(
+            (REPO_ROOT / ".ai/distribution/profiles/dotnet-backend.yaml").read_text(encoding="utf-8")
+        )
+        source = GENERATOR.source_path("code-reviewer")
+        projected = PACKAGE.project_portable_payload_content(
+            source.as_posix(),
+            (REPO_ROOT / source).read_bytes(),
+            profile,
+        )
+        data, _ = PACKAGE.RUNTIME_SKILL_ENTRIES.load_skill_document(projected, source)
+        selected = dict(data["role_bindings"][0])
+        selected["applicability"] = "Projected primary review scope only."
+        data["role_bindings"] = [selected]
+        final_projected = yaml.safe_dump(data, sort_keys=False, allow_unicode=True).encode("utf-8")
+        contents = {source.as_posix(): final_projected}
+        for target in ("codex", "claude"):
+            contents[GENERATOR.wrapper_path("code-reviewer", target).as_posix()] = b"stale wrapper\n"
+
+        # When package assembly renders from those final bytes, then it exposes
+        # the selected role identity and condition without leaking omitted roles.
+        entries = PACKAGE.RUNTIME_SKILL_ENTRIES.render_payload_entries(contents)
+        entry = entries[GENERATOR.wrapper_path("code-reviewer", "codex").as_posix()].decode("utf-8")
+
+        self.assertIn("## Canonical role bindings", entry)
+        self.assertIn("`code-review-sub-agent`", entry)
+        self.assertIn("Projected primary review scope only.", entry)
+        self.assertIn("`primary`", entry)
+        self.assertIn("`mandatory-when-applicable`", entry)
+        self.assertNotIn("aggregate-code-review-sub-agent", entry)
+        self.assertNotIn("Aggregate or event-sourcing", entry)
+
+        local_data, local_raw = GENERATOR.load_skill(REPO_ROOT, "local-change-implementer")
+        local_entry = GENERATOR.render_entry(local_data, local_raw)
+        self.assertNotIn("## Canonical role bindings", local_entry)
+
 
 if __name__ == "__main__":
     unittest.main()

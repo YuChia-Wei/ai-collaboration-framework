@@ -35,6 +35,26 @@ Use for a bounded code or implementation-guidance review that returns evidence-b
 - Select only an applicability mode declared by this canonical payload: `framework-source`, `initialized-target`.
 - Use the request-authorized effective-rule resolver invocation. Run `.ai/scripts/resolve-effective-rule-packet.py --help` only when its supported interface is needed.
 
+## Canonical role bindings
+
+- Generated from `.ai/assets/skills/code-reviewer/skill.yaml` `role_bindings`; this selection metadata does not execute, delegate, or replace a canonical role contract.
+- `code-review-sub-agent` — `.ai/assets/skills/code-reviewer/roles/code-review-sub-agent/sub-agent.yaml`
+  - Binding kind: `primary`
+  - Applies when: A bounded code or implementation-guidance review scope is selected, regardless of technology.
+  - Load obligation: `mandatory-when-applicable`
+- `aggregate-code-review-sub-agent` — `.ai/assets/skills/code-reviewer/roles/aggregate-code-review-sub-agent/sub-agent.yaml`
+  - Binding kind: `conditional`
+  - Applies when: The target adopts aggregate or event-sourcing concepts for the selected scope, or domain-invariant behavior needs bounded review.
+  - Load obligation: `mandatory-when-applicable`
+- `controller-code-review-sub-agent` — `.ai/assets/skills/code-reviewer/roles/controller-code-review-sub-agent/sub-agent.yaml`
+  - Binding kind: `conditional`
+  - Applies when: The selected scope includes an HTTP controller, endpoint, transport-data boundary or HTTP contract.
+  - Load obligation: `mandatory-when-applicable`
+- `reactor-code-review-sub-agent` — `.ai/assets/skills/code-reviewer/roles/reactor-code-review-sub-agent/sub-agent.yaml`
+  - Binding kind: `conditional`
+  - Applies when: The selected scope includes event handling, handler registration or adopted cross-aggregate integration boundaries.
+  - Load obligation: `mandatory-when-applicable`
+
 ## Conditional expansion
 
 - When: Always before reviewing.

@@ -4,7 +4,7 @@
 - template_id: ai-context-governance-maintenance-workflow-plan
 - template_version: 1.2.0
 - created_at: 2026-09-17T23:54:11+08:00
-- updated_at: 2026-09-17T23:54:11+08:00
+- updated_at: 2026-09-18T01:34:00+08:00
 
 ## Workflow Metadata
 - workflow_id: 2026-09-17-v018-cost-and-messaging
@@ -55,8 +55,9 @@ Base/source: f643b56cd68faec590f23a8c8a7436f813285e5d, clean and equal to origin
 Codebase Memory was refreshed in fast mode, but reported `.ai/assets`, `.ai/scripts` and `.claude` excluded. Use explicit Git-tracked file inventories and direct code/document reads for these scoped surfaces; graph absence is not evidence.
 
 ## Resume Checkpoint
-- Last completed: clean baseline, Issue/Project read-back, proposal intake and Terra review; initial proportional policy edit.
+- Last completed: private-role colocation, proportional execution rules, generated runtime entry pilot, messaging contracts and first package candidates. Actual Terra/Luna baseline reviews completed on the lab's v0.16.0 installation.
 - Active: COST-001.
-- Next: implement/validate skill resource and entry changes; finish scope proportionality; checkpoint before MSG-001.
-- Validation: delegation packet/lease passed; full source checks pending after edits.
+- Next: integrate role-selection metadata and exact validation registration, build candidate 03, finish disposable downstream reconciliation, then run matched candidate reviews before freezing the final package.
+- Validation: candidate 02 matrix timed out at 1800 seconds after three v0.6.0 cases; no complete terminal matrix or release acceptance. Callback and zero-process cleanup evidence are retained and the source lease is released. A fresh disposable v0.17.0 application passed 52 target tests; independent audit/finalization remain pending.
+- Execution decision: the parent authorizes another matrix attempt only after candidate usability and payload freeze, using a new immutable subject, a timeout justified by observed duration, and retained prior failures. This is a bounded continuation of the owner's autonomous release preparation, not a new user approval or a test waiver.
 - Publication decision: not requested yet; prepare a concrete candidate before any final owner publication decision.
