@@ -515,7 +515,7 @@ def main():
         require(candidate.with_suffix(candidate.suffix + ".sha256").read_text().split()[0] == sha(candidate.read_bytes()), "candidate sidecar mismatch")
         incoming = extract(candidate, output / "incoming")
         package = yaml.safe_load((incoming / "metadata/package.yaml").read_bytes())
-        require(package["version"] == "0.17.0", "wrong incoming version")
+        require(package["version"] == "0.18.0", "wrong incoming version")
         terminal["archive_sha256"] = sha(candidate.read_bytes())
         terminal["package_source"] = package["source"]
         sys.path.insert(0, str(incoming / "payload/.ai/scripts"))
