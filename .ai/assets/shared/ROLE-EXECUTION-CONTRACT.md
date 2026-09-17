@@ -7,6 +7,13 @@ configuration, or effective-state semantics.
 
 ## Ownership and Use
 
+- First apply the proportionate-execution classification in
+  `AGENT-EXECUTION-GUARDRAILS-CONTRACT.md`. Its routine bounded envelope is
+  sufficient for ordinary execution, including an applicable canonical role.
+  Load that role's necessary instructions, retain its scope and ownership, and
+  record the actual result; the full record below is required only by the full
+  execution tier or an explicit acceptance contract. Do not manufacture records
+  for unselected roles or an inline action merely to resemble delegation.
 - The owning skill evaluates its own canonical binding and produces each
   `role_execution` record.
 - The role contract at `role_path` and its mandatory references remain the

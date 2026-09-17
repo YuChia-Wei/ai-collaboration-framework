@@ -49,7 +49,7 @@ Use `.ai/assets/skills/README.MD` as the canonical skill registry. Runtime wrapp
 - For AI-context placement or language changes, load `.dev/standards/AI-CONTEXT-BOUNDARY.md` and `.dev/standards/AI-CONTEXT-LANGUAGE-POLICY.md` only when applicable.
 - For code review, load `.ai/assets/skills/code-reviewer/references/review-routing.yaml` first and only selected route and finding references.
 - `test-execution` has no required skill; resolve target-owned commands first.
-- Direct execution remains valid. For delegation, load `.ai/assets/shared/ROLE-EXECUTION-CONTRACT.md`; static profile presence is not invocation evidence.
+- Direct execution remains valid. Classify delegation under `.ai/assets/shared/AGENT-EXECUTION-GUARDRAILS-CONTRACT.md`; load the role contract only when applicable. Static profile presence is not invocation evidence.
 
 ## Workflow And Change Control
 
@@ -79,9 +79,9 @@ Use `.ai/assets/skills/README.MD` as the canonical skill registry. Runtime wrapp
 
 ### Agent Execution Guardrails
 
-- Before delegated, external, or fixed-head execution, validate an agent execution packet with owning skill, canonical role path and applicability, exact SHA/argv/cwd, permissions, ignored artifact roots, terminal schema and callback, integration owner, stop conditions, and retry budget. The SHA pins the execution checkout; evidence validity follows the applicable content-subject contract.
-- Hold a machine-readable worktree snapshot lease. One active tracked-writer holder excludes every other tracked writer; read-only work and declared ignored validation output remain permitted, and terminal release must be explicit.
-- Keep an acceptance-to-evidence ledger and validate its human-report projection. Synthetic, mock, fixture, and unit evidence cannot satisfy an acceptance that requires actual execution.
+- For ordinary same-runtime work, use the bounded envelope in `.ai/assets/shared/AGENT-EXECUTION-GUARDRAILS-CONTRACT.md`; do not construct formal audit records solely for routine analysis or local edits.
+- Before terminal/high-risk, external or long-running validation, use the full validated packet, immutable subject and machine-readable snapshot lease. One tracked writer per worktree remains mandatory in both tiers; a full lease requires explicit terminal release.
+- Keep formal acceptance-to-evidence ledgers where the acceptance contract requires them. Synthetic, mock, fixture, and unit evidence cannot satisfy an acceptance that requires actual execution.
 - Retry only after a privacy-safe failure fingerprint and material state change. Attempt three or later requires new owner or workflow authorization.
 - Verify code-graph index SHA and coverage before discovery claims. Reindex stale or missing graphs or use an explicit tracked-file fallback; search absence alone is not proof.
 - Never assign to PowerShell automatic or reserved variables, case-insensitively; use purpose-specific variable names.
