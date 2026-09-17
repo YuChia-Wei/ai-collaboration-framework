@@ -25,7 +25,7 @@ outputs:
   - "intent, execution mode, overlays, and reference paths used"
   - "touched files and validation notes"
   - "explicit handoff if architecture, local change, test design, review, or compliance work remains"
-  - "one provider-neutral role_execution record for every considered role binding, handed to the orchestrator without transferring slice ownership"
+  - "when the full execution contract applies, one provider-neutral role_execution record for every considered role binding, handed to the orchestrator without transferring slice ownership"
 constraints:
   - "Select scope and necessary handoffs through IMPLEMENTATION-SCOPE-ROUTING-CONTRACT; file count alone does not determine the owner."
   - "Do not redefine architecture direction mid-slice"

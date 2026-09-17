@@ -25,6 +25,7 @@ This is the canonical English collaboration guide for AI agents and humans in th
 - Resolve target-owned commands and working directories before validation. Run required gates and the narrowest meaningful checks; broaden or repeat only for new changes, failures, or unresolved risks.
 - Record skipped, failed, and blocked checks truthfully. Do not claim completion while required gates fail or remain unverified.
 - Follow `.dev/standards/GIT-COMMIT-POLICY.md` before AI-assisted commits.
+- For delegation, select the evidence tier in `.ai/assets/shared/ROLE-EXECUTION-CONTRACT.md`. Routine bounded work keeps actual invocation/results and one tracked writer per worktree; full records remain required for terminal/high-risk, external validation and adoption operations.
 
 ## CLI Execution Routing
 

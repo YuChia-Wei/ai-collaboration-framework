@@ -32,6 +32,9 @@ mutate providers, credentials, publication state or target adoption state.
 Use the full contract below for terminal/high-risk review, external or long-running
 validation, publication/adoption operations, or work requiring a frozen snapshot
 across execution boundaries. Unknown classification selects the full contract.
+These are agent-dispatch requirements. Direct owner execution still follows its
+adoption or publication evidence contract; it does not fabricate a delegated
+role or invocation solely to perform an authorized local operation.
 The distinction changes evidence overhead, not authorization, semantics, runtime
 permissions, truthful reporting or required validation. Retry after a failure
 still requires a material state change; attempt three needs new authorization.

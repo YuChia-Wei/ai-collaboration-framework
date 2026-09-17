@@ -107,8 +107,9 @@ only by that skill. The named `role_path` must use one of these exact canonical
 locations.
 
 When a binding's applicability matches, the owning skill must read the exact
-role manifest and its mandatory references before using that role, then record
-the applicable runtime outcome as `direct`, `delegated`, or `unavailable` in
+role manifest and its mandatory references before using that role, then retain execution evidence at the tier selected by `ROLE-EXECUTION-CONTRACT.md`.
+When that tier requires a full record, record the applicable runtime outcome as
+`direct`, `delegated`, or `unavailable` in
 the separately owned execution record defined by
 `.ai/assets/shared/ROLE-EXECUTION-CONTRACT.md`. The owning skill produces that
 record and the orchestrator aggregates it without taking domain ownership. A
