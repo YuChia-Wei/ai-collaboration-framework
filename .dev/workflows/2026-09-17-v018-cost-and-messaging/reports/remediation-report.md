@@ -105,3 +105,25 @@ No usability improvement, release readiness, independent audit success or public
   partial edit was repaired through the approved surface before testing.
 - This packaged correction supersedes Candidate 03 for future release admission.
   It does not authorize the blocked downstream receipt/audit retry.
+
+## Prepared Checkpoint At 2026-09-18 02:02 +08:00
+
+- Candidate 04 binds `4f057c2c79a5b2351515db0cc6e65a2e5112ab42`.
+  ZIP/tar parity and canonical source verification passed. ZIP SHA-256:
+  `a2736aff2f70f46af0b73a74d2c902bb2c0a634f924c3cedc6ccc257e260e0c6`.
+  The exact four assets are retained in external `candidate-inputs/04`.
+- The third disposable checkout remains at clean preapply commit
+  `8e913853c0d7b56f872f8c2b173f80907cac9580`. Its v0.17 plan binds 660
+  managed paths and preserves four CUST identities. Three authority drafts and
+  an explicit `draft-not-finalizable` proposal are retained in external
+  `upgrade-v017-attempt-03`. No package apply, receipt or finalization occurred.
+- A long-path checkout failure was repaired only in that clone by enabling its
+  local Git long-path setting and restoring its one missing tracked template.
+  Draft generation first failed on unregistered dynamic Python module metadata;
+  after the loader correction and API import check, proposal generation passed.
+- The next matrix runner's focused eight-test fixture check passed after a
+  sandbox write failure. It now rejects incomplete terminal envelopes and
+  mismatched canonical origins. This is runner preparation, not matrix evidence.
+- The pending approval remains the sole prerequisite for the specifically
+  rejected read-only receipt/schema retry. Candidate model trials, complete
+  matrix, required release checks and final independent review remain unrun.

@@ -4,7 +4,7 @@
 - template_id: ai-context-governance-maintenance-workflow-plan
 - template_version: 1.2.0
 - created_at: 2026-09-17T23:54:11+08:00
-- updated_at: 2026-09-18T01:34:00+08:00
+- updated_at: 2026-09-18T02:02:00+08:00
 
 ## Workflow Metadata
 - workflow_id: 2026-09-17-v018-cost-and-messaging
@@ -57,7 +57,7 @@ Codebase Memory was refreshed in fast mode, but reported `.ai/assets`, `.ai/scri
 ## Resume Checkpoint
 - Last completed: private-role colocation, proportional execution rules, generated runtime entry pilot, messaging contracts and first package candidates. Actual Terra/Luna baseline reviews completed on the lab's v0.16.0 installation.
 - Active: COST-001.
-- Next: integrate role-selection metadata and exact validation registration, build candidate 03, finish disposable downstream reconciliation, then run matched candidate reviews before freezing the final package.
+- Next: Candidate 04 is built and archive-validated from `4f057c2c79a5b2351515db0cc6e65a2e5112ab42`. A clean third lab checkout has a package plan and non-finalizable authority drafts. Resume the explicitly blocked receipt/audit check only after the pending user answer, then complete adoption and matched candidate reviews before final matrix execution.
 - Validation: candidate 02 matrix timed out at 1800 seconds after three v0.6.0 cases; no complete terminal matrix or release acceptance. Callback and zero-process cleanup evidence are retained and the source lease is released. A fresh disposable v0.17.0 application passed 52 target tests; independent audit/finalization remain pending.
 - Execution decision: the parent authorizes another matrix attempt only after candidate usability and payload freeze, using a new immutable subject, a timeout justified by observed duration, and retained prior failures. This is a bounded continuation of the owner's autonomous release preparation, not a new user approval or a test waiver.
 - Publication decision: not requested yet; prepare a concrete candidate before any final owner publication decision.
