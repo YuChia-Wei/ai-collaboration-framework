@@ -1,6 +1,6 @@
 # Remediation Progress
 
-Updated: 2026-09-18T01:34:00+08:00
+Updated: 2026-09-18T01:38:00+08:00
 
 Baseline: `ASM-20260917-23-c18`. Workflow: `2026-09-17-v018-cost-and-messaging`. This is the implementation owner's ledger, not independent verification.
 
@@ -70,3 +70,24 @@ No usability improvement, release readiness, independent audit success or public
   parity, lifecycle classification, source context and workflow validation.
   A sandboxed Git Bash signal-pipe failure was retained before the same bounded
   classification check passed through the approved execution surface.
+
+## Downstream Finalization Checkpoint
+
+- Candidate 03 was built from `b2624174efc31725d7e76fbc3046b5339da91e8e`.
+  ZIP and tar validation passed. Its ZIP SHA-256 is
+  `cd3422d3f6b0969d9bb143cbdb7825c6adde24efc458a310daeb2d493dcd0db2`.
+  This is an evaluation input, not release admission.
+- The second disposable trial's approved decision bound the old provenance
+  document instead of an incoming-version candidate. Its successful file checks
+  and 52-test receipt do not authorize provenance advancement. Prepare a fresh
+  isolated transaction with correct candidate documents; preserve both prior
+  clones without rewriting sealed transaction evidence.
+- Independent content reads found no semantic issue, but the first audit record
+  used invalid gate dispositions. A fresh bounded read pass retained eight gate
+  results and a blocked receipt-line matcher; its lifecycle validator also lacked
+  the correct Git Bash registry execution path. Neither audit is formally passed.
+- Automatic approval review rejected a further receipt verification as a retry
+  without material state change. One explicit user approval question is pending
+  for the newline-safe read-only receipt check and correctly routed schema check.
+  Do not bypass this block, relabel existing evidence, or rerun product tests.
+  Independent adapter and final-runner preparation may continue.
