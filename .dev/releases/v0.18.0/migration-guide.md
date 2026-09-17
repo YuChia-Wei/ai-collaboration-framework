@@ -2,8 +2,7 @@
 
 ## Supported Sources
 
-The required direct origins are v0.6.0, v0.9.0 and v0.17.0. Preparation is active;
-do not treat the planned release record as an admitted or published package.
+The required direct origins are v0.6.0, v0.9.0 and v0.17.0.
 Each origin must select its own exact previous `metadata/files.yaml` and use the
 incoming package's planner. No intermediate package may replace a required
 direct-origin acceptance case.
@@ -53,6 +52,6 @@ entries are seeds; repository identity and commands require target evidence.
 - Routine bounded execution does not weaken release, adoption, authorization,
   transaction durability or actual-execution evidence gates.
 - A private implementation helper may remain local only within the accepted
-  responsibility, behavior, dependency and lifetime boundaries.
+  responsibility, behavior, dependency, lifetime and transaction boundaries.
 - Target-specific schemas, endpoints, message retention, retry policies,
   package versions and operations remain target-owned.

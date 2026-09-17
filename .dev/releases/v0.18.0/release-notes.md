@@ -13,9 +13,12 @@ review and test selection.
 - Routine same-runtime work can use a bounded execution envelope. Terminal,
   high-risk, external validation and adoption operations retain their full
   evidence requirements.
-- Runtime entry and local-helper scope improvements are being validated with
-  real Terra and Luna downstream reviews. Token savings are not assumed from
-  document size or directory placement.
+- `code-reviewer` and `local-change-implementer` have generated execution
+  entries with conditional reference loading and exact canonical parity.
+  Package assembly regenerates them from the projected downstream authority.
+- Private implementation helpers may remain within a local change when behavior,
+  responsibility, dependency direction, lifetime and transaction boundaries stay
+  unchanged. Public abstractions and changed boundaries retain their owning route.
 - Transactional messaging guidance distinguishes business orchestration,
   physical completion, durable inbox receipt, successful handling and outgoing
   intent. Framework-native facilities remain conditional on target selection.
@@ -27,14 +30,14 @@ retiring their old paths. Target-owned technology choices, project facts and
 effective-rule decisions remain authoritative. Wolverine is not a required
 dependency, and `IDbContextFactory` is not universally prohibited.
 
-Required direct origins are v0.6.0, v0.9.0 and v0.17.0. Admission of those routes
-is pending the candidate's actual migration and recovery evidence.
+The direct-upgrade contract covers v0.6.0, v0.9.0 and v0.17.0 with each origin's
+exact package inventory and explicit target reconciliation.
 
-## Release Validation
+## Usage And Evidence Limits
 
-Preparation remains active. Focused context, role ownership and package
-selection checks have passed. Full candidate admission, downstream comparison
-and independent release verification are not yet complete. Earlier environment
-failures and deferred I/O or OS checks remain recorded separately.
+Directory placement and document length alone do not establish token or credit
+savings. Evaluate loading, tool use and answer quality on the selected model and
+target. Framework contract tests do not substitute for actual message-flow,
+rollback, duplicate-delivery or concurrency evidence in an application.
 
 <!-- The renderer appends Included Work and release provenance. -->
