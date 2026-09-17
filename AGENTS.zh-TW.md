@@ -25,7 +25,7 @@
 ## 漸進式 Context 載入
 
 1. 從 request、目前 Git/worktree state、本文件，以及明確指定的 Issues 或 artifacts 開始。
-2. 先選定一個 owning skill 或 policy，再載入其 canonical entry。
+2. 先選定一個 owning skill 或 policy，再載入其 canonical entry。可直接使用產生的 runtime entry；只有查閱 metadata、維護或釐清不一致時，才重新載入完整來源。
 3. 只有適用的 phase、finding、file type、provider、decision 或 execution boundary 才擴大 context。
 4. 不得預先載入 `README.md`、所有 indexes、所有 standards、每個 skill reference、historical workflows 或 assessment archives。
 5. 除非 scope 需要，不要 broad-scan `src/`、`tests/`、`.dev/workflows/` 或 `.dev/assessments/`。

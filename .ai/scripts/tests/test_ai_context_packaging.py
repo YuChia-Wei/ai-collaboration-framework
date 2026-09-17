@@ -120,6 +120,7 @@ class SyntheticPackageRepo:
             "validate-ai-context-payload.py",
             "python-entrypoints.json",
             "python_prerequisites.py",
+            "runtime_skill_entries.py",
         ):
             (self.root / ".ai/scripts" / script).write_bytes((SCRIPTS / script).read_bytes())
         registry = json.loads((SCRIPTS / "python-entrypoints.json").read_text(encoding="utf-8"))

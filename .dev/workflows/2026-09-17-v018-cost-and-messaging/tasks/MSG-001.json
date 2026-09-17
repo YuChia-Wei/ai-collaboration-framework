@@ -8,11 +8,13 @@
   "owner_skill": "ai-context-governance",
   "status": "pending",
   "created_at": "2026-09-17T23:54:11+08:00",
-  "updated_at": "2026-09-18T00:19:54+08:00",
+  "updated_at": "2026-09-18T00:28:00+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-6-astra",
   "reasoning_effort": "ultra",
-  "finding_ids": [],
+  "finding_ids": [
+    "ASM-20260917-23-c18#F-003"
+  ],
   "scope": {
     "target": "Canonical transactional messaging defaults and selected consumer routes",
     "files": [],
@@ -28,15 +30,19 @@
   "execution": {
     "steps": [],
     "validation": [],
-    "last_completed_step": "Terra produced guidance/catalog changes in an isolated worktree; conditional routing refinement in progress.",
-    "next_action": "Pending owning integration stage; preparation evidence is retained. Integrate the finalized messaging diff, verify semantic hashes and selected consumer routes."
+    "last_completed_step": "Integrated MESSAGING-TX-001, clarified ARCH-UOW-001, and selective routing across actual message review surfaces.",
+    "next_action": "Pending owning integration stage; verify the integrated catalog and package, then downstream review quality."
   },
   "results": {
-    "summary": "",
+    "summary": "Terra high authored transaction completion, receipt/completion, native adapter, idempotency, failure, and DbContext participation guidance.",
     "files_changed": [],
-    "tests_run": [],
-    "finding_status": "not-addressed",
-    "residual_risk": "",
+    "tests_run": [
+      "PASS worker review routing: 9 tests after fixture repair",
+      "PASS worker catalog hashes and normative-text digests",
+      "PASS source context validation after messaging integration: 14 owned rules"
+    ],
+    "finding_status": "partially-addressed",
+    "residual_risk": "Final package, downstream evidence and independent acceptance remain pending.",
     "follow_up_needed": true
   },
   "github_issue_refs": [

@@ -14,6 +14,7 @@
     {"path": ".ai/scripts/plan-ai-context-package-apply.py", "portable": true, "dependency_profile": ["PyYAML"], "prerequisite_exit_code": 2},
     {"path": ".ai/scripts/resolve-effective-rule-packet.py", "portable": true, "dependency_profile": ["PyYAML"], "prerequisite_exit_code": 1},
     {"path": ".ai/scripts/observe-validation-dependencies.py", "portable": true, "dependency_profile": ["PyYAML"], "prerequisite_exit_code": 1},
+    {"path": ".ai/scripts/generate-runtime-skill-entries.py", "portable": true, "dependency_profile": ["PyYAML"], "prerequisite_exit_code": 1},
     {"path": ".ai/scripts/validate-ai-context-payload.py", "portable": true, "dependency_profile": ["PyYAML"], "prerequisite_exit_code": 1},
     {"path": ".ai/scripts/validate-ai-context-target.py", "portable": true, "dependency_profile": ["PyYAML"], "prerequisite_exit_code": 1},
     {"path": ".ai/scripts/validate-ai-context.py", "portable": true, "dependency_profile": ["PyYAML"], "prerequisite_exit_code": 1},

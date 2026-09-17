@@ -123,7 +123,11 @@ Before creating or moving an AI context file, answer these questions:
 ## Anti-Patterns
 
 - Do not hide .NET backend rules in universal shared context.
-- Do not duplicate canonical skill instructions in runtime wrappers.
+- Do not independently maintain canonical skill instructions in runtime wrappers.
+  Deterministically generated entries may project canonical `runtime_entry`
+  instructions with source identity and exact parity validation. Execute the
+  projection directly; reload the full source only for metadata, maintenance,
+  or discrepancy resolution.
 - Do not put project-specific requirements or specs under `.ai/`.
 - Do not use a frontend or full-stack folder for the current .NET backend-only profile unless a separate profile is explicitly created.
 - Do not rely on metadata when folder placement can express the boundary.

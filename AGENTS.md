@@ -25,7 +25,7 @@ This file is the canonical English root collaboration guide. `AGENTS.zh-TW.md` i
 ## Progressive Context Loading
 
 1. Start with the request, current Git/worktree state, this file, and explicitly named Issues or artifacts.
-2. Select one owning skill or policy, then load its canonical entry.
+2. Select one owning skill or policy, then load its canonical entry. A generated runtime entry may serve directly; reload its full source only for metadata, maintenance, or discrepancy resolution.
 3. Expand only for an applicable phase, finding, file type, provider, decision, or execution boundary.
 4. Do not preload `README.md`, all indexes, all standards, every skill reference, historical workflows, or assessment archives.
 5. Do not broad-scan `src/`, `tests/`, `.dev/workflows/`, or `.dev/assessments/` unless scope requires it.

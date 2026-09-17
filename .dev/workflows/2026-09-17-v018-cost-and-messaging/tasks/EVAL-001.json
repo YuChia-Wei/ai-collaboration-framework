@@ -8,7 +8,7 @@
   "owner_skill": "ai-context-governance",
   "status": "pending",
   "created_at": "2026-09-17T23:54:11+08:00",
-  "updated_at": "2026-09-18T00:19:54+08:00",
+  "updated_at": "2026-09-18T00:28:00+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-6-astra",
   "reasoning_effort": "ultra",
@@ -28,11 +28,11 @@
   "execution": {
     "steps": [],
     "validation": [],
-    "last_completed_step": "Terra baseline actual review completed on pinned lab with installed v0.16.0; Luna baseline executing.",
-    "next_action": "Pending owning integration stage; preparation evidence is retained. Prepare truthful candidate adoption with fresh target rules, then run the same bounded review task."
+    "last_completed_step": "Both actual v0.16 lab baseline runs completed without tracked drift: Terra medium 216.507s/22 tool calls, Luna medium 236.416s/46 tool calls.",
+    "next_action": "Pending owning integration stage; reconcile the disposable candidate upgrade, then execute the identical bounded task."
   },
   "results": {
-    "summary": "RAM-disk Codex startup failed; retry on ordinary disk completed in 216.507s with 22 tool calls. Actual token counters retained externally; quality review and candidate comparison pending.",
+    "summary": "Raw usage, output, invocation and terminal receipts retained in external usability reports. RAM-disk startup failure retained; ordinary-disk baseline runs passed command execution, with quality adjudication pending.",
     "files_changed": [],
     "tests_run": [],
     "finding_status": "not-addressed",

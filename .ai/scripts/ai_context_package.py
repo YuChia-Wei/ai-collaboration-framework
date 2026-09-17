@@ -14,12 +14,14 @@ import subprocess
 import tarfile
 import urllib.parse
 import zipfile
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 from datetime import datetime, timezone
 from pathlib import Path, PurePosixPath
 from typing import Iterable
 
 import yaml
+
+import runtime_skill_entries as RUNTIME_SKILL_ENTRIES
 
 from ai_context_release_projection import (
     project_release_input, canonical_projection_bytes, validate_selected_release_projection,
@@ -520,6 +522,25 @@ def project_portable_payload_content(
     return projected
 
 
+def regenerate_generated_runtime_entries(
+    files: dict[str, PayloadFile],
+    profile: dict,
+) -> None:
+    """Bind selected runtime wrappers to the final projected package skill bytes."""
+    if profile.get("portable_projection") is None:
+        return
+    contents = {path: item.content for path, item in files.items()}
+    try:
+        rendered = RUNTIME_SKILL_ENTRIES.render_payload_entries(contents)
+    except ValueError as exc:
+        raise PackageError(f"cannot regenerate projected runtime skill entries: {exc}") from exc
+    for path, content in rendered.items():
+        existing = files.get(path)
+        if existing is None:
+            raise PackageError(f"generated runtime wrapper is absent from package payload: {path}")
+        files[path] = replace(existing, content=content)
+
+
 def add_payload_file(files: dict[str, PayloadFile], candidate: PayloadFile) -> None:
     target = safe_relative_path(candidate.path, "target path")
     if target in files:
@@ -719,6 +740,7 @@ def collect_payload(
                 matched += 1
         if matched == 0 and "allow_empty_until" not in entry:
             raise PackageError(f"{entry_id}: allowlist entry matched no Git-tree files")
+    regenerate_generated_runtime_entries(output, profile)
     return sorted(output.values(), key=lambda item: item.path.encode("utf-8"))
 
 

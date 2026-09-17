@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import argparse
+import importlib.util
 import posixpath
 import re
 import subprocess
@@ -1862,6 +1863,7 @@ def validate_skill_wrapper_semantics(
 
     projections: dict[str, str] = {}
     deprecated = data.get("status") == "deprecated"
+    generated_entry = isinstance(data.get("runtime_entry"), dict)
     for target in sorted(set(targets) & set(SKILL_WRAPPER_CONTRACTS)):
         target_metadata = metadata.get(target)
         if not isinstance(target_metadata, dict):
@@ -1896,28 +1898,35 @@ def validate_skill_wrapper_semantics(
         if not isinstance(description, str) or not description.strip():
             errors.append(f"{entry}: frontmatter description must be non-empty")
 
-        required_references = canonical_wrapper_references(path, data)
-        cited = set(re.findall(r"`([^`\n]+)`", text))
-        missing = sorted(required_references - cited)
-        if missing:
-            errors.append(f"{entry}: missing canonical references {missing}")
-        authority_line = (
-            f"If wrapper text and canonical spec differ, follow `{path.as_posix()}`."
-        )
-        if authority_line not in text:
-            errors.append(f"{entry}: missing exact canonical authority fallback")
-        kind_line = (
-            DEPRECATED_WRAPPER_KIND_LINE
-            if deprecated
-            else contract["kind_line"]
-        )
-        use_line = (
-            DEPRECATED_WRAPPER_USE_LINE
-            if deprecated
-            else contract["use_line"]
-        )
-        if kind_line not in text or use_line not in text:
-            errors.append(f"{entry}: missing exact {target} thin-wrapper identity")
+        if generated_entry:
+            authority_line = f"- Execution authority: `{path.as_posix()}` `runtime_entry`."
+            if authority_line not in text:
+                errors.append(f"{entry}: missing generated runtime execution authority")
+            if "This runtime execution entry is generated. Do not edit it by hand." not in text:
+                errors.append(f"{entry}: missing generated runtime entry marker")
+        else:
+            required_references = canonical_wrapper_references(path, data)
+            cited = set(re.findall(r"`([^`\n]+)`", text))
+            missing = sorted(required_references - cited)
+            if missing:
+                errors.append(f"{entry}: missing canonical references {missing}")
+            authority_line = (
+                f"If wrapper text and canonical spec differ, follow `{path.as_posix()}`."
+            )
+            if authority_line not in text:
+                errors.append(f"{entry}: missing exact canonical authority fallback")
+            kind_line = (
+                DEPRECATED_WRAPPER_KIND_LINE
+                if deprecated
+                else contract["kind_line"]
+            )
+            use_line = (
+                DEPRECATED_WRAPPER_USE_LINE
+                if deprecated
+                else contract["use_line"]
+            )
+            if kind_line not in text or use_line not in text:
+                errors.append(f"{entry}: missing exact {target} thin-wrapper identity")
         projections[target] = normalized_wrapper_projection(
             text, target, deprecated=deprecated
         )
@@ -1929,6 +1938,29 @@ def validate_skill_wrapper_semantics(
             f"{path}: Codex and Claude wrappers differ outside declared "
             "runtime identity boilerplate"
         )
+
+
+def validate_generated_runtime_skill_entries(
+    errors: list[str], *, root: Path = ROOT
+) -> None:
+    """Run the bounded deterministic parity check for the selected entry pilot."""
+    script = root / ".ai/scripts/generate-runtime-skill-entries.py"
+    if not script.is_file():
+        errors.append(".ai/scripts/generate-runtime-skill-entries.py: missing runtime entry generator")
+        return
+    spec = importlib.util.spec_from_file_location("generated_runtime_skill_entries", script)
+    if spec is None or spec.loader is None:
+        errors.append(".ai/scripts/generate-runtime-skill-entries.py: cannot load runtime entry generator")
+        return
+    module = importlib.util.module_from_spec(spec)
+    try:
+        spec.loader.exec_module(module)
+        parity_errors = module.check_entries(root)
+    except (ImportError, OSError, ValueError, yaml.YAMLError) as exc:
+        errors.append(f".ai/scripts/generate-runtime-skill-entries.py: parity check failed: {exc}")
+        return
+    for error in parity_errors:
+        errors.append(f"generated runtime entry parity: {error}")
 
 
 def yaml_string_list(value: object) -> list[str]:
@@ -4645,6 +4677,7 @@ def main(argv: list[str] | None = None) -> int:
     ownership_rules = validate_rule_ownership(errors)
     governance_terms = validate_governance_term_routing(errors)
     canonical_assets, skill_assets = validate_canonical_assets(errors)
+    validate_generated_runtime_skill_entries(errors)
     capability_mappings = validate_capability_profile(skill_assets, errors)
     sag003_role_bindings = validate_sag003_provider_role_projection_contract(errors)
     upg004_delegation_contracts = validate_upg004_delegation_run_contract(errors)

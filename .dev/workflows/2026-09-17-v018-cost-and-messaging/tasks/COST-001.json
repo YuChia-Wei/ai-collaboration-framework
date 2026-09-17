@@ -8,7 +8,7 @@
   "owner_skill": "ai-context-governance",
   "status": "in_progress",
   "created_at": "2026-09-17T23:54:11+08:00",
-  "updated_at": "2026-09-18T00:19:54+08:00",
+  "updated_at": "2026-09-18T00:28:00+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-6-astra",
   "reasoning_effort": "ultra",
@@ -31,11 +31,11 @@
   "execution": {
     "steps": [],
     "validation": [],
-    "last_completed_step": "Role relocation committed; both HEAD-based package route checks passed. Routine evidence applicability propagated to slice, framing and orchestrator consumers.",
-    "next_action": "Validate and commit role ownership checkpoint; integrate generated entry and local-scope pilot from isolated worker."
+    "last_completed_step": "Integrated deterministic runtime entries and package-time projection for the two-skill pilot, private helper scope, and proportionate review evidence.",
+    "next_action": "Complete integrated validation and immutable package projection; verify downstream quality and cost."
   },
   "results": {
-    "summary": "Structural portion implemented by Terra xhigh; runtime entry and local scope work remains active.",
+    "summary": "Terra xhigh implementation integrated; root reconciled role paths and removed redundant full-manifest loading from active entry guidance.",
     "files_changed": [
       ".ai/assets/skills/code-reviewer/roles/",
       ".ai/assets/skills/slice-implementer/roles/",
@@ -54,10 +54,12 @@
       "PASS committed-HEAD reviewer package projection: 2 tests in 75.770s",
       "PASS role execution acceptance after tier clarification: 6 tests",
       "PASS workflow implementation contract: 7 tests",
-      "BLOCKED capability contract: 13 cases passed, 1 Temp permission error; full suite not passed"
+      "BLOCKED capability contract: 13 cases passed, 1 Temp permission error; full suite not passed",
+      "PASS integrated runtime-entry tests: 7, including projected payload and LF normalization",
+      "PASS generated entry parity after role-path integration"
     ],
     "finding_status": "partially-addressed",
-    "residual_risk": "HEAD-bound package case and focused private-role ownership checks remain; no runtime cost or downstream acceptance claim.",
+    "residual_risk": "Final package, downstream evidence and independent acceptance remain pending.",
     "follow_up_needed": true
   },
   "github_issue_refs": [
