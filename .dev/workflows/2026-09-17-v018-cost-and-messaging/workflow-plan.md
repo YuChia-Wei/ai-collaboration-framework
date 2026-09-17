@@ -57,7 +57,31 @@ Codebase Memory was refreshed in fast mode, but reported `.ai/assets`, `.ai/scri
 ## Resume Checkpoint
 - Last completed: private-role colocation, proportional execution rules, generated runtime entry pilot, messaging contracts and first package candidates. Actual Terra/Luna baseline reviews completed on the lab's v0.16.0 installation.
 - Active: COST-001.
-- Next: Build candidate07 with the shipped receipt runner and Issue #303 direct-finalization cleanup, then perform one v0.18 application, independent projected-content audit and matched candidate reviews. Lab draft PR #13 remains an explicitly unfinalized public checkpoint.
+- Next: Build candidate08 with the Issue #304 rollback snapshot correction, reconcile the isolated target's historical-audit gate before sealing a new plan, then perform v0.18 application, independent projected-content audit and matched candidate reviews. Lab draft PR #13 remains an explicitly unfinalized public checkpoint.
 - Validation: The approved audit-03 receipt/schema retry passed without rerunning its recorded tests. A separate short-root v0.17 transaction passed its actual 52-test target command and finalized. The owner-approved bilingual entry reconciliation retains 13 rules and 20 routes. Canonical archival in the original transaction, followed by transport of only its committed pending-receipt deletion, made successor `4507aecb7f2132abf7ec7f1b41aabc7f1aa35ed5` pass effective-state validation without private transaction data. Earlier receipt construction, clone portability and committed-HEAD cleanup failures remain retained. Candidate02 matrix timed out after three cases; complete matrix and release acceptance remain pending.
 - Execution decision: the parent authorizes another matrix attempt only after candidate usability and payload freeze, using a new immutable subject, a timeout justified by observed duration, and retained prior failures. This is a bounded continuation of the owner's autonomous release preparation, not a new user approval or a test waiver.
 - Publication decision: not requested yet; prepare a concrete candidate before any final owner publication decision.
+
+## Candidate07 Failure And Bounded Recovery
+
+Candidate07 applied successfully in the isolated short-root target, but its
+separately routed validation stopped at a retained v0.16 audit that incorrectly
+compared historical authority pins to current files. No passing receipt was
+created and the subsequent 52-test suite did not execute. Reconcile the
+target-owned gate on a fresh preapply branch: completed audits verify their
+immutable commit, while in-progress audits and explicit admission keep current
+authority checks. The 21 focused target audit tests passed.
+
+The first canonical rollback stopped after restoring an executable script.
+Read-only replay and focused reproduction identified a stale in-process dirty
+snapshot, rather than a persisted content mismatch. Issue #304 records the
+correction: accept a restored snapshot baseline only after sealed bytes, index
+identity and applicable modes verify. Three focused rollback tests and four
+dependent target-validation runner tests passed. Preserve both original failed
+operations and separately record the real rollback retry outcome; no journal or
+receipt is repaired manually.
+
+The corrected canonical rollback then completed with `rolled-back` and exit 0.
+The isolated target is clean at its original preapply commit
+`4507aecb7f2132abf7ec7f1b41aabc7f1aa35ed5`; the original failed validation and
+rollback records remain retained.

@@ -28,6 +28,9 @@ review and test selection.
 - An explicit terminal cleanup archives a finalized direct-upgrade pending
   receipt before clearing its root copy, so a subsequent clone does not depend
   on transaction records stored only in the original checkout's Git directory.
+- Rollback refreshes its in-process file snapshot only after verifying the
+  sealed original state. This prevents restored executable files from being
+  mistaken for drift on Windows while retaining later-mutation rejection.
 
 ## Compatibility
 

@@ -16,6 +16,7 @@ planning:
   - '#300'
   - '#301'
   - '#303'
+  - '#304'
 provider_reconciliation:
   schema_version: '1.0'
   provider: github

@@ -291,6 +291,41 @@ class TargetGitSnapshot:
             self.worktree_inventory.pop(relative, None)
         self.dirty_paths = frozenset(remaining_dirty)
 
+    def accept_verified_prestate_restoration(
+        self, relative: str, expected: dict
+    ) -> bool:
+        """Advance one originally clean tracked path after sealed restoration."""
+        if (
+            expected.get("exists") is not True
+            or expected.get("tracked") is not True
+            or expected.get("dirty") is not False
+        ):
+            return False
+        path = self.root / Path(*PurePosixPath(relative).parts)
+        reject_symlink_boundary(self.root, relative)
+        if path.is_symlink() or is_reparse_point(path) or not path.is_file():
+            return False
+        if sha256_bytes(path.read_bytes()) != expected.get("sha256"):
+            return False
+        if self.tracked_mode(relative) != expected.get("mode"):
+            return False
+        if self.core_filemode and filesystem_mode(path) != expected.get("mode"):
+            return False
+        index_content = self.tracked_bytes(relative)
+        if (
+            index_content is None
+            or sha256_bytes(index_content) != expected.get("git_sha256")
+        ):
+            return False
+        current = worktree_inventory_entry(path)
+        if current is None:
+            return False
+        remaining_dirty = set(self.dirty_paths)
+        remaining_dirty.discard(relative)
+        self.dirty_paths = frozenset(remaining_dirty)
+        self.worktree_inventory[relative] = current
+        return True
+
 
 _ACTIVE_TARGET_GIT_SNAPSHOT: ContextVar[TargetGitSnapshot | None] = ContextVar(
     "active_target_git_snapshot", default=None
@@ -6149,6 +6184,9 @@ def rollback_loaded_transaction(
             )
         elif path.exists():
             durable_unlink(path, root)
+        snapshot = active_target_git_snapshot(target)
+        if snapshot is not None:
+            snapshot.accept_verified_prestate_restoration(relative, item["state"])
         invoke_boundary(hook, "after_rollback_restore", {"path": relative})
         append_progress_record(
             root,
