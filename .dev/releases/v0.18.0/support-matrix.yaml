@@ -1,0 +1,189 @@
+schema_version: '1.1'
+matrix_id: upgrade-route-matrix-v0.18.0
+target:
+  version: v0.18.0
+  release_id: REL-v0.18.0
+  commit: d3364303d55d1f3b8e67c720b04c1d3b34b1d4f3
+  manifest:
+    asset_id: v0.18.0-files-manifest
+    path: route-assets/incoming/metadata/files.yaml
+    sha256: 7b6cfa2efb8f83cb79f38c5df910dfcc664e6dad300511b0d9ea858f78d741c7
+  package_identity:
+    package_id: ai-collaboration-framework-v0.18.0
+    release_id: REL-v0.18.0
+    payload_fingerprint: fda89ae97f9601346555bead6a6d9bd6387bce8968b942c5e0d5d4c56a2cf8e1
+retained_origins:
+- role: immediate-predecessor
+  version: v0.17.0
+  release_id: REL-v0.17.0
+  commit: 8eed3960f19c57050c8e8a8e1ecedbc3004aabc2
+  manifest:
+    asset_id: v0.17.0-files-manifest
+    path: route-assets/origins/v0.17.0/metadata/files.yaml
+    sha256: f262df5acb224ef260f855b08f9b8bb130ec4f5d280209af6475c4b1a06c4059
+- role: v0.9.0
+  version: v0.9.0
+  release_id: REL-v0.9.0
+  commit: c14a3260cba7d0a9e2b67b73df9e221280d2d2ef
+  manifest:
+    asset_id: v0.9.0-files-manifest
+    path: route-assets/origins/v0.9.0/metadata/files.yaml
+    sha256: c293247612eb2f01ef42e4d7c55be4ff36201cdf034157c518de871ec2acb5c7
+- role: v0.6.0
+  version: v0.6.0
+  release_id: REL-v0.6.0
+  commit: 8b98b5f917513f2d143f42a322050a1162bb63f9
+  manifest:
+    asset_id: v0.6.0-files-manifest
+    path: route-assets/origins/v0.6.0/metadata/files.yaml
+    sha256: 20ca69ef4e1b4085476a2b15eeba93da7a75ea580fd2ab9f6c8815938b0af3be
+semantic_cutovers:
+- cutover_id: retained-direct-upgrade-v1
+  required: true
+  description: Actual pristine, customized, and interruption-recovery cases preserve
+    target customizations, reconcile source-specific removals and retirement applicability,
+    execute target validation, and prove finalized readiness or exact rollback for
+    every retained direct origin.
+routes:
+- route_id: v0.6.0-to-v0.18.0-direct
+  origin: v0.6.0
+  target: v0.18.0
+  edges:
+  - edge_id: v0.6.0-to-v0.18.0
+    order: 1
+    from_version: v0.6.0
+    to_version: v0.18.0
+    package_identity:
+      package_id: ai-collaboration-framework-v0.18.0
+      release_id: REL-v0.18.0
+      payload_fingerprint: fda89ae97f9601346555bead6a6d9bd6387bce8968b942c5e0d5d4c56a2cf8e1
+    artifacts:
+      archive:
+        asset_id: v0.6.0-to-v0.18.0-archive
+        path: route-assets/admitted/ai-collaboration-framework-v0.18.0.zip
+        sha256: 764eb3197b0ab76efaea1ca272e76fe7c9b780db348b60ab2b1bd3b7ccefd811
+      checksum:
+        asset_id: v0.6.0-to-v0.18.0-checksum
+        path: route-assets/admitted/ai-collaboration-framework-v0.18.0.zip.sha256
+        sha256: e83b40f8525316373f2abbb2ff9004b25fa9332e2bd12cb43bcd89386c3a26c9
+      manifest:
+        asset_id: v0.6.0-to-v0.18.0-manifest
+        path: route-assets/incoming/metadata/migration.yaml
+        sha256: 44a9c68c4317fdf6e303e92fab1dd647c285debc9778d3f982af6e485b0f0dc2
+      validator:
+        asset_id: v0.6.0-to-v0.18.0-validator
+        path: route-assets/validation/v0.6.0-to-v0.18.0/validator.py
+        sha256: 4ada4c1cdd0851805e392f2645003b70feaa0ccd21bfce6d21fc7cf3bf68b477
+    semantic_cutovers:
+    - cutover_id: retained-direct-upgrade-v1
+      state: passed
+    validation:
+      state: passed
+      validator_argv:
+      - python
+      - route-assets/validation/v0.6.0-to-v0.18.0/validator.py
+      - --edge-id
+      - v0.6.0-to-v0.18.0
+      report:
+        asset_id: v0.6.0-to-v0.18.0-report
+        path: route-assets/validation/v0.6.0-to-v0.18.0/validation-report.json
+        sha256: 145e9be6d11d2e2655c5416ea9ea31094a841135cbd586beeb1c60fdfe344338
+      output:
+        asset_id: v0.6.0-to-v0.18.0-output
+        path: route-assets/validation/v0.6.0-to-v0.18.0/portable-run/validation-output.log
+        sha256: 951a7ed249384fdfda4ca097232c13c609ad9df0d258b9996d491f00f25647eb
+- route_id: v0.9.0-to-v0.18.0-direct
+  origin: v0.9.0
+  target: v0.18.0
+  edges:
+  - edge_id: v0.9.0-to-v0.18.0
+    order: 1
+    from_version: v0.9.0
+    to_version: v0.18.0
+    package_identity:
+      package_id: ai-collaboration-framework-v0.18.0
+      release_id: REL-v0.18.0
+      payload_fingerprint: fda89ae97f9601346555bead6a6d9bd6387bce8968b942c5e0d5d4c56a2cf8e1
+    artifacts:
+      archive:
+        asset_id: v0.9.0-to-v0.18.0-archive
+        path: route-assets/admitted/ai-collaboration-framework-v0.18.0.zip
+        sha256: 764eb3197b0ab76efaea1ca272e76fe7c9b780db348b60ab2b1bd3b7ccefd811
+      checksum:
+        asset_id: v0.9.0-to-v0.18.0-checksum
+        path: route-assets/admitted/ai-collaboration-framework-v0.18.0.zip.sha256
+        sha256: e83b40f8525316373f2abbb2ff9004b25fa9332e2bd12cb43bcd89386c3a26c9
+      manifest:
+        asset_id: v0.9.0-to-v0.18.0-manifest
+        path: route-assets/incoming/metadata/migration.yaml
+        sha256: 44a9c68c4317fdf6e303e92fab1dd647c285debc9778d3f982af6e485b0f0dc2
+      validator:
+        asset_id: v0.9.0-to-v0.18.0-validator
+        path: route-assets/validation/v0.9.0-to-v0.18.0/validator.py
+        sha256: 4ada4c1cdd0851805e392f2645003b70feaa0ccd21bfce6d21fc7cf3bf68b477
+    semantic_cutovers:
+    - cutover_id: retained-direct-upgrade-v1
+      state: passed
+    validation:
+      state: passed
+      validator_argv:
+      - python
+      - route-assets/validation/v0.9.0-to-v0.18.0/validator.py
+      - --edge-id
+      - v0.9.0-to-v0.18.0
+      report:
+        asset_id: v0.9.0-to-v0.18.0-report
+        path: route-assets/validation/v0.9.0-to-v0.18.0/validation-report.json
+        sha256: 8900a87d9fcc35f3368495ee0716deb568998a4913e4de731d68f203b19d6ea4
+      output:
+        asset_id: v0.9.0-to-v0.18.0-output
+        path: route-assets/validation/v0.9.0-to-v0.18.0/portable-run/validation-output.log
+        sha256: 951a7ed249384fdfda4ca097232c13c609ad9df0d258b9996d491f00f25647eb
+- route_id: v0.17.0-to-v0.18.0-direct
+  origin: v0.17.0
+  target: v0.18.0
+  edges:
+  - edge_id: v0.17.0-to-v0.18.0
+    order: 1
+    from_version: v0.17.0
+    to_version: v0.18.0
+    package_identity:
+      package_id: ai-collaboration-framework-v0.18.0
+      release_id: REL-v0.18.0
+      payload_fingerprint: fda89ae97f9601346555bead6a6d9bd6387bce8968b942c5e0d5d4c56a2cf8e1
+    artifacts:
+      archive:
+        asset_id: v0.17.0-to-v0.18.0-archive
+        path: route-assets/admitted/ai-collaboration-framework-v0.18.0.zip
+        sha256: 764eb3197b0ab76efaea1ca272e76fe7c9b780db348b60ab2b1bd3b7ccefd811
+      checksum:
+        asset_id: v0.17.0-to-v0.18.0-checksum
+        path: route-assets/admitted/ai-collaboration-framework-v0.18.0.zip.sha256
+        sha256: e83b40f8525316373f2abbb2ff9004b25fa9332e2bd12cb43bcd89386c3a26c9
+      manifest:
+        asset_id: v0.17.0-to-v0.18.0-manifest
+        path: route-assets/incoming/metadata/migration.yaml
+        sha256: 44a9c68c4317fdf6e303e92fab1dd647c285debc9778d3f982af6e485b0f0dc2
+      validator:
+        asset_id: v0.17.0-to-v0.18.0-validator
+        path: route-assets/validation/v0.17.0-to-v0.18.0/validator.py
+        sha256: 4ada4c1cdd0851805e392f2645003b70feaa0ccd21bfce6d21fc7cf3bf68b477
+    semantic_cutovers:
+    - cutover_id: retained-direct-upgrade-v1
+      state: passed
+    validation:
+      state: passed
+      validator_argv:
+      - python
+      - route-assets/validation/v0.17.0-to-v0.18.0/validator.py
+      - --edge-id
+      - v0.17.0-to-v0.18.0
+      report:
+        asset_id: v0.17.0-to-v0.18.0-report
+        path: route-assets/validation/v0.17.0-to-v0.18.0/validation-report.json
+        sha256: 9a43f4b2c9fa90429254ce17d8bb9675a93d4cd1ec12dd98847b9f465f556ea7
+      output:
+        asset_id: v0.17.0-to-v0.18.0-output
+        path: route-assets/validation/v0.17.0-to-v0.18.0/portable-run/validation-output.log
+        sha256: 951a7ed249384fdfda4ca097232c13c609ad9df0d258b9996d491f00f25647eb
+deprecations: []

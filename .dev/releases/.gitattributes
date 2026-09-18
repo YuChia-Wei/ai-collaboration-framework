@@ -1,0 +1,4 @@
+# Preserve hash-bound package, native execution and derived route evidence bytes.
+# In particular, Windows target-validation logs must retain their native CRLF.
+# Whitespace in immutable native evidence is data, including tampered fixtures.
+**/route-assets/** -text -whitespace

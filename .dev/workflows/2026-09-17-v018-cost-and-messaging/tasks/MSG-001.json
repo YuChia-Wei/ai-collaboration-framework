@@ -6,9 +6,9 @@
   "task_id": "MSG-001",
   "workflow_id": "2026-09-17-v018-cost-and-messaging",
   "owner_skill": "ai-context-governance",
-  "status": "pending",
+  "status": "completed",
   "created_at": "2026-09-17T23:54:11+08:00",
-  "updated_at": "2026-09-18T09:40:26+08:00",
+  "updated_at": "2026-09-18T22:13:09+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-6-astra",
   "reasoning_effort": "ultra",
@@ -31,7 +31,7 @@
     "steps": [],
     "validation": [],
     "last_completed_step": "Candidate09 preserves 13 prior rules and 20 selectors, adding MESSAGING-TX-001 to existing ARCH-UOW-001 routes. Both actual models consumed that exact rule.",
-    "next_action": "Assess source guidance and consumer consistency in the final independent source review."
+    "next_action": "Implementation-owned work is complete. Required release profile, lifecycle-sensitive validation, independent source review and live integration/publication admission remain with the source-release and terminal-delivery owners; this task does not claim those gates passed."
   },
   "results": {
     "summary": "Both model answers received 6 met and 2 partial rubric findings; initial inbox receipt versus completion and retention boundaries remain incompletely stated.",
@@ -41,7 +41,7 @@
       "PASS worker catalog hashes and normative-text digests",
       "PASS source context validation after messaging integration: 14 owned rules"
     ],
-    "finding_status": "partially-addressed",
+    "finding_status": "addressed",
     "residual_risk": "Rule consumption is demonstrated, but no runtime message-flow, retry or broker behavior was executed.",
     "follow_up_needed": true
   },

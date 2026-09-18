@@ -1,14 +1,14 @@
 # Remediation Progress
 
-Updated: 2026-09-18T20:40:38+08:00
+Updated: 2026-09-18T22:13:09+08:00
 
 Baseline: `ASM-20260917-23-c18`. Workflow: `2026-09-17-v018-cost-and-messaging`. This is the implementation owner's ledger, not independent verification.
 
 | Finding | State | Evidence / remaining work |
 | --- | --- | --- |
-| F-001 | partially-resolved | 17 private roles colocated with owners; generated two-skill runtime entry and package projection integrated. Actual candidate02 route discovery and bounded comparison completed; independent source acceptance pending. |
-| F-002 | partially-resolved | Routine evidence tiers propagated; private helper types permitted within unchanged semantic boundaries. Final package and independent acceptance pending. |
-| F-003 | partially-resolved | MESSAGING-TX-001 and ARCH-UOW-001 clarification integrated with conditional design/review routing. Actual downstream rule consumption demonstrated; independent source acceptance pending. |
+| F-001 | implementation-complete | 17 private roles colocated with owners; generated two-skill runtime entry and package projection integrated. Actual candidate02 route discovery and bounded comparison completed; independent source acceptance pending. |
+| F-002 | implementation-complete | Routine evidence tiers propagated; private helper types permitted within unchanged semantic boundaries. Final package and independent acceptance pending. |
+| F-003 | implementation-complete | MESSAGING-TX-001 and ARCH-UOW-001 clarification integrated with conditional design/review routing. Actual downstream rule consumption demonstrated; independent source acceptance pending. |
 
 The bounded candidate02 experiment shows lower uncached input with retained quality limitations; no billing, whole-project savings, source release readiness or publication is claimed. The isolated downstream candidate09 audit and finalization passed. The necessity review selects one frozen release profile and retained-origin matrix; it adds no nightly or unrelated OS suite.
 
@@ -255,3 +255,29 @@ No full matrix, model, product suite or release profile was rerun during this
 recovery. Attempt04 remains prepared only. Source acceptance and publication
 remain pending; the next long execution must use one terminal callback without
 repeated parent polling.
+
+## Matrix04 Source Preparation Completion
+
+At 2026-09-18T22:13:09+08:00, the parent accepted the schema-valid Matrix04 callback: all nine
+actual cases passed at `1379c079ca153245721bdf709287091e05ed445c` in 4018.216
+seconds, with a clean tracked worktree and complete process-tree cleanup.
+Its lease was explicitly released. Candidate09 was not rebuilt; the native
+terminal and all referenced case artifacts were retained with the admitted
+archives and canonical route evidence.
+
+Workflow-owned implementation, focused verification and evidence preparation
+are complete. The findings are addressed at the implementation stage; final
+independent source acceptance remains pending. Mandatory release profile,
+lifecycle-sensitive checks, independent review, hosted checks and live
+admission remain separately owned source-release/terminal gates. This stage
+boundary does not mark an unrun check passed or claim publication.
+
+The owner authorized publication and downstream upgrade integration. The
+original isolated prerequisite was canonically rolled back and preserved in
+recovery commit `2b4e5bb314370b7039fff88c5c53915ddd5351ad`; local PR preparation
+retains that history. Public adoption must verify the published archive equals
+Candidate09 and pass final PR-content checks. The original lab checkout and
+product bytes remain unchanged.
+
+The preceding progress sections are historical checkpoints; their pending and
+failed states remain evidence about those points in time.

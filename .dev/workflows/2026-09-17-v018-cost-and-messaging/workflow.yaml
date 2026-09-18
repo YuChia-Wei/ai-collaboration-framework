@@ -4,14 +4,14 @@ lifecycle_contract: '1.0'
 workflow_kind: ai-context-maintenance
 title: v0.18.0 skill usability and transactional messaging
 owner_skill: ai-context-governance
-status: in_progress
-current_phase: remediation
+status: completed
+current_phase: completed
 branch: codex/2026-09-17-v018-cost-and-messaging
 base_branch: main
 artifact_root: .dev/workflows/2026-09-17-v018-cost-and-messaging
 entrypoint: workflow-plan.md
 created_at: '2026-09-17T23:54:11+08:00'
-updated_at: '2026-09-18T20:40:38+08:00'
+updated_at: '2026-09-18T22:13:09+08:00'
 template_source: .ai/assets/skills/ai-context-governance/templates/workflow-locator-template.yaml
 template_version: 1.2.0
 github_issue_refs:

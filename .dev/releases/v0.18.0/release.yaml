@@ -10,7 +10,7 @@ commit: null
 tagged_at: null
 recorded_at: null
 created_at: '2026-09-18T00:15:40+08:00'
-updated_at: '2026-09-18T00:15:40+08:00'
+updated_at: '2026-09-18T22:13:09+08:00'
 planning:
   github_issue_refs:
   - '#300'
@@ -109,12 +109,13 @@ distribution:
     automation: github-actions
     creates_or_moves_tag: false
 validation:
-  evidence: Preparation is active. Runtime entry, role ownership and messaging focused
-    checks passed. Candidate08 completed an isolated55-test upgrade and independent
-    target audit; actual cheaper-model trials exposed missing selector-discovery
-    guidance, now corrected with nine focused entry tests. Corrected candidate
-    usability, complete retained-origin matrix, required release profile and final
-    independent source verification remain pending. Deferred checks are not passed.
+  evidence: Implementation and exact candidate09 preparation are complete. Matrix04
+    at 1379c079 passed all nine retained-origin cases in 4018.216 seconds; its native
+    terminal and case artifacts are retained below route-assets. The isolated target
+    passed 55 tests and 11 independent gates; actual Terra/Luna trials retain explicit
+    quality and measurement limits. Source release profile, lifecycle-sensitive validation,
+    independent source audit and provider admission remain mandatory and pending.
+    No pending gate is passed by this record.
   workflow_id: 2026-09-17-v018-cost-and-messaging
   related_workflows: []
   related_assessments:

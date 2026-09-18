@@ -4,7 +4,7 @@
 - template_id: ai-context-governance-maintenance-workflow-plan
 - template_version: 1.2.0
 - created_at: 2026-09-17T23:54:11+08:00
-- updated_at: 2026-09-18T20:40:38+08:00
+- updated_at: 2026-09-18T22:13:09+08:00
 
 ## Workflow Metadata
 - workflow_id: 2026-09-17-v018-cost-and-messaging
@@ -12,8 +12,8 @@
 - owner_skill: ai-context-governance
 - branch: codex/2026-09-17-v018-cost-and-messaging
 - base_branch: main
-- status: in_progress
-- current_phase: remediation
+- status: completed
+- current_phase: completed
 - artifact_root: .dev/workflows/2026-09-17-v018-cost-and-messaging
 - template_source: .ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md
 - template_version: 1.2.0
@@ -44,7 +44,7 @@ This is one cohesive release delivery with independent acceptance mappings. Sour
 | ASM-20260917-23-c18#F-002: routine execution overhead and type-based routing | COST-001 | proportional boundaries with preserved terminal safeguards |
 | ASM-20260917-23-c18#F-003: transactional messaging gaps and completion ambiguity | MSG-001 | one contract and consistent selected design/review/implementation/test routes |
 | Usability/cost hypothesis | EVAL-001 | pinned baseline/candidate, actual Terra/Luna task outputs, quality and measured cost limits |
-| Release readiness | REL018-001 | explicit gate necessity/outcomes, package/upgrade identity, independent final review |
+| Release evidence preparation | REL018-001 | explicit gate necessity and exact package/upgrade evidence; mandatory source-release admission owns terminal profile and independent final review |
 
 ## Validation Strategy
 Run focused deterministic checks after each coherent edit. Heavy unrelated I/O/OS suites are deferred during iteration by owner instruction, not passed or permanently waived. Before candidate readiness, enumerate affected release gates, justify execution/reuse/not-applicable/deferral, and preserve OS/durability semantics where they matter. Do not route durability tests through RAM-disk fixture acceleration. Reuse evidence only under the existing content-subject contract.
@@ -54,15 +54,16 @@ Base/source: f643b56cd68faec590f23a8c8a7436f813285e5d, clean and equal to origin
 
 Codebase Memory was refreshed in fast mode, but reported `.ai/assets`, `.ai/scripts` and `.claude` excluded. Use explicit Git-tracked file inventories and direct code/document reads for these scoped surfaces; graph absence is not evidence.
 
-## Resume Checkpoint
-- Updated: 2026-09-18T20:40:38+08:00
-- Completed downstream evidence: Candidate09 finalized at isolated target `e19dc802326ac19dae90dc0b5df3b9b683450e1e`; 55 actual target tests and 11 independent gates passed. Both actual candidate02 models consumed MESSAGING-TX-001, with 6 met and 2 partial quality items each. These completed checks are not scheduled for replay.
-- Latest source validation: Matrix03 at `d7a8d2c5dc0619cc1c369a4514fdf996e0bb4320` failed after 3037.455s. All six v0.6.0/v0.9.0 cases passed; v0.17.0 fixture setup rejected ordinary role-path removals as missing skill retirement. The failure is preserved, process tree was empty and lease released.
-- Recovery: Host sleep interrupted the follow-up repair. The three source edits survived; no matching task test process remained at recovery. Five focused tests now pass in 1.492s, and retained-manifest checks confirm source-specific applicability and unchanged bytes for the six prior retirement fixtures.
-- Strictness decision: Remove the implication that any managed removal requires a historical retired skill. The consumer accepts evidence-backed not-applicable retirement, permits unrelated diagnostic fields, and rejects missing proof or falsely reported verified retirement. Generic removals, customization preservation, transaction recovery and target-validation evidence remain required.
-- Active: REL018-001. Next, rebind unchanged candidate09 to this checkpoint and finish the proportional validation decision. Attempt04, release profile and source audit helpers remain unactivated; this checkpoint does not claim their execution or passing results.
-- Waiting contract: Dispatch one immutable validation task and wait for its terminal callback. Do not repeatedly poll status/artifacts or wake the parent to narrate unchanged state.
-- Publication: Lab PR13 remains draft and unfinalized. No source push, merge, tag, publication or public target adoption is inferred.
+## Source Preparation Completion
+- Updated: 2026-09-18T22:13:09+08:00
+- Owner continuation explicitly authorizes source push, PR, merge, tag and publication, plus lab PR13 upgrade integration into its existing sample branch. The original lab checkout remains untouched.
+- The workflow-owned implementation, focused validation, isolated downstream usability and retained-origin evidence preparation are complete. Source-release status remains planned.
+- Matrix04 passed 9/9 actual cases at `1379c079ca153245721bdf709287091e05ed445c` in 4018.216 seconds. Exact candidate09 assets and native artifacts are retained under `.dev/releases/v0.18.0/route-assets/`.
+- Candidate09's isolated lab upgrade passed 55 tests and 11 independent gates; the actual model experiment retains 6 met/2 partial quality results and bounded token measurements. None is scheduled for replay solely because the publication checkout changes.
+- Required release profile, lifecycle-sensitive checks, independent source audit, hosted checks, live admission and publication remain pending with their source-release/terminal-policy owners. The explicit stage split does not waive a gate or call it passed.
+- Run the release profile once on the clean planned-and-promoted H1. After its pass, H2 changes only release lifecycle metadata and reruns every affected check determined from canonical input closures. H1 profile execution remains H1 evidence; no H2 terminal-profile cache/reuse claim is made.
+- PR306 declares final-delivery intent for Issues300/301/303/304 and defers coordination Issue302. Declaration is separate from review, hosted admission, integration and post-merge read-back.
+- Wait for one terminal callback per long execution; retain failures and avoid parent status/artifact polling.
 
 ## Candidate07 Failure And Bounded Recovery
 

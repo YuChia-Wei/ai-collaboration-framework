@@ -6,9 +6,9 @@
   "task_id": "EVAL-001",
   "workflow_id": "2026-09-17-v018-cost-and-messaging",
   "owner_skill": "ai-context-governance",
-  "status": "pending",
+  "status": "completed",
   "created_at": "2026-09-17T23:54:11+08:00",
-  "updated_at": "2026-09-18T09:40:26+08:00",
+  "updated_at": "2026-09-18T22:13:09+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-6-astra",
   "reasoning_effort": "ultra",
@@ -29,7 +29,7 @@
     "steps": [],
     "validation": [],
     "last_completed_step": "Candidate09 attempt11 passed 55 actual target tests in 20.407s, canonical receipt binding, 11 independent audit gates, finalization, receipt archival and exact-tree rebind. Clean target e19dc802326ac19dae90dc0b5df3b9b683450e1e has audited tree eb29ab00d595152e8cc21d7e5cdc5e232d571514. Both candidate02 model commands and independent quality review completed.",
-    "next_action": "Retain the bounded comparison and all historical failures for independent source review; no additional model run is planned."
+    "next_action": "Implementation-owned work is complete. Required release profile, lifecycle-sensitive validation, independent source review and live integration/publication admission remain with the source-release and terminal-delivery owners; this task does not claim those gates passed."
   },
   "results": {
     "summary": "Terra used 209.427s/22 calls/111190 uncached input tokens; Luna used 163.443s/27 calls/86171 uncached input tokens. Uncached input decreased 9.87% and 33.13% respectively versus the v0.16 baseline. Both have 6 met/2 partial; baseline had 6 met/1 partial/1 not demonstrated. No overall rubric pass threshold was defined.",
@@ -38,9 +38,11 @@
       "PASS actual 55-test candidate08 target execution and canonical receipt binding",
       "PASS independent projected-content audit:9proof reuses and1format re-execution",
       "PASS canonical finalization, receipt archival, exact-tree rebind and target effective readiness",
-      "PASS both actual model command executions; catalog-rule consumption remained incomplete"
+      "PASS both actual model command executions; catalog-rule consumption remained incomplete",
+      "PASS corrected candidate09 attempt11: 55 of 55 actual target tests in 20.407 seconds and all 11 independent audit gates",
+      "PASS actual candidate02 Terra and Luna execution and exact target-rule consumption; quality remains 6 met and 2 partial each"
     ],
-    "finding_status": "partially-addressed",
+    "finding_status": "addressed",
     "residual_risk": "One replicate, v0.16 baseline, cache/runtime differences and different supervision prevent statistical, causal or company-credit conclusions. Migration and coordination costs are excluded.",
     "follow_up_needed": true
   },
