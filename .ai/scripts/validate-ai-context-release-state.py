@@ -522,25 +522,67 @@ def pending_terminal_issue_delivery(
     )
 
 
+def validate_skill_retirement_fixture(case, packet, fixture):
+    """Bind retirement applicability to the selected source migration."""
+    selected = packet.get("migration", {}).get("selected_input", {})
+    contract = packet.get("migration", {}).get("contract", {})
+    version = selected.get("previous_version")
+    manifest = selected.get("previous_files_sha256")
+    sources = contract.get("sources")
+    if (not isinstance(version, str) or not isinstance(manifest, str)
+            or not isinstance(sources, list)):
+        raise ReleaseStateError("actual upgrade retirement fixture lacks selected source evidence")
+    matching_sources = [source for source in sources if isinstance(source, dict)
+                        and source.get("version") == version and source.get("manifest_sha256") == manifest]
+    if len(matching_sources) != 1 or version.lstrip("v") != str(case.get("origin", "")).lstrip("v"):
+        raise ReleaseStateError("actual upgrade retirement fixture source differs from its case")
+    operations = matching_sources[0].get("operations")
+    if not isinstance(operations, list) or not all(isinstance(operation, dict) for operation in operations):
+        raise ReleaseStateError("actual upgrade retirement fixture source operations are invalid")
+    removals = [operation["path"] for operation in operations
+                if operation.get("kind") == "remove" and operation.get("ownership") == "framework-managed"
+                and isinstance(operation.get("path"), str)]
+    if len(removals) != sum(operation.get("kind") == "remove" and operation.get("ownership") == "framework-managed"
+                            for operation in operations):
+        raise ReleaseStateError("actual upgrade retirement fixture removal path is invalid")
+    retired = [path for path in removals if "/dev-workflow/" in path or "/repo-structure-sync/" in path]
+    applicability = "selected" if retired else "not-applicable-no-retired-skill-source-paths"
+    expected = {
+        "origin": version,
+        "source_remove_count": len(removals),
+        "fixture_paths": retired,
+        "applicability": applicability,
+        "rename_source_count": sum(operation.get("kind") == "rename" for operation in operations),
+        "customized_retirement": "-customized-" in str(case.get("case", "")) and bool(retired),
+    }
+    if any(fixture.get(key) != value for key, value in expected.items()):
+        raise ReleaseStateError("actual upgrade retirement fixture differs from selected source evidence")
+    return "verified" if applicability == "selected" else applicability
+
+
+def retained_case_artifact(actual_root, case, name, *, document=True):
+    expected = f"evidence/{case['case']}/{name}"
+    record = case.get("artifacts", {}).get(name)
+    if not isinstance(record, dict) or record.get("path") != expected or not re.fullmatch(r"[0-9a-f]{64}", str(record.get("sha256"))):
+        raise ReleaseStateError("actual upgrade retained artifact binding is missing")
+    try:
+        raw = contained_release_asset(actual_root, expected).read_bytes()
+        if hashlib.sha256(raw).hexdigest() != record["sha256"]:
+            raise ReleaseStateError("actual upgrade retained artifact digest differs")
+        return json.loads(raw) if document else raw
+    except ReleaseStateError:
+        raise
+    except (OSError, ValueError, PackageError) as exc:
+        raise ReleaseStateError("actual upgrade retained artifact is unavailable or invalid") from exc
+
+
 def validate_direct_case_artifacts(actual_root, case, origin_identity, target_identity):
     """Bind completion to retained target output, receipts and transaction states."""
     def digest(document):
         return hashlib.sha256(json.dumps(document, sort_keys=True, separators=(",", ":"), ensure_ascii=False, allow_nan=False).encode()).hexdigest()
 
     def retained(name, *, document=True):
-        expected = f"evidence/{case['case']}/{name}"
-        record = case.get("artifacts", {}).get(name)
-        if not isinstance(record, dict) or record.get("path") != expected or not re.fullmatch(r"[0-9a-f]{64}", str(record.get("sha256"))):
-            raise ReleaseStateError("actual upgrade retained artifact binding is missing")
-        try:
-            raw = contained_release_asset(actual_root, expected).read_bytes()
-            if hashlib.sha256(raw).hexdigest() != record["sha256"]:
-                raise ReleaseStateError("actual upgrade retained artifact digest differs")
-            return json.loads(raw) if document else raw
-        except ReleaseStateError:
-            raise
-        except (OSError, ValueError, PackageError) as exc:
-            raise ReleaseStateError("actual upgrade retained artifact is unavailable or invalid") from exc
+        return retained_case_artifact(actual_root, case, name, document=document)
 
     transaction = case.get("transaction_id")
     if not re.fullmatch(r"[0-9a-f]{64}", str(transaction)):
@@ -848,11 +890,19 @@ def validate_direct_upgrade_cases(cases, case_roots, sources, matrix):
         origin_identity = next((item for item in matrix["retained_origins"] if item["version"] == origin), None)
         if origin_identity is None:
             raise ReleaseStateError("actual upgrade origin identity is missing from matrix")
+        retirement_statuses = {}
         for suffix, recovery in (("-pristine-resume", "resume"), ("-customized-none", "none"), ("-customized-rollback", "rolled-back")):
             case = selected[origin + suffix]
             if case.get("recovery") != recovery:
                 raise ReleaseStateError("actual upgrade recovery mode differs from its case")
             validate_direct_case_artifacts(case_roots[case["case"]], case, origin_identity, matrix["target"])
+            if "retirement-fixture.json" in case.get("artifacts", {}):
+                fixture = retained_case_artifact(case_roots[case["case"]], case, "retirement-fixture.json")
+                if not isinstance(fixture, dict):
+                    raise ReleaseStateError("actual upgrade retirement fixture is invalid")
+                if fixture.get("applicability") == "not-applicable-no-retired-skill-source-paths":
+                    retirement_statuses[case["case"]] = validate_skill_retirement_fixture(case, retained_case_artifact(
+                        case_roots[case["case"]], case, "packet.json"), fixture)
         for suffix in ("-pristine-resume", "-customized-none"):
             case = selected[origin + suffix]
             final = case.get("finalization", {})
@@ -861,8 +911,11 @@ def validate_direct_upgrade_cases(cases, case_roots, sources, matrix):
                     or validation.get("outcome") != "passed" or validation.get("exit_code") != 0):
                 raise ReleaseStateError("actual upgrade requires passed target validation and finalized action readiness")
             cutovers = case.get("semantic_cutovers", {})
-            if any(cutovers.get(key) != expected for key, expected in {"provider_component_selection": "preserved", "source_specific_managed_removals": "verified", "commit_grammar_adoption": "verified", "effective_rule_regeneration": "verified", "skill_retirement": "verified"}.items()):
+            if any(cutovers.get(key) != expected for key, expected in {"provider_component_selection": "preserved", "source_specific_managed_removals": "verified", "commit_grammar_adoption": "verified", "effective_rule_regeneration": "verified"}.items()):
                 raise ReleaseStateError("actual upgrade semantic cutover evidence is incomplete")
+            expected_retirement = retirement_statuses.get(case["case"], "verified")
+            if cutovers.get("skill_retirement") != expected_retirement:
+                raise ReleaseStateError("actual upgrade skill retirement applicability differs from retained evidence")
         if not selected[origin + "-customized-none"]["semantic_cutovers"].get("target_customization_ids"):
             raise ReleaseStateError("actual customized upgrade lacks retained semantic customization")
         negative = selected[origin + "-pristine-resume"].get("negative_evidence", [])

@@ -1,6 +1,6 @@
 # Remediation Progress
 
-Updated: 2026-09-18T09:40:26+08:00
+Updated: 2026-09-18T20:40:38+08:00
 
 Baseline: `ASM-20260917-23-c18`. Workflow: `2026-09-17-v018-cost-and-messaging`. This is the implementation owner's ledger, not independent verification.
 
@@ -226,3 +226,32 @@ The nine-case retained-origin matrix, 76-check release profile and independent
 source audit remain pending at this checkpoint. The actual public lab PR13 is
 still draft and contains unfinalized prerequisite preparation. No source push,
 merge, release publication or public target adoption is claimed.
+
+## Matrix03 Applicability Repair And Sleep Recovery
+
+The actual matrix ended with six passed v0.6.0/v0.9.0 cases and a failed
+v0.17.0 fixture setup after 3037.455s. It incorrectly required the two historical
+retired skills whenever a source had any managed removal. The v0.17.0 source
+has 21 managed removals from relocation but no such retired-skill paths.
+The complete failure record remains retained; its process tree was empty and
+the snapshot lease was explicitly released before repair.
+
+The executor and canonical consumer now use source-specific applicability.
+Not-applicable retirement needs a hash-bound fixture and matching source
+migration; it cannot bypass actual managed-removal, content, receipt or recovery
+checks. Unrelated diagnostic fields are allowed. A report claiming verified
+retirement despite a not-applicable fixture is rejected.
+
+Host sleep interrupted repair closeout. At recovery, all three uncommitted
+source changes survived and a scoped process readback found no matching test
+process. Earlier worker evidence includes one invalid RAM-disk fixture root and
+one malformed unittest invocation; these remain non-passing. The repaired
+five-test focused selection passed in 1.492s. A separate proof-driver comparison
+initially added a duplicate newline after the tests passed; its classification
+check was corrected without rerunning those tests. Actual retained manifests
+confirm unchanged serialized retirement fixtures for all six previous cases.
+
+No full matrix, model, product suite or release profile was rerun during this
+recovery. Attempt04 remains prepared only. Source acceptance and publication
+remain pending; the next long execution must use one terminal callback without
+repeated parent polling.

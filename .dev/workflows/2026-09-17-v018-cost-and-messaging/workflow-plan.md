@@ -4,7 +4,7 @@
 - template_id: ai-context-governance-maintenance-workflow-plan
 - template_version: 1.2.0
 - created_at: 2026-09-17T23:54:11+08:00
-- updated_at: 2026-09-18T09:40:26+08:00
+- updated_at: 2026-09-18T20:40:38+08:00
 
 ## Workflow Metadata
 - workflow_id: 2026-09-17-v018-cost-and-messaging
@@ -55,13 +55,14 @@ Base/source: f643b56cd68faec590f23a8c8a7436f813285e5d, clean and equal to origin
 Codebase Memory was refreshed in fast mode, but reported `.ai/assets`, `.ai/scripts` and `.claude` excluded. Use explicit Git-tracked file inventories and direct code/document reads for these scoped surfaces; graph absence is not evidence.
 
 ## Resume Checkpoint
-- Updated: 2026-09-18T09:40:26+08:00
-- Last completed: Candidate09 finalized in the isolated short-root target at `e19dc802326ac19dae90dc0b5df3b9b683450e1e`; 55 actual target tests, canonical receipt binding, 11 independent audit gates and exact-tree rebind passed. Original lab/product bytes remain unchanged.
-- Usability: Both candidate02 models resolved `review/direct/dotnet-backend/dotnet-mixed-review` and consumed the freshness-verified packet containing MESSAGING-TX-001. Each received 6 met and 2 partial rubric findings. Compared with the v0.16 baseline, uncached input decreased 9.87% for Terra and 33.13% for Luna in this one task. This is not company-credit or whole-project cost evidence.
-- Active: REL018-001. Implementation tasks retain pending final independent acceptance. Candidate01 incomplete rule consumption and all earlier failed operations remain preserved.
-- Next: Freeze this clean workflow checkpoint and canonically rebind unchanged candidate09 ZIP `764eb3197b0ab76efaea1ca272e76fe7c9b780db348b60ab2b1bd3b7ccefd811`; then execute the required matrix and release profile before independent source review.
-- Execution decision: The workflow owner authorizes one nine-case matrix attempt03 after this freeze. Its new retry authorization binds the immutable subject, retained timeout fingerprint, corrected runner, unchanged candidate09 and duration-based 7200s timeout. After a passing terminal record and explicit lease release, run the policy-selected 76-check release profile once with a 9000s bound. No extra nightly/OS suite or duplicate target-suite/model replay is added.
-- Publication decision: Draft lab PR13 is an unfinalized public checkpoint. Source push, PR, merge, tag and publication are not inferred from local preparation; present the concrete validated result for the final owner decision.
+- Updated: 2026-09-18T20:40:38+08:00
+- Completed downstream evidence: Candidate09 finalized at isolated target `e19dc802326ac19dae90dc0b5df3b9b683450e1e`; 55 actual target tests and 11 independent gates passed. Both actual candidate02 models consumed MESSAGING-TX-001, with 6 met and 2 partial quality items each. These completed checks are not scheduled for replay.
+- Latest source validation: Matrix03 at `d7a8d2c5dc0619cc1c369a4514fdf996e0bb4320` failed after 3037.455s. All six v0.6.0/v0.9.0 cases passed; v0.17.0 fixture setup rejected ordinary role-path removals as missing skill retirement. The failure is preserved, process tree was empty and lease released.
+- Recovery: Host sleep interrupted the follow-up repair. The three source edits survived; no matching task test process remained at recovery. Five focused tests now pass in 1.492s, and retained-manifest checks confirm source-specific applicability and unchanged bytes for the six prior retirement fixtures.
+- Strictness decision: Remove the implication that any managed removal requires a historical retired skill. The consumer accepts evidence-backed not-applicable retirement, permits unrelated diagnostic fields, and rejects missing proof or falsely reported verified retirement. Generic removals, customization preservation, transaction recovery and target-validation evidence remain required.
+- Active: REL018-001. Next, rebind unchanged candidate09 to this checkpoint and finish the proportional validation decision. Attempt04, release profile and source audit helpers remain unactivated; this checkpoint does not claim their execution or passing results.
+- Waiting contract: Dispatch one immutable validation task and wait for its terminal callback. Do not repeatedly poll status/artifacts or wake the parent to narrate unchanged state.
+- Publication: Lab PR13 remains draft and unfinalized. No source push, merge, tag, publication or public target adoption is inferred.
 
 ## Candidate07 Failure And Bounded Recovery
 

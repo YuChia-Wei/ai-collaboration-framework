@@ -249,6 +249,40 @@ def hosted_workflow() -> dict:
 
 
 class AiContextReleaseStateGwtTests(unittest.TestCase):
+    def test_gwt_000a_given_hash_bound_role_relocation_fixture_when_retirement_is_not_applicable_then_it_passes(self):
+        case = {"origin": "v0.17.0", "case": "v0.17.0-customized-rollback", "artifacts": {}}
+        packet = {"migration": {"selected_input": {"previous_version": "0.17.0", "previous_files_sha256": "a" * 64},
+                                "contract": {"sources": [{"version": "0.17.0", "manifest_sha256": "a" * 64,
+                                                            "operations": [{"kind": "remove", "ownership": "framework-managed", "path": ".ai/assets/sub-agent-role-prompts/reviewer/sub-agent.yaml"},
+                                                                           {"kind": "rename", "ownership": "framework-managed", "path": ".ai/assets/skills/reviewer/roles/sub-agent.yaml"}]}]}}}
+        fixture = {"origin": "0.17.0", "source_remove_count": 1, "fixture_paths": [],
+                   "applicability": "not-applicable-no-retired-skill-source-paths", "rename_source_count": 1,
+                   "customized_retirement": False}
+        with tempfile.TemporaryDirectory() as temp:
+            actual = Path(temp)
+            path = actual / "evidence" / case["case"] / "retirement-fixture.json"
+            path.parent.mkdir(parents=True)
+            raw = (json.dumps(fixture, sort_keys=True, separators=(",", ":")) + "\n").encode()
+            path.write_bytes(raw)
+            case["artifacts"]["retirement-fixture.json"] = {"path": path.relative_to(actual).as_posix(),
+                                                                "sha256": STATE.hashlib.sha256(raw).hexdigest()}
+            bound = STATE.retained_case_artifact(actual, case, "retirement-fixture.json")
+            self.assertEqual("not-applicable-no-retired-skill-source-paths", STATE.validate_skill_retirement_fixture(case, packet, bound))
+            path.write_bytes(raw + b"tampered")
+            with self.assertRaisesRegex(STATE.ReleaseStateError, "digest"):
+                STATE.retained_case_artifact(actual, case, "retirement-fixture.json")
+
+    def test_gwt_000b_given_retired_skill_path_when_not_applicable_is_claimed_then_it_fails_closed(self):
+        case = {"origin": "v0.17.0", "case": "v0.17.0-pristine-resume"}
+        packet = {"migration": {"selected_input": {"previous_version": "0.17.0", "previous_files_sha256": "a" * 64},
+                                "contract": {"sources": [{"version": "0.17.0", "manifest_sha256": "a" * 64,
+                                                            "operations": [{"kind": "remove", "ownership": "framework-managed", "path": ".agents/skills/dev-workflow/SKILL.md"}]}]}}}
+        fixture = {"origin": "0.17.0", "source_remove_count": 1, "fixture_paths": [],
+                   "applicability": "not-applicable-no-retired-skill-source-paths", "rename_source_count": 0,
+                   "customized_retirement": False}
+        with self.assertRaisesRegex(STATE.ReleaseStateError, "differs from selected source evidence"):
+            STATE.validate_skill_retirement_fixture(case, packet, fixture)
+
     def test_given_each_retained_origin_when_v017_retirement_fixture_is_selected_then_it_uses_actual_managed_removals(self):
         spec = importlib.util.spec_from_file_location("v017_actual_runner", ROOT / ".github/scripts/validate-v017-direct-upgrades.py")
         module = importlib.util.module_from_spec(spec)
@@ -1017,6 +1051,37 @@ class AiContextReleaseStateGwtTests(unittest.TestCase):
                 STATE.validate_direct_upgrade_execution(root, version, sources, matrix)
             path.write_text(json.dumps(evidence), encoding="utf-8")
             STATE.validate_direct_upgrade_execution(root, version, sources, matrix)
+            if version == "v0.18.0":
+                applicable = json.loads(json.dumps(evidence))
+                for case in applicable["cases"]:
+                    if case["origin"] != predecessor:
+                        continue
+                    packet = {"migration": {"selected_input": {"previous_version": predecessor.lstrip("v"), "previous_files_sha256": digest},
+                        "contract": {"sources": [{"version": predecessor.lstrip("v"), "manifest_sha256": digest,
+                            "operations": [{"kind": "remove", "ownership": "framework-managed", "path": ".ai/assets/sub-agent-role-prompts/reviewer/sub-agent.yaml"}]}]}}}
+                    fixture = {"origin": predecessor.lstrip("v"), "source_remove_count": 1, "fixture_paths": [],
+                        "applicability": "not-applicable-no-retired-skill-source-paths", "rename_source_count": 0,
+                        "customized_retirement": False, "diagnostic_note": "Optional metadata does not change applicability."}
+                    case["artifacts"] = {}
+                    for name, document in (("packet.json", packet), ("retirement-fixture.json", fixture)):
+                        artifact = path.parent / "evidence" / case["case"] / name
+                        artifact.parent.mkdir(parents=True, exist_ok=True)
+                        raw = json.dumps(document).encode()
+                        artifact.write_bytes(raw)
+                        case["artifacts"][name] = {"path": artifact.relative_to(path.parent).as_posix(), "sha256": STATE.hashlib.sha256(raw).hexdigest()}
+                    case["semantic_cutovers"]["skill_retirement"] = fixture["applicability"]
+                path.write_text(json.dumps(applicable), encoding="utf-8")
+                STATE.validate_direct_upgrade_execution(root, version, sources, matrix)
+                predecessor_case = next(case for case in applicable["cases"] if case["case"] == predecessor + "-pristine-resume")
+                predecessor_case["semantic_cutovers"]["skill_retirement"] = "verified"
+                path.write_text(json.dumps(applicable), encoding="utf-8")
+                with self.assertRaisesRegex(STATE.ReleaseStateError, "applicability differs"):
+                    STATE.validate_direct_upgrade_execution(root, version, sources, matrix)
+                predecessor_case["semantic_cutovers"]["skill_retirement"] = "not-applicable-no-retired-skill-source-paths"
+                predecessor_case["artifacts"].pop("retirement-fixture.json")
+                path.write_text(json.dumps(applicable), encoding="utf-8")
+                with self.assertRaisesRegex(STATE.ReleaseStateError, "applicability differs"):
+                    STATE.validate_direct_upgrade_execution(root, version, sources, matrix)
             changes = [
                 ("synthetic", lambda item: item.update(evidence_kind="synthetic-test")),
                 ("failed", lambda item: item.update(outcome="failed")),

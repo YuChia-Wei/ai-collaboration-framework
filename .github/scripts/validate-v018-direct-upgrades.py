@@ -177,10 +177,10 @@ def seed_target(previous, incoming, target, customized, apply, provenance, rules
     operations = selected_sources[0]["operations"]
     managed_removals = [item for item in operations if item["kind"] == "remove" and item["ownership"] == "framework-managed"]
     retired = fixture_retirement_paths(old_inventory, inventory, operations)
-    require(retired or not managed_removals, "origin has removals but lacks expected skill retirement fixtures")
+    retirement_applicability = "selected" if retired else "not-applicable-no-retired-skill-source-paths"
     write_json(logs / "retirement-fixture.json", {
         "origin": old["version"], "source_remove_count": len(managed_removals), "fixture_paths": retired,
-        "applicability": "selected" if retired else "not-applicable-no-source-removals",
+        "applicability": retirement_applicability,
         "rename_source_count": sum(item["kind"] == "rename" for item in operations),
         "customized_retirement": customized and bool(retired),
     })
@@ -213,7 +213,7 @@ def seed_target(previous, incoming, target, customized, apply, provenance, rules
                  ["git", "config", "user.name", "Direct Upgrade Fixture"], ["git", "config", "user.email", "fixture@example.invalid"],
                  ["git", "add", "--all"], ["git", "commit", "-qm", "test(fixture): record exact origin and bounded target decisions"]):
         run(argv, target, logs, "seed-" + argv[1] + (argv[2] if len(argv) > 2 else ""))
-    return initial, ledger, preserved
+    return initial, ledger, preserved, retirement_applicability
 
 
 def approved_decision(packet, candidate, ledger, provenance):
@@ -392,7 +392,7 @@ def execute_case(origin, previous, incoming, output, customized, recovery, apply
     logs = output / "evidence" / label
     logs.mkdir(parents=True)
     target = output / "work" / label
-    initial, ledger, preserved = seed_target(previous, incoming, target, customized, apply, provenance, rules, logs)
+    initial, ledger, preserved, retirement_applicability = seed_target(previous, incoming, target, customized, apply, provenance, rules, logs)
     print(json.dumps({"event": "target-seeded", "case": label}), flush=True)
     negative = negative_preflight(origin, previous, incoming, target, initial, ledger, logs, apply, provenance) if not customized else []
     before = snapshot(target)
@@ -488,7 +488,8 @@ def execute_case(origin, previous, incoming, output, customized, recovery, apply
             "negative_evidence": negative, "failed_target_validation": failed_validation,
             "semantic_cutovers": {"provider_component_selection": "preserved", "source_specific_managed_removals": "verified",
                 "target_customization_ids": [entry["id"] for entry in installed_ledger["customizations"]],
-                "commit_grammar_adoption": "verified", "effective_rule_regeneration": "verified", "skill_retirement": "verified"},
+                "commit_grammar_adoption": "verified", "effective_rule_regeneration": "verified",
+                "skill_retirement": "verified" if retirement_applicability == "selected" else retirement_applicability},
             "prestate_sha256": sha(canonical(before)), "poststate_sha256": sha(canonical(terminal_before)), "artifacts": case_artifacts(logs, output)}
 
 

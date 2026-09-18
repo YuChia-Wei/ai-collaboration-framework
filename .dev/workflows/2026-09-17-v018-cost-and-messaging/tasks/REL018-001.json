@@ -8,7 +8,7 @@
   "owner_skill": "ai-context-governance",
   "status": "in_progress",
   "created_at": "2026-09-17T23:54:11+08:00",
-  "updated_at": "2026-09-18T09:40:26+08:00",
+  "updated_at": "2026-09-18T20:40:38+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-6-astra",
   "reasoning_effort": "ultra",
@@ -28,15 +28,19 @@
   "execution": {
     "steps": [],
     "validation": [],
-    "last_completed_step": "Candidate09 ZIP/tar and source identity passed. Actual isolated upgrade, receipt, independent target audit and finalization passed. Necessity review selects 76 release checks and nine retained-origin cases without extra nightly/OS checks.",
-    "next_action": "Freeze this workflow checkpoint, canonically rebind the unchanged archive, authorize matrix attempt03, then run one required release profile and independent source audit."
+    "last_completed_step": "Matrix03 retained six passed v0.6.0/v0.9.0 cases but failed at v0.17.0 fixture setup after 3037.455s. Its schema-valid failure and empty process tree were preserved and lease released. Source-specific retirement applicability now replaces the over-strict any-removal implication in both executor and evidence consumer. Five focused tests passed in 1.492s; actual retained-source checks preserve all six previous retirement fixture bytes.",
+    "next_action": "Refresh the unchanged candidate09 source rebind after this recovery commit, finish the proportional validation decision, and only then activate required frozen validation. Matrix04 helpers are preparation only; release profile and independent source audit have not run."
   },
   "results": {
-    "summary": "Required origins remain v0.6.0, v0.9.0 and v0.17.0. Each requires pristine-resume, customized-none and customized-rollback. The package is prepared, not admitted.",
+    "summary": "The failure was a fixture applicability defect, not evidence of a failed product upgrade. v0.17.0 has 21 managed removals but no selected historical retired-skill paths. Generic removal, content preservation, recovery and target-validation checks remain required. No nine-case pass is claimed.",
     "files_changed": [],
-    "tests_run": [],
+    "tests_run": [
+      "FAILED actual matrix03: six of nine cases passed before v0.17.0 setup rejection; released lease and failure retained",
+      "PASS five focused applicability, evidence-truth and historical-compatibility tests in 1.492s",
+      "PASS real retained-source classification and six prior retirement-fixture byte comparisons"
+    ],
     "finding_status": "not-addressed",
-    "residual_risk": "Complete matrix, required release profile and independent source review remain pending. Public lab PR13 stays draft and unfinalized; source integration and publication require a later concrete owner decision.",
+    "residual_risk": "Complete current-run matrix, required release profile and independent source review remain pending. Focused tests and six historical cases do not substitute for all-nine acceptance. Host sleep interrupted repair closeout; no matching task validation processes remained at recovery readback.",
     "follow_up_needed": true
   },
   "github_issue_refs": [
