@@ -6,6 +6,7 @@ from __future__ import annotations
 import hashlib
 import importlib.util
 import unittest
+from copy import deepcopy
 from pathlib import Path
 
 import yaml
@@ -131,6 +132,8 @@ class RuntimeSkillEntryTests(unittest.TestCase):
             with self.subTest(wrapper=path):
                 self.assertEqual(entry, payload[path].content)
                 self.assertNotIn(b"framework-source", payload[path].content)
+                self.assertIn(b"## Canonical capability slots", payload[path].content)
+                self.assertIn(b".dev/ai-context/effective-rules.yaml", payload[path].content)
                 source = path.replace(".agents/skills", ".ai/assets/skills").replace(".claude/skills", ".ai/assets/skills").replace("/SKILL.md", "/skill.yaml")
                 self.assertIn(
                     f"canonical source SHA-256: `{hashlib.sha256(contents[source]).hexdigest()}`".encode("utf-8"),
@@ -173,6 +176,39 @@ class RuntimeSkillEntryTests(unittest.TestCase):
         local_data, local_raw = GENERATOR.load_skill(REPO_ROOT, "local-change-implementer")
         local_entry = GENERATOR.render_entry(local_data, local_raw)
         self.assertNotIn("## Canonical role bindings", local_entry)
+
+    def test_gwt_009_given_canonical_capabilities_and_target_mode_when_rendered_then_slots_and_exact_selector_discovery_are_projected(self) -> None:
+        # Given each selected canonical skill's capability slots and initialized-target route contract.
+        # When rendering its runtime entry, then only canonical slots and target selector discovery appear.
+        expected_slots = {
+            "code-reviewer": "review",
+            "local-change-implementer": "local-change",
+        }
+        for skill_id, capability_slot in expected_slots.items():
+            with self.subTest(skill_id=skill_id):
+                data, raw = GENERATOR.load_skill(REPO_ROOT, skill_id)
+                entry = GENERATOR.render_entry(data, raw)
+
+                self.assertIn("## Canonical capability slots", entry)
+                self.assertIn(f"`capability_slots`: `{capability_slot}`.", entry)
+                self.assertIn(
+                    "When `initialized-target`, before the resolver invocation, inspect only `.dev/ai-context/effective-rules.yaml` routing selector inventory.",
+                    entry,
+                )
+                self.assertIn(
+                    "select an existing exact tuple of `capability`, `execution_mode`, `technology_profile`, `file_type`",
+                    entry,
+                )
+                self.assertIn("do not derive selectors from this skill ID, an action label, or a file suffix.", entry)
+                self.assertIn("preserve canonical unresolved outcome `stop-applicable-action`; do not use aliases or default routes.", entry)
+
+        # When the canonical target mode is absent, then target discovery guidance is absent too.
+        local_data, local_raw = GENERATOR.load_skill(REPO_ROOT, "local-change-implementer")
+        source_only = deepcopy(local_data)
+        source_only["effective_rule_consumption"]["applicability"]["modes"].pop("initialized-target")
+        source_only_entry = GENERATOR.render_entry(source_only, local_raw)
+        self.assertNotIn(".dev/ai-context/effective-rules.yaml", source_only_entry)
+        self.assertNotIn("exact tuple of `capability`", source_only_entry)
 
 
 if __name__ == "__main__":

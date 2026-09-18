@@ -11,6 +11,7 @@ import yaml
 
 SELECTED_SKILLS = ("code-reviewer", "local-change-implementer")
 RUNTIME_ENTRY_VERSION = "1.0"
+INITIALIZED_TARGET_SELECTOR_INVENTORY = ".dev/ai-context/effective-rules.yaml"
 
 
 def source_path(skill_id: str) -> Path:
@@ -110,6 +111,38 @@ def allowed_applicability_modes(data: dict[str, Any], skill_id: str) -> list[str
     return [require_string(mode, f"{label}.applicability.modes key") for mode in modes]
 
 
+def projected_capability_slots(data: dict[str, Any], skill_id: str) -> list[str]:
+    """Project the canonical capability slots without creating route aliases."""
+    return require_strings(data.get("capability_slots"), f"{source_path(skill_id).as_posix()}: capability_slots")
+
+
+def initialized_target_route_selection(data: dict[str, Any], skill_id: str) -> tuple[list[str], str] | None:
+    """Return canonical selector metadata only when the target mode is declared."""
+    label = f"{source_path(skill_id).as_posix()}: effective_rule_consumption"
+    consumption = data.get("effective_rule_consumption")
+    if not isinstance(consumption, dict):
+        raise ValueError(f"{label} must be a mapping")
+    applicability = consumption.get("applicability")
+    if not isinstance(applicability, dict):
+        raise ValueError(f"{label}.applicability must be a mapping")
+    modes = applicability.get("modes")
+    if not isinstance(modes, dict):
+        raise ValueError(f"{label}.applicability.modes must be a mapping")
+    target_mode = modes.get("initialized-target")
+    if target_mode is None:
+        return None
+    if not isinstance(target_mode, dict):
+        raise ValueError(f"{label}.applicability.modes.initialized-target must be a mapping")
+    if require_string(
+        target_mode.get("rule_selection"),
+        f"{label}.applicability.modes.initialized-target.rule_selection",
+    ) != "exact target effective-state route":
+        raise ValueError(f"{label}.applicability.modes.initialized-target must select an exact target effective-state route")
+    selectors = require_strings(consumption.get("selectors"), f"{label}.selectors")
+    unresolved_outcome = require_string(consumption.get("unresolved_outcome"), f"{label}.unresolved_outcome")
+    return selectors, unresolved_outcome
+
+
 def projected_role_bindings(data: dict[str, Any], skill_id: str) -> list[dict[str, str]]:
     """Project declared role-selection metadata without creating role authority."""
     bindings = data.get("role_bindings")
@@ -157,6 +190,8 @@ def render_entry(data: dict[str, Any], raw: bytes) -> str:
     skill_id = require_string(data.get("asset_id"), "asset_id")
     entry = load_runtime_entry(data, skill_id)
     modes = allowed_applicability_modes(data, skill_id)
+    capability_slots = projected_capability_slots(data, skill_id)
+    target_route_selection = initialized_target_route_selection(data, skill_id)
     role_bindings = projected_role_bindings(data, skill_id)
     source = source_path(skill_id).as_posix()
     mode_list = ", ".join(f"`{mode}`" for mode in modes)
@@ -185,9 +220,30 @@ def render_entry(data: dict[str, Any], raw: bytes) -> str:
     output.extend(
         [
             "",
+            "## Canonical capability slots",
+            "",
+            f"- Generated from `{source}` `capability_slots`: {', '.join(f'`{slot}`' for slot in capability_slots)}.",
+        ]
+    )
+    output.extend(
+        [
+            "",
             "## Effective-rule preflight",
             "",
             f"- Select only an applicability mode declared by this canonical payload: {mode_list}.",
+        ]
+    )
+    if target_route_selection is not None:
+        selectors, unresolved_outcome = target_route_selection
+        output.extend(
+            [
+                f"- When `initialized-target`, before the resolver invocation, inspect only `{INITIALIZED_TARGET_SELECTOR_INVENTORY}` routing selector inventory.",
+                f"- For each task partition, select an existing exact tuple of {', '.join(f'`{selector}`' for selector in selectors)}; do not derive selectors from this skill ID, an action label, or a file suffix.",
+                f"- If no exact existing tuple is available, preserve canonical unresolved outcome `{unresolved_outcome}`; do not use aliases or default routes.",
+            ]
+        )
+    output.extend(
+        [
             "- Use the request-authorized effective-rule resolver invocation. Run `.ai/scripts/resolve-effective-rule-packet.py --help` only when its supported interface is needed.",
             "",
         ]

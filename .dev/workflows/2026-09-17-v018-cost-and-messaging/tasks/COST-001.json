@@ -8,7 +8,7 @@
   "owner_skill": "ai-context-governance",
   "status": "in_progress",
   "created_at": "2026-09-17T23:54:11+08:00",
-  "updated_at": "2026-09-18T00:28:00+08:00",
+  "updated_at": "2026-09-18T08:48:09+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-6-astra",
   "reasoning_effort": "ultra",
@@ -31,8 +31,8 @@
   "execution": {
     "steps": [],
     "validation": [],
-    "last_completed_step": "Integrated deterministic runtime entries and package-time projection for the two-skill pilot, private helper scope, and proportionate review evidence.",
-    "next_action": "Complete integrated validation and immutable package projection; verify downstream quality and cost."
+    "last_completed_step": "Candidate08 actual Terra and Luna reviews both guessed nonexistent exact selectors. The generated entries now project canonical capability_slots and direct initialized targets to existing routing selector inventory; nine focused tests and four-entry parity passed.",
+    "next_action": "Build the corrected immutable candidate and verify actual rule consumption plus quality in fresh Terra/Luna trials."
   },
   "results": {
     "summary": "Terra xhigh implementation integrated; root reconciled role paths and removed redundant full-manifest loading from active entry guidance.",
@@ -56,10 +56,11 @@
       "PASS workflow implementation contract: 7 tests",
       "BLOCKED capability contract: 13 cases passed, 1 Temp permission error; full suite not passed",
       "PASS integrated runtime-entry tests: 7, including projected payload and LF normalization",
-      "PASS generated entry parity after role-path integration"
+      "PASS generated entry parity after role-path integration",
+      "PASS nine runtime-entry tests and parity after actual Terra/Luna selector-discovery defect"
     ],
     "finding_status": "partially-addressed",
-    "residual_risk": "Final package, downstream evidence and independent acceptance remain pending.",
+    "residual_risk": "First candidate reviews stopped catalog-rule checks; their lower counters are not accepted as usability savings. Corrected real trials and final source validation remain pending.",
     "follow_up_needed": true
   },
   "github_issue_refs": [

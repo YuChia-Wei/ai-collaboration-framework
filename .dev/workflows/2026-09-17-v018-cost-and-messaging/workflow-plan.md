@@ -55,12 +55,13 @@ Base/source: f643b56cd68faec590f23a8c8a7436f813285e5d, clean and equal to origin
 Codebase Memory was refreshed in fast mode, but reported `.ai/assets`, `.ai/scripts` and `.claude` excluded. Use explicit Git-tracked file inventories and direct code/document reads for these scoped surfaces; graph absence is not evidence.
 
 ## Resume Checkpoint
-- Last completed: private-role colocation, proportional execution rules, generated runtime entry pilot, messaging contracts and first package candidates. Actual Terra/Luna baseline reviews completed on the lab's v0.16.0 installation.
-- Active: COST-001.
-- Next: Build candidate08 with the Issue #304 rollback snapshot correction, reconcile the isolated target's historical-audit gate before sealing a new plan, then perform v0.18 application, independent projected-content audit and matched candidate reviews. Lab draft PR #13 remains an explicitly unfinalized public checkpoint.
-- Validation: The approved audit-03 receipt/schema retry passed without rerunning its recorded tests. A separate short-root v0.17 transaction passed its actual 52-test target command and finalized. The owner-approved bilingual entry reconciliation retains 13 rules and 20 routes. Canonical archival in the original transaction, followed by transport of only its committed pending-receipt deletion, made successor `4507aecb7f2132abf7ec7f1b41aabc7f1aa35ed5` pass effective-state validation without private transaction data. Earlier receipt construction, clone portability and committed-HEAD cleanup failures remain retained. Candidate02 matrix timed out after three cases; complete matrix and release acceptance remain pending.
-- Execution decision: the parent authorizes another matrix attempt only after candidate usability and payload freeze, using a new immutable subject, a timeout justified by observed duration, and retained prior failures. This is a bounded continuation of the owner's autonomous release preparation, not a new user approval or a test waiver.
-- Publication decision: not requested yet; prepare a concrete candidate before any final owner publication decision.
+- Updated: 2026-09-18T08:48:09+08:00
+- Last completed: Candidate08 finalized in the isolated short-root target at `8cb687d567428d888d4cea1fb30e30cff90c194b`;55actual target tests, receipt binding, independent audit and exact-tree rebind passed. Original lab/product bytes remain unchanged.
+- Active: COST-001 selector-discovery correction; EVAL-001 retains the actual experiment checkpoint. Both actual Terra/Luna candidate01 reviews guessed nonexistent selectors and stopped catalog checks despite a ready target. Their lower counters are not accepted as savings.
+- Next: Build candidate09 with canonical capability projection and exact target-selector discovery; prepare fresh isolated input and repeat the same bounded reviews. Draft lab PR13 remains an unfinalized public checkpoint.
+- Validation: Nine focused runtime-entry tests and four-entry parity passed. Earlier55-test/audit evidence belongs to candidate08, not new candidate09. All historical failed operations remain retained.
+- Execution decision: after corrected candidate usability and payload freeze, the parent authorizes one nine-case matrix attempt with a new immutable subject and duration-based 7200s timeout. Then run the policy-selected 76-check release profile once with a 9000s supervisor bound. No extra nightly/OS suite or duplicate target-suite replay is added.
+- Publication decision: not requested yet; prepare a concrete candidate before the final owner source-integration/publication decision.
 
 ## Candidate07 Failure And Bounded Recovery
 

@@ -30,9 +30,16 @@ Use for a bounded code or implementation-guidance review that returns evidence-b
 5. Evaluate each applicable role binding. In a routine direct review, record only material applicable roles and state that unselected roles were not applicable; use full per-role execution records only for a terminal, high-risk, or external acceptance path.
 6. Load the output contract only when findings are ready to format or persistence is requested.
 
+## Canonical capability slots
+
+- Generated from `.ai/assets/skills/code-reviewer/skill.yaml` `capability_slots`: `review`.
+
 ## Effective-rule preflight
 
 - Select only an applicability mode declared by this canonical payload: `framework-source`, `initialized-target`.
+- When `initialized-target`, before the resolver invocation, inspect only `.dev/ai-context/effective-rules.yaml` routing selector inventory.
+- For each task partition, select an existing exact tuple of `capability`, `execution_mode`, `technology_profile`, `file_type`; do not derive selectors from this skill ID, an action label, or a file suffix.
+- If no exact existing tuple is available, preserve canonical unresolved outcome `stop-applicable-action`; do not use aliases or default routes.
 - Use the request-authorized effective-rule resolver invocation. Run `.ai/scripts/resolve-effective-rule-packet.py --help` only when its supported interface is needed.
 
 ## Canonical role bindings

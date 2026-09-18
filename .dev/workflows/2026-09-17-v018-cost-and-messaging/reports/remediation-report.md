@@ -1,6 +1,6 @@
 # Remediation Progress
 
-Updated: 2026-09-18T01:38:00+08:00
+Updated: 2026-09-18T08:48:09+08:00
 
 Baseline: `ASM-20260917-23-c18`. Workflow: `2026-09-17-v018-cost-and-messaging`. This is the implementation owner's ledger, not independent verification.
 
@@ -10,7 +10,7 @@ Baseline: `ASM-20260917-23-c18`. Workflow: `2026-09-17-v018-cost-and-messaging`.
 | F-002 | partially-resolved | Routine evidence tiers propagated; private helper types permitted within unchanged semantic boundaries. Final package and independent acceptance pending. |
 | F-003 | partially-resolved | MESSAGING-TX-001 and ARCH-UOW-001 clarification integrated with conditional design/review routing. Downstream and independent acceptance pending. |
 
-No usability improvement, release readiness, independent audit success or publication is claimed. Heavy unrelated I/O/OS checks are deferred to the explicit release necessity review.
+No accepted usability savings, source release readiness, final independent source audit or publication is claimed. The isolated downstream candidate08 audit and finalization passed. The necessity review selects one frozen release profile and retained-origin matrix; it adds no nightly or unrelated OS suite.
 
 ## Integrated Implementation
 
@@ -165,3 +165,26 @@ No usability improvement, release readiness, independent audit success or public
 - Final validation is one frozen release profile plus the nine retained-origin
   cases. No nightly-full or unrelated OS suite is added. Existing non-passing
   matrices and the unpublished candidate cannot supply passing evidence.
+
+## Finalized Candidate08 And Observed Runtime Routing Gap
+
+The isolated mq18e transaction completed actual 55-test validation, canonical
+receipt binding, independent audit (nine proof reuses and one re-executed format
+gate), finalization and terminal receipt archival. Its clean commit
+`8cb687d567428d888d4cea1fb30e30cff90c194b` has the exact independently reviewed
+tree `9b77e694fcaa0bade49c11ad55c5a65b3ba51c07`. No product bytes changed.
+The first format attempt was sandbox-blocked; the approved unchanged-content
+retry used the working Git Bash execution boundary without rerunning 55tests.
+The target-owned manifest continues excluding the generic source-navigation
+validator's known package-projection failures; those are not passing checks.
+
+Actual candidate01 Terra and Luna commands completed in151.363s/13calls and
+177.184s/14calls respectively. Both guessed nonexistent rule selectors and
+stopped catalog checks, despite valid existing target routes. Retain these
+outputs as limited experimental evidence; lower counters alone are not savings.
+The generated entries had omitted canonical capability slots and route discovery.
+The correction mechanically projects capability slots and directs initialized
+targets to their existing exact selector inventory before resolution, preserving
+freshness, missing-route failure and source/target boundaries. Nine focused
+entry tests and generated parity passed. Candidate09, actual corrected model
+trials, complete release gates and independent source review remain pending.

@@ -29,9 +29,16 @@ Use for one accepted local technical target and operation, including direct call
 3. Apply the smallest coherent local change and update only its direct usage sites and immediate tests when necessary. Preserve existing authorization; do not widen it.
 4. Run the narrowest meaningful validation for the changed behavior and report compatibility, touched radius, and any prevented expansion.
 
+## Canonical capability slots
+
+- Generated from `.ai/assets/skills/local-change-implementer/skill.yaml` `capability_slots`: `local-change`.
+
 ## Effective-rule preflight
 
 - Select only an applicability mode declared by this canonical payload: `framework-source`, `initialized-target`.
+- When `initialized-target`, before the resolver invocation, inspect only `.dev/ai-context/effective-rules.yaml` routing selector inventory.
+- For each task partition, select an existing exact tuple of `capability`, `execution_mode`, `technology_profile`, `file_type`; do not derive selectors from this skill ID, an action label, or a file suffix.
+- If no exact existing tuple is available, preserve canonical unresolved outcome `stop-applicable-action`; do not use aliases or default routes.
 - Use the request-authorized effective-rule resolver invocation. Run `.ai/scripts/resolve-effective-rule-packet.py --help` only when its supported interface is needed.
 
 ## Conditional expansion

@@ -109,10 +109,12 @@ distribution:
     automation: github-actions
     creates_or_moves_tag: false
 validation:
-  evidence: Preparation is active. Focused role ownership and context checks passed.
-    Runtime entry, messaging, downstream usability, direct-origin package evidence
-    and final independent verification remain pending. Deferred I/O and OS checks
-    are not passing evidence.
+  evidence: Preparation is active. Runtime entry, role ownership and messaging focused
+    checks passed. Candidate08 completed an isolated55-test upgrade and independent
+    target audit; actual cheaper-model trials exposed missing selector-discovery
+    guidance, now corrected with nine focused entry tests. Corrected candidate
+    usability, complete retained-origin matrix, required release profile and final
+    independent source verification remain pending. Deferred checks are not passed.
   workflow_id: 2026-09-17-v018-cost-and-messaging
   related_workflows: []
   related_assessments:
