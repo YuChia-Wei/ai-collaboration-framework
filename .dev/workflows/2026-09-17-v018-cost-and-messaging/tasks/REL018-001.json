@@ -6,9 +6,9 @@
   "task_id": "REL018-001",
   "workflow_id": "2026-09-17-v018-cost-and-messaging",
   "owner_skill": "ai-context-governance",
-  "status": "pending",
+  "status": "in_progress",
   "created_at": "2026-09-17T23:54:11+08:00",
-  "updated_at": "2026-09-18T08:48:09+08:00",
+  "updated_at": "2026-09-18T09:40:26+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-6-astra",
   "reasoning_effort": "ultra",
@@ -28,15 +28,15 @@
   "execution": {
     "steps": [],
     "validation": [],
-    "last_completed_step": "Candidate08 ZIP/tar and source identity passed. Real isolated application/finalization verified Issue303 cleanup and Issue304 recovery fixes. Necessity review selects 76 release checks and 9 retained-origin cases, with no extra nightly/OS suite.",
-    "next_action": "Build corrected entry candidate09, finish actual usability and quality evidence, freeze once, execute complete retained-origin matrix and required release profile, then independent source review."
+    "last_completed_step": "Candidate09 ZIP/tar and source identity passed. Actual isolated upgrade, receipt, independent target audit and finalization passed. Necessity review selects 76 release checks and nine retained-origin cases without extra nightly/OS checks.",
+    "next_action": "Freeze this workflow checkpoint, canonically rebind the unchanged archive, authorize matrix attempt03, then run one required release profile and independent source audit."
   },
   "results": {
-    "summary": "Required retained origins remain v0.6.0, v0.9.0 and v0.17.0. No compatibility retirement or additional test waiver inferred.",
+    "summary": "Required origins remain v0.6.0, v0.9.0 and v0.17.0. Each requires pristine-resume, customized-none and customized-rollback. The package is prepared, not admitted.",
     "files_changed": [],
     "tests_run": [],
     "finding_status": "not-addressed",
-    "residual_risk": "The next candidate is not admitted. Complete actual matrix, release profile and final independent source review remain pending. Earlier candidate partial cases do not admit new archive bytes.",
+    "residual_risk": "Complete matrix, required release profile and independent source review remain pending. Public lab PR13 stays draft and unfinalized; source integration and publication require a later concrete owner decision.",
     "follow_up_needed": true
   },
   "github_issue_refs": [

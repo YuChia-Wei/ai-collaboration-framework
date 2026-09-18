@@ -4,7 +4,7 @@
 - template_id: ai-context-governance-maintenance-workflow-plan
 - template_version: 1.2.0
 - created_at: 2026-09-17T23:54:11+08:00
-- updated_at: 2026-09-18T06:27:17+08:00
+- updated_at: 2026-09-18T09:40:26+08:00
 
 ## Workflow Metadata
 - workflow_id: 2026-09-17-v018-cost-and-messaging
@@ -55,13 +55,13 @@ Base/source: f643b56cd68faec590f23a8c8a7436f813285e5d, clean and equal to origin
 Codebase Memory was refreshed in fast mode, but reported `.ai/assets`, `.ai/scripts` and `.claude` excluded. Use explicit Git-tracked file inventories and direct code/document reads for these scoped surfaces; graph absence is not evidence.
 
 ## Resume Checkpoint
-- Updated: 2026-09-18T08:48:09+08:00
-- Last completed: Candidate08 finalized in the isolated short-root target at `8cb687d567428d888d4cea1fb30e30cff90c194b`;55actual target tests, receipt binding, independent audit and exact-tree rebind passed. Original lab/product bytes remain unchanged.
-- Active: COST-001 selector-discovery correction; EVAL-001 retains the actual experiment checkpoint. Both actual Terra/Luna candidate01 reviews guessed nonexistent selectors and stopped catalog checks despite a ready target. Their lower counters are not accepted as savings.
-- Next: Build candidate09 with canonical capability projection and exact target-selector discovery; prepare fresh isolated input and repeat the same bounded reviews. Draft lab PR13 remains an unfinalized public checkpoint.
-- Validation: Nine focused runtime-entry tests and four-entry parity passed. Earlier55-test/audit evidence belongs to candidate08, not new candidate09. All historical failed operations remain retained.
-- Execution decision: after corrected candidate usability and payload freeze, the parent authorizes one nine-case matrix attempt with a new immutable subject and duration-based 7200s timeout. Then run the policy-selected 76-check release profile once with a 9000s supervisor bound. No extra nightly/OS suite or duplicate target-suite replay is added.
-- Publication decision: not requested yet; prepare a concrete candidate before the final owner source-integration/publication decision.
+- Updated: 2026-09-18T09:40:26+08:00
+- Last completed: Candidate09 finalized in the isolated short-root target at `e19dc802326ac19dae90dc0b5df3b9b683450e1e`; 55 actual target tests, canonical receipt binding, 11 independent audit gates and exact-tree rebind passed. Original lab/product bytes remain unchanged.
+- Usability: Both candidate02 models resolved `review/direct/dotnet-backend/dotnet-mixed-review` and consumed the freshness-verified packet containing MESSAGING-TX-001. Each received 6 met and 2 partial rubric findings. Compared with the v0.16 baseline, uncached input decreased 9.87% for Terra and 33.13% for Luna in this one task. This is not company-credit or whole-project cost evidence.
+- Active: REL018-001. Implementation tasks retain pending final independent acceptance. Candidate01 incomplete rule consumption and all earlier failed operations remain preserved.
+- Next: Freeze this clean workflow checkpoint and canonically rebind unchanged candidate09 ZIP `764eb3197b0ab76efaea1ca272e76fe7c9b780db348b60ab2b1bd3b7ccefd811`; then execute the required matrix and release profile before independent source review.
+- Execution decision: The workflow owner authorizes one nine-case matrix attempt03 after this freeze. Its new retry authorization binds the immutable subject, retained timeout fingerprint, corrected runner, unchanged candidate09 and duration-based 7200s timeout. After a passing terminal record and explicit lease release, run the policy-selected 76-check release profile once with a 9000s bound. No extra nightly/OS suite or duplicate target-suite/model replay is added.
+- Publication decision: Draft lab PR13 is an unfinalized public checkpoint. Source push, PR, merge, tag and publication are not inferred from local preparation; present the concrete validated result for the final owner decision.
 
 ## Candidate07 Failure And Bounded Recovery
 

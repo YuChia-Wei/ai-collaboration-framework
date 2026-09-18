@@ -8,7 +8,7 @@
   "owner_skill": "ai-context-governance",
   "status": "pending",
   "created_at": "2026-09-17T23:54:11+08:00",
-  "updated_at": "2026-09-18T08:48:09+08:00",
+  "updated_at": "2026-09-18T09:40:26+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-6-astra",
   "reasoning_effort": "ultra",
@@ -28,11 +28,11 @@
   "execution": {
     "steps": [],
     "validation": [],
-    "last_completed_step": "Candidate08 attempt09 passed 55actual target tests in 20.128s, bound its receipt, passed 10independent gates, finalized and archived the pending receipt. Clean isolated target 8cb687d567428d888d4cea1fb30e30cff90c194b has the exact audited tree. Both actual candidate01 model commands passed but reported catalog-rule limits from guessed selectors.",
-    "next_action": "Retain candidate01 output and quality review; prepare a fresh candidate09 transaction with corrected generated-entry selector discovery, then run the same Terra/Luna task again."
+    "last_completed_step": "Candidate09 attempt11 passed 55 actual target tests in 20.407s, canonical receipt binding, 11 independent audit gates, finalization, receipt archival and exact-tree rebind. Clean target e19dc802326ac19dae90dc0b5df3b9b683450e1e has audited tree eb29ab00d595152e8cc21d7e5cdc5e232d571514. Both candidate02 model commands and independent quality review completed.",
+    "next_action": "Retain the bounded comparison and all historical failures for independent source review; no additional model run is planned."
   },
   "results": {
-    "summary": "Actual isolated upgrade completed. Candidate01 Terra used 151.363s/13calls and Luna 177.184s/14calls, but both stopped catalog checks. These counters are limited experiment evidence, not accepted quality or credit savings.",
+    "summary": "Terra used 209.427s/22 calls/111190 uncached input tokens; Luna used 163.443s/27 calls/86171 uncached input tokens. Uncached input decreased 9.87% and 33.13% respectively versus the v0.16 baseline. Both have 6 met/2 partial; baseline had 6 met/1 partial/1 not demonstrated. No overall rubric pass threshold was defined.",
     "files_changed": [],
     "tests_run": [
       "PASS actual 55-test candidate08 target execution and canonical receipt binding",
@@ -41,7 +41,7 @@
       "PASS both actual model command executions; catalog-rule consumption remained incomplete"
     ],
     "finding_status": "partially-addressed",
-    "residual_risk": "Baseline is labv016; one cell replicate, differing cache/runtime conditions and candidate complete-tree supervision prevent statistical or billing conclusions. Migration/coordination cost is excluded from task token counters.",
+    "residual_risk": "One replicate, v0.16 baseline, cache/runtime differences and different supervision prevent statistical, causal or company-credit conclusions. Migration and coordination costs are excluded.",
     "follow_up_needed": true
   },
   "github_issue_refs": [

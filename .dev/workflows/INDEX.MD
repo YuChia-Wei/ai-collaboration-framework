@@ -8,7 +8,7 @@ task-level progress.
 
 | Workflow | Title | Owner | Status | Updated | Entry Point |
 | --- | --- | --- | --- | --- | --- |
-| [`2026-09-17-v018-cost-and-messaging`](2026-09-17-v018-cost-and-messaging/workflow.yaml) | v0.18.0 skill usability and transactional messaging | `ai-context-governance` | `in_progress` | `2026-09-17T23:54:11+08:00` | [plan](2026-09-17-v018-cost-and-messaging/workflow-plan.md) |
+| [`2026-09-17-v018-cost-and-messaging`](2026-09-17-v018-cost-and-messaging/workflow.yaml) | v0.18.0 skill usability and transactional messaging | `ai-context-governance` | `in_progress` | `2026-09-18T09:40:26+08:00` | [plan](2026-09-17-v018-cost-and-messaging/workflow-plan.md) |
 | [`2026-09-12-v017-release`](2026-09-12-v017-release/workflow.yaml) | Prepare REL-v0.17.0 | `ai-context-governance` | `in_progress` | `2026-09-12T13:59:25+08:00` | [plan](2026-09-12-v017-release/workflow-plan.md) |
 | [`2026-09-12-init-agents-guidance`](2026-09-12-init-agents-guidance/workflow.yaml) | Task-led initialization AGENTS guidance | `ai-context-governance` | `completed` | `2026-09-12T13:42:33+08:00` | [plan](2026-09-12-init-agents-guidance/workflow-plan.md) |
 | [`2026-09-12-short-assessment-ids`](2026-09-12-short-assessment-ids/workflow.yaml) | Short assessment identities | `ai-context-governance` | `completed` | `2026-09-12T13:04:55+08:00` | [plan](2026-09-12-short-assessment-ids/workflow-plan.md) |

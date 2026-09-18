@@ -1,16 +1,16 @@
 # Remediation Progress
 
-Updated: 2026-09-18T08:48:09+08:00
+Updated: 2026-09-18T09:40:26+08:00
 
 Baseline: `ASM-20260917-23-c18`. Workflow: `2026-09-17-v018-cost-and-messaging`. This is the implementation owner's ledger, not independent verification.
 
 | Finding | State | Evidence / remaining work |
 | --- | --- | --- |
-| F-001 | partially-resolved | 17 private roles colocated with owners; generated two-skill runtime entry and package projection integrated. Actual candidate usability comparison pending. |
+| F-001 | partially-resolved | 17 private roles colocated with owners; generated two-skill runtime entry and package projection integrated. Actual candidate02 route discovery and bounded comparison completed; independent source acceptance pending. |
 | F-002 | partially-resolved | Routine evidence tiers propagated; private helper types permitted within unchanged semantic boundaries. Final package and independent acceptance pending. |
-| F-003 | partially-resolved | MESSAGING-TX-001 and ARCH-UOW-001 clarification integrated with conditional design/review routing. Downstream and independent acceptance pending. |
+| F-003 | partially-resolved | MESSAGING-TX-001 and ARCH-UOW-001 clarification integrated with conditional design/review routing. Actual downstream rule consumption demonstrated; independent source acceptance pending. |
 
-No accepted usability savings, source release readiness, final independent source audit or publication is claimed. The isolated downstream candidate08 audit and finalization passed. The necessity review selects one frozen release profile and retained-origin matrix; it adds no nightly or unrelated OS suite.
+The bounded candidate02 experiment shows lower uncached input with retained quality limitations; no billing, whole-project savings, source release readiness or publication is claimed. The isolated downstream candidate09 audit and finalization passed. The necessity review selects one frozen release profile and retained-origin matrix; it adds no nightly or unrelated OS suite.
 
 ## Integrated Implementation
 
@@ -188,3 +188,41 @@ targets to their existing exact selector inventory before resolution, preserving
 freshness, missing-route failure and source/target boundaries. Nine focused
 entry tests and generated parity passed. Candidate09, actual corrected model
 trials, complete release gates and independent source review remain pending.
+
+## Candidate09 Frozen-Input Checkpoint
+
+Candidate09 was built at `d3364303d55d1f3b8e67c720b04c1d3b34b1d4f3`.
+Its ZIP SHA-256 is `764eb3197b0ab76efaea1ca272e76fe7c9b780db348b60ab2b1bd3b7ccefd811`.
+Attempt10 failed one obsolete target source-identity expectation (54/55 passed);
+canonical rollback completed and no receipt was produced. The corrected isolated
+prestate preserved product and authority bytes. Attempt11 passed 55/55 actual
+target tests in 20.407s, canonical receipt binding, all 11 independent audit
+gates, finalization and pending-receipt archival. The finalized clean target
+`e19dc802326ac19dae90dc0b5df3b9b683450e1e` exactly matches independently audited
+tree `eb29ab00d595152e8cc21d7e5cdc5e232d571514`.
+
+Both actual candidate02 reviews consumed the exact target route and MESSAGING-TX-001.
+Terra measured 209.427s, 22 calls and 111190 uncached input tokens; Luna measured
+163.443s, 27 calls and 86171 uncached input tokens. Uncached input decreased
+9.87% and 33.13% respectively against the retained v0.16 baseline. Independent
+quality review found 6 met and 2 partial items for both, versus baseline
+6 met, 1 partial and 1 not demonstrated. Neither candidate fully explained
+initial inbox receipt versus successful completion or the retention boundary.
+The rubric has no overall pass threshold. One replicate, cache/runtime variation,
+the v0.16 baseline and supervision differences prevent broader causal, billing
+or whole-migration cost conclusions. No additional model run is planned.
+
+Candidate09 has 677 payload files, maximum relative payload length 132 and
+maximum possible staging-relative length 178. A 35-character normal lab root
+produces maxima 168/214; the earlier 128-character nested root produces 261/307,
+with 1 payload and 400 possible staging paths at least 260 characters. A
+64-character isolated root completed real application with core.longpaths=false.
+This measures exposure, not incident probability. The measured 80-character
+root budget keeps current staging paths below 260; it is not a universal tool
+or future-package guarantee.
+
+The parent accepts these bounded experiment results for final source review.
+The nine-case retained-origin matrix, 76-check release profile and independent
+source audit remain pending at this checkpoint. The actual public lab PR13 is
+still draft and contains unfinalized prerequisite preparation. No source push,
+merge, release publication or public target adoption is claimed.
