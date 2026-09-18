@@ -281,3 +281,24 @@ product bytes remain unchanged.
 
 The preceding progress sections are historical checkpoints; their pending and
 failed states remain evidence about those points in time.
+
+## Release Profile Routing And Wiring Repair
+
+The first release profile at `d9ba7890` failed in 1655.863 seconds. A bare
+Windows `bash` invocation selected WSL rather than the intended Git for Windows
+Bash; the navigation check timed out at 600 seconds. Fifteen checks passed,
+one timed out, fifty-eight were not launched, and final evidence sealing failed.
+The failed result, native output and released lease remain retained.
+
+Sealing also exposed an independent implementation omission: the runtime skill
+entry check was registered but never invoked by the aggregate runner. The exact
+registered call is now wired once. Eleven existing registry tests and nine
+runtime entry tests passed. This repairs execution coverage without weakening
+assertions or increasing timeouts. The ignored external dispatcher will bind an
+explicit native Bash executable before any subsequent execution.
+
+Because the aggregate runner is a packaged input, a replacement archive and its
+applicable actual validation are required. Candidate09, Matrix04, and the isolated
+target results remain evidence about their original identities. They do not
+attest the replacement candidate. Source release admission continues to own these
+pending gates; the implementation repair does not claim publication or acceptance.
