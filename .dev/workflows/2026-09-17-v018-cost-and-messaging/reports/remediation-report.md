@@ -1,6 +1,6 @@
 # Remediation Progress
 
-Updated: 2026-09-18T22:13:09+08:00
+Updated: 2026-09-19T00:15:00+08:00
 
 Baseline: `ASM-20260917-23-c18`. Workflow: `2026-09-17-v018-cost-and-messaging`. This is the implementation owner's ledger, not independent verification.
 
@@ -302,3 +302,26 @@ applicable actual validation are required. Candidate09, Matrix04, and the isolat
 target results remain evidence about their original identities. They do not
 attest the replacement candidate. Source release admission continues to own these
 pending gates; the implementation repair does not claim publication or acceptance.
+
+## Candidate10 Actual Upgrade Acceptance
+
+Candidate10 was built from `f566a6014f0942a15b28a39f0b2f5df3303e6014` with ZIP
+SHA-256 `90e403bde5e1e84767a4c00b67923780ebea76222b7956e598c814241c0f7db0`.
+All 677 payload paths and modes remain unchanged from Candidate09; the only
+payload byte change is the aggregate runtime-entry check invocation described
+above. Generated package metadata changes with that payload identity.
+
+Matrix05 executed all nine pristine, customized and interruption-recovery cases
+for v0.6.0, v0.9.0 and v0.17.0 against Candidate10. It passed in 3762.874 seconds
+on the exact build commit with a clean tracked worktree and verified process-tree
+cleanup. The parent accepted the terminal callback and released the snapshot
+lease. Current retained release assets, native evidence and the three derived
+route receipts now bind Candidate10. The original Candidate09 evidence remains
+in its prior commit and retained execution artifacts; it was not relabeled.
+
+The separate lab adoption is being refreshed from a clean v0.17 prestate. Its
+incoming package check passed for 677 payload files and 20 portable entrypoints;
+target apply, target receipt and independent audit remain pending. Final public
+adoption must bind the published Candidate10 bytes. The source record remains
+planned until the newly bound release profile passes. No source admission,
+publication or downstream merge is claimed by this checkpoint.

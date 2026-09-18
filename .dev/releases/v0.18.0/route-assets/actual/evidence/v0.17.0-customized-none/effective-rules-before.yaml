@@ -13,10 +13,10 @@ catalogs:
 target_authorities:
   provenance:
     path: .dev/ai-context/provenance.yaml
-    digest: 5808ef738df3af4b6c6fad5f12842629ded0357593393ec91cb42109a654125a
+    digest: a8205f69d0e17ad7f3bd53dff28d08f12a47d0e4a1763862732c78248a08104e
   customizations:
     path: .dev/ai-context/customizations.yaml
-    digest: e2aa5cbc587ed28c491a11ca178436b7035d03ef4e9219a50bc75caae93258eb
+    digest: 773df41f443a2b55856953c926dc2f14156ef767f06b3a353264174b64dec6be
 rule_dispositions:
 - rule_id: AICTX-EVIDENCE-001
   effective_disposition: baseline-effective
@@ -42,5 +42,5 @@ routing:
   reported_not_applicable_rule_ids: []
   packet:
     path: .dev/ai-context/effective-rule-packets/r-xf7kfiuvlvxk.yaml
-    digest: c90d7f9be5481e57ab000d228d190a840e14dea06b852d9eb2e5853377676d44
-target_state_digest: 2bd17f76ec21b8812195db2ae952f59ef2bf8ab1aca0227bc702e55b1a263c3b
+    digest: fb220f398f349e8d57c5c89c47eb2237582c6dc73713873be926017918460dce
+target_state_digest: a42d1f4f7ff95607b4719d57c7f70457b10f786d51809611935617f2c342f23f

@@ -5,24 +5,24 @@ version: 0.18.0
 release_id: REL-v0.18.0
 source:
   repository: https://github.com/YuChia-Wei/ai-collaboration-framework
-  ref: d3364303d55d1f3b8e67c720b04c1d3b34b1d4f3
-  commit: d3364303d55d1f3b8e67c720b04c1d3b34b1d4f3
-  tree: 28f24aa6d462c1886eb96c2a345fc72593290ade
-created_at: '2026-09-18T00:49:29Z'
-source_date_epoch: 1789692569
+  ref: f566a6014f0942a15b28a39f0b2f5df3303e6014
+  commit: f566a6014f0942a15b28a39f0b2f5df3303e6014
+  tree: f83eef3cfb6829029658c1db6a616653177565af
+created_at: '2026-09-18T14:54:58Z'
+source_date_epoch: 1789743298
 identity:
   schema_version: 1.1.0
   package_identity_policy: public-package-identity-v1
   identity_rule: from-v0.15
   public_artifact_base: ai-collaboration-framework-v0.18.0
-  selected_input_fingerprint: ca09364556bd06a9edf42fdb8cf769b8fc0696a41a52612756f2e68f9658e380
-  payload_fingerprint: fda89ae97f9601346555bead6a6d9bd6387bce8968b942c5e0d5d4c56a2cf8e1
-  files_manifest_digest: 7b6cfa2efb8f83cb79f38c5df910dfcc664e6dad300511b0d9ea858f78d741c7
-  migration_digest: 44a9c68c4317fdf6e303e92fab1dd647c285debc9778d3f982af6e485b0f0dc2
+  selected_input_fingerprint: 38eb18d3d2964a4d95204ff1d90da3da409466fe3e47706c66559440cf7ccb8a
+  payload_fingerprint: 3af97c3d986f13aeec45dfd1efc123700cbf4d3d4378af178cfcedc34a85e64d
+  files_manifest_digest: 303d8f951e56d422892f43222e304ae31f6ec4dd414171b8873ce530963fad4a
+  migration_digest: 35e3618d92ae26ab7db343de8bffdebac75ac1473e8f7d680d2c37ccd7d7904e
 payload:
   root: payload
   file_count: 677
-  sha256: fda89ae97f9601346555bead6a6d9bd6387bce8968b942c5e0d5d4c56a2cf8e1
+  sha256: 3af97c3d986f13aeec45dfd1efc123700cbf4d3d4378af178cfcedc34a85e64d
 compatibility:
   minimum_governed_source: v0.6.0
   breaking_changes: true
@@ -146,6 +146,6 @@ user_view:
 validation:
   schema_version: package-validation/v1
   manifest: metadata/validation.json
-  manifest_sha256: 294a3d39fe637598afb5e1a8f7cc36aa54a5d0c1f7edf5e3039a8a3846530f71
+  manifest_sha256: 28efff38ac53ef3fd9096fbf84aad525588ced60cdbfef9d52d2c71cf3575be2
   selected_inputs: metadata/selected-inputs.json
-  selected_inputs_sha256: ca09364556bd06a9edf42fdb8cf769b8fc0696a41a52612756f2e68f9658e380
+  selected_inputs_sha256: 38eb18d3d2964a4d95204ff1d90da3da409466fe3e47706c66559440cf7ccb8a

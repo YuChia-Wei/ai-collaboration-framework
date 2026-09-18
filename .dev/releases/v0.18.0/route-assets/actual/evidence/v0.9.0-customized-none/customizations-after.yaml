@@ -19,7 +19,7 @@ customizations:
   owner_reconciliation:
     status: approved
     owner: bounded-fixture-owner
-    decided_at: '2026-09-18T13:34:45+00:00'
+    decided_at: '2026-09-18T15:44:43+00:00'
     evidence: .dev/decisions/direct-v018-fixture.md
   decision_evidence:
     requirements:
@@ -38,6 +38,6 @@ customizations:
   post_upgrade_audit:
     assessment_id: ASM-20260905-272
     status: verified
-    evidence: .git/ai-context-package-apply/208c69b2782b98981d913bb74b89b657e37a2826d52774dd798e5bad8acdc20c/target-validation-output.log
+    evidence: .git/ai-context-package-apply/cc957ecc6977b199efdf787515a740bc622bd8d4dbbc0cf2994b36d86b0fcc7b/target-validation-output.log
   validation:
   - python .dev/validation/direct-upgrade-target.py

@@ -3,15 +3,15 @@ matrix_id: upgrade-route-matrix-v0.18.0
 target:
   version: v0.18.0
   release_id: REL-v0.18.0
-  commit: d3364303d55d1f3b8e67c720b04c1d3b34b1d4f3
+  commit: f566a6014f0942a15b28a39f0b2f5df3303e6014
   manifest:
     asset_id: v0.18.0-files-manifest
     path: route-assets/incoming/metadata/files.yaml
-    sha256: 7b6cfa2efb8f83cb79f38c5df910dfcc664e6dad300511b0d9ea858f78d741c7
+    sha256: 303d8f951e56d422892f43222e304ae31f6ec4dd414171b8873ce530963fad4a
   package_identity:
     package_id: ai-collaboration-framework-v0.18.0
     release_id: REL-v0.18.0
-    payload_fingerprint: fda89ae97f9601346555bead6a6d9bd6387bce8968b942c5e0d5d4c56a2cf8e1
+    payload_fingerprint: 3af97c3d986f13aeec45dfd1efc123700cbf4d3d4378af178cfcedc34a85e64d
 retained_origins:
 - role: immediate-predecessor
   version: v0.17.0
@@ -56,20 +56,20 @@ routes:
     package_identity:
       package_id: ai-collaboration-framework-v0.18.0
       release_id: REL-v0.18.0
-      payload_fingerprint: fda89ae97f9601346555bead6a6d9bd6387bce8968b942c5e0d5d4c56a2cf8e1
+      payload_fingerprint: 3af97c3d986f13aeec45dfd1efc123700cbf4d3d4378af178cfcedc34a85e64d
     artifacts:
       archive:
         asset_id: v0.6.0-to-v0.18.0-archive
         path: route-assets/admitted/ai-collaboration-framework-v0.18.0.zip
-        sha256: 764eb3197b0ab76efaea1ca272e76fe7c9b780db348b60ab2b1bd3b7ccefd811
+        sha256: 90e403bde5e1e84767a4c00b67923780ebea76222b7956e598c814241c0f7db0
       checksum:
         asset_id: v0.6.0-to-v0.18.0-checksum
         path: route-assets/admitted/ai-collaboration-framework-v0.18.0.zip.sha256
-        sha256: e83b40f8525316373f2abbb2ff9004b25fa9332e2bd12cb43bcd89386c3a26c9
+        sha256: 787319928b5ed20b4d03b858d59652eec090d78e2f34107b2f7c01e522ff2f34
       manifest:
         asset_id: v0.6.0-to-v0.18.0-manifest
         path: route-assets/incoming/metadata/migration.yaml
-        sha256: 44a9c68c4317fdf6e303e92fab1dd647c285debc9778d3f982af6e485b0f0dc2
+        sha256: 35e3618d92ae26ab7db343de8bffdebac75ac1473e8f7d680d2c37ccd7d7904e
       validator:
         asset_id: v0.6.0-to-v0.18.0-validator
         path: route-assets/validation/v0.6.0-to-v0.18.0/validator.py
@@ -87,7 +87,7 @@ routes:
       report:
         asset_id: v0.6.0-to-v0.18.0-report
         path: route-assets/validation/v0.6.0-to-v0.18.0/validation-report.json
-        sha256: 145e9be6d11d2e2655c5416ea9ea31094a841135cbd586beeb1c60fdfe344338
+        sha256: e09b71b4b9d9abc935bba3358fb598720cf35f80871e0049c48474c226c20c21
       output:
         asset_id: v0.6.0-to-v0.18.0-output
         path: route-assets/validation/v0.6.0-to-v0.18.0/portable-run/validation-output.log
@@ -103,20 +103,20 @@ routes:
     package_identity:
       package_id: ai-collaboration-framework-v0.18.0
       release_id: REL-v0.18.0
-      payload_fingerprint: fda89ae97f9601346555bead6a6d9bd6387bce8968b942c5e0d5d4c56a2cf8e1
+      payload_fingerprint: 3af97c3d986f13aeec45dfd1efc123700cbf4d3d4378af178cfcedc34a85e64d
     artifacts:
       archive:
         asset_id: v0.9.0-to-v0.18.0-archive
         path: route-assets/admitted/ai-collaboration-framework-v0.18.0.zip
-        sha256: 764eb3197b0ab76efaea1ca272e76fe7c9b780db348b60ab2b1bd3b7ccefd811
+        sha256: 90e403bde5e1e84767a4c00b67923780ebea76222b7956e598c814241c0f7db0
       checksum:
         asset_id: v0.9.0-to-v0.18.0-checksum
         path: route-assets/admitted/ai-collaboration-framework-v0.18.0.zip.sha256
-        sha256: e83b40f8525316373f2abbb2ff9004b25fa9332e2bd12cb43bcd89386c3a26c9
+        sha256: 787319928b5ed20b4d03b858d59652eec090d78e2f34107b2f7c01e522ff2f34
       manifest:
         asset_id: v0.9.0-to-v0.18.0-manifest
         path: route-assets/incoming/metadata/migration.yaml
-        sha256: 44a9c68c4317fdf6e303e92fab1dd647c285debc9778d3f982af6e485b0f0dc2
+        sha256: 35e3618d92ae26ab7db343de8bffdebac75ac1473e8f7d680d2c37ccd7d7904e
       validator:
         asset_id: v0.9.0-to-v0.18.0-validator
         path: route-assets/validation/v0.9.0-to-v0.18.0/validator.py
@@ -134,7 +134,7 @@ routes:
       report:
         asset_id: v0.9.0-to-v0.18.0-report
         path: route-assets/validation/v0.9.0-to-v0.18.0/validation-report.json
-        sha256: 8900a87d9fcc35f3368495ee0716deb568998a4913e4de731d68f203b19d6ea4
+        sha256: bcc0965d5acad5ec9b0892737dd5fd126cda57d3e9eba5c4bc2866bcbdb9895f
       output:
         asset_id: v0.9.0-to-v0.18.0-output
         path: route-assets/validation/v0.9.0-to-v0.18.0/portable-run/validation-output.log
@@ -150,20 +150,20 @@ routes:
     package_identity:
       package_id: ai-collaboration-framework-v0.18.0
       release_id: REL-v0.18.0
-      payload_fingerprint: fda89ae97f9601346555bead6a6d9bd6387bce8968b942c5e0d5d4c56a2cf8e1
+      payload_fingerprint: 3af97c3d986f13aeec45dfd1efc123700cbf4d3d4378af178cfcedc34a85e64d
     artifacts:
       archive:
         asset_id: v0.17.0-to-v0.18.0-archive
         path: route-assets/admitted/ai-collaboration-framework-v0.18.0.zip
-        sha256: 764eb3197b0ab76efaea1ca272e76fe7c9b780db348b60ab2b1bd3b7ccefd811
+        sha256: 90e403bde5e1e84767a4c00b67923780ebea76222b7956e598c814241c0f7db0
       checksum:
         asset_id: v0.17.0-to-v0.18.0-checksum
         path: route-assets/admitted/ai-collaboration-framework-v0.18.0.zip.sha256
-        sha256: e83b40f8525316373f2abbb2ff9004b25fa9332e2bd12cb43bcd89386c3a26c9
+        sha256: 787319928b5ed20b4d03b858d59652eec090d78e2f34107b2f7c01e522ff2f34
       manifest:
         asset_id: v0.17.0-to-v0.18.0-manifest
         path: route-assets/incoming/metadata/migration.yaml
-        sha256: 44a9c68c4317fdf6e303e92fab1dd647c285debc9778d3f982af6e485b0f0dc2
+        sha256: 35e3618d92ae26ab7db343de8bffdebac75ac1473e8f7d680d2c37ccd7d7904e
       validator:
         asset_id: v0.17.0-to-v0.18.0-validator
         path: route-assets/validation/v0.17.0-to-v0.18.0/validator.py
@@ -181,7 +181,7 @@ routes:
       report:
         asset_id: v0.17.0-to-v0.18.0-report
         path: route-assets/validation/v0.17.0-to-v0.18.0/validation-report.json
-        sha256: 9a43f4b2c9fa90429254ce17d8bb9675a93d4cd1ec12dd98847b9f465f556ea7
+        sha256: ff8baf0f0f339572acfaed806212534343fcba7ff8290be73efe1f0dba7f65e0
       output:
         asset_id: v0.17.0-to-v0.18.0-output
         path: route-assets/validation/v0.17.0-to-v0.18.0/portable-run/validation-output.log

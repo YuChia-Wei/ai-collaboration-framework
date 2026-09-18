@@ -13,7 +13,7 @@ catalogs:
 target_authorities:
   provenance:
     path: .dev/ai-context/provenance.yaml
-    digest: 892cf2133f3e4f22a50bccf24a68e7b43b3b00666037c056285b2aad7c550dd8
+    digest: 993208a8d3a2ec0cf2f6bd72d222197681bcf11ece386ce4004254672ee6aac4
   customizations:
     path: .dev/ai-context/customizations.yaml
     digest: 189a5d1d3fe423f91fbfd6e18190a1f3436536a80e2b6bcbd5ffd0df4fd1d67a
@@ -42,5 +42,5 @@ routing:
   reported_not_applicable_rule_ids: []
   packet:
     path: .dev/ai-context/effective-rule-packets/r-xf7kfiuvlvxk.yaml
-    digest: 417aaa9cf8aff06ee34684533b63690ccbee30dc94e98e5ab1337f9ada286d5c
-target_state_digest: cc30d41648a3b7612351cc4fd61b84db047cbab2eab162441097172e85083f53
+    digest: 01d7f718c63500185017896852a55f4e8a78b943ad048929f3b653ff48e52754
+target_state_digest: b42e5574b77c8b186c63e12137d2136cdcfb044b0f96c5d63f29defd8bd31f14

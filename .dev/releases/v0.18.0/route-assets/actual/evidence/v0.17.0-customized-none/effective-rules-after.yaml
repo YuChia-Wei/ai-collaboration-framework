@@ -1,7 +1,7 @@
 schema_version: '1.0'
 framework:
   version: v0.18.0
-  commit: d3364303d55d1f3b8e67c720b04c1d3b34b1d4f3
+  commit: f566a6014f0942a15b28a39f0b2f5df3303e6014
   selected_technology_profile: dotnet-backend
 catalogs:
 - catalog_id: selected-profile
@@ -13,10 +13,10 @@ catalogs:
 target_authorities:
   provenance:
     path: .dev/ai-context/provenance.yaml
-    digest: 2e7e83b2b385c1bc8f80d9fd2e9a3b9bf853401ee6c08aae090cb8753bdbc091
+    digest: 9d6608f8a9c3ba99c5beed0d4110f42a9c9170edbb608471a7de6f0767b623a9
   customizations:
     path: .dev/ai-context/customizations.yaml
-    digest: b5f7c6c6461b3c995e892200abf4cff2a1a48e42c052e8c86b3cd7639f6d4cf1
+    digest: 7a86eb4cf8230fb7b7b9d231c2a2bde2562507ee512105ce29ccf67fda74df2b
 rule_dispositions:
 - rule_id: AICTX-EVIDENCE-001
   effective_disposition: baseline-effective
@@ -42,5 +42,5 @@ routing:
   reported_not_applicable_rule_ids: []
   packet:
     path: .dev/ai-context/effective-rule-packets/r-xf7kfiuvlvxk.yaml
-    digest: 4e27bb813ed02f22d63993fe1707ab631b670a5bfc2553e596f7e0e64748bf56
-target_state_digest: a9b9c002f68401eda89161e7b0c6bf55511ca504a00c98ce0798ee699abe07c3
+    digest: 0e98ecff46aa19be2b28b2d7d47faf44f4a713fe13ad90a0621fa0a991620b05
+target_state_digest: 1f06df4a1b1e9319150ed5a068d3698ae82db88aaf8ad076f4e826c1a941cd40

@@ -4,11 +4,11 @@ source:
   release_id: REL-v0.18.0
   version: v0.18.0
   tag: v0.18.0
-  commit: d3364303d55d1f3b8e67c720b04c1d3b34b1d4f3
+  commit: f566a6014f0942a15b28a39f0b2f5df3303e6014
 installation:
   initialized_by: ai-context-init
-  imported_at: '2026-09-18T13:06:40+00:00'
-  last_upgraded_at: '2026-09-18T13:06:40+00:00'
+  imported_at: '2026-09-18T15:18:13+00:00'
+  last_upgraded_at: '2026-09-18T15:18:13+00:00'
 selection:
   release_model: single-versioned-componentized-release
   mandatory_components:
@@ -39,12 +39,12 @@ last_migration:
   status: completed
   from_version: v0.6.0
   to_version: v0.18.0
-  completed_at: '2026-09-18T13:06:40+00:00'
+  completed_at: '2026-09-18T15:18:13+00:00'
   evidence: .dev/decisions/direct-v018-fixture.md
 policy_adoptions:
   commit_subject_grammar:
     policy_id: git-commit-subject/v2
-    legacy_history_tip: 3afd1dcc85800e73f4ad633542e87d8ac83e8f25
-    adopted_at: '2026-09-18T13:06:40+00:00'
+    legacy_history_tip: 8f7960243f2a1efbf9565d1316bcac19b65d4f14
+    adopted_at: '2026-09-18T15:18:13+00:00'
     incoming_policy_sha256: a933d39f4f2f082c1bffc43bb8ec8f8b6d7686ef9bd9597f7c90937d8f1c60ea
     decision_evidence: .dev/decisions/direct-v018-fixture.md

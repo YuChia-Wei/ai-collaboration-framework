@@ -7,7 +7,7 @@ source:
   commit: 8b98b5f917513f2d143f42a322050a1162bb63f9
 installation:
   initialized_by: ai-context-init
-  imported_at: '2026-09-18T12:52:17+00:00'
+  imported_at: '2026-09-18T15:04:52+00:00'
   last_upgraded_at: null
 selection:
   release_model: single-versioned-componentized-release
@@ -34,5 +34,5 @@ last_migration:
   status: completed
   from_version: null
   to_version: v0.6.0
-  completed_at: '2026-09-18T12:52:17+00:00'
+  completed_at: '2026-09-18T15:04:52+00:00'
   evidence: credible-source-evidence

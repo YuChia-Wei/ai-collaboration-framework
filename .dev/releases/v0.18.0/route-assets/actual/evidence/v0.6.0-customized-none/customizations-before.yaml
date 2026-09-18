@@ -19,7 +19,7 @@ customizations:
   owner_reconciliation:
     status: approved
     owner: bounded-fixture-owner
-    decided_at: '2026-09-18T13:06:11+00:00'
+    decided_at: '2026-09-18T15:17:46+00:00'
     evidence: .dev/decisions/direct-v018-fixture.md
   decision_evidence:
     requirements:
