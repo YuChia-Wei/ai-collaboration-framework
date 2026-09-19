@@ -21,7 +21,7 @@ RECIPE_ROOT = Path(
 )
 PROJECT_SUFFIXES = {".csproj", ".sln", ".slnx"}
 DISCOVERY_SKIP_PARTS = {".git", ".tmp", "artifacts", "bin", "obj", "__pycache__"}
-LOCAL_RELEASE_EXTRACT_ROOTS = {(".codex", "release")}
+LOCAL_ARTIFACT_ROOTS = {(".codex", "release"), (".dev", "ai-context", "local")}
 # Optional teaching projects are not framework SDK prerequisites. Keep this
 # exception scoped to the owner-classified example, not every examples folder.
 OPTIONAL_EXAMPLE_ROOT = Path(
@@ -36,7 +36,7 @@ def supplied_core_projects(root: Path, tracked: set[str]) -> tuple[list[str], li
         child_directories[:] = [
             name for name in child_directories
             if name not in DISCOVERY_SKIP_PARTS
-            and (*relative.parts, name) not in LOCAL_RELEASE_EXTRACT_ROOTS
+            and (*relative.parts, name) not in LOCAL_ARTIFACT_ROOTS
             and not (relative / name).is_relative_to(OPTIONAL_EXAMPLE_ROOT)
         ]
         for filename in filenames:
@@ -87,16 +87,22 @@ class SdkFreeFrameworkContractTests(unittest.TestCase):
             "Core.csproj", "Framework.sln", "src/Core/Core.slnx",
             ".ai/assets/tech-stacks/dotnet-backend/examples/other/Other.csproj",
             OPTIONAL_EXAMPLE_ROOT.as_posix() + "-extra/Unexpected.csproj",
+            ".dev/ai-context/local-extra/Unexpected.csproj",
         }
+        local_artifacts = {
+            ".dev/ai-context/local/validation-fixture/Fixture.csproj",
+            ".codex/release/extracted/Fixture.slnx",
+        }
+        tracked_local_artifact = ".dev/ai-context/local/AccidentallyTracked.csproj"
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)
-            for name in examples | core | {"src/Untracked.csproj"}:
+            for name in examples | core | local_artifacts | {"src/Untracked.csproj", tracked_local_artifact}:
                 path = root / name
                 path.parent.mkdir(parents=True, exist_ok=True)
                 path.write_text("<Project />", encoding="utf-8")
-            physical, tracked = supplied_core_projects(root, examples | core)
+            physical, tracked = supplied_core_projects(root, examples | core | {tracked_local_artifact})
             self.assertEqual(sorted(core | {"src/Untracked.csproj"}), physical)
-            self.assertEqual(sorted(core), tracked)
+            self.assertEqual(sorted(core | {tracked_local_artifact}), tracked)
 
     def test_gwt_002_given_mechanical_guidance_when_inspected_then_it_is_recipe_only(self) -> None:
         paths = tracked_paths()
