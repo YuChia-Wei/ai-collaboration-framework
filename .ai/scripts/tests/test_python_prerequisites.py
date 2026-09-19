@@ -14,6 +14,11 @@ import unittest
 from pathlib import Path
 from contextlib import redirect_stderr, redirect_stdout
 
+from source_like_entrypoint_fixture import (
+    copy_source_like_entrypoints,
+    fixture_tree_snapshot,
+)
+
 
 ROOT = Path(__file__).resolve().parents[3]
 DIRECT_ENTRYPOINT_TIMEOUT_SECONDS = 15
@@ -274,15 +279,27 @@ class PythonPrerequisiteGwtTests(unittest.TestCase):
                 self.assertFalse(result.diagnostic["mutation_started"])
 
     def test_gwt_014_given_direct_portable_cli_and_shadowed_yaml_when_json_requested_then_it_blocks_without_repo_bytecode(self) -> None:
-        before = list(ROOT.rglob("__pycache__")) + list(ROOT.rglob("*.pyc"))
         with tempfile.TemporaryDirectory(prefix="python-prerequisite-shadow-") as shadow_root:
-            shadow = Path(shadow_root)
+            fixture_root = Path(shadow_root) / "source"
+            shadow = Path(shadow_root) / "shadow"
+            copy_source_like_entrypoints(
+                ROOT,
+                fixture_root,
+                (".ai/scripts/validate-ai-context.py",),
+            )
+            shadow.mkdir()
             (shadow / "yaml.py").write_text("raise ImportError('shadowed PyYAML')\n", encoding="utf-8")
+            before = fixture_tree_snapshot(fixture_root)
             environment = dict(os.environ)
             environment.update({"PYTHONPATH": str(shadow), "PYTHONDONTWRITEBYTECODE": "1"})
             result = subprocess.run(
-                [sys.executable, "-B", str(ROOT / ".ai/scripts/validate-ai-context.py"), "--diagnostic-format=json"],
-                cwd=ROOT,
+                [
+                    sys.executable,
+                    "-B",
+                    str(fixture_root / ".ai/scripts/validate-ai-context.py"),
+                    "--diagnostic-format=json",
+                ],
+                cwd=fixture_root,
                 env=environment,
                 capture_output=True,
                 text=True,
@@ -291,12 +308,12 @@ class PythonPrerequisiteGwtTests(unittest.TestCase):
                 check=False,
                 timeout=DIRECT_ENTRYPOINT_TIMEOUT_SECONDS,
             )
-        self.assertEqual(1, result.returncode, result.stdout + result.stderr)
-        self.assertEqual("", result.stderr)
-        payload = json.loads(result.stdout)
-        self.assertEqual("missing-dependency", payload["reason_code"])
-        self.assertFalse(payload["mutation_started"])
-        self.assertEqual(before, list(ROOT.rglob("__pycache__")) + list(ROOT.rglob("*.pyc")))
+            self.assertEqual(1, result.returncode, result.stdout + result.stderr)
+            self.assertEqual("", result.stderr)
+            payload = json.loads(result.stdout)
+            self.assertEqual("missing-dependency", payload["reason_code"])
+            self.assertFalse(payload["mutation_started"])
+            self.assertEqual(before, fixture_tree_snapshot(fixture_root))
 
 
 if __name__ == "__main__":

@@ -3,7 +3,6 @@
 
 from __future__ import annotations
 
-import concurrent.futures
 import hashlib
 import importlib.util
 import json
@@ -20,15 +19,24 @@ from typing import Any, Callable
 
 
 ROOT = Path(__file__).resolve().parents[3]
+SCRIPTS = ROOT / ".ai/scripts"
+sys.path.insert(0, str(SCRIPTS))
+
+import validation_process_supervisor as process_supervisor  # noqa: E402
+
+
 HELPER = ROOT / ".ai/scripts/validation-evidence.py"
 SUBJECT_HELPER = ROOT / ".ai/scripts/validation_subject.py"
 INVOCATION_ID = "fixture-invocation"
 
 DEFAULT_FULL_ARGUMENTS = ((), ("-v",))
+PRIVATE_PARALLEL_SHARDS_ARGUMENT = "--_run-default-full-shards"
+DEFAULT_FULL_MODULE_BUDGET_SECONDS = 180
 PARALLEL_FULL_SHARDS: tuple[tuple[str, tuple[str, ...]], ...] = (
     ("core-bootstrap", (
         "ValidationEvidenceCoreGwtTests",
         "ValidationEvidenceBootstrapReadinessGwtTests",
+        "ValidationEvidenceShardSelectionGwtTests",
     )),
     ("readiness-admission", ("ValidationEvidenceReadinessGwtTests",)),
     ("readiness-integrity-routine", (
@@ -3057,13 +3065,117 @@ class ValidationEvidenceRoutineContractGwtTests(ValidationEvidenceFixture):
         )
 
 
+class ValidationEvidenceShardSelectionGwtTests(unittest.TestCase):
+    """Default-full shard selection must reject incomplete or overlapping coverage."""
+
+    def test_gwt_038_given_missing_duplicate_or_extra_shard_membership_when_prepared_then_launch_is_rejected(self) -> None:
+        discovered = {"module.Case.test_alpha", "module.Case.test_beta"}
+        scenarios = (
+            (
+                "missing",
+                (("first", {"module.Case.test_alpha"}),),
+                "missing",
+            ),
+            (
+                "duplicate",
+                (
+                    ("first", {"module.Case.test_alpha"}),
+                    ("second", {"module.Case.test_alpha", "module.Case.test_beta"}),
+                ),
+                "duplicate",
+            ),
+            (
+                "extra",
+                (
+                    (
+                        "first",
+                        {
+                            "module.Case.test_alpha",
+                            "module.Case.test_beta",
+                            "module.Case.test_unknown",
+                        },
+                    ),
+                ),
+                "extra",
+            ),
+        )
+        for name, shards, expected in scenarios:
+            with self.subTest(case=name):
+                with self.assertRaisesRegex(RuntimeError, expected):
+                    _assert_complete_disjoint_shard_coverage(discovered, shards)
+
+
 def _is_default_full_invocation(arguments: list[str]) -> bool:
     return tuple(arguments) in DEFAULT_FULL_ARGUMENTS
 
 
-def _terminate_parallel_children(
-    children: list[tuple[str, subprocess.Popen[str]]],
+def _flatten_test_ids(suite: unittest.TestSuite | unittest.TestCase) -> set[str]:
+    if isinstance(suite, unittest.TestCase):
+        return {suite.id()}
+    result: set[str] = set()
+    for item in suite:
+        result.update(_flatten_test_ids(item))
+    return result
+
+
+def _assert_complete_disjoint_shard_coverage(
+    discovered: set[str],
+    shard_membership: tuple[tuple[str, set[str]], ...],
 ) -> None:
+    if not discovered:
+        raise RuntimeError("parallel shard coverage rejected: discovered test set is empty")
+    owners: dict[str, list[str]] = {}
+    for shard_name, test_ids in shard_membership:
+        for test_id in test_ids:
+            owners.setdefault(test_id, []).append(shard_name)
+    selected = set(owners)
+    missing = sorted(discovered - selected)
+    duplicate = sorted(test_id for test_id, names in owners.items() if len(names) > 1)
+    extra = sorted(selected - discovered)
+    if missing or duplicate or extra:
+        raise RuntimeError(
+            "parallel shard coverage rejected: "
+            f"missing={missing}; duplicate={duplicate}; extra={extra}"
+        )
+
+
+def _validated_parallel_full_shards() -> tuple[tuple[str, tuple[str, ...]], ...]:
+    module = sys.modules[__name__]
+    loader = unittest.defaultTestLoader
+    discovered = _flatten_test_ids(loader.loadTestsFromModule(module))
+    membership: list[tuple[str, set[str]]] = []
+    selected_classes: set[str] = set()
+    for shard_name, selectors in PARALLEL_FULL_SHARDS:
+        shard_test_ids: set[str] = set()
+        for selector in selectors:
+            if selector in selected_classes:
+                raise RuntimeError(
+                    "parallel shard coverage rejected: duplicate selector "
+                    f"{selector} in {shard_name}"
+                )
+            selected_classes.add(selector)
+            candidate = getattr(module, selector, None)
+            if (
+                not isinstance(candidate, type)
+                or not issubclass(candidate, unittest.TestCase)
+            ):
+                raise RuntimeError(
+                    "parallel shard coverage rejected: unknown unittest selector "
+                    f"{selector} in {shard_name}"
+                )
+            case_ids = _flatten_test_ids(loader.loadTestsFromTestCase(candidate))
+            if not case_ids:
+                raise RuntimeError(
+                    "parallel shard coverage rejected: selector has no test cases "
+                    f"{selector} in {shard_name}"
+                )
+            shard_test_ids.update(case_ids)
+        membership.append((shard_name, shard_test_ids))
+    _assert_complete_disjoint_shard_coverage(discovered, tuple(membership))
+    return PARALLEL_FULL_SHARDS
+
+
+def _reap_direct_shard_roots(children: list[tuple[str, subprocess.Popen[bytes]]]) -> None:
     for _name, child in children:
         if child.poll() is None:
             try:
@@ -3073,22 +3185,27 @@ def _terminate_parallel_children(
     for _name, child in children:
         if child.poll() is None:
             try:
-                child.wait(timeout=5)
+                child.wait(timeout=1)
             except subprocess.TimeoutExpired:
                 try:
                     child.kill()
                 except OSError:
                     pass
-                child.wait()
+                try:
+                    child.wait(timeout=1)
+                except subprocess.TimeoutExpired:
+                    pass
 
 
 def run_parallel_shards(
     shards: tuple[tuple[str, tuple[str, ...]], ...],
     unittest_arguments: tuple[str, ...],
 ) -> int:
-    children: list[tuple[str, subprocess.Popen[str]]] = []
+    _validated_parallel_full_shards()
+    children: list[tuple[str, subprocess.Popen[bytes]]] = []
     try:
         for name, selectors in shards:
+            print(f"===== validation-evidence shard started: {name} =====", flush=True)
             child = subprocess.Popen(
                 [
                     sys.executable,
@@ -3096,38 +3213,77 @@ def run_parallel_shards(
                     *unittest_arguments,
                     *selectors,
                 ],
-                stdout=subprocess.PIPE,
-                stderr=subprocess.STDOUT,
-                text=True,
             )
             children.append((name, child))
-
-        def collect(
-            pair: tuple[str, subprocess.Popen[str]],
-        ) -> tuple[str, int, str]:
-            name, child = pair
-            output, _ = child.communicate()
-            return name, child.returncode, output
-
-        with concurrent.futures.ThreadPoolExecutor(max_workers=len(children)) as executor:
-            completed = list(executor.map(collect, children))
     except BaseException:
-        _terminate_parallel_children(children)
+        _reap_direct_shard_roots(children)
         raise
 
     succeeded = True
-    for name, returncode, output in completed:
-        print(f"===== validation-evidence shard: {name} =====")
-        if output:
-            print(output, end="" if output.endswith("\n") else "\n")
+    for name, child in children:
+        returncode = child.wait()
+        print(
+            f"===== validation-evidence shard completed: {name} "
+            f"(exit={returncode}) =====",
+            flush=True,
+        )
         succeeded = succeeded and returncode == 0
     return 0 if succeeded else 1
 
 
+def _private_parallel_arguments(arguments: list[str]) -> tuple[str, ...] | None:
+    if not arguments or arguments[-1] != PRIVATE_PARALLEL_SHARDS_ARGUMENT:
+        return None
+    unittest_arguments = tuple(arguments[:-1])
+    if unittest_arguments not in DEFAULT_FULL_ARGUMENTS:
+        return None
+    return unittest_arguments
+
+
+def run_supervised_default_full(unittest_arguments: tuple[str, ...]) -> int:
+    _validated_parallel_full_shards()
+    with tempfile.TemporaryDirectory(prefix="validation-evidence-default-full-") as temporary:
+        temporary_root = Path(temporary)
+        log_path = temporary_root / "default-full.log"
+        receipt_path = temporary_root / "default-full.receipt.json"
+        receipt = process_supervisor.supervise_command(
+            [
+                sys.executable,
+                str(Path(__file__).resolve()),
+                *unittest_arguments,
+                PRIVATE_PARALLEL_SHARDS_ARGUMENT,
+            ],
+            cwd=ROOT,
+            cwd_ref=".",
+            log_path=log_path,
+            result_path=receipt_path,
+            timeout_seconds=DEFAULT_FULL_MODULE_BUDGET_SECONDS,
+        )
+        output = log_path.read_text(encoding="utf-8", errors="replace") if log_path.is_file() else ""
+        if output:
+            print(output, end="" if output.endswith("\n") else "\n")
+        try:
+            persisted_receipt = json.loads(receipt_path.read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError):
+            return 1
+        termination = receipt.get("termination")
+        completed = (
+            receipt == persisted_receipt
+            and receipt.get("status") == "completed"
+            and receipt.get("child_exit_code") == 0
+            and isinstance(termination, dict)
+            and termination.get("tree_empty") is True
+        )
+    return 0 if completed else 1
+
+
 def main() -> int:
     arguments = sys.argv[1:]
+    private_arguments = _private_parallel_arguments(arguments)
+    if private_arguments is not None:
+        return run_parallel_shards(PARALLEL_FULL_SHARDS, private_arguments)
     if _is_default_full_invocation(arguments):
-        return run_parallel_shards(PARALLEL_FULL_SHARDS, tuple(arguments))
+        return run_supervised_default_full(tuple(arguments))
     unittest.main()
     return 0
 

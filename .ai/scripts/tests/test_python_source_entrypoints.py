@@ -4,7 +4,6 @@
 from __future__ import annotations
 
 import ast
-import hashlib
 import json
 import os
 import subprocess
@@ -12,6 +11,11 @@ import sys
 import tempfile
 import unittest
 from pathlib import Path
+
+from source_like_entrypoint_fixture import (
+    copy_source_like_entrypoints,
+    fixture_tree_snapshot,
+)
 
 
 ROOT = Path(__file__).resolve().parents[3]
@@ -21,54 +25,8 @@ STDLIB_FIXTURE_PROFILE = ".ai/scripts/run-test-fixture-profile.py"
 STDLIB_PACKAGE_IDENTITY = ".ai/scripts/resolve-ai-context-package-identity.py"
 STDLIB_V015_WSL_RUNNER = ".ai/scripts/run-v015-package-validation-wsl.py"
 PYYAML_SOURCE_ONLY_SENTINEL = ".ai/scripts/validate-ai-context-package.py"
+SOURCE_GOVERNANCE_ENTRYPOINT = ".ai/scripts/validate-source-governance.py"
 DIRECT_ENTRYPOINT_TIMEOUT_SECONDS = 15
-MARKER = ROOT / ".ai/scripts/tests/.python-source-entrypoints-marker"
-RUNNER_LOG_DIRECTORY = os.environ.get("AI_CONTEXT_VALIDATION_RUN_LOG_DIR")
-ACTIVE_RUNNER_LOG_DIRECTORY = (
-    Path(RUNNER_LOG_DIRECTORY).resolve() if RUNNER_LOG_DIRECTORY else None
-)
-PROTECTED_ROOTS = (
-    ROOT / ".dev/releases/v0.8.0",
-    ROOT / "dist",
-    ROOT / "artifacts",
-    MARKER,
-)
-
-
-def digest(path: Path) -> str:
-    return hashlib.sha256(path.read_bytes()).hexdigest()
-
-
-def is_active_runner_diagnostic(path: Path) -> bool:
-    """Exclude only the aggregate runner's own retained diagnostic files."""
-    if ACTIVE_RUNNER_LOG_DIRECTORY is None:
-        return False
-    try:
-        path.resolve().relative_to(ACTIVE_RUNNER_LOG_DIRECTORY)
-    except ValueError:
-        return False
-    return True
-
-
-def protected_snapshot() -> dict[str, str]:
-    """Capture artifacts a blocked preflight must never create or change."""
-    snapshot: dict[str, str] = {}
-    for root in PROTECTED_ROOTS:
-        if root.is_file():
-            snapshot[root.relative_to(ROOT).as_posix()] = digest(root)
-        elif root.is_dir():
-            for path in sorted(item for item in root.rglob("*") if item.is_file()):
-                if is_active_runner_diagnostic(path):
-                    continue
-                snapshot[path.relative_to(ROOT).as_posix()] = digest(path)
-    # The guarded sentinel and its shared bootstrap both reside here.  The
-    # subprocess also uses -B and PYTHONDONTWRITEBYTECODE, so no repository-wide
-    # cache walk is needed to prove this preflight leaves protected state intact.
-    cache_directory = ROOT / ".ai/scripts/__pycache__"
-    if cache_directory.is_dir():
-        for path in sorted(item for item in cache_directory.iterdir() if item.is_file()):
-            snapshot[path.relative_to(ROOT).as_posix()] = digest(path)
-    return snapshot
 
 
 def imports_nonstdlib_module(statement: ast.AST) -> bool:
@@ -161,38 +119,46 @@ class PythonSourceEntrypointTests(unittest.TestCase):
         environment = os.environ.copy()
         environment["PYTHONDONTWRITEBYTECODE"] = "1"
         for item in self.source_only:
-            with self.subTest(entrypoint=item["path"]):
-                result = subprocess.run(
-                    [sys.executable, "-B", str(ROOT / item["path"]), "--help"],
-                    cwd=ROOT,
-                    env=environment,
-                    capture_output=True,
-                    text=True,
-                    check=False,
-                )
+            entrypoint = item["path"]
+            self.assertIsInstance(entrypoint, str)
+            with self.subTest(entrypoint=entrypoint):
+                try:
+                    result = subprocess.run(
+                        [sys.executable, "-B", str(ROOT / entrypoint), "--help"],
+                        cwd=ROOT,
+                        env=environment,
+                        capture_output=True,
+                        text=True,
+                        encoding="utf-8",
+                        errors="replace",
+                        check=False,
+                        timeout=DIRECT_ENTRYPOINT_TIMEOUT_SECONDS,
+                    )
+                except subprocess.TimeoutExpired as error:
+                    self.fail(
+                        f"{entrypoint} did not return from --help within "
+                        f"{DIRECT_ENTRYPOINT_TIMEOUT_SECONDS}s: {error}"
+                    )
                 self.assertEqual(0, result.returncode, result.stdout + result.stderr)
+                self.assertIn("usage:", result.stdout)
 
-    def test_gwt_002_given_shadowed_yaml_when_source_only_pyyaml_clis_run_then_each_blocks_before_target_body_or_writes(self) -> None:
-        self.assertTrue(self.pyyaml_source_only, "PyYAML source-only entrypoint set must not be empty")
-        for item in self.pyyaml_source_only:
-            self.assert_pyyaml_entrypoint_uses_shared_guard(item)
-        sentinel = next(
-            (item for item in self.pyyaml_source_only if item["path"] == PYYAML_SOURCE_ONLY_SENTINEL),
-            None,
-        )
-        self.assertIsNotNone(sentinel, "the representative source-only PyYAML sentinel must remain registered")
-        before = protected_snapshot()
-        with tempfile.TemporaryDirectory(prefix="python-source-entrypoints-") as temporary:
-            shadow = Path(temporary) / "yaml.py"
-            shadow.write_text("raise ImportError('deterministic shadowed yaml')\n", encoding="utf-8")
-            environment = os.environ.copy()
-            environment["PYTHONPATH"] = str(Path(temporary))
-            environment["PYTHONDONTWRITEBYTECODE"] = "1"
-            environment.pop("AI_CONTEXT_PYTHON", None)
+    def test_gwt_001a_given_source_governance_help_when_invoked_then_it_short_circuits_before_governance_body_or_fixture_mutation(self) -> None:
+        environment = os.environ.copy()
+        environment["PYTHONDONTWRITEBYTECODE"] = "1"
+        environment.pop("PYTHONPATH", None)
+        with tempfile.TemporaryDirectory(prefix="source-governance-help-") as temporary:
+            fixture_root = Path(temporary)
+            copy_source_like_entrypoints(ROOT, fixture_root, (SOURCE_GOVERNANCE_ENTRYPOINT,))
+            before = fixture_tree_snapshot(fixture_root)
             try:
-                result = subprocess.run(
-                    [sys.executable, "-B", str(ROOT / PYYAML_SOURCE_ONLY_SENTINEL), "--diagnostic-format=json"],
-                    cwd=ROOT,
+                fixture = subprocess.run(
+                    [
+                        sys.executable,
+                        "-B",
+                        str(fixture_root / SOURCE_GOVERNANCE_ENTRYPOINT),
+                        "--help",
+                    ],
+                    cwd=fixture_root,
                     env=environment,
                     capture_output=True,
                     text=True,
@@ -203,20 +169,146 @@ class PythonSourceEntrypointTests(unittest.TestCase):
                 )
             except subprocess.TimeoutExpired as error:
                 self.fail(
-                    f"{PYYAML_SOURCE_ONLY_SENTINEL} did not return from its prerequisite guard "
-                    f"within {DIRECT_ENTRYPOINT_TIMEOUT_SECONDS}s: {error}"
+                    f"fixture {SOURCE_GOVERNANCE_ENTRYPOINT} did not return from --help within "
+                    f"{DIRECT_ENTRYPOINT_TIMEOUT_SECONDS}s: {error}"
                 )
-            self.assertEqual(sentinel["prerequisite_exit_code"], result.returncode, result.stdout + result.stderr)
-            self.assertEqual("", result.stderr)
-            lines = result.stdout.splitlines()
-            self.assertEqual(1, len(lines), result.stdout)
-            diagnostic = json.loads(lines[0])
-            self.assertEqual("blocked-by-environment", diagnostic["outcome"])
-            self.assertEqual("missing-dependency", diagnostic["reason_code"])
-            self.assertEqual(sentinel["path"], diagnostic["entrypoint"])
-            self.assertEqual(["PyYAML==6.0.3"], diagnostic["missing_requirements"])
-            self.assertFalse(diagnostic["mutation_started"])
-        self.assertEqual(before, protected_snapshot())
+            self.assertEqual(0, fixture.returncode, fixture.stdout + fixture.stderr)
+            self.assertIn("usage:", fixture.stdout)
+            self.assertEqual(before, fixture_tree_snapshot(fixture_root))
+
+    def test_gwt_002_given_shadowed_yaml_when_source_only_pyyaml_clis_run_then_each_blocks_before_target_body_or_writes(self) -> None:
+        self.assertTrue(self.pyyaml_source_only, "PyYAML source-only entrypoint set must not be empty")
+        for item in self.pyyaml_source_only:
+            self.assert_pyyaml_entrypoint_uses_shared_guard(item)
+        self.assertIn(
+            PYYAML_SOURCE_ONLY_SENTINEL,
+            {item["path"] for item in self.pyyaml_source_only},
+            "the representative source-only PyYAML entrypoint must remain registered",
+        )
+        entrypoints: list[str] = []
+        for item in self.pyyaml_source_only:
+            entrypoint = item["path"]
+            self.assertIsInstance(entrypoint, str)
+            entrypoints.append(entrypoint)
+        with tempfile.TemporaryDirectory(prefix="python-source-entrypoints-") as temporary:
+            fixture_root = Path(temporary) / "source"
+            shadow_root = Path(temporary) / "shadow"
+            copy_source_like_entrypoints(ROOT, fixture_root, tuple(entrypoints))
+            shadow_root.mkdir()
+            shadow = shadow_root / "yaml.py"
+            shadow.write_text("raise ImportError('deterministic shadowed yaml')\n", encoding="utf-8")
+            environment = os.environ.copy()
+            environment["PYTHONPATH"] = str(shadow_root)
+            environment["PYTHONDONTWRITEBYTECODE"] = "1"
+            environment.pop("AI_CONTEXT_PYTHON", None)
+            before = fixture_tree_snapshot(fixture_root)
+            for item in self.pyyaml_source_only:
+                entrypoint = item["path"]
+                self.assertIsInstance(entrypoint, str)
+                with self.subTest(entrypoint=entrypoint):
+                    try:
+                        result = subprocess.run(
+                            [
+                                sys.executable,
+                                "-B",
+                                str(fixture_root / entrypoint),
+                                "--diagnostic-format=json",
+                            ],
+                            cwd=fixture_root,
+                            env=environment,
+                            capture_output=True,
+                            text=True,
+                            encoding="utf-8",
+                            errors="replace",
+                            check=False,
+                            timeout=DIRECT_ENTRYPOINT_TIMEOUT_SECONDS,
+                        )
+                    except subprocess.TimeoutExpired as error:
+                        self.fail(
+                            f"{entrypoint} did not return from its prerequisite guard within "
+                            f"{DIRECT_ENTRYPOINT_TIMEOUT_SECONDS}s: {error}"
+                        )
+                    self.assertEqual(
+                        item["prerequisite_exit_code"],
+                        result.returncode,
+                        result.stdout + result.stderr,
+                    )
+                    self.assertEqual("", result.stderr)
+                    lines = result.stdout.splitlines()
+                    self.assertEqual(1, len(lines), result.stdout)
+                    diagnostic = json.loads(lines[0])
+                    self.assertEqual("blocked-by-environment", diagnostic["outcome"])
+                    self.assertEqual("missing-dependency", diagnostic["reason_code"])
+                    self.assertEqual(entrypoint, diagnostic["entrypoint"])
+                    self.assertEqual(["PyYAML==6.0.3"], diagnostic["missing_requirements"])
+                    self.assertFalse(diagnostic["mutation_started"])
+                    self.assertEqual(before, fixture_tree_snapshot(fixture_root))
+
+    def test_gwt_002a_given_every_stdlib_source_entrypoint_when_the_guard_exits_then_no_pre_guard_fixture_write_is_allowed(self) -> None:
+        source_only_paths = {item["path"] for item in self.source_only}
+        pyyaml_source_only_paths = {item["path"] for item in self.pyyaml_source_only}
+        stdlib_source_only_paths = {item["path"] for item in self.stdlib_source_only}
+        self.assertFalse(pyyaml_source_only_paths & stdlib_source_only_paths)
+        self.assertEqual(source_only_paths, pyyaml_source_only_paths | stdlib_source_only_paths)
+        self.assertEqual(
+            {
+                STDLIB_COMPARE,
+                STDLIB_FIXTURE_PROFILE,
+                STDLIB_PACKAGE_IDENTITY,
+                STDLIB_V015_WSL_RUNNER,
+            },
+            stdlib_source_only_paths,
+        )
+        entrypoints: list[str] = []
+        for item in self.stdlib_source_only:
+            entrypoint = item["path"]
+            self.assertIsInstance(entrypoint, str)
+            entrypoints.append(entrypoint)
+        with tempfile.TemporaryDirectory(prefix="python-source-entrypoints-guard-") as temporary:
+            fixture_root = Path(temporary)
+            copy_source_like_entrypoints(
+                ROOT,
+                fixture_root,
+                tuple(entrypoints),
+                support_files=(".ai/scripts/ai_context_package_identity.py",),
+            )
+            bootstrap = fixture_root / ".ai/scripts/python_prerequisites.py"
+            bootstrap.write_text(
+                "def guard_direct_entrypoint(entrypoint):\n"
+                "    print(f'fixture-direct-guard:{entrypoint}')\n"
+                "    raise SystemExit(73)\n",
+                encoding="utf-8",
+            )
+            before = fixture_tree_snapshot(fixture_root)
+            environment = os.environ.copy()
+            environment["PYTHONDONTWRITEBYTECODE"] = "1"
+            environment.pop("PYTHONPATH", None)
+            for entrypoint in entrypoints:
+                with self.subTest(entrypoint=entrypoint):
+                    try:
+                        result = subprocess.run(
+                            [sys.executable, "-B", str(fixture_root / entrypoint)],
+                            cwd=fixture_root,
+                            env=environment,
+                            capture_output=True,
+                            text=True,
+                            encoding="utf-8",
+                            errors="replace",
+                            check=False,
+                            timeout=DIRECT_ENTRYPOINT_TIMEOUT_SECONDS,
+                        )
+                    except subprocess.TimeoutExpired as error:
+                        self.fail(
+                            f"{entrypoint} did not reach its direct guard within "
+                            f"{DIRECT_ENTRYPOINT_TIMEOUT_SECONDS}s: {error}"
+                        )
+                    self.assertEqual(73, result.returncode, result.stdout + result.stderr)
+                    self.assertEqual(
+                        [f"fixture-direct-guard:{entrypoint}"],
+                        result.stdout.splitlines(),
+                    )
+                    self.assertEqual("", result.stderr)
+                    self.assertEqual(before, fixture_tree_snapshot(fixture_root))
 
     def test_gwt_003_given_source_only_registry_when_stdlib_entries_are_selected_then_they_have_empty_dependency_profiles(self) -> None:
         stdlib_entries = {item["path"]: item for item in self.stdlib_source_only}

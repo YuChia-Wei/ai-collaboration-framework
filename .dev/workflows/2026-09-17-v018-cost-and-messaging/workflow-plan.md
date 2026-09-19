@@ -4,7 +4,7 @@
 - template_id: ai-context-governance-maintenance-workflow-plan
 - template_version: 1.2.0
 - created_at: 2026-09-17T23:54:11+08:00
-- updated_at: 2026-09-18T22:13:09+08:00
+- updated_at: 2026-09-20T07:37:16+08:00
 
 ## Workflow Metadata
 - workflow_id: 2026-09-17-v018-cost-and-messaging
@@ -26,7 +26,7 @@ This is one cohesive release delivery with independent acceptance mappings. Sour
 ## Artifact Contract
 - Baseline: ../../assessments/ASM-20260917-23-c18/assessment.yaml
 - Remediation: reports/remediation-report.md
-- Tasks: tasks/COST-001.json, tasks/MSG-001.json, tasks/EVAL-001.json, tasks/REL018-001.json
+- Tasks: tasks/COST-001.json, tasks/MSG-001.json, tasks/EVAL-001.json, tasks/REL018-001.json, tasks/TEST018-001.json
 - Raw runtime/provider evidence: ignored `.dev/ai-context/local/v018/`.
 - External analysis reports and disposable evaluation checkouts may be used under the owner's authorized roots; copy only stable conclusions/identity references into source records.
 
@@ -48,6 +48,36 @@ This is one cohesive release delivery with independent acceptance mappings. Sour
 
 ## Validation Strategy
 Run focused deterministic checks after each coherent edit. Heavy unrelated I/O/OS suites are deferred during iteration by owner instruction, not passed or permanently waived. Before candidate readiness, enumerate affected release gates, justify execution/reuse/not-applicable/deferral, and preserve OS/durability semantics where they matter. Do not route durability tests through RAM-disk fixture acceleration. Reuse evidence only under the existing content-subject contract.
+
+## Mandatory Test Design Repairs
+
+On 2026-09-20 the owner accepted the test-code review findings and explicitly
+made their repair a prerequisite for v0.18.0 publication. Live Issue #302 now
+records T1-T7 under its existing AC2 release-qualification scope. This reopens
+the workflow for TEST018-001; earlier completed implementation tasks and their
+historical evidence remain unchanged.
+
+- T1: A real help-only source-governance CLI and assertions about help output.
+- T2: Every source-only prerequisite boundary retains meaningful protection
+  against execution or writes before the guard; import order alone is insufficient.
+- T3: Bounded isolated fixtures replace ambient output and cache inventories.
+- T4: Parallel shards cover exactly the discovered tests without duplication.
+- T5: Interruption and partial-launch failures clean up the child process scope.
+- T6: Review the repaired design before execution, then run focused checks and
+  the mandatory source-release gates. A timeout increase alone is not remediation.
+- T7: Reconcile the final package projection with Candidate11's immutable assets;
+  source-only repairs do not authorize silent package drift or evidence relabeling.
+
+The timeout-only proposal at `96aec35cff4cf3f631296e7f7fa2108829b9a0b8` and its
+unexecuted focused02 retry were superseded by reviewed source-only repairs.
+Four native focused commands now pass (9 cases); complete process-tree cleanup
+and unchanged source/dependency bytes are retained. Full Release05 remains
+failed history with a released lease. Fresh Release06 and final admission remain
+mandatory; the focused pass does not substitute for them.
+
+Keep the existing real Git/Bash orchestration cases and immutable fixture
+baselines. Do not expand this work into unrelated I/O/OS suites. Any necessary
+new execution must bind the repaired subject and retain original failures.
 
 ## Evidence Intake
 Base/source: f643b56cd68faec590f23a8c8a7436f813285e5d, clean and equal to origin/main. Lab reference: ed27f6b7c63fdb45dfa9a8e6ff010b4be63b4045. Terra read-only guidance review verified the external report manifest's 10 exported artifacts and returned five bounded findings; no product code or tests were executed. It identified the Use Case versus native middleware completion ambiguity and missing inbox/Factory/idempotency contracts. Historical sample tests do not establish current-head execution, crash recovery or business OperationId deduplication.

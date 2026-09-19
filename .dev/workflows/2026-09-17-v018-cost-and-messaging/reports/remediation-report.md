@@ -1,8 +1,15 @@
 # Remediation Progress
 
-Updated: 2026-09-19T00:15:00+08:00
+Updated: 2026-09-20T07:37:16+08:00
 
 Baseline: `ASM-20260917-23-c18`. Workflow: `2026-09-17-v018-cost-and-messaging`. This is the implementation owner's ledger, not independent verification.
+
+The owner reopened release qualification on 2026-09-20 for mandatory test-design
+repairs in TEST018-001 and live Issue #302 T1-T7. They cover true help-only
+behavior, prerequisite failure sensitivity, isolated fixtures, complete parallel
+selection, and cancellation cleanup. Implementation and pre-execution review are complete;
+four native focused commands passed. The complete release profile and final
+admission remain mandatory and are not discharged by this focused evidence.
 
 | Finding | State | Evidence / remaining work |
 | --- | --- | --- |
@@ -394,3 +401,35 @@ Its fresh plan has 139 automatic operations, one explicit AGENTS reconciliation,
 no ignored managed paths and no unresolved automatic operations. Prospective
 authority retains four CUST identities, 13 dispositions, 20 routes and null
 policy adoptions. Application, target receipt and independent audit are pending.
+
+## Reviewed Test Design Repairs
+
+TEST018-001 implements true source-governance help short-circuiting, per-entrypoint
+prerequisite failure checks in bounded fixtures, empty-directory mutation
+sensitivity, an executed-guard sentinel, exact disjoint shard coverage and
+canonical supervision of the full evidence test module. Duplicate guard/help
+probes were removed. The independent design review found no remaining findings
+before execution. An earlier reviewer stop was a SHA-1/SHA-256 comparison error;
+matching raw SHA-256 identities resolved it without changing the source.
+
+Four Windows Job Object supervised commands passed: the complete source-entrypoint
+module (5 cases, 9.071532s), prerequisite GWT014 (0.505904s), shard-selection
+contracts (0.310298s), and two actual parallel cases (7.773579s). All four receipts
+report zero active processes, empty process trees and unchanged source/dependency
+bytes. The actual receipt bundle SHA-256 is
+`57845e7e238929f5e6cdec35fbf506dfca97eab067af113756cd1930358bc0da`.
+The source-entrypoint budget remains 60 seconds; the full evidence-module budget
+remains 180 seconds. Existing meaningful orchestration and fault cases remain.
+
+These five code paths are source-only exclusions. Candidate11 ZIP remains
+`51c550f974ab32581f1b02d4966bd84e6e5ac76bb7bd6b77fd5da2ce9ef84070`;
+canonical release-input projection remains
+`57e1d102a7e59c1f26766a3fe2e8ef9a0dc1309ce35c438350a326c439abec10`.
+The mutable source workflow index is excluded; the identically named payload
+path is supplied by the unchanged public catalog template. No downstream product
+change or package rebuild is needed for these repairs.
+
+Fresh Release06 must still exercise the complete repaired module and all required
+release checks. Existing supervisor cleanup implementation was reused; no new
+OS/cancellation suite was run in this focused pass. Release05, SourceFocused08
+and the stopped timeout-only retry remain retained non-passing history.
