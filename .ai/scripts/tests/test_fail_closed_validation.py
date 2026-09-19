@@ -208,6 +208,7 @@ class SyntheticRunnerRepo:
         shutil.copy2(RUNNER_SOURCE, self.scripts / RUNNER_SOURCE.name)
         shutil.copy2(PROFILE_REGISTRY_SOURCE, self.scripts / PROFILE_REGISTRY_SOURCE.name)
         shutil.copy2(EVIDENCE_SOURCE, self.scripts / EVIDENCE_SOURCE.name)
+        self._capture_full_fixture_catalog()
         self._write_declared_python_targets()
         if not full_profile_membership:
             self._use_default_narrow_profile_membership()
@@ -264,6 +265,58 @@ class SyntheticRunnerRepo:
                 encoding="utf-8",
                 newline="\n",
             )
+
+    def _capture_full_fixture_catalog(self) -> None:
+        with (self.scripts / PROFILE_REGISTRY_SOURCE.name).open(
+            "a", encoding="utf-8", newline="\n"
+        ) as registry:
+            registry.write('FIXTURE_ALL_CHECK_IDS=("${CHECK_IDS[@]}")\n')
+
+    def _project_fixture_catalog(self, *check_ids: str) -> None:
+        if not check_ids:
+            raise ValueError("fixture catalog projection requires at least one check id")
+        if any(
+            not re.fullmatch(r"[a-z0-9][a-z0-9-]*", check_id)
+            for check_id in check_ids
+        ):
+            raise ValueError("fixture catalog projection contains an unsafe check id")
+        roots = " ".join(f'"{check_id}"' for check_id in check_ids)
+        with (self.scripts / PROFILE_REGISTRY_SOURCE.name).open(
+            "a", encoding="utf-8", newline="\n"
+        ) as registry:
+            registry.write(
+                "declare -A FIXTURE_CATALOG_KEEP=()\n"
+                "_fixture_catalog_mark() {\n"
+                "  local fixture_catalog_id=$1 fixture_catalog_dependency\n"
+                '  [ -n "${CHECK_DESCRIPTION[$fixture_catalog_id]:-}" ] || {\n'
+                '    echo "Fixture catalog references an unknown check: $fixture_catalog_id" >&2\n'
+                "    return 2\n"
+                "  }\n"
+                '  [ -n "${FIXTURE_CATALOG_KEEP[$fixture_catalog_id]:-}" ] && return 0\n'
+                '  FIXTURE_CATALOG_KEEP["$fixture_catalog_id"]=true\n'
+                '  for fixture_catalog_dependency in ${CHECK_DEPENDS[$fixture_catalog_id]}; do\n'
+                '    _fixture_catalog_mark "$fixture_catalog_dependency" || return $?\n'
+                "  done\n"
+                "}\n"
+                f"for fixture_catalog_root in {roots}; do\n"
+                '  _fixture_catalog_mark "$fixture_catalog_root" || exit $?\n'
+                "done\n"
+                "CHECK_IDS=()\n"
+                'for fixture_catalog_id in "${FIXTURE_ALL_CHECK_IDS[@]}"; do\n'
+                '  [ -n "${FIXTURE_CATALOG_KEEP[$fixture_catalog_id]:-}" ] && '
+                'CHECK_IDS+=("$fixture_catalog_id")\n'
+                "done\n"
+                '[ "${#CHECK_IDS[@]}" -gt 0 ] || {\n'
+                '  echo "Fixture catalog projection is empty" >&2\n'
+                "  exit 2\n"
+                "}\n"
+            )
+
+    def _restore_full_fixture_catalog(self) -> None:
+        with (self.scripts / PROFILE_REGISTRY_SOURCE.name).open(
+            "a", encoding="utf-8", newline="\n"
+        ) as registry:
+            registry.write('CHECK_IDS=("${FIXTURE_ALL_CHECK_IDS[@]}")\n')
 
     def add_python_stub(self, name: str, exit_variable: str = "PYTHON_STUB_EXIT") -> Path:
         path = self.bin / name
@@ -554,6 +607,7 @@ class SyntheticRunnerRepo:
         ) as registry:
             for check_id, dependencies in dependencies_by_id.items():
                 registry.write(f'CHECK_DEPENDS["{check_id}"]="{dependencies}"\n')
+        self._restore_full_fixture_catalog()
 
     def override_input_paths(self, **input_paths_by_id: str) -> None:
         with (self.scripts / PROFILE_REGISTRY_SOURCE.name).open(
@@ -575,26 +629,29 @@ class SyntheticRunnerRepo:
             "a", encoding="utf-8", newline="\n"
         ) as registry:
             registry.write(
-                'for fixture_id in "${CHECK_IDS[@]}"; do '
+                'for fixture_id in "${FIXTURE_ALL_CHECK_IDS[@]}"; do '
                 f'CHECK_PROFILES["$fixture_id"]="{fallback_profile}"; done\n'
             )
             for check_id in check_ids:
                 registry.write(f'CHECK_PROFILES["{check_id}"]="{profile}"\n')
+        self._project_fixture_catalog(*check_ids)
 
     def _use_default_narrow_profile_membership(self) -> None:
         with (self.scripts / PROFILE_REGISTRY_SOURCE.name).open(
             "a", encoding="utf-8", newline="\n"
         ) as registry:
             registry.write(
-                'for fixture_id in "${CHECK_IDS[@]}"; do '
+                'for fixture_id in "${FIXTURE_ALL_CHECK_IDS[@]}"; do '
                 'CHECK_PROFILES["$fixture_id"]="closeout"; done\n'
             )
             registry.write(
                 'CHECK_PROFILES["profile-registry-contract"]='
                 '"fast pr release nightly-full"\n'
             )
+        self._project_fixture_catalog("profile-registry-contract")
 
     def create_changed_path_revisions(self, relative_path: str) -> tuple[str, str]:
+        self._restore_full_fixture_catalog()
         path = self.root / relative_path
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_text("baseline\n", encoding="utf-8", newline="\n")
@@ -1600,6 +1657,11 @@ class CheckAllRunnerGwtTests(unittest.TestCase):
     def test_gwt_022_given_selected_nonexecuted_paths_when_quick_finishes_then_every_selected_id_has_one_bound_event(self) -> None:
         fixture = SyntheticRunnerRepo()
         try:
+            fixture.restrict_profile_to(
+                "pr",
+                "release-asset-identity",
+                "validation-dependency-observation-contract",
+            )
             result = fixture.execute(
                 "--quick",
                 environment={"AI_CONTEXT_VALIDATION_LOG_DIR": str(fixture.validation_logs)},

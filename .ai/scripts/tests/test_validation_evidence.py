@@ -7,6 +7,7 @@ import hashlib
 import importlib.util
 import json
 import os
+import shutil
 import subprocess
 import sys
 import tempfile
@@ -25,6 +26,63 @@ INVOCATION_ID = "fixture-invocation"
 
 class ValidationEvidenceFixture(unittest.TestCase):
     """Shared isolated repository fixture; no test methods live here."""
+
+    @staticmethod
+    def _template_git(repo: Path, *arguments: str) -> None:
+        result = subprocess.run(
+            ["git", *arguments],
+            cwd=repo,
+            check=False,
+            capture_output=True,
+            text=True,
+            timeout=30,
+        )
+        if result.returncode != 0:
+            raise RuntimeError(
+                f"fixture template Git command failed ({' '.join(arguments)}): "
+                f"{result.stderr}"
+            )
+
+    @classmethod
+    def setUpClass(cls) -> None:
+        super().setUpClass()
+        cls._template_temporary = tempfile.TemporaryDirectory(
+            prefix="validation-evidence-template-"
+        )
+        template_root = Path(cls._template_temporary.name)
+        cls._base_template = template_root / "base"
+        cls._helper_template = template_root / "helper"
+        cls._base_template.mkdir()
+        template_inputs = cls._base_template / "inputs"
+        template_inputs.mkdir()
+        (template_inputs / "rule.md").write_text("governed bytes\n", encoding="utf-8")
+        (cls._base_template / ".gitignore").write_text("artifacts/\n", encoding="utf-8")
+        cls._template_git(cls._base_template, "init")
+        cls._template_git(cls._base_template, "config", "user.email", "validator@example.test")
+        cls._template_git(cls._base_template, "config", "user.name", "Validator Fixture")
+        cls._template_git(cls._base_template, "add", "inputs/rule.md", ".gitignore")
+        cls._template_git(cls._base_template, "commit", "-m", "fixture")
+        shutil.copytree(cls._base_template, cls._helper_template)
+        template_helper = cls._helper_template / ".ai/scripts/validation-evidence.py"
+        template_helper.parent.mkdir(parents=True, exist_ok=True)
+        template_helper.write_bytes(HELPER.read_bytes())
+        template_subject_helper = cls._helper_template / ".ai/scripts/validation_subject.py"
+        template_subject_helper.write_bytes(SUBJECT_HELPER.read_bytes())
+        cls._template_git(
+            cls._helper_template,
+            "add",
+            template_helper.relative_to(cls._helper_template).as_posix(),
+            template_subject_helper.relative_to(cls._helper_template).as_posix(),
+        )
+        cls._template_git(cls._helper_template, "commit", "-m", "tracked bootstrap helper fixture")
+
+    @classmethod
+    def tearDownClass(cls) -> None:
+        try:
+            cls._template_temporary.cleanup()
+        finally:
+            super().tearDownClass()
+
     def setUp(self) -> None:
         self.temporary = tempfile.TemporaryDirectory(prefix="validation-evidence-")
         self.repo = Path(self.temporary.name) / "repo"
@@ -73,8 +131,28 @@ class ValidationEvidenceFixture(unittest.TestCase):
         )
         self.assertEqual(0, result.returncode, result.stderr)
 
+    def _materialize_pristine_template(self, template: Path, *, includes_helper: bool) -> bool:
+        if self.git_initialized:
+            return False
+        if (
+            (self.inputs / "rule.md").read_bytes() != b"governed bytes\n"
+            or (self.repo / ".git").exists()
+            or (self.repo / ".gitignore").exists()
+            or (self.repo / ".ai").exists()
+        ):
+            return False
+        self.assertTrue(template.is_dir())
+        shutil.copytree(template / ".git", self.repo / ".git")
+        shutil.copy2(template / ".gitignore", self.repo / ".gitignore")
+        if includes_helper:
+            shutil.copytree(template / ".ai", self.repo / ".ai")
+        self.git_initialized = True
+        return True
+
     def initialize_git(self) -> None:
         if self.git_initialized:
+            return
+        if self._materialize_pristine_template(self._base_template, includes_helper=False):
             return
         self.git("init")
         self.git("config", "user.email", "validator@example.test")
@@ -85,6 +163,8 @@ class ValidationEvidenceFixture(unittest.TestCase):
         self.git_initialized = True
 
     def install_tracked_helper(self, message: str = "tracked bootstrap helper fixture") -> None:
+        if self._materialize_pristine_template(self._helper_template, includes_helper=True):
+            return
         self.initialize_git()
         fixture_helper = self.repo / ".ai/scripts/validation-evidence.py"
         fixture_helper.parent.mkdir(parents=True, exist_ok=True)
@@ -208,16 +288,16 @@ class ValidationEvidenceFixture(unittest.TestCase):
         fingerprint, reusable, _ = result.stdout.rstrip("\r\n").split("\t")
         return fingerprint, reusable == "true"
 
-    def lookup_three_release_rows(
+    def prepare_lookup_rows(
         self,
         specs: list[dict[str, Any]],
         *,
         profile: str,
+        name: str,
     ) -> dict[str, tuple[str, bool]]:
-        self.assertEqual("release", profile)
-        self.assertEqual(3, len(specs))
+        self.assertTrue(specs)
         self.assertTrue(all("fingerprint" not in spec for spec in specs))
-        selection = self.logs / "three-release-row-lookup.tsv"
+        selection = self.logs / name
         selection.write_text(
             "\n".join(
                 f"{spec['id']}\t{spec.get('version', 'validator-v1')}\tinputs\treuse-by-input"
@@ -227,21 +307,19 @@ class ValidationEvidenceFixture(unittest.TestCase):
         )
         result = self.helper(
             "prepare", "--repo", str(self.repo), "--cache", str(self.cache),
-            "--profile", "release", "--environment-class", "windows-native",
+            "--profile", profile, "--environment-class", "windows-native",
             "--selection", str(selection),
         )
         self.assertEqual(0, result.returncode, result.stderr)
         lines = result.stdout.splitlines()
         self.assertEqual(len(specs), len(lines))
-        lookups: dict[str, tuple[str, bool]] = {}
+        prepared: dict[str, tuple[str, bool]] = {}
         for spec, line in zip(specs, lines, strict=True):
-            validator_id, fingerprint, reusable, log_ref = line.split("\t", 3)
+            validator_id, fingerprint, reusable, _log_ref = line.split("\t", 3)
             self.assertEqual(spec["id"], validator_id)
-            self.assertEqual("false", reusable)
-            self.assertEqual("", log_ref)
-            self.assertNotIn(validator_id, lookups)
-            lookups[validator_id] = (fingerprint, False)
-        return lookups
+            self.assertNotIn(validator_id, prepared)
+            prepared[validator_id] = (fingerprint, reusable == "true")
+        return prepared
 
     def record_current(
         self,
@@ -767,7 +845,6 @@ class ValidationEvidenceFixture(unittest.TestCase):
         profile: str = "release",
         snapshot: Path | None = None,
         preparation_python: str | None = None,
-        batch_three_release_lookups: bool = False,
     ) -> dict[str, Path]:
         self.initialize_git()
         snapshot = snapshot or self.capture_snapshot(
@@ -777,11 +854,33 @@ class ValidationEvidenceFixture(unittest.TestCase):
             "id": "fixture-check", "outcome": "passed",
             "disposition": "executed", "enforcement": "required",
         }]
-        batch_lookups = (
-            self.lookup_three_release_rows(specs, profile=profile)
-            if batch_three_release_lookups
-            else {}
-        )
+        automatic_specs = [spec for spec in specs if "fingerprint" not in spec]
+        automatic_ids = [str(spec["id"]) for spec in automatic_specs]
+        batch_lookups: dict[str, tuple[str, bool]] | None = None
+        if automatic_specs and len(automatic_ids) == len(set(automatic_ids)):
+            initial_lookups = self.prepare_lookup_rows(
+                automatic_specs,
+                profile=profile,
+                name="prepare-initial-selection.tsv",
+            )
+            for spec in automatic_specs:
+                validator_id = str(spec["id"])
+                disposition = str(spec["disposition"])
+                cache_hit = bool(spec.get("cache_hit", disposition == "reused"))
+                fingerprint, reusable = initial_lookups[validator_id]
+                if disposition == "reused" and cache_hit and not reusable:
+                    self.seed_cache_source(
+                        snapshot,
+                        validator_id=validator_id,
+                        version=str(spec.get("version", "validator-v1")),
+                        profile=profile,
+                        fingerprint=fingerprint,
+                    )
+            batch_lookups = self.prepare_lookup_rows(
+                automatic_specs,
+                profile=profile,
+                name="prepare-final-selection.tsv",
+            )
         changed_paths_content = b"inputs/rule.md\n"
         changed_paths_digest = hashlib.sha256(changed_paths_content).hexdigest()
         events: list[str] = []
@@ -795,7 +894,7 @@ class ValidationEvidenceFixture(unittest.TestCase):
             if "fingerprint" in spec:
                 fingerprint = str(spec["fingerprint"])
                 reusable = False
-            elif batch_three_release_lookups:
+            elif batch_lookups is not None:
                 fingerprint, reusable = batch_lookups[validator_id]
             else:
                 fingerprint, reusable = self.lookup(
@@ -809,18 +908,7 @@ class ValidationEvidenceFixture(unittest.TestCase):
             outcome = spec["outcome"]
             cache_hit = spec.get("cache_hit", disposition == "reused")
             if disposition == "reused" and cache_hit and not reusable:
-                self.seed_cache_source(
-                    snapshot,
-                    validator_id=validator_id,
-                    version=version,
-                    profile=profile,
-                    fingerprint=fingerprint,
-                )
-                same_fingerprint, reusable = self.lookup(
-                    validator_id=validator_id, version=version, profile=profile
-                )
-                self.assertEqual(fingerprint, same_fingerprint)
-                self.assertTrue(reusable)
+                self.fail("prepared cache source was not reusable after canonical final prepare")
             result_path: Path | None = spec.get("result_path")
             if disposition == "reused" and not cache_hit and result_path is not None:
                 preparation_results.append(result_path)
@@ -2562,7 +2650,7 @@ class ValidationEvidenceRoutineContractGwtTests(ValidationEvidenceFixture):
                 "outcome": "passed",
                 "disposition": "executed",
             },
-        ], profile=profile, batch_three_release_lookups=True)
+        ], profile=profile)
         rows_by_id = {
             line.split("\t", 1)[0]: line
             for line in paths["preparation_selection"].read_text(
@@ -2608,7 +2696,7 @@ class ValidationEvidenceRoutineContractGwtTests(ValidationEvidenceFixture):
                 "outcome": "passed",
                 "disposition": "executed",
             },
-        ], profile=profile, batch_three_release_lookups=True)
+        ], profile=profile)
         rows_by_id = {
             line.split("\t", 1)[0]: line
             for line in paths["preparation_selection"].read_text(
