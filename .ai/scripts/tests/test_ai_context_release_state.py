@@ -1465,8 +1465,7 @@ class V017RetainedExecutionSetTests(unittest.TestCase):
     def test_given_affected_only_subject_drift_when_rebound_then_rejected(self):
         matrix = yaml.safe_load((self.actual.parents[1] / "support-matrix.yaml").read_bytes())
         paths = [self.actual / "baseline-support-matrix.yaml", self.actual / "baseline.zip",
-                 self.actual.parent / "admitted/ai-collaboration-framework-v0.17.0.zip",
-                 ROOT / ".ai/scripts/check-all.sh"]
+                 self.actual.parent / "admitted/ai-collaboration-framework-v0.17.0.zip"]
         for path in paths:
             with self.subTest(path=path.name), self.altered_bytes(path, lambda raw: raw + b"changed"):
                 with self.assertRaises(STATE.ReleaseStateError):
@@ -1527,6 +1526,174 @@ class V017RetainedExecutionSetTests(unittest.TestCase):
         with patch.object(STATE.subprocess, "run", return_value=subprocess.CompletedProcess([], 128, b"", b"missing")):
             with self.assertRaisesRegex(STATE.ReleaseStateError, "native execution provenance"):
                 STATE.load_v017_execution_set(ROOT, self.actual)
+
+
+class V018MatrixRebindTests(unittest.TestCase):
+    """Keep Candidate10 facts distinct from a C11 bounded archive rebind."""
+
+    @staticmethod
+    def archive(shell_assets, keep=b"unchanged"):
+        import io
+        import zipfile
+
+        output = io.BytesIO()
+        with zipfile.ZipFile(output, "w") as archive:
+            for name, value in [
+                (".ai/scripts/shell-assets.yaml", shell_assets),
+                ("meta/keep.txt", keep),
+            ]:
+                entry = zipfile.ZipInfo(f"bundle/payload/{name}")
+                entry.external_attr = 0o100644 << 16
+                archive.writestr(entry, value)
+        return output.getvalue()
+
+    def fixture(self, root):
+        old_subject = "a" * 40
+        new_subject = "b" * 40
+        runner = b"preserved C10 runner\n"
+        before = b"  - python .ai/scripts/tests/test_code_reviewer_routing_contract.py -v\n"
+        after = before + b"  - python .ai/scripts/tests/test_runtime_skill_entries.py -v\n"
+        baseline_archive = self.archive(before)
+        replacement_archive = self.archive(after)
+        release = root / ".dev/releases/v0.18.0"
+        actual = release / "route-assets/actual"
+        admitted = release / "route-assets/admitted/ai-collaboration-framework-v0.18.0.zip"
+        actual.mkdir(parents=True)
+        admitted.parent.mkdir(parents=True)
+        source_runner = root / ".github/scripts/validate-v018-direct-upgrades.py"
+        source_runner.parent.mkdir(parents=True)
+        source_runner.write_bytes(runner)
+        shell_path = root / ".ai/scripts/shell-assets.yaml"
+        shell_path.parent.mkdir(parents=True)
+        shell_path.write_bytes(after)
+        (actual / "validate-v018-direct-upgrades.py").write_bytes(runner)
+        (actual / "baseline.zip").write_bytes(baseline_archive)
+        admitted.write_bytes(replacement_archive)
+        origins = [{"version": value} for value in ("v0.6.0", "v0.9.0", "v0.17.0")]
+        baseline = {
+            "target": {"version": "v0.18.0", "commit": old_subject},
+            "retained_origins": origins,
+            "routes": [{"edges": [{"to_version": "v0.18.0", "artifacts": {"archive": {
+                "sha256": STATE.hashlib.sha256(baseline_archive).hexdigest()}}}]}],
+        }
+        baseline_raw = yaml.safe_dump(baseline, sort_keys=False).encode()
+        (actual / "baseline-support-matrix.yaml").write_bytes(baseline_raw)
+        cases = [{"case": case, "outcome": "passed"} for case in STATE.V018_REBIND_CASES]
+        terminal = {
+            "schema_version": "direct-upgrade-execution/v1",
+            "evidence_kind": "actual-isolated-target-execution",
+            "outcome": "passed",
+            "archive_sha256": STATE.hashlib.sha256(baseline_archive).hexdigest(),
+            "subject_sha": old_subject,
+            "package_source": {"commit": old_subject},
+            "runner": {"path": STATE.V018_REBIND_RUNNER_PATH,
+                       "sha256": STATE.hashlib.sha256(runner).hexdigest()},
+            "started_at": "2026-09-19T01:00:00+00:00",
+            "completed_at": "2026-09-19T01:00:01+00:00",
+            "duration_seconds": 1.0,
+            "invocation": ["python", STATE.V018_REBIND_RUNNER_PATH, "--subject-sha", old_subject],
+            "cases": cases,
+        }
+        terminal_raw = json.dumps(terminal, sort_keys=True).encode()
+        (actual / "terminal.json").write_bytes(terminal_raw)
+        evidence = b"Candidate10 native evidence only\n"
+        (actual / "evidence.txt").write_bytes(evidence)
+        index = {
+            "schema_version": "v018-direct-case-evidence-index/v1",
+            "terminal": {"asset_id": "actual-direct-v018-terminal", "path": "actual/terminal.json",
+                         "sha256": STATE.hashlib.sha256(terminal_raw).hexdigest()},
+            "evidence": [{"staged": {"asset_id": "fixture-evidence", "path": "actual/evidence.txt",
+                                        "sha256": STATE.hashlib.sha256(evidence).hexdigest()},
+                          "terminal_path": "evidence.txt"}],
+        }
+        index_raw = json.dumps(index, sort_keys=True).encode()
+        (actual / "case-evidence-index.json").write_bytes(index_raw)
+        pins = {
+            "V018_REBIND_ARCHIVE_SHA256": STATE.hashlib.sha256(baseline_archive).hexdigest(),
+            "V018_REBIND_SUBJECT_SHA": old_subject,
+            "V018_REBIND_RUNNER_SHA256": STATE.hashlib.sha256(runner).hexdigest(),
+            "V018_REBIND_TERMINAL_SHA256": STATE.hashlib.sha256(terminal_raw).hexdigest(),
+            "V018_REBIND_CASE_INDEX_SHA256": STATE.hashlib.sha256(index_raw).hexdigest(),
+            "V018_REBIND_BASELINE_MATRIX_SHA256": STATE.hashlib.sha256(baseline_raw).hexdigest(),
+            "V018_REBIND_CASE_EVIDENCE_COUNT": 1,
+        }
+        with patch.multiple(STATE, **pins):
+            (actual / "execution-set.json").write_text(
+                json.dumps(STATE.v018_rebind_execution_set(), sort_keys=True), encoding="utf-8"
+            )
+        matrix = {
+            "target": {"version": "v0.18.0", "commit": new_subject},
+            "retained_origins": origins,
+            "routes": [{"edges": [{"to_version": "v0.18.0", "artifacts": {"archive": {
+                "sha256": STATE.hashlib.sha256(replacement_archive).hexdigest()}}}]}],
+        }
+        return {
+            "actual": actual,
+            "admitted": admitted,
+            "baseline": baseline,
+            "baseline_archive": baseline_archive,
+            "before": before,
+            "after": after,
+            "matrix": matrix,
+            "pins": pins,
+            "root": root,
+            "shell_path": shell_path,
+            "runner": runner,
+        }
+
+    @staticmethod
+    def git_show(runner):
+        return patch.object(
+            STATE.subprocess,
+            "run",
+            return_value=subprocess.CompletedProcess([], 0, runner, b""),
+        )
+
+    def test_given_exact_archive_delta_when_rebound_then_preserves_candidate10_case_matrix(self):
+        with tempfile.TemporaryDirectory() as directory:
+            fixture = self.fixture(Path(directory))
+            with patch.multiple(STATE, **fixture["pins"]), self.git_show(fixture["runner"]), patch.object(
+                STATE, "validate_direct_upgrade_cases"
+            ) as validate_cases:
+                STATE.validate_direct_upgrade_execution(
+                    fixture["root"], "v0.18.0", ["v0.6.0", "v0.9.0", "v0.17.0"], fixture["matrix"]
+                )
+            self.assertEqual(list(STATE.V018_REBIND_CASES), [case["case"] for case in validate_cases.call_args.args[0]])
+            self.assertEqual(fixture["baseline"], validate_cases.call_args.args[3])
+            self.assertNotEqual(fixture["matrix"], validate_cases.call_args.args[3])
+
+    def test_given_payload_origin_or_workspace_drift_when_rebound_then_rejects(self):
+        for change in ("payload", "origins", "workspace"):
+            with self.subTest(change=change), tempfile.TemporaryDirectory() as directory:
+                fixture = self.fixture(Path(directory))
+                if change == "payload":
+                    altered = self.archive(fixture["after"], b"changed")
+                    fixture["admitted"].write_bytes(altered)
+                    fixture["matrix"]["routes"][0]["edges"][0]["artifacts"]["archive"]["sha256"] = (
+                        STATE.hashlib.sha256(altered).hexdigest()
+                    )
+                elif change == "origins":
+                    fixture["matrix"]["retained_origins"] = []
+                else:
+                    fixture["shell_path"].write_bytes(fixture["after"] + b"changed")
+                with patch.multiple(STATE, **fixture["pins"]):
+                    with self.assertRaises(STATE.ReleaseStateError):
+                        STATE.v018_affected_only_case_matrix(fixture["root"], fixture["matrix"])
+
+    def test_given_execution_set_terminal_index_or_runner_drift_when_loaded_then_rejects(self):
+        for change in ("execution-set", "terminal", "index", "runner"):
+            with self.subTest(change=change), tempfile.TemporaryDirectory() as directory:
+                fixture = self.fixture(Path(directory))
+                paths = {
+                    "execution-set": fixture["actual"] / "execution-set.json",
+                    "terminal": fixture["actual"] / "terminal.json",
+                    "index": fixture["actual"] / "case-evidence-index.json",
+                    "runner": fixture["root"] / STATE.V018_REBIND_RUNNER_PATH,
+                }
+                paths[change].write_bytes(paths[change].read_bytes() + b"changed")
+                with patch.multiple(STATE, **fixture["pins"]), self.git_show(fixture["runner"]):
+                    with self.assertRaises(STATE.ReleaseStateError):
+                        STATE.load_v018_execution_set(fixture["root"], fixture["actual"])
 
 
 if __name__ == "__main__":

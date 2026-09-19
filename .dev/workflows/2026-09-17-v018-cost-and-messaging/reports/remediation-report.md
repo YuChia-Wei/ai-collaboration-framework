@@ -325,3 +325,36 @@ target apply, target receipt and independent audit remain pending. Final public
 adoption must bind the published Candidate10 bytes. The source record remains
 planned until the newly bound release profile passes. No source admission,
 publication or downstream merge is claimed by this checkpoint.
+
+## Release02 Recovery And Bounded Candidate11 Preparation
+
+The second source release profile completed at `17d3d551` with exit 1 in
+1238.912 seconds. Its 39 failed records comprise eight completed failures,
+one timeout and thirty checks not launched after that timeout. Preserve this
+failed terminal and released lease; skipped checks have no executed outcome.
+
+The repaired causes are a stale incident input digest, a missing governed
+exit-code entry, duplicate fixture-directory creation, a hardcoded fixture
+count, an historical v0.17 assertion against evolving source bytes, and a
+cache scan traversing ignored analysis clones. The cache test now inventories
+tracked Python module parents while retaining its protected-tree assertions
+and timeout. Focused dependency validation and 19 tests passed; ten current
+rebind/historical-evidence tests passed. Six deterministic behavior cases
+passed, and fault injection detected all five critical mutants while retaining
+one exploratory survivor. The earlier package fixtures and three source
+entrypoint tests also passed after their respective repairs.
+
+The real lab Candidate10 apply reached target validation, which failed because
+`shell-assets.yaml` omitted the new runtime-entry command from its inventory.
+No passing receipt or finalization occurred. Canonical rollback restored the
+clean v0.17 target at `b45ac1eb`; native failure evidence remains retained.
+
+The owner requested assessment and relaxation of excessive validation rather
+than repeated execution without new information. The source release policy
+now permits only the single command-inventory correction to rebind Candidate10
+Matrix05's nine native cases to a replacement candidate. Exact baseline ZIP,
+matrix, runner, terminal, indexed artifacts and payload comparison remain
+mandatory. Three fresh archive edge validations, source acceptance and actual
+lab adoption gates remain required. Candidate11 identity is not yet assigned
+at this preparation checkpoint, and no new matrix execution, release-profile
+pass, publication or downstream merge is claimed.

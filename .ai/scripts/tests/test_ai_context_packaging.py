@@ -1977,6 +1977,7 @@ class UpgradeRoutePackageProjectionGwtTests(unittest.TestCase):
                 ROOT / ".ai/assets/skills/ai-context-upgrader",
                 fixture_assets / "ai-context-upgrader",
                 ignore=shutil.ignore_patterns("__pycache__"),
+                dirs_exist_ok=True,
             )
             shutil.copytree(
                 ROOT / ".ai/assets/skills/ai-context-governance",

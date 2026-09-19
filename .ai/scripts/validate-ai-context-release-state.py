@@ -9,7 +9,7 @@ tags, releases, assets, or workflow runs.
 from __future__ import annotations
 
 import sys
-from pathlib import Path
+from pathlib import Path, PurePosixPath
 
 SCRIPT_ROOT = Path(__file__).resolve().parent
 sys.path.insert(0, str(SCRIPT_ROOT))
@@ -46,10 +46,31 @@ from ai_context_upgrade_routes import (
 
 VERSION_RE = re.compile(r"^v(?:0|[1-9]\d*)\.(?:0|[1-9]\d*)\.(?:0|[1-9]\d*)$")
 SHA_RE = re.compile(r"^[0-9a-f]{40}$")
+SHA256_RE = re.compile(r"^[0-9a-f]{64}$")
 DIRECT_UPGRADE_RUNNERS = {
     "v0.17.0": ".github/scripts/validate-v017-direct-upgrades.py",
     "v0.18.0": ".github/scripts/validate-v018-direct-upgrades.py",
 }
+V018_REBIND_ARCHIVE_SHA256 = "90e403bde5e1e84767a4c00b67923780ebea76222b7956e598c814241c0f7db0"
+V018_REBIND_SUBJECT_SHA = "f566a6014f0942a15b28a39f0b2f5df3303e6014"
+V018_REBIND_RUNNER_PATH = ".github/scripts/validate-v018-direct-upgrades.py"
+V018_REBIND_RUNNER_SHA256 = "60df0a1c2fc0217c104467d23a23b65245d3360fbc04291ff26387470b4e199b"
+V018_REBIND_TERMINAL_SHA256 = "04885cbbb8c3dc6823867f7ed73be102c2c427b3b34602080204b0f12782a3ca"
+V018_REBIND_CASE_INDEX_SHA256 = "3e4f5dab025e408f6588959f9bb8c328835721c9b2b5f6886dcee575c127978a"
+V018_REBIND_BASELINE_MATRIX_SHA256 = "d95c5ee82b97013f46f9a52a54ec54e698f94706cb0c29280f44c93b84417c30"
+V018_REBIND_CASE_EVIDENCE_COUNT = 236
+V018_REBIND_PAYLOAD_PATH = ".ai/scripts/shell-assets.yaml"
+V018_REBIND_CASES = (
+    "v0.6.0-pristine-resume",
+    "v0.6.0-customized-none",
+    "v0.6.0-customized-rollback",
+    "v0.9.0-pristine-resume",
+    "v0.9.0-customized-none",
+    "v0.9.0-customized-rollback",
+    "v0.17.0-pristine-resume",
+    "v0.17.0-customized-none",
+    "v0.17.0-customized-rollback",
+)
 ONLINE_ISSUE_REF_RE = re.compile(r"^#([1-9]\d*)$")
 PHASES = ("candidate", "tag", "publication", "finalization")
 V010_AGENT_PUBLICATION_AUTHORITY = {
@@ -811,13 +832,298 @@ def v017_affected_only_case_matrix(root, matrix):
             if expected.count(anchor) != 1:
                 raise ReleaseStateError("v0.17 affected-only repair anchor differs")
             expected = expected.replace(anchor, anchor + addition)
-        if after[path][1] != expected or (root / path).read_bytes() != expected:
-            raise ReleaseStateError("v0.17 affected-only runner differs from the reviewed repair")
+        if after[path][1] != expected:
+            raise ReleaseStateError("v0.17 affected-only archived repair differs")
         return baseline
     except ReleaseStateError:
         raise
     except (OSError, ValueError, KeyError, TypeError, PackageError, zipfile.BadZipFile) as exc:
         raise ReleaseStateError("v0.17 affected-only evidence is missing or invalid") from exc
+
+
+def v018_rebind_execution_set():
+    """Return the one-version contract that preserves Candidate10 native evidence."""
+    return {
+        "schema_version": "v018-direct-upgrade-rebind/v1",
+        "release": "v0.18.0",
+        "authority": "user-authorized-excessive-validation-rebind",
+        "original": {
+            "archive_sha256": V018_REBIND_ARCHIVE_SHA256,
+            "subject_sha": V018_REBIND_SUBJECT_SHA,
+            "runner": {
+                "path": V018_REBIND_RUNNER_PATH,
+                "sha256": V018_REBIND_RUNNER_SHA256,
+            },
+            "terminal": {
+                "path": "terminal.json",
+                "sha256": V018_REBIND_TERMINAL_SHA256,
+            },
+            "case_evidence_index": {
+                "path": "case-evidence-index.json",
+                "sha256": V018_REBIND_CASE_INDEX_SHA256,
+                "evidence_count": V018_REBIND_CASE_EVIDENCE_COUNT,
+            },
+            "baseline_support_matrix": {
+                "path": "baseline-support-matrix.yaml",
+                "sha256": V018_REBIND_BASELINE_MATRIX_SHA256,
+            },
+            "baseline_archive": {
+                "path": "baseline.zip",
+                "sha256": V018_REBIND_ARCHIVE_SHA256,
+            },
+        },
+        "cases": list(V018_REBIND_CASES),
+        "allowed_payload_delta": {
+            "path": V018_REBIND_PAYLOAD_PATH,
+            "mode": "0644",
+            "command": "python .ai/scripts/tests/test_runtime_skill_entries.py -v",
+        },
+    }
+
+
+def v018_payload_entries(content):
+    """Read one package payload as an unambiguous path-to-byte-and-mode map."""
+    import io
+    import zipfile
+
+    try:
+        entries = {}
+        with zipfile.ZipFile(io.BytesIO(content)) as archive:
+            for item in archive.infolist():
+                name = item.filename
+                marker = "/payload/"
+                if marker not in name:
+                    continue
+                prefix, relative = name.split(marker, 1)
+                pure = PurePosixPath(relative)
+                if (
+                    not prefix
+                    or not relative
+                    or name.count(marker) != 1
+                    or "\\" in name
+                    or pure.is_absolute()
+                    or str(pure) != relative
+                    or any(part in {"", ".", ".."} for part in pure.parts)
+                ):
+                    raise ReleaseStateError("v0.18 rebound payload path is invalid")
+                if item.is_dir():
+                    continue
+                key = pure.as_posix()
+                if key in entries:
+                    raise ReleaseStateError("v0.18 rebound payload has duplicate paths")
+                entries[key] = (item.external_attr, archive.read(item))
+        if not entries:
+            raise ReleaseStateError("v0.18 rebound payload is empty")
+        return entries
+    except ReleaseStateError:
+        raise
+    except (OSError, ValueError, zipfile.BadZipFile) as exc:
+        raise ReleaseStateError("v0.18 rebound payload cannot be read") from exc
+
+
+def validate_v018_case_evidence_index(actual_root):
+    """Bind every retained Candidate10 artifact through the checked-in index."""
+    raw = contained_release_asset(actual_root, "case-evidence-index.json").read_bytes()
+    if hashlib.sha256(raw).hexdigest() != V018_REBIND_CASE_INDEX_SHA256:
+        raise ReleaseStateError("v0.18 native case evidence index changed")
+    try:
+        index = json.loads(raw)
+    except ValueError as exc:
+        raise ReleaseStateError("v0.18 native case evidence index is invalid") from exc
+    terminal = {
+        "asset_id": "actual-direct-v018-terminal",
+        "path": "actual/terminal.json",
+        "sha256": V018_REBIND_TERMINAL_SHA256,
+    }
+    entries = index.get("evidence") if isinstance(index, dict) else None
+    if (
+        not isinstance(index, dict)
+        or set(index) != {"schema_version", "terminal", "evidence"}
+        or index.get("schema_version") != "v018-direct-case-evidence-index/v1"
+        or index.get("terminal") != terminal
+        or not isinstance(entries, list)
+        or len(entries) != V018_REBIND_CASE_EVIDENCE_COUNT
+    ):
+        raise ReleaseStateError("v0.18 native case evidence index differs")
+    paths, asset_ids = set(), set()
+    for entry in entries:
+        if not isinstance(entry, dict) or set(entry) != {"staged", "terminal_path"}:
+            raise ReleaseStateError("v0.18 native case evidence entry is invalid")
+        staged = entry["staged"]
+        path = entry["terminal_path"]
+        if (
+            not isinstance(staged, dict)
+            or set(staged) != {"asset_id", "path", "sha256"}
+            or not isinstance(staged.get("asset_id"), str)
+            or not staged["asset_id"]
+            or not isinstance(path, str)
+            or not path
+            or not SHA256_RE.fullmatch(str(staged.get("sha256")))
+            or staged.get("path") != f"actual/{path}"
+            or path in paths
+            or staged["asset_id"] in asset_ids
+        ):
+            raise ReleaseStateError("v0.18 native case evidence entry differs")
+        try:
+            observed = contained_release_asset(actual_root, path).read_bytes()
+        except (OSError, ValueError, PackageError) as exc:
+            raise ReleaseStateError("v0.18 native case evidence path is unavailable") from exc
+        if hashlib.sha256(observed).hexdigest() != staged["sha256"]:
+            raise ReleaseStateError("v0.18 native case evidence bytes changed")
+        paths.add(path)
+        asset_ids.add(staged["asset_id"])
+
+
+def validate_v018_rebound_payload_delta(baseline_archive, replacement_archive, shell_assets):
+    """Validate the exact C10-to-replacement payload repair from explicit bytes.
+
+    This narrow helper deliberately has no current-admission or matrix authority.
+    Derived route validators may use the same byte-level proof while their caller
+    binds the replacement archive to the current route admission.
+    """
+    before = v018_payload_entries(baseline_archive)
+    after = v018_payload_entries(replacement_archive)
+    changed = {name for name in before.keys() | after.keys() if before.get(name) != after.get(name)}
+    if (
+        changed != {V018_REBIND_PAYLOAD_PATH}
+        or before[V018_REBIND_PAYLOAD_PATH][0] != after[V018_REBIND_PAYLOAD_PATH][0]
+    ):
+        raise ReleaseStateError("v0.18 rebound payload delta differs")
+    expected = before[V018_REBIND_PAYLOAD_PATH][1]
+    anchor = b"  - python .ai/scripts/tests/test_code_reviewer_routing_contract.py -v\n"
+    addition = b"  - python .ai/scripts/tests/test_runtime_skill_entries.py -v\n"
+    if expected.count(anchor) != 1:
+        raise ReleaseStateError("v0.18 rebound payload anchor differs")
+    expected = expected.replace(anchor, anchor + addition)
+    if after[V018_REBIND_PAYLOAD_PATH][1] != expected or shell_assets != expected:
+        raise ReleaseStateError("v0.18 rebound shell-assets bytes differ")
+
+
+def load_v018_execution_set(root, actual_root):
+    """Load the immutable Candidate10 matrix for the one v0.18 replacement path."""
+    try:
+        record = json.loads(contained_release_asset(actual_root, "execution-set.json").read_bytes())
+        if record != v018_rebind_execution_set():
+            raise ReleaseStateError("v0.18 execution set differs from the bounded user decision")
+        terminal_raw = contained_release_asset(actual_root, "terminal.json").read_bytes()
+        if hashlib.sha256(terminal_raw).hexdigest() != V018_REBIND_TERMINAL_SHA256:
+            raise ReleaseStateError("v0.18 original execution terminal changed")
+        terminal = json.loads(terminal_raw)
+        validate_v018_case_evidence_index(actual_root)
+        runner = terminal.get("runner", {})
+        cases = terminal.get("cases")
+        invocation = terminal.get("invocation")
+        start = iso_timestamp(terminal.get("started_at"), "v0.18 native execution started_at")
+        end = iso_timestamp(terminal.get("completed_at"), "v0.18 native execution completed_at")
+        duration = terminal.get("duration_seconds")
+        if (
+            terminal.get("schema_version") != "direct-upgrade-execution/v1"
+            or terminal.get("evidence_kind") != "actual-isolated-target-execution"
+            or terminal.get("outcome") != "passed"
+            or terminal.get("archive_sha256") != V018_REBIND_ARCHIVE_SHA256
+            or terminal.get("subject_sha") != V018_REBIND_SUBJECT_SHA
+            or terminal.get("package_source", {}).get("commit") != V018_REBIND_SUBJECT_SHA
+            or runner != {"path": V018_REBIND_RUNNER_PATH, "sha256": V018_REBIND_RUNNER_SHA256}
+            or end < start
+            or type(duration) not in (int, float)
+            or not math.isfinite(duration)
+            or duration <= 0
+            or not isinstance(invocation, list)
+            or len(invocation) < 4
+            or invocation[1] != V018_REBIND_RUNNER_PATH
+            or not all(isinstance(arg, str) and arg for arg in invocation)
+            or invocation.count("--subject-sha") != 1
+            or invocation[-1] == "--subject-sha"
+            or invocation[invocation.index("--subject-sha") + 1] != V018_REBIND_SUBJECT_SHA
+            or not isinstance(cases, list)
+            or [case.get("case") for case in cases if isinstance(case, dict)] != list(V018_REBIND_CASES)
+            or any(not isinstance(case, dict) or case.get("outcome") != "passed" for case in cases)
+        ):
+            raise ReleaseStateError("v0.18 native execution provenance differs")
+        retained_runner = contained_release_asset(
+            actual_root, "validate-v018-direct-upgrades.py"
+        ).read_bytes()
+        native = subprocess.run(
+            ["git", "show", f"{V018_REBIND_SUBJECT_SHA}:{V018_REBIND_RUNNER_PATH}"],
+            cwd=root,
+            capture_output=True,
+            check=False,
+        )
+        current_runner = (root / V018_REBIND_RUNNER_PATH).read_bytes()
+        if (
+            native.returncode != 0
+            or native.stdout != retained_runner
+            or hashlib.sha256(retained_runner).hexdigest() != V018_REBIND_RUNNER_SHA256
+            or current_runner != retained_runner
+        ):
+            raise ReleaseStateError("v0.18 native runner provenance differs")
+        return cases, {case["case"]: actual_root for case in cases}, terminal["package_source"], V018_REBIND_ARCHIVE_SHA256
+    except ReleaseStateError:
+        raise
+    except (OSError, ValueError, KeyError, TypeError, PackageError) as exc:
+        raise ReleaseStateError("v0.18 execution set is missing or invalid") from exc
+
+
+def v018_affected_only_case_matrix(root, matrix):
+    """Prove the exact shell-assets repair without relabeling Candidate10 execution."""
+    release = root / ".dev/releases/v0.18.0"
+    actual = release / "route-assets/actual"
+    try:
+        archives = {
+            edge["artifacts"]["archive"]["sha256"]
+            for route in matrix["routes"]
+            for edge in route["edges"]
+            if edge["to_version"] == "v0.18.0"
+        }
+        current_subject = matrix["target"]["commit"]
+        if (
+            matrix["target"].get("version") != "v0.18.0"
+            or not SHA_RE.fullmatch(str(current_subject))
+            or current_subject == V018_REBIND_SUBJECT_SHA
+            or len(archives) != 1
+            or not all(SHA256_RE.fullmatch(str(value)) for value in archives)
+            or V018_REBIND_ARCHIVE_SHA256 in archives
+        ):
+            raise ReleaseStateError("v0.18 rebound archive or source differs")
+        baseline_raw = contained_release_asset(actual, "baseline-support-matrix.yaml").read_bytes()
+        if hashlib.sha256(baseline_raw).hexdigest() != V018_REBIND_BASELINE_MATRIX_SHA256:
+            raise ReleaseStateError("v0.18 rebound baseline matrix bytes differ")
+        baseline = yaml.safe_load(baseline_raw)
+        if (
+            not isinstance(baseline, dict)
+            or baseline.get("target", {}).get("version") != "v0.18.0"
+            or baseline.get("target", {}).get("commit") != V018_REBIND_SUBJECT_SHA
+            or baseline.get("retained_origins") != matrix.get("retained_origins")
+        ):
+            raise ReleaseStateError("v0.18 rebound baseline origin binding differs")
+        baseline_archives = {
+            edge["artifacts"]["archive"]["sha256"]
+            for route in baseline["routes"]
+            for edge in route["edges"]
+            if edge["to_version"] == "v0.18.0"
+        }
+        if baseline_archives != {V018_REBIND_ARCHIVE_SHA256}:
+            raise ReleaseStateError("v0.18 rebound baseline archive differs")
+        baseline_archive = contained_release_asset(actual, "baseline.zip").read_bytes()
+        replacement = contained_release_asset(
+            release, "route-assets/admitted/ai-collaboration-framework-v0.18.0.zip"
+        ).read_bytes()
+        replacement_sha256 = hashlib.sha256(replacement).hexdigest()
+        if (
+            hashlib.sha256(baseline_archive).hexdigest() != V018_REBIND_ARCHIVE_SHA256
+            or archives != {replacement_sha256}
+        ):
+            raise ReleaseStateError("v0.18 rebound archive bytes differ")
+        validate_v018_rebound_payload_delta(
+            baseline_archive,
+            replacement,
+            (root / V018_REBIND_PAYLOAD_PATH).read_bytes(),
+        )
+        return baseline
+    except ReleaseStateError:
+        raise
+    except (OSError, ValueError, KeyError, TypeError, PackageError) as exc:
+        raise ReleaseStateError("v0.18 rebound evidence is missing or invalid") from exc
 
 
 def validate_direct_upgrade_execution(root, version, sources, matrix):
@@ -833,6 +1139,17 @@ def validate_direct_upgrade_execution(root, version, sources, matrix):
             case_matrix = v017_affected_only_case_matrix(root, matrix)
         if package_source.get("commit") != case_matrix["target"]["commit"]:
             raise ReleaseStateError("v0.17 native execution set differs from its original route subject")
+        validate_direct_upgrade_cases(cases, case_roots, sources, case_matrix)
+        return
+    if version == "v0.18.0" and (actual_root / "execution-set.json").exists():
+        cases, case_roots, package_source, archive = load_v018_execution_set(root, actual_root)
+        archives = {edge["artifacts"]["archive"]["sha256"] for route in matrix["routes"]
+                    for edge in route["edges"] if edge["to_version"] == version}
+        case_matrix = matrix
+        if archives != {archive} or package_source.get("commit") != matrix["target"]["commit"]:
+            case_matrix = v018_affected_only_case_matrix(root, matrix)
+        if package_source.get("commit") != case_matrix["target"]["commit"]:
+            raise ReleaseStateError("v0.18 native execution set differs from its original route subject")
         validate_direct_upgrade_cases(cases, case_roots, sources, case_matrix)
         return
     evidence_path = release_dir / "route-assets/actual/terminal.json"

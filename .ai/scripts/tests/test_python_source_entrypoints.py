@@ -58,12 +58,19 @@ def protected_snapshot() -> dict[str, str]:
                 if is_active_runner_diagnostic(path):
                     continue
                 snapshot[path.relative_to(ROOT).as_posix()] = digest(path)
-    for directory, directories, files in os.walk(ROOT):
-        directories[:] = [name for name in directories if name != ".git"]
-        if Path(directory).name != "__pycache__":
+    # A source entrypoint can create bytecode beside its versioned modules.
+    # Ignored analysis checkouts and disposable fixtures are not source inputs;
+    # traversing them makes this prerequisite test depend on workspace size.
+    tracked_python = subprocess.check_output(
+        ["git", "ls-files", "-z", "--", "*.py"], cwd=ROOT
+    ).decode("utf-8").split("\0")
+    cache_directories = {
+        (ROOT / path).parent / "__pycache__" for path in tracked_python if path
+    }
+    for directory in sorted(cache_directories):
+        if not directory.is_dir():
             continue
-        for name in sorted(files):
-            path = Path(directory) / name
+        for path in sorted(item for item in directory.iterdir() if item.is_file()):
             snapshot[path.relative_to(ROOT).as_posix()] = digest(path)
     return snapshot
 
