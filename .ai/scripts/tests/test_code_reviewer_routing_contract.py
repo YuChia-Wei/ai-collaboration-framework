@@ -120,6 +120,19 @@ def total_bytes(paths: set[Path]) -> int:
 
 
 class CodeReviewerRoutingContractTests(unittest.TestCase):
+    _committed_profile_payload: tuple[PACKAGE.PayloadFile, ...] | None = None
+
+    @classmethod
+    def committed_profile_payload(cls) -> tuple[PACKAGE.PayloadFile, ...]:
+        """Return one immutable package projection for the current test process."""
+        if cls._committed_profile_payload is None:
+            profile = load_yaml(Path(".ai/distribution/profiles/dotnet-backend.yaml"))
+            snapshot = PACKAGE.PackageRepositorySnapshot.from_ref(ROOT, "HEAD")
+            cls._committed_profile_payload = tuple(
+                PACKAGE.collect_payload(ROOT, snapshot.tree, profile, snapshot.blob_reader)
+            )
+        return cls._committed_profile_payload
+
     def test_gwt_001_given_routing_contract_when_loaded_then_required_routes_are_complete(self) -> None:
         routes = route_map()
         self.assertEqual(
@@ -291,15 +304,9 @@ class CodeReviewerRoutingContractTests(unittest.TestCase):
                 self.assertLess(size, BASELINE_BYTES[route_name])
 
     def test_gwt_008_given_committed_profile_when_projected_then_routing_and_compatibility_entries_ship(self) -> None:
-        tree = PACKAGE.git_tree(ROOT, "HEAD")
-        profile = yaml.safe_load(
-            (
-                ROOT / ".ai/distribution/profiles/dotnet-backend.yaml"
-            ).read_text(encoding="utf-8")
-        )
         payload = {
             item.path: item
-            for item in PACKAGE.collect_payload(ROOT, tree, profile)
+            for item in self.committed_profile_payload()
         }
         required = {
             str(ROUTING_PATH).replace("\\", "/"),
@@ -316,9 +323,8 @@ class CodeReviewerRoutingContractTests(unittest.TestCase):
                 self.assertLess(len(payload[entry].content), 1_500)
 
     def test_gwt_009_given_core_only_selection_when_projected_then_review_and_role_dependencies_are_closed(self) -> None:
-        tree = PACKAGE.git_tree(ROOT, "HEAD")
         profile = load_yaml(Path(".ai/distribution/profiles/dotnet-backend.yaml"))
-        files = PACKAGE.collect_payload(ROOT, tree, profile)
+        files = self.committed_profile_payload()
         payload = {item.path: item for item in files}
         common = load_yaml(CORE_ROUTING_PATH)
         extension = common["extensions"][0]
