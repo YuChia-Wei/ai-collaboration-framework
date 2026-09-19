@@ -12,11 +12,14 @@ pull_request:
 
 
     The upgrade fixes archive finalized pending receipts before clone and verify restored
-    rollback snapshots on Windows. Actual retained-origin coverage includes all nine
-    v0.6.0, v0.9.0 and v0.17.0 cases against the exact admitted candidate. The isolated
-    lab upgrade passed 55 target tests and independent verification. Terra/Luna trials
-    demonstrate rule consumption with explicitly retained answer-quality and measurement
-    limits; they do not establish billing savings.
+    rollback snapshots on Windows. Retained native Candidate10 execution covers all
+    nine v0.6.0, v0.9.0 and v0.17.0 cases. Candidate11 admission proves exactly two
+    bounded payload repairs and preserves that original execution identity; it does
+    not claim a repeated nine-case run. The earlier lab candidate passed 55 target
+    tests and independent verification; Candidate11 requires its own target receipt
+    and audit before downstream adoption. Terra/Luna trials demonstrate rule consumption
+    with retained answer-quality and measurement limits; they do not establish billing
+    savings.
 
 
     Release admission separately requires the release profile, fresh lifecycle-sensitive
