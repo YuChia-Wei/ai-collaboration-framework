@@ -379,3 +379,18 @@ terminal and indexed artifacts remain C10 evidence and continue to validate
 against the preserved C10 matrix; this record does not relabel them as C11
 execution. Fresh C11 edge validation, source acceptance, target receipt,
 independent audit, release-profile, hosted and provider gates remain required.
+
+## Candidate11 Evidence Promotion
+
+All three retained-origin direct-edge portable validators executed against the
+unchanged Candidate11 archive and passed. Canonical asset admission accepted
+the same four built assets. C10 baseline ZIP, matrix, terminal, runner and all
+236 indexed artifacts are retained with the exact two-delta execution-set.
+Source status remains planned pending the fresh release profile; no Candidate11
+nine-case execution, publication or merge is asserted.
+
+The isolated lab incoming check passed for 677 files and 20 portable entrypoints.
+Its fresh plan has 139 automatic operations, one explicit AGENTS reconciliation,
+no ignored managed paths and no unresolved automatic operations. Prospective
+authority retains four CUST identities, 13 dispositions, 20 routes and null
+policy adoptions. Application, target receipt and independent audit are pending.

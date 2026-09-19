@@ -4476,8 +4476,8 @@ files:
   component_id: software-development-core
 - path: .ai/scripts/shell-assets.yaml
   source_path: .ai/scripts/shell-assets.yaml
-  sha256: a7575627d5966ac9945d76358e845a37a11eaacf0ad5f54f58b98c43efddeece
-  size: 9429
+  sha256: 133aa8b9976e5b0267157daca2b65feccc61ce1eb90fba452f71e5f8ef63aa6a
+  size: 9491
   mode: '0644'
   ownership: framework-managed
   install_behavior: managed
@@ -4548,8 +4548,8 @@ files:
   component_id: software-development-core
 - path: .ai/scripts/validate-dependency-versions.py
   source_path: .ai/scripts/validate-dependency-versions.py
-  sha256: c0b62745845bf4c463e85bee16195000ed32daae519230812cfe0f9fe133f405
-  size: 17429
+  sha256: 85ef2d8fac5b66a59076f1613c92d64a9e0061c1f19ca4f740f71c60b6441853
+  size: 17511
   mode: '0644'
   ownership: framework-managed
   install_behavior: managed

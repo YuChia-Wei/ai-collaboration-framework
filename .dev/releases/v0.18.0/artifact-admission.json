@@ -4,34 +4,34 @@
   "version": "v0.18.0",
   "package_id": "ai-collaboration-framework-v0.18.0",
   "release_id": "REL-v0.18.0",
-  "build_commit": "f566a6014f0942a15b28a39f0b2f5df3303e6014",
-  "payload_fingerprint": "3af97c3d986f13aeec45dfd1efc123700cbf4d3d4378af178cfcedc34a85e64d",
-  "selected_input_fingerprint": "38eb18d3d2964a4d95204ff1d90da3da409466fe3e47706c66559440cf7ccb8a",
-  "artifact_set_id": "sha256:ce4416f1157222a2ae9d3b96bb170c03be1dcaee553d7204315e456877508824",
+  "build_commit": "0e5fbfc4a4a69ecd9da543751d53edfd311f93fb",
+  "payload_fingerprint": "4e570164a5e33d3e7b989aba59a69512fdd62b7c80f4228f1adf231144fb0b6f",
+  "selected_input_fingerprint": "ca5d8241507fdf79d8adec0024b50de781ad6c2715681dfe8c6bbad4c4669dcc",
+  "artifact_set_id": "sha256:413163858122f1ea72f37225f4b0088e91a67e9a8e3b8f1421d3cc9728e3628a",
   "assets": [
     {
       "name": "ai-collaboration-framework-v0.18.0.zip",
       "path": ".dev/releases/v0.18.0/route-assets/admitted/ai-collaboration-framework-v0.18.0.zip",
-      "size": 1610643,
-      "sha256": "90e403bde5e1e84767a4c00b67923780ebea76222b7956e598c814241c0f7db0"
+      "size": 1610738,
+      "sha256": "51c550f974ab32581f1b02d4966bd84e6e5ac76bb7bd6b77fd5da2ce9ef84070"
     },
     {
       "name": "ai-collaboration-framework-v0.18.0.zip.sha256",
       "path": ".dev/releases/v0.18.0/route-assets/admitted/ai-collaboration-framework-v0.18.0.zip.sha256",
       "size": 105,
-      "sha256": "787319928b5ed20b4d03b858d59652eec090d78e2f34107b2f7c01e522ff2f34"
+      "sha256": "279966712fb3af848e9dd1b95e23435aa8ebc76b37e141a511f5d23c8ad66a52"
     },
     {
       "name": "ai-collaboration-framework-v0.18.0.tar.gz",
       "path": ".dev/releases/v0.18.0/route-assets/admitted/ai-collaboration-framework-v0.18.0.tar.gz",
-      "size": 1158065,
-      "sha256": "72f3b2e2df745d6b8b478fbf533e278db601585f441fba9b9c263559332368a0"
+      "size": 1158117,
+      "sha256": "ef99dce78e469d538ff820133100aa28d962341a1105cd5366828dc99760803a"
     },
     {
       "name": "ai-collaboration-framework-v0.18.0.tar.gz.sha256",
       "path": ".dev/releases/v0.18.0/route-assets/admitted/ai-collaboration-framework-v0.18.0.tar.gz.sha256",
       "size": 108,
-      "sha256": "32ccc460884d6bc86c66a4ac857bbd88428b73db71170e5d5000ef01cc93a847"
+      "sha256": "c739a26020708e9dae75cecd89c8008bfdacdacec1f65a688b5adeb282190c36"
     }
   ]
 }

@@ -3,15 +3,15 @@ matrix_id: upgrade-route-matrix-v0.18.0
 target:
   version: v0.18.0
   release_id: REL-v0.18.0
-  commit: 0e5fbfc4a4a69ecd9da543751d53edfd311f93fb
+  commit: f566a6014f0942a15b28a39f0b2f5df3303e6014
   manifest:
     asset_id: v0.18.0-files-manifest
     path: route-assets/incoming/metadata/files.yaml
-    sha256: 18aed7ff84d6715ad864c900eccc432a35c3f86bb721f0dcdda86667e1c6f4d5
+    sha256: 303d8f951e56d422892f43222e304ae31f6ec4dd414171b8873ce530963fad4a
   package_identity:
     package_id: ai-collaboration-framework-v0.18.0
     release_id: REL-v0.18.0
-    payload_fingerprint: 4e570164a5e33d3e7b989aba59a69512fdd62b7c80f4228f1adf231144fb0b6f
+    payload_fingerprint: 3af97c3d986f13aeec45dfd1efc123700cbf4d3d4378af178cfcedc34a85e64d
 retained_origins:
 - role: immediate-predecessor
   version: v0.17.0
@@ -56,24 +56,24 @@ routes:
     package_identity:
       package_id: ai-collaboration-framework-v0.18.0
       release_id: REL-v0.18.0
-      payload_fingerprint: 4e570164a5e33d3e7b989aba59a69512fdd62b7c80f4228f1adf231144fb0b6f
+      payload_fingerprint: 3af97c3d986f13aeec45dfd1efc123700cbf4d3d4378af178cfcedc34a85e64d
     artifacts:
       archive:
         asset_id: v0.6.0-to-v0.18.0-archive
         path: route-assets/admitted/ai-collaboration-framework-v0.18.0.zip
-        sha256: 51c550f974ab32581f1b02d4966bd84e6e5ac76bb7bd6b77fd5da2ce9ef84070
+        sha256: 90e403bde5e1e84767a4c00b67923780ebea76222b7956e598c814241c0f7db0
       checksum:
         asset_id: v0.6.0-to-v0.18.0-checksum
         path: route-assets/admitted/ai-collaboration-framework-v0.18.0.zip.sha256
-        sha256: 279966712fb3af848e9dd1b95e23435aa8ebc76b37e141a511f5d23c8ad66a52
+        sha256: 787319928b5ed20b4d03b858d59652eec090d78e2f34107b2f7c01e522ff2f34
       manifest:
         asset_id: v0.6.0-to-v0.18.0-manifest
         path: route-assets/incoming/metadata/migration.yaml
-        sha256: 5490ac69fb91b41d331f6d64d041ac8ade1cb9e7e41490caa64fa759a955ba30
+        sha256: 35e3618d92ae26ab7db343de8bffdebac75ac1473e8f7d680d2c37ccd7d7904e
       validator:
         asset_id: v0.6.0-to-v0.18.0-validator
         path: route-assets/validation/v0.6.0-to-v0.18.0/validator.py
-        sha256: 197d54559349a38f5b28372544bed776c54f0ed1dfc784fa9a5647d2a522b9a8
+        sha256: 4ada4c1cdd0851805e392f2645003b70feaa0ccd21bfce6d21fc7cf3bf68b477
     semantic_cutovers:
     - cutover_id: retained-direct-upgrade-v1
       state: passed
@@ -86,11 +86,11 @@ routes:
       - v0.6.0-to-v0.18.0
       report:
         asset_id: v0.6.0-to-v0.18.0-report
-        path: route-assets/validation/v0.6.0-to-v0.18.0/validation-report-candidate11.json
-        sha256: 6f7f460cd7f6d71d3697c1c31fb49d0c97361111fa82bec87975c79482fc4365
+        path: route-assets/validation/v0.6.0-to-v0.18.0/validation-report.json
+        sha256: e09b71b4b9d9abc935bba3358fb598720cf35f80871e0049c48474c226c20c21
       output:
         asset_id: v0.6.0-to-v0.18.0-output
-        path: route-assets/validation/v0.6.0-to-v0.18.0/portable-run-candidate11/validation-output.log
+        path: route-assets/validation/v0.6.0-to-v0.18.0/portable-run/validation-output.log
         sha256: 951a7ed249384fdfda4ca097232c13c609ad9df0d258b9996d491f00f25647eb
 - route_id: v0.9.0-to-v0.18.0-direct
   origin: v0.9.0
@@ -103,24 +103,24 @@ routes:
     package_identity:
       package_id: ai-collaboration-framework-v0.18.0
       release_id: REL-v0.18.0
-      payload_fingerprint: 4e570164a5e33d3e7b989aba59a69512fdd62b7c80f4228f1adf231144fb0b6f
+      payload_fingerprint: 3af97c3d986f13aeec45dfd1efc123700cbf4d3d4378af178cfcedc34a85e64d
     artifacts:
       archive:
         asset_id: v0.9.0-to-v0.18.0-archive
         path: route-assets/admitted/ai-collaboration-framework-v0.18.0.zip
-        sha256: 51c550f974ab32581f1b02d4966bd84e6e5ac76bb7bd6b77fd5da2ce9ef84070
+        sha256: 90e403bde5e1e84767a4c00b67923780ebea76222b7956e598c814241c0f7db0
       checksum:
         asset_id: v0.9.0-to-v0.18.0-checksum
         path: route-assets/admitted/ai-collaboration-framework-v0.18.0.zip.sha256
-        sha256: 279966712fb3af848e9dd1b95e23435aa8ebc76b37e141a511f5d23c8ad66a52
+        sha256: 787319928b5ed20b4d03b858d59652eec090d78e2f34107b2f7c01e522ff2f34
       manifest:
         asset_id: v0.9.0-to-v0.18.0-manifest
         path: route-assets/incoming/metadata/migration.yaml
-        sha256: 5490ac69fb91b41d331f6d64d041ac8ade1cb9e7e41490caa64fa759a955ba30
+        sha256: 35e3618d92ae26ab7db343de8bffdebac75ac1473e8f7d680d2c37ccd7d7904e
       validator:
         asset_id: v0.9.0-to-v0.18.0-validator
         path: route-assets/validation/v0.9.0-to-v0.18.0/validator.py
-        sha256: 197d54559349a38f5b28372544bed776c54f0ed1dfc784fa9a5647d2a522b9a8
+        sha256: 4ada4c1cdd0851805e392f2645003b70feaa0ccd21bfce6d21fc7cf3bf68b477
     semantic_cutovers:
     - cutover_id: retained-direct-upgrade-v1
       state: passed
@@ -133,11 +133,11 @@ routes:
       - v0.9.0-to-v0.18.0
       report:
         asset_id: v0.9.0-to-v0.18.0-report
-        path: route-assets/validation/v0.9.0-to-v0.18.0/validation-report-candidate11.json
-        sha256: 0131ca347e121d5e2b9fcf2cfda2544430b636e5b2c6e8a9c2bb8481c49b86be
+        path: route-assets/validation/v0.9.0-to-v0.18.0/validation-report.json
+        sha256: bcc0965d5acad5ec9b0892737dd5fd126cda57d3e9eba5c4bc2866bcbdb9895f
       output:
         asset_id: v0.9.0-to-v0.18.0-output
-        path: route-assets/validation/v0.9.0-to-v0.18.0/portable-run-candidate11/validation-output.log
+        path: route-assets/validation/v0.9.0-to-v0.18.0/portable-run/validation-output.log
         sha256: 951a7ed249384fdfda4ca097232c13c609ad9df0d258b9996d491f00f25647eb
 - route_id: v0.17.0-to-v0.18.0-direct
   origin: v0.17.0
@@ -150,24 +150,24 @@ routes:
     package_identity:
       package_id: ai-collaboration-framework-v0.18.0
       release_id: REL-v0.18.0
-      payload_fingerprint: 4e570164a5e33d3e7b989aba59a69512fdd62b7c80f4228f1adf231144fb0b6f
+      payload_fingerprint: 3af97c3d986f13aeec45dfd1efc123700cbf4d3d4378af178cfcedc34a85e64d
     artifacts:
       archive:
         asset_id: v0.17.0-to-v0.18.0-archive
         path: route-assets/admitted/ai-collaboration-framework-v0.18.0.zip
-        sha256: 51c550f974ab32581f1b02d4966bd84e6e5ac76bb7bd6b77fd5da2ce9ef84070
+        sha256: 90e403bde5e1e84767a4c00b67923780ebea76222b7956e598c814241c0f7db0
       checksum:
         asset_id: v0.17.0-to-v0.18.0-checksum
         path: route-assets/admitted/ai-collaboration-framework-v0.18.0.zip.sha256
-        sha256: 279966712fb3af848e9dd1b95e23435aa8ebc76b37e141a511f5d23c8ad66a52
+        sha256: 787319928b5ed20b4d03b858d59652eec090d78e2f34107b2f7c01e522ff2f34
       manifest:
         asset_id: v0.17.0-to-v0.18.0-manifest
         path: route-assets/incoming/metadata/migration.yaml
-        sha256: 5490ac69fb91b41d331f6d64d041ac8ade1cb9e7e41490caa64fa759a955ba30
+        sha256: 35e3618d92ae26ab7db343de8bffdebac75ac1473e8f7d680d2c37ccd7d7904e
       validator:
         asset_id: v0.17.0-to-v0.18.0-validator
         path: route-assets/validation/v0.17.0-to-v0.18.0/validator.py
-        sha256: 197d54559349a38f5b28372544bed776c54f0ed1dfc784fa9a5647d2a522b9a8
+        sha256: 4ada4c1cdd0851805e392f2645003b70feaa0ccd21bfce6d21fc7cf3bf68b477
     semantic_cutovers:
     - cutover_id: retained-direct-upgrade-v1
       state: passed
@@ -180,10 +180,10 @@ routes:
       - v0.17.0-to-v0.18.0
       report:
         asset_id: v0.17.0-to-v0.18.0-report
-        path: route-assets/validation/v0.17.0-to-v0.18.0/validation-report-candidate11.json
-        sha256: b008ae9ac3a072c4cf7572417a6d00b1dcc42dc057a7e433c34c29eacc2db0bf
+        path: route-assets/validation/v0.17.0-to-v0.18.0/validation-report.json
+        sha256: ff8baf0f0f339572acfaed806212534343fcba7ff8290be73efe1f0dba7f65e0
       output:
         asset_id: v0.17.0-to-v0.18.0-output
-        path: route-assets/validation/v0.17.0-to-v0.18.0/portable-run-candidate11/validation-output.log
+        path: route-assets/validation/v0.17.0-to-v0.18.0/portable-run/validation-output.log
         sha256: 951a7ed249384fdfda4ca097232c13c609ad9df0d258b9996d491f00f25647eb
 deprecations: []

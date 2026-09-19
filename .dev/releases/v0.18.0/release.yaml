@@ -10,7 +10,7 @@ commit: null
 tagged_at: null
 recorded_at: null
 created_at: '2026-09-18T00:15:40+08:00'
-updated_at: '2026-09-19T00:15:00+08:00'
+updated_at: '2026-09-19T19:44:26+08:00'
 planning:
   github_issue_refs:
   - '#300'
@@ -109,15 +109,15 @@ distribution:
     automation: github-actions
     creates_or_moves_tag: false
 validation:
-  evidence: Candidate10 archive 90e403bde5e1e84767a4c00b67923780ebea76222b7956e598c814241c0f7db0
-    was built at f566a6014f0942a15b28a39f0b2f5df3303e6014. Matrix05 passed all
-    nine retained-origin cases on that exact archive and source in 3762.874 seconds;
-    native artifacts and three derived direct-route receipts are retained. The
-    prior Candidate09 Matrix04 result and failed source release profile remain
-    historical evidence. The missing runtime-skill invocation is repaired and
-    twenty focused tests passed. A new clean source release profile, lifecycle-sensitive
-    validation, independent audit and provider admission remain mandatory. No
-    unrun or failed gate is passed by this record.
+  evidence: Candidate11 archive 51c550f974ab32581f1b02d4966bd84e6e5ac76bb7bd6b77fd5da2ce9ef84070
+    was built at 0e5fbfc4a4a69ecd9da543751d53edfd311f93fb. All three current-archive
+    direct-edge portable validations passed and exact assets were admitted. The version-specific
+    two-delta proof preserves Candidate10 Matrix05 native nine-case execution at f566a6014f0942a15b28a39f0b2f5df3303e6014
+    against its original baseline; it does not claim a Candidate11 matrix run. Release
+    profiles01 and02 and failed lab attempt12 remain non-passing historical evidence.
+    Focused source repairs passed, while a fresh clean source release profile, lifecycle-sensitive
+    checks, independent audit, required hosted/provider admission, and actual Candidate11
+    lab receipt/audit remain mandatory. No publication or downstream merge is claimed.
   workflow_id: 2026-09-17-v018-cost-and-messaging
   related_workflows: []
   related_assessments:
