@@ -208,6 +208,41 @@ class ValidationEvidenceFixture(unittest.TestCase):
         fingerprint, reusable, _ = result.stdout.rstrip("\r\n").split("\t")
         return fingerprint, reusable == "true"
 
+    def lookup_three_release_rows(
+        self,
+        specs: list[dict[str, Any]],
+        *,
+        profile: str,
+    ) -> dict[str, tuple[str, bool]]:
+        self.assertEqual("release", profile)
+        self.assertEqual(3, len(specs))
+        self.assertTrue(all("fingerprint" not in spec for spec in specs))
+        selection = self.logs / "three-release-row-lookup.tsv"
+        selection.write_text(
+            "\n".join(
+                f"{spec['id']}\t{spec.get('version', 'validator-v1')}\tinputs\treuse-by-input"
+                for spec in specs
+            ) + "\n",
+            encoding="utf-8",
+        )
+        result = self.helper(
+            "prepare", "--repo", str(self.repo), "--cache", str(self.cache),
+            "--profile", "release", "--environment-class", "windows-native",
+            "--selection", str(selection),
+        )
+        self.assertEqual(0, result.returncode, result.stderr)
+        lines = result.stdout.splitlines()
+        self.assertEqual(len(specs), len(lines))
+        lookups: dict[str, tuple[str, bool]] = {}
+        for spec, line in zip(specs, lines, strict=True):
+            validator_id, fingerprint, reusable, log_ref = line.split("\t", 3)
+            self.assertEqual(spec["id"], validator_id)
+            self.assertEqual("false", reusable)
+            self.assertEqual("", log_ref)
+            self.assertNotIn(validator_id, lookups)
+            lookups[validator_id] = (fingerprint, False)
+        return lookups
+
     def record_current(
         self,
         fingerprint: str,
@@ -732,6 +767,7 @@ class ValidationEvidenceFixture(unittest.TestCase):
         profile: str = "release",
         snapshot: Path | None = None,
         preparation_python: str | None = None,
+        batch_three_release_lookups: bool = False,
     ) -> dict[str, Path]:
         self.initialize_git()
         snapshot = snapshot or self.capture_snapshot(
@@ -741,6 +777,11 @@ class ValidationEvidenceFixture(unittest.TestCase):
             "id": "fixture-check", "outcome": "passed",
             "disposition": "executed", "enforcement": "required",
         }]
+        batch_lookups = (
+            self.lookup_three_release_rows(specs, profile=profile)
+            if batch_three_release_lookups
+            else {}
+        )
         changed_paths_content = b"inputs/rule.md\n"
         changed_paths_digest = hashlib.sha256(changed_paths_content).hexdigest()
         events: list[str] = []
@@ -754,6 +795,8 @@ class ValidationEvidenceFixture(unittest.TestCase):
             if "fingerprint" in spec:
                 fingerprint = str(spec["fingerprint"])
                 reusable = False
+            elif batch_three_release_lookups:
+                fingerprint, reusable = batch_lookups[validator_id]
             else:
                 fingerprint, reusable = self.lookup(
                     validator_id=validator_id, version=version, profile=profile
@@ -2073,327 +2116,6 @@ class ValidationEvidenceReadinessGwtTests(ValidationEvidenceFixture):
         self.assertFalse(rejected_output.exists())
 
 
-class ValidationEvidenceBootstrapReadinessGwtTests(ValidationEvidenceFixture):
-    """Focused bootstrap admission and containment proofs; not a routine profile target."""
-
-    def test_gwt_031_given_dirty_clean_required_bootstrap_when_admitted_then_snapshot_is_retained_and_target_is_not_launched(self) -> None:
-        self.install_tracked_helper()
-        (self.inputs / "rule.md").write_text("dirty governed bytes\n", encoding="utf-8")
-        snapshot = self.logs / "dirty-bootstrap-snapshot.json"
-        marker = self.repo / "artifacts/validation/dirty-bootstrap-target.txt"
-        target = [
-            sys.executable,
-            "-c",
-            "from pathlib import Path; Path('artifacts/validation/dirty-bootstrap-target.txt').write_text('launched')",
-        ]
-        result, _log, result_path = self.supervise_bootstrap(
-            snapshot,
-            *target,
-            profile="release",
-            require_clean=True,
-            name="dirty-bootstrap",
-        )
-        self.assertEqual(128, result.returncode, result.stderr)
-        self.assertFalse(marker.exists())
-        snapshot_value = json.loads(snapshot.read_text(encoding="utf-8"))
-        self.assertFalse(snapshot_value["identity"]["clean"])
-        receipt = json.loads(result_path.read_text(encoding="utf-8"))
-        self.assertEqual("snapshot-drift", receipt["status"])
-        self.assertTrue(receipt["execution"]["launched"], "contained driver was launched")
-        self.assertFalse(receipt["bootstrap"]["target_launched"])
-        self.assertEqual("repository-not-clean", receipt["bootstrap"]["reason_code"])
-        verified = self.helper(
-            "verify-supervision-result", "--repo", str(self.repo),
-            "--snapshot", str(snapshot), "--result-path", str(result_path),
-        )
-        self.assertEqual(0, verified.returncode, verified.stderr)
-        self.assertEqual("snapshot-drift\tfalse\t", verified.stdout.rstrip("\r\n"))
-
-    def test_gwt_032_given_bootstrap_target_with_descendant_when_timed_out_then_the_owned_tree_is_empty(self) -> None:
-        self.install_tracked_helper()
-        snapshot = self.logs / "timeout-bootstrap-snapshot.json"
-        marker = self.repo / "artifacts/validation/bootstrap-descendant-survived.txt"
-        descendant = (
-            "import time; from pathlib import Path; time.sleep(3); "
-            "Path('artifacts/validation/bootstrap-descendant-survived.txt').write_text('survived')"
-        )
-        target = [
-            sys.executable,
-            "-c",
-            "import subprocess,sys,time; "
-            f"subprocess.Popen([sys.executable,'-c',{descendant!r}]); time.sleep(10)",
-        ]
-        result, _log, result_path = self.supervise_bootstrap(
-            snapshot,
-            *target,
-            profile="fast",
-            timeout_seconds=2.0,
-            name="timeout-bootstrap",
-        )
-        self.assertEqual(124, result.returncode, result.stderr)
-        receipt = json.loads(result_path.read_text(encoding="utf-8"))
-        self.assertEqual("timed-out", receipt["status"])
-        self.assertTrue(receipt["bootstrap"]["target_launched"])
-        self.assertTrue(receipt["cleanup"]["tree_empty"])
-        time.sleep(3.5)
-        self.assertFalse(marker.exists())
-
-    def test_gwt_033_given_forged_prepare_output_when_sealed_then_standard_fingerprint_parity_fails_closed(self) -> None:
-        paths = self.prepare_invocation(profile="fast")
-        expected_argv = self.control_argv(
-            "prepare", paths, profile="fast", preparation_python=None
-        )
-        forged_log = self.logs / "forged-prepare.log"
-        forged_log.write_text(
-            f"fixture-check\t{'0' * 64}\tfalse\t\n", encoding="utf-8"
-        )
-        safe_python = (
-            f"<absolute-path>/{Path(sys.executable).name}"
-            if Path(sys.executable).is_absolute()
-            else sys.executable
-        )
-        forged_result = self.write_receipt(
-            paths["snapshot"],
-            log_path=forged_log,
-            name="forged-prepare",
-            safe_argv=[safe_python, *expected_argv[1:]],
-            effective_argv=expected_argv,
-            accepted_child_exit_codes=[0],
-        )
-        forged_paths = dict(paths)
-        controls = dict(paths["control_results"])  # type: ignore[arg-type]
-        controls["prepare"] = forged_result
-        forged_paths["control_results"] = controls  # type: ignore[assignment]
-        sealed, output = self.seal_prepared(
-            forged_paths, output_name="forged-prepare-seal.json"
-        )
-        self.assertNotEqual(0, sealed.returncode)
-        self.assertFalse(output.exists())
-        self.assertFalse(self.cache.exists())
-
-    def test_gwt_034_given_uncapturable_bootstrap_repository_when_admitted_then_failure_receipt_is_retained_without_target_launch(self) -> None:
-        fixture_helper = self.repo / ".ai/scripts/validation-evidence.py"
-        fixture_helper.parent.mkdir(parents=True)
-        fixture_helper.write_bytes(HELPER.read_bytes())
-        (self.repo / ".ai/scripts/validation_subject.py").write_bytes(
-            SUBJECT_HELPER.read_bytes()
-        )
-        snapshot = self.logs / "uncapturable-bootstrap-snapshot.json"
-        marker = self.repo / "artifacts/validation/uncapturable-target.txt"
-        target = [
-            sys.executable,
-            "-c",
-            "from pathlib import Path; Path('artifacts/validation/uncapturable-target.txt').write_text('launched')",
-        ]
-        result, _log, result_path = self.supervise_bootstrap(
-            snapshot,
-            *target,
-            profile="fast",
-            name="uncapturable-bootstrap",
-        )
-        self.assertEqual(128, result.returncode, result.stderr)
-        self.assertFalse(marker.exists())
-        admission = json.loads(snapshot.read_text(encoding="utf-8"))
-        self.assertEqual("validation-repository-admission-failure/v1", admission["schema_version"])
-        self.assertEqual("snapshot-capture-failed", admission["reason_code"])
-        receipt = json.loads(result_path.read_text(encoding="utf-8"))
-        self.assertEqual("snapshot-drift", receipt["status"])
-        self.assertFalse(receipt["bootstrap"]["target_launched"])
-        self.assertEqual("snapshot-capture-failed", receipt["bootstrap"]["reason_code"])
-
-
-class ValidationEvidenceRoutineContractGwtTests(ValidationEvidenceFixture):
-    """Routine proof for supervised control roles and staged terminal publication."""
-
-    def write_ordered_preparation(
-        self,
-        paths: dict[str, Path],
-        rows: list[str],
-        *,
-        profile: str,
-    ) -> None:
-        paths["preparation_selection"].write_text(
-            "\n".join(rows) + "\n", encoding="utf-8"
-        )
-        paths["control_results"] = self.write_control_results(  # type: ignore[assignment]
-            paths,
-            profile=profile,
-            preparation_python=None,
-        )
-
-    def test_gwt_036_given_distinct_valid_preparation_and_evidence_orders_when_sealed_then_exact_unique_set_parity_is_accepted(self) -> None:
-        profile = "release"
-        paths = self.prepare_invocation([
-            {
-                "id": "not-selected-a",
-                "outcome": "not-applicable",
-                "disposition": "not-selected",
-            },
-            {
-                "id": "not-selected-c",
-                "outcome": "not-applicable",
-                "disposition": "not-selected",
-            },
-            {
-                "id": "executed-b",
-                "outcome": "passed",
-                "disposition": "executed",
-            },
-        ], profile=profile)
-        rows_by_id = {
-            line.split("\t", 1)[0]: line
-            for line in paths["preparation_selection"].read_text(
-                encoding="utf-8"
-            ).splitlines()
-        }
-        preparation_order = ["not-selected-a", "executed-b", "not-selected-c"]
-        self.write_ordered_preparation(
-            paths,
-            [rows_by_id[validator_id] for validator_id in preparation_order],
-            profile=profile,
-        )
-        evidence_order = [
-            json.loads(line)["validator_id"]
-            for line in paths["evidence"].read_text(encoding="utf-8").splitlines()
-            if line
-        ]
-        self.assertNotEqual(preparation_order, evidence_order)
-        self.assertEqual(set(preparation_order), set(evidence_order))
-
-        sealed, output = self.seal_prepared(
-            paths, output_name="different-valid-orders.json"
-        )
-
-        self.assertEqual(0, sealed.returncode, sealed.stderr)
-        self.assertTrue(output.is_file())
-
-    def test_gwt_037_given_membership_or_same_domain_order_violation_when_sealed_then_integrity_checks_remain_fail_closed(self) -> None:
-        profile = "release"
-        paths = self.prepare_invocation([
-            {
-                "id": "not-selected-a",
-                "outcome": "not-applicable",
-                "disposition": "not-selected",
-            },
-            {
-                "id": "not-selected-c",
-                "outcome": "not-applicable",
-                "disposition": "not-selected",
-            },
-            {
-                "id": "executed-b",
-                "outcome": "passed",
-                "disposition": "executed",
-            },
-        ], profile=profile)
-        rows_by_id = {
-            line.split("\t", 1)[0]: line
-            for line in paths["preparation_selection"].read_text(
-                encoding="utf-8"
-            ).splitlines()
-        }
-        valid_preparation_order = ["not-selected-a", "executed-b", "not-selected-c"]
-
-        replacement_fields = rows_by_id["not-selected-c"].split("\t")
-        replacement_fields[0] = "unexpected-d"
-        self.write_ordered_preparation(
-            paths,
-            [
-                rows_by_id["not-selected-a"],
-                rows_by_id["executed-b"],
-                "\t".join(replacement_fields),
-            ],
-            profile=profile,
-        )
-        mismatched, mismatch_output = self.seal_prepared(
-            paths, output_name="mismatched-validator-set.json"
-        )
-        with self.subTest(contract="exact-validator-set-membership"):
-            self.assertNotEqual(0, mismatched.returncode)
-            self.assertIn(
-                "preparation-selection validators do not match evidence",
-                mismatched.stderr,
-            )
-            self.assertFalse(mismatch_output.exists())
-
-        paths["preparation_selection"].write_text(
-            "\n".join((
-                rows_by_id["not-selected-a"],
-                rows_by_id["executed-b"],
-                rows_by_id["executed-b"],
-            )) + "\n",
-            encoding="utf-8",
-        )
-        duplicated, duplicate_output = self.seal_prepared(
-            paths, output_name="duplicate-preparation-validator.json"
-        )
-        with self.subTest(contract="unique-preparation-validator-ids"):
-            self.assertNotEqual(0, duplicated.returncode)
-            self.assertIn("duplicate validator ids", duplicated.stderr)
-            self.assertFalse(duplicate_output.exists())
-
-        self.write_ordered_preparation(
-            paths,
-            [rows_by_id[validator_id] for validator_id in valid_preparation_order],
-            profile=profile,
-        )
-        prepare_log = self.logs / "control-prepare.log"
-        prepare_lines = prepare_log.read_text(encoding="utf-8").splitlines()
-        prepare_log.write_text(
-            "\n".join((prepare_lines[0], prepare_lines[2], prepare_lines[1])) + "\n",
-            encoding="utf-8",
-        )
-        expected_argv = self.control_argv(
-            "prepare", paths, profile=profile, preparation_python=None
-        )
-        safe_python = (
-            f"<absolute-path>/{Path(sys.executable).name}"
-            if Path(sys.executable).is_absolute()
-            else sys.executable
-        )
-        reordered_prepare_result = self.write_receipt(
-            paths["snapshot"],
-            log_path=prepare_log,
-            name="reordered-prepare-control",
-            safe_argv=[safe_python, *expected_argv[1:]],
-            effective_argv=expected_argv,
-            accepted_child_exit_codes=[0],
-        )
-        controls = dict(paths["control_results"])  # type: ignore[arg-type]
-        controls["prepare"] = reordered_prepare_result
-        paths["control_results"] = controls  # type: ignore[assignment]
-        reordered_prepare, prepare_output = self.seal_prepared(
-            paths, output_name="reordered-prepare-log.json"
-        )
-        with self.subTest(contract="preparation-to-prepare-log-order"):
-            self.assertNotEqual(0, reordered_prepare.returncode)
-            self.assertIn(
-                "prepare control output order or reuse state is invalid",
-                reordered_prepare.stderr,
-            )
-            self.assertFalse(prepare_output.exists())
-
-        self.write_ordered_preparation(
-            paths,
-            [rows_by_id[validator_id] for validator_id in valid_preparation_order],
-            profile=profile,
-        )
-        evidence_lines = paths["evidence"].read_text(encoding="utf-8").splitlines()
-        paths["evidence"].write_text(
-            "\n".join((evidence_lines[1], evidence_lines[0], evidence_lines[2])) + "\n",
-            encoding="utf-8",
-        )
-        reordered_evidence, evidence_output = self.seal_prepared(
-            paths, output_name="reordered-evidence.json"
-        )
-        with self.subTest(contract="events-to-evidence-order"):
-            self.assertNotEqual(0, reordered_evidence.returncode)
-            self.assertIn(
-                "events and evidence validators are not bound one-to-one in order",
-                reordered_evidence.stderr,
-            )
-            self.assertFalse(evidence_output.exists())
-
     def test_gwt_030_given_exact_supervised_controls_and_staged_manifest_when_published_then_terminal_pair_is_reusable(self) -> None:
         self.install_tracked_helper("tracked control helper fixture")
         bootstrap_snapshot = self.logs / "fast-snapshot-pre.json"
@@ -2673,6 +2395,465 @@ class ValidationEvidenceRoutineContractGwtTests(ValidationEvidenceFixture):
         )
         self.assertNotEqual(0, wrong.returncode)
         self.assertFalse(wrong_output.exists())
+
+class ValidationEvidenceBootstrapReadinessGwtTests(ValidationEvidenceFixture):
+    """Focused bootstrap admission and containment proofs; not a routine profile target."""
+
+    def test_gwt_031_given_dirty_clean_required_bootstrap_when_admitted_then_snapshot_is_retained_and_target_is_not_launched(self) -> None:
+        self.install_tracked_helper()
+        (self.inputs / "rule.md").write_text("dirty governed bytes\n", encoding="utf-8")
+        snapshot = self.logs / "dirty-bootstrap-snapshot.json"
+        marker = self.repo / "artifacts/validation/dirty-bootstrap-target.txt"
+        target = [
+            sys.executable,
+            "-c",
+            "from pathlib import Path; Path('artifacts/validation/dirty-bootstrap-target.txt').write_text('launched')",
+        ]
+        result, _log, result_path = self.supervise_bootstrap(
+            snapshot,
+            *target,
+            profile="release",
+            require_clean=True,
+            name="dirty-bootstrap",
+        )
+        self.assertEqual(128, result.returncode, result.stderr)
+        self.assertFalse(marker.exists())
+        snapshot_value = json.loads(snapshot.read_text(encoding="utf-8"))
+        self.assertFalse(snapshot_value["identity"]["clean"])
+        receipt = json.loads(result_path.read_text(encoding="utf-8"))
+        self.assertEqual("snapshot-drift", receipt["status"])
+        self.assertTrue(receipt["execution"]["launched"], "contained driver was launched")
+        self.assertFalse(receipt["bootstrap"]["target_launched"])
+        self.assertEqual("repository-not-clean", receipt["bootstrap"]["reason_code"])
+        verified = self.helper(
+            "verify-supervision-result", "--repo", str(self.repo),
+            "--snapshot", str(snapshot), "--result-path", str(result_path),
+        )
+        self.assertEqual(0, verified.returncode, verified.stderr)
+        self.assertEqual("snapshot-drift\tfalse\t", verified.stdout.rstrip("\r\n"))
+
+    def test_gwt_032_given_bootstrap_target_with_descendant_when_timed_out_then_the_owned_tree_is_empty(self) -> None:
+        self.install_tracked_helper()
+        snapshot = self.logs / "timeout-bootstrap-snapshot.json"
+        marker = self.repo / "artifacts/validation/bootstrap-descendant-survived.txt"
+        descendant = (
+            "import time; from pathlib import Path; time.sleep(3); "
+            "Path('artifacts/validation/bootstrap-descendant-survived.txt').write_text('survived')"
+        )
+        target = [
+            sys.executable,
+            "-c",
+            "import subprocess,sys,time; "
+            f"subprocess.Popen([sys.executable,'-c',{descendant!r}]); time.sleep(10)",
+        ]
+        result, _log, result_path = self.supervise_bootstrap(
+            snapshot,
+            *target,
+            profile="fast",
+            timeout_seconds=2.0,
+            name="timeout-bootstrap",
+        )
+        self.assertEqual(124, result.returncode, result.stderr)
+        receipt = json.loads(result_path.read_text(encoding="utf-8"))
+        self.assertEqual("timed-out", receipt["status"])
+        self.assertTrue(receipt["bootstrap"]["target_launched"])
+        self.assertTrue(receipt["cleanup"]["tree_empty"])
+        time.sleep(3.5)
+        self.assertFalse(marker.exists())
+
+    def test_gwt_033_given_forged_prepare_output_when_sealed_then_standard_fingerprint_parity_fails_closed(self) -> None:
+        paths = self.prepare_invocation(profile="fast")
+        expected_argv = self.control_argv(
+            "prepare", paths, profile="fast", preparation_python=None
+        )
+        forged_log = self.logs / "forged-prepare.log"
+        forged_log.write_text(
+            f"fixture-check\t{'0' * 64}\tfalse\t\n", encoding="utf-8"
+        )
+        safe_python = (
+            f"<absolute-path>/{Path(sys.executable).name}"
+            if Path(sys.executable).is_absolute()
+            else sys.executable
+        )
+        forged_result = self.write_receipt(
+            paths["snapshot"],
+            log_path=forged_log,
+            name="forged-prepare",
+            safe_argv=[safe_python, *expected_argv[1:]],
+            effective_argv=expected_argv,
+            accepted_child_exit_codes=[0],
+        )
+        forged_paths = dict(paths)
+        controls = dict(paths["control_results"])  # type: ignore[arg-type]
+        controls["prepare"] = forged_result
+        forged_paths["control_results"] = controls  # type: ignore[assignment]
+        sealed, output = self.seal_prepared(
+            forged_paths, output_name="forged-prepare-seal.json"
+        )
+        self.assertNotEqual(0, sealed.returncode)
+        self.assertFalse(output.exists())
+        self.assertFalse(self.cache.exists())
+
+    def test_gwt_034_given_uncapturable_bootstrap_repository_when_admitted_then_failure_receipt_is_retained_without_target_launch(self) -> None:
+        fixture_helper = self.repo / ".ai/scripts/validation-evidence.py"
+        fixture_helper.parent.mkdir(parents=True)
+        fixture_helper.write_bytes(HELPER.read_bytes())
+        (self.repo / ".ai/scripts/validation_subject.py").write_bytes(
+            SUBJECT_HELPER.read_bytes()
+        )
+        snapshot = self.logs / "uncapturable-bootstrap-snapshot.json"
+        marker = self.repo / "artifacts/validation/uncapturable-target.txt"
+        target = [
+            sys.executable,
+            "-c",
+            "from pathlib import Path; Path('artifacts/validation/uncapturable-target.txt').write_text('launched')",
+        ]
+        result, _log, result_path = self.supervise_bootstrap(
+            snapshot,
+            *target,
+            profile="fast",
+            name="uncapturable-bootstrap",
+        )
+        self.assertEqual(128, result.returncode, result.stderr)
+        self.assertFalse(marker.exists())
+        admission = json.loads(snapshot.read_text(encoding="utf-8"))
+        self.assertEqual("validation-repository-admission-failure/v1", admission["schema_version"])
+        self.assertEqual("snapshot-capture-failed", admission["reason_code"])
+        receipt = json.loads(result_path.read_text(encoding="utf-8"))
+        self.assertEqual("snapshot-drift", receipt["status"])
+        self.assertFalse(receipt["bootstrap"]["target_launched"])
+        self.assertEqual("snapshot-capture-failed", receipt["bootstrap"]["reason_code"])
+
+
+class ValidationEvidenceRoutineContractGwtTests(ValidationEvidenceFixture):
+    """Routine proof for supervised control roles and staged terminal publication."""
+
+    def write_ordered_preparation(
+        self,
+        paths: dict[str, Path],
+        rows: list[str],
+        *,
+        profile: str,
+    ) -> None:
+        paths["preparation_selection"].write_text(
+            "\n".join(rows) + "\n", encoding="utf-8"
+        )
+        paths["control_results"] = self.write_control_results(  # type: ignore[assignment]
+            paths,
+            profile=profile,
+            preparation_python=None,
+        )
+
+    def test_gwt_036_given_distinct_valid_preparation_and_evidence_orders_when_sealed_then_exact_unique_set_parity_is_accepted(self) -> None:
+        profile = "release"
+        paths = self.prepare_invocation([
+            {
+                "id": "not-selected-a",
+                "outcome": "not-applicable",
+                "disposition": "not-selected",
+            },
+            {
+                "id": "not-selected-c",
+                "outcome": "not-applicable",
+                "disposition": "not-selected",
+            },
+            {
+                "id": "executed-b",
+                "outcome": "passed",
+                "disposition": "executed",
+            },
+        ], profile=profile, batch_three_release_lookups=True)
+        rows_by_id = {
+            line.split("\t", 1)[0]: line
+            for line in paths["preparation_selection"].read_text(
+                encoding="utf-8"
+            ).splitlines()
+        }
+        preparation_order = ["not-selected-a", "executed-b", "not-selected-c"]
+        self.write_ordered_preparation(
+            paths,
+            [rows_by_id[validator_id] for validator_id in preparation_order],
+            profile=profile,
+        )
+        evidence_order = [
+            json.loads(line)["validator_id"]
+            for line in paths["evidence"].read_text(encoding="utf-8").splitlines()
+            if line
+        ]
+        self.assertNotEqual(preparation_order, evidence_order)
+        self.assertEqual(set(preparation_order), set(evidence_order))
+
+        sealed, output = self.seal_prepared(
+            paths, output_name="different-valid-orders.json"
+        )
+
+        self.assertEqual(0, sealed.returncode, sealed.stderr)
+        self.assertTrue(output.is_file())
+
+    def test_gwt_037_given_membership_or_same_domain_order_violation_when_sealed_then_integrity_checks_remain_fail_closed(self) -> None:
+        profile = "release"
+        paths = self.prepare_invocation([
+            {
+                "id": "not-selected-a",
+                "outcome": "not-applicable",
+                "disposition": "not-selected",
+            },
+            {
+                "id": "not-selected-c",
+                "outcome": "not-applicable",
+                "disposition": "not-selected",
+            },
+            {
+                "id": "executed-b",
+                "outcome": "passed",
+                "disposition": "executed",
+            },
+        ], profile=profile, batch_three_release_lookups=True)
+        rows_by_id = {
+            line.split("\t", 1)[0]: line
+            for line in paths["preparation_selection"].read_text(
+                encoding="utf-8"
+            ).splitlines()
+        }
+        valid_preparation_order = ["not-selected-a", "executed-b", "not-selected-c"]
+
+        replacement_fields = rows_by_id["not-selected-c"].split("\t")
+        replacement_fields[0] = "unexpected-d"
+        self.write_ordered_preparation(
+            paths,
+            [
+                rows_by_id["not-selected-a"],
+                rows_by_id["executed-b"],
+                "\t".join(replacement_fields),
+            ],
+            profile=profile,
+        )
+        mismatched, mismatch_output = self.seal_prepared(
+            paths, output_name="mismatched-validator-set.json"
+        )
+        with self.subTest(contract="exact-validator-set-membership"):
+            self.assertNotEqual(0, mismatched.returncode)
+            self.assertIn(
+                "preparation-selection validators do not match evidence",
+                mismatched.stderr,
+            )
+            self.assertFalse(mismatch_output.exists())
+
+        paths["preparation_selection"].write_text(
+            "\n".join((
+                rows_by_id["not-selected-a"],
+                rows_by_id["executed-b"],
+                rows_by_id["executed-b"],
+            )) + "\n",
+            encoding="utf-8",
+        )
+        duplicated, duplicate_output = self.seal_prepared(
+            paths, output_name="duplicate-preparation-validator.json"
+        )
+        with self.subTest(contract="unique-preparation-validator-ids"):
+            self.assertNotEqual(0, duplicated.returncode)
+            self.assertIn("duplicate validator ids", duplicated.stderr)
+            self.assertFalse(duplicate_output.exists())
+
+        self.write_ordered_preparation(
+            paths,
+            [rows_by_id[validator_id] for validator_id in valid_preparation_order],
+            profile=profile,
+        )
+        prepare_log = self.logs / "control-prepare.log"
+        prepare_lines = prepare_log.read_text(encoding="utf-8").splitlines()
+        prepare_log.write_text(
+            "\n".join((prepare_lines[0], prepare_lines[2], prepare_lines[1])) + "\n",
+            encoding="utf-8",
+        )
+        expected_argv = self.control_argv(
+            "prepare", paths, profile=profile, preparation_python=None
+        )
+        safe_python = (
+            f"<absolute-path>/{Path(sys.executable).name}"
+            if Path(sys.executable).is_absolute()
+            else sys.executable
+        )
+        reordered_prepare_result = self.write_receipt(
+            paths["snapshot"],
+            log_path=prepare_log,
+            name="reordered-prepare-control",
+            safe_argv=[safe_python, *expected_argv[1:]],
+            effective_argv=expected_argv,
+            accepted_child_exit_codes=[0],
+        )
+        controls = dict(paths["control_results"])  # type: ignore[arg-type]
+        controls["prepare"] = reordered_prepare_result
+        paths["control_results"] = controls  # type: ignore[assignment]
+        reordered_prepare, prepare_output = self.seal_prepared(
+            paths, output_name="reordered-prepare-log.json"
+        )
+        with self.subTest(contract="preparation-to-prepare-log-order"):
+            self.assertNotEqual(0, reordered_prepare.returncode)
+            self.assertIn(
+                "prepare control output order or reuse state is invalid",
+                reordered_prepare.stderr,
+            )
+            self.assertFalse(prepare_output.exists())
+
+        self.write_ordered_preparation(
+            paths,
+            [rows_by_id[validator_id] for validator_id in valid_preparation_order],
+            profile=profile,
+        )
+        evidence_lines = paths["evidence"].read_text(encoding="utf-8").splitlines()
+        paths["evidence"].write_text(
+            "\n".join((evidence_lines[1], evidence_lines[0], evidence_lines[2])) + "\n",
+            encoding="utf-8",
+        )
+        reordered_evidence, evidence_output = self.seal_prepared(
+            paths, output_name="reordered-evidence.json"
+        )
+        with self.subTest(contract="events-to-evidence-order"):
+            self.assertNotEqual(0, reordered_evidence.returncode)
+            self.assertIn(
+                "events and evidence validators are not bound one-to-one in order",
+                reordered_evidence.stderr,
+            )
+            self.assertFalse(evidence_output.exists())
+
+    def test_gwt_030_given_supervised_terminal_publication_when_published_then_reuse_is_authorized(self) -> None:
+        self.install_tracked_helper("tracked control helper fixture")
+        bootstrap_snapshot = self.logs / "fast-snapshot-pre.json"
+        bootstrap_target = [
+            sys.executable,
+            ".ai/scripts/validation-evidence.py",
+            "verify-snapshot",
+            "--repo", ".",
+            "--snapshot", bootstrap_snapshot.relative_to(self.repo).as_posix(),
+        ]
+        bootstrapped, bootstrap_log, bootstrap_result = self.supervise_bootstrap(
+            bootstrap_snapshot,
+            *bootstrap_target,
+            profile="fast",
+            name="bootstrap-snapshot-control",
+        )
+        self.assertEqual(0, bootstrapped.returncode, bootstrapped.stderr)
+        bootstrap_receipt = json.loads(bootstrap_result.read_text(encoding="utf-8"))
+        self.assertTrue(bootstrap_receipt["bootstrap"]["target_launched"])
+        self.assertEqual(0, bootstrap_receipt["bootstrap"]["target_exit_code"])
+        bootstrap_verified = self.helper(
+            "verify-supervision-result", "--repo", str(self.repo),
+            "--snapshot", str(bootstrap_snapshot), "--result-path", str(bootstrap_result),
+        )
+        self.assertEqual(0, bootstrap_verified.returncode, bootstrap_verified.stderr)
+        self.assertEqual("completed\ttrue\t0", bootstrap_verified.stdout.strip())
+
+        paths = self.prepare_invocation(profile="fast", snapshot=bootstrap_snapshot)
+        controls = dict(paths["control_results"])  # type: ignore[arg-type]
+        controls["bootstrap-snapshot"] = bootstrap_result
+        paths["control_results"] = controls  # type: ignore[assignment]
+        unbound, unbound_stage = self.seal_prepared(
+            paths,
+            output_name="unbound-staged-manifest.json",
+            publication_name="unbound-published-manifest.json",
+        )
+        self.assertNotEqual(0, unbound.returncode)
+        self.assertFalse(unbound_stage.exists())
+        self.assertFalse(self.cache.exists())
+
+        staged = self.logs / "staged-terminal-manifest.json"
+        published = self.logs / "published-terminal-manifest.json"
+        terminal_log = self.logs / "terminal-seal.log"
+        terminal_result = self.logs / "terminal-seal-result.json"
+        seal_arguments = self.seal_arguments(
+            paths,
+            outcome="passed",
+            output=staged,
+            publication_output=published,
+            terminal_result=terminal_result,
+            terminal_log=terminal_log,
+        )
+        terminal_command = [
+            sys.executable,
+            ".ai/scripts/validation-evidence.py",
+            *seal_arguments,
+        ]
+        sealed, observed_terminal_log, observed_terminal_result = self.supervise(
+            paths["snapshot"],
+            *terminal_command,
+            name="terminal-seal",
+        )
+        self.assertEqual(
+            0,
+            sealed.returncode,
+            sealed.stderr
+            + (
+                observed_terminal_log.read_text(encoding="utf-8", errors="replace")
+                if observed_terminal_log.is_file()
+                else "missing terminal log"
+            ),
+        )
+        self.assertEqual(terminal_log, observed_terminal_log)
+        self.assertEqual(terminal_result, observed_terminal_result)
+        self.assertTrue(staged.is_file())
+        self.assertFalse(published.exists())
+        self.assertFalse(self.lookup(profile="fast")[1])
+
+        manifest = json.loads(staged.read_text(encoding="utf-8"))
+        self.assertEqual(
+            [
+                "bootstrap-snapshot", "finalize", "post-snapshot", "prepare",
+                "summarize", "workflow-summary",
+            ],
+            [item["role"] for item in manifest["control_plane"]],
+        )
+        terminal_declaration = manifest["terminal_supervision"]
+        terminal_receipt = json.loads(terminal_result.read_text(encoding="utf-8"))
+        self.assertEqual("supervised", terminal_declaration["mode"])
+        self.assertEqual(
+            terminal_result.relative_to(self.repo).as_posix(),
+            terminal_declaration["result_ref"],
+        )
+        self.assertEqual(
+            terminal_log.relative_to(self.repo).as_posix(),
+            terminal_declaration["log_ref"],
+        )
+        self.assertEqual(
+            terminal_receipt["command"]["effective_argv_digest"],
+            terminal_declaration["expected_effective_argv_digest"],
+        )
+        artifact_refs = {item["ref"] for item in manifest["artifacts"]}
+        for path in (
+            bootstrap_result,
+            bootstrap_log,
+            Path(str(bootstrap_result) + ".process.json"),
+            Path(str(bootstrap_result) + ".bootstrap.json"),
+        ):
+            self.assertIn(path.relative_to(self.repo).as_posix(), artifact_refs)
+        verified_terminal = self.helper(
+            "verify-supervision-result", "--repo", str(self.repo),
+            "--snapshot", str(paths["snapshot"]), "--result-path", str(terminal_result),
+        )
+        self.assertEqual(0, verified_terminal.returncode, verified_terminal.stderr)
+        staged_content = staged.read_bytes()
+        verified_invocation = self.helper(
+            "verify-terminal-invocation", "--repo", str(self.repo),
+            "--snapshot", str(paths["snapshot"]), "--manifest", str(staged),
+            "--result-path", str(terminal_result), "--", *terminal_command,
+        )
+        self.assertEqual(0, verified_invocation.returncode, verified_invocation.stderr)
+        self.assertEqual(
+            hashlib.sha256(staged_content).hexdigest(),
+            verified_invocation.stdout.strip(),
+        )
+        cache_value = json.loads(self.cache.read_text(encoding="utf-8"))
+        source_manifest_refs = {
+            entry["reuse_source"]["source_manifest"]["ref"]
+            for entry in cache_value["entries"].values()
+        }
+        self.assertEqual({published.relative_to(self.repo).as_posix()}, source_manifest_refs)
+
+        os.link(staged, published)
+        staged.unlink()
+        self.assertEqual(staged_content, published.read_bytes())
+        self.assertTrue(self.lookup(profile="fast")[1])
+
 
     def test_gwt_035_given_repository_relative_finalize_refs_when_supervised_then_snapshot_resolves_from_repository_root(self) -> None:
         self.install_tracked_helper("tracked repository-relative finalize fixture")
