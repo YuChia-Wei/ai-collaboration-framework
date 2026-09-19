@@ -197,7 +197,7 @@ class SyntheticShellAssetRepo:
 class SyntheticRunnerRepo:
     """Run an unmodified copied check-all.sh against deterministic stubs."""
 
-    def __init__(self) -> None:
+    def __init__(self, *, full_profile_membership: bool = False) -> None:
         self._temporary = tempfile.TemporaryDirectory(prefix="aic007-check-all-")
         self.root = Path(self._temporary.name)
         self.scripts = self.root / ".ai/scripts"
@@ -209,6 +209,8 @@ class SyntheticRunnerRepo:
         shutil.copy2(PROFILE_REGISTRY_SOURCE, self.scripts / PROFILE_REGISTRY_SOURCE.name)
         shutil.copy2(EVIDENCE_SOURCE, self.scripts / EVIDENCE_SOURCE.name)
         self._write_declared_python_targets()
+        if not full_profile_membership:
+            self._use_default_narrow_profile_membership()
         self.add_python_stub("python")
         self._write_stub(
             self.bin / "dotnet",
@@ -579,6 +581,19 @@ class SyntheticRunnerRepo:
             for check_id in check_ids:
                 registry.write(f'CHECK_PROFILES["{check_id}"]="{profile}"\n')
 
+    def _use_default_narrow_profile_membership(self) -> None:
+        with (self.scripts / PROFILE_REGISTRY_SOURCE.name).open(
+            "a", encoding="utf-8", newline="\n"
+        ) as registry:
+            registry.write(
+                'for fixture_id in "${CHECK_IDS[@]}"; do '
+                'CHECK_PROFILES["$fixture_id"]="closeout"; done\n'
+            )
+            registry.write(
+                'CHECK_PROFILES["profile-registry-contract"]='
+                '"fast pr release nightly-full"\n'
+            )
+
     def create_changed_path_revisions(self, relative_path: str) -> tuple[str, str]:
         path = self.root / relative_path
         path.parent.mkdir(parents=True, exist_ok=True)
@@ -674,6 +689,7 @@ class CheckAllRunnerGwtTests(unittest.TestCase):
     def test_gwt_001_given_required_script_missing_when_critical_runs_then_gate_fails(self) -> None:
         fixture = SyntheticRunnerRepo()
         try:
+            fixture.restrict_profile_to("release", "coding-standards-structural")
             # Given the selected required child script is absent.
             fixture.remove_child("check-coding-standards.sh")
 
@@ -710,6 +726,7 @@ class CheckAllRunnerGwtTests(unittest.TestCase):
     def test_gwt_003_given_required_script_nonzero_when_selected_then_counted_once(self) -> None:
         fixture = SyntheticRunnerRepo()
         try:
+            fixture.restrict_profile_to("release", "coding-standards-structural")
             # Given the required coding check returns 17.
             # When critical mode executes.
             result = fixture.execute("--critical", environment={"CODING_STUB_EXIT": "17"})
@@ -724,6 +741,7 @@ class CheckAllRunnerGwtTests(unittest.TestCase):
     def test_gwt_004_given_source_context_without_dotnet_when_selected_then_no_sdk_command_runs(self) -> None:
         fixture = SyntheticRunnerRepo()
         try:
+            fixture.restrict_profile_to("release", "sdk-free-framework-contract")
             # Given source-only checks are selected and any accidental dotnet
             # invocation would fail with command-not-found semantics.
             fixture.enable_source_release_context()
@@ -750,6 +768,7 @@ class CheckAllRunnerGwtTests(unittest.TestCase):
     def test_gwt_004c_given_read_only_child_when_critical_runs_then_gate_is_blocked(self) -> None:
         fixture = SyntheticRunnerRepo()
         try:
+            fixture.restrict_profile_to("release", "coding-standards-structural")
             # Given a required child reports a read-only filesystem.
             # When critical mode runs.
             result = fixture.execute(
@@ -769,7 +788,7 @@ class CheckAllRunnerGwtTests(unittest.TestCase):
             fixture.close()
 
     def test_gwt_005_given_retirement_candidate_when_modes_run_then_it_is_never_selected(self) -> None:
-        fixture = SyntheticRunnerRepo()
+        fixture = SyntheticRunnerRepo(full_profile_membership=True)
         try:
             # Given the stale helper is a packaged retirement candidate.
             # When every supported mode executes.
@@ -796,6 +815,12 @@ class CheckAllRunnerGwtTests(unittest.TestCase):
     def test_gwt_006_given_no_spec_inputs_when_quick_runs_then_spec_is_not_applicable(self) -> None:
         fixture = SyntheticRunnerRepo()
         try:
+            fixture.restrict_profile_to(
+                "pr",
+                "spec-implementation",
+                "source-governance-manifest",
+                "governance-workflow-contract",
+            )
             # Given both conditional spec inputs and source release context are absent.
             # When quick mode reaches spec compliance.
             result = fixture.execute("--quick")
@@ -823,6 +848,7 @@ class CheckAllRunnerGwtTests(unittest.TestCase):
     def test_gwt_007_given_partial_spec_inputs_when_quick_runs_then_configuration_fails(self) -> None:
         fixture = SyntheticRunnerRepo()
         try:
+            fixture.restrict_profile_to("pr", "spec-implementation")
             for environment in ({"SPEC_FILE": "spec.json"}, {"TASK_NAME": "task"}):
                 with self.subTest(environment=environment):
                     # Given exactly one conditional-required input is present.
@@ -841,6 +867,7 @@ class CheckAllRunnerGwtTests(unittest.TestCase):
     def test_gwt_007a_given_source_governance_paths_without_release_context_then_checks_are_not_applicable(self) -> None:
         fixture = SyntheticRunnerRepo()
         try:
+            fixture.restrict_profile_to("release", "source-governance-manifest")
             # Given a downstream happens to retain the two source governance paths.
             fixture.enable_source_governance_context()
 
@@ -864,6 +891,7 @@ class CheckAllRunnerGwtTests(unittest.TestCase):
     def test_gwt_007b_given_pending_target_apply_receipt_without_provenance_when_critical_runs_then_target_validation_is_required(self) -> None:
         fixture = SyntheticRunnerRepo()
         try:
+            fixture.restrict_profile_to("release", "target-ai-context-version")
             # Given a downstream pending receipt but no finalized target provenance.
             receipt = fixture.root / ".dev/AI-CONTEXT-APPLY-PENDING.yaml"
             receipt.parent.mkdir(parents=True)
@@ -887,6 +915,7 @@ class CheckAllRunnerGwtTests(unittest.TestCase):
     def test_gwt_008_given_complete_spec_inputs_when_quick_runs_then_child_result_is_required(self) -> None:
         fixture = SyntheticRunnerRepo()
         try:
+            fixture.restrict_profile_to("pr", "spec-implementation")
             base = {"SPEC_FILE": "spec.json", "TASK_NAME": "task"}
             # Given both inputs exist, when the spec child passes, then the gate passes.
             passing = fixture.execute("--quick", environment=base)
@@ -902,6 +931,7 @@ class CheckAllRunnerGwtTests(unittest.TestCase):
     def test_gwt_009_given_dependency_gate_when_quick_runs_then_it_is_required_not_deferred(self) -> None:
         fixture = SyntheticRunnerRepo()
         try:
+            fixture.restrict_profile_to("pr", "dependency-versions-tests")
             # Given the offline dependency validator and its fixtures are declared required.
             # When quick mode reaches the dependency gate.
             result = fixture.execute("--quick")
@@ -925,6 +955,7 @@ class CheckAllRunnerGwtTests(unittest.TestCase):
     def test_gwt_009_language_gate_when_quick_runs_then_it_is_required(self) -> None:
         fixture = SyntheticRunnerRepo()
         try:
+            fixture.restrict_profile_to("pr", "ai-context-language-policy")
             # Given the language and bilingual parity fixtures are a required gate.
             # When quick mode reaches the AI context validators.
             result = fixture.execute("--quick")
@@ -990,7 +1021,7 @@ class CheckAllRunnerGwtTests(unittest.TestCase):
             fixture.close()
 
     def test_gwt_011a_given_profile_selection_when_runner_starts_then_membership_is_registry_driven(self) -> None:
-        fixture = SyntheticRunnerRepo()
+        fixture = SyntheticRunnerRepo(full_profile_membership=True)
         try:
             # Given the canonical registry supplies five named profiles and
             # source-only checks can execute when their profile selects them.
@@ -1029,6 +1060,14 @@ class CheckAllRunnerGwtTests(unittest.TestCase):
     def test_gwt_012_given_source_release_context_when_critical_runs_then_source_tests_are_required(self) -> None:
         fixture = SyntheticRunnerRepo()
         try:
+            fixture.restrict_profile_to(
+                "release",
+                "source-version-governance-tests",
+                "package-full-matrix",
+                "source-governance-manifest",
+                "governance-workflow-contract",
+                "package-apply",
+            )
             # Given the runner can prove it is executing in the source release repository.
             fixture.enable_source_release_context()
             fixture.enable_source_governance_context()
@@ -1065,6 +1104,7 @@ class CheckAllRunnerGwtTests(unittest.TestCase):
         try:
             fixture.enable_source_release_context()
             fixture.enable_immutable_history_context()
+            fixture.restrict_profile_to("fast", "workflow-artifacts")
 
             result = fixture.execute(
                 "--profile",
@@ -1150,6 +1190,7 @@ class CheckAllRunnerGwtTests(unittest.TestCase):
         try:
             fixture.enable_source_release_context()
             fixture.enable_immutable_history_context()
+            fixture.restrict_profile_to("fast", "workflow-artifacts")
 
             result = fixture.execute(
                 "--profile",
@@ -1171,6 +1212,7 @@ class CheckAllRunnerGwtTests(unittest.TestCase):
         try:
             fixture.enable_source_release_context()
             fixture.enable_immutable_history_context()
+            fixture.restrict_profile_to("release", "workflow-artifacts")
 
             result = fixture.execute(
                 "--profile",
@@ -1195,6 +1237,7 @@ class CheckAllRunnerGwtTests(unittest.TestCase):
         try:
             fixture.enable_source_release_context()
             fixture.enable_immutable_history_context()
+            fixture.restrict_profile_to("fast", "workflow-artifacts")
             (
                 fixture.root
                 / ".ai/distribution/validation/immutable-history-receipt.yaml"
@@ -1216,6 +1259,7 @@ class CheckAllRunnerGwtTests(unittest.TestCase):
         try:
             fixture.enable_source_release_context()
             fixture.enable_immutable_history_context()
+            fixture.restrict_profile_to("fast", "workflow-artifacts")
 
             result = fixture.execute(
                 "--profile",
@@ -1249,6 +1293,7 @@ class CheckAllRunnerGwtTests(unittest.TestCase):
         try:
             fixture.enable_source_release_context()
             fixture.enable_immutable_history_context()
+            fixture.restrict_profile_to("fast", "workflow-artifacts")
 
             result = fixture.execute(
                 "--profile",
@@ -1274,6 +1319,7 @@ class CheckAllRunnerGwtTests(unittest.TestCase):
         try:
             fixture.enable_source_release_context()
             fixture.enable_immutable_history_context()
+            fixture.restrict_profile_to("release", "workflow-artifacts")
 
             result = fixture.execute(
                 "--profile",
@@ -1301,6 +1347,7 @@ class CheckAllRunnerGwtTests(unittest.TestCase):
                 try:
                     fixture.enable_source_release_context()
                     fixture.enable_immutable_history_context()
+                    fixture.restrict_profile_to("fast", "workflow-artifacts")
 
                     result = fixture.execute(
                         "--profile",
@@ -2486,6 +2533,7 @@ class ChangedPathDependencyClosureGwtTests(unittest.TestCase):
     ) -> None:
         fixture = SyntheticRunnerRepo()
         try:
+            fixture.restrict_profile_to("pr", "profile-projection")
             fixture.override_dependencies(
                 **{
                     "profile-projection": "dependency-versions-tests",
@@ -2516,6 +2564,7 @@ class ChangedPathDependencyClosureGwtTests(unittest.TestCase):
     def test_gwt_002_given_diamond_dependency_then_shared_check_is_selected_once(self) -> None:
         fixture = SyntheticRunnerRepo()
         try:
+            fixture.restrict_profile_to("pr", "profile-projection")
             fixture.override_dependencies(
                 **{
                     "profile-projection": "dependency-versions-tests coding-standards-integrity",
@@ -2554,6 +2603,7 @@ class ChangedPathDependencyClosureGwtTests(unittest.TestCase):
     def test_gwt_003_given_dependency_cycle_then_exact_path_fails_before_execution(self) -> None:
         fixture = SyntheticRunnerRepo()
         try:
+            fixture.restrict_profile_to("pr", "profile-projection")
             fixture.override_dependencies(
                 **{
                     "dependency-versions-tests": "profile-projection",
@@ -2575,6 +2625,7 @@ class ChangedPathDependencyClosureGwtTests(unittest.TestCase):
     def test_gwt_004_given_unknown_dependency_then_registry_fails_before_execution(self) -> None:
         fixture = SyntheticRunnerRepo()
         try:
+            fixture.restrict_profile_to("pr", "profile-projection")
             fixture.override_dependencies(**{"profile-projection": "missing-check"})
 
             result = fixture.execute("--profile", "pr")
@@ -2593,6 +2644,7 @@ class ChangedPathDependencyClosureGwtTests(unittest.TestCase):
     ) -> None:
         fixture = SyntheticRunnerRepo()
         try:
+            fixture.restrict_profile_to("pr", "profile-projection")
             fixture.override_dependencies(**{"profile-projection": "test-di-compliance"})
             changed_path = "fixture/profile-projection.txt"
             fixture.override_input_paths(**{"profile-projection": changed_path})
@@ -2614,6 +2666,9 @@ class ChangedPathDependencyClosureGwtTests(unittest.TestCase):
     def test_gwt_006_given_multiple_direct_roots_then_evidence_is_repeatable(self) -> None:
         fixture = SyntheticRunnerRepo()
         try:
+            fixture.restrict_profile_to(
+                "pr", "coding-standards-integrity", "profile-projection"
+            )
             changed_path = "fixture/shared.txt"
             fixture.override_input_paths(
                 **{
