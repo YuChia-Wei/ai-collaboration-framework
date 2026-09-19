@@ -3,6 +3,7 @@
 
 from __future__ import annotations
 
+import ast
 import hashlib
 import json
 import os
@@ -19,6 +20,8 @@ STDLIB_COMPARE = ".ai/assets/skills/ai-context-upgrader/scripts/compare-ai-conte
 STDLIB_FIXTURE_PROFILE = ".ai/scripts/run-test-fixture-profile.py"
 STDLIB_PACKAGE_IDENTITY = ".ai/scripts/resolve-ai-context-package-identity.py"
 STDLIB_V015_WSL_RUNNER = ".ai/scripts/run-v015-package-validation-wsl.py"
+PYYAML_SOURCE_ONLY_SENTINEL = ".ai/scripts/validate-ai-context-package.py"
+DIRECT_ENTRYPOINT_TIMEOUT_SECONDS = 15
 MARKER = ROOT / ".ai/scripts/tests/.python-source-entrypoints-marker"
 RUNNER_LOG_DIRECTORY = os.environ.get("AI_CONTEXT_VALIDATION_RUN_LOG_DIR")
 ACTIVE_RUNNER_LOG_DIRECTORY = (
@@ -58,21 +61,48 @@ def protected_snapshot() -> dict[str, str]:
                 if is_active_runner_diagnostic(path):
                     continue
                 snapshot[path.relative_to(ROOT).as_posix()] = digest(path)
-    # A source entrypoint can create bytecode beside its versioned modules.
-    # Ignored analysis checkouts and disposable fixtures are not source inputs;
-    # traversing them makes this prerequisite test depend on workspace size.
-    tracked_python = subprocess.check_output(
-        ["git", "ls-files", "-z", "--", "*.py"], cwd=ROOT
-    ).decode("utf-8").split("\0")
-    cache_directories = {
-        (ROOT / path).parent / "__pycache__" for path in tracked_python if path
-    }
-    for directory in sorted(cache_directories):
-        if not directory.is_dir():
-            continue
-        for path in sorted(item for item in directory.iterdir() if item.is_file()):
+    # The guarded sentinel and its shared bootstrap both reside here.  The
+    # subprocess also uses -B and PYTHONDONTWRITEBYTECODE, so no repository-wide
+    # cache walk is needed to prove this preflight leaves protected state intact.
+    cache_directory = ROOT / ".ai/scripts/__pycache__"
+    if cache_directory.is_dir():
+        for path in sorted(item for item in cache_directory.iterdir() if item.is_file()):
             snapshot[path.relative_to(ROOT).as_posix()] = digest(path)
     return snapshot
+
+
+def imports_nonstdlib_module(statement: ast.AST) -> bool:
+    """Inspect imports executable before the guard, including control-flow bodies."""
+    if isinstance(statement, ast.Import):
+        modules = [alias.name.partition(".")[0] for alias in statement.names]
+    elif isinstance(statement, ast.ImportFrom):
+        if statement.level:
+            return True
+        modules = [(statement.module or "").partition(".")[0]]
+    elif isinstance(statement, (ast.FunctionDef, ast.AsyncFunctionDef, ast.Lambda)):
+        return False  # A function body is not executed merely by defining it.
+    else:
+        return any(imports_nonstdlib_module(child) for child in ast.iter_child_nodes(statement))
+    return any(
+        module not in {"__future__", "python_prerequisites"}
+        and module not in sys.stdlib_module_names
+        for module in modules
+    )
+
+
+def is_direct_guard_call(statement: ast.stmt, entrypoint: str) -> bool:
+    """Match the shared prerequisite guard bound to one registry entrypoint."""
+    if not isinstance(statement, ast.Expr) or not isinstance(statement.value, ast.Call):
+        return False
+    call = statement.value
+    return (
+        isinstance(call.func, ast.Name)
+        and call.func.id == "guard_direct_entrypoint"
+        and len(call.args) == 1
+        and not call.keywords
+        and isinstance(call.args[0], ast.Constant)
+        and call.args[0].value == entrypoint
+    )
 
 
 class PythonSourceEntrypointTests(unittest.TestCase):
@@ -84,6 +114,33 @@ class PythonSourceEntrypointTests(unittest.TestCase):
         cls.portable = [item for item in cls.entrypoints if item["portable"]]
         cls.pyyaml_source_only = [item for item in cls.source_only if item["dependency_profile"] == ["PyYAML"]]
         cls.stdlib_source_only = [item for item in cls.source_only if not item["dependency_profile"]]
+
+    def assert_pyyaml_entrypoint_uses_shared_guard(self, item: dict[str, object]) -> None:
+        """Prove a registered entrypoint reaches the common guard before domain imports."""
+        entrypoint = item["path"]
+        self.assertIsInstance(entrypoint, str)
+        tree = ast.parse((ROOT / entrypoint).read_text(encoding="utf-8"), filename=entrypoint)
+        guard_imports = [
+            index
+            for index, statement in enumerate(tree.body)
+            if isinstance(statement, ast.ImportFrom)
+            and statement.module == "python_prerequisites"
+            and statement.level == 0
+            and any(alias.name == "guard_direct_entrypoint" and alias.asname is None for alias in statement.names)
+        ]
+        guard_calls = [
+            index
+            for index, statement in enumerate(tree.body)
+            if is_direct_guard_call(statement, entrypoint)
+        ]
+        with self.subTest(entrypoint=entrypoint):
+            self.assertEqual(1, len(guard_imports), "shared guard must be directly imported once")
+            self.assertEqual(1, len(guard_calls), "shared guard must be called once with the registry path")
+            self.assertLess(guard_imports[0], guard_calls[0], "shared guard must be imported before use")
+            self.assertFalse(
+                any(imports_nonstdlib_module(statement) for statement in tree.body[:guard_calls[0]]),
+                "shared guard must run before domain or third-party imports",
+            )
 
     def test_gwt_001_given_source_only_registry_when_help_is_requested_then_each_direct_cli_remains_callable(self) -> None:
         all_paths = {item["path"] for item in self.entrypoints}
@@ -101,11 +158,14 @@ class PythonSourceEntrypointTests(unittest.TestCase):
         self.assertEqual(all_paths, portable_paths | source_only_paths)
         self.assertFalse(pyyaml_source_only_paths & stdlib_source_only_paths)
         self.assertEqual(source_only_paths, pyyaml_source_only_paths | stdlib_source_only_paths)
+        environment = os.environ.copy()
+        environment["PYTHONDONTWRITEBYTECODE"] = "1"
         for item in self.source_only:
             with self.subTest(entrypoint=item["path"]):
                 result = subprocess.run(
-                    [sys.executable, str(ROOT / item["path"]), "--help"],
+                    [sys.executable, "-B", str(ROOT / item["path"]), "--help"],
                     cwd=ROOT,
+                    env=environment,
                     capture_output=True,
                     text=True,
                     check=False,
@@ -114,33 +174,48 @@ class PythonSourceEntrypointTests(unittest.TestCase):
 
     def test_gwt_002_given_shadowed_yaml_when_source_only_pyyaml_clis_run_then_each_blocks_before_target_body_or_writes(self) -> None:
         self.assertTrue(self.pyyaml_source_only, "PyYAML source-only entrypoint set must not be empty")
+        for item in self.pyyaml_source_only:
+            self.assert_pyyaml_entrypoint_uses_shared_guard(item)
+        sentinel = next(
+            (item for item in self.pyyaml_source_only if item["path"] == PYYAML_SOURCE_ONLY_SENTINEL),
+            None,
+        )
+        self.assertIsNotNone(sentinel, "the representative source-only PyYAML sentinel must remain registered")
         before = protected_snapshot()
         with tempfile.TemporaryDirectory(prefix="python-source-entrypoints-") as temporary:
             shadow = Path(temporary) / "yaml.py"
             shadow.write_text("raise ImportError('deterministic shadowed yaml')\n", encoding="utf-8")
             environment = os.environ.copy()
             environment["PYTHONPATH"] = str(Path(temporary))
+            environment["PYTHONDONTWRITEBYTECODE"] = "1"
             environment.pop("AI_CONTEXT_PYTHON", None)
-            for item in self.pyyaml_source_only:
-                with self.subTest(entrypoint=item["path"]):
-                    result = subprocess.run(
-                        [sys.executable, str(ROOT / item["path"]), "--diagnostic-format=json"],
-                        cwd=ROOT,
-                        env=environment,
-                        capture_output=True,
-                        text=True,
-                        check=False,
-                    )
-                    self.assertEqual(item["prerequisite_exit_code"], result.returncode, result.stdout + result.stderr)
-                    self.assertEqual("", result.stderr)
-                    lines = result.stdout.splitlines()
-                    self.assertEqual(1, len(lines), result.stdout)
-                    diagnostic = json.loads(lines[0])
-                    self.assertEqual("blocked-by-environment", diagnostic["outcome"])
-                    self.assertEqual("missing-dependency", diagnostic["reason_code"])
-                    self.assertEqual(item["path"], diagnostic["entrypoint"])
-                    self.assertEqual(["PyYAML==6.0.3"], diagnostic["missing_requirements"])
-                    self.assertFalse(diagnostic["mutation_started"])
+            try:
+                result = subprocess.run(
+                    [sys.executable, "-B", str(ROOT / PYYAML_SOURCE_ONLY_SENTINEL), "--diagnostic-format=json"],
+                    cwd=ROOT,
+                    env=environment,
+                    capture_output=True,
+                    text=True,
+                    encoding="utf-8",
+                    errors="replace",
+                    check=False,
+                    timeout=DIRECT_ENTRYPOINT_TIMEOUT_SECONDS,
+                )
+            except subprocess.TimeoutExpired as error:
+                self.fail(
+                    f"{PYYAML_SOURCE_ONLY_SENTINEL} did not return from its prerequisite guard "
+                    f"within {DIRECT_ENTRYPOINT_TIMEOUT_SECONDS}s: {error}"
+                )
+            self.assertEqual(sentinel["prerequisite_exit_code"], result.returncode, result.stdout + result.stderr)
+            self.assertEqual("", result.stderr)
+            lines = result.stdout.splitlines()
+            self.assertEqual(1, len(lines), result.stdout)
+            diagnostic = json.loads(lines[0])
+            self.assertEqual("blocked-by-environment", diagnostic["outcome"])
+            self.assertEqual("missing-dependency", diagnostic["reason_code"])
+            self.assertEqual(sentinel["path"], diagnostic["entrypoint"])
+            self.assertEqual(["PyYAML==6.0.3"], diagnostic["missing_requirements"])
+            self.assertFalse(diagnostic["mutation_started"])
         self.assertEqual(before, protected_snapshot())
 
     def test_gwt_003_given_source_only_registry_when_stdlib_entries_are_selected_then_they_have_empty_dependency_profiles(self) -> None:
