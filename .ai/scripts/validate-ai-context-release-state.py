@@ -59,7 +59,18 @@ V018_REBIND_TERMINAL_SHA256 = "04885cbbb8c3dc6823867f7ed73be102c2c427b3b34602080
 V018_REBIND_CASE_INDEX_SHA256 = "3e4f5dab025e408f6588959f9bb8c328835721c9b2b5f6886dcee575c127978a"
 V018_REBIND_BASELINE_MATRIX_SHA256 = "d95c5ee82b97013f46f9a52a54ec54e698f94706cb0c29280f44c93b84417c30"
 V018_REBIND_CASE_EVIDENCE_COUNT = 236
-V018_REBIND_PAYLOAD_PATH = ".ai/scripts/shell-assets.yaml"
+V018_REBIND_PAYLOAD_DELTAS = (
+    (
+        ".ai/scripts/shell-assets.yaml",
+        b"  - python .ai/scripts/tests/test_code_reviewer_routing_contract.py -v\n",
+        b"  - python .ai/scripts/tests/test_runtime_skill_entries.py -v\n",
+    ),
+    (
+        ".ai/scripts/validate-dependency-versions.py",
+        b"    expected_exit_two = {\n",
+        b"        \".ai/assets/skills/ai-context-upgrader/scripts/run-target-validation.py\",\n",
+    ),
+)
 V018_REBIND_CASES = (
     "v0.6.0-pristine-resume",
     "v0.6.0-customized-none",
@@ -873,11 +884,15 @@ def v018_rebind_execution_set():
             },
         },
         "cases": list(V018_REBIND_CASES),
-        "allowed_payload_delta": {
-            "path": V018_REBIND_PAYLOAD_PATH,
-            "mode": "0644",
-            "command": "python .ai/scripts/tests/test_runtime_skill_entries.py -v",
-        },
+        "allowed_payload_deltas": [
+            {
+                "path": path,
+                "mode": "0644",
+                "anchor": anchor.decode("ascii"),
+                "addition": addition.decode("ascii"),
+            }
+            for path, anchor, addition in V018_REBIND_PAYLOAD_DELTAS
+        ],
     }
 
 
@@ -890,6 +905,8 @@ def v018_payload_entries(content):
         entries = {}
         with zipfile.ZipFile(io.BytesIO(content)) as archive:
             for item in archive.infolist():
+                if item.is_dir():
+                    continue
                 name = item.filename
                 marker = "/payload/"
                 if marker not in name:
@@ -906,8 +923,6 @@ def v018_payload_entries(content):
                     or any(part in {"", ".", ".."} for part in pure.parts)
                 ):
                     raise ReleaseStateError("v0.18 rebound payload path is invalid")
-                if item.is_dir():
-                    continue
                 key = pure.as_posix()
                 if key in entries:
                     raise ReleaseStateError("v0.18 rebound payload has duplicate paths")
@@ -974,8 +989,8 @@ def validate_v018_case_evidence_index(actual_root):
         asset_ids.add(staged["asset_id"])
 
 
-def validate_v018_rebound_payload_delta(baseline_archive, replacement_archive, shell_assets):
-    """Validate the exact C10-to-replacement payload repair from explicit bytes.
+def validate_v018_rebound_payload_delta(baseline_archive, replacement_archive, current_payloads):
+    """Validate the exact two-path C10-to-replacement repair from explicit bytes.
 
     This narrow helper deliberately has no current-admission or matrix authority.
     Derived route validators may use the same byte-level proof while their caller
@@ -983,20 +998,23 @@ def validate_v018_rebound_payload_delta(baseline_archive, replacement_archive, s
     """
     before = v018_payload_entries(baseline_archive)
     after = v018_payload_entries(replacement_archive)
+    expected_paths = {path for path, _anchor, _addition in V018_REBIND_PAYLOAD_DELTAS}
     changed = {name for name in before.keys() | after.keys() if before.get(name) != after.get(name)}
     if (
-        changed != {V018_REBIND_PAYLOAD_PATH}
-        or before[V018_REBIND_PAYLOAD_PATH][0] != after[V018_REBIND_PAYLOAD_PATH][0]
+        changed != expected_paths
+        or not isinstance(current_payloads, dict)
+        or set(current_payloads) != expected_paths
     ):
         raise ReleaseStateError("v0.18 rebound payload delta differs")
-    expected = before[V018_REBIND_PAYLOAD_PATH][1]
-    anchor = b"  - python .ai/scripts/tests/test_code_reviewer_routing_contract.py -v\n"
-    addition = b"  - python .ai/scripts/tests/test_runtime_skill_entries.py -v\n"
-    if expected.count(anchor) != 1:
-        raise ReleaseStateError("v0.18 rebound payload anchor differs")
-    expected = expected.replace(anchor, anchor + addition)
-    if after[V018_REBIND_PAYLOAD_PATH][1] != expected or shell_assets != expected:
-        raise ReleaseStateError("v0.18 rebound shell-assets bytes differ")
+    for path, anchor, addition in V018_REBIND_PAYLOAD_DELTAS:
+        if path not in before or path not in after or before[path][0] != after[path][0]:
+            raise ReleaseStateError("v0.18 rebound payload mode differs")
+        expected = before[path][1]
+        if expected.count(anchor) != 1:
+            raise ReleaseStateError("v0.18 rebound payload anchor differs")
+        expected = expected.replace(anchor, anchor + addition)
+        if after[path][1] != expected or current_payloads[path] != expected:
+            raise ReleaseStateError("v0.18 rebound payload bytes differ")
 
 
 def load_v018_execution_set(root, actual_root):
@@ -1117,7 +1135,7 @@ def v018_affected_only_case_matrix(root, matrix):
         validate_v018_rebound_payload_delta(
             baseline_archive,
             replacement,
-            (root / V018_REBIND_PAYLOAD_PATH).read_bytes(),
+            {path: (root / path).read_bytes() for path, _anchor, _addition in V018_REBIND_PAYLOAD_DELTAS},
         )
         return baseline
     except ReleaseStateError:

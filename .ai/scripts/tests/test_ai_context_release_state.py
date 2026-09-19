@@ -1532,14 +1532,17 @@ class V018MatrixRebindTests(unittest.TestCase):
     """Keep Candidate10 facts distinct from a C11 bounded archive rebind."""
 
     @staticmethod
-    def archive(shell_assets, keep=b"unchanged"):
+    def archive(shell_assets, dependency_validator, keep=b"unchanged"):
         import io
         import zipfile
 
         output = io.BytesIO()
         with zipfile.ZipFile(output, "w") as archive:
+            archive.writestr("bundle/payload/", b"")
+            archive.writestr("bundle/payload/.ai/scripts/", b"")
             for name, value in [
                 (".ai/scripts/shell-assets.yaml", shell_assets),
+                (".ai/scripts/validate-dependency-versions.py", dependency_validator),
                 ("meta/keep.txt", keep),
             ]:
                 entry = zipfile.ZipInfo(f"bundle/payload/{name}")
@@ -1553,8 +1556,19 @@ class V018MatrixRebindTests(unittest.TestCase):
         runner = b"preserved C10 runner\n"
         before = b"  - python .ai/scripts/tests/test_code_reviewer_routing_contract.py -v\n"
         after = before + b"  - python .ai/scripts/tests/test_runtime_skill_entries.py -v\n"
-        baseline_archive = self.archive(before)
-        replacement_archive = self.archive(after)
+        dependency_anchor = STATE.V018_REBIND_PAYLOAD_DELTAS[1][1]
+        dependency_addition = STATE.V018_REBIND_PAYLOAD_DELTAS[1][2]
+        dependency_before = (
+            dependency_anchor
+            + b'        ".ai/scripts/plan-ai-context-package-apply.py",\n'
+            + b'        ".ai/scripts/validate-immutable-history.py",\n'
+            + b"    }\n"
+        )
+        dependency_after = dependency_before.replace(
+            dependency_anchor, dependency_anchor + dependency_addition
+        )
+        baseline_archive = self.archive(before, dependency_before)
+        replacement_archive = self.archive(after, dependency_after)
         release = root / ".dev/releases/v0.18.0"
         actual = release / "route-assets/actual"
         admitted = release / "route-assets/admitted/ai-collaboration-framework-v0.18.0.zip"
@@ -1566,6 +1580,8 @@ class V018MatrixRebindTests(unittest.TestCase):
         shell_path = root / ".ai/scripts/shell-assets.yaml"
         shell_path.parent.mkdir(parents=True)
         shell_path.write_bytes(after)
+        dependency_path = root / ".ai/scripts/validate-dependency-versions.py"
+        dependency_path.write_bytes(dependency_after)
         (actual / "validate-v018-direct-upgrades.py").write_bytes(runner)
         (actual / "baseline.zip").write_bytes(baseline_archive)
         admitted.write_bytes(replacement_archive)
@@ -1634,6 +1650,9 @@ class V018MatrixRebindTests(unittest.TestCase):
             "baseline_archive": baseline_archive,
             "before": before,
             "after": after,
+            "dependency_before": dependency_before,
+            "dependency_after": dependency_after,
+            "dependency_path": dependency_path,
             "matrix": matrix,
             "pins": pins,
             "root": root,
@@ -1661,13 +1680,27 @@ class V018MatrixRebindTests(unittest.TestCase):
             self.assertEqual(list(STATE.V018_REBIND_CASES), [case["case"] for case in validate_cases.call_args.args[0]])
             self.assertEqual(fixture["baseline"], validate_cases.call_args.args[3])
             self.assertNotEqual(fixture["matrix"], validate_cases.call_args.args[3])
+            deltas = STATE.v018_rebind_execution_set()["allowed_payload_deltas"]
+            self.assertEqual(
+                [".ai/scripts/shell-assets.yaml", ".ai/scripts/validate-dependency-versions.py"],
+                [delta["path"] for delta in deltas],
+            )
+            self.assertEqual(82, len(deltas[1]["addition"].encode("ascii")))
 
     def test_given_payload_origin_or_workspace_drift_when_rebound_then_rejects(self):
-        for change in ("payload", "origins", "workspace"):
+        for change in ("payload", "dependency", "origins", "workspace"):
             with self.subTest(change=change), tempfile.TemporaryDirectory() as directory:
                 fixture = self.fixture(Path(directory))
                 if change == "payload":
-                    altered = self.archive(fixture["after"], b"changed")
+                    altered = self.archive(
+                        fixture["after"], fixture["dependency_after"], b"changed"
+                    )
+                    fixture["admitted"].write_bytes(altered)
+                    fixture["matrix"]["routes"][0]["edges"][0]["artifacts"]["archive"]["sha256"] = (
+                        STATE.hashlib.sha256(altered).hexdigest()
+                    )
+                elif change == "dependency":
+                    altered = self.archive(fixture["after"], fixture["dependency_before"])
                     fixture["admitted"].write_bytes(altered)
                     fixture["matrix"]["routes"][0]["edges"][0]["artifacts"]["archive"]["sha256"] = (
                         STATE.hashlib.sha256(altered).hexdigest()
@@ -1675,7 +1708,7 @@ class V018MatrixRebindTests(unittest.TestCase):
                 elif change == "origins":
                     fixture["matrix"]["retained_origins"] = []
                 else:
-                    fixture["shell_path"].write_bytes(fixture["after"] + b"changed")
+                    fixture["dependency_path"].write_bytes(fixture["dependency_after"] + b"changed")
                 with patch.multiple(STATE, **fixture["pins"]):
                     with self.assertRaises(STATE.ReleaseStateError):
                         STATE.v018_affected_only_case_matrix(fixture["root"], fixture["matrix"])

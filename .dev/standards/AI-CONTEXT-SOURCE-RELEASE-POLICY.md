@@ -186,11 +186,19 @@ cases. Preserve that execution against ZIP
 at `f566a6014f0942a15b28a39f0b2f5df3303e6014`, its original support matrix,
 canonical runner, terminal and all 236 indexed case artifacts. The exact
 `route-assets/actual/execution-set.json` contract binds these identities.
-The replacement candidate may add only
-`python .ai/scripts/tests/test_runtime_skill_entries.py -v` to the governed
-`shell-assets.yaml` command inventory immediately after the existing
-code-reviewer routing check. Compare every payload path, byte and mode; all
-other payload bytes, origin identities, case selection and runner remain equal.
+The replacement candidate may make only these two mode-preserving `0644` payload
+changes: add `python .ai/scripts/tests/test_runtime_skill_entries.py -v` to the
+governed `shell-assets.yaml` command inventory immediately after the existing
+code-reviewer routing check; and add the exact 82-byte
+`run-target-validation.py` line immediately after `expected_exit_two = {` in
+`validate-dependency-versions.py`. The latter reconciles the source-mode
+entrypoint registry gate with the already-present, byte-identical portable
+target-validation runner. It does not alter Matrix05's target mechanism: the
+direct runner does not invoke that dependency gate, and portable package checks
+invoke entrypoints only with `--help`. The execution-set contract binds both
+paths, anchors and additions. Compare every payload path, byte and mode, and
+require current source bytes to equal both replacement payloads; all other
+payload bytes, origin identities, case selection and runner remain equal.
 Generated package metadata must bind the new admitted archive and source.
 
 The original nine cases continue to validate against their Candidate10 matrix.

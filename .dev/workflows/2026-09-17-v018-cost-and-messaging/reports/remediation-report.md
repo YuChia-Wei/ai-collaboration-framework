@@ -358,3 +358,24 @@ mandatory. Three fresh archive edge validations, source acceptance and actual
 lab adoption gates remain required. Candidate11 identity is not yet assigned
 at this preparation checkpoint, and no new matrix execution, release-profile
 pass, publication or downstream merge is claimed.
+
+## Candidate11 Two-Delta Rebind Boundary
+
+Candidate11 was built at `0e5fbfc4a4a69ecd9da543751d53edfd311f93fb` with ZIP
+SHA-256 `51c550f974ab32581f1b02d4966bd84e6e5ac76bb7bd6b77fd5da2ce9ef84070`.
+It differs from Candidate10 in exactly two mode-preserving payload files:
+the governed `shell-assets.yaml` runtime-entry command insertion and the
+82-byte `run-target-validation.py` insertion immediately after
+`expected_exit_two = {` in `validate-dependency-versions.py`. The latter
+aligns the source-mode registry gate with a target-validation runner already
+present and byte-identical in Candidate10; it does not alter Matrix05's direct
+target mechanism. The Matrix05 runner does not invoke the dependency gate, and
+portable envelope checks invoke entrypoints only with `--help`.
+
+The v0.18 execution-set now pins both paths, modes, anchors and additions.
+An explicit C10-to-C11 archive/current-source proof passed for both paths, and
+the focused three-test rebind class passed. Candidate10's nine actual cases,
+terminal and indexed artifacts remain C10 evidence and continue to validate
+against the preserved C10 matrix; this record does not relabel them as C11
+execution. Fresh C11 edge validation, source acceptance, target receipt,
+independent audit, release-profile, hosted and provider gates remain required.
