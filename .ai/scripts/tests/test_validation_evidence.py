@@ -3,6 +3,7 @@
 
 from __future__ import annotations
 
+import concurrent.futures
 import hashlib
 import importlib.util
 import json
@@ -22,6 +23,20 @@ ROOT = Path(__file__).resolve().parents[3]
 HELPER = ROOT / ".ai/scripts/validation-evidence.py"
 SUBJECT_HELPER = ROOT / ".ai/scripts/validation_subject.py"
 INVOCATION_ID = "fixture-invocation"
+
+DEFAULT_FULL_ARGUMENTS = ((), ("-v",))
+PARALLEL_FULL_SHARDS: tuple[tuple[str, tuple[str, ...]], ...] = (
+    ("core-bootstrap", (
+        "ValidationEvidenceCoreGwtTests",
+        "ValidationEvidenceBootstrapReadinessGwtTests",
+    )),
+    ("readiness-admission", ("ValidationEvidenceReadinessGwtTests",)),
+    ("readiness-integrity-routine", (
+        "ValidationEvidenceReadinessIntegrityGwtTests",
+        "ValidationEvidenceRoutineContractGwtTests",
+    )),
+    ("terminal-publication-fault-matrix", ("ValidationEvidenceFaultMatrixGwtTests",)),
+)
 
 
 class ValidationEvidenceFixture(unittest.TestCase):
@@ -1713,6 +1728,9 @@ class ValidationEvidenceReadinessGwtTests(ValidationEvidenceFixture):
         self.assertTrue(receipt["cleanup"]["tree_empty"])
         self.assertTrue(receipt["log"]["sealed"])
 
+class ValidationEvidenceReadinessIntegrityGwtTests(ValidationEvidenceFixture):
+    """Readiness integrity cases split only for isolated default-full execution."""
+
     def test_gwt_018_given_executed_evidence_when_sealed_then_wrapper_raw_receipt_and_log_are_required(self) -> None:
         paths = self.prepare_invocation()
         sealed, seal = self.seal_prepared(paths)
@@ -2203,6 +2221,9 @@ class ValidationEvidenceReadinessGwtTests(ValidationEvidenceFixture):
         self.assertNotEqual(0, rejected.returncode)
         self.assertFalse(rejected_output.exists())
 
+
+class ValidationEvidenceFaultMatrixGwtTests(ValidationEvidenceFixture):
+    """Retained terminal-publication fault matrix; isolated as one default-full shard."""
 
     def test_gwt_030_given_exact_supervised_controls_and_staged_manifest_when_published_then_terminal_pair_is_reusable(self) -> None:
         self.install_tracked_helper("tracked control helper fixture")
@@ -3035,5 +3056,81 @@ class ValidationEvidenceRoutineContractGwtTests(ValidationEvidenceFixture):
             record["execution"]["snapshot"]["identity_digest"],
         )
 
-if __name__ == "__main__":
+
+def _is_default_full_invocation(arguments: list[str]) -> bool:
+    return tuple(arguments) in DEFAULT_FULL_ARGUMENTS
+
+
+def _terminate_parallel_children(
+    children: list[tuple[str, subprocess.Popen[str]]],
+) -> None:
+    for _name, child in children:
+        if child.poll() is None:
+            try:
+                child.terminate()
+            except OSError:
+                pass
+    for _name, child in children:
+        if child.poll() is None:
+            try:
+                child.wait(timeout=5)
+            except subprocess.TimeoutExpired:
+                try:
+                    child.kill()
+                except OSError:
+                    pass
+                child.wait()
+
+
+def run_parallel_shards(
+    shards: tuple[tuple[str, tuple[str, ...]], ...],
+    unittest_arguments: tuple[str, ...],
+) -> int:
+    children: list[tuple[str, subprocess.Popen[str]]] = []
+    try:
+        for name, selectors in shards:
+            child = subprocess.Popen(
+                [
+                    sys.executable,
+                    str(Path(__file__).resolve()),
+                    *unittest_arguments,
+                    *selectors,
+                ],
+                stdout=subprocess.PIPE,
+                stderr=subprocess.STDOUT,
+                text=True,
+            )
+            children.append((name, child))
+
+        def collect(
+            pair: tuple[str, subprocess.Popen[str]],
+        ) -> tuple[str, int, str]:
+            name, child = pair
+            output, _ = child.communicate()
+            return name, child.returncode, output
+
+        with concurrent.futures.ThreadPoolExecutor(max_workers=len(children)) as executor:
+            completed = list(executor.map(collect, children))
+    except BaseException:
+        _terminate_parallel_children(children)
+        raise
+
+    succeeded = True
+    for name, returncode, output in completed:
+        print(f"===== validation-evidence shard: {name} =====")
+        if output:
+            print(output, end="" if output.endswith("\n") else "\n")
+        succeeded = succeeded and returncode == 0
+    return 0 if succeeded else 1
+
+
+def main() -> int:
+    arguments = sys.argv[1:]
+    if _is_default_full_invocation(arguments):
+        return run_parallel_shards(PARALLEL_FULL_SHARDS, tuple(arguments))
     unittest.main()
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

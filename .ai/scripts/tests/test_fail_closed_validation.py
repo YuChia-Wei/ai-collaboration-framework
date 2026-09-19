@@ -1162,6 +1162,11 @@ class CheckAllRunnerGwtTests(unittest.TestCase):
             fixture.enable_source_release_context()
             fixture.enable_immutable_history_context()
             fixture.restrict_profile_to("fast", "workflow-artifacts")
+            fixture._project_fixture_catalog(
+                "workflow-artifacts",
+                "assessment-artifacts",
+                "source-ai-context-version",
+            )
 
             result = fixture.execute(
                 "--profile",
@@ -1248,6 +1253,11 @@ class CheckAllRunnerGwtTests(unittest.TestCase):
             fixture.enable_source_release_context()
             fixture.enable_immutable_history_context()
             fixture.restrict_profile_to("fast", "workflow-artifacts")
+            fixture._project_fixture_catalog(
+                "workflow-artifacts",
+                "assessment-artifacts",
+                "source-ai-context-version",
+            )
 
             result = fixture.execute(
                 "--profile",
@@ -1270,6 +1280,11 @@ class CheckAllRunnerGwtTests(unittest.TestCase):
             fixture.enable_source_release_context()
             fixture.enable_immutable_history_context()
             fixture.restrict_profile_to("release", "workflow-artifacts")
+            fixture._project_fixture_catalog(
+                "workflow-artifacts",
+                "assessment-artifacts",
+                "source-ai-context-version",
+            )
 
             result = fixture.execute(
                 "--profile",
@@ -1295,6 +1310,11 @@ class CheckAllRunnerGwtTests(unittest.TestCase):
             fixture.enable_source_release_context()
             fixture.enable_immutable_history_context()
             fixture.restrict_profile_to("fast", "workflow-artifacts")
+            fixture._project_fixture_catalog(
+                "workflow-artifacts",
+                "assessment-artifacts",
+                "source-ai-context-version",
+            )
             (
                 fixture.root
                 / ".ai/distribution/validation/immutable-history-receipt.yaml"
@@ -1377,6 +1397,11 @@ class CheckAllRunnerGwtTests(unittest.TestCase):
             fixture.enable_source_release_context()
             fixture.enable_immutable_history_context()
             fixture.restrict_profile_to("release", "workflow-artifacts")
+            fixture._project_fixture_catalog(
+                "workflow-artifacts",
+                "assessment-artifacts",
+                "source-ai-context-version",
+            )
 
             result = fixture.execute(
                 "--profile",
@@ -1727,6 +1752,11 @@ class CheckAllRunnerGwtTests(unittest.TestCase):
     ) -> None:
         fixture = SyntheticRunnerRepo()
         try:
+            fixture.restrict_profile_to(
+                "pr",
+                "profile-registry-contract",
+                "validation-evidence-contract",
+            )
             result = fixture.execute(
                 "--quick",
                 environment={
@@ -1918,6 +1948,11 @@ class CheckAllRunnerGwtTests(unittest.TestCase):
             fixture.restrict_profile_to("pr", "workflow-implementation-contract")
             fixture.enable_source_release_context()
             fixture.enable_immutable_history_context()
+            fixture._project_fixture_catalog(
+                "workflow-implementation-contract",
+                "assessment-artifacts",
+                "source-ai-context-version",
+            )
 
             result = fixture.execute(
                 "--profile",
