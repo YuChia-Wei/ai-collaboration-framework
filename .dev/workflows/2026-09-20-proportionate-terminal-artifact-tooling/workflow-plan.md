@@ -6,10 +6,10 @@
 - `owner_skill`: `ai-context-governance`
 - `branch`: `codex/2026-09-20-proportionate-terminal-artifact-tooling`
 - `base_branch`: `main`
-- `status`: `in_progress`
-- `current_phase`: `validation`
+- `status`: `completed`
+- `current_phase`: `completed`
 - `created_at`: `2026-09-20T19:00:23+08:00`
-- `updated_at`: `2026-09-20T21:51:53+08:00`
+- `updated_at`: `2026-09-20T22:08:14+08:00`
 - `template_source`: `.ai/assets/skills/ai-context-governance/templates/ai-context-maintenance-workflow-plan-template.md`
 - `template_version`: `1.2.0`
 
@@ -49,9 +49,9 @@ The owner requested review of the affected functional scenarios, removal of narr
 ## Resume Checkpoint
 
 - Completed: live authorization/base read-back, dedicated branch, committed #313 contract and focused tests; #312 implementation and narrow tests; real CLI synthetic-fixture smoke.
-- Current: implementation committed as e421c80e. Independent assessment `ASM-20260920-21-wwi` found AIC-001 and AIC-002; bounded repairs and their focused tests passed. Independent verification of the repair commit remains pending.
+- Current: local implementation and the 8 + 7 per-Issue criteria are accepted. Initial assessment ASM-20260920-21-wwi is retained; focused repair verification ASM-20260920-22-7r2 resolves both findings at 831310d2b6e4a67056ed41ac48effff0aeaf33cd.
 - Resolved checkpoint: prior automated lifecycle retry was denied, but the owner subsequently executed the exact command and supplied passing stdout. Record it as user-reported evidence without inventing process metadata. Prior failures/denial remain retained and no agent rerun is needed.
-- Next: commit the repaired admission/timing boundaries, freeze the clean subject, independently verify the affected gates, then reconcile the final per-Issue ledger and workflow.
+- Next: no workflow-owned implementation remains. Any provider admission, push, PR, merge or Issue closure is a separately authorized future operation.
 - Tooling test logs/hashes: `.dev/ai-context/local/issue312-validation/`; parent checks and smoke: `.dev/ai-context/local/issue-312-313/`.
 - Tracked writer: parent only; implementation workers have returned ownership. No active frozen lease exists.
 - No push, PR, merge, Issue/Project mutation or release action performed.

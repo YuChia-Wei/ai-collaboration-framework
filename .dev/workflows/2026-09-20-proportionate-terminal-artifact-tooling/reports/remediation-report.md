@@ -2,13 +2,13 @@
 
 ## Metadata
 
-- `status`: `draft`
+- `status`: `final`
 - `created_at`: `2026-09-20T20:00:32+08:00`
-- `updated_at`: `2026-09-20T21:17:10+08:00`
+- `updated_at`: `2026-09-20T22:08:14+08:00`
 
 - Owner: `ai-context-governance`
 - Workflow: `2026-09-20-proportionate-terminal-artifact-tooling`
-- Status: implementation complete; lifecycle validation reported passed by owner; immutable independent verification pending
+- Status: local implementation accepted; independent findings resolved; final metadata validation follows persistence
 - Template source: `.ai/assets/skills/ai-context-governance/templates/ai-context-remediation-report-template.md`
 - Template version: `2.0.1`
 - Baseline: conversation-only assessment and Issues #312/#313; no historical assessment was rewritten or invented.
@@ -49,13 +49,11 @@ are excluded from this slice.
 
 ## Separate Acceptance Checkpoint
 
-These rows identify implementation evidence, not completed independent acceptance.
-The final machine-readable ledger must bind the committed implementation and
-independent review before workflow completion.
+These rows describe the implementation boundaries. Final outcomes and evidence digests are projected below from the separate per-Issue ledger; they do not imply live provider admission.
 
 | Acceptance | Implementation evidence | Remaining boundary |
 | --- | --- | --- |
-| 312-AC1 Compatible/incompatible changes and deterministic generation | Actual selected schema/template change tests, independent input expectations, repeated generation equality | Independent review pending |
+| 312-AC1 Compatible/incompatible changes and deterministic generation | Actual selected schema/template change tests, independent input expectations, repeated generation equality | Initial review completed; focused repairs verified |
 | 312-AC2 No handwritten hashes or envelopes | Prepare/finalize tests and real CLI fixture smoke, including dispatch/terminal envelopes | Fixture is not downstream adoption |
 | 312-AC3 Actual outcomes, no success defaults | Explicit observation requirements; failed/blocked/timed-out/interrupted preservation tests | Builders do not attest caller honesty or execute the delegated command |
 | 312-AC4 Historical semantics and explicit migration | Legacy reader, no fresh downgrade, supported migration, source-byte preservation tests | No receipt migration or guessed semantic input |
@@ -63,9 +61,9 @@ independent review before workflow completion.
 | 312-AC6 Independent behavioral expectations | Outcome, content/authority drift, paths, cleanup and version tests | No generated-checker-only acceptance |
 | 312-AC7 Bounded cost observation | Shared receipt process exercise below | No aggregate timing/token savings |
 | 312-AC8 Retired duplication | Field sets removed; templates generated; manual sealing/envelope steps delegated to common CLI | Legacy low-level APIs intentionally retained |
-| 313-AC1 Gate disposition | Matrix above | Independent review pending |
+| 313-AC1 Gate disposition | Matrix above | Initial review completed; focused repairs verified |
 | 313-AC2 Pre-dispatch material input | Review preflight and packet byte-binding tests | Formatting repair does not prove behavioral correctness |
-| 313-AC3 Content/criteria reuse | Existing tree/SHA tests plus changed criteria byte-binding rejection | No new provider receipt protocol or live merge tested |
+| 313-AC3 Content/criteria reuse | Current v3 receipt compares the owner-selected criteria and authority input as well as content | Synthetic provider projection tested; live merge admission unperformed |
 | 313-AC4 Truthful outcomes and artifact identity | Existing execution-truth checks and new preservation tests | No release selected or verified by this work |
 | 313-AC5 Proportionate examples | Ordinary terminal review remains bounded; authority/custody/external/unknown cases require full | Classification consumes declared operation facts |
 | 313-AC6 Bounded before/after | Shared exercise below | Synthetic parser exercise only |
@@ -204,8 +202,8 @@ Independent assessment: [report](../../../assessments/ASM-20260920-21-wwi/report
 
 | Finding | Acceptance | Repair | Verification disposition |
 | --- | --- | --- | --- |
-| ASM-20260920-21-wwi#AIC-001 | ISS313-AC3 | Current v3 receipt carries criteria and authority digests. Capture/replay requires the owner's current review-input through canonical preflight and compares all three review identities. v1/v2 remain historical only. Provider configuration, active consumer and operation guide synchronized. | Focused tests passed; independent recheck pending |
-| ASM-20260920-21-wwi#AIC-002 | ISS312-AC3 | Current completion 1.3 rejects reversed UTC instants before candidate/receipt/message output. Equal coarse timestamps and independent monotonic durations remain valid; historical 1.2 reading remains unchanged. | Focused tests passed; independent recheck pending |
+| ASM-20260920-21-wwi#AIC-001 | ISS313-AC3 | Current v3 receipt carries criteria and authority digests. Capture/replay requires the owner's current review-input through canonical preflight and compares all three review identities. v1/v2 remain historical only. Provider configuration, active consumer and operation guide synchronized. | Resolved by ASM-20260920-22-7r2 |
+| ASM-20260920-21-wwi#AIC-002 | ISS312-AC3 | Current completion 1.3 rejects reversed UTC instants before candidate/receipt/message output. Equal coarse timestamps and independent monotonic durations remain valid; historical 1.2 reading remains unchanged. | Resolved by ASM-20260920-22-7r2 |
 
 The auditor clarified that AIC-002 requires chronological ordering, not an arbitrary wall/elapsed duration equality or tolerance. No automatic criteria resolver, new provider action, release contract, #307/#308 change, or historical receipt rewriting was introduced.
 
@@ -219,3 +217,35 @@ Focused fixture/unit verification (current working-tree bytes, not a live admiss
 Evidence and input hashes: `.dev/ai-context/local/issue-312-313/repair-checks/`. Passing tests support the repairs and do not override the initial independent findings. The user-reported lifecycle pass remains separate; no lifecycle-main retry was performed.
 
 Repair checkpoint metadata validation initially rejected two active tasks. The existing sequential task rule is retained: ISS312-tooling coordinates joint verification, while ISS313-contract is pending that result and keeps its implementation evidence. This is a workflow-state correction, not a failed functional test.
+
+## Final Local Acceptance
+
+- Accepted implementation subject: `831310d2b6e4a67056ed41ac48effff0aeaf33cd`.
+- Initial assessment: [ASM-20260920-21-wwi](../../../assessments/ASM-20260920-21-wwi/report.md); its two blocking findings remain preserved as historical observations.
+- Focused verification: [ASM-20260920-22-7r2](../../../assessments/ASM-20260920-22-7r2/report.md). AIC-001 and AIC-002 are `resolved` by independent verification at the stated implementation subject.
+- Canonical ledger: [acceptance-ledger.json](../acceptance-ledger.json); evidence byte catalog: [acceptance-evidence-bindings.json](../acceptance-evidence-bindings.json).
+- Three redundant methods were removed. Four distinct missing boundary methods were added during independent remediation; the selected four-file count moved from 162 to 159 to 163. This is coverage repair, not a timing or token savings claim.
+- Earlier runs remain supporting evidence at their recorded subjects. No full transitive/environment reuse proof, newly executed broad suite, or new provider admission is claimed.
+- This persistence commit contains reporting and workflow metadata after the reviewed implementation. It does not turn the earlier review into a current-head live admission receipt. Later provider operations require their own current subject and checks.
+
+| Acceptance | Outcome | Evidence SHA-256 |
+| --- | --- | --- |
+| 312-AC1 | passed | `2117b770a7778d3aaf9d8bc275abd2556f305c61d4f63984a17f3eafa688c85e` |
+| 312-AC2 | passed | `45d1698474289db4cba41cfe9a179124a301facf85fc71958956c775fde7066f` |
+| 312-AC3 | passed | `b8bd107b056f0717f6c1f608816c00717ff8eb92751a974448d57de2c55fdb9d` |
+| 312-AC4 | passed | `dd6ea943a4b25f2170d0ffc3e7ad08d2667faca465eace88ea353ffac76ee8ac` |
+| 312-AC5 | passed | `e9613a0c97e7f8eff5a4bf64f91de771ab2228bbe8cffdb0fb40209bc3c90c6a` |
+| 312-AC6 | passed | `51d25b16e0a9725d99ec9e6eaabcbf3f08ade31fad9dfe35954c446782c91305` |
+| 312-AC7 | passed | `f72fca3f341c0b523d3dadd4e7dfdeaa44cb1b9428b34b14c102b19ef8f725c5` |
+| 312-AC8 | passed | `c841c3f42580b1b5ee636bfcf8d390beb07a2fc33a3a189a2d425147a1348300` |
+| 313-AC1 | passed | `c841c3f42580b1b5ee636bfcf8d390beb07a2fc33a3a189a2d425147a1348300` |
+| 313-AC2 | passed | `e9613a0c97e7f8eff5a4bf64f91de771ab2228bbe8cffdb0fb40209bc3c90c6a` |
+| 313-AC3 | passed | `64717f4f12e6127461765918f4227617aa0a2d2c5ece75ad464769d9ca0a4971` |
+| 313-AC4 | passed | `b2d61e94d1947202c655b28881b08ae257acfab8e2c2d3b576c2ad11db0bf30f` |
+| 313-AC5 | passed | `36ce85eb6bc114cbd99b3e5d0381a9883dff3ca2f2a1d332f1df70bb5ba0f616` |
+| 313-AC6 | passed | `f72fca3f341c0b523d3dadd4e7dfdeaa44cb1b9428b34b14c102b19ef8f725c5` |
+| 313-AC7 | passed | `c841c3f42580b1b5ee636bfcf8d390beb07a2fc33a3a189a2d425147a1348300` |
+
+The independent repair review executed at `d9cd5539adb3b670866cf2b87b8fa5e2247a67a5`. The subsequent message-only amend to `831310d2b6e4a67056ed41ac48effff0aeaf33cd` added the assessment search identity; exact Git trees, criteria and authority digests match, with fresh canonical preflight recorded in the evidence catalog. No new behavioral execution is attributed to that amend.
+
+The independent facade rerun was blocked by the known sandbox TEMP ACL before tests began. Parent host verification found the named fixture directory contained, non-reparse and empty, removed only that directory, and confirmed absence. The failed test attempt remains non-passing; cleanup completion does not promote it. The prior passing three-case fixture run and current direct review remain the stated supporting evidence.

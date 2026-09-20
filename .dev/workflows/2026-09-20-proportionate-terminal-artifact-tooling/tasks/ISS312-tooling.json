@@ -6,9 +6,9 @@
   "task_id": "ISS312-tooling",
   "workflow_id": "2026-09-20-proportionate-terminal-artifact-tooling",
   "owner_skill": "ai-context-governance",
-  "status": "in_progress",
+  "status": "completed",
   "created_at": "2026-09-20T19:00:23+08:00",
-  "updated_at": "2026-09-20T21:51:53+08:00",
+  "updated_at": "2026-09-20T22:08:14+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-6-astra",
   "reasoning_effort": "ultra",
@@ -67,11 +67,11 @@
       "Lifecycle third attempt requested after sandbox registry failure and host gate ordering failure. Automatic approval review rejected the attempted workflow-owned authorization as untrusted; awaiting explicit user approval. No execution workaround permitted.",
       "Owner directly executed py -3 .ai/scripts/validate-validation-lifecycle.py and supplied passing stdout. Recorded as user-reported evidence; no agent rerun or invented process receipt."
     ],
-    "last_completed_step": "Initial immutable audit retained; the assigned evidence-boundary repair and focused verification passed.",
-    "next_action": "Commit repair and obtain focused independent verification before final acceptance."
+    "last_completed_step": "Local implementation, scoped functional verification and independent finding reconciliation completed; separate Issue acceptance retained.",
+    "next_action": ""
   },
   "results": {
-    "summary": "Implementation and focused boundary repairs complete; independent verification and final per-Issue ledger pending.",
+    "summary": "Locally accepted with separate per-Issue evidence; original failed assessment retained and the selected finding independently resolved.",
     "files_changed": [
       ".ai/assets/shared/README.MD",
       ".ai/assets/shared/agent-execution-guardrails.schema.yaml",
@@ -118,10 +118,11 @@
       "Three mocked membership/diagnostic tests passed; they do not execute or replace the denied lifecycle validator.",
       "Absent-context runner first returned exit 0 but its new log assertion used an unconfigured fixture directory. Fixture-local log setting corrected; selected case passed and original failure retained.",
       "Owner reported direct lifecycle execution passed; command/stdout and evidence limitations retained in user-lifecycle-result.json.",
-      "Repair verification: terminal, external, provider policy, and three artifact boundary cases passed; exact commands, logs, durations and hashes in ignored repair-checks/."
+      "Repair verification: terminal, external, provider policy, and three artifact boundary cases passed; exact commands, logs, durations and hashes in ignored repair-checks/.",
+      "Focused independent verification: ASM-20260920-22-7r2; subject 831310d2b6e4a67056ed41ac48effff0aeaf33cd"
     ],
-    "finding_status": "partially-resolved",
-    "residual_risk": "Initial assessment findings remain open until independently verified; user lifecycle output remains limited user-reported evidence.",
+    "finding_status": "resolved",
+    "residual_risk": "Synthetic/unit evidence and owner-reported lifecycle output retain their stated limits. No live provider admission, release or publication is claimed.",
     "follow_up_needed": false
   }
 }

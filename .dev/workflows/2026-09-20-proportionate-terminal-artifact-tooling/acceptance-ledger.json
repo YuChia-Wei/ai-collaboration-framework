@@ -1,0 +1,391 @@
+{
+  "schema_version": "1.0",
+  "record_type": "acceptance-evidence-ledger",
+  "subject_sha": "831310d2b6e4a67056ed41ac48effff0aeaf33cd",
+  "entries": [
+    {
+      "acceptance_id": "312-AC1",
+      "issue": 312,
+      "requires_actual_execution": false,
+      "evidence_kind": "unit",
+      "command": "py -3 .ai/scripts/tests/test_execution_artifacts.py -v; affected case rerun recorded separately",
+      "profile": "focused",
+      "subject_sha": "831310d2b6e4a67056ed41ac48effff0aeaf33cd",
+      "outcome": "passed",
+      "evidence_refs": [
+        "ignored:.dev/ai-context/local/issue-312-313/implementation-review/review.json",
+        "ignored:.dev/ai-context/local/issue-312-313/scenario-review/artifact-batch-2.log",
+        "ignored:.dev/ai-context/local/issue-312-313/scenario-review/artifacts.log"
+      ],
+      "evidence_sha256": "2117b770a7778d3aaf9d8bc275abd2556f305c61d4f63984a17f3eafa688c85e",
+      "execution_receipt_ref": null,
+      "execution_receipt_file_sha256": null,
+      "execution_receipt": null
+    },
+    {
+      "acceptance_id": "312-AC2",
+      "issue": 312,
+      "requires_actual_execution": false,
+      "evidence_kind": "synthetic-test",
+      "command": "py -3 .dev/ai-context/local/issue-312-313/smoke_execution_artifacts.py",
+      "profile": "focused",
+      "subject_sha": "831310d2b6e4a67056ed41ac48effff0aeaf33cd",
+      "outcome": "passed",
+      "evidence_refs": [
+        "ignored:.dev/ai-context/local/issue-312-313/implementation-review/review.json",
+        "ignored:.dev/ai-context/local/issue-312-313/scenario-review/artifact-batch-2.log",
+        "ignored:.dev/ai-context/local/issue-312-313/scenario-review/artifacts.log",
+        "ignored:.dev/ai-context/local/issue-312-313/smoke-runs/20260920T115818Z-e6f85a4dbc/report.json"
+      ],
+      "evidence_sha256": "45d1698474289db4cba41cfe9a179124a301facf85fc71958956c775fde7066f",
+      "execution_receipt_ref": null,
+      "execution_receipt_file_sha256": null,
+      "execution_receipt": null
+    },
+    {
+      "acceptance_id": "312-AC3",
+      "issue": 312,
+      "requires_actual_execution": false,
+      "evidence_kind": "unit",
+      "command": "Focused artifact and external-task behavioral suites, followed by current timing/facade regressions",
+      "profile": "focused",
+      "subject_sha": "831310d2b6e4a67056ed41ac48effff0aeaf33cd",
+      "outcome": "passed",
+      "evidence_refs": [
+        "ignored:.dev/ai-context/local/issue-312-313/implementation-review/review.json",
+        "ignored:.dev/ai-context/local/issue-312-313/repair-checks/artifact-boundaries.log",
+        "ignored:.dev/ai-context/local/issue-312-313/repair-checks/external.log",
+        "ignored:.dev/ai-context/local/issue-312-313/repair-review/review.json",
+        "ignored:.dev/ai-context/local/issue-312-313/repair-review/subject-rebind.json",
+        "ignored:.dev/ai-context/local/issue-312-313/scenario-review/artifact-batch-2.log",
+        "ignored:.dev/ai-context/local/issue-312-313/scenario-review/artifacts.log",
+        "ignored:.dev/ai-context/local/issue-312-313/scenario-review/external.log"
+      ],
+      "evidence_sha256": "b8bd107b056f0717f6c1f608816c00717ff8eb92751a974448d57de2c55fdb9d",
+      "execution_receipt_ref": null,
+      "execution_receipt_file_sha256": null,
+      "execution_receipt": null
+    },
+    {
+      "acceptance_id": "312-AC4",
+      "issue": 312,
+      "requires_actual_execution": false,
+      "evidence_kind": "unit",
+      "command": "Focused artifact legacy-reader and migration cases plus current and historical timing semantics",
+      "profile": "focused",
+      "subject_sha": "831310d2b6e4a67056ed41ac48effff0aeaf33cd",
+      "outcome": "passed",
+      "evidence_refs": [
+        "ignored:.dev/ai-context/local/issue-312-313/implementation-review/review.json",
+        "ignored:.dev/ai-context/local/issue-312-313/repair-checks/external.log",
+        "ignored:.dev/ai-context/local/issue-312-313/scenario-review/artifact-batch-2.log",
+        "ignored:.dev/ai-context/local/issue-312-313/scenario-review/artifacts.log"
+      ],
+      "evidence_sha256": "dd6ea943a4b25f2170d0ffc3e7ad08d2667faca465eace88ea353ffac76ee8ac",
+      "execution_receipt_ref": null,
+      "execution_receipt_file_sha256": null,
+      "execution_receipt": null
+    },
+    {
+      "acceptance_id": "312-AC5",
+      "issue": 312,
+      "requires_actual_execution": false,
+      "evidence_kind": "unit",
+      "command": "Focused preparation mismatch and review-role binding cases",
+      "profile": "focused",
+      "subject_sha": "831310d2b6e4a67056ed41ac48effff0aeaf33cd",
+      "outcome": "passed",
+      "evidence_refs": [
+        "ignored:.dev/ai-context/local/issue-312-313/implementation-review/review.json",
+        "ignored:.dev/ai-context/local/issue-312-313/scenario-review/artifact-batch-2.log",
+        "ignored:.dev/ai-context/local/issue-312-313/scenario-review/artifacts.log",
+        "ignored:.dev/ai-context/local/issue-312-313/scenario-review/guardrails.log"
+      ],
+      "evidence_sha256": "e9613a0c97e7f8eff5a4bf64f91de771ab2228bbe8cffdb0fb40209bc3c90c6a",
+      "execution_receipt_ref": null,
+      "execution_receipt_file_sha256": null,
+      "execution_receipt": null
+    },
+    {
+      "acceptance_id": "312-AC6",
+      "issue": 312,
+      "requires_actual_execution": false,
+      "evidence_kind": "unit",
+      "command": "Focused artifact and external-task behavioral suites with independent boundary assertions",
+      "profile": "focused",
+      "subject_sha": "831310d2b6e4a67056ed41ac48effff0aeaf33cd",
+      "outcome": "passed",
+      "evidence_refs": [
+        "ignored:.dev/ai-context/local/issue-312-313/implementation-review/review.json",
+        "ignored:.dev/ai-context/local/issue-312-313/repair-checks/artifact-boundaries.log",
+        "ignored:.dev/ai-context/local/issue-312-313/repair-checks/external.log",
+        "ignored:.dev/ai-context/local/issue-312-313/scenario-review/artifact-batch-2.log",
+        "ignored:.dev/ai-context/local/issue-312-313/scenario-review/artifacts.log",
+        "ignored:.dev/ai-context/local/issue-312-313/scenario-review/external.log"
+      ],
+      "evidence_sha256": "51d25b16e0a9725d99ec9e6eaabcbf3f08ade31fad9dfe35954c446782c91305",
+      "execution_receipt_ref": null,
+      "execution_receipt_file_sha256": null,
+      "execution_receipt": null
+    },
+    {
+      "acceptance_id": "312-AC7",
+      "issue": 312,
+      "requires_actual_execution": false,
+      "evidence_kind": "synthetic-test",
+      "command": "Bounded before/after receipt parser process exercise",
+      "profile": "focused",
+      "subject_sha": "831310d2b6e4a67056ed41ac48effff0aeaf33cd",
+      "outcome": "passed",
+      "evidence_refs": [
+        "ignored:.dev/ai-context/local/issue-312-313/implementation-review/review.json",
+        "ignored:.dev/ai-context/local/issue-312-313/receipt-process-exercise.json"
+      ],
+      "evidence_sha256": "f72fca3f341c0b523d3dadd4e7dfdeaa44cb1b9428b34b14c102b19ef8f725c5",
+      "execution_receipt_ref": null,
+      "execution_receipt_file_sha256": null,
+      "execution_receipt": null
+    },
+    {
+      "acceptance_id": "312-AC8",
+      "issue": 312,
+      "requires_actual_execution": false,
+      "evidence_kind": "document",
+      "command": "Read-only selected base-to-subject diff and retirement inventory",
+      "profile": "focused",
+      "subject_sha": "831310d2b6e4a67056ed41ac48effff0aeaf33cd",
+      "outcome": "passed",
+      "evidence_refs": [
+        "commit:831310d2b6e4a67056ed41ac48effff0aeaf33cd:.dev/workflows/2026-09-20-proportionate-terminal-artifact-tooling/reports/remediation-report.md",
+        "ignored:.dev/ai-context/local/issue-312-313/implementation-review/review.json"
+      ],
+      "evidence_sha256": "c841c3f42580b1b5ee636bfcf8d390beb07a2fc33a3a189a2d425147a1348300",
+      "execution_receipt_ref": null,
+      "execution_receipt_file_sha256": null,
+      "execution_receipt": null
+    },
+    {
+      "acceptance_id": "313-AC1",
+      "issue": 313,
+      "requires_actual_execution": false,
+      "evidence_kind": "document",
+      "command": "Read-only gate disposition and consumer inventory",
+      "profile": "focused",
+      "subject_sha": "831310d2b6e4a67056ed41ac48effff0aeaf33cd",
+      "outcome": "passed",
+      "evidence_refs": [
+        "commit:831310d2b6e4a67056ed41ac48effff0aeaf33cd:.dev/workflows/2026-09-20-proportionate-terminal-artifact-tooling/reports/remediation-report.md",
+        "ignored:.dev/ai-context/local/issue-312-313/implementation-review/review.json"
+      ],
+      "evidence_sha256": "c841c3f42580b1b5ee636bfcf8d390beb07a2fc33a3a189a2d425147a1348300",
+      "execution_receipt_ref": null,
+      "execution_receipt_file_sha256": null,
+      "execution_receipt": null
+    },
+    {
+      "acceptance_id": "313-AC2",
+      "issue": 313,
+      "requires_actual_execution": false,
+      "evidence_kind": "unit",
+      "command": "Focused review preflight and bound packet cases",
+      "profile": "focused",
+      "subject_sha": "831310d2b6e4a67056ed41ac48effff0aeaf33cd",
+      "outcome": "passed",
+      "evidence_refs": [
+        "ignored:.dev/ai-context/local/issue-312-313/implementation-review/review.json",
+        "ignored:.dev/ai-context/local/issue-312-313/scenario-review/artifact-batch-2.log",
+        "ignored:.dev/ai-context/local/issue-312-313/scenario-review/artifacts.log",
+        "ignored:.dev/ai-context/local/issue-312-313/scenario-review/guardrails.log"
+      ],
+      "evidence_sha256": "e9613a0c97e7f8eff5a4bf64f91de771ab2228bbe8cffdb0fb40209bc3c90c6a",
+      "execution_receipt_ref": null,
+      "execution_receipt_file_sha256": null,
+      "execution_receipt": null
+    },
+    {
+      "acceptance_id": "313-AC3",
+      "issue": 313,
+      "requires_actual_execution": false,
+      "evidence_kind": "unit",
+      "command": "Focused content/criteria/authority drift, actual canonical preflight, history-only reuse and active policy consumer cases",
+      "profile": "focused",
+      "subject_sha": "831310d2b6e4a67056ed41ac48effff0aeaf33cd",
+      "outcome": "passed",
+      "evidence_refs": [
+        "ignored:.dev/ai-context/local/issue-312-313/implementation-review/review.json",
+        "ignored:.dev/ai-context/local/issue-312-313/repair-checks/artifact-boundaries.log",
+        "ignored:.dev/ai-context/local/issue-312-313/repair-checks/provider.log",
+        "ignored:.dev/ai-context/local/issue-312-313/repair-checks/terminal.log",
+        "ignored:.dev/ai-context/local/issue-312-313/repair-review/review.json",
+        "ignored:.dev/ai-context/local/issue-312-313/repair-review/subject-rebind.json",
+        "ignored:.dev/ai-context/local/issue-312-313/scenario-review/artifact-batch-2.log",
+        "ignored:.dev/ai-context/local/issue-312-313/scenario-review/artifacts.log",
+        "ignored:.dev/ai-context/local/issue-312-313/scenario-review/guardrails.log",
+        "ignored:.dev/ai-context/local/issue-312-313/scenario-review/terminal.log"
+      ],
+      "evidence_sha256": "64717f4f12e6127461765918f4227617aa0a2d2c5ece75ad464769d9ca0a4971",
+      "execution_receipt_ref": null,
+      "execution_receipt_file_sha256": null,
+      "execution_receipt": null
+    },
+    {
+      "acceptance_id": "313-AC4",
+      "issue": 313,
+      "requires_actual_execution": false,
+      "evidence_kind": "unit",
+      "command": "Focused nonpassing outcome and exact artifact-identity cases",
+      "profile": "focused",
+      "subject_sha": "831310d2b6e4a67056ed41ac48effff0aeaf33cd",
+      "outcome": "passed",
+      "evidence_refs": [
+        "ignored:.dev/ai-context/local/issue-312-313/implementation-review/review.json",
+        "ignored:.dev/ai-context/local/issue-312-313/repair-checks/external.log",
+        "ignored:.dev/ai-context/local/issue-312-313/repair-checks/terminal.log",
+        "ignored:.dev/ai-context/local/issue-312-313/scenario-review/artifact-batch-2.log",
+        "ignored:.dev/ai-context/local/issue-312-313/scenario-review/artifacts.log",
+        "ignored:.dev/ai-context/local/issue-312-313/scenario-review/external.log",
+        "ignored:.dev/ai-context/local/issue-312-313/scenario-review/guardrails.log",
+        "ignored:.dev/ai-context/local/issue-312-313/scenario-review/terminal.log"
+      ],
+      "evidence_sha256": "b2d61e94d1947202c655b28881b08ae257acfab8e2c2d3b576c2ad11db0bf30f",
+      "execution_receipt_ref": null,
+      "execution_receipt_file_sha256": null,
+      "execution_receipt": null
+    },
+    {
+      "acceptance_id": "313-AC5",
+      "issue": 313,
+      "requires_actual_execution": false,
+      "evidence_kind": "unit",
+      "command": "py -3 .ai/scripts/tests/test_agent_execution_guardrails.py -v",
+      "profile": "focused",
+      "subject_sha": "831310d2b6e4a67056ed41ac48effff0aeaf33cd",
+      "outcome": "passed",
+      "evidence_refs": [
+        "ignored:.dev/ai-context/local/issue-312-313/implementation-review/review.json",
+        "ignored:.dev/ai-context/local/issue-312-313/scenario-review/guardrails.log"
+      ],
+      "evidence_sha256": "36ce85eb6bc114cbd99b3e5d0381a9883dff3ca2f2a1d332f1df70bb5ba0f616",
+      "execution_receipt_ref": null,
+      "execution_receipt_file_sha256": null,
+      "execution_receipt": null
+    },
+    {
+      "acceptance_id": "313-AC6",
+      "issue": 313,
+      "requires_actual_execution": false,
+      "evidence_kind": "synthetic-test",
+      "command": "Bounded before/after receipt parser process exercise",
+      "profile": "focused",
+      "subject_sha": "831310d2b6e4a67056ed41ac48effff0aeaf33cd",
+      "outcome": "passed",
+      "evidence_refs": [
+        "ignored:.dev/ai-context/local/issue-312-313/implementation-review/review.json",
+        "ignored:.dev/ai-context/local/issue-312-313/receipt-process-exercise.json"
+      ],
+      "evidence_sha256": "f72fca3f341c0b523d3dadd4e7dfdeaa44cb1b9428b34b14c102b19ef8f725c5",
+      "execution_receipt_ref": null,
+      "execution_receipt_file_sha256": null,
+      "execution_receipt": null
+    },
+    {
+      "acceptance_id": "313-AC7",
+      "issue": 313,
+      "requires_actual_execution": false,
+      "evidence_kind": "document",
+      "command": "Read-only selected diff and ownership exclusions",
+      "profile": "focused",
+      "subject_sha": "831310d2b6e4a67056ed41ac48effff0aeaf33cd",
+      "outcome": "passed",
+      "evidence_refs": [
+        "commit:831310d2b6e4a67056ed41ac48effff0aeaf33cd:.dev/workflows/2026-09-20-proportionate-terminal-artifact-tooling/reports/remediation-report.md",
+        "ignored:.dev/ai-context/local/issue-312-313/implementation-review/review.json"
+      ],
+      "evidence_sha256": "c841c3f42580b1b5ee636bfcf8d390beb07a2fc33a3a189a2d425147a1348300",
+      "execution_receipt_ref": null,
+      "execution_receipt_file_sha256": null,
+      "execution_receipt": null
+    }
+  ],
+  "human_report": {
+    "entries": [
+      {
+        "acceptance_id": "312-AC1",
+        "outcome": "passed",
+        "evidence_sha256": "2117b770a7778d3aaf9d8bc275abd2556f305c61d4f63984a17f3eafa688c85e"
+      },
+      {
+        "acceptance_id": "312-AC2",
+        "outcome": "passed",
+        "evidence_sha256": "45d1698474289db4cba41cfe9a179124a301facf85fc71958956c775fde7066f"
+      },
+      {
+        "acceptance_id": "312-AC3",
+        "outcome": "passed",
+        "evidence_sha256": "b8bd107b056f0717f6c1f608816c00717ff8eb92751a974448d57de2c55fdb9d"
+      },
+      {
+        "acceptance_id": "312-AC4",
+        "outcome": "passed",
+        "evidence_sha256": "dd6ea943a4b25f2170d0ffc3e7ad08d2667faca465eace88ea353ffac76ee8ac"
+      },
+      {
+        "acceptance_id": "312-AC5",
+        "outcome": "passed",
+        "evidence_sha256": "e9613a0c97e7f8eff5a4bf64f91de771ab2228bbe8cffdb0fb40209bc3c90c6a"
+      },
+      {
+        "acceptance_id": "312-AC6",
+        "outcome": "passed",
+        "evidence_sha256": "51d25b16e0a9725d99ec9e6eaabcbf3f08ade31fad9dfe35954c446782c91305"
+      },
+      {
+        "acceptance_id": "312-AC7",
+        "outcome": "passed",
+        "evidence_sha256": "f72fca3f341c0b523d3dadd4e7dfdeaa44cb1b9428b34b14c102b19ef8f725c5"
+      },
+      {
+        "acceptance_id": "312-AC8",
+        "outcome": "passed",
+        "evidence_sha256": "c841c3f42580b1b5ee636bfcf8d390beb07a2fc33a3a189a2d425147a1348300"
+      },
+      {
+        "acceptance_id": "313-AC1",
+        "outcome": "passed",
+        "evidence_sha256": "c841c3f42580b1b5ee636bfcf8d390beb07a2fc33a3a189a2d425147a1348300"
+      },
+      {
+        "acceptance_id": "313-AC2",
+        "outcome": "passed",
+        "evidence_sha256": "e9613a0c97e7f8eff5a4bf64f91de771ab2228bbe8cffdb0fb40209bc3c90c6a"
+      },
+      {
+        "acceptance_id": "313-AC3",
+        "outcome": "passed",
+        "evidence_sha256": "64717f4f12e6127461765918f4227617aa0a2d2c5ece75ad464769d9ca0a4971"
+      },
+      {
+        "acceptance_id": "313-AC4",
+        "outcome": "passed",
+        "evidence_sha256": "b2d61e94d1947202c655b28881b08ae257acfab8e2c2d3b576c2ad11db0bf30f"
+      },
+      {
+        "acceptance_id": "313-AC5",
+        "outcome": "passed",
+        "evidence_sha256": "36ce85eb6bc114cbd99b3e5d0381a9883dff3ca2f2a1d332f1df70bb5ba0f616"
+      },
+      {
+        "acceptance_id": "313-AC6",
+        "outcome": "passed",
+        "evidence_sha256": "f72fca3f341c0b523d3dadd4e7dfdeaa44cb1b9428b34b14c102b19ef8f725c5"
+      },
+      {
+        "acceptance_id": "313-AC7",
+        "outcome": "passed",
+        "evidence_sha256": "c841c3f42580b1b5ee636bfcf8d390beb07a2fc33a3a189a2d425147a1348300"
+      }
+    ],
+    "report_sha256": "e90bfa4a24807f895b7fd08c4794dd38d831dcc8e8842af30fce6d70affc8c61"
+  },
+  "ledger_sha256": "266203b5c5c992a5b8ce000bcd3878ff5dab7ef50e9f35a2199090a0c7fc4e90"
+}

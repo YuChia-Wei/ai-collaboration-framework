@@ -6,9 +6,9 @@
   "task_id": "ISS313-contract",
   "workflow_id": "2026-09-20-proportionate-terminal-artifact-tooling",
   "owner_skill": "ai-context-governance",
-  "status": "pending",
+  "status": "completed",
   "created_at": "2026-09-20T19:00:23+08:00",
-  "updated_at": "2026-09-20T21:51:53+08:00",
+  "updated_at": "2026-09-20T22:08:14+08:00",
   "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
   "model": "gpt-6-astra",
   "reasoning_effort": "ultra",
@@ -49,11 +49,11 @@
       "Record separate issue acceptance and commit"
     ],
     "validation": [],
-    "last_completed_step": "Initial immutable audit retained; the assigned evidence-boundary repair and focused verification passed.",
-    "next_action": "Await the joint independent verification coordinated by active ISS312-tooling, then reconcile this Issue separately."
+    "last_completed_step": "Local implementation, scoped functional verification and independent finding reconciliation completed; separate Issue acceptance retained.",
+    "next_action": ""
   },
   "results": {
-    "summary": "Implementation and focused boundary repairs complete; independent verification and final per-Issue ledger pending.",
+    "summary": "Locally accepted with separate per-Issue evidence; original failed assessment retained and the selected finding independently resolved.",
     "files_changed": [
       ".ai/assets/shared/AGENT-EXECUTION-GUARDRAILS-CONTRACT.md",
       ".ai/assets/shared/agent-execution-guardrails.schema.yaml",
@@ -77,10 +77,11 @@
       "Synthetic receipt/prose exercise: manual edits 1 to 0; validator API calls 2 to 1; format-only rejections 1 to 0. No time/token savings claim.",
       "Workflow metadata initially rejected two active tasks; corrected to completed ISS313 implementation and active ISS312, with independent verification still owned by workflow post-audit phase.",
       "Owner-requested scenario cleanup: guardrails 46 and terminal 60 passed after duplicate removal and assertion fixes; four further CLI-boundary assertions passed on focused rerun. See remediation report for retained coverage.",
-      "Repair verification: terminal, external, provider policy, and three artifact boundary cases passed; exact commands, logs, durations and hashes in ignored repair-checks/."
+      "Repair verification: terminal, external, provider policy, and three artifact boundary cases passed; exact commands, logs, durations and hashes in ignored repair-checks/.",
+      "Focused independent verification: ASM-20260920-22-7r2; subject 831310d2b6e4a67056ed41ac48effff0aeaf33cd"
     ],
-    "finding_status": "partially-resolved",
-    "residual_risk": "Initial assessment findings remain open until independently verified; user lifecycle output remains limited user-reported evidence.",
+    "finding_status": "resolved",
+    "residual_risk": "Synthetic/unit evidence and owner-reported lifecycle output retain their stated limits. No live provider admission, release or publication is claimed.",
     "follow_up_needed": false
   }
 }

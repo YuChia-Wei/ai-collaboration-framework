@@ -1,0 +1,182 @@
+{
+  "subject_sha": "831310d2b6e4a67056ed41ac48effff0aeaf33cd",
+  "binding_method": "SHA-256 of canonical sorted ref/digest list per criterion",
+  "source_criteria": {
+    "source_kind": "live-provider-readback",
+    "entries": [
+      {
+        "acceptance_id": "312-AC1",
+        "issue": 312,
+        "criterion": "One representative compatible and one incompatible contract change update all selected generated consumers deterministically; a second generation run produces no diff.",
+        "source": "https://github.com/YuChia-Wei/ai-collaboration-framework/issues/312",
+        "requires_non_synthetic_actual_execution": false,
+        "classification_basis": "The selected issue criteria allow unit/synthetic workflow exercises and impose outcome truth; they do not request deployment, publication, adoption or other non-synthetic business execution."
+      },
+      {
+        "acceptance_id": "312-AC2",
+        "issue": 312,
+        "criterion": "The normal selected packet/completion/receipt workflow requires no agent-written hashes or hand-authored record envelopes.",
+        "source": "https://github.com/YuChia-Wei/ai-collaboration-framework/issues/312",
+        "requires_non_synthetic_actual_execution": false,
+        "classification_basis": "The selected issue criteria allow unit/synthetic workflow exercises and impose outcome truth; they do not request deployment, publication, adoption or other non-synthetic business execution."
+      },
+      {
+        "acceptance_id": "312-AC3",
+        "issue": 312,
+        "criterion": "Receipt creation records actual validator/execution outcomes. Builders cannot manufacture a successful execution result from a default or migration.",
+        "source": "https://github.com/YuChia-Wei/ai-collaboration-framework/issues/312",
+        "requires_non_synthetic_actual_execution": false,
+        "classification_basis": "The selected issue criteria allow unit/synthetic workflow exercises and impose outcome truth; they do not request deployment, publication, adoption or other non-synthetic business execution."
+      },
+      {
+        "acceptance_id": "312-AC4",
+        "issue": 312,
+        "criterion": "Supported historical inputs remain readable under declared version semantics; unsupported changes receive actionable diagnostics and never silently rewrite sealed history.",
+        "source": "https://github.com/YuChia-Wei/ai-collaboration-framework/issues/312",
+        "requires_non_synthetic_actual_execution": false,
+        "classification_basis": "The selected issue criteria allow unit/synthetic workflow exercises and impose outcome truth; they do not request deployment, publication, adoption or other non-synthetic business execution."
+      },
+      {
+        "acceptance_id": "312-AC5",
+        "issue": 312,
+        "criterion": "A regression reproducing the PR #311 packet-preparation mismatch is diagnosed before dispatch, without running a behavioral audit just to discover malformed input.",
+        "source": "https://github.com/YuChia-Wei/ai-collaboration-framework/issues/312",
+        "requires_non_synthetic_actual_execution": false,
+        "classification_basis": "The selected issue criteria allow unit/synthetic workflow exercises and impose outcome truth; they do not request deployment, publication, adoption or other non-synthetic business execution."
+      },
+      {
+        "acceptance_id": "312-AC6",
+        "issue": 312,
+        "criterion": "Independent behavioral tests cover outcome preservation, content mismatch, invalid paths, and version transitions; generated output passing a matching generated checker alone is insufficient.",
+        "source": "https://github.com/YuChia-Wei/ai-collaboration-framework/issues/312",
+        "requires_non_synthetic_actual_execution": false,
+        "classification_basis": "The selected issue criteria allow unit/synthetic workflow exercises and impose outcome truth; they do not request deployment, publication, adoption or other non-synthetic business execution."
+      },
+      {
+        "acceptance_id": "312-AC7",
+        "issue": 312,
+        "criterion": "Report before/after manual edits, process invocations, and format-only failed attempts for a bounded comparable exercise. Report elapsed time and tokens only when actually observed; no assumed savings.",
+        "source": "https://github.com/YuChia-Wei/ai-collaboration-framework/issues/312",
+        "requires_non_synthetic_actual_execution": false,
+        "classification_basis": "The selected issue criteria allow unit/synthetic workflow exercises and impose outcome truth; they do not request deployment, publication, adoption or other non-synthetic business execution."
+      },
+      {
+        "acceptance_id": "312-AC8",
+        "issue": 312,
+        "criterion": "Identify which old templates, duplicated checks, and manual instruction steps were removed or delegated to the common tool.",
+        "source": "https://github.com/YuChia-Wei/ai-collaboration-framework/issues/312",
+        "requires_non_synthetic_actual_execution": false,
+        "classification_basis": "The selected issue criteria allow unit/synthetic workflow exercises and impose outcome truth; they do not request deployment, publication, adoption or other non-synthetic business execution."
+      },
+      {
+        "acceptance_id": "313-AC1",
+        "issue": 313,
+        "criterion": "A concise disposition identifies each examined gate as retain, simplify, combine, or remove, with a concrete risk and affected consumers.",
+        "source": "https://github.com/YuChia-Wei/ai-collaboration-framework/issues/313",
+        "requires_non_synthetic_actual_execution": false,
+        "classification_basis": "The selected issue criteria allow unit/synthetic workflow exercises and impose outcome truth; they do not request deployment, publication, adoption or other non-synthetic business execution."
+      },
+      {
+        "acceptance_id": "313-AC2",
+        "issue": 313,
+        "criterion": "Ordinary review input is checked once before dispatch; a formatting repair does not masquerade as a product defect or independently justify repeating unaffected behavioral checks.",
+        "source": "https://github.com/YuChia-Wei/ai-collaboration-framework/issues/313",
+        "requires_non_synthetic_actual_execution": false,
+        "classification_basis": "The selected issue criteria allow unit/synthetic workflow exercises and impose outcome truth; they do not request deployment, publication, adoption or other non-synthetic business execution."
+      },
+      {
+        "acceptance_id": "313-AC3",
+        "issue": 313,
+        "criterion": "Unchanged content/criteria can retain valid review evidence under the accepted binding policy; changed behavior receives appropriately scoped fresh checks.",
+        "source": "https://github.com/YuChia-Wei/ai-collaboration-framework/issues/313",
+        "requires_non_synthetic_actual_execution": false,
+        "classification_basis": "The selected issue criteria allow unit/synthetic workflow exercises and impose outcome truth; they do not request deployment, publication, adoption or other non-synthetic business execution."
+      },
+      {
+        "acceptance_id": "313-AC4",
+        "issue": 313,
+        "criterion": "Failed, missing, or unexecuted checks are never converted to passes, and release artifacts still correspond to the version actually verified.",
+        "source": "https://github.com/YuChia-Wei/ai-collaboration-framework/issues/313",
+        "requires_non_synthetic_actual_execution": false,
+        "classification_basis": "The selected issue criteria allow unit/synthetic workflow exercises and impose outcome truth; they do not request deployment, publication, adoption or other non-synthetic business execution."
+      },
+      {
+        "acceptance_id": "313-AC5",
+        "issue": 313,
+        "criterion": "Ordinary and genuinely high-risk examples demonstrate the intended routing; policy and executable behavior agree.",
+        "source": "https://github.com/YuChia-Wei/ai-collaboration-framework/issues/313",
+        "requires_non_synthetic_actual_execution": false,
+        "classification_basis": "The selected issue criteria allow unit/synthetic workflow exercises and impose outcome truth; they do not request deployment, publication, adoption or other non-synthetic business execution."
+      },
+      {
+        "acceptance_id": "313-AC6",
+        "issue": 313,
+        "criterion": "A bounded before/after exercise records avoided manual operations and format-only retries; timing/token claims use actual observations.",
+        "source": "https://github.com/YuChia-Wei/ai-collaboration-framework/issues/313",
+        "requires_non_synthetic_actual_execution": false,
+        "classification_basis": "The selected issue criteria allow unit/synthetic workflow exercises and impose outcome truth; they do not request deployment, publication, adoption or other non-synthetic business execution."
+      },
+      {
+        "acceptance_id": "313-AC7",
+        "issue": 313,
+        "criterion": "Existing #307 and #308 remain owners of their specific release-reuse and input-resolution work; this issue does not duplicate their implementations.",
+        "source": "https://github.com/YuChia-Wei/ai-collaboration-framework/issues/313",
+        "requires_non_synthetic_actual_execution": false,
+        "classification_basis": "The selected issue criteria allow unit/synthetic workflow exercises and impose outcome truth; they do not request deployment, publication, adoption or other non-synthetic business execution."
+      }
+    ]
+  },
+  "evidence": {
+    "ignored:.dev/ai-context/local/issue-312-313/scenario-review/artifacts.log": "b1ae5e94ac687c3173c655b0d14bd6f7378aeed119404cd4bc3e1db2e9bbd5d7",
+    "ignored:.dev/ai-context/local/issue-312-313/scenario-review/artifact-batch-2.log": "ea363bc2647c473bc72473eb88dd8911b5ceaed46b8858c42a94f731606c3988",
+    "ignored:.dev/ai-context/local/issue-312-313/implementation-review/review.json": "07e126d9cf309c75f12e81ec62ee5c8d3cc61a7c67e6ecef1a5b7dc6a23b8363",
+    "ignored:.dev/ai-context/local/issue-312-313/smoke-runs/20260920T115818Z-e6f85a4dbc/report.json": "a3a28e9ba1e10b4e1bd4e379e847074d4fc0c1bc55b245ba3f28ecf82f4a553e",
+    "ignored:.dev/ai-context/local/issue-312-313/scenario-review/external.log": "52e5cb95295a31db69620bd15557367987d956128c1c2957d8effd6785b52f71",
+    "ignored:.dev/ai-context/local/issue-312-313/repair-checks/external.log": "841bdd9f44b2ab51c7df5f0f2600b9b7af39f531a111b3616e3c7ea7451d80ef",
+    "ignored:.dev/ai-context/local/issue-312-313/repair-checks/artifact-boundaries.log": "a92c610df1c57dd906fb8037c4354f2634d92c9beec41178eb07c5a9e403a97c",
+    "ignored:.dev/ai-context/local/issue-312-313/repair-review/review.json": "7d79f19dc4216d298d620b09d7660597d2e1812cdfd5d615a64f5766cca913ab",
+    "ignored:.dev/ai-context/local/issue-312-313/repair-review/subject-rebind.json": "a43bd9de6a74c00b1fcd3380129eabc6cf0f62b6faa648597f2f49b6eedc8750",
+    "ignored:.dev/ai-context/local/issue-312-313/scenario-review/guardrails.log": "17b528fb63de1291e7c41b29faf81abeee12cead354a86cfcbdeeb34b02ef2f0",
+    "ignored:.dev/ai-context/local/issue-312-313/receipt-process-exercise.json": "b84211e5d37d3691502d4dbfd0d8c2f143446ea77f25ef414f36bf6f8d202fce",
+    "commit:831310d2b6e4a67056ed41ac48effff0aeaf33cd:.dev/workflows/2026-09-20-proportionate-terminal-artifact-tooling/reports/remediation-report.md": "cb6857dc862812b11bbc12abeafa2139527cac1968847a87fab9a5a3108b64a7",
+    "ignored:.dev/ai-context/local/issue-312-313/scenario-review/terminal.log": "0b80e21d76154545d168cafa9a2ac4fdd3c4db03eb8ee1878cf6b959ef36a2b2",
+    "ignored:.dev/ai-context/local/issue-312-313/repair-checks/terminal.log": "b4335eefa3ccfbabea83012392691f168f599c720774d65a03fd17bcafecd650",
+    "ignored:.dev/ai-context/local/issue-312-313/repair-checks/provider.log": "c153d2aded57156ffc748781e44bbf4f538b4fa6fc136e0e7ad84b0a61ed1233"
+  },
+  "limits": [
+    "The artifact suite retained 18 passing methods and one failed expectation; that affected method has its own corrected pass.",
+    "Unit and synthetic evidence is not a non-synthetic execution receipt or live provider admission.",
+    "Review evidence is newly observed; historical validation is supporting evidence, not a newly executed full suite or formal reuse receipt."
+  ],
+  "review_identity_rebind": {
+    "kind": "deterministic-history-only-review-binding",
+    "reviewed_head_sha": "d9cd5539adb3b670866cf2b87b8fa5e2247a67a5",
+    "current_head_sha": "831310d2b6e4a67056ed41ac48effff0aeaf33cd",
+    "reviewed_tree": "979db0f9493c2f285e7c87fae59fca9573e66cfd",
+    "current_tree": "979db0f9493c2f285e7c87fae59fca9573e66cfd",
+    "content_criteria_authority_equal": true,
+    "current_preflight": {
+      "tier": "full",
+      "reasons": [
+        "change-risk",
+        "snapshot",
+        "review-isolation"
+      ],
+      "preparation": "ready",
+      "subject_digest": "0a55b518d92d92fc47631bb8f5aaf2f13686c0441ee384114d3d9a0648674b16",
+      "criteria_sha256": "edc8faf97ae2999983117edc7ccc263a707f9d284ce045cd1b307b98d6f217bb",
+      "authority_sha256": "b72c1fd3bd3e562a51c141c5264e185748fc15c41ae98326fb952781c648c79c",
+      "input_sha256": "9351b2fc964d1c25465850463f2bcb6a7b33ba1f4dc11d01affc9e82688e3906"
+    },
+    "review_artifact_sha256": "7d79f19dc4216d298d620b09d7660597d2e1812cdfd5d615a64f5766cca913ab",
+    "limits": "Independent execution remains at the reviewed SHA. This binding is neither new execution nor live provider admission."
+  },
+  "independent_fixture_cleanup": {
+    "event": "independent-facade-sandbox-TEMP-ACL",
+    "test_outcome": "blocked-by-environment-before-tests",
+    "parent_read": "sandbox directory enumeration also denied; retained as environment observation",
+    "cleanup": "parent host verified canonical contained TEMP path, non-reparse and empty, removed that one directory and confirmed absence",
+    "cleanup_outcome": "completed",
+    "limits": "No test outcome was promoted; no retry of the redundant fixture case."
+  }
+}

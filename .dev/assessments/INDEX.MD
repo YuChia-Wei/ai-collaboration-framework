@@ -12,6 +12,7 @@ owns its identity, current lifecycle state, subject revision, and relationships.
 
 | Assessment | Title | Type | Owner | Status | Subject Commit | Updated | Report |
 | --- | --- | --- | --- | --- | --- | --- | --- |
+| [`ASM-20260920-22-7r2`](ASM-20260920-22-7r2/assessment.yaml) | Terminal Review Identity And Completion Timing Repair Verification | `ai-context-verification` | `ai-context-auditor` | `final` | `d9cd5539adb3b670866cf2b87b8fa5e2247a67a5` | `2026-09-20T22:08:14+08:00` | [report](ASM-20260920-22-7r2/report.md) |
 | [`ASM-20260920-21-wwi`](ASM-20260920-21-wwi/assessment.yaml) | Execution Artifacts And Terminal Review Initial Verification | `ai-context-verification` | `ai-context-auditor` | `final` | `e421c80e266af31ec26b263bad69c1136d9cb4af` | `2026-09-20T21:50:46+08:00` | [report](ASM-20260920-21-wwi/report.md) |
 | [`ASM-20260917-23-c18`](ASM-20260917-23-c18/assessment.yaml) | Baseline for skill cost and transactional messaging | `ai-context-audit` | `ai-context-auditor` | `final` | `f643b56cd68faec590f23a8c8a7436f813285e5d` | `2026-09-17T23:54:11+08:00` | [report](ASM-20260917-23-c18/report.md) |
 | [`ASM-20260825-001`](ASM-20260825-001/assessment.yaml) | GOV-012 Terminal Frozen Authority Verification | `ai-context-verification` | `ai-context-auditor` | `final` | `ba7c159a2d8fd58291ddc1e92036cb82acd23fb6` | `2026-08-25T00:35:25+08:00` | [report](ASM-20260825-001/report.md) |

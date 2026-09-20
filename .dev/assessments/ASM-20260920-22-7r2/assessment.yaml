@@ -1,0 +1,42 @@
+schema_version: '1.0'
+assessment_id: ASM-20260920-22-7r2
+commit_search_id: ASM-20260920-22-7r2
+assessment_type: ai-context-verification
+title: Terminal Review Identity And Completion Timing Repair Verification
+owner_skill: ai-context-auditor
+status: final
+report: report.md
+artifact_branch: codex/2026-09-20-proportionate-terminal-artifact-tooling
+base_branch: main
+created_at: '2026-09-20T22:08:14+08:00'
+updated_at: '2026-09-20T22:08:14+08:00'
+template_source: .dev/assessments/templates/assessment-locator-template.yaml
+template_version: 1.1.0
+report_template_source: .ai/assets/skills/ai-context-auditor/templates/ai-context-audit-report-template.md
+report_template_version: 2.2.0
+subject_ref:
+  repository: YuChia-Wei/ai-collaboration-framework
+  branch: codex/2026-09-20-proportionate-terminal-artifact-tooling
+  commit: d9cd5539adb3b670866cf2b87b8fa5e2247a67a5
+scope:
+  included:
+  - AIC-001 / ISS313-AC3 and AIC-002 / ISS312-AC3 repairs, immediate consumers and
+    focused evidence
+  excluded:
+  - Unaffected original acceptance review gates
+  - Live provider admission, release and publication
+  - Full package, compatibility and history matrices
+relations:
+  supersedes: []
+  superseded_by: []
+  related_assessments:
+  - ASM-20260920-21-wwi
+  workflow_refs:
+  - 2026-09-20-proportionate-terminal-artifact-tooling
+  backlog_refs: []
+  adr_refs: []
+resume:
+  last_completed_action: Focused independent repair verification finalized at the
+    stated immutable subject.
+  next_action: ''
+  blockers: []
