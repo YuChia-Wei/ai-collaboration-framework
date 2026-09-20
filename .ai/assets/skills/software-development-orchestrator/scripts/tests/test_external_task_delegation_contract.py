@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
-"""Focused regression tests for cross-task dispatch and terminal reporting."""
+"""Focused regression tests for external-task candidate custody receipts."""
 
 from __future__ import annotations
 
-import importlib.util
+import copy
 import hashlib
-import tempfile
+import importlib.util
 import unittest
 from pathlib import Path
 from unittest import mock
@@ -14,356 +14,227 @@ import yaml
 
 
 ROOT = Path(__file__).resolve().parents[6]
-DELEGATION_VALIDATOR_PATH = (
-    ROOT
-    / ".ai/assets/skills/software-development-orchestrator/scripts/validate-external-task-delegation.py"
-)
+VALIDATOR_PATH = ROOT / ".ai/assets/skills/software-development-orchestrator/scripts/validate-external-task-delegation.py"
 CONTEXT_VALIDATOR_PATH = ROOT / ".ai/scripts/validate-ai-context.py"
 PROFILE = ROOT / ".ai/assets/skills/software-development-orchestrator/references/capability-profile.yaml"
 PACKET_FIXTURE = ROOT / ".ai/assets/skills/software-development-orchestrator/scripts/tests/fixtures/external-task-packet.yaml"
 PACKET_REF = ".ai/assets/skills/software-development-orchestrator/scripts/tests/fixtures/external-task-packet.yaml"
-
-
-def load_module(name: str, path: Path):
-    spec = importlib.util.spec_from_file_location(name, path)
-    if spec is None or spec.loader is None:
-        raise RuntimeError(f"Unable to load {path}")
-    module = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(module)
-    return module
-
-
-DELEGATION = load_module("external_task_delegation", DELEGATION_VALIDATOR_PATH)
-CONTEXT = load_module("validate_ai_context_for_delegation", CONTEXT_VALIDATOR_PATH)
+SPEC = importlib.util.spec_from_file_location("external_task_delegation", VALIDATOR_PATH)
+if SPEC is None or SPEC.loader is None:
+    raise RuntimeError(f"Unable to load {VALIDATOR_PATH}")
+DELEGATION = importlib.util.module_from_spec(SPEC)
+SPEC.loader.exec_module(DELEGATION)
+CONTEXT_SPEC = importlib.util.spec_from_file_location(
+    "validate_ai_context_for_delegation", CONTEXT_VALIDATOR_PATH
+)
+if CONTEXT_SPEC is None or CONTEXT_SPEC.loader is None:
+    raise RuntimeError(f"Unable to load {CONTEXT_VALIDATOR_PATH}")
+CONTEXT = importlib.util.module_from_spec(CONTEXT_SPEC)
+CONTEXT_SPEC.loader.exec_module(CONTEXT)
 SCHEMA = DELEGATION.load_mapping(DELEGATION.SCHEMA_PATH)
 SHA = "5" * 40
 
 
 def valid_dispatch() -> dict:
     return {
-        "schema_version": "1.1",
-        "record_type": "external-task-dispatch",
-        "delegation_id": "pr-195-hosted-gate-01",
-        "task_kind": "long-running-validation",
-        "source": {
-            "task_id_source": "runtime-injected",
-            "task_id": None,
-            "final_integration_owner": "source-task",
-        },
-        "objective": {
-            "goal": "Run the exact focused regression command and return one terminal report.",
-            "non_goals": ["repair failures", "merge or mutate GitHub state"],
-        },
-        "subject": {
-            "repository_root": "C:/repo",
-            "commit_sha": SHA,
-            "clean_worktree_required": True,
-        },
-        "execution": {
-            "working_directory": "C:/repo",
-            "argv": ["python", "focused-test.py", "-v"],
-            "timeout_seconds": 300,
-        },
-        "execution_packet": {
-            "schema_ref": ".ai/assets/shared/agent-execution-guardrails.schema.yaml",
-            "packet_ref": PACKET_REF,
-            "packet_sha256": hashlib.sha256(PACKET_FIXTURE.read_bytes()).hexdigest(),
-            "subject_sha": SHA,
-            "validator_argv": [
-                "python",
-                ".ai/scripts/validate-agent-execution-guardrails.py",
-                "--packet",
-                PACKET_REF,
-            ],
-            "validation_outcome": "passed",
-        },
-        "permissions": {
-            "read_scope": ["repository"],
-            "write_scope": ["ignored-validation-artifacts"],
-            "repair_allowed": False,
-            "external_mutations": [],
-            "secret_values": "prohibited",
-        },
-        "completion_delivery": {
-            "primary": "source-task-callback",
-            "fallback": "parent-event-wait",
-            "destination": "source-task",
-            "progress_updates": "terminal-only",
-            "max_terminal_reports": 1,
-            "report_schema": "same-contract#completion",
-            "pre_send_validation": {
-                "required": True,
-                "validator_argv": [
-                    "python",
-                    ".ai/assets/skills/software-development-orchestrator/scripts/validate-external-task-delegation.py",
-                    ".external-task/pr-195-hosted-gate-01-completion.yaml",
-                    "--dispatch",
-                    ".external-task/pr-195-hosted-gate-01-dispatch.yaml",
-                ],
-                "dispatch_ref": ".external-task/pr-195-hosted-gate-01-dispatch.yaml",
-                "completion_ref": ".external-task/pr-195-hosted-gate-01-completion.yaml",
-                "failure_action": "do-not-deliver-terminal-report",
-                "payload_binding": "exact-validated-completion-record",
-            },
-        },
-        "stop_conditions": [
-            "preflight mismatch",
-            "command terminal outcome",
-            "execution timeout or interruption",
-        ],
+        "schema_version": "1.2", "record_type": "external-task-dispatch", "delegation_id": "pr-310-custody-01", "task_kind": "long-running-validation",
+        "source": {"task_id_source": "runtime-injected", "task_id": None, "final_integration_owner": "source-task"},
+        "objective": {"goal": "Run one exact command.", "non_goals": ["repair failures"]},
+        "subject": {"repository_root": "C:/repo", "commit_sha": SHA, "clean_worktree_required": True},
+        "execution": {"working_directory": "C:/repo", "argv": ["python", "focused-test.py", "-v"], "timeout_seconds": 300},
+        "execution_packet": {"schema_ref": ".ai/assets/shared/agent-execution-guardrails.schema.yaml", "packet_ref": PACKET_REF, "packet_sha256": hashlib.sha256(PACKET_FIXTURE.read_bytes()).hexdigest(), "subject_sha": SHA, "validator_argv": ["python", ".ai/scripts/validate-agent-execution-guardrails.py", "--packet", PACKET_REF], "validation_outcome": "passed"},
+        "permissions": {"read_scope": ["repository"], "write_scope": ["ignored-validation-artifacts"], "repair_allowed": False, "external_mutations": [], "secret_values": "prohibited"},
+        "completion_delivery": {"primary": "source-task-callback", "fallback": "parent-event-wait", "destination": "source-task", "progress_updates": "terminal-only", "max_terminal_reports": 1, "report_schema": "same-contract#completion", "pre_send_validation": {"required": True, "receipt_writer_argv": ["python", ".ai/assets/skills/software-development-orchestrator/scripts/validate-external-task-delegation.py", "--candidate", ".external-task/candidate.yaml", "--dispatch", ".external-task/dispatch.yaml", "--write-receipt", ".external-task/receipt.yaml"], "dispatch_ref": ".external-task/dispatch.yaml", "candidate_ref": ".external-task/candidate.yaml", "receipt_ref": ".external-task/receipt.yaml", "failure_action": "do-not-deliver-terminal-report", "payload_binding": "exact-candidate-bytes-with-independent-receipt"}},
+        "stop_conditions": ["preflight mismatch", "terminal outcome"],
     }
 
 
-def valid_completion() -> dict:
+def valid_candidate(outcome: str = "passed") -> dict:
+    exit_code = 0 if outcome == "passed" else 1
     return {
-        "schema_version": "1.1",
-        "record_type": "external-task-completion",
-        "delegation_id": "pr-195-hosted-gate-01",
-        "source_task_id": "source-019f",
-        "delegated_task_id": "worker-019f",
-        "subject": {
-            "expected_commit_sha": SHA,
-            "observed_commit_sha": SHA,
-        },
+        "schema_version": "1.2", "record_type": "external-task-completion", "delegation_id": "pr-310-custody-01", "source_task_id": "source-019f", "delegated_task_id": "worker-019f",
+        "subject": {"expected_commit_sha": SHA, "observed_commit_sha": SHA},
         "preflight": {"commit_matches": True, "clean_worktree": True},
-        "execution": {
-            "working_directory": "C:/repo",
-            "argv": ["python", "focused-test.py", "-v"],
-        },
-        "timing": {
-            "started_at": "2026-08-12T01:00:00+08:00",
-            "completed_at": "2026-08-12T01:00:02+08:00",
-            "duration_seconds": 2,
-        },
-        "result": {
-            "outcome": "passed",
-            "exit_code": 0,
-            "counts": {"selected": 10, "failed": 0, "blocked": 0},
-        },
-        "evidence": {"refs": ["runtime final"], "bounded_output": "10 passed"},
+        "execution": {"working_directory": "C:/repo", "argv": ["python", "focused-test.py", "-v"]},
+        "timing": {"started_at": "2026-09-20T01:00:00+08:00", "completed_at": "2026-09-20T01:00:02+08:00", "duration_seconds": 2},
+        "result": {"outcome": outcome, "exit_code": exit_code, "counts": {"selected": 1, "failed": 0 if outcome == "passed" else 1}},
+        "evidence": {"refs": ["runtime terminal"], "bounded_output": outcome},
         "final_state": {"clean_worktree": True, "tracked_changes": []},
-        "delivery": {
-            "mode": "source-task-callback",
-            "destination": "source-task",
-            "terminal_report_number": 1,
-            "schema_validation": {
-                "outcome": "passed",
-                "exit_code": 0,
-                "validator_argv": [
-                    "python",
-                    ".ai/assets/skills/software-development-orchestrator/scripts/validate-external-task-delegation.py",
-                    ".external-task/pr-195-hosted-gate-01-completion.yaml",
-                    "--dispatch",
-                    ".external-task/pr-195-hosted-gate-01-dispatch.yaml",
-                ],
-                "dispatch_ref": ".external-task/pr-195-hosted-gate-01-dispatch.yaml",
-                "completion_ref": ".external-task/pr-195-hosted-gate-01-completion.yaml",
-                "payload_binding": "exact-validated-completion-record",
-            },
-        },
+        "delivery": {"mode": "source-task-callback", "destination": "source-task", "terminal_report_number": 1},
     }
 
 
 class ExternalTaskDelegationContractTests(unittest.TestCase):
-    def test_gwt_001_given_canonical_schema_when_loaded_then_transport_has_callback_and_event_wait_paths(self) -> None:
+    def test_gwt_001_given_schema_1_2_when_loaded_then_candidate_and_receipt_are_separate(self) -> None:
         self.assertEqual([], DELEGATION.validate_schema_definition(SCHEMA))
-        delivery = SCHEMA["dispatch"]["completion_delivery"]
-        self.assertEqual(
-            ["source-task-callback", "parent-event-wait"],
-            delivery["primary_modes"],
-        )
-        self.assertEqual(
-            "pending-awaiting-completion",
-            SCHEMA["transport_semantics"]["parent_wait_timeout"],
-        )
-        self.assertEqual(
-            "recoverable-by-one-terminal-readback",
-            SCHEMA["transport_semantics"][
-                "callback_failure_with_retrievable_terminal_report"
-            ],
-        )
-        self.assertEqual(
-            "BEGIN_EXTERNAL_TASK_COMPLETION",
-            SCHEMA["completion_transport"]["begin_marker"],
-        )
-        self.assertEqual(
-            "runtime-policy-owned-and-not-source-delivery",
-            SCHEMA["transport_semantics"]["runtime_local_progress"],
-        )
+        self.assertEqual("external-task-validation-receipt", SCHEMA["record_types"]["validation_receipt"])
+        self.assertEqual("exact-candidate-bytes-with-independent-receipt", SCHEMA["transport_semantics"]["callback_payload"])
 
-    def test_gwt_002_given_one_marked_prompt_when_parsed_then_dispatch_is_valid(self) -> None:
-        record = valid_dispatch()
+    def test_gwt_002_given_bootstrap_candidate_when_validated_then_it_never_self_asserts_validator_pass(self) -> None:
+        candidate = valid_candidate()
+        self.assertNotIn("schema_validation", candidate["delivery"])
+        self.assertEqual([], DELEGATION.validate_completion(candidate, SCHEMA, valid_dispatch()))
+
+    def test_gwt_002a_given_one_marked_prompt_when_parsed_then_dispatch_is_valid(self) -> None:
+        dispatch = valid_dispatch()
         prompt = (
-            "Run only the bounded task below.\n"
             f"{DELEGATION.BEGIN_MARKER}\n"
-            f"{yaml.safe_dump(record, sort_keys=False)}"
+            f"{yaml.safe_dump(dispatch, sort_keys=False)}"
             f"{DELEGATION.END_MARKER}\n"
         )
-        parsed = DELEGATION.extract_dispatch_from_prompt(prompt)
-        self.assertEqual(record, parsed)
-        self.assertEqual([], DELEGATION.validate_dispatch(parsed, SCHEMA))
+        self.assertEqual(dispatch, DELEGATION.extract_dispatch_from_prompt(prompt))
+        self.assertEqual([], DELEGATION.validate_dispatch(dispatch, SCHEMA))
 
-    def test_gwt_003_given_duplicate_or_missing_envelope_when_parsed_then_it_fails_closed(self) -> None:
-        with self.assertRaisesRegex(ValueError, "exactly one"):
-            DELEGATION.extract_dispatch_from_prompt("no envelope")
-        duplicate = (
+    def test_gwt_002b_given_duplicate_dispatch_envelope_then_it_fails_closed(self) -> None:
+        message = (
             f"{DELEGATION.BEGIN_MARKER}\n{{}}\n{DELEGATION.END_MARKER}\n"
             f"{DELEGATION.BEGIN_MARKER}\n{{}}\n{DELEGATION.END_MARKER}\n"
         )
         with self.assertRaisesRegex(ValueError, "exactly one"):
-            DELEGATION.extract_dispatch_from_prompt(duplicate)
+            DELEGATION.extract_dispatch_from_prompt(message)
 
-    def test_gwt_004_given_callback_dispatch_when_destination_or_terminal_limit_drifts_then_it_is_rejected(self) -> None:
-        record = valid_dispatch()
-        record["completion_delivery"]["destination"] = "delegated-task"
-        record["completion_delivery"]["max_terminal_reports"] = 2
-        errors = DELEGATION.validate_dispatch(record, SCHEMA)
-        self.assertTrue(any("destination must be source-task" in error for error in errors))
-        self.assertTrue(any("max_terminal_reports must be 1" in error for error in errors))
-
-    def test_gwt_005_given_runtime_without_child_callback_when_event_wait_selected_then_it_remains_valid(self) -> None:
-        record = valid_dispatch()
-        record["completion_delivery"].update(
-            primary="parent-event-wait",
-            fallback="single-terminal-readback",
-        )
-        self.assertEqual([], DELEGATION.validate_dispatch(record, SCHEMA))
-
-    def test_gwt_006_given_matching_terminal_report_when_cross_checked_then_it_is_valid(self) -> None:
+    def test_gwt_002c_given_delivery_destination_or_limit_drift_then_dispatch_is_rejected(self) -> None:
         dispatch = valid_dispatch()
-        completion = valid_completion()
+        dispatch["completion_delivery"]["destination"] = "delegated-task"
+        dispatch["completion_delivery"]["max_terminal_reports"] = 2
+        errors = DELEGATION.validate_dispatch(dispatch, SCHEMA)
+        self.assertTrue(any("completion_delivery is invalid" in error for error in errors))
+
+    def test_gwt_002d_given_event_wait_delivery_then_dispatch_remains_valid(self) -> None:
+        dispatch = valid_dispatch()
+        dispatch["completion_delivery"].update(
+            primary="parent-event-wait", fallback="single-terminal-readback"
+        )
+        self.assertEqual([], DELEGATION.validate_dispatch(dispatch, SCHEMA))
+
+    def test_gwt_003_given_exact_candidate_bytes_when_receipt_is_issued_then_custody_releases(self) -> None:
+        dispatch, candidate = valid_dispatch(), valid_candidate()
+        dispatch_bytes = yaml.safe_dump(dispatch, sort_keys=False).encode()
+        candidate_bytes = yaml.safe_dump(candidate, sort_keys=False).encode()
+        receipt = DELEGATION.build_validation_receipt(candidate, dispatch, ".external-task/candidate.yaml", candidate_bytes, ".external-task/dispatch.yaml", dispatch_bytes, ".external-task/receipt.yaml")
+        self.assertEqual([], DELEGATION.validate_receipt(receipt, SCHEMA, candidate, candidate_bytes, dispatch, dispatch_bytes))
+        self.assertEqual("released", receipt["custody"]["state"])
+
+    def test_gwt_004_given_post_validation_candidate_mutation_when_receipt_checked_then_it_is_rejected(self) -> None:
+        dispatch, candidate = valid_dispatch(), valid_candidate()
+        dispatch_bytes = yaml.safe_dump(dispatch, sort_keys=False).encode()
+        candidate_bytes = yaml.safe_dump(candidate, sort_keys=False).encode()
+        receipt = DELEGATION.build_validation_receipt(candidate, dispatch, ".external-task/candidate.yaml", candidate_bytes, ".external-task/dispatch.yaml", dispatch_bytes, ".external-task/receipt.yaml")
+        mutated = copy.deepcopy(candidate); mutated["evidence"]["bounded_output"] = "changed after validation"
+        mutated_bytes = yaml.safe_dump(mutated, sort_keys=False).encode()
+        errors = DELEGATION.validate_receipt(receipt, SCHEMA, mutated, mutated_bytes, dispatch, dispatch_bytes)
+        self.assertTrue(any("candidate.sha256 does not match exact candidate bytes" in error for error in errors))
+
+    def test_gwt_004a_given_receipt_ref_or_writer_argv_drift_then_it_is_rejected(self) -> None:
+        dispatch, candidate = valid_dispatch(), valid_candidate()
+        dispatch_bytes = yaml.safe_dump(dispatch, sort_keys=False).encode()
+        candidate_bytes = yaml.safe_dump(candidate, sort_keys=False).encode()
+        receipt = DELEGATION.build_validation_receipt(
+            candidate, dispatch, ".external-task/candidate.yaml", candidate_bytes,
+            ".external-task/dispatch.yaml", dispatch_bytes, ".external-task/receipt.yaml",
+        )
+        receipt["candidate"]["ref"] = ".external-task/other-candidate.yaml"
+        receipt["dispatch"]["ref"] = ".external-task/other-dispatch.yaml"
+        receipt["receipt_ref"] = ".external-task/other-receipt.yaml"
+        receipt["validator"]["argv"] = ["python", "other-validator.py"]
+        errors = DELEGATION.validate_receipt(
+            receipt, SCHEMA, candidate, candidate_bytes, dispatch, dispatch_bytes
+        )
+        self.assertTrue(any("candidate.ref must match" in error for error in errors))
+        self.assertTrue(any("dispatch.ref must match" in error for error in errors))
+        self.assertTrue(any("receipt_ref must match" in error for error in errors))
+        self.assertTrue(any("validator.argv must match" in error for error in errors))
+
+    def test_gwt_004b_given_combined_terminal_delivery_then_receipt_is_required(self) -> None:
+        dispatch, candidate = valid_dispatch(), valid_candidate()
+        dispatch_bytes = yaml.safe_dump(dispatch, sort_keys=False).encode()
+        candidate_bytes = yaml.safe_dump(candidate, sort_keys=False).encode()
+        receipt = DELEGATION.build_validation_receipt(
+            candidate, dispatch, ".external-task/candidate.yaml", candidate_bytes,
+            ".external-task/dispatch.yaml", dispatch_bytes, ".external-task/receipt.yaml",
+        )
         message = (
             f"{DELEGATION.COMPLETION_BEGIN_MARKER}\n"
-            f"{yaml.safe_dump(completion, sort_keys=False)}"
+            f"{candidate_bytes.decode()}"
             f"{DELEGATION.COMPLETION_END_MARKER}\n"
+            f"{DELEGATION.RECEIPT_BEGIN_MARKER}\n"
+            f"{yaml.safe_dump(receipt, sort_keys=False)}"
+            f"{DELEGATION.RECEIPT_END_MARKER}\n"
         )
-        self.assertEqual(completion, DELEGATION.extract_completion_from_message(message))
         self.assertEqual(
-            [],
-            DELEGATION.validate_completion(completion, SCHEMA, dispatch),
-        )
-
-    def test_gwt_007_given_callback_transport_failed_but_terminal_report_is_retrievable_then_one_readback_is_valid(self) -> None:
-        completion = valid_completion()
-        completion["delivery"]["mode"] = "single-terminal-readback"
-        self.assertEqual(
-            [],
-            DELEGATION.validate_completion(completion, SCHEMA, valid_dispatch()),
-        )
-
-    def test_gwt_008_given_passed_report_when_subject_or_worktree_drifts_then_it_cannot_pass(self) -> None:
-        completion = valid_completion()
-        completion["subject"]["observed_commit_sha"] = "6" * 40
-        completion["final_state"] = {
-            "clean_worktree": False,
-            "tracked_changes": ["tracked.txt"],
-        }
-        errors = DELEGATION.validate_completion(completion, SCHEMA, valid_dispatch())
-        self.assertTrue(any("matching expected and observed" in error for error in errors))
-        self.assertTrue(any("clean final worktree" in error for error in errors))
-        self.assertTrue(any("no tracked changes" in error for error in errors))
-
-    def test_gwt_009_given_capability_profile_1_4_when_ai_context_validator_runs_then_it_is_accepted(self) -> None:
-        profile = yaml.safe_load(PROFILE.read_text(encoding="utf-8"))
-        skills = {
-            skill_id: {"status": "active", "capability_slots": [slot]}
-            for slot, skill_id in profile["mappings"].items()
-        }
-        errors: list[str] = []
-        CONTEXT.validate_capability_profile(skills, errors)
-        self.assertEqual([], errors)
-
-    def test_gwt_010_given_unknown_future_profile_schema_when_validated_then_it_is_rejected(self) -> None:
-        profile = yaml.safe_load(PROFILE.read_text(encoding="utf-8"))
-        profile["schema_version"] = "1.5"
-        skills = {
-            skill_id: {"status": "active", "capability_slots": [slot]}
-            for slot, skill_id in profile["mappings"].items()
-        }
-        with tempfile.TemporaryDirectory(prefix="external-task-profile-") as temporary:
-            path = Path(temporary) / "capability-profile.yaml"
-            path.write_text(yaml.safe_dump(profile, sort_keys=False), encoding="utf-8")
-            errors: list[str] = []
-            with mock.patch.object(CONTEXT, "CAPABILITY_PROFILE", path):
-                CONTEXT.validate_capability_profile(skills, errors)
-        self.assertTrue(any("schema_version must be 1.0, 1.1, 1.2, 1.3, or 1.4" in error for error in errors))
-
-    def test_gwt_011_given_profile_1_4_without_delegation_schema_binding_when_validated_then_it_is_rejected(self) -> None:
-        profile = yaml.safe_load(PROFILE.read_text(encoding="utf-8"))
-        del profile["capability_contracts"]["test-execution"]["long_running"][
-            "delegation_contract"
-        ]
-        skills = {
-            skill_id: {"status": "active", "capability_slots": [slot]}
-            for slot, skill_id in profile["mappings"].items()
-        }
-        with tempfile.TemporaryDirectory(prefix="external-task-profile-") as temporary:
-            path = Path(temporary) / "capability-profile.yaml"
-            path.write_text(yaml.safe_dump(profile, sort_keys=False), encoding="utf-8")
-            errors: list[str] = []
-            with mock.patch.object(CONTEXT, "CAPABILITY_PROFILE", path):
-                CONTEXT.validate_capability_profile(skills, errors)
-        self.assertTrue(any("test-execution.long_running" in error for error in errors))
-
-    def test_gwt_012_given_dispatch_without_mandatory_pre_send_validation_when_validated_then_it_is_rejected(self) -> None:
-        dispatch = valid_dispatch()
-        del dispatch["completion_delivery"]["pre_send_validation"]
-        errors = DELEGATION.validate_dispatch(dispatch, SCHEMA)
-        self.assertTrue(
-            any("pre_send_validation is required" in error for error in errors)
-        )
-
-    def test_gwt_013_given_completion_without_passing_schema_validation_when_validated_then_it_is_rejected(self) -> None:
-        completion = valid_completion()
-        completion["delivery"]["schema_validation"]["outcome"] = "failed"
-        completion["delivery"]["schema_validation"]["exit_code"] = 1
-        errors = DELEGATION.validate_completion(completion, SCHEMA, valid_dispatch())
-        self.assertTrue(
-            any("schema_validation.outcome must be passed" in error for error in errors)
-        )
-        self.assertTrue(
-            any("schema_validation.exit_code must be zero" in error for error in errors)
-        )
-
-    def test_gwt_014_given_validated_completion_record_drift_when_cross_checked_then_it_is_rejected(self) -> None:
-        completion = valid_completion()
-        completion["delivery"]["schema_validation"]["completion_ref"] = (
-            ".external-task/other-completion.yaml"
-        )
-        errors = DELEGATION.validate_completion(completion, SCHEMA, valid_dispatch())
-        self.assertTrue(
-            any(
-                "schema_validation.completion_ref must match dispatch" in error
-                for error in errors
+            [], DELEGATION.validate_terminal_delivery_message(
+                message, SCHEMA, dispatch, dispatch_bytes
             )
         )
+        missing_receipt = message.split(DELEGATION.RECEIPT_BEGIN_MARKER, 1)[0]
+        errors = DELEGATION.validate_terminal_delivery_message(
+            missing_receipt, SCHEMA, dispatch, dispatch_bytes
+        )
+        self.assertTrue(errors)
 
-    def test_gwt_015_given_external_dispatch_without_validated_execution_packet_when_checked_then_it_is_rejected(self) -> None:
-        dispatch = valid_dispatch()
-        del dispatch["execution_packet"]
-        errors = DELEGATION.validate_dispatch(dispatch, SCHEMA)
-        self.assertTrue(any("execution_packet is required" in error for error in errors))
+    def test_gwt_004c_given_terminal_receipt_for_other_candidate_then_delivery_is_rejected(self) -> None:
+        dispatch, candidate = valid_dispatch(), valid_candidate()
+        dispatch_bytes = yaml.safe_dump(dispatch, sort_keys=False).encode()
+        candidate_bytes = yaml.safe_dump(candidate, sort_keys=False).encode()
+        receipt = DELEGATION.build_validation_receipt(
+            candidate, dispatch, ".external-task/candidate.yaml", candidate_bytes,
+            ".external-task/dispatch.yaml", dispatch_bytes, ".external-task/receipt.yaml",
+        )
+        receipt["candidate"]["sha256"] = "f" * 64
+        message = (
+            f"{DELEGATION.COMPLETION_BEGIN_MARKER}\n{candidate_bytes.decode()}"
+            f"{DELEGATION.COMPLETION_END_MARKER}\n"
+            f"{DELEGATION.RECEIPT_BEGIN_MARKER}\n"
+            f"{yaml.safe_dump(receipt, sort_keys=False)}"
+            f"{DELEGATION.RECEIPT_END_MARKER}\n"
+        )
+        errors = DELEGATION.validate_terminal_delivery_message(
+            message, SCHEMA, dispatch, dispatch_bytes
+        )
+        self.assertTrue(any("candidate.sha256" in error for error in errors))
 
-    def test_gwt_016_given_execution_packet_subject_drift_when_dispatch_is_checked_then_it_is_rejected(self) -> None:
-        dispatch = valid_dispatch()
-        dispatch["execution_packet"]["subject_sha"] = "2" * 40
-        errors = DELEGATION.validate_dispatch(dispatch, SCHEMA)
-        self.assertTrue(any("must match dispatch subject" in error for error in errors))
+    def test_gwt_005_given_blocked_terminal_candidate_when_receipt_is_issued_then_delivery_is_released_without_passing_execution(self) -> None:
+        dispatch, candidate = valid_dispatch(), valid_candidate("blocked-by-environment")
+        dispatch_bytes = yaml.safe_dump(dispatch, sort_keys=False).encode()
+        candidate_bytes = yaml.safe_dump(candidate, sort_keys=False).encode()
+        receipt = DELEGATION.build_validation_receipt(candidate, dispatch, ".external-task/candidate.yaml", candidate_bytes, ".external-task/dispatch.yaml", dispatch_bytes, ".external-task/receipt.yaml")
+        self.assertEqual([], DELEGATION.validate_receipt(receipt, SCHEMA, candidate, candidate_bytes, dispatch, dispatch_bytes))
+        self.assertEqual("blocked-by-environment", candidate["result"]["outcome"])
+        self.assertEqual("released", receipt["custody"]["state"])
 
-    def test_gwt_017_given_nonexistent_packet_reference_when_dispatch_is_checked_then_it_is_rejected(self) -> None:
-        dispatch = valid_dispatch()
-        missing = ".external-task/missing-packet.yaml"
-        dispatch["execution_packet"]["packet_ref"] = missing
-        dispatch["execution_packet"]["validator_argv"][-1] = missing
-        errors = DELEGATION.validate_dispatch(dispatch, SCHEMA)
-        self.assertTrue(any("packet_ref does not exist" in error for error in errors))
+    def test_gwt_006_given_failed_or_interrupted_terminal_candidate_when_receipt_is_issued_then_delivery_is_released(self) -> None:
+        for outcome in ("failed", "interrupted"):
+            with self.subTest(outcome=outcome):
+                dispatch, candidate = valid_dispatch(), valid_candidate(outcome)
+                dispatch_bytes = yaml.safe_dump(dispatch, sort_keys=False).encode()
+                candidate_bytes = yaml.safe_dump(candidate, sort_keys=False).encode()
+                receipt = DELEGATION.build_validation_receipt(candidate, dispatch, ".external-task/candidate.yaml", candidate_bytes, ".external-task/dispatch.yaml", dispatch_bytes, ".external-task/receipt.yaml")
+                self.assertEqual([], DELEGATION.validate_receipt(receipt, SCHEMA, candidate, candidate_bytes, dispatch, dispatch_bytes))
 
-    def test_gwt_018_given_packet_file_bytes_drift_when_dispatch_is_checked_then_it_is_rejected(self) -> None:
-        dispatch = valid_dispatch()
-        dispatch["execution_packet"]["packet_sha256"] = "f" * 64
-        errors = DELEGATION.validate_dispatch(dispatch, SCHEMA)
-        self.assertTrue(any("packet_sha256 does not match" in error for error in errors))
+    def test_gwt_007_given_passed_candidate_subject_or_worktree_drift_then_it_is_rejected(self) -> None:
+        candidate = valid_candidate()
+        candidate["subject"]["observed_commit_sha"] = "6" * 40
+        candidate["final_state"] = {"clean_worktree": False, "tracked_changes": ["tracked.txt"]}
+        errors = DELEGATION.validate_completion(candidate, SCHEMA, valid_dispatch())
+        self.assertTrue(any("matching expected and observed" in error for error in errors))
+        self.assertTrue(any("clean final worktree" in error for error in errors))
 
+    def test_gwt_008_given_execution_packet_drift_or_missing_then_dispatch_is_rejected(self) -> None:
+        missing = valid_dispatch()
+        del missing["execution_packet"]
+        self.assertTrue(any("execution_packet is required" in error for error in DELEGATION.validate_dispatch(missing, SCHEMA)))
+        drifted = valid_dispatch()
+        drifted["execution_packet"]["packet_sha256"] = "f" * 64
+        self.assertTrue(any("does not match packet file bytes" in error for error in DELEGATION.validate_dispatch(drifted, SCHEMA)))
+
+    def test_gwt_009_given_profile_without_delegation_binding_then_capability_validation_rejects_it(self) -> None:
+        profile = yaml.safe_load(PROFILE.read_text(encoding="utf-8"))
+        del profile["capability_contracts"]["test-execution"]["long_running"]["delegation_contract"]
+        skills = {skill_id: {"status": "active", "capability_slots": [slot]} for slot, skill_id in profile["mappings"].items()}
+        errors: list[str] = []
+        with mock.patch.object(CONTEXT, "load_yaml_mapping", return_value=profile):
+            CONTEXT.validate_capability_profile(skills, errors)
+        self.assertTrue(any("test-execution.long_running" in error for error in errors))
 
 if __name__ == "__main__":
     unittest.main()

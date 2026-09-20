@@ -37,10 +37,15 @@ One workflow and one pull request bind Issues #309 and #310: both repair the fra
 | #309 | `Refs #309` | The code improves diagnosis, but a new hosted Project read requires an owner-reviewed credential boundary and a future authorized release execution. |
 | #310 | `Refs #310` | Source repair and focused tests are proposed; terminal closure remains subject to the PR review and hosted required checks. |
 
+## Distribution Boundary
+
+- #309 is source-only self-management: the release workflow and reconciliation script were not in the v0.18.0 package.
+- #310 changes the distributed external-task validator, completion template, and runtime-coordination reference. It affects downstream AI collaboration behavior, not .NET product runtime behavior. No version is allocated here; normal release planning must include that package impact.
+
 ## Current Checkpoint
 
-- Current task: `ISS310-completion-custody`.
-- Last completed action: #309 focused repair passed after preserving the command-syntax and sandbox-TEMP blocked attempts.
-- Exact next action: complete #310 candidate/receipt contract review and focused validation, then commit the validated stage.
+- Current task: none; both implementation tasks are completed.
+- Last completed action: #310 candidate/receipt contract passed its focused 16-test regression module and schema-only validation.
+- Exact next action: push this branch and open the authorized PR; do not close either Issue until the required PR and hosted gates are read back.
 - Preserved facts: v0.18.0 public assets were verified historically; run `35487203277` remains failed. The historical downstream outer receipt was blocked and its custody was released under an explicit exception.
 - No cross-session handoff is required.

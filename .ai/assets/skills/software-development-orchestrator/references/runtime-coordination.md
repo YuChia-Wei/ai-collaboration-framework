@@ -93,15 +93,26 @@ Select one completion path before dispatch:
   the delegated task and does not issue repeated status probes.
 
 The terminal message contains exactly one
-`BEGIN_EXTERNAL_TASK_COMPLETION` / `END_EXTERNAL_TASK_COMPLETION` envelope.
+`BEGIN_EXTERNAL_TASK_COMPLETION` / `END_EXTERNAL_TASK_COMPLETION` candidate
+envelope and exactly one
+`BEGIN_EXTERNAL_TASK_VALIDATION_RECEIPT` /
+`END_EXTERNAL_TASK_VALIDATION_RECEIPT` receipt envelope. The source task admits
+the delivery only through the validator's `--terminal-message` path with the
+bound dispatch record.
 
-Before sending it, the delegated task writes the dispatch and complete
-completion record to the ignored paths bound in `pre_send_validation`, runs the
-canonical delegation validator against that exact pair, and records the
-passing validator command and artifact references in `delivery.schema_validation`.
-It must then deliver that validated completion record without any
-post-validation edit. A missing or failed validation, mismatched artifact
-reference, or different delivered record is non-passing.
+Before sending it, the delegated task writes the dispatch and terminal-result
+candidate to the ignored paths bound in `pre_send_validation`. The candidate
+does not declare that validation passed. It runs the canonical delegation
+validator with `--candidate`, `--dispatch`, and `--write-receipt`; that
+independent validator produces the custody receipt only after validating the
+exact candidate and dispatch bytes. The callback or read-back carries the
+candidate and matching receipt. Delivery is released only when the receipt's
+SHA-256 bindings match the exact persisted bytes; no post-validation candidate
+edit is permitted. This custody release applies equally to `passed`, `failed`,
+`blocked-by-environment`, `timed-out`, and `interrupted` terminal results; it
+validates delivery integrity and never converts a non-passing execution result
+into `passed`. A missing receipt, failed receipt production, mismatched byte
+binding, or changed delivered candidate is non-passing.
 
 At integration, validate the acceptance-evidence ledger against its human
 report projection. Actual-execution requirements cannot be satisfied by a
