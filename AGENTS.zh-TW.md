@@ -25,7 +25,7 @@
 ## 漸進式 Context 載入
 
 1. 從 request、目前 Git/worktree state、本文件，以及明確指定的 Issues 或 artifacts 開始。
-2. 先選定一個 owning skill 或 policy，再載入其 canonical entry。
+2. 先選定一個 owning skill 或 policy，再載入其 canonical entry。可直接使用產生的 runtime entry；只有查閱 metadata、維護或釐清不一致時，才重新載入完整來源。
 3. 只有適用的 phase、finding、file type、provider、decision 或 execution boundary 才擴大 context。
 4. 不得預先載入 `README.md`、所有 indexes、所有 standards、每個 skill reference、historical workflows 或 assessment archives。
 5. 除非 scope 需要，不要 broad-scan `src/`、`tests/`、`.dev/workflows/` 或 `.dev/assessments/`。
@@ -49,7 +49,7 @@
 - AI-context placement 或 language changes 只有適用時才載入 `.dev/standards/AI-CONTEXT-BOUNDARY.md` 與 `.dev/standards/AI-CONTEXT-LANGUAGE-POLICY.md`。
 - Code review 先載入 `.ai/assets/skills/code-reviewer/references/review-routing.yaml`，且只載入 selected route 與 finding references。
 - `test-execution` 沒有 required skill；先解析 target-owned commands。
-- Direct execution 仍然有效。Delegation 時載入 `.ai/assets/shared/ROLE-EXECUTION-CONTRACT.md`；static profile presence 不是 invocation evidence。
+- Direct execution 仍然有效。依 `.ai/assets/shared/AGENT-EXECUTION-GUARDRAILS-CONTRACT.md` 分類 delegation；只有適用時才載入 role contract。Static profile presence 不是 invocation evidence。
 
 ## Workflow 與變更控制
 
@@ -79,9 +79,9 @@
 
 ### Agent Execution Guardrails
 
-- Delegated、external 或 fixed-head execution 前，驗證 agent execution packet；其中包含 owning skill、canonical role path 與 applicability、exact SHA/argv/cwd、permissions、ignored artifact roots、terminal schema 與 callback、integration owner、stop conditions 與 retry budget。SHA 用來固定 execution checkout；evidence validity 依適用的 content-subject contract 判定。
-- 持有 machine-readable worktree snapshot lease。一個 active tracked-writer holder 排除其他所有 tracked writer；read-only work 與已宣告的 ignored validation output 仍可進行，terminal release 必須明確記錄。
-- 維護 acceptance-to-evidence ledger 並驗證其 human-report projection。Synthetic、mock、fixture 與 unit evidence 不得滿足要求 actual execution 的 acceptance。
+- 一般同 runtime 工作使用 `.ai/assets/shared/AGENT-EXECUTION-GUARDRAILS-CONTRACT.md` 的 bounded envelope；不得只為例行分析或局部修改建立正式 audit records。
+- Terminal/high-risk、external 或 long-running validation 前，使用完整 validated packet、immutable subject 與 machine-readable snapshot lease。兩個層級都必須維持每個 worktree 只有一個 tracked writer；完整 lease 必須明確 terminal release。
+- Acceptance contract 要求時才維護正式 acceptance-to-evidence ledger。Synthetic、mock、fixture 與 unit evidence 不得滿足要求 actual execution 的 acceptance。
 - 只有具備 privacy-safe failure fingerprint 與 material state change 才可 retry。Attempt 三次以上需要新的 owner 或 workflow authorization。
 - Discovery conclusion 前驗證 code-graph index SHA 與 coverage。Stale 或 missing graph 必須 reindex 或使用明確 tracked-file fallback；search absence 本身不是 proof。
 - PowerShell automatic 或 reserved variables 一律不得被賦值，且不分大小寫；使用用途明確的 variable names。

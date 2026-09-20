@@ -160,7 +160,9 @@ small, independently assessed repair. The one replacement ZIP
 `8eed3960f19c57050c8e8a8e1ecedbc3004aabc2`, adds exactly two source-only
 not-applicable descriptions in `check-all.sh`. The source gate checks both
 original and replacement archive hashes, every payload byte and mode, the
-exact two-line delta, the current runner and unchanged origin identities.
+exact two-line delta, the reviewed archived runner and unchanged origin identities.
+Later source-runner evolution does not invalidate the preserved historical
+repair; current source execution is validated under its own release gates.
 Native seven-plus-two cases continue to validate against their preserved
 original matrix; they are not relabeled as execution of the replacement ZIP.
 Focused tests cover the changed runner branches, fixture isolation, optional
@@ -176,6 +178,39 @@ actual asset transfer checks.
 Retain the failed critical invocation and every later outcome. Any further
 payload or execution-mechanism change needs its own impact assessment and
 applicable tests; unknown or mismatched identity fails closed.
+
+For v0.18.0 only, the owner's autonomous repair and excessive-validation review
+authorize a bounded rebind after Candidate10 Matrix05 passed all nine actual
+cases. Preserve that execution against ZIP
+`90e403bde5e1e84767a4c00b67923780ebea76222b7956e598c814241c0f7db0`
+at `f566a6014f0942a15b28a39f0b2f5df3303e6014`, its original support matrix,
+canonical runner, terminal and all 236 indexed case artifacts. The exact
+`route-assets/actual/execution-set.json` contract binds these identities.
+The replacement candidate may make only these two mode-preserving `0644` payload
+changes: add `python .ai/scripts/tests/test_runtime_skill_entries.py -v` to the
+governed `shell-assets.yaml` command inventory immediately after the existing
+code-reviewer routing check; and add the exact 82-byte
+`run-target-validation.py` line immediately after `expected_exit_two = {` in
+`validate-dependency-versions.py`. The latter reconciles the source-mode
+entrypoint registry gate with the already-present, byte-identical portable
+target-validation runner. It does not alter Matrix05's target mechanism: the
+direct runner does not invoke that dependency gate, and portable package checks
+invoke entrypoints only with `--help`. The execution-set contract binds both
+paths, anchors and additions. Compare every payload path, byte and mode, and
+require current source bytes to equal both replacement payloads; all other
+payload bytes, origin identities, case selection and runner remain equal.
+Generated package metadata must bind the new admitted archive and source.
+
+The original nine cases continue to validate against their Candidate10 matrix.
+They are not reported as a replacement-candidate matrix execution. Execute the
+replacement archive's incoming portable validator and all three direct-edge
+validators, affected source checks, the source release profile, candidate,
+independent review and required hosted/provider gates. Actual downstream
+adoption still needs its own target receipt and fresh independent audit.
+This exception avoids only repeating the unchanged nine-case execution; it
+does not waive those fresh gates. Any additional payload, runner, origin or
+evidence drift rejects this rebind and requires a new impact assessment and
+applicable execution. Other releases cannot inherit this bounded decision.
 
 Candidate CI and tag publication stage the tracked admitted assets unchanged.
 Before publishing a draft, and again afterward, the hosted workflow downloads

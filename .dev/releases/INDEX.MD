@@ -22,6 +22,7 @@ Historical `v*` directories below are records, never templates.
 
 ## Current Preparation
 
+- [REL-v0.18.0](v0.18.0/release.yaml): planned; [notes](v0.18.0/release-notes.md), [migration](v0.18.0/migration-guide.md), [phase checks](v0.18.0/release-phase-checks.yaml).
 - [REL-v0.17.0](v0.17.0/release.yaml): planned; [notes](v0.17.0/release-notes.md), [migration](v0.17.0/migration-guide.md), [phase checks](v0.17.0/release-phase-checks.yaml).
 
 ## Planned Phase Contracts

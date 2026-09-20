@@ -120,6 +120,7 @@ class SyntheticPackageRepo:
             "validate-ai-context-payload.py",
             "python-entrypoints.json",
             "python_prerequisites.py",
+            "runtime_skill_entries.py",
         ):
             (self.root / ".ai/scripts" / script).write_bytes((SCRIPTS / script).read_bytes())
         registry = json.loads((SCRIPTS / "python-entrypoints.json").read_text(encoding="utf-8"))
@@ -1976,6 +1977,7 @@ class UpgradeRoutePackageProjectionGwtTests(unittest.TestCase):
                 ROOT / ".ai/assets/skills/ai-context-upgrader",
                 fixture_assets / "ai-context-upgrader",
                 ignore=shutil.ignore_patterns("__pycache__"),
+                dirs_exist_ok=True,
             )
             shutil.copytree(
                 ROOT / ".ai/assets/skills/ai-context-governance",

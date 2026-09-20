@@ -29,6 +29,7 @@ ROLE_BINDINGS = {
     "problem-frame-sub-agent": "problem-frame-author",
     "context-translator": "ai-context-init",
 }
+SHARED_ROLE_IDS = {"context-translator"}
 REQUIRED_RECORD_FIELDS = {
     "role_execution_id",
     "role_asset_id",
@@ -158,10 +159,16 @@ def validate_role_execution(
 
     role_asset_id = mapping.get("role_asset_id")
     expected_owner = ROLE_BINDINGS.get(role_asset_id)
-    expected_path = ".ai/assets/sub-agent-role-prompts/{}/sub-agent.yaml".format(role_asset_id)
     if expected_owner is None:
         errors.append(f"{label}.role_asset_id must be an existing #118 binding")
     else:
+        expected_path = (
+            ".ai/assets/sub-agent-role-prompts/{}/sub-agent.yaml".format(role_asset_id)
+            if role_asset_id in SHARED_ROLE_IDS
+            else ".ai/assets/skills/{}/roles/{}/sub-agent.yaml".format(
+                expected_owner, role_asset_id
+            )
+        )
         if mapping.get("owning_skill") != expected_owner:
             errors.append(f"{label}.owning_skill must match the #118 role binding")
         if mapping.get("role_path") != expected_path:

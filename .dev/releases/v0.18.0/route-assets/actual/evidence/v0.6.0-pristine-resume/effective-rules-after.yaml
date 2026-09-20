@@ -1,0 +1,46 @@
+schema_version: '1.0'
+framework:
+  version: v0.18.0
+  commit: f566a6014f0942a15b28a39f0b2f5df3303e6014
+  selected_technology_profile: dotnet-backend
+catalogs:
+- catalog_id: selected-profile
+  path: .ai/assets/tech-stacks/dotnet-backend/engineering-rule-catalog.yaml
+  digest: ce49222006353b9eefdc5dee18d8ec5887c918a9569d3c23d988fe557110c952
+- catalog_id: shared
+  path: .ai/assets/shared/governance/engineering-rule-catalog.yaml
+  digest: f05c2b5d73737fa63e0830ff63e1be4c730b147d5eada083bb74480a489583a4
+target_authorities:
+  provenance:
+    path: .dev/ai-context/provenance.yaml
+    digest: e61c67b1c17e369b07328467bcf910a130dda76befd4e87a4119ab65d4f681cc
+  customizations:
+    path: .dev/ai-context/customizations.yaml
+    digest: 189a5d1d3fe423f91fbfd6e18190a1f3436536a80e2b6bcbd5ffd0df4fd1d67a
+rule_dispositions:
+- rule_id: AICTX-EVIDENCE-001
+  effective_disposition: baseline-effective
+  applicability: This isolated upgrade validation target uses repository evidence
+    for migration verification.
+  evidence:
+  - .dev/decisions/direct-v018-fixture.md
+  baseline_acceptance:
+    explicit: true
+    verification:
+      status: verified
+      evidence:
+      - .dev/decisions/direct-v018-fixture.md
+routing:
+- route_id: ROUTE-B97EA2A2955D6EA4A9EF14DA3E890C0BB5F9B71A065DD92290869F5954A750F7
+  selector:
+    capability: review
+    execution_mode: direct
+    technology_profile: dotnet-backend
+    file_type: python
+  required_rule_ids:
+  - AICTX-EVIDENCE-001
+  reported_not_applicable_rule_ids: []
+  packet:
+    path: .dev/ai-context/effective-rule-packets/r-xf7kfiuvlvxk.yaml
+    digest: d08ecc9b31263705962b1c7a371d84afc89638cb4790f184baf413b4845afc04
+target_state_digest: f8d70fcbef8589a0a13bac8452d31eeb18fc151fb9912dcf6c0f394348e309a8

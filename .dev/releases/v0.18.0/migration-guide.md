@@ -1,0 +1,73 @@
+# Migrate To v0.18.0
+
+## Supported Sources
+
+The required direct origins are v0.6.0, v0.9.0 and v0.17.0.
+Each origin must select its own exact previous `metadata/files.yaml` and use the
+incoming package's planner. No intermediate package may replace a required
+direct-origin acceptance case.
+
+## Before You Start
+
+1. Preserve target provenance, effective rules and semantic customizations.
+2. Start from a clean target checkout and verify the incoming archive checksum,
+   package identity and exact prior-version manifest.
+3. Review target-owned root instructions, private role changes, selected
+   messaging rules and target validation commands. Do not overwrite them with
+   source-repository facts.
+
+### Windows Path Budget
+
+Prefer a short checkout root for installation and upgrade trials. The measured
+v0.18.0 payload has a maximum relative path of 132 characters; its current
+destination-adjacent apply staging names reach 178 characters. A root of at
+most 80 characters keeps those measured paths below the traditional 260-character
+limit. This is a budget for these package paths, not a guarantee for arbitrary
+target files, outer worktrees or other tools' temporary files.
+
+Do not nest checkouts beneath long report, workflow and candidate directory
+names. Keep reports separate from a short trial checkout. Git for Windows
+`core.longpaths=true` helps supported Git operations, but does not establish
+long-path support for every later tool; Windows and applications have separate
+opt-in requirements. See the [Microsoft path-limit documentation](https://learn.microsoft.com/en-us/windows/win32/fileio/maximum-file-path-limitation)
+and [Git for Windows guidance](https://gitforwindows.org/git-cannot-create-a-file-or-directory-with-a-long-path.html).
+
+## Migration Steps
+
+1. For each supported origin, invoke the incoming
+   `plan-ai-context-package-apply.py` with `--target-root`, `--package-root`,
+   `--previous-version v0.6.0`, `v0.9.0` or `v0.17.0`, and the matching
+   `--previous-files`. Begin without `--apply` and retain the resulting plan.
+2. Reconcile private roles by stable role identifier. Their destination is
+   `.ai/assets/skills/<owner>/roles/<role-id>/`: code-reviewer owns its four
+   review roles, slice-implementer owns its twelve implementation/test roles,
+   and problem-frame-author owns its framing role. Shared roles stay under
+   `.ai/assets/sub-agent-role-prompts/`. Preserve customized source content until
+   destination reconciliation is complete; update active references together.
+3. Reconcile generated runtime entries through their canonical inputs. Do not
+   maintain an independent manual execution rule in Codex or Claude wrappers.
+4. Review transaction semantics against target topology. Preserve one completion
+   owner, native framework enrollment, transport versus business idempotency,
+   and target-selected operational policy. The guidance does not authorize
+   infrastructure replacement or business-transaction expansion.
+5. Bind the exact candidate provenance and customization documents to the
+   approved remediation decision before applying. Rebuild effective-rule state
+   and selected packets from reconciled authority.
+6. Run the target-owned validation profile, retain its actual receipt and obtain
+   independent post-upgrade verification before finalizing provenance. An
+   interrupted transaction uses its exact `--resume` or `--rollback` identity;
+   it is never reported as a completed upgrade.
+
+## Clean Installation
+
+Use the selected package's `INSTALL.md` and `ai-context-init`. Reusable root
+entries are seeds; repository identity and commands require target evidence.
+
+## Scope Boundaries
+
+- Routine bounded execution does not weaken release, adoption, authorization,
+  transaction durability or actual-execution evidence gates.
+- A private implementation helper may remain local only within the accepted
+  responsibility, behavior, dependency, lifetime and transaction boundaries.
+- Target-specific schemas, endpoints, message retention, retry policies,
+  package versions and operations remain target-owned.

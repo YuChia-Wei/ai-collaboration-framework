@@ -3,6 +3,7 @@
 
 from __future__ import annotations
 
+import argparse
 import re
 import sys
 from pathlib import Path, PurePosixPath
@@ -429,7 +430,9 @@ def current_byte_authorization_paths(
     return forwarded_paths
 
 
-def main() -> int:
+def main(argv: list[str] | None = None) -> int:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.parse_args(argv)
     try:
         (
             manifest_records,

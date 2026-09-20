@@ -2,6 +2,15 @@
 
 This package is a versioned framework payload, not a whole-repository overwrite.
 
+On Windows, use a short target checkout root, such as `C:/work/my-repo`, and
+store trial reports separately. Include destination-adjacent staging files and
+Git transaction artifacts when checking path lengths. A successful checkout
+with Git's `core.longpaths=true` does not prove that every later tool supports
+long paths. For the v0.18.0 package, a root of at most 80 characters keeps the
+measured payload and apply-staging paths below the traditional 260-character
+limit; target-specific files and other tools' temporary paths need their own
+budget.
+
 1. Start from a clean Git worktree and record the current commit.
 2. Use Python 3.11 or newer and install the checksum-governed target-tool dependency from the extracted envelope root:
 

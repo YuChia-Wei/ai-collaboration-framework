@@ -1,0 +1,31 @@
+schema_version: 2.0.0
+package_id: ai-context-dotnet-backend-v0.9.0
+profile_id: dotnet-backend
+version: 0.9.0
+release_id: REL-v0.9.0
+source:
+  repository: https://github.com/YuChia-Wei/ai-collaboration-prompts-dotnet-backend
+  ref: c14a3260cba7d0a9e2b67b73df9e221280d2d2ef
+  commit: c14a3260cba7d0a9e2b67b73df9e221280d2d2ef
+created_at: '2026-08-05T16:27:06Z'
+source_date_epoch: 1785947226
+payload:
+  root: payload
+  file_count: 652
+  sha256: 9ee8bf2175f9f58a7dd9a3a05c9987b599e1b0a8ffca617ad1e8ad8e5bc2de12
+compatibility:
+  minimum_governed_source: v0.8.0
+  breaking_changes: true
+  automatic_upgrade_sources:
+  - v0.8.0
+selection:
+  release_model: single-versioned-componentized-release
+  mandatory_components:
+  - software-development-core
+  - ai-context-lifecycle-core
+  profiles:
+  - dotnet-backend
+  providers:
+    repo-backlog:
+      enabled: false
+      preservation: preserve-existing-if-recorded

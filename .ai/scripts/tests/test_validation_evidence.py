@@ -7,6 +7,7 @@ import hashlib
 import importlib.util
 import json
 import os
+import shutil
 import subprocess
 import sys
 import tempfile
@@ -18,13 +19,93 @@ from typing import Any, Callable
 
 
 ROOT = Path(__file__).resolve().parents[3]
+SCRIPTS = ROOT / ".ai/scripts"
+sys.path.insert(0, str(SCRIPTS))
+
+import validation_process_supervisor as process_supervisor  # noqa: E402
+
+
 HELPER = ROOT / ".ai/scripts/validation-evidence.py"
 SUBJECT_HELPER = ROOT / ".ai/scripts/validation_subject.py"
 INVOCATION_ID = "fixture-invocation"
 
+DEFAULT_FULL_ARGUMENTS = ((), ("-v",))
+PRIVATE_PARALLEL_SHARDS_ARGUMENT = "--_run-default-full-shards"
+DEFAULT_FULL_MODULE_BUDGET_SECONDS = 180
+PARALLEL_FULL_SHARDS: tuple[tuple[str, tuple[str, ...]], ...] = (
+    ("core-bootstrap", (
+        "ValidationEvidenceCoreGwtTests",
+        "ValidationEvidenceBootstrapReadinessGwtTests",
+        "ValidationEvidenceShardSelectionGwtTests",
+    )),
+    ("readiness-admission", ("ValidationEvidenceReadinessGwtTests",)),
+    ("readiness-integrity-routine", (
+        "ValidationEvidenceReadinessIntegrityGwtTests",
+        "ValidationEvidenceRoutineContractGwtTests",
+    )),
+    ("terminal-publication-fault-matrix", ("ValidationEvidenceFaultMatrixGwtTests",)),
+)
+
 
 class ValidationEvidenceFixture(unittest.TestCase):
     """Shared isolated repository fixture; no test methods live here."""
+
+    @staticmethod
+    def _template_git(repo: Path, *arguments: str) -> None:
+        result = subprocess.run(
+            ["git", *arguments],
+            cwd=repo,
+            check=False,
+            capture_output=True,
+            text=True,
+            timeout=30,
+        )
+        if result.returncode != 0:
+            raise RuntimeError(
+                f"fixture template Git command failed ({' '.join(arguments)}): "
+                f"{result.stderr}"
+            )
+
+    @classmethod
+    def setUpClass(cls) -> None:
+        super().setUpClass()
+        cls._template_temporary = tempfile.TemporaryDirectory(
+            prefix="validation-evidence-template-"
+        )
+        template_root = Path(cls._template_temporary.name)
+        cls._base_template = template_root / "base"
+        cls._helper_template = template_root / "helper"
+        cls._base_template.mkdir()
+        template_inputs = cls._base_template / "inputs"
+        template_inputs.mkdir()
+        (template_inputs / "rule.md").write_text("governed bytes\n", encoding="utf-8")
+        (cls._base_template / ".gitignore").write_text("artifacts/\n", encoding="utf-8")
+        cls._template_git(cls._base_template, "init")
+        cls._template_git(cls._base_template, "config", "user.email", "validator@example.test")
+        cls._template_git(cls._base_template, "config", "user.name", "Validator Fixture")
+        cls._template_git(cls._base_template, "add", "inputs/rule.md", ".gitignore")
+        cls._template_git(cls._base_template, "commit", "-m", "fixture")
+        shutil.copytree(cls._base_template, cls._helper_template)
+        template_helper = cls._helper_template / ".ai/scripts/validation-evidence.py"
+        template_helper.parent.mkdir(parents=True, exist_ok=True)
+        template_helper.write_bytes(HELPER.read_bytes())
+        template_subject_helper = cls._helper_template / ".ai/scripts/validation_subject.py"
+        template_subject_helper.write_bytes(SUBJECT_HELPER.read_bytes())
+        cls._template_git(
+            cls._helper_template,
+            "add",
+            template_helper.relative_to(cls._helper_template).as_posix(),
+            template_subject_helper.relative_to(cls._helper_template).as_posix(),
+        )
+        cls._template_git(cls._helper_template, "commit", "-m", "tracked bootstrap helper fixture")
+
+    @classmethod
+    def tearDownClass(cls) -> None:
+        try:
+            cls._template_temporary.cleanup()
+        finally:
+            super().tearDownClass()
+
     def setUp(self) -> None:
         self.temporary = tempfile.TemporaryDirectory(prefix="validation-evidence-")
         self.repo = Path(self.temporary.name) / "repo"
@@ -73,8 +154,28 @@ class ValidationEvidenceFixture(unittest.TestCase):
         )
         self.assertEqual(0, result.returncode, result.stderr)
 
+    def _materialize_pristine_template(self, template: Path, *, includes_helper: bool) -> bool:
+        if self.git_initialized:
+            return False
+        if (
+            (self.inputs / "rule.md").read_bytes() != b"governed bytes\n"
+            or (self.repo / ".git").exists()
+            or (self.repo / ".gitignore").exists()
+            or (self.repo / ".ai").exists()
+        ):
+            return False
+        self.assertTrue(template.is_dir())
+        shutil.copytree(template / ".git", self.repo / ".git")
+        shutil.copy2(template / ".gitignore", self.repo / ".gitignore")
+        if includes_helper:
+            shutil.copytree(template / ".ai", self.repo / ".ai")
+        self.git_initialized = True
+        return True
+
     def initialize_git(self) -> None:
         if self.git_initialized:
+            return
+        if self._materialize_pristine_template(self._base_template, includes_helper=False):
             return
         self.git("init")
         self.git("config", "user.email", "validator@example.test")
@@ -85,6 +186,8 @@ class ValidationEvidenceFixture(unittest.TestCase):
         self.git_initialized = True
 
     def install_tracked_helper(self, message: str = "tracked bootstrap helper fixture") -> None:
+        if self._materialize_pristine_template(self._helper_template, includes_helper=True):
+            return
         self.initialize_git()
         fixture_helper = self.repo / ".ai/scripts/validation-evidence.py"
         fixture_helper.parent.mkdir(parents=True, exist_ok=True)
@@ -207,6 +310,39 @@ class ValidationEvidenceFixture(unittest.TestCase):
         self.assertEqual(0, result.returncode, result.stderr)
         fingerprint, reusable, _ = result.stdout.rstrip("\r\n").split("\t")
         return fingerprint, reusable == "true"
+
+    def prepare_lookup_rows(
+        self,
+        specs: list[dict[str, Any]],
+        *,
+        profile: str,
+        name: str,
+    ) -> dict[str, tuple[str, bool]]:
+        self.assertTrue(specs)
+        self.assertTrue(all("fingerprint" not in spec for spec in specs))
+        selection = self.logs / name
+        selection.write_text(
+            "\n".join(
+                f"{spec['id']}\t{spec.get('version', 'validator-v1')}\tinputs\treuse-by-input"
+                for spec in specs
+            ) + "\n",
+            encoding="utf-8",
+        )
+        result = self.helper(
+            "prepare", "--repo", str(self.repo), "--cache", str(self.cache),
+            "--profile", profile, "--environment-class", "windows-native",
+            "--selection", str(selection),
+        )
+        self.assertEqual(0, result.returncode, result.stderr)
+        lines = result.stdout.splitlines()
+        self.assertEqual(len(specs), len(lines))
+        prepared: dict[str, tuple[str, bool]] = {}
+        for spec, line in zip(specs, lines, strict=True):
+            validator_id, fingerprint, reusable, _log_ref = line.split("\t", 3)
+            self.assertEqual(spec["id"], validator_id)
+            self.assertNotIn(validator_id, prepared)
+            prepared[validator_id] = (fingerprint, reusable == "true")
+        return prepared
 
     def record_current(
         self,
@@ -741,6 +877,33 @@ class ValidationEvidenceFixture(unittest.TestCase):
             "id": "fixture-check", "outcome": "passed",
             "disposition": "executed", "enforcement": "required",
         }]
+        automatic_specs = [spec for spec in specs if "fingerprint" not in spec]
+        automatic_ids = [str(spec["id"]) for spec in automatic_specs]
+        batch_lookups: dict[str, tuple[str, bool]] | None = None
+        if automatic_specs and len(automatic_ids) == len(set(automatic_ids)):
+            initial_lookups = self.prepare_lookup_rows(
+                automatic_specs,
+                profile=profile,
+                name="prepare-initial-selection.tsv",
+            )
+            for spec in automatic_specs:
+                validator_id = str(spec["id"])
+                disposition = str(spec["disposition"])
+                cache_hit = bool(spec.get("cache_hit", disposition == "reused"))
+                fingerprint, reusable = initial_lookups[validator_id]
+                if disposition == "reused" and cache_hit and not reusable:
+                    self.seed_cache_source(
+                        snapshot,
+                        validator_id=validator_id,
+                        version=str(spec.get("version", "validator-v1")),
+                        profile=profile,
+                        fingerprint=fingerprint,
+                    )
+            batch_lookups = self.prepare_lookup_rows(
+                automatic_specs,
+                profile=profile,
+                name="prepare-final-selection.tsv",
+            )
         changed_paths_content = b"inputs/rule.md\n"
         changed_paths_digest = hashlib.sha256(changed_paths_content).hexdigest()
         events: list[str] = []
@@ -754,6 +917,8 @@ class ValidationEvidenceFixture(unittest.TestCase):
             if "fingerprint" in spec:
                 fingerprint = str(spec["fingerprint"])
                 reusable = False
+            elif batch_lookups is not None:
+                fingerprint, reusable = batch_lookups[validator_id]
             else:
                 fingerprint, reusable = self.lookup(
                     validator_id=validator_id, version=version, profile=profile
@@ -766,18 +931,7 @@ class ValidationEvidenceFixture(unittest.TestCase):
             outcome = spec["outcome"]
             cache_hit = spec.get("cache_hit", disposition == "reused")
             if disposition == "reused" and cache_hit and not reusable:
-                self.seed_cache_source(
-                    snapshot,
-                    validator_id=validator_id,
-                    version=version,
-                    profile=profile,
-                    fingerprint=fingerprint,
-                )
-                same_fingerprint, reusable = self.lookup(
-                    validator_id=validator_id, version=version, profile=profile
-                )
-                self.assertEqual(fingerprint, same_fingerprint)
-                self.assertTrue(reusable)
+                self.fail("prepared cache source was not reusable after canonical final prepare")
             result_path: Path | None = spec.get("result_path")
             if disposition == "reused" and not cache_hit and result_path is not None:
                 preparation_results.append(result_path)
@@ -1582,6 +1736,9 @@ class ValidationEvidenceReadinessGwtTests(ValidationEvidenceFixture):
         self.assertTrue(receipt["cleanup"]["tree_empty"])
         self.assertTrue(receipt["log"]["sealed"])
 
+class ValidationEvidenceReadinessIntegrityGwtTests(ValidationEvidenceFixture):
+    """Readiness integrity cases split only for isolated default-full execution."""
+
     def test_gwt_018_given_executed_evidence_when_sealed_then_wrapper_raw_receipt_and_log_are_required(self) -> None:
         paths = self.prepare_invocation()
         sealed, seal = self.seal_prepared(paths)
@@ -2073,6 +2230,289 @@ class ValidationEvidenceReadinessGwtTests(ValidationEvidenceFixture):
         self.assertFalse(rejected_output.exists())
 
 
+class ValidationEvidenceFaultMatrixGwtTests(ValidationEvidenceFixture):
+    """Retained terminal-publication fault matrix; isolated as one default-full shard."""
+
+    def test_gwt_030_given_exact_supervised_controls_and_staged_manifest_when_published_then_terminal_pair_is_reusable(self) -> None:
+        self.install_tracked_helper("tracked control helper fixture")
+        bootstrap_snapshot = self.logs / "fast-snapshot-pre.json"
+        bootstrap_target = [
+            sys.executable,
+            ".ai/scripts/validation-evidence.py",
+            "verify-snapshot",
+            "--repo", ".",
+            "--snapshot", bootstrap_snapshot.relative_to(self.repo).as_posix(),
+        ]
+        bootstrapped, bootstrap_log, bootstrap_result = self.supervise_bootstrap(
+            bootstrap_snapshot,
+            *bootstrap_target,
+            profile="fast",
+            name="bootstrap-snapshot-control",
+        )
+        self.assertEqual(0, bootstrapped.returncode, bootstrapped.stderr)
+        bootstrap_receipt = json.loads(bootstrap_result.read_text(encoding="utf-8"))
+        self.assertTrue(bootstrap_receipt["bootstrap"]["target_launched"])
+        self.assertEqual(0, bootstrap_receipt["bootstrap"]["target_exit_code"])
+        bootstrap_verified = self.helper(
+            "verify-supervision-result", "--repo", str(self.repo),
+            "--snapshot", str(bootstrap_snapshot),
+            "--result-path", str(bootstrap_result),
+        )
+        self.assertEqual(0, bootstrap_verified.returncode, bootstrap_verified.stderr)
+        self.assertEqual("completed\ttrue\t0", bootstrap_verified.stdout.strip())
+        paths = self.prepare_invocation(profile="fast", snapshot=bootstrap_snapshot)
+        controls = dict(paths["control_results"])  # type: ignore[arg-type]
+        controls["bootstrap-snapshot"] = bootstrap_result
+        paths["control_results"] = controls  # type: ignore[assignment]
+        unbound, unbound_stage = self.seal_prepared(
+            paths,
+            output_name="unbound-staged-manifest.json",
+            publication_name="unbound-published-manifest.json",
+        )
+        self.assertNotEqual(0, unbound.returncode)
+        self.assertFalse(unbound_stage.exists())
+        self.assertFalse(self.cache.exists())
+        preexisting_stage = self.logs / "preexisting-stage.json"
+        preexisting_final = self.logs / "preexisting-final.json"
+        preexisting_terminal_result = self.logs / "preexisting-terminal-result.json"
+        preexisting_terminal_log = self.logs / "preexisting-terminal.log"
+        preexisting_final.write_bytes(b"must not be overwritten\n")
+        preexisting = self.helper(*self.seal_arguments(
+            paths,
+            outcome="passed",
+            output=preexisting_stage,
+            publication_output=preexisting_final,
+            terminal_result=preexisting_terminal_result,
+            terminal_log=preexisting_terminal_log,
+        ))
+        self.assertNotEqual(0, preexisting.returncode)
+        self.assertFalse(preexisting_stage.exists())
+        self.assertEqual(b"must not be overwritten\n", preexisting_final.read_bytes())
+        self.assertFalse(self.cache.exists())
+        preexisting_final.unlink()
+        staged_name = "staged-terminal-manifest.json"
+        published_name = "published-terminal-manifest.json"
+        staged = self.logs / staged_name
+        published = self.logs / published_name
+        terminal_log = self.logs / "terminal-seal.log"
+        terminal_result = self.logs / "terminal-seal-result.json"
+        seal_arguments = self.seal_arguments(
+            paths,
+            outcome="passed",
+            output=staged,
+            publication_output=published,
+            terminal_result=terminal_result,
+            terminal_log=terminal_log,
+        )
+        terminal_command = [
+            sys.executable,
+            ".ai/scripts/validation-evidence.py",
+            *seal_arguments,
+        ]
+        sealed, observed_terminal_log, observed_terminal_result = self.supervise(
+            paths["snapshot"],
+            *terminal_command,
+            name="terminal-seal",
+        )
+        self.assertEqual(
+            0,
+            sealed.returncode,
+            sealed.stderr
+            + (
+                observed_terminal_log.read_text(encoding="utf-8", errors="replace")
+                if observed_terminal_log.is_file()
+                else "missing terminal log"
+            ),
+        )
+        self.assertEqual(terminal_log, observed_terminal_log)
+        self.assertEqual(terminal_result, observed_terminal_result)
+        self.assertTrue(staged.is_file())
+        self.assertFalse(published.exists())
+        self.assertFalse(self.lookup(profile="fast")[1])
+        manifest = json.loads(staged.read_text(encoding="utf-8"))
+        self.assertEqual(
+            [
+                "bootstrap-snapshot", "finalize", "post-snapshot", "prepare",
+                "summarize", "workflow-summary",
+            ],
+            [item["role"] for item in manifest["control_plane"]],
+        )
+        terminal_declaration = manifest["terminal_supervision"]
+        terminal_receipt = json.loads(terminal_result.read_text(encoding="utf-8"))
+        self.assertEqual("supervised", terminal_declaration["mode"])
+        self.assertEqual(
+            terminal_result.relative_to(self.repo).as_posix(),
+            terminal_declaration["result_ref"],
+        )
+        self.assertEqual(
+            terminal_log.relative_to(self.repo).as_posix(),
+            terminal_declaration["log_ref"],
+        )
+        self.assertEqual(
+            terminal_receipt["command"]["effective_argv_digest"],
+            terminal_declaration["expected_effective_argv_digest"],
+        )
+        artifact_refs = {item["ref"] for item in manifest["artifacts"]}
+        for path in (
+            bootstrap_result,
+            bootstrap_log,
+            Path(str(bootstrap_result) + ".process.json"),
+            Path(str(bootstrap_result) + ".bootstrap.json"),
+        ):
+            self.assertIn(path.relative_to(self.repo).as_posix(), artifact_refs)
+        cache_value = json.loads(self.cache.read_text(encoding="utf-8"))
+        source_manifest_refs = {
+            entry["reuse_source"]["source_manifest"]["ref"]
+            for entry in cache_value["entries"].values()
+        }
+        self.assertEqual({published.relative_to(self.repo).as_posix()}, source_manifest_refs)
+        held_before_publication = self.logs / "terminal-seal-result.before-publication"
+        terminal_result.rename(held_before_publication)
+        self.assertFalse(published.exists())
+        self.assertFalse(self.lookup(profile="fast")[1])
+        held_before_publication.rename(terminal_result)
+        terminal_raw = Path(str(terminal_result) + ".process.json")
+        terminal_raw_content = terminal_raw.read_bytes()
+        terminal_raw.write_text("{}\n", encoding="utf-8")
+        self.assertFalse(published.exists())
+        self.assertFalse(self.lookup(profile="fast")[1])
+        tampered_terminal = self.helper(
+            "verify-terminal-invocation", "--repo", str(self.repo),
+            "--snapshot", str(paths["snapshot"]), "--manifest", str(staged),
+            "--result-path", str(terminal_result), "--", *terminal_command,
+        )
+        self.assertNotEqual(0, tampered_terminal.returncode)
+        terminal_raw.write_bytes(terminal_raw_content)
+        verified_terminal = self.helper(
+            "verify-supervision-result", "--repo", str(self.repo),
+            "--snapshot", str(paths["snapshot"]),
+            "--result-path", str(terminal_result),
+        )
+        self.assertEqual(0, verified_terminal.returncode, verified_terminal.stderr)
+        staged_content = staged.read_bytes()
+        verified_invocation = self.helper(
+            "verify-terminal-invocation", "--repo", str(self.repo),
+            "--snapshot", str(paths["snapshot"]), "--manifest", str(staged),
+            "--result-path", str(terminal_result), "--", *terminal_command,
+        )
+        self.assertEqual(0, verified_invocation.returncode, verified_invocation.stderr)
+        self.assertEqual(
+            hashlib.sha256(staged_content).hexdigest(),
+            verified_invocation.stdout.strip(),
+        )
+        wrong_terminal_argv = self.helper(
+            "verify-terminal-invocation", "--repo", str(self.repo),
+            "--snapshot", str(paths["snapshot"]), "--manifest", str(staged),
+            "--result-path", str(terminal_result), "--", *terminal_command,
+            "--unexpected",
+        )
+        self.assertNotEqual(0, wrong_terminal_argv.returncode)
+        forged_manifest = json.loads(staged_content)
+        forged_manifest["terminal_supervision"][
+            "expected_effective_argv_digest"
+        ] = "0" * 64
+        forged_core = {
+            key: value
+            for key, value in forged_manifest.items()
+            if key != "manifest_digest"
+        }
+        forged_manifest["manifest_digest"] = self.canonical_digest(forged_core)
+        staged.write_bytes(self.json_bytes(forged_manifest))
+        forged_terminal = self.helper(
+            "verify-terminal-invocation", "--repo", str(self.repo),
+            "--snapshot", str(paths["snapshot"]), "--manifest", str(staged),
+            "--result-path", str(terminal_result), "--", *terminal_command,
+        )
+        self.assertNotEqual(0, forged_terminal.returncode)
+        staged.write_bytes(staged_content)
+        published.write_bytes(b"racing publication must survive\n")
+        with self.assertRaises(FileExistsError):
+            os.link(staged, published)
+        self.assertEqual(b"racing publication must survive\n", published.read_bytes())
+        self.assertEqual(staged_content, staged.read_bytes())
+        staged.unlink()
+        published.unlink()
+        self.assertFalse(staged.exists())
+        self.assertFalse(published.exists())
+        self.assertFalse(self.lookup(profile="fast")[1])
+        staged.write_bytes(staged_content)
+        os.link(staged, published)
+        staged.unlink()
+        self.assertTrue(self.lookup(profile="fast")[1])
+        held_terminal_result = self.logs / "terminal-seal-result.held"
+        terminal_result.rename(held_terminal_result)
+        self.assertFalse(self.lookup(profile="fast")[1])
+        held_terminal_result.rename(terminal_result)
+        self.assertTrue(self.lookup(profile="fast")[1])
+        terminal_raw.write_text("{}\n", encoding="utf-8")
+        self.assertFalse(self.lookup(profile="fast")[1])
+        terminal_raw.write_bytes(terminal_raw_content)
+        self.assertTrue(self.lookup(profile="fast")[1])
+        published.write_text("tampered publication\n", encoding="utf-8")
+        self.assertFalse(self.lookup(profile="fast")[1])
+        published.unlink()
+
+        missing_paths = dict(paths)
+        missing_controls = dict(controls)
+        missing_controls.pop("summarize")
+        missing_paths["control_results"] = missing_controls  # type: ignore[assignment]
+        missing, missing_output = self.seal_prepared(
+            missing_paths, output_name="missing-control.json"
+        )
+        self.assertNotEqual(0, missing.returncode)
+        self.assertFalse(missing_output.exists())
+
+        duplicate_output = self.logs / "duplicate-control.json"
+        duplicate_arguments = self.seal_arguments(
+            paths, outcome="passed", output=duplicate_output
+        )
+        duplicate_arguments.extend((
+            "--control-result", "finalize", str(controls["finalize"]),
+        ))
+        duplicate = self.helper(*duplicate_arguments)
+        self.assertNotEqual(0, duplicate.returncode)
+        self.assertFalse(duplicate_output.exists())
+
+        unknown_output = self.logs / "unknown-control.json"
+        unknown_arguments = self.seal_arguments(
+            paths, outcome="passed", output=unknown_output
+        )
+        unknown_arguments.extend((
+            "--control-result", "unknown-role", str(controls["finalize"]),
+        ))
+        unknown = self.helper(*unknown_arguments)
+        self.assertNotEqual(0, unknown.returncode)
+        self.assertFalse(unknown_output.exists())
+
+        wrong_argv = self.control_argv(
+            "summarize", paths, profile="fast", preparation_python=None
+        )
+        wrong_argv[-1] = "wrong-profile"
+        safe_python = (
+            f"<absolute-path>/{Path(sys.executable).name}"
+            if Path(sys.executable).is_absolute()
+            else sys.executable
+        )
+        wrong_log = self.logs / "wrong-control.log"
+        wrong_log.write_bytes(b"")
+        wrong_result = self.write_receipt(
+            paths["snapshot"],
+            log_path=wrong_log,
+            name="wrong-control",
+            safe_argv=[safe_python, *wrong_argv[1:]],
+            effective_argv=wrong_argv,
+            accepted_child_exit_codes=[0],
+        )
+        wrong_paths = dict(paths)
+        wrong_controls = dict(controls)
+        wrong_controls["summarize"] = wrong_result
+        wrong_paths["control_results"] = wrong_controls  # type: ignore[assignment]
+        wrong, wrong_output = self.seal_prepared(
+            wrong_paths, output_name="wrong-control-argv.json"
+        )
+        self.assertNotEqual(0, wrong.returncode)
+        self.assertFalse(wrong_output.exists())
+
 class ValidationEvidenceBootstrapReadinessGwtTests(ValidationEvidenceFixture):
     """Focused bootstrap admission and containment proofs; not a routine profile target."""
 
@@ -2394,7 +2834,7 @@ class ValidationEvidenceRoutineContractGwtTests(ValidationEvidenceFixture):
             )
             self.assertFalse(evidence_output.exists())
 
-    def test_gwt_030_given_exact_supervised_controls_and_staged_manifest_when_published_then_terminal_pair_is_reusable(self) -> None:
+    def test_gwt_030_given_supervised_terminal_publication_when_published_then_reuse_is_authorized(self) -> None:
         self.install_tracked_helper("tracked control helper fixture")
         bootstrap_snapshot = self.logs / "fast-snapshot-pre.json"
         bootstrap_target = [
@@ -2416,11 +2856,11 @@ class ValidationEvidenceRoutineContractGwtTests(ValidationEvidenceFixture):
         self.assertEqual(0, bootstrap_receipt["bootstrap"]["target_exit_code"])
         bootstrap_verified = self.helper(
             "verify-supervision-result", "--repo", str(self.repo),
-            "--snapshot", str(bootstrap_snapshot),
-            "--result-path", str(bootstrap_result),
+            "--snapshot", str(bootstrap_snapshot), "--result-path", str(bootstrap_result),
         )
         self.assertEqual(0, bootstrap_verified.returncode, bootstrap_verified.stderr)
         self.assertEqual("completed\ttrue\t0", bootstrap_verified.stdout.strip())
+
         paths = self.prepare_invocation(profile="fast", snapshot=bootstrap_snapshot)
         controls = dict(paths["control_results"])  # type: ignore[arg-type]
         controls["bootstrap-snapshot"] = bootstrap_result
@@ -2433,28 +2873,9 @@ class ValidationEvidenceRoutineContractGwtTests(ValidationEvidenceFixture):
         self.assertNotEqual(0, unbound.returncode)
         self.assertFalse(unbound_stage.exists())
         self.assertFalse(self.cache.exists())
-        preexisting_stage = self.logs / "preexisting-stage.json"
-        preexisting_final = self.logs / "preexisting-final.json"
-        preexisting_terminal_result = self.logs / "preexisting-terminal-result.json"
-        preexisting_terminal_log = self.logs / "preexisting-terminal.log"
-        preexisting_final.write_bytes(b"must not be overwritten\n")
-        preexisting = self.helper(*self.seal_arguments(
-            paths,
-            outcome="passed",
-            output=preexisting_stage,
-            publication_output=preexisting_final,
-            terminal_result=preexisting_terminal_result,
-            terminal_log=preexisting_terminal_log,
-        ))
-        self.assertNotEqual(0, preexisting.returncode)
-        self.assertFalse(preexisting_stage.exists())
-        self.assertEqual(b"must not be overwritten\n", preexisting_final.read_bytes())
-        self.assertFalse(self.cache.exists())
-        preexisting_final.unlink()
-        staged_name = "staged-terminal-manifest.json"
-        published_name = "published-terminal-manifest.json"
-        staged = self.logs / staged_name
-        published = self.logs / published_name
+
+        staged = self.logs / "staged-terminal-manifest.json"
+        published = self.logs / "published-terminal-manifest.json"
         terminal_log = self.logs / "terminal-seal.log"
         terminal_result = self.logs / "terminal-seal-result.json"
         seal_arguments = self.seal_arguments(
@@ -2490,6 +2911,7 @@ class ValidationEvidenceRoutineContractGwtTests(ValidationEvidenceFixture):
         self.assertTrue(staged.is_file())
         self.assertFalse(published.exists())
         self.assertFalse(self.lookup(profile="fast")[1])
+
         manifest = json.loads(staged.read_text(encoding="utf-8"))
         self.assertEqual(
             [
@@ -2521,33 +2943,9 @@ class ValidationEvidenceRoutineContractGwtTests(ValidationEvidenceFixture):
             Path(str(bootstrap_result) + ".bootstrap.json"),
         ):
             self.assertIn(path.relative_to(self.repo).as_posix(), artifact_refs)
-        cache_value = json.loads(self.cache.read_text(encoding="utf-8"))
-        source_manifest_refs = {
-            entry["reuse_source"]["source_manifest"]["ref"]
-            for entry in cache_value["entries"].values()
-        }
-        self.assertEqual({published.relative_to(self.repo).as_posix()}, source_manifest_refs)
-        held_before_publication = self.logs / "terminal-seal-result.before-publication"
-        terminal_result.rename(held_before_publication)
-        self.assertFalse(published.exists())
-        self.assertFalse(self.lookup(profile="fast")[1])
-        held_before_publication.rename(terminal_result)
-        terminal_raw = Path(str(terminal_result) + ".process.json")
-        terminal_raw_content = terminal_raw.read_bytes()
-        terminal_raw.write_text("{}\n", encoding="utf-8")
-        self.assertFalse(published.exists())
-        self.assertFalse(self.lookup(profile="fast")[1])
-        tampered_terminal = self.helper(
-            "verify-terminal-invocation", "--repo", str(self.repo),
-            "--snapshot", str(paths["snapshot"]), "--manifest", str(staged),
-            "--result-path", str(terminal_result), "--", *terminal_command,
-        )
-        self.assertNotEqual(0, tampered_terminal.returncode)
-        terminal_raw.write_bytes(terminal_raw_content)
         verified_terminal = self.helper(
             "verify-supervision-result", "--repo", str(self.repo),
-            "--snapshot", str(paths["snapshot"]),
-            "--result-path", str(terminal_result),
+            "--snapshot", str(paths["snapshot"]), "--result-path", str(terminal_result),
         )
         self.assertEqual(0, verified_terminal.returncode, verified_terminal.stderr)
         staged_content = staged.read_bytes()
@@ -2561,118 +2959,18 @@ class ValidationEvidenceRoutineContractGwtTests(ValidationEvidenceFixture):
             hashlib.sha256(staged_content).hexdigest(),
             verified_invocation.stdout.strip(),
         )
-        wrong_terminal_argv = self.helper(
-            "verify-terminal-invocation", "--repo", str(self.repo),
-            "--snapshot", str(paths["snapshot"]), "--manifest", str(staged),
-            "--result-path", str(terminal_result), "--", *terminal_command,
-            "--unexpected",
-        )
-        self.assertNotEqual(0, wrong_terminal_argv.returncode)
-        forged_manifest = json.loads(staged_content)
-        forged_manifest["terminal_supervision"][
-            "expected_effective_argv_digest"
-        ] = "0" * 64
-        forged_core = {
-            key: value
-            for key, value in forged_manifest.items()
-            if key != "manifest_digest"
+        cache_value = json.loads(self.cache.read_text(encoding="utf-8"))
+        source_manifest_refs = {
+            entry["reuse_source"]["source_manifest"]["ref"]
+            for entry in cache_value["entries"].values()
         }
-        forged_manifest["manifest_digest"] = self.canonical_digest(forged_core)
-        staged.write_bytes(self.json_bytes(forged_manifest))
-        forged_terminal = self.helper(
-            "verify-terminal-invocation", "--repo", str(self.repo),
-            "--snapshot", str(paths["snapshot"]), "--manifest", str(staged),
-            "--result-path", str(terminal_result), "--", *terminal_command,
-        )
-        self.assertNotEqual(0, forged_terminal.returncode)
-        staged.write_bytes(staged_content)
-        published.write_bytes(b"racing publication must survive\n")
-        with self.assertRaises(FileExistsError):
-            os.link(staged, published)
-        self.assertEqual(b"racing publication must survive\n", published.read_bytes())
-        self.assertEqual(staged_content, staged.read_bytes())
-        staged.unlink()
-        published.unlink()
-        self.assertFalse(staged.exists())
-        self.assertFalse(published.exists())
-        self.assertFalse(self.lookup(profile="fast")[1])
-        staged.write_bytes(staged_content)
+        self.assertEqual({published.relative_to(self.repo).as_posix()}, source_manifest_refs)
+
         os.link(staged, published)
         staged.unlink()
+        self.assertEqual(staged_content, published.read_bytes())
         self.assertTrue(self.lookup(profile="fast")[1])
-        held_terminal_result = self.logs / "terminal-seal-result.held"
-        terminal_result.rename(held_terminal_result)
-        self.assertFalse(self.lookup(profile="fast")[1])
-        held_terminal_result.rename(terminal_result)
-        self.assertTrue(self.lookup(profile="fast")[1])
-        terminal_raw.write_text("{}\n", encoding="utf-8")
-        self.assertFalse(self.lookup(profile="fast")[1])
-        terminal_raw.write_bytes(terminal_raw_content)
-        self.assertTrue(self.lookup(profile="fast")[1])
-        published.write_text("tampered publication\n", encoding="utf-8")
-        self.assertFalse(self.lookup(profile="fast")[1])
-        published.unlink()
 
-        missing_paths = dict(paths)
-        missing_controls = dict(controls)
-        missing_controls.pop("summarize")
-        missing_paths["control_results"] = missing_controls  # type: ignore[assignment]
-        missing, missing_output = self.seal_prepared(
-            missing_paths, output_name="missing-control.json"
-        )
-        self.assertNotEqual(0, missing.returncode)
-        self.assertFalse(missing_output.exists())
-
-        duplicate_output = self.logs / "duplicate-control.json"
-        duplicate_arguments = self.seal_arguments(
-            paths, outcome="passed", output=duplicate_output
-        )
-        duplicate_arguments.extend((
-            "--control-result", "finalize", str(controls["finalize"]),
-        ))
-        duplicate = self.helper(*duplicate_arguments)
-        self.assertNotEqual(0, duplicate.returncode)
-        self.assertFalse(duplicate_output.exists())
-
-        unknown_output = self.logs / "unknown-control.json"
-        unknown_arguments = self.seal_arguments(
-            paths, outcome="passed", output=unknown_output
-        )
-        unknown_arguments.extend((
-            "--control-result", "unknown-role", str(controls["finalize"]),
-        ))
-        unknown = self.helper(*unknown_arguments)
-        self.assertNotEqual(0, unknown.returncode)
-        self.assertFalse(unknown_output.exists())
-
-        wrong_argv = self.control_argv(
-            "summarize", paths, profile="fast", preparation_python=None
-        )
-        wrong_argv[-1] = "wrong-profile"
-        safe_python = (
-            f"<absolute-path>/{Path(sys.executable).name}"
-            if Path(sys.executable).is_absolute()
-            else sys.executable
-        )
-        wrong_log = self.logs / "wrong-control.log"
-        wrong_log.write_bytes(b"")
-        wrong_result = self.write_receipt(
-            paths["snapshot"],
-            log_path=wrong_log,
-            name="wrong-control",
-            safe_argv=[safe_python, *wrong_argv[1:]],
-            effective_argv=wrong_argv,
-            accepted_child_exit_codes=[0],
-        )
-        wrong_paths = dict(paths)
-        wrong_controls = dict(controls)
-        wrong_controls["summarize"] = wrong_result
-        wrong_paths["control_results"] = wrong_controls  # type: ignore[assignment]
-        wrong, wrong_output = self.seal_prepared(
-            wrong_paths, output_name="wrong-control-argv.json"
-        )
-        self.assertNotEqual(0, wrong.returncode)
-        self.assertFalse(wrong_output.exists())
 
     def test_gwt_035_given_repository_relative_finalize_refs_when_supervised_then_snapshot_resolves_from_repository_root(self) -> None:
         self.install_tracked_helper("tracked repository-relative finalize fixture")
@@ -2766,5 +3064,229 @@ class ValidationEvidenceRoutineContractGwtTests(ValidationEvidenceFixture):
             record["execution"]["snapshot"]["identity_digest"],
         )
 
-if __name__ == "__main__":
+
+class ValidationEvidenceShardSelectionGwtTests(unittest.TestCase):
+    """Default-full shard selection must reject incomplete or overlapping coverage."""
+
+    def test_gwt_038_given_missing_duplicate_or_extra_shard_membership_when_prepared_then_launch_is_rejected(self) -> None:
+        discovered = {"module.Case.test_alpha", "module.Case.test_beta"}
+        scenarios = (
+            (
+                "missing",
+                (("first", {"module.Case.test_alpha"}),),
+                "missing",
+            ),
+            (
+                "duplicate",
+                (
+                    ("first", {"module.Case.test_alpha"}),
+                    ("second", {"module.Case.test_alpha", "module.Case.test_beta"}),
+                ),
+                "duplicate",
+            ),
+            (
+                "extra",
+                (
+                    (
+                        "first",
+                        {
+                            "module.Case.test_alpha",
+                            "module.Case.test_beta",
+                            "module.Case.test_unknown",
+                        },
+                    ),
+                ),
+                "extra",
+            ),
+        )
+        for name, shards, expected in scenarios:
+            with self.subTest(case=name):
+                with self.assertRaisesRegex(RuntimeError, expected):
+                    _assert_complete_disjoint_shard_coverage(discovered, shards)
+
+
+def _is_default_full_invocation(arguments: list[str]) -> bool:
+    return tuple(arguments) in DEFAULT_FULL_ARGUMENTS
+
+
+def _flatten_test_ids(suite: unittest.TestSuite | unittest.TestCase) -> set[str]:
+    if isinstance(suite, unittest.TestCase):
+        return {suite.id()}
+    result: set[str] = set()
+    for item in suite:
+        result.update(_flatten_test_ids(item))
+    return result
+
+
+def _assert_complete_disjoint_shard_coverage(
+    discovered: set[str],
+    shard_membership: tuple[tuple[str, set[str]], ...],
+) -> None:
+    if not discovered:
+        raise RuntimeError("parallel shard coverage rejected: discovered test set is empty")
+    owners: dict[str, list[str]] = {}
+    for shard_name, test_ids in shard_membership:
+        for test_id in test_ids:
+            owners.setdefault(test_id, []).append(shard_name)
+    selected = set(owners)
+    missing = sorted(discovered - selected)
+    duplicate = sorted(test_id for test_id, names in owners.items() if len(names) > 1)
+    extra = sorted(selected - discovered)
+    if missing or duplicate or extra:
+        raise RuntimeError(
+            "parallel shard coverage rejected: "
+            f"missing={missing}; duplicate={duplicate}; extra={extra}"
+        )
+
+
+def _validated_parallel_full_shards() -> tuple[tuple[str, tuple[str, ...]], ...]:
+    module = sys.modules[__name__]
+    loader = unittest.defaultTestLoader
+    discovered = _flatten_test_ids(loader.loadTestsFromModule(module))
+    membership: list[tuple[str, set[str]]] = []
+    selected_classes: set[str] = set()
+    for shard_name, selectors in PARALLEL_FULL_SHARDS:
+        shard_test_ids: set[str] = set()
+        for selector in selectors:
+            if selector in selected_classes:
+                raise RuntimeError(
+                    "parallel shard coverage rejected: duplicate selector "
+                    f"{selector} in {shard_name}"
+                )
+            selected_classes.add(selector)
+            candidate = getattr(module, selector, None)
+            if (
+                not isinstance(candidate, type)
+                or not issubclass(candidate, unittest.TestCase)
+            ):
+                raise RuntimeError(
+                    "parallel shard coverage rejected: unknown unittest selector "
+                    f"{selector} in {shard_name}"
+                )
+            case_ids = _flatten_test_ids(loader.loadTestsFromTestCase(candidate))
+            if not case_ids:
+                raise RuntimeError(
+                    "parallel shard coverage rejected: selector has no test cases "
+                    f"{selector} in {shard_name}"
+                )
+            shard_test_ids.update(case_ids)
+        membership.append((shard_name, shard_test_ids))
+    _assert_complete_disjoint_shard_coverage(discovered, tuple(membership))
+    return PARALLEL_FULL_SHARDS
+
+
+def _reap_direct_shard_roots(children: list[tuple[str, subprocess.Popen[bytes]]]) -> None:
+    for _name, child in children:
+        if child.poll() is None:
+            try:
+                child.terminate()
+            except OSError:
+                pass
+    for _name, child in children:
+        if child.poll() is None:
+            try:
+                child.wait(timeout=1)
+            except subprocess.TimeoutExpired:
+                try:
+                    child.kill()
+                except OSError:
+                    pass
+                try:
+                    child.wait(timeout=1)
+                except subprocess.TimeoutExpired:
+                    pass
+
+
+def run_parallel_shards(
+    shards: tuple[tuple[str, tuple[str, ...]], ...],
+    unittest_arguments: tuple[str, ...],
+) -> int:
+    _validated_parallel_full_shards()
+    children: list[tuple[str, subprocess.Popen[bytes]]] = []
+    try:
+        for name, selectors in shards:
+            print(f"===== validation-evidence shard started: {name} =====", flush=True)
+            child = subprocess.Popen(
+                [
+                    sys.executable,
+                    str(Path(__file__).resolve()),
+                    *unittest_arguments,
+                    *selectors,
+                ],
+            )
+            children.append((name, child))
+    except BaseException:
+        _reap_direct_shard_roots(children)
+        raise
+
+    succeeded = True
+    for name, child in children:
+        returncode = child.wait()
+        print(
+            f"===== validation-evidence shard completed: {name} "
+            f"(exit={returncode}) =====",
+            flush=True,
+        )
+        succeeded = succeeded and returncode == 0
+    return 0 if succeeded else 1
+
+
+def _private_parallel_arguments(arguments: list[str]) -> tuple[str, ...] | None:
+    if not arguments or arguments[-1] != PRIVATE_PARALLEL_SHARDS_ARGUMENT:
+        return None
+    unittest_arguments = tuple(arguments[:-1])
+    if unittest_arguments not in DEFAULT_FULL_ARGUMENTS:
+        return None
+    return unittest_arguments
+
+
+def run_supervised_default_full(unittest_arguments: tuple[str, ...]) -> int:
+    _validated_parallel_full_shards()
+    with tempfile.TemporaryDirectory(prefix="validation-evidence-default-full-") as temporary:
+        temporary_root = Path(temporary)
+        log_path = temporary_root / "default-full.log"
+        receipt_path = temporary_root / "default-full.receipt.json"
+        receipt = process_supervisor.supervise_command(
+            [
+                sys.executable,
+                str(Path(__file__).resolve()),
+                *unittest_arguments,
+                PRIVATE_PARALLEL_SHARDS_ARGUMENT,
+            ],
+            cwd=ROOT,
+            cwd_ref=".",
+            log_path=log_path,
+            result_path=receipt_path,
+            timeout_seconds=DEFAULT_FULL_MODULE_BUDGET_SECONDS,
+        )
+        output = log_path.read_text(encoding="utf-8", errors="replace") if log_path.is_file() else ""
+        if output:
+            print(output, end="" if output.endswith("\n") else "\n")
+        try:
+            persisted_receipt = json.loads(receipt_path.read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError):
+            return 1
+        termination = receipt.get("termination")
+        completed = (
+            receipt == persisted_receipt
+            and receipt.get("status") == "completed"
+            and receipt.get("child_exit_code") == 0
+            and isinstance(termination, dict)
+            and termination.get("tree_empty") is True
+        )
+    return 0 if completed else 1
+
+
+def main() -> int:
+    arguments = sys.argv[1:]
+    private_arguments = _private_parallel_arguments(arguments)
+    if private_arguments is not None:
+        return run_parallel_shards(PARALLEL_FULL_SHARDS, private_arguments)
+    if _is_default_full_invocation(arguments):
+        return run_supervised_default_full(tuple(arguments))
     unittest.main()
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

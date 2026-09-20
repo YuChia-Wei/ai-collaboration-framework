@@ -1,0 +1,46 @@
+schema_version: '1.0'
+assessment_id: ASM-20260917-23-c18
+commit_search_id: ASM-20260917-23-c18
+assessment_type: ai-context-audit
+title: Baseline for skill cost and transactional messaging
+owner_skill: ai-context-auditor
+status: final
+report: report.md
+artifact_branch: codex/2026-09-17-v018-cost-and-messaging
+base_branch: main
+created_at: '2026-09-17T23:54:11+08:00'
+updated_at: '2026-09-17T23:54:11+08:00'
+template_source: .dev/assessments/templates/assessment-locator-template.yaml
+template_version: 1.1.0
+report_template_source: .ai/assets/skills/ai-context-auditor/templates/ai-context-audit-report-template.md
+report_template_version: 2.2.0
+subject_ref:
+  repository: YuChia-Wei/ai-collaboration-framework
+  branch: main
+  commit: f643b56cd68faec590f23a8c8a7436f813285e5d
+scope:
+  included:
+  - AGENTS.md
+  - .ai/assets/skills
+  - .ai/assets/shared
+  - .ai/assets/sub-agent-role-prompts
+  - .ai/assets/tech-stacks/dotnet-backend/standards
+  - .agents/skills
+  - .claude/skills
+  excluded:
+  - product source and tests
+  - historical release/workflow bodies
+  - runtime secrets
+relations:
+  supersedes: []
+  superseded_by: []
+  related_assessments: []
+  workflow_refs:
+  - 2026-09-17-v018-cost-and-messaging
+  adr_refs: []
+  backlog_refs: []
+resume:
+  last_completed_action: Bounded baseline established from pre-edit source and read-only
+    Terra proposal review.
+  next_action: Governance owns remediation; preserve this baseline.
+  blockers: []

@@ -111,7 +111,8 @@ def ledger() -> dict[str, object]:
     return seal(value, "ledger_sha256")
 
 
-def retry(attempt: int = 2, decision: str = "retry") -> dict[str, object]:
+def retry(attempt: int = 2, decision: str = "retry", *, retry_subject_sha: str | None = None) -> dict[str, object]:
+    retry_subject = retry_subject_sha or SHA
     value: dict[str, object] = {
         "schema_version": "1.0",
         "record_type": "agent-retry-decision",
@@ -123,16 +124,18 @@ def retry(attempt: int = 2, decision: str = "retry") -> dict[str, object]:
         "new_authorizations": [],
         "decision": decision,
     }
+    if retry_subject_sha is not None:
+        value["retry_subject_sha"] = retry_subject_sha
     if attempt >= 3:
         authorization_path = EVIDENCE_DIR / f"retry-authorization-{attempt}.yaml"
         authorization_record: dict[str, object] = {
             "schema_version": "1.0", "record_type": "workflow-retry-authorization", "workflow_id": "test-workflow", "task_id": "TEST-VAL-001",
-            "attempt": attempt, "authorized_at": "2026-08-25T01:00:00+08:00", "subject_sha": SHA, "prior_failure_sha256": D,
+            "attempt": attempt, "authorized_at": "2026-08-25T01:00:00+08:00", "subject_sha": retry_subject, "prior_failure_sha256": D,
             "decision": "authorize-retry", "consumed_by_packet_id": "TEST-PACKET-003", "scope": ["retry once"], "non_goals": ["provider mutation"], "terminal_condition": "no further retry",
         }
         seal(authorization_record, "authorization_sha256")
         authorization_path.write_text(yaml.safe_dump(authorization_record, sort_keys=False), encoding="utf-8")
-        authorization: dict[str, object] = {"ref": "workflow:" + authorization_path.relative_to(ROOT).as_posix(), "attempt": attempt, "subject_sha": SHA, "prior_failure_sha256": D, "decision": "authorize-retry", "consumed_by_packet_id": "TEST-PACKET-003", "authorization_sha256": authorization_record["authorization_sha256"]}
+        authorization: dict[str, object] = {"ref": "workflow:" + authorization_path.relative_to(ROOT).as_posix(), "attempt": attempt, "subject_sha": retry_subject, "prior_failure_sha256": D, "decision": "authorize-retry", "consumed_by_packet_id": "TEST-PACKET-003", "authorization_sha256": authorization_record["authorization_sha256"]}
         value["new_authorizations"] = [authorization]
     return seal(value, "retry_sha256")
 
@@ -155,6 +158,29 @@ def graph(state: str = "fresh", coverage: str = "complete") -> dict[str, object]
 
 
 class AgentExecutionGuardrailsGwtTests(unittest.TestCase):
+    def test_private_role_packet_accepts_only_its_owning_skill(self) -> None:
+        value = packet(owning_skill="code-reviewer")
+        value["role"]["path"] = ".ai/assets/skills/code-reviewer/roles/code-review-sub-agent/sub-agent.yaml"
+        seal(value, "packet_sha256")
+        VALIDATOR.validate_packet(value, SCHEMA)
+        value["owning_skill"] = "slice-implementer"
+        seal(value, "packet_sha256")
+        with self.assertRaisesRegex(VALIDATOR.GuardrailError, "must belong to owning_skill"):
+            VALIDATOR.validate_packet(value, SCHEMA)
+
+    def test_private_role_packet_rejects_noncanonical_path_aliases(self) -> None:
+        value = packet(owning_skill="code-reviewer")
+        for path in (
+            ".ai/assets/skills/./code-reviewer/roles/code-review-sub-agent/sub-agent.yaml",
+            ".ai/assets/skills//code-reviewer/roles/code-review-sub-agent/sub-agent.yaml",
+            ".ai/assets/skills/code-reviewer/roles/../code-review-sub-agent/sub-agent.yaml",
+        ):
+            with self.subTest(path=path):
+                value["role"]["path"] = path
+                seal(value, "packet_sha256")
+                with self.assertRaisesRegex(VALIDATOR.GuardrailError, "must be canonical"):
+                    VALIDATOR.validate_packet(value, SCHEMA)
+
     def test_gwt_001_given_complete_fixed_head_packet_when_validated_then_it_passes(self) -> None:
         VALIDATOR.validate_packet(packet("fixed-head-audit"), SCHEMA)
 
@@ -276,6 +302,46 @@ class AgentExecutionGuardrailsGwtTests(unittest.TestCase):
             VALIDATOR.validate_retry(value, SCHEMA)
 
     def test_gwt_010_given_attempt_three_with_fresh_authorization_when_retry_is_validated_then_it_passes(self) -> None:
+        VALIDATOR.validate_retry(retry(3), SCHEMA)
+
+    def test_gwt_010aa_given_new_retry_subject_with_persisted_authorization_and_packet_when_validated_then_it_passes(self) -> None:
+        retry_subject = "2" * 40
+        retry_value = retry(3, retry_subject_sha=retry_subject)
+        VALIDATOR.validate_retry(retry_value, SCHEMA)
+        packet_value = packet()
+        packet_value["packet_id"] = "TEST-PACKET-003"
+        packet_value["subject"]["exact_sha"] = retry_subject
+        packet_value["retry"] = {"attempt": 3, "budget": 3, "authorization_refs": [retry_value["new_authorizations"][0]["ref"]]}
+        seal(packet_value, "packet_sha256")
+        VALIDATOR.validate_packet(packet_value, SCHEMA)
+
+    def test_gwt_010ab_given_historical_subject_authorization_for_new_retry_subject_when_validated_then_it_fails(self) -> None:
+        value = retry(3, retry_subject_sha="2" * 40)
+        authorization = value["new_authorizations"][0]
+        authorization_path = ROOT / authorization["ref"].removeprefix("workflow:")
+        persisted = yaml.safe_load(authorization_path.read_text(encoding="utf-8"))
+        persisted["subject_sha"] = SHA
+        seal(persisted, "authorization_sha256")
+        authorization.update(subject_sha=SHA, authorization_sha256=persisted["authorization_sha256"])
+        authorization_path.write_text(yaml.safe_dump(persisted, sort_keys=False), encoding="utf-8")
+        seal(value, "retry_sha256")
+        with self.assertRaisesRegex(VALIDATOR.GuardrailError, "new authorization"):
+            VALIDATOR.validate_retry(value, SCHEMA)
+
+    def test_gwt_010ac_given_invalid_retry_subject_when_validated_then_it_fails(self) -> None:
+        value = retry(3, retry_subject_sha="not-a-git-sha")
+        seal(value, "retry_sha256")
+        with self.assertRaisesRegex(VALIDATOR.GuardrailError, "retry_subject_sha"):
+            VALIDATOR.validate_retry(value, SCHEMA)
+
+    def test_gwt_010ad_given_new_retry_subject_without_material_state_change_when_validated_then_it_fails(self) -> None:
+        value = retry(3, retry_subject_sha="2" * 40)
+        value["material_state_change_sha256"] = None
+        seal(value, "retry_sha256")
+        with self.assertRaisesRegex(VALIDATOR.GuardrailError, "material state change"):
+            VALIDATOR.validate_retry(value, SCHEMA)
+
+    def test_gwt_010ae_given_legacy_retry_without_retry_subject_when_validated_then_it_passes(self) -> None:
         VALIDATOR.validate_retry(retry(3), SCHEMA)
 
     def test_gwt_010b_given_attempt_three_authorization_for_another_packet_when_retry_is_validated_then_it_fails(self) -> None:

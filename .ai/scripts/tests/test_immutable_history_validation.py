@@ -6,6 +6,7 @@ from __future__ import annotations
 import hashlib
 import importlib.util
 import json
+import shutil
 import subprocess
 import sys
 import tempfile
@@ -45,12 +46,70 @@ ROUTINE_ALLOWLIST = [
 
 
 class ImmutableHistoryValidationGwtTests(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls) -> None:
+        cls.baseline_temporary = tempfile.TemporaryDirectory(
+            prefix="immutable-history-baselines-"
+        )
+        baseline_root = Path(cls.baseline_temporary.name)
+        baseline = cls(methodName="runTest")
+        baseline.initialize_repository_at(
+            baseline_root / "pristine-repo",
+            failing_validator=False,
+        )
+        cls.pristine_repo = baseline.repo
+        cls.refreshed_receipt_repo = baseline_root / "refreshed-receipt-repo"
+        shutil.copytree(cls.pristine_repo, cls.refreshed_receipt_repo)
+        baseline.repo = cls.refreshed_receipt_repo
+        baseline.bind_repository_state()
+        baseline.refresh_and_commit_receipt()
+        cls.refreshed_uncommitted_repo = baseline_root / "refreshed-uncommitted-receipt-repo"
+        shutil.copytree(cls.pristine_repo, cls.refreshed_uncommitted_repo)
+        baseline.repo = cls.refreshed_uncommitted_repo
+        baseline.bind_repository_state()
+        baseline.parse(baseline.invoke("refresh"), 0)
+
+    @classmethod
+    def tearDownClass(cls) -> None:
+        cls.baseline_temporary.cleanup()
+
     def setUp(self) -> None:
-        self.initialize_repository(failing_validator=False)
+        self.copy_baseline(
+            type(self).refreshed_receipt_repo,
+            source_revision_ref="HEAD^",
+        )
+
+    def copy_baseline(self, source: Path, *, source_revision_ref: str) -> None:
+        self.temporary = tempfile.TemporaryDirectory(prefix="immutable-history-")
+        self.repo = Path(self.temporary.name) / "repo"
+        shutil.copytree(source, self.repo)
+        self.bind_repository_state(source_revision_ref=source_revision_ref)
+
+    def use_pristine_baseline(self) -> None:
+        self.temporary.cleanup()
+        self.copy_baseline(type(self).pristine_repo, source_revision_ref="HEAD")
+
+    def use_refreshed_uncommitted_baseline(self) -> None:
+        self.temporary.cleanup()
+        self.copy_baseline(
+            type(self).refreshed_uncommitted_repo,
+            source_revision_ref="HEAD",
+        )
 
     def initialize_repository(self, *, failing_validator: bool) -> None:
         self.temporary = tempfile.TemporaryDirectory(prefix="immutable-history-")
-        self.repo = Path(self.temporary.name) / "repo"
+        self.initialize_repository_at(
+            Path(self.temporary.name) / "repo",
+            failing_validator=failing_validator,
+        )
+
+    def initialize_repository_at(
+        self,
+        repository: Path,
+        *,
+        failing_validator: bool,
+    ) -> None:
+        self.repo = repository
         self.repo.mkdir()
         self.git("init", "-q")
         self.git("config", "user.email", "fixture@example.test")
@@ -68,6 +127,12 @@ class ImmutableHistoryValidationGwtTests(unittest.TestCase):
         )
         self.commit_all("bind fixture release declaration")
         self.source_revision = self.git("rev-parse", "HEAD").stdout.strip()
+
+    def bind_repository_state(self, *, source_revision_ref: str = "HEAD") -> None:
+        self.branch = self.git("branch", "--show-current").stdout.strip()
+        self.contract_path = self.repo / ".ai/distribution/validation/immutable-history-validation.yaml"
+        self.receipt_path = self.repo / ".ai/distribution/validation/immutable-history-receipt.yaml"
+        self.source_revision = self.git("rev-parse", source_revision_ref).stdout.strip()
 
     def tearDown(self) -> None:
         self.temporary.cleanup()
@@ -219,7 +284,6 @@ class ImmutableHistoryValidationGwtTests(unittest.TestCase):
         return payload
 
     def test_gwt_001_given_receipt_only_first_parent_continuation_when_verified_then_routine_checks_are_reusable(self) -> None:
-        self.refresh_and_commit_receipt()
         self.write("tools/ordinary.py", "print('ordinary code')\n")
         self.write(".dev/guides/ordinary.md", "# Ordinary documentation\n")
         self.commit_all("change allowlisted ordinary code and documentation")
@@ -252,7 +316,6 @@ class ImmutableHistoryValidationGwtTests(unittest.TestCase):
             with self.subTest(operation=operation):
                 self.tearDown()
                 self.setUp()
-                self.refresh_and_commit_receipt()
                 path = self.repo / relative
                 if content is None:
                     path.unlink()
@@ -262,14 +325,13 @@ class ImmutableHistoryValidationGwtTests(unittest.TestCase):
                 self.assert_full_required(self.invoke("verify"), "immutable-history-change")
 
     def test_gwt_003_given_unindexed_history_addition_when_verified_then_full_validation_is_required(self) -> None:
-        self.refresh_and_commit_receipt()
         self.write(".dev/workflows/unindexed-evidence/receipt.yaml", "unindexed: true\n")
         self.commit_all("add unindexed immutable history")
 
         self.assert_full_required(self.invoke("verify"), "immutable-history-change")
 
     def test_gwt_004_given_stale_receipt_digest_when_verified_then_full_validation_is_required(self) -> None:
-        self.parse(self.invoke("refresh"), 0)
+        self.use_refreshed_uncommitted_baseline()
         receipt = yaml.safe_load(self.receipt_path.read_text(encoding="utf-8"))
         receipt["source"]["history_digest"] = "0" * 64
         self.receipt_path.write_text(yaml.safe_dump(receipt, sort_keys=False), encoding="utf-8", newline="\n")
@@ -286,12 +348,12 @@ class ImmutableHistoryValidationGwtTests(unittest.TestCase):
             with self.subTest(path=relative):
                 self.tearDown()
                 self.setUp()
-                self.refresh_and_commit_receipt()
                 self.write(relative, "changed\n" if relative.endswith(".md") else "raise SystemExit(0)\n# changed\n")
                 self.commit_all("change fingerprint")
                 self.assert_full_required(self.invoke("verify"), reason)
 
     def test_gwt_006_given_receipt_source_not_on_head_first_parent_when_verified_then_full_validation_is_required(self) -> None:
+        self.use_pristine_baseline()
         self.git("checkout", "-q", "-b", "side")
         self.write("side-only.txt", "side\n")
         self.commit_all("side source")
@@ -308,13 +370,13 @@ class ImmutableHistoryValidationGwtTests(unittest.TestCase):
         self.assert_full_required(self.invoke("verify"), "receipt-source-not-first-parent")
 
     def test_gwt_007_given_unknown_continuation_path_when_verified_then_closed_allowlist_requires_full_validation(self) -> None:
-        self.refresh_and_commit_receipt()
         self.write("unknown-routine-input.txt", "unlisted continuation\n")
         self.commit_all("change unknown path")
 
         self.assert_full_required(self.invoke("verify"), "closed-allowlist-mismatch")
 
     def test_gwt_008_given_clean_committed_source_when_refreshed_then_all_native_full_validators_execute_before_receipt_write(self) -> None:
+        self.use_pristine_baseline()
         payload = self.parse(self.invoke("refresh"), 0)
 
         self.assertEqual("full-refreshed", payload["outcome"])
@@ -326,7 +388,6 @@ class ImmutableHistoryValidationGwtTests(unittest.TestCase):
         self.assertTrue(self.receipt_path.is_file())
 
     def test_gwt_009_given_allowlisted_path_deletion_when_verified_then_full_validation_is_required(self) -> None:
-        self.refresh_and_commit_receipt()
         guide = self.write(".dev/guides/ordinary.md", "# ordinary\n")
         self.commit_all("add ordinary guide")
         self.parse(self.invoke("verify"), 0)
@@ -336,13 +397,11 @@ class ImmutableHistoryValidationGwtTests(unittest.TestCase):
         self.assert_full_required(self.invoke("verify"), "deleted-continuation-path")
 
     def test_gwt_010_given_declared_release_tag_is_moved_when_verified_then_full_validation_is_required(self) -> None:
-        self.refresh_and_commit_receipt()
         self.git("tag", "-f", "v0.0.1", "HEAD")
 
         self.assert_full_required(self.invoke("verify"), "release-reference-drift")
 
     def test_gwt_011_given_head_does_not_equal_checked_out_head_when_verified_then_invocation_is_rejected(self) -> None:
-        self.refresh_and_commit_receipt()
         result = subprocess.run(
             [
                 sys.executable,
@@ -399,7 +458,6 @@ class ImmutableHistoryValidationGwtTests(unittest.TestCase):
         self.assertIn("forbids source-history receipt refresh", str(refresh["reason"]))
 
     def test_gwt_016_given_misnamed_release_record_when_refreshed_then_no_invalid_receipt_is_written(self) -> None:
-        self.refresh_and_commit_receipt()
         receipt_before = self.receipt_path.read_bytes()
         release = (self.repo / ".dev/releases/v0.0.1/release.yaml").read_text(
             encoding="utf-8"
@@ -414,7 +472,7 @@ class ImmutableHistoryValidationGwtTests(unittest.TestCase):
         self.assertEqual(receipt_before, self.receipt_path.read_bytes())
 
     def test_gwt_017_given_receipt_omits_published_release_when_verified_then_full_validation_is_required(self) -> None:
-        self.parse(self.invoke("refresh"), 0)
+        self.use_refreshed_uncommitted_baseline()
         receipt = yaml.safe_load(self.receipt_path.read_text(encoding="utf-8"))
         receipt["source"]["release_refs"] = []
         digest_payload = {
@@ -446,7 +504,6 @@ class ImmutableHistoryValidationGwtTests(unittest.TestCase):
         )
 
     def test_gwt_018_given_side_branch_delete_and_recreate_when_merged_then_full_validation_is_required(self) -> None:
-        self.refresh_and_commit_receipt()
         main_branch = self.branch
         self.write("docs/guide.md", "baseline\n")
         self.commit_all("add allowlisted guide")
@@ -521,6 +578,7 @@ class ImmutableHistoryValidationGwtTests(unittest.TestCase):
                 self.assertEqual(expected_reason, payload["reason"])
 
     def test_gwt_021_given_native_validator_exceeds_its_bound_when_refreshed_then_receipt_and_remaining_validators_are_blocked(self) -> None:
+        self.use_pristine_baseline()
         timeout_validator = ".ai/scripts/fixture-timeout-validator.py"
         second_validator = ".ai/scripts/fixture-second-validator.py"
         third_validator = ".ai/scripts/fixture-third-validator.py"

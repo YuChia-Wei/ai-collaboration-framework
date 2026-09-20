@@ -1,0 +1,74 @@
+{
+  "template_id": "ai-context-governance-remediation-task",
+  "template_version": "1.1.0",
+  "template_created_at": "2026-07-10T18:22:49+08:00",
+  "template_updated_at": "2026-07-27T09:52:09+08:00",
+  "task_id": "TEST018-001",
+  "workflow_id": "2026-09-17-v018-cost-and-messaging",
+  "owner_skill": "ai-context-governance",
+  "status": "completed",
+  "created_at": "2026-09-20T07:08:53+08:00",
+  "updated_at": "2026-09-20T07:37:16+08:00",
+  "template_source": ".ai/assets/skills/ai-context-governance/templates/ai-context-remediation-task-template.json",
+  "model": "gpt-6-astra",
+  "reasoning_effort": "ultra",
+  "finding_ids": [],
+  "scope": {
+    "target": "Repair Issue302 T1-T7 test-design findings before v0.18.0 publication while preserving package identity and meaningful failure coverage",
+    "files": [
+      ".ai/scripts/validate-source-governance.py",
+      ".ai/scripts/tests/test_python_source_entrypoints.py",
+      ".ai/scripts/tests/test_python_prerequisites.py",
+      ".ai/scripts/tests/test_validation_evidence.py",
+      ".ai/scripts/tests/source_like_entrypoint_fixture.py"
+    ],
+    "constraints": [
+      "Owner explicitly accepted these repairs as mandatory v0.18.0 release work on 2026-09-20; live Issue302 records the authorization and acceptance checklist.",
+      "Review before test execution; one tracked writer; preserve previous failures and the blocked superseded retry.",
+      "Keep real orchestration and fault cases; do not weaken failure guarantees or increase global timeout limits to obtain a pass.",
+      "Verify actual archive and selected-input membership before claiming downstream bytes are unaffected."
+    ],
+    "non_goals": [
+      "No product source or original downstream checkout changes.",
+      "No unrelated I/O or OS test expansion, runtime registry change, or candidate rebuild without demonstrated necessity.",
+      "This task does not itself establish release admission, publication, or downstream merge."
+    ]
+  },
+  "execution": {
+    "steps": [
+      "Reconcile the reviewed defects and package boundary before implementation.",
+      "Repair help semantics, isolated prerequisite fixtures, shard completeness and cancellation cleanup.",
+      "Obtain read-only design review, then execute the narrow meaningful repaired checks.",
+      "Bind final source/package identity and hand off to mandatory source-release validation."
+    ],
+    "validation": [
+      "Pre-execution code review: revised design accepted with no remaining findings.",
+      "Four native supervised focused commands passed; 9 actual unittest cases, unchanged source/dependency fingerprints and complete process-tree cleanup.",
+      "Candidate11 archive and canonical release-input projection remain unchanged; mutable workflow index is excluded and its packaged seed comes from a separate unchanged template."
+    ],
+    "last_completed_step": "Implemented and reviewed the five source-only repairs; actual narrow validation passed with retained native receipts.",
+    "next_action": "Commit and rebind the focused receipts, then run mandatory Release06 and final source admission. This completed repair task does not claim those release gates passed."
+  },
+  "results": {
+    "summary": "The reviewed test-design repairs and narrow validation are complete. Candidate11 payload and selected package inputs remain unchanged.",
+    "files_changed": [
+      ".ai/scripts/validate-source-governance.py",
+      ".ai/scripts/tests/test_python_source_entrypoints.py",
+      ".ai/scripts/tests/test_python_prerequisites.py",
+      ".ai/scripts/tests/test_validation_evidence.py",
+      ".ai/scripts/tests/source_like_entrypoint_fixture.py"
+    ],
+    "tests_run": [
+      "PASS full source-entrypoints module: 5 tests, 9.071532s, unchanged 60s budget",
+      "PASS prerequisite GWT014: 1 test, 0.505904s",
+      "PASS shard-selection contracts: 1 test, 0.310298s",
+      "PASS actual two-shard probe: 2 tests, 7.773579s"
+    ],
+    "finding_status": "addressed",
+    "residual_risk": "The complete repaired evidence module, required release profile and final source admission remain mandatory pending release gates. No new OS/cancellation suite or timeout increase was added. Earlier failures remain non-passing history.",
+    "follow_up_needed": true
+  },
+  "github_issue_refs": [
+    "#302"
+  ]
+}

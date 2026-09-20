@@ -9,7 +9,7 @@ tags, releases, assets, or workflow runs.
 from __future__ import annotations
 
 import sys
-from pathlib import Path
+from pathlib import Path, PurePosixPath
 
 SCRIPT_ROOT = Path(__file__).resolve().parent
 sys.path.insert(0, str(SCRIPT_ROOT))
@@ -46,6 +46,42 @@ from ai_context_upgrade_routes import (
 
 VERSION_RE = re.compile(r"^v(?:0|[1-9]\d*)\.(?:0|[1-9]\d*)\.(?:0|[1-9]\d*)$")
 SHA_RE = re.compile(r"^[0-9a-f]{40}$")
+SHA256_RE = re.compile(r"^[0-9a-f]{64}$")
+DIRECT_UPGRADE_RUNNERS = {
+    "v0.17.0": ".github/scripts/validate-v017-direct-upgrades.py",
+    "v0.18.0": ".github/scripts/validate-v018-direct-upgrades.py",
+}
+V018_REBIND_ARCHIVE_SHA256 = "90e403bde5e1e84767a4c00b67923780ebea76222b7956e598c814241c0f7db0"
+V018_REBIND_SUBJECT_SHA = "f566a6014f0942a15b28a39f0b2f5df3303e6014"
+V018_REBIND_RUNNER_PATH = ".github/scripts/validate-v018-direct-upgrades.py"
+V018_REBIND_RUNNER_SHA256 = "60df0a1c2fc0217c104467d23a23b65245d3360fbc04291ff26387470b4e199b"
+V018_REBIND_TERMINAL_SHA256 = "04885cbbb8c3dc6823867f7ed73be102c2c427b3b34602080204b0f12782a3ca"
+V018_REBIND_CASE_INDEX_SHA256 = "3e4f5dab025e408f6588959f9bb8c328835721c9b2b5f6886dcee575c127978a"
+V018_REBIND_BASELINE_MATRIX_SHA256 = "d95c5ee82b97013f46f9a52a54ec54e698f94706cb0c29280f44c93b84417c30"
+V018_REBIND_CASE_EVIDENCE_COUNT = 236
+V018_REBIND_PAYLOAD_DELTAS = (
+    (
+        ".ai/scripts/shell-assets.yaml",
+        b"  - python .ai/scripts/tests/test_code_reviewer_routing_contract.py -v\n",
+        b"  - python .ai/scripts/tests/test_runtime_skill_entries.py -v\n",
+    ),
+    (
+        ".ai/scripts/validate-dependency-versions.py",
+        b"    expected_exit_two = {\n",
+        b"        \".ai/assets/skills/ai-context-upgrader/scripts/run-target-validation.py\",\n",
+    ),
+)
+V018_REBIND_CASES = (
+    "v0.6.0-pristine-resume",
+    "v0.6.0-customized-none",
+    "v0.6.0-customized-rollback",
+    "v0.9.0-pristine-resume",
+    "v0.9.0-customized-none",
+    "v0.9.0-customized-rollback",
+    "v0.17.0-pristine-resume",
+    "v0.17.0-customized-none",
+    "v0.17.0-customized-rollback",
+)
 ONLINE_ISSUE_REF_RE = re.compile(r"^#([1-9]\d*)$")
 PHASES = ("candidate", "tag", "publication", "finalization")
 V010_AGENT_PUBLICATION_AUTHORITY = {
@@ -80,6 +116,12 @@ V011_PUBLICATION_FAILURE = (
     "noncanonical publication ownership values"
 )
 PLACEHOLDER_RE = re.compile(r"\{\{.+?\}\}|<[^\n>]+>|\b(?:TODO|TBD|PLACEHOLDER)\b", re.I)
+AUTHORED_NON_ANGLE_PLACEHOLDER_RE = re.compile(
+    r"\{\{.+?\}\}|\b(?:TODO|TBD|PLACEHOLDER)\b", re.I
+)
+AUTHORED_ANGLE_PLACEHOLDER_RE = re.compile(r"<[^\n>]+>")
+COMPLETE_HTML_COMMENT_RE = re.compile(r"<!--.*?-->", re.S)
+SINGLE_LINE_INLINE_CODE_RE = re.compile(r"(?<!`)(`+)(?!`)[^\r\n]*?(?<!`)\1(?!`)")
 FORBIDDEN_AUTHORED_RE = re.compile(
     r"ai-context-release-automation:|^## Release provenance\s*$", re.I | re.M
 )
@@ -89,6 +131,26 @@ PUBLISH_WORKFLOW_PATH = ".github/workflows/publish-release.yml"
 
 class ReleaseStateError(ValueError):
     """Raised for invalid release-state inputs."""
+
+
+def mask_authored_markdown_literals(text: str) -> str:
+    """Hide complete comments and valid single-line code before angle checks."""
+
+    def spaces(match: re.Match[str]) -> str:
+        return "".join(char if char in "\r\n" else " " for char in match.group(0))
+
+    without_comments = COMPLETE_HTML_COMMENT_RE.sub(spaces, text)
+    return SINGLE_LINE_INLINE_CODE_RE.sub(spaces, without_comments)
+
+
+def authored_source_has_placeholder(text: str) -> bool:
+    """Reject real authored placeholders without treating documentation literals as fields."""
+
+    if AUTHORED_NON_ANGLE_PLACEHOLDER_RE.search(text):
+        return True
+    return AUTHORED_ANGLE_PLACEHOLDER_RE.search(
+        mask_authored_markdown_literals(text)
+    ) is not None
 
 
 def version_key(version: str) -> tuple[int, int, int]:
@@ -230,7 +292,7 @@ def assert_authored_sources(version: str, notes: Path, migration: Path) -> None:
             raise ReleaseStateError(f"{path}: authored source must not be empty")
         if FORBIDDEN_AUTHORED_RE.search(text):
             raise ReleaseStateError(f"{path}: rendered release provenance belongs only in generated output")
-        if PLACEHOLDER_RE.search(text):
+        if authored_source_has_placeholder(text):
             raise ReleaseStateError(f"{path}: unfilled placeholder is forbidden")
         first_line = next((line.strip() for line in text.splitlines() if line.strip()), "")
         if not first_line.startswith(expected_heading):
@@ -518,25 +580,67 @@ def pending_terminal_issue_delivery(
     )
 
 
+def validate_skill_retirement_fixture(case, packet, fixture):
+    """Bind retirement applicability to the selected source migration."""
+    selected = packet.get("migration", {}).get("selected_input", {})
+    contract = packet.get("migration", {}).get("contract", {})
+    version = selected.get("previous_version")
+    manifest = selected.get("previous_files_sha256")
+    sources = contract.get("sources")
+    if (not isinstance(version, str) or not isinstance(manifest, str)
+            or not isinstance(sources, list)):
+        raise ReleaseStateError("actual upgrade retirement fixture lacks selected source evidence")
+    matching_sources = [source for source in sources if isinstance(source, dict)
+                        and source.get("version") == version and source.get("manifest_sha256") == manifest]
+    if len(matching_sources) != 1 or version.lstrip("v") != str(case.get("origin", "")).lstrip("v"):
+        raise ReleaseStateError("actual upgrade retirement fixture source differs from its case")
+    operations = matching_sources[0].get("operations")
+    if not isinstance(operations, list) or not all(isinstance(operation, dict) for operation in operations):
+        raise ReleaseStateError("actual upgrade retirement fixture source operations are invalid")
+    removals = [operation["path"] for operation in operations
+                if operation.get("kind") == "remove" and operation.get("ownership") == "framework-managed"
+                and isinstance(operation.get("path"), str)]
+    if len(removals) != sum(operation.get("kind") == "remove" and operation.get("ownership") == "framework-managed"
+                            for operation in operations):
+        raise ReleaseStateError("actual upgrade retirement fixture removal path is invalid")
+    retired = [path for path in removals if "/dev-workflow/" in path or "/repo-structure-sync/" in path]
+    applicability = "selected" if retired else "not-applicable-no-retired-skill-source-paths"
+    expected = {
+        "origin": version,
+        "source_remove_count": len(removals),
+        "fixture_paths": retired,
+        "applicability": applicability,
+        "rename_source_count": sum(operation.get("kind") == "rename" for operation in operations),
+        "customized_retirement": "-customized-" in str(case.get("case", "")) and bool(retired),
+    }
+    if any(fixture.get(key) != value for key, value in expected.items()):
+        raise ReleaseStateError("actual upgrade retirement fixture differs from selected source evidence")
+    return "verified" if applicability == "selected" else applicability
+
+
+def retained_case_artifact(actual_root, case, name, *, document=True):
+    expected = f"evidence/{case['case']}/{name}"
+    record = case.get("artifacts", {}).get(name)
+    if not isinstance(record, dict) or record.get("path") != expected or not re.fullmatch(r"[0-9a-f]{64}", str(record.get("sha256"))):
+        raise ReleaseStateError("actual upgrade retained artifact binding is missing")
+    try:
+        raw = contained_release_asset(actual_root, expected).read_bytes()
+        if hashlib.sha256(raw).hexdigest() != record["sha256"]:
+            raise ReleaseStateError("actual upgrade retained artifact digest differs")
+        return json.loads(raw) if document else raw
+    except ReleaseStateError:
+        raise
+    except (OSError, ValueError, PackageError) as exc:
+        raise ReleaseStateError("actual upgrade retained artifact is unavailable or invalid") from exc
+
+
 def validate_direct_case_artifacts(actual_root, case, origin_identity, target_identity):
     """Bind completion to retained target output, receipts and transaction states."""
     def digest(document):
         return hashlib.sha256(json.dumps(document, sort_keys=True, separators=(",", ":"), ensure_ascii=False, allow_nan=False).encode()).hexdigest()
 
     def retained(name, *, document=True):
-        expected = f"evidence/{case['case']}/{name}"
-        record = case.get("artifacts", {}).get(name)
-        if not isinstance(record, dict) or record.get("path") != expected or not re.fullmatch(r"[0-9a-f]{64}", str(record.get("sha256"))):
-            raise ReleaseStateError("actual upgrade retained artifact binding is missing")
-        try:
-            raw = contained_release_asset(actual_root, expected).read_bytes()
-            if hashlib.sha256(raw).hexdigest() != record["sha256"]:
-                raise ReleaseStateError("actual upgrade retained artifact digest differs")
-            return json.loads(raw) if document else raw
-        except ReleaseStateError:
-            raise
-        except (OSError, ValueError, PackageError) as exc:
-            raise ReleaseStateError("actual upgrade retained artifact is unavailable or invalid") from exc
+        return retained_case_artifact(actual_root, case, name, document=document)
 
     transaction = case.get("transaction_id")
     if not re.fullmatch(r"[0-9a-f]{64}", str(transaction)):
@@ -765,13 +869,305 @@ def v017_affected_only_case_matrix(root, matrix):
             if expected.count(anchor) != 1:
                 raise ReleaseStateError("v0.17 affected-only repair anchor differs")
             expected = expected.replace(anchor, anchor + addition)
-        if after[path][1] != expected or (root / path).read_bytes() != expected:
-            raise ReleaseStateError("v0.17 affected-only runner differs from the reviewed repair")
+        if after[path][1] != expected:
+            raise ReleaseStateError("v0.17 affected-only archived repair differs")
         return baseline
     except ReleaseStateError:
         raise
     except (OSError, ValueError, KeyError, TypeError, PackageError, zipfile.BadZipFile) as exc:
         raise ReleaseStateError("v0.17 affected-only evidence is missing or invalid") from exc
+
+
+def v018_rebind_execution_set():
+    """Return the one-version contract that preserves Candidate10 native evidence."""
+    return {
+        "schema_version": "v018-direct-upgrade-rebind/v1",
+        "release": "v0.18.0",
+        "authority": "user-authorized-excessive-validation-rebind",
+        "original": {
+            "archive_sha256": V018_REBIND_ARCHIVE_SHA256,
+            "subject_sha": V018_REBIND_SUBJECT_SHA,
+            "runner": {
+                "path": V018_REBIND_RUNNER_PATH,
+                "sha256": V018_REBIND_RUNNER_SHA256,
+            },
+            "terminal": {
+                "path": "terminal.json",
+                "sha256": V018_REBIND_TERMINAL_SHA256,
+            },
+            "case_evidence_index": {
+                "path": "case-evidence-index.json",
+                "sha256": V018_REBIND_CASE_INDEX_SHA256,
+                "evidence_count": V018_REBIND_CASE_EVIDENCE_COUNT,
+            },
+            "baseline_support_matrix": {
+                "path": "baseline-support-matrix.yaml",
+                "sha256": V018_REBIND_BASELINE_MATRIX_SHA256,
+            },
+            "baseline_archive": {
+                "path": "baseline.zip",
+                "sha256": V018_REBIND_ARCHIVE_SHA256,
+            },
+        },
+        "cases": list(V018_REBIND_CASES),
+        "allowed_payload_deltas": [
+            {
+                "path": path,
+                "mode": "0644",
+                "anchor": anchor.decode("ascii"),
+                "addition": addition.decode("ascii"),
+            }
+            for path, anchor, addition in V018_REBIND_PAYLOAD_DELTAS
+        ],
+    }
+
+
+def v018_payload_entries(content):
+    """Read one package payload as an unambiguous path-to-byte-and-mode map."""
+    import io
+    import zipfile
+
+    try:
+        entries = {}
+        with zipfile.ZipFile(io.BytesIO(content)) as archive:
+            for item in archive.infolist():
+                if item.is_dir():
+                    continue
+                name = item.filename
+                marker = "/payload/"
+                if marker not in name:
+                    continue
+                prefix, relative = name.split(marker, 1)
+                pure = PurePosixPath(relative)
+                if (
+                    not prefix
+                    or not relative
+                    or name.count(marker) != 1
+                    or "\\" in name
+                    or pure.is_absolute()
+                    or str(pure) != relative
+                    or any(part in {"", ".", ".."} for part in pure.parts)
+                ):
+                    raise ReleaseStateError("v0.18 rebound payload path is invalid")
+                key = pure.as_posix()
+                if key in entries:
+                    raise ReleaseStateError("v0.18 rebound payload has duplicate paths")
+                entries[key] = (item.external_attr, archive.read(item))
+        if not entries:
+            raise ReleaseStateError("v0.18 rebound payload is empty")
+        return entries
+    except ReleaseStateError:
+        raise
+    except (OSError, ValueError, zipfile.BadZipFile) as exc:
+        raise ReleaseStateError("v0.18 rebound payload cannot be read") from exc
+
+
+def validate_v018_case_evidence_index(actual_root):
+    """Bind every retained Candidate10 artifact through the checked-in index."""
+    raw = contained_release_asset(actual_root, "case-evidence-index.json").read_bytes()
+    if hashlib.sha256(raw).hexdigest() != V018_REBIND_CASE_INDEX_SHA256:
+        raise ReleaseStateError("v0.18 native case evidence index changed")
+    try:
+        index = json.loads(raw)
+    except ValueError as exc:
+        raise ReleaseStateError("v0.18 native case evidence index is invalid") from exc
+    terminal = {
+        "asset_id": "actual-direct-v018-terminal",
+        "path": "actual/terminal.json",
+        "sha256": V018_REBIND_TERMINAL_SHA256,
+    }
+    entries = index.get("evidence") if isinstance(index, dict) else None
+    if (
+        not isinstance(index, dict)
+        or set(index) != {"schema_version", "terminal", "evidence"}
+        or index.get("schema_version") != "v018-direct-case-evidence-index/v1"
+        or index.get("terminal") != terminal
+        or not isinstance(entries, list)
+        or len(entries) != V018_REBIND_CASE_EVIDENCE_COUNT
+    ):
+        raise ReleaseStateError("v0.18 native case evidence index differs")
+    paths, asset_ids = set(), set()
+    for entry in entries:
+        if not isinstance(entry, dict) or set(entry) != {"staged", "terminal_path"}:
+            raise ReleaseStateError("v0.18 native case evidence entry is invalid")
+        staged = entry["staged"]
+        path = entry["terminal_path"]
+        if (
+            not isinstance(staged, dict)
+            or set(staged) != {"asset_id", "path", "sha256"}
+            or not isinstance(staged.get("asset_id"), str)
+            or not staged["asset_id"]
+            or not isinstance(path, str)
+            or not path
+            or not SHA256_RE.fullmatch(str(staged.get("sha256")))
+            or staged.get("path") != f"actual/{path}"
+            or path in paths
+            or staged["asset_id"] in asset_ids
+        ):
+            raise ReleaseStateError("v0.18 native case evidence entry differs")
+        try:
+            observed = contained_release_asset(actual_root, path).read_bytes()
+        except (OSError, ValueError, PackageError) as exc:
+            raise ReleaseStateError("v0.18 native case evidence path is unavailable") from exc
+        if hashlib.sha256(observed).hexdigest() != staged["sha256"]:
+            raise ReleaseStateError("v0.18 native case evidence bytes changed")
+        paths.add(path)
+        asset_ids.add(staged["asset_id"])
+
+
+def validate_v018_rebound_payload_delta(baseline_archive, replacement_archive, current_payloads):
+    """Validate the exact two-path C10-to-replacement repair from explicit bytes.
+
+    This narrow helper deliberately has no current-admission or matrix authority.
+    Derived route validators may use the same byte-level proof while their caller
+    binds the replacement archive to the current route admission.
+    """
+    before = v018_payload_entries(baseline_archive)
+    after = v018_payload_entries(replacement_archive)
+    expected_paths = {path for path, _anchor, _addition in V018_REBIND_PAYLOAD_DELTAS}
+    changed = {name for name in before.keys() | after.keys() if before.get(name) != after.get(name)}
+    if (
+        changed != expected_paths
+        or not isinstance(current_payloads, dict)
+        or set(current_payloads) != expected_paths
+    ):
+        raise ReleaseStateError("v0.18 rebound payload delta differs")
+    for path, anchor, addition in V018_REBIND_PAYLOAD_DELTAS:
+        if path not in before or path not in after or before[path][0] != after[path][0]:
+            raise ReleaseStateError("v0.18 rebound payload mode differs")
+        expected = before[path][1]
+        if expected.count(anchor) != 1:
+            raise ReleaseStateError("v0.18 rebound payload anchor differs")
+        expected = expected.replace(anchor, anchor + addition)
+        if after[path][1] != expected or current_payloads[path] != expected:
+            raise ReleaseStateError("v0.18 rebound payload bytes differ")
+
+
+def load_v018_execution_set(root, actual_root):
+    """Load the immutable Candidate10 matrix for the one v0.18 replacement path."""
+    try:
+        record = json.loads(contained_release_asset(actual_root, "execution-set.json").read_bytes())
+        if record != v018_rebind_execution_set():
+            raise ReleaseStateError("v0.18 execution set differs from the bounded user decision")
+        terminal_raw = contained_release_asset(actual_root, "terminal.json").read_bytes()
+        if hashlib.sha256(terminal_raw).hexdigest() != V018_REBIND_TERMINAL_SHA256:
+            raise ReleaseStateError("v0.18 original execution terminal changed")
+        terminal = json.loads(terminal_raw)
+        validate_v018_case_evidence_index(actual_root)
+        runner = terminal.get("runner", {})
+        cases = terminal.get("cases")
+        invocation = terminal.get("invocation")
+        start = iso_timestamp(terminal.get("started_at"), "v0.18 native execution started_at")
+        end = iso_timestamp(terminal.get("completed_at"), "v0.18 native execution completed_at")
+        duration = terminal.get("duration_seconds")
+        if (
+            terminal.get("schema_version") != "direct-upgrade-execution/v1"
+            or terminal.get("evidence_kind") != "actual-isolated-target-execution"
+            or terminal.get("outcome") != "passed"
+            or terminal.get("archive_sha256") != V018_REBIND_ARCHIVE_SHA256
+            or terminal.get("subject_sha") != V018_REBIND_SUBJECT_SHA
+            or terminal.get("package_source", {}).get("commit") != V018_REBIND_SUBJECT_SHA
+            or runner != {"path": V018_REBIND_RUNNER_PATH, "sha256": V018_REBIND_RUNNER_SHA256}
+            or end < start
+            or type(duration) not in (int, float)
+            or not math.isfinite(duration)
+            or duration <= 0
+            or not isinstance(invocation, list)
+            or len(invocation) < 4
+            or invocation[1] != V018_REBIND_RUNNER_PATH
+            or not all(isinstance(arg, str) and arg for arg in invocation)
+            or invocation.count("--subject-sha") != 1
+            or invocation[-1] == "--subject-sha"
+            or invocation[invocation.index("--subject-sha") + 1] != V018_REBIND_SUBJECT_SHA
+            or not isinstance(cases, list)
+            or [case.get("case") for case in cases if isinstance(case, dict)] != list(V018_REBIND_CASES)
+            or any(not isinstance(case, dict) or case.get("outcome") != "passed" for case in cases)
+        ):
+            raise ReleaseStateError("v0.18 native execution provenance differs")
+        retained_runner = contained_release_asset(
+            actual_root, "validate-v018-direct-upgrades.py"
+        ).read_bytes()
+        native = subprocess.run(
+            ["git", "show", f"{V018_REBIND_SUBJECT_SHA}:{V018_REBIND_RUNNER_PATH}"],
+            cwd=root,
+            capture_output=True,
+            check=False,
+        )
+        current_runner = (root / V018_REBIND_RUNNER_PATH).read_bytes()
+        if (
+            native.returncode != 0
+            or native.stdout != retained_runner
+            or hashlib.sha256(retained_runner).hexdigest() != V018_REBIND_RUNNER_SHA256
+            or current_runner != retained_runner
+        ):
+            raise ReleaseStateError("v0.18 native runner provenance differs")
+        return cases, {case["case"]: actual_root for case in cases}, terminal["package_source"], V018_REBIND_ARCHIVE_SHA256
+    except ReleaseStateError:
+        raise
+    except (OSError, ValueError, KeyError, TypeError, PackageError) as exc:
+        raise ReleaseStateError("v0.18 execution set is missing or invalid") from exc
+
+
+def v018_affected_only_case_matrix(root, matrix):
+    """Prove the exact shell-assets repair without relabeling Candidate10 execution."""
+    release = root / ".dev/releases/v0.18.0"
+    actual = release / "route-assets/actual"
+    try:
+        archives = {
+            edge["artifacts"]["archive"]["sha256"]
+            for route in matrix["routes"]
+            for edge in route["edges"]
+            if edge["to_version"] == "v0.18.0"
+        }
+        current_subject = matrix["target"]["commit"]
+        if (
+            matrix["target"].get("version") != "v0.18.0"
+            or not SHA_RE.fullmatch(str(current_subject))
+            or current_subject == V018_REBIND_SUBJECT_SHA
+            or len(archives) != 1
+            or not all(SHA256_RE.fullmatch(str(value)) for value in archives)
+            or V018_REBIND_ARCHIVE_SHA256 in archives
+        ):
+            raise ReleaseStateError("v0.18 rebound archive or source differs")
+        baseline_raw = contained_release_asset(actual, "baseline-support-matrix.yaml").read_bytes()
+        if hashlib.sha256(baseline_raw).hexdigest() != V018_REBIND_BASELINE_MATRIX_SHA256:
+            raise ReleaseStateError("v0.18 rebound baseline matrix bytes differ")
+        baseline = yaml.safe_load(baseline_raw)
+        if (
+            not isinstance(baseline, dict)
+            or baseline.get("target", {}).get("version") != "v0.18.0"
+            or baseline.get("target", {}).get("commit") != V018_REBIND_SUBJECT_SHA
+            or baseline.get("retained_origins") != matrix.get("retained_origins")
+        ):
+            raise ReleaseStateError("v0.18 rebound baseline origin binding differs")
+        baseline_archives = {
+            edge["artifacts"]["archive"]["sha256"]
+            for route in baseline["routes"]
+            for edge in route["edges"]
+            if edge["to_version"] == "v0.18.0"
+        }
+        if baseline_archives != {V018_REBIND_ARCHIVE_SHA256}:
+            raise ReleaseStateError("v0.18 rebound baseline archive differs")
+        baseline_archive = contained_release_asset(actual, "baseline.zip").read_bytes()
+        replacement = contained_release_asset(
+            release, "route-assets/admitted/ai-collaboration-framework-v0.18.0.zip"
+        ).read_bytes()
+        replacement_sha256 = hashlib.sha256(replacement).hexdigest()
+        if (
+            hashlib.sha256(baseline_archive).hexdigest() != V018_REBIND_ARCHIVE_SHA256
+            or archives != {replacement_sha256}
+        ):
+            raise ReleaseStateError("v0.18 rebound archive bytes differ")
+        validate_v018_rebound_payload_delta(
+            baseline_archive,
+            replacement,
+            {path: (root / path).read_bytes() for path, _anchor, _addition in V018_REBIND_PAYLOAD_DELTAS},
+        )
+        return baseline
+    except ReleaseStateError:
+        raise
+    except (OSError, ValueError, KeyError, TypeError, PackageError) as exc:
+        raise ReleaseStateError("v0.18 rebound evidence is missing or invalid") from exc
 
 
 def validate_direct_upgrade_execution(root, version, sources, matrix):
@@ -789,6 +1185,17 @@ def validate_direct_upgrade_execution(root, version, sources, matrix):
             raise ReleaseStateError("v0.17 native execution set differs from its original route subject")
         validate_direct_upgrade_cases(cases, case_roots, sources, case_matrix)
         return
+    if version == "v0.18.0" and (actual_root / "execution-set.json").exists():
+        cases, case_roots, package_source, archive = load_v018_execution_set(root, actual_root)
+        archives = {edge["artifacts"]["archive"]["sha256"] for route in matrix["routes"]
+                    for edge in route["edges"] if edge["to_version"] == version}
+        case_matrix = matrix
+        if archives != {archive} or package_source.get("commit") != matrix["target"]["commit"]:
+            case_matrix = v018_affected_only_case_matrix(root, matrix)
+        if package_source.get("commit") != case_matrix["target"]["commit"]:
+            raise ReleaseStateError("v0.18 native execution set differs from its original route subject")
+        validate_direct_upgrade_cases(cases, case_roots, sources, case_matrix)
+        return
     evidence_path = release_dir / "route-assets/actual/terminal.json"
     try:
         evidence = json.loads(evidence_path.read_bytes())
@@ -804,8 +1211,7 @@ def validate_direct_upgrade_execution(root, version, sources, matrix):
     if evidence.get("package_source", {}).get("commit") != matrix["target"]["commit"]:
         raise ReleaseStateError("actual upgrade package source differs from the matrix")
     runner = evidence.get("runner", {})
-    path = (".github/scripts/validate-v017-direct-upgrades.py" if version == "v0.17.0"
-            else ".github/scripts/validate-v016-direct-upgrades.py")
+    path = DIRECT_UPGRADE_RUNNERS.get(version, ".github/scripts/validate-v016-direct-upgrades.py")
     if runner.get("path") != path:
         raise ReleaseStateError("actual upgrade runner is not the canonical execution authority")
     if not SHA_RE.fullmatch(str(evidence.get("subject_sha"))):
@@ -845,11 +1251,19 @@ def validate_direct_upgrade_cases(cases, case_roots, sources, matrix):
         origin_identity = next((item for item in matrix["retained_origins"] if item["version"] == origin), None)
         if origin_identity is None:
             raise ReleaseStateError("actual upgrade origin identity is missing from matrix")
+        retirement_statuses = {}
         for suffix, recovery in (("-pristine-resume", "resume"), ("-customized-none", "none"), ("-customized-rollback", "rolled-back")):
             case = selected[origin + suffix]
             if case.get("recovery") != recovery:
                 raise ReleaseStateError("actual upgrade recovery mode differs from its case")
             validate_direct_case_artifacts(case_roots[case["case"]], case, origin_identity, matrix["target"])
+            if "retirement-fixture.json" in case.get("artifacts", {}):
+                fixture = retained_case_artifact(case_roots[case["case"]], case, "retirement-fixture.json")
+                if not isinstance(fixture, dict):
+                    raise ReleaseStateError("actual upgrade retirement fixture is invalid")
+                if fixture.get("applicability") == "not-applicable-no-retired-skill-source-paths":
+                    retirement_statuses[case["case"]] = validate_skill_retirement_fixture(case, retained_case_artifact(
+                        case_roots[case["case"]], case, "packet.json"), fixture)
         for suffix in ("-pristine-resume", "-customized-none"):
             case = selected[origin + suffix]
             final = case.get("finalization", {})
@@ -858,8 +1272,11 @@ def validate_direct_upgrade_cases(cases, case_roots, sources, matrix):
                     or validation.get("outcome") != "passed" or validation.get("exit_code") != 0):
                 raise ReleaseStateError("actual upgrade requires passed target validation and finalized action readiness")
             cutovers = case.get("semantic_cutovers", {})
-            if any(cutovers.get(key) != expected for key, expected in {"provider_component_selection": "preserved", "source_specific_managed_removals": "verified", "commit_grammar_adoption": "verified", "effective_rule_regeneration": "verified", "skill_retirement": "verified"}.items()):
+            if any(cutovers.get(key) != expected for key, expected in {"provider_component_selection": "preserved", "source_specific_managed_removals": "verified", "commit_grammar_adoption": "verified", "effective_rule_regeneration": "verified"}.items()):
                 raise ReleaseStateError("actual upgrade semantic cutover evidence is incomplete")
+            expected_retirement = retirement_statuses.get(case["case"], "verified")
+            if cutovers.get("skill_retirement") != expected_retirement:
+                raise ReleaseStateError("actual upgrade skill retirement applicability differs from retained evidence")
         if not selected[origin + "-customized-none"]["semantic_cutovers"].get("target_customization_ids"):
             raise ReleaseStateError("actual customized upgrade lacks retained semantic customization")
         negative = selected[origin + "-pristine-resume"].get("negative_evidence", [])

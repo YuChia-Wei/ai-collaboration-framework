@@ -249,6 +249,40 @@ def hosted_workflow() -> dict:
 
 
 class AiContextReleaseStateGwtTests(unittest.TestCase):
+    def test_gwt_000a_given_hash_bound_role_relocation_fixture_when_retirement_is_not_applicable_then_it_passes(self):
+        case = {"origin": "v0.17.0", "case": "v0.17.0-customized-rollback", "artifacts": {}}
+        packet = {"migration": {"selected_input": {"previous_version": "0.17.0", "previous_files_sha256": "a" * 64},
+                                "contract": {"sources": [{"version": "0.17.0", "manifest_sha256": "a" * 64,
+                                                            "operations": [{"kind": "remove", "ownership": "framework-managed", "path": ".ai/assets/sub-agent-role-prompts/reviewer/sub-agent.yaml"},
+                                                                           {"kind": "rename", "ownership": "framework-managed", "path": ".ai/assets/skills/reviewer/roles/sub-agent.yaml"}]}]}}}
+        fixture = {"origin": "0.17.0", "source_remove_count": 1, "fixture_paths": [],
+                   "applicability": "not-applicable-no-retired-skill-source-paths", "rename_source_count": 1,
+                   "customized_retirement": False}
+        with tempfile.TemporaryDirectory() as temp:
+            actual = Path(temp)
+            path = actual / "evidence" / case["case"] / "retirement-fixture.json"
+            path.parent.mkdir(parents=True)
+            raw = (json.dumps(fixture, sort_keys=True, separators=(",", ":")) + "\n").encode()
+            path.write_bytes(raw)
+            case["artifacts"]["retirement-fixture.json"] = {"path": path.relative_to(actual).as_posix(),
+                                                                "sha256": STATE.hashlib.sha256(raw).hexdigest()}
+            bound = STATE.retained_case_artifact(actual, case, "retirement-fixture.json")
+            self.assertEqual("not-applicable-no-retired-skill-source-paths", STATE.validate_skill_retirement_fixture(case, packet, bound))
+            path.write_bytes(raw + b"tampered")
+            with self.assertRaisesRegex(STATE.ReleaseStateError, "digest"):
+                STATE.retained_case_artifact(actual, case, "retirement-fixture.json")
+
+    def test_gwt_000b_given_retired_skill_path_when_not_applicable_is_claimed_then_it_fails_closed(self):
+        case = {"origin": "v0.17.0", "case": "v0.17.0-pristine-resume"}
+        packet = {"migration": {"selected_input": {"previous_version": "0.17.0", "previous_files_sha256": "a" * 64},
+                                "contract": {"sources": [{"version": "0.17.0", "manifest_sha256": "a" * 64,
+                                                            "operations": [{"kind": "remove", "ownership": "framework-managed", "path": ".agents/skills/dev-workflow/SKILL.md"}]}]}}}
+        fixture = {"origin": "0.17.0", "source_remove_count": 1, "fixture_paths": [],
+                   "applicability": "not-applicable-no-retired-skill-source-paths", "rename_source_count": 0,
+                   "customized_retirement": False}
+        with self.assertRaisesRegex(STATE.ReleaseStateError, "differs from selected source evidence"):
+            STATE.validate_skill_retirement_fixture(case, packet, fixture)
+
     def test_given_each_retained_origin_when_v017_retirement_fixture_is_selected_then_it_uses_actual_managed_removals(self):
         spec = importlib.util.spec_from_file_location("v017_actual_runner", ROOT / ".github/scripts/validate-v017-direct-upgrades.py")
         module = importlib.util.module_from_spec(spec)
@@ -318,6 +352,69 @@ class AiContextReleaseStateGwtTests(unittest.TestCase):
             with self.assertRaisesRegex(
                 STATE.ReleaseStateError, "rendered release provenance"
             ):
+                STATE.validate(root, "candidate", VERSION, runner=fake_runner())
+
+    def test_gwt_004a_given_complete_html_comment_in_authored_notes_when_checked_then_it_passes(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            write_fixture(
+                root,
+                authored_notes=(
+                    "# REL-v0.5.0 - Candidate\n\n"
+                    "<!-- Explain the `<release-owner>` documentation literal. -->\n"
+                ),
+            )
+            STATE.validate(root, "candidate", VERSION, runner=fake_runner())
+
+    def test_gwt_004b_given_valid_inline_code_path_with_angle_segments_when_checked_then_it_passes(self):
+        for delimiter in ("`", "``"):
+            with self.subTest(delimiter=delimiter), tempfile.TemporaryDirectory() as temp:
+                root = Path(temp)
+                write_fixture(
+                    root,
+                    authored_notes=(
+                        "# REL-v0.5.0 - Candidate\n\n"
+                        f"Use {delimiter}.ai/assets/skills/<owner>/roles/<role-id>{delimiter} for role documentation.\n"
+                    ),
+                )
+                STATE.validate(root, "candidate", VERSION, runner=fake_runner())
+
+    def test_gwt_004c_given_plain_or_incomplete_authored_angle_placeholder_when_checked_then_it_fails_closed(self):
+        cases = {
+            "plain-prose": "Set the <release-owner> before publication.",
+            "incomplete-comment": "<!-- Set the <release-owner> before publication.",
+            "unmatched-inline-code": "Use `.ai/assets/skills/<owner>/roles/<role-id> before publication.",
+            "mismatched-delimiters": "Use ``.ai/assets/skills/<owner>/roles/<role-id>` before publication.",
+        }
+        for name, line in cases.items():
+            with self.subTest(case=name), tempfile.TemporaryDirectory() as temp:
+                root = Path(temp)
+                write_fixture(root, authored_notes=f"# REL-v0.5.0 - Candidate\n\n{line}\n")
+                with self.assertRaisesRegex(STATE.ReleaseStateError, "unfilled placeholder"):
+                    STATE.validate(root, "candidate", VERSION, runner=fake_runner())
+
+    def test_gwt_004d_given_nonangle_placeholder_in_authored_literals_or_raw_yaml_when_checked_then_it_fails_closed(self):
+        for placeholder in ("{{release-owner}}", "TODO", "TBD", "PLACEHOLDER"):
+            for location, line in {
+                "complete-comment": f"<!-- {placeholder} -->",
+                "inline-code": f"`{placeholder}`",
+            }.items():
+                with self.subTest(placeholder=placeholder, location=location), tempfile.TemporaryDirectory() as temp:
+                    root = Path(temp)
+                    write_fixture(root, authored_notes=f"# REL-v0.5.0 - Candidate\n\n{line}\n")
+                    with self.assertRaisesRegex(STATE.ReleaseStateError, "unfilled placeholder"):
+                        STATE.validate(root, "candidate", VERSION, runner=fake_runner())
+
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            release = write_fixture(root)
+            data = yaml.safe_load((release / "release.yaml").read_text(encoding="utf-8"))
+            data["release_id"] = "REL-<release-owner>"
+            (release / "release.yaml").write_text(
+                yaml.safe_dump(data, sort_keys=False),
+                encoding="utf-8",
+            )
+            with self.assertRaisesRegex(STATE.ReleaseStateError, "unfilled placeholder"):
                 STATE.validate(root, "candidate", VERSION, runner=fake_runner())
 
     def test_gwt_005_given_copied_release_heading_when_checked_then_it_fails_closed(self):
@@ -976,7 +1073,7 @@ class AiContextReleaseStateGwtTests(unittest.TestCase):
                     STATE.validate_retained_origin_route_evidence(root, version, artifacts, sources)
 
     def test_gwt_031c_given_direct_execution_claims_when_identity_or_completion_disagrees_then_rejected(self):
-        for version, predecessor, runner_name in [("v0.16.0", "v0.15.1", "validate-v016-direct-upgrades.py"), ("v0.17.0", "v0.16.0", "validate-v017-direct-upgrades.py")]:
+        for version, predecessor, runner_name in [("v0.16.0", "v0.15.1", "validate-v016-direct-upgrades.py"), ("v0.17.0", "v0.16.0", "validate-v017-direct-upgrades.py"), ("v0.18.0", "v0.17.0", "validate-v018-direct-upgrades.py")]:
             with self.subTest(version=version):
                 self.assert_direct_execution_rejects_drift(version, predecessor, runner_name)
 
@@ -1017,6 +1114,37 @@ class AiContextReleaseStateGwtTests(unittest.TestCase):
                 STATE.validate_direct_upgrade_execution(root, version, sources, matrix)
             path.write_text(json.dumps(evidence), encoding="utf-8")
             STATE.validate_direct_upgrade_execution(root, version, sources, matrix)
+            if version == "v0.18.0":
+                applicable = json.loads(json.dumps(evidence))
+                for case in applicable["cases"]:
+                    if case["origin"] != predecessor:
+                        continue
+                    packet = {"migration": {"selected_input": {"previous_version": predecessor.lstrip("v"), "previous_files_sha256": digest},
+                        "contract": {"sources": [{"version": predecessor.lstrip("v"), "manifest_sha256": digest,
+                            "operations": [{"kind": "remove", "ownership": "framework-managed", "path": ".ai/assets/sub-agent-role-prompts/reviewer/sub-agent.yaml"}]}]}}}
+                    fixture = {"origin": predecessor.lstrip("v"), "source_remove_count": 1, "fixture_paths": [],
+                        "applicability": "not-applicable-no-retired-skill-source-paths", "rename_source_count": 0,
+                        "customized_retirement": False, "diagnostic_note": "Optional metadata does not change applicability."}
+                    case["artifacts"] = {}
+                    for name, document in (("packet.json", packet), ("retirement-fixture.json", fixture)):
+                        artifact = path.parent / "evidence" / case["case"] / name
+                        artifact.parent.mkdir(parents=True, exist_ok=True)
+                        raw = json.dumps(document).encode()
+                        artifact.write_bytes(raw)
+                        case["artifacts"][name] = {"path": artifact.relative_to(path.parent).as_posix(), "sha256": STATE.hashlib.sha256(raw).hexdigest()}
+                    case["semantic_cutovers"]["skill_retirement"] = fixture["applicability"]
+                path.write_text(json.dumps(applicable), encoding="utf-8")
+                STATE.validate_direct_upgrade_execution(root, version, sources, matrix)
+                predecessor_case = next(case for case in applicable["cases"] if case["case"] == predecessor + "-pristine-resume")
+                predecessor_case["semantic_cutovers"]["skill_retirement"] = "verified"
+                path.write_text(json.dumps(applicable), encoding="utf-8")
+                with self.assertRaisesRegex(STATE.ReleaseStateError, "applicability differs"):
+                    STATE.validate_direct_upgrade_execution(root, version, sources, matrix)
+                predecessor_case["semantic_cutovers"]["skill_retirement"] = "not-applicable-no-retired-skill-source-paths"
+                predecessor_case["artifacts"].pop("retirement-fixture.json")
+                path.write_text(json.dumps(applicable), encoding="utf-8")
+                with self.assertRaisesRegex(STATE.ReleaseStateError, "applicability differs"):
+                    STATE.validate_direct_upgrade_execution(root, version, sources, matrix)
             changes = [
                 ("synthetic", lambda item: item.update(evidence_kind="synthetic-test")),
                 ("failed", lambda item: item.update(outcome="failed")),
@@ -1400,8 +1528,7 @@ class V017RetainedExecutionSetTests(unittest.TestCase):
     def test_given_affected_only_subject_drift_when_rebound_then_rejected(self):
         matrix = yaml.safe_load((self.actual.parents[1] / "support-matrix.yaml").read_bytes())
         paths = [self.actual / "baseline-support-matrix.yaml", self.actual / "baseline.zip",
-                 self.actual.parent / "admitted/ai-collaboration-framework-v0.17.0.zip",
-                 ROOT / ".ai/scripts/check-all.sh"]
+                 self.actual.parent / "admitted/ai-collaboration-framework-v0.17.0.zip"]
         for path in paths:
             with self.subTest(path=path.name), self.altered_bytes(path, lambda raw: raw + b"changed"):
                 with self.assertRaises(STATE.ReleaseStateError):
@@ -1462,6 +1589,207 @@ class V017RetainedExecutionSetTests(unittest.TestCase):
         with patch.object(STATE.subprocess, "run", return_value=subprocess.CompletedProcess([], 128, b"", b"missing")):
             with self.assertRaisesRegex(STATE.ReleaseStateError, "native execution provenance"):
                 STATE.load_v017_execution_set(ROOT, self.actual)
+
+
+class V018MatrixRebindTests(unittest.TestCase):
+    """Keep Candidate10 facts distinct from a C11 bounded archive rebind."""
+
+    @staticmethod
+    def archive(shell_assets, dependency_validator, keep=b"unchanged"):
+        import io
+        import zipfile
+
+        output = io.BytesIO()
+        with zipfile.ZipFile(output, "w") as archive:
+            archive.writestr("bundle/payload/", b"")
+            archive.writestr("bundle/payload/.ai/scripts/", b"")
+            for name, value in [
+                (".ai/scripts/shell-assets.yaml", shell_assets),
+                (".ai/scripts/validate-dependency-versions.py", dependency_validator),
+                ("meta/keep.txt", keep),
+            ]:
+                entry = zipfile.ZipInfo(f"bundle/payload/{name}")
+                entry.external_attr = 0o100644 << 16
+                archive.writestr(entry, value)
+        return output.getvalue()
+
+    def fixture(self, root):
+        old_subject = "a" * 40
+        new_subject = "b" * 40
+        runner = b"preserved C10 runner\n"
+        before = b"  - python .ai/scripts/tests/test_code_reviewer_routing_contract.py -v\n"
+        after = before + b"  - python .ai/scripts/tests/test_runtime_skill_entries.py -v\n"
+        dependency_anchor = STATE.V018_REBIND_PAYLOAD_DELTAS[1][1]
+        dependency_addition = STATE.V018_REBIND_PAYLOAD_DELTAS[1][2]
+        dependency_before = (
+            dependency_anchor
+            + b'        ".ai/scripts/plan-ai-context-package-apply.py",\n'
+            + b'        ".ai/scripts/validate-immutable-history.py",\n'
+            + b"    }\n"
+        )
+        dependency_after = dependency_before.replace(
+            dependency_anchor, dependency_anchor + dependency_addition
+        )
+        baseline_archive = self.archive(before, dependency_before)
+        replacement_archive = self.archive(after, dependency_after)
+        release = root / ".dev/releases/v0.18.0"
+        actual = release / "route-assets/actual"
+        admitted = release / "route-assets/admitted/ai-collaboration-framework-v0.18.0.zip"
+        actual.mkdir(parents=True)
+        admitted.parent.mkdir(parents=True)
+        source_runner = root / ".github/scripts/validate-v018-direct-upgrades.py"
+        source_runner.parent.mkdir(parents=True)
+        source_runner.write_bytes(runner)
+        shell_path = root / ".ai/scripts/shell-assets.yaml"
+        shell_path.parent.mkdir(parents=True)
+        shell_path.write_bytes(after)
+        dependency_path = root / ".ai/scripts/validate-dependency-versions.py"
+        dependency_path.write_bytes(dependency_after)
+        (actual / "validate-v018-direct-upgrades.py").write_bytes(runner)
+        (actual / "baseline.zip").write_bytes(baseline_archive)
+        admitted.write_bytes(replacement_archive)
+        origins = [{"version": value} for value in ("v0.6.0", "v0.9.0", "v0.17.0")]
+        baseline = {
+            "target": {"version": "v0.18.0", "commit": old_subject},
+            "retained_origins": origins,
+            "routes": [{"edges": [{"to_version": "v0.18.0", "artifacts": {"archive": {
+                "sha256": STATE.hashlib.sha256(baseline_archive).hexdigest()}}}]}],
+        }
+        baseline_raw = yaml.safe_dump(baseline, sort_keys=False).encode()
+        (actual / "baseline-support-matrix.yaml").write_bytes(baseline_raw)
+        cases = [{"case": case, "outcome": "passed"} for case in STATE.V018_REBIND_CASES]
+        terminal = {
+            "schema_version": "direct-upgrade-execution/v1",
+            "evidence_kind": "actual-isolated-target-execution",
+            "outcome": "passed",
+            "archive_sha256": STATE.hashlib.sha256(baseline_archive).hexdigest(),
+            "subject_sha": old_subject,
+            "package_source": {"commit": old_subject},
+            "runner": {"path": STATE.V018_REBIND_RUNNER_PATH,
+                       "sha256": STATE.hashlib.sha256(runner).hexdigest()},
+            "started_at": "2026-09-19T01:00:00+00:00",
+            "completed_at": "2026-09-19T01:00:01+00:00",
+            "duration_seconds": 1.0,
+            "invocation": ["python", STATE.V018_REBIND_RUNNER_PATH, "--subject-sha", old_subject],
+            "cases": cases,
+        }
+        terminal_raw = json.dumps(terminal, sort_keys=True).encode()
+        (actual / "terminal.json").write_bytes(terminal_raw)
+        evidence = b"Candidate10 native evidence only\n"
+        (actual / "evidence.txt").write_bytes(evidence)
+        index = {
+            "schema_version": "v018-direct-case-evidence-index/v1",
+            "terminal": {"asset_id": "actual-direct-v018-terminal", "path": "actual/terminal.json",
+                         "sha256": STATE.hashlib.sha256(terminal_raw).hexdigest()},
+            "evidence": [{"staged": {"asset_id": "fixture-evidence", "path": "actual/evidence.txt",
+                                        "sha256": STATE.hashlib.sha256(evidence).hexdigest()},
+                          "terminal_path": "evidence.txt"}],
+        }
+        index_raw = json.dumps(index, sort_keys=True).encode()
+        (actual / "case-evidence-index.json").write_bytes(index_raw)
+        pins = {
+            "V018_REBIND_ARCHIVE_SHA256": STATE.hashlib.sha256(baseline_archive).hexdigest(),
+            "V018_REBIND_SUBJECT_SHA": old_subject,
+            "V018_REBIND_RUNNER_SHA256": STATE.hashlib.sha256(runner).hexdigest(),
+            "V018_REBIND_TERMINAL_SHA256": STATE.hashlib.sha256(terminal_raw).hexdigest(),
+            "V018_REBIND_CASE_INDEX_SHA256": STATE.hashlib.sha256(index_raw).hexdigest(),
+            "V018_REBIND_BASELINE_MATRIX_SHA256": STATE.hashlib.sha256(baseline_raw).hexdigest(),
+            "V018_REBIND_CASE_EVIDENCE_COUNT": 1,
+        }
+        with patch.multiple(STATE, **pins):
+            (actual / "execution-set.json").write_text(
+                json.dumps(STATE.v018_rebind_execution_set(), sort_keys=True), encoding="utf-8"
+            )
+        matrix = {
+            "target": {"version": "v0.18.0", "commit": new_subject},
+            "retained_origins": origins,
+            "routes": [{"edges": [{"to_version": "v0.18.0", "artifacts": {"archive": {
+                "sha256": STATE.hashlib.sha256(replacement_archive).hexdigest()}}}]}],
+        }
+        return {
+            "actual": actual,
+            "admitted": admitted,
+            "baseline": baseline,
+            "baseline_archive": baseline_archive,
+            "before": before,
+            "after": after,
+            "dependency_before": dependency_before,
+            "dependency_after": dependency_after,
+            "dependency_path": dependency_path,
+            "matrix": matrix,
+            "pins": pins,
+            "root": root,
+            "shell_path": shell_path,
+            "runner": runner,
+        }
+
+    @staticmethod
+    def git_show(runner):
+        return patch.object(
+            STATE.subprocess,
+            "run",
+            return_value=subprocess.CompletedProcess([], 0, runner, b""),
+        )
+
+    def test_given_exact_archive_delta_when_rebound_then_preserves_candidate10_case_matrix(self):
+        with tempfile.TemporaryDirectory() as directory:
+            fixture = self.fixture(Path(directory))
+            with patch.multiple(STATE, **fixture["pins"]), self.git_show(fixture["runner"]), patch.object(
+                STATE, "validate_direct_upgrade_cases"
+            ) as validate_cases:
+                STATE.validate_direct_upgrade_execution(
+                    fixture["root"], "v0.18.0", ["v0.6.0", "v0.9.0", "v0.17.0"], fixture["matrix"]
+                )
+            self.assertEqual(list(STATE.V018_REBIND_CASES), [case["case"] for case in validate_cases.call_args.args[0]])
+            self.assertEqual(fixture["baseline"], validate_cases.call_args.args[3])
+            self.assertNotEqual(fixture["matrix"], validate_cases.call_args.args[3])
+            deltas = STATE.v018_rebind_execution_set()["allowed_payload_deltas"]
+            self.assertEqual(
+                [".ai/scripts/shell-assets.yaml", ".ai/scripts/validate-dependency-versions.py"],
+                [delta["path"] for delta in deltas],
+            )
+            self.assertEqual(82, len(deltas[1]["addition"].encode("ascii")))
+
+    def test_given_payload_origin_or_workspace_drift_when_rebound_then_rejects(self):
+        for change in ("payload", "dependency", "origins", "workspace"):
+            with self.subTest(change=change), tempfile.TemporaryDirectory() as directory:
+                fixture = self.fixture(Path(directory))
+                if change == "payload":
+                    altered = self.archive(
+                        fixture["after"], fixture["dependency_after"], b"changed"
+                    )
+                    fixture["admitted"].write_bytes(altered)
+                    fixture["matrix"]["routes"][0]["edges"][0]["artifacts"]["archive"]["sha256"] = (
+                        STATE.hashlib.sha256(altered).hexdigest()
+                    )
+                elif change == "dependency":
+                    altered = self.archive(fixture["after"], fixture["dependency_before"])
+                    fixture["admitted"].write_bytes(altered)
+                    fixture["matrix"]["routes"][0]["edges"][0]["artifacts"]["archive"]["sha256"] = (
+                        STATE.hashlib.sha256(altered).hexdigest()
+                    )
+                elif change == "origins":
+                    fixture["matrix"]["retained_origins"] = []
+                else:
+                    fixture["dependency_path"].write_bytes(fixture["dependency_after"] + b"changed")
+                with patch.multiple(STATE, **fixture["pins"]):
+                    with self.assertRaises(STATE.ReleaseStateError):
+                        STATE.v018_affected_only_case_matrix(fixture["root"], fixture["matrix"])
+
+    def test_given_execution_set_terminal_index_or_runner_drift_when_loaded_then_rejects(self):
+        for change in ("execution-set", "terminal", "index", "runner"):
+            with self.subTest(change=change), tempfile.TemporaryDirectory() as directory:
+                fixture = self.fixture(Path(directory))
+                paths = {
+                    "execution-set": fixture["actual"] / "execution-set.json",
+                    "terminal": fixture["actual"] / "terminal.json",
+                    "index": fixture["actual"] / "case-evidence-index.json",
+                    "runner": fixture["root"] / STATE.V018_REBIND_RUNNER_PATH,
+                }
+                paths[change].write_bytes(paths[change].read_bytes() + b"changed")
+                with patch.multiple(STATE, **fixture["pins"]), self.git_show(fixture["runner"]):
+                    with self.assertRaises(STATE.ReleaseStateError):
+                        STATE.load_v018_execution_set(fixture["root"], fixture["actual"])
 
 
 if __name__ == "__main__":

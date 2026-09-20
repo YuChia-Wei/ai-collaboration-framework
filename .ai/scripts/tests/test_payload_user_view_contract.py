@@ -39,7 +39,7 @@ def user_view_contract(*, code_reviewer: bool = False) -> dict:
                 "owner_component": "dotnet-backend",
                 "path_patterns": [
                     ".ai/assets/skills/code-reviewer/**",
-                    ".ai/assets/sub-agent-role-prompts/*code-review-sub-agent/**",
+                    ".ai/assets/skills/code-reviewer/roles/**",
                 ],
                 "availability": {
                     "core-only": "unavailable-not-selected",
@@ -246,7 +246,7 @@ class PayloadUserViewContractTests(unittest.TestCase):
                 "dotnet-backend",
             ),
             payload_file(
-                ".ai/assets/sub-agent-role-prompts/code-review-sub-agent/sub-agent.yaml",
+                ".ai/assets/skills/code-reviewer/roles/code-review-sub-agent/sub-agent.yaml",
                 'references: [".ai/assets/skills/code-reviewer/skill.yaml"]\n',
                 "dotnet-backend",
             ),

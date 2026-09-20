@@ -7,7 +7,9 @@ import copy
 import importlib.util
 import subprocess
 import unittest
+from functools import cache
 from pathlib import Path
+from unittest.mock import patch
 
 import yaml
 
@@ -18,14 +20,32 @@ if SPEC is None or SPEC.loader is None:
     raise RuntimeError("validator cannot be loaded")
 VALIDATOR = importlib.util.module_from_spec(SPEC)
 SPEC.loader.exec_module(VALIDATOR)
+ORIGINAL_AUTHORITATIVE_CLOSURE = VALIDATOR.authoritative_closure
+ORIGINAL_GIT_OBJECT = VALIDATOR.git_object
 SCHEMA = yaml.safe_load((ROOT / ".ai/assets/shared/validation-evidence-lifecycle.schema.yaml").read_text(encoding="utf-8"))
 PROVIDER = yaml.safe_load((ROOT / ".dev/standards/GITHUB-WORK-MANAGEMENT-POLICY.yaml").read_text(encoding="utf-8"))
 D = "a" * 64
 SHA1 = subprocess.run(["git", "-C", str(ROOT), "rev-parse", "HEAD"], check=True, capture_output=True, text=True, encoding="utf-8").stdout.strip()
 SHA2 = SHA1
 CHECK_ID = "validation-lifecycle-tests"
-CLOSURE_PATHS = VALIDATOR.authoritative_closure(CHECK_ID, SHA1)
-CLOSURE_DEPENDENCIES = [{"path": path, "original_blob": VALIDATOR.git_object(SHA1, path), "current_blob": VALIDATOR.git_object(SHA2, path)} for path in CLOSURE_PATHS]
+
+
+@cache
+def cached_authoritative_closure_paths(check_id: str, subject_sha: str) -> tuple[str, ...]:
+    return tuple(ORIGINAL_AUTHORITATIVE_CLOSURE(check_id, subject_sha))
+
+
+def cached_authoritative_closure(check_id: str, subject_sha: str) -> list[str]:
+    return list(cached_authoritative_closure_paths(check_id, subject_sha))
+
+
+@cache
+def cached_git_object(subject_sha: str, path: str) -> str:
+    return ORIGINAL_GIT_OBJECT(subject_sha, path)
+
+
+CLOSURE_PATHS = cached_authoritative_closure(CHECK_ID, SHA1)
+CLOSURE_DEPENDENCIES = [{"path": path, "original_blob": cached_git_object(SHA1, path), "current_blob": cached_git_object(SHA2, path)} for path in CLOSURE_PATHS]
 
 
 def pair(value: str = D) -> dict[str, str]:
@@ -76,6 +96,31 @@ def seal(value: dict[str, object], field: str) -> None:
 
 
 class ValidationLifecycleGwtTests(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls) -> None:
+        super().setUpClass()
+        cls._patchers = [
+            patch.object(VALIDATOR, "authoritative_closure", side_effect=cached_authoritative_closure),
+            patch.object(VALIDATOR, "git_object", side_effect=cached_git_object),
+        ]
+        try:
+            for patcher in cls._patchers:
+                patcher.start()
+        except BaseException:
+            for patcher in reversed(cls._patchers):
+                patcher.stop()
+            raise
+
+    @classmethod
+    def tearDownClass(cls) -> None:
+        try:
+            for patcher in reversed(cls._patchers):
+                patcher.stop()
+        finally:
+            cached_authoritative_closure_paths.cache_clear()
+            cached_git_object.cache_clear()
+            super().tearDownClass()
+
     def test_gwt_001_given_complete_input_closure_when_reuse_is_checked_then_it_passes(self) -> None:
         VALIDATOR.validate_reuse_receipt(receipt(), SCHEMA)
 
